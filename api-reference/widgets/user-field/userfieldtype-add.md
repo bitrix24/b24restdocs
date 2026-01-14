@@ -4,7 +4,27 @@
 >
 > Who can execute the method: any user
 
-The method `userfieldtype.add` registers a new user field type. It returns `true` or an error with a description of the reason.
+The `userfieldtype.add` method registers a new type of custom fields. After registering the type, create a custom field using the [userfieldconfig.add](../../crm/universal/userfieldconfig/userfieldconfig/userfieldconfig-add.md) method.
+
+When opening a card with a custom type field, an array `PLACEMENT_OPTIONS` containing data about the field and entity is passed to the application handler.
+
+```json
+{
+    "MODE": "view",
+    "ENTITY_ID": "CRM_DEAL",
+    "FIELD_NAME": "UF_CRM_TEST_TYPE_1",
+    "ENTITY_VALUE_ID": "7303",
+    "VALUE": null,
+    "MULTIPLE": "N",
+    "MANDATORY": "N",
+    "XML_ID": null,
+    "ENTITY_DATA": {
+        "entityTypeId": 2,
+        "entityId": "7303",
+        "module": "crm"
+    }
+}
+```
 
 ## Method Parameters
 
@@ -38,7 +58,7 @@ Default is `0`. If `0` is specified, the standard height for displaying this emb
 
 - cURL (Webhook)
 
-    ```curl
+    ```bash
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
@@ -56,7 +76,7 @@ Default is `0`. If `0` is specified, the standard height for displaying this emb
 
 - cURL (OAuth)
 
-    ```curl
+    ```bash
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \

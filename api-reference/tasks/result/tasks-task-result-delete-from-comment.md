@@ -1,29 +1,35 @@
-# Delete Comment from Result tasks.task.result.deleteFromComment
+# Remove Comment from Result tasks.task.result.deleteFromComment
 
 > Scope: [`task`](../../scopes/permissions.md)
 >
 > Who can execute the method: any user with access to the task
 
-The method `tasks.task.result.deleteFromComment` unpins a comment as the result of a task. To remove a comment from the result, use the method [task.commentitem.delete](../comment-item/task-comment-item-delete.md).
+The method `tasks.task.result.deleteFromComment` removes the pinning of a comment as the result of a task. To delete a comment from the result, use the method [task.commentitem.delete](../comment-item/task-comment-item-delete.md).
 
 A user can only unpin their own comment. An administrator can unpin any user's comment.
 
+{% note warning " " %}
+
+When working with the [new task detail form](../tasks-new.md) with chat from version `tasks 25.700.0`, the method does not work.
+
+{% endnote %}
+
 ## Method Parameters
 
-{% include [Footnote about parameters](../../../_includes/required.md) %}
+{% include [Note on parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **commentId***
-[`integer`](../../data-types.md) | The identifier of the comment for which the result needs to be unpinned. 
+[`integer`](../../data-types.md) | The identifier of the comment for which the result needs to be unpinned.
 
 The comment identifier can be obtained when [adding a new comment](../comment-item/task-comment-item-add.md) or by using the [method to get the list of comments](../comment-item/task-comment-item-get-list.md) for the task ||
 |#
 
 ## Code Examples
 
-{% include [Footnote about examples](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -132,7 +138,7 @@ The comment identifier can be obtained when [adding a new comment](../comment-it
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -163,7 +169,7 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -178,8 +184,8 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `0` | Access denied. | The user does not have permission to access the task or the comment does not belong to the user ||
-|| `100` | Invalid value {value} to match with parameter {commentId}. Should be value of type int. | The value provided for the `commentId` parameter is of an invalid type. It should be of type `integer` ||
+|| `0` | Access denied. | The user does not have access permission to the task or the comment does not belong to the user ||
+|| `100` | Invalid value {value} to match with parameter {commentId}. Should be value of type int. | The parameter `commentId` has an invalid type. It should be of type `integer` ||
 || `0` | Comment not found. | A comment with such an identifier does not exist ||
 |#
 

@@ -13,5 +13,7 @@ items:
     href: how-to-get-deal-funnels.md
   - name: How to Get a Client's Address from CRM
     href: how-to-get-address.md
+  - name: How to Get a List of Vendors
+    href: how-to-get-contractors.md
   - name: How to Filter Elements by Stage Name
     href: how-to-get-elements-by-stage-filter.md

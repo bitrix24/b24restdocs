@@ -15,6 +15,10 @@ The `user.update` method updates user data. It can only be executed on behalf of
 `type` | **Description** ||
 || **ID***
 [`integer`](../data-types.md) | User identifier ||
+|| **ACTIVE**  
+[`boolean`](../data-types.md) | User activity status. Possible values:  
+- `Y` — employee is active,  
+- `N` — employee is terminated ||
 || **EMAIL**
 [`string`](../data-types.md) | User e-mail ||
 || **NAME**

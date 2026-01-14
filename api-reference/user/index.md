@@ -14,9 +14,7 @@ The user profile is a key object in Bitrix24. Without a user profile, an employe
 Use the method:
 
 - [user.add](./user-add.md) to invite new users. The username must not exceed 25 characters.
-- [user.update](./user-update.md) to edit existing user profiles.
-
-You cannot terminate a user using the `user.*` methods. Termination is only available in the Bitrix24 interface.
+- [user.update](./user-update.md) to edit the profiles of existing users, terminate or reinstate an employee.
 
 {% note tip "User Documentation" %}
 

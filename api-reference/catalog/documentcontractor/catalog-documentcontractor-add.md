@@ -242,4 +242,6 @@ HTTP code: **400**
 
 - [{#T}](./catalog-documentcontractor-list.md)  
 - [{#T}](./catalog-documentcontractor-delete.md)  
-- [{#T}](./catalog-documentcontractor-get-fields.md)  
+- [{#T}](./catalog-documentcontractor-get-fields.md)
+- [{#T}](../../../tutorials/crm/how-to-add-crm-objects/how-to-add-contractor.md)
+- [{#T}](../../../tutorials/crm/how-to-get-lists/how-to-get-contractors.md)

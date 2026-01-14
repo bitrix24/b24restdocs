@@ -1,5 +1,15 @@
 # What's New?
 
+## 2026
+
+### January 14, 2026
+
+- Added a new tutorial [How to create a vendor in CRM](./tutorials/crm/how-to-add-crm-objects/how-to-add-contractor.md)
+- Added a new tutorial [How to get a list of vendors](./tutorials/crm/how-to-get-lists/how-to-get-contractors.md)
+- Updated the article [Getting Started](./first-steps/index.md)
+- Updated the main page of the section [Disk Access Permissions](./api-reference/disk/rights/index.md). Added introductory information and an overview of methods
+- Updated the main page of the section [File Version](./api-reference/disk/version/index.md). Added introductory information and an overview of methods
+
 ## 2025
 
 ### December 24, 2025

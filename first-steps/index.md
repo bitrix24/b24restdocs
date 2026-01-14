@@ -1,21 +1,59 @@
 # Getting Started
 
-The Bitrix24 REST API documentation provides developers with all the necessary information to work with the REST API and utilize various SDKs. The documentation consists of several main sections that offer useful insights and examples for developing applications and integrating with Bitrix24.
+The documentation for the Bitrix24 REST API describes API methods, request examples, and integration scenarios for application and external service development.
 
-## Recommended Learning Sequence
+Below is the recommended sequence for studying the documentation, which will help:
 
-- Start with the section [{#T}](./access-to-rest-api.md), where you will learn how to obtain the necessary keys and tokens to work with the Bitrix24 REST API. This is an important first step before you begin using the API.
+- understand the structure of the documentation,
+- master the basic capabilities of the API,
+- move on to more complex scenarios.
 
-- Next, move on to the section [{#T}](./first-rest-api-call.md), where you will find detailed instructions on how to make your first request to the Bitrix24 REST API. This will help you grasp the basics of working with the API and ensure that you have correctly set up your development environment.
+{% note tip  "" %}
 
-- Once you have mastered the basics, check out the section [{#T}](./how-to-use-examples.md). Here, you will find examples of using the Bitrix24 REST API in various programming languages. This will help you understand the nuances of working with the API across different platforms and apply the examples in your projects.
+To understand the architecture of applications, authorization principles, working with the REST API, and the environment structure, study the [Bitrix24 REST API Training Course](https://helpdesk.bitrix24.com/courses/index.php?COURSE_ID=268&INDEX=Y).
 
-- If you want to delve deeper into integration and customization, pay attention to the section [{#T}](../local-integrations/index.md). Here, you will find information on setting up integrations with other systems and automating processes in your Bitrix24.
+{% endnote %}
 
-- If you are looking for ready-made solutions and use-case scenarios for the REST API, refer to the section [{#T}](../tutorials/index.md). Here, you will find a large set of examples and scenarios that will help you quickly understand the capabilities of the API and apply them in your projects.
+## Accessing the REST API
 
-- To understand the capabilities of the Bitrix24 app Market, refer to the section [{#T}](../market/index.md). Here, you will find information on developing and publishing applications, as well as monetization and promotion opportunities in the Bitrix24 Market.
+The section [How to Access the REST API](./access-to-rest-api.md) describes how to activate the trial period and gain access to all methods and capabilities of the Bitrix24 REST API. It also includes information about NFR keys for partner developments.
 
-- Finally, move on to the section [{#T}](../api-reference/index.md), where you will find detailed information about the features and specifics of the Bitrix24 REST API. Here, you will find rules for working with OAuth 2.0 authorization tokens, information about REST API events, and other important aspects that will help you make the most effective use of the API.
+## Setting Up and Using the REST API
 
-By following this sequence, you will systematically master the Bitrix24 REST API and use it for various tasks and integrations.
+The section [Setting Up and Using the REST API](../settings/index.md) is dedicated to parameters that affect integration operations:
+
+- authorization domains,
+- access permissions,
+- method call specifics,
+- environment configuration,
+- request limits.
+
+This section also contains the article [Configuring Access: Cloud and On-Premise Versions](../settings/cloud-and-on-premise/network-access.md), which describes how to set up network access for incoming and outgoing requests and how to add IP addresses to the allowed list.
+
+## First API Request
+
+The section [How to Make Your First API Request](./first-rest-api-call.md) explains how to create an incoming webhook and make your first REST API method call. This allows you to verify the API's functionality and the correctness of the settings.
+
+## Request Examples
+
+The section [How to Use Examples in Documentation](./how-to-use-examples.md) describes how to work with request examples, which programming languages are used, and how to connect to libraries. It also shows how to adapt examples to your task and make real requests to the API.
+
+## SDK for Bitrix24 Development
+
+The section [SDK for Bitrix24 Development](../sdk/index.md) describes ready-made libraries for development and provides information on connecting the MCP service for AI assistants in the development environment.
+
+## Local Integrations
+
+The section [Overview of Tools for Local Integrations](../local-integrations/index.md) is dedicated to tools for creating integrations that work within Bitrix24 and do not require publication in the Marketplace. This section includes examples of working with local webhooks and applications for task automation and data exchange.
+
+## Ready-Made Scenarios
+
+The section [Tutorials: Ready-made Use Cases for REST API](../tutorials/index.md) contains step-by-step guides and ready-made scenarios for using the Bitrix24 REST API. For example, how to create and configure a cash register handler or how to retrieve a client's address from the CRM. These examples can be used as a basis for your own solutions.
+
+## Mass-Market Applications
+
+The section [Overview of Mass-Market Applications](../market/index.md) describes the principles of working with mass-market applications from the Bitrix24 Marketplace, as well as opportunities for monetization and promotion.
+
+## API Reference
+
+The section [API Reference](../api-reference/index.md) contains descriptions of methods and capabilities of the Bitrix24 REST API. This material helps navigate the API and select methods for specific functionalities.

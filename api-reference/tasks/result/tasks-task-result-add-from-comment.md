@@ -1,12 +1,18 @@
-# Add Comment as Task Result tasks.task.result.addFromComment
+# Add Comment to Result tasks.task.result.addFromComment
 
 > Scope: [`task`](../../scopes/permissions.md)
 >
 > Who can execute the method: any user with access to the task
 
-The method `tasks.task.result.addFromComment` attaches a comment as the result of a task.
+The method `tasks.task.result.addFromComment` pins a comment as the result of a task.
 
-A user can only attach their own comment as a result. An administrator can attach any user's comment, becoming the author of the result.
+A user can pin only their own comment as a result. An administrator can pin any user's comment, becoming the author of the result.
+
+{% note warning " " %}
+
+When working with the [new task detail form](../tasks-new.md) with chat from version `tasks 25.700.0`, the method does not work.
+
+{% endnote %}
 
 ## Method Parameters
 
@@ -16,9 +22,9 @@ A user can only attach their own comment as a result. An administrator can attac
 || **Name**
 `type` | **Description** ||
 || **commentId***
-[`integer`](../../data-types.md) | The identifier of the comment to be attached as a result.
+[`integer`](../../data-types.md) | The identifier of the comment to be pinned as the result.
 
-The comment identifier can be obtained when [adding a new comment](../comment-item/task-comment-item-add.md) or by using the [method to get the list of comments](../comment-item/task-comment-item-get-list.md) ||
+The comment identifier can be obtained when [adding a new comment](../comment-item/task-comment-item-add.md) or using the [method for retrieving the list of comments](../comment-item/task-comment-item-get-list.md) ||
 |#
 
 ## Code Examples
@@ -167,19 +173,19 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | An object describing the attached result ||
+[`object`](../../data-types.md) | An object describing the pinned result ||
 || **id**
 [`integer`](../../data-types.md) | The identifier of the result ||
 || **taskId**
 [`integer`](../../data-types.md) | The identifier of the task ||
 || **commentId**
-[`integer`](../../data-types.md) | The identifier of the comment attached as a result ||
+[`integer`](../../data-types.md) | The identifier of the comment pinned as the result ||
 || **createdBy**
-[`integer`](../../data-types.md) | The identifier of the user who attached the result ||
+[`integer`](../../data-types.md) | The identifier of the user who pinned the result ||
 || **createdAt**
-[`string`](../../data-types.md) | The date and time the result was attached in ISO 8601 format ||
+[`string`](../../data-types.md) | The date and time the result was pinned in ISO 8601 format ||
 || **updatedAt**
-[`string`](../../data-types.md) | The date and time of the last update to the result in ISO 8601 format ||
+[`string`](../../data-types.md) | The date and time of the last update of the result in ISO 8601 format ||
 || **status**
 [`integer`](../../data-types.md) | The status of the result. Possible values:
 - `0` — result is open
@@ -187,18 +193,18 @@ HTTP status: **200**
 
 The result becomes closed after the task is completed and retains this status after the task is resumed. Only new results in an unfinished task will be open.
 
-A comment with an open result cannot be re-added to the result. If the result is closed, adding is possible
+A comment with an open result cannot be added again as a result. If the result is closed, adding is possible
  ||
 || **text**
 [`string`](../../data-types.md) | The text of the result ||
 || **formattedText**
 [`string`](../../data-types.md) | The formatted text of the result ||
 || **files**
-`null` | Has a value of `null`. 
+`null` | Has the value `null`. 
 
-The list of files attached to the result can be obtained using the method [tasks.task.result.list](./tasks-task-result-list.md) ||
+The list of files attached to the result can be obtained using the [tasks.task.result.list](./tasks-task-result-list.md) method ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the request execution time ||
+[`time`](../../data-types.md#time) | Information about the time taken for the request ||
 |#
 
 ## Error Handling
@@ -219,9 +225,9 @@ HTTP status: **400**
 #|
 || **Code** | **Description** | **Value** ||
 || `0` | Access denied. | The user does not have permission to access the task or the comment does not belong to the user ||
-|| `0` | Result already exists. | The comment is already attached as a result ||
+|| `0` | Result already exists. | The comment is already pinned as a result ||
 || `100` | Invalid value {value} to match with parameter {commentId}. Should be value of type int. | An invalid type value was passed in the `commentId` parameter. It should be of type `integer` ||
-|| `0` | Comment not found. | A comment with this identifier does not exist ||
+|| `0` | Comment not found. | A comment with that identifier does not exist ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

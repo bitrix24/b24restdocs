@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will fill it in shortly.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -13,8 +13,8 @@ Some data may be missing — we will fill it in shortly.
 - edits needed for writing standards
 - parameter types not specified
 - examples missing
-- response in case of error not provided
-- links to yet-to-be-created pages not specified
+- error response not documented
+- links to yet-to-be-created pages not provided
 - from Sergei's file: unclear in what context the method is applicable, needs clarification
 
 {% endnote %}
@@ -27,25 +27,29 @@ Some data may be missing — we will fill it in shortly.
 
 The method `im.chat.get` retrieves the chat ID.
 
+{% include [Parameter Notes](../../_includes/required.md) %}
+
 #|
 || **Parameter** | **Example** | **Description** ||
 || **ENTITY_TYPE^*^**
-[`unknown`](../data-types.md) | `CRM`, `LINES`, `LIVECHAT` | Entity identifier. Can be used to find the chat and easily determine the context in event handlers:
+[`unknown`](../data-types.md) | `CRM`, `LINES`, `LIVECHAT` | Identifier of the entity. Can be used to find the chat and easily determine the context in event handlers:
 - [ONIMBOTMESSAGEADD](../chat-bots/messages/events/on-imbot-message-add.md),
 - [ONIMBOTMESSAGEUPDATE](../chat-bots/messages/events/on-imbot-message-update.md),
 - [ONIMBOTMESSAGEDELETE](../chat-bots/messages/events/on-imbot-message-delete.md) ||
 || **ENTITY_ID^*^**
-[`unknown`](../data-types.md) | `LEAD`\|`13` | Numeric entity identifier. Can be used to find the chat and easily determine the context in event handlers:
+[`unknown`](../data-types.md) | `LEAD`\|`13` | Numeric identifier of the entity. Can be used to find the chat and easily determine the context in event handlers:
 - [ONIMBOTMESSAGEADD](../chat-bots/messages/events/on-imbot-message-add.md),
 - [ONIMBOTMESSAGEUPDATE](../chat-bots/messages/events/on-imbot-message-update.md),
 - [ONIMBOTMESSAGEDELETE](../chat-bots/messages/events/on-imbot-message-delete.md) ||
 |#
 
-{% include [Footnote about parameters](../../_includes/required.md) %}
+{% note info "" %}
+
+How to get the task chat ID is described in the article [New Task Card: Overview of Changes](../tasks/tasks-new.md)
+
+{% endnote %}
 
 ## Examples
-
-{% include [Explanation about restCommand](./_includes/rest-command.md) %}
 
 {% list tabs %}
 
@@ -127,6 +131,8 @@ The method `im.chat.get` retrieves the chat ID.
 
 - PHP CRest
 
+    {% include [Explanation of restCommand](./_includes/rest-command.md) %}
+
     ```php
     $result = restCommand(
         'im.chat.get',
@@ -142,9 +148,9 @@ The method `im.chat.get` retrieves the chat ID.
 
 {% endlist %}
 
-{% include [Footnote about examples](../../_includes/examples.md) %}
+{% include [Example Notes](../../_includes/examples.md) %}
 
-## Response on Success
+## Successful Response
 
 ```json
 {
@@ -152,4 +158,4 @@ The method `im.chat.get` retrieves the chat ID.
 }
 ```
 
-**Execution result**: returns the chat ID `CHAT_ID` or `null`.
+**Execution Result**: returns the chat ID `CHAT_ID` or `null`.

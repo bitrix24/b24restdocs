@@ -307,7 +307,7 @@ HTTP Status: **200**
                     "name": "First Last",
                     "orderPropsId": 20,
                     "orderPropsXmlId": null,
-                    "value": "Artem Gavrilenko"
+                    "value": "John Smith"
                 },
                 {
                     "code": "EMAIL",
@@ -315,7 +315,7 @@ HTTP Status: **200**
                     "name": "E-Mail1",
                     "orderPropsId": 21,
                     "orderPropsXmlId": "bx_63a082af0d250",
-                    "value": "Artemlxvl@my-mail.com"
+                    "value": "email@mail.com"
                 },
                 {
                     "code": "PHONE",

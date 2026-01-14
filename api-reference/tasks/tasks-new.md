@@ -10,8 +10,8 @@ The new task card has moved comments to chat. The old task methods continue to f
 ## What Has Changed in Comments {#comments}
 
 - Updating and deleting comments using the methods task.commentitem.update and task.commentitem.delete no longer work. Use the Chat methods instead:
-  - [im.message.update](../chats/messages/im-message-update.md) to modify text,
-  - [im.message.delete](../chats/messages/im-message-delete.md) to remove a message.
+  - [im.message.update](../chats/messages/im-message-update.md) to change the text,
+  - [im.message.delete](../chats/messages/im-message-delete.md) to delete a message.
 - Retrieving the list of comments via task.commentitem.getlist is no longer functional. Get task chat messages through [im.dialog.messages.get](../chats/messages/im-dialog-messages-get.md).
 - Use the method [im.disk.file.commit](../chats/files/im-disk-file-commit.md) to send files in the task chat.
 - The chat associated with the task is returned in the response of [tasks.task.get](./tasks-task-get.md). Use its identifier for requests in chat methods.
@@ -105,14 +105,20 @@ Documentation for the new version of the method call is available in OpenApi for
 - The event [OnTaskCommentAdd](./comment-item/events-comment/on-task-comment-add.md) works. When working with the new task card, the handler will receive parameters:
     - `MESSAGE_ID` with the identifier of the message in the task chat,
     - `TASK_ID` with the identifier of the task,
-    - `'ID' => 0` the identifier of the comment will be zero.
+    - `'ID' => 0` the identifier of the comment will equal zero.
 
 - The events [OnTaskCommentUpdate](./comment-item/events-comment/on-task-comment-update.md) and [OnTaskCommentDelete](./comment-item/events-comment/on-task-comment-delete.md) do not work in the new task card.
+
+## Task Result
+
+- The method [tasks.task.result.list](./result/tasks-task-result-list.md) works. When working with the new task card, all task results will be returned with the parameter `commentId: 0`.
+
+- The methods [tasks.task.result.addFromComment](./result/tasks-task-result-add-from-comment.md) and [tasks.task.result.deleteFromComment](./result/tasks-task-result-delete-from-comment.md) do not work in the new task card.
 
 ## Widgets
 
 The locations of the widgets [TASK_VIEW_SIDEBAR](../widgets/task/view-sidebar.md), [TASK_VIEW_TOP_PANEL](../widgets/task/view-top-panel.md), [TASK_VIEW_TAB](../widgets/task/view-tab.md) are no longer relevant in the new task card. In the new card, all widgets are displayed in a single "Applications" block.
 
-All previously registered widgets continue to work. New widgets can also be registered, and they will be shown in the "Applications" block.
+All previously registered widgets continue to work. New widgets can also be registered, and they will be displayed in the "Applications" block.
 
 ![Embedded Applications](_images/widget.png)

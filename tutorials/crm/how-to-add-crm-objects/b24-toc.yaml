@@ -19,6 +19,8 @@ items:
     href: how-to-add-company.md
   - name: Add Company with Details
     href: how-to-add-company-with-requisite.md
+  - name: Create a Vendor in CRM
+    href: how-to-add-contractor.md
   - name: Add Deal and Company with Details
     href: how-to-add-deal-with-choice-of-requisite.md
   - name: Add Calendar Event for Client Work

@@ -55,8 +55,10 @@ There is an additional field `DISABLE_SENDING_MESSAGE_COPY`. It is intended to f
 [`integer`](../../../data-types.md) | Identifier of the CRM entity ||
 || **OWNER_TYPE_ID***
 [`integer`](../../../data-types.md) | [Identifier of the CRM object type](../../../data-types.md#object_type) ||
-|| **TYPE_ID***
-[`crm_enum_activitytype`](../../../data-types.md) | Type of activity ||
+|| **TYPE_ID***  
+[`crm_enum_activitytype`](../../../data-types.md) | Type of the deal. To access the available deal types, use the method [crm.enum.activitytype](../../../auxiliary/enum/outdated/crm-enum-activity-type.md).  
+
+To create a deal with the type "task," use the method [creation](../../../../tasks/tasks-task-add.md) or [modification](../../../../tasks/tasks-task-update.md) of the task and specify the CRM entity in the field `UF_CRM_TASK` ||
 || **ASSOCIATED_ENTITY_ID**
 [`integer`](../../../../data-types.md) | Identifier of the entity associated with the activity ||
 || **COMMUNICATIONS***
