@@ -2,6 +2,11 @@
 
 ## 2026
 
+### January 21, 2026
+
+- Updated the article [How to Access the REST API](./first-steps/access-to-rest-api.md)
+- Updated the documentation for the methods [disk.folder.addsubfolder](./api-reference/disk/folder/disk-folder-add-subfolder.md), [disk.folder.copyto](./api-reference/disk/folder/disk-folder-copy-to.md), [disk.folder.deletetree](./api-reference/disk/folder/disk-folder-delete-tree.md), [disk.folder.getchildren](./api-reference/disk/folder/disk-folder-get-children.md), [disk.folder.getexternallink](./api-reference/disk/folder/disk-folder-get-external-link.md), [disk.folder.getfields](./api-reference/disk/folder/disk-folder-get-fields.md)
+
 ### January 14, 2026
 
 - Added a new tutorial [How to create a vendor in CRM](./tutorials/crm/how-to-add-crm-objects/how-to-add-contractor.md)

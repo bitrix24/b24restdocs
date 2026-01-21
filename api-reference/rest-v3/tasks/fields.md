@@ -1,8 +1,8 @@
 # Task Fields in REST 3.0
 
-In the section [Task Object](#taskdto), all task fields are described, while other sections cover the fields of related objects. Some task fields are available as both an identifier number and an object, for example, `creatorId` and `creator`. Use the identifier field in the methods for [creating](./tasks-task-add.md) and [updating](./tasks-task-update.md) a task. Use the object field in the method for [getting a task](./tasks-task-get.md). Instructions on how to work with the fields of related objects are detailed in the article [Overview of REST API 3.0](../index.md#connection).
+In the section [Task Object](#taskdto), all task fields are described, while other sections cover the fields of related objects. Some task fields are available as both an identifier number and as an object, for example, `creatorId` and `creator`. Use the identifier field in the methods for [creating](./tasks-task-add.md) and [updating](./tasks-task-update.md) a task. Use the object field in the method for [getting a task](./tasks-task-get.md). Instructions on how to work with the fields of related objects are described in the article [Overview of REST API 3.0](../index.md#connection).
 
-Permissions for writing and modifying fields depend on the user's role in the task, group permission settings, employee hierarchy, task status, and certain flags in the task, such as `allowChangeDeadline`.
+The rights to write and modify fields depend on the user's role in the task, group permission settings, employee hierarchy, task status, and certain flags in the task, such as `allowChangeDeadline`.
 
 ## Task Object {#taskdto}
 
@@ -18,13 +18,13 @@ Permissions for writing and modifying fields depend on the user's role in the ta
 || **creatorId**
 [`integer`](../../data-types.md) | Creator identifier, a required field for [creating a task](./tasks-task-add.md) ||
 || **creator**
-[`object`](#user) | Creator. An object of type [user](#user). Use for requesting data in the `select` parameter of [tasks.task.get](./tasks-task-get.md) ||
+[`object`](#user) | Creator. An object of type [user](#user). Use for data requests in the `select` parameter of [tasks.task.get](./tasks-task-get.md) ||
 || **created**
 [`datetime`](../../data-types.md) | Creation date in ISO-8601 format ||
 || **responsibleId**
-[`integer`](../../data-types.md) | Responsible person identifier, a required field for [creating a task](./tasks-task-add.md) ||
+[`integer`](../../data-types.md) | Assignee identifier, a required field for [creating a task](./tasks-task-add.md) ||
 || **responsible**
-[`object`](#user) | Responsible person. An object of type [user](#user). Use for requesting data in the `select` parameter of [tasks.task.get](./tasks-task-get.md) ||
+[`object`](#user) | Assignee. An object of type [user](#user). Use for data requests in the `select` parameter of [tasks.task.get](./tasks-task-get.md) ||
 || **deadline**
 [`datetime`](../../data-types.md) | Deadline in ISO-8601 format, for example, `2025-12-31T23:59:59+02:00` ||
 || **needsControl**
@@ -40,44 +40,45 @@ Permissions for writing and modifying fields depend on the user's role in the ta
 || **groupId**
 [`integer`](../../data-types.md) | Group/project identifier. To work with groups, use the methods [sonet_group.*](../../sonet-group/index.md) ||
 || **group**
-[`object`](#group) | Group/project. An object of type [group](#group). Use for requesting data in the `select` parameter of [tasks.task.get](./tasks-task-get.md) ||
+[`object`](#group) | Group/project. An object of type [group](#group). Use for data requests in the `select` parameter of [tasks.task.get](./tasks-task-get.md) ||
 || **stageId**
 [`integer`](../../data-types.md) | Stage identifier. Use if the task is in a group/project ||
 || **stage**
-[`object`](#stage) | Stage. An object of type [stage](#stage). Use for requesting data in the `select` parameter of [tasks.task.get](./tasks-task-get.md) ||
+[`object`](#stage) | Stage. An object of type [stage](#stage). Use for data requests in the `select` parameter of [tasks.task.get](./tasks-task-get.md) ||
 || **epicId**
 [`integer`](../../data-types.md) | Epic identifier. To work with epics, use the methods [tasks.api.scrum.epic.*](../../sonet-group/scrum/epic/index.md) ||
 || **storyPoints**
-[`integer`](../../data-types.md) | Story points. To modify a Scrum task, use the method [tasks.api.scrum.task.update](../../sonet-group/scrum/task/tasks-api-scrum-task-update.md) ||
+[`integer`](../../data-types.md) | Story points. To update a Scrum task, use the method [tasks.api.scrum.task.update](../../sonet-group/scrum/task/tasks-api-scrum-task-update.md) ||
 || **flowId**
 [`integer`](../../data-types.md) | Flow identifier. To work with flows, use the methods [tasks.flow.Flow.*](../../tasks/flow/index.md) ||
 || **flow**
-[`object`](#flow) | Flow. An object of type [flow](#flow). Use for requesting data in the `select` parameter of [tasks.task.get](./tasks-task-get.md) ||
+[`object`](#flow) | Flow. An object of type [flow](#flow). Use for data requests in the `select` parameter of [tasks.task.get](./tasks-task-get.md) ||
 || **priority**
 [`string`](../../data-types.md) | Task priority. Possible values:
-- `2` — high
-- `1` — medium
-- `0` — low ||
+- `high` — high
+- `average` — average
+- `low` — low ||
 || **status**
 [`string`](../../data-types.md) | Task status. Possible values:
-- `2` — waiting for execution
-- `3` — in progress
-- `4` — awaiting control
-- `5` — completed
-- `6` — postponed ||
+- `pending` — waiting for execution
+- `in_progress` — in progress
+- `supposedly_completed` — awaiting control
+- `completed` — completed
+- `deferred` — deferred
+- `declined` — declined ||
 || **statusChanged**
 [`datetime`](../../data-types.md) | Status change date in ISO 8601 format ||
 || **accomplices**
 [`array<object>`](#user) | List of user identifiers — participants in the methods for [creating](./tasks-task-add.md) or [updating](./tasks-task-update.md) a task.
-An array of objects of type [user](#user). Use for requesting data in the `select` parameter of [tasks.task.get](./tasks-task-get.md) ||
+An array of objects of type [user](#user). Use for data requests in the `select` parameter of [tasks.task.get](./tasks-task-get.md) ||
 || **auditors**
 [`array<object>`](#user) | List of user identifiers — auditors of the task in the methods for [creating](./tasks-task-add.md) or [updating](./tasks-task-update.md) a task.
-An array of objects of type [user](#user). Use for requesting data in the `select` parameter of [tasks.task.get](./tasks-task-get.md) ||
+An array of objects of type [user](#user). Use for data requests in the `select` parameter of [tasks.task.get](./tasks-task-get.md) ||
 || **parentId**
 [`integer`](../../data-types.md) | Parent task identifier.
 Has a value of `null` if there is no parent task ||
 || **parent**
-[`object`](#taskdto) | Parent task. An object of type [task](#taskdto). Use for requesting data in the `select` parameter of [tasks.task.get](./tasks-task-get.md) ||
+[`object`](#taskdto) | Parent task. An object of type [task](#taskdto). Use for data requests in the `select` parameter of [tasks.task.get](./tasks-task-get.md) ||
 || **containsChecklist**
 [`boolean`](../../data-types.md) | Indicates the presence of a checklist. The field is automatically updated ||
 || **containsSubTasks**
@@ -95,7 +96,7 @@ Has a value of `null` if there is no parent task ||
 || **chatId**
 [`integer`](../../data-types.md) | Task chat identifier. To work with the task chat, use the methods [im.message.*](../../tasks/tasks-new.md#comments) ||
 || **chat**
-[`object`](#task-chat) | Task chat. An object of type [task chat](#task-chat). Use for requesting data in the `select` parameter of [tasks.task.get](./tasks-task-get.md) ||
+[`object`](#task-chat) | Task chat. An object of type [task chat](#task-chat). Use for data requests in the `select` parameter of [tasks.task.get](./tasks-task-get.md) ||
 || **plannedDuration**
 [`integer`](../../data-types.md) | Planned duration ||
 || **actualDuration**
@@ -107,23 +108,23 @@ Has a value of `null` if there is no parent task ||
 || **estimatedTime**
 [`integer`](../../data-types.md) | Time estimate in seconds ||
 || **replicate**
-[`boolean`](../../data-types.md) | Indicates if the task is recurring. Possible values: 
-- `Y` — yes, make the task regular
+[`boolean`](../../data-types.md) | Indicates a recurring task. Possible values: 
+- `Y` — yes, make the task recurring
 - `N` — do not repeat ||
 || **changed**
 [`datetime`](../../data-types.md) | Change date in ISO 8601 format ||
 || **changedById**
 [`integer`](../../data-types.md) | Identifier of the user who changed the task ||
 || **changedBy**
-[`object`](#user) | Who changed. An object of type [user](#user). Use for requesting data in the `select` parameter of [tasks.task.get](./tasks-task-get.md) ||
+[`object`](#user) | Who changed. An object of type [user](#user). Use for data requests in the `select` parameter of [tasks.task.get](./tasks-task-get.md) ||
 || **statusChangedById**
 [`integer`](../../data-types.md) | Identifier of the user who changed the status ||
 || **statusChangedBy**
-[`object`](#user) | Who changed the status. An object of type [user](#user). Use for requesting data in the `select` parameter of [tasks.task.get](./tasks-task-get.md) ||
+[`object`](#user) | Who changed the status. An object of type [user](#user). Use for data requests in the `select` parameter of [tasks.task.get](./tasks-task-get.md) ||
 || **closedById**
 [`integer`](../../data-types.md) | Identifier of the user who closed the task ||
 || **closedBy**
-[`object`](#user) | Who closed. An object of type [user](#user). Use for requesting data in the `select` parameter of [tasks.task.get](./tasks-task-get.md) ||
+[`object`](#user) | Who closed. An object of type [user](#user). Use for data requests in the `select` parameter of [tasks.task.get](./tasks-task-get.md) ||
 || **closed**
 [`datetime`](../../data-types.md) | Closing date in ISO 8601 format ||
 || **activity**
@@ -142,7 +143,7 @@ Has a value of `null` if there is no parent task ||
 [`string`](../../data-types.md) | Task rating. Possible values:
 `N` — negative
 `P` — positive
-`null` — no rating ||
+`null` — unrated ||
 || **allowsChangeDeadline**
 [`boolean`](../../data-types.md) | Allowed to change the deadline. Possible values: 
 - `Y` — allowed
@@ -168,7 +169,7 @@ Has a value of `null` if there is no parent task ||
 || **forkedByTemplateId**
 [`integer`](../../data-types.md) | Identifier of the template if the task was created from a template ||
 || **forkedByTemplate**
-[`object`](#template) | Task template. An object of type [template](#template). Use for requesting data in the `select` parameter of [tasks.task.get](./tasks-task-get.md) ||
+[`object`](#template) | Task template. An object of type [template](#template). Use for data requests in the `select` parameter of [tasks.task.get](./tasks-task-get.md) ||
 || **maxDeadlineChangeDate**
 [`datetime`](../../data-types.md) | Date after which the deadline cannot be changed, in ISO 8601 format ||
 || **maxDeadlineChanges**
@@ -192,17 +193,17 @@ Has a value of `null` if there is no parent task ||
 - `SI_XX` — invoice
 - `TXX_XX` — SPA ||
 || **emailId**
-[`integer`](../../data-types.md) | Identifier of the e-mail from which the task was created ||
+[`integer`](../../data-types.md) | Identifier of the email from which the task was created ||
 || **email**
-[`object`](#email) | E-mail from which the task was created. An object of type [e-mail](#email). Use for requesting data in the `select` parameter of [tasks.task.get](./tasks-task-get.md) ||
+[`object`](#email) | Email from which the task was created. An object of type [email](#email). Use for data requests in the `select` parameter of [tasks.task.get](./tasks-task-get.md) ||
 || **elapsedTime**
-[`object`](#elapsed-time) | Time tracking. An object of type [time tracking](#elapsed-time). Use for requesting data in the `select` parameter of [tasks.task.get](./tasks-task-get.md) ||
+[`object`](#elapsed-time) | Time tracking. An object of type [time tracking](#elapsed-time). Use for data requests in the `select` parameter of [tasks.task.get](./tasks-task-get.md) ||
 || **requireResult**
 [`boolean`](../../data-types.md) | Require a result. Possible values: 
 - `Y` — yes
 - `N` — no  ||
 || **matchesSubTasksTime**
-[`boolean`](../../data-types.md) | Consider deadlines of subtasks. Possible values: 
+[`boolean`](../../data-types.md) | Consider subtasks deadlines. Possible values: 
 - `Y` — yes
 - `N` — no  ||
 || **autocompleteSubTasks**
@@ -222,7 +223,7 @@ Has a value of `null` if there is no parent task ||
 || **inMute**
 [`array`](../../data-types.md) | Indicates "mute". The field returns an array containing the ID of the current user if their setting is active `"inMute": [29]` ||
 || **source**
-[`object`](#source) | Source of the task. An object of type [source](#source). Use for requesting data in the `select` parameter of [tasks.task.get](./tasks-task-get.md) ||
+[`object`](#source) | Source of the task. An object [source](#source). Use for data requests in the `select` parameter of [tasks.task.get](./tasks-task-get.md) ||
 || **dependsOn**
 [`array`](../../data-types.md) | Dependencies on tasks ||
 || **scenarios**
@@ -230,8 +231,8 @@ Has a value of `null` if there is no parent task ||
 - `default` — default value
 - `crm` — CRM
 - `mobile` — mobile application
-- `voice` — audio AI tasks
-- `video` — video AI tasks ||
+- `voice` — audio task AI
+- `video` — video task AI ||
 |#
 
 ## User Object {#user}
@@ -246,7 +247,7 @@ Has a value of `null` if there is no parent task ||
 || **role**
 [`string`](../../data-types.md) | User role ||
 || **image**
-[`object`](#file) | An object of type [file](#file). Use for requesting data in the `select` parameter of [tasks.task.get](./tasks-task-get.md) ||
+[`object`](#file) | An object of type [file](#file). Use for data requests in the `select` parameter of [tasks.task.get](./tasks-task-get.md) ||
 || **gender**
 [`string`](../../data-types.md) | Gender ||
 || **email**
@@ -292,7 +293,7 @@ Has a value of `null` if there is no parent task ||
 || **name**
 [`string`](../../data-types.md) | Group name ||
 || **image**
-[`object`](#file) | An object of type [file](#file). Use for requesting data in the `select` parameter of [tasks.task.get](./tasks-task-get.md) ||
+[`object`](#file) | An object of type [file](#file). Use for data requests in the `select` parameter of [tasks.task.get](./tasks-task-get.md) ||
 || **type**
 [`string`](../../data-types.md) | Group type ||
 || **isVisible**
@@ -344,13 +345,13 @@ Has a value of `null` if there is no parent task ||
 || **id**
 [`integer`](../../data-types.md) | Template identifier ||
 || **task**
-[`object`](#taskdto) | An object of type [task](#taskdto). Use for requesting data in the `select` parameter of [tasks.task.get](./tasks-task-get.md) ||
+[`object`](#taskdto) | An object of type [task](#taskdto). Use for data requests in the `select` parameter of [tasks.task.get](./tasks-task-get.md) ||
 || **title**
 [`string`](../../data-types.md) | Title ||
 || **description**
 [`string`](../../data-types.md) | Description ||
 || **creator**
-[`object`](#user) | An object of type [user](#user). Use for requesting data in the `select` parameter of [tasks.task.get](./tasks-task-get.md) ||
+[`object`](#user) | An object of type [user](#user). Use for data requests in the `select` parameter of [tasks.task.get](./tasks-task-get.md) ||
 || **responsibleCollection**
 [`array`](../../data-types.md) | Collection of responsible persons ||
 || **deadlineAfterTs**
@@ -364,7 +365,7 @@ Has a value of `null` if there is no parent task ||
 || **checklist**
 [`array`](../../data-types.md) | Array of checklist item identifiers ||
 || **group**
-[`object`](#group) | An object of type [group](#group). Use for requesting data in the `select` parameter of [tasks.task.get](./tasks-task-get.md) ||
+[`object`](#group) | An object of type [group](#group). Use for data requests in the `select` parameter of [tasks.task.get](./tasks-task-get.md) ||
 || **priority**
 [`string`](../../data-types.md) | Priority ||
 || **accomplices**
@@ -374,7 +375,7 @@ Has a value of `null` if there is no parent task ||
 || **parent**
 [`object`](#template) | Parent template. An object of type [task template](#template) ||
 || **replicateParams**
-[`object`](#template-replicate-params) | Object of [replication parameters](#template-replicate-params). Use for requesting data in the `select` parameter of [tasks.task.get](./tasks-task-get.md) ||
+[`object`](#template-replicate-params) | An object of [replication parameters](#template-replicate-params). Use for data requests in the `select` parameter of [tasks.task.get](./tasks-task-get.md) ||
 |#
 
 ## Template Replication Parameters Object {#template-replicate-params}
@@ -436,21 +437,21 @@ Has a value of `null` if there is no parent task ||
 || **Name**
 `type` | **Description** ||
 || **id**
-[`integer`](../../data-types.md) | ID of the e-mail ||
+[`integer`](../../data-types.md) | Email ID ||
 || **taskId**
-[`integer`](../../data-types.md) | ID of the task ||
+[`integer`](../../data-types.md) | Task ID ||
 || **mailboxId**
-[`integer`](../../data-types.md) | ID of the mailbox ||
+[`integer`](../../data-types.md) | Mailbox ID ||
 || **title**
-[`string`](../../data-types.md) | Title of the e-mail ||
+[`string`](../../data-types.md) | Email title ||
 || **body**
-[`string`](../../data-types.md) | Body of the e-mail ||
+[`string`](../../data-types.md) | Email body ||
 || **from**
-[`string`](../../data-types.md) | Sender of the e-mail ||
+[`string`](../../data-types.md) | Email sender ||
 || **dateTs**
-[`integer`](../../data-types.md) | Timestamp of the e-mail sending ||
+[`integer`](../../data-types.md) | Email sending timestamp ||
 || **link**
-[`string`](../../data-types.md) | Link to the e-mail ||
+[`string`](../../data-types.md) | Link to the email ||
 |#
 
 ## Time Tracking Object {#elapsed-time}
@@ -459,7 +460,7 @@ Has a value of `null` if there is no parent task ||
 || **Name**
 `type` | **Description** ||
 || **id**
-[`integer`](../../data-types.md) | Identifier of the time tracking record ||
+[`integer`](../../data-types.md) | Time tracking record identifier ||
 || **userId**
 [`integer`](../../data-types.md) | User ||
 || **taskId**
@@ -486,7 +487,7 @@ Has a value of `null` if there is no parent task ||
 || **Name**
 `type` | **Description** ||
 || **type**
-[`string`](../../data-types.md) | Type of source ||
+[`string`](../../data-types.md) | Source type ||
 || **data**
 [`array`](../../data-types.md) | Source data ||
 |#

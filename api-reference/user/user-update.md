@@ -15,9 +15,9 @@ The `user.update` method updates user data. It can only be executed on behalf of
 `type` | **Description** ||
 || **ID***
 [`integer`](../data-types.md) | User identifier ||
-|| **ACTIVE**  
-[`boolean`](../data-types.md) | User activity status. Possible values:  
-- `Y` — employee is active,  
+|| **ACTIVE**
+[`boolean`](../data-types.md) | User activity status. Possible values: 
+- `Y` — employee is active,
 - `N` — employee is terminated ||
 || **EMAIL**
 [`string`](../data-types.md) | User e-mail ||
@@ -36,7 +36,7 @@ The `user.update` method updates user data. It can only be executed on behalf of
 || **PERSONAL_BIRTHDAY**
 [`string`](../data-types.md) | Date of birth ||
 || **PERSONAL_PHOTO**
-[`array`](../data-types.md) | Photo ||
+[`array`](../data-types.md) | Photo, pass an array with the filename and a string in [Base64](../files/how-to-upload-files.md) ||
 || **PERSONAL_ICQ**
 [`string`](../data-types.md) | ICQ ||
 || **PERSONAL_PHONE**
@@ -48,11 +48,11 @@ The `user.update` method updates user data. It can only be executed on behalf of
 || **PERSONAL_PAGER**
 [`string`](../data-types.md) | Pager ||
 || **PERSONAL_STREET**
-[`string`](../data-types.md) | Street address ||
+[`string`](../data-types.md) | Street of residence ||
 || **PERSONAL_CITY**
 [`string`](../data-types.md) | City of residence ||
 || **PERSONAL_STATE**
-[`string`](../data-types.md) | State/Region ||
+[`string`](../data-types.md) | State ||
 || **PERSONAL_ZIP**
 [`string`](../data-types.md) | Postal code ||
 || **PERSONAL_COUNTRY**
@@ -305,9 +305,9 @@ HTTP status: **400**
 
 #|
 || **Code** | **Error Message** | **Description** ||
-|| `ERROR_CORE` | access_denied | Invalid `ID` provided for the user ||
+|| `ERROR_CORE` | access_denied | Invalid user `ID` provided ||
 || `ERROR_CORE` | access_denied | User does not have permission to call the method ||
-|| `ERROR_CORE` |  | Invalid `ID` provided for the user ||
+|| `ERROR_CORE` |  | Invalid user `ID` provided ||
 |#
 
 {% include [system errors](../../_includes/system-errors.md) %}

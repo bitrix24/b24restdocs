@@ -142,7 +142,7 @@ The identifier can be obtained using the methods [crm.deal.list](./crm-deal-list
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -287,7 +287,7 @@ where:
 || **OPPORTUNITY**
 [`double`](../../data-types.md) | Amount ||
 || **IS_MANUAL_OPPORTUNITY**
-[`char`](../../data-types.md) | Indicates whether manual mode for amount calculation is enabled. Possible values:
+[`char`](../../data-types.md) | Indicates whether manual mode for calculating the amount is enabled. Possible values:
 - `Y` — yes
 - `N` — no ||
 || **TAX_VALUE**
@@ -298,12 +298,9 @@ where:
 To learn more about the company, you can use the method [crm.item.get](../universal/crm-item-get.md), passing `entityTypeId = 4` and `id = COMPANY_ID`
 ||
 || **CONTACT_ID**
-[`crm_contact`](../data-types.md) | Identifier of the contact. Deprecated ||
-|| **CONTACT_IDS**
-[`crm_contact[]`](../../data-types.md) | List of contact identifiers. 
+[`crm_contact`](../data-types.md) | Identifier of the contact. Deprecated. 
 
-To learn more about the list of contacts, you can use the method [crm.item.list](../universal/crm-item-list.md), passing `entityTypeId = 3` and the filter `{ '@id': CONTACT_IDS }`
-||
+To get a list of all contacts associated with the deal, use the method [crm.deal.contact.items.get](./contacts/crm-deal-contact-items-get.md) or the universal method [crm.item.get](../universal/crm-item-get.md) ||
 || **QUOTE_ID**
 [`crm_quote`](../data-types.md) | Identifier of the estimate based on which the deal was created. 
 
@@ -314,11 +311,11 @@ To learn more about the estimate, you can use the method [crm.item.get](../unive
 || **CLOSEDATE**
 [`date`](../../data-types.md) | Close date ||
 || **OPENED**
-[`char`](../../data-types.md) | Is the deal available to everyone? Possible values:
+[`char`](../../data-types.md) | Indicates whether the deal is available to everyone. Possible values:
 - `Y` — yes
 - `N` — no ||
 || **CLOSED**
-[`char`](../../data-types.md) | Is the deal closed? Possible values:
+[`char`](../../data-types.md) | Indicates whether the deal is closed. Possible values:
 - `Y` — yes
 - `N` — no ||
 || **COMMENTS**
@@ -385,14 +382,14 @@ Depending on the portal settings, deals may have a set of user-defined fields of
 || **PARENT_ID_...**
 [`crm_entity`](../data-types.md) | Relationship fields. 
 
-If there are smart processes related to deals on the portal, for each such smart process, there is a field that stores the relationship between this smart process and the deal. The field itself stores the identifier of the element of that smart process. 
+If there are smart processes associated with deals on the portal, for each such smart process, there is a field that stores the relationship between this smart process and the deal. The field itself stores the identifier of the element of that smart process. 
 
-For example, the field `PARENT_ID_153` — relationship with the smart process `entityTypeId=153`, stores the identifier of the element of this smart process related to the current deal ||
+For example, the field `PARENT_ID_153` — relationship with the smart process `entityTypeId=153`, stores the identifier of the element of this smart process associated with the current deal ||
 |#
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {
@@ -407,7 +404,7 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `-`     | `ID is not defined or invalid` | The `id` parameter is either not provided or is not a positive integer ||
+|| `-`     | `ID is not defined or invalid` | The `id` parameter either has no value or is not a positive integer ||
 || `-`     | `Access denied` | The user does not have permission to "read" this deal ||
 || `-`     | `Not found`      | No deal exists with the provided `id` ||
 |#

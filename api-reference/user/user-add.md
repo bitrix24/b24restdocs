@@ -6,7 +6,7 @@
 
 The method `user.add` invites a user. This can only be done on behalf of a user with the rights to invite users, typically an administrator. Upon success, a standard invitation will be sent to the account. The `result` returns the identifier of the new user.
 
-If you need to add an extranet user, you must provide the fields: `EXTRANET: Y` and `SONET_GROUP_ID: [...]`. If you need to add an intranet user, it is **mandatory** to provide: `UF_DEPARTMENT: [...]`.
+If you need to add an extranet user, you must pass the fields: `EXTRANET: Y` and `SONET_GROUP_ID: [...]`. If you need to add an intranet user, it is **mandatory** to pass: `UF_DEPARTMENT: [...]`.
 
 ## Method Parameters
 
@@ -32,7 +32,7 @@ If you need to add an extranet user, you must provide the fields: `EXTRANET: Y` 
 || **PERSONAL_BIRTHDAY**
 [`string`](../data-types.md) | Date of birth ||
 || **PERSONAL_PHOTO**
-[`array`](../data-types.md) | Photo ||
+[`array`](../data-types.md) | Photo, pass an array with the filename and a string in [Base64](../files/how-to-upload-files.md) ||
 || **PERSONAL_ICQ**
 [`string`](../data-types.md) | ICQ ||
 || **PERSONAL_PHONE**
@@ -50,7 +50,7 @@ If you need to add an extranet user, you must provide the fields: `EXTRANET: Y` 
 || **PERSONAL_STATE**
 [`string`](../data-types.md) | State/Region ||
 || **PERSONAL_ZIP**
-[`string`](../data-types.md) | Postal code ||
+[`string`](../data-types.md) | Zip code ||
 || **PERSONAL_COUNTRY**
 [`string`](../data-types.md) | Country ||
 || **PERSONAL_MAILBOX**
@@ -301,7 +301,7 @@ HTTP Status: **400**
 
 {% include [system errors](../../_includes/system-errors.md) %}
 
-## Continue Learning 
+## Continue Learning
 
 - [{#T}](./user-update.md)
 - [{#T}](./user-get.md)

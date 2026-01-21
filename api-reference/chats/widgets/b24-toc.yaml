@@ -5,8 +5,6 @@ items:
     href: index.md
   - name: General information on all embedding points
     href: placement-info.md
-  - name: Widget in the left chat menu
-    href: im-navigation.md
   - name: Widget panel above the message input field
     href: im-textarea.md
   - name: Chat sidebar widget

@@ -1,13 +1,78 @@
-# How to Access the REST API?
+# How to Access the REST API
 
-To use the REST API in Bitrix24, there are several important points to consider.
+The REST API in Bitrix24 is available only on paid plans. The subscription cost [depends on the plan](https://www.bitrix24.com/prices/).
 
-First, the REST API is only available on [paid plans](https://www.bitrix24.com/prices/) of Bitrix24, as well as during the demo plan. If you plan to automate for your specific Bitrix24, you need to switch to a paid plan.
+To access the REST API, check your current plan in the Subscription section of the main menu in Bitrix24. If the account is on a free plan, select and activate an appropriate plan.
 
-Before purchasing a paid plan, you can test the capabilities of the REST API for 15 days by enabling the [demo plan](https://helpdesk.bitrix24.com/open/20237014/) on your account. To find out your account's current plan and whether the trial subscription is active, you can use the "My Plan" button in the header of the account.
+![My Plan Section](_images/plan.png)
 
-[Technology partners](../market/technology-partnership.md) developing solutions for [listing in Bitrix24 Market](../market/index.md) can request a special NFR sandbox for the account where development is taking place. Upon approval of the request, Bitrix24 support will activate a special partner plan that supports the REST API on the specified account. The request for an NFR sandbox can be submitted through the chat in the Developer's area. This will allow you to use the REST API for developing and testing your solutions before publishing them in the Market.
+{% note tip "" %}
 
-Second, the capabilities of the REST API are limited by the permissions that the specific user making the requests has on the account, as any REST API call is made "on behalf of" that user. To have maximum access to the data and functionality of the account, it is advisable to use an administrator account. However, this does not mean that only the account administrator can use the REST API—any user has access to the REST API through the "Developer resources" section within Bitrix24. Just keep in mind that through the REST API, users can only access the functionality and data that is available to them through the user interface of the account.
+- [Plans and Payments](https://helpdesk.bitrix24.com/section/47912/)
 
-Once you have confirmed that the REST API is available on your account, you can proceed to [make your first REST API call](./first-rest-api-call.md).
+{% endnote %}
+
+## How to Test the API Before Purchase
+
+Before switching to a paid plan, you can test the capabilities of the REST API by activating the demo version.
+
+To enable the trial mode:
+
+1. Go to the My Planner widget in the top menu of Bitrix24.
+2. In the trial section, click Activate.
+3. In the pop-up window, click Activate Trial Mode.
+
+{% note tip "" %}
+
+- [Free trial](https://helpdesk.bitrix24.com/open/20237014/)
+
+{% endnote %}
+
+## Access for Technology Partners
+
+If you are developing mass-market applications for placement in the Bitrix24 Marketplace, request a special NFR key. This key activates the partner plan with a subscription to the Marketplace for working with the REST API on the test account.
+
+To obtain an NFR key:
+
+1. Register as a technology partner. Fill out the form on the [Developer's area site](https://vendors.bitrix24.com/technology-partnership/) and click the Become a Partner button.
+2. After gaining access to the Developer's area, submit a request for the NFR key through the internal support chat.
+
+{% note tip "" %}
+
+- [Overview of Mass-Market Applications](../market/index.md)
+- [Technology Partnership](../market/technology-partnership.md)
+
+{% endnote %}
+
+## User Permissions When Working with the API
+
+The REST API executes requests on behalf of the user who sends them. The API does not extend access permissions. Through the API, you can only do what the user can do in the interface. For example, if a user does not see a task in the task list, they will not be able to retrieve it through the REST API method.
+
+To gain maximum access, use an administrator account.
+
+### Limitations via Scope
+
+Permissions for executing REST API methods are additionally regulated through `scope`. Bitrix24 scopes define which methods an application or webhook can access.
+
+{% note tip "" %}
+
+- [Available Bitrix24 Scopes](../api-reference/scopes/permissions.md)
+
+{% endnote %}
+
+## What’s Next
+
+After activating the trial period or switching to a paid plan, you can start making your first request to the REST API.
+
+{% note warning "" %}
+
+For the REST API to work on-premise, the necessary network connections must be open. If external access is restricted, the API will be unavailable.
+
+{% endnote %}
+
+{% note tip "" %}
+
+- [How to Make Your First API Request](./first-rest-api-call.md)
+- [Required Network Access](../settings/cloud-and-on-premise/network-access.md)
+
+{% endnote %}

@@ -1,29 +1,29 @@
 title: Folder
 href: index.md
 items:
-  - name: Overview of Methods
+  - name: Overview of methods
     href: index.md
-  - name: Create Subfolder
+  - name: Create a subfolder
     href: disk-folder-add-subfolder.md
-  - name: Copy Folder to Specified Folder
+  - name: Copy folder to specified folder
     href: disk-folder-copy-to.md
-  - name: Delete Folder and All Subitems
+  - name: Delete folder and all its contents
     href: disk-folder-delete-tree.md
-  - name: Get List of Files and Folders
+  - name: Get list of files and folders
     href: disk-folder-get-children.md
-  - name: Get Public Link for Folder
+  - name: Get public link to folder
     href: disk-folder-get-external-link.md
-  - name: Get Folder Fields
+  - name: Get folder fields
     href: disk-folder-get-fields.md
-  - name: Get Folder Parameters
+  - name: Get folder parameters
     href: disk-folder-get.md
-  - name: Move Folder to Trash
+  - name: Move folder to trash
     href: disk-folder-mark-deleted.md
-  - name: Move Folder to Specified Folder
+  - name: Move folder to specified folder
     href: disk-folder-move-to.md
-  - name: Rename Folder
+  - name: Rename folder
     href: disk-folder-rename.md
-  - name: Restore Folder from Trash
+  - name: Restore folder from trash
     href: disk-folder-restore.md
-  - name: Upload File to Specified Folder
+  - name: Upload file to specified folder
     href: disk-folder-upload-file.md

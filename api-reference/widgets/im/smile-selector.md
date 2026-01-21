@@ -1,27 +1,14 @@
-# Collection of Emojis IM_SMILES_SELECTOR
+# Emoji Collection IM_SMILES_SELECTOR
 
-{% note warning "We are still updating this page" %}
+{% note warning " " %}
 
-Some data may be missing — we will fill it in shortly.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- What the handler receives (copied from Sergey's example, detail-tab.md)
-- Typical use-cases and scenarios — need to add if there is anything
-- Continue exploring (copied from Sergey's example, detail-tab.md)
-- no screenshot
+Starting from module version `im 25.1600.0`, the `IM_SMILES_SELECTOR` widget is no longer functional. Emojis have been replaced with [stickers](https://helpdesk.bitrix24.com/open/25866875/).
 
 {% endnote %}
-
-{% endif %}
 
 > Scope: [`im`](../../scopes/permissions.md)
 
-You can extend the capabilities of emojis and giphy (there may be your own sources of images or emojis).
+You can extend the capabilities of emojis and Giphy (you can use your own sources for images or emojis).
 
 The specific widget placement code is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
 
@@ -35,12 +22,12 @@ The widget will not be displayed in the interface until the application installa
 
 #|
 || **Widget code** | **Location** ||
-|| `IM_SMILES_SELECTOR` | Extends the capabilities of emojis and giphy  ||
+|| `IM_SMILES_SELECTOR` | Extends the capabilities of emojis and Giphy ||
 |#
 
 ## What the handler receives
 
-Data is transmitted as a POST request {.b24-info}
+Data is sent as a POST request {.b24-info}
 
 ```js
 'DOMAIN': 'xxx.bitrix24.com'
@@ -70,7 +57,7 @@ Data is transmitted as a POST request {.b24-info}
 - `1` - HTTPS
  ||
 || **LANG***
-[`string`](../../data-types.md) | The language of the Bitrix24 user interface that called the widget. You can localize the interface language in your widget based on this value ||
+[`string`](../../data-types.md) | The user interface language of Bitrix24 that called the widget. You can localize the interface language in your widget based on this value ||
 || **APP_SID**
 [`string`](../../data-types.md) | String identifier of the application that registered the widget handler ||
 || **AUTH_ID**
@@ -82,7 +69,7 @@ Data is transmitted as a POST request {.b24-info}
 || **member_id***
 [`string`](../../data-types.md) | Unique string identifier of Bitrix24 where the widget handler was called.  ||
 || **status**
-[`string`](../../data-types.md) | Type of the application that registered the handler for this widget. Accepts values:
+[`string`](../../data-types.md) | Type of application that registered the handler for this widget. Accepts values:
 
 - `L` - [local](../../../local-integrations/local-apps.md) application
 - `F` - [free mass-market](../../../market/index.md) application
@@ -90,10 +77,10 @@ Data is transmitted as a POST request {.b24-info}
 || **PLACEMENT***
 [`string`](../../data-types.md) | Code of the widget placement. You can use the same handler URL for all your widgets. The value that Bitrix24 will report in the `PLACEMENT` parameter will help determine from which specific widget placement your handler was called in each case ||
 || **PLACEMENT_OPTIONS**
-[`string`](../../data-types.md) | Additional data in the form of a JSON string defining the context of the widget execution. In this case, it is an array containing the numeric identifier of the CRM element in the card where the widget handler was called. The `PLACEMENT_OPTIONS` parameter along with the `PLACEMENT` parameter allows you to accurately determine for which specific CRM object the widget handler was called ||
+[`string`](../../data-types.md) | Additional data in the form of a JSON string that defines the context of the widget execution. In this case, it is an array containing the numeric identifier of the CRM element in the detail form where the widget handler was called. The `PLACEMENT_OPTIONS` parameter, along with the `PLACEMENT` parameter, allows you to accurately determine for which specific CRM object the widget handler was called ||
 |#
 
-## Continue exploring
+## Continue your exploration
 
 - [{#T}](../placement-bind.md)
 - [{#T}](../ui-interaction/index.md)

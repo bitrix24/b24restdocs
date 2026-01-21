@@ -4,7 +4,7 @@
 > 
 > Who can execute the method: any user
 
-The method `crm.deal.fields` returns a description of the deal fields, including custom fields. A table with the description of standard fields can be found in the article [Fields of Main CRM Entities](../main-entities-fields.md).
+The method `crm.deal.fields` returns a description of deal fields, including custom ones. A table with descriptions of standard fields can be found in the article [Fields of Main CRM Entities](../main-entities-fields.md).
 
 ## Method Parameters
 
@@ -554,6 +554,12 @@ HTTP status: **200**
     }
 }
 ```
+
+{% note info "" %}
+
+The field `CONTACT_IDS` is not available in the methods [crm.deal.get](./crm-deal-get.md) and [crm.deal.list](./crm-deal-list.md). To get the list of deal contacts, use the methods [crm.deal.contact.items.*](./contacts/index.md) or universal methods [crm.item.*](../universal/index.md).
+
+{% endnote %}
 
 ### Returned Data
 

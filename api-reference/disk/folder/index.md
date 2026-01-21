@@ -6,29 +6,29 @@ Folders in Bitrix24 Drive allow you to create a logical structure for storing fi
 
 ## Folder Structure
 
-Folders in Drive are organized hierarchically. Each folder can contain nested folders and files. You can retrieve the list of files and subfolders using the method [disk.folder.getchildren](./disk-folder-get-children.md).
+Folders in Drive are organized hierarchically. Each folder can contain nested folders and files. You can retrieve the list of files and subfolders using the [disk.folder.getchildren](./disk-folder-get-children.md) method.
 
-A new folder can be created using the method [disk.folder.addsubfolder](./disk-folder-add-subfolder.md), and a file can be uploaded using the method [disk.folder.uploadfile](./disk-folder-upload-file.md).
+A new folder can be created using the [disk.folder.addsubfolder](./disk-folder-add-subfolder.md) method, and a file can be uploaded using the [disk.folder.uploadfile](./disk-folder-upload-file.md) method.
 
-Parent and child folders are linked through the `PARENT_ID` parameter. You can obtain it using the method [disk.folder.get](./disk-folder-get.md). In addition to `PARENT_ID`, the method will return all folder parameters by the identifier `id`. 
+Parent and child folders are linked through the `PARENT_ID` parameter. You can obtain it using the [disk.folder.get](./disk-folder-get.md) method. In addition to `PARENT_ID`, the method will return all folder parameters by the `id` identifier. 
 
-## Operations with Folders
+## Folder Operations
 
 You can perform the following operations with Drive folders:
 
-- move within the structure using the method [disk.folder.moveto](./disk-folder-move-to.md) 
-- copy to other Drive folders using the method [disk.folder.copyto](./disk-folder-copy-to.md)
-- rename using the method [disk.folder.rename](./disk-folder-rename.md)
+- move within the structure using the [disk.folder.moveto](./disk-folder-move-to.md) method 
+- copy to other Drive folders using the [disk.folder.copyto](./disk-folder-copy-to.md) method
+- rename using the [disk.folder.rename](./disk-folder-rename.md) method
 
-## Access for External Users
+## External User Access
 
-To grant access to an external user for a folder, you need to create a public link. This will allow you to share the folder's contents with people who do not have access to Bitrix24. A public link for the folder can be obtained using the method [disk.folder.getExternalLink](./disk-folder-get-external-link.md).
+To provide access to an external user for a folder, you need to create a public link. This will allow you to share the folder's contents with people who do not have access to Bitrix24. You can obtain a public link for the folder using the [disk.folder.getexternallink](./disk-folder-get-external-link.md) method.
 
 ## How to Delete Folders
 
-Folders can be moved to the trash using the method [disk.folder.markdeleted](./disk-folder-mark-deleted.md). Deleted folders can be restored using the method [disk.folder.restore](./disk-folder-restore.md) within 30 days. 
+Folders can be moved to the trash using the [disk.folder.markdeleted](./disk-folder-mark-deleted.md) method. Deleted folders can be restored using the [disk.folder.restore](./disk-folder-restore.md) method within 30 days. 
 
-To permanently delete a folder without the possibility of recovery, you need to use the method [disk.folder.deletetree](./disk-folder-delete-tree.md). This will destroy the folder along with all its nested folders and files forever.
+To permanently delete a folder without the possibility of recovery, you need to use the [disk.folder.deletetree](./disk-folder-delete-tree.md) method. This will destroy the folder along with all nested folders and files forever.
 
 {% note tip "User Documentation" %}
 
@@ -40,20 +40,20 @@ To permanently delete a folder without the possibility of recovery, you need to 
 
 > Scope: [`disk`](../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can perform the method: any user
 
 #|
 || **Method** | **Description** ||
 || [disk.folder.getfields](./disk-folder-get-fields.md) | Returns the description of folder fields ||
 || [disk.folder.get](./disk-folder-get.md) | Returns the folder by identifier ||
-|| [disk.folder.getchildren](./disk-folder-get-children.md) | Returns a list of files and folders that are directly in the folder ||
+|| [disk.folder.getchildren](./disk-folder-get-children.md) | Returns the list of files and folders located in the folder ||
 || [disk.folder.addsubfolder](./disk-folder-add-subfolder.md) | Creates a subfolder ||
 || [disk.folder.copyto](./disk-folder-copy-to.md) | Copies the folder to the specified folder ||
 || [disk.folder.moveto](./disk-folder-move-to.md) | Moves the folder to the specified folder ||
 || [disk.folder.rename](./disk-folder-rename.md) | Renames the folder ||
-|| [disk.folder.deletetree](./disk-folder-delete-tree.md) | Permanently destroys the folder and all its child elements ||
+|| [disk.folder.deletetree](./disk-folder-delete-tree.md) | Permanently deletes the folder and all its contents ||
 || [disk.folder.markdeleted](./disk-folder-mark-deleted.md) | Moves the folder to the trash ||
 || [disk.folder.restore](./disk-folder-restore.md) | Restores the folder from the trash ||
 || [disk.folder.uploadfile](./disk-folder-upload-file.md) | Uploads a new file to the specified folder ||
-|| [disk.folder.getExternalLink](./disk-folder-get-external-link.md) | Returns a public link ||
+|| [disk.folder.getexternallink](./disk-folder-get-external-link.md) | Returns a public link to the folder ||
 |#

@@ -23,7 +23,6 @@ fields:
     "ENTITY_ID": 'value',
     "ENTITY_TYPE": 'value',
     "COMMENT": 'value',
-    "AUTHOR_ID": 'value',
     "FILES": [
         [
             "file name", 
@@ -41,7 +40,7 @@ The file content is transmitted as a [base64 string](../../../files/how-to-uploa
 
 {% note warning %}
 
-Starting from version crm 23.100.0, the method only accepts parameters with the key `fields` in lowercase. Other undocumented variants (Fields, FIELDS, arFields) are not accepted.
+Starting from crm version 23.100.0, the method only accepts parameters with the key `fields` in lowercase. Other undocumented variants (Fields, FIELDS, arFields) are not accepted.
 
 {% endnote %}
 
@@ -58,15 +57,13 @@ Starting from version crm 23.100.0, the method only accepts parameters with the 
 || **ENTITY_ID***
 [`integer`](../../../data-types.md) | `ID` of the element to which the comment is attached.
 
-The value can be obtained using the [`crm.item.list`](../../universal/crm-item-list.md) method or when creating an element with the help of [`crm.item.add`](../../universal/crm-item-add.md) ||
+The value can be obtained using the method [`crm.item.list`](../../universal/crm-item-list.md) or when creating an element with the help of [`crm.item.add`](../../universal/crm-item-add.md) ||
 || **ENTITY_TYPE***
 [`string`](../../../data-types.md) | Identifier of the [system](../../index.md) or [user-defined type](../../universal/user-defined-object-types/index.md) of the CRM object to which the comment is attached. For example: `lead`, `deal`, `contact`, `company`, `order`, `dynamic_1046` ||
-|| **AUTHOR_ID**
-[`user`](../../../data-types.md#standart-objects) | Identifier of the user adding the comment ||
 || **COMMENT***
-[`string`](../../../data-types.md) | Text of the comment ||
+[`string`](../../../data-types.md) | The text of the comment ||
 || **FILES**
-[`attached_diskfile`](../../../data-types.md) | List of files. An array of values described by the [rules](../../../files/how-to-upload-files.md) ||
+[`attached_diskfile`](../../../data-types.md) | List of files. An array of values described according to the [rules](../../../files/how-to-upload-files.md) ||
 |#
 
 ## Code Examples
@@ -81,7 +78,7 @@ The value can be obtained using the [`crm.item.list`](../../universal/crm-item-l
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"ENTITY_ID":10,"ENTITY_TYPE":"deal","COMMENT":"New comment was added","AUTHOR_ID":5,"FILES":[["1.gif","R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=="],["2.gif","R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=="]]}}' \
+    -d '{"fields":{"ENTITY_ID":10,"ENTITY_TYPE":"deal","COMMENT":"New comment was added","FILES":[["1.gif","R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=="],["2.gif","R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=="]]}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.timeline.comment.add
     ```
 
@@ -91,7 +88,7 @@ The value can be obtained using the [`crm.item.list`](../../universal/crm-item-l
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"ENTITY_ID":10,"ENTITY_TYPE":"deal","COMMENT":"New comment was added","AUTHOR_ID":5,"FILES":[["1.gif","R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=="],["2.gif","R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=="]]},"auth":"**put_access_token_here**"}' \
+    -d '{"fields":{"ENTITY_ID":10,"ENTITY_TYPE":"deal","COMMENT":"New comment was added","FILES":[["1.gif","R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=="],["2.gif","R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=="]]},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/crm.timeline.comment.add
     ```
 
@@ -108,7 +105,6 @@ The value can be obtained using the [`crm.item.list`](../../universal/crm-item-l
     				"ENTITY_ID": 10,
     				"ENTITY_TYPE": "deal",
     				"COMMENT": "New comment was added",
-    				"AUTHOR_ID": 5,
     				"FILES": [
     					[
     						"1.gif", 
@@ -145,7 +141,6 @@ The value can be obtained using the [`crm.item.list`](../../universal/crm-item-l
                         'ENTITY_ID'   => 10,
                         'ENTITY_TYPE' => 'deal',
                         'COMMENT'     => 'New comment was added',
-                        'AUTHOR_ID'   => 5,
                         'FILES'       => [
                             ['1.gif', 'R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=='],
                             ['2.gif', 'R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=='],
@@ -179,7 +174,6 @@ The value can be obtained using the [`crm.item.list`](../../universal/crm-item-l
                 "ENTITY_ID": 10,
                 "ENTITY_TYPE": "deal",
                 "COMMENT": "New comment was added",
-                "AUTHOR_ID": 5,
                 "FILES": [
                     [
                         "1.gif", 
@@ -212,7 +206,6 @@ The value can be obtained using the [`crm.item.list`](../../universal/crm-item-l
                 'ENTITY_ID' => 10,
                 'ENTITY_TYPE' => 'deal',
                 'COMMENT' => 'New comment was added',
-                'AUTHOR_ID' => 5,
                 'FILES' => [
                     ["1.gif", "R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=="],
                     ["2.gif", "R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=="]

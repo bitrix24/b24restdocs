@@ -1,39 +1,26 @@
-# Widgets for the New Chat
+# Chat Widgets
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will fill it in shortly.
+Some data may be missing here — we will complete it soon.
 
 {% endnote %}
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
-- edits are needed to meet writing standards
+- edits are needed to meet the writing standard
 
 {% endnote %}
 
 {% endif %}
 
-{% note info %}
+Within the chat, there are several embedding points:
 
-Currently, **New Chat** is available in the cloud version of *Bitrix24* to all partners on [NFR licenses](*NFR). [Learn more about NFR...](https://nfr.bitrix24.com)
+- [IM_TEXTAREA](./im-textarea.md) – an application for the panel above the input field (this format existed before – it generates content while typing a message);
+- [IM_SIDEBAR](./im-sidebar.md) – an application for the sidebar (you can create applications that add additional scenarios for the chat – for example, a separate Drive for the chat or a knowledge base);
+- [IM_CONTEXT_MENU](./im-context-menu.md) – an application for opening the context menu of a message within the chat, embedding in the "Create content based on" item (analogous to "Create task" or "Create meeting" based on the message);
 
-{% endnote %}
-
-The previous embedding format for chat applications was implemented before the creation of a unified Rest Placement format for the entire product (places for [embedding](../../widgets/index.md) Rest applications).
-
-After the release of the Rest Placement format, developers had to learn two different implementation formats for the same task of "embedding into the product" ([old format](../outdated/index.md) for chats and the new one for other entities), and maintaining multiple options in a single application is quite challenging.
-
-Therefore, in the New Chat, which will be available to clients later in 2023, a unified Rest Placement format for the entire product has been implemented.
-
-Within the New Chat, there are several embedding points:
-
-- [IM_NAVIGATION](./im-navigation.md) – application for the left navigation menu (essentially, this is an application within the chat environment without embedding directly into the chat);
-- [IM_TEXTAREA](./im-textarea.md) – application for the panel above the input field (this format existed before – it generates content while composing a message);
-- [IM_SIDEBAR](./im-sidebar.md) – application for the sidebar (you can create applications that add additional scenarios for the chat – for example, a separate drive for the chat or a knowledge base);
-- [IM_CONTEXT_MENU](./im-context-menu.md) – application for opening the context menu of a message within the chat, embedding into the "Create content based on" option (similar to "Create task" or "Create meeting" based on a message);
-- [IM_SMILES_SELECTOR](./im-smiles-selector.md) – application for enhancing the capabilities of emojis and Giphy (this can include custom sources for images or emojis).
-
-[*NFR]: **NFR** (not for resale) – a free license for a limited period, intended for familiarization with the program and testing deployments of the program.
+Before version `im 25.1600.0`: 
+- [IM_SMILES_SELECTOR](./im-smiles-selector.md) – an application for enhancing the capabilities of emojis and Giphy (there can be custom sources for images or emojis).
