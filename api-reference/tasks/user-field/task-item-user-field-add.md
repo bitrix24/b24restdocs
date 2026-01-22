@@ -54,7 +54,7 @@ When creating a custom field, the field name `FIELD_NAME` must use the prefix `U
 - cURL (Webhook)
 
     ```bash
-    curl -X POST "https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webbhook_here**/task.item.userfield.add" \
+    curl -X POST "https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/task.item.userfield.add" \
         -H "Content-Type: application/json" \
         -d '{
             "PARAMS": {
@@ -73,7 +73,7 @@ When creating a custom field, the field name `FIELD_NAME` must use the prefix `U
 - cURL (OAuth)
 
     ```bash
-    curl -X POST "https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webbhook_here**/task.item.userfield.add" \
+    curl -X POST "https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/task.item.userfield.add" \
         -H "Content-Type: application/json" \
         -d '{
             "PARAMS": {

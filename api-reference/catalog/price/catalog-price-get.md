@@ -30,7 +30,7 @@ The method `catalog.price.get` returns information about the product price by it
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"id":1}' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webbhook_here**/catalog.price.get
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/catalog.price.get
     ```
 
 - cURL (OAuth)

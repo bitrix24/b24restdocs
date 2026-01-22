@@ -47,7 +47,7 @@ This method updates the REST handler for the payment system.
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"ID":3,"FIELDS":{"CODE":"newresthandlercode","NAME":"New handler name","SORT":200,"SETTINGS":{"CURRENCY":["USD","EUR"],"FORM_DATA":{"ACTION_URI":"http://example.com/payment_form.php","METHOD":"POST","PARAMS":{"serviceid":"REST_SERVICE_ID_2","invoiceNumber":"PAYMENT_ID_2","Sum":"PAYMENT_SHOULD_PAY_2","customer":"PAYMENT_BUYER_ID_2"},"CODES":{"REST_SERVICE_ID_2":{"NAME":"Store number","DESCRIPTION":"Store number","SORT":"100"},"REST_SERVICE_KEY_2":{"NAME":"Secret key","DESCRIPTION":"Secret key","SORT":"300"},"PAYMENT_ID_2":{"NAME":"Payment number","SORT":"400","GROUP":"PAYMENT","DEFAULT":{"PROVIDER_KEY":"PAYMENT","PROVIDER_VALUE":"ACCOUNT_NUMBER"}},"PAYMENT_SHOULD_PAY_2":{"NAME":"Payment amount","SORT":"600","GROUP":"PAYMENT","DEFAULT":{"PROVIDER_KEY":"PAYMENT","PROVIDER_VALUE":"SUM"}},"PS_CHANGE_STATUS_PAY_2":{"NAME":"Automatic payment status change","SORT":"700","INPUT":{"TYPE":"Y/N"}},"PAYMENT_BUYER_ID_2":{"NAME":"Buyer code","SORT":"1000","GROUP":"PAYMENT","DEFAULT":{"PROVIDER_KEY":"ORDER","PROVIDER_VALUE":"USER_ID"}}}}}}' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webbhook_here**/sale.paysystem.handler.update
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/sale.paysystem.handler.update
     ```
 
 - cURL (OAuth)

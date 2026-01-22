@@ -49,7 +49,7 @@ This method updates the value variant of a property. It is applicable only for p
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"id":5,"fields":{"name":"Red","value":"red","sort":10,"description":"New description for the red color value"}}' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webbhook_here**/sale.propertyvariant.update
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/sale.propertyvariant.update
     ```
 
 - cURL (OAuth)

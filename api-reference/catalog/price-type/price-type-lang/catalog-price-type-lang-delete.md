@@ -30,7 +30,7 @@ This method deletes the translation of the price type name by its identifier.
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"id":3}' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webbhook_here**/catalog.priceTypeLang.delete
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/catalog.priceTypeLang.delete
     ```
 
 - cURL (OAuth)
