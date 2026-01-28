@@ -4,9 +4,9 @@
 >
 > Who can execute the method: administrator
 
-This method registers a new robot.
+The method `bizproc.robot.add` registers a new robot.
 
-It only works in the context of the [application](../../../settings/app-installation/index.md).
+It works only in the context of the [application](../../../settings/app-installation/index.md).
 
 ## Method Parameters
 
@@ -163,8 +163,8 @@ Examples:
 [`boolean`](../../data-types.md) | Parameter multiplicity. Possible values:
 - `Y` — yes
 - `N` — no ||
-|| **Default**
-[`any`](../../data-types.md) | Default parameter value ||
+|| **Default**  
+[`any`](../../data-types.md) | Default value of the parameter. For `Type = 'select'`, specify the key from `Options` ||
 |#
 
 #### Example Objects
@@ -178,7 +178,7 @@ Examples:
     },
     'Required': 'Y',
     'Multiple': 'N',
-    'Default': 'PDF',
+    'Default': 'pdf',
     'Type': 'select',
     'Options': {
         'pdf': 'PDF',

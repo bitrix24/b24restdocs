@@ -34,9 +34,10 @@ Some data may be missing — we will complete it soon.
 #| 
 || **Type** | **Descriptions and Values** ||
 || `integer` | Whole number. For example, 10116 ||
-|| `boolean` | Boolean value. Most often takes values 'Y' or 'N'. In some outdated methods, it may take values 0 or 1. Read the method descriptions carefully! ||
+|| `boolean` | Boolean value. Most often takes values `Y` or `N`. In some outdated methods, it may take values 0 or 1 ||
+|| `char` | Fixed-length string type, usually `CHAR(1)`. Often used as a replacement for `boolean` and stores `Y` or `N` ||
 || `double` | Floating-point number. For example, 100.15 ||
-|| `date` | Date in the format 'YYYY-MM-DD'. For example, '2023-12-28', which means December 28, 2023. ||
+|| `date` | Date in the format 'YYYY-MM-DD'. For example, '2023-12-28', which means December 28, 2023 ||
 || `datetime` | Date and time in the format 'YYYY-MM-DDThh:mm:ss±hh:mm'. For example, '2023-12-28T14:05:48', which means 14 hours, 5 minutes, and 48 seconds on December 28, 2023. ||
 || `string` | Single-line string value. For example, 'Supply Agreement' ||
 || `text` | Multi-line string value, applicable in some special fields of objects. ||

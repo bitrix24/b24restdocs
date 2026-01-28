@@ -1,34 +1,46 @@
-# Set a common company card for all users crm.company.details.configuration.forceCommonScopeForAll
-
-{% note warning "We are still updating this page" %}
-
-Some data may be missing — we will complete it soon.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- examples are missing
-- no response in case of success
-- no response in case of error
-
-{% endnote %}
-
-{% endif %}
+# Set a Common Company Card for All Users crm.company.details.configuration.forceCommonScopeForAll
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: a user with the "Allow changing settings" access permission in CRM
 
-The method `crm.company.details.configuration.forceCommonScopeForAll` allows you to forcibly set a common company card for all users.
+{% note warning "Method Development Stopped" %}
 
-Without parameters
+The method `crm.company.details.configuration.forceCommonScopeForAll` is still operational, but there is a more relevant alternative [crm.item.details.configuration.forceCommonScopeForAll](../../universal/item-details-configuration/crm-item-details-configuration-forceCommonScopeForAll.md).
 
-## Examples
+{% endnote %}
+
+The method `crm.company.details.configuration.forceCommonScopeForAll` forcibly sets a common company card for all users.
+
+## Method Parameters
+
+No parameters.
+
+## Code Examples
+
+{% include [Note on Examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
+
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{}' \
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.company.details.configuration.forceCommonScopeForAll
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/crm.company.details.configuration.forceCommonScopeForAll
+    ```
 
 - JS
 
@@ -79,8 +91,6 @@ Without parameters
 - BX24.js
 
     ```js
-    //---
-    //Set a common company card for all users.
     BX24.callMethod(
         "crm.company.details.configuration.forceCommonScopeForAll",
         {},
@@ -92,9 +102,81 @@ Without parameters
                 console.dir(result.data());
         }
     );
-    //---
+    ```
+
+- PHP CRest
+
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'crm.company.details.configuration.forceCommonScopeForAll',
+        []
+    );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
     ```
 
 {% endlist %}
 
-{% include [Examples note](../../../../_includes/examples.md) %}
+## Response Handling
+
+HTTP Status: **200**
+
+```json
+{
+    "result": true,
+    "time": {
+        "start": 1769418591,
+        "finish": 1769418591.337566,
+        "duration": 0.33756589889526367,
+        "processing": 0,
+        "date_start": "2026-01-26T12:09:51+01:00",
+        "date_finish": "2026-01-26T12:09:51+01:00",
+        "operating_reset_at": 1769419191,
+        "operating": 0
+    }
+}
+```
+
+### Returned Data
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`boolean`](../../../data-types.md) | Root element of the response, contains `true` in case of success ||
+|| **time**
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
+|#
+
+## Error Handling
+
+HTTP Status: **400**
+
+```json
+{
+    "error": "",
+    "error_description": "Access denied."
+}
+```
+
+{% include notitle [error handling](../../../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+#|
+|| **Code** | **Description** | **Value** ||
+|| `-` | `Access denied` | The user does not have permission to change CRM settings ||
+|#
+
+{% include [system errors](../../../../_includes/system-errors.md) %}
+
+## Continue Learning 
+
+- [{#T}](./index.md)
+- [{#T}](./crm-company-details-configuration-get.md)
+- [{#T}](./crm-company-details-configuration-set.md)
+- [{#T}](./crm-company-details-configuration-reset.md)

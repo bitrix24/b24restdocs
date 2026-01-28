@@ -273,14 +273,14 @@ Possible types:
 || **TAX_RATE**
 [`double`](../../data-types.md) | Tax rate in percentage ||
 || **TAX_INCLUDED**
-[`boolean`](../../data-types.md) | Indicator of whether tax is included in the price
+[`char`](../../data-types.md) | Indicator of whether tax is included in the price
 Possible values:
 - `Y` – tax included
 - `N` – tax not included
 
 ||
 || **CUSTOMIZED**
-[`boolean`](../../data-types.md) | Customized (Deprecated)
+[`char`](../../data-types.md) | Customized (Deprecated)
 Possible values:
  - `Y` - Yes
  - `N` - No

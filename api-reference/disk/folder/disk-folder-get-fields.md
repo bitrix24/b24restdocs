@@ -1,10 +1,10 @@
-# Get Folder Field Descriptions for disk.folder.getfields
+# Get Folder Field Descriptions disk.folder.getfields
 
 > Scope: [`disk`](../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-The method `disk.folder.getfields` returns the descriptions of folder fields.
+The method `disk.folder.getfields` returns the description of folder fields.
 
 ## Method Parameters
 
@@ -210,12 +210,12 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`array`](../../data-types.md) | Array with folder field descriptions.
+[`array`](../../data-types.md) | Array with the description of folder fields.
 
-Structure of each field description:
+The structure of each field description:
 - `TYPE` — data type of the field
-- `USE_IN_FILTER` — ability to use the field in filtering
-- `USE_IN_SHOW` — availability of the field in the response ||
+- `USE_IN_FILTER` — ability to use the field for filtering
+- `USE_IN_SHOW` — availability of the field when receiving a response ||
 || **ID**
 [`integer`](../../data-types.md) | Folder identifier ||
 || **NAME**
@@ -264,4 +264,5 @@ Structure of each field description:
 - [{#T}](./disk-folder-move-to.md)
 - [{#T}](./disk-folder-rename.md)
 - [{#T}](./disk-folder-restore.md)
+- [{#T}](./disk-folder-share-to-user.md)
 - [{#T}](./disk-folder-upload-file.md)

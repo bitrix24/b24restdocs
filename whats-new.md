@@ -2,6 +2,18 @@
 
 ## 2026
 
+### January 28, 2026
+
+- Updated the documentation for company methods in CRM [crm.company.*](./api-reference/crm/companies/index.md)
+- Updated the documentation for methods used to manage company cards [crm.company.details.configuration.*](./api-reference/crm/companies/custom-form/index.md)
+- Added a new article [Setup Master for REST-only applications](./settings/app-installation/mass-market-apps/rest-only-installation-master.md)
+- Updated the documentation for methods [task.checklistitem.isactionallowed](./api-reference/tasks/checklist-item/task-checklist-item-is-action-allowed.md), [task.checklistitem.getmanifest](./api-reference/tasks/checklist-item/task-checklist-item-get-manifest.md) in Task Checklists
+- Updated the documentation for methods [disk.folder.get](./api-reference/disk/folder/disk-folder-get.md), [disk.folder.markdeleted](./api-reference/disk/folder/disk-folder-mark-deleted.md), [disk.folder.moveto](./api-reference/disk/folder/disk-folder-move-to.md), [disk.folder.rename](./api-reference/disk/folder/disk-folder-rename.md), [disk.folder.restore](./api-reference/disk/folder/disk-folder-restore.md)
+- Added a new method [disk.folder.sharetouser](./api-reference/disk/folder/disk-folder-share-to-user.md)
+- Updated the main page of the [Attached File](./api-reference/disk/attached-object/index.md) section. Added introductory information and an overview of methods
+- Updated the article [How to make your first API request](./first-steps/first-rest-api-call.md)
+- Updated the article [Feedback](./feedback.md)
+
 ### January 21, 2026
 
 - Updated the article [How to Access the REST API](./first-steps/access-to-rest-api.md)

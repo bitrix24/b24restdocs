@@ -2,9 +2,9 @@
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: `any user`
+> Who can execute the method: a user with read access to CRM entities
 
-The method retrieves a list of all comments of the specified CRM entity type.
+The method `crm.timeline.comment.list` retrieves a list of all comments associated with the specified CRM entity.
 
 ## Method Parameters
 
@@ -12,41 +12,18 @@ The method retrieves a list of all comments of the specified CRM entity type.
 || **Name**
 `type` | **Description** ||
 || **select**
-[`array`](../../../data-types.md) | An array containing the list of fields to be selected (see the fields of the [result](./crm-timeline-comment-fields.md#fields) object). If not provided or an empty array is passed, the result will return an empty array ||
-|| **filter**
+[`array`](../../../data-types.md) | An array of fields to select. Pass the fields of the [result](./crm-timeline-comment-fields.md#fields) object. If not provided or an empty array is passed, all fields will be returned ||
+|| **filter***
 [`object`](../../../data-types.md) | An object for filtering the selected comments in the format `{"field_1": "value_1", ... "field_N": "value_N"}`.
 
-Possible values for `field` correspond to the fields of the [result](./crm-timeline-comment-fields.md#fields) object.
-
-Required fields: `ENTITY_ID`, `ENTITY_TYPE`.
-
-An additional prefix can be assigned to the key to specify the filter behavior. Possible prefix values:
-
-- `>=` — greater than or equal to
-- `>` — greater than
-- `<=` — less than or equal to
-- `<` — less than
-- `@` — IN (an array is passed as the value)
-- `!@`— NOT IN (an array is passed as the value)
-- `%` — LIKE, substring search. The `%` symbol in the filter value does not need to be passed. The search looks for the substring in any position of the string
-- `=%` — LIKE, substring search. The `%` symbol needs to be passed in the value. Examples:
-  - `"mol%"` — looking for values starting with "mol"
-  - `"%mol"` — looking for values ending with "mol"
-  - `"%mol%"` — looking for values where "mol" can be in any position
-- `%=` — LIKE (see description above)
-- `!%` — NOT LIKE, substring search. The `%` symbol in the filter value does not need to be passed. The search goes from both sides.
-- `!=%` — NOT LIKE, substring search. The `%` symbol needs to be passed in the value. Examples:
-  - `"mol%"` — looking for values not starting with "mol"
-  - `"%mol"` — looking for values not ending with "mol"
-  - `"%mol%"` — looking for values where the substring "mol" is not present in any position
-- `!%=` — NOT LIKE (see description above)
-- `=` — equal, exact match (used by default)
-- `!=` — not equal
-- `!` — not equal ||
+The filter works with two required fields:
+- `ENTITY_ID` — ID of the CRM entity to which the comment is attached
+- `ENTITY_TYPE` — [type of CRM object](../../data-types.md#object_type), for example: `deal`, `lead`, `contact`, `company`
+||
 || **order**
 [`object`](../../../data-types.md) | An object for sorting the selected comments in the format `{"field_1": "order_1", ... "field_N": "order_N"}`.
 
-Possible values for `field` correspond to the fields of the [result](./crm-timeline-comment-fields.md#fields) object.
+Only the fields `ID`, `CREATED`, `AUTHOR_ID` are supported.
 
 Possible values for `order`:
 
@@ -62,13 +39,13 @@ To select the second page of results, you need to pass the value `50`. To select
 
 The formula for calculating the `start` parameter value:
 
-`start = (N-1) * 50`, where `N` — the number of the desired page
- ||
+`start = (N-1) * 50`, where `N` — the desired page number
+||
 |#
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../../_includes/examples.md) %}
+{% include [Note on Examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -95,7 +72,7 @@ The formula for calculating the `start` parameter value:
 - JS
 
     ```js
-    // callListMethod is recommended when you need to retrieve the entire set of list data and the volume of records is relatively small (up to about 1000 items). The method loads all data at once, which can lead to high memory load when working with large volumes.
+    // callListMethod is recommended when you need to retrieve the entire set of list data and the volume of records is relatively small (up to about 1000 items). This method loads all data at once, which can lead to high memory load when working with large volumes.
     
     try {
       const response = await $b24.callListMethod(
@@ -123,7 +100,7 @@ The formula for calculating the `start` parameter value:
       console.error('Request failed', error);
     }
     
-    // fetchListMethod is preferred when working with large datasets. The method implements iterative fetching using a generator, allowing data to be processed in parts and efficiently using memory.
+    // fetchListMethod is preferable when working with large datasets. This method implements iterative selection using a generator, allowing data to be processed in chunks and efficiently using memory.
     
     try {
       const generator = $b24.fetchListMethod('crm.timeline.comment.list', {
@@ -148,7 +125,7 @@ The formula for calculating the `start` parameter value:
       console.error('Request failed', error);
     }
     
-    // callMethod provides manual control over the pagination process through the start parameter. Suitable for scenarios where precise control over request batches is required. However, with large volumes of data, it may be less efficient compared to fetchListMethod.
+    // callMethod provides manual control over the pagination process through the start parameter. It is suitable for scenarios where precise control over request batches is required. However, it may be less efficient compared to fetchListMethod when dealing with large volumes of data.
     
     try {
       const response = await $b24.callMethod('crm.timeline.comment.list', {
@@ -301,7 +278,7 @@ HTTP Status: **200**
                         "height": 1
                     },
                     "authorId": 1,
-                    "authorName": "John Dou",
+                    "authorName": "John Doe",
                     "urlPreview": "https://my.bitrix24.com/disk/showFile/930/?&ncc=1&width=640&height=640&signature=292f450929833cd881070155e05a2c41b5bb265ea8c8c1bc2108dbcbb56f667f&ts=1718366521&filename=1.gif",
                     "urlShow": "https://my.bitrix24.com/disk/showFile/930/?&ncc=1&ts=1718366521&filename=1.gif",
                     "urlDownload": "https://my.bitrix24.com/disk/downloadFile/930/?&ncc=1&filename=1.gif"
@@ -317,7 +294,7 @@ HTTP Status: **200**
                         "height": 1
                     },
                     "authorId": 1,
-                    "authorName": "John Dou",
+                    "authorName": "John Doe",
                     "urlPreview": "https://my.bitrix24.com/disk/showFile/931/?&ncc=1&width=640&height=640&signature=118de010a40eff06fb9d691ee9235e2ef809a17780e46927bf8b12f8dc3224db&ts=1718366521&filename=2.gif",
                     "urlShow": "https://my.bitrix24.com/disk/showFile/931/?&ncc=1&ts=1718366521&filename=2.gif",
                     "urlDownload": "https://my.bitrix24.com/disk/downloadFile/931/?&ncc=1&filename=2.gif"
@@ -352,11 +329,11 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`array`](../../../data-types.md) | The root element of the response, containing an array of objects with information about the selected comments ||
+[`array`](../../../data-types.md) | The root element of the response containing an array of objects with information about the selected comments ||
 || **total**
 [`integer`](../../../data-types.md) | The total number of records found ||
 || **time**
-[`time`](../../../data-types.md) | Information about the execution time of the request ||
+[`time`](../../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
@@ -376,7 +353,7 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Error Message** | **Description** ||
-|| Empty string | Access denied. | No rights to edit the entity in CRM ||
+|| Empty string | Access denied | No permissions for the specified CRM entity ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

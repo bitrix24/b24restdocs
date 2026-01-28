@@ -1,12 +1,10 @@
-# Create Subfolder disk.folder.addsubfolder
+# Create a Subfolder disk.folder.addsubfolder
 
 > Scope: [`disk`](../../scopes/permissions.md)
 >
 > Who can execute the method: a user with "Add" or "Edit" access permission for the required folder
 
 The method `disk.folder.addsubfolder` creates a subfolder.
-
-The folder will inherit the same access permissions as its parent folder.
 
 ## Method Parameters
 
@@ -21,8 +19,14 @@ The folder will inherit the same access permissions as its parent folder.
 The identifier can be obtained using the method [disk.storage.getchildren](../storage/disk-storage-get-children.md) if the folder is in the root of the storage, and using the method [disk.folder.getchildren](./disk-folder-get-children.md) if the folder is in another folder
 ||
 || **data***
-[`array`](../../data-types.md) | Array with the field `NAME`, where `NAME` is the name of the subfolder ||
+[`array`](../../data-types.md) | An array with the field `NAME`, where `NAME` is the name of the subfolder ||
 |#
+
+{% note info "" %}
+
+To manage access to the created folder, use the method [disk.folder.sharetouser](./disk-folder-share-to-user.md)
+
+{% endnote %} 
 
 ## Code Examples
 
@@ -149,7 +153,7 @@ The identifier can be obtained using the method [disk.storage.getchildren](../st
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -162,8 +166,8 @@ HTTP status: **200**
         "REAL_OBJECT_ID": 8930,
         "PARENT_ID": "8907",
         "DELETED_TYPE": 0,
-        "CREATE_TIME": "2026-01-13T11:20:40+02:00",
-        "UPDATE_TIME": "2026-01-13T11:20:40+02:00",
+        "CREATE_TIME": "2026-01-13T11:20:40+01:00",
+        "UPDATE_TIME": "2026-01-13T11:20:40+01:00",
         "DELETE_TIME": null,
         "CREATED_BY": "1269",
         "UPDATED_BY": "1269",
@@ -175,8 +179,8 @@ HTTP status: **200**
         "finish": 1768292440.894889,
         "duration": 0.8948891162872314,
         "processing": 0,
-        "date_start": "2026-01-13T11:20:40+02:00",
-        "date_finish": "2026-01-13T11:20:40+02:00",
+        "date_start": "2026-01-13T11:20:40+01:00",
+        "date_finish": "2026-01-13T11:20:40+01:00",
         "operating_reset_at": 1768293040,
         "operating": 0
     }
@@ -189,7 +193,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`array`](../../data-types.md) | Array with data about the created folder ||
+[`array`](../../data-types.md) | An array with data about the created folder ||
 || **ID**
 [`integer`](../../data-types.md) | Identifier of the folder ||
 || **NAME**
@@ -229,7 +233,7 @@ HTTP status: **200**
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {
@@ -247,7 +251,7 @@ HTTP status: **400**
 || `ERROR_ARGUMENT` | Invalid value of parameter {Parameter #1} | The required field `NAME` is missing in the `data` array ||
 || `DISK_OBJ_22000` | A folder with this name already exists | A folder with this name already exists ||
 || `ERROR_NOT_FOUND` | Could not find entity with id `X` | The folder with the specified `id` was not found ||
-|| `ACCESS_DENIED` | Access denied | Insufficient permissions to create the folder ||
+|| `ACCESS_DENIED` | Access denied | Insufficient rights to create the folder ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
@@ -264,4 +268,5 @@ HTTP status: **400**
 - [{#T}](./disk-folder-move-to.md)
 - [{#T}](./disk-folder-rename.md)
 - [{#T}](./disk-folder-restore.md)
+- [{#T}](./disk-folder-share-to-user.md)
 - [{#T}](./disk-folder-upload-file.md)

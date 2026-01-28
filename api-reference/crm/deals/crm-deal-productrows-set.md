@@ -56,7 +56,7 @@ Default - `0.0`
 || **PRICE_NETTO**
 [`double`](../../data-types.md) | Cost per unit excluding discounts and taxes ||
 || **PRICE_BRUTTO**
-[`double`](../../data-types.md) | Cost per unit excluding discounts, but including taxes ||
+[`double`](../../data-types.md) | Cost per unit excluding discounts but including taxes ||
 || **QUANTITY**
 [`double`](../../data-types.md) | Quantity of product units
 
@@ -83,7 +83,7 @@ Default - `0.0`
 || **TAX_RATE**
 [`double`](../../data-types.md) | Tax rate in percentage ||
 || **TAX_INCLUDED**
-[`boolean`](../../data-types.md) | Indicator of whether tax is included in the price
+[`char`](../../data-types.md) | Indicator of whether the tax is included in the price
 Possible values:
 - `Y` – tax included
 - `N` – tax not included

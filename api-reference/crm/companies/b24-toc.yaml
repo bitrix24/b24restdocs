@@ -5,16 +5,16 @@ items:
     href: index.md
   - name: Create a New Company
     href: crm-company-add.md
-  - name: Delete a Company
-    href: crm-company-delete.md
-  - name: Get Company Field Descriptions
-    href: crm-company-fields.md
-  - name: Get Company Information
-    href: crm-company-get.md
-  - name: Get List of Companies by Filter
-    href: crm-company-list.md
   - name: Update an Existing Company
-    href: crm-company-update.md
+    href: crm-company-update.md    
+  - name: Get Information About a Company
+    href: crm-company-get.md
+  - name: Get a List of Companies by Filter
+    href: crm-company-list.md
+  - name: Delete a Company
+    href: crm-company-delete.md    
+  - name: Get Description of Company Fields
+    href: crm-company-fields.md
   - name: Company Contacts
     include:
       path: contacts/b24-toc.yaml

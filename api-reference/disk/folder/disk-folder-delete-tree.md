@@ -2,7 +2,7 @@
 
 > Scope: [`disk`](../../scopes/permissions.md)
 >
-> Who can execute the method: a user with "Full access" permission for the desired folder
+> Who can execute the method: a user with "Full access" permission for the specified folder
 
 The method `disk.folder.deletetree` permanently deletes a folder and all its contents.
 
@@ -24,7 +24,7 @@ The identifier can be obtained using the method [disk.folder.getchildren](./disk
 
 {% note info "" %}
 
-The root folder of the storage cannot be deleted.
+You cannot delete the root folder of the storage
 
 {% endnote %} 
 
@@ -151,8 +151,8 @@ HTTP Status: **200**
         "finish": 1768316913.467206,
         "duration": 0.4672060012817383,
         "processing": 0,
-        "date_start": "2026-01-13T15:08:33+02:00",
-        "date_finish": "2026-01-13T15:08:33+02:00",
+        "date_start": "2026-01-13T15:08:33+01:00",
+        "date_finish": "2026-01-13T15:08:33+01:00",
         "operating_reset_at": 1768317513,
         "operating": 0.3324289321899414
     }
@@ -187,7 +187,7 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `ERROR_ARGUMENT` | Invalid value of parameter {Parameter #1} | The required parameter `id` is missing ||
+|| `ERROR_ARGUMENT` | Invalid value of parameter {Parameter #1} | Required parameter `id` is missing ||
 || `DISK_OBJ_22000` | Could not delete root folder | Attempt to delete the root folder of the storage ||
 || `ERROR_NOT_FOUND` | Could not find entity with id `X` | Folder with the specified `id` was not found ||
 || `ACCESS_DENIED` | Access denied | Insufficient permissions to delete the folder ||
@@ -207,4 +207,5 @@ HTTP Status: **400**
 - [{#T}](./disk-folder-move-to.md)
 - [{#T}](./disk-folder-rename.md)
 - [{#T}](./disk-folder-restore.md)
+- [{#T}](./disk-folder-share-to-user.md)
 - [{#T}](./disk-folder-upload-file.md)

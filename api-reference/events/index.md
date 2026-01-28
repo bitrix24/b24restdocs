@@ -7,7 +7,7 @@ Events in Bitrix24 are notifications about data changes, such as the creation of
 An event handler is an external URL to which Bitrix24 sends a POST request with data about the change. The handler allows you to:
 
 - synchronize data with an external system,
-- trigger automation scenarios,
+- trigger automated scenarios,
 - validate data according to business logic rules.
 
 {% note warning "" %}
@@ -26,7 +26,7 @@ The handler URL must be accessible from the external network. Do not use address
 
 ### Features of Operation
 
-Events are not processed directly. First, Bitrix24 places the event in a queue on a special server. From there, a POST request is sent to your handler. As a result, the request may arrive with a slight delay.
+Events are not processed directly. First, Bitrix24 queues the event on a special server. From there, a POST request is sent to your handler. As a result, the request may arrive with a slight delay.
 
 The server checks the response speed of the handler. If the handler responds slowly, the server reduces the frequency of calls. The intervals between requests increase.
 
@@ -34,7 +34,7 @@ Current [queue server addresses](../../settings/cloud-and-on-premise/network-acc
 
 ## What Comes to the Handler
 
-The system sends a request in JSON format. The main keys are:
+The system sends a request with content-type `application/x-www-form-urlencoded`. The main keys are:
 
 -  `event` — the name of the event,
 -  `ts` — a timestamp in Unix timestamp format,
@@ -74,7 +74,7 @@ To ensure that the application can always make callbacks to Bitrix24, save the t
 
 ## How to Subscribe to an Event via Webhook
 
-1. In Bitrix24, open the *Developer resources > Other > Outgoing Webhook* section.
+1. In Bitrix24, go to *Developer resources > Other > Outbound webhook*.
 2. Specify the handler URL.
 3. Select one or more events from the list, such as `OnCrmDealAdd`.
 4. Save the webhook. The Application Token field will be generated automatically.
@@ -106,8 +106,8 @@ Note that the request from the outgoing webhook does not include user OAuth 2.0 
 
 Events have two main limitations:
 
-1. **Load cannot be regulated**. During mass data changes, you will receive many consecutive calls. If a thousand deals are changed simultaneously in Bitrix24, the handler will receive a thousand calls.
-2. **No retries**. If your server did not respond or returned an error, the Bitrix24 queue server will log the failure but will not resend the event.
+1. **Load cannot be regulated**. When mass data changes occur, you will receive many consecutive calls. If a thousand deals are changed simultaneously in Bitrix24, the handler will receive a thousand calls.
+2. **No retries**. If your server does not respond or returns an error, the Bitrix24 queue server will log the failure but will not resend the event.
 
 If it is important to process all events without loss, use [offline events](./offline-events.md). They allow you to retrieve events from the queue manually.
 

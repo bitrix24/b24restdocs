@@ -16,6 +16,7 @@ Parent and child folders are linked through the `PARENT_ID` parameter. You can o
 
 You can perform the following operations with Drive folders:
 
+- assign access permissions using the [disk.folder.sharetouser](./disk-folder-share-to-user.md) method
 - move within the structure using the [disk.folder.moveto](./disk-folder-move-to.md) method 
 - copy to other Drive folders using the [disk.folder.copyto](./disk-folder-copy-to.md) method
 - rename using the [disk.folder.rename](./disk-folder-rename.md) method
@@ -46,8 +47,9 @@ To permanently delete a folder without the possibility of recovery, you need to 
 || **Method** | **Description** ||
 || [disk.folder.getfields](./disk-folder-get-fields.md) | Returns the description of folder fields ||
 || [disk.folder.get](./disk-folder-get.md) | Returns the folder by identifier ||
-|| [disk.folder.getchildren](./disk-folder-get-children.md) | Returns the list of files and folders located in the folder ||
+|| [disk.folder.getchildren](./disk-folder-get-children.md) | Returns a list of files and folders located in the folder ||
 || [disk.folder.addsubfolder](./disk-folder-add-subfolder.md) | Creates a subfolder ||
+|| [disk.folder.sharetouser](./disk-folder-share-to-user.md) | Assigns access permissions to the folder ||
 || [disk.folder.copyto](./disk-folder-copy-to.md) | Copies the folder to the specified folder ||
 || [disk.folder.moveto](./disk-folder-move-to.md) | Moves the folder to the specified folder ||
 || [disk.folder.rename](./disk-folder-rename.md) | Renames the folder ||

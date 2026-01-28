@@ -51,7 +51,7 @@ You can find out the version of a file using the method [disk.version.get](./ver
 
 **Workflows.** You can initiate workflows for documents in the shared drive. Workflow management is performed using the methods [bizproc.workflow.*](../bizproc/index.md).
 
-**Tasks.** Files are attached to task descriptions and comments. All task participants can view, edit, and download attached files. Work with tasks and comments should be done through the groups of methods [tasks.task.*](../tasks/index.md) and [task.commentitem.*](../tasks/comment-item/index.md).
+**Tasks.** Files are attached to task descriptions. All task participants can view, edit, and download attached files. Work with tasks must be done through the methods [tasks.task.*](../tasks/index.md).
 
 **Calendar.** Files can be added to events and become accessible to all participants. You can create and modify events using the methods [calendar.event.*](../calendar/index.md).
 
@@ -95,6 +95,7 @@ You can find out the version of a file using the method [disk.version.get](./ver
 || [disk.folder.get](folder/disk-folder-get.md) | Returns the folder by identifier ||
 || [disk.folder.getchildren](folder/disk-folder-get-children.md) | Returns a list of files and folders located in the folder ||
 || [disk.folder.addsubfolder](folder/disk-folder-add-subfolder.md) | Creates a subfolder ||
+|| [disk.folder.sharetouser](folder/disk-folder-share-to-user.md) | Assigns access permissions to the folder ||
 || [disk.folder.copyto](folder/disk-folder-copy-to.md) | Copies the folder to the specified folder ||
 || [disk.folder.moveto](folder/disk-folder-move-to.md) | Moves the folder to the specified folder ||
 || [disk.folder.rename](folder/disk-folder-rename.md) | Renames the folder ||

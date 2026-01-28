@@ -1,14 +1,14 @@
-# Move checklist item task.checklistitem.moveafteritem
+# Move Checklist Item task.checklistitem.moveafteritem
 
 > Scope: [`task`](../../scopes/permissions.md)
 >
 > Permissions to execute the method:
-> - any user with editing access to the task
-> - creator, assignee, and participants of the task
+> - any user with edit access to the task
+> - Creator, Performer, and Participants of the task
 
-The method `task.checklistitem.moveafteritem` moves the checklist item `itemId` to a position after the item `afterItemId`.
+The method `task.checklistitem.moveafteritem` moves the checklist item `itemId` to a position after the element `afterItemId`.
 
-Both items must belong to the same task `taskId`. The items can be in different sublists, but after the move, `itemId` will have the same `PARENT_ID` as `afterItemId`.
+Both elements must belong to the same task `taskId`. The elements can be in different sublists, but after the move, `itemId` will have the same `PARENT_ID` as `afterItemId`.
 
 You can check permissions to modify the item using the method [task.checklistitem.isactionallowed](./task-checklist-item-is-action-allowed.md).
 
@@ -20,19 +20,19 @@ You can check permissions to modify the item using the method [task.checklistite
 || **Name**
 `type` | **Description** ||
 || **TASKID***
-[`integer`](../../data-types.md) | Task identifier.
+[`integer`](../../data-types.md) | Identifier of the task.
 
-The task identifier can be obtained when [creating a new task](../tasks-task-add.md) or using the method [get task list](../tasks-task-list.md) ||
+The task identifier can be obtained when [creating a new task](../tasks-task-add.md) or by using the method [get task list](../tasks-task-list.md) ||
 || **ITEMID***
-[`integer`](../../data-types.md) | Identifier of the checklist item to be moved.
+[`integer`](../../data-types.md) | Identifier of the checklist item being moved.
 
-The checklist item identifier can be obtained when [creating an item](./task-checklist-item-add.md) or using the method [get checklist item list](./task-checklist-item-get-list.md) ||
+The checklist item identifier can be obtained when [creating an item](./task-checklist-item-add.md) or by using the method [get checklist item list](./task-checklist-item-get-list.md) ||
 || **AFTERITEMID***
 [`integer`](../../data-types.md) | Identifier of the checklist item after which the moving item should be placed.
 
 The item must belong to the same task as `ITEMID`.
 
-The checklist item identifier can be obtained when [creating an item](./task-checklist-item-add.md) or using the method [get checklist item list](./task-checklist-item-get-list.md) ||
+The checklist item identifier can be obtained when [creating an item](./task-checklist-item-add.md) or by using the method [get checklist item list](./task-checklist-item-get-list.md) ||
 |#
 
 ## Code Examples
@@ -153,7 +153,7 @@ The checklist item identifier can be obtained when [creating an item](./task-che
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -163,8 +163,8 @@ HTTP status: **200**
         "finish": 1764597401.936492,
         "duration": 0.9364919662475586,
         "processing": 0,
-        "date_start": "2025-12-01T16:56:41+02:00",
-        "date_finish": "2025-12-01T16:56:41+02:00",
+        "date_start": "2025-12-01T16:56:41+01:00",
+        "date_finish": "2025-12-01T16:56:41+01:00",
         "operating_reset_at": 1764598001,
         "operating": 0.29050707817077637
     }
@@ -179,12 +179,12 @@ HTTP status: **200**
 || **result**
 `null` | Returns `null` if the item was successfully moved ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the request execution time ||
+[`time`](../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {
@@ -193,20 +193,20 @@ HTTP status: **400**
 }
 ```
 
-{% include notitle [Error response](../../../_includes/error-info.md) %}
+{% include notitle [error handling](../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
-|| **Code** | **Value** | **How to resolve**  ||
-|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #1 (itemId) expected by method ctaskchecklistitem::moveafteritem(), but not given.; 256/TE/WRONG_ARGUMENTS<br> | Required parameter `TASKID`, `ITEMID`, or `AFTERITEMID` not specified ||
-|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #0 (taskId) for method ctaskchecklistitem::moveafteritem() expected to be of type "integer", but given something else.; 256/TE/WRONG_ARGUMENTS<br> | Incorrect value type for `TASKID`, `ITEMID`, or `AFTERITEMID` specified ||
-|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#8; Moving item: action not allowed; 8/TE/ACTION_FAILED_TO_BE_PROCESSED<br> | User does not have access permissions to the task or lacks permissions to perform the action ||
+|| **Code** | **Description** | **Value**  ||
+|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #1 (itemId) expected by method ctaskchecklistitem::moveafteritem(), but not given.; 256/TE/WRONG_ARGUMENTS<br> | Required parameter `TASKID`, `ITEMID`, or `AFTERITEMID` is missing ||
+|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #0 (taskId) for method ctaskchecklistitem::moveafteritem() expected to be of type "integer", but given something else.; 256/TE/WRONG_ARGUMENTS<br> | Incorrect type provided for `TASKID`, `ITEMID`, or `AFTERITEMID` ||
+|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#8; Moving item: action not allowed; 8/TE/ACTION_FAILED_TO_BE_PROCESSED<br> | User does not have access to the task or lacks permissions to perform the action ||
 |#
 
-{% include [System errors](../../../_includes/system-errors.md) %}
+{% include [system errors](../../../_includes/system-errors.md) %}
 
-## See Also
+## Continue Learning
 
 - [{#T}](./index.md)
 - [{#T}](./task-checklist-item-add.md)

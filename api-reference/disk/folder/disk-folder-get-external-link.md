@@ -1,4 +1,4 @@
-# Get Public Link to Folder disk.folder.getexternallink
+# Get Public Link for Folder disk.folder.getexternallink
 
 > Scope: [`disk`](../../scopes/permissions.md)
 >
@@ -8,7 +8,7 @@ The method `disk.folder.getexternallink` returns a public link to the folder.
 
 ## Method Parameters
 
-{% include [Footnote on parameters](../../../_includes/required.md) %}
+{% include [Note on parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -21,7 +21,7 @@ The identifier can be obtained using the method [disk.storage.getchildren](../st
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -132,7 +132,7 @@ The identifier can be obtained using the method [disk.storage.getchildren](../st
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -163,7 +163,7 @@ HTTP status: **200**
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {
@@ -180,7 +180,7 @@ HTTP status: **400**
 || **Code** | **Description** | **Value** ||
 || `ERROR_ARGUMENT` | Invalid value of parameter {Parameter #1} | Required parameter `id` is missing ||
 || `ERROR_NOT_FOUND` | Could not find entity with id `X` | Folder with the specified `id` was not found ||
-|| `ACCESS_DENIED` | Access denied | Insufficient rights to obtain the link to the folder ||
+|| `ACCESS_DENIED` | Access denied | Insufficient permissions to obtain the link to the folder ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
@@ -197,4 +197,5 @@ HTTP status: **400**
 - [{#T}](./disk-folder-move-to.md)
 - [{#T}](./disk-folder-rename.md)
 - [{#T}](./disk-folder-restore.md)
+- [{#T}](./disk-folder-share-to-user.md)
 - [{#T}](./disk-folder-upload-file.md)

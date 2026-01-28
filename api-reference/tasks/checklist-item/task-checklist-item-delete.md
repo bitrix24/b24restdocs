@@ -4,7 +4,7 @@
 >
 > Who can execute the method:
 > - any user with editing access to the task
-> - creator, assignee, and participants of the task
+> - Creator, Performer, and Participants of the task
 
 The method `task.checklistitem.delete` removes a checklist item from a task.
 
@@ -20,11 +20,11 @@ You can check permissions for deleting an item using the method [task.checklisti
 || **TASKID***
 [`integer`](../../data-types.md) | Task identifier.
 
-The task identifier can be obtained when [creating a new task](../tasks-task-add.md) or using the method [getting the list of tasks](../tasks-task-list.md)  ||
+The task identifier can be obtained when [creating a new task](../tasks-task-add.md) or by using the [getting the list of tasks](../tasks-task-list.md) method ||
 || **ITEMID***
 [`integer`](../../data-types.md) | Checklist item identifier.
 
-The item identifier can be obtained when [adding a new item](./task-checklist-item-add.md) or using the method [getting the list of checklist items](./task-checklist-item-get-list.md) ||
+The item identifier can be obtained when [adding a new item](./task-checklist-item-add.md) or by using the [getting the list of checklist items](./task-checklist-item-get-list.md) method ||
 |#
 
 ## Code Examples
@@ -167,7 +167,7 @@ HTTP Status: **200**
 || **result**
 [`boolean`](../../data-types.md) | Returns `true` if the checklist item was successfully deleted ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the execution time of the request ||
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -181,18 +181,18 @@ HTTP Status: **400**
 }
 ```
 
-{% include notitle [Error response](../../../_includes/error-info.md) %}
+{% include notitle [error handling](../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
-|| **Code** | **Value** | **How to resolve**  ||
+|| **Code** | **Description** | **Value**  ||
 || `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #1 (itemId) expected by method ctaskchecklistitem::delete(), but not given.; 256/TE/WRONG_ARGUMENTS<br> | Required parameter `TASKID` or `ITEMID` not specified ||
-|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #0 (taskId) for method ctaskchecklistitem::delete() expected to be of type "integer", but given something else.; 256/TE/WRONG_ARGUMENTS<br> | Incorrect value type for `TASKID` or `ITEMID` specified ||
+|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #0 (taskId) for method ctaskchecklistitem::delete() expected to be of type "integer", but given something else.; 256/TE/WRONG_ARGUMENTS<br> | Incorrect value type for `TASKID` or `ITEMID` ||
 || `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#8; Deleting item: action not allowed; 8/TE/ACTION_FAILED_TO_BE_PROCESSED<br> | User does not have access to the task or lacks permissions to perform the action ||
 |#
 
-{% include [System errors](../../../_includes/system-errors.md) %}
+{% include [system errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
