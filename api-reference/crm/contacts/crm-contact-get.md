@@ -4,6 +4,12 @@
 >
 > Who can execute the method: any user with "read" access permission for contacts
 
+{% note warning "Method Development Stopped" %}
+
+The method `crm.contact.get` continues to function, but there is a more relevant alternative [crm.item.get](../universal/crm-item-get.md).
+
+{% endnote %}
+
 The method `crm.contact.get` returns a contact by its identifier.
 
 To get a list of companies associated with the contact, use the method [`crm.contact.company.items.get`](company/crm-contact-company-items-get.md).

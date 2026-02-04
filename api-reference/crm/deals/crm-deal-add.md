@@ -4,6 +4,12 @@
 > 
 > Who can execute the method: any user with the "add" access permission for deals
 
+{% note warning "Method Development Stopped" %}
+
+The method `crm.deal.add` continues to function, but there is a more relevant alternative [crm.item.add](../universal/crm-item-add.md).
+
+{% endnote %}
+
 The method `crm.deal.add` creates a new deal.
 
 ## Method Parameters

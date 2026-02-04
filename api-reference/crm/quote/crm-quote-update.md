@@ -25,6 +25,12 @@ Some data may be missing — we will complete it shortly.
 >
 > Who can execute the method: any user
 
+{% note warning "Method Development Stopped" %}
+
+The method `crm.quote.update` continues to function, but there is a more relevant alternative [crm.item.update](../universal/crm-item-update.md).
+
+{% endnote %}
+
 The method `crm.quote.update` updates an existing estimate.
 
 

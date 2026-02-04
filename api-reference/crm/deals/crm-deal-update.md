@@ -4,6 +4,12 @@
 > 
 > Who can execute the method: any user with "edit" access permission for deals
 
+{% note warning "Method Development Stopped" %}
+
+The method `crm.deal.update` continues to function, but there is a more relevant alternative [crm.item.update](../universal/crm-item-update.md).
+
+{% endnote %}
+
 The method `crm.deal.update` updates an existing deal.
 
 ## Method Parameters

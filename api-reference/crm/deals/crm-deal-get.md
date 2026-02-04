@@ -4,6 +4,12 @@
 > 
 > Who can execute the method: any user with "read" access permission for deals
 
+{% note warning "Method Development Stopped" %}
+
+The method `crm.deal.get` continues to function, but there is a more relevant alternative [crm.item.get](../universal/crm-item-get.md).
+
+{% endnote %}
+
 The method `crm.deal.get` returns a deal by its identifier.
 
 ## Method Parameters

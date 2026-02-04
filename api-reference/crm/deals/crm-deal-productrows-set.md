@@ -4,6 +4,12 @@
 >
 > Who can execute the method: user with "modify" access permission for the deal
 
+{% note warning "Method Development Stopped" %}
+
+The method `crm.deal.productrows.set` continues to function, but there is a more relevant alternative [crm.item.productrow.*](../universal/product-rows/index.md).
+
+{% endnote %}
+
 The method `crm.deal.productrows.set` creates or updates the product rows of a deal. To modify only one row, use the methods [crm.item.productrow.*](../universal/product-rows/index.md).
 
 #|

@@ -25,6 +25,12 @@ Some data may be missing here — we will fill it in shortly.
 >
 > Who can execute the method: any user
 
+{% note warning "Method Development Stopped" %}
+
+The method `crm.lead.details.configuration.set` continues to function, but there is a more relevant alternative [crm.item.details.configuration.set](../../universal/item-details-configuration/crm-item-details-configuration-set.md).
+
+{% endnote %}
+
 The method `crm.lead.details.configuration.set` sets the lead card settings. This method records the personal settings of the specified user’s card or the general settings for all users.
 
 {% note warning %}

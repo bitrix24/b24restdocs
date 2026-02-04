@@ -4,6 +4,12 @@
 > 
 > Who can execute the method: Administrator
 
+{% note warning "Method Development Stopped" %}
+
+The method `crm.contact.details.configuration.forceCommonScopeForAll` continues to function, but there is a more relevant alternative [crm.item.details.configuration.forceCommonScopeForAll](../../universal/item-details-configuration/crm-item-details-configuration-forceCommonScopeForAll.md).
+
+{% endnote %}
+
 This method allows you to forcibly set a common contact card for all users.
 
 No parameters.

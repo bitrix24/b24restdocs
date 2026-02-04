@@ -4,6 +4,12 @@
 >
 > Who can execute the method: any user with "edit" access permission for contacts
 
+{% note warning "Method Development Stopped" %}
+
+The method `crm.contact.update` continues to function, but there is a more relevant alternative [crm.item.update](../universal/crm-item-update.md).
+
+{% endnote %}
+
 The method `crm.contact.update` updates an existing contact.
 
 It is recommended to pass the complete set of address fields when updating the address.

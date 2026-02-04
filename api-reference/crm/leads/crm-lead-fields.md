@@ -4,6 +4,12 @@
 >
 > Who can execute the method: any user
 
+{% note warning "Method Development Stopped" %}
+
+The method `crm.lead.fields` continues to function, but there is a more relevant alternative [crm.item.fields](../universal/crm-item-fields.md).
+
+{% endnote %}
+
 The method `crm.lead.fields` returns the description of lead fields, including custom ones. A table with the description of standard fields can be found in the article [Fields of Main CRM Entities](../main-entities-fields.md).
 
 ## Method Parameters

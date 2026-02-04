@@ -2,6 +2,12 @@
 
 ## 2026
 
+### February 4, 2026
+
+- Added methods [main.eventlog.*](./api-reference/rest-v3/main/index.md) for retrieving event log entries
+- Updated the article [Support and Community for Developers](./support.md)
+- Updated the documentation for the methods [disk.folder.uploadfile](./api-reference/disk/folder/disk-folder-upload-file.md), [disk.storage.addfolder](./api-reference/disk/storage/disk-storage-add-folder.md), [disk.storage.getchildren](./api-reference/disk/storage/disk-storage-get-children.md), [disk.storage.getfields](./api-reference/disk/storage/disk-storage-get-fields.md), [disk.storage.gettypes](./api-reference/disk/storage/disk-storage-get-types.md), [disk.storage.get](./api-reference/disk/storage/disk-storage-get.md)
+
 ### January 28, 2026
 
 - Updated the documentation for company methods in CRM [crm.company.*](./api-reference/crm/companies/index.md)

@@ -4,6 +4,12 @@
 >
 > Who can execute the method: any user with "read" access permission for contacts
 
+{% note warning "Method Development Stopped" %}
+
+The method `crm.contact.list` continues to function, but there is a more relevant alternative [crm.item.list](../universal/crm-item-list.md).
+
+{% endnote %}
+
 The method `crm.contact.list` returns a list of contacts based on a filter. It is an implementation of the list method for contacts.
 
 To get a list of companies associated with a contact, use the method [`crm.contact.company.items.get`](company/crm-contact-company-items-get.md)

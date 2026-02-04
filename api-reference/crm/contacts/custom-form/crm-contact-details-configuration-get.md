@@ -6,6 +6,12 @@
 >  - Any user has the right to access their own and shared settings
 >  - Only an administrator has the right to access others' settings
 
+{% note warning "Method Development Stopped" %}
+
+The method `crm.contact.details.configuration.get` continues to function, but there is a more relevant alternative [crm.item.details.configuration.get](../../universal/item-details-configuration/crm-item-details-configuration-get.md).
+
+{% endnote %}
+
 The method retrieves the settings for contact cards: it reads the personal settings of the specified user or the shared settings defined for all users.
 
 ## Method Parameters

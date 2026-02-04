@@ -4,6 +4,12 @@
 > 
 > Who can execute the method: any user with "delete" access permission for deals
 
+{% note warning "Method Development Stopped" %}
+
+The method `crm.deal.delete` continues to function, but there is a more relevant alternative [crm.item.delete](../universal/crm-item-delete.md).
+
+{% endnote %}
+
 The method `crm.deal.delete` removes a deal and all associated objects.
 
 Deleting a deal will result in the removal of all related objects, such as activities, history, Timeline activities, and others.

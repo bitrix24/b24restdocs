@@ -1,10 +1,10 @@
-# Get a List of Files and Folders in the disk.folder.getchildren Folder
+# Get a list of files and folders in the folder disk.folder.getchildren
 
 > Scope: [`disk`](../../scopes/permissions.md)
 >
-> Who can execute the method: a user with "Read" access permission for files and folders
+> Who can execute the method: any user
 
-The method `disk.folder.getchildren` returns a list of files and folders located in a specified folder.
+The method `disk.folder.getchildren` returns a list of files and folders located in the folder.
 
 {% note info "" %}
 
@@ -14,7 +14,7 @@ Only those files and folders for which the user has "Read" access permission are
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Footnote on parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -22,7 +22,7 @@ Only those files and folders for which the user has "Read" access permission are
 || **id***
 [`integer`](../../data-types.md) | Identifier of the folder.
 
-The identifier can be obtained using the method [disk.storage.getchildren](../storage/disk-storage-get-children.md) if the folder is in the root of the storage, and using the method [disk.folder.getchildren](./disk-folder-get-children.md) if the folder is in another folder. ||
+The identifier can be obtained using the method [disk.storage.getchildren](../storage/disk-storage-get-children.md) if the folder is located at the root of the storage, and using the method [disk.folder.getchildren](./disk-folder-get-children.md) if the folder is located in another folder ||
 || **filter**
 [`array`](../../data-types.md) | Array format:
 
@@ -36,7 +36,7 @@ The identifier can be obtained using the method [disk.storage.getchildren](../st
 ```
 
 where:
-- `field_n` — the name of the field to filter by
+- `field_n` — the name of the field by which filtering will be performed
 - `value_n` — the filter value
 
 You can add a prefix to the keys `field_n` to specify the filter operation.
@@ -47,13 +47,13 @@ Possible prefix values:
 - `<` — less than
 - `@` — IN, an array is passed as the value
 - `!@` — NOT IN, an array is passed as the value
-- `%` — LIKE, substring search. The `%` symbol in the filter value should not be included. The search looks for the substring in any position of the string.
-- `=%` — LIKE, substring search. The `%` symbol should be included in the value. Examples:
+- `%` — LIKE, substring search. The `%` symbol in the filter value should not be passed. The search looks for a substring at any position in the string
+- `=%` — LIKE, substring search. The `%` symbol should be passed in the value. Examples:
     - `"mol%"` — searches for values starting with "mol"
     - `"%mol"` — searches for values ending with "mol"
-    - `"%mol%"` — searches for values where "mol" can be in any position
+    - `"%mol%"` — searches for values where "mol" can be at any position
 - `%=` — LIKE (similar to `=%`)
-- `=` — equals, exact match (used by default)
+- `=` — equal, exact match (used by default)
 - `!=` — not equal
 - `!` — not equal
 
@@ -71,16 +71,16 @@ The list of fields available for filtering can be obtained using the method [dis
 ```
 
 where:
-- `field_n` — the name of the field to sort by
+- `field_n` — the name of the field by which sorting will be performed
 - `value_n` — a `string` value equal to:
     - `ASC` — ascending sort
     - `DESC` — descending sort
 
 The list of fields available for sorting can be obtained using the method [disk.folder.getfields](./disk-folder-get-fields.md) ||
 || **start**
-[`integer`](../../data-types.md) | This parameter is used to manage pagination.
+[`integer`](../../data-types.md) | This parameter is used to control pagination.
 
-The page size for results is always static — 50 records.
+The page size of results is always static — 50 records.
 
 To select the second page of results, you need to pass the value `50`. To select the third page of results — the value `100`, and so on.
 
@@ -91,7 +91,7 @@ The formula for calculating the `start` parameter value:
 
 ## Code Examples
 
-{% include [Note on examples](../../../_includes/examples.md) %}
+{% include [Footnote on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -226,7 +226,7 @@ The formula for calculating the `start` parameter value:
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -265,7 +265,7 @@ HTTP Status: **200**
             "CREATED_BY": "1269",
             "UPDATED_BY": "1269",
             "DELETED_BY": "0",
-            "DOWNLOAD_URL": "https://test.bitrix24.com/rest/download.json?auth=d9c467690000071b006e2cf2000004f5000007248f2adc44d050ace99adb3cb9d0f1aa&token=disk%7CaWQ9ODk2NCZfPU9zTE4wUFNMRVBacFJiZXF6Q203dkY4d3V6ZUQyd0Rt%7CImRvd25sb2FkfGRpc2t8YVdROU9EazJOQ1pmUFU5elRFNHdVRk5NUlZCYWNGSmlaWEY2UTIwM2RrWTRkM1Y2WlVReWQwUnR8ZDljNDY3NjkwMDAwMDcxYjAwNmUyY2YyMDAwMDA0ZjUwMDAwMDcyNDhmMmFkYzQ0ZDA1MGFjZTk5YWRiM2NiOWQwZjFhYSI%3D.oSqXbtR%2FjZL8%2BfY%2BUvgqYQdxoHVh7PCvocXUvtS9n4s%3D",
+            "DOWNLOAD_URL": "https://test.bitrix24.com/rest/download.json?auth=d9c467690000071b006e2cf2000004f5000007248f2adc44d050ace99adb3cb9d0f1aa&token=disk%7CaWQ9ODk2NCZfPU9zTE4wUFNMRVBacFJiZXF6Q203dkY4d3V6ZUQyd0Rt%7CImRvd25sb2FkfGRpc2t8YVdROU9EazJOQ1pmUFU5elRFNHdVRk5NUlZCYWFGSmlaWEY2UTIwM2RrWTRkM1Y2WlVReWQwUnR8ZDljNDY3NjkwMDAwMDcxYjAwNmUyY2YyMDAwMDA0ZjUwMDAwMDcyNDhmMmFkYzQ0ZDA1MGFjZTk5YWRiM2NiOWQwZjFhYSI%3D.oSqXbtR%2FjZL8%2BfY%2BUvgqYQdxoHVh7PCvocXUvtS9n4s%3D",
             "DETAIL_URL": "https://test.bitrix24.com/company/personal/user/1269/disk/file/Folder/Image.png"
         },
         {
@@ -308,7 +308,7 @@ HTTP Status: **200**
 || **result**
 [`array`](../../data-types.md) | A list of files and folders with field descriptions.
 
-An empty array means that the user does not have permission to view the files and folders located in the specified folder. ||
+An empty array means that the user does not have permission to view the files and folders located in the specified folder ||
 || **ID**
 [`integer`](../../data-types.md) | Identifier of the file/folder ||
 || **NAME**
@@ -335,7 +335,7 @@ An empty array means that the user does not have permission to view the files an
 || **SIZE**
 [`integer`](../../data-types.md) | Size of the file in bytes ||
 || **CREATE_TIME**
-[`datetime`](../../data-types.md) | Date and time of file/folder creation ||
+[`datetime`](../../data-types.md) | Date and time of creation of the file/folder ||
 || **UPDATE_TIME**
 [`datetime`](../../data-types.md) | Date and time of the last update of the file/folder ||
 || **DELETE_TIME**
@@ -358,7 +358,7 @@ An empty array means that the user does not have permission to view the files an
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -373,7 +373,7 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `ERROR_ARGUMENT` | Invalid value of parameter {Parameter #1} | The required parameter `id` is missing ||
+|| `ERROR_ARGUMENT` | Invalid value of parameter {Parameter #1} | The required parameter `id` is not specified ||
 || `ERROR_NOT_FOUND` | Could not find entity with id `X` | The folder with the specified `id` was not found ||
 |#
 

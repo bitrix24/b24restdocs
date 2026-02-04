@@ -25,6 +25,12 @@ Some data may be missing — we will complete it shortly.
 >
 > Who can execute the method: any user
 
+{% note warning "Method Development Stopped" %}
+
+The method `crm.quote.add` continues to function, but there is a more relevant alternative [crm.item.add](../universal/crm-item-add.md).
+
+{% endnote %}
+
 The method `crm.quote.add` creates a new estimate. If you need to specify any details of the buyer/seller in the estimate (since there may be several for a company), use the method [crm.requisite.link.register](../requisites/links/crm-requisite-link-register.md).
 
 The created estimate must include the seller and buyer companies:

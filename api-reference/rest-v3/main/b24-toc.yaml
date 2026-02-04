@@ -1,0 +1,11 @@
+title: Event Log
+href: index.md
+items:
+  - name: Overview of Methods
+    href: index.md
+  - name: Get Event Log Entries
+    href: main-eventlog-list.md
+  - name: Get Event Log Entry
+    href: main-eventlog-get.md
+  - name: Get New Event Log Entries
+    href: main-eventlog-tail.md

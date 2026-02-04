@@ -4,6 +4,12 @@
 >
 > Who can execute the method: any user
 
+{% note warning "Method Development Stopped" %}
+
+The method `crm.quote.fields` continues to function, but there is a more relevant alternative [crm.item.fields](../universal/crm-item-fields.md).
+
+{% endnote %}
+
 The method `crm.quote.fields` returns the description of the fields of the estimate, including custom fields.
 
 ## Method Parameters

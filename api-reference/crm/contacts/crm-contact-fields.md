@@ -4,6 +4,12 @@
 >
 > Who can execute the method: any user
 
+{% note warning "Method Development Stopped" %}
+
+The method `crm.contact.fields` continues to function, but there is a more relevant alternative [crm.item.fields](../universal/crm-item-fields.md).
+
+{% endnote %}
+
 The method returns a description of contact fields, including custom fields.
 
 No parameters required.

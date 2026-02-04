@@ -25,6 +25,12 @@ Some data may be missing here — we will fill it in shortly.
 >
 > Who can execute the method: any user
 
+{% note warning "Method Development Stopped" %}
+
+The method `crm.quote.productrows.set` continues to function, but there is a more relevant alternative [crm.item.productrow.*](../universal/product-rows/index.md).
+
+{% endnote %}
+
 The method `crm.quote.productrows.set` sets (creates or updates) the product items of the quote.
 
 #|

@@ -24,6 +24,12 @@ Some data may be missing — we will complete it shortly.
 >
 > Who can execute the method: any user
 
+{% note warning "Method Development Stopped" %}
+
+The method `crm.quote.productrows.get` continues to function, but there is a more relevant alternative [crm.item.productrow.*](../universal/product-rows/index.md).
+
+{% endnote %}
+
 The method `crm.quote.productrows.get` returns the product rows of the quote.
 
 #|

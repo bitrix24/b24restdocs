@@ -4,6 +4,12 @@
 >
 > Who can execute the method: user with read access permission for leads
 
+{% note warning "Method Development Stopped" %}
+
+The method `crm.lead.list` continues to function, but there is a more relevant alternative [crm.item.list](../universal/crm-item-list.md).
+
+{% endnote %}
+
 The method `crm.lead.list` returns a list of leads based on the filter. It is an implementation of the list method for leads.
 
 ## Method Parameters

@@ -4,6 +4,12 @@
 >
 > Who can execute the method: a user with read access permission for the requested lead
 
+{% note warning "Method Development Stopped" %}
+
+The method `crm.lead.get` continues to function, but there is a more relevant alternative [crm.item.get](../universal/crm-item-get.md).
+
+{% endnote %}
+
 The method `crm.lead.get` returns a lead by its identifier.
 
 ## Method Parameters

@@ -4,6 +4,12 @@
 > 
 > Who can execute the method: any user
 
+{% note warning "Method Development Stopped" %}
+
+The method `crm.deal.fields` continues to function, but there is a more relevant alternative [crm.item.fields](../universal/crm-item-fields.md).
+
+{% endnote %}
+
 The method `crm.deal.fields` returns a description of deal fields, including custom ones. A table with descriptions of standard fields can be found in the article [Fields of Main CRM Entities](../main-entities-fields.md).
 
 ## Method Parameters

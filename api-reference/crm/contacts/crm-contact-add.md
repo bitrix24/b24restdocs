@@ -4,6 +4,12 @@
 >
 > Who can execute the method: any user with "add|import" access permission for contacts
 
+{% note warning "Method Development Stopped" %}
+
+The method `crm.contact.add` continues to function, but there is a more relevant alternative [crm.item.add](../universal/crm-item-add.md).
+
+{% endnote %}
+
 The method `crm.contact.add` creates a new contact.
 
 ## Method Parameters

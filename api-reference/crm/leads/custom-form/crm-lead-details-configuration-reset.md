@@ -25,6 +25,12 @@ Some data may be missing here — we will complete it shortly.
 >
 > Who can execute the method: any user
 
+{% note warning "Method Development Stopped" %}
+
+The method `crm.lead.details.configuration.reset` continues to function, but there is a more relevant alternative [crm.item.details.configuration.reset](../../universal/item-details-configuration/crm-item-details-configuration-reset.md).
+
+{% endnote %}
+
 The method `crm.lead.details.configuration.reset` resets the settings of lead cards. It removes the personal settings of the specified user’s card or the general settings defined for all users.
 
 {% note warning %}

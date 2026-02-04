@@ -4,6 +4,12 @@
 >
 > Who can execute the method: any user with permission to delete leads
 
+{% note warning "Method Development Stopped" %}
+
+The method `crm.lead.delete` continues to function, but there is a more relevant alternative [crm.item.delete](../universal/crm-item-delete.md).
+
+{% endnote %}
+
 The method `crm.lead.delete` removes a lead and all associated objects: activities, history, timeline records, and others.
 
 Objects are deleted if they are not linked to other objects or entities. If the objects are linked to other entities, only the link to the deleted lead will be removed.

@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it shortly.
+Some data may be missing here — we will complete it shortly.
 
 {% endnote %}
 
@@ -10,10 +10,10 @@ Some data may be missing — we will complete it shortly.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- edits needed for writing standards
+- edits are needed for standard writing
 - parameter types are not specified
 - parameter requirements are not indicated
-- parameter tables are generated based on examples. What is [39] in the example??? BOT_ID? And how should this be recorded in the table?
+- parameter tables are generated based on an example. What is [39] in the example??? BOT_ID? And how to record this in the table?
 
 {% endnote %}
 
@@ -23,22 +23,22 @@ Some data may be missing — we will complete it shortly.
 >
 > Who can subscribe: any user
 
-The `ONIMBOTMESSAGEDELETE` event occurs when a message is deleted.
+The `ONIMBOTMESSAGEDELETE` event occurs when a message is deleted. This event only works in the context of a chatbot application.
 
 {% note warning %}
 
-The fields described below are the contents of the [data] field in the event. The authorization data in the [auth] key contains the data of the user who initiated the event; to obtain the bot's authorization data, you need to use [data][BOT][__BOT_CODE__].
+The fields described below are the contents of the [data] field in the event. The authorization data in the [auth] key contains the data of the user who initiated the event. To obtain the bot's authorization data, you need to use [data][BOT][__BOT_CODE__].
 
 {% endnote %}
 
 #|
 || **Field** | **Description** | **Revision** ||
 || **BOT** 
-[`unknown`](../../../data-types.md) | Array of chat-bot codes to which the message is intended | ||
+[`unknown`](../../../data-types.md) | Array of chatbot codes to which the message is intended | ||
 || **PARAMS** 
 [`unknown`](../../../data-types.md) | Array of message data | ||
 || **USER** 
-[`unknown`](../../../data-types.md) | Array of message author data, may be empty if ID = 0 | ||
+[`unknown`](../../../data-types.md) | Array of the message author's data, may be empty if ID = 0 | ||
 |#
 
 ## BOT/[39]???
@@ -74,9 +74,9 @@ The fields described below are the contents of the [data] field in the event. Th
 || **CHAT_TYPE** 
 [`unknown`](../../../data-types.md) | Type of message and chat, can be P (one-on-one chat), C (limited number of participants), O (public chat), S (chat-bot with elevated privileges - supervisor) | ||
 || **CHAT_ENTITY_TYPE** 
-[`unknown`](../../../data-types.md) | for chat identification (this data field can be set at the time of creation), for open line chats this field will indicate LINES | ||
+[`unknown`](../../../data-types.md) | for chat identification (this field can be set at the time of creation), for open line chats this field will indicate LINES | ||
 || **CHAT_ENTITY_ID** 
-[`unknown`](../../../data-types.md) | for chat identification (this data field can be set at the time of creation) | ||
+[`unknown`](../../../data-types.md) | for chat identification (this field can be set at the time of creation) | ||
 || **MESSAGE_ID** 
 [`unknown`](../../../data-types.md) | Message identifier | ||
 || **MESSAGE** 
@@ -106,16 +106,18 @@ The fields described below are the contents of the [data] field in the event. Th
 || **GENDER** 
 [`unknown`](../../../data-types.md) | Gender, can be either M (male) or F (female) | ||
 || **IS_BOT** 
-[`unknown`](../../../data-types.md) | Is this user a bot (Y), otherwise - N. | ||
+[`unknown`](../../../data-types.md) | This user is a bot (Y), otherwise - N. | ||
 || **IS_CONNECTOR** 
-[`unknown`](../../../data-types.md) | Is this user a connector (participant of the open line chat, client), otherwise - N. | ||
+[`unknown`](../../../data-types.md) | This user is a connector (participant of the open line chat, client), otherwise - N. | ||
 || **IS_NETWORK** 
-[`unknown`](../../../data-types.md) | Is this user a network user (can be a participant of the open line chat, client, or just an external user), otherwise - N. | ||
+[`unknown`](../../../data-types.md) | This user is a network user (can be a participant of the open line chat, client, or just an external user), otherwise - N. | ||
 || **IS_EXTRANET** 
-[`unknown`](../../../data-types.md) | Is this user an extranet user (all users who are not intranet), otherwise - N. | ||
+[`unknown`](../../../data-types.md) | This user is an extranet user (all users who are not intranet), otherwise - N. | ||
 |#
 
 ## Examples
+
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -146,9 +148,9 @@ The fields described below are the contents of the [data] field in the event. Th
     )
     [USER] => Array (
         [ID] => 1
-        [NAME] => John Smith
-        [FIRST_NAME] => John
-        [LAST_NAME] => Smith
+        [NAME] => Eugene Shelenkov
+        [FIRST_NAME] => Eugene
+        [LAST_NAME] => Shelenkov
         [WORK_POSITION] =>
         [GENDER] => M
         [IS_BOT] => 'Y'
@@ -160,4 +162,10 @@ The fields described below are the contents of the [data] field in the event. Th
 
 {% endlist %}
 
-{% include [Footnote on examples](../../../../_includes/examples.md) %}
+{% note alert "" %}
+
+Authorization tokens are not always passed to the event handler. If the hit that initiated the event could not be linked to a specific Bitrix24 user, tokens are not passed. Always check the contents of the auth key in the code.
+
+It is recommended to store tokens obtained earlier during the application installation. Use them when working with the application interface in the form of embeds, widgets, and so on.
+
+{% endnote %}

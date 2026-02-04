@@ -4,6 +4,12 @@
 > 
 > Who can execute the method: any user with "read" access permission for deals
 
+{% note warning "Method Development Stopped" %}
+
+The method `crm.deal.list` continues to function, but there is a more relevant alternative [crm.item.list](../universal/crm-item-list.md).
+
+{% endnote %}
+
 The method `crm.deal.list` returns a list of deals based on a filter. It is an implementation of the list method for deals.
 
 ## Method Parameters

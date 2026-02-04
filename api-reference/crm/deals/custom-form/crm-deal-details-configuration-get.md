@@ -25,6 +25,12 @@ Some data may be missing here — we will fill it in shortly.
 >
 > Who can execute the method: any user
 
+{% note warning "Method Development Stopped" %}
+
+The method `crm.deal.details.configuration.get` continues to function, but there is a more relevant alternative [crm.item.details.configuration.get](../../universal/item-details-configuration/crm-item-details-configuration-get.md).
+
+{% endnote %}
+
 The method `crm.deal.details.configuration.get` retrieves the settings for deal cards. It reads the personal settings of the specified user or the general settings defined for all users.
 
 {% note warning %}

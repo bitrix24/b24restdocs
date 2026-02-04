@@ -24,6 +24,12 @@ Some data may be missing here — we will fill it in shortly.
 >
 > Who can execute the method: any user
 
+{% note warning "Method Development Stopped" %}
+
+The method `crm.deal.details.configuration.forceCommonScopeForAll` continues to function, but there is a more relevant alternative [crm.item.details.configuration.forceCommonScopeForAll](../../universal/item-details-configuration/crm-item-details-configuration-forceCommonScopeForAll.md).
+
+{% endnote %}
+
 The method `crm.deal.details.configuration.forceCommonScopeForAll` forcibly sets a common deal card for all users.
 
 {% note warning %}

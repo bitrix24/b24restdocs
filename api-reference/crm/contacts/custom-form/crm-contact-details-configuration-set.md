@@ -6,6 +6,12 @@
 >  - Any user has the right to retrieve their own and common settings
 >  - Only an administrator has the right to retrieve others' settings
 
+{% note warning "Method Development Stopped" %}
+
+The method `crm.contact.details.configuration.set` continues to function, but there is a more relevant alternative [crm.item.details.configuration.set](../../universal/item-details-configuration/crm-item-details-configuration-set.md).
+
+{% endnote %}
+
 The method sets the contact card settings: it writes personal settings for the specified user or common settings for all users.
 
 ## Method Parameters

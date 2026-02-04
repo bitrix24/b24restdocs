@@ -4,6 +4,12 @@
 >
 > Who can execute the method: any user with permission to create leads
 
+{% note warning "Method Development Stopped" %}
+
+The method `crm.lead.add` continues to function, but there is a more relevant alternative [crm.item.add](../universal/crm-item-add.md).
+
+{% endnote %}
+
 The method `crm.lead.add` creates a new lead.
 
 ## Method Parameters

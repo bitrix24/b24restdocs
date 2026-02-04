@@ -10,10 +10,10 @@ Some data may be missing here — we will fill it in shortly.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- edits are needed to meet writing standards
+- edits needed for writing standards
 - parameter types are not specified
 - parameter requirements are not indicated
-- parameter tables are generated based on examples. What is [39] in the example??? BOT_ID? And how should this be recorded in the table?
+- parameter tables are generated based on examples. What is [39] in the example??? BOT_ID? And how to record this in the table?
 
 {% endnote %}
 
@@ -23,18 +23,18 @@ Some data may be missing here — we will fill it in shortly.
 >
 > Who can subscribe: any user
 
-The `ONIMBOTMESSAGEADD` event occurs when a message is sent.
+The `ONIMBOTMESSAGEADD` event occurs when a message is sent. This event works only in the context of a chatbot application.
 
 {% note warning %}
 
-The fields described below are the contents of the [data] field in the event. The authorization data in the [auth] key contains the data of the user who initiated the event; to obtain the bot's authorization data, you need to use [data][BOT][__BOT_CODE__].
+The fields described below are the contents of the [data] field in the event. The authorization data in the [auth] key contains the data of the user who initiated the event. To obtain the bot's authorization data, you need to use [data][BOT][__BOT_CODE__].
 
 {% endnote %}
 
 #|
 || **Field** | **Description** | **Revision** ||
 || **BOT** 
-[`unknown`](../../../data-types.md) | Array of chat-bot codes to which the message is intended | ||
+[`unknown`](../../../data-types.md) | Array of chatbot codes to which the message is intended | ||
 || **PARAMS** 
 [`unknown`](../../../data-types.md) | Array of message data | ||
 || **USER** 
@@ -82,15 +82,15 @@ The fields described below are the contents of the [data] field in the event. Th
 || **MESSAGE** 
 [`unknown`](../../../data-types.md) | Message | ||
 || **MESSAGE_ORIGINAL** 
-[`unknown`](../../../data-types.md) | Original message with BB-code of the chat-bot (parameter available only in group chats) | ||
+[`unknown`](../../../data-types.md) | Original message with BB-code of the chatbot (parameter available only in group chats) | ||
 || **FROM_USER_ID** 
 [`unknown`](../../../data-types.md) | Identifier of the user who sent the message | ||
 || **TO_USER_ID** 
-[`unknown`](../../../data-types.md) | Identifier of the bot or user: in a "one-on-one" dialog this will be the identifier of the bot, and in a group chat - the identifier of the user to whom the message is directed. If 0 is specified, it means all participants in the chat | ||
+[`unknown`](../../../data-types.md) | Identifier of the bot or user: in a "one-on-one" dialog this will be the bot's identifier, and in a group chat - the identifier of the user to whom the message is directed. If 0 is specified, it means all participants in the chat | ||
 || **TO_CHAT_ID** 
 [`unknown`](../../../data-types.md) | Identifier of the chat (parameter available only in group chats) | ||
 || **LANGUAGE** 
-[`unknown`](../../../data-types.md) | Identifier of the default portal language | ||
+[`unknown`](../../../data-types.md) | Identifier of the default account language | ||
 |#
 
 ## USER
@@ -114,12 +114,14 @@ The fields described below are the contents of the [data] field in the event. Th
 || **IS_CONNECTOR** 
 [`unknown`](../../../data-types.md) | This user is a connector (participant of the open line chat, client), otherwise - N. | ||
 || **IS_NETWORK** 
-[`unknown`](../../../data-types.md) | This user is a network user (can be a participant of the open line chat, client, or just an external user), otherwise - N. | ||
+[`unknown`](../../../data-types.md) | This user is a network user (may be a participant of the open line chat, client, or just an external user), otherwise - N. | ||
 || **IS_EXTRANET** 
 [`unknown`](../../../data-types.md) | This user is an extranet user (all users who are not intranet), otherwise - N. | ||
 |#
 
 ## Examples
+
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -166,4 +168,10 @@ The fields described below are the contents of the [data] field in the event. Th
 
 {% endlist %}
 
-{% include [Footnote on examples](../../../../_includes/examples.md) %}
+{% note alert "" %}
+
+Authorization tokens are not always passed to the event handler. If the hit that initiated the event could not be linked to a specific Bitrix24 user, the tokens are not passed. Always check the contents of the auth key in the code.
+
+It is recommended to store tokens obtained earlier during the application installation. Use them when working with the application interface in the form of embeds, widgets, and so on.
+
+{% endnote %}

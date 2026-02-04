@@ -4,6 +4,12 @@
 >
 > Who can execute the method: any user with "delete" access permission for contacts
 
+{% note warning "Method Development Stopped" %}
+
+The method `crm.contact.delete` continues to function, but there is a more relevant alternative [crm.item.delete](../universal/crm-item-delete.md).
+
+{% endnote %}
+
 The method `crm.contact.delete` removes a contact and all associated objects.
 
 ## Method Parameters

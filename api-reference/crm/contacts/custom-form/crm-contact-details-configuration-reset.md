@@ -6,6 +6,12 @@
 >  - Any user has the right to retrieve their own and common settings
 >  - Only an administrator has the right to retrieve others' settings
 
+{% note warning "Method Development Stopped" %}
+
+The method `crm.contact.details.configuration.reset` continues to function, but there is a more relevant alternative [crm.item.details.configuration.reset](../../universal/item-details-configuration/crm-item-details-configuration-reset.md).
+
+{% endnote %}
+
 This method resets the contact card settings: it removes the personal settings of the specified user or the common settings defined for all users.
 
 ## Method Parameters

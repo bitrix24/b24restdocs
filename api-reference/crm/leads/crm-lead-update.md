@@ -4,6 +4,12 @@
 >
 > Who can execute the method: a user with permissions to edit CRM leads
 
+{% note warning "Method Development Stopped" %}
+
+The method `crm.lead.update` continues to function, but there is a more relevant alternative [crm.item.update](../universal/crm-item-update.md).
+
+{% endnote %}
+
 The method `crm.lead.update` updates an existing lead.
 
 ## Method Parameters

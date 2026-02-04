@@ -24,6 +24,12 @@ Some data may be missing — we will fill it in shortly.
 >
 > Who can execute the method: any user
 
+{% note warning "Method Development Stopped" %}
+
+The method `crm.quote.get` continues to function, but there is a more relevant alternative [crm.item.get](../universal/crm-item-get.md).
+
+{% endnote %}
+
 The method `crm.quote.get` returns an estimate by its ID.
 
 #|

@@ -25,6 +25,12 @@ Some data may be missing — we will fill it in shortly.
 >
 > Who can execute the method: any user
 
+{% note warning "Method Development Stopped" %}
+
+The method `crm.quote.list` continues to function, but there is a more relevant alternative [crm.item.list](../universal/crm-item-list.md).
+
+{% endnote %}
+
 The method `crm.quote.list` returns a list of estimates by filter. It is an implementation of the list method for estimates.
 
 See the description of [list methods](../../../settings/how-to-call-rest-api/list-methods-pecularities.md).

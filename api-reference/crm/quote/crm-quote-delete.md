@@ -24,6 +24,12 @@ Some data may be missing here — we will complete it shortly.
 >
 > Who can perform the method: any user
 
+{% note warning "Method Development Stopped" %}
+
+The method `crm.quote.delete` continues to function, but there is a more relevant alternative [crm.item.delete](../universal/crm-item-delete.md).
+
+{% endnote %}
+
 The method `crm.quote.delete` deletes an [estimate](./crm-quote-add.md) and all related objects.
 
 #|
