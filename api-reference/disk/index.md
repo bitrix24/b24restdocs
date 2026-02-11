@@ -144,11 +144,11 @@ You can find out the version of a file using the method [disk.version.get](./ver
 || **Method** | **Description** ||
 || [disk.storage.getfields](storage/disk-storage-get-fields.md) | Returns the description of storage fields ||
 || [disk.storage.get](storage/disk-storage-get.md) | Returns the storage by identifier ||
-|| [disk.storage.rename](storage/disk-storage-rename.md) | Renames the storage. Renaming is only allowed for application storage (see [disk.storage.getforapp](storage/disk-storage-get-for-app.md)) ||
+|| [disk.storage.rename](storage/disk-storage-rename.md) | Renames the application storage ||
 || [disk.storage.getlist](storage/disk-storage-get-list.md) | Returns a list of available storages ||
 || [disk.storage.gettypes](storage/disk-storage-get-types.md) | Returns a list of storage types ||
 || [disk.storage.addfolder](storage/disk-storage-add-folder.md) | Creates a folder in the root of the storage ||
 || [disk.storage.getchildren](storage/disk-storage-get-children.md) | Returns a list of files and folders that are directly in the root of the storage ||
 || [disk.storage.uploadfile](storage/disk-storage-upload-file.md) | Uploads a new file to the root of the storage ||
-|| [disk.storage.getforapp](storage/disk-storage-get-for-app.md) | Returns the description of the storage that the application can work with to store its data (files and folders) ||
+|| [disk.storage.getforapp](storage/disk-storage-get-for-app.md) | Returns the application storage description ||
 |#

@@ -73,7 +73,7 @@ To permanently delete a file without the possibility of recovery, you need to us
 || [disk.file.rename](./disk-file-rename.md) | Renames the file ||
 || [disk.file.copyto](./disk-file-copy-to.md) | Copies the file to the specified folder ||
 || [disk.file.moveto](./disk-file-move-to.md) | Moves the file to the specified folder ||
-|| [disk.file.delete](./disk-file-delete.md) | Destroys the file forever ||
+|| [disk.file.delete](./disk-file-delete.md) | Deletes the file forever ||
 || [disk.file.markdeleted](./disk-file-mark-deleted.md) | Moves the file to the trash ||
 || [disk.file.restore](./disk-file-restore.md) | Restores the file from the trash ||
 || [disk.file.uploadversion](./disk-file-upload-version.md) | Uploads a new version of the file ||

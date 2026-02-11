@@ -329,7 +329,7 @@ An empty array means that the user does not have permission to view the files an
 - `3` — in the trash
 - `4` — deleted along with the parent folder ||
 || **GLOBAL_CONTENT_VERSION**
-[`string`](../../data-types.md) | Incremental version counter of the file ||
+[`integer`](../../data-types.md) | Incremental version counter of the file ||
 || **FILE_ID**
 [`integer`](../../data-types.md) | Internal value of the file identifier ||
 || **SIZE**

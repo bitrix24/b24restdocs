@@ -1,4 +1,4 @@
-# Deleting a Chat Bot Message im.message.delete
+# Delete message im.message.delete
 
 {% note warning "We are still updating this page" %}
 

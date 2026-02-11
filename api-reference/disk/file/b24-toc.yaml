@@ -11,7 +11,7 @@ items:
     href: disk-file-get-external-link.md
   - name: Get File Fields
     href: disk-file-get-fields.md
-  - name: List File Versions
+  - name: Get a List of File Versions
     href: disk-file-get-versions.md
   - name: Get File Parameters
     href: disk-file-get.md

@@ -2,6 +2,12 @@
 
 ## 2026
 
+### February 11, 2026
+
+- Updated the documentation for the methods [disk.file.copyto](./api-reference/disk/file/disk-file-copy-to.md), [disk.file.delete](./api-reference/disk/file/disk-file-delete.md), [disk.file.getExternalLink](./api-reference/disk/file/disk-file-get-external-link.md), [disk.file.getfields](./api-reference/disk/file/disk-file-get-fields.md)
+- Updated the documentation for the methods [disk.storage.getforapp](./api-reference/disk/storage/disk-storage-get-for-app.md), [disk.storage.getlist](./api-reference/disk/storage/disk-storage-get-list.md), [disk.storage.rename](./api-reference/disk/storage/disk-storage-rename.md), [disk.storage.uploadfile](./api-reference/disk/storage/disk-storage-upload-file.md)
+- Updated the main page of the [Storage](./api-reference/disk/storage/index.md) section. Added introductory information and an overview of the methods
+
 ### February 4, 2026
 
 - Added methods [main.eventlog.*](./api-reference/rest-v3/main/index.md) for retrieving event log entries
@@ -11,10 +17,10 @@
 ### January 28, 2026
 
 - Updated the documentation for company methods in CRM [crm.company.*](./api-reference/crm/companies/index.md)
-- Updated the documentation for methods used to manage company cards [crm.company.details.configuration.*](./api-reference/crm/companies/custom-form/index.md)
+- Updated the documentation for the methods used to manage company cards [crm.company.details.configuration.*](./api-reference/crm/companies/custom-form/index.md)
 - Added a new article [Setup Master for REST-only applications](./settings/app-installation/mass-market-apps/rest-only-installation-master.md)
-- Updated the documentation for methods [task.checklistitem.isactionallowed](./api-reference/tasks/checklist-item/task-checklist-item-is-action-allowed.md), [task.checklistitem.getmanifest](./api-reference/tasks/checklist-item/task-checklist-item-get-manifest.md) in Task Checklists
-- Updated the documentation for methods [disk.folder.get](./api-reference/disk/folder/disk-folder-get.md), [disk.folder.markdeleted](./api-reference/disk/folder/disk-folder-mark-deleted.md), [disk.folder.moveto](./api-reference/disk/folder/disk-folder-move-to.md), [disk.folder.rename](./api-reference/disk/folder/disk-folder-rename.md), [disk.folder.restore](./api-reference/disk/folder/disk-folder-restore.md)
+- Updated the documentation for the methods [task.checklistitem.isactionallowed](./api-reference/tasks/checklist-item/task-checklist-item-is-action-allowed.md), [task.checklistitem.getmanifest](./api-reference/tasks/checklist-item/task-checklist-item-get-manifest.md) in Task Checklists
+- Updated the documentation for the methods [disk.folder.get](./api-reference/disk/folder/disk-folder-get.md), [disk.folder.markdeleted](./api-reference/disk/folder/disk-folder-mark-deleted.md), [disk.folder.moveto](./api-reference/disk/folder/disk-folder-move-to.md), [disk.folder.rename](./api-reference/disk/folder/disk-folder-rename.md), [disk.folder.restore](./api-reference/disk/folder/disk-folder-restore.md)
 - Added a new method [disk.folder.sharetouser](./api-reference/disk/folder/disk-folder-share-to-user.md)
 - Updated the main page of the [Attached File](./api-reference/disk/attached-object/index.md) section. Added introductory information and an overview of methods
 - Updated the article [How to make your first API request](./first-steps/first-rest-api-call.md)

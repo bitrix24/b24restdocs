@@ -176,7 +176,7 @@ HTTP status: **200**
 || **NAME**
 [`string`](../../data-types.md) | Name of the file at the time the version was created ||
 || **GLOBAL_CONTENT_VERSION**
-[`string`](../../data-types.md) | Incremental version counter of the file ||
+[`integer`](../../data-types.md) | Incremental version counter of the file ||
 || **CREATE_TIME**
 [`string`](../../data-types.md) | Creation time of the version ||
 || **CREATED_BY**

@@ -197,8 +197,8 @@ Possible values:
 - `user` — user storage
 - `common` — common documents storage
 - `group` — group storage  ||
-|| **ENTITY_ID**
-[`string`](../../data-types.md) | Identifier of the object ||
+|| **ENTITY_ID**  
+[`string`](../../data-types.md) | Identifier of the object associated with the storage ||
 || **ROOT_OBJECT_ID**
 [`integer`](../../data-types.md) | Identifier of the root folder of the storage ||
 || **time**

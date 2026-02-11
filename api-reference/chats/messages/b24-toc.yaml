@@ -27,7 +27,7 @@ items:
     href: im-dialog-unread.md
   - name: Send "Someone is writing to you..." Status
     href: im-dialog-writing.md
-  - name: Delete Chatbot Message
+  - name: Delete Message
     href: im-message-delete.md
   - name: Use Bot Command
     href: im-message-command.md

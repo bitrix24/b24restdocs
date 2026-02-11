@@ -90,7 +90,9 @@ The field for sorting can take the following values:
 - `AUDITOR` — auditor identifier  
 - `DEPENDS_ON` — identifier of the previous task  
 - `ONLY_ROOT_TASKS` — only root tasks and subtasks without access to the parent  
-- `STAGE_ID` — stage  
+- `STAGE_ID` — stage
+- `SPRINT_ID` — sprint identifier  
+- `BACKLOG_ID` — backlog identifier    
 - `UF_CRM_TASK` — binding to CRM entities
 
 To get tasks from Favorites, add the filter parameter `$filter[::SUBFILTER-PARAMS][FAVORITE]=Y`.
