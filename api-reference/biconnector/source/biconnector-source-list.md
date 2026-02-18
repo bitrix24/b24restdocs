@@ -106,7 +106,7 @@ Display only the necessary fields:
 - JS
 
     ```js
-    // callListMethod is recommended when you need to get the entire set of list data and the volume of records is relatively small (up to about 1000 items). The method loads all data at once, which can lead to high memory load when working with large volumes.
+    // callListMethod: Retrieves all data at once. Use only for small selections (< 1000 items) due to high memory usage.
     
     const selectFields = [
         "id",
@@ -137,7 +137,7 @@ Display only the necessary fields:
         console.error('Request failed', error);
     }
     
-    // fetchListMethod is preferred when working with large datasets. The method implements iterative selection using a generator, allowing data to be processed in parts and efficiently using memory.
+    // fetchListMethod: Retrieves data in parts using an iterator. Use it for large data volumes to optimize memory usage.
     
     const selectFields = [
         "id",
@@ -165,7 +165,7 @@ Display only the necessary fields:
         console.error('Request failed', error);
     }
     
-    // callMethod provides manual control over the pagination process through the start parameter. Suitable for scenarios where precise control over request batches is required. However, with large volumes of data, it may be less efficient compared to fetchListMethod.
+    // callMethod: Manually controls pagination through the start parameter. Use it for precise control of request batches. For large datasets, it is less efficient than fetchListMethod.
     
     const selectFields = [
         "id",
@@ -372,3 +372,4 @@ HTTP status: **200**
 - [{#T}](./biconnector-source-add.md)
 - [{#T}](./biconnector-source-delete.md)
 - [{#T}](./biconnector-source-fields.md)
+

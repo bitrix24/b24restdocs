@@ -273,7 +273,7 @@ Before updating the field, get the current file IDs to save them. You can use th
 - JS
 
     ```js
-    // callListMethod is recommended when you need to get the entire set of list data and the volume of records is relatively small (up to about 1000 items). The method loads all data at once, which can lead to high memory load when working with large volumes.
+    // callListMethod: Retrieves all data at once. Use only for small selections (< 1000 items) due to high memory usage.
     
     try {
       const response = await $b24.callListMethod(
@@ -295,7 +295,7 @@ Before updating the field, get the current file IDs to save them. You can use th
       console.error('Request failed', error)
     }
     
-    // fetchListMethod is preferable when working with large datasets. The method implements iterative selection using a generator, allowing data to be processed in parts and efficiently using memory.
+    // fetchListMethod: Retrieves data in parts using an iterator. Use it for large data volumes to optimize memory usage.
     
     try {
       const generator = $b24.fetchListMethod('crm.item.list', { entityTypeId: 177, select: ["ufCrm_7_1739432938"], filter: { "id": "29" } }, 'ID')
@@ -306,7 +306,7 @@ Before updating the field, get the current file IDs to save them. You can use th
       console.error('Request failed', error)
     }
     
-    // callMethod provides manual control over the pagination process through the start parameter. Suitable for scenarios where precise control over request batches is required. However, with large volumes of data, it may be less efficient compared to fetchListMethod.
+    // callMethod: Manually controls pagination through the start parameter. Use it for precise control of request batches. For large datasets, it is less efficient than fetchListMethod.
     
     try {
       const response = await $b24.callMethod('crm.item.list', { entityTypeId: 177, select: ["ufCrm_7_1739432938"], filter: { "id": "29" } }, 0)
@@ -1562,3 +1562,4 @@ To delete a file, pass the field to the [catalog.product.update](../catalog/prod
     ```
 
 {% endlist %}
+

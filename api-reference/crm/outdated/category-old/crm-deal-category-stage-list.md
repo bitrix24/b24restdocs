@@ -50,7 +50,7 @@ The method returns a list of deal stages for the category by its identifier. It 
 - JS
 
     ```js
-    // callListMethod is recommended when you need to retrieve the entire set of list data and the volume of records is relatively small (up to about 1000 items). The method loads all data at once, which can lead to high memory load when working with large volumes.
+    // callListMethod: Retrieves all data at once. Use only for small selections (< 1000 items) due to high memory usage.
     
     var id = prompt("Enter ID");
     try {
@@ -65,7 +65,7 @@ The method returns a list of deal stages for the category by its identifier. It 
       console.error('Request failed', error)
     }
     
-    // fetchListMethod is preferable when working with large datasets. The method implements iterative fetching using a generator, allowing data to be processed in parts and efficiently using memory.
+    // fetchListMethod: Retrieves data in parts using an iterator. Use it for large data volumes to optimize memory usage.
     
     var id = prompt("Enter ID");
     try {
@@ -77,7 +77,7 @@ The method returns a list of deal stages for the category by its identifier. It 
       console.error('Request failed', error)
     }
     
-    // callMethod provides manual control over the pagination process through the start parameter. It is suitable for scenarios where precise control over request batches is required. However, with large volumes of data, it may be less efficient compared to fetchListMethod.
+    // callMethod: Manually controls pagination through the start parameter. Use it for precise control of request batches. For large datasets, it is less efficient than fetchListMethod.
     
     var id = prompt("Enter ID");
     try {
@@ -162,3 +162,4 @@ The method returns a list of deal stages for the category by its identifier. It 
 [*quotes]: Empty quotes or not passing the parameter at all
 
 [*id]: For example, specifying id = 10, but there is no category with id=10 in the system.
+

@@ -45,7 +45,7 @@ The method `task.item.userfield.getlist` returns a list of properties.
 - JS
 
     ```js
-    // callListMethod is recommended when you need to retrieve the entire set of list data and the volume of records is relatively small (up to about 1000 items). The method loads all data at once, which can lead to high memory load when working with large volumes.
+    // callListMethod: Retrieves all data at once. Use only for small selections (< 1000 items) due to high memory usage.
     
     try {
       const response = await $b24.callListMethod(
@@ -62,7 +62,7 @@ The method `task.item.userfield.getlist` returns a list of properties.
       console.error('Request failed', error)
     }
     
-    // fetchListMethod is preferable when working with large datasets. The method implements iterative selection using a generator, allowing data to be processed in chunks and efficiently using memory.
+    // fetchListMethod: Retrieves data in parts using an iterator. Use it for large data volumes to optimize memory usage.
     
     try {
       const generator = $b24.fetchListMethod('task.item.userfield.getlist', { order: { "ID": "ASC" }, filter: { "EDIT_IN_LIST": "Y" } }, 'ID')
@@ -73,7 +73,7 @@ The method `task.item.userfield.getlist` returns a list of properties.
       console.error('Request failed', error)
     }
     
-    // callMethod provides manual control over the process of paginated data retrieval through the start parameter. Suitable for scenarios where precise control over request batches is required. However, it may be less efficient compared to fetchListMethod when dealing with large volumes of data.
+    // callMethod: Manually controls pagination through the start parameter. Use it for precise control of request batches. For large datasets, it is less efficient than fetchListMethod.
     
     try {
       const response = await $b24.callMethod('task.item.userfield.getlist', { order: { "ID": "ASC" }, filter: { "EDIT_IN_LIST": "Y" } }, 0)
@@ -152,3 +152,4 @@ The method `task.item.userfield.getlist` returns a list of properties.
 {% endlist %}
 
 {% include [Footnote on examples](../../../_includes/examples.md) %}
+
