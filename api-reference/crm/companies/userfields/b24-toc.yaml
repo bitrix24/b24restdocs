@@ -1,18 +1,18 @@
 title: Custom Company Fields
 href: index.md
 items:
-  - name: Overview of Methods
+  - name: Overview of Methods 
     href: index.md
   - name: Create a New Field
     href: crm-company-userfield-add.md
-  - name: Delete a Field
-    href: crm-company-userfield-delete.md
+  - name: Update an Existing Field
+    href: crm-company-userfield-update.md
   - name: Get a Field by ID
     href: crm-company-userfield-get.md
   - name: Get a List of Fields by Filter
     href: crm-company-userfield-list.md
-  - name: Update an Existing Field
-    href: crm-company-userfield-update.md
+  - name: Delete a Field
+    href: crm-company-userfield-delete.md    
   - name: Events
     include:
       path: events/b24-toc.yaml

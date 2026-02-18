@@ -1,7 +1,7 @@
 title: Local Integrations and Customization
 href: index.md
 items: 
-  - name: Overview
+  - name: Overview of Tools
     href: index.md
   - name: Typical Use-Cases and Scenarios 
     href: use-cases.md
@@ -15,7 +15,7 @@ items:
     href: serverside-local-app-with-ui.md
   - name: Server-Side Application without UI
     href: serverside-local-app-with-no-ui.md
-  - name: Overview of the Developer's Area
+  - name: Overview of the Developer Resources Section
     href: developers-area.md
-  - name: How to Fix the "Site Does Not Allow Connection" Error When Opening the Application
+  - name: How to Fix the "Site Does Not Allow Connection" Error When Opening an Application
     href: site-does-not-allow-connection.md

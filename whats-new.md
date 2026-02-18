@@ -2,6 +2,12 @@
 
 ## 2026
 
+### February 18, 2026
+
+- Updated the documentation for user field methods for companies in CRM [crm.company.userfield.*](./api-reference/crm/companies/userfields/index.md)
+- Added the method [im.dialog.messages.search](./api-reference/chats/messages/im-dialog-messages-search.md) for searching messages in chat
+- Updated the article [Tools for Local Integrations](./local-integrations/index.md)
+
 ### February 11, 2026
 
 - Updated the documentation for the methods [disk.file.copyto](./api-reference/disk/file/disk-file-copy-to.md), [disk.file.delete](./api-reference/disk/file/disk-file-delete.md), [disk.file.getExternalLink](./api-reference/disk/file/disk-file-get-external-link.md), [disk.file.getfields](./api-reference/disk/file/disk-file-get-fields.md)

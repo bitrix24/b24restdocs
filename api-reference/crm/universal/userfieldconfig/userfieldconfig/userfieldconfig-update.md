@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it shortly.
+Some data may be missing here — we will complete it shortly.
 
 {% endnote %}
 
@@ -40,12 +40,13 @@ The method changes the value of the field.
 - **entityId** - cannot be changed
 - **editInList** - cannot be changed
 - **multiple** - cannot be changed
-- **isSearchable** - changing this flag will not trigger automatic rebuilding of the search index. Rebuilding occurs when entities to which the fields are linked are changed
+- **showInList** - cannot be changed
+- **isSearchable** - changing this flag will not trigger automatic rebuilding of the search index. Rebuilding occurs when the entities to which the fields are linked are changed
 - **enum** - complete list of all value options for the "list" type property. For this field to be considered, **userTypeId** must be present in fields 
   - id - identifier of the option. Must be present if the option needs to be updated| ||
 |#
 
-{% include [Parameter notes](../../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../../_includes/required.md) %}
 
 {% note info "" %}
 
@@ -121,7 +122,7 @@ In this example:
 - All other options will be removed. If only the id of the option is passed in the request without the value, the option will be deleted.
 
   
-{% include [Example notes](../../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../../_includes/examples.md) %}
 
 ## Continue exploring
 

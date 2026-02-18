@@ -11,8 +11,8 @@ Some data may be missing — we will complete it shortly.
 {% note alert "TO-DO _not exported to prod_" %}
 
 - requiredness and parameter types are not specified
-- no success response
-- no error response
+- no response in case of success
+- no response in case of error
 - no examples in other languages
   
 {% endnote %}
@@ -45,20 +45,19 @@ This method will add a new custom field.
 - sort - sorting index.
 - multiple - multiplicity flag (N or Y), default is N. This flag can only be specified when creating the field.
 - mandatory - required flag (N or Y), default is N.
-- showFilter - flag to show the field in the filter (N or Y), default is N.
-- showInList - flag to show the field in the list (N or Y), default is Y.
-- editInList - flag to allow editing the field in the list (N or Y), default is Y.
+- showFilter - flag for displaying the field in the filter (N or Y), default is N.
+- editInList - flag for allowing field editing in the list (N or Y), default is Y.
 - isSearchable - flag for the presence of the field value [in the full-text index](*key_index) (N or Y), default is N.
 - settings - list of additional settings for the field.
 - editFormLabel - list of language-dependent names for the field, where the key is the language identifier and the value is the phrase.
 - enum - array of value options for properties of type "list":
-    - value^*^ - value of the option
+    - value^*^ - option value
     - def - default value flag (N or Y), default is N. Only one can be the default option
-    - sort - sorting index. If not specified, it is generated automatically based on the order of value options
+    - sort - sorting index. If not specified, it is generated automatically based on the order of value options provided
     - xmlId - external identifier of the option | ||
 |#
 
-{% include [Parameter Notes](../../../../../_includes/required.md) %}
+{% include [Footnote on parameters](../../../../../_includes/required.md) %}
 
 ## Return Value and Example
 
@@ -94,7 +93,7 @@ Creating a field of type "list"
 }
 ```
 
-{% include [Example Notes](../../../../../_includes/examples.md) %}
+{% include [Footnote on examples](../../../../../_includes/examples.md) %}
 
 
 ## Continue Learning

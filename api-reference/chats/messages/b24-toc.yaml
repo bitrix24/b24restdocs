@@ -21,13 +21,15 @@ items:
     href: im-message-share.md
   - name: Get List of Recent Messages
     href: im-dialog-messages-get.md
-  - name: Mark Messages as "Read"
+  - name: Find Message in Chat
+    href: im-dialog-messages-search.md
+  - name: Set "Read" Status for Messages
     href: im-dialog-read.md
-  - name: Mark Messages as "Unread"
+  - name: Set "Unread" Status for Messages
     href: im-dialog-unread.md
   - name: Send "Someone is writing to you..." Status
     href: im-dialog-writing.md
   - name: Delete Message
     href: im-message-delete.md
-  - name: Use Bot Command
+  - name: Using Bot Command
     href: im-message-command.md

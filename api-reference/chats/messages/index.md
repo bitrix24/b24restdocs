@@ -306,6 +306,7 @@ For more details on how to use advanced format attachments within messages, read
 #| 
 || **Method** | **Description** ||
 || [im.dialog.messages.get](./im-dialog-messages-get.md) | Retrieves a list of recent messages ||
+|| [im.dialog.messages.search](./im-dialog-messages-search.md) | Searches for messages in chat ||
 || [im.dialog.read](./im-dialog-read.md) | Marks messages as "read" ||
 || [im.dialog.unread](./im-dialog-unread.md) | Marks messages as "unread" ||
 || [im.dialog.writing](./im-dialog-writing.md) | Sends the "someone is typing..." indicator ||
