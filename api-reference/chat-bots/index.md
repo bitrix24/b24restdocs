@@ -312,4 +312,4 @@ The complete list of chatbots for the *Bitrix24* platform can be seen in the [co
 
 {% endlist %}
 
-[*keyboard]: [Keyboard](../chats/messages/keyboards.md) — is a set of buttons, each button can consist of specific keys.
+[*keyboard]: Keyboard — is a set of buttons, each button can consist of specific keys.

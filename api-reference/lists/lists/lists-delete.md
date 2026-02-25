@@ -19,7 +19,7 @@ The method `lists.delete` removes a universal list.
 - `bitrix_processes` — processes information block type 
 - `lists_socnet` — group lists information block type
 
-The identifier can be obtained using the method [lists.get-iblock-type-id](./lists-get-iblock-type-id.md) ||
+The identifier can be obtained using the method [lists.get.iblock.type.id](./lists-get-iblock-type-id.md) ||
 || **IBLOCK_ID***
 [`integer`](../../data-types.md) | Identifier of the information block.
 

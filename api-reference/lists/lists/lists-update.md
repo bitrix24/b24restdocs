@@ -19,7 +19,7 @@ The `lists.update` method updates the universal list.
 - `bitrix_processes` — processes information block type 
 - `lists_socnet` — group lists information block type
 
-The identifier can be obtained using the [lists.get-iblock-type-id](./lists-get-iblock-type-id.md) method ||
+The identifier can be obtained using the [lists.get.iblock.type.id](./lists-get-iblock-type-id.md) method ||
 || **IBLOCK_ID***
 [`integer`](../../data-types.md) | Identifier of the information block.
 

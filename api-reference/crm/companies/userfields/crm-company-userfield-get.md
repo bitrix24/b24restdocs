@@ -319,7 +319,7 @@ HTTP Status: **400**
 #|
 || **Code** | **Description** | **Value** ||
 || `403` | Access denied | Occurs when:
-- the user does not have administrative rights
+- the user does not have read access permission for companies
 - the user attempts to access a custom field not associated with companies ||
 || `400` | ID is not defined or invalid | The provided `id` is less than or equal to zero, or not provided at all ||
 || `ERROR_NOT_FOUND` | The entity with ID 'id' is not found | The custom field with the provided `id` was not found ||

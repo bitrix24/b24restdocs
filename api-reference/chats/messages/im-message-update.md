@@ -21,7 +21,7 @@ Some data may be missing here — we will complete it shortly.
 
 > Scope: [`im`](../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: message author
 
 The `im.message.update` method sends updates to a chatbot message.
 

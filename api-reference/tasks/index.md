@@ -284,7 +284,7 @@ In the task management modes kanban or "My Planner," there are two more special 
 
 #|
 || **Method** | **Description** ||
-|| [task.planer.getList](./planner/task-planner-get-list.md) | Retrieves a list of tasks from the "Daily Planner" ||
+|| [task.planner.getList](./planner/task-planner-get-list.md) | Retrieves a list of tasks from the "Daily Planner" ||
 |#
 
 ### Flows

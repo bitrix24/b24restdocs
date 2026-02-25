@@ -2,6 +2,14 @@
 
 ## 2026
 
+### February 25, 2026
+
+- Updated the article [What the Bitrix24 REST API Allows](./developing-with-rest-api.md)
+- Updated the article [Data Encoding](./settings/how-to-call-rest-api/data-encoding.md)
+- Updated the documentation for custom field methods for leads in CRM [crm.lead.userfield.*](./api-reference/crm/leads/userfield/index.md)
+- Updated the documentation for custom field methods for estimates in CRM [crm.quote.userfield.*](./api-reference/crm/quote/user-field/index.md)
+- Updated the documentation for methods [disk.file.getVersions](./api-reference/disk/file/disk-file-get-versions.md), [disk.file.get](./api-reference/disk/file/disk-file-get.md), [disk.file.markdeleted](./api-reference/disk/file/disk-file-mark-deleted.md), [disk.file.moveto](./api-reference/disk/file/disk-file-move-to.md), [disk.file.rename](./api-reference/disk/file/disk-file-rename.md), [disk.file.restoreFromVersion](./api-reference/disk/file/disk-file-restore-from-version.md), [disk.file.restore](./api-reference/disk/file/disk-file-restore.md), [disk.file.uploadversion](./api-reference/disk/file/disk-file-upload-version.md)
+
 ### February 18, 2026
 
 - Updated the documentation for user field methods for companies in CRM [crm.company.userfield.*](./api-reference/crm/companies/userfields/index.md)

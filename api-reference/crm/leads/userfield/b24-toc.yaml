@@ -1,19 +1,19 @@
-title: Custom Fields
-href: index.md
-items: 
-  - name: Overview of Methods
-    href: index.md
-  - name: Add Field
-    href: crm-lead-userfield-add.md
-  - name: Update Field
-    href: crm-lead-userfield-update.md
-  - name: Get Field by Code
-    href: crm-lead-userfield-get.md
-  - name: Get List of Fields
-    href: crm-lead-userfield-list.md
-  - name: Delete Field
-    href: crm-lead-userfield-delete.md
-  - name: Events
-    include:
-      path: events/b24-toc.yaml
-      mode: link
+title: Custom Fields  
+href: index.md  
+items:  
+  - name: Overview of Methods  
+    href: index.md  
+  - name: Create Custom Field  
+    href: crm-lead-userfield-add.md  
+  - name: Update Custom Field  
+    href: crm-lead-userfield-update.md  
+  - name: Get Custom Field by ID  
+    href: crm-lead-userfield-get.md  
+  - name: Get List of Custom Fields  
+    href: crm-lead-userfield-list.md  
+  - name: Delete Custom Field  
+    href: crm-lead-userfield-delete.md  
+  - name: Events  
+    include:  
+      path: events/b24-toc.yaml  
+      mode: link  

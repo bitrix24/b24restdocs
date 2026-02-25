@@ -1,42 +1,269 @@
-# Restore a file from a specific version disk.file.restoreFromVersion
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- parameter types are not specified
-- parameter requirements are not indicated
-- examples are missing (there should be three examples - curl, js, php)
-- no error response provided
-
-{% endnote %}
-
-{% endif %}
-
-{% note warning "We are still updating this page" %}
-
-Some data may be missing here — we will complete it soon
-
-{% endnote %}
+# Restore a File from a Specific Version disk.file.restoreFromVersion
 
 > Scope: [`disk`](../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: a user with "Full access" permission for the required file
 
 The method `disk.file.restoreFromVersion` restores a file from a specific version.
 
-## Parameters
+## Method Parameters
+
+{% include [Footnote on parameters](../../../_includes/required.md) %}
 
 #|
-||  **Parameter** / **Type**| **Description** ||
-|| **id**
-[`unknown`](../../data-types.md) | Folder identifier. ||
-|| **versionId**
-[`unknown`](../../data-types.md) | Version identifier. ||
+|| **Name**
+`type` | **Description** ||
+|| **id***
+[`integer`](../../data-types.md) | Identifier of the file.
+
+The identifier can be obtained using the [disk.storage.getchildren](../storage/disk-storage-get-children.md) method if the file is located at the root of the storage, and using the [disk.folder.getchildren](../folder/disk-folder-get-children.md) method if the file is located in a folder ||
+|| **versionId***
+[`integer`](../../data-types.md) | Identifier of the file version.
+
+The identifier can be obtained using the [disk.file.getVersions](./disk-file-get-versions.md) method ||
 |#
 
-## Successful response
+## Code Examples
 
-> 200 OK
+{% include [Footnote on examples](../../../_includes/examples.md) %}
 
-The response will return the updated file, and the response structure is similar to [disk.file.get](./disk-file-get.md).
+{% list tabs %}
+
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"id":9043,"versionId":7199}' \
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/disk.file.restoreFromVersion
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"id":9043,"versionId":7199,"auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/disk.file.restoreFromVersion
+    ```
+
+- JS
+
+    ```js
+    try
+    {
+        const response = await $b24.callMethod(
+            'disk.file.restoreFromVersion',
+            {
+                id: 9043,
+                versionId: 7199
+            }
+        );
+        
+        const result = response.getData().result;
+        console.log('Restored file from version with ID:', result);
+        
+        processResult(result);
+    }
+    catch( error )
+    {
+        console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'disk.file.restoreFromVersion',
+                [
+                    'id' => 9043,
+                    'versionId' => 7199
+                ]
+            );
+
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+
+        echo 'Success: ' . print_r($result, true);
+        processData($result);
+
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error restoring file from version: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
+    BX24.callMethod(
+        "disk.file.restoreFromVersion",
+        {
+            id: 9043,
+            versionId: 7199
+        },
+        function (result)
+        {
+            if (result.error())
+                console.error(result.error());
+            else
+                console.dir(result.data());
+        }
+    );
+    ```
+
+- PHP CRest
+
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'disk.file.restoreFromVersion',
+        [
+            'id' => 9043,
+            'versionId' => 7199
+        ]
+    );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
+    ```
+
+{% endlist %}
+
+## Response Handling
+
+HTTP Status: **200**
+
+```json
+{
+    "result": {
+        "ID": "9043",
+        "NAME": "Test №2.docx",
+        "CODE": null,
+        "STORAGE_ID": "1357",
+        "TYPE": "file",
+        "PARENT_ID": "8996",
+        "DELETED_TYPE": "0",
+        "GLOBAL_CONTENT_VERSION": 6,
+        "FILE_ID": "32983",
+        "SIZE": "21756",
+        "CREATE_TIME": "2026-02-16T12:52:05+02:00",
+        "UPDATE_TIME": "2026-02-17T12:33:15+02:00",
+        "DELETE_TIME": null,
+        "CREATED_BY": "1269",
+        "UPDATED_BY": "1269",
+        "DELETED_BY": "0",
+        "DOWNLOAD_URL": "https://test.bitrix24.com/rest/download.json?auth=343794690000071b006e2cf2000004f500000746484b1f82771b3434ff80eb15edc8f8&token=disk%7CaWQ9OTA0MyZfPVM4bEhYNjhjOWN2cmd0QlFnUHo1U3BVUzBaRTBXM3ZP%7CImRvd25sb2FkfGRpc2t8YVdROU9UQTBNeVpmUFZNNGJFaFlOamhqT1dOMmNtZDBRbEZuVUhvMVUzQlZVekJhUlRCWE0zWlB8MzQzNzk0NjkwMDAwMDcxYjAwNmUyY2YyMDAwMDA0ZjUwMDAwMDc0NjQ4NGIxZjgyNzcxYjM0MzRmZjgwZWIxNWVkYzhmOCI%3D.oJ%2BsjpEomvXjuciM5ixZPUhh037HG8qHi%2BdU49CNyFo%3D",
+        "DETAIL_URL": "https://test.bitrix24.com/company/personal/user/1269/disk/file/Folder/Folder/Test №2.docx"
+    },
+    "time": {
+        "start": 1771320794,
+        "finish": 1771320795.058413,
+        "duration": 1.058413028717041,
+        "processing": 1,
+        "date_start": "2026-02-17T12:33:14+02:00",
+        "date_finish": "2026-02-17T12:33:15+02:00",
+        "operating_reset_at": 1771321394,
+        "operating": 0
+    }
+}
+```
+
+### Returned Data
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`array`](../../data-types.md) | Array containing file fields ||
+|| **ID**
+[`integer`](../../data-types.md) | Identifier of the file ||
+|| **NAME**
+[`string`](../../data-types.md) | Name of the file ||
+|| **CODE**
+[`string`](../../data-types.md) | Symbolic code of the file ||
+|| **STORAGE_ID**
+[`integer`](../../data-types.md) | Identifier of the storage where the file is located ||
+|| **TYPE**
+[`enum`](../../data-types.md) | Type of the object ||
+|| **PARENT_ID**
+[`integer`](../../data-types.md) | Identifier of the parent folder ||
+|| **DELETED_TYPE**
+[`enum`](../../data-types.md) | Deletion status of the object. Possible values:
+- `0` — not deleted
+- `3` — in the trash
+- `4` — deleted along with the parent folder ||
+|| **GLOBAL_CONTENT_VERSION**
+[`integer`](../../data-types.md) | Incremental version counter of the file ||
+|| **FILE_ID**
+[`integer`](../../data-types.md) | Internal value of the file identifier ||
+|| **SIZE**
+[`integer`](../../data-types.md) | Size of the file in bytes ||
+|| **CREATE_TIME**
+[`datetime`](../../data-types.md) | Date and time of file creation ||
+|| **UPDATE_TIME**
+[`datetime`](../../data-types.md) | Date and time of the last update of the file ||
+|| **DELETE_TIME**
+[`datetime`](../../data-types.md) | Date and time the file was moved to the trash ||
+|| **CREATED_BY**
+[`integer`](../../data-types.md) | Identifier of the user who created the file ||
+|| **UPDATED_BY**
+[`integer`](../../data-types.md) | Identifier of the user who made the last change ||
+|| **DELETED_BY**
+[`integer`](../../data-types.md) | Identifier of the user who deleted the file ||
+|| **DOWNLOAD_URL**
+[`string`](../../data-types.md) | Link to download the file ||
+|| **DETAIL_URL**
+[`string`](../../data-types.md) | Link to open the file in the interface ||
+|| **time**
+[`time`](../../data-types.md#time) | Information about the execution time of the request ||
+|#
+
+## Error Handling
+
+HTTP Status: **400**
+
+```json
+{
+    "error":"ERROR_ARGUMENT",
+    "error_description":"Invalid value of parameter {Parameter #0}"
+}
+```
+
+{% include notitle [error handling](../../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+#|
+|| **Code** | **Description** | **Value** ||
+|| `ERROR_ARGUMENT` | Invalid value of parameter {Parameter #0} | Required parameter `id` or `versionId` is missing ||
+|| `ERROR_NOT_FOUND` | Could not find entity with id `X` | File with the specified `id` not found ||
+|| `DISK_FILE_22003` | Could not copy file | Failed to copy the file version ||
+|| `DISK_FILE_22004` | Cannot restore version from another file | Version belongs to another file ||
+|| `ACCESS_DENIED` | Access denied | Insufficient permissions to restore the file version ||
+|#
+
+{% include [system errors](../../../_includes/system-errors.md) %}
+
+## Continue Learning
+
+- [{#T}](./disk-file-copy-to.md)
+- [{#T}](./disk-file-delete.md)
+- [{#T}](./disk-file-get-external-link.md)
+- [{#T}](./disk-file-get-fields.md)
+- [{#T}](./disk-file-get-versions.md)
+- [{#T}](./disk-file-get.md)
+- [{#T}](./disk-file-mark-deleted.md)
+- [{#T}](./disk-file-move-to.md)
+- [{#T}](./disk-file-rename.md)
+- [{#T}](./disk-file-restore.md)
+- [{#T}](./disk-file-upload-version.md)

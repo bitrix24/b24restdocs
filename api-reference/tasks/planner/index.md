@@ -14,5 +14,5 @@
 
 #| 
 || **Method** | **Description** ||
-|| [task.planer.getList](./task-planner-get-list.md) | Retrieves a list of task identifiers from "Planner" for the user ||
+|| [task.planner.getList](./task-planner-get-list.md) | Retrieves a list of task identifiers from "Planner" for the user ||
 |#
