@@ -1,51 +1,59 @@
 # Set the "read" flag for all chats im.dialog.read.all
 
-{% note warning "We are still updating this page" %}
-
-Some data may be missing — we will complete it shortly.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- edits are needed to meet writing standards
-- examples are missing
-- response in case of error is missing
-
-{% endnote %}
-
-{% endif %}
-
 > Scope: [`im`](../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-The method `im.dialog.read.all` sets the "read" flags for all dialogs.
+The method `im.dialog.read.all` sets the "read" flag for all chats of the current user.
 
-No parameters are passed.
+## Method Parameters
 
-## Examples
+No parameters.
+
+## Code Examples
+
+{% include [Examples Note](../../../_includes/examples.md) %}
 
 {% list tabs %}
+
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{}' \
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/im.dialog.read.all
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/im.dialog.read.all
+    ```
 
 - JS
 
     ```js
     try
     {
-    	const response = await $b24.callMethod(
-    		'im.dialog.read.all',
-    		{}
-    	);
-    	
-    	const result = response.getData().result;
-    	console.log(result);
+        const response = await $b24.callMethod(
+            'im.dialog.read.all',
+            {}
+        );
+        
+        const result = response.getData().result;
+        console.log('Read all dialogs:', result);
+        
+        processResult(result);
     }
     catch( error )
     {
-    	console.error('Error:', error);
+        console.error('Error:', error);
     }
     ```
 
@@ -59,18 +67,17 @@ No parameters are passed.
                 'im.dialog.read.all',
                 []
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
+
         echo 'Success: ' . print_r($result, true);
-        // Your required data processing logic
         processData($result);
-    
+
     } catch (Throwable $e) {
         error_log($e->getMessage());
-        echo 'Error reading all dialog: ' . $e->getMessage();
+        echo 'Error reading dialog: ' . $e->getMessage();
     }
     ```
 
@@ -80,18 +87,75 @@ No parameters are passed.
     BX24.callMethod(
         'im.dialog.read.all',
         {},
-        res => console.log(res.data())
-    )
+        function(result)
+        {
+            if (result.error())
+            {
+                console.error(result.error());
+            }
+            else
+            {
+                console.log(result.data());
+            }
+        }
+    );
+    ```
+
+- PHP CRest
+
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'im.dialog.read.all',
+        []
+    );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
     ```
 
 {% endlist %}
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+## Response Handling
 
-## Response in case of success
+HTTP Status: **200**
 
 ```json
 {
-    "result": true
+    "result": true,
+    "time": {
+        "start": 1772518010,
+        "finish": 1772518010.715758,
+        "duration": 0.7157580852508545,
+        "processing": 0,
+        "date_start": "2026-03-03T09:06:50+01:00",
+        "date_finish": "2026-03-03T09:06:50+01:00",
+        "operating_reset_at": 1772518610,
+        "operating": 0
+    }
 }
 ```
+
+### Returned Data
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`boolean`](../../data-types.md) | `true` if chats are marked as read ||
+|| **time**
+[`time`](../../data-types.md#time) | Information about the request execution time ||
+|#
+
+## Error Handling
+
+{% include [system errors](../../../_includes/system-errors.md) %}
+
+## Continue Learning
+
+- [{#T}](./im-recent-pin.md)
+- [{#T}](./im-recent-unread.md)
+- [{#T}](./im-chat-mute.md)
+- [{#T}](./im-recent-hide.md)

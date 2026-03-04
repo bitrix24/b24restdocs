@@ -1,9 +1,7 @@
-title: Events
-href: index.md
-items:
-  - name: Overview of Events
-    href: index.md
-  - name: When the bot joins the chat
-    href: on-imbot-join-chat.md
-  - name: When the chat bot is deleted
-    href: on-imbot-delete.md
+title: Events  
+href: index.md  
+items:  
+  - name: Overview of Events  
+    href: index.md  
+  - name: When Connecting the Automation Rule to a Chat  
+    href: on-imbot-join-chat.md  

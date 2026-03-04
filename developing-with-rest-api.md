@@ -8,21 +8,21 @@ With the REST API, you can:
 - automate processes
 - enhance interactions with clients and employees
 
-Below are the key development capabilities on the platform.
+Below are the key capabilities for development on the platform.
 
 ## Automation
 
-Add your own automation tools to Bitrix24: Automation rules, triggers, workflows, smart processes, and event handlers. They simplify routine tasks, reduce errors, and speed up data handling.
+Add your own automation tools to Bitrix24: Automation rules, triggers, workflows, Smart scripts, and event handlers. They simplify routine tasks, reduce errors, and speed up data handling.
 
 ### Automation Rules and Triggers in CRM
 
-[Automation rules](./api-reference/bizproc/bizproc-robot/index.md) perform routine actions: sending e-mails, creating documents, and updating company or contact details.
+[Automation rules](./api-reference/bizproc/bizproc-robot/index.md) perform routine actions: sending e-mails, creating documents, and changing company or contact details.
 
-[Triggers](./api-reference/crm/automation/index.md) monitor client actions and activate automation rules. For example, a trigger can move a deal to the next stage immediately after payment is made through an external service.
+[Triggers](./api-reference/crm/automation/index.md) monitor client actions and activate automation rules. For example, a trigger will move a deal to the next stage immediately after payment is made through an external service.
 
 ## Workflows
 
-[Workflows](./api-reference/bizproc/index.md) automate the approval of documents, such as leave requests. This speeds up the processing of requests and improves work organization.
+[Workflows](./api-reference/bizproc/index.md) automate the approval of documents, such as vacation requests. This speeds up the processing of requests and improves work organization.
 
 Developers link these processes with external systems, such as time tracking or project management systems.
 
@@ -32,13 +32,13 @@ Developers link these processes with external systems, such as time tracking or 
 
 Scripts operate within deals, leads, invoices, contacts, and companies. For instance, a script analyzes client behavior on the website and sends personalized offers.
 
-Developers can add their own automation rules and use them in smart scripts.
+Developers can add their own automation rules and use them in Smart scripts.
 
 ### Event Handlers
 
-[Event handlers](./api-reference/events/index.md) respond to actions in Bitrix24: adding a contact, modifying deal data.
+[Event handlers](./api-reference/events/index.md) respond to actions in Bitrix24: adding a contact, changing data in a deal.
 
-This allows developers to create integrations with external services: analytics, e-mail marketing, ERP systems. Integrations update data, notify employees of events, and synchronize information across platforms.
+This allows developers to create integrations with external services: analytics, email marketing, ERP systems. Integrations update data, notify employees of events, and synchronize information between platforms.
 
 ## Communication with Clients and Employees
 
@@ -52,29 +52,29 @@ Within the company, chatbots assist employees in finding information in knowledg
 
 ### Open Channels Connectors
 
-Messages from Telegram, WhatsApp, and Facebook Messenger come into Bitrix24 through [open channels connectors](./api-reference/imopenlines/imconnector/index.md). This increases client engagement and ensures requests are not lost.
+Messages from Telegram, WhatsApp, Facebook Messenger come into Bitrix24 through [Open Channels connectors](./api-reference/imopenlines/imconnector/index.md). This increases client engagement and ensures requests are not lost.
 
 ### SMS Providers
 
-[Providers](./api-reference/messageservice/index.md) send SMS from Bitrix24: notifications about order status, reminders about events, advertisements. This works in areas without internet access.
+[Providers](./api-reference/messageservice/index.md) send SMS from Bitrix24: notifications about order status, reminders about events, advertisements. This works where there is no internet.
 
 ### Telephony
 
-Integration with [telephony](./api-reference/telephony/index.md) automates calls, records conversations, tracks statistics, and creates deals or tasks from incoming calls. This enhances service and boosts sales efficiency.
+Integration with [telephony](./api-reference/telephony/index.md) automates calls, records conversations, tracks statistics, and creates deals or tasks based on incoming calls. This improves service and enhances sales efficiency.
 
 ## Business Content
 
 Use ready-made templates for [landing pages, websites, and online stores](./api-reference/landing/index.md) to reduce development costs.
 
-### Ready-Made Landing Pages
+### Ready-made Landing Pages
 
 Ready-made landing pages launch promotional pages, product pages, and event registrations. Entrepreneurs and marketers can create them without web development knowledge.
 
-### Ready-Made Websites
+### Ready-made Websites
 
-Ready-made websites are templates for corporate sites, blogs, and portfolios. The templates already have structure and design. You just need to adapt them to your business.
+Ready-made websites are templates for corporate sites, blogs, and portfolios. The templates already include structure and design. You just need to adapt them to your business.
 
-### Ready-Made Online Stores
+### Ready-made Online Stores
 
 Ready-made online stores enable online commerce without technical complexities. The template is set up for managing products, orders, payments, and delivery.
 
@@ -82,9 +82,9 @@ Ready-made online stores enable online commerce without technical complexities. 
 
 [Document templates](./api-reference/document-generator/templates/index.md) simplify the creation of contracts, invoices, and estimates. They standardize document flow and reduce errors.
 
-## Integrations with Payment Systems and Delivery Services
+## Integrations with Payment Systems, Delivery Services, and Online Cash Registers
 
-Integrations facilitate payment for goods and services, simplify logistics and delivery, and ensure accounting and control of financial operations in compliance with regulations.
+Integrations facilitate payment for goods and services, simplify logistics and delivery, and ensure accounting and control of financial operations in accordance with legislation.
 
 ### Integrations with Payment Systems
 
@@ -108,10 +108,10 @@ Analytical widgets provide data for decision-making: key performance indicators,
 
 ### Dashboards
 
-Developers create dashboards for tracking projects, tasks, finances — any aspect of the business that requires oversight.
+Developers create dashboards for tracking projects, tasks, finances — any aspect of the business that requires monitoring.
 
 ### External Services
 
-Widgets integrate external services: e-mail, calendar, time tracking. Data is synchronized, and processes are managed from a single interface.
+Widgets integrate external services: email, calendar, time tracking. Data is synchronized, and processes are managed from a single interface.
 
-Built-in solutions personalize the workspace for companies. Developers who understand business needs create in-demand applications. 
+Built-in solutions personalize the workspace for companies. Developers who understand business needs create in-demand applications.  

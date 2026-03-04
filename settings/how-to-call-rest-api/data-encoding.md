@@ -10,7 +10,7 @@ https://b24-abcdef.bitrix24.com/rest/1/xxxxxxx/crm.lead.add?fields[TITLE]=John&M
 
 After executing the request, you may find that the lead's name only contains `John`. This happened because the `&` character separates query parameters. If it appears within a value, the server interprets it as the start of a new parameter rather than part of the data.
 
-As a result, the request formed two parameters:
+As a result, the request has two parameters:
 
 - `fields[TITLE]` with the value `John`
 - a new parameter `Martin` without a value
@@ -25,28 +25,28 @@ https://b24-abcdef.bitrix24.com/rest/1/xxxxxxx/crm.lead.add?fields[TITLE]=John%2
 
 ## Which Characters Need Encoding
 
-In a URL, special characters such as `&`, `?`, `%`, `[`, `]`, `#`, and others play a significant role. If they appear in a parameter value, they must be encoded. Otherwise, the server will interpret them as control characters, and the request result will become unpredictable.
+In a URL, special characters such as `&`, `?`, `%`, `[`, `]`, `#`, and others play a significant role. If they appear in a parameter value, they must be encoded. Otherwise, the server will interpret them as control characters, and the result of the request will become unpredictable.
 
 ## How to Encode in Different Languages
 
-Each programming language provides a built-in function for this purpose:
+Each programming language provides a built-in function:
 
 - JavaScript — `encodeURIComponent`
 - PHP — `urlencode`
 - Python — `urllib.parse.quote_plus`
 - Java — `URLEncoder.encode`
 
-If you are constructing a request manually, you can use any online service by searching for "URL encoding online."
+If you are forming a request manually, you can use any online service by searching for "URL encoding online."
 
 {% note tip "" %}
 
-You can verify the correctness of the request using the service [https://webhook.site](https://webhook.site). It displays the complete request, including headers and parameters.
+You can check the correctness of the request using the service [https://webhook.site](https://webhook.site). It shows the complete request, including headers and parameters.
 
 {% endnote %}
 
 ## Double Encoding for Batch Requests
 
-The `batch` method allows you to execute multiple requests in a single call. Requests are passed in the `cmd` parameter as strings: `method?parameter1=value&parameter2=7`. However, each of these strings becomes a value of a parameter. Therefore, it also needs to be encoded.
+The `batch` method allows you to execute multiple requests in a single call. Requests are passed in the `cmd` parameter as strings: `method?parameter1=value&parameter2=7`. However, each of these strings becomes a parameter value itself. Therefore, it also needs to be encoded.
 
 1. First, encode the values inside the nested request.
 2. Then, encode the entire string of the nested request.
@@ -57,11 +57,11 @@ If you needed to create a lead from the example above as part of a batch request
 https://b24-abcdef.bitrix24.com/rest/1/xxxxxxx/batch?cmd[0]=crm.lead.add%3Ffields%5BTITLE%5D%3DJohn%2526Martin
 ```
 
-Note: `%26` became `%2526` because the `%` character itself was encoded as `%25`.
+Note: `%26` has turned into `%2526` because the `%` character itself was encoded as `%25`.
 
 {% note info "" %}
 
-To avoid manual encoding and other complexities, use ready-made SDKs. They handle all URL work, encoding, and error processing.
+To avoid manual encoding and other complexities, use ready-made SDKs. They handle all the work with URLs, encoding, and error handling.
 
 Official Bitrix24 SDKs:
 
@@ -189,7 +189,7 @@ Example of a lead with multiple phone numbers:
 
 {% endlist %}
 
-If it is not possible to send JSON, use a GET request or a standard POST request. Data should be passed in the query parameters, following the encoding rules.
+If sending JSON is not possible, use a GET request or a standard POST request. Data should be passed in the query parameters, following the encoding rules.
 
 ### GET Request
 
@@ -208,7 +208,7 @@ How to programmatically assemble such a string:
 
 For a POST request, you need to specify the correct `Content-Type` header and format the request body.
 
-- `application/x-www-form-urlencoded` — data is transformed into a single string
+- `application/x-www-form-urlencoded` — data is converted into a single string
 - `multipart/form-data` — data is split into parts, each with its own headers and separated by a boundary string `boundary=SomeBoundary`
 
 {% list tabs %}
@@ -247,7 +247,7 @@ For a POST request, you need to specify the correct `Content-Type` header and fo
 
 {% endlist %}
 
-## Parameter Order
+## Order of Parameters
 
 Some methods, such as [task.commentitem.add](../../api-reference/tasks/comment-item/task-comment-item-add.md) and [task.checklistitem.complete](../../api-reference/tasks/checklist-item/task-checklist-item-complete.md), require strict adherence to the order of parameter transmission. In such cases, parameters cannot be passed by name — as an object in JavaScript or an associative array in PHP. Otherwise, the execution result will be unpredictable, or the method will return an error.
 

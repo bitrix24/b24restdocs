@@ -1,64 +1,81 @@
-# Set or Remove the "Unread" Flag for the im.recent.unread Chat
-
-{% note warning "We are still updating this page" %}
-
-Some data may be missing — we will complete it shortly.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- edits needed for writing standards
-- parameter types not specified
-- examples missing
-
-{% endnote %}
-
-{% endif %}
+# Set or Remove the "Read" Flag for the Chat im.recent.unread
 
 > Scope: [`im`](../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-The `im.recent.unread` method sets the "unread" label on a chat or conversation.
+The method `im.recent.unread` sets or removes the "read" flag for the chat.
+
+## Method Parameters
+
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
-|| **Parameter** | **Example** | **Description** | **Revision** ||
-|| **DIALOG_ID^*^**
-[`unknown`](../../data-types.md) | `'chat74'` | Identifier of the dialog. Format:
-- **chatXXX** – recipient's chat if the message is for a chat
-- **XXX** – recipient's identifier if the message is for a private conversation | 30 ||
+|| **Name**
+`type` | **Description** ||
+|| **DIALOG_ID***
+[`string`](../../data-types.md) | Identifier of the chat in the format:
+
+- `chatXXX` — chat
+- `sgXXX` — group or project chat
+- `XXX` — identifier of the personal chat user
+  
+The chat identifier can be obtained using the [im.chat.get](../im-chat-get.md) method. The user identifier can be retrieved using the [user.get](../../user/user-get.md) and [user.search](../../user/user-search.md) methods ||
 || **ACTION**
-[`unknown`](../../data-types.md) | `'Y'` | Set / remove the "unread" label on the dialog - `'Y'|'N'` | 30 ||
+[`string`](../../data-types.md) | Action for the "read" flag:
+- `Y` — set the flag
+- `N` — remove the flag and mark the dialog as read
+
+Default: `Y` ||
 |#
 
-{% include [Footnote about parameters](../../../_includes/required.md) %}
+## Code Examples
 
-## Examples
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
+
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"DIALOG_ID":"chat2941","ACTION":"Y"}' \
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/im.recent.unread
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"DIALOG_ID":"chat2941","ACTION":"Y","auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/im.recent.unread
+    ```
 
 - JS
 
     ```js
     try
     {
-    	const response = await $b24.callMethod(
-    		'im.recent.unread',
-    		{
-    			DIALOG_ID: 'chat74',
-    			ACTION: 'Y'
-    		}
-    	);
-    	
-    	const result = response.getData().result;
-    	console.log(result);
+        const response = await $b24.callMethod(
+            'im.recent.unread',
+            {
+                DIALOG_ID: 'chat2941',
+                ACTION: 'Y'
+            }
+        );
+        
+        const result = response.getData().result;
+        console.log('Marked dialog as unread:', result);
+        
+        processResult(result);
     }
     catch( error )
     {
-    	console.error('Error:', error);
+        console.error('Error:', error);
     }
     ```
 
@@ -71,24 +88,21 @@ The `im.recent.unread` method sets the "unread" label on a chat or conversation.
             ->call(
                 'im.recent.unread',
                 [
-                    'DIALOG_ID' => 'chat74',
-                    'ACTION'    => 'Y',
+                    'DIALOG_ID' => 'chat2941',
+                    'ACTION' => 'Y'
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
-        if ($result->error()) {
-            error_log($result->error()->ex);
-        } else {
-            echo 'Success: ' . print_r($result->data(), true);
-        }
-    
+
+        echo 'Success: ' . print_r($result, true);
+        processData($result);
+
     } catch (Throwable $e) {
         error_log($e->getMessage());
-        echo 'Error fetching unread messages: ' . $e->getMessage();
+        echo 'Error marking dialog as unread: ' . $e->getMessage();
     }
     ```
 
@@ -98,51 +112,101 @@ The `im.recent.unread` method sets the "unread" label on a chat or conversation.
     BX24.callMethod(
         'im.recent.unread',
         {
-            DIALOG_ID: 'chat74',
+            DIALOG_ID: 'chat2941',
             ACTION: 'Y'
         },
-        res => {
-            if (res.error())
+        function(result)
+        {
+            if (result.error())
             {
-            console.error(result.error().ex);
+                console.error(result.error());
             }
             else
             {
-            console.log(res.data())
+                console.log(result.data());
             }
         }
-    )
+    );
+    ```
+
+- PHP CRest
+
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'im.recent.unread',
+        [
+            'DIALOG_ID' => 'chat2941',
+            'ACTION' => 'Y'
+        ]
+    );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
     ```
 
 {% endlist %}
 
-{% include [Footnote about examples](../../../_includes/examples.md) %}
+## Response Handling
 
-## Successful Response
-
-```json
-{
-    "result": true //if the label was successfully set|removed
-}
-```
-
-## Error Response
+HTTP Status: **200**
 
 ```json
 {
-    "error":"DIALOG_ID_EMPTY",
-    "error_description":"Dialog ID can't be empty"
+    "result": true,
+    "time": {
+        "start": 1772518597,
+        "finish": 1772518597.385986,
+        "duration": 0.3859860897064209,
+        "processing": 0,
+        "date_start": "2026-03-03T09:16:37+01:00",
+        "date_finish": "2026-03-03T09:16:37+01:00",
+        "operating_reset_at": 1772519197,
+        "operating": 0
+    }
 }
 ```
 
-### Key Descriptions
+### Returned Data
 
-- `error` – code of the occurred error
-- `error_description` – brief description of the occurred error
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`boolean`](../../data-types.md) | `true` if the flag was successfully set or removed.
+
+Returns `false` if the chat with the specified `DIALOG_ID` was not found ||
+|| **time**
+[`time`](../../data-types.md#time) | Information about the request execution time ||
+|#
+
+## Error Handling
+
+HTTP Status: **400**
+
+```json
+{
+    "error": "DIALOG_ID_EMPTY",
+    "error_description": "Dialog ID can't be empty"
+}
+```
+
+{% include notitle [error handling](../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| **DIALOG_ID_EMPTY** | The `DIALOG_ID` parameter was not provided or does not match the format. ||
+|| **Code** | **Description** | **Value** ||
+|| `DIALOG_ID_EMPTY` | Dialog ID can't be empty | Not provided or provided in an incorrect format `DIALOG_ID` ||
 |#
+
+{% include [system errors](../../../_includes/system-errors.md) %}
+
+## Continue Learning
+
+- [{#T}](./im-recent-pin.md)
+- [{#T}](./im-dialog-read-all.md)
+- [{#T}](./im-chat-mute.md)
+- [{#T}](./im-recent-hide.md)

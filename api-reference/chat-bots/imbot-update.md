@@ -1,155 +1,297 @@
-# Update Chat Bot imbot.update
-
-{% note warning "We are still updating this page" %}
-
-Some data may be missing here — we will complete it soon.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- edits needed for writing standards
-- parameter types are not specified
-- parameter requirements are not indicated
-- not all parameters have examples in the table
-- examples are missing
-- no response in case of success
-- no response in case of error
-- links to pages that have not yet been created are not specified
-
-{% endnote %}
-
-{% endif %}
+# Update Chatbot imbot.update
 
 > Scope: [`imbot`](../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: an authorized user of the application that registered the chatbot
 
-The method `imbot.update` updates the bot's data.
+The method `imbot.update` updates the chatbot's data and its event handlers.
+
+## Method Parameters
+
+{% include [Parameters Note](../../_includes/required.md) %}
 
 #|
-|| **Parameter** | **Example** | **Description** | **Revision** ||
-|| **BOT_ID^*^**
-[`unknown`](../data-types.md) | `39` | Identifier of the chat bot to be updated | ||
+|| **Name**
+`Type` | **Description** ||
+|| **BOT_ID***
+[`integer`](../data-types.md) | The identifier of the chatbot. You can obtain the identifier using the [imbot.bot.list](./imbot-bot-list.md) method. The value must be greater than `0` ||
+|| **FIELDS***
+[`object`](../data-types.md) | Data for updating the chatbot. The structure of the object is described in detail [below](#fields) ||
 || **CLIENT_ID**
-[`unknown`](../data-types.md) | `''` | String identifier of the chat bot, used only in Webhook mode | ||
-|| **FIELDS^*^**
-[`unknown`](../data-types.md) | | Data for updating | ||
-|| **CODE**
-[`unknown`](../data-types.md) | `'newbot'` | String identifier of the chat bot, unique within your application | ||
-|| **EVENT_...^*^**
-[`unknown`](../data-types.md) | `'http://www.hazz/chatApi/event.php'` | Link to the event handler for events received from the server. Event handlers:
-- `EVENT_HANDLER` - link to the event handler for sending messages to the chat bot.
-or
-- `EVENT_MESSAGE_ADD` - link to the event handler for sending messages to the chat bot.
-- `EVENT_WELCOME_MESSAGE` - link to the event handler for opening a dialogue with the chat bot or inviting it to a group chat.
-- `EVENT_BOT_DELETE` - link to the event handler for deleting the chat bot from the client side.
- | ||
-|| **PROPERTIES^*^**
-[`unknown`](../data-types.md) | | Required when updating the bot's data | ||
-|| **NAME**
-[`unknown`](../data-types.md) | `'UpdatedBot'` | Name of the chat bot | ||
-|| **LAST_NAME**
-[`unknown`](../data-types.md) | `''` | Last name of the chat bot | ||
-|| **COLOR**
-[`unknown`](../data-types.md) | `'MINT'` | Color of the chat bot for the mobile application: RED, GREEN, MINT, LIGHT_BLUE, DARK_BLUE, PURPLE, AQUA, PINK, LIME, BROWN, AZURE, KHAKI, SAND, MARENGO, GRAY, GRAPHITE | ||
-|| **EMAIL**
-[`unknown`](../data-types.md) | `'test2@test.com'` | E-mail for contact | ||
-|| **PERSONAL_BIRTHDAY**
-[`unknown`](../data-types.md) | `'2016-03-12'` | Birthday in YYYY-mm-dd format | ||
-|| **WORK_POSITION**
-[`unknown`](../data-types.md) | `'My second bot'` | Job title, used as a description of the chat bot | ||
-|| **PERSONAL_WWW**
-[`unknown`](../data-types.md) | `'http://test2.com'` | Link to the website | ||
-|| **PERSONAL_GENDER**
-[`unknown`](../data-types.md) | `'M'` | Gender of the bot, acceptable values are M - male, F - female, empty if not required | ||
-|| **PERSONAL_PHOTO**
-[`unknown`](../data-types.md) | `'/* base64 image */'` | Avatar of the chat bot - base64 | ||
+[`string`](../data-types.md) | A technical parameter for scenarios without `clientId` in authorization. If provided, it is used as `custom{CLIENT_ID}` to identify the application ||
 |#
 
-{% include [Note on parameters](../../_includes/required.md) %}
+### FIELDS Parameter {#fields}
+
+#|
+|| **Name**
+`Type` | **Description** ||
+|| **CODE**
+[`string`](../data-types.md) | The new string code for the bot, unique within Bitrix24  ||
+|| **EVENT_HANDLER**
+[`string`](../data-types.md) | General URL for the event handler. If provided, its value is copied to `EVENT_MESSAGE_ADD`, `EVENT_MESSAGE_UPDATE`, `EVENT_MESSAGE_DELETE`, `EVENT_WELCOME_MESSAGE`, `EVENT_BOT_DELETE`.
+
+If different handlers are needed, do not provide `EVENT_HANDLER`. Set separate URLs in the parameters `EVENT_MESSAGE_ADD`, `EVENT_MESSAGE_UPDATE`, `EVENT_MESSAGE_DELETE`, `EVENT_WELCOME_MESSAGE`, `EVENT_BOT_DELETE` ||
+|| **EVENT_MESSAGE_ADD**
+[`string`](../data-types.md) | URL for the event handler [ONIMBOTMESSAGEADD](./messages/events/on-imbot-message-add.md) ||
+|| **EVENT_MESSAGE_UPDATE**
+[`string`](../data-types.md) | URL for the event handler [ONIMBOTMESSAGEUPDATE](./messages/events/on-imbot-message-update.md) ||
+|| **EVENT_MESSAGE_DELETE**
+[`string`](../data-types.md) | URL for the event handler [ONIMBOTMESSAGEDELETE](./messages/events/on-imbot-message-delete.md) ||
+|| **EVENT_WELCOME_MESSAGE**
+[`string`](../data-types.md) | URL for the event handler [ONIMBOTJOINCHAT](./chats/events/on-imbot-join-chat.md) ||
+|| **EVENT_BOT_DELETE**
+[`string`](../data-types.md) | URL for the event handler [ONIMBOTDELETE](./events/on-imbot-delete.md) ||
+|| **PROPERTIES**
+[`object`](../data-types.md) | Properties of the chatbot profile. The structure of the object is described in detail [below](#fields-properties) ||
+|#
 
 {% note warning "" %}
 
-The method **imbot.update** no longer supports changing the fields `TYPE` and `OPENLINE` (im 17.5.10).
+The method `imbot.update` does not support changing the fields `TYPE` and `OPENLINE`.
 
 {% endnote %}
 
-## Examples
+### FIELDS.PROPERTIES Parameter {#fields-properties}
 
-{% include [Explanation of restCommand](./_includes/rest-command.md) %}
+#|
+|| **Name**
+`Type` | **Description** ||
+|| **NAME**
+[`string`](../data-types.md) | The name of the chatbot. If both values `NAME` and `LAST_NAME` are provided, they must not be empty at the same time ||
+|| **LAST_NAME**
+[`string`](../data-types.md) | The last name of the chatbot. If both values `NAME` and `LAST_NAME` are provided, they must not be empty at the same time ||
+|| **COLOR**
+[`string`](../data-types.md) | The color of the chatbot for the mobile interface: `RED`, `GREEN`, `MINT`, `LIGHT_BLUE`, `DARK_BLUE`, `PURPLE`, `AQUA`, `PINK`, `LIME`, `BROWN`, `AZURE`, `KHAKI`, `SAND`, `MARENGO`, `GRAY`, `GRAPHITE` ||
+|| **EMAIL**
+[`string`](../data-types.md) | Email for contacting the chatbot. The bot is created as a user, so the bot's email must not match the email of a real Bitrix24 user. This will help avoid account conflicts ||
+|| **PERSONAL_BIRTHDAY**
+[`string`](../data-types.md) | Birthday in the format `YYYY-MM-DD` ||
+|| **WORK_POSITION**
+[`string`](../data-types.md) | Position or description of the chatbot ||
+|| **PERSONAL_WWW**
+[`string`](../data-types.md) | Link to the website ||
+|| **PERSONAL_GENDER**
+[`string`](../data-types.md) | Gender, acceptable values: `M` or `F` ||
+|| **PERSONAL_PHOTO**
+[`file`](../data-types.md) | Avatar of the chatbot in [Base64](../files/how-to-upload-files.md) format
+
+The image size must not exceed the limit of 5000x5000 ||
+|#
+
+{% note info "" %}
+
+To update the bot, provide at least one parameter: a field in `FIELDS` or an event handler URL. If all parameters are empty, the method will return an error `WRONG_REQUEST`.
+
+{% endnote %}
+
+## Code Examples
+
+{% include [Examples Note](../../_includes/examples.md) %}
 
 {% list tabs %}
+
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+      -H "Content-Type: application/json" \
+      -H "Accept: application/json" \
+      -d '{"BOT_ID":39,"FIELDS":{"CODE":"newbot_v2","EVENT_HANDLER":"https://example.com/bot/events","PROPERTIES":{"NAME":"UpdatedBot","WORK_POSITION":"Updated description"}}}' \
+      https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/imbot.update
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+      -H "Content-Type: application/json" \
+      -H "Accept: application/json" \
+      -d '{"BOT_ID":39,"FIELDS":{"CODE":"newbot_v2","EVENT_HANDLER":"https://example.com/bot/events","PROPERTIES":{"NAME":"UpdatedBot"}},"auth":"**put_access_token_here**"}' \
+      https://**put_your_bitrix24_address**/rest/imbot.update
+    ```
+
+- JS
+
+    ```js
+    try {
+      const response = await $b24.callMethod('imbot.update', {
+        BOT_ID: 39,
+        FIELDS: {
+          CODE: 'newbot_v2',
+          EVENT_HANDLER: 'https://example.com/bot/events',
+          PROPERTIES: {
+            NAME: 'UpdatedBot',
+            WORK_POSITION: 'Updated description',
+          },
+        },
+      });
+
+      const { result } = response.getData();
+      console.log('Updated:', result);
+    } catch (error) {
+      console.error('Error updating bot:', error);
+    }
+    ```
 
 - PHP
 
     ```php
-    $result = restCommand(
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'imbot.update',
+                [
+                    'BOT_ID' => 39,
+                    'FIELDS' => [
+                        'CODE' => 'newbot_v2',
+                        'EVENT_HANDLER' => 'https://example.com/bot/events',
+                        'PROPERTIES' => [
+                            'NAME' => 'UpdatedBot',
+                            'WORK_POSITION' => 'Updated description',
+                        ],
+                    ],
+                ]
+            );
+
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+
+        if ($result->error()) {
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Updated: ' . ($result->data() ? 'true' : 'false');
+        }
+    } catch (Throwable $exception) {
+        error_log($exception->getMessage());
+        echo 'Error updating bot: ' . $exception->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
+    BX24.callMethod(
         'imbot.update',
-        Array(
+        {
+            BOT_ID: 39,
+            FIELDS: {
+                CODE: 'newbot_v2',
+                EVENT_HANDLER: 'https://example.com/bot/events',
+                PROPERTIES: {
+                    NAME: 'UpdatedBot',
+                    WORK_POSITION: 'Updated description',
+                },
+            },
+        },
+        function(result) {
+            if (result.error()) {
+                console.error(result.error().ex);
+            } else {
+                console.log(result.data());
+            }
+        }
+    );
+    ```
+
+- PHP CRest
+
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'imbot.update',
+        [
             'BOT_ID' => 39,
-            'CLIENT_ID' => '',
-            'FIELDS' => Array(
-                'CODE' => 'newbot',
-                'EVENT_HANDLER' => 'http://www.hazz/chatApi/event.php',
-                'PROPERTIES' => Array(
+            'FIELDS' => [
+                'CODE' => 'newbot_v2',
+                'EVENT_HANDLER' => 'https://example.com/bot/events',
+                'PROPERTIES' => [
                     'NAME' => 'UpdatedBot',
-                    'LAST_NAME' => '',
-                    'COLOR' => 'MINT',
-                    'EMAIL' => 'test2@test.com',
-                    'PERSONAL_BIRTHDAY' => '2016-03-12',
-                    'WORK_POSITION' => 'My second bot',
-                    'PERSONAL_WWW' => 'http://test2.com',
-                    'PERSONAL_GENDER' => 'M',
-                    'PERSONAL_PHOTO' => '/* base64 image */',
-                )
-            )
-        ),
-        $_REQUEST[
-            "auth"
+                    'WORK_POSITION' => 'Updated description',
+                ],
+            ],
         ]
     );
+
+    if (!empty($result['error'])) {
+        echo 'Error: ' . $result['error_description'];
+    } else {
+        echo 'Updated: ' . ($result['result'] ? 'true' : 'false');
+    }
     ```
 
 {% endlist %}
 
-{% include [Note on examples](../../_includes/examples.md) %}
+## Response Handling
 
-## Response in case of success
+HTTP Code: **200**
 
-`true`
-
-## Response in case of error
-
-error
-
-### Possible error codes
-
-#|
-|| **Code** | **Description** ||
-|| **BOT_ID_ERROR** | Chat bot not found. ||
-|| **APP_ID_ERROR** | The chat bot does not belong to this application; you can only work with chat bots installed within the application. ||
-|| **EVENT_MESSAGE_ADD_ERROR** | Event handler link is invalid or not specified. ||
-|| **EVENT_WELCOME_MESSAGE_ERROR** | Event handler link is invalid or not specified. ||
-|| **EVENT_BOT_DELETE_ERROR** | Event handler link is invalid or not specified. ||
-|| **NAME_ERROR** | One of the required fields **NAME** or **LAST_NAME** of the chat bot is not specified. ||
-|| **WRONG_REQUEST** | Something went wrong. ||
-|#
-
-## Event Handlers
-
-If you need to handle events with different handlers, you can specify each handler individually instead of `EVENT_HANDLER`:
-
-```php
-'EVENT_MESSAGE_ADD' => 'http://www.hazz/chatApi/event.php', // Link to the event handler for sending messages to the chat bot
-'EVENT_WELCOME_MESSAGE' => 'http://www.hazz/chatApi/event.php', // Link to the event handler for opening a dialogue with the chat bot or inviting it to a group chat
-'EVENT_BOT_DELETE' => 'http://www.hazz/chatApi/event.php', // Link to the event handler for deleting the chat bot from the client side
-'EVENT_MESSAGE_UPDATE' => 'http://www.hazz/chatApi/event.php', // Link to the event handler for subscribing to change events
-'EVENT_MESSAGE_DELETE' => 'http://www.hazz/chatApi/event.php', // Link to the event handler for subscribing to message deletion events
+```json
+{
+    "result": true,
+    "time": {
+        "start": 1728626400.123,
+        "finish": 1728626400.234,
+        "duration": 0.111,
+        "processing": 0.045,
+        "date_start": "2024-10-11T10:00:00+02:00",
+        "date_finish": "2024-10-11T10:00:00+02:00",
+        "operating_reset_at": 1762349466,
+        "operating": 0
+    }
+}
 ```
 
-## Related Links
+## Returned Data
 
-[Rest API - Events of installation and update](./events/index.md)
+#|
+|| **Name**
+`Type` | **Description** ||
+|| **result**
+[`boolean`](../data-types.md) | `true` if the bot was updated without error ||
+|| **time**
+[`time`](../data-types.md#time) | Information about the execution time of the request ||
+|#
+
+## Error Handling
+
+HTTP Status: **400**, **403**
+
+```json
+{
+    "error": "WRONG_REQUEST",
+    "error_description": "Update fields can't be empty"
+}
+```
+
+{% include notitle [Error Handling](../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+#|
+|| **Code** | **Description** | **Value** ||
+|| `WRONG_AUTH_TYPE` | Access for this method not allowed by session authorization. | The method was called with session authorization instead of OAuth or webhook ||
+|| `ACCESS_DENIED` | Access denied! Client ID not specified | Unable to determine the application: `clientId` authorization is missing and `CLIENT_ID` was not provided ||
+|| `BOT_ID_ERROR` | Bot not found | Bot not found ||
+|| `APP_ID_ERROR` | Bot was installed by another REST application | The provided `BOT_ID` belongs to another application ||
+|| `EVENT_MESSAGE_ADD_ERROR` | Wrong handler URL | An invalid handler URL was provided for `EVENT_MESSAGE_ADD` ||
+|| `EVENT_MESSAGE_UPDATE_ERROR` | Wrong handler URL | An invalid handler URL was provided for `EVENT_MESSAGE_UPDATE` ||
+|| `EVENT_MESSAGE_DELETE_ERROR` | Wrong handler URL | An invalid handler URL was provided for `EVENT_MESSAGE_DELETE` ||
+|| `EVENT_WELCOME_MESSAGE_ERROR` | Wrong handler URL | An invalid handler URL was provided for `EVENT_WELCOME_MESSAGE` ||
+|| `EVENT_BOT_DELETE_ERROR` | Wrong handler URL | An invalid handler URL was provided for `EVENT_BOT_DELETE` ||
+|| `NAME_ERROR` | Bot name isn't specified | Both fields `NAME` and `LAST_NAME` in `PROPERTIES` are empty ||
+|| `WRONG_REQUEST` | Update fields can't be empty | No fields or handlers were provided for the update ||
+|| `WRONG_REQUEST` | Bot can't be updated | The bot cannot be updated ||
+|#
+
+{% include [System Errors](../../_includes/system-errors.md) %}
+
+## Continue Learning
+
+- [{#T}](./imbot-register.md)
+- [{#T}](./imbot-unregister.md)
+- [{#T}](./imbot-bot-list.md)
+- [{#T}](./events/index.md)

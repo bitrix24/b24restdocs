@@ -1,177 +1,434 @@
-# On Message Change ONIMBOTMESSAGEUPDATE
-
-{% note warning "We are still updating this page" %}
-
-Some data may be missing here — we will fill it in shortly.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- edits are needed for standard writing
-- parameter types are not specified
-- parameter requirements are not indicated
-- parameter tables are generated as examples. What is [39] in the example??? BOT_ID? And how to record this in the table?
-
-{% endnote %}
-
-{% endif %}
+# Event on Message Change ONIMBOTMESSAGEUPDATE
 
 > Scope: [`imbot`](../../../scopes/permissions.md)
 >
-> Who can subscribe: any user
+> Who can subscribe: user of the application that registered the chat bot
 
-The event `ONIMBOTMESSAGEUPDATE` occurs when a message is edited. This event works only in the context of a chatbot application.
+The `ONIMBOTMESSAGEUPDATE` event is triggered when a message is modified in a dialogue with the chat bot. This event operates only within the context of the chat bot application.
 
-{% note warning %}
+For bots with `TYPE=B/H` and `OPENLINE=N`, the `EVENT_MESSAGE_UPDATE` parameter is ignored in the [imbot.register](../../imbot-register.md) method. To ensure the event is triggered for such bots, bind the `EVENT_MESSAGE_UPDATE` handler using the [imbot.update](../../imbot-update.md) method.
 
-The fields described below are the contents of the [data] field in the event. The authorization data in the [auth] key contains the data of the user who initiated the event; to obtain the bot's authorization data, you need to use [data][BOT][__BOT_CODE__].
+{% note info "" %}
+
+Events will not be sent to the application until the installation is complete. [Check the application installation](../../../../settings/app-installation/installation-finish.md)
 
 {% endnote %}
 
-#|
-|| **Field** | **Description** | **Revision** ||
-|| **BOT** 
-[`unknown`](../../../data-types.md) | Array of chatbot codes to which the message is intended | ||
-|| **PARAMS** 
-[`unknown`](../../../data-types.md) | Array of message data | ||
-|| **USER** 
-[`unknown`](../../../data-types.md) | Array of the message author's data, may be empty if ID = 0 | ||
-|#
+## Event Triggering Rule
 
-## BOT/[39]???
+The event is triggered if the `EVENT_MESSAGE_UPDATE` handler is bound and the message aligns with the bot type logic:
+- `TYPE=B/H`:
+    - personal chat with the bot: the event triggers regardless of mentions,
+    - group chat: triggers only when the bot is mentioned,
+- `TYPE=S` — the event triggers regardless of mentions,
+- `TYPE=O` — the event triggers in open line chats where the bot is involved.
 
-#|
-|| **Field** | **Description** | **Revision** ||
-|| **AUTH** 
-[`unknown`](../../../data-types.md) | Parameters for authorization under the bot to perform actions | ||
-|| **BOT_ID** 
-[`unknown`](../../../data-types.md) | Bot identifier | ||
-|| **BOT_CODE** 
-[`unknown`](../../../data-types.md) | Bot code | ||
-|#
+Without `EVENT_MESSAGE_UPDATE`, the event will not trigger regardless of mentions.
 
-## AUTH
+## What the Handler Receives
 
-#|
-|| **Field** | **Description** | **Revision** ||
-|| **domain** 
-[`unknown`](../../../data-types.md) | Domain | ||
-|| **member_id** 
-[`unknown`](../../../data-types.md) | Unique identifier | ||
-|| **application_token** 
-[`unknown`](../../../data-types.md) | Application token | ||
-|#
-
-## PARAMS
-
-#|
-|| **Field** | **Description** | **Revision** ||
-|| **DIALOG_ID** 
-[`unknown`](../../../data-types.md) | Dialog identifier | ||
-|| **CHAT_TYPE** 
-[`unknown`](../../../data-types.md) | Type of message and chat, can be P (one-on-one chat), C (limited number of participants), O (public chat), S (chatbot with elevated privileges - supervisor) | ||
-|| **CHAT_ENTITY_TYPE** 
-[`unknown`](../../../data-types.md) | for chat identification (this data field can be set at the time of creation), for open line chats this field will indicate LINES | ||
-|| **CHAT_ENTITY_ID** 
-[`unknown`](../../../data-types.md) | for chat identification (this data field can be set at the time of creation) | ||
-|| **MESSAGE_ID** 
-[`unknown`](../../../data-types.md) | Message identifier | ||
-|| **MESSAGE** 
-[`unknown`](../../../data-types.md) | Message | ||
-|| **MESSAGE_ORIGINAL** 
-[`unknown`](../../../data-types.md) | Original message with BB-code of the chatbot (parameter available only in group chats) | ||
-|| **FROM_USER_ID** 
-[`unknown`](../../../data-types.md) | Identifier of the user who sent the message | ||
-|| **TO_USER_ID** 
-[`unknown`](../../../data-types.md) | Identifier of the bot or user: in a "one-on-one" dialog this will be the bot's identifier, and in a group chat - the identifier of the user to whom the message is directed. If 0 is specified, it means all participants in the chat | ||
-|| **TO_CHAT_ID** 
-[`unknown`](../../../data-types.md) | Identifier of the chat (parameter available only in group chats) | ||
-|| **LANGUAGE** 
-[`unknown`](../../../data-types.md) | Identifier of the default portal language | ||
-|#
-
-## USER
-
-#|
-|| **Field** | **Description** | **Revision** ||
-|| **ID** 
-[`unknown`](../../../data-types.md) | User identifier | ||
-|| **NAME** 
-[`unknown`](../../../data-types.md) | User's full name | ||
-|| **FIRST_NAME** 
-[`unknown`](../../../data-types.md) | User's first name | ||
-|| **LAST_NAME** 
-[`unknown`](../../../data-types.md) | User's last name | ||
-|| **WORK_POSITION** 
-[`unknown`](../../../data-types.md) | Job title | ||
-|| **GENDER** 
-[`unknown`](../../../data-types.md) | Gender, can be either M (male) or F (female) | ||
-|| **IS_BOT** 
-[`unknown`](../../../data-types.md) | This user is a bot (Y), otherwise - N. | ||
-|| **IS_CONNECTOR** 
-[`unknown`](../../../data-types.md) | This user is a connector (participant of the open line chat, client), otherwise - N. | ||
-|| **IS_NETWORK** 
-[`unknown`](../../../data-types.md) | This user is a network user (can be a participant of the open line chat, client, or just an external user), otherwise - N. | ||
-|| **IS_EXTRANET** 
-[`unknown`](../../../data-types.md) | This user is an extranet user (all users who are not intranet), otherwise - N. | ||
-|#
-
-## Examples
-
-{% include [Note about examples](../../../../_includes/examples.md) %}
+Data is transmitted as a POST request {.b24-info}
 
 {% list tabs %}
 
-- JS
+- Personal chat with the bot
 
-    ```js
-    [BOT] => Array (
-        [39] => Array (
-            [AUTH] => Array (
-                [domain] => b24.hazz
-                [member_id] => d41d8cd98f00b204e9800998ecf8427e
-                [application_token] => 8006ddd764e69deb28af0c768b10ed65
-            )
-            [BOT_ID] => 39    
-            [BOT_CODE] => newbot
-        )
-    )
-    [PARAMS] => Array (
-        [DIALOG_ID] => 1    
-        [CHAT_TYPE] => P    
-        [CHAT_ENTITY_TYPE] => 'LINES'    
-        [CHAT_ENTITY_ID] => 13    
-        [MESSAGE_ID] => 392
-        [MESSAGE] => test3
-        [MESSAGE_ORIGINAL] => [USER=39]NewBot[/USER] test3
-        [FROM_USER_ID] => 1
-        [TO_USER_ID] => 1
-        [TO_CHAT_ID] => 6
-        [LANGUAGE] => de    
-    )
-    [USER] => Array (
-        [ID] => 1
-        [NAME] => Eugene Shelenkov
-        [FIRST_NAME] => Eugene
-        [LAST_NAME] => Shelenkov
-        [WORK_POSITION] =>
-        [GENDER] => M
-        [IS_BOT] => 'Y'
-        [IS_CONNECTOR] => 'Y'
-        [IS_NETWORK] => 'Y'
-        [IS_EXTRANET] => 'Y'
-    )
+    ```json
+    {
+        "event": "ONIMBOTMESSAGEUPDATE",
+        "event_handler_id": "455",
+        "data": {
+            "BOT": {
+                "571": {
+                    "access_token": "880aa0690000071b000008440000023bf0f107a4af72f200b757ece",
+                    "expires": "1772096136",
+                    "expires_in": "3600",
+                    "scope": "imbot",
+                    "domain": "some-domain.bitrix24.com",
+                    "server_endpoint": "https://oauth.bitrix.info/rest/",
+                    "status": "F",
+                    "client_endpoint": "https://some-domain.bitrix24.com/rest/",
+                    "member_id": "bac1cd5c8940947a75e0d71b1a84e348",
+                    "refresh_token": "7889c7690000071b000008440000023bf0f107ad212748fb2268",
+                    "user_id": "571",
+                    "client_id": "a7eff906dd1d950269258a599214f69e",
+                    "application_token": "831c76b092f9f135d9b6b36c3a720757",
+                    "AUTH": {
+                        "access_token": "880aa0690000071b000008440000023bf0f107a4af72f200b757ece",
+                        "expires": "1772096136",
+                        "expires_in": "3600",
+                        "scope": "imbot",
+                        "domain": "some-domain.bitrix24.com",
+                        "server_endpoint": "https://oauth.bitrix.info/rest/",
+                        "status": "F",
+                        "client_endpoint": "https://some-domain.bitrix24.com/rest/",
+                        "member_id": "bac1cd5c8940947a75e0d71b1a84e348",
+                        "refresh_token": "7889c7690000071b000008440000023bf0f107ad212748fb2268",
+                        "user_id": "571",
+                        "client_id": "a7eff906dd1d950269258a599214f69e",
+                        "application_token": "831c76b092f9f135d9b6b36c3a720757"
+                    },
+                    "BOT_ID": "571",
+                    "BOT_CODE": "BOT"
+                }
+            },
+            "PARAMS": {
+                "ID": "84531",
+                "CHAT_ID": "1453",
+                "AUTHOR_ID": "27",
+                "MESSAGE": "How to add an observer to the task?",
+                "MESSAGE_TYPE": "P",
+                "CHAT_AUTHOR_ID": "571",
+                "CHAT_ENTITY_ID": "",
+                "CHAT_ENTITY_DATA_1": "",
+                "CHAT_ENTITY_DATA_2": "",
+                "CHAT_ENTITY_DATA_3": "",
+                "FROM_USER_ID": "27",
+                "TO_USER_ID": "571",
+                "CHAT_USER_COUNT": "2",
+                "PLATFORM_CONTEXT": "web",
+                "DIALOG_ID": "27",
+                "MESSAGE_ID": "84531",
+                "CHAT_TYPE": "P",
+                "LANGUAGE": "de"
+            },
+            "USER": {
+                "ID": "27",
+                "NAME": "Svetlana Ivanova",
+                "FIRST_NAME": "Svetlana",
+                "LAST_NAME": "Ivanova",
+                "WORK_POSITION": "",
+                "GENDER": "F",
+                "IS_BOT": "N",
+                "IS_CONNECTOR": "N",
+                "IS_NETWORK": "N",
+                "IS_EXTRANET": "N"
+            }
+        },
+        "ts": "1772092536",
+        "auth": {
+            "access_token": "880aa06900071b00084400001b0007dff360d21523410a45b4f7c12",
+            "expires": "1772096136",
+            "expires_in": "3600",
+            "scope": "imbot",
+            "domain": "some-domain.bitrix24.com",
+            "server_endpoint": "https://oauth.bitrix.info/rest/",
+            "status": "F",
+            "client_endpoint": "https://some-domain.bitrix24.com/rest/",
+            "member_id": "bac1cd5c8940947a75e0d71b1a84e348",
+            "user_id": "27",
+            "refresh_token": "7889c769000071b000084400001b00007c0063d012b7284",
+            "application_token": "831c76b092f9f135d9b6b36c3a720757"
+        }
+    }
+    ```
+
+- Group chat
+
+    ```json
+    {
+        "event": "ONIMBOTMESSAGEUPDATE",
+        "event_handler_id": "455",
+        "data": {
+            "BOT": {
+                "571": {
+                    "access_token": "2c1da06900071b00084400023bf0f107464a9d34dc68a6b185f",
+                    "expires": "1772100908",
+                    "expires_in": "3600",
+                    "scope": "imbot",
+                    "domain": "some-domain.bitrix24.com",
+                    "server_endpoint": "https://oauth.bitrix.info/rest/",
+                    "status": "F",
+                    "client_endpoint": "https://some-domain.bitrix24.com/rest/",
+                    "member_id": "bac1cd5c8940947a75e0d71b1a84e348",
+                    "refresh_token": "1c9cc76900071b00084400023bf0f107bbc698c8eca4b3e89099f4",
+                    "user_id": "571",
+                    "client_id": "a7eff906dd1d950269258a599214f69e",
+                    "application_token": "831c76b092f9f135d9b6b36c3a720757",
+                    "AUTH": {
+                        "access_token": "2c1da06900071b00084400023bf0f107464a9d34dc68a6b185f",
+                        "expires": "1772100908",
+                        "expires_in": "3600",
+                        "scope": "imbot",
+                        "domain": "some-domain.bitrix24.com",
+                        "server_endpoint": "https://oauth.bitrix.info/rest/",
+                        "status": "F",
+                        "client_endpoint": "https://some-domain.bitrix24.com/rest/",
+                        "member_id": "bac1cd5c8940947a75e0d71b1a84e348",
+                        "refresh_token": "1c9cc76900071b00084400023bf0f107bbc698c8eca4b3e89099f4",
+                        "user_id": "571",
+                        "client_id": "a7eff906dd1d950269258a599214f69e",
+                        "application_token": "831c76b092f9f135d9b6b36c3a720757"
+                    },
+                    "BOT_ID": "571",
+                    "BOT_CODE": "BOT"
+                }
+            },
+            "PARAMS": {
+                "ID": "84537",
+                "CHAT_ID": "1157",
+                "AUTHOR_ID": "27",
+                "MESSAGE": "create a task list",
+                "MESSAGE_TYPE": "C",
+                "CHAT_AUTHOR_ID": "27",
+                "CHAT_ENTITY_TYPE": "THREAD",
+                "CHAT_ENTITY_ID": "",
+                "CHAT_ENTITY_DATA_1": "",
+                "CHAT_ENTITY_DATA_2": "",
+                "CHAT_ENTITY_DATA_3": "",
+                "CHAT_USER_COUNT": "2",
+                "MENTIONED_LIST": {
+                    "571": "571"
+                },
+                "PLATFORM_CONTEXT": "web",
+                "MESSAGE_ORIGINAL": "[USER=571]NewBot[/USER], create a task list",
+                "TO_USER_ID": "571",
+                "DIALOG_ID": "chat1157",
+                "MESSAGE_ID": "84537",
+                "CHAT_TYPE": "C",
+                "LANGUAGE": "de"
+            }
+        },
+        "ts": "1772097308",
+        "auth": {
+            "access_token": "2c1da06900071b00084400001b00077e03d155e8",
+            "expires": "1772100908",
+            "expires_in": "3600",
+            "scope": "imbot",
+            "domain": "some-domain.bitrix24.com",
+            "server_endpoint": "https://oauth.bitrix.info/rest/",
+            "status": "F",
+            "client_endpoint": "https://some-domain.bitrix24.com/rest/",
+            "member_id": "bac1cd5c8940947a75e0d71b1a84e348",
+            "user_id": "27",
+            "refresh_token": "1c9cc76900071b00084400001b00007b2dbee904c1",
+            "application_token": "831c76b092f9f135d9b6b36c3a720757"
+        }
+    }
     ```
 
 {% endlist %}
 
-{% note alert "" %}
+#|
+|| **Parameter**
+`type` | **Description** ||
+|| **event**
+[`string`](../../../data-types.md) | Symbolic code of the event.
 
-Authorization tokens are not always passed to the event handler. If the hit that initiated the event could not be linked to a specific Bitrix24 user, the tokens are not passed. Always check the contents of the auth key in the code.
+In this case — `ONIMBOTMESSAGEUPDATE` ||
+|| **event_handler_id**
+[`integer`](../../../data-types.md) | Identifier of the event handler. ||
+|| **data**
+[`object`](../../../data-types.md) | Object containing event data.
 
-We recommend storing tokens obtained earlier during the application installation. Use them when working with the application interface in the form of embeds, widgets, and so on.
+The structure is described [below](#data) ||
+|| **ts**
+[`timestamp`](../../../data-types.md) | Date and time the event was sent from the [event queue](../../../events/index.md) ||
+|| **auth**
+[`object`](../../../data-types.md) | Object with user authorization parameters on behalf of which the event was triggered.
 
-{% endnote %}
+The structure is described [below](#auth) ||
+|#
+
+### Parameter data {#data}
+
+#|
+|| **Parameter**
+`type` | **Description** ||
+|| **BOT**
+[`object`](../../../data-types.md) | Set of authorization parameters for the bots to which the event is addressed. The key of the object is the bot identifier `BOT_ID`.
+
+The structure is described [below](#bot) ||
+|| **PARAMS**
+[`object`](../../../data-types.md) | Parameters of the modified message.
+
+The structure is described [below](#params) ||
+|| **USER**
+[`object`](../../../data-types.md) | Data of the message author. May be absent or empty.
+
+The structure is described [below](#user) ||
+|#
+
+### Parameter BOT {#bot}
+
+#|
+|| **Parameter**
+`type` | **Description** ||
+|| **{BOT_ID}**
+[`object`](../../../data-types.md) | Data object of a specific bot. The key corresponds to the bot identifier, for example `571`.
+
+The structure is described [below](#bot-item) ||
+|#
+
+#### Element \{BOT_ID\} {#bot-item}
+
+#|
+|| **Parameter**
+`type` | **Description** ||
+|| **access_token**
+[`string`](../../../data-types.md) | OAuth authorization token for the bot ||
+|| **expires**
+[`timestamp`](../../../data-types.md) | Moment when the token expires ||
+|| **expires_in**
+[`integer`](../../../data-types.md) | Lifetime of the token in seconds ||
+|| **scope**
+[`string`](../../../data-types.md) | Scope within which the event occurred ||
+|| **domain**
+[`string`](../../../data-types.md) | Bitrix24 address where the event occurred ||
+|| **server_endpoint**
+[`string`](../../../data-types.md) | Address of the OAuth server for REST requests ||
+|| **status**
+[`string`](../../../data-types.md) | Status indicator of the application on the account ||
+|| **client_endpoint**
+[`string`](../../../data-types.md) | General path for calling REST API methods for the account where the event occurred ||
+|| **member_id**
+[`string`](../../../data-types.md) | Unique identifier of Bitrix24 ||
+|| **refresh_token**
+[`string`](../../../data-types.md) | OAuth token for renewing the bot's authorization ||
+|| **user_id**
+[`integer`](../../../data-types.md) | Identifier of the bot user ||
+|| **client_id**
+[`string`](../../../data-types.md) | Identifier of the application issued upon registration ||
+|| **application_token**
+[`string`](../../../data-types.md) | Application token ||
+|| **AUTH**
+[`object`](../../../data-types.md) | Authorization parameters of the bot in `auth` format.
+
+The structure is described [below](#auth) ||
+|| **BOT_ID**
+[`integer`](../../../data-types.md) | Identifier of the bot ||
+|| **BOT_CODE**
+[`string`](../../../data-types.md) | Symbolic code of the bot ||
+|#
+
+### Parameter PARAMS {#params}
+
+#|
+|| **Parameter**
+`type` | **Description** ||
+|| **ID**
+[`integer`](../../../data-types.md) | Identifier of the message ||
+|| **CHAT_ID**
+[`integer`](../../../data-types.md) | Identifier of the chat ||
+|| **AUTHOR_ID**
+[`integer`](../../../data-types.md) | Identifier of the message author ||
+|| **MESSAGE**
+[`string`](../../../data-types.md) | Text of the message after modification.
+
+In a group chat, the text is transmitted without BB-code mentioning the bot ||
+|| **MESSAGE_TYPE**
+[`string`](../../../data-types.md) | Type of message
+
+Possible values:
+- `P` — private, personal chat
+- `C` — group chat
+- `O` — open chat
+- `L` — open line
+- `S` — system/notify
+- `N` — channel
+- `J` — open channel
+- `T` — comment thread
+- `A` — copilot chat
+- `B` — collab
+- `X` — external chat ||
+|| **CHAT_AUTHOR_ID**
+[`integer`](../../../data-types.md) | Identifier of the chat owner ||
+|| **CHAT_ENTITY_TYPE**
+[`string`](../../../data-types.md) | Type of the object to which the chat is linked ||
+|| **CHAT_ENTITY_ID**
+[`string`](../../../data-types.md) | Identifier of the object to which the chat is linked ||
+|| **CHAT_ENTITY_DATA_1**
+[`string`](../../../data-types.md) | Additional data of the chat object — field 1 ||
+|| **CHAT_ENTITY_DATA_2**
+[`string`](../../../data-types.md) | Additional data of the chat object — field 2 ||
+|| **CHAT_ENTITY_DATA_3**
+[`string`](../../../data-types.md) | Additional data of the chat object — field 3 ||
+|| **FROM_USER_ID**
+[`integer`](../../../data-types.md) | Identifier of the message sender. This field is filled for personal chats ||
+|| **TO_USER_ID**
+[`integer`](../../../data-types.md) | Identifier of the recipient.
+
+In a personal chat, this is the identifier of the bot; in a group chat, it is the identifier of the user or bot to whom the message is addressed.
+
+A value of `0` means all participants in the chat ||
+|| **CHAT_USER_COUNT**
+[`integer`](../../../data-types.md) | Number of participants in the chat ||
+|| **MENTIONED_LIST**
+[`object`](../../../data-types.md) | Mentions of users in the message. This parameter depends on the chat type and is absent in personal dialogues.
+
+The structure is described [below](#mentioned-list) ||
+|| **PLATFORM_CONTEXT**
+[`string`](../../../data-types.md) | Platform from which the message was sent ||
+|| **MESSAGE_ORIGINAL**
+[`string`](../../../data-types.md) | Original text of the message with BB-code mentions. This parameter depends on the chat type and is absent in personal dialogues ||
+|| **DIALOG_ID**
+[`string`](../../../data-types.md) | Identifier of the dialogue ||
+|| **MESSAGE_ID**
+[`integer`](../../../data-types.md) | Identifier of the message. Duplicates the `ID` field ||
+|| **CHAT_TYPE**
+[`string`](../../../data-types.md) | Type of chat. 
+
+Possible values:
+- `P` — private, personal chat
+- `C` — group chat
+- `O` — open chat
+- `L` — open line
+- `S` — system/notify
+- `N` — channel
+- `J` — open channel
+- `T` — comment thread
+- `A` — copilot chat
+- `B` — collab
+- `X` — external chat ||
+|| **LANGUAGE**
+[`string`](../../../data-types.md) | Default language of Bitrix24 ||
+|#
+
+#### Parameter MENTIONED_LIST {#mentioned-list}
+
+#|
+|| **Parameter**
+`type` | **Description** ||
+|| **{USER_ID}**
+[`integer`](../../../data-types.md) | Identifier of the user or bot mentioned in the message ||
+|#
+
+### Parameter USER {#user}
+
+#|
+|| **Parameter**
+`type` | **Description** ||
+|| **ID**
+[`integer`](../../../data-types.md) | Identifier of the user ||
+|| **NAME**
+[`string`](../../../data-types.md) | Full name of the user ||
+|| **FIRST_NAME**
+[`string`](../../../data-types.md) | First name of the user ||
+|| **LAST_NAME**
+[`string`](../../../data-types.md) | Last name of the user ||
+|| **WORK_POSITION**
+[`string`](../../../data-types.md) | User's position ||
+|| **GENDER**
+[`string`](../../../data-types.md) | Gender of the user: `M` or `F` ||
+|| **IS_BOT**
+[`string`](../../../data-types.md) | Indicator of a bot user: `Y` or `N` ||
+|| **IS_CONNECTOR**
+[`string`](../../../data-types.md) | Indicator of a connector user: `Y` or `N` ||
+|| **IS_NETWORK**
+[`string`](../../../data-types.md) | Indicator of an external network user: `Y` or `N` ||
+|| **IS_EXTRANET**
+[`string`](../../../data-types.md) | Indicator of an extranet user: `Y` or `N` ||
+|#
+
+### Parameter auth {#auth}
+
+{% include notitle [Table with keys in the auth array](../../../../_includes/auth-params-in-events.md) %}
+
+## Continue Learning
+
+- [{#T}](./on-imbot-message-add.md)
+- [{#T}](./on-imbot-message-delete.md)
+- [{#T}](../imbot-message-add.md)
+- [{#T}](../imbot-message-update.md)
+- [{#T}](../imbot-message-delete.md)
+- [{#T}](../../imbot-register.md)

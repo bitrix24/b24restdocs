@@ -7,9 +7,9 @@
 The method `tasks.task.get` returns information about a task by its ID.
 
 Access to the data depends on permissions:
-- administrators see all tasks,
-- managers see their employees' tasks,
-- others see only the tasks available to them.
+- Administrators can see all tasks,
+- Managers can see their employees' tasks,
+- Others can only see tasks available to them.
 
 ## Method Parameters
 
@@ -17,22 +17,28 @@ Access to the data depends on permissions:
 || **Name**
 `type` | **Description** ||
 || **taskId**
-[`integer`](../data-types.md) | Task identifier. 
+[`integer`](../data-types.md) | The ID of the task. 
 
-The task identifier can be obtained when [creating a new task](./tasks-task-add.md) or by using the [get task list method](./tasks-task-list.md) ||
+The task ID can be obtained when [creating a new task](./tasks-task-add.md) or by using the [get task list method](./tasks-task-list.md) ||
 || **select**
-[`array`](../data-types.md) | An array of fields to be returned by the method. You can specify only the fields you need. If the array contains the value `"*"`, all available fields will be returned. 
+[`array`](../data-types.md) | An array of record fields that will be returned by the method. You can specify only the fields you need. If the array contains the value `"*"`, all available fields will be returned. 
 
 By default, it returns all fields except for custom ones. It is recommended to specify specific fields in the selection, as default fields may change.
 
-To retrieve system fields `UF_CRM_TASK`, `UF_TASK_WEBDAV_FILES`, `UF_MAIL_MESSAGE`, and custom fields, include them in `SELECT`. You can find the names of custom fields using the [tasks.task.getFields](./tasks-task-get-fields.md) method.
+System fields `UF_CRM_TASK`, `UF_TASK_WEBDAV_FILES`, and `UF_MAIL_MESSAGE` are not returned by default. Specify one of these fields in `SELECT` to retrieve their values. 
 
-Include `CHAT_ID` in select to get the chat ID for the [new task card](tasks-new.md) ||
+To retrieve custom fields, include them in `SELECT`. You can find the names of custom fields using the [tasks.task.getFields](./tasks-task-get-fields.md) method. ||
 |#
+
+{% note info "" %}
+
+The field `CHAT_ID`, the chat ID for the [new task card](tasks-new.md), is returned by default. Use its value to work with [chat methods](../chats/index.md).
+
+{% endnote %}
 
 ## Code Examples
 
-{% include [Footnote on examples](../../_includes/examples.md) %}
+{% include [Examples Note](../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -262,11 +268,11 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../data-types.md) | Object containing the response data.
+[`object`](../data-types.md) | An object containing the response data.
 
 Returns an empty array `"result":[],` if the task does not exist or the user does not have access to the task ||
 || **task**
-[`object`](../data-types.md) | Object with [task description](./fields.md) after the operation is performed ||
+[`object`](../data-types.md) | An object with the [task description](./fields.md) after the operation is executed ||
 || **time**
 [`time`](../data-types.md#time) | Information about the request execution time ||
 |#
@@ -288,7 +294,7 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `0` | wrong task id | The value of the `taskId` parameter is of an incorrect type ||
+|| `0` | wrong task id | The value in the `taskId` parameter is of an incorrect type ||
 || `100` | CTaskItem All parameters in the constructor must have real class type (internal error) | The required parameter `taskId` was not provided ||
 || `100` | Invalid value {} to match with parameter {select}. Should be value of type array. (internal error) | The `select` parameter was provided empty or contains invalid values ||
 |#

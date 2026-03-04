@@ -1,4 +1,4 @@
-# Event onAppPayment
+# Event on Application Payment onAppPayment
 
 > Scope: [`basic`](../../scopes/permissions.md)
 >
@@ -16,7 +16,7 @@ Events will not be sent to the application until the installation is complete. [
 
 Data is transmitted as a POST request {.b24-info}
 
-```
+```json
 {
     "event": "ONAPPPAYMENT",
     "data": {
@@ -25,34 +25,34 @@ Data is transmitted as a POST request {.b24-info}
         "STATUS": "S",
         "PAYMENT_EXPIRED": "N",
         "DAYS": 28,
-        "LANGUAGE_ID": "de",
+        "LANGUAGE_ID": "en"
     },
     "ts": "1466439714",
     "auth": {
         "domain": "some-domain.bitrix24.com",
-        "server_endpoint": "https://oauth.bitrix.info/rest/", 
-        "client_endpoint": "https://some-domain.bitrix24.com/rest/", 
+        "server_endpoint": "https://oauth.bitrix.info/rest/",
+        "client_endpoint": "https://some-domain.bitrix24.com/rest/"
     }
 }
 ```
 
-## Request parameters
+## Request Parameters
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
-|| **event*** 
+|| **event***
 [`string`](../../data-types.md) | Symbolic event code — `ONAPPPAYMENT` ||
-|| **data*** 
-[`array`](../../data-types.md) | Payment data.
+|| **data***
+[`object`](../../data-types.md) | Payment data.
 
 The structure is described [below](#data) ||
-|| **ts*** 
-[`timestamp`](../../data-types.md) | Date and time of the event sent from the queue ||
-|| **auth*** 
-[`array`](../../data-types.md) | Authorization and account data.
+|| **ts***
+[`timestamp`](../../data-types.md) | Date and time of event dispatch from the queue ||
+|| **auth***
+[`object`](../../data-types.md) | Authorization and account data.
 
 The structure is described [below](#auth) ||
 |#
@@ -64,22 +64,22 @@ The structure is described [below](#auth) ||
 #|
 || **Name**
 `type` | **Description** ||
-|| **CODE*** 
+|| **CODE***
 [`string`](../../data-types.md) | Application code ||
-|| **VERSION*** 
+|| **VERSION***
 [`integer`](../../data-types.md) | Installed application version ||
-|| **STATUS*** 
+|| **STATUS***
 [`string`](../../data-types.md) | Application status. Possible values:
 - `F` (Free) — free
 - `D` (Demo) — demo version
 - `T` (Trial) — time-limited trial version
 - `P` (Paid) — paid application ||
-|| **PAYMENT_EXPIRED*** 
-[`string`](../../data-types.md) | [Y\|N] Flag indicating whether the paid period or trial period has expired ||
-|| **DAYS*** 
+|| **PAYMENT_EXPIRED***
+[`string`](../../data-types.md) | [Y|N] Flag indicating whether the paid period or trial period has expired ||
+|| **DAYS***
 [`integer`](../../data-types.md) | Number of days remaining until the end of the paid period or trial period ||
-|| **LANGUAGE_ID*** 
-[`string`](../../data-types.md) | Installed language: `de`, `en`, and others ||
+|| **LANGUAGE_ID***
+[`string`](../../data-types.md) | Installed language: `en`, `de`, and others ||
 |#
 
 ### Parameter auth {#auth}
@@ -89,17 +89,17 @@ The structure is described [below](#auth) ||
 #|
 || **Name**
 `type` | **Description** ||
-|| **domain*** 
+|| **domain***
 [`string`](../../data-types.md) | Bitrix24 account address ||
-|| **server_endpoint*** 
-[`string`](../../data-types.md) | Authorization server address for token renewal ||
-|| **client_endpoint*** 
+|| **server_endpoint***
+[`string`](../../data-types.md) | Authorization server address for token refresh ||
+|| **client_endpoint***
 [`string`](../../data-types.md) | Common path for API method calls to the account ||
-|| **member_id*** 
+|| **member_id***
 [`string`](../../data-types.md) | Unique account identifier ||
 |#
 
-## Continue exploring
+## Continue Learning
 
 - [{#T}](../../events/index.md)
 - [{#T}](../../events/event-bind.md)

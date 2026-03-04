@@ -56,7 +56,7 @@ array(
         'expires_in' => '3600',
         'scope' => 'entity,im',
         'domain' => 'portal.bitrix24.com',
-        'server_endpoint' => 'https://oauth.bitrix24.tech/rest/',
+        'server_endpoint' => 'https://oauth.bitrix.info/rest/',
         'status' => 'F',
         'client_endpoint' => 'https://portal.bitrix24.com/rest/',
         'member_id' => 'a223c6b3710f85df22e9377d6c4f7553',
@@ -94,7 +94,7 @@ Example request:
     "auth": {
         "domain": "portal.bitrix24.com",
         "client_endpoint": "https://portal.bitrix24.com/rest/",
-        "server_endpoint": "https://oauth.bitrix24.tech/rest/",
+        "server_endpoint": "https://oauth.bitrix.info/rest/",
         "member_id": "d897063e1ce7c5eb9f04b9751eef5915",
         "application_token": "jvh9y1ulvt2m6k5or90v9mg8nn32ozas"
     }

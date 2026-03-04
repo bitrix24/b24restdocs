@@ -4,7 +4,7 @@
 >
 > Who can subscribe: any user
 
-The `onUserAdd` event is triggered when a user is added to Bitrix24. The event occurs not after the invitation, but after the user logs into the account and completes the registration.
+The `onUserAdd` event is triggered when a user is added to Bitrix24. The event occurs not after the invitation, but after the user logs into the account and completes the registration process.
 
 {% note info "" %}
 
@@ -14,9 +14,9 @@ Events will not be sent to the application until the installation is complete. [
 
 ## What the handler receives
 
-Data is transmitted in the form of a POST request {.b24-info}
+Data is transmitted as a POST request {.b24-info}
 
-```
+```json
 {
     "event": "ONUSERADD",
     "data": {
@@ -52,13 +52,13 @@ Data is transmitted in the form of a POST request {.b24-info}
 || **event***
 [`string`](../../data-types.md) | Symbolic event code — `ONUSERADD` ||
 || **data***
-[`array`](../../data-types.md) | Data of the added user.
+[`object`](../../data-types.md) | Data of the added user.
 
 The structure is described [below](#data) ||
 || **ts***
 [`timestamp`](../../data-types.md) | Date and time the event was sent ||
 || **auth***
-[`array`](../../data-types.md) | Authorization and account data.
+[`object`](../../data-types.md) | Authorization and account data.
 
 The structure is described [below](#auth) ||
 |#
@@ -93,7 +93,7 @@ Possible values:
 || **DATE_REGISTER***
 [`string`](../../data-types.md) | Registration date in `ISO 8601` format ||
 || **WORK_POSITION**
-[`string`](../../data-types.md) | User's position ||
+[`string`](../../data-types.md) | User's job title ||
 || **UF_EMPLOYMENT_DATE**
 [`string`](../../data-types.md) | Employment date in `YYYY-MM-DD` format ||
 |#
@@ -116,11 +116,11 @@ Some fields may be absent or have a value of `null` if the application does not 
 || **expires_in***
 [`integer`](../../data-types.md) | Time in seconds until the token expires ||
 || **scope***
-[`string`](../../data-types.md) | [Scope](../../scopes/permissions.md) within which the event occurred ||
+[`string`](../../data-types.md) | [Scope](../../scopes/permissions.md) under which the event occurred ||
 || **domain***
-[`string`](../../data-types.md) | Address of Bitrix24 where the event occurred ||
+[`string`](../../data-types.md) | Bitrix24 address where the event occurred ||
 || **server_endpoint***
-[`string`](../../data-types.md) | Address of the Bitrix24 authorization server needed to refresh OAuth 2.0 tokens ||
+[`string`](../../data-types.md) | Bitrix24 authorization server address needed for refreshing OAuth 2.0 tokens ||
 || **status***
 [`string`](../../data-types.md) | Status of the application that subscribed to this event:
 
@@ -133,12 +133,12 @@ Some fields may be absent or have a value of `null` if the application does not 
 || **member_id***
 [`string`](../../data-types.md) | Identifier of Bitrix24 where the event occurred ||
 || **refresh_token***
-[`string`](../../data-types.md) | Token for refreshing authorization [OAuth 2.0](../../../settings/oauth/index.md) ||
+[`string`](../../data-types.md) | Token for renewing authorization [OAuth 2.0](../../../settings/oauth/index.md) ||
 || **application_token***
-[`string`](../../data-types.md) | Token for secure event handling ||
+[`string`](../../data-types.md) | Token for secure event processing ||
 |#
 
-## Continue exploring
+## Continue your exploration
 
 - [{#T}](../../events/index.md)
 - [{#T}](../../events/event-bind.md)

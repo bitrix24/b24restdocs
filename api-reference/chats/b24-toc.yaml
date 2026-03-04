@@ -9,11 +9,11 @@ items:
     href: im-chat-get.md
   - name: Get Chat Data
     href: im-dialog-get.md
-  - name: Update Chat
+  - name: Modify Chat
     include:
       path: chat-update/b24-toc.yaml
       mode: link
-  - name: Get Shortened List of Recent Chats
+  - name: Get a Shortened List of Recent Chats
     href: im-recent-get.md
   - name: Get List of Chats
     href: im-recent-list.md
@@ -41,8 +41,6 @@ items:
     include:
       path: notifications/b24-toc.yaml
       mode: link
-  - name: Get Counters
-    href: im-counters-get.md
   - name: Users
     include:
       path: users/b24-toc.yaml
@@ -51,6 +49,10 @@ items:
     include:
       path: departments/b24-toc.yaml
       mode: link
+  - name: Get Counters
+    href: im-counters-get.md
+  - name: Get IM API Revisions
+    href: im-revision-get.md      
   - name: Widgets
     include:
       path: widgets/b24-toc.yaml

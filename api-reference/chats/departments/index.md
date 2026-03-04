@@ -2,9 +2,9 @@
 
 The methods `im.department.*` retrieve information about users in departments from the company's structure. They only work for company employees.
 
-> Quick navigation: [all methods and events](#all-methods)
+> Quick Navigation: [All Methods and Events](#all-methods)
 
-## Connection of Methods with Other Objects
+## Relationship of Methods with Other Objects
 
 **Department.** The methods obtain information about users by the department identifier `ID`. You can get the department identifier using the [get department list method](../../departments/department-get.md) or the [search departments by name method](../search/im-search-department-list.md).
 
@@ -26,7 +26,7 @@ By using the parameter `USER_DATA = 'Y'`, you can get detailed information about
 
 > Scope: [`im`](../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: any intranet user, except for bots
 
 #|
 || **Method** | **Description** ||

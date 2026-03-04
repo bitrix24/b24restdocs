@@ -1,83 +1,75 @@
-# Get the list of colleagues of the current user im.department.colleagues.list
-
-{% note warning "We are still updating this page" %}
-
-Some data may be missing — we will fill it in shortly.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- corrections needed for writing standards
-- parameter types are not specified
-- examples are missing
-- response in case of error is absent
-
-{% endnote %}
-
-{% endif %}
+# Get the List of Colleagues for the Current User im.department.colleagues.list
 
 > Scope: [`im`](../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: any intranet user, except bots
 
-The method `im.department.colleagues.list` retrieves the list of colleagues of the current user. For a manager, the method will return a list of subordinates and all managers.
+The method `im.department.colleagues.list` retrieves the list of colleagues for the current user. For a manager, the method will return a list of subordinates and all supervisors.
+
+## Method Parameters
 
 #|
-|| **Parameter** | **Example** | **Description** | **Revision** ||
+|| **Name**
+`type` | **Description** ||
 || **USER_DATA**
-[`unknown`](../../data-types.md) | `N` | Load user data | 19 ||
+[`string`](../../data-types.md) | Return detailed user data. 
+
+Possible values:
+- `Y` — yes
+- `N` — no ||
 || **OFFSET**
-[`unknown`](../../data-types.md) | `0` | Offset for user selection | 19 ||
+[`integer`](../../data-types.md) | Offset for user selection ||
 || **LIMIT**
-[`unknown`](../../data-types.md) | `10` | Limit for user selection | 19 ||
+[`integer`](../../data-types.md) | Number of items in the selection. Default is `10`. Maximum value is `50` ||
 |#
 
-- If the parameter `USER_DATA = Y` is passed, the response will return an array of objects with user information instead of an array of identifiers.
-- The method supports standard pagination of the Bitrix24 Rest API, but in addition, it allows building navigation using the `OFFSET` and `LIMIT` parameters.
+## Code Examples
 
-## Examples
+{% include [Examples Note](../../../_includes/examples.md) %}
 
 {% list tabs %}
+
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+      -H "Content-Type: application/json" \
+      -H "Accept: application/json" \
+      -d '{"USER_DATA":"Y","OFFSET":0,"LIMIT":5}' \
+      https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/im.department.colleagues.list
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+      -H "Content-Type: application/json" \
+      -H "Accept: application/json" \
+      -d '{"USER_DATA":"Y","OFFSET":0,"LIMIT":5,"auth":"**put_access_token_here**"}' \
+      https://**put_your_bitrix24_address**/rest/im.department.colleagues.list
+    ```
 
 - JS
 
     ```js
-    // callListMethod: Retrieves all data at once. Use only for small selections (< 1000 items) due to high memory usage.
-    
-    try {
-      const response = await $b24.callListMethod(
-        'im.department.colleagues.list',
-        { USER_DATA: 'Y' },
-        (progress) => { console.log('Progress:', progress) }
-      )
-      const items = response.getData() || []
-      for (const entity of items) { console.log('Entity:', entity) }
-    } catch (error) {
-      console.error('Request failed', error)
+    try
+    {
+        const response = await $b24.callMethod(
+            'im.department.colleagues.list',
+            {
+                USER_DATA: 'Y',
+                OFFSET: 0,
+                LIMIT: 5,
+            }
+        );
+
+        console.log(response.getData().result);
+        console.log(response.getData().total);
+        console.log(response.getData().next);
     }
-    
-    // fetchListMethod: Retrieves data in parts using an iterator. Use it for large data volumes to optimize memory usage.
-    
-    try {
-      const generator = $b24.fetchListMethod('im.department.colleagues.list', { USER_DATA: 'Y' }, 'ID')
-      for await (const page of generator) {
-        for (const entity of page) { console.log('Entity:', entity) }
-      }
-    } catch (error) {
-      console.error('Request failed', error)
-    }
-    
-    // callMethod: Manually controls pagination through the start parameter. Use it for precise control of request batches. For large datasets, it is less efficient than fetchListMethod.
-    
-    try {
-      const response = await $b24.callMethod('im.department.colleagues.list', { USER_DATA: 'Y' }, 0)
-      const result = response.getData().result || []
-      for (const entity of result) { console.log('Entity:', entity) }
-    } catch (error) {
-      console.error('Request failed', error)
+    catch (error)
+    {
+        console.error(error);
     }
     ```
 
@@ -90,20 +82,20 @@ The method `im.department.colleagues.list` retrieves the list of colleagues of t
             ->call(
                 'im.department.colleagues.list',
                 [
-                    'USER_DATA' => 'Y'
+                    'USER_DATA' => 'Y',
+                    'OFFSET' => 0,
+                    'LIMIT' => 5,
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
-        echo 'users: ' . print_r($result->data(), true);
-        echo 'total: ' . $result->total();
-    
+
+        echo 'Success: ' . print_r($result, true);
     } catch (Throwable $e) {
         error_log($e->getMessage());
-        echo 'Error fetching colleagues list: ' . $e->getMessage();
+        echo 'Error: ' . $e->getMessage();
     }
     ```
 
@@ -113,17 +105,21 @@ The method `im.department.colleagues.list` retrieves the list of colleagues of t
     BX24.callMethod(
         'im.department.colleagues.list',
         {
-            USER_DATA: 'Y'
+            USER_DATA: 'Y',
+            OFFSET: 0,
+            LIMIT: 5,
         },
-        function(result){
-            if(result.error())
+        function(result)
+        {
+            if (result.error())
             {
-                console.error(result.error().ex);
+                console.error(result.error());
             }
             else
             {
-                console.log('users', result.data());
-                console.log('total', result.total());
+                console.log(result.data());
+                console.log(result.total());
+                console.log(result.answer.next);
             }
         }
     );
@@ -131,100 +127,150 @@ The method `im.department.colleagues.list` retrieves the list of colleagues of t
 
 - PHP CRest
 
-    {% include [Explanation about restCommand](../_includes/rest-command.md) %}
-
     ```php
-    $result = restCommand(
+    require_once('crest.php');
+
+    $result = CRest::call(
         'im.department.colleagues.list',
-        Array(
-            'USER_DATA' => 'Y'
-        ),
-        $_REQUEST[
-            "auth"
+        [
+            'USER_DATA' => 'Y',
+            'OFFSET' => 0,
+            'LIMIT' => 5,
         ]
-    );    
+    );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
     ```
-
-- cURL
-
-    // example for cURL
 
 {% endlist %}
 
-{% include [Footnote about examples](../../../_includes/examples.md) %}
+## Response Handling
 
-## Response in case of success
+HTTP Status: **200**
 
-With the option `USER_DATA = N`:
+- When `USER_DATA = 'N'`:
+
+    ```json
+    {
+        "result": [9,547,408,103,290],
+        "next": 5,
+        "total": 7,
+        "time": {
+            "start": 1772520802,
+            "finish": 1772520802.36194,
+            "duration": 0.3619399070739746,
+            "processing": 0,
+            "date_start": "2026-03-03T09:53:22+01:00",
+            "date_finish": "2026-03-03T09:53:22+01:00",
+            "operating_reset_at": 1772521402,
+            "operating": 0
+        }
+    }
+    ```
+
+- When `USER_DATA = 'Y'`:
+
+    ```json
+    {
+        "result": [
+            {
+                "id": 9,
+                "active": true,
+                "name": "Anna Smith",
+                "first_name": "Anna",
+                "last_name": "Smith",
+                "work_position": "Project Manager",
+                "color": "#58cc47",
+                "avatar": "https://mysite.com/upload/avatars/anna-smith.jpg",
+                "avatar_hr": "https://mysite.com/upload/avatars/anna-smith.jpg",
+                "gender": "F",
+                "birthday": "",
+                "extranet": false,
+                "network": false,
+                "bot": false,
+                "connector": false,
+                "external_auth_id": "socservices",
+                "status": "online",
+                "idle": false,
+                "last_activity_date": "2023-03-10T17:16:44+01:00",
+                "mobile_last_date": false,
+                "desktop_last_date": false,
+                "absent": false,
+                "departments": [
+                    1,
+                    667
+                ],
+                "phones": false,
+                "bot_data": null,
+                "type": "user",
+                "website": "",
+                "email": "anna.smith@mysite.com"
+            },
+            ... // description for each user
+        ],
+        "next": 5,
+        "total": 7,
+        "time": {
+            "start": 1772521273,
+            "finish": 1772521273.83899,
+            "duration": 0.8389899730682373,
+            "processing": 0,
+            "date_start": "2026-03-03T10:01:13+01:00",
+            "date_finish": "2026-03-03T10:01:13+01:00",
+            "operating_reset_at": 1772521873,
+            "operating": 0
+        }
+    }
+    ```
+
+### Returned Data
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`array`](../../data-types.md) | List of users. 
+- When `USER_DATA = 'N'`, contains user IDs
+- When `USER_DATA = 'Y'`, contains user objects [(detailed description)](#user-object) ||
+|| **total**
+[`integer`](../../data-types.md) | Total number of users in the selection ||
+|| **next**
+[`integer`](../../data-types.md) | Offset for retrieving the next page. This field is returned if there is a next page ||
+|| **time**
+[`time`](../../data-types.md#time) | Information about the execution time of the request ||
+|#
+
+#### User Object {#user-object}
+
+{% include [User Object Tables](./_includes/user-object-tables.md) %}
+
+## Error Handling
+
+HTTP Status: **403**
 
 ```json
 {
-    "result": [1],
-    "total": 1
-}    
+    "error": "ACCESS_ERROR",
+    "error_description": "Only intranet users have access to this method."
+}
 ```
 
-With the option `USER_DATA = Y`:
+{% include notitle [Error Handling](../../../_includes/error-info.md) %}
 
-```json
-{    
-    "result": [
-        {
-            "id": 1,
-            "name": "Eugene Shelenkov",
-            "first_name": "Eugene",
-            "last_name": "Shelenkov",
-            "work_position": "",
-            "color": "#df532d",
-            "avatar": "http://192.168.2.232/upload/resize_cache/main/1d3/100_100_2/shelenkov.png",
-            "gender": "M",
-            "birthday": "",
-            "extranet": false,
-            "network": false,
-            "bot": false,
-            "connector": false,
-            "external_auth_id": "default",
-            "status": "online",
-            "idle": false,
-            "last_activity_date": "2018-01-29T17:35:31+02:00",
-            "desktop_last_date": false,
-            "mobile_last_date": false,
-            "departments": [
-             50
-            ],
-            "absent": false,
-            "phones": {
-             "work_phone": "",
-             "personal_mobile": "",
-             "personal_phone": ""
-            }
-        }
-    ],
-    "total": 1
-}    
-```
+### Possible Error Codes
 
-### Description of keys
+#|
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `403` | `ACCESS_ERROR` | Only intranet users have access to this method | The method is not available for extranet users and bots ||
+|#
 
-- `id` – user identifier
-- `name` – user's full name
-- `first_name` – user's first name
-- `last_name` – user's last name
-- `work_position` – position
-- `color` – user's color in hex format
-- `avatar` – link to avatar (if empty, it means the avatar is not set)
-- `gender` – user's gender
-- `birthday` – user's birthday in DD-MM format, if empty – not set
-- `extranet` – indicator of external extranet user (`true/false`)
-- `network` – indicator of Bitrix24.Network user (`true/false`)
-- `bot` – indicator of bot (`true/false`)
-- `connector` – indicator of open channel user (`true/false`)
-- `external_auth_id` – external authorization code
-- `status` – user status. Always displayed as online, even if the user has set the status to "Do Not Disturb". The "Do Not Disturb" status only affects notification receipt and is not visible to other users
-- `idle` – date when the user stepped away from the computer, in ATOM format (if not set, `false`)
-- `last_activity_date` – date of the user's last action in ATOM format
-- `desktop_last_date` – date of the last action in the desktop application in ATOM format (if not set, `false`)
-- `mobile_last_date` – date of the last action in the mobile application in ATOM format (if not set, `false`)
-- `absent` – date until which the user is on vacation, in ATOM format (if not set, `false`)
-- `phones` – array of phone numbers: `work_phone` – work phone, `personal_mobile` – mobile phone, `personal_phone` – home phone
+{% include [System Errors](../../../_includes/system-errors.md) %}
 
+## Continue Learning
+
+- [{#T}](./im-department-get.md)
+- [{#T}](./im-department-managers-get.md)
+- [{#T}](./im-department-employees-get.md)
+- [{#T}](./im-department-colleagues-list.md)

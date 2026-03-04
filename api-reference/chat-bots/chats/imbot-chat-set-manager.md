@@ -1,14 +1,14 @@
-# Get the List of Chat Participants imbot.chat.user.list
+# Assign or Revoke Chat Administrator Rights imbot.chat.setManager
 
 > Scope: [`imbot`](../../scopes/permissions.md)
 >
-> Who can execute the method: an authorized user of the application that registered the chat bot
+> Who can execute the method: chat owner
 
-The method `imbot.chat.user.list` returns a list of identifiers for chat participants.
+The method `imbot.chat.setManager` assigns a chat administrator or revokes administrator rights from a chat participant.
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -17,8 +17,18 @@ The method `imbot.chat.user.list` returns a list of identifiers for chat partici
 [`integer`](../../data-types.md) | Identifier of the chat.
 
 The identifier can be obtained using the [imbot.chat.get](./imbot-chat-get.md) method. ||
+|| **USER_ID***
+[`integer`](../../data-types.md) | Identifier of the user for whom the administrator status is being changed.
+
+The user identifier can be obtained using the [imbot.chat.user.list](./imbot-chat-user-list.md) method. ||
+|| **IS_MANAGER**
+[`string`](../../data-types.md) | Administrator status. Possible values:
+- `Y` — assign as administrator
+- `N` — revoke administrator rights
+
+Default is `Y`. ||
 || **BOT_ID**
-[`integer`](../../data-types.md) | Identifier of the chat bot. You can get the bot identifier using the [imbot.bot.list](../imbot-bot-list.md) method.
+[`integer`](../../data-types.md) | Identifier of the chat bot. The bot identifier can be obtained using the [imbot.bot.list](../imbot-bot-list.md) method.
 
 If the parameter is not provided, the method searches for the first bot registered by the current application. ||
 || **CLIENT_ID**
@@ -29,7 +39,7 @@ If provided, it is used as `custom{CLIENT_ID}` to identify the application. ||
 
 ## Code Examples
 
-{% include [Note on Examples](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -39,8 +49,8 @@ If provided, it is used as `custom{CLIENT_ID}` to identify the application. ||
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"CHAT_ID":2725}' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/imbot.chat.user.list
+    -d '{"CHAT_ID":2725,"USER_ID":1269,"IS_MANAGER":"Y"}' \
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/imbot.chat.setManager
     ```
 
 - cURL (OAuth)
@@ -49,8 +59,8 @@ If provided, it is used as `custom{CLIENT_ID}` to identify the application. ||
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"CHAT_ID":2725,"auth":"**put_access_token_here**"}' \
-    https://**put_your_bitrix24_address**/rest/imbot.chat.user.list
+    -d '{"CHAT_ID":2725,"USER_ID":1269,"IS_MANAGER":"Y","auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/imbot.chat.setManager
     ```
 
 - JS
@@ -59,14 +69,16 @@ If provided, it is used as `custom{CLIENT_ID}` to identify the application. ||
     try
     {
         const response = await $b24.callMethod(
-            'imbot.chat.user.list',
+            'imbot.chat.setManager',
             {
                 CHAT_ID: 2725,
+                USER_ID: 1269,
+                IS_MANAGER: 'Y'
             }
         );
         
         const result = response.getData().result;
-        console.log('Chat user list:', result);
+        console.log(result);
         
         processResult(result);
     }
@@ -83,9 +95,11 @@ If provided, it is used as `custom{CLIENT_ID}` to identify the application. ||
         $response = $b24Service
             ->core
             ->call(
-                'imbot.chat.user.list',
+                'imbot.chat.setManager',
                 [
-                    'CHAT_ID' => 2725
+                    'CHAT_ID' => 2725,
+                    'USER_ID' => 1269,
+                    'IS_MANAGER' => 'Y'
                 ]
             );
 
@@ -98,7 +112,7 @@ If provided, it is used as `custom{CLIENT_ID}` to identify the application. ||
 
     } catch (Throwable $e) {
         error_log($e->getMessage());
-        echo 'Error getting chat user list: ' . $e->getMessage();
+        echo 'Error setting chat manager: ' . $e->getMessage();
     }
     ```
 
@@ -106,9 +120,11 @@ If provided, it is used as `custom{CLIENT_ID}` to identify the application. ||
 
     ```js
     BX24.callMethod(
-        'imbot.chat.user.list',
+        'imbot.chat.setManager',
         {
             CHAT_ID: 2725,
+            USER_ID: 1269,
+            IS_MANAGER: 'Y'
         },
         function (result)
         {
@@ -126,9 +142,11 @@ If provided, it is used as `custom{CLIENT_ID}` to identify the application. ||
     require_once('crest.php');
 
     $result = CRest::call(
-        'imbot.chat.user.list',
+        'imbot.chat.setManager',
         [
-            'CHAT_ID' => 2725
+            'CHAT_ID' => 2725,
+            'USER_ID' => 1269,
+            'IS_MANAGER' => 'Y'
         ]
     );
 
@@ -145,15 +163,15 @@ HTTP Status: **200**
 
 ```json
 {
-    "result": [1269, 1271, 1291],
+    "result": true,
     "time": {
-        "start": 1771936514,
-        "finish": 1771936514.776951,
-        "duration": 0.7769510746002197,
+        "start": 1772543706,
+        "finish": 1772543706.871191,
+        "duration": 0.8711910247802734,
         "processing": 0,
-        "date_start": "2026-02-24T15:35:14+01:00",
-        "date_finish": "2026-02-24T15:35:14+01:00",
-        "operating_reset_at": 1771937114,
+        "date_start": "2026-03-03T16:15:06+01:00",
+        "date_finish": "2026-03-03T16:15:06+01:00",
+        "operating_reset_at": 1772544306,
         "operating": 0
     }
 }
@@ -165,45 +183,46 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`array`](../../data-types.md) | Array of chat participant identifiers. ||
+[`boolean`](../../data-types.md) | `true` if administrator rights have been changed. ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time. ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**, **403**
+HTTP Status: **400**
 
 ```json
 {
-    "error": "CHAT_ID_EMPTY",
-    "error_description": "Chat ID can't be empty"
+    "error": "WRONG_REQUEST",
+    "error_description": "Change manager can only owner and user must be member in chat"
 }
 ```
 
-{% include notitle [Error Handling](../../../_includes/error-info.md) %}
+{% include notitle [error handling](../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
 || **Code** | **Description** | **Value** ||
 || `CHAT_ID_EMPTY` | Chat ID can't be empty | `CHAT_ID` not provided. ||
-|| `ACCESS_ERROR` | Action unavailable | Operation not available for this chat. ||
+|| `USER_ID_EMPTY` | User ID can't be empty | `USER_ID` not provided. ||
+|| `WRONG_REQUEST` | Change manager can only owner and user must be member in chat | Only the chat owner can change administrator rights, and the user must be a member of the chat. ||
 || `BOT_ID_ERROR` | Bot not found | Chat bot not found. ||
-|| `APP_ID_ERROR` | Bot was installed by another REST application | Chat bot installed by another application. ||
+|| `APP_ID_ERROR` | Bot was installed by another rest application | Chat bot was installed by another application. ||
 |#
 
-{% include [System Errors](../../../_includes/system-errors.md) %}
+{% include [system errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
 - [{#T}](./imbot-chat-add.md)
 - [{#T}](./imbot-chat-user-add.md)
-- [{#T}](./imbot-chat-set-manager.md)
 - [{#T}](./imbot-chat-update-title.md)
 - [{#T}](./imbot-chat-update-avatar.md)
 - [{#T}](./imbot-chat-update-color.md)
 - [{#T}](./imbot-chat-get.md)
 - [{#T}](./imbot-dialog-get.md)
+- [{#T}](./imbot-chat-user-list.md)
 - [{#T}](./imbot-chat-user-delete.md)
 - [{#T}](./imbot-chat-leave.md)

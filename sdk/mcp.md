@@ -41,7 +41,7 @@ The server is accessible without authorization.
 
 4. When composing a request, add the `mcp.json` file to the context.
 
-Alternative way to add MCP:
+**Alternative way to add MCP.** When you click the button below, you will be redirected to Cursor. It will automatically open and prompt you to add a server with a pre-filled configuration.
 
 ```html
 <a href="https://cursor.com/en-US/install-mcp?name=b24-dev-mcp&config=eyJ1cmwiOiJodHRwczovL21jcC1kZXYuYml0cml4MjQuY29tL21jcCIsInRpbWVvdXQiOjMwMDAwfQ%3D%3D"><img src="https://cursor.com/deeplink/mcp-install-dark.svg" alt="Add b24-dev-mcp MCP server to Cursor" height="32" /></a>

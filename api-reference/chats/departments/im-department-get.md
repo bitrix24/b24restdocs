@@ -1,63 +1,75 @@
-# Get information about the department im.department.get
-
-{% note warning "We are still updating this page" %}
-
-Some data may be missing — we will fill it in shortly.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- adjustments needed for writing standards
-- parameter types are not specified
-- examples are missing
-
-{% endnote %}
-
-{% endif %}
+# Get Information About the Department im.department.get
 
 > Scope: [`im`](../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: any intranet user, except bots
 
-The method `im.department.get` retrieves data about the department.
+The method `im.department.get` retrieves data about departments by their `ID` identifiers.
+
+## Method Parameters
+
+{% include [Note on Required Parameters](../../../_includes/required.md) %}
 
 #|
-|| **Parameter** | **Example** | **Description** | **Revision** ||
-|| **ID^*^**
-[`unknown`](../../data-types.md) | `[51]` | Department identifiers | 18 ||
+|| **Name**
+`type` | **Description** ||
+|| **ID***
+[`array`](../../data-types.md) | An array of department identifiers. You can pass a string with a JSON array of identifiers.
+
+You can obtain the department ID using the [get department list method](../../departments/department-get.md) or the [search departments by name method](../search/im-search-department-list.md) ||
 || **USER_DATA**
-[`unknown`](../../data-types.md) | `N` | Load user data | 18 ||
+[`string`](../../data-types.md) | Return data about the department head. 
+
+Possible values:
+- `Y` — yes
+- `N` — no 
+||
 |#
 
-{% include [Footnote about parameters](../../../_includes/required.md) %}
+## Code Examples
 
-- If the parameter `USER_DATA = Y` is passed, data about the manager will be included in the result.
-
-## Examples
+{% include [Note on Examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
+
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+      -H "Content-Type: application/json" \
+      -H "Accept: application/json" \
+      -d '{"ID":[3,7],"USER_DATA":"Y"}' \
+      https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/im.department.get
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+      -H "Content-Type: application/json" \
+      -H "Accept: application/json" \
+      -d '{"ID":[3,7],"USER_DATA":"Y","auth":"**put_access_token_here**"}' \
+      https://**put_your_bitrix24_address**/rest/im.department.get
+    ```
 
 - JS
 
     ```js
     try
     {
-    	const response = await $b24.callMethod(
-    		'im.department.get',
-    		{
-    			ID: [51]
-    		}
-    	);
-    	
-    	const result = response.getData().result;
-    	console.log(result);
+        const response = await $b24.callMethod(
+            'im.department.get',
+            {
+                ID: [3, 7],
+                USER_DATA: 'Y'
+            }
+        );
+
+        console.log(response.getData().result);
     }
-    catch( error )
+    catch (error)
     {
-    	console.error(error.ex);
+        console.error(error);
     }
     ```
 
@@ -70,23 +82,19 @@ The method `im.department.get` retrieves data about the department.
             ->call(
                 'im.department.get',
                 [
-                    'ID' => [51]
+                    'ID' => [3, 7],
+                    'USER_DATA' => 'Y',
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
-        if ($result->error()) {
-            echo 'Error: ' . $result->error()->ex;
-        } else {
-            echo 'Success: ' . print_r($result->data(), true);
-        }
-    
+
+        echo 'Success: ' . print_r($result, true);
     } catch (Throwable $e) {
         error_log($e->getMessage());
-        echo 'Error getting department information: ' . $e->getMessage();
+        echo 'Error: ' . $e->getMessage();
     }
     ```
 
@@ -96,12 +104,14 @@ The method `im.department.get` retrieves data about the department.
     BX24.callMethod(
         'im.department.get',
         {
-            ID: [51]
+            ID: [3, 7],
+            USER_DATA: 'Y'
         },
-        function(result){
-            if(result.error())
+        function(result)
+        {
+            if (result.error())
             {
-                console.error(result.error().ex);
+                console.error(result.error());
             }
             else
             {
@@ -113,70 +123,196 @@ The method `im.department.get` retrieves data about the department.
 
 - PHP CRest
 
-    {% include [Explanation about restCommand](../_includes/rest-command.md) %}
-
     ```php
-    $result = restCommand(
+    require_once('crest.php');
+
+    $result = CRest::call(
         'im.department.get',
-        Array(
-            'ID' => [51],
-        ),
-        $_REQUEST[
-            "auth"
+        [
+            'ID' => [3, 7],
+            'USER_DATA' => 'Y',
         ]
-    );    
+    );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
     ```
-
-- cURL
-
-    // example for cURL
 
 {% endlist %}
 
-{% include [Footnote about examples](../../../_includes/examples.md) %}
+## Response Handling
 
-## Response on success
+HTTP Status: **200**
 
-```json
-{
-    "result": [
-        {
-            "id": 51,
-            "name": "New York Branch",
-            "full_name": "New York Branch / Bitrix",
-            "manager_user_id": 11
+- When `USER_DATA = 'N'`:
+
+    ```json
+    {
+        "result": [
+            {
+                "id": 7,
+                "name": "Development Department",
+                "full_name": "Development Department / mysite.com",
+                "manager_user_id": 103
+            },
+            {
+                "id": 3,
+                "name": "Finance Department",
+                "full_name": "Finance Department / mysite.com",
+                "manager_user_id": 13
+            }
+        ],
+        "time": {
+            "start": 1772527966,
+            "finish": 1772527966.081649,
+            "duration": 0.0816490650177002,
+            "processing": 0,
+            "date_start": "2026-03-03T11:52:46+01:00",
+            "date_finish": "2026-03-03T11:52:46+01:00",
+            "operating_reset_at": 1772528566,
+            "operating": 0
         }
-    ]
-}    
-```
+    }
+    ```
 
-### Description of keys
+- When `USER_DATA = 'Y'`:
 
-- `id` – department identifier
-- `name` – short name of the department
-- `full_name` – full name of the department
-- `manager_user_data` – object describing manager data (not available if `USER_DATA != 'Y'`):
-- `id` – user identifier
-- `name` – user's first and last name
-- `first_name` – user's first name
-- `last_name` – user's last name
-- `work_position` – position
-- `color` – user's color in hex format
-- `avatar` – link to avatar (if empty, avatar is not set)
-- `gender` – user's gender
-- `birthday` – user's birthday in DD-MM format, if empty – not set
-- `extranet` – indicator of external extranet user (`true/false`)
-- `network` – indicator of Bitrix24.Network user (`true/false`)
-- `bot` – indicator of bot (`true/false`)
-- `connector` – indicator of open channel user (`true/false`)
-- `external_auth_id` – external authorization code
-- `status` – user status. Always displayed as online, even if the user has set the status to "Do Not Disturb". The "Do Not Disturb" status only affects notification receipt and is not visible to other users.
-- `idle` – date when the user stepped away from the computer, in ATOM format (if not set, `false`)
-- `last_activity_date` – date of the user's last action in ATOM format
-- `mobile_last_date` – date of the last action in the mobile app in ATOM format (if not set, `false`)
-- `absent` – date until which the user is on vacation, in ATOM format (if not set, `false`)
+    ```json
+    {
+        "result": [
+            {
+                "id": 7,
+                "name": "Development Department",
+                "full_name": "Development Department / mysite.com",
+                "manager_user_id": 103,
+                "manager_user_data": {
+                    "id": 103,
+                    "active": true,
+                    "name": "Anna Peterson",
+                    "first_name": "Anna",
+                    "last_name": "Peterson",
+                    "work_position": "Head of Development Department",
+                    "color": "#4ba984",
+                    "avatar": "https://mysite.com/upload/avatars/anna-peterson.jpg",
+                    "avatar_hr": "https://mysite.com/upload/avatars/anna-peterson.jpg",
+                    "gender": "F",
+                    "birthday": "",
+                    "extranet": false,
+                    "network": false,
+                    "bot": false,
+                    "connector": false,
+                    "external_auth_id": "socservices",
+                    "status": "online",
+                    "idle": false,
+                    "last_activity_date": "2025-11-06T16:59:28+01:00",
+                    "mobile_last_date": false,
+                    "desktop_last_date": false,
+                    "absent": false,
+                    "departments": [
+                        1,
+                        7
+                    ],
+                    "phones": false,
+                    "bot_data": null,
+                    "type": "user",
+                    "website": "",
+                    "email": "anna.peterson@mysite.com"
+                }
+            },
+            {
+                "id": 3,
+                "name": "Finance Department",
+                "full_name": "Finance Department / mysite.com",
+                "manager_user_id": 13,
+                "manager_user_data": {
+                    "id": 13,
+                    "active": true,
+                    "name": "John Smith",
+                    "first_name": "John",
+                    "last_name": "Smith",
+                    "work_position": "Chief Accountant",
+                    "color": "#728f7a",
+                    "avatar": "https://mysite.com/upload/avatars/john-smith.jpg",
+                    "avatar_hr": "https://mysite.com/upload/avatars/john-smith.jpg",
+                    "gender": "M",
+                    "birthday": "10-09",
+                    "extranet": false,
+                    "network": false,
+                    "bot": false,
+                    "connector": false,
+                    "external_auth_id": "socservices",
+                    "status": "online",
+                    "idle": false,
+                    "last_activity_date": "2024-02-19T00:40:41+01:00",
+                    "mobile_last_date": false,
+                    "desktop_last_date": false,
+                    "absent": false,
+                    "departments": [
+                        9,
+                        3
+                    ],
+                    "phones": {
+                        "personal_mobile": "12134567890",
+                        "inner_phone": "55"
+                    },
+                    "bot_data": null,
+                    "type": "user",
+                    "website": "",
+                    "email": "john.smith@mysite.com"
+                }
+            }
+        ],
+        "time": {
+            "start": 1772461967,
+            "finish": 1772461967.997741,
+            "duration": 0.9977409839630127,
+            "processing": 0,
+            "date_start": "2026-03-02T17:32:47+01:00",
+            "date_finish": "2026-03-02T17:32:47+01:00",
+            "operating_reset_at": 1772462567,
+            "operating": 0
+        }
+    }
+    ```
 
-## Response on error
+### Returned Data
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`array`](../../data-types.md) | List of departments [(detailed description)](#department).
+
+When `USER_DATA = 'N'`, it contains a brief description of the departments; when `USER_DATA = 'Y'`, it additionally contains an object with data about the department head ||
+|| **time**
+[`time`](../../data-types.md#time) | Information about the execution time of the request ||
+|#
+
+#### Department Object {#department}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **id**
+[`integer`](../../data-types.md) | Department identifier ||
+|| **name**
+[`string`](../../data-types.md) | Department name ||
+|| **full_name**
+[`string`](../../data-types.md) | Full name of the department in the company structure ||
+|| **manager_user_id**
+[`integer`](../../data-types.md) | Identifier of the department head ||
+|| **manager_user_data**
+[`object`](../../data-types.md) | Data about the department head [(detailed description)](#manager_user_data). Returned only when `USER_DATA = 'Y'` ||
+|#
+
+#### Manager User Data Object {#manager_user_data}
+
+{% include [User Object Tables](./_includes/user-object-tables.md) %}
+
+## Error Handling
+
+HTTP Status: **400**
 
 ```json
 {
@@ -185,14 +321,21 @@ The method `im.department.get` retrieves data about the department.
 }
 ```
 
-### Description of keys
+{% include notitle [error handling](../../../_includes/error-info.md) %}
 
-- `error` – code of the occurred error
-- `error_description` – brief description of the occurred error
-
-### Possible error codes
+### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| **INVALID_FORMAT** | An incorrect format of identifiers was passed ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `INVALID_FORMAT` | A wrong format for the ID field is passed | The required parameter `ID` is not provided, is incorrectly provided, or is empty ||
+|| `403` | `ACCESS_ERROR` | Only intranet users have access to this method | The method is not available for extranet users and bots ||
 |#
+
+{% include [system errors](../../../_includes/system-errors.md) %}
+
+## Continue Learning
+
+- [{#T}](./im-department-get.md)
+- [{#T}](./im-department-managers-get.md)
+- [{#T}](./im-department-employees-get.md)
+- [{#T}](./im-department-colleagues-list.md)

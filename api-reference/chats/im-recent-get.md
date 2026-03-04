@@ -1,68 +1,92 @@
-# Get a shortened list of recent chats im.recent.get
-
-{% note warning "We are still updating this page" %}
-
-Some data may be missing — we will complete it soon.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- edits needed for writing standards
-- parameter types not specified
-- examples missing
-- response in case of error missing
-
-{% endnote %}
-
-{% endif %}
+# Get a Shortened List of Recent Chats im.recent.get
 
 > Scope: [`im`](../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-The method `im.recent.get` retrieves a list of the user's recent conversations.
+The method `im.recent.get` retrieves a list of the user's recent chats.
+
+## Method Parameters
 
 #|
-|| **Parameter** | **Example** | **Description** | **Revision** ||
+|| **Name**
+`type` | **Description** ||
 || **SKIP_OPENLINES**
-[`unknown`](../data-types.md) | `N` | Skip open line chats | 18 ||
+[`string`](../data-types.md) | Skip chats from Open Channels.
+
+Possible values:
+- `Y` — yes
+- `N` — no ||
 || **SKIP_CHAT**
-[`unknown`](../data-types.md) | `N` | Skip chats | 18 ||
+[`string`](../data-types.md) | Skip group chats.
+
+Possible values:
+- `Y` — yes
+- `N` — no ||
 || **SKIP_DIALOG**
-[`unknown`](../data-types.md) | `N` | Skip one-on-one dialogs | 18 ||
+[`string`](../data-types.md) | Skip one-on-one dialogs.
+
+Possible values:
+- `Y` — yes
+- `N` — no ||
 || **LAST_UPDATE**
-[`unknown`](../data-types.md) | `2019-07-11T10:45:31+02:00` | Sampling limit to minimize transmitted data, date in ATOM format | 23 ||
+[`datetime`](../data-types.md) | Retrieve data from the specified date in [ATOM](https://www.php.net/manual/en/class.datetimeinterface.php#datetimeinterface.constants.atom) (ISO-8601) format ||
 || **ONLY_OPENLINES**
-[`unknown`](../data-types.md) | `N` | Sample only open line chats | 29 ||
+[`string`](../data-types.md) | Select only chats from Open Channels.
+
+Possible values:
+- `Y` — yes
+- `N` — no ||
 || **LAST_SYNC_DATE**
-[`unknown`](../data-types.md) | `2019-07-11T10:45:31+02:00` | Date of the previous sample for loading changes that occurred in the list since that time. The sample returns data no older than 7 days. Date in ATOM format | 29 ||
+[`datetime`](../data-types.md) | Date of the previous retrieval in [ATOM](https://www.php.net/manual/en/class.datetimeinterface.php#datetimeinterface.constants.atom) (ISO-8601) format to load changes that occurred in the list since the specified date.
+
+The retrieval returns data no older than 7 days ||
 |#
 
-## Examples
+## Code Examples
+
+{% include [Examples Note](../../_includes/examples.md) %}
 
 {% list tabs %}
+
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+      -H "Content-Type: application/json" \
+      -H "Accept: application/json" \
+      -d '{"SKIP_OPENLINES":"Y","LAST_UPDATE":"2026-02-25T18:30:00+01:00"}' \
+      https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/im.recent.get
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+      -H "Content-Type: application/json" \
+      -H "Accept: application/json" \
+      -d '{"SKIP_OPENLINES":"Y","LAST_UPDATE":"2026-02-25T18:30:00+01:00","auth":"**put_access_token_here**"}' \
+      https://**put_your_bitrix24_address**/rest/im.recent.get
+    ```
 
 - JS
 
     ```js
     try
     {
-    	const response = await $b24.callMethod(
-    		'im.recent.get',
-    		{
-    			'SKIP_OPENLINES': 'Y'
-    		}
-    	);
-    	
-    	const result = response.getData().result;
-    	console.log(result);
+        const response = await $b24.callMethod(
+            'im.recent.get',
+            {
+                SKIP_OPENLINES: 'Y',
+                LAST_UPDATE: '2026-02-25T18:30:00+01:00'
+            }
+        );
+
+        console.log(response.getData().result);
     }
-    catch(error)
+    catch (error)
     {
-    	console.error(error.ex);
+        console.error(error);
     }
     ```
 
@@ -75,23 +99,19 @@ The method `im.recent.get` retrieves a list of the user's recent conversations.
             ->call(
                 'im.recent.get',
                 [
-                    'SKIP_OPENLINES' => 'Y'
+                    'SKIP_OPENLINES' => 'Y',
+                    'LAST_UPDATE' => '2026-02-25T18:30:00+01:00',
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
-        if ($result->error()) {
-            error_log($result->error()->ex);
-        } else {
-            echo 'Success: ' . print_r($result->data(), true);
-        }
-    
+
+        echo 'Success: ' . print_r($result, true);
     } catch (Throwable $e) {
         error_log($e->getMessage());
-        echo 'Error getting recent messages: ' . $e->getMessage();
+        echo 'Error: ' . $e->getMessage();
     }
     ```
 
@@ -101,12 +121,14 @@ The method `im.recent.get` retrieves a list of the user's recent conversations.
     BX24.callMethod(
         'im.recent.get',
         {
-            'SKIP_OPENLINES': 'Y'
+            SKIP_OPENLINES: 'Y',
+            LAST_UPDATE: '2026-02-25T18:30:00+01:00'
         },
-        function(result){
-            if(result.error())
+        function(result)
+        {
+            if (result.error())
             {
-                console.error(result.error().ex);
+                console.error(result.error());
             }
             else
             {
@@ -118,157 +140,472 @@ The method `im.recent.get` retrieves a list of the user's recent conversations.
 
 - PHP CRest
 
-    {% include [Explanation about restCommand](./_includes/rest-command.md) %}
-
     ```php
-    $result = restCommand(
-        'im.user.status.idle.start',
-        Array(
-            'SKIP_OPENLINES' => 'Y'
-        ),
-        $_REQUEST[
-            "auth"
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'im.recent.get',
+        [
+            'SKIP_OPENLINES' => 'Y',
+            'LAST_UPDATE' => '2026-02-25T18:30:00+01:00',
         ]
     );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
     ```
-
-- cURL
-
-    // example for cURL
 
 {% endlist %}
 
-{% include [Footnote about examples](../../_includes/examples.md) %}
+## Response Handling
 
-## Response in case of success
+HTTP Status: **200**
 
 ```json
 {
     "result": [
         {
-            "id": "1",
-             "type": "user",
-             "avatar": {
-                "url": "http://www.hazz/upload/resize_cache/main/1af/100_100_2/1464255149.png",
-                "color": "#df532d"
-             },
-            "title": "Eugene Shelenkov",
-            "message": {
-                "id": "30468",
-                "text": "1",
-                "file": false,
-                "attach": false,
-                "author_id": "1"
-            },
-            "counter": "3",
-            "date": "2017-10-17T11:12:56+02:00",
-            "user": {
-                "id": "1",
-                "name": "Eugene Shelenkov",
-                "first_name": "Eugene",
-                "last_name": "Shelenkov",
-                "work_position": "IT Specialist",
-                "color": "#df532d",
-                "avatar": "http://www.hazz/upload/resize_cache/main/1af/100_100_2/1464255149.png",
-                "gender": "M",
-                "birthday": false,
-                "extranet": false,
-                "network": false,
-                "bot": false,
-                "connector": false,
-                "external_auth_id": "default",
-                "status": "online",
-                "idle": false,
-                "last_activity_date": "2017-10-17T11:16:01+02:00",
-                "mobile_last_date": "2017-05-26T12:04:58+02:00",
-                "absent": "2017-11-01T00:00:00+02:00"
-            }
-        },
-        {
-            "id": "chat21191",
+            "id": "chat1451",
+            "chat_id": 1451,
             "type": "chat",
             "avatar": {
                 "url": "",
-                "color": "#4ba984"
+                "color": "#df532d"
             },
-            "title": "Mint Chat #3",
+            "title": "Maximally Complete Task Template",
             "message": {
-                "id": "30467",
-                "text": "Permission to update Bitrix24 received from [Attachment]",
+                "id": 84501,
+                "text": "John Doe created a task [Attachment]",
                 "file": false,
+                "author_id": 0,
                 "attach": true,
-                "author_id": "2"
+                "sticker": null,
+                "date": "2026-02-26T00:01:26+03:00",
+                "status": "received",
+                "uuid": null
             },
-            "counter": "0",
-            "date": "2017-10-17T10:38:20+02:00",
+            "counter": 0,
+            "last_id": 84501,
+            "pinned": false,
+            "unread": false,
+            "has_reminder": false,
+            "date_update": "2026-02-26T00:01:26+03:00",
+            "date_last_activity": "2026-02-26T00:01:26+03:00",
             "chat": {
-                "id": "21191",
-                "title": "Mint Chat #3",
-                "owner": "2",
+                "id": 1451,
+                "parent_chat_id": 0,
+                "parent_message_id": 0,
+                "name": "Maximally Complete Task Template",
+                "owner": 503,
                 "extranet": false,
+                "contains_collaber": false,
                 "avatar": "",
-                "color": "#4ba984",
-                "type": "chat",
-                "entity_type": "",
+                "color": "#df532d",
+                "type": "tasksTask",
+                "entity_type": "TASKS_TASK",
+                "entity_id": "8293",
                 "entity_data_1": "",
                 "entity_data_2": "",
                 "entity_data_3": "",
-                "date_create": "2017-10-14T12:15:32+02:00",
-                "message_type": "C"
-            }
+                "mute_list": [],
+                "manager_list": [
+                    503
+                ],
+                "date_create": "2026-02-26T00:01:26+03:00",
+                "message_type": "X",
+                "user_counter": 4,
+                "restrictions": {
+                    "avatar": true,
+                    "rename": true,
+                    "extend": true,
+                    "call": true,
+                    "mute": true,
+                    "leave": true,
+                    "leave_owner": true,
+                    "send": true,
+                    "user_list": true
+                },
+                "role": "OWNER",
+                "text_field_enabled": true,
+                "background_id": null,
+                "entity_link": {
+                    "type": "TASKS",
+                    "url": "/company/personal/user/503/tasks/task/view/8293/?ta_sec=chat_tasks&ta_el=view_button",
+                    "id": "8293"
+                },
+                "permissions": {
+                    "manage_users_add": "member",
+                    "manage_users_delete": "manager",
+                    "manage_ui": "member",
+                    "manage_settings": "owner",
+                    "manage_messages": "member",
+                    "can_post": "member"
+                },
+                "public": ""
+            },
+            "user": {
+                "id": 0
+            },
+            "options": []
+        },
+        {
+            "id": "chat1449",
+            "chat_id": 1449,
+            "type": "chat",
+            "avatar": {
+                "url": "",
+                "color": "#ab7761"
+            },
+            "title": "Maximally Complete Task Template",
+            "message": {
+                "id": 84499,
+                "text": "John Doe created a task [Attachment]",
+                "file": false,
+                "author_id": 0,
+                "attach": true,
+                "sticker": null,
+                "date": "2026-02-26T00:01:25+03:00",
+                "status": "received",
+                "uuid": null
+            },
+            "counter": 0,
+            "last_id": 84499,
+            "pinned": false,
+            "unread": false,
+            "has_reminder": false,
+            "date_update": "2026-02-26T00:01:25+03:00",
+            "date_last_activity": "2026-02-26T00:01:25+03:00",
+            "chat": {
+                "id": 1449,
+                "parent_chat_id": 0,
+                "parent_message_id": 0,
+                "name": "Maximally Complete Task Template",
+                "owner": 503,
+                "extranet": false,
+                "contains_collaber": false,
+                "avatar": "",
+                "color": "#ab7761",
+                "type": "tasksTask",
+                "entity_type": "TASKS_TASK",
+                "entity_id": "8291",
+                "entity_data_1": "",
+                "entity_data_2": "",
+                "entity_data_3": "",
+                "mute_list": [],
+                "manager_list": [
+                    503
+                ],
+                "date_create": "2026-02-26T00:01:25+03:00",
+                "message_type": "X",
+                "user_counter": 4,
+                "restrictions": {
+                    "avatar": true,
+                    "rename": true,
+                    "extend": true,
+                    "call": true,
+                    "mute": true,
+                    "leave": true,
+                    "leave_owner": true,
+                    "send": true,
+                    "user_list": true
+                },
+                "role": "OWNER",
+                "text_field_enabled": true,
+                "background_id": null,
+                "entity_link": {
+                    "type": "TASKS",
+                    "url": "/company/personal/user/503/tasks/task/view/8291/?ta_sec=chat_tasks&ta_el=view_button",
+                    "id": "8291"
+                },
+                "permissions": {
+                    "manage_users_add": "member",
+                    "manage_users_delete": "manager",
+                    "manage_ui": "member",
+                    "manage_settings": "owner",
+                    "manage_messages": "member",
+                    "can_post": "member"
+                },
+                "public": ""
+            },
+            "user": {
+                "id": 0
+            },
+            "options": []
         }
-    ]
+    ],
+    "time": {
+        "start": 1772086038,
+        "finish": 1772086038.652287,
+        "duration": 0.6522870063781738,
+        "processing": 0,
+        "date_start": "2026-02-26T09:07:18+03:00",
+        "date_finish": "2026-02-26T09:07:18+03:00",
+        "operating_reset_at": 1772086638,
+        "operating": 0
+    }
 }
 ```
 
-### Description of keys
+### Returned Data
 
-- `id` – identifier of the dialog (number if user; chatXXX if it is a chat)
-- `type` – type of record (`user` – if user, `chat` – if it is a chat)
-- `avatar` – object describing the avatar of the record:
-  - `url` – link to the avatar (if empty, the avatar is not set)
-  - `color` – color of the dialog in hex format
-- `title` – title of the record (First name, last name – for user, chat name – for chat)
-- `message` – object describing the message:
-  - `id` – identifier of the message
-  - `text` – text of the message (without BB codes and line breaks)
-  - `file` – files present (`true/false`)
-  - `attach` – attachments present (`true/false`)
-  - `author_id` – author of the message
-  - `date` – date of the message in ATOM format
-- `counter` – counter of unread messages
-- `user` – object describing user data (not available if the record type is chat):
-  - `id` – identifier of the user
-  - `name` – full name of the user
-  - `first_name` – first name of the user
-  - `last_name` – last name of the user
-  - `work_position` – position
-  - `color` – color of the user in hex format
-  - `avatar` – link to the avatar (if empty, the avatar is not set)
-  - `gender` – gender of the user
-  - `birthday` – birthday of the user in DD-MM format, if empty – not set
-  - `extranet` – indicator of external extranet user (`true/false`)
-  - `network` – indicator of Bitrix24.Network user (`true/false`)
-  - `bot` – indicator of bot (`true/false`)
-  - `connector` – indicator of open line user (`true/false`)
-  - `external_auth_id` – external authorization code
-  - `status` – selected status of the user
-  - `idle` – date when the user stepped away from the computer, in ATOM format (if not set, `false`)
-  - `last_activity_date` – date of the user's last action in ATOM format
-  - `mobile_last_date` – date of the last action in the mobile app in ATOM format (if not set, `false`)
-  - `absent` – date until which the user is on vacation, in ATOM format (if not set, `false`)
-- `chat` – object describing chat data (not available if the record type is user):
-  - `id` – identifier of the chat
-  - `title` – name of the chat
-  - `owner` – identifier of the user who owns the chat
-  - `extranet` – indicator of participation in the chat of an external extranet user (`true/false`)
-  - `color` – color of the chat in hex format
-  - `avatar` – link to the avatar (if empty, the avatar is not set)
-  - `type` – type of chat (group chat, call chat, open line chat, etc.)
-  - `entity_type` – external code for the chat – type
-  - `entity_id` – external code for the chat – identifier
-  - `entity_data_1` – external data for the chat
-  - `entity_data_2` – external data for the chat
-  - `entity_data_3` – external data for the chat
-  - `date_create` – date of chat creation in ATOM format
-  - `message_type` – type of chat messages
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`array`](../data-types.md) | List of recent dialogs [(detailed description)](#result-item) ||
+|| **time**
+[`time`](../data-types.md#time) | Information about the request execution time ||
+|#
+
+#### Object result-item {#result-item}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **id**
+[`string`](../data-types.md) | Identifier of the dialog: number for user, `chatXXX` for chat ||
+|| **type**
+[`string`](../data-types.md) | Type of record: `user` for user, `chat` for chat ||
+|| **avatar**
+[`object`](../data-types.md) | Object describing the avatar of the record [(detailed description)](#avatar) ||
+|| **title**
+[`string`](../data-types.md) | Title of the record: first and last name for user, chat name for chat ||
+|| **message**
+[`object`](../data-types.md) | Object describing the last message [(detailed description)](#message) ||
+|| **counter**
+[`integer`](../data-types.md) | Unread message counter ||
+|| **chat_id**
+[`integer`](../data-types.md) | Chat identifier ||
+|| **last_id**
+[`integer`](../data-types.md) | Identifier of the last read message ||
+|| **pinned**
+[`boolean`](../data-types.md) | Indicator of a pinned dialog ||
+|| **unread**
+[`boolean`](../data-types.md) | Indicator of a manual "unread" mark ||
+|| **has_reminder**
+[`boolean`](../data-types.md) | Indicator of a set reminder ||
+|| **date_update**
+[`datetime`](../data-types.md) | Date of the record update in the recent list in ATOM format ||
+|| **date_last_activity**
+[`datetime`](../data-types.md) | Date of the last activity in the dialog in ATOM format ||
+|| **user**
+[`object`](../data-types.md) | Object describing the user. Not available for records of type `chat`. [(detailed description)](#user) ||
+|| **chat**
+[`object`](../data-types.md) | Object describing the chat. Not available for records of type `user`. [(detailed description)](#chat) ||
+|| **options**
+[`array`](../data-types.md) | Additional parameters of the record ||
+|#
+
+#### Object avatar {#avatar}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **url**
+[`string`](../data-types.md) | Link to the avatar. If empty, the avatar is not set ||
+|| **color**
+[`string`](../data-types.md) | Color of the dialog in HEX format ||
+|#
+
+#### Object message {#message}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **id**
+[`integer`](../data-types.md) | Identifier of the message ||
+|| **text**
+[`string`](../data-types.md) | Text of the message without BB codes and line breaks ||
+|| **file**
+[`boolean`](../data-types.md) | Indicator of the presence of files ||
+|| **attach**
+[`boolean`](../data-types.md) | Indicator of the presence of attachments ||
+|| **author_id**
+[`integer`](../data-types.md) | Identifier of the message author ||
+|| **date**
+[`datetime`](../data-types.md) | Date of the message in ATOM format ||
+|| **sticker**
+[`integer`](../data-types.md) | Identifier of the sticker. If there is no sticker, the value is `null` ||
+|| **status**
+[`string`](../data-types.md) | Delivery status of the message ||
+|| **uuid**
+[`string`](../data-types.md) | External identifier of the message. If not set, the value is `null` ||
+|#
+
+#### Object user {#user}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **id**
+[`integer`](../data-types.md) | Identifier of the user ||
+|| **name**
+[`string`](../data-types.md) | User's full name ||
+|| **first_name**
+[`string`](../data-types.md) | User's first name ||
+|| **last_name**
+[`string`](../data-types.md) | User's last name ||
+|| **work_position**
+[`string`](../data-types.md) | User's job title ||
+|| **color**
+[`string`](../data-types.md) | User's color in HEX format ||
+|| **avatar**
+[`string`](../data-types.md) | Link to the avatar. If empty, the avatar is not set ||
+|| **gender**
+[`string`](../data-types.md) | User's gender ||
+|| **birthday**
+[`string`](../data-types.md) | Birthday in `DD-MM` format. If empty, not set ||
+|| **extranet**
+[`boolean`](../data-types.md) | Indicator of an external extranet user ||
+|| **network**
+[`boolean`](../data-types.md) | Indicator of a Bitrix24.Network user ||
+|| **bot**
+[`boolean`](../data-types.md) | Indicator of a bot ||
+|| **connector**
+[`boolean`](../data-types.md) | Indicator of a user from Open Channels ||
+|| **external_auth_id**
+[`string`](../data-types.md) | External authorization code ||
+|| **status**
+[`string`](../data-types.md) | Selected status of the user ||
+|| **idle**
+[`datetime`](../data-types.md) | Date when the user stepped away from the computer, in ATOM format. If not set, `false` ||
+|| **last_activity_date**
+[`datetime`](../data-types.md) | Date of the user's last action in ATOM format ||
+|| **mobile_last_date**
+[`datetime`](../data-types.md) | Date of the last action in the mobile application in ATOM format. If not set, `false` ||
+|| **absent**
+[`datetime`](../data-types.md) | Date until which the user is on vacation, in ATOM format. If not set, `false` ||
+|#
+
+#### Object chat {#chat}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **id**
+[`integer`](../data-types.md) | Identifier of the chat ||
+|| **title**
+[`string`](../data-types.md) | Title of the chat ||
+|| **name**
+[`string`](../data-types.md) | Name of the chat (field from the response) ||
+|| **owner**
+[`integer`](../data-types.md) | Identifier of the chat owner ||
+|| **extranet**
+[`boolean`](../data-types.md) | Indicator of the participation of an external extranet user in the chat ||
+|| **parent_chat_id**
+[`integer`](../data-types.md) | Identifier of the parent chat ||
+|| **parent_message_id**
+[`integer`](../data-types.md) | Identifier of the parent message ||
+|| **contains_collaber**
+[`boolean`](../data-types.md) | Indicator of the participation of collaborator users ||
+|| **color**
+[`string`](../data-types.md) | Color of the chat in HEX format ||
+|| **avatar**
+[`string`](../data-types.md) | Link to the avatar. If empty, the avatar is not set ||
+|| **type**
+[`string`](../data-types.md) | Type of chat: group, call, open line, etc. ||
+|| **entity_type**
+[`string`](../data-types.md) | External code for the chat: type ||
+|| **entity_id**
+[`string`](../data-types.md) | External code for the chat: identifier ||
+|| **entity_data_1**
+[`string`](../data-types.md) | External data for the chat ||
+|| **entity_data_2**
+[`string`](../data-types.md) | External data for the chat ||
+|| **entity_data_3**
+[`string`](../data-types.md) | External data for the chat ||
+|| **date_create**
+[`datetime`](../data-types.md) | Date of chat creation in ATOM format ||
+|| **message_type**
+[`string`](../data-types.md) | Type of chat messages ||
+|| **mute_list**
+[`array`](../data-types.md) | List of users who have disabled notifications ||
+|| **manager_list**
+[`array`](../data-types.md) | List of chat manager identifiers ||
+|| **user_counter**
+[`integer`](../data-types.md) | Number of chat participants ||
+|| **restrictions**
+[`object`](../data-types.md) | Restrictions on actions in the chat [(detailed description)](#chat-restrictions) ||
+|| **role**
+[`string`](../data-types.md) | Current user's role in the chat ||
+|| **text_field_enabled**
+[`boolean`](../data-types.md) | Availability of the message input field ||
+|| **background_id**
+[`integer`](../data-types.md) | Identifier of the chat background. If not set, the value is `null` ||
+|| **entity_link**
+[`object`](../data-types.md) | Link to the related object [(detailed description)](#chat-entity-link) ||
+|| **permissions**
+[`object`](../data-types.md) | Permissions for actions in the chat [(detailed description)](#chat-permissions) ||
+|| **public**
+[`string`](../data-types.md) | Indicator of the chat's public status ||
+|#
+
+#### Object restrictions {#chat-restrictions}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **avatar**
+[`boolean`](../data-types.md) | Availability of avatar change ||
+|| **rename**
+[`boolean`](../data-types.md) | Availability of name change ||
+|| **extend**
+[`boolean`](../data-types.md) | Availability of chat extension ||
+|| **call**
+[`boolean`](../data-types.md) | Availability of calls ||
+|| **mute**
+[`boolean`](../data-types.md) | Availability of notification disabling ||
+|| **leave**
+[`boolean`](../data-types.md) | Availability of leaving the chat ||
+|| **leave_owner**
+[`boolean`](../data-types.md) | Availability of the owner leaving the chat ||
+|| **send**
+[`boolean`](../data-types.md) | Availability of sending messages ||
+|| **user_list**
+[`boolean`](../data-types.md) | Availability of viewing the list of participants ||
+|#
+
+#### Object entity_link {#chat-entity-link}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **type**
+[`string`](../data-types.md) | Type of the related object ||
+|| **url**
+[`string`](../data-types.md) | Link to the related object ||
+|| **id**
+[`string`](../data-types.md) | Identifier of the related object ||
+|#
+
+#### Object permissions {#chat-permissions}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **manage_users_add**
+[`string`](../data-types.md) | Permission to add participants ||
+|| **manage_users_delete**
+[`string`](../data-types.md) | Permission to remove participants ||
+|| **manage_ui**
+[`string`](../data-types.md) | Permission to manage the chat interface ||
+|| **manage_settings**
+[`string`](../data-types.md) | Permission to manage chat settings ||
+|| **manage_messages**
+[`string`](../data-types.md) | Permission to manage messages ||
+|| **can_post**
+[`string`](../data-types.md) | Permission to send messages ||
+|#
+
+## Error Handling
+
+{% include notitle [error handling](../../_includes/error-info.md) %}
+
+{% include [system errors](../../_includes/system-errors.md) %}
+
+## Continue Learning
+
+- [{#T}](./im-recent-list.md)
+- [{#T}](./im-dialog-get.md)
+- [{#T}](./im-counters-get.md)

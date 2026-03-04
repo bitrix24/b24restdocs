@@ -1,59 +1,182 @@
-# Get the list of chatbots imbot.bot.list
-
-{% note warning "We are still updating this page" %}
-
-Some data may be missing here — we will fill it in shortly.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- edits needed for writing standards
-- examples are missing
-- response on success is missing
-- response on error is missing
-
-{% endnote %}
-
-{% endif %}
+# Get the List of Chatbots imbot.bot.list
 
 > Scope: [`imbot`](../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: authorized application user
 
-The method `imbot.bot.list` retrieves a list of available chatbots.
+The method `imbot.bot.list` returns a list of registered chatbots.
 
-No parameters.
+No parameters required.
 
-## Examples
+## Code Examples
 
-{% include [Explanation about restCommand](./_includes/rest-command.md) %}
+{% include [Example Notes](../../_includes/examples.md) %}
 
 {% list tabs %}
+
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+      -H "Content-Type: application/json" \
+      -H "Accept: application/json" \
+      https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/imbot.bot.list
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+      -H "Content-Type: application/json" \
+      -H "Accept: application/json" \
+      -d '{"auth":"**put_access_token_here**"}' \
+      https://**put_your_bitrix24_address**/rest/imbot.bot.list
+    ```
+
+- JS
+
+    ```js
+    try {
+      const response = await $b24.callMethod('imbot.bot.list', {});
+      const { result } = response.getData();
+      console.log('Bots:', result);
+    } catch (error) {
+      console.error('Error getting bot list:', error);
+    }
+    ```
 
 - PHP
 
     ```php
-    $result = restCommand(
+    try {
+        $response = $b24Service
+            ->core
+            ->call('imbot.bot.list', []);
+
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+
+        if ($result->error()) {
+            echo 'Error: ' . $result->error();
+        } else {
+            print_r($result->data());
+        }
+    } catch (Throwable $exception) {
+        error_log($exception->getMessage());
+        echo 'Error getting bot list: ' . $exception->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
+    BX24.callMethod(
         'imbot.bot.list',
-        array(),
-        $_REQUEST[
-            "auth"
-        ]
+        {},
+        function(result) {
+            if (result.error()) {
+                console.error(result.error().ex);
+            } else {
+                console.log(result.data());
+            }
+        }
     );
+    ```
+
+- PHP CRest
+
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call('imbot.bot.list', []);
+
+    if (!empty($result['error'])) {
+        echo 'Error: ' . $result['error_description'];
+    } else {
+        print_r($result['result']);
+    }
     ```
 
 {% endlist %}
 
-{% include [Footnote about examples](../../_includes/examples.md) %}
+## Response Handling
 
-### Response on success
+HTTP Code: **200**
 
-An array of arrays containing data about the chatbots:
+```json
+{
+    "result": {
+        "39": {
+            "ID": 39,
+            "NAME": "NewBot",
+            "CODE": "newbot",
+            "OPENLINE": "N"
+        }
+    },
+    "time": {
+        "start": 1728626400.123,
+        "finish": 1728626400.234,
+        "duration": 0.111,
+        "processing": 0.045,
+        "date_start": "2024-10-11T10:00:00+02:00",
+        "date_finish": "2024-10-11T10:00:00+02:00",
+        "operating_reset_at": 1762349466,
+        "operating": 0
+    }
+}
+```
 
-- **ID** - bot identifier.
-- **NAME** - chatbot name.
-- **CODE** - internal code.
-- **OPENLINE** - whether it supports Open Channels or not.
+## Returned Data
+
+#|
+|| **Name**
+`Type` | **Description** ||
+|| **result**
+[`object`](../data-types.md) | An object where the top-level key is `BOT_ID`, and the value contains the bot data. The structure of the element is described in detail [below](#bot-item) ||
+|| **time**
+[`time`](../data-types.md#time) | Information about the request execution time ||
+|#
+
+### Element \{BOT_ID\} {#bot-item}
+
+#|
+|| **Name**
+`Type` | **Description** ||
+|| **ID**
+[`integer`](../data-types.md) | Identifier of the chatbot ||
+|| **NAME**
+[`string`](../data-types.md) | Full name of the chatbot ||
+|| **CODE**
+[`string`](../data-types.md) | Code of the chatbot ||
+|| **OPENLINE**
+[`string`](../data-types.md) | Indicator of Open Channels support: `Y` or `N` ||
+|#
+
+## Error Handling
+
+HTTP Status: **403**
+
+```json
+{
+    "error": "WRONG_AUTH_TYPE",
+    "error_description": "Access for this method not allowed by session authorization."
+}
+```
+
+{% include notitle [Error Handling](../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+#|
+|| **Code** | **Description** | **Value** ||
+|| `WRONG_AUTH_TYPE` | Access for this method not allowed by session authorization. | Method called with session authorization instead of OAuth or webhook ||
+|#
+
+{% include [System Errors](../../_includes/system-errors.md) %}
+
+## Continue Learning
+
+- [{#T}](./imbot-register.md)
+- [{#T}](./imbot-update.md)
+- [{#T}](./imbot-unregister.md)

@@ -1,64 +1,74 @@
-# Get the list of employees in the department im.department.employees.get
-
-{% note warning "We are still updating this page" %}
-
-Some data may be missing — we will fill it in shortly.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- adjustments needed for writing standards
-- parameter types are not specified
-- examples are missing
-
-{% endnote %}
-
-{% endif %}
+# Get a List of Employees from Departments im.department.employees.get
 
 > Scope: [`im`](../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: any intranet user, except bots
 
-The method `im.department.employees.get` retrieves a list of employees in the department.
+The method `im.department.employees.get` retrieves a list of employees from the specified departments.
+
+## Method Parameters
+
+{% include [Note on Required Parameters](../../../_includes/required.md) %}
 
 #|
-|| **Parameter** | **Example** | **Description** | **Revision** ||
-|| **ID^*^**
-[`unknown`](../../data-types.md) | `[105]` | Department identifiers | 19 ||
+|| **Name**
+`type` | **Description** ||
+|| **ID***
+[`array`](../../data-types.md) | An array of department IDs. You can pass a string with a JSON array of IDs.
+
+You can obtain the department ID using the [get department list method](../../departments/department-get.md) or the [search departments by name method](../search/im-search-department-list.md) ||
 || **USER_DATA**
-[`unknown`](../../data-types.md) | `N` | Load user data | 19 ||
+[`string`](../../data-types.md) | Return detailed user data.  
+
+Possible values:
+- `Y` — yes,
+- `N` — no ||
 |#
 
-{% include [Footnote about parameters](../../../_includes/required.md) %}
+## Code Examples
 
-- If the parameter `USER_DATA = Y` is passed, the response will return an array of objects with user information instead of an array of identifiers.
-
-## Examples
+{% include [Note on Examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
+
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+      -H "Content-Type: application/json" \
+      -H "Accept: application/json" \
+      -d '{"ID":[3,7],"USER_DATA":"Y"}' \
+      https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/im.department.employees.get
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+      -H "Content-Type: application/json" \
+      -H "Accept: application/json" \
+      -d '{"ID":[3,7],"USER_DATA":"Y","auth":"**put_access_token_here**"}' \
+      https://**put_your_bitrix24_address**/rest/im.department.employees.get
+    ```
 
 - JS
 
     ```js
     try
     {
-    	const response = await $b24.callMethod(
-    		'im.department.employees.get',
-    		{
-    			ID: [7],
-    			USER_DATA: 'Y'
-    		}
-    	);
-    	
-    	const result = response.getData().result;
-    	console.log('users', result);
+        const response = await $b24.callMethod(
+            'im.department.employees.get',
+            {
+                ID: [3, 7],
+                USER_DATA: 'Y'
+            }
+        );
+
+        console.log(response.getData().result);
     }
-    catch( error )
+    catch (error)
     {
-    	console.error(error.ex);
+        console.error(error);
     }
     ```
 
@@ -71,24 +81,19 @@ The method `im.department.employees.get` retrieves a list of employees in the de
             ->call(
                 'im.department.employees.get',
                 [
-                    'ID'       => [7],
+                    'ID' => [3, 7],
                     'USER_DATA' => 'Y',
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
-        if ($result->error()) {
-            error_log($result->error()->ex);
-        } else {
-            echo 'users: ' . print_r($result->data(), true);
-        }
-    
+
+        echo 'Success: ' . print_r($result, true);
     } catch (Throwable $e) {
         error_log($e->getMessage());
-        echo 'Error getting department employees: ' . $e->getMessage();
+        echo 'Error: ' . $e->getMessage();
     }
     ```
 
@@ -98,17 +103,18 @@ The method `im.department.employees.get` retrieves a list of employees in the de
     BX24.callMethod(
         'im.department.employees.get',
         {
-            ID: [7],
+            ID: [3, 7],
             USER_DATA: 'Y'
         },
-        function(result){
-            if(result.error())
+        function(result)
+        {
+            if (result.error())
             {
-                console.error(result.error().ex);
+                console.error(result.error());
             }
             else
             {
-                console.log('users', result.data());
+                console.log(result.data());
             }
         }
     );
@@ -116,105 +122,143 @@ The method `im.department.employees.get` retrieves a list of employees in the de
 
 - PHP CRest
 
-    {% include [Explanation about restCommand](../_includes/rest-command.md) %}
-
     ```php
-    $result = restCommand(
+    require_once('crest.php');
+
+    $result = CRest::call(
         'im.department.employees.get',
-        Array(
-            'ID' => [7],
-            'USER_DATA' => 'Y'
-        ),
-        $_REQUEST[
-            "auth"
+        [
+            'ID' => [3, 7],
+            'USER_DATA' => 'Y',
         ]
-    );    
+    );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
     ```
-
-- cURL
-
-    // example for cURL
 
 {% endlist %}
 
-{% include [Footnote about examples](../../../_includes/examples.md) %}
+## Response Handling
 
-## Successful response
+HTTP Status: **200**
 
-With the option `USER_DATA = N`:
+- When `USER_DATA = 'N'`:
 
-```json
-{
-    "result": {
-        105: [1]
-    }
-}    
-```
-
-With the option `USER_DATA = Y`:
-
-```json
-{    
-    "result": {
-        105: {
-            "id": 1,
-            "name": "Eugene Shelenkov",
-            "first_name": "Eugene",
-            "last_name": "Shelenkov",
-            "work_position": "",
-            "color": "#df532d",
-            "avatar": "http://192.168.2.232/upload/resize_cache/main/1d3/100_100_2/shelenkov.png",
-            "gender": "M",
-            "birthday": "",
-            "extranet": false,
-            "network": false,
-            "bot": false,
-            "connector": false,
-            "external_auth_id": "default",
-            "status": "online",
-            "idle": false,
-            "last_activity_date": "2018-01-29T17:35:31+01:00",
-            "desktop_last_date": false,
-            "mobile_last_date": false,
-            "departments": [
-             50
-            ],
-            "absent": false,
-            "phones": {
-             "work_phone": "",
-             "personal_mobile": "",
-             "personal_phone": ""
-            }
+    ```json
+    {
+        "result": {
+            "7": [3,67,61,103],
+            "3": [278,517,13]
+        },
+        "time": {
+            "start": 1772519829,
+            "finish": 1772519829.456118,
+            "duration": 0.456118106842041,
+            "processing": 0,
+            "date_start": "2026-03-03T09:37:09+01:00",
+            "date_finish": "2026-03-03T09:37:09+01:00",
+            "operating_reset_at": 1772520429,
+            "operating": 0.18364310264587402
         }
     }
-}    
-```
+    ```
 
-### Key descriptions
+- When `USER_DATA = 'Y'`:
 
-- `id` – user identifier
-- `name` – user's full name
-- `first_name` – user's first name
-- `last_name` – user's last name
-- `work_position` – position
-- `color` – user's color in hex format
-- `avatar` – link to avatar (if empty, avatar is not set)
-- `gender` – user's gender
-- `birthday` – user's birthday in DD-MM format, if empty – not set
-- `extranet` – indicator of external extranet user (`true/false`)
-- `network` – indicator of Bitrix24.Network user (`true/false`)
-- `bot` – indicator of bot (`true/false`)
-- `connector` – indicator of open channel user (`true/false`)
-- `external_auth_id` – external authorization code
-- `status` – user status. Always displayed as online, even if the user has set the status to "Do Not Disturb". The "Do Not Disturb" status only affects notification receipt and is not visible to other users
-- `idle` – date when the user stepped away from the computer, in ATOM format (if not set, `false`)
-- `last_activity_date` – date of the user's last action in ATOM format
-- `mobile_last_date` – date of the last action in the mobile app in ATOM format (if not set, `false`)
-- `desktop_last_date` – date of the last action in the desktop app in ATOM format (if not set, `false`)
-- `absent` – date until which the user is on vacation, in ATOM format (if not set, `false`)
-- `phones` – array of phone numbers: `work_phone` – work phone, `personal_mobile` – mobile phone, `personal_phone` – home phone
+    ```json
+    {
+        "result": {
+            "7": [
+                {
+                    "id": 3,
+                    "active": true,
+                    "name": "John Smith",
+                    "first_name": "John",
+                    "last_name": "Smith",
+                    "work_position": "System Administrator",
+                    "color": "#4ba984",
+                    "avatar": "https://mysite.com/upload/avatars/john-smith.jpg",
+                    "avatar_hr": "https://mysite.com/upload/avatars/john-smith.jpg",
+                    "gender": "M",
+                    "birthday": "",
+                    "extranet": false,
+                    "network": false,
+                    "bot": false,
+                    "connector": false,
+                    "external_auth_id": "socservices",
+                    "status": "online",
+                    "idle": false,
+                    "last_activity_date": "2015-02-16T19:41:09+01:00",
+                    "mobile_last_date": false,
+                    "desktop_last_date": false,
+                    "absent": false,
+                    "departments": [
+                        7
+                    ],
+                    "phones": {
+                        "inner_phone": "42"
+                    },
+                    "bot_data": null,
+                    "type": "user",
+                    "website": "",
+                    "email": "john.smith@mysite.com"
+                },
+                {
+                    "id": 67,
+                    "active": true,
+                    "name": "Anna Johnson",
+                    "first_name": "Anna",
+                    ...
+                },
 
-## Error response
+            ],
+            "3": [
+                {
+                    "id": 278,
+                    "active": true,
+                    "name": "Maria Brown",
+                    "first_name": "Maria",
+                    "last_name": "Brown",
+                    ...
+                },
+            ...
+            ]
+        },
+        "time": {
+            "start": 1772519820,
+            "finish": 1772519820.48721,
+            "duration": 0.4872100353240967,
+            "processing": 0,
+            "date_start": "2026-03-03T09:37:00+01:00",
+            "date_finish": "2026-03-03T09:37:00+01:00",
+            "operating_reset_at": 1772520420,
+            "operating": 0.18364310264587402
+        }
+    }
+    ```
+
+### Returned Data
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`object`](../../data-types.md) | The root object where the key is the department ID, and the value:
+- when `USER_DATA = 'N'` contains an array of employee IDs,
+- when `USER_DATA = 'Y'` contains an array of objects with user descriptions [(detailed description)](#user-object) ||
+|| **time**
+[`time`](../../data-types.md#time) | Information about the request execution time ||
+|#
+
+#### User Object {#user-object}
+
+{% include [User Object Tables](./_includes/user-object-tables.md) %}
+
+## Error Handling
+
+HTTP Status: **400**
 
 ```json
 {
@@ -223,14 +267,21 @@ With the option `USER_DATA = Y`:
 }
 ```
 
-### Key descriptions
+{% include notitle [Error Handling](../../../_includes/error-info.md) %}
 
-- `error` – error code
-- `error_description` – brief description of the error
-
-### Possible error codes
+### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| **ID_EMPTY** | List of identifiers not provided ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `ID_EMPTY` | Department ID can't be empty | The required parameter `ID` is missing, incorrectly provided, or empty ||
+|| `403` | `ACCESS_ERROR` | Only intranet users have access to this method | The method is not available for extranet users and bots ||
 |#
+
+{% include [System Errors](../../../_includes/system-errors.md) %}
+
+## Continue Learning
+
+- [{#T}](./im-department-get.md)
+- [{#T}](./im-department-managers-get.md)
+- [{#T}](./im-department-employees-get.md)
+- [{#T}](./im-department-colleagues-list.md)

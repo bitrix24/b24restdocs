@@ -1,126 +1,279 @@
 # Update the imbot.command.update
 
-{% note warning "We are still updating this page" %}
-
-Some data may be missing — we will complete it soon.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- edits needed for writing standards
-- parameter types are not specified
-- not all parameters have examples in the table
-- examples are missing
-- no response in case of success
-- no response in case of error
-- links to pages that have not yet been created are not specified
-
-{% endnote %}
-
-{% endif %}
-
 > Scope: [`imbot`](../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: a user of the application that registered the chatbot
 
-The method `imbot.command.update` updates data in the team.
+The method `imbot.command.update` updates the parameters of a registered chatbot command.
+
+## Method Parameters
+
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
-|| **Parameter** | **Example** | **Description** | **Revision** ||
-|| **COMMAND_ID^*^**
-[`unknown`](../../data-types.md) | `13` | Identifier of the command to update | ||
-|| **FIELDS^*^**
-[`unknown`](../../data-types.md) | | Fields to update. At least one field must be specified. | ||
-|| **EVENT_COMMAND_ADD**
-[`unknown`](../../data-types.md) | `'http://www.hazz/chatApi/bot.php'` | Link to the command handler | ||
-|| **HIDDEN**
-[`unknown`](../../data-types.md) | `'N'` | Is the command hidden or not | ||
-|| **EXTRANET_SUPPORT**
-[`unknown`](../../data-types.md) | `'N'` | Is the command available to Extranet users | ||
+|| **Name**
+`type` | **Description** ||
+|| **COMMAND_ID***
+[`integer`](../../data-types.md) | Identifier of the command to update ||
+|| **FIELDS***
+[`object`](../../data-types.md) | Object containing fields to update. The structure is described [below](#fields) ||
 || **CLIENT_ID**
-[`unknown`](../../data-types.md) | `''` | String identifier of the chatbot, used only in Webhook mode | ||
-|| **LANG^*^**
-[`unknown`](../../data-types.md) | 
-```php
-Array(
-    Array(
-        'LANGUAGE_ID' => 'en',
-        'TITLE' => 'Get echo message',
-        'PARAMS' => 'some text'
-    )
-)
-```
- | New translation phrases, all previous ones will be deleted | ||
+[`string`](../../data-types.md) | Technical parameter for scenarios without `clientId` in authorization.
+
+If provided, it is used as `custom{CLIENT_ID}` to identify the application ||
 |#
 
-{% include [Parameter notes](../../../_includes/required.md) %}
+{% note warning "" %}
 
-{% note warning %}
-
-To process the command, the application must handle the command addition event [ONIMCOMMANDADD](./events/on-im-command-add.md).
+At least one modifiable parameter must be provided in `FIELDS`. If an empty object is sent, the method will return an error.
 
 {% endnote %}
 
-{% note warning %}
+### FIELDS Parameter {#fields}
 
-It is mandatory to specify the translation array `LANG` for at least EN and DE. If there is no phrase for BY, UA, KZ, the default phrases from EN will be shown; if there is no phrase in EN, the command will be hidden. The same applies to other languages — if there are no phrases, the default phrases from EN will be shown; if there is no phrase in EN, the command will be hidden in the public part.
+#|
+|| **Name**
+`type` | **Description** ||
+|| **COMMAND**
+[`string`](../../data-types.md) | Command text ||
+|| **EVENT_COMMAND_ADD**
+[`string`](../../data-types.md) | URL of the event handler [ONIMCOMMANDADD](./events/on-im-command-add.md) ||
+|| **HIDDEN**
+[`string`](../../data-types.md) | Command visibility:
+- `Y` - hidden
+- `N` - visible ||
+|| **EXTRANET_SUPPORT**
+[`string`](../../data-types.md) | Availability for extranet users:
+- `Y` - available
+- `N` - not available ||
+|| **LANG**
+[`array`](../../data-types.md) | Array of command localizations. The structure is described [below](#fields-lang) ||
+|#
 
-{% endnote %}
+### FIELDS.LANG Parameter {#fields-lang}
 
-## Examples
+#|
+|| **Name**
+`type` | **Description** ||
+|| **LANGUAGE_ID***
+[`string`](../../data-types.md) | Language identifier, e.g., `de` or `en` ||
+|| **TITLE***
+[`string`](../../data-types.md) | Command title in the selected language ||
+|| **PARAMS**
+[`string`](../../data-types.md) | Parameter hints for the command in the selected language ||
+|#
 
-{% include [Explanation about restCommand](../_includes/rest-command.md) %}
+## Code Examples
+
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
+
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"COMMAND_ID":99,"FIELDS":{"COMMAND":"echo2","EVENT_COMMAND_ADD":"https://example.com/bot/command.php","HIDDEN":"N","EXTRANET_SUPPORT":"Y","LANG":[{"LANGUAGE_ID":"de","TITLE":"Echo 2","PARAMS":"text"},{"LANGUAGE_ID":"en","TITLE":"Echo 2","PARAMS":"text"}]}}' \
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/imbot.command.update
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"COMMAND_ID":99,"FIELDS":{"COMMAND":"echo2","EVENT_COMMAND_ADD":"https://example.com/bot/command.php","HIDDEN":"N","EXTRANET_SUPPORT":"Y","LANG":[{"LANGUAGE_ID":"de","TITLE":"Echo 2","PARAMS":"text"},{"LANGUAGE_ID":"en","TITLE":"Echo 2","PARAMS":"text"}]},"auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/imbot.command.update
+    ```
+
+- JS
+
+    ```js
+    try
+    {
+        const response = await $b24.callMethod(
+            'imbot.command.update',
+            {
+                COMMAND_ID: 99,
+                FIELDS: {
+                    COMMAND: 'echo2',
+                    EVENT_COMMAND_ADD: 'https://example.com/bot/command.php',
+                    HIDDEN: 'N',
+                    EXTRANET_SUPPORT: 'Y',
+                    LANG: [
+                        { LANGUAGE_ID: 'de', TITLE: 'Echo 2', PARAMS: 'text' },
+                        { LANGUAGE_ID: 'en', TITLE: 'Echo 2', PARAMS: 'text' }
+                    ]
+                }
+            }
+        );
+        
+        const result = response.getData().result;
+        console.log('Updated command with ID:', result);
+        processResult(result);
+    }
+    catch( error )
+    {
+        console.error('Error:', error);
+    }
+    ```
 
 - PHP
 
     ```php
-    $result = restCommand(
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'imbot.command.update',
+                [
+                    'COMMAND_ID' => 99,
+                    'FIELDS' => [
+                        'COMMAND' => 'echo2',
+                        'EVENT_COMMAND_ADD' => 'https://example.com/bot/command.php',
+                        'HIDDEN' => 'N',
+                        'EXTRANET_SUPPORT' => 'Y',
+                        'LANG' => [
+                            ['LANGUAGE_ID' => 'de', 'TITLE' => 'Echo 2', 'PARAMS' => 'text'],
+                            ['LANGUAGE_ID' => 'en', 'TITLE' => 'Echo 2', 'PARAMS' => 'text']
+                        ]
+                    ]
+                ]
+            );
+
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+
+        echo 'Success: ' . print_r($result, true);
+        processData($result);
+
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error updating command: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
+    BX24.callMethod(
         'imbot.command.update',
-        Array(
-            'COMMAND_ID' => 13,
-            'FIELDS' => Array(
-                'EVENT_COMMAND_ADD' => 'http://www.hazz/chatApi/bot.php',
+        {
+            COMMAND_ID: 99,
+            FIELDS: {
+                COMMAND: 'echo2',
+                EVENT_COMMAND_ADD: 'https://example.com/bot/command.php',
+                HIDDEN: 'N',
+                EXTRANET_SUPPORT: 'Y',
+                LANG: [
+                    { LANGUAGE_ID: 'de', TITLE: 'Echo 2', PARAMS: 'text' },
+                    { LANGUAGE_ID: 'en', TITLE: 'Echo 2', PARAMS: 'text' }
+                ]
+            }
+        },
+        function(result)
+        {
+            if (result.error())
+                console.error(result.error());
+            else
+                console.dir(result.data());
+        }
+    );
+    ```
+
+- PHP CRest
+
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'imbot.command.update',
+        [
+            'COMMAND_ID' => 99,
+            'FIELDS' => [
+                'COMMAND' => 'echo2',
+                'EVENT_COMMAND_ADD' => 'https://example.com/bot/command.php',
                 'HIDDEN' => 'N',
-                'EXTRANET_SUPPORT' => 'N',
-                'CLIENT_ID' => '',
-                'LANG' => Array(
-                    Array(
-                        'LANGUAGE_ID' => 'en',
-                        'TITLE' => 'Get echo message',
-                        'PARAMS' => 'some text'
-                    ),
-                ),
-            )
-        ),
-        $_REQUEST[
-            "auth"
+                'EXTRANET_SUPPORT' => 'Y',
+                'LANG' => [
+                    ['LANGUAGE_ID' => 'de', 'TITLE' => 'Echo 2', 'PARAMS' => 'text'],
+                    ['LANGUAGE_ID' => 'en', 'TITLE' => 'Echo 2', 'PARAMS' => 'text']
+                ]
+            ]
         ]
     );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
     ```
 
 {% endlist %}
 
-{% include [Examples notes](../../../_includes/examples.md) %}
+## Response Handling
 
-## Response in case of success
+HTTP Status: **200**
 
-`true`
+```json
+{
+    "result": true,
+    "time": {
+        "start": 1772103002,
+        "finish": 1772103003.109342,
+        "duration": 1.109342098236084,
+        "processing": 0,
+        "date_start": "2026-02-26T13:50:02+01:00",
+        "date_finish": "2026-02-26T13:50:03+01:00",
+        "operating_reset_at": 1772103603,
+        "operating": 0
+    }
+}
+```
 
-## Response in case of error
-
-error
-
-### Possible error codes
+### Returned Data
 
 #|
-|| **Code** | **Description** ||
-|| **COMMAND_ID_ERROR** | Command not found. ||
-|| **APP_ID_ERROR** | The chatbot does not belong to this application. It can only work with chatbots installed within the application. ||
-|| **EVENT_COMMAND_ADD** | The event handler link is invalid or not specified. ||
-|| **WRONG_REQUEST** | Something went wrong. ||
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`boolean`](../../data-types.md) | `true` if the command was successfully updated ||
+|| **time**
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
+
+## Error Handling
+
+HTTP Status: **400**
+
+```json
+{
+    "error": "WRONG_REQUEST",
+    "error_description": "Update fields can't be empty"
+}
+```
+
+{% include notitle [error handling](../../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+#|
+|| **Code** | **Description** | **Value** ||
+|| `COMMAND_ID_ERROR` | Command not found | Command not found ||
+|| `APP_ID_ERROR` | Command was installed by another rest application | Command registered by another application ||
+|| `EVENT_COMMAND_ADD_ERROR` | Wrong handler URL | Invalid event handler URL ||
+|| `WRONG_REQUEST` | Update fields can't be empty | No fields provided for update ||
+|| `WRONG_REQUEST` | Command can't be updated | Failed to update command ||
+|#
+
+{% include [system errors](../../../_includes/system-errors.md) %}
+
+## Continue Learning
+
+- [{#T}](./imbot-command-register.md)
+- [{#T}](./imbot-command-answer.md)
+- [{#T}](./imbot-command-unregister.md)
+- [{#T}](./events/on-im-command-add.md)

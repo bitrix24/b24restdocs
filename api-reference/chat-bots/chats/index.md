@@ -1,17 +1,17 @@
-# About Chats
+# Chat Bot Chats: Overview of Methods
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will fill it in shortly.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not exported to prod_" %}
+{% note alert "TO-DO _not deployed to prod_" %}
 
-- no content (only the list of methods is available)
-- from Sergei's file: individual, group, chat owner
+- No content (only the list of methods is available)
+- From Sergei's file: individual, group, chat owner
 
 {% endnote %}
 
@@ -19,18 +19,19 @@ Some data may be missing here — we will fill it in shortly.
 
 > Scope: [`imbot`](../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: depends on the method
 
 {% list tabs %}
 
 - Methods
 
-    #|
+    #| 
     || **Method** | **Description** ||
     || [imbot.chat.add](./imbot-chat-add.md) | Creates a new chat ||
     || [imbot.chat.get](./imbot-chat-get.md) | Returns information about the chat ||
-    || [imbot.chat.leave](./imbot-chat-leave.md) | Makes the chat bot leave the specified chat ||
-    || [imbot.chat.setOwner](./imbot-chat-set-owner.md) | Sets a new owner for the chat ||
+    || [imbot.chat.leave](./imbot-chat-leave.md) | Executes the chat bot's exit from the specified chat ||
+    || [imbot.chat.setManager](./imbot-chat-set-manager.md) | Assigns or revokes admin rights from a chat participant ||
+    || [imbot.chat.sendTyping](./imbot-chat-send-typing.md) | Sends a typing indicator in the chat ||
     || [imbot.chat.updateAvatar](./imbot-chat-update-avatar.md) | Updates the chat avatar ||
     || [imbot.chat.updateColor](./imbot-chat-update-color.md) | Updates the chat color ||
     || [imbot.chat.updateTitle](./imbot-chat-update-title.md) | Updates the chat title ||
@@ -42,9 +43,8 @@ Some data may be missing here — we will fill it in shortly.
 
 - Events
 
-    #|
+    #| 
     || **Event** | **Triggered** ||
-    || [ONIMBOTDELETE](./events/on-imbot-delete.md) | When the chat bot is deleted ||
     || [ONIMBOTJOINCHAT](./events/on-imbot-join-chat.md) | When the chat bot receives information about being added to a chat (or personal conversation) ||
     |#
 

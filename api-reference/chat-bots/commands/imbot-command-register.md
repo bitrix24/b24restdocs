@@ -1,145 +1,280 @@
-# Add the command imbot.command.register
-
-{% note warning "We are still updating this page" %}
-
-Some data may be missing — we will fill it in shortly.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- edits needed for writing standards
-- parameter types are not specified
-- parameter requirements are not indicated
-- not all parameters have examples in the table
-- examples are missing
-- success response is missing
-- error response is missing
-- links to pages that have not yet been created are not specified
-
-{% endnote %}
-
-{% endif %}
+# Add the imbot.command.register Command
 
 > Scope: [`imbot`](../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: a user of the application that registered the chat bot
 
-The method `imbot.command.register` registers a command for processing by the chat bot.
+The method `imbot.command.register` registers a command for the chat bot.
+
+## Method Parameters
+
+{% include [Note on Required Parameters](../../../_includes/required.md) %}
 
 #|
-|| **Parameter** | **Example** | **Description** | **Revision** ||
-|| **BOT_ID**
-[`unknown`](../../data-types.md) | `62` | Identifier of the chat bot that owns the command | ||
-|| **COMMAND**
-[`unknown`](../../data-types.md) | `'echo'` | The text of the command that the user will enter in chats.
-
-Only Latin letters and numbers can be used. Spaces and special characters are not accepted | ||
+|| **Name**
+`type` | **Description** ||
+|| **BOT_ID***
+[`integer`](../../data-types.md) | The identifier of the chat bot. You can obtain the bot ID using the [imbot.bot.list](../imbot-bot-list.md) method ||
+|| **COMMAND***
+[`string`](../../data-types.md) | The text of the command that the user enters in the chat. Latin letters and numbers can be used without spaces and special characters ||
+|| **EVENT_COMMAND_ADD***
+[`string`](../../data-types.md) | The URL of the event handler [ONIMCOMMANDADD](./events/on-im-command-add.md) that is called when the command is used ||
+|| **LANG***
+[`array`](../../data-types.md) | An array of localizations for the command. The structure is described [below](#lang) ||
 || **COMMON**
-[`unknown`](../../data-types.md) | `'Y'` | If Y is specified, the command is available in all chats; if N, it is only available in those where the chat bot is present | ||
+[`string`](../../data-types.md) | Command availability:
+- `Y` - the command is available in any chats
+- `N` - the command is available only where the bot is present
+
+Default - `N` ||
 || **HIDDEN**
-[`unknown`](../../data-types.md) | `'N'` | Whether the command is hidden or not - defaults to N | ||
+[`string`](../../data-types.md) | Command visibility:
+- `Y` - hidden command
+- `N` - visible command
+
+Default - `N` ||
 || **EXTRANET_SUPPORT**
-[`unknown`](../../data-types.md) | `'N'` | Whether the command is available to Extranet users, defaults to N | ||
+[`string`](../../data-types.md) | Command availability for extranet users:
+- `Y` - available
+- `N` - not available
+
+Default - `N` ||
 || **CLIENT_ID**
-[`unknown`](../../data-types.md) | `''` | String identifier of the chat bot, used only in Webhook mode | ||
-|| **LANG^*^**
-[`unknown`](../../data-types.md) | 
-```php
-Array(
-    Array(
-        'LANGUAGE_ID' => 'en',
-        'TITLE' => 'Get echo message',
-        'PARAMS' => 'some text'
-    )
-)
-```
- | Array of translations, at least for DE and EN must be specified | ||
-|| **EVENT_COMMAND_ADD**
-[`unknown`](../../data-types.md) | `'http://www.hazz/chatApi/bot.php'` | Link to the handler for commands | ||
+[`string`](../../data-types.md) | Technical parameter for scripts without `clientId` in authorization.
+
+If provided, it is used as `custom{CLIENT_ID}` to identify the application ||
 |#
 
-{% include [Parameter notes](../../../_includes/required.md) %}
+### LANG Parameter {#lang}
 
-{% note warning %}
+#|
+|| **Name**
+`type` | **Description** ||
+|| **LANGUAGE_ID***
+[`string`](../../data-types.md) | Language identifier, e.g., `de` or `en` ||
+|| **TITLE***
+[`string`](../../data-types.md) | The name of the command in the selected language ||
+|| **PARAMS**
+[`string`](../../data-types.md) | A hint for the command parameters in the selected language ||
+|#
 
-To process the command, the application must handle the event of adding a command [ONIMCOMMANDADD](./events/on-im-command-add.md).
+{% note info "" %}
 
-{% endnote %}
-
-{% note warning %}
-
-Attention! If you plan to install more than one command for the chat bot: Bitrix24 Rest imposes a restriction on working with event handlers - there can only be one handler per application. Therefore, when registering a second command, the links to the handlers `EVENT_COMMAND_ADD` must be the same as for the first command.
-
-If it is necessary to handle multiple commands within one application, this must be accounted for within the event handler. When the event occurs, an array of commands is passed to allow for correct processing.
-
-{% endnote %}
-
-{% note warning %}
-
-It is mandatory to specify the array of translations `LANG` for at least DE and EN. If there is no phrase for BY, UA, KZ, the phrases from DE will be shown by default; if there is no phrase in DE, the command will be hidden. The same applies to other languages - if there are no phrases, the phrases from EN will be shown by default; if there is no phrase in EN, the command will be hidden in the public part.
+When registering multiple commands, specify the same URL in `EVENT_COMMAND_ADD`, and parse the specific command in the handler code by `COMMAND`/`COMMAND_ID`.
 
 {% endnote %}
 
-## Examples
+{% endnote %}
 
-{% include [Explanation about restCommand](../_includes/rest-command.md) %}
+## Code Examples
+
+{% include [Note on Examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
+
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"BOT_ID":1291,"COMMAND":"echo","EVENT_COMMAND_ADD":"https://example.com/bot/command.php","LANG":[{"LANGUAGE_ID":"de","TITLE":"Echo","PARAMS":"text"},{"LANGUAGE_ID":"en","TITLE":"Echo","PARAMS":"text"}],"COMMON":"Y","HIDDEN":"N","EXTRANET_SUPPORT":"N"}' \
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/imbot.command.register
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"BOT_ID":1291,"COMMAND":"echo","EVENT_COMMAND_ADD":"https://example.com/bot/command.php","LANG":[{"LANGUAGE_ID":"de","TITLE":"Echo","PARAMS":"text"},{"LANGUAGE_ID":"en","TITLE":"Echo","PARAMS":"text"}],"COMMON":"Y","HIDDEN":"N","EXTRANET_SUPPORT":"N","auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/imbot.command.register
+    ```
+
+- JS
+
+    ```js
+    try
+    {
+        const response = await $b24.callMethod(
+            'imbot.command.register',
+            {
+                BOT_ID: 1291,
+                COMMAND: 'echo',
+                EVENT_COMMAND_ADD: 'https://example.com/bot/command.php',
+                LANG: [
+                    { LANGUAGE_ID: 'de', TITLE: 'Echo', PARAMS: 'text' },
+                    { LANGUAGE_ID: 'en', TITLE: 'Echo', PARAMS: 'text' }
+                ],
+                COMMON: 'Y',
+                HIDDEN: 'N',
+                EXTRANET_SUPPORT: 'N'
+            }
+        );
+        
+        const result = response.getData().result;
+        console.log('Created element with ID:', result);
+        processResult(result);
+    }
+    catch( error )
+    {
+        console.error('Error:', error);
+    }
+    ```
 
 - PHP
 
     ```php
-    $result = restCommand(
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'imbot.command.register',
+                [
+                    'BOT_ID' => 1291,
+                    'COMMAND' => 'echo',
+                    'EVENT_COMMAND_ADD' => 'https://example.com/bot/command.php',
+                    'LANG' => [
+                        ['LANGUAGE_ID' => 'de', 'TITLE' => 'Echo', 'PARAMS' => 'text'],
+                        ['LANGUAGE_ID' => 'en', 'TITLE' => 'Echo', 'PARAMS' => 'text']
+                    ],
+                    'COMMON' => 'Y',
+                    'HIDDEN' => 'N',
+                    'EXTRANET_SUPPORT' => 'N'
+                ]
+            );
+
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+
+        echo 'Success: ' . print_r($result, true);
+        processData($result);
+
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error adding product row: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
+    BX24.callMethod(
         'imbot.command.register',
-        Array(
-            'BOT_ID' => 62,
+        {
+            BOT_ID: 1291,
+            COMMAND: 'echo',
+            EVENT_COMMAND_ADD: 'https://example.com/bot/command.php',
+            LANG: [
+                { LANGUAGE_ID: 'de', TITLE: 'Echo', PARAMS: 'text' },
+                { LANGUAGE_ID: 'en', TITLE: 'Echo', PARAMS: 'text' }
+            ],
+            COMMON: 'Y',
+            HIDDEN: 'N',
+            EXTRANET_SUPPORT: 'N'
+        },
+        function(result)
+        {
+            if (result.error())
+                console.error(result.error());
+            else
+                console.dir(result.data());
+        }
+    );
+    ```
+
+- PHP CRest
+
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'imbot.command.register',
+        [
+            'BOT_ID' => 1291,
             'COMMAND' => 'echo',
+            'EVENT_COMMAND_ADD' => 'https://example.com/bot/command.php',
+            'LANG' => [
+                ['LANGUAGE_ID' => 'de', 'TITLE' => 'Echo', 'PARAMS' => 'text'],
+                ['LANGUAGE_ID' => 'en', 'TITLE' => 'Echo', 'PARAMS' => 'text']
+            ],
             'COMMON' => 'Y',
             'HIDDEN' => 'N',
-            'EXTRANET_SUPPORT' => 'N',
-            'CLIENT_ID' => '',
-            'LANG' => Array(
-                Array(
-                    'LANGUAGE_ID' => 'en',
-                    'TITLE' => 'Get echo message',
-                    'PARAMS' => 'some text'
-                ),
-            ),
-            'EVENT_COMMAND_ADD' => 'http://www.hazz/chatApi/bot.php',
-        ),
-        $_REQUEST[
-            "auth"
+            'EXTRANET_SUPPORT' => 'N'
         ]
     );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
     ```
 
 {% endlist %}
 
-{% include [Example notes](../../../_includes/examples.md) %}
+## Response Handling
 
-## Success response
+HTTP Status: **200**
 
-The command identifier `COMMAND_ID`.
+```json
+{
+    "result": 99,
+    "time": {
+        "start": 1772088116,
+        "finish": 1772088116.785232,
+        "duration": 0.7852320671081543,
+        "processing": 0,
+        "date_start": "2026-02-26T09:41:56+01:00",
+        "date_finish": "2026-02-26T09:41:56+01:00",
+        "operating_reset_at": 1772088716,
+        "operating": 0.49926185607910156
+    }
+}
+```
 
-## Error response
-
-error
-
-### Possible error codes
+### Returned Data
 
 #|
-|| **Code** | **Description** ||
-|| **EVENT_COMMAND_ADD** | The event handler link is invalid or not specified. ||
-|| **COMMAND_ERROR** | The text of the command that the chat bot should respond to is not specified. ||
-|| **BOT_ID_ERROR** | The chat bot was not found. ||
-|| **APP_ID_ERROR** | The chat bot does not belong to this application. Only chat bots installed within the application can be used. ||
-|| **LANG_ERROR** | Language phrases for the visible command were not provided. ||
-|| **WRONG_REQUEST** | Something went wrong. ||
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`integer`](../../data-types.md) | The identifier of the registered command ||
+|| **time**
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
-## Related links
+## Error Handling
 
-- [Event for the chat bot to receive the command ONIMCOMMANDADD](./events/on-im-command-add.md)
+HTTP Status: **400**
+
+```json
+{
+    "error": "COMMAND_ERROR",
+    "error_description": "Command isn't specified"
+}
+```
+
+{% include notitle [Error Handling](../../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+#|
+|| **Code** | **Description** | **Value** ||
+|| `EVENT_COMMAND_ADD_ERROR` | Handler for "Command add" event isn't specified | The `EVENT_COMMAND_ADD` parameter is not provided ||
+|| `EVENT_COMMAND_ADD_ERROR` | Wrong handler URL | An invalid URL for the command add event handler is provided ||
+|| `COMMAND_ERROR` | Command isn't specified | The command text is not specified ||
+|| `BOT_ID_ERROR` | Bot not found | The chat bot is not found ||
+|| `APP_ID_ERROR` | Bot was installed by another REST application | The chat bot is registered by another application ||
+|| `LANG_ERROR` | Lang set can't be empty | The `LANG` localization array is not provided ||
+|| `WRONG_REQUEST` | Command can't be created | Failed to register the command ||
+|#
+
+{% include [System Errors](../../../_includes/system-errors.md) %}
+
+## Continue Learning
+
+- [{#T}](./imbot-command-update.md)
+- [{#T}](./imbot-command-unregister.md)
+- [{#T}](./imbot-command-answer.md)
+- [{#T}](./events/on-im-command-add.md)

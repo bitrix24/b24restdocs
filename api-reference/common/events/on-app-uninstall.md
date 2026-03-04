@@ -1,4 +1,4 @@
-# Event on Application Uninstallation onAppUninstall
+# Event on Application Uninstallation: onAppUninstall
 
 > Scope: [`basic`](../../scopes/permissions.md)
 >
@@ -12,22 +12,22 @@ Events will not be sent to the application until the installation is complete. [
 
 {% endnote %}
 
-## What the handler receives
+## What the Handler Receives
 
 Data is transmitted as a POST request {.b24-info}
 
-```
+```json
 {
     "event": "ONAPPUNINSTALL",
     "data": {
-        "LANGUAGE_ID" => "en",
+        "LANGUAGE_ID": "de",
         "CLEAN": 1
     },
     "ts": "1466439714",
     "auth": {
         "domain": "some-domain.bitrix24.com",
-        "server_endpoint": "https://oauth.bitrix.info/rest/", 
-        "client_endpoint": "https://some-domain.bitrix24.com/rest/", 
+        "server_endpoint": "https://oauth.bitrix.info/rest/",
+        "client_endpoint": "https://some-domain.bitrix24.com/rest/",
         "member_id": "a223c6b3710f85df22e9377d6c4f7553",
         "application_token": "51856fefc120afa4b628cc82d3935cce"
     }
@@ -36,7 +36,7 @@ Data is transmitted as a POST request {.b24-info}
 
 ## Request Parameters
 
-{% include [Note on required parameters](../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -44,33 +44,33 @@ Data is transmitted as a POST request {.b24-info}
 || **event***
 [`string`](../../data-types.md) | Symbolic event code — `ONAPPUNINSTALL` ||
 || **data***
-[`array`](../../data-types.md) | Data about the uninstalled application.
+[`object`](../../data-types.md) | Data about the uninstalled application.
 
 The structure is described [below](#data) ||
 || **ts***
 [`timestamp`](../../data-types.md) | Date and time the event was sent from the queue ||
 || **auth***
-[`array`](../../data-types.md) | Authorization and account data.
+[`object`](../../data-types.md) | Authorization and account data.
 
 The structure is described [below](#auth) ||
 |#
 
 ### Parameter data {#data}
 
-{% include [Note on required parameters](../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **LANGUAGE_ID***
-[`string`](../../data-types.md) | Set language: `en`, `de`, and others ||
+[`string`](../../data-types.md) | Installed language: `de`, `en`, and others ||
 || **CLEAN***
-[`integer`](../../data-types.md) | Value of the "Clear application data" option set by the user when uninstalling the application. Values: `1` or `0` ||
+[`integer`](../../data-types.md) | Value of the "Clear application data" option set by the user during uninstallation. Values: `1` or `0` ||
 |#
 
 ### Parameter auth {#auth}
 
-{% include [Note on required parameters](../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -80,16 +80,16 @@ The structure is described [below](#auth) ||
 || **server_endpoint***
 [`string`](../../data-types.md) | Authorization server address for token refresh ||
 || **client_endpoint***
-[`string`](../../data-types.md) | General path for API method calls for the account ||
+[`string`](../../data-types.md) | Common path for API method calls ||
 || **member_id***
-[`string`](../../data-types.md) | Unique identifier of the account ||
+[`string`](../../data-types.md) | Unique account identifier ||
 || **application_token***
-[`string`](../../data-types.md) | Token for secure event processing ||
+[`string`](../../data-types.md) | Token for secure event handling ||
 |#
 
 {% note warning "" %}
 
-When an application is uninstalled, all access permissions for the application to the API are removed. Therefore, even though the event handler will receive authorization data, it can no longer use the API on behalf of the uninstalled application.
+When an application is uninstalled, all access permissions for the application to the API are revoked. Therefore, even though the event handler will receive authorization data, it can no longer use the API on behalf of the uninstalled application.
 
 {% endnote %}
 

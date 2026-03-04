@@ -1,81 +1,219 @@
-# Change Chat Title imbot.chat.updateTitle
-
-{% note warning "We are still updating this page" %}
-
-Some data may be missing here — we will complete it shortly.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- edits needed for writing standards
-- parameter types are not specified
-- parameter requirements are not specified
-- examples are missing
-- success response is missing
-- error response is missing
-
-{% endnote %}
-
-{% endif %}
+# Change Chat Title with imbot.chat.updateTitle
 
 > Scope: [`imbot`](../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: an authorized user of the application that registered the chat bot.
 
 The method `imbot.chat.updateTitle` updates the chat title.
 
+## Method Parameters
+
+{% include [Note on required parameters](../../../_includes/required.md) %}
+
 #|
-|| **Parameter** | **Example** | **Description** | **Revision** ||
-|| **CHAT_ID**
-[`unknown`](../../data-types.md) | `13` | Chat identifier | ||
-|| **TITLE**
-[`unknown`](../../data-types.md) | `'New name for the chat'` | New title | ||
+|| **Name**
+`type` | **Description** ||
+|| **CHAT_ID***
+[`integer`](../../data-types.md) | The identifier of the chat.
+
+The identifier can be obtained using the [imbot.chat.get](./imbot-chat-get.md) method. ||
+|| **TITLE***
+[`string`](../../data-types.md) | The new title of the chat.
+
+The method automatically trims spaces and line breaks from the edges of the value. ||
 || **BOT_ID**
-[`unknown`](../../data-types.md) | `39` | Identifier of the chat bot making the request. Can be omitted if there is only one chat bot | ||
+[`integer`](../../data-types.md) | The identifier of the chat bot. You can obtain the bot identifier using the [imbot.bot.list](../imbot-bot-list.md) method.
+
+If the parameter is not provided, the method searches for the first bot registered by the current application. ||
+|| **CLIENT_ID**
+[`string`](../../data-types.md) | A technical parameter for scenarios without `clientId` in authorization.
+
+If provided, it is used as `custom{CLIENT_ID}` to identify the application. ||
 |#
 
-## Examples
+## Code Examples
 
-{% include [Explanation about restCommand](../_includes/rest-command.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
+
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"CHAT_ID":2725,"TITLE":"New name for the chat"}' \
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/imbot.chat.updateTitle
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"CHAT_ID":2725,"TITLE":"New name for the chat","auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/imbot.chat.updateTitle
+    ```
+
+- JS
+
+    ```js
+    try
+    {
+        const response = await $b24.callMethod(
+            'imbot.chat.updateTitle',
+            {
+                CHAT_ID: 2725,
+                TITLE: 'New name for the chat',
+            }
+        );
+        
+        const result = response.getData().result;
+        console.log('Chat title updated:', result);
+        
+        processResult(result);
+    }
+    catch( error )
+    {
+        console.error('Error:', error);
+    }
+    ```
 
 - PHP
 
     ```php
-    $result = restCommand(
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'imbot.chat.updateTitle',
+                [
+                    'CHAT_ID' => 2725,
+                    'TITLE' => 'New name for the chat'
+                ]
+            );
+
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+
+        echo 'Success: ' . print_r($result, true);
+        processData($result);
+
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error updating chat title: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
+    BX24.callMethod(
         'imbot.chat.updateTitle',
-        Array(
-            'CHAT_ID' => 13,
-            'TITLE' => 'New name for the chat',
-            'BOT_ID' => 39,
-        ),
-        $_REQUEST[
-            "auth"
+        {
+            CHAT_ID: 2725,
+            TITLE: 'New name for the chat',
+        },
+        function (result)
+        {
+            if (result.error())
+                console.error(result.error());
+            else
+                console.dir(result.data());
+        }
+    );
+    ```
+
+- PHP CRest
+
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'imbot.chat.updateTitle',
+        [
+            'CHAT_ID' => 2725,
+            'TITLE' => 'New name for the chat'
         ]
     );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
     ```
 
 {% endlist %}
 
-{% include [Footnote about examples](../../../_includes/examples.md) %}
+## Response Handling
 
-## Success Response
+HTTP Status: **200**
 
-`true`.
+```json
+{
+    "result": true,
+    "time": {
+        "start": 1771936871,
+        "finish": 1771936871.911049,
+        "duration": 0.9110488891601562,
+        "processing": 0,
+        "date_start": "2026-02-24T15:41:11+01:00",
+        "date_finish": "2026-02-24T15:41:11+01:00",
+        "operating_reset_at": 1771937471,
+        "operating": 0
+    }
+}
+```
 
-## Error Response
+### Returned Data
 
-error
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`boolean`](../../data-types.md) | `true` if the title was updated. ||
+|| **time**
+[`time`](../../data-types.md#time) | Information about the execution time of the request. ||
+|#
+
+## Error Handling
+
+HTTP Status: **400**
+
+```json
+{
+    "error": "TITLE_EMPTY",
+    "error_description": "Title can't be empty"
+}
+```
+
+{% include notitle [error handling](../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| **CHAT_ID_EMPTY** | Chat identifier was not provided. ||
-|| **TITLE_EMPTY** | New chat title was not provided. ||
-|| **WRONG_REQUEST** | Title is already set or the specified chat does not exist. ||
+|| **Code** | **Description** | **Value** ||
+|| `CHAT_ID_EMPTY` | Chat ID can't be empty | `CHAT_ID` not provided. ||
+|| `TITLE_EMPTY` | Title can't be empty | `TITLE` not provided. ||
+|| `ACCESS_ERROR` | Action unavailable | Operation not available for this chat. ||
+|| `ACCESS_ERROR` | This chat cannot be renamed | This chat cannot be renamed. ||
+|| `BOT_ID_ERROR` | Bot not found | Chat bot not found. ||
+|| `APP_ID_ERROR` | Bot was installed by another REST application | Chat bot installed by another application. ||
 |#
+
+{% include [system errors](../../../_includes/system-errors.md) %}
+
+## Continue Learning
+
+- [{#T}](./imbot-chat-add.md)
+- [{#T}](./imbot-chat-user-add.md)
+- [{#T}](./imbot-chat-set-manager.md)
+- [{#T}](./imbot-chat-update-avatar.md)
+- [{#T}](./imbot-chat-update-color.md)
+- [{#T}](./imbot-chat-get.md)
+- [{#T}](./imbot-dialog-get.md)
+- [{#T}](./imbot-chat-user-list.md)
+- [{#T}](./imbot-chat-user-delete.md)
+- [{#T}](./imbot-chat-leave.md)

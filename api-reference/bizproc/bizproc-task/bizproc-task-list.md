@@ -1,38 +1,44 @@
-# Get the list of workflow tasks bizproc.task.list
+# Get a List of Workflow Tasks bizproc.task.list
 
 > Scope: [`bizproc`](../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-The method retrieves a list of workflow tasks.
+The method `bizproc.task.list` retrieves a list of workflow tasks.
 
-An account administrator can request all tasks or tasks of any user. A regular user can request their own tasks or those of their subordinate.
+A portal administrator can request all tasks or tasks for any user. A regular user can only request their own tasks or those of their subordinate.
 
-To request their own tasks, the `USER_ID` filter does not need to be specified.
+When requesting their own tasks, the `USER_ID` filter does not need to be specified.
+
+{% note info "" %}
+
+In cloud Bitrix24, information about tasks is available for 24 hours after the workflow is completed.
+
+{% endnote %}
 
 ## Method Parameters
 
-{% include [Footnote on parameters](../../../_includes/required.md) %}
+{% include [Note on Parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **SELECT**
-[`array`](../../data-types.md) | The array contains a list of [fields](#fields) to be selected.
+[`array`](../../data-types.md) | An array containing a list of [fields](#fields) to select.
 
-Only the necessary fields can be specified.
+You can specify only the fields that are necessary.
 
 By default, it returns the fields `ENTITY`, `DOCUMENT_ID`, `ID`, `WORKFLOW_ID`, `DOCUMENT_NAME`, `NAME`, `DOCUMENT_URL` ||
 || **FILTER**
 [`object`](../../data-types.md) | An object for filtering the list of tasks in the format `{"field_1": "value_1", ... "field_N": "value_N"}`, where
 - `field_N` — [field](#fields) of the task for filtering
-- `value_N` — field value
+- `value_N` — value of the field
 
 If `USER_ID` is present in the filter, user subordination is checked:
-- a manager can request the list of tasks of their subordinates
-- an administrator can request tasks of any users without restrictions 
+- a manager can request a list of tasks for their subordinates
+- an administrator can request tasks for any users without restrictions 
 
-If the method is called by a non-administrator and the `USER_ID` filter is not specified, it defaults to selecting tasks of the current user
+If the method is called by a non-administrator and the `USER_ID` filter is not specified, it defaults to selecting tasks for the current user
 ||
 || **ORDER**
 [`object`](../../data-types.md) | An object for sorting the list of tasks in the format `{"field_1": "value_1", ... "field_N": "value_N"}`, where
@@ -43,13 +49,13 @@ The sorting direction can take the following values:
 - `asc` — ascending
 - `desc` — descending
   
-Multiple fields can be specified for sorting, for example, `{NAME: 'ASC', ID: 'DESC'}` ||
+You can specify multiple fields for sorting, for example, `{NAME: 'ASC', ID: 'DESC'}` ||
 || **START**
-[`integer`](../../data-types.md) | The parameter is used for managing pagination.
+[`integer`](../../data-types.md) | This parameter is used for managing pagination.
 
 The page size of results is always static — 50 records.
 
-To select the second page of results, the value `50` must be passed. To select the third page of results — the value `100`, and so on.
+To select the second page of results, you need to pass the value `50`. To select the third page of results — the value `100`, and so on.
 
 The formula for calculating the `start` parameter value:
 
@@ -58,7 +64,7 @@ The formula for calculating the `start` parameter value:
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+{% include [Note on Examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -85,7 +91,7 @@ The formula for calculating the `start` parameter value:
 - JS
 
     ```js
-    // callListMethod: Retrieves all data at once. Use only for small selections (< 1000 items) due to high memory usage.
+    // callListMethod: Retrieves all data at once. Use only for small selections (< 1000 items) due to high memory load.
     
     const parameters = {
         select: [
@@ -130,7 +136,7 @@ The formula for calculating the `start` parameter value:
         console.error('Request failed', error);
     }
     
-    // fetchListMethod: Retrieves data in parts using an iterator. Use it for large data volumes to optimize memory usage.
+    // fetchListMethod: Retrieves data in parts using an iterator. Use for large volumes of data for efficient memory consumption.
     
     const parameters = {
         select: [
@@ -176,7 +182,7 @@ The formula for calculating the `start` parameter value:
         console.error('Request failed', error);
     }
     
-    // callMethod: Manually controls pagination through the start parameter. Use it for precise control of request batches. For large datasets, it is less efficient than fetchListMethod.
+    // callMethod: Manual control of pagination through the start parameter. Use for precise control over request batches. Less efficient for large data than fetchListMethod.
     
     const parameters = {
         select: [
@@ -383,7 +389,7 @@ The formula for calculating the `start` parameter value:
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -395,14 +401,14 @@ HTTP status: **200**
             "WORKFLOW_ID": "67a2ffdb2c57a3.35276854",
             "DOCUMENT_NAME": "Partner Conference",
             "DESCRIPTION": "",
-            "NAME": "Add contractor information",
-            "MODIFIED": "2025-02-05T09:06:19+02:00",
-            "WORKFLOW_STARTED": "2025-02-05T09:06:19+02:00",
+            "NAME": "Add Contractor Information",
+            "MODIFIED": "2025-02-05T09:06:19+01:00",
+            "WORKFLOW_STARTED": "2025-02-05T09:06:19+01:00",
             "WORKFLOW_STARTED_BY": "1",
             "OVERDUE_DATE": null,
             "WORKFLOW_TEMPLATE_ID": "565",
             "WORKFLOW_TEMPLATE_NAME": "Event Organization",
-            "WORKFLOW_STATE": "Waiting for additional information",
+            "WORKFLOW_STATE": "Waiting for Additional Information",
             "STATUS": "0",
             "USER_ID": "1",
             "USER_STATUS": "0",
@@ -413,7 +419,7 @@ HTTP status: **200**
                 "CommentLabel": "Comment",
                 "CommentRequired": "Y",
                 "ShowComment": "Y",
-                "StatusOkLabel": "Save result",
+                "StatusOkLabel": "Save Result",
                 "Fields": [
                     {
                         "Id": "contractor",
@@ -439,7 +445,7 @@ HTTP status: **200**
                     {
                         "Id": "phone_number",
                         "Type": "string",
-                        "Name": "Phone number",
+                        "Name": "Phone Number",
                         "Description": "",
                         "Multiple": false,
                         "Required": true,
@@ -464,8 +470,8 @@ HTTP status: **200**
         "finish": 1738735796.510215,
         "duration": 0.037192106246948242,
         "processing": 0.0080459117889404297,
-        "date_start": "2025-02-05T09:09:56+02:00",
-        "date_finish": "2025-02-05T09:09:56+02:00",
+        "date_start": "2025-02-05T09:09:56+01:00",
+        "date_finish": "2025-02-05T09:09:56+01:00",
         "operating_reset_at": 1738736396,
         "operating": 0
     }
@@ -486,7 +492,7 @@ Each object contains [fields](#fields) of the task specified in the `SELECT` par
 || **total**
 [`integer`](../../data-types.md) | The total number of records found ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the query execution time ||
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 #### Task Fields {#fields}
@@ -535,6 +541,7 @@ Each object contains [fields](#fields) of the task specified in the `SELECT` par
 - `1` — approved
 - `2` — rejected
 - `3` — completed ||
+
 || **MODULE_ID**
 [`string`](../../data-types.md) | Module identifier by document ||
 || **ENTITY**
@@ -565,23 +572,23 @@ Each object contains [fields](#fields) of the task specified in the `SELECT` par
 || **CommentLabel**
 [`string`](../../data-types.md) | Name of the Comment field ||
 || **CommentRequired**
-[`string`](../../data-types.md) | Comment requirement. Allowed values:
+[`string`](../../data-types.md) | Comment requirement. Possible values:
 - `N` — no
 - `Y` — yes
 - `YA` — yes, upon approval
 - `YR` — yes, upon rejection
 ||
 || **ShowComment**
-[`boolean`](../../data-types.md) | Show comment. Allowed values:
+[`boolean`](../../data-types.md) | Show comment. Possible values:
 - `N` — no
 - `Y` — yes
 ||
 || **StatusOkLabel**
-[`string`](../../data-types.md) | Text of the Acknowledged button ||
+[`string`](../../data-types.md) | Text for the Acknowledged button ||
 || **StatusYesLabel**
-[`string`](../../data-types.md) | Text of the Approve button ||
+[`string`](../../data-types.md) | Text for the Approve button ||
 || **StatusNoLabel**
-[`string`](../../data-types.md) | Text of the Reject button ||
+[`string`](../../data-types.md) | Text for the Reject button ||
 || **Fields**
 [`array`](../../data-types.md) | An array of objects. Each object contains a description of the [field in the task](#task-fields) ||
 |#
@@ -625,9 +632,9 @@ Values depend on the parameter type. Examples:
 - for the List type `select`, these are the options of the list
 ```json
 "Options": {
-    "1": "First option",
-    "2": "Second option",
-    "3": "Third option",
+    "1": "First Option",
+    "2": "Second Option",
+    "3": "Third Option",
 },
 ```
 - for the CRM Binding type `'E:ECrm'`, these are the available object types
@@ -646,12 +653,12 @@ Values depend on the parameter type. Examples:
 || **Settings**
 [`object`](../../data-types.md) | Additional field settings ||
 || **Default**
-[`any`](../../data-types.md) | Default parameter value ||
+[`any`](../../data-types.md) | Default value of the parameter ||
 |#
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {
@@ -666,7 +673,7 @@ HTTP status: **400**
 
 #|
 || **Code** | **Error Message** | **Description** ||
-|| `ACCESS_DENIED` | Access denied! | The method was not initiated by an administrator or you cannot view the tasks of the specified employee ||
+|| `ACCESS_DENIED` | Access denied! | The method was called by a non-administrator or you cannot view the tasks of the specified employee ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
@@ -678,4 +685,3 @@ HTTP status: **400**
 - [{#T}](./bizproc-task-delegate.md)
 - [{#T}](../../../tutorials/bizproc/how-to-kill-workflows.md)
 - [{#T}](../../../tutorials/bizproc/how-to-filter-and-kill-workflows.md)
-

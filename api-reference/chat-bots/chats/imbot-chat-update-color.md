@@ -1,81 +1,232 @@
 # Change Chat Color imbot.chat.updateColor
 
-{% note warning "We are still updating this page" %}
-
-Some data may be missing here — we will complete it shortly.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- edits needed for writing standards
-- parameter types are not specified
-- parameter requirements are not indicated
-- examples are missing
-- success response is absent
-- error response is absent
-
-{% endnote %}
-
-{% endif %}
-
 > Scope: [`imbot`](../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: an authorized user of the application that registered the chat bot
 
-The method `imbot.chat.updateColor` updates the chat color.
+The method `imbot.chat.updateColor` updates the chat color for the mobile application.
+
+## Method Parameters
+
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
-|| **Parameter** | **Example** | **Description** | **Revision** ||
-|| **CHAT_ID**
-[`unknown`](../../data-types.md) | `13` | Chat identifier | ||
-|| **COLOR**
-[`unknown`](../../data-types.md) | `'MINT'` | Chat color for the mobile application - RED, GREEN, MINT, LIGHT_BLUE, DARK_BLUE, PURPLE, AQUA, PINK, LIME, BROWN, AZURE, KHAKI, SAND, MARENGO, GRAY, GRAPHITE | ||
+|| **Name**
+`type` | **Description** ||
+|| **CHAT_ID***
+[`integer`](../../data-types.md) | The identifier of the chat.
+
+The identifier can be obtained using the method [imbot.chat.get](./imbot-chat-get.md) ||
+|| **COLOR***
+[`string`](../../data-types.md) | The chat color for the mobile application. Possible values:
+- `RED` — red
+- `GREEN` — green
+- `MINT` — mint
+- `LIGHT_BLUE` — light blue
+- `DARK_BLUE` — dark blue
+- `PURPLE` — purple
+- `AQUA` — aqua
+- `PINK` — pink
+- `LIME` — lime
+- `BROWN` — brown
+- `AZURE` — azure
+- `KHAKI` — khaki
+- `SAND` — sand
+- `MARENGO` — marengo
+- `GRAY` — gray
+- `GRAPHITE` — graphite ||
 || **BOT_ID**
-[`unknown`](../../data-types.md) | `39` | Identifier of the chat bot making the request. Can be omitted if there is only one chat bot | ||
+[`integer`](../../data-types.md) | The identifier of the chat bot. You can obtain the bot identifier using the method [imbot.bot.list](../imbot-bot-list.md).
+
+If the parameter is not provided, the method searches for the first bot registered by the current application ||
+|| **CLIENT_ID**
+[`string`](../../data-types.md) | A technical parameter for scenarios without `clientId` in authorization.
+
+If provided, it is used as `custom{CLIENT_ID}` to identify the application ||
 |#
 
-## Examples
+## Code Examples
 
-{% include [Explanation about restCommand](../_includes/rest-command.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
+
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"CHAT_ID":2725,"COLOR":"PINK"}' \
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/imbot.chat.updateColor
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"CHAT_ID":2725,"COLOR":"PINK","auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/imbot.chat.updateColor
+    ```
+
+- JS
+
+    ```js
+    try
+    {
+        const response = await $b24.callMethod(
+            'imbot.chat.updateColor',
+            {
+                CHAT_ID: 2725,
+                COLOR: 'PINK'
+            }
+        );
+        
+        const result = response.getData().result;
+        console.log('Updated chat color:', result);
+        processResult(result);
+    }
+    catch( error )
+    {
+        console.error('Error:', error);
+    }
+    ```
 
 - PHP
 
     ```php
-    $result = restCommand(
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'imbot.chat.updateColor',
+                [
+                    'CHAT_ID' => 2725,
+                    'COLOR' => 'PINK'
+                ]
+            );
+
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+
+        echo 'Success: ' . print_r($result, true);
+        processData($result);
+
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error updating chat color: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
+    BX24.callMethod(
         'imbot.chat.updateColor',
-        Array(
-            'CHAT_ID' => 13,
-            'COLOR' => 'MINT',
-            'BOT_ID' => 39,
-        ),
-        $_REQUEST[
-            "auth"
+        {
+            CHAT_ID: 2725,
+            COLOR: 'PINK',
+        },
+        function (result)
+        {
+            if (result.error())
+                console.error(result.error());
+            else
+                console.dir(result.data());
+        }
+    );
+    ```
+
+- PHP CRest
+
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'imbot.chat.updateColor',
+        [
+            'CHAT_ID' => 2725,
+            'COLOR' => 'PINK'
         ]
     );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
     ```
 
 {% endlist %}
 
-{% include [Footnote about examples](../../../_includes/examples.md) %}
+## Response Handling
 
-## Success Response
+HTTP Status: **200**
 
-`true`
+```json
+{
+    "result": true,
+    "time": {
+        "start": 1771935255,
+        "finish": 1771935255.192065,
+        "duration": 0.19206500053405762,
+        "processing": 0,
+        "date_start": "2026-02-24T15:14:15+01:00",
+        "date_finish": "2026-02-24T15:14:15+01:00",
+        "operating_reset_at": 1771935855,
+        "operating": 0
+    }
+}
+```
 
-## Error Response
+### Returned Data
 
-error
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`boolean`](../../data-types.md) | `true` if the chat color was updated ||
+|| **time**
+[`time`](../../data-types.md#time) | Information about the request execution time ||
+|#
+
+## Error Handling
+
+HTTP Status: **400**, **403**
+
+```json
+{
+    "error": "WRONG_COLOR",
+    "error_description": "This color currently unavailable"
+}
+```
+
+{% include notitle [error handling](../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| **CHAT_ID_EMPTY** | Chat identifier was not provided. ||
-|| **WRONG_COLOR** | Color is not in the list of available colors. ||
-|| **WRONG_REQUEST** | Color is already set or the specified chat does not exist. ||
+|| **Code** | **Description** | **Value** ||
+|| `CHAT_ID_EMPTY` | Chat ID can't be empty | `CHAT_ID` not provided ||
+|| `ACCESS_ERROR` | Action unavailable | Operation not available for this chat ||
+|| `WRONG_COLOR` | This color currently unavailable | Invalid color provided ||
+|| `WRONG_REQUEST` | This color currently set or chat doesn't exist | Color already set or chat does not exist ||
+|| `BOT_ID_ERROR` | Bot not found | Chat bot not found ||
+|| `APP_ID_ERROR` | Bot was installed by another rest application | Chat bot installed by another application ||
 |#
+
+{% include [system errors](../../../_includes/system-errors.md) %}
+
+## Continue Learning
+
+- [{#T}](./imbot-chat-add.md)
+- [{#T}](./imbot-chat-user-add.md)
+- [{#T}](./imbot-chat-set-manager.md)
+- [{#T}](./imbot-chat-update-title.md)
+- [{#T}](./imbot-chat-update-avatar.md)
+- [{#T}](./imbot-chat-get.md)
+- [{#T}](./imbot-dialog-get.md)
+- [{#T}](./imbot-chat-user-list.md)
+- [{#T}](./imbot-chat-user-delete.md)
+- [{#T}](./imbot-chat-leave.md)

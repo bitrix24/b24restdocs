@@ -1,89 +1,200 @@
-# Remove chat-bot imbot.unregister
-
-{% note warning "We are still updating this page" %}
-
-Some data may be missing here — we will complete it shortly.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- edits needed for writing standards
-- parameter types are not specified
-- required parameters are not indicated
-- not all parameters have examples in the table
-- examples are missing
-- response on success is missing
-- response on error is missing
-- links to pages that have not yet been created are not specified
-
-{% endnote %}
-
-{% endif %}
+# Unregister Chat-Bot imbot.unregister
 
 > Scope: [`imbot`](../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: an authorized user of the application that registered the chat-bot
 
-The method `imbot.unregister` removes the chat-bot from the system.
+The method `imbot.unregister` removes the chat-bot.
 
-{% note warning %}
+{% note warning "" %}
 
-All one-on-one chats of this chat-bot with users will be lost.
+When the bot is removed, personal chats with users are deleted.
 
 {% endnote %}
 
+## Method Parameters
+
+{% include [Footnote on parameters](../../_includes/required.md) %}
+
 #|
-|| **Parameter** | **Example** | **Description** | **Revision** ||
-|| **BOT_ID**
-[`unknown`](../data-types.md) | `39` | numeric identifier of the bot | ||
+|| **Name**
+`Type` | **Description** ||
+|| **BOT_ID***
+[`integer`](../data-types.md) | The identifier of the chat-bot. The value must be greater than `0`.
+
+You can obtain the bot identifier using the [imbot.bot.list](./imbot-bot-list.md) method ||
 || **CLIENT_ID**
-[`unknown`](../data-types.md) | `''` | string identifier of the chat-bot, used only in Webhook mode | ||
+[`string`](../data-types.md) | A technical parameter for scenarios without `clientId` in authorization. If provided, it is used as `custom{CLIENT_ID}` to identify the application ||
 |#
 
-## Examples
+## Code Examples
 
-{% include [Explanation about restCommand](./_includes/rest-command.md) %}
+{% include [Footnote on examples](../../_includes/examples.md) %}
 
 {% list tabs %}
+
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+      -H "Content-Type: application/json" \
+      -H "Accept: application/json" \
+      -d '{"BOT_ID":39}' \
+      https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/imbot.unregister
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+      -H "Content-Type: application/json" \
+      -H "Accept: application/json" \
+      -d '{"BOT_ID":39,"auth":"**put_access_token_here**"}' \
+      https://**put_your_bitrix24_address**/rest/imbot.unregister
+    ```
+
+- JS
+
+    ```js
+    try {
+      const response = await $b24.callMethod('imbot.unregister', {
+        BOT_ID: 39,
+      });
+
+      const { result } = response.getData();
+      console.log('Unregistered:', result);
+    } catch (error) {
+      console.error('Error unregistering bot:', error);
+    }
+    ```
 
 - PHP
 
     ```php
-    $result = restCommand(
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'imbot.unregister',
+                [
+                    'BOT_ID' => 39,
+                ]
+            );
+
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+
+        if ($result->error()) {
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Unregistered: ' . ($result->data() ? 'true' : 'false');
+        }
+    } catch (Throwable $exception) {
+        error_log($exception->getMessage());
+        echo 'Error unregistering bot: ' . $exception->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
+    BX24.callMethod(
         'imbot.unregister',
-        Array(
+        {
+            BOT_ID: 39,
+        },
+        function(result) {
+            if (result.error()) {
+                console.error(result.error().ex);
+            } else {
+                console.log(result.data());
+            }
+        }
+    );
+    ```
+
+- PHP CRest
+
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'imbot.unregister',
+        [
             'BOT_ID' => 39,
-            'CLIENT_ID' => '',
-        ),
-        $_REQUEST[
-            "auth"
         ]
     );
+
+    if (!empty($result['error'])) {
+        echo 'Error: ' . $result['error_description'];
+    } else {
+        echo 'Unregistered: ' . ($result['result'] ? 'true' : 'false');
+    }
     ```
 
 {% endlist %}
 
-{% include [Footnote about examples](../../_includes/examples.md) %}
+## Response Handling
 
-## Response on success
+HTTP Code: **200**
 
-`true`
+```json
+{
+    "result": true,
+    "time": {
+        "start": 1728626400.123,
+        "finish": 1728626400.234,
+        "duration": 0.111,
+        "processing": 0.045,
+        "date_start": "2024-10-11T10:00:00+02:00",
+        "date_finish": "2024-10-11T10:00:00+02:00",
+        "operating_reset_at": 1762349466,
+        "operating": 0
+    }
+}
+```
 
-## Response on error
-
-error
-
-### Possible error codes
+## Returned Data
 
 #|
-|| **Code** | **Description** ||
-|| **BOT_ID_ERROR** | Chat-bot not found. ||
-|| **APP_ID_ERROR** | Chat-bot does not belong to this application; you can only work with chat-bots installed within the application. ||
+|| **Name**
+`Type` | **Description** ||
+|| **result**
+[`boolean`](../data-types.md) | `true` if the chat-bot was removed without error ||
+|| **time**
+[`time`](../data-types.md#time) | Information about the execution time of the request ||
 |#
 
-## Related links
+## Error Handling
 
-[Rest API - Installation and update events](./events/index.md)
+HTTP Status: **400**, **403**
+
+```json
+{
+    "error": "BOT_ID_ERROR",
+    "error_description": "Bot not found"
+}
+```
+
+{% include notitle [Error Handling](../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+#|
+|| **Code** | **Description** | **Value** ||
+|| `WRONG_AUTH_TYPE` | Access for this method not allowed by session authorization. | The method was called with session authorization instead of OAuth or webhook ||
+|| `ACCESS_DENIED` | Access denied! Client ID not specified | Unable to determine the application: missing `clientId` authorization and `CLIENT_ID` not provided ||
+|| `BOT_ID_ERROR` | Bot not found | Bot not found ||
+|| `APP_ID_ERROR` | Bot was installed by another REST application | The provided `BOT_ID` belongs to another application ||
+|| `WRONG_REQUEST` | Bot can't be deleted | The bot cannot be deleted ||
+|#
+
+{% include [System Errors](../../_includes/system-errors.md) %}
+
+## Continue Learning
+
+- [{#T}](./imbot-register.md)
+- [{#T}](./imbot-update.md)
+- [{#T}](./imbot-bot-list.md)
+- [{#T}](./events/index.md)
