@@ -1,8 +1,8 @@
-# Change Chat Title with imbot.chat.updateTitle
+# Change Chat Title imbot.chat.updateTitle
 
 > Scope: [`imbot`](../../scopes/permissions.md)
 >
-> Who can execute the method: an authorized user of the application that registered the chat bot.
+> Who can execute the method: an authorized user of the application that registered the chat bot
 
 The method `imbot.chat.updateTitle` updates the chat title.
 
@@ -20,15 +20,13 @@ The identifier can be obtained using the [imbot.chat.get](./imbot-chat-get.md) m
 || **TITLE***
 [`string`](../../data-types.md) | The new title of the chat.
 
-The method automatically trims spaces and line breaks from the edges of the value. ||
+The method automatically trims whitespace and line breaks from the edges of the value. ||
 || **BOT_ID**
 [`integer`](../../data-types.md) | The identifier of the chat bot. You can obtain the bot identifier using the [imbot.bot.list](../imbot-bot-list.md) method.
 
 If the parameter is not provided, the method searches for the first bot registered by the current application. ||
 || **CLIENT_ID**
-[`string`](../../data-types.md) | A technical parameter for scenarios without `clientId` in authorization.
-
-If provided, it is used as `custom{CLIENT_ID}` to identify the application. ||
+[`string`](../../data-types.md) | This parameter is required only for webhooks. Pass the same CLIENT_ID that was specified during the registration of the chat bot. ||
 |#
 
 ## Code Examples
@@ -43,7 +41,7 @@ If provided, it is used as `custom{CLIENT_ID}` to identify the application. ||
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"CHAT_ID":2725,"TITLE":"New name for the chat"}' \
+    -d '{"CHAT_ID":2725,"TITLE":"New name for the chat","CLIENT_ID":"**put_your_client_id_here**"}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/imbot.chat.updateTitle
     ```
 

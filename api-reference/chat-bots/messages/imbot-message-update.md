@@ -14,17 +14,17 @@ The method `imbot.message.update` modifies a previously sent message from the ch
 || **Name**
 `Type` | **Description** ||
 || **BOT_ID**
-[`integer`](../../data-types.md) | The identifier of the chatbot. It can be obtained using the [imbot.bot.list](../imbot-bot-list.md) method.
+[`integer`](../../data-types.md) | The identifier of the chatbot. It can be obtained using the method [imbot.bot.list](../imbot-bot-list.md).
 
-If the parameter is not provided, the method searches for the first bot registered by the current application ||
-|| **MESSAGE_ID***
+If the parameter is not provided, the method searches for the first bot registered by the current application. ||
+|| **MESSAGE_ID*** 
 [`integer`](../../data-types.md) | The identifier of the message to be modified. The value must be greater than `0`.
 
-For messages sent by the bot via REST, the identifier is returned by the [imbot.message.add](./imbot-message-add.md) method ||
+For messages sent by the bot via REST, the identifier is returned by the method [imbot.message.add](./imbot-message-add.md). ||
 || **MESSAGE**
 [`string`](../../data-types.md) | The new text of the message. If an empty value is provided, the message will be deleted.
 
-If the parameter is not provided, the message text will remain unchanged ||
+If the parameter is not provided, the message text will remain unchanged. ||
 || **ATTACH**
 [`object`](../../data-types.md)
 [`string`](../../data-types.md) | An attachment with content blocks: images, links, files. You can provide:
@@ -32,23 +32,23 @@ If the parameter is not provided, the message text will remain unchanged ||
 - an object with the root key `BLOCKS`
 - an array of blocks without wrapping 
 
-For more details, refer to the [Attachments](../../chats/messages/attachments/index.md) section.
+For more details, refer to the section [Attachments](../../chats/messages/attachments/index.md).
 
-An empty value or `N` clears the attachment ||
+An empty value or `N` clears the attachment. ||
 || **KEYBOARD**
 [`object`](../../data-types.md)
 [`string`](../../data-types.md) | Buttons below the message that the user can interact with.
 
-For more details, refer to the [Working with Keyboards](../../chats/messages/keyboards.md) article.
+For more details, refer to the article [Working with Keyboards](../../chats/messages/keyboards.md).
 
-An empty value or `N` disables the display of buttons ||
+An empty value or `N` disables the display of buttons. ||
 || **MENU**
 [`object`](../../data-types.md)
 [`string`](../../data-types.md) | Additional items in the chat's context menu.
 
-For more details, refer to the [Context Menu](../../chats/messages/menu.md) article.
+For more details, refer to the article [Context Menu](../../chats/messages/menu.md).
 
-An empty value or `N` disables the display of additional items ||
+An empty value or `N` disables the display of additional items. ||
 || **URL_PREVIEW**
 [`string`](../../data-types.md) | Controls the display of links: when enabled, the link is shown as a "rich link" with a card.
 
@@ -62,9 +62,7 @@ Allowed values:
 - `Y` — skip
 - `N` — do not skip, default value ||
 || **CLIENT_ID**
-[`string`](../../data-types.md) | A technical parameter for scenarios without `clientId` in authorization.
-
-If provided, it is used as `custom{CLIENT_ID}` to identify the application ||
+[`string`](../../data-types.md) | This parameter is required only for webhooks. Provide the same CLIENT_ID that was specified when registering the chatbot. ||
 |#
 
 ## Code Examples
@@ -79,7 +77,7 @@ If provided, it is used as `custom{CLIENT_ID}` to identify the application ||
     curl -X POST \
       -H "Content-Type: application/json" \
       -H "Accept: application/json" \
-      -d '{"BOT_ID":39,"MESSAGE_ID":19880117,"MESSAGE":"Updated text","URL_PREVIEW":"Y"}' \
+      -d '{"BOT_ID":39,"MESSAGE_ID":19880117,"MESSAGE":"Updated text","URL_PREVIEW":"Y","CLIENT_ID":"**put_your_client_id_here**"}' \
       https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/imbot.message.update
     ```
 
@@ -213,9 +211,9 @@ HTTP Code: **200**
 || **Name**
 `Type` | **Description** ||
 || **result**
-[`boolean`](../../data-types.md) | `true` if the request was processed without error ||
+[`boolean`](../../data-types.md) | `true` if the request was processed without error. ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the execution time of the request ||
+[`time`](../../data-types.md#time) | Information about the execution time of the request. ||
 |#
 
 ## Error Handling
@@ -235,16 +233,16 @@ HTTP Status: **400**, **403**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `BOT_ID_ERROR` | Bot not found | The bot is not found or the application does not have an available bot for auto-completion of `BOT_ID` ||
-|| `APP_ID_ERROR` | Bot was installed by another REST application | The provided `BOT_ID` belongs to another application ||
-|| `MESSAGE_ID_ERROR` | Message ID can't be empty | A valid `MESSAGE_ID` was not provided ||
-|| `ATTACH_ERROR` | Incorrect attach params | Invalid structure of `ATTACH` ||
-|| `ATTACH_OVERSIZE` | You have exceeded the maximum allowable size of attach | The allowable size of `ATTACH` has been exceeded — 30 KB ||
-|| `KEYBOARD_ERROR` | Incorrect keyboard params | Invalid structure of `KEYBOARD` ||
-|| `KEYBOARD_OVERSIZE` | You have exceeded the maximum allowable size of keyboard | The allowable size of `KEYBOARD` has been exceeded — 30 KB ||
-|| `MENU_ERROR` | Incorrect menu params | Invalid structure of `MENU` ||
-|| `MENU_OVERSIZE` | You have exceeded the maximum allowable size of menu | The allowable size of `MENU` has been exceeded — 30 KB ||
-|| `CANT_EDIT_MESSAGE` | Time has expired for modification or you don't have access | No access to modify the message or the editing time has expired — more than three days have passed since publication ||
+|| `BOT_ID_ERROR` | Bot not found | The bot is not found or the application does not have an available bot for auto-filling `BOT_ID`. ||
+|| `APP_ID_ERROR` | Bot was installed by another REST application | The provided `BOT_ID` belongs to another application. ||
+|| `MESSAGE_ID_ERROR` | Message ID can't be empty | A valid `MESSAGE_ID` was not provided. ||
+|| `ATTACH_ERROR` | Incorrect attach params | Invalid structure of `ATTACH`. ||
+|| `ATTACH_OVERSIZE` | You have exceeded the maximum allowable size of attach | The allowable size of `ATTACH` has been exceeded — 30 KB. ||
+|| `KEYBOARD_ERROR` | Incorrect keyboard params | Invalid structure of `KEYBOARD`. ||
+|| `KEYBOARD_OVERSIZE` | You have exceeded the maximum allowable size of keyboard | The allowable size of `KEYBOARD` has been exceeded — 30 KB. ||
+|| `MENU_ERROR` | Incorrect menu params | Invalid structure of `MENU`. ||
+|| `MENU_OVERSIZE` | You have exceeded the maximum allowable size of menu | The allowable size of `MENU` has been exceeded — 30 KB. ||
+|| `CANT_EDIT_MESSAGE` | Time has expired for modification or you don't have access | No access to modify the message or the editing time has expired — more than three days have passed since publication. ||
 |#
 
 {% include [System Errors](../../../_includes/system-errors.md) %}

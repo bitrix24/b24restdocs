@@ -1,98 +1,93 @@
 # Set the "read" flag for messages im.dialog.read
 
-{% note warning "We are still updating this page" %}
-
-Some data may be missing — we will fill it in shortly.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- edits needed for writing standards
-- parameter types are not specified
-- examples are missing
-
-{% endnote %}
-
-{% endif %}
-
 > Scope: [`im`](../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-The method `im.dialog.read` changes the read status of messages. All messages up to the specified one (including the message itself) are marked as read.
+The method `im.dialog.read` sets the "read" flag for dialog messages up to and including the specified message.
+
+## Method Parameters
+
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
-|| **Parameter** | **Example** | **Description** | **Revision** ||
-|| **DIALOG_ID^*^**
-[`unknown`](../../data-types.md) | `chat29`
-or
-`256` | Identifier of the dialog. Format:
-- **chatXXX** – chat of the recipient, if the message is for a chat
-- **XXX** – identifier of the recipient, if the message is for a private dialog | 21 ||
-|| **MESSAGE_ID^*^**
-[`unknown`](../../data-types.md) | `12` | Identifier of the last read message in the dialog | 21 ||
+|| **Name**
+`type` | **Description** ||
+|| **DIALOG_ID***
+[`string`](../../data-types.md) | Identifier of the chat in the format:
+
+- `chatXXX` — chat
+- `sgXXX` — group or project chat
+- `XXX` — identifier of the personal chat user
+
+The chat identifier can be obtained using the [im.chat.get](../im-chat-get.md) method. The user identifier can be obtained using the [user.get](../../user/user-get.md) and [user.search](../../user/user-search.md) methods ||
+|| **MESSAGE_ID**
+[`integer`](../../data-types.md) | Identifier of the last read message. If not provided, the method sets the read flag for all unread messages ||
 |#
 
-{% include [Footnote about parameters](../../../_includes/required.md) %}
+## Code Examples
 
-## Examples 
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
-- JS
+- cURL (Webhook)
 
+    ```bash
+    curl -X POST \
+      -H "Content-Type: application/json" \
+      -H "Accept: application/json" \
+      -d '{"DIALOG_ID":"chat1489","MESSAGE_ID":84875}' \
+      https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/im.dialog.read
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+      -H "Content-Type: application/json" \
+      -H "Accept: application/json" \
+      -d '{"DIALOG_ID":"chat1489","MESSAGE_ID":84875,"auth":"**put_access_token_here**"}' \
+      https://**put_your_bitrix24_address**/rest/im.dialog.read
+    ```
+
+- JS
 
     ```js
     try
     {
-    	const response = await $b24.callMethod(
-    		'im.dialog.read',
-    		{
-    			'DIALOG_ID': chat29,
-    			'MESSAGE_ID': 12,
-    		}
-    	);
-    	
-    	const result = response.getData().result;
-    	console.log(result);
+        const response = await $b24.callMethod(
+            'im.dialog.read',
+            {
+                DIALOG_ID: 'chat1489',
+                MESSAGE_ID: 84875
+            }
+        );
+
+        console.log(response.getData().result);
     }
-    catch( error )
+    catch (error)
     {
-    	console.error(error.ex);
+        console.error(error);
     }
     ```
 
 - PHP
 
-
     ```php
     try {
-        $response = $b24Service
-            ->core
-            ->call(
-                'im.dialog.read',
-                [
-                    'DIALOG_ID' => $chat29,
-                    'MESSAGE_ID' => 12,
-                ]
-            );
-    
-        $result = $response
-            ->getResponseData()
-            ->getResult();
-    
-        if ($result->error()) {
-            echo 'Error: ' . $result->error()->ex;
-        } else {
-            echo 'Success: ' . print_r($result->data(), true);
-        }
-    
+        $response = $b24Service->core->call(
+            'im.dialog.read',
+            [
+                'DIALOG_ID' => 'chat1489',
+                'MESSAGE_ID' => 84875,
+            ]
+        );
+
+        $result = $response->getResponseData()->getResult();
+        print_r($result);
     } catch (Throwable $e) {
         error_log($e->getMessage());
-        echo 'Error reading dialog: ' . $e->getMessage();
     }
     ```
 
@@ -102,13 +97,14 @@ or
     BX24.callMethod(
         'im.dialog.read',
         {
-            'DIALOG_ID': chat29,
-            'MESSAGE_ID': 12,
+            DIALOG_ID: 'chat1489',
+            MESSAGE_ID: 84875
         },
-        function(result){
-            if(result.error())
+        function(result)
+        {
+            if (result.error())
             {
-                console.error(result.error().ex);
+                console.error(result.error());
             }
             else
             {
@@ -120,74 +116,100 @@ or
 
 - PHP CRest
 
-    {% include [Explanation about restCommand](../_includes/rest-command.md) %}
-
     ```php
-    $result = restCommand(
+    require_once('crest.php');
+
+    $result = CRest::call(
         'im.dialog.read',
-        Array(
-            'DIALOG_ID' => chat29,
-            'MESSAGE_ID' => 12,
-        ),
-        $_REQUEST[
-            "auth"
+        [
+            'DIALOG_ID' => 'chat1489',
+            'MESSAGE_ID' => 84875,
         ]
     );
+
+    print_r($result);
     ```
-
-- cURL
-
-    // example for cURL
 
 {% endlist %}
 
-{% include [Footnote about examples](../../../_includes/examples.md) %}
+## Response Handling
 
-## Response on success
+HTTP Status: **200**
 
 ```json
 {
-    "result":
-    {
-        "dialogId": "chat76",
-        "chatId": 76,
-        "counter": 1,
-        "lastId": 6930
+    "result": {
+        "dialogId": "chat1489",
+        "chatId": 1489,
+        "lastId": 84875,
+        "counter": 3
+    },
+    "time": {
+        "start": 1772624912,
+        "finish": 1772624912.615753,
+        "duration": 0.6157529354095459,
+        "processing": 0,
+        "date_start": "2026-03-04T14:48:32+01:00",
+        "date_finish": "2026-03-04T14:48:32+01:00",
+        "operating_reset_at": 1772625512,
+        "operating": 0
     }
 }
 ```
 
-- **dialogId** – identifier of the read dialog
-- **chatId** – identifier of the chat
-- **counter** – number of unread messages after executing the method
-- **lastId** – last read message
-
-If the method could not set the new read mark:
-
-```json
-{
-"result": false
-}
-```
-
-## Response on error
-
-```json
-{
-    "error": "MESSAGE_ID_ERROR",
-    "error_description": "Message ID can't be empty"
-}
-```
-
-### Description of keys
-
-- `error` – code of the occurred error
-- `error_description` – brief description of the occurred error
-
-### Possible error codes
+### Returned Data
 
 #|
-|| **Code** | **Description** ||
-|| **MESSAGE_ID_ERROR** | An incorrect message identifier was specified ||
-|| **DIALOG_ID_EMPTY** | An incorrect dialog identifier was specified ||
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`object`](../../data-types.md) | Root element of the response [(detailed description)](#result).
+
+Returns `false` if the user does not have access to the chat ||
+|| **time**
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
+
+#### Result Object {#result}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **dialogId**
+[`string`](../../data-types.md) | Identifier of the dialog ||
+|| **chatId**
+[`integer`](../../data-types.md) | Identifier of the chat ||
+|| **lastId**
+[`integer`](../../data-types.md) | Identifier of the last read message ||
+|| **counter**
+[`integer`](../../data-types.md) | Number of unread messages after executing the method ||
+|#
+
+## Error Handling
+
+HTTP Status: **400**
+
+```json
+{
+    "error": "DIALOG_ID_EMPTY",
+    "error_description": "Dialog ID can't be empty"
+}
+```
+
+{% include notitle [error handling](../../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+#|
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `DIALOG_ID_EMPTY` | Dialog ID can't be empty | The `DIALOG_ID` parameter was not provided, was empty, or was in an incorrect format ||
+|#
+
+{% include [system errors](../../../_includes/system-errors.md) %}
+
+## Continue Learning
+
+- [{#T}](./im-dialog-messages-get.md)
+- [{#T}](./im-dialog-messages-search.md)
+- [{#T}](./im-dialog-unread.md)
+- [{#T}](./im-dialog-writing.md)

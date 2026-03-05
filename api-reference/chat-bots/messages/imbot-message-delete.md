@@ -2,7 +2,7 @@
 
 > Scope: [`imbot`](../../scopes/permissions.md)
 >
-> Who can execute the method: an authorized user of the application that registered the chat bot. The method works only with bots of this application.
+> Who can execute the method: an authorized user of the application that registered the chat bot. The method only works with bots from this application.
 
 The method `imbot.message.delete` removes a message from the chat bot.
 
@@ -14,23 +14,21 @@ The method `imbot.message.delete` removes a message from the chat bot.
 || **Name**
 `Type` | **Description** ||
 || **BOT_ID**
-[`integer`](../../data-types.md) | The identifier of the chat bot. You can obtain the bot ID using the method [imbot.bot.list](../imbot-bot-list.md).
+[`integer`](../../data-types.md) | The identifier of the chat bot. You can obtain the bot ID using the [imbot.bot.list](../imbot-bot-list.md) method.
 
-If the parameter is not provided, the method searches for the first bot registered by the current application. ||
+If the parameter is not provided, the method searches for the first bot registered by the current application ||
 || **MESSAGE_ID*** 
 [`integer`](../../data-types.md) | The identifier of the message to be deleted. The value must be greater than `0`.
 
-For messages sent by the bot via REST, the identifier is returned by the method [imbot.message.add](./imbot-message-add.md). ||
+For messages sent by the bot via REST, the ID is returned by the [imbot.message.add](./imbot-message-add.md) method ||
 || **COMPLETE**
 [`string`](../../data-types.md) | Deletion mode.
 
 Allowed values:
 - `Y` — delete completely, without marking as deleted
-- `N` — standard deletion, default value. ||
+- `N` — standard deletion, default value ||
 || **CLIENT_ID**
-[`string`](../../data-types.md) | Technical parameter for scenarios without `clientId` in authorization.
-
-If provided, it is used as `custom{CLIENT_ID}` to identify the application. ||
+[`string`](../../data-types.md) | This parameter is required only for webhooks. Pass the same CLIENT_ID that was specified when registering the chat bot ||
 |#
 
 ## Code Examples
@@ -45,7 +43,7 @@ If provided, it is used as `custom{CLIENT_ID}` to identify the application. ||
     curl -X POST \
       -H "Content-Type: application/json" \
       -H "Accept: application/json" \
-      -d '{"BOT_ID":39,"MESSAGE_ID":19880117,"COMPLETE":"N"}' \
+      -d '{"BOT_ID":39,"MESSAGE_ID":19880117,"COMPLETE":"N","CLIENT_ID":"**put_your_client_id_here**"}' \
       https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/imbot.message.delete
     ```
 
@@ -175,9 +173,9 @@ HTTP Code: **200**
 || **Name**
 `Type` | **Description** ||
 || **result**
-[`boolean`](../../data-types.md) | `true` if the message was deleted without error. ||
+[`boolean`](../../data-types.md) | `true` if the message was deleted without error ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the execution time of the request. ||
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -197,10 +195,10 @@ HTTP Status: **400**, **403**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `BOT_ID_ERROR` | Bot not found | The bot is not found or the application does not have an available bot for auto-completion of `BOT_ID`. ||
-|| `APP_ID_ERROR` | Bot was installed by another REST application | The provided `BOT_ID` belongs to another application. ||
-|| `MESSAGE_ID_ERROR` | Message ID can't be empty | A valid message identifier `MESSAGE_ID` was not provided. ||
-|| `CANT_EDIT_MESSAGE` | Time has expired for modification or you don't have access | The time for deleting the message has expired or there is no access to the message. ||
+|| `BOT_ID_ERROR` | Bot not found | The bot was not found or the application does not have an available bot for auto-completion of `BOT_ID` ||
+|| `APP_ID_ERROR` | Bot was installed by another REST application | The provided `BOT_ID` belongs to another application ||
+|| `MESSAGE_ID_ERROR` | Message ID can't be empty | A valid message identifier `MESSAGE_ID` was not provided ||
+|| `CANT_EDIT_MESSAGE` | Time has expired for modification or you don't have access | The time for deleting the message has expired or there is no access to the message ||
 |#
 
 {% include [System Errors](../../../_includes/system-errors.md) %}
@@ -211,3 +209,4 @@ HTTP Status: **400**, **403**
 - [{#T}](./imbot-message-update.md)
 - [{#T}](./imbot-message-like.md)
 - [{#T}](./events/on-imbot-message-delete.md)
+- [Echo Bot Example](https://dev.1c-bitrix.com/~b24bots)

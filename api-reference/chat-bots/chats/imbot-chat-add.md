@@ -46,7 +46,7 @@ Default is `CHAT` ||
 || **USERS**
 [`array`](../../data-types.md) | Array of chat participants ||
 || **AVATAR**
-[`string`](../../data-types.md) | Chat avatar in [Base64](../../files/how-to-upload-files.md) format.
+[`string`](../../data-types.md) | Avatar of the chat in [Base64](../../files/how-to-upload-files.md) format.
 
 Maximum image size is 5000x5000 ||
 || **ENTITY_TYPE**
@@ -60,9 +60,7 @@ When creating a chat, you can pass any pair of `ENTITY_TYPE` and `ENTITY_ID`. Th
 
 If the parameter is not provided, the method searches for the first bot registered by the current application ||
 || **CLIENT_ID**
-[`string`](../../data-types.md) | Technical parameter for scenarios without `clientId` in authorization.
-
-If provided, it is used as `custom{CLIENT_ID}` to identify the application ||
+[`string`](../../data-types.md) | This parameter is required only for webhooks. Pass the same CLIENT_ID that was specified during the registration of the chatbot ||
 |#
 
 ## Code Examples
@@ -77,7 +75,7 @@ If provided, it is used as `custom{CLIENT_ID}` to identify the application ||
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"TYPE":"CHAT","TITLE":"New Chat","DESCRIPTION":"Important News","COLOR":"GREEN","MESSAGE":"Welcome!","USERS":[1271],"AVATAR":"/9j/4AAQSkZJRgABAQEBLAEsAAD/4QBwRXhp...+gKlSv+1v/2Q==","ENTITY_TYPE":"CHAT","ENTITY_ID":"13","BOT_ID":1291}' \
+    -d '{"TYPE":"CHAT","TITLE":"New Chat","DESCRIPTION":"Important News","COLOR":"GREEN","MESSAGE":"Welcome!","USERS":[1271],"AVATAR":"/9j/4AAQSkZJRgABAQEBLAEsAAD/4QBwRXhp...+gKlSv+1v/2Q==","ENTITY_TYPE":"CHAT","ENTITY_ID":"13","BOT_ID":1291,"CLIENT_ID":"**put_your_client_id_here**"}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/imbot.chat.add
     ```
 
@@ -261,7 +259,7 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `INVALID_FORMAT` | Parameter USERS has wrong type | Parameter `USERS` is in an incorrect format ||
+|| `INVALID_FORMAT` | Parameter USERS has wrong type | The `USERS` parameter is in an incorrect format ||
 || `BOT_ID_ERROR` | Bot not found | Chatbot not found ||
 || `APP_ID_ERROR` | Bot was installed by another REST application | The specified chatbot was installed by another application ||
 || `WRONG_REQUEST` | Chat can't be created | Failed to create chat ||

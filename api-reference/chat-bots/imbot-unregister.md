@@ -2,7 +2,7 @@
 
 > Scope: [`imbot`](../scopes/permissions.md)
 >
-> Who can execute the method: an authorized user of the application that registered the chat-bot
+> Who can execute the method: an authorized user of the application that registered the chat-bot.
 
 The method `imbot.unregister` removes the chat-bot.
 
@@ -19,12 +19,12 @@ When the bot is removed, personal chats with users are deleted.
 #|
 || **Name**
 `Type` | **Description** ||
-|| **BOT_ID***
+|| **BOT_ID*** 
 [`integer`](../data-types.md) | The identifier of the chat-bot. The value must be greater than `0`.
 
-You can obtain the bot identifier using the [imbot.bot.list](./imbot-bot-list.md) method ||
+You can obtain the bot identifier using the [imbot.bot.list](./imbot-bot-list.md) method. ||
 || **CLIENT_ID**
-[`string`](../data-types.md) | A technical parameter for scenarios without `clientId` in authorization. If provided, it is used as `custom{CLIENT_ID}` to identify the application ||
+[`string`](../data-types.md) | This parameter is required only for webhooks. Pass the same CLIENT_ID that was specified when registering the chat-bot. ||
 |#
 
 ## Code Examples
@@ -39,7 +39,7 @@ You can obtain the bot identifier using the [imbot.bot.list](./imbot-bot-list.md
     curl -X POST \
       -H "Content-Type: application/json" \
       -H "Accept: application/json" \
-      -d '{"BOT_ID":39}' \
+      -d '{"BOT_ID":39,"CLIENT_ID":"**put_your_client_id_here**"}' \
       https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/imbot.unregister
     ```
 
@@ -161,9 +161,9 @@ HTTP Code: **200**
 || **Name**
 `Type` | **Description** ||
 || **result**
-[`boolean`](../data-types.md) | `true` if the chat-bot was removed without error ||
+[`boolean`](../data-types.md) | `true` if the chat-bot was removed without error. ||
 || **time**
-[`time`](../data-types.md#time) | Information about the execution time of the request ||
+[`time`](../data-types.md#time) | Information about the request execution time. ||
 |#
 
 ## Error Handling
@@ -183,11 +183,11 @@ HTTP Status: **400**, **403**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `WRONG_AUTH_TYPE` | Access for this method not allowed by session authorization. | The method was called with session authorization instead of OAuth or webhook ||
-|| `ACCESS_DENIED` | Access denied! Client ID not specified | Unable to determine the application: missing `clientId` authorization and `CLIENT_ID` not provided ||
-|| `BOT_ID_ERROR` | Bot not found | Bot not found ||
-|| `APP_ID_ERROR` | Bot was installed by another REST application | The provided `BOT_ID` belongs to another application ||
-|| `WRONG_REQUEST` | Bot can't be deleted | The bot cannot be deleted ||
+|| `WRONG_AUTH_TYPE` | Access for this method not allowed by session authorization. | The method was called with session authorization instead of OAuth or webhook. ||
+|| `ACCESS_DENIED` | Access denied! Client ID not specified. | Unable to determine the application: `clientId` authorization is missing and `CLIENT_ID` was not provided. ||
+|| `BOT_ID_ERROR` | Bot not found. | The bot was not found. ||
+|| `APP_ID_ERROR` | Bot was installed by another REST application. | The provided `BOT_ID` belongs to another application. ||
+|| `WRONG_REQUEST` | Bot can't be deleted. | The bot cannot be deleted. ||
 |#
 
 {% include [System Errors](../../_includes/system-errors.md) %}

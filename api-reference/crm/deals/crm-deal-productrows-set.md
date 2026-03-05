@@ -4,19 +4,21 @@
 >
 > Who can execute the method: user with "modify" access permission for the deal
 
-{% note warning "Method Development Stopped" %}
+{% note warning "Method Development Halted" %}
 
-The method `crm.deal.productrows.set` continues to function, but there is a more relevant alternative [crm.item.productrow.*](../universal/product-rows/index.md).
+The method `crm.deal.productrows.set` is still operational, but there is a more current equivalent: [crm.item.productrow.*](../universal/product-rows/index.md).
 
 {% endnote %}
 
-The method `crm.deal.productrows.set` creates or updates the product rows of a deal. To modify only one row, use the methods [crm.item.productrow.*](../universal/product-rows/index.md).
+The method `crm.deal.productrows.set` creates or updates the product rows of a deal. Existing rows that are not passed to the method will be removed from the deal.
+
+To modify only a single row, use the methods [crm.item.productrow.*](../universal/product-rows/index.md).
 
 #|
 || **Name**
 `type` | **Description** ||
 || **id^*^**
-[`integer`](../../data-types.md) | Identifier of the deal. Can be obtained using the method to get the list of deals: [`crm.deal.list`](./crm-deal-list.md) or when creating a deal: [`crm.deal.add`](./crm-deal-add.md) ||
+[`integer`](../../data-types.md) | Identifier of the deal. Can be obtained using the method to retrieve the list of deals: [`crm.deal.list`](./crm-deal-list.md) or when creating a deal: [`crm.deal.add`](./crm-deal-add.md) ||
 || **rows**
 [`object[]`](#productrows) | Product rows
 
@@ -33,7 +35,7 @@ where
 - `field_n` — name of the product row field
 - `value_n` — value of this field
 
-The list of available fields is described [below](#parameter-rows). ||
+The list of available fields is described [below](#parameter-rows) ||
 |#
 
 ### List of Available Fields for Product Rows {#parameter-rows}
@@ -50,7 +52,7 @@ Default - `0`
 || **PRODUCT_NAME**
 [`string`](../../data-types.md) | Name of the product row. If `PRODUCT_ID` is provided, the name will be taken from the product
 
-If both `PRODUCT_ID` and `PRODUCT_NAME` are not provided, then `PRODUCT_NAME` will be equal to `[{id}]`, where `{id}` is the identifier of the created product row
+If both `PRODUCT_ID` and `PRODUCT_NAME` are not provided, then `PRODUCT_NAME` will equal `[{id}]`, where `{id}` is the identifier of the created product row
 ||
 || **PRICE**
 [`double`](../../data-types.md) | Final cost of the product per unit
@@ -89,7 +91,7 @@ Default - `0.0`
 || **TAX_RATE**
 [`double`](../../data-types.md) | Tax rate in percentage ||
 || **TAX_INCLUDED**
-[`char`](../../data-types.md) | Indicator of whether the tax is included in the price
+[`char`](../../data-types.md) | Indicator of whether tax is included in the price
 Possible values:
 - `Y` – tax included
 - `N` – tax not included
@@ -372,12 +374,12 @@ HTTP Status: **400**
 
 #|
 || **Description** | **Value** ||
-|| The parameter id is invalid or not defined. | The parameter `id` contains an incorrect value ||
+|| The parameter id is invalid or not defined | An incorrect value was passed to the `id` parameter ||
 || Access denied | The user does not have permission to "modify" the deal  ||
 || Not found | The deal with the provided `id` was not found ||
-|| Discount Rate (`DISCOUNT_RATE`) is required if Percentage Discount Type (`DISCOUNT_TYPE_ID`) is defined. | `DISCOUNT_TYPE_ID = 2` was provided and `DISCOUNT_RATE` was not provided ||
-|| Discount Sum (`DISCOUNT_SUM`) is required if Percentage Discount Type (`DISCOUNT_TYPE_ID`) is defined and Discount Rate (`DISCOUNT_RATE`) is 100% | `DISCOUNT_RATE = 100` and `DISCOUNT_TYPE_ID = 2` were provided and `DISCOUNT_SUM` was not provided ||
-|| Discount Sum (`DISCOUNT_SUM`) is required if Monetary Discount Type (`DISCOUNT_TYPE_ID`) is defined. | `DISCOUNT_TYPE_ID = 1` was provided and `DISCOUNT_SUM` was not provided ||
+|| Discount Rate (`DISCOUNT_RATE`) is required if Percentage Discount Type (`DISCOUNT_TYPE_ID`) is defined | `DISCOUNT_TYPE_ID = 2` was passed without `DISCOUNT_RATE` ||
+|| Discount Sum (`DISCOUNT_SUM`) is required if Percentage Discount Type (`DISCOUNT_TYPE_ID`) is defined and Discount Rate (`DISCOUNT_RATE`) is 100% | `DISCOUNT_RATE = 100` and `DISCOUNT_TYPE_ID = 2` were passed without `DISCOUNT_SUM` ||
+|| Discount Sum (`DISCOUNT_SUM`) is required if Monetary Discount Type (`DISCOUNT_TYPE_ID`) is defined | `DISCOUNT_TYPE_ID = 1` was passed without `DISCOUNT_SUM` ||
 |#
 
 {% include [system errors](./../../../_includes/system-errors.md) %}

@@ -2,9 +2,9 @@
 
 > Scope: [`imbot`](../../scopes/permissions.md)
 >
-> Who can execute the method: an authorized user of the application that registered the chat bot
+> Who can execute the method: an authorized user of the application that registered the chat bot.
 
-The method `imbot.chat.user.list` returns a list of identifiers for chat participants.
+The method `imbot.chat.user.list` returns a list of participant identifiers in the chat.
 
 ## Method Parameters
 
@@ -22,9 +22,7 @@ The identifier can be obtained using the [imbot.chat.get](./imbot-chat-get.md) m
 
 If the parameter is not provided, the method searches for the first bot registered by the current application. ||
 || **CLIENT_ID**
-[`string`](../../data-types.md) | Technical parameter for scenarios without `clientId` in authorization.
-
-If provided, it is used as `custom{CLIENT_ID}` to identify the application. ||
+[`string`](../../data-types.md) | This parameter is required only for webhooks. Pass the same CLIENT_ID that was specified during the registration of the chat bot. ||
 |#
 
 ## Code Examples
@@ -39,7 +37,7 @@ If provided, it is used as `custom{CLIENT_ID}` to identify the application. ||
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"CHAT_ID":2725}' \
+    -d '{"CHAT_ID":2725,"CLIENT_ID":"**put_your_client_id_here**"}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/imbot.chat.user.list
     ```
 
@@ -165,9 +163,9 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`array`](../../data-types.md) | Array of chat participant identifiers. ||
+[`array`](../../data-types.md) | An array of chat participant identifiers. ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the request execution time. ||
+[`time`](../../data-types.md#time) | Information about the execution time of the request. ||
 |#
 
 ## Error Handling
@@ -181,7 +179,7 @@ HTTP Status: **400**, **403**
 }
 ```
 
-{% include notitle [Error Handling](../../../_includes/error-info.md) %}
+{% include notitle [error handling](../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
@@ -190,10 +188,10 @@ HTTP Status: **400**, **403**
 || `CHAT_ID_EMPTY` | Chat ID can't be empty | `CHAT_ID` not provided. ||
 || `ACCESS_ERROR` | Action unavailable | Operation not available for this chat. ||
 || `BOT_ID_ERROR` | Bot not found | Chat bot not found. ||
-|| `APP_ID_ERROR` | Bot was installed by another REST application | Chat bot installed by another application. ||
+|| `APP_ID_ERROR` | Bot was installed by another rest application | Chat bot installed by another application. ||
 |#
 
-{% include [System Errors](../../../_includes/system-errors.md) %}
+{% include [system errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

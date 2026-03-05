@@ -2,7 +2,7 @@
 
 > Scope: [`imbot`](../../scopes/permissions.md)
 >
-> Who can execute the method: an authorized user of the application that registered the chat bot. The method only works with bots from this application.
+> Who can execute the method: an authorized user of the application that registered the chat bot. The method works only with bots of this application.
 
 The method `imbot.chat.sendTyping` sends a typing indicator to the dialog. The method returns `true` immediately after the command is sent.
 
@@ -24,9 +24,7 @@ Supported formats:
 - `USER_ID` — the identifier of the user, which can be obtained via [user.get](../../user/user-get.md) or [user.search](../../user/user-search.md)
 - `chatXXX`, where `XXX` is the chat identifier, which can be obtained via [imbot.chat.get](../chats/imbot-chat-get.md) ||
 || **CLIENT_ID**
-[`string`](../../data-types.md) | A technical parameter for scenarios without `clientId` in authorization.
-
-If provided, it is used as `custom{CLIENT_ID}` to identify the application. ||
+[`string`](../../data-types.md) | This parameter is required only for webhooks. Pass the same CLIENT_ID that was specified when registering the chat bot. ||
 |#
 
 ## Code Examples
@@ -41,7 +39,7 @@ If provided, it is used as `custom{CLIENT_ID}` to identify the application. ||
     curl -X POST \
       -H "Content-Type: application/json" \
       -H "Accept: application/json" \
-      -d '{"BOT_ID":39,"DIALOG_ID":"chat123"}' \
+      -d '{"BOT_ID":39,"DIALOG_ID":"chat123","CLIENT_ID":"**put_your_client_id_here**"}' \
       https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/imbot.chat.sendTyping
     ```
 
@@ -189,7 +187,7 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `BOT_ID_ERROR` | Bot not found | The bot was not found or the application does not have an available bot for auto-completion of `BOT_ID`. ||
+|| `BOT_ID_ERROR` | Bot not found | The bot was not found or the application does not have an available bot for auto-filling `BOT_ID`. ||
 || `APP_ID_ERROR` | Bot was installed by another REST application | The provided `BOT_ID` belongs to another application. ||
 || `DIALOG_ID_EMPTY` | Dialog ID can't be empty | The dialog identifier was not provided. ||
 |#

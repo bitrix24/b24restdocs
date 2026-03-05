@@ -1,67 +1,69 @@
-# Get the list of recent messages im.dialog.messages.get
-
-{% note warning "We are still updating this page" %}
-
-Some data may be missing — we will complete it shortly.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- edits needed for writing standards
-- parameter types are not specified
-- examples are missing
-
-{% endnote %}
-
-{% endif %}
+# Get the List of Recent Messages im.dialog.messages.get
 
 > Scope: [`im`](../../scopes/permissions.md)
 >
 > Who can execute the method: chat participant
 
-The method `im.dialog.messages.get` retrieves the list of recent messages in a chat.
-
-{% include [Notes on parameters](../../../_includes/required.md) %}
-
-#|
-|| **Parameter** | **Example** | **Description** | **Revision** ||
-|| **DIALOG_ID^*^**
-[`unknown`](../../data-types.md) | `chat29`
-or
-`256` | Identifier of the dialog. Format:
-- **chatXXX** – chat of the recipient, if the message is for a chat
-- **XXX** – identifier of the recipient, if the message is for a private dialog | 19 ||
-|| **LAST_ID**
-[`unknown`](../../data-types.md) | `28561624` | Identifier of the last loaded message | 19 ||
-|| **FIRST_ID**
-[`unknown`](../../data-types.md) | `454322` | Identifier of the first loaded message | 19 ||
-|| **LIMIT**
-[`unknown`](../../data-types.md) | `20` | Limit on the number of messages retrieved in the dialog | 19 ||
-|#
+The method `im.dialog.messages.get` retrieves messages from the specified dialog, including system messages. It does not support standard pagination due to the potential large volume of data.
 
 {% note info "" %}
 
-You can retrieve messages without being a participant in the chat only for open line chats. For this, use the method [imopenlines.session.history.get](../../imopenlines/openlines/sessions/imopenlines-session-history-get.md).
+Messages can only be retrieved without participating in the chat for Open Line chats via the method [imopenlines.session.history.get](../../imopenlines/openlines/sessions/imopenlines-session-history-get.md).
 
 {% endnote %}
 
-- If the keys `LAST_ID` and `FIRST_ID` are not provided, the last 20 messages of the chat will be loaded.
-- To load the previous 20 messages, you need to pass `LAST_ID` with the identifier of the minimum message ID obtained from the last selection.
-- If you need to load the next 20 messages, you must pass `FIRST_ID` with the identifier of the maximum message ID obtained from the last selection.
-- If you need to load the first 20 messages, you must pass `FIRST_ID` with the identifier 0, and you will receive the result with the very first available message in this chat.
+## Method Parameters
 
-{% note warning %}
+{% include [Note on Required Parameters](../../../_includes/required.md) %}
 
-Due to the potentially large volume of data, this method does not support standard pagination in the Bitrix24 Rest API.
+#|
+|| **Name**
+`type` | **Description** ||
+|| **DIALOG_ID***
+[`string`](../../data-types.md) | Identifier of the chat in the format:
 
-{% endnote %}
+- `chatXXX` — chat
+- `sgXXX` — group or project chat
+- `XXX` — user identifier for personal chat
 
-## Examples
+The chat identifier can be obtained using the method [im.chat.get](../im-chat-get.md). The user identifier can be obtained using the methods [user.get](../../user/user-get.md) and [user.search](../../user/user-search.md) ||
+|| **LAST_ID**
+[`integer`](../../data-types.md) | Identifier of the message older than which messages need to be loaded. The method will return messages with identifiers less than the specified one. ||
+|| **FIRST_ID**
+[`integer`](../../data-types.md) | Identifier of the message newer than which messages need to be loaded. The method will return messages with identifiers greater than the specified one.
+
+To load the very first messages of the dialog — pass `FIRST_ID` with the value `0`. ||
+|| **LIMIT**
+[`integer`](../../data-types.md) | Limit on the number of messages in the response. If `LAST_ID` and `FIRST_ID` are not provided, the method will return the last N messages of the dialog specified in `LIMIT`.
+
+Default is `20`. Maximum value is `50`. ||
+|#
+
+## Code Examples
+
+{% include [Note on Examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
+
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+      -H "Content-Type: application/json" \
+      -H "Accept: application/json" \
+      -d '{"DIALOG_ID":"chat1489","FIRST_ID":84869,"LIMIT":10}' \
+      https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/im.dialog.messages.get
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+      -H "Content-Type: application/json" \
+      -H "Accept: application/json" \
+      -d '{"DIALOG_ID":"chat1489","FIRST_ID":84869,"LIMIT":10,"auth":"**put_access_token_here**"}' \
+      https://**put_your_bitrix24_address**/rest/im.dialog.messages.get
+    ```
 
 - JS
 
@@ -71,16 +73,17 @@ Due to the potentially large volume of data, this method does not support standa
         const response = await $b24.callMethod(
             'im.dialog.messages.get',
             {
-                DIALOG_ID: 'chat29'
+                DIALOG_ID: 'chat1489',
+                FIRST_ID: 84869,
+                LIMIT: 10
             }
         );
-        
-        const result = response.getData().result;
-        console.log(result);
+
+        console.log(response.getData().result);
     }
-    catch( error )
+    catch (error)
     {
-        console.error(error.ex);
+        console.error(error);
     }
     ```
 
@@ -88,28 +91,19 @@ Due to the potentially large volume of data, this method does not support standa
 
     ```php
     try {
-        $response = $b24Service
-            ->core
-            ->call(
-                'im.dialog.messages.get',
-                [
-                    'DIALOG_ID' => 'chat29'
-                ]
-            );
-    
-        $result = $response
-            ->getResponseData()
-            ->getResult();
-    
-        if ($result->error()) {
-            echo 'Error: ' . $result->error()->ex;
-        } else {
-            echo 'Success: ' . print_r($result->data(), true);
-        }
-    
+        $response = $b24Service->core->call(
+            'im.dialog.messages.get',
+            [
+                'DIALOG_ID' => 'chat1489',
+                'FIRST_ID' => 84869,
+                'LIMIT' => 10,
+            ]
+        );
+
+        $result = $response->getResponseData()->getResult();
+        print_r($result);
     } catch (Throwable $e) {
         error_log($e->getMessage());
-        echo 'Error getting dialog messages: ' . $e->getMessage();
     }
     ```
 
@@ -119,12 +113,15 @@ Due to the potentially large volume of data, this method does not support standa
     BX24.callMethod(
         'im.dialog.messages.get',
         {
-            DIALOG_ID: 'chat29'
+            DIALOG_ID: 'chat1489',
+            FIRST_ID: 84869,
+            LIMIT: 10
         },
-        function(result){
-            if(result.error())
+        function(result)
+        {
+            if (result.error())
             {
-                console.error(result.error().ex);
+                console.error(result.error());
             }
             else
             {
@@ -136,247 +133,407 @@ Due to the potentially large volume of data, this method does not support standa
 
 - PHP CRest
 
-    {% include [Explanation about restCommand](../_includes/rest-command.md) %}
-
     ```php
-    $result = restCommand(
+    require_once('crest.php');
+
+    $result = CRest::call(
         'im.dialog.messages.get',
-        Array(
-            'DIALOG_ID' => 'chat29'
-        ),
-        $_REQUEST[
-            "auth"
+        [
+            'DIALOG_ID' => 'chat1489',
+            'FIRST_ID' => 84869,
+            'LIMIT' => 10,
         ]
     );
+
+    print_r($result);
     ```
-
-- cURL
-
-    // example for cURL
 
 {% endlist %}
 
-{% include [Notes on examples](../../../_includes/examples.md) %}
+## Response Handling
 
-## Successful response
+HTTP Status: **200**
 
 ```json
 {
     "result": {
+        "chat_id": 1489,
         "messages": [
-         {
-            "id": 28561624,
-            "chat_id": 29,
-            "author_id": 1,
-            "date": "2018-01-29T16:58:47+02:00",
-            "text": "https://my-domain.com",
-            "params": {
-             "URL_ID": [
-                5
-             ],
-             "URL_ONLY": "Y",
-             "ATTACH": [
-                {
-                 "ID": "5",
-                 "BLOCKS": [
-                    {
-                     "RICH_LINK": [
-                        {
-                         "NAME": "My site",
-                         "LINK": "https://my-domain.com",
-                         "DESC": "My personal site",
-                         "PREVIEW": "https://my-domain.com/logo/i/share-logo.png"
-                        }
-                     ]
-                    }
-                 ],
-                 "COLOR": "transparent"
-                }
-             ]
-            }
-         },
-         {
-            "id": 28561623,
-            "chat_id": 29,
-            "author_id": 28,
-            "date": "2018-01-29T16:43:38+02:00",
-            "text": "",
-            "params": {
-             "FILE_ID": [
-                540
-             ]
-            }
-         },
-         {
-            "id": 28561622,
-            "chat_id": 29,
-            "author_id": 1,
-            "date": "2018-01-29T16:43:12+02:00",
-            "text": "It's working yes :) :)",
-            "params": {
-             "IS_EDITED": "Y"
-            }
-         },
-         {
-            "id": 28561618,
-            "chat_id": 29,
-            "author_id": 0,
-            "date": "2018-01-25T15:15:22+02:00",
-            "text": "Eugene Shelenkov changed the chat topic to \"Big chat\"",
-            "params": null
-         }
+            {
+                "id": 84877,
+                "chat_id": 1489,
+                "author_id": 503,
+                "date": "2026-03-04T09:43:26+02:00",
+                "text": "We are very glad to see you!",
+                "unread": false,
+                "uuid": "0c42a08f-4235-49fc-994f-c9bccd499ac1",
+                "replaces": [],
+                "params": {
+                    "LIKE": [547]
+                },
+                "disappearing_date": null
+            },
+            {
+                "id": 84875,
+                "chat_id": 1489,
+                "author_id": 503,
+                "date": "2026-03-04T09:43:21+02:00",
+                "text": "Hello, Anna! Here we will discuss the project.",
+                "unread": false,
+                "uuid": "db2e826a-dd18-4ab5-b76c-4084e106ee28",
+                "replaces": [],
+                "params": [],
+                "disappearing_date": null
+            },
+            ...,
+            {
+                "id": 84869,
+                "chat_id": 1489,
+                "author_id": 0,
+                "date": "2026-03-04T09:42:31+02:00",
+                "text": "[USER=503 REPLACE]John Smith[/USER] invited to the chat [USER=547 REPLACE]Anna Johnson[/USER]",
+                "unread": false,
+                "uuid": null,
+                "replaces": [],
+                "params": {
+                    "CODE": ["CHAT_JOIN"],
+                    "NOTIFY": "N"
+                },
+                "disappearing_date": null
+            },
+            ...
         ],
         "users": [
-         {
-            "id": 1,
-            "name": "Eugene Shelenkov",
-            "first_name": "Eugene",
-            "last_name": "Shelankov",
-            "work_position": "",
-            "color": "#df532d",
-            "avatar": "http://192.168.2.232/upload/resize_cache/main/1d3/100_100_2/shelenkov.png",
-            "gender": "M",
-            "birthday": "",
-            "extranet": false,
-            "network": false,
-            "bot": false,
-            "connector": false,
-            "external_auth_id": "default",
-            "status": "online",
-            "idle": false,
-            "last_activity_date": "2018-01-29T17:35:31+02:00",
-            "mobile_last_date": false,
-            "departments": [
-             50
-            ],
-            "absent": false,
-            "phones": {
-             "work_phone": "",
-             "personal_mobile": "",
-             "personal_phone": ""
+            {
+                "id": 503,
+                "active": true,
+                "name": "John Smith",
+                "first_name": "John",
+                "last_name": "Smith",
+                "work_position": "admin",
+                "color": "#4ba984",
+                "avatar": "https://mysite.com/upload/resize_cache/main/avatar.jpg",
+                "avatar_hr": "https://mysite.com/upload/resize_cache/main/avatar.jpg",
+                "gender": "M",
+                "birthday": "",
+                "extranet": false,
+                "network": false,
+                "bot": false,
+                "connector": false,
+                "external_auth_id": "socservices",
+                "status": "online",
+                "idle": false,
+                "last_activity_date": "2026-03-04T10:13:14+02:00",
+                "mobile_last_date": false,
+                "desktop_last_date": false,
+                "absent": false,
+                "departments": [667],
+                "phones": false,
+                "bot_data": null,
+                "type": "user",
+                "website": "",
+                "email": "smith@mysite.com"
+            },
+            {
+                "id": 547,
+                "active": true,
+                "name": "Anna Johnson",
+                "first_name": "Anna",
+                "last_name": "Johnson",
+                ...
             }
-         },
-         {
-            "id": 28,
-            "name": "Ivan Elpidin",
-            "first_name": "Ivan",
-            "last_name": "Elpidin",
-            "work_position": "manager",
-            "color": "#728f7a",
-            "avatar": "http://192.168.2.232/upload/resize_cache/main/8b8/100_100_2/26.jpg",
-            "gender": "M",
-            "birthday": "26-01",
-            "extranet": false,
-            "network": false,
-            "bot": false,
-            "connector": false,
-            "external_auth_id": "default",
-            "status": "online",
-            "idle": false,
-            "last_activity_date": false,
-            "mobile_last_date": false,
-            "departments": [
-             58
-            ],
-            "absent": false,
-            "phones": {
-             "work_phone": "+1 (495) 222-33-55",
-             "personal_mobile": "+1 (495) 123-55-65",
-             "personal_phone": ""
-            }
-         }
         ],
         "files": [
             {
-                "id": 540,
-                "chatId": 29,
-                "date": "2018-01-29T16:43:39+02:00",
+                "id": 5255,
+                "chatId": 1489,
+                "date": "2026-03-02T16:10:00+02:00",
                 "type": "image",
-                "preview": "",
-                "name": "1176297_698081120237288_696773366_n.jpeg",
-                "size": 55013,
+                "name": "image.png",
+                "extension": "png",
+                "size": 2144,
                 "image": {
-                    "width": 960,
-                    "height": 640
+                    "height": 61,
+                    "width": 72
                 },
                 "status": "done",
                 "progress": 100,
-                "authorId": 1,
-                "authorName": "Eugene Shelenkov",
-                "urlPreview": "http://192.168.2.232/bitrix/components/bitrix/im.messenger/show.file.php?fileId=540&preview=Y&fileName=1176297_698081120237288_696773366_n.jpeg",
-                "urlShow": "http://192.168.2.232/bitrix/components/bitrix/im.messenger/show.file.php?fileId=540&fileName=1176297_698081120237288_696773366_n.jpeg",
-                "urlDownload": "http://192.168.2.232/bitrix/components/bitrix/im.messenger/download.file.php?fileId=540"
+                "authorId": 503,
+                "authorName": "John Smith",
+                "urlPreview": "https://mysite.com/bitrix/services/main/ajax.php?action=disk.api.file.download&SITE_ID=s1&humanRE=1&fileId=5255&exact=N&_esd=s6P3x5qDBEKU0NiS7sczr69Y%2FHHR8Za8EXa7STOAXIVOylYhMsnMj5nGU0VXeQ1PIsqm%2F0GNxOju5wR1jNj76d%2FZnVgpyqeIcJ4UiWXm8CJsrmARXWpxWe%2BgJ%2BpGqx0M5CxgjNzIopQp2cwM&fileName=image.png",
+                "urlShow": "https://mysite.com/bitrix/services/main/ajax.php?action=disk.api.file.showImage&SITE_ID=s1&humanRE=1&fileId=5255&width=1280&height=1280&signature=4b6b2bbba680d3bccd8b70e398d94c1c3cfcb018f813089c32db3bb25df594f5&exact=N&_esd=s6P3x5qDBEKU0NiS7sczr69Y%2FHHR8Za8EXa7STOAXIVOylYhMsnMj5nGU0VXeQ1PIsqm%2F0GNxOju5wR1jNj76d%2FZnVgpyqeIcJ4UiWXm8CJsrmARXWpxWe%2BgJ%2BpGqx0M5CxgjNzIopQp2cwM&fileName=image.png",
+                "urlDownload": "https://mysite.com/bitrix/services/main/ajax.php?action=disk.api.file.download&SITE_ID=s1&humanRE=1&fileId=5255&exact=N&_esd=s6P3x5qDBEKU0NiS7sczr69Y%2FHHR8Za8EXa7STOAXIVOylYhMsnMj5nGU0VXeQ1PIsqm%2F0GNxOju5wR1jNj76d%2FZnVgpyqeIcJ4UiWXm8CJsrmARXWpxWe%2BgJ%2BpGqx0M5CxgjNzIopQp2cwM&fileName=image.png",
+                "viewerAttrs": {
+                    "viewer": "",
+                    "viewerType": "image",
+                    "src": "https://mysite.com/bitrix/services/main/ajax.php?action=disk.api.file.download&SITE_ID=s1&humanRE=1&fileId=5255&exact=N&_esd=s6P3x5qDBEKU0NiS7sczr69Y%2FHHR8Za8EXa7STOAXIVOylYhMsnMj5nGU0VXeQ1PIsqm%2F0GNxOju5wR1jNj76d%2FZnVgpyqeIcJ4UiWXm8CJsrmARXWpxWe%2BgJ%2BpGqx0M5CxgjNzIopQp2cwM&fileName=image.png",
+                    "viewerResized": "",
+                    "objectId": "5255",
+                    "viewerGroupBy": "1489",
+                    "imChatId": 1489,
+                    "title": "image.png",
+                    "actions": "[{\"type\":\"download\"},{\"type\":\"copyToMe\",\"text\":\"Save to Drive\",\"action\":\"BXIM.disk.saveToDiskAction\",\"params\":{\"fileId\":\"5255\"},\"extension\":\"disk.viewer.actions\",\"buttonIconClass\":\"ui-btn-icon-cloud\"}]"
+                },
+                "mediaUrl": {
+                    "preview": {
+                        "250": "https://mysite.com/bitrix/services/main/ajax.php?action=disk.api.file.download&SITE_ID=s1&humanRE=1&fileId=5255&exact=N&_esd=s6P3x5qDBEKU0NiS7sczr69Y%2FHHR8Za8EXa7STOAXIVOylYhMsnMj5nGU0VXeQ1PIsqm%2F0GNxOju5wR1jNj76d%2FZnVgpyqeIcJ4UiWXm8CJsrmARXWpxWe%2BgJ%2BpGqx0M5CxgjNzIopQp2cwM&fileName=image.png"
+                    }
+                },
+                "isTranscribable": false,
+                "isVideoNote": false,
+                "isVoiceNote": false
             }
-        ],
-        "chat_id": 29
+        ]
+    },
+    "time": {
+        "start": 1772608704,
+        "finish": 1772608704.545697,
+        "duration": 0.5456969738006592,
+        "processing": 0,
+        "date_start": "2026-03-04T10:18:24+02:00",
+        "date_finish": "2026-03-04T10:18:24+02:00",
+        "operating_reset_at": 1772609304,
+        "operating": 0
     }
 }
 ```
 
-### Description of keys
+### Returned Data
 
-- `messages` – array of messages:
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`object`](../../data-types.md) | Root element of the response [(detailed description)](#result) ||
+|| **time**
+[`time`](../../data-types.md#time) | Information about the request execution time ||
+|#
 
-    - `id` – message identifier
-    - `chat_id` – chat identifier
-    - `author_id` – message author (0 - if the message is system)
-    - `date` – message date in ATOM format
-    - `text` – message text
-    - `params` – message parameters, an object of parameters, if parameters are not provided `null` (the main types will be described below)
+#### Object result {#result}
 
-- `users` – objects describing user data:
+#|
+|| **Name**
+`type` | **Description** ||
+|| **chat_id**
+[`integer`](../../data-types.md) | Identifier of the chat ||
+|| **messages**
+[`array`](../../data-types.md) | Array of messages [(detailed description)](#message).
 
-    - `id` – user identifier
-    - `name` – user's full name
-    - `first_name` – user's first name
-    - `last_name` – user's last name
-    - `work_position` – position
-    - `color` – user's color in hex format
-    - `avatar` – link to the avatar (if empty, the avatar is not set)
-    - `gender` – user's gender
-    - `birthday` – user's birthday in DD-MM format, if empty – not set
-    - `extranet` – indicator of external extranet user (`true/false`)
-    - `network` – indicator of Bitrix24.Network user (`true/false`)
-    - `bot` – indicator of bot (`true/false`)
-    - `connector` – indicator of open lines user (`true/false`)
-    - `external_auth_id` – external authorization code
-    - `status` – selected user status
-    - `idle` – date when the user stepped away from the computer, in ATOM format (if not set, `false`)
-    - `last_activity_date` – date of the user's last action in ATOM format
-    - `mobile_last_date` – date of the last action in the mobile application in ATOM format (if not set, `false`)
-    - `absent` – date until which the user is on vacation, in ATOM format (if not set, `false`)
+The method will return an empty array if a non-existent identifier is specified in `LAST_ID` or `FIRST_ID`. ||
+|| **users**
+[`array`](../../data-types.md) | Users from the selection [(detailed description)](#user).
 
-- `files` – object describing files in the selected messages:
+The method will return an empty array if a non-existent identifier is specified in `LAST_ID` or `FIRST_ID`. ||
+|| **files**
+[`array`](../../data-types.md) | Files from the selection [(detailed description)](#file).
 
-    - `id` – file identifier
-    - `chatId` – chat identifier
-    - `date` – file modification date
-    - `type` – file type: `image` – image, `file` – file
-    - `name` – name of the uploaded file
-    - `size` – actual size of the image in bytes
-    - `image` – actual size of the image in px
-    - `width` – width in px
-    - `height` – height in px
-    - `status` – current status: `done` – uploaded, `upload` – uploading
-    - `progress` – upload status in percentage: `100` – uploaded, `-1` – current status not available
-    - `authorId` – identifier of the user who uploaded the object
-    - `authorName` – user's full name who uploaded the object
-    - `urlPreview` – link to the image preview (available for images)
-    - `urlShow` – link to view the object in "view" mode
-    - `urlDownload` – link to start the download
+The method will return an empty array if a non-existent identifier is specified in `LAST_ID` or `FIRST_ID`. ||
+|#
 
-- `chat_id` – chat identifier
+#### Object message {#message}
 
-### Description of additional parameters
+#|
+|| **Name**
+`type` | **Description** ||
+|| **id**
+[`integer`](../../data-types.md) | Identifier of the message ||
+|| **chat_id**
+[`integer`](../../data-types.md) | Identifier of the chat ||
+|| **author_id**
+[`integer`](../../data-types.md) | Identifier of the author, `0` for system messages ||
+|| **date**
+[`datetime`](../../data-types.md) | Date of the message in ISO 8601 format ||
+|| **text**
+[`string`](../../data-types.md) | Text of the message ||
+|| **unread**
+[`boolean`](../../data-types.md) | Indicator of unread message ||
+|| **uuid**
+[`string`](../../data-types.md) | Unique identifier of the message, `null` for system messages ||
+|| **replaces**
+[`array`](../../data-types.md) | Array of text replacements for the message ||
+|| **params**
+[`object`](../../data-types.md) | Additional parameters of the message [(detailed description)](#params).
 
-- `ATTACH` – object containing rich formatting
-- `KEYBOARD` – object containing keyboard description
-- `IS_DELETED` – flag indicating that the message is deleted
-- `IS_EDITED` – flag indicating that the message is edited
-- `FILE_ID` – array of file identifiers
-- `LIKE` – array of user identifiers who voted for the message
+The set of fields in the object depends on the type of message: regular or system. ||
+|| **disappearing_date**
+[`datetime`](../../data-types.md) | Date of disappearance of the message, `null` if not set ||
+|#
 
-## Error response
+#### Object params {#params}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **LIKE**
+[`array`](../../data-types.md) | Identifiers of users who reacted to the message ||
+|| **CODE**
+[`array`](../../data-types.md) | Codes of system events:
+- `CHAT_JOIN` — user added to the chat
+- `CHAT_LEAVE` — user left the chat ||
+|| **NOTIFY**
+[`string`](../../data-types.md) | Indicator of notification sending. Value `N` — notification is not sent ||
+|#
+
+#### Object user {#user}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **id**
+[`integer`](../../data-types.md) | Identifier of the user ||
+|| **active**
+[`boolean`](../../data-types.md) | Indicator of active user ||
+|| **name**
+[`string`](../../data-types.md) | Full name ||
+|| **first_name**
+[`string`](../../data-types.md) | First name ||
+|| **last_name**
+[`string`](../../data-types.md) | Last name ||
+|| **work_position**
+[`string`](../../data-types.md) | Job title ||
+|| **color**
+[`string`](../../data-types.md) | Avatar color in hex format ||
+|| **avatar**
+[`string`](../../data-types.md) | Link to the avatar ||
+|| **avatar_hr**
+[`string`](../../data-types.md) | Link to the high-resolution avatar ||
+|| **gender**
+[`string`](../../data-types.md) | Gender.
+- `M` — male
+- `F` — female ||
+|| **birthday**
+[`string`](../../data-types.md) | Date of birth ||
+|| **extranet**
+[`boolean`](../../data-types.md) | Indicator of extranet user ||
+|| **network**
+[`boolean`](../../data-types.md) | Indicator of Bitrix24 network user ||
+|| **bot**
+[`boolean`](../../data-types.md) | Indicator of bot ||
+|| **connector**
+[`boolean`](../../data-types.md) | Indicator of Open Lines user ||
+|| **external_auth_id**
+[`string`](../../data-types.md) | Type of authentication ||
+|| **status**
+[`string`](../../data-types.md) | User status ||
+|| **idle**
+[`boolean`](../../data-types.md) | Indicator of user inactivity ||
+|| **last_activity_date**
+[`datetime`](../../data-types.md) | Date of last activity ||
+|| **mobile_last_date**
+[`datetime`](../../data-types.md) | Date of last activity in the mobile app, `false` if the app was not used ||
+|| **desktop_last_date**
+[`datetime`](../../data-types.md) | Date of last activity in the desktop app, `false` if the app was not used ||
+|| **absent**
+[`boolean`](../../data-types.md) | Indicator of user absence ||
+|| **departments**
+[`array`](../../data-types.md) | Identifiers of user departments ||
+|| **phones**
+[`object`](../../data-types.md) | User phones, `false` if not specified ||
+|| **bot_data**
+[`object`](../../data-types.md) | Bot data, `null` for regular users ||
+|| **type**
+[`string`](../../data-types.md) | User type ||
+|| **website**
+[`string`](../../data-types.md) | User website ||
+|| **email**
+[`string`](../../data-types.md) | User e-mail ||
+|#
+
+#### Object file {#file}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **id**
+[`integer`](../../data-types.md) | Identifier of the file ||
+|| **chatId**
+[`integer`](../../data-types.md) | Identifier of the chat ||
+|| **date**
+[`datetime`](../../data-types.md) | Date of file upload ||
+|| **type**
+[`string`](../../data-types.md) | Type of file: `image`, `video`, `audio`, `file` ||
+|| **name**
+[`string`](../../data-types.md) | Name of the file ||
+|| **extension**
+[`string`](../../data-types.md) | File extension ||
+|| **size**
+[`integer`](../../data-types.md) | Size in bytes ||
+|| **image**
+[`object`](../../data-types.md) | Dimensions of the image for files of type `image` [(detailed description)](#image) ||
+|| **status**
+[`string`](../../data-types.md) | Status of the file: `done` — uploaded ||
+|| **progress**
+[`integer`](../../data-types.md) | Percentage of file upload ||
+|| **authorId**
+[`integer`](../../data-types.md) | Identifier of the file author ||
+|| **authorName**
+[`string`](../../data-types.md) | Name of the file author ||
+|| **urlPreview**
+[`string`](../../data-types.md) | Link for file preview ||
+|| **urlShow**
+[`string`](../../data-types.md) | Link for displaying the file ||
+|| **urlDownload**
+[`string`](../../data-types.md) | Link for downloading the file ||
+|| **viewerAttrs**
+[`object`](../../data-types.md) | Attributes for file viewer [(detailed description)](#viewerAttrs) ||
+|| **mediaUrl**
+[`object`](../../data-types.md) | Media file URL for preview [(detailed description)](#mediaUrl) ||
+|| **isTranscribable**
+[`boolean`](../../data-types.md) | Indicator of transcribability ||
+|| **isVideoNote**
+[`boolean`](../../data-types.md) | Indicator of video note ||
+|| **isVoiceNote**
+[`boolean`](../../data-types.md) | Indicator of voice note ||
+|#
+
+#### Object image {#image}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **height**
+[`integer`](../../data-types.md) | Height of the image in pixels ||
+|| **width**
+[`integer`](../../data-types.md) | Width of the image in pixels ||
+|#
+
+#### Object viewerAttrs {#viewerAttrs}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **viewer**
+[`string`](../../data-types.md) | Type of viewer ||
+|| **viewerType**
+[`string`](../../data-types.md) | Type of file display ||
+|| **src**
+[`string`](../../data-types.md) | Link to the file ||
+|| **viewerResized**
+[`string`](../../data-types.md) | Link to the reduced version of the file ||
+|| **objectId**
+[`string`](../../data-types.md) | Identifier of the file object ||
+|| **viewerGroupBy**
+[`string`](../../data-types.md) | Identifier of the group for viewing files in the chat ||
+|| **imChatId**
+[`integer`](../../data-types.md) | Identifier of the chat ||
+|| **title**
+[`string`](../../data-types.md) | Name of the file ||
+|| **actions**
+[`string`](../../data-types.md) | Available actions with the file in JSON format ||
+|#
+
+#### Object mediaUrl {#mediaUrl}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **preview**
+[`object`](../../data-types.md) | Links for file preview. The keys of the object are the dimensions of the image in pixels ||
+|#
+
+## Error Handling
+
+HTTP Status: **400**
 
 ```json
 {
@@ -385,15 +542,23 @@ Due to the potentially large volume of data, this method does not support standa
 }
 ```
 
-### Description of keys
+{% include notitle [Error Handling](../../../_includes/error-info.md) %}
 
-- `error` – code of the occurred error
-- `error_description` – brief description of the occurred error
-
-### Possible error codes
+### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| **DIALOG_ID_EMPTY** | Dialog identifier not provided ||
-|| **ACCESS_ERROR** | The current user does not have access permission to the dialog ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `DIALOG_ID_EMPTY` | Dialog ID can't be empty | The `DIALOG_ID` parameter is not provided, is empty, or is in an incorrect format. ||
+|| `400` | `FIRST_ID_STRING` | First ID can't be string | The `FIRST_ID` parameter is provided with a non-numeric value. ||
+|| `400` | `LAST_ID_STRING` | Last ID can't be string | The `LAST_ID` parameter is provided with a non-numeric value. ||
+|| `403` | `ACCESS_ERROR` | You do not have access to the specified dialog | The user does not have access to the dialog. ||
 |#
+
+{% include [System Errors](../../../_includes/system-errors.md) %}
+
+## Continue Learning
+
+- [{#T}](./im-dialog-messages-search.md)
+- [{#T}](./im-dialog-read.md)
+- [{#T}](./im-dialog-unread.md)
+- [{#T}](./im-dialog-writing.md)

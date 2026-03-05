@@ -2,9 +2,9 @@
 
 > Scope: [`imbot`](../../scopes/permissions.md)
 >
-> Who can execute the method: an authorized user of the application that registered the chat bot. The method only works with bots from this application.
+> Who can execute the method: an authorized user of the application that registered the chatbot. The method works only with bots of this application.
 
-The method `imbot.message.add` sends a message from the chat bot.
+The method `imbot.message.add` sends a message from the chatbot.
 
 ## Method Parameters
 
@@ -14,7 +14,7 @@ The method `imbot.message.add` sends a message from the chat bot.
 || **Name**
 `Type` | **Description** ||
 || **BOT_ID**
-[`integer`](../../data-types.md) | The identifier of the chat bot. You can obtain the bot ID using the [imbot.bot.list](../imbot-bot-list.md) method.
+[`integer`](../../data-types.md) | The identifier of the chatbot. You can obtain the bot ID using the [imbot.bot.list](../imbot-bot-list.md) method.
 
 If the parameter is not provided, the method searches for the first bot registered by the current application. ||
 || **DIALOG_ID**
@@ -22,18 +22,18 @@ If the parameter is not provided, the method searches for the first bot register
 
 Supported formats:
 - `USER_ID` — the identifier of the user, which can be obtained via [user.get](../../user/user-get.md) or [user.search](../../user/user-search.md)
-- `chatXXX`, where `XXX` is the chat ID, which can be obtained via [imbot.chat.get](../chats/imbot-chat-get.md)
+- `chatXXX`, where `XXX` is the chat identifier, which can be obtained via [imbot.chat.get](../chats/imbot-chat-get.md)
 
 This parameter is required if both `FROM_USER_ID` and `TO_USER_ID` are not provided. ||
 
 || **FROM_USER_ID**
 [`integer`](../../data-types.md) | The identifier of the sender user for sending in a private dialog. You can obtain the user ID using [user.get](../../user/user-get.md) and [user.search](../../user/user-search.md).
 
-Used only together with `TO_USER_ID`. If both parameters are provided and greater than `0`, the `DIALOG_ID` field is ignored, and `SYSTEM` is forcibly set to `Y`. ||
+Used only with `TO_USER_ID`. If both parameters are provided and greater than `0`, the `DIALOG_ID` field is ignored, and `SYSTEM` is forcibly set to `Y`. ||
 || **TO_USER_ID**
 [`integer`](../../data-types.md) | The identifier of the recipient user for sending in a private dialog. You can obtain the user ID using [user.get](../../user/user-get.md) and [user.search](../../user/user-search.md).
 
-Used only together with `FROM_USER_ID`. ||
+Used only with `FROM_USER_ID`. ||
 || **MESSAGE***
 [`string`](../../data-types.md) | The text of the message. The method automatically trims whitespace and line breaks from the edges of the message text. ||
 || **ATTACH**
@@ -43,25 +43,25 @@ Used only together with `FROM_USER_ID`. ||
 - an object with the root key `BLOCKS`
 - an array of blocks without wrapping 
 
-For more details, see the [Attachments](../../chats/messages/attachments/index.md) section. ||
+For more details, refer to the [Attachments](../../chats/messages/attachments/index.md) section. ||
 || **KEYBOARD**
 [`object`](../../data-types.md) 
 [`string`](../../data-types.md) | Buttons below the message that the user can interact with.
 
-For more details, see the [Working with Keyboards](../../chats/messages/keyboards.md) article. ||
+For more details, refer to the [Working with Keyboards](../../chats/messages/keyboards.md) article. ||
 || **MENU**
 [`object`](../../data-types.md) 
 [`string`](../../data-types.md) | Additional items in the chat's context menu.
 
-For more details, see the [Context Menu](../../chats/messages/menu.md) article. ||
+For more details, refer to the [Context Menu](../../chats/messages/menu.md) article. ||
 || **SYSTEM**
-[`string`](../../data-types.md) | Indicator of a system message.
+[`string`](../../data-types.md) | Indicates a system message.
 
 Allowed values:
 - `Y` — system message
 - `N` — regular message, default value
 
-In `FROM_USER_ID` + `TO_USER_ID` mode, the value is forcibly set to `Y`. ||
+In the `FROM_USER_ID` + `TO_USER_ID` mode, the value is forcibly set to `Y`. ||
 || **URL_PREVIEW**
 [`string`](../../data-types.md) | Controls the display of links: when enabled, the link is shown as a "rich link" with a card.
 
@@ -75,9 +75,7 @@ Allowed values:
 - `Y` — skip
 - `N` — do not skip (default) ||
 || **CLIENT_ID**
-[`string`](../../data-types.md) | Technical parameter for scenarios without `clientId` in authorization.
-
-If provided, it is used as `custom{CLIENT_ID}` to identify the application. ||
+[`string`](../../data-types.md) | This parameter is required only for webhooks. Pass the same CLIENT_ID that was specified when registering the chatbot. ||
 |#
 
 ## Code Examples
@@ -92,7 +90,7 @@ If provided, it is used as `custom{CLIENT_ID}` to identify the application. ||
     curl -X POST \
       -H "Content-Type: application/json" \
       -H "Accept: application/json" \
-      -d '{"BOT_ID":39,"DIALOG_ID":"chat123","MESSAGE":"Message text","SYSTEM":"N","URL_PREVIEW":"Y"}' \
+      -d '{"BOT_ID":39,"DIALOG_ID":"chat123","MESSAGE":"Message text","SYSTEM":"N","URL_PREVIEW":"Y","CLIENT_ID":"**put_your_client_id_here**"}' \
       https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/imbot.message.add
     ```
 
@@ -247,10 +245,10 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `BOT_ID_ERROR` | Bot not found | The bot is not found or the application does not have an available bot for auto-filling `BOT_ID`. ||
+|| `BOT_ID_ERROR` | Bot not found | The bot is not found or the application does not have an available bot for auto-completion of `BOT_ID`. ||
 || `APP_ID_ERROR` | Bot was installed by another REST application | The provided `BOT_ID` belongs to another application. ||
 || `DIALOG_ID_EMPTY` | Dialog ID can't be empty | A valid `DIALOG_ID` was not provided if the pair `FROM_USER_ID` and `TO_USER_ID` is not used. ||
-|| `MESSAGE_EMPTY` | Message can't be empty | The message text was not provided. ||
+|| `MESSAGE_EMPTY` | Message can't be empty | No message text was provided. ||
 || `ATTACH_OVERSIZE` | You have exceeded the maximum allowable size of attach | The maximum allowable size of `ATTACH` has been exceeded — 30 KB. ||
 || `ATTACH_ERROR` | Incorrect attach params | Invalid structure of `ATTACH`. ||
 || `KEYBOARD_ERROR` | Incorrect keyboard params | Invalid structure of `KEYBOARD`. ||
@@ -269,3 +267,4 @@ HTTP Status: **400**
 - [{#T}](./imbot-message-like.md)
 - [{#T}](./events/on-imbot-message-add.md)
 - [{#T}](../../../tutorials/chat-bots/index.md)
+- [EchoBot Example](https://dev.1c-bitrix.com/~b24bots)

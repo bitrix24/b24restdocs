@@ -23,7 +23,7 @@ The identifier can be obtained using the [imbot.chat.get](./imbot-chat-get.md) m
 The user identifier can be obtained using the [imbot.chat.user.list](./imbot-chat-user-list.md) method. ||
 || **IS_MANAGER**
 [`string`](../../data-types.md) | Administrator status. Possible values:
-- `Y` — assign as administrator
+- `Y` — assign administrator
 - `N` — revoke administrator rights
 
 Default is `Y`. ||
@@ -32,9 +32,7 @@ Default is `Y`. ||
 
 If the parameter is not provided, the method searches for the first bot registered by the current application. ||
 || **CLIENT_ID**
-[`string`](../../data-types.md) | Technical parameter for scenarios without `clientId` in authorization.
-
-If provided, it is used as `custom{CLIENT_ID}` to identify the application. ||
+[`string`](../../data-types.md) | This parameter is required only for webhooks. Pass the same CLIENT_ID that was specified during the registration of the chat bot. ||
 |#
 
 ## Code Examples
@@ -49,7 +47,7 @@ If provided, it is used as `custom{CLIENT_ID}` to identify the application. ||
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"CHAT_ID":2725,"USER_ID":1269,"IS_MANAGER":"Y"}' \
+    -d '{"CHAT_ID":2725,"USER_ID":1269,"IS_MANAGER":"Y","CLIENT_ID":"**put_your_client_id_here**"}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/imbot.chat.setManager
     ```
 
@@ -183,7 +181,7 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../data-types.md) | `true` if administrator rights have been changed. ||
+[`boolean`](../../data-types.md) | `true` if the administrator rights have been changed. ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time. ||
 |#

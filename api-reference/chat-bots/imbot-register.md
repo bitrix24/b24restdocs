@@ -2,33 +2,33 @@
 
 > Scope: [`imbot`](../scopes/permissions.md)
 >
-> Who can execute the method: an authorized user of the application that registers the chatbot.
+> Who can execute the method: an authorized user of the application that registers the chatbot
 
 The method `imbot.register` registers a chatbot and binds the application's event handlers.
 
 ## Method Parameters
 
-{% include [Note on parameters](../../_includes/required.md) %}
+{% include [Footnote on parameters](../../_includes/required.md) %}
 
 #|
 || **Name**
 `Type` | **Description** ||
 || **CODE***
-[`string`](../data-types.md) | The string code of the bot, unique within Bitrix24 ||
+[`string`](../data-types.md) | String code of the bot, unique within Bitrix24 ||
 || **TYPE**
-[`string`](../data-types.md) | The type of the bot.
+[`string`](../data-types.md) | Type of the bot.
 
 Allowed values:
 - `B` — standard chatbot. In group chats, it sees messages that are specifically addressed to it.
 - `O` — chatbot for Open Channels.
 - `H` — chatbot in "human" mode. Before auto-replying, it activates the "typing..." status `startWriting`.
-- `S` — chatbot with elevated privileges (supervisor). It reads all messages in the chats it is part of. If the bot was added with history visibility, it sees both old and new messages. If without history — only new messages.
+- `S` — chatbot with elevated privileges (supervisor). Reads all messages in chats it is part of. If the bot was added with history visibility, it sees both old and new messages. If added without history, it only sees new messages.
 
 Default value: `B` ||
 || **OPENLINE**
 [`string`](../data-types.md) | Mode of operation with Open Channels.
 
-Allowed values:
+Allowed values: 
 - `Y` — enable Open Channels support mode
 - `N` — disable, default value
 
@@ -36,7 +36,7 @@ For `TYPE=O`, this parameter can be omitted. The value will be forcibly set to `
 || **EVENT_HANDLER**
 [`string`](../data-types.md) | General URL for the event handler. If provided, its value is copied to `EVENT_MESSAGE_ADD`, `EVENT_MESSAGE_UPDATE`, `EVENT_MESSAGE_DELETE`, `EVENT_WELCOME_MESSAGE`, `EVENT_BOT_DELETE`.
 
-If different handlers are needed, do not pass `EVENT_HANDLER`. Set separate URLs in the parameters `EVENT_MESSAGE_ADD`, `EVENT_MESSAGE_UPDATE`, `EVENT_MESSAGE_DELETE`, `EVENT_WELCOME_MESSAGE`, `EVENT_BOT_DELETE` ||
+If different handlers are needed, do not provide `EVENT_HANDLER`. Set separate URLs in the parameters `EVENT_MESSAGE_ADD`, `EVENT_MESSAGE_UPDATE`, `EVENT_MESSAGE_DELETE`, `EVENT_WELCOME_MESSAGE`, `EVENT_BOT_DELETE` ||
 || **EVENT_MESSAGE_ADD***
 [`string`](../data-types.md) | URL for the event handler [ONIMBOTMESSAGEADD](./messages/events/on-imbot-message-add.md) ||
 || **EVENT_MESSAGE_UPDATE**
@@ -52,22 +52,22 @@ This parameter is ignored only for bots with `TYPE=B/H` and `OPENLINE=N` ||
 || **EVENT_BOT_DELETE***
 [`string`](../data-types.md) | URL for the event handler [ONIMBOTDELETE](./events/on-imbot-delete.md) ||
 || **CLIENT_ID**
-[`string`](../data-types.md) | Technical parameter for scenarios without `clientId` in authorization. If provided, it is used as `custom{CLIENT_ID}` to identify the application ||
+[`string`](../data-types.md) | This parameter is mandatory only for webhooks. Provide a unique CLIENT_ID — this key will be linked to the chatbot and will be required for all subsequent calls to imbot* via webhook ||
 || **PROPERTIES***
 [`object`](../data-types.md) | Properties of the chatbot profile. The structure of the object is described in detail [below](#properties) ||
 |#
 
-### Parameter PROPERTIES {#properties}
+### PROPERTIES Parameter {#properties}
 
 #|
 || **Name**
 `Type` | **Description** ||
 || **NAME***
-[`string`](../data-types.md) | The name of the chatbot. You must provide either `NAME` or `LAST_NAME` ||
+[`string`](../data-types.md) | Name of the chatbot. You must provide either `NAME` or `LAST_NAME` ||
 || **LAST_NAME***
-[`string`](../data-types.md) | The last name of the chatbot. You must provide either `NAME` or `LAST_NAME` ||
+[`string`](../data-types.md) | Last name of the chatbot. You must provide either `NAME` or `LAST_NAME` ||
 || **COLOR**
-[`string`](../data-types.md) | The color of the chatbot for the mobile interface: `RED`, `GREEN`, `MINT`, `LIGHT_BLUE`, `DARK_BLUE`, `PURPLE`, `AQUA`, `PINK`, `LIME`, `BROWN`, `AZURE`, `KHAKI`, `SAND`, `MARENGO`, `GRAY`, `GRAPHITE` ||
+[`string`](../data-types.md) | Color of the chatbot for the mobile interface: `RED`, `GREEN`, `MINT`, `LIGHT_BLUE`, `DARK_BLUE`, `PURPLE`, `AQUA`, `PINK`, `LIME`, `BROWN`, `AZURE`, `KHAKI`, `SAND`, `MARENGO`, `GRAY`, `GRAPHITE` ||
 || **EMAIL**
 [`string`](../data-types.md) | Email for contacting the chatbot. The bot is created as a user, so the bot's email must not match the email of a real Bitrix24 user. This will help avoid account conflicts ||
 || **PERSONAL_BIRTHDAY**
@@ -79,20 +79,20 @@ This parameter is ignored only for bots with `TYPE=B/H` and `OPENLINE=N` ||
 || **PERSONAL_GENDER**
 [`string`](../data-types.md) | Gender, allowed values: `M` or `F` ||
 || **PERSONAL_PHOTO**
-[`file`](../data-types.md) | Avatar of the chatbot in [Base64](../files/how-to-upload-files.md) format.
+[`file`](../data-types.md) | Avatar of the chatbot in [Base64](../files/how-to-upload-files.md)
 
 The image size must not exceed the limit of 5000x5000 ||
 |#
 
 {% note info "" %}
 
-If the application logic allows, send a response to the bot upon explicit mention. This can be checked using the `TO_USER_ID` field.
+If the application logic allows, send a response to the bot upon explicit mention. This can be checked via the `TO_USER_ID` field.
 
 {% endnote %}
 
 {% note warning "" %}
 
-Only one set of event handler URLs can be used per application.
+Only one set of event handler URLs can be used in one application.
 
 If you are registering a second bot, the parameters `EVENT_MESSAGE_ADD`, `EVENT_WELCOME_MESSAGE`, and `EVENT_BOT_DELETE` must match those of the first bot.
 
@@ -104,7 +104,7 @@ The maximum number of bots for one application: `5`
 
 ## Code Examples
 
-{% include [Note on examples](../../_includes/examples.md) %}
+{% include [Footnote on examples](../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -114,7 +114,7 @@ The maximum number of bots for one application: `5`
     curl -X POST \
       -H "Content-Type: application/json" \
       -H "Accept: application/json" \
-      -d '{"CODE":"newbot","TYPE":"B","EVENT_HANDLER":"https://example.com/bot/events","OPENLINE":"N","PROPERTIES":{"NAME":"NewBot","WORK_POSITION":"Support bot"}}' \
+      -d '{"CODE":"newbot","TYPE":"B","EVENT_HANDLER":"https://example.com/bot/events","OPENLINE":"N","PROPERTIES":{"NAME":"NewBot","WORK_POSITION":"Support bot"},"CLIENT_ID":"**put_your_client_id_here**"}' \
       https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/imbot.register
     ```
 

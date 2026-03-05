@@ -8,7 +8,7 @@ The method `imbot.command.answer` publishes a response to a chatbot command.
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Footnote on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -62,24 +62,22 @@ The identifier can be obtained from the incoming event [ONIMCOMMANDADD](./events
 - `Y` - system message
 - `N` - regular message
 
-Default is `N` ||
+Default - `N` ||
 || **URL_PREVIEW**
 [`string`](../../data-types.md) | Link transformation into rich links:
 - `Y` - enabled
 - `N` - disabled
 
-Default is `Y`.
+Default - `Y`.
 
 Works for links provided in the `MESSAGE` field ||
 || **CLIENT_ID**
-[`string`](../../data-types.md) | Technical parameter for scenarios without `clientId` in authorization.
-
-If provided, used as `custom{CLIENT_ID}` to identify the application ||
+[`string`](../../data-types.md) | This parameter is required only for webhooks. Pass the same CLIENT_ID that was specified during the chatbot registration ||
 |#
 
 ## Code Examples
 
-{% include [Note on Examples](../../../_includes/examples.md) %}
+{% include [Footnote on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -89,7 +87,7 @@ If provided, used as `custom{CLIENT_ID}` to identify the application ||
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"COMMAND_ID":99,"MESSAGE_ID":33871,"MESSAGE":"Received. Executing command.","SYSTEM":"N","URL_PREVIEW":"Y","ATTACH":{"BLOCKS":[{"MESSAGE":"Task details"},{"DELIMITER":true},{"LINK":{"NAME":"Open","LINK":"https://example.com"}}]},"KEYBOARD":{"BUTTONS":[{"TEXT":"Repeat","COMMAND":"echo repeat"}]},"MENU":[{"TEXT":"bitrix24","LINK":"https://bitrix24.com"}]}' \
+    -d '{"COMMAND_ID":99,"MESSAGE_ID":33871,"MESSAGE":"Received. Executing command.","SYSTEM":"N","URL_PREVIEW":"Y","ATTACH":{"BLOCKS":[{"MESSAGE":"Task details"},{"DELIMITER":true},{"LINK":{"NAME":"Open","LINK":"https://example.com"}}]},"KEYBOARD":{"BUTTONS":[{"TEXT":"Repeat","COMMAND":"echo repeat"}]},"MENU":[{"TEXT":"bitrix24","LINK":"https://bitrix24.com"}],"CLIENT_ID":"**put_your_client_id_here**"}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/imbot.command.answer
     ```
 
@@ -276,8 +274,8 @@ HTTP Status: **200**
         "finish": 1772102359.061859,
         "duration": 1.061858892440796,
         "processing": 1,
-        "date_start": "2026-02-26T13:39:18+01:00",
-        "date_finish": "2026-02-26T13:39:19+01:00",
+        "date_start": "2026-02-26T13:39:18+02:00",
+        "date_finish": "2026-02-26T13:39:19+02:00",
         "operating_reset_at": 1772102958,
         "operating": 0
     }
@@ -306,14 +304,14 @@ HTTP Status: **400**
 }
 ```
 
-{% include notitle [Error Handling](../../../_includes/error-info.md) %}
+{% include notitle [error handling](../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
 || **Code** | **Description** | **Value** ||
 || `COMMAND_ID_ERROR` | Command not found | Command not found ||
-|| `APP_ID_ERROR` | Command was installed by another REST application | Command registered by another application ||
+|| `APP_ID_ERROR` | Command was installed by another rest application | Command registered by another application ||
 || `MESSAGE_ID_EMPTY` | Message ID can't be empty | `MESSAGE_ID` not provided ||
 || `MESSAGE_EMPTY` | Message can't be empty | Message text not provided ||
 || `ATTACH_ERROR` | Incorrect attach params | Invalid `ATTACH` object ||
@@ -324,7 +322,7 @@ HTTP Status: **400**
 || `WRONG_REQUEST` | Message isn't added | Failed to send message ||
 |#
 
-{% include [System Errors](../../../_includes/system-errors.md) %}
+{% include [system errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

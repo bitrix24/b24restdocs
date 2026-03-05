@@ -16,15 +16,15 @@ The method `imbot.command.register` registers a command for the chat bot.
 || **BOT_ID***
 [`integer`](../../data-types.md) | The identifier of the chat bot. You can obtain the bot ID using the [imbot.bot.list](../imbot-bot-list.md) method ||
 || **COMMAND***
-[`string`](../../data-types.md) | The text of the command that the user enters in the chat. Latin letters and numbers can be used without spaces and special characters ||
+[`string`](../../data-types.md) | The text of the command that the user types in the chat. Latin letters and numbers can be used without spaces and special characters ||
 || **EVENT_COMMAND_ADD***
-[`string`](../../data-types.md) | The URL of the event handler [ONIMCOMMANDADD](./events/on-im-command-add.md) that is called when the command is used ||
+[`string`](../../data-types.md) | The URL of the event handler [ONIMCOMMANDADD](./events/on-im-command-add.md), which is called when the command is used ||
 || **LANG***
 [`array`](../../data-types.md) | An array of localizations for the command. The structure is described [below](#lang) ||
 || **COMMON**
 [`string`](../../data-types.md) | Command availability:
 - `Y` - the command is available in any chats
-- `N` - the command is available only where the bot is present
+- `N` - the command is only available where the bot is present
 
 Default - `N` ||
 || **HIDDEN**
@@ -40,9 +40,7 @@ Default - `N` ||
 
 Default - `N` ||
 || **CLIENT_ID**
-[`string`](../../data-types.md) | Technical parameter for scripts without `clientId` in authorization.
-
-If provided, it is used as `custom{CLIENT_ID}` to identify the application ||
+[`string`](../../data-types.md) | This parameter is required only for webhooks. Pass the same CLIENT_ID that was specified when registering the chat bot ||
 |#
 
 ### LANG Parameter {#lang}
@@ -78,7 +76,7 @@ When registering multiple commands, specify the same URL in `EVENT_COMMAND_ADD`,
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"BOT_ID":1291,"COMMAND":"echo","EVENT_COMMAND_ADD":"https://example.com/bot/command.php","LANG":[{"LANGUAGE_ID":"de","TITLE":"Echo","PARAMS":"text"},{"LANGUAGE_ID":"en","TITLE":"Echo","PARAMS":"text"}],"COMMON":"Y","HIDDEN":"N","EXTRANET_SUPPORT":"N"}' \
+    -d '{"BOT_ID":1291,"COMMAND":"echo","EVENT_COMMAND_ADD":"https://example.com/bot/command.php","LANG":[{"LANGUAGE_ID":"de","TITLE":"Echo","PARAMS":"text"},{"LANGUAGE_ID":"en","TITLE":"Echo","PARAMS":"text"}],"COMMON":"Y","HIDDEN":"N","EXTRANET_SUPPORT":"N","CLIENT_ID":"**put_your_client_id_here**"}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/imbot.command.register
     ```
 
@@ -261,12 +259,12 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `EVENT_COMMAND_ADD_ERROR` | Handler for "Command add" event isn't specified | The `EVENT_COMMAND_ADD` parameter is not provided ||
-|| `EVENT_COMMAND_ADD_ERROR` | Wrong handler URL | An invalid URL for the command add event handler is provided ||
+|| `EVENT_COMMAND_ADD_ERROR` | Handler for "Command add" event isn't specified | The `EVENT_COMMAND_ADD` parameter is missing ||
+|| `EVENT_COMMAND_ADD_ERROR` | Wrong handler URL | An invalid URL for the command add event handler was provided ||
 || `COMMAND_ERROR` | Command isn't specified | The command text is not specified ||
-|| `BOT_ID_ERROR` | Bot not found | The chat bot is not found ||
-|| `APP_ID_ERROR` | Bot was installed by another REST application | The chat bot is registered by another application ||
-|| `LANG_ERROR` | Lang set can't be empty | The `LANG` localization array is not provided ||
+|| `BOT_ID_ERROR` | Bot not found | The chat bot was not found ||
+|| `APP_ID_ERROR` | Bot was installed by another REST application | The chat bot was registered by another application ||
+|| `LANG_ERROR` | Lang set can't be empty | The `LANG` localization array is missing ||
 || `WRONG_REQUEST` | Command can't be created | Failed to register the command ||
 |#
 

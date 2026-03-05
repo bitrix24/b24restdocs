@@ -18,7 +18,7 @@ The method `imbot.update` updates the chatbot's data and its event handlers.
 || **FIELDS***
 [`object`](../data-types.md) | Data for updating the chatbot. The structure of the object is described in detail [below](#fields) ||
 || **CLIENT_ID**
-[`string`](../data-types.md) | A technical parameter for scenarios without `clientId` in authorization. If provided, it is used as `custom{CLIENT_ID}` to identify the application ||
+[`string`](../data-types.md) | This parameter is required only for webhooks. Pass the same CLIENT_ID that was specified during the chatbot registration ||
 |#
 
 ### FIELDS Parameter {#fields}
@@ -31,7 +31,7 @@ The method `imbot.update` updates the chatbot's data and its event handlers.
 || **EVENT_HANDLER**
 [`string`](../data-types.md) | General URL for the event handler. If provided, its value is copied to `EVENT_MESSAGE_ADD`, `EVENT_MESSAGE_UPDATE`, `EVENT_MESSAGE_DELETE`, `EVENT_WELCOME_MESSAGE`, `EVENT_BOT_DELETE`.
 
-If different handlers are needed, do not provide `EVENT_HANDLER`. Set separate URLs in the parameters `EVENT_MESSAGE_ADD`, `EVENT_MESSAGE_UPDATE`, `EVENT_MESSAGE_DELETE`, `EVENT_WELCOME_MESSAGE`, `EVENT_BOT_DELETE` ||
+If different handlers are needed, do not pass `EVENT_HANDLER`. Set separate URLs in the parameters `EVENT_MESSAGE_ADD`, `EVENT_MESSAGE_UPDATE`, `EVENT_MESSAGE_DELETE`, `EVENT_WELCOME_MESSAGE`, `EVENT_BOT_DELETE` ||
 || **EVENT_MESSAGE_ADD**
 [`string`](../data-types.md) | URL for the event handler [ONIMBOTMESSAGEADD](./messages/events/on-imbot-message-add.md) ||
 || **EVENT_MESSAGE_UPDATE**
@@ -48,7 +48,7 @@ If different handlers are needed, do not provide `EVENT_HANDLER`. Set separate U
 
 {% note warning "" %}
 
-The method `imbot.update` does not support changing the fields `TYPE` and `OPENLINE`.
+The method `imbot.update` does not support changing the `TYPE` and `OPENLINE` fields.
 
 {% endnote %}
 
@@ -58,9 +58,9 @@ The method `imbot.update` does not support changing the fields `TYPE` and `OPENL
 || **Name**
 `Type` | **Description** ||
 || **NAME**
-[`string`](../data-types.md) | The name of the chatbot. If both values `NAME` and `LAST_NAME` are provided, they must not be empty at the same time ||
+[`string`](../data-types.md) | The name of the chatbot. If both values are provided: `NAME` and `LAST_NAME`, they must not be empty at the same time ||
 || **LAST_NAME**
-[`string`](../data-types.md) | The last name of the chatbot. If both values `NAME` and `LAST_NAME` are provided, they must not be empty at the same time ||
+[`string`](../data-types.md) | The last name of the chatbot. If both values are provided: `NAME` and `LAST_NAME`, they must not be empty at the same time ||
 || **COLOR**
 [`string`](../data-types.md) | The color of the chatbot for the mobile interface: `RED`, `GREEN`, `MINT`, `LIGHT_BLUE`, `DARK_BLUE`, `PURPLE`, `AQUA`, `PINK`, `LIME`, `BROWN`, `AZURE`, `KHAKI`, `SAND`, `MARENGO`, `GRAY`, `GRAPHITE` ||
 || **EMAIL**
@@ -81,7 +81,7 @@ The image size must not exceed the limit of 5000x5000 ||
 
 {% note info "" %}
 
-To update the bot, provide at least one parameter: a field in `FIELDS` or an event handler URL. If all parameters are empty, the method will return an error `WRONG_REQUEST`.
+To update the bot, pass at least one parameter: a field in `FIELDS` or an event handler URL. If all parameters are empty, the method will return an error `WRONG_REQUEST`.
 
 {% endnote %}
 
@@ -97,7 +97,7 @@ To update the bot, provide at least one parameter: a field in `FIELDS` or an eve
     curl -X POST \
       -H "Content-Type: application/json" \
       -H "Accept: application/json" \
-      -d '{"BOT_ID":39,"FIELDS":{"CODE":"newbot_v2","EVENT_HANDLER":"https://example.com/bot/events","PROPERTIES":{"NAME":"UpdatedBot","WORK_POSITION":"Updated description"}}}' \
+      -d '{"BOT_ID":39,"FIELDS":{"CODE":"newbot_v2","EVENT_HANDLER":"https://example.com/bot/events","PROPERTIES":{"NAME":"UpdatedBot","WORK_POSITION":"Updated description"}},"CLIENT_ID":"**put_your_client_id_here**"}' \
       https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/imbot.update
     ```
 
@@ -253,7 +253,7 @@ HTTP Code: **200**
 || **result**
 [`boolean`](../data-types.md) | `true` if the bot was updated without error ||
 || **time**
-[`time`](../data-types.md#time) | Information about the execution time of the request ||
+[`time`](../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -274,16 +274,16 @@ HTTP Status: **400**, **403**
 #|
 || **Code** | **Description** | **Value** ||
 || `WRONG_AUTH_TYPE` | Access for this method not allowed by session authorization. | The method was called with session authorization instead of OAuth or webhook ||
-|| `ACCESS_DENIED` | Access denied! Client ID not specified | Unable to determine the application: `clientId` authorization is missing and `CLIENT_ID` was not provided ||
+|| `ACCESS_DENIED` | Access denied! Client ID not specified | Unable to determine the application: missing `clientId` authorization and `CLIENT_ID` not provided ||
 || `BOT_ID_ERROR` | Bot not found | Bot not found ||
 || `APP_ID_ERROR` | Bot was installed by another REST application | The provided `BOT_ID` belongs to another application ||
-|| `EVENT_MESSAGE_ADD_ERROR` | Wrong handler URL | An invalid handler URL was provided for `EVENT_MESSAGE_ADD` ||
-|| `EVENT_MESSAGE_UPDATE_ERROR` | Wrong handler URL | An invalid handler URL was provided for `EVENT_MESSAGE_UPDATE` ||
-|| `EVENT_MESSAGE_DELETE_ERROR` | Wrong handler URL | An invalid handler URL was provided for `EVENT_MESSAGE_DELETE` ||
-|| `EVENT_WELCOME_MESSAGE_ERROR` | Wrong handler URL | An invalid handler URL was provided for `EVENT_WELCOME_MESSAGE` ||
-|| `EVENT_BOT_DELETE_ERROR` | Wrong handler URL | An invalid handler URL was provided for `EVENT_BOT_DELETE` ||
+|| `EVENT_MESSAGE_ADD_ERROR` | Wrong handler URL | Invalid URL for the `EVENT_MESSAGE_ADD` handler ||
+|| `EVENT_MESSAGE_UPDATE_ERROR` | Wrong handler URL | Invalid URL for the `EVENT_MESSAGE_UPDATE` handler ||
+|| `EVENT_MESSAGE_DELETE_ERROR` | Wrong handler URL | Invalid URL for the `EVENT_MESSAGE_DELETE` handler ||
+|| `EVENT_WELCOME_MESSAGE_ERROR` | Wrong handler URL | Invalid URL for the `EVENT_WELCOME_MESSAGE` handler ||
+|| `EVENT_BOT_DELETE_ERROR` | Wrong handler URL | Invalid URL for the `EVENT_BOT_DELETE` handler ||
 || `NAME_ERROR` | Bot name isn't specified | Both fields `NAME` and `LAST_NAME` in `PROPERTIES` are empty ||
-|| `WRONG_REQUEST` | Update fields can't be empty | No fields or handlers were provided for the update ||
+|| `WRONG_REQUEST` | Update fields can't be empty | No fields or handlers provided for the update ||
 || `WRONG_REQUEST` | Bot can't be updated | The bot cannot be updated ||
 |#
 

@@ -22,9 +22,7 @@ The identifier can be obtained using the [imbot.chat.get](./imbot-chat-get.md) m
 
 If the parameter is not provided, the method searches for the first bot registered by the current application. ||
 || **CLIENT_ID**
-[`string`](../../data-types.md) | Technical parameter for scenarios without `clientId` in authorization.
-
-If provided, it is used as `custom{CLIENT_ID}` to identify the application. ||
+[`string`](../../data-types.md) | This parameter is required only for webhooks. Pass the same CLIENT_ID that was specified during the registration of the chat bot. ||
 |#
 
 ## Code Examples
@@ -39,7 +37,7 @@ If provided, it is used as `custom{CLIENT_ID}` to identify the application. ||
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"CHAT_ID":13,"BOT_ID":39}' \
+    -d '{"CHAT_ID":13,"BOT_ID":39,"CLIENT_ID":"**put_your_client_id_here**"}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/imbot.chat.leave
     ```
 
@@ -185,10 +183,10 @@ HTTP Status: **400**, **403**
 || `CHAT_ID_EMPTY` | Chat ID can't be empty | `CHAT_ID` not provided. ||
 || `ACCESS_ERROR` | Action unavailable | Operation not available for this chat. ||
 || `ACCESS_ERROR` | It is forbidden to delete users of this chat | Cannot remove the chat bot from this chat. ||
-|| `ACCESS_ERROR` | LEAVE_OWNER_FORBIDDEN | Cannot remove the chat owner without transferring rights. ||
-|| `WRONG_REQUEST` | You don't have access or user isn't a member in chat | No permission to leave or the chat bot is not a participant in the chat. ||
+|| `ACCESS_ERROR` | LEAVE_OWNER_FORBIDDEN | Cannot remove the owner of the chat without transferring rights. ||
+|| `WRONG_REQUEST` | You don't have access or user isn't a member of the chat | No permission to leave or the chat bot is not a participant in the chat. ||
 || `BOT_ID_ERROR` | Bot not found | Chat bot not found. ||
-|| `APP_ID_ERROR` | Bot was installed by another rest application | Chat bot installed by another application. ||
+|| `APP_ID_ERROR` | Bot was installed by another REST application | Chat bot installed by another application. ||
 |#
 
 {% include [System Errors](../../../_includes/system-errors.md) %}

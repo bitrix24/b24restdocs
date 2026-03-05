@@ -16,19 +16,17 @@ The method `imbot.chat.updateAvatar` updates the chat avatar.
 || **CHAT_ID***
 [`integer`](../../data-types.md) | The identifier of the chat.
 
-The identifier can be obtained using the method [imbot.chat.get](./imbot-chat-get.md) ||
+The identifier can be obtained using the [imbot.chat.get](./imbot-chat-get.md) method. ||
 || **AVATAR***
 [`string`](../../data-types.md) | Image in [Base64](../../files/how-to-upload-files.md) format.
 
-The maximum image size is 5000x5000 ||
+The maximum image size is 5000x5000. ||
 || **BOT_ID**
-[`integer`](../../data-types.md) | The identifier of the chat bot. You can obtain the bot identifier using the method [imbot.bot.list](../imbot-bot-list.md).
+[`integer`](../../data-types.md) | The identifier of the chat bot. You can obtain the bot identifier using the [imbot.bot.list](../imbot-bot-list.md) method.
 
-If the parameter is not provided, the method searches for the first bot registered by the current application ||
+If the parameter is not provided, the method searches for the first bot registered by the current application. ||
 || **CLIENT_ID**
-[`string`](../../data-types.md) | Technical parameter for scenarios without `clientId` in authorization.
-
-If provided, it is used as `custom{CLIENT_ID}` to identify the application ||
+[`string`](../../data-types.md) | This parameter is required only for webhooks. Pass the same CLIENT_ID that was specified during the registration of the chat bot. ||
 |#
 
 ## Code Examples
@@ -43,7 +41,7 @@ If provided, it is used as `custom{CLIENT_ID}` to identify the application ||
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"CHAT_ID":2725,"AVATAR":"/9j/4QAYRXhpZgAAS...CgCgCgCgP/9k="}' \
+    -d '{"CHAT_ID":2725,"AVATAR":"/9j/4QAYRXhpZgAAS...CgCgCgCgP/9k=","CLIENT_ID":"**put_your_client_id_here**"}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/imbot.chat.updateAvatar
     ```
 
@@ -172,9 +170,9 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../data-types.md) | `true` if the avatar was updated ||
+[`boolean`](../../data-types.md) | `true` if the avatar was updated. ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the request execution time ||
+[`time`](../../data-types.md#time) | Information about the execution time of the request. ||
 |#
 
 ## Error Handling
@@ -194,15 +192,15 @@ HTTP Status: **400**, **403**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `CHAT_ID_EMPTY` | Chat ID can't be empty | `CHAT_ID` not provided ||
-|| `ACCESS_DENIED` | Access denied | Insufficient permissions to change the avatar ||
-|| `ACCESS_ERROR` | Action unavailable | Operation not available for this chat ||
-|| `ACCESS_ERROR` | The avatar of this chat cannot be changed | Cannot change the avatar of this chat ||
-|| `AVATAR_ERROR` | Avatar incorrect type | The file provided is not of image type ||
-|| `AVATAR_ERROR` | Avatar incorrect size (max 5000x5000) | The image size exceeds the limit ||
-|| `WRONG_REQUEST` | Chat doesn't exist | The specified chat does not exist ||
-|| `BOT_ID_ERROR` | Bot not found | Chat bot not found ||
-|| `APP_ID_ERROR` | Bot was installed by another REST application | Chat bot installed by another application ||
+|| `CHAT_ID_EMPTY` | Chat ID can't be empty | `CHAT_ID` not provided. ||
+|| `ACCESS_DENIED` | Access denied | Insufficient permissions to change the avatar. ||
+|| `ACCESS_ERROR` | Action unavailable | Operation not available for this chat. ||
+|| `ACCESS_ERROR` | The avatar of this chat cannot be changed | Cannot change the avatar of this chat. ||
+|| `AVATAR_ERROR` | Avatar incorrect type | The file provided is not of an image type. ||
+|| `AVATAR_ERROR` | Avatar incorrect size (max 5000x5000) | The image size exceeds the limit. ||
+|| `WRONG_REQUEST` | Chat doesn't exist | The specified chat does not exist. ||
+|| `BOT_ID_ERROR` | Bot not found | Chat bot not found. ||
+|| `APP_ID_ERROR` | Bot was installed by another REST application | Chat bot installed by another application. ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

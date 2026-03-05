@@ -14,11 +14,11 @@ The method `imbot.chat.updateColor` updates the chat color for the mobile applic
 || **Name**
 `type` | **Description** ||
 || **CHAT_ID***
-[`integer`](../../data-types.md) | The identifier of the chat.
+[`integer`](../../data-types.md) | Identifier of the chat.
 
-The identifier can be obtained using the method [imbot.chat.get](./imbot-chat-get.md) ||
+The identifier can be obtained using the [imbot.chat.get](./imbot-chat-get.md) method. ||
 || **COLOR***
-[`string`](../../data-types.md) | The chat color for the mobile application. Possible values:
+[`string`](../../data-types.md) | Chat color for the mobile application. Possible values:
 - `RED` — red
 - `GREEN` — green
 - `MINT` — mint
@@ -36,13 +36,11 @@ The identifier can be obtained using the method [imbot.chat.get](./imbot-chat-ge
 - `GRAY` — gray
 - `GRAPHITE` — graphite ||
 || **BOT_ID**
-[`integer`](../../data-types.md) | The identifier of the chat bot. You can obtain the bot identifier using the method [imbot.bot.list](../imbot-bot-list.md).
+[`integer`](../../data-types.md) | Identifier of the chat bot. You can obtain the bot identifier using the [imbot.bot.list](../imbot-bot-list.md) method.
 
-If the parameter is not provided, the method searches for the first bot registered by the current application ||
+If the parameter is not provided, the method searches for the first bot registered by the current application. ||
 || **CLIENT_ID**
-[`string`](../../data-types.md) | A technical parameter for scenarios without `clientId` in authorization.
-
-If provided, it is used as `custom{CLIENT_ID}` to identify the application ||
+[`string`](../../data-types.md) | This parameter is required only for webhooks. Pass the same CLIENT_ID that was specified during the registration of the chat bot. ||
 |#
 
 ## Code Examples
@@ -57,7 +55,7 @@ If provided, it is used as `custom{CLIENT_ID}` to identify the application ||
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"CHAT_ID":2725,"COLOR":"PINK"}' \
+    -d '{"CHAT_ID":2725,"COLOR":"PINK","CLIENT_ID":"**put_your_client_id_here**"}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/imbot.chat.updateColor
     ```
 
@@ -186,9 +184,9 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../data-types.md) | `true` if the chat color was updated ||
+[`boolean`](../../data-types.md) | `true` if the chat color was updated. ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the request execution time ||
+[`time`](../../data-types.md#time) | Information about the request execution time. ||
 |#
 
 ## Error Handling
@@ -208,12 +206,12 @@ HTTP Status: **400**, **403**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `CHAT_ID_EMPTY` | Chat ID can't be empty | `CHAT_ID` not provided ||
-|| `ACCESS_ERROR` | Action unavailable | Operation not available for this chat ||
-|| `WRONG_COLOR` | This color currently unavailable | Invalid color provided ||
-|| `WRONG_REQUEST` | This color currently set or chat doesn't exist | Color already set or chat does not exist ||
-|| `BOT_ID_ERROR` | Bot not found | Chat bot not found ||
-|| `APP_ID_ERROR` | Bot was installed by another rest application | Chat bot installed by another application ||
+|| `CHAT_ID_EMPTY` | Chat ID can't be empty | `CHAT_ID` not provided. ||
+|| `ACCESS_ERROR` | Action unavailable | Operation not available for this chat. ||
+|| `WRONG_COLOR` | This color currently unavailable | An invalid color was provided. ||
+|| `WRONG_REQUEST` | This color currently set or chat doesn't exist | The color is already set or the chat does not exist. ||
+|| `BOT_ID_ERROR` | Bot not found | Chat bot not found. ||
+|| `APP_ID_ERROR` | Bot was installed by another REST application | Chat bot installed by another application. ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

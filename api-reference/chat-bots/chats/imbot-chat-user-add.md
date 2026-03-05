@@ -2,13 +2,13 @@
 
 > Scope: [`imbot`](../../scopes/permissions.md)
 >
-> Who can execute the method: an authorized user of the application that registered the chat bot.
+> Who can execute the method: an authorized user of the application that registered the chat bot
 
 The method `imbot.chat.user.add` adds users to a chat.
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -28,18 +28,16 @@ User identifiers can be obtained using the [user.get](../../user/user-get.md) an
 
 Default is `Y`. ||
 || **BOT_ID**
-[`integer`](../../data-types.md) | Identifier of the chat bot. The bot identifier can be obtained using the [imbot.bot.list](../imbot-bot-list.md) method.
+[`integer`](../../data-types.md) | Identifier of the chat bot. You can obtain the bot identifier using the [imbot.bot.list](../imbot-bot-list.md) method.
 
 If the parameter is not provided, the method searches for the first bot registered by the current application. ||
 || **CLIENT_ID**
-[`string`](../../data-types.md) | Technical parameter for scenarios without `clientId` in authorization.
-
-If provided, it is used as `custom{CLIENT_ID}` to identify the application. ||
+[`string`](../../data-types.md) | This parameter is required only for webhooks. Pass the same CLIENT_ID that was specified during the registration of the chat bot. ||
 |#
 
 ## Code Examples
 
-{% include [Note on Examples](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -49,7 +47,7 @@ If provided, it is used as `custom{CLIENT_ID}` to identify the application. ||
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"CHAT_ID":2725,"USERS":[1269],"HIDE_HISTORY":"Y"}' \
+    -d '{"CHAT_ID":2725,"USERS":[1269],"HIDE_HISTORY":"Y","CLIENT_ID":"**put_your_client_id_here**"}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/imbot.chat.user.add
     ```
 
@@ -198,22 +196,22 @@ HTTP Status: **400**, **403**
 }
 ```
 
-{% include notitle [Error Handling](../../../_includes/error-info.md) %}
+{% include notitle [error handling](../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `CHAT_ID_EMPTY` | Chat ID can't be empty | `CHAT_ID` was not provided. ||
-|| `ACCESS_ERROR` | Action unavailable | Operation is not available for this chat. ||
+|| `CHAT_ID_EMPTY` | Chat ID can't be empty | `CHAT_ID` not provided. ||
+|| `ACCESS_ERROR` | Action unavailable | Operation not available for this chat. ||
 || `ACCESS_ERROR` | It is forbidden to add users to this chat | Users cannot be added to this chat. ||
-|| `WRONG_REQUEST` | User IDs must be passed in array format | `USERS` was provided in an incorrect format. ||
-|| `WRONG_REQUEST` | You don't have access or user already a member in chat | No permission to add or user is already in the chat. ||
+|| `WRONG_REQUEST` | User IDs must be passed in array format | `USERS` provided in incorrect format. ||
+|| `WRONG_REQUEST` | You don't have access or user already member in chat | No permission to add or user already in chat. ||
 || `BOT_ID_ERROR` | Bot not found | Chat bot not found. ||
-|| `APP_ID_ERROR` | Bot was installed by another REST application | Chat bot was installed by another application. ||
+|| `APP_ID_ERROR` | Bot was installed by another rest application | Chat bot installed by another application. ||
 |#
 
-{% include [System Errors](../../../_includes/system-errors.md) %}
+{% include [system errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

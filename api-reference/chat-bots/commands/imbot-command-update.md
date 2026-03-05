@@ -18,14 +18,12 @@ The method `imbot.command.update` updates the parameters of a registered chatbot
 || **FIELDS***
 [`object`](../../data-types.md) | Object containing fields to update. The structure is described [below](#fields) ||
 || **CLIENT_ID**
-[`string`](../../data-types.md) | Technical parameter for scenarios without `clientId` in authorization.
-
-If provided, it is used as `custom{CLIENT_ID}` to identify the application ||
+[`string`](../../data-types.md) | This parameter is required only for webhooks. Pass the same CLIENT_ID that was specified during the chatbot registration ||
 |#
 
 {% note warning "" %}
 
-At least one modifiable parameter must be provided in `FIELDS`. If an empty object is sent, the method will return an error.
+At least one modifiable parameter must be provided in `FIELDS`. If an empty object is passed, the method will return an error.
 
 {% endnote %}
 
@@ -60,7 +58,7 @@ At least one modifiable parameter must be provided in `FIELDS`. If an empty obje
 || **TITLE***
 [`string`](../../data-types.md) | Command title in the selected language ||
 || **PARAMS**
-[`string`](../../data-types.md) | Parameter hints for the command in the selected language ||
+[`string`](../../data-types.md) | Command parameter hints in the selected language ||
 |#
 
 ## Code Examples
@@ -75,7 +73,7 @@ At least one modifiable parameter must be provided in `FIELDS`. If an empty obje
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"COMMAND_ID":99,"FIELDS":{"COMMAND":"echo2","EVENT_COMMAND_ADD":"https://example.com/bot/command.php","HIDDEN":"N","EXTRANET_SUPPORT":"Y","LANG":[{"LANGUAGE_ID":"de","TITLE":"Echo 2","PARAMS":"text"},{"LANGUAGE_ID":"en","TITLE":"Echo 2","PARAMS":"text"}]}}' \
+    -d '{"COMMAND_ID":99,"FIELDS":{"COMMAND":"echo2","EVENT_COMMAND_ADD":"https://example.com/bot/command.php","HIDDEN":"N","EXTRANET_SUPPORT":"Y","LANG":[{"LANGUAGE_ID":"de","TITLE":"Echo 2","PARAMS":"text"},{"LANGUAGE_ID":"en","TITLE":"Echo 2","PARAMS":"text"}]},"CLIENT_ID":"**put_your_client_id_here**"}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/imbot.command.update
     ```
 

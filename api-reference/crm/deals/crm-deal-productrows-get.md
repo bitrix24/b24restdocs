@@ -1,12 +1,12 @@
-# Get Deal Product Rows crm.deal.productrows.get
+# Retrieve Deal Product Rows crm.deal.productrows.get
 
 > Scope: [`crm`](../../scopes/permissions.md)
 >
-> Who can execute the method: user with "read" access permission for the deal
+> Who can execute the method: a user with "read" access permission for the deal
 
-{% note warning "Method Development Stopped" %}
+{% note warning "Method Development Halted" %}
 
-The method `crm.deal.productrows.get` continues to function, but there is a more relevant alternative [crm.item.productrow.*](../universal/product-rows/index.md).
+The method `crm.deal.productrows.get` continues to function, but there is a more current equivalent [crm.item.productrow.*](../universal/product-rows/index.md).
 
 {% endnote %}
 
@@ -16,17 +16,17 @@ The method `crm.deal.productrows.get` returns the product rows of a deal.
 || **Name**
 `type` | **Description** ||
 || **id^*^**
-[`integer`](../../data-types.md) | Identifier of the deal. Can be obtained using the method to get the list of deals: [`crm.deal.list`](./crm-deal-list.md) or when creating a deal: [`crm.deal.add`](./crm-deal-add.md) ||
+[`integer`](../../data-types.md) | Identifier of the deal. It can be obtained using the method to retrieve the list of deals: [`crm.deal.list`](./crm-deal-list.md) or when creating a deal: [`crm.deal.add`](./crm-deal-add.md) ||
 |#
 
-{% include [Footnote about parameters](../../../_includes/required.md) %}
+{% include [Parameter Notes](../../../_includes/required.md) %}
 
 
 ## Code Examples
 
-Get the product rows of the deal with `id = 5`
+Retrieve product rows for the deal with `id = 5`
 
-{% include [Footnote about examples](../../../_includes/examples.md) %}
+{% include [Example Notes](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -174,7 +174,7 @@ HTTP Status: **200**
 			"TYPE": 1,
 			"STORE_ID": 0,
 			"RESERVE_ID": 31,
-			"DATE_RESERVE_END": "12/26/2024",
+			"DATE_RESERVE_END": "2024-12-26",
 			"RESERVE_QUANTITY": 1
 		},
 		{
@@ -204,7 +204,7 @@ HTTP Status: **200**
 			"TYPE": 1,
 			"STORE_ID": 1,
 			"RESERVE_ID": 30,
-			"DATE_RESERVE_END": "12/26/2024",
+			"DATE_RESERVE_END": "2024-12-26",
 			"RESERVE_QUANTITY": 1
 		}
 	],
@@ -226,7 +226,7 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`productrow[]`](#productrow) | Root element of the response containing an array of deal product rows ||
+[`productrow[]`](#productrow) | Root element of the response containing an array of product rows for the deal ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the execution time of the request ||
 |#
@@ -241,7 +241,7 @@ HTTP Status: **200**
 || **OWNER_ID**
 [`integer`](../../data-types.md) | Identifier of the entity to which the product is linked. For this method, it will always equal the `id` of the deal ||
 || **OWNER_TYPE**
-[`string`](../../data-types.md) | String identifier of the entity type to which the product is linked. For this method, it will always equal `D` ||
+[`string`](../../data-types.md) | String identifier of the object type to which the product is linked. For this method, it will always equal `D` ||
 || **PRODUCT_ID**
 [`integer`](../../data-types.md) | Identifier of the product in the catalog. `0` if not from the catalog
 
@@ -293,9 +293,9 @@ Possible values:
 
 ||
 || **MEASURE_CODE**
-[`catalog_measure.code`](../../catalog/data-types.md#catalog_measure) | Measure unit code ||
+[`catalog_measure.code`](../../catalog/data-types.md#catalog_measure) | Unit of measure code ||
 || **MEASURE_NAME**
-[`string`](../../data-types.md) | Text representation of the measure unit (e.g., pcs, kg, m, l, etc.) ||
+[`string`](../../data-types.md) | Text representation of the unit of measure (e.g., pcs, kg, m, l, etc.) ||
 || **SORT**
 [`integer`](../../data-types.md) | Sorting ||
 || **XML_ID**
@@ -309,11 +309,11 @@ Possible values:
 
 ||
 || **STORE_ID**
-[`integer`](../../data-types.md) | Identifier of the inventory. For detailed information about the inventory, use [`catalog.store.get`](../../catalog/store/catalog-store-get.md) ||
+[`integer`](../../data-types.md) | Identifier of the warehouse. For detailed information about the warehouse, use [`catalog.store.get`](../../catalog/store/catalog-store-get.md) ||
 || **RESERVE_ID**
 [`integer`](../../data-types.md) | Identifier of the reserve ||
 || **DATE_RESERVE_END**
-[`date`](../../data-types.md) | Date of reserve expiration ||
+[`date`](../../data-types.md) | Reservation end date ||
 || **RESERVE_QUANTITY**
 [`integer`](../../data-types.md) | Quantity of reserved product units ||
 |#
@@ -330,18 +330,18 @@ HTTP Status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../_includes/error-info.md) %}
+{% include notitle [Error Handling](../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
 || **Description** | **Value** ||
-|| The parameter id is invalid or not defined. | The parameter `id` has an incorrect value ||
-|| Access denied | The user does not have permission to "read" the deal  ||
+|| The parameter id is invalid or not defined | An incorrect value was passed in the `id` parameter ||
+|| Access denied | The user does not have "read" access permission for the deal  ||
 || Not found | The deal with the provided `id` was not found ||
 |#
 
-{% include [system errors](./../../../_includes/system-errors.md) %}
+{% include [System Errors](./../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

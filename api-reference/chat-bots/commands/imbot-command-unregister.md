@@ -8,22 +8,20 @@ The method `imbot.command.unregister` removes a registered command from the chat
 
 ## Method Parameters
 
-{% include [Footnote on required parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
-|| **COMMAND_ID***
+|| **COMMAND_ID*** 
 [`integer`](../../data-types.md) | Identifier of the command to be removed ||
 || **CLIENT_ID**
-[`string`](../../data-types.md) | Technical parameter for scenarios without `clientId` in authorization.
-
-If provided, it is used as `custom{CLIENT_ID}` to identify the application ||
+[`string`](../../data-types.md) | This parameter is required only for webhooks. Pass the same CLIENT_ID that was specified during the registration of the chat bot ||
 |#
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -33,7 +31,7 @@ If provided, it is used as `custom{CLIENT_ID}` to identify the application ||
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"COMMAND_ID":99}' \
+    -d '{"COMMAND_ID":99,"CLIENT_ID":"**put_your_client_id_here**"}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/imbot.command.unregister
     ```
 
@@ -160,7 +158,7 @@ HTTP Status: **200**
 || **result**
 [`boolean`](../../data-types.md) | `true` if the command was successfully removed ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the request execution time ||
+[`time`](../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
@@ -181,7 +179,7 @@ HTTP Status: **400**
 #|
 || **Code** | **Description** | **Value** ||
 || `COMMAND_ID_ERROR` | Command not found | Command not found ||
-|| `APP_ID_ERROR` | Command was installed by another rest application | Command registered by another application ||
+|| `APP_ID_ERROR` | Command was installed by another REST application | Command registered by another application ||
 || `WRONG_REQUEST` | Command can't be deleted | Failed to delete command ||
 |#
 

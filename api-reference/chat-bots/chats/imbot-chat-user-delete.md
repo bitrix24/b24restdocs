@@ -2,38 +2,36 @@
 
 > Scope: [`imbot`](../../scopes/permissions.md)
 >
-> Who can execute the method: an authorized user of the application that registered the chat bot
+> Who can execute the method: an authorized user of the application that registered the chat bot.
 
 The method `imbot.chat.user.delete` removes a user from the chat.
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **CHAT_ID***
-[`integer`](../../data-types.md) | Identifier of the chat.
+[`integer`](../../data-types.md) | The identifier of the chat.
 
 The identifier can be obtained using the [imbot.chat.get](./imbot-chat-get.md) method. ||
 || **USER_ID***
-[`integer`](../../data-types.md) | Identifier of the user to be removed from the chat.
+[`integer`](../../data-types.md) | The identifier of the user to be removed from the chat.
 
 You can get the user identifier using the [imbot.chat.user.list](./imbot-chat-user-list.md) method. ||
 || **BOT_ID**
-[`integer`](../../data-types.md) | Identifier of the chat bot. You can obtain the bot identifier using the [imbot.bot.list](../imbot-bot-list.md) method.
+[`integer`](../../data-types.md) | The identifier of the chat bot. You can obtain the bot identifier using the [imbot.bot.list](../imbot-bot-list.md) method.
 
-If the parameter is not provided, the method searches for the first bot registered by the current application. ||
+If this parameter is not provided, the method searches for the first bot registered by the current application. ||
 || **CLIENT_ID**
-[`string`](../../data-types.md) | Technical parameter for scenarios without `clientId` in authorization.
-
-If provided, it is used as `custom{CLIENT_ID}` to identify the application. ||
+[`string`](../../data-types.md) | This parameter is required only for webhooks. Pass the same CLIENT_ID that was specified when registering the chat bot. ||
 |#
 
 ## Code Examples
 
-{% include [Note on Examples](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -43,7 +41,7 @@ If provided, it is used as `custom{CLIENT_ID}` to identify the application. ||
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"CHAT_ID":2725,"USER_ID":1269}' \
+    -d '{"CHAT_ID":2725,"USER_ID":1269,"CLIENT_ID":"**put_your_client_id_here**"}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/imbot.chat.user.delete
     ```
 
@@ -175,7 +173,7 @@ HTTP Status: **200**
 || **result**
 [`boolean`](../../data-types.md) | `true` if the user has been removed from the chat. ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the request execution time. ||
+[`time`](../../data-types.md#time) | Information about the execution time of the request. ||
 |#
 
 ## Error Handling
@@ -189,7 +187,7 @@ HTTP Status: **400**, **403**
 }
 ```
 
-{% include notitle [Error Handling](../../../_includes/error-info.md) %}
+{% include notitle [error handling](../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
@@ -202,10 +200,10 @@ HTTP Status: **400**, **403**
 || `ACCESS_ERROR` | LEAVE_OWNER_FORBIDDEN | The owner of the chat cannot be removed without transferring rights. ||
 || `WRONG_REQUEST` | You don't have access or user isn't a member of the chat | No permission to delete or user is not a member of the chat. ||
 || `BOT_ID_ERROR` | Bot not found | Chat bot not found. ||
-|| `APP_ID_ERROR` | Bot was installed by another REST application | Chat bot installed by another application. ||
+|| `APP_ID_ERROR` | Bot was installed by another REST application | Chat bot was installed by another application. ||
 |#
 
-{% include [System Errors](../../../_includes/system-errors.md) %}
+{% include [system errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

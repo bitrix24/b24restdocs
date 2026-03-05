@@ -4,7 +4,7 @@
 >
 > Who can execute the method: an authorized user of the application that registered the chatbot. The method only works with bots from this application.
 
-The method `imbot.message.like` sets or removes a "Like" mark for a message.
+The method `imbot.message.like` sets or removes the "Like" mark for a message.
 
 ## Method Parameters
 
@@ -27,15 +27,13 @@ Message IDs sent to the chat by users can be obtained using the [im.dialog.messa
 [`string`](../../data-types.md) | The action for reacting to the message.
 
 Allowed values:
-- `auto` — automatically toggle the current status: if there is no "Like," it will be set; if there is a "Like," it will be removed.
-- `plus` — set "Like."
-- `minus` — remove "Like."
+- `auto` — automatically toggle the current status: if there is no "Like" reaction, it will be set; if there is a reaction, it will be removed.
+- `plus` — set "Like".
+- `minus` — remove "Like".
 
 If the parameter is not provided, `auto` is used. ||
 || **CLIENT_ID**
-[`string`](../../data-types.md) | A technical parameter for scenarios without `clientId` in authorization.
-
-If provided, it is used as `custom{CLIENT_ID}` to identify the application. ||
+[`string`](../../data-types.md) | This parameter is required only for webhooks. Pass the same CLIENT_ID that was specified when registering the chatbot. ||
 |#
 
 ## Code Examples
@@ -50,7 +48,7 @@ If provided, it is used as `custom{CLIENT_ID}` to identify the application. ||
     curl -X POST \
       -H "Content-Type: application/json" \
       -H "Accept: application/json" \
-      -d '{"BOT_ID":39,"MESSAGE_ID":19880117,"ACTION":"auto"}' \
+      -d '{"BOT_ID":39,"MESSAGE_ID":19880117,"ACTION":"auto","CLIENT_ID":"**put_your_client_id_here**"}' \
       https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/imbot.message.like
     ```
 
@@ -180,9 +178,9 @@ HTTP Code: **200**
 || **Name**
 `Type` | **Description** ||
 || **result**
-[`boolean`](../../data-types.md) | `true` if the action was executed successfully. ||
+[`boolean`](../../data-types.md) | `true` if the action was completed successfully. ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the request execution time. ||
+[`time`](../../data-types.md#time) | Information about the execution time of the request. ||
 |#
 
 ## Error Handling
