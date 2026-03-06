@@ -1,16 +1,10 @@
-# Get User Status im.user.status.get
+# Read All Notifications im.notify.read.all
 
 > Scope: [`im`](../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-The method `im.user.status.get` returns the status of the current user.
-
-{% note info "" %}
-
-The method returns the status that was set using the [im.user.status.set](./im-user-status-set.md) method.
-
-{% endnote %}
+The method `im.notify.read.all` marks all notifications of the current user as read.
 
 ## Method Parameters
 
@@ -28,7 +22,7 @@ No parameters.
     curl -X POST \
       -H "Content-Type: application/json" \
       -H "Accept: application/json" \
-      https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/im.user.status.get
+      https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/im.notify.read.all
     ```
 
 - cURL (OAuth)
@@ -38,14 +32,14 @@ No parameters.
       -H "Content-Type: application/json" \
       -H "Accept: application/json" \
       -d '{"auth":"**put_access_token_here**"}' \
-      https://**put_your_bitrix24_address**/rest/im.user.status.get
+      https://**put_your_bitrix24_address**/rest/im.notify.read.all
     ```
 
 - JS
 
     ```js
     try {
-      const response = await $b24.callMethod('im.user.status.get', {});
+      const response = await $b24.callMethod('im.notify.read.all', {});
       const { result } = response.getData();
       console.log(result);
     } catch (error) {
@@ -57,8 +51,7 @@ No parameters.
 
     ```php
     try {
-        $response = $b24Service->core->call('im.user.status.get', []);
-
+        $response = $b24Service->core->call('im.notify.read.all', []);
         $result = $response->getResponseData()->getResult();
 
         if ($result->error()) {
@@ -74,7 +67,7 @@ No parameters.
 - BX24.js
 
     ```js
-    BX24.callMethod('im.user.status.get', {}, function(result) {
+    BX24.callMethod('im.notify.read.all', {}, function(result) {
         if (result.error()) {
             console.error(result.error().ex);
         } else {
@@ -88,7 +81,7 @@ No parameters.
     ```php
     require_once('crest.php');
 
-    $result = CRest::call('im.user.status.get', []);
+    $result = CRest::call('im.notify.read.all', []);
 
     if (!empty($result['error'])) {
         echo 'Error: ' . $result['error_description'];
@@ -104,14 +97,17 @@ HTTP Code: **200**
 
 ```json
 {
-    "result": "dnd",
+    "result": {
+        "result": true,
+        "newCounter": 0
+    },
     "time": {
         "start": 1760000000.0,
-        "finish": 1760000000.05,
-        "duration": 0.05,
-        "processing": 0.02,
-        "date_start": "2026-03-02T09:30:00+01:00",
-        "date_finish": "2026-03-02T09:30:00+01:00",
+        "finish": 1760000000.1,
+        "duration": 0.1,
+        "processing": 0.04,
+        "date_start": "2026-03-03T10:00:00+01:00",
+        "date_finish": "2026-03-03T10:00:00+01:00",
         "operating_reset_at": 1760030000,
         "operating": 0
     }
@@ -124,27 +120,23 @@ HTTP Code: **200**
 || **Name**
 `Type` | **Description** ||
 || **result**
-[`string`](../../data-types.md) 
-[`boolean`](../../data-types.md) | The current status of the user. 
+[`object`](../../data-types.md) | Object with the result of the method execution. 
 
-Allowed values: 
-- `online` — online
-- `dnd` — do not disturb
-- `away` — away
-- `break` — on break
-
-If the status is not found, `false` is returned ||
+The structure of the object is described in detail [below](#result-object) ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
-{% note info "" %}
+### Result Object {#result-object}
 
-In the interface of the new messenger, only the `online` status is displayed. The statuses `dnd`, `away`, and `break` can be set using the method, but they are not shown in the interface.
-
-[Bitrix24 Chat: New Messenger](https://helpdesk.bitrix24.com/open/25661218/)
-
-{% endnote %}
+#|
+|| **Name**
+`Type` | **Description** ||
+|| **result**
+[`boolean`](../../data-types.md) | Flag indicating successful operation execution ||
+|| **newCounter**
+[`integer`](../../data-types.md) | Current value of the unread notifications counter after the operation ||
+|#
 
 ## Error Handling
 
@@ -154,8 +146,14 @@ In the interface of the new messenger, only the `online` status is displayed. Th
 
 ## Continue Learning
 
-- [{#T}](./im-user-get.md)
-- [{#T}](./im-user-list-get.md)
-- [{#T}](./im-user-status-set.md)
-- [{#T}](./im-user-status-idle-start.md)
-- [{#T}](./im-user-status-idle-end.md)
+- [{#T}](./im-notify.md)
+- [{#T}](./im-notify-personal-add.md)
+- [{#T}](./im-notify-system-add.md)
+- [{#T}](./im-notify-get.md)
+- [{#T}](./im-notify-schema-get.md)
+- [{#T}](./im-notify-read-list.md)
+- [{#T}](./im-notify-read.md)
+- [{#T}](./im-notify-answer.md)
+- [{#T}](./im-notify-confirm.md)
+- [{#T}](./im-notify-delete.md)
+- [{#T}](./im-notify-history-search.md)

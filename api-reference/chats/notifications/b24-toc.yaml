@@ -1,19 +1,29 @@
 title: Notifications
 href: index.md
 items:
-  - name: Overview of methods
+  - name: Overview of Methods
     href: index.md
-  - name: Send a personal notification
+  - name: Send Notification
+    href: im-notify.md
+  - name: Send Personal Notification
     href: im-notify-personal-add.md
-  - name: Send a system notification
+  - name: Send System Notification
     href: im-notify-system-add.md
-  - name: Read the list of notifications 
+  - name: Retrieve Notifications
+    href: im-notify-get.md
+  - name: Get Notification Types Schema
+    href: im-notify-schema-get.md
+  - name: Read Notification List 
     href: im-notify-read-list.md
-  - name: Read a notification
+  - name: Read Notification
     href: im-notify-read.md
-  - name: Reply to a notification that supports quick reply
+  - name: Read All Notifications
+    href: im-notify-read-all.md
+  - name: Reply to Notification Supporting Quick Response
     href: im-notify-answer.md
-  - name: Interact with notification buttons
+  - name: Interact with Notification Buttons
     href: im-notify-confirm.md
-  - name: Delete a notification
+  - name: Delete Notification
     href: im-notify-delete.md
+  - name: Search Notification History
+    href: im-notify-history-search.md

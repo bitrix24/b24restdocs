@@ -1,105 +1,277 @@
 # IM_CONTEXT_MENU Message Context Menu Item
 
-{% note warning "We are still updating this page" %}
-
-Some data may be missing — we will fill it in shortly.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- What the handler receives (copied from Sergey's example, detail-tab.md)
-- Typical use-cases and scenarios — need to add if there is anything
-- Continue exploring (copied from Sergey's example, detail-tab.md)
-- no screenshot
-
-{% endnote %}
-
-{% endif %}
-
 > Scope: [`im`](../../scopes/permissions.md)
 
-You can add your item to the message context menu. Integration into the "Create content based on" item (similar to the actions "Create task" or "Create meeting" based on the message).
+You can add your item to the context menu of messages in the chat.
 
-The code for the specific widget integration point is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
+The widget code is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
 
 {% note info "" %}
 
-The integration will not be displayed in the interface until the application installation is complete. [Check the application installation](../../../settings/app-installation/installation-finish.md)
+The widget will not be displayed in the interface until the application installation is complete. [Check the application installation](../../../settings/app-installation/installation-finish.md)
 
 {% endnote %}
 
-## Where the widget is integrated
+## Where the Widget is Embedded
 
-#|
-|| **Widget code** | **Location** ||
+#| 
+|| **Widget Code** | **Location** ||
 || `IM_CONTEXT_MENU` | Message context menu item ||
 |#
 
-## What the handler receives
+### Where to Find It in the Interface
+
+Open any chat and hover over a message. In the message action bar, click the `...` button to open the context menu. Hover over *More* to reveal additional menu items. The application item with `PLACEMENT=IM_CONTEXT_MENU` will appear at the end of the action list above the message.
+
+## What the Handler Receives
 
 Data is transmitted as a POST request {.b24-info}
 
-```js
-
-'DOMAIN': 'xxx.bitrix24.com'
-'PROTOCOL': 1
-'LANG': 'en'
-'APP_SID': '99c80eff6378726287350416ee5fef0'
-'AUTH_ID': '6061e72600631fcd00005a4b00000001f0f1076700000000f69dd5fc643d9ce2fdbc1'
-'AUTH_EXPIRES': 3600
-'REFRESH_ID': '50e00aa340631fcd00005a4b00000001f0f1071111116580a5b83c2de639ef28c12'
-'member_id': 'da45a03b265ed12127f8a258d793cc5d'
-'status': 'L'
-'PLACEMENT': 'CRM_DEAL_DETAIL_TAB'
-'PLACEMENT_OPTIONS': '{"ID":"3443"}'
-
+```php
+Array
+(
+    [DOMAIN] => xxx.bitrix24.com
+    [PROTOCOL] => 1
+    [LANG] => de
+    [APP_SID] => 99c80eff6378726287350416ee5fef0
+    [AUTH_ID] => 6061e72600631fcd00005a4b00000001f0f1076700000000f69dd5fc643d9ce2fdbc1
+    [AUTH_EXPIRES] => 3600
+    [REFRESH_ID] => 50e00aa340631fcd00005a4b00000001f0f1071111116580a5b83c2de639ef28c12
+    [member_id] => da45a03b265ed12127f8a258d793cc5d
+    [status] => F
+    [PLACEMENT] => IM_CONTEXT_MENU
+    [PLACEMENT_OPTIONS] => {"messageId":84889, "dialogId":"chat1489"}
+)
 ```
 
-{% include [Note on required parameters](../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../_includes/required.md) %}
 
-#|
+{% include notitle [Description of Standard Data](../_includes/widget_data.md) %}
+
+### PLACEMENT_OPTIONS
+
+The value of `PLACEMENT_OPTIONS` is passed as a JSON string containing the context of the call.
+
+For `IM_CONTEXT_MENU`, the context includes the following keys:
+
+- `dialogId` — the identifier of the current chat
+- `messageId` — the identifier of the selected message
+
+## OPTIONS When Registering via placement.bind
+
+For `IM_CONTEXT_MENU`, the `placement.bind` method supports `OPTIONS` parameters.
+
+#| 
 || **Parameter**
 `type` | **Description** ||
-|| **DOMAIN***
-[`string`](../../data-types.md) | The address of Bitrix24 where the widget handler was called ||
-|| **PROTOCOL***
-[`string`](../../data-types.md) | Secure or non-secure HTTP protocol:
+|| **extranet**
+[`string`](../../data-types.md) | Access in the extranet, default is `N`.
 
-- `0` - HTTP
-- `1` - HTTPS
- ||
-|| **LANG***
-[`string`](../../data-types.md) | The user interface language of Bitrix24 that called the widget. You can localize the interface language in your widget based on this value ||
-|| **APP_SID**
-[`string`](../../data-types.md) | String identifier of the application that registered the widget handler ||
-|| **AUTH_ID**
-[`string`](../../data-types.md) | Authorization token [OAuth 2](../../../settings/oauth/simple-way.md) issued for the user who called the widget. Can be used for REST API calls on behalf of this user ||
-|| **AUTH_EXPIRES**
-[`integer`](../../data-types.md) | Time in seconds after which the authorization token will become invalid ||
-|| **REFRESH_ID**
-[`string`](../../data-types.md) | Refresh token [OAuth 2](../../../settings/oauth/simple-way.md) issued for the user who called the widget. Can be used to refresh the authorization token on behalf of this user ||
-|| **member_id***
-[`string`](../../data-types.md) | Unique string identifier of Bitrix24 where the widget handler was called.  ||
-|| **status**
-[`string`](../../data-types.md) | Type of the application that registered the handler for this widget. Accepts values:
-
-- `L` - [local](../../../local-integrations/local-apps.md) application
-- `F` - [free mass-market](../../../market/index.md) application
+Possible values:
+- `N` — the application is not available to extranet users
+- `Y` — the application is available to extranet users
 ||
-|| **PLACEMENT***
-[`string`](../../data-types.md) | Code of the widget integration point. You can use the same handler URL for all your widgets. The value that Bitrix24 will report in the `PLACEMENT` parameter will help determine from which specific widget integration point your handler was called in each case ||
-|| **PLACEMENT_OPTIONS**
-[`string`](../../data-types.md) | Additional data in the form of a JSON string defining the context of the widget execution. In this case, it is an array containing the numeric identifier of the CRM element in the card where the widget handler was called. The `PLACEMENT_OPTIONS` parameter along with the `PLACEMENT` parameter allows you to accurately determine for which specific CRM object the widget handler was called ||
+|| **context**
+[`string`](../../data-types.md) | Display context, default is `ALL`. Multiple values can be passed using `;`.
+
+Possible values:
+- `ALL` — all chats
+- `USER` — personal chats of users, excluding chats with bots
+- `CHAT` — group chats, excluding `LINES` and `CRM`
+- `LINES` — open lines chats
+- `CRM` — chats created within CRM
+
+If `ALL` is passed along with other values, only `ALL` is used. An invalid value will cause a registration error.
+||
+|| **role**
+[`string`](../../data-types.md) | User role, default is `USER`.
+
+Possible values:
+- `USER` — the application is available to all users
+- `ADMIN` — the application is available only to portal administrators
+||
 |#
 
-## Continue exploring
+## Code Examples
+
+{% include [Note on Examples](../../../_includes/examples.md) %}
+
+{% list tabs %}
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+      -H "Content-Type: application/json" \
+      -H "Accept: application/json" \
+      -d '{
+        "PLACEMENT": "IM_CONTEXT_MENU",
+        "HANDLER": "https://your-domain.com/widgets/im-context-menu-handler.php",
+        "TITLE": "My menu item",
+        "LANG_ALL": {
+          "de": {
+            "TITLE": "Mein Menüpunkt"
+          },
+          "en": {
+            "TITLE": "My menu item"
+          }
+        },
+        "OPTIONS": {
+          "context": "ALL",
+          "role": "USER",
+          "extranet": "N"
+        },
+        "auth": "**put_access_token_here**"
+      }' \
+      https://**put_your_bitrix24_address**/rest/placement.bind
+    ```
+
+- JS
+
+    ```js
+    try
+    {
+        const response = await $b24.callMethod(
+            'placement.bind',
+            {
+                PLACEMENT: 'IM_CONTEXT_MENU',
+                HANDLER: 'https://your-domain.com/widgets/im-context-menu-handler.php',
+                TITLE: 'My menu item',
+                LANG_ALL: {
+                    de: {
+                        TITLE: 'Mein Menüpunkt',
+                    },
+                    en: {
+                        TITLE: 'My menu item',
+                    }
+                },
+                OPTIONS: {
+                    context: 'ALL',
+                    role: 'USER',
+                    extranet: 'N',
+                }
+            }
+        );
+
+        const result = response.getData().result;
+        if (result.error())
+            console.error(result.error());
+        else
+            console.info(result.data());
+    }
+    catch (error)
+    {
+        console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'placement.bind',
+                [
+                    'PLACEMENT' => 'IM_CONTEXT_MENU',
+                    'HANDLER' => 'https://your-domain.com/widgets/im-context-menu-handler.php',
+                    'TITLE' => 'My menu item',
+                    'LANG_ALL' => [
+                        'de' => [
+                            'TITLE' => 'Mein Menüpunkt',
+                        ],
+                        'en' => [
+                            'TITLE' => 'My menu item',
+                        ],
+                    ],
+                    'OPTIONS' => [
+                        'context' => 'ALL',
+                        'role' => 'USER',
+                        'extranet' => 'N',
+                    ],
+                ]
+            );
+
+        $result = $response->getResponseData()->getResult();
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error binding placement: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
+    BX24.callMethod(
+        'placement.bind',
+        {
+            PLACEMENT: 'IM_CONTEXT_MENU',
+            HANDLER: 'https://your-domain.com/widgets/im-context-menu-handler.php',
+            TITLE: 'My menu item',
+            LANG_ALL: {
+                de: { TITLE: 'Mein Menüpunkt' },
+                en: { TITLE: 'My menu item' }
+            },
+            OPTIONS: {
+                context: 'ALL',
+                role: 'USER',
+                extranet: 'N'
+            }
+        },
+        function(result) {
+            if (result.error()) {
+                console.error(result.error());
+            } else {
+                console.log(result.data());
+            }
+        }
+    );
+    ```
+
+- PHP CRest
+
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'placement.bind',
+        [
+            'PLACEMENT' => 'IM_CONTEXT_MENU',
+            'HANDLER' => 'https://your-domain.com/widgets/im-context-menu-handler.php',
+            'TITLE' => 'My menu item',
+            'LANG_ALL' => [
+                'de' => [
+                    'TITLE' => 'Mein Menüpunkt',
+                ],
+                'en' => [
+                    'TITLE' => 'My menu item',
+                ],
+            ],
+            'OPTIONS' => [
+                'context' => 'ALL',
+                'role' => 'USER',
+                'extranet' => 'N',
+            ],
+        ]
+    );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
+    ```
+
+{% endlist %}
+
+## Continue Learning
 
 - [{#T}](../placement-bind.md)
 - [{#T}](../ui-interaction/index.md)
-- [{#T}](../ui-interaction/crm-card.md)
 - [{#T}](../../../settings/interactivity/index.md)
 - [{#T}](../open-application.md)
 - [{#T}](../open-path.md)

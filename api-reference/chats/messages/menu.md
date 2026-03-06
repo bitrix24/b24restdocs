@@ -1,126 +1,317 @@
-# Context Menu
+# Working with the Context Menu
 
-{% note warning "We are still updating this page" %}
+The context menu is a set of actions within a message. You can add your own items to the context menu to open links or send commands to the bot.
 
-Some data may be missing — we will complete it shortly.
+Methods that support working with the context menu:
 
-{% endnote %}
+- [imbot.message.add](../../chat-bots/messages/imbot-message-add.md) — send a message on behalf of the chat bot
+- [imbot.message.update](../../chat-bots/messages/imbot-message-update.md) — modify a sent message from the chat bot
+- [imbot.command.answer](../../chat-bots/commands/imbot-command-answer.md) — send a response to a command from the chat bot
+- [im.message.add](./im-message-add.md) — send a message in the chat
+- [im.message.update](./im-message-update.md) — modify a sent message
 
-{% if build == 'dev' %}
+## How to Add an Item to the Context Menu
 
-{% note alert "TO-DO _not deployed to prod_" %}
+To add an item to the context menu, pass the `MENU` parameter when creating or updating a message.
 
-- edits needed to meet writing standards
-- links to pages that have not yet been created are not specified
+`MENU` can be passed as:
 
-{% endnote %}
+- a JSON string
+- an object with the root key `ITEMS`
+- an array of items without wrapping
 
-{% endif %}
-
-The context menu allows users to interact with the chatbot or chat application directly from the message's context menu.
-
-![Context Menu](./_images/custom_menu.png)
-
-## How to Add Your Items to the Context Menu
-
-The context menu is part of the message; when creating a message, you need to add the `MENU` key and pass the parameters.
-
-Methods that support the context menu:
-- [imbot.message.add](../../chat-bots/messages/imbot-message-add.md) - sending a message from the chatbot.
-- [imbot.message.update](../../chat-bots/messages/imbot-message-update.md) - sending an update to the chatbot's message.
-- [imbot.command.answer](../../chat-bots/commands/imbot-command-answer.md) - publishing a response to a command.
-- [im.message.add](./im-message-add.md) - sending a message in chat.
-- [im.message.update](./im-message-update.md) - sending an update to the chatbot's message.
-
-Let's consider this message as an example:
-
-{% include [Explanation of restCommand](../_includes/rest-command.md) %}
+If the `MENU` does not contain the `ITEMS` key, the server will automatically assume that a shortened format has been provided and will wrap the array in `ITEMS`.
 
 {% list tabs %}
+
+- Full format with the ITEMS key
+
+  ```json
+  {
+      "MENU": {
+          "ITEMS": [
+              { "TEXT": "Open Website", "LINK": "https://example.com" }
+          ]
+      }
+  }
+  ```
+
+- Shortened format
+
+  ```json
+  {
+      "MENU": [
+          { "TEXT": "Open Website", "LINK": "https://example.com" }
+      ]
+  }
+  ```
+
+{% endlist %}
+
+## Menu Item Fields
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **TEXT**
+[`string`](../../data-types.md) | The text of the menu item.
+
+For menu items, it is mandatory to specify `TEXT` and one action field — `LINK`, `COMMAND`, `ACTION + ACTION_VALUE`, or `APP_ID` ||
+|| **LINK**
+[`string`](../../data-types.md) | The link for the menu item. `http/https` and relative paths `/...` are allowed. ||
+|| **COMMAND**
+[`string`](../../data-types.md) | Command for the bot.
+
+For more details on command processing by the chat bot, read [below](#command-processing) ||
+|| **COMMAND_PARAMS**
+[`string`](../../data-types.md) | Command parameters. Pass together with `COMMAND` ||
+|| **APP_ID**
+[`integer`](../../data-types.md) | Application identifier for the chat.
+
+Deprecated scenario. To open an application from the chat, use widgets. ||
+|| **APP_PARAMS**
+[`string`](../../data-types.md) | Parameters for launching the application in the chat. Pass together with `APP_ID`. 
+
+Deprecated scenario. To open an application from the chat, use widgets.
+
+{% note info "" %}
+
+Currently, the option with parameters `APP_ID` and `APP_PARAMS` is used in chats [Open Channels](../../imopenlines/openlines/index.md)
+
+{% endnote %}
+||
+|| **ACTION**
+[`string`](../../data-types.md) | Action:
+
+- `PUT` — insert text into the input field
+- `SEND` — send text
+- `COPY` — copy text to the clipboard
+- `CALL` — make a call
+- `DIALOG` — open chat
+
+Available starting from [REST API IM revision](../im-revision-get.md) 28 ||
+|| **ACTION_VALUE**
+[`string`](../../data-types.md) | Value for `ACTION`:
+
+- `PUT` — text to be inserted into the input field
+- `SEND` — text to be sent
+- `COPY` — text to be copied to the clipboard
+- `CALL` — phone number in international format
+- `DIALOG` — chat identifier in the format `chatXXX` for group chats and `ID` of the user for personal chats
+
+Available starting from [REST API IM revision](../im-revision-get.md) 28 ||
+|| **CONTEXT**
+[`string`](../../data-types.md) | Display context.
+
+Allowed values:
+- `MOBILE` — show only on mobile devices
+- `DESKTOP` — show only in the desktop version
+- `ALL` — show everywhere
+
+Default is `ALL` ||
+|| **DISABLED**
+[`string`](../../data-types.md) | Activity of the menu item.
+
+Allowed values:
+- `Y` — menu item is inactive
+- `N` — menu item is active
+
+Default is `N` ||
+|#
+
+## Example of Sending a Message with a Context Menu
+
+{% include [Example Note](../../../_includes/examples.md) %}
+
+{% list tabs %}
+
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"DIALOG_ID":"chat2725","MESSAGE":"Select an action from the menu","URL_PREVIEW":"Y","MENU":{"ITEMS":[{"TEXT":"Open Website","LINK":"https://www.example.com/"},{"TEXT":"Send Text","ACTION":"SEND","ACTION_VALUE":"Done"}]}}' \
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/im.message.add
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"DIALOG_ID":"chat2725","MESSAGE":"Select an action from the menu","URL_PREVIEW":"Y","MENU":{"ITEMS":[{"TEXT":"Open Website","LINK":"https://www.example.com/"},{"TEXT":"Send Text","ACTION":"SEND","ACTION_VALUE":"Done"}]}},"auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/im.message.add
+    ```
+
+- JS
+
+    ```js
+    try {
+        const response = await $b24.callMethod(
+            'im.message.add',
+            {
+                DIALOG_ID: 'chat2725',
+                MESSAGE: 'Select an action from the menu',
+                URL_PREVIEW: 'Y',
+                MENU: {
+                    ITEMS: [
+                        {
+                            TEXT: 'Open Website',
+                            LINK: 'https://www.example.com/'
+                        },
+                        {
+                            TEXT: 'Send Text',
+                            ACTION: 'SEND',
+                            ACTION_VALUE: 'Done'
+                        }
+                    ]
+                }
+            }
+        );
+
+        const result = response.getData().result;
+        console.log('Created message with ID:', result);
+        processResult(result);
+    } catch (error) {
+        console.error('Error:', error);
+    }
+    ```
 
 - PHP
 
     ```php
-    restCommand(
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'im.message.add',
+                [
+                    'DIALOG_ID' => 'chat2725',
+                    'MESSAGE' => 'Select an action from the menu',
+                    'URL_PREVIEW' => 'Y',
+                    'MENU' => [
+                        'ITEMS' => [
+                            [
+                                'TEXT' => 'Open Website',
+                                'LINK' => 'https://www.example.com/'
+                            ],
+                            [
+                                'TEXT' => 'Send Text',
+                                'ACTION' => 'SEND',
+                                'ACTION_VALUE' => 'Done'
+                            ]
+                        ]
+                    ]
+                ]
+            );
+
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+
+        echo 'Success: ' . print_r($result, true);
+        processData($result);
+
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error adding message: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
+    BX24.callMethod(
         'im.message.add',
-        Array(
-            "DIALOG_ID" => 12,
-            "MESSAGE" => "Hello! Message with context menu!",
-            "MENU" => Array(
-                Array(
-                    "TEXT" => "Bitrix24",
-                    "LINK" => "http://bitrix24.com",
-                ),
-                Array(
-                    "TEXT" => "Echo",
-                    "COMMAND" => "echo",
-                    "COMMAND_PARAMS" => "test from keyboard"
-                ),
-                Array(
-                    "TEXT" => "Open app",
-                    "APP_ID" => "12",
-                    "APP_PARAMS" => "TEST"
-                ),
-            )
-        ),
-        $_REQUEST["auth"]
+        {
+            DIALOG_ID: 'chat2725',
+            MESSAGE: 'Select an action from the menu',
+            URL_PREVIEW: 'Y',
+            MENU: {
+                ITEMS: [
+                    {
+                        TEXT: 'Open Website',
+                        LINK: 'https://www.example.com/'
+                    },
+                    {
+                        TEXT: 'Send Text',
+                        ACTION: 'SEND',
+                        ACTION_VALUE: 'Done',
+                    }
+                ]
+            }
+        },
+        function(result) {
+            if (result.error()) {
+                console.error(result.error().ex);
+            } else {
+                console.log(result.data());
+            }
+        }
     );
+    ```
+
+- PHP CRest
+
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'im.message.add',
+        [
+            'DIALOG_ID' => 'chat2725',
+            'MESSAGE' => 'Select an action from the menu',
+            'URL_PREVIEW' => 'Y',
+            'MENU' => [
+                'ITEMS' => [
+                    [
+                        'TEXT' => 'Open Website',
+                        'LINK' => 'https://www.example.com/'
+                    ],
+                    [
+                        'TEXT' => 'Send Text',
+                        'ACTION' => 'SEND',
+                        'ACTION_VALUE' => 'Done'
+                    ]
+                ]
+            ]
+        ]
+    );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
     ```
 
 {% endlist %}
 
-The context menu is a set of buttons, each button can consist of the following keys:
+## How to Update or Remove the Context Menu
 
-- **TEXT** - button text;
-- **LINK** - link;
-- **COMMAND** - command that will be sent to the bot;
-- **COMMAND_PARAMS** - parameters for the command;
-- **APP_ID** - identifier of the installed chat application.
-- **APP_PARAMS** - parameters for launching the chat application.
-- **DISABLED** - if set to `Y`, this button will not be clickable.
-- **ACTION** - action, can be one of the following types ([REST revision 28](../im-revision-get.md)):
-  - **PUT** - insert into the input field.
-  - **SEND** - send text.
-  - **COPY** - copy text to clipboard.
-  - **CALL** - make a call.
-  - **DIALOG** - open the specified dialog.
-- **ACTION_VALUE** - value, which means different things for each type ([REST revision 28](../im-revision-get.md)):
-  - **PUT** - text that will be inserted into the input field.
-  - **SEND** - text that will be sent.
-  - **COPY** - text that will be copied to the clipboard.
-  - **CALL** - phone number in international format.
-  - **DIALOG** - dialog identifier, which can be a user `ID` or a chat `ID` in the format `chatXXX`.
+To update menu items, use the following methods:
 
-The required fields are **TEXT** and either the **LINK** field or the **COMMAND** field.
+- [im.message.update](./im-message-update.md)
+- [imbot.message.update](../../chat-bots/messages/imbot-message-update.md)
 
-If the **LINK** key is specified, the button becomes an external link. If the **COMMAND** and **COMMAND_PARAMS** fields are specified, the button acts as an action and sends a command to the chatbot without publishing it in the chat. Available since version 26 of the [API revision (platform version)](../im-revision-get.md).
+To disable the display of additional menu items, pass:
 
-If the **APP_ID** and **APP_PARAMS** fields are specified, the button will open a window with the chat application.
+- `MENU: 'N'`
+- an empty value for `MENU`
 
-If you need to create two rows of buttons in a row, you can separate them by adding a button with the following content: `"TYPE" => "NEWLINE"`.
+## Command Processing by the Chat Bot {#command-processing}
 
-## Handling Commands by the Chatbot
+1. To ensure the command works in the menu, register it using the method [imbot.command.register](../../chat-bots/commands/imbot-command-register.md).
 
-To handle button presses and menu items, **commands** are used.
-
-1. To ensure that the command works on the keyboard (and elsewhere), it must first be registered using the [imbot.command.register](../../chat-bots/commands/imbot-command-register.md) method (to make the command available only for the keyboard, it should be created with the key `"HIDDEN" => "Y"`).
-
-    The button specifies the following keys:
+    In the menu item, specify the following keys:
 
     ```php
-    "COMMAND" => "page", // command that will be sent to the chatbot
-    "COMMAND_PARAMS" => "1", // parameters for the command
-    ```
-
-2. Pressing the button will create an event [ONIMCOMMANDADD](../../chat-bots/commands/events/on-im-command-add.md).
-
-3. Inside this event, you need to either create a new message or edit an old one (thereby creating the effect of pagination).
-
-4. Inside the event, the **[data][COMMAND]** array will contain data about the triggered event. It includes the **COMMAND_CONTEXT** value - a special key that describes the context in which the command was invoked:
-   - if the command was entered by the user manually, it will be **TEXTAREA**;
-   - if the command came from the keyboard, it will be **KEYBOARD**;
-   - if the command came from the context menu, it will be **MENU**.
-
-## Handling the Opening of the Chat Application
-
-Chat applications launched from the context menu operate according to the principles of [Context Application](../outdated/context.md).
+    "COMMAND" => "example", // command that will be sent to the chat bot
+    "COMMAND_PARAMS" => "example", // parameters for the command
+    ```  
+     
+2. Clicking on the menu item will generate the event [ONIMCOMMANDADD](../../chat-bots/commands/events/on-im-command-add.md).
+3. Inside the event, the array `data[COMMAND]` will contain data about the invoked event. The value `COMMAND_CONTEXT` will indicate the context in which the command was invoked:
+   - `TEXTAREA` — command entered manually
+   - `KEYBOARD` — command invoked by button
+   - `MENU` — command invoked from the context menu

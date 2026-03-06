@@ -1,59 +1,86 @@
 # Get Search History im.search.last.get
 
-{% note warning "We are still updating this page" %}
-
-Some data may be missing — we will fill it in shortly.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- edits needed for writing standards
-- parameter types not specified
-- examples missing
-
-{% endnote %}
-
-{% endif %}
-
 > Scope: [`im`](../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-The method `im.search.last.get` retrieves a list of items from the last search.
+The method `im.search.last.get` returns a list of dialogs from the history of the last search.
+
+This method was designed for the previous version of the chat. In the current M1 chat version, it works, but the results are not displayed in the interface.
+
+## Method Parameters
+
+{% include [Footnote on parameters](../../../_includes/required.md) %}
 
 #|
-|| **Parameter** | **Example** | **Description** | **Revision** ||
+|| **Name**
+`Type` | **Description** ||
 || **SKIP_OPENLINES**
-[`unknown`](../../data-types.md) | `N` | Skip open line chats | 18 ||
+[`string`](../../data-types.md) | Skip Open Channels chats.
+
+Possible values:
+- `Y` — yes
+- `N` — no 
+
+Default value — `N` ||
 || **SKIP_CHAT**
-[`unknown`](../../data-types.md) | `N` | Skip chats | 18 ||
+[`string`](../../data-types.md) | Skip group chats.
+
+Possible values:
+- `Y` — yes
+- `N` — no 
+
+Default value — `N` ||
 || **SKIP_DIALOG**
-[`unknown`](../../data-types.md) | `N` | Skip one-on-one dialogs | 18 ||
+[`string`](../../data-types.md) | Skip personal dialogs. 
+
+Possible values:
+- `Y` — yes
+- `N` — no 
+
+Default value — `N` ||
 |#
 
-## Examples
+## Code Examples
+
+{% include [Footnote on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
+
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+      -H "Content-Type: application/json" \
+      -H "Accept: application/json" \
+      -d '{"SKIP_OPENLINES":"N","SKIP_CHAT":"N","SKIP_DIALOG":"N"}' \
+      https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/im.search.last.get
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+      -H "Content-Type: application/json" \
+      -H "Accept: application/json" \
+      -d '{"SKIP_OPENLINES":"N","SKIP_CHAT":"N","SKIP_DIALOG":"N","auth":"**put_access_token_here**"}' \
+      https://**put_your_bitrix24_address**/rest/im.search.last.get
+    ```
 
 - JS
 
     ```js
-    try
-    {
-    	const response = await $b24.callMethod(
-    		'im.search.last.get',
-    		{}
-    	);
-    	
-    	const result = response.getData().result;
-    	console.log(result);
-    }
-    catch( error )
-    {
-    	console.error('Error:', error.ex);
+    try {
+      const response = await $b24.callMethod('im.search.last.get', {
+        SKIP_OPENLINES: 'N',
+        SKIP_CHAT: 'N',
+        SKIP_DIALOG: 'N',
+      });
+
+      const { result } = response.getData();
+      console.log(result);
+    } catch (error) {
+      console.error(error);
     }
     ```
 
@@ -61,26 +88,24 @@ The method `im.search.last.get` retrieves a list of items from the last search.
 
     ```php
     try {
-        $response = $b24Service
-            ->core
-            ->call(
-                'im.search.last.get',
-                []
-            );
-    
-        $result = $response
-            ->getResponseData()
-            ->getResult();
-    
+        $response = $b24Service->core->call(
+            'im.search.last.get',
+            [
+                'SKIP_OPENLINES' => 'N',
+                'SKIP_CHAT' => 'N',
+                'SKIP_DIALOG' => 'N',
+            ]
+        );
+
+        $result = $response->getResponseData()->getResult();
+
         if ($result->error()) {
-            error_log($result->error()->ex);
+            echo 'Error: ' . $result->error();
         } else {
-            echo 'Success: ' . print_r($result->data(), true);
+            var_dump($result->data());
         }
-    
-    } catch (Throwable $e) {
-        error_log($e->getMessage());
-        echo 'Error getting last search: ' . $e->getMessage();
+    } catch (Throwable $exception) {
+        echo $exception->getMessage();
     }
     ```
 
@@ -89,14 +114,15 @@ The method `im.search.last.get` retrieves a list of items from the last search.
     ```js
     BX24.callMethod(
         'im.search.last.get',
-        {},
-        function(result){
-            if(result.error())
-            {
+        {
+            SKIP_OPENLINES: 'N',
+            SKIP_CHAT: 'N',
+            SKIP_DIALOG: 'N',
+        },
+        function(result) {
+            if (result.error()) {
                 console.error(result.error().ex);
-            }
-            else
-            {
+            } else {
                 console.log(result.data());
             }
         }
@@ -105,114 +131,219 @@ The method `im.search.last.get` retrieves a list of items from the last search.
 
 - PHP CRest
 
-    {% include [Explanation about restCommand](../_includes/rest-command.md) %}
-
     ```php
-    $result = restCommand(
-        'im.user.business.list',
-        Array(),
-        $_REQUEST[
-            "auth"
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'im.search.last.get',
+        [
+            'SKIP_OPENLINES' => 'N',
+            'SKIP_CHAT' => 'N',
+            'SKIP_DIALOG' => 'N',
         ]
-    );    
+    );
+
+    if (!empty($result['error'])) {
+        echo 'Error: ' . $result['error_description'];
+    } else {
+        var_dump($result['result']);
+    }
     ```
-
-- cURL
-
-    // example for cURL
-
 {% endlist %}
 
-{% include [Footnote about examples](../../../_includes/examples.md) %}
+## Response Handling
 
-## Response on Success
+HTTP Code: **200**
 
 ```json
-{    
+{
     "result": [
         {
-            "id": 1,
-            "type": "user",
-            "title": "Eugene Shelenkov",
+            "id": "chat1157",
+            "type": "chat",
             "avatar": {
-                "url": "http://192.168.2.232/upload/resize_cache/main/1d3/100_100_2/shelenkov.png",
-                "color": "#df532d"
+                "url": "",
+                "color": "#ab7761"
             },
+            "title": "Brown Chat #18",
+            "chat": {
+                "id": 1157,
+                "name": "Brown Chat #18",
+                "owner": 27,
+                "extranet": false,
+                "avatar": "",
+                "color": "#ab7761",
+                "type": "thread",
+                "entity_type": "THREAD",
+                "entity_id": "",
+                "entity_data_1": "",
+                "entity_data_2": "",
+                "entity_data_3": "",
+                "mute_list": [],
+                "date_create": "2025-01-30T00:41:03+01:00",
+                "message_type": "C"
+            }
+        },
+        {
+            "id": 103,
+            "type": "user",
+            "avatar": {
+                "url": "https://example.bitrix24.com/upload/main/avatar.png",
+                "color": "#4ba984"
+            },
+            "title": "Svetlana Ivanova",
             "user": {
-                "id": 1,
-                "name": "Eugene Shelenkov",
-                "first_name": "Eugene",
-                "last_name": "Shelankov",
-                "work_position": "",
-                "color": "#df532d",
-                "avatar": "http://192.168.2.232/upload/resize_cache/main/1d3/100_100_2/shelenkov.png",
-                "gender": "M",
-                "birthday": "",
+                "id": 103,
+                "active": true,
+                "name": "Svetlana Ivanova",
+                "first_name": "Svetlana",
+                "last_name": "Ivanova",
+                "work_position": "IT Department Head",
+                "color": "#4ba984",
+                "avatar": "https://example.bitrix24.com/upload/main/avatar.png",
+                "avatar_hr": "https://example.bitrix24.com/upload/main/avatar.png",
+                "gender": "F",
+                "birthday": "08-03",
                 "extranet": false,
                 "network": false,
                 "bot": false,
                 "connector": false,
-                "external_auth_id": "default",
+                "external_auth_id": "socservices",
                 "status": "online",
                 "idle": false,
-                "last_activity_date": "2018-01-29T17:35:31+01:00",
-                "desktop_last_date": false,
+                "last_activity_date": "2026-03-05T10:19:37+01:00",
                 "mobile_last_date": false,
-                "departments": [
-                 50
-                ],
+                "desktop_last_date": false,
                 "absent": false,
+                "departments": [1, 7],
                 "phones": {
-                 "work_phone": "",
-                 "personal_mobile": "",
-                 "personal_phone": ""
-                }
+                    "personal_mobile": "81234567890",
+                    "work_phone": "19123456789",
+                    "inner_phone": "78"
+                },
+                "bot_data": null,
+                "type": "user",
+                "website": "",
+                "email": "svetlana@example.com"
             }
-        }
-    ]
-}            
+        },
+        ... // description for each chat, user
+    ],
+    "time": {
+        "start": 1772695649,
+        "finish": 1772695649.89509,
+        "duration": 0.8950901031494141,
+        "processing": 0,
+        "date_start": "2026-03-05T10:27:29+01:00",
+        "date_finish": "2026-03-05T10:27:29+01:00",
+        "operating_reset_at": 1772696249,
+        "operating": 0
+    }
+}
 ```
 
-### Description of Keys
+## Returned Data
 
-- `id` – identifier of the dialog (number if user, chatXXX if it is a chat)
-- `name` – type of record (`user` – if user, `chat` – if it is a chat)
-- `avatar` – object describing the avatar of the record:
-  - `url` – link to the avatar (if empty, the avatar is not set)
-  - `color` – color of the dialog in hex format
-- `title` – title of the record
-- `user` – object describing user data (not available if the record type is chat):
-  - `id` – user identifier
-  - `name` – user's full name
-  - `first_name` – user's first name
-  - `last_name` – user's last name
-  - `work_position` – position
-  - `color` – user's color in hex format
-  - `avatar` – link to the avatar (if empty, the avatar is not set)
-  - `gender` – user's gender
-  - `birthday` – user's birthday in DD-MM format, if empty – not set
-  - `extranet` – indicator of external extranet user (`true/false`)
-  - `network` – indicator of Bitrix24.Network user (`true/false`)
-  - `bot` – indicator of bot (`true/false`)
-  - `connector` – indicator of open line user (`true/false`)
-  - `external_auth_id` – external authorization code
-  - `status` – selected user status
-  - `idle` – date when the user stepped away from the computer, in ATOM format (if not set, `false`)
-  - `last_activity_date` – date of the user's last action in ATOM format
-  - `mobile_last_date` – date of the last action in the mobile app in ATOM format (if not set, `false`)
-  - `absent` – date until which the user is on vacation, in ATOM format (if not set, `false`)
-- `chat` – object describing chat data (not available if the record type is user):
-  - `id` – chat identifier
-  - `title` – chat name
-  - `owner` – identifier of the user who owns the chat
-  - `extranet` – indicator of participation in the chat by an external extranet user (`true/false`)
-  - `color` – chat color in hex format
-  - `avatar` – link to the avatar (if empty, the avatar is not set)
-  - `type` – type of chat (group chat, call chat, open line chat, etc.)
-  - `entity_type` – external code for the chat – type
-  - `entity_id` – external code for the chat – identifier
-  - `entity_data_1` – external data for the chat
-  - `entity_data_2` – external data for the chat
-  - `entity_data_3` – external data for the chat
-  - `date_create` – date of chat creation in ATOM format
-  - `message_type` – type of chat messages
+#|
+|| **Name**
+`Type` | **Description** ||
+|| **result**
+[`array`](../../data-types.md) | List of search history items.
+
+The structure of the item object is described in detail [below](#last-item-object) ||
+|| **time**
+[`time`](../../data-types.md#time) | Information about the request execution time ||
+|#
+
+### Search History Item {#last-item-object}
+
+#|
+|| **Name**
+`Type` | **Description** ||
+|| **id**
+[`string`](../../data-types.md) 
+[`integer`](../../data-types.md) | Identifier of the chat or user identifier for a personal dialog ||
+|| **type**
+[`string`](../../data-types.md) | Record type: `chat` or `user` ||
+|| **avatar**
+[`object`](../../data-types.md) | Avatar data of the record.
+
+The structure of the object is described in detail [below](#avatar-object) ||
+|| **title**
+[`string`](../../data-types.md) | Title of the record ||
+|| **user**
+[`object`](../../data-types.md) | User data for records of type `user`.
+
+The structure of the object is described in detail [below](#user-object) ||
+|| **chat**
+[`object`](../../data-types.md) | Chat data for records of type `chat`.
+
+The structure of the object is described in detail [below](#chat-object) ||
+|#
+
+### Avatar Object {#avatar-object}
+
+#|
+|| **Name**
+`Type` | **Description** ||
+|| **url**
+[`string`](../../data-types.md) | Link to the avatar ||
+|| **color**
+[`string`](../../data-types.md) | Color in HEX format ||
+|#
+
+### User Object {#user-object}
+
+{% include [User Object Tables](../_includes/user-object-tables.md) %}
+
+### Chat Object {#chat-object}
+
+#|
+|| **Name**
+`Type` | **Description** ||
+|| **id**
+[`integer`](../../data-types.md) | Identifier of the chat ||
+|| **name**
+[`string`](../../data-types.md) | Name of the chat ||
+|| **owner**
+[`integer`](../../data-types.md) | Identifier of the chat owner ||
+|| **extranet**
+[`boolean`](../../data-types.md) | Indicates participation of extranet users in the chat ||
+|| **avatar**
+[`string`](../../data-types.md) 
+[`null`](../../data-types.md) | Link to the chat avatar ||
+|| **color**
+[`string`](../../data-types.md) | Color of the chat in HEX format ||
+|| **type**
+[`string`](../../data-types.md) | Type of chat ||
+|| **entity_type**
+[`string`](../../data-types.md) | Type of the object to which the chat is linked ||
+|| **entity_id**
+[`string`](../../data-types.md) | Identifier of the object to which the chat is linked ||
+|| **entity_data_1**
+[`string`](../../data-types.md) | Additional data of the chat object — field 1 ||
+|| **entity_data_2**
+[`string`](../../data-types.md) | Additional data of the chat object — field 2 ||
+|| **entity_data_3**
+[`string`](../../data-types.md) | Additional data of the chat object — field 3 ||
+|| **mute_list**
+[`object`](../../data-types.md) | List of users with muted notifications ||
+|| **date_create**
+[`string`](../../data-types.md) | Creation date of the chat in ISO 8601 format (RFC3339) ||
+|| **message_type**
+[`string`](../../data-types.md) | Type of message ||
+|#
+
+## Error Handling
+
+{% include notitle [Error Handling](../../../_includes/error-info.md) %}
+
+{% include [System Errors](../../../_includes/system-errors.md) %}
+
+## Continue Learning
+
+- [{#T}](./im-search-chat-list.md)
+- [{#T}](./im-search-department-list.md)
+- [{#T}](./im-search-user-list.md)
+- [{#T}](./im-search-last-add.md)
+- [{#T}](./im-search-last-delete.md)

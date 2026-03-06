@@ -1,61 +1,66 @@
-# Add Search to History im.search.last.add
-
-{% note warning "We are still updating this page" %}
-
-Some data may be missing here — we will fill it in shortly.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- edits needed for writing standards
-- parameter types are not specified
-- examples are missing
-
-{% endnote %}
-
-{% endif %}
+# Add Entry to Search History im.search.last.add
 
 > Scope: [`im`](../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-The method `im.search.last.add` adds an item to the history of the last search.
+The method `im.search.last.add` adds a dialog to the last search history.
+
+This method was designed for the previous version of the chat. In the current M1 chat version, it works, but the results are not displayed in the interface.
+
+## Method Parameters
+
+{% include [Footnote on parameters](../../../_includes/required.md) %}
 
 #|
-|| **Parameter** | **Example** | **Description** | **Revision** ||
-|| **DIALOG_ID^*^**
-[`unknown`](../../data-types.md) | `chat17`
-or
-`256` | Identifier of the dialog. Format: **chatXXX** – chat of the recipient if the message is for a chat or **XXX** – identifier of the recipient if the message is for a private dialog | 18 ||
+|| **Name**
+`Type` | **Description** ||
+|| **DIALOG_ID***
+[`string`](../../data-types.md) | Identifier for the message object: user or chat.
+
+Supported formats:
+- `USER_ID` — user identifier, which can be obtained via [user.get](../../user/user-get.md) or [user.search](../../user/user-search.md)
+- `chatXXX`, where `XXX` is the chat identifier, which can be obtained via [im.recent.get](../im-recent-get.md) ||
 |#
 
-{% include [Parameter Note](../../../_includes/required.md) %}
+## Code Examples
 
-## Examples
+{% include [Footnote on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
+
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+      -H "Content-Type: application/json" \
+      -H "Accept: application/json" \
+      -d '{"DIALOG_ID":"chat17"}' \
+      https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/im.search.last.add
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+      -H "Content-Type: application/json" \
+      -H "Accept: application/json" \
+      -d '{"DIALOG_ID":"chat17","auth":"**put_access_token_here**"}' \
+      https://**put_your_bitrix24_address**/rest/im.search.last.add
+    ```
 
 - JS
 
     ```js
-    try
-    {
-    	const response = await $b24.callMethod(
-    		'im.search.last.add',
-    		{
-    			'DIALOG_ID': 'chat17'
-    		}
-    	);
-    	
-    	const result = response.getData().result;
-    	console.log(result);
-    }
-    catch( error )
-    {
-    	console.error(error.ex);
+    try {
+      const response = await $b24.callMethod('im.search.last.add', {
+        DIALOG_ID: 'chat17',
+      });
+
+      const { result } = response.getData();
+      console.log(result);
+    } catch (error) {
+      console.error(error);
     }
     ```
 
@@ -63,28 +68,22 @@ or
 
     ```php
     try {
-        $response = $b24Service
-            ->core
-            ->call(
-                'im.search.last.add',
-                [
-                    'DIALOG_ID' => 'chat17',
-                ]
-            );
-    
-        $result = $response
-            ->getResponseData()
-            ->getResult();
-    
+        $response = $b24Service->core->call(
+            'im.search.last.add',
+            [
+                'DIALOG_ID' => 'chat17',
+            ]
+        );
+
+        $result = $response->getResponseData()->getResult();
+
         if ($result->error()) {
-            echo 'Error: ' . $result->error()->ex;
+            echo 'Error: ' . $result->error();
         } else {
-            echo 'Success: ' . print_r($result->data(), true);
+            var_dump($result->data());
         }
-    
-    } catch (Throwable $e) {
-        error_log($e->getMessage());
-        echo 'Error adding last search: ' . $e->getMessage();
+    } catch (Throwable $exception) {
+        echo $exception->getMessage();
     }
     ```
 
@@ -94,15 +93,12 @@ or
     BX24.callMethod(
         'im.search.last.add',
         {
-            'DIALOG_ID': 'chat17'
+            DIALOG_ID: 'chat17',
         },
-        function(result){
-            if(result.error())
-            {
+        function(result) {
+            if (result.error()) {
                 console.error(result.error().ex);
-            }
-            else
-            {
+            } else {
                 console.log(result.data());
             }
         }
@@ -111,37 +107,58 @@ or
 
 - PHP CRest
 
-    {% include [Explanation about restCommand](../_includes/rest-command.md) %}
-
     ```php
-    $result = restCommand(
+    require_once('crest.php');
+
+    $result = CRest::call(
         'im.search.last.add',
-        Array(
-            'DIALOG_ID' => 'chat17'
-        ),
-        $_REQUEST[
-            "auth"
+        [
+            'DIALOG_ID' => 'chat17',
         ]
-    );    
+    );
+
+    if (!empty($result['error'])) {
+        echo 'Error: ' . $result['error_description'];
+    } else {
+        var_dump($result['result']);
+    }
     ```
-
-- cURL
-
-    // example for cURL
-
 {% endlist %}
 
-{% include [Examples Note](../../../_includes/examples.md) %}
+## Response Handling
 
-## Success Response
+HTTP Code: **200**
 
 ```json
 {
-    "result": true
+    "result": true,
+    "time": {
+        "start": 1772449081,
+        "finish": 1772449081.887056,
+        "duration": 0.8870561122894287,
+        "processing": 0,
+        "date_start": "2026-03-02T13:58:01+01:00",
+        "date_finish": "2026-03-02T13:58:01+01:00",
+        "operating_reset_at": 1772449681,
+        "operating": 0
+    }
 }
 ```
 
-## Error Response
+## Returned Data
+
+#|
+|| **Name**
+`Type` | **Description** ||
+|| **result**
+[`boolean`](../../data-types.md) | `true` if the entry was added or already exists, otherwise `false` ||
+|| **time**
+[`time`](../../data-types.md#time) | Information about the request execution time ||
+|#
+
+## Error Handling
+
+HTTP Status: **400**
 
 ```json
 {
@@ -150,14 +167,21 @@ or
 }
 ```
 
-### Description of Keys
-
-- `error` – code of the occurred error
-- `error_description` – brief description of the occurred error
+{% include notitle [Error Handling](../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| **DIALOG_ID_EMPTY** | Dialog identifier not provided. ||
+|| **Code** | **Description** | **Value** ||
+|| `DIALOG_ID_EMPTY` | Dialog ID can't be empty | An invalid `DIALOG_ID` was provided ||
 |#
+
+{% include [System Errors](../../../_includes/system-errors.md) %}
+
+## Continue Learning
+
+- [{#T}](./im-search-chat-list.md)
+- [{#T}](./im-search-department-list.md)
+- [{#T}](./im-search-user-list.md)
+- [{#T}](./im-search-last-get.md)
+- [{#T}](./im-search-last-delete.md)

@@ -1,89 +1,75 @@
 # Find Departments im.search.department.list
 
-{% note warning "We are still updating this page" %}
-
-Some data may be missing — we will fill it in shortly.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- edits needed for writing standards
-- parameter types are not specified
-- examples are missing
-
-{% endnote %}
-
-{% endif %}
-
 > Scope: [`im`](../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-The method `im.search.department.list` performs a search for departments.
+The method `im.search.department.list` performs a search for departments by their full name.
 
-#|
-|| **Parameter** | **Example** | **Description** | **Revision** ||
-|| **FIND^*^**
-[`unknown`](../../data-types.md) | `Los Angeles` | Search phrase | 19 ||
-|| **USER_DATA**
-[`unknown`](../../data-types.md) | `N` | Load user data | 19 ||
-|| **OFFSET**
-[`unknown`](../../data-types.md) | `0` | Offset for user selection | 19 ||
-|| **LIMIT**
-[`unknown`](../../data-types.md) | `10` | Limit for user selection | 19 ||
-|#
+## Method Parameters
 
 {% include [Footnote on parameters](../../../_includes/required.md) %}
 
-- If the parameter `USER_DATA = Y` is passed, data about the manager will be loaded with the result.
-- The search is conducted on the following field: **Full department name**.
-- The method supports standard pagination of the Bitrix24 Rest API, but in addition, it allows navigation using the `OFFSET` and `LIMIT` parameters.
+#|
+|| **Name**
+`Type` | **Description** ||
+|| **FIND***  
+[`string`](../../data-types.md) | Search phrase for finding the full name of the department (field [full_name](../departments/im-department-get.md#department)) ||
+|| **USER_DATA**  
+[`string`](../../data-types.md) | Return the manager's data in the field [manager_user_data](#manager_user_data). 
 
-## Examples
+Available values: 
+- `Y` — yes
+- `N` — no
+
+Default value — `N` ||
+|| **OFFSET**  
+[`integer`](../../data-types.md) | Offset for the department selection. Default is `0` ||
+|| **LIMIT**  
+[`integer`](../../data-types.md) | Number of items in the selection. Default is `10`. Maximum value is `50` ||
+|#
+
+## Code Examples
+
+{% include [Footnote on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
+
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+      -H "Content-Type: application/json" \
+      -H "Accept: application/json" \
+      -d '{"FIND":"Department","USER_DATA":"Y","OFFSET":0,"LIMIT":10}' \
+      https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/im.search.department.list
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+      -H "Content-Type: application/json" \
+      -H "Accept: application/json" \
+      -d '{"FIND":"Department","USER_DATA":"Y","OFFSET":0,"LIMIT":10,"auth":"**put_access_token_here**"}' \
+      https://**put_your_bitrix24_address**/rest/im.search.department.list
+    ```
 
 - JS
 
     ```js
-    // callListMethod: Retrieves all data at once. Use only for small selections (< 1000 items) due to high memory usage.
-    
     try {
-      const response = await $b24.callListMethod(
-        'im.search.department.list',
-        {
-          FIND: 'Los Angeles'
-        },
-        (progress) => { console.log('Progress:', progress) }
-      )
-      const items = response.getData() || []
-      for (const entity of items) { console.log('Entity:', entity) }
+      const response = await $b24.callMethod('im.search.department.list', {
+        FIND: 'Department',
+        USER_DATA: 'Y',
+        OFFSET: 0,
+        LIMIT: 10,
+      });
+
+      const { result, total, next } = response.getData();
+      console.log(result, total, next);
     } catch (error) {
-      console.error('Request failed', error)
-    }
-    
-    // fetchListMethod: Retrieves data in parts using an iterator. Use it for large data volumes to optimize memory usage.
-    
-    try {
-      const generator = $b24.fetchListMethod('im.search.department.list', { FIND: 'Los Angeles' }, 'ID')
-      for await (const page of generator) {
-        for (const entity of page) { console.log('Entity:', entity) }
-      }
-    } catch (error) {
-      console.error('Request failed', error)
-    }
-    
-    // callMethod: Manually controls pagination through the start parameter. Use it for precise control of request batches. For large datasets, it is less efficient than fetchListMethod.
-    
-    try {
-      const response = await $b24.callMethod('im.search.department.list', { FIND: 'Los Angeles' }, 0)
-      const result = response.getData().result || []
-      for (const entity of result) { console.log('Entity:', entity) }
-    } catch (error) {
-      console.error('Request failed', error)
+      console.error(error);
     }
     ```
 
@@ -91,25 +77,25 @@ The method `im.search.department.list` performs a search for departments.
 
     ```php
     try {
-        $response = $b24Service
-            ->core
-            ->call(
-                'im.search.department.list',
-                [
-                    'FIND' => 'Los Angeles'
-                ]
-            );
-    
-        $result = $response
-            ->getResponseData()
-            ->getResult();
-    
-        echo 'users: ' . print_r($result->data(), true);
-        echo 'total: ' . $result->total();
-    
-    } catch (Throwable $e) {
-        error_log($e->getMessage());
-        echo 'Error searching department list: ' . $e->getMessage();
+        $response = $b24Service->core->call(
+            'im.search.department.list',
+            [
+                'FIND' => 'Department',
+                'USER_DATA' => 'Y',
+                'OFFSET' => 0,
+                'LIMIT' => 10,
+            ]
+        );
+
+        $result = $response->getResponseData()->getResult();
+
+        if ($result->error()) {
+            echo 'Error: ' . $result->error();
+        } else {
+            var_dump($result->data());
+        }
+    } catch (Throwable $exception) {
+        echo $exception->getMessage();
     }
     ```
 
@@ -119,17 +105,16 @@ The method `im.search.department.list` performs a search for departments.
     BX24.callMethod(
         'im.search.department.list',
         {
-            FIND: 'Los Angeles'
+            FIND: 'Department',
+            USER_DATA: 'Y',
+            OFFSET: 0,
+            LIMIT: 10,
         },
-        function(result){
-            if(result.error())
-            {
+        function(result) {
+            if (result.error()) {
                 console.error(result.error().ex);
-            }
-            else
-            {
-                console.log('users', result.data());
-                console.log('total', result.total());
+            } else {
+                console.log(result.data(), result.total(), result.next());
             }
         }
     );
@@ -138,68 +123,131 @@ The method `im.search.department.list` performs a search for departments.
 - PHP CRest
 
     ```php
-    $result = restCommand(
+    require_once('crest.php');
+
+    $result = CRest::call(
         'im.search.department.list',
-        Array(
-            'FIND' => 'Los Angeles'
-        ),
-        $_REQUEST[
-            "auth"
+        [
+            'FIND' => 'Department',
+            'USER_DATA' => 'Y',
+            'OFFSET' => 0,
+            'LIMIT' => 10,
         ]
-    );    
+    );
+
+    if (!empty($result['error'])) {
+        echo 'Error: ' . $result['error_description'];
+    } else {
+        var_dump($result['result']);
+    }
     ```
-
-- cURL
-
-    // example for cURL
-
 {% endlist %}
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+## Response Handling
 
-## Successful Response
+HTTP Code: **200**
 
 ```json
-{    
+{
     "result": [
         {
-            "id": 51,
-            "name": "Los Angeles Branch",
-            "full_name": "Los Angeles Branch / Bitrix",
-            "manager_user_id": 11
-        }
+            "id": 9,
+            "name": "Marketing and Advertising Department",
+            "full_name": "Marketing and Advertising Department / My Company",
+            "manager_user_id": 3,
+            "manager_user_data": {
+                "id": 3,
+                "active": true,
+                "name": "Elena Ivanova",
+                "first_name": "Elena",
+                "last_name": "Ivanova",
+                "work_position": "",
+                "color": "#1eb4aa",
+                "avatar": "https://example.bitrix24.com/upload/main/avatar.png",
+                "avatar_hr": "https://example.bitrix24.com/upload/main/avatar.png",
+                "gender": "F",
+                "birthday": "06-04",
+                "extranet": false,
+                "network": false,
+                "bot": false,
+                "connector": false,
+                "external_auth_id": "socservices",
+                "status": "online",
+                "idle": false,
+                "last_activity_date": "2026-03-04T22:08:29+01:00",
+                "mobile_last_date": false,
+                "desktop_last_date": false,
+                "absent": false,
+                "departments": [1],
+                "phones": {
+                    "work_phone": "1415551111",
+                    "inner_phone": "222"
+                },
+                "bot_data": null,
+                "type": "user",
+                "website": "example.com",
+                "email": "user@example.com"
+            }
+        },
+        ... // description for each department
     ],
-    "total": 1
-}            
+    "total": 2,
+    "time": {
+        "start": 1772651443,
+        "finish": 1772651443.378436,
+        "duration": 0.3784360885620117,
+        "processing": 0,
+        "date_start": "2026-03-04T22:10:43+01:00",
+        "date_finish": "2026-03-04T22:10:43+01:00",
+        "operating_reset_at": 1772652043,
+        "operating": 0
+    }
+}
 ```
 
-### Key Descriptions
+## Returned Data
 
-- `id` – department identifier
-- `name` – short department name
-- `full_name` – full department name
-- `manager_user_data` – object describing manager data (not available if `USER_DATA != 'Y'`)
-- `id` – user identifier
-- `name` – user's first and last name
-- `first_name` – user's first name
-- `last_name` – user's last name
-- `work_position` – position
-- `color` – user's color in hex format
-- `avatar` – link to avatar (if empty, avatar is not set)
-- `gender` – user's gender
-- `birthday` – user's birthday in DD-MM format, if empty – not set
-- `extranet` – indicator of external extranet user (`true/false`)
-- `network` – indicator of Bitrix24.Network user (`true/false`)
-- `bot` – indicator of bot (`true/false`)
-- `connector` – indicator of open channel user (`true/false`)
-- `external_auth_id` – external authorization code
-- `status` – selected user status
-- `idle` – date when the user stepped away from the computer, in ATOM format (if not set, `false`)
-- `last_activity_date` – date of the user's last action in ATOM format
-- `mobile_last_date` – date of the last action in the mobile app in ATOM format (if not set, `false`)
-- `absent` – date until which the user is on vacation, in ATOM format (if not set, `false`)
+#|
+|| **Name**
+`Type` | **Description** ||
+|| **result**  
+[`array`](../../data-types.md) | List of found departments.
 
-## Error Response
+The structure of the department object is described in detail [below](#department-object) ||
+|| **total**  
+[`integer`](../../data-types.md) | Total number of found departments ||
+|| **next**  
+[`integer`](../../data-types.md) | Offset for the next page. This field is returned if there is a next page ||
+|| **time**  
+[`time`](../../data-types.md#time) | Information about the execution time of the request ||
+|#
+
+### Department Object {#department-object}
+
+#|
+|| **Name**
+`Type` | **Description** ||
+|| **id**  
+[`integer`](../../data-types.md) | Department identifier ||
+|| **name**  
+[`string`](../../data-types.md) | Short name of the department ||
+|| **full_name**  
+[`string`](../../data-types.md) | Full name of the department ||
+|| **manager_user_id**  
+[`integer`](../../data-types.md) | Identifier of the department manager ||
+|| **manager_user_data**  
+[`object`](../../data-types.md) | Data of the department manager. This object is returned only when `USER_DATA = 'Y'`.
+
+The structure of the manager object is described in detail [below](#manager_user_data) ||
+|#
+
+#### Manager User Data Object {#manager_user_data}
+
+{% include [User Object Tables](../_includes/user-object-tables.md) %}
+
+## Error Handling
+
+HTTP Status: **400**
 
 ```json
 {
@@ -208,15 +256,21 @@ The method `im.search.department.list` performs a search for departments.
 }
 ```
 
-### Key Descriptions
-
-- `error` – error code
-- `error_description` – brief description of the error
+{% include notitle [Error Handling](../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| **FIND_SHORT** | Search phrase is too short; searching starts from three characters. ||
+|| **Code** | **Description** | **Value** ||
+|| `FIND_SHORT` | Too short a search phrase | The `FIND` parameter is not provided or the phrase is less than three characters ||
 |#
 
+{% include [System Errors](../../../_includes/system-errors.md) %}
+
+## Continue Learning
+
+- [{#T}](./im-search-chat-list.md)
+- [{#T}](./im-search-user-list.md)
+- [{#T}](./im-search-last-add.md)
+- [{#T}](./im-search-last-get.md)
+- [{#T}](./im-search-last-delete.md)

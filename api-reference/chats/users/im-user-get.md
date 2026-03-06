@@ -1,61 +1,67 @@
-# Get User Data im.user.get
-
-{% note warning "We are still updating this page" %}
-
-Some data may be missing — we will fill it in shortly.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- edits needed for writing standards
-- parameter types are not specified
-- examples are missing
-
-{% endnote %}
-
-{% endif %}
+# Get User Data with im.user.get
 
 > Scope: [`im`](../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute this method: any user
 
-The method `im.user.get` retrieves user data.
+The method `im.user.get` retrieves data about the current user or a user by `ID`.
 
-#| 
-|| **Parameter** | **Example** | **Description** | **Revision** ||
-|| **ID** 
-[`unknown`](../../data-types.md) | `5` | User identifier | 18 ||
-|| **AVATAR_HR** 
-[`unknown`](../../data-types.md) | `N` | Generate avatar in high resolution | 18 ||
+## Method Parameters
+
+{% include [Footnote on parameters](../../../_includes/required.md) %}
+
+#|
+|| **Name**
+`Type` | **Description** ||
+|| **ID**
+[`integer`](../../data-types.md) | User identifier. If not provided, the method will return data for the current user.
+
+You can obtain the user ID using the methods [user.get](../../user/user-get.md), [user.search](../../user/user-search.md), or [im.chat.user.list](../chat-users/im-chat-user-list.md) ||
+|| **AVATAR_HR**
+[`string`](../../data-types.md) | Parameter to request the `avatar_hr` field with the high-resolution avatar URL. Acceptable values: `Y` or `N`, default is `N`.
+
+Currently, the `avatar_hr` field is always returned, regardless of the parameter value ||
 |#
 
-If the `ID` key is not provided, data for the current user will be selected.
+## Code Examples
 
-## Examples
+{% include [Footnote on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
+
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+      -H "Content-Type: application/json" \
+      -H "Accept: application/json" \
+      -d '{"ID":5,"AVATAR_HR":"Y"}' \
+      https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/im.user.get
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+      -H "Content-Type: application/json" \
+      -H "Accept: application/json" \
+      -d '{"ID":5,"AVATAR_HR":"Y","auth":"**put_access_token_here**"}' \
+      https://**put_your_bitrix24_address**/rest/im.user.get
+    ```
 
 - JS
 
     ```js
-    try
-    {
-        const response = await $b24.callMethod(
-            'im.user.get',
-            {
-                ID: 5
-            }
-        );
-        
-        const result = response.getData().result;
-        console.log(result);
-    }
-    catch(error)
-    {
-        console.error(error.ex);
+    try {
+      const response = await $b24.callMethod('im.user.get', {
+        ID: 5,
+        AVATAR_HR: 'Y',
+      });
+
+      const { result } = response.getData();
+      console.log(result);
+    } catch (error) {
+      console.error(error);
     }
     ```
 
@@ -63,46 +69,39 @@ If the `ID` key is not provided, data for the current user will be selected.
 
     ```php
     try {
-        $response = $b24Service
-            ->core
-            ->call(
-                'im.user.get',
-                [
-                    'ID' => 5
-                ]
-            );
-    
-        $result = $response
-            ->getResponseData()
-            ->getResult();
-    
+        $response = $b24Service->core->call(
+            'im.user.get',
+            [
+                'ID' => 5,
+                'AVATAR_HR' => 'Y',
+            ]
+        );
+
+        $result = $response->getResponseData()->getResult();
+
         if ($result->error()) {
-            echo 'Error: ' . $result->error()->ex;
+            echo 'Error: ' . $result->error();
         } else {
-            echo 'Success: ' . print_r($result->data(), true);
+            var_dump($result->data());
         }
-    
-    } catch (Throwable $e) {
-        error_log($e->getMessage());
-        echo 'Error getting user information: ' . $e->getMessage();
+    } catch (Throwable $exception) {
+        echo $exception->getMessage();
     }
     ```
 
 - BX24.js
 
-    ```javascript
+    ```js
     BX24.callMethod(
         'im.user.get',
         {
-            ID: 5
+            ID: 5,
+            AVATAR_HR: 'Y',
         },
-        function(result){
-            if(result.error())
-            {
+        function(result) {
+            if (result.error()) {
                 console.error(result.error().ex);
-            }
-            else
-            {
+            } else {
                 console.log(result.data());
             }
         }
@@ -111,40 +110,41 @@ If the `ID` key is not provided, data for the current user will be selected.
 
 - PHP CRest
 
-    {% include [Explanation about restCommand](../_includes/rest-command.md) %}
-
     ```php
-    $result = restCommand(
+    require_once('crest.php');
+
+    $result = CRest::call(
         'im.user.get',
-        Array(
+        [
             'ID' => 5,
-        ),
-        $_REQUEST[
-            "auth"
+            'AVATAR_HR' => 'Y',
         ]
     );
+
+    if (!empty($result['error'])) {
+        echo 'Error: ' . $result['error_description'];
+    } else {
+        var_dump($result['result']);
+    }
     ```
-
-- cURL
-
-    // example for cURL
-
 {% endlist %}
 
-{% include [Footnote about examples](../../../_includes/examples.md) %}
+## Response Handling
 
-## Example Response
+HTTP Code: **200**
 
 ```json
 {
     "result": {
         "id": 5,
-        "name": "Eugene Shelenkov",
-        "first_name": "Eugene",
-        "last_name": "Shelankov",
-        "work_position": "",
-        "color": "#df532d",
-        "avatar": "http://192.168.2.232/upload/resize_cache/main/1d3/100_100_2/shelenkov.png",
+        "active": true,
+        "name": "John Smith",
+        "first_name": "John",
+        "last_name": "Smith",
+        "work_position": "Manager",
+        "color": "#048bd0",
+        "avatar": "https://example.bitrix24.com/upload/main/avatar.png",
+        "avatar_hr": "https://example.bitrix24.com/upload/main/avatar_hr.png",
         "gender": "M",
         "birthday": "",
         "extranet": false,
@@ -154,49 +154,54 @@ If the `ID` key is not provided, data for the current user will be selected.
         "external_auth_id": "default",
         "status": "online",
         "idle": false,
-        "last_activity_date": "2018-01-29T17:35:31+02:00",
-        "desktop_last_date": false,
+        "last_activity_date": "2026-03-02T09:30:00+01:00",
         "mobile_last_date": false,
-        "departments": [
-         50
-        ],
+        "desktop_last_date": false,
         "absent": false,
+        "departments": [10],
         "phones": {
-         "work_phone": "",
-         "personal_mobile": "",
-         "personal_phone": ""
-        }
+            "work_phone": "+11234567890",
+            "personal_mobile": "+11234567890",
+            "inner_phone": "21"
+        },
+        "website": "example.com",
+        "email": "user@example.com",
+        "bot_data": null,
+        "type": "user"
+    },
+    "time": {
+        "start": 1760000000.0,
+        "finish": 1760000000.2,
+        "duration": 0.2,
+        "processing": 0.08,
+        "date_start": "2026-03-02T09:30:00+01:00",
+        "date_finish": "2026-03-02T09:30:00+01:00",
+        "operating_reset_at": 1760030000,
+        "operating": 0
     }
 }
 ```
 
-### Key Descriptions
+## Returned Data
 
-- `id` – user identifier
-- `name` – user's full name
-- `first_name` – user's first name
-- `last_name` – user's last name
-- `work_position` – position
-- `color` – user color in hex format
-- `avatar` – link to avatar (if empty, avatar is not set)
-- `avatar_hr` – link to high-resolution avatar (available only when requesting with parameter `AVATAR_HR = 'Y'`)
-- `gender` – user's gender
-- `birthday` – user's birthday in DD-MM format, if empty – not set
-- `extranet` – indicator of external extranet user (`true/false`)
-- `network` – indicator of Bitrix24.Network user (`true/false`)
-- `bot` – indicator of bot (`true/false`)
-- `connector` – indicator of open channel user (`true/false`)
-- `external_auth_id` – external authorization code
-- `status` – selected user status
-- `idle` – date when the user stepped away from the computer, in ATOM format (if not set, `false`)
-- `last_activity_date` – date of the user's last action in ATOM format
-- `mobile_last_date` – date of the last action in the mobile app in ATOM format (if not set, `false`)
-- `departments` – department identifiers
-- `desktop_last_date` – date of the last action in the desktop app in ATOM format (if not set, `false`)
-- `absent` – date until which the user is on vacation, in ATOM format (if not set, `false`)
-- `phones` – array of phone numbers: `work_phone` – work phone, `personal_mobile` – mobile phone, `personal_phone` – home phone
+#|
+|| **Name**
+`Type` | **Description** ||
+|| **result**
+[`object`](../../data-types.md) | Object containing user data.
 
-## Error Response
+The structure of the object is described in detail [below](#result-object) ||
+|| **time**
+[`time`](../../data-types.md#time) | Information about the request execution time ||
+|#
+
+### Result Object {#result-object}
+
+{% include [User Object Tables](../_includes/user-object-tables.md) %}
+
+## Error Handling
+
+HTTP Status: **400**
 
 ```json
 {
@@ -205,16 +210,23 @@ If the `ID` key is not provided, data for the current user will be selected.
 }
 ```
 
-### Key Descriptions
-
-- `error` – error code
-- `error_description` – brief description of the error
+{% include notitle [Error Handling](../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
-#| 
-|| **Code** | **Description** ||
-|| **ID_EMPTY** | User identifier not provided ||
-|| **USER_NOT_EXISTS** | User with the specified identifier not found ||
-|| **ACCESS_DENIED** | Current user does not have access permission to the data ||
+#|
+|| **Code** | **Description** | **Value** ||
+|| `ID_EMPTY` | User ID can't be empty | Provided `ID <= 0` ||
+|| `USER_NOT_EXISTS` | User does not exist | User with the specified `ID` not found ||
+|| `ACCESS_DENIED` | You can request only users who are part of your extranet group | The current extranet user requests a user not from their extranet group ||
 |#
+
+{% include [System Errors](../../../_includes/system-errors.md) %}
+
+## Continue Learning
+
+- [{#T}](./im-user-list-get.md)
+- [{#T}](./im-user-status-set.md)
+- [{#T}](./im-user-status-get.md)
+- [{#T}](./im-user-status-idle-start.md)
+- [{#T}](./im-user-status-idle-end.md)

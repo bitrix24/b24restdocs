@@ -9,7 +9,7 @@ items:
     href: im-chat-get.md
   - name: Get Chat Data
     href: im-dialog-get.md
-  - name: Modify Chat
+  - name: Update Chat
     include:
       path: chat-update/b24-toc.yaml
       mode: link
@@ -53,10 +53,6 @@ items:
     href: im-counters-get.md
   - name: Get IM API Revisions
     href: im-revision-get.md      
-  - name: Widgets
-    include:
-      path: widgets/b24-toc.yaml
-      mode: link
   - name: Deprecated
     include:
       path: outdated/b24-toc.yaml

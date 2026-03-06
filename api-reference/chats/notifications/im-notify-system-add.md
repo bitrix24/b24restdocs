@@ -1,133 +1,227 @@
 # Send System Notification im.notify.system.add
 
-{% note warning "We are still updating this page" %}
-
-Some data may be missing here — we will complete it shortly.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- edits needed for writing standards
-- parameter types are not specified
-- examples are missing
-- links to pages that have not yet been created are not provided
-
-{% endnote %}
-
-{% endif %}
-
 > Scope: [`im`](../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-The method `im.notify.system.add` sends a system notification.
+The method `im.notify.system.add` sends a system notification to a user.
+
+{% note info "" %}
+
+The method is only available when called through the application.
+
+{% endnote %}
+
+## Method Parameters
+
+{% include [Footnote on parameters](../../../_includes/required.md) %}
 
 #|
-|| **Parameter** | **Example** | **Description** | **Revision** ||
-|| **USER_ID^*^**
-[`unknown`](../../data-types.md) | `1` | Identifier of the user to whom the notification will be addressed | 18 ||
-|| **MESSAGE^*^**
-[`unknown`](../../data-types.md) | System notification | Notification text | 18 ||
-|| **MESSAGE_OUT**
-[`unknown`](../../data-types.md) | Text of the system notification for email | Notification text for email. If not specified, the MESSAGE field is used | 18 ||
-|| **TAG**
-[`unknown`](../../data-types.md) | `TEST` | Notification tag, unique within the system. When adding a notification with an existing tag, other notifications will be deleted | 18 ||
-|| **SUB_TAG**
-[`unknown`](../../data-types.md) | `SUB`\|`TEST` | Additional tag, without uniqueness check | 18 ||
-|| **ATTACH**
-[`unknown`](../../data-types.md) | | Attachment | 18 ||
+|| **Name**
+`Type` | **Description** ||
+|| **USER_ID*** 
+[`integer`](../../data-types.md) | Identifier of the user receiving the notification.
+
+You can obtain the user ID using the [user.get](../../user/user-get.md), [user.search](../../user/user-search.md), or [im.user.get](../users/im-user-get.md) methods. ||
+|| **MESSAGE*** 
+[`string`](../../data-types.md) | The text of the notification. The method trims whitespace from the ends of the string before sending. ||
+|| **MESSAGE_OUT** 
+[`string`](../../data-types.md) | The text of the notification for external channels, such as email. ||
+|| **TAG** 
+[`string`](../../data-types.md) | A unique tag for the notification within the application. When adding a notification with an existing tag, other notifications will be removed. Pass it with `CLIENT_ID` when calling via webhook. ||
+|| **SUB_TAG** 
+[`string`](../../data-types.md) | An additional notification tag without uniqueness checks. Pass it with `CLIENT_ID` when calling via webhook. ||
+|| **ATTACH** 
+[`object`](../../data-types.md) 
+[`string`](../../data-types.md) | An attachment for the notification in the format of an object or JSON string. For more details, see the [Attachments](../messages/attachments/index.md) section. ||
 |#
 
-{% include [Footnote about parameters](../../../_includes/required.md) %}
+## Code Examples
 
-## Examples
-
-{% include [Explanation about restCommand](../_includes/rest-command.md) %}
+{% include [Footnote on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
+
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+      -H "Content-Type: application/json" \
+      -H "Accept: application/json" \
+      -d '{"USER_ID":5,"MESSAGE":"System notification","MESSAGE_OUT":"System notification for email","TAG":"SYSTEM_EVENT_42","SUB_TAG":"SYSTEM_EVENT|42"}' \
+      https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/im.notify.system.add
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+      -H "Content-Type: application/json" \
+      -H "Accept: application/json" \
+      -d '{"USER_ID":5,"MESSAGE":"System notification","MESSAGE_OUT":"System notification for email","TAG":"SYSTEM_EVENT_42","SUB_TAG":"SYSTEM_EVENT|42","auth":"**put_access_token_here**"}' \
+      https://**put_your_bitrix24_address**/rest/im.notify.system.add
+    ```
+
+- JS
+
+    ```js
+    try {
+      const response = await $b24.callMethod('im.notify.system.add', {
+        USER_ID: 5,
+        MESSAGE: 'System notification',
+        MESSAGE_OUT: 'System notification for email',
+        TAG: 'SYSTEM_EVENT_42',
+        SUB_TAG: 'SYSTEM_EVENT|42',
+      });
+
+      const { result } = response.getData();
+      console.log('Notification ID:', result);
+    } catch (error) {
+      console.error('Error:', error);
+    }
+    ```
 
 - PHP
 
     ```php
-    $result = restCommand(
-        'im.notify.system.add',
-        Array(
-            'USER_ID' => 1,
-            'MESSAGE' => 'System notification',
-            'MESSAGE_OUT' => 'Text of the system notification for email',
-            'TAG' => 'TEST',
-            'SUB_TAG' => 'SUB|TEST',
-            'ATTACH' => 'Array()'
-        ),
-        $_REQUEST[
-            "auth"
-        ]
-    );
-    ```
-
-- PHP (B24PhpSdk)
-
-    ```php
     try {
-        $result = $serviceBuilder->getIMScope()
-            ->notify()
-            ->fromSystem(
-                123, // $userId
-                'This is a test message.', // $message
-                null, // $forEmailChannelMessage
-                null, // $notificationTag
-                null, // $subTag
-                null // $attachment
-            );
+        $response = $b24Service->core->call(
+            'im.notify.system.add',
+            [
+                'USER_ID' => 5,
+                'MESSAGE' => 'System notification',
+                'MESSAGE_OUT' => 'System notification for email',
+                'TAG' => 'SYSTEM_EVENT_42',
+                'SUB_TAG' => 'SYSTEM_EVENT|42',
+            ]
+        );
 
-        print($result->getId());
-    } catch (Throwable $e) {
-        // Handle exception
-        print('Error: ' . $e->getMessage());
+        $result = $response->getResponseData()->getResult();
+
+        if ($result->error()) {
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Notification ID: ' . $result->data();
+        }
+    } catch (Throwable $exception) {
+        echo $exception->getMessage();
     }
     ```
 
+- BX24.js
+
+    ```js
+    BX24.callMethod(
+        'im.notify.system.add',
+        {
+            USER_ID: 5,
+            MESSAGE: 'System notification',
+            MESSAGE_OUT: 'System notification for email',
+            TAG: 'SYSTEM_EVENT_42',
+            SUB_TAG: 'SYSTEM_EVENT|42',
+        },
+        function(result) {
+            if (result.error()) {
+                console.error(result.error().ex);
+            } else {
+                console.log(result.data());
+            }
+        }
+    );
+    ```
+
+- PHP CRest
+
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'im.notify.system.add',
+        [
+            'USER_ID' => 5,
+            'MESSAGE' => 'System notification',
+            'MESSAGE_OUT' => 'System notification for email',
+            'TAG' => 'SYSTEM_EVENT_42',
+            'SUB_TAG' => 'SYSTEM_EVENT|42',
+        ]
+    );
+
+    if (!empty($result['error'])) {
+        echo 'Error: ' . $result['error_description'];
+    } else {
+        echo 'Notification ID: ' . $result['result'];
+    }
+    ```
 {% endlist %}
 
-{% include [Footnote about examples](../../../_includes/examples.md) %}
+## Response Handling
 
-## Response on Success
+HTTP Code: **200**
 
 ```json
 {
-    "result": 123
+    "result": 12345,
+    "time": {
+        "start": 1760000000.0,
+        "finish": 1760000000.1,
+        "duration": 0.1,
+        "processing": 0.04,
+        "date_start": "2026-03-02T09:30:00+01:00",
+        "date_finish": "2026-03-02T09:30:00+01:00",
+        "operating_reset_at": 1760030000,
+        "operating": 0
+    }
 }
 ```
 
-**Execution result**: notification identifier `ID` or error.
+## Returned Data
 
-## Response on Error
+#|
+|| **Name**
+`Type` | **Description** ||
+|| **result**
+[`integer`](../../data-types.md) 
+[`boolean`](../../data-types.md) | Identifier of the created notification. If the notification was not created, it may return `false`. ||
+|| **time**
+[`time`](../../data-types.md#time) | Information about the execution time of the request. ||
+|#
+
+## Error Handling
+
+HTTP Status: **400**, **403**
 
 ```json
 {
     "error": "USER_ID_EMPTY",
-    "error_description": "Recipient identifier is not specified"
+    "error_description": "User ID can't be empty"
 }
 ```
 
-### Description of Keys
-
-- `error` – code of the occurred error
-- `error_description` – brief description of the occurred error
+{% include notitle [Error Handling](../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| **USER_ID_EMPTY** | Recipient identifier is not specified ||
-|| **MESSAGE_EMPTY** | Message text is not provided ||
-|| **ATTACH_ERROR** | The entire provided attachment object failed validation ||
-|| **ATTACH_OVERSIZE** | The maximum allowable attachment size (30 KB) has been exceeded ||
+|| **Code** | **Description** | **Value** ||
+|| `WRONG_AUTH_TYPE` | Access for this method not allowed by session authorization. | The method was called with session authorization, which is prohibited. ||
+|| `USER_ID_EMPTY` | User ID can't be empty | The `USER_ID` parameter was not provided or `USER_ID <= 0`. ||
+|| `MESSAGE_EMPTY` | Message can't be empty | The message text was not provided. ||
+|| `ATTACH_OVERSIZE` | You have exceeded the maximum allowable size of attach | The maximum allowable size of the `ATTACH` is exceeded — 30 KB. ||
+|| `ATTACH_ERROR` | Incorrect attach params | An incorrect format for the `ATTACH` was provided. ||
 |#
 
-## Related Links
+{% include [System Errors](../../../_includes/system-errors.md) %}
 
-- [{#T}](../messages/attachments/index.md)
+## Continue Learning
+
+- [{#T}](./im-notify.md)
+- [{#T}](./im-notify-personal-add.md)
+- [{#T}](./im-notify-get.md)
+- [{#T}](./im-notify-schema-get.md)
+- [{#T}](./im-notify-read-list.md)
+- [{#T}](./im-notify-read.md)
+- [{#T}](./im-notify-read-all.md)
+- [{#T}](./im-notify-answer.md)
+- [{#T}](./im-notify-confirm.md)
+- [{#T}](./im-notify-delete.md)
+- [{#T}](./im-notify-history-search.md)

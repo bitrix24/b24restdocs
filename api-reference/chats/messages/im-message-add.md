@@ -1,59 +1,70 @@
-# Add Message im.message.add
-
-{% note warning "We are still updating this page" %}
-
-Some data may be missing — we will fill it in shortly.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- edits needed for standard writing
-- parameter types are not specified
-- examples are missing
-
-{% endnote %}
-
-{% endif %}
+# Send Message im.message.add
 
 > Scope: [`im`](../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: a user with permission to send messages in chat
 
-The method `im.message.add` sends a message from the current user to a chat.
+The method `im.message.add` sends a message to a chat.
+
+## Method Parameters
+
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
-|| **Parameter** | **Example** | **Description** | **Revision** ||
-|| **DIALOG_ID^*^**
-[`string`](../../data-types.md) | `chat13`
-or
-`256` | Identifier of the dialog. Format:
-- **chatXXX** – chat of the recipient, if the message is for chats
-- **XXX** – identifier of the recipient, if the message is for a private dialog | 18 ||
-|| **MESSAGE^*^**
-[`text`](../../data-types.md) | `Message text` | The text of the message.
-[Formatting](./index.html) is supported | 18 ||
-|| **SYSTEM**
-[`boolean`](../../data-types.md) | `N` | Display messages as a system message. Default is 'N'.
- 
-A message marked as system cannot be changed or deleted | 18 ||
+|| **Name**
+`type` | **Description** ||
+|| **DIALOG_ID***
+[`string`](../../data-types.md) | Identifier of the chat in the format:
+
+- `chatXXX` — chat
+- `sgXXX` — group or project chat
+- `XXX` — identifier of the personal chat user
+  
+The chat identifier can be obtained using the method [im.chat.get](../im-chat-get.md). The user identifier can be obtained using the methods [user.get](../../user/user-get.md) and [user.search](../../user/user-search.md) ||
+|| **MESSAGE***
+[`string`](../../data-types.md) | Text of the message. Required if `ATTACH` is not provided.
+
+[Formatting](./index.md) is supported ||
 || **ATTACH**
-[`object`](../../data-types.md) | [Example](./attachments/index.html) | Attachment | 18 ||
-|| **URL_PREVIEW**
-[`boolean`](../../data-types.md) | `Y` | Convert links to rich links, optional field, default is 'Y' | 18 ||
+[`object`](../../data-types.md) 
+[`string`](../../data-types.md) | Attachment with content blocks: images, links, files. Required if `MESSAGE` is not provided.
+
+Read more in the section [Attachments](./attachments/index.md) ||
 || **KEYBOARD**
-[`object`](../../data-types.md) | [Example](./keyboards.html) | Keyboard | 18 ||
+[`object`](../../data-types.md) 
+[`string`](../../data-types.md) | Buttons below the message that the user can interact with.
+
+Read more in the article [Working with Keyboards](./keyboards.md) ||
 || **MENU**
-[`object`](../../data-types.md) | [Example](./menu.html) | Context menu | 18 ||
+[`object`](../../data-types.md) 
+[`string`](../../data-types.md) | Additional items in the chat's context menu.
+
+Read more in the article [Context Menu](./menu.md) ||
+|| **SYSTEM**
+[`string`](../../data-types.md) | Indicator of a system message.
+
+Allowed values:
+- `Y` — system message
+- `N` — regular message
+  
+Default is `N` ||
+|| **URL_PREVIEW**
+[`string`](../../data-types.md) | Conversion of links into rich links.
+
+Allowed values:
+- `Y` — enabled
+- `N` — disabled
+
+Default is `Y` ||
+|| **REPLY_ID**
+[`integer`](../../data-types.md) | Identifier of the message being replied to. The message to reply to must be in the same chat.
+
+The identifier can be obtained using the method [im.dialog.messages.get](./im-dialog-messages-get.md) ||
 |#
 
-{% include [Parameter Notes](../../../_includes/required.md) %}
+## Code Examples
 
-## Examples
-
-{% include [Examples Notes](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -63,7 +74,7 @@ A message marked as system cannot be changed or deleted | 18 ||
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{DIALOG_ID: "chat5",MESSAGE: "Message [B]with attachment[/B] in primary color and supporting [I]bb-codes[/I]",ATTACH: [{MESSAGE: "API will be available in update [B]im 24.0.0[/B]"}]}' \
+    -d '{"DIALOG_ID":"chat2941","MESSAGE":"Message text","SYSTEM":"N","URL_PREVIEW":"Y","REPLY_ID":34237}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/im.message.add
     ```
 
@@ -73,7 +84,7 @@ A message marked as system cannot be changed or deleted | 18 ||
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{DIALOG_ID: "chat5",MESSAGE: "Message [B]with attachment[/B] in primary color and supporting [I]bb-codes[/I]",ATTACH: [{MESSAGE: "API will be available in update [B]im 24.0.0[/B]"}]}' \
+    -d '{"DIALOG_ID":"chat2941","MESSAGE":"Message text","SYSTEM":"N","URL_PREVIEW":"Y","REPLY_ID":34237,"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/im.message.add
     ```
 
@@ -82,29 +93,24 @@ A message marked as system cannot be changed or deleted | 18 ||
     ```js
     try
     {
-    	const response = await $b24.callMethod(
-    		'im.message.add',
-    		{
-    			DIALOG_ID: "chat5",
-    			MESSAGE: "Message [B]with attachment[/B] in primary color and supporting [I]bb-codes[/I]",
-    			ATTACH: [
-    				{
-    					MESSAGE: "API will be available in update [B]im 24.0.0[/B]"
-    				},
-    			],
-    		}
-    	);
-    	
-    	const result = response.getData().result;
-    	console.log('response', result.answer);
-    	if (result.error())
-    		alert("Error: " + result.error());
-    	else
-    		console.log(result);
+        const response = await $b24.callMethod(
+            'im.message.add',
+            {
+                DIALOG_ID: 'chat2941',
+                MESSAGE: 'Message text',
+                SYSTEM: 'N',
+                URL_PREVIEW: 'Y',
+                REPLY_ID: 34237
+            }
+        );
+        
+        const result = response.getData().result;
+        console.log('Created message with ID:', result);
+        processResult(result);
     }
     catch( error )
     {
-    	console.error('Error:', error);
+        console.error('Error:', error);
     }
     ```
 
@@ -117,29 +123,21 @@ A message marked as system cannot be changed or deleted | 18 ||
             ->call(
                 'im.message.add',
                 [
-                    'DIALOG_ID' => "chat5",
-                    'MESSAGE' => "Message [B]with attachment[/B] in primary color and supporting [I]bb-codes[/I]",
-                    'ATTACH' => [
-                        [
-                            'MESSAGE' => "API will be available in update [B]im 24.0.0[/B]"
-                        ],
-                    ],
+                    'DIALOG_ID' => 'chat2941',
+                    'MESSAGE' => 'Message text',
+                    'SYSTEM' => 'N',
+                    'URL_PREVIEW' => 'Y',
+                    'REPLY_ID' => 34237
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
+
         echo 'Success: ' . print_r($result, true);
-        echo 'response: ' . $result['answer'];
-    
-        if ($result['error']) {
-            echo 'Error: ' . $result['error'];
-        } else {
-            echo 'Data: ' . print_r($result['data'], true);
-        }
-    
+        processData($result);
+
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error adding message: ' . $e->getMessage();
@@ -149,23 +147,21 @@ A message marked as system cannot be changed or deleted | 18 ||
 - BX24.js
 
     ```js
-    BX24.callMethod(    
+    BX24.callMethod(
         'im.message.add',
         {
-            DIALOG_ID: "chat5",
-            MESSAGE: "Message [B]with attachment[/B] in primary color and supporting [I]bb-codes[/I]",
-            ATTACH: [
-                {
-                    MESSAGE: "API will be available in update [B]im 24.0.0[/B]"
-                },
-            ],
+            DIALOG_ID: 'chat2941',
+            MESSAGE: 'Message text',
+            SYSTEM: 'N',
+            URL_PREVIEW: 'Y',
+            REPLY_ID: 34237
         },
-        function(result) {
-            console.log('response', result.answer);
-            if(result.error())
-                alert("Error: " + result.error());
+        function(result)
+        {
+            if (result.error())
+                console.error(result.error());
             else
-            console.log(result.data());
+                console.log(result.data());
         }
     );
     ```
@@ -178,73 +174,90 @@ A message marked as system cannot be changed or deleted | 18 ||
     $result = CRest::call(
         'im.message.add',
         [
-            "DIALOG_ID" => "chat20921",
-            "MESSAGE"   => "Message [B]with attachment[/B] in primary color and supporting [I]bb-codes[/I]",
-            "ATTACH" => [
-                [
-                    "MESSAGE" => "API will be available in update [B]im 24.0.0[/B]"
-                ],
-            ],
+            'DIALOG_ID' => 'chat2941',
+            'MESSAGE' => 'Message text',
+            'SYSTEM' => 'N',
+            'URL_PREVIEW' => 'Y',
+            'REPLY_ID' => 34237
         ]
     );
 
-    echo '<pre>';
+    echo '<PRE>';
     print_r($result);
-    echo '</pre>';
+    echo '</PRE>';
     ```
 
 {% endlist %}
 
-{% note tip "Typical use-cases and scenarios" %}
+## Response Handling
 
-- [Example of using the method in the "EchoBot" application](https://github.com/bitrix24com/bots)
-
-{% endnote %}
-
-## Successful Response
+HTTP Status: **200**
 
 ```json
 {
-    "result": 11
+    "result": 34239,
+    "time": {
+        "start": 1772552939,
+        "finish": 1772552939.091396,
+        "duration": 0.09139609336853027,
+        "processing": 0,
+        "date_start": "2026-03-03T17:48:59+01:00",
+        "date_finish": "2026-03-03T17:48:59+01:00",
+        "operating_reset_at": 1772553539,
+        "operating": 0
+    }
 }
 ```
 
-**Execution result**: message identifier `MESSAGE_ID` or error.
+### Returned Data
 
-## Error Response
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`integer`](../../data-types.md) | Identifier of the sent message ||
+|| **time**
+[`time`](../../data-types.md#time) | Information about the request execution time ||
+|#
+
+## Error Handling
+
+HTTP Status: **400**
 
 ```json
 {
-    "error": "USER_ID_EMPTY",
-    "error_description": "Recipient identifier is not specified when sending a message in a one-on-one chat"
+    "error": "MESSAGE_EMPTY",
+    "error_description": "Message can't be empty"
 }
 ```
 
-### Key Descriptions
-
-- `error` – code of the occurred error
-- `error_description` – brief description of the occurred error
+{% include notitle [error handling](../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| **USER_ID_EMPTY** | Recipient identifier is not specified when sending a message in a one-on-one chat ||
-|| **CHAT_ID_EMPTY** | Recipient chat identifier is not specified when sending a message in a chat ||
-|| **ACCESS_ERROR** | Insufficient permissions to send a message ||
-|| **MESSAGE_EMPTY** | Message text is not provided ||
-|| **ATTACH_ERROR** | The entire provided attachment object failed validation ||
-|| **ATTACH_OVERSIZE** | Exceeded maximum allowable attachment size (30 KB) ||
-|| **KEYBOARD_ERROR** | The entire provided keyboard object failed validation ||
-|| **KEYBOARD_OVERSIZE** | Exceeded maximum allowable keyboard size (30 KB) ||
-|| **MENU_ERROR** | The entire provided menu object failed validation ||
-|| **MENU_OVERSIZE** | Exceeded maximum allowable menu size (30 KB) ||
-|| **PARAMS_ERROR** | Something went wrong ||
+|| **Code** | **Description** | **Value** ||
+|| `MESSAGE_EMPTY` | Message can't be empty | Empty `MESSAGE` and no `ATTACH` provided ||
+|| `USER_ID_EMPTY` | User ID can't be empty | User identifier in `DIALOG_ID` is missing or invalid ||
+|| `USER_NOT_FOUND` | User not found | User not found ||
+|| `CHAT_ID` | Error creating message | Failed to create message. Ensure that a chat with such `ID` exists ||
+|| `ACCESS_ERROR` | Action unavailable | Insufficient permissions to send message ||
+|| `PARAMS_ERROR` | Incorrect params | Invalid set of request parameters ||
+|| `ATTACH_ERROR` | Incorrect attach params | Invalid `ATTACH` object ||
+|| `ATTACH_OVERSIZE` | You have exceeded the maximum allowable size of attach | Size of `ATTACH` exceeds the allowable limit ||
+|| `KEYBOARD_ERROR` | Incorrect keyboard params | Invalid `KEYBOARD` object ||
+|| `MENU_ERROR` | Incorrect menu params | Invalid `MENU` object ||
+|| `REPLY_ACCESS_ERROR` | Action unavailable | No access to the message in `REPLY_ID` ||
+|| `REPLY_FROM_OTHER_CHAT_ERROR` | You can only reply to a message within the same chat | Cannot reply to a message from another chat ||
 |#
 
-## Related Links
+{% include [system errors](../../../_includes/system-errors.md) %}
 
-- [How to work with keyboards](./keyboards.html)
-- [How to work with attachments](./attachments/index.html)
-- [Message formatting](./index.html)
-- [Working with context menus](./menu.html)
+## Continue Learning
+
+- [{#T}](./im-message-update.md)
+- [{#T}](./im-message-delete.md)
+- [{#T}](./im-message-like.md)
+- [{#T}](./attachments/index.md)
+- [{#T}](./keyboards.md)
+- [{#T}](./menu.md)

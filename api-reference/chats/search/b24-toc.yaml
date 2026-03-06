@@ -5,13 +5,13 @@ items:
     href: index.md
   - name: Find Chats by Titles
     href: im-search-chat-list.md
-  - name: Find Users
-    href: im-search-user-list.md
   - name: Find Departments
     href: im-search-department-list.md
-  - name: Add Search to History
+  - name: Find Users
+    href: im-search-user-list.md
+  - name: Add Entry to Search History
     href: im-search-last-add.md
   - name: Retrieve Search History
     href: im-search-last-get.md
-  - name: Remove Search from History
+  - name: Delete Entry from Search History
     href: im-search-last-delete.md

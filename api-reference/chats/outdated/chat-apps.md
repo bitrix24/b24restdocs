@@ -2,7 +2,7 @@
 
 {% note warning %}
 
-The embedding format for chat applications described in this section currently works correctly; however, for the New Chat, applications need to be embedded in the [Rest Placement](../widgets/index.md) format.
+The embedding format for chat applications described in this section currently works correctly; however, for the New Chat, applications need to be embedded in the [Rest Placement](../../widgets/im/index.md) format.
 
 {% endnote %}
 

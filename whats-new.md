@@ -2,6 +2,16 @@
 
 ## 2026
 
+### March 6, 2026
+
+- Updated the page on [Working with Keyboards](./api-reference/chats/messages/keyboards.md)
+- Updated the page on [Working with Context Menu](./api-reference/chats/messages/menu.md)
+- Updated the documentation for chat widgets [IM_CONTEXT_MENU](./api-reference/widgets/im/context-menu.md), [IM_SIDEBAR](./api-reference/widgets/im/sidebar.md), [IM_TEXTAREA](./api-reference/widgets/im/textarea.md)
+- Updated the documentation for chat methods [im.dialog.writing](./api-reference/chats/messages/im-dialog-writing.md), [im.message.add](./api-reference/chats/messages/im-message-add.md), [im.message.command](./api-reference/chats/messages/im-message-command.md), [im.message.delete](./api-reference/chats/messages/im-message-delete.md), [im.message.like](./api-reference/chats/messages/im-message-like.md), [im.message.share](./api-reference/chats/messages/im-message-share.md), [im.message.update](./api-reference/chats/messages/im-message-update.md) in the Messages section
+- Updated the documentation for chat methods [im.search.*](./api-reference/chats/search/index.md) in the Search section
+- Updated the documentation for chat methods [im.notify.*](./api-reference/chats/notifications/index.md) in the Notifications section
+- Updated the documentation for chat methods [im.user.*](./api-reference/chats/users/index.md) in the Users section
+
 ### March 04, 2026
 
 - Updated the documentation for the chat methods [im.chat.mute](./api-reference/chats/special-operations/im-chat-mute.md), [im.recent.pin](./api-reference/chats/special-operations/im-recent-pin.md), [im.recent.hide](./api-reference/chats/special-operations/im-recent-hide.md) in the Special Operations section

@@ -3,15 +3,15 @@ href: index.md
 items:
   - name: Overview of Methods
     href: index.md
-  - name: Get User Data
+  - name: Retrieve User Data
     href: im-user-get.md
-  - name: Get User List Data
+  - name: Retrieve User List Data
     href: im-user-list-get.md
-  - name: Set User Status in Chat
+  - name: Set User Status
     href: im-user-status-set.md
-  - name: Get User Status Information
+  - name: Get User Status
     href: im-user-status-get.md
-  - name: Set Automatic Status "Away"
+  - name: Enable Automatic "Away" Status
     href: im-user-status-idle-start.md
-  - name: Disable Automatic Status "Away"
+  - name: Disable Automatic "Away" Status
     href: im-user-status-idle-end.md

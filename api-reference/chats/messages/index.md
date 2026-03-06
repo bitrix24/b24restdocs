@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it soon.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -10,13 +10,13 @@ Some data may be missing — we will complete it soon.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- edits are needed to meet the writing standard
+- edits needed to meet writing standards
 
 {% endnote %}
 
 {% endif %}
 
-Messages can be formatted, with options for bold text, strikethrough, and quotes. The lesson provides user commands, appearance, and REST API for formatting chat messages.
+Messages can be formatted, with options for bold text, strikethrough, and quotes. This lesson provides user commands, appearance, and REST API for formatting chat messages.
 
 > Quick navigation: [all methods](#all-methods)
 
@@ -37,7 +37,7 @@ It will be displayed as follows:
 
 Formatting using the REST API:
 
-{% include [Explanation about restCommand](../_includes/rest-command.md) %}
+{% include [Explanation of restCommand](../_includes/rest-command.md) %}
 
 ```php
 restCommand(
@@ -83,7 +83,7 @@ restCommand(
 
 ## Quoting
 
-You can quote text in two ways:
+Text can be quoted in two ways:
 
 ```markdown
 >>first line of the quote
@@ -94,7 +94,7 @@ Hello everyone
 ------------------------------------------------------
 ```
 
-The appearance of the quote will differ slightly - in the second case, the author and the time of the quote will be indicated:
+The appearance of the quote will differ slightly — in the second case, the author and the time of the quote will be indicated:
 
 ![Quote Result](./_images/quote1.png)
 
@@ -118,7 +118,7 @@ restCommand(
 
 ## Links
 
-Any link in the text will automatically become clickable. If the link address has "rich formatting," the link will automatically pick it up:
+Any link in the text will automatically become clickable. If the link address has "rich formatting," it will automatically pick it up:
 
 ![Link Result](./_images/link1.png)
 
@@ -152,7 +152,7 @@ restCommand(
 
 {% endnote %}
 
-If you send a link to an image `https://files.shelenkov.com/bitrix/images/mantis.jpg` (the link must end with .png, .jpg, .gif), it will automatically convert to an image:
+If you send a link to an image `https://files.shelenkov.com/bitrix/images/mantis.jpg` (the link must end with .png, .jpg, .gif), it will automatically be converted into an image:
 
 ![Link Result](./_images/link2.png)
 
@@ -223,7 +223,7 @@ If you want the user to send some text by clicking on a link, use the **SEND** t
 [send=text]button name[/send] - instant sending of text to the bot.
 ```
 
-With this tag, you can prompt the user to send a command to your bot, but there is a more preferred way - [Keyboards](.)
+With this tag, you can prompt the user to send a command to your bot, but there is a more preferred method - [Keyboards](.)
 
 ![Link Result](./_images/command1.png)
 
@@ -246,7 +246,7 @@ If you need the user to add something to the command, use the **PUT** code:
 [put=/search]Enter search string[/put]
 ```
 
-Sending the bot command using the REST API:
+Sending a bot command using the REST API:
 
 ```php
 restCommand(
@@ -261,18 +261,19 @@ restCommand(
 
 ## Icons
 
-Adding your own icon to a message is done by sending the code:
+To add your own icon to a message, send the code:
 
 ```markdown
 [icon=http://files.shelenkov.com/images/unicorn.png size=30 title=Unicorn]
 ```
 
-The icon will be displayed as follows.
+The icon will be displayed as follows:
 
+![Link Result](./_images/unicorn.png)
 
-After this, the icon will also be added to the Business Chat emoji set. You can remove the icon from the set by right-clicking on the icon in the set and selecting **Delete**.
+Additionally, the icon will be added to the Business Chat emoji set. You can remove the icon from the set by right-clicking on the icon in the set and selecting **Delete**.
 
-A required property is to specify the path to the image (without spaces).
+A required property is specifying the path to the image (without spaces).
 
 Additional attributes are available:
 - **title** - title;
@@ -306,14 +307,14 @@ For more details on how to use advanced format attachments within messages, read
 #| 
 || **Method** | **Description** ||
 || [im.dialog.messages.get](./im-dialog-messages-get.md) | Retrieves a list of recent messages ||
-|| [im.dialog.messages.search](./im-dialog-messages-search.md) | Searches for messages in chat ||
+|| [im.dialog.messages.search](./im-dialog-messages-search.md) | Searches for messages in the chat ||
 || [im.dialog.read](./im-dialog-read.md) | Marks messages as "read" ||
 || [im.dialog.unread](./im-dialog-unread.md) | Marks messages as "unread" ||
-|| [im.dialog.writing](./im-dialog-writing.md) | Sends the "someone is typing..." indicator ||
+|| [im.dialog.writing](./im-dialog-writing.md) | Sends the "User is typing" status ||
 || [im.message.add](./im-message-add.md) | Adds a message ||
-|| [im.message.command](./im-message-command.md) | Uses a bot command ||
+|| [im.message.command](./im-message-command.md) | Executes a bot command ||
 || [im.message.delete](./im-message-delete.md) | Deletes a chatbot message ||
-|| [im.message.like](./im-message-like.md) | Changes the "like" status of a message ||
+|| [im.message.like](./im-message-like.md) | Changes the "Like" status of a message ||
 || [im.message.share](./im-message-share.md) | Creates an object based on a message ||
 || [im.message.update](./im-message-update.md) | Modifies a sent message ||
 |#

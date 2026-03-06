@@ -1,186 +1,440 @@
 # Working with Keyboards
+A keyboard consists of buttons beneath the message. They can be used to open links, perform actions, and trigger commands.
 
-{% note warning "We are still updating this page" %}
+Methods that support keyboard functionality:
 
-Some data may be missing — we will complete it shortly.
+- [imbot.message.add](../../chat-bots/messages/imbot-message-add.md) — send a message on behalf of the chat bot
+- [imbot.message.update](../../chat-bots/messages/imbot-message-update.md) — modify a sent message from the chat bot
+- [imbot.command.answer](../../chat-bots/commands/imbot-command-answer.md) — send a response to a chat bot command
+- [im.message.add](./im-message-add.md) — send a message in the chat
+- [im.message.update](./im-message-update.md) — modify a sent message
 
-{% endnote %}
+## How to Add a Keyboard
 
-{% if build == 'dev' %}
+To add a keyboard, pass the `KEYBOARD` parameter when creating or updating a message.
 
-{% note alert "TO-DO _not exported to prod_" %}
+`KEYBOARD` can be passed as:
 
-- edits needed to meet writing standards
+- a JSON string
+- an object with the root key `BUTTONS`
+- an array of buttons without wrapping
 
-{% endnote %}
-
-{% endif %}
-
-The keyboards you type will allow users to interact with the chat bot simply by pressing buttons.
-
-## How to Add a Keyboard to a Chat Bot
-
-A keyboard is part of a message; when creating a message, you need to add the key **KEYBOARD** and pass the parameters.
-
-Methods that support keyboards:
-- [imbot.message.add](../../chat-bots/messages/imbot-message-add.md) - sending a message from the chat bot.
-- [imbot.message.update](../../chat-bots/messages/imbot-message-update.md) - sending an update to the chat bot's message.
-- [imbot.command.answer](../../chat-bots/commands/imbot-command-answer.md) - publishing a response to a command.
-- [im.message.add](./im-message-add.md) - sending a message in chat.
-- [im.message.update](./im-message-update.md) - sending an update to the chat bot's message.
-
-Let's consider an example of a chat bot message. In the web version of the chat, the keyboard looks like this:
-
-![keyboard example](./_images/keyboard_web.png)
-
-And in the mobile version, it looks like this:
-
-![keyboard example](./_images/keyboard_mob.jpg)
-
-{% include [Footnote on examples](../../../_includes/examples.md) %}
-
-{% include [Explanation about restCommand](../_includes/rest-command.md) %}
+If the `KEYBOARD` does not contain the `BUTTONS` key, the server will automatically assume that a shortened format has been provided and will wrap the array in `BUTTONS`.
 
 {% list tabs %}
+
+- Full format with the BUTTONS key
+
+  ```json
+  {
+      "KEYBOARD": {
+          "BUTTONS": [
+          { "TEXT": "Button", "LINK": "https://example.com" }
+          ]
+      }
+  }
+  ```
+
+- Shortened format
+
+  ```json
+  {
+      "KEYBOARD": [
+          { "TEXT": "Button", "LINK": "https://example.com" }
+          ]
+  }
+  ```
+
+{% endlist %}
+
+## Button Fields
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **TEXT**
+[`string`](../../data-types.md) | Button text.
+
+For all buttons except `TYPE`, it is mandatory to specify `TEXT` and one action field — `LINK`, `COMMAND`, `ACTION + ACTION_VALUE`, or `APP_ID` ||
+|| **TYPE**
+[`string`](../../data-types.md) | Move the button to a new line. The only allowed value is `NEWLINE` ||
+|| **LINK**
+[`string`](../../data-types.md) | Button link. `http/https` and relative path `/...` are allowed ||
+|| **APP_ID**
+[`integer`](../../data-types.md) | Application identifier for the chat.
+
+Deprecated scenario. To open an application from the chat, use widgets ||
+|| **APP_PARAMS**
+[`string`](../../data-types.md) | Parameters for launching the application in the chat. Pass together with `APP_ID`.
+
+Deprecated scenario. To open an application from the chat, use widgets
+
+{% note info "" %}
+
+Currently, the option with parameters `APP_ID` and `APP_PARAMS` is used in chats [Open Channels](../../imopenlines/openlines/index.md)
+
+{% endnote %}
+||
+|| **ACTION**
+[`string`](../../data-types.md) | Action:
+
+- `PUT` — insert text into the input field 
+- `SEND` — send text 
+- `COPY` — copy text to the clipboard
+- `CALL` — make a call
+- `DIALOG` — open chat
+
+Available starting from [REST API IM revision](../im-revision-get.md) 28 ||
+|| **ACTION_VALUE**
+[`string`](../../data-types.md) | Value for `ACTION`:
+
+- `PUT` — text to be inserted into the input field
+- `SEND` — text to be sent
+- `COPY` — text to be copied to the clipboard
+- `CALL` — phone number in international format
+- `DIALOG` — chat identifier in the format `chatXXX` for group chat and `ID` of the user for personal chat 
+
+Available starting from [REST API IM revision](../im-revision-get.md) 28 ||
+|| **COMMAND**
+[`string`](../../data-types.md) | Command for the bot.
+
+Read more about command processing by the chat bot [below](#command-processing) ||
+|| **COMMAND_PARAMS**
+[`string`](../../data-types.md) | Command parameters. Pass together with `COMMAND` ||
+|| **BLOCK**
+[`string`](../../data-types.md) | Button blocking.
+
+Allowed values:
+- `Y` — block the button after pressing
+- `N` — do not block the button after pressing 
+
+Default — `N` ||
+|| **DISABLED**
+[`string`](../../data-types.md) | Button activity.
+
+Allowed values:
+- `Y` — button is inactive
+- `N` — button is active
+
+Default — `N` ||
+|| **CONTEXT**
+[`string`](../../data-types.md) | Display context.
+
+Allowed values:
+- `MOBILE` — show only on mobile devices
+- `DESKTOP` — show only in desktop version
+- `ALL` — show everywhere
+ 
+Default — `ALL` ||
+|| **DISPLAY**
+[`string`](../../data-types.md) | Button display.
+
+Allowed values:
+ - `LINE` — button in line
+ - `BLOCK` — button as a separate block
+ 
+Default — `BLOCK` ||
+|| **WIDTH**
+[`integer`](../../data-types.md) | Button width in pixels ||
+|| **BG_COLOR**
+[`string`](../../data-types.md) | Button color in HEX code format ||
+|| **BG_COLOR_TOKEN**
+[`string`](../../data-types.md) | Button color token.
+
+Allowed values:
+ - `primary` — main accent style
+ - `secondary` — secondary style
+ - `alert` — alert style
+ - `base` — basic neutral style
+ 
+Default — `base` ||
+|| **TEXT_COLOR**
+[`string`](../../data-types.md) | Button text color in HEX code format  ||
+|| **OFF_BG_COLOR**
+[`string`](../../data-types.md) | Button color in HEX code format in inactive state ||
+|| **OFF_TEXT_COLOR**
+[`string`](../../data-types.md) | Button text color in HEX code format in inactive state ||
+|#
+
+## Example of Sending a Message with a Keyboard from a Chat Bot
+
+{% include [Example Notes](../../../_includes/examples.md) %}
+
+{% list tabs %}
+
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"BOT_ID":1291,"DIALOG_ID":"chat2725","MESSAGE":"Select an action","URL_PREVIEW":"Y","KEYBOARD":{"BUTTONS":[{"TEXT":"Open Website","LINK":"https://www.example.com/","DISPLAY":"LINE","BG_COLOR_TOKEN":"primary"},{"TEXT":"Task Command","COMMAND":"task","COMMAND_PARAMS":"task #1","DISPLAY":"LINE","BG_COLOR_TOKEN":"secondary"},{"TYPE":"NEWLINE"},{"TEXT":"Insert Text","ACTION":"PUT","ACTION_VALUE":"/task task #1","DISPLAY":"BLOCK","BG_COLOR_TOKEN":"alert","TEXT_COLOR":"#FFFFFF"},{"TEXT":"Neutral Button","ACTION":"SEND","ACTION_VALUE":"Done","DISPLAY":"BLOCK","BG_COLOR_TOKEN":"base"}]},"CLIENT_ID":"**put_your_client_id_here**"}' \
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/imbot.message.add
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"BOT_ID":1291,"DIALOG_ID":"chat2725","MESSAGE":"Select an action","URL_PREVIEW":"Y","KEYBOARD":{"BUTTONS":[{"TEXT":"Open Website","LINK":"https://www.example.com/","DISPLAY":"LINE","BG_COLOR_TOKEN":"primary"},{"TEXT":"Task Command","COMMAND":"task","COMMAND_PARAMS":"task #1","DISPLAY":"LINE","BG_COLOR_TOKEN":"secondary"},{"TYPE":"NEWLINE"},{"TEXT":"Insert Text","ACTION":"PUT","ACTION_VALUE":"/task task #1","DISPLAY":"BLOCK","BG_COLOR_TOKEN":"alert","TEXT_COLOR":"#FFFFFF"},{"TEXT":"Neutral Button","ACTION":"SEND","ACTION_VALUE":"Done","DISPLAY":"BLOCK","BG_COLOR_TOKEN":"base"}]},"auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/imbot.message.add
+    ```
+
+- JS
+
+    ```js
+    try {
+        const response = await $b24.callMethod(
+            'imbot.message.add',
+            {
+                BOT_ID: 1291,
+                DIALOG_ID: 'chat2725',
+                MESSAGE: 'Select an action',
+                URL_PREVIEW: 'Y',
+                KEYBOARD: {
+                    BUTTONS: [
+                        {
+                            TEXT: 'Open Website',
+                            LINK: 'https://www.example.com/',
+                            DISPLAY: 'LINE',
+                            BG_COLOR_TOKEN: 'primary'
+                        },
+                        {
+                            TEXT: 'Task Command',
+                            COMMAND: 'task',
+                            COMMAND_PARAMS: 'task #1',
+                            DISPLAY: 'LINE',
+                            BG_COLOR_TOKEN: 'secondary'
+                        },
+                        { TYPE: 'NEWLINE' },
+                        {
+                            TEXT: 'Insert Text',
+                            ACTION: 'PUT',
+                            ACTION_VALUE: '/task task #1',
+                            DISPLAY: 'BLOCK',
+                            BG_COLOR_TOKEN: 'alert',
+                            TEXT_COLOR: '#FFFFFF'
+                        },
+                        {
+                            TEXT: 'Neutral Button',
+                            ACTION: 'SEND',
+                            ACTION_VALUE: 'Done',
+                            DISPLAY: 'BLOCK',
+                            BG_COLOR_TOKEN: 'base'
+                        }
+                    ]
+                }
+            }
+        );
+
+        const result = response.getData().result;
+        console.log('Created message with ID:', result);
+        processResult(result);
+    } catch (error) {
+        console.error('Error:', error);
+    }
+    ```
 
 - PHP
 
     ```php
-    restCommand(
-        'imbot.command.answer',
-        Array(
-            "COMMAND_ID" => $command['COMMAND_ID'],
-            "MESSAGE_ID" => $command['MESSAGE_ID'],
-            "MESSAGE" => "Hello! My name is EchoBot :)[br] I am designed to answer your questions!",
-            "KEYBOARD" => Array(
-    // Blue button with text Bitrix24 on the first line
-                Array(
-                    "TEXT" => "Bitrix24",
-                    "LINK" => "http://bitrix24.com",
-                    "BG_COLOR_TOKEN" => "primary",
-                    "BG_COLOR" => "#29619b",
-                    "TEXT_COLOR" => "#fff",
-                    "DISPLAY" => "LINE",		
-                ),
-    // White button with text BitBucket on the first line
-                Array(
-                    "TEXT" => "BitBucket", 
-                    "LINK" => "https://bitbucket.org/Bitrix24com/rest-bot-echotest",
-                    "BG_COLOR_TOKEN" => "secondary",
-                    "BG_COLOR" => "#2a4c7c",
-                    "TEXT_COLOR" => "#fff",
-                    "DISPLAY" => "LINE",
-                ),
-    // Line break, the next buttons will be placed on the second line
-                Array(
-                    "TYPE" => "NEWLINE" 
-                ), 
-    // Red button with text Echo on the second line
-                Array(
-                    "TEXT" => "Echo", 
-                    "COMMAND" => "echo",
-                    "COMMAND_PARAMS" => "test from keyboard",
-                    "DISPLAY" => "LINE",
-                    "BG_COLOR_TOKEN" => "alert",
-                ),
-    // Basic button with text List on the second line
-                Array(
-                    "TEXT" => "List",
-                    "COMMAND" => "echoList",
-                    "DISPLAY" => "LINE"
-                ),
-    // Basic button with text Help on the second line
-                Array(
-                    "TEXT" => "Help", 
-                    "COMMAND" => "help",
-                    "DISPLAY" => "LINE"
-                ),
-            )
-        ),
-        $_REQUEST["auth"]
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'imbot.message.add',
+                [
+                    'BOT_ID' => 1291,
+                    'DIALOG_ID' => 'chat2725',
+                    'MESSAGE' => 'Select an action',
+                    'URL_PREVIEW' => 'Y',
+                    'KEYBOARD' => [
+                        'BUTTONS' => [
+                            [
+                                'TEXT' => 'Open Website',
+                                'LINK' => 'https://www.example.com/',
+                                'DISPLAY' => 'LINE',
+                                'BG_COLOR_TOKEN' => 'primary'
+                            ],
+                            [
+                                'TEXT' => 'Task Command',
+                                'COMMAND' => 'task',
+                                'COMMAND_PARAMS' => 'task #1',
+                                'DISPLAY' => 'LINE',
+                                'BG_COLOR_TOKEN' => 'secondary'
+                            ],
+                            ['TYPE' => 'NEWLINE'],
+                            [
+                                'TEXT' => 'Insert Text',
+                                'ACTION' => 'PUT',
+                                'ACTION_VALUE' => '/task task #1',
+                                'DISPLAY' => 'BLOCK',
+                                'BG_COLOR_TOKEN' => 'alert',
+                                'TEXT_COLOR' => '#FFFFFF'
+                            ],
+                            [
+                                'TEXT' => 'Neutral Button',
+                                'ACTION' => 'SEND',
+                                'ACTION_VALUE' => 'Done',
+                                'DISPLAY' => 'BLOCK',
+                                'BG_COLOR_TOKEN' => 'base'
+                            ]
+                        ]
+                    ]
+                ]
+            );
+
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+
+        echo 'Success: ' . print_r($result, true);
+        processData($result);
+
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error adding message: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
+    BX24.callMethod(
+        'imbot.message.add',
+        {
+            BOT_ID: 1291,
+            DIALOG_ID: 'chat2725',
+            MESSAGE: 'Select an action',
+            URL_PREVIEW: 'Y',
+            KEYBOARD: {
+                BUTTONS: [
+                    {
+                        TEXT: 'Open Website',
+                        LINK: 'https://www.example.com/',
+                        DISPLAY: 'LINE',
+                        BG_COLOR_TOKEN: 'primary'
+                    },
+                    {
+                        TEXT: 'Task Command',
+                        COMMAND: 'task',
+                        COMMAND_PARAMS: 'task #1',
+                        DISPLAY: 'LINE',
+                        BG_COLOR_TOKEN: 'secondary'
+                    },
+
+                    { TYPE: 'NEWLINE' },
+
+                    {
+                        TEXT: 'Insert Text',
+                        ACTION: 'PUT',
+                        ACTION_VALUE: '/task task #1',
+                        DISPLAY: 'BLOCK',
+                        BG_COLOR_TOKEN: 'alert',
+                        TEXT_COLOR: '#FFFFFF'
+                    },
+                    {
+                        TEXT: 'Neutral Button',
+                        ACTION: 'SEND',
+                        ACTION_VALUE: 'Done',
+                        DISPLAY: 'BLOCK',
+                        BG_COLOR_TOKEN: 'base'
+                    }
+                ]
+            }
+        },
+        function(result) {
+            if (result.error()) {
+                console.error(result.error().ex);
+            } else {
+                console.log(result.data());
+            }
+        }
     );
+    ```
+
+- PHP CRest
+
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'imbot.message.add',
+        [
+            'BOT_ID' => 1291,
+            'DIALOG_ID' => 'chat2725',
+            'MESSAGE' => 'Select an action',
+            'URL_PREVIEW' => 'Y',
+            'KEYBOARD' => [
+                'BUTTONS' => [
+                    [
+                        'TEXT' => 'Open Website',
+                        'LINK' => 'https://www.example.com/',
+                        'DISPLAY' => 'LINE',
+                        'BG_COLOR_TOKEN' => 'primary'
+                    ],
+                    [
+                        'TEXT' => 'Task Command',
+                        'COMMAND' => 'task',
+                        'COMMAND_PARAMS' => 'task #1',
+                        'DISPLAY' => 'LINE',
+                        'BG_COLOR_TOKEN' => 'secondary'
+                    ],
+                    ['TYPE' => 'NEWLINE'],
+                    [
+                        'TEXT' => 'Insert Text',
+                        'ACTION' => 'PUT',
+                        'ACTION_VALUE' => '/task task #1',
+                        'DISPLAY' => 'BLOCK',
+                        'BG_COLOR_TOKEN' => 'alert',
+                        'TEXT_COLOR' => '#FFFFFF'
+                    ],
+                    [
+                        'TEXT' => 'Neutral Button',
+                        'ACTION' => 'SEND',
+                        'ACTION_VALUE' => 'Done',
+                        'DISPLAY' => 'BLOCK',
+                        'BG_COLOR_TOKEN' => 'base'
+                    ]
+                ]
+            ]
+        ]
+    );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
     ```
 
 {% endlist %}
 
-A keyboard is a set of buttons, each button can consist of the following keys:
+## How to Update or Remove a Keyboard
 
-- **TEXT** — button text
-- **LINK** — link
-- **COMMAND** — command that will be sent to the bot
-- **COMMAND_PARAMS** — parameters for the command
-- **BG_COLOR_TOKEN** — token for the button color in the chat. It can take one of the following values:
-  - `primary`
-  - `secondary`
-  - `alert`
-  - `base`
-    Defaults to `base`
-- **BG_COLOR** — button color in HEX code format. Used for backward compatibility in buttons of Open Channels chats
-- **BLOCK** — if set to Y, the keyboard will be blocked after clicking one button. Only buttons that send ajax to the bot block the keyboard (note that links to external resources **LINK** and instant actions **ACTION** do not block the keyboard). Blocking is necessary to limit the execution of ajax commands due to their asynchronous nature and waiting time: after pressing a button, the keyboard is blocked and waits for a response from the Bitrix24 backend, so the user does not press a second button, etc. The backend processes commands and decides whether to unblock the keyboard by creating a new one or hiding it.
-- **DISABLED** — if set to Y, this button will not be clickable
-- **TEXT_COLOR** — button text color in HEX code format. Used for backward compatibility in buttons of Open Channels chats
-- **DISPLAY** — button type. If the type **BLOCK** is specified, only this button can be on one line. If the type **LINE** is specified, the buttons will be arranged one after another.
-- **WIDTH** — button width. **Note**, for maximum convenience, it is not recommended to make a set of buttons in one line wider than 225 pixels; this is the maximum width on a mobile device.
-- **APP_ID** — identifier of the installed application for the chat
-- **APP_PARAMS** — parameters for launching the application for the chat
-- **ACTION** — action, can be one of the following types ([REST revision 28](../im-revision-get.md)):
-  - **PUT** — insert into the input field
-  - **SEND** — send text
-  - **COPY** — copy text to clipboard
-  - **CALL** — call
-  - **DIALOG** — open the specified
-- **ACTION_VALUE** — value, which means its own for each type ([REST revision 28](../im-revision-get.md)):
-  - **PUT** — text that will be inserted into the input field
-  - **SEND** — text that will be sent
-  - **COPY** — text that will be copied to the clipboard
-  - **CALL** — phone number in international format
-  - **DIALOG** — dialog identifier, which can be a user ID or chat ID in the format chatXXX
+To update the keyboard buttons, use the following methods:
 
-The required fields are **TEXT** and either the **LINK** field or the **COMMAND** field.
+- [im.message.update](./im-message-update.md)
+- [imbot.message.update](../../chat-bots/messages/imbot-message-update.md)
 
-If the **LINK** key is specified, the button becomes an external link. If the **COMMAND** and **COMMAND_PARAMS** fields are specified, the button is an action and sends a command to the chat bot without publishing it in the chat.
+To disable the display of buttons, pass:
 
-If the **APP_ID** and **APP_PARAMS** fields are specified, the button will open a window with the chat application.
+- `KEYBOARD: 'N'`
+- an empty value for `KEYBOARD`
 
-If you need to create two rows of buttons in a row, you need to add a button with the following content to separate them: `"TYPE" => "NEWLINE"`.
+## Command Processing by the Chat Bot {#command-processing}
 
-## Processing Commands by the Chat Bot
+1. To ensure the command works with the keyboard, register it using the [imbot.command.register](../../chat-bots/commands/imbot-command-register.md) method.
 
-To handle button presses on the keyboard, **commands** are used.
-
-1. For the command to work on the keyboard (and not only), it must first be registered through the method [imbot.command.register](../../chat-bots/commands/imbot-command-register.md) (to make the command available only for the keyboard, it must be created with the key `"HIDDEN" => "Y"`).
-
-    In the button, the following keys are specified:
+    In the button, specify the following keys:
 
     ```php
-    "COMMAND" => "page", // command that will be sent to the chat bot
-    "COMMAND_PARAMS" => "1", // parameters for the command
-    ```
+    "COMMAND" => "example", // command that will be sent to the chat bot
+    "COMMAND_PARAMS" => "example", // parameters for the command
+     ```  
 
-2. Pressing the button will generate the event [ONIMCOMMANDADD](../../chat-bots/commands/events/on-im-command-add.md).
-
-3. Inside this event, you need to either create a new message or edit an old one (thus creating the effect of pagination).
-
-4. Inside the event, the array **[data][COMMAND]** will contain data about the triggered event. It has the value **COMMAND_CONTEXT** - a special key that describes in what context the command was triggered:
-   - if the command was written by the user themselves, it will be **TEXTAREA**;
-   - if the command came from the keyboard, it will be **KEYBOARD**;
-   - if the command came from the context menu, it will be **MENU**.
-
-You can see a complete example in the updated version of the [EchoBot](https://github.com/bitrix24com/bots) (**bot.php**).
-
-## Handling the Opening of the Chat Application
-
-Chat applications launched from the context menu operate on the principles of [Contextual Applications](../outdated/chat-apps.md).
-
-## Examples of Using the Keyboard
-
-1. **EchoBot**
-    Pagination, buttons when the command "Help" is called
-
-2. **Martha**
-    Just write to Martha "Play with me!". The keyboard is used as a game board:
-
-3. **Giphy**
-    The **More** button allows you to view other images on the same topic without re-entering the search term:
-
-    ![Giphy Keyboard](./_images/keyboard2.png)
+2. Pressing the button will generate the [ONIMCOMMANDADD](../../chat-bots/commands/events/on-im-command-add.md) event.
+3. Inside the event, the array `data[COMMAND]` will contain data about the invoked event. The value `COMMAND_CONTEXT` will indicate the context in which the command was invoked:
+   - `TEXTAREA` — command entered manually
+   - `KEYBOARD` — command invoked by button
+   - `MENU` — command invoked from the context menu

@@ -1,85 +1,95 @@
-# Read notification or all notifications with specified im.notify.read
-
-{% note warning "We are still updating this page" %}
-
-Some data may be missing — we will fill it in shortly
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- edits needed for writing standards
-- parameter types not specified
-- examples missing
-- response in case of error is absent
-
-{% endnote %}
-
-{% endif %}
+# Read or Mark Notification as Unread im.notify.read
 
 > Scope: [`im`](../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-The method `im.notify.read` sets a mark for read notifications.
+The method `im.notify.read` marks a notification or all notifications as read or unread based on the specified parameters.
 
-## Parameters
+## Method Parameters
+
+{% include [Footnote on parameters](../../../_includes/required.md) %}
 
 #|
-|| **Parameter** | **Example** | **Description** | **Revision** ||
-|| **ID^*^**
-[`unknown`](../../data-types.md) | `17` | Notification identifier | 18 ||
+|| **Name**
+`Type` | **Description** ||
+|| **ID**
+[`integer`](../../data-types.md) | The identifier of the notification. When `ID >= 0`, the status is changed; if `ID` is absent, the method will return `true` without any changes ||
+|| **ACTION**
+[`string`](../../data-types.md) | Action on the notifications:
+- `Y` — mark as read
+- `N` — mark as unread
+
+Default value is `Y` ||
 || **ONLY_CURRENT**
-[`unknown`](../../data-types.md) | `N` | Read only the specified notification | 18 ||
+[`string`](../../data-types.md) | The value `Y` changes only the notification with the specified `ID`. Any other value changes notifications whose identifiers are equal to or greater than this `ID` ||
 |#
 
-{% include [Footnote about parameters](../../../_includes/required.md) %}
+## Code Examples
 
-- If the `ONLY_CURRENT` parameter is passed as `Y`, the read mark will be set only for the specified `ID`. Otherwise, the mark will be set for notifications equal to or greater than the specified `ID`.
-
-## Examples
+{% include [Footnote on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
+
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+      -H "Content-Type: application/json" \
+      -H "Accept: application/json" \
+      -d '{"ID":101,"ACTION":"Y","ONLY_CURRENT":"Y"}' \
+      https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/im.notify.read
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+      -H "Content-Type: application/json" \
+      -H "Accept: application/json" \
+      -d '{"ID":101,"ACTION":"Y","ONLY_CURRENT":"Y","auth":"**put_access_token_here**"}' \
+      https://**put_your_bitrix24_address**/rest/im.notify.read
+    ```
 
 - JS
 
     ```js
-    try
-    {
-    	const response = await $b24.callMethod(
-    		'im.notify.read',
-    		{
-    			'ID': 17,
-    		}
-    	);
-    	
-    	const result = response.getData().result;
-    	console.log(result);
-    }
-    catch( error )
-    {
-    	console.error(error.ex);
+    try {
+      const response = await $b24.callMethod('im.notify.read', {
+        ID: 101,
+        ACTION: 'Y',
+        ONLY_CURRENT: 'Y',
+      });
+
+      const { result } = response.getData();
+      console.log(result);
+    } catch (error) {
+      console.error(error);
     }
     ```
 
 - PHP
 
-    ```php       
+    ```php
     try {
-        $notificationIds = [1, 2, 3]; // Example notification IDs
-        $result = $serviceBuilder
-            ->getIMScope()
-            ->notify()
-            ->markMessagesAsUnread($notificationIds);
-        if ($result->isSuccess()) {
-            print_r($result->getCoreResponse()->getResponseData()->getResult());
+        $response = $b24Service->core->call(
+            'im.notify.read',
+            [
+                'ID' => 101,
+                'ACTION' => 'Y',
+                'ONLY_CURRENT' => 'Y',
+            ]
+        );
+
+        $result = $response->getResponseData()->getResult();
+
+        if ($result->error()) {
+            echo 'Error: ' . $result->error();
         } else {
-            print("Failed to mark messages as unread.");
+            var_dump($result->data());
         }
-    } catch (Throwable $e) {
-        print("An error occurred: " . $e->getMessage());
+    } catch (Throwable $exception) {
+        echo $exception->getMessage();
     }
     ```
 
@@ -89,15 +99,14 @@ The method `im.notify.read` sets a mark for read notifications.
     BX24.callMethod(
         'im.notify.read',
         {
-            'ID': 17,
+            ID: 101,
+            ACTION: 'Y',
+            ONLY_CURRENT: 'Y',
         },
-        function(result){
-            if(result.error())
-            {
+        function(result) {
+            if (result.error()) {
                 console.error(result.error().ex);
-            }
-            else
-            {
+            } else {
                 console.log(result.data());
             }
         }
@@ -106,32 +115,73 @@ The method `im.notify.read` sets a mark for read notifications.
 
 - PHP CRest
 
-    {% include [Explanation about restCommand](../_includes/rest-command.md) %}
-
     ```php
-    $result = restCommand(
+    require_once('crest.php');
+
+    $result = CRest::call(
         'im.notify.read',
-        Array(
-            'ID' => '17'
-        ),
-        $_REQUEST[
-            "auth"
+        [
+            'ID' => 101,
+            'ACTION' => 'Y',
+            'ONLY_CURRENT' => 'Y',
         ]
-    );    
+    );
+
+    if (!empty($result['error'])) {
+        echo 'Error: ' . $result['error_description'];
+    } else {
+        var_dump($result['result']);
+    }
     ```
-
-- cURL
-
-    // example for cURL
-
 {% endlist %}
 
-{% include [Footnote about examples](../../../_includes/examples.md) %}
+## Response Handling
 
-## Response in case of success
+HTTP Code: **200**
 
 ```json
 {
-    "result": true
-}        
+    "result": true,
+    "time": {
+        "start": 1760000000.0,
+        "finish": 1760000000.1,
+        "duration": 0.1,
+        "processing": 0.04,
+        "date_start": "2026-03-02T09:30:00+01:00",
+        "date_finish": "2026-03-02T09:30:00+01:00",
+        "operating_reset_at": 1760030000,
+        "operating": 0
+    }
+}
 ```
+
+## Returned Data
+
+#|
+|| **Name**
+`Type` | **Description** ||
+|| **result**
+[`boolean`](../../data-types.md) | Returns `true` after executing the method ||
+|| **time**
+[`time`](../../data-types.md#time) | Information about the execution time of the request ||
+|#
+
+## Error Handling
+
+{% include notitle [Error Handling](../../../_includes/error-info.md) %}
+
+{% include [System Errors](../../../_includes/system-errors.md) %}
+
+## Continue Learning
+
+- [{#T}](./im-notify.md)
+- [{#T}](./im-notify-personal-add.md)
+- [{#T}](./im-notify-system-add.md)
+- [{#T}](./im-notify-get.md)
+- [{#T}](./im-notify-schema-get.md)
+- [{#T}](./im-notify-read-list.md)
+- [{#T}](./im-notify-read-all.md)
+- [{#T}](./im-notify-answer.md)
+- [{#T}](./im-notify-confirm.md)
+- [{#T}](./im-notify-delete.md)
+- [{#T}](./im-notify-history-search.md)

@@ -1,18 +1,17 @@
 # Chat Search: Overview of Methods
 
-With the search feature, you can find group chats, departments, and employees. The search is managed by a group of methods im.search.*.
+The search functionality allows you to find group chats, departments, and employees. The search is managed by a group of methods `im.search.*`.
 
-All methods support standard pagination. You can customize the selection using the `OFFSET` and `LIMIT` parameters.
+All methods in the current version of the chat support standard pagination. You can customize the selection using the `OFFSET` and `LIMIT` parameters.
 
-> Quick navigation: [all methods and events](#all-methods) 
-> 
+> Quick navigation: [all methods and events](#all-methods)  
 > User documentation: [Chats in Bitrix24: Design and features](https://helpdesk.bitrix24.com/open/21924784/)
 
 ## Find Chat by Name
 
 The method [im.search.chat.list](./im-search-chat-list.md) searches for group chats by name and participants. The search is performed on substrings:
--  in the chat title,
--  first and last names of participants.
+- in the chat title,
+- in the first and last names of participants.
 
 ## Find Departments
 
@@ -24,6 +23,9 @@ The method [im.search.user.list](./im-search-user-list.md) searches for employee
 
 ## Overview of Methods {#all-methods}
 
+> Scope: [`im`](../../scopes/permissions.md)  
+> Who can execute the method: any user
+
 #|
 || **Method** | **Description** ||
 || [im.search.chat.list](./im-search-chat-list.md) | Searches for chats by names ||
@@ -31,13 +33,13 @@ The method [im.search.user.list](./im-search-user-list.md) searches for employee
 || [im.search.user.list](./im-search-user-list.md) | Searches for users ||
 |#
 
-### Methods for the Previous Chat Version
+### Methods for the Previous Version of the Chat
 
-These methods were developed for the previous version of the chat. In the current chat version M1, they work, but the results are not displayed in the interface.
+These methods were designed for the previous version of the chat. In the current version, M1, they still function, but the results are not displayed in the interface.
 
 {% note tip "User Documentation" %}
 
-- [Bitrix24 Chat: new messenger and AI](https://helpdesk.bitrix24.com/open/19246004/)
+- [Bitrix24 Chat: new messenger](https://helpdesk.bitrix24.com/open/19246004/)
 
 {% endnote %}
 

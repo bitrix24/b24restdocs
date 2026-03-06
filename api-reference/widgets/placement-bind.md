@@ -1,14 +1,14 @@
-# Install Widget Handler placement.bind
+# Set Up the Widget Handler placement.bind
 
 > Scope: [`placement`, `depending on the placement location`](../scopes/permissions.md)
 >
 > Who can execute the method: administrator
 
-This method adds a handler for the widget placement.
+The method `placement.bind` adds a handler for the widget placement.
 
 It can be called at any time during the application's operation; however, it is often more convenient to register your widgets during the [application installation](../../settings/app-installation/index.md).
 
-It is important to note that until the application installation is complete, the widgets you register will not be available to regular users in the Bitrix24 interface - they can only be seen by users with administrative rights. 
+It is important to note that until the application installation is complete, the widgets you register will not be available to regular users in the Bitrix24 interface—they will only be visible to users with administrative rights. 
 [Check the application installation](../../settings/app-installation/installation-finish.md).
 
 ## Method Parameters {#params}
@@ -19,15 +19,15 @@ It is important to note that until the application installation is complete, the
 || **Name**
 `type` | **Description** ||
 || **PLACEMENT***
-[`string`](../data-types.md) | Identifier of the required widget placement location ||
+[`string`](../data-types.md) | Identifier for the required widget placement location ||
 || **HANDLER***
 [`string`](../data-types.md) | URL of the widget placement handler ||
 || **TITLE**
-[`string`](../data-types.md) | Name of the widget in the interface. Depending on the specific placement location, this may be the name of a tab in a form, the name of a menu item, etc. ||
+[`string`](../data-types.md) | Name of the widget in the interface. Depending on the specific placement location, this may be the name of a tab in a form, a menu item, etc. ||
 || **DESCRIPTION**
 [`string`](../data-types.md) | Description of the widget in the interface. Not used in practice ||
 || **GROUP_NAME**
-[`string`](../data-types.md) | Allows grouping UI elements for multiple handlers of the same type of widget into a group. For example, several dropdown menu items in the [top button of the CRM card](./crm/detail-toolbar.md). Supported only by certain types of widgets ||
+[`string`](../data-types.md) | Allows grouping UI elements for multiple handlers of the same widget type. For example, several dropdown items in the [top button of the CRM card](./crm/detail-toolbar.md). Supported only by certain types of widgets ||
 || **LANG_ALL**
 [`object`](../data-types.md) | Array of parameters `TITLE`, `DESCRIPTION`, and `GROUP_NAME` for specified languages. Users who have selected one of these languages in the Bitrix24 interface will see localized versions of `TITLE`, `DESCRIPTION`, and `GROUP_NAME`: 
 
@@ -40,7 +40,7 @@ It is important to note that until the application installation is complete, the
             "GROUP_NAME": "group"
         },
         "de": {
-            "TITLE": "Überschrift",
+            "TITLE": "Titel",
             "DESCRIPTION": "Beschreibung",
             "GROUP_NAME": "Gruppe"
         }
@@ -69,23 +69,13 @@ If you attempt to register a placement in other widgets, you will receive the er
 
 {% list tabs %}
 
-- cURL (Webhook)
-
-    ```bash
-    curl -X POST \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json" \
-    -d '{"PLACEMENT":"PLACEMENT_CODE","HANDLER":"http://myapp.com/handler/?type=1","OPTIONS":{"errorHandlerUrl":"http://myapp.com/error/"},"TITLE":"title","DESCRIPTION":"description","GROUP_NAME":"group","LANG_ALL":{"en":{"TITLE":"title","DESCRIPTION":"description","GROUP_NAME":"group"},"de":{"TITLE":"Überschrift","DESCRIPTION":"Beschreibung","GROUP_NAME":"Gruppe"}}}' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/placement.bind
-    ```
-
 - cURL (OAuth)
 
     ```bash
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"PLACEMENT":"PLACEMENT_CODE","HANDLER":"http://myapp.com/handler/?type=1","OPTIONS":{"errorHandlerUrl":"http://myapp.com/error/"},"TITLE":"title","DESCRIPTION":"description","GROUP_NAME":"group","LANG_ALL":{"en":{"TITLE":"title","DESCRIPTION":"description","GROUP_NAME":"group"},"de":{"TITLE":"Überschrift","DESCRIPTION":"Beschreibung","GROUP_NAME":"Gruppe"}},"auth":"**put_access_token_here**"}' \
+    -d '{"PLACEMENT":"PLACEMENT_CODE","HANDLER":"http://myapp.com/handler/?type=1","OPTIONS":{"errorHandlerUrl":"http://myapp.com/error/"},"TITLE":"title","DESCRIPTION":"description","GROUP_NAME":"group","LANG_ALL":{"en":{"TITLE":"title","DESCRIPTION":"description","GROUP_NAME":"group"},"de":{"TITLE":"Titel","DESCRIPTION":"Beschreibung","GROUP_NAME":"Gruppe"}},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/placement.bind
     ```
 
@@ -112,7 +102,7 @@ If you attempt to register a placement in other widgets, you will receive the er
     					"GROUP_NAME": "group",
     				},
     				"de": {
-    					"TITLE": "Überschrift",
+    					"TITLE": "Titel",
     					"DESCRIPTION": "Beschreibung",
     					"GROUP_NAME": "Gruppe",
     				}
@@ -156,7 +146,7 @@ If you attempt to register a placement in other widgets, you will receive the er
                             'GROUP_NAME' => 'group',
                         ],
                         'de' => [
-                            'TITLE' => 'Überschrift',
+                            'TITLE' => 'Titel',
                             'DESCRIPTION' => 'Beschreibung',
                             'GROUP_NAME' => 'Gruppe',
                         ]
@@ -201,7 +191,7 @@ If you attempt to register a placement in other widgets, you will receive the er
                     "GROUP_NAME": "group",
                 },
                 "de": {
-                    "TITLE": "Überschrift",
+                    "TITLE": "Titel",
                     "DESCRIPTION": "Beschreibung",
                     "GROUP_NAME": "Gruppe",
                 }
@@ -240,7 +230,7 @@ If you attempt to register a placement in other widgets, you will receive the er
                     'GROUP_NAME' => 'group'
                 ],
                 'de' => [
-                    'TITLE' => 'Überschrift',
+                    'TITLE' => 'Titel',
                     'DESCRIPTION' => 'Beschreibung',
                     'GROUP_NAME' => 'Gruppe'
                 ]
@@ -315,25 +305,26 @@ HTTP status: **400**, **403**, **200**
 
 #|
 || **Code** | **Description** | **Status** ||
-|| `ERROR_PLACEMENT_MAX_COUNT` | Attempted to re-register the handler for the `PAGE_BACKGROUND_WORKER` widget | 200 ||
-|| `ERROR_ARGUMENT` | Required field value is not specified. The code of the required field is returned in `argument`| 200 ||
+|| `ERROR_PLACEMENT_MAX_COUNT` | Attempted to re-register the handler for the widget `PAGE_BACKGROUND_WORKER` | 200 ||
+|| `ERROR_ARGUMENT` | A required field value is missing. The code of the required field is returned in `argument`| 200 ||
+|| `WRONG_AUTH_TYPE` | Current authorization type is denied for this method Application context required | 403 ||
 |#
 
 {% include [system errors](../../_includes/system-errors.md) %}
 
 ## Widget Handler
 
-Thus, a successful call to the `placement.bind` method allowed you to register the widget handler. It is important that the HANDLER_URL parameter you specified points to a real and accessible URL.
+Thus, a successful call to the method `placement.bind` has allowed you to register a widget handler. It is important that the HANDLER_URL parameter you specify points to a real and accessible URL.
 
 {% note warning "Important" %}
 
-It is required that the handler URL is **definitely** accessible from the external network. Links to localhost, local domains, and similar ways of accessing a local web server are not acceptable. Check the availability of the URL you specified using special services that monitor website availability!
+It is required that the handler URL is **definitely** accessible from the external network. Links to localhost, local domains, and similar ways to access a local web server are not acceptable. Check the accessibility of the URL you specified using special services that monitor website availability!
 
 {% endnote %}
 
 When accessing your handler, Bitrix24 will send a POST message containing information about the widget context, such as the deal identifier if the widget is embedded in the deal card in CRM, etc.
 
-Examples of such data can be found in the descriptions of [specific widget placement locations](./placements.md).
+You will find examples of such data in the descriptions of [specific widget placement locations](./placements.md).
 
 ## Continue Learning
 

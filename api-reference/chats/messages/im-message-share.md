@@ -1,87 +1,193 @@
-# Create an object based on the message im.message.share
-
-{% note warning "We are still updating this page" %}
-
-Some data may be missing — we will complete it shortly.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- edits needed for writing standards
-- parameter types are not specified
-- examples are missing
-
-{% endnote %}
-
-{% endif %}
+# Create an Object Based on the Message im.message.share
 
 > Scope: [`im`](../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: chat participant
 
-The method `im.message.share` creates new entities based on a chat message: a new chat, task, post in Feed, or event in the calendar.
+The method `im.message.share` creates an object based on a message.
+
+## Method Parameters
+
+{% include [Note on Required Parameters](../../../_includes/required.md) %}
 
 #|
-|| **Parameter** | **Example** | **Description** | **Revision** ||
-|| **MESSAGE_ID^*^**
-[`unknown`](../../data-types.md) | `289` | Identifier of the message for which a new entity will be created | 30 ||
-|| **DIALOG_ID^*^**
-[`unknown`](../../data-types.md) | `'chat74'` | Identifier of the dialog. Format:
-- **chatXXX** – chat of the recipient, if the message is for a chat
-- **XXX** – identifier of the recipient, if the message is for a private dialog | 30 ||
-|| **TYPE^*^**
-[`unknown`](../../data-types.md) | `'TASK'` | Type of the entity to be created:
-- `'CHAT'` – a new chat will be created based on the message
-- `'TASK'` – a task will be created based on the message
-- `'POST'` – a post will be created in Feed based on the message
-- `'CALEND'` – an event will be created in the calendar based on the message | 30 ||
+|| **Name**
+`type` | **Description** ||
+|| **MESSAGE_ID***
+[`integer`](../../data-types.md) | Identifier of the message.
+
+The identifier can be obtained using the method [im.dialog.messages.get](./im-dialog-messages-get.md) ||
+|| **DIALOG_ID***
+[`string`](../../data-types.md) | Identifier of the chat in the format:
+
+- `chatXXX` — chat
+- `sgXXX` — group or project chat
+- `XXX` — identifier of the user in a personal chat 
+
+The chat identifier can be obtained using the method [im.chat.get](../im-chat-get.md). The user identifier can be obtained using the methods [user.get](../../user/user-get.md) and [user.search](../../user/user-search.md) ||
+|| **TYPE***
+[`string`](../../data-types.md) | Type of the object being created.
+
+Allowed values:
+- `CHAT` — chat
+- `TASK` — task
+- `POST` — post in the feed
+- `CALEND` — calendar event ||
 |#
 
-{% include [Footnote about parameters](../../../_includes/required.md) %}
+## Code Examples
 
-## Examples
+{% include [Note on Examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
+
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"MESSAGE_ID":34261,"DIALOG_ID":"chat2941","TYPE":"TASK"}' \
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/im.message.share
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"MESSAGE_ID":34261,"DIALOG_ID":"chat2941","TYPE":"TASK","auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/im.message.share
+    ```
 
 - JS
 
     ```js
-    B24.callMethod(
+    try
+    {
+        const response = await $b24.callMethod(
+            'im.message.share',
+            {
+                MESSAGE_ID: 34261,
+                DIALOG_ID: 'chat2941',
+                TYPE: 'TASK'
+            }
+        );
+        
+        const result = response.getData().result;
+        console.log(result);
+        processResult(result);
+    }
+    catch( error )
+    {
+        console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'im.message.share',
+                [
+                    'MESSAGE_ID' => 34261,
+                    'DIALOG_ID' => 'chat2941',
+                    'TYPE' => 'TASK'
+                ]
+            );
+
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+
+        echo 'Success: ' . print_r($result, true);
+        processData($result);
+
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error sharing message: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
+    BX24.callMethod(
         'im.message.share',
         {
-            MESSAGE_ID: 289,
-            DIALOG_ID: 'chat74',
-            TYPE: 'CHAT',
+            MESSAGE_ID: 34261,
+            DIALOG_ID: 'chat2941',
+            TYPE: 'TASK'
         },
-        res => {
-            if (res.error())
-            {
-            console.error(result.error().ex);
-            }
+        function(result)
+        {
+            if (result.error())
+                console.error(result.error());
             else
-            {
-            console.log(res.data())
-            }
+                console.log(result.data());
         }
-    )
+    );
+    ```
+
+- PHP CRest
+
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'im.message.share',
+        [
+            'MESSAGE_ID' => 34261,
+            'DIALOG_ID' => 'chat2941',
+            'TYPE' => 'TASK'
+        ]
+    );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
     ```
 
 {% endlist %}
 
-{% include [Footnote about examples](../../../_includes/examples.md) %}
+## Response Handling
 
-## Response on success
+HTTP Status: **200**
 
 ```json
 {
-    "result": true
+    "result": true,
+    "time": {
+        "start": 1772632079,
+        "finish": 1772632079.779834,
+        "duration": 0.7798340320587158,
+        "processing": 0,
+        "date_start": "2026-03-04T16:47:59+01:00",
+        "date_finish": "2026-03-04T16:47:59+01:00",
+        "operating_reset_at": 1772632679,
+        "operating": 0.5939757823944092
+    }
 }
 ```
 
-## Response on error
+### Returned Data
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`boolean`](../../data-types.md) | `true` if the object was created ||
+|| **time**
+[`time`](../../data-types.md#time) | Information about the request execution time ||
+|#
+
+## Error Handling
+
+HTTP Status: **400**, **403**
 
 ```json
 {
@@ -90,17 +196,22 @@ The method `im.message.share` creates new entities based on a chat message: a ne
 }
 ```
 
-### Description of keys
+{% include notitle [Error Handling](../../../_includes/error-info.md) %}
 
-- `error` – code of the occurred error
-- `error_description` – brief description of the occurred error
-
-### Possible error codes
+### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| **MESSAGE_ID_ERROR** | The parameter `MESSAGE_ID` is not set or is not a number ||
-|| **DIALOG_ID_EMPTY** | The parameter `DIALOG_ID` is not set or does not match the format ||
-|| **ACCESS_ERROR** | The current user does not have access permission to the chat or dialog ||
-|| **PARAMS_ERROR** | The parameter `TYPE` is not set or does not match the existing types ||
+|| **Code** | **Description** | **Value** ||
+|| `MESSAGE_ID_ERROR` | Message ID can't be empty | `MESSAGE_ID` is missing or incorrect ||
+|| `DIALOG_ID_EMPTY` | Dialog ID can't be empty | `DIALOG_ID` is missing or incorrect ||
+|| `ACCESS_ERROR` | You do not have access to the specified dialog | No access to the dialog ||
+|| `PARAMS_ERROR` | Incorrect params | Incorrect request parameters ||
 |#
+
+{% include [System Errors](../../../_includes/system-errors.md) %}
+
+## Continue Learning
+
+- [{#T}](./im-message-add.md)
+- [{#T}](./im-message-command.md)
+- [{#T}](./im-dialog-messages-get.md)

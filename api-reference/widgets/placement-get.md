@@ -1,10 +1,10 @@
-# Get a list of registered widget placement handlers placement.get
+# Get a List of Registered Placement Handlers placement.get
 
 > Scope: [`placement`, `depending on the placement`](../scopes/permissions.md)
 >
 > Who can execute the method: administrator
 
-This method retrieves a list of registered widget placement handlers.
+The method `placement.get` retrieves a list of registered widget placement handlers.
 
 ## Method Parameters
 
@@ -15,16 +15,6 @@ The method has no parameters.
 {% include [Examples Note](../../_includes/examples.md) %}
 
 {% list tabs %}
-
-- cURL (Webhook)
-
-    ```bash
-    curl -X POST \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json" \
-    -d '{}' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/placement.get
-    ```
 
 - cURL (OAuth)
 
@@ -41,17 +31,17 @@ The method has no parameters.
     ```js
     try
     {
-    	const response = await $b24.callMethod(
-    		"placement.get",
-    		{}
-    	);
-    	
-    	const result = response.getData().result;
-    	console.info(result);
+        const response = await $b24.callMethod(
+            "placement.get",
+            {}
+        );
+        
+        const result = response.getData().result;
+        console.info(result);
     }
     catch( error )
     {
-    	console.error(error);
+        console.error(error);
     }
     ```
 
@@ -85,7 +75,7 @@ The method has no parameters.
 - BX24.js
 
     ```js
- 	BX24.callMethod(
+    BX24.callMethod(
         "placement.get",
         {},
         function(result)
@@ -117,7 +107,7 @@ The method has no parameters.
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -212,12 +202,12 @@ HTTP status: **200**
 
 ||
 || **time**
-[`time`](../data-types.md) | Information about the execution time of the request ||
+[`time`](../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-HTTP status: **400**, **403**, **200**
+HTTP Status: **400**, **403**, **200**
 
 ```json
 {
@@ -229,6 +219,11 @@ HTTP status: **400**, **403**, **200**
 {% include notitle [error handling](../../_includes/error-info.md) %}
 
 ### Possible Error Codes
+
+#|
+|| **Code** | **Description** | **Status** ||
+|| `WRONG_AUTH_TYPE` | Current authorization type is denied for this method. Application context required | 403 ||
+|#
 
 {% include [system errors](../../_includes/system-errors.md) %}
 

@@ -1,90 +1,76 @@
-# Find users im.search.user.list
-
-{% note warning "We are still updating this page" %}
-
-Some data may be missing — we will fill it in shortly.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- adjustments needed for writing standards
-- parameter types are not specified
-- examples are missing
-
-{% endnote %}
-
-{% endif %}
+# Find Users im.search.user.list
 
 > Scope: [`im`](../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-The method `im.search.user.list` performs a search for users.
+The method `im.search.user.list` allows you to search for users by first name, last name, job title, and department.
+
+## Method Parameters
+
+{% include [Footnote on parameters](../../../_includes/required.md) %}
 
 #|
-|| **Parameter** | **Example** | **Description** | **Revision** ||
-|| **FIND^*^**
-[`unknown`](../../data-types.md) | `Eugene` | Search phrase | 19 ||
+|| **Name**
+`Type` | **Description** ||
+|| **FIND***
+[`string`](../../data-types.md) | Search phrase. The minimum number of characters for the search is `3` ||
 || **BUSINESS**
-[`unknown`](../../data-types.md) | `N` | Search among business users | 19 ||
-|| **AVATAR_HR**
-[`unknown`](../../data-types.md) | `N` | Generate avatar in high resolution | 19 ||
+[`string`](../../data-types.md) | Search only among business users. 
+
+Allowed values:
+- `Y` — yes
+- `N` — no
+
+Default value is `N` ||
+
 || **OFFSET**
-[`unknown`](../../data-types.md) | `0` | Offset for user selection | 19 ||
+[`integer`](../../data-types.md) | Offset for the user selection. Default is `0` ||
 || **LIMIT**
-[`unknown`](../../data-types.md) | `10` | Limit for user selection | 19 ||
+[`integer`](../../data-types.md) | Number of items in the selection. Default is `10`. Maximum value is `50` ||
 |#
 
-{% include [Parameter notes](../../../_includes/required.md) %}
+## Code Examples
 
-- The search is conducted across the following fields: **First Name**, **Last Name**, **Position**, **Department**.
-- The method supports standard pagination of the Bitrix24 Rest API, but in addition, it allows for navigation using the `OFFSET` and `LIMIT` parameters.
-
-## Examples
+{% include [Footnote on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
+
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+      -H "Content-Type: application/json" \
+      -H "Accept: application/json" \
+      -d '{"FIND":"John","BUSINESS":"N","OFFSET":0,"LIMIT":10}' \
+      https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/im.search.user.list
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+      -H "Content-Type: application/json" \
+      -H "Accept: application/json" \
+      -d '{"FIND":"John","BUSINESS":"N","OFFSET":0,"LIMIT":10,"auth":"**put_access_token_here**"}' \
+      https://**put_your_bitrix24_address**/rest/im.search.user.list
+    ```
 
 - JS
 
     ```js
-    // callListMethod: Retrieves all data at once. Use only for small selections (< 1000 items) due to high memory usage.
-    
     try {
-      const response = await $b24.callListMethod(
-        'im.search.user.list',
-        {
-          FIND: 'Eugene'
-        },
-        (progress) => { console.log('Progress:', progress) }
-      )
-      const items = response.getData() || []
-      for (const entity of items) { console.log('Entity:', entity) }
+      const response = await $b24.callMethod('im.search.user.list', {
+        FIND: 'John',
+        BUSINESS: 'N',
+        OFFSET: 0,
+        LIMIT: 10,
+      });
+
+      const { result, total, next } = response.getData();
+      console.log(result, total, next);
     } catch (error) {
-      console.error('Request failed', error)
-    }
-    
-    // fetchListMethod: Retrieves data in parts using an iterator. Use it for large data volumes to optimize memory usage.
-    
-    try {
-      const generator = $b24.fetchListMethod('im.search.user.list', { FIND: 'Eugene' }, 'ID')
-      for await (const page of generator) {
-        for (const entity of page) { console.log('Entity:', entity) }
-      }
-    } catch (error) {
-      console.error('Request failed', error)
-    }
-    
-    // callMethod: Manually controls pagination through the start parameter. Use it for precise control of request batches. For large datasets, it is less efficient than fetchListMethod.
-    
-    try {
-      const response = await $b24.callMethod('im.search.user.list', { FIND: 'Eugene' }, 0)
-      const result = response.getData().result || []
-      for (const entity of result) { console.log('Entity:', entity) }
-    } catch (error) {
-      console.error('Request failed', error)
+      console.error(error);
     }
     ```
 
@@ -92,25 +78,25 @@ The method `im.search.user.list` performs a search for users.
 
     ```php
     try {
-        $response = $b24Service
-            ->core
-            ->call(
-                'im.search.user.list',
-                [
-                    'FIND' => 'Eugene'
-                ]
-            );
-    
-        $result = $response
-            ->getResponseData()
-            ->getResult();
-    
-        echo 'users: ' . print_r($result->data(), true);
-        echo 'total: ' . $result->total();
-    
-    } catch (Throwable $e) {
-        error_log($e->getMessage());
-        echo 'Error searching for users: ' . $e->getMessage();
+        $response = $b24Service->core->call(
+            'im.search.user.list',
+            [
+                'FIND' => 'John',
+                'BUSINESS' => 'N',
+                'OFFSET' => 0,
+                'LIMIT' => 10,
+            ]
+        );
+
+        $result = $response->getResponseData()->getResult();
+
+        if ($result->error()) {
+            echo 'Error: ' . $result->error();
+        } else {
+            var_dump($result->data());
+        }
+    } catch (Throwable $exception) {
+        echo $exception->getMessage();
     }
     ```
 
@@ -120,17 +106,16 @@ The method `im.search.user.list` performs a search for users.
     BX24.callMethod(
         'im.search.user.list',
         {
-            FIND: 'Eugene'
+            FIND: 'John',
+            BUSINESS: 'N',
+            OFFSET: 0,
+            LIMIT: 10,
         },
-        function(result){
-            if(result.error())
-            {
+        function(result) {
+            if (result.error()) {
                 console.error(result.error().ex);
-            }
-            else
-            {
-                console.log('users', result.data());
-                console.log('total', result.total());
+            } else {
+                console.log(result.data(), result.total(), result.next());
             }
         }
     );
@@ -138,88 +123,167 @@ The method `im.search.user.list` performs a search for users.
 
 - PHP CRest
 
-    {% include [Explanation about restCommand](../_includes/rest-command.md) %}
-
     ```php
-    $result = restCommand(
+    require_once('crest.php');
+
+    $result = CRest::call(
         'im.search.user.list',
-        Array(
-            'FIND' => 'Eugene'
-        ),
-        $_REQUEST[
-            "auth"
+        [
+            'FIND' => 'John',
+            'BUSINESS' => 'N',
+            'OFFSET' => 0,
+            'LIMIT' => 10,
         ]
-    );    
+    );
+
+    if (!empty($result['error'])) {
+        echo 'Error: ' . $result['error_description'];
+    } else {
+        var_dump($result['result']);
+    }
     ```
-
-- cURL
-
-    // example for cURL
-
 {% endlist %}
 
-{% include [Examples notes](../../../_includes/examples.md) %}
+## Response Handling
 
-## Response on success
+HTTP Status Code: **200**
 
 ```json
-{    
-    "result": {
-        1: {
-            "id": 1,
-            "name": "Eugene Shelenkov",
-            "first_name": "Eugene",
-            "last_name": "Shelkov",
-            "work_position": "",
-            "color": "#df532d",
-            "avatar": "http://192.168.2.232/upload/resize_cache/main/1d3/100_100_2/shelenkov.png",
-            "gender": "M",
-            "birthday": "",
+{
+    "result": [
+        {
+            "id": 103,
+            "name": "Svetlana Ivanova",
+            "first_name": "Svetlana",
+            "last_name": "Ivanova",
+            "work_position": "IT Department Head",
+            "color": "#4ba984",
+            "avatar": "https://example.bitrix24.com/upload/main/avatar.png",
+            "gender": "F",
+            "birthday": "08-03",
             "extranet": false,
             "network": false,
             "bot": false,
             "connector": false,
-            "external_auth_id": "default",
+            "external_auth_id": "socservices",
             "status": "online",
             "idle": false,
-            "last_activity_date": "2018-01-29T17:35:31+02:00",
-            "desktop_last_date": false,
+            "last_activity_date": "2026-03-04T15:40:56+01:00",
             "mobile_last_date": false,
-            "departments": [
-             50
-            ],
-            "absent": false
-        }
-    },
-    "total": 1
-}    
+            "departments": [1, 7],
+            "absent": false,
+            "phones": {
+                "work_phone": "19123456789",
+                "personal_mobile": "12123456789",
+                "inner_phone": "78"
+            }
+        },
+        ... // description for each user
+    ],
+    "total": 2,
+    "time": {
+        "start": 1772628089,
+        "finish": 1772628089.061656,
+        "duration": 0.06165599822998047,
+        "processing": 0,
+        "date_start": "2026-03-04T15:41:29+01:00",
+        "date_finish": "2026-03-04T15:41:29+01:00",
+        "operating_reset_at": 1772628689,
+        "operating": 0
+    }
+}
 ```
 
-### Key descriptions
+## Returned Data
 
-- `id` – user identifier
-- `name` – user's full name
-- `first_name` – user's first name
-- `last_name` – user's last name
-- `work_position` – position
-- `color` – user's color in hex format
-- `avatar` – link to avatar (if empty, avatar is not set)
-- `avatar_hr` – link to high-resolution avatar (available only when requested with the parameter `AVATAR_HR = 'Y'`)
-- `gender` – user's gender
-- `birthday` – user's birthday in DD-MM format, if empty – not set
-- `extranet` – indicator of external extranet user (`true/false`)
-- `network` – indicator of Bitrix24.Network user (`true/false`)
-- `bot` – indicator of bot (`true/false`)
-- `connector` – indicator of open lines user (`true/false`)
-- `external_auth_id` – external authorization code
-- `status` – selected user status
-- `idle` – date when the user stepped away from the computer, in ATOM format (if not set, `false`)
-- `last_activity_date` – date of the user's last action in ATOM format
-- `mobile_last_date` – date of the last action in the mobile application in ATOM format (if not set, `false`)
-- `desktop_last_date` – date of the last action in the desktop application in ATOM format (if not set, `false`)
-- `absent` – date until when the user is on vacation, in ATOM format (if not set, `false`)
+#|
+|| **Name**
+`Type` | **Description** ||
+|| **result**
+[`array`](../../data-types.md) | List of found users.
 
-## Response on error
+The structure of the user object is described in detail [below](#user-object) ||
+|| **total**
+[`integer`](../../data-types.md) | Total number of found users ||
+|| **next**
+[`integer`](../../data-types.md) | Offset for the next page. This field is returned if there is a next page ||
+|| **time**
+[`time`](../../data-types.md#time) | Information about the request execution time ||
+|#
+
+### User Object {#user-object}
+
+#|
+|| **Name**
+`Type` | **Description** ||
+|| **id**
+[`integer`](../../data-types.md) | User identifier ||
+|| **name**
+[`string`](../../data-types.md) | User's full name ||
+|| **first_name**
+[`string`](../../data-types.md) | User's first name ||
+|| **last_name**
+[`string`](../../data-types.md) | User's last name ||
+|| **work_position**
+[`string`](../../data-types.md) | User's job title ||
+|| **color**
+[`string`](../../data-types.md) | User's color in HEX format ||
+|| **avatar**
+[`string`](../../data-types.md) 
+[`null`](../../data-types.md) | Link to the user's avatar ||
+|| **gender**
+[`string`](../../data-types.md) | User's gender: `M` or `F` ||
+|| **birthday**
+[`string`](../../data-types.md) 
+[`boolean`](../../data-types.md) | Birthday in `DD-MM` format or `false` ||
+|| **extranet**
+[`boolean`](../../data-types.md) | Indicator of extranet user ||
+|| **network**
+[`boolean`](../../data-types.md) | Indicator of Bitrix24 Network user ||
+|| **bot**
+[`boolean`](../../data-types.md) | Indicator of bot user ||
+|| **connector**
+[`boolean`](../../data-types.md) | Indicator of open channels connector user ||
+|| **external_auth_id**
+[`string`](../../data-types.md) | External authorization identifier ||
+|| **status**
+[`string`](../../data-types.md) | Current status of the user ||
+|| **idle**
+[`string`](../../data-types.md) 
+[`boolean`](../../data-types.md) | Time of transition to "Away" status in ISO 8601 (RFC3339) format or `false` ||
+|| **last_activity_date**
+[`string`](../../data-types.md) 
+[`boolean`](../../data-types.md) | Time of last activity in ISO 8601 (RFC3339) format or `false` ||
+|| **mobile_last_date**
+[`string`](../../data-types.md) 
+[`boolean`](../../data-types.md) | Time of last mobile activity in ISO 8601 (RFC3339) format or `false` ||
+|| **departments**
+[`array`](../../data-types.md) | Array of department identifiers ||
+|| **absent**
+[`string`](../../data-types.md) 
+[`boolean`](../../data-types.md) | Date of absence end in ISO 8601 (RFC3339) format or `false` ||
+|| **phones**
+[`object`](../../data-types.md) | User's phones or `false`.
+
+The structure of the object is described in detail [below](#phones-object) ||
+|#
+
+### Phones Object {#phones-object}
+
+#|
+|| **Name**
+`Type` | **Description** ||
+|| **work_phone**
+[`string`](../../data-types.md) | Work phone ||
+|| **personal_mobile**
+[`string`](../../data-types.md) | Mobile phone ||
+|| **inner_phone**
+[`string`](../../data-types.md) | Internal phone ||
+|#
+
+## Error Handling
+
+HTTP Status: **400**
 
 ```json
 {
@@ -228,15 +292,21 @@ The method `im.search.user.list` performs a search for users.
 }
 ```
 
-### Key descriptions
+{% include notitle [Error Handling](../../../_includes/error-info.md) %}
 
-- `error` – code of the occurred error
-- `error_description` – brief description of the occurred error
-
-### Possible error codes
+### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| **FIND_SHORT** | Search phrase is too short; search is conducted from three characters. ||
+|| **Code** | **Description** | **Value** ||
+|| `FIND_SHORT` | Too short a search phrase | The search phrase is not provided or is too short for the internal search filter ||
 |#
 
+{% include [System Errors](../../../_includes/system-errors.md) %}
+
+## Continue Learning
+
+- [{#T}](./im-search-chat-list.md)
+- [{#T}](./im-search-department-list.md)
+- [{#T}](./im-search-last-add.md)
+- [{#T}](./im-search-last-get.md)
+- [{#T}](./im-search-last-delete.md)
