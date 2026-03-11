@@ -3,13 +3,13 @@ href: index.md
 items: 
   - name: About Telephony in Bitrix24
     href: index.md
-  - name: Register a Line/Number
+  - name: Register an External Line
     href: telephony-external-line-add.md
-  - name: Change a Line/Number
+  - name: Modify an External Line
     href: telephony-external-line-update.md  
-  - name: Get a List of Lines/Numbers
+  - name: Retrieve a List of External Lines
     href: telephony-external-line-get.md
-  - name: Delete a Line/Number
+  - name: Delete an External Line
     href: telephony-external-line-delete.md
   - name: Find a Client in CRM by Phone Number
     href: telephony-external-call-search-crm-entities.md
@@ -35,5 +35,5 @@ items:
       mode: link
   - name: Widgets
     href: widgets.md
-  - name: Get a List of Calls
+  - name: Retrieve a List of Calls
     href: voximplant-statistic-get.md

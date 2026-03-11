@@ -1,86 +1,106 @@
-# Get a list of custom fields task.item.userfield.getlist
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- parameter types are not specified
-- parameter requirements are not specified
-- one example is missing (there should be three examples - curl, js, php)
-- response in case of error is missing
-- response in case of success is missing
-
-{% endnote %}
-
-{% endif %}
-
-{% note warning "We are still updating this page" %}
-
-Some data may be missing here — we will fill it in shortly
-
-{% endnote %}
+# Get a List of Custom Fields task.item.userfield.getlist
 
 > Scope: [`task`](../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-The method `task.item.userfield.getlist` returns a list of properties.
+The method `task.item.userfield.getlist` retrieves a list of custom fields for tasks.
 
-## Parameters
+The list will include three system fields for linking to other objects:
+
+- `UF_CRM_TASK` — with CRM objects
+- `UF_MAIL_MESSAGE` — with the e-mail
+- `UF_TASK_WEBDAV_FILES` — with files from Drive
+
+These fields are created based on custom fields, which is why they appear in the list. For more information about the relationships of tasks with other objects, refer to the article [Tasks: Overview of Methods](../index.md).
+
+## Method Parameters
+
+{% include [Footnote on Required Parameters](../../../_includes/required.md) %}
 
 #|
-||  **Parameter** / **Type**| **Description** ||
-|| **auth**
-[`unknown`](../../data-types.md) | Authorization token. ||
+|| **Name**
+`type` | **Description** ||
 || **ORDER**
-[`unknown`](../../data-types.md) | Array for sorting the result. An array in the form `array('sort field'=>'sort direction' [, ...])`. ||
+[`object`](../../data-types.md) | Object for sorting the result in the format `{"field": "sort value", ... }`.
+
+You can sort by the following fields:
+- `ID` — identifier of the custom field
+- `FIELD_NAME` — code of the custom field
+- `USER_TYPE_ID` — type of the custom field
+- `SORT` — sort value
+
+The sort direction can take the following values:
+- `asc` — ascending
+- `desc` — descending ||
 || **FILTER**
-[`unknown`](../../data-types.md) | Array for filtering the result in the form `array('filtered field'=>'filter value' [, ...])`. Required parameter. ||
+[`object`](../../data-types.md) | Object for filtering the result in the format `{"field": "filter value", ... }`. The value of the filtered field can be a single value or an array of values.
+
+You can filter by the following fields:
+- `ID` — identifier of the custom field
+- `FIELD_NAME` — code of the custom field
+- `USER_TYPE_ID` — type of the custom field
+- `XML_ID` — external identifier
+- `MULTIPLE` — multiple, `Y` or `N`
+- `MANDATORY` — mandatory, `Y` or `N`
+||
 |#
 
-## Examples
+## Code Examples
+
+{% include [Footnote on Examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
+
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{
+      "ORDER": {
+        "SORT": "ASC"
+      }
+    }' \
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/task.item.userfield.getlist
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{
+      "ORDER": {
+        "SORT": "ASC"
+      },
+      "auth": "**put_access_token_here**"
+    }' \
+    https://**put_your_bitrix24_address**/rest/task.item.userfield.getlist
+    ```
 
 - JS
 
     ```js
-    // callListMethod: Retrieves all data at once. Use only for small selections (< 1000 items) due to high memory usage.
-    
-    try {
-      const response = await $b24.callListMethod(
-        'task.item.userfield.getlist',
-        {
-          order: { "ID": "ASC" },
-          filter: { "EDIT_IN_LIST": "Y" }
-        },
-        (progress) => { console.log('Progress:', progress) }
-      )
-      const items = response.getData() || []
-      for (const entity of items) { console.log('Entity:', entity) }
-    } catch (error) {
-      console.error('Request failed', error)
+    try
+    {
+        const response = await $b24.callMethod(
+            'task.item.userfield.getlist',
+            {
+                ORDER: {
+                    SORT: 'ASC'
+                }
+            }
+        );
+
+        const result = response.getData().result;
+        console.log(result);
     }
-    
-    // fetchListMethod: Retrieves data in parts using an iterator. Use it for large data volumes to optimize memory usage.
-    
-    try {
-      const generator = $b24.fetchListMethod('task.item.userfield.getlist', { order: { "ID": "ASC" }, filter: { "EDIT_IN_LIST": "Y" } }, 'ID')
-      for await (const page of generator) {
-        for (const entity of page) { console.log('Entity:', entity) }
-      }
-    } catch (error) {
-      console.error('Request failed', error)
-    }
-    
-    // callMethod: Manually controls pagination through the start parameter. Use it for precise control of request batches. For large datasets, it is less efficient than fetchListMethod.
-    
-    try {
-      const response = await $b24.callMethod('task.item.userfield.getlist', { order: { "ID": "ASC" }, filter: { "EDIT_IN_LIST": "Y" } }, 0)
-      const result = response.getData().result || []
-      for (const entity of result) { console.log('Entity:', entity) }
-    } catch (error) {
-      console.error('Request failed', error)
+    catch (error)
+    {
+        console.error(error);
     }
     ```
 
@@ -93,24 +113,19 @@ The method `task.item.userfield.getlist` returns a list of properties.
             ->call(
                 'task.item.userfield.getlist',
                 [
-                    'order' => [
-                        'ID' => 'ASC'
-                    ],
-                    'filter' => [
-                        'EDIT_IN_LIST' => 'Y'
+                    'ORDER' => [
+                        'SORT' => 'ASC'
                     ]
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
-        // Your logic for processing data
-    
+
+        print_r($result);
     } catch (Throwable $e) {
-        error_log($e->getMessage());
-        echo 'Error getting user fields list: ' . $e->getMessage();
+        echo $e->getMessage();
     }
     ```
 
@@ -118,38 +133,268 @@ The method `task.item.userfield.getlist` returns a list of properties.
 
     ```js
     BX24.callMethod(
-        "task.item.userfield.getlist",
+        'task.item.userfield.getlist',
         {
-            order:
-            {
-                "ID": "ASC"
+            ORDER: {
+                SORT: 'ASC'
             },
-            filter:
-            {
-                "EDIT_IN_LIST": "Y"
-            }
         },
         function(result)
         {
+            if (result.error())
+            {
+                console.error(result.error());
+            }
+            else
+            {
+                console.log(result.data());
+            }
         }
     );
     ```
 
-- cURL
+- PHP CRest
 
-    ```http    
-    $appParams = array(
-    'auth' => 'q21g8vhcqmxdrbhqlbd2wh6ev1debppa',
-    'ORDER' => array('ID' => 'asc'),
-    'FILTER' => array('USER_TYPE_ID' => 'string')
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'task.item.userfield.getlist',
+        [
+            'ORDER' => [
+                'SORT' => 'ASC'
+            ]
+        ]
     );
-    ```
 
-    ```http    
-    $request = 'http://your-domain.com/rest/task.item.userfield.getlist.xml?' . http_build_query($appParams);
+    print_r($result);
     ```
 
 {% endlist %}
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+## Response Handling
 
+HTTP Status: **200**
+
+```json
+{
+    "result": [
+        {
+            "ID": "1295",
+            "ENTITY_ID": "TASKS_TASK",
+            "FIELD_NAME": "UF_CRM_TASK",
+            "USER_TYPE_ID": "crm",
+            "XML_ID": "",
+            "SORT": "100",
+            "MULTIPLE": "Y",
+            "MANDATORY": "N",
+            "SHOW_FILTER": "N",
+            "SHOW_IN_LIST": "N",
+            "EDIT_IN_LIST": "N",
+            "IS_SEARCHABLE": "N",
+            "SETTINGS": {
+                "LEAD": "Y",
+                "CONTACT": "Y",
+                "COMPANY": "Y",
+                "DEAL": "Y"
+            }
+        },
+        {
+            "ID": "662",
+            "ENTITY_ID": "TASKS_TASK",
+            "FIELD_NAME": "UF_MAIL_MESSAGE",
+            "USER_TYPE_ID": "mail_message",
+            "XML_ID": "",
+            "SORT": "100",
+            "MULTIPLE": "N",
+            "MANDATORY": "N",
+            "SHOW_FILTER": "N",
+            "SHOW_IN_LIST": "N",
+            "EDIT_IN_LIST": "N",
+            "IS_SEARCHABLE": "N",
+            "SETTINGS": []
+        },
+        {
+            "ID": "229",
+            "ENTITY_ID": "TASKS_TASK",
+            "FIELD_NAME": "UF_TASK_WEBDAV_FILES",
+            "USER_TYPE_ID": "disk_file",
+            "XML_ID": "TASK_WEBDAV_FILES",
+            "SORT": "100",
+            "MULTIPLE": "Y",
+            "MANDATORY": "N",
+            "SHOW_FILTER": "N",
+            "SHOW_IN_LIST": "Y",
+            "EDIT_IN_LIST": "Y",
+            "IS_SEARCHABLE": "Y",
+            "SETTINGS": {
+                "IBLOCK_ID": 0,
+                "SECTION_ID": 0,
+                "UF_TO_SAVE_ALLOW_EDIT": ""
+            }
+        },
+        {
+            "ID": "1325",
+            "ENTITY_ID": "TASKS_TASK",
+            "FIELD_NAME": "UF_TASK_CLIENT_REQUEST",
+            "USER_TYPE_ID": "string",
+            "XML_ID": "UF_TASK_CLIENT_REQUEST",
+            "SORT": "220",
+            "MULTIPLE": "N",
+            "MANDATORY": "N",
+            "SHOW_FILTER": "N",
+            "SHOW_IN_LIST": "Y",
+            "EDIT_IN_LIST": "Y",
+            "IS_SEARCHABLE": "N",
+            "SETTINGS": {
+                "SIZE": 20,
+                "ROWS": 10,
+                "REGEXP": "",
+                "MIN_LENGTH": 0,
+                "MAX_LENGTH": 0,
+                "DEFAULT_VALUE": "Clarify the goal and expected outcome"
+            }
+        },
+        {
+            "ID": "1333",
+            "ENTITY_ID": "TASKS_TASK",
+            "FIELD_NAME": "UF_TASK_PROJECT_BUDGET",
+            "USER_TYPE_ID": "double",
+            "XML_ID": "UF_TASK_PROJECT_BUDGET",
+            "SORT": "230",
+            "MULTIPLE": "N",
+            "MANDATORY": "N",
+            "SHOW_FILTER": "N",
+            "SHOW_IN_LIST": "Y",
+            "EDIT_IN_LIST": "Y",
+            "IS_SEARCHABLE": "N",
+            "SETTINGS": {
+                "PRECISION": 0,
+                "SIZE": 20,
+                "MIN_VALUE": 0,
+                "MAX_VALUE": 0,
+                "DEFAULT_VALUE": 0
+            }
+        },
+        {
+            "ID": "1335",
+            "ENTITY_ID": "TASKS_TASK",
+            "FIELD_NAME": "UF_TASK_APPROVAL_DEADLINE",
+            "USER_TYPE_ID": "datetime",
+            "XML_ID": "UF_TASK_APPROVAL_DEADLINE",
+            "SORT": "240",
+            "MULTIPLE": "N",
+            "MANDATORY": "N",
+            "SHOW_FILTER": "N",
+            "SHOW_IN_LIST": "Y",
+            "EDIT_IN_LIST": "Y",
+            "IS_SEARCHABLE": "N",
+            "SETTINGS": {
+                "DEFAULT_VALUE": {
+                    "TYPE": "NONE",
+                    "VALUE": ""
+                },
+                "USE_SECOND": "Y",
+                "USE_TIMEZONE": "N"
+            }
+        },
+        {
+            "ID": "1337",
+            "ENTITY_ID": "TASKS_TASK",
+            "FIELD_NAME": "UF_TASK_LEGAL_REVIEW_REQUIRED",
+            "USER_TYPE_ID": "boolean",
+            "XML_ID": "UF_TASK_LEGAL_REVIEW_REQUIRED",
+            "SORT": "250",
+            "MULTIPLE": "N",
+            "MANDATORY": "N",
+            "SHOW_FILTER": "N",
+            "SHOW_IN_LIST": "Y",
+            "EDIT_IN_LIST": "Y",
+            "IS_SEARCHABLE": "N",
+            "SETTINGS": {
+                "DEFAULT_VALUE": 0,
+                "DISPLAY": "CHECKBOX",
+                "LABEL": ["", ""],
+                "LABEL_CHECKBOX": ""
+            }
+        }
+    ],
+    "total": 0,
+    "time": {
+        "start": 1772718556,
+        "finish": 1772718556.080225,
+        "duration": 0.08022499084472656,
+        "processing": 0,
+        "date_start": "2026-03-05T16:49:16+01:00",
+        "date_finish": "2026-03-05T16:49:16+01:00",
+        "operating_reset_at": 1772719156,
+        "operating": 0
+    }
+}
+```
+
+### Returned Data
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`array`](../../data-types.md) | Array of custom field objects [(detailed description)](#result) ||
+|| **total**
+[`integer`](../../data-types.md) | Currently returns `0` ||
+|| **time**
+[`time`](../../data-types.md#time) | Information about the execution time of the request ||
+|#
+
+#### Object result {#result}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **ID**
+[`integer`](../../data-types.md) | Identifier of the custom field ||
+|| **ENTITY_ID**
+[`string`](../../data-types.md) | Code of the object to which the field is linked ||
+|| **FIELD_NAME**
+[`string`](../../data-types.md) | Code of the custom field ||
+|| **USER_TYPE_ID**
+[`string`](../../data-types.md) | Data type ||
+|| **XML_ID**
+[`string`](../../data-types.md) | External identifier ||
+|| **SORT**
+[`integer`](../../data-types.md) | Sort value ||
+|| **MULTIPLE**
+[`char`](../../data-types.md) | Indicates multiple values. Possible values:
+- `Y` — multiple
+- `N` — single ||
+|| **MANDATORY**
+[`char`](../../data-types.md) | Indicates mandatory field. Possible values:
+- `Y` — mandatory
+- `N` — optional ||
+|| **SHOW_FILTER**
+[`char`](../../data-types.md) | Display in the list filter ||
+|| **SHOW_IN_LIST**
+[`char`](../../data-types.md) | Display in the list ||
+|| **EDIT_IN_LIST**
+[`char`](../../data-types.md) | Editing allowed in the list ||
+|| **IS_SEARCHABLE**
+[`char`](../../data-types.md) | Value is searchable ||
+|| **SETTINGS**
+[`object`](../../data-types.md) | Additional settings for the field, composition depends on the type `USER_TYPE_ID` ||
+|#
+
+## Error Handling
+
+{% include notitle [Error Handling](../../../_includes/error-info.md) %}
+
+{% include [System Errors](../../../_includes/system-errors.md) %}
+
+## Continue Learning
+
+- [{#T}](./index.md)
+- [{#T}](./task-item-user-field-add.md)
+- [{#T}](./task-item-user-field-update.md)
+- [{#T}](./task-item-user-field-get.md)
+- [{#T}](./task-item-user-field-delete.md)
+- [{#T}](./task-item-user-field-get-types.md)
+- [{#T}](./task-item-user-field-get-fields.md)

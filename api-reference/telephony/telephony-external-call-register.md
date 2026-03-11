@@ -1,105 +1,327 @@
-# Register a call in Bitrix24 telephony.externalcall.register
+# Register an External Call in Bitrix24 telephony.externalCall.register
 
-{% note warning "We are still updating this page" %}
+> Scope: [`telephony`](../scopes/permissions.md)
+>
+> Who can execute the method: any user
 
-Some data may be missing — we will fill it in shortly.
+The method `telephony.externalCall.register` registers an external call in Bitrix24.
 
-{% endnote %}
+{% note info "" %}
 
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- examples are missing
-- success response is missing
-- error response is missing
+The method works only in the context of an [application](../../settings/app-installation/index.md)
 
 {% endnote %}
 
-{% endif %}
+## Method Parameters
 
-{% include notitle [Scope telephony all](./_includes/scope-telephony-all.md) %}
-
-The method `telephony.externalcall.register` registers a call in Bitrix24 by searching for the corresponding object in CRM based on the phone number. If found, it adds the call linked to the identified object. If not found, it can automatically create a lead.
-
-When using `telephony.externalcall.register`, the first responsible person for this client will be automatically assigned as the responsible for the new lead. This responsible person can be changed later through [telephony.externalcall.finish](telephony-external-call-finish.md).
-
-Simultaneously with the call registration, the method can optionally display the call card to the user. The user to whom the card is shown is identified either by `USER_ID` or `USER_PHONE_INNER`. (That is, the fields are marked as required, but in fact, only one of the two is needed.)
-
-There is no need to call this method again for calls received on the event [OnExternalCallStart](./events/on-external-call-start.md). These calls are already registered in the system, and only [telephony.externalcall.finish](telephony-external-call-finish.md) should be called at the end of the call.
-
-{% note warning %}
-
-A repeated call to `telephony.externalcall.register` with the same parameters, without closing the previous call using the method `telephony.externalcall.finish`, will return the same `CALL_ID` within 30 minutes.
-
-{% endnote %}
-
-To create an activity "call," it is also necessary to call the method `telephony.externalcall.finish`.
+{% include [Note on required parameters](../../_includes/required.md) %}
 
 #|
-|| **Parameter** / **Type** | **Description** ||
-|| **USER_PHONE_INNER**^*^ 
-[`string`](../data-types.md) | User's internal phone number. ||
-|| **USER_ID**^*^ 
-[`int`](../data-types.md) | User identifier. ||
-|| **PHONE_NUMBER**^*^ 
-[`string`](../data-types.md) | Phone number. ||
-|| **CALL_START_DATE** 
-[`string`](../data-types.md) | Call date/time in iso8601 format. Note that the timezone must be included in the date to avoid distortion of the call time. Example: `2021-02-03T18:25:10+03:00`. ||
-|| **CRM_CREATE** 
-[`int`](../data-types.md) | [0/1] - Automatic creation in CRM of the entity related to the call. Creates a lead or deal in CRM as needed, depending on [settings and CRM operation mode](*mode).
+|| **Name**
+`type` | **Description** ||
+|| **USER_ID*** 
+[`integer`](../data-types.md) | The identifier of the user for whom the call is registered.
 
- Note that the call activity is created with any value of this parameter if creation is possible. ||
-|| **CRM_SOURCE** 
-[`string`](../data-types.md) | STATUS_ID of the source from the sources directory. You can get a list of sources using the `crm.status.list` method with a filter by "ENTITY_ID": "SOURCE". ||
-|| **CRM_ENTITY_TYPE** 
-[`string`](../data-types.md) | Type of the CRM object from which the call is made - CONTACT \| COMPANY \| LEAD. ||
-|| **CRM_ENTITY_ID** 
-[`int`](../data-types.md) | Identifier of the CRM object, the type of which is specified in CRM_ENTITY_TYPE. ||
-|| **SHOW** 
-[`int`](../data-types.md) | [0/1] Whether to show the call card (default is 1). ||
-|| **CALL_LIST_ID** 
-[`int`](../data-types.md) | Identifier of the [call list](../crm/call-list/index.md) to which the call should be linked. ||
-|| **LINE_NUMBER** 
-[`string`](../data-types.md) | Number of the external line through which the call was made (see [telephony.externalLine.add](telephony-external-line-add.md)).
+The identifier can be obtained using the [user.get](../user/user-get.md) method ||
+|| **USER_PHONE_INNER*** 
+[`string`](../data-types.md) | The internal number of the user.
 
-{% note warning %}
+The internal number can be obtained using the [user.get](../user/user-get.md) method.
 
-Values from this parameter are used in Bitrix24's Sales Intelligence scenarios. Therefore, integration solutions with telephony for the Applications24 catalog must necessarily pass the number to which the registered incoming call was made.
+{% note info "" %}
 
-{% endnote %}
+At least one of the parameters must be specified: `USER_ID` or `USER_PHONE_INNER`
 
-||
-|| **TYPE**^*^ 
-[`integer`](../data-types.md) | Type of call:
-1 - outgoing
-2 - incoming
-3 - incoming with redirection
-4 - callback ||
+{% endnote %} ||
+|| **PHONE_NUMBER***
+[`string`](../data-types.md) | The client's phone number ||
+|| **TYPE***
+[`integer`](../data-types.md) | The type of call.
+
+Possible values:
+- `1` — outgoing
+- `2` — incoming
+- `3` — incoming with redirection
+- `4` — callback
+- `5` — informational call ||
+|| **CALL_START_DATE**
+[`string`](../data-types.md) | The date and time the call started in ISO-8601 format with timezone indication, for example `2026-03-07T10:20:30+03:00`.
+
+Default is the current server time ||
+|| **CRM_CREATE**
+[`integer`](../data-types.md) | Automatic creation of a CRM object if no suitable object is found by the number.
+
+Possible values:
+- `0` — do not create
+- `1` — create
+
+Default is `0` ||
+|| **CRM_SOURCE**
+[`string`](../data-types.md) | The identifier of the CRM source.
+
+The list of values can be obtained using the [crm.status.list](../crm/status/crm-status-list.md) method with the filter `ENTITY_ID: 'SOURCE'` ||
+|| **CRM_ENTITY_TYPE**
+[`string`](../data-types.md) | The type of CRM object to associate with the call.
+
+Possible values:
+- `CONTACT` — contact
+- `COMPANY` — company
+- `LEAD` — lead ||
+|| **CRM_ENTITY_ID**
+[`integer`](../data-types.md) | The identifier of the CRM object from `CRM_ENTITY_TYPE`.
+
+The identifier can be obtained using the following methods:
+- [crm.contact.list](../crm/contacts/crm-contact-list.md)
+- [crm.company.list](../crm/companies/crm-company-list.md)
+- [crm.lead.list](../crm/leads/crm-lead-list.md) ||
+|| **SHOW**
+[`integer`](../data-types.md) | Show the call card after registration.
+
+Possible values:
+- `0` — do not show
+- `1` — show
+
+Default is `1` ||
+|| **ADD_TO_CHAT**
+[`integer`](../data-types.md) | Add a message about the call to the employee's chat.
+
+Possible values:
+- `0` — do not add
+- `1` — add
+
+Default is `1` ||
+|| **CALL_LIST_ID**
+[`integer`](../data-types.md) | The identifier of the [call list](../crm/call-list/index.md) to which the call is linked.
+
+The identifier can be obtained using the [crm.calllist.list](../crm/call-list/crm-calllist-list.md) method ||
+|| **LINE_NUMBER**
+[`string`](../data-types.md) | The number of the external line.
+
+The number can be obtained using the [telephony.externalLine.get](./telephony-external-line-get.md) method ||
+|| **EXTERNAL_CALL_ID**
+[`string`](../data-types.md) | The external identifier of the call on the PBX/integration side. Used for deduplication of repeated registrations ||
 |#
 
-{% include [Footnote on parameters](../../_includes/required.md) %}
+## Code Examples
 
-## Returned data
+{% include [Note on examples](../../_includes/examples.md) %}
+
+{% list tabs %}
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"USER_ID":1269,"PHONE_NUMBER":"19062195047","TYPE":2,"CRM_ENTITY_TYPE":"CONTACT","CRM_ENTITY_ID":797,"SHOW":1,"LINE_NUMBER":"3","auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/telephony.externalCall.register
+    ```
+
+- JS
+
+    ```js
+    try
+    {
+        const response = await $b24.callMethod(
+            'telephony.externalCall.register',
+            {
+                USER_ID: 1269,
+                PHONE_NUMBER: '19062195047',
+                TYPE: 2,
+                CRM_ENTITY_TYPE: 'CONTACT',
+                CRM_ENTITY_ID: 797,
+                SHOW: 1,
+                LINE_NUMBER: '3'
+            }
+        );
+        
+        const result = response.getData().result;
+        console.log('Call registered:', result);
+        processResult(result);
+    }
+    catch( error )
+    {
+        console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'telephony.externalCall.register',
+                [
+                    'USER_ID' => 1269,
+                    'PHONE_NUMBER' => '19062195047',
+                    'TYPE' => 2,
+                    'CRM_ENTITY_TYPE' => 'CONTACT',
+                    'CRM_ENTITY_ID' => 797,
+                    'SHOW' => 1,
+                    'LINE_NUMBER' => '3'
+                ]
+            );
+
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+
+        echo 'Success: ' . print_r($result, true);
+        processData($result);
+
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error registering call: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
+    BX24.callMethod(
+        "telephony.externalCall.register",
+        {
+            USER_ID: 1269,
+            PHONE_NUMBER: '19062195047',
+            TYPE: 2,
+            CRM_ENTITY_TYPE: 'CONTACT',
+            CRM_ENTITY_ID: 797,
+            SHOW: 1,
+            LINE_NUMBER: '3'
+        },
+        function(result)
+        {
+            if (result.error())
+            {
+                console.error(result.error(), result.error_description());
+            }
+            else
+            {
+                console.log(result.data());
+            }
+        }
+    );
+    ```
+
+- PHP CRest
+
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'telephony.externalCall.register',
+        [
+            'USER_ID' => 1269,
+            'PHONE_NUMBER' => '19062195047',
+            'TYPE' => 2,
+            'CRM_ENTITY_TYPE' => 'CONTACT',
+            'CRM_ENTITY_ID' => 797,
+            'SHOW' => 1,
+            'LINE_NUMBER' => '3'
+        ]
+    );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
+    ```
+
+{% endlist %}
+
+## Response Handling
+
+HTTP Status: **200**
+
+```json
+{
+    "result": {
+        "CALL_ID": "externalCall.716f1cb73def9700a23842adf9c4c568.1773130779",
+        "CRM_CREATED_LEAD": null,
+        "CRM_CREATED_ENTITIES": [],
+        "CRM_ENTITY_TYPE": "CONTACT",
+        "CRM_ENTITY_ID": 797
+    },
+    "time": {
+        "start": 1773130778,
+        "finish": 1773130779.120838,
+        "duration": 1.120837926864624,
+        "processing": 1,
+        "date_start": "2026-03-10T11:19:38+03:00",
+        "date_finish": "2026-03-10T11:19:39+03:00",
+        "operating_reset_at": 1773131378,
+        "operating": 0.22185301780700684
+    }
+}
+```
+
+### Returned Data
 
 #|
-|| **Value** / **Type** | **Description** ||
-|| **CALL_ID** 
-[`string`](../data-types.md) | Identifier of the call within Bitrix24. ||
-|| **CRM_CREATED_LEAD** 
-[`int`](../data-types.md) | Identifier of the created lead (created if no object is found in CRM for the incoming number). ||
-|| **CRM_ENTITY_ID** 
-[`int`](../data-types.md) | Identifier of the object found in CRM. ||
-|| **CRM_ENTITY_TYPE** 
-[`string`](../data-types.md) | Type of the object found in CRM by the incoming number CONTACT \| COMPANY \| LEAD. ||
-|| **CRM_CREATED_ENTITIES** 
-[`array`](../data-types.md) | Array of entities automatically created in CRM when registering the call. Format:
-- ENTITY_TYPE - type of the created entity
-- ENTITY_ID - identifier of the created entity ||
-|| **LEAD_CREATION_ERROR** 
-[`string`](../data-types.md) | Error message that occurred while attempting to create a lead in CRM. ||
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`object`](../data-types.md) | The root element of the response ||
+|| **CALL_ID**
+[`string`](../data-types.md) | The identifier of the call ||
+|| **CRM_CREATED_LEAD**
+[`integer`](../data-types.md) | The identifier of the automatically created lead ||
+|| **CRM_CREATED_ENTITIES**
+[`array`](../data-types.md) | An array of automatically created [CRM objects](#result-crm-created-entities) ||
+|| **CRM_ENTITY_TYPE**
+[`string`](../data-types.md) | The type of the main CRM object of the call ||
+|| **CRM_ENTITY_ID**
+[`integer`](../data-types.md) | The identifier of the main CRM object of the call ||
+|| **LEAD_CREATION_ERROR**
+[`string`](../data-types.md) | The error message during lead auto-creation (if any) ||
+|| **time**
+[`time`](../data-types.md#time) | Information about the request execution time ||
 |#
 
-[*mode]: There are:
-- simple mode (without leads) - in which a deal will be created instead of a lead;
-- repeat sales mode, in which a deal/lead will be created even if the entity is found in CRM. (But it will not be created if there is an active deal/lead or the number is on the CRM blacklist).
+#### CRM_CREATED_ENTITIES Object {#result-crm-created-entities}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **ENTITY_TYPE**
+[`string`](../data-types.md) | The type of the created CRM object ||
+|| **ENTITY_ID**
+[`integer`](../data-types.md) | The identifier of the created CRM object ||
+|#
+
+## Error Handling
+
+HTTP Status: **400**, **403**
+
+```json
+{
+    "error": "ERROR_CORE",
+    "error_description": "Unknown TYPE"
+}
+```
+
+{% include notitle [error handling](../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+#|
+|| **Code** | **Description** | **Value** ||
+|| `WRONG_AUTH_TYPE` | Current authorization type is denied for this method | Method called outside the context of an application ||
+|| `ERROR_CORE` | USER_ID or USER_PHONE_INNER should be set | `USER_ID` and `USER_PHONE_INNER` not provided ||
+|| `ERROR_CORE` | Unknown TYPE | Invalid `TYPE` value provided ||
+|| `ERROR_CORE` | CALL_START_DATE should be in the ISO-8601 format | Incorrect `CALL_START_DATE` format ||
+|| `ERROR_CORE` | Unsupported phone number format | Incorrect `PHONE_NUMBER` format ||
+|| `ERROR_CORE` | User is not found or is not active | User not found or inactive ||
+|#
+
+{% include [system errors](../../_includes/system-errors.md) %}
+
+## Continue Learning
+
+- [{#T}](./telephony-external-call-search-crm-entities.md)
+- [{#T}](./telephony-external-call-show.md)
+- [{#T}](./telephony-external-call-hide.md)
+- [{#T}](./telephony-external-call-finish.md)
+- [{#T}](./telephony-external-call-attach-record.md)

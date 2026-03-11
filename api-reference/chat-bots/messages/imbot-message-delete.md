@@ -209,4 +209,4 @@ HTTP Status: **400**, **403**
 - [{#T}](./imbot-message-update.md)
 - [{#T}](./imbot-message-like.md)
 - [{#T}](./events/on-imbot-message-delete.md)
-- [Echo Bot Example](https://dev.1c-bitrix.com/~b24bots)
+- [Echo Bot Example](https://github.com/bitrix24com/bots)

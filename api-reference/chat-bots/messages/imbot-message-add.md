@@ -267,4 +267,4 @@ HTTP Status: **400**
 - [{#T}](./imbot-message-like.md)
 - [{#T}](./events/on-imbot-message-add.md)
 - [{#T}](../../../tutorials/chat-bots/index.md)
-- [EchoBot Example](https://dev.1c-bitrix.com/~b24bots)
+- [EchoBot Example](https://github.com/bitrix24com/bots)

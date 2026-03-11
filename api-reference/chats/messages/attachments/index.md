@@ -1,26 +1,28 @@
-# How to Use Attachments
+# Attachments in Messages ATTACH
 
-{% note warning "We are still updating this page" %}
+Attachments `ATTACH` allow you to add structured content to messages: text blocks, links, images, files, dividers, and tables.
 
-Some data may be missing — we will complete it soon.
+![Attachments](./_images/attach1.png)
 
-{% endnote %}
+Methods that support working with `ATTACH`:
 
-{% if build == 'dev' %}
+- [im.message.add](../im-message-add.md) — send a message in a chat
+- [im.message.update](../im-message-update.md) — modify a sent message
+- [im.notify](../../notifications/im-notify.md) — send a notification
+- [im.notify.personal.add](../../notifications/im-notify-personal-add.md) — send a personal notification
+- [im.notify.system.add](../../notifications/im-notify-system-add.md) — send a system notification
+- [imbot.message.add](../../../chat-bots/messages/imbot-message-add.md) — send a message on behalf of a chat bot
+- [imbot.message.update](../../../chat-bots/messages/imbot-message-update.md) — modify a chat bot's message
+- [imbot.command.answer](../../../chat-bots/commands/imbot-command-answer.md) — send a chat bot's response to a command
 
-{% note alert "TO-DO _not exported to prod_" %}
+## ATTACH Object Formats
 
-- edits needed to meet writing standards
+You can pass `ATTACH` in one of two formats:
 
-{% endnote %}
+1. Full form: an object with attachment metadata and an array of `BLOCKS`
+2. Short form: an array of blocks without a wrapper
 
-{% endif %}
-
-Attachments can be applied to any messages (from users or bots) and notifications within the messenger.
-
-You create an **Attachment** object and pass it to the message sending method under the key **ATTACH** (this can be either the **full** or **shortened** form of the attachment).
-
-## Full Version of the ATTACH Object
+### Full Form ATTACH
 
 {% list tabs %}
 
@@ -29,11 +31,11 @@ You create an **Attachment** object and pass it to the message sending method un
     ```js
     ATTACH: {
         ID: 1,
-        COLOR_TOKEN: "secondary",
-        COLOR: "#29619b",
+        COLOR_TOKEN: 'secondary',
+        COLOR: '#29619b',
         BLOCKS: [
             {...},
-            {...},
+            {...}
         ]
     }
     ```
@@ -41,98 +43,182 @@ You create an **Attachment** object and pass it to the message sending method un
 - PHP
 
     ```php
-    "ATTACH" => Array(
-        "ID" => 1,
-        "COLOR_TOKEN" => "secondary",
-        "COLOR" => "#29619b",
-        "BLOCKS" => Array(
-            array(...),
-            array(...),
-        )
-    )
+    'ATTACH' => [
+        'ID' => 1,
+        'COLOR_TOKEN' => 'secondary',
+        'COLOR' => '#29619b',
+        'BLOCKS' => [
+            [...],
+            [...],
+        ]
+    ]
     ```
 
 {% endlist %}
 
-**Array Keys**:
-- `ID` — identifier of the block
-- `COLOR_TOKEN` — responsible for the color highlighting of the attachment. Can take one of the following values:
-  - `primary`
-  - `secondary`
-  - `alert`
-  - `base`
-    Defaults to `base`
-- `COLOR` — responsible for the color highlighting of the attachment in the chat. Used for backward compatibility in open line chats and notifications. By default, the attachment color is assigned to the recipient's chat color (or, if it's a notification, to the current user's color). This key can be omitted if not needed.
-- `BLOCKS` must contain the markup blocks that we will discuss shortly.
+### Full Form Fields
 
-## Example:
+#| 
+|| **Field**
+`type` | **Description** ||
+|| **ID**
+[`integer`](../../../data-types.md) | Identifier of the attachment within the message ||
+|| **COLOR_TOKEN**
+[`string`](../../../data-types.md) | Color scheme of the attachment. Allowed values: `primary`, `secondary`, `alert`, `base`. Default: `base` ||
+|| **COLOR**
+[`string`](../../../data-types.md) | Explicit HEX color of the attachment. Used for compatibility with older scripts and in some types of notifications ||
+|| **BLOCKS**
+[`array`](../../../data-types.md) | Array of content blocks in the attachment. Block types are described in the [Block Collections](./block-collections/index.md) section ||
+|#
+
+![ATTACH Object](./_images/attach_variants.png)
+
+### Example of Full Form
 
 {% include [Example Note](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+      -H "Content-Type: application/json" \
+      -H "Accept: application/json" \
+      -d '{"DIALOG_ID":"chat20921","MESSAGE":"Attachment with primary color","ATTACH":{"ID":1,"COLOR_TOKEN":"primary","COLOR":"#29619b","BLOCKS":[{"MESSAGE":"The API will be available in update [B]im 24.0.0[/B]"}]}}' \
+      https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/im.message.add
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+      -H "Content-Type: application/json" \
+      -H "Accept: application/json" \
+      -d '{"DIALOG_ID":"chat20921","MESSAGE":"Attachment with primary color","ATTACH":{"ID":1,"COLOR_TOKEN":"primary","COLOR":"#29619b","BLOCKS":[{"MESSAGE":"The API will be available in update [B]im 24.0.0[/B]"}]},"auth":"**put_access_token_here**"}' \
+      https://**put_your_bitrix24_address**/rest/im.message.add
+    ```
+
 - JS
 
     ```js
-        BX24.callMethod(
-        'imbot.message.add',
+    try {
+      const response = await $b24.callMethod('im.message.add', {
+        DIALOG_ID: 'chat20921',
+        MESSAGE: 'Attachment with primary color',
+        ATTACH: {
+          ID: 1,
+          COLOR_TOKEN: 'primary',
+          COLOR: '#29619b',
+          BLOCKS: [
+            {
+              MESSAGE: 'The API will be available in update [B]im 24.0.0[/B]'
+            }
+          ]
+        }
+      });
+
+      const { result } = response.getData();
+      console.log(result);
+    } catch (error) {
+      console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'im.message.add',
+                [
+                    'DIALOG_ID' => 'chat20921',
+                    'MESSAGE' => 'Attachment with primary color',
+                    'ATTACH' => [
+                        'ID' => 1,
+                        'COLOR_TOKEN' => 'primary',
+                        'COLOR' => '#29619b',
+                        'BLOCKS' => [
+                            [
+                                'MESSAGE' => 'The API will be available in update [B]im 24.0.0[/B]'
+                            ]
+                        ]
+                    ]
+                ]
+            );
+
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+
+        print_r($result);
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+    }
+    ```
+
+- BX24.js
+
+    ```js
+    BX24.callMethod(
+        'im.message.add',
         {
             DIALOG_ID: 'chat20921',
             MESSAGE: 'Attachment with primary color',
             ATTACH: {
                 ID: 1,
-                COLOR_TOKEN: "primary",
-                COLOR: "#29619b",
+                COLOR_TOKEN: 'primary',
+                COLOR: '#29619b',
                 BLOCKS: [
                     {
-                        MESSAGE: "The API will be available in the update [B]im 24.0.0[/B]"
+                        MESSAGE: 'The API will be available in update [B]im 24.0.0[/B]'
                     }
                 ]
             }
         },
-        function(result){
-            if(result.error())
-            {
+        function(result) {
+            if (result.error()) {
                 console.error(result.error().ex);
-            }
-            else
-            {
+            } else {
                 console.log(result.data());
             }
         }
     );
     ```
 
-- PHP
-
-    {% include [Explanation of restCommand](../../_includes/rest-command.md) %}
+- PHP CRest
 
     ```php
-    restCommand(
-        'imbot.message.add',
-        Array(
-            "DIALOG_ID" => $_REQUEST['data']['PARAMS']['DIALOG_ID'],
-            "MESSAGE" => "Attachment with primary color",
-            "ATTACH" => Array(
-                "ID" => 1,
-                "COLOR_TOKEN" => "primary",
-                "COLOR" => "#29619b",
-                "BLOCKS" => Array(
-                    Array(
-                        "MESSAGE" => "The API will be available in the update [B]im 24.0.0[/B]"
-                    )
-                )
-            )
-        ),
-        $_REQUEST["auth"]
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'im.message.add',
+        [
+            'DIALOG_ID' => 'chat20921',
+            'MESSAGE' => 'Attachment with primary color',
+            'ATTACH' => [
+                'ID' => 1,
+                'COLOR_TOKEN' => 'primary',
+                'COLOR' => '#29619b',
+                'BLOCKS' => [
+                    [
+                        'MESSAGE' => 'The API will be available in update [B]im 24.0.0[/B]'
+                    ]
+                ]
+            ]
+        ]
     );
+
+    print_r($result);
     ```
 
 {% endlist %}
 
-## Short Version of the ATTACH Object
+### Short Form ATTACH
 
-If you are okay with the attachment being at the bottom of the message and do not need to specify a color, you can use the **short** version:
+If attachment metadata (`ID`, `COLOR_TOKEN`, `COLOR`) is not needed, you can pass an array of blocks directly:
 
 {% list tabs %}
 
@@ -141,80 +227,169 @@ If you are okay with the attachment being at the bottom of the message and do no
     ```js
     ATTACH: [
         {...},
-        {...},
+        {...}
     ]
     ```
 
 - PHP
 
     ```php
-    "ATTACH" => Array(
-        array(...),
-        array(...),
-    )
+    'ATTACH' => [
+        [...],
+        [...],
+    ]
     ```
 
 {% endlist %}
 
-Unlike the full version, the markup blocks are specified directly at the first level without declaring the **BLOCKS** key.
+![Short Version of ATTACH](./_images/short_attach.png)
 
-## Example:
+### Example of Short Form
 
 {% include [Example Note](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+      -H "Content-Type: application/json" \
+      -H "Accept: application/json" \
+      -d '{"DIALOG_ID":"chat20921","MESSAGE":"Text block","ATTACH":[{"MESSAGE":"The API will be available in update [B]im 24.0.0[/B]"}]}' \
+      https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/im.message.add
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+      -H "Content-Type: application/json" \
+      -H "Accept: application/json" \
+      -d '{"DIALOG_ID":"chat20921","MESSAGE":"Text block","ATTACH":[{"MESSAGE":"The API will be available in update [B]im 24.0.0[/B]"}],"auth":"**put_access_token_here**"}' \
+      https://**put_your_bitrix24_address**/rest/im.message.add
+    ```
+
 - JS
 
     ```js
+    try {
+      const response = await $b24.callMethod('im.message.add', {
+        DIALOG_ID: 'chat20921',
+        MESSAGE: 'Text block',
+        ATTACH: [
+          {
+            MESSAGE: 'The API will be available in update [B]im 24.0.0[/B]'
+          }
+        ]
+      });
+
+      const { result } = response.getData();
+      console.log(result);
+    } catch (error) {
+      console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'im.message.add',
+                [
+                    'DIALOG_ID' => 'chat20921',
+                    'MESSAGE' => 'Text block',
+                    'ATTACH' => [
+                        [
+                            'MESSAGE' => 'The API will be available in update [B]im 24.0.0[/B]'
+                        ]
+                    ]
+                ]
+            );
+
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+
+        print_r($result);
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
-        'imbot.message.add',
+        'im.message.add',
         {
             DIALOG_ID: 'chat20921',
             MESSAGE: 'Text block',
             ATTACH: [
                 {
-                    MESSAGE: "The API will be available in the update [B]im 24.0.0[/B]"
+                    MESSAGE: 'The API will be available in update [B]im 24.0.0[/B]'
                 }
             ]
         },
-        function(result){
-            if(result.error())
-            {
+        function(result) {
+            if (result.error()) {
                 console.error(result.error().ex);
-            }
-            else
-            {
+            } else {
                 console.log(result.data());
             }
         }
     );
     ```
 
-- PHP
-
-    {% include [Explanation of restCommand](../../_includes/rest-command.md) %}
+- PHP CRest
 
     ```php
-    restCommand(
-        'imbot.message.add',
-        Array(
-            "DIALOG_ID" => $_REQUEST['data']['PARAMS']['DIALOG_ID'],
-            "MESSAGE" => "Text block",
-            "ATTACH" => Array(
-                Array(
-                    "MESSAGE" => "The API will be available in the update [B]im 24.0.0[/B]"
-                )
-            )
-        ),
-        $_REQUEST["auth"]
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'im.message.add',
+        [
+            'DIALOG_ID' => 'chat20921',
+            'MESSAGE' => 'Text block',
+            'ATTACH' => [
+                [
+                    'MESSAGE' => 'The API will be available in update [B]im 24.0.0[/B]'
+                ]
+            ]
+        ]
     );
+
+    print_r($result);
     ```
 
 {% endlist %}
 
+## Limitations and Errors
+
+- Maximum size of serialized `ATTACH`: `60000` characters
+- An incorrect structure returns the error `ATTACH_ERROR`
+- Exceeding the limit returns the error `ATTACH_OVERSIZE`
+
+## Link Validation
+
+Supported in attachment blocks:
+
+- absolute URLs: `http://` and `https://`
+- relative URLs from the Bitrix root: `/company/personal/user/1/`
+
 {% note warning %}
 
-Due to the complexity of the structure, attachments are not automatically added when sent via XMPP, email, or as PUSH notifications to a phone.
+The content of `ATTACH` is not automatically transmitted in XMPP, email, and push notifications.
 
 {% endnote %}
+
+## Continue Learning
+
+- [{#T}](./constructor.md)
+- [{#T}](./block-collections/index.md)
+- [{#T}](../im-message-add.md)
+- [{#T}](../im-message-update.md)
+- [{#T}](../../notifications/im-notify.md)

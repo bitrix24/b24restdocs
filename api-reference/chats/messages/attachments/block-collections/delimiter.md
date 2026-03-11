@@ -1,30 +1,23 @@
-# Block with DELIMITER
+# DELIMITER Block
 
-{% note warning "We are still updating this page" %}
+The `DELIMITER` block adds a visual separator between parts of an attachment.
 
-Some data may be missing — we will fill it in shortly.
+![Delimiter Block](./_images/delimiter.png)
 
-{% endnote %}
+## Block Parameters
 
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- edits needed to meet writing standards.
-
-{% endnote %}
-
-{% endif %}
-
-![Block with delimiter](./_images/delimiter.png)
-
-`DELIMITER` - outputs a delimiter.
-
-You can set the size using the SIZE parameter. This parameter is optional.
+#|
+|| **Name**
+`type` | **Description** ||
+|| **SIZE**
+[`integer`](../../../../data-types.md) | Width of the separator in pixels. If the value is not specified or is incorrect, `200` is used. ||
+|| **COLOR**
+[`string`](../../../../data-types.md) | HEX color of the separator (`#RGB` or `#RRGGBB`) ||
+|#
 
 ## Example
 
-{% include [Note on examples](../../../../../_includes/examples.md) %}
+{% include [Example Notes](../../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -34,18 +27,26 @@ You can set the size using the SIZE parameter. This parameter is optional.
     {
         DELIMITER: {
             SIZE: 200,
+            COLOR: '#c6c6c6'
         }
-    },
+    }
     ```
 
 - PHP
 
     ```php
-    Array(
-        "DELIMITER" => Array(
+    [
+        'DELIMITER' => [
             'SIZE' => 200,
-        )
-    ),
+            'COLOR' => '#c6c6c6'
+        ]
+    ]
     ```
 
 {% endlist %}
+
+## Continue Learning
+
+- [{#T}](./index.md)
+- [{#T}](./text.md)
+- [{#T}](./grid.md)

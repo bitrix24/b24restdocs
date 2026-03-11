@@ -1,43 +1,262 @@
-# Attach a Record to a Completed Call and to the Call's Deal telephony.externalCall.attachRecord
+# Attach a Record to a Completed Call `telephony.externalCall.attachRecord`
 
-{% note warning "We are still updating this page" %}
+> Scope: [`telephony`](../scopes/permissions.md)
+>
+> Who can execute the method: any user
 
-Some data may be missing here — we will fill it in shortly.
+The method `telephony.externalCall.attachRecord` attaches a record to a completed call and to the CRM activity of the call.
 
-{% endnote %}
+Call this method after [telephony.externalCall.finish](./telephony-external-call-finish.md) when the record is ready.
 
-{% if build == 'dev' %}
+## Method Parameters
 
-{% note alert "TO-DO _not exported to prod_" %}
-
-- examples are missing
-- success response is missing
-- error response is missing
-
-{% endnote %}
-
-{% endif %}
-
-{% include notitle [Scope telephony all](./_includes/scope-telephony-all.md) %}
-
-The method `telephony.externalCall.attachRecord` attaches a record to a completed call and to the call's deal. It should be called after [telephony.externalcall.finish](./telephony-external-call-finish.md) if the record is not ready at the time of the finish call.
-
-Only one record can be attached.
-
-If the method is called multiple times, the next call will overwrite the previous record.
+{% include [Note on Required Parameters](../../_includes/required.md) %}
 
 #|
-|| **Parameter** / **Type** | **Description** ||
-|| **CALL_ID**^*^ 
-[`string`](../data-types.md) | The identifier of the call from the method [telephony.externalcall.register](./telephony-external-call-register.md). ||
-|| **FILENAME** 
-[`string`](../data-types.md) | The name of the file, required. The file name must end with wav or mp3. ||
-|| **FILE_CONTENT** 
-[`string`](../data-types.md) | [base64-encoded](../files/how-to-upload-files.md) content of the file. Optional. If this parameter is not specified, the method will return the `uploadUrl` parameter - the URL to which the file content can be 'uploaded'. ||
-|| **RECORD_URL** 
-[`string`](../data-types.md) | A link to the record on the client's server. If specified, an attempt will be made to download the record from the specified address instead of waiting for the record to be uploaded to the client's account. During the execution of the method, the account will make one attempt to download the record from the specified address. In case of failure, the method will return an error.
+|| **Name**
+`type` | **Description** ||
+|| **CALL_ID***
+[`string`](../data-types.md) | Identifier of the call from the method [telephony.externalCall.register](./telephony-external-call-register.md) ||
+|| **RECORD_URL**
+[`string`](../data-types.md) | URL of the record on an external server. If this parameter is provided, Bitrix24 downloads the file from the link.
 
-Since the ability to download depends on many factors independent of the account, the use of this parameter is not recommended. ||
+It is recommended to use this only if the file is reliably and quickly accessible. ||
+|| **FILENAME**
+[`string`](../data-types.md) | Name of the record file.
+
+Possible extensions:
+- `wav`
+- `mp3`
+
+In `RECORD_URL` mode:
+- if `FILENAME` is not provided, the name is taken from the URL. ||
+|| **FILE_CONTENT**
+[`string`](../data-types.md) | File in [Base64](../files/how-to-upload-files.md) encoding. ||
 |#
 
-{% include [Footnote on parameters](../../_includes/required.md) %}
+{% note info "" %}
+
+If `FILENAME` is provided but `FILE_CONTENT` is not, the method will return `uploadUrl` and `fieldName` for subsequent file content upload in a separate request.
+
+If both `FILENAME` and `FILE_CONTENT` (or `RECORD_URL`) are provided, the file is attached immediately, and `FILE_ID` is returned in the response.
+
+{% endnote %}
+
+## Code Examples
+
+{% include [Note on Examples](../../_includes/examples.md) %}
+
+{% list tabs %}
+
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"CALL_ID":"externalCall.716f1cb73def9700a23842adf9c4c568.1773130779","FILENAME":"call-001.mp3","FILE_CONTENT":"SUQzAwAAAAAiVVRJVDI...AAAAAAAAAAAAP8="}' \
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/telephony.externalCall.attachRecord
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"CALL_ID":"externalCall.716f1cb73def9700a23842adf9c4c568.1773130779","FILENAME":"call-001.mp3","FILE_CONTENT":"SUQzAwAAAAAiVVRJVDI...AAAAAAAAAAAAP8=","auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/telephony.externalCall.attachRecord
+    ```
+
+- JS
+
+    ```js
+    try
+    {
+        const response = await $b24.callMethod(
+            'telephony.externalCall.attachRecord',
+            {
+                CALL_ID: 'externalCall.716f1cb73def9700a23842adf9c4c568.1773130779',
+                FILENAME: 'call-001.mp3',
+                FILE_CONTENT: 'SUQzAwAAAAAiVVRJVDI...AAAAAAAAAAAAP8='
+            }
+        );
+        
+        const result = response.getData().result;
+        console.log('Record attached:', result);
+        processResult(result);
+    }
+    catch( error )
+    {
+        console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'telephony.externalCall.attachRecord',
+                [
+                    'CALL_ID' => 'externalCall.716f1cb73def9700a23842adf9c4c568.1773130779',
+                    'FILENAME' => 'call-001.mp3',
+                    'FILE_CONTENT' => 'SUQzAwAAAAAiVVRJVDI...AAAAAAAAAAAAP8='
+                ]
+            );
+
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+
+        echo 'Success: ' . print_r($result, true);
+        processData($result);
+
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error attaching record: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
+    BX24.callMethod(
+        "telephony.externalCall.attachRecord",
+        {
+            CALL_ID: 'externalCall.716f1cb73def9700a23842adf9c4c568.1773130779',
+            FILENAME: 'call-001.mp3',
+            FILE_CONTENT: 'SUQzAwAAAAAiVVRJVDI...AAAAAAAAAAAAP8='
+        },
+        function(result)
+        {
+            if (result.error())
+            {
+                console.error(result.error(), result.error_description());
+            }
+            else
+            {
+                console.log(result.data());
+            }
+        }
+    );
+    ```
+
+- PHP CRest
+
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'telephony.externalCall.attachRecord',
+        [
+            'CALL_ID' => 'externalCall.716f1cb73def9700a23842adf9c4c568.1773130779',
+            'FILENAME' => 'call-001.mp3',
+            'FILE_CONTENT' => 'SUQzAwAAAAAiVVRJVDI...AAAAAAAAAAAAP8='
+        ]
+    );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
+    ```
+
+{% endlist %}
+
+## Response Handling
+
+#### If both FILENAME and FILE_CONTENT are provided
+
+HTTP Status: **200**
+
+```json
+{
+    "result": {
+        "FILE_ID": 9079
+    },
+    "time": {
+        "start": 1773134738,
+        "finish": 1773134740.398239,
+        "duration": 2.3982388973236084,
+        "processing": 2,
+        "date_start": "2026-03-10T12:25:38+01:00",
+        "date_finish": "2026-03-10T12:25:40+01:00",
+        "operating_reset_at": 1773135338,
+        "operating": 1.9444890022277832
+    }
+}
+```
+
+#### If FILENAME is provided without FILE_CONTENT
+
+```json
+{
+    "result": {
+        "uploadUrl": "https://test.bitrix24.com/rest/upload.json?auth=2ae2af690000071b006e2cf2000004f5000007e78a418f2bdef34c831de35c35aaa7ac&token=telephony%7CY2FsbElkPWV4dGVybmFsQ2FsbC43MTZmMWNiNzNkZWY5NzAwYTIzODQyYWRmWRxVVVhdzE%3D%7CInekVhYWE3YWMi.rgOHch62uz5kg9GEslf46sPRmN5MYa/kxBkWcOQtZ/8=",
+        "fieldName": "file"
+    },
+    "time": {
+        "start": 1773134240,
+        "finish": 1773134240.377464,
+        "duration": 0.37746405601501465,
+        "processing": 0,
+        "date_start": "2026-03-10T12:17:20+01:00",
+        "date_finish": "2026-03-10T12:17:20+01:00",
+        "operating_reset_at": 1773134840,
+        "operating": 0
+    }
+}
+```
+
+### Returned Data
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`object`](../data-types.md) | Root element of the response ||
+|| **FILE_ID**
+[`integer`](../data-types.md) | Identifier of the attached file ||
+|| **uploadUrl**
+[`string`](../data-types.md) | URL for file upload if `FILE_CONTENT` was not provided ||
+|| **fieldName**
+[`string`](../data-types.md) | Field name for file upload ||
+|| **time**
+[`time`](../data-types.md#time) | Information about the request execution time ||
+|#
+
+## Error Handling
+
+HTTP Status: **400**
+
+```json
+{
+    "error": "ERROR_CORE",
+    "error_description": "Required parameters are not set. Request should contain either URL or FILENAME parameter."
+}
+```
+
+{% include notitle [Error Handling](../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+#|
+|| **Code** | **Description** | **Value** ||
+|| `ERROR_CORE` | Required parameters are not set. Request should contain either URL or FILENAME parameter. | Neither `RECORD_URL` nor `FILENAME` was provided. ||
+|| `ERROR_CORE` | Call is not found in the statistics table. It seems it is not finished yet. | The call was not found in the statistics. Ensure that the call is completed. ||
+|| `ERROR_CORE` | File name is empty. | Empty `FILENAME`. ||
+|| `ERROR_CORE` | Wrong file extension. Only wav and mp3 are allowed. | Invalid file extension. ||
+|| `ERROR_CORE` | File content is empty. | Empty `FILE_CONTENT`. ||
+|| `ERROR_CORE` | File content is not properly encoded. Base64 encoding is expected. | `FILE_CONTENT` was not provided in Base64. ||
+|| `ERROR_CORE` | Server returns HTTP error code {N}. | HTTP error occurred while uploading the record via `RECORD_URL`. ||
+|#
+
+{% include [System Errors](../../_includes/system-errors.md) %}
+
+## Continue Learning
+
+- [{#T}](./telephony-external-call-register.md)
+- [{#T}](./telephony-external-call-finish.md)
+- [{#T}](./telephony-call-attach-transcription.md)

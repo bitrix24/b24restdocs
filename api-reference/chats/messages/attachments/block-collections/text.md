@@ -1,26 +1,38 @@
-# Block with MESSAGE Text
+# MESSAGE Block
 
-{% note warning "We are still updating this page" %}
+The `MESSAGE` block displays the text portion of an attachment.
 
-Some data may be missing here — we will complete it soon.
+![MESSAGE Block](./_images/text.png)
 
-{% endnote %}
+## Block Parameters
 
-{% if build == 'dev' %}
+#|
+|| **Name**
+`type` | **Description** ||
+|| **MESSAGE***  
+[`string`](../../../../data-types.md) | Text of the block. Supports BB codes ||
+|#
 
-{% note alert "TO-DO _not exported to prod_" %}
+## Supported BB Codes
 
-- edits are needed to meet writing standards.
-
-{% endnote %}
-
-{% endif %}
-
-![Block with text](./_images/text.png)
-
-`MESSAGE` - outputs simple text without formatting.
+#|
+|| **Code** | **Purpose** ||
+|| `USER` | Mention a user with a link to their profile in the chat ||
+|| `CHAT` | Link to the chat ||
+|| `SEND` | Clickable action "send text to chat" ||
+|| `PUT` | Clickable action "insert text into input field" ||
+|| `CALL` | Clickable action for making a call ||
+|| `BR` | Line break ||
+|| `B` | Bold text ||
+|| `U` | Underlined text ||
+|| `I` | Italic text ||
+|| `S` | Strikethrough text ||
+|| `URL` | Link ||
+|#
 
 ## Example
+
+{% include [Example Notes](../../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -28,20 +40,22 @@ Some data may be missing here — we will complete it soon.
 
     ```js
     {
-        MESSAGE: "The API will be available in update im 24.0.0"
-    },
+        MESSAGE: 'The API will be available in the update [B]im 24.0.0[/B]'
+    }
     ```
 
 - PHP
 
     ```php
-    Array(
-        "MESSAGE" => "The API will be available in update im 24.0.0"
-    ),
+    [
+        'MESSAGE' => 'The API will be available in the update [B]im 24.0.0[/B]'
+    ]
     ```
 
 {% endlist %}
 
-{% include [Footnote about examples](../../../../../_includes/examples.md) %}
+## Continue Learning
 
-The following bb-codes are available in the text: `USER`, `CHAT`, `SEND`, `PUT`, `CALL`, `BR`, `B`, `U`, `I`, `S`, `URL`.
+- [{#T}](./index.md)
+- [{#T}](./delimiter.md)
+- [{#T}](./grid.md)

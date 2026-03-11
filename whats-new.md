@@ -2,6 +2,16 @@
 
 ## 2026
 
+### March 11, 2026
+
+- Updated methods in the [Telephony](./api-reference/telephony/index.md) section
+- Updated the [Attachments in Messages ATTACH](./api-reference/chats/messages/attachments/index.md) section
+- Updated the [imopenlines.session.history.get](./api-reference/imopenlines/openlines/sessions/imopenlines-session-history-get.md) method in the Open Channels section
+
+### March 10, 2026
+
+- Updated documentation for methods related to Custom Fields for tasks [task.item.userfield.*](./api-reference/tasks/user-field/index.md)
+
 ### March 6, 2026
 
 - Updated the page on [Working with Keyboards](./api-reference/chats/messages/keyboards.md)

@@ -1,30 +1,45 @@
-# Link Block
+# LINK Block
 
-{% note warning "We are still updating this page" %}
+The `LINK` block outputs a link with a title, description, and an optional preview image.
 
-Some data may be missing here — we will fill it in shortly.
+![LINK Block](./_images/link.png)
 
-{% endnote %}
+## When to Use LINK
 
-{% if build == 'dev' %}
+The `LINK` block is suitable for manually creating a link block in an attachment.
 
-{% note alert "TO-DO _not exported to prod_" %}
+If you specifically need the extended link preview format, use `RICH_LINK`.
 
-- edits needed to meet writing standards
+## Block Parameters
 
-{% endnote %}
-
-{% endif %}
-
-![Link Block](./_images/link.png)
-
-`LINK` - outputs a block with a resource link, description, and explanatory image. This block is used for automatically creating "rich links."
-
-The fields **DESC** (description) and **PREVIEW** (image) are not mandatory fields.
-
-The fields **WIDTH** (width) and **HEIGHT** (height) are not mandatory, but it is recommended to specify them now to display the image correctly.
+#|
+|| **Name**
+`type` | **Description** ||
+|| **LINK***
+[`string`](../../../../data-types.md) | URL of the link. Absolute URLs (`http://`, `https://`) and relative paths from the root of Bitrix are allowed ||
+|| **NAME**
+[`string`](../../../../data-types.md) | Link text. If not specified, `LINK` is displayed ||
+|| **DESC**
+[`string`](../../../../data-types.md) | Description under the link title ||
+|| **HTML**
+[`string`](../../../../data-types.md) | HTML description. If provided, it is used instead of `DESC` ||
+|| **PREVIEW**
+[`string`](../../../../data-types.md) | URL of the preview image ||
+|| **WIDTH**
+[`integer`](../../../../data-types.md) | Width of the preview in pixels ||
+|| **HEIGHT**
+[`integer`](../../../../data-types.md) | Height of the preview in pixels ||
+|| **USER_ID**
+[`integer`](../../../../data-types.md) | Link to the Bitrix user (internal navigation) ||
+|| **CHAT_ID**
+[`integer`](../../../../data-types.md) | Link to the Bitrix chat (internal navigation) ||
+|| **NETWORK_ID**
+[`string`](../../../../data-types.md) | Link to the Bitrix24 Network user ||
+|#
 
 ## Example
+
+{% include [Example Notes](../../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -33,35 +48,35 @@ The fields **WIDTH** (width) and **HEIGHT** (height) are not mandatory, but it i
     ```js
     {
         LINK: {
-            PREVIEW: "https://bitrix24.com/bitrix/templates/1c-bitrix-new/images/logo.png",
+            PREVIEW: 'https://bitrix24.com/bitrix/templates/1c-bitrix-new/images/logo.png',
             WIDTH: 1000,
             HEIGHT: 638,
-            NAME: "Ticket #12345: new API for the \"Web Messenger\" module",
-            DESC: "Must be implemented by the release!",
-            LINK: "https://api.bitrix24.com/",
+            NAME: 'Ticket #12345: New API for the "Web Messenger" Module',
+            DESC: 'Must be implemented by the release!',
+            LINK: 'https://api.bitrix24.com/'
         }
-    },
+    }
     ```
 
 - PHP
 
     ```php
-    Array(
-        "LINK" => Array(
-            "PREVIEW" => "https://bitrix24.com/bitrix/templates/1c-bitrix-new/images/logo.png",
-            "WIDTH" => "1000",
-            "HEIGHT" => "638",
-            "NAME" => "Ticket #12345: new API for the \"Web Messenger\" module",
-            "DESC" => "Must be implemented by the release!",
-            "LINK" => "https://api.bitrix24.com/"
-        )
-    ),
+    [
+        'LINK' => [
+            'PREVIEW' => 'https://bitrix24.com/bitrix/templates/1c-bitrix-new/images/logo.png',
+            'WIDTH' => 1000,
+            'HEIGHT' => 638,
+            'NAME' => 'Ticket #12345: New API for the "Web Messenger" Module',
+            'DESC' => 'Must be implemented by the release!',
+            'LINK' => 'https://api.bitrix24.com/'
+        ]
+    ]
     ```
 
 {% endlist %}
 
-{% include [Example Notes](../../../../../_includes/examples.md) %}
+## Continue Learning
 
-Instead of the key **LINK**, you can also use links to entities:
-- `CHAT_ID => 1` - to specify a link to a chat;
-- `USER_ID => 1` - to specify a link to a user.
+- [{#T}](./index.md)
+- [{#T}](./text.md)
+- [{#T}](./images.md)

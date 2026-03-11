@@ -1,213 +1,213 @@
-# Constructor, Examples
+# Attachment Constructor ATTACH
 
-{% note warning "We are still updating this page" %}
+This page contains practical examples of assembling `ATTACH` from various types of blocks. The final attachment depends on the set and order of the blocks.
 
-Some data may be missing — we will fill it in shortly.
+## Example 1. "Bug Tracker" Card
 
-{% endnote %}
+A system message with a task card, a link, and tables with parameters.
 
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- edits needed for writing standards
-
-{% endnote %}
-
-{% endif %}
-
-The **Attachment** object is a constructor; you can "assemble" it as needed using the available blocks. The order of adding blocks matters.
-
-## "Bug Tracker"
-
-This example demonstrates how to use various types of attachments to create an informative and structured message in a bot that simulates a bug tracking system (bug tracker).
+{% include [Examples Note](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+      -H "Content-Type: application/json" \
+      -H "Accept: application/json" \
+      -d '{"DIALOG_ID":"chat20921","MESSAGE":"Task Card","ATTACH":[{"USER":{"NAME":"Mantis Notifications","AVATAR":"https://files.shelenkov.com/bitrix/images/mantis2.jpg","LINK":"https://shelenkov.com/"}},{"LINK":{"NAME":"Open Mantis from external network","LINK":"https://shelenkov.com/"}},{"DELIMITER":{"SIZE":200,"COLOR":"#c6c6c6"}},{"GRID":[{"NAME":"Project","VALUE":"BUGS","DISPLAY":"LINE","WIDTH":100},{"NAME":"Category","VALUE":"im","DISPLAY":"LINE","WIDTH":100},{"NAME":"Summary","VALUE":"It is necessary to implement the ability to add structured entities to messages and notifications in the messenger.","DISPLAY":"BLOCK"}]},{"DELIMITER":{"SIZE":200,"COLOR":"#c6c6c6"}},{"GRID":[{"NAME":"New Request","VALUE":"","DISPLAY":"ROW","WIDTH":100},{"NAME":"Assigned To","VALUE":"Evgeny Shelenkov","DISPLAY":"ROW","WIDTH":100},{"NAME":"Deadline","VALUE":"11/04/2015 17:50:43","DISPLAY":"ROW","WIDTH":100}]}]}' \
+      https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/im.message.add
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+      -H "Content-Type: application/json" \
+      -H "Accept: application/json" \
+      -d '{"DIALOG_ID":"chat20921","MESSAGE":"Task Card","ATTACH":[{"USER":{"NAME":"Mantis Notifications","AVATAR":"https://files.shelenkov.com/bitrix/images/mantis2.jpg","LINK":"https://shelenkov.com/"}},{"LINK":{"NAME":"Open Mantis from external network","LINK":"https://shelenkov.com/"}},{"DELIMITER":{"SIZE":200,"COLOR":"#c6c6c6"}},{"GRID":[{"NAME":"Project","VALUE":"BUGS","DISPLAY":"LINE","WIDTH":100},{"NAME":"Category","VALUE":"im","DISPLAY":"LINE","WIDTH":100},{"NAME":"Summary","VALUE":"It is necessary to implement the ability to add structured entities to messages and notifications in the messenger.","DISPLAY":"BLOCK"}]},{"DELIMITER":{"SIZE":200,"COLOR":"#c6c6c6"}},{"GRID":[{"NAME":"New Request","VALUE":"","DISPLAY":"ROW","WIDTH":100},{"NAME":"Assigned To","VALUE":"Evgeny Shelenkov","DISPLAY":"ROW","WIDTH":100},{"NAME":"Deadline","VALUE":"11/04/2015 17:50:43","DISPLAY":"ROW","WIDTH":100}]}],"auth":"**put_access_token_here**"}' \
+      https://**put_your_bitrix24_address**/rest/im.message.add
+    ```
+
 - JS
 
-
     ```js
-    try
-    {
-    	const response = await $b24.callMethod(
-    		'imbot.message.add',
-    		{
-    			DIALOG_ID: 'chat20921',
-    			MESSAGE: 'Message from bot',
-    			ATTACH: [
-    				{
-    					USER: {
-    						NAME: "Mantis Notifications",
-    						AVATAR: "http://files.shelenkov.com/bitrix/images/mantis2.jpg",
-    						LINK: "http://shelenkov.com/",
-    					}
-    				},
-    				{
-    					LINK: {
-    						NAME: "Open Mantis from external network",
-    						LINK: "http://shelenkov.com/",
-    					}
-    				},
-    				{
-    					DELIMITER: {
-    						SIZE: 200,
-    						COLOR: "#c6c6c6"
-    					}
-    				},
-    				{
-    					GRID: [
-    						{
-    							NAME: "Project",
-    							VALUE: "BUGS",
-    							DISPLAY: "LINE",
-    							WIDTH: 100
-    						},
-    						{
-    							NAME: "Category",
-    							VALUE: "im",
-    							DISPLAY: "LINE",
-    							WIDTH: 100
-    						},
-    						{
-    							NAME: "Summary",
-    							VALUE: "It is necessary to implement the ability to add structured entities to messages and notifications in the messenger.",
-    							DISPLAY: "BLOCK"
-    						},
-    					]
-    				},
-    				{
-    					DELIMITER: {
-    						SIZE: 200,
-    						COLOR: "#c6c6c6"
-    					}
-    				},
-    				{
-    					GRID: [
-    						{
-    							NAME: "New Request",
-    							VALUE: "",
-    							DISPLAY: "ROW",
-    							WIDTH: 100
-    						},
-    						{
-    							NAME: "Assigned To",
-    							VALUE: "Evgeny Shelenkov",
-    							DISPLAY: "ROW",
-    							WIDTH: 100
-    						},
-    						{
-    							NAME: "Deadline",
-    							VALUE: "11/04/2015 17:50:43",
-    							DISPLAY: "ROW",
-    							WIDTH: 100
-    						},
-    					]
-    				},
-    			]
-    		}
-    	);
-    	
-    	const result = response.getData().result;
-    	console.log(result);
-    }
-    catch(error)
-    {
-    	console.error(error.ex);
+    try {
+        const response = await $b24.callMethod(
+            'im.message.add',
+            {
+                DIALOG_ID: 'chat20921',
+                MESSAGE: 'Task Card',
+                ATTACH: [
+                    {
+                        USER: {
+                            NAME: 'Mantis Notifications',
+                            AVATAR: 'https://files.shelenkov.com/bitrix/images/mantis2.jpg',
+                            LINK: 'https://shelenkov.com/'
+                        }
+                    },
+                    {
+                        LINK: {
+                            NAME: 'Open Mantis from external network',
+                            LINK: 'https://shelenkov.com/'
+                        }
+                    },
+                    {
+                        DELIMITER: {
+                            SIZE: 200,
+                            COLOR: '#c6c6c6'
+                        }
+                    },
+                    {
+                        GRID: [
+                            {
+                                NAME: 'Project',
+                                VALUE: 'BUGS',
+                                DISPLAY: 'LINE',
+                                WIDTH: 100
+                            },
+                            {
+                                NAME: 'Category',
+                                VALUE: 'im',
+                                DISPLAY: 'LINE',
+                                WIDTH: 100
+                            },
+                            {
+                                NAME: 'Summary',
+                                VALUE: 'It is necessary to implement the ability to add structured entities to messages and notifications in the messenger.',
+                                DISPLAY: 'BLOCK'
+                            }
+                        ]
+                    },
+                    {
+                        DELIMITER: {
+                            SIZE: 200,
+                            COLOR: '#c6c6c6'
+                        }
+                    },
+                    {
+                        GRID: [
+                            {
+                                NAME: 'New Request',
+                                VALUE: '',
+                                DISPLAY: 'ROW',
+                                WIDTH: 100
+                            },
+                            {
+                                NAME: 'Assigned To',
+                                VALUE: 'Evgeny Shelenkov',
+                                DISPLAY: 'ROW',
+                                WIDTH: 100
+                            },
+                            {
+                                NAME: 'Deadline',
+                                VALUE: '11/04/2015 17:50:43',
+                                DISPLAY: 'ROW',
+                                WIDTH: 100
+                            }
+                        ]
+                    }
+                ]
+            }
+        );
+
+        const result = response.getData().result;
+        console.log(result);
+    } catch (error) {
+        console.error(error);
     }
     ```
 
 - PHP
-
 
     ```php
     try {
         $response = $b24Service
             ->core
             ->call(
-                'imbot.message.add',
+                'im.message.add',
                 [
                     'DIALOG_ID' => 'chat20921',
-                    'MESSAGE' => 'Message from bot',
+                    'MESSAGE' => 'Task Card',
                     'ATTACH' => [
                         [
                             'USER' => [
-                                'NAME' => "Mantis Notifications",
-                                'AVATAR' => "http://files.shelenkov.com/bitrix/images/mantis2.jpg",
-                                'LINK' => "http://shelenkov.com/",
+                                'NAME' => 'Mantis Notifications',
+                                'AVATAR' => 'https://files.shelenkov.com/bitrix/images/mantis2.jpg',
+                                'LINK' => 'https://shelenkov.com/'
                             ]
                         ],
                         [
                             'LINK' => [
-                                'NAME' => "Open Mantis from external network",
-                                'LINK' => "http://shelenkov.com/",
+                                'NAME' => 'Open Mantis from external network',
+                                'LINK' => 'https://shelenkov.com/'
                             ]
                         ],
                         [
                             'DELIMITER' => [
                                 'SIZE' => 200,
-                                'COLOR' => "#c6c6c6"
+                                'COLOR' => '#c6c6c6'
                             ]
                         ],
                         [
                             'GRID' => [
                                 [
-                                    'NAME' => "Project",
-                                    'VALUE' => "BUGS",
-                                    'DISPLAY' => "LINE",
+                                    'NAME' => 'Project',
+                                    'VALUE' => 'BUGS',
+                                    'DISPLAY' => 'LINE',
                                     'WIDTH' => 100
                                 ],
                                 [
-                                    'NAME' => "Category",
-                                    'VALUE' => "im",
-                                    'DISPLAY' => "LINE",
+                                    'NAME' => 'Category',
+                                    'VALUE' => 'im',
+                                    'DISPLAY' => 'LINE',
                                     'WIDTH' => 100
                                 ],
                                 [
-                                    'NAME' => "Summary",
-                                    'VALUE' => "It is necessary to implement the ability to add structured entities to messages and notifications in the messenger.",
-                                    'DISPLAY' => "BLOCK"
-                                ],
+                                    'NAME' => 'Summary',
+                                    'VALUE' => 'It is necessary to implement the ability to add structured entities to messages and notifications in the messenger.',
+                                    'DISPLAY' => 'BLOCK'
+                                ]
                             ]
                         ],
                         [
                             'DELIMITER' => [
                                 'SIZE' => 200,
-                                'COLOR' => "#c6c6c6"
+                                'COLOR' => '#c6c6c6'
                             ]
                         ],
                         [
                             'GRID' => [
                                 [
-                                    'NAME' => "New Request",
-                                    'VALUE' => "",
-                                    'DISPLAY' => "ROW",
+                                    'NAME' => 'New Request',
+                                    'VALUE' => '',
+                                    'DISPLAY' => 'ROW',
                                     'WIDTH' => 100
                                 ],
                                 [
-                                    'NAME' => "Assigned To",
-                                    'VALUE' => "Evgeny Shelenkov",
-                                    'DISPLAY' => "ROW",
+                                    'NAME' => 'Assigned To',
+                                    'VALUE' => 'Evgeny Shelenkov',
+                                    'DISPLAY' => 'ROW',
                                     'WIDTH' => 100
                                 ],
                                 [
-                                    'NAME' => "Deadline",
-                                    'VALUE' => "11/04/2015 17:50:43",
-                                    'DISPLAY' => "ROW",
+                                    'NAME' => 'Deadline',
+                                    'VALUE' => '11/04/2015 17:50:43',
+                                    'DISPLAY' => 'ROW',
                                     'WIDTH' => 100
-                                ],
+                                ]
                             ]
-                        ],
+                        ]
                     ]
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
+
         echo 'Success: ' . print_r($result, true);
-    
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error adding message: ' . $e->getMessage();
@@ -218,87 +218,85 @@ This example demonstrates how to use various types of attachments to create an i
 
     ```js
     BX24.callMethod(
-        'imbot.message.add',
+        'im.message.add',
         {
             DIALOG_ID: 'chat20921',
-            MESSAGE: 'Message from bot',
+            MESSAGE: 'Task Card',
             ATTACH: [
                 {
                     USER: {
-                        NAME: "Mantis Notifications",
-                        AVATAR: "http://files.shelenkov.com/bitrix/images/mantis2.jpg",
-                        LINK: "http://shelenkov.com/",
+                        NAME: 'Mantis Notifications',
+                        AVATAR: 'https://files.shelenkov.com/bitrix/images/mantis2.jpg',
+                        LINK: 'https://shelenkov.com/'
                     }
                 },
                 {
                     LINK: {
-                        NAME: "Open Mantis from external network",
-                        LINK: "http://shelenkov.com/",
+                        NAME: 'Open Mantis from external network',
+                        LINK: 'https://shelenkov.com/'
                     }
                 },
                 {
                     DELIMITER: {
                         SIZE: 200,
-                        COLOR: "#c6c6c6"
+                        COLOR: '#c6c6c6'
                     }
                 },
                 {
                     GRID: [
                         {
-                            NAME: "Project",
-                            VALUE: "BUGS",
-                            DISPLAY: "LINE",
+                            NAME: 'Project',
+                            VALUE: 'BUGS',
+                            DISPLAY: 'LINE',
                             WIDTH: 100
                         },
                         {
-                            NAME: "Category",
-                            VALUE: "im",
-                            DISPLAY: "LINE",
+                            NAME: 'Category',
+                            VALUE: 'im',
+                            DISPLAY: 'LINE',
                             WIDTH: 100
                         },
                         {
-                            NAME: "Summary",
-                            VALUE: "It is necessary to implement the ability to add structured entities to messages and notifications in the messenger.",
-                            DISPLAY: "BLOCK"
-                        },
+                            NAME: 'Summary',
+                            VALUE: 'It is necessary to implement the ability to add structured entities to messages and notifications in the messenger.',
+                            DISPLAY: 'BLOCK'
+                        }
                     ]
                 },
                 {
                     DELIMITER: {
                         SIZE: 200,
-                        COLOR: "#c6c6c6"
+                        COLOR: '#c6c6c6'
                     }
                 },
                 {
                     GRID: [
                         {
-                            NAME: "New Request",
-                            VALUE: "",
-                            DISPLAY: "ROW",
+                            NAME: 'New Request',
+                            VALUE: '',
+                            DISPLAY: 'ROW',
                             WIDTH: 100
                         },
                         {
-                            NAME: "Assigned To",
-                            VALUE: "Evgeny Shelenkov",
-                            DISPLAY: "ROW",
+                            NAME: 'Assigned To',
+                            VALUE: 'Evgeny Shelenkov',
+                            DISPLAY: 'ROW',
                             WIDTH: 100
                         },
                         {
-                            NAME: "Deadline",
-                            VALUE: "11/04/2015 17:50:43",
-                            DISPLAY: "ROW",
+                            NAME: 'Deadline',
+                            VALUE: '11/04/2015 17:50:43',
+                            DISPLAY: 'ROW',
                             WIDTH: 100
-                        },
+                        }
                     ]
-                },
+                }
             ]
-        }, function(result){
-            if(result.error())
-            {
+        },
+        function(result) {
+            if (result.error()) {
                 console.error(result.error().ex);
-            }
-            else
-            {
+            } else {
                 console.log(result.data());
             }
         }
@@ -307,159 +305,174 @@ This example demonstrates how to use various types of attachments to create an i
 
 - PHP CRest
 
-    {% include [Explanation about restCommand](../../_includes/rest-command.md) %}
-
     ```php
-    restCommand(
-        'imbot.message.add',
-        Array(
-            "DIALOG_ID" => $_REQUEST['data']['PARAMS']['DIALOG_ID'],
-            "MESSAGE" => "You have a new notification",
-            "ATTACH" => Array(
-                Array(
-                    "USER" => Array(
-                        "NAME" => "Mantis Notifications",
-                        "AVATAR" => "http://files.shelenkov.com/bitrix/images/mantis2.jpg",
-                        "LINK" => "http://shelenkov.com/",
-                    )
-                ),
-                Array(
-                    "LINK" => Array(
-                        "NAME" => "Open Mantis from external network",
-                        "LINK" => "http://shelenkov.com/",
-                    )
-                ),
-                Array(
-                    "DELIMITER" => Array(
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'im.message.add',
+        [
+            'DIALOG_ID' => 'chat20921',
+            'MESSAGE' => 'Task Card',
+            'ATTACH' => [
+                [
+                    'USER' => [
+                        'NAME' => 'Mantis Notifications',
+                        'AVATAR' => 'https://files.shelenkov.com/bitrix/images/mantis2.jpg',
+                        'LINK' => 'https://shelenkov.com/'
+                    ]
+                ],
+                [
+                    'LINK' => [
+                        'NAME' => 'Open Mantis from external network',
+                        'LINK' => 'https://shelenkov.com/'
+                    ]
+                ],
+                [
+                    'DELIMITER' => [
                         'SIZE' => 200,
-                        'COLOR' => "#c6c6c6"
-                    )
-                ),
-                Array(
-                    "GRID" => Array(
-                        Array(
-                            "NAME" => "Project",
-                            "VALUE" => "BUGS",
-                            "DISPLAY" => "LINE",
-                            "WIDTH" => 100
-                        ),
-                        Array(
-                            "NAME" => "Category",
-                            "VALUE" => "im",
-                            "DISPLAY" => "LINE",
-                            "WIDTH" => 100
-                        ),
-                        Array(
-                            "NAME" => "Summary",
-                            "VALUE" => "It is necessary to implement the ability to add structured entities to messages and notifications in the messenger.",
-                            "DISPLAY" => "BLOCK"
-                        ),
-                    )
-                ),
-                Array(
-                    "DELIMITER" => Array(
+                        'COLOR' => '#c6c6c6'
+                    ]
+                ],
+                [
+                    'GRID' => [
+                        [
+                            'NAME' => 'Project',
+                            'VALUE' => 'BUGS',
+                            'DISPLAY' => 'LINE',
+                            'WIDTH' => 100
+                        ],
+                        [
+                            'NAME' => 'Category',
+                            'VALUE' => 'im',
+                            'DISPLAY' => 'LINE',
+                            'WIDTH' => 100
+                        },
+                        [
+                            'NAME' => 'Summary',
+                            'VALUE' => 'It is necessary to implement the ability to add structured entities to messages and notifications in the messenger.',
+                            'DISPLAY' => 'BLOCK'
+                        ]
+                    ]
+                ],
+                [
+                    'DELIMITER' => [
                         'SIZE' => 200,
-                        'COLOR' => "#c6c6c6"
-                    )
-                ),
-                Array(
-                    "GRID" => Array(
-                        Array(
-                            "NAME" => "New Request",
-                            "VALUE" => "",
-                            "DISPLAY" => "ROW",
-                            "WIDTH" => 100
-                        ),
-                        Array(
-                            "NAME" => "Assigned To",
-                            "VALUE" => "Evgeny Shelenkov",
-                            "DISPLAY" => "ROW",
-                            "WIDTH" => 100
-                        ),
-                        Array(
-                            "NAME" => "Deadline",
-                            "VALUE" => "11/04/2015 17:50:43",
-                            "DISPLAY" => "ROW",
-                            "WIDTH" => 100
-                        ),
-                    )
-                ),
-            )
-        ),
-        $_REQUEST["auth"]
+                        'COLOR' => '#c6c6c6'
+                    ]
+                ],
+                [
+                    'GRID' => [
+                        [
+                            'NAME' => 'New Request',
+                            'VALUE' => '',
+                            'DISPLAY' => 'ROW',
+                            'WIDTH' => 100
+                        ],
+                        [
+                            'NAME' => 'Assigned To',
+                            'VALUE' => 'Evgeny Shelenkov',
+                            'DISPLAY' => 'ROW',
+                            'WIDTH' => 100
+                        ],
+                        [
+                            'NAME' => 'Deadline',
+                            'VALUE' => '11/04/2015 17:50:43',
+                            'DISPLAY' => 'ROW',
+                            'WIDTH' => 100
+                        ]
+                    ]
+                ]
+            ]
+        }
     );
+
+    print_r($result);
     ```
 
 {% endlist %}
 
-{% include [Footnote about examples](../../../../_includes/examples.md) %}
+## Example 2. Informational Notification
 
-## "Information Leaflet"
+A short informational text and an image as part of a single attachment.
 
-This example shows how to create an informational message using various types of attachments, including text and images.
+{% include [Examples Note](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+      -H "Content-Type: application/json" \
+      -H "Accept: application/json" \
+      -d '{"DIALOG_ID":"chat20921","MESSAGE":"You have a new notification","ATTACH":{"ID":1,"COLOR":"#29619b","BLOCKS":[{"MESSAGE":"Colleagues, the im 16.0.0 update has been checked and is ready for release. A tag needs to be set. We no longer include anything in the update."},{"IMAGE":{"LINK":"https://files.shelenkov.com/bitrix/images/win.jpg"}}]}}' \
+      https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/im.message.add
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+      -H "Content-Type: application/json" \
+      -H "Accept: application/json" \
+      -d '{"DIALOG_ID":"chat20921","MESSAGE":"You have a new notification","ATTACH":{"ID":1,"COLOR":"#29619b","BLOCKS":[{"MESSAGE":"Colleagues, the im 16.0.0 update has been checked and is ready for release. A tag needs to be set. We no longer include anything in the update."},{"IMAGE":{"LINK":"https://files.shelenkov.com/bitrix/images/win.jpg"}}]},"auth":"**put_access_token_here**"}' \
+      https://**put_your_bitrix24_address**/rest/im.message.add
+    ```
+
 - JS
 
-
     ```js
-    try
-    {
-    	const response = await $b24.callMethod(
-    		'imbot.message.add',
-    		{
-    			DIALOG_ID: 'chat20921',
-    			MESSAGE: 'You have a new notification',
-    			ATTACH: {
-    				ID: 1,
-    				COLOR: "#29619b",
-    				BLOCKS: [
-    					{MESSAGE: "Colleagues, the update im 16.0.0 has been checked and is ready for export. A tag needs to be set. We no longer include anything in the update."},
-    					{IMAGE: {LINK: "http://files.shelenkov.com/bitrix/images/win.jpg"}}
-    				]
-    			}
-    		}
-    	);
-    	
-    	const result = response.getData().result;
-    	console.log(result);
-    }
-    catch( error )
-    {
-    	console.error(error.ex);
+    try {
+        const response = await $b24.callMethod(
+            'im.message.add',
+            {
+                DIALOG_ID: 'chat20921',
+                MESSAGE: 'You have a new notification',
+                ATTACH: {
+                    ID: 1,
+                    COLOR: '#29619b',
+                    BLOCKS: [
+                        { MESSAGE: 'Colleagues, the im 16.0.0 update has been checked and is ready for release. A tag needs to be set. We no longer include anything in the update.' },
+                        { IMAGE: { LINK: 'https://files.shelenkov.com/bitrix/images/win.jpg' } }
+                    ]
+                }
+            }
+        );
+
+        const result = response.getData().result;
+        console.log(result);
+    } catch (error) {
+        console.error(error);
     }
     ```
 
 - PHP
-
 
     ```php
     try {
         $response = $b24Service
             ->core
             ->call(
-                'imbot.message.add',
+                'im.message.add',
                 [
                     'DIALOG_ID' => 'chat20921',
-                    'MESSAGE'   => 'You have a new notification',
-                    'ATTACH'    => [
-                        'ID'     => 1,
-                        'COLOR'  => "#29619b",
+                    'MESSAGE' => 'You have a new notification',
+                    'ATTACH' => [
+                        'ID' => 1,
+                        'COLOR' => '#29619b',
                         'BLOCKS' => [
-                            ['MESSAGE' => "Colleagues, the update im 16.0.0 has been checked and is ready for export. A tag needs to be set. We no longer include anything in the update."],
-                            ['IMAGE'   => ['LINK' => "http://files.shelenkov.com/bitrix/images/win.jpg"]],
-                        ],
-                    ],
-                ]
+                            ['MESSAGE' => 'Colleagues, the im 16.0.0 update has been checked and is ready for release. A tag needs to be set. We no longer include anything in the update.'],
+                            ['IMAGE' => ['LINK' => 'https://files.shelenkov.com/bitrix/images/win.jpg']]
+                        ]
+                    ]
+                }
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
+
         echo 'Success: ' . print_r($result, true);
-    
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error adding message: ' . $e->getMessage();
@@ -470,25 +483,23 @@ This example shows how to create an informational message using various types of
 
     ```js
     BX24.callMethod(
-        'imbot.message.add',
+        'im.message.add',
         {
             DIALOG_ID: 'chat20921',
             MESSAGE: 'You have a new notification',
             ATTACH: {
                 ID: 1,
-                COLOR: "#29619b",
+                COLOR: '#29619b',
                 BLOCKS: [
-                    {MESSAGE: "Colleagues, the update im 16.0.0 has been checked and is ready for export. A tag needs to be set. We no longer include anything in the update."},
-                    {IMAGE: {LINK: "http://files.shelenkov.com/bitrix/images/win.jpg"}}
+                    { MESSAGE: 'Colleagues, the im 16.0.0 update has been checked and is ready for release. A tag needs to be set. We no longer include anything in the update.' },
+                    { IMAGE: { LINK: 'https://files.shelenkov.com/bitrix/images/win.jpg' } }
                 ]
             }
-        }, function(result){
-            if(result.error())
-            {
+        },
+        function(result) {
+            if (result.error()) {
                 console.error(result.error().ex);
-            }
-            else
-            {
+            } else {
                 console.log(result.data());
             }
         }
@@ -497,29 +508,32 @@ This example shows how to create an informational message using various types of
 
 - PHP CRest
 
-    {% include [Explanation about restCommand](../../_includes/rest-command.md) %}
-
     ```php
-    restCommand(
-        'imbot.message.add',
-        Array(
-            "DIALOG_ID" => $_REQUEST['data']['PARAMS']['DIALOG_ID'],
-            "MESSAGE" => "You have a new notification",
-            "ATTACH" => Array(
-                Array(
-                    "MESSAGE" => "Colleagues, the update im 16.0.0 has been checked and is ready for export. A tag needs to be set. We no longer include anything in the update."
-                ),
-                Array(
-                    "IMAGE" => Array(
-                        "LINK" => "http://files.shelenkov.com/bitrix/images/win.jpg",
-                    )
-                ),
-            )
-        ),
-        $_REQUEST["auth"]
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'im.message.add',
+        [
+            'DIALOG_ID' => 'chat20921',
+            'MESSAGE' => 'You have a new notification',
+            'ATTACH' => [
+                'ID' => 1,
+                'COLOR' => '#29619b',
+                'BLOCKS' => [
+                    ['MESSAGE' => 'Colleagues, the im 16.0.0 update has been checked and is ready for release. A tag needs to be set. We no longer include anything in the update.'],
+                    ['IMAGE' => ['LINK' => 'https://files.shelenkov.com/bitrix/images/win.jpg']]
+                ]
+            ]
+        }
     );
+
+    print_r($result);
     ```
 
 {% endlist %}
 
-{% include [Footnote about examples](../../../../_includes/examples.md) %}
+## Continue Learning
+
+- [{#T}](./index.md)
+- [{#T}](./block-collections/index.md)
+- [{#T}](../im-message-add.md)

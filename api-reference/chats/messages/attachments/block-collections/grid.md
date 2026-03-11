@@ -1,127 +1,124 @@
-# Block for Building Rows and Columns GRID
+# GRID Block
 
-{% note warning "We are still updating this page" %}
+The `GRID` block displays data in a tabular format of "name-value" pairs with various display options.
 
-Some data may be missing here — we will complete it soon.
+## Display Options
 
-{% endnote %}
+- `BLOCK` — each `GRID` element is displayed as a separate block on a new line, forming a vertical list.
+- `LINE` — elements are displayed in a single line as cards, wrapping to the next line when there is insufficient width.
+- `ROW` — a classic two-column format "NAME | VALUE".
+- `TABLE` — a tabular mode with a denser grid; support depends on the client application version. In some clients, it may appear as `ROW`.
 
-{% if build == 'dev' %}
+### How It Looks in the Interface
 
-{% note alert "TO-DO _not exported to prod_" %}
+- `BLOCK`
 
-- edits are needed to meet the writing standard
+  Fields are listed one below the other, each on a new line.
 
-{% endnote %}
+  Example:
 
-{% endif %}
+  ```text
+  Project: BUGS
+  Category: im
+  Summary: Implementation required...
+  ```
 
-`GRID` - a block for displaying information in a table format, which can be presented in three forms: block, line, and two-column.
+- `LINE`
+
+  Fields are shown as compact cards in a single line. If space is insufficient, the cards wrap to the next line.
+
+  Example:
+
+  ```text
+  [Project: BUGS] [Category: im] [Priority: High]
+  [Executor: John Doe]
+  ```
+
+- `ROW`
+
+  "Name-value" pairs are displayed in two columns: `NAME` on the left and `VALUE` on the right.
+
+  Example:
+
+  ```text
+  Project      | BUGS
+  Category     | im
+  Priority     | High
+  ```
+
+- `TABLE`
+
+  A tabular version with a denser grid. Depending on the client, it may look like `ROW`.
+
+  Example:
+
+  ```text
+  Project    | BUGS
+  Category   | im
+  Deadline   | 11/04/2015 05:50:43 PM
+  ```
 
 {% note warning %}
 
-In all three views, mixing elements within a single entry is not allowed. If you need to use different types of blocks simultaneously, you must create a new block.
-
-{% cut "Examples" %}
-
-{% list tabs %}
-
-- JS
-
-    ```js
-    {
-        GRID: [
-            {
-                NAME: "Priority",
-                VALUE: "High",
-                DISPLAY: "COLUMN",
-            },
-            {
-                NAME: "Category",
-                VALUE: "Requests",
-                DISPLAY: "COLUMN",
-            },
-        ]
-    },
-    {
-        GRID: [
-            {
-                NAME: "Description",
-                VALUE: "It is necessary to implement the ability to add structured entities to messages and notifications in the messenger.",
-                DISPLAY: "BLOCK",
-                WIDTH: 250
-            },
-            {
-                NAME: "Category",
-                VALUE: "Requests",
-                DISPLAY: "BLOCK",
-                WIDTH: 100
-            },
-        ]
-    },
-    ```
-
-- PHP
-
-    ```php
-    Array(
-        "GRID" => Array(
-            Array(
-                "NAME" => "Priority",
-                "VALUE" => "High",
-                "DISPLAY" => "COLUMN",
-            ),
-            Array(
-                "NAME" => "Category",
-                "VALUE" => "Requests",
-                "DISPLAY" => "COLUMN"
-            ),
-        )
-    ),
-    Array(
-        "GRID" => Array(
-            Array(
-                "NAME" => "Description",
-                "VALUE" => "It is necessary to implement the ability to add structured entities to messages and notifications in the messenger.",
-                "DISPLAY" => "BLOCK",
-                "WIDTH" => "250"
-            ),
-            Array(
-                "NAME" => "Category",
-                "VALUE" => "Requests",
-                "DISPLAY" => "BLOCK"
-            ),
-        )
-    ),
-    ```
-
-{% endlist %}
-
-{% include [Footnote on examples](../../../../../_includes/examples.md) %}
-
-{% endcut %}
+Do not mix different display formats within a single `GRID` entry. If different types of representation are needed, create separate `GRID` blocks.
 
 {% endnote %}
 
-For all types of blocks for building rows and columns, additional keys are available:
-- **COLOR_TOKEN** — token for the value color. Can take one of the following values:
-  - `primary`
-  - `secondary`
-  - `alert`
-  - `base`
-By default, it has the value `base`
-- **COLOR** — color of the value;
-- **CHAT_ID** — the value will become a link to the chat in the web messenger;
-- **USER_ID** — the value will become a link to the user in the web messenger;
-- **LINK** — the value will become a link.
+## General Parameters of the GRID Element
 
-For the **VALUE** key, bb-codes are available: `USER`, `CHAT`, `SEND`, `PUT`, `CALL`, `BR`, `B`, `U`, `I`, `S`, `URL`.
+#|
+|| **Name**
+`type` | **Description** ||
+|| **DISPLAY*** 
+[`string`](../../../../data-types.md) | Display format: `BLOCK`, `LINE`, `ROW`, `TABLE` ||
+|| **NAME**
+[`string`](../../../../data-types.md) | Field name. In `ROW` mode, it may be absent, in which case `VALUE` takes the full width of the row ||
+|| **VALUE**
+[`string`](../../../../data-types.md) | Field value. BB codes are supported for `VALUE`. In `ROW` mode, it may be absent, in which case `NAME` takes the full width of the row ||
+|| **WIDTH**
+[`integer`](../../../../data-types.md) | Width of the block or column in pixels ||
+|| **HEIGHT**
+[`integer`](../../../../data-types.md) | Height of the block in pixels ||
+|| **COLOR_TOKEN**
+[`string`](../../../../data-types.md) | Color token for the value: `primary`, `secondary`, `alert`, `base` ||
+|| **COLOR**
+[`string`](../../../../data-types.md) | HEX color of the value (`#RGB` or `#RRGGBB`) ||
+|| **LINK**
+[`string`](../../../../data-types.md) | External link for the value ||
+|| **USER_ID**
+[`integer`](../../../../data-types.md) | Internal reference to the user ||
+|| **CHAT_ID**
+[`integer`](../../../../data-types.md) | Internal reference to the chat ||
+|#
 
-## Block View
+## Supported BB Codes for VALUE
 
-`"DISPLAY" => "BLOCK"` — data is displayed one below the other. The **WIDTH** key is available to specify the width of the block (in pixels).
+#|
+|| **Code** | **Purpose** ||
+|| `USER` | Mention a user with a link to their profile in the chat ||
+|| `CHAT` | Link to the chat ||
+|| `SEND` | Clickable action "send text to chat" ||
+|| `PUT` | Clickable action "insert text into input field" ||
+|| `CALL` | Clickable action for calling ||
+|| `BR` | Line break ||
+|| `B` | Bold text ||
+|| `U` | Underlined text ||
+|| `I` | Italic text ||
+|| `S` | Strikethrough text ||
+|| `URL` | Link ||
+|#
 
-### Example
+## Examples
+
+{% include [Examples Note](../../../../../_includes/examples.md) %}
+
+### Block Representation
+
+`DISPLAY: 'BLOCK'` displays elements one below the other.
+
+![Block Representation](./_images/grid1.png)
+
+#### Example
 
 {% list tabs %}
 
@@ -131,50 +128,53 @@ For the **VALUE** key, bb-codes are available: `USER`, `CHAT`, `SEND`, `PUT`, `C
     {
         GRID: [
             {
-                NAME: "Description",
-                VALUE: "It is necessary to implement the ability to add structured entities to messages and notifications in the messenger.",
-                DISPLAY: "BLOCK",
+                NAME: 'Description',
+                VALUE: 'Implementation required to add structured entities to messages and notifications in the messenger.',
+                DISPLAY: 'BLOCK',
                 WIDTH: 250
             },
             {
-                NAME: "Category",
-                VALUE: "Requests",
-                DISPLAY: "BLOCK",
+                NAME: 'Category',
+                VALUE: 'Requests',
+                DISPLAY: 'BLOCK',
                 WIDTH: 100
-            },
+            }
         ]
-    },
+    }
     ```
 
 - PHP
 
     ```php
-    Array(
-        "GRID" => Array(
-            Array(
-                "NAME" => "Description",
-                "VALUE" => "It is necessary to implement the ability to add structured entities to messages and notifications in the messenger.",
-                "DISPLAY" => "BLOCK",
-                "WIDTH" => "250"
-            ),
-            Array(
-                "NAME" => "Category",
-                "VALUE" => "Requests",
-                "DISPLAY" => "BLOCK"
-            ),
-        )
-    ),
+    [
+        'GRID' => [
+            [
+                'NAME' => 'Description',
+                'VALUE' => 'Implementation required to add structured entities to messages and notifications in the messenger.',
+                'DISPLAY' => 'BLOCK',
+                'WIDTH' => 250
+            ],
+            [
+                'NAME' => 'Category',
+                'VALUE' => 'Requests',
+                'DISPLAY' => 'BLOCK',
+                'WIDTH' => 100
+            ]
+        ]
+    ]
     ```
 
 {% endlist %}
 
-{% include [Footnote on examples](../../../../../_includes/examples.md) %}
+### Line Representation
 
-## Line View
+`DISPLAY: 'LINE'` displays elements in a line, wrapping to the next line when there is insufficient space.
 
-`"DISPLAY" => "LINE"` - each block follows one after another until the available space runs out, after which it moves to a new line. The **WIDTH** key is available to specify the width of the block (in pixels).
+![Line Representation](./_images/grid2.png)
 
-### Example
+In the mobile version, elements are displayed one below the other.
+
+#### Example
 
 {% list tabs %}
 
@@ -184,61 +184,53 @@ For the **VALUE** key, bb-codes are available: `USER`, `CHAT`, `SEND`, `PUT`, `C
     {
         GRID: [
             {
-                NAME: "Priority",
-                VALUE: "High",
-                COLOR_TOKEN: "alert",
-                COLOR: "#ff0000",
-                DISPLAY: "LINE",
+                NAME: 'Priority',
+                VALUE: 'High',
+                COLOR_TOKEN: 'alert',
+                COLOR: '#ff0000',
+                DISPLAY: 'LINE',
                 WIDTH: 250
             },
             {
-                NAME: "Category",
-                VALUE: "Requests",
-                DISPLAY: "LINE",
-            },
+                NAME: 'Category',
+                VALUE: 'Requests',
+                DISPLAY: 'LINE'
+            }
         ]
-    },
+    }
     ```
 
 - PHP
 
     ```php
-    Array(
-        "GRID" => Array(
-            Array(
-                "NAME" => "Priority",
-                "VALUE" => "High",
-                "COLOR_TOKEN" => "alert",
-                "COLOR" => "#ff0000",
-                "DISPLAY" => "LINE",
-                "WIDTH" => "250"
-            ),
-            Array(
-                "NAME" => "Category",
-                "VALUE" => "Requests",
-                "DISPLAY" => "LINE"
-            ),
-        )
-    ),
+    [
+        'GRID' => [
+            [
+                'NAME' => 'Priority',
+                'VALUE' => 'High',
+                'COLOR_TOKEN' => 'alert',
+                'COLOR' => '#ff0000',
+                'DISPLAY' => 'LINE',
+                'WIDTH' => 250
+            },
+            [
+                'NAME' => 'Category',
+                'VALUE' => 'Requests',
+                'DISPLAY' => 'LINE'
+            ]
+        ]
+    ]
     ```
 
 {% endlist %}
 
-{% include [Footnote on examples](../../../../../_includes/examples.md) %}
+### Two-Column Representation
 
-## Two-Column View
+`DISPLAY: 'ROW'` displays data in two columns.
 
-`"DISPLAY" => "COLUMN"` - builds in two columns. The **WIDTH** key is available to specify the width of the first column (in pixels).
+![Two-Column Representation](./_images/grid3.png)
 
-{% note info %}
-
-Starting from version 22 of REST, in the two-column view, you can omit one of the required parameters **NAME** or **VALUE**:
-- if **VALUE** is not provided, **NAME** will take the full width of the table;
-- if **NAME** is not provided, **VALUE** will take the full width of the column.
-
-{% endnote %}
-
-### Example
+#### Example
 
 {% list tabs %}
 
@@ -248,39 +240,43 @@ Starting from version 22 of REST, in the two-column view, you can omit one of th
     {
         GRID: [
             {
-                NAME: "Priority",
-                VALUE: "High",
-                DISPLAY: "COLUMN",
+                NAME: 'Priority',
+                VALUE: 'High',
+                DISPLAY: 'ROW'
             },
             {
-                NAME: "Category",
-                VALUE: "Requests",
-                DISPLAY: "COLUMN",
-            },
+                NAME: 'Category',
+                VALUE: 'Requests',
+                DISPLAY: 'ROW'
+            }
         ]
-    },
+    }
     ```
 
 - PHP
 
     ```php
-    Array(
-        "GRID" => Array(
-            Array(
-                "NAME" => "Priority",
-                "VALUE" => "High",
-                "DISPLAY" => "COLUMN",
-                "WIDTH" => "250"
-            ),
-            Array(
-                "NAME" => "Category",
-                "VALUE" => "Requests",
-                "DISPLAY" => "COLUMN"
-            ),
-        )
-    ),
+    [
+        'GRID' => [
+            [
+                'NAME' => 'Priority',
+                'VALUE' => 'High',
+                'DISPLAY' => 'ROW',
+                'WIDTH' => 250
+            },
+            [
+                'NAME' => 'Category',
+                'VALUE' => 'Requests',
+                'DISPLAY' => 'ROW'
+            ]
+        ]
+    ]
     ```
 
 {% endlist %}
 
-{% include [Footnote on examples](../../../../../_includes/examples.md) %}
+## Continue Learning
+
+- [{#T}](./index.md)
+- [{#T}](./text.md)
+- [{#T}](./delimiter.md)

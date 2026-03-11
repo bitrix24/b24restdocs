@@ -1,28 +1,35 @@
 # User Block USER
 
-{% note warning "We are still updating this page" %}
-
-Some data may be missing here — we will fill it in shortly.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not deployed to prod_" %}
-
-- edits needed to meet writing standards
-
-{% endnote %}
-
-{% endif %}
+The `USER` block displays the user's card within the attachment: name, avatar, and a link for navigation.
 
 ![User Block](./_images/user.png)
 
-`USER` - displays a block with the user's avatar and name.
+## Block Parameters
 
-The fields **AVATAR** (avatar) and **LINK** (link) are not mandatory.
+#|
+|| **Name**
+`type` | **Description** ||
+|| **NAME***
+[`string`](../../../../data-types.md) | The name displayed in the block ||
+|| **AVATAR**
+[`string`](../../../../data-types.md) | Avatar URL. Absolute URLs (`http://`, `https://`) and relative paths from the root of Bitrix are allowed ||
+|| **LINK**
+[`string`](../../../../data-types.md) | URL for navigation when clicking on the block. It is preferable to use `USER_ID`, `CHAT_ID`, `BOT_ID` for navigation within the messenger ||
+|| **USER_ID**
+[`integer`](../../../../data-types.md) | Link to the Bitrix user ||
+|| **CHAT_ID**
+[`integer`](../../../../data-types.md) | Link to the Bitrix chat ||
+|| **BOT_ID**
+[`integer`](../../../../data-types.md) | Link to the Bitrix chatbot ||
+|| **NETWORK_ID**
+[`string`](../../../../data-types.md) | Link to the Bitrix24 Network user ||
+|| **AVATAR_TYPE**
+[`string`](../../../../data-types.md) | Type of avatar display. Allowed values: `USER`, `CHAT`, `BOT` ||
+|#
 
 ## Example
+
+{% include [Example Note](../../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -31,30 +38,29 @@ The fields **AVATAR** (avatar) and **LINK** (link) are not mandatory.
     ```js
     {
         USER: {
-            NAME: "John Smith",
-            AVATAR: "https://files.shelenkov.com/bitrix/images/avatar.png",
-            LINK: "https://shelenkov.com"
+            NAME: 'John Smith',
+            AVATAR: 'https://files.shelenkov.com/bitrix/images/avatar.png',
+            LINK: 'https://shelenkov.com'
         }
-    },
+    }
     ```
 
 - PHP
 
     ```php
-    Array(
-        "USER" => Array(
-            "NAME" => "John Smith",
-            "AVATAR" => "https://files.shelenkov.com/bitrix/images/avatar.png",
-            "LINK" => "https://shelenkov.com/",
-        )
-    ),
+    [
+        'USER' => [
+            'NAME' => 'John Smith',
+            'AVATAR' => 'https://files.shelenkov.com/bitrix/images/avatar.png',
+            'LINK' => 'https://shelenkov.com'
+        ]
+    ]
     ```
 
 {% endlist %}
 
-{% include [Footnote about examples](../../../../../_includes/examples.md) %}
+## Continue Learning
 
-Instead of the key **LINK**, you can also use links to entities:
-- `CHAT_ID` - to specify a link to a chat;
-- `BOT_ID` - to specify a link to a bot;
-- `USER_ID` - to specify a link to a user.
+- [{#T}](./index.md)
+- [{#T}](./links.md)
+- [{#T}](./grid.md)
