@@ -127,7 +127,7 @@ Fields with name-value pairs, changing the deadline.
                         "type": "text",
                         "properties": {
                             "multiline": true,
-                            "value": "Arrive no earlier than noon. Entrance from the yard, gate password 555. Go up to the 5th floor, ask for Ivan Nikolaevich. Payment in cash, change from $5000."
+                            "value": "Arrive no earlier than noon. Entrance from the yard, gate password 555. Go up to the 5th floor, ask for Nicholas Mitchell. Payment in cash, change from $5000."
                         }
                     }
                 }

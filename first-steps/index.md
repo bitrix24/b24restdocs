@@ -57,3 +57,9 @@ The section [Overview of Mass-Market Applications](../market/index.md) describes
 ## API Reference
 
 The section [API Reference](../api-reference/index.md) contains descriptions of methods and capabilities of the Bitrix24 REST API. This material helps navigate the API and select methods for specific functionalities.
+
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (ChatGPT, Claude, Copilot), connect to the [MCP server](../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}

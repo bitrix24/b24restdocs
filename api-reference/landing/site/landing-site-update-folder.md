@@ -1,62 +1,99 @@
 # Change Folder in landing.site.updateFolder
 
-{% note warning "We are still updating this page" %}
-
-Some data may be missing here — we will complete it shortly.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not deployed to prod_" %}
-
-- edits needed for writing standards
-- parameter types are not specified
-- parameter requirements are not indicated
-- examples are missing
-- success response is absent
-- error response is absent
-
-{% endnote %}
-
-{% endif %}
-
 > Scope: [`landing`](../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: a user with "edit" access permission for the site
 
-The method `landing.site.updateFolder` changes the folder in the site.
+The method `landing.site.updateFolder` updates the parameters of a site folder.
 
-## Parameters
+## Method Parameters
+
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
-|| **Parameter** | **Description** | **Available since** ||
-|| **siteId**
-[`unknown`](../../data-types.md) | Identifier of the site.
+|| **Name**
+`type` | **Description** ||
+|| **siteId***
+[`integer`](../../data-types.md) | The identifier of the site to which the folder belongs.
 
-{% note warning %}
+The site identifier can be obtained using the [landing.site.getList](./landing-site-get-list.md) method. ||
+|| **folderId***
+[`integer`](../../data-types.md) | The identifier of the folder to be updated.
 
-Write permissions are required for the specified site.
-
-{% endnote %}
-
- | ||
-|| **folderId**
-[`unknown`](../../data-types.md) | Identifier of the folder in the site. | ||
-|| **fields**
-[`unknown`](../../data-types.md) | Folder fields: 
-- ACTIVE – folder activity (Y/N). By default, it is created inactive;
-- TITLE – title (name) of the folder;
-- INDEX_ID – identifier of the page within the folder that needs to be set as the index page of the folder;
-- CODE – symbolic code of the folder (part of the folder page URL). By default, it is transliterated from the folder name. | ||
+The folder identifier can be obtained using the [landing.site.getFolders](./landing-site-get-folders.md) method. ||
+|| **fields***
+[`object`](../../data-types.md) | A set of fields to update the folder [(detailed description)](#fields) ||
 |#
 
-## Examples
+### Fields Parameter {#fields}
+
+{% include [Note on required parameters](../../../_includes/required.md) %}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **TITLE**
+[`string`](../../data-types.md) | The name of the folder. ||
+|| **CODE**
+[`string`](../../data-types.md) | The symbolic code of the folder for the URL. The code cannot contain the character `/`. 
+
+If the parameter is not provided, the current value of the folder's `CODE` is used. ||
+|| **PARENT_ID**
+[`integer`](../../data-types.md) | The identifier of the parent folder. 
+
+If the value is `0`, `null`, empty, or the parameter is not provided, the folder is moved to the root of the site. ||
+|| **INDEX_ID**
+[`integer`](../../data-types.md) | The identifier of the folder's index page. ||
+|| **ACTIVE**
+[`string`](../../data-types.md) | The active flag of the folder `Y/N`. ||
+|#
+
+## Code Examples
+
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
-- JS
+- cURL (Webhook)
 
+    ```bash
+    curl -X POST \
+      -H "Content-Type: application/json" \
+      -d '{
+        "siteId": 1817,
+        "folderId": 736,
+        "fields": {
+          "TITLE": "Services Catalog",
+          "CODE": "services-catalog",
+          "PARENT_ID": 0,
+          "INDEX_ID": 987,
+          "ACTIVE": "Y"
+        }
+      }' \
+      "https://**put.your-domain-here**/rest/**user_id**/**webhook_code**/landing.site.updateFolder.json"
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+      -H "Content-Type: application/json" \
+      -d '{
+        "siteId": 1817,
+        "folderId": 736,
+        "fields": {
+          "TITLE": "Services Catalog",
+          "CODE": "services-catalog",
+          "PARENT_ID": 0,
+          "INDEX_ID": 987,
+          "ACTIVE": "Y"
+        },
+        "auth": "**put_access_token_here**"
+      }' \
+      "https://**put.your-domain-here**/rest/landing.site.updateFolder.json"
+    ```
+
+- JS
 
     ```js
     try
@@ -67,22 +104,25 @@ Write permissions are required for the specified site.
     			siteId: 1817,
     			folderId: 736,
     			fields: {
-    				TITLE: 'Updated Folder'
+    				TITLE: 'Services Catalog',
+    				CODE: 'services-catalog',
+    				PARENT_ID: 0,
+    				INDEX_ID: 987,
+    				ACTIVE: 'Y'
     			}
     		}
     	);
-    	
+
     	const result = response.getData().result;
     	console.info(result);
     }
-    catch( error )
+    catch (error)
     {
     	console.error(error);
     }
     ```
 
 - PHP
-
 
     ```php
     try {
@@ -91,22 +131,23 @@ Write permissions are required for the specified site.
             ->call(
                 'landing.site.updateFolder',
                 [
-                    'siteId'  => 1817,
+                    'siteId' => 1817,
                     'folderId' => 736,
-                    'fields'  => [
-                        'TITLE' => 'Updated Folder'
+                    'fields' => [
+                        'TITLE' => 'Services Catalog',
+                        'CODE' => 'services-catalog',
+                        'PARENT_ID' => 0,
+                        'INDEX_ID' => 987,
+                        'ACTIVE' => 'Y',
                     ],
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
-        echo 'Success: ' . print_r($result, true);
-        // Your required data processing logic
-        processData($result);
-    
+
+        echo 'Success: ' . var_export($result, true);
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error updating folder: ' . $e->getMessage();
@@ -122,12 +163,16 @@ Write permissions are required for the specified site.
             siteId: 1817,
             folderId: 736,
             fields: {
-                TITLE: 'Updated Folder'
+                TITLE: 'Services Catalog',
+                CODE: 'services-catalog',
+                PARENT_ID: 0,
+                INDEX_ID: 987,
+                ACTIVE: 'Y'
             }
         },
         function(result)
         {
-            if(result.error())
+            if (result.error())
             {
                 console.error(result.error());
             }
@@ -139,6 +184,101 @@ Write permissions are required for the specified site.
     );
     ```
 
+- PHP CRest
+
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'landing.site.updateFolder',
+        [
+            'siteId' => 1817,
+            'folderId' => 736,
+            'fields' => [
+                'TITLE' => 'Services Catalog',
+                'CODE' => 'services-catalog',
+                'PARENT_ID' => 0,
+                'INDEX_ID' => 987,
+                'ACTIVE' => 'Y',
+            ],
+        ]
+    );
+
+    if (isset($result['error']))
+    {
+        echo 'Error: ' . $result['error_description'];
+    }
+    else
+    {
+        echo '<pre>';
+        print_r($result['result']);
+        echo '</pre>';
+    }
+    ```
+
 {% endlist %}
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+## Response Handling
+
+HTTP Status: **200**
+
+```json
+{
+    "result": true,
+    "time": {
+        "start": 1773291230,
+        "finish": 1773291230.313858,
+        "duration": 0.3138580322265625,
+        "processing": 0,
+        "date_start": "2026-03-12T07:53:50+01:00",
+        "date_finish": "2026-03-12T07:53:50+01:00",
+        "operating_reset_at": 1773291830,
+        "operating": 0
+    }
+}
+```
+
+### Returned Data
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`boolean`](../../data-types.md) | Returns `true` if the folder was successfully updated. ||
+|| **time**
+[`time`](../../data-types.md#time) | Information about the execution time of the request. ||
+|#
+
+## Error Handling
+
+HTTP Status: **400**
+
+```json
+{
+    "error": "ACCESS_DENIED",
+    "error_description": "Site not found or access to it is denied."
+}
+```
+
+{% include notitle [error handling](../../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+#|
+|| **Code** | **Description** ||
+|| `MISSING_PARAMS` | Required parameter `siteId`, `folderId`, or `fields` is missing. ||
+|| `ACCESS_DENIED` | Site not found or access to it is denied. ||
+|| `FOLDER_IS_NOT_UNIQUE` | A folder with this name already exists. ||
+|| `SLASH_IS_NOT_ALLOWED` | Slash is not allowed in the folder address. ||
+|#
+
+{% include [system errors](../../../_includes/system-errors.md) %}
+
+## Continue Learning
+
+- [{#T}](./landing-site-add-folder.md)
+- [{#T}](./landing-site-get-folders.md)
+- [{#T}](./landing-site-mark-folder-delete.md)
+- [{#T}](./landing-site-mark-folder-undelete.md)
+- [{#T}](./landing-site-publication-folder.md)
+- [{#T}](./landing-site-unpublic-folder.md)

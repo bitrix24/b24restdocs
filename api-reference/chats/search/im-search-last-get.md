@@ -191,13 +191,13 @@ HTTP Code: **200**
                 "url": "https://example.bitrix24.com/upload/main/avatar.png",
                 "color": "#4ba984"
             },
-            "title": "Svetlana Ivanova",
+            "title": "Emily Smith",
             "user": {
                 "id": 103,
                 "active": true,
-                "name": "Svetlana Ivanova",
-                "first_name": "Svetlana",
-                "last_name": "Ivanova",
+                "name": "Emily Smith",
+                "first_name": "Emily",
+                "last_name": "Smith",
                 "work_position": "IT Department Head",
                 "color": "#4ba984",
                 "avatar": "https://example.bitrix24.com/upload/main/avatar.png",
@@ -224,7 +224,7 @@ HTTP Code: **200**
                 "bot_data": null,
                 "type": "user",
                 "website": "",
-                "email": "svetlana@example.com"
+                "email": "emily@example.com"
             }
         },
         ... // description for each chat, user

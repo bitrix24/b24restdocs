@@ -192,7 +192,7 @@ HTTP status: **200**
             "PROVIDER_TYPE_ID": "CALL",
             "PROVIDER_GROUP_ID": null,
             "ASSOCIATED_ENTITY_ID": "0",
-            "SUBJECT": "Outgoing call Andrew Nikolaev",
+            "SUBJECT": "Outgoing call Nicholas Mitchell",
             "CREATED": "2020-09-27T13:26:55+03:00",
             "LAST_UPDATED": "2021-03-21T20:28:24+03:00",
             "START_TIME": "2020-09-27T13:25:00+03:00",

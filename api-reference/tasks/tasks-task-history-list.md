@@ -197,10 +197,10 @@ HTTP Status: **200**
                 },
                 "user": {
                     "id": 503,
-                    "name": "Maria",
-                    "lastName": "Ivanova",
+                    "name": "Danielle",
+                    "lastName": "Foster",
                     "secondName": "",
-                    "login": "maria@mysite.com"
+                    "login": "danielle@mysite.com"
                 }
             },
             {
@@ -213,10 +213,10 @@ HTTP Status: **200**
                 },
                 "user": {
                     "id": 503,
-                    "name": "Maria",
-                    "lastName": "Ivanova",
+                    "name": "Danielle",
+                    "lastName": "Foster",
                     "secondName": "",
-                    "login": "maria@mysite.com"
+                    "login": "danielle@mysite.com"
                 }
             },
             {
@@ -229,10 +229,10 @@ HTTP Status: **200**
                 },
                 "user": {
                     "id": 503,
-                    "name": "Maria",
-                    "lastName": "Ivanova",
+                    "name": "Danielle",
+                    "lastName": "Foster",
                     "secondName": "",
-                    "login": "maria@mysite.com"
+                    "login": "danielle@mysite.com"
                 }
             },
             {
@@ -245,10 +245,10 @@ HTTP Status: **200**
                 },
                 "user": {
                     "id": 503,
-                    "name": "Maria",
-                    "lastName": "Ivanova",
+                    "name": "Danielle",
+                    "lastName": "Foster",
                     "secondName": "",
-                    "login": "maria@mysite.com"
+                    "login": "danielle@mysite.com"
                 }
             },
             {
@@ -261,74 +261,10 @@ HTTP Status: **200**
                 },
                 "user": {
                     "id": 503,
-                    "name": "Maria",
-                    "lastName": "Ivanova",
+                    "name": "Danielle",
+                    "lastName": "Foster",
                     "secondName": "",
-                    "login": "maria@mysite.com"
-                }
-            },
-            {
-                "id": 16369,
-                "createdDate": "2025-09-25T14:09:45+02:00",
-                "field": "CHECKLIST_ITEM_CREATE",
-                "value": {
-                    "from": "",
-                    "to": "Sign the contract"
-                },
-                "user": {
-                    "id": 503,
-                    "name": "Maria",
-                    "lastName": "Ivanova",
-                    "secondName": "",
-                    "login": "maria@mysite.com"
-                }
-            },
-            {
-                "id": 16371,
-                "createdDate": "2025-09-25T14:09:57+02:00",
-                "field": "AUDITORS",
-                "value": {
-                    "from": "",
-                    "to": "547"
-                },
-                "user": {
-                    "id": 503,
-                    "name": "Maria",
-                    "lastName": "Ivanova",
-                    "secondName": "",
-                    "login": "maria@mysite.com"
-                }
-            },
-            {
-                "id": 16375,
-                "createdDate": "2025-09-25T14:09:57+02:00",
-                "field": "COMMENT",
-                "value": {
-                    "from": null,
-                    "to": "3411"
-                },
-                "user": {
-                    "id": 503,
-                    "name": "Maria",
-                    "lastName": "Ivanova",
-                    "secondName": "",
-                    "login": "maria@mysite.com"
-                }
-            },
-            {
-                "id": 16373,
-                "createdDate": "2025-09-25T14:09:58+02:00",
-                "field": "COMMENT",
-                "value": {
-                    "from": null,
-                    "to": "3413"
-                },
-                "user": {
-                    "id": 503,
-                    "name": "Maria",
-                    "lastName": "Ivanova",
-                    "secondName": "",
-                    "login": "maria@mysite.com"
+                    "login": "danielle@mysite.com"
                 }
             }
         ],

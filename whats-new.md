@@ -2,6 +2,17 @@
 
 ## 2026
 
+### March 13, 2026
+
+- Added the documentation for methods related to [task templates](./api-reference/tasks/template/index.md)
+- Added the documentation for methods related to [checklists for task templates](./api-reference/tasks/template/index.md)
+- Updated the documentation for methods [imconnector.*](./api-reference/imopenlines/imconnector/index.md) in the Open Channels Connectors section
+- Updated the documentation for methods related to [company contacts](./api-reference/crm/companies/contacts/index.md)
+- Updated the documentation for methods [voximplant.sip.connector.status](./api-reference/telephony/voximplant/sip/voximplant-sip-connector-status.md), [voximplant.sip.status](./api-reference/telephony/voximplant/sip/voximplant-sip-status.md), [voximplant.tts.voices.get](./api-reference/telephony/voximplant/voximplant-tts-voices-get.md), [voximplant.url.get](./api-reference/telephony/voximplant/voximplant-url-get.md)
+- Updated the documentation for events [ONEXTERNALCALLBACKSTART](./api-reference/telephony/events/on-external-call-back-start.md), [ONEXTERNALCALLSTART](./api-reference/telephony/events/on-external-call-start.md), [ONVOXIMPLANTCALLEND](./api-reference/telephony/voximplant/events/on-voximplant-call-end.md), [ONVOXIMPLANTCALLINIT](./api-reference/telephony/voximplant/events/on-voximplant-call-init.md), [ONVOXIMPLANTCALLSTART](./api-reference/telephony/voximplant/events/on-voximplant-call-start.md)
+- Updated the documentation for managing deal detail forms [crm.deal.details.configuration.*](./api-reference/crm/deals/custom-form/index.md)
+- Updated the documentation for methods connecting deals with contacts [crm.deal.contact.*](./api-reference/crm/deals/contacts/index.md)
+
 ### March 11, 2026
 
 - Updated methods in the [Telephony](./api-reference/telephony/index.md) section

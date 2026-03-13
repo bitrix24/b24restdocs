@@ -231,8 +231,8 @@ HTTP status: **200**
             {
                 "ID": "3",
                 "ACTIVE": true,
-                "NAME": "Ivan",
-                "LAST_NAME": "Ivanov",
+                "NAME": "Danielle",
+                "LAST_NAME": "Foster",
                 "EMAIL": "test@gmail.com",
                 "LAST_LOGIN": "2024-07-24T09:01:55+00:00",
                 "DATE_REGISTER": "2024-07-22T00:00:00+00:00",

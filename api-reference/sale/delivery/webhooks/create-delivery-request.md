@@ -114,7 +114,7 @@ Example JSON request:
                 }
             ],
             "RESPONSIBLE_CONTACT":{
-                "NAME":"Roman Gorshkov",
+                "NAME":"Ronald Perez",
                 "PHONES":[
                     {
                         "TYPE":"MOBILE",
@@ -123,7 +123,7 @@ Example JSON request:
                 ]
             },
             "RECIPIENT_CONTACT":{
-                "NAME":"Alexey Mironov",
+                "NAME":"James Johnson",
                 "PHONES":[
                     {
                         "TYPE":"WORK",

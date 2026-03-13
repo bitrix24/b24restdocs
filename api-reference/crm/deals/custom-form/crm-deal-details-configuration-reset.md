@@ -1,62 +1,92 @@
 # Reset Deal Card Settings crm.deal.details.configuration.reset
 
-{% note warning "We are still updating this page" %}
-
-Some data may be missing here — we will fill it in shortly.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- edits needed for writing standards
-- parameter types are not specified
-- parameter requirements are not indicated
-- examples are missing
-- success response is absent
-- error response is absent
-
-{% endnote %}
-
-{% endif %}
-
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method:
+> - any user can reset their personal settings
+> - resetting another user's personal settings is possible if the user has edit access permission for that user's personal view
+> - resetting common settings is possible if the user has edit access permission for the common view
 
-{% note warning "Method Development Stopped" %}
+{% note warning "Method Development Halted" %}
 
-The method `crm.deal.details.configuration.reset` continues to function, but there is a more relevant alternative [crm.item.details.configuration.reset](../../universal/item-details-configuration/crm-item-details-configuration-reset.md).
+The method `crm.deal.details.configuration.reset` continues to function, but there is a more relevant alternative: [crm.item.details.configuration.reset](../../universal/item-details-configuration/crm-item-details-configuration-reset.md).
+
+{% endnote %}
+
+The method `crm.deal.details.configuration.reset` resets the settings of the deal card. It removes the personal settings of the specified user or the common settings defined for all users.
+
+{% note info %}
+
+Deal card settings may vary across different Sales Funnels. To select a funnel, use the `extras.dealCategoryId` parameter.
 
 {% endnote %}
 
-The method `crm.deal.details.configuration.reset` resets the settings of deal cards. It removes personal settings for the specified user or the general settings defined for all users.
+## Method Parameters
 
-{% note warning %}
-
-Please note that the settings for deal cards of different directions (or funnels) may differ from each other. 
-To switch between the settings of deal cards of different directions, the parameter **dealCategoryId** is used.
-
-{% endnote %}
+{% include [Parameter Note](../../../../_includes/required.md) %}
 
 #|
-|| **Parameter** | **Description** ||
+|| **Name**
+`type` | **Description** ||
 || **scope**
-[`unknown`](../../../data-types.md) | The scope of the settings. Allowed values:
+[`string`](../../../data-types.md) | The scope of the settings.
 
-- **P** - personal settings,
-- **C** - general settings.
- ||
+Possible values:
+- `P` — personal settings
+- `C` — common settings
+
+Default — `P`
+||
 || **userId**
-[`unknown`](../../../data-types.md) | User identifier. If not specified, the current user is taken. Needed only when resetting personal settings. ||
+[`user`](../../../data-types.md) | User identifier. Required only when resetting another user's personal settings.
+
+If not specified, the current user is used.
+||
 || **extras**
-[`unknown`](../../../data-types.md) | Additional parameters. Here, the parameter `dealCategoryId` can be specified for deals. ||
+[`object`](../../../data-types.md) | Additional parameters [(detailed description)](#parameter-extras) ||
 |#
 
-## Examples
+### Extras Parameter {#parameter-extras}
+
+{% include [Parameter Note](../../../../_includes/required.md) %}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **dealCategoryId**
+[`integer`](../../../data-types.md) | Identifier of the deal funnel. Can be obtained using [crm.category.list](../../universal/category/crm-category-list.md)
+
+If not specified, the default funnel for deals is used.
+||
+|#
+
+## Code Examples
+
+{% include [Examples Note](../../../../_includes/examples.md) %}
+
+Reset personal configuration of the deal card for the user with `id = 1` in the funnel with `id = 32`
 
 {% list tabs %}
+
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"scope":"P","userId":1,"extras":{"dealCategoryId":32}}' \
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.deal.details.configuration.reset
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"scope":"P","userId":1,"extras":{"dealCategoryId":32},"auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/crm.deal.details.configuration.reset
+    ```
 
 - JS
 
@@ -64,17 +94,20 @@ To switch between the settings of deal cards of different directions, the parame
     try
     {
     	const response = await $b24.callMethod(
-    		"crm.deal.details.configuration.reset",
+    		'crm.deal.details.configuration.reset',
     		{
     			scope: "P",
-    			userId: 1
+    			userId: 1,
+    			extras: {
+    				dealCategoryId: 32,
+    			},
     		}
     	);
     	
     	const result = response.getData().result;
-    	console.dir(result);
+    	console.info(result);
     }
-    catch(error)
+    catch( error )
     {
     	console.error(error);
     }
@@ -91,6 +124,9 @@ To switch between the settings of deal cards of different directions, the parame
                 [
                     'scope'  => 'P',
                     'userId' => 1,
+                    'extras' => [
+                        'dealCategoryId' => 32,
+                    ],
                 ]
             );
     
@@ -113,25 +149,107 @@ To switch between the settings of deal cards of different directions, the parame
 - BX24.js
 
     ```js
-    //---
-    //Reset personal settings of the general direction deal card for the user with identifier 1.
     BX24.callMethod(
-        "crm.deal.details.configuration.reset",
+        'crm.deal.details.configuration.reset',
         {
             scope: "P",
-            userId: 1
+            userId: 1,
+            extras: {
+                dealCategoryId: 32,
+            },
         },
-        function(result)
-        {
-            if(result.error())
+        (result) => {
+            if (result.error())
+            {
                 console.error(result.error());
-            else
-                console.dir(result.data());
-        }
+
+                return;
+            }
+
+            console.info(result.data());
+        },
     );
-    //---
+    ```
+
+- PHP CRest
+
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'crm.deal.details.configuration.reset',
+        [
+            'scope' => 'P',
+            'userId' => 1,
+            'extras' => [
+                'dealCategoryId' => 32,
+            ],
+        ]
+    );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
     ```
 
 {% endlist %}
 
-{% include [Examples Note](../../../../_includes/examples.md) %}
+## Response Handling
+
+HTTP Status: **200**
+
+```json
+{
+    "result": true,
+    "time": {
+        "start": 1773307850,
+        "finish": 1773307850.136405,
+        "duration": 0.13640499114990234,
+        "processing": 0,
+        "date_start": "2026-03-12T12:30:50+01:00",
+        "date_finish": "2026-03-12T12:30:50+01:00",
+        "operating_reset_at": 1773308450,
+        "operating": 0
+    }
+}
+```
+
+### Returned Data
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`boolean`](../../../data-types.md) | Root element of the response. Returns `true` if the settings were successfully reset ||
+|| **time**
+[`time`](../../../data-types.md#time) | Information about the execution time of the request ||
+|#
+
+## Error Handling
+
+HTTP Status: **400**
+
+```json
+{
+    "error": "",
+    "error_description": "Access denied."
+}
+```
+
+{% include notitle [error handling](../../../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+#|
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | Empty Value | Access denied | No permission to reset deal card settings ||
+|#
+
+{% include [system errors](../../../../_includes/system-errors.md) %}
+
+## Continue Learning
+
+- [{#T}](./index.md)
+- [{#T}](./crm-deal-details-configuration-get.md)
+- [{#T}](./crm-deal-details-configuration-set.md)
+- [{#T}](./crm-deal-details-configuration-force-common-scope-for-all.md)

@@ -448,7 +448,7 @@ HTTP status: **200**
                     },
                     "103": {
                         "id": "103",
-                        "name": "Svetlana Ivanova",
+                        "name": "Emily Smith",
                         "link": "/company/personal/user/103/",
                         "icon": "https://mysite.com/b17053/resize_cache/8644/c0120a8d7c10d63c83e32398d1ec4d9e/main/45f/45fff10d17d398a5583184c8350cd197/buh.jpg",
                         "workPosition": "Accountant"

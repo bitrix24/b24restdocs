@@ -1,135 +1,393 @@
-# Send Messages in Bitrix24 imconnector.send.messages
-
-{% note warning "We are still updating this page" %}
-
-Some data may be missing here — we will complete it shortly.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- parameter types are not specified
-- parameter mandatory status is not indicated
-- no examples provided
-
-{% endnote %}
-
-{% endif %}
+# Send Messages to Bitrix24 imconnector.send.messages
 
 > Scope: [`imopenlines`](../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-This method sends messages to an open line. The method parameters use values from the external system — these are the user ID, chat ID, links to the chat, and its names in the application that [registered](./imconnector-register.md) the connector.
+The method `imconnector.send.messages` accepts messages from an external system and forwards them to an open line in Bitrix24 via a custom connector.
 
-The created chat ID and open line dialog ID values will be returned as a result of the method execution.
+The method parameters utilize values from the external system: user ID, chat ID, chat link, and its name in the application that registered the connector.
+
+Upon execution, the method returns the chat ID and the open line dialog ID created in Bitrix24.
+
+{% note info "" %}
+
+The method works only in the context of an [application](../../../settings/app-installation/index.md).
+
+{% endnote %}
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
-|| **CONNECTOR**
-[`unknown`](../../data-types.md) | Identifier `ID` of the connector specified during handler registration ||
-|| **LINE**
-[`unknown`](../../data-types.md) | Identifier `ID` of the open line ||
-|| **MESSAGES**
-[`unknown`](../../data-types.md) | Array of messages. Each message is described by a separate array, including information about the user, message, and chat.
+|| **CONNECTOR***
+[`string`](../../data-types.md) | The string code of the connector specified in the `ID` parameter when calling [imconnector.register](./imconnector-register.md) ||
+|| **LINE***
+[`integer`](../../data-types.md) | The ID of the open line.
 
-```js
-array(
-    array(
-        //Array describing the user
-        'user' => array(
-            'id', //User ID in the external system *
-            'last_name', //Last name
-            'name', //First name
-            'picture' => array(
-                'url' //Link to the user's avatar available for the account
-            ),
-            'url', //Link to the user's profile
-            'sex', //Gender. Acceptable values are male and female
-            'email', //email
-            'phone', //phone
-            'skip_phone_validate' => 'Y', //In value 'Y' allows skipping validation 
-                                            //of the user's phone number. By default         
-        ),
-        //Array describing the message
-        'message' => array(
-            'id', //Message ID in the external system.*
-            'date', //Message time in timestamp format *
-            'disable_crm' => 'Y', //disable chat tracker (CRM tracker)
-            'text', //Message text. Either the text or files element must be specified. 
-                    //Allowed formatting (BB codes) is described 
-                    //here: https://apidocs.bitrix24.com/api-reference/chats/messages/index.html
-            'files' => array( //Array of file descriptions, where each file is described 
-                              //by an array with a link available to the account
-                array('url' => 'Link to file', 'name' => 'File name'),
-                array('url' => 'Link to file', 'name' => 'File name'),
-                ...
-            )
-        ),
-        //Array describing the chat
-        'chat' => array(
-            'id', //Chat ID in the external system *
-            'name', //Chat name in the external system
-            'url', //Link to the chat in the external system
-        ),
-    ),
-    array(...),
-);
+The ID can be obtained using the methods [imopenlines.config.get](../openlines/imopenlines-config-get.md) and [imopenlines.config.list.get](../openlines/imopenlines-config-list-get.md) ||
+|| **MESSAGES***
+[`array`](../../data-types.md) | An array of messages. Each element of the array is a single message in the object format with three required blocks: `user`, `message`, `chat`.
 
-```
-In the `user` array, the fields `name` and `last_name` can contain letters, spaces, hyphens, and apostrophes. Numbers and other special characters are not allowed. The maximum length for `name` and `last_name` is 25 characters. The language and case can be any.
-
-The format of the transmitted file has no restrictions. In the chat, attachments in messages can be formatted as images for types: jpe, jpg, jpeg, png, webp, gif, bmp.
-
-Messages can be sent on behalf of the manager by specifying `user_id` in the message array.
-||
+The structure of the object is described in detail [below](#messages) ||
 |#
 
-{% note info "Note" %}
+### MESSAGES Parameter {#messages}
 
-The `skip_phone_validate` parameter in the user structure is recommended to be used only in exceptional cases. This parameter is a necessary measure to overcome the limitations of the phone number validator.
+#|
+|| **Name**
+`type` | **Description** ||
+|| **user**
+[`object`](../../data-types.md) | User data from the external system.
+
+The structure of the object is described in detail [below](#messages-user) ||
+|| **message**
+[`object`](../../data-types.md) | Message data from the external system.
+
+The structure of the object is described in detail [below](#messages-message) ||
+|| **chat**
+[`object`](../../data-types.md) | Chat data from the external system.
+
+The structure of the object is described in detail [below](#messages-chat) ||
+|#
+
+#### User Object {#messages-user}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **id***
+[`string`](../../data-types.md) | User ID in the external system. The value is generated on the side of the external system ||
+|| **last_name**
+[`string`](../../data-types.md) | User's last name ||
+|| **name**
+[`string`](../../data-types.md) | User's first name ||
+|| **picture**
+[`object`](../../data-types.md) | User's avatar. Pass as an object with the `url` field, for example, `{"url":"https://example.com/u42.png"}`. The link must be public ||
+|| **url**
+[`string`](../../data-types.md) | Link to the user's profile in the external system ||
+|| **gender**
+[`string`](../../data-types.md) | User's gender. Supported values are `male` and `female` ||
+|| **email**
+[`string`](../../data-types.md) | User's email ||
+|| **phone**
+[`string`](../../data-types.md) | User's phone ||
+|| **skip_phone_validate**
+[`string`](../../data-types.md) | Disables phone validation before saving in CRM. Acceptable value is `Y`. If validation should be performed, do not pass this parameter ||
+|#
+
+The `name` and `last_name` fields can contain letters, spaces, hyphens, and apostrophes. Numbers and other special characters are not allowed. The maximum length for `name` and `last_name` is 25 characters. The language and case can be any.
+
+{% note info "" %}
+
+The `skip_phone_validate` parameter is recommended to be used only in rare cases when the number fails the built-in validation. This is a workaround to bypass the phone validator's limitations. In a typical scenario, pass the phone without this parameter.
 
 {% endnote %}
 
+#### Message Object {#messages-message}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **id**
+[`string`](../../data-types.md) | Message ID in the external system. The value is generated on the side of the external system ||
+|| **date**
+[`integer`](../../data-types.md) | Message time in Unix Timestamp in seconds ||
+|| **text**
+[`string`](../../data-types.md) | Message text. You must pass either the `text` or `files` element.
+
+For acceptable formatting, refer to the article [Formatting](../../chats/messages/index.md) ||
+|| **files**
+[`array`](../../data-types.md) | An array of files. Each file is passed as an array of the form `array('url' => 'File link', 'name' => 'File name')`. The `url` link must be accessible from Bitrix24.
+
+The format of the transmitted file is not restricted. In chat, the attachment can be displayed as an image for types: `jpe`, `jpg`, `jpeg`, `png`, `webp`, `gif`, `bmp` ||
+|| **disable_crm**
+[`string`](../../data-types.md) | Disables the CRM tracker for the message. Acceptable value is `Y`. If the CRM tracker should work, do not pass this parameter ||
+|| **user_id**
+[`integer`](../../data-types.md) | The ID of the manager in Bitrix24. If `user_id` is passed, the message will be sent on behalf of this manager ||
+|#
+
+#### Chat Object {#messages-chat}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **id***
+[`string`](../../data-types.md) | Chat or channel ID in the external system.
+
+It is recommended to pass the same value as in `DATA.ID` of the method [imconnector.connector.data.set](./imconnector-connector-data-set.md) ||
+|| **name**
+[`string`](../../data-types.md) | Chat or channel name.
+
+It is recommended to use the value from `DATA.NAME` ||
+|| **url**
+[`string`](../../data-types.md) | Link to the chat or channel in the external system.
+
+It is recommended to use the value from `DATA.URL` ||
+|#
+
+## Code Examples
+
+{% include [Note on examples](../../../_includes/examples.md) %}
+
+{% list tabs %}
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+      -H "Content-Type: application/json" \
+      -H "Accept: application/json" \
+      -d '{
+        "CONNECTOR": "myconnector",
+        "LINE": 107,
+        "MESSAGES": [
+          {
+            "user": {
+              "id": "ext-user-42",
+              "last_name": "Smith",
+              "name": "John",
+              "picture": {"url": "https://example.com/u42.png"},
+              "url": "https://example.com/users/42",
+              "gender": "male",
+              "email": "john@example.com",
+              "phone": "+19990000000",
+              "skip_phone_validate": "Y"
+            },
+            "message": {
+              "id": "ext-msg-1001",
+              "date": 1773265993,
+              "text": "Good afternoon",
+              "files": [
+                {"url": "https://example.com/files/spec.pdf", "name": "spec.pdf"}
+              ],
+              "disable_crm": "Y"
+            },
+            "chat": {
+              "id": "channel-123",
+              "name": "Support Channel",
+              "url": "https://example.com/chats/123"
+            }
+          }
+        ],
+        "auth": "**put_access_token_here**"
+      }' \
+      https://**put_your_bitrix24_address**/rest/imconnector.send.messages
+    ```
+
+- JS
+
+    ```js
+    const payload = {
+      CONNECTOR: 'myconnector',
+      LINE: 107,
+      MESSAGES: [
+        {
+          user: {
+            id: 'ext-user-42',
+            last_name: 'Smith',
+            name: 'John',
+            picture: { url: 'https://example.com/u42.png' },
+            url: 'https://example.com/users/42',
+            gender: 'male',
+            email: 'john@example.com',
+            phone: '+19990000000',
+            skip_phone_validate: 'Y',
+          },
+          message: {
+            id: 'ext-msg-1001',
+            date: 1773265993,
+            text: 'Good afternoon',
+            files: [{ url: 'https://example.com/files/spec.pdf', name: 'spec.pdf' }],
+            disable_crm: 'Y',
+          },
+          chat: {
+            id: 'channel-123',
+            name: 'Support Channel',
+            url: 'https://example.com/chats/123',
+          },
+        },
+      ],
+    };
+
+    const response = await $b24.callMethod('imconnector.send.messages', payload);
+    console.log(response.getData());
+    ```
+
+- PHP
+
+    ```php
+    $result = $b24Service->core->call(
+        'imconnector.send.messages',
+        [
+            'CONNECTOR' => 'myconnector',
+            'LINE' => 107,
+            'MESSAGES' => [
+                [
+                    'user' => [
+                        'id' => 'ext-user-42',
+                        'last_name' => 'Smith',
+                        'name' => 'John',
+                        'picture' => ['url' => 'https://example.com/u42.png'],
+                        'url' => 'https://example.com/users/42',
+                        'gender' => 'male',
+                        'email' => 'john@example.com',
+                        'phone' => '+19990000000',
+                        'skip_phone_validate' => 'Y',
+                    ],
+                    'message' => [
+                        'id' => 'ext-msg-1001',
+                        'date' => 1773265993,
+                        'text' => 'Good afternoon',
+                        'files' => [
+                            ['url' => 'https://example.com/files/spec.pdf', 'name' => 'spec.pdf'],
+                        ],
+                        'disable_crm' => 'Y',
+                    ],
+                    'chat' => [
+                        'id' => 'channel-123',
+                        'name' => 'Support Channel',
+                        'url' => 'https://example.com/chats/123',
+                    ],
+                ],
+            ],
+        ]
+    );
+    ```
+
+- BX24.js
+
+    ```js
+    BX24.callMethod(
+      'imconnector.send.messages',
+      {
+        CONNECTOR: 'myconnector',
+        LINE: 107,
+        MESSAGES: [
+          {
+            user: {
+              id: 'ext-user-42',
+              last_name: 'Smith',
+              name: 'John',
+              picture: { url: 'https://example.com/u42.png' },
+              url: 'https://example.com/users/42',
+              gender: 'male',
+              email: 'john@example.com',
+              phone: '+19990000000',
+              skip_phone_validate: 'Y',
+            },
+            message: {
+              id: 'ext-msg-1001',
+              date: 1773265993,
+              text: 'Good afternoon',
+              files: [{ url: 'https://example.com/files/spec.pdf', name: 'spec.pdf' }],
+              disable_crm: 'Y',
+            },
+            chat: {
+              id: 'channel-123',
+              name: 'Support Channel',
+              url: 'https://example.com/chats/123',
+            },
+          },
+        ],
+      },
+      function(result) {
+        console.log(result.data());
+      }
+    );
+    ```
+
+- PHP CRest
+
+    ```php
+    $result = CRest::call(
+        'imconnector.send.messages',
+        [
+            'CONNECTOR' => 'myconnector',
+            'LINE' => 107,
+            'MESSAGES' => [
+                [
+                    'user' => [
+                        'id' => 'ext-user-42',
+                        'last_name' => 'Smith',
+                        'name' => 'John',
+                        'picture' => ['url' => 'https://example.com/u42.png'],
+                        'url' => 'https://example.com/users/42',
+                        'gender' => 'male',
+                        'email' => 'john@example.com',
+                        'phone' => '+19990000000',
+                        'skip_phone_validate' => 'Y',
+                    ],
+                    'message' => [
+                        'id' => 'ext-msg-1001',
+                        'date' => 1773265993,
+                        'text' => 'Good afternoon',
+                        'files' => [
+                            ['url' => 'https://example.com/files/spec.pdf', 'name' => 'spec.pdf'],
+                        ],
+                        'disable_crm' => 'Y',
+                    ],
+                    'chat' => [
+                        'id' => 'channel-123',
+                        'name' => 'Support Channel',
+                        'url' => 'https://example.com/chats/123',
+                    ],
+                ],
+            ],
+        ]
+    );
+    ```
+
+{% endlist %}
+
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
-    "SUCCESS": true,
-    "DATA": {
-        "RESULT": [
-            {
-                "user": "1670",
-                "message": {
-                    "id": "1",
-                    "date": {},
-                    "disable_crm": "true",
-                    "text": "test message"
-                },
-                "chat": {
-                    "id": "1",
-                    "name": "test_chat",
-                    "description": "Link to the original post: example.com"
-                },
-                "extra": {
-                    "skip_phone_validate": "Y"
-                },
-                "SUCCESS": true,
-                "session": {
-                    "ID": "3267",
-                    "CHAT_ID": "9853"
+    "result": {
+        "SUCCESS": true,
+        "DATA": {
+            "RESULT": [
+                {
+                    "user": "585",
+                    "message": {
+                        "id": "ext-msg-1001",
+                        "date": {},
+                        "text": "Good afternoon",
+                        "files": []
+                    },
+                    "chat": {
+                        "id": "channel-123",
+                        "name": "Support Channel",
+                        "description": "Link to the original post: https://example.com/chats/123"
+                    },
+                    "extra": {
+                        "skip_phone_validate": "Y",
+                        "disable_tracker": "Y"
+                    },
+                    "SUCCESS": true,
+                    "session": {
+                        "ID": "323",
+                        "CHAT_ID": "1767"
+                    }
                 }
-            }
-        ]
+            ]
+        }
+    },
+    "time": {
+        "start": 1773265993,
+        "finish": 1773265994.487149,
+        "duration": 1.4871490001678467,
+        "processing": 1,
+        "date_start": "2026-03-11T13:53:13+01:00",
+        "date_finish": "2026-03-11T13:53:14+01:00",
+        "operating_reset_at": 1773266593,
+        "operating": 1.1916680335998535
     }
 }
 ```
@@ -140,67 +398,138 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **SUCCESS**
-[`boolean`](../../data-types.md) | Returns `true` if the sending was successful ||
+[`boolean`](../../data-types.md) | Returns `true` if the message was sent successfully ||
 || **DATA**
-[`object`](../../data-types.md) | Contains the object [`RESULT`](#result) with information about the sent messages ||
+[`object`](../../data-types.md) | Data containing information about the sent messages.
+
+The structure of the object is described in detail [below](#result-data) ||
+|| **time**
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
-#### Object RESULT {#result}
+#### DATA Object {#result-data}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **RESULT**
+[`array`](../../data-types.md) | An array of results for each element of `MESSAGES`.
+
+The structure of the element is described in detail [below](#result-item) ||
+|#
+
+#### RESULT[] Object {#result-item}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **user**
-[`integer`](../../data-types.md) | User identifier in the external system ||
+[`string`](../../data-types.md) | Internal user ID in Bitrix24 ||
 || **message**
-[`object`](../../data-types.md) | Object with information about the message:
-- `id` — message identifier in the external system
-- `date` — message time in timestamp format
-- `disable_crm` — whether the chat tracker is disabled
-- `text` — message text
- ||
+[`object`](../../data-types.md) | Message data after processing [(detailed description)](#result-item-message) ||
 || **chat**
-[`object`](../../data-types.md) | Object with information about the chat:
-- `id` — chat identifier in the external system
-- `name` — chat name in the external system
-- `description` — chat description
-  ||
+[`object`](../../data-types.md) | Chat data after processing [(detailed description)](#result-item-chat) ||
 || **extra**
-[`object`](../../data-types.md) | Object with information about additional settings:
-- `skip_phone_validate` — whether the phone number validation was skipped ||
+[`object`](../../data-types.md) | Additional flags for message processing [(detailed description)](#result-item-extra) ||
 || **SUCCESS**
-[`boolean`](../../data-types.md) | Returns `true` if the sending was successful ||
+[`boolean`](../../data-types.md) | Indicates successful processing of the current array element ||
+|| **ERRORS**
+[`array`](../../data-types.md) | An array of error texts for the current element, returned when `SUCCESS = false` ||
 || **session**
-[`object`](../../data-types.md) | Object with information about the open line dialog
-- `ID` — session identifier
-- `CHAT_ID` — chat identifier   ||
+[`object`](../../data-types.md) | Information about the open line session, returned if available [(detailed description)](#result-item-session) ||
+|#
+
+#### Message Object {#result-item-message}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **id**
+[`string`](../../data-types.md) | External message ID ||
+|| **date**
+[`object`](../../data-types.md) | Date of the message after processing ||
+|| **text**
+[`string`](../../data-types.md) | Message text ||
+|| **files**
+[`array`](../../data-types.md) | An array of message files ||
+|#
+
+#### Chat Object {#result-item-chat}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **id**
+[`string`](../../data-types.md) | Chat or channel ID ||
+|| **name**
+[`string`](../../data-types.md) | Chat or channel name ||
+|| **description**
+[`string`](../../data-types.md) | Description of the chat, such as a link to the original post ||
+|#
+
+#### Extra Object {#result-item-extra}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **skip_phone_validate**
+[`string`](../../data-types.md) | Indicates phone validation is disabled, returned when the value is `Y` ||
+|| **disable_tracker**
+[`string`](../../data-types.md) | Indicates the CRM tracker is disabled, returned when the value is `Y` ||
+|#
+
+#### Session Object {#result-item-session}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **ID**
+[`string`](../../data-types.md) | Open line session ID ||
+|| **CHAT_ID**
+[`string`](../../data-types.md) | Chat ID in Bitrix24 ||
 |#
 
 ## Error Handling
 
+HTTP Status: **400**, **403**
+
+```json
+{
+    "error": "ERROR_ARGUMENT",
+    "error_description": "Argument 'MESSAGES' is null or empty"
+}
+```
+
+{% include notitle [error handling](../../../_includes/error-info.md) %}
+
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Explanation** ||
-|| `WRONG_AUTH_TYPE` | Current authorization type is denied for this method | Incorrect authorization type. OAuth type is required ||
-|| `CONNECTOR` | Argument 'CONNECTOR' is null or empty | Required parameter `CONNECTOR` is not specified in the request ||
-|| `LINE` | Argument 'LINE' is null or empty | Required parameter `LINE` is not specified in the request ||
-|| `MESSAGES` | Argument 'MESSAGES' is null or empty | Required parameter `MESSAGES` is not specified in the request ||
-|| `MESSAGES` | The value of an argument 'MESSAGES' must be of type array | The parameter value is not an array. ||
-|| `IMCONNECTOR_NO_CORRECT_PROVIDER` | Could not find a suitable provider for the connector | Incorrect value in the `CONNECTOR` parameter ||
-|| `IMCONNECTOR_COULD_NOT_GET_PROVIDER_OBJECT` | Could not get the provider object | Incorrect value in the `CONNECTOR` parameter ||
-|| `IMCONNECTOR_NOT_SPECIFIED_CORRECT_COMMAND` | No correct command specified | Something incredible. The developer made a mistake somewhere ||
-|| `IMCONNECTOR_NOT_SPECIFIED_CORRECT_CONNECTOR` | Connector not specified | Incorrect value in the `CONNECTOR` parameter ||
-|| `NOT_ACTIVE_LINE` | Line with this ID is inactive or does not exist | The line has been deleted or disabled on the account ||
-|| `PROVIDER_UNSUPPORTED_TYPE_INCOMING_MESSAGE` | Unsupported type of incoming message from the server | Incorrect value in the `type_message` parameter, if it was passed ||
-|| `IMCONNECTOR_NOT_ALL_THE_REQUIRED_DATA` | Not all required data was provided | Empty or incorrect value in the `user` parameter ||
-|| `CONNECTOR_PROXY_NO_ADD_USER` | Could not create or get the system user mapped to the remote messenger user | To work with open line chats, a special technical user must be added to the account, marked as a user for the messenger connector, and under which it is impossible to authorize ||
-|| `CONNECTOR_PROXY_NO_USER_IM` | Messenger user ID not obtained | Incorrect value in the `id` field in the `user` parameter. This is a consequence of the previous error ||
-|| `IMCONNECTOR_NOT_ALL_THE_REQUIRED_DATA` | Not all required data was provided | Incorrect value in the `text` or `files` field in the `message` parameter. Some data for sending the message was not provided ||
-|| `100` | The MESSAGES parameter must be an array of messages (arrays) | The value of the `MESSAGES` parameter must be an array of messages ||
-|| `100` | The incorrect structure of a message inside the MESSAGES parameter. | Incorrect structure of messages ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `403` | `WRONG_AUTH_TYPE` | Current authorization type is denied for this method Application context required | Method called not in the context of an application OAuth ||
+|| `400` | `ERROR_ARGUMENT` | Argument 'CONNECTOR' is null or empty | `CONNECTOR` not provided ||
+|| `400` | `ERROR_ARGUMENT` | Argument 'LINE' is null or empty | `LINE` not provided ||
+|| `400` | `ERROR_ARGUMENT` | Argument 'MESSAGES' is null or empty | `MESSAGES` not provided ||
+|| `400` | `ERROR_ARGUMENT` | The value of an argument 'MESSAGES' must be of type array | `MESSAGES` not passed as an array ||
+|| `400` | `ERROR_ARGUMENT` | The MESSAGES parameter must be an array of messages (arrays) | Elements of `MESSAGES` not passed as arrays ||
+|| `400` | `ERROR_ARGUMENT` | The incorrect structure of a message inside MESSAGES parameter | The `MESSAGES` element is missing `user`, `message`, or `chat` ||
+|| `400` | `NOT_ACTIVE_LINE` | The line with this ID is inactive or does not exist | An inactive `LINE` was passed ||
+|| `400` | `IMCONNECTOR_NO_CORRECT_PROVIDER` | Failed to find a suitable provider for the connector | Unable to initialize the provider for the connector ||
+|| `400` | `IMCONNECTOR_NOT_SPECIFIED_CORRECT_COMMAND` | No valid command specified | Unable to determine the command for processing incoming data ||
 |#
+
+{% include [system errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./imconnector-register.md)
+- [{#T}](./imconnector-activate.md)
+- [{#T}](./imconnector-status.md)
+- [{#T}](./imconnector-connector-data-set.md)
+- [{#T}](./imconnector-list.md)
+- [{#T}](./imconnector-unregister.md)
+- [{#T}](./imconnector-update-messages.md)
+- [{#T}](./imconnector-delete-messages.md)
+- [{#T}](./imconnector-send-status-delivery.md)
+- [{#T}](./imconnector-chat-name-set.md)
 - [{#T}](../../../tutorials/openlines/example-connector.md)

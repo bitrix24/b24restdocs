@@ -1,144 +1,142 @@
-# Get the list of connectors imconnector.list
-
-{% note warning "We are still updating this page" %}
-
-Some data may be missing here — we will fill it in shortly.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- from Sergei's file: please note that this returns the complete list of connected connectors in the current Bitrix24
-- parameters are not specified
-- required parameters are not indicated
-- examples in other languages are missing
-
-{% endnote %}
-
-{% endif %}
+# Get the List of Connectors imconnector.list
 
 > Scope: [`imopenlines`](../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: a user with permission to modify Open Channels connectors
 
-The method retrieves the list of connectors.
+The method `imconnector.list` returns a list of all connectors registered in Bitrix24.
 
-## Example
+{% note info "" %}
+
+The method works only in the context of an [application](../../../settings/app-installation/index.md).
+
+{% endnote %} 
+
+## Method Parameters
+
+No parameters.
+
+## Code Examples
+
+{% include [Example Note](../../../_includes/examples.md) %}
 
 {% list tabs %}
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+      -H "Content-Type: application/json" \
+      -H "Accept: application/json" \
+      -d '{"auth":"**put_access_token_here**"}' \
+      https://**put_your_bitrix24_address**/rest/imconnector.list
+    ```
 
 - JS
 
     ```js
-    // callListMethod: Retrieves all data at once. Use only for small selections (< 1000 items) due to high memory usage.
-    
-    try {
-      const response = await $b24.callListMethod(
-        'imconnector.list',
-        {},
-        (progress) => { console.log('Progress:', progress) }
-      )
-      const items = response.getData() || []
-      for (const entity of items) { console.log('Entity:', entity) }
-    } catch (error) {
-      console.error('Request failed', error)
-    }
-    
-    // fetchListMethod: Retrieves data in parts using an iterator. Use it for large data volumes to optimize memory usage.
-    
-    try {
-      const generator = $b24.fetchListMethod('imconnector.list', {}, 'ID')
-      for await (const page of generator) {
-        for (const entity of page) { console.log('Entity:', entity) }
-      }
-    } catch (error) {
-      console.error('Request failed', error)
-    }
-    
-    // callMethod: Manually controls pagination through the start parameter. Use it for precise control of request batches. For large datasets, it is less efficient than fetchListMethod.
-    
-    try {
-      const response = await $b24.callMethod('imconnector.list', {}, 0)
-      const result = response.getData().result || []
-      for (const entity of result) { console.log('Entity:', entity) }
-    } catch (error) {
-      console.error('Request failed', error)
-    }
+    const response = await $b24.callMethod('imconnector.list', {});
+    console.log(response.getData());
     ```
 
 - PHP
 
     ```php
-    try {
-        $response = $b24Service
-            ->core
-            ->call(
-                'imconnector.list',
-                []
-            );
-    
-        $result = $response
-            ->getResponseData()
-            ->getResult();
-    
-        if ($result->error()) {
-            echo 'Error: ' . $result->error()->ex;
-        } else {
-            echo 'Success: ' . print_r($result->data(), true);
-        }
-    
-    } catch (Throwable $e) {
-        error_log($e->getMessage());
-        echo 'Error calling imconnector.list: ' . $e->getMessage();
-    }
+    $result = $b24Service->core->call(
+        'imconnector.list',
+        []
+    );
     ```
 
 - BX24.js
 
     ```js
-    BX24.callMethod('imconnector.list', {}, function(result) {
-        if(result.error())
-        {
-            console.error(result.error().ex);
-        }
-        else
-        {
-            console.log(result.data());
-        }
-    });
+    BX24.callMethod(
+      'imconnector.list',
+      {},
+      function(result) {
+        console.log(result.data());
+      }
+    );
     ```
 
+- PHP CRest
+
+    ```php
+    $result = CRest::call(
+        'imconnector.list',
+        []
+    );
+    ```
 {% endlist %}
 
-{% include [Footnote about examples](../../../_includes/examples.md) %}
+## Response Handling
 
-## Response on success
-
-List of connectors with names.
+HTTP Status: **200**
 
 ```json
 {
-    "livechat": "Live Chat",
-    "whatsappbytwilio": "WhatsApp",
-    "viber": "Viber",
-    "telegrambot": "Telegram",
-    "imessage": "Apple Messages for Business",
-    "facebook": "Facebook: Messages",
-    "facebookcomments": "Facebook: Comments",
-    "fbinstagramdirect": "Instagram Direct",
-    "network": "Bitrix24.Network",
-    "notifications": "Bitrix24 SMS and WhatsApp",
-    "whatsappbyedna": "Edna.com WhatsApp",
-    "newcustomconnector": "new super Connector"
+    "result": {
+        "livechat": "Live Chat",
+        "telegrambot": "Telegram",
+        "network": "Bitrix24.Network",
+        "myconnector": "My Connector"
+    },
+    "time": {
+        "start": 1738065600.11,
+        "finish": 1738065600.17,
+        "duration": 0.06,
+        "processing": 0.03,
+        "date_start": "2025-01-28T12:00:00+00:00",
+        "date_finish": "2025-01-28T12:00:00+00:00"
+    }
 }
 ```
 
-### Possible error codes
+### Returned Data
 
 #|
-|| **Code** | **Description** ||
-|| **ACCESS_DENIED** | The current user does not have access ||
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`object`](../../data-types.md) | An object of the form `connector_id: connector_name` for available connectors ||
+|| **time**
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
+## Error Handling
+
+HTTP Status: **400**, **403**
+
+```json
+{
+    "error": "ACCESS_DENIED",
+    "error_description": "You don't have access to this action"
+}
+```
+
+{% include notitle [Error Handling](../../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+#|
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `403` | `WRONG_AUTH_TYPE` | Current authorization type is denied for this method. Application context required | Method called outside of the application OAuth context ||
+|| `400` | `ACCESS_DENIED` | The ImOpenLines module is not installed | The `imopenlines` module is not installed on the account ||
+|| `400` | `ACCESS_DENIED` | You don't have access to this action | The user does not have permission to modify connectors ||
+|#
+
+{% include [System Errors](../../../_includes/system-errors.md) %}
+
+## Continue Learning
+
+- [{#T}](./imconnector-register.md)
+- [{#T}](./imconnector-activate.md)
+- [{#T}](./imconnector-status.md)
+- [{#T}](./imconnector-connector-data-set.md)
+- [{#T}](./imconnector-unregister.md)
+- [{#T}](./imconnector-send-messages.md)
+- [{#T}](./imconnector-update-messages.md)
+- [{#T}](./imconnector-delete-messages.md)
+- [{#T}](./imconnector-send-status-delivery.md)
+- [{#T}](./imconnector-chat-name-set.md)

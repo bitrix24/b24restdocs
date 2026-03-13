@@ -158,9 +158,9 @@ HTTP Code: **200**
             "manager_user_data": {
                 "id": 3,
                 "active": true,
-                "name": "Elena Ivanova",
-                "first_name": "Elena",
-                "last_name": "Ivanova",
+                "name": "Catherine Peterson",
+                "first_name": "Catherine",
+                "last_name": "Peterson",
                 "work_position": "",
                 "color": "#1eb4aa",
                 "avatar": "https://example.bitrix24.com/upload/main/avatar.png",

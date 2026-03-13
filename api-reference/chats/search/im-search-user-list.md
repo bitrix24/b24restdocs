@@ -153,9 +153,9 @@ HTTP Status Code: **200**
     "result": [
         {
             "id": 103,
-            "name": "Svetlana Ivanova",
-            "first_name": "Svetlana",
-            "last_name": "Ivanova",
+            "name": "Emily Smith",
+            "first_name": "Emily",
+            "last_name": "Smith",
             "work_position": "IT Department Head",
             "color": "#4ba984",
             "avatar": "https://example.bitrix24.com/upload/main/avatar.png",

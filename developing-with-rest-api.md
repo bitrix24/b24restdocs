@@ -8,6 +8,12 @@ With the REST API, you can:
 - automate processes
 - enhance interactions with clients and employees
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (ChatGPT, Claude, Copilot), connect to the [MCP server](./sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 Below are the key capabilities for development on the platform.
 
 ## Automation

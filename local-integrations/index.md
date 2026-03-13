@@ -2,6 +2,12 @@
 
 Local integrations are software solutions that are created and configured for a specific Bitrix24. Unlike cloud applications from the Marketplace, local tools are designed for internal company tasks and can be tailored to specific business processes.
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (ChatGPT, Claude, Copilot), connect to the [MCP server](../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 ## Typical use-cases and scenarios
 
 Use local tools to address the following tasks:

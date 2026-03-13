@@ -71,9 +71,9 @@ Data is transmitted in the form of a POST request {.b24-info}
             },
             "USER": {
                 "ID": "27",
-                "NAME": "Svetlana Ivanova",
-                "FIRST_NAME": "Svetlana",
-                "LAST_NAME": "Ivanova",
+                "NAME": "Emily Smith",
+                "FIRST_NAME": "Emily",
+                "LAST_NAME": "Smith",
                 "WORK_POSITION": "",
                 "GENDER": "F"
             }
@@ -151,9 +151,9 @@ Data is transmitted in the form of a POST request {.b24-info}
             },
             "USER": {
                 "ID": "27",
-                "NAME": "Svetlana Ivanova",
-                "FIRST_NAME": "Svetlana",
-                "LAST_NAME": "Ivanova",
+                "NAME": "Emily Smith",
+                "FIRST_NAME": "Emily",
+                "LAST_NAME": "Smith",
                 "WORK_POSITION": "",
                 "GENDER": "F"
             }

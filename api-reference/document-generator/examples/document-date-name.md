@@ -34,9 +34,9 @@ To ensure that modifiers work for name-type fields, they must be passed in the f
 
 ```php
 [
-    'NAME' => 'Igor', // first name
-    'LAST_NAME' => 'Ivanov', // last name
-    'SECOND_NAME' => 'Petrovich', // middle name
+    'NAME' => 'Ian', // first name
+    'LAST_NAME' => 'Smith', // last name
+    'SECOND_NAME' => 'Peter', // middle name
     'GENDER' => 'M', // gender
 ]
 ```

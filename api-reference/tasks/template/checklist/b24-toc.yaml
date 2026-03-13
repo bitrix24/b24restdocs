@@ -1,0 +1,29 @@
+title: Task Template Checklists  
+href: index.md  
+items:  
+  - name: Overview of Methods  
+    href: index.md  
+  - name: Add Checklist Item  
+    href: tasks-template-checklist-add.md  
+  - name: Update Checklist Item  
+    href: tasks-template-checklist-update.md  
+  - name: Retrieve Checklist Item  
+    href: tasks-template-checklist-get.md  
+  - name: Retrieve Checklist Item List  
+    href: tasks-template-checklist-list.md  
+  - name: Delete Checklist Item  
+    href: tasks-template-checklist-delete.md  
+  - name: Move Item After Another  
+    href: tasks-template-checklist-move-after.md  
+  - name: Move Item Before Another  
+    href: tasks-template-checklist-move-before.md  
+  - name: Mark Item as Completed  
+    href: tasks-template-checklist-complete.md  
+  - name: Mark Item as Incomplete  
+    href: tasks-template-checklist-renew.md  
+  - name: Add Attachment from Content  
+    href: tasks-template-checklist-add-attachment-by-content.md  
+  - name: Add Attachments from Drive  
+    href: tasks-template-checklist-add-attachments-from-disk.md  
+  - name: Remove Attachments  
+    href: tasks-template-checklist-remove-attachments.md  

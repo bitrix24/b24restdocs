@@ -208,13 +208,13 @@ HTTP Status: **200**
         {
         "id": 99,
         "active": true,
-        "name": "Catherine Ivanova",
+        "name": "Catherine Peterson",
         "first_name": "Catherine",
-        "last_name": "Ivanova",
+        "last_name": "Peterson",
         "work_position": "Business Analyst",
         "color": "#58cc47",
-        "avatar": "https://cdn-com.bitrix24.com/avatars/catherine-ivanova.png",
-        "avatar_hr": "https://cdn-com.bitrix24.com/avatars/catherine-ivanova@2x.png",
+        "avatar": "https://cdn-com.bitrix24.com/avatars/catherine-peterson.png",
+        "avatar_hr": "https://cdn-com.bitrix24.com/avatars/catherine-peterson@2x.png",
         "gender": "F",
         "birthday": "",
         "extranet": false,
@@ -233,18 +233,18 @@ HTTP Status: **200**
         "bot_data": null,
         "type": "user",
         "website": "",
-        "email": "c.ivanova@mail.com"
+        "email": "c.peterson@mail.com"
         },
         {
         "id": 1271,
         "active": true,
-        "name": "Dmitry Kuznetsov",
+        "name": "Dmitry Harris",
         "first_name": "Dmitry",
-        "last_name": "Kuznetsov",
+        "last_name": "Harris",
         "work_position": "Senior Developer",
         "color": "#df532d",
-        "avatar": "https://cdn-com.bitrix24.com/avatars/dmitry-kuznetsov.png",
-        "avatar_hr": "https://cdn-com.bitrix24.com/avatars/dmitry-kuznetsov@2x.png",
+        "avatar": "https://cdn-com.bitrix24.com/avatars/dmitry-harris.png",
+        "avatar_hr": "https://cdn-com.bitrix24.com/avatars/dmitry-harris@2x.png",
         "gender": "M",
         "birthday": "",
         "extranet": false,
@@ -263,7 +263,7 @@ HTTP Status: **200**
         "bot_data": null,
         "type": "user",
         "website": "",
-        "email": "d.kuznetsov@mail.com"
+        "email": "d.harris@mail.com"
         }
     ],
     "total": 3,

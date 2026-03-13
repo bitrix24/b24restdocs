@@ -1,21 +1,21 @@
-title: Open Line Connectors  
+title: Open Channels Connectors  
 href: index.md  
 items:  
   - name: Overview of Methods  
     href: index.md  
   - name: Typical Use-Cases  
     href: tutorials.md  
-  - name: Register Connector  
+  - name: Register a Connector  
     href: imconnector-register.md  
-  - name: Activate Connector  
+  - name: Activate a Connector  
     href: imconnector-activate.md  
   - name: Get Connector Status  
     href: imconnector-status.md  
-  - name: Change Connector Settings  
+  - name: Set Connector Settings  
     href: imconnector-connector-data-set.md  
   - name: Get List of Connectors  
     href: imconnector-list.md  
-  - name: Unregister Connector  
+  - name: Unregister a Connector  
     href: imconnector-unregister.md  
   - name: Send Messages to Bitrix24  
     href: imconnector-send-messages.md  
@@ -23,10 +23,8 @@ items:
     href: imconnector-update-messages.md  
   - name: Delete Sent Messages  
     href: imconnector-delete-messages.md  
-  - name: Update "Delivered" Status  
+  - name: Update Delivery Status  
     href: imconnector-send-status-delivery.md  
-  - name: Update "Read" Status  
-    href: imconnector-send-status-reading.md  
   - name: Set New Chat Name  
     href: imconnector-chat-name-set.md  
   - name: Events  

@@ -14,7 +14,7 @@ To send the email, we will sequentially execute three methods:
 
 3. [crm.activity.add](../../../api-reference/crm/timeline/activities/activity-base/crm-activity-add.md) — create an activity of type "Email"
 
-## 1\. Retrieve Client Data
+## 1. Retrieve Client Data
 
 We will use the method [crm.contact.get](../../../api-reference/crm/contacts/crm-contact-get.md) with the client's identifier. The identifier value can be stored in the variable `contactID`. For example, we will retrieve the contact data with the identifier `1`.
 
@@ -75,7 +75,7 @@ As a result, we will obtain the client's data, including the email address `EMAI
 }
 ```
 
-## 2\. Retrieve Employee Data
+## 2. Retrieve Employee Data
 
 To get the data of the responsible employee, we will use the method [user.get](../../../api-reference/user/user-get.md) with a filter by the employee's identifier. The identifier should take the value from the `ASSIGNED_BY_ID` field of the `resultContact` object.
 
@@ -126,15 +126,15 @@ We will obtain the employee's data, including the email address `EMAIL`.
         {
         "ID": "61",
         "ACTIVE": true,
-        "NAME": "Ivan",
-        "LAST_NAME": "Petrov",
-        "EMAIL": "ivanpetrov@example.com"
+        "NAME": "John",
+        "LAST_NAME": "Peterson",
+        "EMAIL": "johnpeterson@example.com"
         }
     ]
 }
 ```
 
-## 3\. Create an Activity of Type "Email"
+## 3. Create an Activity of Type "Email"
 
 We will prepare the variables:
 

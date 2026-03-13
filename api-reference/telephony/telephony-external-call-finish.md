@@ -1,10 +1,10 @@
-# Finish Call and Record It in Telephony Statistics telephony.externalCall.finish
+# Finish Call and Log It in Telephony Statistics telephony.externalCall.finish
 
 > Scope: [`telephony`](../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-The method `telephony.externalCall.finish` ends an external call, saves it in the statistics, and in the CRM activity.
+The method `telephony.externalCall.finish` ends an external call, saves it in the statistics, and logs it in the CRM activity.
 
 {% note info "" %}
 
@@ -20,15 +20,17 @@ The method works only in the context of the [application](../../settings/app-ins
 || **Name**
 `type` | **Description** ||
 || **CALL_ID***
-[`string`](../data-types.md) | Identifier of the call from the method [telephony.externalCall.register](./telephony-external-call-register.md). ||
+[`string`](../data-types.md) | The identifier of the call from the method [telephony.externalCall.register](./telephony-external-call-register.md) ||
 || **USER_ID***
-[`integer`](../data-types.md) | Identifier of the user who is finishing the call.
+[`integer`](../data-types.md) | The identifier of the user who ends the call.
 
-The identifier can be obtained using the method [user.get](../user/user-get.md) ||
+The user is also assigned as responsible for the CRM entities that were automatically created during the call. For previously existing CRM entities, the responsible person remains unchanged.
+
+The identifier can be obtained using the [user.get](../user/user-get.md) method. ||
 || **USER_PHONE_INNER***
-[`string`](../data-types.md) | Internal number of the user.
+[`string`](../data-types.md) | The internal number of the user.
 
-The internal number can be obtained using the method [user.get](../user/user-get.md)
+The internal number can be obtained using the [user.get](../user/user-get.md) method.
 
 {% note info "" %}
 
@@ -36,21 +38,21 @@ At least one of the parameters must be specified: `USER_ID` or `USER_PHONE_INNER
 
 {% endnote %} ||
 || **DURATION**
-[`integer`](../data-types.md) | Duration of the call in seconds.
+[`integer`](../data-types.md) | The duration of the call in seconds.
 
 Default is `0` ||
 || **COST**
-[`double`](../data-types.md) | Cost of the call.
+[`double`](../data-types.md) | The cost of the call.
 
 Default is `0` ||
 || **COST_CURRENCY**
-[`string`](../data-types.md) | Currency of the call cost.
+[`string`](../data-types.md) | The currency of the call cost.
 
-The list of currencies can be obtained using the method [crm.currency.list](../crm/currency/crm-currency-list.md).
+A list of currencies can be obtained using the [crm.currency.list](../crm/currency/crm-currency-list.md) method.
 
 Default is an empty string ||
 || **STATUS_CODE**
-[`string`](../data-types.md) | Result code of the call.
+[`string`](../data-types.md) | The result code of the call.
 
 Possible values:
 - `200` — successful call
@@ -68,8 +70,8 @@ Possible values:
 - `OTHER` — undefined
 
 Default:
-- `200`, if `DURATION > 0`
-- `304`, if `DURATION = 0` ||
+- `200` if `DURATION > 0`
+- `304` if `DURATION = 0` ||
 || **FAILED_REASON**
 [`string`](../data-types.md) | Text reason for the failed call.
 
@@ -282,7 +284,7 @@ HTTP Status: **200**
 || **PORTAL_NUMBER**
 [`string`](../data-types.md) | Line number through which the call was made ||
 || **INCOMING**
-[`string`](../data-types.md) | Type of call.
+[`string`](../data-types.md) | Type of the call.
 
 Possible values:
 - `1` — outgoing
@@ -326,7 +328,7 @@ Possible values:
 || **CALL_FAILED_REASON**
 [`string`](../data-types.md) | Text reason for the call completion ||
 || **REST_APP_ID**
-[`integer`](../data-types.md) | Application identifier ||
+[`integer`](../data-types.md) | Identifier of the application ||
 || **REST_APP_NAME**
 [`string`](../data-types.md) | Name of the application ||
 || **CRM_ACTIVITY_ID**
@@ -334,7 +336,7 @@ Possible values:
 || **COMMENT**
 [`string`](../data-types.md) | Comment on the call ||
 || **CRM_ENTITY_TYPE**
-[`string`](../data-types.md) | Type of CRM entity associated with the call ||
+[`string`](../data-types.md) | Type of the CRM entity associated with the call ||
 || **CRM_ENTITY_ID**
 [`integer`](../data-types.md) | Identifier of the CRM entity associated with the call ||
 || **ERRORS**

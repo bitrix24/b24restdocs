@@ -18,6 +18,12 @@ Some data may be missing — we will complete it shortly.
 
 A local webhook is a simplified way to access the methods and events of the Bitrix24 REST API, specifically designed for use within a single account.
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (ChatGPT, Claude, Copilot), connect to the [MCP server](../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 Local webhooks are divided into incoming and outgoing.
 
 ## Incoming Webhook

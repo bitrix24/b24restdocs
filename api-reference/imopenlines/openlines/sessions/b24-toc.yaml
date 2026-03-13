@@ -1,29 +1,29 @@
-title: Dialogs
-href: imopenlines-session-open.md
-items: 
-  - name: Get chat by symbolic code
-    href: imopenlines-session-open.md
-  - name: Start a new dialog
-    href: imopenlines-session-start.md
-  - name: Join a dialog
-    href: imopenlines-session-join.md
-  - name: Get chat and dialog messages
-    href: imopenlines-session-history-get.md
-  - name: Take the dialog from the current operator
-    href: imopenlines-session-intercept.md
-  - name: Pin or unpin the dialog from the operator
-    href: imopenlines-session-mode-pin.md
-  - name: Pin all available dialogs to the operator
-    href: imopenlines-session-mode-pin-all.md
-  - name: Unpin all dialogs from the operator
-    href: imopenlines-session-mode-unpin-all.md
-  - name: Switch the dialog to "silent" mode
-    href: imopenlines-session-mode-silent.md
-  - name: Rate the employee's performance in the dialog
-    href: imopenlines-session-head-vote.md
-  - name: Start a new dialog based on a message
-    href: imopenlines-message-session-start.md
-  - name: Create a lead based on the dialog
-    href: imopenlines-crm-lead-create.md
-  - name: Get information about the dialog
-    href: imopenlines-dialog-get.md
+title: Dialogs  
+href: imopenlines-session-open.md  
+items:  
+  - name: Retrieve chat by character code  
+    href: imopenlines-session-open.md  
+  - name: Start a new dialog  
+    href: imopenlines-session-start.md  
+  - name: Join a dialog  
+    href: imopenlines-session-join.md  
+  - name: Get message history of the dialog  
+    href: imopenlines-session-history-get.md  
+  - name: Take the dialog from the current operator  
+    href: imopenlines-session-intercept.md  
+  - name: Pin or unpin the dialog from the operator  
+    href: imopenlines-session-mode-pin.md  
+  - name: Pin all available dialogs to the operator  
+    href: imopenlines-session-mode-pin-all.md  
+  - name: Unpin all dialogs from the operator  
+    href: imopenlines-session-mode-unpin-all.md  
+  - name: Switch the dialog to "silent" mode  
+    href: imopenlines-session-mode-silent.md  
+  - name: Rate the employee's performance in the dialog  
+    href: imopenlines-session-head-vote.md  
+  - name: Start a new dialog based on a message  
+    href: imopenlines-message-session-start.md  
+  - name: Create a lead based on the dialog  
+    href: imopenlines-crm-lead-create.md  
+  - name: Get information about the dialog  
+    href: imopenlines-dialog-get.md  

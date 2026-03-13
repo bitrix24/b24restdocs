@@ -282,14 +282,14 @@ HTTP Status: **200**
             },
             "creator": {
                 "id": "503",
-                "name": "Maria Ivanova",
+                "name": "Natalie Brooks",
                 "link": "/company/personal/user/503/",
                 "icon": "https://mysite.com/b17053/resize_cache/45749/c0120a8d7c10d63c83e32398d1ec4d9e/main/c89/c89c6b7301880958ea704b5a8470635c/4R5A1256.png",
                 "workPosition": "Administrator"
             },
             "responsible": {
                 "id": "547",
-                "name": "Maria",
+                "name": "Megan",
                 "link": "/company/personal/user/547/",
                 "icon": "/bitrix/images/tasks/default_avatar.png",
                 "workPosition": "Tester"
@@ -298,14 +298,14 @@ HTTP Status: **200**
             "auditorsData": {
                 "103": {
                     "id": "103",
-                    "name": "Svetlana Ivanova",
+                    "name": "Emily Smith",
                     "link": "/company/personal/user/103/",
                     "icon": "https://mysite.com/b17053/resize_cache/8644/c0120a8d7c10d63c83e32398d1ec4d9e/main/45f/45fff10d17d398a5583184c8350cd197/buh.jpg",
                     "workPosition": "Accountant"
                 },
                 "503": {
                     "id": "503",
-                    "name": "Maria Ivanova",
+                    "name": "Natalie Brooks",
                     "link": "/company/personal/user/503/",
                     "icon": "https://mysite.com/b17053/resize_cache/45749/c0120a8d7c10d63c83e32398d1ec4d9e/main/c89/c89c6b7301880958ea704b5a8470635c/4R5A1256.png",
                     "workPosition": "Administrator"

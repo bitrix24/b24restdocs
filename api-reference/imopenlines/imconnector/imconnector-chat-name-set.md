@@ -1,10 +1,16 @@
-# Set New Chat Name imconnector.chat.name.set
+# Set a New Chat Name imconnector.chat.name.set
 
 > Scope: [`imconnector`](../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-This method sets a new chat name.
+The method `imconnector.chat.name.set` sets a new name for the chat.
+
+{% note info "" %}
+
+The method works only in the context of the [application](../../../settings/app-installation/index.md).
+
+{% endnote %} 
 
 ## Method Parameters
 
@@ -13,16 +19,18 @@ This method sets a new chat name.
 #|
 || **Name**
 `type` | **Description** ||
-|| **CONNECTOR***
-[`string`](../../data-types.md) | Connector identifier ||
-|| **LINE***
-[`string`](../../data-types.md) | Open line identifier ||
-|| **CHAT_ID***
-[`string`](../../data-types.md) | Chat identifier in the external system ||
-|| **NAME***
-[`string`](../../data-types.md) | New chat name ||
-|| **USER_ID**
-[`string`](../../data-types.md) | User identifier. This parameter is required only for connectors without group chats from the external side. For such a connector, the parameter `CHAT_GROUP` in the method [imconnector.register](./imconnector-register.md) must be equal to `N` ||
+|| **CONNECTOR***  
+[`string`](../../data-types.md) | The string code of the connector specified in the `ID` parameter when calling [imconnector.register](./imconnector-register.md) ||
+|| **LINE***  
+[`integer`](../../data-types.md) | Identifier of the Open Channel
+
+The identifier can be obtained using the methods [imopenlines.config.get](../openlines/imopenlines-config-get.md) and [imopenlines.config.list.get](../openlines/imopenlines-config-list-get.md) ||
+|| **CHAT_ID***  
+[`string`](../../data-types.md) | Identifier of the chat in the external system ||
+|| **NAME***  
+[`string`](../../data-types.md) | New name for the chat ||
+|| **USER_ID**  
+[`string`](../../data-types.md) | User identifier. This parameter is mandatory only for connectors without group chats from the external side. For such a connector, the `CHAT_GROUP` parameter in the [imconnector.register](./imconnector-register.md) method must be set to `N` ||
 |#
 
 ## Code Examples
@@ -31,23 +39,13 @@ This method sets a new chat name.
 
 {% list tabs %}
 
-- cURL (Webhook)
-
-    ```bash
-    curl -X POST \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json" \
-    -d '{"CONNECTOR":"connector","LINE":"105","CHAT_ID":"47e007b1-ee15-43db-bcba-1c26e5884d3f","NAME":"New dialog name"}' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/imconnector.chat.name.set
-    ```
-
 - cURL (OAuth)
 
     ```bash
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"CONNECTOR":"connector","LINE":"105","CHAT_ID":"47e007b1-ee15-43db-bcba-1c26e5884d3f","NAME":"New dialog name","auth":"**put_access_token_here**"}' \
+    -d '{"CONNECTOR":"connector","LINE":105,"CHAT_ID":"47e007b1-ee15-43db-bcba-1c26e5884d3f","NAME":"New Dialog Name","auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/imconnector.chat.name.set
     ```
 
@@ -56,25 +54,25 @@ This method sets a new chat name.
     ```js
     try
     {
-    	const response = await $b24.callMethod(
-    		'imconnector.chat.name.set',
-    		{
-    			CONNECTOR: 'connector',
-    			LINE: '105',
-    			CHAT_ID: '47e007b1-ee15-43db-bcba-1c26e5884d3f',
-    			NAME: 'New dialog name'
-    		}
-    	);
-    	
-    	const result = response.getData().result;
-    	if(result.error())
-    		alert("Error: " + result.error());
-    	else
-    		alert("Success: " + result);
+        const response = await $b24.callMethod(
+            'imconnector.chat.name.set',
+            {
+                CONNECTOR: 'connector',
+                LINE: 105,
+                CHAT_ID: '47e007b1-ee15-43db-bcba-1c26e5884d3f',
+                NAME: 'New Dialog Name'
+            }
+        );
+        
+        const result = response.getData().result;
+        if(result.error())
+            alert("Error: " + result.error());
+        else
+            alert("Success: " + result);
     }
     catch( error )
     {
-    	console.error('Error:', error);
+        console.error('Error:', error);
     }
     ```
 
@@ -84,9 +82,9 @@ This method sets a new chat name.
     try {
         $params = [
             'CONNECTOR' => 'connector',
-            'LINE'      => '105',
+            'LINE'      => 105,
             'CHAT_ID'   => '47e007b1-ee15-43db-bcba-1c26e5884d3f',
-            'NAME'      => 'New dialog name',
+            'NAME'      => 'New Dialog Name',
         ];
     
         $response = $b24Service
@@ -117,9 +115,9 @@ This method sets a new chat name.
     ```js
     var params = {
         CONNECTOR: 'connector',
-        LINE: '105',
+        LINE: 105,
         CHAT_ID: '47e007b1-ee15-43db-bcba-1c26e5884d3f',
-        NAME: 'New dialog name'
+        NAME: 'New Dialog Name'
     };
     BX24.callMethod(
         'imconnector.chat.name.set',
@@ -141,9 +139,9 @@ This method sets a new chat name.
 
     $params = [
         'CONNECTOR' => 'connector',
-        'LINE' => '105',
+        'LINE' => 105,
         'CHAT_ID' => '47e007b1-ee15-43db-bcba-1c26e5884d3f',
-        'NAME' => 'New dialog name'
+        'NAME' => 'New Dialog Name'
     ];
 
     $result = CRest::call(
@@ -160,7 +158,7 @@ This method sets a new chat name.
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -206,7 +204,7 @@ HTTP status: **200**
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {
@@ -220,18 +218,17 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `NOT_ACTIVE_LINE` | The line with this ID is inactive or does not exist ||
-|| `IMCONNECTOR_NO_CORRECT_PROVIDER` | Could not find a suitable provider for the connector ||
-|| `ERROR_ARGUMENT` | Required parameters `NAME`, `CHAT_ID`, `USER_ID`, `CONNECTOR`, or `LINE` are missing ||
-|| `CHAT_RENAMING_FAILED` | Failed to rename the chat ||
+|| **Status** | **Code** | **Description** ||
+|| `400` | `NOT_ACTIVE_LINE` | The line with this ID is inactive or does not exist ||
+|| `400` | `IMCONNECTOR_NO_CORRECT_PROVIDER` | Unable to find a suitable provider for the connector ||
+|| `400` | `ERROR_ARGUMENT` | Required parameters `NAME`, `CHAT_ID`, `USER_ID`, `CONNECTOR`, or `LINE` are missing ||
+|| `400` | `CHAT_RENAMING_FAILED` | Failed to rename the chat ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
-- [{#T}](./tutorials.md)
 - [{#T}](./imconnector-register.md)
 - [{#T}](./imconnector-activate.md)
 - [{#T}](./imconnector-status.md)
@@ -242,4 +239,4 @@ HTTP status: **400**
 - [{#T}](./imconnector-update-messages.md)
 - [{#T}](./imconnector-delete-messages.md)
 - [{#T}](./imconnector-send-status-delivery.md)
-- [{#T}](./imconnector-send-status-reading.md)
+- [{#T}](./imconnector-chat-name-set.md)

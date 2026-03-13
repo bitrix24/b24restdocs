@@ -6,9 +6,11 @@
 
 The method `telephony.externalCall.register` registers an external call in Bitrix24.
 
+To create a CRM activity for the call, you also need to call the method [telephony.externalcall.finish](./telephony-external-call-finish.md).
+
 {% note info "" %}
 
-The method works only in the context of an [application](../../settings/app-installation/index.md)
+The method works only in the context of an [application](../../settings/app-installation/index.md).
 
 {% endnote %}
 
@@ -20,21 +22,21 @@ The method works only in the context of an [application](../../settings/app-inst
 || **Name**
 `type` | **Description** ||
 || **USER_ID*** 
-[`integer`](../data-types.md) | The identifier of the user for whom the call is registered.
+[`integer`](../data-types.md) | The identifier of the user for whom the call is being registered.
 
-The identifier can be obtained using the [user.get](../user/user-get.md) method ||
+The identifier can be obtained using the [user.get](../user/user-get.md) method. ||
 || **USER_PHONE_INNER*** 
-[`string`](../data-types.md) | The internal number of the user.
+[`string`](../data-types.md) | The internal phone number of the user.
 
 The internal number can be obtained using the [user.get](../user/user-get.md) method.
 
 {% note info "" %}
 
-At least one of the parameters must be specified: `USER_ID` or `USER_PHONE_INNER`
+At least one of the parameters must be specified: `USER_ID` or `USER_PHONE_INNER`.
 
 {% endnote %} ||
 || **PHONE_NUMBER***
-[`string`](../data-types.md) | The client's phone number ||
+[`string`](../data-types.md) | The client's phone number. ||
 || **TYPE***
 [`integer`](../data-types.md) | The type of call.
 
@@ -43,11 +45,11 @@ Possible values:
 - `2` — incoming
 - `3` — incoming with redirection
 - `4` — callback
-- `5` — informational call ||
+- `5` — informational call. ||
 || **CALL_START_DATE**
-[`string`](../data-types.md) | The date and time the call started in ISO-8601 format with timezone indication, for example `2026-03-07T10:20:30+03:00`.
+[`string`](../data-types.md) | The date and time the call started in ISO-8601 format with timezone indication, e.g., `2026-03-07T10:20:30+03:00`.
 
-Default is the current server time ||
+Default — current server time. ||
 || **CRM_CREATE**
 [`integer`](../data-types.md) | Automatic creation of a CRM object if no suitable object is found by the number.
 
@@ -55,18 +57,18 @@ Possible values:
 - `0` — do not create
 - `1` — create
 
-Default is `0` ||
+Default — `0`. ||
 || **CRM_SOURCE**
-[`string`](../data-types.md) | The identifier of the CRM source.
+[`string`](../data-types.md) | The identifier of the CRM source (the value of the `STATUS_ID` field).
 
-The list of values can be obtained using the [crm.status.list](../crm/status/crm-status-list.md) method with the filter `ENTITY_ID: 'SOURCE'` ||
+The list of values can be obtained using the [crm.status.list](../crm/status/crm-status-list.md) method with the filter `ENTITY_ID: 'SOURCE'`. ||
 || **CRM_ENTITY_TYPE**
 [`string`](../data-types.md) | The type of CRM object to associate with the call.
 
 Possible values:
 - `CONTACT` — contact
 - `COMPANY` — company
-- `LEAD` — lead ||
+- `LEAD` — lead. ||
 || **CRM_ENTITY_ID**
 [`integer`](../data-types.md) | The identifier of the CRM object from `CRM_ENTITY_TYPE`.
 
@@ -75,13 +77,13 @@ The identifier can be obtained using the following methods:
 - [crm.company.list](../crm/companies/crm-company-list.md)
 - [crm.lead.list](../crm/leads/crm-lead-list.md) ||
 || **SHOW**
-[`integer`](../data-types.md) | Show the call card after registration.
+[`integer`](../data-types.md) | Show the call detail form after registration.
 
 Possible values:
 - `0` — do not show
 - `1` — show
 
-Default is `1` ||
+Default — `1`. ||
 || **ADD_TO_CHAT**
 [`integer`](../data-types.md) | Add a message about the call to the employee's chat.
 
@@ -89,17 +91,21 @@ Possible values:
 - `0` — do not add
 - `1` — add
 
-Default is `1` ||
+Default — `1`. ||
 || **CALL_LIST_ID**
 [`integer`](../data-types.md) | The identifier of the [call list](../crm/call-list/index.md) to which the call is linked.
 
-The identifier can be obtained using the [crm.calllist.list](../crm/call-list/crm-calllist-list.md) method ||
+If the call is initiated from a call list, pass the identifier obtained in the [ONEXTERNALCALLSTART](./events/on-external-call-start.md) event.
+
+The list of available call lists can be obtained using the [crm.calllist.list](../crm/call-list/crm-calllist-list.md) method. ||
 || **LINE_NUMBER**
 [`string`](../data-types.md) | The number of the external line.
 
-The number can be obtained using the [telephony.externalLine.get](./telephony-external-line-get.md) method ||
+The line number can be obtained using the [telephony.externalLine.get](./telephony-external-line-get.md) method.
+
+This parameter is not mandatory, but it is recommended to always pass it, especially for incoming calls, to ensure proper line binding and telephony reports/analytics. ||
 || **EXTERNAL_CALL_ID**
-[`string`](../data-types.md) | The external identifier of the call on the PBX/integration side. Used for deduplication of repeated registrations ||
+[`string`](../data-types.md) | The external identifier of the call on the PBX/integration side. Used for deduplication of repeated registrations. ||
 |#
 
 ## Code Examples
@@ -263,21 +269,21 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../data-types.md) | The root element of the response ||
+[`object`](../data-types.md) | The root element of the response. ||
 || **CALL_ID**
-[`string`](../data-types.md) | The identifier of the call ||
+[`string`](../data-types.md) | The identifier of the call. ||
 || **CRM_CREATED_LEAD**
-[`integer`](../data-types.md) | The identifier of the automatically created lead ||
+[`integer`](../data-types.md) | The identifier of the automatically created lead. ||
 || **CRM_CREATED_ENTITIES**
-[`array`](../data-types.md) | An array of automatically created [CRM objects](#result-crm-created-entities) ||
+[`array`](../data-types.md) | An array of automatically created [CRM objects](#result-crm-created-entities). ||
 || **CRM_ENTITY_TYPE**
-[`string`](../data-types.md) | The type of the main CRM object of the call ||
+[`string`](../data-types.md) | The type of the main CRM object of the call. ||
 || **CRM_ENTITY_ID**
-[`integer`](../data-types.md) | The identifier of the main CRM object of the call ||
+[`integer`](../data-types.md) | The identifier of the main CRM object of the call. ||
 || **LEAD_CREATION_ERROR**
-[`string`](../data-types.md) | The error message during lead auto-creation (if any) ||
+[`string`](../data-types.md) | The error message during lead auto-creation (if any). ||
 || **time**
-[`time`](../data-types.md#time) | Information about the request execution time ||
+[`time`](../data-types.md#time) | Information about the request execution time. ||
 |#
 
 #### CRM_CREATED_ENTITIES Object {#result-crm-created-entities}
@@ -286,9 +292,9 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **ENTITY_TYPE**
-[`string`](../data-types.md) | The type of the created CRM object ||
+[`string`](../data-types.md) | The type of the created CRM object. ||
 || **ENTITY_ID**
-[`integer`](../data-types.md) | The identifier of the created CRM object ||
+[`integer`](../data-types.md) | The identifier of the created CRM object. ||
 |#
 
 ## Error Handling
@@ -308,12 +314,12 @@ HTTP Status: **400**, **403**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `WRONG_AUTH_TYPE` | Current authorization type is denied for this method | Method called outside the context of an application ||
-|| `ERROR_CORE` | USER_ID or USER_PHONE_INNER should be set | `USER_ID` and `USER_PHONE_INNER` not provided ||
-|| `ERROR_CORE` | Unknown TYPE | Invalid `TYPE` value provided ||
-|| `ERROR_CORE` | CALL_START_DATE should be in the ISO-8601 format | Incorrect `CALL_START_DATE` format ||
-|| `ERROR_CORE` | Unsupported phone number format | Incorrect `PHONE_NUMBER` format ||
-|| `ERROR_CORE` | User is not found or is not active | User not found or inactive ||
+|| `WRONG_AUTH_TYPE` | Current authorization type is denied for this method. | Method called outside the application context. ||
+|| `ERROR_CORE` | USER_ID or USER_PHONE_INNER should be set. | Neither `USER_ID` nor `USER_PHONE_INNER` were provided. ||
+|| `ERROR_CORE` | Unknown TYPE. | An invalid value for `TYPE` was provided. ||
+|| `ERROR_CORE` | CALL_START_DATE should be in the ISO-8601 format. | Incorrect format for `CALL_START_DATE`. ||
+|| `ERROR_CORE` | Unsupported phone number format. | Incorrect format for `PHONE_NUMBER`. ||
+|| `ERROR_CORE` | User is not found or is not active. | User not found or inactive. ||
 |#
 
 {% include [system errors](../../_includes/system-errors.md) %}

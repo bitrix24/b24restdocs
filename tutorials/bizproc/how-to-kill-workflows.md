@@ -207,7 +207,7 @@ As a result, we will obtain a list of incomplete tasks. Each task has a `WORKFLO
             "DOCUMENT_ID": "CONTACT_2429",
             "ID": "871",
             "WORKFLOW_ID": "67091df4b13dd2.83077613",
-            "DOCUMENT_NAME": "Petrov Vasily",
+            "DOCUMENT_NAME": "Thomas Anderson",
             "NAME": "Address",
             "DOCUMENT_URL": "/crm/contact/details/2429/"
         },
@@ -216,7 +216,7 @@ As a result, we will obtain a list of incomplete tasks. Each task has a `WORKFLO
             "DOCUMENT_ID": "CONTACT_2427",
             "ID": "859",
             "WORKFLOW_ID": "66e2d5d5c64f82.28057011",
-            "DOCUMENT_NAME": "Ivanovich",
+            "DOCUMENT_NAME": "Christopher",
             "NAME": "Address",
             "DOCUMENT_URL": "/crm/contact/details/2427/"
         },
@@ -225,7 +225,7 @@ As a result, we will obtain a list of incomplete tasks. Each task has a `WORKFLO
             "DOCUMENT_ID": "CONTACT_2425",
             "ID": "857",
             "WORKFLOW_ID": "66e0242399d303.52288141",
-            "DOCUMENT_NAME": "Petrovna",
+            "DOCUMENT_NAME": "Patricia",
             "NAME": "Address",
             "DOCUMENT_URL": "/crm/contact/details/2425/"
         },
@@ -234,7 +234,7 @@ As a result, we will obtain a list of incomplete tasks. Each task has a `WORKFLO
             "DOCUMENT_ID": "CONTACT_2423",
             "ID": "855",
             "WORKFLOW_ID": "66d870dfbb9542.91956540",
-            "DOCUMENT_NAME": "Smirnov",
+            "DOCUMENT_NAME": "Johnson",
             "NAME": "Address",
             "DOCUMENT_URL": "/crm/contact/details/2423/"
         },
@@ -243,18 +243,9 @@ As a result, we will obtain a list of incomplete tasks. Each task has a `WORKFLO
             "DOCUMENT_ID": "CONTACT_2421",
             "ID": "853",
             "WORKFLOW_ID": "66d7fb6f86c0c2.49741539",
-            "DOCUMENT_NAME": "Kalashnikov",
+            "DOCUMENT_NAME": "Williams",
             "NAME": "Address",
             "DOCUMENT_URL": "/crm/contact/details/2421/"
-        },
-        {
-            "ENTITY": "CCrmDocumentContact",
-            "DOCUMENT_ID": "CONTACT_2419",
-            "ID": "851",
-            "WORKFLOW_ID": "66d073d9c9fc08.23457428",
-            "DOCUMENT_NAME": "Unnamed",
-            "NAME": "Address",
-            "DOCUMENT_URL": "/crm/contact/details/2419/"
         }
     ],
     "total": 9,

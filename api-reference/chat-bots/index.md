@@ -18,9 +18,11 @@ Some data may be missing — we will complete it soon.
 
 {% endif %}
 
-{% note tip " " %}
-
 The Bitrix24 bot platform is a new format for applications based on chats in the web messenger.
+
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (ChatGPT, Claude, Copilot), connect to the [MCP server](../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
 
 {% endnote %}
 

@@ -1,42 +1,52 @@
-# Unpublish the site folder landing.site.unPublicFolder
-
-{% note warning "We are still updating this page" %}
-
-Some data may be missing — we will complete it shortly.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not deployed to prod_" %}
-
-- parameter types are not specified
-- parameter requirements are not indicated
-- examples are missing
-- success response is absent
-- error response is absent
-
-{% endnote %}
-
-{% endif %}
+# Unpublishing a Website Folder landing.site.unPublicFolder
 
 > Scope: [`landing`](../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: a user with "publication" access permission for the website
 
-The method `landing.site.unPublicFolder` unpublishes a site folder. Permissions to publish the site folder are required.
+The method `landing.site.unPublicFolder` unpublishes a website folder and its chain of parent folders.
 
-## Parameters
+## Method Parameters
+
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
-|| **Parameter** | **Description** | **Version** ||
-|| **folderId**
-[`unknown`](../../data-types.md) | Identifier of the folder. | ||
+|| **Name**
+`type` | **Description** ||
+|| **folderId***
+[`integer`](../../data-types.md) | The identifier of the folder.
+
+The folder identifier can be obtained using the [landing.site.getFolders](./landing-site-get-folders.md) method ||
 |#
 
-## Example
+## Code Examples
+
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
+
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+      -H "Content-Type: application/json" \
+      -d '{
+        "folderId": 737
+      }' \
+      "https://**put.your-domain-here**/rest/**user_id**/**webhook_code**/landing.site.unPublicFolder.json"
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+      -H "Content-Type: application/json" \
+      -d '{
+        "folderId": 737,
+        "auth": "**put_access_token_here**"
+      }' \
+      "https://**put.your-domain-here**/rest/landing.site.unPublicFolder.json"
+    ```
 
 - JS
 
@@ -46,14 +56,14 @@ The method `landing.site.unPublicFolder` unpublishes a site folder. Permissions 
     	const response = await $b24.callMethod(
     		'landing.site.unPublicFolder',
     		{
-    			id: 737
+    			folderId: 737
     		}
     	);
-    	
+
     	const result = response.getData().result;
     	console.info(result);
     }
-    catch( error )
+    catch (error)
     {
     	console.error(error);
     }
@@ -68,23 +78,18 @@ The method `landing.site.unPublicFolder` unpublishes a site folder. Permissions 
             ->call(
                 'landing.site.unPublicFolder',
                 [
-                    'id' => 737
+                    'folderId' => 737,
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
-        if ($result->error()) {
-            error_log($result->error());
-        } else {
-            echo 'Info: ' . print_r($result->data(), true);
-        }
-    
+
+        echo 'Success: ' . var_export($result, true);
     } catch (Throwable $e) {
         error_log($e->getMessage());
-        echo 'Error un-publishing folder: ' . $e->getMessage();
+        echo 'Error unpublishing folder: ' . $e->getMessage();
     }
     ```
 
@@ -94,11 +99,11 @@ The method `landing.site.unPublicFolder` unpublishes a site folder. Permissions 
     BX24.callMethod(
         'landing.site.unPublicFolder',
         {
-            id: 737
+            folderId: 737
         },
         function(result)
         {
-            if(result.error())
+            if (result.error())
             {
                 console.error(result.error());
             }
@@ -110,6 +115,93 @@ The method `landing.site.unPublicFolder` unpublishes a site folder. Permissions 
     );
     ```
 
+- PHP CRest
+
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'landing.site.unPublicFolder',
+        [
+            'folderId' => 737,
+        ]
+    );
+
+    if (isset($result['error']))
+    {
+        echo 'Error: ' . $result['error_description'];
+    }
+    else
+    {
+        echo '<pre>';
+        print_r($result['result']);
+        echo '</pre>';
+    }
+    ```
+
 {% endlist %}
 
-{% include [Footnote about examples](../../../_includes/examples.md) %}
+## Response Handling
+
+HTTP Status: **200**
+
+```json
+{
+    "result": true,
+    "time": {
+        "start": 1773286567,
+        "finish": 1773286567.497827,
+        "duration": 0.49782705307006836,
+        "processing": 0,
+        "date_start": "2026-03-12T06:36:07+01:00",
+        "date_finish": "2026-03-12T06:36:07+01:00",
+        "operating_reset_at": 1773287167,
+        "operating": 0
+    }
+}
+```
+
+### Returned Data
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`boolean`](../../data-types.md) | Returns `true` if the folder and its chain of parent folders were successfully unpublished ||
+|| **time**
+[`time`](../../data-types.md#time) | Information about the execution time of the request ||
+|#
+
+## Error Handling
+
+HTTP Status: **400**
+
+```json
+{
+    "error": "ACCESS_DENIED",
+    "error_description": "Folder not found or access to it is denied."
+}
+```
+
+{% include notitle [error handling](../../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+#|
+|| **Code** | **Description** ||
+|| `MISSING_PARAMS` | Required parameter `folderId` not provided ||
+|| `ACCESS_DENIED` | Folder not found or access to it is denied ||
+|| `TYPE_ERROR` | Data type error in the method call parameters ||
+|| `SYSTEM_ERROR` | Internal error during method execution ||
+|#
+
+{% include [system errors](../../../_includes/system-errors.md) %}
+
+## Continue Learning
+
+- [{#T}](./landing-site-add-folder.md)
+- [{#T}](./landing-site-update-folder.md)
+- [{#T}](./landing-site-get-folders.md)
+- [{#T}](./landing-site-mark-folder-delete.md)
+- [{#T}](./landing-site-mark-folder-undelete.md)
+- [{#T}](./landing-site-publication-folder.md)

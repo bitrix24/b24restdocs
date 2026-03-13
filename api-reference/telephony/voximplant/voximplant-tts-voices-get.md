@@ -1,62 +1,63 @@
-# Get an array of available voices for speech synthesis voximplant.tts.voices.get
+# Get a List of Available Voices for Text-to-Speech voximplant.tts.voices.get
 
-{% note warning "We are still updating this page" %}
+> Scope: [`telephony`](../../scopes/permissions.md)
+>
+> Who can execute the method: any user
 
-Some data may be missing here — we will fill it in shortly.
+The method `voximplant.tts.voices.get` returns a list of available voices for text-to-speech synthesis.
 
-{% endnote %}
+## Method Parameters
 
-{% if build == 'dev' %}
+No parameters.
 
-{% note alert "TO-DO _not deployed to prod_" %}
+## Code Examples
 
-- examples are missing
-- success response is missing
-- error response is missing
-
-{% endnote %}
-
-{% endif %}
-
-{% include notitle [Scope telephony all](../_includes/scope-telephony-all.md) %}
-
-The method `voximplant.tts.voices.get` returns an array of available voices for text-to-speech in the format voice ID => voice name. The method has no restrictions on [access permissions](https://helpdesk.bitrix24.com/open/18216960/).
-
-There are no incoming parameters.
-
-## Example
+{% include [Footnote on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
-- JS
+- cURL (Webhook)
 
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{}' \
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/voximplant.tts.voices.get
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/voximplant.tts.voices.get
+    ```
+
+- JS
 
     ```js
     try
     {
-    	const response = await $b24.callMethod(
-    		'voximplant.tts.voices.get',
-    		{}
-    	);
-    	
-    	const result = response.getData().result;
-    	if(result.error())
-    	{
-    		console.error(result.error());
-    	}
-    	else
-    	{
-    		console.info(result);
-    	}
+        const response = await $b24.callMethod(
+            'voximplant.tts.voices.get',
+            {}
+        );
+        
+        const result = response.getData().result;
+        console.log('Data:', result);
+        
+        processResult(result);
     }
-    catch(error)
+    catch( error )
     {
-    	console.error('Error:', error);
+        console.error('Error:', error);
     }
     ```
 
 - PHP
-
 
     ```php
     try {
@@ -66,21 +67,17 @@ There are no incoming parameters.
                 'voximplant.tts.voices.get',
                 []
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
-        if ($result->error()) {
-            error_log($result->error());
-            echo 'Error: ' . $result->error();
-        } else {
-            echo 'Success: ' . print_r($result->data(), true);
-        }
-    
+
+        echo 'Success: ' . print_r($result, true);
+        processData($result);
+
     } catch (Throwable $e) {
         error_log($e->getMessage());
-        echo 'Error calling voximplant.tts.voices.get: ' . $e->getMessage();
+        echo 'Error: ' . $e->getMessage();
     }
     ```
 
@@ -92,14 +89,116 @@ There are no incoming parameters.
         {},
         function(result)
         {
-            if(result.error())
-                console.error(result.error());
+            if (result.error())
+            {
+                console.error(result.error(), result.error_description());
+            }
             else
-                console.info(result.data());
+            {
+                console.log(result.data());
+            }
         }
     );
     ```
 
+- PHP CRest
+
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'voximplant.tts.voices.get',
+        []
+    );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
+    ```
+
 {% endlist %}
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+## Response Handling
+
+HTTP Status: **200**
+
+```json
+{
+    "result": {
+        "auenglishfemale": "Australian English (Female) (Amazon)",
+        "brportuguesefemale": "Brazilian Portuguese (Female) (Amazon)",
+        "caenglishfemale": "Canadian English (Female) (Default)",
+        "cafrenchfemale": "Canadian French (Female) (Amazon)",
+        "cafrenchmale": "Canadian French (Male) (Amazon)",
+        "chchinesefemale": "Chinese (Female) (Default)",
+        "chchinesemale": "Chinese (Male) (Default)",
+        "eurcatalanfemale": "Catalan (Female) (Default)",
+        "eurczechfemale": "Czech (Female) (Default)",
+        "eurdanishfemale": "Danish (Female) (Default)",
+        "eurdutchfemale": "Dutch (Female) (Default)",
+        "eurfinnishfemale": "Finnish (Female) (Default)",
+        "eurfrenchfemale": "French (Female) (Amazon)",
+        "eurfrenchmale": "French (Male) (Amazon)",
+        "eurgermanfemale": "German (Female) (Default)",
+        "eurgermanmale": "German (Male) (Default)",
+        "euritalianfemale": "Italian (Female) (Default)",
+        "euritalianmale": "Italian (Male) (Default)",
+        "eurnorwegianfemale": "Norwegian (Female) (Default)",
+        "eurpolishfemale": "Polish (Female) (Default)",
+        "eurportuguesefemale": "Portuguese (Female) (Default)",
+        "eurportuguesemale": "Portuguese (Male) (Default)",
+        "eurspanishfemale": "Spanish (Female) (Default)",
+        "eurspanishmale": "Spanish (Male) (Default)",
+        "eurturkishfemale": "Turkish (Female) (Default)",
+        "eurturkishmale": "Turkish (Male) (Default)",
+        "hkchinesefemale": "Hong Kong Cantonese (Female) (Default)",
+        "huhungarianfemale": "Hungarian (Female) (Default)",
+        "jpjapanesefemale": "Japanese (Female) (Default)",
+        "jpjapanesemale": "Japanese (Male) (Default)",
+        "krkoreanfemale": "Korean (Female) (Default)",
+        "krkoreanmale": "Korean (Male) (Default)",
+        "usinternalfemale": "English (Female) (Default)",
+        "usinternalmale": "English (Male) (Default)",
+        "swswedishfemale": "Swedish (Female) (Default)",
+        "twchinesefemale": "Taiwanese Chinese (Female) (Default)",
+        "ukenglishfemale": "English (Female) (Amazon)",
+        "ukenglishmale": "English (Male) (Amazon)",
+        "usenglishfemale": "American English (Female) (Default)",
+        "usenglishmale": "American English (Male) (Default)",
+        "usspanishfemale": "American Spanish (Female) (Amazon)",
+        "usspanishmale": "American Spanish (Male) (Amazon)"
+    },
+    "time": {
+        "start": 1773323829,
+        "finish": 1773323829.353531,
+        "duration": 0.3535308837890625,
+        "processing": 0,
+        "date_start": "2026-03-12T16:57:09+01:00",
+        "date_finish": "2026-03-12T16:57:09+01:00",
+        "operating_reset_at": 1773324429,
+        "operating": 0
+    }
+}
+```
+
+### Returned Data
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`object`](../../data-types.md) | An object containing a list of available voices for text-to-speech synthesis, where the key is the voice identifier and the value is the voice name ||
+|| **time**
+[`time`](../../data-types.md#time) | Information about the request execution time ||
+|#
+
+## Error Handling
+
+{% include [system errors](../../../_includes/system-errors.md) %}
+
+## Continue Learning
+
+- [{#T}](./voximplant-callback-start.md)
+- [{#T}](./voximplant-infocall-start-with-sound.md)
+- [{#T}](./voximplant-infocall-start-with-text.md)
+- [{#T}](./voximplant-url-get.md)

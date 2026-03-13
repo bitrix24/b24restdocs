@@ -1,132 +1,200 @@
-# Set Parameters for the Individual Card crm.deal.details.configuration.set
-
-{% note warning "We are still updating this page" %}
-
-Some data may be missing here — we will fill it in shortly.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- adjustments needed for writing standards
-- parameter types not specified
-- parameter requirements not indicated
-- examples are missing
-- success response is absent
-- error response is absent
-
-{% endnote %}
-
-{% endif %}
+# Set Parameters for the Deal Card crm.deal.details.configuration.set
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method:
+> - a user can set their personal settings
+> - personal settings for another user can be set if the user has editing rights for that user's personal view
+> - general settings can be set if the user has editing rights for the common view
 
-{% note warning "Method Development Stopped" %}
+{% note warning "Method Development Halted" %}
 
-The method `crm.deal.details.configuration.set` continues to function, but there is a more relevant alternative [crm.item.details.configuration.set](../../universal/item-details-configuration/crm-item-details-configuration-set.md).
+The method `crm.deal.details.configuration.set` continues to function, but there is a more relevant alternative: [crm.item.details.configuration.set](../../universal/item-details-configuration/crm-item-details-configuration-set.md).
+
+{% endnote %}
+
+The method `crm.deal.details.configuration.set` sets the settings for the deal card. This method records personal settings for the specified user or general settings for all users.
+
+{% note info %}
+
+Settings for deal cards may vary across different Sales Funnels. To select a funnel, use the `extras.dealCategoryId` parameter.
 
 {% endnote %}
 
-The method `crm.deal.details.configuration.set` allows you to set the settings for deal cards. The method records the personal settings of the specified user’s card or general settings for all users.
+## Method Parameters
 
-{% note warning %}
-
-Please note that the settings for deal cards of different directions (or funnels) may differ from each other. 
-To switch between the settings of deal cards of different directions, the parameter **dealCategoryId** is used.
-
-{% endnote %}
+{% include [Parameter Note](../../../../_includes/required.md) %}
 
 #|
-|| **Parameter** | **Description** ||
+|| **Name**
+`type` | **Description** ||
 || **scope**
-[`unknown`](../../../data-types.md) | The scope of the settings. Acceptable values:
+[`string`](../../../data-types.md) | The scope of the settings.
 
-- **P** - personal settings,
-- **C** - general settings.
- ||
+Possible values:
+- `P` — personal settings
+- `C` — general settings
+
+Default — `P`
+||
 || **userId**
-[`unknown`](../../../data-types.md) | User identifier. If not specified, the current one is used. Required only when setting personal settings. ||
+[`user`](../../../data-types.md) | User identifier. Required only when setting personal settings for another user.
+
+If not specified, the current user is used.
+||
+|| **data*** 
+[`section[]`](#section) | A list of `section` describing the configuration of the deal card sections. The structure of `section` is described below. ||
 || **extras**
-[`unknown`](../../../data-types.md) | Additional parameters. Here, for deals, the parameter `dealCategoryId` can be specified. ||
+[`object`](../../../data-types.md) | Additional parameters [(detailed description)](#parameter-extras) ||
 |#
 
-## Examples
+### Extras Parameter {#parameter-extras}
+
+{% include [Parameter Note](../../../../_includes/required.md) %}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **dealCategoryId**
+[`integer`](../../../data-types.md) | Identifier for the Sales Funnel. Can be obtained using [crm.category.list](../../universal/category/crm-category-list.md)
+
+If not specified, the default funnel for deals is used.
+||
+|#
+
+### Section Parameter {#section}
+
+Describes an individual section with fields within the deal card.
+
+{% include [Parameter Note](../../../../_includes/required.md) %}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **name***
+[`string`](../../../data-types.md) | Unique name of the section. ||
+|| **title***
+[`string`](../../../data-types.md) | Title of the section. ||
+|| **type***
+[`string`](../../../data-types.md) | Type of the section.
+
+Currently, only the value `section` is available.
+||
+|| **elements**
+[`section_element[]`](#section_element) | List of fields displayed in the card with additional settings. ||
+|#
+
+### Section Element Parameter {#section_element}
+
+Configuration of an individual field within the section.
+
+{% include [Parameter Note](../../../../_includes/required.md) %}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **name***
+[`string`](../../../data-types.md) | Field identifier. A list of available fields can be found using [`crm.deal.fields`](../crm-deal-fields.md). ||
+|| **optionFlags**
+[`integer`](../../../data-types.md) | Should the field always be displayed:
+- `1` — yes
+- `0` — no
+
+Default — `0`
+||
+|| **options**
+[`object`](../../../data-types.md) | Additional options for the field. The composition depends on the field. ||
+|#
+
+## Code Examples
+
+{% include [Examples Note](../../../../_includes/examples.md) %}
+
+Set personal configuration for the deal card for the user with `id = 1` in the funnel with `id = 32`.
 
 {% list tabs %}
 
-- JS
+- cURL (Webhook)
 
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"scope":"P","userId":1,"extras":{"dealCategoryId":32},"data":[{"name":"main","title":"About the Deal","type":"section","elements":[{"name":"TITLE"},{"name":"OPPORTUNITY_WITH_CURRENCY"},{"name":"STAGE_ID"},{"name":"CLOSEDATE"},{"name":"CLIENT"}]},{"name":"additional","title":"Additional Information","type":"section","elements":[{"name":"TYPE_ID"},{"name":"SOURCE_ID"},{"name":"SOURCE_DESCRIPTION"},{"name":"OPENED"},{"name":"ASSIGNED_BY_ID"},{"name":"COMMENTS"}]},{"name":"products","title":"Products","type":"section","elements":[{"name":"PRODUCT_ROW_SUMMARY"}]}]}' \
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.deal.details.configuration.set
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"scope":"P","userId":1,"extras":{"dealCategoryId":32},"data":[{"name":"main","title":"About the Deal","type":"section","elements":[{"name":"TITLE"},{"name":"OPPORTUNITY_WITH_CURRENCY"},{"name":"STAGE_ID"},{"name":"CLOSEDATE"},{"name":"CLIENT"}]},{"name":"additional","title":"Additional Information","type":"section","elements":[{"name":"TYPE_ID"},{"name":"SOURCE_ID"},{"name":"SOURCE_DESCRIPTION"},{"name":"OPENED"},{"name":"ASSIGNED_BY_ID"},{"name":"COMMENTS"}]},{"name":"products","title":"Products","type":"section","elements":[{"name":"PRODUCT_ROW_SUMMARY"}]}],"auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/crm.deal.details.configuration.set
+    ```
+
+- JS
 
     ```js
     try
     {
     	const response = await $b24.callMethod(
-    		"crm.deal.details.configuration.set",
+    		'crm.deal.details.configuration.set',
     		{
     			scope: "P",
     			userId: 1,
-    			data:
-    			[
+    			extras: {
+    				dealCategoryId: 32,
+    			},
+    			data: [
     				{
     					name: "main",
     					title: "About the Deal",
     					type: "section",
-    					elements:
-    					[
+    					elements: [
     						{ name: "TITLE" },
     						{ name: "OPPORTUNITY_WITH_CURRENCY" },
     						{ name: "STAGE_ID" },
-    						{ name: "BEGINDATE" },
     						{ name: "CLOSEDATE" },
-    						{ name: "CLIENT" }
-    					]
+    						{ name: "CLIENT" },
+    					],
     				},
     				{
     					name: "additional",
     					title: "Additional Information",
     					type: "section",
-    					elements:
-    					[
+    					elements: [
     						{ name: "TYPE_ID" },
     						{ name: "SOURCE_ID" },
     						{ name: "SOURCE_DESCRIPTION" },
     						{ name: "OPENED" },
     						{ name: "ASSIGNED_BY_ID" },
-    						{ name: "OBSERVER" },
-    						{ name: "COMMENTS" }
-    					]
+    						{ name: "COMMENTS" },
+    					],
     				},
     				{
     					name: "products",
     					title: "Products",
     					type: "section",
-    					elements:
-    					[
-    						{ name: "PRODUCT_ROW_SUMMARY" }
-    					]
-    				}
-    			]
+    					elements: [
+    						{ name: "PRODUCT_ROW_SUMMARY" },
+    					],
+    				},
+    			],
     		}
     	);
     	
     	const result = response.getData().result;
-    	if(result.error())
-    		console.error(result.error());
-    	else
-    		console.dir(result);
+    	console.info(result);
     }
-    catch(error)
+    catch( error )
     {
     	console.error(error);
     }
     ```
 
 - PHP
-
 
     ```php
     try {
@@ -137,7 +205,10 @@ To switch between the settings of deal cards of different directions, the parame
                 [
                     'scope'  => 'P',
                     'userId' => 1,
-                    'data'   => [
+                    'extras' => [
+                        'dealCategoryId' => 32,
+                    ],
+                    'data' => [
                         [
                             'name'     => 'main',
                             'title'    => 'About the Deal',
@@ -146,7 +217,6 @@ To switch between the settings of deal cards of different directions, the parame
                                 ['name' => 'TITLE'],
                                 ['name' => 'OPPORTUNITY_WITH_CURRENCY'],
                                 ['name' => 'STAGE_ID'],
-                                ['name' => 'BEGINDATE'],
                                 ['name' => 'CLOSEDATE'],
                                 ['name' => 'CLIENT'],
                             ],
@@ -161,7 +231,6 @@ To switch between the settings of deal cards of different directions, the parame
                                 ['name' => 'SOURCE_DESCRIPTION'],
                                 ['name' => 'OPENED'],
                                 ['name' => 'ASSIGNED_BY_ID'],
-                                ['name' => 'OBSERVER'],
                                 ['name' => 'COMMENTS'],
                             ],
                         ],
@@ -181,8 +250,11 @@ To switch between the settings of deal cards of different directions, the parame
             ->getResponseData()
             ->getResult();
     
-        echo 'Success: ' . print_r($result, true);
-        console.dir($result);
+        if ($result->error()) {
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Data: ' . print_r($result->data(), true);
+        }
     
     } catch (Throwable $e) {
         error_log($e->getMessage());
@@ -193,66 +265,180 @@ To switch between the settings of deal cards of different directions, the parame
 - BX24.js
 
     ```js
-    //---
-    //Setting personal settings for the general direction deal card for the user with identifier 1.
     BX24.callMethod(
-        "crm.deal.details.configuration.set",
+        'crm.deal.details.configuration.set',
         {
             scope: "P",
             userId: 1,
-            data:
-            [
+            extras: {
+                dealCategoryId: 32,
+            },
+            data: [
                 {
                     name: "main",
                     title: "About the Deal",
                     type: "section",
-                    elements:
-                    [
+                    elements: [
                         { name: "TITLE" },
                         { name: "OPPORTUNITY_WITH_CURRENCY" },
                         { name: "STAGE_ID" },
-                        { name: "BEGINDATE" },
                         { name: "CLOSEDATE" },
-                        { name: "CLIENT" }
-                    ]
+                        { name: "CLIENT" },
+                    ],
                 },
                 {
                     name: "additional",
                     title: "Additional Information",
                     type: "section",
-                    elements:
-                    [
+                    elements: [
                         { name: "TYPE_ID" },
                         { name: "SOURCE_ID" },
                         { name: "SOURCE_DESCRIPTION" },
                         { name: "OPENED" },
                         { name: "ASSIGNED_BY_ID" },
-                        { name: "OBSERVER" },
-                        { name: "COMMENTS" }
-                    ]
+                        { name: "COMMENTS" },
+                    ],
                 },
                 {
                     name: "products",
                     title: "Products",
                     type: "section",
-                    elements:
-                    [
-                        { name: "PRODUCT_ROW_SUMMARY" }
-                    ]
-                }
-            ]
+                    elements: [
+                        { name: "PRODUCT_ROW_SUMMARY" },
+                    ],
+                },
+            ],
         },
-        function(result)
-        {
-            if(result.error())
-                console.error(result.error());
-            else
-                console.dir(result.data());
-        }
+        (result) => {
+            result.error()
+                ? console.error(result.error())
+                : console.info(result.data())
+            ;
+        },
     );
-    //---
+    ```
+
+- PHP CRest
+
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'crm.deal.details.configuration.set',
+        [
+            'scope' => 'P',
+            'userId' => 1,
+            'extras' => [
+                'dealCategoryId' => 32,
+            ],
+            'data' => [
+                [
+                    'name' => 'main',
+                    'title' => 'About the Deal',
+                    'type' => 'section',
+                    'elements' => [
+                        ['name' => 'TITLE'],
+                        ['name' => 'OPPORTUNITY_WITH_CURRENCY'],
+                        ['name' => 'STAGE_ID'],
+                        ['name' => 'CLOSEDATE'],
+                        ['name' => 'CLIENT'],
+                    ],
+                ],
+                [
+                    'name' => 'additional',
+                    'title' => 'Additional Information',
+                    'type' => 'section',
+                    'elements' => [
+                        ['name' => 'TYPE_ID'],
+                        ['name' => 'SOURCE_ID'],
+                        ['name' => 'SOURCE_DESCRIPTION'],
+                        ['name' => 'OPENED'],
+                        ['name' => 'ASSIGNED_BY_ID'],
+                        ['name' => 'COMMENTS'],
+                    ],
+                ],
+                [
+                    'name' => 'products',
+                    'title' => 'Products',
+                    'type' => 'section',
+                    'elements' => [
+                        ['name' => 'PRODUCT_ROW_SUMMARY'],
+                    ],
+                ],
+            ],
+        ]
+    );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
     ```
 
 {% endlist %}
 
-{% include [Examples Note](../../../../_includes/examples.md) %}
+## Response Handling
+
+HTTP Status: **200**
+
+```json
+{
+    "result": true,
+    "time": {
+        "start": 1773311825,
+        "finish": 1773311825.969825,
+        "duration": 0.969825029373169,
+        "processing": 0,
+        "date_start": "2026-03-12T13:37:05+01:00",
+        "date_finish": "2026-03-12T13:37:05+01:00",
+        "operating_reset_at": 1773312425,
+        "operating": 0
+    }
+}
+```
+
+### Returned Data
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`boolean`](../../../data-types.md) | Root element of the response. Returns `true` if the settings were successfully recorded. ||
+|| **time**
+[`time`](../../../data-types.md#time) | Information about the request execution time. ||
+|#
+
+## Error Handling
+
+HTTP Status: **400**
+
+```json
+{
+    "error": "",
+    "error_description": "Access denied."
+}
+```
+
+{% include notitle [Error Handling](../../../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+#|
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | Empty Value | Access denied | No rights to set deal card settings. ||
+|| `400` | Empty Value | Parameter 'data' must be array | A non-array was passed in `data`. ||
+|| `400` | Empty Value | There are no data to write | An empty array was passed in `data`. ||
+|| `400` | Empty Value | The data must be indexed array | A non-indexed array was passed in `data`. ||
+|| `400` | Empty Value | Section at index `i` has type `data[i].type`. The expected type is 'section' | A value other than `section` is found in `data[i].type`. ||
+|| `400` | Empty Value | Section at index `i` does not have a name | An empty value was passed in `data[i].name`. ||
+|| `400` | Empty Value | Section at index `i` does not have a title | An empty value was passed in `data[i].title`. ||
+|| `400` | Empty Value | Element at index `j` in section at index `i` does not have a name | An empty value was passed in `data[i].elements[j].name`. ||
+|#
+
+{% include [System Errors](../../../../_includes/system-errors.md) %}
+
+## Continue Learning
+
+- [{#T}](./index.md)
+- [{#T}](./crm-deal-details-configuration-get.md)
+- [{#T}](./crm-deal-details-configuration-reset.md)
+- [{#T}](./crm-deal-details-configuration-force-common-scope-for-all.md)

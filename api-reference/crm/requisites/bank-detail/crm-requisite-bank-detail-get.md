@@ -155,7 +155,7 @@ HTTP status: **200**
         "SORT": "600",
         "RQ_BANK_NAME": "Ltd. Superbank",
         "RQ_BANK_CODE": null,
-        "RQ_BANK_ADDR": "117312, New York, Vavilova Street, House 19",
+        "RQ_BANK_ADDR": "117312, New York, 19 Miller St., House 19",
         "RQ_BANK_ROUTE_NUM": null,
         "RQ_BIK": "044525225",
         "RQ_MFO": null,

@@ -25,3 +25,9 @@ Similarly, in the case of a static application, which is an archive with html/js
 In both cases, after saving the local application, it will already be available to users without any installation procedure.
 
 If your application does not have a user interface, you need to enable the "Uses only API" option. And then, despite the fact that you still do not need an "installation," you will still need REST API tokens for further use. In this case, you cannot do without a [callback handler](./installation-callback.md), which will receive a call from Bitrix24 immediately after the local application is added.
+
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (ChatGPT, Claude, Copilot), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}

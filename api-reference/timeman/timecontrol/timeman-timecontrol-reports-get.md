@@ -214,9 +214,9 @@ HTTP Status: **200**
         "user": {
             "id": 3,
             "active": true,
-            "name": "Maria Ivshina",
-            "first_name": "Maria",
-            "last_name": "Ivshina",
+            "name": "Natalie Brooks",
+            "first_name": "Natalie",
+            "last_name": "Brooks",
             "work_position": "IT Specialist",
             "avatar": "http://test.bitrix24.com/upload/resize_cache/45749/7acf4ca766af5d8/main/c89/c89c6b73470635c/4R5A1256.png",
             "personal_gender": "F",

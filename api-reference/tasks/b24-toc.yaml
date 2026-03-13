@@ -17,7 +17,7 @@ items:
     href: tasks-task-list.md
   - name: Delete Task
     href: tasks-task-delete.md
-  - name: Get Field List
+  - name: Get List of Fields
     href: tasks-task-get-fields.md
   - name: Check Access to Task
     href: tasks-task-get-access.md
@@ -41,13 +41,13 @@ items:
     href: tasks-task-start-watch.md
   - name: Stop Watching Task
     href: tasks-task-stop-watch.md
-  - name: Move Task to In Progress Status
+  - name: Change Task Status to In Progress
     href: tasks-task-start.md
-  - name: Move Task to Waiting for Execution Status
+  - name: Change Task Status to Waiting
     href: tasks-task-pause.md
-  - name: Move Task to Deferred Status
+  - name: Change Task Status to Deferred
     href: tasks-task-defer.md
-  - name: Move Task to Completed Status
+  - name: Change Task Status to Completed
     href: tasks-task-complete.md
   - name: Renew Task After Completion
     href: tasks-task-renew.md
@@ -94,6 +94,10 @@ items:
   - name: Flows
     include:
       path: flow/b24-toc.yaml
+      mode: link
+  - name: Templates
+    include:
+      path: template/b24-toc.yaml
       mode: link
   - name: Deprecated
     include:

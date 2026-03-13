@@ -1,60 +1,87 @@
-# Add Folder to the site landing.site.addFolder
-
-{% note warning "We are still updating this page" %}
-
-Some data may be missing — we will complete it shortly.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not deployed to prod_" %}
-
-- edits needed for writing standards
-- parameter types are not specified
-- parameter requirements are not specified
-- examples are missing
-- success response is missing
-- error response is missing
-
-{% endnote %}
-
-{% endif %}
+# Add Folder to Site landing.site.addFolder
 
 > Scope: [`landing`](../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: a user with "edit" access permission for the site
 
-The method `landing.site.addFolder` adds a folder to the site.
+The method `landing.site.addFolder` creates a folder in the specified site and returns the identifier of the created folder.
 
-## Parameters
+## Method Parameters
+
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
-|| **Parameter** | **Description** | **Available since** ||
-|| **siteId**
-[`unknown`](../../data-types.md) | Site identifier. 
+|| **Name**
+`type` | **Description** ||
+|| **siteId***
+[`integer`](../../data-types.md) | The identifier of the site where the folder needs to be created.
 
-{% note warning %}
-
-Write permissions are required for the specified site.
-
-{% endnote %}
-
- | ||
-
-|| **fields**
-[`unknown`](../../data-types.md) | Folder fields: 
-- ACTIVE – folder activity (Y/N). By default, it is created inactive;
-- TITLE – title (name) of the folder; 
-- CODE – symbolic code of the folder (part of the folder page URL). By default, it is transliterated from the folder name. | ||
+The site identifier can be obtained using the [landing.site.getList](./landing-site-get-list.md) method or from the result of the [landing.site.add](./landing-site-add.md) method ||
+|| **fields***
+[`object`](../../data-types.md) | A set of fields for the folder being created [(detailed description)](#fields) ||
 |#
 
-## Examples
+### Parameter fields {#fields}
+
+{% include [Note on required parameters](../../../_includes/required.md) %}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **TITLE***
+[`string`](../../data-types.md) | The name of the folder, maximum length `255` characters ||
+|| **CODE**
+[`string`](../../data-types.md) | Symbolic code for the folder in the URL, maximum length `255` characters. If not provided or empty, the code is generated from `TITLE` using transliteration. 
+
+If the code is empty after transliteration, a random string of length `12` characters is created ||
+|| **PARENT_ID**
+[`integer`](../../data-types.md) | The identifier of the parent folder. If the value is `0`, `null`, or empty, the folder is created at the root of the site ||
+|| **ACTIVE**
+[`string`](../../data-types.md) | Folder activity flag `Y/N`, default is `N` ||
+|#
+
+## Code Examples
+
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
-- JS
+- cURL (Webhook)
 
+    ```bash
+    curl -X POST \
+      -H "Content-Type: application/json" \
+      -d '{
+        "siteId": 1817,
+        "fields": {
+          "TITLE": "New Folder",
+          "CODE": "new-folder",
+          "ACTIVE": "Y",
+          "PARENT_ID": 736
+        }
+      }' \
+      "https://**put.your-domain-here**/rest/**user_id**/**webhook_code**/landing.site.addFolder.json"
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+      -H "Content-Type: application/json" \
+      -d '{
+        "siteId": 1817,
+        "fields": {
+          "TITLE": "New Folder",
+          "CODE": "new-folder",
+          "ACTIVE": "Y",
+          "PARENT_ID": 736
+        },
+        "auth": "**put_access_token_here**"
+      }' \
+      "https://**put.your-domain-here**/rest/landing.site.addFolder.json"
+    ```
+
+- JS
 
     ```js
     try
@@ -64,22 +91,24 @@ Write permissions are required for the specified site.
     		{
     			siteId: 1817,
     			fields: {
-    				TITLE: 'New Folder'
+    				TITLE: 'New Folder',
+    				CODE: 'new-folder',
+    				ACTIVE: 'Y',
+    				PARENT_ID: 736
     			}
     		}
     	);
-    	
+
     	const result = response.getData().result;
     	console.info(result);
     }
-    catch( error )
+    catch (error)
     {
     	console.error(error);
     }
     ```
 
 - PHP
-
 
     ```php
     try {
@@ -90,19 +119,19 @@ Write permissions are required for the specified site.
                 [
                     'siteId' => 1817,
                     'fields' => [
-                        'TITLE' => 'New Folder'
-                    ]
+                        'TITLE' => 'New Folder',
+                        'CODE' => 'new-folder',
+                        'ACTIVE' => 'Y',
+                        'PARENT_ID' => 736,
+                    ],
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
+
         echo 'Success: ' . print_r($result, true);
-        // Your required data processing logic
-        processData($result);
-    
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error adding folder: ' . $e->getMessage();
@@ -117,12 +146,15 @@ Write permissions are required for the specified site.
         {
             siteId: 1817,
             fields: {
-                TITLE: 'New Folder'
+                TITLE: 'New Folder',
+                CODE: 'new-folder',
+                ACTIVE: 'Y',
+                PARENT_ID: 736
             }
         },
         function(result)
         {
-            if(result.error())
+            if (result.error())
             {
                 console.error(result.error());
             }
@@ -134,6 +166,96 @@ Write permissions are required for the specified site.
     );
     ```
 
+- PHP CRest
+
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'landing.site.addFolder',
+        [
+            'siteId' => 1817,
+            'fields' => [
+                'TITLE' => 'New Folder',
+                'CODE' => 'new-folder',
+                'ACTIVE' => 'Y',
+                'PARENT_ID' => 736,
+            ],
+        ]
+    );
+
+    if (isset($result['error']))
+    {
+        echo 'Error: ' . $result['error_description'];
+    }
+    else
+    {
+        echo '<pre>';
+        print_r($result['result']);
+        echo '</pre>';
+    }
+    ```
+
 {% endlist %}
 
-{% include [Footnote about examples](../../../_includes/examples.md) %}
+## Response Handling
+
+HTTP Status: **200**
+
+```json
+{
+    "result": 89,
+    "time": {
+        "start": 1773169396,
+        "finish": 1773169396.875899,
+        "duration": 0.875899076461792,
+        "processing": 0,
+        "date_start": "2026-03-10T22:03:16+01:00",
+        "date_finish": "2026-03-10T22:03:16+01:00",
+        "operating_reset_at": 1773169996,
+        "operating": 0
+    }
+}
+```
+
+### Returned Data
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`integer`](../../data-types.md) | The identifier of the created folder ||
+|| **time**
+[`time`](../../data-types.md#time) | Information about the execution time of the request ||
+|#
+
+## Error Handling
+
+HTTP Status: **400**
+
+```json
+{
+    "error": "ACCESS_DENIED",
+    "error_description": "Site not found or access to it is denied."
+}
+```
+
+{% include notitle [error handling](../../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+#|
+|| **Code** | **Description** ||
+|| `ACCESS_DENIED` | Site not found or access to it is denied ||
+|| `BX_EMPTY_REQUIRED` | A required field is not filled, such as `TITLE` or `CODE` ||
+|| `FOLDER_IS_NOT_UNIQUE` | A folder with this name already exists. This error occurs when there is a conflict with `CODE` within the site and the parent folder ||
+|| `SLASH_IS_NOT_ALLOWED` | The character `/` is present in `fields.CODE` ||
+|#
+
+{% include [system errors](../../../_includes/system-errors.md) %}
+
+## Continue Learning
+
+- [{#T}](./landing-site-update-folder.md)
+- [{#T}](./landing-site-get-folders.md)
+- [{#T}](./landing-site-mark-folder-delete.md)

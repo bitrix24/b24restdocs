@@ -111,7 +111,7 @@ The request is sent to the address specified in `CALCULATE_URL` when creating a 
             }
         ],
         "RESPONSIBLE_CONTACT":{
-            "NAME":"Roman Gorshkov",
+            "NAME":"Ronald Perez",
             "PHONES":[
                 {
                     "TYPE":"MOBILE",
@@ -120,7 +120,7 @@ The request is sent to the address specified in `CALCULATE_URL` when creating a 
             ]
         },
         "RECIPIENT_CONTACT":{
-            "NAME":"Alexey Mironov",
+            "NAME":"James Johnson",
             "PHONES":[
                 {
                     "TYPE":"WORK",

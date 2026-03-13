@@ -1,58 +1,59 @@
-# Get the current status of the SIP Connector voximplant.sip.connector.status
+# Get the Status of the SIP Connector voximplant.sip.connector.status
 
-{% note warning "We are still updating this page" %}
+> Scope: [`telephony`](../../../scopes/permissions.md)
+>
+> Who can execute the method: user with the Manage Numbers — Edit access permission
 
-Some data may be missing here — we will complete it shortly.
+The method `voximplant.sip.connector.status` returns the current status of the SIP connector.
 
-{% endnote %}
+## Method Parameters
 
-{% if build == 'dev' %}
+No parameters.
 
-{% note alert "TO-DO _not deployed to prod_" %}
+## Code Examples
 
-- parameter types are not specified
-- parameter requirements are not indicated
-- examples are missing
-- success response is absent
-- error response is absent
-
-{% endnote %}
-
-{% endif %}
-
-{% include notitle [Scope telephony admin](../../_includes/scope-telephony-admin.md) %}
-
-The method `voximplant.sip.connector.status` returns the current status of the SIP Connector. This method is available to the holder of the [access permissions](https://helpdesk.bitrix24.com/open/18216960/) `Manage numbers - change - any`.
-
-There are no input parameters.
-
-## Example
+{% include [Examples Note](../../../../_includes/examples.md) %}
 
 {% list tabs %}
+
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{}' \
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/voximplant.sip.connector.status
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/voximplant.sip.connector.status
+    ```
 
 - JS
 
     ```js
     try
     {
-    	const response = await $b24.callMethod(
-    		'voximplant.sip.connector.status',
-    		{}
-    	);
-    	
-    	const result = response.getData().result;
-    	if(result.error())
-    	{
-    		console.error(result.error());
-    	}
-    	else
-    	{
-    		console.info(result);
-    	}
+        const response = await $b24.callMethod(
+            'voximplant.sip.connector.status',
+            {}
+        );
+        
+        const result = response.getData().result;
+        console.log('Data:', result);
+        
+        processResult(result);
     }
-    catch(error)
+    catch( error )
     {
-    	console.error('Error:', error);
+        console.error('Error:', error);
     }
     ```
 
@@ -66,20 +67,17 @@ There are no input parameters.
                 'voximplant.sip.connector.status',
                 []
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
-        if ($result->error()) {
-            error_log($result->error());
-        } else {
-            echo 'Success: ' . print_r($result->data(), true);
-        }
-    
+
+        echo 'Success: ' . print_r($result, true);
+        processData($result);
+
     } catch (Throwable $e) {
         error_log($e->getMessage());
-        echo 'Error checking SIP connector status: ' . $e->getMessage();
+        echo 'Error: ' . $e->getMessage();
     }
     ```
 
@@ -91,23 +89,101 @@ There are no input parameters.
         {},
         function(result)
         {
-            if(result.error())
-                console.error(result.error());
+            if (result.error())
+            {
+                console.error(result.error(), result.error_description());
+            }
             else
-                console.info(result.data());
+            {
+                console.log(result.data());
+            }
         }
     );
     ```
 
+- PHP CRest
+
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'voximplant.sip.connector.status',
+        []
+    );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
+    ```
+
 {% endlist %}
 
-{% include [Footnote on examples](../../../../_includes/examples.md) %}
+## Response Handling
 
-## Returned data
+HTTP Status: **200**
+
+```json
+{
+    "result": {
+        "FREE_MINUTES": 60,
+        "PAID": false
+    },
+    "time": {
+        "start": 1773323233,
+        "finish": 1773323233.979212,
+        "duration": 0.9792120456695557,
+        "processing": 0,
+        "date_start": "2026-03-12T16:47:13+01:00",
+        "date_finish": "2026-03-12T16:47:13+01:00",
+        "operating_reset_at": 1773323833,
+        "operating": 0.1122438907623291
+    }
+}
+```
+
+### Returned Data
 
 #|
-|| **Field** | **Description** ||
-|| **FREE_MINUTES** | Number of free minutes for setting up and testing the integration. ||
-|| **PAID** | Whether the connector is paid or not. ||
-|| **PAID_DATE_END** | Until what date the connector is paid (if payment has been made). ||
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`object`](../../../data-types.md) | Object containing the status of the SIP connector ||
+|| **FREE_MINUTES**
+[`integer`](../../../data-types.md) | Number of free minutes available for setting up and testing the integration ||
+|| **PAID**
+[`boolean`](../../../data-types.md) | Indicates whether the SIP connector is paid ||
+|| **PAID_DATE_END**
+[`string`](../../../data-types.md) | End date of the paid period. This field is returned if the connector is paid ||
+|| **time**
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
+
+## Error Handling
+
+HTTP Status: **403**
+
+```json
+{
+    "error": "ACCESS_DENIED",
+    "error_description": "Access denied!"
+}
+```
+
+{% include notitle [error handling](../../../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+#|
+|| **Code** | **Description** | **Value** ||
+|| `ACCESS_DENIED` | `Access denied!` | Insufficient permissions to retrieve the status of the SIP connector ||
+|#
+
+{% include [system errors](../../../../_includes/system-errors.md) %}
+
+## Continue Learning
+
+- [{#T}](./voximplant-sip-add.md)
+- [{#T}](./voximplant-sip-delete.md)
+- [{#T}](./voximplant-sip-get.md)
+- [{#T}](./voximplant-sip-status.md)
+- [{#T}](./voximplant-sip-update.md)

@@ -1,4 +1,4 @@
-# Retrieve Chat Messages and Dialog imopenlines.session.history.get
+# Get Message History of the Dialogue imopenlines.session.history.get
 
 > Scope: [`imopenlines`](../../../scopes/permissions.md)
 >
@@ -16,7 +16,7 @@ The method `imopenlines.session.history.get` returns the message history of an o
 || **SESSION_ID**
 [`integer`](../../../data-types.md) | Identifier of the open line session.
 
-The identifier can be obtained using the [imopenlines.dialog.get](./imopenlines-dialog-get.md) method from the `entity_data_1` field. The `SESSION_ID` identifier is located in the sixth parameter of the `entity_data_1` string. For example, for ```"entity_data_1":"Y|LEAD|1205|N|N|321|1773223732|0|0|0"``` the session identifier is `321` ||
+The identifier can be obtained using the [imopenlines.dialog.get](./imopenlines-dialog-get.md) method from the `entity_data_1` field. The `SESSION_ID` identifier is located in the sixth parameter of the `entity_data_1` string. For example, for ```"entity_data_1":"Y|LEAD|1205|N|N|321|1773223732|0|0|0"```, the session identifier is `321` ||
 || **CHAT_ID**
 [`integer`](../../../data-types.md) | Numeric identifier of the open line chat without the `chat` prefix. For example, `1763`, not `chat1763`.
 
@@ -26,7 +26,7 @@ The identifier can be obtained using the [imopenlines.dialog.get](./imopenlines-
 The method accepts one of the parameters: `SESSION_ID` or `CHAT_ID`.
 
 - If `SESSION_ID` is provided, the method operates based on it.
-- If `SESSION_ID` is not provided, the method attempts to determine the last session by `CHAT_ID` with sorting `ID DESC`.
+- If `SESSION_ID` is not provided, the method attempts to determine the last session by `CHAT_ID` sorted by `ID DESC`.
 
 In practice, for stable results, it is recommended to provide `SESSION_ID`.
 
@@ -201,7 +201,7 @@ HTTP Status: **200**
                                         {
                                             "display": "LINE",
                                             "name": "Phone",
-                                            "value": "+11110000000",
+                                            "value": "+11234567890",
                                             "height": 20,
                                             "colorToken": "base"
                                         }
@@ -225,10 +225,10 @@ HTTP Status: **200**
         "users": {
             "103": {
                 "id": "103",
-                "name": "Svetlana Ivanova",
+                "name": "Samantha Johnson",
                 "active": true,
-                "firstName": "Svetlana",
-                "lastName": "Ivanova",
+                "firstName": "Samantha",
+                "lastName": "Johnson",
                 "workPosition": "IT Department Head",
                 "color": "#4ba984",
                 "avatar": "https://example.bitrix24.com/upload/main/avatar.png",
@@ -339,7 +339,7 @@ HTTP Status: **200**
                 "status": "done",
                 "progress": 100,
                 "authorid": 103,
-                "authorname": "Svetlana Ivanova",
+                "authorname": "Samantha Johnson",
                 "urlpreview": "https://some-domain.bitrix24.com/bitrix/services/main/ajax.php?action=disk.api.file.download&SITE_ID=s1&humanRE=1&fileId=5437&exact=N&_esd=oYQLNdHU%3D&fileName=2311.png",
                 "urlshow": "https://some-domain.bitrix24.com/bitrix/services/main/ajax.php?action=disk.api.file.showImage&SITE_ID=s1&humanRE=1&fileId=5437&width=1280&height=1280&signature=d1007a9ed47599e2160b993ca&exact=N&_esd=oYQLNdHU%3D&fileName=2311.png",
                 "urldownload": "https://some-domain.bitrix24.com/bitrix/services/main/ajax.php?action=disk.api.file.download&SITE_ID=s1&humanRE=1&fileId=5437&exact=N&_esd=oYQLNdHU%3D&fileName=2311.png",
@@ -388,7 +388,7 @@ HTTP Status: **200**
 
 The structure of the object is described in detail [below](#result) ||
 || **time**
-[`time`](../../../data-types.md#time) | Information about the request execution time ||
+[`time`](../../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
 ### Result Object {#result}
@@ -399,7 +399,7 @@ The structure of the object is described in detail [below](#result) ||
 || **chatId**
 [`integer`](../../../data-types.md) | Identifier of the chat ||
 || **canJoin**
-[`string`](../../../data-types.md) | Flag indicating the ability to join the dialog: `Y` or `N` ||
+[`string`](../../../data-types.md) | Flag indicating the ability to join the dialogue: `Y` or `N` ||
 || **canVoteHead**
 [`string`](../../../data-types.md) | Flag indicating the ability to evaluate operators by the supervisor: `Y` or `N` ||
 || **sessionId**
@@ -407,11 +407,11 @@ The structure of the object is described in detail [below](#result) ||
 || **sessionVoteHead**
 [`integer`](../../../data-types.md) | Rating given by the supervisor ||
 || **sessionCommentHead**
-[`string`](../../../data-types.md) | Supervisor's comment on the rating or `null` ||
+[`string`](../../../data-types.md) | Comment from the supervisor on the rating or `null` ||
 || **userId**
 [`string`](../../../data-types.md) | Identifier of the chat in the format `chat<ID>` ||
 || **message**
-[`object`](../../../data-types.md) | Chat messages indexed by message ID.
+[`object`](../../../data-types.md) | Chat messages indexed by message identifier.
 
 The structure of the object is described in detail [below](#message) ||
 || **usersMessage**
@@ -437,7 +437,7 @@ The structure of the object is described in detail [below](#user-in-group) ||
 
 The structure of the object is described in detail [below](#chat) ||
 || **userBlockChat**
-[`object`](../../../data-types.md) | Flags for user chat blocking.
+[`object`](../../../data-types.md) | Flags for blocking the chat by users.
 
 The structure of the object is described in detail [below](#user-block-chat) ||
 || **userInChat**
@@ -481,7 +481,7 @@ The structure of the message object is described in detail [below](#message-item
 || **textlegacy**
 [`string`](../../../data-types.md) | Text of the message in legacy format ||
 || **params**
-[`object`](../../../data-types.md) | Auxiliary parameters of the message ||
+[`object`](../../../data-types.md) | Service parameters of the message ||
 |#
 
 ### Users Message Object {#users-message}
@@ -512,11 +512,11 @@ The structure of the user object is described in detail [below](#user-item) ||
 || **id**
 [`string`](../../../data-types.md) | Identifier of the user ||
 || **name**
-[`string`](../../../data-types.md) | User's full name ||
+[`string`](../../../data-types.md) | Full name of the user ||
 || **firstName**
-[`string`](../../../data-types.md) | User's first name ||
+[`string`](../../../data-types.md) | First name of the user ||
 || **lastName**
-[`string`](../../../data-types.md) | User's last name ||
+[`string`](../../../data-types.md) | Last name of the user ||
 || **workPosition**
 [`string`](../../../data-types.md) | Position or `null` ||
 || **avatar**
@@ -524,7 +524,7 @@ The structure of the user object is described in detail [below](#user-item) ||
 || **avatarId**
 [`integer`](../../../data-types.md) | Identifier of the avatar file or `null` ||
 || **gender**
-[`string`](../../../data-types.md) | User's gender ||
+[`string`](../../../data-types.md) | Gender of the user ||
 || **extranet**
 [`boolean`](../../../data-types.md) | Extranet user flag ||
 || **connector**
@@ -538,9 +538,9 @@ The structure of the user object is described in detail [below](#user-item) ||
 || **lastActivityDate**
 [`datetime`](../../../data-types.md) | Date and time of the last activity in ISO 8601 format (RFC3339) ||
 || **departments**
-[`array`](../../../data-types.md) | Department identifiers ||
+[`array`](../../../data-types.md) | Identifiers of departments ||
 || **type**
-[`string`](../../../data-types.md) | User type ||
+[`string`](../../../data-types.md) | Type of user ||
 |#
 
 ### Open Lines Object {#openlines}
@@ -611,9 +611,9 @@ The structure of the department object is described in detail [below](#chat-item
 || **public**
 [`string`](../../../data-types.md) | Public flag of the chat ||
 || **muteList**
-[`object`](../../../data-types.md) | Object where the key is the user identifier and the value `true/false` indicates whether notifications are turned off for this user in the chat ||
+[`object`](../../../data-types.md) | Object where the key is the user identifier, and the value `true/false` indicates whether notifications are turned off for this user in the chat ||
 || **managerList**
-[`array`](../../../data-types.md) | List of operator-manager identifiers ||
+[`array`](../../../data-types.md) | List of identifiers of operator-managers ||
 || **dateCreate**
 [`datetime`](../../../data-types.md) | Date and time of chat creation in ISO 8601 format (RFC3339) ||
 || **type**
@@ -638,7 +638,7 @@ The structure of the department object is described in detail [below](#chat-item
 || **Name**
 `Type` | **Description** ||
 || **\<chatId\>**
-[`object`](../../../data-types.md) | Object with flags for user blocking in the chat: key — user identifier, value — `true` or `false` || ||
+[`object`](../../../data-types.md) | Object with flags for blocking users in the chat: key — user identifier, value — `true` or `false` || ||
 |#
 
 ### User In Chat Object {#user-in-chat}
@@ -697,7 +697,7 @@ The structure of the object is described in detail [below](#file-item) ||
 || **urldownload**
 [`string`](../../../data-types.md) | URL of the file download ||
 || **viewerattrs**
-[`object`](../../../data-types.md) | Parameters for viewing the file in the interface ||
+[`object`](../../../data-types.md) | Viewing parameters of the file in the interface ||
 || **mediaurl**
 [`string`](../../../data-types.md) | URL of the media file ||
 || **istranscribable**
@@ -727,7 +727,7 @@ HTTP Status: **400**
 || **Code** | **Description** | **Value** ||
 || `MISSING_REQUIRED_PARAM` | Session ID or Chat ID must be provided | Neither `SESSION_ID` nor `CHAT_ID` was provided ||
 || `INVALID_SESSION_ID` | Unable to determine session ID from provided parameters | Unable to determine the session from the provided parameters ||
-|| `ACCESS_DENIED` | You cannot open this conversation as you do not have sufficient permissions | Insufficient permissions to view history, session not found or unavailable ||
+|| `ACCESS_DENIED` | You cannot open this conversation as you do not have sufficient permissions | Insufficient permissions to view the history, session not found or unavailable ||
 |#
 
 {% include [System Errors](../../../../_includes/system-errors.md) %}

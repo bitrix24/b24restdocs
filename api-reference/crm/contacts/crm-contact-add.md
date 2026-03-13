@@ -247,7 +247,7 @@ Default `No` ||
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"FIELDS":{"HONORIFIC":"HNR_RU_1","NAME":"John","SECOND_NAME":"Ivanovich","LAST_NAME":"Ivanov","PHOTO":{"fileData":"**put_photo_data_here**"},"BIRTHDATE":"11.11.2001","TYPE_ID":"PARTNER","SOURCE_ID":"WEB","SOURCE_DESCRIPTION":"*Additional information about the source*","POST":"Administrator","COMMENTS":"**put_comment_here**","OPENED":"Y","EXPORT":"N","ASSIGNED_BY_ID":6,"COMPANY_ID":12,"COMPANY_IDS":[12,13,15],"UTM_SOURCE":"google","UTM_MEDIUM":"CPC","UTM_CAMPAIGN":"summer_sale","UTM_CONTENT":"header_banner","UTM_TERM":"discount","PHONE":[{"VALUE":"+12333333555","VALUE_TYPE":"WORK"},{"VALUE":"+15599888666","VALUE_TYPE":"HOME"}],"EMAIL":[{"VALUE":"ivanov@example.mailing","VALUE_TYPE":"MAILING"},{"VALUE":"ivanov@example.work","VALUE_TYPE":"WORK"}],"UF_CRM_1720697698689":"Example value of a custom field with type \"String\"","PARENT_ID_1224":12}}' \
+    -d '{"FIELDS":{"HONORIFIC":"HNR_RU_1","NAME":"John","SECOND_NAME":"Nicholas","LAST_NAME":"Mitchell","PHOTO":{"fileData":"**put_photo_data_here**"},"BIRTHDATE":"11.11.2001","TYPE_ID":"PARTNER","SOURCE_ID":"WEB","SOURCE_DESCRIPTION":"*Additional information about the source*","POST":"Administrator","COMMENTS":"**put_comment_here**","OPENED":"Y","EXPORT":"N","ASSIGNED_BY_ID":6,"COMPANY_ID":12,"COMPANY_IDS":[12,13,15],"UTM_SOURCE":"google","UTM_MEDIUM":"CPC","UTM_CAMPAIGN":"summer_sale","UTM_CONTENT":"header_banner","UTM_TERM":"discount","PHONE":[{"VALUE":"+12333333555","VALUE_TYPE":"WORK"},{"VALUE":"+15599888666","VALUE_TYPE":"HOME"}],"EMAIL":[{"VALUE":"mitchell@example.mailing","VALUE_TYPE":"MAILING"},{"VALUE":"mitchell@example.work","VALUE_TYPE":"WORK"}],"UF_CRM_1720697698689":"Example value of a custom field with type \"String\"","PARENT_ID_1224":12}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.contact.add
     ```
 
@@ -257,7 +257,7 @@ Default `No` ||
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"FIELDS":{"HONORIFIC":"HNR_RU_1","NAME":"John","SECOND_NAME":"Ivanovich","LAST_NAME":"Ivanov","PHOTO":{"fileData":"**put_photo_data_here**"},"BIRTHDATE":"11.11.2001","TYPE_ID":"PARTNER","SOURCE_ID":"WEB","SOURCE_DESCRIPTION":"*Additional information about the source*","POST":"Administrator","COMMENTS":"**put_comment_here**","OPENED":"Y","EXPORT":"N","ASSIGNED_BY_ID":6,"COMPANY_ID":12,"COMPANY_IDS":[12,13,15],"UTM_SOURCE":"google","UTM_MEDIUM":"CPC","UTM_CAMPAIGN":"summer_sale","UTM_CONTENT":"header_banner","UTM_TERM":"discount","PHONE":[{"VALUE":"+12333333555","VALUE_TYPE":"WORK"},{"VALUE":"+15599888666","VALUE_TYPE":"HOME"}],"EMAIL":[{"VALUE":"ivanov@example.mailing","VALUE_TYPE":"MAILING"},{"VALUE":"ivanov@example.work","VALUE_TYPE":"WORK"}],"UF_CRM_1720697698689":"Example value of a custom field with type \"String\"","PARENT_ID_1224":12},"auth":"**put_access_token_here**"}' \
+    -d '{"FIELDS":{"HONORIFIC":"HNR_RU_1","NAME":"John","SECOND_NAME":"Nicholas","LAST_NAME":"mitchell","PHOTO":{"fileData":"**put_photo_data_here**"},"BIRTHDATE":"11.11.2001","TYPE_ID":"PARTNER","SOURCE_ID":"WEB","SOURCE_DESCRIPTION":"*Additional information about the source*","POST":"Administrator","COMMENTS":"**put_comment_here**","OPENED":"Y","EXPORT":"N","ASSIGNED_BY_ID":6,"COMPANY_ID":12,"COMPANY_IDS":[12,13,15],"UTM_SOURCE":"google","UTM_MEDIUM":"CPC","UTM_CAMPAIGN":"summer_sale","UTM_CONTENT":"header_banner","UTM_TERM":"discount","PHONE":[{"VALUE":"+12333333555","VALUE_TYPE":"WORK"},{"VALUE":"+15599888666","VALUE_TYPE":"HOME"}],"EMAIL":[{"VALUE":"mitchell@example.mailing","VALUE_TYPE":"MAILING"},{"VALUE":"mitchell@example.work","VALUE_TYPE":"WORK"}],"UF_CRM_1720697698689":"Example value of a custom field with type \"String\"","PARENT_ID_1224":12},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/crm.contact.add
     ```
 
@@ -272,8 +272,8 @@ Default `No` ||
     			fields: {
     				HONORIFIC: "HNR_RU_1",
     				NAME: "John",
-    				SECOND_NAME: "Ivanovich",
-    				LAST_NAME: "Ivanov",
+    				SECOND_NAME: "Nicholas",
+    				LAST_NAME: "Mitchell",
     				PHOTO: {
     					fileData: document.getElementById('photo'),
     				},
@@ -325,11 +325,11 @@ Default `No` ||
     				],
     				EMAIL: [
     					{
-    						VALUE: "ivanov@example.mailing",
+    						VALUE: "mitchellv@example.mailing",
     						VALUE_TYPE: "MAILING",
     					},
     					{
-    						VALUE: "ivanov@example.work",
+    						VALUE: "mitchell@example.work",
     						VALUE_TYPE: "WORK",
     					}
     				],
@@ -363,8 +363,8 @@ Default `No` ||
                     'fields' => [
                         'HONORIFIC' => 'HNR_RU_1',
                         'NAME' => 'John',
-                        'SECOND_NAME' => 'Ivanovich',
-                        'LAST_NAME' => 'Ivanov',
+                        'SECOND_NAME' => 'Nicholas',
+                        'LAST_NAME' => 'Mitchell',
                         'PHOTO' => [
                             'fileData' => document.getElementById('photo'),
                         ],
@@ -416,11 +416,11 @@ Default `No` ||
                         ],
                         'EMAIL' => [
                             [
-                                'VALUE' => 'ivanov@example.mailing',
+                                'VALUE' => 'mitchell@example.mailing',
                                 'VALUE_TYPE' => 'MAILING',
                             ],
                             [
-                                'VALUE' => 'ivanov@example.work',
+                                'VALUE' => 'mitchell@example.work',
                                 'VALUE_TYPE' => 'WORK',
                             ]
                         ],
@@ -452,8 +452,8 @@ Default `No` ||
             fields: {
                 HONORIFIC: "HNR_RU_1",
                 NAME: "John",
-                SECOND_NAME: "Ivanovich",
-                LAST_NAME: "Ivanov",
+                SECOND_NAME: "Nicholas",
+                LAST_NAME: "Mitchell",
                 PHOTO: {
                     fileData: document.getElementById('photo'),
                 },
@@ -505,11 +505,11 @@ Default `No` ||
                 ],
                 EMAIL: [
                     {
-                        VALUE: "ivanov@example.mailing",
+                        VALUE: "mitchell@example.mailing",
                         VALUE_TYPE: "MAILING",
                     },
                     {
-                        VALUE: "ivanov@example.work",
+                        VALUE: "mitchell@example.work",
                         VALUE_TYPE: "WORK",
                     }
                 ],
@@ -537,8 +537,8 @@ Default `No` ||
             'FIELDS' => [
                 'HONORIFIC' => 'HNR_RU_1',
                 'NAME' => 'John',
-                'SECOND_NAME' => 'Ivanovich',
-                'LAST_NAME' => 'Ivanov',
+                'SECOND_NAME' => 'Nicholas',
+                'LAST_NAME' => 'Mitchell',
                 'PHOTO' => [
                     'fileData' => $_FILES['photo']
                 ],
@@ -590,11 +590,11 @@ Default `No` ||
                 ],
                 'EMAIL' => [
                     [
-                        'VALUE' => 'ivanov@example.mailing',
+                        'VALUE' => 'mitchell@example.mailing',
                         'VALUE_TYPE' => 'MAILING',
                     ],
                     [
-                        'VALUE' => 'ivanov@example.work',
+                        'VALUE' => 'mitchell@example.work',
                         'VALUE_TYPE' => 'WORK',
                     ]
                 ],

@@ -148,9 +148,9 @@ HTTP Code: **200**
         {
             "id": 4,
             "active": true,
-            "name": "Anna Sokolova",
-            "first_name": "Anna",
-            "last_name": "Sokolova",
+            "name": "Emily Smith",
+            "first_name": "Emily",
+            "last_name": "Smith",
             "work_position": "Analyst",
             "color": "#df532d",
             "avatar": "https://example.bitrix24.com/upload/main/avatar4.png",
@@ -175,16 +175,16 @@ HTTP Code: **200**
                 "inner_phone": "22"
             },
             "website": "example.com",
-            "email": "anna.sokolova@example.com",
+            "email": "emily.smith@example.com",
             "bot_data": null,
             "type": "user"
         },
         {
             "id": 5,
             "active": true,
-            "name": "Ivan Petrov",
-            "first_name": "Ivan",
-            "last_name": "Petrov",
+            "name": "John Johnson",
+            "first_name": "John",
+            "last_name": "Johnson",
             "work_position": "Manager",
             "color": "#048bd0",
             "avatar": "https://example.bitrix24.com/upload/main/avatar.png",

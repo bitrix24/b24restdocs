@@ -286,14 +286,14 @@ HTTP status: **200**
             },
             "creator": {
                 "id": "503",
-                "name": "Maria Ivanova",
+                "name": "Jessica Wilson",
                 "link": "\/company\/personal\/user\/503\/",
                 "icon": "https:\/\/mysite.com\/b17053\/resize_cache\/45749\/c0120a8d7c10d63c83e32398d1ec4d9e\/main\/c89\/c89c6b7301880958ea704b5a8470635c\/4R5A1256.png",
                 "workPosition": "Administrator"
             },
             "responsible": {
                 "id": "503",
-                "name": "Maria Ivanova",
+                "name": "Jessica Wilson",
                 "link": "\/company\/personal\/user\/503\/",
                 "icon": "https:\/\/mysite.com\/b17053\/resize_cache\/45749\/c0120a8d7c10d63c83e32398d1ec4d9e\/main\/c89\/c89c6b7301880958ea704b5a8470635c\/4R5A1256.png",
                 "workPosition": "Administrator"
@@ -301,14 +301,14 @@ HTTP status: **200**
             "accomplicesData": {
                 "3": {
                     "id": "3",
-                    "name": "Andrew Karpov",
+                    "name": "Thomas Anderson",
                     "link": "\/company\/personal\/user\/3\/",
                     "icon": "https:\/\/mysite.com\/b17053\/resize_cache\/249\/c0120a8d7c10d63c83e32398d1ec4d9e\/main\/cd526b0644e7ff4d794ea41cb36bc423\/odmin.png",
                     "workPosition": "System Administrator"
                 },
                 "11": {
                     "id": "11",
-                    "name": "Andrew Sergeev",
+                    "name": "Christopher Moore",
                     "link": "\/company\/personal\/user\/11\/",
                     "icon": "https:\/\/mysite.com\/b17053\/resize_cache\/231\/c0120a8d7c10d63c83e32398d1ec4d9e\/main\/026bf59e161a0bd50f401d3796800651\/66b.jpg",
                     "workPosition": "Specialist"
@@ -317,21 +317,21 @@ HTTP status: **200**
             "auditorsData": {
                 "61": {
                     "id": "61",
-                    "name": "Ivan Petrov",
+                    "name": "Michael Roberts",
                     "link": "\/company\/personal\/user\/61\/",
                     "icon": "https:\/\/mysite.com\/b17053\/resize_cache\/8674\/c0120a8d7c10d63c83e32398d1ec4d9e\/main\/7b5\/7b52e4c2304ec0520dab3d4261e9ca1f\/sp.jpg",
                     "workPosition": "Marketer"
                 },
                 "103": {
                     "id": "103",
-                    "name": "Svetlana Ivanova",
+                    "name": "Emily Smith",
                     "link": "\/company\/personal\/user\/103\/",
                     "icon": "https:\/\/mysite.com\/b17053\/resize_cache\/8644\/c0120a8d7c10d63c83e32398d1ec4d9e\/main\/45f\/45fff10d17d398a5583184c8350cd197\/buh.jpg",
                     "workPosition": "Accountant"
                 },
                 "547": {
                     "id": "547",
-                    "name": "Maria",
+                    "name": "Ashley",
                     "link": "\/company\/personal\/user\/547\/",
                     "icon": "\/bitrix\/images\/tasks\/default_avatar.png",
                     "workPosition": "Tester"

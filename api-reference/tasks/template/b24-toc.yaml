@@ -1,0 +1,21 @@
+title: Task Templates  
+href: index.md  
+items:  
+  - name: Overview of Methods  
+    href: index.md  
+  - name: Task Template Fields  
+    href: fields.md  
+  - name: Add Task Template  
+    href: tasks-template-add.md  
+  - name: Update Task Template  
+    href: tasks-template-update.md  
+  - name: Get Task Template  
+    href: tasks-template-get.md  
+  - name: Delete Task Template  
+    href: tasks-template-delete.md  
+  - name: Get Task Template Fields  
+    href: tasks-template-fields.md  
+  - name: Task Template Checklists  
+    include:  
+      path: checklist/b24-toc.yaml  
+      mode: link  

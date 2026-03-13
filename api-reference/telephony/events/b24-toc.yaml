@@ -1,9 +1,9 @@
-title: Events
-href: on-external-call-start.md
-items: 
-  - name: Overview of events
-    href: index.md
-  - name: When clicking on a phone number
-    href: on-external-call-start.md
-  - name: When filling out a CRM form
-    href: on-external-call-back-start.md
+title: Events  
+href: on-external-call-start.md  
+items:   
+  - name: Overview of Events  
+    href: index.md  
+  - name: When Clicking on a Phone Number  
+    href: on-external-call-start.md  
+  - name: When Filling Out a CRM Form  
+    href: on-external-call-back-start.md  

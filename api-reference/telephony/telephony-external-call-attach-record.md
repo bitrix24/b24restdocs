@@ -1,4 +1,4 @@
-# Attach a Record to a Completed Call `telephony.externalCall.attachRecord`
+# Attach a Record to a Completed Call telephony.externalCall.attachRecord
 
 > Scope: [`telephony`](../scopes/permissions.md)
 >
@@ -10,19 +10,21 @@ Call this method after [telephony.externalCall.finish](./telephony-external-call
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../_includes/required.md) %}
+{% include [Note on required parameters](../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **CALL_ID***
-[`string`](../data-types.md) | Identifier of the call from the method [telephony.externalCall.register](./telephony-external-call-register.md) ||
+[`string`](../data-types.md) | The identifier of the call from the method [telephony.externalCall.register](./telephony-external-call-register.md).
+
+If the method is called again for the same call, the new record will replace the previously attached one. ||
 || **RECORD_URL**
-[`string`](../data-types.md) | URL of the record on an external server. If this parameter is provided, Bitrix24 downloads the file from the link.
+[`string`](../data-types.md) | The URL of the record on an external server. If this parameter is provided, Bitrix24 will download the file from the link.
 
 It is recommended to use this only if the file is reliably and quickly accessible. ||
 || **FILENAME**
-[`string`](../data-types.md) | Name of the record file.
+[`string`](../data-types.md) | The name of the record file.
 
 Possible extensions:
 - `wav`
@@ -31,7 +33,7 @@ Possible extensions:
 In `RECORD_URL` mode:
 - if `FILENAME` is not provided, the name is taken from the URL. ||
 || **FILE_CONTENT**
-[`string`](../data-types.md) | File in [Base64](../files/how-to-upload-files.md) encoding. ||
+[`string`](../data-types.md) | The file in [Base64](../files/how-to-upload-files.md) encoding. ||
 |#
 
 {% note info "" %}
@@ -44,7 +46,7 @@ If both `FILENAME` and `FILE_CONTENT` (or `RECORD_URL`) are provided, the file i
 
 ## Code Examples
 
-{% include [Note on Examples](../../_includes/examples.md) %}
+{% include [Note on examples](../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -169,7 +171,7 @@ If both `FILENAME` and `FILE_CONTENT` (or `RECORD_URL`) are provided, the file i
 
 #### If both FILENAME and FILE_CONTENT are provided
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -216,44 +218,44 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../data-types.md) | Root element of the response ||
+[`object`](../data-types.md) | The root element of the response ||
 || **FILE_ID**
-[`integer`](../data-types.md) | Identifier of the attached file ||
+[`integer`](../data-types.md) | The identifier of the attached file ||
 || **uploadUrl**
-[`string`](../data-types.md) | URL for file upload if `FILE_CONTENT` was not provided ||
+[`string`](../data-types.md) | The URL for uploading the file if `FILE_CONTENT` was not provided ||
 || **fieldName**
-[`string`](../data-types.md) | Field name for file upload ||
+[`string`](../data-types.md) | The field name for uploading the file ||
 || **time**
 [`time`](../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
     "error": "ERROR_CORE",
-    "error_description": "Required parameters are not set. Request should contain either URL or FILENAME parameter."
+    "error_description": "Required parameters are not set. Request should contain either URL or FILENAME parameter"
 }
 ```
 
-{% include notitle [Error Handling](../../_includes/error-info.md) %}
+{% include notitle [error handling](../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `ERROR_CORE` | Required parameters are not set. Request should contain either URL or FILENAME parameter. | Neither `RECORD_URL` nor `FILENAME` was provided. ||
-|| `ERROR_CORE` | Call is not found in the statistics table. It seems it is not finished yet. | The call was not found in the statistics. Ensure that the call is completed. ||
-|| `ERROR_CORE` | File name is empty. | Empty `FILENAME`. ||
-|| `ERROR_CORE` | Wrong file extension. Only wav and mp3 are allowed. | Invalid file extension. ||
-|| `ERROR_CORE` | File content is empty. | Empty `FILE_CONTENT`. ||
-|| `ERROR_CORE` | File content is not properly encoded. Base64 encoding is expected. | `FILE_CONTENT` was not provided in Base64. ||
-|| `ERROR_CORE` | Server returns HTTP error code {N}. | HTTP error occurred while uploading the record via `RECORD_URL`. ||
+|| `ERROR_CORE` | Required parameters are not set. Request should contain either URL or FILENAME parameter | Neither `RECORD_URL` nor `FILENAME` was provided ||
+|| `ERROR_CORE` | Call is not found in the statistic table. It looks like it is not finished yet. | The call was not found in the statistics. Ensure that the call is completed. ||
+|| `ERROR_CORE` | File name is empty | Empty `FILENAME` ||
+|| `ERROR_CORE` | Wrong file extension. Only wav and mp3 are allowed | Invalid file extension ||
+|| `ERROR_CORE` | File content is empty. | Empty `FILE_CONTENT` ||
+|| `ERROR_CORE` | File content is not properly encoded. Base64 encoding is expected. | `FILE_CONTENT` was not provided in Base64 format ||
+|| `ERROR_CORE` | Server returns HTTP error code {N} | HTTP error when uploading the record via `RECORD_URL` ||
 |#
 
-{% include [System Errors](../../_includes/system-errors.md) %}
+{% include [system errors](../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
