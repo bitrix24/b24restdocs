@@ -40,7 +40,7 @@ The task identifier can be obtained when [creating a new task](./tasks-task-add.
 
 The new API call differs by the addition of the `/api/` parameter in the request:
 
-`https://{installation_address}/rest/api/{user_id}/{webhook_token}/tasks.task.chat.message.send`
+`https://{address}/rest/api/{user_id}/{webhook_token}/tasks.task.chat.message.send`
 
 {% endnote %}
 

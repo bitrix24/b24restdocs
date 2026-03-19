@@ -1,8 +1,8 @@
-# Get the list of open lines imopenlines.config.list.get
+# Get a List of Open Channels imopenlines.config.list.get
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will fill it in shortly.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -24,7 +24,7 @@ Some data may be missing — we will fill it in shortly.
 >
 > Who can execute the method: any user
 
-This method retrieves a list of open lines.
+This method retrieves a list of open channels.
 
 ## Method Parameters
 
@@ -210,17 +210,17 @@ HTTP status: **200**
             "WATCH_TYPING": "Y",
             "WELCOME_BOT_ENABLE": "N",
             "WELCOME_MESSAGE": "N",
-            "WELCOME_MESSAGE_TEXT": "Welcome to the Open Line [br]The first available operator will respond to you.",
+            "WELCOME_MESSAGE_TEXT": "Welcome to the Open Channel [br]The first available operator will respond to you.",
             "VOTE_MESSAGE": "N",
             "VOTE_TIME_LIMIT": "0",
             "VOTE_BEFORE_FINISH": "Y",
             "VOTE_CLOSING_DELAY": "N",
             "VOTE_MESSAGE_1_TEXT": "Please rate the quality of service.",
             "VOTE_MESSAGE_1_LIKE": "Thank you for your feedback!",
-            "VOTE_MESSAGE_1_DISLIKE": "We are sorry that we couldn't assist you, we will strive to improve.",
+            "VOTE_MESSAGE_1_DISLIKE": "We are sorry we couldn't assist you, we will strive to improve.",
             "VOTE_MESSAGE_2_TEXT": "Please rate the quality of service.\r\n\r\nSend: 1 - good, 0 - bad",
             "VOTE_MESSAGE_2_LIKE": "Thank you for your feedback!",
-            "VOTE_MESSAGE_2_DISLIKE": "We are sorry that we couldn't assist you, we will strive to improve.",
+            "VOTE_MESSAGE_2_DISLIKE": "We are sorry we couldn't assist you, we will strive to improve.",
             "AGREEMENT_MESSAGE": "N",
             "AGREEMENT_ID": "0",
             "CATEGORY_ENABLE": "N",
@@ -247,7 +247,7 @@ HTTP status: **200**
             "WORKTIME_DAYOFF_RULE": "text",
             "WORKTIME_DAYOFF_FORM_ID": "0",
             "WORKTIME_DAYOFF_BOT_ID": "0",
-            "WORKTIME_DAYOFF_TEXT": "Welcome to the Open Line [br]Unfortunately, we cannot respond to you at this moment.[br][br]Please write your question and we will definitely get back to you during working hours.",
+            "WORKTIME_DAYOFF_TEXT": "Welcome to the Open Channel [br]Unfortunately, we cannot respond to you at this moment.[br][br]Please write your question and we will definitely get back to you during working hours.",
             "CLOSE_RULE": "none",
             "CLOSE_FORM_ID": "0",
             "CLOSE_BOT_ID": "0",

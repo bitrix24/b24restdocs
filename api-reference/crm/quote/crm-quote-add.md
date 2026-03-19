@@ -34,7 +34,7 @@ The method `crm.quote.add` continues to function, but there is a more relevant a
 The method `crm.quote.add` creates a new estimate. If you need to specify any details of the buyer/seller in the estimate (since there may be several for a company), use the method [crm.requisite.link.register](../requisites/links/crm-requisite-link-register.md).
 
 The created estimate must include the seller and buyer companies:
-- `COMPANY_ID`, if the buyer is a company or `CONTACT_ID`, if the buyer is a contact.
+- `COMPANY_ID` - if the buyer is a company or `CONTACT_ID` if the buyer is a contact.
 - `MYCOMPANY_ID` - seller. 
 
 The identifiers specified in **crm.requisite.link.register** and in the created estimate must correspond to the buyer and seller.
@@ -122,7 +122,7 @@ To find out the required format of the fields, execute the method [crm.quote.fie
     
     } catch (Throwable $e) {
         error_log($e->getMessage());
-        echo 'Error creating quote: ' . $e->getMessage();
+        echo 'Error creating estimate: ' . $e->getMessage();
     }
     ```
 

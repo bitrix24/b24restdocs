@@ -79,6 +79,16 @@ Possible values:
 [`integer`](../data-types.md) | Number of items per page. Default: `50`. Maximum value: `200` ||
 |#
 
+## Pagination Recommendations
+
+- To move to the next page, increase `OFFSET` by the value of `LIMIT` (`0`, `50`, `100`), not by the number of items in the response.
+
+- The same dialogs may repeat between pages because the selection is first built on internal records and then collapsed into unique dialogs. As a result, page boundaries may overlap.
+
+- If Open Channels chats are not needed, pass `SKIP_OPENLINES = Y` — this reduces the likelihood of overlaps between pages.
+
+- If the list is small, request it in a single call with an increased `LIMIT`, maximum value `200`.
+
 ## Code Examples
 
 {% include [Example Notes](../../_includes/examples.md) %}

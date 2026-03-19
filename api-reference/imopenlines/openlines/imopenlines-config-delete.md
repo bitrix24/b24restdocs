@@ -1,4 +1,4 @@
-# Delete open line imopenlines.config.delete
+# Delete Open Channel imopenlines.config.delete
 
 {% note warning "We are still updating this page" %}
 
@@ -8,7 +8,7 @@ Some data may be missing — we will complete it shortly
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not exported to prod_" %}
+{% note alert "TO-DO _not deployed to prod_" %}
 
 - parameter types are not specified
 - examples are missing
@@ -23,7 +23,7 @@ Some data may be missing — we will complete it shortly
 >
 > Who can execute the method: any user
 
-This method deletes an open line.
+This method deletes an open channel.
 
 ## Method Parameters
 
@@ -33,7 +33,7 @@ This method deletes an open line.
 || **Name**
 `Type` | **Description** ||
 || **CONFIG_ID***
-[`unknown`](../../data-types.md) | Line identifier ||
+[`unknown`](../../data-types.md) | Identifier of the channel ||
 |#
 
 ## Examples

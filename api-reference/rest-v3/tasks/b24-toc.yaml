@@ -10,12 +10,28 @@ items:
   - name: Update Task
     href: tasks-task-update.md
   - name: Send Message in Task Chat
-    href: tasks-task-chat-message-send.md        
+    href: tasks-task-chat-message-send.md
   - name: Attach Files to Task
-    href: tasks-task-file-attach.md    
+    href: tasks-task-file-attach.md
   - name: Get Task
     href: tasks-task-get.md
   - name: Delete Task
     href: tasks-task-delete.md
   - name: Check Access Permissions
-    href: tasks-task-access-get.md    
+    href: tasks-task-access-get.md
+  - name: Get List of Task Fields
+    href: tasks-task-field-list.md
+  - name: Get Task Field
+    href: tasks-task-field-get.md
+  - name: Get List of Task Access Permission Fields
+    href: tasks-task-access-field-list.md
+  - name: Get Task Access Permission Field
+    href: tasks-task-access-field-get.md
+  - name: Get List of Task File Fields
+    href: tasks-task-file-field-list.md
+  - name: Get Task File Field
+    href: tasks-task-file-field-get.md
+  - name: Get List of Task Chat Message Fields
+    href: tasks-task-chat-message-field-list.md
+  - name: Get Task Chat Message Field
+    href: tasks-task-chat-message-field-get.md

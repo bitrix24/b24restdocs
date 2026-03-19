@@ -2,6 +2,10 @@
 
 ## 2026
 
+### March 16, 2026
+
+- Added documentation for REST 3.0 methods to retrieve fields from the [event log](./api-reference/rest-v3/main/index.md) and [tasks](./api-reference/rest-v3/tasks/index.md)
+
 ### March 13, 2026
 
 - Added the documentation for methods related to [task templates](./api-reference/tasks/template/index.md)

@@ -3,9 +3,13 @@ href: index.md
 items:
   - name: Overview of Methods
     href: index.md
-  - name: Get Event Log Entries
+  - name: Retrieve Event Log Entries
     href: main-eventlog-list.md
-  - name: Get Event Log Entry
+  - name: Retrieve a Specific Event Log Entry
     href: main-eventlog-get.md
-  - name: Get New Event Log Entries
+  - name: Retrieve New Event Log Entries
     href: main-eventlog-tail.md
+  - name: Retrieve Event Log Fields
+    href: main-eventlog-field-list.md
+  - name: Retrieve a Specific Event Log Field
+    href: main-eventlog-field-get.md

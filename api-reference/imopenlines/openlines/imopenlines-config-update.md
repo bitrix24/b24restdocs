@@ -34,9 +34,9 @@ This method updates the open channel.
 || **Name**
 `Type` | **Description** ||
 || **CONFIG_ID***
-[`unknown`](../../data-types.md) | ID of the line ||
+[`unknown`](../../data-types.md) | Channel ID ||
 || **PARAMS**
-[`unknown`](../../data-types.md) | Array of parameters to update (optional). A list of possible fields can be found in the description of the method [imopenlines.config.add](./imopenlines-config-add.md) ||
+[`unknown`](../../data-types.md) | Array of parameters for update (optional). A list of possible fields can be found in the method description [imopenlines.config.add](./imopenlines-config-add.md) ||
 |#
 
 ## Examples

@@ -201,7 +201,7 @@ This method adds a new open channel.
     	if (result.error())
     		alert("Error: " + result.error());
     	else
-    		alert("Successfully: " + result);
+    		alert("Success: " + result);
     }
     catch( error )
     {
@@ -235,7 +235,7 @@ This method adds a new open channel.
         if ($result->error()) {
             echo 'Error: ' . $result->error();
         } else {
-            echo 'Successfully: ' . $result->data();
+            echo 'Success: ' . $result->data();
         }
     
     } catch (Throwable $e) {
@@ -263,7 +263,7 @@ This method adds a new open channel.
                 if (result.error())
                     alert("Error: " + result.error());
                 else
-                    alert("Successfully: " + result.data());
+                    alert("Success: " + result.data());
             }
         );
     }

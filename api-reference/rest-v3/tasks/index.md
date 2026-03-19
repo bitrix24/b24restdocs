@@ -6,7 +6,7 @@ Tasks in Bitrix24 are a tool for organizing work, ranging from simple assignment
 > 
 > User Documentation: [Bitrix24 Tasks](https://helpdesk.bitrix24.com/open/18034564/) 
 
-In [REST 3.0](../index.md), task methods have received an updated architecture, a unified response format, and support for relationships between objects. Currently, REST 3.0 covers only basic operations: creating, deleting, updating, and retrieving tasks. All features related to checklists, time tracking, results, and history are available in REST v2.
+In [REST 3.0](../index.md), task methods have received an updated architecture, a unified response format, and support for relationships between objects. REST 3.0 now covers basic operations on tasks, working with task chat, attaching files, and methods for retrieving field schemas (`*.field.list` / `*.field.get`). Everything related to checklists, time tracking, results, and history is available in REST v2.
 
 ## Task Detail Form
 
@@ -156,7 +156,15 @@ The following capabilities work only through REST v2:
 || [tasks.task.chat.message.send](./tasks-task-chat-message-send.md) | Sends a message in the task chat ||
 || [tasks.task.update](./tasks-task-update.md) | Updates the task ||
 || [tasks.task.delete](./tasks-task-delete.md) | Deletes the task ||
-|| [tasks.task.access.get](./tasks-task-get.md) | Checks access permissions for the task ||
+|| [tasks.task.access.get](./tasks-task-access-get.md) | Checks access permissions for the task ||
+|| [tasks.task.field.list](./tasks-task-field-list.md) | Returns a list of task fields ||
+|| [tasks.task.field.get](./tasks-task-field-get.md) | Returns the description of a task field by name ||
+|| [tasks.task.access.field.list](./tasks-task-access-field-list.md) | Returns a list of task access permission fields ||
+|| [tasks.task.access.field.get](./tasks-task-access-field-get.md) | Returns the description of a task access permission field by name ||
+|| [tasks.task.file.field.list](./tasks-task-file-field-list.md) | Returns a list of task file fields ||
+|| [tasks.task.file.field.get](./tasks-task-file-field-get.md) | Returns the description of a task file field by name ||
+|| [tasks.task.chat.message.field.list](./tasks-task-chat-message-field-list.md) | Returns a list of task chat message fields ||
+|| [tasks.task.chat.message.field.get](./tasks-task-chat-message-field-get.md) | Returns the description of a task chat message field by name ||
 |#
 
 ## Continue Learning
