@@ -1,59 +1,53 @@
-# Pin all available dialogs to the operator imopenlines.session.mode.pinAll
-
-{% note warning "We are still updating this page" %}
-
-Some data may be missing — we will fill it in shortly.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- examples are missing
-- response in case of error is missing
-
-{% endnote %}
-
-{% endif %}
+# Pin All Available Dialogs to the Operator imopenlines.session.mode.pinAll
 
 > Scope: [`imopenlines`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-Pinning all dialogs to the current operator. Returns an array of IDs of pinned sessions.
+The method `imopenlines.session.mode.pinAll` pins all available active dialogs to the current operator.
 
-## Examples
+## Method Parameters
 
-{% include [Examples note](../../../../_includes/examples.md) %}
+No parameters.
+
+## Code Examples
+
+{% include [Example Note](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
 - cURL (Webhook)
 
-    // example for cURL (Webhook)
+    ```bash
+    curl -X POST \
+      -H "Content-Type: application/json" \
+      -H "Accept: application/json" \
+      https://your-domain.bitrix24.com/rest/1/webhook_key/imopenlines.session.mode.pinAll.json
+    ```
 
 - cURL (OAuth)
 
-    // example for cURL (OAuth)
+    ```bash
+    curl -X POST \
+      -H "Content-Type: application/json" \
+      -H "Accept: application/json" \
+      -d '{"auth":"<access_token>"}' \
+      https://your-domain.bitrix24.com/rest/imopenlines.session.mode.pinAll.json
+    ```
 
 - JS
 
     ```js
-    try
-    {
-    	const response = await $b24.callMethod(
-    		'imopenlines.session.mode.pinAll',
-    		{}
-    	);
-    	
-    	const result = response.getData().result;
-    	console.log(result);
-    }
-    catch( error )
-    {
-    	console.warn(error.ex);
-    	return false;
+    try {
+        const response = await $b24.callMethod(
+            'imopenlines.session.mode.pinAll',
+            {}
+        );
+
+        const { result } = response.getData();
+        console.log(result);
+    } catch (error) {
+        console.error(error);
     }
     ```
 
@@ -67,21 +61,19 @@ Pinning all dialogs to the current operator. Returns an array of IDs of pinned s
                 'imopenlines.session.mode.pinAll',
                 []
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
+
         if ($result->error()) {
-            echo 'Warning: ' . $result->error()->ex;
-            return false;
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
         }
-    
-        echo 'Success: ' . print_r($result->data(), true);
-    
-    } catch (Throwable $e) {
-        error_log($e->getMessage());
-        echo 'Error: ' . $e->getMessage();
+    } catch (Throwable $exception) {
+        error_log($exception->getMessage());
+        echo 'Error pinning all dialogs: ' . $exception->getMessage();
     }
     ```
 
@@ -91,31 +83,83 @@ Pinning all dialogs to the current operator. Returns an array of IDs of pinned s
     BX24.callMethod(
         'imopenlines.session.mode.pinAll',
         {},
-        function(result)
-        {
-            if(result.error())
-            {
-                console.warn(result.error().ex);
-                return false;
+        function(result) {
+            if (result.error()) {
+                console.error(result.error().ex);
+            } else {
+                console.log(result.data());
             }
-            console.log(result.data());
         }
     );
     ```
 
 - PHP CRest
 
-    // example for php
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'imopenlines.session.mode.pinAll',
+        []
+    );
+
+    if (!empty($result['error'])) {
+        echo 'Error: ' . $result['error_description'];
+    } else {
+        echo 'Success: ' . print_r($result['result'], true);
+    }
+    ```
 
 {% endlist %}
 
-## Response in case of success
+## Response Handling
+
+HTTP Status: **200**
 
 ```json
 {
-    "result":[
-        1652,
-        1653
-    ]
+    "result": [339, 337],
+    "time": {
+        "start": 1773673238,
+        "finish": 1773673238.659743,
+        "duration": 0.659743070602417,
+        "processing": 0,
+        "date_start": "2026-03-16T18:00:38+01:00",
+        "date_finish": "2026-03-16T18:00:38+01:00",
+        "operating_reset_at": 1773673838,
+        "operating": 0
+    }
 }
 ```
+
+### Returned Data
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`integer[]`](../../../data-types.md) | Array of session IDs that were successfully pinned ||
+|| **time**
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
+|#
+
+## Error Handling
+
+{% include notitle [error handling](../../../../_includes/error-info.md) %}
+
+{% include [system errors](../../../../_includes/system-errors.md) %}
+
+## Continue Learning
+
+- [{#T}](./imopenlines-session-open.md)
+- [{#T}](./imopenlines-session-start.md)
+- [{#T}](./imopenlines-session-join.md)
+- [{#T}](./imopenlines-session-history-get.md)
+- [{#T}](./imopenlines-session-intercept.md)
+- [{#T}](./imopenlines-session-mode-pin.md)
+- [{#T}](./imopenlines-session-mode-unpin-all.md)
+- [{#T}](./imopenlines-session-mode-silent.md)
+- [{#T}](./imopenlines-session-head-vote.md)
+- [{#T}](./imopenlines-message-session-start.md)
+- [{#T}](./imopenlines-crm-lead-create.md)
+- [{#T}](./imopenlines-dialog-get.md)

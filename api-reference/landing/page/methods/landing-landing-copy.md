@@ -1,46 +1,71 @@
 # Copy Page landing.landing.copy
 
-{% note warning "We are still updating this page" %}
-
-Some data may be missing — we will complete it shortly.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- parameter types are not specified
-- parameter requirements are not indicated
-- examples are missing
-- success response is absent
-- error response is absent
-
-{% endnote %}
-
-{% endif %}
-
 > Scope: [`landing`](../../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: a user with "edit" access permission for the site
 
-The method `landing.landing.copy` copies the specified page. It returns the identifier of the new page.
+The method `landing.landing.copy` duplicates a page and returns the identifier of the new page. This method can also copy a page marked as deleted and located in the trash.
 
-## Parameters
+## Method Parameters
+
+{% include [Footnote on required parameters](../../../../_includes/required.md) %}
 
 #|
-|| **Parameters** | **Description** | **Available since** ||
-|| **lid**
-[`unknown`](../../../data-types.md) | Page identifier. ||
+|| **Name**
+`type` | **Description** ||
+|| **lid***
+[`integer`](../../../data-types.md) | Identifier of the original page.
+
+The page identifier can be obtained using the method [landing.landing.getList](./landing-landing-get-list.md) ||
 || **toSiteId**
-[`unknown`](../../../data-types.md) | Optional parameter, site identifier. If specified, the copy will occur to the indicated site. ||
+[`integer`](../../../data-types.md) | Identifier of the target site. If this parameter is not provided or set to `0`, the copy will be created on the same site as the original page.
+
+The site identifier can be obtained using the method [landing.site.getList](../../site/landing-site-get-list.md) ||
 || **toFolderId**
-[`unknown`](../../../data-types.md) | Optional parameter, folder identifier. If specified, the copy will occur to the indicated folder (if it exists and access is granted). Otherwise, the copy will occur in the same folder where the page is located, or in the root if the source is also in the root. | 18.7.500 ||
+[`integer`](../../../data-types.md) | Identifier of the target folder. If this parameter is provided, the copy is created in the specified folder. The folder must belong to the target site `toSiteId`. 
+
+If this parameter is not provided or set to `0`, the copy is created in the root of the target site. If the folder is not found or belongs to another site, the method does not return an error and creates the copy in the root of the target site.
+
+The folder identifier can be obtained using the method [landing.site.getFolders](../../site/landing-site-get-folders.md) ||
+|| **skipSystem**
+[`boolean`](../../../data-types.md) | Flag for copying the system attribute of the page. Default is `false`.
+
+If set to `true`, the new page is created as non-system (`SYS = N`)
+||
 |#
 
-## Examples
+## Code Examples
+
+{% include [Footnote on examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
+
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+      -H "Content-Type: application/json" \
+      -d '{
+        "lid": 1688,
+        "toSiteId": 305,
+        "toFolderId": 95
+      }' \
+      "https://**put.your-domain-here**/rest/**user_id**/**webhook_code**/landing.landing.copy.json"
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+      -H "Content-Type: application/json" \
+      -d '{
+        "lid": 1688,
+        "toSiteId": 305,
+        "toFolderId": 95,
+        "auth": "**put_access_token_here**"
+      }' \
+      "https://**put.your-domain-here**/rest/landing.landing.copy.json"
+    ```
 
 - JS
 
@@ -50,14 +75,16 @@ The method `landing.landing.copy` copies the specified page. It returns the iden
     	const response = await $b24.callMethod(
     		'landing.landing.copy',
     		{
-    			lid: 1688
+    			lid: 1688,
+    			toSiteId: 305,
+    			toFolderId: 95
     		}
     	);
-    	
+
     	const result = response.getData().result;
     	console.info(result);
     }
-    catch(error)
+    catch (error)
     {
     	console.error(error);
     }
@@ -72,24 +99,20 @@ The method `landing.landing.copy` copies the specified page. It returns the iden
             ->call(
                 'landing.landing.copy',
                 [
-                    'lid' => 1688
+                    'lid' => 1688,
+                    'toSiteId' => 305,
+                    'toFolderId' => 95,
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
-        if ($result->error()) {
-            error_log($result->error());
-            echo 'Error: ' . $result->error();
-        } else {
-            echo 'Info: ' . print_r($result->data(), true);
-        }
-    
+
+        echo 'Success: ' . var_export($result, true);
     } catch (Throwable $e) {
         error_log($e->getMessage());
-        echo 'Error copying landing: ' . $e->getMessage();
+        echo 'Error copying landing page: ' . $e->getMessage();
     }
     ```
 
@@ -99,11 +122,13 @@ The method `landing.landing.copy` copies the specified page. It returns the iden
     BX24.callMethod(
         'landing.landing.copy',
         {
-            lid: 1688
+            lid: 1688,
+            toSiteId: 305,
+            toFolderId: 95
         },
         function(result)
         {
-            if(result.error())
+            if (result.error())
             {
                 console.error(result.error());
             }
@@ -115,6 +140,95 @@ The method `landing.landing.copy` copies the specified page. It returns the iden
     );
     ```
 
+- PHP CRest
+
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'landing.landing.copy',
+        [
+            'lid' => 1688,
+            'toSiteId' => 305,
+            'toFolderId' => 95,
+        ]
+    );
+
+    if (isset($result['error']))
+    {
+        echo 'Error: ' . $result['error_description'];
+    }
+    else
+    {
+        echo '<pre>';
+        print_r($result['result']);
+        echo '</pre>';
+    }
+    ```
+
 {% endlist %}
 
-{% include [Footnote about examples](../../../../_includes/examples.md) %}
+## Response Handling
+
+HTTP Status: **200**
+
+```json
+{
+    "result": 2237,
+    "time": {
+        "start": 1773706491,
+        "finish": 1773706492.91233,
+        "duration": 1.912329912185669,
+        "processing": 1,
+        "date_start": "2026-03-17T03:14:51+01:00",
+        "date_finish": "2026-03-17T03:14:52+01:00",
+        "operating_reset_at": 1773707091,
+        "operating": 0.9924919605255127
+    }
+}
+```
+
+### Returned Data
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`integer`](../../../data-types.md) | Identifier of the created page copy ||
+|| **time**
+[`time`](../../../data-types.md#time) | Information about the execution time of the request ||
+|#
+
+## Error Handling
+
+HTTP Status: **400 Bad Request**
+
+```json
+{
+    "error": "LANDING_NOT_EXIST",
+    "error_description": "Landing not found"
+}
+```
+
+{% include notitle [error handling](../../../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+#|
+|| **Code** | **Description** ||
+|| `LANDING_NOT_EXIST` | Landing not found. If the original page does not exist or is not accessible to the current user. Being in the trash does not trigger this error by itself. ||
+|| `SITE_NOT_FOUND` | Site not found. If `toSiteId` points to a non-existent site ||
+|| `ACCESS_DENIED` | Access to create the page is denied. If the user does not have "edit" access permission for the site ||
+|#
+
+{% include [system errors](../../../../_includes/system-errors.md) %}
+
+## Continue Learning
+
+- [{#T}](./landing-landing-add.md)
+- [{#T}](./landing-landing-add-by-template.md)
+- [{#T}](./landing-landing-delete.md)
+- [{#T}](./landing-landing-get-list.md)
+- [{#T}](./landing-landing-move.md)
+- [{#T}](./landing-landing-publication.md)
+- [{#T}](./landing-landing-update.md)

@@ -1,19 +1,19 @@
 title: News Feed
 href: index.md
 items:
-  - name: Overview of methods
+  - name: Overview of Methods
     href: index.md
-  - name: Add message
+  - name: Add Message
     href: log-blogpost-add.md
-  - name: Get list of messages
+  - name: Edit Message
+    href: log-blogpost-update.md
+  - name: Get List of Messages
     href: log-blogpost-get.md
-  - name: Edit message
-    href: log-blogpost-update.md 
-  - name: Add recipients to message
-    href: log-blogpost-share.md 
-  - name: Delete message
-    href: log-blogpost-delete.md  
-  - name: View users who read an important message
+  - name: Delete Message
+    href: log-blogpost-delete.md
+  - name: Add Recipients to Message
+    href: log-blogpost-share.md
+  - name: View Users Who Read Important Message
     href: log-blogpost-getusers-important.md
   - name: Comments
     include:

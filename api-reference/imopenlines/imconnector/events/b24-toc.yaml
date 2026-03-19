@@ -3,7 +3,7 @@ href: index.md
 items: 
   - name: Overview of Events
     href: index.md
-  - name: When New Messages Are Received
+  - name: When Sending Messages
     href: on-im-connector-message-add.md
   - name: When a Dialogue Is Started
     href: on-im-connector-dialog-start.md

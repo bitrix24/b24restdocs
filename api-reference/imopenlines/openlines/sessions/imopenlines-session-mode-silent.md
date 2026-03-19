@@ -1,44 +1,33 @@
-# Switch the dialog to "silent" mode imopenlines.session.mode.silent
-
-{% note warning "We are still updating this page" %}
-
-Some data may be missing here — we will fill it in shortly
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- parameter types are not specified
-- examples are missing
-- success response is absent
-- error response is absent
-
-{% endnote %}
-
-{% endif %}
+# Switch the dialog to silent mode imopenlines.session.mode.silent
 
 > Scope: [`imopenlines`](../../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: any user with access permission to the dialog
 
-This method is used to enable and disable silent messaging mode.
+The method `imopenlines.session.mode.silent` enables or disables silent messaging mode in the dialog.
+
+{% note warning "" %}
+
+Development of the method has been halted, but it continues to function.
+
+{% endnote %}
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
-`Type` | **Example** | **Default** | **Description** ||
+`type` | **Description** ||
 || **CHAT_ID***
-[`unknown`](../../../data-types.md) | 2020 | | Identifier of the chat ||
+[`integer`](../../../data-types.md) | Identifier of the open line chat. 
+
+The identifier can be obtained using the [imopenlines.session.open](./imopenlines-session-open.md) or [imopenlines.dialog.get](./imopenlines-dialog-get.md) methods. ||
 || **ACTIVATE**
-[`unknown`](../../../data-types.md) | Y | N | Activation flag ||
+[`string`](../../../data-types.md) | Activation flag. `Y` — enable silent mode, any other value disables it. By default, the mode is off. ||
 |#
 
-## Examples
+## Code Examples
 
 {% include [Note on examples](../../../../_includes/examples.md) %}
 
@@ -46,37 +35,44 @@ This method is used to enable and disable silent messaging mode.
 
 - cURL (Webhook)
 
-    // example for cURL (Webhook)
+    ```bash
+    curl -X POST \
+      -H "Content-Type: application/json" \
+      -H "Accept: application/json" \
+      -d '{"CHAT_ID":2043,"ACTIVATE":"Y"}' \
+      https://your-domain.bitrix24.com/rest/1/webhook_key/imopenlines.session.mode.silent.json
+    ```
 
 - cURL (OAuth)
 
-    // example for cURL (OAuth)
+    ```bash
+    curl -X POST \
+      -H "Content-Type: application/json" \
+      -H "Accept: application/json" \
+      -d '{"CHAT_ID":2043,"ACTIVATE":"Y","auth":"<access_token>"}' \
+      https://your-domain.bitrix24.com/rest/imopenlines.session.mode.silent.json
+    ```
 
 - JS
 
-
     ```js
-    try
-    {
-    	const response = await $b24.callMethod(
-    		'imopenlines.session.mode.silent',
-    		{
-    			CHAT_ID: 2024
-    		}
-    	);
-    	
-    	const result = response.getData().result;
-    	console.log(result);
-    }
-    catch(error)
-    {
-    	console.warn(error.ex);
-    	return false;
+    try {
+        const response = await $b24.callMethod(
+            'imopenlines.session.mode.silent',
+            {
+                CHAT_ID: 2043,
+                ACTIVATE: 'Y',
+            }
+        );
+
+        const { result } = response.getData();
+        console.log(result);
+    } catch (error) {
+        console.error(error);
     }
     ```
 
 - PHP
-
 
     ```php
     try {
@@ -85,24 +81,23 @@ This method is used to enable and disable silent messaging mode.
             ->call(
                 'imopenlines.session.mode.silent',
                 [
-                    'CHAT_ID' => 2024
+                    'CHAT_ID' => 2043,
+                    'ACTIVATE' => 'Y',
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
+
         if ($result->error()) {
-            echo 'Warning: ' . $result->error()->ex;
-            return false;
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
         }
-    
-        echo 'Success: ' . print_r($result->data(), true);
-    
-    } catch (Throwable $e) {
-        error_log($e->getMessage());
-        echo 'Error: ' . $e->getMessage();
+    } catch (Throwable $exception) {
+        error_log($exception->getMessage());
+        echo 'Error setting silent mode: ' . $exception->getMessage();
     }
     ```
 
@@ -112,38 +107,108 @@ This method is used to enable and disable silent messaging mode.
     BX24.callMethod(
         'imopenlines.session.mode.silent',
         {
-            CHAT_ID: 2024
+            CHAT_ID: 2043,
+            ACTIVATE: 'Y',
         },
-        function(result)
-        {
-            if(result.error())
-            {
-                console.warn(result.error().ex);
-                return false;
+        function(result) {
+            if (result.error()) {
+                console.error(result.error().ex);
+            } else {
+                console.log(result.data());
             }
-
-            console.log(result.data());
         }
     );
     ```
 
 - PHP CRest
 
-    // example for php
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'imopenlines.session.mode.silent',
+        [
+            'CHAT_ID' => 2043,
+            'ACTIVATE' => 'Y',
+        ]
+    );
+
+    if (!empty($result['error'])) {
+        echo 'Error: ' . $result['error_description'];
+    } else {
+        echo 'Success: ' . print_r($result['result'], true);
+    }
+    ```
 
 {% endlist %}
 
-## Success Response
+## Response Handling
+
+HTTP Status: **200**
 
 ```json
-true
+{
+    "result": true,
+    "time": {
+        "start": 1773678966,
+        "finish": 1773678966.767325,
+        "duration": 0.7673249244689941,
+        "processing": 0,
+        "date_start": "2026-03-16T19:36:06+01:00",
+        "date_finish": "2026-03-16T19:36:06+01:00",
+        "operating_reset_at": 1773679566,
+        "operating": 0
+    }
+}
 ```
+
+### Returned Data
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`boolean`](../../../data-types.md) | Returns `true` if the mode is applied. ||
+|| **time**
+[`time`](../../../data-types.md#time) | Information about the request execution time. ||
+|#
+
+## Error Handling
+
+HTTP Status: **400**
+
+```json
+{
+    "error": "CHAT_ID",
+    "error_description": "Chat ID is incorrect"
+}
+```
+
+{% include notitle [error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| **ACCESS_DENIED** | The current user does not have access to the specified chat ||
-|| **CHAT_TYPE** | The specified chat is not an open line ||
-|| **CHAT_ID** | An incorrect chat identifier was provided ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `CHAT_ID` | The specified chat identifier is incorrect. | Empty or incorrect `CHAT_ID`. ||
+|| `400` | `CHAT_TYPE` | The specified chat is not an open line. | The specified chat does not belong to open lines. ||
+|| `400` | `ACCESS_DENIED` | You cannot open this conversation as you do not have sufficient rights. | The current user does not have access to the dialog. ||
+|| `400` | `USER_ID` | The specified user identifier is incorrect. | The user on behalf of whom the method is executed is not defined. ||
 |#
+
+{% include [system errors](../../../../_includes/system-errors.md) %}
+
+## Continue Learning
+
+- [{#T}](./imopenlines-session-open.md)
+- [{#T}](./imopenlines-session-start.md)
+- [{#T}](./imopenlines-session-join.md)
+- [{#T}](./imopenlines-session-history-get.md)
+- [{#T}](./imopenlines-session-intercept.md)
+- [{#T}](./imopenlines-session-mode-pin.md)
+- [{#T}](./imopenlines-session-mode-pin-all.md)
+- [{#T}](./imopenlines-session-mode-unpin-all.md)
+- [{#T}](./imopenlines-session-head-vote.md)
+- [{#T}](./imopenlines-message-session-start.md)
+- [{#T}](./imopenlines-crm-lead-create.md)
+- [{#T}](./imopenlines-dialog-get.md)

@@ -6,7 +6,7 @@ metadata:
     content: 'Make sure to connect the Bitrix24 MCP server and use the official Bitrix24 documentation for code generation and working with the REST API.'
 ---
 
-The Model Context Protocol (MCP) for Bitrix24 is a server that allows neural networks (ChatGPT, Claude, Copilot, and other AI assistants) to access the up-to-date REST documentation of Bitrix24.
+The Model Context Protocol (MCP) for Bitrix24 is a server that enables neural networks (ChatGPT, Claude, Copilot, and other AI assistants) to access the up-to-date REST documentation of Bitrix24.
 
 By using the MCP server, the neural network:
 
@@ -16,15 +16,15 @@ By using the MCP server, the neural network:
 
 ## When to Use MCP
 
-Connect the Bitrix24 MCP server if you are:
+Connect the Bitrix24 MCP server if:
 
-- developing a chatbot for Bitrix24
-- creating an application or integration via REST API
-- setting up automation, an AI agent, or a no-code scenario
-- writing a chatbot for Bitrix24 using ChatGPT
-- generating Bitrix24 integration code through Claude or Copilot
-- encountering non-existent REST methods in Bitrix24 from the neural network
-- receiving 404 errors when the AI opens Bitrix24 documentation links
+- you are developing a chatbot for Bitrix24
+- you are creating an application or integration via REST API
+- you are setting up automation, an AI agent, or a no-code scenario
+- you are writing a chatbot for Bitrix24 using ChatGPT
+- you are generating Bitrix24 integration code through Claude or Copilot
+- the neural network is producing non-existent Bitrix24 REST methods
+- the AI opens Bitrix24 documentation links and receives a 404 error
 
 ## How MCP Works in Bitrix24
 
@@ -32,7 +32,7 @@ The MCP server provides the AI assistant with structured data from the Bitrix24 
 
 This allows:
 
-- obtaining relevant API methods and fields for specific tasks
+- obtaining relevant methods and API fields for specific tasks
 - working with structured data instead of free text
 - reducing the number of errors and code corrections
 
@@ -46,7 +46,7 @@ The Bitrix24 MCP server operates over the Streamable HTTP protocol without suppo
 
 Specify the server address <https://mcp-dev.bitrix24.tech/mcp> in your development environment settings.
 
-The server is accessible without authorization.
+The server is accessible without authentication.
 
 ### Codex CLI
 
@@ -73,11 +73,11 @@ The server is accessible without authorization.
 
 3. Restart VS Code or reconnect the Codex session.
 
-4. Send requests in the Codex chat as usual. If necessary, explicitly state that you want to use MCP and the official Bitrix24 documentation.
+4. Send requests to the Codex chat as usual. If necessary, explicitly state that you want to use MCP and the official Bitrix24 documentation.
 
 ### Cursor
 
-1. Open *File > Preferences > Cursor Settings > Tools & MCP > New MCP server*. Cursor will open the system file `mcp.json`.
+1. Open *File > Preferences > Cursor Settings > Tools & MCP > New MCP server*. Cursor will open the system file `mcp.json`. 
 
 2. Add the configuration by creating a new array element `mcpServers` in the `mcp.json` file:
 
@@ -96,7 +96,7 @@ The server is accessible without authorization.
 
 4. When composing a request, add the `mcp.json` file to the context.
 
-**Alternative Method to Add MCP.** Click the button below, which will redirect you to Cursor. Cursor will automatically open and prompt you to add the server with pre-filled configuration.
+**Alternative way to add MCP.** Click the button below, which will redirect you to Cursor. Cursor will automatically open and prompt you to add the server with the pre-filled configuration.
 
 <a href="https://cursor.com/en-US/install-mcp?name=b24-dev-mcp&config=eyJ1cmwiOiJodHRwczovL21jcC1kZXYuYml0cml4MjQuY29tL21jcCIsInRpbWVvdXQiOjMwMDAwfQ%3D%3D"><img src="https://cursor.com/deeplink/mcp-install-dark.svg" alt="Add b24-dev-mcp MCP server to Cursor" height="32" /></a>
 
@@ -104,7 +104,7 @@ The server is accessible without authorization.
 
 1. For setup, use the instructions from [GitHub](https://docs.github.com/en/copilot/how-tos/provide-context/use-mcp/extend-copilot-chat-with-mcp#configuring-mcp-servers-manually).
 
-2. Create a file `.vscode/mcp.json` in the root of your project. The content of the file:
+2. Create the file `.vscode/mcp.json` in the root of the project. The content of the file:
 
   ```json
   {
@@ -159,7 +159,7 @@ The server is accessible without authorization.
 
 ### Google Antigravity
 
-1. Open the MCP Store menu by clicking `...` at the top of the agent panel.
+1. Open the MCP Store menu by clicking on `...` at the top of the agent panel.
 
 2. Click Manage MCP Servers.
 
@@ -177,11 +177,11 @@ The server is accessible without authorization.
    }
    ```
 
-5. Save the changes.
+5. Save the changes. 
 
 ## Example Requests
 
-The MCP server automatically provides the assistant with up-to-date Bitrix24 REST API data, but the interaction methods between the development environment and MCP vary.
+The MCP server automatically provides the assistant with up-to-date Bitrix24 REST API data, but the ways to interact between the development environment and MCP vary.
 
 **Example universal request to the neural network**: "Write an integration for Bitrix24 via REST API. Use the MCP server and the official Bitrix24 documentation to obtain relevant methods."
 
@@ -207,13 +207,13 @@ The MCP server automatically provides the assistant with up-to-date Bitrix24 RES
 
 ### Cursor
 
-**Feature**: It is necessary to connect the MCP configuration in the chat context.
+**Feature**: It is necessary to include the MCP configuration in the chat context.
 
 1. Add the `mcp.json` file to the chat context.
 
 2. Send a request in the chat with the AI assistant — "Write a `curl` request to create a lead in Bitrix24."
 
-3. The assistant will refer to the MCP server.
+3. The assistant will query the MCP server.
 
 4. MCP will return information about the method and its parameters from the documentation.
 
@@ -223,7 +223,7 @@ The MCP server automatically provides the assistant with up-to-date Bitrix24 RES
 
 **Feature**: It is necessary to select MCP as the agent for executing the request.
 
-1. Select the MCP agent and send a request in the chat with the AI assistant — "Create a lead in Bitrix24 with contact information and the source 'website'. Show an example in JavaScript."
+1. Select the MCP agent and send a request in the chat with the AI assistant — "Create a lead in Bitrix24 with contact information and source 'website'. Show an example in JavaScript."
 
 2. Copilot will automatically use the selected MCP agent.
 
@@ -235,9 +235,9 @@ The MCP server automatically provides the assistant with up-to-date Bitrix24 RES
 
 **Feature**: Automatically determines whether to use MCP.
 
-1. Send a request in the chat with the AI assistant — "Write a request to create a new lead in Bitrix24. The lead will include the data: name, company, and phone."
+1. Send a request in the chat with the AI assistant — "Write a request to create a new lead in Bitrix24. The lead will include the following data: name, company, and phone."
 
-2. Claude will determine that data from the connected MCP is needed and will send the request.
+2. Claude will determine that data from the connected MCP is needed and send the request.
 
 3. MCP will return information about the method and its parameters from the documentation.
 
@@ -261,9 +261,9 @@ The MCP server automatically provides the assistant with up-to-date Bitrix24 RES
 
 **Feature**: Automatically determines whether to use MCP.
 
-1. Execute the command `gemini chat` and send a request — "Build a `curl` request to create a lead with fields name, phone, and source 'website'."
+1. Execute the `gemini chat` command and send a request — "Build a `curl` request to create a lead with fields name, phone, and source 'website'."
 
-2. Gemini will determine that data from the connected MCP is needed and will send the request.
+2. Gemini will determine that data from the connected MCP is needed and send the request.
 
 3. MCP will return a description of the appropriate method and its parameters from the documentation.
 
@@ -273,9 +273,9 @@ The MCP server automatically provides the assistant with up-to-date Bitrix24 RES
 
 **Feature**: Automatically determines whether to use MCP.
 
-1. Send a request in the chat — "Find the method to update a deal in CRM."
+1. Send a request in the chat — "Find the method for updating a deal in CRM."
 
-2. Antigravity will determine that data from MCP is needed, perform the search, and return the result.
+2. Antigravity will determine that data from MCP is needed, perform a search, and return the result.
 
 3. The assistant will generate a response based on the documentation.
 

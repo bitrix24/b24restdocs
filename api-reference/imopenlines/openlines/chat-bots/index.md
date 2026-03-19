@@ -40,10 +40,10 @@ Chatbots in open channels help automate communication with customers:
 
 #|
 || **Method** | **Description** ||
+|| [imopenlines.bot.session.message.send](./imopenlines-bot-session-message-send.md) | Sends an automatic message in the dialogue ||
+|| [imopenlines.bot.session.operator](./imopenlines-bot-session-operator.md) | Switches the dialogue to an available operator ||
+|| [imopenlines.bot.session.transfer](./imopenlines-bot-session-transfer.md) | Transfers the dialogue to an operator by ID or queue ||
 || [imopenlines.bot.session.finish](./imopenlines-bot-session-finish.md) | Ends the dialogue ||
-|| [imopenlines.bot.session.message.send](./imopenlines-bot-session-message-send.md) | Sends a welcome message ||
-|| [imopenlines.bot.session.operator](./imopenlines-bot-session-operator.md) | Switches the dialogue to a free operator ||
-|| [imopenlines.bot.session.transfer](./imopenlines-bot-session-transfer.md) | Transfers the dialogue to an operator by ID ||
 |#
 
 ## Continue Learning

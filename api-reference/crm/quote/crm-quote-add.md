@@ -1,61 +1,169 @@
-# Add estimate crm.quote.add
-
-{% note warning "We are still updating this page" %}
-
-Some data may be missing — we will complete it shortly.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- adjustments needed for writing standards
-- parameter types not specified
-- parameter requirements not indicated
-- examples missing (should include three examples - curl, js, php)
-- error response missing
-- success response missing
-
-{% endnote %}
-
-{% endif %}
+# Add Estimate crm.quote.add
 
 > Scope: [`crm`](../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: a user with the "add" access permission for estimates
 
-{% note warning "Method Development Stopped" %}
+{% note warning "Method development halted" %}
 
-The method `crm.quote.add` continues to function, but there is a more relevant alternative [crm.item.add](../universal/crm-item-add.md).
+The method `crm.quote.add` continues to function, but there is a more relevant alternative: [crm.item.add](../universal/crm-item-add.md)
 
 {% endnote %}
 
-The method `crm.quote.add` creates a new estimate. If you need to specify any details of the buyer/seller in the estimate (since there may be several for a company), use the method [crm.requisite.link.register](../requisites/links/crm-requisite-link-register.md).
+The method `crm.quote.add` creates an estimate.
 
-The created estimate must include the seller and buyer companies:
-- `COMPANY_ID` - if the buyer is a company or `CONTACT_ID` if the buyer is a contact.
-- `MYCOMPANY_ID` - seller. 
+If you need to explicitly specify the details of the buyer and seller in the estimate, use the method [crm.requisite.link.register](../requisites/links/crm-requisite-link-register.md).
 
-The identifiers specified in **crm.requisite.link.register** and in the created estimate must correspond to the buyer and seller.
+## Method Parameters
+
+{% include [Note on parameters](../../../_includes/required.md) %}
 
 #|
-||  **Parameter** / **Type**| **Description** ||
-|| **fields**
-[`unknown`](../../data-types.md) | Set of fields - an array of the form `array("field"=>"value"[, ...])`, containing the values of the estimate fields, where "field" can take values returned by the method [crm.quote.fields](./crm-quote-fields.md).
+|| **Name**
+`type` | **Description** ||
+|| **fields***
+[`object`](../data-types.md) | An object with fields of the estimate in the following format:
 
-{% note info %}
+```json
+{
+    "field_1": "value_1",
+    "field_2": "value_2",
+    "...": "..."
+}
+```
 
-To find out the required format of the fields, execute the method [crm.quote.fields](./crm-quote-fields.md) and check the format of the returned values for these fields. 
+where:
+- `field_n` — field name
+- `value_n` — field value
+
+The list of required and main fields is provided [below](#parameter-fields).
+
+A complete list of available fields and their types can be obtained using the method [crm.quote.fields](./crm-quote-fields.md)
+||
+|| **params**
+[`object`](../data-types.md) | An object of additional parameters [(detailed description)](#parameter-params) ||
+|#
+
+### Parameter fields {#parameter-fields}
+
+{% include [Note on parameters](../../../_includes/required.md) %}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **TITLE***
+[`string`](../data-types.md) | Subject of the estimate
+
+Length restriction — up to `255` characters.
+
+If a value longer than `255` is provided, the system will truncate it to `255` characters ||
+|| **STATUS_ID**
+[`crm_status`](../data-types.md) | Stage of the estimate
+
+Pass the value explicitly in each request.
+
+The list of available stages can be obtained using the method [crm.status.list](../status/crm-status-list.md) with the filter `ENTITY_ID = QUOTE_STATUS` ||
+|| **CURRENCY_ID**
+[`crm_currency`](../data-types.md) | Currency of the estimate amount ||
+|| **OPPORTUNITY**
+[`double`](../data-types.md) | Amount of the estimate
+
+Pass a numeric value along with `CURRENCY_ID` ||
+|| **ASSIGNED_BY_ID**
+[`user`](../data-types.md) | Identifier of the responsible person ||
+|| **COMPANY_ID**
+[`crm_company`](../data-types.md) | Identifier of the client company ||
+|| **CONTACT_IDS**
+[`crm_contact[]`](../data-types.md) | Array of identifiers of client contacts
+||
+|| **MYCOMPANY_ID**
+[`crm_company`](../data-types.md) | Identifier of "your company" for seller requisites ||
+|| **OPENED**
+[`char`](../data-types.md) | Is the estimate available to everyone? Possible values:
+- `Y` — yes
+- `N` — no ||
+|| **PERSON_TYPE_ID**
+[`integer`](../data-types.md) | Identifier of the payer type ||
+|| **BEGINDATE**
+[`date`](../data-types.md) | Date of issuance ||
+|| **CLOSEDATE**
+[`date`](../data-types.md) | Expiration date of the estimate ||
+|| **CLIENT_TITLE**
+[`string`](../data-types.md) | Client name, up to `255` characters ||
+|| **CLIENT_ADDR**
+[`string`](../data-types.md) | Client address, up to `255` characters ||
+|| **CLIENT_EMAIL**
+[`string`](../data-types.md) | Client email, up to `255` characters ||
+|| **CLIENT_PHONE**
+[`string`](../data-types.md) | Client phone, up to `255` characters ||
+|| **COMMENTS**
+[`string`](../data-types.md) | Comment ||
+|#
+
+{% note info "Method feature" %}
+
+Some incorrect values in the fields may not lead to a `400` error: values are normalized, truncated, or replaced with default values.
 
 {% endnote %}
 
-||
+### Parameter params {#parameter-params}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **IMPORT**
+[`boolean`](../data-types.md) | Import mode. Possible values:
+- `Y` — yes
+- `N` — no ||
 |#
 
-## Example
+**Import**
+
+These fields are available for filling when the parameter `IMPORT = 'Y'` is passed in the `params`.
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **DATE_CREATE**
+[`datetime`](../data-types.md) | Creation date ||
+|| **DATE_MODIFY**
+[`datetime`](../data-types.md) | Modification date ||
+|| **CREATED_BY_ID**
+[`user`](../data-types.md) | Created by ||
+|| **MODIFY_BY_ID**
+[`user`](../data-types.md) | Modified by ||
+|#
+
+## Code Examples
+
+{% include [Note on examples](../../../_includes/examples.md) %}
+
+Example of creating an estimate:
+- subject — `Estimate for furniture supply`
+- buyer — company with `id = 1`
+- seller — your company with `id = 3`
 
 {% list tabs %}
+
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"fields":{"TITLE":"Estimate for furniture supply","STATUS_ID":"DRAFT","OPENED":"Y","ASSIGNED_BY_ID":1,"CURRENCY_ID":"USD","OPPORTUNITY":150000,"COMPANY_ID":1,"MYCOMPANY_ID":3,"COMMENTS":"Prepared upon client request","BEGINDATE":"2026-03-13T10:00:00+01:00","CLOSEDATE":"2026-03-20T18:00:00+01:00"},"params":{"IMPORT":"N"}}' \
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.quote.add
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"fields":{"TITLE":"Estimate for furniture supply","STATUS_ID":"DRAFT","OPENED":"Y","ASSIGNED_BY_ID":1,"CURRENCY_ID":"USD","OPPORTUNITY":150000,"COMPANY_ID":1,"MYCOMPANY_ID":3,"COMMENTS":"Prepared upon client request","BEGINDATE":"2026-03-13T10:00:00+01:00","CLOSEDATE":"2026-03-20T18:00:00+01:00"},"params":{"IMPORT":"N"},"auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/crm.quote.add
+    ```
 
 - JS
 
@@ -63,30 +171,33 @@ To find out the required format of the fields, execute the method [crm.quote.fie
     try
     {
     	const response = await $b24.callMethod(
-    		"crm.quote.add",
+    		'crm.quote.add',
     		{
-    			fields:
-    			{
-    				"TITLE": "Draft",
-    				"STATUS_ID": "DRAFT",
-    				"OPENED": "Y",
-    				"ASSIGNED_BY_ID": 1,
-    				"CURRENCY_ID": "USD",
-    				"OPPORTUNITY": 5000,
-    				"COMPANY_ID": 1,
-    				"COMMENTS": "New estimate.",
-    				"BEGINDATE": "2016-03-01T12:00:00",
-    				"CLOSEDATE": "2016-04-01T12:00:00"
-    			}
+    			fields: {
+    				TITLE: 'Estimate for furniture supply',
+    				STATUS_ID: 'DRAFT',
+    				OPENED: 'Y',
+    				ASSIGNED_BY_ID: 1,
+    				CURRENCY_ID: 'USD',
+    				OPPORTUNITY: 150000,
+    				COMPANY_ID: 1,
+    				MYCOMPANY_ID: 3,
+    				COMMENTS: 'Prepared upon client request',
+    				BEGINDATE: '2026-03-13T10:00:00+01:00',
+    				CLOSEDATE: '2026-03-20T18:00:00+01:00',
+    			},
+    			params: {
+    				IMPORT: 'N',
+    			},
     		}
     	);
-    	
+
     	const result = response.getData().result;
-    	console.info("Estimate created with ID " + result);
+    	console.info(result);
     }
     catch( error )
     {
-    	console.error(error);
+    	console.error('Error:', error);
     }
     ```
 
@@ -100,29 +211,33 @@ To find out the required format of the fields, execute the method [crm.quote.fie
                 'crm.quote.add',
                 [
                     'fields' => [
-                        'TITLE'          => 'Draft',
-                        'STATUS_ID'      => 'DRAFT',
-                        'OPENED'         => 'Y',
+                        'TITLE' => 'Estimate for furniture supply',
+                        'STATUS_ID' => 'DRAFT',
+                        'OPENED' => 'Y',
                         'ASSIGNED_BY_ID' => 1,
-                        'CURRENCY_ID'    => 'USD',
-                        'OPPORTUNITY'    => 5000,
-                        'COMPANY_ID'     => 1,
-                        'COMMENTS'       => 'New estimate.',
-                        'BEGINDATE'      => '2016-03-01T12:00:00',
-                        'CLOSEDATE'      => '2016-04-01T12:00:00',
+                        'CURRENCY_ID' => 'USD',
+                        'OPPORTUNITY' => 150000,
+                        'COMPANY_ID' => 1,
+                        'MYCOMPANY_ID' => 3,
+                        'COMMENTS' => 'Prepared upon client request',
+                        'BEGINDATE' => '2026-03-13T10:00:00+01:00',
+                        'CLOSEDATE' => '2026-03-20T18:00:00+01:00',
+                    ],
+                    'params' => [
+                        'IMPORT' => 'N',
                     ],
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
-        echo 'Estimate created with ID ' . $result;
-    
+
+        echo 'Created quote ID: ' . $result;
+
     } catch (Throwable $e) {
         error_log($e->getMessage());
-        echo 'Error creating estimate: ' . $e->getMessage();
+        echo 'Error creating quote: ' . $e->getMessage();
     }
     ```
 
@@ -130,32 +245,129 @@ To find out the required format of the fields, execute the method [crm.quote.fie
 
     ```js
     BX24.callMethod(
-        "crm.quote.add",
+        'crm.quote.add',
         {
-            fields:
-            {
-                "TITLE": "Draft",
-                "STATUS_ID": "DRAFT",
-                "OPENED": "Y",
-                "ASSIGNED_BY_ID": 1,
-                "CURRENCY_ID": "USD",
-                "OPPORTUNITY": 5000,
-                "COMPANY_ID": 1,
-                "COMMENTS": "New estimate.",
-                "BEGINDATE": "2016-03-01T12:00:00",
-                "CLOSEDATE": "2016-04-01T12:00:00"
-            }
+            fields: {
+                TITLE: 'Estimate for furniture supply',
+                STATUS_ID: 'DRAFT',
+                OPENED: 'Y',
+                ASSIGNED_BY_ID: 1,
+                CURRENCY_ID: 'USD',
+                OPPORTUNITY: 150000,
+                COMPANY_ID: 1,
+                MYCOMPANY_ID: 3,
+                COMMENTS: 'Prepared upon client request',
+                BEGINDATE: '2026-03-13T10:00:00+01:00',
+                CLOSEDATE: '2026-03-20T18:00:00+01:00',
+            },
+            params: {
+                IMPORT: 'N',
+            },
         },
-        function(result)
-        {
-            if(result.error())
-                console.error(result.error());
-            else
-                console.info("Estimate created with ID " + result.data());
-        }
+        (result) => {
+            result.error()
+                ? console.error(result.error())
+                : console.info(result.data())
+            ;
+        },
     );
+    ```
+
+- PHP CRest
+
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'crm.quote.add',
+        [
+            'fields' => [
+                'TITLE' => 'Estimate for furniture supply',
+                'STATUS_ID' => 'DRAFT',
+                'OPENED' => 'Y',
+                'ASSIGNED_BY_ID' => 1,
+                'CURRENCY_ID' => 'USD',
+                'OPPORTUNITY' => 150000,
+                'COMPANY_ID' => 1,
+                'MYCOMPANY_ID' => 3,
+                'COMMENTS' => 'Prepared upon client request',
+                'BEGINDATE' => '2026-03-13T10:00:00+01:00',
+                'CLOSEDATE' => '2026-03-20T18:00:00+01:00',
+            ],
+            'params' => [
+                'IMPORT' => 'N',
+            ],
+        ]
+    );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
     ```
 
 {% endlist %}
 
-{% include [Footnote about examples](../../../_includes/examples.md) %}
+## Response Handling
+
+HTTP status: **200**
+
+```json
+{
+    "result": 43,
+    "time": {
+        "start": 1773396937,
+        "finish": 1773396937.557957,
+        "duration": 0.5579569339752197,
+        "processing": 0,
+        "date_start": "2026-03-13T13:15:37+01:00",
+        "date_finish": "2026-03-13T13:15:37+01:00",
+        "operating_reset_at": 1773397537,
+        "operating": 0.5224320888519287
+    }
+}
+```
+
+### Returned Data
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`integer`](../data-types.md) | Root element of the response. Contains the identifier of the created estimate ||
+|| **time**
+[`time`](../data-types.md#time) | Information about the request execution time ||
+|#
+
+## Error Handling
+
+HTTP status: **400**
+
+```json
+{
+    "error": "",
+    "error_description": "Parameter 'fields' must be array."
+}
+```
+
+{% include notitle [error handling](../../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+#|
+|| **Code** | **Description** | **Value** ||
+|| `-` | `Parameter 'fields' must be array.` | `fields` is not an object ||
+|| `-` | `Parameter 'params' must be array.` | `params` is not an object ||
+|| `-` | `Access denied.` | The user does not have permission to add estimates ||
+|#
+
+{% include [system errors](../../../_includes/system-errors.md) %}
+
+## Continue Learning
+
+- [{#T}](./crm-quote-update.md)
+- [{#T}](./crm-quote-get.md)
+- [{#T}](./crm-quote-list.md)
+- [{#T}](./crm-quote-delete.md)
+- [{#T}](./crm-quote-fields.md)
+- [{#T}](./crm-quote-product-rows-set.md)
+- [{#T}](./crm-quote-product-rows-get.md)

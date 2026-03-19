@@ -59,9 +59,9 @@ There are two embedding scenarios:
 
 > Scope: [`crm`](../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: depending on the method
 
-### Main
+### Main Methods
 
 {% list tabs %}
 
@@ -71,9 +71,9 @@ There are two embedding scenarios:
     || **Method** | **Description** ||
     || [crm.quote.add](./crm-quote-add.md) | Creates a new estimate ||
     || [crm.quote.update](./crm-quote-update.md) | Modifies an existing estimate ||
-    || [crm.quote.get](./crm-quote-get.md) | Returns an estimate by ID ||
-    || [crm.quote.list](./crm-quote-list.md) | Returns a list of estimates by filter ||
-    || [crm.quote.delete](./crm-quote-delete.md) | Deletes an estimate and all related objects ||
+    || [crm.quote.get](./crm-quote-get.md) | Returns an estimate by its identifier ||
+    || [crm.quote.list](./crm-quote-list.md) | Returns a list of estimates based on a filter ||
+    || [crm.quote.delete](./crm-quote-delete.md) | Deletes an estimate ||
     || [crm.quote.fields](./crm-quote-fields.md) | Returns the description of estimate fields ||
     || [crm.quote.productrows.get](./crm-quote-product-rows-get.md) | Returns the product items of the estimate ||
     || [crm.quote.productrows.set](./crm-quote-product-rows-set.md) | Sets (creates or updates) the product items of the estimate ||

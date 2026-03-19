@@ -1,25 +1,25 @@
 title: Open Channels
 href: index.md
-items: 
+items:
   - name: Open Channels in Bitrix24
     href: index.md
   - name: Add a New Open Channel
     href: imopenlines-config-add.md
-  - name: Modify Open Channel
+  - name: Edit Open Channel
     href: imopenlines-config-update.md
   - name: Get Open Channel by Id
     href: imopenlines-config-get.md
   - name: Get List of Open Channels
     href: imopenlines-config-list-get.md
-  - name: Get Link to Public Page of Open Channels Account
-    href: imopenlines-config-path-get.md
+  - name: Delete Open Channel
+    href: imopenlines-config-delete.md
   - name: Connect External Open Channel to Account
     href: imopenlines-network-join.md
   - name: Send Message to User on Behalf of Open Channel
     href: imopenlines-network-message-add.md
-  - name: Delete Open Channel
-    href: imopenlines-config-delete.md
-  - name: Chats
+  - name: Get Link to Public Page of Open Channels in Account
+    href: imopenlines-config-path-get.md
+  - name: CRM Chats
     include:
       path: chats/b24-toc.yaml
       mode: link
@@ -43,5 +43,5 @@ items:
     include:
       path: events/b24-toc.yaml
       mode: link
-  - name: Get Information About API Revisions
+  - name: Get API Revision Information
     href: imopenlines-revision-get.md

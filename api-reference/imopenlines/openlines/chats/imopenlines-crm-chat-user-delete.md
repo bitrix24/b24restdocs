@@ -1,65 +1,65 @@
-# Delete User from Chat imopenlines.crm.chat.user.delete
-
-{% note warning "We are still updating this page" %}
-
-Some data may be missing — we will complete it shortly.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- parameter types are not specified
-- examples are missing
-- success response is absent
-- error response is absent
-
-{% endnote %}
-
-{% endif %}
+# Remove User from Chat imopenlines.crm.chat.user.delete
 
 > Scope: [`imopenlines`](../../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: any user with access to the CRM entity
 
-This method removes a user from the CRM entity chat.
+The method `imopenlines.crm.chat.user.delete` removes a user from the chat associated with the CRM entity.
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../../_includes/required.md) %}
+{% include [Footnote on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
-`Type` | **Description** ||
-|| **CRM_ENTITY_TYPE***  
-[`unknown`](../../../data-types.md) | Type of CRM entity:
-- lead
-- deal
-- company
-- contact
- ||
-|| **CRM_ENTITY***  
-[`unknown`](../../../data-types.md) | Identifier of the CRM entity ||
-|| **USER_ID***  
-[`unknown`](../../../data-types.md) | Identifier of the user or bot we want to remove from the chat ||
-|| **CHAT_ID**  
-[`unknown`](../../../data-types.md) | Identifier of the chat. If not specified, the last chat linked to the CRM entity will be used ||
+`type` | **Description** ||
+|| **CRM_ENTITY_TYPE***
+[`string`](../../../data-types.md) | Type of the CRM entity. Possible values:
+- `lead` — lead
+- `deal` — deal
+- `company` — company
+- `contact` — contact ||
+|| **CRM_ENTITY***
+[`integer`](../../../data-types.md) | Identifier of the CRM entity.
+
+You can obtain the identifier using the universal method [getting a list of CRM entities](../../../crm/universal/crm-item-list.md) ||
+|| **USER_ID***
+[`integer`](../../../data-types.md) | Identifier of the user or bot to be removed from the chat.
+
+You can obtain the user identifier using the [user.get](../../../user/user-get.md) and [user.search](../../../user/user-search.md) methods ||
+|| **CHAT_ID**
+[`integer`](../../../data-types.md) | Identifier of the chat. 
+
+By default, the last chat associated with the CRM entity is used.
+
+You can obtain the identifiers of chats associated with the CRM entity using the [imopenlines.crm.chat.get](./imopenlines-crm-chat-get.md) method ||
 |#
 
-## Examples
+## Code Examples
 
-{% include [Note on examples](../../../../_includes/examples.md) %}
+{% include [Footnote on examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
 - cURL (Webhook)
 
-    // example for cURL (Webhook)
+    ```bash
+    curl -X POST \
+      -H "Content-Type: application/json" \
+      -H "Accept: application/json" \
+      -d '{"CRM_ENTITY_TYPE":"lead","CRM_ENTITY":1205,"USER_ID":503,"CHAT_ID":1763}' \
+      https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/imopenlines.crm.chat.user.delete
+    ```
 
 - cURL (OAuth)
 
-    // example for cURL (OAuth)
+    ```bash
+    curl -X POST \
+      -H "Content-Type: application/json" \
+      -H "Accept: application/json" \
+      -d '{"CRM_ENTITY_TYPE":"lead","CRM_ENTITY":1205,"USER_ID":503,"CHAT_ID":1763,"auth":"**put_access_token_here**"}' \
+      https://**put_your_bitrix24_address**/rest/imopenlines.crm.chat.user.delete
+    ```
 
 - JS
 
@@ -69,19 +69,19 @@ This method removes a user from the CRM entity chat.
         const response = await $b24.callMethod(
             'imopenlines.crm.chat.user.delete',
             {
-                CRM_ENTITY_TYPE: 'deal',
-                CRM_ENTITY: 288,
-                USER_ID: 12,
-                CHAT_ID: 8773
+                CRM_ENTITY_TYPE: 'lead',
+                CRM_ENTITY: 1205,
+                USER_ID: 503,
+                CHAT_ID: 1763
             }
         );
-        
+
         const result = response.getData().result;
         console.log(result);
     }
-    catch( error )
+    catch (error)
     {
-        console.error(error.ex);
+        console.error(error);
     }
     ```
 
@@ -94,26 +94,20 @@ This method removes a user from the CRM entity chat.
             ->call(
                 'imopenlines.crm.chat.user.delete',
                 [
-                    'CRM_ENTITY_TYPE' => 'deal',
-                    'CRM_ENTITY'      => 288,
-                    'USER_ID'         => 12,
-                    'CHAT_ID'         => 8773,
+                    'CRM_ENTITY_TYPE' => 'lead',
+                    'CRM_ENTITY' => 1205,
+                    'USER_ID' => 503,
+                    'CHAT_ID' => 1763,
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
-        if ($result->error()) {
-            error_log($result->error()->ex);
-        } else {
-            echo 'Success: ' . print_r($result->data(), true);
-        }
-    
+
+        print_r($result);
     } catch (Throwable $e) {
-        error_log($e->getMessage());
-        echo 'Error deleting chat user: ' . $e->getMessage();
+        echo $e->getMessage();
     }
     ```
 
@@ -123,15 +117,16 @@ This method removes a user from the CRM entity chat.
     BX24.callMethod(
         'imopenlines.crm.chat.user.delete',
         {
-            CRM_ENTITY_TYPE: 'deal',
-            CRM_ENTITY: 288,
-            USER_ID: 12,
-            CHAT_ID: 8773
+            CRM_ENTITY_TYPE: 'lead',
+            CRM_ENTITY: 1205,
+            USER_ID: 503,
+            CHAT_ID: 1763
         },
-        function(result) {
-            if(result.error())
+        function(result)
+        {
+            if (result.error())
             {
-                console.error(result.error().ex);
+                console.error(result.error());
             }
             else
             {
@@ -143,29 +138,97 @@ This method removes a user from the CRM entity chat.
 
 - PHP CRest
 
-    // example for php
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'imopenlines.crm.chat.user.delete',
+        [
+            'CRM_ENTITY_TYPE' => 'lead',
+            'CRM_ENTITY' => 1205,
+            'USER_ID' => 503,
+            'CHAT_ID' => 1763,
+        ]
+    );
+
+    print_r($result);
+    ```
 
 {% endlist %}
 
-## Success Response
+## Response Handling
 
-Returns CHAT_ID on success.
+HTTP Status: **200**
 
-```js
-8773
+```json
+{
+    "result": 1763,
+    "time": {
+        "start": 1773814361,
+        "finish": 1773814361.128245,
+        "duration": 0.12824511528015137,
+        "processing": 0,
+        "date_start": "2026-03-18T09:12:41+01:00",
+        "date_finish": "2026-03-18T09:12:41+01:00",
+        "operating_reset_at": 1773814961,
+        "operating": 0
+    }
+}
 ```
 
-## Error Response
+### Returned Data
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`integer`](../../../data-types.md) | Identifier of the chat from which the user was removed.
+
+If `CHAT_ID` is not provided and the chat for the CRM entity is not found or does not exist, the method will return `"result":0` ||
+|| **time**
+[`time`](../../../data-types.md#time) | Information about the execution time of the request ||
+|#
+
+## Error Handling
+
+HTTP Status: **400**, **403**
+
+```json
+{
+    "error": "ERROR_ARGUMENT",
+    "error_description": "The value of an argument CRM_ENTITY has an invalid type"
+}
+```
+
+{% include notitle [error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| **ACCESS_DENIED** | The current user does not have access ||
-|| **CRM_CHAT_EMPTY_USER** | User identifier is not specified ||
-|| **CRM_CHAT_EMPTY_CRM_DATA** | CRM data is not specified ||
-|| **IM_NOT_INSTALLED** | IM module is not installed ||
-|| **CHAT_NOT_IN_CRM** | Chat does not belong to the CRM entity ||
-|| **CHAT_DELETE_USER_PERMISSION_DENIED** | User does not have access to the CRM entity ||
-|| **CRM_CHAT_USER_NOT_ACTIVE** | The user being removed is not active ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `403` | `ACCESS_DENIED` | Access denied! You don't have access to join user to chat | Possible reasons:
+- invalid or non-existent `CRM_ENTITY_TYPE` specified 
+- the user executing the method does not have access to the CRM entity
+||
+|| `400` | `CRM_CHAT_EMPTY_USER` | User identifier is not specified | Required parameter `USER_ID` is not specified ||
+|| `400` | `CRM_CHAT_EMPTY_CRM_DATA` | Empty CRM data | Required parameters `CRM_ENTITY_TYPE` and `CRM_ENTITY` are not provided ||
+|| `400` | `CRM_CHAT_EMPTY_CRM_DATA` | CRM data is not specified | CRM data is not provided ||
+|| `400` | `ERROR_ARGUMENT` | The value of an argument CRM_ENTITY has an invalid type | The parameter `CRM_ENTITY` is passed in an incorrect format ||
+|| `400` | `IM_NOT_INSTALLED` | Module im is not installed | The `im` module is not installed ||
+|| `400` | `CHAT_NOT_IN_CRM` | Chat does not belong to the CRM entity being checked | Possible reasons:
+- the chat is not linked to the CRM entity
+- the chat with the specified `CHAT_ID` does not exist ||
+|| `403` | `CHAT_DELETE_USER_PERMISSION_DENIED` | You don't have access to delete a user from this chat | The user does not have permission to remove a participant from the chat ||
+|| `400` | `CRM_CHAT_USER_NOT_ACTIVE` | Chat user is not active | The user being removed with `USER_ID` is not active or does not exist ||
+|| `400` | `WRONG_REQUEST` | You don't have access or user already not in chat | The user has already been removed from the chat or is unavailable for removal ||
+|| `400` | `USER_NOT_FOUND` | The specified user is not in the chat | The user with identifier `CHAT_ID` is not in the specified chat ||
 |#
+
+{% include [system errors](../../../../_includes/system-errors.md) %}
+
+## Continue Learning
+
+- [{#T}](./index.md)
+- [{#T}](./imopenlines-crm-chat-get-last-id.md)
+- [{#T}](./imopenlines-crm-chat-get.md)
+- [{#T}](./imopenlines-crm-chat-user-add.md)

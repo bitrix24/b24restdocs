@@ -1,60 +1,75 @@
-# View users who read an important message log.blogpost.getusers.important
-
-{% note warning "We are still updating this page" %}
-
-Some data may be missing — we will fill it in shortly
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- parameter types are not specified
-- parameter requirements are not indicated
-- no response in case of error
-- no examples in other languages
-- the description needs a link to the user documentation on important messages
-
-{% endnote %}
-
-{% endif %}
+# View Users Who Read an Important Message log.blogpost.getusers.important
 
 > Scope: [`log`](../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-Returns an array of user IDs who have read the specified important message.
+The method `log.blogpost.getusers.important` returns an array of user IDs who have read an important message.
+
+## Method Parameters
+
+{% include [Note on Required Parameters](../../_includes/required.md) %}
 
 #|
-|| **Parameter** | **Description** ||
-|| **POST_ID** | ID of the news feed message that is an important message. ||
+|| **Name**
+`type` | **Description** ||
+|| **POST_ID***
+[`integer`](../data-types.md) | The identifier of the important message in the News Feed.
+
+You can obtain the identifier using the method [log.blogpost.get](./log-blogpost-get.md) ||
 |#
 
-{% include [Footnote about parameters](../../_includes/required.md) %}
+{% note info "" %}
 
-## Example
+The method returns no more than 500 user IDs who have read the important message.
+
+{% endnote %}
+
+## Code Examples
+
+{% include [Note on Examples](../../_includes/examples.md) %}
 
 {% list tabs %}
+
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"POST_ID":221}' \
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/log.blogpost.getusers.important
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"POST_ID":221,"auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/log.blogpost.getusers.important
+    ```
 
 - JS
 
     ```js
     try
     {
-    	const response = await $b24.callMethod(
-    		'log.blogpost.getusers.important',
-    		{
-    			POST_ID: 345
-    		}
-    	);
-    	
-    	const result = response.getData().result;
-    	console.log(result);
+        const response = await $b24.callMethod(
+            'log.blogpost.getusers.important',
+            {
+                POST_ID: 221
+            }
+        );
+        
+        const result = response.getData().result;
+        console.log(result);
+        processResult(result);
     }
     catch( error )
     {
-    	console.error('Error:', error);
+        console.error('Error:', error);
     }
     ```
 
@@ -67,21 +82,20 @@ Returns an array of user IDs who have read the specified important message.
             ->call(
                 'log.blogpost.getusers.important',
                 [
-                    'POST_ID' => 345
+                    'POST_ID' => 221
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
+
         echo 'Success: ' . print_r($result, true);
-        // Your required data processing logic
         processData($result);
-    
+
     } catch (Throwable $e) {
         error_log($e->getMessage());
-        echo 'Error getting important blog post users: ' . $e->getMessage();
+        echo 'Error retrieving important users: ' . $e->getMessage();
     }
     ```
 
@@ -91,35 +105,100 @@ Returns an array of user IDs who have read the specified important message.
     BX24.callMethod(
         'log.blogpost.getusers.important',
         {
-            POST_ID: 345
+            POST_ID: 221
         },
         function(result)
         {
-            console.log(result.data());
+            if (result.error())
+            {
+                console.error(result.error(), result.error_description());
+            }
+            else
+            {
+                console.log(result.data());
+            }
         }
     );
     ```
 
-{% endlist %}
+- PHP CRest
 
-{% include [Footnote about examples](../../_includes/examples.md) %}
+    ```php
+    require_once('crest.php');
 
-## Request:
+    $result = CRest::call(
+        'log.blogpost.getusers.important',
+        [
+            'POST_ID' => 221
+        ]
+    );
 
-{% list tabs %}
-
-- URL request
-
-    ```http
-    https://my.bitrix24.com/rest/log.blogpost.getusers.important.json?POST_ID=345&auth=xxxxxxx
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
     ```
 
 {% endlist %}
 
-## Response:
+## Response Handling
 
-> 200 OK
+HTTP Status: **200**
 
 ```json
-{"result":["1","2","3"]}
+{
+    "result": ["1269", "1271"],
+    "time": {
+        "start": 1773755868,
+        "finish": 1773755868.215257,
+        "duration": 0.215256929397583,
+        "processing": 0,
+        "date_start": "2026-03-17T16:57:48+01:00",
+        "date_finish": "2026-03-17T16:57:48+01:00",
+        "operating_reset_at": 1773756468,
+        "operating": 0
+    }
+}
 ```
+
+### Returned Data
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`array`](../data-types.md) | An array of user IDs who have read the important message. A maximum of 500 entries.
+
+An empty array indicates that the user does not have permission to view the message. ||
+|| **time**
+[`time`](../data-types.md#time) | Information about the request execution time. ||
+|#
+
+## Error Handling
+
+HTTP Status: **400**
+
+```json
+{
+    "error": "",
+    "error_description": "Wrong post ID"
+}
+```
+
+{% include notitle [Error Handling](../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+#|
+|| **Code** | **Description** | **Value** ||
+|| — | `Wrong post ID` | Invalid `POST_ID` ||
+|#
+
+{% include [System Errors](../../_includes/system-errors.md) %}
+
+## Continue Learning
+
+- [{#T}](./log-blogpost-add.md)
+- [{#T}](./log-blogpost-update.md)
+- [{#T}](./log-blogpost-get.md)
+- [{#T}](./log-blogpost-delete.md)
+- [{#T}](./log-blogpost-share.md)

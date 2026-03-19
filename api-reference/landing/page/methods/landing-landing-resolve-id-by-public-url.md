@@ -1,44 +1,58 @@
-# Get Page ID by URL landing.landing.resolveIdByPublicUrl
-
-{% note warning "We are still updating this page" %}
-
-Some data may be missing — we will fill it in shortly.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not deployed to prod_" %}
-
-- parameter types are not specified
-- parameter requirements are not specified
-- examples are missing
-- success response is missing
-- error response is missing
-
-{% endnote %}
-
-{% endif %}
+# Get Page ID by Public URL landing.landing.resolveIdByPublicUrl
 
 > Scope: [`landing`](../../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: a user with access to the "Sites and Stores" section
 
-The method `landing.landing.resolveIdByPublicUrl` returns the page ID based on the provided relative URL of the page.
+The method `landing.landing.resolveIdByPublicUrl` returns the page ID based on its public URL within the specified site.
 
-## Parameters
+## Method Parameters
+
+{% include [Footnote on required parameters](../../../../_includes/required.md) %}
 
 #|
-|| **Parameter** | **Description** | **Version** ||
-|| **landingUrl**
-[`unknown`](../../../data-types.md) | Relative URL of the page. ||
-|| **siteId**
-[`unknown`](../../../data-types.md) | Site ID. ||
+|| **Name**
+`type` | **Description** ||
+|| **landingUrl***
+[`string`](../../../data-types.md) | Relative public URL of the page within the site `siteId`, for example `/catalog/sale/`.
+
+Provide the path from the root of the site without the domain ||
+|| **siteId***
+[`integer`](../../../data-types.md) | The ID of the site within which to find the page.
+
+The site ID can be obtained using the method [landing.site.getList](../../site/landing-site-get-list.md) ||
 |#
 
-## Examples
+## Code Examples
+
+{% include [Footnote on examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
+
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+      -H "Content-Type: application/json" \
+      -d '{
+        "landingUrl": "/catalog/sale/",
+        "siteId": 1817
+      }' \
+      "https://**put.your-domain-here**/rest/**user_id**/**webhook_code**/landing.landing.resolveIdByPublicUrl.json"
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+      -H "Content-Type: application/json" \
+      -d '{
+        "landingUrl": "/catalog/sale/",
+        "siteId": 1817,
+        "auth": "**put_access_token_here**"
+      }' \
+      "https://**put.your-domain-here**/rest/landing.landing.resolveIdByPublicUrl.json"
+    ```
 
 - JS
 
@@ -48,15 +62,15 @@ The method `landing.landing.resolveIdByPublicUrl` returns the page ID based on t
     	const response = await $b24.callMethod(
     		'landing.landing.resolveIdByPublicUrl',
     		{
-    			landingUrl: '/folder/sub/folder/page/',
+    			landingUrl: '/catalog/sale/',
     			siteId: 1817
     		}
     	);
-    	
+
     	const result = response.getData().result;
     	console.info(result);
     }
-    catch( error )
+    catch (error)
     {
     	console.error(error);
     }
@@ -71,22 +85,16 @@ The method `landing.landing.resolveIdByPublicUrl` returns the page ID based on t
             ->call(
                 'landing.landing.resolveIdByPublicUrl',
                 [
-                    'landingUrl' => '/folder/sub/folder/page/',
-                    'siteId'     => 1817
+                    'landingUrl' => '/catalog/sale/',
+                    'siteId' => 1817,
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
-        if ($result->error()) {
-            error_log($result->error());
-            echo 'Error: ' . $result->error();
-        } else {
-            echo 'Info: ' . print_r($result->data(), true);
-        }
-    
+
+        echo 'Success: ' . print_r($result, true);
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error resolving landing ID: ' . $e->getMessage();
@@ -99,12 +107,12 @@ The method `landing.landing.resolveIdByPublicUrl` returns the page ID based on t
     BX24.callMethod(
         'landing.landing.resolveIdByPublicUrl',
         {
-            landingUrl: '/folder/sub/folder/page/',
+            landingUrl: '/catalog/sale/',
             siteId: 1817
         },
         function(result)
         {
-            if(result.error())
+            if (result.error())
             {
                 console.error(result.error());
             }
@@ -116,6 +124,95 @@ The method `landing.landing.resolveIdByPublicUrl` returns the page ID based on t
     );
     ```
 
+- PHP CRest
+
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'landing.landing.resolveIdByPublicUrl',
+        [
+            'landingUrl' => '/catalog/sale/',
+            'siteId' => 1817,
+        ]
+    );
+
+    if (isset($result['error']))
+    {
+        echo 'Error: ' . $result['error_description'];
+    }
+    else
+    {
+        echo '<pre>';
+        print_r($result['result']);
+        echo '</pre>';
+    }
+    ```
+
 {% endlist %}
 
-{% include [Example notes](../../../../_includes/examples.md) %}
+## Response Handling
+
+HTTP Status: **200**
+
+```json
+{
+    "result": 2231,
+    "time": {
+        "start": 1773830531,
+        "finish": 1773830531.858353,
+        "duration": 0.8583528995513916,
+        "processing": 0,
+        "date_start": "2026-03-18T13:42:11+01:00",
+        "date_finish": "2026-03-18T13:42:11+01:00",
+        "operating_reset_at": 1773831131,
+        "operating": 0
+    }
+}
+```
+
+### Returned Data
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`integer`](../../../data-types.md) \| `null` | The ID of the found page.
+
+If a page with such a public URL is not found on the site `siteId`, the method returns `null` ||
+|| **time**
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
+|#
+
+## Error Handling
+
+HTTP Status: **400**
+
+```json
+{
+    "error": "MISSING_PARAMS",
+    "error_description": "Not enough parameters provided, missing: landingUrl, siteId"
+}
+```
+
+{% include notitle [error handling](../../../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+#|
+|| **Code** | **Description** ||
+|| `MISSING_PARAMS` | Required parameters `landingUrl`, `siteId` or one of them are missing ||
+|| `ACCESS_DENIED` | Insufficient permissions to call the method ||
+|| `TYPE_ERROR` | Data type error in the method call parameters ||
+|| `SYSTEM_ERROR` | Internal error during method execution ||
+|#
+
+{% include [system errors](../../../../_includes/system-errors.md) %}
+
+## Continue Learning
+
+- [{#T}](./landing-landing-get-list.md)
+- [{#T}](./landing-landing-get-preview.md)
+- [{#T}](./landing-landing-get-public-url.md)
+- [{#T}](./landing-landing-move.md)
+- [{#T}](./landing-landing-update.md)

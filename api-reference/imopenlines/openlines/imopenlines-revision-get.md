@@ -1,50 +1,54 @@
 # Get Information About API Revisions imopenlines.revision.get
 
-{% note warning "We are still updating this page" %}
-
-Some data may be missing — we will complete it shortly.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- examples are missing
-- response in case of error is missing
-
-{% endnote %}
-
-{% endif %}
-
 > Scope: [`imopenlines`](../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-This method retrieves information about the Open Lines API revisions.
+The method `imopenlines.revision.get` retrieves information about the API revisions of Open Channels.
 
-No parameters required.
+## Method Parameters
 
-## Examples
+No parameters.
+
+## Code Examples
+
+{% include [Example Footnote](../../../_includes/examples.md) %}
 
 {% list tabs %}
+
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+      -H "Content-Type: application/json" \
+      -H "Accept: application/json" \
+      https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/imopenlines.revision.get
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+      -H "Content-Type: application/json" \
+      -H "Accept: application/json" \
+      -d '{
+        "auth": "**put_access_token_here**"
+      }' \
+      https://**put_your_bitrix24_address**/rest/imopenlines.revision.get
+    ```
 
 - JS
 
     ```js
     try
     {
-        const response = await $b24.callMethod(
-            'imopenlines.revision.get',
-            {}
-        );
-        
+        const response = await $b24.callMethod('imopenlines.revision.get', {});
         const result = response.getData().result;
         console.log(result);
     }
-    catch( error )
+    catch (error)
     {
-        console.error('Error:', error.ex);
+        console.error(error);
     }
     ```
 
@@ -58,20 +62,14 @@ No parameters required.
                 'imopenlines.revision.get',
                 []
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
-        if ($result->error()) {
-            echo 'Error: ' . $result->error()->ex;
-        } else {
-            echo 'Success: ' . print_r($result->data(), true);
-        }
-    
+
+        print_r($result);
     } catch (Throwable $e) {
-        error_log($e->getMessage());
-        echo 'Error getting revision: ' . $e->getMessage();
+        echo $e->getMessage();
     }
     ```
 
@@ -81,10 +79,11 @@ No parameters required.
     BX24.callMethod(
         'imopenlines.revision.get',
         {},
-        function(result){
-            if(result.error())
+        function(result)
+        {
+            if (result.error())
             {
-                console.error(result.error().ex);
+                console.error(result.error());
             }
             else
             {
@@ -96,38 +95,70 @@ No parameters required.
 
 - PHP CRest
 
-    {% include [Explanation about restCommand](../../chat-bots/_includes/rest-command.md) %}
-
     ```php
-    $result = restCommand(
-        'imopenlines.revision.get',
-        Array(),
-        $_REQUEST["auth"]
-    );
+    require_once('crest.php');
+
+    $result = CRest::call('imopenlines.revision.get', []);
+
+    print_r($result);
     ```
-
-- cURL
-
-    // example for cURL
 
 {% endlist %}
 
-{% include [Footnote about examples](../../../_includes/examples.md) %}
+## Response Handling
 
-## Response on Success
+HTTP Status: **200**
 
 ```json
-{    
+{
     "result": {
         "rest": 2,
         "web": 1,
         "mobile": 1
+    },
+    "time": {
+        "start": 1773660116,
+        "finish": 1773660116.269681,
+        "duration": 0.2696809768676758,
+        "processing": 0,
+        "date_start": "2026-03-16T14:21:56+01:00",
+        "date_finish": "2026-03-16T14:21:56+01:00",
+        "operating_reset_at": 1773660716,
+        "operating": 0
     }
 }
 ```
 
-**Description of keys**:
+### Returned Data
 
-- `rest` – API revision for REST clients
-- `web` – API revision for web/desktop client
-- `mobile` – API revision for mobile client
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`object`](../../data-types.md) | Root object with API revisions [(detailed description)](#result) ||
+|| **time**
+[`time`](../../data-types.md#time) | Information about the request execution time ||
+|#
+
+#### Object result {#result}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **rest**
+[`integer`](../../data-types.md) | API revision for REST clients ||
+|| **web**
+[`integer`](../../data-types.md) | API revision for web and desktop clients ||
+|| **mobile**
+[`integer`](../../data-types.md) | API revision for mobile clients ||
+|#
+
+## Error Handling
+
+{% include notitle [error handling](../../../_includes/error-info.md) %}
+
+{% include [system errors](../../../_includes/system-errors.md) %}
+
+## Continue Learning
+
+- [{#T}](./index.md)

@@ -1,8 +1,8 @@
-# Open Line Dialogs
+# Open Channels Dialogs
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon.
+Some data may be missing here — we will fill it in shortly.
 
 {% endnote %}
 
@@ -18,17 +18,17 @@ Some data may be missing here — we will complete it soon.
 
 #|
 || **Method** | **Description** ||
-|| [imopenlines.crm.lead.create](./imopenlines-crm-lead-create.md) | Creates a lead based on the dialog ||
-|| [imopenlines.dialog.get](./imopenlines-dialog-get.md) | Retrieves information about the operator's open line dialog (chat) ||
-|| [imopenlines.message.session.start](./imopenlines-message-session-start.md) | Starts a new dialog based on a message ||
-|| [imopenlines.session.head.vote](./imopenlines-session-head-vote.md) | Rates the employee's performance in the dialog ||
-|| [imopenlines.session.history.get](./imopenlines-session-history-get.md) | Retrieves chat and dialog messages ||
-|| [imopenlines.session.intercept](./imopenlines-session-intercept.md) | Takes the dialog from the current operator ||
-|| [imopenlines.session.join](./imopenlines-session-join.md) | Joins the dialog ||
-|| [imopenlines.session.mode.pinAll](./imopenlines-session-mode-pin-all.md) | Pins all available dialogs to the operator ||
-|| [imopenlines.session.mode.pin](./imopenlines-session-mode-pin.md) | Pins or unpins the dialog ||
-|| [imopenlines.session.mode.silent](./imopenlines-session-mode-silent.md) | Switches the dialog to "hidden" mode ||
-|| [imopenlines.session.mode.unpinAll](./imopenlines-session-mode-unpin-all.md) | Unpins all dialogs from the operator ||
-|| [imopenlines.session.open](./imopenlines-session-open.md) | Retrieves the chat by symbolic code ||
-|| [imopenlines.session.start](./imopenlines-session-start.md) | Starts a new dialog ||
+|| [imopenlines.crm.lead.create](./imopenlines-crm-lead-create.md) | Creates a CRM lead from an open channel chat. ||
+|| [imopenlines.dialog.get](./imopenlines-dialog-get.md) | Returns the operator's dialog data by one of the identifiers. ||
+|| [imopenlines.message.session.start](./imopenlines-message-session-start.md) | Starts a new session and transfers the selected message into it. ||
+|| [imopenlines.session.head.vote](./imopenlines-session-head-vote.md) | Saves the supervisor's rating for the completed session. ||
+|| [imopenlines.session.history.get](./imopenlines-session-history-get.md) | Returns the message history and session data. ||
+|| [imopenlines.session.intercept](./imopenlines-session-intercept.md) | Transfers the dialog to the current operator. ||
+|| [imopenlines.session.join](./imopenlines-session-join.md) | Joins the current operator to the dialog. ||
+|| [imopenlines.session.mode.pinAll](./imopenlines-session-mode-pin-all.md) | Pins all available dialogs to the current operator. ||
+|| [imopenlines.session.mode.pin](./imopenlines-session-mode-pin.md) | Pins or unpins the selected dialog. ||
+|| [imopenlines.session.mode.silent](./imopenlines-session-mode-silent.md) | Turns the dialog's silent mode on or off. ||
+|| [imopenlines.session.mode.unpinAll](./imopenlines-session-mode-unpin-all.md) | Unpins all pinned dialogs from the current operator. ||
+|| [imopenlines.session.open](./imopenlines-session-open.md) | Opens the open channel chat by user code. ||
+|| [imopenlines.session.start](./imopenlines-session-start.md) | Starts a new session in the current chat. ||
 |#

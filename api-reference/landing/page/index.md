@@ -97,8 +97,8 @@ Some data may be missing — we will complete it soon.
 || [landing.landing.markUnDelete](./methods/landing-landing-mark-undelete.md) | Method marks the page as not deleted. | ||
 || [landing.landing.move](./methods/landing-landing-move.md) | Method moves the page to another site and/or folder. | 21.800.0 ||
 || [landing.landing.publication](./methods/landing-landing-publication.md) | Method for publishing the page. | ||
-|| [landing.landing.removeEntities](./methods/landing-landing-remove-entities.md) | Method removes related landing entities. | ||
-|| [landing.landing.resolveIdByPublicUrl](./methods/landing-landing-resolve-id-by-public-url.md) | Method returns the page identifier by the provided relative URL. | 21.800.0 ||
+|| [landing.landing.removeEntities](./methods/landing-landing-remove-entities.md) | Method removes blocks and images from the page. | ||
+|| [landing.landing.resolveIdByPublicUrl](./methods/landing-landing-resolve-id-by-public-url.md) | Method returns the page identifier by the provided public URL. | 21.800.0 ||
 || [landing.landing.unpublic](./methods/landing-landing-unpublic.md) | Method for unpublishing the page. | ||
 || [landing.landing.update](./methods/landing-landing-update.md) | Method for modifying the page. | ||
 |#

@@ -1,71 +1,83 @@
-# Update Existing SIP Line voximplant.sip.update
+# Update SIP Line voximplant.sip.update
 
-{% note warning "We are still updating this page" %}
+> Scope: [`telephony`](../../../scopes/permissions.md)
+>
+> Who can execute the method: user with the Manage Numbers — Edit access permission
 
-Some data may be missing — we will complete it shortly.
+The method `voximplant.sip.update` updates an existing SIP line created by the current application.
 
-{% endnote %}
+## Method Parameters
 
-{% if build == 'dev' %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
-{% note alert "TO-DO _not exported to prod_" %}
+#|
+|| **Name**
+`type` | **Description** ||
+|| **CONFIG_ID***
+[`integer`](../../../data-types.md) | Identifier of the SIP line configuration.
 
-- parameter types are not specified
-- examples are missing
-- response in case of error is absent
-
-{% endnote %}
-
-{% endif %}
-
-{% include notitle [Scope telephony admin](../../_includes/scope-telephony-admin.md) %}
-
-The method `voximplant.sip.update` updates an existing SIP line (created by the application). This method is available to the holder of the [access permissions](https://helpdesk.bitrix24.com/open/18216960/) `Manage numbers - change - any`.
-
-#| 
-|| **Parameter** | **Description** ||
-|| **CONFIG_ID**^*^ | Identifier of the SIP line configuration. ||
-|| **TYPE** | Type of PBX, a list of PBX types, optional parameter, defaults to `Cloud PBX`. ||
-|| **TITLE** | Name of the connection (optional field). ||
-|| **SERVER** | Address of the SIP registration server (optional field). ||
-|| **LOGIN** | Login for the server (optional field). ||
-|| **PASSWORD** | Password for the server (optional field). ||
+You can obtain the identifier using the [voximplant.sip.get](./voximplant-sip-get.md) method. ||
+|| **TITLE**
+[`string`](../../../data-types.md) | New name for the connection. ||
+|| **SERVER**
+[`string`](../../../data-types.md) | New SIP registration server address. ||
+|| **LOGIN**
+[`string`](../../../data-types.md) | New login for connecting to the server. ||
+|| **PASSWORD**
+[`string`](../../../data-types.md) | New password for connecting to the server. Maximum length is 100 characters. ||
 |#
 
-{% include [Footnote on parameters](../../../../_includes/required.md) %}
+{% note info "" %}
 
-To successfully call, at least one of the fields must be present: `TITLE`, `SERVER`, `LOGIN`, `PASSWORD`.
+To make changes, at least one of the following fields must be provided: `TITLE`, `SERVER`, `LOGIN`, `PASSWORD`.
 
-## Example
+{% endnote %}
+
+## Code Examples
+
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
+
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"CONFIG_ID":5,"TITLE":"SIP line 1 (updated)"}' \
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/voximplant.sip.update
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"CONFIG_ID":5,"TITLE":"SIP line 1 (updated)","auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/voximplant.sip.update
+    ```
 
 - JS
 
     ```js
     try
     {
-    	const response = await $b24.callMethod(
-    		"voximplant.sip.update",
-    		{
-    			"CONFIG_ID": 69,
-    			"TITLE": "line name",
-    		}
-    	);
-    	
-    	const result = response.getData().result;
-    	if(result.error())
-    	{
-    		console.error(result.error());
-    	}
-    	else
-    	{
-    		console.info(result);
-    	}
+        const response = await $b24.callMethod(
+            'voximplant.sip.update',
+            {
+                CONFIG_ID: 5,
+                TITLE: 'SIP line 1 (updated)'
+            }
+        );
+
+        const result = response.getData().result;
+        console.log('Data:', result);
     }
-    catch(error)
+    catch (error)
     {
-    	console.error('Error:', error);
+        console.error('Error:', error);
     }
     ```
 
@@ -78,24 +90,19 @@ To successfully call, at least one of the fields must be present: `TITLE`, `SERV
             ->call(
                 'voximplant.sip.update',
                 [
-                    'CONFIG_ID' => 69,
-                    'TITLE'     => 'line name',
+                    'CONFIG_ID' => 5,
+                    'TITLE' => 'SIP line 1 (updated)',
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
-        if ($result->error()) {
-            error_log($result->error());
-        } else {
-            echo 'Success: ' . print_r($result->data(), true);
-        }
-    
+
+        echo 'Success: ' . print_r($result, true);
     } catch (Throwable $e) {
         error_log($e->getMessage());
-        echo 'Error updating SIP line: ' . $e->getMessage();
+        echo 'Error: ' . $e->getMessage();
     }
     ```
 
@@ -103,32 +110,110 @@ To successfully call, at least one of the fields must be present: `TITLE`, `SERV
 
     ```js
     BX24.callMethod(
-        "voximplant.sip.update",
+        'voximplant.sip.update',
         {
-            "CONFIG_ID": 69,
-            "TITLE": "line name",
+            CONFIG_ID: 5,
+            TITLE: 'SIP line 1 (updated)'
         },
         function(result)
         {
-            if(result.error())
-                console.error(result.error());
+            if (result.error())
+            {
+                console.error(result.error(), result.error_description());
+            }
             else
-                console.info(result.data());
+            {
+                console.log(result.data());
+            }
         }
     );
     ```
 
+- PHP CRest
+
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'voximplant.sip.update',
+        [
+            'CONFIG_ID' => 5,
+            'TITLE' => 'SIP line 1 (updated)',
+        ]
+    );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
+    ```
+
 {% endlist %}
 
-{% include [Footnote on examples](../../../../_includes/examples.md) %}
+## Response Handling
 
-## Response on Success
+HTTP Status: **200**
 
-Returns 1 on successful execution or an exception.
+```json
+{
+    "result": 1,
+    "time": {
+        "start": 1773657589,
+        "finish": 1773657589.659046,
+        "duration": 0.659045934677124,
+        "processing": 0,
+        "date_start": "2026-03-16T13:39:49+01:00",
+        "date_finish": "2026-03-16T13:39:49+01:00",
+        "operating_reset_at": 1773658189,
+        "operating": 0
+    }
+}
+```
 
-## Specific Error Codes
+### Returned Data
 
-#| 
-|| **Code** | **Description** ||
-|| TITLE_EXISTS | A line with this name already exists. ||
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`integer`](../../../data-types.md) | Result of the update.
+
+`1` — update was successful. ||
+|| **time**
+[`time`](../../../data-types.md#time) | Information about the request execution time. ||
 |#
+
+## Error Handling
+
+HTTP Status: **400**, **403**, **404**
+
+```json
+{
+    "error": "ERROR_NOT_FOUND",
+    "error_description": "Specified CONFIG_ID is not found"
+}
+```
+
+{% include notitle [error handling](../../../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+#|
+|| **Code** | **Description** | **Value** ||
+|| `ERROR_NOT_FOUND` | `Specified CONFIG_ID is not found` | SIP line with the specified `CONFIG_ID` was not found among the lines of the current application. ||
+|| `CHECK_FIELDS_ERROR` | `Server address not specified` | An empty or incorrect value was provided for the `SERVER` parameter. ||
+|| `CHECK_FIELDS_ERROR` | `Login for connecting to the server not specified` | An empty or incorrect value was provided for the `LOGIN` parameter. ||
+|| `CHECK_FIELDS_ERROR` | `Password for connecting to the server cannot exceed 100 characters` | The limit for the `PASSWORD` parameter has been exceeded. ||
+|| `TITLE_EXISTS` | `The specified connection name is already registered in the system` | A line with that name already exists. ||
+|| `ACCESS_DENIED` | `Access denied!` | Insufficient permissions to update the SIP line. ||
+|#
+
+{% include [system errors](../../../../_includes/system-errors.md) %}
+
+## Continue Learning
+
+- [{#T}](./voximplant-sip-add.md)
+- [{#T}](./voximplant-sip-update.md)
+- [{#T}](./voximplant-sip-get.md)
+- [{#T}](./voximplant-sip-delete.md)
+- [{#T}](./voximplant-sip-status.md)
+- [{#T}](./voximplant-sip-connector-status.md)

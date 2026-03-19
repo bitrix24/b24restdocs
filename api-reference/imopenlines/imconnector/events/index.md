@@ -24,10 +24,10 @@ An example of a handler code for the event is described in the article [How to T
 
 #|
 || **Event** | **Triggered** ||
-|| [OnImConnectorMessageAdd](on-im-connector-message-add.md) | When new messages are received manually or via the [imconnector.send.messages](../imconnector-send-messages.md) method ||
+|| [OnImConnectorMessageAdd](on-im-connector-message-add.md) | When messages are sent manually ||
 || [OnImConnectorDialogStart](on-im-connector-dialog-start.md) | When a dialogue is created manually ||
-|| [OnImConnectorMessageUpdate](on-im-connector-message-update.md) | When a message is modified manually or via the [imconnector.update.messages](../imconnector-update-messages.md) method ||
-|| [OnImConnectorMessageDelete](on-im-connector-message-delete.md) | When a message is deleted manually or via the [imconnector.delete.messages](../imconnector-delete-messages.md) method ||
+|| [OnImConnectorMessageUpdate](on-im-connector-message-update.md) | When a message is modified manually ||
+|| [OnImConnectorMessageDelete](on-im-connector-message-delete.md) | When a message is deleted manually ||
 || [OnImConnectorDialogFinish](on-im-connector-dialog-finish.md) | When a dialogue is closed manually ||
 || [OnImConnectorStatusDelete](on-im-connector-status-delete.md) | When an open line is disconnected manually ||
 || [OnImConnectorLineDelete](on-im-connector-line-delete.md) | When an open line is deleted manually ||

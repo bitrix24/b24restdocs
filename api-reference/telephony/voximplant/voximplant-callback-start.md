@@ -1,76 +1,81 @@
-# Start Callback voximplant.callback.start
+# Start a Callback with voximplant.callback.start
 
-{% note warning "We are still updating this page" %}
+> Scope: [`telephony`](../../scopes/permissions.md)
+>
+> Who can execute the method: user with Outgoing Call — Execute permission
 
-Some data may be missing — we will fill it in shortly.
+The method `voximplant.callback.start` initiates a callback between an employee and a client.
 
-{% endnote %}
+## Method Parameters
 
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- parameter types are not specified
-- parameter requirements are not specified
-- examples are missing
-- success response is missing
-- error response is missing
-
-{% endnote %}
-
-{% endif %}
-
-{% include notitle [Scope telephony all](../_includes/scope-telephony-all.md) %}
-
-The method `voximplant.callback.start` initiates a callback. This method is available to the holder of the [access permission](https://helpdesk.bitrix24.com/open/18216960/) `Outgoing call - Execution - any`.
-
-The callback algorithm is as follows:
-
-0. The client fills out a form on the site, providing their number.
-
-1. Upon form submission, a third-party application triggers the REST API method.
-
-2. The system makes an incoming call to the line specified in the FROM_LINE parameter, according to the line settings, and waits for a connection with the manager. The incoming call is real, following all processing rules. For example, if call forwarding to a mobile phone is enabled on the line, the call will go to the mobile.
-
-3. Once the manager answers, the system pronounces the text specified in the TEXT_TO_PRONOUNCE parameter, using the voice specified in the VOICE parameter. This is necessary for the manager to understand that they have received a callback, not a regular incoming call.
-
-4. The system makes an outgoing call to the number specified in the TO_NUMBER parameter, and once the client answers, it connects them with the manager.
-
-To access the method, the application must request the call access permission. This permission is specified during application registration.
+{% include [Note on Required Parameters](../../../_includes/required.md) %}
 
 #|
-|| **Parameter** | **Description** ||
-|| **FROM_LINE** | ID of the line from which the call will be made. A list of available lines can be obtained using the [voximplant.line.get](lines/voximplant-line-get.md) method. ||
-|| **TO_NUMBER** | The number to call. ||
-|| **TEXT_TO_PRONOUNCE** | The text that is pronounced to the manager before the call begins. ||
-|| **VOICE** | The voice used to pronounce this text (optional). A list of voices can be obtained using the [voximplant.tts.voices.get](voximplant-tts-voices-get.md) method. ||
+|| **Name**
+`type` | **Description** ||
+|| **FROM_LINE***
+[`string`](../../data-types.md) | Identifier of the outgoing line from which the callback is initiated.
+
+A list of available lines can be obtained using the [voximplant.line.get](./lines/voximplant-line-get.md) method. ||
+|| **TO_NUMBER***
+[`string`](../../data-types.md) | The client's number to call. ||
+|| **TEXT_TO_PRONOUNCE***
+[`string`](../../data-types.md) | The text that the system will pronounce to the employee before connecting with the client. ||
+|| **VOICE**
+[`string`](../../data-types.md) | Identifier of the voice for speech synthesis.
+
+If not provided, the default voice for the account's language will be used.
+
+A list of available voices can be obtained using the [voximplant.tts.voices.get](./voximplant-tts-voices-get.md) method. ||
 |#
 
-## Example
+## Code Examples
+
+{% include [Note on Examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
+
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"FROM_LINE":"reg151083","TO_NUMBER":"+19991234567","TEXT_TO_PRONOUNCE":"You have received a callback request","VOICE":"internalfemale"}' \
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/voximplant.callback.start
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"FROM_LINE":"reg151083","TO_NUMBER":"+19991234567","TEXT_TO_PRONOUNCE":"You have received a callback request","VOICE":"internalfemale","auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/voximplant.callback.start
+    ```
 
 - JS
 
     ```js
     try
     {
-    	const response = await $b24.callMethod(
-    		'voximplant.callback.start',
-    		{
-    			"FROM_LINE": "reg1332",
-    			"TO_NUMBER": "+1911xxxxxxx",
-    			"TEXT_TO_PRONOUNCE": "You have received a request for a callback, connecting you with the client.",
-    			"VOICE": "deinternalfemale"
-    		}
-    	);
-    	
-    	const result = response.getData().result;
-    	console.info(result);
+        const response = await $b24.callMethod(
+            'voximplant.callback.start',
+            {
+                FROM_LINE: 'reg151083',
+                TO_NUMBER: '+19991234567',
+                TEXT_TO_PRONOUNCE: 'You have received a callback request',
+                VOICE: 'internalfemale'
+            }
+        );
+
+        const result = response.getData().result;
+        console.log('Data:', result);
     }
-    catch(error)
+    catch (error)
     {
-    	console.error(error);
+        console.error('Error:', error);
     }
     ```
 
@@ -83,26 +88,21 @@ To access the method, the application must request the call access permission. T
             ->call(
                 'voximplant.callback.start',
                 [
-                    'FROM_LINE'         => 'reg1332',
-                    'TO_NUMBER'         => '+1911xxxxxxx',
-                    'TEXT_TO_PRONOUNCE' => 'You have received a request for a callback, connecting you with the client.',
-                    'VOICE'             => 'deinternalfemale',
+                    'FROM_LINE' => 'reg151083',
+                    'TO_NUMBER' => '+19991234567',
+                    'TEXT_TO_PRONOUNCE' => 'You have received a callback request',
+                    'VOICE' => 'internalfemale',
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
-        if ($result->error()) {
-            error_log($result->error());
-        } else {
-            echo 'Success: ' . print_r($result->data(), true);
-        }
-    
+
+        echo 'Success: ' . print_r($result, true);
     } catch (Throwable $e) {
         error_log($e->getMessage());
-        echo 'Error starting callback: ' . $e->getMessage();
+        echo 'Error: ' . $e->getMessage();
     }
     ```
 
@@ -112,21 +112,115 @@ To access the method, the application must request the call access permission. T
     BX24.callMethod(
         'voximplant.callback.start',
         {
-            "FROM_LINE": "reg1332",
-            "TO_NUMBER": "+1911xxxxxxx",
-            "TEXT_TO_PRONOUNCE": "You have received a request for a callback, connecting you with the client.",
-            "VOICE": "deinternalfemale"
+            FROM_LINE: 'reg151083',
+            TO_NUMBER: '+19991234567',
+            TEXT_TO_PRONOUNCE: 'You have received a callback request',
+            VOICE: 'internalfemale'
         },
         function(result)
         {
-            if(result.error())
-                console.error(result.error());
+            if (result.error())
+            {
+                console.error(result.error(), result.error_description());
+            }
             else
-                console.info(result.data());
+            {
+                console.log(result.data());
+            }
         }
     );
     ```
 
+- PHP CRest
+
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'voximplant.callback.start',
+        [
+            'FROM_LINE' => 'reg151083',
+            'TO_NUMBER' => '+19991234567',
+            'TEXT_TO_PRONOUNCE' => 'You have received a callback request',
+            'VOICE' => 'internalfemale',
+        ]
+    );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
+    ```
+
 {% endlist %}
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+## Response Handling
+
+HTTP Status: **200**
+
+```json
+{
+    "result": {
+        "RESULT": true,
+        "CALL_ID": "callback.72f42b118e019a4cc47629ff60525f43.1773736077"
+    },
+    "time": {
+        "start": 1773736066,
+        "finish": 1773736067.708955,
+        "duration": 1.7089550495147705,
+        "processing": 1,
+        "date_start": "2026-03-17T11:27:46+02:00",
+        "date_finish": "2026-03-17T11:27:47+02:00",
+        "operating_reset_at": 1773736666,
+        "operating": 0.9574570655822754
+    }
+}
+```
+
+### Returned Data
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`object`](../../data-types.md) | Object containing the result of the callback initiation. ||
+|| **RESULT**
+[`boolean`](../../data-types.md) | Indicator of successful initiation.
+
+`true` — callback successfully initiated. ||
+|| **CALL_ID**
+[`string`](../../data-types.md) | Identifier of the call. ||
+|| **time**
+[`time`](../../data-types.md#time) | Information about the request execution time. ||
+|#
+
+## Error Handling
+
+HTTP Status: **400**, **403**
+
+```json
+{
+    "error": "ERROR_CORE",
+    "error_description": "Could not find line reg000000"
+}
+```
+
+{% include notitle [error handling](../../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+#|
+|| **Code** | **Description** | **Value** ||
+|| `ERROR_CORE` | `Could not find line <LINE_ID>` | The line with the specified identifier was not found. ||
+|| `ERROR_CORE` | `Could not find config for number <LINE_ID>` | Configuration for the specified line was not found. ||
+|| `ERROR_CORE` | `Phone number is not correct` | Incorrect number in `TO_NUMBER`. ||
+|| `ACCESS_DENIED` | `Access denied` | Insufficient permissions to make outgoing calls. ||
+|#
+
+{% include [system errors](../../../_includes/system-errors.md) %}
+
+## Continue Learning
+
+- [{#T}](./voximplant-callback-start.md)
+- [{#T}](./voximplant-infocall-start-with-sound.md)
+- [{#T}](./voximplant-infocall-start-with-text.md)
+- [{#T}](./voximplant-tts-voices-get.md)

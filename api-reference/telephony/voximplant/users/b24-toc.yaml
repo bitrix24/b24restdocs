@@ -7,5 +7,3 @@ items:
     href: voximplant-user-get.md
   - name: Activate SIP Device
     href: voximplant-user-activate-phone.md
-  - name: Deactivate SIP Device
-    href: voximplant-user-deactivate-phone.md

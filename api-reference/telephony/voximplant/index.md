@@ -43,28 +43,27 @@ When creating applications, keep in mind that methods are available to users acc
 
 {% endlist %}
 
-## User Management
+## User Management 
 
-#| 
-|| [voximplant.user.activatePhone](./users/voximplant-user-activate-phone.md) | Sets the employee's SIP phone presence ||
-|| [voximplant.user.deactivatePhone](./users/voximplant-user-deactivate-phone.md) | Disables the employee's SIP phone presence ||
+#|
+|| [voximplant.user.activatePhone](./users/voximplant-user-activate-phone.md) | Sets the presence of a SIP device for an employee ||
 || [voximplant.user.get](./users/voximplant-user-get.md) | Retrieves user settings ||
 |#
 
 ## Managing SIP Connections
 
-#| 
+#|
 || [voximplant.sip.add](./sip/voximplant-sip-add.md) | Creates a new SIP line linked to the application ||
 || [voximplant.sip.connector.status](./sip/voximplant-sip-connector-status.md) | Retrieves the current status of the SIP Connector ||
 || [voximplant.sip.delete](./sip/voximplant-sip-delete.md) | Deletes an existing SIP line ||
 || [voximplant.sip.get](./sip/voximplant-sip-get.md) | Retrieves a list of all SIP lines created by the application ||
-|| [voximplant.sip.status](./sip/voximplant-sip-status.md) | Retrieves the current status of SIP registration (only for cloud PBXs) ||
+|| [voximplant.sip.status](./sip/voximplant-sip-status.md) | Retrieves the current status of SIP registration (for cloud PBXs only) ||
 || [voximplant.sip.update](./sip/voximplant-sip-update.md) | Modifies an existing SIP line ||
 |#
 
 # Managing Lines
 
-#| 
+#|
 || [voximplant.line.get](./lines/voximplant-line-get.md) | Retrieves a list of all available outgoing lines ||
 || [voximplant.line.outgoing.get](./lines/voximplant-line-outgoing-get.md) | Retrieves the currently selected line as the default outgoing line ||
 || [voximplant.line.outgoing.set](./lines/voximplant-line-outgoing-set.md) | Sets the selected line as the default outgoing line ||

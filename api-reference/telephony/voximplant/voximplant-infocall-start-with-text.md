@@ -1,70 +1,80 @@
-# Make a call to the specified number with automatic pronunciation of the given text voximplant.infocall.startwithtext
+# Initiate an Auto-Call with the Voice Automation Rule voximplant.infocall.startwithtext
 
-{% note warning "We are still updating this page" %}
+> Scope: [`telephony`](../../scopes/permissions.md), [`call`](../../scopes/permissions.md) 
+>
+> Who can execute the method: a user with Outgoing Call — Execute access permission
 
-Some data may be missing here — we will fill it in shortly.
+The method `voximplant.infocall.startwithtext` initiates an auto-call and plays the specified text to the recipient using speech synthesis.
 
-{% endnote %}
+## Method Parameters
 
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- parameter types are not specified
-- parameter requirements are not indicated
-- examples are missing
-- success response is absent
-- error response is absent
-
-{% endnote %}
-
-{% endif %}
-
-{% include notitle [Scope telephony all](../_includes/scope-telephony-all.md) %}
-
-The method `voximplant.infocall.startwithtext` makes a call to the specified number with automatic pronunciation of the given text. This method is available to the holder of the [access permission](https://helpdesk.bitrix24.com/open/18216960/) `Outgoing call - Execution - any`.
-
-To access the method, the application must request the call permission. The permission is specified during [application registration](../../../settings/app-installation/index.md).
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
-|| **Parameter** | **Description** ||
-|| **FROM_LINE** | ID of the line from which the call will be made. A list of available lines can be obtained using the [voximplant.line.get](lines/voximplant-line-get.md) method. ||
-|| **TO_NUMBER** | The number to call. ||
-|| **TEXT_TO_PRONOUNCE** | The text to pronounce. ||
-|| **VOICE** | The voice to pronounce this text (optional). A list of voices can be obtained using the [voximplant.tts.voices.get](voximplant-tts-voices-get.md) method. ||
+|| **Name**
+`type` | **Description** ||
+|| **FROM_LINE***
+[`string`](../../data-types.md) | Identifier of the outgoing line from which the call is initiated.
+
+A list of available lines can be obtained using the [voximplant.line.get](./lines/voximplant-line-get.md) method. ||
+|| **TO_NUMBER***
+[`string`](../../data-types.md) | The number to which the call should be made. ||
+|| **TEXT_TO_PRONOUNCE***
+[`string`](../../data-types.md) | The text that will be spoken to the recipient. ||
+|| **VOICE**
+[`string`](../../data-types.md) | Identifier of the voice for speech synthesis.
+
+If not provided, the default voice for the portal's language will be used.
+
+A list of available voices can be obtained using the [voximplant.tts.voices.get](./voximplant-tts-voices-get.md) method. ||
 |#
 
-## Example
+## Code Examples
+
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
+
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"FROM_LINE":"reg151083","TO_NUMBER":"+19991234567","TEXT_TO_PRONOUNCE":"Good afternoon. This is a reminder for your appointment."}' \
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/voximplant.infocall.startwithtext
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"FROM_LINE":"reg151083","TO_NUMBER":"+19991234567","TEXT_TO_PRONOUNCE":"Good afternoon. This is a reminder for your appointment.","auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/voximplant.infocall.startwithtext
+    ```
 
 - JS
 
     ```js
     try
     {
-    	const response = await $b24.callMethod(
-    		'voximplant.infocall.startwithtext',
-    		{
-    			"FROM_LINE": "reg1332",
-    			"TO_NUMBER": "+17911xxxxxxx",
-    			"PRONOUNCE": "Good afternoon. Your request has been completed",
-    		}
-    	);
-    	
-    	const result = response.getData().result;
-    	if(result.error())
-    	{
-    		console.error(result.error());
-    	}
-    	else
-    	{
-    		console.info(result);
-    	}
+        const response = await $b24.callMethod(
+            'voximplant.infocall.startwithtext',
+            {
+                FROM_LINE: 'reg151083',
+                TO_NUMBER: '+19991234567',
+                TEXT_TO_PRONOUNCE: 'Good afternoon. This is a reminder for your appointment.'
+            }
+        );
+
+        const result = response.getData().result;
+        console.log('Data:', result);
     }
-    catch(error)
+    catch (error)
     {
-    	console.error('Error:', error);
+        console.error('Error:', error);
     }
     ```
 
@@ -77,25 +87,20 @@ To access the method, the application must request the call permission. The perm
             ->call(
                 'voximplant.infocall.startwithtext',
                 [
-                    'FROM_LINE' => 'reg1332',
-                    'TO_NUMBER' => '+17911xxxxxxx',
-                    'PRONOUNCE' => 'Good afternoon. Your request has been completed',
+                    'FROM_LINE' => 'reg151083',
+                    'TO_NUMBER' => '+19991234567',
+                    'TEXT_TO_PRONOUNCE' => 'Good afternoon. This is a reminder for your appointment.',
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
-        if ($result->error()) {
-            error_log($result->error());
-        } else {
-            echo 'Info: ' . print_r($result->data(), true);
-        }
-    
+
+        echo 'Success: ' . print_r($result, true);
     } catch (Throwable $e) {
         error_log($e->getMessage());
-        echo 'Error starting info call: ' . $e->getMessage();
+        echo 'Error: ' . $e->getMessage();
     }
     ```
 
@@ -105,20 +110,115 @@ To access the method, the application must request the call permission. The perm
     BX24.callMethod(
         'voximplant.infocall.startwithtext',
         {
-            "FROM_LINE": "reg1332",
-            "TO_NUMBER": "+17911xxxxxxx",
-            "PRONOUNCE": "Good afternoon. Your request has been completed",
+            FROM_LINE: 'reg151083',
+            TO_NUMBER: '+19991234567',
+            TEXT_TO_PRONOUNCE: 'Good afternoon. This is a reminder for your appointment.'
         },
         function(result)
         {
-            if(result.error())
-                console.error(result.error());
+            if (result.error())
+            {
+                console.error(result.error(), result.error_description());
+            }
             else
-                console.info(result.data());
+            {
+                console.log(result.data());
+            }
         }
     );
     ```
 
+- PHP CRest
+
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'voximplant.infocall.startwithtext',
+        [
+            'FROM_LINE' => 'reg151083',
+            'TO_NUMBER' => '+19991234567',
+            'TEXT_TO_PRONOUNCE' => 'Good afternoon. This is a reminder for your appointment.',
+        ]
+    );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
+    ```
+
 {% endlist %}
 
-{% include [Footnote about examples](../../../_includes/examples.md) %}
+## Response Handling
+
+HTTP Status: **200**
+
+```json
+{
+    "result": {
+        "RESULT": true,
+        "CALL_ID": "infocall.4aa8f8e35bb6ece352fec0537b58ac42.1773740701"
+    },
+    "time": {
+        "start": 1773740709,
+        "finish": 1773740710.094622,
+        "duration": 1.0946218967437744,
+        "processing": 1,
+        "date_start": "2026-03-17T12:45:09+01:00",
+        "date_finish": "2026-03-17T12:45:10+01:00",
+        "operating_reset_at": 1773741309,
+        "operating": 0.14156007766723633
+    }
+}
+```
+
+### Returned Data
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`object`](../../data-types.md) | Object containing the result of the auto-call initiation. ||
+|| **RESULT**
+[`boolean`](../../data-types.md) | Indicator of successful initiation.
+
+`true` — auto-call successfully initiated. ||
+|| **CALL_ID**
+[`string`](../../data-types.md) | Identifier of the call. ||
+|| **time**
+[`time`](../../data-types.md#time) | Information about the request execution time. ||
+|#
+
+## Error Handling
+
+HTTP Status: **400**, **403**
+
+```json
+{
+    "error": "ERROR_CORE",
+    "error_description": "Infocall limit for this month is exceeded"
+}
+```
+
+{% include notitle [error handling](../../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+#|
+|| **Code** | **Description** | **Value** ||
+|| `ERROR_CORE` | `Making infocall using LINK_BASE_NUMBER is not allowed` | Auto-call cannot be initiated through a service line. ||
+|| `ERROR_CORE` | `Could not find config for number <LINE_ID>` | Configuration for the specified line not found. ||
+|| `ERROR_CORE` | `Infocall limit for this month is exceeded` | Monthly limit for auto-calls exceeded. ||
+|| `ERROR_CORE` | `Phone number is not correct` | Invalid number in `TO_NUMBER`. ||
+|| `ERROR_CORE` | `Infocall failure` | Error while initiating the auto-call. ||
+|| `ACCESS_DENIED` | `Access denied` | Insufficient permissions to make outgoing calls. ||
+|#
+
+{% include [system errors](../../../_includes/system-errors.md) %}
+
+## Continue Learning
+
+- [{#T}](./voximplant-callback-start.md)
+- [{#T}](./voximplant-infocall-start-with-sound.md)
+- [{#T}](./voximplant-infocall-start-with-text.md)
+- [{#T}](./voximplant-tts-voices-get.md)

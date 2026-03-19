@@ -3,8 +3,6 @@ href: index.md
 items: 
   - name: Open Channels in Bitrix24
     href: index.md
-  - name: Data Types and Object Structure in the REST API for Open Channels
-    href: data-types.md
   - name: Scenarios Using Open Channels
     href: tutorials.md
   - name: Open Channels Connectors

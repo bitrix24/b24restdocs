@@ -1,13 +1,13 @@
-title: Chats
-href: index.md
-items: 
-  - name: Overview of methods
-    href: index.md
-  - name: Get chat for CRM entity
-    href: imopenlines-crm-chat-get.md
-  - name: Get the Id of the last chat
-    href: imopenlines-crm-chat-get-last-id.md
-  - name: Add user to existing chat
-    href: imopenlines-crm-chat-user-add.md
-  - name: Remove user from chat
-    href: imopenlines-crm-chat-user-delete.md
+title: CRM Chats  
+href: index.md  
+items:  
+  - name: Overview of Methods  
+    href: index.md  
+  - name: Get the ID of the Last CRM Object Chat  
+    href: imopenlines-crm-chat-get-last-id.md  
+  - name: Retrieve Chats for the CRM Object  
+    href: imopenlines-crm-chat-get.md  
+  - name: Add a User to an Existing CRM Object Chat  
+    href: imopenlines-crm-chat-user-add.md  
+  - name: Remove a User from the CRM Object Chat  
+    href: imopenlines-crm-chat-user-delete.md  

@@ -1,74 +1,65 @@
-# Join the imopenlines.session.join Dialog
-
-{% note warning "We are still updating this page" %}
-
-Some data may be missing here — we will complete it shortly.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- parameter types are not specified
-- examples are missing
-- success response is absent
-- error response is absent
-- from Sergei's file: mention that this is done for the user whose tokens are used to call the method
-
-{% endnote %}
-
-{% endif %}
+# Join the Dialogue imopenlines.session.join
 
 > Scope: [`imopenlines`](../../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: any user with dialogue permissions
 
-This method allows you to join a session.
+The method `imopenlines.session.join` adds the current operator to an active dialogue in the Open Channels.
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../../_includes/required.md) %}
+{% include [Footnote on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
-`Type` | **Example** | **Description** ||
+`type` | **Description** ||
 || **CHAT_ID***
-[`unknown`](../../../data-types.md) | 494 | Identifier of the chat ||
+[`integer`](../../../data-types.md) | Identifier of the Open Channels chat. 
+
+The identifier can be obtained using the [imopenlines.session.open](./imopenlines-session-open.md) or [imopenlines.dialog.get](./imopenlines-dialog-get.md) methods. ||
 |#
 
-## Examples
+## Code Examples
 
-{% include [Note on examples](../../../../_includes/examples.md) %}
+{% include [Footnote on examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
 - cURL (Webhook)
 
-    // example for cURL (Webhook)
+    ```bash
+    curl -X POST \
+      -H "Content-Type: application/json" \
+      -H "Accept: application/json" \
+      -d '{"CHAT_ID":2043}' \
+      https://your-domain.bitrix24.com/rest/1/webhook_key/imopenlines.session.join.json
+    ```
 
 - cURL (OAuth)
 
-    // example for cURL (OAuth)
+    ```bash
+    curl -X POST \
+      -H "Content-Type: application/json" \
+      -H "Accept: application/json" \
+      -d '{"CHAT_ID":2043,"auth":"<access_token>"}' \
+      https://your-domain.bitrix24.com/rest/imopenlines.session.join.json
+    ```
 
 - JS
 
     ```js
-    try
-    {
-    	const response = await $b24.callMethod(
-    		'imopenlines.session.join',
-    		{
-    			CHAT_ID: 2024
-    		}
-    	);
-    	
-    	const result = response.getData().result;
-    	console.log(result);
-    }
-    catch( error )
-    {
-    	console.error(error.ex);
+    try {
+        const response = await $b24.callMethod(
+            'imopenlines.session.join',
+            {
+                CHAT_ID: 2043,
+            }
+        );
+
+        const { result } = response.getData();
+        console.log(result);
+    } catch (error) {
+        console.error(error);
     }
     ```
 
@@ -81,23 +72,22 @@ This method allows you to join a session.
             ->call(
                 'imopenlines.session.join',
                 [
-                    'CHAT_ID' => 2024
+                    'CHAT_ID' => 2043,
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
+
         if ($result->error()) {
-            echo 'Error: ' . $result->error()->ex;
+            echo 'Error: ' . $result->error();
         } else {
             echo 'Success: ' . print_r($result->data(), true);
         }
-    
-    } catch (Throwable $e) {
-        error_log($e->getMessage());
-        echo 'Error joining openlines session: ' . $e->getMessage();
+    } catch (Throwable $exception) {
+        error_log($exception->getMessage());
+        echo 'Error joining session: ' . $exception->getMessage();
     }
     ```
 
@@ -107,16 +97,12 @@ This method allows you to join a session.
     BX24.callMethod(
         'imopenlines.session.join',
         {
-            CHAT_ID: 2024
+            CHAT_ID: 2043,
         },
-        function(result)
-        {
-            if(result.error())
-            {
+        function(result) {
+            if (result.error()) {
                 console.error(result.error().ex);
-            }
-            else
-            {
+            } else {
                 console.log(result.data());
             }
         }
@@ -125,23 +111,92 @@ This method allows you to join a session.
 
 - PHP CRest
 
-    // example for php
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'imopenlines.session.join',
+        [
+            'CHAT_ID' => 2043,
+        ]
+    );
+
+    if (!empty($result['error'])) {
+        echo 'Error: ' . $result['error_description'];
+    } else {
+        echo 'Success: ' . print_r($result['result'], true);
+    }
+    ```
 
 {% endlist %}
 
-## Success Response
+## Response Handling
+
+HTTP Status: **200**
 
 ```json
-true
+{
+    "result": true,
+    "time": {
+        "start": 1773663032,
+        "finish": 1773663032.493037,
+        "duration": 0.49303698539733887,
+        "processing": 0,
+        "date_start": "2026-03-16T15:10:32+01:00",
+        "date_finish": "2026-03-16T15:10:32+01:00",
+        "operating_reset_at": 1773663632,
+        "operating": 0
+    }
+}
 ```
 
-## Error Response
+### Returned Data
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`boolean`](../../../data-types.md) | Returns `true` if the operator successfully joined the dialogue ||
+|| **time**
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
+|#
+
+## Error Handling
+
+HTTP Status: **400**
+
+```json
+{
+    "error": "CHAT_ID",
+    "error_description": "The specified chat identifier is incorrect"
+}
+```
+
+{% include notitle [error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| **ACCESS_DENIED** | The current user does not have access to the specified chat ||
-|| **CHAT_TYPE** | The specified chat is not an open line ||
-|| **CHAT_ID** | An incorrect chat identifier was provided ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `CHAT_ID` | The specified chat identifier is incorrect | Empty or invalid `CHAT_ID` ||
+|| `400` | `CHAT_TYPE` | The specified chat is not an Open Channel | The specified chat does not belong to Open Channels ||
+|| `400` | `ACCESS_DENIED` | You cannot open this conversation as you do not have sufficient permissions | The current user does not have access to the dialogue ||
+|| `400` | `USER_ID` | The specified user identifier is incorrect | The user on behalf of whom the method is executed is not defined ||
 |#
+
+{% include [system errors](../../../../_includes/system-errors.md) %}
+
+## Continue Learning
+
+- [{#T}](./imopenlines-session-open.md)
+- [{#T}](./imopenlines-session-start.md)
+- [{#T}](./imopenlines-session-history-get.md)
+- [{#T}](./imopenlines-session-intercept.md)
+- [{#T}](./imopenlines-session-mode-pin.md)
+- [{#T}](./imopenlines-session-mode-pin-all.md)
+- [{#T}](./imopenlines-session-mode-unpin-all.md)
+- [{#T}](./imopenlines-session-mode-silent.md)
+- [{#T}](./imopenlines-session-head-vote.md)
+- [{#T}](./imopenlines-message-session-start.md)
+- [{#T}](./imopenlines-crm-lead-create.md)
+- [{#T}](./imopenlines-dialog-get.md)

@@ -1,25 +1,25 @@
 title: Estimates  
 href: index.md  
 items:  
-  - name: Overview of methods  
+  - name: Overview of Methods  
     href: index.md  
-  - name: Add estimate  
+  - name: Add Estimate  
     href: crm-quote-add.md  
-  - name: Delete estimate  
-    href: crm-quote-delete.md  
-  - name: Get estimate fields  
-    href: crm-quote-fields.md  
-  - name: Get estimate by ID  
-    href: crm-quote-get.md  
-  - name: Get list of estimates by filter  
-    href: crm-quote-list.md  
-  - name: Update estimate  
+  - name: Update Estimate  
     href: crm-quote-update.md  
-  - name: Get product items of the estimate  
+  - name: Get Estimate by ID  
+    href: crm-quote-get.md  
+  - name: Get List of Estimates by Filter  
+    href: crm-quote-list.md  
+  - name: Delete Estimate  
+    href: crm-quote-delete.md  
+  - name: Get Estimate Fields  
+    href: crm-quote-fields.md  
+  - name: Get Product Items of Estimate  
     href: crm-quote-product-rows-get.md  
-  - name: Create/Update product items of the estimate  
+  - name: Create/Update Product Items of Estimate  
     href: crm-quote-product-rows-set.md  
-  - name: Custom fields  
+  - name: Custom Fields  
     include:  
       path: user-field/b24-toc.yaml  
       mode: link  

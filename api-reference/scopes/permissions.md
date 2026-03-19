@@ -28,7 +28,7 @@
 || **pull** | [Pull&Push](../../settings/interactivity/push-and-pull/index.md) | Pull&Push ||
 || **rpa** | [Business Automation](../outdated/rpa/index.md) | Business Automation ||
 || **sale** | [Online Store](../sale/index.md) | Online Store ||
-|| **sign.b2e** | [e-Signature for HR + Government Key](../sign/index.md) | e-Signature for HR, Signature ||
+|| **sign.b2e** | [e-Signature for HR](../sign/index.md) | e-Signature for HR ||
 || **sonet_group, socialnetwork** | [Social Network Workgroups](../sonet-group/sonet-group-create.md) | Social Network Workgroups ||
 || **task** | [Tasks](../tasks/index.md) | Tasks ||
 || **telephony** | [Telephony](../telephony/index.md) | Telephony ||

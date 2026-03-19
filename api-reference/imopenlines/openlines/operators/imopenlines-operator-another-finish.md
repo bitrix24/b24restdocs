@@ -1,43 +1,25 @@
-# Finish the dialog of another operator imopenlines.operator.another.finish
-
-{% note warning "We are still updating this page" %}
-
-Some data may be missing here — we will fill it in shortly
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- missing parameters or fields
-- parameter types not specified
-- examples missing
-- success response missing
-- error response missing
-
-{% endnote %}
-
-{% endif %}
+# Finish Another Operator's Dialog imopenlines.operator.another.finish
 
 > Scope: [`imopenlines`](../../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: any user with dialog permissions
 
-This method finishes the dialog of another operator.
+The method `imopenlines.operator.another.finish` ends a dialog in an open line, even if the dialog is assigned to another operator.
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
-`Type` | **Example** | **Description** ||
+`type` | **Description** ||
 || **CHAT_ID***
-[`unknown`](../../../data-types.md) |`2020` | Identifier of the chat ||
+[`integer`](../../../data-types.md) | Identifier of the open line chat.
+
+The identifier can be obtained using the [imopenlines.session.open](../sessions/imopenlines-session-open.md) or [imopenlines.dialog.get](../sessions/imopenlines-dialog-get.md) methods ||
 |#
 
-## Examples
+## Code Examples
 
 {% include [Note on examples](../../../../_includes/examples.md) %}
 
@@ -45,53 +27,169 @@ This method finishes the dialog of another operator.
 
 - cURL (Webhook)
 
-    // example for cURL (Webhook)
+    ```bash
+    curl -X POST \
+      -H "Content-Type: application/json" \
+      -H "Accept: application/json" \
+      -d '{"CHAT_ID":2043}' \
+      https://your-domain.bitrix24.com/rest/1/webhook_key/imopenlines.operator.another.finish.json
+    ```
 
 - cURL (OAuth)
 
-    // example for cURL (OAuth)
+    ```bash
+    curl -X POST \
+      -H "Content-Type: application/json" \
+      -H "Accept: application/json" \
+      -d '{"CHAT_ID":2043,"auth":"<access_token>"}' \
+      https://your-domain.bitrix24.com/rest/imopenlines.operator.another.finish.json
+    ```
 
 - JS
 
-    ```javascript
-    BX.callMethod(
+    ```js
+    try {
+        const response = await $b24.callMethod(
+            'imopenlines.operator.another.finish',
+            {
+                CHAT_ID: 2043,
+            }
+        );
+
+        const { result } = response.getData();
+        console.log(result);
+    } catch (error) {
+        console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'imopenlines.operator.another.finish',
+                [
+                    'CHAT_ID' => 2043,
+                ]
+            );
+
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+
+        if ($result->error()) {
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    } catch (Throwable $exception) {
+        error_log($exception->getMessage());
+        echo 'Error finishing another dialog: ' . $exception->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
+    BX24.callMethod(
         'imopenlines.operator.another.finish',
         {
-            CHAT_ID: 2024
+            CHAT_ID: 2043,
         },
-        function(result)
-        {
-            if(result.error())
-            {
+        function(result) {
+            if (result.error()) {
                 console.error(result.error().ex);
-            }
-            else
-            {
+            } else {
                 console.log(result.data());
             }
         }
     );
     ```
 
-- PHP
+- PHP CRest
 
-    // example for PHP
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'imopenlines.operator.another.finish',
+        [
+            'CHAT_ID' => 2043,
+        ]
+    );
+
+    if (!empty($result['error'])) {
+        echo 'Error: ' . $result['error_description'];
+    } else {
+        echo 'Success: ' . print_r($result['result'], true);
+    }
+    ```
 
 {% endlist %}
 
-## Success Response
+## Response Handling
+
+HTTP Status: **200**
 
 ```json
-true
+{
+    "result": true,
+    "time": {
+        "start": 1773663032,
+        "finish": 1773663032.493037,
+        "duration": 0.49303698539733887,
+        "processing": 0,
+        "date_start": "2026-03-16T15:10:32+01:00",
+        "date_finish": "2026-03-16T15:10:32+01:00",
+        "operating_reset_at": 1773663632,
+        "operating": 0
+    }
+}
 ```
 
-## Error Response
+### Returned Data
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`boolean`](../../../data-types.md) | Returns `true` if the dialog was successfully finished ||
+|| **time**
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
+|#
+
+## Error Handling
+
+HTTP Status: **400**
+
+```json
+{
+    "error": "CHAT_ID",
+    "error_description": "The provided chat identifier is invalid"
+}
+```
+
+{% include notitle [error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| **ACCESS_DENIED** | The current user does not have access to the specified chat ||
-|| **CHAT_TYPE** | The specified chat is not an open line ||
-|| **CHAT_ID** | An incorrect chat identifier was provided ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `CHAT_ID` | The provided chat identifier is invalid | Empty or incorrect `CHAT_ID` ||
+|| `400` | `CHAT_TYPE` | The specified chat is not an open line | The specified chat does not belong to open lines ||
+|| `400` | `ACCESS_DENIED` | You cannot open this conversation as you do not have sufficient permissions | The current user does not have permissions for the dialog ||
+|| `400` | `USER_ID` | The provided user identifier is invalid | The user on behalf of whom the method is executed is not defined ||
 |#
+
+{% include [system errors](../../../../_includes/system-errors.md) %}
+
+## Continue Learning
+
+- [{#T}](./imopenlines-operator-answer.md)
+- [{#T}](./imopenlines-operator-finish.md)
+- [{#T}](./imopenlines-operator-skip.md)
+- [{#T}](./imopenlines-operator-spam.md)
+- [{#T}](./imopenlines-operator-transfer.md)

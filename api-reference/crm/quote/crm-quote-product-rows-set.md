@@ -1,75 +1,162 @@
-# Create/Update Product Items in crm.quote.productrows.set
-
-{% note warning "We are still updating this page" %}
-
-Some data may be missing here — we will fill it in shortly.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- adjustments needed for writing standards
-- parameter types not specified
-- parameter requirements not indicated
-- examples missing (should include three examples - curl, js, php)
-- success response missing
-- error response missing
-
-{% endnote %}
-
-{% endif %}
+# Set Product Rows for the Quote crm.quote.productrows.set
 
 > Scope: [`crm`](../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: a user with "edit" access permission for estimates
 
-{% note warning "Method Development Stopped" %}
+{% note warning "Method Development Halted" %}
 
-The method `crm.quote.productrows.set` continues to function, but there is a more relevant alternative [crm.item.productrow.*](../universal/product-rows/index.md).
+The method `crm.quote.productrows.set` is still operational, but there is a more relevant alternative: [crm.item.productrow.*](../universal/product-rows/index.md).
 
 {% endnote %}
 
-The method `crm.quote.productrows.set` sets (creates or updates) the product items of the quote.
+The method `crm.quote.productrows.set` creates or updates the product rows of an estimate.
+
+To modify only one row, use the methods [crm.item.productrow.*](../universal/product-rows/index.md).
+
+## Method Parameters
+
+{% include [Parameter Note](../../../_includes/required.md) %}
 
 #|
-||  **Parameter** / **Type**| **Description** ||
-|| **id**
-[`unknown`](../../data-types.md) | Identifier of the quote. ||
+|| **Name**
+`type` | **Description** ||
+|| **id***
+[`integer`](../data-types.md) | Identifier of the estimate.
+
+The identifier can be obtained using the methods [crm.quote.list](./crm-quote-list.md) or [crm.quote.add](./crm-quote-add.md) ||
 || **rows**
-[`unknown`](../../data-types.md) | Product items - an array of the form `array(array("field"=>"value"[, ...])[, ...])`, where "field" can take values returned by the method [crm.productrow.fields](../../crm/outdated/productrow-old/crm-productrow-fields.md). The product items of the quote that exist before the method call will be replaced with the new ones. After saving, the total amount of the quote will be recalculated. ||
+[`object[]`](#parameter-rows) | Array of product rows.
+
+Format of the array element:
+```json
+{
+    "field_1": "value_1",
+    "field_2": "value_2",
+    "...": "..."
+}
+```
+
+where:
+- `field_n` — name of the product row field
+- `value_n` — value of the field
+
+The list of main fields is described [below](#parameter-rows) ||
 |#
 
-## Example
+### List of Available Fields for Product Rows {#parameter-rows}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **PRODUCT_ID**
+[`integer`](../data-types.md) | Identifier of the product in the catalog.
+
+The list of products can be obtained using the method [catalog.product.list](../../catalog/product/catalog-product-list.md).
+
+If `PRODUCT_ID = 0`, the row is created as "custom" ||
+|| **PRODUCT_NAME**
+[`string`](../data-types.md) | Name of the product row ||
+|| **PRODUCT_DESCRIPTION**
+[`string`](../data-types.md) | Description of the product row ||
+|| **PRICE**
+[`double`](../data-types.md) | Final cost of the product per unit ||
+|| **QUANTITY**
+[`double`](../data-types.md) | Quantity of product units ||
+|| **DISCOUNT_TYPE_ID**
+[`integer`](../data-types.md) | Type of discount:
+- `1` — absolute
+- `2` — percentage ||
+|| **DISCOUNT_RATE**
+[`double`](../data-types.md) | Discount value in percentage ||
+|| **DISCOUNT_SUM**
+[`double`](../data-types.md) | Absolute discount value ||
+|| **TAX_RATE**
+[`double`](../data-types.md) | Tax rate in percentage ||
+|| **TAX_INCLUDED**
+[`char`](../data-types.md) | Is tax included in the price:
+- `Y` — yes
+- `N` — no ||
+|| **MEASURE_CODE**
+[`catalog_measure.code`](../../catalog/data-types.md#catalog_measure) | Unit of measure code ||
+|| **MEASURE_NAME**
+[`string`](../data-types.md) | Text representation of the unit of measure ||
+|| **SORT**
+[`integer`](../data-types.md) | Sorting order ||
+|#
+
+The complete list of fields for product rows and types can be obtained using the method [crm.productrow.fields](../outdated/productrow-old/crm-productrow-fields.md).
+
+## Code Examples
+
+{% include [Example Note](../../../_includes/examples.md) %}
+
+Set two product rows for the estimate with `id = 1`.
 
 {% list tabs %}
+
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"id":1,"rows":[{"PRODUCT_ID":459,"PRICE":3000,"QUANTITY":1,"DISCOUNT_TYPE_ID":2,"DISCOUNT_RATE":0,"TAX_RATE":0,"TAX_INCLUDED":"Y","MEASURE_CODE":796,"MEASURE_NAME":"pcs","SORT":10},{"PRODUCT_NAME":"Support Service","PRICE":1500,"QUANTITY":2,"DISCOUNT_TYPE_ID":2,"DISCOUNT_RATE":0,"TAX_RATE":0,"TAX_INCLUDED":"Y","MEASURE_CODE":796,"MEASURE_NAME":"pcs","SORT":20}]}' \
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.quote.productrows.set
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"id":1,"rows":[{"PRODUCT_ID":459,"PRICE":3000,"QUANTITY":1,"DISCOUNT_TYPE_ID":2,"DISCOUNT_RATE":0,"TAX_RATE":0,"TAX_INCLUDED":"Y","MEASURE_CODE":796,"MEASURE_NAME":"pcs","SORT":10},{"PRODUCT_NAME":"Support Service","PRICE":1500,"QUANTITY":2,"DISCOUNT_TYPE_ID":2,"DISCOUNT_RATE":0,"TAX_RATE":0,"TAX_INCLUDED":"Y","MEASURE_CODE":796,"MEASURE_NAME":"pcs","SORT":20}],"auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/crm.quote.productrows.set
+    ```
 
 - JS
 
     ```js
     try
     {
-    	const id = prompt("Enter ID");
     	const response = await $b24.callMethod(
-    		"crm.quote.productrows.set",
+    		'crm.quote.productrows.set',
     		{
-    			id: id,
-    			rows:
-    			[
-    				{ "PRODUCT_ID": 1, "PRICE": 100.00, "QUANTITY": 2 },
-    				{ "PRODUCT_ID": 2, "PRICE": 200.00, "QUANTITY": 1 }
-    			]
+    			id: 1,
+    			rows: [
+    				{
+    					PRODUCT_ID: 459,
+    					PRICE: 3000,
+    					QUANTITY: 1,
+    					DISCOUNT_TYPE_ID: 2,
+    					DISCOUNT_RATE: 0,
+    					TAX_RATE: 0,
+    					TAX_INCLUDED: 'Y',
+    					MEASURE_CODE: 796,
+    					MEASURE_NAME: 'pcs',
+    					SORT: 10,
+    				},
+    				{
+    					PRODUCT_NAME: 'Support Service',
+    					PRICE: 1500,
+    					QUANTITY: 2,
+    					DISCOUNT_TYPE_ID: 2,
+    					DISCOUNT_RATE: 0,
+    					TAX_RATE: 0,
+    					TAX_INCLUDED: 'Y',
+    					MEASURE_CODE: 796,
+    					MEASURE_NAME: 'pcs',
+    					SORT: 20,
+    				},
+    			],
     		}
     	);
-    	
+
     	const result = response.getData().result;
-    	if(result.error())
-    		console.error(result.error());
-    	else
-    		console.info(result);
+    	console.info(result);
     }
-    catch(error)
+    catch( error )
     {
     	console.error('Error:', error);
     }
@@ -78,32 +165,48 @@ The method `crm.quote.productrows.set` sets (creates or updates) the product ite
 - PHP
 
     ```php
-    $id = readline("Enter ID");
-    
     try {
         $response = $b24Service
             ->core
             ->call(
                 'crm.quote.productrows.set',
                 [
-                    'id'   => $id,
+                    'id' => 1,
                     'rows' => [
-                        ['PRODUCT_ID' => 1, 'PRICE' => 100.00, 'QUANTITY' => 2],
-                        ['PRODUCT_ID' => 2, 'PRICE' => 200.00, 'QUANTITY' => 1],
+                        [
+                            'PRODUCT_ID' => 459,
+                            'PRICE' => 3000,
+                            'QUANTITY' => 1,
+                            'DISCOUNT_TYPE_ID' => 2,
+                            'DISCOUNT_RATE' => 0,
+                            'TAX_RATE' => 0,
+                            'TAX_INCLUDED' => 'Y',
+                            'MEASURE_CODE' => 796,
+                            'MEASURE_NAME' => 'pcs',
+                            'SORT' => 10,
+                        ],
+                        [
+                            'PRODUCT_NAME' => 'Support Service',
+                            'PRICE' => 1500,
+                            'QUANTITY' => 2,
+                            'DISCOUNT_TYPE_ID' => 2,
+                            'DISCOUNT_RATE' => 0,
+                            'TAX_RATE' => 0,
+                            'TAX_INCLUDED' => 'Y',
+                            'MEASURE_CODE' => 796,
+                            'MEASURE_NAME' => 'pcs',
+                            'SORT' => 20,
+                        ],
                     ],
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
-        if ($result->error()) {
-            error_log($result->error());
-        } else {
-            echo 'Success: ' . print_r($result->data(), true);
-        }
-    
+
+        echo 'Updated: ' . ($result ? 'true' : 'false');
+
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error setting quote product rows: ' . $e->getMessage();
@@ -113,27 +216,154 @@ The method `crm.quote.productrows.set` sets (creates or updates) the product ite
 - BX24.js
 
     ```js
-    var id = prompt("Enter ID");
     BX24.callMethod(
-        "crm.quote.productrows.set",
+        'crm.quote.productrows.set',
         {
-            id: id,
-            rows:
-            [
-                { "PRODUCT_ID": 1, "PRICE": 100.00, "QUANTITY": 2 },
-                { "PRODUCT_ID": 2, "PRICE": 200.00, "QUANTITY": 1 }
-            ]
+            id: 1,
+            rows: [
+                {
+                    PRODUCT_ID: 459,
+                    PRICE: 3000,
+                    QUANTITY: 1,
+                    DISCOUNT_TYPE_ID: 2,
+                    DISCOUNT_RATE: 0,
+                    TAX_RATE: 0,
+                    TAX_INCLUDED: 'Y',
+                    MEASURE_CODE: 796,
+                    MEASURE_NAME: 'pcs',
+                    SORT: 10,
+                },
+                {
+                    PRODUCT_NAME: 'Support Service',
+                    PRICE: 1500,
+                    QUANTITY: 2,
+                    DISCOUNT_TYPE_ID: 2,
+                    DISCOUNT_RATE: 0,
+                    TAX_RATE: 0,
+                    TAX_INCLUDED: 'Y',
+                    MEASURE_CODE: 796,
+                    MEASURE_NAME: 'pcs',
+                    SORT: 20,
+                },
+            ],
         },
-        function(result)
-        {
-            if(result.error())
-                console.error(result.error());
-            else
-                console.info(result.data());
-        }
+        (result) => {
+            result.error()
+                ? console.error(result.error())
+                : console.info(result.data())
+            ;
+        },
     );
+    ```
+
+- PHP CRest
+
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'crm.quote.productrows.set',
+        [
+            'id' => 1,
+            'rows' => [
+                [
+                    'PRODUCT_ID' => 459,
+                    'PRICE' => 3000,
+                    'QUANTITY' => 1,
+                    'DISCOUNT_TYPE_ID' => 2,
+                    'DISCOUNT_RATE' => 0,
+                    'TAX_RATE' => 0,
+                    'TAX_INCLUDED' => 'Y',
+                    'MEASURE_CODE' => 796,
+                    'MEASURE_NAME' => 'pcs',
+                    'SORT' => 10,
+                ],
+                [
+                    'PRODUCT_NAME' => 'Support Service',
+                    'PRICE' => 1500,
+                    'QUANTITY' => 2,
+                    'DISCOUNT_TYPE_ID' => 2,
+                    'DISCOUNT_RATE' => 0,
+                    'TAX_RATE' => 0,
+                    'TAX_INCLUDED' => 'Y',
+                    'MEASURE_CODE' => 796,
+                    'MEASURE_NAME' => 'pcs',
+                    'SORT' => 20,
+                ],
+            ],
+        ]
+    );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
     ```
 
 {% endlist %}
 
-{% include [Examples note](../../../_includes/examples.md) %}
+## Response Handling
+
+HTTP Status: **200**
+
+```json
+{
+    "result": true,
+    "time": {
+        "start": 1773416018,
+        "finish": 1773416018.877651,
+        "duration": 0.8776509761810303,
+        "processing": 0,
+        "date_start": "2026-03-13T18:33:38+02:00",
+        "date_finish": "2026-03-13T18:33:38+02:00",
+        "operating_reset_at": 1773416618,
+        "operating": 0.5666530132293701
+    }
+}
+```
+
+### Returned Data
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`boolean`](../data-types.md) | Root element of the response. Contains:
+- `true` — product rows successfully saved
+- `false` — product rows not saved ||
+|| **time**
+[`time`](../data-types.md#time) | Information about the execution time of the request ||
+|#
+
+## Error Handling
+
+HTTP Status: **400**
+
+```json
+{
+    "error": "",
+    "error_description": "Not found."
+}
+```
+
+{% include notitle [error handling](../../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+#|
+|| **Code** | **Description** | **Value** ||
+|| `-` | `The parameter id is invalid or not defined.` | The parameter `id` has no value or an invalid value was provided ||
+|| `-` | `The parameter rows must be array.` | The parameter `rows` is not an array ||
+|| `-` | `Access denied.` | The user does not have permission to edit the estimate ||
+|| `-` | `Not found.` | The estimate with the provided `id` was not found ||
+|| `-` | Text of catalog rights check error | Error checking rights for catalog products and/or catalog restrictions for the provided rows ||
+|#
+
+{% include [system errors](../../../_includes/system-errors.md) %}
+
+## Continue Learning
+
+- [{#T}](./crm-quote-product-rows-get.md)
+- [{#T}](./crm-quote-get.md)
+- [{#T}](./crm-quote-update.md)
+- [{#T}](./crm-quote-add.md)
+- [{#T}](./crm-quote-fields.md)

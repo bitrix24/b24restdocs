@@ -54,8 +54,8 @@ To add a bot to an open channel chat, it must have the scope [crm](../../../scop
 
 #|
 || **Method** | **Description** ||
-|| [imopenlines.crm.chat.getLastId](./imopenlines-crm-chat-get-last-id.md) | Retrieves the ID of the last chat ||
-|| [imopenlines.crm.chat.get](./imopenlines-crm-chat-get.md) | Retrieves the chat for the CRM object ||
-|| [imopenlines.crm.chat.user.add](./imopenlines-crm-chat-user-add.md) | Adds a user to an existing chat ||
-|| [imopenlines.crm.chat.user.delete](./imopenlines-crm-chat-user-delete.md) | Removes a user from the chat ||
+|| [imopenlines.crm.chat.getLastId](./imopenlines-crm-chat-get-last-id.md) | Retrieves the ID of the last chat for the CRM entity ||
+|| [imopenlines.crm.chat.get](./imopenlines-crm-chat-get.md) | Retrieves chats for the CRM entity ||
+|| [imopenlines.crm.chat.user.add](./imopenlines-crm-chat-user-add.md) | Adds a user to an existing chat of the CRM entity ||
+|| [imopenlines.crm.chat.user.delete](./imopenlines-crm-chat-user-delete.md) | Removes a user from the chat of the CRM entity ||
 |#

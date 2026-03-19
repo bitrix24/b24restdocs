@@ -1,61 +1,71 @@
-# Get Additional Fields for landing.landing.getadditionalfields
-
-{% note warning "We are still updating this page" %}
-
-Some data may be missing here — we will complete it shortly.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- parameter types are not specified
-- parameter requirements are not specified
-- examples are missing
-- success response is missing
-- error response is missing
-
-{% endnote %}
-
-{% endif %}
+# Get Additional Fields of the Page landing.landing.getadditionalfields
 
 > Scope: [`landing`](../../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: user with "view" access permission for the site
 
-The method `landing.landing.getadditionalfields` retrieves [additional fields](../additional-fields.md) for the page. It returns the additional fields of the site or an error.
+The method `landing.landing.getadditionalfields` retrieves [additional fields](../additional-fields.md) of the page.
 
-## Parameters
+## Method Parameters
+
+{% include [Footnote on required parameters](../../../../_includes/required.md) %}
 
 #|
-|| **Method** | **Description** | **Available since** ||
-|| **lid**
-[`unknown`](../../../data-types.md) | page identifier. ||
+|| **Name**
+`type` | **Description** ||
+|| **lid***
+[`integer`](../../../data-types.md) | Page identifier.
+
+The page identifier can be obtained using the [landing.landing.getList](./landing-landing-get-list.md) method, as well as from the results of the [landing.landing.add](./landing-landing-add.md), [landing.landing.addByTemplate](./landing-landing-add-by-template.md), and [landing.landing.copy](./landing-landing-copy.md) methods ||
 |#
 
-## Example
+## Code Examples
+
+{% include [Footnote on examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
+
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+      -H "Content-Type: application/json" \
+      -d '{
+        "lid": 349
+      }' \
+      "https://**put.your-domain-here**/rest/**user_id**/**webhook_code**/landing.landing.getadditionalfields.json"
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+      -H "Content-Type: application/json" \
+      -d '{
+        "lid": 349,
+        "auth": "**put_access_token_here**"
+      }' \
+      "https://**put.your-domain-here**/rest/landing.landing.getadditionalfields.json"
+    ```
 
 - JS
 
     ```js
     try
     {
-    	const response = await $b24.callMethod(
-    		'landing.landing.getadditionalfields',
-    		{
-    			lid: 349
-    		}
-    	);
-    	
-    	const result = response.getData().result;
-    	console.info(result);
+        const response = await $b24.callMethod(
+            'landing.landing.getadditionalfields',
+            {
+                lid: 349
+            }
+        );
+
+        const result = response.getData().result;
+        console.info(result);
     }
-    catch(error)
+    catch (error)
     {
-    	console.error(error);
+        console.error(error);
     }
     ```
 
@@ -68,20 +78,15 @@ The method `landing.landing.getadditionalfields` retrieves [additional fields](.
             ->call(
                 'landing.landing.getadditionalfields',
                 [
-                    'lid' => 349
+                    'lid' => 349,
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
-        if ($result->error()) {
-            echo 'Error: ' . $result->error();
-        } else {
-            echo 'Additional fields: ' . print_r($result->data(), true);
-        }
-    
+
+        echo 'Success: ' . print_r($result, true);
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error getting additional fields: ' . $e->getMessage();
@@ -98,7 +103,7 @@ The method `landing.landing.getadditionalfields` retrieves [additional fields](.
         },
         function(result)
         {
-            if(result.error())
+            if (result.error())
             {
                 console.error(result.error());
             }
@@ -110,6 +115,122 @@ The method `landing.landing.getadditionalfields` retrieves [additional fields](.
     );
     ```
 
+- PHP CRest
+
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'landing.landing.getadditionalfields',
+        [
+            'lid' => 349,
+        ]
+    );
+
+    if (isset($result['error']))
+    {
+        echo 'Error: ' . $result['error_description'];
+    }
+    else
+    {
+        echo '<pre>';
+        print_r($result['result']);
+        echo '</pre>';
+    }
+    ```
+
 {% endlist %}
 
-{% include [Footnote about examples](../../../../_includes/examples.md) %}
+## Response Handling
+
+HTTP Status: **200**
+
+Below is a shortened example of the response. The actual set of fields depends on the page settings and the additional fields connected to it.
+
+```json
+{
+    "result": {
+        "FONTS_CODE": "<noscript><link rel=\"stylesheet\" href=\"https://fonts.googleapis.com/...\" data-font=\"g-font-russo-one\"></noscript>",
+        "GACOUNTER_USE": "N",
+        "METAMAIN_USE": "Y",
+        "METAMAIN_TITLE": "Festival in New York. April 20-26, 2022. Buy tickets online",
+        "METAOG_TITLE": "Festival in New York. April 20-26, 2022. Buy tickets online",
+        "METAOG_IMAGE": "https://cdn.com.bitrix24.com/.../cover_1x.webp",
+        "SETTINGS_PRICE_CODE": [
+            "BASE"
+        ],
+        "SETTINGS_SHOW_PRICE_COUNT": 1,
+        "THEMEFONTS_LINE_HEIGHT": "1.6",
+        "VIEW_TYPE": "no",
+        "YACOUNTER_USE": "N"
+    },
+    "time": {
+        "start": 1773722096,
+        "finish": 1773722096.682451,
+        "duration": 0.6824510097503662,
+        "processing": 0,
+        "date_start": "2026-03-17T12:34:56+01:00",
+        "date_finish": "2026-03-17T12:34:56+01:00",
+        "operating_reset_at": 1773722696,
+        "operating": 0.11843705177307129
+    }
+}
+```
+
+### Returned Data
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`object`](../../../data-types.md) \| [`array`](../../../data-types.md) | Set of additional fields of the page in the format `{"<FIELD_CODE>": "<VALUE>"}`.
+
+If the page has no available non-empty additional fields, the method returns an empty array `[]` [(detailed description)](#result) ||
+|| **time**
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
+|#
+
+#### Result Object {#result}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **<FIELD_CODE>**
+[`string`](../../../data-types.md) \| [`integer`](../../../data-types.md) \| [`boolean`](../../../data-types.md) \| [`array`](../../../data-types.md) \| [`object`](../../../data-types.md) | Pair "field code → field value". The method returns only fields with non-empty values.  
+
+Available field codes are listed in the [Additional Fields of the Page](../additional-fields.md) section ||
+|#
+
+## Error Handling
+
+HTTP Status: **400**
+
+```json
+{
+    "error": "LANDING_NOT_EXIST",
+    "error_description": "Landing not found"
+}
+```
+
+{% include notitle [error handling](../../../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+#|
+|| **Code** | **Description** ||
+|| `MISSING_PARAMS` | Required parameter `lid` is missing ||
+|| `LANDING_NOT_EXIST` | Page not found: the `lid` parameter contains the identifier of a non-existent or inaccessible page ||
+|| `ACCESS_DENIED` | Insufficient permissions to call the method ||
+|#
+
+{% include [system errors](../../../../_includes/system-errors.md) %}
+
+## Continue Learning
+
+- [{#T}](./landing-landing-add.md)
+- [{#T}](./landing-landing-add-by-template.md)
+- [{#T}](./landing-landing-copy.md)
+- [{#T}](./landing-landing-update.md)
+- [{#T}](./landing-landing-get-list.md)
+- [{#T}](./landing-landing-get-preview.md)
+- [{#T}](./landing-landing-get-public-url.md)

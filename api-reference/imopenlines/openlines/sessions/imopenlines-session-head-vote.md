@@ -1,79 +1,77 @@
-# Rate the employee's performance in the dialog imopenlines.session.head.vote
-
-{% note warning "We are still updating this page" %}
-
-Some data may be missing here — we will fill it in shortly
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- parameter types are not specified
-- examples are missing
-- success response is missing
-- error response is missing
-
-{% endnote %}
-
-{% endif %}
+# Rate Employee Performance in the imopenlines.session.head.vote Dialog
 
 > Scope: [`imopenlines`](../../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: a manager with evaluation rights in the line settings
 
-This method is for rating the dialog by the supervisor.
+The method `imopenlines.session.head.vote` saves the manager's rating and comment for a completed dialog.
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
-`Type` | **Example** | **Description** ||
-|| **SESSION_ID*** 
-[`unknown`](../../../data-types.md) | `494` | Session identifier ||
+`type` | **Description** ||
+|| **SESSION_ID***
+[`integer`](../../../data-types.md) | Session identifier. 
+
+The identifier can be obtained using the [imopenlines.session.history.get](./imopenlines-session-history-get.md) method in the `sessionId` field ||
 || **RATING**
-[`unknown`](../../../data-types.md) | `5` | Number of stars from 1 to 5 ||
+[`integer`](../../../data-types.md) | Manager's rating. Pass a value from `1` to `5` ||
 || **COMMENT**
-[`unknown`](../../../data-types.md) | `Well done` | Supervisor's comment ||
+[`string`](../../../data-types.md) | Manager's comment on the rating ||
 |#
 
-**Note:** Although two parameters are optional, at least one of them must be filled in.
+{% note info "" %}
 
-## Examples
+At least one of the parameters must be provided: `RATING` or `COMMENT`.
 
-{% include [Note on examples](../../../../_includes/examples.md) %}
+{% endnote %} 
+
+## Code Examples
+
+{% include [Note on Examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
 - cURL (Webhook)
 
-    // example for cURL (Webhook)
+    ```bash
+    curl -X POST \
+      -H "Content-Type: application/json" \
+      -H "Accept: application/json" \
+      -d '{"SESSION_ID":1743,"RATING":5,"COMMENT":"Excellent handling"}' \
+      https://your-domain.bitrix24.com/rest/1/webhook_key/imopenlines.session.head.vote.json
+    ```
 
 - cURL (OAuth)
 
-    // example for cURL (OAuth)
+    ```bash
+    curl -X POST \
+      -H "Content-Type: application/json" \
+      -H "Accept: application/json" \
+      -d '{"SESSION_ID":1743,"RATING":5,"COMMENT":"Excellent handling","auth":"<access_token>"}' \
+      https://your-domain.bitrix24.com/rest/imopenlines.session.head.vote.json
+    ```
 
 - JS
 
     ```js
-    try
-    {
+    try {
         const response = await $b24.callMethod(
             'imopenlines.session.head.vote',
             {
-                CHAT_ID: 2024
+                SESSION_ID: 1743,
+                RATING: 5,
+                COMMENT: 'Excellent handling',
             }
         );
-        
-        const result = response.getData().result;
+
+        const { result } = response.getData();
         console.log(result);
-    }
-    catch( error )
-    {
-        console.error(error.ex);
+    } catch (error) {
+        console.error(error);
     }
     ```
 
@@ -86,23 +84,24 @@ This method is for rating the dialog by the supervisor.
             ->call(
                 'imopenlines.session.head.vote',
                 [
-                    'CHAT_ID' => 2024
+                    'SESSION_ID' => 1743,
+                    'RATING' => 5,
+                    'COMMENT' => 'Excellent handling',
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
+
         if ($result->error()) {
-            error_log($result->error()->ex);
+            echo 'Error: ' . $result->error();
         } else {
             echo 'Success: ' . print_r($result->data(), true);
         }
-    
-    } catch (Throwable $e) {
-        error_log($e->getMessage());
-        echo 'Error voting for session head: ' . $e->getMessage();
+    } catch (Throwable $exception) {
+        error_log($exception->getMessage());
+        echo 'Error voting as head: ' . $exception->getMessage();
     }
     ```
 
@@ -112,16 +111,14 @@ This method is for rating the dialog by the supervisor.
     BX24.callMethod(
         'imopenlines.session.head.vote',
         {
-            CHAT_ID: 2024
+            SESSION_ID: 1743,
+            RATING: 5,
+            COMMENT: 'Excellent handling',
         },
-        function(result)
-        {
-            if(result.error())
-            {
+        function(result) {
+            if (result.error()) {
                 console.error(result.error().ex);
-            }
-            else
-            {
+            } else {
                 console.log(result.data());
             }
         }
@@ -130,24 +127,93 @@ This method is for rating the dialog by the supervisor.
 
 - PHP CRest
 
-    // example for php
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'imopenlines.session.head.vote',
+        [
+            'SESSION_ID' => 1743,
+            'RATING' => 5,
+            'COMMENT' => 'Excellent handling',
+        ]
+    );
+
+    if (!empty($result['error'])) {
+        echo 'Error: ' . $result['error_description'];
+    } else {
+        echo 'Success: ' . print_r($result['result'], true);
+    }
+    ```
 
 {% endlist %}
 
-## Success Response
+## Response Handling
+
+HTTP Status: **200**
 
 ```json
-true
+{
+    "result": true,
+    "time": {
+        "start": 1773681878,
+        "finish": 1773681878.850923,
+        "duration": 0.8509230613708496,
+        "processing": 0,
+        "date_start": "2026-03-16T20:24:38+01:00",
+        "date_finish": "2026-03-16T20:24:38+01:00",
+        "operating_reset_at": 1773682478,
+        "operating": 0
+    }
+}
 ```
 
-## Error Response
+### Returned Data
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`boolean`](../../../data-types.md) | Returns `true` if the rating is saved ||
+|| **time**
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
+|#
+
+## Error Handling
+
+HTTP Status: **400**
+
+```json
+{
+    "error": "EMPTY_VOTE_PARAMS",
+    "error_description": "At least one of the parameters RATING or COMMENT must be specified"
+}
+```
+
+{% include notitle [Error Handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| **ACCESS_DENIED** | The current user does not have access to the specified chat ||
-|| **CHAT_TYPE** | The specified chat is not an open line ||
-|| **CHAT_ID** | An incorrect chat identifier is specified ||
-|| **WRONG_PARAMETER** | At least one of the optional parameters must be specified ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `EMPTY_SESSION_ID` | Session ID can't be empty | `SESSION_ID` not provided or value `<= 0` ||
+|| `400` | `EMPTY_VOTE_PARAMS` | At least one of the parameters RATING or COMMENT must be specified | Both `RATING` and `COMMENT` not provided ||
+|| `400` | `ACCESS_DENIED` | You cannot open this conversation as you do not have sufficient rights | The current user cannot rate the specified session ||
 |#
+
+{% include [System Errors](../../../../_includes/system-errors.md) %}
+
+## Continue Learning
+
+- [{#T}](./imopenlines-session-open.md)
+- [{#T}](./imopenlines-session-start.md)
+- [{#T}](./imopenlines-session-join.md)
+- [{#T}](./imopenlines-session-history-get.md)
+- [{#T}](./imopenlines-session-intercept.md)
+- [{#T}](./imopenlines-session-mode-pin.md)
+- [{#T}](./imopenlines-session-mode-pin-all.md)
+- [{#T}](./imopenlines-session-mode-unpin-all.md)
+- [{#T}](./imopenlines-session-mode-silent.md)
+- [{#T}](./imopenlines-message-session-start.md)
+- [{#T}](./imopenlines-crm-lead-create.md)
+- [{#T}](./imopenlines-dialog-get.md)

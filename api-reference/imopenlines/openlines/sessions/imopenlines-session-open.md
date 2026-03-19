@@ -1,80 +1,75 @@
-# Get chat by symbolic code imopenlines.session.open
-
-{% note warning "We are still updating this page" %}
-
-Some data may be missing here — we will fill it in shortly
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- parameter types are not specified
-- examples are missing
-- response in case of error is missing
-- from Sergei's file: also recommend a method to get the chat by CRM object id, as a more reliable option
-
-{% endnote %}
-
-{% endif %}
+# Get Chat by User Code imopenlines.session.open
 
 > Scope: [`imopenlines`](../../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: any user with access permission to the dialogue
 
-The method returns the chat identifier by USER_CODE.
+The method `imopenlines.session.open` returns the chat ID of the open line based on the user code `USER_CODE`.
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../../_includes/required.md) %}
+{% include [Footnote on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
-`Type` | **Example** | **Description** ||
+`type` | **Description** ||
 || **USER_CODE***
-[`unknown`](../../../data-types.md) | `livechat`\|`58`\|`2042`\|`479` | Chat code, can be found in ENTITY_ID ||
+[`string`](../../../data-types.md) | String code of the user for the external system channel. 
+
+Code format: ```<connector>|<LINE_ID>|<CONNECTOR_CHAT_ID>|<CONNECTOR_USER_ID>```, where:
+- `<connector>` — connector identifier: `livechat`, `telegram`, and others
+- `<LINE_ID>` — identifier of the open line
+- `<CONNECTOR_CHAT_ID>` — chat identifier in the channel
+- `<CONNECTOR_USER_ID>` — user identifier in the channel
+
+The value can be obtained using the method [imopenlines.dialog.get](./imopenlines-dialog-get.md) from the `entity_id` field or the method [imopenlines.session.history.get](./imopenlines-session-history-get.md) from `result.chat.<chatId>.entityId` ||
 |#
 
-## Examples
+## Code Examples
 
-{% include [Note on examples](../../../../_includes/examples.md) %}
+{% include [Footnote on examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
 - cURL (Webhook)
 
-    // example for cURL (Webhook)
+    ```bash
+    curl -X POST \
+      -H "Content-Type: application/json" \
+      -H "Accept: application/json" \
+      -d '{"USER_CODE":"livechat|22|1761|587"}' \
+      https://your-domain.bitrix24.com/rest/1/webhook_key/imopenlines.session.open.json
+    ```
 
 - cURL (OAuth)
 
-    // example for cURL (OAuth)
+    ```bash
+    curl -X POST \
+      -H "Content-Type: application/json" \
+      -H "Accept: application/json" \
+      -d '{"USER_CODE":"livechat|22|1761|587","auth":"<access_token>"}' \
+      https://your-domain.bitrix24.com/rest/imopenlines.session.open.json
+    ```
 
 - JS
 
-
     ```js
-    try
-    {
-    	const response = await $b24.callMethod(
-    		'imopenlines.session.open',
-    		{
-    			CHAT_ID: 2024
-    		}
-    	);
-    	
-    	const result = response.getData().result;
-    	console.log(result);
-    }
-    catch( error )
-    {
-    	console.warn(error.ex);
-    	return false;
+    try {
+        const response = await $b24.callMethod(
+            'imopenlines.session.open',
+            {
+                USER_CODE: 'livechat|22|1761|587',
+            }
+        );
+
+        const { result } = response.getData();
+        console.log(result);
+    } catch (error) {
+        console.error(error);
     }
     ```
 
 - PHP
-
 
     ```php
     try {
@@ -83,24 +78,22 @@ The method returns the chat identifier by USER_CODE.
             ->call(
                 'imopenlines.session.open',
                 [
-                    'CHAT_ID' => 2024
+                    'USER_CODE' => 'livechat|22|1761|587',
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
+
         if ($result->error()) {
-            echo 'Warning: ' . $result->error()->ex;
-            return false;
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
         }
-    
-        echo 'Success: ' . print_r($result->data(), true);
-    
-    } catch (Throwable $e) {
-        error_log($e->getMessage());
-        echo 'Error opening session: ' . $e->getMessage();
+    } catch (Throwable $exception) {
+        error_log($exception->getMessage());
+        echo 'Error opening chat: ' . $exception->getMessage();
     }
     ```
 
@@ -110,39 +103,114 @@ The method returns the chat identifier by USER_CODE.
     BX24.callMethod(
         'imopenlines.session.open',
         {
-            CHAT_ID: 2024
+            USER_CODE: 'livechat|22|1761|587',
         },
-        function(result)
-        {
-            if(result.error())
-            {
-                console.warn(result.error().ex);
-                return false;
+        function(result) {
+            if (result.error()) {
+                console.error(result.error().ex);
+            } else {
+                console.log(result.data());
             }
-            console.log(result.data());
         }
     );
     ```
 
 - PHP CRest
 
-    // example for php
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'imopenlines.session.open',
+        [
+            'USER_CODE' => 'livechat|22|1761|587',
+        ]
+    );
+
+    if (!empty($result['error'])) {
+        echo 'Error: ' . $result['error_description'];
+    } else {
+        echo 'Success: ' . print_r($result['result'], true);
+    }
+    ```
 
 {% endlist %}
 
-## Response in case of success
+## Response Handling
+
+HTTP Status: **200**
 
 ```json
 {
-    "chatId":"2043"
+    "result": {
+        "chatId": "1763"
+    },
+    "time": {
+        "start": 1773666416,
+        "finish": 1773666416.279787,
+        "duration": 0.2797870635986328,
+        "processing": 0,
+        "date_start": "2026-03-16T16:06:56+01:00",
+        "date_finish": "2026-03-16T16:06:56+01:00",
+        "operating_reset_at": 1773667016,
+        "operating": 0
+    }
 }
 ```
 
-## Response in case of error
-
-### Possible error codes
+### Returned Data
 
 #|
-|| **Code** | **Description** ||
-|| **ACCESS_DENIED** | The current user does not have access to the specified chat ||
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`object`](../../../data-types.md) | Root object of the response [(detailed description)](#result) ||
+|| **time**
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
+
+### Result Object {#result}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **chatId**
+[`integer`](../../../data-types.md) | Identifier of the open line chat ||
+|#
+
+## Error Handling
+
+HTTP Status: **400**
+
+```json
+{
+    "error": "ACCESS_DENIED",
+    "error_description": "You cannot open this conversation because you do not have sufficient permissions"
+}
+```
+
+{% include notitle [error handling](../../../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+#|
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `ACCESS_DENIED` | You cannot open this conversation because you do not have sufficient permissions | No access to the chat with the specified `USER_CODE` ||
+|#
+
+{% include [system errors](../../../../_includes/system-errors.md) %}
+
+## Continue Learning
+
+- [{#T}](./imopenlines-session-start.md)
+- [{#T}](./imopenlines-session-join.md)
+- [{#T}](./imopenlines-session-history-get.md)
+- [{#T}](./imopenlines-session-intercept.md)
+- [{#T}](./imopenlines-session-mode-pin.md)
+- [{#T}](./imopenlines-session-mode-pin-all.md)
+- [{#T}](./imopenlines-session-mode-unpin-all.md)
+- [{#T}](./imopenlines-session-mode-silent.md)
+- [{#T}](./imopenlines-session-head-vote.md)
+- [{#T}](./imopenlines-message-session-start.md)
+- [{#T}](./imopenlines-crm-lead-create.md)
+- [{#T}](./imopenlines-dialog-get.md)
