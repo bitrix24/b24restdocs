@@ -3,25 +3,25 @@ href: index.md
 items:
   - name: Overview of Methods
     href: index.md
-  - name: Create Group/Project
+  - name: Create Group or Project
     href: sonet-group-create.md
-  - name: Update Group/Project
+  - name: Modify Group or Project
     href: sonet-group-update.md
-  - name: Get Group/Project by Id
+  - name: Retrieve Workgroup Data
     href: socialnetwork-api-workgroup-get.md
   - name: Get List of Workgroups
     href: socialnetwork-api-workgroup-list.md
-  - name: Get List of Groups/Projects
+  - name: Get List of Groups and Projects
     href: sonet-group-get.md 
-  - name: Check Current User's Access Permissions
+  - name: Check Current User Permissions
     href: sonet-group-feature-access.md
   - name: Get List of Current User's Groups
     href: sonet-group-user-groups.md
-  - name: Change Owner of Group/Project
+  - name: Change Group or Project Owner
     href: sonet-group-setowner.md
-  - name: Delete Social Network Group
+  - name: Delete Group or Project
     href: sonet-group-delete.md
-  - name: Group/Project Participants
+  - name: Group and Project Participants
     include:
       path: members/b24-toc.yaml
       mode: link

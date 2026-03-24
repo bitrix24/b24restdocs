@@ -18,7 +18,7 @@ Some data may be missing — we will complete it soon.
 
 {% note info "Permissions" %}
 
-**Scope**: [`crm.documentgenerator`](../../scopes/permissions.md) | **Who can execute the method**: `any user`
+**Scope**: [`crm`](../../scopes/permissions.md) | **Who can execute the method**: `any user`
 
 > Quick navigation: [all methods](#all-methods) 
 

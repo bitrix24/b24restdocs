@@ -3,15 +3,15 @@ href: index.md
 items:  
   - name: Overview of Methods  
     href: index.md  
-  - name: Retrieve Document Template Fields  
-    href: crm-document-generator-template-get-fields.md  
   - name: Add New Template  
     href: crm-document-generator-template-add.md  
   - name: Modify Existing Document Template  
     href: crm-document-generator-template-update.md  
   - name: Get Document Template Information by Id  
     href: crm-document-generator-template-get.md  
-  - name: Retrieve List of Document Templates  
+  - name: Get List of Document Templates  
     href: crm-document-generator-template-list.md  
   - name: Delete Document Template  
     href: crm-document-generator-template-delete.md  
+  - name: Get Document Template Fields  
+    href: crm-document-generator-template-get-fields.md  

@@ -1,62 +1,70 @@
-# Delete social network group sonet_group.delete
-
-{% note warning "We are still updating this page" %}
-
-Some data may be missing — we will complete it shortly.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- parameter types are not specified
-- parameter requirements are not indicated
-- no error response is provided
-- no examples in other languages
-
-{% endnote %}
-
-{% endif %}
+# Delete group or project sonet_group.delete
 
 > Scope: [`sonet`](../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: administrator or group or project owner
 
-Deletes a social network group. To perform this operation, the current user must either be the owner of the group or have administrator rights in the social network.
+The method `sonet_group.delete` removes a workgroup or project.
 
-## Function Parameters
+## Method parameters
+
+{% include [Note on required parameters](../../_includes/required.md) %}
 
 #|
-|| **Parameter** | **Description** ||
-|| **GROUP_ID** | ID of the group to be deleted. ||
+|| **Name**
+`type` | **Description** ||
+|| **GROUP_ID***
+[`integer`](../data-types.md) | Identifier of the group or project to be deleted.
+
+The identifier can be obtained using the [sonet_group.get](./sonet-group-get.md) method ||
 |#
 
-{% include [Footnote about parameters](../../_includes/required.md) %}
+## Code examples
 
-In case of successful group deletion, it returns **true**, otherwise - an error message.
-
-## Example
+{% include [Note on examples](../../_includes/examples.md) %}
 
 {% list tabs %}
+
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"GROUP_ID":77}' \
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/sonet_group.delete
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"GROUP_ID":77,"auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/sonet_group.delete
+    ```
 
 - JS
 
     ```js
     try
     {
-    	const response = await $b24.callMethod(
-    		'sonet_group.delete',
-    		{
-    			'GROUP_ID': 11
-    		}
-    	);
-    	
-    	const result = response.getData().result;
+        const response = await $b24.callMethod(
+            'sonet_group.delete',
+            {
+                GROUP_ID: 77
+            }
+        );
+        
+        const result = response.getData().result;
+        console.log('Deleted group:', result);
+        
+        processResult(result);
     }
     catch( error )
     {
-    	console.error('Error:', error);
+        console.error('Error:', error);
     }
     ```
 
@@ -69,46 +77,123 @@ In case of successful group deletion, it returns **true**, otherwise - an error 
             ->call(
                 'sonet_group.delete',
                 [
-                    'GROUP_ID' => 11
+                    'GROUP_ID' => 77
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
+
         echo 'Success: ' . print_r($result, true);
-    
+        processData($result);
+
     } catch (Throwable $e) {
         error_log($e->getMessage());
-        echo 'Error deleting social network group: ' . $e->getMessage();
+        echo 'Error deleting group: ' . $e->getMessage();
     }
     ```
 
 - BX24.js
 
     ```js
-    // Deleting social network group with ID=11
+    BX24.callMethod('sonet_group.delete',
+        {
+            GROUP_ID: 77
+        }, 
+        function(result)
+        {
+            if (result.error())
+            {
+                console.error(result.error(), result.error_description());
+            }
+            else
+            {
+                console.log(result.data());
+            }
+        }
+    );
+    ```
 
-    BX24.callMethod('sonet_group.delete', {
-        'GROUP_ID': 11
-    });
+- PHP CRest
+
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'sonet_group.delete',
+        [
+            'GROUP_ID' => 77
+        ]
+    );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
     ```
 
 {% endlist %}
 
-{% include [Footnote about examples](../../_includes/examples.md) %}
+## Response handling
 
-## Request:
-
-```http
-https://mydomain.bitrix24.com/rest/sonet_group.delete.json?auth=803f65e30340ff39703f8061c8b63a10&GROUP_ID=11
-```
-
-## Response:
-
->200 OK
+HTTP status: **200**
 
 ```json
-{"result":true}
+{
+    "result": true,
+    "time": {
+        "start": 1773931621,
+        "finish": 1773931622.233361,
+        "duration": 1.233361005783081,
+        "processing": 1,
+        "date_start": "2026-03-19T17:47:01+02:00",
+        "date_finish": "2026-03-19T17:47:02+02:00",
+        "operating_reset_at": 1773932221,
+        "operating": 0.4352729320526123
+    }
+}
 ```
+
+### Returned data
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`boolean`](../data-types.md) | `true` if the group or project has been deleted ||
+|| **time**
+[`time`](../data-types.md#time) | Information about the request execution time ||
+|#
+
+## Error handling
+
+HTTP status: **400**
+
+```json
+{
+    "error": "",
+    "error_description": "User has no permissions to delete group"
+}
+```
+
+{% include notitle [error handling](../../_includes/error-info.md) %}
+
+### Possible error codes
+
+#|
+|| **Code** | **Description** | **Value** ||
+|| — | `Wrong group ID` | An incorrect `GROUP_ID` was provided ||
+|| — | `Socialnetwork group not found` | Group or project not found ||
+|| — | `User has no permissions to delete group` | Insufficient rights to delete the group ||
+|| — | `Cannot delete group` | Failed to delete the group ||
+|#
+
+{% include [system errors](../../_includes/system-errors.md) %}
+
+## Continue exploring
+
+- [{#T}](./sonet-group-create.md)
+- [{#T}](./sonet-group-update.md)
+- [{#T}](./socialnetwork-api-workgroup-get.md)
+- [{#T}](./socialnetwork-api-workgroup-list.md)
+- [{#T}](./sonet-group-get.md)

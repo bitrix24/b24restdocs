@@ -1,40 +1,16 @@
 # Get Product or Variation Property Fields catalog.productProperty.getFields
 
-{% note warning "We are still updating this page" %}
-
-Some data may be missing — we will complete it shortly.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- no response in case of error
-- no response in case of success
-- no examples in other languages
-  
-{% endnote %}
-
-{% endif %}
-
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: user with permission to view the catalog
 
-## Description
+The method `catalog.productProperty.getFields` returns the fields of product or variation properties.
 
-```js
-catalog.productProperty.getFields()
-```
-
-The method returns the fields of product or variation properties.
-
-## Parameters
+## Method Parameters
 
 No parameters.
 
-## Examples
+## Code Examples
 
 {% include [Examples Note](../../../_includes/examples.md) %}
 
@@ -63,26 +39,11 @@ No parameters.
 - JS
 
     ```js
-    try
-    {
-    	const response = await $b24.callMethod(
-    		'catalog.productProperty.getFields',
-    		{}
-    	);
-    	
-    	const result = response.getData().result;
-    	if(result.error())
-    	{
-    		console.error(result.error().ex);
-    	}
-    	else
-    	{
-    		console.log(result);
-    	}
-    }
-    catch(error)
-    {
-    	console.error('Error:', error);
+    try {
+        const response = await $b24.callMethod('catalog.productProperty.getFields', {});
+        console.log(response.getData().result);
+    } catch (error) {
+        console.error('Error:', error);
     }
     ```
 
@@ -96,20 +57,10 @@ No parameters.
                 'catalog.productProperty.getFields',
                 []
             );
-    
-        $result = $response
-            ->getResponseData()
-            ->getResult();
-    
-        if ($result->error()) {
-            error_log($result->error()->ex);
-        } else {
-            echo 'Success: ' . print_r($result->data(), true);
-        }
-    
-    } catch (Throwable $e) {
-        error_log($e->getMessage());
-        echo 'Error getting product property fields: ' . $e->getMessage();
+
+        print_r($response->getResponseData()->getResult());
+    } catch (\Throwable $exception) {
+        echo $exception->getMessage();
     }
     ```
 
@@ -119,12 +70,12 @@ No parameters.
     BX24.callMethod(
         'catalog.productProperty.getFields',
         {},
-        function(result)
-        {
-            if(result.error())
-                console.error(result.error().ex);
-            else
+        function(result) {
+            if (result.error()) {
+                console.error(result.error());
+            } else {
                 console.log(result.data());
+            }
         }
     );
     ```
@@ -139,59 +90,92 @@ No parameters.
         []
     );
 
-    echo '<PRE>';
     print_r($result);
-    echo '</PRE>';
     ```
 
 {% endlist %}
 
-## Returned Fields
+## Response Handling
+
+HTTP status: **200**
+
+```json
+{
+    "result": {
+        "productProperty": {
+            "active": {
+                "isImmutable": false,
+                "isReadOnly": false,
+                "isRequired": false,
+                "type": "char"
+            },
+            "code": {
+                "isImmutable": false,
+                "isReadOnly": false,
+                "isRequired": false,
+                "type": "string"
+            },
+            ... // description for each field
+            "xmlId": {
+                "isImmutable": false,
+                "isReadOnly": false,
+                "isRequired": false,
+                "type": "string"
+            }
+        }
+    },
+    "time": {
+        "start": 1773946315,
+        "finish": 1773946315.270372,
+        "duration": 0.2703719139099121,
+        "processing": 0,
+        "date_start": "2026-03-19T21:51:55+01:00",
+        "date_finish": "2026-03-19T21:51:55+01:00",
+        "operating_reset_at": 1773946915,
+        "operating": 0
+    }
+}
+```
+
+### Returned Data
 
 #|
-|| **Field** | **Description** | **Note** ||
-|| **active** 
-[`char`](../../data-types.md) | Is the property active. | ||
-|| **code** 
-[`string`](../../data-types.md) | Symbolic code. | ||
-|| **rowCount, colCount**
-[`integer`](../../data-types.md) | Size of the input field (Rows x Columns). | ||
-|| **defaultValue** 
-[`text`](../../data-types.md) | Default value. | ||
-|| **filtrable** 
-[`char`](../../data-types.md) | Should the field for filtering by this property be displayed on the item list page. | ||
-|| **hint** 
-[`string`](../../data-types.md) | Hint. | ||
-|| **iblockId^*^** 
-[`integer`](../../data-types.md) | Identifier of the information block. | ||
-|| **id** 
-[`integer`](../../data-types.md) | Identifier of the property. | Read-only. ||
-|| **isRequired** 
-[`char`](../../data-types.md) | Is it required. | ||
-|| **linkIblockId** 
-[`integer`](../../data-types.md) | Identifier of the information block linked to the value. Currently, this field is not used (it is intended for types that are not yet supported in REST). | ||
-|| **listType**
-[`char`](../../data-types.md) | Appearance. | Only for "List" type fields. ||
-|| **multiple** 
-[`char`](../../data-types.md) | Is the property multiple. | ||
-|| **multipleCnt** 
-[`integer`](../../data-types.md) | Number of fields for entering new multiple values. | ||
-|| **name^*^** 
-[`string`](../../data-types.md) | Name. | ||
-|| **propertyType^*^** 
-[`string`](../../data-types.md) | Type of property. |  ||
-|| **searchable** 
-[`char`](../../data-types.md) | Are the property values included in the search. | ||
-|| **sort** 
-[`integer`](../../data-types.md) | Sort order. | ||
-|| **timestampX** 
-[`datetime`](../../data-types.md) | Date of the last modification of parameters. | Read-only. ||
-|| **userType** 
-[`string`](../../data-types.md) | User-defined property type. | ||
-|| **withDescription** 
-[`char`](../../data-types.md) | Should the field for value description be displayed. | ||
-|| **xmlId** 
-[`string`](../../data-types.md) | External identifier. | ||
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`object`](../../data-types.md) | Root object of the response ||
+|| **productProperty**
+[`object`](../../data-types.md) | Object in the format `{"field_1": "value_1", ... "field_N": "value_N"}`, where `field` is the identifier of the object [catalog_product_property](../data-types.md#catalog_product_property), and `value` is an object of type [rest_field_description](../data-types.md#rest_field_description) ||
+|| **time**
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
-{% include [Parameters Note](../../../_includes/required.md) %}
+## Error Handling
+
+HTTP status: **400**
+
+```json
+{
+    "error": "0",
+    "error_description": "Access Denied"
+}
+```
+
+{% include notitle [error handling](../../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+#|
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `0` | Access Denied | Insufficient permissions to view the catalog ||
+|#
+
+{% include [system errors](../../../_includes/system-errors.md) %}
+
+## Continue Learning
+
+- [{#T}](./catalog-product-property-add.md)
+- [{#T}](./catalog-product-property-update.md)
+- [{#T}](./catalog-product-property-get.md)
+- [{#T}](./catalog-product-property-list.md)
+- [{#T}](./catalog-product-property-delete.md)

@@ -50,10 +50,10 @@ The type is set when creating the property and cannot be changed.
 
 #|
 || **Method** | **Description** ||
-|| [catalog.productProperty.add](./catalog-product-property-add.md) | Adds a property for products or variations ||
-|| [catalog.productProperty.delete](./catalog-product-property-delete.md) | Deletes a property for products or variations ||
-|| [catalog.productProperty.get](./catalog-product-property-get.md) | Returns the values of the product or variation property fields ||
-|| [catalog.productProperty.getFields](./catalog-product-property-get-fields.md) | Returns the fields of the product or variation properties ||
-|| [catalog.productProperty.list](./catalog-product-property-list.md) | Returns a list of properties for products or variations ||
-|| [catalog.productProperty.update](./catalog-product-property-update.md) | Updates the fields of the product or variation properties ||
+|| [catalog.productProperty.add](./catalog-product-property-add.md) | Adds a product or variation property ||
+|| [catalog.productProperty.update](./catalog-product-property-update.md) | Updates the fields of a product or variation property ||
+|| [catalog.productProperty.get](./catalog-product-property-get.md) | Returns the values of the fields of a product or variation property ||
+|| [catalog.productProperty.list](./catalog-product-property-list.md) | Returns a list of product or variation properties ||
+|| [catalog.productProperty.delete](./catalog-product-property-delete.md) | Deletes a product or variation property ||
+|| [catalog.productProperty.getFields](./catalog-product-property-get-fields.md) | Returns the fields of a product or variation property ||
 |#

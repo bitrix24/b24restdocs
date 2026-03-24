@@ -76,7 +76,7 @@ Some data may be missing — we will complete it soon.
 || [landing.landing.markdeletedblock](./block-methods/landing-landing-mark-deleted-block.md) | Method marks a block as deleted but does not physically remove it. | ||
 || [landing.landing.markundeletedblock](./block-methods/landing-landing-mark-undeleted-block.md) | Method restores a block from marked as deleted. | ||
 || [landing.landing.moveblock](./block-methods/landing-landing-move-block.md) | Method for moving a block from one page to another. | ||
-|| [landing.landing.showblock](./block-methods/landing-landing-show-block.md) | Method for displaying a block on the page. | ||
+|| [landing.landing.showblock](./block-methods/landing-landing-show-block.md) | Method shows a block on the page. | ||
 || [landing.landing.unFavoriteBlock](./block-methods/landing-landing-unfavorite-block.md) | Method removes a block that was saved in "My Blocks." | 21.800.0 ||
 || [landing.landing.upblock](./block-methods/landing-landing-up-block.md) | Method for moving a block up one position on the page. | ||
 |#

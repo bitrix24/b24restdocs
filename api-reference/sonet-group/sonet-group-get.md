@@ -1,105 +1,167 @@
-# Get a list of social network groups sonet_group.get
-
-{% note warning "We are still updating this page" %}
-
-Some data may be missing — we will complete it shortly.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- parameter types are not specified
-- parameter requirements are not indicated
-- no response in case of error
-- no examples in other languages
-
-{% endnote %}
-
-{% endif %}
+# Get a list of groups and projects sonet_group.get
 
 > Scope: [`sonet`](../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-The method returns an array of social network groups, each containing an array of fields, by calling `CSocNetGroup::GetList()`. Only those groups that are accessible to the user based on permissions are returned.
+The method `sonet_group.get` returns a list of workgroups and projects considering the permissions of the current user.
 
-## Request:
+## Method Parameters
 
-```
-https://mydomain.bitrix24.com/rest/sonet_group.get.json?auth=bbc392f317df617d02c942a78ad43aab&ORDER[NAME]=ASC&FILTER[%25NAME]=Sales
-```
-
-## Response:
-
->200 OK
-
-```json
-{
-"result": [
-    {
-    "ID": "3",
-    "SITE_ID": "s1",
-    "NAME": "Sales",
-    "DESCRIPTION": "Marketing group for sales",
-    "DATE_CREATE": "2013-11-06T07:45:12+02:00",
-    "DATE_UPDATE": "2013-11-06T07:45:12+02:00",
-    "ACTIVE": "Y",
-    "VISIBLE": "Y",
-    "OPENED": "N",
-    "CLOSED": "N",
-    "SUBJECT_ID": "1",
-    "OWNER_ID": "1",
-    "KEYWORDS": "sale, product, marketing, market",
-    "NUMBER_OF_MEMBERS": "1",
-    "DATE_ACTIVITY": "2013-11-06T07:45:12+02:00",
-    "SUBJECT_NAME": "Workgroups",
-    "IMAGE": "https://cdn.bitrix24.com/b211545/socialnetwork/ba9/ba9533b38f60ade077b64f06a60d7082/2.jpg",
-    "IS_EXTRANET": "Y"
-    }
-],
-"total": 1
-}
-```
-
-## Parameters
+{% include [Note on required parameters](../../_includes/required.md) %}
 
 #|
-|| **Parameter** | **Description** ||
-|| **ORDER** | Corresponds to the arOrder parameter of the `CSocNetGroup::GetList()` method. ||
-|| **FILTER** | Corresponds to the arFilter parameter of the `CSocNetGroup::GetList()` method. ||
-|| **IS_ADMIN** | When Y is passed, it checks if the current user is an administrator of the social network and, if so, disables permission checks when selecting groups. ||
+|| **Name**
+`type` | **Description** ||
+|| **ORDER**
+[`object`](../data-types.md) | Sorting direction.
+
+Possible values:
+- `ASC` — ascending order
+- `DESC` — descending order
+
+Default — `ID:'DESC'` ||
+|| **FILTER**
+[`object`](../data-types.md) | Object for filtering in the format `{"field_1": "value_1", ... "field_N": "value_N"}`.
+
+See below [list of available fields for filtering](#filterable).
+
+Supported operators in the filter key:
+- `!` — not equal
+- `>=` — greater than or equal
+- `>` — greater than
+- `<=` — less than or equal
+- `<` — less than
+- `><` — between (inclusive range)
+- `!><` — not between (outside the range)
+- `?` — string search
+- `=` — equal, exact match (used by default)
+- `!=` — not equal
+- `%` — LIKE, substring search
+- `!%` — NOT LIKE, substring search
+
+Default — no filtering ||
+|| **GROUP_ID**
+[`integer`](../data-types.md) | Return group or project by identifier.
+
+If the parameter is provided, the method adds the filter condition `ID = GROUP_ID` ||
+|| **IS_ADMIN**
+[`string`](../data-types.md) | Disable permission check.
+
+Possible values:
+- `Y` — disable permission check if the current user is an administrator
+
+If `Y` is provided by a non-administrator, the value is ignored.
+
+Default — permission check is enabled ||
+|| **start**
+[`integer`](../data-types.md) | Pagination parameter.
+
+The page size of results is 50 records.
+
+To get the second page, pass `50`; the third — `100`, and so on.
+
+Formula:
+
+`start = (N - 1) * 50`, where `N` — page number ||
 |#
 
-{% include [Footnote about parameters](../../_includes/required.md) %}
+### Available fields for filtering {#filterable}
 
-Returns the same fields as `CSocNetGroup::GetList()`, except for `INITIATE_PERMS`, `SPAM_PERMS`, and `IMAGE_ID` (instead of the last one, the `IMAGE` field is returned, containing the file fields corresponding to `IMAGE_ID`).
+#|
+|| **Name**
+`type` | **Description** ||
+|| **ID**
+[`integer`](../data-types.md) | Identifier of the group or project ||
+|| **NAME**
+[`string`](../data-types.md) | Name of the group or project ||
+|| **OWNER_ID**
+[`integer`](../data-types.md) | Identifier of the owner ||
+|| **ACTIVE**
+[`string`](../data-types.md) | Activity status of the group.
 
-## Example
+Possible values:
+- `Y` — group is active
+- `N` — group is deactivated ||
+|| **VISIBLE**
+[`string`](../data-types.md) | Visibility of the group in the list.
+
+Possible values:
+- `Y` — group is visible in the general list
+- `N` — group is hidden from the general list ||
+|| **OPENED**
+[`string`](../data-types.md) | Is the group open for free membership.
+
+Possible values:
+- `Y` — user can join the group without confirmation
+- `N` — membership by invitation or request ||
+|| **CLOSED**
+[`string`](../data-types.md) | Is the group archived.
+
+Possible values:
+- `Y` — group is archived
+- `N` — active group ||
+|| **DATE_CREATE**
+[`datetime`](../data-types.md) | Creation date of the group in ISO-8601 format ||
+|| **DATE_UPDATE**
+[`datetime`](../data-types.md) | Modification date of the group in ISO-8601 format ||
+|| **DATE_ACTIVITY**
+[`datetime`](../data-types.md) | Date of last activity in the group in ISO-8601 format ||
+|| **IS_EXTRANET**
+[`string`](../data-types.md) | Filter by the type of the group's site.
+
+Possible values:
+- `Y` — extranet groups
+- `N` — non-extranet groups ||
+|#
+
+## Code Examples
+
+{% include [Note on examples](../../_includes/examples.md) %}
 
 {% list tabs %}
+
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"ORDER":{"NAME":"ASC"},"FILTER":{"%NAME":"Pro"}}' \
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/sonet_group.get
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"ORDER":{"NAME":"ASC"},"FILTER":{"%NAME":"Pro"},"auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/sonet_group.get
+    ```
 
 - JS
 
     ```js
     try
     {
-    	const response = await $b24.callMethod('sonet_group.get', {
-    		'ORDER': {
-    			'NAME': 'ASC'
-    		},
-    		'FILTER': {
-    			'%NAME': 'Sales'
-    		}
-    	});
-    	
-    	const result = response.getData().result;
-    	console.log(result);
+        const response = await $b24.callMethod(
+            'sonet_group.get',
+            {
+                ORDER: { NAME: 'ASC' },
+                FILTER: { '%NAME': 'Pro' }
+            }
+        );
+        
+        const result = response.getData().result;
+        console.log('Retrieved groups:', result);
+        
+        processResult(result);
     }
     catch( error )
     {
-    	console.error('Error:', error);
+        console.error('Error:', error);
     }
     ```
 
@@ -112,43 +174,185 @@ Returns the same fields as `CSocNetGroup::GetList()`, except for `INITIATE_PERMS
             ->call(
                 'sonet_group.get',
                 [
-                    'ORDER' => [
-                        'NAME' => 'ASC'
-                    ],
-                    'FILTER' => [
-                        '%NAME' => 'Sales'
-                    ]
+                    'ORDER' => ['NAME' => 'ASC'],
+                    'FILTER' => ['%NAME' => 'Pro']
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
+
         echo 'Success: ' . print_r($result, true);
-        // Your required data processing logic
         processData($result);
-    
+
     } catch (Throwable $e) {
         error_log($e->getMessage());
-        echo 'Error getting social network groups: ' . $e->getMessage();
+        echo 'Error retrieving groups: ' . $e->getMessage();
     }
     ```
 
 - BX24.js
 
     ```js
-    // Get a list of all available social network groups whose names start with the substring "Sales", sorted by name in alphabetical order
     BX24.callMethod('sonet_group.get', {
-        'ORDER': {
-            'NAME': 'ASC'
-        },
-        'FILTER': {
-            '%NAME': 'Sales'
+        ORDER: { NAME: 'ASC' },
+        FILTER: { '%NAME': 'Pro' }
+    }, function(result) {
+        if (result.error())
+        {
+            console.error(result.error(), result.error_description());
+        }
+        else
+        {
+            console.log(result.data());
         }
     });
     ```
 
+- PHP CRest
+
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'sonet_group.get',
+        [
+            'ORDER' => ['NAME' => 'ASC'],
+            'FILTER' => ['%NAME' => 'Pro']
+        ]
+    );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
+    ```
+
 {% endlist %}
 
-{% include [Footnote about examples](../../_includes/examples.md) %}
+## Response Handling
+
+HTTP status: **200**
+
+```json
+{
+    "result": [
+        {
+        "ID": "77",
+        "SITE_ID": "s1",
+        "NAME": "New Project Title",
+        "DESCRIPTION": null,
+        "DATE_CREATE": "2026-03-19T15:01:27+02:00",
+        "DATE_UPDATE": "2026-03-19T15:01:27+02:00",
+        "ACTIVE": "Y",
+        "VISIBLE": "Y",
+        "OPENED": "N",
+        "CLOSED": "N",
+        "SUBJECT_ID": "1",
+        "OWNER_ID": "1271",
+        "KEYWORDS": null,
+        "NUMBER_OF_MEMBERS": "12",
+        "DATE_ACTIVITY": "2026-03-19T15:01:27+02:00",
+        "SUBJECT_NAME": "Workgroups",
+        "PROJECT": "Y",
+        "IS_EXTRANET": "N"
+        },
+        {
+        "ID": "79",
+        "SITE_ID": "s1",
+        "NAME": "Scrum Project",
+        "DESCRIPTION": null,
+        "DATE_CREATE": "2026-03-19T15:15:06+02:00",
+        "DATE_UPDATE": "2026-03-19T15:15:06+02:00",
+        "ACTIVE": "Y",
+        "VISIBLE": "Y",
+        "OPENED": "N",
+        "CLOSED": "N",
+        "SUBJECT_ID": "1",
+        "OWNER_ID": "1269",
+        "KEYWORDS": null,
+        "NUMBER_OF_MEMBERS": "8",
+        "DATE_ACTIVITY": "2026-03-19T15:15:06+02:00",
+        "SUBJECT_NAME": "Workgroups",
+        "PROJECT": "Y",
+        "IS_EXTRANET": "N"
+        }
+    ],
+    "total": 2,
+    "time": {
+        "start": 1773925430,
+        "finish": 1773925430.419962,
+        "duration": 0.41996192932128906,
+        "processing": 0,
+        "date_start": "2026-03-19T16:03:50+02:00",
+        "date_finish": "2026-03-19T16:03:50+02:00",
+        "operating_reset_at": 1773926030,
+        "operating": 0
+    }
+}
+```
+
+### Returned Data
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`object`](../data-types.md) | Array of groups and projects that match the `FILTER` conditions.
+
+An empty array means that there are no suitable records considering the access permissions of the current user ||
+|| **ID**
+[`integer`](../data-types.md) | Identifier of the group ||
+|| **SITE_ID**
+[`string`](../data-types.md) | Identifier of the group's site ||
+|| **NAME**
+[`string`](../data-types.md) | Name of the group ||
+|| **DESCRIPTION**
+[`string`](../data-types.md) | Description of the group ||
+|| **DATE_CREATE**
+[`datetime`](../data-types.md) | Creation date of the group in ISO-8601 format ||
+|| **DATE_UPDATE**
+[`datetime`](../data-types.md) | Modification date of the group in ISO-8601 format ||
+|| **DATE_ACTIVITY**
+[`datetime`](../data-types.md) | Date of last activity in ISO-8601 format ||
+|| **ACTIVE**
+[`string`](../data-types.md) | Activity status ||
+|| **VISIBLE**
+[`string`](../data-types.md) | Visibility of the group ||
+|| **OPENED**
+[`string`](../data-types.md) | Is the group open ||
+|| **CLOSED**
+[`string`](../data-types.md) | Is the group archived ||
+|| **SUBJECT_ID**
+[`integer`](../data-types.md) | Identifier of the group's subject ||
+|| **OWNER_ID**
+[`integer`](../data-types.md) | Identifier of the owner ||
+|| **KEYWORDS**
+[`string`](../data-types.md) | Keywords of the group ||
+|| **NUMBER_OF_MEMBERS**
+[`integer`](../data-types.md) | Number of members ||
+|| **SUBJECT_NAME**
+[`string`](../data-types.md) | Name of the group's subject ||
+|| **IMAGE**
+[`string`](../data-types.md) | URL of the group's avatar ||
+|| **IS_EXTRANET**
+[`string`](../data-types.md) | Indicator of the extranet group ||
+|| **total**
+[`integer`](../data-types.md) | Total number of items in the selection ||
+|| **next**
+[`integer`](../data-types.md) | Offset for the next page (if any) ||
+|| **time**
+[`time`](../data-types.md#time) | Information about the execution time of the request ||
+|#
+
+## Error Handling
+
+{% include [system errors](../../_includes/system-errors.md) %}
+
+## Continue Learning
+
+- [{#T}](./socialnetwork-api-workgroup-get.md)
+- [{#T}](./socialnetwork-api-workgroup-list.md)
+- [{#T}](./sonet-group-user-groups.md)
+- [{#T}](./sonet-group-feature-access.md)
+- [{#T}](./sonet-group-delete.md)

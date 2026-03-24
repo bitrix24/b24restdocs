@@ -1,83 +1,114 @@
-# Create a new mail service mailservice.add
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not deployed to prod_" %}
-
-- missing parameter type descriptions
-- no response examples
-- parameter versions not specified
-
-{% endnote %}
-
-{% endif %}
-
-{% note warning "We are still updating this page" %}
-
-Some data may be missing here — we will complete it shortly
-
-{% endnote %}
+# Create Mail Service mailservice.add
 
 > Scope: [`mailservice`](../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: administrator
 
-The method `mailservice.add` adds a new mail service.
+The method `mailservice.add` creates a mail service for the current Bitrix24.
 
-## Parameters
+## Method Parameters
+
+{% include [Note on required parameters](../../_includes/required.md) %}
 
 #|
-||  **Parameter** / **Type**| **Description** | **Available since** ||
+|| **Name**
+`type` | **Description** ||
+|| **NAME***
+[`string`](../data-types.md) | Name of the mail service ||
 || **ACTIVE**
-[`unknown`](../data-types.md) | Service activity (Y / N) | ||
-|| **NAME**
-[`unknown`](../data-types.md) | Name of the mail service being added | ||
+[`string`](../data-types.md) | Service activity status. Allowed values:
+- `Y` — yes
+- `N` — no
+
+Default value: `Y` ||
 || **SERVER**
-[`unknown`](../data-types.md) | Address of the mail server being added | ||
+[`string`](../data-types.md) | IMAP server address. Stored in lowercase in the database ||
 || **PORT**
-[`unknown`](../data-types.md) | Port number | ||
+[`integer`](../data-types.md) | IMAP server port ||
 || **ENCRYPTION**
-[`unknown`](../data-types.md) | Need for encryption (Y / N) | ||
+[`string`](../data-types.md) | Secure connection status. Allowed values:
+- `Y` — yes
+- `N` — no ||
 || **LINK**
-[`unknown`](../data-types.md) | Link to the mail service | ||
+[`string`](../data-types.md) | Web interface address of the mail service ||
+|| **ICON**
+[`file`](../data-types.md)
+[`integer`](../data-types.md)
+[`string`](../data-types.md) | Service logo. You can provide a file or an existing file ID ||
 || **SORT**
-[`unknown`](../data-types.md) | Sort index | ||
+[`integer`](../data-types.md) | Sort index. Default value: `100` ||
 |#
 
-## Example
+## Code Examples
+
+{% include [Note on examples](../../_includes/examples.md) %}
 
 {% list tabs %}
 
-- JS
+- cURL (Webhook)
 
+    ```bash
+    curl -X POST \
+      -H "Content-Type: application/json" \
+      -H "Accept: application/json" \
+      -d '{
+        "NAME": "My Mail Service",
+        "ACTIVE": "Y",
+        "SERVER": "imap.my-mail.com",
+        "PORT": 993,
+        "ENCRYPTION": "Y",
+        "LINK": "https://mail.my-mail.com/",
+        "SORT": 500
+      }' \
+      https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/mailservice.add
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+      -H "Content-Type: application/json" \
+      -H "Accept: application/json" \
+      -d '{
+        "NAME": "My Mail Service",
+        "ACTIVE": "Y",
+        "SERVER": "imap.my-mail.com",
+        "PORT": 993,
+        "ENCRYPTION": "Y",
+        "LINK": "https://mail.my-mail.com/",
+        "SORT": 500,
+        "auth": "**put_access_token_here**"
+      }' \
+      https://**put_your_bitrix24_address**/rest/mailservice.add
+    ```
+
+- JS
 
     ```js
     try
     {
     	const response = await $b24.callMethod(
-    		"mailservice.add",
+    		'mailservice.add',
     		{
-    			'ACTIVE': 'Y',
-    			'NAME': 'My mail service',
-    			'SERVER': 'imap.my-mail.com',
-    			'PORT': '993',
-    			'ENCRYPTION': 'Y',
-    			'LINK': 'https://mail.my-mail.com/',
-    			'SORT': '500'
+    			NAME: 'My Mail Service',
+    			ACTIVE: 'Y',
+    			SERVER: 'imap.my-mail.com',
+    			PORT: 993,
+    			ENCRYPTION: 'Y',
+    			LINK: 'https://mail.my-mail.com/',
+    			SORT: 500
     		}
     	);
-    	
-    	const result = response.getData().result;
-    	console.info(result);
+
+    	console.log(response.getData().result);
     }
-    catch( error )
+    catch (error)
     {
     	console.error(error);
     }
     ```
 
 - PHP
-
 
     ```php
     try {
@@ -86,27 +117,20 @@ The method `mailservice.add` adds a new mail service.
             ->call(
                 'mailservice.add',
                 [
-                    'ACTIVE'     => 'Y',
-                    'NAME'       => 'My mail service',
-                    'SERVER'     => 'imap.my-mail.com',
-                    'PORT'       => '993',
+                    'NAME' => 'My Mail Service',
+                    'ACTIVE' => 'Y',
+                    'SERVER' => 'imap.my-mail.com',
+                    'PORT' => 993,
                     'ENCRYPTION' => 'Y',
-                    'LINK'       => 'https://mail.my-mail.com/',
-                    'SORT'       => '500',
+                    'LINK' => 'https://mail.my-mail.com/',
+                    'SORT' => 500,
                 ]
             );
-    
-        $result = $response
-            ->getResponseData()
-            ->getResult();
-    
-        echo 'Success: ' . print_r($result, true);
-        // Your required data processing logic
-        processData($result);
-    
+
+        $result = $response->getResponseData()->getResult();
+        print_r($result);
     } catch (Throwable $e) {
-        error_log($e->getMessage());
-        echo 'Error adding mail service: ' . $e->getMessage();
+        echo $e->getMessage();
     }
     ```
 
@@ -114,30 +138,112 @@ The method `mailservice.add` adds a new mail service.
 
     ```js
     BX24.callMethod(
-        "mailservice.add",
+        'mailservice.add',
         {
-            'ACTIVE': 'Y',
-            'NAME': 'My mail service',
-            'SERVER': 'imap.my-mail.com',
-            'PORT': '993',
-            'ENCRYPTION': 'Y',
-            'LINK': 'https://mail.my-mail.com/',
-            'SORT': '500'
+            NAME: 'My Mail Service',
+            ACTIVE: 'Y',
+            SERVER: 'imap.my-mail.com',
+            PORT: 993,
+            ENCRYPTION: 'Y',
+            LINK: 'https://mail.my-mail.com/',
+            SORT: 500
         },
         function(result)
         {
-            if(result.error())
+            if (result.error())
             {
                 console.error(result.error());
             }
             else
             {
-                console.info(result.data());
+                console.log(result.data());
             }
         }
     );
     ```
 
+- PHP CRest
+
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'mailservice.add',
+        [
+            'NAME' => 'My Mail Service',
+            'ACTIVE' => 'Y',
+            'SERVER' => 'imap.my-mail.com',
+            'PORT' => 993,
+            'ENCRYPTION' => 'Y',
+            'LINK' => 'https://mail.my-mail.com/',
+            'SORT' => 500,
+        ]
+    );
+
+    print_r($result);
+    ```
+
 {% endlist %}
 
-{% include [Examples note](../../_includes/examples.md) %}
+## Response Handling
+
+HTTP status: **200**
+
+```json
+{
+    "result": 31,
+    "time": {
+        "start": 1774005930,
+        "finish": 1774005930.256403,
+        "duration": 0.25640296936035156,
+        "processing": 0,
+        "date_start": "2026-03-20T14:25:30+02:00",
+        "date_finish": "2026-03-20T14:25:30+02:00",
+        "operating_reset_at": 1774006530,
+        "operating": 0
+    }
+}
+```
+
+### Returned Data
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`integer`](../data-types.md) | Identifier of the created mail service ||
+|| **time**
+[`time`](../data-types.md#time) | Information about the request execution time ||
+|#
+
+## Error Handling
+
+HTTP status: **400**
+
+```json
+{
+    "error": "ERROR_CORE",
+    "error_description": "Access denied"
+}
+```
+
+{% include notitle [Error Handling](../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+#|
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `ERROR_CORE` | Access denied | Insufficient permissions to add the mail service ||
+|| `400` | `ERROR_CORE` | Required field "Name" not filled | Required parameter `NAME` not provided ||
+|| `400` | `ERROR_CORE` | Invalid value for "*field_name*" | Invalid value provided for the specified field ||
+|#
+
+{% include [System Errors](../../_includes/system-errors.md) %}
+
+## Continue Learning
+
+- [{#T}](./mailservice-update.md)
+- [{#T}](./mailservice-get.md)
+- [{#T}](./mailservice-list.md)
+- [{#T}](./mailservice-delete.md)
+- [{#T}](./mailservice-fields.md)

@@ -1,59 +1,46 @@
-# Get the field settings description for the custom field type crm.userfield.settings.fields
-
-{% note warning "We are still updating this page" %}
-
-Some data may be missing — we will complete it shortly.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- parameter types are not specified
-- no response in case of error and success
-
-{% endnote %}
-
-{% endif %}
+# Get the settings field descriptions for the custom field type crm.userfield.settings.fields
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-The method `crm.userfield.settings.fields` returns the field settings description for the custom field type.
+The method `crm.userfield.settings.fields` returns the settings field descriptions for the specified custom field type.
 
-## Parameters
+## Method Parameters
+
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
-|| **Parameter** | **Description** ||
-|| **type** | The type of the custom field. Value from the list returned by the method [crm.userfield.types](crm-userfield-types.md).  ||
+|| **Name**
+`type` | **Description** ||
+|| **type***
+[`string`](../../data-types.md) | The type of the custom field. A value from the list returned by the method [crm.userfield.types](./crm-userfield-types.md) ||
 |#
 
-{% include [Note on parameters](../../../../_includes/required.md) %}
+## Code Examples
 
-## Example
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
-- CURL (webhook)
+- cURL (Webhook)
 
     ```bash
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"type":"string"}' \
+    -d '{"type":"double"}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.userfield.settings.fields
     ```
 
-- CURL (oauth)
+- cURL (OAuth)
 
     ```bash
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"type":"string"}' \
-    https://**put_your_bitrix24_address**/rest/crm.userfield.settings.fields?auth=**put_access_token_here**
+    -d '{"type":"double","auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/crm.userfield.settings.fields
     ```
 
 - JS
@@ -61,18 +48,17 @@ The method `crm.userfield.settings.fields` returns the field settings descriptio
     ```js
     try
     {
-    	const id = prompt("Enter ID");
     	const response = await $b24.callMethod(
     		"crm.userfield.settings.fields",
     		{
-    			type: "string"
+    			type: "double"
     		}
     	);
-    	
+
     	const result = response.getData().result;
     	console.dir(result);
     }
-    catch(error)
+    catch (error)
     {
     	console.error(error);
     }
@@ -81,40 +67,40 @@ The method `crm.userfield.settings.fields` returns the field settings descriptio
 - PHP
 
     ```php
-    $id = $_POST['id'];
-    
     try {
         $response = $b24Service
             ->core
             ->call(
                 'crm.userfield.settings.fields',
                 [
-                    'type' => 'string'
+                    'type' => 'double'
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
-        echo 'Success: ' . print_r($result, true);
-        // Your required data processing logic
-        processData($result);
-    
+
+        if ($result->error()) {
+            error_log($result->error());
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+
     } catch (Throwable $e) {
         error_log($e->getMessage());
-        echo 'Error: ' . $e->getMessage();
+        echo 'Error fetching CRM userfield settings fields: ' . $e->getMessage();
     }
     ```
 
 - BX24.js
 
     ```js
-    var id = prompt("Enter ID");
     BX24.callMethod(
         "crm.userfield.settings.fields",
         {
-            type: "string"
+            type: "double"
         },
         function(result)
         {
@@ -131,11 +117,11 @@ The method `crm.userfield.settings.fields` returns the field settings descriptio
     ```php
     require_once('crest.php');
 
-    $type = 'string'; // Replace with the required type
-
     $result = CRest::call(
         'crm.userfield.settings.fields',
-        ['type' => $type]
+        [
+            'type' => 'double'
+        ]
     );
 
     echo '<PRE>';
@@ -145,8 +131,70 @@ The method `crm.userfield.settings.fields` returns the field settings descriptio
 
 {% endlist %}
 
-{% include [Note on examples](../../../../_includes/examples.md) %}
+## Response Handling
 
-## Continue exploring
+HTTP Status: **200**
 
-- [{#T}](../../../../tutorials/crm/how-to-add-crm-objects/how-to-add-precision-to-user-field.md)
+```json
+{
+    "result": {
+        "DEFAULT_VALUE": {
+            "type": "double",
+            "title": "Default Value"
+        },
+        "PRECISION": {
+            "type": "int",
+            "title": "Precision"
+        }
+    },
+    "time": {
+        "start": 1752132864.335154,
+        "finish": 1752132864.366912,
+        "duration": 0.03175783157348633,
+        "processing": 0.002053976058959961,
+        "date_start": "2025-07-10T10:34:24+02:00",
+        "date_finish": "2025-07-10T10:34:24+02:00",
+        "operating_reset_at": 1752133464,
+        "operating": 0
+    }
+}
+```
+
+### Returned Data
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`object`](../../data-types.md) | The root element of the response containing the field settings. The final list of fields depends on the type of the requested field ||
+|| **time**
+[`time`](../../data-types.md#time) | Information about the execution time of the request ||
+|#
+
+## Error Handling
+
+HTTP Status: **400**
+
+```json
+{
+    "error": "",
+    "error_description": "Parameter 'type' is not specified or empty."
+}
+```
+
+{% include notitle [error handling](../../../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+#|
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | Empty value | `error_description` | The parameter `type` is not provided or is empty ||
+|#
+
+{% include [system errors](../../../../_includes/system-errors.md) %}
+
+## Continue Learning
+
+- [{#T}](./crm-userfield-types.md)
+- [{#T}](./crm-userfield-fields.md)
+- [{#T}](./crm-userfield-enumeration-fields.md)

@@ -1,7 +1,7 @@
 title: Document Generator
 href: index.md
 items: 
-  - name: About the Document Generator
+  - name: Overview of Methods 
     href: index.md
   - name: Typical use-cases and scenarios
     include:

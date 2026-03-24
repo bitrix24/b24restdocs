@@ -1,74 +1,82 @@
 # Invite users to group sonet_group.user.invite
 
-{% note warning "We are still updating this page" %}
-
-Some data may be missing — we will fill it in shortly
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- parameter types are not specified
-- parameter requirements are not indicated
-- no response in case of error
-- no examples in other languages
-
-{% endnote %}
-
-{% endif %}
-
 > Scope: [`sonet`](../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can perform the method: a user with the permission to Invite to a group or project
 
-## Description
+The method `sonet_group.user.invite` sends invitations to users in a workgroup or project.
 
-This method invites users to a social network group on behalf of the current user, while checking the current user's access rights to the group.
+## Method parameters
 
-## Returns an array of user IDs that were successfully invited to the group.
-
-## Parameters
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
-|| **Parameter** | **Description** ||
-|| **GROUP_ID** | ID of the group to which the invitation is being sent. ||
-|| **USER_ID** | ID of the user (or array of user IDs) being invited to the group. ||
-|| **MESSAGE** | Invitation text. ||
+|| **Name**
+`type` | **Description** ||
+|| **GROUP_ID***
+[`integer`](../../data-types.md) | Identifier of the workgroup or project.
+
+The identifier can be obtained using the [sonet_group.get](../sonet-group-get.md) method. ||
+|| **USER_ID***
+[`integer/array`](../../data-types.md) | User identifier.
+
+The identifier can be obtained using the [user.get](../../user/user-get.md) method. ||
+|| **MESSAGE**
+[`string`](../../data-types.md) | Invitation text. ||
 |#
 
-{% include [Footnote about parameters](../../../_includes/required.md) %}
+## Code examples
 
-## Example
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
-- JS
+- cURL (Webhook)
 
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"GROUP_ID":69,"USER_ID":1271,"MESSAGE":"Join the project"}' \
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/sonet_group.user.invite
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"GROUP_ID":69,"USER_ID":1271,"MESSAGE":"Join the project","auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/sonet_group.user.invite
+    ```
+
+- JS
 
     ```js
     try
     {
-    	const response = await $b24.callMethod(
-    		'sonet_group.user.invite',
-    		{
-    			'GROUP_ID': 15,
-    			'USER_ID': 3,
-    			'MESSAGE': 'Invitation'
-    		}
-    	);
-    	
-    	const result = response.getData().result;
+        const response = await $b24.callMethod(
+            'sonet_group.user.invite',
+            {
+                GROUP_ID: 69,
+                USER_ID: 1271,
+                MESSAGE: 'Join the project',
+            }
+        );
+        
+        const result = response.getData().result;
+        console.log('User invited to group:', result);
+        
+        processResult(result);
     }
     catch( error )
     {
-    	console.error('Error:', error);
+        console.error('Error:', error);
     }
     ```
 
 - PHP
-
 
     ```php
     try {
@@ -77,18 +85,19 @@ This method invites users to a social network group on behalf of the current use
             ->call(
                 'sonet_group.user.invite',
                 [
-                    'GROUP_ID' => 15,
-                    'USER_ID' => 3,
-                    'MESSAGE' => 'Invitation',
+                    'GROUP_ID' => 69,
+                    'USER_ID' => 1271,
+                    'MESSAGE' => 'Join the project'
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
+
         echo 'Success: ' . print_r($result, true);
-    
+        processData($result);
+
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error inviting user to group: ' . $e->getMessage();
@@ -98,30 +107,109 @@ This method invites users to a social network group on behalf of the current use
 - BX24.js
 
     ```js
-    // Inviting user with ID=3 to social network group with ID=15
-    BX24.callMethod('sonet_group.user.invite', {
-        'GROUP_ID': 15,
-        'USER_ID': 3,
-        'MESSAGE': 'Invitation'
-    });
+    BX24.callMethod(
+        'sonet_group.user.invite',
+        {
+            GROUP_ID: 69,
+            USER_ID: 1271,
+            MESSAGE: 'Join the project'
+        },
+        function(result)
+        {
+            if (result.error())
+            {
+                console.error(result.error(), result.error_description());
+            }
+            else
+            {
+                console.log(result.data());
+            }
+        }
+    );
+    ```
+
+- PHP CRest
+
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'sonet_group.user.invite',
+        [
+            'GROUP_ID' => 69,
+            'USER_ID' => 1271,
+            'MESSAGE' => 'Join the project'
+        ]
+    );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
     ```
 
 {% endlist %}
 
+## Response handling
 
-{% include [Footnote about examples](../../../_includes/examples.md) %}
-
-
-## Request:
-
-```
-https://mydomain.bitrix24.com/rest/sonet_group.user.invite.json?auth=52423d4a5f19f5f964f9b4e96a925cfa&GROUP_ID=15&USER_ID=3&MESSAGE=Invitation
-```
-
-## Response:
-
->200 OK
+HTTP status: **200**
 
 ```json
-{"result":["3"]}
+{
+    "result": ["1271"],
+    "time": {
+        "start": 1773846932,
+        "finish": 1773846933.077318,
+        "duration": 1.0773179531097412,
+        "processing": 0,
+        "date_start": "2026-03-18T18:15:32+02:00",
+        "date_finish": "2026-03-18T18:15:33+02:00",
+        "operating_reset_at": 1773847533,
+        "operating": 0
+    }
+}
 ```
+
+### Returned data
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`array`](../../data-types.md) | An array of user identifiers that were successfully invited.
+
+An empty array means that none of the provided users could be invited. For example, the user is already a member of the group or the current user does not have permission to invite. ||
+|| **time**
+[`time`](../../data-types.md#time) | Information about the request execution time. ||
+|#
+
+## Error handling
+
+HTTP status: **400**
+
+```json
+{
+    "error": "",
+    "error_description": "Wrong user IDs"
+}
+```
+
+{% include notitle [Error handling](../../../_includes/error-info.md) %}
+
+### Possible error codes
+
+#|
+|| **Code** | **Description** | **Value** ||
+|| — | `Wrong group ID` | An incorrect `GROUP_ID` was provided. ||
+|| — | `Wrong user IDs` | An empty or incorrect `USER_ID` was provided. ||
+|| — | `Socialnetwork group not found` | The group or project was not found or is not accessible to the current user. ||
+|#
+
+{% include [System errors](../../../_includes/system-errors.md) %}
+
+## Continue exploring
+
+- [{#T}](./sonet-group-user-request.md)
+- [{#T}](./sonet-group-user-add.md)
+- [{#T}](./sonet-group-user-update.md)
+- [{#T}](./sonet-group-user-get.md)
+- [{#T}](./sonet-group-user-delete.md)

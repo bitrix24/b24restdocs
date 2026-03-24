@@ -1,4 +1,4 @@
-# About the Document Generator
+# Document Generator: Overview of Methods
 
 {% note warning "We are still updating this page" %}
 

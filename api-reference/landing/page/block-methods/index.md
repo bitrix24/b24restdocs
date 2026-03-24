@@ -23,7 +23,7 @@ Adding a block occurs in the page editing mode. In this mode, the block identifi
 || [landing.landing.markdeletedblock](./landing-landing-mark-deleted-block.md) | Method marks a block as deleted but does not physically remove it. | ||
 || [landing.landing.markundeletedblock](./landing-landing-mark-undeleted-block.md) | Method restores a block from those marked as deleted. | ||
 || [landing.landing.moveblock](./landing-landing-move-block.md) | Method for moving a block from one page to another. | ||
-|| [landing.landing.showblock](./landing-landing-show-block.md) | Method for displaying a block on the page. | ||
+|| [landing.landing.showblock](./landing-landing-show-block.md) | Method displays a block on the page. | ||
 || [landing.landing.unFavoriteBlock](./landing-landing-unfavorite-block.md) | Method removes a block that was saved in "My Blocks." | 21.800.0 ||
 || [landing.landing.upblock](./landing-landing-up-block.md) | Method for moving a block up one position on the page. | ||
 |#

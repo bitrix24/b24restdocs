@@ -19,14 +19,14 @@ You can manage only email services through the REST API. Connecting mailboxes, s
 
 > Scope: [`mailservice`](../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can perform the method: depending on the method
 
 #|
 || **Method** | **Description** ||
-|| [mailservice.fields](./mailservice-add.md) | Returns the description of the email service fields ||
-|| [mailservice.list](./mailservice-list.md) | Returns a list of all email services ||
-|| [mailservice.get](./mailservice-get.md) | Returns the parameters of the specified email service ||
-|| [mailservice.add](./mailservice-add.md) | Adds an email service ||
+|| [mailservice.add](./mailservice-add.md) | Creates an email service ||
 || [mailservice.update](./mailservice-update.md) | Updates the parameters of the email service ||
+|| [mailservice.get](./mailservice-get.md) | Returns the parameters of the email service by ID ||
+|| [mailservice.list](./mailservice-list.md) | Returns a list of active email services for the current site ||
 || [mailservice.delete](./mailservice-delete.md) | Deletes an email service ||
+|| [mailservice.fields](./mailservice-fields.md) | Returns the names of the fields of the email service ||
 |#

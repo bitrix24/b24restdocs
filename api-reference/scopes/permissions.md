@@ -10,7 +10,7 @@
 || **call** | Telephony (making calls). The scope includes methods: [voximplant.infocall.startwithsound](../telephony/voximplant/voximplant-infocall-start-with-sound.md), [voximplant.infocall.startwithtext](../telephony/voximplant/voximplant-infocall-start-with-text.md)| Telephony ||
 || **catalog** | [Trade Catalog](../catalog/index.md) | Trade catalog, inventory management ||
 || **crm** | [CRM](../crm/index.md) | CRM ||
-|| **documentgenerator, crm.documentgenerator** | [Document Generator](../document-generator/index.md), [CRM Document Generator](../crm/document-generator/index.md) | Document Generator ||
+|| **documentgenerator** | [Document Generator](../document-generator/index.md), [CRM Document Generator](../crm/document-generator/index.md) | Document Generator ||
 || **delivery** | [Deliveries](../sale/delivery/index.md) | Online Store, CRM ||
 || **department** | [Company Structure](../departments/index.md) | Company Structure ||
 || **disk** | [Drive](../disk/index.md) | Bitrix24.Drive ||

@@ -16,18 +16,18 @@ Some data may be missing here — we will complete it shortly.
 
 {% endif %}
 
-{% note info "Permissions" %}
+## Overview of Methods {#all-methods}
 
-**Scope**: [`crm.documentgenerator`](../../../scopes/permissions.md) | **Who can execute the method**: `any user`
-
-{% endnote %}
+> Scope: [`crm`](../../../scopes/permissions.md)
+>
+> Who can perform the method: a user with the "edit" access permission for document generator templates.
 
 #|
 || **Method** | **Description** ||
-|| [crm.documentgenerator.template.getfields](./crm-document-generator-template-get-fields.md) | Document template fields. ||
-|| [crm.documentgenerator.template.add](./crm-document-generator-template-add.md) | Adding a new template. ||
-|| [crm.documentgenerator.template.update](./crm-document-generator-template-update.md) | Modifying an existing document template. ||
-|| [crm.documentgenerator.template.get](./crm-document-generator-template-get.md) | Retrieving information about a document template by Id. ||
-|| [crm.documentgenerator.template.list](./crm-document-generator-template-list.md) | Getting a list of document templates. ||
-|| [crm.documentgenerator.template.delete](./crm-document-generator-template-delete.md) | Deleting a document template. ||
+|| [crm.documentgenerator.template.add](./crm-document-generator-template-add.md) | Adds a new template ||
+|| [crm.documentgenerator.template.update](./crm-document-generator-template-update.md) | Updates an existing template ||
+|| [crm.documentgenerator.template.get](./crm-document-generator-template-get.md) | Returns information about a template by ID ||
+|| [crm.documentgenerator.template.list](./crm-document-generator-template-list.md) | Returns a list of templates ||
+|| [crm.documentgenerator.template.delete](./crm-document-generator-template-delete.md) | Deletes a template ||
+|| [crm.documentgenerator.template.getfields](./crm-document-generator-template-get-fields.md) | Returns the fields of a template ||
 |#

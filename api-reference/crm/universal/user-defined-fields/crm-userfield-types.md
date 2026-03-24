@@ -1,52 +1,40 @@
-# Get a list of user field types crm.userfield.types
-
-{% note warning "We are still updating this page" %}
-
-Some data may be missing — we will complete it soon.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- parameters and their types are not specified
-- no response in case of error and success
-
-{% endnote %}
-
-{% endif %}
+# Get a list of custom field types crm.userfield.types
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-The method `crm.userfield.types` returns a description of fields for user-defined fields.
+The method `crm.userfield.types` retrieves the available types of custom fields.
 
-List of user field types. Contains descriptions of types:
+The types returned are:
+- `string` — string
+- `integer` — integer
+- `double` — number
+- `boolean` — yes/no
+- `datetime` — date and time
+- `enumeration` — list
+- `iblock_section` — binding to information block sections
+- `iblock_element` — binding to information block elements
+- `employee` — binding to an employee
+- `crm_status` — binding to the CRM directory
+- `crm` — binding to CRM entities
+- `address` — Google Maps address
+- `money` — money
+- `url` — link
 
-- string
-- integer
-- double
-- boolean
-- datetime
-- enumeration
-- iblock_section
-- iblock_element
-- employee
-- crm_status
-- crm
-- address
-- money
-- url
+The method also returns [custom types](./userfield-type.md) registered by the current application.
 
-Also, the [types](../user-defined-fields/userfield-type.md) of user-defined fields registered by the current application will be returned.
+## Method Parameters
 
-## Example
+No parameters.
+
+## Code Examples
+
+{% include [Examples Note](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
-- CURL (webhook)
+- cURL (Webhook)
 
     ```bash
     curl -X POST \
@@ -56,15 +44,15 @@ Also, the [types](../user-defined-fields/userfield-type.md) of user-defined fiel
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.userfield.types
     ```
 
-- CURL (oauth)
+- cURL (OAuth)
 
     ```bash
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{}' \
-    https://**put_your_bitrix24_address**/rest/crm.userfield.types?auth=**put_access_token_here**
-    ```    
+    -d '{"auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/crm.userfield.types
+    ```
 
 - JS
 
@@ -75,20 +63,13 @@ Also, the [types](../user-defined-fields/userfield-type.md) of user-defined fiel
     		"crm.userfield.types",
     		{}
     	);
-    	
+
     	const result = response.getData().result;
-    	if(result.error())
-    	{
-    		console.error(result.error());
-    	}
-    	else
-    	{
-    		console.dir(result);
-    	}
+    	console.log(result);
     }
-    catch(error)
+    catch (error)
     {
-    	console.error('Error:', error);
+    	console.error(error);
     }
     ```
 
@@ -96,15 +77,20 @@ Also, the [types](../user-defined-fields/userfield-type.md) of user-defined fiel
 
     ```php
     try {
-        $userfieldService = $serviceBuilder->getCRMScope()->userfield();
-        $userfieldTypesResult = $userfieldService->types();
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.userfield.types',
+                []
+            );
 
-        foreach ($userfieldTypesResult->getTypes() as $item) {
-            print("ID: " . $item->ID . "\n");
-            print("Title: " . $item->title . "\n");
-        }
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+
+        print_r($result);
     } catch (Throwable $e) {
-        print("Error: " . $e->getMessage() . "\n");
+        echo $e->getMessage();
     }
     ```
 
@@ -116,10 +102,14 @@ Also, the [types](../user-defined-fields/userfield-type.md) of user-defined fiel
         {},
         function(result)
         {
-            if(result.error())
+            if (result.error())
+            {
                 console.error(result.error());
+            }
             else
-                console.dir(result.data());
+            {
+                console.log(result.data());
+            }
         }
     );
     ```
@@ -134,15 +124,126 @@ Also, the [types](../user-defined-fields/userfield-type.md) of user-defined fiel
         []
     );
 
-    echo '<PRE>';
     print_r($result);
-    echo '</PRE>';
     ```
 
 {% endlist %}
 
-{% include [Footnote about examples](../../../../_includes/examples.md) %}
+## Response Handling
 
-## Continue exploring
+HTTP status: **200**
 
-- [{#T}](../../../../tutorials/crm/how-to-add-crm-objects/how-to-add-precision-to-user-field.md)
+```json
+{
+    "result": [
+        {
+            "ID": "string",
+            "title": "String"
+        },
+        {
+            "ID": "integer",
+            "title": "Integer"
+        },
+        {
+            "ID": "double",
+            "title": "Number"
+        },
+        {
+            "ID": "boolean",
+            "title": "Yes/No"
+        },
+        {
+            "ID": "enumeration",
+            "title": "List"
+        },
+        {
+            "ID": "datetime",
+            "title": "Date/Time"
+        },
+        {
+            "ID": "date",
+            "title": "Date"
+        },
+        {
+            "ID": "money",
+            "title": "Money"
+        },
+        {
+            "ID": "url",
+            "title": "Link"
+        },
+        {
+            "ID": "address",
+            "title": "Google Maps Address"
+        },
+        {
+            "ID": "file",
+            "title": "File"
+        },
+        {
+            "ID": "employee",
+            "title": "Binding to User"
+        },
+        {
+            "ID": "crm_status",
+            "title": "Binding to CRM Directories"
+        },
+        {
+            "ID": "iblock_section",
+            "title": "Binding to Information Block Sections"
+        },
+        {
+            "ID": "iblock_element",
+            "title": "Binding to Information Block Elements"
+        },
+        {
+            "ID": "crm",
+            "title": "Binding to CRM Entities"
+        }
+    ],
+    "time": {
+        "start": 1773992560,
+        "finish": 1773992560.044522,
+        "duration": 0.04452204704284668,
+        "processing": 0,
+        "date_start": "2026-03-20T10:42:40+02:00",
+        "date_finish": "2026-03-20T10:42:40+02:00",
+        "operating_reset_at": 1773993160,
+        "operating": 0
+    }
+}
+```
+
+### Returned Data
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`array`](../../data-types.md) | Array of objects with supported types [(detailed description)](#result) ||
+|| **time**
+[`time`](../../data-types.md#time) | Information about the request execution time ||
+|#
+
+#### Result Object {#result}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **ID**
+[`string`](../../data-types.md) | Code of the custom field type ||
+|| **title**
+[`string`](../../data-types.md) | Name of the custom field type ||
+|#
+
+## Error Handling
+
+{% include notitle [error handling](../../../../_includes/error-info.md) %}
+
+{% include [system errors](../../../../_includes/system-errors.md) %}
+
+## Continue Learning
+
+- [{#T}](./crm-userfield-fields.md)
+- [{#T}](./crm-userfield-settings-fields.md)
+- [{#T}](./crm-userfield-enumeration-fields.md)

@@ -11,6 +11,7 @@ Some data may be missing here — we will fill it in shortly.
 {% note alert "TO-DO _not exported to prod_" %}
 
 - from Sergey's file: how they work, what the connection is between them and the connectors, what scenarios are implemented in REST
+- from Sergey's file: how lines, chats, sessions, employees, and external users are related
 
 {% endnote %}
 
@@ -73,7 +74,7 @@ Some data may be missing here — we will fill it in shortly.
 
 {% endlist %}
 
-### Operators of Open Lines
+### Operators of Open Channels
 
 #|
 || **Method** | **Description** ||
@@ -85,7 +86,7 @@ Some data may be missing here — we will fill it in shortly.
 || [imopenlines.operator.transfer](./operators/imopenlines-operator-transfer.md) | Transfers the dialogue to another operator or to another line ||
 |#
 
-### Dialogues in Open Lines
+### Dialogues in Open Channels
 
 {% list tabs %}
 
@@ -94,7 +95,7 @@ Some data may be missing here — we will fill it in shortly.
     #|
     || **Method** | **Description** ||
     || [imopenlines.crm.lead.create](./sessions/imopenlines-crm-lead-create.md) | Creates a lead based on the dialogue ||
-    || [imopenlines.dialog.get](./sessions/imopenlines-dialog-get.md) | Retrieves information about the operator's dialogue (chat) in the open line ||
+    || [imopenlines.dialog.get](./sessions/imopenlines-dialog-get.md) | Retrieves information about the dialogue (chat) of the open channel operator ||
     || [imopenlines.message.session.start](./sessions/imopenlines-message-session-start.md) | Starts a new dialogue based on a message ||
     || [imopenlines.session.head.vote](./sessions/imopenlines-session-head-vote.md) | Rates the employee's performance in the dialogue ||
     || [imopenlines.session.history.get](./sessions/imopenlines-session-history-get.md) | Retrieves chat and dialogue messages ||
