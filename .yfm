@@ -11,6 +11,8 @@ resources:
 
 search: true
 
+staticContent: true
+
 extensions:
   - './extensions/feedback-control'
 
