@@ -4,11 +4,17 @@
 >
 > Who can execute the method: any user
 
-The method `crm.invoice.status.delete` removes the invoice status.
+{% note warning "DEPRECATED" %}
+
+Development of this method has been halted. Please use [Universal Methods for Invoices](../../universal/invoice.md).
+
+{% endnote %}
+
+The method `crm.invoice.status.delete` removes the status of an invoice.
 
 {% note warning %}
 
-Starting from version 19.0.0, it is recommended to use the method [crm.status.delete](../../../crm/status/crm-status-delete.md)
+Starting from version 19.0.0, it is recommended to use the method [crm.status.delete](../../../crm/status/crm-status-delete.md).
 
 {% endnote %}
 

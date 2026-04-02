@@ -4,15 +4,15 @@
 >
 > Who can execute the method: user with "modify" access permission for the deal
 
-{% note warning "Method Development Halted" %}
+{% note warning "DEPRECATED" %}
 
-The method `crm.deal.productrows.set` is still operational, but there is a more current equivalent: [crm.item.productrow.*](../universal/product-rows/index.md).
+The development of this method has been halted. Please use [crm.item.productrow.*](../universal/product-rows/index.md).
 
 {% endnote %}
 
 The method `crm.deal.productrows.set` creates or updates the product rows of a deal. Existing rows that are not passed to the method will be removed from the deal.
 
-To modify only a single row, use the methods [crm.item.productrow.*](../universal/product-rows/index.md).
+To modify only one row, use the methods [crm.item.productrow.*](../universal/product-rows/index.md).
 
 #|
 || **Name**
@@ -52,7 +52,7 @@ Default - `0`
 || **PRODUCT_NAME**
 [`string`](../../data-types.md) | Name of the product row. If `PRODUCT_ID` is provided, the name will be taken from the product
 
-If both `PRODUCT_ID` and `PRODUCT_NAME` are not provided, then `PRODUCT_NAME` will equal `[{id}]`, where `{id}` is the identifier of the created product row
+If neither `PRODUCT_ID` nor `PRODUCT_NAME` is provided, `PRODUCT_NAME` will be equal to `[{id}]`, where `{id}` is the identifier of the created product row
 ||
 || **PRICE**
 [`double`](../../data-types.md) | Final cost of the product per unit

@@ -1,12 +1,12 @@
-# Get enumeration items "Status" crm.enum.activitystatus
+# Get Enumeration Elements "Status" crm.enum.activitystatus
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-{% note warning "Method development has been discontinued" %}
+{% note warning "DEPRECATED" %}
 
-The method `crm.enum.activitystatus` continues to function, but it is related to deprecated methods [crm.activity.*](../../../timeline/activities/index.md). A more current equivalent is the methods [crm.activity.todo.*](../../../timeline/activities/todo/index.md).
+Development of this method has been halted. Please use [crm.activity.todo.*](../../../timeline/activities/todo/index.md).
 
 {% endnote %}
 
@@ -18,7 +18,7 @@ No parameters.
 
 ## Code Examples
 
-{% include [Examples note](../../../../../_includes/examples.md) %}
+{% include [Examples Note](../../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -123,7 +123,7 @@ No parameters.
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -148,7 +148,7 @@ HTTP status: **200**
     },
     {
      "ID": 3,
-     "NAME": "Automatically completed",
+     "NAME": "Automatically Completed",
      "SYMBOL_CODE": null,
      "SYMBOL_CODE_SHORT": null
     }

@@ -60,7 +60,7 @@ Site types and rules for selecting the `scope` parameter are described in the ar
 || `PAGE`, `STORE`, `SMN` | do not pass | Site or store when the `scope` parameter is not passed ||
 || `GROUP` | `GROUP` | Group site ||
 || `KNOWLEDGE` | `KNOWLEDGE` | Knowledge base ||
-|| `MAINPAGE` | `MAINPAGE` | Main page or vibe ||
+|| `MAINPAGE` | `MAINPAGE` | Main page ||
 |#
 
 ## Code Examples

@@ -1,12 +1,12 @@
-# Cancel Document catalog.document.unconfirm
+# Cancel Document Processing catalog.document.unconfirm
 
 > Scope: [`catalog`](../../../scopes/permissions.md)
 >
 > Who can execute the method: administrator
 
-{% note warning "Method development halted" %}
+{% note warning "DEPRECATED" %}
 
-The method `catalog.document.unconfirm` is still operational, but there is a more relevant alternative [catalog.document.cancel](../catalog-document-cancel.md).
+The development of this method has been halted. Please use [catalog.document.cancel](../catalog-document-cancel.md).
 
 {% endnote %}
 

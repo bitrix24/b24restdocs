@@ -1,12 +1,12 @@
-# Get enumeration items "Types of activities" crm.enum.activitytype
+# Get Enumeration Elements "Activity Types" crm.enum.activitytype
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-{% note warning "Method development has been discontinued" %}
+{% note warning "DEPRECATED" %}
 
-The method `crm.enum.activitytype` continues to function, but it is related to deprecated methods [crm.activity.*](../../../timeline/activities/index.md). A more current alternative is the methods [crm.activity.todo.*](../../../timeline/activities/todo/index.md).
+The development of this method has been halted. Please use [crm.activity.todo.*](../../../timeline/activities/todo/index.md).
 
 {% endnote %}
 
@@ -18,7 +18,7 @@ No parameters.
 
 ## Code Examples
 
-{% include [Examples note](../../../../../_includes/examples.md) %}
+{% include [Examples Note](../../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -47,17 +47,17 @@ No parameters.
     ```js
     try
     {
-    	const response = await $b24.callMethod(
-    		"crm.enum.activitytype",
-    		{}
-    	);
-    	
-    	const result = response.getData().result;
-    	console.dir(result);
+        const response = await $b24.callMethod(
+            "crm.enum.activitytype",
+            {}
+        );
+        
+        const result = response.getData().result;
+        console.dir(result);
     }
     catch( error )
     {
-    	console.error(error);
+        console.error(error);
     }
     ```
 
@@ -123,7 +123,7 @@ No parameters.
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -166,7 +166,7 @@ HTTP status: **200**
     },
     {
      "ID": 6,
-     "NAME": "Custom Action",
+     "NAME": "User Action",
      "SYMBOL_CODE": null,
      "SYMBOL_CODE_SHORT": null
     }
@@ -190,7 +190,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`array`](../../../../data-types.md) | Array with activity types [(detailed description)](#result) ||
+[`array`](../../../../data-types.md) | Array of activity types [(detailed description)](#result) ||
 || **time**
 [`time`](../../../../data-types.md#time) | Information about the request execution time ||
 |#

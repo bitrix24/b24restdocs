@@ -1,12 +1,18 @@
-# Delete file attachment from task task.item.deletefile
+# Delete File Attachment from Task task.item.deletefile
 
 > Scope: [`task`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
+{% note warning "DEPRECATED" %}
+
+The development of this method has been halted. Please use [tasks.task.update](../../tasks-task-update.md).
+
+{% endnote %}
+
 This method removes the file attachment from a task.
 
-## Method parameters
+## Method Parameters
 
 #|
 || **Name** | **Description** ||
@@ -15,9 +21,9 @@ This method removes the file attachment from a task.
 || **ATTACHMENT_ID** | Identifier of the attached file ||
 |#
 
-## Code examples
+## Code Examples
 
-{% include [Footnote about examples](../../../../_includes/examples.md) %}
+{% include [Examples Note](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -46,20 +52,20 @@ This method removes the file attachment from a task.
     ```js
     try
     {
-    	const response = await $b24.callMethod(
-    		'task.item.deletefile',
-    		{
-    			TASK_ID: 3,
-    			ATTACHMENT_ID: 28
-    		}
-    	);
-    	
-    	const result = response.getData().result;
-    	console.log(result);
+        const response = await $b24.callMethod(
+            'task.item.deletefile',
+            {
+                TASK_ID: 3,
+                ATTACHMENT_ID: 28
+            }
+        );
+        
+        const result = response.getData().result;
+        console.log(result);
     }
     catch( error )
     {
-    	console.error(error);
+        console.error(error);
     }
     ```
 

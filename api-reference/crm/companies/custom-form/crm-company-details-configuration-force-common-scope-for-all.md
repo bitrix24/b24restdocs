@@ -1,16 +1,16 @@
-# Set a Common Company Card for All Users crm.company.details.configuration.forceCommonScopeForAll
+# Set Common Company Card for All Users crm.company.details.configuration.forceCommonScopeForAll
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: a user with the "Allow changing settings" access permission in CRM
+> Who can execute the method: a user with the "Allow to modify settings" access permission in CRM
 
-{% note warning "Method Development Stopped" %}
+{% note warning "DEPRECATED" %}
 
-The method `crm.company.details.configuration.forceCommonScopeForAll` is still operational, but there is a more relevant alternative [crm.item.details.configuration.forceCommonScopeForAll](../../universal/item-details-configuration/crm-item-details-configuration-forceCommonScopeForAll.md).
+The development of this method has been halted. Please use [crm.item.details.configuration.forceCommonScopeForAll](../../universal/item-details-configuration/crm-item-details-configuration-forceCommonScopeForAll.md).
 
 {% endnote %}
 
-The method `crm.company.details.configuration.forceCommonScopeForAll` forcibly sets a common company card for all users.
+The method `crm.company.details.configuration.forceCommonScopeForAll` enforces a common company card for all users.
 
 ## Method Parameters
 
@@ -18,7 +18,7 @@ No parameters.
 
 ## Code Examples
 
-{% include [Note on Examples](../../../../_includes/examples.md) %}
+{% include [Examples Note](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -147,9 +147,9 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../../data-types.md) | Root element of the response, contains `true` in case of success ||
+[`boolean`](../../../data-types.md) | Root element of the response, contains `true` on success ||
 || **time**
-[`time`](../../../data-types.md#time) | Information about the request execution time ||
+[`time`](../../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
@@ -169,7 +169,7 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `-` | `Access denied` | The user does not have permission to change CRM settings ||
+|| `-` | `Access denied` | The user does not have permission to modify CRM settings ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

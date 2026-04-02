@@ -1,23 +1,151 @@
-# On Clicking the Mute Button BackgroundCallCard::muteButtonClick
-
-{% note warning "We are still updating this page" %}
-
-Some data may be missing here — we will complete it soon.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not deployed to prod_" %}
-
-- examples are missing
-
-{% endnote %}
-
-{% endif %}
+# On Clicking the Mute Button of BackgroundCallCard::muteButtonClick
 
 > Scope: [`telephony`](../../../../scopes/permissions.md)
 >
-> Who can subscribe: `any user`
+> Who can subscribe: any user
 
-The event `BackgroundCallCard::muteButtonClick` occurs when the mute button is clicked. A boolean value is passed to the callback function: true - mute is expected, false - unmute is expected.
+The event `BackgroundCallCard::muteButtonClick` is triggered when the operator clicks the microphone control button.
+
+{% note info "" %}
+
+The event operates within the context of the application in the placement `PAGE_BACKGROUND_WORKER`.
+
+{% endnote %}
+
+## What the Handler Receives
+
+Data is passed to the callback `BX24.placement.bindEvent` {.b24-info}
+
+```js
+callback(true);
+```
+
+## Event Handler Parameters
+
+{% include [Note on Required Parameters](../../../../../_includes/required.md) %}
+
+#|
+|| **Parameter**
+`type` | **Description** ||
+|| **eventData*** 
+[`boolean`](../../../../data-types.md) | The current state of the microphone after the button is pressed.
+
+Possible values:
+
+- `true` — muted
+- `false` — unmuted ||
+|#
+
+## Event Subscription Parameters
+
+{% include [Note on Required Parameters](../../../../../_includes/required.md) %}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **PLACEMENT*** 
+[`string`](../../../../data-types.md) | The name of the interface event.
+
+For this event — `BackgroundCallCard::muteButtonClick` ||
+|| **HANDLER*** 
+[`string`](../../../../data-types.md) | The URL of the event handler for calling `placement.bindEvent` ||
+|#
+
+## Code Examples
+
+{% include [Note on Examples](../../../../../_includes/examples.md) %}
+
+{% list tabs %}
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"PLACEMENT":"BackgroundCallCard::muteButtonClick","HANDLER":"**your_handler_url_here**"}' \
+    "https://**put_your_bitrix24_address**/rest/placement.bindEvent?auth=**put_access_token_here**"
+    ```
+
+- JS
+
+    ```js
+    BX24.placement.bindEvent('BackgroundCallCard::muteButtonClick', function (eventData) {
+        console.log(eventData);
+    });
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'placement.bindEvent',
+                [
+                    'PLACEMENT' => 'BackgroundCallCard::muteButtonClick',
+                    'HANDLER' => '**your_handler_url_here**'
+                ]
+            );
+
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+
+        echo 'Success: ' . print_r($result, true);
+        processData($result);
+
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
+    BX24.callMethod(
+        'placement.bindEvent',
+        {
+            PLACEMENT: 'BackgroundCallCard::muteButtonClick',
+            HANDLER: '**your_handler_url_here**'
+        },
+        function(result)
+        {
+            if (result.error())
+            {
+                console.error(result.error(), result.error_description());
+            }
+            else
+            {
+                console.log(result.data());
+            }
+        }
+    );
+    ```
+
+- PHP CRest
+
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'placement.bindEvent',
+        [
+            'PLACEMENT' => 'BackgroundCallCard::muteButtonClick',
+            'HANDLER' => '**your_handler_url_here**'
+        ]
+    );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
+    ```
+
+{% endlist %}
+
+## Continue Learning
+
+- [{#T}](./index.md)
+- [{#T}](../card.md)

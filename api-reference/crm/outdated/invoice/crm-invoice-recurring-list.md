@@ -1,18 +1,18 @@
-# Get a list of recurring invoice settings by filter crm.invoice.recurring.list
+# Get a List of Recurring Invoice Settings by Filter crm.invoice.recurring.list
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-{% note warning %}
+{% note warning "DEPRECATED" %}
 
-The method is deprecated. It is recommended to use [`Universal methods for invoices`](../../universal/invoice.md)
+The development of this method has been halted. Please use [Universal Methods for Invoices](../../universal/invoice.md).
 
 {% endnote %}
 
-The method returns a list of recurring invoice template settings based on the filter.
+This method returns a list of recurring invoice template settings based on the specified filter.
 
-When querying, use the mask "*" to select all fields (excluding custom and multiple fields).
+When querying, use the wildcard "*" to select all fields (excluding custom and multiple fields).
 
 ## Method Parameters
 
@@ -45,7 +45,7 @@ See the description of [list methods](../../../../settings/how-to-call-rest-api/
 - JS
 
     ```js
-    // callListMethod: Retrieves all data at once. Use only for small selections (< 1000 items) due to high memory usage.
+    // callListMethod: Retrieves all data at once. Use only for small selections (< 1000 items) due to high memory load.
     
     try {
       const response = await $b24.callListMethod(
@@ -62,7 +62,7 @@ See the description of [list methods](../../../../settings/how-to-call-rest-api/
       console.error('Request failed', error)
     }
     
-    // fetchListMethod: Retrieves data in parts using an iterator. Use it for large data volumes to optimize memory usage.
+    // fetchListMethod: Retrieves data in chunks using an iterator. Use for large volumes of data for efficient memory consumption.
     
     try {
       const generator = $b24.fetchListMethod('crm.invoice.recurring.list', {
@@ -77,7 +77,7 @@ See the description of [list methods](../../../../settings/how-to-call-rest-api/
       console.error('Request failed', error)
     }
     
-    // callMethod: Manually controls pagination through the start parameter. Use it for precise control of request batches. For large datasets, it is less efficient than fetchListMethod.
+    // callMethod: Manual control of pagination through the start parameter. Use for precise control over request batches. Less efficient for large data than fetchListMethod.
     
     try {
       const response = await $b24.callMethod('crm.invoice.recurring.list', {
@@ -167,4 +167,3 @@ See the description of [list methods](../../../../settings/how-to-call-rest-api/
     ```
 
 {% endlist %}
-

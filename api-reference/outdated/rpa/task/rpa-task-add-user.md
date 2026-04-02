@@ -4,6 +4,12 @@
 >
 > Who can execute the method: any user
 
+{% note warning "DEPRECATED" %}
+
+The development of this method has been halted. Use [Smart scripts](../../../crm/universal/user-defined-object-types/index.md) as an alternative to this functionality.
+
+{% endnote %}
+
 The method `rpa.task.addUser` will add a user to an existing task.
 
 ## Method Parameters
@@ -15,13 +21,13 @@ The method `rpa.task.addUser` will add a user to an existing task.
 [`integer`](../../../data-types.md) | Process identifier ||
 || **stageId** 
 [`integer`](../../../data-types.md) | Stage identifier ||
-|| **automationRuleName** 
+|| **Automation rule name** 
 [`string`](../../../data-types.md) | Name of the Automation rule ||
 || **userValue** 
-[`string`](../../../data-types.md) | String with user in the format `First Last [user id]` ||
+[`string`](../../../data-types.md) | String with user in the format `First Last [user ID]` ||
 |#
 
-## Continue Exploring 
+## Continue Your Exploration 
 
 - [{#T}](./index.md)
 - [{#T}](./rpa-task-do.md)

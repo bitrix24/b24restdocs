@@ -1,18 +1,18 @@
-# Set Product Rows for the Quote crm.quote.productrows.set
+# Set Product Rows for the Quote `crm.quote.productrows.set`
 
 > Scope: [`crm`](../../scopes/permissions.md)
 >
 > Who can execute the method: a user with "edit" access permission for estimates
 
-{% note warning "Method Development Halted" %}
+{% note warning "DEPRECATED" %}
 
-The method `crm.quote.productrows.set` is still operational, but there is a more relevant alternative: [crm.item.productrow.*](../universal/product-rows/index.md).
+The development of this method has been halted. Please use [crm.item.productrow.*](../universal/product-rows/index.md).
 
 {% endnote %}
 
-The method `crm.quote.productrows.set` creates or updates the product rows of an estimate.
+The method `crm.quote.productrows.set` creates or updates product rows in an estimate.
 
-To modify only one row, use the methods [crm.item.productrow.*](../universal/product-rows/index.md).
+To modify only a single row, use the methods [crm.item.productrow.*](../universal/product-rows/index.md).
 
 ## Method Parameters
 
@@ -28,7 +28,7 @@ The identifier can be obtained using the methods [crm.quote.list](./crm-quote-li
 || **rows**
 [`object[]`](#parameter-rows) | Array of product rows.
 
-Format of the array element:
+Format of an array element:
 ```json
 {
     "field_1": "value_1",
@@ -41,7 +41,7 @@ where:
 - `field_n` — name of the product row field
 - `value_n` — value of the field
 
-The list of main fields is described [below](#parameter-rows) ||
+A list of primary fields is described [below](#parameter-rows) ||
 |#
 
 ### List of Available Fields for Product Rows {#parameter-rows}
@@ -62,7 +62,7 @@ If `PRODUCT_ID = 0`, the row is created as "custom" ||
 || **PRICE**
 [`double`](../data-types.md) | Final cost of the product per unit ||
 || **QUANTITY**
-[`double`](../data-types.md) | Quantity of product units ||
+[`double`](../data-types.md) | Number of product units ||
 || **DISCOUNT_TYPE_ID**
 [`integer`](../data-types.md) | Type of discount:
 - `1` — absolute
@@ -82,14 +82,14 @@ If `PRODUCT_ID = 0`, the row is created as "custom" ||
 || **MEASURE_NAME**
 [`string`](../data-types.md) | Text representation of the unit of measure ||
 || **SORT**
-[`integer`](../data-types.md) | Sorting order ||
+[`integer`](../data-types.md) | Sorting ||
 |#
 
 The complete list of fields for product rows and types can be obtained using the method [crm.productrow.fields](../outdated/productrow-old/crm-productrow-fields.md).
 
 ## Code Examples
 
-{% include [Example Note](../../../_includes/examples.md) %}
+{% include [Examples Note](../../../_includes/examples.md) %}
 
 Set two product rows for the estimate with `id = 1`.
 
@@ -313,8 +313,8 @@ HTTP Status: **200**
         "finish": 1773416018.877651,
         "duration": 0.8776509761810303,
         "processing": 0,
-        "date_start": "2026-03-13T18:33:38+02:00",
-        "date_finish": "2026-03-13T18:33:38+02:00",
+        "date_start": "2026-03-13T18:33:38+01:00",
+        "date_finish": "2026-03-13T18:33:38+01:00",
         "operating_reset_at": 1773416618,
         "operating": 0.5666530132293701
     }
@@ -345,7 +345,7 @@ HTTP Status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../_includes/error-info.md) %}
+{% include notitle [Error Handling](../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
@@ -355,10 +355,10 @@ HTTP Status: **400**
 || `-` | `The parameter rows must be array.` | The parameter `rows` is not an array ||
 || `-` | `Access denied.` | The user does not have permission to edit the estimate ||
 || `-` | `Not found.` | The estimate with the provided `id` was not found ||
-|| `-` | Text of catalog rights check error | Error checking rights for catalog products and/or catalog restrictions for the provided rows ||
+|| `-` | Catalog rights check error message | Error checking rights for catalog products and/or catalog restrictions for the provided rows ||
 |#
 
-{% include [system errors](../../../_includes/system-errors.md) %}
+{% include [System Errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

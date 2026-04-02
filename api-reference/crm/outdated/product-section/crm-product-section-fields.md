@@ -4,13 +4,19 @@
 >
 > Who can execute the method: any user
 
-The method `crm.productsection.fields` returns the description of the [fields of the section](./crm-product-section-add.md) of the product.
+{% note warning "DEPRECATED" %}
 
-No parameters.
+The development of this method has been halted. Please use [catalog.section.getFields](../../../catalog/section/catalog-section-get-fields.md).
+
+{% endnote %}
+
+The method `crm.productsection.fields` returns the description of the [fields of the section](./crm-product-section-add.md) for the product.
+
+No parameters required.
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../../_includes/examples.md) %}
+{% include [Note on Examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -39,24 +45,24 @@ No parameters.
     ```js
     try
     {
-    	const response = await $b24.callMethod(
-    		"crm.productsection.fields",
-    		{}
-    	);
-    	
-    	const result = response.getData().result;
-    	if(result.error())
-    	{
-    		console.error(result.error());
-    	}
-    	else
-    	{
-    		console.dir(result);
-    	}
+        const response = await $b24.callMethod(
+            "crm.productsection.fields",
+            {}
+        );
+        
+        const result = response.getData().result;
+        if(result.error())
+        {
+            console.error(result.error());
+        }
+        else
+        {
+            console.dir(result);
+        }
     }
     catch(error)
     {
-    	console.error('Error:', error);
+        console.error('Error:', error);
     }
     ```
 
@@ -130,13 +136,13 @@ No parameters.
 || **Name**
 `type`  | **Description** | **Note** ||
 || **CATALOG_ID** 
-[`integer`](../../data-types.md) | Catalog identifier | Immutable ||
+[`integer`](../../data-types.md) | Catalog Identifier | Immutable ||
 || **ID** 
-[`integer`](../../data-types.md) | Section identifier | Read-only ||
+[`integer`](../../data-types.md) | Section Identifier | Read-only ||
 || **NAME** 
-[`string`](../../data-types.md) | Section name | Required ||
+[`string`](../../data-types.md) | Section Name | Required ||
 || **SECTION_ID** 
 [`integer`](../../data-types.md) | Identifier of the linked section | ||
 || **XML_ID** 
-[`string`](../../data-types.md) | Symbolic code | ||
+[`string`](../../data-types.md) | Symbolic Code | ||
 |#

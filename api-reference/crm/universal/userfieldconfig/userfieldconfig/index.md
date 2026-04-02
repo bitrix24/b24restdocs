@@ -1,14 +1,12 @@
 # Custom Fields
 
-{% note info "" %}
-
-**Scope**: [`catalog`](../../../../scopes/permissions.md) | **Who can execute the method**: `any user`
-
-{% endnote %}
+> Scope: [`userfieldconfig`](../../../../scopes/permissions.md), module scope from `moduleId` (for example, [`crm`](../../../../scopes/permissions.md))
+>
+> Who can execute the method: depends on the method
 
 Methods for working with custom fields:
 
-#| 
+#|
 || **Method** | **Description** ||
 || [userfieldconfig.add](userfieldconfig-add.md) | This method adds a custom field. ||
 || [userfieldconfig.delete](userfieldconfig-delete.md) | This method deletes a custom field. ||
@@ -18,6 +16,6 @@ Methods for working with custom fields:
 || [userfieldconfig.update](userfieldconfig-update.md) | This method modifies the value of a field. ||
 |#
 
-## Continue Learning
+## Continue Exploring
 
 - [{#T}](../../../../../tutorials/crm/how-to-add-crm-objects/how-to-add-user-field-to-spa.md)

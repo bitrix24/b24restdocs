@@ -13,37 +13,37 @@ The method `im.message.update` modifies the text and parameters of an already se
 #|
 || **Name**
 `type` | **Description** ||
-|| **MESSAGE_ID***  
+|| **MESSAGE_ID***
 [`integer`](../../data-types.md) | Identifier of the message.
 
 The identifier is returned by the method [im.message.add](./im-message-add.md) ||
-|| **MESSAGE**  
+|| **MESSAGE**
 [`string`](../../data-types.md) | New text of the message. If an empty value is provided, the message will be deleted.
 
 If the parameter is not provided, the message text will remain unchanged ||
-|| **ATTACH**  
-[`object`](../../data-types.md)  
+|| **ATTACH**
+[`object`](../../data-types.md)
 [`string`](../../data-types.md) | Attachment with content blocks: images, links, files. To remove the attachment, pass `N` or an empty value.
 
-Read more in the [Attachments](./attachments/index.md) section ||
-|| **KEYBOARD**  
-[`object`](../../data-types.md)  
-[`string`](../../data-types.md) | Buttons below the message that the user can interact with. To disable the display of buttons, pass `N` or an empty value.
+Read more in the [Attachments](./attachments.md) section ||
+|| **KEYBOARD**
+[`object`](../../data-types.md)
+[`string`](../../data-types.md) | Buttons below the message that the user can interact with. To disable button display, pass `N` or an empty value.
 
 Read more in the [Working with Keyboards](./keyboards.md) article ||
-|| **MENU**  
-[`object`](../../data-types.md)  
+|| **MENU**
+[`object`](../../data-types.md)
 [`string`](../../data-types.md) | Additional items in the chat's context menu. To disable the display of additional menu items, pass `N` or an empty value.
 
 Read more in the [Context Menu](./menu.md) article ||
-|| **URL_PREVIEW**  
+|| **URL_PREVIEW**
 [`string`](../../data-types.md) | Conversion of links into rich links.
 
 Allowed values:
 - `Y` — enabled
 - `N` — disabled ||
-|| **IS_EDITED**  
-[`string`](../../data-types.md) | Flag to mark as "edited":
+|| **IS_EDITED**
+[`string`](../../data-types.md) | Flag for marking "edited":
 - `Y` — mark
 - `N` — do not mark
 
@@ -51,7 +51,7 @@ Default is `Y`
 
 {% note info "" %}
 
-The parameter is applied when updating `ATTACH`. When changing `MESSAGE`, the "edited" label may appear even if `IS_EDITED = 'N'` is passed.
+The parameter is applied when updating `ATTACH`. When changing `MESSAGE`, the "edited" label may appear even if `IS_EDITED = 'N'` is provided.
 
 {% endnote %} ||
 |#
@@ -200,10 +200,10 @@ HTTP Status: **200**
 #|
 || **Name**
 `type` | **Description** ||
-|| **result**  
+|| **result**
 [`boolean`](../../data-types.md) | `true` if the message was updated ||
-|| **time**  
-[`time`](../../data-types.md#time) | Information about the execution time of the request ||
+|| **time**
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -223,7 +223,7 @@ HTTP Status: **400**, **403**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `MESSAGE_ID_ERROR` | Message ID can't be empty | `MESSAGE_ID` is not provided or is invalid ||
+|| `MESSAGE_ID_ERROR` | Message ID can't be empty | `MESSAGE_ID` is missing or invalid ||
 || `CANT_EDIT_MESSAGE` | Time has expired for modification or you don't have access | No permission to edit the message or the modification period has expired ||
 || `ATTACH_ERROR` | Incorrect attach params | Invalid `ATTACH` object ||
 || `ATTACH_OVERSIZE` | You have exceeded the maximum allowable size of attach | The size of `ATTACH` exceeds the allowable limit ||
@@ -240,5 +240,5 @@ HTTP Status: **400**, **403**
 - [{#T}](./im-message-add.md)
 - [{#T}](./im-message-delete.md)
 - [{#T}](./keyboards.md)
-- [{#T}](./attachments/index.md)
+- [{#T}](./attachments.md)
 - [{#T}](./menu.md)

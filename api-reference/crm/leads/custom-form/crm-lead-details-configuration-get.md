@@ -6,9 +6,9 @@
 >  - any user can retrieve their own and shared settings,
 >  - a user with the "Allow to modify settings" access permission in CRM can retrieve others' settings.
 
-{% note warning "Method Development Halted" %}
+{% note warning "DEPRECATED" %}
 
-The method `crm.lead.details.configuration.get` continues to function, but there is a more relevant alternative: [crm.item.details.configuration.get](../../universal/item-details-configuration/crm-item-details-configuration-get.md).
+The development of this method has been halted. Please use [crm.item.details.configuration.get](../../universal/item-details-configuration/crm-item-details-configuration-get.md).
 
 {% endnote %}
 
@@ -369,7 +369,7 @@ HTTP Status: **200**
 || **optionFlags**
 [`string`](../../../data-types.md) | Values:
 - `"1"` - always show
-- `"0"` - do not always show ||
+- `"0"` - not always show ||
 || **options**
 [`object`](../../../data-types.md) | Additional options for the field ||
 |#
@@ -385,7 +385,7 @@ HTTP Status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../../_includes/error-info.md) %}
+{% include notitle [Error Handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
@@ -394,7 +394,7 @@ HTTP Status: **400**
 || `-` | Access denied | Insufficient permissions to retrieve the requested configuration ||
 |#
 
-{% include [system errors](../../../../_includes/system-errors.md) %}
+{% include [System Errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

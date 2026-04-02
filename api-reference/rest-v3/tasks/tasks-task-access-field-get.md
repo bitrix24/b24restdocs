@@ -1,6 +1,6 @@
 # Get Task Access Field Permissions tasks.task.access.field.get
 
-> Scope: [`task`](../../scopes/permissions.md)
+> Scope: [`tasks`](../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
@@ -8,7 +8,7 @@ The method `tasks.task.access.field.get` returns the description of the task acc
 
 ## Method Parameters
 
-{% include [Parameter Notes](../../../_includes/required.md) %}
+{% include [Footnote on parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -24,7 +24,7 @@ Available fields:
 - `title` — title
 - `description` — description
 - `validationRules` — validation rules
-- `requiredGroups` — required groups
+- `requiredGroups` — mandatory groups
 - `filterable` — filter availability indicator
 - `sortable` — sort availability indicator
 - `editable` — editability indicator
@@ -34,7 +34,7 @@ Available fields:
 
 ## Code Examples
 
-{% include [Example Notes](../../../_includes/examples.md) %}
+{% include [Footnote on examples](../../../_includes/examples.md) %}
 
 {% note info "" %}
 
@@ -68,7 +68,7 @@ The new API call differs by the addition of the `/api/` parameter in the request
 
 - JS
 
-    The SDK does not currently support the address /rest/api/ in calls. Use direct HTTP requests, such as via curl or fetch.
+    The SDK does not currently support calls to the address /rest/api/. Use direct HTTP requests, such as via curl or fetch.
 
     ```javascript
     try
@@ -100,7 +100,7 @@ The new API call differs by the addition of the `/api/` parameter in the request
 
 - PHP
 
-    The SDK does not currently support the address /rest/api/ in calls. Use direct HTTP requests, such as via curl or fetch.
+    The SDK does not currently support calls to the address /rest/api/. Use direct HTTP requests, such as via curl or fetch.
 
     ```php
     try {
@@ -136,7 +136,7 @@ The new API call differs by the addition of the `/api/` parameter in the request
 
 - BX24.js
 
-    The SDK does not currently support the address /rest/api/ in calls. Use direct HTTP requests, such as via curl or fetch.
+    The SDK does not currently support calls to the address /rest/api/. Use direct HTTP requests, such as via curl or fetch.
 
     ```js
     BX24.callMethod(
@@ -162,7 +162,7 @@ The new API call differs by the addition of the `/api/` parameter in the request
 
 - PHP CRest
 
-    The SDK does not currently support the address /rest/api/ in calls. Use direct HTTP requests, such as via curl or fetch.
+    The SDK does not currently support calls to the address /rest/api/. Use direct HTTP requests, such as via curl or fetch.
 
     ```php
     require_once('crest.php');
@@ -216,8 +216,8 @@ HTTP Status: **200**
         "finish": 1769780771.081992,
         "duration": 0.08199191093444824,
         "processing": 0,
-        "date_start": "2026-01-30T16:46:11+02:00",
-        "date_finish": "2026-01-30T16:46:11+02:00",
+        "date_start": "2026-01-30T16:46:11+01:00",
+        "date_finish": "2026-01-30T16:46:11+01:00",
         "operating_reset_at": 1769781371,
         "operating": 0
     }
@@ -232,9 +232,9 @@ HTTP Status: **200**
 || **result**
 [`object`](../../data-types.md) | Object containing the response data ||
 || **item**
-[`object`](../../data-types.md) | Object with the field description. The response structure depends on `select`  ||
+[`object`](../../data-types.md) | Object with field description. The response structure depends on `select`  ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the request execution time ||
+[`time`](../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
 ## Error Handling

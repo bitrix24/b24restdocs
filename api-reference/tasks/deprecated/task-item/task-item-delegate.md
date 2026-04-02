@@ -6,9 +6,9 @@
 
 This method delegates a task to a new user.
 
-{% note warning %}
+{% note warning "DEPRECATED" %}
 
-This method is deprecated and not supported. It is recommended to use the methods [tasks.task.*](../../index.md).
+The development of this method has been halted. Please use [tasks.task.delegate](../../tasks-task-delegate.md).
 
 {% endnote %}
 
@@ -17,14 +17,14 @@ This method is deprecated and not supported. It is recommended to use the method
 #|
 || **Name** | **Description** ||
 || **TASKID** | Task identifier ||
-|| **USERID** | Identifier of the new Assignee (responsible) ||
+|| **USERID** | Identifier of the new executor (responsible) ||
 |#
 
-It is mandatory to follow the order of parameters in the request. If this order is violated, the request will be executed with errors.
+It is essential to maintain the order of parameters in the request. Any deviation will result in errors during execution.
 
 ## Code Examples
 
-{% include [Note on examples](../../../../_includes/examples.md) %}
+{% include [Examples Note](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -84,7 +84,7 @@ It is mandatory to follow the order of parameters in the request. If this order 
             ->getResult();
     
         echo 'Success: ' . print_r($result, true);
-        // Your logic for processing data
+        // Your desired data processing logic
         processData($result);
     
     } catch (Throwable $e) {

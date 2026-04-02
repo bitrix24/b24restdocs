@@ -1,49 +1,40 @@
-# Get the types of inventory management documents available for REST catalog.enum.getStoreDocumentTypes
-
-{% note warning "We are still updating this page" %}
-
-Some data may be missing — we will complete it shortly.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- no response in case of success
-- no response in case of error
-- no examples in other languages
-  
-{% endnote %}
-
-{% endif %}
+# Get Store Document Types catalog.enum.getStoreDocumentTypes
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-## Description
+The method `catalog.enum.getStoreDocumentTypes` returns the types of store accounting documents available for REST.
 
-```http
-catalog.enum.getStoreDocumentTypes()
-```
-
-This method returns the types of inventory management documents available for REST.
-
-Currently, the following types are available:
-- `A` – Stock receipt of goods;
-- `S` – Stock adjustment of goods;
-- `M` – Transfer of goods between inventories;
-- `R` – Return of goods;
-- `D` – Write-off of goods.
-
-## Parameters
+## Method Parameters
 
 No parameters.
 
-## Examples
+## Code Examples
+
+{% include [Examples Note](../../../_includes/examples.md) %}
 
 {% list tabs %}
+
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{}' \
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/catalog.enum.getStoreDocumentTypes
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/catalog.enum.getStoreDocumentTypes
+    ```
 
 - JS
 
@@ -56,18 +47,11 @@ No parameters.
     	);
     	
     	const result = response.getData().result;
-    	if(result.error())
-    	{
-    		console.error(result.error().ex);
-    	}
-    	else
-    	{
-    		console.log(result);
-    	}
+    	console.log(result);
     }
-    catch(error)
+    catch( error )
     {
-    	console.error('Error:', error);
+    	console.error(error);
     }
     ```
 
@@ -87,7 +71,7 @@ No parameters.
             ->getResult();
     
         if ($result->error()) {
-            error_log($result->error()->ex);
+            error_log($result->error());
         } else {
             echo 'Success: ' . print_r($result->data(), true);
         }
@@ -104,16 +88,92 @@ No parameters.
     BX24.callMethod(
         'catalog.enum.getStoreDocumentTypes',
         {},
-        function(result)
-        {
-            if(result.error())
-                console.error(result.error().ex);
+        function(result) {
+            if (result.error())
+                console.error(result.error());
             else
                 console.log(result.data());
         }
     );
     ```
 
+- PHP CRest
+
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'catalog.enum.getStoreDocumentTypes',
+        []
+    );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
+    ```
+
 {% endlist %}
 
-{% include [Examples note](../../../_includes/examples.md) %}
+## Response Handling
+
+HTTP Status: **200**
+
+```json
+{
+    "result": {
+        "enum": [
+        {
+            "id": "A",
+            "name": "Goods Receipt"
+        },
+        {
+            "id": "S",
+            "name": "Goods Acquisition"
+        },
+        {
+            "id": "M",
+            "name": "Goods Transfer Between Warehouses"
+        },
+        {
+            "id": "R",
+            "name": "Goods Return"
+        },
+        {
+            "id": "D",
+            "name": "Goods Write-off"
+        }
+        ]
+    },
+    "time": {
+        "start": 1774268098,
+        "finish": 1774268098.509955,
+        "duration": 0.5099549293518066,
+        "processing": 0,
+        "date_start": "2026-03-23T15:14:58+01:00",
+        "date_finish": "2026-03-23T15:14:58+01:00",
+        "operating_reset_at": 1774268698,
+        "operating": 0
+    }
+}
+```
+
+### Returned Data
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`object`](../../data-types.md) | Root element of the response ||
+|| **enum**
+[`catalog_enum[]`](../data-types.md#catalog_enum) | Array of enumeration elements for store accounting document types ||
+|| **time**
+[`time`](../../data-types.md#time) | Information about the request execution time ||
+|#
+
+## Error Handling
+
+{% include [system errors](../../../_includes/system-errors.md) %}
+
+## Continue Learning
+
+- [{#T}](./catalog-enum-get-round-types.md)

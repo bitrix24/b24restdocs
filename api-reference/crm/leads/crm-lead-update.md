@@ -4,9 +4,9 @@
 >
 > Who can execute the method: a user with permissions to edit CRM leads
 
-{% note warning "Method Development Stopped" %}
+{% note warning "DEPRECATED" %}
 
-The method `crm.lead.update` continues to function, but there is a more relevant alternative [crm.item.update](../universal/crm-item-update.md).
+The development of this method has been halted. Please use [crm.item.update](../universal/crm-item-update.md).
 
 {% endnote %}
 
@@ -16,7 +16,7 @@ The method `crm.lead.update` updates an existing lead.
 
 {% note warning %}
 
-It is highly recommended to pass the complete set of address fields when updating an address. The specifics of updating address fields are described [here](../data-types.md).
+It is strongly recommended to pass the complete set of address fields when updating an address. The specifics of updating address fields are described [here](../data-types.md).
 
 {% endnote %}
 
@@ -26,11 +26,11 @@ It is highly recommended to pass the complete set of address fields when updatin
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`](../../data-types.md) | Lead identifier.
+[`integer`](../../data-types.md) | The identifier of the lead.
 
 The identifier can be obtained using the methods [crm.lead.list](./crm-lead-list.md) or [crm.lead.add](./crm-lead-add.md) ||
 || **fields**
-[`object`](../../data-types.md) | Object format:
+[`object`](../../data-types.md) | An object in the following format:
 
 ```
 {
@@ -42,17 +42,17 @@ The identifier can be obtained using the methods [crm.lead.list](./crm-lead-list
 ```
 
 where:
-- `field_n` — field name
-- `value_n` — new field value
+- `field_n` — the name of the field
+- `value_n` — the new value of the field
 
 The list of available fields is described [below](#fields).
 
 An incorrect field in `fields` will be ignored.
 
-Only those fields that need to be changed should be passed in `fields`
+Only the fields that need to be changed should be passed in `fields`
 ||
 || **params** 
-[`object`](../../data-types.md)|Optional set of options. (`"paramName"=>"value"[, ...]`). The list of possible fields is described [below](#params) ||
+[`object`](../../data-types.md)|An optional set of options. (`"paramName"=>"value"[, ...]`). The list of possible fields is described [below](#params) ||
 |#
 
 ## Parameter fields {#fields}
@@ -61,7 +61,7 @@ Only those fields that need to be changed should be passed in `fields`
 || **Name**
 `type` | **Description** ||
 || **ADDRESS**
-[`string`](../../data-types.md) | Lead address ||
+[`string`](../../data-types.md) | The lead's address ||
 || **ADDRESS_2**
 [`string`](../../data-types.md) | Second line of the address. In some countries, it is customary to split the address into 2 parts ||
 || **ADDRESS_CITY**
@@ -73,9 +73,9 @@ Only those fields that need to be changed should be passed in `fields`
 || **ADDRESS_POSTAL_CODE**
 [`string`](../../data-types.md) | Postal code ||
 || **ADDRESS_PROVINCE**
-[`string`](../../data-types.md) | State ||
-|| **ADDRESS_REGION**
 [`string`](../../data-types.md) | Region ||
+|| **ADDRESS_REGION**
+[`string`](../../data-types.md) | District ||
 || **ASSIGNED_BY_ID**
 [`user`](../../data-types.md) | Responsible person ||
 || **BIRTHDATE**
@@ -85,23 +85,23 @@ Only those fields that need to be changed should be passed in `fields`
 || **COMPANY_ID**
 [`crm_company`](../data-types.md) | Link the lead to a company ||
 || **COMPANY_TITLE**
-[`string`](../../data-types.md) | Company name specified in the corresponding lead field. To link an existing company, pass its id in the COMPANY_ID field ||
+[`string`](../../data-types.md) | The name of the company specified in the corresponding field of the lead. To link an existing company, pass its id in the COMPANY_ID field ||
 || **CONTACT_ID**
 [`crm_contact`](../data-types.md) | Link the lead to a contact ||
 || **CONTACT_IDS**
-[`crm_contact`](../data-types.md) | List of contacts linked to the lead.
+[`crm_contact`](../data-types.md) | A list of contacts linked to the lead.
 
 Contacts can be added or removed using the group of methods [crm.lead.contact.*](./management-communication/index.md) ||
 || **CURRENCY_ID**
 [`crm_currency`](../data-types.md) | Currency identifier ||
 || **EMAIL**
-[`crm_multifield`](../data-types.md) | E-mail address. Multiple ||
+[`crm_multifield`](../data-types.md) | Email address. Multiple ||
 || **HONORIFIC**
 [`crm_status`](../data-types.md) | Salutation ||
 || **IM**
 [`crm_multifield`](../data-types.md) | Messenger. Multiple ||
 || **LINK**
-[`crm_multifield`](../data-types.md) | User ID linked through an open channel. Multiple ||
+[`crm_multifield`](../data-types.md) | User ID linked through Open Channels. Multiple ||
 || **LAST_NAME**
 [`string`](../../data-types.md) | Last name ||
 || **NAME**
@@ -109,23 +109,23 @@ Contacts can be added or removed using the group of methods [crm.lead.contact.*]
 || **SECOND_NAME**
 [`string`](../../data-types.md) | Middle name ||
 || **OPENED**
-[`char`](../../data-types.md) | Indicator of lead availability for everyone. Acceptable values Y or N ||
+[`char`](../../data-types.md) | Indicates whether the lead is available to everyone. Acceptable values are Y or N ||
 || **OPPORTUNITY**
 [`double`](../../data-types.md) | Amount ||
 || **IS_MANUAL_OPPORTUNITY**
-[`char`](../../data-types.md) | Indicator of manual calculation mode for the amount. Acceptable values Y or N ||
+[`char`](../../data-types.md) | Indicates manual mode for calculating the amount. Acceptable values are Y or N ||
 || **ORIGINATOR_ID**
 [`string`](../../data-types.md) | Identifier of the data source. Used only for linking to an external source ||
 || **ORIGIN_ID**
 [`string`](../../data-types.md) | Identifier of the item in the data source. Used only for linking to an external source ||
 || **PHONE**
-[`crm_multifield`](../data-types.md) | Phone. Multiple ||
+[`crm_multifield`](../data-types.md) | Phone number. Multiple ||
 || **POST**
 [`string`](../../data-types.md) | Position ||
 || **SOURCE_DESCRIPTION**
-[`string`](../../data-types.md) | Source description ||
+[`string`](../../data-types.md) | Description of the source ||
 || **SOURCE_ID**
-[`crm_status`](../data-types.md) | Source identifier.
+[`crm_status`](../data-types.md) | Identifier of the source.
 Default values:
 
 #|
@@ -156,27 +156,27 @@ The list of all possible identifiers from the directory can be obtained using th
 ||IN_PROCESS | In process||
 ||PROCESSED | Processed||
 ||JUNK | Junk lead||
-||CONVERTED | Converted lead||
+||CONVERTED | Qualified lead||
 |#
 
 The list of all possible stages from the directory can be obtained using the method [crm.status.list](../status/crm-status-list.md) with the filter `filter[ENTITY_ID]=STATUS` ||
 || **TITLE**
-[`string`](../../data-types.md) | Lead title ||
+[`string`](../../data-types.md) | Title of the lead ||
 || **UTM_CAMPAIGN**
-[`string`](../../data-types.md) | Advertising campaign designation ||
+[`string`](../../data-types.md) | Identifier of the advertising campaign ||
 || **UTM_CONTENT**
-[`string`](../../data-types.md) | Campaign content. For example, for contextual ads ||
+[`string`](../../data-types.md) | Content of the campaign. For example, for contextual ads ||
 || **UTM_MEDIUM**
 [`string`](../../data-types.md) | Type of traffic. CPC (ads), CPM (banners) ||
 || **UTM_SOURCE**
-[`string`](../../data-types.md) | Advertising system. Google Ads, Facebook Ads, and others ||
+[`string`](../../data-types.md) | Advertising system. Google-Adwords and others ||
 || **UTM_TERM**
-[`string`](../../data-types.md) | Search term for the campaign. For example, keywords for contextual advertising ||
+[`string`](../../data-types.md) | Search condition of the campaign. For example, keywords for contextual advertising ||
 || **WEB**
 [`crm_multifield`](../data-types.md) | Website. Multiple ||
 || **UF_...** | Custom fields. For example, `UF_CRM_25534736`.  
 
-Depending on the account settings, leads may have a set of custom fields of specific types. 
+Depending on the portal settings, leads may have a set of custom fields of specific types. 
 
 To change file fields, it is recommended to use the method [crm.item.update](../universal/crm-item-update.md).
 
@@ -185,13 +185,13 @@ To create, modify, or delete custom fields in leads, use the methods [crm.lead.u
 
 {% note info %}
 
-Additionally, to find out the required format of fields, you can execute the method [crm.lead.fields](./crm-lead-fields.md) and check the format of the incoming values of these fields.
+Additionally, to find out the required format of the fields, you can execute the method [crm.lead.fields](./crm-lead-fields.md) and check the format of the incoming values for these fields.
 
 {% endnote %}
 
 {% note info %}
 
-When changing a lead, you cannot explicitly set the indicator for a repeat lead (the `IS_RETURN_CUSTOMER` field), however, this field automatically takes the value Y if you specify a value for `COMPANY_ID` or `CONTACT_ID` when changing the lead.
+When modifying a lead, you cannot explicitly set the repeat lead indicator (the `IS_RETURN_CUSTOMER` field); however, this field automatically takes the value Y if you specify a value for `COMPANY_ID` or `CONTACT_ID` when modifying the lead.
 
 {% endnote %}
 
@@ -201,7 +201,7 @@ When changing a lead, you cannot explicitly set the indicator for a repeat lead 
 || **Name**
 `type` | **Description** ||
 || **REGISTER_SONET_EVENT**
-[`char`](../../data-types.md) | Register an event for adding the lead in the activity stream. Additionally, a notification will be sent to the person responsible for the lead. Acceptable values `Y` or `N` ||
+[`char`](../../data-types.md) | Register an event for adding the lead in the activity stream. A notification will also be sent to the person responsible for the lead. Acceptable values are `Y` or `N` ||
 |#
 
 {% include [Footnote on parameters](../../../_includes/required.md) %}
@@ -218,7 +218,7 @@ When changing a lead, you cannot explicitly set the indicator for a repeat lead 
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":1608,"fields":{"TITLE":"LLC Titov","NAME":"Gleb","SECOND_NAME":"Egorovich","LAST_NAME":"Titov","STATUS_ID":"NEW","OPENED":"Y","ASSIGNED_BY_ID":1,"CURRENCY_ID":"USD","OPPORTUNITY":12500,"PHONE":[{"VALUE":"555888","VALUE_TYPE":"WORK"}],"WEB":[{"VALUE":"www.mysite.com","VALUE_TYPE":"WORK"}]},"params":{"REGISTER_SONET_EVENT":"Y"}}' \
+    -d '{"id":1608,"fields":{"TITLE":"IP Titov","NAME":"Gleb","SECOND_NAME":"Yegorovich","LAST_NAME":"Titov","STATUS_ID":"NEW","OPENED":"Y","ASSIGNED_BY_ID":1,"CURRENCY_ID":"USD","OPPORTUNITY":12500,"PHONE":[{"VALUE":"555888","VALUE_TYPE":"WORK"}],"WEB":[{"VALUE":"www.mysite.com","VALUE_TYPE":"WORK"}]},"params":{"REGISTER_SONET_EVENT":"Y"}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.lead.update
     ```
 
@@ -228,7 +228,7 @@ When changing a lead, you cannot explicitly set the indicator for a repeat lead 
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":1608,"fields":{"TITLE":"LLC Titov","NAME":"Gleb","SECOND_NAME":"Egorovich","LAST_NAME":"Titov","STATUS_ID":"NEW","OPENED":"Y","ASSIGNED_BY_ID":1,"CURRENCY_ID":"USD","OPPORTUNITY":12500,"PHONE":[{"VALUE":"555888","VALUE_TYPE":"WORK"}],"WEB":[{"VALUE":"www.mysite.com","VALUE_TYPE":"WORK"}]},"params":{"REGISTER_SONET_EVENT":"Y"},"auth":"**put_access_token_here**"}' \
+    -d '{"id":1608,"fields":{"TITLE":"IP Titov","NAME":"Gleb","SECOND_NAME":"Yegorovich","LAST_NAME":"Titov","STATUS_ID":"NEW","OPENED":"Y","ASSIGNED_BY_ID":1,"CURRENCY_ID":"USD","OPPORTUNITY":12500,"PHONE":[{"VALUE":"555888","VALUE_TYPE":"WORK"}],"WEB":[{"VALUE":"www.mysite.com","VALUE_TYPE":"WORK"}]},"params":{"REGISTER_SONET_EVENT":"Y"},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/crm.lead.update
     ```
 
@@ -243,9 +243,9 @@ When changing a lead, you cannot explicitly set the indicator for a repeat lead 
     			id: 1608,
     			fields:
     			{
-    				TITLE: "LLC Titov",
+    				TITLE: "IP Titov",
     				NAME: "Gleb",
-    				SECOND_NAME: "Egorovich",
+    				SECOND_NAME: "Yegorovich",
     				LAST_NAME: "Titov",
     				STATUS_ID: "NEW",
     				OPENED: "Y",
@@ -319,9 +319,9 @@ When changing a lead, you cannot explicitly set the indicator for a repeat lead 
             id: 1608,
             fields:
             {
-                TITLE: "LLC Titov",
+                TITLE: "IP Titov",
                 NAME: "Gleb",
-                SECOND_NAME: "Egorovich",
+                SECOND_NAME: "Yegorovich",
                 LAST_NAME: "Titov",
                 STATUS_ID: "NEW",
                 OPENED: "Y",
@@ -386,7 +386,7 @@ When changing a lead, you cannot explicitly set the indicator for a repeat lead 
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -410,14 +410,14 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../data-types.md) | Root element of the response, contains `true` in case of success ||
+[`boolean`](../../data-types.md) | The root element of the response, contains `true` in case of success ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
 
-> HTTP status: 40x, 50x Error
+> HTTP Status: 40x, 50x Error
 
 ```json
 {
@@ -430,8 +430,8 @@ HTTP status: **200**
 
 #|  
 || **Error Text** | **Description** ||
-|| `ID is not defined or invalid` | The parameter `id` is not a positive integer ||
-|| `Not found` | The lead with the provided `id` does not exist ||
+|| `ID is not defined or invalid` | The parameter `id` contains a non-integer number less than or equal to zero ||
+|| `Not found` | A lead with the provided `id` does not exist ||
 || `Access denied` | The user does not have permission to edit the lead ||
 |#
 

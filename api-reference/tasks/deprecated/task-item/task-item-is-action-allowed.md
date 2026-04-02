@@ -4,11 +4,11 @@
 >
 > Who can execute the method: any user
 
-The method returns `true` if the action is permitted. Otherwise, it will return `false`.
+The method returns `true` if the action is allowed. Otherwise, it will return `false`.
 
-{% note warning %}
+{% note warning "DEPRECATED" %}
 
-The method is deprecated and not supported. It is recommended to use the methods [tasks.task.*](../../index.md).
+The development of this method has been halted. Please use [tasks.task.getAccess](../../tasks-task-get-access.md).
 
 {% endnote %}
 
@@ -20,11 +20,11 @@ The method is deprecated and not supported. It is recommended to use the methods
 || **ACTIONID** | Identifier of the action being checked (see the constants of the method [task.item.getallowedactions](./task-item-get-allowed-actions.md)) ||
 |#
 
-It is mandatory to follow the order of parameters in the request. If this order is violated, the request will be executed with errors.
+It is essential to maintain the order of parameters in the request. If this order is violated, the request will be executed with errors.
 
 ## Code Examples
 
-{% include [Note on examples](../../../../_includes/examples.md) %}
+{% include [Examples Note](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -84,7 +84,7 @@ It is mandatory to follow the order of parameters in the request. If this order 
             ->getResult();
     
         echo 'Success: ' . print_r($result, true);
-        // Your logic for processing data
+        // Your data processing logic here
         processData($result);
     
     } catch (Throwable $e) {

@@ -1,22 +1,22 @@
-# Get Product Property Fields crm.product.property.fields
+# Retrieve Product Property Fields crm.product.property.fields
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-{% note warning "Method development has been halted" %}
+{% note warning "DEPRECATED" %}
 
-The method `crm.product.property.fields` is still operational, but there is a more relevant alternative [catalog.productProperty.getFields](../../../catalog/product-property/catalog-product-property-get-fields.md).
+The development of this method has been halted. Please use [catalog.productProperty.getFields](../../../catalog/product-property/catalog-product-property-get-fields.md).
 
 {% endnote %}
 
 The method `crm.product.property.fields` returns the description of fields for product properties.
 
-No parameters.
+No parameters required.
 
 ## Code Examples
 
-{% include [Note on examples](../../../../_includes/examples.md) %}
+{% include [Note on Examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 

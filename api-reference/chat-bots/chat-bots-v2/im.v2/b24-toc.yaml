@@ -1,0 +1,13 @@
+title: Working with Chat
+href: index.md
+items:
+  - name: Overview of Methods
+    href: index.md
+  - name: Events
+    include:
+      path: events/b24-toc.yaml
+      mode: link
+  - name: Files
+    include:
+      path: files/b24-toc.yaml
+      mode: link

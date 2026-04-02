@@ -1,16 +1,16 @@
-# Delete deal category crm.dealcategory.delete
+# Delete Deal Direction crm.dealcategory.delete
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-{% note warning %}
+{% note warning "DEPRECATED" %}
 
-The method is deprecated. It is recommended to use [`crm.category.delete`](../../universal/category/crm-category-delete.md)
+The development of this method has been halted. Please use [crm.category.delete](../../universal/category/crm-category-delete.md).
 
 {% endnote %}
 
-The method deletes a deal category.
+This method deletes a deal direction.
 
 ## Method Parameters
 
@@ -20,7 +20,7 @@ The method deletes a deal category.
 || **Name**
 `type` | **Description** ||
 || **id** 
-[`integer`](../../../data-types.md)| Identifier of the category ||
+[`integer`](../../../data-types.md)| Identifier of the direction ||
 |#
 
 ## Code Examples

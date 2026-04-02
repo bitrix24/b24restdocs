@@ -66,7 +66,7 @@ The structure of the object is described in detail [below](#messages-chat) ||
 || **name**
 [`string`](../../data-types.md) | User's first name ||
 || **picture**
-[`object`](../../data-types.md) | User's avatar in the object format with the `url` field, for example `{"url":"https://example.com/u42.png"}` ||
+[`object`](../../data-types.md) | User's avatar in the object format with a `url` field, for example `{"url":"https://example.com/u42.png"}` ||
 || **url**
 [`string`](../../data-types.md) | Link to the user's profile in the external system ||
 || **gender**
@@ -91,9 +91,9 @@ The structure of the object is described in detail [below](#messages-chat) ||
 || **text**
 [`string`](../../data-types.md) | New text of the message. Pass either `text` or `files`
 
-For acceptable formatting, refer to the article [Formatting](../../chats/messages/index.md) ||
+For acceptable formatting, refer to the article [Formatting](../../chats/messages/formatting.md) ||
 || **files**
-[`array`](../../data-types.md) | Array of files. Each file is passed as an array of the form `array('url' => 'File link', 'name' => 'File name')` ||
+[`array`](../../data-types.md) | Array of files. Each file is passed as an array like `array('url' => 'File link', 'name' => 'File name')` ||
 || **disable_crm**
 [`string`](../../data-types.md) | Disables the CRM tracker for the message. Acceptable value is `Y` ||
 || **user_id**
@@ -132,18 +132,18 @@ For acceptable formatting, refer to the article [Formatting](../../chats/message
           {
             "user": {
               "id": "ext-user-42",
-              "last_name": "Johnson",
-              "name": "James",
+              "last_name": "Ivanov",
+              "name": "Ivan",
               "picture": {"url": "https://example.com/u42.png"},
               "url": "https://example.com/users/42",
               "gender": "male",
-              "email": "james@example.com",
+              "email": "ivan@example.com",
               "phone": "+19990000000"
             },
             "message": {
               "id": "ext-msg-1001",
               "date": 1773266050,
-              "text": "Good afternoon, we have clarified the details"
+              "text": "Good afternoon, we clarified the details"
             },
             "chat": {
               "id": "channel-123",
@@ -167,18 +167,18 @@ For acceptable formatting, refer to the article [Formatting](../../chats/message
             {
                 user: {
                     id: 'ext-user-42',
-                    last_name: 'Johnson',
-                    name: 'James',
+                    last_name: 'Ivanov',
+                    name: 'Ivan',
                     picture: { url: 'https://example.com/u42.png' },
                     url: 'https://example.com/users/42',
                     gender: 'male',
-                    email: 'james@example.com',
+                    email: 'ivan@example.com',
                     phone: '+19990000000',
                 },
                 message: {
                     id: 'ext-msg-1001',
                     date: 1773266050,
-                    text: 'Good afternoon, we have clarified the details',
+                    text: 'Good afternoon, we clarified the details',
                 },
                 chat: {
                     id: 'channel-123',
@@ -205,18 +205,18 @@ For acceptable formatting, refer to the article [Formatting](../../chats/message
                 [
                     'user' => [
                           'id' => 'ext-user-42',
-                          'last_name' => 'Johnson',
-                          'name' => 'James',
+                          'last_name' => 'Ivanov',
+                          'name' => 'Ivan',
                           'picture' => ['url' => 'https://example.com/u42.png'],
                           'url' => 'https://example.com/users/42',
                           'gender' => 'male',
-                          'email' => 'james@example.com',
+                          'email' => 'ivan@example.com',
                           'phone' => '+19990000000',
                     ],
                     'message' => [
                           'id' => 'ext-msg-1001',
                           'date' => 1773266050,
-                          'text' => 'Good afternoon, we have clarified the details',
+                          'text' => 'Good afternoon, we clarified the details',
                     ],
                     'chat' => [
                           'id' => 'channel-123',
@@ -241,18 +241,18 @@ For acceptable formatting, refer to the article [Formatting](../../chats/message
                 {
                     user: {
                         id: 'ext-user-42',
-                        last_name: 'Johnson',
-                        name: 'James',
+                        last_name: 'Ivanov',
+                        name: 'Ivan',
                         picture: { url: 'https://example.com/u42.png' },
                         url: 'https://example.com/users/42',
                         gender: 'male',
-                        email: 'james@example.com',
+                        email: 'ivan@example.com',
                         phone: '+19990000000',
                     },
                     message: {
                         id: 'ext-msg-1001',
                         date: 1773266050,
-                        text: 'Good afternoon, we have clarified the details',
+                        text: 'Good afternoon, we clarified the details',
                     },
                     chat: {
                         id: 'channel-123',
@@ -280,18 +280,18 @@ For acceptable formatting, refer to the article [Formatting](../../chats/message
                 [
                     'user' => [
                         'id' => 'ext-user-42',
-                        'last_name' => 'Johnson',
-                        'name' => 'James',
+                        'last_name' => 'Ivanov',
+                        'name' => 'Ivan',
                         'picture' => ['url' => 'https://example.com/u42.png'],
                         'url' => 'https://example.com/users/42',
                         'gender' => 'male',
-                        'email' => 'jamesn@example.com',
+                        'email' => 'ivan@example.com',
                         'phone' => '+19990000000',
                     ],
                     'message' => [
                         'id' => 'ext-msg-1001',
                         'date' => 1773266050,
-                        'text' => 'Good afternoon, we have clarified the details',
+                        'text' => 'Good afternoon, we clarified the details',
                     ],
                     'chat' => [
                         'id' => 'channel-123',
@@ -321,7 +321,7 @@ HTTP Status: **200**
                     "message": {
                         "id": "ext-msg-1001",
                         "date": {},
-                        "text": "Good afternoon, we have clarified the details"
+                        "text": "Good afternoon, we clarified the details"
                     },
                     "chat": {
                         "id": "channel-123",
@@ -352,7 +352,7 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **SUCCESS**
-[`boolean`](../../data-types.md) | Returns `true` if the message was successfully updated ||
+[`boolean`](../../data-types.md) | Returns `true` if the message was successfully changed ||
 || **DATA**
 [`object`](../../data-types.md) | Data of the message processing. 
 
@@ -378,7 +378,7 @@ The structure of the element is described in detail [below](#result-item) ||
 || **Name**
 `type` | **Description** ||
 || **user**
-[`string`](../../data-types.md) | Internal ID of the user in Bitrix24 ||
+[`string`](../../data-types.md) | Internal user ID in Bitrix24 ||
 || **message**
 [`object`](../../data-types.md) | Data of the message after processing [(detailed description)](#result-item-message) ||
 || **chat**
@@ -397,7 +397,7 @@ The structure of the element is described in detail [below](#result-item) ||
 || **Name**
 `type` | **Description** ||
 || **id**
-[`string`](../../data-types.md) | External ID of the message ||
+[`string`](../../data-types.md) | External message ID ||
 || **date**
 [`object`](../../data-types.md) | Date of the message after processing ||
 || **text**
@@ -427,7 +427,7 @@ The structure of the element is described in detail [below](#result-item) ||
 || **skip_phone_validate**
 [`string`](../../data-types.md) | Indicates phone validation is disabled, returned with value `Y` ||
 || **disable_tracker**
-[`string`](../../data-types.md) | Indicates CRM tracker is disabled, returned with value `Y` ||
+[`string`](../../data-types.md) | Indicates the CRM tracker is disabled, returned with value `Y` ||
 |#
 
 ## Error Handling
@@ -447,12 +447,12 @@ HTTP Status: **400**, **403**
 
 #|
 || **Status** | **Code** | **Description** | **Value** ||
-|| `403` | `WRONG_AUTH_TYPE` | Current authorization type is denied for this method. Application context required | Method called outside of the application OAuth context ||
+|| `403` | `WRONG_AUTH_TYPE` | Current authorization type is denied for this method Application context required | Method called not in the context of an application OAuth ||
 || `400` | `ERROR_ARGUMENT` | Argument 'CONNECTOR' is null or empty | `CONNECTOR` not provided ||
 || `400` | `ERROR_ARGUMENT` | Argument 'LINE' is null or empty | `LINE` not provided ||
 || `400` | `ERROR_ARGUMENT` | Argument 'MESSAGES' is null or empty | `MESSAGES` not provided ||
 || `400` | `NOT_ACTIVE_LINE` | The line with this ID is inactive or does not exist | An inactive `LINE` was provided ||
-|| `400` | `IMCONNECTOR_NO_CORRECT_PROVIDER` | Unable to find a suitable provider for the connector | Failed to initialize the provider for the connector ||
+|| `400` | `IMCONNECTOR_NO_CORRECT_PROVIDER` | Failed to find a suitable provider for the connector | Unable to initialize provider for the connector ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

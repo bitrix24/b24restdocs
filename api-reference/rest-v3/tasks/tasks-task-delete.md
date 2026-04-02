@@ -1,6 +1,6 @@
 # Delete Task tasks.task.delete
 
-> Scope: [`task`](../../scopes/permissions.md)
+> Scope: [`tasks`](../../scopes/permissions.md)
 >
 > Who can execute the method: user with permission to delete a task
 
@@ -10,7 +10,7 @@ You can check the permission to delete a task using the [task access check metho
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Footnote on parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -18,16 +18,16 @@ You can check the permission to delete a task using the [task access check metho
 || **id***
 [`integer`](../../data-types.md) | Task identifier.
 
-The task identifier can be obtained when [creating a new task](./tasks-task-add.md) or using the old method of [getting the list of tasks](../../tasks/tasks-task-list.md) ||
+The task identifier can be obtained when [creating a new task](./tasks-task-add.md) or through the old method of [getting the list of tasks](../../tasks/tasks-task-list.md) ||
 |#
 
 ## Code Examples
 
-{% include [Note on examples](../../../_includes/examples.md) %}
+{% include [Footnote on examples](../../../_includes/examples.md) %}
 
 {% note info "" %}
 
-The new API call differs by adding the `/api/` parameter to the request:
+The call to the new API differs by the addition of the `/api/` parameter in the request:
 
 `https://{installation_address}/rest/api/{user_id}/{webhook_token}/tasks.task.delete`
 
@@ -57,7 +57,7 @@ The new API call differs by adding the `/api/` parameter to the request:
 
 - JS
 
-    The SDK does not yet support calls to the address /rest/api/. Use direct HTTP requests, for example, via curl or fetch.
+    The SDK does not yet support calls to the /rest/api/ address. Use direct HTTP requests, for example, via curl or fetch.
 
     ```javascript
     try
@@ -82,7 +82,7 @@ The new API call differs by adding the `/api/` parameter to the request:
 
 - PHP
 
-    The SDK does not yet support calls to the address /rest/api/. Use direct HTTP requests, for example, via curl or fetch.
+    The SDK does not yet support calls to the /rest/api/ address. Use direct HTTP requests, for example, via curl or fetch.
 
     ```php
     try {
@@ -109,7 +109,7 @@ The new API call differs by adding the `/api/` parameter to the request:
 
 - BX24.js
 
-    The SDK does not yet support calls to the address /rest/api/. Use direct HTTP requests, for example, via curl or fetch.
+    The SDK does not yet support calls to the /rest/api/ address. Use direct HTTP requests, for example, via curl or fetch.
 
     ```js
     BX24.callMethod(
@@ -126,7 +126,7 @@ The new API call differs by adding the `/api/` parameter to the request:
 
 - PHP CRest
 
-    The SDK does not yet support calls to the address /rest/api/. Use direct HTTP requests, for example, via curl or fetch.
+    The SDK does not yet support calls to the /rest/api/ address. Use direct HTTP requests, for example, via curl or fetch.
 
     ```php
     require_once('crest.php');

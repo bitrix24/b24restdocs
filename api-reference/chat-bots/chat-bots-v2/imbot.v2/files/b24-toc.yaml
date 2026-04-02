@@ -1,0 +1,9 @@
+title: Files  
+href: index.md  
+items:  
+  - name: Overview of Methods  
+    href: index.md  
+  - name: Upload a File to Chat  
+    href: file-upload.md  
+  - name: Get a Download Link for the File  
+    href: file-download.md  

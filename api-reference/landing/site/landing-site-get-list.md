@@ -60,7 +60,7 @@ The table below applies to `params.filter.TYPE` and `params.filter.=TYPE`.
 || `PAGE`, `STORE`, `SMN` | do not pass | Selection of sites and stores in the standard `scope` ||
 || `GROUP` | `GROUP` | Selection of group sites ||
 || `KNOWLEDGE` | `KNOWLEDGE` | Selection of knowledge bases ||
-|| `MAINPAGE` | `MAINPAGE` | Selection of the main page or vibe ||
+|| `MAINPAGE` | `MAINPAGE` | Selection of the Main Page ||
 |#
 
 ## Code Examples

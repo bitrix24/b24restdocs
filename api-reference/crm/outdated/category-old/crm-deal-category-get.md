@@ -1,16 +1,16 @@
-# Get Deal Category crm.dealcategory.get
+# Get Deal Direction crm.dealcategory.get
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-{% note warning %}
+{% note warning "DEPRECATED" %}
 
-The method is deprecated. It is recommended to use [`crm.category.get`](../../universal/category/crm-category-get.md)
+The development of this method has been halted. Please use [crm.category.get](../../universal/category/crm-category-get.md).
 
 {% endnote %}
 
-The method returns the deal category by its identifier.
+This method returns the deal direction by its identifier.
 
 ## Method Parameters
 
@@ -20,7 +20,7 @@ The method returns the deal category by its identifier.
 || **Name**
 `type` | **Description** ||
 || **id** 
-[`integer`](../../../data-types.md)| Identifier of the category ||
+[`integer`](../../../data-types.md)| Identifier of the direction ||
 |#
 
 ## Code Examples

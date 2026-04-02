@@ -1,20 +1,26 @@
-# Add a lead with files via a web form
+# Add Lead with Files via Web Form
 
 > Scope: [`crm`](../../../api-reference/scopes/permissions.md)
 >
-> Who can execute the method: users with the permission to create leads in CRM
+> Who can execute the method: users with permission to create leads in CRM
 
-You can place a form on the site to collect data from potential clients. When a client fills out the form and attaches files, their data will be sent to CRM, and you will be able to process the request.
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
+You can place a form on your website to collect data from potential clients. When a client fills out the form and attaches files, their data will be sent to the CRM, allowing you to process the request.
 
 Setting up the form consists of two steps.
 
-1. Place the form on an HTML page. It will send the data to the handler.
+1. Place the form on an HTML page. It will send data to the handler.
 
-2. Create a file to process the data. The handler will accept and prepare the data, and then create a lead using the method [crm.lead.add](../../../api-reference/crm/leads/crm-lead-add).
+2. Create a file to process the data. The handler will accept and prepare the data, then create a lead using the [crm.lead.add](../../../api-reference/crm/leads/crm-lead-add) method.
 
-## 1. Creating the web form
+## 1. Creating the Web Form
 
-In Bitrix24, you can automatically create a contact and a company from a lead. To make the form suitable for various cases, we will make it universal. For the contact, you need to specify the first name and last name, and for the company — the name. We will create a web form on the site page with the following fields:
+In Bitrix24, you can automatically create a contact and a company from a lead. To make the form suitable for various cases, we will make it universal. For a contact, you need to specify the first name and last name, and for a company, the name. We will create a web form on the website page with the following fields:
 
 -  `NAME` — first name, required,
 
@@ -22,15 +28,15 @@ In Bitrix24, you can automatically create a contact and a company from a lead. T
 
 -  `COMPANY_TITLE` — company name,
 
--  `EMAIL` — e-mail,
+-  `EMAIL` — email address,
 
--  `PHONE` — phone.
+-  `PHONE` — phone number.
 
-To allow the client to upload files, we will add the following fields to the form:
+To allow clients to upload files, we will add the following fields to the form:
 
--  `FILE` — for one file,
+-  `FILE` — for a single file,
 
--  `FILES` — for adding multiple files.
+-  `FILES` — for uploading multiple files.
 
 When submitted, the form sends data to the handler `form.php`.
 
@@ -46,7 +52,7 @@ When submitted, the form sends data to the handler `form.php`.
     <input type="text" name="EMAIL" placeholder="Email">
     <!-- Phone -->
     <input type="text" name="PHONE" placeholder="Phone">
-    <!-- Field for one file -->
+    <!-- Field for a single file -->
     <input type="file" name="FILE">
     <!-- Field for multiple files -->
     <input type="file" name="FILES" multiple>
@@ -73,7 +79,7 @@ When submitted, the form sends data to the handler `form.php`.
 	                alert(data.message);
 	            },
 	            error: function() {
-	                alert('Error while submitting the form');
+	                alert('Error submitting the form');
 	            }
 	        });
 	    });
@@ -81,17 +87,17 @@ When submitted, the form sends data to the handler `form.php`.
 </script>
 ```
 
-## 2. Creating the form handler
+## 2. Creating the Form Handler
 
-To process the values from the form fields and add a lead to CRM, we will create the handler `form.php`.
+To process the values from the form fields and add a lead to the CRM, we will create the handler `form.php`.
 
-### Preparing data from the form
+### Preparing Data from the Form
 
 To use the data from the form in the lead creation method, we need to prepare it.
 
-#### Cleaning from HTML tags
+#### Cleaning HTML Tags
 
-We will retrieve and clean the data from the form of HTML tags.
+We will retrieve and clean the data from the form.
 
 ```php
 // Retrieve and clean data from the form
@@ -102,7 +108,7 @@ $sPhone = htmlspecialchars($_POST["PHONE"]);
 $sEmail = htmlspecialchars($_POST["EMAIL"]);
 ```
 
-#### Preparing files
+#### Preparing Files
 
 We will prepare the files for upload to Bitrix24. For each file, we need to pass an array:
 
@@ -110,11 +116,11 @@ We will prepare the files for upload to Bitrix24. For each file, we need to pass
 
 -  a string with the file encoded in Base64.
 
-To encode the file, we will use the function [base64_encode](https://www.php.net/manual/en/function.base64-encode.php).
+To encode the file, we will use the [base64_encode](https://www.php.net/manual/en/function.base64-encode.php) function.
 
 {% note tip "Documentation" %}
 
--  [How to work with files](../../../api-reference/files/index.md)
+-  [How to Work with Files](../../../api-reference/files/index.md)
 
 {% endnote %}
 
@@ -137,7 +143,7 @@ if(!empty($_FILES['FILES']['tmp_name'])) {
     }
 }
 
-// Process the FILE field with one file
+// Process the FILE field with a single file
 if(!empty($_FILES['FILE']['tmp_name'])) {
     $arSingleFile = [
         'fileData' => [
@@ -148,17 +154,17 @@ if(!empty($_FILES['FILE']['tmp_name'])) {
 }
 ```
 
-#### Formatting phone and email
+#### Formatting Phone and Email
 
-The phone and email are stored in the system as an array of objects [crm_multifield](../../../api-reference/crm/data-types.md#crm_multifield), so they need to be formatted as an array.
+The system stores phone numbers and emails as an array of objects [crm_multifield](../../../api-reference/crm/data-types.md#crm_multifield), so they need to be formatted as an array.
 
-1. If the value exists, we add it as the first element `VALUE` in the array, and the second value is the type `VALUE_TYPE`, for example:
+1. If a value exists, we add it as the first element `VALUE` in the array, and the second value indicates the type `VALUE_TYPE`, for example:
 
    -  `WORK` — for phone,
 
    -  `HOME` — for email.
 
-2. If the value does not exist, we pass an empty array.
+2. If there is no value, we pass an empty array.
 
 ```php
 // Format phone and email for Bitrix24 in crm_multifield format
@@ -166,22 +172,22 @@ $arPhone = (!empty($sPhone)) ? array(array('VALUE' => $sPhone, 'VALUE_TYPE' => '
 $arEmail = (!empty($sEmail)) ? array(array('VALUE' => $sEmail, 'VALUE_TYPE' => 'HOME')) : array();
 ```
 
-#### Forming the lead title
+#### Forming the Lead Title
 
 We will form the lead title from the first name and last name. For companies, we will add the company name to the title.
 
 ```php
 // Form the lead title from the first name and last name
-$sTitle = 'From the site: ' . trim($sName . ' ' . $sLastName);
-// If there is a company name — add it with a dash after the first name and last name
+$sTitle = 'From website: ' . trim($sName . ' ' . $sLastName);
+// If there is a company name, add it after the first name and last name with a dash
 if (!empty($sCompanyTitle)) {
     $sTitle .= ' — ' . $sCompanyTitle;
 }
 ```
 
-### Creating the lead
+### Creating the Lead
 
-To create a lead, we will use the method [crm.lead.add](../../../api-reference/crm/leads/crm-lead-add.md). In the `fields` object, we will pass the fields:
+To create a lead, we will use the [crm.lead.add](../../../api-reference/crm/leads/crm-lead-add.md) method. In the `fields` object, we will pass the fields:
 
 -  `TITLE` — lead title,
 
@@ -193,17 +199,17 @@ To create a lead, we will use the method [crm.lead.add](../../../api-reference/c
 
 -  `PHONE` — phone number,
 
--  `EMAIL` — e-mail,
+-  `EMAIL` — email address,
 
 -  `UF_CRM_LEAD_FILES` — custom field for adding multiple files,
 
--  `UF_CRM_LEAD_FILE` — custom field for a file.
+-  `UF_CRM_LEAD_FILE` — custom field for a single file.
 
-Custom fields `UF_CRM_*` need to be created in Bitrix24 before creating the lead. Add them on the account manually or using the method [crm.lead.userfield.add](../../../api-reference/crm/leads/userfield/crm-lead-userfield-add.md). In the example, replace `UF_CRM_LEAD_FILES` and `UF_CRM_LEAD_FILE` with your field names.
+Custom fields `UF_CRM_*` need to be created in Bitrix24 before creating the lead. Add them on the account manually or using the [crm.lead.userfield.add](../../../api-reference/crm/leads/userfield/crm-lead-userfield-add.md) method. In the example, replace `UF_CRM_LEAD_FILES` and `UF_CRM_LEAD_FILE` with your field names.
 
 {% note warning "" %}
 
-Check which required fields are set for leads in your Bitrix24. All required fields must be passed to the method [crm.lead.add](../../../api-reference/crm/leads/crm-lead-add.md).
+Check which required fields are configured for leads in your Bitrix24. All required fields must be passed to the [crm.lead.add](../../../api-reference/crm/leads/crm-lead-add.md) method.
 
 {% endnote %}
 
@@ -219,13 +225,13 @@ CRest::call(
             'PHONE' => $arPhone, // Phone
             'EMAIL' => $arEmail, // Email
             'UF_CRM_LEAD_FILES' => $arFiles, // Field for adding multiple files
-            'UF_CRM_LEAD_FILE' => $arSingleFile // Field for a file
+            'UF_CRM_LEAD_FILE' => $arSingleFile // Field for a single file
         ]
     ]
 );
 ```
 
-As a result, we will get the identifier of the new lead `5`.
+As a result, we will receive the identifier of the new lead `5`.
 
 ```json
 {
@@ -233,7 +239,7 @@ As a result, we will get the identifier of the new lead `5`.
 }
 ```
 
-### Full example of the handler code
+### Complete Example of the Handler Code
 
 ```php
 <?php
@@ -264,7 +270,7 @@ if(!empty($_FILES['FILES']['tmp_name'])) {
     }
 }
 
-// Process the FILE field with one file
+// Process the FILE field with a single file
 if(!empty($_FILES['FILE']['tmp_name'])) {
     $arSingleFile = [
         'fileData' => [
@@ -279,8 +285,8 @@ $arPhone = (!empty($sPhone)) ? array(array('VALUE' => $sPhone, 'VALUE_TYPE' => '
 $arEmail = (!empty($sEmail)) ? array(array('VALUE' => $sEmail, 'VALUE_TYPE' => 'HOME')) : array();
 
 // Form the lead title from the first name and last name
-$sTitle = 'From the site: ' . trim($sName . ' ' . $sLastName);
-// If there is a company name — add it with a dash after the first name and last name
+$sTitle = 'From website: ' . trim($sName . ' ' . $sLastName);
+// If there is a company name, add it after the first name and last name with a dash
 if (!empty($sCompanyTitle)) {
     $sTitle .= ' — ' . $sCompanyTitle;
 }
@@ -297,7 +303,7 @@ $result = CRest::call(
             'PHONE' => $arPhone, // Phone
             'EMAIL' => $arEmail, // Email
             'UF_CRM_LEAD_FILES' => $arFiles, // Field for adding multiple files
-            'UF_CRM_LEAD_FILE' => $arSingleFile // Field for a file
+            'UF_CRM_LEAD_FILE' => $arSingleFile // Field for a single file
         ]
     ]
 );

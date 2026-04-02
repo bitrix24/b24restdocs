@@ -1,10 +1,16 @@
-# Update the Attachment Flag of the Record rpa.timeline.updateIsFixed
+# Update the Attachment Flag of rpa.timeline.updateIsFixed
 
 > Scope: [`rpa`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-This method updates the attachment flag of the record.
+{% note warning "DEPRECATED" %}
+
+The development of this method has been halted. Please use [Smart scripts](../../../crm/universal/user-defined-object-types/index.md) as an alternative to this functionality.
+
+{% endnote %}
+
+This method updates the attachment flag of a record.
 
 ## Method Parameters
 
@@ -21,7 +27,7 @@ This method updates the attachment flag of the record.
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {

@@ -4,12 +4,18 @@
 >
 > Who can execute the method: users with administrative access to the CRM section
 
-An example of using Sales Intelligence when creating a deal and contact. First, create a PHP page with a feedback web form: Full Name, Phone. Place the example code on the page.
+{% note tip "" %}
 
-What happens during the execution of the code?
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
 
-1. The standard JS code from Bitrix24 Sales Intelligence is connected.
-2. After filling out the form, in addition to the form fields, the code for Sales Intelligence `b24Tracker.guest.getTrace()` is passed in a hidden field.
+{% endnote %}
+
+This example demonstrates the use of Sales Intelligence when creating a deal and a contact. First, create a PHP page with a feedback web form: Full Name, Phone. Place the example code on the page.
+
+What happens during code execution?
+
+1. The standard JS code from Bitrix24's Sales Intelligence is connected.
+2. After filling out the form, in addition to the form fields, a code for Sales Intelligence `b24Tracker.guest.getTrace()` is passed in a hidden field.
 3. A deal and a related contact are then created.
 4. Finally, an analytics "trace" is registered for these objects, passing their types and identifiers in the following format:
 
@@ -17,7 +23,7 @@ What happens during the execution of the code?
 /rest/crm.tracking.trace.add?ENTITIES[0][TYPE]=CONTACT&ENTITIES[0][ID]=3215&ENTITIES[1][TYPE]=LEAD&ENTITIES[1][ID]=1&TRACE=…
 ```
 
-The Sales Intelligence script is installed on your site before the closing `</body>` tag on all pages of the site, including the page with the form.
+The Sales Intelligence script should be installed on your website before the closing `</body>` tag on all pages, including the page with the form.
 
 {% list tabs %}
 
@@ -140,7 +146,7 @@ The Sales Intelligence script is installed on your site before the closing `</bo
 
     {% note info %}
 
-    To use the examples in PHP, configure the *CRest* class and include the **crest.php** file in the files where this class is used. [More details](../../../first-steps/how-to-use-examples.md)
+    To use the PHP examples, configure the *CRest* class and include the **crest.php** file in the files where this class is used. [Learn more](../../../first-steps/how-to-use-examples.md)
 
     {% endnote %}
 

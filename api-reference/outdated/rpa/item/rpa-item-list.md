@@ -1,10 +1,16 @@
-# Get an Array of Process Items rpa.item.list
+# Retrieve an Array of Process Elements rpa.item.list
 
 > Scope: [`rpa`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-The method retrieves a list of process items with the identifier `typeId`.
+{% note warning "DEPRECATED" %}
+
+The development of this method has been halted. Please use [Smart Processes](../../../crm/universal/user-defined-object-types/index.md) as an alternative to this functionality.
+
+{% endnote %}
+
+This method retrieves a list of process elements with the identifier `typeId`.
 
 ## Method Parameters
 
@@ -18,7 +24,7 @@ The method retrieves a list of process items with the identifier `typeId`.
 || **filter** 
 [`number`](../../../data-types.md)  | List for filtering.
 
-Keys for filtering by custom fields should be in `UPPER_CASE`, while others should be in `camelCase`. Examples of filters [below](#filters) ||
+Keys for filtering by custom fields should be in `UPPER_CASE`, while others should be in `camelCase`. Examples of filters are provided [below](#filters) ||
 || **start** 
 [`number`](../../../data-types.md)  | Offset for pagination. ||
 |#
@@ -27,7 +33,7 @@ Keys for filtering by custom fields should be in `UPPER_CASE`, while others shou
 
 HTTP Status: **200**
 
-The response will only include the main fields of the items, without data about tasks and users of the items:
+The response will contain only the main fields of the elements, without data about tasks and users of the elements:
 
 ```json
 {
@@ -40,7 +46,7 @@ The response will only include the main fields of the items, without data about 
 
 ## Filter Examples {#filters}
 
-1. Find items that have incomplete tasks for the current user
+1. Find elements that have uncompleted tasks for the current user
 
     ```json
     {
@@ -50,9 +56,9 @@ The response will only include the main fields of the items, without data about 
     }
     ```
 
-    To find items that do not have any tasks for the user, you need to pass the value `no_tasks`.
+    To find elements that do not have tasks assigned to the user, pass the value `no_tasks`.
 
-2. Find items updated by the user with identifier `4`
+2. Find elements updated by the user with the identifier `4`
 
     ```json
     {
@@ -62,7 +68,7 @@ The response will only include the main fields of the items, without data about 
     }
     ```
 
-3. Find items updated or moved by the user with identifier `4`
+3. Find elements updated or moved by the user with the identifier `4`
 
     ```json
     {
@@ -78,17 +84,17 @@ The response will only include the main fields of the items, without data about 
     }
     ```
 
-4. Find items that have a filled custom field with code `UF_RPA_1_STRING`
+4. Find elements where the custom field with the code `UF_RPA_1_STRING` is filled
 
     ```json
     {
         "filter": {
-            "!=UF_RPA_1_STRING": "",
+            "!=UF_RPA_1_STRING": ""
         }
     }
     ```
 
-5. Find items that were created, modified, and moved between March 19 and March 22
+5. Find elements that were created, modified, and moved between March 19 and March 22
 
     ```json
     {
@@ -103,7 +109,7 @@ The response will only include the main fields of the items, without data about 
     }
     ```
 
-6. Find items that were either created, modified, or moved between March 19 and March 22
+6. Find elements that were either created, modified, or moved between March 19 and March 22
 
     ```json
     {

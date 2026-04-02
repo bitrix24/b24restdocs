@@ -1,0 +1,15 @@
+title: Teams
+href: index.md
+items:
+  - name: Overview of Methods
+    href: index.md
+  - name: Register a Team
+    href: command-register.md
+  - name: Update a Team
+    href: command-update.md
+  - name: Get a List of Teams
+    href: command-list.md
+  - name: Unregister a Team
+    href: command-unregister.md
+  - name: Respond to a Team
+    href: command-answer.md

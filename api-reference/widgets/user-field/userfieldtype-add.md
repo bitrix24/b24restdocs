@@ -1,12 +1,12 @@
-# Register a new user field type userfieldtype.add
+# Register a New User Field Type userfieldtype.add
 
-> Scope: [`depending on the embedding location`](../../scopes/permissions.md)
+> Scope: [`depending on the placement`](../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-The `userfieldtype.add` method registers a new type of custom fields. After registering the type, create a custom field using the [userfieldconfig.add](../../crm/universal/userfieldconfig/userfieldconfig/userfieldconfig-add.md) method.
+The method `userfieldtype.add` registers a new user field type. After registering the type, create a user field using the method [userfieldconfig.add](../../crm/universal/userfieldconfig/userfieldconfig/userfieldconfig-add.md).
 
-When opening a card with a custom type field, an array `PLACEMENT_OPTIONS` containing data about the field and entity is passed to the application handler.
+When opening a card with a user type field, an array `PLACEMENT_OPTIONS` containing data about the field and entity is passed to the application handler.
 
 ```json
 {
@@ -36,18 +36,19 @@ When opening a card with a custom type field, an array `PLACEMENT_OPTIONS` conta
 || **USER_TYPE_ID***
 [`string`](../../data-types.md) | String code for the type | 
 - a-z0-9
-- must be unique ||
+- must be unique
+- the final code is formed as `rest_<APP_ID>_<USER_TYPE_ID>` and cannot exceed 50 characters, so the length of `USER_TYPE_ID` must be no more than `50 - length("rest_<APP_ID>_")` ||
 || **HANDLER***
 [`URL`](../../data-types.md) | Address of the user type handler | 
 - in the same domain as the main application address
 - must be unique ||
 || **TITLE**
-[`string`](../../data-types.md) | Text name of the type. Will be displayed in the administrative interface for user field settings | ||
+[`string`](../../data-types.md) | Text title of the type. Will be displayed in the administrative interface for user field settings | ||
 || **DESCRIPTION**
 [`string`](../../data-types.md) | Text description of the type. Will be displayed in the administrative interface for user field settings | ||
 || **OPTIONS**
 [`array`](../../data-types.md) | Additional settings. Currently, one key is available: `height` — specifies the height of the user field in pixels. Any positive value will apply.
-Default is `0`. If `0` is specified, the standard height for displaying this embedding will be used | ||
+Default is `0`. If `0` is specified, the standard height for displaying this placement will be used | ||
 |#
 
 ## Code Examples
@@ -206,7 +207,7 @@ Default is `0`. If `0` is specified, the standard height for displaying this emb
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -230,12 +231,12 @@ HTTP status: **200**
 || **result**
 [`boolean`](../../data-types.md) | Result of registering the new user field type ||
 || **time**
-[`time`](../../data-types.md) | Information about the execution time of the request ||
+[`time`](../../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {
@@ -262,3 +263,5 @@ HTTP status: **400**
 - [{#T}](./userfieldtype-update.md)
 - [{#T}](./userfieldtype-list.md)
 - [{#T}](./userfieldtype-delete.md)
+- [{#T}](../../crm/universal/userfieldconfig/userfieldconfig/userfieldconfig-add.md)
+- [{#T}](../../crm/universal/user-defined-fields/userfield-type.md)

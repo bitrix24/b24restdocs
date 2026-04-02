@@ -1,39 +1,37 @@
-# Get a list of SMS providers or message providers messageservice.sender.list
-
-{% note warning "We are still updating this page" %}
-
-Some data may be missing here — we will fill it in shortly.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- parameters, types, and required parameters are not specified
-- no success response
-- no error response
-- No examples in other languages
-
-{% endnote %}
-
-{% endif %}
+# Get a List of SMS Providers or Message Providers messageservice.sender.list
 
 > Scope: [`messageservice`](../scopes/permissions.md)
 >
 > Who can execute the method: administrator
 
-The method returns a list of message providers registered by the current application (or the same incoming webhook).
+The method `messageservice.sender.list` returns a list of provider codes registered with the current application.
 
-## Example
+This method works only in the context of the [application](../../settings/app-installation/index.md).
+
+## Method Parameters
+
+No parameters.
+
+## Code Examples
+
+{% include [Examples Note](../../_includes/examples.md) %}
 
 {% list tabs %}
 
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/messageservice.sender.list
+    ```
+
 - JS
 
-
     ```js
-    // callListMethod: Retrieves all data at once. Use only for small selections (< 1000 items) due to high memory usage.
+    // callListMethod: Retrieves all data at once. Use only for small datasets (< 1000 items) due to high memory load.
     
     try {
       const response = await $b24.callListMethod(
@@ -47,7 +45,7 @@ The method returns a list of message providers registered by the current applica
       console.error('Request failed', error)
     }
     
-    // fetchListMethod: Retrieves data in parts using an iterator. Use it for large data volumes to optimize memory usage.
+    // fetchListMethod: Retrieves data in chunks using an iterator. Use for large datasets for efficient memory consumption.
     
     try {
       const generator = $b24.fetchListMethod('messageservice.sender.list', {}, 'ID')
@@ -58,7 +56,7 @@ The method returns a list of message providers registered by the current applica
       console.error('Request failed', error)
     }
     
-    // callMethod: Manually controls pagination through the start parameter. Use it for precise control of request batches. For large datasets, it is less efficient than fetchListMethod.
+    // callMethod: Manual control of pagination through the start parameter. Use for precise control over request batches. Less efficient for large data than fetchListMethod.
     
     try {
       const response = await $b24.callMethod('messageservice.sender.list', {}, 0)
@@ -71,7 +69,6 @@ The method returns a list of message providers registered by the current applica
 
 - PHP
 
-
     ```php
     try {
         $response = $b24Service
@@ -80,20 +77,15 @@ The method returns a list of message providers registered by the current applica
                 'messageservice.sender.list',
                 []
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
-        if ($result->error()) {
-            echo 'Error: ' . $result->error();
-        } else {
-            echo 'Success: ' . implode(', ', $result->data());
-        }
-    
+
+        print_r($result);
     } catch (Throwable $e) {
         error_log($e->getMessage());
-        echo 'Error calling messageservice.sender.list: ' . $e->getMessage();
+        echo 'Error listing senders: ' . $e->getMessage();
     }
     ```
 
@@ -105,15 +97,97 @@ The method returns a list of message providers registered by the current applica
         {},
         function(result)
         {
-            if(result.error())
-                alert("Error: " + result.error());
+            if (result.error())
+            {
+                console.error(result.error(), result.error_description());
+            }
             else
-                alert("Success: " + result.data().join(', '));
+            {
+                console.log(result.data());
+            }
         }
     );
     ```
 
+- PHP CRest
+
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'messageservice.sender.list',
+        []
+    );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
+    ```
+
 {% endlist %}
 
-{% include [Note on examples](../../_includes/examples.md) %}
+## Response Handling
 
+HTTP Status: **200**
+
+```json
+{
+    "result": [
+        "provider1",
+        "provider2"
+    ],
+    "time": {
+        "start": 1742895600,
+        "finish": 1742895600.845505,
+        "duration": 0.845505952835083,
+        "processing": 0,
+        "date_start": "2025-03-25T10:00:00+02:00",
+        "date_finish": "2025-03-25T10:00:00+02:00",
+        "operating_reset_at": 1742896200,
+        "operating": 0
+    }
+}
+```
+### Returned Data
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`array`](../data-types.md) | An array of provider codes registered with the current application.
+
+An empty array indicates that the current application has no registered providers ||
+|| **time**
+[`time`](../data-types.md#time) | Information about the request execution time ||
+|#
+
+## Error Handling
+
+HTTP Status: **400**, **403**
+
+```json
+{
+    "error": "ACCESS_DENIED",
+    "error_description": "Access denied!"
+}
+```
+
+{% include notitle [Error Handling](../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+#|
+|| **Code** | **Description** | **Value** ||
+|| `ACCESS_DENIED` | `Application context required` | Method called outside the application context ||
+|| `ACCESS_DENIED` | `Access denied!` | Method was not executed by an administrator ||
+|#
+
+{% include [System Errors](../../_includes/system-errors.md) %}
+
+## Continue Learning
+
+- [{#T}](./messageservice-sender-add.md)
+- [{#T}](./messageservice-sender-update.md)
+- [{#T}](./messageservice-sender-list.md)
+- [{#T}](./messageservice-sender-delete.md)
+- [{#T}](./messageservice-message-status-update.md)

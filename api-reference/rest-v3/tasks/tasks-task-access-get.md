@@ -1,6 +1,6 @@
 # Check Access Permissions tasks.task.access.get
 
-> Scope: [`task`](../../scopes/permissions.md)
+> Scope: [`tasks`](../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
@@ -8,7 +8,7 @@ The method `tasks.task.access.get` checks the available actions a user can perfo
 
 ## Method Parameters
 
-{% include [Footnote about parameters](../../../_includes/required.md) %}
+{% include [Footnote on parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -21,11 +21,11 @@ The task identifier can be obtained when [creating a new task](./tasks-task-add.
 
 ## Code Examples
 
-{% include [Footnote about examples](../../../_includes/examples.md) %}
+{% include [Footnote on examples](../../../_includes/examples.md) %}
 
 {% note info "" %}
 
-The call to the new API differs by adding the `/api/` parameter in the request:
+The call to the new API differs by the addition of the `/api/` parameter in the request:
 
 `https://{installation_address}/rest/api/{user_id}/{webhook_token}/tasks.task.access.get`
 
@@ -215,7 +215,7 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | The root element of the response. Contains an object with a description of the available actions for the current user ||
+[`object`](../../data-types.md) | The root element of the response. Contains an object describing the available actions for the current user ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -231,7 +231,7 @@ HTTP Status: **400**
         "message": "Error during request object validation",
         "validation": [
             {
-                "message": "Required field `id` is not specified",
+                "message": "Required field `id` is missing",
                 "field": "id"
             }
         ]
@@ -249,8 +249,8 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION`
 
 #|
 || **Field** | **Error Description** | **How to Fix** ||
-|| `id` | Required field `id` is not specified | Add `id` to the request body ||
-|| `id` | Field `id` requires data type `int` for this request | Ensure that the value is a number, not a string ||
+|| `id` | Required field `id` is missing | Add `id` to the request body ||
+|| `id` | Field `id` requires data type `int` for this request | Ensure the value is a number, not a string ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

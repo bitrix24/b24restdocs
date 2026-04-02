@@ -1,16 +1,16 @@
-# Get Company Field Descriptions crm.company.fields
+# Get Company Fields Description crm.company.fields
 
 > Scope: [`crm`](../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-{% note warning "Method Development Stopped" %}
+{% note warning "DEPRECATED" %}
 
-The method `crm.company.fields` continues to function, but there is a more relevant alternative [crm.item.fields](../universal/crm-item-fields.md).
+The development of this method has been halted. Please use [crm.item.fields](../universal/crm-item-fields.md).
 
 {% endnote %}
 
-The method `crm.company.fields` returns descriptions of company fields, including [custom fields](./userfields/index.md).
+The method `crm.company.fields` returns the description of company fields, including [custom fields](./userfields/index.md).
 
 ## Method Parameters
 
@@ -47,24 +47,24 @@ No parameters.
     ```js
     try
     {
-    	const response = await $b24.callMethod(
-    		'crm.company.fields',
-    		{}
-    	);
-    	
-    	const result = response.getData().result;
-    	if(result.error())
-    	{
-    		console.error(result.error());
-    	}
-    	else
-    	{
-    		console.dir(result);
-    	}
+        const response = await $b24.callMethod(
+            'crm.company.fields',
+            {}
+        );
+        
+        const result = response.getData().result;
+        if(result.error())
+        {
+            console.error(result.error());
+        }
+        else
+        {
+            console.dir(result);
+        }
     }
     catch(error)
     {
-    	console.error('Error:', error);
+        console.error('Error:', error);
     }
     ```
 
@@ -451,7 +451,7 @@ HTTP Status: **200**
             "isImmutable": false,
             "isMultiple": false,
             "isDynamic": false,
-            "title": "Responsible"
+            "title": "Responsible Person"
         },
         "CREATED_BY_ID": {
             "type": "user",
@@ -526,7 +526,7 @@ HTTP Status: **200**
             "isImmutable": false,
             "isMultiple": false,
             "isDynamic": false,
-            "title": "Element ID in External Source"
+            "title": "Identifier in External Source"
         },
         "ORIGIN_VERSION": {
             "type": "string",
@@ -562,7 +562,7 @@ HTTP Status: **200**
             "isImmutable": false,
             "isMultiple": false,
             "isDynamic": false,
-            "title": "Campaign Designation"
+            "title": "Campaign Identifier"
         },
         "UTM_CONTENT": {
             "type": "string",
@@ -580,7 +580,7 @@ HTTP Status: **200**
             "isImmutable": false,
             "isMultiple": false,
             "isDynamic": false,
-            "title": "Campaign Search Condition"
+            "title": "Campaign Search Term"
         },
         "PARENT_ID_156": {
             "type": "crm_entity",
@@ -601,7 +601,7 @@ HTTP Status: **200**
             "isImmutable": false,
             "isMultiple": false,
             "isDynamic": false,
-            "title": "Last Activity"
+            "title": "Last Activity Time"
         },
         "LAST_ACTIVITY_BY": {
             "type": "user",
@@ -610,7 +610,7 @@ HTTP Status: **200**
             "isImmutable": false,
             "isMultiple": false,
             "isDynamic": false,
-            "title": "Last Activity Author in Timeline"
+            "title": "Last Activity Author"
         },
         "LAST_COMMUNICATION_TIME": {
             "type": "string",
@@ -726,7 +726,7 @@ HTTP Status: **200**
 || **TITLE**
 [`string`](../../data-types.md) | Company Name ||
 || **COMPANY_TYPE**
-[`crm_status`](../../data-types.md) | Company Type. Values can be obtained using the method [crm.status.list](../status/crm-status-list.md) with a filter by `ENTITY_ID=COMPANY_TYPE` ||
+[`crm_status`](../../data-types.md) | Company Type. Values can be obtained using the method [crm.status.list](../status/crm-status-list.md) with a filter for `ENTITY_ID=COMPANY_TYPE` ||
 || **LOGO**
 [`file`](../../data-types.md) | Logo ||
 || **ADDRESS**
@@ -754,9 +754,9 @@ Deprecated address fields:
 || **BANKING_DETAILS**
 [`string`](../../data-types.md) | Banking Details ||
 || **INDUSTRY**
-[`crm_status`](../../data-types.md) | Industry. Values can be obtained using the method [crm.status.list](../status/crm-status-list.md) with a filter by `ENTITY_ID=INDUSTRY` ||
+[`crm_status`](../../data-types.md) | Industry. Values can be obtained using the method [crm.status.list](../status/crm-status-list.md) with a filter for `ENTITY_ID=INDUSTRY` ||
 || **EMPLOYEES**
-[`crm_status`](../../data-types.md) | Number of Employees. Values can be obtained using the method [crm.status.list](../status/crm-status-list.md) with a filter by `ENTITY_ID=EMPLOYEES` ||
+[`crm_status`](../../data-types.md) | Number of Employees. Values can be obtained using the method [crm.status.list](../status/crm-status-list.md) with a filter for `ENTITY_ID=EMPLOYEES` ||
 || **CURRENCY_ID**
 [`crm_currency`](../../data-types.md) | Currency ||
 || **REVENUE**
@@ -772,9 +772,9 @@ Deprecated address fields:
 || **HAS_IMOL**
 [`char`](../../data-types.md) | Open Line Set ||
 || **IS_MY_COMPANY**
-[`char`](../../data-types.md) | My Company Indicator. Possible values: `Y` or `N` ||
+[`char`](../../data-types.md) | My Company Flag. Possible values: `Y` or `N` ||
 || **ASSIGNED_BY_ID**
-[`user`](../../data-types.md) | Responsible ||
+[`user`](../../data-types.md) | Responsible Person ||
 || **CREATED_BY_ID**
 [`user`](../../data-types.md) | Created By ||
 || **MODIFY_BY_ID**
@@ -786,28 +786,28 @@ Deprecated address fields:
 || **CONTACT_ID**
 [`crm_contact`](../../data-types.md) | Contact. Multiple ||
 || **LEAD_ID**
-[`crm_lead`](../../data-types.md) | Lead ID associated with the company ||
+[`crm_lead`](../../data-types.md) | Identifier of the lead associated with the company ||
 || **ORIGINATOR_ID**
-[`string`](../../data-types.md) | Data Source Identifier. Used only for linking to an external source ||
+[`string`](../../data-types.md) | Identifier of the data source. Used only for linking to an external source ||
 || **ORIGIN_ID**
-[`string`](../../data-types.md) | Element ID in the data source. Used only for linking to an external source ||
+[`string`](../../data-types.md) | Identifier of the item in the data source. Used only for linking to an external source ||
 || **ORIGIN_VERSION**
-[`string`](../../data-types.md) | Original Version. Used to protect data from accidental overwriting by an external system ||
+[`string`](../../data-types.md) | Original version. Used to protect data from accidental overwriting by an external system ||
 || **UTM_SOURCE**
-[`string`](../../data-types.md) | Advertising System. Google Ads, Facebook Ads, etc. ||
+[`string`](../../data-types.md) | Advertising system. Google Ads, Facebook Ads, etc. ||
 || **UTM_MEDIUM**
 [`string`](../../data-types.md) | Traffic Type. Possible values:
 - `CPC` — ads
 - `CPM` — banners ||
 || **UTM_CAMPAIGN**
-[`string`](../../data-types.md) | Campaign Designation ||
+[`string`](../../data-types.md) | Campaign Identifier ||
 || **UTM_CONTENT**
 [`string`](../../data-types.md) | Campaign Content. For example, for contextual ads ||
 || **UTM_TERM**
-[`string`](../../data-types.md) | Campaign Search Condition. For example, keywords for contextual advertising ||
-||**PARENT_ID_...** | Relationship Fields.
+[`string`](../../data-types.md) | Campaign Search Term. For example, keywords for contextual advertising ||
+||**PARENT_ID_...** | Relationship fields.
 
-If there are SPAs related to companies in the account, there is a field for each such SPA that stores the relationship between that SPA and the company. The field itself stores the identifier of the element of that SPA ||
+If there are smart processes related to companies on the account, there is a field for each such smart process that stores the relationship between this smart process and the company. The field itself stores the identifier of the item of such a smart process ||
 || **LAST_ACTIVITY_TIME**
 [`datetime`](../../data-types.md) | Last Activity ||
 || **LAST_ACTIVITY_BY**
@@ -824,9 +824,9 @@ If there are SPAs related to companies in the account, there is a field for each
 [`crm_multifield`](../../data-types.md) | Messenger. Multiple ||
 || **LINK**
 [`crm_multifield`](../../data-types.md) | LINK. Multiple ||
-||**UF_...**  | Custom Fields. For example, `UF_CRM_25534736`.
+||**UF_...**  | Custom fields. For example, `UF_CRM_25534736`.
 
-Depending on the account settings, companies may have a set of custom fields of specific types.
+Depending on the portal settings, companies may have a set of custom fields of specific types.
 
 You can add a custom field to a company using the method [crm.company.userfield.add](./userfields/crm-company-userfield-add.md) ||
 || **time**
@@ -850,7 +850,7 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `-` | `Access denied` | The user does not have permission for "Read" companies ||
+|| `-` | `Access denied` | The user does not have permission to "Read" companies ||
 |#
 
 {% include [system errors](./../../../_includes/system-errors.md) %}

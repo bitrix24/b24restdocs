@@ -4,22 +4,28 @@
 >
 > Who can execute the method: any user
 
+{% note warning "DEPRECATED" %}
+
+The development of this method has been halted. Use [Smart scripts](../../../crm/universal/user-defined-object-types/index.md) as an alternative to this functionality.
+
+{% endnote %}
+
 This method retrieves information about a process by its `id`.
 
 ## Method Parameters
 
-{% include [Footnote on parameters](../../../../_includes/required.md) %}
+{% include [Parameter Note](../../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **id*** 
-[`number`](../../../data-types.md) | Identifier of the process ||
+[`number`](../../../data-types.md) | Process identifier ||
 |#
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -47,12 +53,12 @@ HTTP status: **200**
 
 #|
 || **Name** | **Description** ||
-|| **id** | Identifier of the process ||
-|| **title** | Name of the process ||
+|| **id** | Process identifier ||
+|| **title** | Process name ||
 || **image** | Icon identifier from the list ||
 || **createdBy** | Identifier of the user who created the process ||
 || **settings** | Set of process settings ||
-|| **permissions** | Set of access permission settings for this process ||
+|| **permissions** | Set of access permissions for this process ||
 |#
 
 ## Continue Exploring

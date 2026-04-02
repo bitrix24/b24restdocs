@@ -4,19 +4,19 @@
 >
 > Who can execute the method: any user
 
-{% note warning %}
+{% note warning "DEPRECATED" %}
 
-The method is deprecated. It is recommended to use [`Universal methods for invoices`](../../universal/invoice.md)
+Development of this method has been halted. Please use [Universal Methods for Invoices](../../universal/invoice.md).
 
 {% endnote %}
 
-The method returns a description of the fields for payment methods.
+This method returns a description of the fields for payment methods.
 
-No parameters.
+No parameters required.
 
 ## Code Examples
 
-{% include [Note on examples](../../../../_includes/examples.md) %}
+{% include [Note on Examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -28,7 +28,7 @@ No parameters.
     -H "Accept: application/json" \
     -d '{}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.paysystem.fields
-   ```
+    ```
 
 - cURL (OAuth)
 
@@ -45,17 +45,17 @@ No parameters.
     ```js
     try
     {
-    	const response = await $b24.callMethod(
-    		"crm.paysystem.fields",
-    		{}
-    	);
-    	
-    	const result = response.getData().result;
-    	console.dir(result);
+        const response = await $b24.callMethod(
+            "crm.paysystem.fields",
+            {}
+        );
+        
+        const result = response.getData().result;
+        console.dir(result);
     }
     catch( error )
     {
-    	console.error(error);
+        console.error(error);
     }
     ```
 

@@ -1,20 +1,20 @@
-# Delete the recurring invoice setting crm.invoice.recurring.delete
+# Delete the Recurring Invoice Setting crm.invoice.recurring.delete
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-{% note warning %}
+{% note warning "DEPRECATED" %}
 
-The method is deprecated. It is recommended to use [`Universal methods for invoices`](../../universal/invoice.md)
+Development of this method has been halted. Please use [Universal Methods for Invoices](../../universal/invoice.md).
 
 {% endnote %}
 
-The method deletes an existing setting for the recurring invoice template.
+This method deletes an existing setting for the recurring invoice template.
 
 ## Method Parameters
 
-{% include [Note about required parameters](../../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -25,7 +25,7 @@ The method deletes an existing setting for the recurring invoice template.
 
 ## Code Examples
 
-{% include [Note about examples](../../../../_includes/examples.md) %}
+{% include [Note on Examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 

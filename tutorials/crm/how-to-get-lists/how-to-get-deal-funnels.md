@@ -1,8 +1,14 @@
-# How to Get the Sales Funnel of a Given Direction with the Semantics of Each Deal Stage
+# How to Retrieve a Sales Funnel for a Specific Direction with Semantics for Each Stage of the Deal
 
 > Scope: [`crm`](../../../api-reference/scopes/permissions.md)
 >
 > Who can execute the method: users with administrative access to the CRM section
+
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
 
 This example outputs all existing deal directions along with the semantics for each stage.
 
@@ -81,7 +87,7 @@ This example outputs all existing deal directions along with the semantics for e
 
     {% note info %}
 
-    To use the examples in PHP, set up the *CRest* class and include the **crest.php** file in the files where this class is used. [Learn more](../../../first-steps/how-to-use-examples.md)
+    To use the PHP examples, configure the *CRest* class and include the **crest.php** file in the files where this class is used. [Learn more](../../../first-steps/how-to-use-examples.md)
 
     {% endnote %}
 

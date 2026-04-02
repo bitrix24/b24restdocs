@@ -1,14 +1,14 @@
-# Reset CRM Lead Details Configuration Parameters
+# Resetting the Parameters of crm.lead.details.configuration.reset
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
 > Who can execute the method:
 >  - any user can reset their own settings,
->  - a user with the "Allow to modify settings" access permission in CRM can reset both general and others' settings.
+>  - a user with the "Allow to change settings" access permission in CRM can reset both general and others' settings.
 
-{% note warning "Method Development Stopped" %}
+{% note warning "DEPRECATED" %}
 
-The method `crm.lead.details.configuration.reset` continues to function, but there is a more relevant alternative: [crm.item.details.configuration.reset](../../universal/item-details-configuration/crm-item-details-configuration-reset.md).
+The development of this method has been halted. Please use [crm.item.details.configuration.reset](../../universal/item-details-configuration/crm-item-details-configuration-reset.md).
 
 {% endnote %}
 
@@ -30,15 +30,15 @@ The settings for repeat leads may differ from those for simple leads. To switch 
 || **userId**
 [`user`](../../../data-types.md) | The identifier of the user for whom the personal configuration needs to be reset.
 
-If the parameter is not provided, the `userId` of the user calling the method will be used.
+If this parameter is not provided, the `userId` of the user calling the method will be used.
 
-This is only required when resetting personal settings. ||
+This is only required when resetting personal settings ||
 || **scope**
 [`string`](../../../data-types.md) | The scope of the settings. Possible values:
 - `'P'` - personal settings
 - `'C'` - general settings
 
-The default value is `'P'`. ||
+The default value is `'P'` ||
 || **extras**
 [`object`](../../../data-types.md) | Additional parameters for selecting the type of lead. The structure is described [below](#extras) ||
 |#
@@ -49,7 +49,7 @@ The default value is `'P'`. ||
 || **Name**
 `type` | **Description** ||
 || **lead.customer.type**
-[`integer`](../../../data-types.md) | Type of lead. Possible values:
+[`integer`](../../../data-types.md) | The type of lead. Possible values:
 - `1` - simple lead
 - `2` - repeat lead ||
 |#
@@ -58,7 +58,7 @@ The default value is `'P'`. ||
 
 {% include [Note on Examples](../../../../_includes/examples.md) %}
 
-1. Reset Personal Card Settings
+1. Resetting Personal Card Settings
 
     {% list tabs %}
 
@@ -173,7 +173,7 @@ The default value is `'P'`. ||
 
     {% endlist %}
 
-2. Reset General Card Settings
+2. Resetting General Card Settings
 
     {% list tabs %}
 
@@ -309,9 +309,9 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../../data-types.md) | The root element of the response. Returns `true` if the settings were successfully reset. ||
+[`boolean`](../../../data-types.md) | The root element of the response. Returns `true` if the settings were successfully reset ||
 || **time**
-[`time`](../../../data-types.md#time) | Information about the execution time of the request. ||
+[`time`](../../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
@@ -331,7 +331,7 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `-` | Access denied | Insufficient permissions to reset the requested configuration. ||
+|| `-` | Access denied | Insufficient permissions to reset the requested configuration ||
 |#
 
 {% include [System Errors](../../../../_includes/system-errors.md) %}

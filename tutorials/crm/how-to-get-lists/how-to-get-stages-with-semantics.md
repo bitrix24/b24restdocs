@@ -1,30 +1,36 @@
-# How to Get a List of Stages with Semantics for CRM Objects
+# How to Retrieve a List of Stages with Semantics for CRM Entities
 
 > Scope: [`crm, user_brief`](../../../api-reference/scopes/permissions.md)
 >
 > Who can execute the method: any user with access to CRM
 
-The semantics of a stage reflects the current state of a CRM entity: in progress, successfully completed, or unsuccessful. The system uses the semantics value in automation and reporting.
+{% note tip "" %}
 
-To create a table of stages for a CRM object with semantics, we use the method [crm.status.list](../../../api-reference/crm/status/crm-status-list.md).
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
 
-## Get a List of Stages with Semantics
+{% endnote %}
 
-The method [crm.status.list](../../../api-reference/crm/status/crm-status-list.md) returns a description of stages by the `ENTITY_ID` stage code for the CRM object.
+The semantics of a stage reflects the current state of a CRM entity: in progress, successfully completed, or unsuccessful. The system uses the semantic value in automation and reporting.
 
--  [Deals](../../../api-reference/crm/deals/index.md) — `DEAL_STAGE` for the main direction of deals and `DEAL_STAGE_xx` for additional ones, where xx is the direction identifier.
+To create a table of CRM entity stages with semantics, we will use the method [crm.status.list](../../../api-reference/crm/status/crm-status-list.md).
 
--  [Leads](../../../api-reference/crm/leads/index.md) —  `STATUS`.
+## Retrieve a List of Stages with Semantics
+
+The method [crm.status.list](../../../api-reference/crm/status/crm-status-list.md) returns a description of stages based on the stage code `ENTITY_ID` for the CRM entity.
+
+-  [Deals](../../../api-reference/crm/deals/index.md) — `DEAL_STAGE` for the main deal direction and `DEAL_STAGE_xx` for additional ones, where xx is the direction identifier.
+
+-  [Leads](../../../api-reference/crm/leads/index.md) — `STATUS`.
 
 -  [Invoices](../../../api-reference/crm/universal/invoice.md) — `SMART_INVOICE_STAGE_xx`, where `xx` is the invoice direction identifier value.
 
--  [Estimates](../../../api-reference/crm/quote/index.md) — `QUOTE_STATUS`.
+-  [Quotes](../../../api-reference/crm/quote/index.md) — `QUOTE_STATUS`.
 
 -  [Documents](https://helpdesk.bitrix24.com/open/19441484/) — `SMART_DOCUMENT_STAGE_xx`, where `xx` is the `ID` of the document direction.
 
--  [SPAs](../../../api-reference/crm/universal/index.md) —  `DYNAMIC_xx_STAGE_xx`, where the first `xx` is the `ID` of the SPA, and the second `xx` is the direction `ID`.
+-  [Smart Processes](../../../api-reference/crm/universal/index.md) — `DYNAMIC_xx_STAGE_xx`, where the first `xx` is the smart process `ID`, and the second `xx` is the direction `ID`.
 
-We will get a description of stages with semantics for leads. To do this, we specify in the filter `filter` the field `ENTITY_ID` with the value `STATUS`.
+Let's retrieve the description of stages with semantics for leads. To do this, we will specify in the filter `filter` the field `ENTITY_ID` with the value `STATUS`.
 
 {% include [Example Notes](../../../_includes/examples.md) %}
 
@@ -36,8 +42,8 @@ We will get a description of stages with semantics for leads. To do this, we spe
     BX24.callMethod(
         "crm.status.list",
         {
-            order: { SORT: "ASC" }, // sorting in ascending order by the SORT field value
-            filter: { ENTITY_ID: "STATUS" }, // getting stages for leads
+            order: { SORT: "ASC" }, // sorting in ascending order based on the SORT field
+            filter: { ENTITY_ID: "STATUS" }, // retrieving stages for leads
         },
         function(result) {
             if(result.error())
@@ -64,7 +70,7 @@ We will get a description of stages with semantics for leads. To do this, we spe
 
 {% endlist %}
 
-As a result, we will get an array of objects, where each object is a description of a stage.
+As a result, we will receive an array of objects, where each object is a description of a stage.
 
 ```json
 {
@@ -122,8 +128,8 @@ As a result, we will get an array of objects, where each object is a description
             "ID": "17",
             "ENTITY_ID": "STATUS",
             "STATUS_ID": "JUNK",
-            "NAME": "Poor Quality Lead",
-            "NAME_INIT": "Poor Quality Lead",
+            "NAME": "Low-Quality Lead",
+            "NAME_INIT": "Low-Quality Lead",
             "SORT": "60",
             "SYSTEM": "Y",
             "CATEGORY_ID": null,
@@ -139,17 +145,17 @@ As a result, we will get an array of objects, where each object is a description
 }
 ```
 
-The `EXTRA.SEMANTICS` object contains the semantics of the stages. Possible values:
+The `EXTRA.SEMANTICS` object contains the semantics of the stages. Possible values include:
 
 -  `process` — the CRM entity is in progress,
 
--  `success` — work with the CRM entity has been successfully completed,
+-  `success` — the work with the CRM entity has been successfully completed,
 
--  `failure` — work with the CRM entity has been unsuccessfully completed.
+-  `failure` — the work with the CRM entity has been unsuccessfully completed.
 
 ## Code Example
 
-The code outputs tables with the list of stages for leads and estimates.
+The code outputs tables with a list of stages for leads and quotes.
 
 {% list tabs %}
 
@@ -218,7 +224,7 @@ The code outputs tables with the list of stages for leads and estimates.
    // Requesting statuses
    Promise.all([
        loadStatuses('STATUS').then(data => ({ type: 'Leads', data })),
-       loadStatuses('QUOTE_STATUS').then(data => ({ type: 'Estimates', data }))
+       loadStatuses('QUOTE_STATUS').then(data => ({ type: 'Quotes', data }))
    ]).then(results => {
        results.forEach(({ type, data }) => {
            console.group(`📊 ${type}`);
@@ -238,7 +244,7 @@ The code outputs tables with the list of stages for leads and estimates.
    require_once 'crest.php';
    
    /**
-    * Gets all statuses for the given ENTITY_ID
+    * Retrieves all statuses for the given ENTITY_ID
     * @param string $entityId
     * @return array
     */
@@ -250,7 +256,7 @@ The code outputs tables with the list of stages for leads and estimates.
        ]);
    
        if (!empty($result['error'])) {
-           throw new Exception("Error loading statuses $entityId: " . $result['error_description']);
+           throw new Exception("Error loading statuses for $entityId: " . $result['error_description']);
        }
    
        return $result['result'];
@@ -304,7 +310,7 @@ The code outputs tables with the list of stages for leads and estimates.
    
    $entities = [
        ['title' => 'Lead Statuses', 'entityId' => 'STATUS'],
-       ['title' => 'Estimate Statuses', 'entityId' => 'QUOTE_STATUS']
+       ['title' => 'Quote Statuses', 'entityId' => 'QUOTE_STATUS']
    ];
    
    foreach ($entities as $entity) {

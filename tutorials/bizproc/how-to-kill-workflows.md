@@ -4,15 +4,21 @@
 > 
 > Who can execute methods: administrator
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 When an employee is terminated in Bitrix24, there may be unfinished business processes for which they were responsible.
 
-To complete the active business processes of the terminated employee, we will sequentially execute three methods:
+To complete the active business processes of a terminated employee, we will sequentially execute three methods:
 
 1. [user.get](../../api-reference/user/user-get.md) — retrieve the `ID` of the terminated employee
 
-2. [bizproc.task.list](../../api-reference/bizproc/bizproc-task/bizproc-task-list.md) — get the list of tasks for the processes that the terminated employee was responsible for
+2. [bizproc.task.list](../../api-reference/bizproc/bizproc-task/bizproc-task-list.md) — obtain a list of process tasks for which the terminated employee is responsible
 
-3. [bizproc.workflow.kill](../../api-reference/bizproc/bizproc-workflow-kill.md) — complete the business processes with data deletion. If you need to preserve the fact that the business process was initiated, use the method [bizproc.workflow.terminate](../../api-reference/bizproc/bizproc-workflow-terminate.md). Both methods are called in the same way.
+3. [bizproc.workflow.kill](../../api-reference/bizproc/bizproc-workflow-kill.md) — complete the business processes while deleting data. If you need to retain the fact that the business process was initiated, use the method [bizproc.workflow.terminate](../../api-reference/bizproc/bizproc-workflow-terminate.md). Both methods are called in the same way.
 
 ## 1. Retrieve the ID of the Terminated Employee {#user-id}
 
@@ -22,9 +28,9 @@ We will use the method [user.get](../../api-reference/user/user-get.md) with the
 
 - `LAST_NAME` — specify the employee's last name
 
-- `ACTIVE` — this parameter controls the search for active or terminated employees. If this parameter is not passed, the search will include all employees regardless of their status. We will specify `0` to search only among terminated employees.
+- `ACTIVE` — this parameter controls the search for active or terminated employees. If this parameter is not provided, the search will include all employees regardless of their status. We will set it to `0` to search only among terminated employees.
 
-{% include [Note on Examples](../../_includes/examples.md) %}
+{% include [Example Note](../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -76,8 +82,8 @@ As a result, we will obtain the `ID` of the terminated employee.
             "SECOND_NAME": "",
             "TITLE": "",
             "EMAIL": "employee_email@gmail.com",
-            "LAST_LOGIN": "2025-03-27T13:49:36+02:00",
-            "DATE_REGISTER": "2020-04-23T03:00:00+02:00",
+            "LAST_LOGIN": "2025-03-27T13:49:36+01:00",
+            "DATE_REGISTER": "2020-04-23T03:00:00+01:00",
             "TIME_ZONE": "Europe/Berlin",
             "IS_ONLINE": "N",
             "TIMESTAMP_X": {},
@@ -86,7 +92,7 @@ As a result, we will obtain the `ID` of the terminated employee.
             "PERSONAL_PROFESSION": "",
             "PERSONAL_WWW": "",
             "PERSONAL_BIRTHDAY": "",
-            "PERSONAL_PHOTO": "https://cdn-com.bitrix24.com/b13743910/main/3f2/3f212fjf8c3627cfe51633f959de/avatar.png",
+            "PERSONAL_PHOTO": "https://cdn.com.bitrix24.com/b13743910/main/3f2/3f212fkdjf8c3627cfe51633f959de/avatar.png",
             "PERSONAL_ICQ": "",
             "PERSONAL_PHONE": "",
             "PERSONAL_FAX": "",
@@ -128,13 +134,13 @@ As a result, we will obtain the `ID` of the terminated employee.
 }
 ```
 
-## 2. Retrieve the List of Tasks for the Processes that the Terminated Employee Was Responsible For {#workflow_id}
+## 2. Retrieve the List of Process Tasks for Which the Terminated Employee is Responsible {#workflow_id}
 
 We will use the method [bizproc.task.list](../../api-reference/bizproc/bizproc-task/bizproc-task-list.md) with the following filter:
 
 - `USER_ID` — the identifier of the employee, we will pass the ID obtained in [step 1](#user-id)
 
-- `STATUS` — this parameter indicates the status of the tasks, we will specify `0` to filter only incomplete tasks.
+- `STATUS` — this parameter indicates the status of the tasks; we will set it to `0` to filter only incomplete tasks.
 
 {% list tabs %}
 
@@ -207,7 +213,7 @@ As a result, we will obtain a list of incomplete tasks. Each task has a `WORKFLO
             "DOCUMENT_ID": "CONTACT_2429",
             "ID": "871",
             "WORKFLOW_ID": "67091df4b13dd2.83077613",
-            "DOCUMENT_NAME": "Thomas Anderson",
+            "DOCUMENT_NAME": "Petrov Vasily",
             "NAME": "Address",
             "DOCUMENT_URL": "/crm/contact/details/2429/"
         },
@@ -216,7 +222,7 @@ As a result, we will obtain a list of incomplete tasks. Each task has a `WORKFLO
             "DOCUMENT_ID": "CONTACT_2427",
             "ID": "859",
             "WORKFLOW_ID": "66e2d5d5c64f82.28057011",
-            "DOCUMENT_NAME": "Christopher",
+            "DOCUMENT_NAME": "Ivanovich",
             "NAME": "Address",
             "DOCUMENT_URL": "/crm/contact/details/2427/"
         },
@@ -225,7 +231,7 @@ As a result, we will obtain a list of incomplete tasks. Each task has a `WORKFLO
             "DOCUMENT_ID": "CONTACT_2425",
             "ID": "857",
             "WORKFLOW_ID": "66e0242399d303.52288141",
-            "DOCUMENT_NAME": "Patricia",
+            "DOCUMENT_NAME": "Petrovna",
             "NAME": "Address",
             "DOCUMENT_URL": "/crm/contact/details/2425/"
         },
@@ -234,7 +240,7 @@ As a result, we will obtain a list of incomplete tasks. Each task has a `WORKFLO
             "DOCUMENT_ID": "CONTACT_2423",
             "ID": "855",
             "WORKFLOW_ID": "66d870dfbb9542.91956540",
-            "DOCUMENT_NAME": "Johnson",
+            "DOCUMENT_NAME": "Smirnov",
             "NAME": "Address",
             "DOCUMENT_URL": "/crm/contact/details/2423/"
         },
@@ -243,9 +249,18 @@ As a result, we will obtain a list of incomplete tasks. Each task has a `WORKFLO
             "DOCUMENT_ID": "CONTACT_2421",
             "ID": "853",
             "WORKFLOW_ID": "66d7fb6f86c0c2.49741539",
-            "DOCUMENT_NAME": "Williams",
+            "DOCUMENT_NAME": "Kalashnikov",
             "NAME": "Address",
             "DOCUMENT_URL": "/crm/contact/details/2421/"
+        },
+        {
+            "ENTITY": "CCrmDocumentContact",
+            "DOCUMENT_ID": "CONTACT_2419",
+            "ID": "851",
+            "WORKFLOW_ID": "66d073d9c9fc08.23457428",
+            "DOCUMENT_NAME": "Unnamed",
+            "NAME": "Address",
+            "DOCUMENT_URL": "/crm/contact/details/2419/"
         }
     ],
     "total": 9,
@@ -286,7 +301,7 @@ We will use the method [bizproc.workflow.kill](../../api-reference/bizproc/bizpr
 
 {% endlist %}
 
-As a result, we will receive `true`, indicating that the process deletion was successful. If you receive an `error`, review the possible error descriptions in the documentation for the method [bizproc.workflow.kill](../../api-reference/bizproc/bizproc-workflow-kill.md).
+As a result, we will receive `true`, indicating that the process has been successfully deleted. If you receive an `error`, review the possible error descriptions in the documentation for the method [bizproc.workflow.kill](../../api-reference/bizproc/bizproc-workflow-kill.md).
 
 ```json
 {
@@ -296,14 +311,14 @@ As a result, we will receive `true`, indicating that the process deletion was su
 
 ## Code Example
 
-In the example, all found processes are deleted in a loop. If you need to delete a large volume of data, you may encounter limits on request execution. To optimize the code for your workload, use the recommendations in the [Performance](../../settings/performance/index.md) section.
+In the example, all found processes are deleted in a loop. If you need to delete a large volume of data, you may encounter limits on request execution. To optimize the code for your workload, refer to the recommendations in the [Performance](../../settings/performance/index.md) section.
 
 {% list tabs %}
 
 - JS
 
     ```javascript
-    // Function to get employee ID by first name and last name
+    // Function to get the employee ID by first and last name
     function getUserId(firstName, lastName, callback) {
         BX24.callMethod(
             "user.get",
@@ -374,7 +389,7 @@ In the example, all found processes are deleted in a loop. If you need to delete
         });
     }
 
-    // Prompt user for first name and last name
+    // Prompt the user for the employee's first and last name
     const firstName = prompt("Enter the employee's first name:");
     const lastName = prompt("Enter the employee's last name:");
 
@@ -387,7 +402,7 @@ In the example, all found processes are deleted in a loop. If you need to delete
     ```php
     require_once('crest.php');
 
-    // Function to get employee ID by first name and last name
+    // Function to get the employee ID by first and last name
     function getUserId($firstName, $lastName) {
         $result = CRest::call(
             'user.get',
@@ -459,7 +474,7 @@ In the example, all found processes are deleted in a loop. If you need to delete
         }
     }
 
-    // Prompt user for first name and last name
+    // Prompt the user for the employee's first and last name
     $firstName = readline("Enter the employee's first name: ");
     $lastName = readline("Enter the employee's last name: ");
 

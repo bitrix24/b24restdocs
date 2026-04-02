@@ -4,7 +4,13 @@
 >
 > Who can execute the method: users with permission to create contacts or companies in CRM
 
-Vendors are CRM contacts and companies with a system category designation:
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
+Vendors are CRM contacts and companies marked with a system category:
 
 - `CATALOG_CONTRACTOR_CONTACT` — for contacts,
 - `CATALOG_CONTRACTOR_COMPANY` — for companies.
@@ -18,10 +24,10 @@ To create a vendor, we will sequentially execute two methods:
 
 We will use the method [crm.category.list](../../../api-reference/crm/universal/category/crm-category-list.md) with the following parameters:
 
-- `entityTypeId` — the ID of the [CRM object type](../../../api-reference/crm/data-types.md#object_type). Use `3` for contacts. For companies, use `4`.
-- `filter[code]` — filter by category code. Use `CATALOG_CONTRACTOR_CONTACT` for contacts. For companies, use `CATALOG_CONTRACTOR_COMPANY`.
+- `entityTypeId` — the ID of the [CRM object type](../../../api-reference/crm/data-types.md#object_type). Specify `3` for contacts. Use `4` for companies.
+- `filter[code]` — filter by category code. Specify `CATALOG_CONTRACTOR_CONTACT` for contacts. Use `CATALOG_CONTRACTOR_COMPANY` for companies.
 
-{% include [Example Notes](../../../_includes/examples.md) %}
+{% include [Examples Note](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -60,7 +66,7 @@ We will use the method [crm.category.list](../../../api-reference/crm/universal/
 
 {% endlist %}
 
-As a result, we will obtain the category ID. In the example, `id`:`15`. The ID may vary in different Bitrix24 instances.
+As a result, we will obtain the category ID. In the example, `id` is `15`. The ID may vary across different Bitrix24 instances.
 
 ```json
 {
@@ -82,20 +88,20 @@ As a result, we will obtain the category ID. In the example, `id`:`15`. The ID m
 
 We will use the method [crm.item.add](../../../api-reference/crm/universal/crm-item-add.md) with the following parameters:
 
-- `entityTypeId` — the ID of the [CRM object type](../../../api-reference/crm/data-types.md#object_type). Use `3` for contacts. For companies, use `4`.
+- `entityTypeId` — the ID of the [CRM object type](../../../api-reference/crm/data-types.md#object_type). Specify `3` for contacts. Use `4` for companies.
 
-- `fields[categoryId]` — the ID of the system category from step 1. In the example, `15`.
+- `fields[categoryId]` — the ID of the system category from step 1. In the example, it is `15`.
 
 - `fields[name]` — first name.
-- `fields[lastName]` — last name. For companies, instead of first and last names, you can provide the `fields[title]` field — the name.
+- `fields[lastName]` — last name. For companies, instead of first and last names, you can provide the `fields[title]` field — the company name.
 
 - `fields[fm]` — an array of multi-fields [crm_multifield](../../../api-reference/crm/data-types.md#crm_multifield) for phone and email.
 - `fields[comments]` — comments.
- 
+
 The system stores phone and email as an array of multi-fields `fm`. Each element of the array contains:
 
 - `typeId` — the type of multi-field, `PHONE` or `EMAIL`,
-- `valueType` — the type of value, for example, `WORK` or `MOBILE`,
+- `valueType` — the type of value, such as `WORK` or `MOBILE`,
 - `value` — the field value.
 
 {% list tabs %}
@@ -116,7 +122,7 @@ The system stores phone and email as an array of multi-fields `fm`. Each element
                     { typeId: 'PHONE', valueType: 'MOBILE', value: '+1 495 111 22 33' },
                     { typeId: 'EMAIL', valueType: 'WORK', value: 'supplier@example.com' }
                 ],
-                comments: 'Electronics vendor'
+                comments: 'Electronics Supplier'
             }
         },
         function(result) {
@@ -147,7 +153,7 @@ The system stores phone and email as an array of multi-fields `fm`. Each element
                     [ 'typeId' => 'PHONE', 'valueType' => 'MOBILE', 'value' => '+1 495 111 22 33' ],
                     [ 'typeId' => 'EMAIL', 'valueType' => 'WORK', 'value' => 'supplier@example.com' ]
                 ],
-                'comments' => 'Electronics vendor'
+                'comments' => 'Electronics Supplier'
             ]
         ]
     );
@@ -176,7 +182,7 @@ As a result, the method will return an `item` object with the data of the create
             "photo": null,
             "post": null,
             "address": null,
-            "comments": "Electronics vendor",
+            "comments": "Electronics Supplier",
             "leadId": null,
             "export": "Y",
             "webformId": null,
@@ -245,7 +251,7 @@ As a result, the method will return an `item` object with the data of the create
 }
 ```
 
-The vendor ID, in the example `id`: `2449`, should be used in the inventory accounting method [catalog.documentcontractor.add](../../../api-reference/catalog/documentcontractor/catalog-documentcontractor-add.md).
+The vendor ID, in this example `id`: `2449`, should be used in the inventory accounting method [catalog.documentcontractor.add](../../../api-reference/catalog/documentcontractor/catalog-documentcontractor-add.md).
 
 ## Code Example
 
@@ -291,7 +297,7 @@ The vendor ID, in the example `id`: `2449`, should be used in the inventory acco
                             { typeId: 'PHONE', valueType: 'MOBILE', value: '+1 495 111 22 33' },
                             { typeId: 'EMAIL', valueType: 'WORK', value: 'supplier@example.com' }
                         ],
-                        comments: 'Electronics vendor'
+                        comments: 'Electronics Supplier'
                     }
                 },
                 function(resultItem) {
@@ -350,7 +356,7 @@ The vendor ID, in the example `id`: `2449`, should be used in the inventory acco
                     [ 'typeId' => 'PHONE', 'valueType' => 'MOBILE', 'value' => '+1 495 111 22 33' ],
                     [ 'typeId' => 'EMAIL', 'valueType' => 'WORK', 'value' => 'supplier@example.com' ]
                 ],
-                'comments' => 'Electronics vendor'
+                'comments' => 'Electronics Supplier'
             ]
         ]
     );

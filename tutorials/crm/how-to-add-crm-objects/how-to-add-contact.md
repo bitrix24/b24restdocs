@@ -4,17 +4,23 @@
 >
 > Who can execute the method: users with permission to create contacts in CRM
 
-You can place a form on the site to collect client data. When a client fills out the form, their data will be sent to CRM, and you will be able to process the request.
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
+You can place a form on your website to collect client data. When a client fills out the form, their information will be sent to the CRM, allowing you to process the request.
 
 Setting up the form consists of two steps.
 
-1. Place the form on an HTML page. It will send the data to the handler.
+1. Place the form on an HTML page. It will send data to the handler.
 
-2. Create a file to process the data. The handler will accept and prepare the data, and then create a contact using the method [crm.contact.add](../../../api-reference/crm/contacts/crm-contact-add.md).
+2. Create a file to process the data. The handler will accept and prepare the data, then create a contact using the [crm.contact.add](../../../api-reference/crm/contacts/crm-contact-add.md) method.
 
 ## 1. Creating the Web Form
 
-Let's create a web form on the site page with four fields:
+Let's create a web form on the website page with four fields:
 
 -  `NAME` — contact's first name, required,
 
@@ -24,7 +30,7 @@ Let's create a web form on the site page with four fields:
 
 -  `PHONE` — phone number.
 
-When submitted, the form sends data to the handler `form.php`.
+Upon submission, the form sends data to the handler `form.php`.
 
 ```html
 <form id="form_to_crm" method="POST" action="form.php">
@@ -51,7 +57,7 @@ When submitted, the form sends data to the handler `form.php`.
     $(document).ready(function() {
         $('#form_to_crm').on('submit', function(el) {
             el.preventDefault(); // Prevent default form submission
-            var formData = $(this).serialize(); // Gather form data
+            var formData = $(this).serialize(); // Collect form data
             
             // Send data to the server
             $.ajax({
@@ -70,9 +76,9 @@ When submitted, the form sends data to the handler `form.php`.
 
 ## 2. Creating the Form Handler
 
-To process the values from the form fields and add a contact to CRM, we will create the handler `form.php`.
+To process the values from the form fields and add a contact to the CRM, we will create the handler `form.php`.
 
-To add a contact, we will use the method [crm.contact.add](../../../api-reference/crm/contacts/crm-contact-add.md). In the `fields` object, we will pass the fields:
+To add a contact, we will use the [crm.contact.add](../../../api-reference/crm/contacts/crm-contact-add.md) method. In the `fields` object, we will pass the fields:
 
 -  `NAME` — contact's first name,
 
@@ -82,7 +88,7 @@ To add a contact, we will use the method [crm.contact.add](../../../api-referenc
 
 -  `EMAIL` — email address.
 
-The values of the fields are obtained from the form. The system stores phone and email as an array of objects [crm_multifield](../../../api-reference/crm/data-types.md#crm_multifield), so they need to be formatted as an array.
+We will retrieve the values from the form. The system stores phone numbers and emails as an array of objects [crm_multifield](../../../api-reference/crm/data-types.md#crm_multifield), so they need to be formatted as an array.
 
 1. If a value exists, we add it as the first element `VALUE` in the array, and the second value specifies the type `VALUE_TYPE`, for example:
 
@@ -90,11 +96,11 @@ The values of the fields are obtained from the form. The system stores phone and
 
    -  `HOME` — for email.
 
-2. If there is no value, we pass an empty array.
+2. If no values exist, we pass an empty array.
 
 {% note warning "" %}
 
-Check which required fields are set for contacts in your Bitrix24. All required fields must be passed to the method [crm.contact.add](../../../api-reference/crm/contacts/crm-contact-add.md).
+Check which required fields are set for contacts in your Bitrix24. All required fields must be passed to the [crm.contact.add](../../../api-reference/crm/contacts/crm-contact-add.md) method.
 
 {% endnote %}
 
@@ -102,7 +108,7 @@ Check which required fields are set for contacts in your Bitrix24. All required 
 <?php
 require_once('crest.php');
             
-// Get and sanitize data from the form
+// Retrieve and sanitize data from the form
 $sName = htmlspecialchars($_POST["NAME"]);
 $sLastName = htmlspecialchars($_POST["LAST_NAME"]);
 $sPhone = htmlspecialchars($_POST["PHONE"]);
@@ -125,7 +131,7 @@ $result = CRest::call(
     ]
 );
 
-// Check the result and output the message
+// Check the result and output a message
 if(!empty($result['result'])){
     echo json_encode(['message' => 'Contact added']);
 } elseif(!empty($result['error_description'])){

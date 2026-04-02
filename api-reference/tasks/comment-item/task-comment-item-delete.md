@@ -1,4 +1,4 @@
-# Delete Comment task.commentitem.delete
+# Delete Comment `task.commentitem.delete`
 
 > Scope: [`task`](../../scopes/permissions.md)
 >
@@ -6,9 +6,9 @@
 
 The method `task.commentitem.delete` removes a comment.
 
-{% note warning "Development of the method has been halted since version `tasks 25.700.0` " %}
+{% note warning "DEPRECATED" %}
 
-The method `task.commentitem.delete` does not work in the [new task card](../tasks-new.md), use the method [im.message.delete](../../chats/messages/im-message-delete.md) for working with task chat.
+Development of this method has been halted since version `tasks 25.700.0`. The method `task.commentitem.delete` does not work in the [new task card](../tasks-new.md); please use the method [im.message.delete](../../chats/messages/im-message-delete.md) for managing task chat.
 
 {% endnote %}
 
@@ -20,7 +20,7 @@ Pass parameters in the request according to the order in the table. If the order
 
 {% endnote %}
 
-{% include [Footnote about parameters](../../../_includes/required.md) %}
+{% include [Footnote on parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -28,16 +28,16 @@ Pass parameters in the request according to the order in the table. If the order
 || **TASKID***
 [`integer`](../../data-types.md) | Task identifier.
 
-The task identifier can be obtained when [creating a new task](../tasks-task-add.md) or by using the [get task list method](../tasks-task-list.md) ||
+The task identifier can be obtained when [creating a new task](../tasks-task-add.md) or by using the [get task list](../tasks-task-list.md) method. ||
 || **ITEMID***
 [`integer`](../../data-types.md) | Comment identifier.
 
-The comment identifier can be obtained when [adding a new comment](./task-comment-item-add.md) or by using the [get comment list method](./task-comment-item-get-list.md) ||
+The comment identifier can be obtained when [adding a new comment](./task-comment-item-add.md) or by using the [get comment list](./task-comment-item-get-list.md) method. ||
 |#
 
 ## Code Examples
 
-{% include [Footnote about examples](../../../_includes/examples.md) %}
+{% include [Footnote on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -66,21 +66,21 @@ The comment identifier can be obtained when [adding a new comment](./task-commen
     ```js
     try
     {
-    	const response = await $b24.callMethod(
-    		'task.commentitem.delete',
-    		{
-    			"TASKID": 8017,
-    			"ITEMID": 3155
-    		}
-    	);
-    	
-    	const result = response.getData().result;
-    	console.info(result);
-    	console.log(result);
+        const response = await $b24.callMethod(
+            'task.commentitem.delete',
+            {
+                "TASKID": 8017,
+                "ITEMID": 3155
+            }
+        );
+        
+        const result = response.getData().result;
+        console.info(result);
+        console.log(result);
     }
     catch( error )
     {
-    	console.error('Error:', error);
+        console.error('Error:', error);
     }
     ```
 
@@ -174,9 +174,9 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../data-types.md) | Returns `true` if the comment was successfully deleted ||
+[`boolean`](../../data-types.md) | Returns `true` if the comment was successfully deleted. ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the request execution time ||
+[`time`](../../data-types.md#time) | Information about the request execution time. ||
 |#
 
 ## Error Handling
@@ -196,13 +196,13 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #1 (itemId) expected by method ctaskcommentitem::delete(), but not given.; 256/TE/WRONG_ARGUMENTS | Required parameter not specified, for example, `ITEMID` ||
-|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#4; Action is not allowed; 4/TE/ACTION_NOT_ALLOWED | Error returned in several cases:
+|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #1 (itemId) expected by method ctaskcommentitem::delete(), but not given.; 256/TE/WRONG_ARGUMENTS | Required parameter not specified, for example, `ITEMID`. ||
+|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#4; Action is not allowed; 4/TE/ACTION_NOT_ALLOWED | This error is returned in several cases:
 - Incorrect parameter order
 - No access permission to the task
 - Cannot delete another user's comment unless you are an administrator
-- The specified task or comment does not exist ||
-|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #0 (taskId) for method ctaskcommentitem::delete() expected to be of type "integer", but given something else.; 256/TE/WRONG_ARGUMENTS | Incorrect value type specified for the parameter, for example, for `TASKID` ||
+- The specified task or comment does not exist. ||
+|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #0 (taskId) for method ctaskcommentitem::delete() expected to be of type "integer", but given something else.; 256/TE/WRONG_ARGUMENTS | An incorrect type of value was provided for the parameter, for example, for `TASKID`. ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

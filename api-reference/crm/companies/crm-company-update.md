@@ -4,9 +4,9 @@
 >
 > Who can execute the method: user with "Edit" access permission for companies
 
-{% note warning "Method Development Stopped" %}
+{% note warning "DEPRECATED" %}
 
-The method `crm.company.update` is still operational, but there is a more current equivalent, [crm.item.update](../universal/crm-item-update.md).
+The development of this method has been halted. Please use [crm.item.update](../universal/crm-item-update.md).
 
 {% endnote %}
 
@@ -14,7 +14,7 @@ The method `crm.company.update` updates an existing company.
 
 ## Method Parameters
 
-{% include [Note on Parameters](../../../_includes/required.md) %}
+{% include [Parameter Note](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -45,7 +45,7 @@ An incorrect field in `fields` will be ignored
 [`object`](../../data-types.md) | Object containing a set of additional parameters:
 
 - `REGISTER_SONET_EVENT` — send notification to the responsible person
-- `REGISTER_HISTORY_EVENT` — register event in history. Possible values:
+- `REGISTER_HISTORY_EVENT` — register an event in history. Possible values:
   - `Y` — yes
   - `N` — no
 ||
@@ -71,7 +71,7 @@ An incorrect field in `fields` will be ignored
 || **REVENUE**
 [`double`](../../data-types.md) | Annual revenue ||
 || **OPENED**
-[`char`](../../data-types.md) | Is the company available to everyone. Possible values:
+[`char`](../../data-types.md) | Is the company available to everyone? Possible values:
 - `Y` — yes
 - `N` — no ||
 || **COMMENTS**
@@ -81,26 +81,26 @@ An incorrect field in `fields` will be ignored
 || **CONTACT_ID**
 [`crm_contact`](../../data-types.md) | Contact. Multiple ||
 || **ORIGINATOR_ID**
-[`string`](../../data-types.md) | Data source identifier. Used only for linking to an external source ||
+[`string`](../../data-types.md) | Identifier of the data source. Used only for linking to an external source ||
 || **ORIGIN_ID**
 [`string`](../../data-types.md) | Identifier of the element in the data source. Used only for linking to an external source ||
 || **ORIGIN_VERSION**
 [`string`](../../data-types.md) | Original version. Used to protect data from accidental overwriting by an external system ||
 || **UTM_SOURCE**
-[`string`](../../data-types.md) | Advertising system. Google Ads, Bing Ads, etc. ||
+[`string`](../../data-types.md) | Advertising system. Google Ads, Microsoft Advertising, and others ||
 || **UTM_MEDIUM**
-[`string`](../../data-types.md) | Traffic type. Possible values:
+[`string`](../../data-types.md) | Type of traffic. Possible values:
 - `CPC` — ads
 - `CPM` — banners ||
 || **UTM_CAMPAIGN**
 [`string`](../../data-types.md) | Advertising campaign designation ||
 || **UTM_CONTENT**
-[`string`](../../data-types.md) | Campaign content. For example, for contextual ads ||
+[`string`](../../data-types.md) | Content of the campaign. For example, for contextual ads ||
 || **UTM_TERM**
-[`string`](../../data-types.md) | Campaign search condition. For example, keywords for contextual advertising ||
+[`string`](../../data-types.md) | Search condition of the campaign. For example, keywords for contextual advertising ||
 ||**PARENT_ID_...** | Relationship fields.
 
-If there are SPAs related to companies in the account, for each such SPA there is a field that stores the relationship between this SPA and the company. The field itself stores the identifier of the element of that SPA ||
+If there are SPAs related to companies on the account, there is a field for each such SPA that stores the relationship between this SPA and the company. The field itself stores the identifier of the SPA element ||
 || **PHONE**
 [`crm_multifield[]`](../data-types.md) | Phone. Multiple ||
 || **EMAIL**
@@ -126,7 +126,7 @@ To change the address and banking details of the company, use the methods for [r
 
 ## Examples
 
-{% include [Note on Examples](../../../_includes/examples.md) %}
+{% include [Example Note](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -136,7 +136,7 @@ To change the address and banking details of the company, use the methods for [r
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"ID":43,"FIELDS":{"CURRENCY_ID":"USD","REVENUE":500000,"EMPLOYEES":"EMPLOYEES_3"},"PARAMS":{"REGISTER_SONET_EVENT":"Y","REGISTER_HISTORY_EVENT":"Y"}}' \
+    -d '{"ID":43,"FIELDS":{"CURRENCY_ID":"EUR","REVENUE":500000,"EMPLOYEES":"EMPLOYEES_3"},"PARAMS":{"REGISTER_SONET_EVENT":"Y","REGISTER_HISTORY_EVENT":"Y"}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.company.update
     ```
 
@@ -146,7 +146,7 @@ To change the address and banking details of the company, use the methods for [r
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"ID":43,"FIELDS":{"CURRENCY_ID":"USD","REVENUE":500000,"EMPLOYEES":"EMPLOYEES_3"},"PARAMS":{"REGISTER_SONET_EVENT":"Y","REGISTER_HISTORY_EVENT":"Y"},"auth":"**put_access_token_here**"}' \
+    -d '{"ID":43,"FIELDS":{"CURRENCY_ID":"EUR","REVENUE":500000,"EMPLOYEES":"EMPLOYEES_3"},"PARAMS":{"REGISTER_SONET_EVENT":"Y","REGISTER_HISTORY_EVENT":"Y"},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/crm.company.update
     ```
 
@@ -162,7 +162,7 @@ To change the address and banking details of the company, use the methods for [r
     			id: id,
     			fields:
     			{
-    				"CURRENCY_ID": "USD",
+    				"CURRENCY_ID": "EUR",
     				"REVENUE" : 500000,
     				"EMPLOYEES": "EMPLOYEES_3"
     			},
@@ -199,7 +199,7 @@ To change the address and banking details of the company, use the methods for [r
                 [
                     'id' => $id,
                     'fields' => [
-                        'CURRENCY_ID' => 'USD',
+                        'CURRENCY_ID' => 'EUR',
                         'REVENUE' => 500000,
                         'EMPLOYEES' => 'EMPLOYEES_3',
                     ],
@@ -233,7 +233,7 @@ To change the address and banking details of the company, use the methods for [r
             id: id,
             fields:
             {
-                "CURRENCY_ID": "USD",
+                "CURRENCY_ID": "EUR",
                 "REVENUE" : 500000,
                 "EMPLOYEES": "EMPLOYEES_3"
             },
@@ -261,7 +261,7 @@ To change the address and banking details of the company, use the methods for [r
         [
             'id' => 43,
             'fields' => [
-                'CURRENCY_ID' => 'USD',
+                'CURRENCY_ID' => 'EUR',
                 'REVENUE' => 500000,
                 'EMPLOYEES' => 'EMPLOYEES_3',
             ],
@@ -327,11 +327,11 @@ HTTP Status: **400**
 
 #|
 || **Code**      | **Description** | **Value** ||
-|| `-`          | Parameter 'fields' must be array | The parameter `fields` is not an object ||
-|| `-`          | Parameter 'params' must be array | The parameter `params` is not an object ||
-|| `-`          | Access denied | User does not have "Edit" access permission for companies ||
-|| `-`          | Disk resource exhausted | ||
-|| `ERROR_CORE` | Field `E-mail` contains an invalid address | Field `E-mail` contains an invalid address ||
+|| `-`          | Parameter 'fields' must be an array | The `fields` parameter is not an object ||
+|| `-`          | Parameter 'params' must be an array | The `params` parameter is not an object ||
+|| `-`          | Access denied | The user does not have "Edit" access permission for companies ||
+|| `-`          | Exhausted allocated disk resource | ||
+|| `ERROR_CORE` | The `E-mail` field contains an invalid address | The `E-mail` field contains an invalid address ||
 |#
 
 {% include [system errors](./../../../_includes/system-errors.md) %}

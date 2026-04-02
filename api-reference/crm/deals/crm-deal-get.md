@@ -4,9 +4,9 @@
 > 
 > Who can execute the method: any user with "read" access permission for deals
 
-{% note warning "Method Development Stopped" %}
+{% note warning "DEPRECATED" %}
 
-The method `crm.deal.get` continues to function, but there is a more relevant alternative [crm.item.get](../universal/crm-item-get.md).
+The development of this method has been halted. Please use [crm.item.get](../universal/crm-item-get.md).
 
 {% endnote %}
 
@@ -14,18 +14,18 @@ The method `crm.deal.get` returns a deal by its identifier.
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Parameter Note](../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** || 
 || **id***
-[`integer`](../../data-types.md) | Identifier of the deal.
+[`integer`](../../data-types.md) | The identifier of the deal.
 
 The identifier can be obtained using the methods [crm.deal.list](./crm-deal-list.md) or [crm.deal.add](./crm-deal-add.md) ||
 |#
 
-{% note tip "Related methods and topics" %}
+{% note tip "Related Methods and Topics" %}
 
 [{#T}](./recurring-deals/crm-deal-recurring-get.md)
 
@@ -33,7 +33,7 @@ The identifier can be obtained using the methods [crm.deal.list](./crm-deal-list
 
 ## Code Examples
 
-{% include [Note on examples](../../../_includes/examples.md) %}
+{% include [Example Note](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -62,22 +62,22 @@ The identifier can be obtained using the methods [crm.deal.list](./crm-deal-list
     ```js
     try
     {
-    	const response = await $b24.callMethod(
-    		'crm.deal.get',
-    		{
-    			id: 410,
-    		}
-    	);
-    	
-    	const result = response.getData().result;
-    	result.error()
-    		? console.error(result.error())
-    		: console.info(result)
-    	;
+        const response = await $b24.callMethod(
+            'crm.deal.get',
+            {
+                id: 410,
+            }
+        );
+        
+        const result = response.getData().result;
+        result.error()
+            ? console.error(result.error())
+            : console.info(result)
+        ;
     }
     catch( error )
     {
-    	console.error('Error:', error);
+        console.error('Error:', error);
     }
     ```
 
@@ -185,7 +185,7 @@ HTTP Status: **200**
         "IS_RETURN_CUSTOMER": "N",
         "IS_REPEATED_APPROACH": "N",
         "SOURCE_ID": "CALLBACK",
-        "SOURCE_DESCRIPTION": "Additional information about the source",
+        "SOURCE_DESCRIPTION": "Additional source information",
         "ORIGINATOR_ID": null,
         "ORIGIN_ID": null,
         "MOVED_BY_ID": "1",
@@ -218,24 +218,24 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`deal`](#deal) | Root element of the response. Contains information about the deal fields. The structure is described [below](#deal) ||
+[`deal`](#deal) | The root element of the response. Contains information about the deal fields. The structure is described [below](#deal) ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
-#### Type deal {#deal}
+#### Deal Type {#deal}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **ID**
-[`integer`](../../data-types.md) | Identifier of the deal ||
+[`integer`](../../data-types.md) | The identifier of the deal ||
 || **TITLE**
 [`string`](../../data-types.md) | Title ||
 || **TYPE_ID**
 [`crm_status`](../data-types.md) | String identifier of the deal type. 
 
-To learn more about the obtained deal type, you can use the method [crm.status.list](../status/crm-status-list.md), passing the filter:
+To learn more about the obtained deal type, you can use the method [crm.status.list](../status/crm-status-list.md) by passing the filter:
 
 ```
 {
@@ -245,11 +245,11 @@ To learn more about the obtained deal type, you can use the method [crm.status.l
 ```
 ||
 || **CATEGORY_ID**
-[`crm_category`](../data-types.md) | Funnel. To learn more about this funnel, you can use the method [crm.category.get](../universal/category/crm-category-get.md), passing `entityTypeId = 2` and `id = CATEGORY_ID` ||
+[`crm_category`](../data-types.md) | Sales Funnel. To learn more about this funnel, you can use the method [crm.category.get](../universal/category/crm-category-get.md) by passing `entityTypeId = 2` and `id = CATEGORY_ID` ||
 || **STAGE_ID**
 [`crm_status`](../data-types.md) | String identifier of the deal stage. 
 
-To learn more about the obtained stage, you can use the method [crm.status.list](../status/crm-status-list.md), passing the filter:
+To learn more about the obtained stage, you can use the method [crm.status.list](../status/crm-status-list.md) by passing the filter:
 
 ```
 {
@@ -301,7 +301,7 @@ where:
 || **COMPANY_ID**
 [`crm_company`](../data-types.md) | Identifier of the company. 
 
-To learn more about the company, you can use the method [crm.item.get](../universal/crm-item-get.md), passing `entityTypeId = 4` and `id = COMPANY_ID`
+To learn more about the company, you can use the method [crm.item.get](../universal/crm-item-get.md) by passing `entityTypeId = 4` and `id = COMPANY_ID`
 ||
 || **CONTACT_ID**
 [`crm_contact`](../data-types.md) | Identifier of the contact. Deprecated. 
@@ -310,7 +310,7 @@ To get a list of all contacts associated with the deal, use the method [crm.deal
 || **QUOTE_ID**
 [`crm_quote`](../data-types.md) | Identifier of the estimate based on which the deal was created. 
 
-To learn more about the estimate, you can use the method [crm.item.get](../universal/crm-item-get.md), passing `entityTypeId = 7` and `id = QUOTE_ID`
+To learn more about the estimate, you can use the method [crm.item.get](../universal/crm-item-get.md) by passing `entityTypeId = 7` and `id = QUOTE_ID`
 ||
 || **BEGINDATE**
 [`date`](../../data-types.md) | Start date ||
@@ -343,7 +343,7 @@ To learn more about the estimate, you can use the method [crm.item.get](../unive
 || **SOURCE_ID**
 [`crm_status`](../data-types.md) | Source. 
 
-To learn more about the obtained source, you can use the method [crm.status.list](../status/crm-status-list.md), passing the filter:
+To learn more about the obtained source, you can use the method [crm.status.list](../status/crm-status-list.md) by passing the filter:
 
 ```
 {
@@ -357,7 +357,7 @@ To learn more about the obtained source, you can use the method [crm.status.list
 || **LEAD_ID**
 [`crm_lead`](../data-types.md) | Identifier of the lead based on which the deal was created. 
 
-To learn more about the lead, you can use the method [crm.item.get](../universal/crm-item-get.md), passing `entityTypeId = 1` and `id = LEAD_ID`
+To learn more about the lead, you can use the method [crm.item.get](../universal/crm-item-get.md) by passing `entityTypeId = 1` and `id = LEAD_ID`
 ||
 || **ADDITIONAL_INFO**
 [`string`](../../data-types.md) | Additional information ||
@@ -366,7 +366,7 @@ To learn more about the lead, you can use the method [crm.item.get](../universal
 || **ORIGINATOR_ID**
 [`string`](../../data-types.md) | External source ||
 || **ORIGIN_ID**
-[`string`](../../data-types.md) | Identifier of the element in the external source ||
+[`string`](../../data-types.md) | Identifier of the item in the external source ||
 || **UTM_SOURCE**
 [`string`](../../data-types.md) | Advertising system ||
 || **UTM_MEDIUM**
@@ -374,23 +374,23 @@ To learn more about the lead, you can use the method [crm.item.get](../universal
 || **UTM_CAMPAIGN**
 [`string`](../../data-types.md) | Advertising campaign designation ||
 || **UTM_CONTENT**
-[`string`](../../data-types.md) | Content of the campaign ||
+[`string`](../../data-types.md) | Campaign content ||
 || **UTM_TERM**
-[`string`](../../data-types.md) | Search condition of the campaign ||
+[`string`](../../data-types.md) | Campaign search term ||
 || **LAST_ACTIVITY_TIME**
 [`datetime`](../../data-types.md) | Date of the last activity in the timeline ||
 || **LAST_ACTIVITY_BY**
 [`user`](../../data-types.md) | Author of the last activity in the timeline ||
 || **UF_CRM_...**
-[`any`](../../data-types.md) | User-defined fields. For example, `UF_CRM_25534736`. 
+[`any`](../../data-types.md) | Custom fields. For example, `UF_CRM_25534736`. 
 
-Depending on the portal settings, deals may have a set of user-defined fields of specific types. Read more in the section [about user-defined fields](./user-defined-fields/index.md) ||
+Depending on the portal settings, deals may have a set of custom fields of defined types. Read more in the section [about custom fields](./user-defined-fields/index.md) ||
 || **PARENT_ID_...**
 [`crm_entity`](../data-types.md) | Relationship fields. 
 
-If there are smart processes associated with deals on the portal, for each such smart process, there is a field that stores the relationship between this smart process and the deal. The field itself stores the identifier of the element of that smart process. 
+If there are smart processes associated with deals on the portal, there is a field for each such smart process that stores the relationship between this smart process and the deal. The field itself stores the identifier of the item of that smart process. 
 
-For example, the field `PARENT_ID_153` — relationship with the smart process `entityTypeId=153`, stores the identifier of the element of this smart process associated with the current deal ||
+For example, the field `PARENT_ID_153` — relationship with the smart process `entityTypeId=153`, stores the identifier of the item of this smart process associated with the current deal ||
 |#
 
 ## Error Handling

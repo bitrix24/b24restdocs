@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will fill it in shortly.
+Some data may be missing here — we will complete it shortly.
 
 {% endnote %}
 
@@ -10,7 +10,7 @@ Some data may be missing here — we will fill it in shortly.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- The page mentions the method crm.tracking.trace.add, which is not described anywhere in the documentation.
+- The method crm.tracking.trace.add is mentioned on this page, but it is not documented anywhere.
 
 {% endnote %}
 
@@ -18,19 +18,25 @@ Some data may be missing here — we will fill it in shortly.
 
 > Scope: [`crm`](../../../api-reference/scopes/permissions.md)
 >
-> Who can execute the method: users with administrative access permission to the CRM section.
+> Who can execute the method: users with administrative access to the CRM section.
+
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
 
 When creating CRM entities, there are three ways to transfer information for Sales Intelligence.
 
-## The Easiest Way
+## The Simplest Method
 
-Transfer the `UTM_SOURCE` field in the created entity's fields.
+Transfer the `UTM_SOURCE` field in the fields of the created entity.
 
-In this case, when the entity is created, if a configured source in Sales Intelligence with the same `UTM_SOURCE` is found, this source will be assigned to the entity, the corresponding icon will be displayed, and the entity will participate in the Sales Intelligence report.
+In this case, when the entity is created, if a configured source in Sales Intelligence with the same `UTM_SOURCE` is found, this source will be assigned to the entity, a corresponding icon will be displayed, and the entity will participate in the Sales Intelligence report.
 
 ## Complete Data
 
-Transfer the `TRACE` field in the created entity's fields.
+Transfer the `TRACE` field in the fields of the created entity.
 
 In this case, all data will be taken into account — device, all channels, including the website, and visited pages.
 
@@ -42,11 +48,11 @@ This method works for the following methods: [crm.lead.add](../../../api-referen
         "NAME": "test",
         "LAST_NAME": "",
         "TRACE": ...
-    },
+    }
 }
 ```
 
-The value of the `TRACE` field must be either the identifier of the saved Sales Intelligence record or a JSON string with an array of a specific format, which can be obtained by simply using the JS code of the Sales Intelligence widget in Bitrix24:
+The value of the `TRACE` field must be either the identifier of the saved Sales Intelligence record or a JSON string with an array of a specific format, which can be easily obtained using the JS code of the Bitrix24 Sales Intelligence widget:
 
 ```js
 b24Tracker.guest.getTrace()
@@ -63,9 +69,9 @@ crm.tracking.trace.add
 ?ENTITIES[0][TYPE]=CONTACT&ENTITIES[0][ID]=3215&ENTITIES[1][TYPE]=LEAD&ENTITIES[1][ID]=1&TRACE=
 ```
 
-The `TRACE` field is required, and the value is a string obtained by the method `b24Tracker.guest.getTrace`. See the example above.
+The `TRACE` field is required, and the value is a string obtained from the method `b24Tracker.guest.getTrace`. See the example above.
 
-The `ENTITIES` field is optional; it can list the entities that are linked to this trace:
+The `ENTITIES` field is optional; it can list the entities associated with this trace:
 
 ```js
 ENTITIES: [
@@ -82,9 +88,9 @@ ENTITIES: [
 
 ## One Trace for Related Entities
 
-If a package of related entities (deal + contact + company) is created, a single trace can be created for them. If the contact and company already exist, and only the deal is being created, a trace can be created and linked to the existing entities.
+If a package of related entities (deal + contact + company) is being created, a single trace can be created for them. If the contact and company already exist, and only the deal is being created, a trace can be created and linked to the existing entities.
 
-## Continue Learning
+## Continue Your Exploration
 
 - [Using Sales Intelligence When Creating a Lead](./use-analitics-for-add-lead.md)
 - [Using Sales Intelligence When Creating a Deal and Contact](./use-analitics-for-add-contact.md)

@@ -1,0 +1,7 @@
+﻿title: Events  
+href: index.md  
+items:  
+  - name: Overview of Events  
+    href: index.md  
+  - name: When Connecting an Automation Rule to a Chat  
+    href: on-imbot-join-chat.md

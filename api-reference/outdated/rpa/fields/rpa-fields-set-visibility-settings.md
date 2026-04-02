@@ -1,35 +1,41 @@
-# Change visibility settings for rpa.fields.setVisibilitySettings
+# Change Field Visibility Settings rpa.fields.setVisibilitySettings
 
 > Scope: [`rpa`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-The method updates the `visibility` settings of the `fields` for the process with the identifier `typeId` at the stage with the identifier `stageId`. Other settings remain unchanged.
+{% note warning "DEPRECATED" %}
 
-This method should be used when you need to change the visibility settings for only one type.
+The development of this method has been halted. Use [Smart scripts](../../../crm/universal/user-defined-object-types/index.md) as an alternative to this functionality.
+
+{% endnote %}
+
+This method updates the `visibility` settings of `fields` for the process with the identifier `typeId` at the stage with the identifier `stageId`. Other settings remain unchanged.
+
+The method should be used when you need to change the visibility settings for only one type.
 
 ## Method Parameters
 
-{% include [Footnote about parameters](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
-|| **typeId***  
+|| **typeId*** 
 [`integer`](../../../data-types.md) | Identifier of the process ||
-|| **visibility***  
-[`string`](../../../data-types.md) | Identifier of the visibility for which the settings are changed ||
-|| **stageId**  
+|| **visibility*** 
+[`string`](../../../data-types.md) | Identifier of the visibility for which the settings are being changed ||
+|| **stageId** 
 [`integer`](../../../data-types.md) | Identifier of the stage.
 
-Defaults to `0`, which means — general settings ||
-|| **fields***  
-[`array`](../../../data-types.md) | Array of fields for which the setting needs to be changed ||
+Defaults to `0`, which means general settings ||
+|| **fields*** 
+[`array`](../../../data-types.md) | Array of fields for which the settings need to be changed ||
 |#
 
 ## Code Examples
 
-{% include [Footnote about examples](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 

@@ -1,21 +1,20 @@
-# Get a list of VAT rates by filter crm.vat.list
+# Get a List of VAT Rates by Filter crm.vat.list
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-{% note warning "Method development has been halted" %}
+{% note warning "DEPRECATED" %}
 
-The method `crm.vat.list` continues to function, but there is a more current equivalent [catalog.vat.list](../../../catalog/vat/catalog-vat-list.md).
+The development of this method has been halted. Please use [catalog.vat.list](../../../catalog/vat/catalog-vat-list.md).
 
 {% endnote %}
 
-The method `crm.vat.list` returns a list of VAT rates based on a filter. 
-It is an implementation of the [list method](../../../../settings/how-to-call-rest-api/list-methods-pecularities.md) for VAT rates.
+The method `crm.vat.list` returns a list of VAT rates based on a filter. It is an implementation of the [list method](../../../../settings/how-to-call-rest-api/list-methods-pecularities.md) for VAT rates.
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../../_includes/required.md) %}
+{% include [Parameters Note](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -32,12 +31,12 @@ It is an implementation of the [list method](../../../../settings/how-to-call-re
 }
 ```
 
-- `field_n` — the name of the field by which the selection of rates will be sorted
-- `value_n` — a `string` value equal to:
-    - `ASC` — ascending sort
-    - `DESC` — descending sort
+- `field_n` — the name of the field by which the VAT rates will be sorted
+- `value_n` — a `string` value that can be:
+    - `ASC` — ascending order
+    - `DESC` — descending order
 
-The list of available fields for sorting can be found using the method [crm.vat.fields](./crm-vat-fields.md) ||
+The list of available fields for sorting can be obtained using the [crm.vat.fields](./crm-vat-fields.md) method ||
 || **filter** 
 [`object`](../../../data-types.md) | Object format:
 
@@ -50,18 +49,18 @@ The list of available fields for sorting can be found using the method [crm.vat.
 }
 ```
 
-- `field_n` — the name of the field by which the selection of elements will be filtered
+- `field_n` — the name of the field by which the elements will be filtered
 - `value_n` — the filter value
 
-The list of available fields for filtering can be found using the method [crm.vat.fields](./crm-vat-fields.md)
+The list of available fields for filtering can be obtained using the [crm.vat.fields](./crm-vat-fields.md) method
 ||
 || **select** 
-[`array`](../../../data-types.md) | Array of returned fields. If not specified, all fields are returned ||
+[`array`](../../../data-types.md) | An array of fields to return. If not specified, all fields will be returned ||
 |#
 
 ## Code Examples
 
-{% include [Note on examples](../../../../_includes/examples.md) %}
+{% include [Examples Note](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -88,7 +87,7 @@ The list of available fields for filtering can be found using the method [crm.va
 - JS
 
     ```js
-    // callListMethod: Retrieves all data at once. Use only for small selections (< 1000 items) due to high memory usage.
+    // callListMethod: Retrieves all data at once. Use only for small selections (< 1000 items) due to high memory load.
     
     try {
       const response = await $b24.callListMethod(
@@ -106,7 +105,7 @@ The list of available fields for filtering can be found using the method [crm.va
       console.error('Request failed', error)
     }
     
-    // fetchListMethod: Retrieves data in parts using an iterator. Use it for large data volumes to optimize memory usage.
+    // fetchListMethod: Retrieves data in chunks using an iterator. Use for large volumes of data for efficient memory consumption.
     
     try {
       const generator = $b24.fetchListMethod('crm.vat.list', { order: { ID: "ASC" }, filter: { ACTIVE: "Y" }, select: ["ID", "NAME", "RATE"] }, 'ID')
@@ -117,7 +116,7 @@ The list of available fields for filtering can be found using the method [crm.va
       console.error('Request failed', error)
     }
     
-    // callMethod: Manually controls pagination through the start parameter. Use it for precise control of request batches. For large datasets, it is less efficient than fetchListMethod.
+    // callMethod: Manual control of pagination through the start parameter. Use for precise control over request batches. Less efficient for large data than fetchListMethod.
     
     try {
       const response = await $b24.callMethod('crm.vat.list', { order: { ID: "ASC" }, filter: { ACTIVE: "Y" }, select: ["ID", "NAME", "RATE"] }, 0)
@@ -201,7 +200,7 @@ The list of available fields for filtering can be found using the method [crm.va
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -228,8 +227,8 @@ HTTP status: **200**
         "finish": 1752044697.66439,
         "duration": 0.0747671127319336,
         "processing": 0.00588679313659668,
-        "date_start": "2025-07-09T10:04:57+03:00",
-        "date_finish": "2025-07-09T10:04:57+03:00",
+        "date_start": "2025-07-09T10:04:57+02:00",
+        "date_finish": "2025-07-09T10:04:57+02:00",
         "operating_reset_at": 1752045297,
         "operating": 0
     }
@@ -253,12 +252,12 @@ The structure of the fields may change due to the `select` parameter ||
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {
     "error": "Inadmissible fields for selection",
-    "error_description": "Invalid fields for selection were provided."
+    "error_description": "Invalid fields were provided for selection."
 }
 ```
 
@@ -270,7 +269,7 @@ HTTP status: **400**
 || **Code** | **Description** | **Value** ||
 || `400`     | `The Commercial Catalog module is not installed.` | The catalog module is not installed ||
 || `400`     | `Access denied.` | No permission to perform the operation ||
-|| `400`     | `"Inadmissible fields for selection.` | Invalid fields for selection were provided ||
+|| `400`     | `"Inadmissible fields for selection.` | Invalid fields were provided for selection ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}
@@ -282,4 +281,3 @@ HTTP status: **400**
 - [{#T}](./crm-vat-add.md)
 - [{#T}](./crm-vat-update.md)
 - [{#T}](./crm-vat-delete.md) 
-

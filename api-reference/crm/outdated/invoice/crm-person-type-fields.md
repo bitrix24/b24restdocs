@@ -1,22 +1,22 @@
-# Get Fields for Payer Types crm.persontype.fields
+# Get Fields for CRM Payer Types crm.persontype.fields
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-{% note warning %}
+{% note warning "DEPRECATED" %}
 
-The method is deprecated. It is recommended to use [`Universal methods for invoices`](../../universal/invoice.md)
+Development of this method has been halted. Please use [Universal Methods for Invoices](../../universal/invoice.md).
 
 {% endnote %}
 
-The method returns a description of the fields for payer types.
+This method returns the description of fields for payer types.
 
-No parameters.
+No parameters required.
 
 ## Code Examples
 
-{% include [Note about examples](../../../../_includes/examples.md) %}
+{% include [Example Note](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -28,7 +28,7 @@ No parameters.
     -H "Accept: application/json" \
     -d '{}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.persontype.fields
-   ```
+    ```
 
 - cURL (OAuth)
 
@@ -45,17 +45,17 @@ No parameters.
     ```js
     try
     {
-    	const response = await $b24.callMethod(
-    		"crm.persontype.fields",
-    		{}
-    	);
-    	
-    	const result = response.getData().result;
-    	console.dir(result);
+        const response = await $b24.callMethod(
+            "crm.persontype.fields",
+            {}
+        );
+        
+        const result = response.getData().result;
+        console.dir(result);
     }
     catch( error )
     {
-    	console.error(error);
+        console.error(error);
     }
     ```
 

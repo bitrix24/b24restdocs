@@ -4,6 +4,12 @@
 >
 > Who can execute the method: users with administrative access to the CRM section
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 Example of automatically generating a lead editing form with all fields created in Bitrix24 on the application page.
 
 Some field types are not implemented in this example; a message *field not support* will be displayed in place of fields with unsupported types.
@@ -18,7 +24,7 @@ Generated form code:
 
 ```php
 <?php
-    $ID = intVal($_REQUEST['ID']);
+    $ID = intval($_REQUEST['ID']);
     class CPrintForm
     {
         /**
@@ -520,10 +526,10 @@ Generated form code:
     </script>
     <div class="container">
         <form id="auto_form" action="" enctype="multipart/form-data" method="post">
-            <?				if(!empty($arResult[ 'ITEM' ][ 'ID' ]))://for update entity
+            <?php				if(!empty($arResult[ 'ITEM' ][ 'ID' ]))://for update entity
                     ?>
                     <input type="hidden" name="form[ID]" value="<?= $arResult[ 'ITEM' ][ 'ID' ] ?>">
-                <?endif; ?>
+                <?php endif; ?>
             <h2>Standard fields</h2>
             <div class="row">
                 <?= $sResult ?>
@@ -539,7 +545,7 @@ Generated form code:
             </div>
         </form>
     </div>
-<?endif; ?>
+<?php endif; ?>
 ```
 
 Code for the **auto_form.php** file that saves the form:
@@ -630,7 +636,7 @@ Code for the **auto_form.php** file that saves the form:
             }
         }
     }
-    $arForm['ID'] = intVal($arForm['ID']);
+    $arForm['ID'] = intval($arForm['ID']);
     if($arForm['ID'] > 0)
     {
         $method = 'crm.lead.update';

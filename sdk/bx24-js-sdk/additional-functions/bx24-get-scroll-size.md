@@ -1,30 +1,51 @@
 # Get Frame Dimensions BX24.getScrollSize
 
-{% note warning "We are still updating this page" %}
-
-Some data may be missing here — we will complete it soon.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not deployed to prod_" %}
-
-- examples are missing
-- success response is missing
-- error response is missing
-
-{% endnote %}
-
-{% endif %}
+The method `BX24.getScrollSize` returns the dimensions of the current frame's content as an object with the fields `scrollWidth` and `scrollHeight`.
 
 ```js
 Object BX24.getScrollSize()
 ```
 
-The function `BX24.getScrollSize` will return the internal dimensions of the application frame as an object with the fields **scrollWidth** and **scrollHeight**. The returned values may depend not only on the frame size but also on the application's layout.
+## Parameters
 
-## See also:
+No parameters.
 
-- [BX24.resizeWindow](./bx24-resize-window.md)
-- [BX24.fitWindow](./bx24-fit-window.md)
+## Code Example
+
+```js
+BX24.init(function () {
+    const size = BX24.getScrollSize();
+    console.log(size.scrollWidth, size.scrollHeight);
+});
+```
+
+{% include [Footnote on examples](../../../_includes/examples.md) %}
+
+## Response Handling
+
+The method synchronously returns an object containing the dimensions of the content.
+
+### Returned Data
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`object`](../../../api-reference/data-types.md) | An object with the dimensions of the frame's content [(detailed description)](#result) ||
+|#
+
+### Object result {#result}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **scrollWidth**
+[`integer`](../../../api-reference/data-types.md) | The width of the frame's content in pixels ||
+|| **scrollHeight**
+[`integer`](../../../api-reference/data-types.md) | The height of the frame's content in pixels ||
+|#
+
+## Continue Learning
+
+- [{#T}](./bx24-resize-window.md)
+- [{#T}](./bx24-fit-window.md)

@@ -1,14 +1,20 @@
-# Set Full Visibility Settings for Fields rpa.fields.setSettings
+# Set Full Visibility Settings for rpa.fields.setSettings
 
 > Scope: [`rpa`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
+{% note warning "DEPRECATED" %}
+
+Development of this method has been halted. Use [Smart scripts](../../../crm/universal/user-defined-object-types/index.md) as an alternative to this functionality.
+
+{% endnote %}
+
 This method sets the full visibility settings for fields at the stage with the identifier `stageId` of the process with the identifier `typeId`.
 
 ## Method Parameters
 
-{% include [Footnote about parameters](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -18,7 +24,7 @@ This method sets the full visibility settings for fields at the stage with the i
 || **stageId** 
 [`number`](../../../data-types.md) | Identifier of the stage.
 
-Defaults to `0`, which means — general settings ||
+Defaults to `0`, meaning — general settings ||
 || **fields*** 
 [`object`](../../../data-types.md) | Array with field visibility settings.
 
@@ -27,44 +33,42 @@ If an empty `fields` is passed, all settings will be cleared ||
 
 ## Code Examples
 
-{% include [Footnote about examples](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
 - JS
 
-
     ```js
     try
     {
-    	const response = await $b24.callMethod(
-    		'rpa.comment.add',
-    		{
-    			"typeId": 1,
-    			"fields": {
-    				"kanban": [
-    					"createdBy",
-    					"UF_RPA_1_NAME"
-    				]
-    			}
-    		}
-    	);
-    	
-    	const result = response.getData().result;
-    	console.log('response', result.answer);
-    	if(result.error())
-    		alert("Error: " + result.error());
-    	else
-    		console.log(result);
+        const response = await $b24.callMethod(
+            'rpa.comment.add',
+            {
+                "typeId": 1,
+                "fields": {
+                    "kanban": [
+                        "createdBy",
+                        "UF_RPA_1_NAME"
+                    ]
+                }
+            }
+        );
+        
+        const result = response.getData().result;
+        console.log('response', result.answer);
+        if(result.error())
+            alert("Error: " + result.error());
+        else
+            console.log(result);
     }
     catch( error )
     {
-    	console.error('Error:', error);
+        console.error('Error:', error);
     }
     ```
 
 - PHP
-
 
     ```php
     try {
@@ -120,7 +124,7 @@ If an empty `fields` is passed, all settings will be cleared ||
             if(result.error())
                 alert("Error: " + result.error());
             else
-            console.log(result.data());
+                console.log(result.data());
         }
     )
     ```

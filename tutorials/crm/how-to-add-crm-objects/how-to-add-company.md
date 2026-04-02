@@ -1,16 +1,22 @@
-# Add a Company via Web Form
+# Adding a Company via Web Form
 
 > Scope: [`crm`](../../../api-reference/scopes/permissions.md)
 >
-> Who can execute the method: users with permission to create companies in CRM
+> Who can execute the method: users with the permission to create companies in CRM
 
-You can place a form on the site to collect client data. When a client fills out the form, their data will be sent to CRM, and you will be able to process the request.
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
+You can place a form on your website to collect client data. When a client fills out the form, their information will be sent to the CRM, allowing you to process the request.
 
 Setting up the form consists of two steps.
 
 1. Place the form on an HTML page. It will send data to the handler.
 
-2. Create a file to process the data. The handler will accept and prepare the data, and then create a company using the method [crm.company.add](../../../api-reference/crm/companies/crm-company-add.md).
+2. Create a file to process the data. The handler will accept and prepare the data, then create a company using the [crm.company.add](../../../api-reference/crm/companies/crm-company-add.md) method.
 
 ## 1. Creating the Web Form
 
@@ -22,12 +28,12 @@ Let's create a web form on the website page with three fields:
 
 -  `PHONE` — phone number.
 
-When submitted, the form sends data to the handler `form.php`.
+Upon submission, the form sends data to the handler `form.php`.
 
 ```html
 <form id="form_to_crm" method="POST" action="form.php">
     <!-- Company name (required field) -->
-    <input type="text" name="TITLE" placeholder="Company name" required>
+    <input type="text" name="TITLE" placeholder="Company Name" required>
     
     <!-- Email address -->
     <input type="text" name="EMAIL" placeholder="Email">
@@ -67,19 +73,19 @@ When submitted, the form sends data to the handler `form.php`.
 
 ## 2. Creating the Form Handler
 
-To process the values from the form fields and add a company to CRM, we will create the handler `form.php`.
+To process the values from the form fields and add a company to the CRM, we will create the handler `form.php`.
 
-To add a company, we will use the method [crm.company.add](../../../api-reference/crm/companies/crm-company-add.md). In the `fields` object, we pass the fields:
+To add a company, we will use the [crm.company.add](../../../api-reference/crm/companies/crm-company-add.md) method. In the `fields` object, we will pass the fields:
 
 -  `TITLE` — company name,
 
--  `COMPANY_TYPE` — type of company. We specify `CUSTOMER`, as only clients of the company fill out the form,
+-  `COMPANY_TYPE` — company type. We specify `CUSTOMER`, as only clients of the company fill out the form,
 
 -  `PHONE` — phone number,
 
 -  `EMAIL` — email address.
 
-The values for `TITLE`, `PHONE`, and `EMAIL` are obtained from the form. The system stores phone and email as an array of objects [crm_multifield](../../../api-reference/crm/data-types.md#crm_multifield), so they need to be formatted as an array.
+The values for `TITLE`, `PHONE`, and `EMAIL` are obtained from the form. The system stores the phone and email as an array of objects [crm_multifield](../../../api-reference/crm/data-types.md#crm_multifield), so they need to be formatted as an array.
 
 1. If a value exists, we add it as the first element `VALUE` in the array, and the second value specifies the type `VALUE_TYPE`, for example:
 
@@ -91,7 +97,7 @@ The values for `TITLE`, `PHONE`, and `EMAIL` are obtained from the form. The sys
 
 {% note warning "" %}
 
-Check which required fields are set for companies in your Bitrix24. All required fields must be passed to the method [crm.company.add](../../../api-reference/crm/companies/crm-company-add.md).
+Check which required fields are set for companies in your Bitrix24. All required fields must be passed to the [crm.company.add](../../../api-reference/crm/companies/crm-company-add.md) method.
 
 {% endnote %}
 

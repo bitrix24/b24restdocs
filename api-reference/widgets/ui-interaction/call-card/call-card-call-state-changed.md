@@ -1,68 +1,78 @@
-# Event of Call Status Change CallCard::CallStateChanged
-
-{% note warning "We are still updating this page" %}
-
-Some data may be missing here — we will complete it soon.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not deployed to prod_" %}
-
-- clarify permissions and scope
-- added a custom block "Event Subscription"
-- custom block "What the handler receives"
-
-{% endnote %}
-
-{% endif %}
+# Call Status Change Event CallCard::CallStateChanged
 
 > Scope: [`telephony`](../../../scopes/permissions.md)
 >
-> Who can subscribe: `any user`
+> Who can subscribe: any user
 
-The event `CallCard::CallStateChanged` occurs when the status of the current call changes.
+The event `CallCard::CallStateChanged` is triggered when the status of the current call changes.
+
+{% note info "" %}
+
+The event operates within the context of the application in the `CALL_CARD` placement.
+
+{% endnote %}
 
 ## What the handler receives
 
-The specified arguments are passed to the handler.
+Data is passed to the callback `BX24.placement.bindEvent` {.b24-info}
+
+```js
+callback(
+    "idle",
+    {
+        "failedCode": "486"
+    }
+);
+```
+
+## Event handler parameters
 
 {% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Parameter**
 `type` | **Description** ||
-|| **PHONE_NUMBER***
-[`callState`](../../../data-types.md) |  Current state of the call (`idle`, `connecting`, `connected`) ||
+|| **callState***
+[`string`](../../../data-types.md) | The current state of the call.
+
+Possible values:
+
+- `idle` — no connection
+- `connecting` — connection is being established
+- `connected` — connection established ||
 || **additionalParams**
-[`object`](../../../data-types.md) | Object with additional fields ||
+[`object`](../../../data-types.md) | Additional data [(detailed description)](#additional_params) ||
 |#
 
-### Parameter data[]
+### Parameter additionalParams{#additional_params}
 
 #|
 || **Parameter**
 `type` | **Description** ||
 || **failedCode**
-[`string`](../../../data-types.md) | Call completion code. Passed only in case of an unsuccessful call completion when transitioning to the `idle` state ||
+[`string`](../../../data-types.md) | Call termination code. Passed only on unsuccessful termination when `callState = idle` ||
 |#
 
-## Event Subscription
+## Subscription parameters for the event
+
+{% include [Note on required parameters](../../../../_includes/required.md) %}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **PLACEMENT***
+[`string`](../../../data-types.md) | The name of the interface event.
+
+For this event — `CallCard::CallStateChanged` ||
+|| **HANDLER***
+[`string`](../../../data-types.md) | URL of the event handler for calling `placement.bindEvent` ||
+|#
+
+## Code examples
 
 {% include [Note on examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
-
-- cURL (Webhook)
-
-    ```bash
-    curl -X POST \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json" \
-    -d '{"PLACEMENT":"CallCard::CallStateChanged","HANDLER":"**your_handler_url_here**"}' \
-    "https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/placement.bindEvent"
-    ```
 
 - cURL (OAuth)
 
@@ -77,12 +87,62 @@ The specified arguments are passed to the handler.
 - JS
 
     ```js
-    BX24.placement.bindEvent("CallCard::CallStateChanged", function (callState) {
-        console.log(callState);
+    BX24.placement.bindEvent('CallCard::CallStateChanged', function (callState, additionalParams) {
+        console.log(callState, additionalParams);
     });
     ```
 
 - PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'placement.bindEvent',
+                [
+                    'PLACEMENT' => 'CallCard::CallStateChanged',
+                    'HANDLER' => '**your_handler_url_here**'
+                ]
+            );
+
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+
+        echo 'Success: ' . print_r($result, true);
+        processData($result);
+
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
+    BX24.callMethod(
+        'placement.bindEvent',
+        {
+            PLACEMENT: 'CallCard::CallStateChanged',
+            HANDLER: '**your_handler_url_here**'
+        },
+        function(result)
+        {
+            if (result.error())
+            {
+                console.error(result.error(), result.error_description());
+            }
+            else
+            {
+                console.log(result.data());
+            }
+        }
+    );
+    ```
+
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -102,7 +162,7 @@ The specified arguments are passed to the handler.
 
 {% endlist %}
 
-## Continue Learning
+## Continue your exploration
 
 - [{#T}](./get-status.md)
 - [{#T}](./disable-auto-close.md)

@@ -8,13 +8,13 @@ This method updates an existing custom field of a requisite.
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`](../../../data-types.md) | Identifier of the custom field. Can be obtained using the method [crm.requisite.userfield.list](./crm-requisite-userfield-list.md) ||
+[`integer`](../../../data-types.md) | Identifier of the custom field. It can be obtained using the method [crm.requisite.userfield.list](./crm-requisite-userfield-list.md) ||
 || **fields***
 [`object`](../../../data-types.md) | Set of fields — an object of the form `{"field": "value"[, ...]}`, the values of which need to be changed ||
 |#
@@ -25,7 +25,7 @@ This method updates an existing custom field of a requisite.
 || **Name**
 `type` | **Description** ||
 || **XML_ID**
-[`string`](../../../data-types.md) | External key. Used for data exchange operations. Identifier of the object in the external information base. 
+[`string`](../../../data-types.md) | External key. Used for exchange operations. Identifier of the object in the external information base. 
 
 The purpose of the field may change by the final developer ||
 || **SORT**
@@ -41,14 +41,14 @@ The purpose of the field may change by the final developer ||
 - `N` — no 
 ||
 || **SHOW_FILTER**
-[`char`](../../../data-types.md) | Show in the list filter. Possible values:
+[`char`](../../../data-types.md) | Whether to show in the list filter. Possible values:
 - `N` — do not show
 - `I` — exact match
 - `E` — mask
 - `S` — substring 
 ||
 || **SHOW_IN_LIST**
-[`char`](../../../data-types.md) | Show in the list. Possible values:
+[`char`](../../../data-types.md) | Whether to show in the list. Possible values:
 - `Y` — yes
 - `N` — no 
 ||
@@ -58,7 +58,7 @@ The purpose of the field may change by the final developer ||
 - `N` — no 
 ||
 || **IS_SEARCHABLE**
-[`char`](../../../data-types.md) | Are the field values included in the search. Possible values:
+[`char`](../../../data-types.md) | Whether the field values participate in search. Possible values:
 - `Y` — yes
 - `N` — no 
 ||
@@ -73,14 +73,14 @@ The purpose of the field may change by the final developer ||
 || **HELP_MESSAGE**
 [`string`](../../../data-types.md) | Help ||
 || **LIST**
-[`uf_enum_element`](../../../data-types.md) | List elements. For detailed information, see the section [{#T}](../../universal/user-defined-fields/crm-userfield-enumeration-fields.md) ||
+[`uf_enum_element`](../../../data-types.md) | List elements. For more details, see the section [{#T}](../../universal/user-defined-fields/crm-userfield-enumeration-fields.md) ||
 || **SETTINGS**
-[`object`](../../../data-types.md) | Additional settings (depend on the type). For detailed information, see the section [{#T}](../../universal/user-defined-fields/crm-userfield-settings-fields.md) ||
+[`object`](../../../data-types.md) | Additional settings (dependent on type). For more details, see the section [{#T}](../../universal/user-defined-fields/crm-userfield-settings-fields.md) ||
 |#
 
 ## Code Examples
 
-{% include [Note on examples](../../../../_includes/examples.md) %}
+{% include [Note on Examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -109,25 +109,25 @@ The purpose of the field may change by the final developer ||
     ```js
     try
     {
-    	const response = await $b24.callMethod(
-    		"crm.requisite.userfield.update",
-    		{
-    			id: 235,
-    			fields:
-    			{
-    				"EDIT_FORM_LABEL": title,
-    				"LIST_COLUMN_LABEL": title,
-    				"LIST_FILTER_LABEL": title
-    			}
-    		}
-    	);
-    	
-    	const result = response.getData().result;
-    	console.info(result);
+        const response = await $b24.callMethod(
+            "crm.requisite.userfield.update",
+            {
+                id: 235,
+                fields:
+                {
+                    "EDIT_FORM_LABEL": title,
+                    "LIST_COLUMN_LABEL": title,
+                    "LIST_FILTER_LABEL": title
+                }
+            }
+        );
+        
+        const result = response.getData().result;
+        console.info(result);
     }
     catch( error )
     {
-    	console.error(error);
+        console.error(error);
     }
     ```
 
@@ -223,7 +223,7 @@ The purpose of the field may change by the final developer ||
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -246,17 +246,17 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../../data-types.md) | Result of updating the custom field of the requisite:
+[`boolean`](../../../data-types.md) | Result of updating the custom field:
 - true — updated
 - false — not updated 
 ||
 || **time**
-[`time`](../../../data-types.md) | Information about the execution time of the request ||
+[`time`](../../../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-HTTP status: **40x**, **50x**
+HTTP Status: **40x**, **50x**
 
 ```json
 {
@@ -265,7 +265,7 @@ HTTP status: **40x**, **50x**
 }
 ```
 
-{% include notitle [error handling](../../../../_includes/error-info.md) %}
+{% include notitle [Error Handling](../../../../_includes/error-info.md) %}
 
 ### Possible Errors
 
@@ -274,12 +274,12 @@ HTTP status: **40x**, **50x**
 || Empty string | `Operation is not allowed. Entity ID is not defined` | Custom field with the specified identifier not found ||
 || Empty string | `The entity with ID '235' is not found` | Custom field with the specified identifier not found ||
 || Empty string | `ID is not defined or invalid` | Identifier of the custom field is not specified or has an invalid value ||
-|| Empty string | `Access denied` | Insufficient access permissions to modify the custom field ||
-|| `ERROR_CORE` | `Fail to update user field` |  Failed to update the custom field ||
+|| Empty string | `Access denied` | Insufficient access rights to modify the custom field ||
+|| `ERROR_CORE` | `Fail to update user field` | Failed to update the custom field ||
 || `ERROR_CORE` | `Fail to save enumeration field values` | Failed to save values of the custom list-type field (e.g., when a duplicate external key of one of the values occurred) ||
 |#
 
-{% include [system errors](../../../../_includes/system-errors.md) %}
+{% include [System Errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

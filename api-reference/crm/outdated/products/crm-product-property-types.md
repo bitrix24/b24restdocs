@@ -1,12 +1,12 @@
-# Get a list of product property types crm.product.property.types
+# Get a List of Product Property Types crm.product.property.types
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-{% note warning "Method development has been halted" %}
+{% note warning "DEPRECATED" %}
 
-The method `crm.product.property.types` is still operational, but there is a more relevant alternative [catalog.productPropertyFeature.*](../../../catalog/product-property-feature/index.md).
+The development of this method has been halted. Please use [catalog.productPropertyFeature.*](../../../catalog/product-property-feature/index.md).
 
 {% endnote %}
 
@@ -16,7 +16,7 @@ No parameters required.
 
 ## Code Examples
 
-{% include [Note on examples](../../../../_includes/examples.md) %}
+{% include [Examples Note](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 

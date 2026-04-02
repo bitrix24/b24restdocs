@@ -1,16 +1,22 @@
-# Get available fields of crm.measure.fields
+# Get Available Fields of crm.measure.fields
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-The method returns a description of the fields for measurement units.
+{% note warning "DEPRECATED" %}
 
-No parameters.
+The development of this method has been halted. Please use [catalog.measure.getFields](../../../catalog/measure/catalog-measure-get-fields.md).
+
+{% endnote %}
+
+This method returns a description of the fields for measurement units.
+
+No parameters required.
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../../_includes/examples.md) %}
+{% include [Examples Note](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -122,7 +128,7 @@ No parameters.
 
 ## Returned Fields
 
-#|
+#| 
 || **Field**
 `type` | **Description** | **Note** ||
 || **CODE** 

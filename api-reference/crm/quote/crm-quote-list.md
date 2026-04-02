@@ -4,9 +4,9 @@
 >
 > Who can execute the method: a user with "read" access permission for estimates
 
-{% note warning "Method Development Halted" %}
+{% note warning "DEPRECATED" %}
 
-The method `crm.quote.list` continues to function, but there is a more current equivalent, [crm.item.list](../universal/crm-item-list.md).
+Development of this method has been halted. Please use [crm.item.list](../universal/crm-item-list.md).
 
 {% endnote %}
 
@@ -28,7 +28,7 @@ You can use masks for selection:
 - `'*'` — to select all standard fields (excluding custom and multiple fields),
 - `'UF_*'` — to select all custom fields.
 
-You can retrieve the list of available fields for selection using the method [crm.quote.fields](./crm-quote-fields.md).
+A list of available fields for selection can be obtained using the [crm.quote.fields](./crm-quote-fields.md) method.
 
 By default, all standard fields and custom fields are returned (`'*'` + `'UF_*'`) ||
 || **filter**
@@ -50,7 +50,7 @@ The filter key format: `<operator><field>`.
 Example: `>=DATE_CREATE`, `@ASSIGNED_BY_ID`, `=%TITLE`.
 
 Supported operators:
-- `=` — equals (exact match, used by default)
+- `=` — equal (exact match, used by default)
 - `!=` — not equal
 - `!` — not equal
 - `>` — greater than
@@ -64,11 +64,11 @@ Supported operators:
 - `%=` — LIKE (similar to `=%`)
 
 For `LIKE`:
-- `=%TITLE: "%fur"` — substring anywhere
-- `=%TITLE: "fur%"` — starts with `fur`
-- `=%TITLE: "%fur"` — ends with `fur`
+- `=%TITLE: "%meb"` — substring anywhere
+- `=%TITLE: "meb%"` — starts with `meb`
+- `=%TITLE: "%meb"` — ends with `meb`
 
-You can retrieve the list of available fields for filtering using the method [crm.quote.fields](./crm-quote-fields.md) ||
+A list of available fields for filtering can be obtained using the [crm.quote.fields](./crm-quote-fields.md) method ||
 || **order**
 [`object`](../data-types.md) | An object in the format:
 
@@ -85,7 +85,7 @@ where:
   - `ASC` — ascending,
   - `DESC` — descending.
 
-You can retrieve the list of available fields for sorting using the method [crm.quote.fields](./crm-quote-fields.md).
+A list of available fields for sorting can be obtained using the [crm.quote.fields](./crm-quote-fields.md) method.
 
 When sorting by `STATUS_ID`, the internal field `STATUS_SORT` is used ||
 || **start**
@@ -106,7 +106,7 @@ Select estimates:
 - for the company with `COMPANY_ID = 1`,
 - with the stage `SENT`,
 - sorted by stage and ID,
-- with selected fields: `ID`, `TITLE`, `STATUS_ID`, `OPPORTUNITY`, `CURRENCY_ID`, `ASSIGNED_BY_ID`.
+- selecting fields: `ID`, `TITLE`, `STATUS_ID`, `OPPORTUNITY`, `CURRENCY_ID`, `ASSIGNED_BY_ID`.
 
 {% list tabs %}
 
@@ -294,10 +294,10 @@ HTTP Status: **200**
     "result": [
         {
             "ID": "9",
-            "TITLE": "The latest version of our product",
+            "TITLE": "Latest version of our product",
             "STATUS_ID": "SENT",
             "OPPORTUNITY": "45000.00",
-            "CURRENCY_ID": "EUR",
+            "CURRENCY_ID": "USD",
             "ASSIGNED_BY_ID": "7"
         },
         {
@@ -305,7 +305,7 @@ HTTP Status: **200**
             "TITLE": "Estimate for furniture supply",
             "STATUS_ID": "SENT",
             "OPPORTUNITY": "150000.00",
-            "CURRENCY_ID": "EUR",
+            "CURRENCY_ID": "USD",
             "ASSIGNED_BY_ID": "1"
         }
     ],
@@ -357,8 +357,8 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `-` | `Parameter 'order' must be array.` | The `order` parameter is not an object ||
-|| `-` | `Parameter 'filter' must be array.` | The `filter` parameter is not an object ||
+|| `-` | `Parameter 'order' must be array.` | An object was not passed in `order` ||
+|| `-` | `Parameter 'filter' must be array.` | An object was not passed in `filter` ||
 || `-` | `Access denied.` | The user does not have permission to read estimates ||
 || `-` | `Failed to get list. General error.` | General error executing the request ||
 |#

@@ -1,10 +1,10 @@
-# Attach Files to Task tasks.task.file.attach
+# Attach Files to a Task tasks.task.file.attach
 
-> Scope: [`task`](../../scopes/permissions.md)
+> Scope: [`tasks`](../../scopes/permissions.md)
 >
 > Who can execute the method: task Creator or a user with edit access to the task
 
-The method `tasks.task.file.attach` adds files from Disk to a task. The user must have read access or higher to the file.
+The method `tasks.task.file.attach` adds files from Drive to a task. The user must have read access to the file or higher.
 
 ## Method Parameters
 
@@ -18,7 +18,7 @@ The method `tasks.task.file.attach` adds files from Disk to a task. The user mus
 
 The task identifier can be obtained when [creating a new task](./tasks-task-add.md) or by using the old method of [getting the task list](../../tasks/tasks-task-list.md) ||
 || **fileIds***
-[`array<integer>`](../../data-types.md) | An array of file identifiers from Disk.
+[`array<integer>`](../../data-types.md) | An array of file identifiers from Drive.
 
 File identifiers can be obtained in two ways.
 
@@ -26,7 +26,7 @@ Use one of the file upload methods:
   - [disk.storage.uploadfile](../../disk/storage/disk-storage-upload-file.md)
   - [disk.folder.uploadfile](../../disk/folder/disk-folder-upload-file.md)
 
-Use one of the file list retrieval methods:
+Use one of the methods to get the list of files:
   - [disk.storage.getchildren](../../disk/storage/disk-storage-get-children.md)
   - [disk.folder.getchildren](../../disk/folder/disk-folder-get-children.md) ||
 |#
@@ -37,7 +37,7 @@ Use one of the file list retrieval methods:
 
 {% note info "" %}
 
-The call to the new API differs by the addition of the `/api/` parameter in the request:
+The new API call differs by the addition of the `/api/` parameter in the request:
 
 `https://{installation_address}/rest/api/{user_id}/{webhook_token}/tasks.task.file.attach`
 
@@ -67,7 +67,7 @@ The call to the new API differs by the addition of the `/api/` parameter in the 
 
 - JS
 
-    The SDK does not yet support calls to the address /rest/api/. Use direct HTTP requests, for example, via curl or fetch.
+    The SDK does not currently support calls to the address /rest/api/. Use direct HTTP requests, for example, via curl or fetch.
 
     ```javascript
     try
@@ -93,7 +93,7 @@ The call to the new API differs by the addition of the `/api/` parameter in the 
 
 - PHP
 
-    The SDK does not yet support calls to the address /rest/api/. Use direct HTTP requests, for example, via curl or fetch.
+    The SDK does not currently support calls to the address /rest/api/. Use direct HTTP requests, for example, via curl or fetch.
 
     ```php
     try {
@@ -122,7 +122,7 @@ The call to the new API differs by the addition of the `/api/` parameter in the 
 
 - BX24.js
 
-    The SDK does not yet support calls to the address /rest/api/. Use direct HTTP requests, for example, via curl or fetch.
+    The SDK does not currently support calls to the address /rest/api/. Use direct HTTP requests, for example, via curl or fetch.
 
     ```js
     BX24.callMethod(
@@ -140,7 +140,7 @@ The call to the new API differs by the addition of the `/api/` parameter in the 
 
 - PHP CRest
 
-    The SDK does not yet support calls to the address /rest/api/. Use direct HTTP requests, for example, via curl or fetch.
+    The SDK does not currently support calls to the address /rest/api/. Use direct HTTP requests, for example, via curl or fetch.
 
     ```php
     require_once('crest.php');
@@ -192,7 +192,7 @@ HTTP Status: **200**
 
 Contains an object with the key `result` and the value `true` if the file was successfully attached ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the execution time of the request ||
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -203,10 +203,10 @@ HTTP Status: **400**
 {
     "error": {
         "code": "BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION",
-        "message": "Error during request object validation",
+        "message": "Error validating the request object",
         "validation": [
             {
-                "message": "Required field `taskId` is missing",
+                "message": "The required field `taskId` is missing",
                 "field": "taskId"
             }
         ]
@@ -225,8 +225,8 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION`
 #|
 || **Field** | **Error Description** | **How to Fix** ||
 || `taskId`
-`fileIds` | Required field `#FIELD#` is missing | Add the specified field to the request body ||
-|| `#FIELD#` | Field `#FIELD#` requires data type `#TYPE#` for this request | Ensure that the provided value is of the correct type ||
+`fileIds` | The required field `#FIELD#` is missing | Add the specified field to the request body ||
+|| `#FIELD#` | The field `#FIELD#` requires data type `#TYPE#` for this request | Ensure the provided value is of the correct type ||
 || — | Insufficient permissions | No access to the specified file or task ||
 |#
 

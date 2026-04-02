@@ -1,16 +1,16 @@
-# Get Lead Fields crm.lead.fields
+# Get CRM Lead Fields `crm.lead.fields`
 
 > Scope: [`crm`](../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-{% note warning "Method Development Stopped" %}
+{% note warning "DEPRECATED" %}
 
-The method `crm.lead.fields` continues to function, but there is a more relevant alternative [crm.item.fields](../universal/crm-item-fields.md).
+The development of this method has been halted. Please use [crm.item.fields](../universal/crm-item-fields.md).
 
 {% endnote %}
 
-The method `crm.lead.fields` returns the description of lead fields, including custom ones. A table with the description of standard fields can be found in the article [Fields of Main CRM Entities](../main-entities-fields.md).
+The method `crm.lead.fields` returns a description of lead fields, including custom fields. A table with descriptions of standard fields can be found in the article [Fields of Main CRM Entities](../main-entities-fields.md).
 
 ## Method Parameters
 
@@ -47,58 +47,57 @@ No parameters.
     ```js
     try
     {
-    	const response = await $b24.callMethod(
-    		'crm.lead.fields',
-    		{}
-    	);
-    	
-    	const result = response.getData().result;
-    	console.info(result);
+        const response = await $b24.callMethod(
+            'crm.lead.fields',
+            {}
+        );
+        
+        const result = response.getData().result;
+        console.info(result);
     }
     catch( error )
     {
-    	console.error(error);
+        console.error(error);
     }
     ```
 
 - PHP
 
-  ```php      
-  try {
-      $fieldsResult = $serviceBuilder
-          ->getCRMScope()
-          ->lead()
-          ->fields();
-      $fieldsDescription = $fieldsResult->getFieldsDescription();
-      // Assuming you want to print the fields description
-      print_r($fieldsDescription);
-  } catch (Throwable $e) {
-      print("Error: " . $e->getMessage());
-  }
-  ```
+    ```php      
+    try {
+        $fieldsResult = $serviceBuilder
+            ->getCRMScope()
+            ->lead()
+            ->fields();
+        $fieldsDescription = $fieldsResult->getFieldsDescription();
+        // Assuming you want to print the fields description
+        print_r($fieldsDescription);
+    } catch (Throwable $e) {
+        print("Error: " . $e->getMessage());
+    }
+    ```
 
 - BX24.js
 
     ```javascript 
     BX24.callMethod(
-      'crm.lead.fields',
-      {},
-      (result) => {
-        if(result.error())
-        {
-          console.error(result.error());
-  
-          return;
+        'crm.lead.fields',
+        {},
+        (result) => {
+            if(result.error())
+            {
+                console.error(result.error());
+                return;
+            }
+            
+            console.info(result.data());
         }
-        
-        console.info(result.data());
-      }
     );
     ```
 
 - PHP CRest
 
-   ```php
+    ```php
     require_once('crest.php');
 
     $result = CRest::call(
@@ -109,13 +108,13 @@ No parameters.
     echo '<PRE>';
     print_r($result);
     echo '</PRE>';
-  ```
+    ```
 
 {% endlist %}
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -210,7 +209,7 @@ HTTP status: **200**
       "isImmutable": false,
       "isMultiple": false,
       "isDynamic": false,
-      "title": "Additional Source Information"
+      "title": "Source Description"
     },
     "STATUS_ID": {
       "type": "crm_status",
@@ -229,7 +228,7 @@ HTTP status: **200**
       "isImmutable": false,
       "isMultiple": false,
       "isDynamic": false,
-      "title": "Additional Stage Information"
+      "title": "Stage Description"
     },
     "STATUS_SEMANTIC_ID": {
       "type": "string",
@@ -373,7 +372,7 @@ HTTP status: **200**
       "isImmutable": false,
       "isMultiple": false,
       "isDynamic": false,
-      "title": "Comment"
+      "title": "Comments"
     },
     "HAS_PHONE": {
       "type": "char",
@@ -400,7 +399,7 @@ HTTP status: **200**
       "isImmutable": false,
       "isMultiple": false,
       "isDynamic": false,
-      "title": "Open Channel Provided"
+      "title": "Open Line Assigned"
     },
     "ASSIGNED_BY_ID": {
       "type": "user",
@@ -521,7 +520,7 @@ HTTP status: **200**
       "isImmutable": false,
       "isMultiple": false,
       "isDynamic": false,
-      "title": "External Source ID"
+      "title": "External Source"
     },
     "ORIGIN_ID": {
       "type": "string",
@@ -530,7 +529,7 @@ HTTP status: **200**
       "isImmutable": false,
       "isMultiple": false,
       "isDynamic": false,
-      "title": "Element ID in External Source"
+      "title": "Identifier in External Source"
     },
     "UTM_SOURCE": {
       "type": "string",
@@ -575,7 +574,7 @@ HTTP status: **200**
       "isImmutable": false,
       "isMultiple": false,
       "isDynamic": false,
-      "title": "Campaign Search Condition"
+      "title": "Campaign Search Term"
     },
     "LAST_ACTIVITY_TIME": {
       "type": "datetime",
@@ -659,7 +658,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`lead`](#lead) | The root element of the response. Contains information about lead fields. The structure is described [below](#lead) ||
+[`lead`](#lead) | Root element of the response. Contains information about lead fields. The structure is described [below](#lead) ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the execution time of the request ||
 |#
@@ -672,15 +671,15 @@ HTTP status: **200**
 || **ID**
 [`integer`](../../data-types.md) | Integer identifier of the lead ||
 || **TITLE**
-[`string`](../../data-types.md) | Lead title ||
+[`string`](../../data-types.md) | Title of the lead ||
 || **HONORIFIC**
 [`crm_status`](../data-types.md) | Type of salutation. Status from the directory. A list of possible identifiers can be obtained using the method [crm.status.list](../status/crm-status-list.md) with the filter `filter[ENTITY_ID]=HONORIFIC` ||
 || **NAME**
-[`string`](../../data-types.md) |  Contact's first name ||
+[`string`](../../data-types.md) | First name of the contact ||
 || **SECOND_NAME**
-[`string`](../../data-types.md) |  Contact's middle name ||
+[`string`](../../data-types.md) | Middle name of the contact ||
 || **LAST_NAME**
-[`string`](../../data-types.md) |  Contact's last name ||
+[`string`](../../data-types.md) | Last name of the contact ||
 || **BIRTHDATE**
 [`date`](../../data-types.md) | Birthdate ||
 || **COMPANY_TITLE**
@@ -690,7 +689,7 @@ HTTP status: **200**
 || **SOURCE_DESCRIPTION**
 [`string`](../../data-types.md) | Description of the source ||
 || **STATUS_ID**
-[`crm_status`](../data-types.md) | Identifier of the lead's stage. Status from the directory. A list of possible identifiers can be obtained using the method [crm.status.list](../status/crm-status-list.md) with the filter `filter[ENTITY_ID]=STATUS` ||
+[`crm_status`](../data-types.md) | Identifier of the lead stage. Status from the directory. A list of possible identifiers can be obtained using the method [crm.status.list](../status/crm-status-list.md) with the filter `filter[ENTITY_ID]=STATUS` ||
 || **STATUS_DESCRIPTION**
 [`string`](../../data-types.md) | Additional information about the stage ||
 || **STATUS_SEMANTIC_ID**
@@ -701,7 +700,7 @@ HTTP status: **200**
 || **POST**
 [`string`](../../data-types.md) | Position ||
 || **ADDRESS**
-[`string`](../../data-types.md) | Contact's address ||
+[`string`](../../data-types.md) | Address of the contact ||
 || **ADDRESS_2**
 [`string`](../../data-types.md) | Second line of the address. In some countries, it is customary to split the address into 2 parts ||
 || **ADDRESS_CITY**
@@ -723,63 +722,63 @@ HTTP status: **200**
 || **OPPORTUNITY**
 [`double`](../../data-types.md) | Estimated amount ||
 || **IS_MANUAL_OPPORTUNITY**
-[`char`](../../data-types.md) | Indicator of manual calculation of the amount. Allowed values Y or N ||
+[`char`](../../data-types.md) | Indicator of manual calculation of the amount. Allowed values are Y or N ||
 || **OPENED**
-[`char`](../../data-types.md) | Available to all. Allowed values Y or N ||
+[`char`](../../data-types.md) | Available to all. Allowed values are Y or N ||
 || **COMMENTS**
 [`string`](../../data-types.md) | Comments ||
 || **HAS_PHONE**
-[`char`](../../data-types.md) | Indicator of whether the phone field is filled. Allowed values Y or N ||
+[`char`](../../data-types.md) | Indicator of whether the phone field is filled. Allowed values are Y or N ||
 || **HAS_EMAIL**
-[`char`](../../data-types.md) | Indicator of whether the email field is filled. Allowed values Y or N ||
+[`char`](../../data-types.md) | Indicator of whether the email field is filled. Allowed values are Y or N ||
 || **HAS_IMOL**
-[`char`](../../data-types.md) | Indicator of whether there is an associated open channel. Allowed values Y or N ||
+[`char`](../../data-types.md) | Indicator of whether an open line is assigned. Allowed values are Y or N ||
 || **ASSIGNED_BY_ID**
 [`user`](../../data-types.md) | Identifier of the user responsible for the lead ||
 || **CREATED_BY_ID**
 [`user`](../../data-types.md) | Identifier of the user who created the lead ||
 || **MODIFY_BY_ID**
-[`user`](../../data-types.md) | Identifier of the user who last modified it ||
+[`user`](../../data-types.md) | Identifier of the user who last modified the lead ||
 || **MOVED_BY_ID**
-[`user`](../../data-types.md) | Identifier of the user who moved the element to the current stage ||
+[`user`](../../data-types.md) | Identifier of the user who moved the item to the current stage ||
 || **DATE_CREATE**
 [`datetime`](../../data-types.md) | Creation date ||
 || **DATE_MODIFY**
 [`datetime`](../../data-types.md) | Modification date ||
 || **MOVED_TIME**
-[`datetime`](../../data-types.md) | Date of moving the element to the current stage ||
+[`datetime`](../../data-types.md) | Date the item was moved to the current stage ||
 || **COMPANY_ID**
-[`crm_company`](../data-types.md) | Linking the lead to a company (Client->Company field) ||
+[`crm_company`](../data-types.md) | Link of the lead to the company (Client->Company field) ||
 || **CONTACT_ID**
-[`crm_contact`](../data-types.md) | Linking the lead to a contact (Client->Contact field. In the case of multiple linked contacts, this field will contain the ID of the first linked contact) ||
+[`crm_contact`](../data-types.md) | Link of the lead to the contact (Client->Contact field. In case of multiple linked contacts, this field will contain the ID of the first linked contact) ||
 || **IS_RETURN_CUSTOMER**
-[`char`](../../data-types.md) | Indicator of a returning lead. Allowed values Y or N ||
+[`char`](../../data-types.md) | Indicator of a returning lead. Allowed values are Y or N ||
 || **DATE_CLOSED**
 [`datetime`](../../data-types.md) | Closing date ||
 || **ORIGINATOR_ID**
 [`string`](../../data-types.md) | Identifier of the data source. Used only for linking to an external source ||
 || **ORIGIN_ID**
-[`string`](../../data-types.md) | Identifier of the element in the data source. Used only for linking to an external source ||
+[`string`](../../data-types.md) | Identifier of the item in the data source. Used only for linking to an external source ||
 || **UTM_SOURCE**
-[`string`](../../data-types.md) | Advertising system. Google Ads, Facebook Ads, and others ||
+[`string`](../../data-types.md) | Advertising system. Google Ads, Microsoft Advertising, and others ||
 || **UTM_MEDIUM**
-[`string`](../../data-types.md) | Traffic type. CPC (ads), CPM (banners) ||
+[`string`](../../data-types.md) | Type of traffic. CPC (ads), CPM (banners) ||
 || **UTM_CAMPAIGN**
-[`string`](../../data-types.md) | Advertising campaign designation ||
+[`string`](../../data-types.md) | Identifier of the advertising campaign ||
 || **UTM_CONTENT**
 [`string`](../../data-types.md) | Content of the campaign. For example, for contextual ads ||
 || **UTM_TERM**
-[`string`](../../data-types.md) | Campaign search condition. For example, keywords for contextual advertising ||
+[`string`](../../data-types.md) | Search term of the campaign. For example, keywords for contextual advertising ||
 || **LAST_ACTIVITY_TIME**
 [`datetime`](../../data-types.md) | Time of the last activity ||
 || **LAST_ACTIVITY_BY**
-[`string`](../../data-types.md) | Identifier of the user responsible for the last activity in this lead (e.g., who created a new activity in the lead) ||
+[`string`](../../data-types.md) | Identifier of the user responsible for the last activity in this lead (e.g., who created a new CRM activity in the lead) ||
 || **PHONE**
-[`crm_multifield`](../data-types.md) | Contact's phone ||
+[`crm_multifield`](../data-types.md) | Phone of the contact ||
 || **EMAIL**
 [`crm_multifield`](../data-types.md) | Email address ||
 || **WEB**
-[`crm_multifield`](../data-types.md) | Lead resource URL ||
+[`crm_multifield`](../data-types.md) | URL resources of the lead ||
 || **IM**
 [`crm_multifield`](../data-types.md) | Messengers ||
 || **LINK**
@@ -793,7 +792,7 @@ HTTP status: **200**
 || **type** | **Field type. Described above** ||
 || **isRequired** | Indicator of whether the field is mandatory when creating a new lead ||
 || **isReadOnly** | Indicator of whether the field value can be edited ||
-|| **isImmutable** | Indicator of whether the field value can only be filled once when creating a new element ||
+|| **isImmutable** | Indicator of whether the field value can only be filled once during the creation of a new item ||
 || **isMultiple** | Indicator of whether the field can have multiple values. If true, values in the field are passed as an array ||
 || **isDynamic** | Indicates whether the field is [custom](./userfield/index.md) ||
 || **title** | Field name ||
@@ -801,6 +800,6 @@ HTTP status: **200**
 
 ## Error Handling
 
-The method does not return errors.
+Does not return errors.
 
 {% include [system errors](./../../../_includes/system-errors.md) %}

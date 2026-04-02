@@ -1,28 +1,34 @@
 # How to Create a Task with an Attached File
 
-> Scope: [`disk`, `tasks`](../../api-reference/scopes/permissions.md)
+> Scope: [`drive`, `tasks`](../../api-reference/scopes/permissions.md)
 >
 > Who can execute the method: users with access to the drive and tasks sections
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect the [MCP server](../../sdk/mcp.md) so that the assistant uses the official REST documentation.
+
+{% endnote %}
+
 In Bitrix24, there are two types of file fields:
 
-* **File.** This field is not linked to the drive; files are uploaded directly through the [Base64 format string](../../api-reference/files/how-to-upload-files.md).
+* **File.** This field is not linked to the drive; files are uploaded directly through a [Base64 format string](../../api-reference/files/how-to-upload-files.md).
 * **File (drive).** This field is linked to the drive, and it stores the ID of the drive object. The Base64 format is not processed in this field, so the file must first be uploaded to the Bitrix24 drive.
 
 To create a task with a file, we will sequentially execute two methods:
 
-1. [disk.folder.uploadfile](../../api-reference/disk/folder/disk-folder-upload-file.md) — this method uploads a file to the disk.
+1. [drive.folder.uploadfile](../../api-reference/disk/folder/disk-folder-upload-file.md) — this method uploads a file to the drive.
 2. [tasks.task.add](../../api-reference/tasks/tasks-task-add.md) — this method creates a task.
 
 ## 1. Uploading a File to the Bitrix24 Drive
 
-To upload a file to the drive, we use the method [disk.folder.uploadfile](../../api-reference/disk/folder/disk-folder-upload-file.md) with the following parameters:
+To upload a file to the drive, we use the method [drive.folder.uploadfile](../../api-reference/disk/folder/disk-folder-upload-file.md) with the following parameters:
 
-* `id` — we will specify the value `1739` — the identifier of the drive folder where we are uploading the file.
-* `data` — we will specify the file name `NAME`, under which the file will be saved on the Bitrix24 drive.
-* `fileContent` — we pass the file in the format ['file_name.extension', 'file as a Base64 encoded string'].
+* `id` — specify the value `1739` — the identifier of the drive folder where we will upload the file.
+* `data` — specify the file name `NAME`, which will be used to save the file on the Bitrix24 drive.
+* `fileContent` — pass the file in the format ['file_name.extension', 'file as a Base64 encoded string'].
 
-Uploading the file to the drive is a necessary step, as the `UF_TASK_WEBDAV_FILES` field in tasks only accepts the IDs of drive files.
+Uploading the file to the drive is a necessary step since the `UF_TASK_WEBDAV_FILES` field in tasks only accepts the IDs of drive files.
 
 {% include [Examples Note](../../_includes/examples.md) %}
 
@@ -32,7 +38,7 @@ Uploading the file to the drive is a necessary step, as the `UF_TASK_WEBDAV_FILE
 
     ```javascript
     BX24.callMethod(
-        "disk.folder.uploadfile",
+        "drive.folder.uploadfile",
         {
             id: 1739,
             data: {
@@ -52,7 +58,7 @@ Uploading the file to the drive is a necessary step, as the `UF_TASK_WEBDAV_FILE
     require_once('crest.php');
 
     $result = CRest::call(
-        'disk.folder.uploadfile',
+        'drive.folder.uploadfile',
         [
             'id' => 1739,
             'data' => [
@@ -72,11 +78,10 @@ Uploading the file to the drive is a necessary step, as the `UF_TASK_WEBDAV_FILE
 
 {% endlist %}
 
-As a result of uploading the file to the drive, we received two different file ID values:
+As a result of uploading the file to the drive, we receive two different file ID values:
 
 * `FILE_ID`: `28073` — the internal file ID value.
-* `ID`: `6687` — the drive object ID, this value is used in methods for working with fields of the type "file (drive)".
-If the `FILE_ID` value is passed in the request to change the "file (drive)" field, the file will either not be attached to the task because there is no drive object with such an ID, or the wrong file will be attached.
+* `ID`: `6687` — the ID of the drive object; this value is used in methods for working with fields of the "file (drive)" type. If the request to change the "file (drive)" field passes the `FILE_ID`, the file will either not be attached to the task because there is no drive object with that ID, or the wrong file will be attached.
 
 ```json
 {
@@ -98,7 +103,7 @@ If the `FILE_ID` value is passed in the request to change the "file (drive)" fie
         "UPDATED_BY": "1",
         "DELETED_BY": null,
         "DOWNLOAD_URL": "https://your-domain.bitrix24.com/rest/download.json?sessid=9dd90ed5a58ccc41af81f5f0043739db&token=disk%7CaWQ9NjY4NyZfPTJ5ZXdvN2Fsb09SMGw1b0FHTkRMSGR5MFJkN1pLTjNS%7CImRvd25sb2FkfGRpc2t8YVdROU5qWTROeVpmUFRKNVpYZHZOMkZzYjA5U01HdzFiMEZIVGtSTVNHUjVNRkprTjFwTFRqTlN8OWRkOTBlZDVhNThjY2M0MWFmODFmNWYwMDQzNzM5ZGIi.Lup1vDbibL6twiCPfCMFnLSoDLleNX0cfMHGv5PFaJw%3D",
-        "DETAIL_URL": "https://your-domain.bitrix24.com/company/personal/user/1/disk/file/Created files/New folder for testing the process/ava555.jpg"
+        "DETAIL_URL": "https://your-domain.bitrix24.com/company/personal/user/1/drive/file/Created files/New folder for process/ava555.jpg"
     }
 }
 ```
@@ -107,10 +112,10 @@ If the `FILE_ID` value is passed in the request to change the "file (drive)" fie
 
 To create a task, we use the method [tasks.task.add](../../api-reference/tasks/tasks-task-add.md) with the following parameters:
 
-* `UF_TASK_WEBDAV_FILES` — we will specify the value `n6687`. This is the file ID from the result of the previous method, to which we add the prefix `n` for uploading the file to the field.
+* `UF_TASK_WEBDAV_FILES` — specify the value `n6687`. This is the file ID from the result of the previous method, to which we add the prefix `n` for uploading the file to the field.
 * `TITLE` — the task title, a required field. Without a title, the task will not be created.
-* `CREATED_BY` — the ID of the task creator, this field cannot be empty. If it is not filled, the creator will automatically be the one who sends the request.
-* `RESPONSIBLE_ID` — the ID of the task assignee, a required field. Without an assignee, the task will not be created.
+* `CREATED_BY` — the ID of the task Creator, this field cannot be empty. If it is not filled, the Creator will automatically be the one who sends the request.
+* `RESPONSIBLE_ID` — the ID of the task Participant, a required field. Without a Participant, the task will not be created.
 
 {% list tabs %}
 
@@ -294,9 +299,9 @@ We created a task with ID `3711`.
 }
 ```
 
-In the received result, there is no information about the task files. To check if the file was successfully attached to the task, we will execute the method [tasks.task.get](../../api-reference/tasks/tasks-task-get.md) with the `UF_TASK_WEBDAV_FILES` field in `SELECT`.
+In the resulting data, there is no information about the files attached to the task. To check if the file was successfully attached to the task, we will execute the method [tasks.task.get](../../api-reference/tasks/tasks-task-get.md) with the `UF_TASK_WEBDAV_FILES` field in `SELECT`.
 
-As a result of [tasks.task.get](../../api-reference/tasks/tasks-task-get.md), we will obtain the ID of the record linking the drive file to the task — this is the ID of the connection that links the task and the drive file. To get information about the file by the connection ID, we use the method [disk.attachedObject.get](../../api-reference/disk/attached-object/disk-attached-object-get.md).
+As a result of [tasks.task.get](../../api-reference/tasks/tasks-task-get.md), we will obtain the ID of the record linking the drive file to the task — this is the ID of the connection that links the task and the drive file. To get information about the file by the connection ID, we use the method [drive.attachedObject.get](../../api-reference/disk/attached-object/disk-attached-object-get.md).
 
 ## Code Example
 
@@ -306,16 +311,16 @@ As a result of [tasks.task.get](../../api-reference/tasks/tasks-task-get.md), we
 
     ```javascript
     // Function to upload a file
-    function uploadFileToDisk() {
+    function uploadFileToDrive() {
         // ID of the folder where you want to upload the file
         var folderId = 'your_folder_ID';
         // File name and its content in Base64 format
         var fileName = 'your_file_name';
         var fileContentBase64 = 'your_file_content_Base64';
 
-        // Call the disk.folder.uploadfile method
+        // Call the method drive.folder.uploadfile
         BX24.callMethod(
-            'disk.folder.uploadfile',
+            'drive.folder.uploadfile',
             {
                 id: folderId,
                 data: {
@@ -345,7 +350,7 @@ As a result of [tasks.task.get](../../api-reference/tasks/tasks-task-get.md), we
         var taskDescription = 'your_task_description';
         var responsibleId = 'your_responsible_ID';
 
-        // Call the tasks.task.add method
+        // Call the method tasks.task.add
         BX24.callMethod(
             'tasks.task.add',
             {
@@ -367,7 +372,7 @@ As a result of [tasks.task.get](../../api-reference/tasks/tasks-task-get.md), we
     }
 
     // Call the function to upload the file and create the task
-    uploadFileToDisk();
+    uploadFileToDrive();
     ```
 
 - PHP
@@ -376,7 +381,7 @@ As a result of [tasks.task.get](../../api-reference/tasks/tasks-task-get.md), we
     require_once('crest.php');
 
     // Function to upload a file
-    function uploadFileToDisk() {
+    function uploadFileToDrive() {
         // ID of the folder where you want to upload the file
         $folderId = 'your_folder_ID';
         // Name of the file you want to upload
@@ -387,9 +392,9 @@ As a result of [tasks.task.get](../../api-reference/tasks/tasks-task-get.md), we
         // Read the file content and encode it in Base64
         $fileContentBase64 = base64_encode(file_get_contents($filePath));
 
-        // Call the disk.folder.uploadfile method
+        // Call the method drive.folder.uploadfile
         $result = CRest::call(
-            'disk.folder.uploadfile',
+            'drive.folder.uploadfile',
             [
                 'id' => $folderId,
                 'data' => [
@@ -418,7 +423,7 @@ As a result of [tasks.task.get](../../api-reference/tasks/tasks-task-get.md), we
         $taskDescription = 'your_task_description';
         $responsibleId = 'your_responsible_ID';
 
-        // Call the tasks.task.add method
+        // Call the method tasks.task.add
         $result = CRest::call(
             'tasks.task.add',
             [
@@ -439,7 +444,7 @@ As a result of [tasks.task.get](../../api-reference/tasks/tasks-task-get.md), we
     }
 
     // Call the function to upload the file and create the task
-    uploadFileToDisk();
+    uploadFileToDrive();
     ```
 
 {% endlist %}

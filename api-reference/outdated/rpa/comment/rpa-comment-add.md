@@ -4,7 +4,13 @@
 >
 > Who can execute the method: any user
 
-This method creates a new comment in the timeline of the item with the identifier `itemId` of the process with the identifier `typeId`.
+{% note warning "DEPRECATED" %}
+
+The development of this method has been halted. Please use [Smart scripts](../../../crm/universal/user-defined-object-types/index.md) as an alternative to this functionality.
+
+{% endnote %}
+
+This method creates a new comment in the timeline of the item with the identifier `itemId` for the process with the identifier `typeId`.
 
 #|
 || **Name**
@@ -25,52 +31,50 @@ This method creates a new comment in the timeline of the item with the identifie
 || **description** 
 [`string`](../../../data-types.md) | Description of the entry. HTML and BB-code formatting can be used ||
 || **files** 
-[`array`](../../../data-types.md) | Array of attached files. Each element is an array with the name and content encoded in base64 ||
+[`array`](../../../data-types.md) | Array of attached files. Each element is an array containing the name and content encoded in base64 ||
 |#
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../../_includes/examples.md) %}
+{% include [Examples Note](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
 - JS
 
-
     ```js
     try
     {
-    	const response = await $b24.callMethod(
-    		'rpa.comment.add',
-    		{
-    			"typeId": 24,
-    			"itemId": 10,
-    			"fields": {
-    				"description": "Mention of user with id 1",
-    				"files": [
-    					[
-    						"document.pdf", "...base64_decoded_content..."
-    					]
-    				]    
-    			}
-    		}
-    	);
-    	
-    	const result = response.getData().result;
-    	console.log('response', result.answer);
-    	if(result.error())
-    		alert("Error: " + result.error());
-    	else
-    		console.log(result);
+        const response = await $b24.callMethod(
+            'rpa.comment.add',
+            {
+                "typeId": 24,
+                "itemId": 10,
+                "fields": {
+                    "description": "Mention of user with id 1",
+                    "files": [
+                        [
+                            "document.pdf", "...base64_decoded_content..."
+                        ]
+                    ]    
+                }
+            }
+        );
+        
+        const result = response.getData().result;
+        console.log('response', result.answer);
+        if(result.error())
+            alert("Error: " + result.error());
+        else
+            console.log(result);
     }
     catch( error )
     {
-    	console.error('Error:', error);
+        console.error('Error:', error);
     }
     ```
 
 - PHP
-
 
     ```php
     try {
@@ -133,17 +137,16 @@ This method creates a new comment in the timeline of the item with the identifie
             if(result.error())
                 alert("Error: " + result.error());
             else
-            console.log(result.data());
+                console.log(result.data());
         }
     )
     ```
 
 {% endlist %}
 
-
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {

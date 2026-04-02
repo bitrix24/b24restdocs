@@ -1,14 +1,14 @@
-# Translate a task awaiting approval to "completed" status task.item.approve
+# Change the status of a pending task to "completed" task.item.approve
 
 > Scope: [`task`](../../../scopes/permissions.md)
 >
-> Who can perform the method: any user
+> Who can execute the method: any user
 
-The method changes the status of a task awaiting approval to "completed".
+This method changes the status of a pending task to "completed."
 
-{% note warning %}
+{% note warning "DEPRECATED" %}
 
-The method is deprecated and not supported. It is recommended to use the methods [tasks.task.*](../../index.md).
+Development of this method has been halted. Please use [tasks.task.approve](../../tasks-task-approve.md).
 
 {% endnote %}
 
@@ -21,7 +21,7 @@ The method is deprecated and not supported. It is recommended to use the methods
 
 ## Code Examples
 
-{% include [Examples note](../../../../_includes/examples.md) %}
+{% include [Examples Note](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -81,7 +81,7 @@ The method is deprecated and not supported. It is recommended to use the methods
             ->getResult();
     
         echo 'Success: ' . print_r($result, true);
-        // Your logic for processing data
+        // Your required data processing logic
         processData($result);
     
     } catch (Throwable $e) {

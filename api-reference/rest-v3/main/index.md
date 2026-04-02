@@ -54,5 +54,5 @@ Use [main.eventlog.field.list](./main-eventlog-field-list.md) and [main.eventlog
 - [{#T}](./main-eventlog-get.md)
 - [{#T}](./main-eventlog-tail.md)
 - [{#T}](./main-eventlog-field-list.md)
-- [{#T}](./main.eventlog-field-get.md)
+- [{#T}](./main-eventlog-field-get.md)
 - [{#T}](../index.md)

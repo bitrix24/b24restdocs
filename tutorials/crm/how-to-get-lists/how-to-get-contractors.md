@@ -1,27 +1,33 @@
-# How to Get a List of Vendors
+# How to Retrieve a List of Vendors
 
 > Scope: [`crm`](../../../api-reference/scopes/permissions.md)
 >
-> Who can execute the method: users with permission to view contacts or companies in CRM
+> Who can execute the method: users with access permission to view contacts or companies in CRM
 
-Vendors are contacts and companies in CRM that have a system category designation:
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
+Vendors are contacts and companies in CRM marked with a system category:
 
 - `CATALOG_CONTRACTOR_CONTACT` — for contacts,
 - `CATALOG_CONTRACTOR_COMPANY` — for companies.
 
-To obtain a list of vendors, we will sequentially execute two methods:
+To retrieve a list of vendors, we will sequentially execute two methods:
 
-1. [crm.category.list](../../../api-reference/crm/universal/category/crm-category-list.md) — to get the category ID for the contact or company.
-2. [crm.item.list](../../../api-reference/crm/universal/crm-item-list.md) — to retrieve the list of vendors based on a filter.
+1. [crm.category.list](../../../api-reference/crm/universal/category/crm-category-list.md) — to obtain the category ID for the contact or company.
+2. [crm.item.list](../../../api-reference/crm/universal/crm-item-list.md) — to get the list of vendors based on the filter.
 
-## 1. Get the Vendor Category ID
+## 1. Retrieve the Vendor Category ID
 
-We will use the method [crm.category.list](../../../api-reference/crm/universal/category/crm-category-list.md) with the following parameters:
+We will use the [crm.category.list](../../../api-reference/crm/universal/category/crm-category-list.md) method with the following parameters:
 
 - `entityTypeId` — the ID of the [CRM object type](../../../api-reference/crm/data-types.md#object_type). Use `3` for contacts. For companies, use `4`.
 - `filter[code]` — filter by category code. Use `CATALOG_CONTRACTOR_CONTACT` for contacts. For companies, use `CATALOG_CONTRACTOR_COMPANY`.
 
-{% include [Example Notes](../../../_includes/examples.md) %}
+{% include [Examples Note](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -78,15 +84,15 @@ As a result, we will obtain the category ID. In the example, `id`:`15`. The ID m
 }
 ```
 
-## 2. Get the List of Vendors
+## 2. Retrieve the List of Vendors
 
-We will filter the items using the method [crm.item.list](../../../api-reference/crm/universal/crm-item-list.md) with the following parameters:
+We will filter the items using the [crm.item.list](../../../api-reference/crm/universal/crm-item-list.md) method with the following parameters:
 
 - `entityTypeId` — the ID of the [CRM object type](../../../api-reference/crm/data-types.md#object_type). Use `3` for contacts. For companies, use `4`.
 
-- `select` — list of fields to output. All available fields can be obtained using the method [crm.item.fields](../../../api-reference/crm/universal/crm-item-fields.md).
+- `select` — a list of fields to output. All available fields can be retrieved using the [crm.item.fields](../../../api-reference/crm/universal/crm-item-fields.md) method.
 
-- `filter[categoryId]` - the ID of the system category from step 1. In the example, `15`.
+- `filter[categoryId]` - the ID of the system category from step 1. In this example, `15`.
 
 {% list tabs %}
 
@@ -141,8 +147,8 @@ As a result, we will obtain a list of contacts that are vendors.
       },
       {
         "id": 2443,
-        "name": "John",
-        "lastName": "Doe",
+        "name": "Ivan",
+        "lastName": "Ivanov",
         "categoryId": 15
       }
     ]
@@ -151,7 +157,7 @@ As a result, we will obtain a list of contacts that are vendors.
 }
 ```
 
-The vendor IDs, in the example `id`: `2185` and `id`: `2443`, should be used in the inventory method [catalog.documentcontractor.add](../../../api-reference/catalog/documentcontractor/catalog-documentcontractor-add.md).
+The vendor IDs, in this example `id`: `2185` and `id`: `2443`, should be used in the inventory method [catalog.documentcontractor.add](../../../api-reference/catalog/documentcontractor/catalog-documentcontractor-add.md).
 
 ## Code Example
 

@@ -1,21 +1,21 @@
-# Set a Common Card for All Users crm.deal.details.configuration.forceCommonScopeForAll
+# Set a Common Detail Form for All Users crm.deal.details.configuration.forceCommonScopeForAll
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
 > Who can execute the method:
-> - A common card can be set if the user has editing rights for the common view.
+> - A common detail form can be set if the user has edit permissions for the common view.
 
-{% note warning "Method Development Halted" %}
+{% note warning "DEPRECATED" %}
 
-The method `crm.deal.details.configuration.forceCommonScopeForAll` continues to function, but there is a more relevant alternative: [crm.item.details.configuration.forceCommonScopeForAll](../../universal/item-details-configuration/crm-item-details-configuration-forceCommonScopeForAll.md).
+The development of this method has been halted. Please use [crm.item.details.configuration.forceCommonScopeForAll](../../universal/item-details-configuration/crm-item-details-configuration-forceCommonScopeForAll.md).
 
 {% endnote %}
 
-The method `crm.deal.details.configuration.forceCommonScopeForAll` forcibly sets a common deal card for all users and removes their personal settings.
+The method `crm.deal.details.configuration.forceCommonScopeForAll` forcibly sets a common deal detail form for all users and removes their personal settings.
 
 {% note info %}
 
-The settings for deal cards in different Sales Funnels may vary. To select a funnel, use the `extras.dealCategoryId` parameter.
+The settings for deal detail forms may vary across different Sales Funnels. To select a Sales Funnel, use the `extras.dealCategoryId` parameter.
 
 {% endnote %}
 
@@ -38,17 +38,17 @@ The settings for deal cards in different Sales Funnels may vary. To select a fun
 || **Name**
 `type` | **Description** ||
 || **dealCategoryId**
-[`integer`](../../../data-types.md) | Identifier of the deal funnel. Can be obtained using [crm.category.list](../../universal/category/crm-category-list.md)
+[`integer`](../../../data-types.md) | Identifier of the Sales Funnel. Can be obtained using [crm.category.list](../../universal/category/crm-category-list.md)
 
-If not specified, the default funnel for deals is used.
+If not specified, the default Sales Funnel for deals is used.
 ||
 |#
 
 ## Code Examples
 
-{% include [Example Notes](../../../../_includes/examples.md) %}
+{% include [Examples Notes](../../../../_includes/examples.md) %}
 
-Set a common deal card for all users in the funnel with `id = 32`
+Set a common deal detail form for all users in the Sales Funnel with `id = 32`
 
 {% list tabs %}
 
@@ -122,7 +122,7 @@ Set a common deal card for all users in the funnel with `id = 32`
     
     } catch (Throwable $e) {
         error_log($e->getMessage());
-        echo 'Error setting common deal card for all users: ' . $e->getMessage();
+        echo 'Error setting common deal detail form for all users: ' . $e->getMessage();
     }
     ```
 
@@ -194,7 +194,7 @@ HTTP Status: **200**
 || **result**
 [`boolean`](../../../data-types.md) | Root element of the response. Returns `true` on success ||
 || **time**
-[`time`](../../../data-types.md#time) | Information about the execution time of the request ||
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -214,7 +214,7 @@ HTTP Status: **400**
 
 #|
 || **Status** | **Code** | **Description** | **Value** ||
-|| `400` | Empty Value | Access denied | No rights to set a common card for all users ||
+|| `400` | Empty Value | Access denied | No permissions to set a common detail form for all users ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

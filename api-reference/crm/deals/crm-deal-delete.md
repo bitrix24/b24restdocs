@@ -1,35 +1,35 @@
-# Delete deal crm.deal.delete
+# Delete Deal crm.deal.delete
 
 > Scope: [`crm`](../../scopes/permissions.md)
 > 
 > Who can execute the method: any user with "delete" access permission for deals
 
-{% note warning "Method Development Stopped" %}
+{% note warning "DEPRECATED" %}
 
-The method `crm.deal.delete` continues to function, but there is a more relevant alternative [crm.item.delete](../universal/crm-item-delete.md).
+The development of this method has been halted. Please use [crm.item.delete](../universal/crm-item-delete.md).
 
 {% endnote %}
 
 The method `crm.deal.delete` removes a deal and all associated objects.
 
-Deleting a deal will result in the removal of all related objects, such as activities, history, Timeline activities, and others.
+Deleting a deal will result in the removal of all related objects, such as CRM activities, history, Timeline activities, and others.
 
-Objects are deleted if they are not linked to other entities or items. If the objects are linked to other entities, only the link to the deleted deal will be removed.
+Objects are deleted only if they are not linked to other entities or elements. If the objects are linked to other entities, only the link to the deleted deal will be removed.
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Parameter Note](../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`](../../data-types.md) | Identifier of the deal.
+[`integer`](../../data-types.md) | The identifier of the deal.
 
 The identifier can be obtained using the methods [crm.deal.list](./crm-deal-list.md) or [crm.deal.add](./crm-deal-add.md) ||
 |#
 
-{% note tip "Related methods and topics" %}
+{% note tip "Related Methods and Topics" %}
 
 [{#T}](./recurring-deals/crm-deal-recurring-delete.md)
 
@@ -37,7 +37,7 @@ The identifier can be obtained using the methods [crm.deal.list](./crm-deal-list
 
 ## Code Examples
 
-{% include [Note on examples](../../../_includes/examples.md) %}
+{% include [Example Note](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -66,22 +66,22 @@ The identifier can be obtained using the methods [crm.deal.list](./crm-deal-list
     ```js
     try
     {
-    	const response = await $b24.callMethod(
-    		'crm.deal.delete',
-    		{
-    			id: 12,
-    		}
-    	);
-    	
-    	const result = response.getData().result;
-    	result.error()
-    		? console.error(result.error())
-    		: console.info(result)
-    	;
+        const response = await $b24.callMethod(
+            'crm.deal.delete',
+            {
+                id: 12,
+            }
+        );
+        
+        const result = response.getData().result;
+        result.error()
+            ? console.error(result.error())
+            : console.info(result)
+        ;
     }
     catch( error )
     {
-    	console.error('Error:', error);
+        console.error('Error:', error);
     }
     ```
 
@@ -152,7 +152,7 @@ The identifier can be obtained using the methods [crm.deal.list](./crm-deal-list
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -175,14 +175,14 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../data-types.md) | Root element of the response, contains `true` in case of success ||
+[`boolean`](../../data-types.md) | The root element of the response, contains `true` on success ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the request execution time ||
+[`time`](../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {
@@ -191,18 +191,18 @@ HTTP status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../_includes/error-info.md) %}
+{% include notitle [Error Handling](../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
 || **Description** | **Value** ||
-|| `ID is not defined or invalid` | The `id` parameter either has no value or is not a positive integer ||
+|| `ID is not defined or invalid` | The `id` parameter is either not provided or is not a positive integer ||
 || `Access denied` | The user does not have permission to "delete" deals ||
-|| `Not found` | A deal with the provided `id` does not exist ||
+|| `Not found` | The deal with the provided `id` does not exist ||
 |#
 
-{% include [system errors](./../../../_includes/system-errors.md) %}
+{% include [System Errors](./../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

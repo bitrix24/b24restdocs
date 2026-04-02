@@ -1,16 +1,16 @@
-# Update Task task.item.update
+# Update Task: task.item.update
 
 > Scope: [`task`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-This method updates the data for a task. The following [fields](./index.md) are available for updating. When updating task data, business logic and permissions are taken into account. For example, the Assignee cannot rename the task — in such cases, an error will be generated.
+This method updates the data for a task. The following [fields](./index.md) are available for updating. When updating task data, business logic and permissions are taken into account. For example, a Participant cannot rename a task—an error will be generated in such cases.
 
-It is recommended to check if the action is allowed before updating the data ([task.item.isactionallowed](./task-item-is-action-allowed.md)).
+It is recommended to check whether the action is allowed before updating the data ([task.item.isactionallowed](./task-item-is-action-allowed.md)).
 
-{% note warning %}
+{% note warning "DEPRECATED" %}
 
-The method is deprecated and not supported. It is recommended to use the [tasks.task.*](../../index.md) methods.
+The development of this method has been halted. Please use [tasks.task.update](../../tasks-task-update.md).
 
 {% endnote %}
 
@@ -22,7 +22,7 @@ The method is deprecated and not supported. It is recommended to use the [tasks.
 || **TASKDATA** | List of fields with new values. ||
 |#
 
-The order of parameters in the request must be followed. If it is violated, the request will be executed with errors.
+It is essential to maintain the order of parameters in the request. If this order is violated, the request will be executed with errors.
 
 ## Code Examples
 
@@ -55,18 +55,18 @@ The order of parameters in the request must be followed. If it is violated, the 
     ```js
     try
     {
-    	const response = await $b24.callMethod(
-    		'task.item.update',
-    		[1, {TIME_ESTIMATE: 113}]
-    	);
-    	
-    	const result = response.getData().result;
-    	console.info(result);
-    	console.log(result);
+        const response = await $b24.callMethod(
+            'task.item.update',
+            [1, {TIME_ESTIMATE: 113}]
+        );
+        
+        const result = response.getData().result;
+        console.info(result);
+        console.log(result);
     }
     catch( error )
     {
-    	console.error('Error:', error);
+        console.error('Error:', error);
     }
     ```
 
@@ -89,7 +89,7 @@ The order of parameters in the request must be followed. If it is violated, the 
             ->getResult();
     
         echo 'Success: ' . print_r($result, true);
-        // Your data processing logic
+        // Your required data processing logic
         processData($result);
     
     } catch (Throwable $e) {
@@ -163,18 +163,18 @@ Example of recording values with CRM.
     ```js
     try
     {
-    	const response = await $b24.callMethod(
-    		'task.item.update',
-    		[1, {UF_CRM_TASK: ["L_4", "C_7", "CO_5", "D_10"]}]
-    	);
-    	
-    	const result = response.getData().result;
-    	console.info(result);
-    	console.log(result);
+        const response = await $b24.callMethod(
+            'task.item.update',
+            [1, {UF_CRM_TASK: ["L_4", "C_7", "CO_5", "D_10"]}]
+        );
+        
+        const result = response.getData().result;
+        console.info(result);
+        console.log(result);
     }
     catch( error )
     {
-    	console.error('Error:', error);
+        console.error('Error:', error);
     }
     ```
 
@@ -197,7 +197,7 @@ Example of recording values with CRM.
             ->getResult();
     
         echo 'Success: ' . print_r($result, true);
-        // Your data processing logic
+        // Your required data processing logic
         processData($result);
     
     } catch (Throwable $e) {
@@ -242,7 +242,7 @@ Example of recording values with CRM.
 
 {% endlist %}
 
-The numbers are the `IDs` of the corresponding values. The value `L_4` indicates a link to the lead task with `ID = 4`. Multiple links of the same type can be specified, for example, `L_4, L_5`. The following designations are available:
+The numbers represent the `ID` of the corresponding values. The value `L_4` indicates a link to a lead task with `ID = 4`. Multiple links of the same type can be specified, for example, `L_4, L_5`. The following designations are available:
 - `L` — lead
 - `C` — contact
 - `CO` — company

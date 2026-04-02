@@ -1,22 +1,22 @@
-# Get the template fields of the recurring invoice crm.invoice.recurring.fields
+# Get Full Template of Recurring Invoice Fields `crm.invoice.recurring.fields`
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-{% note warning %}
+{% note warning "DEPRECATED" %}
 
-The method is deprecated. It is recommended to use [`Universal methods for invoices`](../../universal/invoice.md)
+The development of this method has been halted. Please use [Universal Methods for Invoices](../../universal/invoice.md).
 
 {% endnote %}
 
-The method returns a list of fields for the recurring invoice template along with their descriptions.
+This method returns a list of fields for the recurring invoice template along with their descriptions.
 
-No parameters.
+No parameters required.
 
 ## Code Examples
 
-{% include [Note on examples](../../../../_includes/examples.md) %}
+{% include [Examples Note](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -28,7 +28,7 @@ No parameters.
     -H "Accept: application/json" \
     -d '{}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.invoice.recurring.fields
-   ```
+    ```
 
 - cURL (OAuth)
 
@@ -45,24 +45,24 @@ No parameters.
     ```js
     try
     {
-    	const response = await $b24.callMethod(
-    		'crm.invoice.recurring.fields',
-    		{}
-    	);
-    	
-    	const result = response.getData().result;
-    	if(result.error())
-    	{
-    		console.error(result.error());
-    	}
-    	else
-    	{
-    		console.dir(result);
-    	}
+        const response = await $b24.callMethod(
+            'crm.invoice.recurring.fields',
+            {}
+        );
+        
+        const result = response.getData().result;
+        if(result.error())
+        {
+            console.error(result.error());
+        }
+        else
+        {
+            console.dir(result);
+        }
     }
     catch(error)
     {
-    	console.error('Error:', error);
+        console.error('Error:', error);
     }
     ```
 
@@ -76,17 +76,17 @@ No parameters.
                 'crm.invoice.recurring.fields',
                 []
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
+
         if ($result->error()) {
             error_log($result->error());
         } else {
             echo 'Success: ' . print_r($result->data(), true);
         }
-    
+
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error fetching recurring invoice fields: ' . $e->getMessage();
@@ -128,7 +128,7 @@ No parameters.
 
 ### Returned Data
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+{% include [Required Parameters Note](../../../../_includes/required.md) %}
 
 #|
 || **Field** / **Type** | **Description** | **Note** ||
@@ -139,13 +139,13 @@ No parameters.
 || **ACTIVE**
 [`char`](../../../data-types.md) | Active flag. Values: Y/N | ||
 || **NEXT_EXECUTION**
-[`date`](../../../data-types.md) | Date of the next creation of a new invoice from the template. Calculated by the system based on the specified parameters. If the value is empty, new invoices are not created | Read-only. ||
+[`date`](../../../data-types.md) | Date of the next invoice creation from the template. Calculated by the system based on the specified parameters. If the value is empty, new invoices are not created | Read-only. ||
 || **LAST_EXECUTION**
-[`date`](../../../data-types.md) | Date of the last creation of a new invoice from the template | Read-only ||
+[`date`](../../../data-types.md) | Date of the last invoice creation from the template | Read-only ||
 || **COUNTER_REPEAT**
 [`integer`](../../../data-types.md) | Number of invoices created from the template | Read-only ||
 || **START_DATE**
-[`date`](../../../data-types.md) | Start date for calculating the date of the next creation of a new invoice | ||
+[`date`](../../../data-types.md) | Start date for calculating the next invoice creation date | ||
 || **SEND_BILL**
 [`char`](../../../data-types.md) | Send the invoice to the email associated with the payer. Values: Y/N | ||
 || **EMAIL_ID**
@@ -153,9 +153,9 @@ No parameters.
 || **IS_LIMIT**
 [`char`](../../../data-types.md) | Are there limitations on creating new invoices | ||
 || **LIMIT_REPEAT**
-[`integer`](../../../data-types.md) | Maximum number of invoices that can be created from this template | Considered if `IS_LIMIT` is `T` ||
+[`integer`](../../../data-types.md) | Maximum number of invoices that can be created from this template | Considered if `IS_LIMIT` is equal to `T` ||
 || **LIMIT_DATE**
-[`date`](../../../data-types.md) | Date until which invoices can be created from this template | Considered if `IS_LIMIT` is `D` ||
+[`date`](../../../data-types.md) | Date until which invoices can be created from this template | Considered if `IS_LIMIT` is equal to `D` ||
 || **PARAMS**
 [`unknown`](../../../data-types.md)
 | Set of parameters for calculation - recurring_params: 
@@ -171,16 +171,16 @@ No parameters.
     - if PERIOD is year
         - 1 - calculation by the ordinal day number in the specified month
         - 2 - calculation by the weekday numbers in the specified month
-- **INTERVAL** - offset in calculation
+- **INTERVAL** - offset for calculation
 - **IS_WORKING_ONLY** - only working days are considered (Y/N)
-- **WEEKDAY** - full name of the weekday (according to the formatting of the PHP method `date()`)
+- **WEEKDAY** - full name of the weekday (according to PHP method `date()` formatting)
 - **NUM_DAY_IN_MONTH** - ordinal date number in the month (PERIOD is month or year)
-- **NUM_WEEKDAY_IN_MONTH**  - ordinal weekday number in the month (PERIOD is month or year)
+- **NUM_WEEKDAY_IN_MONTH** - ordinal weekday number in the month (PERIOD is month or year)
 - **FIELD_YEARLY_INTERVAL_MONTH_NAME** - ordinal weekday number in the month (PERIOD is month or year)
-- **DATE_PAY_BEFORE_OFFSET_TYPE** - offset value for calculating the payment term, calculation is made from the moment of creating a new invoice from the template:
+- **DATE_PAY_BEFORE_OFFSET_TYPE** - offset value for calculating the payment deadline, calculated from the moment of creating a new invoice from the template:
     - day - day
     - week - week
     - month - month
     - year - year
-- **DATE_PAY_BEFORE_OFFSET_VALUE** - offset value for calculating the payment term, calculation is made from the moment of creating a new invoice from the template| ||
+- **DATE_PAY_BEFORE_OFFSET_VALUE** - offset value for calculating the payment deadline, calculated from the moment of creating a new invoice from the template| ||
 |#

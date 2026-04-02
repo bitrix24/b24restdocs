@@ -4,6 +4,12 @@
 >
 > Who can execute the method: any user
 
+{% note warning "DEPRECATED" %}
+
+The development of this method has been halted. Please use [catalog.measure.delete](../../../catalog/measure/catalog-measure-delete.md).
+
+{% endnote %}
+
 This method deletes a measurement unit.
 
 ## Method Parameters

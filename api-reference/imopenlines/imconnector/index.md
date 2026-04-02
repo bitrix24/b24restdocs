@@ -2,14 +2,14 @@
 
 Open Channels Connectors are a tool for integrating external messengers and social networks with Bitrix24. Connectors allow you to:
 
-- Respond to customer messages from various channels within a single interface.
+- Respond to customer messages from various channels in a unified interface.
 - Connect chatbots to automate communication with customers.
 - Analyze dialogue statistics to assess the effectiveness of communications.
 
 > Quick navigation: [all methods](#all-methods)  
-> User documentation: [Connecting Contact Center Channels](https://helpdesk.bitrix24.com/open/7872935/)
+> User documentation: [Connecting Contact Center Channels](https://helpdesk.bitrix24.com/open/9392259/)
 
-## Connector Interaction with Other Objects
+## Connection of Connectors with Other Objects
 
 **Open Channels**. They collect messages from connectors, manage queues, and distribute messages among employees. Working with open channels should be done using the group of methods [imopenlines.*](../openlines/index.md).
 
@@ -17,9 +17,9 @@ Open Channels Connectors are a tool for integrating external messengers and soci
 
 **User**. The user ID can be obtained using the methods [user.get](../../user/user-get.md) and [user.search](../../user/user-search.md).
 
-**Chat**. The methods [im.chat.*](../../chats/index.md) and [im.message.*](../../chats/messages/index.md) are responsible for the correspondence with users.
+**Chat**. The correspondence with users is managed by the methods [im.chat.*](../../chats/index.md) and [im.message.*](../../chats/messages/index.md).
 
-**Chatbots**. The setup of automatic responses and chatbots is performed using the methods [imbot.*](../../chat-bots/index.md).
+**Chatbots**. Setting up automated responses and chatbots is done using the methods [imbot.*](../../chat-bots/outdated/index.md).
 
 ## How to Connect a Connector
 
@@ -34,11 +34,11 @@ You can send a message using the method [imconnector.send.messages](./imconnecto
 
 Sent messages can be modified using the method [imconnector.update.messages](imconnector-update-messages.md). This method changes the parameters of the user, message, and chat.
 
-Messages from open channels can be deleted using the method [imconnector.delete.messages](imconnector-delete-messages.md).
+Messages in open channels can be deleted using the method [imconnector.delete.messages](imconnector-delete-messages.md).
 
 ## How to Add a Widget to the Contact Center
 
-To add the connector widget to the Contact Center, use the widget code [CONTACT_CENTER](../../widgets/contact-center.md). This code must be specified in the `PLACEMENT` parameter of the method [placement.bind](../../widgets/placement-bind.md).
+To add a connector widget to the Contact Center, use the widget code [CONTACT_CENTER](../../widgets/contact-center.md). This code must be specified in the `PLACEMENT` parameter of the method [placement.bind](../../widgets/placement-bind.md).
 
 ## Overview of Methods and Events {#all-methods}
 
@@ -47,7 +47,7 @@ To add the connector widget to the Contact Center, use the widget code [CONTACT_
 
 {% note info "" %}
 
-The `imconnector.*` methods in the current version do not support operation via webhooks.
+The methods `imconnector.*` in the current version do not support operation via webhooks.
 
 {% endnote %}
 
@@ -88,7 +88,7 @@ The `imconnector.*` methods in the current version do not support operation via 
     || [imconnector.send.messages](imconnector-send-messages.md) | Send messages to Bitrix24 ||
     || [imconnector.update.messages](imconnector-update-messages.md) | Modify sent messages ||
     || [imconnector.delete.messages](imconnector-delete-messages.md) | Delete sent messages ||
-    || [imconnector.send.status.delivery](imconnector-send-status-delivery.md) | Update delivery status to `delivered` ||
+    || [imconnector.send.status.delivery](imconnector-send-status-delivery.md) | Update the status to `delivered` ||
     || [imconnector.chat.name.set](imconnector-chat-name-set.md) | Set a new chat name ||
     |#
 

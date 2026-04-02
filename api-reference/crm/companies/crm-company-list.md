@@ -4,9 +4,9 @@
 >
 > Who can execute the method: user with "Read" access permission for companies
 
-{% note warning "Method development has been halted" %}
+{% note warning "DEPRECATED" %}
 
-The method `crm.company.list` continues to function, but there is a more current equivalent [crm.item.list](../universal/crm-item-list.md).
+The development of this method has been halted. Please use [crm.item.list](../universal/crm-item-list.md).
 
 {% endnote %}
 
@@ -14,7 +14,7 @@ The method `crm.company.list` returns a list of companies based on a filter. It 
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Parameter Note](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -26,9 +26,9 @@ You can use masks for selection:
 - `'*'` — to select all fields, excluding custom and multiple fields,
 - `'UF_*'` — to select all custom fields excluding multiple ones.
 
-There are no masks for selecting multiple fields. To select multiple fields, specify the required ones in the selection list — `PHONE`, `EMAIL`, and so on.
+There is no mask for selecting multiple fields. To select multiple fields, specify the required ones in the selection list — `PHONE`, `EMAIL`, and so on.
 
-You can find the list of available fields for selection using the method [crm.company.fields](crm-company-fields.md).
+You can find the list of available fields for selection using the [crm.company.fields](crm-company-fields.md) method.
 
 By default, all fields are returned — `'*'` + custom fields — `'UF_*'`
 ||
@@ -57,7 +57,7 @@ Possible prefix values:
 - `@` — IN, an array is passed as the value
 - `!@` — NOT IN, an array is passed as the value
 - `%` — LIKE, substring search. The `%` symbol in the filter value does not need to be passed. The search looks for a substring in any position of the string
-- `=%` — LIKE, substring search. The `%` symbol must be passed in the value. Examples:
+- `=%` — LIKE, substring search. The `%` symbol needs to be passed in the value. Examples:
     - `"mol%"` — searches for values starting with "mol"
     - `"%mol"` — searches for values ending with "mol"
     - `"%mol%"` — searches for values where "mol" can be in any position
@@ -66,13 +66,13 @@ Possible prefix values:
 - `!=` — not equal
 - `!` — not equal
 
-The fields `PHONE`, `EMAIL`, `WEB`, `IM` are multiple. Filters work only on exact matches for them.
+Fields `PHONE`, `EMAIL`, `WEB`, `IM` — are multiple. Filters work only on exact matches for these.
 
 The `LIKE` filter does not work with fields of type `crm_status`, `crm_company` — for example, `COMPANY_TYPE`.
 
-You can find the list of available fields for filtering using the method [crm.company.fields](crm-company-fields.md).
+You can find the list of available fields for filtering using the [crm.company.fields](crm-company-fields.md) method.
 
-The `logic` key in the filter is not supported. To use complex logic in the filter, use the method [crm.item.list](../universal/crm-item-list.md)
+The `logic` key in the filter is not supported. For complex logic in the filter, use the [crm.item.list](../universal/crm-item-list.md) method.
 ||
 || **order**
 [`object`](../../data-types.md) | Object format:
@@ -91,7 +91,7 @@ where:
     - `ASC` — ascending sort
     - `DESC` — descending sort
 
-You can find the list of available fields for sorting using the method [crm.company.fields](crm-company-fields.md)
+You can find the list of available fields for sorting using the [crm.company.fields](crm-company-fields.md) method
 ||
 || **start**
 [`integer`](../../data-types.md) | Parameter for managing pagination.
@@ -108,12 +108,12 @@ The formula for calculating the `start` parameter value:
 
 ## Code Examples
 
-{% include [Note on examples](../../../_includes/examples.md) %}
+{% include [Example Note](../../../_includes/examples.md) %}
 
 Retrieve companies:
 - sorted by creation date,
-- with selected fields: name, responsible person, phone,
-- filtered by: company type `CUSTOMER` and creation date from 2025-01-01.
+- with selected fields: title, responsible person, phone,
+- filtered by company type `CUSTOMER` and creation date from 2025-01-01.
 
 {% list tabs %}
 
@@ -160,7 +160,7 @@ Retrieve companies:
     console.error('Request failed', error)
     }
 
-    // fetchListMethod: Retrieves data in parts using an iterator.
+    // fetchListMethod: Selects data in parts using an iterator.
     // Use for large volumes of data for efficient memory consumption.
 
     try {
@@ -271,7 +271,7 @@ Retrieve companies:
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -319,7 +319,7 @@ HTTP status: **200**
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {
@@ -328,7 +328,7 @@ HTTP status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../_includes/error-info.md) %}
+{% include notitle [Error Handling](../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
@@ -340,7 +340,7 @@ HTTP status: **400**
 || `-`     | `Failed to get list. General error` | An unknown error occurred ||
 |#
 
-{% include [system errors](./../../../_includes/system-errors.md) %}
+{% include [System Errors](./../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

@@ -1,18 +1,18 @@
-# Get the list of contacts crm.contact.list
+# Get a List of Contacts crm.contact.list
 
 > Scope: [`crm`](../../scopes/permissions.md)
 >
 > Who can execute the method: any user with "read" access permission for contacts
 
-{% note warning "Method Development Stopped" %}
+{% note warning "DEPRECATED" %}
 
-The method `crm.contact.list` continues to function, but there is a more relevant alternative [crm.item.list](../universal/crm-item-list.md).
+The development of this method has been halted. Please use [crm.item.list](../universal/crm-item-list.md).
 
 {% endnote %}
 
 The method `crm.contact.list` returns a list of contacts based on a filter. It is an implementation of the list method for contacts.
 
-To get a list of companies associated with a contact, use the method [`crm.contact.company.items.get`](company/crm-contact-company-items-get.md)
+To retrieve a list of companies associated with a contact, use the method [`crm.contact.company.items.get`](company/crm-contact-company-items-get.md).
 
 ## Method Parameters
 
@@ -20,20 +20,20 @@ To get a list of companies associated with a contact, use the method [`crm.conta
 || **Name**
 `type` | **Description** ||
 || **select**
-[`string[]`][1] | List of fields that should be filled in the contacts in the selection.
+[`string[]`][1] | A list of fields that should be populated for the contacts in the selection.
 
 You can use masks in the selection:
 - `'*'` — to select all fields (excluding custom and multiple fields)
 - `'UF_*'` — to select all custom fields (excluding multiple fields)
 
-There are no masks for selecting multiple fields. To select multiple fields, specify the required ones in the selection list (`PHONE`, `EMAIL`, etc.).
+There is no mask for selecting multiple fields. To select multiple fields, specify the required ones in the selection list (`PHONE`, `EMAIL`, etc.).
 
 You can find the list of available fields for selection using the method [`crm.contact.fields`](crm-contact-fields.md).
 
 By default, all fields are taken — `'*'` + Custom fields — `'UF_*'`
 ||
 || **filter**
-[`object`][1] | Object format:
+[`object`][1] | An object in the format:
 
 ```
 {
@@ -48,7 +48,7 @@ where:
 - `field_n` — the name of the field by which the selection of elements will be filtered
 - `value_n` — the filter value
 
-You can add a prefix to the keys `field_n` to clarify the filter operation.
+You can add a prefix to the keys `field_n` to specify the filter operation.
 Possible prefix values:
 - `>=` — greater than or equal to
 - `>` — greater than
@@ -62,20 +62,20 @@ Possible prefix values:
     - `"%mol"` — searches for values ending with "mol"
     - `"%mol%"` — searches for values where "mol" can be in any position
 - `%=` — LIKE (similar to `=%`)
-- `=` — equals, exact match (used by default)
+- `=` — equal, exact match (used by default)
 - `!=` — not equal
 - `!` — not equal
 
-The fields Phone (`PHONE`), Email (`EMAIL`), Website (`WEB`), Messengers (`IM`), Links (`LINK`) — are multiple. Filters for them only work on exact matches.
+The fields Phone (`PHONE`), Email (`EMAIL`), Website (`WEB`), Messengers (`IM`), Links (`LINK`) are multiple. Filters for these fields only work on exact matches.
 
-Also, the `LIKE` filter does not work with fields of type `crm_status`, `crm_contact`, `crm_company` — for example, Contact Type (`TYPE_ID`), Salutation (`HONORIFIC`), etc.
+Additionally, the `LIKE` filter does not work with fields of type `crm_status`, `crm_contact`, `crm_company` — for example, Contact Type (`TYPE_ID`), Salutation (`HONORIFIC`), etc.
 
 You can find the list of available fields for filtering using the method [`crm.contact.fields`](crm-contact-fields.md).
 
-The `logic` key in the filter is not supported. To use complex logic in the filter, use the method [crm.item.list](../universal/crm-item-list.md)
+The `logic` key in the filter is not supported. To use complex logic in the filter, use the method [crm.item.list](../universal/crm-item-list.md).
 ||
 || **order**
-[`object`][1] | Object format:
+[`object`][1] | An object in the format:
 
 ```
 {
@@ -88,21 +88,21 @@ The `logic` key in the filter is not supported. To use complex logic in the filt
 where:
 - `field_n` — the name of the field by which the selection of contacts will be sorted
 - `value_n` — a `string` value equal to:
-    - `ASC` — ascending sort
-    - `DESC` — descending sort
+    - `ASC` — ascending order
+    - `DESC` — descending order
 
 You can find the list of available fields for sorting using the method [`crm.contact.fields`](crm-contact-fields.md)
 ||
 || **start**
-[`integer`][1] | Parameter for managing pagination.
+[`integer`][1] | A parameter for managing pagination.
 
 The page size of results is always static — 50 records.
 
 To select the second page of results, pass the value `50`. To select the third page of results — the value `100`, and so on.
 
-The formula for calculating the value of the `start` parameter:
+The formula for calculating the `start` parameter value:
 
-`start = (N-1) * 50`, where `N` — the number of the desired page
+`start = (N-1) * 50`, where `N` — the desired page number
 ||
 |#
 
@@ -110,25 +110,25 @@ Also, see the description of [list methods](../../../settings/how-to-call-rest-a
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+{% include [Examples Note](../../../_includes/examples.md) %}
 
 Get a list of contacts where:
 1. the source is CRM Form
 2. first name and last name are not empty
 3. first name or last name starts with "I"
-4. are participating in the export
+4. they participate in export
 5. e-mail equals 'special-for@example.com'
-6. the responsible person's ID is either 1 or 6
+6. the responsible ID is either 1 or 6
 7. created less than 6 months ago
 
-Set the order of sorting the selection: first name and last name in ascending order.
+Set the order of the selection: first name and last name in ascending order.
 
 For clarity, select only the necessary fields:
 - Contact ID
 - First Name
 - Last Name
 - E-mail
-- Participating in export
+- Participation in export
 - Responsible
 - Creation Date
 
@@ -157,7 +157,7 @@ For clarity, select only the necessary fields:
 - JS
 
     ```js
-    // callListMethod: Retrieves all data at once. Use only for small selections (< 1000 items) due to high memory usage.
+    // callListMethod: Retrieves all data at once. Use only for small selections (< 1000 items) due to high memory load.
     
     const sixMonthAgo = new Date();
     sixMonthAgo.setMonth(new Date().getMonth() - 6);
@@ -202,7 +202,7 @@ For clarity, select only the necessary fields:
       console.error('Request failed', error);
     }
     
-    // fetchListMethod: Retrieves data in parts using an iterator. Use it for large data volumes to optimize memory usage.
+    // fetchListMethod: Retrieves data in parts using an iterator. Use for large volumes of data for efficient memory consumption.
     
     const sixMonthAgo = new Date();
     sixMonthAgo.setMonth(new Date().getMonth() - 6);
@@ -243,7 +243,7 @@ For clarity, select only the necessary fields:
       console.error('Request failed', error);
     }
     
-    // callMethod: Manually controls pagination through the start parameter. Use it for precise control of request batches. For large datasets, it is less efficient than fetchListMethod.
+    // callMethod: Manual control of pagination through the start parameter. Use for precise control over request batches. Less efficient for large data than fetchListMethod.
     
     const sixMonthAgo = new Date();
     sixMonthAgo.setMonth(new Date().getMonth() - 6);
@@ -429,15 +429,15 @@ For clarity, select only the necessary fields:
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
 	"result": [
 		{
 			"ID": "75",
-			"NAME": "Emily",
-			"LAST_NAME": "Smith",
+			"NAME": "Anastasia",
+			"LAST_NAME": "Ilyina",
 			"EXPORT": "Y",
 			"ASSIGNED_BY_ID": "6",
 			"DATE_CREATE": "2024-02-26T00:00:00+02:00",
@@ -452,8 +452,8 @@ HTTP status: **200**
 		},
 		{
 			"ID": "74",
-			"NAME": "James",
-			"LAST_NAME": "Johnson",
+			"NAME": "Artem",
+			"LAST_NAME": "Isaev",
 			"EXPORT": "Y",
 			"ASSIGNED_BY_ID": "1",
 			"DATE_CREATE": "2024-08-15T00:00:00+02:00",
@@ -468,8 +468,8 @@ HTTP status: **200**
 		},
 		{
 			"ID": "78",
-			"NAME": "James",
-			"LAST_NAME": "Johnson",
+			"NAME": "Artem",
+			"LAST_NAME": "Isaev",
 			"EXPORT": "Y",
 			"ASSIGNED_BY_ID": "1",
 			"DATE_CREATE": "2024-08-15T00:00:00+02:00",
@@ -484,8 +484,8 @@ HTTP status: **200**
 		},
 		{
 			"ID": "77",
-			"NAME": "Jessica",
-			"LAST_NAME": "Williams",
+			"NAME": "Inna",
+			"LAST_NAME": "Kuznetsova",
 			"EXPORT": "Y",
 			"ASSIGNED_BY_ID": "6",
 			"DATE_CREATE": "2024-07-01T00:00:00+02:00",
@@ -500,8 +500,8 @@ HTTP status: **200**
 		},
 		{
 			"ID": "73",
-			"NAME": "John",
-			"LAST_NAME": "Brown",
+			"NAME": "Ivan",
+			"LAST_NAME": "Petrov",
 			"EXPORT": "Y",
 			"ASSIGNED_BY_ID": "1",
 			"DATE_CREATE": "2024-02-20T00:00:00+02:00",
@@ -548,7 +548,7 @@ The `next` parameter appears in the response if the number of elements matching 
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {
@@ -564,8 +564,8 @@ HTTP status: **400**
 #|
 || **Code** | **Description** | **Value** ||
 || `-`     | `Access denied` | The user does not have permission for "Read" contacts ||
-|| `-`     | `Parameter 'order' must be array` | A non-array was passed to the `order` parameter ||
-|| `-`     | `Parameter 'filter' must be array` | A non-array was passed to the `filter` parameter ||
+|| `-`     | `Parameter 'order' must be array` | A non-array value was passed to the `order` parameter ||
+|| `-`     | `Parameter 'filter' must be array` | A non-array value was passed to the `filter` parameter ||
 || `-`     | `Failed to get list. General error` | An unknown error occurred ||
 |#
 
@@ -581,4 +581,3 @@ HTTP status: **400**
 - [{#T}](../../../tutorials/crm/how-to-get-lists/search-by-phone-and-email.md)
 
 [1]: ../../data-types.md
-

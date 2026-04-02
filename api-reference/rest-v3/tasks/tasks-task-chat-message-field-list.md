@@ -1,6 +1,6 @@
 # Get the List of Chat Message Fields for tasks.task.chat.message.field.list
 
-> Scope: [`task`](../../scopes/permissions.md)
+> Scope: [`tasks`](../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
@@ -8,13 +8,13 @@ The method `tasks.task.chat.message.field.list` returns a list of available fiel
 
 ## Method Parameters
 
-{% include [Parameter Note](../../../_includes/required.md) %}
+{% include [Parameter Notes](../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **select**
-[`array`](../../data-types.md) | List of description fields to be returned in the response.
+[`array`](../../data-types.md) | List of description fields to return in the response.
 
 Available fields:
 - `name` — field name
@@ -22,7 +22,7 @@ Available fields:
 - `title` — title
 - `description` — description
 - `validationRules` — validation rules
-- `requiredGroups` — required groups
+- `requiredGroups` — mandatory groups
 - `filterable` — filter availability indicator
 - `sortable` — sort availability indicator
 - `editable` — editability indicator
@@ -32,7 +32,7 @@ Available fields:
 
 ## Code Examples
 
-{% include [Example Note](../../../_includes/examples.md) %}
+{% include [Example Notes](../../../_includes/examples.md) %}
 
 {% note info "" %}
 
@@ -66,7 +66,7 @@ The new API call differs by the addition of the `/api/` parameter in the request
 
 - JS
 
-    The SDK does not currently support the address /rest/api/ in calls. Use direct HTTP requests, for example, via curl or fetch.
+    The SDK does not currently support calls to the /rest/api/ address. Use direct HTTP requests, such as via curl or fetch.
 
     ```javascript
     try
@@ -97,7 +97,7 @@ The new API call differs by the addition of the `/api/` parameter in the request
 
 - PHP
 
-    The SDK does not currently support the address /rest/api/ in calls. Use direct HTTP requests, for example, via curl or fetch.
+    The SDK does not currently support calls to the /rest/api/ address. Use direct HTTP requests, such as via curl or fetch.
 
     ```php
     try {
@@ -132,7 +132,7 @@ The new API call differs by the addition of the `/api/` parameter in the request
 
 - BX24.js
 
-    The SDK does not currently support the address /rest/api/ in calls. Use direct HTTP requests, for example, via curl or fetch.
+    The SDK does not currently support calls to the /rest/api/ address. Use direct HTTP requests, such as via curl or fetch.
 
     ```js
     BX24.callMethod(
@@ -157,7 +157,7 @@ The new API call differs by the addition of the `/api/` parameter in the request
 
 - PHP CRest
 
-    The SDK does not currently support the address /rest/api/ in calls. Use direct HTTP requests, for example, via curl or fetch.
+    The SDK does not currently support calls to the /rest/api/ address. Use direct HTTP requests, such as via curl or fetch.
 
     ```php
     require_once('crest.php');
@@ -260,7 +260,7 @@ HTTP Status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../_includes/error-info-v3.md) %}
+{% include notitle [Error Handling](../../../_includes/error-info-v3.md) %}
 
 ### Possible Error Codes
 
@@ -270,7 +270,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_ACCESSDENIEDEXCEPTION`
 
 #|
 || **Field** | **Error Description** | **How to Fix** ||
-|| `-` | Access denied | Check user permissions and scope `task` ||
+|| `-` | Access denied | Check user permissions and the `task` scope ||
 |#
 
 #### Errors in the `select` Parameter
@@ -286,10 +286,10 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_INVALIDSELECTEXCEPTION`
 
 #|
 || **Field** | **Error Description** | **How to Fix** ||
-|| `select` | Unable to recognize select expression `#SELECT#` | Pass `select` as an array of strings, for example `["name","type"]` ||
+|| `select` | Unable to recognize select expression `#SELECT#` | Pass `select` as an array of strings, e.g., `["name","type"]` ||
 |#
 
-{% include [system errors](../../../_includes/system-errors.md) %}
+{% include [System Errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

@@ -1,12 +1,12 @@
-# Delete product crm.product.delete
+# Delete Product crm.product.delete
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: administrator, user with the "Allow to modify settings" access permission in CRM
+> Who can execute the method: administrator, user with "Allow to modify settings" access permission in CRM
 
-{% note warning "Method development has been halted" %}
+{% note warning "DEPRECATED" %}
 
-The method `crm.product.delete` is still operational, but there are more relevant alternatives [catalog.product.*](../../../catalog/product/index.md).
+Development of this method has been halted. Please use [catalog.product.delete](../../../catalog/product/catalog-product-delete.md).
 
 {% endnote %}
 

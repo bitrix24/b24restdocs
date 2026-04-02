@@ -1,22 +1,28 @@
-# How to Mass Finish Workflows with Date Filter
+# How to Mass Terminate Workflows with Date Filtering
 
 > Scope: [`bizproc`](../../api-reference/scopes/permissions.md)
 > 
 > Who can execute methods: administrator
 
-During the use of Bitrix24, there may be accumulated stuck workflows or processes that remain in the "In Progress" status for too long and become irrelevant.
+{% note tip "" %}
 
-To mass finish old workflows, we will sequentially execute two methods:
-1. [bizproc.workflow.instances](../../api-reference/bizproc/bizproc-workflow-instances.md) — we will get a filtered list of processes
-2. [bizproc.workflow.kill](../../api-reference/bizproc/bizproc-workflow-kill.md) — we will finish the workflows with data deletion. If you need to keep the fact of the workflow's launch, use the method [bizproc.workflow.terminate](../../api-reference/bizproc/bizproc-workflow-terminate.md). Both methods are called in the same way.
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
 
-## 1. Get the List of Processes {#workflow_id}
+{% endnote %}
 
-We will use the method [bizproc.workflow.instances](../../api-reference/bizproc/bizproc-workflow-instances.md) with a filter:
+During the operation of Bitrix24, you may accumulate stuck workflows or processes that remain in the "In Progress" status for too long and become irrelevant.
 
-- `<STARTED` — we will specify the start date with the prefix `<`, only those processes that were started before this date will be selected.
+To mass terminate old workflows, we will sequentially execute two methods:
+1. [bizproc.workflow.instances](../../api-reference/bizproc/bizproc-workflow-instances.md) — retrieve a filtered list of processes
+2. [bizproc.workflow.kill](../../api-reference/bizproc/bizproc-workflow-kill.md) — terminate workflows with data deletion. If you need to preserve the fact that the workflow was initiated, use the [bizproc.workflow.terminate](../../api-reference/bizproc/bizproc-workflow-terminate.md) method. Both methods are called in the same way.
 
-{% include [Example Notes](../../_includes/examples.md) %}
+## 1. Retrieve the List of Processes {#workflow_id}
+
+We will use the [bizproc.workflow.instances](../../api-reference/bizproc/bizproc-workflow-instances.md) method with a filter:
+
+- `<STARTED` — specify the start date with the prefix `<`, only processes that were started before this date will be selected.
+
+{% include [Examples Note](../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -50,7 +56,7 @@ We will use the method [bizproc.workflow.instances](../../api-reference/bizproc/
 
 {% endlist %}
 
-As a result, we will get the `ID` of all active workflows that were started before the specified date.
+As a result, we will obtain the `ID` of all active workflows that were initiated before the specified date.
 
 ```json
 {
@@ -76,13 +82,13 @@ As a result, we will get the `ID` of all active workflows that were started befo
             "OWNED_UNTIL": null
         }
     ],
-    "total": 4,
+    "total": 4
 }
 ```
 
-## 2. Finish the Workflows 
+## 2. Terminate Workflows 
 
-We will use the method [bizproc.workflow.kill](../../api-reference/bizproc/bizproc-workflow-kill.md) with the parameter:
+We will use the [bizproc.workflow.kill](../../api-reference/bizproc/bizproc-workflow-kill.md) method with the parameter:
 - `ID` — the identifier of the process, we pass the `ID` obtained in [step 1](#workflow_id).
 
 {% list tabs %}
@@ -113,17 +119,17 @@ We will use the method [bizproc.workflow.kill](../../api-reference/bizproc/bizpr
 
 {% endlist %}
 
-As a result, we will receive `true`, indicating that the process was successfully deleted. If you received an `error`, check the possible error descriptions in the documentation for the method [bizproc.workflow.kill](../../api-reference/bizproc/bizproc-workflow-kill.md).
+As a result, we will receive `true`, indicating that the process was successfully deleted. If you encounter an `error`, refer to the documentation for possible errors in the [bizproc.workflow.kill](../../api-reference/bizproc/bizproc-workflow-kill.md) method.
 
 ```json
 {
-    "result": true,
+    "result": true
 }
 ```
 
 ## Code Example
 
-In the example, all found processes are deleted in a loop. When deleting a large volume of data, there may be limitations on request execution. To optimize the code for your workload, use the recommendations in the [Performance](../../settings/performance/index.md) section.
+In this example, all found processes are deleted in a loop. When deleting a large volume of data, there may be limitations on request execution. To optimize the code for your workload, refer to the [Performance](../../settings/performance/index.md) section.
 
 {% list tabs %}
 
@@ -137,7 +143,7 @@ In the example, all found processes are deleted in a loop. When deleting a large
     }
 
     // Request date from user
-    const userDateInput = prompt("Enter date in dd.mm.yyyy format:");
+    const userDateInput = prompt("Enter the date in dd.mm.yyyy format:");
     const isoDate = convertDateToISO(userDateInput);
 
     // Call the bizproc.workflow.instances method with date filter
@@ -192,7 +198,7 @@ In the example, all found processes are deleted in a loop. When deleting a large
     }
 
     // Request date from user
-    $userDateInput = readline("Enter date in dd.mm.yyyy format: ");
+    $userDateInput = readline("Enter the date in dd.mm.yyyy format: ");
     $isoDate = convertDateToISO($userDateInput);
 
     // Call the bizproc.workflow.instances method with date filter

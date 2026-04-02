@@ -1,10 +1,10 @@
-# Event on Document Deletion `onCrmDocumentGeneratorDocumentDelete`
+# Document Deletion Event onCrmDocumentGeneratorDocumentDelete
 
 > Scope: [`documentgenerator, crm`](../../../../scopes/permissions.md)
 >
 > Who can subscribe: any user
 
-The event `ONCRMDOCUMENTGENERATORDOCUMENTDELETE` will trigger upon the deletion of a document.
+The event `ONCRMDOCUMENTGENERATORDOCUMENTDELETE` will be triggered upon the deletion of a document.
 
 {% note info "" %}
 
@@ -12,7 +12,7 @@ Events will not be sent to the application until the installation is complete. [
 
 {% endnote %}
 
-## What the handler receives
+## What the Handler Receives
 
 Data is transmitted as a POST request {.b24-info}
 
@@ -61,7 +61,7 @@ Contains the key `FIELDS` ||
 
 The structure is described [below](#fields) ||
 || **ts**
-[`timestamp`](../../../../data-types.md) | Date and time of the event sent from the [event queue](../../../../events/index.md) ||
+[`timestamp`](../../../../data-types.md) | Date and time the event was sent from the [event queue](../../../../events/index.md) ||
 || **auth**
 [`object`](../../../../data-types.md) | Object containing authorization parameters and information about the account where the event occurred.
 
@@ -78,14 +78,14 @@ The structure is described [below](#auth) ||
 || **ENTITY_TYPE_ID**
 [`integer`](../../../../data-types.md) | Identifier of the [object type](../../../../crm/data-types.md#object_type) to which the document belonged, for example `1` — lead ||
 || **ENTITY_ID**
-[`integer`](../../../../data-types.md) | Identifier of the entity to which the document was attached ||
+[`integer`](../../../../data-types.md) | Identifier of the element to which the document was attached ||
 |#
 
 ### Parameter auth {#auth}
 
 {% include notitle [Table with keys in the auth array](../../../../../_includes/auth-params-in-events.md) %}
 
-## Continue exploring
+## Continue Your Exploration
 
 - [{#T}](../../../../events/index.md)
 - [{#T}](../../../../events/event-bind.md)

@@ -1,10 +1,16 @@
-# Get the values of the fields of the unit of measurement crm.measure.get
+# Get Field Values of Measurement Unit crm.measure.get
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-The method returns the values of all fields of the unit of measurement by its identifier.
+{% note warning "DEPRECATED" %}
+
+The development of this method has been halted. Please use [catalog.measure.get](../../../catalog/measure/catalog-measure-get.md).
+
+{% endnote %}
+
+This method returns the values of all fields of a measurement unit by its identifier.
 
 ## Method Parameters
 
@@ -12,7 +18,7 @@ The method returns the values of all fields of the unit of measurement by its id
 
 #|
 || **Name** | **Description** ||
-|| **id*** | Identifier of the unit of measurement ||
+|| **id*** | Identifier of the measurement unit ||
 |#
 
 ## Code Examples

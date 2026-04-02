@@ -1,3 +1,9 @@
-# Tutorials and use-cases for REST in the Open Channels module
+# Tutorials and Use-Cases for REST in the Open Channels Module
+
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
 
 - [{#T}](./example-connector.md)

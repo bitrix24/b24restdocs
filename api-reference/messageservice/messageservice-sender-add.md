@@ -1,80 +1,96 @@
-# Register SMS Provider or Message Provider messageservice.sender.add
-
-{% note warning "We are still updating this page" %}
-
-Some data may be missing — we will fill it in shortly.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- parameter types are not specified
-- parameter requirements are not indicated
-- no success response is provided
-- no error response is provided
-- No examples in other languages
-
-{% endnote %}
-
-{% endif %}
+# Register an SMS Provider or Message Provider messageservice.sender.add
 
 > Scope: [`messageservice`](../scopes/permissions.md)
 >
 > Who can execute the method: administrator
 
-This method registers a new message provider.
+The method `messageservice.sender.add` registers a new message provider.
+
+This method works only in the context of an [application](../../settings/app-installation/index.md).
+
+## Method Parameters
+
+{% include [Note on required parameters](../../_includes/required.md) %}
 
 #|
-|| **Parameter** | **Description** ||
-|| **CODE** | Internal identifier of the provider. Allowed characters are a-z, A-Z, 0-9, dot, dash, and underscore. ||
-|| **TYPE** | Type of the provider. ||
-|| **HANDLER** | URL of the application to which data will be sent. ||
-|| **NAME** | Name of the provider. It can be a string or an associative array of localized strings. ||
-|| **DESCRIPTION** | Description of the provider. It can be a string or an associative array of localized strings. ||
+|| **Name**
+`type` | **Description** ||
+|| **CODE***
+[`string`](../data-types.md) | Provider code.
+
+Allowed characters: `a-z`, `A-Z`, `0-9`, `.`, `-`, `_` ||
+|| **TYPE***
+[`string`](../data-types.md) | Provider type.
+
+Supported value: `SMS` ||
+|| **HANDLER***
+[`string`](../data-types.md) | Application handler URL that is called when sending a message ||
+|| **NAME***
+[`string` \| `object`](../data-types.md) | Provider name.
+
+Can be a string or an associative array of localized strings like:
+
+```js
+'NAME': {
+    'de': 'Anbietername',
+    'en': 'provider name',
+    ...
+},
+```
+ ||
+|| **DESCRIPTION**
+[`string` \| `object`](../data-types.md) | Provider description.
+
+Can be a string or an associative array of localized strings like:
+
+```js
+'DESCRIPTION': {
+    'de': 'Anbieterbeschreibung',
+    'en': 'provider description',
+    ...
+},
+```
+||
 |#
 
-{% include [Footnote on parameters](../../_includes/required.md) %}
+## Code Examples
 
-Data is sent to HANDLER:
-
-- **module_id** - initiating module. `crm` means the message was sent from a detail form (other options may be available in the future), `bizproc` means sent from Business Processes or an Automation rule.
-- **bindings** - parameter relevant only for module_id = crm. It contains an array of message bindings to CRM entities (what the activity will be linked to).
-- **workflow_id**, **document_id**, **document_type** - parameters relevant only for module_id = bizproc. These parameters are not always present: if sent from a detail form, they will not be included.
-- **message_id** - unique identifier of the message. It can be used to refer to [messageservice.message.status.update](messageservice-message-status-update.md).
-- **message_to** - recipient's phone number
-- **message_body** - text of the message
-
-## Example
+{% include [Note on examples](../../_includes/examples.md) %}
 
 {% list tabs %}
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"CODE":"provider1","TYPE":"SMS","HANDLER":"https://provider.example/api/handler","NAME":"Provider 1","DESCRIPTION":"Main SMS provider","auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/messageservice.sender.add
+    ```
 
 - JS
 
     ```js
     try
     {
-    	const response = await $b24.callMethod(
-    		'messageservice.sender.add',
-    		{
-    			CODE: 'provider1',
-    			TYPE: 'SMS',
-    			HANDLER: 'http:///',
-    			NAME: 'Provider ***.com',
-    			DESCRIPTION: 'Provider ***.com'
-    		}
-    	);
-    	
-    	const result = response.getData().result;
-    	if(result.error())
-    		alert("Error: " + result.error());
-    	else
-    		alert("Success: " + result);
+        const response = await $b24.callMethod(
+            'messageservice.sender.add',
+            {
+                CODE: 'provider1',
+                TYPE: 'SMS',
+                HANDLER: 'https://provider.example/api/handler',
+                NAME: 'Provider 1',
+                DESCRIPTION: 'Main SMS provider'
+            }
+        );
+
+        const result = response.getData().result;
+        console.log(result);
     }
-    catch( error )
+    catch (error)
     {
-    	console.error('Error:', error);
+        console.error('Error:', error);
     }
     ```
 
@@ -82,31 +98,24 @@ Data is sent to HANDLER:
 
     ```php
     try {
-        $params = [
-            'CODE'        => 'provider1',
-            'TYPE'        => 'SMS',
-            'HANDLER'     => 'http:///',
-            'NAME'        => 'Provider ***.com',
-            'DESCRIPTION' => 'Provider ***.com',
-        ];
-    
         $response = $b24Service
             ->core
             ->call(
                 'messageservice.sender.add',
-                $params
+                [
+                    'CODE' => 'provider1',
+                    'TYPE' => 'SMS',
+                    'HANDLER' => 'https://provider.example/api/handler',
+                    'NAME' => 'Provider 1',
+                    'DESCRIPTION' => 'Main SMS provider',
+                ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
-        if ($result->error()) {
-            echo 'Error: ' . $result->error();
-        } else {
-            echo 'Success: ' . $result->data();
-        }
-    
+
+        print_r($result);
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error adding sender: ' . $e->getMessage();
@@ -116,96 +125,118 @@ Data is sent to HANDLER:
 - BX24.js
 
     ```js
-    var params = {
-        CODE: 'provider1',
-        TYPE: 'SMS',
-        HANDLER: 'http:///',
-        NAME: 'Provider ***.com',
-        DESCRIPTION: 'Provider ***.com'
-    };
     BX24.callMethod(
         'messageservice.sender.add',
-        params,
+        {
+            CODE: 'provider1',
+            TYPE: 'SMS',
+            HANDLER: 'https://provider.example/api/handler',
+            NAME: 'Provider 1',
+            DESCRIPTION: 'Main SMS provider'
+        },
         function(result)
         {
-            if(result.error())
-                alert("Error: " + result.error());
+            if (result.error())
+            {
+                console.error(result.error(), result.error_description());
+            }
             else
-                alert("Success: " + result.data());
+            {
+                console.log(result.data());
+            }
         }
     );
     ```
 
+- PHP CRest
+
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'messageservice.sender.add',
+        [
+            'CODE' => 'provider1',
+            'TYPE' => 'SMS',
+            'HANDLER' => 'https://provider.example/api/handler',
+            'NAME' => 'Provider 1',
+            'DESCRIPTION' => 'Main SMS provider',
+        ]
+    );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
+    ```
+
 {% endlist %}
 
-**Sending from CRM detail form**
+## Response Handling
 
-```plaintext
-Array
-(
-    [module_id] => crm
-    [bindings] => Array
-        (
-            [0] => Array
-                (
-                    [OWNER_TYPE_ID] => 1
-                    [OWNER_ID] => 98
-                )
+HTTP status: **200**
 
-        )
-
-    [properties] => Array
-        (
-            [phone_number] => +1*********
-            [message_text] => test message
-    )
-
-    [type] => SMS
-    [code] => example
-    [message_id] => 72dd742c8270db0ddbbab92f98877537
-    [message_to] => +1**********
-    [message_body] => test message
-    [ts] => 1506687055
-    [auth] => /*auth*/
-
-)
+```json
+{
+    "result": true,
+    "time": {
+        "start": 1742895600,
+        "finish": 1742895600.845505,
+        "duration": 0.845505952835083,
+        "processing": 0,
+        "date_start": "2025-03-25T10:00:00+02:00",
+        "date_finish": "2025-03-25T10:00:00+02:00",
+        "operating_reset_at": 1742896200,
+        "operating": 0
+    }
+}
 ```
 
-**Sending from Business Process or Automation rule.**
+### Returned Data
 
-```plaintext
-Array
-(
-    [module_id] => bizproc
-    [workflow_id] => 59ce38567ff2a5.26351167
-    [document_id] => Array
-        (
-            [0] => crm
-            [1] => CCrmDocumentLead
-            [2] => LEAD_98
-        )
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`boolean`](../data-types.md) | `true` if the provider was successfully registered ||
+|| **time**
+[`time`](../data-types.md#time) | Information about the request execution time ||
+|#
 
-    [document_type] => Array
-        (
-            [0] => crm
-            [1] => CCrmDocumentLead
-            [2] => LEAD
-        )
+## Error Handling
 
-    [properties] => Array
-        (
-            [phone_number] => +1*********
-            [message_text] => test message
-        )
+HTTP status: **400**, **403**
 
-    [type] => SMS
-    [code] => example
-    [message_id] => 8b3fc6cd0cb4a7b91f6632889cdf46e0
-    [message_to] => +1*********
-    [message_body] => test message
-    [ts] => 1506687103
-    [auth] => /*auth*/
-
-)
+```json
+{
+    "error": "ERROR_SENDER_VALIDATION_FAILURE",
+    "error_description": "Empty sender code!"
+}
 ```
-{% include [Footnote on examples](../../_includes/examples.md) %}
+
+{% include notitle [Error Handling](../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+#|
+|| **Code** | **Description** | **Value** ||
+|| `ERROR_SENDER_VALIDATION_FAILURE` | `Empty data!` | Empty parameter set ||
+|| `ERROR_SENDER_VALIDATION_FAILURE` | `Empty sender code!` | Required parameter `CODE` not provided ||
+|| `ERROR_SENDER_VALIDATION_FAILURE` | `Wrong sender code!` | `CODE` contains invalid characters ||
+|| `ERROR_SENDER_VALIDATION_FAILURE` | `Empty sender NAME!` | Required parameter `NAME` not provided ||
+|| `ERROR_SENDER_VALIDATION_FAILURE` | `Empty sender message TYPE!` | Required parameter `TYPE` not provided ||
+|| `ERROR_SENDER_VALIDATION_FAILURE` | `Unknown sender message TYPE!` | Unsupported `TYPE` provided (only `SMS` is allowed) ||
+|| `ERROR_SENDER_ALREADY_INSTALLED` | `Sender already installed!` | A provider with this `CODE` is already registered for the current application ||
+|| `ERROR_SENDER_ADD_FAILURE` | `Sender save error!` | Error saving the provider ||
+|| `ACCESS_DENIED` | `Access denied!` | Method was invoked by a non-administrator ||
+|| `ACCESS_DENIED` | `Application context required` | Method called outside of application context ||
+|#
+
+{% include [System Errors](../../_includes/system-errors.md) %}
+
+## Continue Learning
+
+- [{#T}](./messageservice-sender-add.md)
+- [{#T}](./messageservice-sender-update.md)
+- [{#T}](./messageservice-sender-list.md)
+- [{#T}](./messageservice-sender-delete.md)
+- [{#T}](./messageservice-message-status-update.md)

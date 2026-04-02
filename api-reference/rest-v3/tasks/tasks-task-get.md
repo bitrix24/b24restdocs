@@ -1,19 +1,19 @@
 # Get Task tasks.task.get
 
-> Scope: [`task`](../../scopes/permissions.md)
+> Scope: [`tasks`](../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
 The method `tasks.task.get` returns information about a task by its identifier.
 
 Access to the data depends on permissions:
-- administrators see all tasks,
-- managers see their employees' tasks,
-- others see only the tasks available to them.
+- Administrators can see all tasks,
+- Managers can see their employees' tasks,
+- Others can only see tasks available to them.
 
 ## Method Parameters
 
-{% include [Footnote about parameters](../../../_includes/required.md) %}
+{% include [Footnote on parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -21,7 +21,7 @@ Access to the data depends on permissions:
 || **id***
 [`integer`](../../data-types.md) | Task identifier.
 
-The task identifier can be obtained when [creating a new task](./tasks-task-add.md) or by the old method of [getting the list of tasks](../../tasks/tasks-task-list.md) ||
+The task identifier can be obtained when [creating a new task](./tasks-task-add.md) or by using the old method of [getting the task list](../../tasks/tasks-task-list.md) ||
 || **select** 
 [`array`](../../data-types.md) | An array of fields that the method will return. If `select` is not specified, a basic set of task fields without related objects is returned.
 
@@ -31,11 +31,11 @@ For related objects, use a nested path with a dot, for example `["responsible.na
 
 ## Code Examples
 
-{% include [Footnote about examples](../../../_includes/examples.md) %}
+{% include [Footnote on examples](../../../_includes/examples.md) %}
 
 {% note info "" %}
 
-The call to the new API differs by adding the `/api/` parameter in the request:
+The new API call differs by adding the `/api/` parameter in the request:
 
 `https://{installation_address}/rest/api/{user_id}/{webhook_token}/tasks.task.get`
 
@@ -65,7 +65,7 @@ The call to the new API differs by adding the `/api/` parameter in the request:
 
 - JS
 
-    The SDK does not yet support calls to the address /rest/api/. Use direct HTTP requests, for example, via curl, fetch. 
+    The SDK does not currently support calls to the address /rest/api/. Use direct HTTP requests, for example, via curl or fetch.
 
     ```javascript
     try
@@ -93,7 +93,7 @@ The call to the new API differs by adding the `/api/` parameter in the request:
 
 - PHP
 
-    The SDK does not yet support calls to the address /rest/api/. Use direct HTTP requests, for example, via curl, fetch. 
+    The SDK does not currently support calls to the address /rest/api/. Use direct HTTP requests, for example, via curl or fetch.
 
     ```php
     try {
@@ -124,7 +124,7 @@ The call to the new API differs by adding the `/api/` parameter in the request:
 
 - BX24.js
 
-    The SDK does not yet support calls to the address /rest/api/. Use direct HTTP requests, for example, via curl, fetch. 
+    The SDK does not currently support calls to the address /rest/api/. Use direct HTTP requests, for example, via curl or fetch.
 
     ```js
     BX24.callMethod(
@@ -145,7 +145,7 @@ The call to the new API differs by adding the `/api/` parameter in the request:
 
 - PHP CRest
 
-    The SDK does not yet support calls to the address /rest/api/. Use direct HTTP requests, for example, via curl, fetch. 
+    The SDK does not currently support calls to the address /rest/api/. Use direct HTTP requests, for example, via curl or fetch.
 
     ```php
     require_once('crest.php');
@@ -183,7 +183,7 @@ HTTP Status: **200**
                 "name": "Alex",
                 "email": "mail@bitrix.com"
             },
-            "deadline": "2025-12-25T23:00:00+01:00",
+            "deadline": "2025-12-25T23:00:00+02:00",
             "needsControl": false,
             "startPlan": null,
             "endPlan": null,
@@ -196,7 +196,7 @@ HTTP Status: **200**
             "storyPoints": null,
             "priority": "average",
             "status": "pending",
-            "statusChanged": "2025-11-24T06:00:00+01:00",
+            "statusChanged": "2025-11-24T06:00:00+02:00",
             "parentId": null,
             "containsChecklist": true,
             "containsSubTasks": false,
@@ -212,9 +212,9 @@ HTTP Status: **200**
             "started": null,
             "estimatedTime": 0,
             "replicate": false,
-            "changed": "2025-12-10T16:04:54+01:00",
+            "changed": "2025-12-10T16:04:54+02:00",
             "closed": null,
-            "activity": "2025-12-10T16:04:42+01:00",
+            "activity": "2025-12-10T16:04:42+02:00",
             "guid": "{99502976-b2a2-4246-8d35-c6943b5ff242}",
             "xmlId": null,
             "exchangeId": null,
@@ -337,8 +337,8 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION`
 
 #|
 || **Field** | **Error Description** | **How to Fix** ||
-|| `id` | Required field `id` is not specified | Add `id` to the request body ||
-|| `id` | Field `id` requires data type `int` for this request | Ensure that the value is a number, not a string ||
+|| `id` | Required field `id` is missing | Add `id` to the request body ||
+|| `id` | Field `id` requires data type `int` for this request | Ensure the value is a number, not a string ||
 |#
 
 #### Data Not Found Errors
@@ -347,14 +347,14 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_ENTITYNOTFOUNDEXCEPTION`
 
 #|
 || **Field** | **Error Description** | **How to Fix** ||
-|| `id` | Record with ID = `2` not found | Specify `id` of an existing task ||
+|| `id` | Record with ID = `2` not found | Specify the `id` of an existing task ||
 |#
 
 Error Code: `BITRIX_REST_V3_EXCEPTION_UNKNOWNDTOPROPERTYEXCEPTION`
 
 #|
 || **Field** | **Error Description** | **How to Fix** ||
-|| `-` | Unknown field `status` for entity `TaskDto` | Specify existing fields in `select` for retrieving fields of related objects ||
+|| `-` | Unknown field `status` for entity `TaskDto` | Specify existing fields in `select` for fetching fields of related objects ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

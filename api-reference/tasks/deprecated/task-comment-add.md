@@ -1,18 +1,18 @@
-# Add a comment to the task task.comment.add
+# Add Comment to Task task.comment.add
 
 > Scope: [`task`](../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-This method adds comments to a task.
+{% note warning "DEPRECATED" %}
 
-{% note warning %}
-
-Instead of this method, you should use the methods [`task.commentitem.*`](../comment-item/index.md).
+Development of this method has been halted. Please use [tasks.task.chat.message.send](../../rest-v3/tasks/tasks-task-chat-message-send.md).
 
 {% endnote %}
 
-## Method parameters
+This method adds comments to a task.
+
+## Method Parameters
 
 #|
 || **Name** | **Description** ||
@@ -20,11 +20,11 @@ Instead of this method, you should use the methods [`task.commentitem.*`](../com
 || **COMMENTTEXT** | Comment ||
 |#
 
-It is mandatory to follow the order of parameters in the request. If this order is violated, the request will be executed with errors.
+It is essential to maintain the order of parameters in the request. If this order is violated, the request will be executed with errors.
 
-## Code examples
+## Code Examples
 
-{% include [Note on examples](../../../_includes/examples.md) %}
+{% include [Examples Note](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -87,7 +87,7 @@ It is mandatory to follow the order of parameters in the request. If this order 
             ->getResult();
     
         echo 'Success: ' . print_r($result, true);
-        // Your required data processing logic
+        // Your data processing logic here
         processData($result);
     
     } catch (Throwable $e) {

@@ -8,7 +8,7 @@ The `im.notify` method sends a notification to a user.
 
 {% note info "" %}
 
-This method is only available when called through the application.
+The method is only available when called through the application.
 
 {% endnote %}
 
@@ -19,7 +19,7 @@ This method is only available when called through the application.
 #|
 || **Name**
 `Type` | **Description** ||
-|| **USER_ID*** 
+|| **USER_ID***
 [`integer`](../../data-types.md) | The identifier of the user receiving the notification.
 
 You can obtain the user ID using the [user.get](../../user/user-get.md) or [user.search](../../user/user-search.md) methods. ||
@@ -30,9 +30,9 @@ Allowed values:
 - `USER` — personal notification
 - `SYSTEM` — system notification
  
-Default value is `USER` ||
-|| **MESSAGE*** 
-[`string`](../../data-types.md) | The text of the notification. The method trims whitespace from the edges of the string before sending. ||
+Default value — `USER` ||
+|| **MESSAGE***
+[`string`](../../data-types.md) | The text of the notification. The method trims whitespace from the ends of the string before sending. ||
 || **MESSAGE_OUT**
 [`string`](../../data-types.md) | The text of the notification for external channels, such as email. ||
 || **TAG**
@@ -41,7 +41,7 @@ Default value is `USER` ||
 [`string`](../../data-types.md) | An additional notification tag without uniqueness checks. Pass it with `CLIENT_ID` when calling via webhook. ||
 || **ATTACH**
 [`object`](../../data-types.md) 
-[`string`](../../data-types.md) | An attachment for the notification in object format or JSON string. For more details, see the [Attachments](../messages/attachments/index.md) section. ||
+[`string`](../../data-types.md) | An attachment for the notification in object format or JSON string. For more details, see the [Attachments](../messages/attachments.md) section. ||
 |#
 
 ## Code Examples
@@ -195,7 +195,7 @@ HTTP Code: **200**
 [`integer`](../../data-types.md) 
 [`boolean`](../../data-types.md) | The identifier of the created notification. If the notification was not created, it may return `false`. ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the execution time of the request. ||
+[`time`](../../data-types.md#time) | Information about the request execution time. ||
 |#
 
 ## Error Handling
@@ -218,7 +218,7 @@ HTTP Status: **400**, **403**
 || `WRONG_AUTH_TYPE` | Access for this method not allowed by session authorization. | The method was called with session authorization, which is prohibited. ||
 || `USER_ID_EMPTY` | User ID can't be empty | The `USER_ID` parameter was not provided, or `USER_ID <= 0`. ||
 || `MESSAGE_EMPTY` | Message can't be empty | The message text was not provided. ||
-|| `ATTACH_OVERSIZE` | You have exceeded the maximum allowable size of attach | The maximum allowable size of the `ATTACH` is exceeded — 30 KB. ||
+|| `ATTACH_OVERSIZE` | You have exceeded the maximum allowable size of attach | The maximum allowable size for the `ATTACH` is exceeded — 30 KB. ||
 || `ATTACH_ERROR` | Incorrect attach params | An incorrect format for the `ATTACH` was provided. ||
 |#
 

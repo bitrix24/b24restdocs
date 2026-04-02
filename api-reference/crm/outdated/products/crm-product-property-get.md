@@ -1,12 +1,12 @@
-# Get product property by ID crm.product.property.get
+# Get Product Property by ID crm.product.property.get
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-{% note warning "Method development has been halted" %}
+{% note warning "DEPRECATED" %}
 
-The method `crm.product.property.get` continues to function, but there is a more relevant alternative [catalog.productProperty.get](../../../catalog/product-property/catalog-product-property-get.md).
+The development of this method has been halted. Please use [catalog.productProperty.get](../../../catalog/product-property/catalog-product-property-get.md).
 
 {% endnote %}
 
@@ -16,7 +16,7 @@ The method `crm.product.property.get` returns the property of products by ID.
 
 {% include [Note on required parameters](../../../../_includes/required.md) %}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **id**
@@ -54,20 +54,20 @@ The method `crm.product.property.get` returns the property of products by ID.
     ```js
     try
     {
-    	const id = prompt("Enter ID");
-    	const response = await $b24.callMethod(
-    		"crm.product.property.get",
-    		{
-    			id: id
-    		}
-    	);
-    	
-    	const result = response.getData().result;
-    	console.dir(result);
+        const id = prompt("Enter ID");
+        const response = await $b24.callMethod(
+            "crm.product.property.get",
+            {
+                id: id
+            }
+        );
+        
+        const result = response.getData().result;
+        console.dir(result);
     }
     catch(error)
     {
-    	console.error(error);
+        console.error(error);
     }
     ```
 

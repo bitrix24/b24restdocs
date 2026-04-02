@@ -28,7 +28,7 @@ Data is transmitted as a POST request {.b24-info}
         "expires_in": 3600,
         "scope": "imconnector, imopenlines",
         "domain": "some-domain.bitrix24.com",
-        "server_endpoint": "https://oauth.bitrix24.tech/rest/",
+        "server_endpoint": "https://oauth.bitrix.info/rest/",
         "status": "F",
         "client_endpoint": "https://some-domain.bitrix24.com/rest/",
         "member_id": "bac1cd5c8940947a75e0d71b1a84e348",

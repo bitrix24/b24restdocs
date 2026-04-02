@@ -4,19 +4,19 @@
 >
 > Who can execute the method:
 >  - any user can set their own settings,
->  - a user with the "Allow changing settings" access permission in CRM can set others' and common settings
+>  - a user with the "Allow changing settings" access permission in CRM can set others' and common settings.
 
-{% note warning "Method development has been halted" %}
+{% note warning "DEPRECATED" %}
 
-The method `crm.company.details.configuration.set` continues to function, but there is a more relevant alternative [crm.item.details.configuration.set](../../universal/item-details-configuration/crm-item-details-configuration-set.md).
+The development of this method has been halted. Please use [crm.item.details.configuration.set](../../universal/item-details-configuration/crm-item-details-configuration-set.md).
 
 {% endnote %}
 
-The method `crm.company.details.configuration.set` sets the settings for company cards: it records personal settings for the specified user or common settings for all users.
+The method `crm.company.details.configuration.set` sets the settings for company cards: it records the personal settings of the specified user or the common settings for all users.
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -31,12 +31,12 @@ Possible values:
 Default — `P`
 ||
 || **userId**
-[`user`](../../../data-types.md) | User identifier, which can be obtained using the [user.get](../../../user/user-get.md) method. Required only when setting personal settings.
+[`user`](../../../data-types.md) | The user identifier, which can be obtained using the [user.get](../../../user/user-get.md) method. Required only when setting personal settings.
 
-If not specified — the `id` of the current user is used
+If not specified, the `id` of the current user is used.
 ||
 || **data***
-[`section[]`](#section) | The list `section` describes the configuration of field sections in the company card.
+[`section[]`](#section) | The list of `section` describes the configuration of field sections in the company card.
 
 The structure is described [below](#section) ||
 |#
@@ -45,7 +45,7 @@ The structure is described [below](#section) ||
 
 Describes a specific section with fields within the company card.
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -70,7 +70,7 @@ The structure is described [below](#section_element) ||
 
 Configuration of a specific field within the section.
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -80,13 +80,13 @@ Configuration of a specific field within the section.
 
 The list of available fields can be found using [`crm.company.fields`](../crm-company-fields.md) ||
 || **optionFlags**
-[`integer`](../../../data-types.md) | Whether to always show the field:
+[`integer`](../../../data-types.md) | Should the field always be displayed:
 - `1` — yes
 - `0` — no
 
 Default — `0` ||
 || **options**
-[`object`](../../../data-types.md) | Additional [options list](#options) for the field ||
+[`object`](../../../data-types.md) | Additional [list of options](#options) for the field ||
 |#
 
 #### section_element.options {#options}
@@ -109,12 +109,12 @@ For example, `"DE"` ||
 
 ## Code Examples
 
-{% include [Note on examples](../../../../_includes/examples.md) %}
+{% include [Note on Examples](../../../../_includes/examples.md) %}
 
-For a user with `id = 1`, set the configuration for the company card:
+To set the card configuration for a user with `id = 1` in companies:
 
 - Section 1 — **About the Company**
-    - Title
+    - Name
     - Logo
     - Company Type
     - Position
@@ -361,7 +361,7 @@ For a user with `id = 1`, set the configuration for the company card:
                     ]
                 ],
             ]
-        ]
+        }
     );
 
     echo '<PRE>';
@@ -397,7 +397,7 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../../data-types.md) | Root element of the response, contains `true` in case of success ||
+[`boolean`](../../../data-types.md) | The root element of the response, contains `true` in case of success ||
 || **time**
 [`time`](../../../data-types.md#time) | Information about the execution time of the request ||
 |#
@@ -413,23 +413,23 @@ HTTP Status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../../_includes/error-info.md) %}
+{% include notitle [Error Handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
 || **Code** | **Description** | **Value** ||
 || `-` | Access denied | The user does not have permission to change CRM settings ||
-|| `-` | Parameter 'data' must be array | A non-array was passed in `data` ||
+|| `-` | Parameter 'data' must be array | A non-array value was passed in `data` ||
 || `-` | The data must be indexed array | A non-indexed array was passed in `data` ||
 || `-` | There are no data to write | An empty array was passed in `data` ||
-|| `-` | Section at index `#` have type `data[i].type`. The expected type is 'section' | The value in `data[i].type` is different from `'section'` ||
+|| `-` | Section at index `#` has type `data[i].type`. The expected type is 'section' | The value in `data[i].type` is different from `'section'` ||
 || `-` | Section at index `#` does not have name | An empty value was passed in `data[i].name` ||
 || `-` | Section at index `#` does not have title | An empty value was passed in `data[i].title` ||
 || `-` | Element at index `#` in section at index `#` does not have name | An empty value was passed in `data[i].elements[j].name` ||
 |#
 
-{% include [system errors](../../../../_includes/system-errors.md) %}
+{% include [System Errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning 
 

@@ -1,12 +1,12 @@
-# Create a new deal crm.deal.add
+# Create a New Deal crm.deal.add
 
 > Scope: [`crm`](../../scopes/permissions.md)
 > 
-> Who can execute the method: any user with the "add" access permission for deals
+> Who can execute the method: any user with "add" access permission for deals
 
-{% note warning "Method Development Stopped" %}
+{% note warning "DEPRECATED" %}
 
-The method `crm.deal.add` continues to function, but there is a more relevant alternative [crm.item.add](../universal/crm-item-add.md).
+The development of this method has been halted. Please use [crm.item.add](../universal/crm-item-add.md).
 
 {% endnote %}
 
@@ -57,14 +57,14 @@ The list of available deal types can be obtained using the method [crm.status.li
 By default — the first available deal type
 ||
 || **CATEGORY_ID**
-[`crm_category`](../data-types.md) | Identifier of the funnel. Must be greater than or equal to 0.
+[`crm_category`](../data-types.md) | Funnel identifier. Must be greater than or equal to 0.
 
 The list of available funnels can be obtained using the method [crm.category.list](../universal/category/crm-category-list.md) by passing `entityTypeId = 2`.
 
-By default — the identifier of the default funnel
+By default — the default funnel identifier
 ||
 || **STAGE_ID**
-[`crm_status`](../data-types.md) | Stage of the deal. 
+[`crm_status`](../data-types.md) | Deal stage. 
 
 The list of available stages can be obtained using the method [crm.status.list](../status/crm-status-list.md) with the filter:
 - `{ ENTITY_ID: "DEAL_STAGE" }` — if the deal is in the general funnel (direction)
@@ -72,21 +72,21 @@ The list of available stages can be obtained using the method [crm.status.list](
 
 By default — the first available stage relative to the funnel ||
 || **IS_RECURRING**
-[`char`](../../data-types.md) | Is the deal a template for a recurring deal? Possible values:
+[`char`](../../data-types.md) | Indicates whether the deal is a template for a recurring deal. Possible values:
 - `Y` — yes
 - `N` — no
 
 By default `N`
 ||
 || **IS_RETURN_CUSTOMER**
-[`char`](../../data-types.md) | Is the deal a repeat? Possible values:
+[`char`](../../data-types.md) | Indicates whether the deal is a repeat. Possible values:
 - `Y` — yes
 - `N` — no
 
 By default `N`
 ||
 || **IS_REPEATED_APPROACH**
-[`char`](../../data-types.md) | Is the deal a repeated approach? Possible values:
+[`char`](../../data-types.md) | Indicates whether the deal is a repeated approach. Possible values:
 - `Y` — yes
 - `N` — no
 
@@ -104,7 +104,7 @@ The list of available currencies can be obtained using the method [crm.currency.
 
 By default `0.00` ||
 || **IS_MANUAL_OPPORTUNITY**
-[`char`](../../data-types.md) | Is manual calculation of the amount enabled? Possible values:
+[`char`](../../data-types.md) | Indicates whether manual calculation of the amount is enabled. Possible values:
 - `Y` — yes
 - `N` — no
 
@@ -130,18 +130,18 @@ The list of contacts can be obtained using the method [crm.item.list](../univers
 || **BEGINDATE**
 [`date`](../../data-types.md) | Start date. 
 
-By default — the date of deal creation ||
+By default — the date the deal is created ||
 || **CLOSEDATE**
-[`date`](../../data-types.md) | Completion date. 
+[`date`](../../data-types.md) | Close date. 
 
-By default — the date of deal creation plus 7 days
+By default — the date the deal is created plus 7 days
 ||
 || **OPENED**
 [`char`](../../data-types.md) | Is the deal available to everyone? Possible values:
 - `Y` — yes
 - `N` — no
 
-By default `Y`. The default value can be changed in CRM settings
+By default `Y`. The default value can be changed in the CRM settings
 ||
 || **CLOSED**
 [`char`](../../data-types.md) | Is the deal closed? Possible values:
@@ -183,16 +183,16 @@ Used only for linking to an external source
 || **UTM_SOURCE**
 [`string`](../../data-types.md) | Advertising system (Google-Adwords and others) ||
 || **UTM_MEDIUM**
-[`string`](../../data-types.md) | Type of traffic. Possible values:
+[`string`](../../data-types.md) | Traffic type. Possible values:
 - `CPC` — ads
 - `CPM` — banners 
 ||
 || **UTM_CAMPAIGN**
-[`string`](../../data-types.md) | Designation of the advertising campaign ||
+[`string`](../../data-types.md) | Advertising campaign designation ||
 || **UTM_CONTENT**
-[`string`](../../data-types.md) | Content of the campaign. For example, for contextual ads ||
+[`string`](../../data-types.md) | Campaign content. For example, for contextual ads ||
 || **UTM_TERM**
-[`string`](../../data-types.md) | Search term of the campaign. For example, keywords for contextual advertising ||
+[`string`](../../data-types.md) | Campaign search term. For example, keywords for contextual advertising ||
 || **TRACE**
 [`string`](../../data-types.md) | Information for Sales Intelligence — read more in the article [{#T}](../../../tutorials/crm/how-to-use-analitycs/info-to-analitics.md) ||
 || **UF_CRM_...** | Custom fields. For example, `UF_CRM_25534736`. 
@@ -203,9 +203,9 @@ You can add a custom field to a deal using the method [crm.deal.userfield.add](.
 || **PARENT_ID_...**
 [`crm_entity`](../data-types.md) | Relationship fields. 
 
-If there are SPAs related to deals on the portal, there is a field for each such SPA that stores the relationship between this SPA and the deal. The field itself stores the identifier of the element of that SPA. 
+If there are smart processes related to deals on the portal, each such smart process has a field that stores the relationship between this smart process and the deal. The field itself stores the identifier of the element of that smart process. 
 
-For example, the field `PARENT_ID_153` — relationship with the SPA `entityTypeId=153`, stores the identifier of the element of this SPA related to the current deal ||
+For example, the field `PARENT_ID_153` — relationship with the smart process `entityTypeId=153`, stores the identifier of the element of this smart process related to the current deal ||
 |#
 
 ### Parameter params {#params}
@@ -214,7 +214,7 @@ For example, the field `PARENT_ID_153` — relationship with the SPA `entityType
 || **Name**
 `type` | **Description** ||
 || **REGISTER_SONET_EVENT** 
-[`boolean`](../../data-types.md) | Should the event of adding a deal be registered in the live feed? Possible values:
+[`boolean`](../../data-types.md) | Should the event of adding a deal be registered in the activity stream? Possible values:
 - `Y` — yes
 - `N` — no
 
@@ -223,7 +223,7 @@ By default `Y` ||
 
 ## Code Examples
 
-{% include [Note on examples](../../../_includes/examples.md) %}
+{% include [Examples Note](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -233,7 +233,7 @@ By default `Y` ||
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"FIELDS":{"TITLE":"New Deal #1","TYPE_ID":"COMPLEX","CATEGORY_ID":0,"STAGE_ID":"PREPARATION","IS_RECURRING":"N","IS_RETURN_CUSTOMER":"Y","IS_REPEATED_APPROACH":"Y","PROBABILITY":99,"CURRENCY_ID":"EUR","OPPORTUNITY":1000000,"IS_MANUAL_OPPORTUNITY":"Y","TAX_VALUE":0.10,"COMPANY_ID":9,"CONTACT_IDS":[84,83],"BEGINDATE":"'"$(date --iso-8601=seconds)"'","CLOSEDATE":"'"$(date --iso-8601=seconds --date='+10 days')"'", "OPENED":"Y","CLOSED":"N","COMMENTS":"Example comment","SOURCE_ID":"CALLBACK","SOURCE_DESCRIPTION":"Additional information about the source","ADDITIONAL_INFO":"Additional information","UTM_SOURCE":"google","UTM_MEDIUM":"CPC","PARENT_ID_1220":22,"UF_CRM_1721244482250":"Hello world!"},"PARAMS":{"REGISTER_SONET_EVENT":"N"}}' \
+    -d '{"FIELDS":{"TITLE":"New Deal #1","TYPE_ID":"COMPLEX","CATEGORY_ID":0,"STAGE_ID":"PREPARATION","IS_RECURRING":"N","IS_RETURN_CUSTOMER":"Y","IS_REPEATED_APPROACH":"Y","PROBABILITY":99,"CURRENCY_ID":"EUR","OPPORTUNITY":1000000,"IS_MANUAL_OPPORTUNITY":"Y","TAX_VALUE":0.10,"COMPANY_ID":9,"CONTACT_IDS":[84,83],"BEGINDATE":"'"$(date --iso-8601=seconds)"'","CLOSEDATE":"'"$(date --iso-8601=seconds --date='+10 days')"'", "OPENED":"Y","CLOSED":"N","COMMENTS":"Example comment","SOURCE_ID":"CALLBACK","SOURCE_DESCRIPTION":"Additional information about the source","ADDITIONAL_INFO":"Additional information","UTM_SOURCE":"google","UTM_MEDIUM":"CPC","PARENT_ID_1220":22,"UF_CRM_1721244482250":"Hello World!"},"PARAMS":{"REGISTER_SONET_EVENT":"N"}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.deal.add
     ```
 
@@ -243,7 +243,7 @@ By default `Y` ||
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"FIELDS":{"TITLE":"New Deal #1","TYPE_ID":"COMPLEX","CATEGORY_ID":0,"STAGE_ID":"PREPARATION","IS_RECURRING":"N","IS_RETURN_CUSTOMER":"Y","IS_REPEATED_APPROACH":"Y","PROBABILITY":99,"CURRENCY_ID":"EUR","OPPORTUNITY":1000000,"IS_MANUAL_OPPORTUNITY":"Y","TAX_VALUE":0.10,"COMPANY_ID":9,"CONTACT_IDS":[84,83],"BEGINDATE":"'"$(date --iso-8601=seconds)"'","CLOSEDATE":"'"$(date --iso-8601=seconds --date='+10 days')"'", "OPENED":"Y","CLOSED":"N","COMMENTS":"Example comment","SOURCE_ID":"CALLBACK","SOURCE_DESCRIPTION":"Additional information about the source","ADDITIONAL_INFO":"Additional information","UTM_SOURCE":"google","UTM_MEDIUM":"CPC","PARENT_ID_1220":22,"UF_CRM_1721244482250":"Hello world!"},"PARAMS":{"REGISTER_SONET_EVENT":"N"},"auth":"**put_access_token_here**"}' \
+    -d '{"FIELDS":{"TITLE":"New Deal #1","TYPE_ID":"COMPLEX","CATEGORY_ID":0,"STAGE_ID":"PREPARATION","IS_RECURRING":"N","IS_RETURN_CUSTOMER":"Y","IS_REPEATED_APPROACH":"Y","PROBABILITY":99,"CURRENCY_ID":"EUR","OPPORTUNITY":1000000,"IS_MANUAL_OPPORTUNITY":"Y","TAX_VALUE":0.10,"COMPANY_ID":9,"CONTACT_IDS":[84,83],"BEGINDATE":"'"$(date --iso-8601=seconds)"'","CLOSEDATE":"'"$(date --iso-8601=seconds --date='+10 days')"'", "OPENED":"Y","CLOSED":"N","COMMENTS":"Example comment","SOURCE_ID":"CALLBACK","SOURCE_DESCRIPTION":"Additional information about the source","ADDITIONAL_INFO":"Additional information","UTM_SOURCE":"google","UTM_MEDIUM":"CPC","PARENT_ID_1220":22,"UF_CRM_1721244482250":"Hello World!"},"PARAMS":{"REGISTER_SONET_EVENT":"N"},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/crm.deal.add
     ```
 
@@ -286,7 +286,7 @@ By default `Y` ||
     				UTM_SOURCE: "google",
     				UTM_MEDIUM: "CPC",
     				PARENT_ID_1220: 22,
-    				UF_CRM_1721244482250: "Hello world!",
+    				UF_CRM_1721244482250: "Hello World!",
     			},
     			params: {
     				REGISTER_SONET_EVENT: "N",
@@ -371,7 +371,7 @@ By default `Y` ||
                 UTM_SOURCE: "google",
                 UTM_MEDIUM: "CPC",
                 PARENT_ID_1220: 22,
-                UF_CRM_1721244482250: "Hello world!",
+                UF_CRM_1721244482250: "Hello World!",
             },
             params: {
                 REGISTER_SONET_EVENT: "N",
@@ -420,7 +420,7 @@ By default `Y` ||
                 'UTM_SOURCE' => 'google',
                 'UTM_MEDIUM' => 'CPC',
                 'PARENT_ID_1220' => 22,
-                'UF_CRM_1721244482250' => 'Hello world!',
+                'UF_CRM_1721244482250' => 'Hello World!',
             ],
             'PARAMS' => [
                 'REGISTER_SONET_EVENT' => 'N',
@@ -437,7 +437,7 @@ By default `Y` ||
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -467,7 +467,7 @@ HTTP status: **200**
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {

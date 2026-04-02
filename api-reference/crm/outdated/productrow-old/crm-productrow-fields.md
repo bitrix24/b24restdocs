@@ -1,22 +1,22 @@
-# Get descriptions of fields for product items crm.productrow.fields
+# Get Descriptions of Fields for Product Rows crm.productrow.fields
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-{% note warning %}
+{% note warning "DEPRECATED" %}
 
-The method is deprecated. It is recommended to use [`crm.item.productrow.fields`](../../universal/product-rows/crm-item-productrow-fields.md)
+The development of this method has been halted. Please use [crm.item.productrow.fields](../../universal/product-rows/crm-item-productrow-fields.md).
 
 {% endnote %}
 
-The method retrieves information about the data structure of product items in CRM, including field types and their purposes.
+This method retrieves information about the data structure of product rows in the CRM, including field types and their purposes.
 
-No parameters.
+No parameters are required.
 
 ## Code Examples
 
-{% include [Note about examples](../../../../_includes/examples.md) %}
+{% include [Examples Note](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -45,17 +45,17 @@ No parameters.
     ```js
     try
     {
-    	const response = await $b24.callMethod(
-    		'crm.productrow.fields',
-    		{}
-    	);
-    	
-    	const result = response.getData().result;
-    	console.dir(result);
+        const response = await $b24.callMethod(
+            'crm.productrow.fields',
+            {}
+        );
+        
+        const result = response.getData().result;
+        console.dir(result);
     }
     catch( error )
     {
-    	console.error('Error:', error);
+        console.error('Error:', error);
     }
     ```
 

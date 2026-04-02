@@ -32,7 +32,6 @@ The method `crm.activity.todo.add` adds a universal activity to the timeline.
 || **colorId**
 [`string`](../../../../data-types.md) | Identifier of the activity color in the timeline, for example `1`. There are 8 colors available, values from 1 to 7 and a default color if none is specified:
 
-![Available colors](./_images/colors.png)
 
 ||
 |#

@@ -4,9 +4,15 @@
 >
 > Who can execute the method: any user
 
-The method deletes a stage.
+{% note warning "DEPRECATED" %}
 
-A process must always have one successful stage. A successful stage cannot be deleted.
+The development of this method has been halted. Please use [Smart scripts](../../../crm/universal/user-defined-object-types/index.md) as an alternative to this functionality.
+
+{% endnote %}
+
+This method deletes a stage.
+
+A process must always have one successful stage. It is not possible to delete a successful stage.
 
 ## Method Parameters
 
@@ -19,7 +25,7 @@ A process must always have one successful stage. A successful stage cannot be de
 [`number`](../../../data-types.md) | Identifier of the stage ||
 |#
 
-## Continue Exploring
+## Continue Your Exploration
 
 - [{#T}](./index.md)
 - [{#T}](./rpa-stage-add.md)

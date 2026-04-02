@@ -1,24 +1,24 @@
-# Get the identifier of the directory where the stages of deals are stored crm.dealcategory.status
+# Get the Identifier of the Directory Where Deal Stages are Stored: crm.dealcategory.status
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-{% note warning %}
+{% note warning "DEPRECATED" %}
 
-The method is deprecated. It is recommended to use the funnel methods [`crm.category.*`](../../universal/category/index.md)
+The development of this method has been halted. Please use [crm.category.*](../../universal/category/index.md).
 
 {% endnote %}
 
-The method returns the identifier of the directory for storing stages based on the deal direction identifier.
+This method returns the identifier of the directory for storing stages based on the deal direction identifier.
 
-This is a string of the format `DEAL_STAGE_[Direction Identifier]`. For example, for a direction with identifier 1, the string `"DEAL_STAGE_1"` will be returned.
+The identifier is a string of the format `DEAL_STAGE_[Direction Identifier]`. For example, for a direction with an identifier of 1, the string `"DEAL_STAGE_1"` will be returned.
 
-The identifier is intended for use with the family of methods [`crm.status.*`](.). For example, to create a new stage for a direction, it needs to be passed to the method [`crm.status.add`](../../status/crm-status-add.md) as the `ENTITY_ID` parameter.
+The identifier is intended for use with the family of methods [`crm.status.*`](.). For instance, to create a new stage for a direction, you need to pass it to the method [`crm.status.add`](../../status/crm-status-add.md) as the `ENTITY_ID` parameter.
 
 # Method Parameters
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -29,7 +29,7 @@ The identifier is intended for use with the family of methods [`crm.status.*`](.
 
 ## Code Examples
 
-{% include [Note on examples](../../../../_includes/examples.md) %}
+{% include [Note on Examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -58,24 +58,24 @@ The identifier is intended for use with the family of methods [`crm.status.*`](.
     ```js
     try
     {
-    	const response = await $b24.callMethod(
-    		"crm.dealcategory.status",
-    		{ id: id }
-    	);
-    	
-    	const result = response.getData().result;
-    	if(result.error())
-    	{
-    		console.error(result.error());
-    	}
-    	else
-    	{
-    		console.dir(result);
-    	}
+        const response = await $b24.callMethod(
+            "crm.dealcategory.status",
+            { id: id }
+        );
+        
+        const result = response.getData().result;
+        if(result.error())
+        {
+            console.error(result.error());
+        }
+        else
+        {
+            console.dir(result);
+        }
     }
     catch(error)
     {
-    	console.error('Error:', error);
+        console.error('Error:', error);
     }
     ```
 

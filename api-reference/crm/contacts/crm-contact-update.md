@@ -4,29 +4,29 @@
 >
 > Who can execute the method: any user with "edit" access permission for contacts
 
-{% note warning "Method Development Stopped" %}
+{% note warning "DEPRECATED" %}
 
-The method `crm.contact.update` continues to function, but there is a more relevant alternative [crm.item.update](../universal/crm-item-update.md).
+Development of this method has been discontinued. Please use [crm.item.update](../universal/crm-item-update.md).
 
 {% endnote %}
 
 The method `crm.contact.update` updates an existing contact.
 
-It is recommended to pass the complete set of address fields when updating the address.
+It is recommended to pass the complete set of address fields when updating an address.
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Parameter Note](../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`][1] | Identifier of the contact to be changed.
+[`integer`][1] | The identifier of the contact to be changed.
 
 The identifier can be obtained using the methods [`crm.contact.list`](crm-contact-list.md) or [`crm.contact.add`](crm-contact-add.md) ||
 || **fields***
-[`object`][1] | Object in the format:
+[`object`][1] | An object in the following format:
 
 ```
 {
@@ -45,10 +45,10 @@ The list of available fields is described [below](#parameter-fields).
 
 An incorrect field in `fields` will be ignored.
 
-Only those fields that need to be changed should be passed in `fields`
+Only the fields that need to be changed should be passed in `fields`
 ||
 || **params**
-[`object`][1] | Object containing a set of additional parameters.
+[`object`][1] | An object containing a set of additional parameters.
 
 The structure and possible values are described [below](#parameter-params)
 |#
@@ -69,7 +69,7 @@ The list of available salutation types can be obtained using [`crm.status.list`]
 || **LAST_NAME**
 [`string`][1] | Last name ||
 || **PHOTO**
-[`file`][1] | Photo ||
+[`file`][1] | Photograph ||
 || **BIRTHDATE**
 [`date`][1] | Date of birth ||
 || **TYPE_ID**
@@ -103,9 +103,9 @@ The list of companies can be obtained using the method [`crm.item.list`](../univ
 
 The list of companies can be obtained using the method [`crm.item.list`](../universal/crm-item-list.md) with `entityTypeId = 4` ||
 || **UTM_SOURCE**
-[`string`][1] | Advertising system (Google Ads, etc.) ||
+[`string`][1] | Advertising system (Google Ads, Microsoft Advertising, etc.) ||
 || **UTM_MEDIUM**
-[`string`][1] | Type of traffic. Possible values:
+[`string`][1] | Traffic type. Possible values:
 - `CPC` — ads
 - `CPM` — banners ||
 || **UTM_CAMPAIGN**
@@ -123,19 +123,19 @@ The list of companies can be obtained using the method [`crm.item.list`](../univ
 || **IM**
 [`crm_multifield[]`](../data-types.md) | Messenger ||
 || **LINK**
-[`crm_multifield[]`](../data-types.md) | Links. Service field ||
-||**UF_...**  | Custom fields. For example, `UF_CRM_25534736`. 
+[`crm_multifield[]`](../data-types.md) | Links. System field ||
+||**UF_...**  | Custom fields. For example, `UF_CRM_25534736`.
 
-Depending on the account settings, contacts may have a set of custom fields of specific types. 
+Depending on the portal settings, contacts may have a set of custom fields of defined types.
 
 To change file fields, it is recommended to use the method [crm.item.update](../universal/crm-item-update.md).
 
 A custom field can be added to a contact using the method [crm.contact.userfield.add](./userfield/crm-contact-userfield-add.md) ||
-||**PARENT_ID_...** | Relationship fields. 
+||**PARENT_ID_...** | Relationship fields.
 
-If there are smart processes related to contacts in the account, there is a field for each such smart process that stores the relationship between this smart process and the contact. The field itself stores the identifier of the element of that smart process. 
+If there are smart processes related to contacts on the portal, there is a field for each such smart process that stores the relationship between that smart process and the contact. The field itself stores the identifier of the element of that smart process.
 
-For example, the field `PARENT_ID_153` — relationship with the smart process `entityTypeId=153`. It stores the identifier of the element of this smart process related to the current contact ||
+For example, the field `PARENT_ID_153` — relationship with the smart process `entityTypeId=153`. It stores the identifier of the element of that smart process related to the current contact ||
 |#
 
 **Fields for external data sources**
@@ -151,9 +151,9 @@ If the contact was created by an external system, then:
 || **ORIGINATOR_ID**
 [`string`][1] | Identifier of the external system that is the source of data about this contact ||
 || **ORIGIN_ID**
-[`string`][1] | Version of the contact data in the external system. Used to protect data from accidental overwriting by the external system. 
+[`string`][1] | Version of the contact data in the external system. Used to protect data from accidental overwriting by the external system.
 
-If the data was imported and not changed in the external system, then such data can be edited in CRM without fear that the next export will lead to data overwriting ||
+If the data was imported and not changed in the external system, then such data can be edited in CRM without fear that the next export will lead to overwriting of the data ||
 || **ORIGIN_VERSION**
 [`string`][1] | Version of the original ||
 |#
@@ -182,7 +182,7 @@ Address fields in the contact are deprecated and are only used in compatibility 
 || **ADDRESS_COUNTRY_CODE**
 [`string`][1] | Country code ||
 || **ADDRESS_LOC_ADDR_ID**
-[`integer`][1] | Identifier of the location address ||
+[`integer`][1] | Location address identifier ||
 |#
 
 ### Parameter params {#parameter-params}
@@ -206,7 +206,7 @@ Default is `Y` ||
 
 ## Code Examples
 
-{% include [Note on examples](../../../_includes/examples.md) %}
+{% include [Example Note](../../../_includes/examples.md) %}
 
 Update contact with `id = 43`
 
@@ -463,7 +463,7 @@ Suppose there are the following values for the `PHONE` field:
 ]
 ```
 
-Let's consider ways to delete all values except for the phone with `ID = 225`:
+Let’s consider ways to delete all values except the phone with `ID = 225`:
 
 ```json
 {
@@ -567,7 +567,7 @@ HTTP status: **400**
 || `-`          | `Parameter 'params' must be array` | The `params` parameter is not an object ||
 || `-`          | `Access denied` | The user does not have permission to "Edit" contacts ||
 || `-`          | Disk resource exhausted | ||
-|| `ERROR_CORE` | The field `Work e-mail` contains an incorrect address | ||
+|| `ERROR_CORE` | The field `Work e-mail` contains an invalid address | ||
 |#
 
 {% include [system errors](./../../../_includes/system-errors.md) %}

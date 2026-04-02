@@ -4,19 +4,19 @@
 >
 > Who can execute the method: any user
 
-{% note warning "Method Development Stopped" %}
+{% note warning "DEPRECATED" %}
 
-The method `crm.contact.fields` continues to function, but there is a more relevant alternative [crm.item.fields](../universal/crm-item-fields.md).
+The development of this method has been halted. Please use [crm.item.fields](../universal/crm-item-fields.md).
 
 {% endnote %}
 
-The method returns a description of contact fields, including custom fields.
+This method returns the description of contact fields, including custom fields.
 
-No parameters required.
+No parameters are required.
 
 ## Code Examples
 
-{% include [Example notes](../../../_includes/examples.md) %}
+{% include [Examples Note](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -46,17 +46,17 @@ No parameters required.
     ```js
     try
     {
-    	const response = await $b24.callMethod(
-    		'crm.contact.fields',
-    		{}
-    	);
-    	
-    	const result = response.getData().result;
-    	console.info('Contact fields', result);
+        const response = await $b24.callMethod(
+            'crm.contact.fields',
+            {}
+        );
+        
+        const result = response.getData().result;
+        console.info('Contact Fields', result);
     }
     catch( error )
     {
-    	console.error('Error:', error);
+        console.error('Error:', error);
     }
     ```
 
@@ -79,7 +79,7 @@ No parameters required.
             error_log($result->error());
             echo 'Error: ' . $result->error();
         } else {
-            echo 'Contact fields: ' . print_r($result->data(), true);
+            echo 'Contact Fields: ' . print_r($result->data(), true);
         }
     
     } catch (Throwable $e) {
@@ -98,7 +98,7 @@ No parameters required.
             if(result.error())
                 console.error(result.error());
             else
-                console.info("Contact fields", result.data());
+                console.info("Contact Fields", result.data());
         }
     );    
     ```
@@ -122,458 +122,458 @@ No parameters required.
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
     "result": {
         "ID": {
-        "type": "integer",
-        "isRequired": false,
-        "isReadOnly": true,
-        "isImmutable": false,
-        "isMultiple": false,
-        "isDynamic": false,
-        "title": "ID"
+            "type": "integer",
+            "isRequired": false,
+            "isReadOnly": true,
+            "isImmutable": false,
+            "isMultiple": false,
+            "isDynamic": false,
+            "title": "ID"
         },
         "HONORIFIC": {
-        "type": "crm_status",
-        "isRequired": false,
-        "isReadOnly": false,
-        "isImmutable": false,
-        "isMultiple": false,
-        "isDynamic": false,
-        "statusType": "HONORIFIC",
-        "title": "Salutation"
+            "type": "crm_status",
+            "isRequired": false,
+            "isReadOnly": false,
+            "isImmutable": false,
+            "isMultiple": false,
+            "isDynamic": false,
+            "statusType": "HONORIFIC",
+            "title": "Salutation"
         },
         "NAME": {
-        "type": "string",
-        "isRequired": true,
-        "isReadOnly": false,
-        "isImmutable": false,
-        "isMultiple": false,
-        "isDynamic": false,
-        "title": "First Name"
+            "type": "string",
+            "isRequired": true,
+            "isReadOnly": false,
+            "isImmutable": false,
+            "isMultiple": false,
+            "isDynamic": false,
+            "title": "First Name"
         },
         "SECOND_NAME": {
-        "type": "string",
-        "isRequired": true,
-        "isReadOnly": false,
-        "isImmutable": false,
-        "isMultiple": false,
-        "isDynamic": false,
-        "title": "Middle Name"
+            "type": "string",
+            "isRequired": true,
+            "isReadOnly": false,
+            "isImmutable": false,
+            "isMultiple": false,
+            "isDynamic": false,
+            "title": "Middle Name"
         },
         "LAST_NAME": {
-        "type": "string",
-        "isRequired": true,
-        "isReadOnly": false,
-        "isImmutable": false,
-        "isMultiple": false,
-        "isDynamic": false,
-        "title": "Last Name"
+            "type": "string",
+            "isRequired": true,
+            "isReadOnly": false,
+            "isImmutable": false,
+            "isMultiple": false,
+            "isDynamic": false,
+            "title": "Last Name"
         },
         "PHOTO": {
-        "type": "file",
-        "isRequired": false,
-        "isReadOnly": false,
-        "isImmutable": false,
-        "isMultiple": false,
-        "isDynamic": false,
-        "title": "Photo"
+            "type": "file",
+            "isRequired": false,
+            "isReadOnly": false,
+            "isImmutable": false,
+            "isMultiple": false,
+            "isDynamic": false,
+            "title": "Photo"
         },
         "BIRTHDATE": {
-        "type": "date",
-        "isRequired": false,
-        "isReadOnly": false,
-        "isImmutable": false,
-        "isMultiple": false,
-        "isDynamic": false,
-        "title": "Birthdate"
+            "type": "date",
+            "isRequired": false,
+            "isReadOnly": false,
+            "isImmutable": false,
+            "isMultiple": false,
+            "isDynamic": false,
+            "title": "Birthdate"
         },
         "TYPE_ID": {
-        "type": "crm_status",
-        "isRequired": false,
-        "isReadOnly": false,
-        "isImmutable": false,
-        "isMultiple": false,
-        "isDynamic": false,
-        "statusType": "CONTACT_TYPE",
-        "title": "Contact Type"
+            "type": "crm_status",
+            "isRequired": false,
+            "isReadOnly": false,
+            "isImmutable": false,
+            "isMultiple": false,
+            "isDynamic": false,
+            "statusType": "CONTACT_TYPE",
+            "title": "Contact Type"
         },
         "SOURCE_ID": {
-        "type": "crm_status",
-        "isRequired": false,
-        "isReadOnly": false,
-        "isImmutable": false,
-        "isMultiple": false,
-        "isDynamic": false,
-        "statusType": "SOURCE",
-        "title": "Source"
+            "type": "crm_status",
+            "isRequired": false,
+            "isReadOnly": false,
+            "isImmutable": false,
+            "isMultiple": false,
+            "isDynamic": false,
+            "statusType": "SOURCE",
+            "title": "Source"
         },
         "SOURCE_DESCRIPTION": {
-        "type": "string",
-        "isRequired": false,
-        "isReadOnly": false,
-        "isImmutable": false,
-        "isMultiple": false,
-        "isDynamic": false,
-        "title": "Additional Source Info"
+            "type": "string",
+            "isRequired": false,
+            "isReadOnly": false,
+            "isImmutable": false,
+            "isMultiple": false,
+            "isDynamic": false,
+            "title": "Additional Source Information"
         },
         "POST": {
-        "type": "string",
-        "isRequired": false,
-        "isReadOnly": false,
-        "isImmutable": false,
-        "isMultiple": false,
-        "isDynamic": false,
-        "title": "Position"
+            "type": "string",
+            "isRequired": false,
+            "isReadOnly": false,
+            "isImmutable": false,
+            "isMultiple": false,
+            "isDynamic": false,
+            "title": "Position"
         },
         "ADDRESS": {
-        "type": "string",
-        "isRequired": false,
-        "isReadOnly": false,
-        "isImmutable": false,
-        "isMultiple": false,
-        "isDynamic": false,
-        "title": "Address"
+            "type": "string",
+            "isRequired": false,
+            "isReadOnly": false,
+            "isImmutable": false,
+            "isMultiple": false,
+            "isDynamic": false,
+            "title": "Address"
         },
         "ADDRESS_2": {
-        "type": "string",
-        "isRequired": false,
-        "isReadOnly": false,
-        "isImmutable": false,
-        "isMultiple": false,
-        "isDynamic": false,
-        "title": "Address (line 2)"
+            "type": "string",
+            "isRequired": false,
+            "isReadOnly": false,
+            "isImmutable": false,
+            "isMultiple": false,
+            "isDynamic": false,
+            "title": "Address (Line 2)"
         },
         "ADDRESS_CITY": {
-        "type": "string",
-        "isRequired": false,
-        "isReadOnly": false,
-        "isImmutable": false,
-        "isMultiple": false,
-        "isDynamic": false,
-        "title": "City"
+            "type": "string",
+            "isRequired": false,
+            "isReadOnly": false,
+            "isImmutable": false,
+            "isMultiple": false,
+            "isDynamic": false,
+            "title": "City"
         },
         "ADDRESS_POSTAL_CODE": {
-        "type": "string",
-        "isRequired": false,
-        "isReadOnly": false,
-        "isImmutable": false,
-        "isMultiple": false,
-        "isDynamic": false,
-        "title": "Postal Code"
+            "type": "string",
+            "isRequired": false,
+            "isReadOnly": false,
+            "isImmutable": false,
+            "isMultiple": false,
+            "isDynamic": false,
+            "title": "Postal Code"
         },
         "ADDRESS_REGION": {
-        "type": "string",
-        "isRequired": false,
-        "isReadOnly": false,
-        "isImmutable": false,
-        "isMultiple": false,
-        "isDynamic": false,
-        "title": "Region"
+            "type": "string",
+            "isRequired": false,
+            "isReadOnly": false,
+            "isImmutable": false,
+            "isMultiple": false,
+            "isDynamic": false,
+            "title": "Region"
         },
         "ADDRESS_PROVINCE": {
-        "type": "string",
-        "isRequired": false,
-        "isReadOnly": false,
-        "isImmutable": false,
-        "isMultiple": false,
-        "isDynamic": false,
-        "title": "State"
+            "type": "string",
+            "isRequired": false,
+            "isReadOnly": false,
+            "isImmutable": false,
+            "isMultiple": false,
+            "isDynamic": false,
+            "title": "Province"
         },
         "ADDRESS_COUNTRY": {
-        "type": "string",
-        "isRequired": false,
-        "isReadOnly": false,
-        "isImmutable": false,
-        "isMultiple": false,
-        "isDynamic": false,
-        "title": "Country"
+            "type": "string",
+            "isRequired": false,
+            "isReadOnly": false,
+            "isImmutable": false,
+            "isMultiple": false,
+            "isDynamic": false,
+            "title": "Country"
         },
         "ADDRESS_COUNTRY_CODE": {
-        "type": "string",
-        "isRequired": false,
-        "isReadOnly": false,
-        "isImmutable": false,
-        "isMultiple": false,
-        "isDynamic": false,
-        "title": "Country Code"
+            "type": "string",
+            "isRequired": false,
+            "isReadOnly": false,
+            "isImmutable": false,
+            "isMultiple": false,
+            "isDynamic": false,
+            "title": "Country Code"
         },
         "ADDRESS_LOC_ADDR_ID": {
-        "type": "integer",
-        "isRequired": false,
-        "isReadOnly": false,
-        "isImmutable": false,
-        "isMultiple": false,
-        "isDynamic": false,
-        "title": "Location Address ID"
+            "type": "integer",
+            "isRequired": false,
+            "isReadOnly": false,
+            "isImmutable": false,
+            "isMultiple": false,
+            "isDynamic": false,
+            "title": "Location Address ID"
         },
         "COMMENTS": {
-        "type": "string",
-        "isRequired": false,
-        "isReadOnly": false,
-        "isImmutable": false,
-        "isMultiple": false,
-        "isDynamic": false,
-        "title": "Comment"
+            "type": "string",
+            "isRequired": false,
+            "isReadOnly": false,
+            "isImmutable": false,
+            "isMultiple": false,
+            "isDynamic": false,
+            "title": "Comment"
         },
         "OPENED": {
-        "type": "char",
-        "isRequired": false,
-        "isReadOnly": false,
-        "isImmutable": false,
-        "isMultiple": false,
-        "isDynamic": false,
-        "title": "Available to all"
+            "type": "char",
+            "isRequired": false,
+            "isReadOnly": false,
+            "isImmutable": false,
+            "isMultiple": false,
+            "isDynamic": false,
+            "title": "Available to All"
         },
         "EXPORT": {
-        "type": "char",
-        "isRequired": false,
-        "isReadOnly": false,
-        "isImmutable": false,
-        "isMultiple": false,
-        "isDynamic": false,
-        "title": "Participates in contact export"
+            "type": "char",
+            "isRequired": false,
+            "isReadOnly": false,
+            "isImmutable": false,
+            "isMultiple": false,
+            "isDynamic": false,
+            "title": "Participates in Contact Export"
         },
         "HAS_PHONE": {
-        "type": "char",
-        "isRequired": false,
-        "isReadOnly": true,
-        "isImmutable": false,
-        "isMultiple": false,
-        "isDynamic": false,
-        "title": "Phone set"
+            "type": "char",
+            "isRequired": false,
+            "isReadOnly": true,
+            "isImmutable": false,
+            "isMultiple": false,
+            "isDynamic": false,
+            "title": "Phone Set"
         },
         "HAS_EMAIL": {
-        "type": "char",
-        "isRequired": false,
-        "isReadOnly": true,
-        "isImmutable": false,
-        "isMultiple": false,
-        "isDynamic": false,
-        "title": "E-mail set"
+            "type": "char",
+            "isRequired": false,
+            "isReadOnly": true,
+            "isImmutable": false,
+            "isMultiple": false,
+            "isDynamic": false,
+            "title": "E-mail Set"
         },
         "HAS_IMOL": {
-        "type": "char",
-        "isRequired": false,
-        "isReadOnly": true,
-        "isImmutable": false,
-        "isMultiple": false,
-        "isDynamic": false,
-        "title": "Open channel set"
+            "type": "char",
+            "isRequired": false,
+            "isReadOnly": true,
+            "isImmutable": false,
+            "isMultiple": false,
+            "isDynamic": false,
+            "title": "Open Line Set"
         },
         "ASSIGNED_BY_ID": {
-        "type": "user",
-        "isRequired": false,
-        "isReadOnly": false,
-        "isImmutable": false,
-        "isMultiple": false,
-        "isDynamic": false,
-        "title": "Responsible"
+            "type": "user",
+            "isRequired": false,
+            "isReadOnly": false,
+            "isImmutable": false,
+            "isMultiple": false,
+            "isDynamic": false,
+            "title": "Responsible Person"
         },
         "CREATED_BY_ID": {
-        "type": "user",
-        "isRequired": false,
-        "isReadOnly": true,
-        "isImmutable": false,
-        "isMultiple": false,
-        "isDynamic": false,
-        "title": "Created by"
+            "type": "user",
+            "isRequired": false,
+            "isReadOnly": true,
+            "isImmutable": false,
+            "isMultiple": false,
+            "isDynamic": false,
+            "title": "Created By"
         },
         "MODIFY_BY_ID": {
-        "type": "user",
-        "isRequired": false,
-        "isReadOnly": true,
-        "isImmutable": false,
-        "isMultiple": false,
-        "isDynamic": false,
-        "title": "Modified by"
+            "type": "user",
+            "isRequired": false,
+            "isReadOnly": true,
+            "isImmutable": false,
+            "isMultiple": false,
+            "isDynamic": false,
+            "title": "Modified By"
         },
         "DATE_CREATE": {
-        "type": "datetime",
-        "isRequired": false,
-        "isReadOnly": true,
-        "isImmutable": false,
-        "isMultiple": false,
-        "isDynamic": false,
-        "title": "Creation Date"
+            "type": "datetime",
+            "isRequired": false,
+            "isReadOnly": true,
+            "isImmutable": false,
+            "isMultiple": false,
+            "isDynamic": false,
+            "title": "Creation Date"
         },
         "DATE_MODIFY": {
-        "type": "datetime",
-        "isRequired": false,
-        "isReadOnly": true,
-        "isImmutable": false,
-        "isMultiple": false,
-        "isDynamic": false,
-        "title": "Modification Date"
+            "type": "datetime",
+            "isRequired": false,
+            "isReadOnly": true,
+            "isImmutable": false,
+            "isMultiple": false,
+            "isDynamic": false,
+            "title": "Modification Date"
         },
         "COMPANY_ID": {
-        "type": "crm_company",
-        "isRequired": false,
-        "isReadOnly": false,
-        "isImmutable": false,
-        "isMultiple": false,
-        "isDynamic": false,
-        "isDeprecated": true,
-        "title": "Company"
+            "type": "crm_company",
+            "isRequired": false,
+            "isReadOnly": false,
+            "isImmutable": false,
+            "isMultiple": false,
+            "isDynamic": false,
+            "isDeprecated": true,
+            "title": "Company"
         },
         "COMPANY_IDS": {
-        "type": "crm_company",
-        "isRequired": false,
-        "isReadOnly": false,
-        "isImmutable": false,
-        "isMultiple": true,
-        "isDynamic": false,
-        "title": "COMPANY_IDS"
+            "type": "crm_company",
+            "isRequired": false,
+            "isReadOnly": false,
+            "isImmutable": false,
+            "isMultiple": true,
+            "isDynamic": false,
+            "title": "COMPANY_IDS"
         },
         "LEAD_ID": {
-        "type": "crm_lead",
-        "isRequired": false,
-        "isReadOnly": true,
-        "isImmutable": false,
-        "isMultiple": false,
-        "isDynamic": false,
-        "title": "Lead",
-        "settings": {
-            "parentEntityTypeId": 1
-        }
+            "type": "crm_lead",
+            "isRequired": false,
+            "isReadOnly": true,
+            "isImmutable": false,
+            "isMultiple": false,
+            "isDynamic": false,
+            "title": "Lead",
+            "settings": {
+                "parentEntityTypeId": 1
+            }
         },
         "ORIGINATOR_ID": {
-        "type": "string",
-        "isRequired": false,
-        "isReadOnly": false,
-        "isImmutable": false,
-        "isMultiple": false,
-        "isDynamic": false,
-        "title": "External Source"
+            "type": "string",
+            "isRequired": false,
+            "isReadOnly": false,
+            "isImmutable": false,
+            "isMultiple": false,
+            "isDynamic": false,
+            "title": "External Source"
         },
         "ORIGIN_ID": {
-        "type": "string",
-        "isRequired": false,
-        "isReadOnly": false,
-        "isImmutable": false,
-        "isMultiple": false,
-        "isDynamic": false,
-        "title": "Identifier in External Source"
+            "type": "string",
+            "isRequired": false,
+            "isReadOnly": false,
+            "isImmutable": false,
+            "isMultiple": false,
+            "isDynamic": false,
+            "title": "Identifier in External Source"
         },
         "ORIGIN_VERSION": {
-        "type": "string",
-        "isRequired": false,
-        "isReadOnly": false,
-        "isImmutable": false,
-        "isMultiple": false,
-        "isDynamic": false,
-        "title": "Original Version"
+            "type": "string",
+            "isRequired": false,
+            "isReadOnly": false,
+            "isImmutable": false,
+            "isMultiple": false,
+            "isDynamic": false,
+            "title": "Original Version"
         },
         "UTM_SOURCE": {
-        "type": "string",
-        "isRequired": false,
-        "isReadOnly": false,
-        "isImmutable": false,
-        "isMultiple": false,
-        "isDynamic": false,
-        "title": "Advertising System"
+            "type": "string",
+            "isRequired": false,
+            "isReadOnly": false,
+            "isImmutable": false,
+            "isMultiple": false,
+            "isDynamic": false,
+            "title": "Advertising System"
         },
         "UTM_MEDIUM": {
-        "type": "string",
-        "isRequired": false,
-        "isReadOnly": false,
-        "isImmutable": false,
-        "isMultiple": false,
-        "isDynamic": false,
-        "title": "Traffic Type"
+            "type": "string",
+            "isRequired": false,
+            "isReadOnly": false,
+            "isImmutable": false,
+            "isMultiple": false,
+            "isDynamic": false,
+            "title": "Traffic Type"
         },
         "UTM_CAMPAIGN": {
-        "type": "string",
-        "isRequired": false,
-        "isReadOnly": false,
-        "isImmutable": false,
-        "isMultiple": false,
-        "isDynamic": false,
-        "title": "Campaign Identifier"
+            "type": "string",
+            "isRequired": false,
+            "isReadOnly": false,
+            "isImmutable": false,
+            "isMultiple": false,
+            "isDynamic": false,
+            "title": "Campaign Identifier"
         },
         "UTM_CONTENT": {
-        "type": "string",
-        "isRequired": false,
-        "isReadOnly": false,
-        "isImmutable": false,
-        "isMultiple": false,
-        "isDynamic": false,
-        "title": "Campaign Content"
+            "type": "string",
+            "isRequired": false,
+            "isReadOnly": false,
+            "isImmutable": false,
+            "isMultiple": false,
+            "isDynamic": false,
+            "title": "Campaign Content"
         },
         "UTM_TERM": {
-        "type": "string",
-        "isRequired": false,
-        "isReadOnly": false,
-        "isImmutable": false,
-        "isMultiple": false,
-        "isDynamic": false,
-        "title": "Campaign Search Condition"
+            "type": "string",
+            "isRequired": false,
+            "isReadOnly": false,
+            "isImmutable": false,
+            "isMultiple": false,
+            "isDynamic": false,
+            "title": "Campaign Search Condition"
         },
         "LAST_ACTIVITY_TIME": {
-        "type": "datetime",
-        "isRequired": false,
-        "isReadOnly": true,
-        "isImmutable": false,
-        "isMultiple": false,
-        "isDynamic": false,
-        "title": "Last Activity"
+            "type": "datetime",
+            "isRequired": false,
+            "isReadOnly": true,
+            "isImmutable": false,
+            "isMultiple": false,
+            "isDynamic": false,
+            "title": "Last Activity"
         },
         "LAST_ACTIVITY_BY": {
-        "type": "user",
-        "isRequired": false,
-        "isReadOnly": true,
-        "isImmutable": false,
-        "isMultiple": false,
-        "isDynamic": false,
-        "title": "Last Activity Author"
+            "type": "user",
+            "isRequired": false,
+            "isReadOnly": true,
+            "isImmutable": false,
+            "isMultiple": false,
+            "isDynamic": false,
+            "title": "Last Activity By"
         },
         "PHONE": {
-        "type": "crm_multifield",
-        "isRequired": false,
-        "isReadOnly": false,
-        "isImmutable": false,
-        "isMultiple": true,
-        "isDynamic": false,
-        "title": "Phone"
+            "type": "crm_multifield",
+            "isRequired": false,
+            "isReadOnly": false,
+            "isImmutable": false,
+            "isMultiple": true,
+            "isDynamic": false,
+            "title": "Phone"
         },
         "EMAIL": {
-        "type": "crm_multifield",
-        "isRequired": false,
-        "isReadOnly": false,
-        "isImmutable": false,
-        "isMultiple": true,
-        "isDynamic": false,
-        "title": "E-mail"
+            "type": "crm_multifield",
+            "isRequired": false,
+            "isReadOnly": false,
+            "isImmutable": false,
+            "isMultiple": true,
+            "isDynamic": false,
+            "title": "E-mail"
         },
         "WEB": {
-        "type": "crm_multifield",
-        "isRequired": false,
-        "isReadOnly": false,
-        "isImmutable": false,
-        "isMultiple": true,
-        "isDynamic": false,
-        "title": "Website"
+            "type": "crm_multifield",
+            "isRequired": false,
+            "isReadOnly": false,
+            "isImmutable": false,
+            "isMultiple": true,
+            "isDynamic": false,
+            "title": "Website"
         },
         "IM": {
-        "type": "crm_multifield",
-        "isRequired": false,
-        "isReadOnly": false,
-        "isImmutable": false,
-        "isMultiple": true,
-        "isDynamic": false,
-        "title": "Messenger"
+            "type": "crm_multifield",
+            "isRequired": false,
+            "isReadOnly": false,
+            "isImmutable": false,
+            "isMultiple": true,
+            "isDynamic": false,
+            "title": "Messenger"
         },
         "LINK": {
-        "type": "crm_multifield",
-        "isRequired": false,
-        "isReadOnly": false,
-        "isImmutable": false,
-        "isMultiple": true,
-        "isDynamic": false,
-        "title": "LINK"
+            "type": "crm_multifield",
+            "isRequired": false,
+            "isReadOnly": false,
+            "isImmutable": false,
+            "isMultiple": true,
+            "isDynamic": false,
+            "title": "LINK"
         }
     },
     "time": {
@@ -581,8 +581,8 @@ HTTP status: **200**
         "finish": 1715004756.118899,
         "duration": 0.3361940383911133,
         "processing": 0.10344505310058594,
-        "date_start": "2024-05-06T17:12:35+03:00",
-        "date_finish": "2024-05-06T17:12:36+03:00",
+        "date_start": "2024-05-06T17:12:35+02:00",
+        "date_finish": "2024-05-06T17:12:36+02:00",
         "operating": 0
     }
 }
@@ -594,11 +594,11 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 ||**ID**
-[`integer`](../../data-types.md) | Contact identifier. Read-only ||
+[`integer`](../../data-types.md) | Identifier of the contact. Read-only ||
 ||**HONORIFIC**
 [`crm_status`](../data-types.md) | Salutation.
 
-You can get the values of the directory using the method [crm.status.list](../status/crm-status-list.md) with a filter by `ENTITY_ID=HONORIFIC` ||
+You can get the values from the directory using the method [crm.status.list](../status/crm-status-list.md) with the filter `ENTITY_ID=HONORIFIC` ||
 ||**NAME**
 [`string`](../../data-types.md) | First Name ||
 ||**SECOND_NAME**
@@ -612,13 +612,13 @@ You can get the values of the directory using the method [crm.status.list](../st
 ||**TYPE_ID**
 [`crm_status`](../data-types.md)| Contact Type.
 
-You can get the values of the directory using the method [crm.status.list](../status/crm-status-list.md) with a filter by `ENTITY_ID=CONTACT_TYPE` ||
+You can get the values from the directory using the method [crm.status.list](../status/crm-status-list.md) with the filter `ENTITY_ID=CONTACT_TYPE` ||
 ||**SOURCE_ID**
 [`crm_status`](../data-types.md) | Source.
 
-You can get the values of the directory using the method [crm.status.list](../status/crm-status-list.md) with a filter by `ENTITY_ID=SOURCE`||
+You can get the values from the directory using the method [crm.status.list](../status/crm-status-list.md) with the filter `ENTITY_ID=SOURCE`||
 ||**SOURCE_DESCRIPTION**
-[`string`](../../data-types.md) | Additional Source Info ||
+[`string`](../../data-types.md) | Additional Source Information ||
 ||**POST**
 [`string`](../../data-types.md) | Position ||
 ||**COMMENTS**
@@ -628,7 +628,7 @@ You can get the values of the directory using the method [crm.status.list](../st
 - `Y` — yes
 - `N` — no 
 
-Considered in the access permission work for roles with "All Open" access level ||
+Considered in access permission for roles with "All Open" access level ||
 ||**EXPORT**
 [`char`](../../data-types.md) | Participates in contact export. Possible values:
 - `Y` — yes
@@ -646,17 +646,17 @@ Read-only ||
 
 Read-only  ||
 ||**HAS_IMOL**
-[`char`](../../data-types.md) | Is open channel set. Possible values:
+[`char`](../../data-types.md) | Is open line set. Possible values:
 - `Y` — yes
 - `N` — no
 
 Read-only ||
 ||**ASSIGNED_BY_ID**
-[`user`](../../data-types.md) | Responsible ||
+[`user`](../../data-types.md) | Responsible Person ||
 ||**CREATED_BY_ID**
-[`user`](../../data-types.md) | Created by. Read-only ||
+[`user`](../../data-types.md) | Created By. Read-only ||
 ||**MODIFY_BY_ID**
-[`user`](../../data-types.md) | Modified by. Read-only ||
+[`user`](../../data-types.md) | Modified By. Read-only ||
 ||**DATE_CREATE**
 [`datetime`](../../data-types.md) | Creation Date. Read-only ||
 ||**DATE_MODIFY**
@@ -664,7 +664,7 @@ Read-only ||
 ||**COMPANY_ID**
 [`crm_company`](../data-types.md) | Main company of the contact ||
 ||**COMPANY_IDS**
-[`crm_company`](../data-types.md) | Contact association with companies. Multiple. 
+[`crm_company`](../data-types.md) | Contact's association with companies. Multiple. 
 
 In the methods [`crm.contact.update`](./crm-contact-update.md) and [`crm.contact.add`](./crm-contact-add.md) it is used to submit an array of companies. 
 
@@ -672,7 +672,7 @@ In the methods [`crm.contact.list`](./crm-contact-list.md) and [`crm.contact.get
 ||**LEAD_ID**
 [`crm_lead`](../data-types.md) | Identifier of the lead associated with the contact. Read-only ||
 ||**UTM_SOURCE**
-[`string`](../../data-types.md) | Advertising system (Google Ads, etc.) ||
+[`string`](../../data-types.md) | Advertising system (Google Ads, Microsoft Advertising, etc.) ||
 ||**UTM_MEDIUM**
 [`string`](../../data-types.md) | Traffic type. Possible values:
 - `CPC` — ads 
@@ -684,7 +684,7 @@ In the methods [`crm.contact.list`](./crm-contact-list.md) and [`crm.contact.get
 ||**UTM_TERM**
 [`string`](../../data-types.md) | Campaign search condition. For example, keywords for contextual advertising ||
 ||**LAST_ACTIVITY_TIME**
-[`datetime`](../../data-types.md) | Last activity date in the timeline. Read-only ||
+[`datetime`](../../data-types.md) | Date of last activity in the timeline. Read-only ||
 ||**LAST_ACTIVITY_BY**
 [`user`](../../data-types.md) | Author of the last activity in the timeline. Read-only ||
 ||**PHONE**
@@ -699,14 +699,14 @@ In the methods [`crm.contact.list`](./crm-contact-list.md) and [`crm.contact.get
 [`crm_multifield`](../data-types.md) | Links. Multiple. Service field. ||
 ||**UF_...**  | Custom fields. For example, `UF_CRM_25534736`. 
 
-Depending on the account settings, contacts may have a set of custom fields of defined types. 
+Depending on the portal settings, contacts may have a set of custom fields of specific types. 
 
 You can add a custom field to a contact using the method [crm.contact.userfield.add](./userfield/crm-contact-userfield-add.md)  ||
 ||**PARENT_ID_...** | Relationship fields. 
 
-If there are smart processes related to contacts in the account, for each such smart process there is a field that stores the relationship between this smart process and the contact. The field itself stores the identifier of the element of that smart process. 
+If there are smart processes associated with contacts on the portal, there is a field for each such smart process that stores the relationship between that smart process and the contact. The field itself stores the identifier of the element of that smart process. 
 
-For example, the field `PARENT_ID_153` — relationship with the smart process `entityTypeId=153`. It stores the identifier of the element of this smart process associated with the current contact ||
+For example, the field `PARENT_ID_153` — relationship with the smart process `entityTypeId=153`. It stores the identifier of the element of that smart process associated with the current contact ||
 |#
 
 **Fields for External Data Sources**
@@ -728,12 +728,12 @@ If the contact was created by an external system, then:
 
 Used to protect data from accidental overwriting by the external system. 
 
-If the data was imported and not changed in the external system, then such data can be edited in CRM without fear that the next export will lead to data overwriting ||
+If the data was imported and not changed in the external system, such data can be edited in the CRM without fear that the next export will lead to data overwriting ||
 |#
 
 **Deprecated Fields**
 
-Address fields in the contact are deprecated and are only used for compatibility mode. To work with the address, use [requisites](../requisites/index.md).
+Address fields in the contact are deprecated and are only used for compatibility mode. For working with addresses, use [requisites](../requisites/index.md).
 
 #|
 || **Name**
@@ -741,7 +741,7 @@ Address fields in the contact are deprecated and are only used for compatibility
 ||**ADDRESS**
 [`string`](../../data-types.md) | Address ||
 ||**ADDRESS_2**
-[`string`](../../data-types.md) | Second line of address ||
+[`string`](../../data-types.md) | Second line of the address ||
 ||**ADDRESS_CITY**
 [`string`](../../data-types.md) | City ||
 ||**ADDRESS_POSTAL_CODE**
@@ -749,7 +749,7 @@ Address fields in the contact are deprecated and are only used for compatibility
 ||**ADDRESS_REGION**
 [`string`](../../data-types.md) | Region ||
 ||**ADDRESS_PROVINCE**
-[`string`](../../data-types.md) | State ||
+[`string`](../../data-types.md) | Province ||
 ||**ADDRESS_COUNTRY**
 [`string`](../../data-types.md) | Country ||
 ||**ADDRESS_COUNTRY_CODE**

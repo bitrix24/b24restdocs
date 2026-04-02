@@ -2,23 +2,23 @@
 
 Tasks in Bitrix24 are a tool for organizing work, ranging from simple assignments to complex projects. They enable teams to track execution, manage deadlines, and distribute responsibilities.
 
-> Quick Navigation: [All Methods](#all-methods) 
+> Quick navigation: [all methods](#all-methods) 
 > 
 > User Documentation: [Bitrix24 Tasks](https://helpdesk.bitrix24.com/open/18034564/) 
 
 In [REST 3.0](../index.md), task methods have received an updated architecture, a unified response format, and support for relationships between objects. REST 3.0 now covers basic operations on tasks, working with task chat, attaching files, and methods for retrieving field schemas (`*.field.list` / `*.field.get`). Everything related to checklists, time tracking, results, and history is available in REST v2.
 
-## Task Detail Form
+## Task Card
 
-The task detail form includes data about the task and a chat for discussions. The task itself can be divided into logical blocks:
-- Task description,
-- System fields: responsible, Creator, deadline, status,
-- Relationships: subtasks, dependencies on other tasks, links to CRM entities, files,
-- Additional data: checklists, results, time tracking.
+The task card includes data about the task and a chat for discussion. The task itself can be divided into logical blocks:
+- task description,
+- system fields: responsible, Creator, deadline, status,
+- relationships: subtasks, dependencies on other tasks, links to CRM entities, files,
+- additional data: checklists, results, time tracking.
 
-![Task Detail Form](_images/task.png)
+![Task Card](_images/task.png)
 
-Starting from module version `tasks 25.700.0`, comments have been moved to the task chat. More about the changes can be found in the article [New Task Detail Form: Overview of Changes](../../tasks/tasks-new.md).
+Starting from module version `tasks 25.700.0`, comments have been moved to the task chat. For more details on the changes, refer to the article [New Task Card: Overview of Changes](../../tasks/tasks-new.md).
 
 {% note tip "User Documentation" %}
 
@@ -32,15 +32,15 @@ Starting from module version `tasks 25.700.0`, comments have been moved to the t
 
 **Parent Task.** A task can have subtasks. In this case, it is considered a parent task. You can add a link to the parent task using the `parentId` parameter. To get details about the parent task, use the parameter `"select": ["parent.title", "parent.description"]` in the method [tasks.task.get](./tasks-task-get.md).
 
-**Users.** A task is linked to users by numerical identifiers in the fields:
+**Users.** A task is linked to users by numeric identifiers in the fields:
 
-- `creatorId` — the Creator of the task. Specify it when [creating](./tasks-task-add.md) the task. To get information about the Creator, request the object fields via `"select": ["creator.name", "creator.email"]`.
+- `creatorId` — the Creator of the task. Specify this when [creating](./tasks-task-add.md) the task. To get information about the Creator, request the object's fields via `"select": ["creator.name", "creator.email"]`.
 
-- `responsibleId` — the responsible person for the task. This is a required field when [creating](./tasks-task-add.md) the task. You can retrieve data about the responsible person through: `"select": ["responsible.name", "responsible.email"]`.
+- `responsibleId` — the responsible person for the task. This is a required field when [creating](./tasks-task-add.md) the task. You can obtain data about the responsible person through: `"select": ["responsible.name", "responsible.email"]`.
 
-- `accomplices` — Participants. They are passed as an array of identifiers when [creating](./tasks-task-add.md) or [updating](./tasks-task-update.md) the task. To get information about them: `"select": ["accomplices.name", "accomplices.email"]`.
+- `accomplices` — Participants. These are passed as an array of identifiers when [creating](./tasks-task-add.md) or [updating](./tasks-task-update.md) the task. To get information about them: `"select": ["accomplices.name", "accomplices.email"]`.
 
-- `auditors` — observers. They are passed as an array of identifiers when [creating](./tasks-task-add.md) or [updating](./tasks-task-update.md) the task. Request data through: `"select": ["auditors.name", "auditors.email"]`.
+- `auditors` — observers. These are passed as an array of identifiers when [creating](./tasks-task-add.md) or [updating](./tasks-task-update.md) the task. Request data via: `"select": ["auditors.name", "auditors.email"]`.
 
 - `changedById` — the identifier of the user who last modified the task. Retrieve data: `"select": ["changedBy.name", "changedBy.email"]`.
 
@@ -52,9 +52,9 @@ Starting from module version `tasks 25.700.0`, comments have been moved to the t
 
 **E-mail.** A task can be created from an e-mail, in which case it will have a link to the e-mail. The e-mail identifier is stored in the `emailId` field. To get information about the e-mail, use: `"select": ["email.title", "email.from", "email.body"]`.
 
-**Task Chat.** Discussions about the task take place in the chat. The task chat identifier is returned in the `chatId` field. To get data about the chat, request: `"select": ["chat.id", "chat.entityId", "chat.entityType"]`.
+**Task Chat.** Task discussions take place in the chat. The task chat identifier is returned in the `chatId` field. To get data about the chat, request: `"select": ["chat.id", "chat.entityId", "chat.entityType"]`.
 
-**Flow.** A task can be created within a Flow — a mechanism for automatic task distribution. Link the task to the flow via the `flowId` parameter. To get data about the flow, use: `"select": ["flow.name"]`.
+**Flow.** A task can be created within a Flow — a mechanism for automatic task distribution. Link the task to the flow using the `flowId` parameter. To get data about the flow, use: `"select": ["flow.name"]`.
 
 **Time Tracking.** If time tracking is enabled for the task, data on the minutes and seconds spent can be accessed via `"select": ["elapsedTime.minutes", "elapsedTime.seconds", "elapsedTime.text"]`.
 
@@ -64,7 +64,7 @@ The listed fields are returned as objects in the method [tasks.task.get](./tasks
 
 {% endnote %}
 
-**CRM Entities.** You can link CRM entities to a task: leads, contacts, companies, deals, invoices, and SPAs. The identifiers of such entities are passed in the `crmItemIds` field in a prefixed format, for example, `C_3` for a contact. Data about related CRM entities is not available directly — they should be requested separately through [CRM methods](../../crm/index.md).
+**CRM Objects.** You can link CRM objects to a task: leads, contacts, companies, deals, invoices, and SPAs. The identifiers of such objects are passed in the `crmItemIds` field in a prefixed format, for example, `C_3` for a contact. Data about related CRM objects is not available directly — they should be requested separately through [CRM methods](../../crm/index.md).
 
 **Drive Files.** You can upload files from Drive to the task.
 
@@ -72,7 +72,7 @@ The listed fields are returned as objects in the method [tasks.task.get](./tasks
 
 - If you want to attach an already existing file on the drive, use the methods [disk.storage.getchildren](../../disk/storage/disk-storage-get-children.md) or [disk.folder.getchildren](../../disk/folder/disk-folder-get-children.md) to find out the file identifier.
 
-Pass the received file identifier to the method [tasks.task.file.attach](./tasks-task-file-attach.md).
+Pass the obtained file identifier to the method [tasks.task.file.attach](./tasks-task-file-attach.md).
 
 {% note tip " " %} 
 
@@ -92,9 +92,9 @@ To perform other actions with chat messages, use the messenger methods:
 
 - [im.dialog.messages.get](../../chats/messages/im-dialog-messages-get.md) — returns the chat history by identifier. To get the task chat identifier, request: `"select": ["chat.id"]` in the method [tasks.task.get](./tasks-task-get.md).
 
-## Widgets in the Task Detail Form
+## Widgets in the Task Card
 
-The task detail form can be extended with widgets — external applications embedded in the interface. This allows users to work with integrations without leaving the task detail form.
+The task card can be extended with widgets — external applications embedded in the interface. This allows users to work with integrations without leaving the task card.
 
 {% note tip " " %} 
 
@@ -104,7 +104,7 @@ The task detail form can be extended with widgets — external applications embe
 
 ### Where to Place Widgets
 
-Starting from module version `tasks 25.700.0`, all embedding locations in the task detail form have been consolidated into a single "Applications" block at the bottom of the task detail form:
+Starting from module version `tasks 25.700.0`, all embedding locations in the task card have been consolidated into a single "Applications" block at the bottom of the task card:
 
 - `TASK_VIEW_TAB`
 
@@ -118,11 +118,11 @@ Embedding locations on the general task page remain unchanged:
 
 - `TASK_USER_LIST_TOOLBAR` — [item in the dropdown menu of the "My Plan" mode](../../widgets/task/list-toolbar.md),
 
-- `TASK_GROUP_LIST_TOOLBAR` — [item in the dropdown menu of the group kanban mode](../../widgets/task/list-toolbar.md),
+- `TASK_GROUP_LIST_TOOLBAR` — [item in the dropdown menu of the kanban group mode](../../widgets/task/list-toolbar.md),
 
 - `TASK_ROBOT_DESIGNER_TOOLBAR` — [item next to the Automation rule settings](../../widgets/task/robot-designer-toolbar.md).
 
-## Additional Operations on Tasks
+## Additional Operations on the Task
 
 The following capabilities work only through REST v2:
 
@@ -144,7 +144,7 @@ The following capabilities work only through REST v2:
 
 ## Overview of Methods {#all-methods}
 
-> Scope: [`task`](../../scopes/permissions.md)
+> Scope: [`tasks`](../../scopes/permissions.md)
 >
 > Who can execute the method: depending on the method
 
@@ -162,10 +162,10 @@ The following capabilities work only through REST v2:
 || [tasks.task.access.field.list](./tasks-task-access-field-list.md) | Returns a list of task access permission fields ||
 || [tasks.task.access.field.get](./tasks-task-access-field-get.md) | Returns the description of a task access permission field by name ||
 || [tasks.task.file.field.list](./tasks-task-file-field-list.md) | Returns a list of task file fields ||
-|| [tasks.task.file.field.get](./tasks-task-file-field-get.md) | Returns the description of a task file field by name ||
+|| [tasks.task.file.field.get](./tasks-task-file-field-get.md) | Returns the description of task file fields by name ||
 || [tasks.task.chat.message.field.list](./tasks-task-chat-message-field-list.md) | Returns a list of task chat message fields ||
 || [tasks.task.chat.message.field.get](./tasks-task-chat-message-field-get.md) | Returns the description of a task chat message field by name ||
-|#
+|# 
 
 ## Continue Learning
 

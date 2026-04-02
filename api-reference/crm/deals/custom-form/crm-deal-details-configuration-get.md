@@ -6,9 +6,9 @@
 > - a user can retrieve their own and shared settings
 > - personal settings of another user can be accessed if the user has edit rights for that user's personal view
 
-{% note warning "Method Development Halted" %}
+{% note warning "DEPRECATED" %}
 
-The method `crm.deal.details.configuration.get` continues to function, but there is a more relevant alternative: [crm.item.details.configuration.get](../../universal/item-details-configuration/crm-item-details-configuration-get.md).
+The development of this method has been halted. Please use [crm.item.details.configuration.get](../../universal/item-details-configuration/crm-item-details-configuration-get.md).
 
 {% endnote %}
 
@@ -16,13 +16,13 @@ The method `crm.deal.details.configuration.get` retrieves the settings of the de
 
 {% note info %}
 
-The settings for deal cards may vary across different Sales Funnels. To select a specific funnel, use the `extras.dealCategoryId` parameter.
+The settings of deal cards may vary across different Sales Funnels. To select a funnel, use the `extras.dealCategoryId` parameter.
 
 {% endnote %}
 
 ## Method Parameters
 
-{% include [Parameter Notes](../../../../_includes/required.md) %}
+{% include [Parameter Note](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -47,7 +47,7 @@ If not specified, the current user's ID is used.
 
 ### Extras Parameter {#parameter-extras}
 
-{% include [Parameter Notes](../../../../_includes/required.md) %}
+{% include [Parameter Note](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -61,7 +61,7 @@ If not specified, the default funnel for deals is used.
 
 ## Code Examples
 
-{% include [Example Notes](../../../../_includes/examples.md) %}
+{% include [Examples Note](../../../../_includes/examples.md) %}
 
 Example of retrieving the general configuration of the deal card for the funnel with `id = 32`.
 

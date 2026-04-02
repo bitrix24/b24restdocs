@@ -4,15 +4,15 @@
 >
 > Who can execute the method: any user
 
-{% note warning "Method development has been halted" %}
+{% note warning "DEPRECATED" %}
 
-The method `crm.product.fields` continues to function, but there are more relevant alternatives [catalog.product.*](../../../catalog/product/index.md).
+The development of this method has been halted. Please use [catalog.product.getFieldsByFilter](../../../catalog/product/catalog-product-get-fields-by-filter.md).
 
 {% endnote %}
 
 The method `crm.product.fields` returns the description of product fields.
 
-Without parameters.
+No parameters required.
 
 ## Code Examples
 
@@ -129,43 +129,43 @@ Without parameters.
 || **Name**
 `type` | **Description** ||
 || **ACTIVE**
-[`char`](../../../data-types.md) | Active  ||
+[`char`](../../../data-types.md) | Active ||
 || **CATALOG_ID**
-[`integer`](../../../data-types.md) | Catalog identifier  ||
+[`integer`](../../../data-types.md) | Catalog identifier ||
 || **CREATED_BY**
-[`integer`](../../../data-types.md) | Created by  ||
+[`integer`](../../../data-types.md) | Created by ||
 || **CURRENCY_ID**
-[`string`](../../../data-types.md) | Currency identifier  ||
+[`string`](../../../data-types.md) | Currency identifier ||
 || **DATE_CREATE**
-[`datetime`](../../../data-types.md) | Product creation date  ||
+[`datetime`](../../../data-types.md) | Product creation date ||
 || **DESCRIPTION**
-[`string`](../../../data-types.md) | Description  ||
+[`string`](../../../data-types.md) | Description ||
 || **DESCRIPTION_TYPE**
-[`string`](../../../data-types.md) | Description type  ||
+[`string`](../../../data-types.md) | Description type ||
 || **DETAIL_PICTURE**
-[`product_file`](../../../data-types.md) | Detailed picture, field available in the old product card  ||
+[`product_file`](../../../data-types.md) | Detailed picture, field available in the old product card ||
 || **ID**
-[`integer`](../../../data-types.md) | Product identifier  ||
+[`integer`](../../../data-types.md) | Product identifier ||
 || **MEASURE**
-[`integer`](../../../data-types.md) | Unit of measurement  ||
+[`integer`](../../../data-types.md) | Unit of measure ||
 || **MODIFIED_BY**
-[`integer`](../../../data-types.md) | Modified by  ||
+[`integer`](../../../data-types.md) | Modified by ||
 || **NAME***
-[`string`](../../../data-types.md) | Name  ||
+[`string`](../../../data-types.md) | Name ||
 || **PREVIEW_PICTURE**
-[`product_file`](../../../data-types.md) | Preview picture, field available in the old product card  ||
+[`product_file`](../../../data-types.md) | Preview picture, field available in the old product card ||
 || **PRICE**
-[`double`](../../../data-types.md) | Price  ||
+[`double`](../../../data-types.md) | Price ||
 || **SECTION_ID**
-[`integer`](../../../data-types.md) | Section identifier  ||
+[`integer`](../../../data-types.md) | Section identifier ||
 || **SORT**
-[`integer`](../../../data-types.md) | Sorting  ||
+[`integer`](../../../data-types.md) | Sort order ||
 || **TIMESTAMP_X**
-[`datetime`](../../../data-types.md) | Product modification date  ||
+[`datetime`](../../../data-types.md) | Product modification date ||
 || **VAT_ID**
-[`integer`](../../../data-types.md) | VAT rate identifier  ||
+[`integer`](../../../data-types.md) | VAT rate identifier ||
 || **VAT_INCLUDED**
-[`char`](../../../data-types.md) | VAT included in price  ||
+[`char`](../../../data-types.md) | VAT included in price ||
 || **XML_ID**
-[`string`](../../../data-types.md) | External code  ||
+[`string`](../../../data-types.md) | External code ||
 |#

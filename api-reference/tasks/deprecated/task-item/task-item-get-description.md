@@ -4,11 +4,11 @@
 >
 > Who can execute the method: any user
 
-The method returns the description of the task.
+This method returns the description of a task.
 
-{% note warning %}
+{% note warning "DEPRECATED" %}
 
-The method is deprecated and not supported. It is recommended to use the methods [tasks.task.*](../../index.md).
+Development of this method has been halted. Please use [tasks.task.get](../../tasks-task-get.md).
 
 {% endnote %}
 
@@ -19,15 +19,15 @@ The method is deprecated and not supported. It is recommended to use the methods
 || **TASKID** | Task identifier ||
 || **FORMAT** | Acceptable values:
 - `1` (corresponds to PHP constant `CTaskItem::DESCR_FORMAT_RAW`) — the description will be returned in the format it is stored in the database (HTML or BB-code), no sanitization will be performed
-- `2` (corresponds to PHP constant `CTaskItem::DESCR_FORMAT_HTML`) — the description will be returned in HTML format, it will be sanitized beforehand (if this is enabled in the task module settings)
-- `3` (corresponds to PHP constant `CTaskItem::DESCR_FORMAT_PLAIN_TEXT`) — the description will be returned as "plain" text (without HTML tags) ||
+- `2` (corresponds to PHP constant `CTaskItem::DESCR_FORMAT_HTML`) — the description will be returned in HTML format, sanitized beforehand (if enabled in the task module settings)
+- `3` (corresponds to PHP constant `CTaskItem::DESCR_FORMAT_PLAIN_TEXT`) — the description will be returned as plain text (without HTML tags) ||
 |#
 
-It is mandatory to follow the order of parameters in the request. If this order is violated, the request will be executed with errors.
+It is mandatory to maintain the order of parameters in the request. If this order is violated, the request will be executed with errors.
 
 ## Code Examples
 
-{% include [Note on examples](../../../../_includes/examples.md) %}
+{% include [Note on Examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -87,7 +87,7 @@ It is mandatory to follow the order of parameters in the request. If this order 
             ->getResult();
     
         echo 'Success: ' . print_r($result, true);
-        // Your required data processing logic
+        // Your data processing logic here
         processData($result);
     
     } catch (Throwable $e) {

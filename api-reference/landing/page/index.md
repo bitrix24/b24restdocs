@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it soon.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -10,9 +10,9 @@ Some data may be missing — we will complete it soon.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- edits needed for writing standards
+- adjustments needed for writing standards
 - parameter types are not specified
-- links to pages that have not yet been created are not provided (view template)
+- links to pages that have not yet been created are not defined (view template)
 
 {% endnote %}
 
@@ -24,7 +24,7 @@ Some data may be missing — we will complete it soon.
 
 || **Fields** | **Description** | **Read** | **Write** ||
 || **ID**
-[`unknown`](../../data-types.md) | Page identifier. Automatically created and unique within the database. | Yes | No ||
+[`unknown`](../../data-types.md) | Page identifier. Automatically generated and unique within the database. | Yes | No ||
 || **CODE^*^**
 [`unknown`](../../data-types.md) | Unique symbolic code of the page. Added to the website address if it is not the main page. | Yes | Yes ||
 || **RULE**
@@ -32,9 +32,9 @@ Some data may be missing — we will complete it soon.
 || **ACTIVE**
 [`unknown`](../../data-types.md) | Page activity: Y / N. | Yes | No ||
 || **DELETED**
-[`unknown`](../../data-types.md) | Flag [deleted page](*deleted_page): Y / N.  | Yes | Yes ||
+[`unknown`](../../data-types.md) | Flag for [deleted page](*deleted_page): Y / N.  | Yes | Yes ||
 || **TITLE^*^**
-[`unknown`](../../data-types.md) | Page title. | Yes | Yes ||
+[`unknown`](../../data-types.md) | Title of the page. | Yes | Yes ||
 || **XML_ID**
 [`unknown`](../../data-types.md) | External key for developer needs. Not used by the service. | Yes | Yes ||
 || **DESCRIPTION**
@@ -50,7 +50,7 @@ Some data may be missing — we will complete it soon.
 || **DATE_MODIFY**
 [`unknown`](../../data-types.md) | Modification date. | Yes | No ||
 || **SITEMAP**
-[`unknown`](../../data-types.md) | The page is present in the sitemap (`/sitemap.xml`), Y / N. | Yes | Yes ||
+[`unknown`](../../data-types.md) | Page is present in the sitemap (`/sitemap.xml`), Y / N. | Yes | Yes ||
 || **FOLDER_ID**
 [`unknown`](../../data-types.md) | Identifier of the folder where the page is located. | Yes | Yes ||
 || **TPL_ID**
@@ -59,7 +59,7 @@ Some data may be missing — we will complete it soon.
 [`unknown`](../../data-types.md) | Identifier of the partner solution template on which the site was created. For example, bitrix.eshop. | Yes | No ||
 |#
 
-{% include [Parameter Notes](../../../_includes/required.md) %}
+{% include [Parameter Footnote](../../../_includes/required.md) %}
 
 ## Overview of Methods {#all-methods}
 
@@ -86,7 +86,7 @@ Some data may be missing — we will complete it soon.
 #|
 || **Method** | **Description** | **Version** ||
 || [landing.landing.add](./methods/landing-landing-add.md) | Method for adding a page. | ||
-|| [landing.landing.addByTemplate](./methods/landing-landing-add-by-template.md) | Method for adding a page by template. | ||
+|| [landing.landing.addByTemplate](./methods/landing-landing-add-by-template.md) | Method for adding a Page by template. | ||
 || [landing.landing.copy](./methods/landing-landing-copy.md) | Method copies the specified page. | ||
 || [landing.landing.delete](./methods/landing-landing-delete.md) | Method for deleting a page. | ||
 || [landing.landing.getadditionalfields](./methods/landing-landing-get-additional-fields.md) | Method for obtaining additional fields of the page. | ||
@@ -96,22 +96,22 @@ Some data may be missing — we will complete it soon.
 || [landing.landing.markDelete](./methods/landing-landing-mark-delete.md) | Method marks the page as deleted. | ||
 || [landing.landing.markUnDelete](./methods/landing-landing-mark-undelete.md) | Method marks the page as not deleted. | ||
 || [landing.landing.move](./methods/landing-landing-move.md) | Method moves the page to another site and/or folder. | 21.800.0 ||
-|| [landing.landing.publication](./methods/landing-landing-publication.md) | Method for publishing the page. | ||
+|| [landing.landing.publication](./methods/landing-landing-publication.md) | Method for publishing a page. | ||
 || [landing.landing.removeEntities](./methods/landing-landing-remove-entities.md) | Method removes blocks and images from the page. | ||
 || [landing.landing.resolveIdByPublicUrl](./methods/landing-landing-resolve-id-by-public-url.md) | Method returns the page identifier by the provided public URL. | 21.800.0 ||
-|| [landing.landing.unpublic](./methods/landing-landing-unpublic.md) | Method for unpublishing the page. | ||
-|| [landing.landing.update](./methods/landing-landing-update.md) | Method for modifying the page. | ||
+|| [landing.landing.unpublic](./methods/landing-landing-unpublic.md) | Method for unpublishing a page. | ||
+|| [landing.landing.update](./methods/landing-landing-update.md) | Method for modifying a page. | ||
 |#
 
 ### Special Pages
 
 #|
 || **Method** | **Description** ||
-|| [landing.syspage.deleteForLanding](./special-pages/landing-syspage-delete-for-landing.md) | Deletes all mentions of the page as special. ||
+|| [landing.syspage.deleteForLanding](./special-pages/landing-syspage-delete-for-landing.md) | Deletes all bindings of the page as special. ||
 || [landing.syspage.deleteForSite](./special-pages/landing-syspage-delete-for-site.md) | Deletes all special pages. ||
-|| [landing.syspage.getSpecialPage](./special-pages/landing-syspage-get-special-page.md) | Gets the address of the special page of the site. ||
-|| [landing.syspage.get](./special-pages/landing-syspage-get.md) | Gets a list of special pages. ||
+|| [landing.syspage.getSpecialPage](./special-pages/landing-syspage-get-special-page.md) | Retrieves the address of the special page of the site. ||
+|| [landing.syspage.get](./special-pages/landing-syspage-get.md) | Retrieves a list of special pages. ||
 || [landing.syspage.set](./special-pages/landing-syspage-set.md) | Sets a special page for the site. ||
 |#
 
-[*deleted_page]: Marked as deleted entities do not appear in any requests. The system does not see them. Through REST, you can only access such entities by explicitly specifying in the filter DELETED=Y.
+[*deleted_page]: Marked as deleted entities do not appear in any requests. The system does not see them. Through REST, you can only access such entities by explicitly specifying DELETED=Y in the filtering.

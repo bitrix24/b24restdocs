@@ -1,26 +1,32 @@
-# How to Create a Custom Field in a SPA
+# How to Create a Custom Field in a Smart Process
 
 > Scope: [`crm, userfieldconfig`](../../../api-reference/scopes/permissions.md)
 >
-> Who can execute the method: users with permission to modify the SPA
+> Who can execute the method: users with permission to modify the smart process
 
-Custom fields enhance the functionality of the CRM to meet your business needs:
+{% note tip "" %}
 
-- You can create fields to store information in various formats: string, money, number, address, file, and others.
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so the assistant can utilize the official REST documentation.
 
-- You can configure field characteristics: names for different languages, multiple field flag, rounding settings for numeric fields, and more.
+{% endnote %}
 
-To create a custom field in a SPA, we will sequentially execute two methods:
+Custom fields extend the functionality of CRM to meet your business needs:
 
-1. [crm.type.list](../../../api-reference/crm/universal/user-defined-object-types/crm-type-list.md) — retrieve the SPA ID.
+- You can create fields to store information in various formats: string, money, number, address, file, and more.
 
-2. [userfieldconfig.add](../../../api-reference/crm/universal/userfieldconfig/userfieldconfig/userfieldconfig-add.md) — create a custom field in the SPA.
+- You can configure field characteristics: names for different languages, multi-field flag, rounding settings for numeric fields, and others.
 
-## 1. Retrieve the SPA Identifier {#spa-id}
+To create a custom field in a smart process, we will sequentially execute two methods:
 
-To obtain the SPA ID, we use the method [crm.type.list](../../../api-reference/crm/universal/user-defined-object-types/crm-type-list.md) with the filter:
+1. [crm.type.list](../../../api-reference/crm/universal/user-defined-object-types/crm-type-list.md) — retrieve the ID of the smart process.
 
-- `title` — specify the name of the SPA.
+2. [userfieldconfig.add](../../../api-reference/crm/universal/userfieldconfig/userfieldconfig/userfieldconfig-add.md) — create a custom field in the smart process.
+
+## 1. Retrieve the Smart Process ID {#spa-id}
+
+To obtain the ID of the smart process, we use the [crm.type.list](../../../api-reference/crm/universal/user-defined-object-types/crm-type-list.md) method with the filter:
+
+- `title` — specify the name of the smart process.
 
 {% include [Example Notes](../../../_includes/examples.md) %}
 
@@ -33,7 +39,7 @@ To obtain the SPA ID, we use the method [crm.type.list](../../../api-reference/c
         'crm.type.list',
         {
             filter: { // array of fields for filtering
-                "title": "Equipment Purchase" // name of the SPA
+                "title": "Equipment Purchase" // name of the smart process
             }
         }
     );
@@ -48,7 +54,7 @@ To obtain the SPA ID, we use the method [crm.type.list](../../../api-reference/c
         'crm.type.list',
         [
             'filter' => [
-                'title' => 'Equipment Purchase' // name of the SPA
+                'title' => 'Equipment Purchase' // name of the smart process
             ]
         ]
     );
@@ -56,7 +62,7 @@ To obtain the SPA ID, we use the method [crm.type.list](../../../api-reference/c
 
 {% endlist %}
 
-As a result, we will receive the id — this is the ordinal number of the SPA in Bitrix24. In the example, `id`: `7`.
+As a result, we will receive the id — this is the ordinal number of the smart process in Bitrix24. In the example, `id`: `7`.
 
 ```json
 {
@@ -94,19 +100,19 @@ As a result, we will receive the id — this is the ordinal number of the SPA in
 }
 ```
 
-## 2. Create a Custom Field in the SPA
+## 2. Create a Custom Field in the Smart Process
 
-To create a custom field, we use the method [userfieldconfig.add](../../../api-reference/crm/universal/userfieldconfig/userfieldconfig/userfieldconfig-add.md) with the following parameters:
+To create a custom field, we use the [userfieldconfig.add](../../../api-reference/crm/universal/userfieldconfig/userfieldconfig/userfieldconfig-add.md) method with the following parameters:
 
-- `moduleId` — the identifier of the module in which the method will create the field, a required parameter. The module for SPAs is `crm`.
+- `moduleId` — the identifier of the module in which the method will create the field, a required parameter. The module for smart processes is `crm`.
 
-- `field[entityId]` — the identifier of the object in the format `CRM_ + {ID}`, where ID is the ordinal number of the SPA in Bitrix24 from the result of [crm.type.list](./how-to-add-user-field-to-spa.md#spa-id), a required parameter. In the example, we will specify `CRM_7`.
+- `field[entityId]` — the identifier of the object in the format `CRM_ + {ID}`, where ID is the ordinal number of the smart process in Bitrix24 from the result of [crm.type.list](./how-to-add-user-field-to-spa.md#spa-id), a required parameter. In the example, we will specify `CRM_7`.
 
 - `field[fieldName]` — the field code in the format `UF_ + {object identifier} + _ + {arbitrary string in UPPERCASE}`. The length limit for the code is 50 characters, a required parameter. In the example, we will specify `UF_CRM_7_NEW_REST_LIST`.
 
 - `field[userTypeId]` — the identifier of the [field type](../../../api-reference/crm/universal/user-defined-fields/crm-userfield-types.md), a required parameter. In the example, we will specify `enumeration` to create a list-type field, and we will pass the list values in a separate `enum` array.
 
-- `field[multiple]` — the multiple field flag, an optional parameter. The multiplicity flag cannot be changed after the field is created.
+- `field[multiple]` — the multi-field flag, an optional parameter. The multiplicity flag cannot be changed after the field is created.
 
 - `field[editFormLabel]` — an array of names for displaying the field in Bitrix24 in different languages. An optional parameter; if no name is provided, the field code will be displayed in Bitrix24.
 
@@ -123,7 +129,7 @@ To create a custom field, we use the method [userfieldconfig.add](../../../api-r
                 entityId: 'CRM_7', // Object identifier
                 fieldName: 'UF_CRM_7_NEW_REST_LIST', // Field code
                 userTypeId: 'enumeration', // Field type identifier
-                multiple: 'Y', // Multiple field flag
+                multiple: 'Y', // Multi-field flag
                 editFormLabel: { 
                     'de': 'Merkmal Liste', // Field name in German
                     'en': 'List of characteristics' // Field name in English
@@ -158,7 +164,7 @@ To create a custom field, we use the method [userfieldconfig.add](../../../api-r
                 'entityId' => 'CRM_7', // Object identifier
                 'fieldName' => 'UF_CRM_7_NEW_REST_LIST', // Field code
                 'userTypeId' => 'enumeration', // Field type identifier
-                'multiple' => 'Y', // Multiple field flag
+                'multiple' => 'Y', // Multi-field flag
                 'editFormLabel' => [
                     'de' => 'Merkmal Liste', // Field name in German
                     'en' => 'List of characteristics' // Field name in English
@@ -260,11 +266,11 @@ As a result, we will receive the data of the created field.
 - JS
   
     ```JavaScript
-    // Function to retrieve the SPA and create a custom field
+    // Function to retrieve the smart process and create a custom field
     function getCrmTypeAndAddUserField() {
-        // Variable for user input of the SPA name
-        var processTitle = prompt("Enter the name of the SPA to search:", "Your_Process_Name");
-        // Call the crm.type.list method to retrieve the SPA
+        // Variable for user input of the smart process name
+        var processTitle = prompt("Enter the name of the smart process to search:", "Your_Process_Name");
+        // Call the crm.type.list method to retrieve the smart process
         BX24.callMethod(
             'crm.type.list',
             {
@@ -274,9 +280,9 @@ As a result, we will receive the data of the created field.
             },
             function(result) {
                 if (result.error()) {
-                    console.error('Error retrieving the SPA:', result.error());
+                    console.error('Error retrieving smart process:', result.error());
                 } else {
-                    console.log('SPA successfully retrieved:', result.data());
+                    console.log('Smart process successfully retrieved:', result.data());
                     var spaId = result.data().types[0].id; // Use the id from the result
                     addUserField(spaId);
                 }
@@ -324,7 +330,7 @@ As a result, we will receive the data of the created field.
         );
     }
 
-    // Call the function to retrieve SPA data and create a custom field
+    // Call the function to retrieve smart process data and create a custom field
     getCrmTypeAndAddUserField();
     ```
 
@@ -333,9 +339,9 @@ As a result, we will receive the data of the created field.
     ```php
     require_once('crest.php');
 
-    // Function to retrieve the SPA and create a custom field
+    // Function to retrieve the smart process and create a custom field
     function getCrmTypeAndAddUserField($processTitle) {
-        // Call the crm.type.list method to retrieve the SPA
+        // Call the crm.type.list method to retrieve the smart process
         $result = CRest::call('crm.type.list', [
             'filter' => [
                 'title' => $processTitle // Use the name entered by the user
@@ -343,16 +349,16 @@ As a result, we will receive the data of the created field.
         ]);
 
         if (isset($result['error'])) {
-            echo 'Error retrieving the SPA: ' . $result['error_description'];
+            echo 'Error retrieving smart process: ' . $result['error_description'];
         } else {
-            echo 'SPA successfully retrieved: ';
+            echo 'Smart process successfully retrieved: ';
             print_r($result['result']);
             
             if (!empty($result['result']['types'])) {
                 $spaId = $result['result']['types'][0]['id']; // Use the id from the result
                 addUserField($spaId);
             } else {
-                echo 'SPA not found.';
+                echo 'Smart process not found.';
             }
         }
     }
@@ -394,8 +400,8 @@ As a result, we will receive the data of the created field.
         }
     }
 
-    // Call the function to retrieve SPA data and create a custom field
-    $processTitle = readline("Enter the name of the SPA to search: ");
+    // Call the function to retrieve smart process data and create a custom field
+    $processTitle = readline("Enter the name of the smart process to search: ");
     getCrmTypeAndAddUserField($processTitle);
     ```
 

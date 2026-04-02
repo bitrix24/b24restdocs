@@ -4,6 +4,12 @@
 >
 > Who can execute the method: any user
 
+{% note warning "DEPRECATED" %}
+
+The development of this method has been halted. Use [Smart scripts](../../../crm/universal/user-defined-object-types/index.md) as an alternative functionality.
+
+{% endnote %}
+
 This method deletes a timeline record with the identifier `id`.
 
 The method only deletes records that were created by the same user and through the application.
@@ -19,7 +25,7 @@ The method only deletes records that were created by the same user and through t
 [`integer`](../../../data-types.md) | Identifier of the record ||
 |#
 
-## Continue Exploring 
+## Continue Your Exploration 
 
 - [{#T}](./index.md)
 - [{#T}](./rpa-timeline-add.md)

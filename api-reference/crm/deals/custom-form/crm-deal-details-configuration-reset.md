@@ -4,12 +4,12 @@
 >
 > Who can execute the method:
 > - any user can reset their personal settings
-> - resetting another user's personal settings is possible if the user has edit access permission for that user's personal view
-> - resetting common settings is possible if the user has edit access permission for the common view
+> - resetting another user's personal settings is possible if the user has edit rights for that user's personal view
+> - resetting common settings is possible if the user has edit rights for the common view
 
-{% note warning "Method Development Halted" %}
+{% note warning "DEPRECATED" %}
 
-The method `crm.deal.details.configuration.reset` continues to function, but there is a more relevant alternative: [crm.item.details.configuration.reset](../../universal/item-details-configuration/crm-item-details-configuration-reset.md).
+The development of this method has been halted. Please use [crm.item.details.configuration.reset](../../universal/item-details-configuration/crm-item-details-configuration-reset.md).
 
 {% endnote %}
 
@@ -17,7 +17,7 @@ The method `crm.deal.details.configuration.reset` resets the settings of the dea
 
 {% note info %}
 
-Deal card settings may vary across different Sales Funnels. To select a funnel, use the `extras.dealCategoryId` parameter.
+The settings of deal cards in different Sales Funnels may vary. To select a Sales Funnel, use the `extras.dealCategoryId` parameter.
 
 {% endnote %}
 
@@ -35,12 +35,12 @@ Possible values:
 - `P` — personal settings
 - `C` — common settings
 
-Default — `P`
+Default is `P`
 ||
 || **userId**
 [`user`](../../../data-types.md) | User identifier. Required only when resetting another user's personal settings.
 
-If not specified, the current user is used.
+If not specified, the current user is used
 ||
 || **extras**
 [`object`](../../../data-types.md) | Additional parameters [(detailed description)](#parameter-extras) ||
@@ -54,9 +54,9 @@ If not specified, the current user is used.
 || **Name**
 `type` | **Description** ||
 || **dealCategoryId**
-[`integer`](../../../data-types.md) | Identifier of the deal funnel. Can be obtained using [crm.category.list](../../universal/category/crm-category-list.md)
+[`integer`](../../../data-types.md) | Identifier of the Sales Funnel. Can be obtained using [crm.category.list](../../universal/category/crm-category-list.md)
 
-If not specified, the default funnel for deals is used.
+If not specified, the default Sales Funnel for deals is used
 ||
 |#
 
@@ -64,7 +64,7 @@ If not specified, the default funnel for deals is used.
 
 {% include [Examples Note](../../../../_includes/examples.md) %}
 
-Reset personal configuration of the deal card for the user with `id = 1` in the funnel with `id = 32`
+Reset the personal configuration of the deal card for the user with `id = 1` in the Sales Funnel with `id = 32`
 
 {% list tabs %}
 
@@ -242,7 +242,7 @@ HTTP Status: **400**
 
 #|
 || **Status** | **Code** | **Description** | **Value** ||
-|| `400` | Empty Value | Access denied | No permission to reset deal card settings ||
+|| `400` | Empty Value | Access denied | No rights to reset deal card settings ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

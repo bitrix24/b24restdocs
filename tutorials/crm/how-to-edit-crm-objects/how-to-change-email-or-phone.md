@@ -4,7 +4,13 @@
 >
 > Who can execute the method: users with permission to create and modify contacts in CRM
 
-Contact data in CRM can contain multiple phone numbers and email addresses. Sometimes it is necessary to update existing values or remove unnecessary ones.
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
+Contact data in CRM can contain multiple phone numbers and email addresses. Sometimes, it is necessary to update existing values or remove unnecessary ones.
 
 Let's create a contact with multiple emails and phone numbers, and then modify this information. To do this, we will sequentially execute three methods:
 
@@ -20,8 +26,8 @@ The system stores phone numbers and emails as an array of objects [crm_multifiel
 
 ```javascript
 {
-    ID: 123, // Identifier of the existing record. Needed for updating
-    TYPE_ID: "PHONE", // Type of the multifield
+    ID: 123, // Identifier of the existing record. Needed for updates
+    TYPE_ID: "PHONE" // Type of the multifield
     VALUE: "test@test.com", // Value
     VALUE_TYPE: "WORK" // Type of the value
 }
@@ -121,13 +127,13 @@ To change the email list, we will execute the method [crm.contact.update](../../
 
 - `ID` — the identifier of the contact,
 
-- `FIELDS` — an array of fields to be changed. We will pass the `EMAIL` field in the array and the new address values: for the first address, we will specify a new email, and for the second — `DELETE: 'Y'` to remove it.
+- `FIELDS` — an array of fields that need to be changed. We will pass the `EMAIL` field in the array along with the new address values: for the first address, we will specify a new email, and for the second, we will use `DELETE: 'Y'` to remove it.
 
 ```javascript
 // preparing an array with new email information
 let arUpdateEmail = [
  { ID: contactData.EMAIL[0].ID, VALUE: 'new_work_email@example.com' }, // changing value for the first email
- { ID: contactData.EMAIL[1].ID, 'DELETE': 'Y' } // removing the second value
+ { ID: contactData.EMAIL[1].ID, 'DELETE': 'Y' } // deleting the second value
 ];
 
 // updating the contact
@@ -209,7 +215,7 @@ Upon successful update, the method will return `true`.
                                 }
                             ];
 
-                            // Updating contact
+                            // Update contact
                             BX24.callMethod(
                                 "crm.contact.update",
                                 {
@@ -266,7 +272,7 @@ Upon successful update, the method will return `true`.
             // Step 3: Prepare email update
             $updateEmail = [
                 ['ID' => $contactData['result']['EMAIL'][0]['ID'], 'VALUE' => 'new_work_email@example.com'],
-                ['ID' => $contactData['result']['EMAIL'][1]['ID'], 'DELETE' => 'Y'] // Removing second email
+                ['ID' => $contactData['result']['EMAIL'][1]['ID'], 'DELETE' => 'Y'] // Deleting second email
             ];
 
             // Updating contact
@@ -382,7 +388,7 @@ To change the phone list, we will execute the method [crm.contact.update](../../
 
 - `ID` — the identifier of the contact,
 
-- `FIELDS` — an array of fields to be changed. We will pass the `PHONE` field in the array and the new phone values: for the first phone, we will specify a new value, and for the second — an empty value to remove it.
+- `FIELDS` — an array of fields that need to be changed. We will pass the `PHONE` field in the array along with the new phone values: for the first phone, we will specify a new value, and for the second, we will use an empty value to remove it.
 
 ```javascript
 // preparing an array with new phone information
@@ -463,7 +469,7 @@ Upon successful update, the method will return `true`.
                                 }
                             ];
 
-                            // Updating contact
+                            // Update contact
                             BX24.callMethod(
                                 "crm.contact.update",
                                 {
@@ -520,7 +526,7 @@ Upon successful update, the method will return `true`.
             // Step 3: Prepare phone update
             $updatePhone = [
                 ['ID' => $contactData['result']['PHONE'][0]['ID'], 'VALUE' => '81119876541'],
-                ['ID' => $contactData['result']['PHONE'][1]['ID'], 'VALUE' => ''] // Removing second phone
+                ['ID' => $contactData['result']['PHONE'][1]['ID'], 'VALUE' => ''] // Deleting second phone
             ];
 
             // Updating contact

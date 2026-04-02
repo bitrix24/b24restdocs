@@ -10,7 +10,8 @@ Some data may be missing here — we will complete it shortly.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- How this works, what integration through REST is, and how to manage built-in telephony and connect to a SIP connector.
+- How this works in general, the integration via REST, and the management of built-in telephony and connection to the SIP connector.
+- Add links to telephony widgets.
 
 {% endnote %}
 

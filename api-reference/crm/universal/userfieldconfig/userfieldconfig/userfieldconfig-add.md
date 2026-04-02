@@ -1,104 +1,658 @@
-# Add a New Custom Field userfieldconfig.add
+# Add Custom Field userfieldconfig.add
 
-{% note warning "We are still updating this page" %}
-
-Some data may be missing — we will complete it shortly.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- requiredness and parameter types are not specified
-- no response in case of success
-- no response in case of error
-- no examples in other languages
-  
-{% endnote %}
-
-{% endif %}
-
-> Scope: [`userfieldconfig, module scope`](../../../../scopes/permissions.md)
+> Scope: [`userfieldconfig`](../../../../scopes/permissions.md), module scope from `moduleId` (for example, [`crm`](../../../../scopes/permissions.md))
 >
-> Who can execute the method: any user
+> Who can execute the method: a user with permission to modify object settings in the `moduleId` (for `crm` — permission "Allow to modify settings")
 
-## Description
+The method `userfieldconfig.add` adds a new custom field.
 
-```http
-userfieldconfig.add({moduleId: string, field: {}})
-```
+## Method Parameters
 
-This method will add a new custom field.
-
-## Parameters
+{% include [Parameter Notes](../../../../../_includes/required.md) %}
 
 #|
-|| **Parameter** | **Description** ||
-|| **moduleId^*^** | String identifier of the module. | ||
-|| **field** | List of settings for the new field:
-
-- [entityId^*^](../entity-id.md) - string identifier of the entity. 
-- fieldName^*^ - field code. Must be formed according to the template `UF_ + {entity identifier} + _ + {arbitrary string in UPPER_CASE}`. The field code cannot exceed 50 characters. 
-- userTypeId^*^ - string identifier of the [field type](../userfieldconfig/userfieldconfig-get-types.md). 
-- xmlId - external identifier.
-- sort - sorting index.
-- multiple - multiplicity flag (N or Y), default is N. This flag can only be specified when creating the field.
-- mandatory - required flag (N or Y), default is N.
-- showFilter - flag for displaying the field in the filter (N or Y), default is N.
-- editInList - flag for allowing field editing in the list (N or Y), default is Y.
-- isSearchable - flag for the presence of the field value [in the full-text index](*key_index) (N or Y), default is N.
-- settings - list of additional settings for the field.
-- editFormLabel - list of language-dependent names for the field, where the key is the language identifier and the value is the phrase.
-- enum - array of value options for properties of type "list":
-    - value^*^ - option value
-    - def - default value flag (N or Y), default is N. Only one can be the default option
-    - sort - sorting index. If not specified, it is generated automatically based on the order of value options provided
-    - xmlId - external identifier of the option | ||
+|| **Name**
+`type` | **Description** ||
+|| **moduleId***
+[`string`](../../../data-types.md) | Identifier of the module where the field is created ||
+|| **field***
+[`object`](../../../data-types.md) | Object with custom field settings [(detailed description)](#field) ||
 |#
 
-{% include [Footnote on parameters](../../../../../_includes/required.md) %}
+### Parameter field {#field}
 
-## Return Value and Example
+#|
+|| **Name**
+`type` | **Description** ||
+|| **entityId***
+[`string`](../../../data-types.md) | Identifier of the object for which the field is created. The format depends on the module, for example, `CRM_7` for SPA ||
+|| **fieldName***
+[`string`](../../../data-types.md) | Field code in the format `UF_{OBJECT_IDENTIFIER}_{POSTFIX}`. The code must be unique within the object. Allowed characters are `A-Z`, `0-9`, `_`. Maximum length of the code is 50 characters ||
+|| **userTypeId***
+[`string`](../../../data-types.md) | Identifier of the field type. The list of available types is returned by the method [userfieldconfig.getTypes](./userfieldconfig-get-types.md) ||
+|| **xmlId**
+[`string`](../../../data-types.md) | External identifier of the field ||
+|| **sort**
+[`integer`](../../../data-types.md) | Sort index. Default is `100` ||
+|| **multiple**
+[`boolean`](../../../data-types.md) | Indicates whether the field is multiple. Possible values: `Y` or `N`. Default is `N` ||
+|| **mandatory**
+[`boolean`](../../../data-types.md) | Indicates whether the field is mandatory. Possible values: `Y` or `N`. Default is `N` ||
+|| **showFilter**
+[`boolean`](../../../data-types.md) | Whether to show the field in the filter. Possible values: `Y` or `N`. Default is `N` ||
+|| **editInList**
+[`boolean`](../../../data-types.md) | Whether to allow editing the value in the list. Possible values: `Y` or `N` ||
+|| **isSearchable**
+[`boolean`](../../../data-types.md) | Whether the field values are included in the search. Possible values: `Y` or `N` ||
+|| **settings**
+[`object`](../../../data-types.md) | Additional settings for the field. The set of keys depends on `userTypeId` [(detailed description)](#settings) ||
+|| **editFormLabel**
+[`string`](../../../data-types.md)\|[`lang_map`](../../../data-types.md#lang_map) | Label in the edit form. When a string is passed, it is used as a general value; when `lang_map` is passed, labels can be specified by languages ||
+|| **helpMessage**
+[`string`](../../../data-types.md)\|[`lang_map`](../../../data-types.md#lang_map) | Help text. When a string is passed, it is used as a general value; when `lang_map` is passed, help messages can be specified by languages ||
+|| **enum**
+[`uf_enum_element[]`](#uf_enum_element) | Value options for fields of type `enumeration` ||
+|#
 
-### Return Value
+The method uses a fixed set of keys in `field` (see the table above).
 
-The method will return the same data as the [userfieldconfig.get](userfieldconfig-get.md) method on the newly created field.
+Incorrect and unsupported keys in `field` are ignored.
 
-### Examples
+The keys `showInList`, `listColumnLabel`, `listFilterLabel`, `errorMessage`, `label` are not processed by the method `userfieldconfig.add`, even if passed in `field`.
 
-Example of a simple request. This request is sufficient to create a field of type "string".
+### Parameter settings {#settings}
+
+Each field type has its own set of keys in `settings`.
+
+{% list tabs %}
+
+- string
+
+    #|
+    || **Name**
+    `type` | **Description** ||
+    || **DEFAULT_VALUE**
+    [`string`](../../../data-types.md) | Default value ||
+    || **ROWS**
+    [`integer`](../../../data-types.md) | Number of rows in the input field, must be greater than 0 ||
+    || **SIZE**
+    [`integer`](../../../data-types.md) | Width of the input field ||
+    || **REGEXP**
+    [`string`](../../../data-types.md) | Regular expression for validation ||
+    || **MIN_LENGTH**
+    [`integer`](../../../data-types.md) | Minimum length of the string ||
+    || **MAX_LENGTH**
+    [`integer`](../../../data-types.md) | Maximum length of the string ||
+    |#
+
+- integer
+
+    #|
+    || **Name**
+    `type` | **Description** ||
+    || **DEFAULT_VALUE**
+    [`integer`](../../../data-types.md) | Default value ||
+    || **SIZE**
+    [`integer`](../../../data-types.md) | Width of the input field ||
+    || **MIN_VALUE**
+    [`integer`](../../../data-types.md) | Minimum value ||
+    || **MAX_VALUE**
+    [`integer`](../../../data-types.md) | Maximum value ||
+    |#
+
+- double
+
+    #|
+    || **Name**
+    `type` | **Description** ||
+    || **DEFAULT_VALUE**
+    [`double`](../../../data-types.md) | Default value ||
+    || **PRECISION**
+    [`integer`](../../../data-types.md) | Precision of the number, must be greater than or equal to 0 ||
+    || **SIZE**
+    [`integer`](../../../data-types.md) | Width of the input field ||
+    || **MIN_VALUE**
+    [`double`](../../../data-types.md) | Minimum value ||
+    || **MAX_VALUE**
+    [`double`](../../../data-types.md) | Maximum value ||
+    |#
+
+- boolean
+
+    #|
+    || **Name**
+    `type` | **Description** ||
+    || **DEFAULT_VALUE**
+    [`integer`](../../../data-types.md) | Default value, where `1` = yes and `0` = no ||
+    || **DISPLAY**
+    [`string`](../../../data-types.md) | Appearance, possible values: `CHECKBOX`, `RADIO`, `DROPDOWN` ||
+    || **LABEL**
+    [`string`](../../../data-types.md) | Label for the Yes value ||
+    || **LABEL_CHECKBOX**
+    [`string`](../../../data-types.md) | Label for `CHECKBOX` mode ||
+    |#
+
+- date|datetime
+
+    #|
+    || **Name**
+    `type` | **Description** ||
+    || **DEFAULT_VALUE**
+    [`object`](../../../data-types.md) | Default value in the format `{VALUE, TYPE}`, where `TYPE`: `NONE`, `NOW`, `FIXED` ||
+    || **USE_SECOND**
+    [`boolean`](../../../data-types.md) | Use seconds in the `datetime` field ||
+    || **USE_TIMEZONE**
+    [`boolean`](../../../data-types.md) | Use timezone in the `datetime` field ||
+    |#
+
+- money
+
+    #|
+    || **Name**
+    `type` | **Description** ||
+    || **DEFAULT_VALUE**
+    [`string`](../../../data-types.md) | Default value in the format `{VALUE}|{CURRENCY}` ||
+    |#
+
+- url
+
+    #|
+    || **Name**
+    `type` | **Description** ||
+    || **POPUP**
+    [`boolean`](../../../data-types.md) | Open link in a new window ||
+    || **SIZE**
+    [`integer`](../../../data-types.md) | Width of the input field ||
+    || **MIN_LENGTH**
+    [`integer`](../../../data-types.md) | Minimum length of the value ||
+    || **MAX_LENGTH**
+    [`integer`](../../../data-types.md) | Maximum length of the value ||
+    || **DEFAULT_VALUE**
+    [`string`](../../../data-types.md) | Default value ||
+    || **ROWS**
+    [`integer`](../../../data-types.md) | Number of rows in the input field ||
+    |#
+
+- address
+
+    #|
+    || **Name**
+    `type` | **Description** ||
+    || **SHOW_MAP**
+    [`boolean`](../../../data-types.md) | Show map for the address ||
+    |#
+
+- file
+
+    #|
+    || **Name**
+    `type` | **Description** ||
+    || **SIZE**
+    [`integer`](../../../data-types.md) | Width of the input field ||
+    || **LIST_WIDTH**
+    [`integer`](../../../data-types.md) | Width of the preview in the list ||
+    || **LIST_HEIGHT**
+    [`integer`](../../../data-types.md) | Height of the preview in the list ||
+    || **MAX_SHOW_SIZE**
+    [`integer`](../../../data-types.md) | Maximum file size for display ||
+    || **MAX_ALLOWED_SIZE**
+    [`integer`](../../../data-types.md) | Maximum allowed file size ||
+    || **EXTENSIONS**
+    [`string[]`](../../../data-types.md) | List of allowed extensions ||
+    || **TARGET_BLANK**
+    [`boolean`](../../../data-types.md) | Open file in a new tab ||
+    |#
+
+- enumeration
+
+    #|
+    || **Name**
+    `type` | **Description** ||
+    || **DISPLAY**
+    [`string`](../../../data-types.md) | Appearance, possible values: `LIST`, `UI`, `CHECKBOX`, `DIALOG` ||
+    || **LIST_HEIGHT**
+    [`integer`](../../../data-types.md) | Height of the list, must be greater than 0 ||
+    || **CAPTION_NO_VALUE**
+    [`string`](../../../data-types.md) | Label for empty value ||
+    || **SHOW_NO_VALUE**
+    [`boolean`](../../../data-types.md) | Show empty value ||
+    |#
+
+- iblock_section|iblock_element
+
+    #|
+    || **Name**
+    `type` | **Description** ||
+    || **DISPLAY**
+    [`string`](../../../data-types.md) | Appearance, possible values: `DIALOG`, `UI`, `LIST`, `CHECKBOX` ||
+    || **LIST_HEIGHT**
+    [`integer`](../../../data-types.md) | Height of the list, must be greater than 0 ||
+    || **IBLOCK_ID**
+    [`integer`](../../../data-types.md) | Identifier of the information block ||
+    || **DEFAULT_VALUE**
+    [`string`](../../../data-types.md) | Default value ||
+    || **ACTIVE_FILTER**
+    [`boolean`](../../../data-types.md) | Use only active elements ||
+    |#
+
+- crm_status
+
+    #|
+    || **Name**
+    `type` | **Description** ||
+    || **ENTITY_TYPE**
+    [`string`](../../../data-types.md) | Identifier of the CRM reference type. Possible values can be obtained by the method [`crm.status.entity.types`](../../../status/crm-status-entity-types.md) ||
+    |#
+
+- crm
+
+    #|
+    || **Name**
+    `type` | **Description** ||
+    || **LEAD**
+    [`boolean`](../../../data-types.md) | Enable binding to leads ||
+    || **CONTACT**
+    [`boolean`](../../../data-types.md) | Enable binding to contacts ||
+    || **COMPANY**
+    [`boolean`](../../../data-types.md) | Enable binding to companies ||
+    || **DEAL**
+    [`boolean`](../../../data-types.md) | Enable binding to deals ||
+    || **QUOTE**
+    [`boolean`](../../../data-types.md) | Enable binding to estimates ||
+    || **ORDER**
+    [`boolean`](../../../data-types.md) | Enable binding to orders ||
+    || **SMART_INVOICE**
+    [`boolean`](../../../data-types.md) | Enable binding to invoices ||
+    || **DYNAMIC_***
+    [`boolean`](../../../data-types.md) | Enable binding to SPA with a specific `typeId` ||
+    |#
+
+- employee
+
+    Separate settings in `settings` for the `employee` type are not used.
+
+- rest_*
+
+    Settings are defined by the handler of the custom field type.
+
+{% endlist %}
+
+### Type uf_enum_element {#uf_enum_element}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **value***
+[`string`](../../../data-types.md) | Value of the list option ||
+|| **def**
+[`boolean`](../../../data-types.md) | Default value flag (`Y`/`N`) ||
+|| **sort**
+[`integer`](../../../data-types.md) | Sort index of the option ||
+|| **xmlId**
+[`string`](../../../data-types.md) | External identifier of the option ||
+|#
+
+## Code Examples
+
+{% include [Example Notes](../../../../../_includes/examples.md) %}
+
+{% list tabs %}
+
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+      -H "Content-Type: application/json" \
+      -H "Accept: application/json" \
+      -d '{
+        "moduleId": "crm",
+        "field": {
+          "entityId": "CRM_7",
+          "fieldName": "UF_CRM_7_NEW_REST_LIST_2026",
+          "userTypeId": "enumeration",
+          "multiple": "Y",
+          "editFormLabel": {
+            "en": "List of characteristics"
+          },
+          "enum": [
+            { "value": "Characteristic 1", "def": "N", "sort": 100 },
+            { "value": "Characteristic 2", "def": "Y", "sort": 200 }
+          ]
+        }
+      }' \
+      "https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/userfieldconfig.add"
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+      -H "Content-Type: application/json" \
+      -H "Accept: application/json" \
+      -d '{
+        "moduleId": "crm",
+        "field": {
+          "entityId": "CRM_7",
+          "fieldName": "UF_CRM_7_NEW_REST_LIST_2026",
+          "userTypeId": "enumeration",
+          "multiple": "Y",
+          "editFormLabel": {
+            "en": "List of characteristics"
+          },
+          "enum": [
+            { "value": "Characteristic 1", "def": "N", "sort": 100 },
+            { "value": "Characteristic 2", "def": "Y", "sort": 200 }
+          ]
+        },
+        "auth": "**put_access_token_here**"
+      }' \
+      "https://**put_your_bitrix24_address**/rest/userfieldconfig.add"
+    ```
+
+- JS
+
+    ```js
+    const endpoint = "https://**put_your_bitrix24_address**/rest/userfieldconfig.add.json";
+
+    fetch(endpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            auth: "**put_access_token_here**",
+            moduleId: "crm",
+            field: {
+                entityId: "CRM_7",
+                fieldName: "UF_CRM_7_NEW_REST_LIST_2026",
+                userTypeId: "enumeration",
+                multiple: "Y",
+                editFormLabel: {
+                    en: "List of characteristics",
+                },
+                enum: [
+                    { value: "Characteristic 1", def: "N", sort: 100 },
+                    { value: "Characteristic 2", def: "Y", sort: 200 },
+                ],
+            },
+        }),
+    })
+        .then((response) => response.json())
+        .then((data) => console.log(data))
+        .catch((error) => console.error(error));
+    ```
+
+- PHP
+
+    ```php
+    $payload = [
+        'auth' => '**put_access_token_here**',
+        'moduleId' => 'crm',
+        'field' => [
+            'entityId' => 'CRM_7',
+            'fieldName' => 'UF_CRM_7_NEW_REST_LIST_2026',
+            'userTypeId' => 'enumeration',
+            'multiple' => 'Y',
+            'editFormLabel' => [
+                'en' => 'List of characteristics',
+            ],
+            'enum' => [
+                ['value' => 'Characteristic 1', 'def' => 'N', 'sort' => 100],
+                ['value' => 'Characteristic 2', 'def' => 'Y', 'sort' => 200],
+            ],
+        ],
+    ];
+
+    $curl = curl_init('https://**put_your_bitrix24_address**/rest/userfieldconfig.add.json');
+    curl_setopt_array($curl, [
+        CURLOPT_POST => true,
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_HTTPHEADER => ['Content-Type: application/json'],
+        CURLOPT_POSTFIELDS => json_encode($payload),
+    ]);
+
+    $result = curl_exec($curl);
+    curl_close($curl);
+
+    print_r($result);
+    ```
+
+- BX24.js
+
+    ```js
+    BX24.callMethod(
+        "userfieldconfig.add",
+        {
+            moduleId: "crm",
+            field: {
+                entityId: "CRM_7",
+                fieldName: "UF_CRM_7_NEW_REST_LIST_2026",
+                userTypeId: "enumeration",
+                multiple: "Y",
+                editFormLabel: {
+                    en: "List of characteristics",
+                },
+                enum: [
+                    { value: "Characteristic 1", def: "N", sort: 100 },
+                    { value: "Characteristic 2", def: "Y", sort: 200 },
+                ],
+            },
+        },
+        (result) => {
+            if (result.error()) {
+                console.error(result.error());
+            } else {
+                console.info(result.data());
+            }
+        }
+    );
+    ```
+
+- PHP CRest
+
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'userfieldconfig.add',
+        [
+            'moduleId' => 'crm',
+            'field' => [
+                'entityId' => 'CRM_7',
+                'fieldName' => 'UF_CRM_7_NEW_REST_LIST_2026',
+                'userTypeId' => 'enumeration',
+                'multiple' => 'Y',
+                'editFormLabel' => [
+                    'en' => 'List of characteristics',
+                ],
+                'enum' => [
+                    ['value' => 'Characteristic 1', 'def' => 'N', 'sort' => 100],
+                    ['value' => 'Characteristic 2', 'def' => 'Y', 'sort' => 200],
+                ],
+            ],
+        ]
+    );
+
+    echo '<pre>';
+    print_r($result);
+    echo '</pre>';
+    ```
+
+{% endlist %}
+
+## Response Handling
+
+HTTP Status: **200**
 
 ```json
 {
-    "moduleId": "rpa",
-    "field": {
-        "entityId": "RPA_1",
-        "fieldName": "UF_RPA_1_NEW_REST_STRING",
-        "userTypeId": "string"
+    "result": {
+        "field": {
+            "id": "6953",
+            "entityId": "CRM_7",
+            "fieldName": "UF_CRM_7_NEW_REST_LIST_2026",
+            "userTypeId": "enumeration",
+            "xmlId": null,
+            "sort": "100",
+            "multiple": "Y",
+            "mandatory": "N",
+            "showFilter": "N",
+            "showInList": "Y",
+            "editInList": "Y",
+            "isSearchable": "N",
+            "settings": {
+                "DISPLAY": "LIST",
+                "LIST_HEIGHT": 1,
+                "CAPTION_NO_VALUE": "",
+                "SHOW_NO_VALUE": "Y"
+            },
+            "languageId": {
+                "en": "en"
+            },
+            "editFormLabel": {
+                "en": "List of characteristics"
+            },
+            "listColumnLabel": {
+                "en": null
+            },
+            "listFilterLabel": {
+                "en": null
+            },
+            "errorMessage": {
+                "en": null
+            },
+            "helpMessage": {
+                "en": null
+            },
+            "enum": [
+                {
+                    "id": "3363",
+                    "userFieldId": "6953",
+                    "value": "Characteristic 1",
+                    "def": "N",
+                    "sort": "100",
+                    "xmlId": "56dff18efcfe25f3bae0117a6b372567"
+                },
+                {
+                    "id": "3365",
+                    "userFieldId": "6953",
+                    "value": "Characteristic 2",
+                    "def": "Y",
+                    "sort": "200",
+                    "xmlId": "42e3ebcf5506a65283bf3bf510d8f05a"
+                }
+            ]
+        }
+    },
+    "time": {
+        "start": 1724239307.903115,
+        "finish": 1724239308.567422,
+        "duration": 0.6643068790435791,
+        "processing": 0.20090818405151367,
+        "date_start": "2024-08-21T13:21:47+02:00",
+        "date_finish": "2024-08-21T13:21:48+02:00",
+        "operating": 0
     }
 }
 ```
 
-Creating a field of type "list"
+### Returned Data
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`object`](../../../data-types.md) | Root element of the response [(detailed description)](#result) ||
+|| **time**
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
+|#
+
+#### Object result {#result}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **field**
+[`object`](../../../data-types.md) | Settings of the created custom field [(detailed description)](#result_field) ||
+|#
+
+##### Object field {#result_field}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **id**
+[`integer`](../../../data-types.md) | Identifier of the field settings ||
+|| **entityId**
+[`string`](../../../data-types.md) | Identifier of the object ||
+|| **fieldName**
+[`string`](../../../data-types.md) | Field code ||
+|| **userTypeId**
+[`string`](../../../data-types.md) | Identifier of the field type ||
+|| **xmlId**
+[`string`](../../../data-types.md) | External identifier of the field ||
+|| **sort**
+[`integer`](../../../data-types.md) | Sort index ||
+|| **multiple**
+[`boolean`](../../../data-types.md) | Multiple value flag (`Y`/`N`) ||
+|| **mandatory**
+[`boolean`](../../../data-types.md) | Mandatory field flag (`Y`/`N`) ||
+|| **showFilter**
+[`boolean`](../../../data-types.md) | Flag to show the field in the filter ||
+|| **showInList**
+[`boolean`](../../../data-types.md) | Flag to show the field in the list ||
+|| **editInList**
+[`boolean`](../../../data-types.md) | Flag for editing in the list ||
+|| **isSearchable**
+[`boolean`](../../../data-types.md) | Flag for participation in search ||
+|| **settings**
+[`object`](../../../data-types.md) | Additional settings for the field [(detailed description)](#settings). The set of keys depends on `userTypeId` ||
+|| **languageId**
+[`object`](../../../data-types.md) | Languages for which field labels are set ||
+|| **editFormLabel**
+[`lang_map`](../../../data-types.md) | Labels in the edit form ||
+|| **listColumnLabel**
+[`lang_map`](../../../data-types.md) | Column labels in the list ||
+|| **listFilterLabel**
+[`lang_map`](../../../data-types.md) | Filter labels ||
+|| **errorMessage**
+[`lang_map`](../../../data-types.md) | Error message text ||
+|| **helpMessage**
+[`lang_map`](../../../data-types.md) | Help text for the field ||
+|| **enum**
+[`object[]`](../../../data-types.md) | Value options. This field is returned only for `userTypeId = enumeration` ||
+|#
+
+## Error Handling
+
+HTTP Status: **400**
 
 ```json
 {
-    "moduleId": "rpa",
-    "field": {
-        "entityId": "RPA_1",
-        "fieldName": "UF_RPA_1_NEW_REST_STRING",
-        "userTypeId": "enumeration"
-    }
+    "error": "",
+    "error_description": "The 'FIELD_NAME' field is not found."
 }
 ```
 
-{% include [Footnote on examples](../../../../../_includes/examples.md) %}
+{% include notitle [error handling](../../../../../_includes/error-info.md) %}
 
+### Possible Error Codes
+
+#|
+|| **Code** | **Description** | **Value** ||
+|| `-` | Access denied | Insufficient permissions to create a custom field ||
+|| `-` | You cannot create custom fields | This error may occur if `field.fieldName` does not start with `UF_{entityId}_` ||
+|| `-` | The 'USER_TYPE_ID' field is not found | Required `field.userTypeId` is not provided ||
+|| `-` | The 'FIELD_NAME' field is not found | Required `field.fieldName` is not provided ||
+|| `-` | Field ... already exists | The provided `field.fieldName` is already in use for this object ||
+|| `-` | Fail to create new user field | Error creating the field on the server side ||
+|| `-` | Fail to save enumeration field values | Error saving list values for type `enumeration` ||
+|#
+
+{% include [system errors](../../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
-- [{#T}](../../../../../tutorials/crm/how-to-add-crm-objects/how-to-add-user-field-to-spa.md)
-- [{#T}](../../../../../tutorials/crm/how-to-add-crm-objects/how-to-add-precision-to-user-field.md)
-
-[*key_index]: Only add necessary fields to the search. Building the index takes time when changing each field value, which can significantly slow down operations with a large number of such fields.
+- [{#T}](./userfieldconfig-update.md)
+- [{#T}](./userfieldconfig-get.md)
+- [{#T}](./userfieldconfig-list.md)
+- [{#T}](./userfieldconfig-delete.md)
+- [{#T}](./userfieldconfig-get-types.md)

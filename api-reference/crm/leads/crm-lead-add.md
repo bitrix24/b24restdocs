@@ -4,9 +4,9 @@
 >
 > Who can execute the method: any user with permission to create leads
 
-{% note warning "Method Development Stopped" %}
+{% note warning "DEPRECATED" %}
 
-The method `crm.lead.add` continues to function, but there is a more relevant alternative [crm.item.add](../universal/crm-item-add.md).
+The development of this method has been halted. Please use [crm.item.add](../universal/crm-item-add.md).
 
 {% endnote %}
 
@@ -14,7 +14,7 @@ The method `crm.lead.add` creates a new lead.
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Note on Parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -58,19 +58,19 @@ The list of available fields is described [below](#fields)
 || **ADDRESS_POSTAL_CODE**
 [`string`](../../data-types.md) | Postal code ||
 || **ADDRESS_PROVINCE**
-[`string`](../../data-types.md) | State ||
+[`string`](../../data-types.md) | Province ||
 || **ADDRESS_REGION**
 [`string`](../../data-types.md) | Region ||
 || **ASSIGNED_BY_ID**
 [`user`](../../data-types.md) | Responsible person ||
 || **BIRTHDATE**
-[`date`](../../data-types.md) | Date of birth ||
+[`date`](../../data-types.md) | Birthdate ||
 || **COMMENTS**
 [`string`](../../data-types.md) | Comments ||
 || **COMPANY_ID**
 [`crm_company`](../data-types.md) | Link the lead to a company ||
 || **COMPANY_TITLE**
-[`string`](../../data-types.md) | Company name specified in the corresponding lead field. To link an existing company, pass its id in the COMPANY_ID field ||
+[`string`](../../data-types.md) | Company name as specified in the corresponding lead field. To link an existing company, pass its id in the COMPANY_ID field ||
 || **CONTACT_ID**
 [`crm_contact`](../data-types.md) | Link the lead to a contact ||
 || **CONTACT_IDS**
@@ -78,7 +78,7 @@ The list of available fields is described [below](#fields)
 
 Contacts can be added or removed using the group of methods [crm.lead.contact.*](./management-communication/index.md) ||
 || **CURRENCY_ID**
-[`crm_currency`](../data-types.md) | Currency identifier ||
+[`crm_currency`](../../data-types.md) | Currency identifier ||
 || **EMAIL**
 [`crm_multifield`](../data-types.md) | Email address. Multiple ||
 || **HONORIFIC**
@@ -86,7 +86,7 @@ Contacts can be added or removed using the group of methods [crm.lead.contact.*]
 || **IM**
 [`crm_multifield`](../data-types.md) | Messenger. Multiple ||
 || **LINK**
-[`crm_multifield`](../data-types.md) | User ID linked through an open channel. Multiple ||
+[`crm_multifield`](../data-types.md) | User ID linked through Open Channels. Multiple ||
 || **LAST_NAME**
 [`string`](../../data-types.md) | Last name ||
 || **NAME**
@@ -94,7 +94,7 @@ Contacts can be added or removed using the group of methods [crm.lead.contact.*]
 || **SECOND_NAME**
 [`string`](../../data-types.md) | Middle name ||
 || **OPENED**
-[`char`](../../data-types.md) | Indicator of lead availability to everyone. Acceptable values are `Y` or `N`.||
+[`char`](../../data-types.md) | Indicator of lead availability for everyone. Acceptable values are `Y` or `N`.||
 || **OPPORTUNITY**
 [`double`](../../data-types.md) | Amount ||
 || **IS_MANUAL_OPPORTUNITY**
@@ -140,10 +140,10 @@ The list of all possible identifiers from the directory can be obtained using th
 #|
 ||STATUS_ID|Name||
 ||NEW | Unprocessed||
-||IN_PROCESS | In progress||
+||IN_PROCESS | In process||
 ||PROCESSED | Processed||
 ||JUNK | Low-quality lead||
-||CONVERTED | Quality lead||
+||CONVERTED | High-quality lead||
 |#
 
 The list of all possible stages from the directory can be obtained using the method [crm.status.list](../status/crm-status-list.md) with the filter `filter[ENTITY_ID]=STATUS` ||
@@ -156,7 +156,7 @@ The list of all possible stages from the directory can be obtained using the met
 || **UTM_MEDIUM**
 [`string`](../../data-types.md) | Type of traffic. CPC (ads), CPM (banners) ||
 || **UTM_SOURCE**
-[`string`](../../data-types.md) | Advertising system. Google AdWords, and others ||
+[`string`](../../data-types.md) | Advertising system. Google Ads, Bing Ads, etc. ||
 || **UTM_TERM**
 [`string`](../../data-types.md) | Search condition of the campaign. For example, keywords for contextual advertising ||
 || **WEB**
@@ -185,12 +185,12 @@ When adding a lead, you cannot explicitly set the indicator for a repeat lead (t
 || **Name**
 `type`  | **Description** ||
 || **REGISTER_SONET_EVENT**
-[`boolean`](../../data-types.md) | Flag `Y`/`N` - register the event of adding a lead. Additionally, a notification will be sent to the person responsible for the lead ||
+[`boolean`](../../data-types.md) | Flag `Y`/`N` - register the lead addition event. Additionally, a notification will be sent to the responsible person for the lead ||
 |#
 
 ## Code Examples
 
-{% include [Note on examples](../../../_includes/examples.md) %}
+{% include [Note on Examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -219,45 +219,45 @@ When adding a lead, you cannot explicitly set the indicator for a repeat lead (t
     ```js
     try
     {
-    	const response = await $b24.callMethod(
-    		'crm.lead.add',
-    		{
-    			fields:
-    			{
-    				TITLE: 'IP Titov',
-    				NAME: 'Gleb',
-    				SECOND_NAME: 'Egorovich',
-    				LAST_NAME: 'Titov',
-    				STATUS_ID: 'NEW',
-    				OPENED: 'Y',
-    				ASSIGNED_BY_ID: 1,
-    				CURRENCY_ID: 'USD',
-    				OPPORTUNITY: 12500,
-    				PHONE: [
-    					{ 
-    						VALUE: '555888',
-    						VALUE_TYPE: 'WORK',
-    					},
-    				],
-    				WEB: [
-    					{
-    						VALUE: 'www.mysite.com',
-    						VALUE_TYPE: 'WORK',
-    					}
-    				],
-    			},
-    			params: {
-    				REGISTER_SONET_EVENT: 'Y',
-    			}
-    		}
-    	);
-    	
-    	const result = response.getData().result;
-    	console.info(`Lead created with ID ${result}`);
+        const response = await $b24.callMethod(
+            'crm.lead.add',
+            {
+                fields:
+                {
+                    TITLE: 'IP Titov',
+                    NAME: 'Gleb',
+                    SECOND_NAME: 'Egorovich',
+                    LAST_NAME: 'Titov',
+                    STATUS_ID: 'NEW',
+                    OPENED: 'Y',
+                    ASSIGNED_BY_ID: 1,
+                    CURRENCY_ID: 'USD',
+                    OPPORTUNITY: 12500,
+                    PHONE: [
+                        { 
+                            VALUE: '555888',
+                            VALUE_TYPE: 'WORK',
+                        },
+                    ],
+                    WEB: [
+                        {
+                            VALUE: 'www.mysite.com',
+                            VALUE_TYPE: 'WORK',
+                        }
+                    ],
+                },
+                params: {
+                    REGISTER_SONET_EVENT: 'Y',
+                }
+            }
+        );
+        
+        const result = response.getData().result;
+        console.info(`Lead created with ID ${result}`);
     }
     catch( error )
     {
-    	console.error(error);
+        console.error(error);
     }
     ```
 
@@ -335,10 +335,10 @@ When adding a lead, you cannot explicitly set the indicator for a repeat lead (t
                     },
                 ] ,
                 WEB: [
-                        {
+                    {
                         VALUE: "www.mysite.com",
                         VALUE_TYPE: "WORK",
-                        }
+                    }
                 ],
             },
             params: {
@@ -404,7 +404,7 @@ When adding a lead, you cannot explicitly set the indicator for a repeat lead (t
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -435,7 +435,7 @@ HTTP status: **200**
 
 ## Error Handling
 
-> HTTP status: 40x, 50x Error
+> HTTP Status: 40x, 50x Error
 
 ```json
 {
@@ -450,7 +450,7 @@ HTTP status: **200**
 
 #|  
 || **Code** | **Error Text** | **Description** ||
-|| Empty value | Access denied. | The user does not have permission to add a lead ||
+|| Empty Value | Access denied. | The user does not have permission to add a lead ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

@@ -4,11 +4,17 @@
 >
 > Who can execute the method: any user
 
+{% note warning "DEPRECATED" %}
+
+Development of this method has been halted. Please use [catalog.section.update](../../../catalog/section/catalog-section-update.md).
+
+{% endnote %}
+
 The method `crm.productsection.update` updates an existing product section.
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -16,7 +22,7 @@ The method `crm.productsection.update` updates an existing product section.
 || **id***
 [`integer`](../../data-types.md) | Identifier of the product section ||
 || **fields**
-[`array`](../../data-types.md) | [Set of fields](./crm-product-section-add.md) — an array in the form `array("field_to_update"=>"value"[, ...])`, where "field_to_update" can take values from the returned method [crm.productsection.fields](./crm-product-section-fields.md). 
+[`array`](../../data-types.md) | [Set of fields](./crm-product-section-add.md) — an array in the form `array("field_to_update"=>"value"[, ...])`, where "field_to_update" can take values returned by the method [crm.productsection.fields](./crm-product-section-fields.md). 
 
 {% note info %}
 
@@ -28,7 +34,7 @@ To find out the required format of the fields, execute the method [crm.productse
 
 ## Code Examples
 
-{% include [Note on examples](../../../../_includes/examples.md) %}
+{% include [Note on Examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -74,33 +80,33 @@ To find out the required format of the fields, execute the method [crm.productse
     ```js
     try
     {
-    	const id = prompt("Enter ID");
-    	const sectionName = prompt("Enter section name");
+        const id = prompt("Enter ID");
+        const sectionName = prompt("Enter section name");
     
-    	const response = await $b24.callMethod(
-    		"crm.productsection.update",
-    		{
-    			id: id,
-    			fields:
-    			{
-    				"NAME": sectionName
-    			}
-    		}
-    	);
+        const response = await $b24.callMethod(
+            "crm.productsection.update",
+            {
+                id: id,
+                fields:
+                {
+                    "NAME": sectionName
+                }
+            }
+        );
     
-    	const result = response.getData().result;
-    	if(result.error())
-    	{
-    		console.error(result.error());
-    	}
-    	else
-    	{
-    		console.info(result);
-    	}
+        const result = response.getData().result;
+        if(result.error())
+        {
+            console.error(result.error());
+        }
+        else
+        {
+            console.info(result);
+        }
     }
     catch(error)
     {
-    	console.error('Error:', error);
+        console.error('Error:', error);
     }
     ```
 

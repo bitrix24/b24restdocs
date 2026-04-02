@@ -1,0 +1,13 @@
+title: Events
+href: index.md
+items:
+  - name: Overview of Methods
+    href: index.md
+  - name: Subscribe to Events
+    href: event-subscribe.md
+  - name: Unsubscribe from Events
+    href: event-unsubscribe.md
+  - name: Retrieve User Events
+    href: event-get.md
+  - name: Event Formats
+    href: events.md

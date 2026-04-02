@@ -2,28 +2,27 @@
 
 > Scope: [`crm`](../../../api-reference/scopes/permissions.md)
 >
-> Who can execute the methods: users with read access to CRM entities
+> Who can execute methods: users with read access to CRM entities
+
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect the [MCP server](../../../sdk/mcp.md) so the assistant can utilize the official REST documentation.
+
+{% endnote %}
 
 You can automate the search for duplicates by phone and email address using a script. It will find leads, contacts, and companies with matching data, retrieve information about them, and display it in a table:
 
-- object ID,
-
-- object type: lead, contact, or company,
-
-- title or first and last name,
-
-- phone,
-
-- email address.
+- Object ID,
+- Object type: lead, contact, or company,
+- Title or first and last name,
+- Phone,
+- Email address.
 
 To find duplicates, we will sequentially execute the following methods:
 
 1. [crm.duplicate.findbycomm](../../../api-reference/crm/duplicates/crm-duplicate-find-by-comm.md) — find duplicates by phone and email,
-
 2. [crm.lead.list](../../../api-reference/crm/leads/crm-lead-list.md) — retrieve leads,
-
 3. [crm.contact.list](../../../api-reference/crm/contacts/crm-contact-list.md) — retrieve contacts,
-
 4. [crm.company.list](../../../api-reference/crm/companies/crm-company-list.md) — retrieve companies.
 
 ## Prepare the Data
@@ -35,10 +34,9 @@ If the data is entered correctly and duplicates are found, they will be displaye
 We will create arrays:
 
 - `entityIDs` — IDs of found leads, contacts, companies,
-
 - `$resultEntity` — detailed data about the found objects.
 
-{% include [Note on examples](../../../_includes/examples.md) %}
+{% include [Examples Note](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -88,7 +86,6 @@ We will create arrays:
 To find duplicate objects by phone and email, we will call the method [crm.duplicate.findbycomm](../../../api-reference/crm/duplicates/crm-duplicate-find-by-comm.md) twice. We will pass two parameters to it.
 
 - `type` — type of communication, `PHONE` or `EMAIL`.
-
 - `values` — array of phone numbers or email addresses. We will specify the variables `phone` and `email`.
 
 The IDs of the found duplicates will be combined in the `entityIDs` array.
@@ -202,9 +199,7 @@ The method [crm.duplicate.findbycomm](../../../api-reference/crm/duplicates/crm-
 If the list of lead IDs is not empty, we will retrieve their data using the method [crm.lead.list](../../../api-reference/crm/leads/crm-lead-list.md).
 
 1. Apply a filter by ID.
-
 2. Select fields: `ID`, `NAME`, `LAST_NAME`, `PHONE`, `EMAIL`, `TITLE`.
-
 3. Save the result in the `resultEntity` array.
 
 {% list tabs %}
@@ -279,9 +274,7 @@ The method [crm.lead.list](../../../api-reference/crm/leads/crm-lead-list.md) wi
 If the list of contact IDs is not empty, we will retrieve their data using the method [crm.contact.list](../../../api-reference/crm/contacts/crm-contact-list.md).
 
 1. Apply a filter by ID.
-
 2. Select fields: `ID`, `NAME`, `LAST_NAME`, `PHONE`, `EMAIL`.
-
 3. Save the result in the `resultEntity` array.
 
 {% list tabs %}
@@ -343,7 +336,7 @@ The method [crm.contact.list](../../../api-reference/crm/contacts/crm-contact-li
         "EMAIL":[{
             "ID":"854",
             "VALUE_TYPE":"WORK",
-            "VALUE":"alekseev@example.com",
+            "VALUE":"alekseev@ya.com",
             "TYPE_ID":"EMAIL"
         }]
     }]
@@ -355,9 +348,7 @@ The method [crm.contact.list](../../../api-reference/crm/contacts/crm-contact-li
 If the list of company IDs is not empty, we will retrieve their data using the method [crm.company.list](../../../api-reference/crm/companies/crm-company-list.md).
 
 1. Apply a filter by ID.
-
 2. Select fields: `ID`, `PHONE`, `EMAIL`, `TITLE`.
-
 3. Save the result in the `resultEntity` array.
 
 {% list tabs %}
@@ -526,7 +517,7 @@ We will display the found records in the columns `Identifier`, `Object Type`, `T
 
 {% endlist %}
 
-## Code Example
+## Example Code
 
 {% list tabs %}
 
@@ -697,7 +688,7 @@ We will display the found records in the columns `Identifier`, `Object Type`, `T
                });
            }
            
-           // Output the table to the console
+           // Displaying the table in the console
            console.table(table);
        }, 1000); // Delay for all requests to complete
    }, 1000);
@@ -870,7 +861,7 @@ We will display the found records in the columns `Identifier`, `Object Type`, `T
        }
    }
    
-   // Output the table to the console with tabulation
+   // Displaying the table in the console with tabulation
    foreach ($table as $row) {
        echo implode("\t", $row) . "\n";
    }

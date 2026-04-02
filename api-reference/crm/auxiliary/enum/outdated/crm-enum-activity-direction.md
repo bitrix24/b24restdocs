@@ -4,13 +4,13 @@
 >
 > Who can execute the method: any user
 
-{% note warning "Method development has been discontinued" %}
+{% note warning "DEPRECATED" %}
 
-The method `crm.enum.activitydirection` continues to function, but it is considered deprecated in favor of the more current methods [crm.activity.*](../../../timeline/activities/index.md). A more relevant alternative is the methods [crm.activity.todo.*](../../../timeline/activities/todo/index.md).
+Development of this method has been halted. Please use [crm.activity.todo.*](../../../timeline/activities/todo/index.md).
 
 {% endnote %}
 
-The method `crm.enum.activitydirection` returns activity directions for the `DIRECTION` field of [deals, e-mails, and calls](../../../timeline/activities/index.md).
+The method `crm.enum.activitydirection` returns activity directions for the `DIRECTION` field of [CRM activities related to emails and calls](../../../timeline/activities/index.md).
 
 ## Method Parameters
 

@@ -1,0 +1,29 @@
+title: Messages
+href: index.md
+items:
+  - name: Overview of Methods
+    href: index.md
+  - name: Send Message
+    href: chat-message-send.md
+  - name: Update Message
+    href: chat-message-update.md
+  - name: Delete Message
+    href: chat-message-delete.md
+  - name: Mark Messages as Read
+    href: chat-message-read.md
+  - name: Get Message
+    href: chat-message-get.md
+  - name: Get Message Context
+    href: chat-message-get-context.md
+  - name: Add Reaction to Message
+    href: chat-message-reaction-add.md
+  - name: Remove Reaction from Message
+    href: chat-message-reaction-delete.md
+  - name: Text Formatting
+    href: message-formatting.md
+  - name: Keyboards
+    href: message-keyboards.md       
+  - name: Attachments
+    include:
+      path: attachments/b24-toc.yaml
+      mode: link

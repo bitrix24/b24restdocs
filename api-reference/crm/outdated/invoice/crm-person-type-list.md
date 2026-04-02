@@ -1,20 +1,20 @@
-# Get a list of payer types crm.persontype.list
+# Get a List of CRM Payer Types crm.persontype.list
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-{% note warning %}
+{% note warning "DEPRECATED" %}
 
-The method is deprecated. It is recommended to use [`Universal methods for invoices`](../../universal/invoice.md)
+The development of this method has been halted. Please use [Universal Methods for Invoices](../../universal/invoice.md).
 
 {% endnote %}
 
-The method returns a list of payer types.
+This method returns a list of payer types.
 
 {% note info %}
 
-For payment systems used in CRM (for invoices, deals), payer types should be retrieved through the `crm.persontype.list` method. If a payment system is being created for orders, then the [`sale.persontype.list`](../../../sale/person-type/sale-person-type-list.md) method should be used.
+For payment systems used in CRM (for invoices, deals), payer types should be retrieved using the `crm.persontype.list` method. If a payment system is being created for orders, then the [`sale.persontype.list`](../../../sale/person-type/sale-person-type-list.md) method should be used.
 
 {% endnote %}
 
@@ -25,9 +25,9 @@ For payment systems used in CRM (for invoices, deals), payer types should be ret
 || **filter** | Filter fields ||
 |#
 
-## Code examples
+## Code Examples
 
-{% include [Note on examples](../../../../_includes/examples.md) %}
+{% include [Note on Examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -54,7 +54,7 @@ For payment systems used in CRM (for invoices, deals), payer types should be ret
 - JS
 
     ```js
-    // callListMethod: Retrieves all data at once. Use only for small selections (< 1000 items) due to high memory usage.
+    // callListMethod: Retrieves all data at once. Use only for small datasets (< 1000 items) due to high memory load.
     
     try {
       const response = await $b24.callListMethod(
@@ -73,7 +73,7 @@ For payment systems used in CRM (for invoices, deals), payer types should be ret
       console.error('Request failed', error)
     }
     
-    // fetchListMethod: Retrieves data in parts using an iterator. Use it for large data volumes to optimize memory usage.
+    // fetchListMethod: Retrieves data in chunks using an iterator. Use for large datasets for efficient memory consumption.
     
     try {
       const generator = $b24.fetchListMethod('crm.persontype.list', {
@@ -89,7 +89,7 @@ For payment systems used in CRM (for invoices, deals), payer types should be ret
       console.error('Request failed', error)
     }
     
-    // callMethod: Manually controls pagination through the start parameter. Use it for precise control of request batches. For large datasets, it is less efficient than fetchListMethod.
+    // callMethod: Manual control of pagination through the start parameter. Use for precise control over request batches. Less efficient for large data than fetchListMethod.
     
     try {
       const response = await $b24.callMethod('crm.persontype.list', {
@@ -132,7 +132,7 @@ For payment systems used in CRM (for invoices, deals), payer types should be ret
     
     } catch (Throwable $e) {
         error_log($e->getMessage());
-        echo 'Error listing person types: ' . $e->getMessage();
+        echo 'Error listing payer types: ' . $e->getMessage();
     }
     ```
 
@@ -181,4 +181,3 @@ For payment systems used in CRM (for invoices, deals), payer types should be ret
     ```
 
 {% endlist %}
-

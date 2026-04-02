@@ -1,93 +1,239 @@
-# Register the service ai.engine.register
-
-{% note warning "We are still updating this page" %}
-
-Some data may be missing — we will fill it in shortly.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- edits needed for writing standards
-- parameter types are not specified
-- parameter requirements are not indicated
-- examples are missing
-- success response is absent
-- error response is absent
-- links to pages that have not yet been created are not provided.
-
-{% endnote %}
-
-{% endif %}
+# Register the ai.engine.register Service
 
 > Scope: [`ai_admin`](../scopes/permissions.md)
 >
 > Who can execute the method: administrator
 
-REST method for adding a custom service. The method registers an **engine** and updates it upon subsequent calls. This is not quite an embedding location, as the partner's **endpoint** must follow strict formats.
+The method `ai.engine.register` registers a custom AI service.
+
+## Method Parameters
+
+{% include [Note on Required Parameters](../../_includes/required.md) %}
 
 #|
-|| **Parameter** | **Description** | **Version** ||
-|| **name**
-[`unknown`](../data-types.md) | A meaningful and concise name that will appear in the user interface. | | ||
-|| **code**
-[`unknown`](../data-types.md) | Unique engine code | | ||
-|| **category**
-[`unknown`](../data-types.md) | Can be either text (text generation), image (image generation), or audio (text recognition). | | ||
-|| **completions_url**
-[`unknown`](../data-types.md) | endpoint for processing the user request. | | ||
+|| **Name**
+`type` | **Description** ||
+|| **name***
+[`string`](../data-types.md) | The name of the service that will be displayed in the interface ||
+|| **code***
+[`string`](../data-types.md) | A unique code for the service.
+
+Only characters `A-Za-z0-9-_` are allowed ||
+|| **category***
+[`string`](../data-types.md) | The category of the service.
+
+Possible values:
+- `text`
+- `image`
+- `audio`
+- `call` ||
+|| **completions_url***
+[`string`](../data-types.md) | The URL endpoint of the handler, which must respond with HTTP status `200` during registration verification [(detailed description)](#endpoint) ||
 || **settings**
-[`unknown`](../data-types.md) | Type of AI (see description below). Optional. | 23.800 | ||
+[`object`](../data-types.md) | Additional settings for the service [(detailed description)](#settings) ||
 |#
 
-The method will return the ID of the added **engine** upon success.
+### Settings Parameter {#settings}
 
-## Type of AI
-
-Array of parameters:
+The method accepts `settings` as a JSON object without a strict schema. The following fields are used in the service code:
 
 #|
-|| **Parameter** | **Description** | **Version** ||
+|| **Name**
+`type` | **Description** ||
 || **code_alias**
-[`unknown`](../data-types.md) | Type of AI. Available values: ChatGPT (Open AI) | | ||
+[`string`](../data-types.md) | The model alias.
+
+Defaults to `ChatGPT` ||
 || **model_context_type**
-[`unknown`](../data-types.md) | Type of context counting. Available values: token - tokens, symbol - symbols. Default is token. | | ||
+[`string`](../data-types.md) | The method of context calculation.
+
+Possible values:
+- `token`
+- `symbol`
+
+Defaults to `token` ||
 || **model_context_limit**
-[`unknown`](../data-types.md) | Volume of context (default is 16K). Before sending your user request, the context limit is checked according to the counting type. | | ||
+[`integer`](../data-types.md) | The context limit.
+
+Defaults to `15666` ||
 |#
 
-## Examples
+## Endpoint {#endpoint}
+
+`completions_url` must point to your endpoint that accepts requests from Bitrix24 and processes them in the expected format.
+
+{% note info "Attention!" %}
+
+The endpoint code from the examples can be used as a basis, but for production, it's better to handle processing in separate parts of the application.
+
+{% endnote %}
+
+The [template](https://helpdesk.bitrix24.com/examples/endpoint.zip) endpoint can be used as a foundation for your own service.
+
+### Endpoint Requirements
+
+1. The endpoint must quickly accept the request and return a response or queue the task internally.
+2. For the `image` category, processing should be done asynchronously.
+3. The request payload includes `callbackUrl` and `errorCallbackUrl`. After processing, the result should be sent to `callbackUrl`, and error information to `errorCallbackUrl`.
+4. The endpoint must correctly return HTTP statuses:
+
+- `200` — request processed immediately
+- `202` — request accepted and queued
+- `503` — service temporarily unavailable
+
+The callback expects a response for a limited time. If the endpoint does not respond in time, the call will become invalid.
+
+{% note info "Attention!" %}
+
+The endpoint's response to the original request does not replace the callback mechanism. Upon successful acceptance of the request, the endpoint should return `json_encode(['result' => 'OK'])`.
+
+{% endnote %}
+
+### Features for the Audio Category
+
+For the `audio` category, the `prompt` key receives an object with the following fields:
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **file**
+[`string`](../data-types.md) | Link to the file. The file may come without an extension ||
+|| **fields**
+[`object`](../data-types.md) | Additional data about the file [(detailed description)](#audio-fields) ||
+|#
+
+#### Fields Object {#audio-fields}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **type**
+[`string`](../data-types.md) | Content-Type of the file. Especially important if the file is sent without an extension, e.g., `audio/ogg` ||
+|| **prompt**
+[`string`](../data-types.md) | Auxiliary prompt for file recognition, e.g., company name ||
+|#
+
+### Additional Fields in the Request to the Endpoint
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **auth**
+[`object`](../data-types.md) | Authorization data ||
+|| **payload_raw**
+[`string`](../data-types.md) | Raw value of the prompt. When using BitrixGPT, this may contain the symbolic code of the used prompt ||
+|| **payload_provider**
+[`string`](../data-types.md) | Symbolic code of the pre-prompt provider. When using BitrixGPT, this may contain `prompt` ||
+|| **payload_prompt_text**
+[`string`](../data-types.md) | If `payload_provider = prompt`, contains the raw instruction of the pre-prompt ||
+|| **payload_markers**
+[`object`](../data-types.md) | Additional user markers used in prompt formation ||
+|| **payload_role**
+[`string`](../data-types.md) | Role or instruction used in prompt formation. In GPT-like systems, this value is usually passed as a system message ||
+|| **collect_context**
+[`boolean`](../data-types.md) | A flag indicating whether to pass context to the model ||
+|| **context**
+[`array`](../data-types.md) | An array of previous messages in chronological order. The volume sent depends on the provider's settings and the type of context calculation ||
+|| **max_tokens**
+[`integer`](../data-types.md) | Maximum number of tokens in the response ||
+|| **temperature**
+[`number`](../data-types.md) | A parameter that controls the degree of randomness in the output ||
+|| **callbackUrl**
+[`string`](../data-types.md) | URL to which the result of successful processing should be sent ||
+|| **errorCallbackUrl**
+[`string`](../data-types.md) | URL to which error information should be sent ||
+|#
+
+Context should only be passed to the model if the request includes `collect_context = true`. If the parameter is absent or set to `false`, context can be omitted.
+
+Example message structure for a GPT-like model:
+
+```json
+[
+    {
+        "role": "system",
+        "content": "$payload_role"
+    },
+    {
+        "role": "user",
+        "content": "$prompt"
+    }
+]
+```
+
+## Code Examples
+
+{% include [Note on Examples](../../_includes/examples.md) %}
 
 {% list tabs %}
+
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+      -H "Content-Type: application/json" \
+      -H "Accept: application/json" \
+      -d '{
+        "name": "Acme GPT",
+        "code": "acme_gpt",
+        "category": "text",
+        "completions_url": "https://api.example.com/bitrix24/ai/completions",
+        "settings": {
+          "code_alias": "ChatGPT",
+          "model_context_type": "token",
+          "model_context_limit": 15666
+        }
+      }' \
+      https://**put_your_bitrix24_address**/rest/**put_your_webhook_id**/**put_your_webhook_code**/ai.engine.register.json
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+      -H "Content-Type: application/json" \
+      -H "Accept: application/json" \
+      -d '{
+        "name": "Acme GPT",
+        "code": "acme_gpt",
+        "category": "text",
+        "completions_url": "https://api.example.com/bitrix24/ai/completions",
+        "settings": {
+          "code_alias": "ChatGPT",
+          "model_context_type": "token",
+          "model_context_limit": 15666
+        },
+        "auth": "**put_access_token_here**"
+      }' \
+      https://**put_your_bitrix24_address**/rest/ai.engine.register
+    ```
 
 - JS
 
     ```js
     try
     {
-    	const response = await $b24.callMethod(
-    		'ai.engine.register',
-    		{
-    			name: 'Smith GPT',
-    			code: 'smith_gpt',
-    			category: 'text',
-    			completions_url: 'https://antonds.com/ai/aul/completions/',
-    			settings: {
-    				code_alias: 'ChatGPT',
-    				model_context_type: 'token',
-    				model_context_limit: 16*1024,
-    			},
-    		}
-    	);
-    	
-    	const result = response.getData().result;
-    	console.info(result);
+        const response = await $b24.callMethod(
+            'ai.engine.register',
+            {
+                name: 'Acme GPT',
+                code: 'acme_gpt',
+                category: 'text',
+                completions_url: 'https://api.example.com/bitrix24/ai/completions',
+                settings: {
+                    code_alias: 'ChatGPT',
+                    model_context_type: 'token',
+                    model_context_limit: 15666
+                }
+            }
+        );
+
+        const result = response.getData().result;
+        console.log('Engine registered:', result);
     }
-    catch( error )
+    catch (error)
     {
-    	console.error(error);
+        console.error('Error:', error);
     }
     ```
 
@@ -100,26 +246,23 @@ Array of parameters:
             ->call(
                 'ai.engine.register',
                 [
-                    'name'            => 'Smith GPT',
-                    'code'            => 'smith_gpt',
-                    'category'        => 'text',
-                    'completions_url' => 'https://antonds.com/ai/aul/completions/',
-                    'settings'        => [
-                        'code_alias'          => 'ChatGPT',
-                        'model_context_type'  => 'token',
-                        'model_context_limit' => 16 * 1024,
+                    'name' => 'Acme GPT',
+                    'code' => 'acme_gpt',
+                    'category' => 'text',
+                    'completions_url' => 'https://api.example.com/bitrix24/ai/completions',
+                    'settings' => [
+                        'code_alias' => 'ChatGPT',
+                        'model_context_type' => 'token',
+                        'model_context_limit' => 15666,
                     ],
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
+
         echo 'Success: ' . print_r($result, true);
-        // Your required data processing logic
-        processData($result);
-    
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error registering AI engine: ' . $e->getMessage();
@@ -132,108 +275,119 @@ Array of parameters:
     BX24.callMethod(
         'ai.engine.register',
         {
-            name: 'Smith GPT',
-            code: 'smith_gpt',
+            name: 'Acme GPT',
+            code: 'acme_gpt',
             category: 'text',
-            completions_url: 'https://antonds.com/ai/aul/completions/',
+            completions_url: 'https://api.example.com/bitrix24/ai/completions',
             settings: {
                 code_alias: 'ChatGPT',
                 model_context_type: 'token',
-                model_context_limit: 16*1024,
-            },
+                model_context_limit: 15666
+            }
         },
         function(result)
         {
-            if(result.error())
+            if (result.error())
             {
-                console.error(result.error());
+                console.error(result.error(), result.error_description());
             }
             else
             {
-                console.info(result.data());
+                console.log(result.data());
             }
         }
     );
     ```
 
+- PHP CRest
+
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'ai.engine.register',
+        [
+            'name' => 'Acme GPT',
+            'code' => 'acme_gpt',
+            'category' => 'text',
+            'completions_url' => 'https://api.example.com/bitrix24/ai/completions',
+            'settings' => [
+                'code_alias' => 'ChatGPT',
+                'model_context_type' => 'token',
+                'model_context_limit' => 15666,
+            ],
+        ]
+    );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
+    ```
+
 {% endlist %}
 
-## Endpoint
+## Response Handling
 
-{% note info "Attention!" %}
-
-In the script, everything is in a single code flow, this is for example purposes. In **production** mode, it is necessary to separate the lines of code into a different section.
-
-{% endnote %}
-
-[Template](https://helpdesk.bitrix24.com/examples/endpoint.zip) for creating a custom endpoint can be used for customizing your own service.
-
-## Important points:
-
-1. The script must accept the request, process it quickly, and add it to its internal queue.
-2. A service with the type "image" must send asynchronous requests.
-3. It should be able to return various response statuses (as shown in the example):
-  - 200 — normal link transition;
-  - 202 — if you accepted the request and added it to the queue;
-  - 503 — if the service is unavailable.
-
-A response is expected within a certain time, after which the callback becomes invalid.
-
-{% note info "Attention!" %}
-
-In addition to the response code, in case of successful generation, the handler must return `json_encode(['result' => 'OK'])`.
-
-{% endnote %}
-
-When working with the provider category **audio**, in the `prompt` key, you receive an array that includes the following elements:
-
-- **file**: Link to the file. It is important to note that the file may have no extension.
-- **fields**: An auxiliary internal array that contains:
-  - **type**: Content-type of the file, which is especially important if the file has no extension (e.g., "audio/ogg").
-  - **prompt**: An auxiliary prompt for the audio file, which may contain key information to assist in recognizing the file, such as your company name.
-
-The provider also receives additional fields:
-
-#|
-|| **Fields** | **Description** | **Version** ||
-|| **auth** | Authorization data, | 23.600.0 ||
-|| **payload_raw** | Raw value of the prompt (when using Copilot, there will be a character code of the used prompt) | 23.600.0 ||
-|| **payload_provider** | Character code of the provider pre-prompt (when using Copilot, there will be prompt). | 23.600.0 ||
-|| **payload_prompt_text** | If `payload_provider = prompt`, it will contain the raw instruction of the pre-prompt. This is the unprocessed pre-prompt for independent analysis. More details in the documentation on [prompts](.). | 23.800.0 ||
-|| **payload_markers** | Array of additional markers from the user (`original_message`, `user_message`, `language`), used when forming the prompt. More details in the documentation on [prompts](.). | 23.800.0 ||
-|| **payload_role** | Role (instruction) used when forming the prompt. In GPT-like systems, you should send this role as a system in the message array. | 23.800.0 ||
-|| **context** | Array of preceding messages in chronological order. For example, a list of comments on a post. The first in such a context list is the author's message (the post itself). Important: The volume of context sent to your provider depends on the volume specified by you and the counting type (more details in the provider documentation). By default, the counting method is "tokens", volume 16K. You should send context to the neural network only if the parameter collect_context is set to true (1). In other cases, it is sent as additional information at your discretion. | 23.800.0 ||
-|| **max_tokens** | Maximum number of lexemes. This parameter controls the length of the output. Optional. | | ||
-|| **temperature**^*^ | Temperature. This parameter controls the randomness of the output (low values make the output more focused and deterministic). Required. | | ||
-|#
-
-\* - Required parameters 
-
-**Example**
-
-Suppose you receive (in addition to other information) three data arrays.
-
-- prompt - contains the current request, this is just text;
-- payload_role - some text containing instructions;
-- context - an array (presumably also not empty).
-
-In this case, the resulting array we obtain is:
+HTTP Status: **200**
 
 ```json
-[
-    [
-        "role": "system",
-        "content": "$payload_role"
-    ],
-    [
-        // the entire context array, or part of it if you want to save the request
-        // but remember that it goes in chronological order (the most recent messages are at the bottom)
-    ],
-    [
-        "role": "user",
-        "content": "$prompt" // this is the current request, and it is NOT included in the context
-    ]
-]
+{
+    "result": 12,
+    "time": {
+        "start": 1774078200,
+        "finish": 1774078200.315271,
+        "duration": 0.31527090072631836,
+        "processing": 0.02,
+        "date_start": "2026-03-20T09:50:00+01:00",
+        "date_finish": "2026-03-20T09:50:00+01:00",
+        "operating_reset_at": 1774078800,
+        "operating": 0
+    }
+}
 ```
 
-{% include [Footnote on examples](../../_includes/examples.md) %}
+### Returned Data
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`integer`](../data-types.md) | Identifier of the registered service ||
+|| **time**
+[`time`](../data-types.md#time) | Information about the request execution time ||
+|#
+
+## Error Handling
+
+HTTP Status: **400**
+
+```json
+{
+    "error": "ENGINE_REGISTER_ERROR_CODE_UNIQUE",
+    "error_description": "An entry with this `code` already exists."
+}
+```
+
+{% include notitle [Error Handling](../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+#|
+|| **Code** | **Description** | **Value** ||
+|| `ENGINE_REGISTER_ERROR_NAME` | The `name` key with a string value is required | The `name` parameter is not provided, an empty value is passed, or the value is not a string ||
+|| `ENGINE_REGISTER_ERROR_CODE` | The `code` key with a string value is required | The `code` parameter is not provided, an empty value is passed, or the value is not a string ||
+|| `ENGINE_REGISTER_ERROR_CODE_FORMAT` | The `code` key must contain only characters `A-Za-z0-9-_` | Invalid characters are passed in `code` ||
+|| `ENGINE_REGISTER_ERROR_CODE_UNIQUE` | An entry with this `code` already exists | A service with this code is already registered in the same category ||
+|| `ENGINE_REGISTER_ERROR_CATEGORY` | The `category` key is required | The `category` parameter is not provided or an empty value is passed ||
+|| `ENGINE_REGISTER_ERROR_CATEGORY_FORMAT` | The `category` key can contain one of the values: `text, image, audio, call` | A value for `category` that is not in the list of available categories is passed ||
+|| `ENGINE_REGISTER_ERROR_COMPLETIONS_URL` | The `completions_url` key with a string value is required | The `completions_url` parameter is not provided, an empty value is passed, or the value is not a string ||
+|| `ENGINE_REGISTER_ERROR_COMPLETIONS_URL_FAIL` | The value of the `completions_url` key must be a valid URL that returns status `200` upon verification | The URL is unavailable, invalid, or returns a status other than `200` upon verification ||
+|| `ENGINE_REGISTER_ERROR_SETTINGS_FORMAT` | The value of the `settings` key must be valid JSON | The `settings` parameter is not passed as an object ||
+|#
+
+{% include [System Errors](../../_includes/system-errors.md) %}
+
+## Continue Learning
+
+- [{#T}](./ai-engine-list.md)
+- [{#T}](./ai-engine-unregister.md)

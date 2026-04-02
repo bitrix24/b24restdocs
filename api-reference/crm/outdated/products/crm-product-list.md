@@ -1,12 +1,12 @@
-# Get a list of products by filter crm.product.list
+# Get Product List by Filter crm.product.list
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-{% note warning "Method development has been discontinued" %}
+{% note warning "DEPRECATED" %}
 
-The method `crm.product.list` continues to function, but there are more current alternatives [catalog.product.*](../../../catalog/product/index.md).
+Development of this method has been halted. Please use [catalog.product.list](../../../catalog/product/catalog-product-list.md).
 
 {% endnote %}
 
@@ -18,7 +18,7 @@ See the description of [list methods](../../../common/index.md).
 
 ## Code Examples
 
-{% include [Note on examples](../../../../_includes/examples.md) %}
+{% include [Examples Note](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -45,7 +45,7 @@ See the description of [list methods](../../../common/index.md).
 - JS
 
     ```js
-    // callListMethod: Retrieves all data at once. Use only for small selections (< 1000 items) due to high memory usage.
+    // callListMethod: Retrieves all data at once. Use only for small selections (< 1000 items) due to high memory load.
     
     var catalogId = prompt("Enter catalog ID");
     try {
@@ -64,7 +64,7 @@ See the description of [list methods](../../../common/index.md).
       console.error('Request failed', error)
     }
     
-    // fetchListMethod: Retrieves data in parts using an iterator. Use it for large data volumes to optimize memory usage.
+    // fetchListMethod: Retrieves data in parts using an iterator. Use for large volumes of data for efficient memory consumption.
     
     var catalogId = prompt("Enter catalog ID");
     try {
@@ -80,7 +80,7 @@ See the description of [list methods](../../../common/index.md).
       console.error('Request failed', error)
     }
     
-    // callMethod: Manually controls pagination through the start parameter. Use it for precise control of request batches. For large datasets, it is less efficient than fetchListMethod.
+    // callMethod: Manual control of pagination through the start parameter. Use for precise control over request batches. Less efficient for large data than fetchListMethod.
     
     var catalogId = prompt("Enter catalog ID");
     try {
@@ -161,7 +161,7 @@ See the description of [list methods](../../../common/index.md).
     );
     ```
 
-    To get product properties, you need to specify `PROPERTY_*` in `select`.
+    To retrieve product properties, you need to specify `PROPERTY_*` in `select`.
 
     ```js
     $arFields['select'] = array('*', 'PROPERTY_*');
@@ -189,4 +189,3 @@ See the description of [list methods](../../../common/index.md).
     ```
 
 {% endlist %}
-

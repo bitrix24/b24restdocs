@@ -1,22 +1,22 @@
-# Reset Contact Card Parameters crm.contact.details.configuration.reset
+# Resetting the Parameters of crm.contact.details.configuration.reset
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
 > Who can execute the method:
->  - Any user has the right to retrieve their own and common settings
->  - Only an administrator has the right to retrieve others' settings
+>  - Any user has the right to access their own and shared settings
+>  - Only an administrator has the right to access others' settings
 
-{% note warning "Method Development Stopped" %}
+{% note warning "DEPRECATED" %}
 
-The method `crm.contact.details.configuration.reset` continues to function, but there is a more relevant alternative [crm.item.details.configuration.reset](../../universal/item-details-configuration/crm-item-details-configuration-reset.md).
+The development of this method has been halted. Please use [crm.item.details.configuration.reset](../../universal/item-details-configuration/crm-item-details-configuration-reset.md).
 
 {% endnote %}
 
-This method resets the contact card settings: it removes the personal settings of the specified user or the common settings defined for all users.
+This method resets the contact card settings: it removes the personal settings of the specified user or the shared settings defined for all users.
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -26,9 +26,9 @@ This method resets the contact card settings: it removes the personal settings o
 
 Possible values:
 - **P** — personal settings
-- **C** — common settings
+- **C** — shared settings
 
-Default — `P`
+Default is `P`
 ||
 || **userId**
 [`user`](../../../data-types.md) | User identifier. Required only when resetting personal settings.
@@ -39,9 +39,9 @@ If not specified, the `id` of the current user is used
 
 ## Code Examples
 
-{% include [Note on examples](../../../../_includes/examples.md) %}
+{% include [Note on Examples](../../../../_includes/examples.md) %}
 
-1. Reset Common Configuration
+1. Resetting Shared Configuration
 
     {% list tabs %}
 
@@ -101,7 +101,7 @@ If not specified, the `id` of the current user is used
 
     {% endlist %}
 
-2. Reset Personal Configuration
+2. Resetting Personal Configuration
 
     {% list tabs %}
 
@@ -190,9 +190,9 @@ HTTP Status: **200**
 || **result**
 [`boolean`](../../../data-types.md) | The root element of the response.
 
-Returns `true` in case of successful settings reset ||
+Returns `true` if the settings were successfully reset ||
 || **time**
-[`time`](../../../data-types.md#time) | Information about the request execution time ||
+[`time`](../../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
@@ -206,16 +206,16 @@ HTTP Status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../../_includes/error-info.md) %}
+{% include notitle [Error Handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
 || **Code** | **Description**   | **Value** ||
-|| Empty value | Access denied. | The user does not have administrative rights ||
+|| Empty Value | Access denied. | The user does not have administrative rights ||
 |#
 
-{% include [system errors](../../../../_includes/system-errors.md) %}
+{% include [System Errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning 
 

@@ -1,14 +1,20 @@
-# Create process rpa.type.add
+# Create Process rpa.type.add
 
 > Scope: [`rpa`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
+{% note warning "DEPRECATED" %}
+
+The development of this method has been halted. Use [Smart scripts](../../../crm/universal/user-defined-object-types/index.md) as an alternative to this functionality.
+
+{% endnote %}
+
 This method creates a new process.
 
 ## Method Parameters
 
-{% include [Footnote on parameters](../../../../_includes/required.md) %}
+{% include [Parameter Note](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -19,7 +25,7 @@ This method creates a new process.
 
 ### Parameter fields {#fields}
 
-{% include [Footnote on parameters](../../../../_includes/required.md) %}
+{% include [Parameter Note](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -29,7 +35,7 @@ This method creates a new process.
 || **image**
 [`string`](../../../data-types.md) | The image of the process from the list ||
 || **settings**
-[`array`](../../../data-types.md) | A list with an arbitrary set of process settings ||
+[`array`](../../../data-types.md) | A list of arbitrary settings for the process ||
 || **permissions**
 [`array`](../../../data-types.md) | A list of objects. Each object describes access permissions for this process ||
 |#
@@ -43,9 +49,9 @@ This method creates a new process.
 
 ## Code Examples
 
-Create a new process named "My Process". All users can create items for this process. Only the user with `id = 1` can change the settings of this process.
+Create a new process named "My Process." All users can create items for this process. Only the user with `id = 1` can modify the settings of this process.
 
-{% include [Footnote on examples](../../../../_includes/examples.md) %}
+{% include [Example Note](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -76,7 +82,7 @@ Create a new process named "My Process". All users can create items for this pro
 
 ## Response Handling
 
-The method will return data similar to the response of the method [rpa.type.get](./rpa-type-get.md).
+The method will return data in the response similar to the response of the method [rpa.type.get](./rpa-type-get.md).
 
 ## Continue Learning 
 

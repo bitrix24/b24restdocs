@@ -4,15 +4,15 @@
 >
 > Who can execute the method: any user
 
-{% note warning %}
+{% note warning "DEPRECATED" %}
 
-The method is deprecated. It is recommended to use [`Universal methods for invoices`](../../universal/invoice.md)
+The development of this method has been halted. Please use [Universal methods for invoices](../../universal/invoice.md).
 
 {% endnote %}
 
-The method deletes an invoice.
+This method deletes an invoice.
 
-## Method parameters
+## Method Parameters
 
 {% include [Note on required parameters](../../../../_includes/required.md) %}
 
@@ -23,7 +23,7 @@ The method deletes an invoice.
 [`integer`](../../../data-types.md) | Invoice identifier ||
 |#
 
-## Code examples
+## Code Examples
 
 {% include [Note on examples](../../../../_includes/examples.md) %}
 

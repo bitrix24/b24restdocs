@@ -1,16 +1,16 @@
-# Update deal category crm.dealcategory.update
+# Update Deal Direction crm.dealcategory.update
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-{% note warning %}
+{% note warning "DEPRECATED" %}
 
-The method is deprecated. It is recommended to use [`crm.category.update`](../../universal/category/crm-category-update.md)
+The development of this method has been halted. Please use [crm.category.update](../../universal/category/crm-category-update.md).
 
 {% endnote %}
 
-The method updates an existing deal category.
+This method updates an existing deal direction.
 
 ## Parameters
 
@@ -18,16 +18,16 @@ The method updates an existing deal category.
 || **Name**
 `type` | **Description** ||
 || **id** 
-[`integer`](../../../data-types.md)| Identifier of the category ||
+[`integer`](../../../data-types.md)| Identifier of the direction ||
 || **fields**
-[`array`](../../../data-types.md) | Field values for updating the deal category.
+[`array`](../../../data-types.md) | Field values for updating the deal direction.
 
-To find out the required format of the fields, execute the method [`crm.dealcategory.fields`](./crm-deal-category-fields.md) and check the format of the incoming values of these fields (except for fields marked with the attributes **isReadOnly** and **isImmutable**) ||
+To find out the required format for the fields, execute the method [`crm.dealcategory.fields`](./crm-deal-category-fields.md) and check the format of the incoming values for these fields (except for fields marked with the **isReadOnly** and **isImmutable** attributes) ||
 |#
 
-## Code examples
+## Code Examples
 
-{% include [Note about examples](../../../../_includes/examples.md) %}
+{% include [Note on Examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 

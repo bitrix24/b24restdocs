@@ -1,37 +1,38 @@
-# Adjust Frame Size to Content BX24.fitWindow
+# Adjusting the Frame Size to Fit Content with BX24.fitWindow
 
-{% note warning "We are still updating this page" %}
-
-Some data may be missing here — we will complete it shortly.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- missing parameters or fields
-- missing examples
-- missing success response
-- missing error response
-
-{% endnote %}
-
-{% endif %}
+The `BX24.fitWindow` method sends a command to change the height of the application frame based on the height of the page content. It utilizes `BX24.getScrollSize().scrollHeight` in its implementation.
 
 ```js
 void BX24.fitWindow([Function callback])
 ```
 
-The method `BX24.fitWindow` adjusts the size of the application frame according to the dimensions of the frame's content.
+## Parameters
 
-Due to browser limitations, the method can only increase the frame size. To set the size accurately, you can use the following approach:
+#|
+|| **Name**
+`type` | **Description** ||
+|| **callback**
+`function` | The callback function that executes after the resize command is sent ||
 
-- wrap the application content in a container;
-- calculate the dimensions of the container;
-- set the frame size based on the container's dimensions using [BX24.resizeWindow](./bx24-resize-window.md).
+|#
 
-## See also:
+## Code Example
 
-- [BX24.resizeWindow](./bx24-resize-window.md)
-- [BX24.getScrollSize](./bx24-get-scroll-size.md)
+```js
+BX24.init(function () {
+    BX24.fitWindow(function () {
+        console.log('The command to resize the frame has been sent');
+    });
+});
+```
+
+{% include [Footnote on examples](../../../_includes/examples.md) %}
+
+## Handling the Response
+
+The method does not return any data (`void`).
+
+## Continue Your Learning
+
+- [{#T}](./bx24-resize-window.md)
+- [{#T}](./bx24-get-scroll-size.md)

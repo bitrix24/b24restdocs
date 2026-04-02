@@ -1,25 +1,38 @@
-# Reload the page BX24.reloadWindow
+# Reload the Page BX24.reloadWindow
 
-{% note warning "We are still updating this page" %}
-
-Some data may be missing here — we will complete it shortly.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- examples are missing
-- success response is missing
-- error response is missing
-
-{% endnote %}
-
-{% endif %}
+The method `BX24.reloadWindow` sends a command to reload the page with the application. Starting from version `25.800.0` of the `rest` module, this method can be used in [embedding locations](../../../api-reference/widgets/index.md) of the application.
 
 ```js
-void BX24.reloadWindow()
+void BX24.reloadWindow([Function callback])
 ```
 
-The method `BX24.reloadWindow` reloads the page with the application. Starting from [module version](../../../settings/cloud-and-on-premise/on-premise/versions.md) rest 25.800.0, the method can be used in [embedding locations](../../../api-reference/widgets/index.md) of the application.
+## Parameters
+
+#| 
+|| **Name**
+`type` | **Description** ||
+|| **callback**
+`function` | Callback function that is executed after the command to reload the page is sent ||
+
+|#
+
+## Code Example
+
+```js
+BX24.init(function () {
+    BX24.reloadWindow(function () {
+        console.log('The command to reload the page has been sent');
+    });
+});
+```
+
+{% include [Footnote on examples](../../../_includes/examples.md) %}
+
+## Handling the Response
+
+The method does not return any data (`void`).
+
+## Continue Learning
+
+- [{#T}](./bx24-fit-window.md)
+- [{#T}](./bx24-resize-window.md)

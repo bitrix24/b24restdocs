@@ -4,21 +4,27 @@
 >
 > Who can execute the method: any user
 
+{% note warning "DEPRECATED" %}
+
+Development of this method has been halted. Please use [catalog.section.add](../../../catalog/section/catalog-section-add.md).
+
+{% endnote %}
+
 The method `crm.productsection.add` creates a new product section.
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **fields***
-[`array`](../../data-types.md) | A set of fields — an array of the form `array("field"=>"value"[, ...])`, containing the values of the product section fields. 
+[`array`](../../data-types.md) | A set of fields — an array in the format `array("field"=>"value"[, ...])`, containing the values of the product section fields. 
 
 {% note info %}
 
-To find out the required format of the fields, execute the method [crm.productsection.fields](./crm-product-section-fields.md) and check the format of the returned values for these fields. 
+To find out the required format for the fields, execute the method [crm.productsection.fields](./crm-product-section-fields.md) and check the format of the returned values for these fields. 
 
 {% endnote %}
 ||
@@ -26,16 +32,16 @@ To find out the required format of the fields, execute the method [crm.productse
 
 ## Code Examples
 
-{% include [Note on examples](../../../../_includes/examples.md) %}
+{% include [Note on Examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
 - cURL (Webhook)
 
     ```curl
-    catalogId=$(prompt "Enter catalog ID")
-    sectionId=$(prompt "Enter parent section ID (0 if at root)")
-    sectionName=$(prompt "Enter section name")
+    catalogId=$(prompt "Enter Catalog ID")
+    sectionId=$(prompt "Enter Parent Section ID (0 if at root)")
+    sectionName=$(prompt "Enter Section Name")
 
     curl -X POST \
     -H "Content-Type: application/json" \
@@ -53,9 +59,9 @@ To find out the required format of the fields, execute the method [crm.productse
 - cURL (OAuth)
 
     ```curl
-    catalogId=$(prompt "Enter catalog ID")
-    sectionId=$(prompt "Enter parent section ID (0 if at root)")
-    sectionName=$(prompt "Enter section name")
+    catalogId=$(prompt "Enter Catalog ID")
+    sectionId=$(prompt "Enter Parent Section ID (0 if at root)")
+    sectionName=$(prompt "Enter Section Name")
 
     curl -X POST \
     -H "Content-Type: application/json" \
@@ -76,28 +82,28 @@ To find out the required format of the fields, execute the method [crm.productse
     ```js
     try
     {
-    	const catalogId = prompt("Enter catalog ID");
-    	const sectionId = prompt("Enter parent section ID (0 if at root)");
-    	const sectionName = prompt("Enter section name");
+        const catalogId = prompt("Enter Catalog ID");
+        const sectionId = prompt("Enter Parent Section ID (0 if at root)");
+        const sectionName = prompt("Enter Section Name");
     
-    	const response = await $b24.callMethod(
-    		"crm.productsection.add",
-    		{
-    			fields:
-    			{
-    				CATALOG_ID: catalogId,
-    				NAME: sectionName,
-    				SECTION_ID: sectionId
-    			}
-    		}
-    	);
+        const response = await $b24.callMethod(
+            "crm.productsection.add",
+            {
+                fields:
+                {
+                    CATALOG_ID: catalogId,
+                    NAME: sectionName,
+                    SECTION_ID: sectionId
+                }
+            }
+        );
     
-    	const result = response.getData().result;
-    	console.info("A new section has been created with ID " + result);
+        const result = response.getData().result;
+        console.info("A new section has been created with ID " + result);
     }
     catch(error)
     {
-    	console.error(error);
+        console.error(error);
     }
     ```
 
@@ -105,9 +111,9 @@ To find out the required format of the fields, execute the method [crm.productse
 
     ```php
     try {
-        $catalogId = readline("Enter catalog ID");
-        $sectionId = readline("Enter parent section ID (0 if at root)");
-        $sectionName = readline("Enter section name");
+        $catalogId = readline("Enter Catalog ID");
+        $sectionId = readline("Enter Parent Section ID (0 if at root)");
+        $sectionName = readline("Enter Section Name");
     
         $response = $b24Service
             ->core
@@ -141,9 +147,9 @@ To find out the required format of the fields, execute the method [crm.productse
 - BX24.js
 
     ```js
-    var catalogId = prompt("Enter catalog ID");
-    var sectionId = prompt("Enter parent section ID (0 if at root)");
-    var sectionName = prompt("Enter section name");
+    var catalogId = prompt("Enter Catalog ID");
+    var sectionId = prompt("Enter Parent Section ID (0 if at root)");
+    var sectionName = prompt("Enter Section Name");
     BX24.callMethod(
         "crm.productsection.add",
         {
@@ -169,9 +175,9 @@ To find out the required format of the fields, execute the method [crm.productse
     ```php
     require_once('crest.php');
 
-    $catalogId = readline("Enter catalog ID: ");
-    $sectionId = readline("Enter parent section ID (0 if at root): ");
-    $sectionName = readline("Enter section name: ");
+    $catalogId = readline("Enter Catalog ID: ");
+    $sectionId = readline("Enter Parent Section ID (0 if at root): ");
+    $sectionName = readline("Enter Section Name: ");
 
     $result = CRest::call(
         'crm.productsection.add',

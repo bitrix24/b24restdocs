@@ -4,11 +4,17 @@
 >
 > Who can execute the method: any user
 
-The method `crm.productsection.delete` removes a product catalog section.
+{% note warning "DEPRECATED" %}
+
+The development of this method has been halted. Please use [catalog.section.delete](../../../catalog/section/catalog-section-delete.md).
+
+{% endnote %}
+
+The method `crm.productsection.delete` removes a product category from the catalog.
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -19,7 +25,7 @@ The method `crm.productsection.delete` removes a product catalog section.
 
 ## Code Examples
 
-{% include [Note on examples](../../../../_includes/examples.md) %}
+{% include [Note on Examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 

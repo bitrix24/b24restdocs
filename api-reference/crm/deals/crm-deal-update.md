@@ -4,9 +4,9 @@
 > 
 > Who can execute the method: any user with "edit" access permission for deals
 
-{% note warning "Method Development Stopped" %}
+{% note warning "DEPRECATED" %}
 
-The method `crm.deal.update` continues to function, but there is a more relevant alternative [crm.item.update](../universal/crm-item-update.md).
+The development of this method has been halted. Please use [crm.item.update](../universal/crm-item-update.md).
 
 {% endnote %}
 
@@ -14,17 +14,17 @@ The method `crm.deal.update` updates an existing deal.
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Parameter Note](../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`](../../data-types.md) | Identifier of the deal.
+[`integer`](../../data-types.md) | The identifier of the deal.
 
 The identifier can be obtained using the methods [crm.deal.list](./crm-deal-list.md) or [crm.deal.add](./crm-deal-add.md) ||
 || **fields**
-[`object`](../../data-types.md) | Object format:
+[`object`](../../data-types.md) | An object in the following format:
 
 ```
 {
@@ -36,45 +36,45 @@ The identifier can be obtained using the methods [crm.deal.list](./crm-deal-list
 ```
 
 where:
-- `field_n` — field name
-- `value_n` — new field value
+- `field_n` — the name of the field
+- `value_n` — the new value of the field
 
 The list of available fields is described [below](#fields).
 
 An incorrect field in `fields` will be ignored.
 
-Only those fields that need to be changed should be passed in `fields`
+Only those fields that need to be changed should be passed in `fields`.
 ||
 || **params** 
-[`object`](../../data-types.md)| Set of additional parameters ([detailed description](#params)) ||
+[`object`](../../data-types.md)| A set of additional parameters ([detailed description](#params)) ||
 |#
 
-### Parameter fields {#fields}
+### Fields Parameter {#fields}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **TITLE**
-[`string`](../../data-types.md) | Title of the deal ||
+[`string`](../../data-types.md) | The title of the deal ||
 || **TYPE_ID**
-[`crm_status`](../data-types.md) | String identifier of the deal type.
+[`crm_status`](../data-types.md) | The string identifier of the deal type.
 
-The list of available deal types can be obtained using the method [crm.status.list](../status/crm-status-list.md) with the filter `{ ENTITY_ID: 'DEAL_TYPE' }` ||
+The list of available deal types can be found using the method [crm.status.list](../status/crm-status-list.md) with the filter `{ ENTITY_ID: 'DEAL_TYPE' }` ||
 || **STAGE_ID**
-[`crm_status`](../data-types.md) | Stage of the deal.
+[`crm_status`](../data-types.md) | The stage of the deal.
 
-The list of available stages can be obtained using the method [crm.status.list](../status/crm-status-list.md) with the filter:
+The list of available stages can be found using the method [crm.status.list](../status/crm-status-list.md) with the filter:
 - `{ ENTITY_ID: "DEAL_STAGE" }` — if the deal is in the general Sales Funnel
-- `{ ENTITY_ID: "DEAL_STAGE_{categoryId}" }` — if the deal is not in the general Sales Funnel, where `categoryId` is the identifier of the [funnel](../universal/category/index.md) and equals `CATEGORY_ID` of the deal.
+- `{ ENTITY_ID: "DEAL_STAGE_{categoryId}" }` — if the deal is not in the general Sales Funnel, where `categoryId` is the identifier of the [Sales Funnel](../universal/category/index.md) and equals the `CATEGORY_ID` of the deal.
   
-If it is necessary to change the funnel of the deal, use the method [crm.item.update](../universal/crm-item-update.md), with the `entityTypeId` of the deal being `2`
+If you need to change the Sales Funnel of the deal, use the method [crm.item.update](../universal/crm-item-update.md), with the `entityTypeId` of the deal being `2`.
 ||
 || **IS_RECURRING**
-[`char`](../../data-types.md) | Indicates whether the deal is a recurring deal template. Possible values:
+[`char`](../../data-types.md) | Indicates whether the deal is a template for a recurring deal. Possible values:
 - `Y` — yes
 - `N` — no ||
 || **IS_RETURN_CUSTOMER**
-[`char`](../../data-types.md) | Indicates whether the deal is a repeat deal. Possible values:
+[`char`](../../data-types.md) | Indicates whether the deal is a repeat. Possible values:
 - `Y` — yes
 - `N` — no ||
 || **IS_REPEATED_APPROACH**
@@ -87,25 +87,25 @@ If it is necessary to change the funnel of the deal, use the method [crm.item.up
 || **CURRENCY_ID**
 [`crm_currency`](../data-types.md#crm_currency) | Currency.
 
-The list of available currencies can be obtained using the method [crm.currency.list](../currency/crm-currency-list.md)
+The list of available currencies can be found using the method [crm.currency.list](../currency/crm-currency-list.md)
 ||
 || **OPPORTUNITY**
 [`double`](../../data-types.md) | Amount ||
 || **IS_MANUAL_OPPORTUNITY**
-[`char`](../../data-types.md) | Indicates whether manual calculation mode is enabled. Possible values:
+[`char`](../../data-types.md) | Indicates whether manual calculation of the amount is enabled. Possible values:
 - `Y` — yes
 - `N` — no ||
 || **TAX_VALUE**
 [`double`](../../data-types.md) | Tax amount ||
 || **COMPANY_ID**
-[`crm_company`](../data-types.md) | Identifier of the company associated with the deal.
+[`crm_company`](../data-types.md) | The identifier of the company associated with the deal.
 
-The list of companies can be obtained using the method [crm.item.list](../universal/crm-item-list.md) by passing `entityTypeId = 4`
+The list of companies can be found using the method [crm.item.list](../universal/crm-item-list.md) by passing `entityTypeId = 4`
 ||
 || **CONTACT_ID**
 [`crm_contact`](../data-types.md) | Contact. Deprecated ||
 || **CONTACT_IDS**
-[`crm_contact[]`](../data-types.md) | List of contacts associated with the deal. The field is completely replaced.
+[`crm_contact[]`](../data-types.md) | A list of contacts associated with the deal. The field is completely replaced.
 
 To change individual related contacts, use the methods [crm.deal.contact.items.*](./contacts/index.md).
 ||
@@ -114,21 +114,21 @@ To change individual related contacts, use the methods [crm.deal.contact.items.*
 || **CLOSEDATE**
 [`date`](../../data-types.md) | End date ||
 || **OPENED**
-[`char`](../../data-types.md) | Is the deal available to everyone. Possible values:
+[`char`](../../data-types.md) | Is the deal available to everyone? Possible values:
 - `Y` — yes
 - `N` — no ||
 || **CLOSED**
-[`char`](../../data-types.md) | Is the deal closed. Possible values:
+[`char`](../../data-types.md) | Is the deal closed? Possible values:
 - `Y` — yes
 - `N` — no ||
 || **COMMENTS**
-[`string`](../../data-types.md) | Comment. Supports bb-codes ||
+[`string`](../../data-types.md) | Comment. Supports BB codes ||
 || **ASSIGNED_BY_ID**
 [`user`](../../data-types.md) | Responsible person ||
 || **SOURCE_ID**
-[`crm_status`](../data-types.md) | String identifier of the source type.
+[`crm_status`](../data-types.md) | The string identifier of the source type.
 
-The list of available sources can be obtained using the method [crm.status.list](../status/crm-status-list.md) with the filter `{ ENTITY_ID: "SOURCE" }` ||
+The list of available sources can be found using the method [crm.status.list](../status/crm-status-list.md) with the filter `{ ENTITY_ID: "SOURCE" }` ||
 || **SOURCE_DESCRIPTION**
 [`string`](../../data-types.md) | Additional information about the source ||
 || **ADDITIONAL_INFO**
@@ -153,11 +153,11 @@ Used only for linking to an external source
 - `CPM` — banners
 ||
 || **UTM_CAMPAIGN**
-[`string`](../../data-types.md) | Designation of the advertising campaign ||
+[`string`](../../data-types.md) | Advertising campaign designation ||
 || **UTM_CONTENT**
 [`string`](../../data-types.md) | Content of the campaign. For example, for contextual ads ||
 || **UTM_TERM**
-[`string`](../../data-types.md) | Search condition of the campaign. For example, keywords for contextual advertising ||
+[`string`](../../data-types.md) | Search term of the campaign. For example, keywords for contextual advertising ||
 || **UF_CRM_...** | Custom fields. For example, `UF_CRM_25534736`. 
 
 Depending on the portal settings, deals may have a set of custom fields of specific types. 
@@ -170,27 +170,27 @@ You can add a custom field to a deal using the method [crm.deal.userfield.add](.
 || **PARENT_ID_...**
 [`crm_entity`](../data-types.md) | Relationship fields. 
 
-If there are smart processes related to deals on the portal, there is a field for each such smart process that stores the relationship between this smart process and the deal. The field itself stores the identifier of the element of that smart process. 
+If there are smart processes associated with deals on the portal, there is a field for each such smart process that stores the link between this smart process and the deal. The field itself stores the identifier of the element of that smart process. 
 
-For example, the field `PARENT_ID_153` — relationship with the smart process `entityTypeId=153`, stores the identifier of the element of this smart process related to the current deal ||
+For example, the field `PARENT_ID_153` — link to the smart process `entityTypeId=153`, stores the identifier of the element of this smart process associated with the current deal ||
 |#
 
-### Parameter params {#params}
+### Params Parameter {#params}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **REGISTER_SONET_EVENT**
-[`boolean`](../../data-types.md) | Whether to register the deal change event in the activity stream. Possible values:
+[`boolean`](../../data-types.md) | Should the event of the deal change be registered in the live feed? Possible values:
 - `Y` — yes
 - `N` — no ||
 || **REGISTER_HISTORY_EVENT**
-[`boolean`](../../data-types.md) | Whether to create a history record. Possible values:
+[`boolean`](../../data-types.md) | Should a record be created in the history? Possible values:
 - `Y` — yes
 - `N` — no ||
 |#
 
-{% note tip "Related methods and topics" %}
+{% note tip "Related Methods and Topics" %}
 
 [{#T}](./recurring-deals/crm-deal-recurring-update.md)
 
@@ -198,7 +198,7 @@ For example, the field `PARENT_ID_153` — relationship with the smart process `
 
 ## Code Examples
 
-{% include [Note on examples](../../../_includes/examples.md) %}
+{% include [Example Note](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -208,7 +208,7 @@ For example, the field `PARENT_ID_153` — relationship with the smart process `
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"ID":123,"FIELDS":{"TITLE":"New Deal Title!","TYPE_ID":"GOODS","STAGE_ID":"WON","IS_RECURRING":"Y","IS_RETURN_CUSTOMER":"Y","OPPORTUNITY":9999.99,"IS_MANUAL_OPPORTUNITY":"Y","ASSIGNED_BY_ID":1,"UF_CRM_1725365197310":"String","PARENT_ID_1032":1},"PARAMS":{"REGISTER_SONET_EVENT":"N","REGISTER_HISTORY_EVENT":"N"}}' \
+    -d '{"ID":123,"FIELDS":{"TITLE":"New Deal Title!","TYPE_ID":"GOODS","STAGE_ID":"WON","IS_RECCURING":"Y","IS_RETURN_CUSTOMER":"Y","OPPORTUNITY":9999.99,"IS_MANUAL_OPPORTUNITY":"Y","ASSIGNED_BY_ID":1,"UF_CRM_1725365197310":"String","PARENT_ID_1032":1},"PARAMS":{"REGISTER_SONET_EVENT":"N","REGISTER_HISTORY_EVENT":"N"}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.deal.update
     ```
 
@@ -218,7 +218,7 @@ For example, the field `PARENT_ID_153` — relationship with the smart process `
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"ID":123,"FIELDS":{"TITLE":"New Deal Title!","TYPE_ID":"GOODS","STAGE_ID":"WON","IS_RECURRING":"Y","IS_RETURN_CUSTOMER":"Y","OPPORTUNITY":9999.99,"IS_MANUAL_OPPORTUNITY":"Y","ASSIGNED_BY_ID":1,"UF_CRM_1725365197310":"String","PARENT_ID_1032":1},"PARAMS":{"REGISTER_SONET_EVENT":"N","REGISTER_HISTORY_EVENT":"N"},"auth":"**put_access_token_here**"}' \
+    -d '{"ID":123,"FIELDS":{"TITLE":"New Deal Title!","TYPE_ID":"GOODS","STAGE_ID":"WON","IS_RECCURING":"Y","IS_RETURN_CUSTOMER":"Y","OPPORTUNITY":9999.99,"IS_MANUAL_OPPORTUNITY":"Y","ASSIGNED_BY_ID":1,"UF_CRM_1725365197310":"String","PARENT_ID_1032":1},"PARAMS":{"REGISTER_SONET_EVENT":"N","REGISTER_HISTORY_EVENT":"N"},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/crm.deal.update
     ```
 
@@ -235,7 +235,7 @@ For example, the field `PARENT_ID_153` — relationship with the smart process `
     				TITLE: "New Deal Title!",
     				TYPE_ID: "GOODS",
     				STAGE_ID: "WON",
-    				IS_RECURRING: "Y",
+    				IS_RECCURING: "Y",
     				IS_RETURN_CUSTOMER: "Y",
     				OPPORTUNITY: 9999.99,
     				IS_MANUAL_OPPORTUNITY: "Y",
@@ -273,7 +273,7 @@ For example, the field `PARENT_ID_153` — relationship with the smart process `
                         'TITLE'              => "New Deal Title!",
                         'TYPE_ID'            => "GOODS",
                         'STAGE_ID'           => "WON",
-                        'IS_RECURRING'       => "Y",
+                        'IS_RECCURING'       => "Y",
                         'IS_RETURN_CUSTOMER' => "Y",
                         'OPPORTUNITY'        => 9999.99,
                         'IS_MANUAL_OPPORTUNITY' => "Y",
@@ -317,7 +317,7 @@ For example, the field `PARENT_ID_153` — relationship with the smart process `
                 TITLE: "New Deal Title!",
                 TYPE_ID: "GOODS",
                 STAGE_ID: "WON",
-                IS_RECURRING: "Y",
+                IS_RECCURING: "Y",
                 IS_RETURN_CUSTOMER: "Y",
                 OPPORTUNITY: 9999.99,
                 IS_MANUAL_OPPORTUNITY: "Y",
@@ -352,7 +352,7 @@ For example, the field `PARENT_ID_153` — relationship with the smart process `
                 'TITLE' => 'New Deal Title!',
                 'TYPE_ID' => 'GOODS',
                 'STAGE_ID' => 'WON',
-                'IS_RECURRING' => 'Y',
+                'IS_RECCURING' => 'Y',
                 'IS_RETURN_CUSTOMER' => 'Y',
                 'OPPORTUNITY' => 9999.99,
                 'IS_MANUAL_OPPORTUNITY' => 'Y',
@@ -382,7 +382,7 @@ Use the methods [crm.deal.contact.*](./contacts/index.md) for working with a sin
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -405,14 +405,14 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../data-types.md) | Root element of the response, contains `true` in case of success ||
+[`boolean`](../../data-types.md) | The root element of the response, contains `true` in case of success ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {

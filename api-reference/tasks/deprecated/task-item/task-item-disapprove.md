@@ -1,14 +1,14 @@
-# Translate a task awaiting control to the "not completed" status task.item.disapprove
+# Change the pending control task status to "not completed" task.item.disapprove
 
 > Scope: [`task`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-The method changes the status of a task awaiting control to "not completed".
+This method changes the status of a pending control task to "not completed."
 
-{% note warning %}
+{% note warning "DEPRECATED" %}
 
-The method is deprecated and not supported. It is recommended to use the methods [tasks.task.*](../../index.md).
+Development of this method has been halted. Please use [tasks.task.disapprove](../../tasks-task-disapprove.md).
 
 {% endnote %}
 
@@ -21,7 +21,7 @@ The method is deprecated and not supported. It is recommended to use the methods
 
 ## Code Examples
 
-{% include [Examples note](../../../../_includes/examples.md) %}
+{% include [Examples Note](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 

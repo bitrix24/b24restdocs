@@ -1,6 +1,6 @@
 # Add Task tasks.task.add
 
-> Scope: [`task`](../../scopes/permissions.md)
+> Scope: [`tasks`](../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
@@ -29,10 +29,10 @@ The method `tasks.task.add` adds a new task.
 [`string`](../../data-types.md) | Task title ||
 || **creatorId***
 [`integer`](../../data-types.md)  | Creator's identifier. 
-The employee identifier can be obtained using the [user.get](../../user/user-get.md) method. ||
+You can obtain the employee identifier using the [user.get](../../user/user-get.md) method. ||
 || **responsibleId***
 [`integer`](../../data-types.md)  | Executor's identifier.
-The employee identifier can be obtained using the [user.get](../../user/user-get.md) method. ||
+You can obtain the employee identifier using the [user.get](../../user/user-get.md) method. ||
 |#
 
 {% note info "" %}
@@ -47,7 +47,7 @@ The employee identifier can be obtained using the [user.get](../../user/user-get
 
 {% note info "" %}
 
-The call to the new API differs by adding the parameter `/api/` in the request:
+The call to the new API differs by the addition of the `/api/` parameter in the request:
 
 `https://{installation_address}/rest/api/{user_id}/{webhook_token}/tasks.task.add`
 
@@ -337,7 +337,6 @@ HTTP Status: **200**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
-
 ## Error Handling
 
 HTTP Status: **400**
@@ -346,10 +345,10 @@ HTTP Status: **400**
 {
     "error": {
         "code": "BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION",
-        "message": "Error validating the request object",
+        "message": "Error during request object validation",
         "validation": [
             {
-                "message": "The `deadline` field requires a `DateTime` data type for this request",
+                "message": "Field `deadline` requires data type `DateTime` for this request",
                 "field": "deadline"
             }
         ]
@@ -371,12 +370,12 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION`
 `responsibleId`
 `creatorId`
 `fields` | Required field `#FIELD#` is missing | Add the specified field to the request body ||
-|| `#FIELD#` | The `#FIELD#` field requires a data type of `#TYPE#` for this request | Ensure that the provided value is of the correct type ||
-|| `responsibleId` | The user specified in the "Executor" field was not found | Specify the identifier of an existing user in the `responsibleId` field ||
-|| `creatorId` | "" | Specify the identifier of an existing user in the `creatorId` field ||
-|| `parentId` | The task specified in the "Parent Task" field was not found | Specify the identifier of an existing task in the `parentId` field ||
-|| `endPlan` | The end date in the scheduling is earlier than the start date | Specify an `endPlan` date later than `startPlan` ||
-|| `endPlan` | The scheduling indicates a task duration that is too long | Reduce the date in the `endPlan` field ||
+|| `#FIELD#` | Field `#FIELD#` requires data type `#TYPE#` for this request | Ensure the provided value is of the correct type ||
+|| `responsibleId` | User specified in the "Executor" field not found | Provide the identifier of an existing user in the `responsibleId` field ||
+|| `creatorId` | "" | Provide the identifier of an existing user in the `creatorId` field ||
+|| `parentId` | Task specified in the "Parent Task" field not found | Provide the identifier of an existing task in the `parentId` field ||
+|| `endPlan` | The end date specified in the planning is earlier than the start date | Provide an `endPlan` date later than `startPlan` ||
+|| `endPlan` | The planning duration specified is too long | Reduce the date in the `endPlan` field ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

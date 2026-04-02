@@ -2,11 +2,11 @@
 
 > Scope: [`crm`](../../scopes/permissions.md)
 >
-> Who can execute the method: user with "delete" access permission for estimates
+> Who can execute the method: a user with "delete" access permission for estimates
 
-{% note warning "Method development halted" %}
+{% note warning "DEPRECATED" %}
 
-The method `crm.quote.delete` continues to function, but there is a more relevant alternative: [crm.item.delete](../universal/crm-item-delete.md).
+The development of this method has been halted. Please use [crm.item.delete](../universal/crm-item-delete.md).
 
 {% endnote %}
 
@@ -14,7 +14,7 @@ The method `crm.quote.delete` removes an estimate.
 
 ## Method Parameters
 
-{% include [Footnote on parameters](../../../_includes/required.md) %}
+{% include [Note on parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -27,7 +27,7 @@ The identifier can be obtained using the methods [crm.quote.list](./crm-quote-li
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 Example of deleting an estimate with `id = 43`.
 
@@ -147,8 +147,8 @@ HTTP Status: **200**
         "finish": 1773414644.363449,
         "duration": 0.3634490966796875,
         "processing": 0,
-        "date_start": "2026-03-13T18:10:44+02:00",
-        "date_finish": "2026-03-13T18:10:44+02:00",
+        "date_start": "2026-03-13T18:10:44+01:00",
+        "date_finish": "2026-03-13T18:10:44+01:00",
         "operating_reset_at": 1773415244,
         "operating": 0.2564728260040283
     }
@@ -163,7 +163,7 @@ HTTP Status: **200**
 || **result**
 [`boolean`](../data-types.md) | Root element of the response, returns `true` on success ||
 || **time**
-[`time`](../data-types.md#time) | Information about the execution time of the request ||
+[`time`](../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -183,9 +183,9 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `-` | `ID is not defined or invalid.` | Invalid `id` provided ||
-|| `-` | `Access denied.` | User does not have permission to delete estimates ||
-|| `ERROR_CORE` | `Element not found` | Estimate with the provided `id` not found ||
+|| `-` | `ID is not defined or invalid.` | An incorrect `id` was provided ||
+|| `-` | `Access denied.` | The user does not have permission to delete estimates ||
+|| `ERROR_CORE` | `Element not found` | The estimate with the provided `id` was not found ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

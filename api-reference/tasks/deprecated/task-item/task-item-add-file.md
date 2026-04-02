@@ -1,10 +1,16 @@
-# Upload a file to the task task.item.addfile
+# Upload File to Task task.item.addfile
 
 > Scope: [`task`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-This method uploads a file to a task. Currently, file upload is implemented via `post` with the file content passed in the `CONTENT` parameter.
+{% note warning "DEPRECATED" %}
+
+The development of this method has been halted. Please use [tasks.task.files.attach](../../tasks-task-files-attach.md).
+
+{% endnote %}
+
+This method uploads a file to a task. Currently, file upload is implemented via `post`, with the file content passed in the `CONTENT` parameter.
 
 ## Method Parameters
 
@@ -19,7 +25,7 @@ This method uploads a file to a task. Currently, file upload is implemented via 
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../../_includes/examples.md) %}
+{% include [Examples Note](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 

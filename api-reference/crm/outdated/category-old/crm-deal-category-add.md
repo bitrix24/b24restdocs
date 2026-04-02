@@ -1,34 +1,34 @@
-# Create a new deal category crm.dealcategory.add
+# Create a New Deal Direction crm.dealcategory.add
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-{% note warning %}
+{% note warning "DEPRECATED" %}
 
-The method is deprecated. It is recommended to use [`crm.category.add`](../../universal/category/crm-category-add.md)
+Development of this method has been halted. Please use [crm.category.add](../../universal/category/crm-category-add.md).
 
 {% endnote %}
 
-The method creates a new deal category.
+This method creates a new deal direction.
 
-## Method parameters
+## Method Parameters
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **fields**
-[`array`](../../../data-types.md) | Field values for creating a deal category.
+[`array`](../../../data-types.md) | Field values for creating a deal direction.
 
-To find out the required format of the fields, execute the method [`crm.dealcategory.fields`](./crm-deal-category-fields.md) and check the format of the returned values for these fields
+To find out the required format for the fields, execute the method [`crm.dealcategory.fields`](./crm-deal-category-fields.md) and check the format of the returned field values.
 ||
 |#
 
-## Code examples
+## Code Examples
 
-{% include [Note on examples](../../../../_includes/examples.md) %}
+{% include [Note on Examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -38,7 +38,7 @@ To find out the required format of the fields, execute the method [`crm.dealcate
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"NAME":"New Category","SORT":"20"}}' \
+    -d '{"fields":{"NAME":"New Direction","SORT":"20"}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.dealcategory.add
     ```
 
@@ -48,7 +48,7 @@ To find out the required format of the fields, execute the method [`crm.dealcate
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"NAME":"New Category","SORT":"20"},"auth":"**put_access_token_here**"}' \
+    -d '{"fields":{"NAME":"New Direction","SORT":"20"},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/crm.dealcategory.add
     ```
 
@@ -57,23 +57,23 @@ To find out the required format of the fields, execute the method [`crm.dealcate
     ```js
     try
     {
-    	const response = await $b24.callMethod(
-    		'crm.dealcategory.add',
-    		{
-    			fields:
-    			{
-    				"NAME": "New Category",
-    				"SORT": "20"
-    			}
-    		}
-    	);
-    	
-    	const result = response.getData().result;
-    	console.info('Created category with ID ' + result);
+        const response = await $b24.callMethod(
+            'crm.dealcategory.add',
+            {
+                fields:
+                {
+                    "NAME": "New Direction",
+                    "SORT": "20"
+                }
+            }
+        );
+        
+        const result = response.getData().result;
+        console.info('Created direction with ID ' + result);
     }
     catch( error )
     {
-    	console.error('Error:', error);
+        console.error('Error:', error);
     }
     ```
 
@@ -87,7 +87,7 @@ To find out the required format of the fields, execute the method [`crm.dealcate
                 'crm.dealcategory.add',
                 [
                     'fields' => [
-                        'NAME' => 'New Category',
+                        'NAME' => 'New Direction',
                         'SORT' => '20',
                     ],
                 ]
@@ -100,7 +100,7 @@ To find out the required format of the fields, execute the method [`crm.dealcate
         if ($result->error()) {
             error_log($result->error());
         } else {
-            echo 'Created category with ID ' . $result->data();
+            echo 'Created direction with ID ' . $result->data();
         }
     
     } catch (Throwable $e) {
@@ -117,7 +117,7 @@ To find out the required format of the fields, execute the method [`crm.dealcate
         {
             fields:
             {
-                "NAME": "New Category",
+                "NAME": "New Direction",
                 "SORT": "20"
             }
         },
@@ -126,7 +126,7 @@ To find out the required format of the fields, execute the method [`crm.dealcate
             if(result.error())
                 console.error(result.error());
             else
-                console.info("Created category with ID " + result.data());
+                console.info("Created direction with ID " + result.data());
         }
     );
     ```
@@ -141,7 +141,7 @@ To find out the required format of the fields, execute the method [`crm.dealcate
         [
             'fields' =>
             [
-                'NAME' => 'New Category',
+                'NAME' => 'New Direction',
                 'SORT' => '20'
             ]
         ]

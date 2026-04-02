@@ -1,21 +1,21 @@
 # Tools for Local Integrations
 
-Local integrations are software solutions that are created and configured for a specific Bitrix24. Unlike cloud applications from the Marketplace, local tools are designed for internal company tasks and can be tailored to specific business processes.
+Local integrations are software solutions that are created and configured for a specific Bitrix24 instance. Unlike cloud applications from the Marketplace, local tools are designed for internal company tasks and can be tailored to specific business workflows.
 
 {% note tip "" %}
 
-If you are developing integrations for Bitrix24 using AI tools (ChatGPT, Claude, Copilot), connect to the [MCP server](../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
 
 {% endnote %}
 
-## Typical use-cases and scenarios
+## Typical Tasks for Local Integrations
 
 Use local tools to address the following tasks:
 
-- importing data into CRM or other Bitrix24 tools
-- integration with internal systems
-- simple automation related to bulk processing of customer data
-- embedding custom elements into the Bitrix24 interface
+- Importing data into CRM or other Bitrix24 tools
+- Integration with internal systems
+- Simple automation related to bulk processing of customer data
+- Embedding custom elements into the Bitrix24 interface
 
 {% note tip  "" %}
 
@@ -37,28 +37,28 @@ To use outgoing webhooks in the on-premise version of Bitrix24, an active licens
 
 [Local applications](./local-apps.md) allow you to:
 
-- create a custom interface
-- perform server-side processing
-- subscribe to events
-- configure access permissions
+- Create a custom interface
+- Perform server-side processing
+- Subscribe to events
+- Configure access permissions
   
 There are three types of local applications:
 
-- [Static application](./static-local-app.md) — runs in the browser on HTML/JS, does not require its own server, and is displayed as a separate page in the Bitrix24 interface.
-- [Server-side application with interface](./serverside-local-app-with-ui.md) — code runs on your server, displayed as a page or embedded widget within Bitrix24.
-- [Server-side application without interface](./serverside-local-app-with-no-ui.md) — runs in the background on your server, not displayed in the interface, suitable for automated tasks and synchronization.
+- [Static application](./static-local-app.md) — runs in the browser using HTML/JS, does not require its own server, and is displayed as a separate page in the Bitrix24 interface.
+- [Server-side application with interface](./serverside-local-app-with-ui.md) — code runs on your server and is displayed as a page or an embedded widget within Bitrix24.
+- [Server-side application without interface](./serverside-local-app-with-no-ui.md) — runs in the background on your server, is not displayed in the interface, and is suitable for automated tasks and synchronization.
 
 {% note tip  "" %}
 
-[How to fix the error "The site does not allow connection" when opening the application](./site-does-not-allow-connection.md)
+[How to fix the "Site does not allow connection" error when opening the application](./site-does-not-allow-connection.md)
 
 {% endnote %}
 
-## Developer's area
+## Developer Resources
 
-The [Developer's area](./developers-area.md) contains tools to simplify working with local integrations. You can access this section through the left menu of Bitrix24 by navigating to *Applications > Developer's area*.
+The [Developer resources](./developers-area.md) section contains tools to simplify working with local integrations. You can access this section through the left menu in Bitrix24 by navigating to *Applications > Developer resources*.
 
-### Ready-made scenarios
+### Ready-made Scenarios
 
 Templates for typical tasks with code examples and pre-set parameters based on webhooks and local applications.
 
@@ -68,7 +68,7 @@ A list of all created webhooks and applications with information about access pe
 
 ### Statistics
 
-A graph of the total number of requests and details for each integration. Helps monitor load and debug operations.
+A graph showing the total number of requests and details for each integration. This helps monitor load and debug operations.
 
 {% note tip  "" %}
 

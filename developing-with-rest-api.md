@@ -10,7 +10,7 @@ With the REST API, you can:
 
 {% note tip "" %}
 
-If you are developing integrations for Bitrix24 using AI tools (ChatGPT, Claude, Copilot), connect to the [MCP server](./sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect the [MCP server](./sdk/mcp.md) so the assistant can utilize the official REST documentation.
 
 {% endnote %}
 
@@ -22,9 +22,9 @@ Add your own automation tools to Bitrix24: Automation rules, triggers, workflows
 
 ### Automation Rules and Triggers in CRM
 
-[Automation rules](./api-reference/bizproc/bizproc-robot/index.md) perform routine actions: sending e-mails, creating documents, and changing company or contact details.
+[Automation rules](./api-reference/bizproc/bizproc-robot/index.md) perform routine actions: sending e-mails, creating documents, changing company or contact details.
 
-[Triggers](./api-reference/crm/automation/index.md) monitor client actions and activate automation rules. For example, a trigger will move a deal to the next stage immediately after payment is made through an external service.
+[Triggers](./api-reference/crm/automation/index.md) monitor client actions and activate automation rules. For example, a trigger can move a deal to the next stage immediately after payment is made through an external service.
 
 ## Workflows
 
@@ -38,13 +38,13 @@ Developers link these processes with external systems, such as time tracking or 
 
 Scripts operate within deals, leads, invoices, contacts, and companies. For instance, a script analyzes client behavior on the website and sends personalized offers.
 
-Developers can add their own automation rules and use them in Smart scripts.
+Developers can add their own automation rules and use them in smart scripts.
 
 ### Event Handlers
 
 [Event handlers](./api-reference/events/index.md) respond to actions in Bitrix24: adding a contact, changing data in a deal.
 
-This allows developers to create integrations with external services: analytics, email marketing, ERP systems. Integrations update data, notify employees of events, and synchronize information between platforms.
+This allows developers to create integrations with external services: analytics, e-mail marketing, ERP systems. Integrations update data, notify employees of events, and synchronize information between platforms.
 
 ## Communication with Clients and Employees
 
@@ -54,19 +54,19 @@ Integrate chatbots, messenger connectors, SMS providers, and telephony into Bitr
 
 [Chatbots](./api-reference/chat-bots/index.md) operate in both internal and external communications. They answer frequently asked questions, conduct surveys, gather information, and relay it to operators.
 
-Within the company, chatbots assist employees in finding information in knowledge bases, reminding them of tasks and events.
+Within the company, chatbots assist employees in finding information in knowledge bases and remind them of tasks and events.
 
 ### Open Channels Connectors
 
-Messages from Telegram, WhatsApp, Facebook Messenger come into Bitrix24 through [Open Channels connectors](./api-reference/imopenlines/imconnector/index.md). This increases client engagement and ensures requests are not lost.
+Messages from Telegram, WhatsApp, and Facebook Messenger come into Bitrix24 through [Open Channels connectors](./api-reference/imopenlines/imconnector/index.md). This increases client engagement and prevents requests from being lost.
 
 ### SMS Providers
 
-[Providers](./api-reference/messageservice/index.md) send SMS from Bitrix24: notifications about order status, reminders about events, advertisements. This works where there is no internet.
+[Providers](./api-reference/messageservice/index.md) send SMS from Bitrix24: notifications about order status, reminders about events, advertisements. This works in areas without internet access.
 
 ### Telephony
 
-Integration with [telephony](./api-reference/telephony/index.md) automates calls, records conversations, tracks statistics, and creates deals or tasks based on incoming calls. This improves service and enhances sales efficiency.
+Integration with [telephony](./api-reference/telephony/index.md) automates calls, records conversations, tracks statistics, and creates deals or tasks based on incoming calls. This enhances service and boosts sales efficiency.
 
 ## Business Content
 
@@ -90,7 +90,7 @@ Ready-made online stores enable online commerce without technical complexities. 
 
 ## Integrations with Payment Systems, Delivery Services, and Online Cash Registers
 
-Integrations facilitate payment for goods and services, simplify logistics and delivery, and ensure accounting and control of financial operations in accordance with legislation.
+Integrations facilitate payment for goods and services, simplify logistics and delivery, and ensure accounting and control of financial operations in compliance with legislation.
 
 ### Integrations with Payment Systems
 
@@ -99,6 +99,12 @@ Clients can pay for purchases using a convenient [payment method](./api-referenc
 ### Integrations with Delivery Services
 
 Integration with [delivery services](./api-reference/sale/delivery/index.md) calculates delivery costs, tracks packages, and manages orders. This improves service and optimizes logistics.
+
+### Integrations with Online Cash Registers
+
+[Online cash registers](./api-reference/sale/cashbox/index.md) track sales and transmit transaction data to tax authorities — a legal requirement in many countries. Integration automates receipt issuance, sales accounting, and financial reporting.
+
+Developers create applications and services that enhance operational efficiency for businesses.
 
 ## Widgets
 
@@ -110,14 +116,14 @@ Widgets in CRM display additional information about clients: recent purchases, p
 
 ### Analytics
 
-Analytical widgets provide data for decision-making: key performance indicators, sales reports, website traffic analytics, and advertising campaign effectiveness — all within the Bitrix24 interface.
+Analytical widgets provide data for decision-making: key performance indicators, sales reports, website traffic analytics, advertising campaign effectiveness — all within the Bitrix24 interface.
 
 ### Dashboards
 
-Developers create dashboards for tracking projects, tasks, finances — any aspect of the business that requires monitoring.
+Developers create dashboards to track projects, tasks, finances — any aspect of the business that requires monitoring.
 
 ### External Services
 
-Widgets integrate external services: email, calendar, time tracking. Data is synchronized, and processes are managed from a single interface.
+Widgets integrate external services: e-mail, calendar, time tracking. Data is synchronized, and processes are managed from a single interface.
 
 Built-in solutions personalize the workspace for companies. Developers who understand business needs create in-demand applications.  

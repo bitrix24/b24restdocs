@@ -4,7 +4,13 @@
 >
 > Who can execute the method: any user
 
-The method retrieves information about a stage by `id`.
+{% note warning "DEPRECATED" %}
+
+The development of this method has been halted. Use [Smart scripts](../../../crm/universal/user-defined-object-types/index.md) as an alternative to this functionality.
+
+{% endnote %}
+
+This method retrieves information about a stage by its `id`.
 
 ## Stage Parameters
 
@@ -43,7 +49,7 @@ HTTP status: **200**
                 {
                     "id": "U1",
                     "entityId": 1,
-                    "name": "Anthony",
+                    "name": "Anton",
                     "photoSrc": "",
                     "url": "\/company\/personal\/user\/1\/",
                     "entityType": "users"
@@ -51,7 +57,7 @@ HTTP status: **200**
                 {
                     "id": "U4",
                     "entityId": 4,
-                    "name": "Peter",
+                    "name": "Piter",
                     "photoSrc": "",
                     "url": "\/company\/personal\/user\/4\/",
                     "entityType": "users"
@@ -78,9 +84,9 @@ HTTP status: **200**
 || **sort** | Sorting index ||
 || **semantic** | Semantic code of the stage. Can be either `SUCCESS` or `FAIL` ||
 || **typeId** | Identifier of the process ||
-|| **isFirst** | Calculated field. Returns `true` if this is the first stage of the process ||
-|| **isSuccess** | Calculated field. Returns `true` if this stage is successful ||
-|| **isFail** | Calculated field. Returns `true` if this stage is a failure ||
+|| **isFirst** | Computed field. Returns `true` if this is the first stage of the process ||
+|| **isSuccess** | Computed field. Returns `true` if this stage is successful ||
+|| **isFail** | Computed field. Returns `true` if this stage has failed ||
 || **tasks** | Array of tasks for the stage. Each entry has the following structure:
 - `title` — title of the task
 - `robotType` — type of the task. Can take one of the following values:
@@ -89,15 +95,15 @@ HTTP status: **200**
   - `RpaRequestActivity` — request information
   - `RpaReviewActivity` — review information
 - `robotName` — name of the activity
-- `users` — array of participants in the task for rendering in the kanban at the stage ||
-|| **robotsCount** | Calculated field. Number of robots at the stage ||
-|| **possibleNextStages** | Array of identifiers of stages to which the item can be moved. Not used ||
-|| **permissions** | Set of permissions for the kanban:
+- `users` — array of participants for the task to be displayed in the kanban at the stage ||
+|| **robotsCount** | computed field. Number of robots at the stage ||
+|| **possibleNextStages** | array of identifiers of stages to which the item can be moved. Not used ||
+|| **permissions** | set of permissions for the kanban:
 - `droppable` — items can be moved to this stage
 - `canMoveFrom` — items can be moved from this stage ||
 |#
 
-## Continue Exploring 
+## Continue Learning 
 
 - [{#T}](./index.md)
 - [{#T}](./rpa-stage-add.md)

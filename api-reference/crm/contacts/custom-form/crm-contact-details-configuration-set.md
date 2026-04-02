@@ -1,22 +1,22 @@
-# Set Parameters for Individual Card crm.contact.details.configuration.set
+# Set Parameters for the Individual Card crm.contact.details.configuration.set
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 > 
 > Who can execute the method:
->  - Any user has the right to retrieve their own and common settings
->  - Only an administrator has the right to retrieve others' settings
+>  - Any user has the right to access their own and shared settings
+>  - Only an administrator has the right to access others' settings
 
-{% note warning "Method Development Stopped" %}
+{% note warning "DEPRECATED" %}
 
-The method `crm.contact.details.configuration.set` continues to function, but there is a more relevant alternative [crm.item.details.configuration.set](../../universal/item-details-configuration/crm-item-details-configuration-set.md).
+The development of this method has been halted. Please use [crm.item.details.configuration.set](../../universal/item-details-configuration/crm-item-details-configuration-set.md).
 
 {% endnote %}
 
-The method sets the contact card settings: it writes personal settings for the specified user or common settings for all users.
+This method sets the contact card settings: it writes personal settings for the specified user or shared settings for all users.
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -26,26 +26,26 @@ The method sets the contact card settings: it writes personal settings for the s
 
 Possible values:
 - **P** — personal settings
-- **C** — common settings
+- **C** — shared settings
 
 Default — `P`
 ||
 || **userId**
 [`user`](../../../data-types.md) | User identifier. Required only when setting personal settings.
 
-If not specified — takes the `id` of the current user
+If not specified, the `id` of the current user is used
 ||
 || **data***
-[`section[]`](#section) | The list `section` describes the configuration of the field sections in the item card.
+[`section[]`](#section) | The list of `section` describes the configuration of field sections in the item card.
 
 The structure is described [below](#section) ||
 |#
 
 ### section
 
-Describes a specific section with fields within the contact card.
+Describes an individual section with fields within the contact card.
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -68,9 +68,9 @@ The structure is described [below](#section_element) ||
 
 #### section_element
 
-Configuration of a specific field within the section.
+Configuration of an individual field within the section.
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -78,9 +78,9 @@ Configuration of a specific field within the section.
 || **name***
 [`string`](../../../data-types.md) | Field identifier.
 
-The list of available fields can be found using [`crm.contact.fields`](../crm-contact-fields.md) ||
+The list of available fields can be obtained using [`crm.contact.fields`](../crm-contact-fields.md) ||
 || **optionFlags**
-[`integer`](../../../data-types.md) | Whether to always show the field:
+[`integer`](../../../data-types.md) | Should the field always be displayed:
 - `1` — yes
 - `0` — no
 
@@ -95,7 +95,7 @@ Default — `0` ||
 || **Name**
 `type` | **Fields where the option is available** | **Description** ||
 || **defaultAddressType**
-[`integer`](../../../data-types.md) | `ADDRESS` | Identifier of the default address type. To find possible address types, use [`crm.enum.addresstype`](../../auxiliary/enum/crm-enum-address-type.md) ||
+[`integer`](../../../data-types.md) | `ADDRESS` | Identifier for the default address type. To find possible address types, use [`crm.enum.addresstype`](../../auxiliary/enum/crm-enum-address-type.md) ||
 || **defaultCountry**
 [`string`](../../../data-types.md) | 
 `PHONE`
@@ -104,29 +104,30 @@ Default — `0` ||
 `CONTACT`
 `MYCOMPANY_ID` | Country code for the default phone number format — a string of two Latin letters.
 
-For example, `"GB"` ||
+For example, `"DE"` ||
 || **isPayButtonVisible**
-[`boolean`](../../../data-types.md) | `OPPORTUNITY_WITH_CURRENCY` | Whether the payment acceptance button is shown.
+[`boolean`](../../../data-types.md) | `OPPORTUNITY_WITH_CURRENCY` | Whether the payment acceptance button is displayed.
 
 Possible values:
-- `'true'` — shown
+- `'true'` — displayed
 - `'false'` — hidden
 
 Default — `true` ||
 || **isPaymentDocumentsVisible**
-[`boolean`](../../../data-types.md) | `OPPORTUNITY_WITH_CURRENCY` | Whether the "Payment and Delivery" block is shown.
+[`boolean`](../../../data-types.md) | `OPPORTUNITY_WITH_CURRENCY` | Whether the "Payment and Delivery" block is displayed.
 
 Possible values:
-- `'true'` — shown
+- `'true'` — displayed
 - `'false'` — hidden
 
 Default — `true`
 ||
 |#
 
+
 ## Code Examples
 
-{% include [Note on examples](../../../../_includes/examples.md) %}
+{% include [Note on Examples](../../../../_includes/examples.md) %}
 
 For the user with `id = 1`, set the following configuration for the contact item card:
 
@@ -176,6 +177,7 @@ For the user with `id = 1`, set the following configuration for the contact item
     ```
 
 - JS
+
 
     ```js
     try
@@ -258,6 +260,7 @@ For the user with `id = 1`, set the following configuration for the contact item
 
 - PHP
 
+
     ```php
     try {
         $response = $b24Service
@@ -334,7 +337,7 @@ For the user with `id = 1`, set the following configuration for the contact item
             echo 'Error: ' . $response->getError();
         } else {
             echo 'Success: ' . print_r($result, true);
-            // Your logic for processing data
+            // Your data processing logic here
             processData($result);
         }
     
@@ -520,11 +523,11 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../../data-types.md) | Root element of the response.
+[`boolean`](../../../data-types.md) | The root element of the response.
 
 Returns `true` on success ||
 || **time**
-[`time`](../../../data-types.md#time) | Information about the execution time of the request ||
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -538,23 +541,23 @@ HTTP Status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../../_includes/error-info.md) %}
+{% include notitle [Error Handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
 || **Code** | **Description** | **Value** ||
-|| Empty value | Access denied. | The user does not have administrative rights ||
-|| Empty value | Parameter 'data' must be array. | A non-array was passed in `data` ||
-|| Empty value | The data must be indexed array. | A non-indexed array was passed in `data` ||
-|| Empty value | There are no data to write. | An empty array was passed in `data` ||
-|| Empty value | Section at index `i` has type `data[i].type`. The expected type is 'section'. | The value in `data[i].type` is different from `'section'` ||
-|| Empty value | Section at index `i` does not have name. | An empty value was passed in `data[i].name` ||
-|| Empty value | Section at index `i` does not have title. | An empty value was passed in `data[i].title` ||
-|| Empty value | Element at index `j` in section at index `i` does not have name. | An empty value was passed in `data[i].elements[j].name` ||
+|| Empty Value | Access denied. | The user does not have administrative rights ||
+|| Empty Value | Parameter 'data' must be array. | A non-array was passed in `data` ||
+|| Empty Value | The data must be indexed array. | A non-indexed array was passed in `data` ||
+|| Empty Value | There are no data to write. | An empty array was passed in `data` ||
+|| Empty Value | Section at index `i` has type `data[i].type`. The expected type is 'section'. | A value other than `'section'` is found in `data[i].type` ||
+|| Empty Value | Section at index `i` does not have name. | An empty value was passed in `data[i].name` ||
+|| Empty Value | Section at index `i` does not have title. | An empty value was passed in `data[i].title` ||
+|| Empty Value | Element at index `j` in section at index `i` does not have name. | An empty value was passed in `data[i].elements[j].name` ||
 |#
 
-{% include [system errors](./../../../../_includes/system-errors.md) %}
+{% include [System Errors](./../../../../_includes/system-errors.md) %}
 
 ## Continue Learning 
 

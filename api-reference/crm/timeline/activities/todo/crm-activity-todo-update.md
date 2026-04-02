@@ -34,7 +34,6 @@ The method `crm.activity.todo.update` updates a universal deal.
 || **colorId**
 [`string`](../../../../data-types.md) | Identifier of the deal's color in the timeline, for example `1`. There are 8 colors available, values from 1 to 7 and a default color if none is specified:
 
-![Available colors](./_images/colors.png)
 
 ||
 |#

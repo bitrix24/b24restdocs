@@ -1,28 +1,28 @@
-# Translate task to "in progress" status task.item.startexecution
+# Move Task to "In Progress" Status task.item.startexecution
 
 > Scope: [`task`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-This method changes the task status to "in progress".
+This method changes the status of a task to "In Progress".
 
-{% note warning %}
+{% note warning "DEPRECATED" %}
 
-The method is deprecated and not supported. It is recommended to use the methods [tasks.task.*](../../index.md).
+Development of this method has been halted. Please use [tasks.task.start](../../tasks-task-start.md).
 
 {% endnote %}
 
 
-## Method parameters
+## Method Parameters
 
 #|
 || **Name** | **Description** ||
 || **TASKID** | Task identifier ||
 |#
 
-## Code examples
+## Code Examples
 
-{% include [Note about examples](../../../../_includes/examples.md) %}
+{% include [Examples Note](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 

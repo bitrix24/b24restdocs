@@ -4,11 +4,17 @@
 >
 > Who can execute the method: any user
 
-The method returns the change history of a task.
+{% note warning "DEPRECATED" %}
+
+The development of this method has been halted. Please use [tasks.task.history.list](../../tasks-task-history-list.md).
+
+{% endnote %}
+
+This method returns the history of changes for a task.
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name** | **Description** ||
@@ -17,7 +23,7 @@ The method returns the change history of a task.
 
 ## Code Examples
 
-{% include [Note on examples](../../../../_includes/examples.md) %}
+{% include [Note on Examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -44,7 +50,7 @@ The method returns the change history of a task.
 - JS
 
     ```js
-    // callListMethod: Retrieves all data at once. Use only for small selections (< 1000 items) due to high memory usage.
+    // callListMethod: Retrieves all data at once. Use only for small datasets (< 1000 items) due to high memory load.
     
     try {
       const response = await $b24.callListMethod(
@@ -58,7 +64,7 @@ The method returns the change history of a task.
       console.error('Request failed', error)
     }
     
-    // fetchListMethod: Retrieves data in parts using an iterator. Use it for large data volumes to optimize memory usage.
+    // fetchListMethod: Retrieves data in chunks using an iterator. Use for large datasets for efficient memory consumption.
     
     try {
       const generator = $b24.fetchListMethod('task.logitem.list', [1205], 'ID')
@@ -69,7 +75,7 @@ The method returns the change history of a task.
       console.error('Request failed', error)
     }
     
-    // callMethod: Manually controls pagination through the start parameter. Use it for precise control of request batches. For large datasets, it is less efficient than fetchListMethod.
+    // callMethod: Manually controls pagination through the start parameter. Use for precise control over request batches. Less efficient for large data than fetchListMethod.
     
     try {
       const response = await $b24.callMethod('task.logitem.list', [1205], 0)
@@ -137,7 +143,7 @@ The method returns the change history of a task.
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 Array
@@ -187,4 +193,3 @@ Array
         )
 )
 ```
-

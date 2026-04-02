@@ -1,76 +1,66 @@
-# Get the values of the product property feature parameter or variations catalog.productPropertyFeature.get
-
-{% note warning "We are still updating this page" %}
-
-Some data may be missing here — we will fill it in shortly.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- the requirement for parameters is not specified
-- no response in case of an error
-- no examples in other languages
-  
-{% endnote %}
-
-{% endif %}
+# Get Product Property Feature Parameter or Variations catalog.productPropertyFeature.get
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: a user with the "View Product Catalog" access permission
 
-## Description
+The method `catalog.productPropertyFeature.get` returns the product property feature parameter or variation by its identifier.
 
-```http
-catalog.productPropertyFeature.get(id)
-```
+## Method Parameters
 
-Method to access the value of the product property feature or variations by ID.
-
-## Parameters
+{% include [Footnote on required parameters](../../../_includes/required.md) %}
 
 #|
-|| **Parameter** | **Description** ||
-|| **id** 
-[`integer`](../../data-types.md)| Identifier of the product property feature or variations ||
+|| **Name**
+`type` | **Description** ||
+|| **id***
+[`integer`](../../data-types.md) | Identifier of the property parameter.
+
+The parameter identifier can be obtained using the [catalog.productPropertyFeature.list](./catalog-product-property-feature-list.md) method ||
 |#
 
-{% include [Footnote about parameters](../../../_includes/required.md) %}
+## Code Examples
 
-## Examples
+{% include [Footnote on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+      -H "Content-Type: application/json" \
+      -H "Accept: application/json" \
+      -d '{"id":101}' \
+      https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/catalog.productPropertyFeature.get
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+      -H "Content-Type: application/json" \
+      -H "Accept: application/json" \
+      -d '{"id":101,"auth":"**put_access_token_here**"}' \
+      https://**put_your_bitrix24_address**/rest/catalog.productPropertyFeature.get
+    ```
+
 - JS
 
-
     ```js
-    try
-    {
-    	const response = await $b24.callMethod(
-    		'catalog.productPropertyFeature.get',
-    		{
-    			id: 144
-    		}
-    	);
-    	
-    	const result = response.getData().result;
-    	if(result.error())
-    		console.error(result.error().ex);
-    	else
-    		console.log(result);
+    try {
+        const response = await $b24.callMethod('catalog.productPropertyFeature.get', {
+            id: 101
+        });
+
+        console.log(response.getData().result);
     }
-    catch(error)
-    {
-    	console.error('Error:', error);
+    catch (error) {
+        console.error('Error:', error);
     }
     ```
 
 - PHP
-
 
     ```php
     try {
@@ -79,23 +69,13 @@ Method to access the value of the product property feature or variations by ID.
             ->call(
                 'catalog.productPropertyFeature.get',
                 [
-                    'id' => 144
+                    'id' => 101,
                 ]
             );
-    
-        $result = $response
-            ->getResponseData()
-            ->getResult();
-    
-        if ($result->error()) {
-            error_log($result->error()->ex);
-        } else {
-            echo 'Success: ' . print_r($result->data(), true);
-        }
-    
-    } catch (Throwable $e) {
-        error_log($e->getMessage());
-        echo 'Error getting product property feature: ' . $e->getMessage();
+
+        print_r($response->getResponseData()->getResult());
+    } catch (\Throwable $exception) {
+        echo $exception->getMessage();
     }
     ```
 
@@ -105,18 +85,104 @@ Method to access the value of the product property feature or variations by ID.
     BX24.callMethod(
         'catalog.productPropertyFeature.get',
         {
-            id: 144
+            id: 101
         },
-        function(result)
-        {
-            if(result.error())
-                console.error(result.error().ex);
-            else
+        function(result) {
+            if (result.error()) {
+                console.error(result.error());
+            } else {
                 console.log(result.data());
+            }
         }
     );
     ```
 
+- PHP CRest
+
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'catalog.productPropertyFeature.get',
+        [
+            'id' => 101
+        ]
+    );
+
+    print_r($result);
+    ```
+
 {% endlist %}
 
-{% include [Footnote about examples](../../../_includes/examples.md) %}
+## Response Handling
+
+HTTP Status: **200**
+
+```json
+{
+    "result": {
+        "productPropertyFeature": {
+        "featureId": "LIST_PAGE_SHOW",
+        "id": 101,
+        "isEnabled": "Y",
+        "moduleId": "iblock",
+        "propertyId": 901
+        }
+    },
+    "time": {
+        "start": 1774016738,
+        "finish": 1774016738.424501,
+        "duration": 0.4245009422302246,
+        "processing": 0,
+        "date_start": "2026-03-20T17:25:38+01:00",
+        "date_finish": "2026-03-20T17:25:38+01:00",
+        "operating_reset_at": 1774017338,
+        "operating": 0
+    }
+}
+```
+
+### Returned Data
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`object`](../../data-types.md) | Root object of the response ||
+|| **productPropertyFeature**
+[`catalog_product_property_features`](../data-types.md#catalog_product_property_features) | Object of the property parameter ||
+|| **time**
+[`time`](../../data-types.md#time) | Information about the request execution time ||
+|#
+
+## Error Handling
+
+HTTP Status: **400**
+
+```json
+{
+    "error": "0",
+    "error_description": "productPropertyFeature does not exist."
+}
+```
+
+{% include notitle [error handling](../../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+#|
+|| **Code** | **Description** | **Value** ||
+|| `0` | Access Denied | Insufficient rights to view the product catalog ||
+|| `0` | productPropertyFeature does not exist. | The property parameter with the provided `id` was not found or the value is in an incorrect format ||
+|| `100` | Could not find value for parameter {id} | The required parameter `id` was not provided ||
+|#
+
+{% include [system errors](../../../_includes/system-errors.md) %}
+
+## Continue Learning
+
+- [{#T}](./catalog-product-property-feature-add.md)
+- [{#T}](./catalog-product-property-feature-update.md)
+- [{#T}](./catalog-product-property-feature-list.md)
+- [{#T}](./catalog-product-property-feature-get-available-features-by-property.md)
+- [{#T}](./catalog-product-property-feature-get-fields.md)

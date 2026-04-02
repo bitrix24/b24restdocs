@@ -4,11 +4,17 @@
 >
 > Who can execute the method: any user
 
-The method retrieves the complete set of field visibility settings for the stage with the identifier `stageId` of the process with the identifier `typeId`.
+{% note warning "DEPRECATED" %}
+
+The development of this method has been halted. Use [Smart processes](../../../crm/universal/user-defined-object-types/index.md) as an alternative functionality.
+
+{% endnote %}
+
+This method retrieves the complete set of field visibility settings for the stage with the identifier `stageId` in the process with the identifier `typeId`.
 
 ## Method Parameters
 
-{% include [Footnote on parameters](../../../../_includes/required.md) %}
+{% include [Parameter Note](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -18,12 +24,12 @@ The method retrieves the complete set of field visibility settings for the stage
 || **stageId**  
 [`integer`](../../../data-types.md) | Identifier of the stage.
 
-Defaults to `0`, which means — general settings ||
+Defaults to `0`, which means general settings ||
 |#
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -39,7 +45,7 @@ HTTP status: **200**
 }
 ```
 
-## Continue Exploring 
+## Continue Your Exploration 
 
 - [{#T}](./index.md)
 - [{#T}](./rpa-fields-set-settings.md)

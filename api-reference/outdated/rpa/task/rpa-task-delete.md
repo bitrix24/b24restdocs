@@ -4,7 +4,13 @@
 >
 > Who can execute the method: any user
 
-The method removes the Automation rule named `robotName` from the process with the identifier `typeId` at the stage with the identifier `stageId`.
+{% note warning "DEPRECATED" %}
+
+The development of this method has been halted. Please use [Smart scripts](../../../crm/universal/user-defined-object-types/index.md) as an alternative to this functionality.
+
+{% endnote %}
+
+This method removes the Automation rule named `robotName` from the process with the identifier `typeId` at the stage with the identifier `stageId`.
 
 ## Method Parameters
 

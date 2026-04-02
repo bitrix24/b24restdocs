@@ -1,4 +1,4 @@
-# Update Comment task.commentitem.update
+# Update Comment `task.commentitem.update`
 
 > Scope: [`task`](../../scopes/permissions.md)
 >
@@ -6,9 +6,9 @@
 
 The method `task.commentitem.update` updates a comment.
 
-{% note warning "Method development has been halted since version `tasks 25.700.0` " %}
+{% note warning "DEPRECATED" %}
 
-The method `task.commentitem.update` does not work in the [new task card](../tasks-new.md), use the method [im.message.update](../../chats/messages/im-message-update.md) to work with task chat.
+The development of this method has been halted since version `tasks 25.700.0`. The method `task.commentitem.update` does not work in the [new task card](../tasks-new.md); use the method [im.message.update](../../chats/messages/im-message-update.md) for working with task chat.
 
 {% endnote %}
 
@@ -20,7 +20,7 @@ Pass parameters in the request according to the order in the table. If the order
 
 {% endnote %}
 
-{% include [Footnote on parameters](../../../_includes/required.md) %}
+{% include [Parameter Note](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -28,18 +28,18 @@ Pass parameters in the request according to the order in the table. If the order
 || **TASKID***
 [`integer`](../../data-types.md) | Task identifier.
 
-The task identifier can be obtained when [creating a new task](../tasks-task-add.md) or by using the [method to get the list of tasks](../tasks-task-list.md) ||
+The task identifier can be obtained when [creating a new task](../tasks-task-add.md) or by using the [get task list](../tasks-task-list.md) method. ||
 || **ITEMID***
 [`integer`](../../data-types.md) | Comment identifier.
 
-The comment identifier can be obtained when [adding a new comment](./task-comment-item-add.md) or by using the [method to get the list of comments](./task-comment-item-get-list.md) ||
+The comment identifier can be obtained when [adding a new comment](./task-comment-item-add.md) or by using the [get comment list](./task-comment-item-get-list.md) method. ||
 || **FIELDS***
 [`object`](../../data-types.md) | Object with [comment fields](#fields) ||
 |#
 
 ### FIELDS Parameter {#fields}
 
-{% include [Footnote on parameters](../../../_includes/required.md) %}
+{% include [Parameter Note](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -47,13 +47,13 @@ The comment identifier can be obtained when [adding a new comment](./task-commen
 || **POST_MESSAGE***
 [`string`](../../data-types.md) | Message text ||
 || **UF_FORUM_MESSAGE_DOC**
-[`array`](../../data-types.md) | Array with file identifiers from Drive. Prefix each identifier with `n`, for example, `['n123', 'n456', ... ]`.
+[`array`](../../data-types.md) | Array of file identifiers from Drive. Prefix each identifier with `n`, for example, `['n123', 'n456', ... ]`.
 
-The author of the comment must have access to the attached files; otherwise, the method will return an error.
+The comment author must have access to the attached files; otherwise, the method will return an error.
 
 {% note info "" %}
 
-The field is completely overwritten. To add a file to already uploaded ones, pass the identifiers of all files in the array — both old and new.
+The field is completely overwritten. To add a file to already uploaded ones, pass the identifiers of all files in the array—both old and new.
 
 {% endnote %}
 ||
@@ -133,7 +133,7 @@ The field is completely overwritten. To add a file to already uploaded ones, pas
             ->getResult();
     
         echo 'Success: ' . print_r($result, true);
-        // Your required data processing logic
+        // Your logic for processing data
         processData($result);
     
     } catch (Throwable $e) {
@@ -188,7 +188,7 @@ The field is completely overwritten. To add a file to already uploaded ones, pas
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -212,14 +212,14 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../data-types.md) | Returns `true` if the comment was successfully updated ||
+[`boolean`](../../data-types.md) | Returns `true` if the comment was successfully updated. ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the request execution time ||
+[`time`](../../data-types.md#time) | Information about the request execution time. ||
 |#
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {
@@ -234,15 +234,15 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `ERROR_CORE` | Comment text not specified. | Required parameter `POST_MESSAGE` not provided or empty ||
+|| `ERROR_CORE` | Comment text not specified. | Required parameter `POST_MESSAGE` not provided or is empty. ||
 || `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#4; Action is not allowed; 4/TE/ACTION_NOT_ALLOWED | Error returned in the following cases:
-- Incorrect parameter order specified in the method
-- No access permission to the task
-- Attempting to update another user's comment
-- If the specified task or comment does not exist ||
+- Incorrect parameter order in the method.
+- No access rights to the task.
+- Attempting to update another user's comment.
+- If the specified task or comment does not exist. ||
 || `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #0 (taskId) for method ctaskcommentitem::delete() expected to be of type "integer", but given something else.; 256/TE/WRONG_ARGUMENTS | Error returned in the following cases:
-- Required parameter not specified, for example, `TASKID`
-- Incorrect value type specified for the parameter, for example, for `TASKID` ||
+- Required parameter not specified, e.g., `TASKID`.
+- Incorrect value type for the parameter, e.g., for `TASKID`. ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

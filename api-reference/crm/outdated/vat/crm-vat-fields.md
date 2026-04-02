@@ -4,13 +4,13 @@
 >
 > Who can execute the method: any user
 
-{% note warning "Method development has been halted" %}
+{% note warning "DEPRECATED" %}
 
-The method `crm.vat.fields` continues to function, but there is a more relevant alternative [catalog.vat.getFields](../../../catalog/vat/catalog-vat-get-fields.md).
+Development of this method has been halted. Please use [catalog.vat.getFields](../../../catalog/vat/catalog-vat-get-fields.md).
 
 {% endnote %}
 
-The method `crm.vat.fields` returns the description of VAT rate fields.
+The method `crm.vat.fields` returns a description of the VAT rate fields.
 
 ## Method Parameters
 
@@ -130,7 +130,7 @@ No parameters.
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -201,7 +201,7 @@ HTTP status: **200**
 [`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
 
-#### Fields of the result Object {#result}
+#### Fields of the result object {#result}
 
 #|
 || **Name**

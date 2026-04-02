@@ -1,14 +1,14 @@
-# Get Task File Field Description tasks.task.file.field.get
+# Get Task File Field Description: `tasks.task.file.field.get`
 
-> Scope: [`task`](../../scopes/permissions.md)
+> Scope: [`tasks`](../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-The method `tasks.task.file.field.get` returns the description of the task file field by name.
+The method `tasks.task.file.field.get` returns the description of a task file field by name.
 
 ## Method Parameters
 
-{% include [Parameter Note](../../../_includes/required.md) %}
+{% include [Parameter Notes](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -34,7 +34,7 @@ Available fields:
 
 ## Code Examples
 
-{% include [Example Note](../../../_includes/examples.md) %}
+{% include [Examples Notes](../../../_includes/examples.md) %}
 
 {% note info "" %}
 
@@ -68,7 +68,7 @@ The new API call differs by the addition of the `/api/` parameter in the request
 
 - JS
 
-    The SDK does not yet support the address /rest/api/ in calls. Use direct HTTP requests, for example, via curl or fetch.
+    The SDK does not currently support calls to the /rest/api/ address. Use direct HTTP requests, such as via curl or fetch.
 
     ```javascript
     try
@@ -100,7 +100,7 @@ The new API call differs by the addition of the `/api/` parameter in the request
 
 - PHP
 
-    The SDK does not yet support the address /rest/api/ in calls. Use direct HTTP requests, for example, via curl or fetch.
+    The SDK does not currently support calls to the /rest/api/ address. Use direct HTTP requests, such as via curl or fetch.
 
     ```php
     try {
@@ -136,7 +136,7 @@ The new API call differs by the addition of the `/api/` parameter in the request
 
 - BX24.js
 
-    The SDK does not yet support the address /rest/api/ in calls. Use direct HTTP requests, for example, via curl or fetch.
+    The SDK does not currently support calls to the /rest/api/ address. Use direct HTTP requests, such as via curl or fetch.
 
     ```js
     BX24.callMethod(
@@ -162,7 +162,7 @@ The new API call differs by the addition of the `/api/` parameter in the request
 
 - PHP CRest
 
-    The SDK does not yet support the address /rest/api/ in calls. Use direct HTTP requests, for example, via curl or fetch.
+    The SDK does not currently support calls to the /rest/api/ address. Use direct HTTP requests, such as via curl or fetch.
 
     ```php
     require_once('crest.php');
@@ -228,7 +228,7 @@ HTTP Status: **200**
 || **result**
 [`object`](../../data-types.md) | Object containing the response data ||
 || **item**
-[`object`](../../data-types.md) | Object with field description. The response structure depends on `select`  ||
+[`object`](../../data-types.md) | Object describing the field. The response structure depends on `select`  ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -245,7 +245,7 @@ HTTP Status: **400**
         "validation": [
             {
                 "field": "name",
-                "message": "Required field `name` is not specified"
+                "message": "Required field `name` is missing"
             }
         ]
     }
@@ -262,7 +262,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_ACCESSDENIEDEXCEPTION`
 
 #|
 || **Field** | **Error Description** | **How to Fix** ||
-|| `-` | Access denied | Check user permissions and scope `task` ||
+|| `-` | Access denied | Check user permissions and the `task` scope ||
 |#
 
 #### Data Not Found Errors
@@ -271,7 +271,7 @@ Error Code: `BITRIX_REST_V3_REALISATION_EXCEPTION_FIELDNOTFOUNDEXCEPTION`
 
 #|
 || **Field** | **Error Description** | **How to Fix** ||
-|| `name` | Field `#FIELD#` not found | Specify an existing field name ||
+|| `name` | Field `#FIELD#` not found | Provide an existing field name ||
 |#
 
 #### Request Validation Errors
@@ -280,7 +280,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION`
 
 #|
 || **Field** | **Error Description** | **How to Fix** ||
-|| `name` | Required field `name` is not specified | Provide the `name` parameter with an existing field name ||
+|| `name` | Required field `name` is missing | Pass the `name` parameter with an existing field name ||
 |#
 
 #### Errors in the `select` Parameter
@@ -289,14 +289,14 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_UNKNOWNDTOPROPERTYEXCEPTION`
 
 #|
 || **Field** | **Error Description** | **How to Fix** ||
-|| `select` | Unknown field `#FIELD#` for entity `DtoFieldDto` | Provide only fields from the list: `name`, `type`, `title`, `description`, `validationRules`, `requiredGroups`, `filterable`, `sortable`, `editable`, `multiple`, `elementType` ||
+|| `select` | Unknown field `#FIELD#` for entity `DtoFieldDto` | Pass only fields from the list: `name`, `type`, `title`, `description`, `validationRules`, `requiredGroups`, `filterable`, `sortable`, `editable`, `multiple`, `elementType` ||
 |#
 
 Error Code: `BITRIX_REST_V3_EXCEPTION_INVALIDSELECTEXCEPTION`
 
 #|
 || **Field** | **Error Description** | **How to Fix** ||
-|| `select` | Unable to recognize select expression `#SELECT#` | Provide `select` as an array of strings, e.g., `["name","type"]` ||
+|| `select` | Unable to recognize select expression `#SELECT#` | Pass `select` as an array of strings, e.g., `["name","type"]` ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

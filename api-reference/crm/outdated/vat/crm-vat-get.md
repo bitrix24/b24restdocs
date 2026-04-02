@@ -4,13 +4,13 @@
 >
 > Who can execute the method: any user
 
-{% note warning "Method development has been halted" %}
+{% note warning "DEPRECATED" %}
 
-The method `crm.vat.get` is still operational, but there is a more relevant alternative [catalog.vat.get](../../../catalog/vat/catalog-vat-get.md).
+Development of this method has been halted. Please use [catalog.vat.get](../../../catalog/vat/catalog-vat-get.md).
 
 {% endnote %}
 
-The method `crm.vat.get` returns the VAT rate parameters by ID.
+The method `crm.vat.get` returns the parameters of the VAT rate by its ID.
 
 ## Method Parameters
 
@@ -20,7 +20,7 @@ The method `crm.vat.get` returns the VAT rate parameters by ID.
 || **Name**
 `type` | **Description** ||
 || **id*** 
-[`integer`](../../../data-types.md) | Identifier of the VAT rate. You can get a list of rates using the method [crm.vat.list](./crm-vat-list.md) ||
+[`integer`](../../../data-types.md) | Identifier of the VAT rate. You can obtain a list of rates using the [crm.vat.list](./crm-vat-list.md) method ||
 |#
 
 ## Code Examples
@@ -217,4 +217,4 @@ HTTP Status: **400**
 - [{#T}](./crm-vat-list.md)
 - [{#T}](./crm-vat-add.md)
 - [{#T}](./crm-vat-update.md)
-- [{#T}](./crm-vat-delete.md)
+- [{#T}](./crm-vat-delete.md) 

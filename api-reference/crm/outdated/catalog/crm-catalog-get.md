@@ -1,12 +1,18 @@
-# Get product catalog by ID crm.catalog.get
+# Get Product Catalog by ID crm.catalog.get
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-The method returns the product catalog by ID.
+{% note warning "DEPRECATED" %}
 
-## Method parameters
+The development of this method has been halted. Please use [catalog.catalog.get](../../../catalog/catalog/catalog-catalog-get.md).
+
+{% endnote %}
+
+This method returns the product catalog by ID.
+
+## Method Parameters
 
 {% include [Note on required parameters](../../../../_includes/required.md) %}
 
@@ -17,7 +23,7 @@ The method returns the product catalog by ID.
 [`integer`](../../../data-types.md)| Identifier of the product catalog ||
 |#
 
-## Code examples
+## Code Examples
 
 {% include [Note on examples](../../../../_includes/examples.md) %}
 

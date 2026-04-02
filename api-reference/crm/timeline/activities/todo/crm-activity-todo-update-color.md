@@ -22,7 +22,6 @@ The method `crm.activity.todo.updateColor` updates the color of the universal de
 || **colorId***
 [`string`](../../../../data-types.md) | Identifier of the deal's color in the timeline, for example `1`. There are 8 available colors, values from 1 to 7 and the default color if none is specified:
 
-![Available colors](./_images/colors.png)
 
 ||
 |#

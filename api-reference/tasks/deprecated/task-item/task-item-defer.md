@@ -1,14 +1,14 @@
-# Translate the task to "deferred" status task.item.defer
+# Defer Task to "Deferred" Status task.item.defer
 
 > Scope: [`task`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-This method changes the task status to "deferred." To perform this operation, the task must be in the [In Progress](./task-item-start-execution.md) status.
+This method changes the status of a task to "Deferred." To perform this operation, the task must be in the [In Progress](./task-item-start-execution.md) status.
 
-{% note warning %}
+{% note warning "DEPRECATED" %}
 
-The method is deprecated and not supported. It is recommended to use the methods [tasks.task.*](../../index.md).
+Development of this method has been halted. Please use [tasks.task.defer](../../tasks-task-defer.md).
 
 {% endnote %}
 
@@ -21,7 +21,7 @@ The method is deprecated and not supported. It is recommended to use the methods
 
 ## Code Examples
 
-{% include [Note on examples](../../../../_includes/examples.md) %}
+{% include [Examples Note](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -81,7 +81,7 @@ The method is deprecated and not supported. It is recommended to use the methods
             ->getResult();
     
         echo 'Success: ' . print_r($result, true);
-        // Your required data processing logic
+        // Your logic for processing data
         processData($result);
     
     } catch (Throwable $e) {

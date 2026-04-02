@@ -1,16 +1,16 @@
-# Conduct the inventory management document catalog.document.confirm
+# Conduct Warehouse Accounting Document catalog.document.confirm
 
 > Scope: [`catalog`](../../../scopes/permissions.md)
 >
 > Who can execute the method: administrator
 
-{% note warning "Method development has been halted" %}
+{% note warning "DEPRECATED" %}
 
-The method `catalog.document.confirm` continues to function, but there is a more relevant alternative [catalog.document.conduct](../catalog-document-conduct.md).
+The development of this method has been halted. Please use [catalog.document.conduct](../catalog-document-conduct.md).
 
 {% endnote %}
 
-The method `catalog.document.confirm` conducts the inventory management document.
+The method `catalog.document.confirm` processes the warehouse accounting document.
 
 ## Method Parameters
 

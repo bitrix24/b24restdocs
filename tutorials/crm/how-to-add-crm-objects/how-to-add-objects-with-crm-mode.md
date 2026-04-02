@@ -1,30 +1,36 @@
-# Add an activity to a new lead or deal depending on the CRM mode
+# Add a CRM Activity to a New Lead or Deal Depending on the CRM Mode
 
 > Scope: [`crm`](../../../api-reference/scopes/permissions.md)
 >
 > Who can execute the method:
-> -  creating a lead — users with the right to create a lead,
-> -  adding an activity to a lead or deal — users with the right to modify a lead or deal in CRM
+> -  Creating a lead — users with the permission to create leads,
+> -  Adding an activity to a lead or deal — users with the permission to modify leads or deals in CRM.
 
-You can place a form on the site to collect potential client data. When a client fills out the form, their data will be sent to the CRM. You will be able to process the request and call the client.
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect the [MCP server](../../../sdk/mcp.md) so that the assistant can use the official REST documentation.
+
+{% endnote %}
+
+You can place a form on your website to collect potential client data. When a client fills out the form, their data will be sent to the CRM. You will be able to process the request and call the client.
 
 Setting up the form consists of two steps.
 
-1. Place the form on an HTML page. It will send data to the handler.
+1. Place the form on an HTML page. It will send the data to the handler.
 
 2. Create a file to process the data. The handler will:
 
    -  accept and prepare the data,
-
+   
    -  create a lead using the [crm.lead.add](../../../api-reference/crm/leads/crm-lead-add) method,
-
+   
    -  check the CRM mode,
-
+   
    -  add an activity with a reminder to call either the deal or the lead.
 
 ## CRM Modes
 
-In Bitrix24, there are two CRM operation modes.
+Bitrix24 has two CRM modes.
 
 1. Simple mode — operates without leads. The system automatically converts a new lead into a deal.
 
@@ -32,15 +38,15 @@ In Bitrix24, there are two CRM operation modes.
 
 In the handler, we will determine which mode the CRM is operating in — simple or classic — and based on that, we will link the call reminder to either the deal or the lead.
 
-{% note tip "User documentation" %}
+{% note tip "User Documentation" %}
 
 -  [How to choose the CRM operation mode](https://helpdesk.bitrix24.com/open/24207198/)
 
 {% endnote %}
 
-## 1. Creating a web form
+## 1. Creating a Web Form
 
-In Bitrix24, you can automatically create a contact and company from a lead. To make the form suitable for different cases, we will make it universal. For a contact, you need to specify the first name and last name, and for a company — the name. We will create a web form on the site page with five fields:
+In Bitrix24, you can automatically create a contact and a company from a lead. To make the form suitable for various cases, we will make it universal. For a contact, you need to specify the first name and last name, and for a company — the name. We will create a web form on the website page with five fields:
 
 -  `NAME` — client's first name, required field,
 
@@ -48,9 +54,9 @@ In Bitrix24, you can automatically create a contact and company from a lead. To 
 
 -  `COMPANY_TITLE` — company name,
 
--  `PHONE` — phone,
+-  `PHONE` — phone number,
 
--  `EMAIL` — email.
+-  `EMAIL` — email address.
 
 When submitted, the form sends data to the handler `form.php`.
 
@@ -66,7 +72,7 @@ When submitted, the form sends data to the handler `form.php`.
     <input type="text" name="EMAIL" placeholder="Email">
     <!-- Phone -->
     <input type="text" name="PHONE" placeholder="Phone">
-    <!-- Submit button -->
+    <!-- Submit Button -->
     <input type="submit" value="Submit">
 </form>
 
@@ -92,9 +98,9 @@ When submitted, the form sends data to the handler `form.php`.
 </script>
 ```
 
-## 2. Creating the form handler
+## 2. Creating the Form Handler
 
-We will create a file `form.php`, which will:
+We will create a file `form.php` that will:
 
 -  accept data from the form,
 
@@ -104,7 +110,7 @@ We will create a file `form.php`, which will:
 
 -  add an activity with a reminder to call either the lead or the deal.
 
-### Preparing data from the form
+### Preparing Data from the Form
 
 We will retrieve and sanitize the data from the form.
 
@@ -117,15 +123,15 @@ $sPhone = htmlspecialchars($_POST["PHONE"]);
 $sEmail = htmlspecialchars($_POST["EMAIL"]);
 ```
 
-The system stores the phone and email as an array of objects [crm_multifield](../../../api-reference/crm/data-types#crm_multifield), so they need to be formatted as an array.
+The system stores phone numbers and emails as an array of objects [crm_multifield](../../../api-reference/crm/data-types#crm_multifield), so they need to be formatted as an array.
 
-1. If a value exists, we add it as the first element `VALUE` in the array, and the second value indicates the type `VALUE_TYPE`, for example:
+1. If a value exists, we add it as the first element `VALUE` in the array, and the second value specifies the type `VALUE_TYPE`, for example:
 
    -  `WORK` — for phone,
 
    -  `HOME` — for email.
 
-2. If there is no value, we pass an empty array.
+2. If no values exist, we pass an empty array.
 
 ```php
 // Format phone and email for Bitrix24 in crm_multifield format
@@ -137,18 +143,18 @@ We will form the lead title from the first name and last name. For companies, we
 
 ```php
 // Form the lead title from the first name and last name
-$sTitle = 'From the site: ' . trim($sName . ' ' . $sLastName);
-// If there is a company name — add it with a dash after the first name and last name
+$sTitle = 'From website: ' . trim($sName . ' ' . $sLastName);
+// If there is a company name — add it after the first name and last name with a dash
 if (!empty($sCompanyTitle)) {
     $sTitle .= ' — ' . $sCompanyTitle;
 }
 ```
 
-### Creating a lead and retrieving lead data
+### Creating a Lead and Retrieving Lead Data
 
 We will use the batch method [CRest::callBatch()](../../../settings/how-to-call-rest-api/batch.md) to sequentially execute two methods in one request: creating a lead and retrieving lead data. We will collect the methods in the array `$arData[]`.
 
-To add a lead, we will use the [crm.lead.add](../../../api-reference/crm/leads/crm-lead-add.md) method. In the `fields` object, we will pass the fields:
+To add a lead, we will use the method [crm.lead.add](../../../api-reference/crm/leads/crm-lead-add.md). In the `fields` object, we will pass the fields:
 
 -  `TITLE` — lead title,
 
@@ -160,11 +166,11 @@ To add a lead, we will use the [crm.lead.add](../../../api-reference/crm/leads/c
 
 -  `PHONE` — phone number,
 
--  `EMAIL` — email.
+-  `EMAIL` — email address.
 
 {% note warning "" %}
 
-Check which required fields are set for leads in your Bitrix24. All required fields must be passed to the [crm.lead.add](../../../api-reference/crm/leads/crm-lead-add.md) method.
+Check which required fields are set for leads in your Bitrix24. All required fields must be passed to the method [crm.lead.add](../../../api-reference/crm/leads/crm-lead-add.md).
 
 {% endnote %}
 
@@ -184,7 +190,7 @@ Check which required fields are set for leads in your Bitrix24. All required fie
 ],
 ```
 
-To retrieve lead data, we will use the [crm.lead.get](../../../api-reference/crm/leads/crm-lead-get.md) method. In the `ID` parameter, we will pass the identifier of the created lead `$result[add_lead]` from the result of the [crm.lead.add](../../../api-reference/crm/leads/crm-lead-add.md) method.
+To retrieve lead data, we will use the method [crm.lead.get](../../../api-reference/crm/leads/crm-lead-get.md). In the `ID` parameter, we will pass the identifier of the created lead `$result[add_lead]` from the result of the [crm.lead.add](../../../api-reference/crm/leads/crm-lead-add.md) method.
 
 ```php
 'get_lead' => [
@@ -195,20 +201,20 @@ To retrieve lead data, we will use the [crm.lead.get](../../../api-reference/crm
 ]
 ```
 
-We will pass the array of requests `$arData` to the `CRest::callBatch` method. The result of the method execution will be stored in the variable `$result`.
+We will pass the array of requests `$arData` to the `CRest::callBatch` method. The result of the method execution will be saved in the variable `$result`.
 
 ```php
 $result = CRest::callBatch($arData);
 ```
 
-As a result, we will obtain the identifier of the new lead `add_lead` and lead data `get_lead`.
+As a result, we will obtain the identifier of the new lead `add_lead` and the lead data `get_lead`.
 
 ```json
 {
     "result": {
         "result": {
-            "add_lead": 22, // result of the crm.lead.add method execution
-            "get_lead": { // result of the crm.lead.get method execution
+            "add_lead": 22, // result of the crm.lead.add method
+            "get_lead": { // result of the crm.lead.get method
                 "ID": "22",
                 "TITLE": "John Doe",
                 "HONORIFIC": null,
@@ -226,7 +232,7 @@ As a result, we will obtain the identifier of the new lead `add_lead` and lead d
 }
 ```
 
-### Determining the CRM mode and creating an activity
+### Determining the CRM Mode and Creating an Activity
 
 If the system successfully created the lead, we will save the following in variables:
 
@@ -242,9 +248,9 @@ if (empty($result['result']['result_error']['add_lead']) && !empty($result['resu
 }
 ```
 
-#### Simple mode
+#### Simple Mode
 
-In simple mode, when a lead with a filled first name is created, the system automatically converts it into a deal. The lead field `STATUS_ID` takes the value `CONVERTED`.
+In simple mode, when a lead is created with a filled first name, the system automatically converts it into a deal. The lead field `STATUS_ID` takes the value `CONVERTED`.
 
 We check the value of the variable `$leadStatus`. If the value is equal to `'CONVERTED'` — the CRM is operating in simple mode and the lead has already been converted into a deal.
 
@@ -252,15 +258,15 @@ We check the value of the variable `$leadStatus`. If the value is equal to `'CON
 
 In classic mode, a new lead can also be automatically converted into a deal using automation tools.
 
-You can accurately determine the CRM operation mode using the special method [crm.settings.mode.get](../../../api-reference/crm/crm-settings-mode-get.md).
+You can accurately determine the CRM operating mode using the special method [crm.settings.mode.get](../../../api-reference/crm/crm-settings-mode-get.md).
 
 {% endnote %}
 
-To obtain the deal identifier, we will use the [crm.deal.list](../../../api-reference/crm/deals/crm-deal-list.md) method. We will specify the `select` field as `ID`, and in the filter `filter`, we will pass the field `LEAD_ID` with the lead identifier from the variable `$leadId`.
+To obtain the deal identifier, we will use the method [crm.deal.list](../../../api-reference/crm/deals/crm-deal-list.md). We will specify the `select` field as `ID`, and in the filter `filter`, we will pass the field `LEAD_ID` with the lead identifier from the variable `$leadId`.
 
 ```php
 if ($leadStatus == 'CONVERTED') {
-    // Simple mode: searching for the deal created from the lead
+    // Simple mode: find the deal created from the lead
     $resultDeal = CRest::call('crm.deal.list', [
         'select' => [
             'ID'
@@ -281,9 +287,9 @@ As a result, we will obtain the deal identifier.
 ],
 ```
 
-To add an activity to the deal, we will use the [crm.activity.todo.add](../../../api-reference/crm/timeline/activities/todo/crm-activity-todo-add.md) method. We will pass the fields:
+To add an activity to the deal, we will use the method [crm.activity.todo.add](../../../api-reference/crm/timeline/activities/todo/crm-activity-todo-add.md). We will pass the fields:
 
--  `ownerTypeId` — identifier of the CRM object type. You can obtain identifiers using the [crm.enum.ownertype](../../../api-reference/crm/auxiliary/enum/crm-enum-owner-type.md) method. We will specify the value — `2`, which means deal,
+-  `ownerTypeId` — identifier of the CRM object type. You can obtain identifiers using the method [crm.enum.ownertype](../../../api-reference/crm/auxiliary/enum/crm-enum-owner-type.md). We will specify the value — `2`, which means a deal,
 
 -  `ownerId` — identifier of the CRM entity. We will specify the deal identifier obtained in the previous request,
 
@@ -296,7 +302,7 @@ To add an activity to the deal, we will use the [crm.activity.todo.add](../../..
 ```php
 if (!empty($resultDeal['result'][0]['ID'])) {
     $dealId = $resultDeal['result'][0]['ID'];
-    // Linking the activity to the deal
+    // Link the activity to the deal
     CRest::call(
         'crm.activity.todo.add',
         [
@@ -304,19 +310,19 @@ if (!empty($resultDeal['result'][0]['ID'])) {
             'ownerId' => $dealId, // deal identifier
             'deadline' => date("Y-m-d H:i:s", time() + 3600), // current time + 1 hour
             'title' => 'Call the client',
-            'description' => 'Filled out the request on the site',
+            'description' => 'Filled out the request on the website',
         ]
     );
 }
 ```
 
-#### Classic mode
+#### Classic Mode
 
 In classic mode, the system does not convert the lead, so we link the activity to the created lead.
 
-To add an activity to the lead, we will use the [crm.activity.todo.add](../../../api-reference/crm/timeline/activities/todo/crm-activity-todo-add.md) method. We will pass the fields:
+To add an activity to the lead, we will use the method [crm.activity.todo.add](../../../api-reference/crm/timeline/activities/todo/crm-activity-todo-add.md). We will pass the fields:
 
--  `ownerTypeId` — identifier of the CRM object type. You can obtain identifiers using the [crm.enum.ownertype](../../../api-reference/crm/auxiliary/enum/crm-enum-owner-type.md) method. We will specify the value — `1`, which means lead,
+-  `ownerTypeId` — identifier of the CRM object type. You can obtain identifiers using the method [crm.enum.ownertype](../../../api-reference/crm/auxiliary/enum/crm-enum-owner-type.md). We will specify the value — `1`, which means a lead,
 
 -  `ownerId` — identifier of the CRM entity. We will specify the identifier of the new lead,
 
@@ -327,7 +333,7 @@ To add an activity to the lead, we will use the [crm.activity.todo.add](../../..
 -  `description` — activity description.
 
 ```php
-// Classic mode: linking the activity to the lead
+// Classic mode: link the activity to the lead
 CRest::call(
     'crm.activity.todo.add',
     [
@@ -335,14 +341,14 @@ CRest::call(
         'ownerId' => $leadId, // lead identifier
         'deadline' => date("Y-m-d H:i:s", time() + 3600), // current time + 1 hour
         'title' => 'Call the client',
-        'description' => 'Filled out the request on the site',
+        'description' => 'Filled out the request on the website',
     ]
 );
 ```
 
-## Full example of the handler code
+## Complete Example of the Handler Code
 
-{% include [Example note](../../../_includes/examples.md) %}
+{% include [Example Note](../../../_includes/examples.md) %}
 
 ```php
 <?php
@@ -358,8 +364,8 @@ $arPhone = (!empty($sPhone)) ? array(array('VALUE' => $sPhone, 'VALUE_TYPE' => '
 $arEmail = (!empty($sEmail)) ? array(array('VALUE' => $sEmail, 'VALUE_TYPE' => 'HOME')) : array();
 
 // Form the lead title from the first name and last name
-$sTitle = 'From the site: ' . trim($sName . ' ' . $sLastName);
-// If there is a company name — add it with a dash after the first name and last name
+$sTitle = 'From website: ' . trim($sName . ' ' . $sLastName);
+// If there is a company name — add it after the first name and last name with a dash
 if (!empty($sCompanyTitle)) {
     $sTitle .= ' — ' . $sCompanyTitle;
 }
@@ -393,7 +399,7 @@ if (empty($result['result']['result_error']['add_lead']) && !empty($result['resu
     $leadStatus = $result['result']['result']['get_lead']['STATUS_ID']; // save the lead status in a variable
 
     if ($leadStatus == 'CONVERTED') {
-        // Simple mode: searching for the deal created from the lead
+        // Simple mode: find the deal created from the lead
         $resultDeal = CRest::call('crm.deal.list', [
             'select' => [
                 'ID'
@@ -406,32 +412,32 @@ if (empty($result['result']['result_error']['add_lead']) && !empty($result['resu
         if (!empty($resultDeal['result'][0]['ID'])) {
             $dealId = $resultDeal['result'][0]['ID'];
             CRest::call(
-                // Adding an activity to the deal
+                // Add activity to the deal
                 'crm.activity.todo.add',
                 [
                     'ownerTypeId' => 2, // object type — deal
                     'ownerId' => $dealId, // deal identifier
                     'deadline' => date("Y-m-d H:i:s", time() + 3600), // current time + 1 hour
                     'title' => 'Call the client',
-                    'description' => 'Filled out the request on the site',
+                    'description' => 'Filled out the request on the website',
                 ]
             );
         }
     } else {
         CRest::call(
-            // Classic mode: adding an activity to the new lead
+            // Classic mode: add activity to the new lead
             'crm.activity.todo.add',
             [
                 'ownerTypeId' => 1, // object type — lead
                 'ownerId' => $leadId, // lead identifier
                 'deadline' => date("Y-m-d H:i:s", time() + 3600), // current time + 1 hour
                 'title' => 'Call the client',
-                'description' => 'Filled out the request on the site',
+                'description' => 'Filled out the request on the website',
             ]
         );
     }
 
-    echo json_encode(['message' => 'Activity added to the lead or deal']);
+    echo json_encode(['message' => 'Activity added to lead or deal']);
 } else {
     $errors = [];
     if (!empty($result['result']['result_error']['add_lead'])) {

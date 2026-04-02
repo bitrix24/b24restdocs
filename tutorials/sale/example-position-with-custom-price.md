@@ -1,6 +1,12 @@
-# Create an item with a product from the catalog in a quantity of 4 units with an arbitrary price
+# Create a Position with a Product from the Catalog in a Quantity of 4 Units at an Arbitrary Price
 
-{% include [Footnote about examples](../../_includes/examples.md) %}
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect the [MCP server](../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
+{% include [Example Footnote](../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -10,7 +16,7 @@
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"orderId":5147,"quantity":4,"productId":6544,"currency":"USD","price":1100,"discountPrice":-1070,"customPrice":"Y"}}' \
+    -d '{"fields":{"orderId":5147,"quantity":4,"productId":6544,"currency":"EUR","price":1100,"discountPrice":-1070,"customPrice":"Y"}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/sale.basketitem.add
     ```
 
@@ -20,7 +26,7 @@
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"orderId":5147,"quantity":4,"productId":6544,"currency":"USD","price":1100,"discountPrice":-1070,"customPrice":"Y"},"auth":"**put_access_token_here**"}' \
+    -d '{"fields":{"orderId":5147,"quantity":4,"productId":6544,"currency":"EUR","price":1100,"discountPrice":-1070,"customPrice":"Y"},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/sale.basketitem.add
     ```
 
@@ -30,13 +36,13 @@
     BX24.callMethod(
         "sale.basketitem.add",
         {
-            fields: { // minimum set of required fields
+            fields: { // minimum required fields
                 orderId: 5147,
                 quantity: 4,
                 productId: 6544,
-                currency: 'USD',
+                currency: 'EUR',
                 price: 1100,
-                discountPrice: -1070, // price in the catalog – 30 USD, indicating the markup
+                discountPrice: -1070, // catalog price – 30 EUR, indicating the markup
                 customPrice: 'Y',
             }
         },
@@ -73,7 +79,7 @@
                 'orderId' => 5147,
                 'quantity' => 4,
                 'productId' => 6544,
-                'currency' => 'USD',
+                'currency' => 'EUR',
                 'price' => 1100,
                 'discountPrice' => -1070,
                 'customPrice' => 'Y',
@@ -97,7 +103,7 @@
             "basePrice": 30,
             "canBuy": "Y",
             "catalogXmlId": "FUTURE-1C-CATALOG",
-            "currency": "USD",
+            "currency": "EUR",
             "customPrice": "N",
             "dateInsert": "2024-04-23T15:59:37+02:00",
             "dateUpdate": "2024-04-23T15:59:37+02:00",

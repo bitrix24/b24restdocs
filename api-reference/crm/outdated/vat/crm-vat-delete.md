@@ -4,9 +4,9 @@
 >
 > Who can execute the method: user with CRM administrator rights
 
-{% note warning "Method development halted" %}
+{% note warning "DEPRECATED" %}
 
-The method `crm.vat.delete` continues to function, but there is a more relevant alternative [catalog.vat.delete](../../../catalog/vat/catalog-vat-delete.md).
+The development of this method has been discontinued. Please use [catalog.vat.delete](../../../catalog/vat/catalog-vat-delete.md).
 
 {% endnote %}
 
@@ -20,8 +20,8 @@ The method `crm.vat.delete` removes a VAT rate by its identifier.
 || **Name**
 `type` | **Description** ||
 || **id*** 
-[`integer`](../../../data-types.md) | Identifier of the VAT rate to be deleted. 
-You can obtain a list of rates with identifiers using the method [crm.vat.list](./crm-vat-list.md) ||
+[`integer`](../../../data-types.md) | The identifier of the VAT rate to be deleted. 
+You can obtain a list of rates with identifiers using the [crm.vat.list](./crm-vat-list.md) method ||
 |#
 
 ## Code Examples
@@ -165,7 +165,7 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result** 
-[`boolean`](../../../data-types.md) | Root element of the response, contains `true` in case of success ||
+[`boolean`](../../../data-types.md) | The root element of the response, contains `true` in case of success ||
 || **time** 
 [`time`](../../../data-types.md#time) | Information about the execution time of the request ||
 |#
@@ -189,7 +189,7 @@ HTTP Status: **400**
 || **Code** | **Description** | **Value** ||
 || `400`     | `The Commercial Catalog module is not installed.` | The catalog module is not installed ||
 || `400`     | `Invalid identifier.` | An invalid identifier was provided ||
-|| `400`     | `Access denied.` | No rights to perform the operation ||
+|| `400`     | `Access denied.` | No permission to perform the operation ||
 || `400`     | `Error on deleting VAT rate.` | Error while deleting the VAT rate ||
 |#
 
@@ -201,4 +201,4 @@ HTTP Status: **400**
 - [{#T}](./crm-vat-list.md)
 - [{#T}](./crm-vat-get.md)
 - [{#T}](./crm-vat-add.md)
-- [{#T}](./crm-vat-update.md)
+- [{#T}](./crm-vat-update.md) 

@@ -4,16 +4,22 @@
 >
 > Who can execute the method: any user
 
+{% note warning "DEPRECATED" %}
+
+Development of this method has been halted. Please use [catalog.section.get](../../../catalog/section/catalog-section-get.md).
+
+{% endnote %}
+
 The method `crm.productsection.get` [returns the product section](./crm-product-section-add.md) by its ID.
 
 ## Method Parameters
 
 {% include [Note on required parameters](../../../../_includes/required.md) %}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
-|| **id***
+|| **id*** 
 [`integer`](../../data-types.md) | Product section ID ||
 |#
 
@@ -57,18 +63,18 @@ The method `crm.productsection.get` [returns the product section](./crm-product-
     ```js
     try
     {
-    	const id = prompt("Enter ID");
-    	const response = await $b24.callMethod(
-    		"crm.productsection.get",
-    		{ id: id }
-    	);
-    
-    	const result = response.getData().result;
-    	console.dir(result);
+        const id = prompt("Enter ID");
+        const response = await $b24.callMethod(
+            "crm.productsection.get",
+            { id: id }
+        );
+
+        const result = response.getData().result;
+        console.dir(result);
     }
     catch( error )
     {
-    	console.error(error);
+        console.error(error);
     }
     ```
 
@@ -86,17 +92,17 @@ The method `crm.productsection.get` [returns the product section](./crm-product-
                     'id' => $id,
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
+
         if ($result->error()) {
             error_log($result->error());
         } else {
             echo 'Success: ' . print_r($result->data(), true);
         }
-    
+
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error getting product section: ' . $e->getMessage();

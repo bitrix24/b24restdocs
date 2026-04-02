@@ -1,27 +1,27 @@
-# Get a list of payment methods crm.paysystem.list
+# Get a List of Payment Methods crm.paysystem.list
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-{% note warning %}
+{% note warning "DEPRECATED" %}
 
-The method is deprecated. It is recommended to use [`Universal methods for invoices`](../../universal/invoice.md)
+The development of this method has been halted. Please use [Universal Methods for Invoices](../../universal/invoice.md).
 
 {% endnote %}
 
-The method returns a list of payment methods applicable to estimates or invoices.
+This method returns a list of payment methods applicable to estimates or invoices.
 
 #|
 || **Name**
 `type` | **Description** ||
 || **order** | Sorting fields ||
-|| **filter** | Filtering fields ||
+|| **filter** | Filter fields ||
 |#
 
-## Code examples
+## Code Examples
 
-{% include [Note on examples](../../../../_includes/examples.md) %}
+{% include [Examples Note](../../../../_includes/examples.md) %}
 
 The example outputs data to the console. If you need to display data differently, implement your own data handling for the results returned by `result.data()` and `result.error()`.
 
@@ -50,7 +50,7 @@ The example outputs data to the console. If you need to display data differently
 - JS
 
     ```js
-    // callListMethod: Retrieves all data at once. Use only for small selections (< 1000 items) due to high memory usage.
+    // callListMethod: Retrieves all data at once. Use only for small datasets (< 1000 items) due to high memory load.
     
     try {
       const response = await $b24.callListMethod(
@@ -69,7 +69,7 @@ The example outputs data to the console. If you need to display data differently
       console.error('Request failed', error)
     }
     
-    // fetchListMethod: Retrieves data in parts using an iterator. Use it for large data volumes to optimize memory usage.
+    // fetchListMethod: Retrieves data in chunks using an iterator. Use for large datasets for efficient memory consumption.
     
     try {
       const generator = $b24.fetchListMethod('crm.paysystem.list', {
@@ -85,7 +85,7 @@ The example outputs data to the console. If you need to display data differently
       console.error('Request failed', error)
     }
     
-    // callMethod: Manually controls pagination through the start parameter. Use it for precise control of request batches. For large datasets, it is less efficient than fetchListMethod.
+    // callMethod: Manual control of pagination through the start parameter. Use for precise control over request batches. Less efficient for large data than fetchListMethod.
     
     try {
       const response = await $b24.callMethod('crm.paysystem.list', {
@@ -177,4 +177,3 @@ The example outputs data to the console. If you need to display data differently
     ```
 
 {% endlist %}
-

@@ -14,17 +14,17 @@ The method `im.message.command` executes a chat-bot command in the context of a 
 || **Name**
 `type` | **Description** ||
 || **MESSAGE_ID***
-[`integer`](../../data-types.md) | Identifier of the message in the context of which the command is executed.
+[`integer`](../../data-types.md) | The identifier of the message in the context of which the command is executed.
 
 The identifier can be obtained using the method [im.dialog.messages.get](./im-dialog-messages-get.md) ||
 || **BOT_ID***
-[`integer`](../../data-types.md) | Identifier of the bot.
+[`integer`](../../data-types.md) | The identifier of the bot.
 
-The identifier can be obtained using the method [imbot.bot.list](../../chat-bots/imbot-bot-list.md). ||
+The identifier can be obtained using the method [imbot.bot.list](../../chat-bots/outdated/bots/imbot-bot-list.md). ||
 || **COMMAND***
-[`string`](../../data-types.md) | Bot command.
+[`string`](../../data-types.md) | The bot command.
 
-The text is specified when registering the command by the chat-bot through the method [imbot.command.register](../../chat-bots/commands/imbot-command-register.md) ||
+The text is specified when registering the command by the chat-bot through the method [imbot.command.register](../../chat-bots/outdated/commands/imbot-command-register.md) ||
 || **COMMAND_PARAMS**
 [`string`](../../data-types.md) | Command parameter ||
 |#

@@ -1,138 +1,226 @@
-# How to Send Commands and Extend the Authorization Key
+# How to Call Chatbot Methods and Update the Authorization Token
 
-{% note warning "We are still updating this page" %}
+This page outlines the basic approach to calling REST methods for chatbots and explains when to update the OAuth token and when webhook authorization is sufficient.
 
-Some data may be missing here — we will complete it soon.
+{% note info "" %}
 
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- edits are needed to meet writing standards
+For new integrations, use the methods [`imbot.v2`](./chat-bots-v2/index.md)
 
 {% endnote %}
 
-{% endif %}
+## Basic Method Call
 
-## Interaction Using PHP
+Below is a typical example of calling the method [imbot.v2.Chat.Message.send](./chat-bots-v2/imbot.v2/messages/chat-message-send.md) in standard formats used in the documentation.
 
-In our course, we interact with Bitrix24 using **PHP**.
+{% include [Examples Note](../../_includes/examples.md) %}
 
-All examples are provided using the **restCommand** function:
+{% list tabs %}
 
-```php
-restCommand(
-    'imbot.message.add',
-    Array(
-        "DIALOG_ID" => $_REQUEST['data']['PARAMS']['DIALOG_ID'],
-        "MESSAGE" => "Enter search string",
-    ),
-    $_REQUEST["auth"]
-);
-```
+- cURL (Webhook)
 
-where:
-- **The first parameter** is the API name (`imbot.message.add`);
-- **The second parameter** is the data sent to the API (`Array(...)`);
-- **The third parameter** is the authorization data for the request (`$_REQUEST["auth"]`).
+  ```bash
+  curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"botId":456,"botToken":"my_bot_token","dialogId":"chat5","fields":{"message":"Enter search string"}}' \
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/imbot.v2.Chat.Message.send
+  ```
 
-### The `restCommand` Function
+- cURL (OAuth)
 
-The `restCommand` function sends a REST request to Bitrix24:
+  ```bash
+  curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"botId":456,"dialogId":"chat5","fields":{"message":"Enter search string"},"auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/imbot.v2.Chat.Message.send
+  ```
 
-{% note info %}
+- JS
 
-This function is used as an example. You can use your own function based on the [interaction protocol](../../settings/how-to-call-rest-api/general-principles.md), or the JavaScript method [BX24.callMethod](../../sdk/bx24-js-sdk/how-to-call-rest-methods/bx24-call-method.md), or the partner-developed [bitrix24-php-sdk](https://github.com/mesilov/bitrix24-php-sdk).
+  ```js
+  try {
+      const response = await $b24.callMethod('imbot.v2.Chat.Message.send', {
+          botId: 456,
+          dialogId: 'chat5',
+          fields: {
+              message: 'Enter search string',
+          },
+      });
+
+      const result = response.getData().result.id;
+      console.log('Created message ID:', result);
+  } catch (error) {
+      console.error('Error:', error);
+  }
+  ```
+
+- PHP
+
+  ```php
+  try {
+      $response = $b24Service
+          ->core
+          ->call(
+              'imbot.v2.Chat.Message.send',
+              [
+                  'botId' => 456,
+                  'dialogId' => 'chat5',
+                  'fields' => [
+                      'message' => 'Enter search string',
+                  ],
+              ]
+          );
+
+      $result = $response
+          ->getResponseData()
+          ->getResult()['id'];
+
+      echo 'Created message ID: ' . $result;
+  } catch (Throwable $e) {
+      error_log($e->getMessage());
+      echo 'Error: ' . $e->getMessage();
+  }
+  ```
+
+- BX24.js
+
+  ```js
+  BX24.callMethod(
+      'imbot.v2.Chat.Message.send',
+      {
+          botId: 456,
+          dialogId: 'chat5',
+          fields: {
+              message: 'Enter search string',
+          },
+      },
+      function(result) {
+          if (result.error()) {
+              console.error(result.error().ex);
+          } else {
+              console.log('Message ID:', result.data().id);
+          }
+      }
+  );
+  ```
+
+- PHP CRest
+
+  ```php
+  require_once('crest.php');
+
+  $result = CRest::call(
+      'imbot.v2.Chat.Message.send',
+      [
+          'botId' => 456,
+          'dialogId' => 'chat5',
+          'fields' => [
+              'message' => 'Enter search string',
+          ],
+      ]
+  );
+
+  if (!empty($result['error'])) {
+      echo 'Error: ' . $result['error_description'];
+  } else {
+      echo 'Message ID: ' . $result['result']['id'];
+  }
+  ```
+
+{% endlist %}
+
+{% note info "" %}
+
+If you are using your own PHP wrapper for REST, it can replicate the logic of the standard examples above: forming the HTTP request, passing method parameters, and, if necessary, adding OAuth authorization.
 
 {% endnote %}
 
-## The restCommand Function
+## Calling Scenarios
+
+There are two main scenarios for calling methods:
+
+1. Incoming Webhook
+2. OAuth Authorization
+
+### Incoming Webhook
+
+If you are calling methods via an incoming webhook, there is no need to update the OAuth token. For `imbot.v2` methods in the webhook scenario, the `botToken` provided during bot registration is additionally passed.
+
+### OAuth
+
+If you are calling REST via OAuth, the request includes an `access_token` and a `refresh_token`. In this case, the access token may expire, and it needs to be refreshed using the `refresh_token`.
+
+For this scenario, the `restAuth` function is useful.
+
+#### `restAuth` Function
+
+Use this function only for the OAuth scenario.
 
 ```php
 /**
-* Send rest query to Bitrix24.
-*
-* @param $method - Rest method, ex: methods
-* @param array $params - Method params, ex: Array()
-* @param array $auth - Authorize data, ex: Array('domain' => 'https://test.bitrix24.com', 'access_token' => '7inpwszbuu8vnwr5jmabqa467rqur7u6')
-* @param boolean $authRefresh - If authorization is expired, refresh token
-* @return mixed
-*/
-function restCommand($method, array $params = Array(), array $auth = Array(), $authRefresh = true)
-{
-$queryUrl = "https://".$auth["domain"]."/rest/".$method;
-$queryData = http_build_query(array_merge($params, array("auth" => $auth["access_token"])));
-
-$curl = curl_init();
-
-curl_setopt_array($curl, array(
-     CURLOPT_POST => 1,
-     CURLOPT_HEADER => 0,
-     CURLOPT_RETURNTRANSFER => 1,
-     CURLOPT_SSL_VERIFYPEER => 1,
-     CURLOPT_URL => $queryUrl,
-     CURLOPT_POSTFIELDS => $queryData,
-));
-
-$result = curl_exec($curl);
-curl_close($curl);
-
-$result = json_decode($result, 1);
-
-if ($authRefresh && isset($result['error']) && in_array($result['error'], array('expired_token', 'invalid_token')))
-{
-     $auth = restAuth($auth);
-     if ($auth)
-     {
-         $result = restCommand($method, $params, $auth, false);
-     }
-}
-
-return $result;
-}
-```
-
-## The restAuth Function
-
-```php
-/**
-* Get new authorization data if your authorization has expired.
-*
-* @param array $auth - Authorize data, ex: Array('domain' => 'https://test.bitrix24.com', 'access_token' => '7inpwszbuu8vnwr5jmabqa467rqur7u6')
-* @return bool|mixed
-*/
+ * Refresh OAuth token.
+ *
+ * @param array $auth OAuth authorization data
+ *
+ * @return bool|array
+ */
 function restAuth($auth)
 {
-if (!CLIENT_ID || !CLIENT_SECRET)
-     return false;
+    if (!CLIENT_ID || !CLIENT_SECRET)
+    {
+        return false;
+    }
 
-if(!isset($auth['refresh_token']) || !isset($auth['scope']) || !isset($auth['domain']))
-     return false;
+    if (
+        !isset($auth['refresh_token'])
+        || !isset($auth['scope'])
+        || !isset($auth['domain'])
+    )
+    {
+        return false;
+    }
 
-$queryUrl = 'https://'.$auth['domain'].'/oauth/token/';
-$queryData = http_build_query($queryParams = array(
-     'grant_type' => 'refresh_token',
-     'client_id' => CLIENT_ID,
-     'client_secret' => CLIENT_SECRET,
-     'refresh_token' => $auth['refresh_token'],
-     'scope' => $auth['scope'],
-));
+    $queryUrl = 'https://' . $auth['domain'] . '/oauth/token/';
+    $queryData = http_build_query(
+        [
+            'grant_type' => 'refresh_token',
+            'client_id' => CLIENT_ID,
+            'client_secret' => CLIENT_SECRET,
+            'refresh_token' => $auth['refresh_token'],
+            'scope' => $auth['scope'],
+        ]
+    );
 
-$curl = curl_init();
+    $curl = curl_init();
 
-curl_setopt_array($curl, array(
-     CURLOPT_HEADER => 0,
-     CURLOPT_RETURNTRANSFER => 1,
-     CURLOPT_URL => $queryUrl.'?'.$queryData,
-));
+    curl_setopt_array(
+        $curl,
+        [
+            CURLOPT_HEADER => 0,
+            CURLOPT_RETURNTRANSFER => 1,
+            CURLOPT_URL => $queryUrl . '?' . $queryData,
+        ]
+    );
 
-$result = curl_exec($curl);
-curl_close($curl);
+    $result = curl_exec($curl);
+    curl_close($curl);
 
-$result = json_decode($result, 1);
-
-return $result;
+    return json_decode($result, true);
 }
 ```
+
+## Considerations for `imbot.v2`
+
+- For webhook method calls, pass the `botToken`
+- For OAuth calls, the `botToken` is not needed, but `auth` is required
+- The parameters for most `imbot.v2` methods are nested within `fields.*`
+- The event receiving mode depends on the bot's `eventMode`: `fetch` or `webhook`
+
+## Continue Learning
+
+- [{#T}](./chat-bots-v2/quick-start.md)
+- [{#T}](./chat-bots-v2/imbot.v2/bots/bot-register.md)
+- [{#T}](./chat-bots-v2/imbot.v2/messages/chat-message-send.md)
+- [{#T}](./chat-bots-v2/imbot.v2/events/event-get.md)
+- [{#T}](./outdated/send-command.md)

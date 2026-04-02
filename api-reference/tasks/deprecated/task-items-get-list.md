@@ -1,18 +1,18 @@
-# Get the list of tasks task.items.getlist
+# Get Task List: task.items.getlist
 
 > Scope: [`task`](../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-The method returns an array of tasks, each containing an array of fields (similar to the array returned by [task.item.getdata](task-item/task-item-get-data.md)).
+{% note warning "DEPRECATED" %}
 
-{% note warning %}
-
-Instead of this method, it is recommended to use the methods [`task.item.*`](task-item/index.md).
+The development of this method has been halted. Please use [tasks.task.list](../tasks-task-list.md).
 
 {% endnote %}
 
-## Method parameters
+This method returns an array of tasks, each containing an array of fields (similar to the array returned by [task.item.getdata](task-item/task-item-get-data.md)).
+
+## Method Parameters
 
 #|
 || **Name**
@@ -25,28 +25,28 @@ Instead of this method, it is recommended to use the methods [`task.item.*`](tas
 - `STATUS` — status 
 - `PRIORITY` — priority 
 - `MARK` — rating 
-- `CREATED_BY` — creator 
-- `RESPONSIBLE_ID` — assignee 
-- `GROUP_ID` — workgroup 
+- `CREATED_BY` — Creator 
+- `RESPONSIBLE_ID` — Participant 
+- `GROUP_ID` — working group 
 
 The sorting direction can take the following values: 
 - `asc` — ascending 
 - `desc` — descending 
    
-Optional parameter. By default, it is sorted in descending order by task ID. 
+This is an optional parameter. By default, it is sorted in descending order by task ID. 
 
-Sorting by custom fields is allowed 
+Sorting by custom fields is allowed.
 ||
 || **FILTER**
 [`object`](../../data-types.md) | An array in the format `{'filter_field': "filter_value" [, ...]}`. The filter field can take the following values: 
 - `ID` — task ID
 - `PARENT_ID` — parent task ID
-- `GROUP_ID` — workgroup ID
-- `CREATED_BY` — creator
+- `GROUP_ID` — working group ID
+- `CREATED_BY` — Creator
 - `STATUS_CHANGED_BY` — user who last changed the task status
 - `PRIORITY` — priority
 - `FORUM_TOPIC_ID` — forum topic ID
-- `RESPONSIBLE_ID` — assignee
+- `RESPONSIBLE_ID` — Participant
 - `TITLE` — task title (can be searched using the pattern `[%_]`)
 - `TAG` — tag
 - `REAL_STATUS` — task status with possible values:
@@ -69,15 +69,15 @@ Sorting by custom fields is allowed
 - `CREATED_DATE` — creation date
 - `CLOSED_DATE` — completion date
 - `CHANGED_DATE` — last modification date
-- `ACCOMPLICE` — participant ID
+- `ACCOMPLICE` — co-participant ID
 - `AUDITOR` — auditor ID
-- `DEPENDS_ON` — previous task ID
-- `ONLY_ROOT_TASKS` — only tasks that are not subtasks (root tasks), as well as subtasks of the parent task to which the current user does not have access (Y\|N)
+- `DEPENDS_ON` — ID of the previous task
+- `ONLY_ROOT_TASKS` — only tasks that are not sub-tasks (root tasks), as well as sub-tasks of the parent task to which the current user does not have access (Y\|N)
 - `SUBORDINATE_TASKS` — tasks of the current user and their subordinates (Y\|N)
 - `OVERDUED` — were overdue (Y\|N)
 - `DEPARTMENT_ID` — department ID
 
-Before the filter field name, you can specify the filtering type:
+You can specify the type of filtering before the filter field name:
 - `!` — not equal
 - `<` — less than
 - `<=` — less than or equal to
@@ -86,20 +86,21 @@ Before the filter field name, you can specify the filtering type:
   
 Filter values can be a single value or an array. 
 
-Optional parameter. By default, records are not filtered ||
+This is an optional parameter. By default, records are not filtered.
+||
 || **TASKDATA**
 [`array`](../../data-types.md) | Array of returned task fields ||
 || **NAV_PARAMS**
-[`array`](../../data-types.md) | Pagination. The option `iNumPage` — page number is available ||
+[`array`](../../data-types.md) | Pagination. The option `iNumPage` is available — page number ||
 |#
 
-The order of parameters in the request must be followed. If violated, the request will be executed with errors.
+The order of parameters in the request must be strictly followed. If this order is violated, the request will be executed with errors.
 
-## Code examples
+## Code Examples
 
-{% include [Note on examples](../../../_includes/examples.md) %}
+{% include [Note on Examples](../../../_includes/examples.md) %}
 
-Get a list of all tasks (by default, pagination will be applied with 50 items per page).
+Get a list of all tasks (by default, pagination will limit to 50 items per page).
 
 {% list tabs %}
 
@@ -126,7 +127,7 @@ Get a list of all tasks (by default, pagination will be applied with 50 items pe
 - JS
 
     ```js
-    // callListMethod: Retrieves all data at once. Use only for small selections (< 1000 items) due to high memory usage.
+    // callListMethod: Retrieves all data at once. Use only for small selections (< 1000 items) due to high memory load.
     
     try {
       const response = await $b24.callListMethod(
@@ -140,7 +141,7 @@ Get a list of all tasks (by default, pagination will be applied with 50 items pe
       console.error('Request failed', error)
     }
     
-    // fetchListMethod: Retrieves data in parts using an iterator. Use it for large data volumes to optimize memory usage.
+    // fetchListMethod: Retrieves data in chunks using an iterator. Use for large volumes of data for efficient memory consumption.
     
     try {
       const generator = $b24.fetchListMethod('task.items.getlist', {}, 'ID')
@@ -151,7 +152,7 @@ Get a list of all tasks (by default, pagination will be applied with 50 items pe
       console.error('Request failed', error)
     }
     
-    // callMethod: Manually controls pagination through the start parameter. Use it for precise control of request batches. For large datasets, it is less efficient than fetchListMethod.
+    // callMethod: Manual control of pagination through the start parameter. Use for precise control over request batches. Less efficient for large data than fetchListMethod.
     
     try {
       const response = await $b24.callMethod('task.items.getlist', {}, 0)
@@ -178,7 +179,7 @@ Get a list of all tasks (by default, pagination will be applied with 50 items pe
             ->getResult();
     
         echo 'Success: ' . print_r($result, true);
-        // Your logic for processing data
+        // Your data processing logic
         processData($result);
     
     } catch (Throwable $e) {
@@ -218,7 +219,7 @@ Get a list of all tasks (by default, pagination will be applied with 50 items pe
 
 {% endlist %}
 
-Get a list of tasks with IDs 1, 2, 3, 4, 5, 6, selecting only the fields `ID` and `TITLE`. Pagination mode — 2 items per page, 2nd page. Sorting by `ID` — descending.
+Get a list of tasks with IDs 1, 2, 3, 4, 5, 6, selecting only the fields `ID` and `TITLE`. Pagination mode — 2 items per page, page 2. Sorting by `ID` — descending.
 
 {% list tabs %}
 
@@ -245,7 +246,7 @@ Get a list of tasks with IDs 1, 2, 3, 4, 5, 6, selecting only the fields `ID` an
 - JS
 
     ```js
-    // callListMethod: Retrieves all data at once. Use only for small selections (< 1000 items) due to high memory usage.
+    // callListMethod: Retrieves all data at once. Use only for small selections (< 1000 items) due to high memory load.
     
     try {
       const response = await $b24.callListMethod(
@@ -268,7 +269,7 @@ Get a list of tasks with IDs 1, 2, 3, 4, 5, 6, selecting only the fields `ID` an
       console.error('Request failed', error);
     }
     
-    // fetchListMethod: Retrieves data in parts using an iterator. Use it for large data volumes to optimize memory usage.
+    // fetchListMethod: Retrieves data in chunks using an iterator. Use for large volumes of data for efficient memory consumption.
     
     try {
       const generator = $b24.fetchListMethod('task.items.getlist', [
@@ -288,7 +289,7 @@ Get a list of tasks with IDs 1, 2, 3, 4, 5, 6, selecting only the fields `ID` an
       console.error('Request failed', error);
     }
     
-    // callMethod: Manually controls pagination through the start parameter. Use it for precise control of request batches. For large datasets, it is less efficient than fetchListMethod.
+    // callMethod: Manual control of pagination through the start parameter. Use for precise control over request batches. Less efficient for large data than fetchListMethod.
     
     try {
       const response = await $b24.callMethod('task.items.getlist', [
@@ -333,7 +334,7 @@ Get a list of tasks with IDs 1, 2, 3, 4, 5, 6, selecting only the fields `ID` an
             ->getResult();
     
         echo 'Success: ' . print_r($result, true);
-        // Your logic for processing data
+        // Your data processing logic
         processData($result);
     
     } catch (Throwable $e) {
@@ -387,5 +388,4 @@ Get a list of tasks with IDs 1, 2, 3, 4, 5, 6, selecting only the fields `ID` an
 
 {% endlist %}
 
-To limit the load on pagination, a limit of 50 tasks has been imposed.
-
+To limit the load on pagination, a restriction of 50 tasks has been imposed.

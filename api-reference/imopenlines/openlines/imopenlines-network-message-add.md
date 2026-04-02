@@ -1,19 +1,19 @@
-# Send a Message to a User on Behalf of the Open Channel imopenlines.network.message.add
+# Send a message to a user on behalf of the Open Channel imopenlines.network.message.add
 
 > Scope: [`imopenlines`](../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-The method `imopenlines.network.message.add` sends a message to a user on behalf of the open channel connected in Bitrix24 Network.
+The method `imopenlines.network.message.add` sends a message to a user on behalf of an open channel connected in Bitrix24 Network.
 
-Method operation limitations:
+Method limitations:
 1. The method is unavailable during session authorization. It returns the error `WRONG_AUTH_TYPE` for session authorization.
 2. A message can be sent no more than once per user within a week. There are no limits for accounts with a Partner (NFR) license.
-3. The keyboard can only be used for formatting the link button to an external site.
+3. The keyboard can only be used for formatting a button link to an external site.
 
 ## Method Parameters
 
-{% include [Footnote on Required Parameters](../../../_includes/required.md) %}
+{% include [Footnote on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -25,15 +25,15 @@ Method operation limitations:
 || **MESSAGE***
 [`string`](../../data-types.md) | Message text. 
 
-How to format text is described in the article [Formatting](../../chats/messages/index.md) ||
+How to format text is described in the article [formatting](../../chats/messages/formatting.md) ||
 || **ATTACH**
 [`object`](../../data-types.md) | Attachment.
 
-The format of the attachment is described in the article [How to Use Attachments](../../chats/messages/attachments/index.md) ||
+The format of the attachment is described in the article [How to use attachments](../../chats/messages/attachments.md) ||
 || **KEYBOARD**
 [`object`](../../data-types.md) | Keyboard.
 
-How to create keyboards is described in the article [Working with Keyboards](../../chats/messages/keyboards.md) ||
+How to create keyboards is described in the article [Working with keyboards](../../chats/messages/keyboards.md) ||
 || **URL_PREVIEW**
 [`char`](../../data-types.md) | Link preview. Enabled `Y` by default. 
 
@@ -42,7 +42,7 @@ Pass `N` to disable link preview ||
 
 ## Code Examples
 
-{% include [Footnote on Examples](../../../_includes/examples.md) %}
+{% include [Footnote on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -448,7 +448,7 @@ HTTP Status: **400**
 }
 ```
 
-{% include notitle [Error Handling](../../../_includes/error-info.md) %}
+{% include notitle [error handling](../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
@@ -462,17 +462,17 @@ HTTP Status: **400**
 || `400` | `USER_MESSAGE_LIMIT` | You can't send more than one message per week to each user | Message limit exceeded for a specific user ||
 || `400` | `MESSAGE_EMPTY` | Message can't be empty | Message text not specified ||
 || `400` | `ATTACH_OVERSIZE` | You have exceeded the maximum allowable size of attach | Maximum allowable attachment size exceeded 30 KB ||
-|| `400` | `ATTACH_ERROR` | Incorrect attach params | Attachment object did not pass validation ||
-|| `400` | `KEYBOARD_ERROR` | Incorrect keyboard params | Keyboard object did not pass validation ||
+|| `400` | `ATTACH_ERROR` | Incorrect attach params | Attachment object failed validation ||
+|| `400` | `KEYBOARD_ERROR` | Incorrect keyboard params | Keyboard object failed validation ||
 || `400` | `WRONG_REQUEST` | Message isn't added | Message not sent ||
 |#
 
-{% include [System Errors](../../../_includes/system-errors.md) %}
+{% include [system errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
 - [{#T}](./index.md)
 - [{#T}](./imopenlines-network-join.md)
-- [{#T}](../../chats/messages/index.md)
-- [{#T}](../../chats/messages/attachments/index.md)
+- [{#T}](../../chats/messages/formatting.md)
+- [{#T}](../../chats/messages/attachments.md)
 - [{#T}](../../chats/messages/keyboards.md)

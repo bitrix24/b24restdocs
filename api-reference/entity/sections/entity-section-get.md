@@ -1,82 +1,113 @@
-# Get the list of sections entity.section.get
-
-{% note warning "We are still updating this page" %}
-
-Some data may be missing — we will fill it in shortly.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- edits needed for writing standards
-- parameter types not specified
-- examples missing
-- response in case of error is absent
-
-{% endnote %}
-
-{% endif %}
+# Get the List of Sections entity.section.get
 
 > Scope: [`entity`](../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: any user upon application authorization
 
-The method `entity.section.get` retrieves a list of sections from the storage (information block sections). It is a list method.
+The method `entity.section.get` retrieves the list of sections from the application's data storage.
 
-The user must have at least read access permission (**R**) to the storage.
+{% note info "" %}
 
-## Parameters
+The method works only in the context of the [application](../../../settings/app-installation/index.md).
+
+{% endnote %}
+
+
+## Method Parameters
+
+{% include [Note on parameters](../../../_includes/required.md) %}
 
 #|
-|| **Parameter** | **Description** ||
+|| **Name**
+`type` | **Description** ||
 || **ENTITY**^*^
-[`string`](../../data-types.md) | Required. String identifier of the storage. ||
-|| **SORT**
-[`unknown`](../../data-types.md) | An array for sorting, in the form `by1`=>`order1`[, `by2`=>`order2` [, ..]], where `by1, ...` is the sorting field, which can take the following values: 
-- **ID** - section code;
-- **SECTION** - parent section code;
-- **NAME** - section name;
-- **CODE** - symbolic section code;
-- **ACTIVE** - section activity;
-- **LEFT_MARGIN** - left boundary;
-- **DEPTH_LEVEL** - depth level (starts from 1);
-- **SORT** - sorting index;
-- **CREATED** - by section creation time;
-- **CREATED_BY** - by the identifier of the section creator;
-- **MODIFIED_BY** - by the identifier of the user who modified the section;
-- **TIMESTAMP_X** - by the time of the last modification.
+[`string`](../../data-types.md) | Identifier of the application's data storage. Use the value specified when creating the storage.
 
-*order1, ...* - sorting order, which can take the following values:
-- **ASC** - ascending;
-- **DESC** - descending.
-The default value `Array("SORT"=>"ASC")` means that the result will be sorted in ascending order. If an empty array `Array()` is specified, the result will not be sorted. ||
+You can obtain the identifier using the [entity.get](../entities/entity-get.md) method. ||
+|| **SORT**
+[`object`](../../data-types.md) | Object format:
+
+```
+{
+    field_1: value_1,
+    field_2: value_2,
+    ...,
+    field_n: value_n
+}
+```
+
+where:
+- `field_n` — sorting field
+- `value_n` — sorting direction: `ASC` or `DESC`
+
+Refer to the [Section Type](#section) for the list of available sorting fields.
+
+By default, `{"ID":"ASC"}` is used.
+
+Example: `{"NAME":"ASC","ID":"DESC"}` ||
 || **FILTER**
-[`unknown`](../../data-types.md) | An array in the form `array("filter_field"=>"value" [, ...])`. `Filter field` can take the following values:
-- **ACTIVE** - filter by activity (Y\|N);
-- **NAME** - by name (can search by pattern [%_]);
-- **CODE** - by symbolic code (by pattern [%_]);
-- **SECTION_ID** - by parent section code (if false is specified, root sections will be returned);
-- **DEPTH_LEVEL** - by depth level (starts from 1);
-- **LEFT_MARGIN**, **RIGHT_MARGIN** - by position in the tree (used when a selection of the tree of subsections is needed);
-- **ID** - by section code;
-- **TIMESTAMP_X** - by the time of the last modification;
-- **DATE_CREATE** - by creation time;
-- **MODIFIED_BY** - by the code of the user who modified the section;
-- **CREATED_BY** - by creator;
-All filterable fields can contain a type of filter check before the name. Optional. By default, records are not filtered. ||
-|| **start** | The ordinal number of the list item from which to return the next items when calling the current method. Details in the article [{#T}](../../../settings/how-to-call-rest-api/list-methods-pecularities.md) ||
+[`object`](../../data-types.md) | Object format:
+
+```
+{
+    field_1: value_1,
+    field_2: value_2,
+    ...,
+    field_n: value_n
+}
+```
+
+where:
+- `field_n` — filtering field
+- `value_n` — filter value
+
+Refer to the [Section Type](#section) for the list of available filtering fields.
+
+You can add prefixes to the keys `field_n`:
+- `>=` — greater than or equal to
+- `>` — greater than
+- `<=` — less than or equal to
+- `<` — less than
+- `=` — equal (default)
+- `!=` or `!` — not equal
+- `><` — range
+- `!><` — not in range
+- `%` — LIKE
+- `!%` — NOT LIKE
+- `?` — check for `null`/`not null` ||
+|| **start**
+[`integer`](../../data-types.md) | Pagination parameter.
+
+The page size is fixed at `50` records.
+
+The formula to obtain the N-th page:
+`start = (N - 1) * 50`
+
+For more details, refer to the article [Features of List Methods](../../../settings/how-to-call-rest-api/list-methods-pecularities.md) ||
 |#
 
-{% include [Parameter notes](../../../_includes/required.md) %}
+## Code Examples
 
-## Examples
+{% include [Note on examples](../../../_includes/examples.md) %}
+
+Example of retrieving sections from the storage, where:
+- `ENTITY` — storage identifier `dish`
+- `SORT` — sorting by name
+- `FILTER` — only active sections
 
 {% list tabs %}
 
-- JS
+- cURL (OAuth)
 
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"ENTITY":"dish","SORT":{"NAME":"ASC"},"FILTER":{"ACTIVE":"Y"},"start":0,"auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/entity.section.get
+    ```
+
+- JS
 
     ```js
     try
@@ -84,23 +115,23 @@ All filterable fields can contain a type of filter check before the name. Option
     	const response = await $b24.callMethod(
     		'entity.section.get',
     		{
-    			ENTITY: 'menu_new',
-    			SORT: {
-    				'NAME': 'ASC'
-    			}
+    			ENTITY: 'dish',
+    			SORT: { NAME: 'ASC' },
+    			FILTER: { ACTIVE: 'Y' },
+    			start: 0,
     		}
     	);
-    	
-    	const sections = response.getData().result;
+
+    	const result = response.getData().result;
+    	console.info(result);
     }
-    catch( error )
+    catch (error)
     {
     	console.error('Error:', error);
     }
     ```
 
 - PHP
-
 
     ```php
     try {
@@ -109,19 +140,21 @@ All filterable fields can contain a type of filter check before the name. Option
             ->call(
                 'entity.section.get',
                 [
-                    'ENTITY' => 'menu_new',
-                    'SORT'   => [
-                        'NAME' => 'ASC'
-                    ]
+                    'ENTITY' => 'dish',
+                    'SORT' => ['NAME' => 'ASC'],
+                    'FILTER' => ['ACTIVE' => 'Y'],
+                    'start' => 0,
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
-        $sections = $result->data();
-    
+
+        echo '<pre>';
+        print_r($result);
+        echo '</pre>';
+
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error getting entity sections: ' . $e->getMessage();
@@ -134,72 +167,231 @@ All filterable fields can contain a type of filter check before the name. Option
     BX24.callMethod(
         'entity.section.get',
         {
-            ENTITY: 'menu_new',
-            SORT: {
-                'NAME': 'ASC'
-            }
+            ENTITY: 'dish',
+            SORT: { NAME: 'ASC' },
+            FILTER: { ACTIVE: 'Y' },
+            start: 0,
         },
-        function(result){
-            sections = result.data();
-        }
+        (result) => {
+            result.error()
+                ? console.error(result.error())
+                : console.info(result.data())
+            ;
+        },
     );
     ```
 
-- HTTP
+- PHP CRest
 
-    ```http
-    https://my.bitrix24.com/rest/entity.section.get.json?ENTITY=menu_new&SORT%5BNAME%5D=ASC&auth=9affe382af74d9c5caa588e28096e872
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'entity.section.get',
+        [
+            'ENTITY' => 'dish',
+            'SORT' => ['NAME' => 'ASC'],
+            'FILTER' => ['ACTIVE' => 'Y'],
+            'start' => 0,
+        ]
+    );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
     ```
 
 {% endlist %}
 
-{% include [Example notes](../../../_includes/examples.md) %}
+## Response Handling
 
-## Response in case of success
+HTTP Status: **200**
 
-> 200 OK
 ```json
 {
-    "result":
-    [
+    "result": [
         {
-            "ID":"219",
-            "CODE":null,
-            "TIMESTAMP_X":"2013-06-23T10:11:59+02:00",
-            "DATE_CREATE":"2013-06-23T10:11:59+02:00",
-            "CREATED_BY":"1","MODIFIED_BY":"1",
-            "ACTIVE":"Y",
-            "SORT":"500",
-            "NAME":"Second test section",
-            "PICTURE":null,
-            "DETAIL_PICTURE":null,
-            "DESCRIPTION":null,
-            "LEFT_MARGIN":"1",
-            "RIGHT_MARGIN":"2",
-            "DEPTH_LEVEL":"1",
-            "ENTITY":"menu_new",
-            "SECTION":null
+            "ID": "671",
+            "CODE": null,
+            "TIMESTAMP_X": "2026-03-23T17:15:51+02:00",
+            "DATE_CREATE": "2026-03-23T17:15:51+02:00",
+            "CREATED_BY": "577",
+            "MODIFIED_BY": "577",
+            "ACTIVE": "Y",
+            "SORT": "500",
+            "NAME": "Parent Section",
+            "PICTURE": null,
+            "DETAIL_PICTURE": null,
+            "DESCRIPTION": null,
+            "LEFT_MARGIN": "1",
+            "RIGHT_MARGIN": "6",
+            "DEPTH_LEVEL": "1",
+            "ENTITY": "dish",
+            "SECTION": null
         },
         {
-            "ID":"218",
-            "CODE":null,
-            "TIMESTAMP_X":"2013-06-23T10:24:46+02:00",
-            "DATE_CREATE":"2013-06-23T10:08:54+02:00",
-            "CREATED_BY":"1",
-            "MODIFIED_BY":"1",
-            "ACTIVE":"Y",
-            "SORT":"500",
-            "NAME":"First test section",
-            "PICTURE":null,
-            "DETAIL_PICTURE":null,
-            "DESCRIPTION":null,
-            "LEFT_MARGIN":"3",
-            "RIGHT_MARGIN":"4",
-            "DEPTH_LEVEL":"1",
-            "ENTITY":"menu_new",
-            "SECTION":null
+            "ID": "669",
+            "CODE": null,
+            "TIMESTAMP_X": "2026-03-23T17:14:22+02:00",
+            "DATE_CREATE": "2026-03-23T17:14:22+02:00",
+            "CREATED_BY": "577",
+            "MODIFIED_BY": "577",
+            "ACTIVE": "Y",
+            "SORT": "500",
+            "NAME": "Test Section",
+            "PICTURE": null,
+            "DETAIL_PICTURE": null,
+            "DESCRIPTION": null,
+            "LEFT_MARGIN": "7",
+            "RIGHT_MARGIN": "8",
+            "DEPTH_LEVEL": "1",
+            "ENTITY": "dish",
+            "SECTION": null
+        },
+        {
+            "ID": "673",
+            "CODE": null,
+            "TIMESTAMP_X": "2026-03-23T17:16:37+02:00",
+            "DATE_CREATE": "2026-03-23T17:16:37+02:00",
+            "CREATED_BY": "577",
+            "MODIFIED_BY": "577",
+            "ACTIVE": "Y",
+            "SORT": "500",
+            "NAME": "Test Section",
+            "PICTURE": null,
+            "DETAIL_PICTURE": null,
+            "DESCRIPTION": null,
+            "LEFT_MARGIN": "4",
+            "RIGHT_MARGIN": "5",
+            "DEPTH_LEVEL": "2",
+            "ENTITY": "dish",
+            "SECTION": "671"
+        },
+        {
+            "ID": "675",
+            "CODE": "test-section",
+            "TIMESTAMP_X": "2026-03-23T17:42:32+02:00",
+            "DATE_CREATE": "2026-03-23T17:42:32+02:00",
+            "CREATED_BY": "577",
+            "MODIFIED_BY": "577",
+            "ACTIVE": "Y",
+            "SORT": "500",
+            "NAME": "Test Section",
+            "PICTURE": null,
+            "DETAIL_PICTURE": null,
+            "DESCRIPTION": "Description of the test section",
+            "LEFT_MARGIN": "2",
+            "RIGHT_MARGIN": "3",
+            "DEPTH_LEVEL": "2",
+            "ENTITY": "dish",
+            "SECTION": "671"
         }
     ],
-    "total":2
+    "total": 4,
+    "time": {
+        "start": 1774338416,
+        "finish": 1774338416.415466,
+        "duration": 0.4154660701751709,
+        "processing": 0,
+        "date_start": "2026-03-24T10:46:56+02:00",
+        "date_finish": "2026-03-24T10:46:56+02:00",
+        "operating_reset_at": 1774339016,
+        "operating": 0
+    }
 }
 ```
+
+### Returned Data
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`section[]`](#section) | List of sections in the storage ||
+|| **total**
+[`integer`](../../data-types.md) | Total number of sections in the selection ||
+|| **next**
+[`integer`](../../data-types.md) | Offset for retrieving the next page (if available) ||
+|| **time**
+[`time`](../../data-types.md#time) | Information about the request execution time ||
+|#
+
+#### Section Type {#section}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **ID**
+[`integer`](../../data-types.md) | Identifier of the section ||
+|| **CODE**
+[`string`](../../data-types.md) | Symbolic code of the section ||
+|| **TIMESTAMP_X**
+[`datetime`](../../data-types.md) | Date and time of the last modification ||
+|| **DATE_CREATE**
+[`datetime`](../../data-types.md) | Date and time of creation ||
+|| **CREATED_BY**
+[`integer`](../../data-types.md) | Identifier of the user who created the section ||
+|| **MODIFIED_BY**
+[`integer`](../../data-types.md) | Identifier of the user who modified the section ||
+|| **ACTIVE**
+[`string`](../../data-types.md) | Active flag (`Y` or `N`) ||
+|| **SORT**
+[`integer`](../../data-types.md) | Sorting index ||
+|| **NAME**
+[`string`](../../data-types.md) | Name of the section ||
+|| **PICTURE**
+[`string`](../../data-types.md) | URL of the section image or `null` ||
+|| **DETAIL_PICTURE**
+[`string`](../../data-types.md) | URL of the detailed section image or `null` ||
+|| **DESCRIPTION**
+[`string`](../../data-types.md) | Description of the section ||
+|| **LEFT_MARGIN**
+[`integer`](../../data-types.md) | Left boundary of the section in the tree ||
+|| **RIGHT_MARGIN**
+[`integer`](../../data-types.md) | Right boundary of the section in the tree ||
+|| **DEPTH_LEVEL**
+[`integer`](../../data-types.md) | Depth level of the section ||
+|| **ENTITY**
+[`string`](../../data-types.md) | Identifier of the storage ||
+|| **SECTION**
+[`integer`](../../data-types.md) | Identifier of the parent section or `null` ||
+|#
+
+## Error Handling
+
+HTTP Status: **400**
+
+```json
+{
+    "error": "ERROR_ARGUMENT",
+    "error_description": "Argument 'ENTITY' is null or empty",
+    "argument": "ENTITY"
+}
+```
+
+```json
+{
+    "error": "ERROR_ENTITY_NOT_FOUND",
+    "error_description": "Entity not found"
+}
+```
+
+{% include notitle [error handling](../../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+#|
+|| **Code** | **Description** | **Value** ||
+|| `ERROR_ARGUMENT` | Argument 'ENTITY' is null or empty | The `ENTITY` parameter was not provided or is empty after cleaning ||
+|| `ERROR_ARGUMENT` | Entity code is too long. Max length is N characters. | The `ENTITY` value is too long ||
+|| `ERROR_ENTITY_NOT_FOUND` | Entity not found | The storage with the provided `ENTITY` was not found ||
+|#
+
+{% include [system errors](../../../_includes/system-errors.md) %}
+
+## Continue Learning
+
+- [{#T}](./entity-section-add.md)
+- [{#T}](./entity-section-update.md)
+- [{#T}](./entity-section-delete.md)
+- [{#T}](./index.md)

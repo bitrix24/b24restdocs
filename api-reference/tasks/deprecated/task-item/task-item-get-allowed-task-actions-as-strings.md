@@ -1,4 +1,4 @@
-# Get a list of action names and their availability task.item.getallowedtaskactionsasstrings
+# Get a List of Action Names and Their Allowability task.item.getallowedtaskactionsasstrings
 
 > Scope: [`task`](../../../scopes/permissions.md)
 >
@@ -6,9 +6,9 @@
 
 The method returns an array where the keys are the names of actions (the names correspond to the constants of the PHP class `CTaskItem`), and the values indicate whether the action is allowed (`true`) or not (`false`).
 
-{% note warning %}
+{% note warning "DEPRECATED" %}
 
-The method is deprecated and not supported. It is recommended to use the methods [tasks.task.*](../../index.md).
+The development of this method has been halted. Please use [tasks.task.getAccess](../../tasks-task-get-access.md).
 
 {% endnote %}
 
@@ -21,7 +21,7 @@ The method is deprecated and not supported. It is recommended to use the methods
 
 ## Code Examples
 
-{% include [Note about examples](../../../../_includes/examples.md) %}
+{% include [Examples Note](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 

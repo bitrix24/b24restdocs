@@ -1,16 +1,16 @@
-# Get Custom Field by ID crm.invoice.userfield.get
+# Get User Field by ID crm.invoice.userfield.get
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-{% note warning %}
+{% note warning "DEPRECATED" %}
 
-The method is deprecated. It is recommended to use [`Universal methods for invoices`](../../universal/invoice.md)
+The development of this method has been halted. Please use [Universal Methods for Invoices](../../universal/invoice.md).
 
 {% endnote %}
 
-The method returns the user field of invoices by ID.
+This method returns the user field of invoices by its ID.
 
 ## Parameters
 
@@ -23,7 +23,7 @@ The method returns the user field of invoices by ID.
 
 ## Code Examples
 
-{% include [Note on examples](../../../../_includes/examples.md) %}
+{% include [Note on Examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 

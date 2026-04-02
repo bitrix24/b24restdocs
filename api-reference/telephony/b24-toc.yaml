@@ -1,39 +1,37 @@
-title: Telephony
-href: index.md
-items: 
-  - name: About Telephony in Bitrix24
-    href: index.md
-  - name: Register an External Line
-    href: telephony-external-line-add.md
-  - name: Modify an External Line
+title: Telephony  
+href: index.md  
+items:  
+  - name: About Telephony in Bitrix24  
+    href: index.md  
+  - name: Register an External Line  
+    href: telephony-external-line-add.md  
+  - name: Modify an External Line  
     href: telephony-external-line-update.md  
-  - name: Retrieve a List of External Lines
-    href: telephony-external-line-get.md
-  - name: Delete an External Line
-    href: telephony-external-line-delete.md
-  - name: Find a Client in CRM by Phone Number
-    href: telephony-external-call-search-crm-entities.md
-  - name: Register Call Start
-    href: telephony-external-call-register.md
-  - name: Open Call Detail Form for User
-    href: telephony-external-call-show.md
-  - name: Hide Call Detail Form for User
-    href: telephony-external-call-hide.md
-  - name: End Call
-    href: telephony-external-call-finish.md
-  - name: Attach Call Recording
-    href: telephony-external-call-attach-record.md
-  - name: Add Transcription of Recording to Call
-    href: telephony-call-attach-transcription.md
-  - name: Events
-    include:
-      path: events/b24-toc.yaml
-      mode: link
-  - name: SIP and Built-in Telephony
-    include:
-      path: voximplant/b24-toc.yaml
-      mode: link
-  - name: Widgets
-    href: widgets.md
-  - name: Retrieve a List of Calls
-    href: voximplant-statistic-get.md
+  - name: Retrieve a List of External Lines  
+    href: telephony-external-line-get.md  
+  - name: Delete an External Line  
+    href: telephony-external-line-delete.md  
+  - name: Find a Client in CRM by Phone Number  
+    href: telephony-external-call-search-crm-entities.md  
+  - name: Register Call Start  
+    href: telephony-external-call-register.md  
+  - name: Open Call Detail Form for User  
+    href: telephony-external-call-show.md  
+  - name: Hide Call Detail Form for User  
+    href: telephony-external-call-hide.md  
+  - name: End Call  
+    href: telephony-external-call-finish.md  
+  - name: Attach Call Recording  
+    href: telephony-external-call-attach-record.md  
+  - name: Add Transcription of Recording to Call  
+    href: telephony-call-attach-transcription.md  
+  - name: Events  
+    include:  
+      path: events/b24-toc.yaml  
+      mode: link  
+  - name: SIP and Built-in Telephony  
+    include:  
+      path: voximplant/b24-toc.yaml  
+      mode: link  
+  - name: Retrieve a List of Calls  
+    href: voximplant-statistic-get.md  

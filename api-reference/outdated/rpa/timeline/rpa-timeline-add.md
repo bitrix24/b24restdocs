@@ -4,9 +4,15 @@
 >
 > Who can execute the method: any user
 
+{% note warning "DEPRECATED" %}
+
+The development of this method has been halted. Use [Smart scripts](../../../crm/universal/user-defined-object-types/index.md) as an alternative to this functionality.
+
+{% endnote %}
+
 This method creates a new timeline entry for the `itemId` of the `typeId` process.
 
-This method allows modifying only the `title` and `description` fields.
+This method allows modification of only the `title` and `description` fields.
 
 ## Method Parameters
 
@@ -14,11 +20,11 @@ This method allows modifying only the `title` and `description` fields.
 || **Name**
 `type` | **Description** ||
 || **typeId** 
-[`integer`](../../../data-types.md) | Process identifier ||
+[`integer`](../../../data-types.md) | Identifier of the process ||
 || **itemId** 
-[`integer`](../../../data-types.md) | Entity identifier ||
+[`integer`](../../../data-types.md) | Identifier of the item ||
 || **fields** 
-[`object`](../../../data-types.md) | Object with [fields](#fields) of the entry ||
+[`object`](../../../data-types.md) | Object containing the [fields](#fields) of the entry ||
 |#
 
 ### Fields Parameter {#fields}
@@ -55,12 +61,12 @@ HTTP Status: **200**
         "users": {
             "1": {
                 "id": "1",
-                "name": "Anthony",
+                "name": "John",
                 "secondName": "",
                 "lastName": "",
                 "title": null,
                 "workPosition": "",
-                "fullName": "Anthony",
+                "fullName": "John",
                 "link": "/company/personal/user/1/"
             }
         }

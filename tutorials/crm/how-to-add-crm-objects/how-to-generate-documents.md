@@ -4,27 +4,33 @@
 >
 > Who can execute the method: users with administrative access to the CRM section
 
-You can automate document handling in CRM using a script. It will perform the complete cycle of document generation: create a number generator, upload a template in `.docx` format, and generate a document for a specific deal.
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
+You can automate document handling in CRM using a script. It will perform the complete document generation cycle: create a number generator, upload a template in `.docx` format, and generate a document for a specific deal.
 
 To create a document, we will sequentially execute the following methods:
 
-1. [crm.documentgenerator.numerator.add](../../../api-reference/crm/document-generator/numerator/crm-document-generator-numerator-add.md) — we will create a document number generator,
+1. [crm.documentgenerator.numerator.add](../../../api-reference/crm/document-generator/numerator/crm-document-generator-numerator-add.md) — create a document number generator,
 
-2. [crm.documentgenerator.template.add](../../../api-reference/crm/document-generator/templates/crm-document-generator-template-add.md) — we will upload the document template,
+2. [crm.documentgenerator.template.add](../../../api-reference/crm/document-generator/templates/crm-document-generator-template-add.md) — upload the document template,
 
-3. [crm.documentgenerator.document.add](../../../api-reference/crm/document-generator/documents/crm-document-generator-document-add.md) — we will generate the document.
+3. [crm.documentgenerator.document.add](../../../api-reference/crm/document-generator/documents/crm-document-generator-document-add.md) — generate the document.
 
-## Prepare Variables
+## Preparing Variables
 
 Let's define the main variables that we will use during the document generation process.
 
--  `filePath` — path to the template file. We will specify `template.docx`.
+-  `filePath` — the path to the template file. We will specify `template.docx`.
 
--  `iDealID` — deal identifier. We will create a document for the deal with the identifier `1`.
+-  `iDealID` — the deal identifier. We will create a document for the deal with the identifier `1`.
 
--  `sDocName` — name of the document being created. We will specify `Product Demonstration Implementation`.
+-  `sDocName` — the name of the document being created. We will specify `Product Demonstration Implementation`.
 
-{% include [Note on Examples](../../../_includes/examples.md) %}
+{% include [Example Notes](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -46,13 +52,13 @@ Let's define the main variables that we will use during the document generation 
 
 {% endlist %}
 
-## 1\. Create a Document Number Generator
+## 1. Create a Document Number Generator
 
 We will create a number generator for documents using [crm.documentgenerator.numerator.add](../../../api-reference/crm/document-generator/numerator/crm-document-generator-numerator-add.md). We will pass two parameters to the method.
 
--  `name` — name of the number generator. We will specify `Rest Numerator`.
+-  `name` — the name of the number generator. We will specify `Rest Numerator`.
 
--  `template` — the template from which the document number will be generated. We will specify `{NUMBER}` — this is a variable that will be replaced with the sequential number. Other variables can be used, for example, `{DAY}` — current day, `{CLIENT_ID}` — client identifier, `{RANDOM}` — random number.
+-  `template` — the template from which the document number will be generated. We will specify `{NUMBER}` — this variable will be replaced with the sequential number. Other variables can also be used, for example, `{DAY}` — the current day, `{CLIENT_ID}` — the client identifier, `{RANDOM}` — a random number.
 
 {% list tabs %}
 
@@ -115,7 +121,7 @@ The method [crm.documentgenerator.numerator.add](../../../api-reference/crm/docu
 }
 ```
 
-## 2\. Upload the Document Template
+## 2. Upload the Document Template
 
 If the number generator is created, we will add the document template using the method [crm.documentgenerator.template.add](../../../api-reference/crm/document-generator/templates/crm-document-generator-template-add.md).
 
@@ -127,17 +133,17 @@ The content of the template file needs to be converted to [Base64](../../../api-
 
 In [crm.documentgenerator.template.add](../../../api-reference/crm/document-generator/templates/crm-document-generator-template-add.md), we need to pass the following data:
 
--  `name` — name of the template. We will specify the variable `sDocName`.
+-  `name` — the name of the template. We will specify the variable `sDocName`.
 
--  `numeratorId` — identifier of the number generator. We will pass it from the object `resNum`, which was obtained in the first step.
+-  `numeratorId` — the identifier of the number generator. We will pass it from the object `resNum`, which we obtained in the first step.
 
--  `region` — region of the template. This affects localization, such as currency and date. We will specify `de` — Germany.
+-  `region` — the region of the template. This affects localization, such as currency and date. We will specify `de` — Germany.
 
--  `users` — array of access permissions. Defines which user groups can see and use the template. We will specify `UA` — all authorized users.
+-  `users` — an array of access permissions. This defines which user groups can see and use the template. We will specify `UA` — all authorized users.
 
--  `entityTypeId` — [identifier of the CRM object type](../../../api-reference/crm/data-types.md#object_type). We will specify `2` — deal. A complete list of object types can be obtained using the method [crm.enum.ownertype](../../../api-reference/crm/auxiliary/enum/crm-enum-owner-type.md).
+-  `entityTypeId` — [the identifier of the CRM object type](../../../api-reference/crm/data-types.md#object_type). We will specify `2` — deal. A complete list of object types can be obtained using the method [crm.enum.ownertype](../../../api-reference/crm/auxiliary/enum/crm-enum-owner-type.md).
 
--  `file` — content of the file `filePath`, which has been converted to Base64.
+-  `file` — the content of the file `filePath`, which has been converted to Base64.
 
 {% list tabs %}
 
@@ -212,7 +218,7 @@ template: {
     "region": "de",
     "active": "Y",
     "code": null,
-    "createTime": "2025-07-09T16:12:13+02:00",
+    "createTime": "2025-07-09T16:12:13+03:00",
     "download": "https://some-domain.bitrix24.com/bitrix/services/main/ajax.php?action=crm.documentgenerator.template.download&SITE_ID=s1&id=39",
     "downloadMachine": "https://some-domain.bitrix24.com/rest/crm.documentgenerator.template.download.json?sessid=c4ad892d7583ead4fd38666a0af85cb7&token=crm%7CYWN0aW9uPWNybS5kb2N1bWVudGdlbmVyYXRvci50ZW1wbGF0ZS5kb3dubG9hZCZTSVRFX0lEPXMxJmlkPTM5Jl89azNRNlFuVVRvUGl5VzNLaExTVDJCR3g1WjdyQ0tSSFA%3D%7CImNybS5kb2N1bWVudGdlbmVyYXRvci50ZW1wbGF0ZS5kb3dubG9hZHxjcm18WVdOMGFXOXVQV055YlM1a2IyTjFiV1Z1ZEdkbGJtVnlZWFJ2Y2k1MFpXMXdiR0YwWlM1a2IzZHViRzloWkNaVFNWUkZYMGxFUFhNeEptbGtQVE01Smw4OWF6TlJObEZ1VlZSdlVHbDVWek5MYUV4VFZESkNSM2cxV2pkeVEwdFNTRkE9fGM0YWQ4OTJkNzU4M2VhZDRmZDM4NjY2YTBhZjg1Y2I3Ig%3D%3D.GMgjAbCT099xlo8CJN9n5mP2s7MBbqfU%2BbEM%2FAzpoYE%3D",
     "entityTypeId": [ "0": "2" ],
@@ -223,15 +229,15 @@ template: {
 }
 ```
 
-## 3\. Generate the Document
+## 3. Generate the Document
 
 If the template is successfully uploaded, we will create a document for the deal using the method [crm.documentgenerator.document.add](../../../api-reference/crm/document-generator/documents/crm-document-generator-document-add.md). We will specify three parameters in the method.
 
-1. `templateId` — identifier of the template. We will pass it from the object `resTemplate`, which was obtained in the second step.
+1. `templateId` — the identifier of the template. We will pass it from the object `resTemplate`, which we obtained in the second step.
 
-2. `entityTypeId` — [identifier of the CRM object type](../../../api-reference/crm/data-types.md#object_type). We will specify `2` — deal. A complete list of object types can be obtained using the method [crm.enum.ownertype](../../../api-reference/crm/auxiliary/enum/crm-enum-owner-type.md).
+2. `entityTypeId` — [the identifier of the CRM object type](../../../api-reference/crm/data-types.md#object_type). We will specify `2` — deal. A complete list of object types can be obtained using the method [crm.enum.ownertype](../../../api-reference/crm/auxiliary/enum/crm-enum-owner-type.md).
 
-3. `entityId` — identifier of the deal. We will specify the variable `iDealID`.
+3. `entityId` — the identifier of the deal. We will specify the variable `iDealID`.
 
 {% list tabs %}
 
@@ -285,9 +291,9 @@ The document will be generated, and the method [crm.documentgenerator.document.a
     "title": "Product Demonstration Implementation 1",
     "number": "1",
     "id": 29,
-    "createTime": "2025-07-09T16:29:27+02:00",
+    "createTime": "2025-07-09T16:29:27+03:00",
     "createdBy": 27,
-    "updateTime": "2025-07-09T16:29:27+02:00",
+    "updateTime": "2025-07-09T16:29:27+03:00",
     "templateId": "39",
     "emailDiskFile": 4917,
     "entityId": "1",

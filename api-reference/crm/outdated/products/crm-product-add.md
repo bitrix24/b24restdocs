@@ -2,11 +2,11 @@
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: administrator, user with the "Allow to change settings" access permission in CRM
+> Who can execute the method: administrator, user with the "Allow to modify settings" access permission in CRM
 
-{% note warning "Method development halted" %}
+{% note warning "DEPRECATED" %}
 
-The method `crm.product.add` continues to function, but there are more relevant alternatives [catalog.product.*](../../../catalog/product/index.md).
+The development of this method has been halted. Please use [catalog.product.add](../../../catalog/product/catalog-product-add.md).
 
 {% endnote %}
 
@@ -20,16 +20,16 @@ The method `crm.product.add` creates a new product.
 || **Name**
 `type` | **Description** ||
 || **fields**
-[`array`](../../../data-types.md) | Field values for creating a product.
+[`array`](../../../data-types.md) | Field values for creating the product.
 
-To find out the required field format, execute the method [crm.product.fields](./crm-product-fields.md) and check the format of the returned field values ||
+To find out the required format of the fields, execute the method [crm.product.fields](./crm-product-fields.md) and check the format of the incoming values for these fields ||
 |#
 
 {% note info %}
 
 Starting from version **CRM 21.700.0**, support for auto-generating the product's symbolic code has been included.
 
-If the generated symbolic code exceeds 100 characters, it is automatically truncated to 100 characters. This should be taken into account when creating requests by passing a unique value at the beginning/middle of the product name to avoid duplicate symbolic codes.
+If the generated symbolic code exceeds 100 characters, it will be automatically truncated to 100 characters. This should be taken into account when creating requests by passing a unique value at the beginning/middle of the product name to avoid duplicate symbolic codes.
 
 {% endnote %}
 

@@ -1,12 +1,18 @@
-# Embed a widget in a lead as a custom property
+# Embed a Widget in a Lead as a Custom Property
 
 > Scope: [`crm`](../../../api-reference/scopes/permissions.md)
 >
 > Who can execute the method: users with administrative access to the CRM section
 
-Example of adding a custom property to a lead's detail form. The example works as follows: after the first interaction with the property in the lead editing form, the handler from the application will always be loaded, even in view mode. The handler makes a request to an external API to obtain the region and operator of the given phone number in the US.
+{% note tip "" %}
 
-The property installation code is called once. The variable `handlerUrl` is the path to the property handler file.
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
+Here’s an example of adding a custom property to a lead's detail form. The example works as follows: after the first interaction with the property in the lead's edit form, the handler from the application will always load, even in view mode. The handler makes a request to an external API to retrieve the region and operator of the given phone number in the territory of the US.
+
+The property setup code is called once. The variable `handlerUrl` is the path to the property handler file.
 
 {% list tabs %}
 
@@ -111,7 +117,7 @@ The property installation code is called once. The variable `handlerUrl` is the 
 
 {% endlist %}
 
-The handler file that you specified in the `handlerUrl` variable in the code above:
+The handler file specified in the `handlerUrl` variable in the code above:
 
 {% list tabs %}
 

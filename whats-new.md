@@ -2,6 +2,18 @@
 
 ## 2026
 
+### April 02, 2026
+
+- Consolidated updates in WebRTC Call Card docs: events [BackgroundCallCard*](./api-reference/widgets/ui-interaction/page-background-worker/events/index.md), Call Card interaction methods/events, and Page Background Worker call-card methods
+- Updated [BX24 JS SDK additional functions](./sdk/bx24-js-sdk/additional-functions/index.md), including `BX24.isAdmin`, `BX24.fitWindow`, `BX24.getScrollSize`, `BX24.reloadWindow`, `BX24.resizeWindow`, `BX24.getLang`, and `BX24.scrollParentWindow`
+- Consolidated updates in the Landing section: Template Object methods (`landing.template.*`), Block methods (`landing.block.*`), and Special Pages methods (`landing.syspage.*`)
+- Consolidated updates in Data Storage: [entity.*](./api-reference/entity/entities/index.md), [entity.section.*](./api-reference/entity/sections/index.md), [entity.item.*](./api-reference/entity/items/index.md), and [entity.item.property.*](./api-reference/entity/items/properties/index.md)
+- Consolidated updates in the Document Generator: [documentgenerator.region.*](./api-reference/document-generator/region/index.md), [documentgenerator.numerator.*](./api-reference/document-generator/numerators/index.md), [documentgenerator.template.*](./api-reference/document-generator/templates/index.md), and [crm.documentgenerator.document.*](./api-reference/crm/document-generator/documents/index.md)
+- Updated CRM universal custom fields methods [userfieldconfig.*](./api-reference/crm/universal/userfieldconfig/userfieldconfig/index.md)
+- Consolidated updates in the Trade Catalog: [catalog.enum.*](./api-reference/catalog/enum/index.md), [catalog.priceTypeGroup.*](./api-reference/catalog/price-type/price-type-group/index.md), [catalog.productPropertyEnum.*](./api-reference/catalog/product-property-enum/index.md), [catalog.productPropertyFeature.*](./api-reference/catalog/product-property-feature/index.md), [catalog.productPropertySection.*](./api-reference/catalog/product-property-section/index.md), [catalog.userfield.document.*](./api-reference/catalog/userfield-document/index.md), and [Data Types and Object Structure in the Catalog REST API](./api-reference/catalog/data-types.md)
+- Updated [messageservice.sender.*](./api-reference/messageservice/index.md) and [socialnetwork.api.workgroup.list](./api-reference/sonet-group/socialnetwork-api-workgroup-list.md)
+- Added new methods for [Chatbots 2.0](./api-reference/chat-bots/chat-bots-v2/index.md)
+
 ### March 23, 2026
 
 - Updated the documentation for methods [documentgenerator.role.*](./api-reference/document-generator/role/index.md) in the Roles and permissions section of the Document Generator
@@ -50,7 +62,7 @@
 ### March 11, 2026
 
 - Updated methods in the [Telephony](./api-reference/telephony/index.md) section
-- Updated the [Attachments in Messages ATTACH](./api-reference/chats/messages/attachments/index.md) section
+- Updated the [Attachments in Messages ATTACH](./api-reference/chats/messages/attachments.md) section
 - Updated the [imopenlines.session.history.get](./api-reference/imopenlines/openlines/sessions/imopenlines-session-history-get.md) method in the Open Channels section
 
 ### March 10, 2026
@@ -70,19 +82,19 @@
 ### March 04, 2026
 
 - Updated the documentation for the chat methods [im.chat.mute](./api-reference/chats/special-operations/im-chat-mute.md), [im.recent.pin](./api-reference/chats/special-operations/im-recent-pin.md), [im.recent.hide](./api-reference/chats/special-operations/im-recent-hide.md) in the Special Operations section
-- Added the method [imbot.chat.setManager](./api-reference/chat-bots/chats/imbot-chat-set-manager.md) for assigning and revoking chat administrator rights
+- Added the method [imbot.chat.setManager](./api-reference/chat-bots/chat-bots-v2/imbot.v2/chats/index.md) for assigning and revoking chat administrator rights
 - Updated the documentation for the chat methods [im.disk.file.commit](./api-reference/chats/files/im-disk-file-commit.md), [im.disk.file.delete](./api-reference/chats/files/im-disk-file-delete.md), [im.disk.file.save](./api-reference/chats/files/im-disk-file-save.md), [im.disk.folder.get](./api-reference/chats/files/im-disk-folder-get.md) in the Files section
 - Updated the documentation for the chat methods [im.department.get](./api-reference/chats/departments/im-department-get.md), [im.department.managers.get](./api-reference/chats/departments/im-department-managers-get.md), [im.department.employees.get](./api-reference/chats/departments/im-department-employees-get.md), [im.department.colleagues.list](./api-reference/chats/departments/im-department-colleagues-list.md) in the Departments section
 - Updated the documentation for the chat methods [im.chat.setOwner](./api-reference/chats/chat-update/im-chat-set-owner.md), [im.chat.updateAvatar](./api-reference/chats/chat-update/im-chat-update-avatar.md), [im.chat.updateColor](./api-reference/chats/chat-update/im-chat-update-color.md), [im.chat.updateTitle](./api-reference/chats/chat-update/im-chat-update-title.md) in the Chat Update section
 - Updated the documentation for the chat methods [im.chat.leave](./api-reference/chats/chat-users/im-chat-leave.md), [im.chat.user.add](./api-reference/chats/chat-users/im-chat-user-add.md), [im.chat.user.delete](./api-reference/chats/chat-users/im-chat-user-delete.md), [im.chat.user.list](./api-reference/chats/chat-users/im-chat-user-list.md), [im.dialog.users.list](./api-reference/chats/chat-users/im-dialog-users-list.md) in the Chat Participants section
 - Updated the documentation for the chat methods [im.dialog.read.all](./api-reference/chats/special-operations/im-dialog-read-all.md), [im.recent.unread](./api-reference/chats/special-operations/im-recent-unread.md) in the Special Operations section
 - Updated the documentation for the chat methods [im.chat.add](./api-reference/chats/im-chat-add.md), [im.chat.get](./api-reference/chats/im-chat-get.md), [im.counters.get](./api-reference/chats/im-counters-get.md), [im.dialog.get](./api-reference/chats/im-dialog-get.md), [im.recent.get](./api-reference/chats/im-recent-get.md), [im.recent.list](./api-reference/chats/im-recent-list.md)
-- Updated the documentation for the methods [imbot.command.register](./api-reference/chat-bots/commands/imbot-command-register.md), [imbot.command.update](./api-reference/chat-bots/commands/imbot-command-update.md), [imbot.command.answer](./api-reference/chat-bots/commands/imbot-command-answer.md), [imbot.command.unregister](./api-reference/chat-bots/commands/imbot-command-unregister.md)
-- Updated the documentation for the methods [imbot.register](./api-reference/chat-bots/imbot-register.md), [imbot.update](./api-reference/chat-bots/imbot-update.md), [imbot.unregister](./api-reference/chat-bots/imbot-unregister.md), and [imbot.bot.list](./api-reference/chat-bots/imbot-bot-list.md)
-- Updated the documentation for the methods [imbot.chat.sendTyping](./api-reference/chat-bots/chats/imbot-chat-send-typing.md), [imbot.message.update](./api-reference/chat-bots/messages/imbot-message-update.md), [imbot.message.delete](./api-reference/chat-bots/messages/imbot-message-delete.md), and [imbot.message.like](./api-reference/chat-bots/messages/imbot-message-like.md)
-- Updated the documentation for events [ONIMBOTMESSAGEUPDATE](./api-reference/chat-bots/messages/events/on-imbot-message-update.md), [ONIMBOTMESSAGEDELETE](./api-reference/chat-bots/messages/events/on-imbot-message-delete.md), [ONIMCOMMANDADD](./api-reference/chat-bots/commands/events/on-im-command-add.md), [ONIMBOTJOINCHAT](./api-reference/chat-bots/chats/events/on-imbot-join-chat.md), and [ONIMBOTDELETE](./api-reference/chat-bots/events/on-imbot-delete.md)
-- Updated the documentation for the chat-bot chat methods [imbot.chat.*](./api-reference/chat-bots/chats/index.md)
-- Updated the documentation for the method [imbot.message.add](./api-reference/chat-bots/messages/imbot-message-add.md) and the event [ONIMBOTMESSAGEADD](./api-reference/chat-bots/messages/events/on-imbot-message-add.md)
+- Updated the documentation for the methods [imbot.command.register](./api-reference/chat-bots/chat-bots-v2/imbot.v2/commands/command-register.md), [imbot.command.update](./api-reference/chat-bots/chat-bots-v2/imbot.v2/commands/command-update.md), [imbot.command.answer](./api-reference/chat-bots/chat-bots-v2/imbot.v2/commands/command-answer.md), [imbot.command.unregister](./api-reference/chat-bots/chat-bots-v2/imbot.v2/commands/command-unregister.md)
+- Updated the documentation for the methods [imbot.register](./api-reference/chat-bots/chat-bots-v2/imbot.v2/bots/bot-register.md), [imbot.update](./api-reference/chat-bots/chat-bots-v2/imbot.v2/bots/bot-update.md), [imbot.unregister](./api-reference/chat-bots/chat-bots-v2/imbot.v2/bots/bot-unregister.md), and [imbot.bot.list](./api-reference/chat-bots/chat-bots-v2/imbot.v2/bots/bot-list.md)
+- Updated the documentation for the methods [imbot.chat.sendTyping](./api-reference/chat-bots/chat-bots-v2/imbot.v2/chats/index.md), [imbot.message.update](./api-reference/chat-bots/chat-bots-v2/imbot.v2/messages/chat-message-update.md), [imbot.message.delete](./api-reference/chat-bots/chat-bots-v2/imbot.v2/messages/chat-message-delete.md), and [imbot.message.like](./api-reference/chat-bots/chat-bots-v2/imbot.v2/messages/chat-message-reaction-add.md)
+- Updated the documentation for events [ONIMBOTMESSAGEUPDATE](./api-reference/chat-bots/chat-bots-v2/imbot.v2/events/index.md), [ONIMBOTMESSAGEDELETE](./api-reference/chat-bots/chat-bots-v2/imbot.v2/events/index.md), [ONIMCOMMANDADD](./api-reference/chat-bots/chat-bots-v2/imbot.v2/events/index.md), [ONIMBOTJOINCHAT](./api-reference/chat-bots/chat-bots-v2/imbot.v2/events/index.md), and [ONIMBOTDELETE](./api-reference/chat-bots/chat-bots-v2/imbot.v2/events/index.md)
+- Updated the documentation for the chat-bot chat methods [imbot.chat.*](./api-reference/chat-bots/chat-bots-v2/imbot.v2/chats/index.md)
+- Updated the documentation for the method [imbot.message.add](./api-reference/chat-bots/chat-bots-v2/imbot.v2/messages/chat-message-send.md) and the event [ONIMBOTMESSAGEADD](./api-reference/chat-bots/chat-bots-v2/imbot.v2/events/index.md)
 
 ### February 25, 2026
 
@@ -212,7 +224,7 @@
 
 ### October 2, 2025
 
-- Updated the main event pages in the [Chats](./api-reference/chat-bots/chats/events/index.md) and [Messages](./api-reference/chat-bots/messages/events/index.md) sections of Chatbots. Introductory information and an overview of events have been added.
+- Updated the main event pages in the [Chats](./api-reference/chat-bots/outdated/chats/events/index.md) and [Messages](./api-reference/chat-bots/outdated/messages/events/index.md) sections of Chatbots. Introductory information and an overview of events have been added.
 - Updated the main page of the [Inventory balances](./api-reference/catalog/store-product/index.md) section in the Trade Catalog. Introductory information and an overview of methods and relationships have been added.
 - Updated the main page of the [Object binding to booking](./api-reference/booking/booking/external-data/index.md) section in Online Booking. Introductory information and an overview of methods and relationships have been added.
 - Updated documentation for the methods [tasks.task.getFields](./api-reference/tasks/tasks-task-get-fields.md), [tasks.task.files.attach](./api-reference/tasks/tasks-task-files-attach.md), [tasks.task.counters.get](./api-reference/tasks/tasks-task-counters-get.md), [tasks.task.history.list](./api-reference/tasks/tasks-task-history-list.md) in Tasks.
@@ -610,7 +622,7 @@
 
 - Updated the documentation for working with product images [catalog.productImage.*](./api-reference/catalog/product-image/index.md)
 
-- Added documentation for the methods [landing.repowidget.getlist](./api-reference/vibe/landing-repowidget-get-list.md) and [landing.repowidget.debug](./api-reference/vibe/landing-repowidget-debug.md)
+- Added documentation for the methods [landing.repowidget.getlist](./api-reference/main/landing-repowidget-get-list.md) and [landing.repowidget.debug](./api-reference/main/landing-repowidget-debug.md)
 
 ### October 16, 2024
 
@@ -627,7 +639,7 @@
 ### October 1, 2024
 
 - Added [OAuth server error codes](./settings/oauth/error-codes.md)
-- Added documentation for [Widgets for Vibes](./api-reference/vibe/index.md)
+- Added documentation for [Widgets for Main Page](./api-reference/main/index.md)
 
 ### September 26, 2024
 

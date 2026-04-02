@@ -1,20 +1,20 @@
-# Get an Estimate by ID: crm.quote.get
+# Get Estimate by ID: crm.quote.get
 
 > Scope: [`crm`](../../scopes/permissions.md)
 >
 > Who can execute the method: a user with "read" access permission for estimates
 
-{% note warning "Method Development Halted" %}
+{% note warning "DEPRECATED" %}
 
-The method `crm.quote.get` is still operational, but there is a more current alternative: [crm.item.get](../universal/crm-item-get.md).
+The development of this method has been halted. Please use [crm.item.get](../universal/crm-item-get.md).
 
 {% endnote %}
 
-The method `crm.quote.get` retrieves an estimate by its ID.
+The method `crm.quote.get` returns an estimate by its ID.
 
 ## Method Parameters
 
-{% include [Parameter Note](../../../_includes/required.md) %}
+{% include [Note on parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -27,7 +27,7 @@ The ID can be obtained using the methods [crm.quote.list](./crm-quote-list.md) a
 
 ## Code Examples
 
-{% include [Examples Note](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 Example of retrieving an estimate with `id = 43`.
 
@@ -244,7 +244,7 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `-` | `ID is not defined or invalid.` | An invalid `id` was provided ||
+|| `-` | `ID is not defined or invalid.` | An incorrect `id` was provided ||
 || `-` | `Access denied.` | The user does not have permission to read estimates ||
 || `-` | `Not found` | The estimate with the provided `id` was not found ||
 |#

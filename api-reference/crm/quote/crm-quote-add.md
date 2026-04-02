@@ -4,9 +4,9 @@
 >
 > Who can execute the method: a user with the "add" access permission for estimates
 
-{% note warning "Method development halted" %}
+{% note warning "DEPRECATED" %}
 
-The method `crm.quote.add` continues to function, but there is a more relevant alternative: [crm.item.add](../universal/crm-item-add.md)
+The development of this method has been halted. Please use [crm.item.add](../universal/crm-item-add.md).
 
 {% endnote %}
 
@@ -16,13 +16,13 @@ If you need to explicitly specify the details of the buyer and seller in the est
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Parameter Note](../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **fields***
-[`object`](../data-types.md) | An object with fields of the estimate in the following format:
+[`object`](../data-types.md) | An object containing the fields of the estimate in the following format:
 
 ```json
 {
@@ -46,7 +46,7 @@ A complete list of available fields and their types can be obtained using the me
 
 ### Parameter fields {#parameter-fields}
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Parameter Note](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -60,7 +60,7 @@ If a value longer than `255` is provided, the system will truncate it to `255` c
 || **STATUS_ID**
 [`crm_status`](../data-types.md) | Stage of the estimate
 
-Pass the value explicitly in each request.
+Provide the value explicitly in each request.
 
 The list of available stages can be obtained using the method [crm.status.list](../status/crm-status-list.md) with the filter `ENTITY_ID = QUOTE_STATUS` ||
 || **CURRENCY_ID**
@@ -68,13 +68,13 @@ The list of available stages can be obtained using the method [crm.status.list](
 || **OPPORTUNITY**
 [`double`](../data-types.md) | Amount of the estimate
 
-Pass a numeric value along with `CURRENCY_ID` ||
+Provide a numeric value along with `CURRENCY_ID` ||
 || **ASSIGNED_BY_ID**
 [`user`](../data-types.md) | Identifier of the responsible person ||
 || **COMPANY_ID**
 [`crm_company`](../data-types.md) | Identifier of the client company ||
 || **CONTACT_IDS**
-[`crm_contact[]`](../data-types.md) | Array of identifiers of client contacts
+[`crm_contact[]`](../data-types.md) | Array of identifiers for client contacts
 ||
 || **MYCOMPANY_ID**
 [`crm_company`](../data-types.md) | Identifier of "your company" for seller requisites ||
@@ -85,7 +85,7 @@ Pass a numeric value along with `CURRENCY_ID` ||
 || **PERSON_TYPE_ID**
 [`integer`](../data-types.md) | Identifier of the payer type ||
 || **BEGINDATE**
-[`date`](../data-types.md) | Date of issuance ||
+[`date`](../data-types.md) | Date of issue ||
 || **CLOSEDATE**
 [`date`](../data-types.md) | Expiration date of the estimate ||
 || **CLIENT_TITLE**
@@ -100,7 +100,7 @@ Pass a numeric value along with `CURRENCY_ID` ||
 [`string`](../data-types.md) | Comment ||
 |#
 
-{% note info "Method feature" %}
+{% note info "Method Feature" %}
 
 Some incorrect values in the fields may not lead to a `400` error: values are normalized, truncated, or replaced with default values.
 
@@ -119,7 +119,7 @@ Some incorrect values in the fields may not lead to a `400` error: values are no
 
 **Import**
 
-These fields are available for filling when the parameter `IMPORT = 'Y'` is passed in the `params`.
+These fields are available for filling when the parameter `IMPORT = 'Y'` is passed in the `params` parameter.
 
 #|
 || **Name**
@@ -136,10 +136,10 @@ These fields are available for filling when the parameter `IMPORT = 'Y'` is pass
 
 ## Code Examples
 
-{% include [Note on examples](../../../_includes/examples.md) %}
+{% include [Example Note](../../../_includes/examples.md) %}
 
 Example of creating an estimate:
-- subject — `Estimate for furniture supply`
+- subject — `Estimate for Furniture Supply`
 - buyer — company with `id = 1`
 - seller — your company with `id = 3`
 
@@ -151,7 +151,7 @@ Example of creating an estimate:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"TITLE":"Estimate for furniture supply","STATUS_ID":"DRAFT","OPENED":"Y","ASSIGNED_BY_ID":1,"CURRENCY_ID":"USD","OPPORTUNITY":150000,"COMPANY_ID":1,"MYCOMPANY_ID":3,"COMMENTS":"Prepared upon client request","BEGINDATE":"2026-03-13T10:00:00+01:00","CLOSEDATE":"2026-03-20T18:00:00+01:00"},"params":{"IMPORT":"N"}}' \
+    -d '{"fields":{"TITLE":"Estimate for Furniture Supply","STATUS_ID":"DRAFT","OPENED":"Y","ASSIGNED_BY_ID":1,"CURRENCY_ID":"USD","OPPORTUNITY":150000,"COMPANY_ID":1,"MYCOMPANY_ID":3,"COMMENTS":"Prepared upon client request","BEGINDATE":"2026-03-13T10:00:00+01:00","CLOSEDATE":"2026-03-20T18:00:00+01:00"},"params":{"IMPORT":"N"}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.quote.add
     ```
 
@@ -161,7 +161,7 @@ Example of creating an estimate:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"TITLE":"Estimate for furniture supply","STATUS_ID":"DRAFT","OPENED":"Y","ASSIGNED_BY_ID":1,"CURRENCY_ID":"USD","OPPORTUNITY":150000,"COMPANY_ID":1,"MYCOMPANY_ID":3,"COMMENTS":"Prepared upon client request","BEGINDATE":"2026-03-13T10:00:00+01:00","CLOSEDATE":"2026-03-20T18:00:00+01:00"},"params":{"IMPORT":"N"},"auth":"**put_access_token_here**"}' \
+    -d '{"fields":{"TITLE":"Estimate for Furniture Supply","STATUS_ID":"DRAFT","OPENED":"Y","ASSIGNED_BY_ID":1,"CURRENCY_ID":"USD","OPPORTUNITY":150000,"COMPANY_ID":1,"MYCOMPANY_ID":3,"COMMENTS":"Prepared upon client request","BEGINDATE":"2026-03-13T10:00:00+01:00","CLOSEDATE":"2026-03-20T18:00:00+01:00"},"params":{"IMPORT":"N"},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/crm.quote.add
     ```
 
@@ -174,7 +174,7 @@ Example of creating an estimate:
     		'crm.quote.add',
     		{
     			fields: {
-    				TITLE: 'Estimate for furniture supply',
+    				TITLE: 'Estimate for Furniture Supply',
     				STATUS_ID: 'DRAFT',
     				OPENED: 'Y',
     				ASSIGNED_BY_ID: 1,
@@ -211,7 +211,7 @@ Example of creating an estimate:
                 'crm.quote.add',
                 [
                     'fields' => [
-                        'TITLE' => 'Estimate for furniture supply',
+                        'TITLE' => 'Estimate for Furniture Supply',
                         'STATUS_ID' => 'DRAFT',
                         'OPENED' => 'Y',
                         'ASSIGNED_BY_ID' => 1,
@@ -248,7 +248,7 @@ Example of creating an estimate:
         'crm.quote.add',
         {
             fields: {
-                TITLE: 'Estimate for furniture supply',
+                TITLE: 'Estimate for Furniture Supply',
                 STATUS_ID: 'DRAFT',
                 OPENED: 'Y',
                 ASSIGNED_BY_ID: 1,
@@ -282,7 +282,7 @@ Example of creating an estimate:
         'crm.quote.add',
         [
             'fields' => [
-                'TITLE' => 'Estimate for furniture supply',
+                'TITLE' => 'Estimate for Furniture Supply',
                 'STATUS_ID' => 'DRAFT',
                 'OPENED' => 'Y',
                 'ASSIGNED_BY_ID' => 1,
@@ -309,7 +309,7 @@ Example of creating an estimate:
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -335,12 +335,12 @@ HTTP status: **200**
 || **result**
 [`integer`](../data-types.md) | Root element of the response. Contains the identifier of the created estimate ||
 || **time**
-[`time`](../data-types.md#time) | Information about the request execution time ||
+[`time`](../data-types.md#time) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {

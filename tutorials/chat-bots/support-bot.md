@@ -1,6 +1,12 @@
 # Example of Creating a Support Channel
 
-With the **Open Channels** module, you can organize technical support for any *Bitrix24* application, including chatbots.
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
+With the **Open Channels** module, you can organize technical support for any Bitrix24 application, including chatbots.
 
 To do this, follow these steps:
 
@@ -22,7 +28,7 @@ To do this, follow these steps:
 
 ![Creating or Selecting an Open Line](./_images/add_network000.png)
 
-Using the method [imopenlines.network.join](../../api-reference/imopenlines/openlines/imopenlines-network-join.md), you can automatically connect your open line to the user account:
+You can automatically connect your open line to the user account using the method [imopenlines.network.join](../../api-reference/imopenlines/openlines/imopenlines-network-join.md):
 
 ```php
 $result = restCommand(
@@ -39,11 +45,11 @@ $result = restCommand(
 After setting up the Open Line, you can send a welcome message to the client using the method [imopenlines.network.message.add](../../api-reference/imopenlines/openlines/imopenlines-network-message-add.md):
 
 ```php
-Thank you for setting up, we will be happy to help. If you have any questions, feel free to write in this chat. Have a great day! :)
+Thank you for setting up, we will be happy to help if you have any questions — feel free to write in this chat. Have a great day! :)
 ```
 
 {% note info %}
 
-`restCommand` is a method for sending data to *Bitrix24*, this method is available in [EchoBot](https://github.com/bitrix24com/bots) and is presented here as an example. You can use your own function or the javascript method [BX24.callMethod](../../first-steps/how-to-use-examples.md), as well as [bitrix24-php-sdk](https://github.com/mesilov/bitrix24-php-sdk). You can also open such a support channel through the javascript method [BX24.im.openMessenger](../../sdk/bx24-js-sdk/additional-functions/bx24-im-open-messenger.md).
+`restCommand` is a method for sending data to *Bitrix24*. This method is available in [EchoBot](https://github.com/bitrix24com/bots) and is presented here as an example. You can use your own function or the JavaScript method [BX24.callMethod](../../first-steps/how-to-use-examples.md), as well as [bitrix24-php-sdk](https://github.com/mesilov/bitrix24-php-sdk). You can also open such a support channel using the JavaScript method [BX24.im.openMessenger](../../sdk/bx24-js-sdk/additional-functions/bx24-im-open-messenger.md).
 
 {% endnote %}

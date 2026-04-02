@@ -1,56 +1,73 @@
-# Add entity.section.add storage section
-
-{% note warning "We are still updating this page" %}
-
-Some data may be missing — we will fill it in shortly
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- parameter types are not specified
-- examples are missing
-- response in case of error is absent
-
-{% endnote %}
-
-{% endif %}
+# Add Section to the entity.section.add Storage
 
 > Scope: [`entity`](../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: a user with `W` (write) or `X` (manage) access permission on the data storage.
 
-The `entity.section.add` method adds a storage section. The user must have at least write access permission (**W**) in the storage.
+The `entity.section.add` method adds a section to the application's data storage.
 
-## Parameters
+{% note info "" %}
+
+The method works only in the context of the [application](../../../settings/app-installation/index.md).
+
+{% endnote %}
+
+
+## Method Parameters
+
+{% include [Footnote on parameters](../../../_includes/required.md) %}
 
 #|
-|| **Parameter** | **Description** ||
+|| **Name**
+`type` | **Description** ||
 || **ENTITY**^*^
-[`string`](../../data-types.md) | Required. String identifier of the storage. ||
+[`string`](../../data-types.md) | Identifier of the application's data storage. Use the value specified when creating the storage.
+
+You can obtain the identifier using the [entity.get](../entities/entity-get.md) method. ||
 || **NAME**^*^
-[`string`](../../data-types.md) | Required. Name of the section. ||
-|| **DESCRIPTION**
-[`unknown`](../../data-types.md) | Description of the section. ||
-|| **ACTIVE**
-[`unknown`](../../data-types.md) | Flag indicating if the section is active (Y\|N). ||
-|| **SORT**
-[`unknown`](../../data-types.md) | Sorting parameter for the section. ||
-|| **PICTURE**
-[`unknown`](../../data-types.md) | Picture of the section. ||
-|| **DETAIL_PICTURE**
-[`unknown`](../../data-types.md) | Detailed picture of the section. ||
+[`string`](../../data-types.md) | Name of the section. ||
 || **SECTION**
-[`unknown`](../../data-types.md) | Identifier of the parent section. ||
+[`integer`](../../data-types.md) | Identifier of the parent section. ||
+|| **ACTIVE**
+[`string`](../../data-types.md) | Section activity flag:
+- `Y` — section is active
+- `N` — section is inactive ||
+|| **SORT**
+[`integer`](../../data-types.md) | Section sorting index. ||
+|| **CODE**
+[`string`](../../data-types.md) | Symbolic code of the section. ||
+|| **DESCRIPTION**
+[`string`](../../data-types.md) | Description of the section. ||
+|| **PICTURE**
+[`file`](../../data-types.md) | Section image. File format — as described in [How to upload files](../../files/how-to-upload-files.md). ||
+|| **DETAIL_PICTURE**
+[`file`](../../data-types.md) | Detailed image of the section. File format — as described in [How to upload files](../../files/how-to-upload-files.md). ||
+|| **UF_**
+[`object`](../../data-types.md) | Custom fields of the section `UF_*` in the format `{"UF_CODE": value}` ||
 |#
 
-{% include [Parameter notes](../../../_includes/required.md) %}
+## Code Examples
 
-## Examples
+{% include [Footnote on examples](../../../_includes/examples.md) %}
+
+Example of adding a section to the `dish` storage:
+- `ENTITY` — storage identifier
+- `NAME` — section name
+- `SECTION` — parent section `671`
+- `ACTIVE`, `SORT`, `CODE`, `DESCRIPTION` — main parameters
+- `PICTURE`, `DETAIL_PICTURE` — files in the format described in [How to upload files](../../files/how-to-upload-files.md)
 
 {% list tabs %}
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"ENTITY":"dish","NAME":"Test Section","SECTION":671,"ACTIVE":"Y","SORT":500,"CODE":"test-section","DESCRIPTION":"Description of the test section","PICTURE":["section.jpg","**base64_section_image**"],"DETAIL_PICTURE":["section-detail.jpg","**base64_section_detail_image**"],"auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/entity.section.add
+    ```
 
 - JS
 
@@ -60,14 +77,22 @@ The `entity.section.add` method adds a storage section. The user must have at le
     	const response = await $b24.callMethod(
     		'entity.section.add',
     		{
-    			ENTITY: 'menu_new',
-    			'NAME': 'Test Section'
+    			ENTITY: 'dish',
+    			NAME: 'Test Section',
+    			SECTION: 671,
+    			ACTIVE: 'Y',
+    			SORT: 500,
+    			CODE: 'test-section',
+    			DESCRIPTION: 'Description of the test section',
+    			PICTURE: ['section.jpg', '**base64_section_image**'],
+    			DETAIL_PICTURE: ['section-detail.jpg', '**base64_section_detail_image**'],
     		}
     	);
-    	
+
     	const result = response.getData().result;
+    	console.info(result);
     }
-    catch( error )
+    catch (error)
     {
     	console.error('Error:', error);
     }
@@ -82,17 +107,26 @@ The `entity.section.add` method adds a storage section. The user must have at le
             ->call(
                 'entity.section.add',
                 [
-                    'ENTITY' => 'menu_new',
-                    'NAME'   => 'Test Section',
+                    'ENTITY' => 'dish',
+                    'NAME' => 'Test Section',
+                    'SECTION' => 671,
+                    'ACTIVE' => 'Y',
+                    'SORT' => 500,
+                    'CODE' => 'test-section',
+                    'DESCRIPTION' => 'Description of the test section',
+                    'PICTURE' => ['section.jpg', '**base64_section_image**'],
+                    'DETAIL_PICTURE' => ['section-detail.jpg', '**base64_section_detail_image**'],
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
-        echo 'Success: ' . print_r($result, true);
-    
+
+        echo '<pre>';
+        print_r($result);
+        echo '</pre>';
+
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error adding entity section: ' . $e->getMessage();
@@ -105,25 +139,115 @@ The `entity.section.add` method adds a storage section. The user must have at le
     BX24.callMethod(
         'entity.section.add',
         {
-            ENTITY: 'menu_new',
-            'NAME': 'Test Section'
-        }
+            ENTITY: 'dish',
+            NAME: 'Test Section',
+            SECTION: 671,
+            ACTIVE: 'Y',
+            SORT: 500,
+            CODE: 'test-section',
+            DESCRIPTION: 'Description of the test section',
+            PICTURE: ['section.jpg', '**base64_section_image**'],
+            DETAIL_PICTURE: ['section-detail.jpg', '**base64_section_detail_image**'],
+        },
+        (result) => {
+            result.error()
+                ? console.error(result.error())
+                : console.info(result.data())
+            ;
+        },
     );
     ```
 
-- HTTP
+- PHP CRest
 
-    ```http
-    https://my.bitrix24.com/rest/entity.section.add.json?ENTITY=menu_new&NAME=Test%20Section&auth=9affe382af74d9c5caa588e28096e872
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'entity.section.add',
+        [
+            'ENTITY' => 'dish',
+            'NAME' => 'Test Section',
+            'SECTION' => 671,
+            'ACTIVE' => 'Y',
+            'SORT' => 500,
+            'CODE' => 'test-section',
+            'DESCRIPTION' => 'Description of the test section',
+            'PICTURE' => ['section.jpg', '**base64_section_image**'],
+            'DETAIL_PICTURE' => ['section-detail.jpg', '**base64_section_detail_image**'],
+        ]
+    );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
     ```
 
 {% endlist %}
 
-{% include [Example notes](../../../_includes/examples.md) %}
+## Response Handling
 
-## Response on success
+HTTP Status: **200**
 
-> 200 OK
 ```json
-{"result":220}
+{
+    "result": 673,
+    "time": {
+        "start": 1774275397,
+        "finish": 1774275397.576672,
+        "duration": 0.5766720771789551,
+        "processing": 0,
+        "date_start": "2026-03-23T17:16:37+01:00",
+        "date_finish": "2026-03-23T17:16:37+01:00",
+        "operating_reset_at": 1774275997,
+        "operating": 0
+    }
+}
 ```
+
+### Returned Data
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`integer`](../../data-types.md) | Identifier of the created section. ||
+|| **time**
+[`time`](../../data-types.md#time) | Information about the request execution time. ||
+|#
+
+## Error Handling
+
+HTTP Status: **400**
+
+```json
+{
+    "error": "ERROR_ENTITY_NOT_FOUND",
+    "error_description": "Entity not found"
+}
+```
+
+{% include notitle [error handling](../../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+#|
+|| **Code** | **Description** | **Value** ||
+|| `ERROR_ARGUMENT` | Argument 'ENTITY' is null or empty | Parameter `ENTITY` is not provided or is empty after cleaning. ||
+|| `ERROR_ARGUMENT` | Entity code is too long. Max length is N characters. | The value of `ENTITY` is too long. ||
+|| `ERROR_ENTITY_NOT_FOUND` | Entity not found | Storage with the provided `ENTITY` was not found. ||
+|| `ACCESS_DENIED` | Access denied! | Insufficient rights to create a section. ||
+|| `ERROR_CORE` | Internal error adding entity section. Try adding again. | Internal error while creating the section. ||
+|| `ERROR_CORE` | Invalid parent section! | An invalid `SECTION` was provided. ||
+|| `ERROR_CORE` | The section block code does not match the parent section block code! | The parent section belongs to another storage. ||
+|| `ERROR_CORE` | Invalid file type | A file of unsupported type was provided in `PICTURE` or `DETAIL_PICTURE`. ||
+|#
+
+{% include [system errors](../../../_includes/system-errors.md) %}
+
+## Continue Learning
+
+- [{#T}](./entity-section-update.md)
+- [{#T}](./entity-section-get.md)
+- [{#T}](./entity-section-delete.md)
+- [{#T}](./index.md)

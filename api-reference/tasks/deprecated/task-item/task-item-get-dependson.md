@@ -1,14 +1,14 @@
-# Get a list of previous tasks task.item.getdependson
+# Get a List of Previous Tasks task.item.getdependson
 
 > Scope: [`task`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-The method returns an array containing the identifiers of the tasks that the task depends on (the `Previous tasks` option in the task creation form).
+This method returns an array containing the identifiers of tasks that the specified task depends on (the `Previous Tasks` option in the task creation form).
 
-{% note warning %}
+{% note warning "DEPRECATED" %}
 
-The method is deprecated and not supported. It is recommended to use the methods [tasks.task.*](../../index.md).
+Development of this method has been halted. Please use [tasks.task.get](../../tasks-task-get.md).
 
 {% endnote %}
 
@@ -21,7 +21,7 @@ The method is deprecated and not supported. It is recommended to use the methods
 
 ## Code Examples
 
-{% include [Note on examples](../../../../_includes/examples.md) %}
+{% include [Examples Note](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -81,7 +81,7 @@ The method is deprecated and not supported. It is recommended to use the methods
             ->getResult();
     
         echo 'Success: ' . print_r($result, true);
-        // Your required data processing logic
+        // Your data processing logic here
         processData($result);
     
     } catch (Throwable $e) {

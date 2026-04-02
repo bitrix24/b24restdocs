@@ -1,25 +1,25 @@
-title: Documents
-href: index.md
-items:
-  - name: Overview of methods
-    href: index.md
-  - name: Get document fields
-    href: crm-document-generator-document-get-fields.md
-  - name: Create a new document
-    href: crm-document-generator-document-add.md
-  - name: Update document
-    href: crm-document-generator-document-update.md
-  - name: Get document information by Id
-    href: crm-document-generator-document-get.md
-  - name: Get list of documents
-    href: crm-document-generator-document-list.md
-  - name: Enable and disable public link to document
-    href: crm-document-generator-document-enable-public-url.md
-  - name: Upload generated document and attach it to specified entity
-    href: crm-document-generator-document-upload.md
-  - name: Delete document
-    href: crm-document-generator-document-delete.md
-  - name: Events
-    include:
-      path: events/b24-toc.yaml
-      mode: link
+title: Documents  
+href: index.md  
+items:  
+  - name: Overview of Methods  
+    href: index.md  
+  - name: Create a New Document  
+    href: crm-document-generator-document-add.md  
+  - name: Modify Document  
+    href: crm-document-generator-document-update.md  
+  - name: Retrieve Document Information by Id  
+    href: crm-document-generator-document-get.md  
+  - name: Get List of Documents  
+    href: crm-document-generator-document-list.md  
+  - name: Delete Document  
+    href: crm-document-generator-document-delete.md  
+  - name: Enable or Disable Public Link for Document  
+    href: crm-document-generator-document-enable-public-url.md  
+  - name: Upload Generated Document and Attach it to Specified CRM Entity  
+    href: crm-document-generator-document-upload.md  
+  - name: Retrieve Document Fields  
+    href: crm-document-generator-document-get-fields.md  
+  - name: Events  
+    include:  
+      path: events/b24-toc.yaml  
+      mode: link  

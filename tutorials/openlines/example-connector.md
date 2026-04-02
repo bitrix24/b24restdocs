@@ -1,26 +1,32 @@
-# How to Create an Open Channel Connector for Chat on the Site
+# How to Create an Open Channels Connector for Website Chat
 
 {% note info "" %}
 
-The example works only with application authorization. It will not work when using webhooks.
+This example works only with application authorization. It will not function with webhooks.
 
-To use the example, configure the CRest class. For detailed information, read the article [Loading and Using CRest PHP SDK](../../sdk/crest-php-sdk/index.md).
+To use the example, configure the CRest class. For detailed information, refer to the article [Loading and Using CRest PHP SDK](../../sdk/crest-php-sdk/index.md).
 
 {% endnote %}
 
-You can create an online chat on the site. When a visitor writes a message, the open channel connector sends the text to Bitrix24. An employee replies from Bitrix24 — the response is displayed on the site.
+{% note tip "" %}
 
-To set up the connector and create an online chat, we will perform six steps:
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../sdk/mcp.md) so that the assistant uses the official REST documentation.
+
+{% endnote %}
+
+You can create an online chat on your website. When a visitor sends a message, the open channels connector forwards the text to Bitrix24. An employee responds from Bitrix24, and the reply is displayed on the website.
+
+To set up the connector and create the online chat, we will follow six steps:
 
 1. Create a file `function.php` with helper functions and a class for working with the API.
 
-2. Create a file `install_connector.php` to register the connector. In the file, we will call the methods:
+2. Create a file `install_connector.php` to register the connector. In this file, we will call the methods:
 
     - [imconnector.register](../../api-reference/imopenlines/imconnector/imconnector-register.md) — register the connector in Bitrix24,
 
     - [event.bind](../../api-reference/events/event-bind.md) — subscribe to the event [OnImConnectorMessageAdd](../../api-reference/imopenlines/imconnector/events/on-im-connector-message-add.md).
 
-3. Create a handler `handler.php` for events from Bitrix24. In the file, we will call the methods:
+3. Create a handler `handler.php` for events from Bitrix24. In this file, we will call the methods:
 
     - [imconnector.activate](../../api-reference/imopenlines/imconnector/imconnector-activate.md) — activate the connector,
 
@@ -28,27 +34,27 @@ To set up the connector and create an online chat, we will perform six steps:
 
     - [imconnector.send.status.delivery](../../api-reference/imopenlines/imconnector/imconnector-send-status-delivery.md) — confirm message delivery.
 
-4. Create a file `ajax.php` for data exchange between the widget and Bitrix24. In the file, we will call the method [imconnector.send.messages](../../api-reference/imopenlines/imconnector/imconnector-send-messages.md) to send messages.
+4. Create a file `ajax.php` for data exchange between the widget and Bitrix24. In this file, we will call the method [imconnector.send.messages](../../api-reference/imopenlines/imconnector/imconnector-send-messages.md) to send messages.
 
 5. Create a public page `index.php` with the chat interface.
 
 6. Run the script `install_connector.php` to register the connector in the system.
 
-As a result, we will have a chat that is integrated with Bitrix24 and ready to receive messages from users.
+As a result, we will have a chat integrated with Bitrix24 and ready to receive messages from users.
 
-The dialogue is tied to:
+The dialogue is linked:
 
-- the user's session — each visitor receives an independent conversation,
+- to the user session — each visitor receives an independent conversation,
 
-- the site's domain — message exchange works only at the specified address.
+- to the website domain — message exchange works only at the specified address.
 
-## 1\. Create the file function.php
+## 1. Create the file function.php
 
 Create the file `function.php` and define helper functions.
 
 {% note info "" %}
 
-In the example, the chat history is stored in files. In real projects, it is recommended to use a database.
+In this example, chat history is stored in files. In real projects, it is recommended to use a database.
 
 {% endnote %}
 
@@ -70,7 +76,7 @@ function getConnectorID()
 
 The function `getChat` returns the chat history `$chatID` from a file. If the file exists, it returns an array of messages `$result`. If not, it returns an empty array.
 
-It takes the parameter `$chatID` — the chat identifier.
+It accepts the parameter `$chatID` — the chat identifier.
 
 ```php
 function getChat($chatID)
@@ -127,7 +133,7 @@ function getLine()
 
 ### setLine
 
-The function `setLine` saves the line identifier to the file `line_id.txt`. It takes the parameter `$line_id` — the open line identifier. In case of successful writing, the function returns the number of bytes written, otherwise — `false`.
+The function `setLine` saves the line identifier to the file `line_id.txt`. It accepts the parameter `$line_id` — the identifier of the open line. In case of successful writing, the function returns the number of bytes written; otherwise, it returns `false`.
 
 ```php
 function setLine($line_id)
@@ -138,7 +144,7 @@ function setLine($line_id)
 
 ### convertBB
 
-The function `convertBB` converts BB codes to HTML. It takes the parameter `$var` — text with tags like `[b]bold[/b]`. It returns text with HTML tags, for example, `<strong>bold</strong>`.
+The function `convertBB` converts BB codes to HTML. It accepts the parameter `$var` — text with tags like `[b]bold[/b]`. It returns text with HTML tags, for example, `<strong>bold</strong>`.
 
 ```php
 function convertBB($var)
@@ -232,15 +238,15 @@ function convertBB($var)
 }
 ```
 
-## 2\. Create the file install_connector.php
+## 2. Create the file install_connector.php
 
-To register the connector in Bitrix24, create the file `install_connector.php`. In the file, include `function.php`, which we created in the first step.
+To register the connector in Bitrix24, create the file `install_connector.php`. In this file, include `function.php`, which we created in the first step.
 
 ```php
 require_once('function.php');
 ```
 
-### Set up the event handler URL
+### Configure the event handler URL
 
 In the parameter `$handlerUrl`, specify the address of the script that will receive events from Bitrix24. We will create the file with the script `handler.php` in the third step.
 
@@ -256,11 +262,11 @@ $handlerUrl = 'https://yourdomain.com/handler.php';
 
 ### Create a directory to store chats
 
-Create a folder `/chats/` to store the history of conversations.
+Create a folder `/chats/` to store chat history.
 
 1. Use `@mkdir()` to create the directory with permissions `0775`.
 
-2. The flag `true` allows creating nested folders.
+2. The `true` flag allows creating nested folders.
 
 3. Check if the folder was created successfully.
 
@@ -274,15 +280,15 @@ if(!file_exists(__DIR__ . '/chats/'))
 
 ### Register the connector
 
-Get the connector identifier `$connector_id` through the function `getConnectorID()` from `function.php`.
+Obtain the connector identifier `$connector_id` through the function `getConnectorID()` from `function.php`.
 
-To register the connector, use the method [imconnector.register](../../api-reference/imopenlines/imconnector/imconnector-register.md). We will pass the following data to it:
+To register the connector, use the method [imconnector.register](../../api-reference/imopenlines/imconnector/imconnector-register.md). We will pass the following data:
 
 - `ID` — the connector identifier `$connector_id`.
 
 - `NAME` — the name of the connector. We will specify `ExampleSiteChat`.
 
-- `ICON` — an array for describing the connector's icon in an active state.
+- `ICON` — an array to describe the connector's icon in an active state.
 
     - `DATA_IMAGE` — DATA representation of the SVG icon. For example, `data:image/svg+xml;charset=US-ASCII,…`.
 
@@ -292,9 +298,9 @@ To register the connector, use the method [imconnector.register](../../api-refer
 
     - `POSITION` — position of the SVG. We will set it to `center`.
 
-- `ICON_DISABLED` — an array for describing the icon when the connector is disabled. It is similar to the `ICON` array.
+- `ICON_DISABLED` — an array to describe the icon when the connector is disabled. It is similar to the `ICON` array.
 
-- `PLACEMENT_HANDLER` — the URL of the event handler. We will pass `$handlerUrl`.
+- `PLACEMENT_HANDLER` — the event handler URL. We will pass `$handlerUrl`.
 
 ```php
 $connector_id = getConnectorID();
@@ -322,9 +328,9 @@ $result = CRest::call(
 
 ### Register the event handler
 
-After successfully registering the connector, we will subscribe to the event [OnImConnectorMessageAdd](../../api-reference/imopenlines/imconnector/events/on-im-connector-message-add.md). It is triggered when a new message is received from the user.
+After successfully registering the connector, subscribe to the event [OnImConnectorMessageAdd](../../api-reference/imopenlines/imconnector/events/on-im-connector-message-add.md). This event triggers when a new message is received from the user.
 
-To register the event handler, use the method [event.bind](../../api-reference/events/event-bind.md). We will pass the following parameters to it:
+To register the event handler, use the method [event.bind](../../api-reference/events/event-bind.md). We will pass the following parameters:
 
 - `event` — the name of the event. We will pass `OnImConnectorMessageAdd`.
 
@@ -401,15 +407,15 @@ else
 }
 ```
 
-## 3\. Create the file handler.php
+## 3. Create the file handler.php
 
-Create the file `handler.php` to process events from Bitrix24. In the file, include `function.php`, which we created in the first step.
+Create the file `handler.php` to process events from Bitrix24. In this file, include `function.php`, which we created in the first step.
 
 ```php
 require_once('function.php');
 ```
 
-### Set up widget parameters
+### Configure widget parameters
 
 - `$widgetUri` — specify the URL of the page with the widget icon.
 
@@ -423,17 +429,17 @@ $widgetName = 'ExampleSiteChatWidget';
 $connector_id = getConnectorID();
 ```
 
-The variables `$widgetUri` and `$widgetName` are required if you need to show the connector in the list of connectors in the widget on the site. In other cases, they can be left empty.
+The variables `$widgetUri` and `$widgetName` are mandatory if you need to display the connector in the list of connectors in the widget on the website. In other cases, they can be left empty.
 
 ### Activate the connector
 
 In the array `$options`, pass the processed data from `PLACEMENT_OPTIONS`. The array contains the line identifier and the connector status.
 
-To activate the connector, use the method [imconnector.activate](../../api-reference/imopenlines/imconnector/imconnector-activate.md). We will pass the following data to it:
+To activate the connector, use the method [imconnector.activate](../../api-reference/imopenlines/imconnector/imconnector-activate.md). We will pass the following data:
 
 - `CONNECTOR` — the connector identifier `$connector_id`.
 
-- `LINE` — the open line identifier. We will specify `intVal($options['LINE'])`.
+- `LINE` — the identifier of the open line. We will specify `intVal($options['LINE'])`.
 
 - `ACTIVE` — the connector status. We will pass `intVal($options['ACTIVE_STATUS'])`. Possible values: `1` — active, `0` — inactive.
 
@@ -449,13 +455,13 @@ $result = CRest::call(
 );
 ```
 
-### Supplement the connector settings
+### Supplement connector settings
 
-If the connector is activated and `widgetUri` and `widgetName` are specified, we will supplement the connector settings using the method [imconnector.connector.data.set](../../api-reference/imopenlines/imconnector/imconnector-connector-data-set.md). We will pass the following data to it:
+If the connector is activated and `widgetUri` and `widgetName` are specified, supplement the connector settings using the method [imconnector.connector.data.set](../../api-reference/imopenlines/imconnector/imconnector-connector-data-set.md). We will pass the following data:
 
 - `CONNECTOR` — the connector identifier `$connector_id`.
 
-- `LINE` — the open line identifier. We will specify `intVal($options['LINE'])`.
+- `LINE` — the identifier of the open line. We will specify `intVal($options['LINE'])`.
 
 - `DATA` — an array with data to save.
 
@@ -500,15 +506,15 @@ if(!empty($resultWidgetData['result']))
 
 When the event `ONIMCONNECTORMESSAGEADD` is triggered, and a message is received for the connector with the identifier `$connector_id`, save the message using the function `saveMessage`.
 
-Confirm message delivery using the method [imconnector.send.status.delivery](../../api-reference/imopenlines/imconnector/imconnector-send-status-delivery.md). We will pass the following data to it:
+Confirm message delivery using the method [imconnector.send.status.delivery](../../api-reference/imopenlines/imconnector/imconnector-send-status-delivery.md). We will pass the following data:
 
 - `CONNECTOR` — the connector identifier `$connector_id`.
 
-- `LINE` — the open line identifier. We will specify it using the function `getLine` from the file `function.php`.
+- `LINE` — the identifier of the open line. We will specify it using the function `getLine` from the file `function.php`.
 
 - `MESSAGES` — an array of messages.
 
-    - `im` — the element from the incoming message of the open line.
+    - `im` — an element from the incoming message of the open line.
 
     - `message` — an array of message identifiers. We will pass `$idMess`, which is obtained from the function `saveMessage`.
 
@@ -629,9 +635,9 @@ if(
 }
 ```
 
-## 4\. Create the file ajax.php
+## 4. Create the file ajax.php
 
-Create the file `ajax.php` to handle AJAX requests from the chat widget on the site. In the file, include `function.php`, which contains the necessary functions.
+Create the file `ajax.php` to handle AJAX requests from the chat widget on the website. In this file, include `function.php`, which contains the necessary functions.
 
 ```php
 require_once('function.php');
@@ -640,13 +646,13 @@ session_start();
 
 ### Prepare variables
 
-- `$chatID` — the chat identifier. Create it based on the domain `HTTP_ORIGIN` and the user session `session_id()`.
+- `$chatID` — the chat identifier. It will be created based on the domain `HTTP_ORIGIN` and the user session `session_id()`.
 
-- `$type` — the request type. Pass the value from the form `$_POST['type']`. Possible values: `chat_history` — load history, `send_message` — send a message.
+- `$type` — the request type. We will pass the value from the form `$_POST['type']`. Possible values: `chat_history` — load history, `send_message` — send a message.
 
-- `$connector_id` — the connector identifier. Obtain it using the function `getConnectorID` from `function.php`.
+- `$connector_id` — the connector identifier. We will obtain it using the function `getConnectorID` from `function.php`.
 
-- `$line_id` — the open line identifier. Obtain it using the function `getLine` from `function.php`.
+- `$line_id` — the identifier of the open line. We will obtain it using the function `getLine` from `function.php`.
 
 ```php
 $chatID = 'chat' . md5($_SERVER['HTTP_ORIGIN']) . md5(session_id());
@@ -659,13 +665,13 @@ $line_id = getLine();
 
 For an AJAX request of type `chat_history`, load messages using the function `getChat` from `function.php`.
 
-1. Output each message as a block.
+1. Each message will be output as a block.
 
-    - If the element `im` exists, the message came from Bitrix24. Display it on the left with a gray background `#fbfbfb`.
+    - If the `im` element exists, the message came from Bitrix24. It will be displayed on the left with a gray background `#fbfbfb`.
 
-    - If the element `im` does not exist — the message is from the user. Display it on the right with a light blue background `#ccf2ff`.
+    - If there is no `im` element — the message is from the user. It will be displayed on the right with a light blue background `#ccf2ff`.
 
-2. Process the text using the function `convertBB()` from `function.php`.
+2. The text will be processed using the function `convertBB()` from `function.php`.
 
 ```php
 if ($type == 'chat_history'):
@@ -682,27 +688,27 @@ if ($type == 'chat_history'):
 
 ### Send a message
 
-For an AJAX request of type `send_message`, form the message structure `$arMessage` and send it to Bitrix24.
+For an AJAX request of type `send_message`, we will form the message structure `$arMessage` and send it to Bitrix24.
 
 #### Structure of the array \$arMessage
 
 - `user` — an array describing the user:
 
-    - `id` — the user identifier, which matches the chat identifier. Pass `$chatID`.
+    - `id` — the user identifier, which matches the chat identifier. We will pass `$chatID`.
 
-    - `name` — the user's name. Protect against XSS attacks using `htmlspecialchars` and pass the value from the form `$_POST['name']`.
+    - `name` — the user's name. We will protect against XSS attacks using `htmlspecialchars` and pass the value from the form `$_POST['name']`.
 
 - `message` — an array describing the message:
 
     - `date` — the message time in `timestamp` format.
 
-    - `text` — the message text. Protect against XSS attacks using `htmlspecialchars` and pass the value from the form `$_POST['message']`.
+    - `text` — the message text. We will protect against XSS attacks using `htmlspecialchars` and pass the value from the form `$_POST['message']`.
 
 - `chat` — an array describing the chat:
 
-    - `id` — the chat identifier. Pass `$chatID`.
+    - `id` — the chat identifier. We will pass `$chatID`.
 
-    - `url` — the link to the chat in the external system. Protect against XSS attacks using `htmlspecialchars` and pass the address of the page `HTTP_REFERER`.
+    - `url` — the link to the chat in the external system. We will protect against XSS attacks using `htmlspecialchars` and pass the address of the page `HTTP_REFERER`.
 
 ```php
 elseif ($type == 'send_message'):
@@ -725,19 +731,19 @@ elseif ($type == 'send_message'):
 
 #### Save the message locally
 
-Add the message to the file using the function `saveMessage`. Save the message number in the variable `$id`.
+Add the message to the file using the function `saveMessage`. We will save the message number in the variable `$id`.
 
 ```php
 $id = saveMessage($chatID, $arMessage);
 ```
 
-#### Pass the message to Bitrix24
+#### Send the message to Bitrix24
 
-To send the message to the open line, use the method [imconnector.send.messages](../../api-reference/imopenlines/imconnector/imconnector-send-messages.md). We will pass the following data to it:
+To send the message to the open line, we will use the method [imconnector.send.messages](../../api-reference/imopenlines/imconnector/imconnector-send-messages.md). We will pass the following data:
 
 - `CONNECTOR` — the connector identifier `$connector_id`.
 
-- `LINE` — the open line identifier. We will specify `$line_id`, which is obtained using `getLine`.
+- `LINE` — the identifier of the open line. We will specify `$line_id`, which is obtained using `getLine`.
 
 - `MESSAGES` — an array of messages. Each message is described by a separate array. We will pass `[$arMessage]`.
 
@@ -827,7 +833,7 @@ elseif ($type == 'send_message'):
 endif;
 ```
 
-## 5\. Create the file index.php
+## 5. Create the file index.php
 
 Create a public chat page for visitors — the file `index.php`.
 
@@ -839,9 +845,9 @@ Create a public chat page for visitors — the file `index.php`.
 
     - `chat_form` — message sending form.
 
-3. Implement the chat logic through JavaScript.
+3. Implement chat functionality through JavaScript.
 
-    - Add the function `updateChat`, which updates the message history every five seconds. It sends a POST request to `ajax.php` with the parameter `type=chat_history`, receives the HTML markup of the messages, and inserts it into `#chat_history`.
+    - Add the function `updateChat`, which updates the message history every five seconds. It sends a POST request to `ajax.php` with the parameter `type=chat_history`, receives the HTML markup of messages, and inserts it into `#chat_history`.
 
     - Handle message sending. Collect data using the `serialize` function and perform a request to `ajax.php` with the parameter `type=send_message`.
 
@@ -913,15 +919,15 @@ Create a public chat page for visitors — the file `index.php`.
 </body>
 ```
 
-## 6\. Run the connector
+## 6. Run the connector
 
-1. Place the files `function.php`, `handler.php`, `install_connector.php`, `ajax.php`, `index.php` in one folder on the server. For example, in the folder `/myconnector/`.
+1. Place the files `function.php`, `handler.php`, `install_connector.php`, `ajax.php`, `index.php` in the same folder on the server. For example, in the folder `/myconnector/`.
 
-2. In the browser, open the page `https://your_site.com/myconnector/install_connector.php` and see one of two messages:
+2. In the browser, open the page `https://your_website.com/myconnector/install_connector.php` and see one of two messages:
 
-    - `successfully` — the folder `/chats/` was created, the connector was registered,
+    - `successfully` — the folder `/chats/` was created, and the connector was registered,
 
-    - `error create dir "chats"` — the script cannot create the folder `/chats/`, the connector setup was not completed. To fix this, you need to correctly configure the permissions.
+    - `error create dir "chats"` — the script could not create the folder `/chats/`, and the connector setup was not completed. To fix this, you need to correctly configure permissions.
 
 3. Connect the connector in Bitrix24.
 
@@ -935,8 +941,8 @@ Create a public chat page for visitors — the file `index.php`.
 
 4. Start a dialogue in the chat.
 
-    - In the browser, open the page `https://your_site.com/myconnector/index.php`.
+    - In the browser, open the page `https://your_website.com/myconnector/index.php`.
 
     - Write a message. It should arrive in Bitrix24.
 
-    - Reply — the response will appear on the site.
+    - Respond — the reply will appear on the website.

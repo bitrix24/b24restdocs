@@ -1,0 +1,9 @@
+title: Interface
+href: index.md
+items:
+  - name: Overview of Methods
+    href: index.md
+  - name: Send Automation Rule Action Indicator
+    href: chat-input-action-notify.md
+  - name: Manage Text Input Field
+    href: chat-text-field-enabled.md

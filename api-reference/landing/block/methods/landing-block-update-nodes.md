@@ -1,51 +1,252 @@
-# Change the content of the block landing.block.updatenodes
-
-{% note warning "We are still updating this page" %}
-
-Some data may be missing — we will fill it in shortly
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- edits needed for writing standards
-- parameter types are not specified
-- parameter requirements are not specified
-- examples are missing
-- success response is missing
-- error response is missing
-
-{% endnote %}
-
-{% endif %}
+# Update Nodes of the Block landing.block.updatenodes
 
 > Scope: [`landing`](../../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: a user with "edit" access permission for the site
 
-The method `landing.block.updatenodes` changes the content of the block. It returns _true_ or an error. This method is also used for [updating the parameters of dynamic blocks](#edit_params), such as the product list, detailed product, and some others.
+The method `landing.block.updatenodes` updates the nodes of a block in the draft of a page. If the page is already published, changes will be visible to visitors after re-publishing through the interface or using the method [landing.landing.publication](../../page/methods/landing-landing-publication.md).
 
-## Parameters
+## Method Parameters
+
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
-|| **Method** | **Description** | **Version** ||
-|| **lid**
-[`unknown`](../../../data-types.md) | Page identifier | ||
-|| **block**
-[`unknown`](../../../data-types.md) | Block identifier | ||
-|| **data**
-[`unknown`](../../../data-types.md) | Array of selectors and new values.
-For example: `data: {'.landing-block-node-text@1': 'new text!'}`. The principle is the same - selector and its new value. If you are sure that the selector in the block is unique, you can omit the counter **@1**.
-Also, data depends on the types of nodes being modified. For more details, see the example below; for descriptions of types, refer to [a separate page](../node-types.md). | ||
+|| **Name**
+`type` | **Description** ||
+|| **lid***
+[`integer`](../../../data-types.md) | The identifier of the page.
+
+The page identifier can be obtained using the method [landing.landing.getList](../../page/methods/landing-landing-get-list.md) ||
+|| **block***
+[`integer`](../../../data-types.md) | The identifier of the block in the version of the page for editing.
+
+The block identifier can be obtained using the method [landing.block.getlist](./landing-block-get-list.md) with the parameter `params.edit_mode = 1`. If the identifier of a block from the published version of the page is passed, the method may return an error ||
+|| **data***
+[`object`](../../../data-types.md) | A set of changes for the block nodes and component parameters available for editing [(detailed description)](#data) ||
+|| **additional**
+[`object`](../../../data-types.md) | Additional save parameters [(detailed description)](#additional) ||
+|| **preventHistory**
+[`boolean`](../../../data-types.md) | If `true` is passed, the method will not add the action to the page change history. Defaults to `false` ||
 |#
 
-## Examples
+### Parameter data {#data}
+
+#|
+|| **Key**
+`type` | **Description** ||
+|| **<selector>**
+[`string`](../../../data-types.md) \| [`object`](../../../data-types.md) \| [`array`](../../../data-types.md) | The key must match the selector from the block manifest.
+
+For repeating elements, the position can be specified using `@`, for example, `.landing-block-node-text@1`. Positions are numbered starting from `0`.
+
+If the position is not specified, the behavior depends on the value format:
+
+- for node value, the method modifies the first found element,
+- for a value like `{attrs: {...}}` with a regular selector, the method updates all found elements,
+- for a component selector with `:`, for example, `bitrix:catalog.section`, the position is not used.
+
+The value format depends on the node type [(detailed description)](#value-formats) ||
+|#
+
+### Value Formats in data {#value-formats}
+
+#|
+|| **Node Type** | **Example Value** ||
+|| `text` | `'New block text'` or `{text: 'New block text'}` ||
+|| `img` | `{src: 'https://example.com/a.jpg', alt: 'Banner', src2x: 'https://example.com/a@2x.jpg'}` ||
+|| `link` | `{text: 'Learn more', href: 'https://example.com', target: '_blank', query: 'utm_source=test'}` ||
+|| `icon` | `['fa', 'fa-telegram']` ||
+|| `embed` | `{src: '//youtube.com/embed/123', source: 'https://youtube.com/watch?v=123'}` ||
+|#
+
+The formats for other node types are described in the article [Node Types](../node-types.md).
+
+Additional features of the formats:
+
+- `link` supports the fields `text`, `href`, `query`, `target`, `skipContent`, and `attrs`
+- in `link.attrs`, only the attributes `data-embed` and `data-url` are saved
+- if `link.text` is not provided, the method will update `href`, `target`, and allowed attributes, but will not change the link text
+- if a link object is passed without `target`, the current value of `target` will be cleared
+- if `link.attrs` is not provided or an empty object is passed, the current `data-embed` and `data-url` will be removed
+- `img` additionally supports the fields `src2x`, `id`, `id2x`, `isLazy`, `lazyOrigSrc`, `lazyOrigSrc2x`, `lazyOrigSrcset`, `lazyOrigStyle`
+- for `img`, it is recommended to pass the full image object. If `src` is not provided, the current image address will be cleared. If `src2x` is not provided, the value for the retina version will be cleared
+- for `img`, addresses `src` and `src2x` with `http://` will be replaced by `https://`
+- for `img`, lazy loading is enabled only with the value `isLazy = 'Y'`
+- `embed` additionally supports the fields `preview` and `ratio`
+- for `embed`, it is recommended to pass the full object. If `preview` is not provided, the current preview will be removed
+- for `embed`, the `ratio` field is applied only with the new `src`
+
+If a value like `{attrs: {...}}` is passed, the method behaves differently depending on the selector:
+
+- for a regular selector, it updates the node attributes,
+- for a component selector with `:`, for example, `bitrix:catalog.section`, it updates only those component parameters that are available for editing in the block manifest.
+
+Selectors not present in the block manifest are ignored by the method. The same applies to component parameters that are not among those available for editing.
+
+### Parameter additional {#additional}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **appendMenu**
+[`boolean`](../../../data-types.md) | Adds new items to the current menu instead of completely replacing it. Works only for blocks that have a `menu` section described in the manifest.
+
+Defaults to `false` ||
+|#
+
+## Code Examples
+
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+      -H "Content-Type: application/json" \
+      -d '{
+        "lid": 311,
+        "block": 6058,
+        "data": {
+          ".landing-block-node-text": "New block text",
+          ".landing-block-node-img": {
+            "src": "https://cdn.bitrix24.site/bitrix/images/landing/business/1920x1280/img12.jpg",
+            "alt": "New banner"
+          },
+          ".landing-block-node-link": {
+            "text": "Learn more",
+            "href": "https://www.bitrix24.com",
+            "target": "_blank"
+          },
+          ".landing-block-node-icon": [
+            "fa",
+            "fa-telegram"
+          ],
+          ".landing-block-node-embed": {
+            "src": "//www.youtube.com/embed/q4d8g9Dn3ww?autoplay=1&controls=0&loop=1&mute=1&rel=0",
+            "source": "https://www.youtube.com/watch?v=q4d8g9Dn3ww"
+          }
+        }
+      }' \
+      "https://**put.your-domain-here**/rest/**user_id**/**webhook_code**/landing.block.updatenodes.json"
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+      -H "Content-Type: application/json" \
+      -d '{
+        "lid": 311,
+        "block": 6058,
+        "data": {
+          ".landing-block-node-text": "New block text",
+          ".landing-block-node-img": {
+            "src": "https://cdn.bitrix24.site/bitrix/images/landing/business/1920x1280/img12.jpg",
+            "alt": "New banner"
+          },
+          ".landing-block-node-link": {
+            "text": "Learn more",
+            "href": "https://www.bitrix24.com",
+            "target": "_blank"
+          },
+          ".landing-block-node-icon": [
+            "fa",
+            "fa-telegram"
+          ],
+          ".landing-block-node-embed": {
+            "src": "//www.youtube.com/embed/q4d8g9Dn3ww?autoplay=1&controls=0&loop=1&mute=1&rel=0",
+            "source": "https://www.youtube.com/watch?v=q4d8g9Dn3ww"
+          }
+        },
+        "auth": "**put_access_token_here**"
+      }' \
+      "https://**put.your-domain-here**/rest/landing.block.updatenodes.json"
+    ```
+
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'landing.block.updatenodes',
+    		{
+    			lid: 311,
+    			block: 6058,
+    			data: {
+    				'.landing-block-node-text': 'New block text',
+    				'.landing-block-node-img': {
+    					src: 'https://cdn.bitrix24.site/bitrix/images/landing/business/1920x1280/img12.jpg',
+    					alt: 'New banner'
+    				},
+    				'.landing-block-node-link': {
+    					text: 'Learn more',
+    					href: 'https://www.bitrix24.com',
+    					target: '_blank'
+    				},
+    				'.landing-block-node-icon': ['fa', 'fa-telegram'],
+    				'.landing-block-node-embed': {
+    					src: '//www.youtube.com/embed/q4d8g9Dn3ww?autoplay=1&controls=0&loop=1&mute=1&rel=0',
+    					source: 'https://www.youtube.com/watch?v=q4d8g9Dn3ww'
+    				}
+    			}
+    		}
+    	);
+
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch (error)
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'landing.block.updatenodes',
+                [
+                    'lid' => 311,
+                    'block' => 6058,
+                    'data' => [
+                        '.landing-block-node-text' => 'New block text',
+                        '.landing-block-node-img' => [
+                            'src' => 'https://cdn.bitrix24.site/bitrix/images/landing/business/1920x1280/img12.jpg',
+                            'alt' => 'New banner',
+                        ],
+                        '.landing-block-node-link' => [
+                            'text' => 'Learn more',
+                            'href' => 'https://www.bitrix24.com',
+                            'target' => '_blank',
+                        ],
+                        '.landing-block-node-icon' => ['fa', 'fa-telegram'],
+                        '.landing-block-node-embed' => [
+                            'src' => '//www.youtube.com/embed/q4d8g9Dn3ww?autoplay=1&controls=0&loop=1&mute=1&rel=0',
+                            'source' => 'https://www.youtube.com/watch?v=q4d8g9Dn3ww',
+                        ],
+                    ],
+                ]
+            );
+
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+
+        echo 'Success: ' . var_export($result, true);
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error updating block nodes: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -54,16 +255,26 @@ Also, data depends on the types of nodes being modified. For more details, see t
             lid: 311,
             block: 6058,
             data: {
-                '.landing-block-node-text': 'Text with html',
-                '.landing-block-node-img': {src: '/some/path/picture.png', alt: 'My picture'},
-                '.landing-block-node-link': {text: 'My link', href: 'https://bitrix24.com', target: '_blank'},
-                '.landing-block-node-icon': ['fa-telegram', 'fa-skype'],
-                '.landing-block-node-embed': {src: '//www.youtube.com/embed/q4d8g9Dn3ww?autoplay=1&controls=0&loop=1&mute=1&rel=0', source: 'https://www.youtube.com/watch?v=q4d8g9Dn3ww'},
-            },
+                '.landing-block-node-text': 'New block text',
+                '.landing-block-node-img': {
+                    src: 'https://cdn.bitrix24.site/bitrix/images/landing/business/1920x1280/img12.jpg',
+                    alt: 'New banner'
+                },
+                '.landing-block-node-link': {
+                    text: 'Learn more',
+                    href: 'https://www.bitrix24.com',
+                    target: '_blank'
+                },
+                '.landing-block-node-icon': ['fa', 'fa-telegram'],
+                '.landing-block-node-embed': {
+                    src: '//www.youtube.com/embed/q4d8g9Dn3ww?autoplay=1&controls=0&loop=1&mute=1&rel=0',
+                    source: 'https://www.youtube.com/watch?v=q4d8g9Dn3ww'
+                }
+            }
         },
         function(result)
         {
-            if(result.error())
+            if (result.error())
             {
                 console.error(result.error());
             }
@@ -75,61 +286,138 @@ Also, data depends on the types of nodes being modified. For more details, see t
     );
     ```
 
-{% endlist %}
+- PHP CRest
 
-{% include [Footnote about examples](../../../../_includes/examples.md) %}
+    ```php
+    require_once('crest.php');
 
-## Editing parameters of dynamic blocks
+    $result = CRest::call(
+        'landing.block.updatenodes',
+        [
+            'lid' => 311,
+            'block' => 6058,
+            'data' => [
+                '.landing-block-node-text' => 'New block text',
+                '.landing-block-node-img' => [
+                    'src' => 'https://cdn.bitrix24.site/bitrix/images/landing/business/1920x1280/img12.jpg',
+                    'alt' => 'New banner',
+                ],
+                '.landing-block-node-link' => [
+                    'text' => 'Learn more',
+                    'href' => 'https://www.bitrix24.com',
+                    'target' => '_blank',
+                ],
+                '.landing-block-node-icon' => ['fa', 'fa-telegram'],
+                '.landing-block-node-embed' => [
+                    'src' => '//www.youtube.com/embed/q4d8g9Dn3ww?autoplay=1&controls=0&loop=1&mute=1&rel=0',
+                    'source' => 'https://www.youtube.com/watch?v=q4d8g9Dn3ww',
+                ],
+            ],
+        ]
+    );
 
-There are several dynamic blocks whose parameters can be changed via REST. For example, the number of products on a page. This can be done as follows.
-
-1. Use the method [landing.block.getmanifest](./landing-block-get-manifest.md) to find out what parameters the block has. The method will return an array of the manifest, where we are interested in the key `attrs` and the parameters of the dynamic block component you are interested in. In this case, we are interested in `bitrix:catalog.section`.
-
-    ```js
-    attrs:
-    bitrix:catalog.section: Array(24)
-    0: {name: "Section ID", style: false, original_type: "component", component_type: "STRING", attribute: "SECTION_ID", …}
-    1: {name: "Unavailable products", style: false, original_type: "component", component_type: "LIST", attribute: "HIDE_NOT_AVAILABLE", …}
-    2: {name: "Unavailable trade offers", style: false, original_type: "component", component_type: "LIST", attribute: "HIDE_NOT_AVAILABLE_OFFERS", …}
-    3: {name: "Field by which we sort elements", style: false, original_type: "component", component_type: "LIST", attribute: "ELEMENT_SORT_FIELD", …}
-    4: {name: "Order of sorting elements", style: false, original_type: "component", component_type: "LIST", attribute: "ELEMENT_SORT_ORDER", …}
-    5: {name: "Currency to which prices will be converted", style: false, original_type: "component", component_type: "LIST", attribute: "CURRENCY_ID", …}
-    6: {name: "Price type", style: false, original_type: "component", component_type: "LIST", attribute: "PRICE_CODE", …}
-    ...
+    if (isset($result['error']))
+    {
+        echo 'Error: ' . $result['error_description'];
+    }
+    else
+    {
+        echo '<pre>';
+        print_r($result['result']);
+        echo '</pre>';
+    }
     ```
 
-2. Use the method `landing.block.updatenodes` to change the necessary parameters. Historically, dynamic parameters (attributes) are changed specifically through this method.
+{% endlist %}
 
-    {% list tabs %}
+### Updating Component Parameters
 
-    - JS
+Some blocks contain a component, such as a catalog. In this case, the method can only change those component parameters that are available for editing in the block manifest.
 
-        ```js
-        BX24.callMethod(
-            'landing.block.updatenodes',
-            {
-                lid: 5597,
-                block: 44131,
-                data: {
-                    'bitrix:catalog.section': {
-                        attrs: {
-                            'MESS_BTN_BUY': 'Add to my cart'
-                        }
-                    }
-                },
-                function(result)
-                {
-                    if (result.error())
-                    {
-                        console.error(result.error());
-                    }
-                    else
-                    {
-                        console.info(result.data());
-                    }
+To understand which parameters can be changed, first obtain the block manifest using the method [landing.block.getmanifest](./landing-block-get-manifest.md) and check the `attrs` section for the desired component selector.
+
+After that, pass the component selector and an object with the key `attrs` in `data`:
+
+```js
+BX24.callMethod(
+    'landing.block.updatenodes',
+    {
+        lid: 5597,
+        block: 44131,
+        data: {
+            'bitrix:catalog.section': {
+                attrs: {
+                    MESS_BTN_BUY: 'Buy'
                 }
             }
-        );
-        ```
+        }
+    }
+);
+```
 
-    {% endlist %}
+## Response Handling
+
+HTTP Status: **200**
+
+```json
+{
+    "result": true,
+    "time": {
+        "start": 1774442460,
+        "finish": 1774442460.28751,
+        "duration": 0.2875099182128906,
+        "processing": 0,
+        "date_start": "2026-03-25T11:01:00+01:00",
+        "date_finish": "2026-03-25T11:01:00+01:00",
+        "operating_reset_at": 1774443060,
+        "operating": 0.09410285949707031
+    }
+}
+```
+
+### Returned Data
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`boolean`](../../../data-types.md) | The result of the block update. If successful, the method returns `true` ||
+|| **time**
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
+|#
+
+## Error Handling
+
+HTTP Status: **400**
+
+```json
+{
+    "error": "NODES_NOT_FOUND",
+    "error_description": "No nodes found for modification"
+}
+```
+
+{% include notitle [error handling](../../../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+#|
+|| **Code** | **Description** ||
+|| `MISSING_PARAMS` | Required parameter `lid`, `block`, or `data` is missing ||
+|| `TYPE_ERROR` | An incorrect type was passed in the parameter `lid`, `block`, `data`, `additional`, or `preventHistory` ||
+|| `LANDING_NOT_EXIST` | The page with identifier `lid` was not found or is not accessible to the current user ||
+|| `BLOCK_NOT_FOUND` | The block with identifier `block` was not found on page `lid` or is not available in the version of the page for editing ||
+|| `ACCESS_DENIED` | Insufficient rights to edit the site ||
+|| `NODES_NOT_FOUND` | No changes were passed in the `data` parameter for the block ||
+|| `INCORRECT_AFFECTED` | The server could not confirm the saving of the modified HTML after updating the nodes with additional verification enabled ||
+|#
+
+{% include [system errors](../../../../_includes/system-errors.md) %}
+
+## Continue Learning
+
+- [{#T}](./landing-block-update-attrs.md)
+- [{#T}](./landing-block-update-styles.md)
+- [{#T}](./landing-block-get-manifest.md)
+- [{#T}](./landing-block-get-list.md)
+- [{#T}](./landing-block-update-content.md)

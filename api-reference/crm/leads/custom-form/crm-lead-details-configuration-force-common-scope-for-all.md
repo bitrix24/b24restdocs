@@ -1,12 +1,12 @@
-# Set a Common Lead Card for All Users crm.lead.details.configuration.forceCommonScopeForAll
+# Set Common Lead Card for All Users crm.lead.details.configuration.forceCommonScopeForAll
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
 > Who can execute the method: a user with the "Allow to modify settings" access permission in CRM
 
-{% note warning "Method Development Halted" %}
+{% note warning "DEPRECATED" %}
 
-The method `crm.lead.details.configuration.forceCommonScopeForAll` is still operational, but there is a more relevant alternative: [crm.item.details.configuration.forceCommonScopeForAll](../../universal/item-details-configuration/crm-item-details-configuration-forceCommonScopeForAll.md).
+Development of this method has been halted. Please use [crm.item.details.configuration.forceCommonScopeForAll](../../universal/item-details-configuration/crm-item-details-configuration-forceCommonScopeForAll.md).
 
 {% endnote %}
 
@@ -20,7 +20,7 @@ Settings for repeat leads may differ from those for simple leads. To switch betw
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -29,7 +29,7 @@ Settings for repeat leads may differ from those for simple leads. To switch betw
 [`object`](../../../data-types.md) | Additional parameters for selecting the lead type. The structure is described [below](#extras) ||
 |#
 
-### Parameter extras {#extras}
+### Extras Parameter {#extras}
 
 #|
 || **Name**
@@ -42,7 +42,7 @@ Settings for repeat leads may differ from those for simple leads. To switch betw
 
 ## Code Examples
 
-{% include [Note on Examples](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -207,7 +207,7 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `-` | Access denied | Insufficient permissions to forcibly set a common lead card ||
+|| `-` | Access denied | Insufficient permissions to forcibly set the common lead card ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

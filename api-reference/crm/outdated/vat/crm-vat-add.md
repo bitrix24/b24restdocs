@@ -4,17 +4,17 @@
 >
 > Who can execute the method: user with CRM administrator rights
 
-{% note warning "Method development has been halted" %}
+{% note warning "DEPRECATED" %}
 
-The method `crm.vat.add` continues to function, but there is a more relevant alternative [catalog.vat.add](../../../catalog/vat/catalog-vat-add.md).
+Development of this method has been halted. Please use [catalog.vat.add](../../../catalog/vat/catalog-vat-add.md).
 
 {% endnote %}
 
-The method `crm.vat.add` creates a new VAT rate in CRM.
+The method `crm.vat.add` creates a new VAT rate in the CRM.
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../../_includes/required.md) %}
+{% include [Parameter Note](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -54,12 +54,12 @@ Default — 100 ||
 || **NAME*** 
 [`string`](../../../data-types.md) | Name of the rate ||
 || **RATE*** 
-[`double`](../../../data-types.md) | VAT rate value, % ||
+[`double`](../../../data-types.md) | Value of the VAT rate, % ||
 |#
 
 ## Code Examples
 
-{% include [Note on examples](../../../../_includes/examples.md) %}
+{% include [Examples Note](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -194,7 +194,7 @@ Default — 100 ||
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -225,7 +225,7 @@ HTTP status: **200**
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {

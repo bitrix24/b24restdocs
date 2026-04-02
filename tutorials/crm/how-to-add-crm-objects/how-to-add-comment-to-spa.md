@@ -4,26 +4,32 @@
 >
 > Who can execute the method: users with permission to modify the CRM entity
 
-The key parameter for adding a comment to a CRM entity is the [object type identifier](../../../api-reference/crm/data-types.md#object_type). This identifier indicates which type of object the comment will be added to: a deal, a lead, or a specific smart process. The identifier is used in the parameters `OWNER_TYPE`, `OWNER_TYPE_ID`, `ENTITY_TYPE`, and `ENTITY_TYPE_ID` of the method groups [crm.item.*](../../../api-reference/crm/universal/index.md), [crm.timeline.*](../../../api-reference/crm/timeline/index.md), [crm.activity.*](../../../api-reference/crm/timeline/activities/index.md).
+{% note tip "" %}
 
-There are two types of object identifiers in CRM:  
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
+The key parameter for adding a comment to a CRM entity is the [object type identifier](../../../api-reference/crm/data-types.md#object_type). This identifier indicates which type of object the comment will be added to: a deal, a lead, or a specific smart process. The identifier is used in the parameters `OWNER_TYPE`, `OWNER_TYPE_ID`, `ENTITY_TYPE`, and `ENTITY_TYPE_ID` of the method groups [crm.item.*](../../../api-reference/crm/universal/index.md), [crm.timeline.*](../../../api-reference/crm/timeline/index.md), and [crm.activity.*](../../../api-reference/crm/timeline/activities/index.md).
+
+In CRM, there are two types of object identifiers:
 * **Predefined** — these are identifiers for [leads](../../../api-reference/crm/leads/index.md), [deals](../../../api-reference/crm/deals/index.md), [companies](../../../api-reference/crm/companies/index.md), [contacts](../../../api-reference/crm/contacts/index.md), [invoices](../../../api-reference/crm/universal/invoice.md), and [estimates](../../../api-reference/crm/quote/index.md). The identifiers for predefined objects can be found in the [documentation](../../../api-reference/crm/data-types.md#object_type).
-* **Dynamic** — these are identifiers for smart processes. The smart process identifier is generated at the time of creation and does not depend on the name of the smart process.
+* **Dynamic** — these are identifiers for smart processes. The identifier for a smart process is generated at the time of creation and does not depend on the name of the smart process.
 
-You can obtain the identifier of a smart process using two methods:
+You can obtain the identifier for a smart process using two methods:
 * [crm.enum.ownertype](../../../api-reference/crm/auxiliary/enum/crm-enum-owner-type.md) — a method without parameters that returns an enumeration of CRM object types, both predefined and dynamic.
 * [crm.type.list](../../../api-reference/crm/universal/user-defined-object-types/crm-type-list.md) — a method with a filter that returns only dynamic CRM objects.
 
-To create a comment in a smart process entity, we will sequentially execute two methods: 
-1. [crm.type.list](../../../api-reference/crm/universal/user-defined-object-types/crm-type-list.md) — retrieve the smart process by filter.
+To create a comment in a smart process entity, we will sequentially execute two methods:
+1. [crm.type.list](../../../api-reference/crm/universal/user-defined-object-types/crm-type-list.md) — retrieve the smart process using a filter.
 2. [crm.timeline.comment.add](../../../api-reference/crm/timeline/comments/crm-timeline-comment-add.md) — create the comment.
 
 ## 1. Retrieve the Smart Process Type Identifier
 
-To obtain the type identifier, we use the method [crm.type.list](../../../api-reference/crm/universal/user-defined-object-types/crm-type-list.md) with a filter:
-* `title`  —   specify the name of the smart process.
+To obtain the type identifier, we use the [crm.type.list](../../../api-reference/crm/universal/user-defined-object-types/crm-type-list.md) method with a filter:
+* `title` — specify the name of the smart process.
 
-{% include [Footnote on Examples](../../../_includes/examples.md) %}
+{% include [Example Notes](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -59,7 +65,7 @@ To obtain the type identifier, we use the method [crm.type.list](../../../api-re
 
 As a result, we obtain two ID values:
 * `id`: `7` — the ordinal number of the smart process in Bitrix.
-* `entityTypeId`: `177` — the identifier of the smart process type. This parameter is necessary for the next request.
+* `entityTypeId`: `177` — the identifier for the smart process type. This parameter is necessary for the next request.
   
 ```json
 {
@@ -88,19 +94,20 @@ As a result, we obtain two ID values:
                 "isSetOpenPermissions": "Y",
                 "isPaymentsEnabled": "N",
                 "isCountersEnabled": "N",
-                "createdTime": "2021-11-26T10:52:17+03:00",
-                "updatedTime": "2024-11-12T15:32:39+03:00",
+                "createdTime": "2021-11-26T10:52:17+01:00",
+                "updatedTime": "2024-11-12T15:32:39+01:00",
                 "updatedBy": 1
             }
         ]
     }
 }
 ```
+
 ## 2. Add a Comment to the Smart Process Entity
 
-To add a comment, we use the method [crm.timeline.comment.add](../../../api-reference/crm/timeline/comments/crm-timeline-comment-add.md) with the following parameters:
-* `ENTITY_ID`  —   ID of the entity. To obtain the ID value, use the method [crm.item.list](../../../api-reference/crm/universal/crm-item-list.md), where `entityTypeId` filter equals the `entityTypeId` value from [crm.type.list](../../../api-reference/crm/universal/user-defined-object-types/crm-type-list.md).
-* `ENTITY_TYPE`  — specify `DYNAMIC_177`. The value consists of the `entityTypeId` from the result of the previous method and the prefix for dynamic objects `DYNAMIC_`.
+To add a comment, we use the [crm.timeline.comment.add](../../../api-reference/crm/timeline/comments/crm-timeline-comment-add.md) method with the following parameters:
+* `ENTITY_ID` — the ID of the entity. To obtain the ID value, use the [crm.item.list](../../../api-reference/crm/universal/crm-item-list.md) method, where the `entityTypeId` filter equals the `entityTypeId` value from [crm.type.list](../../../api-reference/crm/universal/user-defined-object-types/crm-type-list.md).
+* `ENTITY_TYPE` — specify `DYNAMIC_177`. The value consists of the `entityTypeId` from the previous method's result and the prefix for dynamic objects `DYNAMIC_`.
 * `COMMENT` — the text value of the comment.
 
 {% list tabs %}
@@ -115,7 +122,7 @@ To add a comment, we use the method [crm.timeline.comment.add](../../../api-refe
             {
                 "ENTITY_ID": 19,
                 "ENTITY_TYPE": "DYNAMIC_177",
-                "COMMENT": "Confirm the purchase via e-mail!",
+                "COMMENT": "Confirm the purchase via email!",
             }
         }
     );
@@ -132,7 +139,7 @@ To add a comment, we use the method [crm.timeline.comment.add](../../../api-refe
             'fields' => [
                 'ENTITY_ID' => 19,
                 'ENTITY_TYPE' => 'DYNAMIC_177',
-                'COMMENT' => 'Confirm the purchase via e-mail!',
+                'COMMENT' => 'Confirm the purchase via email!',
             ]
         ]
     );
@@ -140,7 +147,7 @@ To add a comment, we use the method [crm.timeline.comment.add](../../../api-refe
 
 {% endlist %}
 
-We added a comment to the timeline of the smart process entity and received the timeline record ID `55771` in response. This record ID can be used in the methods for [updating](../../../api-reference/crm/timeline/comments/crm-timeline-comment-update.md) and [deleting](../../../api-reference/crm/timeline/comments/crm-timeline-comment-delete.md) the comment.
+We have added a comment to the timeline of the smart process entity and received the timeline record ID `55771` in response. This record ID can be used in the [update](../../../api-reference/crm/timeline/comments/crm-timeline-comment-update.md) and [delete](../../../api-reference/crm/timeline/comments/crm-timeline-comment-delete.md) methods for comments.
 
 ```json
 {

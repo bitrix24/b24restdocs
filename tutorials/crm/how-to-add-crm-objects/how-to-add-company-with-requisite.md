@@ -4,7 +4,13 @@
 >
 > Who can execute the method: users with permission to create companies in CRM
 
-You can place a form on the site to collect client data and details. When a client fills out the form, their data will be sent to CRM, and you will be able to process the request.
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
+You can place a form on the website to collect client data and details. When a client fills out the form, their information will be sent to the CRM, allowing you to process the request.
 
 Setting up the form consists of two steps.
 
@@ -12,17 +18,17 @@ Setting up the form consists of two steps.
 
 2. We will create a file to process the data. The handler will accept and prepare the data, and then create a company with the details.
 
-## 1\. Creating the Web Form
+## 1. Creating the Web Form
 
-To generate the form fields, we will use data from Bitrix24. To get information about the detail settings, we will sequentially execute two methods:
+To generate the form fields, we will use data from Bitrix24. To obtain information about the detail settings, we will sequentially execute two methods:
 
-1. [crm.address.fields](../../../api-reference/crm/requisites/addresses/crm-address-fields.md) — we get the list of address fields. The result is saved in `arAddressFields`.
+1. [crm.address.fields](../../../api-reference/crm/requisites/addresses/crm-address-fields.md) — retrieves the list of address fields. We will save the result in `arAddressFields`.
 
    ```php
    $arAddressFields = CRest::call('crm.address.fields', []);
    ```
 
-2. [crm.requisite.preset.list](../../../api-reference/crm/requisites/presets/crm-requisite-preset-list.md) — we request the list of detail templates. Using the `select` parameter, we choose the `ID` and `NAME` fields for each template. The result is saved in `arRequisiteType`.
+2. [crm.requisite.preset.list](../../../api-reference/crm/requisites/presets/crm-requisite-preset-list.md) — requests the list of detail templates. Using the `select` parameter, we will choose the `ID` and `NAME` fields for each template. We will save the result in `arRequisiteType`.
 
    ```php
    $arRequisiteType = CRest::call(
@@ -32,7 +38,7 @@ To generate the form fields, we will use data from Bitrix24. To get information 
    );
    ```
 
-We will add a web form to the site page with the following fields:
+We will add a web form to the website with the following fields:
 
 -  `REQ_TYPE` — a dropdown list with the type of details from the `arRequisiteType` array,
   
@@ -42,17 +48,17 @@ We will add a web form to the site page with the following fields:
 
 -  `PHONE` — phone number,
 
--  `${addressFieldsInputs}` — address fields that are dynamically created from the `arAddressFields` array.
+-  `${addressFieldsInputs}` — address fields, which are dynamically created from the `arAddressFields` array.
 
 The form sends data using the `POST` method to the `form.php` file.
 
-### Full Example of the Page Code with the Form
+### Complete Example of the Page with the Form
 
-{% include [Example Notes](../../../_includes/examples.md) %}
+{% include [Example Note](../../../_includes/examples.md) %}
 
 ```php
 <?php
-// Get the list of address fields and detail templates
+// Retrieve the list of address fields and detail templates
 $arAddressFields = CRest::call('crm.address.fields', []);
 $arRequisiteType = CRest::call('crm.requisite.preset.list', [
     'select' => ["ID", "NAME"]
@@ -68,7 +74,7 @@ if(!empty($arRequisiteType['result'])):
 ?>
     <form id="form_to_crm">
         <select name="REQ_TYPE" required>
-            <option value="" disabled selected>Select the type of details</option>
+            <option value="" disabled selected>Select a detail type</option>
             <?php foreach($arRequisiteType as $id => $name): ?>
                 <option value="<?=$id?>"><?=$name?></option>
             <?php endforeach; ?>
@@ -84,7 +90,7 @@ if(!empty($arRequisiteType['result'])):
         <input type="submit" value="Submit">
     </form>
 <?php else: ?>
-    <p>No available types of details.</p>
+    <p>No available detail types.</p>
 <?php endif; ?>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -106,17 +112,17 @@ $(document).ready(function() {
 </script>
 ```
 
-## 2\. Creating the Form Handler
+## 2. Creating the Form Handler
 
-To process the values from the form fields and add a company to CRM, we will create the handler `form.php`.
+To process the values from the form fields and add the company to the CRM, we will create the handler `form.php`.
 
 ### Preparing the Data
 
 We will retrieve and sanitize the data from the form:
 
--  `REQ_TYPE` is converted to an integer,
+-  `REQ_TYPE` will be converted to an integer,
 
--  `TITLE`, `INN`, `PHONE` are sanitized from HTML tags.
+-  `TITLE`, `INN`, `PHONE` will be stripped of HTML tags.
 
 ```php
 $iRequisitePresetID = intVal($_POST["REQ_TYPE"]);
@@ -125,13 +131,13 @@ $sINN = htmlspecialchars($_POST["INN"]);
 $sPhone = htmlspecialchars($_POST["PHONE"]);
 ```
 
-We prepare the address fields and collect them into the `$arAddress` array.
+We will prepare the address fields and collect them into the `$arAddress` array.
 
--  The values of the fields from the form are sanitized from HTML tags.
+-  The values of the fields from the form will be stripped of HTML tags.
 
--  We add the address type `TYPE_ID`. The address types can be obtained using the method [crm.enum.addresstype](../../../api-reference/crm/auxiliary/enum/crm-enum-address-type.md). We will specify the value — `1`, which means the actual address.
+-  We will add the address type `TYPE_ID`. The address types can be obtained using the method [crm.enum.addresstype](../../../api-reference/crm/auxiliary/enum/crm-enum-address-type.md). We will specify the value as `1`, which means the actual address.
 
--  We add the identifier of the [object type](../../../api-reference/crm/data-types.md#object_type) `ENTITY_TYPE_ID`. The identifiers can be obtained using the method [crm.enum.ownertype](../../../api-reference/crm/auxiliary/enum/crm-enum-owner-type.md). We will specify the value — `8`, which means detail.
+-  We will add the identifier of the [object type](../../../api-reference/crm/data-types.md#object_type) `ENTITY_TYPE_ID`. The identifiers can be obtained using the method [crm.enum.ownertype](../../../api-reference/crm/auxiliary/enum/crm-enum-owner-type.md). We will specify the value as `8`, which means detail.
 
 ```php
 $arAddress = [];
@@ -144,9 +150,9 @@ $arAddress['ENTITY_TYPE_ID'] = 8;
 
 The system stores the phone as an array of objects [crm_multifield](../../../api-reference/crm/data-types.md#crm_multifield), so it needs to be formatted as an array.
 
-1. We add the phone as the first element `VALUE` in the array, and the second value specifies the type `VALUE_TYPE`, for example, `WORK`.
+1. We will add the phone as the first element `VALUE` in the array, and the second value will specify the type `VALUE_TYPE`, for example, `WORK`.
 
-2. For an empty value, we pass an empty array.
+2. For an empty value, we will pass an empty array.
 
 ```php
 $arPhone = !empty($sPhone) ? [['VALUE' => $sPhone, 'VALUE_TYPE' => 'WORK']] : [];
@@ -154,17 +160,17 @@ $arPhone = !empty($sPhone) ? [['VALUE' => $sPhone, 'VALUE_TYPE' => 'WORK']] : []
 
 ### Adding the Company
 
-To create a company, we will execute the method [crm.company.add](../../../api-reference/crm/companies/crm-company-add.md). In the `fields` object, we pass the fields:
+To create the company, we will execute the method [crm.company.add](../../../api-reference/crm/companies/crm-company-add.md). In the `fields` object, we will pass the fields:
 
 -  `TITLE` — the name of the company.
 
--  `COMPANY_TYPE` — the type of company. The types of companies can be found using the method [crm.status.list](../../../api-reference/crm/status/crm-status-list.md) by filtering the `filter` field by `ENTITY_ID` with the value `COMPANY_TYPE`. In the example, we will specify the value `CUSTOMER`, as only clients of the company fill out the form.
+-  `COMPANY_TYPE` — the type of company. The types of companies can be found using the method [crm.status.list](../../../api-reference/crm/status/crm-status-list.md) by applying a filter on the `ENTITY_ID` field with the value `COMPANY_TYPE`. In this example, we will specify the value `CUSTOMER`, as only clients of the company fill out the form.
 
--  `PHONE` — phone number.
+-  `PHONE` — the phone number.
 
 {% note warning "" %}
 
-Check which required fields are set for companies in your Bitrix24. All required fields must be passed to the method [crm.company.add](../../../api-reference/crm/companies/crm-company-add.md).
+Check which required fields are configured for companies in your Bitrix24. All required fields must be passed to the method [crm.company.add](../../../api-reference/crm/companies/crm-company-add.md).
 
 {% endnote %}
 
@@ -190,11 +196,11 @@ As a result, we will receive the identifier of the new company `5`.
 
 ### Adding Details to the Company
 
-To add details to the company, we will execute the method [crm.requisite.add](../../../api-reference/crm/requisites/universal/crm-requisite-add.md). In the `fields` object, we pass the fields:
+To add details to the company, we will execute the method [crm.requisite.add](../../../api-reference/crm/requisites/universal/crm-requisite-add.md). In the `fields` object, we will pass the fields:
 
--  `ENTITY_TYPE_ID` — the identifier of the [object type](../../../api-reference/crm/data-types.md#object_type). The identifiers can be obtained using the method [crm.enum.ownertype](../../../api-reference/crm/auxiliary/enum/crm-enum-owner-type.md). In the example, we will specify the value `4`, which means company,
+-  `ENTITY_TYPE_ID` — the identifier of the [object type](../../../api-reference/crm/data-types.md#object_type). The identifiers can be obtained using the method [crm.enum.ownertype](../../../api-reference/crm/auxiliary/enum/crm-enum-owner-type.md). In this example, we will specify the value `4`, which means company,
 
--  `ENTITY_ID` — the identifier of the company obtained in the previous request,
+-  `ENTITY_ID` — the identifier of the company obtained from the previous request,
 
 -  `PRESET_ID` — the identifier of the detail template obtained from the form,
 
@@ -202,7 +208,7 @@ To add details to the company, we will execute the method [crm.requisite.add](..
 
 -  `NAME` — the name of the detail,
 
--  `RQ_INN` — the Tax Identification Number of the company.
+-  `RQ_INN` — the company's Tax Identification Number.
 
 ```php
 CRest::call(
@@ -230,7 +236,7 @@ As a result, we will receive the identifier of the details.
 
 ### Adding an Address for the Detail
 
-We will add an address for the detail using the method [crm.address.add](../../../api-reference/crm/requisites/addresses/crm-address-add.md) if the detail was created successfully. In `$arAddress`, we add `ENTITY_ID` with the `ID` of the detail from the response of the previous request. In the `fields` object, we pass the `$arAddress` array with the address fields.
+We will add an address for the detail using the method [crm.address.add](../../../api-reference/crm/requisites/addresses/crm-address-add.md) if the detail was created successfully. In `$arAddress`, we will add `ENTITY_ID` with the `ID` of the detail from the response of the previous request. In the `fields` object, we will pass the `$arAddress` array with the address fields.
 
 ```php
 if(!empty($resultRequisite['result'])) {
@@ -244,19 +250,19 @@ if(!empty($resultRequisite['result'])) {
 }
 ```
 
-### Full Example of the Handler Code
+### Complete Example of the Handler Code
 
 ```php
 <?php
 require_once('crest.php');
 
-// Get and sanitize form data
+// Retrieve and sanitize form data
 $iRequisitePresetID = intVal($_POST["REQ_TYPE"]);
 $sTitle = htmlspecialchars($_POST["TITLE"]);
 $sINN = htmlspecialchars($_POST["INN"]);
 $sPhone = htmlspecialchars($_POST["PHONE"]);
 
-// Prepare address
+// Prepare the address
 $arAddress = [];
 foreach($_POST["ADDRESS"] as $key => $val) {
     $arAddress[$key] = htmlspecialchars($val);
@@ -264,10 +270,10 @@ foreach($_POST["ADDRESS"] as $key => $val) {
 $arAddress['TYPE_ID'] = 1; // Value 1 — actual address
 $arAddress['ENTITY_TYPE_ID'] = 8; // Object type identifier — 8, which means detail
 
-// Format phone for Bitrix24 in crm_multifield format
+// Format the phone for Bitrix24 in crm_multifield format
 $arPhone = !empty($sPhone) ? [['VALUE' => $sPhone, 'VALUE_TYPE' => 'WORK']] : [];
 
-// Create company
+// Create the company
 $result = CRest::call('crm.company.add', [
     'fields' => [
         'TITLE' => $sTitle,
@@ -292,7 +298,7 @@ if(!empty($result['result'])) {
         ]
     ]);
     
-    // Add address if details were created successfully
+    // Add the address if the details were created successfully
     if(!empty($resultRequisite['result'])) {
         $arAddress['ENTITY_ID'] = $resultRequisite['result'];
         CRest::call('crm.address.add', ['fields' => $arAddress]);

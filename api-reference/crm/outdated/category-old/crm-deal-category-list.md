@@ -4,13 +4,13 @@
 >
 > Who can execute the method: any user
 
-{% note warning %}
+{% note warning "DEPRECATED" %}
 
-The method is deprecated. It is recommended to use [`crm.category.list`](../../universal/category/crm-category-list.md)
+The development of this method has been halted. Please use [crm.category.list](../../universal/category/crm-category-list.md).
 
 {% endnote %}
 
-The method returns a list of deal categories based on the filter. It is an implementation of list methods for deal categories.
+This method returns a list of deal categories based on the filter. It is an implementation of list methods for deal categories.
 
 ## Method Parameters
 
@@ -18,7 +18,7 @@ See the description of [list methods](../../../../settings/how-to-call-rest-api/
 
 ## Code Examples
 
-{% include [Note on examples](../../../../_includes/examples.md) %}
+{% include [Examples Note](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -45,7 +45,7 @@ See the description of [list methods](../../../../settings/how-to-call-rest-api/
 - JS
 
     ```js
-    // callListMethod: Retrieves all data at once. Use only for small selections (< 1000 items) due to high memory usage.
+    // callListMethod: Retrieves all data at once. Use only for small datasets (< 1000 items) due to high memory load.
     
     try {
       const response = await $b24.callListMethod(
@@ -62,7 +62,7 @@ See the description of [list methods](../../../../settings/how-to-call-rest-api/
       console.error('Request failed', error)
     }
     
-    // fetchListMethod: Retrieves data in parts using an iterator. Use it for large data volumes to optimize memory usage.
+    // fetchListMethod: Retrieves data in chunks using an iterator. Use for large datasets for efficient memory consumption.
     
     try {
       const generator = $b24.fetchListMethod('crm.dealcategory.list', {
@@ -77,7 +77,7 @@ See the description of [list methods](../../../../settings/how-to-call-rest-api/
       console.error('Request failed', error)
     }
     
-    // callMethod: Manually controls pagination through the start parameter. Use it for precise control of request batches. For large datasets, it is less efficient than fetchListMethod.
+    // callMethod: Manual control of pagination through the start parameter. Use for precise control over request batches. Less efficient for large data than fetchListMethod.
     
     try {
       const response = await $b24.callMethod('crm.dealcategory.list', {
@@ -167,4 +167,3 @@ See the description of [list methods](../../../../settings/how-to-call-rest-api/
     ```
 
 {% endlist %}
-

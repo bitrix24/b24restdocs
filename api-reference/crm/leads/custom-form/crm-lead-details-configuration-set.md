@@ -4,11 +4,11 @@
 >
 > Who can execute the method:
 >  - any user can set their own settings,
->  - a user with the "Allow to change settings" permission in CRM can set others' and shared settings.
+>  - a user with the "Allow to change settings" access permission in CRM can set others' and shared settings.
 
-{% note warning "Method Development Halted" %}
+{% note warning "DEPRECATED" %}
 
-The method `crm.lead.details.configuration.set` continues to function, but there is a more relevant alternative: [crm.item.details.configuration.set](../../universal/item-details-configuration/crm-item-details-configuration-set.md).
+The development of this method has been halted. Please use [crm.item.details.configuration.set](../../universal/item-details-configuration/crm-item-details-configuration-set.md).
 
 {% endnote %}
 
@@ -34,7 +34,7 @@ The settings for repeat leads may differ from those for simple leads. To switch 
 
 If the parameter is not provided, the `userId` of the user calling the method will be used.
 
-Required only when setting personal settings. ||
+This is only required when setting personal settings. ||
 || **scope**
 [`string`](../../../data-types.md) | The scope of the settings. Possible values:
 - `'P'` - personal settings
@@ -349,23 +349,23 @@ HTTP Status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../../_includes/error-info.md) %}
+{% include notitle [Error Handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
 || **Code** | **Description** | **Value** ||
 || `-` | Access denied | Insufficient permissions. ||
-|| `-` | Parameter `data` must be array | `data` is not an array. ||
-|| `-` | The data must be indexed array | `data` is not an indexed array. ||
-|| `-` | There are no data to write | `data` is an empty array. ||
-|| `-` | Section at index `i` have type `data[i].type`. The expected type is 'section' | `data[i].type` is not equal to `'section'`. ||
-|| `-` | Section at index `i` does not have name | `data[i].name` is empty. ||
-|| `-` | Section at index `i` does not have title | `data[i].title` is empty. ||
-|| `-` | Element at index `j` in section at index `i` does not have name | `data[i].elements[j].name` is empty. ||
+|| `-` | Parameter 'data' must be array | The `data` parameter is not an array. ||
+|| `-` | The data must be indexed array | The `data` parameter is not an indexed array. ||
+|| `-` | There are no data to write | An empty array was passed in `data`. ||
+|| `-` | Section at index `i` has type `data[i].type`. The expected type is 'section' | A value other than `'section'` was passed in `data[i].type`. ||
+|| `-` | Section at index `i` does not have name | An empty value was passed in `data[i].name`. ||
+|| `-` | Section at index `i` does not have title | An empty value was passed in `data[i].title`. ||
+|| `-` | Element at index `j` in section at index `i` does not have name | An empty value was passed in `data[i].elements[j].name`. ||
 |#
 
-{% include [system errors](../../../../_includes/system-errors.md) %}
+{% include [System Errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

@@ -24,16 +24,16 @@ The method is only available when called through the application.
 
 You can obtain the user ID using the methods [user.get](../../user/user-get.md), [user.search](../../user/user-search.md), or [im.user.get](../users/im-user-get.md) ||
 || **MESSAGE*** 
-[`string`](../../data-types.md) | The text of the notification. The method trims whitespace from the ends of the string before sending. ||
+[`string`](../../data-types.md) | The text of the notification. The method trims whitespace from the ends of the string before sending it. ||
 || **MESSAGE_OUT** 
 [`string`](../../data-types.md) | The text of the notification for external channels, such as email. If not provided, an empty value is sent. ||
 || **TAG** 
-[`string`](../../data-types.md) | A unique tag for the notification within the application. When adding a notification with an existing tag, other notifications will be removed. Pass with `CLIENT_ID` when calling via webhook. ||
+[`string`](../../data-types.md) | A unique tag for the notification within the application. When adding a notification with an existing tag, other notifications will be removed. Pass it with `CLIENT_ID` when calling via webhook. ||
 || **SUB_TAG** 
-[`string`](../../data-types.md) | An additional notification tag without uniqueness checks. Pass with `CLIENT_ID` when calling via webhook. ||
+[`string`](../../data-types.md) | An additional notification tag without uniqueness checks. Pass it with `CLIENT_ID` when calling via webhook. ||
 || **ATTACH** 
 [`object`](../../data-types.md) 
-[`string`](../../data-types.md) | An attachment for the notification in object format or JSON string. For more details, see the [Attachments](../messages/attachments/index.md) section. ||
+[`string`](../../data-types.md) | An attachment for the notification in object format or JSON string. For more details, see the [Attachments](../messages/attachments.md) section. ||
 |#
 
 ## Code Examples
@@ -203,11 +203,11 @@ HTTP Status: **400**, **403**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `WRONG_AUTH_TYPE` | Access for this method not allowed by session authorization. | The method was called with session authorization, which is prohibited. ||
+|| `WRONG_AUTH_TYPE` | Access for this method not allowed by session authorization | The method was called with session authorization, which is prohibited. ||
 || `USER_ID_EMPTY` | User ID can't be empty | The `USER_ID` parameter was not provided or `USER_ID <= 0`. ||
 || `MESSAGE_EMPTY` | Message can't be empty | The message text was not provided. ||
-|| `ATTACH_OVERSIZE` | You have exceeded the maximum allowable size of attach | The maximum allowable size of the `ATTACH` attachment has been exceeded — 30 KB. ||
-|| `ATTACH_ERROR` | Incorrect attach params | An incorrect format for the `ATTACH` attachment was provided. ||
+|| `ATTACH_OVERSIZE` | You have exceeded the maximum allowable size of attach | The maximum allowable size of the `ATTACH` is exceeded — 30 KB. ||
+|| `ATTACH_ERROR` | Incorrect attach params | An incorrect format for the `ATTACH` was provided. ||
 |#
 
 {% include [System Errors](../../../_includes/system-errors.md) %}

@@ -1,0 +1,15 @@
+title: Bots
+href: index.md
+items:
+  - name: Overview of Methods
+    href: index.md
+  - name: Register a Bot
+    href: bot-register.md
+  - name: Update a Bot
+    href: bot-update.md
+  - name: Get Information About a Bot
+    href: bot-get.md
+  - name: List of Application Bots
+    href: bot-list.md
+  - name: Unregister a Bot
+    href: bot-unregister.md

@@ -1,12 +1,12 @@
-# Update Product Property crm.product.property.update
+# Update Product Property `crm.product.property.update`
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: administrator, user with the "Allow changing settings" access permission in CRM
+> Who can execute the method: administrator, user with the "Allow to change settings" access permission in CRM
 
-{% note warning "Method development halted" %}
+{% note warning "DEPRECATED" %}
 
-The method `crm.product.property.update` is still operational, but there is a more current equivalent [catalog.productProperty.update](../../../catalog/product-property/catalog-product-property-update.md).
+The development of this method has been halted. Please use [catalog.productProperty.update](../../../catalog/product-property/catalog-product-property-update.md).
 
 {% endnote %}
 
@@ -16,7 +16,7 @@ The method `crm.product.property.update` updates an existing product property.
 
 {% include [Note on required parameters](../../../../_includes/required.md) %}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **id**
@@ -24,7 +24,7 @@ The method `crm.product.property.update` updates an existing product property.
 || **fields**
 [`array`](../../../data-types.md) | Field values for updating the product property.
 
-To find out the required format of the fields, execute the method [crm.product.property.fields](./crm-product-property-fields.md) and check the format of the incoming values for these fields ||
+To find out the required format for the fields, execute the method [crm.product.property.fields](./crm-product-property-fields.md) and check the format of the incoming values for these fields ||
 |#
 
 ## Code Examples
@@ -58,28 +58,28 @@ To find out the required format of the fields, execute the method [crm.product.p
     ```js
     try
     {
-    	const id = prompt("Enter ID");
-    	const propertyName = prompt("Enter new name");
+        const id = prompt("Enter ID");
+        const propertyName = prompt("Enter new name");
     
-    	const response = await $b24.callMethod(
-    		"crm.product.property.update",
-    		{
-    			id: id,
-    			fields:
-    			{
-    				"NAME": propertyName
-    			}
-    		}
-    	);
+        const response = await $b24.callMethod(
+            "crm.product.property.update",
+            {
+                id: id,
+                fields:
+                {
+                    "NAME": propertyName
+                }
+            }
+        );
     
-    	const result = response.getData().result;
-    	console.dir(result);
-    	if(response.more())
-    		response.next();
+        const result = response.getData().result;
+        console.dir(result);
+        if(response.more())
+            response.next();
     }
     catch(error)
     {
-    	console.error(error);
+        console.error(error);
     }
     ```
 

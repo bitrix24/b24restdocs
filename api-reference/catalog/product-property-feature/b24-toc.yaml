@@ -1,15 +1,17 @@
-title: Product property and variation parameters  
+title: Product Property and Variation Parameters  
 href: index.md  
 items:  
-  - name: Overview of methods  
+  - name: Overview of Methods  
     href: index.md  
-  - name: Add property parameters  
+  - name: Add Property Parameters  
     href: catalog-product-property-feature-add.md  
-  - name: Get property parameter values  
-    href: catalog-product-property-feature-get.md  
-  - name: Get fields of list property values  
-    href: catalog-product-property-feature-get-fields.md  
-  - name: Get available parameters  
-    href: catalog-product-property-feature-get-available-features-by-property.md  
-  - name: Update parameter values  
+  - name: Update Parameter Values  
     href: catalog-product-property-feature-update.md  
+  - name: Retrieve Property Parameter Values  
+    href: catalog-product-property-feature-get.md  
+  - name: Get List of Parameters  
+    href: catalog-product-property-feature-list.md  
+  - name: Retrieve Available Parameters  
+    href: catalog-product-property-feature-get-available-features-by-property.md  
+  - name: Get Parameter Fields  
+    href: catalog-product-property-feature-get-fields.md  

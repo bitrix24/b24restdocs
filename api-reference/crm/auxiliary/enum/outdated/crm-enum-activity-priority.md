@@ -1,12 +1,12 @@
-# Get the enumeration items "Activity Priorities" crm.enum.activitypriority
+# Get Enumeration Items for "Activity Priorities" crm.enum.activitypriority
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-{% note warning "Method development has been discontinued" %}
+{% note warning "DEPRECATED" %}
 
-The method `crm.enum.activitypriority` continues to function, but it is considered deprecated in favor of the more current methods [crm.activity.todo.*](../../../timeline/activities/todo/index.md).
+Development of this method has been halted. Please use [crm.activity.todo.*](../../../timeline/activities/todo/index.md).
 
 {% endnote %}
 
@@ -18,7 +18,7 @@ No parameters.
 
 ## Code Examples
 
-{% include [Examples note](../../../../../_includes/examples.md) %}
+{% include [Examples Note](../../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -130,7 +130,7 @@ No parameters.
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -184,15 +184,15 @@ HTTP status: **200**
 [`time`](../../../../data-types.md#time) | Information about the request execution time ||
 |#
 
-#### Fields of the result array {#result}
+#### Fields of the result Array {#result}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **ID**
-[`integer`](../../../../data-types.md) | Priority identifier ||
+[`integer`](../../../../data-types.md) | Identifier of the priority ||
 || **NAME**
-[`string`](../../../../data-types.md) | Priority name ||
+[`string`](../../../../data-types.md) | Name of the priority ||
 || **SYMBOL_CODE**
 [`string`](../../../../data-types.md) | Symbolic code ||
 || **SYMBOL_CODE_SHORT**

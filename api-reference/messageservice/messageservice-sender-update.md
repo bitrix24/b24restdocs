@@ -4,7 +4,9 @@
 >
 > Who can execute the method: administrator
 
-This method updates the message provider.
+The method `messageservice.sender.update` updates the data of a registered message provider.
+
+This method works only in the context of an [application](../../settings/app-installation/index.md).
 
 ## Method Parameters
 
@@ -14,20 +16,44 @@ This method updates the message provider.
 || **Name**
 `type` | **Description** ||
 || **CODE***
-[`string`](../data-types.md) | Internal identifier of the provider ||
+[`string`](../data-types.md) | The code of the provider to be updated.
+
+The provider code can be obtained using the [messageservice.sender.list](./messageservice-sender-list.md) method. ||
 || **HANDLER**
-[`string`](../data-types.md) | URL of the application to which data will be sent ||
+[`string`](../data-types.md) | New application handler URL. ||
 || **NAME**
-[`string / array`](../data-types.md) | Name of the provider. It can be a string or an associative array of localized strings. 
+[`string` \| `object`](../data-types.md) | New name of the provider.
 
-This parameter is required if the phrase is in a new language ||
+It can be a string or an associative array of localized strings in the following format:
+
+```js
+'NAME': {
+    'de': 'Anbietername',
+    'en': 'provider name',
+    ...
+},
+```
+ ||
 || **DESCRIPTION**
-[`string / array`](../data-types.md) | Description of the provider. It can be a string or an associative array of localized strings. 
+[`string` \| `object`](../data-types.md) | New description of the provider.
 
-Used only with the `NAME` parameter if the language is new ||
+It can be a string or an associative array of localized strings in the following format:
+
+```js
+'DESCRIPTION': {
+    'de': 'Anbieterbeschreibung',
+    'en': 'provider description',
+    ...
+},
+```
+||
 |#
 
-The request must contain at least one optional parameter.
+{% note info "" %}
+
+The request must include `CODE` and at least one of the parameters `HANDLER`, `NAME`, or `DESCRIPTION`.
+
+{% endnote %}
 
 ## Code Examples
 
@@ -35,23 +61,13 @@ The request must contain at least one optional parameter.
 
 {% list tabs %}
 
-- cURL (Webhook)
-
-    ```bash
-    curl -X POST \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json" \
-    -d '{"CODE":"provider","HANDLER":"https://newhandler.com/","NAME":"New Provider Name","DESCRIPTION":"New Provider Description"}' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/messageservice.sender.update
-    ```
-
 - cURL (OAuth)
 
     ```bash
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"CODE":"provider","HANDLER":"https://newhandler.com/","NAME":"New Provider Name","DESCRIPTION":"New Provider Description","auth":"**put_access_token_here**"}' \
+    -d '{"CODE":"provider1","HANDLER":"https://provider.example/api/new-handler","NAME":"Provider 1 Updated","DESCRIPTION":"Updated description","auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/messageservice.sender.update
     ```
 
@@ -60,25 +76,22 @@ The request must contain at least one optional parameter.
     ```js
     try
     {
-    	const response = await $b24.callMethod(
-    		'messageservice.sender.update',
-    		{
-    			CODE: 'provider',
-    			HANDLER: 'https://newhandler.com/',
-    			NAME: 'New Provider Name',
-    			DESCRIPTION: 'New Provider Description'
-    		}
-    	);
-    	
-    	const result = response.getData().result;
-    	if(result.error())
-    		alert("Error: " + result.error());
-    	else
-    		alert("Success: " + result);
+        const response = await $b24.callMethod(
+            'messageservice.sender.update',
+            {
+                CODE: 'provider1',
+                HANDLER: 'https://provider.example/api/new-handler',
+                NAME: 'Provider 1 Updated',
+                DESCRIPTION: 'Updated description'
+            }
+        );
+
+        const result = response.getData().result;
+        console.log(result);
     }
-    catch( error )
+    catch (error)
     {
-    	console.error('Error:', error);
+        console.error('Error:', error);
     }
     ```
 
@@ -86,30 +99,23 @@ The request must contain at least one optional parameter.
 
     ```php
     try {
-        $params = [
-            'CODE'        => 'provider',
-            'HANDLER'     => 'https://newhandler.com/',
-            'NAME'        => 'New Provider Name',
-            'DESCRIPTION' => 'New Provider Description',
-        ];
-    
         $response = $b24Service
             ->core
             ->call(
                 'messageservice.sender.update',
-                $params
+                [
+                    'CODE' => 'provider1',
+                    'HANDLER' => 'https://provider.example/api/new-handler',
+                    'NAME' => 'Provider 1 Updated',
+                    'DESCRIPTION' => 'Updated description',
+                ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
-        if ($result->error()) {
-            echo 'Error: ' . $result->error();
-        } else {
-            echo 'Success: ' . $result->data();
-        }
-    
+
+        print_r($result);
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error updating sender: ' . $e->getMessage();
@@ -119,21 +125,24 @@ The request must contain at least one optional parameter.
 - BX24.js
 
     ```js
-    var params = {
-        CODE: 'provider',
-        HANDLER: 'https://newhandler.com/',
-        NAME: 'New Provider Name',
-        DESCRIPTION: 'New Provider Description'
-    };
     BX24.callMethod(
         'messageservice.sender.update',
-        params,
+        {
+            CODE: 'provider1',
+            HANDLER: 'https://provider.example/api/new-handler',
+            NAME: 'Provider 1 Updated',
+            DESCRIPTION: 'Updated description'
+        },
         function(result)
         {
-            if(result.error())
-                alert("Error: " + result.error());
+            if (result.error())
+            {
+                console.error(result.error(), result.error_description());
+            }
             else
-                alert("Success: " + result.data());
+            {
+                console.log(result.data());
+            }
         }
     );
     ```
@@ -142,144 +151,15 @@ The request must contain at least one optional parameter.
 
     ```php
     require_once('crest.php');
-
-    $params = [
-        'CODE' => 'provider',
-        'HANDLER' => 'https://newhandler.com/',
-        'NAME' => 'New Provider Name',
-        'DESCRIPTION' => 'New Provider Description'
-    ];
 
     $result = CRest::call(
         'messageservice.sender.update',
-        $params
-    );
-
-    echo '<PRE>';
-    print_r($result);
-    echo '</PRE>';
-    ```
-
-{% endlist %}
-
-{% list tabs %}
-
-- cURL (Webhook)
-
-    ```bash
-    curl -X POST \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json" \
-    -d '{"CODE":"provider","NAME":{"en":"New Name","de":"Neuer Name"},"DESCRIPTION":{"en":"New Description"}}' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/messageservice.sender.update
-    ```
-
-- cURL (OAuth)
-
-    ```bash
-    curl -X POST \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json" \
-    -d '{"CODE":"provider","NAME":{"en":"New Name","de":"Neuer Name"},"DESCRIPTION":{"en":"New Description"},"auth":"**put_access_token_here**"}' \
-    https://**put_your_bitrix24_address**/rest/messageservice.sender.update
-    ```
-
-- JS
-
-    ```js
-    try
-    {
-    	const response = await $b24.callMethod(
-    		'messageservice.sender.update',
-    		{
-    			CODE: 'provider',
-    			NAME: {"en":"New Name","de":"Neuer Name"},
-    			DESCRIPTION: {"en":"New Description"}
-    		}
-    	);
-    	
-    	const result = response.getData().result;
-    	alert("Success: " + result);
-    }
-    catch( error )
-    {
-    	alert("Error: " + error);
-    }
-    ```
-
-- PHP
-
-    ```php
-    try {
-        $params = [
-            'CODE'        => 'provider',
-            'NAME'        => ['en' => 'New Name', 'de' => 'Neuer Name'],
-            'DESCRIPTION' => ['en' => 'New Description'],
-        ];
-    
-        $response = $b24Service
-            ->core
-            ->call(
-                'messageservice.sender.update',
-                $params
-            );
-    
-        $result = $response
-            ->getResponseData()
-            ->getResult();
-    
-        if ($result->error()) {
-            echo 'Error: ' . $result->error();
-        } else {
-            echo 'Success: ' . $result->data();
-        }
-    
-    } catch (Throwable $e) {
-        error_log($e->getMessage());
-        echo 'Error updating sender: ' . $e->getMessage();
-    }
-    ```
-
-- BX24.js
-
-    ```js
-    var params = {
-        CODE: 'provider',
-        NAME: {"en":"New Name","de":"Neuer Name"},
-        DESCRIPTION: {"en":"New Description"}
-    };
-    BX24.callMethod(
-        'messageservice.sender.update',
-        params,
-        function(result)
-        {
-            if(result.error())
-                alert("Error: " + result.error());
-            else
-                alert("Success: " + result.data());
-        }
-    );
-    ```
-
-- PHP CRest
-
-    ```php
-    require_once('crest.php');
-
-    $params = [
-        'CODE' => 'provider',
-        'NAME' => [
-            'en' => 'New Name',
-            'de' => 'Neuer Name'
-        ],
-        'DESCRIPTION' => [
-            'en' => 'New Description'
+        [
+            'CODE' => 'provider1',
+            'HANDLER' => 'https://provider.example/api/new-handler',
+            'NAME' => 'Provider 1 Updated',
+            'DESCRIPTION' => 'Updated description',
         ]
-    ];
-
-    $result = CRest::call(
-        'messageservice.sender.update',
-        $params
     );
 
     echo '<PRE>';
@@ -297,12 +177,14 @@ HTTP Status: **200**
 {
     "result": true,
     "time": {
-        "start": 1732110540.526103,
-        "finish": 1732110540.797043,
-        "duration": 0.27094006538391113,
-        "processing": 0.007060050964355469,
-        "date_start": "2024-11-20T15:49:00+02:00",
-        "date_finish": "2024-11-20T15:49:00+02:00"
+        "start": 1742895600,
+        "finish": 1742895600.845505,
+        "duration": 0.845505952835083,
+        "processing": 0.1402289867401123,
+        "date_start": "2025-03-25T10:00:00+01:00",
+        "date_finish": "2025-03-25T10:00:00+01:00",
+        "operating_reset_at": 1742896200,
+        "operating": 0
     }
 }
 ```
@@ -313,9 +195,9 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../data-types.md) | Result of the message provider update ||
+[`boolean`](../data-types.md) | `true` if the provider was successfully updated. ||
 || **time**
-[`time`](../data-types.md) | Information about the execution time of the request ||
+[`time`](../data-types.md#time) | Information about the request execution time. ||
 |#
 
 ## Error Handling
@@ -324,28 +206,31 @@ HTTP Status: **400**, **403**
 
 ```json
 {
-    "error": "ERROR_SENDER_NOT_FOUND",
-    "error_description": "Sender not found!"
+    "error": "ERROR_SENDER_OTHER_PARAMS_REQUIRED",
+    "error_description": "At least one other parameter is required!"
 }
 ```
 
-{% include notitle [error handling](../../_includes/error-info.md) %}
+{% include notitle [Error Handling](../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `ERROR_SENDER_NOT_FOUND` | Provider not found ||
-|| `ERROR_SENDER_CODE_REQUIRED` | The `CODE` parameter is missing ||
-|| `ERROR_SENDER_OTHER_PARAMS_REQUIRED` | At least one of the optional parameters is missing ||
-|| `ACCESS_DENIED` | Insufficient permissions to update the provider ||
+|| **Code** | **Description** | **Value** ||
+|| `ERROR_SENDER_CODE_REQUIRED` | `CODE is required!` | The required parameter `CODE` is missing. ||
+|| `ERROR_SENDER_OTHER_PARAMS_REQUIRED` | `At least one other parameter is required!` | No parameters for updating (`HANDLER`, `NAME`, `DESCRIPTION`) were provided. ||
+|| `ERROR_SENDER_NOT_FOUND` | `Sender not found!` | The provider with the given `CODE` was not found. ||
+|| `ERROR_SENDER_UPDATE_FAILURE` | `Sender update error!` | An error occurred while updating the provider. ||
+|| `ACCESS_DENIED` | `Application context required` | The method was called outside the application context. ||
+|| `ACCESS_DENIED` | `Access denied!` | The method was executed by a non-administrator. ||
 |#
 
-{% include [system errors](../../_includes/system-errors.md) %}
+{% include [System Errors](../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
 - [{#T}](./messageservice-sender-add.md)
+- [{#T}](./messageservice-sender-update.md)
 - [{#T}](./messageservice-sender-list.md)
 - [{#T}](./messageservice-sender-delete.md)
 - [{#T}](./messageservice-message-status-update.md)

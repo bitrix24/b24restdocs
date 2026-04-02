@@ -4,11 +4,11 @@
 >
 > Who can execute the method: any user
 
-This method creates a new task. It returns the identifier of the added task. The following [fields](./index.md) are available.
+This method creates a new task and returns the identifier of the added task. The following [fields](./index.md) are available.
 
-{% note warning %}
+{% note warning "DEPRECATED" %}
 
-This method is deprecated and not supported. It is recommended to use the methods [tasks.task.*](../../index.md).
+Development of this method has been halted. Please use [tasks.task.add](../../tasks-task-add.md).
 
 {% endnote %}
 
@@ -18,12 +18,12 @@ This method is deprecated and not supported. It is recommended to use the method
 || **Name**
 `type` | **Description** ||
 || **TASKDATA**
-[`array`](../../../data-types.md) | Array of data fields for the task (`TITLE`, `DESCRIPTION`, etc.) ||
+[`array`](../../../data-types.md) | An array of data fields for the task (`TITLE`, `DESCRIPTION`, etc.) ||
 |#
 
 ## Code Examples
 
-{% include [Note on examples](../../../../_includes/examples.md) %}
+{% include [Example Note](../../../../_includes/examples.md) %}
 
 Creating a task.
 
@@ -251,7 +251,7 @@ Example of recording values with CRM.
 
 {% endlist %}
 
-The numbers are the `ID` of the corresponding values. The value `L_4` indicates a link to the lead task with `ID = 4`. Multiple links of the same type can be specified, for example, `L_4, L_5`.
+The numbers represent the `ID` of the corresponding values. The value `L_4` indicates a link to a lead task with `ID = 4`. Multiple links of the same type can be specified, for example, `L_4, L_5`.
 
 - `L` — lead
 - `C` — contact

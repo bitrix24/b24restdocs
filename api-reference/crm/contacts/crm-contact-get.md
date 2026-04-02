@@ -4,15 +4,15 @@
 >
 > Who can execute the method: any user with "read" access permission for contacts
 
-{% note warning "Method Development Stopped" %}
+{% note warning "DEPRECATED" %}
 
-The method `crm.contact.get` continues to function, but there is a more relevant alternative [crm.item.get](../universal/crm-item-get.md).
+Development of this method has been halted. Please use [crm.item.get](../universal/crm-item-get.md).
 
 {% endnote %}
 
 The method `crm.contact.get` returns a contact by its identifier.
 
-To get a list of companies associated with the contact, use the method [`crm.contact.company.items.get`](company/crm-contact-company-items-get.md).
+To retrieve a list of companies associated with the contact, use the method [`crm.contact.company.items.get`](company/crm-contact-company-items-get.md).
 
 ## Method Parameters
 
@@ -58,22 +58,22 @@ Get contact with `id = 23`
     ```js
     try
     {
-    	const response = await $b24.callMethod(
-    		'crm.contact.get',
-    		{
-    			id: 23,
-    		}
-    	);
-    	
-    	const result = response.getData().result;
-    	result.error()
-    		? console.error(result.error())
-    		: console.info(result)
-    	;
+        const response = await $b24.callMethod(
+            'crm.contact.get',
+            {
+                id: 23,
+            }
+        );
+        
+        const result = response.getData().result;
+        result.error()
+            ? console.error(result.error())
+            : console.info(result)
+        ;
     }
     catch( error )
     {
-    	console.error('Error:', error);
+        console.error('Error:', error);
     }
     ```
 
@@ -136,15 +136,15 @@ Get contact with `id = 23`
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
     "result": {
         "ID": "43",
         "POST": "Administrator",
-        "COMMENTS": "\nExample comment inside the contact\n\n[B]Bold text[\/B]\n[I]Italic[\/I]\n[U]Underlined[\/U]\n[S]Strikethrough[\/S]\n[B][I][U][S]Mix[\/S][\/U][\/I][\/B]\n\n[LIST]\n[*]List item #1\n[*]List item #2\n[*]List item #3\n[\/LIST]\n\n[LIST=1]\n[*]Numbered list item #1\n[*]Numbered list item #2\n[*]Numbered list item #3\n[\/LIST]\n",
-        "HONORIFIC": "HNR_EN_1",
+        "COMMENTS": "\nExample comment within the contact\n\n[B]Bold text[\/B]\n[I]Italic[\/I]\n[U]Underlined[\/U]\n[S]Strikethrough[\/S]\n[B][I][U][S]Mix[\/S][\/U][\/I][\/B]\n\n[LIST]\n[*]List item #1\n[*]List item #2\n[*]List item #3\n[\/LIST]\n\n[LIST=1]\n[*]Numbered list item #1\n[*]Numbered list item #2\n[*]Numbered list item #3\n[\/LIST]\n",
+        "HONORIFIC": "HNR_RU_1",
         "NAME": "John",
         "SECOND_NAME": "Doe",
         "LAST_NAME": "Smith",
@@ -259,7 +259,7 @@ HTTP status: **200**
 || **PHOTO**
 [`file`][1] | Photo ||
 || **LEAD_ID**
-[`crm_lead`](../data-types.md) | Identifier of the lead based on which the contact was created ||
+[`crm_lead`](../data-types.md) | Identifier of the lead from which the contact was created ||
 || **TYPE_ID**
 [`crm_status`](../data-types.md) | Type of contact ||
 || **SOURCE_ID**
@@ -271,19 +271,19 @@ HTTP status: **200**
 || **BIRTHDATE**
 [`date`][1] | Date of birth ||
 || **EXPORT**
-[`boolean`][1] | Whether the contact is included in the export. Possible values:
+[`boolean`][1] | Whether the contact is included in exports. Possible values:
 - `Y` — yes
 - `N` — no ||
 || **HAS_PHONE**
-[`boolean`][1] | Whether a phone is set. Possible values:
+[`boolean`][1] | Is a phone number provided. Possible values:
 - `Y` — yes
 - `N` — no ||
 || **HAS_EMAIL**
-[`boolean`][1] | Whether an e-mail is set. Possible values:
+[`boolean`][1] | Is an e-mail provided. Possible values:
 - `Y` — yes
 - `N` — no ||
 || **HAS_IMOL**
-[`boolean`][1] | Whether an open channel is set. Possible values:
+[`boolean`][1] | Is an open line provided. Possible values:
 - `Y` — yes
 - `N` — no ||
 || **DATE_CREATE**
@@ -297,7 +297,7 @@ HTTP status: **200**
 || **MODIFY_BY_ID**
 [`user`][1] | Modified by ||
 || **OPENED**
-[`boolean`][1] | Available to everyone. Possible values:
+[`boolean`][1] | Is it available to everyone. Possible values:
 - `Y` — yes
 - `N` — no ||
 || **FACE_ID**
@@ -307,13 +307,13 @@ HTTP status: **200**
 || **LAST_ACTIVITY_BY**
 [`user`][1] | Who performed the last activity in the timeline ||
 || **UTM_SOURCE**
-[`string`][1] | Advertising system (Google Ads, Facebook Ads, etc.) ||
+[`string`][1] | Advertising system (Google Ads, etc.) ||
 || **UTM_MEDIUM**
 [`string`][1] | Type of traffic. Possible values:
 - `CPC` — ads
 - `CPM` — banners ||
 || **UTM_CAMPAIGN**
-[`string`][1] | Designation of the advertising campaign ||
+[`string`][1] | Identifier of the advertising campaign ||
 || **UTM_CONTENT**
 [`string`][1] | Content of the campaign. For example, for contextual ads ||
 || **UTM_TERM**
@@ -333,9 +333,9 @@ HTTP status: **200**
 **Fields for external data source connections**
 
 If the contact was created by an external system, then:
-- the field `ORIGINATOR_ID` stores the string identifier of that system
-- the field `ORIGIN_ID` stores the string identifier of the contact in that external system
-- the field `ORIGIN_VERSION` stores the version of the contact data in that external system
+- the `ORIGINATOR_ID` field stores the string identifier of that system
+- the `ORIGIN_ID` field stores the string identifier of the contact in that external system
+- the `ORIGIN_VERSION` field stores the version of the contact data in that external system
 
 #|
 || **Name**
@@ -350,7 +350,7 @@ If the contact was created by an external system, then:
 
 **Deprecated Fields**
 
-Address fields in the contact are deprecated and are only used for compatibility mode. To work with the address, use [details](../requisites/index.md).
+Address fields in the contact are deprecated and are only used for compatibility. To work with addresses, use [requisites](../requisites/index.md).
 
 #|
 || **Name**
@@ -364,9 +364,9 @@ Address fields in the contact are deprecated and are only used for compatibility
 || **ADDRESS_POSTAL_CODE**
 [`string`][1] | Postal code ||
 || **ADDRESS_REGION**
-[`string`][1] | Region ||
+[`string`][1] | District ||
 || **ADDRESS_PROVINCE**
-[`string`][1] | Province ||
+[`string`][1] | Region ||
 || **ADDRESS_COUNTRY**
 [`string`][1] | Country ||
 || **ADDRESS_LOC_ADDR_ID**
@@ -381,7 +381,7 @@ Fields of type `crm_multifield` (`PHONE`, `EMAIL`, `WEB`, `IM`, `LINK`) are expl
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {
@@ -396,7 +396,7 @@ HTTP status: **400**
 
 #|
 || **Description** | **Value** ||
-|| `ID is not defined or invalid` | The `id` parameter is not provided or the provided value is not a positive integer ||
+|| `ID is not defined or invalid` | The `id` parameter was not provided or the provided value is not a positive integer ||
 || `Access denied` | The user does not have permission to "Read" the contact ||
 || `Not found` | The contact with the provided `id` was not found ||
 |#

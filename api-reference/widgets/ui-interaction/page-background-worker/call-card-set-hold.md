@@ -1,39 +1,205 @@
-# Set a Call on Hold from the CallCardSetHold Application
-
-{% note warning "We are still updating this page" %}
-
-Some data may be missing here — we will complete it shortly.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not deployed to prod_" %}
-
-- examples are missing
-- success response is missing
-- error response is missing
-
-{% endnote %}
-
-{% endif %}
+# Set Call on Hold Using the CallCardSetHold Application
 
 > Scope: [`telephony`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-The `CallCardSetHold` method allows the application to place a call on hold.
+The `CallCardSetHold` method enables or disables call hold in the card.
 
-The application must pass an object with the property held to the method, which contains a boolean value: true - to enable hold, false - to disable hold. No data is passed to the callback function.
+{% note info "" %}
 
-## Example
+The method operates within the context of the application in the `PAGE_BACKGROUND_WORKER` placement.
 
-```js
-BX24.placement.bindEvent('BackgroundCallCard::initialized', event => {
-    BX24.placement.call('CallCardSetHold', { held: true }, () => {
-        // some code
+{% endnote %}
+
+## Method Parameters
+
+{% include [Note on Required Parameters](../../../../_includes/required.md) %}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **PLACEMENT***
+[`string`](../../../data-types.md) | The name of the interface command.
+
+For this method — `CallCardSetHold` ||
+|| **PARAMS***
+[`object`](../../../data-types.md) | The parameters object for the command.
+
+For this method, an object with the `held` property is passed [(detailed description)](#params) ||
+|#
+
+### PARAMS Parameter {#params}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **held***
+[`boolean`](../../../data-types.md) | Control of hold status.
+
+Possible values:
+
+- `true` — put the call on hold
+- `false` — take the call off hold ||
+|#
+
+## Code Examples
+
+{% include [Note on Examples](../../../../_includes/examples.md) %}
+
+{% note info "" %}
+
+It is recommended to call the method after the [BackgroundCallCard::initialized](./events/initialized.md) event.
+
+{% endnote %}
+
+{% list tabs %}
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+      -H "Content-Type: application/json" \
+      -H "Accept: application/json" \
+      -d '{"PLACEMENT":"CallCardSetHold","PARAMS":{"held":true}}' \
+      "https://**put_your_bitrix24_address**/rest/placement.call?auth=**put_access_token_here**"
+    ```
+
+- JS
+
+    ```js
+    BX24.placement.call('CallCardSetHold', { held: true }, function(result) {
+        console.log(result);
     });
-});
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'placement.call',
+                [
+                    'PLACEMENT' => 'CallCardSetHold',
+                    'PARAMS' => [
+                        'held' => true,
+                    ]
+                ]
+            );
+
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+
+        echo 'Success: ' . print_r($result, true);
+        processData($result);
+
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
+    BX24.callMethod(
+        'placement.call',
+        {
+            PLACEMENT: 'CallCardSetHold',
+            PARAMS: {
+                held: true
+            }
+        },
+        function(result)
+        {
+            if (result.error())
+            {
+                console.error(result.error(), result.error_description());
+            }
+            else
+            {
+                console.log(result.data());
+            }
+        }
+    );
+    ```
+
+- PHP CRest
+
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'placement.call',
+        [
+            'PLACEMENT' => 'CallCardSetHold',
+            'PARAMS' => [
+                'held' => true,
+            ]
+        ]
+    );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
+    ```
+
+{% endlist %}
+
+## Response Handling
+
+```json
+[]
 ```
 
-{% include [Note on examples](../../../../_includes/examples.md) %}
+### Returned Data
+
+An empty array upon a successful call.
+
+## Error Handling
+
+### REST Call Error
+
+```json
+{
+    "error": "WRONG_AUTH_TYPE",
+    "error_description": "Application context required"
+}
+```
+
+### Interface Call Error
+
+```json
+[
+    {
+        "result": "error",
+        "errorCode": "Call card is undefined"
+    }
+]
+```
+
+{% include notitle [error handling](../../../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+#|
+|| **Code** | **Description** | **Value** ||
+|| `WRONG_AUTH_TYPE` | Application context required | The method was called outside the application context in the `PAGE_BACKGROUND_WORKER` placement ||
+|| `Call card is undefined` | Call card is unavailable | No active call card available for management ||
+|| `missing field held` | Required parameter `held` not provided | Parameter error in the desktop scenario. Due to callback implementation specifics, an additional successful response `[]` may occur ||
+|#
+
+{% include [system errors](../../../../_includes/system-errors.md) %}
+
+## Continue Learning
+
+- [{#T}](./call-card-set-mute.md)
+- [{#T}](./call-card-set-ui-state.md)
+- [{#T}](./call-card-get-list-ui-states.md)
+- [{#T}](./call-card-set-card-title.md)
+- [{#T}](./call-card-set-status-text.md)
+- [{#T}](./call-card-close.md)
+- [{#T}](./events/index.md)

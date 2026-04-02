@@ -1,12 +1,12 @@
-# Delete contact crm.contact.delete
+# Delete Contact crm.contact.delete
 
 > Scope: [`crm`](../../scopes/permissions.md)
 >
 > Who can execute the method: any user with "delete" access permission for contacts
 
-{% note warning "Method Development Stopped" %}
+{% note warning "DEPRECATED" %}
 
-The method `crm.contact.delete` continues to function, but there is a more relevant alternative [crm.item.delete](../universal/crm-item-delete.md).
+The development of this method has been halted. Please use [crm.item.delete](../universal/crm-item-delete.md).
 
 {% endnote %}
 
@@ -14,20 +14,20 @@ The method `crm.contact.delete` removes a contact and all associated objects.
 
 ## Method Parameters
 
-{% include [Footnote about parameters](../../../_includes/required.md) %}
+{% include [Note on parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`][1] | Identifier of the contact.
+[`integer`][1] | The identifier of the contact.
 
 The identifier can be obtained using the methods [`crm.contact.list`](crm-contact-list.md) or [`crm.contact.add`](crm-contact-add.md) ||
 |#
 
 ## Code Examples
 
-{% include [Footnote about examples](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 Delete contact with `id = 50`
 
@@ -144,7 +144,7 @@ Delete contact with `id = 50`
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -166,16 +166,16 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`][1] | Root element of the response.
+[`boolean`][1] | The root element of the response.
 
 Returns `true` on success ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the request execution time ||
+[`time`](../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {
@@ -192,7 +192,7 @@ HTTP status: **400**
 || **Code** | **Description** | **Value** ||
 || `-`     | `ID is not defined or invalid` | The `id` parameter is not provided or the provided value is not a positive integer ||
 || `-`     | `Access denied` | The user does not have permission to "Delete" the contact ||
-|| `ERROR_CORE` | Element not found | Contact with the provided `id` was not found ||
+|| `ERROR_CORE` | Element not found | The contact with the provided `id` was not found ||
 |#
 
 {% include [system errors](./../../../_includes/system-errors.md) %}

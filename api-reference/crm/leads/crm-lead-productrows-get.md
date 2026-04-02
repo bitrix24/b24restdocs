@@ -1,33 +1,33 @@
-# Retrieve Lead Product Rows crm.lead.productrows.get
+# Get Lead Product Rows crm.lead.productrows.get
 
 > Scope: [`crm`](../../scopes/permissions.md)
 >
 > Who can execute the method: user with "read" access permission for leads
 
-{% note warning "Method Development Halted" %}
+{% note warning "DEPRECATED" %}
 
-The method `crm.lead.productrows.get` is still operational, but there is a more current equivalent: [crm.item.productrow.*](../universal/product-rows/index.md).
+Development of this method has been halted. Please use [crm.item.productrow.*](../universal/product-rows/index.md).
 
 {% endnote %}
 
-The method `crm.lead.productrows.get` returns the product rows associated with a lead.
+The method `crm.lead.productrows.get` returns the product rows of a lead.
 
 ## Method Parameters
 
-{% include [Parameter Note](../../../_includes/required.md) %}
+{% include [Note on Parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **id^*^**
-[`integer`](../../data-types.md) | Identifier of the lead. Can be obtained using the method to retrieve the list of leads: [`crm.lead.list`](./crm-lead-list.md) or when creating a lead: [`crm.lead.add`](./crm-lead-add.md) ||
+[`integer`](../../data-types.md) | Identifier of the lead. Can be obtained using the method to get the list of leads: [`crm.lead.list`](./crm-lead-list.md) or when creating a lead: [`crm.lead.add`](./crm-lead-add.md) ||
 |#
 
 ## Code Examples
 
-Retrieve product rows for a lead with `id = 5`
+Get product rows for the lead with `id = 5`
 
-{% include [Example Note](../../../_includes/examples.md) %}
+{% include [Note on Examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -241,9 +241,9 @@ HTTP Status: **200**
 || **ID**
 [`integer`](../../data-types.md) | Identifier of the product row ||
 || **OWNER_ID**
-[`integer`](../../data-types.md) | Identifier of the element to which the product is linked. For this method, it will always equal the lead `id` ||
+[`integer`](../../data-types.md) | Identifier of the element to which the product is linked. For this method, it will always equal the `id` of the lead ||
 || **OWNER_TYPE**
-[`string`](../../data-types.md) | String identifier of the object type to which the product is linked. For this method, it will always equal `L` ||
+[`string`](../../data-types.md) | String identifier of the type of object to which the product is linked. For this method, it will always equal `L` ||
 || **PRODUCT_ID**
 [`integer`](../../data-types.md) | Identifier of the product in the catalog. `0` if not from the catalog
 
@@ -277,11 +277,11 @@ Possible types:
 || **DISCOUNT_RATE**
 [`double`](../../data-types.md) | Discount value in percentage (if using the percentage discount type) ||
 || **DISCOUNT_SUM**
-[`double`](../../data-types.md) | Absolute value of the discount (if using the absolute discount type) ||
+[`double`](../../data-types.md) | Absolute discount value (if using the absolute discount type) ||
 || **TAX_RATE**
 [`double`](../../data-types.md) | Tax rate in percentage ||
 || **TAX_INCLUDED**
-[`char`](../../data-types.md) | Indicator of whether the tax is included in the price
+[`char`](../../data-types.md) | Indicator of whether tax is included in the price
 Possible values:
 - `Y` – tax included
 - `N` – tax not included
@@ -332,17 +332,17 @@ HTTP Status: **400**
 }
 ```
 
-{% include notitle [Error Handling](../../../_includes/error-info.md) %}
+{% include notitle [error handling](../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
 || **Description** | **Value** ||
 || The parameter id is invalid or not defined | The `id` parameter has an incorrect value ||
-|| Access denied | The user does not have "read" access permission for leads ||
+|| Access denied | The user does not have permission to "read" the lead ||
 |#
 
-{% include [System Errors](./../../../_includes/system-errors.md) %}
+{% include [system errors](./../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

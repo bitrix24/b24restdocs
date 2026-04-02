@@ -1,35 +1,35 @@
-# Delete lead crm.lead.delete
+# Delete Lead crm.lead.delete
 
 > Scope: [`crm`](../../scopes/permissions.md)
 >
 > Who can execute the method: any user with permission to delete leads
 
-{% note warning "Method Development Stopped" %}
+{% note warning "DEPRECATED" %}
 
-The method `crm.lead.delete` continues to function, but there is a more relevant alternative [crm.item.delete](../universal/crm-item-delete.md).
+Development of this method has been halted. Please use [crm.item.delete](../universal/crm-item-delete.md).
 
 {% endnote %}
 
-The method `crm.lead.delete` removes a lead and all associated objects: activities, history, timeline records, and others.
+The method `crm.lead.delete` removes a lead and all associated objects: tasks, history, timeline records, and others.
 
 Objects are deleted if they are not linked to other objects or entities. If the objects are linked to other entities, only the link to the deleted lead will be removed.
 
 ## Method Parameters
 
-{% include [Footnote about parameters](../../../_includes/required.md) %}
+{% include [Note on parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`](../../data-types.md) | The identifier of the lead.
+[`integer`](../../data-types.md) | Lead identifier.
 
 The identifier can be obtained using the methods [crm.lead.list](./crm-lead-list.md) or [crm.lead.add](./crm-lead-add.md) ||
 |#
 
 ## Code Examples
 
-{% include [Footnote about examples](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -141,7 +141,7 @@ The identifier can be obtained using the methods [crm.lead.list](./crm-lead-list
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -165,9 +165,9 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../data-types.md) | The root element of the response, contains `true` in case of success ||
+[`boolean`](../../data-types.md) | Root element of the response, contains `true` in case of success ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the execution time of the request ||
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -187,7 +187,7 @@ HTTP status: **200**
 
 #|
 || **Description** | **Value** ||
-|| `ID is not defined or invalid` | The `id` parameter either has no value or is not a positive integer ||
+|| `ID is not defined or invalid` | The `id` parameter is either not provided or is not a positive integer ||
 || `Access denied` | The user does not have permission to delete leads ||
 || `Not found` | The lead with the provided `id` does not exist ||
 |#

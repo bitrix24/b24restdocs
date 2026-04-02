@@ -6,15 +6,15 @@
 
 The method `task.commentitem.add` adds a new comment to a task.
 
-{% note warning "The development of the method has been halted since version `tasks 25.700.0` " %}
+{% note warning "DEPRECATED" %}
 
-The method `task.commentitem.add` continues to work, but there is a more current equivalent [tasks.task.chat.message.send](../../rest-v3/tasks/tasks-task-chat-message-send.md).
+The development of this method has been halted since version `tasks 25.700.0`. Please use [tasks.task.chat.message.send](../../rest-v3/tasks/tasks-task-chat-message-send.md).
 
 {% endnote %}
 
 ## Method Parameters
 
-{% include [Footnote about parameters](../../../_includes/required.md) %}
+{% include [Note on parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -22,14 +22,14 @@ The method `task.commentitem.add` continues to work, but there is a more current
 || **TASKID***
 [`integer`](../../data-types.md) | Task identifier.
 
-The task identifier can be obtained when [creating a new task](../tasks-task-add.md) or by using the [getting the list of tasks](../tasks-task-list.md) method ||
+The task identifier can be obtained when [creating a new task](../tasks-task-add.md) or by using the [get task list method](../tasks-task-list.md) ||
 || **FIELDS***
 [`object`](../../data-types.md) | Object with [comment fields](#fields) ||
 |#
 
 ### FIELDS Parameter {#fields}
 
-{% include [Footnote about parameters](../../../_includes/required.md) %}
+{% include [Note on parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -39,11 +39,11 @@ The task identifier can be obtained when [creating a new task](../tasks-task-add
 || **AUTHOR_ID**
 [`integer`](../../data-types.md) | Identifier of the user on behalf of whom the comment should be created.
 
-You can get the user identifier using the [user.get](../../user/user-get.md) method.
+You can obtain the user identifier using the [user.get](../../user/user-get.md) method.
 
 {% note alert "" %}
 
-The method `task.commentitem.add` allows any user to add a comment on behalf of someone else
+The method `task.commentitem.add` allows any user to add a comment on behalf of someone else.
 
 {% endnote %}
 
@@ -51,14 +51,14 @@ The method `task.commentitem.add` allows any user to add a comment on behalf of 
 || **POST_DATE**
 [`string`](../../data-types.md) | Message date ||
 || **UF_FORUM_MESSAGE_DOC**
-[`array`](../../data-types.md) | Array with file identifiers from Drive. Prefix each identifier with `n`, for example, `['n123', 'n456', ... ]`.
+[`array`](../../data-types.md) | Array of file identifiers from Drive. Prefix each identifier with `n`, for example, `['n123', 'n456', ... ]`.
 
-The author of the comment must have access to the attached files; otherwise, the method will return an error ||
+The comment author must have access to the attached files; otherwise, the method will return an error ||
 |#
 
 ## Code Examples
 
-{% include [Footnote about examples](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -134,7 +134,7 @@ The author of the comment must have access to the attached files; otherwise, the
             ->getResult();
     
         echo 'Success: ' . print_r($result, true);
-        // Your data processing logic
+        // Your data processing logic here
         processData($result);
     
     } catch (Throwable $e) {
@@ -191,7 +191,7 @@ The author of the comment must have access to the attached files; otherwise, the
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -220,10 +220,9 @@ HTTP status: **200**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
-
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {
@@ -240,9 +239,9 @@ HTTP status: **400**
 || **Code** | **Description** | **Value**  ||
 || `ERROR_CORE` | Comment text not specified | Required parameter `POST_MESSAGE` not provided or is empty ||
 || `ERROR_CORE` | Insufficient permissions to add a comment | No access permission to the task ||
-|| `ERROR_CORE` | File not found | File from the `UF_FORUM_MESSAGE_DOC` parameter not found or the author does not have access to it ||
+|| `ERROR_CORE` | File not found | File from parameter `UF_FORUM_MESSAGE_DOC` not found or the author does not have access to it ||
 || `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #1 (arFields) for method ctaskcommentitem::add() must not contain key `<FIELD_NAME>`.; 256/TE/WRONG_ARGUMENTS | Field `<FIELD_NAME>` cannot be used in the method ||
-|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #0 (taskId) for method ctaskcommentitem::add() expected to be of type "integer", but given something else.; 256/TE/WRONG_ARGUMENTS | Incorrect value type for the parameter, for example, for `TASKID` ||
+|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #0 (taskId) for method ctaskcommentitem::add() expected to be of type "integer", but given something else.; 256/TE/WRONG_ARGUMENTS | Incorrect value type specified for the parameter, e.g., for `TASKID` ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

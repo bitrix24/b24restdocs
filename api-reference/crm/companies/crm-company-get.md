@@ -4,9 +4,9 @@
 >
 > Who can execute the method: user with "Read" access permission for companies
 
-{% note warning "Method development has been halted" %}
+{% note warning "DEPRECATED" %}
 
-The method `crm.company.get` is still operational, but there is a more current equivalent [crm.item.get](../universal/crm-item-get.md).
+The development of this method has been halted. Please use [crm.item.get](../universal/crm-item-get.md).
 
 {% endnote %}
 
@@ -216,7 +216,7 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | Root element of the response, returns company fields. Description of company fields can be obtained using the method [crm.company.fields](./crm-company-fields.md) ||
+[`object`](../../data-types.md) | Root element of the response, returns company fields. You can get the description of company fields using the method [crm.company.fields](./crm-company-fields.md) ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#

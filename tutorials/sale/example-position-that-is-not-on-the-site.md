@@ -1,6 +1,12 @@
-# Create an item with a product that does not exist on the site (2 pcs at a price of 900 rubles)
+# Create a Position with a Product That Does Not Exist on the Site (2 pcs at a price of 900 RUB)
 
-{% include [Footnote about examples](../../_includes/examples.md) %}
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
+{% include [Footnote on Examples](../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -10,7 +16,7 @@
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"orderId":5147,"productId":0,"name":"Test Product","quantity":2,"basePrice":1000,"price":900,"discountPrice":100,"customPrice":"Y","canBuy":"Y","weight":40,"measureCode":"768","measureName":"pcs","sort":400,"xmlId":"BasketPositionId","dimensions":"a:3:{s:5:\"WIDTH\";i:244;s:6:\"HEIGHT\";i:100;s:6:\"LENGTH\";i:31;}","vatRate":10,"vatIncluded":"Y","productXmlId":"ProductKey","currency":"RUB"}}' \
+    -d '{"fields":{"orderId":5147,"productId":0,"name":"Trial Product","quantity":2,"basePrice":1000,"price":900,"discountPrice":100,"customPrice":"Y","canBuy":"Y","weight":40,"measureCode":"768","measureName":"pcs","sort":400,"xmlId":"BasketPositionId","dimensions":"a:3:{s:5:\"WIDTH\";i:244;s:6:\"HEIGHT\";i:100;s:6:\"LENGTH\";i:31;}","vatRate":10,"vatIncluded":"Y","productXmlId":"ProductKey","currency":"RUB"}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/sale.basketitem.add
     ```
 
@@ -20,7 +26,7 @@
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"orderId":5147,"productId":0,"name":"Test Product","quantity":2,"basePrice":1000,"price":900,"discountPrice":100,"customPrice":"Y","canBuy":"Y","weight":40,"measureCode":"768","measureName":"pcs","sort":400,"xmlId":"BasketPositionId","dimensions":"a:3:{s:5:\"WIDTH\";i:244;s:6:\"HEIGHT\";i:100;s:6:\"LENGTH\";i:31;}","vatRate":10,"vatIncluded":"Y","productXmlId":"ProductKey","currency":"RUB"},"auth":"**put_access_token_here**"}' \
+    -d '{"fields":{"orderId":5147,"productId":0,"name":"Trial Product","quantity":2,"basePrice":1000,"price":900,"discountPrice":100,"customPrice":"Y","canBuy":"Y","weight":40,"measureCode":"768","measureName":"pcs","sort":400,"xmlId":"BasketPositionId","dimensions":"a:3:{s:5:\"WIDTH\";i:244;s:6:\"HEIGHT\";i:100;s:6:\"LENGTH\";i:31;}","vatRate":10,"vatIncluded":"Y","productXmlId":"ProductKey","currency":"RUB"},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/sale.basketitem.add
     ```
 
@@ -33,7 +39,7 @@
             fields: { // all fields are filled
                 orderId: 5147,
                 productId: 0,
-                name: 'Test Product',
+                name: 'Trial Product',
                 quantity: 2,
                 basePrice: 1000,
                 price: 900,
@@ -84,7 +90,7 @@
             [
                 'orderId' => 5147,
                 'productId' => 0,
-                'name' => 'Test Product',
+                'name' => 'Trial Product',
                 'quantity' => 2,
                 'basePrice' => 1000,
                 'price' => 900,
@@ -129,7 +135,7 @@
             "id": 6791,
             "measureCode": "768",
             "measureName": "pcs",
-            "name": "Test Product",
+            "name": "Trial Product",
             "orderId": 5147,
             "price": 900,
             "productId": 0,

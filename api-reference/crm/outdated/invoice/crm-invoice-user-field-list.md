@@ -4,13 +4,13 @@
 >
 > Who can execute the method: any user
 
-{% note warning %}
+{% note warning "DEPRECATED" %}
 
-The method is deprecated. It is recommended to use [`Universal methods for invoices`](../../universal/invoice.md)
+The development of this method has been halted. Please use [Universal Methods for Invoices](../../universal/invoice.md).
 
 {% endnote %}
 
-The method returns a list of custom fields for invoices based on the filter.
+This method returns a list of custom fields for invoices based on the specified filter.
 
 ## Parameters
 
@@ -18,7 +18,7 @@ The method returns a list of custom fields for invoices based on the filter.
 || **Name**
 `type` | **Description** ||
 || **order** | Sorting fields ||
-|| **filter** | Filter fields  ||
+|| **filter** | Filtering fields  ||
 |#
 
 ## Code Examples
@@ -48,7 +48,7 @@ The method returns a list of custom fields for invoices based on the filter.
 - JS
 
     ```js
-    // callListMethod: Retrieves all data at once. Use only for small selections (< 1000 items) due to high memory usage.
+    // callListMethod: Retrieves all data at once. Use only for small datasets (< 1000 items) due to high memory load.
     
     try {
       const response = await $b24.callListMethod(
@@ -65,7 +65,7 @@ The method returns a list of custom fields for invoices based on the filter.
       console.error('Request failed', error)
     }
     
-    // fetchListMethod: Retrieves data in parts using an iterator. Use it for large data volumes to optimize memory usage.
+    // fetchListMethod: Retrieves data in chunks using an iterator. Use for large datasets for efficient memory consumption.
     
     try {
       const generator = $b24.fetchListMethod('crm.invoice.userfield.list', { order: {"SORT": "ASC"}, filter: {"MANDATORY": "N"} }, 'ID')
@@ -76,7 +76,7 @@ The method returns a list of custom fields for invoices based on the filter.
       console.error('Request failed', error)
     }
     
-    // callMethod: Manually controls pagination through the start parameter. Use it for precise control of request batches. For large datasets, it is less efficient than fetchListMethod.
+    // callMethod: Manual control of pagination through the start parameter. Use for precise control over request batches. Less efficient for large data than fetchListMethod.
     
     try {
       const response = await $b24.callMethod('crm.invoice.userfield.list', { order: {"SORT": "ASC"}, filter: {"MANDATORY": "N"} }, 0)
@@ -159,4 +159,3 @@ The method returns a list of custom fields for invoices based on the filter.
     ```
 
 {% endlist %}
-

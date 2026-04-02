@@ -1,14 +1,14 @@
-# Get Comment by ID task.commentitem.get
+# Get Comment by Identifier task.commentitem.get
 
 > Scope: [`task`](../../scopes/permissions.md)
 >
 > Who can execute the method: any user with read access permission for the task or higher
 
-The method `task.commentitem.get` retrieves a comment by its ID.
+The method `task.commentitem.get` retrieves a comment by its identifier.
 
-{% note warning "Development of the method has been halted since version of the module `tasks 25.700.0` " %}
+{% note warning "DEPRECATED" %}
 
-The method `task.commentitem.get` does not work in the [new task card](../tasks-new.md), use the method [im.dialog.messages.get](../../chats/messages/im-dialog-messages-get.md) for working with task chat.
+Development of this method has been halted since version `tasks 25.700.0`. The method task.commentitem.get does not work in the [new task card](../tasks-new.md); use the method [im.dialog.messages.get](../../chats/messages/im-dialog-messages-get.md) for working with task chat.
 
 {% endnote %}
 
@@ -20,24 +20,24 @@ Pass parameters in the request according to the order in the table. If the order
 
 {% endnote %}
 
-{% include [Footnote about parameters](../../../_includes/required.md) %}
+{% include [Footnote on parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **TASKID***
-[`integer`](../../data-types.md) | Task ID.
+[`integer`](../../data-types.md) | Task identifier.
 
-The task ID can be obtained when [creating a new task](../tasks-task-add.md) or by using the [method to get the list of tasks](../tasks-task-list.md) ||
+The task identifier can be obtained when [creating a new task](../tasks-task-add.md) or by using the [get task list](../tasks-task-list.md) method. ||
 || **ITEMID***
-[`integer`](../../data-types.md) | Comment ID.
+[`integer`](../../data-types.md) | Comment identifier.
 
-The comment ID can be obtained when [adding a new comment](./task-comment-item-add.md) or by using the [method to get the list of comments](./task-comment-item-get-list.md) ||
+The comment identifier can be obtained when [adding a new comment](./task-comment-item-add.md) or by using the [get comment list](./task-comment-item-get-list.md) method. ||
 |#
 
 ## Code Examples
 
-{% include [Footnote about examples](../../../_includes/examples.md) %}
+{% include [Footnote on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -158,7 +158,7 @@ HTTP Status: **200**
         "POST_MESSAGE_HTML": null,
         "ID": "3157",
         "AUTHOR_ID": "503",
-        "AUTHOR_NAME": "John Smith",
+        "AUTHOR_NAME": "John Doe",
         "AUTHOR_EMAIL": "",
         "POST_DATE": "2025-07-15T14:30:00+02:00",
         "POST_MESSAGE": "Text of the new comment for the task",
@@ -204,19 +204,19 @@ HTTP Status: **200**
 || **POST_MESSAGE_HTML**
 [`string`](../../data-types.md) | HTML code of the comment ||
 || **ID**
-[`string`](../../data-types.md) | Comment ID ||
+[`string`](../../data-types.md) | Comment identifier ||
 || **AUTHOR_ID**
-[`string`](../../data-types.md) | Author ID of the comment ||
+[`string`](../../data-types.md) | Comment author's identifier ||
 || **AUTHOR_NAME**
-[`string`](../../data-types.md) | Name of the comment author ||
+[`string`](../../data-types.md) | Comment author's name ||
 || **AUTHOR_EMAIL**
-[`string`](../../data-types.md) | Email of the comment author ||
+[`string`](../../data-types.md) | Comment author's email ||
 || **POST_DATE**
 [`string`](../../data-types.md) | Date and time of comment creation ||
 || **POST_MESSAGE**
-[`string`](../../data-types.md) | Text of the comment ||
+[`string`](../../data-types.md) | Comment text ||
 || **ATTACHED_OBJECTS**
-[`object`](../../data-types.md) | Object containing information about attachments. The key of the object is the attachment ID, and the value is the object with [file description](#attached-objects) ||
+[`object`](../../data-types.md) | Object containing information about attachments. The key of the object is the attachment identifier, and the value is the object with [file description](#attached-objects) ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -227,13 +227,13 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **ATTACHMENT_ID**
-[`string`](../../data-types.md) | Attachment ID ||
+[`string`](../../data-types.md) | Attachment identifier ||
 || **NAME**
 [`string`](../../data-types.md) | File name ||
 || **SIZE**
 [`string`](../../data-types.md) | File size in bytes ||
 || **FILE_ID**
-[`string`](../../data-types.md) | File ID on Drive ||
+[`string`](../../data-types.md) | File identifier on Drive ||
 || **DOWNLOAD_URL**
 [`string`](../../data-types.md) | URL for downloading the file ||
 || **VIEW_URL**
@@ -257,12 +257,12 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#512; Check listitem not found or not accessible; 512/TE/ITEM_NOT_FOUND_OR_NOT_ACCESSIBLE | The error is returned in the following cases:
+|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#512; Check listitem not found or not accessible; 512/TE/ITEM_NOT_FOUND_OR_NOT_ACCESSIBLE | This error is returned in the following cases:
 - Incorrect order of parameters in the method
-- Task or comment with the specified ID not found
+- Task or comment with the specified identifier not found
 - No access permission to the task ||
-|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #0 (taskId) for method ctaskcommentitem::get() expected to be of type "integer", but given something else.; 256/TE/WRONG_ARGUMENTS | Incorrect value type for the parameter, for example, for `TASKID` ||
-|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #1 (itemId) expected by method ctaskcommentitem::get(), but not given.; 256/TE/WRONG_ARGUMENTS | Required parameter not specified, for example, `ITEMID` ||
+|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #0 (taskId) for method ctaskcommentitem::get() expected to be of type "integer", but given something else.; 256/TE/WRONG_ARGUMENTS | An incorrect value type was provided for the parameter, for example, for `TASKID` ||
+|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #1 (itemId) expected by method ctaskcommentitem::get(), but not given.; 256/TE/WRONG_ARGUMENTS | A required parameter was not provided, for example, `ITEMID` ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

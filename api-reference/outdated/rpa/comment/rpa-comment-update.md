@@ -4,6 +4,12 @@
 >
 > Who can execute the method: any user
 
+{% note warning "DEPRECATED" %}
+
+The development of this method has been halted. Please use [Smart scripts](../../../crm/universal/user-defined-object-types/index.md) as an alternative to this functionality.
+
+{% endnote %}
+
 This method updates the timeline entry with the identifier `id`. It only updates the `title` and `description` fields.
 
 The method allows changes only to comments that were added by the same user.
@@ -16,7 +22,7 @@ The method allows changes only to comments that were added by the same user.
 || **id** 
 [`integer`](../../../data-types.md) | Identifier of the comment ||
 || **fields** 
-[`object`](../../../data-types.md) | Object describing the [fields](#fields) of the comment ||
+[`object`](../../../data-types.md) | An object describing the [fields](#fields) of the comment ||
 |#
 
 ## Fields Parameter {#fields}
@@ -27,16 +33,16 @@ The method allows changes only to comments that were added by the same user.
 || **description** 
 [`integer`](../../../data-types.md) | Description of the entry. HTML and BB-code formatting can be used ||
 || **files** 
-[`integer`](../../../data-types.md) | Array of attached files. Each element is an array containing the name and content encoded in base64
+[`integer`](../../../data-types.md) | An array of attached files. Each element is an array containing the name and content encoded in base64.
 
-To add a new file, you need to pass a list as the record of the old file, where the key `id` will be the identifier of the file attached to this comment.
+To add a new file, you must provide a list where the key `id` corresponds to the identifier of the file attached to this comment.
 
-To upload new files, you also need to pass an array with the name and content of the file in base64. ||
+For uploading new files, you also need to provide an array with the name and content of the file in base64. ||
 |#
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../../_includes/examples.md) %}
+{% include [Examples Note](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 

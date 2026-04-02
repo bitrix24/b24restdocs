@@ -1,14 +1,14 @@
-# Get a list of actions for the task task.item.getallowedactions
+# Get Allowed Actions for Task: task.item.getallowedactions
 
 > Scope: [`task`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-The method returns an array of identifiers for the allowed actions on the task.
+This method returns an array of identifiers for the allowed actions on a task.
 
-{% note warning %}
+{% note warning "DEPRECATED" %}
 
-The method is deprecated and not supported. It is recommended to use the methods [tasks.task.*](../../index.md).
+The development of this method has been halted. Please use [tasks.task.getAccess](../../tasks-task-get-access.md).
 
 {% endnote %}
 
@@ -19,7 +19,7 @@ The method is deprecated and not supported. It is recommended to use the methods
 || **TASKID** | Task identifier ||
 |#
 
-## Table of identifiers and allowed actions for the task
+## Mapping Table of Identifiers and Allowed Actions for the Task
 
 #|
 || **Identifier** | **Description** ||
@@ -45,7 +45,7 @@ The method is deprecated and not supported. It is recommended to use the methods
 
 ## Code Examples
 
-{% include [Note on examples](../../../../_includes/examples.md) %}
+{% include [Examples Note](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -105,7 +105,7 @@ The method is deprecated and not supported. It is recommended to use the methods
             ->getResult();
     
         echo 'Success: ' . print_r($result, true);
-        // Your required data processing logic
+        // Your logic for processing data
         processData($result);
     
     } catch (Throwable $e) {

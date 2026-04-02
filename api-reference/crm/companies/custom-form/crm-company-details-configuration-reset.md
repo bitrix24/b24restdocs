@@ -1,22 +1,22 @@
-# Reset Company Card Settings crm.company.details.configuration.reset
+# Reset Company Card Settings: crm.company.details.configuration.reset
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method:
->  - any user can reset their settings,
->  - a user with the "Allow to change settings" access permission in CRM can reset both general and other users' settings.
+> Who can execute this method:
+>  - any user can reset their own settings,
+>  - a user with the "Allow changing settings" access permission in CRM can reset both general and other users' settings.
 
-{% note warning "Method development halted" %}
+{% note warning "DEPRECATED" %}
 
-The method `crm.company.details.configuration.reset` continues to function, but there is a more relevant alternative [crm.item.details.configuration.reset](../../universal/item-details-configuration/crm-item-details-configuration-reset.md).
+Development of this method has been halted. Please use [crm.item.details.configuration.reset](../../universal/item-details-configuration/crm-item-details-configuration-reset.md).
 
 {% endnote %}
 
-The method `crm.company.details.configuration.reset` resets the settings of company cards: it removes personal settings for the specified user or general settings defined for all users.
+The method `crm.company.details.configuration.reset` resets the settings of company cards: it removes the personal settings of the specified user or the general settings defined for all users.
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+{% include [Required Parameters Note](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -31,7 +31,7 @@ Possible values:
 Default is `P`
 ||
 || **userId**
-[`user`](../../../data-types.md) | User identifier, which can be obtained using the [user.get](../../../user/user-get.md) method. Required only when resetting personal settings.
+[`user`](../../../data-types.md) | The user identifier, which can be obtained using the [user.get](../../../user/user-get.md) method. Required only when resetting personal settings.
 
 If not specified, the `id` of the current user is used.
 ||
@@ -39,9 +39,9 @@ If not specified, the `id` of the current user is used.
 
 ## Code Examples
 
-{% include [Note on examples](../../../../_includes/examples.md) %}
+{% include [Examples Note](../../../../_includes/examples.md) %}
 
-1. Reset personal card settings
+1. Reset Personal Card Settings
 
     {% list tabs %}
 
@@ -156,7 +156,7 @@ If not specified, the `id` of the current user is used.
 
     {% endlist %}
 
-2. Reset general card settings
+2. Reset General Card Settings
 
     {% list tabs %}
 
@@ -311,7 +311,7 @@ HTTP Status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../../_includes/error-info.md) %}
+{% include notitle [Error Handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
@@ -320,7 +320,7 @@ HTTP Status: **400**
 || `-` | `Access denied` | The user does not have permission to reset settings ||
 |#
 
-{% include [system errors](../../../../_includes/system-errors.md) %}
+{% include [System Errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning 
 

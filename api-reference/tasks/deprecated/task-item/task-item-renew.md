@@ -1,14 +1,14 @@
-# Translate task to "not completed" status task.item.renew
+# Change Task Status to "Not Completed" task.item.renew
 
 > Scope: [`task`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-The method changes the status of a task to "not completed." It is applicable for tasks in the [Completed](./task-item-complete.md) status.
+This method changes the task status to "Not Completed." It is applicable for tasks with the status [Completed](./task-item-complete.md).
 
-{% note warning %}
+{% note warning "DEPRECATED" %}
 
-The method is deprecated and not supported. It is recommended to use the [tasks.task.*](../../index.md) methods.
+Development of this method has been halted. Please use [tasks.task.renew](../../tasks-task-renew.md).
 
 {% endnote %}
 
@@ -21,7 +21,7 @@ The method is deprecated and not supported. It is recommended to use the [tasks.
 
 ## Code Examples
 
-{% include [Note about examples](../../../../_includes/examples.md) %}
+{% include [Examples Note](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -81,7 +81,7 @@ The method is deprecated and not supported. It is recommended to use the [tasks.
             ->getResult();
     
         echo 'Success: ' . print_r($result, true);
-        // Your required data processing logic
+        // Your logic for processing data
         processData($result);
     
     } catch (Throwable $e) {

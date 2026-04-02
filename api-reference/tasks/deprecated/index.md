@@ -1,12 +1,20 @@
 # Deprecated Task Methods
 
-> Scope: [`task`](../../scopes/permissions.md)
->
+{% note warning "" %}
+
+**DEPRECATED**
+
+The development of methods task.item.* has been halted.  
+Please use the section [Current Task Methods (`tasks.task.*`)](../index.md).
+
+{% endnote %}
+
+> Scope: [`task`](../../scopes/permissions.md)  
 > Who can execute the method: any user
 
 {% note warning %}
 
-This section contains information about deprecated methods. Their use in operations is strongly discouraged.
+This section contains information about deprecated methods. Their use is strongly discouraged.
 
 {% endnote %}
 
@@ -24,7 +32,7 @@ This section contains information about deprecated methods. Their use in operati
 || [task.item.getdependson](./task-item/task-item-get-dependson.md) | Returns an array of task IDs that the task depends on ||
 || [task.item.getallowedactions](./task-item/task-item-get-allowed-actions.md) | Returns an array of IDs of allowed actions on the task ||
 || [task.item.getallowedtaskactionsasstrings](./task-item/task-item-get-allowed-task-actions-as-strings.md) | Returns a list of allowed actions on the task ||
-|| [task.item.isactionallowed](./task-item/task-item-is-action-allowed.md) | Checks if the action is allowed ||
+|| [task.item.isactionallowed](./task-item/task-item-is-action-allowed.md) | Checks if the action is permitted ||
 || [task.item.delegate](./task-item/task-item-delegate.md) | Delegates the task to a new user ||
 || [task.item.startexecution](./task-item/task-item-start-execution.md) | Changes the task status to "in progress" ||
 || [task.item.defer](./task-item/task-item-defer.md) | Changes the task status to "deferred" ||
@@ -36,7 +44,7 @@ This section contains information about deprecated methods. Their use in operati
 || [task.item.deletefromfavorite](./task-item/task-item-delete-from-favorite.md) | Removes the task from Favorites ||
 || [task.item.addfile](./task-item/task-item-add-file.md) | Uploads a file to the task ||
 || [task.item.deletefile](./task-item/task-item-delete-file.md) | Removes the file attachment from the task ||
-|| [task.logitem.list](./task-item/task-log-item-list.md) | Returns the history of task changes ||
+|| [task.logitem.list](./task-item/task-log-item-list.md) | Returns the task change history ||
 || **items** | ||
 || [task.items.getlist](./task-items-get-list.md) | Returns an array of tasks, each containing an array of fields ||
 || **comment** | ||

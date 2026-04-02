@@ -1,14 +1,22 @@
 # Processes: Overview of Methods
 
-> Scope: [`rpa`](../../../scopes/permissions.md)
->
+{% note warning "" %}
+
+**DEPRECATED**
+
+The development of methods rpa.type.* has been halted.  
+Please use the section [Smart Processes CRM](../../../crm/universal/user-defined-object-types/index.md).
+
+{% endnote %}
+
+> Scope: [`rpa`](../../../scopes/permissions.md)  
 > Who can execute the method: any user
 
-#| 
-|| **Method** | **Description** ||
-|| [rpa.type.add](./rpa-type-add.md) | Creates a new process ||
-|| [rpa.type.update](./rpa-type-update.md) | Updates a process ||
-|| [rpa.type.get](./rpa-type-get.md) | Retrieves information about a process by its `id` ||
-|| [rpa.type.list](./rpa-type-list.md) | Gets a list of processes with field descriptions ||
-|| [rpa.type.delete](./rpa-type-delete.md) | Deletes a process ||
-|#
+#|  
+|| **Method** | **Description** ||  
+|| [rpa.type.add](./rpa-type-add.md) | Creates a new workflow ||  
+|| [rpa.type.update](./rpa-type-update.md) | Updates a workflow ||  
+|| [rpa.type.get](./rpa-type-get.md) | Retrieves information about a workflow by its `id` ||  
+|| [rpa.type.list](./rpa-type-list.md) | Gets a list of workflows with field descriptions ||  
+|| [rpa.type.delete](./rpa-type-delete.md) | Deletes a workflow ||  
+|#  

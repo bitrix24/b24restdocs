@@ -1,48 +1,39 @@
-# Disable Auto-Close disableAutoClose
-
-{% note warning "We are still updating this page" %}
-
-Some data may be missing here — we will complete it shortly.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not deployed to prod_" %}
-
-- clarify permissions and scope
-- missing "Response Handling" block
-- missing "Error Handling" block
-
-{% endnote %}
-
-{% endif %}
+# Disable Auto-Close Method `disableAutoClose`
 
 > Scope: [`telephony`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-This method disables the automatic closing of the card for 60 seconds after the call ends. It also blocks incoming calls until the card is closed.
+The method `disableAutoClose` disables the automatic closing of the call card and updates the delayed closing timer to 65 seconds if it has already been started.
 
-No parameters.
+{% note info "" %}
+
+The method operates within the application context in the `CALL_CARD` placement.
+
+{% endnote %}
+
+## Method Parameters
+
+{% include [Note on required parameters](../../../../_includes/required.md) %}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **PLACEMENT***  
+[`string`](../../../data-types.md) | The name of the interface command.
+
+For this method — `disableAutoClose` ||
+|| **PARAMS***  
+[`object`](../../../data-types.md) | The parameters object for the command.
+
+For this method, an empty object is passed: `{}` ||
+|#
 
 ## Code Examples
 
 {% include [Note on examples](../../../../_includes/examples.md) %}
 
-Calling the placement method. The result is returned in the callback.
-
 {% list tabs %}
-
-- cURL (Webhook)
-
-    ```bash
-    curl -X POST \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json" \
-    -d '{"PLACEMENT":"disableAutoClose","PARAMS":{}}' \
-    "https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/placement.call"
-    ```
 
 - cURL (OAuth)
 
@@ -65,6 +56,56 @@ Calling the placement method. The result is returned in the callback.
 - PHP
 
     ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'placement.call',
+                [
+                    'PLACEMENT' => 'disableAutoClose',
+                    'PARAMS' => []
+                ]
+            );
+
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+
+        echo 'Success: ' . print_r($result, true);
+        processData($result);
+
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
+    BX24.callMethod(
+        'placement.call',
+        {
+            PLACEMENT: 'disableAutoClose',
+            PARAMS: {}
+        },
+        function(result)
+        {
+            if (result.error())
+            {
+                console.error(result.error(), result.error_description());
+            }
+            else
+            {
+                console.log(result.data());
+            }
+        }
+    );
+    ```
+
+- PHP CRest
+
+    ```php
     require_once('crest.php');
 
     $result = CRest::call(
@@ -81,6 +122,36 @@ Calling the placement method. The result is returned in the callback.
     ```
 
 {% endlist %}
+
+## Response Handling
+
+```json
+[]
+```
+
+### Returned Data
+
+An empty array upon successful invocation.
+
+## Error Handling
+
+```json
+{
+    "error": "WRONG_AUTH_TYPE",
+    "error_description": "Application context required"
+}
+```
+
+{% include notitle [error handling](../../../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+#|
+|| **Code** | **Description** | **Value** ||
+|| `WRONG_AUTH_TYPE` | Application context required | Method called outside the application context in the `CALL_CARD` placement ||
+|#
+
+{% include [system errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

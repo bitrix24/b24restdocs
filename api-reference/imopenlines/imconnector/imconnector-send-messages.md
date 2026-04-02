@@ -14,7 +14,7 @@ Upon execution, the method returns the chat ID and the open line dialog ID creat
 
 The method works only in the context of an [application](../../../settings/app-installation/index.md).
 
-{% endnote %}
+{% endnote %} 
 
 ## Method Parameters
 
@@ -26,11 +26,11 @@ The method works only in the context of an [application](../../../settings/app-i
 || **CONNECTOR***
 [`string`](../../data-types.md) | The string code of the connector specified in the `ID` parameter when calling [imconnector.register](./imconnector-register.md) ||
 || **LINE***
-[`integer`](../../data-types.md) | The ID of the open line.
+[`integer`](../../data-types.md) | The ID of the open line. 
 
 The ID can be obtained using the methods [imopenlines.config.get](../openlines/imopenlines-config-get.md) and [imopenlines.config.list.get](../openlines/imopenlines-config-list-get.md) ||
 || **MESSAGES***
-[`array`](../../data-types.md) | An array of messages. Each element of the array is a single message in the object format with three required blocks: `user`, `message`, `chat`.
+[`array`](../../data-types.md) | An array of messages. Each element of the array represents a single message in the object format with three required blocks: `user`, `message`, `chat`. 
 
 The structure of the object is described in detail [below](#messages) ||
 |#
@@ -41,15 +41,15 @@ The structure of the object is described in detail [below](#messages) ||
 || **Name**
 `type` | **Description** ||
 || **user**
-[`object`](../../data-types.md) | User data from the external system.
+[`object`](../../data-types.md) | User data from the external system. 
 
 The structure of the object is described in detail [below](#messages-user) ||
 || **message**
-[`object`](../../data-types.md) | Message data from the external system.
+[`object`](../../data-types.md) | Message data from the external system. 
 
 The structure of the object is described in detail [below](#messages-message) ||
 || **chat**
-[`object`](../../data-types.md) | Chat data from the external system.
+[`object`](../../data-types.md) | Chat data from the external system. 
 
 The structure of the object is described in detail [below](#messages-chat) ||
 |#
@@ -66,7 +66,7 @@ The structure of the object is described in detail [below](#messages-chat) ||
 || **name**
 [`string`](../../data-types.md) | User's first name ||
 || **picture**
-[`object`](../../data-types.md) | User's avatar. Pass as an object with the `url` field, for example, `{"url":"https://example.com/u42.png"}`. The link must be public ||
+[`object`](../../data-types.md) | User's avatar. Pass it as an object with the `url` field, for example, `{"url":"https://example.com/u42.png"}`. The link must be public ||
 || **url**
 [`string`](../../data-types.md) | Link to the user's profile in the external system ||
 || **gender**
@@ -79,13 +79,13 @@ The structure of the object is described in detail [below](#messages-chat) ||
 [`string`](../../data-types.md) | Disables phone validation before saving in CRM. Acceptable value is `Y`. If validation should be performed, do not pass this parameter ||
 |#
 
-The `name` and `last_name` fields can contain letters, spaces, hyphens, and apostrophes. Numbers and other special characters are not allowed. The maximum length for `name` and `last_name` is 25 characters. The language and case can be any.
+The fields `name` and `last_name` can contain letters, spaces, hyphens, and apostrophes. Numbers and other special characters are not allowed. The maximum length for `name` and `last_name` is 25 characters. The language and case can be any.
 
 {% note info "" %}
 
 The `skip_phone_validate` parameter is recommended to be used only in rare cases when the number fails the built-in validation. This is a workaround to bypass the phone validator's limitations. In a typical scenario, pass the phone without this parameter.
 
-{% endnote %}
+{% endnote %} 
 
 #### Message Object {#messages-message}
 
@@ -97,9 +97,9 @@ The `skip_phone_validate` parameter is recommended to be used only in rare cases
 || **date**
 [`integer`](../../data-types.md) | Message time in Unix Timestamp in seconds ||
 || **text**
-[`string`](../../data-types.md) | Message text. You must pass either the `text` or `files` element.
+[`string`](../../data-types.md) | Message text. You must pass either the `text` or `files` element. 
 
-For acceptable formatting, refer to the article [Formatting](../../chats/messages/index.md) ||
+For acceptable formatting, refer to the article [Formatting](../../chats/messages/formatting.md) ||
 || **files**
 [`array`](../../data-types.md) | An array of files. Each file is passed as an array of the form `array('url' => 'File link', 'name' => 'File name')`. The `url` link must be accessible from Bitrix24.
 
@@ -107,7 +107,7 @@ The format of the transmitted file is not restricted. In chat, the attachment ca
 || **disable_crm**
 [`string`](../../data-types.md) | Disables the CRM tracker for the message. Acceptable value is `Y`. If the CRM tracker should work, do not pass this parameter ||
 || **user_id**
-[`integer`](../../data-types.md) | The ID of the manager in Bitrix24. If `user_id` is passed, the message will be sent on behalf of this manager ||
+[`integer`](../../data-types.md) | The ID of the manager in Bitrix24. If you pass `user_id`, the message will be sent on behalf of this manager ||
 |#
 
 #### Chat Object {#messages-chat}
@@ -116,15 +116,15 @@ The format of the transmitted file is not restricted. In chat, the attachment ca
 || **Name**
 `type` | **Description** ||
 || **id***
-[`string`](../../data-types.md) | Chat or channel ID in the external system.
+[`string`](../../data-types.md) | Chat or channel ID in the external system. 
 
 It is recommended to pass the same value as in `DATA.ID` of the method [imconnector.connector.data.set](./imconnector-connector-data-set.md) ||
 || **name**
-[`string`](../../data-types.md) | Chat or channel name.
+[`string`](../../data-types.md) | Chat or channel name. 
 
 It is recommended to use the value from `DATA.NAME` ||
 || **url**
-[`string`](../../data-types.md) | Link to the chat or channel in the external system.
+[`string`](../../data-types.md) | Link to the chat or channel in the external system. 
 
 It is recommended to use the value from `DATA.URL` ||
 |#
@@ -148,12 +148,12 @@ It is recommended to use the value from `DATA.URL` ||
           {
             "user": {
               "id": "ext-user-42",
-              "last_name": "Smith",
-              "name": "John",
+              "last_name": "Ivanov",
+              "name": "Ivan",
               "picture": {"url": "https://example.com/u42.png"},
               "url": "https://example.com/users/42",
               "gender": "male",
-              "email": "john@example.com",
+              "email": "ivan@example.com",
               "phone": "+19990000000",
               "skip_phone_validate": "Y"
             },
@@ -188,12 +188,12 @@ It is recommended to use the value from `DATA.URL` ||
         {
           user: {
             id: 'ext-user-42',
-            last_name: 'Smith',
-            name: 'John',
+            last_name: 'Ivanov',
+            name: 'Ivan',
             picture: { url: 'https://example.com/u42.png' },
             url: 'https://example.com/users/42',
             gender: 'male',
-            email: 'john@example.com',
+            email: 'ivan@example.com',
             phone: '+19990000000',
             skip_phone_validate: 'Y',
           },
@@ -229,12 +229,12 @@ It is recommended to use the value from `DATA.URL` ||
                 [
                     'user' => [
                         'id' => 'ext-user-42',
-                        'last_name' => 'Smith',
-                        'name' => 'John',
+                        'last_name' => 'Ivanov',
+                        'name' => 'Ivan',
                         'picture' => ['url' => 'https://example.com/u42.png'],
                         'url' => 'https://example.com/users/42',
                         'gender' => 'male',
-                        'email' => 'john@example.com',
+                        'email' => 'ivan@example.com',
                         'phone' => '+19990000000',
                         'skip_phone_validate' => 'Y',
                     ],
@@ -270,12 +270,12 @@ It is recommended to use the value from `DATA.URL` ||
           {
             user: {
               id: 'ext-user-42',
-              last_name: 'Smith',
-              name: 'John',
+              last_name: 'Ivanov',
+              name: 'Ivan',
               picture: { url: 'https://example.com/u42.png' },
               url: 'https://example.com/users/42',
               gender: 'male',
-              email: 'john@example.com',
+              email: 'ivan@example.com',
               phone: '+19990000000',
               skip_phone_validate: 'Y',
             },
@@ -312,12 +312,12 @@ It is recommended to use the value from `DATA.URL` ||
                 [
                     'user' => [
                         'id' => 'ext-user-42',
-                        'last_name' => 'Smith',
-                        'name' => 'John',
+                        'last_name' => 'Ivanov',
+                        'name' => 'Ivan',
                         'picture' => ['url' => 'https://example.com/u42.png'],
                         'url' => 'https://example.com/users/42',
                         'gender' => 'male',
-                        'email' => 'john@example.com',
+                        'email' => 'ivan@example.com',
                         'phone' => '+19990000000',
                         'skip_phone_validate' => 'Y',
                     ],
@@ -384,8 +384,8 @@ HTTP Status: **200**
         "finish": 1773265994.487149,
         "duration": 1.4871490001678467,
         "processing": 1,
-        "date_start": "2026-03-11T13:53:13+01:00",
-        "date_finish": "2026-03-11T13:53:14+01:00",
+        "date_start": "2026-03-11T13:53:13+02:00",
+        "date_finish": "2026-03-11T13:53:14+02:00",
         "operating_reset_at": 1773266593,
         "operating": 1.1916680335998535
     }
@@ -400,7 +400,7 @@ HTTP Status: **200**
 || **SUCCESS**
 [`boolean`](../../data-types.md) | Returns `true` if the message was sent successfully ||
 || **DATA**
-[`object`](../../data-types.md) | Data containing information about the sent messages.
+[`object`](../../data-types.md) | Data containing information about the sent messages. 
 
 The structure of the object is described in detail [below](#result-data) ||
 || **time**
@@ -413,7 +413,7 @@ The structure of the object is described in detail [below](#result-data) ||
 || **Name**
 `type` | **Description** ||
 || **RESULT**
-[`array`](../../data-types.md) | An array of results for each element of `MESSAGES`.
+[`array`](../../data-types.md) | An array of results for each element of `MESSAGES`. 
 
 The structure of the element is described in detail [below](#result-item) ||
 |#
@@ -447,7 +447,7 @@ The structure of the element is described in detail [below](#result-item) ||
 || **id**
 [`string`](../../data-types.md) | External message ID ||
 || **date**
-[`object`](../../data-types.md) | Date of the message after processing ||
+[`object`](../../data-types.md) | Message date after processing ||
 || **text**
 [`string`](../../data-types.md) | Message text ||
 || **files**
@@ -464,7 +464,7 @@ The structure of the element is described in detail [below](#result-item) ||
 || **name**
 [`string`](../../data-types.md) | Chat or channel name ||
 || **description**
-[`string`](../../data-types.md) | Description of the chat, such as a link to the original post ||
+[`string`](../../data-types.md) | Description of the chat, e.g., link to the original post ||
 |#
 
 #### Extra Object {#result-item-extra}
@@ -506,7 +506,7 @@ HTTP Status: **400**, **403**
 
 #|
 || **Status** | **Code** | **Description** | **Value** ||
-|| `403` | `WRONG_AUTH_TYPE` | Current authorization type is denied for this method Application context required | Method called not in the context of an application OAuth ||
+|| `403` | `WRONG_AUTH_TYPE` | Current authorization type is denied for this method Application context required | The method was called outside the application context OAuth ||
 || `400` | `ERROR_ARGUMENT` | Argument 'CONNECTOR' is null or empty | `CONNECTOR` not provided ||
 || `400` | `ERROR_ARGUMENT` | Argument 'LINE' is null or empty | `LINE` not provided ||
 || `400` | `ERROR_ARGUMENT` | Argument 'MESSAGES' is null or empty | `MESSAGES` not provided ||

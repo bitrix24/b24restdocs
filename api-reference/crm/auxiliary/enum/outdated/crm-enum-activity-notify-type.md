@@ -1,12 +1,12 @@
-# Get enumeration items "Activity Notification Type" crm.enum.activitynotifytype
+# Get Enumeration Items for "Activity Notification Type" crm.enum.activitynotifytype
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-{% note warning "Method development has been discontinued" %}
+{% note warning "DEPRECATED" %}
 
-The method `crm.enum.activitynotifytype` continues to function, but it is related to deprecated methods [crm.activity.*](../../../timeline/activities/index.md). A more current alternative is the methods [crm.activity.todo.*](../../../timeline/activities/todo/index.md). 
+The development of this method has been halted. Please use [crm.activity.todo.*](../../../timeline/activities/todo/index.md).
 
 {% endnote %}
 
@@ -18,7 +18,7 @@ No parameters.
 
 ## Code Examples
 
-{% include [Examples note](../../../../../_includes/examples.md) %}
+{% include [Examples Note](../../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -123,7 +123,7 @@ No parameters.
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -142,13 +142,13 @@ HTTP status: **200**
     },
     {
      "ID": 2,
-     "NAME": "hr.",
+     "NAME": "h.",
      "SYMBOL_CODE": null,
      "SYMBOL_CODE_SHORT": null
     },
     {
      "ID": 3,
-     "NAME": "day.",
+     "NAME": "d.",
      "SYMBOL_CODE": null,
      "SYMBOL_CODE_SHORT": null
     }
@@ -172,12 +172,12 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`array`](../../../../data-types.md) | Array with notification types for activity start [(detailed description)](#result) ||
+[`array`](../../../../data-types.md) | Array of notification types for activity start [(detailed description)](#result) ||
 || **time**
 [`time`](../../../../data-types.md#time) | Information about the request execution time ||
 |#
 
-#### Fields of the result array {#result}
+#### Fields of the result Array {#result}
 
 #|
 || **Name**

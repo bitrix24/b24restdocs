@@ -4,19 +4,25 @@
 >
 > Who can execute methods: users with administrative access to the CRM section
 
-Sales funnels allow you to divide work in CRM into different stages. For example, a sale can consist of three funnels: sales, delivery, and post-sale service. Access permissions and the view of the CRM entity card can be configured for each funnel.
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect the [MCP server](../../../sdk/mcp.md) so that the assistant uses the official REST documentation.
+
+{% endnote %}
+
+Sales funnels allow you to divide work in the CRM into different stages. For example, a sale may consist of three funnels: sales, delivery, and post-sale service. Access permissions and the view of the CRM entity card can be configured for each funnel.
 
 To create a new funnel in a smart process, we will sequentially execute the following methods:
 
 1. [crm.type.list](../../../api-reference/crm/universal/user-defined-object-types/crm-type-list.md) — retrieve the numeric identifier of the smart process type.
 2. [crm.category.add](../../../api-reference/crm/universal/category/crm-category-add.md) — create a new funnel.
 3. [crm.status.list](../../../api-reference/crm/status/crm-status-list.md) — retrieve the pre-installed stages of the new funnel.
-4. [crm.status.update](../../../api-reference/crm/status/crm-status-update.md) — modify the pre-installed stage.
-5. [crm.status.add](../../../api-reference/crm/status/crm-status-add.md) — add a new stage.
+4. [crm.status.update](../../../api-reference/crm/status/crm-status-update.md) — modify a pre-installed stage.
+5. [crm.status.add](../../../api-reference/crm/status/crm-status-add.md) — create a new stage.
 
 ## 1. Retrieve the Smart Process Identifier
 
-Use the method [crm.type.list](../../../api-reference/crm/universal/user-defined-object-types/crm-type-list.md) with a filter by the smart process `title`.
+We will use the method [crm.type.list](../../../api-reference/crm/universal/user-defined-object-types/crm-type-list.md) with a filter by the smart process name `title`.
 
 {% include [Example Notes](../../../_includes/examples.md) %}
 
@@ -109,11 +115,11 @@ As a result, we will obtain and save the `entityTypeId` of the required smart pr
 
 ## 2. Create a New Funnel
 
-Use the method [crm.category.add](../../../api-reference/crm/universal/category/crm-category-add.md) with the following parameters:
+We will use the method [crm.category.add](../../../api-reference/crm/universal/category/crm-category-add.md) with the following parameters:
 
 - `entityTypeId` — the numeric identifier of the type from the method [crm.type.list](../../../api-reference/crm/universal/user-defined-object-types/crm-type-list.md),
 - `fields[name]` — the name of the funnel,
-- `fields[sort]` — the sorting of the funnel. Sorting affects the position of the funnel in the list.
+- `fields[sort]` — the sorting order of the funnel. Sorting affects the position of the funnel in the list.
 
 {% list tabs %}
 
@@ -186,7 +192,7 @@ As a result, we will obtain and save the `id` of the created funnel.
 
 ## 3. Retrieve the Stages of the Created Funnel
 
-Use the method [crm.status.list](../../../api-reference/crm/status/crm-status-list.md) with the filter:
+We will use the method [crm.status.list](../../../api-reference/crm/status/crm-status-list.md) with the filter:
 
 - `ENTITY_ID` — the identifier of the CRM directory. For smart process stages, the identifier has the format `DYNAMIC_{entityTypeId}_STAGE_{categoryId}`:
 	- `{entityTypeId}` — the numeric identifier of the smart process type from the method [crm.type.list](../../../api-reference/crm/universal/user-defined-object-types/crm-type-list.md),
@@ -233,7 +239,7 @@ As a result, we will obtain the pre-installed stages of the funnel. By default, 
 - one stage "Success" `SEMANTICS: "S"`,
 - one stage "Failure" `SEMANTIC": "F"`.
 
-Each funnel must have at least one stage from each group. There can only be one successful stage in the funnel.
+Each funnel must have at least one stage from each group. There can only be one successful stage in a funnel.
 
 ```json
 {
@@ -313,9 +319,9 @@ Each funnel must have at least one stage from each group. There can only be one 
 }
 ```
 
-## 4. Modify the Pre-installed Stage
+## 4. Modify a Pre-installed Stage
 
-Use the method [crm.status.update](../../../api-reference/crm/status/crm-status-update.md) with the parameters:
+We will use the method [crm.status.update](../../../api-reference/crm/status/crm-status-update.md) with the following parameters:
 
 - `id` — the identifier of the stage from the method [crm.status.list](../../../api-reference/crm/status/crm-status-list.md),
 - `fields[name]` — the new name of the stage.
@@ -359,7 +365,7 @@ Use the method [crm.status.update](../../../api-reference/crm/status/crm-status-
 
 {% endlist %}
 
-As a result, we will receive `true`, indicating that the stage has been successfully modified. If you receive an `error` as a result, review the possible error descriptions in the documentation for the method [crm.status.update](../../../api-reference/crm/status/crm-status-update.md).
+As a result, we will receive `true`, indicating that the stage has been successfully modified. If you receive an `error` in the result, refer to the documentation for the method [crm.status.update](../../../api-reference/crm/status/crm-status-update.md) for possible error descriptions.
 
 ```json
 {
@@ -379,17 +385,17 @@ As a result, we will receive `true`, indicating that the stage has been successf
 
 ## 5. Add a New Stage to the Funnel
 
-Use the method [crm.status.add](../../../api-reference/crm/status/crm-status-add.md) with the `fields` parameters:
+We will use the method [crm.status.add](../../../api-reference/crm/status/crm-status-add.md) with the following parameters in `fields`:
 
 - `ENTITY_ID` — the identifier of the CRM directory. For smart process stages, the identifier has the format `DYNAMIC_{entityTypeId}_STAGE_{categoryId}`:
 	- `{entityTypeId}` — the numeric identifier of the smart process type from the method [crm.type.list](../../../api-reference/crm/universal/user-defined-object-types/crm-type-list.md),
 	- `{categoryId}` — the identifier of the funnel from the method [crm.category.add](../../../api-reference/crm/universal/category/crm-category-add.md).
-- `STATUS_ID` — the identifier of the stage. For smart process stages, the field must have the prefix `DT{entityTypeId}_{categoryId}`:
+- `STATUS_ID` — the identifier of the stage. For smart process stages, this field must have the prefix `DT{entityTypeId}_{categoryId}`:
 	- `{entityTypeId}` — the numeric identifier of the smart process type from the method [crm.type.list](../../../api-reference/crm/universal/user-defined-object-types/crm-type-list.md),
 	- `{categoryId}` — the identifier of the funnel from the method [crm.category.add](../../../api-reference/crm/universal/category/crm-category-add.md).
 - `NAME` — the name of the stage,
-- `SORT` — the sorting of the stage. Sorting affects the display order of the stage in the kanban. The sorting of "In Progress" stages should be the lowest, "Failure" stages the highest. The "Success" stage should have an intermediate sorting value between the sorting values of "In Progress" and "Failure" stages.
-- `SEMANTICS` — the parameter indicating the stage's group membership. We will specify `F` to create a new stage in the "Failure" group.
+- `SORT` — the sorting order of the stage. Sorting affects the order of the stage display in the kanban. The sorting of "In Progress" stages should be the lowest, "Failure" stages the highest. The "Success" stage should have an intermediate sorting value between the sorting values of "In Progress" and "Failure" stages.
+- `SEMANTICS` — a parameter indicating the stage's group affiliation. We will specify `F` to create a new stage in the "Failure" group.
 
 {% list tabs %}
 
@@ -457,14 +463,14 @@ As a result, we will obtain the ID of the created stage.
 
 ## Code Example
 
-In this example, we create a new funnel in a smart process, change the name of the first pre-installed stage, and add another stage to the "Failure" group. Finally, we call the method [crm.status.list](../../../api-reference/crm/status/crm-status-list.md) again and display a table with the groups of stages.
+In this example, we create a new funnel in the smart process, change the name of the first pre-installed stage, and add another stage to the "Failure" group. Finally, we call the method [crm.status.list](../../../api-reference/crm/status/crm-status-list.md) again and display a table with the groups of stages.
 
 {% list tabs %}
 
 - JS
   
    ```javascript
-    // 1. Retrieve entityTypeId by the smart process title
+    // 1. Retrieve entityTypeId by the smart process name
     BX24.callMethod('crm.type.list', {
         filter: {
             title: 'Equipment Purchase'
@@ -573,7 +579,7 @@ In this example, we create a new funnel in a smart process, change the name of t
     <?php
     require_once('crest.php');
 
-    // 1. Retrieve entityTypeId by the smart process title
+    // 1. Retrieve entityTypeId by the smart process name
     $result = CRest::call(
         'crm.type.list',
         [

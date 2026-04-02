@@ -1,20 +1,20 @@
-# Change setting for recurring invoice crm.invoice.recurring.update
+# Change Settings for Recurring Invoice crm.invoice.recurring.update
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-{% note warning %}
+{% note warning "DEPRECATED" %}
 
-The method is deprecated. It is recommended to use [`Universal methods for invoices`](../../universal/invoice.md)
+The development of this method has been halted. Please use [Universal Methods for Invoices](../../universal/invoice.md).
 
 {% endnote %}
 
-The method updates an existing setting for the recurring invoice template.
+This method updates an existing setting for the recurring invoice template.
 
-## Method parameters
+## Method Parameters
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -24,10 +24,10 @@ The method updates an existing setting for the recurring invoice template.
 || **fields**
 [`array`](../../../data-types.md) | Field values for updating the setting.
 
-To find out the required format of the fields, execute the method [crm.invoice.recurring.fields](./crm-invoice-recurring-fields.md) and check the format of the returned values for these fields ||
+To find out the required format for the fields, execute the method [crm.invoice.recurring.fields](./crm-invoice-recurring-fields.md) and check the format of the returned values for these fields ||
 |#
 
-## Code examples
+## Code Examples
 
 {% list tabs %}
 

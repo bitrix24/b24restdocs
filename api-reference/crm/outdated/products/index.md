@@ -1,8 +1,17 @@
 # Products
 
+{% note warning "" %}
+
+**DEPRECATED**
+
+The development of methods crm.product.* and crm.product.property.* has been halted.  
+Please use the section [Products (`catalog.product.*`)](../../../catalog/product/index.md).
+
+{% endnote %}
+
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can perform the method: depends on the method
+> Who can execute the method: depends on the method
 
 #|
 || **Method** | **Description** ||
@@ -14,7 +23,7 @@
 || [crm.product.update](./crm-product-update.md) | Updates an existing product ||
 || [crm.product.property.types](./crm-product-property-types.md) | Returns a list of product property types ||
 || [crm.product.property.fields](./crm-product-property-fields.md) | Returns the description of fields for product properties ||
-|| [crm.product.property.settings.fields](./crm-product-property-settings-fields.md) | Returns the description of fields for additional settings of custom product properties ||
+|| [crm.product.property.settings.fields](./crm-product-property-settings-fields.md) | Returns the description of fields for additional settings of custom-type product properties ||
 || [crm.product.property.enumeration.fields](./crm-product-property-enumeration-fields.md) | Returns the description of fields for list-type product property elements ||
 || [crm.product.property.add](./crm-product-property-add.md) | Creates a new product property ||
 || [crm.product.property.get](./crm-product-property-get.md) | Returns a product property by its identifier ||
@@ -23,4 +32,4 @@
 || [crm.product.property.delete](./crm-product-property-delete.md) | Deletes a product property ||
 |#
 
-A complete list of **product events** is provided in the article [Events](./events-custom/index.md).
+A comprehensive list of **product events** can be found in the article [Events](./events-custom/index.md).

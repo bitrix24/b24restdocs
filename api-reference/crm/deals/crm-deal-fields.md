@@ -1,16 +1,16 @@
-# Get Deal Fields crm.deal.fields
+# Get Fields of the Deal crm.deal.fields
 
 > Scope: [`crm`](../../scopes/permissions.md)
 > 
 > Who can execute the method: any user
 
-{% note warning "Method Development Stopped" %}
+{% note warning "DEPRECATED" %}
 
-The method `crm.deal.fields` continues to function, but there is a more relevant alternative [crm.item.fields](../universal/crm-item-fields.md).
+The development of this method has been halted. Please use [crm.item.fields](../universal/crm-item-fields.md).
 
 {% endnote %}
 
-The method `crm.deal.fields` returns a description of deal fields, including custom ones. A table with descriptions of standard fields can be found in the article [Fields of Main CRM Entities](../main-entities-fields.md).
+The method `crm.deal.fields` returns the description of deal fields, including custom fields. A table with the description of standard fields can be found in the article [Fields of Main CRM Entities](../main-entities-fields.md).
 
 ## Method Parameters
 
@@ -125,7 +125,7 @@ No parameters.
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -362,7 +362,7 @@ HTTP status: **200**
             "isImmutable": false,
             "isMultiple": false,
             "isDynamic": false,
-            "title": "Assignee"
+            "title": "Responsible"
         },
         "CREATED_BY_ID": {
             "type": "user",
@@ -563,7 +563,7 @@ HTTP status: **200**
 
 {% note info "" %}
 
-The field `CONTACT_IDS` is not available in the methods [crm.deal.get](./crm-deal-get.md) and [crm.deal.list](./crm-deal-list.md). To get the list of deal contacts, use the methods [crm.deal.contact.items.*](./contacts/index.md) or universal methods [crm.item.*](../universal/index.md).
+The field `CONTACT_IDS` is not available in the methods [crm.deal.get](./crm-deal-get.md) and [crm.deal.list](./crm-deal-list.md). To get the list of contacts for a deal, use the methods [crm.deal.contact.items.*](./contacts/index.md) or the universal methods [crm.item.*](../universal/index.md).
 
 {% endnote %}
 
@@ -593,7 +593,7 @@ where:
 
 ## Error Handling
 
-The method does not return errors.
+does not return errors.
 
 {% include [system errors](./../../../_includes/system-errors.md) %}
 

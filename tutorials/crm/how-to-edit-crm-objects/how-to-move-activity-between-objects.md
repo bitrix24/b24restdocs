@@ -1,10 +1,16 @@
-# How to Transfer an Activity from One Object Type to Another
+# How to Transfer a Deal from One Object Type to Another
 
 > Scope: [`crm`](../../../api-reference/scopes/permissions.md)
 >
 > Who can execute the method: users with permission to modify CRM entities
 
-Activities related to CRM entities are stored in the timeline of the entity's card. Transferring activities may be necessary between different types of entities: [lead](../../../api-reference/crm/leads/index.md), [deal](../../../api-reference/crm/deals/index.md), [contact](../../../api-reference/crm/contacts/index.md), [company](../../../api-reference/crm/companies/index.md), [invoice](../../../api-reference/crm/universal/invoice.md), [SPA](../../../api-reference/crm/universal/index.md). For example, if a client has two email addresses but only one is saved in your Bitrix24 company card, when the client sends an email from the second, unknown address, the email will create a new lead instead of attaching to the existing company card. To keep client information in one place, you can transfer the activity from the lead to the company card.
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
+Activities related to CRM entities are stored in the timeline of the entity's detail form. Transferring activities may be necessary between different types of entities: [lead](../../../api-reference/crm/leads/index.md), [deal](../../../api-reference/crm/deals/index.md), [contact](../../../api-reference/crm/contacts/index.md), [company](../../../api-reference/crm/companies/index.md), [invoice](../../../api-reference/crm/universal/invoice.md), [SPA](../../../api-reference/crm/universal/index.md). For example, a client has two email addresses, but only one is saved in the company detail form in your Bitrix24. When the client sends an email from the second, unknown address, the email will create a new lead instead of attaching the email to the existing company. To keep client information in one place, you can transfer the activity from the lead to the company detail form.
 
 To transfer the activity, we will sequentially execute four methods:
 
@@ -16,15 +22,15 @@ To transfer the activity, we will sequentially execute four methods:
 
 4. [crm.activity.binding.delete](../../../api-reference/crm/timeline/activities/binding/crm-activity-binding-delete.md) — remove the binding of the activity from the lead
 
-## 1. Retrieve the Activity ID {#first}
+## 1. Retrieving the Activity ID {#first}
 
-Use the method [crm.activity.list](../../../api-reference/crm/timeline/activities/activity-base/crm-activity-list.md) with the filter:
+We will use the method [crm.activity.list](../../../api-reference/crm/timeline/activities/activity-base/crm-activity-list.md) with the following filter:
 
 - `OWNER_TYPE_ID` — [object type](../../../api-reference/crm/data-types.md#object_type), specify `1` for lead
 
 - `OWNER_ID` — ID of the entity from which we will transfer the activity
 
-{% include [Example Notes](../../../_includes/examples.md) %}
+{% include [Examples Note](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -61,7 +67,7 @@ Use the method [crm.activity.list](../../../api-reference/crm/timeline/activitie
 
 {% endlist %}
 
-As a result, we will receive all activities related to the specified entity.
+As a result, we will receive all activities associated with the specified entity.
 
 ```JSON
 {
@@ -76,11 +82,11 @@ As a result, we will receive all activities related to the specified entity.
             "PROVIDER_GROUP_ID": null,
             "ASSOCIATED_ENTITY_ID": "0",
             "SUBJECT": "for leads",
-            "CREATED": "2025-03-10T10:57:41+03:00",
-            "LAST_UPDATED": "2025-03-10T10:57:41+03:00",
-            "START_TIME": "2025-03-10T10:57:34+03:00",
-            "END_TIME": "2025-03-10T20:00:00+03:00",
-            "DEADLINE": "9999-12-31T00:00:00+03:00",
+            "CREATED": "2025-03-10T10:57:41+01:00",
+            "LAST_UPDATED": "2025-03-10T10:57:41+01:00",
+            "START_TIME": "2025-03-10T10:57:34+01:00",
+            "END_TIME": "2025-03-10T20:00:00+01:00",
+            "DEADLINE": "9999-12-31T00:00:00+01:00",
             "COMPLETED": "N",
             "STATUS": "1",
             "RESPONSIBLE_ID": "29",
@@ -116,19 +122,19 @@ As a result, we will receive all activities related to the specified entity.
             "RESULT_STREAM": "0",
             "RESULT_SOURCE_ID": null,
             "AUTOCOMPLETE_RULE": "0"
-        }
+        },
     ],
-    "total": 1
+    "total": 1,
 }
 ```
 
-## 2. Retrieve the Company ID {#second}
+## 2. Retrieving the Company ID {#second}
 
-Use the method [crm.company.list](../../../api-reference/crm/companies/crm-company-list.md) with the filter:
+We will use the method [crm.company.list](../../../api-reference/crm/companies/crm-company-list.md) with the following filter:
 
-- `TITLE` — company name
+- `TITLE` — name of the company
 
-To limit the returned fields, add the `select` parameter and specify only the `ID` and `TITLE` fields.
+To limit the returned fields, we will add the `select` parameter and specify only the `ID` and `TITLE` fields.
 
 {% list tabs %}
 
@@ -174,13 +180,13 @@ As a result, we will receive the company ID — `ID`: `173`.
             "TITLE": "Company_Name"
         }
     ],
-    "total": 1
+    "total": 1,
 }
 ```
 
-## 3. Add the Binding of the Activity to the Company
+## 3. Adding the Binding of the Activity to the Company
 
-To bind the activity and the company, use the method [crm.activity.binding.add](../../../api-reference/crm/timeline/activities/binding/crm-activity-binding-add.md) with the parameters:
+To bind the activity and the company, we will use the method [crm.activity.binding.add](../../../api-reference/crm/timeline/activities/binding/crm-activity-binding-add.md) with the following parameters:
 
 - `activityId` — ID of the activity, obtained in [step 1](#first) using the method [crm.activity.list](../../../api-reference/crm/timeline/activities/activity-base/crm-activity-list.md)
 
@@ -220,17 +226,17 @@ To bind the activity and the company, use the method [crm.activity.binding.add](
 
 {% endlist %}
 
-As a result, we will receive `true`, indicating that the binding for the activity was successfully created. If you receive an `error` in the result, review the possible error descriptions in the documentation for the method [crm.activity.binding.add](../../../api-reference/crm/timeline/activities/binding/crm-activity-binding-add.md).
+As a result, we will receive `true`, indicating that the binding for the activity was successfully created. If you receive an `error` in the result, refer to the documentation for the method [crm.activity.binding.add](../../../api-reference/crm/timeline/activities/binding/crm-activity-binding-add.md) to understand possible errors.
 
 ```JSON
 {
-    "result": true
+    "result": true,
 }
 ```
 
-## 4. Remove the Binding of the Activity from the Lead
+## 4. Removing the Binding of the Activity from the Lead
 
-Use the method [crm.activity.binding.delete](../../../api-reference/crm/timeline/activities/binding/crm-activity-binding-delete.md) with the parameters:
+We will use the method [crm.activity.binding.delete](../../../api-reference/crm/timeline/activities/binding/crm-activity-binding-delete.md) with the following parameters:
 
 - `activityId` — ID of the activity, obtained in [step 1](#first) using the method [crm.activity.list](../../../api-reference/crm/timeline/activities/activity-base/crm-activity-list.md)
 
@@ -270,11 +276,11 @@ Use the method [crm.activity.binding.delete](../../../api-reference/crm/timeline
 
 {% endlist %}
 
-As a result, we will receive `true`, indicating that the binding of the activity from the lead was successfully removed. If you receive an `error` in the result, review the possible error descriptions in the documentation for the method [crm.activity.binding.delete](../../../api-reference/crm/timeline/activities/binding/crm-activity-binding-delete.md).
+As a result, we will receive `true`, indicating that the binding of the activity from the lead was successfully removed. If you receive an `error` in the result, refer to the documentation for the method [crm.activity.binding.delete](../../../api-reference/crm/timeline/activities/binding/crm-activity-binding-delete.md) to understand possible errors.
 
 ```JSON
 {
-    "result": true
+    "result": true,
 }
 ```
 
@@ -288,10 +294,10 @@ As a result, we will receive `true`, indicating that the binding of the activity
     // Function to execute all steps
     function transferActivityToCompany() {
         // Prompt user for lead ID
-        const leadId = prompt("Enter lead ID:");
+        const leadId = prompt("Enter the lead ID:");
 
         // Prompt user for company name
-        const companyName = prompt("Enter company name:");
+        const companyName = prompt("Enter the company name:");
 
         // Step 1: Retrieve the list of activities for the specified lead
         BX24.callMethod(
@@ -469,11 +475,11 @@ As a result, we will receive `true`, indicating that the binding of the activity
     }
 
     // Prompt user for lead ID and company name
-    $leadId = readline("Enter lead ID: ");
-    $companyName = readline("Enter company name: ");
+    $leadId = readline("Enter the lead ID: ");
+    $companyName = readline("Enter the company name: ");
 
     // Execute the function
     transferActivityToCompany($leadId, $companyName);
-    ```
+    ``` 
 
 {% endlist %}

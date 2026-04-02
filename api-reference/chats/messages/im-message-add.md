@@ -20,26 +20,26 @@ The method `im.message.add` sends a message to a chat.
 - `sgXXX` — group or project chat
 - `XXX` — identifier of the personal chat user
   
-The chat identifier can be obtained using the method [im.chat.get](../im-chat-get.md). The user identifier can be obtained using the methods [user.get](../../user/user-get.md) and [user.search](../../user/user-search.md) ||
+The chat identifier can be obtained using the [im.chat.get](../im-chat-get.md) method. The user identifier can be obtained using the [user.get](../../user/user-get.md) and [user.search](../../user/user-search.md) methods ||
 || **MESSAGE***
-[`string`](../../data-types.md) | Text of the message. Required if `ATTACH` is not provided.
+[`string`](../../data-types.md) | The text of the message. Required if `ATTACH` is not provided.
 
-[Formatting](./index.md) is supported ||
+[Formatting](./formatting.md) is supported ||
 || **ATTACH**
 [`object`](../../data-types.md) 
 [`string`](../../data-types.md) | Attachment with content blocks: images, links, files. Required if `MESSAGE` is not provided.
 
-Read more in the section [Attachments](./attachments/index.md) ||
+Read more in the [Attachments](./attachments.md) section ||
 || **KEYBOARD**
 [`object`](../../data-types.md) 
-[`string`](../../data-types.md) | Buttons below the message that the user can interact with.
+[`string`](../../data-types.md) | Buttons under the message that the user can interact with.
 
-Read more in the article [Working with Keyboards](./keyboards.md) ||
+Read more in the [Working with Keyboards](./keyboards.md) article ||
 || **MENU**
 [`object`](../../data-types.md) 
 [`string`](../../data-types.md) | Additional items in the chat's context menu.
 
-Read more in the article [Context Menu](./menu.md) ||
+Read more in the [Context Menu](./menu.md) article ||
 || **SYSTEM**
 [`string`](../../data-types.md) | Indicator of a system message.
 
@@ -57,9 +57,9 @@ Allowed values:
 
 Default is `Y` ||
 || **REPLY_ID**
-[`integer`](../../data-types.md) | Identifier of the message being replied to. The message to reply to must be in the same chat.
+[`integer`](../../data-types.md) | Identifier of the message to which the reply is sent. The message for the reply must be in the same chat.
 
-The identifier can be obtained using the method [im.dialog.messages.get](./im-dialog-messages-get.md) ||
+The identifier can be obtained using the [im.dialog.messages.get](./im-dialog-messages-get.md) method ||
 |#
 
 ## Code Examples
@@ -237,14 +237,14 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `MESSAGE_EMPTY` | Message can't be empty | Empty `MESSAGE` and no `ATTACH` provided ||
-|| `USER_ID_EMPTY` | User ID can't be empty | User identifier in `DIALOG_ID` is missing or invalid ||
+|| `MESSAGE_EMPTY` | Message can't be empty | Empty `MESSAGE` and `ATTACH` not provided ||
+|| `USER_ID_EMPTY` | User ID can't be empty | User identifier in `DIALOG_ID` is not provided or is invalid ||
 || `USER_NOT_FOUND` | User not found | User not found ||
 || `CHAT_ID` | Error creating message | Failed to create message. Ensure that a chat with such `ID` exists ||
-|| `ACCESS_ERROR` | Action unavailable | Insufficient permissions to send message ||
+|| `ACCESS_ERROR` | Action unavailable | Insufficient permissions to send the message ||
 || `PARAMS_ERROR` | Incorrect params | Invalid set of request parameters ||
 || `ATTACH_ERROR` | Incorrect attach params | Invalid `ATTACH` object ||
-|| `ATTACH_OVERSIZE` | You have exceeded the maximum allowable size of attach | Size of `ATTACH` exceeds the allowable limit ||
+|| `ATTACH_OVERSIZE` | You have exceeded the maximum allowable size of attach | The size of `ATTACH` exceeds the allowable limit ||
 || `KEYBOARD_ERROR` | Incorrect keyboard params | Invalid `KEYBOARD` object ||
 || `MENU_ERROR` | Incorrect menu params | Invalid `MENU` object ||
 || `REPLY_ACCESS_ERROR` | Action unavailable | No access to the message in `REPLY_ID` ||
@@ -258,6 +258,6 @@ HTTP Status: **400**
 - [{#T}](./im-message-update.md)
 - [{#T}](./im-message-delete.md)
 - [{#T}](./im-message-like.md)
-- [{#T}](./attachments/index.md)
+- [{#T}](./attachments.md)
 - [{#T}](./keyboards.md)
 - [{#T}](./menu.md)

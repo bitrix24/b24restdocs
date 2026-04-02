@@ -1,24 +1,30 @@
-# How to Send an Email to a Client on Behalf of an Employee
+# How to Send an E-mail to a Client on Behalf of an Employee
 
 > Scope: [`crm`](../../../api-reference/scopes/permissions.md)
 >
-> Who can perform the method: users with permission to modify a CRM entity
+> Who can execute the method: users with permission to modify a CRM entity
 
-An email can be sent automatically through the CRM. The "From" field will display the name and email address of the employee. An event for the outgoing email will be added to the contact's card.
+{% note tip "" %}
 
-To send the email, we will sequentially execute three methods:
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
 
-1. [crm.contact.get](../../../api-reference/crm/contacts/crm-contact-get.md) — retrieve the client's data
+{% endnote %}
 
-2. [user.get](../../../api-reference/user/user-get.md) — retrieve the employee's data
+You can automatically send an e-mail to a client through the CRM. The "From" field will display the name and e-mail address of the employee. An event for the outgoing e-mail will be added to the contact card.
 
-3. [crm.activity.add](../../../api-reference/crm/timeline/activities/activity-base/crm-activity-add.md) — create an activity of type "Email"
+To send the e-mail, we will sequentially execute three methods:
+
+1. [crm.contact.get](../../../api-reference/crm/contacts/crm-contact-get.md) — retrieve client data
+
+2. [user.get](../../../api-reference/user/user-get.md) — retrieve employee data
+
+3. [crm.activity.add](../../../api-reference/crm/timeline/activities/activity-base/crm-activity-add.md) — create a deal of type "E-mail"
 
 ## 1. Retrieve Client Data
 
-We will use the method [crm.contact.get](../../../api-reference/crm/contacts/crm-contact-get.md) with the client's identifier. The identifier value can be stored in the variable `contactID`. For example, we will retrieve the contact data with the identifier `1`.
+We will use the [crm.contact.get](../../../api-reference/crm/contacts/crm-contact-get.md) method with the client ID. The ID value can be stored in the variable `contactID`. For example, we will retrieve the contact data with the ID `1`.
 
-{% include [Example Notes](../../../_includes/examples.md) %}
+{% include [Example Note](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -53,7 +59,7 @@ We will use the method [crm.contact.get](../../../api-reference/crm/contacts/crm
 
 {% endlist %}
 
-As a result, we will obtain the client's data, including the email address `EMAIL` and the identifier of the responsible employee `ASSIGNED_BY_ID`.
+As a result, we will obtain client data, including the e-mail address `EMAIL` and the ID of the responsible employee `ASSIGNED_BY_ID`.
 
 ```json
 {
@@ -77,7 +83,7 @@ As a result, we will obtain the client's data, including the email address `EMAI
 
 ## 2. Retrieve Employee Data
 
-To get the data of the responsible employee, we will use the method [user.get](../../../api-reference/user/user-get.md) with a filter by the employee's identifier. The identifier should take the value from the `ASSIGNED_BY_ID` field of the `resultContact` object.
+To get the data of the responsible employee, we will use the [user.get](../../../api-reference/user/user-get.md) method with a filter by employee ID. The ID should take the value from the `ASSIGNED_BY_ID` field of the `resultContact` object.
 
 {% list tabs %}
 
@@ -118,7 +124,7 @@ To get the data of the responsible employee, we will use the method [user.get](.
 
 {% endlist %}
 
-We will obtain the employee's data, including the email address `EMAIL`.
+We will obtain employee data, including the e-mail address `EMAIL`.
 
 ```json
 {
@@ -126,19 +132,19 @@ We will obtain the employee's data, including the email address `EMAIL`.
         {
         "ID": "61",
         "ACTIVE": true,
-        "NAME": "John",
-        "LAST_NAME": "Peterson",
-        "EMAIL": "johnpeterson@example.com"
+        "NAME": "Ivan",
+        "LAST_NAME": "Petrov",
+        "EMAIL": "ivanpetrov@example.com"
         }
     ]
 }
 ```
 
-## 3. Create an Activity of Type "Email"
+## 3. Create a Deal of Type "E-mail"
 
 We will prepare the variables:
 
-- `contactEmail` — the first element from the `resultContact` contact,
+- `contactEmail` — the first element from the contact `resultContact`,
 
 - `staff` — the first element from the `resultUser` object.
 
@@ -160,39 +166,39 @@ We will prepare the variables:
 
 {% endlist %}
 
-To add the event and send the email, we will use the method [crm.activity.add](../../../api-reference/crm/timeline/activities/activity-base/crm-activity-add.md). We need to pass the client's data, the employee's data, and the activity parameters.
+To add the event and send the e-mail, we will use the [crm.activity.add](../../../api-reference/crm/timeline/activities/activity-base/crm-activity-add.md) method. We need to pass the client data, employee data, and deal parameters.
 
-- `SUBJECT` — the email subject. We will specify `subject email now`.
+- `SUBJECT` — the subject of the e-mail. We will specify `subject email now`.
 
-- `DESCRIPTION` — the email body. For example, `body email now`.
+- `DESCRIPTION` — the body of the e-mail. For example, `body email now`.
 
 - `DESCRIPTION_TYPE` — the text type. Possible values: `1`— plain text, `2`— HTML markup, `3`— BB-code. We will set the value to `3`.
 
 - `COMPLETED` — a flag indicating whether the event is completed. We will specify `Y`.
 
-- `DIRECTION` — the direction of the activity. We will pass `2` — outgoing email. A complete list of activity directions can be obtained using the method [crm.enum.activitydirection](../../../api-reference/crm/auxiliary/enum/outdated/crm-enum-activity-direction.md).
+- `DIRECTION` — the direction of the activity. We will pass `2` — outgoing e-mail. A complete list of activity directions can be obtained using the [crm.enum.activitydirection](../../../api-reference/crm/auxiliary/enum/outdated/crm-enum-activity-direction.md) method.
 
-- `OWNER_ID` — the contact identifier. We will pass the variable `contactID`.
+- `OWNER_ID` — the contact ID. We will pass the variable `contactID`.
 
-- `OWNER_TYPE_ID` — [the identifier of the CRM object type](../../../api-reference/crm/data-types.md#object_type). We will pass `3`— contact. A complete list of object types can be obtained using the method [crm.enum.ownertype](../../../api-reference/crm/auxiliary/enum/crm-enum-owner-type.md).
+- `OWNER_TYPE_ID` — [the identifier of the CRM object type](../../../api-reference/crm/data-types.md#object_type). We will pass `3`— contact. A complete list of object types can be obtained using the [crm.enum.ownertype](../../../api-reference/crm/auxiliary/enum/crm-enum-owner-type.md) method.
 
-- `TYPE_ID` — the activity type. We will specify `4` — email. The list of activity types can be obtained using the method [crm.enum.activitytype](../../../api-reference/crm/auxiliary/enum/outdated/crm-enum-activity-type.md).
+- `TYPE_ID` — the activity type. We will specify `4` — e-mail. A list of activity types can be obtained using the [crm.enum.activitytype](../../../api-reference/crm/auxiliary/enum/outdated/crm-enum-activity-type.md) method.
 
 - `COMMUNICATIONS` — the client's contact details:
 
-    - `VALUE` — the email address, taking the `VALUE` from the `contactEmail` array,
+    - `VALUE` — the e-mail address, we will take the `VALUE` from the `contactEmail` array,
 
-    - `ENTITY_ID` — the client identifier, passing `contactID`,
+    - `ENTITY_ID` — the client ID, we will pass `contactID`,
 
-    - `ENTITY_TYPE_ID` — [the identifier of the object type](../../../api-reference/crm/data-types.md#object_type), passing `3` — contact.
+    - `ENTITY_TYPE_ID` — [the identifier of the object type](../../../api-reference/crm/data-types.md#object_type), we will pass `3` — contact.
 
 - `START_TIME` and `END_TIME` — the start and end date and time of the activity. We will specify a duration of 1 hour.
 
-- `RESPONSIBLE_ID` — the identifier of the responsible person, passing `staff.ID`.
+- `RESPONSIBLE_ID` — the ID of the responsible person, we will pass `staff.ID`.
 
 - `SETTINGS` — additional settings:
 
-    - `MESSAGE_FROM` — the email sender, passing the name `staff.NAME`, last name `staff.LAST_NAME`, and email address `staff.EMAIL` of the employee.
+    - `MESSAGE_FROM` — the sender of the e-mail, we will pass the name `staff.NAME`, last name `staff.LAST_NAME`, and e-mail address `staff.EMAIL` of the employee.
 
 {% list tabs %}
 
@@ -267,7 +273,7 @@ To add the event and send the email, we will use the method [crm.activity.add](.
 
 {% endlist %}
 
-If the event is successfully created, the method will return its identifier. If you receive an `error`, refer to the documentation for the method [crm.activity.add](../../../api-reference/crm/timeline/activities/activity-base/crm-activity-add.md) for possible error descriptions.
+If the event is created successfully, the method will return its ID. If you receive an `error`, refer to the documentation for the [crm.activity.add](../../../api-reference/crm/timeline/activities/activity-base/crm-activity-add.md) method to understand possible errors.
 
 ```json
 {
@@ -277,7 +283,7 @@ If the event is successfully created, the method will return its identifier. If 
 
 ## Complete Code Example
 
-The code in the example combines all steps: retrieves the client and employee data, adds the "Email" activity, and sends the email to the client.
+The code in this example combines all steps: it retrieves client and employee data, adds the "E-mail" deal, and sends the e-mail to the client.
 
 {% list tabs %}
 

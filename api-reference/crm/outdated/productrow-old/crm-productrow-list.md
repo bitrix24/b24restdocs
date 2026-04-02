@@ -1,16 +1,16 @@
-# Get the list of order properties crm.productrow.list
+# Get a List of Order Properties crm.productrow.list
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-{% note warning %}
+{% note warning "DEPRECATED" %}
 
-The method is deprecated. It is recommended to use [`crm.item.productrow.list`](../../universal/product-rows/crm-item-productrow-list.md)
+The development of this method has been halted. Please use [crm.item.productrow.list](../../universal/product-rows/crm-item-productrow-list.md).
 
 {% endnote %}
 
-The method returns a list of product items based on the filter. It is an implementation of the list method for product items. The owner of the product items is determined by the required fields `OWNER_TYPE` and `OWNER_ID`, where `OWNER_TYPE` is a one-character code for the type ("D" - deal, "L" - lead), and `OWNER_ID` is the identifier.
+This method returns a list of product rows based on a filter. It is an implementation of the list method for product rows. The owner of the product rows is determined by the required fields `OWNER_TYPE` and `OWNER_ID`, where `OWNER_TYPE` is a one-character code indicating the type ("D" - deal, "L" - lead), and `OWNER_ID` is the identifier.
 
 ## Method Parameters
 
@@ -18,7 +18,7 @@ See the description of [list methods](../../../../settings/how-to-call-rest-api/
 
 ## Code Examples
 
-{% include [Note on examples](../../../../_includes/examples.md) %}
+{% include [Examples Note](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -45,7 +45,7 @@ See the description of [list methods](../../../../settings/how-to-call-rest-api/
 - JS
 
     ```js
-    // callListMethod: Retrieves all data at once. Use only for small selections (< 1000 items) due to high memory usage.
+    // callListMethod: Retrieves all data at once. Use only for small selections (< 1000 items) due to high memory load.
     
     var ownerType = prompt("Enter owner type (D, L)");
     var ownerId = prompt("Enter owner ID");
@@ -74,7 +74,7 @@ See the description of [list methods](../../../../settings/how-to-call-rest-api/
       console.error('Request failed', error);
     }
     
-    // fetchListMethod: Retrieves data in parts using an iterator. Use it for large data volumes to optimize memory usage.
+    // fetchListMethod: Retrieves data in parts using an iterator. Use for large volumes of data for efficient memory consumption.
     
     var ownerType = prompt("Enter owner type (D, L)");
     var ownerId = prompt("Enter owner ID");
@@ -95,7 +95,7 @@ See the description of [list methods](../../../../settings/how-to-call-rest-api/
       console.error('Request failed', error);
     }
     
-    // callMethod: Manually controls pagination through the start parameter. Use it for precise control of request batches. For large datasets, it is less efficient than fetchListMethod.
+    // callMethod: Manual control of pagination through the start parameter. Use for precise control over request batches. Less efficient for large data than fetchListMethod.
     
     var ownerType = prompt("Enter owner type (D, L)");
     var ownerId = prompt("Enter owner ID");
@@ -207,4 +207,3 @@ See the description of [list methods](../../../../settings/how-to-call-rest-api/
     ```
 
 {% endlist %}
-

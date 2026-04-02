@@ -4,25 +4,25 @@
 >
 > Who can execute the method: any user
 
-{% note warning %}
+{% note warning "DEPRECATED" %}
 
-The method is deprecated. It is recommended to use [`Universal methods for invoices`](../../universal/invoice.md)
+The development of this method has been halted. Please use [Universal methods for invoices](../../universal/invoice.md).
 
 {% endnote %}
 
-The method creates a new invoice.
+This method creates a new invoice.
 
-If you need to specify any details of the buyer/seller in the invoice (since there can be multiple for a company), use the method [crm.requisite.link.register](../../requisites/links/crm-requisite-link-register.md).
+If you need to specify any details of the buyer/seller in the invoice (as there may be multiple for a company), use the method [crm.requisite.link.register](../../requisites/links/crm-requisite-link-register.md).
 
 The created invoice must include the seller and buyer companies:
-- `UF_COMPANY_ID`, if the buyer is a company or `UF_CONTACT_ID`, if the buyer is a contact 
+- `UF_COMPANY_ID` if the buyer is a company or `UF_CONTACT_ID` if the buyer is a contact 
 - `UF_MYCOMPANY_ID` - seller 
 
 The identifiers specified in **crm.requisite.link.register** and in the created invoice must correspond to the buyer and seller.
 
 ## Method Parameters
 
-{% include [Note about required parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -35,7 +35,7 @@ To find out the required format of the fields, execute the method [crm.invoice.f
 
 ## Code Examples
 
-{% include [Note about examples](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 ### Example 1
 
@@ -47,7 +47,7 @@ To find out the required format of the fields, execute the method [crm.invoice.f
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"ORDER_TOPIC":"Invoice for legal entity","STATUS_ID":"P","DATE_INSERT":"'$(date -Iseconds --utc --date='TZ="Europe/Berlin" now')'","PAY_VOUCHER_DATE":"'$(date -Iseconds --utc --date='TZ="Europe/Berlin" now')'","PAY_VOUCHER_NUM":"876","DATE_MARKED":"'$(date -Iseconds --utc --date='TZ="Europe/Berlin" now')'","REASON_MARKED":"Invoice paid immediately.","COMMENTS":"manager's comment","USER_DESCRIPTION":"comment for the client","DATE_BILL":"'$(date -Iseconds --utc --date='TZ="Europe/Berlin" now')'","DATE_PAY_BEFORE":"'$(date -Iseconds --utc --date='TZ="Europe/Berlin" +1 month')'","RESPONSIBLE_ID":1,"UF_DEAL_ID":10,"UF_COMPANY_ID":5,"UF_CONTACT_ID":2,"PERSON_TYPE_ID":2,"PAY_SYSTEM_ID":6,"INVOICE_PROPERTIES":{"COMPANY":"Ltd. \"New Technologies\"","COMPANY_ADR":"543000 Berlin, Peschanskaya St., 15, office 55 (legal)","INN":"","KPP":"","CONTACT_PERSON":"Boris Sokolov","EMAIL":"pr@logistics-north.com","PHONE":"+1 (495) 234-54-32","FAX":"","ZIP":"","CITY":"","LOCATION":"","ADDRESS":""},"PRODUCT_ROWS":[{"ID":0,"PRODUCT_ID":438,"PRODUCT_NAME":"Product 01","QUANTITY":1,"PRICE":100},{"ID":0,"PRODUCT_ID":515,"PRODUCT_NAME":"Product 77","QUANTITY":1,"PRICE":118}]}}' \
+    -d '{"fields":{"ORDER_TOPIC":"Invoice for legal entity","STATUS_ID":"P","DATE_INSERT":"'$(date -Iseconds --utc --date='TZ="Europe/Berlin" now')'","PAY_VOUCHER_DATE":"'$(date -Iseconds --utc --date='TZ="Europe/Berlin" now')'","PAY_VOUCHER_NUM":"876","DATE_MARKED":"'$(date -Iseconds --utc --date='TZ="Europe/Berlin" now')'","REASON_MARKED":"Invoice paid immediately.","COMMENTS":"manager's comment","USER_DESCRIPTION":"comment for the client","DATE_BILL":"'$(date -Iseconds --utc --date='TZ="Europe/Berlin" now')'","DATE_PAY_BEFORE":"'$(date -Iseconds --utc --date='TZ="Europe/Berlin" +1 month')'","RESPONSIBLE_ID":1,"UF_DEAL_ID":10,"UF_COMPANY_ID":5,"UF_CONTACT_ID":2,"PERSON_TYPE_ID":2,"PAY_SYSTEM_ID":6,"INVOICE_PROPERTIES":{"COMPANY":"Tech Innovations LLC","COMPANY_ADR":"543000 Berlin, Peschanskaya St., 15, Office 55 (legal)","INN":"","KPP":"","CONTACT_PERSON":"Boris Sokolov","EMAIL":"pr@logistics-north.com","PHONE":"+1 (495) 234-54-32","FAX":"","ZIP":"","CITY":"","LOCATION":"","ADDRESS":""},"PRODUCT_ROWS":[{"ID":0,"PRODUCT_ID":438,"PRODUCT_NAME":"Product 01","QUANTITY":1,"PRICE":100},{"ID":0,"PRODUCT_ID":515,"PRODUCT_NAME":"Product 77","QUANTITY":1,"PRICE":118}]}}' \
     https://**put_your_bitrix24_address**/rest/crm.invoice.add?auth=**put_access_token_here**
     ```
 
@@ -92,8 +92,8 @@ To find out the required format of the fields, execute the method [crm.invoice.f
     				"PERSON_TYPE_ID": 2,
     				"PAY_SYSTEM_ID": 6,
     				"INVOICE_PROPERTIES": {
-    					"COMPANY": "Ltd. \"New Technologies\"",
-    					"COMPANY_ADR": "543000 Berlin, Peschanskaya St., 15, office 55 (legal)",
+    					"COMPANY": "Tech Innovations LLC",
+    					"COMPANY_ADR": "543000 Berlin, Peschanskaya St., 15, Office 55 (legal)",
     					"INN": "",
     					"KPP": "",
     					"CONTACT_PERSON": "Boris Sokolov",
@@ -162,8 +162,8 @@ To find out the required format of the fields, execute the method [crm.invoice.f
                         "PERSON_TYPE_ID"    => 2,
                         "PAY_SYSTEM_ID"     => 6,
                         "INVOICE_PROPERTIES" => [
-                            "COMPANY"        => "Ltd. \"New Technologies\"",
-                            "COMPANY_ADR"    => "543000 Berlin, Peschanskaya St., 15, office 55 (legal)",
+                            "COMPANY"        => "Tech Innovations LLC",
+                            "COMPANY_ADR"    => "543000 Berlin, Peschanskaya St., 15, Office 55 (legal)",
                             "INN"            => "",
                             "KPP"            => "",
                             "CONTACT_PERSON" => "Boris Sokolov",
@@ -234,8 +234,8 @@ To find out the required format of the fields, execute the method [crm.invoice.f
                 "PERSON_TYPE_ID": 2,
                 "PAY_SYSTEM_ID": 6,
                 "INVOICE_PROPERTIES": {
-                    "COMPANY": "Ltd. \"New Technologies\"",
-                    "COMPANY_ADR": "543000 Berlin, Peschanskaya St., 15, office 55 (legal)",
+                    "COMPANY": "Tech Innovations LLC",
+                    "COMPANY_ADR": "543000 Berlin, Peschanskaya St., 15, Office 55 (legal)",
                     "INN": "",
                     "KPP": "",
                     "CONTACT_PERSON": "Boris Sokolov",
@@ -291,15 +291,20 @@ To find out the required format of the fields, execute the method [crm.invoice.f
                 'DATE_BILL' => date2str($current),
                 'DATE_PAY_BEFORE' => date2str($nextMonth),
                 'RESPONSIBLE_ID' => 1,
-                'UF_DEAL_ID' => 8,
-                'UF_COMPANY_ID' => 0,
-                'UF_CONTACT_ID' => 3,
-                'PERSON_TYPE_ID' => 1,
+                'UF_DEAL_ID' => 10,
+                'UF_COMPANY_ID' => 5,
+                'UF_CONTACT_ID' => 2,
+                'PERSON_TYPE_ID' => 2,
                 'PAY_SYSTEM_ID' => 6,
                 'INVOICE_PROPERTIES' => [
-                    'FIO' => 'Gleb Titov',
-                    'EMAIL' => 'boss@yt-soft.net',
-                    'PHONE' => '',
+                    'COMPANY' => 'Tech Innovations LLC',
+                    'COMPANY_ADR' => '543000 Berlin, Peschanskaya St., 15, Office 55 (legal)',
+                    'INN' => '',
+                    'KPP' => '',
+                    'CONTACT_PERSON' => 'Boris Sokolov',
+                    'EMAIL' => 'pr@logistics-north.com',
+                    'PHONE' => '+1 (495) 234-54-32',
+                    'FAX' => '',
                     'ZIP' => '',
                     'CITY' => '',
                     'LOCATION' => '',
@@ -330,7 +335,7 @@ To find out the required format of the fields, execute the method [crm.invoice.f
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"ORDER_TOPIC":"Invoice for individual","STATUS_ID":"P","DATE_INSERT":"'$(date -Iseconds --utc --date='TZ="Europe/Berlin" now')'","PAY_VOUCHER_DATE":"'$(date -Iseconds --utc --date='TZ="Europe/Berlin" now')'","PAY_VOUCHER_NUM":"876","DATE_MARKED":"'$(date -Iseconds --utc --date='TZ="Europe/Berlin" now')'","REASON_MARKED":"paid","COMMENTS":"comment","USER_DESCRIPTION":"comment to the client","DATE_BILL":"'$(date -Iseconds --utc --date='TZ="Europe/Berlin" now')'","DATE_PAY_BEFORE":"'$(date -Iseconds --utc --date='TZ="Europe/Berlin" +1 month')'","RESPONSIBLE_ID":1,"UF_DEAL_ID":8,"UF_COMPANY_ID":0,"UF_CONTACT_ID":3,"PERSON_TYPE_ID":1,"PAY_SYSTEM_ID":6,"INVOICE_PROPERTIES":{"FIO":"Gleb Titov","EMAIL":"boss@yt-soft.net","PHONE":"","ZIP":"","CITY":"","LOCATION":"","ADDRESS":""},"PRODUCT_ROWS":[{"ID":0,"PRODUCT_ID":438,"PRODUCT_NAME":"Product 01","QUANTITY":1,"PRICE":100},{"ID":0,"PRODUCT_ID":515,"PRODUCT_NAME":"Product 77","QUANTITY":1,"PRICE":118}]}}' \
+    -d '{"fields":{"ORDER_TOPIC":"Invoice for individual","STATUS_ID":"P","DATE_INSERT":"'$(date -Iseconds --utc --date='TZ="Europe/Berlin" now')'","PAY_VOUCHER_DATE":"'$(date -Iseconds --utc --date='TZ="Europe/Berlin" now')'","PAY_VOUCHER_NUM":"876","DATE_MARKED":"'$(date -Iseconds --utc --date='TZ="Europe/Berlin" now')'","REASON_MARKED":"paid","COMMENTS":"comment","USER_DESCRIPTION":"comment for the client","DATE_BILL":"'$(date -Iseconds --utc --date='TZ="Europe/Berlin" now')'","DATE_PAY_BEFORE":"'$(date -Iseconds --utc --date='TZ="Europe/Berlin" +1 month')'","RESPONSIBLE_ID":1,"UF_DEAL_ID":8,"UF_COMPANY_ID":0,"UF_CONTACT_ID":3,"PERSON_TYPE_ID":1,"PAY_SYSTEM_ID":6,"INVOICE_PROPERTIES":{"FIO":"Gleb Titov","EMAIL":"boss@yt-soft.net","PHONE":"","ZIP":"","CITY":"","LOCATION":"","ADDRESS":""},"PRODUCT_ROWS":[{"ID":0,"PRODUCT_ID":438,"PRODUCT_NAME":"Product 01","QUANTITY":1,"PRICE":100},{"ID":0,"PRODUCT_ID":515,"PRODUCT_NAME":"Product 77","QUANTITY":1,"PRICE":118}]}}' \
     https://**put_your_bitrix24_address**/rest/crm.invoice.add?auth=**put_access_token_here**
     ```
 
@@ -365,7 +370,7 @@ To find out the required format of the fields, execute the method [crm.invoice.f
     				"DATE_MARKED": date2str(current),
     				"REASON_MARKED": "paid",
     				"COMMENTS": "comment",
-    				"USER_DESCRIPTION": "comment to the client",
+    				"USER_DESCRIPTION": "comment for the client",
     				"DATE_BILL": date2str(current),
     				"DATE_PAY_BEFORE": date2str(nextMonth),
     				"RESPONSIBLE_ID": 1,
@@ -430,7 +435,7 @@ To find out the required format of the fields, execute the method [crm.invoice.f
                         'DATE_MARKED'       => $date2str($current),
                         'REASON_MARKED'     => 'paid',
                         'COMMENTS'          => 'comment',
-                        'USER_DESCRIPTION'  => 'comment to the client',
+                        'USER_DESCRIPTION'  => 'comment for the client',
                         'DATE_BILL'         => $date2str($current),
                         'DATE_PAY_BEFORE'   => $date2str($nextMonth),
                         'RESPONSIBLE_ID'    => 1,
@@ -501,7 +506,7 @@ To find out the required format of the fields, execute the method [crm.invoice.f
                 "DATE_MARKED": date2str(current),
                 "REASON_MARKED": "paid",
                 "COMMENTS": "comment",
-                "USER_DESCRIPTION": "comment to the client",
+                "USER_DESCRIPTION": "comment for the client",
                 "DATE_BILL": date2str(current),
                 "DATE_PAY_BEFORE": date2str(nextMonth),
                 "RESPONSIBLE_ID": 1,
@@ -559,7 +564,7 @@ To find out the required format of the fields, execute the method [crm.invoice.f
                 'DATE_MARKED' => date2str($current),
                 'REASON_MARKED' => 'paid',
                 'COMMENTS' => 'comment',
-                'USER_DESCRIPTION' => 'comment to the client',
+                'USER_DESCRIPTION' => 'comment for the client',
                 'DATE_BILL' => date2str($current),
                 'DATE_PAY_BEFORE' => date2str($nextMonth),
                 'RESPONSIBLE_ID' => 1,

@@ -1,14 +1,20 @@
-# Get Data on Current Tasks of the rpa.item.getTasks Element
+# Get Data on Current Tasks of the Element rpa.item.getTasks
 
 > Scope: [`rpa`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-The method retrieves data on the current tasks of the element with the identifier `id` of the process with the identifier `typeId`.
+{% note warning "DEPRECATED" %}
+
+The development of this method has been halted. Use [Smart processes](../../../crm/universal/user-defined-object-types/index.md) as an alternative to this functionality.
+
+{% endnote %}
+
+This method retrieves data on the current tasks of the element with the identifier `id` for the process with the identifier `typeId`.
 
 ## Method Parameters
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **typeId** 
@@ -75,7 +81,7 @@ HTTP Status: **200**
 }
 ```
 
-## Continue Exploring 
+## Continue Your Exploration 
 
 - [{#T}](./index.md)
 - [{#T}](./rpa-item-add.md)

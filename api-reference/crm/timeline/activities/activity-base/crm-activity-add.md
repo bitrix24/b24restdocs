@@ -1,26 +1,26 @@
-# Add System Activity crm.activity.add
+# Add System Deal crm.activity.add
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
-> Who can execute the method: user with permission to add an activity
+> Who can execute the method: user with permission to add a deal
 
-{% note warning "Method development has been halted" %}
+{% note warning "DEPRECATED" %}
 
-The method `crm.activity.add` continues to function, but there is a more relevant alternative [crm.activity.todo.add](../todo/crm-activity-todo-add.md).
+Development of this method has been halted. Please use [crm.activity.todo.add](../todo/crm-activity-todo-add.md).
 
 {% endnote %}
 
-The method `crm.activity.add` creates a new system activity.
+The method `crm.activity.add` creates a new system deal.
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **fields***
-[`array`](../../../../data-types.md) | Array of values for [activity fields](#fields) in the following structure:
+[`array`](../../../../data-types.md) | An array of values for the [deal fields](#fields) in the following structure:
 
 ```json
 fields:
@@ -28,7 +28,7 @@ fields:
     "OWNER_TYPE_ID": 2, 
     "OWNER_ID": 102, 
     "TYPE_ID": 2, 
-    "SUBJECT": "New call",
+    "SUBJECT": "New Call",
 }
 ```
 There is an additional field `DISABLE_SENDING_MESSAGE_COPY`. It is intended to forcibly disable sending a copy of the message to the recipient from MESSAGE_FROM. If the parameter is not filled or any value other than `Y` is specified, a copy will be sent. Example:
@@ -47,7 +47,7 @@ There is an additional field `DISABLE_SENDING_MESSAGE_COPY`. It is intended to f
 
 ### Parameter fields {#fields}
 
-{% include [Note on required parameters](../../../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../../../_includes/required.md) %}
 
 #|
 || **Field** `type` | **Description** ||
@@ -55,36 +55,36 @@ There is an additional field `DISABLE_SENDING_MESSAGE_COPY`. It is intended to f
 [`integer`](../../../data-types.md) | Identifier of the CRM entity ||
 || **OWNER_TYPE_ID***
 [`integer`](../../../data-types.md) | [Identifier of the CRM object type](../../../data-types.md#object_type) ||
-|| **TYPE_ID***  
-[`crm_enum_activitytype`](../../../data-types.md) | Type of the deal. To access the available deal types, use the method [crm.enum.activitytype](../../../auxiliary/enum/outdated/crm-enum-activity-type.md).  
+|| **TYPE_ID***
+[`crm_enum_activitytype`](../../../data-types.md) | Type of the deal. To get available deal types, use the method [crm.enum.activitytype](../../../auxiliary/enum/outdated/crm-enum-activity-type.md). 
 
-To create a deal with the type "task," use the method [creation](../../../../tasks/tasks-task-add.md) or [modification](../../../../tasks/tasks-task-update.md) of the task and specify the CRM entity in the field `UF_CRM_TASK` ||
+To create a deal with the type "task", use the [creation](../../../../tasks/tasks-task-add.md) or [modification](../../../../tasks/tasks-task-update.md) method and specify the CRM entity in the `UF_CRM_TASK` field ||
 || **ASSOCIATED_ENTITY_ID**
-[`integer`](../../../../data-types.md) | Identifier of the entity associated with the activity ||
+[`integer`](../../../../data-types.md) | Identifier of the entity associated with the deal ||
 || **COMMUNICATIONS***
 [`crm_activity_communication`](../../../data-types.md) | [Description of communication](./crm-activity-communication-fields.md) ||
 || **DEADLINE**
-[`datetime`](../../../data-types.md) | Date and time of the activity deadline. The field is not set directly; the value is taken from START_TIME for calls and meetings and from END_TIME for tasks ||
+[`datetime`](../../../data-types.md) | Date and time of the deal's deadline. This field is not set directly; the value is taken from START_TIME for calls and meetings and from END_TIME for tasks ||
 || **DESCRIPTION**
-[`string`](../../../data-types.md) | Text description of the activity ||
+[`string`](../../../data-types.md) | Text description of the deal ||
 || **DESCRIPTION_TYPE**
 [`crm.enum.contenttype`](../../../data-types.md) | Type of description ||
 || **DIRECTION**
-[`crm.enum.activitydirection`](../../../data-types.md) | Direction of the activity: incoming/outgoing. Relevant for calls and emails, not used for meetings ||
+[`crm.enum.activitydirection`](../../../data-types.md) | Direction of the deal: incoming/outgoing. Relevant for calls and emails, not used for meetings ||
 || **END_TIME**
-[`datetime`](../../../data-types.md) | End time of the activity | ||
+[`datetime`](../../../data-types.md) | Time of deal completion | ||
 || **FILES**
-[`diskfile`](../../../data-types.md) | Files added to the activity ||
+[`diskfile`](../../../data-types.md) | Files added to the deal ||
 || **LOCATION**
 [`string`](../../../data-types.md) | Location ||
 || **NOTIFY_TYPE**
 [`crm.enum.activitynotifytype`](../../../data-types.md) | Type of notification ||
 || **ORIGINATOR_ID**
-[`string`](../../../data-types.md) | Identifier of the data source, used only for binding to an external source ||
+[`string`](../../../data-types.md) | Identifier of the data source, used only for linking to an external source ||
 || **ORIGIN_ID**
-[`string`](../../../data-types.md) | Identifier of the entity in the data source, used only for binding to an external source ||
+[`string`](../../../data-types.md) | Identifier of the entity in the data source, used only for linking to an external source ||
 || **ORIGIN_VERSION**
-[`string`](../../../data-types.md) | Original version, used to protect data from accidental overwriting by an external system. If the data was imported and not changed in the external system, such data can be edited in CRM without fear that the next export will lead to data overwriting ||
+[`string`](../../../data-types.md) | Original version, used to protect data from accidental overwriting by an external system. If the data was imported and not modified in the external system, such data can be edited in CRM without fear that the next export will lead to data overwriting ||
 || **PRIORITY**
 [`crm.enum.activitypriority`](../../../data-types.md) | Priority ||
 || **PROVIDER_DATA**
@@ -98,30 +98,30 @@ To create a deal with the type "task," use the method [creation](../../../../tas
 || **PROVIDER_PARAMS**
 [`object`](../../../data-types.md) | Additional provider parameters ||
 || **RESPONSIBLE_ID***
-[`user`](../../../data-types.md) | Identifier of the user responsible for the activity ||
+[`user`](../../../data-types.md) | Identifier of the user responsible for the deal ||
 || **SETTINGS**
 [`object`](../../../data-types.md) | Additional settings ||
 || **START_TIME**
-[`datetime`](../../../data-types.md) | Start time of the activity ||
+[`datetime`](../../../data-types.md) | Time when the deal starts ||
 || **STATUS**
-[`crm_enum_activitystatus`](../../../data-types.md) | Status of the activity ||
+[`crm_enum_activitystatus`](../../../data-types.md) | Status of the deal ||
 || **SUBJECT**
-[`string`](../../../data-types.md) | Additional description of the activity ||
+[`string`](../../../data-types.md) | Additional description of the deal ||
 || **WEBDAV_ELEMENTS**
 [`diskfile`](../../../data-types.md) | Added files. Deprecated, kept for compatibility ||
 || **IS_INCOMING_CHANNEL**
-[`char`](../../../data-types.md) | Flag indicating whether the activity was created from an incoming channel (`Y`/`N`) ||
+[`char`](../../../data-types.md) | Flag indicating whether the deal was created from an incoming channel (`Y`/`N`) ||
 |#
 
-### Value Usage Examples for Fields
+### Usage Scenarios for Field Values
 
-For activities of type `e-mail`:
+For deals of type `e-mail`:
 - if the email should not be sent, set parameters `DIRECTION=2` and `COMPLETED='N'`;
-- if it is necessary to mark emails as completed, update the activities by setting the completion flag.
+- if it is necessary to mark emails as completed, update the deals by setting the completion flag.
 
 ## Code Examples
 
-{% include [Note on examples](../../../../../_includes/examples.md) %}
+{% include [Note on Examples](../../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -131,7 +131,7 @@ For activities of type `e-mail`:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"OWNER_TYPE_ID":2,"OWNER_ID":102,"TYPE_ID":2,"COMMUNICATIONS":[{"VALUE":"+18005551234","ENTITY_ID":134,"ENTITY_TYPE_ID":3}],"SUBJECT":"New call","START_TIME":"2023-12-31T12:00:00+00:00","END_TIME":"2023-12-31T12:30:00+00:00","COMPLETED":"N","PRIORITY":3,"RESPONSIBLE_ID":1,"DESCRIPTION":"Important call","DESCRIPTION_TYPE":3,"DIRECTION":2,"FILES":[{"fileData":["example.jpg","base64_encoded_content_here"]}]} }' \
+    -d '{"fields":{"OWNER_TYPE_ID":2,"OWNER_ID":102,"TYPE_ID":2,"COMMUNICATIONS":[{"VALUE":"+1234567890","ENTITY_ID":134,"ENTITY_TYPE_ID":3}],"SUBJECT":"New Call","START_TIME":"2023-12-31T12:00:00+00:00","END_TIME":"2023-12-31T12:30:00+00:00","COMPLETED":"N","PRIORITY":3,"RESPONSIBLE_ID":1,"DESCRIPTION":"Important Call","DESCRIPTION_TYPE":3,"DIRECTION":2,"FILES":[{"fileData":["example.jpg","base64_encoded_content_here"]}]} }' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.activity.add
     ```
 
@@ -141,7 +141,7 @@ For activities of type `e-mail`:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"OWNER_TYPE_ID":2,"OWNER_ID":102,"TYPE_ID":2,"COMMUNICATIONS":[{"VALUE":"+18005551234","ENTITY_ID":134,"ENTITY_TYPE_ID":3}],"SUBJECT":"New call","START_TIME":"2023-12-31T12:00:00+00:00","END_TIME":"2023-12-31T12:30:00+00:00","COMPLETED":"N","PRIORITY":3,"RESPONSIBLE_ID":1,"DESCRIPTION":"Important call","DESCRIPTION_TYPE":3,"DIRECTION":2,"FILES":[{"fileData":["example.jpg","base64_encoded_content_here"]}]},"auth":"**put_access_token_here**"}' \
+    -d '{"fields":{"OWNER_TYPE_ID":2,"OWNER_ID":102,"TYPE_ID":2,"COMMUNICATIONS":[{"VALUE":"+1234567890","ENTITY_ID":134,"ENTITY_TYPE_ID":3}],"SUBJECT":"New Call","START_TIME":"2023-12-31T12:00:00+00:00","END_TIME":"2023-12-31T12:30:00+00:00","COMPLETED":"N","PRIORITY":3,"RESPONSIBLE_ID":1,"DESCRIPTION":"Important Call","DESCRIPTION_TYPE":3,"DIRECTION":2,"FILES":[{"fileData":["example.jpg","base64_encoded_content_here"]}]},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/crm.activity.add
     ```
 
@@ -158,15 +158,15 @@ For activities of type `e-mail`:
     				"OWNER_ID": 102,
     				"TYPE_ID": 2,
     				"COMMUNICATIONS": [
-    					{ VALUE: "+18005551234", ENTITY_ID: 134, ENTITY_TYPE_ID: 3 }
+    					{ VALUE: "+1234567890", ENTITY_ID: 134, ENTITY_TYPE_ID: 3 }
     				],
-    				"SUBJECT": "New call",
+    				"SUBJECT": "New Call",
     				"START_TIME": "2023-12-31T12:00:00+00:00", // Example date and time
     				"END_TIME": "2023-12-31T12:30:00+00:00", // Example date and time
     				"COMPLETED": "N",
     				"PRIORITY": 3,
     				"RESPONSIBLE_ID": 1,
-    				"DESCRIPTION": "Important call",
+    				"DESCRIPTION": "Important Call",
     				"DESCRIPTION_TYPE": 3,
     				"DIRECTION": 2,
     				"FILES": [
@@ -204,15 +204,15 @@ For activities of type `e-mail`:
                         'OWNER_ID'         => 102,
                         'TYPE_ID'          => 2,
                         'COMMUNICATIONS'   => [
-                            ['VALUE' => '+18005551234', 'ENTITY_ID' => 134, 'ENTITY_TYPE_ID' => 3]
+                            ['VALUE' => '+1234567890', 'ENTITY_ID' => 134, 'ENTITY_TYPE_ID' => 3]
                         ],
-                        'SUBJECT'          => 'New call',
+                        'SUBJECT'          => 'New Call',
                         'START_TIME'       => '2023-12-31T12:00:00+00:00',
                         'END_TIME'         => '2023-12-31T12:30:00+00:00',
                         'COMPLETED'        => 'N',
                         'PRIORITY'         => 3,
                         'RESPONSIBLE_ID'   => 1,
-                        'DESCRIPTION'      => 'Important call',
+                        'DESCRIPTION'      => 'Important Call',
                         'DESCRIPTION_TYPE' => 3,
                         'DIRECTION'        => 2,
                         'FILES'            => [
@@ -252,15 +252,15 @@ For activities of type `e-mail`:
                 "OWNER_ID": 102,
                 "TYPE_ID": 2,
                 "COMMUNICATIONS": [
-                    { VALUE: "+18005551234", ENTITY_ID: 134, ENTITY_TYPE_ID: 3 }
+                    { VALUE: "+1234567890", ENTITY_ID: 134, ENTITY_TYPE_ID: 3 }
                 ],
-                "SUBJECT": "New call",
+                "SUBJECT": "New Call",
                 "START_TIME": "2023-12-31T12:00:00+00:00", // Example date and time
                 "END_TIME": "2023-12-31T12:30:00+00:00", // Example date and time
                 "COMPLETED": "N",
                 "PRIORITY": 3,
                 "RESPONSIBLE_ID": 1,
-                "DESCRIPTION": "Important call",
+                "DESCRIPTION": "Important Call",
                 "DESCRIPTION_TYPE": 3,
                 "DIRECTION": 2,
                 "FILES": [
@@ -297,18 +297,18 @@ For activities of type `e-mail`:
                 'TYPE_ID' => 2,
                 'COMMUNICATIONS' => [
                     [
-                        'VALUE' => '+18005551234',
+                        'VALUE' => '+1234567890',
                         'ENTITY_ID' => 134,
                         'ENTITY_TYPE_ID' => 3
                     ]
                 ],
-                'SUBJECT' => 'New call',
+                'SUBJECT' => 'New Call',
                 'START_TIME' => '2023-12-31T12:00:00+00:00', // Example date and time
                 'END_TIME' => '2023-12-31T12:30:00+00:00', // Example date and time
                 'COMPLETED' => 'N',
                 'PRIORITY' => 3,
                 'RESPONSIBLE_ID' => 1,
-                'DESCRIPTION' => 'Important call',
+                'DESCRIPTION' => 'Important Call',
                 'DESCRIPTION_TYPE' => 3,
                 'DIRECTION' => 2,
                 'FILES' => [
@@ -320,7 +320,7 @@ For activities of type `e-mail`:
                     ]
                 ]
             ]
-        ]
+        }
     );
 
     if (isset($result['error'])) {
@@ -336,7 +336,7 @@ For activities of type `e-mail`:
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -360,14 +360,14 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../../../data-types.md) | Result of the operation. Returns the identifier of the activity in the timeline in case of success, otherwise — `false` ||
+[`boolean`](../../../../data-types.md) | Result of the operation. Returns the identifier of the deal in the timeline on success, otherwise — `false` ||
 || **time**
-[`time`](../../../../data-types.md#time) | Information about the execution time of the request ||
+[`time`](../../../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {
@@ -376,7 +376,7 @@ HTTP status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../../../_includes/error-info.md) %}
+{% include notitle [Error Handling](../../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
@@ -387,7 +387,7 @@ HTTP status: **400**
 || `The field TYPE_ID is not defined or invalid` | The `TYPE_ID` field is not set ||
 || `The field COMMUNICATIONS is not defined or invalid` | The `COMMUNICATIONS` field is not set ||
 || `The only one communication is allowed for activity of specified type` | More than one contact is specified ||
-|| `Could not build binding. Please ensure that owner info and communications are defined correctly` | Connections for the activity are not specified ||
+|| `Could not build binding. Please ensure that owner info and communications are defined correctly` | Connections for the deal are not specified ||
 || 
 - `Email send error. Failed to load module "subscribe"`
 - `Email send error. Invalid data`
@@ -398,14 +398,14 @@ HTTP status: **400**
 - `Email send error. Failed to save posting file. Please see details below`
 - `Email send error. Failed to update activity`
 - `Email send error. General error`
- | Errors related to "email" activities ||
-|| `The custom activity without provider is not supported in current context` | Activity type is not supported in the specified context ||
-|| `Use crm.activity.configurable.add for this activity provider` | Incorrect method call for configurable activity ||
-|| `Access denied` | No permission to add an entity in CRM ||
-|| `Application context required` | Incorrect `PROVIDER_ID` parameter for the activity created in the application context ||
+ | Errors related to "email" deals ||
+|| `The custom activity without provider is not supported in current context` | The deal type is not supported in the specified context ||
+|| `Use crm.activity.configurable.add for this activity provider` | Incorrect method call for configurable deal ||
+|| `Access denied` | No permission to add entity in CRM ||
+|| `Application context required` | Incorrect `PROVIDER_ID` parameter for the deal created in the application context ||
 |#
 
-{% include [system errors](../../../../../_includes/system-errors.md) %}
+{% include [System Errors](../../../../../_includes/system-errors.md) %}
 
 ## Continue Learning 
 

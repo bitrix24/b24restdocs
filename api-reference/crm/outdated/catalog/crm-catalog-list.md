@@ -1,16 +1,22 @@
-# Get a list of product catalogs crm.catalog.list
+# Get a List of Product Catalogs crm.catalog.list
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-The method returns a list of product catalogs. It is an implementation of the list method for product catalogs.
+{% note warning "DEPRECATED" %}
 
-See the description of [list methods](../../../../settings/how-to-call-rest-api/list-methods-pecularities.md).
+The development of this method has been halted. Please use [catalog.catalog.list](../../../catalog/catalog/catalog-catalog-list.md).
 
-## Code examples
+{% endnote %}
 
-{% include [Note on examples](../../../../_includes/examples.md) %}
+This method returns a list of product catalogs. It is an implementation of the listing method for product catalogs.
+
+See the description of [listing methods](../../../../settings/how-to-call-rest-api/list-methods-pecularities.md).
+
+## Code Examples
+
+{% include [Note on Examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -37,7 +43,7 @@ See the description of [list methods](../../../../settings/how-to-call-rest-api/
 - JS
 
     ```js
-    // callListMethod: Retrieves all data at once. Use only for small selections (< 1000 items) due to high memory usage.
+    // callListMethod: Retrieves all data at once. Use only for small datasets (< 1000 items) due to high memory load.
     
     try {
       const response = await $b24.callListMethod(
@@ -51,7 +57,7 @@ See the description of [list methods](../../../../settings/how-to-call-rest-api/
       console.error('Request failed', error)
     }
     
-    // fetchListMethod: Retrieves data in parts using an iterator. Use it for large data volumes to optimize memory usage.
+    // fetchListMethod: Retrieves data in chunks using an iterator. Use for large datasets for efficient memory consumption.
     
     try {
       const generator = $b24.fetchListMethod('crm.catalog.list', {}, 'ID')
@@ -62,7 +68,7 @@ See the description of [list methods](../../../../settings/how-to-call-rest-api/
       console.error('Request failed', error)
     }
     
-    // callMethod: Manually controls pagination through the start parameter. Use it for precise control of request batches. For large datasets, it is less efficient than fetchListMethod.
+    // callMethod: Manually controls pagination through the start parameter. Use for precise control over request batches. Less efficient for large data than fetchListMethod.
     
     try {
       const response = await $b24.callMethod('crm.catalog.list', {}, 0)
@@ -140,4 +146,3 @@ See the description of [list methods](../../../../settings/how-to-call-rest-api/
     ```
 
 {% endlist %}
-

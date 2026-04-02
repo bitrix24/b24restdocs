@@ -1,29 +1,35 @@
-# How to Get a Client's Address from CRM
+# How to Retrieve a Client's Address from CRM
 
 > Scope: [`crm`](../../../api-reference/scopes/permissions.md)
 >
 > Who can execute the method: users with administrative access to the CRM section
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 A client's address can be stored in Bitrix:
 
-* in a user-defined field of type "address" for any CRM entity. To retrieve the address from the field, call the get or list method for the desired entity type.
-* in the [requisites](../../../api-reference/crm/requisites/index.md) of contacts, companies, and leads. Within a single field `Address`, multiple addresses can be stored with their types specified. A single client may have several requisites recorded.
+* in a custom field of type "address" for any CRM entity. To retrieve the address from the field, call the get or list method for the desired entity type.
+* in the [requisites](../../../api-reference/crm/requisites/index.md) of contacts, companies, and leads. Within the requisites, multiple addresses can be stored in a single field `Address`, specifying their types. A single client may have multiple requisites recorded.
 
-To obtain a client's address from the requisites, sequentially execute two methods:
+To obtain a client's address from the requisites, you need to execute two methods sequentially:
 
 1. [crm.requisite.list](../../../api-reference/crm/requisites/universal/crm-requisite-list.md)
 2. [crm.address.list](../../../api-reference/crm/requisites/addresses/crm-address-list.md)
 
 ## 1. Retrieving Requisites Associated with a Contact
 
-Obtaining the requisite ID is a necessary step, as the address does not have a direct link to the contact or company. The address is linked to the requisite object.
+Obtaining the requisite ID is a necessary step, as the address is not directly linked to a contact or company. The address is associated with the requisite entity.
 
 To retrieve the requisites, we use the crm.requisite.list method with the following filter:
 
 * in `ENTITY_TYPE_ID`, specify the value `3` — the identifier for [contact type](../../../api-reference/crm/data-types.md#object_type). For company type, use the identifier `4`.
-* in `ENTITY_ID` — the contact ID, in this example `2429`. You can obtain the ID using the [crm.contact.list](../../../api-reference/crm/contacts/crm-contact-list.md) method with a filter based on any known contact field. To get the company ID, use [crm.company.list](../../../api-reference/crm/companies/crm-company-list.md). If you need to obtain the contact or company ID by phone number or email, refer to the tutorial [“Finding Duplicates by Phone Number”](./search-by-phone-and-email.md).
+* in `ENTITY_ID` — the ID of the contact, in this example `2429`. You can obtain the ID using the [crm.contact.list](../../../api-reference/crm/contacts/crm-contact-list.md) method with a filter based on any known contact field. To get the company ID, use [crm.company.list](../../../api-reference/crm/companies/crm-company-list.md). If you need to find the contact or company ID by phone number or email, refer to the tutorial [“Finding Duplicates by Phone Number”](./search-by-phone-and-email.md).
 
-{% include [Note on Examples](../../../_includes/examples.md) %}
+{% include [Example Footnote](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -149,7 +155,7 @@ We received the delivery address data for the contact.
                         [TYPE_ID] => 11
                         [ENTITY_TYPE_ID] => 8
                         [ENTITY_ID] => 361
-                        [ADDRESS_1] => 45th Lane, 10 c1
+                        [ADDRESS_1] => Pomegranate Lane, 10 c1
                         [ADDRESS_2] => 
                         [CITY] => New York
                         [POSTAL_CODE] => 10001
@@ -210,7 +216,7 @@ We received the delivery address data for the contact.
                             } else {
                                 var addresses = addressResult.data();
                                 if (addresses.length > 0) {
-                                    // Create a table to display the addresses
+                                    // Create a table to display addresses
                                     var table = [];
                                     addresses.forEach(function(address) {
                                         table.push({
@@ -280,7 +286,7 @@ We received the delivery address data for the contact.
                 } else {
                     $addresses = $addressResult['result'];
                     if (count($addresses) > 0) {
-                        // Create a table to display the addresses
+                        // Create a table to display addresses
                         echo '<table border="1">';
                         echo '<tr><th>Address</th><th>City</th><th>Postal Code</th><th>Country</th></tr>';
                         foreach ($addresses as $address) {

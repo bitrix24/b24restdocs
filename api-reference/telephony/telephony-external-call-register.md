@@ -16,17 +16,17 @@ The method works only in the context of an [application](../../settings/app-inst
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **USER_ID*** 
-[`integer`](../data-types.md) | The identifier of the user for whom the call is being registered.
+[`integer`](../data-types.md) | The identifier of the user for whom the call is registered.
 
 The identifier can be obtained using the [user.get](../user/user-get.md) method. ||
 || **USER_PHONE_INNER*** 
-[`string`](../data-types.md) | The internal phone number of the user.
+[`string`](../data-types.md) | The internal number of the user.
 
 The internal number can be obtained using the [user.get](../user/user-get.md) method.
 
@@ -47,17 +47,19 @@ Possible values:
 - `4` — callback
 - `5` — informational call. ||
 || **CALL_START_DATE**
-[`string`](../data-types.md) | The date and time the call started in ISO-8601 format with timezone indication, e.g., `2026-03-07T10:20:30+03:00`.
+[`string`](../data-types.md) | The date and time the call started in ISO-8601 format with timezone indication, for example, `2026-03-07T10:20:30+03:00`.
 
-Default — current server time. ||
+By default — the current time on the server. ||
 || **CRM_CREATE**
 [`integer`](../data-types.md) | Automatic creation of a CRM object if no suitable object is found by the number.
 
 Possible values:
 - `0` — do not create
 - `1` — create
+  
+By default — `0`. 
 
-Default — `0`. ||
+For outgoing calls through an external line, the final behavior also depends on the value of the `CRM_AUTO_CREATE` parameter set for the line in the methods [telephony.externalLine.add](./telephony-external-line-add.md) and [telephony.externalLine.update](./telephony-external-line-update.md). ||
 || **CRM_SOURCE**
 [`string`](../data-types.md) | The identifier of the CRM source (the value of the `STATUS_ID` field).
 
@@ -83,7 +85,7 @@ Possible values:
 - `0` — do not show
 - `1` — show
 
-Default — `1`. ||
+By default — `1`. ||
 || **ADD_TO_CHAT**
 [`integer`](../data-types.md) | Add a message about the call to the employee's chat.
 
@@ -91,7 +93,7 @@ Possible values:
 - `0` — do not add
 - `1` — add
 
-Default — `1`. ||
+By default — `1`. ||
 || **CALL_LIST_ID**
 [`integer`](../data-types.md) | The identifier of the [call list](../crm/call-list/index.md) to which the call is linked.
 
@@ -103,14 +105,42 @@ The list of available call lists can be obtained using the [crm.calllist.list](.
 
 The line number can be obtained using the [telephony.externalLine.get](./telephony-external-line-get.md) method.
 
-This parameter is not mandatory, but it is recommended to always pass it, especially for incoming calls, to ensure proper line binding and telephony reports/analytics. ||
+This parameter is not mandatory, but it is recommended to always pass it, especially for incoming calls, to ensure proper line binding and reporting/analytics of telephony. ||
 || **EXTERNAL_CALL_ID**
-[`string`](../data-types.md) | The external identifier of the call on the PBX/integration side. Used for deduplication of repeated registrations. ||
+[`string`](../data-types.md) | The external identifier of the call on the side of the PBX/integration.
+
+It is recommended to pass a unique value for each physical call to avoid returning an existing `CALL_ID` when re-registering within 30 minutes. ||
 |#
+
+## Features of Re-registration
+
+If the method `telephony.externalCall.register` is called again within 30 minutes, Bitrix24 may return an existing `CALL_ID` instead of creating a new registration.
+
+To find an existing registration, the following technical call parameters are used:
+- `PHONE_NUMBER`
+- `TYPE`
+- `USER_ID` or `USER_PHONE_INNER`
+- `LINE_NUMBER` (if provided)
+- `EXTERNAL_CALL_ID` (if provided)
+
+The search is performed within the application and only among registrations from the last 30 minutes.
+
+CRM fields and start time are not used as deduplication keys:
+- `CRM_ENTITY_TYPE`
+- `CRM_ENTITY_ID`
+- `CALL_START_DATE`
+
+To ensure that each physical call is registered as separate, pass a unique `EXTERNAL_CALL_ID` for each call on the side of the PBX/integration.
+
+{% note warning "" %}
+
+In click-to-call scenarios, where the call is created by Bitrix24 itself, the internal registration call is performed without `EXTERNAL_CALL_ID`. Therefore, in the statistics for such calls, the `EXTERNAL_CALL_ID` field is usually empty.
+
+{% endnote %}
 
 ## Code Examples
 
-{% include [Note on examples](../../_includes/examples.md) %}
+{% include [Note on Examples](../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -120,7 +150,7 @@ This parameter is not mandatory, but it is recommended to always pass it, especi
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"USER_ID":1269,"PHONE_NUMBER":"19062195047","TYPE":2,"CRM_ENTITY_TYPE":"CONTACT","CRM_ENTITY_ID":797,"SHOW":1,"LINE_NUMBER":"3","auth":"**put_access_token_here**"}' \
+    -d '{"USER_ID":1269,"PHONE_NUMBER":"19062195047","TYPE":2,"CRM_ENTITY_TYPE":"CONTACT","CRM_ENTITY_ID":797,"SHOW":1,"LINE_NUMBER":"3","EXTERNAL_CALL_ID":"asterisk-1710140185.18441","auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/telephony.externalCall.register
     ```
 
@@ -138,7 +168,8 @@ This parameter is not mandatory, but it is recommended to always pass it, especi
                 CRM_ENTITY_TYPE: 'CONTACT',
                 CRM_ENTITY_ID: 797,
                 SHOW: 1,
-                LINE_NUMBER: '3'
+                LINE_NUMBER: '3',
+                EXTERNAL_CALL_ID: 'asterisk-1710140185.18441'
             }
         );
         
@@ -167,7 +198,8 @@ This parameter is not mandatory, but it is recommended to always pass it, especi
                     'CRM_ENTITY_TYPE' => 'CONTACT',
                     'CRM_ENTITY_ID' => 797,
                     'SHOW' => 1,
-                    'LINE_NUMBER' => '3'
+                    'LINE_NUMBER' => '3',
+                    'EXTERNAL_CALL_ID' => 'asterisk-1710140185.18441'
                 ]
             );
 
@@ -196,7 +228,8 @@ This parameter is not mandatory, but it is recommended to always pass it, especi
             CRM_ENTITY_TYPE: 'CONTACT',
             CRM_ENTITY_ID: 797,
             SHOW: 1,
-            LINE_NUMBER: '3'
+            LINE_NUMBER: '3',
+            EXTERNAL_CALL_ID: 'asterisk-1710140185.18441'
         },
         function(result)
         {
@@ -226,7 +259,8 @@ This parameter is not mandatory, but it is recommended to always pass it, especi
             'CRM_ENTITY_TYPE' => 'CONTACT',
             'CRM_ENTITY_ID' => 797,
             'SHOW' => 1,
-            'LINE_NUMBER' => '3'
+            'LINE_NUMBER' => '3',
+            'EXTERNAL_CALL_ID' => 'asterisk-1710140185.18441'
         ]
     );
 
@@ -275,7 +309,7 @@ HTTP Status: **200**
 || **CRM_CREATED_LEAD**
 [`integer`](../data-types.md) | The identifier of the automatically created lead. ||
 || **CRM_CREATED_ENTITIES**
-[`array`](../data-types.md) | An array of automatically created [CRM objects](#result-crm-created-entities). ||
+[`array`](../data-types.md) | An array of automatically created [CRM entities](#result-crm-created-entities). ||
 || **CRM_ENTITY_TYPE**
 [`string`](../data-types.md) | The type of the main CRM object of the call. ||
 || **CRM_ENTITY_ID**
@@ -308,21 +342,21 @@ HTTP Status: **400**, **403**
 }
 ```
 
-{% include notitle [error handling](../../_includes/error-info.md) %}
+{% include notitle [Error Handling](../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
 || **Code** | **Description** | **Value** ||
 || `WRONG_AUTH_TYPE` | Current authorization type is denied for this method. | Method called outside the application context. ||
-|| `ERROR_CORE` | USER_ID or USER_PHONE_INNER should be set. | Neither `USER_ID` nor `USER_PHONE_INNER` were provided. ||
-|| `ERROR_CORE` | Unknown TYPE. | An invalid value for `TYPE` was provided. ||
+|| `ERROR_CORE` | USER_ID or USER_PHONE_INNER should be set. | `USER_ID` and `USER_PHONE_INNER` not provided. ||
+|| `ERROR_CORE` | Unknown TYPE. | Invalid value for `TYPE` provided. ||
 || `ERROR_CORE` | CALL_START_DATE should be in the ISO-8601 format. | Incorrect format for `CALL_START_DATE`. ||
 || `ERROR_CORE` | Unsupported phone number format. | Incorrect format for `PHONE_NUMBER`. ||
 || `ERROR_CORE` | User is not found or is not active. | User not found or inactive. ||
 |#
 
-{% include [system errors](../../_includes/system-errors.md) %}
+{% include [System Errors](../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

@@ -1,12 +1,12 @@
-# Update Commercial Estimate crm.quote.update
+# Update Estimate crm.quote.update
 
 > Scope: [`crm`](../../scopes/permissions.md)
 >
 > Who can execute the method: a user with "edit" access permission for estimates
 
-{% note warning "Method Development Halted" %}
+{% note warning "DEPRECATED" %}
 
-The method `crm.quote.update` continues to function, but there is a more current alternative, [crm.item.update](../universal/crm-item-update.md).
+The development of this method has been halted. Please use [crm.item.update](../universal/crm-item-update.md).
 
 {% endnote %}
 
@@ -14,7 +14,7 @@ The method `crm.quote.update` updates an existing estimate.
 
 ## Method Parameters
 
-{% include [Note on Parameters](../../../_includes/required.md) %}
+{% include [Note on parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -40,16 +40,16 @@ where:
 
 Only include the fields that need to be changed in `fields`.
 
-Unknown fields in `fields` are ignored.
+Unknown fields in `fields` will be ignored.
 
-The list of primary fields for updating is provided [below](#parameter-fields).
+The list of main fields for updating is provided [below](#parameter-fields).
 
 A complete list of fields and types can be obtained using the method [crm.quote.fields](./crm-quote-fields.md) ||
 || **params**
 [`object`](../data-types.md) | Object of additional parameters [(detailed description)](#parameter-params) ||
 |#
 
-### Parameter fields {#parameter-fields}
+### Fields Parameter {#parameter-fields}
 
 #|
 || **Name**
@@ -57,7 +57,7 @@ A complete list of fields and types can be obtained using the method [crm.quote.
 || **TITLE**
 [`string`](../data-types.md) | Subject of the estimate.
 
-Length restriction — up to `255` characters.
+Length limit — up to `255` characters.
 
 If a value longer than `255` is provided, the system will truncate it to `255` characters ||
 || **STATUS_ID**
@@ -75,7 +75,7 @@ The list of available stages can be obtained using the method [crm.status.list](
 || **CONTACT_IDS**
 [`crm_contact[]`](../data-types.md) | Array of identifiers for client contacts.
 
-The field is completely replaced ||
+This field is completely replaced ||
 || **MYCOMPANY_ID**
 [`crm_company`](../data-types.md) | Identifier of "your company" for vendor details ||
 || **OPENED**
@@ -85,7 +85,7 @@ The field is completely replaced ||
 || **PERSON_TYPE_ID**
 [`integer`](../data-types.md) | Identifier of the client type ||
 || **BEGINDATE**
-[`date`](../data-types.md) | Date of issue ||
+[`date`](../data-types.md) | Date of issuance ||
 || **CLOSEDATE**
 [`date`](../data-types.md) | Expiration date of the estimate ||
 || **CLIENT_TITLE**
@@ -99,9 +99,9 @@ The field is completely replaced ||
 || **COMMENTS**
 [`string`](../data-types.md) | Comment ||
 || **PARENT_ID_...**
-[`crm_entity`](../data-types.md) | Fields for links to smart processes.
+[`crm_entity`](../data-types.md) | Fields for connections with smart processes.
 
-For example, `PARENT_ID_136` — link to the smart process `entityTypeId = 136` ||
+For example, `PARENT_ID_136` — connection with the smart process `entityTypeId = 136` ||
 |#
 
 {% note info "Method Feature" %}
@@ -110,7 +110,7 @@ Some incorrect values in the fields may not lead to a `400` error: values are no
 
 {% endnote %}
 
-### Parameter params {#parameter-params}
+### Params Parameter {#parameter-params}
 
 #|
 || **Name**
@@ -125,12 +125,12 @@ Default — `Y` ||
 
 ## Code Examples
 
-{% include [Note on Examples](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 Example of updating an estimate:
 - estimate identifier — `43`
 - new stage — `SENT`
-- updated comment — `Terms and conditions clarified`
+- updated comment — `Conditions and deadlines clarified`
 
 {% list tabs %}
 
@@ -140,7 +140,7 @@ Example of updating an estimate:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":43,"fields":{"STATUS_ID":"SENT","COMMENTS":"Terms and conditions clarified"},"params":{"REGISTER_HISTORY_EVENT":"Y"}}' \
+    -d '{"id":43,"fields":{"STATUS_ID":"SENT","COMMENTS":"Conditions and deadlines clarified"},"params":{"REGISTER_HISTORY_EVENT":"Y"}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.quote.update
     ```
 
@@ -150,7 +150,7 @@ Example of updating an estimate:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":43,"fields":{"STATUS_ID":"SENT","COMMENTS":"Terms and conditions clarified"},"params":{"REGISTER_HISTORY_EVENT":"Y"},"auth":"**put_access_token_here**"}' \
+    -d '{"id":43,"fields":{"STATUS_ID":"SENT","COMMENTS":"Conditions and deadlines clarified"},"params":{"REGISTER_HISTORY_EVENT":"Y"},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/crm.quote.update
     ```
 
@@ -165,7 +165,7 @@ Example of updating an estimate:
     			id: 43,
     			fields: {
     				STATUS_ID: 'SENT',
-    				COMMENTS: 'Terms and conditions clarified',
+    				COMMENTS: 'Conditions and deadlines clarified',
     			},
     			params: {
     				REGISTER_HISTORY_EVENT: 'Y',
@@ -194,7 +194,7 @@ Example of updating an estimate:
                     'id' => 43,
                     'fields' => [
                         'STATUS_ID' => 'SENT',
-                        'COMMENTS' => 'Terms and conditions clarified',
+                        'COMMENTS' => 'Conditions and deadlines clarified',
                     ],
                     'params' => [
                         'REGISTER_HISTORY_EVENT' => 'Y',
@@ -210,7 +210,7 @@ Example of updating an estimate:
 
     } catch (Throwable $e) {
         error_log($e->getMessage());
-        echo 'Error updating quote: ' . $e->getMessage();
+        echo 'Error updating estimate: ' . $e->getMessage();
     }
     ```
 
@@ -223,7 +223,7 @@ Example of updating an estimate:
             id: 43,
             fields: {
                 STATUS_ID: 'SENT',
-                COMMENTS: 'Terms and conditions clarified',
+                COMMENTS: 'Conditions and deadlines clarified',
             },
             params: {
                 REGISTER_HISTORY_EVENT: 'Y',
@@ -249,7 +249,7 @@ Example of updating an estimate:
             'id' => 43,
             'fields' => [
                 'STATUS_ID' => 'SENT',
-                'COMMENTS' => 'Terms and conditions clarified',
+                'COMMENTS' => 'Conditions and deadlines clarified',
             ],
             'params' => [
                 'REGISTER_HISTORY_EVENT' => 'Y',
@@ -266,7 +266,7 @@ Example of updating an estimate:
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -292,12 +292,12 @@ HTTP Status: **200**
 || **result**
 [`boolean`](../data-types.md) | Root element of the response, returns `true` on success ||
 || **time**
-[`time`](../data-types.md#time) | Information about the request execution time ||
+[`time`](../data-types.md#time) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -314,9 +314,9 @@ HTTP Status: **400**
 || **Code** | **Description** | **Value** ||
 || `-` | `Parameter 'fields' must be array.` | `fields` is not an object ||
 || `-` | `Parameter 'params' must be array.` | `params` is not an object ||
-|| `-` | `ID is not defined or invalid.` | Invalid `id` provided ||
-|| `-` | `Access denied.` | User does not have permission to edit estimates ||
-|| `-` | `Quote is not found` | Estimate with the provided `id` was not found ||
+|| `-` | `ID is not defined or invalid.` | An incorrect `id` was provided ||
+|| `-` | `Access denied.` | The user does not have permission to edit estimates ||
+|| `-` | `Quote is not found` | The estimate with the provided `id` was not found ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

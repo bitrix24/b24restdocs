@@ -1,6 +1,6 @@
-# Send Message to Task Chat tasks.task.chat.message.send
+# Send a Message in Task Chat tasks.task.chat.message.send
 
-> Scope: [`task`](../../scopes/permissions.md)
+> Scope: [`tasks`](../../scopes/permissions.md)
 >
 > Who can execute the method: any user with read access permission for the task or higher
 
@@ -8,33 +8,33 @@ The method `tasks.task.chat.message.send` sends a new message to the task chat.
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Parameter Notes](../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **fields***
-[`object`](../../data-types.md) | Object with [message parameters](#fields) ||
+[`object`](../../data-types.md) | An object with [message parameters](#fields) ||
 |#
 
 ### Parameter fields {#fields}
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Parameter Notes](../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **taskId***
-[`integer`](../../data-types.md) | Identifier of the task to which the message should be sent. 
+[`integer`](../../data-types.md) | The identifier of the task to which the message should be sent. 
 
-The task identifier can be obtained when [creating a new task](./tasks-task-add.md) or by the old method of [getting the task list](../../tasks/tasks-task-list.md) ||
+The task identifier can be obtained when [creating a new task](./tasks-task-add.md) or through the old method of [getting the task list](../../tasks/tasks-task-list.md) ||
 || **text***
-[`string`](../../data-types.md) | Message text ||
+[`string`](../../data-types.md) | The message text ||
 |#
 
 ## Code Examples
 
-{% include [Note on examples](../../../_includes/examples.md) %}
+{% include [Example Notes](../../../_includes/examples.md) %}
 
 {% note info "" %}
 
@@ -68,7 +68,7 @@ The new API call differs by the addition of the `/api/` parameter in the request
 
 - JS
 
-    The SDK does not yet support calls to the address /rest/api/. Use direct HTTP requests, for example, via curl or fetch.
+    The SDK does not currently support calls to the address /rest/api/. Use direct HTTP requests, for example, via curl or fetch.
 
     ```javascript
     try
@@ -96,7 +96,7 @@ The new API call differs by the addition of the `/api/` parameter in the request
 
 - PHP
 
-    The SDK does not yet support calls to the address /rest/api/. Use direct HTTP requests, for example, via curl or fetch.
+    The SDK does not currently support calls to the address /rest/api/. Use direct HTTP requests, for example, via curl or fetch.
 
     ```php
     try {
@@ -128,7 +128,7 @@ The new API call differs by the addition of the `/api/` parameter in the request
 
 - BX24.js
 
-    The SDK does not yet support calls to the address /rest/api/. Use direct HTTP requests, for example, via curl or fetch.
+    The SDK does not currently support calls to the address /rest/api/. Use direct HTTP requests, for example, via curl or fetch.
 
     ```js
     BX24.callMethod(
@@ -148,7 +148,7 @@ The new API call differs by the addition of the `/api/` parameter in the request
 
 - PHP CRest
 
-    The SDK does not yet support calls to the address /rest/api/. Use direct HTTP requests, for example, via curl or fetch.
+    The SDK does not currently support calls to the address /rest/api/. Use direct HTTP requests, for example, via curl or fetch.
 
     ```php
     require_once('crest.php');
@@ -173,7 +173,7 @@ The new API call differs by the addition of the `/api/` parameter in the request
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -198,7 +198,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | Root element of the response.
+[`object`](../../data-types.md) | The root element of the response.
 
 Contains an object with the key `result` and the value `true` if the message was sent successfully ||
 || **time**
@@ -207,7 +207,7 @@ Contains an object with the key `result` and the value `true` if the message was
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {
@@ -224,32 +224,32 @@ HTTP status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../_includes/error-info-v3.md) %}
+{% include notitle [Error Handling](../../../_includes/error-info-v3.md) %}
 
 ### Possible Error Codes
 
 #### Request Validation Errors  
 
-Error code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION`
+Error Code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION`
 
 #|
 || **Field** | **Error Description** | **How to Fix** ||
 || `taskId`
 `fields`
-`text` | Required field `#FIELD#` is not specified | Add the specified field to the request body ||
-|| `#FIELD#` | Field `#FIELD#` requires data type `#TYPE#` for this request | Ensure that the passed value is of the correct type ||
+`text` | The required field `#FIELD#` is not specified | Add the specified field to the request body ||
+|| `#FIELD#` | The field `#FIELD#` requires data type `#TYPE#` for this request | Ensure the value passed is of the correct type ||
 |#
 
-#### Access Error
+#### Access Denied Error
 
-Error code: `BITRIX_REST_V3_EXCEPTION_ACCESSDENIEDEXCEPTION`
+Error Code: `BITRIX_REST_V3_EXCEPTION_ACCESSDENIEDEXCEPTION`
 
 #|
 || **Field** | **Error Description** | **How to Fix** ||
 || `taskId` | Access denied | No access to the task ||
 |#
 
-{% include [system errors](../../../_includes/system-errors.md) %}
+{% include [System Errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

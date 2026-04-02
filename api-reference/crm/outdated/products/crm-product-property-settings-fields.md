@@ -1,22 +1,22 @@
-# Get the fields of additional settings for the custom type crm.product.property.settings.fields
+# Retrieve Additional Settings Fields for Custom Type crm.product.property.settings.fields
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-{% note warning "Method development has been halted" %}
+{% note warning "DEPRECATED" %}
 
-The method `crm.product.property.settings.fields` continues to function, but there is a more relevant alternative [catalog.productPropertyFeature.*](../../../catalog/product-property-feature/index.md).
+The development of this method has been halted. Please use [catalog.productPropertyFeature.*](../../../catalog/product-property-feature/index.md).
 
 {% endnote %}
 
-The method `crm.product.property.settings.fields` returns a description of the fields for additional settings of custom type product properties.
+The method `crm.product.property.settings.fields` returns the description of the additional settings fields for custom type product properties.
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../../_includes/required.md) %}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **propertyType** | Property type ||
@@ -25,7 +25,7 @@ The method `crm.product.property.settings.fields` returns a description of the f
 
 ## Code Examples
 
-{% include [Note on examples](../../../../_includes/examples.md) %}
+{% include [Note on Examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -37,7 +37,7 @@ The method `crm.product.property.settings.fields` returns a description of the f
     -H "Accept: application/json" \
     -d '{"propertyType":"S","userType":"HTML"}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.product.property.settings.fields
-   ```
+    ```
 
 - cURL (OAuth)
 
@@ -54,24 +54,24 @@ The method `crm.product.property.settings.fields` returns a description of the f
     ```js
     try
     {
-    	const response = await $b24.callMethod(
-    		"crm.product.property.settings.fields",
-    		{propertyType: "S", userType: "HTML"}
-    	);
-    	
-    	const result = response.getData().result;
-    	if(result.error())
-    	{
-    		console.error(result.error());
-    	}
-    	else
-    	{
-    		console.dir(result);
-    	}
+        const response = await $b24.callMethod(
+            "crm.product.property.settings.fields",
+            {propertyType: "S", userType: "HTML"}
+        );
+        
+        const result = response.getData().result;
+        if(result.error())
+        {
+            console.error(result.error());
+        }
+        else
+        {
+            console.dir(result);
+        }
     }
     catch(error)
     {
-    	console.error('Error:', error);
+        console.error('Error:', error);
     }
     ```
 

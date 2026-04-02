@@ -1,31 +1,43 @@
-# Change Frame Size BX24.resizeWindow
+# Resize the Frame with BX24.resizeWindow
 
-{% note warning "We are still updating this page" %}
-
-Some data may be missing here — we will complete it shortly.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- missing parameters or fields
-- missing examples
-- missing success response
-- missing error response
-
-{% endnote %}
-
-{% endif %}
+The method `BX24.resizeWindow` sends a command to change the size of the application frame based on the provided width and height.
 
 ```js
 void BX24.resizeWindow(Integer width, Integer height[, Function callback])
 ```
 
-The method `BX24.resizeWindow` changes the size of the frame with the application, including embeddings in the form of custom fields. If the frame width exceeds the maximum allowable width of the **Bitrix24** page, part of the frame will be hidden due to layout constraints. The maximum allowable width depends on the user's screen resolution.
+## Parameters
 
-## See also:
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
-- [BX24.getScrollSize](./bx24-get-scroll-size.md)
-- [BX24.fitWindow](./bx24-fit-window.md)
+#|
+|| **Name**
+`type` | **Description** ||
+|| **width***
+`integer` | The width of the frame in pixels. Inside the method, the value is parsed using `parseInt` and is only used if greater than `0` ||
+|| **height***
+`integer` | The height of the frame in pixels. Inside the method, the value is parsed using `parseInt` and is only used if greater than `0` ||
+|| **callback**
+`function` | A callback function that is executed after the resize command is sent ||
+|#
+
+## Code Example
+
+```js
+BX24.init(function () {
+    BX24.resizeWindow(980, 700, function () {
+        console.log('Resize command sent');
+    });
+});
+```
+
+{% include [Note on examples](../../../_includes/examples.md) %}
+
+## Handling the Response
+
+The method does not return any data (`void`).
+
+## Continue Learning
+
+- [{#T}](./bx24-fit-window.md)
+- [{#T}](./bx24-get-scroll-size.md)

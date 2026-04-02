@@ -4,13 +4,19 @@
 >
 > Who can execute the method: any user
 
-The method returns the description of the product catalog fields.
+{% note warning "DEPRECATED" %}
 
-No parameters.
+The development of this method has been halted. Please use [catalog.catalog.getFields](../../../catalog/catalog/catalog-catalog-get-fields.md).
+
+{% endnote %}
+
+This method returns the description of the product catalog fields.
+
+No parameters required.
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../../_includes/examples.md) %}
+{% include [Example Note](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -115,15 +121,15 @@ No parameters.
 
 ## Returned Data
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **ID** 
 [`integer`](../../../data-types.md) | Identifier. Read-only ||
 || **NAME** 
-[`string`](../../../data-types.md) | Title ||
+[`string`](../../../data-types.md) | Name ||
 || **ORIGINATOR_ID** 
-[`string`](../../../data-types.md) | Identifier of the data source. Used only for linking to an external source ||
+[`string`](../../../data-types.md) | Data source identifier. Used only for linking to an external source ||
 || **ORIGIN_ID** 
 [`string`](../../../data-types.md) | Identifier of the element in the data source. Used only for linking to an external source ||
 || **XML_ID** 

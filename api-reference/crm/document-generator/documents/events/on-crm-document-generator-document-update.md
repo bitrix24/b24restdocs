@@ -1,4 +1,4 @@
-# Event on Document Update `onCrmDocumentGeneratorDocumentUpdate`
+# Document Update Event onCrmDocumentGeneratorDocumentUpdate
 
 > Scope: [`documentgenerator, crm`](../../../../scopes/permissions.md)
 >
@@ -14,7 +14,7 @@ Events will not be sent to the application until the installation is complete. [
 
 ## What the handler receives
 
-Data is sent as a POST request {.b24-info}
+Data is transmitted as a POST request {.b24-info}
 
 ```json
 {
@@ -47,7 +47,7 @@ Data is sent as a POST request {.b24-info}
 || **Parameter**
 `type` | **Description** ||
 || **event**
-[`string`](../../../../data-types.md) | Symbolic event code.
+[`string`](../../../../data-types.md) | Symbolic code of the event.
 
 In this case — `ONCRMDOCUMENTGENERATORDOCUMENTUPDATE` ||
 || **event_handler_id**
@@ -63,7 +63,7 @@ The structure is described [below](#fields) ||
 || **ts**
 [`timestamp`](../../../../data-types.md) | Date and time the event was sent from the [event queue](../../../../events/index.md) ||
 || **auth**
-[`object`](../../../../data-types.md) | Object containing authorization parameters and information about the account where the event occurred.
+[`object`](../../../../data-types.md) | Object containing authorization parameters and data about the account where the event occurred.
 
 The structure is described [below](#auth) ||
 |#
@@ -78,14 +78,14 @@ The structure is described [below](#auth) ||
 || **ENTITY_TYPE_ID**
 [`integer`](../../../../data-types.md) | Identifier of the [object type](../../../../crm/data-types.md#object_type) to which the document belongs, for example `1` — lead ||
 || **ENTITY_ID**
-[`integer`](../../../../data-types.md) | Identifier of the entity to which the document is linked ||
+[`integer`](../../../../data-types.md) | Identifier of the element to which the document is linked ||
 |#
 
 ### Parameter auth {#auth}
 
 {% include notitle [Table with keys in the auth array](../../../../../_includes/auth-params-in-events.md) %}
 
-## Continue exploring
+## Continue your exploration
 
 - [{#T}](../../../../events/index.md)
 - [{#T}](../../../../events/event-bind.md)

@@ -1,20 +1,20 @@
-# Get a link to the invoice crm.invoice.getexternallink
+# Get Link to Invoice crm.invoice.getexternallink
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-{% note warning %}
+{% note warning "DEPRECATED" %}
 
-The method is deprecated. It is recommended to use [`Universal methods for invoices`](../../universal/invoice.md)
+The development of this method has been halted. Please use [Universal Methods for Invoices](../../universal/invoice.md).
 
 {% endnote %}
 
-The method returns a public link for the online invoice.
+This method returns a public link for an online invoice.
 
-## Method parameters
+## Method Parameters
 
-{% include [Note about required parameters](../../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -23,9 +23,9 @@ The method returns a public link for the online invoice.
 [`integer`](../../../data-types.md) | Invoice identifier ||
 |#
 
-## Code examples
+## Code Examples
 
-{% include [Note about examples](../../../../_includes/examples.md) %}
+{% include [Note on Examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 

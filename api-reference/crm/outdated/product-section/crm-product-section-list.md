@@ -1,20 +1,26 @@
-# Get the list of sections crm.productsection.list
+# Get a List of Sections from crm.productsection.list
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-The method `crm.productsection.list` returns a list of product sections based on a filter. It is an implementation of a list method for product sections. It is expected that the filter will define the `CATALOG_ID` parameter. Otherwise, sections will be selected from the default catalog.
+{% note warning "DEPRECATED" %}
+
+The development of this method has been halted. Please use [catalog.section.list](../../../catalog/section/catalog-section-list.md).
+
+{% endnote %}
+
+The method `crm.productsection.list` returns a list of product sections based on a filter. It is an implementation of the list method for product sections. It is expected that the filter will specify the `CATALOG_ID` parameter. Otherwise, sections will be selected from the default catalog.
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **select**
-[`array`](../../../data-types.md) | The array contains a list of fields to select ||
+[`array`](../../../data-types.md) | An array containing the list of fields to be selected ||
 || **filter**
 [`object`](../../../data-types.md) | An object for filtering the selected items ||
 || **order**
@@ -23,7 +29,7 @@ The method `crm.productsection.list` returns a list of product sections based on
 
 ## Code Examples
 
-{% include [Note on examples](../../../../_includes/examples.md) %}
+{% include [Note on Examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -63,7 +69,7 @@ The method `crm.productsection.list` returns a list of product sections based on
 - JS
 
     ```js
-    // callListMethod: Retrieves all data at once. Use only for small selections (< 1000 items) due to high memory usage.
+    // callListMethod: Retrieves all data at once. Use only for small selections (< 1000 items) due to high memory load.
     
     var catalogId = prompt("Enter the catalog ID");
     try {
@@ -81,7 +87,7 @@ The method `crm.productsection.list` returns a list of product sections based on
       console.error('Request failed', error);
     }
     
-    // fetchListMethod: Retrieves data in parts using an iterator. Use it for large data volumes to optimize memory usage.
+    // fetchListMethod: Retrieves data in chunks using an iterator. Use for large volumes of data for efficient memory consumption.
     
     var catalogId = prompt("Enter the catalog ID");
     try {
@@ -97,7 +103,7 @@ The method `crm.productsection.list` returns a list of product sections based on
       console.error('Request failed', error);
     }
     
-    // callMethod: Manually controls pagination through the start parameter. Use it for precise control of request batches. For large datasets, it is less efficient than fetchListMethod.
+    // callMethod: Manual control of pagination through the start parameter. Use for precise control over request batches. Less efficient for large data than fetchListMethod.
     
     var catalogId = prompt("Enter the catalog ID");
     try {
@@ -194,7 +200,6 @@ The method `crm.productsection.list` returns a list of product sections based on
         print_r($result['result']);
         echo '</PRE>';
     }
-    ``` 
+    ```
 
 {% endlist %}
-

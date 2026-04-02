@@ -6,17 +6,17 @@
 >  - Any user has the right to access their own and shared settings
 >  - Only an administrator has the right to access others' settings
 
-{% note warning "Method Development Stopped" %}
+{% note warning "DEPRECATED" %}
 
-The method `crm.contact.details.configuration.get` continues to function, but there is a more relevant alternative [crm.item.details.configuration.get](../../universal/item-details-configuration/crm-item-details-configuration-get.md).
+The development of this method has been halted. Please use [crm.item.details.configuration.get](../../universal/item-details-configuration/crm-item-details-configuration-get.md).
 
 {% endnote %}
 
-The method retrieves the settings for contact cards: it reads the personal settings of the specified user or the shared settings defined for all users.
+This method retrieves the settings for contact cards: it reads the personal settings of the specified user or the shared settings defined for all users.
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -31,17 +31,17 @@ Possible values:
 Default — `P`
 ||
 || **userId**
-[`user`](../../../data-types.md) | User identifier. Required only when requesting someone else's personal settings.
+[`user`](../../../data-types.md) | User identifier. Required only when requesting another user's personal settings.
 
-If not specified, the current user is taken
+If not specified, the current user's ID is used.
 ||
 |#
 
 ## Code Examples
 
-{% include [Note on examples](../../../../_includes/examples.md) %}
+{% include [Note on Examples](../../../../_includes/examples.md) %}
 
-1. Get personal card configuration
+1. Retrieve personal card configuration
 
     {% list tabs %}
 
@@ -103,7 +103,7 @@ If not specified, the current user is taken
 
     {% endlist %}
 
-2. Get shared card configuration
+2. Retrieve shared card configuration
 
     {% list tabs %}
 
@@ -165,7 +165,7 @@ If not specified, the current user is taken
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -265,7 +265,7 @@ Returns `null` if there is no configuration ||
 
 #### section
 
-Describes an individual section with fields inside the entity card
+Describes a specific section with fields inside the entity card
 
 #|
 || **Name**
@@ -282,7 +282,7 @@ Describes an individual section with fields inside the entity card
 
 #### section_element
 
-Configuration of an individual field within the section
+Configuration of a specific field within the section
 
 #|
 || **Name**
@@ -310,7 +310,7 @@ The structure is described [below](#options) ||
 || **Name**
 `type` | **Fields where the option is available** | **Description** ||
 || **defaultAddressType**
-[`integer`](../../../data-types.md) | `ADDRESS` | Identifier for the default address type ||
+[`integer`](../../../data-types.md) | `ADDRESS` | Identifier of the default address type ||
 || **defaultCountry**
 [`string`](../../../data-types.md) | 
 `PHONE`
@@ -341,7 +341,7 @@ Possible values:
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {
@@ -356,7 +356,7 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description**   | **Value** ||
-|| Empty value | Access denied. | The user does not have administrative rights ||
+|| Empty Value | Access denied. | The user does not have administrative rights ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

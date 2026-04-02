@@ -4,17 +4,17 @@
 >
 > Who can execute the method: any user
 
-{% note warning %}
+{% note warning "DEPRECATED" %}
 
-The method is deprecated. It is recommended to use [`Universal methods for invoices`](../../universal/invoice.md)
+The development of this method has been halted. Please use [Universal Methods for Invoices](../../universal/invoice.md).
 
 {% endnote %}
 
-The method updates an existing invoice.
+This method updates an existing invoice.
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -24,7 +24,7 @@ The method updates an existing invoice.
 || **fields**
 [`array`](../../../data-types.md) | Field values for updating the invoice.
 
-To find out the required format of the fields, execute the method [crm.invoice.fields](./crm-invoice-fields.md) and check the format of the incoming values of these fields ||
+To find out the required format for the fields, execute the method [crm.invoice.fields](./crm-invoice-fields.md) and check the format of the incoming values for these fields ||
 |#
 
 ## Code Examples
@@ -56,80 +56,80 @@ To find out the required format of the fields, execute the method [crm.invoice.f
     ```js
     try
     {
-    	const current = new Date();
-    	const date2str = function(d)
-    	{
-    		return d.getFullYear() + '-' + paddatepart(1 + d.getMonth()) + '-' + paddatepart(d.getDate()) + 'T' + paddatepart(d.getHours()) + ':' + paddatepart(d.getMinutes()) + ':' + paddatepart(d.getSeconds()) + '+02:00';
-    	};
-    	const paddatepart = function(part)
-    	{
-    		return part >= 10 ? part.toString() : '0' + part.toString();
-    	};
-    	const id = prompt("Enter ID");
-    	
-    	const response = await $b24.callMethod('crm.invoice.get', {"id": id});
-    	const result = response.getData().result;
-    	
-    	if(result.error())
-    	{
-    		console.error(result.error());
-    	}
-    	else
-    	{
-    		const fields = clone(result.data());
-    		const n = fields['PRODUCT_ROWS'].length;
-    		let productUpdated = false;
-    		
-    		fields["DATE_BILL"] = date2str(current);
-    		fields["USER_DESCRIPTION"] = "Comment for the client (updated).";
-    		
-    		for (let i in fields['PRODUCT_ROWS'])
-    		{
-    			if (fields['PRODUCT_ROWS'][i]["PRODUCT_ID"] == 703)
-    			{
-    				const rowId = fields['PRODUCT_ROWS'][i]["ID"];
-    				fields['PRODUCT_ROWS'][i] = {
-    					"ID": rowId, "PRODUCT_ID": 703, "QUANTITY": 4, "PRICE": 779.60
-    				};
-    				productUpdated = true;
-    				break;
-    			}
-    		}
-    		
-    		if (!productUpdated && n > 0)
-    		{
-    			fields['PRODUCT_ROWS'][n] = {
-    				"ID": 0, "PRODUCT_ID": 703, "QUANTITY": 5, "PRICE": 779.60
-    			};
-    		}
-    		
-    		const updateResponse = await $b24.callMethod('crm.invoice.update', {"id": id, "fields": fields});
-    		const updateResult = updateResponse.getData().result;
-    		
-    		console.info("Invoice updated with ID " + updateResult);
-    	}
+        const current = new Date();
+        const date2str = function(d)
+        {
+            return d.getFullYear() + '-' + paddatepart(1 + d.getMonth()) + '-' + paddatepart(d.getDate()) + 'T' + paddatepart(d.getHours()) + ':' + paddatepart(d.getMinutes()) + ':' + paddatepart(d.getSeconds()) + '+01:00';
+        };
+        const paddatepart = function(part)
+        {
+            return part >= 10 ? part.toString() : '0' + part.toString();
+        };
+        const id = prompt("Enter ID");
+        
+        const response = await $b24.callMethod('crm.invoice.get', {"id": id});
+        const result = response.getData().result;
+        
+        if(result.error())
+        {
+            console.error(result.error());
+        }
+        else
+        {
+            const fields = clone(result.data());
+            const n = fields['PRODUCT_ROWS'].length;
+            let productUpdated = false;
+            
+            fields["DATE_BILL"] = date2str(current);
+            fields["USER_DESCRIPTION"] = "Comment for the client (updated).";
+            
+            for (let i in fields['PRODUCT_ROWS'])
+            {
+                if (fields['PRODUCT_ROWS'][i]["PRODUCT_ID"] == 703)
+                {
+                    const rowId = fields['PRODUCT_ROWS'][i]["ID"];
+                    fields['PRODUCT_ROWS'][i] = {
+                        "ID": rowId, "PRODUCT_ID": 703, "QUANTITY": 4, "PRICE": 779.60
+                    };
+                    productUpdated = true;
+                    break;
+                }
+            }
+            
+            if (!productUpdated && n > 0)
+            {
+                fields['PRODUCT_ROWS'][n] = {
+                    "ID": 0, "PRODUCT_ID": 703, "QUANTITY": 5, "PRICE": 779.60
+                };
+            }
+            
+            const updateResponse = await $b24.callMethod('crm.invoice.update', {"id": id, "fields": fields});
+            const updateResult = updateResponse.getData().result;
+            
+            console.info("Invoice updated with ID " + updateResult);
+        }
     }
     catch(error)
     {
-    	console.error(error);
+        console.error(error);
     }
     
     function clone(src)
     {
-    	let dst;
-    	if (src instanceof Object)
-    	{
-    		dst = {};
-    		for (let i in src)
-    		{
-    			if (src[i] instanceof Object)
-    				dst[i] = clone(src[i]);
-    			else
-    				dst[i] = src[i];
-    		}
-    	}
-    	else dst = src;
-    	return dst;
+        let dst;
+        if (src instanceof Object)
+        {
+            dst = {};
+            for (let i in src)
+            {
+                if (src[i] instanceof Object)
+                    dst[i] = clone(src[i]);
+                else
+                    dst[i] = src[i];
+            }
+        }
+        else dst = src;
+        return dst;
     }
     ```
 
@@ -219,7 +219,7 @@ To find out the required format of the fields, execute the method [crm.invoice.f
     var current = new Date();
     var date2str = function(d)
     {
-        return d.getFullYear() + '-' + paddatepart(1 + d.getMonth()) + '-' + paddatepart(d.getDate()) + 'T' + paddatepart(d.getHours()) + ':' + paddatepart(d.getMinutes()) + ':' + paddatepart(d.getSeconds()) + '+02:00';
+        return d.getFullYear() + '-' + paddatepart(1 + d.getMonth()) + '-' + paddatepart(d.getDate()) + 'T' + paddatepart(d.getHours()) + ':' + paddatepart(d.getMinutes()) + ':' + paddatepart(d.getSeconds()) + '+01:00';
     };
     var paddatepart = function(part)
     {
@@ -238,11 +238,11 @@ To find out the required format of the fields, execute the method [crm.invoice.f
             var productUpdated = false;
             // Changing the "Invoice Date" field
             fields["DATE_BILL"] = date2str(current);
-            // Changing the "Comment (will be displayed in the invoice)"
+            // Changing the "Comment (will appear on the invoice)" field
             fields["USER_DESCRIPTION"] = "Comment for the client (updated).";
-            // If the product with ID 703 is in the invoice, update its fields.
-            // If the product with ID 703 is not in the invoice, add it to the invoice.
-            // If VAT is used, it is read that the price includes it, and the indication of VAT inclusion in the price will
+            // If the product with ID 703 exists in the invoice, update its fields.
+            // If the product with ID 703 does not exist in the invoice, add it to the invoice.
+            // If VAT is used, it is read that the price includes it, and the flag for including VAT in the price will
             // be taken from the catalog.
             for (var i in fields['PRODUCT_ROWS'])
             {
@@ -303,7 +303,7 @@ To find out the required format of the fields, execute the method [crm.invoice.f
 
     $current = new DateTime();
     $date2str = function($d) {
-        return $d->format('Y-m-d\TH:i:s+02:00');
+        return $d->format('Y-m-d\TH:i:s+01:00');
     };
 
     $fields = CRest::call(

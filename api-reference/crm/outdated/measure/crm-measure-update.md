@@ -4,6 +4,12 @@
 >
 > Who can execute the method: any user
 
+{% note warning "DEPRECATED" %}
+
+The development of this method has been halted. Please use [catalog.measure.update](../../../catalog/measure/catalog-measure-update.md).
+
+{% endnote %}
+
 This method updates an existing measurement unit.
 
 ## Method Parameters
@@ -15,9 +21,9 @@ This method updates an existing measurement unit.
 `type` | **Description** ||
 || **id*** | Identifier of the measurement unit ||
 || **fields**
-[`array`](../../data-types.md) | [Set of fields](./crm-measure-add.md) — an array of the form `array("field_to_update"=>"value"[, ...])`, where the field to update can take values returned by the method [crm.measure.fields](./crm-measure-fields.md). 
+[`array`](../../data-types.md) | [Set of fields](./crm-measure-add.md) — an array in the format `array("field_to_update"=>"value"[, ...])`, where the field to update can take values returned by the method [crm.measure.fields](./crm-measure-fields.md). 
 
-To find out the required format of the fields, execute the method [crm.measure.fields](./crm-measure-fields.md) and check the format of the returned values for these fields 
+To find out the required format of the fields, execute the method [crm.measure.fields](./crm-measure-fields.md) and check the format of the returned values for those fields 
 ||
 |#
 
@@ -108,7 +114,7 @@ To find out the required format of the fields, execute the method [crm.measure.f
     
     } catch (Throwable $e) {
         error_log($e->getMessage());
-        echo 'Error updating measure: ' . $e->getMessage();
+        echo 'Error updating measurement: ' . $e->getMessage();
     }
     ```
 

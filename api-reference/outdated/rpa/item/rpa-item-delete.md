@@ -4,6 +4,12 @@
 >
 > Who can execute the method: any user
 
+{% note warning "DEPRECATED" %}
+
+The development of this method has been halted. Please use [Smart scripts](../../../crm/universal/user-defined-object-types/index.md) as an alternative to this functionality.
+
+{% endnote %}
+
 This method deletes an element.
 
 ## Method Parameters
@@ -19,7 +25,7 @@ This method deletes an element.
 [`integer`](../../../data-types.md) | Element identifier ||
 |#
 
-## Continue Exploring 
+## Continue Your Exploration 
 
 - [{#T}](./index.md)
 - [{#T}](./rpa-item-add.md)

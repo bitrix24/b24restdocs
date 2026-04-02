@@ -2,11 +2,11 @@
 
 > Scope: [`crm`](../../scopes/permissions.md)
 >
-> Who can execute the method: a user with the "Add|Import" access permission for companies
+> Who can execute the method: a user with "Add|Import" access permission for companies
 
-{% note warning "Method Development Stopped" %}
+{% note warning "DEPRECATED" %}
 
-The method `crm.company.add` continues to function, but there is a more relevant alternative [crm.item.add](../universal/crm-item-add.md).
+The development of this method has been halted. Please use [crm.item.add](../universal/crm-item-add.md).
 
 {% endnote %}
 
@@ -48,7 +48,7 @@ To find out the list of required fields, execute the method [crm.company.fields]
 || **params**
 [`object`](../../data-types.md) | An object containing a set of additional parameters:
 
-- `REGISTER_SONET_EVENT` — register the event of adding a company and send a notification to the responsible person
+- `REGISTER_SONET_EVENT` — register the company addition event and send a notification to the responsible person
 - `IMPORT` — import mode. Possible values:
   - `Y` — yes
   - `N` — no
@@ -93,7 +93,7 @@ The list of available currencies can be obtained using the method [crm.currency.
 - `Y` — yes
 - `N` — no
 
-Default `Y`. The default value can be changed in the CRM settings ||
+Default is `Y`. The default value can be changed in the CRM settings ||
 || **ASSIGNED_BY_ID**
 [`user`](../../data-types.md) | Identifier of the user responsible for the element.
 
@@ -119,19 +119,19 @@ Default — the identifier of the user calling the method ||
 || **UTM_CONTENT**
 [`string`](../../data-types.md) | Campaign content. For example, for contextual ads ||
 || **UTM_TERM**
-[`string`](../../data-types.md) | Campaign search condition. For example, keywords for contextual advertising ||
+[`string`](../../data-types.md) | Campaign search term. For example, keywords for contextual advertising ||
 || **IS_MY_COMPANY**
 [`char`](../../data-types.md) | Is the company "my company"? Possible values:
 - `Y` — yes
 - `N` — no ||
 ||**UF_...**  | Custom fields. For example, `UF_CRM_25534736`.
 
-Depending on the account settings, companies may have a set of custom fields of specific types.
+Depending on the portal settings, companies may have a set of custom fields of specific types.
 
 You can add a custom field to a company using the method [crm.company.userfield.add](./userfields/crm-company-userfield-add.md) ||
 ||**PARENT_ID_...** | Relationship fields.
 
-If there are SPAs related to companies on the account, there is a field for each such SPA that stores the relationship between that SPA and the company. The field itself stores the identifier of the element of that SPA ||
+If there are smart processes related to companies on the portal, there is a field for each such smart process that stores the relationship between this smart process and the company. The field itself stores the identifier of the element of that smart process ||
 |#
 
 **Fields for connections with external data sources**
@@ -139,7 +139,7 @@ If there are SPAs related to companies on the account, there is a field for each
 If the company is created by an external system, then:
 - the field `ORIGINATOR_ID` stores the string identifier of that system
 - the field `ORIGIN_ID` stores the string identifier of the company in that external system
-- the field `ORIGIN_VERSION` stores the version of the company's data in that external system
+- the field `ORIGIN_VERSION` stores the version of the company data in that external system
 
 #|
 || **Name**
@@ -171,7 +171,7 @@ These fields are available for filling when the parameter `IMPORT = 'Y'` is pass
 
 {% note info " " %}
 
-To add the company's address and banking details, use the methods [requisites](../requisites/index.md).
+To add the company's address and banking details, use the methods from [requisites](../requisites/index.md).
 
 {% endnote %}
 
@@ -187,7 +187,7 @@ To add the company's address and banking details, use the methods [requisites](.
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"TITLE":"LLC Smith","COMPANY_TYPE":"CUSTOMER","INDUSTRY":"MANUFACTURING","EMPLOYEES":"EMPLOYEES_2","CURRENCY_ID":"USD","REVENUE":3000000,"OPENED":"Y","ASSIGNED_BY_ID":1,"PHONE":[{"VALUE":"555888","VALUE_TYPE":"WORK"}]},"params":{"REGISTER_SONET_EVENT":"Y"}}' \
+    -d '{"fields":{"TITLE":"John Doe LLC","COMPANY_TYPE":"CUSTOMER","INDUSTRY":"MANUFACTURING","EMPLOYEES":"EMPLOYEES_2","CURRENCY_ID":"USD","REVENUE":3000000,"OPENED":"Y","ASSIGNED_BY_ID":1,"PHONE":[{"VALUE":"555888","VALUE_TYPE":"WORK"}]},"params":{"REGISTER_SONET_EVENT":"Y"}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.company.add
     ```
 
@@ -197,7 +197,7 @@ To add the company's address and banking details, use the methods [requisites](.
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"TITLE":"LLC Smith","COMPANY_TYPE":"CUSTOMER","INDUSTRY":"MANUFACTURING","EMPLOYEES":"EMPLOYEES_2","CURRENCY_ID":"USD","REVENUE":3000000,"OPENED":"Y","ASSIGNED_BY_ID":1,"PHONE":[{"VALUE":"555888","VALUE_TYPE":"WORK"}]},"params":{"REGISTER_SONET_EVENT":"Y"},"auth":"**put_access_token_here**"}' \
+    -d '{"fields":{"TITLE":"John Doe LLC","COMPANY_TYPE":"CUSTOMER","INDUSTRY":"MANUFACTURING","EMPLOYEES":"EMPLOYEES_2","CURRENCY_ID":"USD","REVENUE":3000000,"OPENED":"Y","ASSIGNED_BY_ID":1,"PHONE":[{"VALUE":"555888","VALUE_TYPE":"WORK"}]},"params":{"REGISTER_SONET_EVENT":"Y"},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/crm.company.add
     ```
 
@@ -211,7 +211,7 @@ To add the company's address and banking details, use the methods [requisites](.
     		{
     			fields:
     			{
-    				"TITLE": "LLC Smith",
+    				"TITLE": "John Doe LLC",
     				"COMPANY_TYPE": "CUSTOMER",
     				"INDUSTRY": "MANUFACTURING",
     				"EMPLOYEES": "EMPLOYEES_2",
@@ -245,7 +245,7 @@ To add the company's address and banking details, use the methods [requisites](.
                 'crm.company.add',
                 [
                     'fields' => [
-                        'TITLE'         => 'LLC Smith',
+                        'TITLE'         => 'John Doe LLC',
                         'COMPANY_TYPE'  => 'CUSTOMER',
                         'INDUSTRY'      => 'MANUFACTURING',
                         'EMPLOYEES'     => 'EMPLOYEES_2',
@@ -280,7 +280,7 @@ To add the company's address and banking details, use the methods [requisites](.
         {
             fields:
             {
-                "TITLE": "LLC Smith",
+                "TITLE": "John Doe LLC",
                 "COMPANY_TYPE": "CUSTOMER",
                 "INDUSTRY": "MANUFACTURING",
                 "EMPLOYEES": "EMPLOYEES_2",
@@ -312,7 +312,7 @@ To add the company's address and banking details, use the methods [requisites](.
         'crm.company.add',
         [
             'fields' => [
-                'TITLE' => 'LLC Smith',
+                'TITLE' => 'John Doe LLC',
                 'COMPANY_TYPE' => 'CUSTOMER',
                 'INDUSTRY' => 'MANUFACTURING',
                 'EMPLOYEES' => 'EMPLOYEES_2',
@@ -345,8 +345,8 @@ HTTP Status: **200**
         "finish": 1769500711.551784,
         "duration": 1.5517840385437012,
         "processing": 1,
-        "date_start": "2026-01-27T10:58:30+02:00",
-        "date_finish": "2026-01-27T10:58:31+02:00",
+        "date_start": "2026-01-27T10:58:30+01:00",
+        "date_finish": "2026-01-27T10:58:31+01:00",
         "operating_reset_at": 1769501310,
         "operating": 0.6509370803833008
     }
@@ -361,7 +361,7 @@ HTTP Status: **200**
 || **result**
 [`integer`](../../data-types.md) | Root element of the response, contains the identifier of the created company ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the request execution time ||
+[`time`](../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
@@ -375,7 +375,7 @@ HTTP Status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../_includes/error-info.md) %}
+{% include notitle [Error Handling](../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
@@ -388,7 +388,7 @@ HTTP Status: **400**
 || `ERROR_CORE` | The `E-mail` field contains an invalid address | The `E-mail` field contains an invalid address ||
 |#
 
-{% include [system errors](./../../../_includes/system-errors.md) %}
+{% include [System Errors](./../../../_includes/system-errors.md) %}
 
 ## Continue Learning 
 

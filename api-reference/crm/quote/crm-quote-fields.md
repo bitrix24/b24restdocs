@@ -4,13 +4,13 @@
 >
 > Who can execute the method: any user
 
-{% note warning "Method Development Stopped" %}
+{% note warning "DEPRECATED" %}
 
-The method `crm.quote.fields` continues to function, but there is a more relevant alternative [crm.item.fields](../universal/crm-item-fields.md).
+Development of this method has been halted. Please use [crm.item.fields](../universal/crm-item-fields.md).
 
 {% endnote %}
 
-The method `crm.quote.fields` returns the description of the fields of the estimate, including custom fields.
+The method `crm.quote.fields` returns a description of the fields of the estimate, including custom fields.
 
 ## Method Parameters
 
@@ -18,7 +18,7 @@ No parameters.
 
 ## Code Examples
 
-{% include [Note on examples](../../../_includes/examples.md) %}
+{% include [Examples Note](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -77,7 +77,7 @@ No parameters.
             ->getResult();
     
         echo 'Success: ' . print_r($result, true);
-        // Your logic for processing data
+        // Your data processing logic here
         processData($result);
     
     } catch (Throwable $e) {
@@ -121,7 +121,7 @@ No parameters.
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -566,11 +566,11 @@ HTTP status: **200**
 || **ASSIGNED_BY_ID**  
 [`integer`](../../data-types.md) | Responsible ||
 || **BEGINDATE**  
-[`date`](../../data-types.md) | Issue date of the estimate ||
+[`date`](../../data-types.md) | Date of the estimate issue ||
 || **CLOSED**  
-[`char`](../../data-types.md) | Flag for completion of the estimate ||
+[`char`](../../data-types.md) | Flag for the completion of the estimate ||
 || **CLOSEDATE**  
-[`date`](../../data-types.md) | Completion date of the estimate ||
+[`date`](../../data-types.md) | Date of the estimate completion ||
 || **COMMENTS**  
 [`string`](../../data-types.md) | Comment ||
 || **COMPANY_ID**  
@@ -584,9 +584,9 @@ HTTP status: **200**
 || **CURRENCY_ID**  
 [`crm_currency`](../../data-types.md) | Currency of the estimate ||
 || **DATE_CREATE**  
-[`datetime`](../../data-types.md) | Creation date of the estimate. Read-only ||
+[`datetime`](../../data-types.md) | Date of the estimate creation. Read-only ||
 || **DATE_MODIFY**  
-[`datetime`](../../data-types.md) | Modification date of the estimate. Read-only ||
+[`datetime`](../../data-types.md) | Date of the estimate modification. Read-only ||
 || **DEAL_ID**  
 [`integer`](../../data-types.md) | Identifier of the deal associated with the estimate ||
 || **ID**  
@@ -600,7 +600,7 @@ HTTP status: **200**
 || **MYCOMPANY_ID**  
 [`integer`](../../data-types.md) | Identifier of the company making the estimate ||
 || **OPENED**  
-[`char`](../../data-types.md) | Flag for availability of the estimate to everyone ||
+[`char`](../../data-types.md) | Flag for the availability of the estimate to everyone ||
 || **OPPORTUNITY**  
 [`double`](../../data-types.md) | Amount of the estimate ||
 || **PERSON_TYPE_ID**  
@@ -608,7 +608,7 @@ HTTP status: **200**
 || **QUOTE_NUMBER**  
 [`string`](../../data-types.md) | Estimate number. Read-only ||
 || **STATUS_ID**  
-[`crm_status`](../../data-types.md) | Stage of the estimate. You can get the values of the directory using the method [crm.status.list](../status/crm-status-list.md) with the filter `ENTITY_ID=QUOTE_STATUS` ||
+[`crm_status`](../../data-types.md) | Estimate stage. You can get the values of the directory using the method [crm.status.list](../status/crm-status-list.md) with the filter `ENTITY_ID=QUOTE_STATUS` ||
 || **TAX_VALUE**  
 [`double`](../../data-types.md) | Tax rate ||
 || **TERMS**  
@@ -616,11 +616,11 @@ HTTP status: **200**
 || **TITLE**  
 [`string`](../../data-types.md) | Title of the estimate ||
 || **UTM_CAMPAIGN**  
-[`string`](../../data-types.md) | dvertising campaign identifier ||
+[`string`](../../data-types.md) | Campaign identifier ||
 || **UTM_CONTENT**  
 [`string`](../../data-types.md) | Content of the advertising campaign. For example, for contextual ads ||
 || **UTM_MEDIUM**  
-[`string`](../../data-types.md) | Traffic type. For example, CPC for ads or CPM for banners ||
+[`string`](../../data-types.md) | Type of traffic. For example, CPC for ads or CPM for banners ||
 || **UTM_SOURCE**  
 [`string`](../../data-types.md) | Advertising system. For example, Google Ads ||
 || **UTM_TERM**  
@@ -638,7 +638,7 @@ You can add a custom field to the estimate using the method [crm.quote.userfield
 
 #### Deprecated Fields
 
-The following fields are kept only for compatibility and are not recommended for use.
+The following fields are retained only for compatibility and are not recommended for use.
 
 #|
 || **Name**
@@ -663,7 +663,7 @@ The following fields are kept only for compatibility and are not recommended for
 
 ## Error Handling
 
-The method does not return errors.
+does not return errors.
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 

@@ -25,7 +25,6 @@ For example, consider a notification that supports buttons:
 - Accept — value `'Y'`
 - Decline — value `'N'`
 
-![Example of buttons](./_images/buttons_example.png)
 
 ## Code Examples
 

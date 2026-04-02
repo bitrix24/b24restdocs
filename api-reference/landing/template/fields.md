@@ -1,43 +1,35 @@
-# Entity Fields Template
-
-{% note warning "We are still updating this page" %}
-
-Some data may be missing — we will complete it soon.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- parameter types are not specified
-
-{% endnote %}
-
-{% endif %}
+# Object Fields Template View
 
 #|
 || **Field** | **Description** | **Read** | **Write** ||
 || **ID**
-[`unknown`](../../data-types.md) | Identifier of the template. | Yes | No ||
+[`integer`](../../data-types.md) | Template identifier | Yes | No ||
 || **ACTIVE**
-[`unknown`](../../data-types.md) | Template activity: Y / N. | Yes | No ||
+[`string`](../../data-types.md) | Template activity
+
+Possible values:
+`Y` — template is active
+`N` — template is inactive | Yes | No ||
 || **AREA_COUNT**
-[`unknown`](../../data-types.md) | Number of areas besides content. | Yes | No ||
+[`integer`](../../data-types.md) | Number of additional areas in the template, besides the main area `#CONTENT#` | Yes | No ||
 || **SORT**
-[`unknown`](../../data-types.md) | Sorting. | Yes | No ||
+[`integer`](../../data-types.md) | Template sorting order | Yes | No ||
 || **TITLE**
-[`unknown`](../../data-types.md) | Title. | Yes | No ||
+[`string`](../../data-types.md) | Template title. For system templates, the localized title is usually returned | Yes | No ||
 || **XML_ID**
-[`unknown`](../../data-types.md) | External code. | Yes | No ||
+[`string`](../../data-types.md) | External code of the template | Yes | No ||
 || **CONTENT**
-[`unknown`](../../data-types.md) | Template markup. | Yes | No ||
+[`string`](../../data-types.md) | HTML markup of the template with area macros, such as `#CONTENT#` and `#AREA_1#` | Yes | No ||
 || **CREATED_BY_ID**
-[`unknown`](../../data-types.md) | Identifier of the user who created the template. | Yes | No ||
+[`integer`](../../data-types.md) | Identifier of the user who created the template. Only the identifier is returned via REST | Yes | No ||
 || **MODIFIED_BY_ID**
-[`unknown`](../../data-types.md) | Identifier of the user who modified the template. | Yes | No ||
+[`integer`](../../data-types.md) | Identifier of the user who last modified the template. Only the identifier is returned via REST | Yes | No ||
 || **DATE_CREATE**
-[`unknown`](../../data-types.md) | Creation date. | Yes | No ||
+[`datetime`](../../data-types.md) | Date and time of template creation | Yes | No ||
 || **DATE_MODIFY**
-[`unknown`](../../data-types.md) | Modification date. | Yes | No ||
+[`datetime`](../../data-types.md) | Date and time of the last modification of the template | Yes | No ||
 |#
+
+In the method [landing.template.getlist](./landing-template-get-list.md), only simple fields of the template can be used.
+
+For the author and last editor, only identifiers are available in the fields `CREATED_BY_ID` and `MODIFIED_BY_ID`.

@@ -1,14 +1,14 @@
-# Translate task to "completed" status task.item.complete
+# Move Task to "Completed" Status task.item.complete
 
 > Scope: [`task`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-The method changes the task status to "completed" or "conditionally completed (awaiting the Assignee's control)".
+This method moves a task to the "completed" or "conditionally completed (awaiting executor control)" status.
 
-{% note warning %}
+{% note warning "DEPRECATED" %}
 
-The method is deprecated and not supported. It is recommended to use the methods [tasks.task.*](../../index.md).
+Development of this method has been halted. Please use [tasks.task.complete](../../tasks-task-complete.md).
 
 {% endnote %}
 
@@ -21,7 +21,7 @@ The method is deprecated and not supported. It is recommended to use the methods
 
 ## Code Examples
 
-{% include [Note on examples](../../../../_includes/examples.md) %}
+{% include [Examples Note](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 

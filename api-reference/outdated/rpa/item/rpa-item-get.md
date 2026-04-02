@@ -4,15 +4,21 @@
 >
 > Who can execute the method: any user
 
+{% note warning "DEPRECATED" %}
+
+The development of this method has been halted. Use [Smart scripts](../../../crm/universal/user-defined-object-types/index.md) as an alternative to this functionality.
+
+{% endnote %}
+
 This method retrieves information about the element with the identifier `id` of the process with the identifier `typeId`.
 
 #|
 || **Name**
 `type` | **Description** ||
 || **typeId** 
-[`integer`](../../../data-types.md) | Process identifier ||
+[`integer`](../../../data-types.md) | Identifier of the process ||
 || **id** 
-[`integer`](../../../data-types.md) | Element identifier ||
+[`integer`](../../../data-types.md) | Identifier of the element ||
 |#
 
 ## Response Handling
@@ -29,9 +35,9 @@ HTTP Status: **200**
         "typeId": 1,
         "createdBy": 1,
         "updatedBy": 1,
-        "createdTime": "03/19/2020 13:07:39",
-        "updatedTime": "03/23/2020 18:34:05",
-        "movedTime": "03/23/2020 18:34:05",
+        "createdTime": "03/19/2020 01:07:39 PM",
+        "updatedTime": "03/23/2020 06:34:05 PM",
+        "movedTime": "03/23/2020 06:34:05 PM",
         "detailUrl": "/rpa/item/1/43/",
         "movedBy": 1,
         "UF_RPA_1_NAME": "Element Name",
@@ -75,7 +81,7 @@ HTTP Status: **200**
 || **createdTime** | Time the element was created ||
 || **updatedTime** | Time the element was modified ||
 || **movedTime** | Time the stage of the element was changed ||
-|| **detailUrl** | Link to the element's detail form ||
+|| **detailUrl** | Link to the detail form of the element ||
 || **tasksCounter** | Number of tasks associated with the element for the user ||
 || **tasksFaces** | Information for rendering the sequence of responsible parties during approval:
 - `completed` — who completed the task
@@ -87,14 +93,14 @@ HTTP Status: **200**
 - `secondName` — middle name
 - `lastName` — last name
 - `title` — title
-- `workPosition` — job title
+- `workPosition` — position
 - `fullName` — formatted name
 - `link` — link to the profile ||
 || **UF_RPA_...** | Values of custom fields.
 
 Values of multiple fields are returned as an array.
 
-File type field values are returned as a list:
+File-type field values are returned as a list:
 - `id` — identifier
 - `url` — link to the file on the account
 - `urlMachine` — link to the file for the application ||

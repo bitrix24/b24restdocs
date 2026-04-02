@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it shortly.
+Some data may be missing — we will complete it soon.
 
 {% endnote %}
 
@@ -10,7 +10,7 @@ Some data may be missing — we will complete it shortly.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- add "Typical use-cases and scenarios" about ready-made scenarios for webhooks.
+- Add "Typical use-cases and scenarios" about ready-made scenarios for webhooks.
 
 {% endnote %}
 
@@ -20,7 +20,7 @@ A local webhook is a simplified way to access the methods and events of the Bitr
 
 {% note tip "" %}
 
-If you are developing integrations for Bitrix24 using AI tools (ChatGPT, Claude, Copilot), connect to the [MCP server](../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect the [MCP server](../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
 
 {% endnote %}
 
@@ -28,7 +28,7 @@ Local webhooks are divided into incoming and outgoing.
 
 ## Incoming Webhook
 
-Through the user interface of the Developer resources section, you can obtain and record an authorization key — an incoming webhook.
+Through the user interface of the Developer resources section, you can obtain and record an authorization key — the incoming webhook.
 
 This key can then be used to call REST methods, and it does not have an expiration date (unlike OAuth 2.0 authorization tokens).
 
@@ -36,14 +36,13 @@ This makes webhooks an exceptionally simple and convenient mechanism for working
 
 - User participation is required to create a webhook (you cannot generate webhooks automatically).
 - Since the webhook does not expire, any "leak" of the webhook URL can lead to unauthorized access to your Bitrix24 within the permissions of that specific webhook. Therefore, this mechanism is suitable for "internal" integrations but not for mass-market use cases.
-- A number of REST methods are not available for use through webhooks, as their logic requires an "application context," and there is no application in Bitrix24 terms for webhooks (in particular, methods for embedding applications in the Bitrix24 interface, telephony events, some chatbot events, etc.).
+- A number of REST methods are not available for use through webhooks, as their logic requires the "context" of an application, and there is no application in Bitrix24 terms for webhooks (in particular, methods for embedding applications in the Bitrix24 interface, telephony events, some chatbot events, etc.).
 
 Despite these limitations, for the vast majority of integration tasks within a specific project, webhooks are an ideal option for working with the REST API.
 
 {% note tip "Typical use-cases and scenarios" %}
 
 - [{#T}](../tutorials/crm/index.md)
-- [{#T}](../tutorials/ai/add-joke-prompt.md)
 
 {% endnote %}
 
@@ -51,10 +50,10 @@ You can create an incoming webhook from the **Developer resources** section (*Ap
 
 In the opened form:
 
-- change the name of the webhook
-- in the request generator, select the REST API method (you can read the method description and download a ready-made code example with the necessary parameters for making requests)
-- test the webhook by clicking the **Execute** button
-- specify access permissions, allowing requests only from certain Bitrix24 tools
+- Change the name of the webhook.
+- In the request generator, select the REST API method (you can read the method description and download a ready-made code example with the necessary parameters for making requests).
+- Test the webhook by clicking the **Execute** button.
+- Specify access permissions, allowing only certain Bitrix24 tools to make requests.
 
 The request generator will provide a sample URL that should be used when sending data from an external system to Bitrix24.
 
@@ -62,29 +61,28 @@ The request generator will provide a sample URL that should be used when sending
 
 **The URL consists of:**
 
-- **doc-test-b24.bitrix24.com** — the address of your Bitrix24
-- **/rest** — indicating that the work is being done through REST with webhooks
-- **/1** — the identifier of the user who created the webhook
-- **/173glortu42lvpju** — the secret code
+- **doc-test-b24.bitrix24.com** — the address of your Bitrix24.
+- **/rest** — indicating that the work is being done through REST with webhooks.
+- **/1** — the identifier of the user who created the webhook.
+- **/173glortu42lvpju** — the secret code.
 
 > **Attention!** This code is confidential information. It must be kept secret.
 
-- **/crm.contact.get** — the called REST API method. In this case, it is the method that returns a contact by its identifier.
+- **/crm.contact.get** — the called REST API method. In this case, it is the method that returns a contact by ID.
 - **.json** — an optional parameter ("transport"). When creating new webhooks, it can be omitted (by default, `.json` will be used). In the ready-made solutions constructor, `.json` is explicitly included.
 - **?ID=42** — parameters required for the specific method. In this case, it is the identifier. Parameters are specified after the question mark and separated by the `&` symbol.
 
 ## Outgoing Webhook
 
-For some scenarios, it would be convenient for our automation to trigger automatically when a user changes some data in Bitrix24. For this, there is a tool in local integrations called "Outgoing webhook."
+For some scenarios, it would be convenient for our automation to trigger automatically when a user changes certain data in Bitrix24. For this, there is a tool in local integrations called "Outgoing webhook."
 
 {% note tip "Typical use-cases and scenarios" %}
 
 - [{#T}](../tutorials/crm/index.md)
-- [{#T}](../tutorials/ai/add-joke-prompt.md)
 
 {% endnote %}
 
-> **Attention!** An active license is required for the outgoing webhook to work in the on-premise version of Bitrix24; it will not work on demo accounts.
+> **Attention!** An active license is required for the outgoing webhook to work in the on-premise version of Bitrix24; it will not function on demo accounts.
 
 You can create an outgoing webhook from the **Developer resources** section (*Applications > Developer resources, "Ready-made scenarios" tab > Other > Outgoing webhook*).
 
@@ -125,7 +123,7 @@ In the opened form:
     }
     ```
 
-    To test, open any deal for editing and save the changes; the log will display a history similar to this:
+    To test, open any deal for editing and save changes; the log will display a history similar to this:
 
     ```plaintext
     2017.01.17 12:58:29
@@ -155,7 +153,7 @@ In the opened form:
     )
     ```
 
-{% note info  " " %}
+{% note info %}
 
 To ensure the outgoing webhook works, make sure that the necessary [network access](../settings/cloud-and-on-premise/network-access.md) is open on your server.
 

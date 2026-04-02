@@ -1,10 +1,16 @@
-# Add a contact with details via a web form
+# Add a Contact with Details via Web Form
 
 > Scope: [`crm`](../../../api-reference/scopes/permissions.md)
 >
 > Who can execute the method: users with permission to create contacts in CRM
 
-You can place a form on the site to collect client data and details. When a client fills out the form, their data will be sent to CRM, and you will be able to process the request.
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect the [MCP server](../../../sdk/mcp.md) so that the assistant uses the official REST documentation.
+
+{% endnote %}
+
+You can place a form on your website to collect client data and details. When a client fills out the form, their data will be sent to the CRM, and you will be able to process the request.
 
 Setting up the form consists of two steps.
 
@@ -12,9 +18,9 @@ Setting up the form consists of two steps.
 
 2. We will create a file to process the data. The handler will accept and prepare the data, and then create a contact with the details.
 
-## 1. Creating the web form
+## 1. Creating the Web Form
 
-To generate the form fields, we will use data from Bitrix24. To get information about the detail settings, we will sequentially execute two methods:
+To generate the form fields, we will use data from Bitrix24. To obtain information about the detail settings, we will sequentially execute two methods:
 
 1. [crm.address.fields](../../../api-reference/crm/requisites/addresses/crm-address-fields.md) — we retrieve the list of address fields. The result is saved in `arAddressFields`.
 
@@ -32,7 +38,7 @@ To generate the form fields, we will use data from Bitrix24. To get information 
    );
    ```
 
-We will add a web form to the site page with the following fields:
+We will add a web form to the website with the following fields:
 
 -  `REQ_TYPE` — a dropdown list with the type of details from the `arRequisiteType` array, required,
 
@@ -46,9 +52,9 @@ We will add a web form to the site page with the following fields:
 
 The form sends data using the `POST` method to the `form.php` file.
 
-### Full example of the page code with the form
+### Complete Example of the Page with the Form
 
-{% include [Example notes](../../../_includes/examples.md) %}
+{% include [Example Note](../../../_includes/examples.md) %}
 
 ```php
 <?php
@@ -69,7 +75,7 @@ if (!empty($arRequisiteType['result'])):
 ?>
     <form id="form_to_crm">
         <select name="REQ_TYPE" required>
-            <option value="" disabled selected>Select the type of details</option>
+            <option value="" disabled selected>Select a detail type</option>
             <?php foreach ($arRequisiteType as $id => $name): ?>
                 <option value="<?=$id?>"><?=$name?></option>
             <?php endforeach; ?>
@@ -85,7 +91,7 @@ if (!empty($arRequisiteType['result'])):
         <input type="submit" value="Submit">
     </form>
 <?php else: ?>
-    <p>No available types of details.</p>
+    <p>No available detail types.</p>
 <?php endif; ?>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> 
@@ -107,17 +113,17 @@ $(document).ready(function() {
 </script>
 ```
 
-## 2. Creating the form handler
+## 2. Creating the Form Handler
 
-To process the values from the form fields and add a contact to CRM, we will create a handler `form.php`.
+To process the values from the form fields and add a contact to the CRM, we will create the handler `form.php`.
 
-### Preparing the data
+### Preparing the Data
 
-We retrieve and clean the data from the form:
+We retrieve and sanitize the data from the form:
 
--  `REQ_TYPE` is converted to a number,
+-  `REQ_TYPE` is converted to an integer,
 
--  `NAME`, `LAST_NAME`, `PHONE` are cleaned of HTML tags.
+-  `NAME`, `LAST_NAME`, `PHONE` are sanitized from HTML tags.
 
 ```php
 $iRequisitePresetID = intVal($_POST["REQ_TYPE"]);
@@ -128,11 +134,11 @@ $sPhone = htmlspecialchars($_POST["PHONE"]);
 
 We prepare the address fields and collect them into the `$arAddress` array.
 
--  The values of the fields from the form are cleaned of HTML tags.
+-  The values from the form fields are sanitized from HTML tags.
 
 -  We add the address type `TYPE_ID`. The address types can be obtained using the method [crm.enum.addresstype](../../../api-reference/crm/auxiliary/enum/crm-enum-address-type.md). We will specify the value — `1`, which means the actual address.
 
--  We add the identifier of the [object type](../../../api-reference/crm/data-types.md#object_type) `ENTITY_TYPE_ID`. The identifiers can be obtained using the method [crm.enum.ownertype](../../../api-reference/crm/auxiliary/enum/crm-enum-owner-type.md). We will specify the value — `8`, which means detail.
+-  We add the identifier for the [object type](../../../api-reference/crm/data-types.md#object_type) `ENTITY_TYPE_ID`. The identifiers can be obtained using the method [crm.enum.ownertype](../../../api-reference/crm/auxiliary/enum/crm-enum-owner-type.md). We will specify the value — `8`, which means detail.
 
 ```php
 $arAddress = [];
@@ -153,7 +159,7 @@ The system stores the phone as an array of objects [crm_multifield](../../../api
 $arPhone = !empty($sPhone) ? [['VALUE' => $sPhone, 'VALUE_TYPE' => 'WORK']] : [];
 ```
 
-### Adding the contact
+### Adding the Contact
 
 To create a contact, we will execute the method [crm.contact.add](../../../api-reference/crm/contacts/crm-contact-add.md). In the `fields` object, we pass the fields:
 
@@ -161,11 +167,11 @@ To create a contact, we will execute the method [crm.contact.add](../../../api-r
 
 -  `LAST_NAME` — last name,
 
--  `PHONE` — phone.
+-  `PHONE` — phone number.
 
 {% note warning "" %}
 
-Check which required fields are set for contacts in your Bitrix24. All required fields must be passed to the method [crm.contact.add](../../../api-reference/crm/contacts/crm-contact-add.md).
+Check which required fields are configured for contacts in your Bitrix24. All required fields must be passed to the method [crm.contact.add](../../../api-reference/crm/contacts/crm-contact-add.md).
 
 {% endnote %}
 
@@ -189,11 +195,11 @@ As a result, we will receive the identifier of the new contact, for example, `23
 }
 ```
 
-### Adding details to the contact
+### Adding Details to the Contact
 
 To add details to the contact, we will execute the method [crm.requisite.add](../../../api-reference/crm/requisites/universal/crm-requisite-add.md). In the `fields` object, we pass the fields:
 
--  `ENTITY_TYPE_ID` — identifier of the [object type](../../../api-reference/crm/data-types.md#object_type). The identifiers can be obtained using the method [crm.enum.ownertype](../../../api-reference/crm/auxiliary/enum/crm-enum-owner-type.md). In the example, we will specify the value `3`, which means contact,
+-  `ENTITY_TYPE_ID` — identifier of the [object type](../../../api-reference/crm/data-types.md#object_type). The identifiers can be obtained using the method [crm.enum.ownertype](../../../api-reference/crm/auxiliary/enum/crm-enum-owner-type.md). In this example, we will specify the value `3`, which means contact,
 
 -  `ENTITY_ID` — identifier of the contact received in the previous request,
 
@@ -226,9 +232,9 @@ As a result, we will receive the identifier of the details.
 }
 ```
 
-### Adding an address for the detail
+### Adding an Address for the Detail
 
-We will add an address for the detail using the method [crm.address.add](../../../api-reference/crm/requisites/addresses/crm-address-add.md), if the detail was created successfully. In `$arAddress`, we add `ENTITY_ID` with the `ID` of the detail from the response of the previous request. In the `fields` object, we pass the array `$arAddress` with the address fields.
+We will add an address for the detail using the method [crm.address.add](../../../api-reference/crm/requisites/addresses/crm-address-add.md), if the detail was created successfully. In `$arAddress`, we add `ENTITY_ID` with the `ID` of the detail from the response of the previous request. In the `fields` object, we pass the `$arAddress` array with the address fields.
 
 ```php
 if(!empty($resultRequisite['result'])) {
@@ -242,19 +248,19 @@ if(!empty($resultRequisite['result'])) {
 }
 ```
 
-### Full example of the handler code
+### Complete Example of the Handler Code
 
 ```php
 <?php
 require_once('crest.php');
 
-// Retrieve and clean the form data
+// Retrieve and sanitize form data
 $iRequisitePresetID = intVal($_POST["REQ_TYPE"]);
 $sName = htmlspecialchars($_POST["NAME"]);
 $sLastName = htmlspecialchars($_POST["LAST_NAME"]);
 $sPhone = htmlspecialchars($_POST["PHONE"]);
 
-// Prepare the address
+// Prepare address
 $arAddress = [];
 foreach ($_POST["ADDRESS"] as $key => $val) {
     $arAddress[$key] = htmlspecialchars($val);
@@ -262,10 +268,10 @@ foreach ($_POST["ADDRESS"] as $key => $val) {
 $arAddress['TYPE_ID'] = 1; // Actual address
 $arAddress['ENTITY_TYPE_ID'] = 8; // Object type — detail
 
-// Format the phone for Bitrix24
+// Format phone for Bitrix24
 $arPhone = !empty($sPhone) ? [['VALUE' => $sPhone, 'VALUE_TYPE' => 'WORK']] : [];
 
-// Create the contact
+// Create contact
 $result = CRest::call('crm.contact.add', [
     'fields' => [
         'NAME' => $sName,
@@ -274,7 +280,7 @@ $result = CRest::call('crm.contact.add', [
     ]
 ]);
 
-// Get the identifier of the new contact
+// Retrieve the identifier of the new contact
 if (!empty($result['result'])) {
     $contactId = $result['result'];
 

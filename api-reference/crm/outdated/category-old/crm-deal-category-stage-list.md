@@ -1,16 +1,16 @@
-# Get the list of deal stages for the method crm.dealcategory.stage.list
+# Get a List of Deal Stages for the crm.dealcategory.stage.list Endpoint
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-{% note warning %}
+{% note warning "DEPRECATED" %}
 
-The method is deprecated. It is recommended to use funnel methods [`crm.category.*`](../../universal/category/index.md)
+The development of this method has been halted. Please use [crm.category.*](../../universal/category/index.md).
 
 {% endnote %}
 
-The method returns a list of deal stages for the category by its identifier. It is equivalent to calling the method [`crm.status.list`](../../status/crm-status-list.md) with the `ENTITY_ID` parameter equal to the result of calling [`crm.dealcategory.status`](crm-deal-category-status.md).
+This method returns a list of deal stages for the direction specified by the identifier. It is equivalent to calling the [`crm.status.list`](../../status/crm-status-list.md) method with the `ENTITY_ID` parameter set to the result of the [`crm.dealcategory.status`](crm-deal-category-status.md) call.
 
 ## Method Parameters
 
@@ -18,12 +18,12 @@ The method returns a list of deal stages for the category by its identifier. It 
 || **Name**
 `type` | **Description** ||
 || **id** 
-[`integer`](../../../data-types.md)| Identifier of the category. If `id = 0` or nothing [is specified](*quotes), it will return the statuses of the "default" category. If `id > 0` [for a non-existent category](*id), it returns nothing ||
+[`integer`](../../../data-types.md)| Identifier of the direction. If `id = 0` or nothing [is specified](*quotes), it will return the statuses of the "default" direction. If `id > 0` [for a non-existent direction](*id), it returns nothing ||
 |#
 
 ## Code Examples
 
-{% include [Note about examples](../../../../_includes/examples.md) %}
+{% include [Examples Note](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -50,7 +50,7 @@ The method returns a list of deal stages for the category by its identifier. It 
 - JS
 
     ```js
-    // callListMethod: Retrieves all data at once. Use only for small selections (< 1000 items) due to high memory usage.
+    // callListMethod: Retrieves all data at once. Use only for small datasets (< 1000 items) due to high memory load.
     
     var id = prompt("Enter ID");
     try {
@@ -65,7 +65,7 @@ The method returns a list of deal stages for the category by its identifier. It 
       console.error('Request failed', error)
     }
     
-    // fetchListMethod: Retrieves data in parts using an iterator. Use it for large data volumes to optimize memory usage.
+    // fetchListMethod: Retrieves data in parts using an iterator. Use for large datasets for efficient memory consumption.
     
     var id = prompt("Enter ID");
     try {
@@ -77,7 +77,7 @@ The method returns a list of deal stages for the category by its identifier. It 
       console.error('Request failed', error)
     }
     
-    // callMethod: Manually controls pagination through the start parameter. Use it for precise control of request batches. For large datasets, it is less efficient than fetchListMethod.
+    // callMethod: Manual control of pagination through the start parameter. Use for precise control over request batches. Less efficient for large data than fetchListMethod.
     
     var id = prompt("Enter ID");
     try {
@@ -161,5 +161,4 @@ The method returns a list of deal stages for the category by its identifier. It 
 
 [*quotes]: Empty quotes or not passing the parameter at all
 
-[*id]: For example, specifying id = 10, but there is no category with id=10 in the system.
-
+[*id]: For example, specifying id = 10, but there is no direction with id=10 in the system

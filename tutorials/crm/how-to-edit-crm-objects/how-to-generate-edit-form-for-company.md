@@ -1,10 +1,16 @@
-# How to Create Your Company Editing Form
+# How to Create Your Company Edit Form
 
 > Scope: [`crm`](../../../api-reference/scopes/permissions.md)
 >
 > Who can execute the method: users with administrative access to the CRM section
 
-Example of automatically generating a company editing form with all fields created in Bitrix24 on your application's page.
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
+Example of automatically generating a company edit form with all fields created in Bitrix24 on your application's page.
 
 Some field types are not implemented in the example; a message *field not support* will be displayed in place of unsupported field types.
 
@@ -612,7 +618,7 @@ if (is_array($arResult['FIELDS'])):
     <?php endif;?>
 ```
 
-**auto_form.php** file:
+File **auto_form.php**:
 
 ```php
 <?php

@@ -1,63 +1,64 @@
-# Get the list of leads crm.lead.list
+# Get a List of Leads crm.lead.list
 
 > Scope: [`crm`](../../scopes/permissions.md)
 >
-> Who can execute the method: user with read access permission for leads
+> Who can execute the method: user with read access to leads
 
-{% note warning "Method Development Stopped" %}
+{% note warning "DEPRECATED" %}
 
-The method `crm.lead.list` continues to function, but there is a more relevant alternative [crm.item.list](../universal/crm-item-list.md).
+The development of this method has been halted. Please use [crm.item.list](../universal/crm-item-list.md).
 
 {% endnote %}
 
-The method `crm.lead.list` returns a list of leads based on the filter. It is an implementation of the list method for leads.
+The method `crm.lead.list` returns a list of leads based on a filter. It is an implementation of the list method for leads.
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **select**
-[`array`](../../data-types.md) | The array contains a list of fields to select (see lead fields [crm-lead-fields](./crm-lead-fields.md)).
+[`array`](../../data-types.md) | An array containing the list of fields to be selected (see lead fields [crm-lead-fields](./crm-lead-fields.md)).
 
 When selecting, use masks:
 - "*" - to select all fields (excluding custom and multiple fields)
 - "UF_*" - to select all custom fields (excluding multiple fields)
 
 There are no masks for selecting multiple fields. To select multiple fields, specify the required ones in the selection list ("PHONE", "EMAIL", etc.).
-There is no option to add a logical OR condition to the filter if you need to select by several different fields. ||
+There is no option to add a logical OR condition to the filter if you need to select by several different fields.||
+
 || **filter**
 [`object`](../../data-types.md) | An object for filtering the selected leads in the format `{"field_1": "value_1", ... "field_N": "value_N"}`.
 
-Possible values for `field` correspond to lead fields [crm-lead-fields](./crm-lead-fields.md).
+Possible values for `field` correspond to the lead fields [crm-lead-fields](./crm-lead-fields.md).
 
-The key can have an additional prefix that clarifies the behavior of the filter. Possible prefix values:
+An additional prefix can be assigned to the key to clarify the filter behavior. Possible prefix values:
 - `>=` — greater than or equal to
 - `>` — greater than
 - `<=` — less than or equal to
 - `<` — less than
 - `@` — IN (an array is passed as the value)
 - `!@` — NOT IN (an array is passed as the value)
-- `%` — LIKE, substring search. The "%" symbol in the filter value does not need to be passed. The search looks for the substring in any position of the string.
-- `=%` — LIKE, substring search. The "%" symbol needs to be passed in the value. Examples:
+- `%` — LIKE, substring search. The `%` symbol in the filter value does not need to be passed. The search looks for the substring in any position of the string.
+- `=%` — LIKE, substring search. The `%` symbol needs to be passed in the value. Examples:
   - "mol%" — searching for values starting with "mol"
   - "%mol" — searching for values ending with "mol"
   - "%mol%" — searching for values where "mol" can be in any position
 
 - `%=` — LIKE (see description above)
 
-- `!%` — NOT LIKE, substring search. The "%" symbol in the filter value does not need to be passed. The search goes from both sides.
+- `!%` — NOT LIKE, substring search. The `%` symbol in the filter value does not need to be passed. The search goes from both sides.
 
-- `=%` — NOT LIKE, substring search. The "%" symbol needs to be passed in the value. Examples:
+- `=%` — NOT LIKE, substring search. The `%` symbol needs to be passed in the value. Examples:
   - "mol%" — searching for values not starting with "mol"
   - "%mol" — searching for values not ending with "mol"
-  - "%mol%" — searching for values where the substring "mol" is not in any position
+  - "%mol%" — searching for values where the substring "mol" is not present in any position
 
 - `!%=` — NOT LIKE (see description above)
 
-- `=` — equals, exact match (used by default)
+- `=` — equal, exact match (used by default)
 - `!=` - not equal
 - `!` — not equal
   ||
@@ -74,14 +75,14 @@ To select the second page of results, you need to pass the value `50`. To select
 
 The formula for calculating the `start` parameter value:
 
-`start = (N-1) * 50`, where `N` — the number of the desired page ||
+`start = (N-1) * 50`, where `N` — the desired page number ||
 |#
 
 Also, see the description of [list methods](../../../settings/how-to-call-rest-api/list-methods-pecularities.md).
 
 ## Code Examples
 
-{% include [Note on examples](../../../_includes/examples.md) %}
+{% include [Note on Examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -108,7 +109,7 @@ Also, see the description of [list methods](../../../settings/how-to-call-rest-a
 - JS
 
     ```js
-    // callListMethod: Retrieves all data at once. Use only for small selections (< 1000 items) due to high memory usage.
+    // callListMethod: Retrieves all data at once. Use only for small selections (< 1000 items) due to high memory load.
     
     try {
       const response = await $b24.callListMethod(
@@ -130,7 +131,7 @@ Also, see the description of [list methods](../../../settings/how-to-call-rest-a
       console.error('Request failed', error)
     }
     
-    // fetchListMethod: Retrieves data in parts using an iterator. Use it for large data volumes to optimize memory usage.
+    // fetchListMethod: Retrieves data in parts using an iterator. Use for large volumes of data for efficient memory consumption.
     
     try {
       const generator = $b24.fetchListMethod('crm.lead.list', {
@@ -149,7 +150,7 @@ Also, see the description of [list methods](../../../settings/how-to-call-rest-a
       console.error('Request failed', error)
     }
     
-    // callMethod: Manually controls pagination through the start parameter. Use it for precise control of request batches. For large datasets, it is less efficient than fetchListMethod.
+    // callMethod: Manual control of pagination through the start parameter. Use for precise control over request batches. Less efficient for large data than fetchListMethod.
     
     try {
       const response = await $b24.callMethod('crm.lead.list', {
@@ -313,7 +314,7 @@ Also, see the description of [list methods](../../../settings/how-to-call-rest-a
   );
   ```
 
-- Selecting leads for the month
+- Retrieve leads for the month
 
   ```php
   $result = CRest::call(
@@ -367,15 +368,15 @@ HTTP Status: **200**
       "ASSIGNED_BY_ID": "1",
       "CREATED_BY_ID": "1",
       "MODIFY_BY_ID": "1",
-      "DATE_CREATE": "2021-05-31T15:10:16+02:00",
-      "DATE_MODIFY": "2021-11-26T18:56:13+02:00",
-      "DATE_CLOSED": "2021-07-16T16:43:44+02:00",
+      "DATE_CREATE": "2021-05-31T15:10:16+01:00",
+      "DATE_MODIFY": "2021-11-26T18:56:13+01:00",
+      "DATE_CLOSED": "2021-07-16T16:43:44+01:00",
       "STATUS_SEMANTIC_ID": "S",
       "OPENED": "Y",
       "ORIGINATOR_ID": null,
       "ORIGIN_ID": null,
       "MOVED_BY_ID": "1",
-      "MOVED_TIME": "2021-07-16T16:43:44+02:00",
+      "MOVED_TIME": "2021-07-16T16:43:44+01:00",
       "ADDRESS": "7677 Hollow Ridge Alley",
       "ADDRESS_2": null,
       "ADDRESS_CITY": null,
@@ -391,7 +392,7 @@ HTTP Status: **200**
       "UTM_CONTENT": null,
       "UTM_TERM": null,
       "LAST_ACTIVITY_BY": "1",
-      "LAST_ACTIVITY_TIME": "2021-05-31T15:10:16+02:00",
+      "LAST_ACTIVITY_TIME": "2021-05-31T15:10:16+01:00",
       "UF_CRM_1704817278": null,
       "UF_CRM_1706782596092": null,
       "UF_CRM_1708952993785": false
@@ -423,15 +424,15 @@ HTTP Status: **200**
       "ASSIGNED_BY_ID": "1",
       "CREATED_BY_ID": "1",
       "MODIFY_BY_ID": "1",
-      "DATE_CREATE": "2021-05-31T15:10:16+02:00",
-      "DATE_MODIFY": "2021-11-26T18:56:13+02:00",
-      "DATE_CLOSED": "2021-07-16T16:43:47+02:00",
+      "DATE_CREATE": "2021-05-31T15:10:16+01:00",
+      "DATE_MODIFY": "2021-11-26T18:56:13+01:00",
+      "DATE_CLOSED": "2021-07-16T16:43:47+01:00",
       "STATUS_SEMANTIC_ID": "S",
       "OPENED": "Y",
       "ORIGINATOR_ID": null,
       "ORIGIN_ID": null,
       "MOVED_BY_ID": "1",
-      "MOVED_TIME": "2021-07-16T16:43:47+02:00",
+      "MOVED_TIME": "2021-07-16T16:43:47+01:00",
       "ADDRESS": "35 Mosinee Street",
       "ADDRESS_2": null,
       "ADDRESS_CITY": null,
@@ -447,13 +448,13 @@ HTTP Status: **200**
       "UTM_CONTENT": null,
       "UTM_TERM": null,
       "LAST_ACTIVITY_BY": "1",
-      "LAST_ACTIVITY_TIME": "2021-05-31T15:10:16+02:00",
+      "LAST_ACTIVITY_TIME": "2021-05-31T15:10:16+01:00",
       "UF_CRM_1704817278": null,
       "UF_CRM_1706782596092": null,
       "UF_CRM_1708952993785": true
     },
     
-      48 more leads with similar structure
+      48 more leads with a similar structure
     
   ],
   "next": 50,
@@ -463,8 +464,8 @@ HTTP Status: **200**
     "finish": 1718292234.657739,
     "duration": 0.10295796394348145,
     "processing": 0.05574321746826172,
-    "date_start": "2024-06-13T18:23:54+02:00",
-    "date_finish": "2024-06-13T18:23:54+02:00",
+    "date_start": "2024-06-13T18:23:54+01:00",
+    "date_finish": "2024-06-13T18:23:54+01:00",
     "operating": 0
   }
 }
@@ -476,11 +477,11 @@ HTTP Status: **200**
 || **Name**
 `type`  | **Description** ||
 || **result**
-[`array`](../../data-types.md) | The root element of the response. Contains an array of objects that hold information about the fields of deals. 
+[`array`](../../data-types.md) | The root element of the response. Contains an array of objects with information about the fields of deals. 
 
-It should be noted that the structure of the fields may change due to the `select` parameter.
+Keep in mind that the structure of fields may change due to the `select` parameter.
 
- For information about the structure of a lead, see the method [`crm.lead.get`](./crm-lead-get.md) ||
+ For information on the structure of a lead, see the method [`crm.lead.get`](./crm-lead-get.md) ||
 || **total**
 [`integer`](../../data-types.md) | The total number of found items ||
 || **next**
@@ -517,4 +518,3 @@ The `next` parameter appears in the response if the number of items matching you
 
 - [{#T}](../../../tutorials/crm/how-to-add-crm-objects/how-to-add-repeat-lead.md)
 - [{#T}](../../../tutorials/crm/how-to-get-lists/search-by-phone-and-email.md)
-

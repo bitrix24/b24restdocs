@@ -1,5 +1,11 @@
 # How to Embed Your UI in Robot Parameters
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 In *Bitrix24*, you can configure a robot and workflow action using the application interface. This is implemented through the standard [widget embedding mechanism](../../api-reference/widgets/index.md). It is available in the on-premise version starting from [20.0.600](../../settings/cloud-and-on-premise/on-premise/versions.md) of the `Business Processes` module.
 
 ## Implementation Using an Application Example

@@ -1,0 +1,198 @@
+# Get a Link to Download the File imbot.v2.File.download
+
+> Scope: [`imbot`](../../../../scopes/permissions.md)
+>
+> Who can execute the method: owner of the registered bot
+
+The method `imbot.v2.File.download` returns a link to download a file from the chat.
+
+## Method Parameters
+
+{% include [Footnote on parameters](../../../../../_includes/required.md) %}
+
+#|
+|| **Name**
+`Type` | **Description** ||
+|| **botId***
+[`integer`](../../../../data-types.md) | Bot ID ||
+|| **botToken**
+[`string`](../../../../data-types.md) | Unique authorization token for the bot. Required for webhook authorization, not needed for OAuth.
+
+Pass the same botToken that was specified during the chat bot registration ||
+|| **fileId***
+[`integer`](../../../../data-types.md) | File ID on Drive. Can be obtained from the response of the method [imbot.v2.File.upload](./file-upload.md) ||
+|#
+
+## Code Examples
+
+{% include [Footnote on examples](../../../../../_includes/examples.md) %}
+
+{% list tabs %}
+
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+      -H "Content-Type: application/json" \
+      -H "Accept: application/json" \
+      -d '{"botId":456,"botToken":"my_bot_token","fileId":138}' \
+      https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/imbot.v2.File.download
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+      -H "Content-Type: application/json" \
+      -H "Accept: application/json" \
+      -d '{"botId":456,"fileId":138,"auth":"**put_access_token_here**"}' \
+      https://**put_your_bitrix24_address**/rest/imbot.v2.File.download
+    ```
+
+- JS
+
+    ```js
+    try {
+      const response = await $b24.callMethod('imbot.v2.File.download', {
+        botId: 456,
+        fileId: 138,
+      });
+
+      const { result } = response.getData();
+      console.log('result:', result);
+    } catch (error) {
+      console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'imbot.v2.File.download',
+                [
+                    'botId' => 456,
+                    'fileId' => 138,
+                ]
+            );
+
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+
+        echo 'result: ' . print_r($result, true);
+    } catch (Throwable $exception) {
+        error_log($exception->getMessage());
+        echo 'Error: ' . $exception->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
+    BX24.callMethod(
+        'imbot.v2.File.download',
+        {
+            botId: 456,
+            fileId: 138,
+        },
+        function(result) {
+            if (result.error()) {
+                console.error(result.error().ex);
+            } else {
+                const downloadUrl = result.data().downloadUrl;
+                window.open(downloadUrl);
+            }
+        }
+    );
+    ```
+
+- PHP CRest
+
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'imbot.v2.File.download',
+        [
+            'botId' => 456,
+            'fileId' => 138,
+        ]
+    );
+
+    if (!empty($result['error'])) {
+        echo 'Error: ' . $result['error_description'];
+    } else {
+        echo 'Download URL: ' . $result['result']['downloadUrl'];
+    }
+    ```
+
+{% endlist %}
+
+## Response Handling
+
+HTTP Code: **200**
+
+```json
+{
+    "result": {
+        "downloadUrl": "https://**put_your_bitrix24_address**/rest/download.json?token=imbot%7CaW..."
+    },
+    "time": {
+        "start": 1728626400.123,
+        "finish": 1728626400.234,
+        "duration": 0.111,
+        "processing": 0.045,
+        "date_start": "2024-10-11T10:00:00+02:00",
+        "date_finish": "2024-10-11T10:00:00+02:00"
+    }
+}
+```
+
+## Returned Data
+
+#|
+|| **Name**
+`Type` | **Description** ||
+|| **result**
+[`object`](../../../../data-types.md) | Result of the operation ||
+|| **result.downloadUrl**
+[`string`](../../../../data-types.md) | One-time link to download the file. The link contains an authorization token, reuse is not guaranteed ||
+|| **time**
+[`time`](../../../../data-types.md#time) | Information about the request execution time ||
+|#
+
+## Error Handling
+
+HTTP Status: **400**, **403**
+
+```json
+{
+    "error": "FILE_NOT_FOUND",
+    "error_description": "File not found"
+}
+```
+
+{% include notitle [Error Handling](../../../../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+#|
+|| **Code** | **Description** | **Value** ||
+|| `BOT_TOKEN_NOT_SPECIFIED` | Bot token is not specified | `botToken` is not provided. Required for webhook authorization ||
+|| `BOT_ID_REQUIRED` | Bot ID is required | `botId` is not provided ||
+|| `BOT_NOT_FOUND` | Bot not found | Bot not found ||
+|| `BOT_OWNERSHIP_ERROR` | Bot is registered by another application | Bot is registered by another application ||
+|| `FILE_ACCESS_ERROR` | File access error | No permission to download the file ||
+|| `FILE_NOT_FOUND` | File not found | File not found ||
+|#
+
+{% include [System Errors](../../../../../_includes/system-errors.md) %}
+
+## Continue Learning
+
+- [Upload a File to Chat imbot.v2.File.upload](./file-upload.md)
+- [Send Message imbot.v2.Chat.Message.send](../messages/chat-message-send.md)

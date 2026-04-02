@@ -6,9 +6,9 @@
 
 This method removes a task from Favorites.
 
-{% note warning %}
+{% note warning "DEPRECATED" %}
 
-The method is deprecated and not supported. It is recommended to use the methods [tasks.task.*](../../index.md).
+The development of this method has been halted. Please use [tasks.task.favorite.remove](../../tasks-task-favorite-remove.md).
 
 {% endnote %}
 
@@ -18,10 +18,10 @@ The method is deprecated and not supported. It is recommended to use the methods
 || **Name** | **Description** ||
 || **auth** | Authorization token ||
 || **TASK_ID** | Task identifier ||
-|| **PARAMS** | The parameter contains the key `AFFECT_CHILDREN`. It indicates whether to add the subtasks of this task to Favorites ||
+|| **PARAMS** | This parameter contains the key `AFFECT_CHILDREN`. It indicates whether to add the subtasks of this task to Favorites ||
 |#
 
-It is mandatory to follow the order of parameters in the request. If this order is violated, the request will be executed with errors.
+It is essential to maintain the order of parameters in the request. If this order is violated, the request will be executed with errors.
 
 ## Code Examples
 

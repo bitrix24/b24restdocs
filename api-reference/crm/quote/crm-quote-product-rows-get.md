@@ -1,35 +1,35 @@
-# Get Product Rows of the Quote crm.quote.productrows.get
+# Retrieve Product Rows of the Estimate crm.quote.productrows.get
 
 > Scope: [`crm`](../../scopes/permissions.md)
 >
 > Who can execute the method: a user with "read" access permission for estimates
 
-{% note warning "Method Development Halted" %}
+{% note warning "DEPRECATED" %}
 
-The method `crm.quote.productrows.get` is still operational, but there is a more current equivalent [crm.item.productrow.*](../universal/product-rows/index.md).
+The development of this method has been halted. Please use [crm.item.productrow.*](../universal/product-rows/index.md).
 
 {% endnote %}
 
-The method `crm.quote.productrows.get` returns the product rows of a quote.
+The method `crm.quote.productrows.get` returns the product rows of an estimate.
 
 ## Method Parameters
 
-{% include [Parameter Note](../../../_includes/required.md) %}
+{% include [Note on Parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`](../data-types.md) | Identifier of the quote.
+[`integer`](../data-types.md) | Identifier of the estimate.
 
 The identifier can be obtained using the methods [crm.quote.list](./crm-quote-list.md) or [crm.quote.add](./crm-quote-add.md) ||
 |#
 
 ## Code Examples
 
-{% include [Examples Note](../../../_includes/examples.md) %}
+{% include [Note on Examples](../../../_includes/examples.md) %}
 
-Get product rows of the quote with `id = 1`.
+Retrieve product rows of the estimate with `id = 1`.
 
 {% list tabs %}
 
@@ -194,12 +194,12 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`productrow[]`](#productrow) | Root element of the response containing an array of product rows of the quote ||
+[`productrow[]`](#productrow) | Root element of the response containing an array of product rows of the estimate ||
 || **time**
 [`time`](../data-types.md#time) | Information about the execution time of the request ||
 |#
 
-#### Product Row Type {#productrow}
+#### Type productrow {#productrow}
 
 #|
 || **Name**
@@ -207,7 +207,7 @@ HTTP Status: **200**
 || **ID**
 [`integer`](../data-types.md) | Identifier of the product row ||
 || **OWNER_ID**
-[`integer`](../data-types.md) | Identifier of the entity to which the product is linked. For this method, it equals the `id` of the quote ||
+[`integer`](../data-types.md) | Identifier of the element to which the product is linked. For this method, it equals the `id` of the estimate ||
 || **OWNER_TYPE**
 [`string`](../data-types.md) | String identifier of the CRM object type to which the product is linked. For this method, it is always `Q` ||
 || **PRODUCT_ID**
@@ -221,15 +221,15 @@ To get detailed information about the product, use [catalog.product.get](../../c
 || **PRODUCT_DESCRIPTION**
 [`string`](../data-types.md) | Description of the product row ||
 || **PRICE**
-[`double`](../data-types.md) | Final price of the product per unit ||
+[`double`](../data-types.md) | Final cost of the product per unit ||
 || **PRICE_EXCLUSIVE**
-[`double`](../data-types.md) | Price per unit considering discounts, excluding taxes ||
+[`double`](../data-types.md) | Cost per unit considering discounts, excluding taxes ||
 || **PRICE_NETTO**
-[`double`](../data-types.md) | Price per unit excluding discounts and taxes ||
+[`double`](../data-types.md) | Cost per unit excluding discounts and taxes ||
 || **PRICE_BRUTTO**
-[`double`](../data-types.md) | Price per unit excluding discounts but including taxes ||
+[`double`](../data-types.md) | Cost per unit excluding discounts but including taxes ||
 || **PRICE_ACCOUNT**
-[`string`](../data-types.md) | Price of the product in reporting currency ||
+[`string`](../data-types.md) | Cost of the product in reporting currency ||
 || **QUANTITY**
 [`double`](../data-types.md) | Quantity of product units ||
 || **DISCOUNT_TYPE_ID**
@@ -291,7 +291,7 @@ HTTP Status: **400**
 #|
 || **Code** | **Description** | **Value** ||
 || `-` | `The parameter id is invalid or not defined.` | The `id` parameter has no value or an invalid value was provided ||
-|| `-` | `Access denied.` | The user does not have permission to read the quote ||
+|| `-` | `Access denied.` | The user does not have permission to read the estimate ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

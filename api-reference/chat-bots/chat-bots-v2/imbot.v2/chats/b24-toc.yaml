@@ -1,0 +1,25 @@
+title: Chats
+href: index.md
+items:
+  - name: Overview of Methods
+    href: index.md
+  - name: Create Group Chat
+    href: chat-add.md
+  - name: Get Chat Information
+    href: chat-get.md
+  - name: Update Chat Properties
+    href: chat-update.md
+  - name: Add Participants to Chat
+    href: chat-user-add.md
+  - name: Remove Participant from Chat
+    href: chat-user-delete.md
+  - name: List of Chat Participants
+    href: chat-user-list.md
+  - name: Leave Chat
+    href: chat-leave.md
+  - name: Add Chat Managers
+    href: chat-manager-add.md
+  - name: Remove Chat Managers
+    href: chat-manager-delete.md
+  - name: Assign Chat Owner
+    href: chat-set-owner.md

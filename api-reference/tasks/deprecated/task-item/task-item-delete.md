@@ -1,4 +1,4 @@
-# Delete task task.item.delete
+# Delete Task task.item.delete
 
 > Scope: [`task`](../../../scopes/permissions.md)
 >
@@ -6,22 +6,22 @@
 
 This method deletes a task.
 
-{% note warning %}
+{% note warning "DEPRECATED" %}
 
-The method is deprecated and not supported. It is recommended to use the methods [tasks.task.*](../../index.md).
+The development of this method has been halted. Please use [tasks.task.delete](../../tasks-task-delete.md).
 
 {% endnote %}
 
-## Method parameters
+## Method Parameters
 
 #|
 || **Name** | **Description** ||
 || **TASKID** | Task identifier ||
 |#
 
-## Code examples
+## Code Examples
 
-{% include [Note about examples](../../../../_includes/examples.md) %}
+{% include [Examples Note](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -81,7 +81,7 @@ The method is deprecated and not supported. It is recommended to use the methods
             ->getResult();
     
         echo 'Success: ' . print_r($result, true);
-        // Your logic for processing data
+        // Your required data processing logic
         processData($result);
     
     } catch (Throwable $e) {

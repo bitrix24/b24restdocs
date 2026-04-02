@@ -3,7 +3,7 @@ href: index.md
 items: 
   - name: Overview of Methods 
     href: index.md
-  - name: Typical use-cases and scenarios
+  - name: Typical Use-Cases and Scenarios
     include:
       path: examples/b24-toc.yaml
       mode: link
@@ -11,25 +11,25 @@ items:
     href: document-generator-document-add.md
   - name: Modify an Existing Document
     href: document-generator-document-update.md
-  - name: Retrieve a Document by ID
+  - name: Retrieve Document by ID
     href: document-generator-document-get.md
   - name: Get a List of Documents
     href: document-generator-document-list.md
-  - name: Delete a Document
+  - name: Delete Document
     href: document-generator-document-delete.md
-  - name: Enable/Disable Public Link for Document
+  - name: Enable/Disable Public Link to Document
     href: document-generator-document-enable-public-url.md
-  - name: Get a List of Document Fields
+  - name: Retrieve List of Document Fields
     href: document-generator-document-get-fields.md
   - name: Templates
     include:
       path: templates/b24-toc.yaml
       mode: link
-  - name: Numbering Systems
+  - name: Numerators
     include:
       path: numerators/b24-toc.yaml
       mode: link
-  - name: Countries
+  - name: Regions
     include:
       path: region/b24-toc.yaml
       mode: link

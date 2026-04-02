@@ -4,9 +4,9 @@
 >
 > Who can execute the method: any user
 
-{% note warning %}
+{% note warning "DEPRECATED" %}
 
-The method is deprecated. It is recommended to use funnel methods [`crm.category.*`](../../universal/category/index.md)
+Development of this method has been halted. Please use [crm.category.*](../../universal/category/index.md).
 
 {% endnote %}
 

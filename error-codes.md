@@ -1,6 +1,6 @@
 # Error Codes
 
-To handle errors that occur during request execution, it is necessary to analyze the HTTP response status or the presence of a special JSON structure in the response:
+To handle errors that occur during request execution, it is necessary to analyze the HTTP status of the response or the presence of a specific JSON structure in the response:
 
 ```json
 {
@@ -13,6 +13,12 @@ To handle errors that occur during request execution, it is necessary to analyze
 
 A list of specific error codes that occur when calling a particular REST API method is described for each method separately. There is also a list of system errors that are independent of the logic of a specific REST API request.
 
-## Statuses and Codes of System Errors
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect the [MCP server](./sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
+## Statuses and System Error Codes
 
 {% include notitle [system errors](_includes/system-errors.md) %}

@@ -6,9 +6,9 @@
 
 The `methods` method retrieves a list of available methods.
 
-{% note warning "Method Development Halted" %}
+{% note warning "DEPRECATED" %}
 
-The `methods` method continues to function, but it lacks information on some methods. A more current alternative is the [method.get](./method-get.md).
+Development of this method has been halted. Please use [method.get](./method-get.md).
 
 {% endnote %}
 
@@ -22,7 +22,7 @@ The `methods` method continues to function, but it lacks information on some met
 || **full**
 [`boolean`](../../data-types.md) | If the parameter is set to `true`, the method will return a list of all methods ||
 || **scope**
-[`string`](../../data-types.md) | Display of methods included in the specified permission. If the parameter is provided without a value (`methods?scope=&auth=xxxxx`), all common methods will be displayed. ||
+[`string`](../../data-types.md) | Displays methods included in the specified permission. If the parameter is provided without a value (`methods?scope=&auth=xxxxx`), all common methods will be displayed. ||
 |#
 
 > If the method is called without parameters, it will return a list of all methods available to the current application.
@@ -63,19 +63,19 @@ The `methods` method continues to function, but it lacks information on some met
     ```js
     try
     {
-        const response = await $b24.callMethod(
-            "methods",
-            {
-                "scope": "user"
-            }
-        );
-        
-        const result = response.getData().result;
-        console.log(result);
+    	const response = await $b24.callMethod(
+    		"methods",
+    		{
+    			"scope": "user"
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
     }
     catch( error )
     {
-        console.error(error);
+    	console.error(error);
     }
     ```
 

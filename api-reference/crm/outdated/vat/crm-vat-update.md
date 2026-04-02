@@ -4,9 +4,9 @@
 >
 > Who can execute the method: user with CRM administrator rights
 
-{% note warning "Method development halted" %}
+{% note warning "DEPRECATED" %}
 
-The method `crm.vat.update` is still operational, but there is a more relevant alternative [catalog.vat.update](../../../catalog/vat/catalog-vat-update.md).
+The development of this method has been halted. Please use [catalog.vat.update](../../../catalog/vat/catalog-vat-update.md).
 
 {% endnote %}
 
@@ -20,27 +20,27 @@ The method `crm.vat.update` updates the parameters of an existing VAT rate.
 || **Name**
 `type` | **Description** ||
 || **id*** 
-[`integer`](../../../data-types.md) | Identifier of the VAT rate to be updated. You can get a list of rates using the [crm.vat.list](./crm-vat-list.md) method ||
+[`integer`](../../../data-types.md) | Identifier of the VAT rate to be updated. You can retrieve the list of rates using the [crm.vat.list](./crm-vat-list.md) method ||
 || **fields*** 
 [`object`](../../../data-types.md) | Array of fields to update. The list of available fields is described [below](#fields)  ||
 |#
 
-### Parameter fields {#fields}
+### Field Parameter {#fields}
 
 #|
 || **Name**
  `type` | **Description** ||
 || **ACTIVE** 
-[`string`](../../../data-types.md) | Activity of the rate:
+[`string`](../../../data-types.md) | Activity status of the rate:
 - `Y` — active,
 - `N` — inactive.
 ||
 || **C_SORT** 
 [`integer`](../../../data-types.md) | Sorting ||
-|| **NAME*** 
+|| **NAME***
 [`string`](../../../data-types.md) | Name of the rate ||
 || **RATE*** 
-[`double`](../../../data-types.md) | VAT rate value, % ||
+[`double`](../../../data-types.md) | Value of the VAT rate, % ||
 |#
 
 ## Code Examples
@@ -227,7 +227,7 @@ HTTP Status: **400**
 || `400`     | `Invalid parameters.` | Invalid parameters were provided ||
 || `400`     | `Access denied.` | No rights to perform the operation ||
 || `400`     | `Invalid identifier.` | An invalid identifier was provided ||
-|| `400`     | `Error on updating VAT rate.` | Error updating the VAT rate ||
+|| `400`     | `Error on updating VAT rate.` | Error while updating the VAT rate ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}
@@ -238,4 +238,4 @@ HTTP Status: **400**
 - [{#T}](./crm-vat-list.md)
 - [{#T}](./crm-vat-get.md)
 - [{#T}](./crm-vat-add.md)
-- [{#T}](./crm-vat-delete.md)
+- [{#T}](./crm-vat-delete.md) 

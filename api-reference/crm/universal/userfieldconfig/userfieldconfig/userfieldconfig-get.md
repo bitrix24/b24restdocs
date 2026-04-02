@@ -1,602 +1,319 @@
-# Get Data on User Field Settings userfieldconfig.get
+# Get User Field Settings userfieldconfig.get
 
-{% note warning "We are still updating this page" %}
-
-Some data may be missing — we will complete it shortly.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- parameter types are not specified
-- no response in case of error
-- no examples in other languages
-  
-{% endnote %}
-
-{% endif %}
-
-> Scope: [`userfieldconfig, module scope`](../../../../scopes/permissions.md)
+> Scope: [`userfieldconfig`](../../../../scopes/permissions.md), module scope from `moduleId` (for example, [`crm`](../../../../scopes/permissions.md))
 >
-> Who can execute the method: any user
+> Who can execute the method: a user with read access permission to the object that owns the field in the `moduleId`
 
-## Description
+The `userfieldconfig.get` method returns the settings of a user field by its identifier.
 
-```http
-userfieldconfig.get({id: number, moduleId: string})
-```
-
-The method will return data on the settings of the user field with the identifier **id**.
-
-## Parameters
-
-#|
-|| **Parameter** | **Description** ||
-|| **id^*^** | Identifier of the field settings.  | ||
-|| **moduleId^*^** | String identifier of the module.  | ||
-|#
+## Method Parameters
 
 {% include [Footnote on parameters](../../../../../_includes/required.md) %}
 
-## Examples
+#|
+|| **Name**
+`type` | **Description** ||
+|| **moduleId***
+[`string`](../../../data-types.md) | Identifier of the module where the field is located ||
+|| **id***
+[`integer`](../../../data-types.md) | Identifier of the user field settings.
 
-Example response:
+The identifier can be obtained using the [userfieldconfig.list](./userfieldconfig-list.md) method or when creating the field with the [userfieldconfig.add](./userfieldconfig-add.md) method ||
+|#
+
+## Code Examples
+
+{% include [Footnote on examples](../../../../../_includes/examples.md) %}
+
+{% list tabs %}
+
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"moduleId":"crm","id":7095}' \
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/userfieldconfig.get
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"moduleId":"crm","id":7095,"auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/userfieldconfig.get
+    ```
+
+- JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'userfieldconfig.get',
+    		{
+    			moduleId: 'crm',
+    			id: 7095,
+    		}
+    	);
+
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch (error)
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'userfieldconfig.get',
+                [
+                    'moduleId' => 'crm',
+                    'id' => 7095,
+                ]
+            );
+
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+
+        echo 'Result: ' . print_r($result, true);
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
+    BX24.callMethod(
+        'userfieldconfig.get',
+        {
+            moduleId: 'crm',
+            id: 7095,
+        },
+        (result) => {
+            result.error()
+                ? console.error(result.error())
+                : console.info(result.data())
+            ;
+        },
+    );
+    ```
+
+- PHP CRest
+
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'userfieldconfig.get',
+        [
+            'moduleId' => 'crm',
+            'id' => 7095,
+        ]
+    );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
+    ```
+
+{% endlist %}
+
+## Response Handling
+
+HTTP Status: **200**
 
 ```json
 {
-    "field": {
-        "id": "165",
-        "entityId": "RPA_1",
-        "fieldName": "UF_RPA_1_1585069397",
-        "userTypeId": "file",
-        "xmlId": null,
-        "sort": "100",
-        "multiple": "Y",
-        "mandatory": "N",
-        "showFilter": "E",
-        "showInList": "Y",
-        "editInList": "Y",
-        "isSearchable": "Y",
-        "settings": {
-            "SIZE": 20,
-            "LIST_WIDTH": 0,
-            "LIST_HEIGHT": 0,
-            "MAX_SHOW_SIZE": 0,
-            "MAX_ALLOWED_SIZE": 0,
-            "EXTENSIONS": []
-        },
-        "languageId": {
-            "en": "en",
-            "de": "de"
-        },
-        "editFormLabel": {
-            "en": "",
-            "de": "Multiple file"
-        },
-        "listColumnLabel": {
-            "en": null,
-            "de": null
-        },
-        "listFilterLabel": {
-            "en": null,
-            "de": null
-        },
-        "errorMessage": {
-            "en": null,
-            "de": null
-        },
-        "helpMessage": {
-            "en": null,
-            "de": null
+    "result": {
+        "field": {
+            "id": "7095",
+            "entityId": "CRM_7",
+            "fieldName": "UF_CRM_7_NEW_REST_LIST_2026",
+            "userTypeId": "enumeration",
+            "xmlId": null,
+            "sort": "100",
+            "multiple": "Y",
+            "mandatory": "N",
+            "showFilter": "N",
+            "showInList": "Y",
+            "editInList": "Y",
+            "isSearchable": "N",
+            "settings": {
+                "DISPLAY": "LIST",
+                "LIST_HEIGHT": 1,
+                "CAPTION_NO_VALUE": "",
+                "SHOW_NO_VALUE": "Y"
+            },
+            "languageId": {
+                "en": "en",
+                "de": "de"
+            },
+            "editFormLabel": {
+                "en": "List of characteristics",
+                "de": "Liste der Merkmale"
+            },
+            "listColumnLabel": {
+                "en": null,
+                "de": null
+            },
+            "listFilterLabel": {
+                "en": null,
+                "de": null
+            },
+            "errorMessage": {
+                "en": null,
+                "de": null
+            },
+            "helpMessage": {
+                "en": null,
+                "de": null
+            },
+            "enum": [
+                {
+                    "id": "3671",
+                    "userFieldId": "7095",
+                    "value": "Characteristic 1",
+                    "def": "N",
+                    "sort": "100",
+                    "xmlId": "38a8c98a5de02f8ccdca2244e5065ecd"
+                },
+                {
+                    "id": "3673",
+                    "userFieldId": "7095",
+                    "value": "Characteristic 2",
+                    "def": "Y",
+                    "sort": "200",
+                    "xmlId": "9520e17b39f3525b820b809914b52207"
+                }
+            ]
         }
+    },
+    "time": {
+        "start": 1774355752,
+        "finish": 1774355752.177393,
+        "duration": 0.17739295959472656,
+        "processing": 0,
+        "date_start": "2026-03-24T15:35:52+01:00",
+        "date_finish": "2026-03-24T15:35:52+01:00",
+        "operating_reset_at": 1774356352,
+        "operating": 0
     }
 }
 ```
 
-Where:
-- **id** - identifier
-- **entityId** - string identifier of the object
-- **fieldName** - field code
-- **userTypeId** - string identifier of the field type
-- **xmlId** - external identifier
-- **sort** - sort index
-- **multiple** - multiplicity flag
-- **mandatory** - mandatory flag
-- **showFilter** - flag for showing the field in the filter. For some objects, such as RPA, it returns the value Enabled `E` instead of `Y`
-- **showInList** - flag for showing the field in the list
-- **editInList** - flag for allowing editing the field in the list
-- **isSearchable** - flag for the presence of the field value in the full-text index
-- **settings** - list of additional field settings, depending on its type
-- **languageId** - list of language identifiers for which phrases are available
-- **editFormLabel** - list with language-dependent field names, where the key is the language identifier and the value is the phrase
-- **listColumnLabel**, **listFilterLabel**, **errorMessage**, **helpMessage** - similar lists of phrases for various purposes (not used)
-- **enum** - array with value options for properties of type "list" (enumeration), including option identifier, value, default flag, sort index, and external identifier of the option.
-
-{% include [Footnote on examples](../../../../../_includes/examples.md) %}
-
-
-{% if build == 'dev' %}
-
-{% note alert "Parameter `settings`" %}
-
-During the description of `crm.contact.userfield.get`, almost all `settings` for all types of user fields were mistakenly described.
-I am leaving them here to simplify their description later :)
-
-{% endnote %}
-
-### Parameter settings
-
-{% list tabs %}
-
-- double
-
-  #|
-  || **Name**
-  `type` | **Description** ||
-  || **PRECISION**
-  [`integer`][1] | Precision (number of decimal places) ||
-  || **SIZE**
-  [`integer`][1] | Input field size for display ||
-  || **MIN_VALUE**
-  [`double`][1] | Minimum value (0 - do not check) ||
-  || **MAX_VALUE**
-  [`double`][1] | Maximum value (0 - do not check) ||
-  || **DEFAULT_VALUE**
-  [`double`][1] | Default value ||
-  |#
-
-- boolean
-
-  #|
-  || **Name**
-  `type` | **Description** ||
-  || **DEFAULT_VALUE**
-  [`integer`][1] | Default value
-  `0` - No
-  `1` - Yes ||
-  || **DISPLAY**
-  [`string`][1] | Appearance
-
-  Possible values:
-  `CHECKBOX` - Checkbox
-  `RADIO` - Radio buttons
-  `DROPDOWN` - Dropdown list ||
-  || **LABEL**
-  [`string[]`][1] | Labels for values, where
-    * array element with index `0` - Label for value "No"
-    * array element with index `1` - Label for value "Yes"
-
-  ||
-  || **LABEL_CHECKBOX**
-  [`string`][1] | Checkbox label ||
-  |#
-
-- date
-
-  #|
-  || **Name**
-  `type` | **Description** ||
-  || **DEFAULT_VALUE**
-  [`object`][1] | Default value. Object format:
-  ```
-  {
-      TYPE: 'NONE'|'FIXED'|'NONE',
-      VALUE: date
-  }
-  ```
-
-  where `TYPE` - Type of default value:
-  `NONE` - Absent
-  `NOW` - Current date
-  `FIXED` - Date from `VALUE`
-
-  `VALUE` is of type `date` ||
-  |#
-
-- integer
-
-  #|
-  || **Name**
-  `type` | **Description** ||
-  || **SIZE**
-  [`integer`][1] | Input field size for display ||
-  || **MIN_VALUE**
-  [`integer`][1] | Minimum value (0 - do not check) ||
-  || **MAX_VALUE**
-  [`integer`][1] | Maximum value (0 - do not check) ||
-  || **DEFAULT_VALUE**
-  [`integer`][1] | Default value ||
-  |#
-
-- datetime
-
-  #|
-  || **Name**
-  `type` | **Description** ||
-  || **DEFAULT_VALUE**
-  [`object`][1] | Default value. Object format:
-  ```
-  {
-      TYPE: 'NONE'|'FIXED'|'NONE',
-      VALUE: datetime
-  }
-  ```
-
-  where `TYPE` - Type of default value:
-  `NONE` - Absent
-  `NOW` - Current date with time
-  `FIXED` - Date with time from `VALUE`
-
-  `VALUE` is of type `datetime` ||
-  || **USE_SECOND**
-  [`boolean`][1] | Use seconds
-
-  Possible values:
-  `Y` - Yes
-  `N` - No ||
-  || **USE_TIMEZONE**
-  [`boolean`][1] | Use time zones
-
-  Possible values:
-  `Y` - Yes
-  `N` - No ||
-  |#
-
-- string
-
-  #|
-  || **Name**
-  `type` | **Description** ||
-  || **SIZE**
-  [`integer`][1] | Input field size for display ||
-  || **ROWS**
-  [`integer`][1] | Number of lines in the input field ||
-  || **REGEXP**
-  [`string`][1] | Regular expression for validation ||
-  || **MIN_LENGTH**
-  [`integer`][1] | Minimum string length (0 - do not check) ||
-  || **MAX_LENGTH**
-  [`integer`][1] | Maximum string length (0 - do not check) ||
-  || **DEFAULT_VALUE**
-  [`string`][1] | Default value ||
-  |#
-
-- enumeration
-
-  #|
-  || **Name**
-  `type` | **Description** ||
-  || **DISPLAY**
-  [`string`][1] | Appearance
-
-  Possible values:
-  `LIST` - List
-  `CHECKBOX` - Checkboxes
-  `UI` - Input list
-  `DIALOG` - Entity selection dialog ||
-  || **LIST_HEIGHT**
-  [`integer`][1] | List height ||
-  || **CAPTION_NO_VALUE**
-  [`string`][1] | Label when no value ||
-  || **SHOW_NO_VALUE**
-  [`boolean`][1] | Show empty value for required field
-
-  Possible values:
-  `Y` - Yes
-  `N` - No ||
-  |#
-
-- iblock_section|iblock_element
-
-  #|
-  || **Name**
-  `type` | **Description** ||
-  || **DISPLAY**
-  [`string`][1] | Appearance
-
-  Possible values:
-  `LIST` - List
-  `CHECKBOX` - Checkboxes
-  `UI` - Input list
-  `DIALOG` - Entity selection dialog ||
-  || **LIST_HEIGHT**
-  [`integer`][1] | List height ||
-  || **IBLOCK_ID**
-  [`integer`][1] | Identifier of the information block ||
-  || **DEFAULT_VALUE**
-  [`integer`][1] | Default value ||
-  || **ACTIVE_FILTER**
-  [`boolean`][1] | Show only active elements
-
-  Possible values:
-  `Y` - Yes
-  `N` - No ||
-  |#
-
-- crm_status
-
-  #|
-  || **Name**
-  `type` | **Description** ||
-  || **ENTITY_TYPE**
-  [`object`][1] | CRM reference. Structure is similar to the returned elements of the method [`crm.status.entity.types`](../../../status/crm-status-entity-types.md) ||
-  |#
-
-- crm
-
-  #|
-  || **Name**
-  `type` | **Description** ||
-  || **LEAD**
-  [`boolean`][1] | Lead binding enabled ||
-  || **CONTACT**
-  [`boolean`][1] | Contact binding enabled ||
-  || **COMPANY**
-  [`boolean`][1] | Company binding enabled ||
-  || **DEAL**
-  [`boolean`][1] | Deal binding enabled ||
-  || **ORDER**
-  [`boolean`][1] | Order binding enabled ||
-  || **QUOTE**
-  [`boolean`][1] | Estimate binding enabled ||
-  || **SMART_INVOICE**
-  [`boolean`][1] | New invoice binding enabled ||
-  || **DYNAMIC_...**
-  [`boolean`][1] | Binding to a specific SPA enabled
-
-  Each such field has the form: `DYNAMIC_{entityTypeId}`, where `entityTypeId` is the identifier of the SPA type to which the binding is enabled. ||
-  |#
-
-- money
-
-  #|
-  || **Name**
-  `type` | **Description** ||
-  || **DEFAULT_VALUE**
-  [`string`][1] | Default value
-
-  The value of this field has the format: "**{VALUE}\|{CURRENCY}**", where
-  `VALUE` - Default amount of money
-  `CURRENCY` - String identifier of the currency
-
-  For example: "**300\|USD**" - 300 dollars
-
-  ||
-  |#
-
-- disk_file|disk_version
-
-  #|
-  || **Name**
-  `type` | **Description** ||
-  || **IBLOCK_ID**
-  [`integer`][1] | Document library information block ||
-  || **SECTION_ID**
-  [`integer`][1] | Document library folder ||
-  || **UF_TO_SAVE_ALLOW_EDIT**
-  [`boolean`][1] | Save editing settings ||
-  |#
-
-- video
-
-  #|
-  || **Name**
-  `type` | **Description** ||
-  || **BUFFER_LENGTH**
-  [`integer`][1] | Buffer size in seconds ||
-  || **CONTROLBAR**
-  [`string`][1] | Control bar position
-
-  Possible values:
-  `bottom` - Bottom
-  `over` - Over
-  `none` - Do not show ||
-  || **AUTOSTART**
-  [`boolean`][1] | Automatically start playing ||
-  || **VOLUME**
-  [`integer`][1] | Volume level as a percentage of maximum ||
-  || **SKIN**
-  [`string`][1] | Skin ||
-  || **FLASHVARS**
-  [`string`][1] | Additional Flashvars ||
-  || **WMODE_FLV**
-  [`string`][1] | Window mode (WMode)
-
-  Possible values:
-  `WMV` - Window mode
-  `WINDOW` - Normal
-  `OPAQUE` - Opaque
-  `TRANSPARENT` - Transparent ||
-  || **BGCOLOR**
-  [`string`][1] | Background color of the control panel ||
-  || **COLOR**
-  [`string`][1] | Color of control elements ||
-  || **OVER_COLOR**
-  [`string`][1] | Color of control elements on hover ||
-  || **SCREEN_COLOR**
-  [`string`][1] | Screen color ||
-  || **SILVERVARS**
-  [`string`][1] | Additional Silverlight variables ||
-  || **WMODE_WMV**
-  [`string`][1] | Window mode
-
-  Possible values:
-  `window` - Normal
-  `windowless` - Transparent ||
-  || **WIDTH**
-  [`integer`][1] | Width ||
-  || **HEIGHT**
-  [`integer`][1] | Height ||
-  |#
-
-- hlblock
-
-  #|
-  || **Name**
-  `type` | **Description** ||
-  || **DISPLAY**
-  [`string`][1] | Appearance
-
-  Possible values:
-  `LIST` - List
-  `CHECKBOX` - Checkboxes
-  `UI` - Input list
-  `DIALOG` - Entity selection dialog ||
-  || **LIST_HEIGHT**
-  [`integer`][1] | List height ||
-  || **HLBLOCK_ID**
-  [`integer`][1] | Identifier of the highload block ||
-  || **HLFIELD_ID**
-  [`integer`][1] | Identifier of the highload block element ||
-  || **DEFAULT_VALUE**
-  [`integer`][1] | Default value ||
-  |#
-
-- resourcebooking
-
-  #|
-  || **Name**
-  `type` | **Description** ||
-  || **USE_USERS**
-  [`boolean`][1] | Use users or not ||
-  || **USE_RESOURCES**
-  [`boolean`][1] | Use resources or not ||
-  || **RESOURCES**
-  [`object`][1] | List of resources ||
-  || **SELECTED_RESOURCES**
-  [`resourcebooking_resource[]`](#resourcebooking_resource) | Selected resources ||
-  || **SELECTED_USERS**
-  [`user[]`][1] | Selected employees ||
-  || **FULL_DAY**
-  [`boolean`][1] | Only date without time ||
-  || **ALLOW_OVERBOOKING**
-  [`boolean`][1] | Allow booking occupied resources ||
-  || **USE_SERVICES**
-  [`boolean`][1] | Use services or not ||
-  || **SERVICE_LIST**
-  [`resourcebooking_service[]`](#resourcebooking_service) | List of services ||
-  || **RESOURCE_LIMIT**
-  [`integer`][1] | Limit on resource booking. `-1` - No limits ||
-  || **TIMEZONE**
-  [`string`][1] | Time zone ||
-  || **USE_USER_TIMEZONE**
-  [`boolean`][1] | Consider user time zone  ||
-  |#
-
-  #### resourcebooking_resource
-
-  #|
-  || **Name**
-  `type` | **Description** ||
-  || **name**
-  [`string`][1] | Name of the service ||
-  || **duration**
-  [`integer`][1] | Duration (in minutes) ||
-  |#
-
-  #### resourcebooking_service
-
-  #|
-  || **Name**
-  `type` | **Description** ||
-  || **name**
-  [`string`][1] | Name of the service ||
-  || **duration**
-  [`integer`][1] | Duration (in minutes) ||
-  |#
-
-- address
-
-  #|
-  || **Name**
-  `type` | **Description** ||
-  || **SHOW_MAP**
-  [`boolean`][1] | Show map ||
-  |#
-
-- url
-
-  #|
-  || **Name**
-  `type` | **Description** ||
-  || **POPUP**
-  [`boolean`][1] | Open in a new window ||
-  || **SIZE**
-  [`integer`][1] | Input field size for display ||
-  || **MIN_LENGTH**
-  [`integer`][1] | Minimum string length (0 - do not check) ||
-  || **MAX_LENGTH**
-  [`integer`][1] | Maximum string length (0 - do not check) ||
-  || **DEFAULT_VALUE**
-  [`string`][1] | Default value ||
-  || **ROWS**
-  [`integer`][1] | Number of lines in the input field ||
-  |#
-
-- file
-
-  #|
-  || **Name**
-  `type` | **Description** ||
-  || **SIZE**
-  [`integer`][1] | Input field size for display ||
-  || **LIST_WIDTH**
-  [`integer`][1] | Maximum width for display in the list ||
-  || **LIST_HEIGHT**
-  [`integer`][1] | Maximum height for display in the list ||
-  || **MAX_SHOW_SIZE**
-  [`integer`][1] | Maximum allowed size for display in the list (0 - no limit) ||
-  || **MAX_ALLOWED_SIZE**
-  [`integer`][1] | Maximum allowed file size for upload (0 - do not check) ||
-  || **EXTENSIONS**
-  [`string[]`][1] | Extensions ||
-  || **TARGET_BLANK**
-  [`boolean`][1] | Open file in a new tab ||
-  |#
-
-- string_formatted
-
-  #|
-  || **Name**
-  `type` | **Description** ||
-  || **SIZE**
-  [`integer`][1] | Input field size for display ||
-  || **ROWS**
-  [`integer`][1] | Number of lines in the input field ||
-  || **REGEXP**
-  [`string`][1] | Regular expression for validation ||
-  || **MIN_LENGTH**
-  [`integer`][1] | Minimum string length (0 - do not check) ||
-  || **MAX_LENGTH**
-  [`integer`][1] | Maximum string length (0 - do not check) ||
-  || **DEFAULT_VALUE**
-  [`string`][1] | Default value ||
-  || **PATTERN**
-  [`string`][1] | Output pattern (#VALUE# - value) ||
-  |#
-
-- vote
-
-  TODO!!!
-  Settings Preparer: Bitrix\Vote\Uf\VoteUserType::preparesettings
-
-  #|
-  || **Name**
-  `type` | **Description** ||
-  || **CHANNEL_ID**
-  [`TODO`][1] | TODO ||
-  || **UNIQUE**
-  [`TODO`][1] | TODO ||
-  || **UNIQUE_IP_DELAY**
-  [`TODO[]`][1] | TODO ||
-  || **NOTIFY**
-  [`TODO`][1] | TODO ||
-  |#
-
-{% endlist %}
-
-{% endif %}
-
-[1]: ../../../../data-types.md
+### Returned Data
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`object`](../../../data-types.md) | Root element of the response. If the field is not found, it may return `null` ||
+|| **time**
+[`time`](../../../data-types.md#time) | Information about the execution time of the request ||
+|#
+
+#### Result Object {#result}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **field**
+[`object`](../../../data-types.md) | User field settings [(detailed description)](#result_field) ||
+|#
+
+##### Field Object {#result_field}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **id**
+[`integer`](../../../data-types.md) | Identifier of the field settings ||
+|| **entityId**
+[`string`](../../../data-types.md) | Identifier of the object ||
+|| **fieldName**
+[`string`](../../../data-types.md) | Field code ||
+|| **userTypeId**
+[`string`](../../../data-types.md) | Identifier of the field type ||
+|| **xmlId**
+[`string`](../../../data-types.md) | External identifier of the field ||
+|| **sort**
+[`integer`](../../../data-types.md) | Sort index ||
+|| **multiple**
+[`boolean`](../../../data-types.md) | Flag for multiple values (`Y`/`N`) ||
+|| **mandatory**
+[`boolean`](../../../data-types.md) | Flag for mandatory field (`Y`/`N`) ||
+|| **showFilter**
+[`boolean`](../../../data-types.md) | Flag for showing the field in the filter ||
+|| **showInList**
+[`boolean`](../../../data-types.md) | Flag for showing the field in the list ||
+|| **editInList**
+[`boolean`](../../../data-types.md) | Flag for editing in the list ||
+|| **isSearchable**
+[`boolean`](../../../data-types.md) | Flag for participation in search ||
+|| **settings**
+[`object`](../../../data-types.md) | Additional field settings.
+
+The composition of keys depends on `userTypeId` ||
+|| **languageId**
+[`object`](../../../data-types.md) | Languages for which field labels are defined ||
+|| **editFormLabel**
+[`lang_map`](../../../data-types.md) | Labels in the edit form ||
+|| **listColumnLabel**
+[`lang_map`](../../../data-types.md) | Column labels in the list ||
+|| **listFilterLabel**
+[`lang_map`](../../../data-types.md) | Labels in the filter ||
+|| **errorMessage**
+[`lang_map`](../../../data-types.md) | Error message text ||
+|| **helpMessage**
+[`lang_map`](../../../data-types.md) | Field help message ||
+|| **enum**
+[`object[]`](../../../data-types.md) | Value options.
+
+This field is returned only for `userTypeId = enumeration` ||
+|#
+
+## Error Handling
+
+HTTP Status: **400**
+
+```json
+{
+    "error": "",
+    "error_description": "You do not have permission to view user field settings"
+}
+```
+
+{% include notitle [error handling](../../../../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+#|
+|| **Code** | **Description** | **Value** ||
+|| `-` | You do not have permission to view user field settings | Insufficient rights to view the field. This error may also be returned if the field with the provided `id` has already been deleted or is unavailable in the context of `moduleId` ||
+|| `-` | The current method required more scopes. (crm) | The application does not have the required scope for the module from `moduleId` ||
+|| `-` | No settings for UserFieldAccess | Access to user fields is not configured for the provided `moduleId` ||
+|#
+
+{% include [system errors](../../../../../_includes/system-errors.md) %}
+
+## Continue Learning
+
+- [{#T}](./userfieldconfig-add.md)
+- [{#T}](./userfieldconfig-update.md)
+- [{#T}](./userfieldconfig-list.md)
+- [{#T}](./userfieldconfig-delete.md)
+- [{#T}](./userfieldconfig-get-types.md)

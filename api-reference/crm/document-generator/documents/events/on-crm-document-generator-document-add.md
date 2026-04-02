@@ -1,10 +1,10 @@
-# Event when creating a document onCrmDocumentGeneratorDocumentAdd
+# Event of Document Creation onCrmDocumentGeneratorDocumentAdd
 
 > Scope: [`documentgenerator, crm`](../../../../scopes/permissions.md)
 >
 > Who can subscribe: any user
 
-The event `ONCRMDOCUMENTGENERATORDOCUMENTADD` will trigger when a new document is created.
+The event `ONCRMDOCUMENTGENERATORDOCUMENTADD` will trigger upon the creation of a new document.
 
 {% note info "" %}
 
@@ -12,9 +12,9 @@ Events will not be sent to the application until the installation is complete. [
 
 {% endnote %}
 
-## What the handler receives
+## What the Handler Receives
 
-Data is sent as a POST request {.b24-info}
+Data is transmitted as a POST request {.b24-info}
 
 ```json
 {
@@ -85,7 +85,7 @@ The structure is described [below](#auth) ||
 
 {% include notitle [Table with keys in the auth array](../../../../../_includes/auth-params-in-events.md) %}
 
-## Continue exploring
+## Continue Exploring
 
 - [{#T}](../../../../events/index.md)
 - [{#T}](../../../../events/event-bind.md)

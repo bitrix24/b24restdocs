@@ -4,9 +4,9 @@
 >
 > Who can execute the method: user with "Delete" access permission for companies
 
-{% note warning "Method development has been halted" %}
+{% note warning "DEPRECATED" %}
 
-The method `crm.company.delete` is still operational, but there is a more relevant alternative [crm.item.delete](../universal/crm-item-delete.md).
+The development of this method has been halted. Please use [crm.item.delete](../universal/crm-item-delete.md).
 
 {% endnote %}
 
@@ -141,7 +141,7 @@ The method `crm.company.delete` removes a company.
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -172,7 +172,7 @@ HTTP status: **200**
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {

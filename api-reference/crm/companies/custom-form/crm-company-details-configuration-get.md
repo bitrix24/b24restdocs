@@ -1,4 +1,4 @@
-# Get Parameters of crm.company.details.configuration.get
+# Get Parameters for crm.company.details.configuration.get
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
@@ -6,17 +6,17 @@
 >  - any user can retrieve their own and shared settings,
 >  - a user with the "Allow to modify settings" access permission in CRM can retrieve others' settings.
 
-{% note warning "Method development has been halted" %}
+{% note warning "DEPRECATED" %}
 
-The method `crm.company.details.configuration.get` continues to function, but there is a more relevant alternative [crm.item.details.configuration.get](../../universal/item-details-configuration/crm-item-details-configuration-get.md).
+The development of this method has been halted. Please use [crm.item.details.configuration.get](../../universal/item-details-configuration/crm-item-details-configuration-get.md).
 
 {% endnote %}
 
-The method `crm.company.details.configuration.get` retrieves the settings of company cards: it reads the personal settings of the specified user or the shared settings defined for all users.
+The method `crm.company.details.configuration.get` retrieves the settings for company cards: it reads the personal settings of the specified user or the shared settings defined for all users.
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -28,7 +28,7 @@ Possible values:
 - `P` — personal settings
 - `C` — shared settings
 
-Default — `P`
+Default is `P`
 ||
 || **userId**
 [`user`](../../../data-types.md) | User identifier, which can be obtained using the [user.get](../../../user/user-get.md) method.
@@ -39,7 +39,7 @@ Required only for administrators when requesting others' personal settings. If n
 
 ## Code Examples
 
-{% include [Note on examples](../../../../_includes/examples.md) %}
+{% include [Note on Examples](../../../../_includes/examples.md) %}
 
 1. Retrieve personal card configuration
 
@@ -272,7 +272,7 @@ HTTP Status: **200**
     "result": [
         {
             "name": "main",
-            "title": "About the Company",
+            "title": "About Company",
             "type": "section",
             "elements": [
                 {
@@ -456,7 +456,7 @@ The structure is described [below](#options) ||
 `CONTACT`
 `MYCOMPANY_ID` | Country code for the default phone number format — a string of two Latin letters.
 
-For example, `"DE"` ||
+For example `"DE"` ||
 |#
 
 ## Error Handling

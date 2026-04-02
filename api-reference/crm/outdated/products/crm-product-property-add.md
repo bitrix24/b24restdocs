@@ -1,12 +1,12 @@
-# Add Product Property crm.product.property.add
+# Add Product Property `crm.product.property.add`
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
 > Who can execute the method: administrator, user with the "Allow to modify settings" access permission in CRM
 
-{% note warning "Method development has been halted" %}
+{% note warning "DEPRECATED" %}
 
-The method `crm.product.property.add` continues to function, but there is a more relevant alternative [catalog.productProperty.add](../../../catalog/product-property/catalog-product-property-add.md).
+The development of this method has been halted. Please use [catalog.productProperty.add](../../../catalog/product-property/catalog-product-property-add.md).
 
 {% endnote %}
 
@@ -20,9 +20,9 @@ The method `crm.product.property.add` creates a new product property.
 || **Name**
 `type` | **Description** ||
 || **fields**
-[`array`](../../../data-types.md) | Field values for creating a product property.
+[`array`](../../../data-types.md) | Field values for creating the product property.
 
-To find out the required format of the fields, execute the method [crm.product.property.fields](./crm-product-property-fields.md) and check the format of the received values for these fields ||
+To find out the required format for the fields, execute the method [crm.product.property.fields](./crm-product-property-fields.md) and check the format of the returned field values. ||
 |#
 
 ## Code Examples
@@ -187,7 +187,7 @@ To find out the required format of the fields, execute the method [crm.product.p
                 ->getResult();
     
             echo 'Success: ' . print_r($resultProperty, true);
-            // Your logic for processing data
+            // Your data processing logic
             processData($resultProperty);
         }
     
@@ -750,13 +750,13 @@ To find out the required format of the fields, execute the method [crm.product.p
                             'VALUE' => 'List value 1',
                             'SORT' => 100,
                             'DEF' => 'Y'
-                        },
+                        ],
                         'n1' => [
                             'ID' => 'n1',
                             'VALUE' => 'List value 2',
                             'SORT' => 200,
                             'DEF' => 'N'
-                        },
+                        ],
                         'n2' => [
                             'ID' => 'n2',
                             'VALUE' => 'List value 3',

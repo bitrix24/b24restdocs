@@ -1,16 +1,22 @@
 # How to Add an Action to Create an Invoice Based on a Lead or Deal
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 This example is universal for workflow actions and Automation rules. The only difference is the method:
 - [bizproc.activity.add](../../api-reference/bizproc/bizproc-activity/bizproc-activity-add.md) — create a workflow action
 - [bizproc.robot.add](../../api-reference/bizproc/bizproc-robot/bizproc-robot-add.md) — create an Automation rule
 
 In the example code, the method `bizproc.activity.add` is used. If you want to create an Automation rule, replace the method with `bizproc.robot.add`.
 
-To use the example, configure the `CRest` class and include the `crest.php` file in the files where this class is used. More details in the article [{#T}](../../first-steps/how-to-use-examples.md).
+To use the example, set up the `CRest` class and include the `crest.php` file in the files where this class is used. More details can be found in the article [{#T}](../../first-steps/how-to-use-examples.md).
 
 ## Action Registration File
 
-{% include [Note on examples](../../_includes/examples.md) %}
+{% include [Example Note](../../_includes/examples.md) %}
 
 Replace the path `$handlerUrl` with your path to the action handler.
 
@@ -109,9 +115,9 @@ Replace the path `$handlerUrl` with your path to the action handler.
 
 {% endlist %}
 
-## Action Handler
+## Action Handler 
 
-{% include [Note on examples](../../_includes/examples.md) %}
+{% include [Example Note](../../_includes/examples.md) %}
 
 ```php
 <?php

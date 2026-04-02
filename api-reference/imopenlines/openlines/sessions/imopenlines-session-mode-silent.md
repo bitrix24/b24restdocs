@@ -4,11 +4,11 @@
 >
 > Who can execute the method: any user with access permission to the dialog
 
-The method `imopenlines.session.mode.silent` enables or disables silent messaging mode in the dialog.
+The method `imopenlines.session.mode.silent` enables or disables the silent messaging mode in the dialog.
 
-{% note warning "" %}
+{% note warning "DEPRECATED" %}
 
-Development of the method has been halted, but it continues to function.
+The development of this method has been halted, but it continues to function.
 
 {% endnote %}
 
@@ -20,11 +20,11 @@ Development of the method has been halted, but it continues to function.
 || **Name**
 `type` | **Description** ||
 || **CHAT_ID***
-[`integer`](../../../data-types.md) | Identifier of the open line chat. 
+[`integer`](../../../data-types.md) | Identifier of the open line chat.
 
-The identifier can be obtained using the [imopenlines.session.open](./imopenlines-session-open.md) or [imopenlines.dialog.get](./imopenlines-dialog-get.md) methods. ||
+The identifier can be obtained using the [imopenlines.session.open](./imopenlines-session-open.md) or [imopenlines.dialog.get](./imopenlines-dialog-get.md) methods ||
 || **ACTIVATE**
-[`string`](../../../data-types.md) | Activation flag. `Y` — enable silent mode, any other value disables it. By default, the mode is off. ||
+[`string`](../../../data-types.md) | Activation flag. `Y` — enable silent mode, any other value disables it. By default, the mode is off ||
 |#
 
 ## Code Examples
@@ -168,9 +168,9 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../../data-types.md) | Returns `true` if the mode is applied. ||
+[`boolean`](../../../data-types.md) | Returns `true` if the mode has been applied ||
 || **time**
-[`time`](../../../data-types.md#time) | Information about the request execution time. ||
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -190,10 +190,10 @@ HTTP Status: **400**
 
 #|
 || **Status** | **Code** | **Description** | **Value** ||
-|| `400` | `CHAT_ID` | The specified chat identifier is incorrect. | Empty or incorrect `CHAT_ID`. ||
-|| `400` | `CHAT_TYPE` | The specified chat is not an open line. | The specified chat does not belong to open lines. ||
-|| `400` | `ACCESS_DENIED` | You cannot open this conversation as you do not have sufficient rights. | The current user does not have access to the dialog. ||
-|| `400` | `USER_ID` | The specified user identifier is incorrect. | The user on behalf of whom the method is executed is not defined. ||
+|| `400` | `CHAT_ID` | The provided chat identifier is incorrect | Empty or invalid `CHAT_ID` ||
+|| `400` | `CHAT_TYPE` | The specified chat is not an open line | The specified chat does not belong to open lines ||
+|| `400` | `ACCESS_DENIED` | You cannot open this conversation due to insufficient rights | The current user does not have access to the dialog ||
+|| `400` | `USER_ID` | The provided user identifier is incorrect | The user on behalf of whom the method is executed is not defined ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

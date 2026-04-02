@@ -1,18 +1,18 @@
-# Get Settings for Default Deal Category crm.dealcategory.default.get
+# Get Default Deal Category Settings crm.dealcategory.default.get
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-{% note warning %}
+{% note warning "DEPRECATED" %}
 
-The method is deprecated. It is recommended to use funnel methods [`crm.category.*`](../../universal/category/index.md)
+The development of this method has been halted. Please use [crm.category.*](../../universal/category/index.md).
 
 {% endnote %}
 
-The method retrieves settings for the default deal category.
+This method retrieves the settings for the default deal category.
 
-Without parameters
+No parameters
 
 ## Code Examples
 
@@ -45,24 +45,24 @@ Without parameters
     ```js
     try
     {
-    	const response = await $b24.callMethod(
-    		'crm.dealcategory.default.get',
-    		{}
-    	);
-    	
-    	const result = response.getData().result;
-    	if (result.error())
-    	{
-    		console.error(result.error());
-    	}
-    	else
-    	{
-    		console.dir(result);
-    	}
+        const response = await $b24.callMethod(
+            'crm.dealcategory.default.get',
+            {}
+        );
+        
+        const result = response.getData().result;
+        if (result.error())
+        {
+            console.error(result.error());
+        }
+        else
+        {
+            console.dir(result);
+        }
     }
     catch(error)
     {
-    	console.error('Error:', error);
+        console.error('Error:', error);
     }
     ```
 

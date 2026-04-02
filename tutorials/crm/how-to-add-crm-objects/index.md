@@ -1,5 +1,11 @@
 # How to Add Leads and Other Entities
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 - [{#T}](./how-to-add-lead.md)
 - [{#T}](./how-to-add-lead-with-files.md)
 - [{#T}](./how-to-add-objects-with-crm-mode.md)

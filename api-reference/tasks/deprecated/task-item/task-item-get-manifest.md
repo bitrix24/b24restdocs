@@ -1,24 +1,24 @@
-# Get a list of methods task.item.* with their description task.item.getmanifest
+# Get a List of Methods task.item.* with Their Descriptions task.item.getmanifest
 
 > Scope: [`task`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-The method returns a list of methods in the form of `task.item.*` along with their descriptions.
+This method returns a list of methods in the format `task.item.*` along with their descriptions.
 
 The return value of this method is not intended for automated processing, as its format may change without notice.
 
-The method can be useful as reference information, as it always contains up-to-date information.
+This method can be useful as a reference, as it always contains up-to-date information.
 
-{% note warning %}
+{% note warning "DEPRECATED" %}
 
-The method is deprecated and not supported. It is recommended to use the methods [tasks.task.*](../../index.md).
+Development of this method has been halted. Please use [tasks.task.getFields](../../tasks-task-get-fields.md).
 
 {% endnote %}
 
 ## Code Examples
 
-{% include [Note on examples](../../../../_includes/examples.md) %}
+{% include [Examples Note](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -78,7 +78,7 @@ The method is deprecated and not supported. It is recommended to use the methods
             ->getResult();
     
         echo 'Success: ' . print_r($result, true);
-        // Your required data processing logic
+        // Your data processing logic here
         processData($result);
     
     } catch (Throwable $e) {

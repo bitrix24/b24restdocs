@@ -1,0 +1,15 @@
+title: Chatbots 2.0  
+href: index.md  
+items:  
+  - name: Overview of Methods  
+    href: index.md  
+  - name: Quick Start  
+    href: quick-start.md  
+  - name: Objects and Fields  
+    href: entities.md  
+  - name: Migration from imbot to imbot.v2  
+    href: migration.md  
+  - name: Methods  
+    include:  
+      path: imbot.v2/b24-toc.yaml  
+      mode: link  

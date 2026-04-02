@@ -1,6 +1,6 @@
 # Update Task tasks.task.update
 
-> Scope: [`task`](../../scopes/permissions.md)
+> Scope: [`tasks`](../../scopes/permissions.md)
 >
 > Who can execute the method: task Creator or a user with access permission to edit the task
 
@@ -16,7 +16,7 @@ The method `tasks.task.update` updates a task.
 || **id***
 [`integer`](../../data-types.md)  | Task identifier.
 
-The task identifier can be obtained when [creating a new task](./tasks-task-add.md) or by the old method of [getting the list of tasks](../../tasks/tasks-task-list.md) ||
+The task identifier can be obtained when [creating a new task](./tasks-task-add.md) or by using the old method of [getting the task list](../../tasks/tasks-task-list.md) ||
 || **fields***
 [`object`](../../data-types.md) | Values of the task fields to be updated.
 [Description of all task fields](./fields.md) ||
@@ -28,7 +28,7 @@ The task identifier can be obtained when [creating a new task](./tasks-task-add.
 
 {% note info "" %}
 
-The call to the new API differs by adding the parameter `/api/` in the request:
+The new API call differs by the addition of the `/api/` parameter in the request:
 
 `https://{installation_address}/rest/api/{user_id}/{webhook_token}/tasks.task.update`
 
@@ -186,8 +186,8 @@ HTTP Status: **200**
         "finish": 1765452442.17818,
         "duration": 1.1781799793243408,
         "processing": 1,
-        "date_start": "2025-12-11T14:27:21+03:00",
-        "date_finish": "2025-12-11T14:27:22+03:00",
+        "date_start": "2025-12-11T14:27:21+01:00",
+        "date_finish": "2025-12-11T14:27:22+01:00",
         "operating_reset_at": 1765453041,
         "operating": 0
     }
@@ -238,13 +238,13 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION`
 || **Field** | **Error Description** | **How to Fix** ||
 || `id`
 `fields` | Required field `#FIELD#` is missing | Add the specified field to the request body ||
-|| `#FIELD#` | The field `#FIELD#` requires data type `#TYPE#` for such a request | Ensure that the value being passed is of the correct type ||
+|| `#FIELD#` | The field `#FIELD#` requires data type `#TYPE#` for such a request | Ensure the provided value is of the correct type ||
 || `responsibleId` | The user specified in the "Responsible" field was not found | Specify the identifier of an existing user in the `responsibleId` field ||
 || `parentId` | The task specified in the "Parent Task" field was not found | Specify the identifier of an existing task in the `parentId` field ||
 || `parentId` | Cannot bind a node to itself | Specify a task identifier in the `parentId` field that is different from the `id` field ||
-|| `endPlan` | The end date specified in the planning is earlier than the start date | Specify an `endPlan` date that is later than `startPlan` ||
-|| `endPlan` | The duration of the task specified in the planning is too long | Reduce the date in the `endPlan` field ||
-|| `creatorId` | In DTO `TaskDto`, the field `creatorId` requires the presence of the `Editable` attribute for such a request | Remove the `creatorId` field from the request, it cannot be changed ||
+|| `endPlan` | The specified end date is earlier than the start date in the planning | Specify an `endPlan` date that is later than `startPlan` ||
+|| `endPlan` | The specified duration of the task is too long | Reduce the date in the `endPlan` field ||
+|| `creatorId` | In DTO `TaskDto`, the field `creatorId` requires the presence of the `Editable` attribute for such a request | Remove the `creatorId` field from the request, it cannot be modified ||
 |#
 
 #### Access Error

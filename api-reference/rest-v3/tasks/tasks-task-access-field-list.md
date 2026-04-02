@@ -1,6 +1,6 @@
-# Get a List of Access Permission Fields for tasks.task.access.field.list
+# Get the List of Access Permission Fields for tasks.task.access.field.list
 
-> Scope: [`task`](../../scopes/permissions.md)
+> Scope: [`tasks`](../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
@@ -14,7 +14,7 @@ The method `tasks.task.access.field.list` returns a list of available access per
 || **Name**
 `type` | **Description** ||
 || **select**
-[`array`](../../data-types.md) | A list of description fields to return in the response.
+[`array`](../../data-types.md) | List of description fields to return in the response.
 
 Available fields:
 - `name` — field name
@@ -22,7 +22,7 @@ Available fields:
 - `title` — title
 - `description` — description
 - `validationRules` — validation rules
-- `requiredGroups` — mandatory groups
+- `requiredGroups` — required groups
 - `filterable` — filter availability indicator
 - `sortable` — sort availability indicator
 - `editable` — editability indicator
@@ -36,7 +36,7 @@ Available fields:
 
 {% note info "" %}
 
-The new API call differs by the addition of the `/api/` parameter in the request:
+The call to the new API differs by the addition of the `/api/` parameter in the request:
 
 `https://{installation_address}/rest/api/{user_id}/{webhook_token}/tasks.task.access.field.list`
 
@@ -66,7 +66,7 @@ The new API call differs by the addition of the `/api/` parameter in the request
 
 - JS
 
-    The SDK does not currently support the /rest/api/ address in calls. Use direct HTTP requests, for example, via curl or fetch.
+    The SDK does not currently support calls to the address /rest/api/. Use direct HTTP requests, for example, via curl or fetch.
 
     ```javascript
     try
@@ -97,7 +97,7 @@ The new API call differs by the addition of the `/api/` parameter in the request
 
 - PHP
 
-    The SDK does not currently support the /rest/api/ address in calls. Use direct HTTP requests, for example, via curl or fetch.
+    The SDK does not currently support calls to the address /rest/api/. Use direct HTTP requests, for example, via curl or fetch.
 
     ```php
     try {
@@ -132,7 +132,7 @@ The new API call differs by the addition of the `/api/` parameter in the request
 
 - BX24.js
 
-    The SDK does not currently support the /rest/api/ address in calls. Use direct HTTP requests, for example, via curl or fetch.
+    The SDK does not currently support calls to the address /rest/api/. Use direct HTTP requests, for example, via curl or fetch.
 
     ```js
     BX24.callMethod(
@@ -157,7 +157,7 @@ The new API call differs by the addition of the `/api/` parameter in the request
 
 - PHP CRest
 
-    The SDK does not currently support the /rest/api/ address in calls. Use direct HTTP requests, for example, via curl or fetch.
+    The SDK does not currently support calls to the address /rest/api/. Use direct HTTP requests, for example, via curl or fetch.
 
     ```php
     require_once('crest.php');
@@ -226,7 +226,7 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | Object containing the response data ||
+[`object`](../../data-types.md) | Object containing response data ||
 || **items**
 [`array`](../../data-types.md) | Array of objects describing the fields. The response structure depends on `select`  ||
 || **time**
@@ -256,7 +256,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_ACCESSDENIEDEXCEPTION`
 
 #|
 || **Field** | **Error Description** | **How to Fix** ||
-|| `-` | Access denied | Check user permissions and scope `task` ||
+|| `-` | Access denied | Check user permissions and the `task` scope ||
 |#
 
 #### Errors in the `select` Parameter

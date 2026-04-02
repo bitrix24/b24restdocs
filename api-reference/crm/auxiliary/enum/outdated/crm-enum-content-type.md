@@ -1,16 +1,16 @@
-# Get enumeration items "Description Type" crm.enum.contenttype
+# Get Enumeration Elements of "Description Type" crm.enum.contenttype
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-{% note warning "Method development has been discontinued" %}
+{% note warning "DEPRECATED" %}
 
-The method `crm.enum.contenttype` continues to function, but it is related to deprecated methods [crm.activity.*](../../../timeline/activities/index.md). A more current equivalent is the methods [crm.activity.todo.*](../../../timeline/activities/todo/index.md). 
+The development of this method has been halted. Please use [crm.activity.todo.*](../../../timeline/activities/todo/index.md).
 
 {% endnote %}
 
-The method `crm.enum.contenttype` returns description types for the `DESCRIPTION_TYPE` field of [deals](../../../timeline/activities/index.md).
+The method `crm.enum.contenttype` returns the description types for the `DESCRIPTION_TYPE` field of [deals](../../../timeline/activities/index.md).
 
 ## Method Parameters
 
@@ -130,7 +130,7 @@ No parameters.
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -179,7 +179,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`array`](../../../../data-types.md) | Array with description types [(detailed description)](#result) ||
+[`array`](../../../../data-types.md) | Array of description types [(detailed description)](#result) ||
 || **time**
 [`time`](../../../../data-types.md#time) | Information about the request execution time ||
 |#

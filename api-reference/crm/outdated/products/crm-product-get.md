@@ -4,9 +4,9 @@
 >
 > Who can execute the method: any user
 
-{% note warning "Method development has been halted" %}
+{% note warning "DEPRECATED" %}
 
-The method `crm.product.get` continues to function, but there are more relevant alternatives [catalog.product.*](../../../catalog/product/index.md).
+The development of this method has been halted. Please use [catalog.product.get](../../../catalog/product/catalog-product-get.md).
 
 {% endnote %}
 
@@ -16,7 +16,7 @@ The method `crm.product.get` returns a product by its ID.
 
 {% include [Note on required parameters](../../../../_includes/required.md) %}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **id**
@@ -54,18 +54,18 @@ The method `crm.product.get` returns a product by its ID.
     ```js
     try
     {
-    	const id = prompt("Enter ID");
-    	const response = await $b24.callMethod(
-    		"crm.product.get",
-    		{ id: id }
-    	);
-    
-    	const result = response.getData().result;
-    	console.dir(result);
+        const id = prompt("Enter ID");
+        const response = await $b24.callMethod(
+            "crm.product.get",
+            { id: id }
+        );
+
+        const result = response.getData().result;
+        console.dir(result);
     }
     catch(error)
     {
-    	console.error(error);
+        console.error(error);
     }
     ```
 

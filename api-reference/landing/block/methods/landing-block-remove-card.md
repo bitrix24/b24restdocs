@@ -1,75 +1,101 @@
-# Remove Card Method landing.block.removecard
-
-{% note warning "We are still updating this page" %}
-
-Some data may be missing here — we will complete it shortly.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- revisions needed for standard writing
-- parameter types not specified
-- parameter requirements not specified
-- examples missing
-- success response missing
-- error response missing
-
-{% endnote %}
-
-{% endif %}
+# Remove Card from Block landing.block.removecard
 
 > Scope: [`landing`](../../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: user with "edit" access permission for the site
 
-The method `landing.block.removecard` removes a block card. It returns *_true_* or an error.
+The method `landing.block.removecard` removes a card from a block in the draft of a page.
 
-## Parameters
+This method only works with cards described in the `cards` key of the block manifest. If the page is already published, the change will be visible to visitors after publication through the interface or via the method [landing.landing.publication](../../page/methods/landing-landing-publication.md).
+
+## Method Parameters
+
+{% include [Footnote about required parameters](../../../../_includes/required.md) %}
 
 #|
-|| **Method** | **Description** | **Available since** ||
-|| **lid**
-[`unknown`](../../../data-types.md) | Page identifier | ||
-|| **block**
-[`unknown`](../../../data-types.md) | Block identifier | ||
-|| **selector**
-[`unknown`](../../../data-types.md) | [Card selector](../manifest.md#key-cards) taken from the manifest, with the card identifier added.
-For example: '.landing-block-card@0'. The 0 at the end indicates that we are affecting the first card in order. | ||
+|| **Name**
+`type` | **Description** ||
+|| **lid***
+[`integer`](../../../data-types.md) | Identifier of the page.
+
+The page identifier can be obtained using the method [landing.landing.getlist](../../page/methods/landing-landing-get-list.md) ||
+|| **block***
+[`integer`](../../../data-types.md) | Identifier of the block in the editable version of the page.
+
+The block identifier can be obtained using the method [landing.block.getlist](./landing-block-get-list.md) with the parameter `params.edit_mode = 1`. If you pass the block identifier from the published version of the page, the method may return an error ||
+|| **selector***
+[`string`](../../../data-types.md) | Selector of the card from the [section `cards` of the block manifest](../manifest.md#key-cards)
+
+The method searches for cards using this selector and removes the one whose index is specified after `@<index>`. The index is counted only among the found cards. The numbering starts from `0`: 
+- `.landing-block-card@0` removes the first found card, 
+- `.landing-block-card@2` removes the third found card.
+
+If the index is not specified and only `.landing-block-card` is provided, the method will return an error. If an empty or non-numeric value is specified after `@`, the method will interpret it as `0` and attempt to remove the first card.
+
+The method will also return an error if the selector is not in the manifest, if there are no cards in the block with that selector, or if the index is out of bounds of the list ||
+|| **preventHistory**
+[`boolean`](../../../data-types.md) | Do not add the action to the page change history.
+
+Possible values:
+`true` - do not save the action in the change history,
+`false` - save the action in the change history.
+
+Default is `false` ||
 |#
 
-{% note warning %}
+## Code Examples
 
-Please note that once you have removed a card, their counters have changed.
-
-{% endnote %}
-
-## Examples
+{% include [Footnote about examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
+
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+      -H "Content-Type: application/json" \
+      -d '{
+        "lid": 351,
+        "block": 6428,
+        "selector": ".landing-block-card@0"
+      }' \
+      "https://**put.your-domain-here**/rest/**user_id**/**webhook_code**/landing.block.removecard.json"
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+      -H "Content-Type: application/json" \
+      -d '{
+        "lid": 351,
+        "block": 6428,
+        "selector": ".landing-block-card@0",
+        "auth": "**put_access_token_here**"
+      }' \
+      "https://**put.your-domain-here**/rest/landing.block.removecard.json"
+    ```
 
 - JS
 
     ```js
     try
     {
-    	const response = await $b24.callMethod(
-    		'landing.block.removecard',
-    		{
-    			lid: 311,
-    			block: 6057,
-    			selector: '.landing-block-card@0'
-    		}
-    	);
-    	
-    	const result = response.getData().result;
-    	console.info(result);
+        const response = await $b24.callMethod(
+            'landing.block.removecard',
+            {
+                lid: 351,
+                block: 6428,
+                selector: '.landing-block-card@0'
+            }
+        );
+
+        const result = response.getData().result;
+        console.info(result);
     }
-    catch(error)
+    catch (error)
     {
-    	console.error(error);
+        console.error(error);
     }
     ```
 
@@ -82,23 +108,20 @@ Please note that once you have removed a card, their counters have changed.
             ->call(
                 'landing.block.removecard',
                 [
-                    'lid'      => 311,
-                    'block'    => 6057,
+                    'lid' => 351,
+                    'block' => 6428,
                     'selector' => '.landing-block-card@0',
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
-        echo 'Success: ' . print_r($result, true);
-        // Your required data processing logic
-        processData($result);
-    
+
+        echo 'Success: ' . var_export($result, true);
     } catch (Throwable $e) {
         error_log($e->getMessage());
-        echo 'Error removing card: ' . $e->getMessage();
+        echo 'Error removing block card: ' . $e->getMessage();
     }
     ```
 
@@ -108,13 +131,13 @@ Please note that once you have removed a card, their counters have changed.
     BX24.callMethod(
         'landing.block.removecard',
         {
-            lid: 311,
-            block: 6057,
+            lid: 351,
+            block: 6428,
             selector: '.landing-block-card@0'
         },
         function(result)
         {
-            if(result.error())
+            if (result.error())
             {
                 console.error(result.error());
             }
@@ -126,6 +149,94 @@ Please note that once you have removed a card, their counters have changed.
     );
     ```
 
+- PHP CRest
+
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'landing.block.removecard',
+        [
+            'lid' => 351,
+            'block' => 6428,
+            'selector' => '.landing-block-card@0',
+        ]
+    );
+
+    if (isset($result['error']))
+    {
+        echo 'Error: ' . $result['error_description'];
+    }
+    else
+    {
+        echo '<pre>';
+        print_r($result['result']);
+        echo '</pre>';
+    }
+    ```
+
 {% endlist %}
 
-{% include [Footnote on examples](../../../../_includes/examples.md) %}
+## Response Handling
+
+HTTP Status: **200**
+
+```json
+{
+    "result": true,
+    "time": {
+        "start": 1774505673,
+        "finish": 1774505673.578092,
+        "duration": 0.578092098236084,
+        "processing": 0,
+        "date_start": "2026-03-26T09:14:33+01:00",
+        "date_finish": "2026-03-26T09:14:33+01:00",
+        "operating_reset_at": 1774506273,
+        "operating": 0
+    }
+}
+```
+
+### Returned Data
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`boolean`](../../../data-types.md) | Result of the card removal. Returns `true` upon successful execution ||
+|| **time**
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
+|#
+
+## Error Handling
+
+HTTP Status: **400**
+
+```json
+{
+    "error": "CARD_NOT_FOUND",
+    "error_description": "Card not found in the block"
+}
+```
+
+{% include notitle [error handling](../../../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+#|
+|| **Code** | **Description** ||
+|| `MISSING_PARAMS` | Required parameter `lid`, `block`, or `selector` is missing ||
+|| `LANDING_NOT_EXIST` | Page with identifier `lid` not found or not accessible to the current user ||
+|| `ACCESS_DENIED` | User does not have permission to edit the page and block ||
+|| `BLOCK_NOT_FOUND` | Block with identifier `block` not found on page `lid` or not accessible in the editable version of the page ||
+|| `CARD_NOT_FOUND` | No card found in the block with selector `selector`. This error is returned if the position is not specified, the selector is not in `manifest.cards`, no cards are found by it, or the index is out of bounds of the found cards ||
+|#
+
+{% include [system errors](../../../../_includes/system-errors.md) %}
+
+## Continue Learning
+
+- [{#T}](./landing-block-clone-card.md)
+- [{#T}](./landing-block-add-card.md)
+- [{#T}](./landing-block-update-cards.md)
+- [{#T}](../../page/methods/landing-landing-publication.md)

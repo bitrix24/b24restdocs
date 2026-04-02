@@ -4,9 +4,15 @@
 >
 > Who can execute the method: users with administrative access to the CRM section
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 Example of automatically generating a contact editing form with all fields created in Bitrix24 on the application page.
 
-Some field types are not implemented in this example; a message *field not support* will be displayed in place of unsupported field types.
+Some field types are not implemented in this example; a message *field not support* will be displayed in place of fields with unsupported types.
 
 {% note info %}
 
@@ -17,160 +23,160 @@ To use the examples in PHP, configure the *CRest* class and include the **crest.
 Generated form code:
 
 ```php
-<?
-$ID = intVal($_REQUEST['ID']);
+<?php
+$ID = intval($_REQUEST['ID']);
 
-    class CPrintForm
+class CPrintForm
+{
+    /**
+     * @return string html select
+     * @var $arParams array params input keys: 'NAME', 'ID', 'TYPE', 'REQUIRED', 'CHECKED', 'DISABLE', 'MULTIPLE', 'VALUE'
+     */
+    public static function input($arParams)
     {
-        /**
-         * @return string html select
-         * @var $arParams array params input keys: 'NAME', 'ID', 'TYPE', 'REQUIRED', 'CHECKED', 'DISABLE', 'MULTIPLE', 'VALUE'
-         */
-        public static function input($arParams)
+        $count = 0;
+        $i = 0;
+        $sResult = '';
+        if ($arParams['MULTIPLE'] && $arParams['TYPE'] != 'file')
         {
-            $count = 0;
-            $i = 0;
-            $sResult = '';
-            if ($arParams['MULTIPLE'] && $arParams['TYPE'] != 'file')
+            $count = 2;
+        }
+        $value = $arParams['VALUE'];
+        while ($i <= $count)
+        {
+            if ($count > 0)
             {
-                $count = 2;
+                $value = $arParams['VALUE'][$i];
             }
-            $value = $arParams['VALUE'];
-            while ($i <= $count)
+            $sResult .= '<input class="form-control' . (($arParams['TYPE'] == 'file') ? '-file' : '') . '"';
+            if (!empty($arParams['ID']))
             {
-
-                if ($count > 0)
-                {
-                    $value = $arParams['VALUE'][$i];
-                }
-                $sResult .= '<input class="form-control' . (($arParams['TYPE'] == 'file') ? '-file' : '') . '"';
-                if (!empty($arParams['ID']))
-                {
-                    $sResult .= ' id="' . $arParams['ID'] . '"';
-                }
-                if (!empty($arParams['NAME']))
-                {
-                    $sResult .= ' name="' . $arParams['NAME'] . '' . (($arParams['MULTIPLE']) ? '[]' : '') . '"';
-                }
-                if (!empty($arParams['TYPE']))
-                {
-                    $sResult .= ' type="' . $arParams['TYPE'] . '"';
-                }
-                if (!empty($arParams['REQUIRED']))
-                {
-                    $sResult .= ' required';
-                }
-                if (!empty($arParams['DISABLE']))
-                {
-                    $sResult .= ' disabled';
-                }
-                if (!empty($arParams['CHECKED']))
-                {
-                    $sResult .= ' checked';
-                }
-                if (!empty($arParams['MULTIPLE']))
-                {//sometimes work, not for standard type="text"
-                    $sResult .= ' multiple';
-                }
-                if (!empty($arParams['VALUE']))
-                {
-                    $sResult .= ' value="' . $value . '"';
-                }
-                $sResult .= '>';
-                $i++;
+                $sResult .= ' id="' . $arParams['ID'] . '"';
             }
-
-            return $sResult;
+            if (!empty($arParams['NAME']))
+            {
+                $sResult .= ' name="' . $arParams['NAME'] . '' . (($arParams['MULTIPLE']) ? '[]' : '') . '"';
+            }
+            if (!empty($arParams['TYPE']))
+            {
+                $sResult .= ' type="' . $arParams['TYPE'] . '"';
+            }
+            if (!empty($arParams['REQUIRED']))
+            {
+                $sResult .= ' required';
+            }
+            if (!empty($arParams['DISABLE']))
+            {
+                $sResult .= ' disabled';
+            }
+            if (!empty($arParams['CHECKED']))
+            {
+                $sResult .= ' checked';
+            }
+            if (!empty($arParams['MULTIPLE']))
+            {
+                //sometimes work, not for standard type="text"
+                $sResult .= ' multiple';
+            }
+            if (!empty($arParams['VALUE']))
+            {
+                $sResult .= ' value="' . $value . '"';
+            }
+            $sResult .= '>';
+            $i++;
         }
 
-        /**
-         * @return string html select
-         * @var $arList array of select options where key is value option and value is title
-         * @var $arParams array settings of select params keys: 'NAME', 'ID', 'REQUIRED', 'DISABLE','MULTIPLE', 'VALUE'
-         */
-        public static function select($arParams, $arList)
-        {
-            $sResult = '';
-            if (!empty($arList) && is_array($arList))
-            {
-                $sResult .= '<select class="form-control"' .
-                    (($arParams['NAME']) ? ' name="' .
-                        $arParams['NAME'] .
-                        '' .
-                        (($arParams['MULTIPLE']) ? '[]' : '') .
-                        '"' : '') .
-                    (($arParams['ID']) ? ' id="' . $arParams['ID'] . '"' : '') .
-                    (($arParams['REQUIRED']) ? ' required' : '') .
-                    (($arParams['DISABLE']) ? ' disabled' : '') .
-                    (($arParams['MULTIPLE']) ? ' multiple' : '') .
-                    '>';
-                $value = [];
-                if (is_array($arParams['VALUE']))
-                {
-                    $value = $arParams['VALUE'];
-                }
-                else
-                {
-                    $value[] = ($arParams['VALUE']) ? $arParams['VALUE'] : '';
-                }
-                foreach ($arList as $key => $title)
-                {
-                    $sResult .= '<option value="' .
-                        $key .
-                        '" ' .
-                        ((in_array($key, $value)) ? ' selected' : '') .
-                        '>' .
-                        $title .
-                        '</option>';
-                }
-                $sResult .= '</select>';
-            }
-
-            return $sResult;
-        }
-
+        return $sResult;
     }
 
-    $arData = [
-        //Get all fields and standard enum fields
-        'FIELDS' => [
-            'method' => 'crm.contact.fields',
-            'params' => []
-        ],
-        'FIELD_VALUES_SOURCE_ID' => [
-            'method' => 'crm.status.list',//only 50 first values
-            'params' => ['filter' => ['ENTITY_ID' => '$result[FIELDS][SOURCE_ID][statusType]']]
-        ],
-        'FIELD_VALUES_STATUS_ID' => [
-            'method' => 'crm.status.list',//only 50 first values
-            'params' => ['filter' => ['ENTITY_ID' => '$result[FIELDS][STATUS_ID][statusType]']]
-        ],
-        'FIELD_VALUES_CURRENCY' => [
-            'method' => 'crm.currency.list',//only 50 first values
-            'params' => ['filter' => ['ENTITY_ID' => '$result[FIELDS][STATUS_ID][statusType]']]
-        ],
-        'OWNER_TYPE' => [
-            'method' => 'crm.enum.ownertype',
-            'params' => []
-        ],
+    /**
+     * @return string html select
+     * @var $arList array of select options where key is value option and value is title
+     * @var $arParams array settings of select params keys: 'NAME', 'ID', 'REQUIRED', 'DISABLE','MULTIPLE', 'VALUE'
+     */
+    public static function select($arParams, $arList)
+    {
+        $sResult = '';
+        if (!empty($arList) && is_array($arList))
+        {
+            $sResult .= '<select class="form-control"' .
+                (($arParams['NAME']) ? ' name="' .
+                    $arParams['NAME'] .
+                    '' .
+                    (($arParams['MULTIPLE']) ? '[]' : '') .
+                    '"' : '') .
+                (($arParams['ID']) ? ' id="' . $arParams['ID'] . '"' : '') .
+                (($arParams['REQUIRED']) ? ' required' : '') .
+                (($arParams['DISABLE']) ? ' disabled' : '') .
+                (($arParams['MULTIPLE']) ? ' multiple' : '') .
+                '>';
+            $value = [];
+            if (is_array($arParams['VALUE']))
+            {
+                $value = $arParams['VALUE'];
+            }
+            else
+            {
+                $value[] = ($arParams['VALUE']) ? $arParams['VALUE'] : '';
+            }
+            foreach ($arList as $key => $title)
+            {
+                $sResult .= '<option value="' .
+                    $key .
+                    '" ' .
+                    ((in_array($key, $value)) ? ' selected' : '') .
+                    '>' .
+                    $title .
+                    '</option>';
+            }
+            $sResult .= '</select>';
+        }
+
+        return $sResult;
+    }
+
+}
+
+$arData = [
+    //Get all fields and standard enum fields
+    'FIELDS' => [
+        'method' => 'crm.contact.fields',
+        'params' => []
+    ],
+    'FIELD_VALUES_SOURCE_ID' => [
+        'method' => 'crm.status.list',//only 50 first values
+        'params' => ['filter' => ['ENTITY_ID' => '$result[FIELDS][SOURCE_ID][statusType]']]
+    ],
+    'FIELD_VALUES_STATUS_ID' => [
+        'method' => 'crm.status.list',//only 50 first values
+        'params' => ['filter' => ['ENTITY_ID' => '$result[FIELDS][STATUS_ID][statusType]']]
+    ],
+    'FIELD_VALUES_CURRENCY' => [
+        'method' => 'crm.currency.list',//only 50 first values
+        'params' => ['filter' => ['ENTITY_ID' => '$result[FIELDS][STATUS_ID][statusType]']]
+    ],
+    'OWNER_TYPE' => [
+        'method' => 'crm.enum.ownertype',
+        'params' => []
+    ],
+];
+if ($ID > 0)
+{//get item and standard enum field values if is update form
+    $arData['ITEM'] = [
+        'method' => 'crm.contact.get',
+        'params' => ['id' => $ID]
     ];
-    if ($ID > 0)
-    {//get item and standard enum field values if is update form
-        $arData['ITEM'] = [
-            'method' => 'crm.contact.get',
-            'params' => ['id' => $ID]
-        ];
-        $arData['VALUE_LEAD_ID'] = [
-            'method' => 'crm.lead.get',
-            'params' => ['id' => '$result[ITEM][LEAD_ID]']
-        ];
-    }
+    $arData['VALUE_LEAD_ID'] = [
+        'method' => 'crm.lead.get',
+        'params' => ['id' => '$result[ITEM][LEAD_ID]']
+    ];
+}
 
-    $arResult = CRest::callBatch($arData, 0);
+$arResult = CRest::callBatch($arData, 0);
 
-    $arResult = $arResult['result']['result'];
-    $sResult = '';
-    $sResultCustom = '';
+$arResult = $arResult['result']['result'];
+$sResult = '';
+$sResultCustom = '';
 if (is_array($arResult['FIELDS'])):
     if (isset($arResult['FIELDS']['COMPANY_ID']))//deprecated use crm.contact.company.items.get
     {
@@ -181,7 +187,7 @@ if (is_array($arResult['FIELDS'])):
         unset($arResult['FIELDS']['COMPANY_IDS']);
     }
 
-    foreach ($arResult['FIELDS'] as $key =&gt; $arField)
+    foreach ($arResult['FIELDS'] as $key => $arField)
     {
         $value = '';
         $return = '';
@@ -197,7 +203,7 @@ if (is_array($arResult['FIELDS'])):
                 {
                     $arFieldsStatus = \CRest::get(
                         'crm.status.list',
-                        ['filter' =&gt; ['ENTITY_ID' =&gt; $arField['statusType']]]
+                        ['filter' => ['ENTITY_ID' => $arField['statusType']]]
                     );
                     if (!empty($arFieldsStatus['result']))
                     {
@@ -208,11 +214,11 @@ if (is_array($arResult['FIELDS'])):
 
                 $return = CPrintForm::select(
                     [
-                        'NAME' =&gt; 'form[' . $key . ']',
-                        'REQUIRED' =&gt; $arField['isRequired'],
-                        'DISABLE' =&gt; $arField['isReadOnly'],
-                        'MULTIPLE' =&gt; $arField['isMultiple'],
-                        'VALUE' =&gt; $value
+                        'NAME' => 'form[' . $key . ']',
+                        'REQUIRED' => $arField['isRequired'],
+                        'DISABLE' => $arField['isReadOnly'],
+                        'MULTIPLE' => $arField['isMultiple'],
+                        'VALUE' => $value
                     ],
                     $arList
                 );
@@ -221,11 +227,11 @@ if (is_array($arResult['FIELDS'])):
                 $arList = array_column($arResult['FIELD_VALUES_CURRENCY'], 'FULL_NAME', 'CURRENCY');
                 $return = CPrintForm::select(
                     [
-                        'NAME' =&gt; 'form[' . $key . ']',
-                        'REQUIRED' =&gt; $arField['isRequired'],
-                        'DISABLE' =&gt; $arField['isReadOnly'],
-                        'MULTIPLE' =&gt; $arField['isMultiple'],
-                        'VALUE' =&gt; $value
+                        'NAME' => 'form[' . $key . ']',
+                        'REQUIRED' => $arField['isRequired'],
+                        'DISABLE' => $arField['isReadOnly'],
+                        'MULTIPLE' => $arField['isMultiple'],
+                        'VALUE' => $value
                     ],
                     $arList
                 );
@@ -238,44 +244,44 @@ if (is_array($arResult['FIELDS'])):
 
                 $return = CPrintForm::select(
                     [
-                        'NAME' =&gt; 'form[' . $key . ']',
-                        'REQUIRED' =&gt; $arField['isRequired'],
-                        'DISABLE' =&gt; $arField['isReadOnly'],
-                        'MULTIPLE' =&gt; $arField['isMultiple'],
-                        'VALUE' =&gt; $value
+                        'NAME' => 'form[' . $key . ']',
+                        'REQUIRED' => $arField['isRequired'],
+                        'DISABLE' => $arField['isReadOnly'],
+                        'MULTIPLE' => $arField['isMultiple'],
+                        'VALUE' => $value
                     ],
                     $arList
                 );
                 break;
-            case 'crm_multifield'://its simple example: need multifield, check data type and more...
-                if (!empty($value) &amp;&amp; is_array($value))
+            case 'crm_multifield': //its simple example: need multifield, check data type and more...
+                if (!empty($value) && is_array($value))
                 {
                     $value = reset($value)['VALUE'];
                 }
                 $return = CPrintForm::input(
                     [
-                        'NAME' =&gt; 'form[' . $key . ']',
-                        'REQUIRED' =&gt; $arField['isRequired'],
-                        'DISABLE' =&gt; $arField['isReadOnly'],
-                        'MULTIPLE' =&gt; false,
-                        'VALUE' =&gt; $value,
-                        'TYPE' =&gt; 'text',
+                        'NAME' => 'form[' . $key . ']',
+                        'REQUIRED' => $arField['isRequired'],
+                        'DISABLE' => $arField['isReadOnly'],
+                        'MULTIPLE' => false,
+                        'VALUE' => $value,
+                        'TYPE' => 'text',
                     ]
                 );
                 break;
             case 'crm_lead':
                 $return = CPrintForm::input(
                     [
-                        'NAME' =&gt; 'form[' . $key . ']',
-                        'REQUIRED' =&gt; $arField['isRequired'],
-                        'DISABLE' =&gt; $arField['isReadOnly'],
-                        'MULTIPLE' =&gt; $arField['isMultiple'],
-                        'VALUE' =&gt; $value,
-                        'TYPE' =&gt; 'text',
+                        'NAME' => 'form[' . $key . ']',
+                        'REQUIRED' => $arField['isRequired'],
+                        'DISABLE' => $arField['isReadOnly'],
+                        'MULTIPLE' => $arField['isMultiple'],
+                        'VALUE' => $value,
+                        'TYPE' => 'text',
                     ]
                 );
 
-                if (!empty($arResult['VALUE_LEAD_ID']) &amp;&amp; $value == $arResult['VALUE_LEAD_ID']['ID'])
+                if (!empty($arResult['VALUE_LEAD_ID']) && $value == $arResult['VALUE_LEAD_ID']['ID'])
                 {
                     $return .= '(' . $arResult['VALUE_LEAD_ID']['TITLE'] . ')';
                 }
@@ -283,23 +289,23 @@ if (is_array($arResult['FIELDS'])):
             case 'file':
                 $return = CPrintForm::input(
                     [
-                        'NAME' =&gt; 'form[' . $key . ']',
-                        'REQUIRED' =&gt; $arField['isRequired'],
-                        'DISABLE' =&gt; $arField['isReadOnly'],
-                        'MULTIPLE' =&gt; $arField['isMultiple'],
-                        'VALUE' =&gt; $value,
-                        'TYPE' =&gt; 'file',
+                        'NAME' => 'form[' . $key . ']',
+                        'REQUIRED' => $arField['isRequired'],
+                        'DISABLE' => $arField['isReadOnly'],
+                        'MULTIPLE' => $arField['isMultiple'],
+                        'VALUE' => $value,
+                        'TYPE' => 'file',
                     ]
                 );
                 if ($arField['isMultiple'])
                 {
                     if (is_array($value))
                     {
-                        foreach ($value as $k =&gt; $val)
+                        foreach ($value as $k => $val)
                         {
                             if (!empty($val['downloadUrl']))
                             {
-                                $return .= '&lt;br/&gt;&lt;a href="' . $val['downloadUrl'] . '"&gt;old file ' . $k . '&lt;/a&gt;';
+                                $return .= '<br/><a href="' . $val['downloadUrl'] . '">old file ' . $k . '</a>';
                             }
                         }
                     }
@@ -308,7 +314,7 @@ if (is_array($arResult['FIELDS'])):
                 {
                     if (!empty($value['downloadUrl']))
                     {
-                        $return .= '&lt;br/&gt;&lt;a href="' . $value['downloadUrl'] . '"&gt;old file&lt;/a&gt;';
+                        $return .= '<br/><a href="' . $value['downloadUrl'] . '">old file</a>';
                     }
                 }
                 break;
@@ -319,12 +325,12 @@ if (is_array($arResult['FIELDS'])):
                 }
                 $return = CPrintForm::input(
                     [
-                        'NAME' =&gt; 'form[' . $key . ']',
-                        'REQUIRED' =&gt; $arField['isRequired'],
-                        'DISABLE' =&gt; $arField['isReadOnly'],
-                        'MULTIPLE' =&gt; $arField['isMultiple'],
-                        'VALUE' =&gt; $value,
-                        'TYPE' =&gt; 'date',
+                        'NAME' => 'form[' . $key . ']',
+                        'REQUIRED' => $arField['isRequired'],
+                        'DISABLE' => $arField['isReadOnly'],
+                        'MULTIPLE' => $arField['isMultiple'],
+                        'VALUE' => $value,
+                        'TYPE' => 'date',
                     ]
                 );
                 break;
@@ -335,25 +341,25 @@ if (is_array($arResult['FIELDS'])):
                 }
                 $return = CPrintForm::input(
                     [
-                        'NAME' =&gt; 'form[' . $key . ']',
-                        'REQUIRED' =&gt; $arField['isRequired'],
-                        'DISABLE' =&gt; $arField['isReadOnly'],
-                        'MULTIPLE' =&gt; $arField['isMultiple'],
-                        'VALUE' =&gt; $value,
-                        'TYPE' =&gt; 'datetime-local',
+                        'NAME' => 'form[' . $key . ']',
+                        'REQUIRED' => $arField['isRequired'],
+                        'DISABLE' => $arField['isReadOnly'],
+                        'MULTIPLE' => $arField['isMultiple'],
+                        'VALUE' => $value,
+                        'TYPE' => 'datetime-local',
                     ]
                 );
                 break;
             case 'char':
                 $return = CPrintForm::input(
                     [
-                        'NAME' =&gt; 'form[' . $key . ']',
-                        'REQUIRED' =&gt; $arField['isRequired'],
-                        'DISABLE' =&gt; $arField['isReadOnly'],
-                        'MULTIPLE' =&gt; $arField['isMultiple'],
-                        'VALUE' =&gt; 'Y',
-                        'CHECKED' =&gt; ($value == 'Y') ? true : false,
-                        'TYPE' =&gt; 'checkbox',
+                        'NAME' => 'form[' . $key . ']',
+                        'REQUIRED' => $arField['isRequired'],
+                        'DISABLE' => $arField['isReadOnly'],
+                        'MULTIPLE' => $arField['isMultiple'],
+                        'VALUE' => 'Y',
+                        'CHECKED' => ($value == 'Y') ? true : false,
+                        'TYPE' => 'checkbox',
                     ]
                 );
                 break;
@@ -361,25 +367,25 @@ if (is_array($arResult['FIELDS'])):
             case 'boolean':
                 $return = CPrintForm::input(
                     [
-                        'NAME' =&gt; 'form[' . $key . ']',
-                        'REQUIRED' =&gt; $arField['isRequired'],
-                        'DISABLE' =&gt; $arField['isReadOnly'],
-                        'MULTIPLE' =&gt; $arField['isMultiple'],
-                        'VALUE' =&gt; '1',
-                        'CHECKED' =&gt; ($value == 'Y') ? true : false,
-                        'TYPE' =&gt; 'checkbox',
+                        'NAME' => 'form[' . $key . ']',
+                        'REQUIRED' => $arField['isRequired'],
+                        'DISABLE' => $arField['isReadOnly'],
+                        'MULTIPLE' => $arField['isMultiple'],
+                        'VALUE' => '1',
+                        'CHECKED' => ($value == 'Y') ? true : false,
+                        'TYPE' => 'checkbox',
                     ]
                 );
                 break;
             case 'double':
                 $return = CPrintForm::input(
                     [
-                        'NAME' =&gt; 'form[' . $key . ']',
-                        'REQUIRED' =&gt; $arField['isRequired'],
-                        'DISABLE' =&gt; $arField['isReadOnly'],
-                        'MULTIPLE' =&gt; $arField['isMultiple'],
-                        'VALUE' =&gt; $value,
-                        'TYPE' =&gt; 'number'
+                        'NAME' => 'form[' . $key . ']',
+                        'REQUIRED' => $arField['isRequired'],
+                        'DISABLE' => $arField['isReadOnly'],
+                        'MULTIPLE' => $arField['isMultiple'],
+                        'VALUE' => $value,
+                        'TYPE' => 'number'
                     ]
                 );
                 break;
@@ -387,16 +393,16 @@ if (is_array($arResult['FIELDS'])):
                 $arUser = [];
                 if (!empty($value))
                 {
-                    $arUser = CRest::get('user.get', ['filter' =&gt; ['ID' =&gt; $value]]);
+                    $arUser = CRest::get('user.get', ['filter' => ['ID' => $value]]);
                 }
                 $return = CPrintForm::input(
                     [
-                        'NAME' =&gt; 'form[' . $key . ']',
-                        'REQUIRED' =&gt; $arField['isRequired'],
-                        'DISABLE' =&gt; $arField['isReadOnly'],
-                        'MULTIPLE' =&gt; $arField['isMultiple'],
-                        'VALUE' =&gt; $value,
-                        'TYPE' =&gt; 'number'
+                        'NAME' => 'form[' . $key . ']',
+                        'REQUIRED' => $arField['isRequired'],
+                        'DISABLE' => $arField['isReadOnly'],
+                        'MULTIPLE' => $arField['isMultiple'],
+                        'VALUE' => $value,
+                        'TYPE' => 'number'
                     ]
                 );
                 if (!empty($arUser['result']))
@@ -406,7 +412,7 @@ if (is_array($arResult['FIELDS'])):
                     foreach ($arUser['result'] as $val)
                     {
                         $i++;
-                        if ($i &gt; 1)
+                        if ($i > 1)
                         {
                             $return .= ', ';
                         }
@@ -419,24 +425,24 @@ if (is_array($arResult['FIELDS'])):
             case 'url':
                 $return = CPrintForm::input(
                     [
-                        'NAME' =&gt; 'form[' . $key . ']',
-                        'REQUIRED' =&gt; $arField['isRequired'],
-                        'DISABLE' =&gt; $arField['isReadOnly'],
-                        'MULTIPLE' =&gt; $arField['isMultiple'],
-                        'VALUE' =&gt; $value,
-                        'TYPE' =&gt; 'text',
+                        'NAME' => 'form[' . $key . ']',
+                        'REQUIRED' => $arField['isRequired'],
+                        'DISABLE' => $arField['isReadOnly'],
+                        'MULTIPLE' => $arField['isMultiple'],
+                        'VALUE' => $value,
+                        'TYPE' => 'text',
                     ]
                 );
                 break;
             case 'integer':
                 $return = CPrintForm::input(
                     [
-                        'NAME' =&gt; 'form[' . $key . ']',
-                        'REQUIRED' =&gt; $arField['isRequired'],
-                        'DISABLE' =&gt; $arField['isReadOnly'],
-                        'MULTIPLE' =&gt; $arField['isMultiple'],
-                        'VALUE' =&gt; $value,
-                        'TYPE' =&gt; 'number',
+                        'NAME' => 'form[' . $key . ']',
+                        'REQUIRED' => $arField['isRequired'],
+                        'DISABLE' => $arField['isReadOnly'],
+                        'MULTIPLE' => $arField['isMultiple'],
+                        'VALUE' => $value,
+                        'TYPE' => 'number',
                     ]
                 );
                 break;
@@ -444,22 +450,22 @@ if (is_array($arResult['FIELDS'])):
                 list($money, $currency) = explode('|', $value);
                 $return = CPrintForm::input(
                     [
-                        'NAME' =&gt; 'form[' . $key . ']',
-                        'REQUIRED' =&gt; $arField['isRequired'],
-                        'DISABLE' =&gt; $arField['isReadOnly'],
-                        'MULTIPLE' =&gt; $arField['isMultiple'],
-                        'VALUE' =&gt; $money,
-                        'TYPE' =&gt; 'number',
+                        'NAME' => 'form[' . $key . ']',
+                        'REQUIRED' => $arField['isRequired'],
+                        'DISABLE' => $arField['isReadOnly'],
+                        'MULTIPLE' => $arField['isMultiple'],
+                        'VALUE' => $money,
+                        'TYPE' => 'number',
                     ]
                 );
                 $arList = array_column($arResult['FIELD_VALUES_CURRENCY'], 'FULL_NAME', 'CURRENCY');
                 $return .= CPrintForm::select(
                     [
-                        'NAME' =&gt; $key . '_CURRENCY',
-                        'REQUIRED' =&gt; $arField['isRequired'],
-                        'DISABLE' =&gt; $arField['isReadOnly'],
-                        'MULTIPLE' =&gt; $arField['isMultiple'],
-                        'VALUE' =&gt; $currency
+                        'NAME' => $key . '_CURRENCY',
+                        'REQUIRED' => $arField['isRequired'],
+                        'DISABLE' => $arField['isReadOnly'],
+                        'MULTIPLE' => $arField['isMultiple'],
+                        'VALUE' => $currency
                     ],
                     $arList
                 );
@@ -467,12 +473,12 @@ if (is_array($arResult['FIELDS'])):
             case 'address':
                 $return = CPrintForm::input(
                     [
-                        'NAME' =&gt; 'form[' . $key . ']',
-                        'REQUIRED' =&gt; $arField['isRequired'],
-                        'DISABLE' =&gt; $arField['isReadOnly'],
-                        'MULTIPLE' =&gt; $arField['isMultiple'],
-                        'VALUE' =&gt; $value,
-                        'TYPE' =&gt; 'text',
+                        'NAME' => 'form[' . $key . ']',
+                        'REQUIRED' => $arField['isRequired'],
+                        'DISABLE' => $arField['isReadOnly'],
+                        'MULTIPLE' => $arField['isMultiple'],
+                        'VALUE' => $value,
+                        'TYPE' => 'text',
                     ]
                 );
                 break;
@@ -484,12 +490,12 @@ if (is_array($arResult['FIELDS'])):
 
                 $return = CPrintForm::input(
                     [
-                        'NAME' =&gt; 'form[' . $key . ']',
-                        'REQUIRED' =&gt; $arField['isRequired'],
-                        'DISABLE' =&gt; $arField['isReadOnly'],
-                        'MULTIPLE' =&gt; $arField['isMultiple'],
-                        'VALUE' =&gt; $value,
-                        'TYPE' =&gt; 'text',
+                        'NAME' => 'form[' . $key . ']',
+                        'REQUIRED' => $arField['isRequired'],
+                        'DISABLE' => $arField['isReadOnly'],
+                        'MULTIPLE' => $arField['isMultiple'],
+                        'VALUE' => $value,
+                        'TYPE' => 'text',
                     ]
                 );
 
@@ -498,220 +504,219 @@ if (is_array($arResult['FIELDS'])):
 
         if (strpos($key, 'UF_') === 0)
         {
-            $sResultCustom .= '&lt;div class="col-4 mt-3"&gt;' .
+            $sResultCustom .= '<div class="col-4 mt-3">' .
                 (($arField['formLabel']) ? $arField['formLabel'] : $arField['title']) .
                 ': ' .
-                '&lt;/div&gt;';
-            $sResultCustom .= '&lt;div class="col-6 mt-3"&gt;' . $return . '&lt;/div&gt;';
+                '</div>';
+            $sResultCustom .= '<div class="col-6 mt-3">' . $return . '</div>';
         }
         else
         {
-            $sResult .= '&lt;div class="col-4 mt-3"&gt;' .
+            $sResult .= '<div class="col-4 mt-3">' .
                 (($arField['formLabel']) ? $arField['formLabel'] : $arField['title']) .
                 ': ' .
-                '&lt;/div&gt;';
-            $sResult .= '&lt;div class="col-6 mt-3"&gt;' . $return . '&lt;/div&gt;';
+                '</div>';
+            $sResult .= '<div class="col-6 mt-3">' . $return . '</div>';
         }
     }
 
-    ?&gt;
-    &lt;link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-            crossorigin="anonymous"&gt;
-    &lt;script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" crossorigin="anonymous"&gt;&lt;/script&gt;
-    &lt;script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
-            crossorigin="anonymous"&gt;&lt;/script&gt;
-    &lt;script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-            crossorigin="anonymous"&gt;&lt;/script&gt;
-    &lt;script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"&gt;&lt;/script&gt;
-    &lt;script&gt;
-            $(document).ready(function () {
-                $('#auto_form').on('submit', function (el) {//event submit form
-                    el.preventDefault();//the default action of the event will not be triggered
-                    var formData = new FormData(this);
-                    var xhr = new XMLHttpRequest();
-                    xhr.open("POST", 'auto_form.php');
-                    xhr.onreadystatechange = function () {
-                        if (this.readyState === 4)
+    ?>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#auto_form').on('submit', function (el) {//event submit form
+                el.preventDefault();//the default action of the event will not be triggered
+                var formData = new FormData(this);
+                var xhr = new XMLHttpRequest();
+                xhr.open("POST", 'auto_form.php');
+                xhr.onreadystatechange = function () {
+                    if (this.readyState === 4)
+                    {
+                        if (this.status >= 200 && this.status < 400)
                         {
-                            if (this.status &gt;= 200 &amp;&amp; this.status &lt; 400)
+                            // Success!
+                            var resp = this.responseText;
+                            try
                             {
-                                // Success!
-                                var resp = this.responseText;
-                                try
+                                var json = JSON.parse(resp);
+                                if (typeof json.message !== 'undefined')
                                 {
-                                    var json = JSON.parse(resp);
-                                    if (typeof json.message !== 'undefined')
-                                    {
-                                        alert(json.message);
-                                    }
-                                } catch (e)
-                                {
-                                    return false;
+                                    alert(json.message);
                                 }
-                            }
-                            else
+                            } catch (e)
                             {
-                                alert('error');
+                                return false;
                             }
                         }
-                    };
-                    xhr.send(formData);
-                });
+                        else
+                        {
+                            alert('error');
+                        }
+                    }
+                };
+                xhr.send(formData);
             });
-        &lt;/script&gt;
-    &lt;div class="container"&gt;
-            &lt;form id="auto_form" action="" enctype="multipart/form-data" method="post"&gt;
-                &lt;?if (!empty($arResult['ITEM']['ID']))://for update entity	?&gt;
-                    &lt;input type="hidden" name="form[ID]" value="&lt;?=$arResult[ 'ITEM' ][ 'ID' ]	?&gt;"&gt;
-                &lt;?endif;?&gt;
-                &lt;h2&gt;Standard fields&lt;/h2&gt;
-                &lt;div class="row"&gt;
-                    &lt;?=$sResult?&gt;
-                &lt;/div&gt;
-                &lt;h2&gt;Custom fields&lt;/h2&gt;
-                &lt;div class="row"&gt;
-                    &lt;?=$sResultCustom?&gt;
-                &lt;/div&gt;
-                &lt;div class="row"&gt;
-                    &lt;div class="col-sm-10 mt-5"&gt;
-                        &lt;input type="submit" class="btn btn-primary" value="Submit"&gt;
-                    &lt;/div&gt;
-                &lt;/div&gt;
-            &lt;/form&gt;
-        &lt;/div&gt;						
-			
-    &lt;? endif;?&gt;
-</pre>
+        });
+    </script>
+    <div class="container">
+        <form id="auto_form" action="" enctype="multipart/form-data" method="post">
+            <?php if (!empty($arResult['ITEM']['ID'])): //for update entity ?>
+                <input type="hidden" name="form[ID]" value="<?= $arResult['ITEM']['ID'] ?>">
+            <?php endif; ?>
+            <h2>Standard fields</h2>
+            <div class="row">
+                <?= $sResult ?>
+            </div>
+            <h2>Custom fields</h2>
+            <div class="row">
+                <?= $sResultCustom ?>
+            </div>
+            <div class="row">
+                <div class="col-sm-10 mt-5">
+                    <input type="submit" class="btn btn-primary" value="Submit">
+                </div>
+            </div>
+        </form>
+    </div>
+
+<?php endif; ?>
 ```
 
 File **auto_form.php**:
 
 ```php
-<?
+<?php
 
-    $arForm = [];
-    foreach ($_POST['form'] as $key => $item)
+$arForm = [];
+foreach ($_POST['form'] as $key => $item)
+{
+    if (is_array($item))
     {
-        if (is_array($item))
+        $arForm[$key] = [];
+        foreach ($item as $k => $val)
         {
-            $arForm[$key] = [];
-            foreach ($item as $k => $val)
-            {
-                $arForm[$key][$k] = htmlspecialchars($val);
-            }
-        }
-        else
-        {
-            $arForm[$key] = htmlspecialchars($item);
+            $arForm[$key][$k] = htmlspecialchars($val);
         }
     }
-    //make array multiple files for add to custom field
-    if (!empty($_FILES['form']['tmp_name']) && is_array($_FILES['form']['tmp_name']))
+    else
     {
-        foreach ($_FILES['form']['tmp_name'] as $key => $files)
+        $arForm[$key] = htmlspecialchars($item);
+    }
+}
+//make array multiple files for add to custom field
+if (!empty($_FILES['form']['tmp_name']) && is_array($_FILES['form']['tmp_name']))
+{
+    foreach ($_FILES['form']['tmp_name'] as $key => $files)
+    {
+        if (is_array($files))
         {
-            if (is_array($files))
+            foreach ($files as $k => $file)
             {
-                foreach ($files as $k => $file)
-                {
-                    $arForm[$key][$k] = [
-                        "fileData" => [
-                            $_FILES['form']['name'][$key][$k],
-                            base64_encode(file_get_contents($file))
-                        ]
-                    ];
-                }
-            }
-            else
-            {
-                $arForm[$key] = [
+                $arForm[$key][$k] = [
                     "fileData" => [
-                        $_FILES['form']['name'][$key],
-                        base64_encode(file_get_contents($files))
+                        $_FILES['form']['name'][$key][$k],
+                        base64_encode(file_get_contents($file))
                     ]
                 ];
             }
         }
-    }
-    $arResult = CRest::get('crm.contact.fields', []);
-    if (!empty($arResult['result']))
-    {
-        foreach ($arResult['result'] as $key => $prop)
+        else
         {
-            if (!isset($arForm[$key]))
-            {
-                if (!$prop['isReadOnly'] && $prop['type'] != 'file')
-                {
-                    if ($prop['type'] == 'enumeration' && $prop['isMultiple'])
-                    {
-                        //if type multiple enumeration to clean selected value need send: [false]
-                        $arForm[$key] = [false];
-                    }
-                    elseif ($prop['isMultiple'])
-                    {
-                        $arForm[$key] = [];
-                    }
-                    else
-                    {
-                        $arForm[$key] = '';
-                    }
-                }
-                continue;
-            }
-            //here may be any check field example by type
-            if ($prop['type'] == 'crm_multifield')
-            {
-                if (isset($arForm[$key]))
-                {
-                    $arForm[$key] = [['VALUE' => $arForm[$key]]];
-                }
-            }
-            elseif ($prop['type'] == 'money')
-            {
-                $arForm[$key] = implode('|', [$arForm[$key], $arForm[$key . '_CURRENCY']]);
-                unset($arForm[$key . '_CURRENCY']);
-            }
+            $arForm[$key] = [
+                "fileData" => [
+                    $_FILES['form']['name'][$key],
+                    base64_encode(file_get_contents($files))
+                ]
+            ];
         }
     }
-    $arForm['ID'] = intVal($arForm['ID']);
-    if ($arForm['ID'] > 0)
+}
+$arResult = CRest::get('crm.contact.fields', []);
+if (!empty($arResult['result']))
+{
+    foreach ($arResult['result'] as $key => $prop)
     {
-        $method = 'crm.contact.update';
-        $arParams = [
-            'id' => $arForm['ID'],
-            'fields' => $arForm
-        ];
-        $arMess = [
-            'success' => 'Contact updated',
-            'error' => 'Contact not updated',
-        ];
+        if (!isset($arForm[$key]))
+        {
+            if (!$prop['isReadOnly'] && $prop['type'] != 'file')
+            {
+                if ($prop['type'] == 'enumeration' && $prop['isMultiple'])
+                {
+                    //if type multiple enumeration to clean selected value need send: [false]
+                    $arForm[$key] = [false];
+                }
+                elseif ($prop['isMultiple'])
+                {
+                    $arForm[$key] = [];
+                }
+                else
+                {
+                    $arForm[$key] = '';
+                }
+            }
+            continue;
+        }
+        //here may be any check field example by type
+        if ($prop['type'] == 'crm_multifield')
+        {
+            if (isset($arForm[$key]))
+            {
+                $arForm[$key] = [['VALUE' => $arForm[$key]]];
+            }
+        }
+        elseif ($prop['type'] == 'money')
+        {
+            $arForm[$key] = implode('|', [$arForm[$key], $arForm[$key . '_CURRENCY']]);
+            unset($arForm[$key . '_CURRENCY']);
+        }
     }
-    else
-    {
-        $method = 'crm.contact.add';
-        $arParams = [
-            'fields' => $arForm
-        ];
-        $arMess = [
-            'success' => 'Contact added',
-            'error' => 'Contact not added',
-        ];
-    }
-    $result = CRest::get($method, $arParams);
-    if (!empty($result['result']))
-    {
-        echo json_encode(
-            ['message' => $arMess['success'] . (($method == 'crm.contact.add') ? ' ID:' . $result['result'] : '')]
-        );
-    }
-    elseif (!empty($result['error_description']))
-    {
-        echo json_encode(['message' => $arMess['error'] . ': ' . $result['error_description']]);
-    }
-    else
-    {
-        echo json_encode(['message' => $arMess['error']]);
-    }
+}
+$arForm['ID'] = intval($arForm['ID']);
+if ($arForm['ID'] > 0)
+{
+    $method = 'crm.contact.update';
+    $arParams = [
+        'id' => $arForm['ID'],
+        'fields' => $arForm
+    ];
+    $arMess = [
+        'success' => 'Contact updated',
+        'error' => 'Contact not updated',
+    ];
+}
+else
+{
+    $method = 'crm.contact.add';
+    $arParams = [
+        'fields' => $arForm
+    ];
+    $arMess = [
+        'success' => 'Contact added',
+        'error' => 'Contact not added',
+    ];
+}
+$result = CRest::get($method, $arParams);
+if (!empty($result['result']))
+{
+    echo json_encode(
+        ['message' => $arMess['success'] . (($method == 'crm.contact.add') ? ' ID:' . $result['result'] : '')]
+    );
+}
+elseif (!empty($result['error_description']))
+{
+    echo json_encode(['message' => $arMess['error'] . ': ' . $result['error_description']]);
+}
+else
+{
+    echo json_encode(['message' => $arMess['error']]);
+}
 
 ?>
 ```

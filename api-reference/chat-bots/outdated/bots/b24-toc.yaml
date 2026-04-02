@@ -1,0 +1,12 @@
+title: Chatbots
+items:
+  - name: Overview of Methods
+    href: index.md
+  - name: Create a Chatbot
+    href: imbot-register.md
+  - name: Update a Chatbot
+    href: imbot-update.md
+  - name: Retrieve a List of Chatbots
+    href: imbot-bot-list.md
+  - name: Delete a Chatbot
+    href: imbot-unregister.md

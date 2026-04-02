@@ -4,13 +4,19 @@
 >
 > Who can execute the method: any user
 
-This method deletes the comment with the identifier `id`.
+{% note warning "DEPRECATED" %}
+
+The development of this method has been halted. Please use [Smart scripts](../../../crm/universal/user-defined-object-types/index.md) as an alternative to this functionality.
+
+{% endnote %}
+
+This method deletes a comment with the identifier `id`.
 
 It only allows the deletion of comments that were added by the same user.
 
 ## Method Parameters
 
-{% include [Footnote on required parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -19,7 +25,7 @@ It only allows the deletion of comments that were added by the same user.
 [`integer`](../../../data-types.md) | Record identifier ||
 |#
 
-## Continue Exploring 
+## Continue Your Exploration 
 
 - [{#T}](./index.md)
 - [{#T}](./rpa-comment-add.md)

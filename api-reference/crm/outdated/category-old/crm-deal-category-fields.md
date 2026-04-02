@@ -1,22 +1,22 @@
-# Get descriptions of fields for deal categories crm.dealcategory.fields
+# Get Descriptions of Fields for Deal Categories crm.dealcategory.fields
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-{% note warning %}
+{% note warning "DEPRECATED" %}
 
-The method is deprecated. It is recommended to use [`crm.category.fields`](../../universal/category/crm-category-fields.md)
+Development of this method has been halted. Please use [crm.category.fields](../../universal/category/crm-category-fields.md).
 
 {% endnote %}
 
-The method returns descriptions of fields for deal categories.
+This method returns descriptions of fields for deal categories.
 
-No parameters.
+No parameters required.
 
 ## Code Examples
 
-{% include [Footnote about examples](../../../../_includes/examples.md) %}
+{% include [Examples Note](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -45,17 +45,17 @@ No parameters.
     ```js
     try
     {
-    	const response = await $b24.callMethod(
-    		"crm.dealcategory.fields",
-    		{}
-    	);
-    	
-    	const result = response.getData().result;
-    	console.dir(result);
+        const response = await $b24.callMethod(
+            "crm.dealcategory.fields",
+            {}
+        );
+        
+        const result = response.getData().result;
+        console.dir(result);
     }
     catch( error )
     {
-    	console.error(error);
+        console.error(error);
     }
     ```
 
@@ -121,7 +121,7 @@ No parameters.
 
 ### Returned Data
 
-{% include [Footnote about required parameters](../../../../_includes/required.md) %}
+{% include [Required Parameters Note](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -129,11 +129,11 @@ No parameters.
 || **CREATED_DATE** 
 [`datetime`](../../../data-types.md) | Creation date  ||
 || **ID** 
-[`integer`](../../../data-types.md)| Identifier of the deal category ||
+[`integer`](../../../data-types.md)| Identifier for the deal category ||
 || **IS_LOCKED**
-[`char`](../../../data-types.md) | Locked  ||
+[`char`](../../../data-types.md) | Is locked  ||
 || **NAME***
 [`string`](../../../data-types.md)| Name of the category  ||
 || **SORT** 
-[`integer`](../../../data-types.md) | Sorting   ||
+[`integer`](../../../data-types.md) | Sorting order   ||
 |#

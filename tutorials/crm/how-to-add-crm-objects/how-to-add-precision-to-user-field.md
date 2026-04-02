@@ -1,9 +1,15 @@
-# How to Set Up Rounding for a Custom Field of Type "Number"
+# How to Configure Rounding for a Custom Field of Type "Number"
+
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
 
 Custom fields have standard settings: name, required status, and multiple values.
 
 Additionally, there are specialized settings depending on the field type:
-- values for the list
+- values for lists
 - rounding precision for numbers
 - currency for monetary fields
 
@@ -69,22 +75,22 @@ As a result, we will receive two settings: default value and precision.
 }
 ```
 
-## Creating a Numeric Field with Rounding Setting
+## Creating a Numeric Field with Rounding Configuration
 
 We will create a field of type number with a precision setting of three decimal places. If a value with four or more decimal places is entered in the field, it will automatically round to three decimal places.
 
 To create a custom field, we use the method [userfieldconfig.add](../../../api-reference/crm/universal/userfieldconfig/userfieldconfig/userfieldconfig-add.md) with the following parameters:
 
-- `moduleId` — the identifier of the module in which the method will create the field, a required parameter. In the example, we create a field for deals, the module is `crm`.
-- `field[entityId]` — the identifier of the object in the format `CRM_ + {ID}`, a required parameter. The list of identifiers for objects can be found in the article — [Entity ID Identifiers](../../../api-reference/crm/universal/userfieldconfig/entity-id.md). In the example, we will specify `CRM_DEAL`.
+- `moduleId` — the identifier of the module in which the method will create the field, a required parameter. In this example, we create a field for deals, the module is `crm`.
+- `field[entityId]` — the identifier of the object in the format `CRM_ + {ID}`, a required parameter. The list of identifiers for objects can be found in the article — [Entity ID Identifiers](../../../api-reference/crm/universal/userfieldconfig/entity-id.md). In this example, we will specify `CRM_DEAL`.
 
-- `field[fieldName]` — the field code in the format `UF_ + {object identifier} + _ + {arbitrary string in UPPERCASE}`. The length limit for the code is 50 characters, a required parameter. In the example, we will specify `UF_CRM_DEAL_NEW_DOUBLE_FIELD`.
+- `field[fieldName]` — the field code in the format `UF_ + {object identifier} + _ + {arbitrary string in UPPERCASE}`. The length limit for the code is 50 characters, a required parameter. In this example, we will specify `UF_CRM_DEAL_NEW_DOUBLE_FIELD`.
 
-- `field[userTypeId]` — the identifier of the [field type](../../../api-reference/crm/universal/user-defined-fields/crm-userfield-types.md), a required parameter. In the example, we will specify `double` to create a number type field.
+- `field[userTypeId]` — the identifier of the [field type](../../../api-reference/crm/universal/user-defined-fields/crm-userfield-types.md), a required parameter. In this example, we will specify `double` to create a number type field.
 
 - `field[editFormLabel]` — an array of names for displaying the field in Bitrix24 in different languages. An optional parameter; if no name is provided, the field code will be displayed in Bitrix24.
 
-- `field[settings]` — an array of additional settings for the field depending on its type. An optional parameter; if not provided, default settings will be used. In the example, we will specify the `PRECISION` setting — precision. We will pass an integer equal to the number of decimal places.
+- `field[settings]` — an array of additional settings for the field depending on its type. An optional parameter; if not provided, default settings will be used. In this example, we will specify the `PRECISION` setting — precision. We will pass an integer equal to the number of decimal places.
 
 {% list tabs %}
 
@@ -190,9 +196,9 @@ As a result, we will receive the data of the created field.
 
 ## Modifying the Setting of an Existing Numeric Field
 
-To change the rounding setting of an existing field, we use the method [userfieldconfig.update](../../../api-reference/crm/universal/userfieldconfig/userfieldconfig/userfieldconfig-update.md) by specifying the field ID. The field ID can be obtained in two ways: when creating the field using the method [userfieldconfig.add](../../../api-reference/crm/universal/userfieldconfig/userfieldconfig/userfieldconfig-add.md) or through the method to retrieve the list of custom fields of the object. In the example, the field is for deals, so we will use the method [crm.deal.userfield.list](../../../api-reference/crm/deals/user-defined-fields/crm-deal-userfield-list.md).
+To change the rounding setting of an existing field, we use the method [userfieldconfig.update](../../../api-reference/crm/universal/userfieldconfig/userfieldconfig/userfieldconfig-update.md) specifying the field ID. The field ID can be obtained in two ways: when creating the field using the method [userfieldconfig.add](../../../api-reference/crm/universal/userfieldconfig/userfieldconfig/userfieldconfig-add.md) or through the method for retrieving the list of custom fields of the object. In this example, we are dealing with a deal field, so we will use the method [crm.deal.userfield.list](../../../api-reference/crm/deals/user-defined-fields/crm-deal-userfield-list.md).
 
-### 1. Getting the Field ID
+### 1. Retrieving the Field ID
 
 To get the field ID, we use the method [crm.deal.userfield.list](../../../api-reference/crm/deals/user-defined-fields/crm-deal-userfield-list.md) with the following parameters:
 
@@ -209,7 +215,7 @@ To get the field ID, we use the method [crm.deal.userfield.list](../../../api-re
         "crm.deal.userfield.list",
         {
             filter: {
-                LANG: 'en', // Language filter for displaying field name
+                LANG: 'en', // Language filter for displaying field names
                 USER_TYPE_ID: 'double' // Field type filter
             }
         }
@@ -225,7 +231,7 @@ To get the field ID, we use the method [crm.deal.userfield.list](../../../api-re
         'crm.deal.userfield.list',
         [
             'filter' => [
-                'LANG' => 'en', // Language filter for displaying field name
+                'LANG' => 'en', // Language filter for displaying field names
                 'USER_TYPE_ID' => 'double' // Field type filter
             ]
         ]
@@ -234,7 +240,7 @@ To get the field ID, we use the method [crm.deal.userfield.list](../../../api-re
 
 {% endlist %}
 
-As a result, we will receive all numeric fields of deals with names.
+As a result, we will receive all numeric fields of deals with their names.
 
 ```JSON
 {
@@ -300,11 +306,11 @@ As a result, we will receive all numeric fields of deals with names.
 
 To change the setting of an existing field, we use the method [userfieldconfig.update](../../../api-reference/crm/universal/userfieldconfig/userfieldconfig/userfieldconfig-update.md) with the following parameters:
 
-- `moduleId` — the identifier of the module in which the method will modify the field, a required parameter. In the example, we modify the field for deals, the module is `crm`.
+- `moduleId` — the identifier of the module in which the method will modify the field, a required parameter. In this example, we are modifying a deal field, the module is `crm`.
 
-- `id` — the identifier of the custom field, a required parameter. In the example, we will pass the field ID obtained from the method [crm.deal.userfield.list](#1-getting-the-field-id).
+- `id` — the identifier of the custom field, a required parameter. In this example, we will pass the field ID obtained from the method [crm.deal.userfield.list](#1-retrieving-the-field-id).
 
-- `field[settings]` — an array of additional settings for the field depending on its type. In the example, we will specify the `PRECISION` setting — precision. We will pass an integer equal to the number of decimal places.
+- `field[settings]` — an array of additional settings for the field depending on its type. In this example, we will specify the `PRECISION` setting — precision. We will pass an integer equal to the number of decimal places.
 
 {% list tabs %}
 
@@ -406,12 +412,12 @@ As a result, we will receive the data of the modified field.
         // Prompt the user for the field name
         var fieldName = prompt("Enter the field name:");
 
-        // First method: Get a list of all custom fields of type 'double'
+        // First method: Retrieve the list of all custom fields of type 'double'
         BX24.callMethod(
             "crm.deal.userfield.list",
             {
                 filter: {
-                    LANG: 'en', // Language filter for displaying field name
+                    LANG: 'en', // Language filter for displaying field names
                     USER_TYPE_ID: 'double' // Field type filter
                 }
             },
@@ -419,7 +425,7 @@ As a result, we will receive the data of the modified field.
                 if (result.error()) {
                     console.error(result.error());
                 } else {
-                    // Iterate through the retrieved fields to find the one by name
+                    // Iterate through the retrieved fields to find the desired one by name
                     var fields = result.data();
                     var fieldId = null;
 
@@ -470,12 +476,12 @@ As a result, we will receive the data of the modified field.
 
     // Function to find and update a custom field
     function updateUserField($fieldName) {
-        // First method: Get a list of all custom fields of type 'double'
+        // First method: Retrieve the list of all custom fields of type 'double'
         $result = CRest::call(
             'crm.deal.userfield.list',
             [
                 'filter' => [
-                    'LANG' => 'en', // Language filter for displaying field name
+                    'LANG' => 'en', // Language filter for displaying field names
                     'USER_TYPE_ID' => 'double' // Field type filter
                 ]
             ]
@@ -484,7 +490,7 @@ As a result, we will receive the data of the modified field.
         if (isset($result['error'])) {
             echo 'Error: ' . $result['error_description'];
         } else {
-            // Iterate through the retrieved fields to find the one by name
+            // Iterate through the retrieved fields to find the desired one by name
             $fields = $result['result'];
             $fieldId = null;
 

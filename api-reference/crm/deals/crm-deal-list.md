@@ -1,12 +1,12 @@
-# Get a list of deals crm.deal.list
+# Get a List of Deals crm.deal.list
 
 > Scope: [`crm`](../../scopes/permissions.md)
 > 
 > Who can execute the method: any user with "read" access permission for deals
 
-{% note warning "Method Development Stopped" %}
+{% note warning "DEPRECATED" %}
 
-The method `crm.deal.list` continues to function, but there is a more relevant alternative [crm.item.list](../universal/crm-item-list.md).
+Development of this method has been halted. Please use [crm.item.list](../universal/crm-item-list.md).
 
 {% endnote %}
 
@@ -18,9 +18,9 @@ The method `crm.deal.list` returns a list of deals based on a filter. It is an i
 || **Name**
 `type` | **Description** ||
 || **select**
-[`string[]`](../../data-types.md) | List of fields that should be populated for deals in the selection.
+[`string[]`](../../data-types.md) | A list of fields that should be populated for deals in the selection.
 
-You can use the following masks for selection:
+The following masks can be used in the selection:
 - `'*'` — to select all fields (excluding custom and multiple fields)
 - `'UF_*'` — to select all custom fields (excluding multiple fields)
 
@@ -45,7 +45,7 @@ where:
 - `field_n` — the name of the field by which the selection of elements will be filtered
 - `value_n` — the filter value
 
-You can add a prefix to the keys `field_n` to clarify the filter operation.
+You can add a prefix to the keys `field_n` to specify the filter operation.
 Possible prefix values:
 - `>=` — greater than or equal to
 - `>` — greater than
@@ -53,8 +53,8 @@ Possible prefix values:
 - `<` — less than
 - `@` — IN, an array is passed as the value
 - `!@` — NOT IN, an array is passed as the value
-- `%` — LIKE, substring search. The `%` character in the filter value should not be passed. The search looks for a substring in any position of the string
-- `=%` — LIKE, substring search. The `%` character should be passed in the value. Examples:
+- `%` — LIKE, substring search. The `%` symbol in the filter value should not be included. The search looks for the substring in any position of the string
+- `=%` — LIKE, substring search. The `%` symbol should be included in the value. Examples:
     - `"mol%"` — searches for values starting with "mol"
     - `"%mol"` — searches for values ending with "mol"
     - `"%mol%"` — searches for values where "mol" can be in any position
@@ -83,7 +83,7 @@ The filter does not support the field `CONTACT_IDS`; to filter by contacts, use 
 
 where:
 - `field_n` — the name of the field by which the selection of deals will be sorted
-- `value_n` — a `string` value equal to:
+- `value_n` — a `string` value, equal to:
     - `ASC` — ascending sort
     - `DESC` — descending sort
 
@@ -92,13 +92,13 @@ You can find the list of available fields for sorting using the method [crm.deal
 || **start**
 [`integer`](../../data-types.md)  | This parameter is used to manage pagination.
 
-The page size of results is always static — 50 records.
+The page size for results is always static — 50 records.
 
 To select the second page of results, pass the value `50`. To select the third page of results — the value `100`, and so on.
 
 The formula for calculating the `start` parameter value:
 
-`start = (N-1) * 50`, where `N` — the number of the desired page
+`start = (N-1) * 50`, where `N` — the desired page number
 ||
 |#
 
@@ -112,13 +112,13 @@ Also, see the description of [list methods](../../../settings/how-to-call-rest-a
 
 ## Code Examples
 
-{% include [Note on examples](../../../_includes/examples.md) %}
+{% include [Examples Note](../../../_includes/examples.md) %}
 
 Get a list of deals where:
-1. the funnel ID equals `1`
-2. the deal type equals `COMPLEX`
+1. the funnel ID is `1`
+2. the deal type is `COMPLEX`
 3. the title ends with `a`
-4. the stage equals `C1:NEW`
+4. the stage is `C1:NEW`
 5. the amount is greater than 10000 but less than or equal to 20000
 6. manual mode for amount calculation is enabled
 7. the responsible person is either the user with `id = 1` or the user with `id = 6`
@@ -162,7 +162,7 @@ For clarity, select only the necessary fields:
 - JS
 
     ```js
-    // callListMethod: Retrieves all data at once. Use only for small selections (< 1000 items) due to high memory usage.
+    // callListMethod: Retrieves all data at once. Use only for small selections (< 1000 items) due to high memory load.
     
     const now = new Date();
     const sixMonthAgo = new Date();
@@ -184,7 +184,7 @@ For clarity, select only the necessary fields:
             'DATE_CREATE',
           ],
           filter: {
-            '=%TITLE': '%а',
+            '=%TITLE': '%a',
             CATEGORY_ID: 1,
             TYPE_ID: 'COMPLEX',
             STAGE_ID: 'C1:NEW',
@@ -210,7 +210,7 @@ For clarity, select only the necessary fields:
       console.error('Request failed', error);
     }
     
-    // fetchListMethod: Retrieves data in parts using an iterator. Use it for large data volumes to optimize memory usage.
+    // fetchListMethod: Retrieves data in parts using an iterator. Use for large volumes of data for efficient memory consumption.
     
     const now = new Date();
     const sixMonthAgo = new Date();
@@ -230,7 +230,7 @@ For clarity, select only the necessary fields:
           'DATE_CREATE',
         ],
         filter: {
-          '=%TITLE': '%а',
+          '=%TITLE': '%a',
           CATEGORY_ID: 1,
           TYPE_ID: 'COMPLEX',
           STAGE_ID: 'C1:NEW',
@@ -254,7 +254,7 @@ For clarity, select only the necessary fields:
       console.error('Request failed', error);
     }
     
-    // callMethod: Manually controls pagination through the start parameter. Use it for precise control of request batches. For large datasets, it is less efficient than fetchListMethod.
+    // callMethod: Manual control of pagination through the start parameter. Use for precise control over request batches. Less efficient for large data than fetchListMethod.
     
     const now = new Date();
     const sixMonthAgo = new Date();
@@ -274,7 +274,7 @@ For clarity, select only the necessary fields:
           'DATE_CREATE',
         ],
         filter: {
-          '=%TITLE': '%а',
+          '=%TITLE': '%a',
           CATEGORY_ID: 1,
           TYPE_ID: 'COMPLEX',
           STAGE_ID: 'C1:NEW',
@@ -319,7 +319,7 @@ For clarity, select only the necessary fields:
                         'DATE_CREATE',
                     ],
                     'filter' => [
-                        '=%TITLE'              => '%а',
+                        '=%TITLE'              => '%a',
                         'CATEGORY_ID'          => 1,
                         'TYPE_ID'              => 'COMPLEX',
                         'STAGE_ID'             => 'C1:NEW',
@@ -374,7 +374,7 @@ For clarity, select only the necessary fields:
                 'DATE_CREATE',
             ],
             filter: {
-                '=%TITLE': '%а',
+                '=%TITLE': '%a',
                 CATEGORY_ID: 1,
                 TYPE_ID: 'COMPLEX',
                 STAGE_ID: 'C1:NEW',
@@ -420,7 +420,7 @@ For clarity, select only the necessary fields:
                 'DATE_CREATE',
             ],
             'FILTER' => [
-                '=%TITLE' => '%а',
+                '=%TITLE' => '%a',
                 'CATEGORY_ID' => 1,
                 'TYPE_ID' => 'COMPLEX',
                 'STAGE_ID' => 'C1:NEW',
@@ -446,7 +446,7 @@ For clarity, select only the necessary fields:
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -497,7 +497,7 @@ HTTP status: **200**
         },
         {
             "ID": "41",
-            "TITLE": "[C] Deal",
+            "TITLE": "[V] Deal",
             "TYPE_ID": "COMPLEX",
             "CATEGORY_ID": "1",
             "STAGE_ID": "C1:NEW",
@@ -508,7 +508,7 @@ HTTP status: **200**
         },
         {
             "ID": "42",
-            "TITLE": "[D] Deal",
+            "TITLE": "[S] Deal",
             "TYPE_ID": "COMPLEX",
             "CATEGORY_ID": "1",
             "STAGE_ID": "C1:NEW",
@@ -537,13 +537,13 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`deal[]`](crm-deal-get.md#deal) | The root element of the response. Contains an array of objects with information about the fields of deals. 
+[`deal[]`](crm-deal-get.md#deal) | The root element of the response. Contains an array of objects with information about the deal fields. 
 
-It should be noted that the structure of fields may change due to the `select` parameter ||
+Note that the structure of the fields may change due to the `select` parameter ||
 || **total**
 [`integer`](../../data-types.md) | The total number of found items ||
 || **next**
-[`integer`](../../data-types.md) | Contains the value that needs to be passed in the next request in the `start` parameter to get the next batch of data.
+[`integer`](../../data-types.md) | Contains the value to be passed in the next request in the `start` parameter to get the next batch of data.
 
 The `next` parameter appears in the response if the number of items matching your request exceeds `50` ||
 || **time**
@@ -552,7 +552,7 @@ The `next` parameter appears in the response if the number of items matching you
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {
@@ -583,4 +583,3 @@ HTTP status: **400**
 - [{#T}](./crm-deal-delete.md)
 - [{#T}](./crm-deal-fields.md)
 - [{#T}](../../../tutorials/crm/how-to-add-crm-objects/how-to-add-objects-with-crm-mode.md)
-

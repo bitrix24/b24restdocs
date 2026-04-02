@@ -5,8 +5,8 @@
 {% note alert "TO-DO _not exported to prod_" %}
 
 - parameter types are not specified
-- parameter requirements are not specified
-- no response in case of error
+- parameter requirements are not indicated
+- no response in case of an error
 - no response in case of success
  
 {% endnote %}
@@ -19,9 +19,9 @@
 
 This method adds a task to Favorites.
 
-{% note warning %}
+{% note warning "DEPRECATED" %}
 
-The method is deprecated and not supported. It is recommended to use the methods [tasks.task.*](../../index.md).
+Development of this method has been halted. Please use [tasks.task.favorite.add](../../tasks-task-favorite-add.md).
 
 {% endnote %}
 
@@ -31,10 +31,10 @@ The method is deprecated and not supported. It is recommended to use the methods
 || **Name** | **Description** ||
 || **auth** | Authorization token ||
 || **TASK_ID** | Task identifier ||
-|| **PARAMS** | The parameter contains the key `AFFECT_CHILDREN`. It indicates whether to add the subtasks of this task to Favorites ||
+|| **PARAMS** | This parameter contains the key `AFFECT_CHILDREN`. It indicates whether to add the subtasks of this task to Favorites ||
 |#
 
-It is mandatory to follow the order of parameters in the request. If violated, the request will be executed with errors.
+It is mandatory to maintain the order of parameters in the request. If this order is violated, the request will be executed with errors.
 
 ## Code Examples
 

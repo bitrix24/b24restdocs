@@ -1,16 +1,16 @@
-# Get the list of product fields for the inventory management document catalog.document.element.fields
+# Get a List of Product Fields for the Warehouse Accounting Document catalog.document.element.fields
 
 > Scope: [`catalog`](../../../scopes/permissions.md)
 >
 > Who can execute the method: administrator
 
-{% note warning "Method development has been halted" %}
+{% note warning "DEPRECATED" %}
 
-The method `catalog.document.element.fields` continues to function, but there is a more current equivalent [catalog.document.element.getFields](../document-element/catalog-document-element-get-fields.md).
+The development of this method has been halted. Please use [catalog.document.element.getFields](../document-element/catalog-document-element-get-fields.md).
 
 {% endnote %}
 
-The method `catalog.document.element.fields` returns a list of product fields for the inventory management document.
+The method `catalog.document.element.fields` returns a list of product fields for the warehouse accounting document.
 
 ## Method Parameters
 
@@ -18,7 +18,7 @@ No parameters.
 
 ## Code Examples
 
-{% include [Note about examples](../../../../_includes/examples.md) %}
+{% include [Examples Note](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -47,17 +47,17 @@ No parameters.
     ```js
     try
     {
-    	const response = await $b24.callMethod(
-    		'catalog.document.element.fields',
-    		{}
-    	);
-    	
-    	const result = response.getData().result;
-    	console.log(result);
+        const response = await $b24.callMethod(
+            'catalog.document.element.fields',
+            {}
+        );
+        
+        const result = response.getData().result;
+        console.log(result);
     }
     catch( error )
     {
-    	console.error(error);
+        console.error(error);
     }
     ```
 

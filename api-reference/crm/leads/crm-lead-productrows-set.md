@@ -4,19 +4,19 @@
 >
 > Who can execute the method: user with "edit" access permission for the lead
 
-{% note warning "Method Development Halted" %}
+{% note warning "DEPRECATED" %}
 
-The method `crm.lead.productrows.set` continues to function, but there is a more current alternative [crm.item.productrow.*](../universal/product-rows/index.md).
+The development of this method has been halted. Please use [crm.item.productrow.*](../universal/product-rows/index.md).
 
 {% endnote %}
 
-The method `crm.lead.productrows.set` creates or updates the product rows of a lead. Existing rows that are not provided in the method will be removed from the lead.
+The method `crm.lead.productrows.set` creates or updates the product rows of a lead. Existing rows that are not passed to the method will be removed from the lead.
 
 To modify only a single row, use the methods [crm.item.productrow.*](../universal/product-rows/index.md).
 
 ## Method Parameters
 
-{% include [Parameters Note](../../../_includes/required.md) %}
+{% include [Parameter Note](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -59,7 +59,7 @@ Default - `0`
 If both `PRODUCT_ID` and `PRODUCT_NAME` are not provided, then `PRODUCT_NAME` will be equal to `[{id}]`, where `{id}` is the identifier of the created product row
 ||
 || **PRICE**
-[`double`](../../data-types.md) | Total cost of the product per unit
+[`double`](../../data-types.md) | Final cost of the product per unit
 
 Default - `0.0`
 ||
@@ -68,14 +68,14 @@ Default - `0.0`
 || **PRICE_NETTO**
 [`double`](../../data-types.md) | Cost per unit excluding discounts and taxes ||
 || **PRICE_BRUTTO**
-[`double`](../../data-types.md) | Cost per unit excluding discounts, but including taxes ||
+[`double`](../../data-types.md) | Cost per unit excluding discounts but including taxes ||
 || **QUANTITY**
-[`double`](../../data-types.md) | Quantity of product units
+[`double`](../../data-types.md) | Quantity of the product
 
 Default - `1.0`
 ||
 || **DISCOUNT_TYPE_ID**
-[`integer`](../../data-types.md) | Type of discount
+[`integer`](../../data-types.md) | Discount type
 Possible types:
 - `1` - Absolute
 - `2` - Percentage
@@ -83,12 +83,12 @@ Possible types:
 Default - `2`
 ||
 || **DISCOUNT_RATE**
-[`double`](../../data-types.md) | Discount value in percentage (if using percentage discount type)
+[`double`](../../data-types.md) | Discount value in percentage (if percentage discount type is used)
 
 Default - `0.0`
 ||
 || **DISCOUNT_SUM**
-[`double`](../../data-types.md) | Absolute discount value (if using absolute discount type)
+[`double`](../../data-types.md) | Absolute discount value (if absolute discount type is used)
 
 Default - `0.0`
 ||
@@ -121,7 +121,7 @@ Default - `0`
 
 ## Code Examples
 
-{% include [Examples Note](../../../_includes/examples.md) %}
+{% include [Example Note](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -379,13 +379,13 @@ HTTP Status: **400**
 
 #|
 || **Description** | **Value** ||
-|| The parameter id is invalid or not defined | An invalid value was provided for the `id` parameter ||
-|| The parameter rows must be array | A non-array value was provided for the `rows` parameter ||
+|| The parameter id is invalid or not defined | An incorrect value was passed to the `id` parameter ||
+|| The parameter rows must be array | A non-array value was passed to the `rows` parameter ||
 || Access denied | The user does not have permission to "edit" the lead ||
 || Not found | The lead with the provided `id` was not found ||
-|| Discount Rate (`DISCOUNT_RATE`) is required if Percentage Discount Type (`DISCOUNT_TYPE_ID`) is defined | `DISCOUNT_TYPE_ID = 2` was provided without `DISCOUNT_RATE` ||
-|| Discount Sum (`DISCOUNT_SUM`) is required if Percentage Discount Type (`DISCOUNT_TYPE_ID`) is defined and Discount Rate (`DISCOUNT_RATE`) is 100% | `DISCOUNT_RATE = 100` and `DISCOUNT_TYPE_ID = 2` were provided without `DISCOUNT_SUM` ||
-|| Discount Sum (`DISCOUNT_SUM`) is required if Monetary Discount Type (`DISCOUNT_TYPE_ID`) is defined | `DISCOUNT_TYPE_ID = 1` was provided without `DISCOUNT_SUM` ||
+|| Discount Rate (`DISCOUNT_RATE`) is required if Percentage Discount Type (`DISCOUNT_TYPE_ID`) is defined | `DISCOUNT_TYPE_ID = 2` was passed without `DISCOUNT_RATE` ||
+|| Discount Sum (`DISCOUNT_SUM`) is required if Percentage Discount Type (`DISCOUNT_TYPE_ID`) is defined and Discount Rate (`DISCOUNT_RATE`) is 100% | `DISCOUNT_RATE = 100` and `DISCOUNT_TYPE_ID = 2` were passed without `DISCOUNT_SUM` ||
+|| Discount Sum (`DISCOUNT_SUM`) is required if Monetary Discount Type (`DISCOUNT_TYPE_ID`) is defined | `DISCOUNT_TYPE_ID = 1` was passed without `DISCOUNT_SUM` ||
 |#
 
 {% include [system errors](./../../../_includes/system-errors.md) %}

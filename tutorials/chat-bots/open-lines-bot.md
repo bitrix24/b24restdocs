@@ -1,12 +1,18 @@
 # Example of Creating a Chatbot for Open Channels
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect the [MCP server](../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 The process of creating a chatbot for *Open Channels* is similar to [creating a regular chatbot](./index.md), but there are two differences:
 
-1. When creating a chatbot for *Open Channels*, in [imbot.register](../../api-reference/chat-bots/imbot-register.md), the `TYPE` parameter must be set to `O`.
+1. When creating a chatbot for *Open Channels*, in [imbot.register](../../api-reference/chat-bots/outdated/bots/imbot-register.md), the `TYPE` parameter must be set to `O`.
 
 2. If you need to extend the capabilities of an existing chatbot, you should pass the new key `OPENLINE => Y`, and then the chatbot will operate in hybrid mode.
 
-   In hybrid mode, the chatbot must function correctly in group chats, personal chats, and open channel chats. To achieve this, you need to check the `CHAT_ENTITY_TYPE` parameter in all incoming events ([ONIMBOTMESSAGEADD](../../api-reference/chat-bots/messages/events/on-imbot-message-add.md) and [ONIMBOTJOINCHAT](../../api-reference/chat-bots/chats/events/on-imbot-join-chat.md)) — for *Open Channels*, it should be `CHAT_ENTITY_TYPE => LINES`.
+   In hybrid mode, the chatbot must function correctly in group chats, personal chats, and open channel chats. To achieve this, you need to check the `CHAT_ENTITY_TYPE` parameter in all incoming events ([ONIMBOTMESSAGEADD](../../api-reference/chat-bots/outdated/messages/events/on-imbot-message-add.md) and [ONIMBOTJOINCHAT](../../api-reference/chat-bots/outdated/chats/events/on-imbot-join-chat.md)) — for *Open Channels*, it should be `CHAT_ENTITY_TYPE => LINES`.
 
 In all other respects, this is the familiar and already known [chatbot](./index.md).
 

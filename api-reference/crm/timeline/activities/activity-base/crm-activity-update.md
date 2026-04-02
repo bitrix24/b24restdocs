@@ -1,12 +1,12 @@
-# Update System Activity crm.activity.update
+# Update System CRM Activity crm.activity.update
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
 > Who can execute the method: any user with permission to update the activity
 
-{% note warning "Method development has been halted" %}
+{% note warning "DEPRECATED" %}
 
-The method `crm.activity.update` continues to function, but there is a more current equivalent [crm.activity.todo.update](../todo/crm-activity-todo-update.md).
+Development of this method has been halted. Please use [crm.activity.todo.update](../todo/crm-activity-todo-update.md).
 
 {% endnote %}
 
@@ -14,7 +14,7 @@ The method `crm.activity.update` updates an existing activity.
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -30,7 +30,7 @@ fields:
     "OWNER_TYPE_ID": 2, 
     "OWNER_ID": 102, 
     "TYPE_ID": 2, 
-    "SUBJECT": "New call",
+    "SUBJECT": "New Call",
 }
 ```
 ||
@@ -38,7 +38,7 @@ fields:
 
 ### Parameter fields {#fields}
 
-{% include [Note on required parameters](../../../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../../../_includes/required.md) %}
 
 #|
 || **Field** `type` | **Description** ||
@@ -47,13 +47,13 @@ fields:
 || **OWNER_TYPE_ID***
 [`integer`](../../../data-types.md) | [Identifier of the CRM object type](../../../data-types.md#object_type) ||
 || **TYPE_ID***
-[`crm_enum_activitytype`](../../../data-types.md) | Type of activity ||
+[`crm_enum_activitytype`](../../../data-types.md) | Type of the activity ||
 || **ASSOCIATED_ENTITY_ID**
 [`integer`](../../../../data-types.md) | Identifier of the entity associated with the activity ||
 || **COMMUNICATIONS***
 [`crm_activity_communication`](../../../data-types.md) | [Description of the communication](./crm-activity-communication-fields.md) ||
 || **DEADLINE**
-[`datetime`](../../../data-types.md) | Date and time of the activity deadline. This field is not set directly; the value is taken from START_TIME for calls and meetings and from END_TIME for tasks ||
+[`datetime`](../../../data-types.md) | Date and time of the activity deadline. This field is not set directly; the value is taken from START_TIME for calls and meetings, and from END_TIME for tasks ||
 || **DESCRIPTION**
 [`string`](../../../data-types.md) | Text description of the activity ||
 || **DESCRIPTION_TYPE**
@@ -71,9 +71,9 @@ fields:
 || **ORIGINATOR_ID**
 [`string`](../../../data-types.md) | Identifier of the data source, used only for linking to an external source ||
 || **ORIGIN_ID**
-[`string`](../../../data-types.md) | Identifier of the item in the data source, used only for linking to an external source ||
+[`string`](../../../data-types.md) | Identifier of the entity in the data source, used only for linking to an external source ||
 || **ORIGIN_VERSION**
-[`string`](../../../data-types.md) | Original version, used to protect data from accidental overwriting by an external system. If the data was imported and not changed in the external system, it can be edited in CRM without fear that the next export will overwrite the data ||
+[`string`](../../../data-types.md) | Original version, used to protect data from accidental overwriting by an external system. If the data was imported and not modified in the external system, it can be edited in CRM without fear that the next export will overwrite the data ||
 || **PRIORITY**
 [`crm.enum.activitypriority`](../../../data-types.md) | Priority ||
 || **PROVIDER_DATA**
@@ -97,14 +97,14 @@ fields:
 || **SUBJECT**
 [`string`](../../../data-types.md) | Additional description of the activity ||
 || **WEBDAV_ELEMENTS**
-[`diskfile`](../../../data-types.md) | Added files. Deprecated, kept for compatibility ||
+[`diskfile`](../../../data-types.md) | Added files. Deprecated, retained for compatibility ||
 || **IS_INCOMING_CHANNEL**
 [`char`](../../../data-types.md) | Flag indicating whether the activity was created from an incoming channel (`Y`/`N`) ||
 |#
 
 ## Code Examples
 
-{% include [Note on examples](../../../../../_includes/examples.md) %}
+{% include [Note on Examples](../../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -114,7 +114,7 @@ fields:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":999,"fields":{"RESPONSIBLE_ID":1,"DESCRIPTION":"New activity description"}}' \
+    -d '{"id":999,"fields":{"RESPONSIBLE_ID":1,"DESCRIPTION":"New description of the activity"}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.activity.update
     ```
 
@@ -124,7 +124,7 @@ fields:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":999,"fields":{"RESPONSIBLE_ID":1,"DESCRIPTION":"New activity description"},"auth":"**put_access_token_here**"}' \
+    -d '{"id":999,"fields":{"RESPONSIBLE_ID":1,"DESCRIPTION":"New description of the activity"},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/crm.activity.update
     ```
 
@@ -139,7 +139,7 @@ fields:
     			id: 999,
     			fields: {
     				"RESPONSIBLE_ID": 1, 
-    				"DESCRIPTION": "New activity description"
+    				"DESCRIPTION": "New description of the activity"
     			}
     		}
     	);
@@ -165,7 +165,7 @@ fields:
                     'id' => 999,
                     'fields' => [
                         "RESPONSIBLE_ID" => 1,
-                        "DESCRIPTION" => "New activity description"
+                        "DESCRIPTION" => "New description of the activity"
                     ]
                 ]
             );
@@ -193,7 +193,7 @@ fields:
             id: 999,
             fields: {
                 "RESPONSIBLE_ID": 1, 
-                "DESCRIPTION": "New activity description"
+                "DESCRIPTION": "New description of the activity"
             }
         },
         result => {
@@ -217,7 +217,7 @@ fields:
             'id' => 999,
             'fields' => [
                 'RESPONSIBLE_ID' => 1,
-                'DESCRIPTION' => 'New activity description'
+                'DESCRIPTION' => 'New description of the activity'
             ]
         ]
     );
@@ -257,7 +257,7 @@ HTTP Status: **200**
 || **result**
 [`boolean`](../../../../data-types.md) | Result of the operation. Returns `true` if the activity was successfully updated, otherwise `false` ||
 || **time**
-[`time`](../../../../data-types.md#time) | Information about the execution time of the request ||
+[`time`](../../../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -271,7 +271,7 @@ HTTP Status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../../../_includes/error-info.md) %}
+{% include notitle [Error Handling](../../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
@@ -282,15 +282,15 @@ HTTP Status: **400**
 || `The field RESPONSIBLE_ID is not defined or invalid` | The `RESPONSIBLE_ID` field is not set ||
 || `The field TYPE_ID is not defined or invalid` | The `TYPE_ID` field is not set ||
 || `The field COMMUNICATIONS is not defined or invalid` | The `COMMUNICATIONS` field is not set ||
-|| `The only one communication is allowed for activity of specified type` | More than one contact is allowed ||
+|| `The only one communication is allowed for activity of specified type` | More than one contact is specified ||
 || `Could not build binding. Please ensure that owner info and communications are defined correctly` | Connections for the activity are not specified ||
-|| `The custom activity without provider is not supported in current context` | The activity type is not supported in the given context ||
+|| `The custom activity without provider is not supported in current context` | The activity type is not supported in the specified context ||
 || `Use crm.activity.configurable.update for this activity provider` | Incorrect method call for configurable activity ||
 || `Access denied` | No permission to update the entity in CRM ||
 || `Application context required` | Incorrect `PROVIDER_ID` parameter for the activity created in the application context ||
 |#
 
-{% include [system errors](../../../../../_includes/system-errors.md) %}
+{% include [System Errors](../../../../../_includes/system-errors.md) %}
 
 ## Continue Learning 
 

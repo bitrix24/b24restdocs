@@ -1,20 +1,20 @@
-# Get Task Data task.item.getdata
+# Get Data About Task task.item.getdata
 
 > Scope: [`task`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-The method returns an array of task data (`TITLE`, `DESCRIPTION`, and so on). The following [fields](./index.md) are available.
+This method returns an array of data about the task (`TITLE`, `DESCRIPTION`, and so on). The following [fields](./index.md) are available.
 
-{% note warning %}
+{% note warning "DEPRECATED" %}
 
-The method is deprecated and not supported. It is recommended to use the methods [tasks.task.*](../../index.md).
+Development of this method has been halted. Please use [tasks.task.get](../../tasks-task-get.md).
 
 {% endnote %}
 
 ## Method Parameters
 
-#|
+#| 
 || **Name** | **Description** ||
 || **TASKID** | Task identifier ||
 |#
@@ -50,18 +50,18 @@ The method is deprecated and not supported. It is recommended to use the methods
     ```js
     try
     {
-    	const response = await $b24.callMethod(
-    		'task.item.getdata',
-    		[2]
-    	);
-    	
-    	const result = response.getData().result;
-    	console.info(result);
-    	console.log(result);
+        const response = await $b24.callMethod(
+            'task.item.getdata',
+            [2]
+        );
+        
+        const result = response.getData().result;
+        console.info(result);
+        console.log(result);
     }
     catch( error )
     {
-    	console.error('Error:', error);
+        console.error('Error:', error);
     }
     ```
 

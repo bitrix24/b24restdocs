@@ -1,42 +1,40 @@
-# Get Fields for Price Type Bindings to Customer Groups catalog.priceTypeGroup.getFields
-
-{% note warning "We are still updating this page" %}
-
-Some data may be missing here — we will fill it in shortly.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- no response in case of error
-- no response in case of success
-- no examples in other languages
-  
-{% endnote %}
-
-{% endif %}
+# Get Price Type Group Binding Fields catalog.priceTypeGroup.getFields
 
 > Scope: [`catalog`](../../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: a user with the "View Product Catalog" or "Manage Price Types" access permission
 
-## Description
+The method `catalog.priceTypeGroup.getFields` returns the description of the fields binding price types to customer groups.
 
-```js
-catalog.priceTypeGroup.getFields()
-```
-
-The method returns the fields for binding price types to customer groups.
-
-## Parameters
+## Method Parameters
 
 No parameters.
 
-## Examples
+## Code Examples
+
+{% include [Example Notes](../../../../_includes/examples.md) %}
 
 {% list tabs %}
+
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{}' \
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/catalog.priceTypeGroup.getFields
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/catalog.priceTypeGroup.getFields
+    ```
 
 - JS
 
@@ -49,18 +47,11 @@ No parameters.
     	);
     	
     	const result = response.getData().result;
-    	if(result.error())
-    	{
-    		console.error(result.error().ex);
-    	}
-    	else
-    	{
-    		console.log(result);
-    	}
+    	console.log(result);
     }
-    catch(error)
+    catch( error )
     {
-    	console.error('Error:', error);
+    	console.error(error);
     }
     ```
 
@@ -80,7 +71,7 @@ No parameters.
             ->getResult();
     
         if ($result->error()) {
-            error_log($result->error()->ex);
+            error_log($result->error());
         } else {
             echo 'Success: ' . print_r($result->data(), true);
         }
@@ -93,39 +84,120 @@ No parameters.
 
 - BX24.js
 
-    ```javascript
+    ```js
     BX24.callMethod(
         'catalog.priceTypeGroup.getFields',
         {},
-        function(result)
-        {
-            if(result.error())
-                console.error(result.error().ex);
+        function(result) {
+            if (result.error())
+                console.error(result.error());
             else
                 console.log(result.data());
         }
     );
     ```
 
+- PHP CRest
+
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'catalog.priceTypeGroup.getFields',
+        []
+    );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
+    ```
+
 {% endlist %}
 
-{% include [Note on examples](../../../../_includes/examples.md) %}
+## Response Handling
 
-## Returned Fields
+HTTP Status: **200**
+
+```json
+{
+    "result": {
+        "priceTypeGroup": {
+            "access": {
+                "isImmutable": false,
+                "isReadOnly": false,
+                "isRequired": true,
+                "type": "char"
+            },
+            "catalogGroupId": {
+                "isImmutable": false,
+                "isReadOnly": false,
+                "isRequired": true,
+                "type": "integer"
+            },
+            "groupId": {
+                "isImmutable": false,
+                "isReadOnly": false,
+                "isRequired": true,
+                "type": "integer"
+            },
+            "id": {
+                "isImmutable": true,
+                "isReadOnly": false,
+                "isRequired": false,
+                "type": "integer"
+            }
+        }
+    },
+    "time": {
+        "start": 1774259882,
+        "finish": 1774259882.700544,
+        "duration": 0.7005441188812256,
+        "processing": 0,
+        "date_start": "2026-03-23T12:58:02+01:00",
+        "date_finish": "2026-03-23T12:58:02+01:00",
+        "operating_reset_at": 1774260482,
+        "operating": 0
+    }
+}
+```
+
+### Returned Data
 
 #|
-|| **Field** | **Description** | **Note** ||
-|| **access^*^** 
-[`char`](../../data-types.md) | Type of added binding:
-- `N` – permission to view this price type;
-- `Y` – permission to purchase at this price type.
-To add both permissions, the method must be called twice, sequentially specifying both types of binding (`N` and `Y`). |  ||
-|| **catalogGroupId^*^** 
-[`integer`](../../data-types.md) | ID of the price type. |  ||
-|| **groupId^*^** 
-[`integer`](../../data-types.md) | ID of the group to which the price is bound. |  ||
-|| **id**
-[`integer`](../../data-types.md) | Identifier of the binding. | Immutable field. ||
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`object`](../../data-types.md) | Root element of the response ||
+|| **priceTypeGroup**
+[`object`](../../data-types.md#catalog_price_type_group) | Object in the format `{"field_1": "value_1", ... "field_N": "value_N"}`, where `field` is the identifier of the [catalog_price_type_group](../../data-types.md#catalog_price_type_group) object, and `value` is an object of type [rest_field_description](../../data-types.md#rest_field_description) ||
+|| **time**
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
 
-{% include [Note on parameters](../../../../_includes/required.md) %}
+## Error Handling
+
+HTTP Status: **400**
+
+```json
+{
+    "error": 200040300010,
+    "error_description": "Access Denied"
+}
+```
+
+{% include notitle [error handling](../../../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+#|
+|| **Code** | **Description** | **Value** ||
+|| `200040300010` | Access Denied | Insufficient permissions to view the catalog ||
+|#
+
+{% include [system errors](../../../../_includes/system-errors.md) %}
+
+## Continue Learning
+
+- [{#T}](./catalog-price-type-group-add.md)
+- [{#T}](./catalog-price-type-group-list.md)
+- [{#T}](./catalog-price-type-group-delete.md)

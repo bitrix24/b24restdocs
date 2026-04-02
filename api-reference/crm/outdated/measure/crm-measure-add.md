@@ -4,6 +4,12 @@
 >
 > Who can execute the method: any user
 
+{% note warning "DEPRECATED" %}
+
+The development of this method has been halted. Please use [catalog.measure.add](../../../catalog/measure/catalog-measure-add.md).
+
+{% endnote %}
+
 This method adds a new measurement unit.
 
 ## Method Parameters
@@ -14,9 +20,9 @@ This method adds a new measurement unit.
 || **Name**
 `type` | **Description** ||
 || **fields***
-[`array`](../../data-types.md) | Set of fields — an array of the form `array("field"=>"value"[, ...])`, containing the values of the measurement unit fields.
+[`array`](../../data-types.md) | A set of fields — an array in the form `array("field"=>"value"[, ...])`, containing the values of the measurement unit fields.
 
-To find out the required format of the fields, execute the method [crm.measure.fields](./crm-measure-fields.md) and check the format of the received values for these fields 
+To find out the required format of the fields, execute the method [crm.measure.fields](./crm-measure-fields.md) and check the format of the incoming values for these fields.
 ||
 |#
 
@@ -72,26 +78,26 @@ To find out the required format of the fields, execute the method [crm.measure.f
     ```js
     try
     {
-    	const response = await $b24.callMethod(
-    		'crm.measure.add',
-    		{
-    			fields: {
-    				"CODE": "212",
-    				"MEASURE_TITLE": "Watt",
-    				"SYMBOL_RUS": "W",
-    				"SYMBOL_INTL": "W",
-    				"SYMBOL_LETTER_INTL": "WTT",
-    				"IS_DEFAULT": "N"
-    			}
-    		}
-    	);
-    	
-    	const result = response.getData().result;
-    	console.info('Created measurement unit with ID ' + result);
+        const response = await $b24.callMethod(
+            'crm.measure.add',
+            {
+                fields: {
+                    "CODE": "212",
+                    "MEASURE_TITLE": "Watt",
+                    "SYMBOL_RUS": "W",
+                    "SYMBOL_INTL": "W",
+                    "SYMBOL_LETTER_INTL": "WTT",
+                    "IS_DEFAULT": "N"
+                }
+            }
+        );
+        
+        const result = response.getData().result;
+        console.info('Measurement unit created with ID ' + result);
     }
     catch(error)
     {
-    	console.error('Error:', error);
+        console.error('Error:', error);
     }
     ```
 
@@ -119,7 +125,7 @@ To find out the required format of the fields, execute the method [crm.measure.f
             ->getResponseData()
             ->getResult();
     
-        echo 'Created measurement unit with ID ' . $result;
+        echo 'Measurement unit created with ID ' . $result;
     
     } catch (Throwable $e) {
         error_log($e->getMessage());
@@ -147,7 +153,7 @@ To find out the required format of the fields, execute the method [crm.measure.f
             if(result.error())
                 console.error(result.error());
             else
-                console.info("Created measurement unit with ID " + result.data());
+                console.info("Measurement unit created with ID " + result.data());
         }
     );
     ```

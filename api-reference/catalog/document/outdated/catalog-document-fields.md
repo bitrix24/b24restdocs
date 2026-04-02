@@ -1,12 +1,12 @@
-# Get the list of fields for the document catalog.document.fields
+# Get a List of Document Fields catalog.document.fields
 
 > Scope: [`catalog`](../../../scopes/permissions.md)
 >
 > Who can execute the method: administrator
 
-{% note warning "Method development has been halted" %}
+{% note warning "DEPRECATED" %}
 
-The method `catalog.document.fields` continues to function, but there is a more relevant alternative [catalog.document.getFields](../catalog-document-get-fields.md).
+The development of this method has been halted. Please use [catalog.document.getFields](../catalog-document-get-fields.md).
 
 {% endnote %}
 
@@ -18,7 +18,7 @@ No parameters.
 
 ## Code Examples
 
-{% include [Note on examples](../../../../_includes/examples.md) %}
+{% include [Examples Note](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 

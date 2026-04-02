@@ -1,5 +1,11 @@
 # Meetups, Broadcasts, and Recordings for Developers
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](./sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 ## CRM Timeline Widgets, Integrating E-Signing Solutions  - Episode 9 of Bitrix24 REST API Series
 
 @[youtube](https://youtu.be/IJ8s5T_htck?si=JWfKC-JA34zuVT8_)
@@ -7,7 +13,7 @@
 Example: [Github](https://github.com/bitrix24/b24sdk-examples/tree/main/php/special/custom-activities)
 B24PHPSDK: [GitHub](https://github.com/bitrix24/b24phpsdk)
 
-## Bitrix24 Vibe: Custom Widgets for Start Page - Episode 8 of Bitrix24 REST API Series
+## Bitrix24 Main page: Custom Widgets for Start Page - Episode 8 of Bitrix24 REST API Series
 
 @[youtube](https://youtu.be/jdZUN3ygWaE?si=NBhG2l1Fq2Fntb1K)
 

@@ -1,10 +1,16 @@
-# How to Create Your Deal Edit Form
+# How to Create an Edit Deal Form
 
 > Scope: [`crm`](../../../api-reference/scopes/permissions.md)
 >
 > Who can execute the method: users with administrative access to the CRM section
 
-Example of automatically generating a deal edit form with all fields created in Bitrix24 on the application page.
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
+Example of automatically generating an edit deal form with all fields created in Bitrix24 on the application page.
 
 Some field types are not implemented in the example; a message *field not support* will be displayed in place of unsupported field types.
 
@@ -48,10 +54,10 @@ class CPrintForm
             }
             if (!empty($arParams['NAME']))
             {
-                $sResult .= ' name="' .
-                    $arParams['NAME'] .
-                    '' .
-                    (($arParams['MULTIPLE']) ? '[]' : '') .
+                $sResult .= ' name="' . 
+                    $arParams['NAME'] . 
+                    '' . 
+                    (($arParams['MULTIPLE']) ? '[]' : '') . 
                     '"';
             }
             if (!empty($arParams['TYPE']))
@@ -93,16 +99,16 @@ class CPrintForm
         $sResult = '';
         if (!empty($arList) && is_array($arList))
         {
-            $sResult .= '<select class="form-control"' .
-                (($arParams['NAME']) ? ' name="' .
-                    $arParams['NAME'] .
-                    '' .
-                    (($arParams['MULTIPLE']) ? '[]' : '') .
-                    '"' : '') .
-                (($arParams['ID']) ? ' id="' . $arParams['ID'] . '"' : '') .
-                (($arParams['REQUIRED']) ? ' required' : '') .
-                (($arParams['DISABLE']) ? ' disabled' : '') .
-                (($arParams['MULTIPLE']) ? ' multiple' : '') .
+            $sResult .= '<select class="form-control"' . 
+                (($arParams['NAME']) ? ' name="' . 
+                    $arParams['NAME'] . 
+                    '' . 
+                    (($arParams['MULTIPLE']) ? '[]' : '') . 
+                    '"' : '') . 
+                (($arParams['ID']) ? ' id="' . $arParams['ID'] . '"' : '') . 
+                (($arParams['REQUIRED']) ? ' required' : '') . 
+                (($arParams['DISABLE']) ? ' disabled' : '') . 
+                (($arParams['MULTIPLE']) ? ' multiple' : '') . 
                 '>';
             $value = [];
             if (is_array($arParams['VALUE']))
@@ -115,12 +121,12 @@ class CPrintForm
             }
             foreach ($arList as $key => $title)
             {
-                $sResult .= '<option value="' .
-                    $key .
-                    '" ' .
-                    ((in_array($key, $value)) ? ' selected' : '') .
-                    '>' .
-                    $title .
+                $sResult .= '<option value="' . 
+                    $key . 
+                    '" ' . 
+                    ((in_array($key, $value)) ? ' selected' : '') . 
+                    '>' . 
+                    $title . 
                     '</option>';
             }
             $sResult .= '</select>';
@@ -590,17 +596,17 @@ foreach ($arResult['FIELDS'] as $key => $arField)
         }
         if (strpos($key, 'UF_') === 0)
         {
-            $sResultCustom .= '<div class="col-4 mt-3">' .
-                (($arField['formLabel']) ? $arField['formLabel'] : $arField['title']) .
-                ': ' .
+            $sResultCustom .= '<div class="col-4 mt-3">' . 
+                (($arField['formLabel']) ? $arField['formLabel'] : $arField['title']) . 
+                ': ' . 
                 '</div>';
             $sResultCustom .= '<div class="col-6 mt-3">' . $return . '</div>';
         }
         else
         {
-            $sResult .= '<div class="col-4 mt-3">' .
-                (($arField['formLabel']) ? $arField['formLabel'] : $arField['title']) .
-                ': ' .
+            $sResult .= '<div class="col-4 mt-3">' . 
+                (($arField['formLabel']) ? $arField['formLabel'] : $arField['title']) . 
+                ': ' . 
                 '</div>';
             $sResult .= '<div class="col-6 mt-3">' . $return . '</div>';
         }

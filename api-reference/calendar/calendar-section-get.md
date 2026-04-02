@@ -1,4 +1,4 @@
-# Get the list of calendars calendar.section.get
+# Get Calendar List calendar.section.get
 
 > Scope: [`calendar`](../scopes/permissions.md)
 >
@@ -21,7 +21,9 @@ This method retrieves a list of calendars.
 - `location` — meeting room calendar. Used for booking time in the meeting room calendar through a third-party application
 - other types, including custom ||
 || **ownerId***
-[`integer`](../data-types.md) | Calendar owner identifier.
+[`integer`](../data-types.md) | Identifier of the calendar owner.
+
+This parameter can be omitted if the calendar type is `user`. In this case, the current user's identifier is used.
 
 For the `location` calendar type, the `ownerId` parameter must be set to `0` ||
 |#
@@ -136,7 +138,7 @@ For the `location` calendar type, the `ownerId` parameter must be set to `0` ||
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -222,11 +224,11 @@ HTTP status: **200**
 || **CAL_TYPE**
 [`string`](../data-types.md) | Calendar type ||
 || **OWNER_ID**
-[`string`](../data-types.md) | Calendar owner identifier. 
+[`string`](../data-types.md) | Identifier of the calendar owner. 
 
-For the user calendar type `user`, the field contains the user identifier. For the group calendar `group`, it contains the group identifier ||
+For the user calendar type `user`, this field contains the user identifier. For the group calendar `group`, it contains the group identifier ||
 || **CREATED_BY**
-[`string`](../data-types.md) | Calendar creator identifier ||
+[`string`](../data-types.md) | Identifier of the calendar creator ||
 || **DATE_CREATE**
 [`datetime`](../data-types.md) | Calendar creation date ||
 || **TIMESTAMP_X**
@@ -242,13 +244,13 @@ For the user calendar type `user`, the field contains the user identifier. For t
 || **ACCESS**
 [`object`](../data-types.md) | Object containing access data for the calendar. 
 
-The object key is the access permission identifier. You can get the name of the access permission using the [access.name](../common/system/access-name.md) method. Determine access permissions for the current user using the [user.access](../common/users/user-access.md) method.
+The object key is the access permission identifier. You can obtain the name of the access permission using the [access.name](../common/system/access-name.md) method. Determine access rights for the current user using the [user.access](../common/users/user-access.md) method.
 
-The object value contains the numerical identifier of the access permission. Access permission identifiers differ across different accounts. Currently, only the account administrator in the on-premise version of Bitrix24 can find out all identifiers ||
+The object value contains a numerical identifier of the access permission. Access permission identifiers differ across different accounts. Currently, only the portal administrator in the on-premise version of Bitrix24 can retrieve all identifiers. ||
 || **IS_COLLAB**
-[`boolean`](../data-types.md) | Flag indicating whether the calendar belongs to collaboration ||
+[`boolean`](../data-types.md) | Flag indicating whether the calendar belongs to a collaboration ||
 || **PERM**
-[`object`](../data-types.md) | Object [access permissions](#perm) for the current user to the calendar ||
+[`object`](../data-types.md) | Object containing [access permissions](#perm) for the current user to the calendar ||
 |#
 
 #### EXPORT Object {#export}
@@ -270,7 +272,7 @@ The object value contains the numerical identifier of the access permission. Acc
 || **view_title**
 [`boolean`](../data-types.md) | View calendar event titles ||
 || **view_full**
-[`boolean`](../data-types.md) | Full access to calendar event information ||
+[`boolean`](../data-types.md) | Full access to event information in the calendar ||
 || **add**
 [`boolean`](../data-types.md) | Add events to the calendar ||
 || **edit**
@@ -283,7 +285,7 @@ The object value contains the numerical identifier of the access permission. Acc
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {
@@ -300,7 +302,7 @@ HTTP status: **400**
 || **Code** | **Error Message** | **Description** ||
 || Empty string | The required parameter "type" for the method "calendar.section.get" is not set | The required parameter `type` was not provided ||
 || Empty string | The required parameter "ownerId" for the method "calendar.section.get" is not set | The required parameter `ownerId` was not provided and the `type` parameter is not equal to `user` ||
-|| Empty string | Access denied | Access to the method is denied for external users ||
+|| Empty string | Access denied | Access to the method is prohibited for external users ||
 |#
 
 {% include [system errors](../../_includes/system-errors.md) %}

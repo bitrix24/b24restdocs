@@ -1,10 +1,16 @@
-# Add Calendar Event for Client Interaction
+# Add Calendar Event for Client Management
 
 > Scope: [`crm`](../../../api-reference/scopes/permissions.md)
 >
-> Who can execute the method: users with permission to modify a CRM entity
+> Who can execute the method: users with permission to modify the CRM entity
 
-Calendar events can be added automatically to remind employees about meetings or calls with clients. An event linked to the client's contact will appear in the calendar of the responsible employee. A task for the event will be added to the contact's detail form.
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
+Calendar events can be added automatically to remind employees about meetings or calls with clients. An event linked to the client's contact will appear in the calendar of the responsible employee. A CRM activity will be created for the event in the contact's detail form.
 
 To add an event to the calendar, we will sequentially execute two methods:
 
@@ -12,11 +18,11 @@ To add an event to the calendar, we will sequentially execute two methods:
 
 2. [crm.activity.add](../../../api-reference/crm/timeline/activities/activity-base/crm-activity-add.md) — create a calendar event
 
-## 1\. Retrieve Client Data
+## 1. Retrieve Client Data
 
-We will use the method [crm.contact.get](../../../api-reference/crm/contacts/crm-contact-get.md) with the client identifier. For example, we are interested in the contact with the identifier `1`.
+We will use the [crm.contact.get](../../../api-reference/crm/contacts/crm-contact-get.md) method with the client ID. For example, we are interested in the contact with ID `1`.
 
-{% include [Example Notes](../../../_includes/examples.md) %}
+{% include [Example Note](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -46,7 +52,7 @@ We will use the method [crm.contact.get](../../../api-reference/crm/contacts/crm
 
 {% endlist %}
 
-As a result, we will receive client data, including phone `PHONE` and the identifier of the responsible employee `ASSIGNED_BY_ID`.
+As a result, we will obtain client data, including the phone `PHONE` and the ID of the responsible employee `ASSIGNED_BY_ID`.
 
 ```json
 {
@@ -68,8 +74,8 @@ As a result, we will receive client data, including phone `PHONE` and the identi
         "HAS_PHONE": "Y",
         "HAS_EMAIL": "Y",
         "HAS_IMOL": "N",
-        "DATE_CREATE": "2023-08-18T12:43:42+02:00",
-        "DATE_MODIFY": "2023-10-17T15:59:13+02:00",
+        "DATE_CREATE": "2023-08-18T12:43:42+03:00",
+        "DATE_MODIFY": "2023-10-17T15:59:13+03:00",
         "ASSIGNED_BY_ID": "61",
         "CREATED_BY_ID": "57",
         "MODIFY_BY_ID": "47",
@@ -78,7 +84,7 @@ As a result, we will receive client data, including phone `PHONE` and the identi
         "ORIGIN_ID": null,
         "ORIGIN_VERSION": null,
         "FACE_ID": null,
-        "LAST_ACTIVITY_TIME": "2025-03-15T10:38:21+01:00",
+        "LAST_ACTIVITY_TIME": "2025-03-15T10:38:21+02:00",
         "ADDRESS": null,
         "ADDRESS_2": null,
         "ADDRESS_CITY": null,
@@ -115,39 +121,39 @@ As a result, we will receive client data, including phone `PHONE` and the identi
         "finish": 1747737934.945823,
         "duration": 0.057394981384277344,
         "processing": 0.029510021209716797,
-        "date_start": "2025-05-20T13:45:34+02:00",
-        "date_finish": "2025-05-20T13:45:34+02:00"
+        "date_start": "2025-05-20T13:45:34+03:00",
+        "date_finish": "2025-05-20T13:45:34+03:00"
     }
 }
 ```
 
-## 2\. Create Calendar Event
+## 2. Create Calendar Event
 
-To create an event, we will use the method [crm.activity.add](../../../api-reference/crm/timeline/activities/activity-base/crm-activity-add.md). We need to pass the client data and arbitrary parameters for the new event.
+To create an event, we will use the [crm.activity.add](../../../api-reference/crm/timeline/activities/activity-base/crm-activity-add.md) method. We need to pass the client data and arbitrary parameters for the new event.
 
 - `SUBJECT` — event title. We will specify `calendar title`.
 
 - `DESCRIPTION` — description. For example, `calendar body`.
 
-- `DESCRIPTION_TYPE` — format of the description text. Possible values: `1` — plain text, `2` — HTML markup, `3` — BB-code. We will set the value to `3`.
+- `DESCRIPTION_TYPE` — format of the description text. Possible values: `1` — plain text, `2` — HTML markup, `3` — BB code. We will set the value to `3`.
 
-- `OWNER_ID` — contact identifier. We will pass the client identifier — `1`.
+- `OWNER_ID` — contact ID. We will pass the client ID — `1`.
 
-- `OWNER_TYPE_ID` — [CRM object type identifier](../../../api-reference/crm/data-types.md#object_type). We will pass `3` — contact. A complete list of object types can be obtained using the method [crm.enum.ownertype](../../../api-reference/crm/auxiliary/enum/crm-enum-owner-type.md).
+- `OWNER_TYPE_ID` — [CRM object type ID](../../../api-reference/crm/data-types.md#object_type). We will pass `3` — contact. A complete list of object types can be obtained using the [crm.enum.ownertype](../../../api-reference/crm/auxiliary/enum/crm-enum-owner-type.md) method.
 
-- `TYPE_ID` — event type. We will specify `1` — meeting. The list of event types can be obtained using the method [crm.enum.activitytype](../../../api-reference/crm/auxiliary/enum/outdated/crm-enum-activity-type.md).
+- `TYPE_ID` — event type. We will specify `1` — meeting. The list of event types can be obtained using the [crm.enum.activitytype](../../../api-reference/crm/auxiliary/enum/outdated/crm-enum-activity-type.md) method.
 
 - `COMMUNICATIONS` — client's contact details:
 
     - `VALUE` — phone number, we will take the `VALUE` from the `PHONE` array obtained in the first step,
 
-    - `ENTITY_ID` — client identifier, we will pass `1`,
+    - `ENTITY_ID` — client ID, we will pass `1`,
 
-    - `ENTITY_TYPE_ID` — [object type identifier](../../../api-reference/crm/data-types.md#object_type), we will pass `3` — contact.
+    - `ENTITY_TYPE_ID` — [object type ID](../../../api-reference/crm/data-types.md#object_type), we will pass `3` — contact.
 
 - `START_TIME` and `END_TIME` — start and end date and time in [ISO 8601](https://www.php.net/manual/en/class.datetimeinterface.php#datetimeinterface.constants.atom) format, we will specify, for example, a duration of one hour,
 
-- `RESPONSIBLE_ID` — identifier of the responsible person, we will pass `ASSIGNED_BY_ID`, which was obtained in the first step.
+- `RESPONSIBLE_ID` — ID of the responsible person, we will pass `ASSIGNED_BY_ID`, which was obtained in the first step.
 
 {% list tabs %}
 
@@ -179,7 +185,7 @@ To create an event, we will use the method [crm.activity.add](../../../api-refer
     );
     ```
 
--  PHP
+- PHP
 
     ```php
     require_once('crest.php');
@@ -211,7 +217,7 @@ To create an event, we will use the method [crm.activity.add](../../../api-refer
 
 {% endlist %}
 
-If the event is created successfully, the method will return its identifier. If you receive an `error`, review the possible error descriptions in the documentation for the method [crm.activity.add](../../../api-reference/crm/timeline/activities/activity-base/crm-activity-add.md).
+If the event is created successfully, the method will return its ID. If you receive an `error`, refer to the documentation for the [crm.activity.add](../../../api-reference/crm/timeline/activities/activity-base/crm-activity-add.md) method to understand possible errors.
 
 ```json
 {
@@ -221,7 +227,7 @@ If the event is created successfully, the method will return its identifier. If 
 
 ## Code Example
 
-The example creates a task "Meeting" in the CRM contact detail form and an event lasting one hour in the employee's calendar.
+The example creates an activity "Meeting" in the CRM contact detail form and an event lasting one hour in the employee's calendar.
 
 {% list tabs %}
 

@@ -1,12 +1,18 @@
-# Update Timeline Record rpa.timeline.update
+# Update Timeline Entry rpa.timeline.update
 
 > Scope: [`rpa`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-This method updates the timeline record with the identifier `id`.
+{% note warning "DEPRECATED" %}
 
-The method only updates the `title` and `description` fields, and only those records that were created by the same user and through the application.
+The development of this method has been halted. Please use [Smart scripts](../../../crm/universal/user-defined-object-types/index.md) as an alternative to this functionality.
+
+{% endnote %}
+
+This method updates the timeline entry with the identifier `id`.
+
+The method only updates the `title` and `description` fields, and only for entries created by the same user and through the application.
 
 ## Method Parameters
 
@@ -14,20 +20,20 @@ The method only updates the `title` and `description` fields, and only those rec
 || **Name**
 `type` | **Description** ||
 || **id** 
-[`integer`](../../../data-types.md) | Identifier of the record ||
+[`integer`](../../../data-types.md) | Identifier of the entry ||
 || **fields** 
-[`object`](../../../data-types.md) | Object with [fields](#fields) of the record ||
+[`object`](../../../data-types.md) | Object containing the [fields](#fields) of the entry ||
 |#
 
-### Fields Parameter {#fields}
+### Parameter fields {#fields}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **title** 
-[`string`](../../../data-types.md) | Title of the record ||
+[`string`](../../../data-types.md) | Title of the entry ||
 || **description** 
-[`string`](../../../data-types.md) | Description of the record. HTML tags can be used ||
+[`string`](../../../data-types.md) | Description of the entry. HTML tags can be used ||
 |#
 
 ## Continue Exploring 

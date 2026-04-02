@@ -1,18 +1,18 @@
-# Get a list of product properties crm.product.property.list
+# Get a List of Product Properties crm.product.property.list
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-{% note warning "Method development has been halted" %}
+{% note warning "DEPRECATED" %}
 
-The method `crm.product.property.list` continues to function, but there is a more current equivalent [catalog.productProperty.list](../../../catalog/product-property/catalog-product-property-list.md).
+The development of this method has been halted. Please use [catalog.productProperty.list](../../../catalog/product-property/catalog-product-property-list.md).
 
 {% endnote %}
 
 The method `crm.product.property.list` returns a list of product properties.
 
-## Method parameters
+## Method Parameters
 
 {% include [Note on required parameters](../../../../_includes/required.md) %}
 
@@ -23,7 +23,7 @@ The method `crm.product.property.list` returns a list of product properties.
 || **filter** | Filter fields ||
 |#
 
-## Code examples
+## Code Examples
 
 {% include [Note on examples](../../../../_includes/examples.md) %}
 
@@ -52,7 +52,7 @@ The method `crm.product.property.list` returns a list of product properties.
 - JS
 
     ```js
-    // callListMethod: Retrieves all data at once. Use only for small selections (< 1000 items) due to high memory usage.
+    // callListMethod: Retrieves all data at once. Use only for small datasets (< 1000 items) due to high memory load.
     
     try {
       const response = await $b24.callListMethod(
@@ -72,7 +72,7 @@ The method `crm.product.property.list` returns a list of product properties.
       console.error('Request failed', error)
     }
     
-    // fetchListMethod: Retrieves data in parts using an iterator. Use it for large data volumes to optimize memory usage.
+    // fetchListMethod: Retrieves data in chunks using an iterator. Use for large datasets for efficient memory consumption.
     
     try {
       const generator = $b24.fetchListMethod('crm.product.property.list', {
@@ -89,7 +89,7 @@ The method `crm.product.property.list` returns a list of product properties.
       console.error('Request failed', error)
     }
     
-    // callMethod: Manually controls pagination through the start parameter. Use it for precise control of request batches. For large datasets, it is less efficient than fetchListMethod.
+    // callMethod: Manual control of pagination through the start parameter. Use for precise control over request batches. Less efficient for large data than fetchListMethod.
     
     try {
       const response = await $b24.callMethod('crm.product.property.list', {
@@ -187,4 +187,3 @@ The method `crm.product.property.list` returns a list of product properties.
     ```
 
 {% endlist %}
-

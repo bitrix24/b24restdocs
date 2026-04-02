@@ -1,12 +1,18 @@
-# Get the list of timeline records for the item rpa.timeline.listForItem
+# Get the Timeline Records List for the `rpa.timeline.listForItem` Element
 
 > Scope: [`rpa`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-The method retrieves a list of timeline records for the `itemId` of the `typeId` process.
+{% note warning "DEPRECATED" %}
 
-Records are sorted in descending order by creation date, meaning the most recent ones appear at the top of the list.
+The development of this method has been halted. Please use [Smart processes](../../../crm/universal/user-defined-object-types/index.md) as an alternative to this functionality.
+
+{% endnote %}
+
+This method retrieves a list of timeline records for the `itemId` of the `typeId` process.
+
+The records are sorted in descending order by creation date, meaning the newest entries appear at the top of the list.
 
 ## Method Parameters
 
@@ -16,9 +22,9 @@ Records are sorted in descending order by creation date, meaning the most recent
 || **typeId** 
 [`integer`](../../../data-types.md) | Identifier of the process ||
 || **itemId** 
-[`integer`](../../../data-types.md) | Identifier of the item ||
+[`integer`](../../../data-types.md) | Identifier of the element ||
 || **start** 
-[`integer`](../../../data-types.md) | This parameter is used to control pagination.
+[`integer`](../../../data-types.md) | This parameter is used for pagination.
 
 The page size for results is always static — 50 records.
 
@@ -42,7 +48,7 @@ HTTP Status: **200**
             "itemId": 10,
             "createdTime": "2020-03-26T20:28:57+02:00",
             "userId": 1,
-            "title": "Task completed",
+            "title": "Task Completed",
             "description": "",
             "action": "task_complete",
             "isFixed": false,
@@ -53,7 +59,7 @@ HTTP Status: **200**
                 "scope": "task",
                 "stageFrom": {
                     "id": 30,
-                    "name": "Approved by accountant"
+                    "name": "Approved by Accountant"
                 },
                 "stageTo": {
                     "id": 31,
@@ -127,13 +133,13 @@ HTTP Status: **200**
 || **Name** | **Description** ||
 || **id** | Identifier of the record ||
 || **typeId** | Identifier of the process ||
-|| **itemId** | Identifier of the item ||
-|| **createdTime** | Creation time of the record ||
+|| **itemId** | Identifier of the element ||
+|| **createdTime** | Time of record creation ||
 || **userId** | Identifier of the user who initiated the action ||
 || **title** | Title of the record ||
 || **description** | Text content of the record ||
 || **action** | Action type code ||
-|| **isFixed** | Flag indicating if the record is fixed ||
+|| **isFixed** | Flag indicating if the record is attached ||
 || **data** | Serialized data about the completed action and related entities at the time of record creation. Depending on the action type, it may contain a different [set of data](#data) ||
 |#
 
@@ -141,25 +147,25 @@ HTTP Status: **200**
 
 #|
 || **Name** | **Description** ||
-|| **item** | Data about the item:
-- `item[name]` — name of the item at the time of action execution ||
+|| **item** | Data about the element:
+- `item[name]` — name of the element at the time of action execution ||
 || **scope** | Code of the action source. Can take the value:
 - `manual` — manually
-- `task` — when performing a task
-- `automation` — by an Automation rule
-- `rest` — by an application ||
+- `task` — when executing a task
+- `automation` — by Automation rule
+- `rest` — by application ||
 || **stageFrom** | Data about the original stage at the time of action execution
 - `id` — identifier
 - `name` — name ||
 || **stageTo** | Data about the new stage, if it was changed during the action execution ||
-|| **fields** | Array of data about the fields whose values were changed during the action execution
+|| **fields** | Array of data about fields whose values were changed during the action execution
 - `name` — field code
 - `title` — field title ||
 || **task** | Data about the task, if the action was performed while executing a task ||
-|| **users** | Data about the users involved in the action ||
+|| **users** | Data about users who were involved in the action ||
 |#
 
-## Continue Exploring 
+## Continue Learning 
 
 - [{#T}](./index.md)
 - [{#T}](./rpa-timeline-add.md)

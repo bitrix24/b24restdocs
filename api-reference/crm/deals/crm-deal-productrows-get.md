@@ -1,12 +1,12 @@
-# Retrieve Deal Product Rows crm.deal.productrows.get
+# Get Deal Products crm.deal.productrows.get
 
 > Scope: [`crm`](../../scopes/permissions.md)
 >
 > Who can execute the method: a user with "read" access permission for the deal
 
-{% note warning "Method Development Halted" %}
+{% note warning "DEPRECATED" %}
 
-The method `crm.deal.productrows.get` continues to function, but there is a more current equivalent [crm.item.productrow.*](../universal/product-rows/index.md).
+Development of this method has been halted. Please use [crm.item.productrow.*](../universal/product-rows/index.md).
 
 {% endnote %}
 
@@ -16,17 +16,17 @@ The method `crm.deal.productrows.get` returns the product rows of a deal.
 || **Name**
 `type` | **Description** ||
 || **id^*^**
-[`integer`](../../data-types.md) | Identifier of the deal. It can be obtained using the method to retrieve the list of deals: [`crm.deal.list`](./crm-deal-list.md) or when creating a deal: [`crm.deal.add`](./crm-deal-add.md) ||
+[`integer`](../../data-types.md) | The identifier of the deal. It can be obtained using the method for retrieving the list of deals: [`crm.deal.list`](./crm-deal-list.md) or when creating a deal: [`crm.deal.add`](./crm-deal-add.md) ||
 |#
 
-{% include [Parameter Notes](../../../_includes/required.md) %}
+{% include [Footnote on parameters](../../../_includes/required.md) %}
 
 
 ## Code Examples
 
-Retrieve product rows for the deal with `id = 5`
+Retrieve the product rows of the deal with `id = 5`
 
-{% include [Example Notes](../../../_includes/examples.md) %}
+{% include [Footnote on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -226,7 +226,7 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`productrow[]`](#productrow) | Root element of the response containing an array of product rows for the deal ||
+[`productrow[]`](#productrow) | The root element of the response containing an array of product rows for the deal ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the execution time of the request ||
 |#
@@ -237,47 +237,47 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **ID**
-[`integer`](../../data-types.md) | Identifier of the product row ||
+[`integer`](../../data-types.md) | The identifier of the product row ||
 || **OWNER_ID**
-[`integer`](../../data-types.md) | Identifier of the entity to which the product is linked. For this method, it will always equal the `id` of the deal ||
+[`integer`](../../data-types.md) | The identifier of the entity to which the product is linked. For this method, it will always equal the `id` of the deal ||
 || **OWNER_TYPE**
-[`string`](../../data-types.md) | String identifier of the object type to which the product is linked. For this method, it will always equal `D` ||
+[`string`](../../data-types.md) | String identifier of the type of object to which the product is linked. For this method, it will always equal `D` ||
 || **PRODUCT_ID**
-[`integer`](../../data-types.md) | Identifier of the product in the catalog. `0` if not from the catalog
+[`integer`](../../data-types.md) | The identifier of the product in the catalog. `0` if not from the catalog
 
 For more detailed information about the product, use [`catalog.product.get`](../../catalog/product/catalog-product-get.md)
 ||
 || **PRODUCT_NAME**
-[`string`](../../data-types.md) | Name of the product row ||
+[`string`](../../data-types.md) | The name of the product row ||
 || **ORIGINAL_PRODUCT_NAME**
-[`string`](../../data-types.md) | Name of the product row in the catalog ||
+[`string`](../../data-types.md) | The name of the product row in the catalog ||
 || **PRODUCT_DESCRIPTION**
-[`string`](../../data-types.md) | Description of the product row ||
+[`string`](../../data-types.md) | The description of the product row ||
 || **PRICE**
-[`double`](../../data-types.md) | Final cost of the product per unit ||
+[`double`](../../data-types.md) | The total cost of the product per unit ||
 || **PRICE_EXCLUSIVE**
-[`double`](../../data-types.md) | Cost per unit considering discounts, excluding taxes ||
+[`double`](../../data-types.md) | The cost per unit considering discounts, excluding taxes ||
 || **PRICE_NETTO**
-[`double`](../../data-types.md) | Cost per unit excluding discounts and taxes ||
+[`double`](../../data-types.md) | The cost per unit excluding discounts and taxes ||
 || **PRICE_BRUTTO**
-[`double`](../../data-types.md) | Cost per unit excluding discounts but including taxes ||
+[`double`](../../data-types.md) | The cost per unit excluding discounts but including taxes ||
 || **PRICE_ACCOUNT**
-[`string`](../../data-types.md) | Cost of the product in "report currency" ||
+[`string`](../../data-types.md) | The cost of the product in "report currency" ||
 || **QUANTITY**
-[`integer`](../../data-types.md) | Quantity of product units ||
+[`integer`](../../data-types.md) | The quantity of the product units ||
 || **DISCOUNT_TYPE_ID**
-[`integer`](../../data-types.md) | Type of discount
+[`integer`](../../data-types.md) | The type of discount
 Possible types:
  - `1` - Absolute
  - `2` - Percentage
 
 ||
 || **DISCOUNT_RATE**
-[`double`](../../data-types.md) | Discount value in percentage (if using the percentage discount type) ||
+[`double`](../../data-types.md) | The discount value in percentage (if using the percentage discount type) ||
 || **DISCOUNT_SUM**
-[`double`](../../data-types.md) | Absolute discount value (if using the absolute discount type) ||
+[`double`](../../data-types.md) | The absolute value of the discount (if using the absolute discount type) ||
 || **TAX_RATE**
-[`double`](../../data-types.md) | Tax rate in percentage ||
+[`double`](../../data-types.md) | The tax rate in percentage ||
 || **TAX_INCLUDED**
 [`char`](../../data-types.md) | Indicator of whether tax is included in the price
 Possible values:
@@ -293,15 +293,15 @@ Possible values:
 
 ||
 || **MEASURE_CODE**
-[`catalog_measure.code`](../../catalog/data-types.md#catalog_measure) | Unit of measure code ||
+[`catalog_measure.code`](../../catalog/data-types.md#catalog_measure) | The code of the unit of measure ||
 || **MEASURE_NAME**
-[`string`](../../data-types.md) | Text representation of the unit of measure (e.g., pcs, kg, m, l, etc.) ||
+[`string`](../../data-types.md) | The textual representation of the unit of measure (e.g., pcs, kg, m, l, etc.) ||
 || **SORT**
 [`integer`](../../data-types.md) | Sorting ||
 || **XML_ID**
-[`string`](../../data-types.md) | External code of the product ||
+[`string`](../../data-types.md) | The external code of the product ||
 || **TYPE**
-[`integer`](../../data-types.md) | Type of product
+[`integer`](../../data-types.md) | The type of product
 Possible values: 
  - `1` - Simple product
  - `4` - Trade offer/variation
@@ -309,13 +309,13 @@ Possible values:
 
 ||
 || **STORE_ID**
-[`integer`](../../data-types.md) | Identifier of the warehouse. For detailed information about the warehouse, use [`catalog.store.get`](../../catalog/store/catalog-store-get.md) ||
+[`integer`](../../data-types.md) | The identifier of the warehouse. For more detailed information about the warehouse, use [`catalog.store.get`](../../catalog/store/catalog-store-get.md) ||
 || **RESERVE_ID**
-[`integer`](../../data-types.md) | Identifier of the reserve ||
+[`integer`](../../data-types.md) | The identifier of the reserve ||
 || **DATE_RESERVE_END**
-[`date`](../../data-types.md) | Reservation end date ||
+[`date`](../../data-types.md) | The date of the end of the reservation ||
 || **RESERVE_QUANTITY**
-[`integer`](../../data-types.md) | Quantity of reserved product units ||
+[`integer`](../../data-types.md) | The quantity of reserved product units ||
 |#
 
 
@@ -330,7 +330,7 @@ HTTP Status: **400**
 }
 ```
 
-{% include notitle [Error Handling](../../../_includes/error-info.md) %}
+{% include notitle [error handling](../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
@@ -341,7 +341,7 @@ HTTP Status: **400**
 || Not found | The deal with the provided `id` was not found ||
 |#
 
-{% include [System Errors](./../../../_includes/system-errors.md) %}
+{% include [system errors](./../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

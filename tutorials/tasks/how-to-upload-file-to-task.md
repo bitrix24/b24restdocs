@@ -1,17 +1,23 @@
 # How to Upload a File to a Task
 
-> Scope: [`disk`, `tasks`](../../api-reference/scopes/permissions.md)
+> Scope: [`drive`, `tasks`](../../api-reference/scopes/permissions.md)
 >
 > Who can execute the method: users with access to the drive and tasks sections
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect the [MCP server](../../sdk/mcp.md) so the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 In Bitrix24, there are two types of file fields:
 
-* **File.** This field is not linked to the drive; files are uploaded directly through the [Base64 format string](../../api-reference/files/how-to-upload-files.md).
-* **File (drive).** This field is linked to the drive, and it stores the ID of the drive object. The Base64 format is not processed in this field, so the file must first be uploaded to the Bitrix24 drive.
+* **File.** This field is not linked to the drive; files are uploaded directly via a [Base64 format string](../../api-reference/files/how-to-upload-files.md).
+* **File (drive).** This field is linked to the drive, storing the ID of the drive object. The Base64 format is not processed in this field, so the file must first be uploaded to the Bitrix24 drive.
 
-To attach a file to a task, perform the following two methods in sequence:
+To attach a file to a task, you need to execute two methods in sequence:
 
-1. [disk.folder.uploadfile](../../api-reference/disk/folder/disk-folder-upload-file.md) — this method uploads the file to the disk.
+1. [disk.folder.uploadfile](../../api-reference/disk/folder/disk-folder-upload-file.md) — this method uploads the file to the drive.
 2. [tasks.task.files.attach](../../api-reference/tasks/tasks-task-files-attach.md) — this method attaches the drive file to the task.
 
 ## 1. Uploading a File to the Bitrix24 Drive
@@ -19,12 +25,12 @@ To attach a file to a task, perform the following two methods in sequence:
 To upload a file to the drive, we use the [disk.folder.uploadfile](../../api-reference/disk/folder/disk-folder-upload-file.md) method with the following parameters:
 
 * `id` — specify the value `1739` — the identifier of the drive folder where the file will be uploaded.
-* `data` — specify the file name `NAME`, which will be the name the file is saved as on the Bitrix24 drive.
+* `data` — specify the file name `NAME`, which will be used to save the file on the Bitrix24 drive.
 * `fileContent` — pass the file in the format ['file_name.extension', 'file as a Base64 encoded string'].
 
-Uploading the file to the drive is a necessary step, as the `UF_TASK_WEBDAV_FILES` field in tasks only accepts drive file IDs.
+Uploading the file to the drive is a necessary step, as the `UF_TASK_WEBDAV_FILES` field in tasks only accepts the IDs of drive files.
 
-{% include [Footnote on examples](../../_includes/examples.md) %}
+{% include [Examples Note](../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -72,11 +78,10 @@ Uploading the file to the drive is a necessary step, as the `UF_TASK_WEBDAV_FILE
 
 {% endlist %}
 
-As a result of uploading the file to the drive, we received two different file ID values:
+As a result of uploading the file to the drive, we receive two different file ID values:
 
 * `FILE_ID`: `28073` — the internal file ID value.
-* `ID`: `6687` — the drive object ID, which we will use in methods for working with "file (drive)" type fields. 
-If the request to change the "file (drive)" field passes the `FILE_ID` value, the file will either not be attached to the task because there is no drive object with that ID, or the wrong file will be attached.
+* `ID`: `6687` — the drive object ID, which we will use in methods for working with fields of the "file (drive)" type. If the request to change the "file (drive)" field passes the `FILE_ID`, the file will either not attach to the task because there is no drive object with that ID, or the wrong file will be attached.
 
 ```json
 {
@@ -91,14 +96,14 @@ If the request to change the "file (drive)" field passes the `FILE_ID` value, th
         "GLOBAL_CONTENT_VERSION": 1,
         "FILE_ID": 28073,
         "SIZE": "405559",
-        "CREATE_TIME": "2024-11-01T17:00:55+02:00",
-        "UPDATE_TIME": "2024-11-01T17:00:55+02:00",
+        "CREATE_TIME": "2024-11-01T17:00:55+03:00",
+        "UPDATE_TIME": "2024-11-01T17:00:55+03:00",
         "DELETE_TIME": null,
         "CREATED_BY": "1",
         "UPDATED_BY": "1",
         "DELETED_BY": null,
         "DOWNLOAD_URL": "https://your-domain.bitrix24.com/rest/download.json?sessid=9dd90ed5a58ccc41af81f5f0043739db&token=disk%7CaWQ9NjY4NyZfPTJ5ZXdvN2Fsb09SMGw1b0FHTkRMSGR5MFJkN1pLTjNS%7CImRvd25sb2FkfGRpc2t8YVdROU5qWTROeVpmUFRKNVpYZHZOMkZzYjA5U01HdzFiMEZIVGtSTVNHUjVNRkprTjFwTFRqTlN8OWRkOTBlZDVhNThjY2M0MWFmODFmNWYwMDQzNzM5ZGIi.Lup1vDbibL6twiCPfCMFnLSoDLleNX0cfMHGv5PFaJw%3D",
-        "DETAIL_URL": "https://your-domain.bitrix24.com/company/personal/user/1/disk/file/Created files/New folder for testing process/ava555.jpg"
+        "DETAIL_URL": "https://your-domain.bitrix24.com/company/personal/user/1/disk/file/Created files/New test folder/ava555.jpg"
     }
 }
 ```
@@ -156,8 +161,8 @@ We uploaded the file to the task and received the ID of the link between the dri
         "finish": 1730795703.8165951,
         "duration": 0.22943496704101562,
         "processing": 0.18604612350463867,
-        "date_start": "2024-11-05T11:35:03+02:00",
-        "date_finish": "2024-11-05T11:35:03+02:00",
+        "date_start": "2024-11-05T11:35:03+03:00",
+        "date_finish": "2024-11-05T11:35:03+03:00",
         "operating_reset_at": 1730796303,
         "operating": 0.18602108955383301
     }

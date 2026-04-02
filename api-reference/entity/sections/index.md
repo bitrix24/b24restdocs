@@ -2,18 +2,18 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
 > Scope: [`entity`](../../scopes/permissions.md)
 >
-> Who can perform the method: any user
+> Who can perform the method: a user authorized in the application
 
 #|
 || **Method** | **Description** ||
-|| [entity.section.get](./entity-section-get.md) | Retrieve a list of storage sections (information block sections). List method. ||
-|| [entity.section.add](./entity-section-add.md) | Add a storage section. ||
-|| [entity.section.update](./entity-section-update.md) | Update a storage section. ||
-|| [entity.section.delete](./entity-section-delete.md) | Delete a storage section. ||
+|| [entity.section.add](./entity-section-add.md) | Adds a section to the application's data storage ||
+|| [entity.section.update](./entity-section-update.md) | Updates a section in the application's data storage ||
+|| [entity.section.get](./entity-section-get.md) | Retrieves a list of sections from the application's data storage ||
+|| [entity.section.delete](./entity-section-delete.md) | Deletes a section from the application's data storage ||
 |#

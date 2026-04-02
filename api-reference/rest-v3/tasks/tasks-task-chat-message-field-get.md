@@ -1,14 +1,14 @@
 # Get Chat Message Field of Task tasks.task.chat.message.field.get
 
-> Scope: [`task`](../../scopes/permissions.md)
+> Scope: [`tasks`](../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-The method `tasks.task.chat.message.field.get` returns the description of the chat message field of a task by name.
+The method `tasks.task.chat.message.field.get` returns the description of a chat message field for a task by name.
 
 ## Method Parameters
 
-{% include [Parameter Note](../../../_includes/required.md) %}
+{% include [Footnote on parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -34,7 +34,7 @@ Available fields:
 
 ## Code Examples
 
-{% include [Examples Note](../../../_includes/examples.md) %}
+{% include [Footnote on examples](../../../_includes/examples.md) %}
 
 {% note info "" %}
 
@@ -68,7 +68,7 @@ The call to the new API differs by the addition of the `/api/` parameter in the 
 
 - JS
 
-    The SDK does not yet support the address /rest/api/ in calls. Use direct HTTP requests, for example, via curl or fetch.
+    The SDK does not currently support calls to the address /rest/api/. Use direct HTTP requests, for example, via curl or fetch.
 
     ```javascript
     try
@@ -100,7 +100,7 @@ The call to the new API differs by the addition of the `/api/` parameter in the 
 
 - PHP
 
-    The SDK does not yet support the address /rest/api/ in calls. Use direct HTTP requests, for example, via curl or fetch.
+    The SDK does not currently support calls to the address /rest/api/. Use direct HTTP requests, for example, via curl or fetch.
 
     ```php
     try {
@@ -136,7 +136,7 @@ The call to the new API differs by the addition of the `/api/` parameter in the 
 
 - BX24.js
 
-    The SDK does not yet support the address /rest/api/ in calls. Use direct HTTP requests, for example, via curl or fetch.
+    The SDK does not currently support calls to the address /rest/api/. Use direct HTTP requests, for example, via curl or fetch.
 
     ```js
     BX24.callMethod(
@@ -162,7 +162,7 @@ The call to the new API differs by the addition of the `/api/` parameter in the 
 
 - PHP CRest
 
-    The SDK does not yet support the address /rest/api/ in calls. Use direct HTTP requests, for example, via curl or fetch.
+    The SDK does not currently support calls to the address /rest/api/. Use direct HTTP requests, for example, via curl or fetch.
 
     ```php
     require_once('crest.php');
@@ -226,9 +226,9 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | Object containing response data ||
+[`object`](../../data-types.md) | Object containing the response data ||
 || **item**
-[`object`](../../data-types.md) | Object with field description. The response structure depends on `select`  ||
+[`object`](../../data-types.md) | Object describing the field. The response structure depends on `select`  ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#

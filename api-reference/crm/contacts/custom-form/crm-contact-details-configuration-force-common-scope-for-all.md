@@ -1,22 +1,22 @@
-# Set Common Contact Card for All Users crm.contact.details.configuration.forceCommonScopeForAll
+# Set a Common Contact Card for All Users crm.contact.details.configuration.forceCommonScopeForAll
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 > 
 > Who can execute the method: Administrator
 
-{% note warning "Method Development Stopped" %}
+{% note warning "DEPRECATED" %}
 
-The method `crm.contact.details.configuration.forceCommonScopeForAll` continues to function, but there is a more relevant alternative [crm.item.details.configuration.forceCommonScopeForAll](../../universal/item-details-configuration/crm-item-details-configuration-forceCommonScopeForAll.md).
+The development of this method has been halted. Please use [crm.item.details.configuration.forceCommonScopeForAll](../../universal/item-details-configuration/crm-item-details-configuration-forceCommonScopeForAll.md).
 
 {% endnote %}
 
-This method allows you to forcibly set a common contact card for all users.
+This method allows you to enforce a common contact card for all users.
 
-No parameters.
+No parameters required.
 
 ## Code Examples
 
-{% include [Note on examples](../../../../_includes/examples.md) %}
+{% include [Examples Note](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -124,7 +124,7 @@ No parameters.
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -157,7 +157,7 @@ Returns `true` on success ||
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {
@@ -166,7 +166,7 @@ HTTP status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../../_includes/error-info.md) %}
+{% include notitle [Error Handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
@@ -175,7 +175,7 @@ HTTP status: **400**
 || Empty value | Access denied. | The user does not have administrative rights ||
 |#
 
-{% include [system errors](../../../../_includes/system-errors.md) %}
+{% include [System Errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning 
 

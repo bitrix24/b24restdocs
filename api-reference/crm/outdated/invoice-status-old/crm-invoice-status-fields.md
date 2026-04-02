@@ -1,8 +1,14 @@
-# Get Invoice Status Fields crm.invoice.status.fields
+# Get Invoice Status Fields `crm.invoice.status.fields`
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
+
+{% note warning "DEPRECATED" %}
+
+Development of this method has been halted. Please use [Universal Methods for Invoices](../../universal/invoice.md).
+
+{% endnote %}
 
 The method `crm.invoice.status.fields` returns the description of the invoice status fields.
 
@@ -16,7 +22,7 @@ Without parameters
 
 ### Returned Data
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
