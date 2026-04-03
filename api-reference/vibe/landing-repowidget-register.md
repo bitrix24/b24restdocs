@@ -1,12 +1,12 @@
-# Add Widget to Start Page: the Main Page landing.repowidget.register
+# Add Widget to Start Page: the Vibe landing.repowidget.register
 
 > Scope: [`landing`](../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-The method `landing.repowidget.register` adds a widget for the Main Page. It returns an error or the `ID` of the added widget.
+The method `landing.repowidget.register` adds a widget for the Start page: the Vibe. It returns an error or the `ID` of the added widget.
 
-During the addition, a check is performed. If a widget with the code `code` has already been registered previously, its content will be updated. Widgets already placed on the Main Page will be automatically updated in case of content changes.
+During the addition, a check is performed. If a widget with the code `code` has already been registered previously, its content will be updated. Widgets already placed on the Vibe will be automatically updated in case of content changes.
 
 ## Method Parameters
 
@@ -84,11 +84,11 @@ During the addition, a check is performed. If a widget with the code `code` has 
 || **style**
 [`string`](../data-types.md) | Address of styles for the widget. Styles can also be set inline in the markup via the binding `:style="{borderBottom: '1px solid red'}"` ||
 || **demoData***
-[`object`](../data-types.md) | Demo data for the widget that will be used to showcase the widget in the Main Page templates in [Bitrix24 Marketplace](../../market/index.md).
+[`object`](../data-types.md) | Demo data for the widget that will be used to showcase the widget in the Vibe templates in [Bitrix24 Marketplace](../../market/index.md).
 
 If you are developing a widget for a specific Bitrix24 and do not plan to publish it in the Marketplace, you can specify any array as the parameter value; it will not be used anyway.
 
-However, if you are preparing a mass-market solution with a widget, pay maximum attention to the demo data — they will be displayed in the preview slider of the Main Page template! Obviously, the structure of the demo data should match what your `handler` would return in normal widget usage
+However, if you are preparing a mass-market solution with a widget, pay maximum attention to the demo data — they will be displayed in the preview slider of the Vibe template! Obviously, the structure of the demo data should match what your `handler` would return in normal widget usage
  ||
 |#
 
@@ -153,8 +153,8 @@ However, if you are preparing a mass-market solution with a widget, pay maximum 
                                     'W_EMPTY' => 'Empty',
                                 },
                             ],
-                            'handler'   => 'https://my-app.com/main.php',
-                            'style'     => 'https://my-app.com/main.css',
+                            'handler'   => 'https://my-app.com/vibe.php',
+                            'style'     => 'https://my-app.com/vibe.css',
                             'demoData'  => [
                                 'desc'    => 'Just a test widget',
                                 'count'   => 420,
@@ -236,8 +236,8 @@ However, if you are preparing a mass-market solution with a widget, pay maximum 
                         W_EMPTY: 'Empty',
                     },
                 },
-                handler: 'https://my-app.com/main.php',
-                style: 'https://my-app.com/main.css',
+                handler: 'https://my-app.com/vibe.php',
+                style: 'https://my-app.com/vibe.css',
                 demoData: {
                     desc: 'Just a test widget',
                     count: 420,
@@ -323,8 +323,8 @@ However, if you are preparing a mass-market solution with a widget, pay maximum 
                         'W_EMPTY' => 'Empty!',
                     ],
                 ],
-                'handler' => 'https://my-app.com/main.php',
-                'style' => 'https://my-app.com/main.css',
+                'handler' => 'https://my-app.com/vibe.php',
+                'style' => 'https://my-app.com/vibe.css',
                 'demoData' => [
                     'desc' => 'Just a test widget',
                     'count' => 420,

@@ -307,8 +307,8 @@ HTTP status: **200**
                             "desc": "JustSome widget data",
                             "count": "420"
                         },
-                        "handler": "https://my-app.com/main.php",
-                        "style": "https://my-app.com/main.css",
+                        "handler": "https://my-app.com/vibe.php",
+                        "style": "https://my-app.com/vibe.css",
                         "lang": {
                             "de": {
                                 "W_TITLE": "People and their age",

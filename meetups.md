@@ -13,7 +13,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 Example: [Github](https://github.com/bitrix24/b24sdk-examples/tree/main/php/special/custom-activities)
 B24PHPSDK: [GitHub](https://github.com/bitrix24/b24phpsdk)
 
-## Bitrix24 Main page: Custom Widgets for Start Page - Episode 8 of Bitrix24 REST API Series
+## Bitrix24 Vibe: Custom Widgets for Start Page - Episode 8 of Bitrix24 REST API Series
 
 @[youtube](https://youtu.be/jdZUN3ygWaE?si=NBhG2l1Fq2Fntb1K)
 

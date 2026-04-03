@@ -1,10 +1,10 @@
-# Unregister Widget for Main Page landing.repowidget.unregister
+# Unregister Widget for Vibe landing.repowidget.unregister
 
 > Scope: [`landing`](../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-The method `landing.repowidget.unregister` removes the widget for Main Page. On success, it returns `true`; otherwise, it returns `false` or an error with a description.
+The method `landing.repowidget.unregister` removes the widget for Start page: the Vibe. On success, it returns `true`; otherwise, it returns `false` or an error with a description.
 
 ## Method Parameters
 

@@ -13,10 +13,6 @@ items:
     include:  
       path: widgets/b24-toc.yaml  
       mode: link  
-  - name: Main Page  
-    include:  
-      path: main/b24-toc.yaml  
-      mode: link  
   - name: REST 3.0  
     include:  
       path: rest-v3/b24-toc.yaml  
@@ -108,7 +104,11 @@ items:
   - name: Message Providers, SMS Providers  
     include:  
       path: messageservice/b24-toc.yaml  
-      mode: link  
+      mode: link 
+  - name: Vibe  
+    include:  
+      path: vibe/b24-toc.yaml  
+      mode: link         
   - name: Workgroups and Projects  
     include:  
       path: sonet-group/b24-toc.yaml  

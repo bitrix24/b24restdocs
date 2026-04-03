@@ -1,7 +1,7 @@
-title: Main Page  
+title: Vibe  
 href: index.md  
 items:  
-  - name: Main Page and Widgets  
+  - name: Vibe and Widgets  
     href: index.md  
   - name: Add Widget  
     href: landing-repowidget-register.md  

@@ -1,18 +1,18 @@
-# Widgets and Main Page
+# Widgets and Start page: the Vibe
 
-The Main Page is the start page of *Bitrix24*, replacing the familiar [Feed](../log/index.md) and allowing for a more personalized interface (details in [article](https://helpdesk.bitrix24.com/open/22548692)).
+The Vibe is the start page of *Bitrix24*, replacing the familiar [Feed](../log/index.md) and allowing for a more personalized interface (details in [article](https://helpdesk.bitrix24.com/open/22548692)).
 
 The administrator configures the page in the builder using ready-made blocks and widgets, similar to how it's done in [Sites](../landing/index.md). In addition to the system widgets of *Bitrix24*, developers can add their own using the appropriate REST API methods.
 
 {% note info "" %}
 
-**Widget** — a dynamic element of the Main Page that displays data obtained through the corresponding server handler. This allows widgets to be interactive, showing changing data in response to user actions.
+**Widget** — a dynamic element of the Vibe that displays data obtained through the corresponding server handler. This allows widgets to be interactive, showing changing data in response to user actions.
 
 For example, you can sort data in a table, load new data, open a slider with additional interface for your solution, etc.
 
 {% endnote %}
 
-Additionally, the Main Page created on your *Bitrix24* can be exported as a ready-made solution for publication in the [Market](../../market/index.md).
+Additionally, the Vibe created on your *Bitrix24* can be exported as a ready-made solution for publication in the [Market](../../market/index.md).
 
 ## How Widgets Work
 
@@ -22,7 +22,7 @@ In fact, when adding your widget to *Bitrix24*, you need to provide the Vue temp
 
 ### Vue Directives
 
-In the widgets for the Main Page, we support the following Vue directives and constructs:
+In the widgets for the Vibe, we support the following Vue directives and constructs:
 
 - variables `not_var{{ your_variable_name }}`
 - conditional operator `v-if` / `v-else`
@@ -36,14 +36,14 @@ In the widgets for the Main Page, we support the following Vue directives and co
 Custom JS code cannot be added to the widgets, so only the following predefined functions can be used as event handlers for `@click` and `v-on:click`:
 
 - `fetch(?params)` — calls the widget handler to obtain new data, passing the specified parameters `params` to the handler;
-- `openApplication(?params)` — opens the slider of your application with the ability to pass arbitrary parameters `params`. Essentially, this is a way to call [openApplication](../widgets/open-application.md) from the Main Page widget interface;
-- `openPath(url)` — opens the *Bitrix24* page at the specified `url` in the slider. Essentially, this is a way to call [openPath](../widgets/open-path.md) from the Main Page widget interface.
+- `openApplication(?params)` — opens the slider of your application with the ability to pass arbitrary parameters `params`. Essentially, this is a way to call [openApplication](../widgets/open-application.md) from the Vibe widget interface;
+- `openPath(url)` — opens the *Bitrix24* page at the specified `url` in the slider. Essentially, this is a way to call [openPath](../widgets/open-path.md) from the Vibe widget interface.
 
 ## How the Widget Works {#anchor-handler}
 
 The most important part of the functionality lies in using `fetch(?params)` and your widget handler.
 
-1. When a Bitrix24 administrator adds your widget to the Main Page page or when a regular user opens an already published Main Page on their account, Bitrix24 makes a request to the widget handler URL you specified during widget registration.
+1. When a Bitrix24 administrator adds your widget to the Vibe page or when a regular user opens an already published Vibe page on their account, Bitrix24 makes a request to the widget handler URL you specified during widget registration.
 2. Your handler returns a specific data structure defined by you in the form of a JSON string.
 3. Vue executes the template code of your widget, substituting the data obtained from the handler in step 2. This forms the initial complete appearance of the widget.
 4. If you used the `fetch` function (for example, with parameters `{'action': 'getItems'}`) in your template when clicking on a certain link, *Bitrix24* will again call your widget handler, passing those same parameters `{'action': 'getItems'}` in a POST request.
@@ -52,7 +52,7 @@ The most important part of the functionality lies in using `fetch(?params)` and 
 
 In this straightforward manner, your widget can change its appearance and displayed data in response to user actions.
 
-## Examples of Vue Syntax for Main Page Widgets
+## Examples of Vue Syntax for Vibe Widgets
 
 ### Localization
 

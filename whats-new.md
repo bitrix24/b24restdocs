@@ -622,7 +622,7 @@
 
 - Updated the documentation for working with product images [catalog.productImage.*](./api-reference/catalog/product-image/index.md)
 
-- Added documentation for the methods [landing.repowidget.getlist](./api-reference/main/landing-repowidget-get-list.md) and [landing.repowidget.debug](./api-reference/main/landing-repowidget-debug.md)
+- Added documentation for the methods [landing.repowidget.getlist](./api-reference/vibe/landing-repowidget-get-list.md) and [landing.repowidget.debug](./api-reference/vibe/landing-repowidget-debug.md)
 
 ### October 16, 2024
 
@@ -639,7 +639,7 @@
 ### October 1, 2024
 
 - Added [OAuth server error codes](./settings/oauth/error-codes.md)
-- Added documentation for [Widgets for Main Page](./api-reference/main/index.md)
+- Added documentation for [Widgets for Vibes](./api-reference/vibe/index.md)
 
 ### September 26, 2024
 
