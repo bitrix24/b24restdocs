@@ -1,10 +1,10 @@
-# Get a list of custom fields involved in duplicate search crm.duplicate.volatileType.list
+# Get a List of Custom Fields Used in Duplicate Search crm.duplicate.volatileType.list
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
 > Who can execute the method: administrator
 
-The method `crm.duplicate.volatileType.list` returns a list of custom fields that are already being used for duplicate searches in leads, contacts, and companies.
+The method `crm.duplicate.volatileType.list` returns a list of custom fields that are already being used to search for duplicates in leads, contacts, and companies.
 
 ## Method Parameters
 
@@ -39,7 +39,7 @@ No parameters.
 - JS
 
     ```js
-    // callListMethod: Retrieves all data at once. Use only for small selections (< 1000 items) due to high memory usage.
+    // callListMethod: Retrieves all data at once. Use only for small datasets (< 1000 items) due to high memory load.
     
     try {
       const response = await $b24.callListMethod(
@@ -52,7 +52,7 @@ No parameters.
       console.error('Request failed', error)
     }
     
-    // fetchListMethod: Retrieves data in parts using an iterator. Use it for large data volumes to optimize memory usage.
+    // fetchListMethod: Retrieves data in chunks using an iterator. Use for large datasets for efficient memory consumption.
     
     try {
       const generator = $b24.fetchListMethod('crm.duplicate.volatileType.list', {})
@@ -63,7 +63,7 @@ No parameters.
       console.error('Request failed', error)
     }
     
-    // callMethod: Manually controls pagination through the start parameter. Use it for precise control of request batches. For large datasets, it is less efficient than fetchListMethod.
+    // callMethod: Manual control of pagination through the start parameter. Use for precise control over request batches. Less efficient for large data than fetchListMethod.
     
     try {
       const response = await $b24.callMethod('crm.duplicate.volatileType.list', {}, 0)
@@ -136,7 +136,7 @@ No parameters.
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -171,12 +171,12 @@ HTTP status: **200**
 [`integer`](../../../data-types.md) | Object type ||
 || **fieldCode**
 [`string`](../../../data-types.md) | Field code ||
-|| **time**[`time`](../../../data-types.md#time) | Information about the execution time of the request ||
+|| **time**[`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-The method does not return errors.
+Specific method errors are not highlighted.
 
 {% include [system errors](./../../../../_includes/system-errors.md) %}
 
@@ -184,5 +184,4 @@ The method does not return errors.
 
 - [crm.duplicate.volatileType.fields](./crm-duplicate-volatile-type-fields.md)
 - [crm.duplicate.volatileType.register](./crm-duplicate-volatile-type-register.md)
-- [crm.duplicate.volatileType.unregister](./crm-duplicate-volatile-type-unregister.md)
-
+- [crm.duplicate.volatileType.unregister](./crm-duplicate-volatile-type-unregister.md) 

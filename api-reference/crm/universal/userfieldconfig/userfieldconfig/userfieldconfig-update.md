@@ -1,14 +1,14 @@
-# Update User Field userfieldconfig.update
+# Update User Field `userfieldconfig.update`
 
 > Scope: [`userfieldconfig`](../../../../scopes/permissions.md), module scope from `moduleId` (for example, [`crm`](../../../../scopes/permissions.md))
 >
-> Who can execute the method: a user with permission to modify object settings in the `moduleId` (for `crm` — permission "Allow to modify settings")
+> Who can execute the method: a user with permission to modify object settings in the `moduleId` module (for `crm` — permission "Allow to modify settings")
 
 The method `userfieldconfig.update` updates the settings of an existing user field.
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../../../_includes/required.md) %}
+{% include [Parameter Note](../../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -17,7 +17,7 @@ The method `userfieldconfig.update` updates the settings of an existing user fie
 [`string`](../../../data-types.md) | Identifier of the module where the field is located ||
 || **id***
 [`integer`](../../../data-types.md) | Identifier of the user field settings ||
-|| **field**
+|| **field***
 [`object`](../../../data-types.md) | Object with new field settings [(detailed description)](#field) ||
 |#
 
@@ -33,9 +33,9 @@ The method `userfieldconfig.update` updates the settings of an existing user fie
 || **mandatory**
 [`boolean`](../../../data-types.md) | Mandatory field flag (`Y`/`N`) ||
 || **showFilter**
-[`boolean`](../../../data-types.md) | Flag to show the field in the filter (`Y`/`N`) ||
+[`boolean`](../../../data-types.md) | Show field in filter flag (`Y`/`N`) ||
 || **isSearchable**
-[`boolean`](../../../data-types.md) | Flag for field participation in search (`Y`/`N`) ||
+[`boolean`](../../../data-types.md) | Field participation in search flag (`Y`/`N`) ||
 || **editFormLabel**
 [`lang_map`](../../../data-types.md) | Labels in the edit form by languages ||
 || **helpMessage**
@@ -188,7 +188,7 @@ Each field type has its own set of keys in `settings`.
     || **MAX_SHOW_SIZE**
     [`integer`](../../../data-types.md) | Maximum file size for display ||
     || **MAX_ALLOWED_SIZE**
-    [`integer`](../../../data-types.md) | Maximum allowable file size ||
+    [`integer`](../../../data-types.md) | Maximum allowed file size ||
     || **EXTENSIONS**
     [`string[]`](../../../data-types.md) | List of allowed extensions ||
     || **TARGET_BLANK**
@@ -265,11 +265,11 @@ Each field type has its own set of keys in `settings`.
 
 - rest_*
 
-    Settings are defined by the user-defined field type handler.
+    Settings are defined by the user-defined field handler.
 
 {% endlist %}
 
-### Type uf_enum_element {#uf_enum_element}
+### Type `uf_enum_element` {#uf_enum_element}
 
 #|
 || **Name**
@@ -285,7 +285,7 @@ Each field type has its own set of keys in `settings`.
 || **xmlId**
 [`string`](../../../data-types.md) | External identifier of the option ||
 || **del**
-[`boolean`](../../../data-types.md) | Flag to delete the existing option (`Y`/`N`) ||
+[`boolean`](../../../data-types.md) | Flag for deleting the existing option (`Y`/`N`) ||
 |#
 
 {% note info "" %}
@@ -296,7 +296,7 @@ Some field parameters cannot be changed after creation. If they are passed in `f
 
 ## Code Examples
 
-{% include [Note on examples](../../../../../_includes/examples.md) %}
+{% include [Example Note](../../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -548,13 +548,13 @@ HTTP Status: **200**
 || **mandatory**
 [`boolean`](../../../data-types.md) | Mandatory field flag (`Y`/`N`) ||
 || **showFilter**
-[`boolean`](../../../data-types.md) | Flag to show the field in the filter ||
+[`boolean`](../../../data-types.md) | Show field in filter flag ||
 || **showInList**
-[`boolean`](../../../data-types.md) | Flag to show the field in the list ||
+[`boolean`](../../../data-types.md) | Show field in list flag ||
 || **editInList**
-[`boolean`](../../../data-types.md) | Flag for editing in the list ||
+[`boolean`](../../../data-types.md) | Edit in list flag ||
 || **isSearchable**
-[`boolean`](../../../data-types.md) | Flag for participation in search ||
+[`boolean`](../../../data-types.md) | Participation in search flag ||
 || **settings**
 [`object`](../../../data-types.md) | Additional field settings. See [Settings Parameter](#settings).
 
@@ -594,7 +594,7 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `-` | You cannot change the settings of the user field | Insufficient rights to modify the field. This same error is returned if the field with the provided `id` has already been deleted or is unavailable in the context of `moduleId` ||
+|| `-` | You cannot change the settings of the user field | Insufficient permissions to modify the field. This same error is returned if the field with the provided `id` has already been deleted or is unavailable in the context of `moduleId` ||
 || `-` | The current method required more scopes. (crm) | The application does not have the required scope for the module from `moduleId` ||
 || `-` | No settings for UserFieldAccess | Access to user fields is not configured for the provided `moduleId` ||
 || `-` | Error while attempting to change user field settings | General error in changing the field ||

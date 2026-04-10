@@ -4,7 +4,7 @@
 
 You can add your item to the context menu of the top profile button.
 
-The code for the specific widget placement is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
+The specific placement code for the widget is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
 
 {% note info "" %}
 
@@ -14,7 +14,7 @@ The widget will not be displayed in the interface until the application installa
 
 ## Where the Widget is Embedded
 
-#|
+#| 
 || **Widget Code** | **Location** ||
 || `USER_PROFILE_TOOLBAR` | Context menu item of the top profile button ||
 |#
@@ -24,7 +24,6 @@ The widget will not be displayed in the interface until the application installa
 Data is transmitted as a POST request {.b24-info}
 
 ```php
-
 Array
 (
     [DOMAIN] => xxx.bitrix24.com
@@ -39,7 +38,6 @@ Array
     [PLACEMENT] => USER_PROFILE_TOOLBAR
     [PLACEMENT_OPTIONS] => {"USER_ID":"1"}
 )
-
 ```
 
 {% include [Note on Required Parameters](../../../_includes/required.md) %}
@@ -52,21 +50,19 @@ The value of `PLACEMENT_OPTIONS` is a JSON string containing an array of one or 
 
 {% include [Note on Required Parameters](../../../_includes/required.md) %}
 
-#|
+#| 
 || **Parameter** | **Description** ||
-|| **USER_ID***
+|| **USER_ID*** 
 [`string`](../../data-types.md) | The identifier of the user whose profile the widget was opened in.
 
-It can be used to retrieve additional information using the [user.get](../../user/user-get.md) method.
+This can be used to retrieve additional information using the [user.get](../../user/user-get.md) method.
 
-||
+|| 
 |#
 
-## Continue Exploring
+## Continue Your Exploration
 
 - [{#T}](../placement-bind.md)
 - [{#T}](../ui-interaction/index.md)
-- [{#T}](../ui-interaction/crm-card.md)
 - [{#T}](../../../settings/interactivity/index.md)
-- [{#T}](../open-application.md)
-- [{#T}](../open-path.md)
+- [{#T}](../bx24-widget-methods.md)

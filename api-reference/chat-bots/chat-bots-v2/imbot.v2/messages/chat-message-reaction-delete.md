@@ -1,4 +1,4 @@
-# Delete Reaction from Message imbot.v2.Chat.Message.Reaction.delete
+# Remove Reaction from Message imbot.v2.Chat.Message.Reaction.delete
 
 > Scope: [`imbot`](../../../../scopes/permissions.md)
 >
@@ -22,7 +22,7 @@ Pass the same botToken that was specified during the chat bot registration ||
 || **messageId***
 [`integer`](../../../../data-types.md) | Message ID ||
 || **reaction***
-[`string`](../../../../data-types.md) | Reaction code to be removed. Available codes list: [imbot.v2.Chat.Message.Reaction.add](./chat-message-reaction-add.md#reactions) ||
+[`string`](../../../../data-types.md) | Reaction code to be removed. List of available codes: [imbot.v2.Chat.Message.Reaction.add](./chat-message-reaction-add.md#reactions) ||
 |#
 
 ## Code Examples
@@ -183,17 +183,18 @@ HTTP Status: **400**, **403**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `BOT_TOKEN_NOT_SPECIFIED` | Bot token is not specified | `botToken` is not provided. Required for webhook authorization ||
-|| `BOT_ID_REQUIRED` | Bot ID is required | `botId` is not provided ||
+|| `BOT_TOKEN_NOT_SPECIFIED` | Bot token is not specified | Bot token is not specified. Required for webhook authorization ||
+|| `BOT_ID_REQUIRED` | Bot ID is required | Bot ID is not specified ||
 || `BOT_NOT_FOUND` | Bot not found | Bot not found ||
 || `BOT_OWNERSHIP_ERROR` | Bot is registered by another application | Bot is registered by another application ||
 || `ACCESS_DENIED` | Access denied | Bot is not a participant in the chat with this message ||
-|| `REACTION_NOT_FOUND` | Reaction not found | A non-existent reaction code was specified ||
+|| `REACTION_NOT_FOUND` | Reaction not found | The specified reaction code does not exist ||
 |#
 
 {% include [System Errors](../../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
-- [Add Reaction to Message imbot.v2.Chat.Message.Reaction.add](./chat-message-reaction-add.md)
-- [Send Message imbot.v2.Chat.Message.send](./chat-message-send.md)
+- [API Change Log for imbot.v2](../../change-log.md)
+- [{#T}](./chat-message-reaction-add.md)
+- [{#T}](./chat-message-send.md)

@@ -273,4 +273,4 @@ HTTP Status: **400**
 - [Set "Like" for the message imbot.message.like](./imbot-message-like.md)
 - [Event on Message Sent ONIMBOTMESSAGEADD](./events/on-imbot-message-add.md)
 - [Example of Creating a Chatbot](../../../../tutorials/chat-bots/index.md)
-- [EchoBot Example](https://dev.1c-bitrix.com/~b24bots)
+- [EchoBot Example](https://github.com/bitrix24com/bots)

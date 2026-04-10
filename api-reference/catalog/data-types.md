@@ -390,7 +390,6 @@ Examples of values:
 - `SectionAuto` — binding to sections with auto-search
 - `HTML` — value in HTML format
 - `map_google` — coordinates and address on Google map
-- `map_yandex` — coordinates and address on a map service
 - `DiskFile` — binding to a file from Bitrix24.Drive
 - `ECrm` — binding to CRM elements
 - `BoolEnum` — checkbox based on a list ||

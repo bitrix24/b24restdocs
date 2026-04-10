@@ -5,15 +5,15 @@ The `GRID` block displays data in a tabular format of "name-value" pairs with va
 ## Display Options
 
 - `BLOCK` — each `GRID` element is displayed as a separate block on a new line, forming a vertical list.
-- `LINE` — elements are displayed in a single line as cards, wrapping to the next line when there isn't enough width.
-- `ROW` — a classic two-column format "NAME | VALUE".
-- `TABLE` — a tabular mode with a denser grid; support depends on the client application version. In some clients, it may appear as `ROW`.
+- `LINE` — elements are displayed in a single line as cards, wrapping to the next line when there is insufficient width.
+- `ROW` — a classic two-column format of "NAME | VALUE".
+- `TABLE` — tabular mode with a denser grid; support depends on the client application version. In some clients, it may appear as `ROW`.
 
 ### How It Looks in the Interface
 
 - `BLOCK`
 
-  Fields are stacked vertically, each on a new line.
+  Fields are listed one below the other, each on a new line.
 
   Example:
 
@@ -25,13 +25,13 @@ The `GRID` block displays data in a tabular format of "name-value" pairs with va
 
 - `LINE`
 
-  Fields are shown as compact cards in a single line. If space is insufficient, cards wrap to the next line.
+  Fields are shown as compact cards in a single line. If space is insufficient, the cards wrap to the next line.
 
   Example:
 
   ```text
   [Project: BUGS] [Category: im] [Priority: High]
-  [Executor: John Doe]
+  [Executor: John Smith]
   ```
 
 - `ROW`
@@ -48,14 +48,14 @@ The `GRID` block displays data in a tabular format of "name-value" pairs with va
 
 - `TABLE`
 
-  A tabular variant with a denser grid. Depending on the client, it may look like `ROW`.
+  Tabular variant with a denser grid. Depending on the client, it may look like `ROW`.
 
   Example:
 
   ```text
   Project    | BUGS
   Category   | im
-  Deadline   | 11/04/2015 17:50:43
+  Deadline   | 11/04/2015 05:50:43 PM
   ```
 
 {% note warning %}
@@ -72,9 +72,9 @@ Do not mix different display formats within a single `GRID` entry. If different 
 || **DISPLAY***
 [`string`](../../../../../../data-types.md) | Display format: `BLOCK`, `LINE`, `ROW`, `TABLE` ||
 || **NAME**
-[`string`](../../../../../../data-types.md) | Field name. In `ROW` mode, it can be omitted, allowing `VALUE` to take the full width of the row ||
+[`string`](../../../../../../data-types.md) | Field name. In `ROW` mode, it may be omitted, in which case `VALUE` occupies the entire width of the row ||
 || **VALUE**
-[`string`](../../../../../../data-types.md) | Field value. BB codes are supported for `VALUE`. In `ROW` mode, it can be omitted, allowing `NAME` to take the full width of the row ||
+[`string`](../../../../../../data-types.md) | Field value. BB codes are supported for `VALUE`. In `ROW` mode, it may be omitted, in which case `NAME` occupies the entire width of the row ||
 || **WIDTH**
 [`integer`](../../../../../../data-types.md) | Width of the block or column in pixels ||
 || **HEIGHT**
@@ -97,8 +97,8 @@ Do not mix different display formats within a single `GRID` entry. If different 
 || **Code** | **Purpose** ||
 || `USER` | Mention a user with a link to their profile in the chat ||
 || `CHAT` | Link to the chat ||
-|| `SEND` | Clickable action "send text in chat" ||
-|| `PUT` | Clickable action "insert text in input field" ||
+|| `SEND` | Clickable action "send text to chat" ||
+|| `PUT` | Clickable action "insert text into input field" ||
 || `CALL` | Clickable action for calling ||
 || `BR` | Line break ||
 || `B` | Bold text ||
@@ -135,7 +135,7 @@ Do not mix different display formats within a single `GRID` entry. If different 
             },
             {
                 NAME: 'Category',
-                VALUE: 'Suggestions',
+                VALUE: 'Requests',
                 DISPLAY: 'BLOCK',
                 WIDTH: 100
             }
@@ -156,7 +156,7 @@ Do not mix different display formats within a single `GRID` entry. If different 
             ],
             [
                 'NAME' => 'Category',
-                'VALUE' => 'Suggestions',
+                'VALUE' => 'Requests',
                 'DISPLAY' => 'BLOCK',
                 'WIDTH' => 100
             ]
@@ -168,7 +168,7 @@ Do not mix different display formats within a single `GRID` entry. If different 
 
 ### Line Representation
 
-`DISPLAY: 'LINE'` displays elements in a line, wrapping to the next line when space is insufficient.
+`DISPLAY: 'LINE'` displays elements in a line, wrapping to the next line when there is insufficient space.
 
 ![Line Representation](./_images/grid2.png){width=420}
 
@@ -193,7 +193,7 @@ In the mobile version, elements are displayed one below the other.
             },
             {
                 NAME: 'Category',
-                VALUE: 'Suggestions',
+                VALUE: 'Requests',
                 DISPLAY: 'LINE'
             }
         ]
@@ -215,7 +215,7 @@ In the mobile version, elements are displayed one below the other.
             },
             [
                 'NAME' => 'Category',
-                'VALUE' => 'Suggestions',
+                'VALUE' => 'Requests',
                 'DISPLAY' => 'LINE'
             ]
         ]
@@ -228,7 +228,7 @@ In the mobile version, elements are displayed one below the other.
 
 `DISPLAY: 'ROW'` displays data in two columns.
 
-![Two-Column Layout](./_images/grid3.png)
+![Two-Column Representation](./_images/grid3.png)
 
 #### Example
 
@@ -246,7 +246,7 @@ In the mobile version, elements are displayed one below the other.
             },
             {
                 NAME: 'Category',
-                VALUE: 'Suggestions',
+                VALUE: 'Requests',
                 DISPLAY: 'ROW'
             }
         ]
@@ -263,10 +263,10 @@ In the mobile version, elements are displayed one below the other.
                 'VALUE' => 'High',
                 'DISPLAY' => 'ROW',
                 'WIDTH' => 250
-            ],
+            },
             [
                 'NAME' => 'Category',
-                'VALUE' => 'Suggestions',
+                'VALUE' => 'Requests',
                 'DISPLAY' => 'ROW'
             ]
         ]
@@ -277,6 +277,7 @@ In the mobile version, elements are displayed one below the other.
 
 ## Continue Learning
 
-- [ATTACH Block Collection](./index.md)
-- [MESSAGE Block](./text.md)
-- [Block with DELIMITER](./delimiter.md)
+- [API Change Log for imbot.v2](../../../../change-log.md)
+- [{#T}](./index.md)
+- [{#T}](./text.md)
+- [{#T}](./delimiter.md)

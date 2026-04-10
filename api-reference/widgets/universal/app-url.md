@@ -1,18 +1,18 @@
-# Widget as a Link with Slider REST_APP_URI
+# Widget as a Link with REST_APP_URI Slider
 
 > Scope: [`placement`](../../scopes/permissions.md)
 
-This integration does not have a separate, pre-defined button in the interface that allows the user to open it independently. The application can simply send a link of a special format to any Bitrix24 tool that supports adding content with links:
+This integration does not have a separate, pre-defined button in the interface that allows users to open it independently. The application can simply send a link of a special format to any Bitrix24 tool that supports adding content with links:
 
 - Messages and comments in the news feed;
-- Messages in internal group and individual chats (will not work in open channel dialogs);
+- Messages in internal group and individual chats (it will not work in Open Channels dialogs);
 - Task descriptions and comments;
 - Calendar meeting descriptions;
 - Etc.
 
 To use this integration, the link must be in the format `/marketplace/view/#APP_CODE#/`, where `#APP_CODE#`:
 
-- The symbolic code of your mass-market application from the Developer's area, which is set in the application card;
+- The symbolic code of your mass-market application from the Developer's area, which is specified in the application card;
 - The client_id of the local application (for example, `local.66ba434d853c87.18550109`), which can be copied from the application settings in the Developer resources section.
 
 The integration can accept any number of arbitrary parameters in the GET key `params`, for example: `/marketplace/view/#APP_CODE#/?params[test]=y`. In this case, `PLACEMENT_OPTIONS` will be as follows:
@@ -21,7 +21,7 @@ The integration can accept any number of arbitrary parameters in the GET key `pa
 [PLACEMENT_OPTIONS] => {"test":"y"}
 ```
 
-The widget code is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
+The widget's integration code is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
 
 {% note info "" %}
 
@@ -31,8 +31,8 @@ The integration will not be displayed in the interface until the application ins
 
 ## Where the Widget is Integrated
 
-#|
-|| **Widget Code** | **Location** ||
+#| 
+|| **Integration Code** | **Location** ||
 || `REST_APP_URI` | The specific integration location is not indicated at the stage of adding the widget handler, as the widget will open when clicking on any links of the special format described above ||
 |#
 
@@ -57,19 +57,19 @@ Array
 )
 ```
 
-{% include [Note on required parameters](../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../_includes/required.md) %}
 
-{% include notitle [description of standard data](../_includes/widget_data.md) %}
+{% include notitle [Description of Standard Data](../_includes/widget_data.md) %}
 
 ### PLACEMENT_OPTIONS
 
 The value of `PLACEMENT_OPTIONS` is a JSON string containing an array of one or more keys that were specified in the `params` parameter of the specific link, as described above.
 
-This means that by setting in your links and processing the received GET parameter `params` in the widget handler, you can implement any necessary business logic.
+This means that by setting your links and processing the received GET parameter `params` in the widget handler, you can implement any necessary business logic.
 
-{% note tip "Typical use-cases and scenarios" %}
+{% note tip "Typical Use-Cases and Scenarios" %}
 
-- [View external documents via link](https://dev.quickbooks.com/learning/course/index.php?COURSE_ID=266&LESSON_ID=25550&LESSON_PATH=25398.25506.25530.25550)
+- [View external documents via link](https://helpdesk.bitrix24.com/courses/index.php?COURSE_ID=268&LESSON_ID=26030)
 
 {% endnote %}
 
@@ -77,7 +77,5 @@ This means that by setting in your links and processing the received GET paramet
 
 - [{#T}](../placement-bind.md)
 - [{#T}](../ui-interaction/index.md)
-- [{#T}](../ui-interaction/crm-card.md)
 - [{#T}](../../../settings/interactivity/index.md)
-- [{#T}](../open-application.md)
-- [{#T}](../open-path.md)
+- [{#T}](../bx24-widget-methods.md)

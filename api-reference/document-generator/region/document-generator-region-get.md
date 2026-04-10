@@ -4,7 +4,7 @@
 >
 > Who can execute the method: a user with permission to modify document generator templates
 
-The method `documentgenerator.region.get` returns region data by its ID or code.
+The method `documentgenerator.region.get` returns region data based on the identifier or code.
 
 ## Method Parameters
 
@@ -194,7 +194,11 @@ HTTP Status: **200**
 || **formatName**
 [`string`](../../data-types.md) | Full name template ||
 || **phrases**
-[`object`](../../data-types.md) | Set of phrases in the format `code: text` ||
+[`object`](../../data-types.md) | Set of phrases in the format `code: text`, where keys and values are strings.
+
+Examples of keys: `TAX_INCLUDED`, `TAX_NOT_INCLUDED`
+
+The list of template fields can be obtained using the [documentgenerator.template.getfields](../templates/document-generator-template-get-fields.md) method ||
 |#
 
 ## Error Handling
@@ -214,7 +218,7 @@ HTTP Status: **400**
 
 #|
 || **Status** | **Code** | **Description** | **Value** ||
-|| `400` | `100` | Could not find value for parameter {id} | Required parameter `id` not provided ||
+|| `400` | `100` | Could not find value for parameter {id} | Required parameter `id` is missing ||
 || `400` | `0` | Region not found | The parameter `id` specifies a non-existent region ||
 || `400` | `0` | You do not have permissions to modify templates | Insufficient permissions to modify document generator templates ||
 |#

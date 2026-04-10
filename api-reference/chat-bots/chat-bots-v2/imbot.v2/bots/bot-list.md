@@ -221,13 +221,13 @@ HTTP Code: **200**
 || **isReactionsEnabled**
 [`boolean`](../../../../data-types.md) | Reactions are enabled for bot messages ||
 || **backgroundId**
-[`integer`](../../../../data-types.md) | Identifier of the chat background ||
+[`string|null`](../../../../data-types.md) | Chat background ID or `null` ||
 || **language**
 [`string`](../../../../data-types.md) | Language of the bot ||
 || **moduleId**
-[`string`](../../../../data-types.md) | Identifier of the module ||
+[`string`](../../../../data-types.md) | Module identifier ||
 || **appId**
-[`integer`](../../../../data-types.md) | Identifier of the application or `0` if the bot is not linked to an application ||
+[`string`](../../../../data-types.md) | ID of the application that registered the bot ||
 || **eventMode**
 [`string`](../../../../data-types.md) | Event delivery mode: `webhook` or `fetch` ||
 || **countMessage**
@@ -254,10 +254,10 @@ HTTP Code: **200**
 || **bot**
 [`boolean`](../../../../data-types.md) | Indicates if the user is a bot ||
 || **type**
-[`string`](../../../../data-types.md) | Type of the user ||
+[`string`](../../../../data-types.md) | Type of user ||
 |#
 
-Complete description of all fields of the objects can be found on the [Objects and Fields](../../entities.md) page.
+Complete description of all object fields is available on the [Objects and Fields](../../entities.md) page.
 
 {% note info "" %}
 
@@ -289,7 +289,8 @@ HTTP Status: **400**, **403**
 
 ## Continue Learning
 
-- [Register a Bot imbot.v2.Bot.register](./bot-register.md)
-- [Get Information About the Bot imbot.v2.Bot.get](./bot-get.md)
-- [Update the bot imbot.v2.Bot.update](./bot-update.md)
-- [Unregister the bot imbot.v2.Bot.unregister](./bot-unregister.md)
+- [API imbot.v2 Change Log](../../change-log.md)
+- [{#T}](./bot-register.md)
+- [{#T}](./bot-get.md)
+- [{#T}](./bot-update.md)
+- [{#T}](./bot-unregister.md)

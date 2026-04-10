@@ -1,26 +1,15 @@
-# Navigation and Title
+# Navigation and Header
 
-{% note warning "We are still updating this page" %}
+For blocks of this type, there is no need to specify a special `subtype` in the manifest. It is sufficient to add one of the markers to the block's markup:
 
-Some data may be missing here — we will fill it in shortly.
+- `#title#`
+- `#breadcrumb#`
 
-{% endnote %}
+The system replaces them during the processing of the block's content.
 
-{% if build == 'dev' %}
+## Marker `#title#`
 
-{% note alert "TO-DO _not exported to prod_" %}
-
-- edits are needed to meet writing standards
-
-{% endnote %}
-
-{% endif %}
-
-For this type of block, there is no need to specify any special parameters in the manifest. Any block can serve as a navigation chain or title. It is sufficient to have markers in the block's content:
-
-## Marker: \#title\#
-
-This is replaced with the title of the current page, which primarily depends on the page's name but can be overridden by components within the page blocks or an external solution.
+In the public part, the marker `#title#` is replaced with the title of the current page.
 
 Example of a block with a title:
 
@@ -32,11 +21,13 @@ Example of a block with a title:
 </section>
 ```
 
-## Marker: \#breadcrumb\#
+In the preview and editor, a standard text value can be used.
 
-This marker is replaced with a navigation chain – a sequence of links from the main page to the current one. Typically, the real benefit of the chain appears only in the case of dynamic content and a branched structure.
+## Marker `#breadcrumb#`
 
-There is no way to influence the layout of the sequence of links directly in the cloud version.
+In the public part, the marker `#breadcrumb#` is replaced with the navigation chain of the current page.
+
+In the public part, the chain is built using `getNavChain()`. In the preview and editor, the system may use the `chain_template.php` template of the active site template and substitute the template markup.
 
 Example of a block with a navigation chain:
 
@@ -47,3 +38,23 @@ Example of a block with a navigation chain:
     </div>
 </section>
 ```
+
+## Important Considerations
+
+- It is sufficient for the required marker to be present in the block's HTML.
+- If these markers are not present in the block, special substitution will not be performed.
+
+## Examples of Standard Blocks
+
+- `store.breadcrumb`
+- `store.breadcrumb_dark_bg_text_left`
+- `store.store_v3_menu_2`
+
+## Continue Your Learning
+
+- [Special Blocks](./index.md)
+- [Menu Blocks](./menu.md)
+- [Maps in Blocks](./maps.md)
+- [Search Results](./search.md)
+- [Search Forms](./search-forms.md)
+- [Forms in Blocks](./crm-forms.md)

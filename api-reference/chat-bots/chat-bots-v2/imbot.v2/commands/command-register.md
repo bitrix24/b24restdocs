@@ -6,53 +6,71 @@
 
 The method `imbot.v2.Command.register` registers a bot's slash command.
 
-This method is idempotent: a repeated call with the same `command` for the same bot from the same application returns the existing command without updating the data. To update, use [imbot.v2.Command.update](./command-update.md).
+The method is idempotent: a repeated call with the same `command` for the same bot from the same application returns the existing command without updating the data. To update, use [imbot.v2.Command.update](./command-update.md).
+
+{% note warning "" %}
+
+The method call format has changed: command parameters are now passed in the `fields` object. The old flat format will be supported until 30.09.2026. For more details, see [API Change Log for imbot.v2](../../change-log.md#command-register-fields).
+
+{% endnote %}
 
 ## Method Parameters
 
-{% include [Parameter Notes](../../../../../_includes/required.md) %}
+{% include [Footnote on parameters](../../../../../_includes/required.md) %}
 
-#|
+#| 
 || **Name**
 `Type` | **Description** ||
-|| **botId***
+|| **botId*** 
 [`integer`](../../../../data-types.md) | Bot ID ||
-|| **botToken**
+|| **botToken** 
 [`string`](../../../../data-types.md) | Unique authorization token for the bot. Required for webhook authorization, not needed for OAuth.
 
-Pass the same botToken that was specified during the chat bot registration ||
-|| **command***
+Pass the same `botToken` that was specified when registering the chatbot ||
+|| **fields*** 
+[`object`](../../../../data-types.md) | Object with command parameters [(detailed description)](#fields) ||
+|#
+
+### Parameter fields {#fields}
+
+#| 
+|| **Name**
+`Type` | **Description** ||
+|| **command*** 
 [`string`](../../../../data-types.md) | Command without the `/` symbol. For example: `help` ||
-|| **title**
-[`object`](../../../../data-types.md) | Title of the command in different languages. An object `{langCode: text}`, where `langCode` is the two-letter language code `en`, `ru`, `de`, etc. 
+|| **title** 
+[`object`](../../../../data-types.md) | Title of the command in different languages. An object `{langCode: text}`, where `langCode` is a two-letter lowercase language code: `en`, `de`, etc.
+
 Displayed in the list of available commands. Required for visible commands `hidden: false`. For hidden commands `hidden: true`, it can be omitted ||
-|| **params**
+|| **params** 
 [`object`](../../../../data-types.md) | Description of command parameters in different languages. An object `{langCode: text}`, similar to `title`. Displayed as a hint next to the command ||
-|| **common**
-[`boolean`](../../../../data-types.md) | Common command. Acceptable values: `true`, `false`. Default is `false`. More details — [Common and Local Commands](#common-types) ||
-|| **hidden**
-[`boolean`](../../../../data-types.md) | Hidden command (not displayed in hints). Acceptable values: `true`, `false`. Default is `false` ||
-|| **extranetSupport**
+|| **common** 
+[`boolean`](../../../../data-types.md) | Common command. Acceptable values: `true`, `false`. Default is `false`. For more details, see [Common and Local Commands](#common-types) ||
+|| **hidden** 
+[`boolean`](../../../../data-types.md) | Hidden command. Acceptable values: `true`, `false`. Default is `false` ||
+|| **extranetSupport** 
 [`boolean`](../../../../data-types.md) | Extranet support. Acceptable values: `true`, `false`. Default is `false` ||
 |#
 
+> Boolean parameters accept `true` and `false`. If the client does not support JSON boolean, strings `"Y"` and `"N"` can be passed.
+
 ## Common and Local Commands {#common-types}
 
-The `common` parameter determines where the command is available:
+The `common` parameter defines where the command is available:
 
 - `common: true` — common command, available in any chat
 - `common: false` — local command, available only in a personal dialogue with the bot and in chats where the bot is a participant
 
 Typical use-cases:
 
-- Common commands are suitable for global actions (e.g., search or help without the bot needing to be present in the chat)
+- Common commands are suitable for global actions, such as searching or help without the bot needing to be present in the chat
 - Local commands are suitable for actions tied to a specific bot and the context of its chat
 
 The event for command invocation: [ONIMBOTV2COMMANDADD](../events/events.md#onimbotv2commandadd).
 
 ## Code Examples
 
-{% include [Example Notes](../../../../../_includes/examples.md) %}
+{% include [Footnote on examples](../../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -62,7 +80,7 @@ The event for command invocation: [ONIMBOTV2COMMANDADD](../events/events.md#onim
     curl -X POST \
       -H "Content-Type: application/json" \
       -H "Accept: application/json" \
-      -d '{"botId":456,"botToken":"my_bot_token","command":"help","title":{"en":"Show help","ru":"Show help"}}' \
+      -d '{"botId":456,"botToken":"my_bot_token","fields":{"command":"help","title":{"en":"Show help","de":"Hilfe anzeigen"},"params":{"en":"query","de":"Anfrage"}}}' \
       https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/imbot.v2.Command.register
     ```
 
@@ -72,7 +90,7 @@ The event for command invocation: [ONIMBOTV2COMMANDADD](../events/events.md#onim
     curl -X POST \
       -H "Content-Type: application/json" \
       -H "Accept: application/json" \
-      -d '{"botId":456,"command":"help","title":{"en":"Show help","ru":"Show help"},"auth":"**put_access_token_here**"}' \
+      -d '{"botId":456,"fields":{"command":"help","title":{"en":"Show help","de":"Hilfe anzeigen"},"params":{"en":"query","de":"Anfrage"}},"auth":"**put_access_token_here**"}' \
       https://**put_your_bitrix24_address**/rest/imbot.v2.Command.register
     ```
 
@@ -82,8 +100,11 @@ The event for command invocation: [ONIMBOTV2COMMANDADD](../events/events.md#onim
     try {
       const response = await $b24.callMethod('imbot.v2.Command.register', {
         botId: 456,
-        command: 'help',
-        title: { en: 'Show help', ru: 'Show help' },
+        fields: {
+          command: 'help',
+          title: { en: 'Show help', de: 'Hilfe anzeigen' },
+          params: { en: 'query', de: 'Anfrage' },
+        },
       });
 
       const { result } = response.getData();
@@ -103,8 +124,11 @@ The event for command invocation: [ONIMBOTV2COMMANDADD](../events/events.md#onim
                 'imbot.v2.Command.register',
                 [
                     'botId' => 456,
-                    'command' => 'help',
-                    'title' => ['en' => 'Show help', 'ru' => 'Show help'],
+                    'fields' => [
+                        'command' => 'help',
+                        'title' => ['en' => 'Show help', 'de' => 'Hilfe anzeigen'],
+                        'params' => ['en' => 'query', 'de' => 'Anfrage'],
+                    ],
                 ]
             );
 
@@ -126,8 +150,11 @@ The event for command invocation: [ONIMBOTV2COMMANDADD](../events/events.md#onim
         'imbot.v2.Command.register',
         {
             botId: 456,
-            command: 'help',
-            title: { en: 'Show help', ru: 'Show help' },
+            fields: {
+                command: 'help',
+                title: { en: 'Show help', de: 'Hilfe anzeigen' },
+                params: { en: 'query', de: 'Anfrage' },
+            },
         },
         function(result) {
             if (result.error()) {
@@ -148,8 +175,11 @@ The event for command invocation: [ONIMBOTV2COMMANDADD](../events/events.md#onim
         'imbot.v2.Command.register',
         [
             'botId' => 456,
-            'command' => 'help',
-            'title' => ['en' => 'Show help', 'ru' => 'Show help'],
+            'fields' => [
+                'command' => 'help',
+                'title' => ['en' => 'Show help', 'de' => 'Hilfe anzeigen'],
+                'params' => ['en' => 'query', 'de' => 'Anfrage'],
+            ],
         ]
     );
 
@@ -191,7 +221,7 @@ HTTP Code: **200**
 
 ## Returned Data
 
-#|
+#| 
 || **Name**
 `Type` | **Description** ||
 || **result**
@@ -204,7 +234,7 @@ HTTP Code: **200**
 
 ### Fields of the Command Object {#command-object}
 
-#|
+#| 
 || **Field**
 `Type` | **Description** ||
 || **id**
@@ -238,22 +268,24 @@ HTTP Status: **400**, **403**
 
 ### Possible Error Codes
 
-#|
+#| 
 || **Code** | **Description** | **Value** ||
-|| `BOT_TOKEN_NOT_SPECIFIED` | Bot token is not specified | `botToken` not specified. Required for webhook authorization ||
-|| `BOT_ID_REQUIRED` | Bot ID is required | `botId` not specified ||
+|| `BOT_TOKEN_NOT_SPECIFIED` | Bot token is not specified | `botToken` is not provided. Required for webhook authorization ||
+|| `BOT_ID_REQUIRED` | Bot ID is required | `botId` is not provided ||
 || `BOT_NOT_FOUND` | Bot not found | Bot not found ||
-|| `BOT_OWNERSHIP_ERROR` | Bot is registered by another application | Bot registered by another application ||
-|| `COMMAND_REQUIRED` | Command is required | Command (`command`) not specified ||
-|| `COMMAND_TITLE_REQUIRED` | Command title is required | `title` not specified for visible command `hidden: false` ||
-|| `COMMAND_REGISTER_FAILED` | Command registration failed | Error during command registration ||
+|| `BOT_OWNERSHIP_ERROR` | Bot is registered by another application | Bot is registered by another application ||
+|| `COMMAND_NAME_INVALID` | Command name is invalid | Command name must be a string ||
+|| `COMMAND_REQUIRED` | Command is required | Command (`fields.command`) is not specified ||
+|| `COMMAND_TITLE_REQUIRED` | Command title is required | `fields.title` is not specified for visible command `fields.hidden: false` ||
+|| `COMMAND_REGISTER_FAILED` | Command registration failed | Error occurred during command registration ||
 |#
 
 {% include [System Errors](../../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
-- [Update the imbot.v2.Command.update](./command-update.md)
-- [Get the List of imbot.v2.Command.list Commands](./command-list.md)
-- [Remove the imbot.v2.Command.unregister Command](./command-unregister.md)
-- [Responding to the Command imbot.v2.Command.answer](./command-answer.md)
+- [{#T}](./command-update.md)
+- [{#T}](./command-list.md)
+- [{#T}](./command-unregister.md)
+- [{#T}](./command-answer.md)
+- [API Change Log for imbot.v2](../../change-log.md#command-register-fields) — the method call format has changed, the old format will be supported until 2026-09

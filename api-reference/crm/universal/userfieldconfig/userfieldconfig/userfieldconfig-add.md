@@ -2,19 +2,19 @@
 
 > Scope: [`userfieldconfig`](../../../../scopes/permissions.md), module scope from `moduleId` (for example, [`crm`](../../../../scopes/permissions.md))
 >
-> Who can execute the method: a user with permission to modify object settings in the `moduleId` (for `crm` — permission "Allow to modify settings")
+> Who can execute the method: a user with permission to modify object settings in the `moduleId` module (for `crm` — permission "Allow to modify settings")
 
-The method `userfieldconfig.add` adds a new custom field.
+The `userfieldconfig.add` method adds a new custom field.
 
 ## Method Parameters
 
-{% include [Parameter Notes](../../../../../_includes/required.md) %}
+{% include [Parameter Note](../../../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **moduleId***
-[`string`](../../../data-types.md) | Identifier of the module where the field is created ||
+[`string`](../../../data-types.md) | Module identifier where the field is created ||
 || **field***
 [`object`](../../../data-types.md) | Object with custom field settings [(detailed description)](#field) ||
 |#
@@ -25,11 +25,11 @@ The method `userfieldconfig.add` adds a new custom field.
 || **Name**
 `type` | **Description** ||
 || **entityId***
-[`string`](../../../data-types.md) | Identifier of the object for which the field is created. The format depends on the module, for example, `CRM_7` for SPA ||
+[`string`](../../../data-types.md) | Identifier of the object for which the field is created. The format depends on the module, for example `CRM_7` for SPA ||
 || **fieldName***
 [`string`](../../../data-types.md) | Field code in the format `UF_{OBJECT_IDENTIFIER}_{POSTFIX}`. The code must be unique within the object. Allowed characters are `A-Z`, `0-9`, `_`. Maximum length of the code is 50 characters ||
 || **userTypeId***
-[`string`](../../../data-types.md) | Identifier of the field type. The list of available types is returned by the method [userfieldconfig.getTypes](./userfieldconfig-get-types.md) ||
+[`string`](../../../data-types.md) | Identifier of the field type. The list of available types is returned by the [userfieldconfig.getTypes](./userfieldconfig-get-types.md) method ||
 || **xmlId**
 [`string`](../../../data-types.md) | External identifier of the field ||
 || **sort**
@@ -45,11 +45,11 @@ The method `userfieldconfig.add` adds a new custom field.
 || **isSearchable**
 [`boolean`](../../../data-types.md) | Whether the field values are included in the search. Possible values: `Y` or `N` ||
 || **settings**
-[`object`](../../../data-types.md) | Additional settings for the field. The set of keys depends on `userTypeId` [(detailed description)](#settings) ||
+[`object`](../../../data-types.md) | Additional field settings. The set of keys depends on `userTypeId` [(detailed description)](#settings) ||
 || **editFormLabel**
-[`string`](../../../data-types.md)\|[`lang_map`](../../../data-types.md#lang_map) | Label in the edit form. When a string is passed, it is used as a general value; when `lang_map` is passed, labels can be specified by languages ||
+[`string`](../../../data-types.md)\|[`lang_map`](../../../data-types.md#lang_map) | Label in the edit form. When a string is passed, it is used as a general value; when `lang_map` is passed, labels can be set by languages ||
 || **helpMessage**
-[`string`](../../../data-types.md)\|[`lang_map`](../../../data-types.md#lang_map) | Help text. When a string is passed, it is used as a general value; when `lang_map` is passed, help messages can be specified by languages ||
+[`string`](../../../data-types.md)\|[`lang_map`](../../../data-types.md#lang_map) | Help text. When a string is passed, it is used as a general value; when `lang_map` is passed, help can be set by languages ||
 || **enum**
 [`uf_enum_element[]`](#uf_enum_element) | Value options for fields of type `enumeration` ||
 |#
@@ -58,7 +58,7 @@ The method uses a fixed set of keys in `field` (see the table above).
 
 Incorrect and unsupported keys in `field` are ignored.
 
-The keys `showInList`, `listColumnLabel`, `listFilterLabel`, `errorMessage`, `label` are not processed by the method `userfieldconfig.add`, even if passed in `field`.
+Keys `showInList`, `listColumnLabel`, `listFilterLabel`, `errorMessage`, `label` are not processed by the `userfieldconfig.add` method, even if passed in `field`.
 
 ### Parameter settings {#settings}
 
@@ -80,9 +80,9 @@ Each field type has its own set of keys in `settings`.
     || **REGEXP**
     [`string`](../../../data-types.md) | Regular expression for validation ||
     || **MIN_LENGTH**
-    [`integer`](../../../data-types.md) | Minimum length of the string ||
+    [`integer`](../../../data-types.md) | Minimum string length ||
     || **MAX_LENGTH**
-    [`integer`](../../../data-types.md) | Maximum length of the string ||
+    [`integer`](../../../data-types.md) | Maximum string length ||
     |#
 
 - integer
@@ -108,7 +108,7 @@ Each field type has its own set of keys in `settings`.
     || **DEFAULT_VALUE**
     [`double`](../../../data-types.md) | Default value ||
     || **PRECISION**
-    [`integer`](../../../data-types.md) | Precision of the number, must be greater than or equal to 0 ||
+    [`integer`](../../../data-types.md) | Number precision, must be greater than or equal to 0 ||
     || **SIZE**
     [`integer`](../../../data-types.md) | Width of the input field ||
     || **MIN_VALUE**
@@ -241,7 +241,7 @@ Each field type has its own set of keys in `settings`.
     || **Name**
     `type` | **Description** ||
     || **ENTITY_TYPE**
-    [`string`](../../../data-types.md) | Identifier of the CRM reference type. Possible values can be obtained by the method [`crm.status.entity.types`](../../../status/crm-status-entity-types.md) ||
+    [`string`](../../../data-types.md) | Identifier of the CRM reference type. Possible values can be obtained using the [`crm.status.entity.types`](../../../status/crm-status-entity-types.md) method ||
     |#
 
 - crm
@@ -273,7 +273,7 @@ Each field type has its own set of keys in `settings`.
 
 - rest_*
 
-    Settings are defined by the handler of the custom field type.
+    Settings are defined by the custom field type handler.
 
 {% endlist %}
 
@@ -294,7 +294,7 @@ Each field type has its own set of keys in `settings`.
 
 ## Code Examples
 
-{% include [Example Notes](../../../../../_includes/examples.md) %}
+{% include [Example Note](../../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -505,22 +505,22 @@ HTTP Status: **200**
                 "SHOW_NO_VALUE": "Y"
             },
             "languageId": {
-                "en": "en"
+                "en": "en",
             },
             "editFormLabel": {
-                "en": "List of characteristics"
+                "en": "List of characteristics",
             },
             "listColumnLabel": {
-                "en": null
+                "en": null,
             },
             "listFilterLabel": {
-                "en": null
+                "en": null,
             },
             "errorMessage": {
-                "en": null
+                "en": null,
             },
             "helpMessage": {
-                "en": null
+                "en": null,
             },
             "enum": [
                 {
@@ -592,19 +592,19 @@ HTTP Status: **200**
 || **sort**
 [`integer`](../../../data-types.md) | Sort index ||
 || **multiple**
-[`boolean`](../../../data-types.md) | Multiple value flag (`Y`/`N`) ||
+[`boolean`](../../../data-types.md) | Flag for multiple values (`Y`/`N`) ||
 || **mandatory**
-[`boolean`](../../../data-types.md) | Mandatory field flag (`Y`/`N`) ||
+[`boolean`](../../../data-types.md) | Flag for mandatory field (`Y`/`N`) ||
 || **showFilter**
-[`boolean`](../../../data-types.md) | Flag to show the field in the filter ||
+[`boolean`](../../../data-types.md) | Flag for showing the field in the filter ||
 || **showInList**
-[`boolean`](../../../data-types.md) | Flag to show the field in the list ||
+[`boolean`](../../../data-types.md) | Flag for showing the field in the list ||
 || **editInList**
 [`boolean`](../../../data-types.md) | Flag for editing in the list ||
 || **isSearchable**
 [`boolean`](../../../data-types.md) | Flag for participation in search ||
 || **settings**
-[`object`](../../../data-types.md) | Additional settings for the field [(detailed description)](#settings). The set of keys depends on `userTypeId` ||
+[`object`](../../../data-types.md) | Additional field settings [(detailed description)](#settings). The set of keys depends on `userTypeId` ||
 || **languageId**
 [`object`](../../../data-types.md) | Languages for which field labels are set ||
 || **editFormLabel**
@@ -616,7 +616,7 @@ HTTP Status: **200**
 || **errorMessage**
 [`lang_map`](../../../data-types.md) | Error message text ||
 || **helpMessage**
-[`lang_map`](../../../data-types.md) | Help text for the field ||
+[`lang_map`](../../../data-types.md) | Field help ||
 || **enum**
 [`object[]`](../../../data-types.md) | Value options. This field is returned only for `userTypeId = enumeration` ||
 |#
@@ -639,7 +639,7 @@ HTTP Status: **400**
 #|
 || **Code** | **Description** | **Value** ||
 || `-` | Access denied | Insufficient permissions to create a custom field ||
-|| `-` | You cannot create custom fields | This error may occur if `field.fieldName` does not start with `UF_{entityId}_` ||
+|| `-` | You cannot create custom fields | This error may be returned if `field.fieldName` does not start with `UF_{entityId}_` ||
 || `-` | The 'USER_TYPE_ID' field is not found | Required `field.userTypeId` is not provided ||
 || `-` | The 'FIELD_NAME' field is not found | Required `field.fieldName` is not provided ||
 || `-` | Field ... already exists | The provided `field.fieldName` is already in use for this object ||

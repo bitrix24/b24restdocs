@@ -2,11 +2,11 @@
 
 > Scope: [`intranet`](../../scopes/permissions.md)
 
-You can add your dropdown menu item to the top button of the robot designer in CRM entities: [leads](../../crm/leads/index.md), [deals](../../crm/deals/index.md), [new invoices](../../crm/universal/invoice.md), [custom entity types](../../crm/universal/index.md).
+You can add your dropdown menu item to the top button of the robot designer in CRM entities: [leads](../../crm/leads/index.md), [deals](../../crm/deals/index.md), [new invoices](../../crm/universal/invoice.md), and [custom entity types](../../crm/universal/index.md).
 
 ![Widget as a Dropdown Menu Item of the Top Button in the Robot Designer](./_images/CRM_ROBOT_DESIGNER_TOOLBAR.png "Widget as a Dropdown Menu Item of the Top Button in the Robot Designer")
 
-The specific widget placement code is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
+The specific placement code for the widget is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
 
 {% note info "" %}
 
@@ -16,7 +16,7 @@ The widget will not be displayed in the interface until the application installa
 
 ## Where the Widget is Embedded
 
-#|
+#| 
 || **Widget Code** | **Location** ||
 || `CRM_LEAD_ROBOT_DESIGNER_TOOLBAR` | Dropdown menu item of the top button in the [lead](../../crm/leads/index.md) ||
 || `CRM_DEAL_ROBOT_DESIGNER_TOOLBAR` | Dropdown menu item of the top button in the [deal](../../crm/deals/index.md) ||
@@ -120,11 +120,9 @@ Data is transmitted as a POST request {.b24-info}
 
 In the current widget, the `PLACEMENT_OPTIONS` parameter is not passed.
 
-## Continue Learning
+## Continue Your Exploration
 
 - [{#T}](../placement-bind.md)
 - [{#T}](../ui-interaction/index.md)
-- [{#T}](../ui-interaction/crm-card.md)
 - [{#T}](../../../settings/interactivity/index.md)
-- [{#T}](../open-application.md)
-- [{#T}](../open-path.md)
+- [{#T}](../bx24-widget-methods.md)

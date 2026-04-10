@@ -1,109 +1,145 @@
-# Add a custom block to the repository landing.repo.register
-
-{% note warning "We are still updating this page" %}
-
-Some data may be missing — we will complete it shortly.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- edits needed for writing standards
-- parameter types are not specified
-- parameter requirements are not specified
-- examples are missing
-- success response is missing
-- error response is missing
-
-{% endnote %}
-
-{% endif %}
+# Add a Custom Block to the Repository landing.repo.register
 
 > Scope: [`landing`](../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: a user with View access permission in the Sites section
 
-The method `landing.repo.register` adds a block to the repository. It returns an error or the `ID` of the added block. This `ID` is used to add the block to programmatically created landing pages.
+The method `landing.repo.register` adds a new custom block to the repository.
 
-When adding, a check is performed. If a block with this code already exists in the system, it will be removed.
+The method updates the block if it already exists with the same code for the current application. If it does not exist, it creates a new one.
 
-The method may return an error about dangerous content in the block. In this case, it is necessary to first check the registered content using the method [landing.repo.checkContent](./landing-repo-check-content.md).
+## Method Parameters
 
-When developing a new block or modifying an existing one, it may be necessary to see changes faster than re-adding the block or using the RESET flag allows. It is recommended to use the method [landing.block.updatecontent](../block/methods/landing-block-update-content.md) for these purposes. This method sends arbitrary content to the block and displays changes almost "on the fly." Once development is complete, the developer can finalize the registration.
-
-The method is suitable only for changing content. When modifying the manifest, the block needs to be re-registered (without re-adding it to the page).
-
-## Parameters
+{% include [Footnote on required parameters](../../../_includes/required.md) %}
 
 #|
-|| **Method** | **Description** | **Version** ||
-|| **code**
-[`unknown`](../../data-types.md) | Unique code for your block, which will be used to remove the block if necessary. ||
-|| **fields**
-[`unknown`](../../data-types.md) | An array of fields describing your block, consisting of keys:
-- NAME - block name
-- DESCRIPTION - block description
-- SECTIONS - categories in which the block should appear, separated by commas.
-
-  {% note info %}
-  
-  If the required category is not in the list, simply write its text in the manifest, and the category will be added. The key for the new category becomes the value `md5(strtolower($sectionName))`.
-  
-  {% endnote %}
-
-- PREVIEW - URL of the block's cover image
-- CONTENT - HTML content of the block
-- ACTIVE - block activity (Y / N)
-- SITE_TEMPLATE_ID – binding the block to a specific template of the main module's site. **Only for on-premise versions!**
-
-Additional parameters:
-- RESET - if passed with the value Y, the system will automatically update all blocks added to the pages to the new layout. ||
+|| **Name**
+`type` | **Description** ||
+|| **code**^*^
+[`string`](../../data-types.md) | Unique block code ||
+|| **fields**^*^
+[`object`](../../data-types.md) | Block fields [more details](#fields) ||
 || **manifest**
-[`unknown`](../../data-types.md) | An array of the manifest describing the block. ||
+[`object`](../../data-types.md) | Block manifest.
+
+See the structure of the manifest in the method [landing.block.getManifestFile](../block/methods/landing-block-get-manifest-file.md) and in the section [Manifest File](../block/manifest.md) ||
 |#
 
-{% note info %}
+### Type fields {#fields}
 
-The **style** attribute may be stripped by the built-in sanitizer. To bypass this, use the **bxstyle** attribute instead. When added, the system converts it to the standard style.
+{% include [Footnote on required parameters](../../../_includes/required.md) %}
 
-{% endnote %}
+#|
+|| **Name**
+`type` | **Description** ||
+|| **NAME**^*^
+[`string`](../../data-types.md) | Block name ||
+|| **CONTENT**^*^
+[`string`](../../data-types.md) | HTML content of the block. It undergoes a sanitize check before saving ||
+|| **SECTIONS**^*^
+[`string`](../../data-types.md) | Block categories as a comma-separated string, e.g., `cover,about` ||
+|| **PREVIEW**^*^
+[`string`](../../data-types.md) | Block preview URL ||
+|| **DESCRIPTION**
+[`string`](../../data-types.md) | Block description ||
+|| **ACTIVE**
+[`string`](../../data-types.md) | Block activity (`Y`/`N`) ||
+|| **SITE_TEMPLATE_ID**
+[`string`](../../data-types.md) | Binding of the block to the site template ||
+|| **RESET**
+[`string`](../../data-types.md) | If `Y` is passed, the method registers updates for blocks added to pages with the code `repo_<ID>` ||
+|#
 
+## Code Examples
 
-## Examples
+{% include [Footnote on examples](../../../_includes/examples.md) %}
+
+Example of registering a block where:
+- `code` — unique block code `myblockx`
+- `fields` — main parameters of the block (`NAME`, `DESCRIPTION`, `SECTIONS`, `PREVIEW`, `CONTENT`)
+- `manifest` — basic manifest of the block with the description of `block` and `nodes`
 
 {% list tabs %}
 
-- JS
+- cURL (Webhook)
 
+    ```bash
+    curl -X POST \
+      -H "Content-Type: application/json" \
+      -d '{
+        "code": "myblockx",
+        "fields": {
+          "NAME": "Test block",
+          "DESCRIPTION": "Just try!",
+          "SECTIONS": "cover,about",
+          "PREVIEW": "https://www.bitrix24.com/images/b24_screen.png",
+          "CONTENT": "<section class=\"landing-block\"><div class=\"container\">Test</div></section>"
+        },
+        "manifest": {
+          "block": {"name": "Test block"},
+          "nodes": {
+            ".landing-block-node-text": {"name": "Text", "type": "text"}
+          }
+        }
+      }' \
+      "https://**put.your-domain-here**/rest/**user_id**/**webhook_code**/landing.repo.register.json"
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+      -H "Content-Type: application/json" \
+      -d '{
+        "code": "myblockx",
+        "fields": {
+          "NAME": "Test block",
+          "SECTIONS": "cover,about",
+          "PREVIEW": "https://www.bitrix24.com/images/b24_screen.png",
+          "CONTENT": "<section class=\"landing-block\"><div class=\"container\">Test</div></section>"
+        },
+        "manifest": {
+          "block": {"name": "Test block"}
+        },
+        "auth": "**put_access_token_here**"
+      }' \
+      "https://**put.your-domain-here**/rest/landing.repo.register.json"
+    ```
+
+- JS
 
     ```js
     try
     {
     	const response = await $b24.callMethod(
     		'landing.repo.register',
-    		<?= \CUtil::PhpToJSObject($data) ?>
+    		{
+    			code: 'myblockx',
+    			fields: {
+    				NAME: 'Test block',
+    				DESCRIPTION: 'Just try!',
+    				SECTIONS: 'cover,about',
+    				PREVIEW: 'https://www.bitrix24.com/images/b24_screen.png',
+    				CONTENT: '<section class="landing-block"><div class="container">Test</div></section>'
+    			},
+    			manifest: {
+    				block: { name: 'Test block' },
+    				nodes: {
+    					'.landing-block-node-text': { name: 'Text', type: 'text' }
+    				}
+    			}
+    		}
     	);
-    	
-    	const result = response.getData().result;
-    	if (result.error())
-    	{
-    		console.error(result.error());
-    	}
-    	else
-    	{
-    		console.info(result);
-    	}
+
+    	console.info(response.getData().result);
     }
-    catch(error)
+    catch (error)
     {
-    	console.error('Error:', error);
+    	console.error(error);
     }
     ```
 
 - PHP
-
 
     ```php
     try {
@@ -114,77 +150,26 @@ The **style** attribute may be stripped by the built-in sanitizer. To bypass thi
                 [
                     'code' => 'myblockx',
                     'fields' => [
-                        'NAME'        => 'Test block',
+                        'NAME' => 'Test block',
                         'DESCRIPTION' => 'Just try!',
-                        'SECTIONS'    => 'cover,about',
-                        'PREVIEW'     => 'https://www.bitrix24.com/images/b24_screen.png',
-                        'CONTENT'     => '
-        <section class="landing-block">
-            <div class="text-center g-color-gray-dark-v3 g-pa-10">
-                <div class="g-width-600 mx-auto">
-                    <div class="landing-block-node-text g-font-size-12 ">
-                        <p>© 2017 All rights reserved. Developed by
-                        <a href="#" class="landing-block-node-link g-color-primary">Bitrix24</a></p>
-                    </div>
-                </div>
-            </div>
-        </section>'
+                        'SECTIONS' => 'cover,about',
+                        'PREVIEW' => 'https://www.bitrix24.com/images/b24_screen.png',
+                        'CONTENT' => '<section class="landing-block"><div class="container">Test</div></section>',
                     ],
                     'manifest' => [
-                        'assets' => [
-                            'css' => [
-                                'https://site.com/aaa.css'
-                            ],
-                            'js'  => [
-                                'https://site.com/aaa.js'
-                            ]
-                        ],
-                        'nodes'  => [
-                            '.landing-block-node-text' => [
-                                'name' => 'Text',
-                                'type' => 'text',
-                            ],
-                            '.landing-block-node-link' => [
-                                'name' => 'Link',
-                                'type' => 'link',
-                            ],
-                        ],
-                        'style'  => [
-                            '.landing-block-node-text' => [
-                                'name' => 'Text',
-                                'type' => 'typo',
-                            ],
-                            '.landing-block-node-link' => [
-                                'name' => 'Link',
-                                'type' => 'typo',
-                            ],
-                        ],
-                        'attrs'  => [
-                            '.landing-block-node-text' => [
-                                'name'      => 'Copyright settings',
-                                'type'      => 'dropdown',
-                                'attribute' => 'data-copy',
-                                'items'     => [
-                                    'val1' => 'Value 1',
-                                    'val2' => 'Value 2'
-                                ]
-                            ],
+                        'block' => ['name' => 'Test block'],
+                        'nodes' => [
+                            '.landing-block-node-text' => ['name' => 'Text', 'type' => 'text'],
                         ],
                     ],
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
-        if ($result->error()) {
-            error_log($result->error());
-            echo 'Error: ' . $result->error();
-        } else {
-            echo 'Success: ' . print_r($result->data(), true);
-        }
-    
+
+        echo 'Success: ' . print_r($result, true);
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error calling landing.repo.register: ' . $e->getMessage();
@@ -194,93 +179,141 @@ The **style** attribute may be stripped by the built-in sanitizer. To bypass thi
 - BX24.js
 
     ```js
-    <?php
-    //for clarity, we will pass a PHP array to JS execution
-    $data = array(
-        'code' => 'myblockx',
-        'fields' => array(
-            'NAME' => 'Test block',
-            'DESCRIPTION' => 'Just try!',
-            'SECTIONS' => 'cover,about',
-            'PREVIEW' => 'https://www.bitrix24.com/images/b24_screen.png',
-            'CONTENT' => '
-    <section class="landing-block">
-        <div class="text-center g-color-gray-dark-v3 g-pa-10">
-            <div class="g-width-600 mx-auto">
-                <div class="landing-block-node-text g-font-size-12 ">
-                    <p>© 2017 All rights reserved. Developed by
-                    <a href="#" class="landing-block-node-link g-color-primary">Bitrix24</a></p>
-                </div>
-            </div>
-        </div>
-    </section>'
-        ),
-        'manifest' => array(
-            'assets' => array(
-                'css' => array(
-                    'https://site.com/aaa.css'
-                ),
-                'js' => array(
-                    'https://site.com/aaa.js'
-                )
-            ),
-            'nodes' =>
-                array(
-                    '.landing-block-node-text' =>
-                        array(
-                            'name' => 'Text',
-                            'type' => 'text',
-                        ),
-                    '.landing-block-node-link' =>
-                        array(
-                            'name' => 'Link',
-                            'type' => 'link',
-                        ),
-                ),
-            'style' =>
-                array(
-                    '.landing-block-node-text' =>
-                        array(
-                            'name' => 'Text',
-                            'type' => 'typo',
-                        ),
-                    '.landing-block-node-link' =>
-                        array(
-                            'name' => 'Link',
-                            'type' => 'typo',
-                        ),
-                ),
-            'attrs' =>
-                array(
-                '.landing-block-node-text' =>
-                    array(
-                        'name' => 'Copyright settings',
-                        'type' => 'dropdown',
-                        'attribute' => 'data-copy',
-                        'items' => array(
-                            'val1' => 'Value 1',
-                            'val2' => 'Value 2'
-                                )
-                        ),
-                ),
-        ),
-    );
-    ?>
-    // note! the following is JS code.
     BX24.callMethod(
         'landing.repo.register',
-        //abstract method that converts PHP array to JS object
-        <?= \CUtil::PhpToJSObject($data)?>,
+        {
+            code: 'myblockx',
+            fields: {
+                NAME: 'Test block',
+                DESCRIPTION: 'Just try!',
+                SECTIONS: 'cover,about',
+                PREVIEW: 'https://www.bitrix24.com/images/b24_screen.png',
+                CONTENT: '<section class="landing-block"><div class="container">Test</div></section>'
+            },
+            manifest: {
+                block: { name: 'Test block' },
+                nodes: {
+                    '.landing-block-node-text': { name: 'Text', type: 'text' }
+                }
+            }
+        },
         function(result)
         {
-            if(result.error())
+            if (result.error())
+            {
                 console.error(result.error());
+            }
             else
+            {
                 console.info(result.data());
+            }
         }
     );
     ```
 
+- PHP CRest
+
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'landing.repo.register',
+        [
+            'code' => 'myblockx',
+            'fields' => [
+                'NAME' => 'Test block',
+                'DESCRIPTION' => 'Just try!',
+                'SECTIONS' => 'cover,about',
+                'PREVIEW' => 'https://www.bitrix24.com/images/b24_screen.png',
+                'CONTENT' => '<section class="landing-block"><div class="container">Test</div></section>',
+            ],
+            'manifest' => [
+                'block' => ['name' => 'Test block'],
+            ],
+        ]
+    );
+
+    echo '<pre>';
+    print_r($result);
+    echo '</pre>';
+    ```
+
 {% endlist %}
 
-{% include [Examples note](../../../_includes/examples.md) %}
+## Response Handling
+
+HTTP Status: **200**
+
+```json
+{
+    "result": 7,
+    "time": {
+        "start": 1774879194,
+        "finish": 1774879194.526507,
+        "duration": 0.5265069007873535,
+        "processing": 0,
+        "date_start": "2026-03-30T16:59:54+02:00",
+        "date_finish": "2026-03-30T16:59:54+02:00",
+        "operating_reset_at": 1774879794,
+        "operating": 0
+    }
+}
+```
+
+### Returned Data
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`integer`](../../data-types.md) | Identifier of the added or updated block in the repository ||
+|| **time**
+[`time`](../../data-types.md#time) | Information about the execution time of the request ||
+|#
+
+## Error Handling
+
+HTTP Status: **400**
+
+```json
+{
+    "error": "MANIFEST_INTERSECT_IMG",
+    "error_description": "The editable manifest element \".landing-block-node-text\" cannot have a style type of \"Image\". Change the style type."
+}
+```
+
+```json
+{
+    "error": "ERROR_ARGUMENT",
+    "error_description": "The value of an argument 'code' has an invalid type",
+    "argument": "code"
+}
+```
+
+{% include notitle [error handling](../../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+#|
+|| **Code** | **Description** | **Value** ||
+|| `ACCESS_DENIED` | Insufficient permissions | User did not pass general access checks ||
+|| `ERROR_ARGUMENT` | Invalid argument type | An argument was passed in an incorrect type. The name of the argument is returned in the `argument` field ||
+|| `MISSING_PARAMS` | Insufficient call parameters | A required parameter (`code` or `fields`) was not passed ||
+|| `REQUIRED_FIELD_NO_EXISTS` | Missing required field | One of the fields was not passed: `NAME`, `CONTENT`, `SECTIONS`, `PREVIEW` ||
+|| `MANIFEST_INTERSECT_IMG` | Type conflict in the manifest | A `node` and a style with type `background`, `block-default`, or `block-border` are set for one selector ||
+|| `CONTENT_IS_BAD` | Unsafe block content | The `fields.CONTENT` field did not pass the sanitize check ||
+|| `PRESET_CONTENT_IS_BAD` | Unsafe preset content | Unsafe content in `manifest.cards[*].presets[*]` ||
+|| `UNSUPPORTED_BLOCK_TYPE` | Unsupported block type | The method code checks the restriction on `MAINPAGE` in `manifest.block.type` ||
+|| `UNSUPPORTED_BLOCK_SUBTYPE` | Unsupported block subtype | `widget` was passed in `manifest.block.subtype` ||
+|| `insufficient_scope` | Insufficient scope for the token | The token does not contain the `landing` scope ||
+|| `SYSTEM_ERROR` | Internal error | Execution error on the server side ||
+|#
+
+{% include [system errors](../../../_includes/system-errors.md) %}
+
+## Continue Learning
+
+- [{#T}](./landing-repo-check-content.md)
+- [{#T}](./landing-repo-get-list.md)
+- [{#T}](./landing-repo-unregister.md)
+- [{#T}](./index.md)

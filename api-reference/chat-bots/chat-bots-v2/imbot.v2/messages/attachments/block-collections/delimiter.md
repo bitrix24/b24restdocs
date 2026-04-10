@@ -1,4 +1,4 @@
-# Block with DELIMITER
+# DELIMITER Block
 
 The `DELIMITER` block adds a visual separator between parts of an attachment.
 
@@ -6,18 +6,18 @@ The `DELIMITER` block adds a visual separator between parts of an attachment.
 
 ## Block Parameters
 
-#|
-|| **Name**
+#| 
+|| **Name** 
 `type` | **Description** ||
-|| **SIZE**
-[`integer`](../../../../../../data-types.md) | Width of the separator in pixels. If the value is not specified or incorrect, `200` is used. ||
-|| **COLOR**
+|| **SIZE** 
+[`integer`](../../../../../../data-types.md) | Width of the separator in pixels. If the value is not specified or is incorrect, `200` is used ||
+|| **COLOR** 
 [`string`](../../../../../../data-types.md) | HEX color of the separator (`#RGB` or `#RRGGBB`) ||
 |#
 
 ## Example
 
-{% include [Example Note](../../../../../../../_includes/examples.md) %}
+{% include [Example Notes](../../../../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -47,6 +47,7 @@ The `DELIMITER` block adds a visual separator between parts of an attachment.
 
 ## Continue Learning
 
-- [ATTACH Block Collection](./index.md)
-- [MESSAGE Block](./text.md)
-- [GRID Block](./grid.md)
+- [API imbot.v2 Change Log](../../../../change-log.md)
+- [{#T}](./index.md)
+- [{#T}](./text.md)
+- [{#T}](./grid.md)

@@ -1,142 +1,232 @@
 # Node Types
 
-{% note warning "We are still updating this page" %}
+Nodes are described in the `nodes` key of the [block manifest](./manifest.md). Each node is tied to a CSS selector and defines how a specific element of the block is edited in the interface.
 
-Some data may be missing — we will complete it soon.
+## Node Fields
 
-{% endnote %}
+A node has common fields that are used across different types and set the basic configuration of the element in the editor. In addition to these, there are type-dependent fields that work only for specific types.
 
-{% if build == 'dev' %}
+Common fields:
 
-{% note alert "TO-DO _not exported to prod_" %}
+- `name` — the name of the node in the editing interface
+- `type` — the type of the node
+- `allowInlineEdit` — controls the availability of the node for inline editing. If set to `false`, the node will be unavailable for inline editing but will remain accessible in the block editing form
+- `useInDesigner` — controls the participation of the node in the block designer. If set to `false`, the element will be ignored in the block designer
+- `group` — grouping of nodes. If multiple nodes in one block are assigned the same value, clicking on any of them will open a common editing form for the group
 
-- edits are needed to meet the writing standard
+Fields for specific types:
 
-{% endnote %}
+- `dimensions` — image size parameters for `img`
+- `create2xByDefault` — enable the creation of a `2x` version by default for `img`
+- `skipContent` — do not modify internal content when saving for `link`
+- `extra` — description of editable parameters for the component for `component`
 
-{% endif %}
+The set of fields depends on the type of node and the specific scenario of the block.
 
-As you can learn from the [manifest file](./manifest.md), there are several types of nodes – containers that hold various types of content. Let's take a look at what they are at the moment. The examples show how to register in the manifest under the **nodes** key, and how it appears in the layout.
+## Node Types
 
-## text
+### text
 
-Regular text content with minimal inline HTML.
-
-```js
-'.landing-block-node-card-title' => array(
-    'name' => 'Description',
-    'type' => 'text',
-),
-```
-
-```js
-<h2 class="landing-block-node-card-title">Company24 video</h2>
-```
-
-## img
-
-Image. It can be used as a separate tag (`<img>`), or as a background (usually for the `<div>` tag). For this type, it is also necessary to specify the recommended size. Why is this done? Images can serve different purposes. An avatar can be very small, while a background can be quite large. Moreover, if content editors upload huge images for the avatar, they will quickly exhaust the available space on the account, and the page will lag in the browser. Therefore, block authors need to take care of declaring these nodes themselves. If the size is not specified, the system will resize such images to a uniform small size.
+Text node for headings, paragraphs, and other text elements.
 
 ```php
-'.landing-block-node-card-bgimg' => array(
-    'name' => 'Background image',
-    'type' => 'img',
-    // the image will be resized to this size
-    'dimensions' => array('width' => 1920, 'height' => 1080),
-    // the system will reduce the image only if it exceeds the size
-    'dimensions' => array('maxWidth' => 1920, 'maxHeight' => 1080),
-    // the system will enlarge the image until the width
-    // or height matches the specified
-    'dimensions' => array('minWidth' => 1920, 'minHeight' => 1080),
-),
+'.landing-block-node-card-title' => [
+    'name' => 'Heading',
+    'type' => 'text',
+],
 ```
 
 ```html
-<div class="landing-block-node-card-bgimg"></div>
+<h2 class="landing-block-node-card-title">Company24 video</h2>
 ```
 
-{% note warning %}
+### img
 
-This type must have an attribute with the image. For the `img` tag, this is the **src** attribute, and it obviously should not be empty. For the **style** attribute (in the `div` tag), it is **background-image**.
+Image node. It can be a separate `<img>` tag or a background image for a container, such as `<div>`.
 
-{% endnote %}
+For this type, it is recommended to set `dimensions` to control the size of uploaded images and avoid overloading the account with excessively large files.
 
-## link
+Supported options for `dimensions`:
 
-Link, which contains the link text, the link value, the link type (link, phone, ...), as well as the type of opening (in the current window, new, ...).
+- `width` / `height` — set to a fixed size
+- `maxWidth` / `maxHeight` — reduce if the image exceeds the specified size
+- `minWidth` / `minHeight` — increase until the minimum is reached
 
-```js
-'.landing-block-node-card-button' => array(
+```php
+'.landing-block-node-card-image' => [
+    'name' => 'Image',
+    'type' => 'img',
+    'dimensions' => [
+        'maxWidth' => 1920,
+        'maxHeight' => 1080,
+    ],
+],
+```
+
+```html
+<img class="landing-block-node-card-image" src="/upload/demo.jpg" alt="">
+```
+
+To display the image, the node must have an image source specified:
+- for the `<img>` tag, the `src` attribute is used
+- for a background element, such as `<div>`, the CSS property `background-image` is used
+
+### link
+
+Link node. Allows editing the address and related parameters of the link, such as link text or opening mode.
+
+```php
+'.landing-block-node-card-button' => [
     'name' => 'Button',
     'type' => 'link',
-),
+],
 ```
 
-```js
-<a href="/"
-    class="landing-block-node-card-button text-uppercase btn u-btn-outline-white btn-md rounded-0">
-    Read more
-</a>
+```html
+<a class="landing-block-node-card-button btn btn-primary" href="/">Read more</a>
 ```
 
-If the link is not text-based (for example, contains an image or something else), then the parameter skipContent should be added to prevent it from changing upon saving.
+If the link wraps non-text content, you can specify `skipContent => true` to avoid modifying the internal content when saving:
 
-```js
-'.landing-block-node-card-button' => array(
+```php
+'.landing-block-node-card-button' => [
     'name' => 'Button',
     'type' => 'link',
-    'skipContent' => true
-),
+    'skipContent' => true,
+],
 ```
 
-## icon
+### icon
 
-Visually similar to an image, as the end user interacts with icon options, with the exception that they cannot upload their own to these nodes. Technically, this is a class of the element that renders a specific icon through standard icon fonts.
+Icon node. Typically changes the CSS class that defines the displayed icon.
 
-```js
-'.landing-block-node-list-item-icon' => array(
+```php
+'.landing-block-node-list-item-icon' => [
     'name' => 'Icon',
     'type' => 'icon',
-),
+],
 ```
 
-```js
-<i class="landing-block-node-list-item-icon fa fa-instagram"></i> // the class fa-instagram is responsible for displaying the Instagram icon
+```html
+<i class="landing-block-node-list-item-icon fa fa-check"></i>
 ```
 
-## embed
+### embed
 
-Multimedia. For example, background video. For this type, only two attributes change – `src` and `source`.
+Node for embedding media content, such as video.
 
-```js
-'.landing-block-node-card-videobg' => array(
-    'name' => 'Background video',
+In a typical scenario for this node, the following fields are used:
+- `src` — the address of the embedded content. For `<iframe>`, it is saved in the `src` attribute; for other embedding options, `data-src` may be used
+- `source` — the original URL, saved in the `data-source` attribute
+- `preview` — the URL of the preview image, saved in `data-preview`
+- `ratio` — the aspect ratio of the container. A utility CSS class of the form `embed-responsive-*` is used
+
+```php
+'.landing-block-node-video' => [
+    'name' => 'Video',
     'type' => 'embed',
-),
+],
 ```
 
-```js
-<iframe
-    class="landing-block-node-card-videobg bg-video__video"
-    width="100%"
-    src="//www.youtube.com/embed/q4d8g9Dn3ww?autoplay=1&controls=0&loop=1&mute=1&rel=0"
-    data-source="https://www.youtube.com/watch?v=q4d8g9Dn3ww"
-    frameborder="0"
-    allowfullscreen="">
-</iframe>
+```html
+<div class="embed-responsive embed-responsive-16by9">
+    <iframe
+        class="landing-block-node-video"
+        width="100%"
+        src="//www.youtube.com/embed/q4d8g9Dn3ww"
+        data-source="https://www.youtube.com/watch?v=q4d8g9Dn3ww"
+        data-preview="https://example.com/preview.jpg"
+        frameborder="0"
+        allowfullscreen>
+    </iframe>
+</div>
 ```
 
-## map
+### map
 
-Allows working with the selector as a geo-map. Currently, only Google Maps are supported. In editing mode, it allows easy management of balloons.
+Map node for blocks with geographical references.
 
-```js
-'.landing-block-node-map' => array(
-    'name' => 'Location of our office',
+In the current implementation, `google` provider is used. If the provider is not explicitly specified, `google` is used by default.
+
+The typical structure of the map value in `data-map` includes:
+- `center` — coordinates of the center of the map
+- `zoom` — zoom level
+- `markers` — an array of markers
+
+```php
+'.landing-block-node-map' => [
+    'name' => 'Map',
     'type' => 'map',
-),
+],
 ```
 
-```js
-<div class="landing-block-node-map mx-auto w-100 g-min-height-430 h-100"></div>
+```html
+<div
+    class="landing-block-node-map"
+    data-map-provider="google"
+    data-map='{
+        "center":{"lat":55.751244,"lng":37.618423},
+        "zoom":12,
+        "markers":[
+            {
+                "title":"Office",
+                "description":"New York, center",
+                "showByDefault":true,
+                "latLng":{"lat":55.751244,"lng":37.618423}
+            }
+        ]
+    }'>
+</div>
+```
+
+### component
+
+Node for embedding a component into the block structure.
+
+```php
+'.landing-block-node-catalog' => [
+    'name' => 'Catalog',
+    'type' => 'component',
+],
+```
+
+```html
+<div class="landing-block-node-catalog"></div>
+```
+
+### styleimg
+
+Image node managed through the style settings of the block.
+
+```php
+'.landing-block-node-cover' => [
+    'name' => 'Background Image',
+    'type' => 'styleimg',
+],
+```
+
+```html
+<div class="landing-block-node-cover"></div>
+```
+
+## Node Grouping
+
+To have multiple nodes open in a single editing form, specify the same `group` value.
+
+```php
+'.landing-block-node-title' => [
+    'name' => 'Heading',
+    'type' => 'text',
+    'group' => 'hero-content',
+],
+'.landing-block-node-text' => [
+    'name' => 'Text',
+    'type' => 'text',
+    'group' => 'hero-content',
+],
+'.landing-block-node-button' => [
+    'name' => 'Button',
+    'type' => 'link',
+    // without group: edited separately
+],
 ```

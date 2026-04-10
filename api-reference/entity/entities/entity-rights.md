@@ -6,32 +6,32 @@
 > - Any user can retrieve current permissions
 > - A user with access level `X` (management) can modify permissions for the data storage
 
-The `entity.rights` method returns the current set of access permissions for the application's data storage.
+The `entity.rights` method retrieves the current set of access permissions for the application's data storage or modifies it.
 
 {% note info "" %}
 
-The method works only in the context of an [application](../../../settings/app-installation/index.md).
+The method works only in the context of the [application](../../../settings/app-installation/index.md).
 
 {% endnote %}
 
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Note on Parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **ENTITY**^*^
-[`string`](../../data-types.md) | Identifier of the application's data storage. Use the value specified when creating the storage.
+[`string`](../../data-types.md) | Identifier of the application's data storage. Use the value specified when creating the storage. 
 
 You can obtain the identifier using the [entity.get](./entity-get.md) method. ||
 || **ACCESS**
-[`object`](../../data-types.md) | New set of permissions in the format `{"access_code":"access_level"}`.
+[`object`](../../data-types.md) | A new set of permissions in the format `{"access_code":"access_level"}`.
 
 Examples of access codes:
-- `U<id>` — user, e.g., `U1`
-- `G<id>` — user group, e.g., `G2`
+- `U<id>` — user, for example `U1`
+- `G<id>` — user group, for example `G2`
 - `AU` — all authorized users
 
 The method accepts standard access codes from Bitrix24. You can check the name of the code using the [access.name](../../common/system/access-name.md) method.
@@ -43,15 +43,17 @@ Supported levels:
 
 If a different level is provided, that permission entry will not be added.
 
-When `ACCESS` is passed, the current user is forcibly granted the `X` permission (`U<id>`). ||
+When `ACCESS` is provided, the current user is forcibly granted the `X` permission (`U<id>`).
+
+If the parameter is not provided, the method returns the current set of access permissions. ||
 |#
 
 ## Code Examples
 
-{% include [Note on examples](../../../_includes/examples.md) %}
+{% include [Note on Examples](../../../_includes/examples.md) %}
 
 Example of modifying access permissions, where:
-- `ENTITY` — storage identifier `dish`
+- `ENTITY` — identifier of the storage `dish`
 - `ACCESS` — new set of permissions: `U1` with level `W` and `AU` with level `R`
 
 {% list tabs %}
@@ -182,8 +184,8 @@ HTTP Status: **200**
         "finish": 1774267885.803565,
         "duration": 0.8035650253295898,
         "processing": 0,
-        "date_start": "2026-03-23T15:11:25+01:00",
-        "date_finish": "2026-03-23T15:11:25+01:00",
+        "date_start": "2026-03-23T15:11:25+02:00",
+        "date_finish": "2026-03-23T15:11:25+02:00",
         "operating_reset_at": 1774268485,
         "operating": 0
     }
@@ -196,9 +198,9 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`result`](#result) | Root element of the response. Contains access permissions for the storage ||
+[`result`](#result) | Root element of the response. Contains the current set of access permissions for the storage. ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the request execution time ||
+[`time`](../../data-types.md#time) | Information about the execution time of the request. ||
 |#
 
 #### Type result {#result}
@@ -207,9 +209,9 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 ||
-[`object`](../../data-types.md) | Access permissions object in the format `{"access_code":"access_level"}`, where access level is `R`, `W`, or `X` ||
+[`object`](../../data-types.md) | Access permissions object in the format `{"access_code":"access_level"}`, where access level is `R`, `W`, or `X`. ||
 ||
-`null` | Returned if the storage with the provided `ENTITY` is not found ||
+`null` | Returned if the storage with the provided `ENTITY` is not found. ||
 |#
 
 ## Error Handling
@@ -230,9 +232,9 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `ERROR_ARGUMENT` | Argument 'ENTITY' is null or empty | The `ENTITY` parameter was not provided or is empty after cleaning ||
-|| `ERROR_ARGUMENT` | Entity code is too long. Max length is 13 characters. | The `ENTITY` value is too long ||
-|| `ACCESS_DENIED` | Access denied! | Insufficient permissions to modify the storage access rights ||
+|| `ERROR_ARGUMENT` | Argument 'ENTITY' is null or empty | Parameter `ENTITY` is not provided or is empty after cleanup. ||
+|| `ERROR_ARGUMENT` | Entity code is too long. Max length is 13 characters. | The value of `ENTITY` is too long. ||
+|| `ACCESS_DENIED` | Access denied! | Insufficient permissions to modify access permissions for the storage. ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

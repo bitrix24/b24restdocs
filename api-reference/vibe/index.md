@@ -36,8 +36,8 @@ In the widgets for the Vibe, we support the following Vue directives and constru
 Custom JS code cannot be added to the widgets, so only the following predefined functions can be used as event handlers for `@click` and `v-on:click`:
 
 - `fetch(?params)` — calls the widget handler to obtain new data, passing the specified parameters `params` to the handler;
-- `openApplication(?params)` — opens the slider of your application with the ability to pass arbitrary parameters `params`. Essentially, this is a way to call [openApplication](../widgets/open-application.md) from the Vibe widget interface;
-- `openPath(url)` — opens the *Bitrix24* page at the specified `url` in the slider. Essentially, this is a way to call [openPath](../widgets/open-path.md) from the Vibe widget interface.
+- `openApplication(?params)` — opens the slider of your application with the ability to pass arbitrary parameters `params`. Essentially, this is a way to call [openApplication](../widgets/bx24-widget-methods.md) from the Vibe widget interface;
+- `openPath(url)` — opens the *Bitrix24* page at the specified `url` in the slider. Essentially, this is a way to call [openPath](../widgets/bx24-widget-methods.md) from the Vibe widget interface.
 
 ## How the Widget Works {#anchor-handler}
 

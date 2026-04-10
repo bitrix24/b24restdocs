@@ -16,15 +16,15 @@ The method `telephony.call.attachTranscription` adds a transcription of the conv
 || **CALL_ID***
 [`string`](../data-types.md) | Identifier of the call from the method [telephony.externalCall.register](./telephony-external-call-register.md) ||
 || **MESSAGES***
-[`array`](../data-types.md) | Array of [transcription messages](#messages) ||
+[`array`](../data-types.md) | Array of [transcription utterances](#messages) ||
 || **COST**
 [`double`](../data-types.md) | Cost of the transcription.
 
-By default — not specified ||
+By default — not set ||
 || **COST_CURRENCY**
 [`string`](../data-types.md) | Currency of the transcription cost. Used only with `COST`.
 
-By default — not specified ||
+By default — not set ||
 |#
 
 ### MESSAGES Parameter {#messages}
@@ -39,15 +39,15 @@ Possible values:
 - `User` — portal user
 - `Client` — client ||
 || **START_TIME***
-[`integer`](../data-types.md) | Start time of the message in seconds from the beginning of the call.
+[`integer`](../data-types.md) | Start time of the utterance in seconds from the beginning of the call.
 
 Minimum value — `0` ||
 || **STOP_TIME***
-[`integer`](../data-types.md) | End time of the message in seconds from the beginning of the call.
+[`integer`](../data-types.md) | End time of the utterance in seconds from the beginning of the call.
 
 Minimum value — `1` ||
 || **MESSAGE***
-[`string`](../data-types.md) | Text of the message ||
+[`string`](../data-types.md) | Text of the utterance ||
 |#
 
 ## Code Examples
@@ -234,12 +234,12 @@ HTTP Status: **400**
 #|
 || **Code** | **Description** | **Value** ||
 || `ERROR_CORE` | CALL_ID should be set | `CALL_ID` not provided ||
-|| `ERROR_CORE` | MESSAGES should be an array | `MESSAGES` parameter not passed as an array ||
-|| `ERROR_CORE` | MESSAGES[{N}][SIDE] should be either Client or User | Invalid `SIDE` value ||
+|| `ERROR_CORE` | MESSAGES should be an array | Parameter `MESSAGES` not passed as an array ||
+|| `ERROR_CORE` | MESSAGES[{N}][SIDE] should be either Client or User | Invalid value for `SIDE` ||
 || `ERROR_CORE` | MESSAGES[{N}][START_TIME] should be greater or equal to zero | Invalid `START_TIME` ||
 || `ERROR_CORE` | MESSAGES[{N}][STOP_TIME] should be greater than zero | Invalid `STOP_TIME` ||
-|| `ERROR_CORE` | MESSAGES[{N}][MESSAGE] is empty | Empty message text ||
-|| `ERROR_CORE` | Call {CALL_ID} is not found. Is it finished? | Call not found in statistics. Ensure the call is completed ||
+|| `ERROR_CORE` | MESSAGES[{N}][MESSAGE] is empty | Empty text for the utterance ||
+|| `ERROR_CORE` | Call {CALL_ID} is not found. Is it finished? | Call not found in the statistics. Ensure the call is completed ||
 |#
 
 {% include [system errors](../../_includes/system-errors.md) %}
@@ -249,4 +249,4 @@ HTTP Status: **400**
 - [{#T}](./telephony-external-call-register.md)
 - [{#T}](./telephony-external-call-finish.md)
 - [{#T}](./telephony-external-call-attach-record.md)
-- [{#T}](./voximplant-statistic-get.md)
+- [{#T}](./voximplant/voximplant-statistic-get.md)

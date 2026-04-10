@@ -4,15 +4,15 @@ In CRM, you can create fields of two types:
 - standard: number, string, date, address, link, file, and so on,
 - custom: application integrations within the CRM detail form.
 
-With custom field types, you can:
+With custom fields, you can:
 
-- display data in the CRM detail form that does not fit standard field types. Essentially, the data will be stored in the application database in the required format, and the integration will show it within the field.
-- create interface elements in CRM detail forms. For example, display buttons within a field to control the application.
-- integrate external services into the CRM detail form. For instance, display dynamic information in a field. Each time the detail form is opened, the field will make a request to the application handler and automatically load fresh data.
+- display data in the CRM detail form that does not fit standard field types. The field value is stored in Bitrix24, while the application shows it within the field and, if necessary, supplements it with data from its service.
+- create interface elements in CRM detail forms. For example, you can display buttons within the field to control the application.
+- integrate external services into the CRM detail form. For instance, you can display dynamic information in the field. Each time the detail form is opened, the field will make a request to the application handler and automatically load fresh data.
 
 > Quick navigation: [all methods](#all-methods)
 >
-> User documentation: [Working with custom fields](https://helpdesk.bitrix24.com/open/22067852/)
+> User documentation: [Working with custom fields](https://helpdesk.bitrix24.com/open/22048980/)
 
 ## Connection with CRM Objects
 
@@ -27,7 +27,7 @@ Custom field types can be added to:
 
 In the `USER_TYPE_ID` field, pass the value in the form `rest_#ID_application#_#USER_TYPE_ID#`. For example, for an application with `ID: 123` and `USER_TYPE_ID: userfield1`, the value will be `rest_123_test_userfield1`.
 
-To get the application `ID`, use the method [app.info](../../../common/system/app-info.md).
+To obtain the application `ID`, use the method [app.info](../../../common/system/app-info.md).
 
 ## Errors When Working with Custom Field Types
 
@@ -37,15 +37,15 @@ When creating a field with a custom type, you may encounter the error `Error! 40
 
 1. Execute the method [userfieldtype.list](../../../widgets/user-field/userfieldtype-list.md).
 
-   - If the method returned the field type `USER_TYPE_ID`, proceed to step 2.
+   - If the method returns the field type `USER_TYPE_ID`, proceed to step 2.
 
    - If the required field type is not found, register a new type using the method [userfieldtype.add](../../../widgets/user-field/userfieldtype-add.md).
 
 2. Execute the method [app.info](../../../common/system/app-info.md). This method will check the correctness of the application installation.
 
-   - If the method returned `INSTALLED = true`, the application is installed correctly.
+   - If the method returns `INSTALLED = true`, the application is installed correctly.
 
-   - If the method returned `INSTALLED = false`, execute the method [BX24.installFinish](../../../../sdk/bx24-js-sdk/system-functions/bx24-install-finish.md) on the application page. This method will complete the installation of the application with the interface.
+   - If the method returns `INSTALLED = false`, execute the method [BX24.installFinish](../../../../sdk/bx24-js-sdk/system-functions/bx24-install-finish.md) on the application page. This method will complete the installation of the application with the interface.
 
     ```javascript
     BX24.init(function(){
@@ -63,15 +63,15 @@ If the field was created without errors, but the content is not loading:
 
    - do not use local addresses: localhost, 192.168.* and other addresses accessible only from the local network,
 
-   - check the handler's accessibility using public "site availability" services.
+   - check the handler's accessibility using public "website availability" services.
 
-3. Check:
+3. Verify:
 
    - the correctness of the SSL certificate if HTTPS is used,
 
    - the absence of blocks in .htaccess or firewall on the handler server,
 
-   - the returned HTTP codes, which should be 200 OK.
+   - the returned HTTP codes; it should be 200 OK.
 
 ## General Recommendations
 
@@ -93,7 +93,7 @@ If the field was created without errors, but the content is not loading:
 > 
 > Who can execute the method: administrator
 
-#|
+#| 
 || **Method** | **Description** ||
 || [userfieldtype.add](../../../widgets/user-field/userfieldtype-add.md) | Registers a new type of custom field ||
 || [userfieldtype.update](../../../widgets/user-field/userfieldtype-update.md) | Modifies the parameters of an existing field type ||

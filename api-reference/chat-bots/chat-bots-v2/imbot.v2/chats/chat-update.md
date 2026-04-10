@@ -18,22 +18,22 @@ The method `imbot.v2.Chat.update` updates the properties of a chat. It combines 
 || **botToken**
 [`string`](../../../../data-types.md) | Unique authorization token for the bot. Required for webhook authorization, not needed for OAuth.
 
-Pass the same botToken that was specified during the registration of the chat bot ||
+Pass the same botToken that was specified during the chat bot registration ||
 || **dialogId***
 [`string`](../../../../data-types.md) | Dialog ID. For group chats — `chat{chatId}`, for personal chats — `{userId}` ||
 || **fields***
 [`object`](../../../../data-types.md) | Properties of the chat to be updated. The structure of the object is described [below](#fields) ||
 |#
 
-### Fields Parameter {#fields}
+### Parameter fields {#fields}
 
 #|
 || **Name**
 `Type` | **Description** ||
 || **title**
-[`string`](../../../../data-types.md) | New title of the chat ||
+[`string`](../../../../data-types.md) | New chat title ||
 || **description**
-[`string`](../../../../data-types.md) | New description of the chat ||
+[`string`](../../../../data-types.md) | New chat description ||
 || **color**
 [`string`](../../../../data-types.md) | Chat color — [available colors](#available-colors) ||
 || **avatar**
@@ -243,7 +243,8 @@ HTTP Status: **400**, **403**
 
 ## Continue Learning
 
-- [Create Group Chat imbot.v2.Chat.add](./chat-add.md)
-- [Get Information About the Chat imbot.v2.Chat.get](./chat-get.md)
-- [Add Participants to Chat imbot.v2.Chat.User.add](./chat-user-add.md)
-- [Assign Chat Owner imbot.v2.Chat.setOwner](./chat-set-owner.md)
+- [API Change Log imbot.v2](../../change-log.md)
+- [{#T}](./chat-add.md)
+- [{#T}](./chat-get.md)
+- [{#T}](./chat-user-add.md)
+- [{#T}](./chat-set-owner.md)

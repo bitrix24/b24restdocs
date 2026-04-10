@@ -4,11 +4,11 @@
 >
 > Who can execute the method: owner of the registered bot
 
-The method `imbot.v2.Chat.Message.read` marks messages as read on behalf of the bot. It marks all messages up to and including the specified one as read. If `messageId` is not provided, it marks all messages in the chat as read.
+The method `imbot.v2.Chat.Message.read` marks messages as read on behalf of the bot. It marks all messages up to and including the specified one as read. If `messageId` is not specified, it marks all messages in the chat as read.
 
 ## Method Parameters
 
-{% include [Footnote on parameters](../../../../../_includes/required.md) %}
+{% include [Footnote about parameters](../../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -27,7 +27,7 @@ Pass the same botToken that was specified during the chat bot registration ||
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../../../_includes/examples.md) %}
+{% include [Footnote about examples](../../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -172,7 +172,7 @@ HTTP Code: **200**
 || **result.lastId**
 [`integer`](../../../../data-types.md) | ID of the last read message ||
 || **result.counter**
-[`integer`](../../../../data-types.md) | Remaining counter of unread messages ||
+[`integer`](../../../../data-types.md) | Remaining count of unread messages ||
 || **result.viewedMessages**
 [`integer[]`](../../../../data-types.md) | Array of IDs of viewed messages ||
 || **time**
@@ -196,10 +196,10 @@ HTTP Status: **400**, **403**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `BOT_TOKEN_NOT_SPECIFIED` | Bot token is not specified | `botToken` is not provided. Required for webhook authorization ||
-|| `BOT_ID_REQUIRED` | Bot ID is required | `botId` is not provided ||
+|| `BOT_TOKEN_NOT_SPECIFIED` | Bot token is not specified | `botToken` is not specified. Required for webhook authorization ||
+|| `BOT_ID_REQUIRED` | Bot ID is required | `botId` is not specified ||
 || `BOT_NOT_FOUND` | Bot not found | Bot not found ||
-|| `BOT_OWNERSHIP_ERROR` | Bot is registered by another application | Bot is registered by another application ||
+|| `BOT_OWNERSHIP_ERROR` | Bot is registered by another application | Bot registered by another application ||
 || `ACCESS_DENIED` | Access denied | Bot is not a participant in the chat ||
 || `MESSAGE_NOT_FOUND` | Message not found | The specified message was not found or is unavailable ||
 |#
@@ -208,5 +208,6 @@ HTTP Status: **400**, **403**
 
 ## Continue Learning
 
-- [Send Message imbot.v2.Chat.Message.send](./chat-message-send.md)
-- [Get Bot Events imbot.v2.Event.get](../events/event-get.md)
+- [API Change Log for imbot.v2](../../change-log.md)
+- [{#T}](./chat-message-send.md)
+- [{#T}](../events/event-get.md)

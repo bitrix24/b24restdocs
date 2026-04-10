@@ -4,7 +4,7 @@
 >
 > Who can execute the method: user with "view" access permission for sites
 
-The method `landing.site.getList` retrieves a list of sites based on selection parameters.
+The method `landing.site.getList` retrieves a list of sites based on the selection parameters.
 
 {% note warning %}
 
@@ -33,26 +33,26 @@ For `GROUP`, `KNOWLEDGE`, and `MAINPAGE`, pass the corresponding `scope` [(detai
 || **Name**
 `type` | **Description** ||
 || **select**
-[`string[]`](../../data-types.md) | List of fields to select from [basic site fields](./base-fields.md). If the parameter is not provided or is not an array, `["*"]` is used. The method always adds `ID` and `TYPE` to the selection. ||
+[`string[]`](../../data-types.md) | List of fields to select from [basic site fields](./base-fields.md). If the parameter is not passed or is not an array, `["*"]` is used. The method always adds `ID` and `TYPE` to the selection. ||
 || **filter**
-[`object`](../../data-types.md) | Filter by fields from [basic site fields](./base-fields.md). If the parameter is not provided or is not an array, an empty filter `{}` is used.
+[`object`](../../data-types.md) | Filter by fields from [basic site fields](./base-fields.md). If the parameter is not passed or is not an array, an empty filter `{}` is used.
 
-If the `TYPE` parameter or `=TYPE` specifies the value `STORE`, the public method converts it to `["STORE", "SMN"]`.
+If the parameter `TYPE` or `=TYPE` specifies the value `STORE`, the public method converts it to `["STORE", "SMN"]`.
 
-Exact filtering by type works only for a single value that is allowed in the current internal `scope`. If an array or a value not available in the current scope is provided, the method will substitute it with a list of allowed types. ||
+Exact filtering by type works only for one value that is allowed in the current internal `scope`. If an array or a value not available in the current scope is passed, the method will substitute a list of allowed types. ||
 || **order**
-[`object`](../../data-types.md) | Sorting in the format `{"FIELD": "ASC DESC"}`. If the parameter is not provided, no special sorting is applied. ||
+[`object`](../../data-types.md) | Sorting in the format `{"FIELD": "ASC DESC"}`. If the parameter is not passed, no special sorting is applied. ||
 || **group**
-[`array`](../../data-types.md) | Grouping in ORM format. If not an array, the parameter is converted to an empty array. When filtering by access permissions, `ID` is added to the grouping. ||
+[`array`](../../data-types.md) | Grouping in ORM format. If not an array, the parameter is converted to an empty array. When filtering by access rights, `ID` is added to the grouping. ||
 || **limit**
 [`integer`](../../data-types.md) | Limit on the number of rows in the selection at the ORM level. By default, it is not set. ||
 || **offset**
-[`integer`](../../data-types.md) | Offset for the selection at the ORM level. If the parameter is not provided, the default ORM behavior is applied. ||
+[`integer`](../../data-types.md) | Offset for the selection at the ORM level. If the parameter is not passed, the default ORM behavior is applied. ||
 |#
 
-### TYPE and scope Correspondence {#type-scope}
+### TYPE and scope Mapping {#type-scope}
 
-Site types and rules for selecting the `scope` parameter are described in the article [Working with Site Types and Scopes](../types.md).
+The types of sites and the rules for selecting the `scope` parameter are described in the article [Working with Site Types and Scopes](../types.md).
 The table below applies to `params.filter.TYPE` and `params.filter.=TYPE`.
 
 #|
@@ -303,25 +303,25 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **ID**
-[`string`](../../data-types.md) | Site identifier. This field is always present in the response. ||
+[`string`](../../data-types.md) | Identifier of the site. This field is always present in the response. ||
 || **TYPE**
-[`string`](../../data-types.md) | Site type. This field is always present in the response. ||
+[`string`](../../data-types.md) | Type of the site. This field is always present in the response. ||
 || **DOMAIN_NAME**
-[`string`](../../data-types.md) | Site domain, returned when selecting the `DOMAIN_NAME` field. ||
+[`string`](../../data-types.md) | Domain of the site, returned when selecting the field `DOMAIN_NAME`. ||
 || **PUBLIC_URL**
-[`string`](../../data-types.md) | Public URL of the site, returned when selecting the `PUBLIC_URL` field.
+[`string`](../../data-types.md) | Public URL of the site, returned when selecting the field `PUBLIC_URL`.
 
 It may be an empty string if the URL could not be determined. ||
 || **PREVIEW_PICTURE**
-[`string`](../../data-types.md) | URL of the preview of the main page of the site, returned when selecting the `PREVIEW_PICTURE` field. It may be an empty string if the preview is unavailable. ||
+[`string`](../../data-types.md) | URL of the preview of the main page of the site, returned when selecting the field `PREVIEW_PICTURE`. It may be an empty string if the preview is unavailable. ||
 || **PHONE**
-[`string`](../../data-types.md) \| `null` | Company phone from CRM, returned when selecting the `PHONE` field. ||
+[`string`](../../data-types.md) \| `null` | Phone number of the company from CRM, returned when selecting the field `PHONE`. ||
 || **DATE_CREATE**
-[`string`](../../data-types.md) | Creation date in string format, returned when selecting the `DATE_CREATE` field. ||
+[`string`](../../data-types.md) | Creation date in string format, returned when selecting the field `DATE_CREATE`. ||
 || **DATE_MODIFY**
-[`string`](../../data-types.md) | Modification date in string format, returned when selecting the `DATE_MODIFY` field. ||
+[`string`](../../data-types.md) | Modification date in string format, returned when selecting the field `DATE_MODIFY`. ||
 || **LANDING_ID_INDEX**
-[`string`](../../data-types.md) \| `null` | May be present if `PREVIEW_PICTURE` was requested in `select`. ||
+[`string`](../../data-types.md) \| `null` | May be present if `PREVIEW_PICTURE` is requested in `select`. ||
 |#
 
 ## Error Handling
@@ -341,7 +341,7 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `ACCESS_DENIED` | Insufficient permissions to call landing methods. ||
+|| `ACCESS_DENIED` | Insufficient rights to call landing methods. ||
 || `TYPE_ERROR` | Data type error in method call parameters. ||
 || `SYSTEM_ERROR` | Internal error during method execution. ||
 |#

@@ -2,9 +2,9 @@
 
 > Scope: [`imopenlines`](../../../scopes/permissions.md), [`imbot`](../../../scopes/permissions.md)
 >
-> Who can execute the method: application user with a registered chat bot
+> Who can execute the method: application user with a registered chat-bot
 
-The method `imopenlines.bot.session.finish` ends the current dialog of the open line on behalf of the application's chat bot.
+The method `imopenlines.bot.session.finish` ends the current dialog of the open line on behalf of the application's chat-bot.
 
 ## Method Parameters
 
@@ -14,9 +14,15 @@ The method `imopenlines.bot.session.finish` ends the current dialog of the open 
 || **Name**
 `type` | **Description** ||
 || **CHAT_ID***
-[`integer`](../../../data-types.md) | Identifier of the chat whose dialog needs to be finished. 
+[`integer`](../../../data-types.md) | Identifier of the chat whose dialog needs to be finished.
 
 The chat identifier can be obtained using the methods [imopenlines.dialog.get](../sessions/imopenlines-dialog-get.md) or [imopenlines.crm.chat.get](../chats/imopenlines-crm-chat-get.md) ||
+|| **CLIENT_ID**
+[`string`](../../../data-types.md) | This parameter is required only for webhooks.
+
+Pass:
+- the same `CLIENT_ID` that was specified when registering the chat-bot using the method [imbot.register](../../../chat-bots/outdated/bots/imbot-register.md)
+- or the value of the `botToken` parameter provided during the registration of the chat-bot using the method [imbot.v2.Bot.register](../../../chat-bots/chat-bots-v2/imbot.v2/bots/bot-register.md) ||
 |#
 
 ## Code Examples
@@ -31,7 +37,7 @@ The chat identifier can be obtained using the methods [imopenlines.dialog.get](.
   curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"CHAT_ID":112}' \
+    -d '{"CHAT_ID":112,"CLIENT_ID":"**put_your_client_id_or_bot_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/imopenlines.bot.session.finish
   ```
 
@@ -170,8 +176,8 @@ HTTP Status: **400**, **403**
 
 #|
 || **Status** | **Code** | **Description** | **Value** ||
-|| `400` | `CHAT_ID_EMPTY` | Chat ID can't be empty | `CHAT_ID` not provided or value `<= 0` ||
-|| `400` | `BOT_ID_ERROR` | Bot not found | Registered chat bot not found in the application ||
+|| `400` | `CHAT_ID_EMPTY` | Chat ID can't be empty | `CHAT_ID` not provided or value is `<= 0` ||
+|| `400` | `BOT_ID_ERROR` | Bot not found | No registered chat-bot found in the application ||
 || `403` | `WRONG_AUTH_TYPE` | Access for this method not allowed by session authorization | Method called with session authorization, which is prohibited for this method ||
 |#
 

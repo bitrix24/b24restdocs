@@ -1,152 +1,205 @@
-# Get the list of custom blocks landing.repo.getList
-
-{% note warning "We are still updating this page" %}
-
-Some data may be missing — we will complete it shortly.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- parameter types are not specified
-- parameter requirements are not specified
-- examples are missing
-- success response is missing
-- error response is missing
-
-{% endnote %}
-
-{% endif %}
+# Get a List of Custom Blocks landing.repo.getList
 
 > Scope: [`landing`](../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: a user with View access permission in the Sites section
 
-The method `landing.repo.getList` retrieves a list of blocks from the current application.
+The method `landing.repo.getList` retrieves a list of custom blocks.
 
-## Parameters
+## Method Parameters
+
+{% include [Note on parameters](../../../_includes/required.md) %}
 
 #|
-|| **Parameter** | **Description** | **Available from** ||
+|| **Name**
+`type` | **Description** ||
 || **params**
-[`unknown`](../../data-types.md) | Optional array with optional keys:
-- select,
-- filter,
-- order,
-- group,
+[`object`](../../data-types.md) | Object format:
 
-which contain values from the main fields table of the entity. The table is provided below. ||
+```
+{
+    select: value_1,
+    filter: value_2,
+    order: value_3,
+    group: value_4,
+    limit: value_5,
+    offset: value_6
+}
+```
+
+where:
+- `value_n` — value of the corresponding selection parameter
+
+For more details on each parameter, see the [params parameter](#params) section ||
 |#
 
-## Fields
+### params Parameter {#params}
 
 #|
-|| **Field** | **Description** ||
-|| **ID**
-[`unknown`](../../data-types.md) | Record identifier ||
-|| **XML_ID**
-[`unknown`](../../data-types.md) | Unique record code. ||
-|| **APP_CODE**
-[`unknown`](../../data-types.md) | Code of the current application. ||
-|| **ACTIVE**
-[`unknown`](../../data-types.md) | Activity status (Y / N). ||
-|| **NAME**
-[`unknown`](../../data-types.md) | Title. ||
-|| **DESCRIPTION**
-[`unknown`](../../data-types.md) | Description. ||
-|| **SECTIONS**
-[`unknown`](../../data-types.md) | Symbolic codes of categories. ||
-|| **PREVIEW**
-[`unknown`](../../data-types.md) | Preview image. ||
-|| **MANIFEST**
-[`unknown`](../../data-types.md) | Manifest. ||
-|| **CONTENT**
-[`unknown`](../../data-types.md) | Content. ||
-|| **CREATED_BY_ID**
-[`unknown`](../../data-types.md) | Identifier of the user who created the record. ||
-|| **MODIFIED_BY_ID**
-[`unknown`](../../data-types.md) | Identifier of the user who modified the record. ||
-|| **DATE_CREATE**
-[`unknown`](../../data-types.md) | Creation date. ||
-|| **DATE_MODIFY**
-[`unknown`](../../data-types.md) | Modification date. ||
+|| **Name**
+`type` | **Description** ||
+|| **select**
+[`string[]`](../../data-types.md) | Array format:
+
+```
+[
+    field_1,
+    field_2,
+    ...,
+    field_n
+]
+```
+
+where:
+- `field_n` — selection field
+
+For a list of available fields for selection, see the [result element type](#result-template) section.
+
+Elements in `select` with a `.` are ignored ||
+|| **filter**
+[`object`](../../data-types.md) | Object format:
+
+```
+{
+    field_1: value_1,
+    field_2: value_2,
+    ...,
+    field_n: value_n
+}
+```
+
+where:
+- `field_n` — filtering field
+- `value_n` — filter value
+
+For a list of available fields for filtering, see the [result element type](#result-template) section.
+
+If `filter` is not provided or is not in the `object` format, the method uses an empty filter `{}` ||
+|| **order**
+[`object`](../../data-types.md) | Object format:
+
+```
+{
+    field_1: value_1,
+    field_2: value_2,
+    ...,
+    field_n: value_n
+}
+```
+
+where:
+- `field_n` — sorting field
+- `value_n` — sorting direction: `ASC` or `DESC`
+
+For a list of available fields for sorting, see the [result element type](#result-template) section ||
+|| **group**
+[`array`](../../data-types.md) | Array of fields for grouping the result.
+
+Format:
+
+```
+[
+    field_1,
+    field_2,
+    ...,
+    field_n
+]
+```
+
+where:
+- `field_n` — grouping field
+
+Examples:
+- `["ACTIVE"]`
+- `["APP_CODE", "ACTIVE"]`
+
+For a list of available fields, see the [result element type](#result-template) section ||
+|| **limit**
+[`integer`](../../data-types.md) | Limit of records ||
+|| **offset**
+[`integer`](../../data-types.md) | Offset of records ||
 |#
 
-## Examples
+{% note info %}
+
+If the method is called in the context of an application, the server additionally adds a filter for the current application.
+
+In this case, only blocks created by the same application will be included in the response.
+
+{% endnote %}
+
+
+## Code Examples
+
+{% include [Note on examples](../../../_includes/examples.md) %}
+
+Example of retrieving a list of blocks, where:
+- `params.select` — fields to return in the response
+- `params.filter` — conditions for filtering records
+- `params.order` — sorting the result
+- `params.group` — grouping fields
 
 {% list tabs %}
 
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+      -H "Content-Type: application/json" \
+      -d '{
+        "params": {
+          "select": ["ID", "NAME", "DATE_MODIFY"],
+          "filter": {"ACTIVE": "Y"},
+          "order": {"ID": "DESC"},
+          "group": ["ACTIVE"]
+        }
+      }' \
+      "https://**put.your-domain-here**/rest/**user_id**/**webhook_code**/landing.repo.getList.json"
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+      -H "Content-Type: application/json" \
+      -d '{
+        "params": {
+          "select": ["ID", "NAME", "DATE_MODIFY"],
+          "filter": {"ACTIVE": "Y"},
+          "order": {"ID": "DESC"},
+          "group": ["ACTIVE"]
+        },
+        "auth": "**put_access_token_here**"
+      }' \
+      "https://**put.your-domain-here**/rest/landing.repo.getList.json"
+    ```
+
 - JS
 
-
     ```js
-    // callListMethod: Retrieves all data at once. Use only for small selections (< 1000 items) due to high memory usage.
-    
-    try {
-      const response = await $b24.callListMethod(
-        'landing.repo.getList',
-        {
-          params: {
-            select: [
-              'ID', 'NAME', 'MANIFEST'
-            ],
-            filter: {
-              '>ID': '1'
-            }
-          }
-        },
-        (progress) => { console.log('Progress:', progress) }
-      )
-      const items = response.getData() || []
-      for (const entity of items) { console.log('Entity:', entity) }
-    } catch (error) {
-      console.error('Request failed', error)
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'landing.repo.getList',
+    		{
+    			params: {
+    				select: ['ID', 'NAME', 'DATE_MODIFY'],
+    				filter: { ACTIVE: 'Y' },
+    				order: { ID: 'DESC' },
+    				group: ['ACTIVE']
+    			}
+    		}
+    	);
+
+    	console.info(response.getData().result);
     }
-    
-    // fetchListMethod: Retrieves data in parts using an iterator. Use it for large data volumes to optimize memory usage.
-    
-    try {
-      const generator = $b24.fetchListMethod('landing.repo.getList', {
-        params: {
-          select: [
-            'ID', 'NAME', 'MANIFEST'
-          ],
-          filter: {
-            '>ID': '1'
-          }
-        }
-      }, 'ID')
-      for await (const page of generator) {
-        for (const entity of page) { console.log('Entity:', entity) }
-      }
-    } catch (error) {
-      console.error('Request failed', error)
-    }
-    
-    // callMethod: Manually controls pagination through the start parameter. Use it for precise control of request batches. For large datasets, it is less efficient than fetchListMethod.
-    
-    try {
-      const response = await $b24.callMethod('landing.repo.getList', {
-        params: {
-          select: [
-            'ID', 'NAME', 'MANIFEST'
-          ],
-          filter: {
-            '>ID': '1'
-          }
-        }
-      }, 0)
-      const result = response.getData().result || []
-      for (const entity of result) { console.log('Entity:', entity) }
-    } catch (error) {
-      console.error('Request failed', error)
+    catch (error)
+    {
+    	console.error(error);
     }
     ```
 
 - PHP
-
 
     ```php
     try {
@@ -156,26 +209,19 @@ which contain values from the main fields table of the entity. The table is prov
                 'landing.repo.getList',
                 [
                     'params' => [
-                        'select' => [
-                            'ID', 'NAME', 'MANIFEST'
-                        ],
-                        'filter' => [
-                            '>ID' => '1'
-                        ]
-                    ]
+                        'select' => ['ID', 'NAME', 'DATE_MODIFY'],
+                        'filter' => ['ACTIVE' => 'Y'],
+                        'order' => ['ID' => 'DESC'],
+                        'group' => ['ACTIVE'],
+                    ],
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
-        if ($result->error()) {
-            error_log($result->error());
-        } else {
-            echo 'Success: ' . print_r($result->data(), true);
-        }
-    
+
+        echo 'Success: ' . print_r($result, true);
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error getting landing repository list: ' . $e->getMessage();
@@ -189,25 +235,186 @@ which contain values from the main fields table of the entity. The table is prov
         'landing.repo.getList',
         {
             params: {
-                select: [
-                    'ID', 'NAME', 'MANIFEST'
-                ],
-                filter: {
-                    '>ID': '1'
-                }
+                select: ['ID', 'NAME', 'DATE_MODIFY'],
+                filter: { ACTIVE: 'Y' },
+                order: { ID: 'DESC' },
+                group: ['ACTIVE']
             }
         },
         function(result)
         {
-            if(result.error())
+            if (result.error())
+            {
                 console.error(result.error());
+            }
             else
+            {
                 console.info(result.data());
+            }
         }
     );
     ```
 
+- PHP CRest
+
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'landing.repo.getList',
+        [
+            'params' => [
+                'select' => ['ID', 'NAME', 'DATE_MODIFY'],
+                'filter' => ['ACTIVE' => 'Y'],
+                'order' => ['ID' => 'DESC'],
+                'group' => ['ACTIVE'],
+            ],
+        ]
+    );
+
+    echo '<pre>';
+    print_r($result);
+    echo '</pre>';
+    ```
+
 {% endlist %}
 
-{% include [Footnote about examples](../../../_includes/examples.md) %}
+## Response Handling
 
+HTTP Status: **200**
+
+```json
+{
+    "result": [
+        {
+            "ID": "5",
+            "XML_ID": "ctx_full_1774873150158",
+            "APP_CODE": "bitrix.restapi",
+            "ACTIVE": "Y",
+            "NAME": "Context full test block",
+            "DESCRIPTION": "Check full fields from getList",
+            "SECTIONS": "cover,about",
+            "SITE_TEMPLATE_ID": null,
+            "PREVIEW": "https://www.bitrix24.com/images/b24_screen.png",
+            "MANIFEST": {
+                "block": {
+                    "name": "Context full test block"
+                },
+                "nodes": {
+                    ".landing-block-node-text": {
+                        "name": "Text",
+                        "type": "text"
+                    }
+                }
+            },
+            "CONTENT": "<section class=\"landing-block\"><div class=\"container\">Test</div></section>",
+            "CREATED_BY_ID": "577",
+            "MODIFIED_BY_ID": "577",
+            "DATE_CREATE": "30.03.2026 14:19:11",
+            "DATE_MODIFY": "30.03.2026 14:19:11"
+        }
+    ],
+    "time": {
+        "start": 1774873153,
+        "finish": 1774873153.634216,
+        "duration": 0.6342160701751709,
+        "processing": 0,
+        "date_start": "2026-03-30T15:19:13+02:00",
+        "date_finish": "2026-03-30T15:19:13+02:00",
+        "operating_reset_at": 1774873753,
+        "operating": 0.11733078956604004
+    }
+}
+```
+
+### Returned Data
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`object[]`](../../data-types.md) | List of blocks [more details](#result-template) ||
+|| **time**
+[`time`](../../data-types.md#time) | Information about the request execution time ||
+|#
+
+### Result Element Type {#result-template}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **ID**
+[`string`](../../data-types.md) | Identifier of the block ||
+|| **XML_ID**
+[`string`](../../data-types.md) | External code of the block ||
+|| **APP_CODE**
+[`string`](../../data-types.md) \| [`null`](../../data-types.md) | Application code ||
+|| **ACTIVE**
+[`string`](../../data-types.md) | Activity status (`Y`/`N`) ||
+|| **NAME**
+[`string`](../../data-types.md) | Name of the block ||
+|| **DESCRIPTION**
+[`string`](../../data-types.md) | Description of the block ||
+|| **SECTIONS**
+[`string`](../../data-types.md) | Sections of the block ||
+|| **SITE_TEMPLATE_ID**
+[`string`](../../data-types.md) \| [`null`](../../data-types.md) | Identifier of the site template ||
+|| **PREVIEW**
+[`string`](../../data-types.md) | Link to preview ||
+|| **MANIFEST**
+[`object`](../../data-types.md) \| [`array`](../../data-types.md) \| [`boolean`](../../data-types.md) | Manifest of the block.
+
+For more details on the manifest structure: [Manifest format description](../block/manifest.md).
+
+Example of a manifest in the method response: [landing.block.getManifestFile](../block/methods/landing-block-get-manifest-file.md) ||
+|| **CONTENT**
+[`string`](../../data-types.md) | HTML of the block ||
+|| **CREATED_BY_ID**
+[`string`](../../data-types.md) | Identifier of the author ||
+|| **MODIFIED_BY_ID**
+[`string`](../../data-types.md) | Identifier of the user who modified the record ||
+|| **DATE_CREATE**
+[`string`](../../data-types.md) | Creation date in the format `DD.MM.YYYY HH:MI:SS` ||
+|| **DATE_MODIFY**
+[`string`](../../data-types.md) | Modification date in the format `DD.MM.YYYY HH:MI:SS` ||
+|#
+
+## Error Handling
+
+HTTP Status: **400**
+
+```json
+{
+    "error": "ERROR_ARGUMENT",
+    "error_description": "The value of an argument 'params' has an invalid type",
+    "argument": "params"
+}
+```
+
+```json
+{
+    "error": "ACCESS_DENIED",
+    "error_description": "Insufficient permissions."
+}
+```
+
+{% include notitle [error handling](../../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+#|
+|| **Code** | **Description** | **Value** ||
+|| `ACCESS_DENIED` | Insufficient permissions | User did not pass general access checks ||
+|| `ERROR_ARGUMENT` | The value of an argument 'params' has an invalid type | The `params` argument was passed in an incorrect type ||
+|| `SYSTEM_ERROR` | Internal error | Error executing the method on the server side ||
+|| `insufficient_scope` | Insufficient scope for the token | The token does not contain the `landing` scope ||
+|#
+
+{% include [system errors](../../../_includes/system-errors.md) %}
+
+## Continue Learning
+
+- [{#T}](./landing-repo-register.md)
+- [{#T}](./landing-repo-check-content.md)
+- [{#T}](./landing-repo-unregister.md)
+- [{#T}](./index.md)

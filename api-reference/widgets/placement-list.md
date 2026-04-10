@@ -1,66 +1,225 @@
-# Retrieving a List of Available Placement Options for the Application
+# Get a List of Available Application Embed Locations placement.list
 
-{% note warning "We are still updating this page" %}
+> Scope: [`placement`](../scopes/permissions.md)
+>
+> Who can execute the method: a user authorized in the application
 
-Some data may be missing — we will complete it shortly.
+The method `placement.list` returns a list of available embed locations for the application.
 
-{% endnote %}
+{% note info "" %}
 
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not deployed to prod_" %}
-
-- revisions needed for writing standards
-- parameter types not specified
-- parameter requirements not indicated
-- examples missing
-- success response not provided
-- error response not provided
-- links to pages not yet created are missing.
+The method works only in the context of the [application](../../settings/app-installation/index.md).
 
 {% endnote %}
 
-{% endif %}
+## Method Parameters
 
-{% note info "placement.list" %}
-
-**Scope**: [`depending on the placement`](../scopes/permissions.md) | **Who can execute the method**: `for everyone`
-
-{% endnote %}
-
-This method retrieves a list of available placement options for the application.
-
-## Parameters
+{% include [Parameter Note](../../_includes/required.md) %}
 
 #|
-|| **Parameter** | **Description** | **Available Since** ||
-|| **SCOPE** | Restricts the list to one of the application's access permissions | ||
+|| **Name**
+`type` | **Description** ||
+|| **SCOPE**
+[`string`](../data-types.md) | Limits the list of embed locations to a specific application scope.
+
+If the parameter is provided and not empty, the method returns embed locations only for the specified scope. ||
+|| **FULL**
+[`boolean`](../data-types.md) | Flag to retrieve the full list of embed locations.
+
+If the parameter is not provided or is set to `false`, the method returns embed locations for the current application's scope and global embed locations.
+
+If the parameter is set to `true`, the method returns embed locations for all service scopes.
+
+The parameter is considered only if `SCOPE` is not provided. ||
 |#
 
-## Example
+## Code Examples
 
-```http
-GET https://sometestaccount.bitrix24.com/rest/placement.list?auth=7e623a5a0000cd710000cd5b00000001000000a8b1dbe022e2de93198634e9526b00f7 HTTP/1.1
-HTTP/1.1 200 OK
+{% include [Examples Note](../../_includes/examples.md) %}
+
+Example of retrieving a list of embed locations available for the application, where:
+- `SCOPE` — the application's scope for which embed locations are needed.
+
+{% list tabs %}
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+      -H "Content-Type: application/json" \
+      -d '{
+        "SCOPE": "crm",
+        "auth": "**put_access_token_here**"
+      }' \
+      "https://**put.your-domain-here**/rest/placement.list.json"
+    ```
+
+- JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'placement.list',
+    		{
+    			SCOPE: 'crm'
+    		}
+    	);
+
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch (error)
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'placement.list',
+                [
+                    'SCOPE' => 'crm',
+                ]
+            );
+
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+
+        echo 'Success: ' . print_r($result, true);
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting placement list: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
+    BX24.callMethod(
+        'placement.list',
+        {
+            SCOPE: 'crm'
+        },
+        function(result)
+        {
+            if (result.error())
+            {
+                console.error(result.error());
+            }
+            else
+            {
+                console.info(result.data());
+            }
+        }
+    );
+    ```
+
+- PHP CRest
+
+    ```php
+    $result = CRest::call(
+        'placement.list',
+        [
+            'SCOPE' => 'crm',
+        ]
+    );
+
+    echo '<pre>';
+    print_r($result);
+    echo '</pre>';
+    ```
+
+{% endlist %}
+
+## Response Handling
+
+HTTP Status: **200**
+
+```json
 {
     "result": [
-        "CRM_LEAD_LIST_MENU",
-        "CRM_DEAL_LIST_MENU",
-        "CRM_INVOICE_LIST_MENU",
-        "CRM_QUOTE_LIST_MENU",
-        "CRM_CONTACT_LIST_MENU",
-        "CRM_COMPANY_LIST_MENU",
-        "CRM_ACTIVITY_LIST_MENU",
-        "CRM_LEAD_DETAIL_TAB",
-        "CRM_DEAL_DETAIL_TAB",
-        "CRM_CONTACT_DETAIL_TAB",
-        "CRM_COMPANY_DETAIL_TAB",
-        "CRM_LEAD_DETAIL_ACTIVITY",
-        "CRM_DEAL_DETAIL_ACTIVITY",
-        "CRM_CONTACT_DETAIL_ACTIVITY",
-        "CRM_COMPANY_DETAIL_ACTIVITY"
-    ]
+        "CRM_DEAL_LIST_TOOLBAR",
+        "CRM_LEAD_LIST_TOOLBAR",
+        "CRM_CONTACT_LIST_TOOLBAR",
+        "CRM_COMPANY_LIST_TOOLBAR",
+        "CRM_INVOICE_LIST_TOOLBAR",
+        "CRM_QUOTE_LIST_TOOLBAR",
+        "CRM_ORDER_LIST_TOOLBAR",
+        "CRM_DYNAMIC_136_LIST_TOOLBAR",
+        "CRM_DYNAMIC_1038_LIST_TOOLBAR",
+        "CRM_SMART_INVOICE_LIST_TOOLBAR",
+        "CRM_DEAL_DETAIL_TOOLBAR",
+        "CRM_LEAD_DETAIL_TOOLBAR",
+        "CRM_CONTACT_DETAIL_TOOLBAR",
+        "CRM_COMPANY_DETAIL_TOOLBAR",
+        "CRM_INVOICE_DETAIL_TOOLBAR",
+        "CRM_QUOTE_DETAIL_TOOLBAR",
+        "CRM_DYNAMIC_136_DETAIL_TOOLBAR",
+        "CRM_DYNAMIC_1038_DETAIL_TOOLBAR",
+        "CRM_SMART_INVOICE_DETAIL_TOOLBAR",
+        "CRM_DEAL_ACTIVITY_TIMELINE_MENU",
+        "CRM_LEAD_ACTIVITY_TIMELINE_MENU",
+        "CRM_QUOTE_ACTIVITY_TIMELINE_MENU"
+    ],
+    "time": {
+        "start": 1712132792.910734,
+        "finish": 1712132793.530359,
+        "duration": 0.6196250915527344,
+        "processing": 0.032338857650756836,
+        "date_start": "2024-04-03T10:26:32+02:00",
+        "date_finish": "2024-04-03T10:26:33+02:00",
+        "operating_reset_at": 1705765533,
+        "operating": 3.3076241016387939
+    }
 }
 ```
 
-{% include [Footnote on examples](../../_includes/examples.md) %}
+### Returned Data
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`string[]`](../data-types.md) | A list of codes for embed locations available for the application.
+
+Each element of the array is a string code for an embed location. ||
+|| **time**
+[`time`](../data-types.md#time) | Information about the execution time of the request. ||
+|#
+
+## Error Handling
+
+HTTP Status: **403**
+
+```json
+{
+    "error": "WRONG_AUTH_TYPE",
+    "error_description": "Current authorization type is denied for this method Application context required"
+}
+```
+
+{% include notitle [error handling](../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+#|
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `403` | `WRONG_AUTH_TYPE` | Current authorization type is denied for this method Application context required | Method call not from application context. ||
+|#
+
+{% include [system errors](../../_includes/system-errors.md) %}
+
+## Continue Learning
+
+- [{#T}](./placements.md)
+- [{#T}](./placement-bind.md)
+- [{#T}](./placement-get.md)
+- [{#T}](./placement-unbind.md)
+- [{#T}](./ui-interaction/index.md)

@@ -1,19 +1,19 @@
 # FILE Block
 
-The `FILE` block outputs a file as an attachment element with its name and size.
+The `FILE` block displays a file as an attachment element with its name and size.
 
 ![FILE Block](./_images/file.png){width=420}
 
 ## Block Parameters
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
-|| **LINK***
-[`string`](../../../../../../data-types.md) | File URL ||
-|| **NAME**
+|| **LINK*** 
+[`string`](../../../../../../data-types.md) | URL of the file ||
+|| **NAME** 
 [`string`](../../../../../../data-types.md) | Display name of the file ||
-|| **SIZE**
+|| **SIZE** 
 [`integer`](../../../../../../data-types.md) | Size of the file in bytes. If this field is not specified, the file is displayed without a correct size ||
 |#
 
@@ -55,6 +55,7 @@ The `FILE` block outputs a file as an attachment element with its name and size.
 
 ## Continue Learning
 
-- [ATTACH Block Collection](./index.md)
-- [IMAGE Block](./images.md)
-- [Attachments in Messages ATTACH](../index.md)
+- [API imbot.v2 Change Log](../../../../change-log.md)
+- [{#T}](./index.md)
+- [{#T}](./images.md)
+- [{#T}](../index.md)

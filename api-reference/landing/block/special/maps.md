@@ -1,71 +1,97 @@
 # Maps in Blocks
 
-{% note warning "We are still updating this page" %}
+Blocks with maps use `subtype: map`. This subtype connects map settings, adds the necessary attributes, and prepares the block for use in the editor.
 
-Some data may be missing here — we will fill it in shortly.
+In standard blocks for maps, the following approach is used:
 
-{% endnote %}
+- In the `block` section, `subtype: map` is specified
+- In `assets`, the `landing_map` extension is included
+- In the block markup, the node `.landing-block-node-map` is used
 
-{% if build == 'dev' %}
+The node `.landing-block-node-map` must already be present in the block markup. If it is not, the map subtype will not function. For an existing node `.landing-block-node-map`, the handler automatically adds the type `map`, the attribute `data-map`, and, if available, the attribute `data-map-provider`.
 
-{% note alert "TO-DO _not exported to prod_" %}
+## How to Configure a Map Block
 
-- edits are needed to meet the writing standard
+The minimal version of the manifest:
 
-{% endnote %}
-
-{% endif %}
-
-To work with maps (currently only Google Maps are supported) and have full editing functionality, you need to:
-
-1. Place two keys in the **block** section: subtype and subtype_params (see the manifest example for more details).
-2. Specify the extension **landing_google_maps_new** (see assets in the manifest example).
-3. Indicate the type **map** for the required node (where the map will be).
-
-## Manifest Example
-
-```js
-return [
-    'block' => [
-        'name' => 'Google Map',
-        'section' => ['contacts'],
-        'subtype' => 'map',
-        'subtype_params' =>[
-            'required' => 'google'
-        ],
-    ],
-    'cards' => [],
-    'nodes' => [
-        '.landing-block-node-map' => [
-            'name' => 'Map',
-            'type' => 'map',
-        ]
-    ],
-    'style' => [
-        'block' => [
-            'type' => ['block-default-wo-background-vh-animation']
-        ],
-        'nodes' => [],
-    ],
-    'assets' => [
-        'ext' => ['landing_google_maps_new'],
-    ]
-];
+```php
+'block' => [
+    'name' => 'Map',
+    'section' => ['contacts'],
+    'subtype' => 'map',
+],
+'assets' => [
+    'ext' => ['landing_map'],
+],
 ```
 
-Example block for this manifest:
+Example markup:
 
 ```html
-<section class="landing_block g-pt-0 g-pb-0 g-height-70vh">
-     <div class="landing-block-node-map h-100" data-map></div>
+<section class="landing-block g-pt-0 g-pb-0 g-height-70vh">
+    <div class="landing-block-node-map h-100"></div>
 </section>
 ```
 
-You can view examples of blocks of this type in our repository by using the methods [landing.block.getmanifestfile](../methods/landing-block-get-manifest-file.md) and [landing.block.getrepository](../methods/landing-block-get-repository.md). Their codes are:
-- 16.3.two_cols_map_text_fix
-- 16.4.three_cols_map
-- 16.5.two_cols_map
-- 16.6.two_cols_map_reverse
-- 16.1.google_map
-- 16.2.two_cols_text_map_fix
-- and many others.
+## What the Map Subtype Does
+
+After adding the block, the system:
+
+- Determines the map provider
+- Adds the attribute `data-map-provider` to the node `.landing-block-node-map`
+- Creates an initial value for `data-map` with center, zoom, and marker
+- Connects the `map_init` extension if it is not already in the manifest
+
+In standard blocks, the manifest usually specifies the `landing_map` extension. The map subtype automatically adds `map_init` if this extension is not present.
+
+By default, the following is recorded in `data-map`:
+
+- Center of the map
+- Zoom level `17`
+- One initial marker
+
+The starting center of the map depends on the website's zone.
+
+If a map key is not configured for the selected provider, the subtype adds `requiredUserAction`. In the editor, the user will see a required action to navigate to the website settings.
+
+## What Providers Are Used
+
+By default, Google Maps is used. The current provider is stored in the attribute `data-map-provider`.
+
+The starting coordinates of the map depend on the website's zone. For the `ru` zone, a separate set of coordinates is used. For other zones, the default value is applied.
+
+In the block interface, map provider settings are available, and for Google Maps, additional visual parameters are accessible:
+
+- Map theme
+- Display of roads
+- Display of landmarks
+
+## Important Considerations
+
+- In standard map blocks, the `landing_map` extension is used, not `landing_google_maps_new`
+- In standard map manifests, `subtype: map` and `landing_map` are usually specified, while the `map_init` subtype is added automatically
+- `type: map` for `.landing-block-node-map` is added by the subtype handler
+- If the block does not contain the node `.landing-block-node-map`, the map subtype will not function
+
+## Examples of Standard Blocks
+
+Examples of blocks of this type can be viewed in the repository through the methods [landing.block.getmanifestfile](../methods/landing-block-get-manifest-file.md) and [landing.block.getrepository](../methods/landing-block-get-repository.md).
+
+Codes for some standard blocks:
+
+- `16.1.google_map`
+- `16.2.two_cols_text_map_fix`
+- `16.3.two_cols_map_text_fix`
+- `16.5.two_cols_map`
+- `16.6.two_cols_map_reverse`
+
+To ensure the map block functions correctly, add the node `.landing-block-node-map` to the markup in advance, and the `map` subtype will complement the manifest and initial settings.
+
+## Continue Your Learning
+
+- [Special Blocks](./index.md)
+- [Menu Blocks](./menu.md)
+- [Navigation and Header](./navigation.md)
+- [Search Results](./search.md)
+- [Search Forms](./search-forms.md)
+- [Forms in Blocks](./crm-forms.md)

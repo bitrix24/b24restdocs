@@ -14,17 +14,16 @@ The widget will not be displayed in the interface until the application installa
 
 ## Where the widget is embedded
 
-#|
-|| **Placement Code** | **Location** ||
+#| 
+|| **Widget code** | **Location** ||
 || `USER_PROFILE_MENU` | Context menu item in the profile ||
 |#
 
 ## What the handler receives
 
-Data is transmitted as a POST request {.b24-info}
+Data is sent as a POST request {.b24-info}
 
 ```php
-
 Array
 (
     [DOMAIN] => xxx.bitrix24.com
@@ -39,7 +38,6 @@ Array
     [PLACEMENT] => USER_PROFILE_MENU
     [PLACEMENT_OPTIONS] => {"USER_ID":"1"}
 )
-
 ```
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
@@ -52,21 +50,19 @@ The value of `PLACEMENT_OPTIONS` is a JSON string containing an array of one or 
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
 
-#|
+#| 
 || **Parameter** | **Description** ||
-|| **USER_ID***
+|| **USER_ID*** 
 [`string`](../../data-types.md) | The identifier of the user whose profile the widget was opened in.
 
-This can be used to retrieve additional information using the [user.get](../../user/user-get.md) method.
+It can be used to retrieve additional information using the [user.get](../../user/user-get.md) method.
 
-||
+|| 
 |#
 
 ## Continue your exploration
 
 - [{#T}](../placement-bind.md)
 - [{#T}](../ui-interaction/index.md)
-- [{#T}](../ui-interaction/crm-card.md)
 - [{#T}](../../../settings/interactivity/index.md)
-- [{#T}](../open-application.md)
-- [{#T}](../open-path.md)
+- [{#T}](../bx24-widget-methods.md)

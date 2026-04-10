@@ -6,7 +6,7 @@ Blocks define the structure and appearance of the `ATTACH` attachment.
 
 ### [User Block (USER)](./user.md)
 
-Displays a user card within the attachment: name, avatar, and a link to the profile or external resource.
+Displays the user card within the attachment: name, avatar, and a link to the profile or external resource.
 
 ![User Block](./_images/user.png){width=420}
 
@@ -28,7 +28,7 @@ Adds a visual separator between parts of the attachment. Helps to distinguish me
 
 ![Delimiter Block](./_images/delimiter.png){width=420}
 
-### [Grid Block (GRID)](./grid.md)
+### [Grid Block for Rows and Columns (GRID)](./grid.md)
 
 Forms a tabular structure from pairs of "name-value". Suitable for cards with properties and parameters.
 
@@ -54,12 +54,13 @@ Displays one or more images within the attachment.
 
 ### [File Block (FILE)](./files.md)
 
-Adds a file with a name and a link for download or opening.
+Adds a file with a name and a link for downloading or opening.
 
 ![File Block](./_images/file.png){width=420}
 
 ## Continue Exploring
 
-- [Attachments in Messages ATTACH](../index.md)
-- [Attachment Builder ATTACH](../constructor.md)
+- [API Change Log for imbot.v2](../../../../change-log.md)
+- [{#T}](../index.md)
+- [{#T}](../constructor.md)
 - [Working with Keyboards](../../message-keyboards.md) — buttons under the message for commands, links, and actions

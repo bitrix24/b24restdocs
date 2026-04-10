@@ -23,7 +23,7 @@ The method `documentgenerator.region.add` adds a new custom region.
 || **Name**
 `type` | **Description** ||
 || **title***
-[`string`](../../data-types.md) | Name of the region ||
+[`string`](../../data-types.md) | Region name ||
 || **languageId**
 [`string`](../../data-types.md) | Language identifier for the region, e.g., `de` ||
 || **formatDate**
@@ -45,13 +45,23 @@ List of possible modifiers:
 
 {% note tip "User Documentation" %}
 
-- [What are Modifiers in Document Templates](https://helpdesk.bitrix24.com/open/25799327/)
+- [What are modifiers in document templates](https://helpdesk.bitrix24.com/open/25799327/)
 
 {% endnote %}
 
 ||
 || **phrases**
-[`object`](../../data-types.md) | Set of localized phrases for the region in the format `code: text` ||
+[`object`](../../data-types.md) | Set of localized phrases for the region in the format `code: text`.
+
+The keys of the object are strings and can be defined arbitrarily depending on the template. The values of the keys are also strings.
+
+To understand which fields are used in the document template, retrieve their list using the method [documentgenerator.template.getfields](../templates/document-generator-template-get-fields.md). This will help determine which template values require their own language phrases.
+
+Examples:
+
+- `TAX_INCLUDED`: `Tax included in the price`
+- `TAX_NOT_INCLUDED`: `Tax not included in the price`
+||
 |#
 
 ## Code Examples
@@ -74,8 +84,8 @@ List of possible modifiers:
         "formatDatetime": "DD.MM.YYYY HH:MI:SS",
         "formatName": "#LAST_NAME# #NAME# #SECOND_NAME#",
         "phrases": {
-          "TAX_INCLUDED": "VAT included in price",
-          "TAX_NOT_INCLUDED": "VAT not included in price"
+          "TAX_INCLUDED": "Tax included in the price",
+          "TAX_NOT_INCLUDED": "Tax not included in the price"
         }
       }
     }' \
@@ -96,8 +106,8 @@ List of possible modifiers:
         "formatDatetime": "DD.MM.YYYY HH:MI:SS",
         "formatName": "#LAST_NAME# #NAME# #SECOND_NAME#",
         "phrases": {
-          "TAX_INCLUDED": "VAT included in price",
-          "TAX_NOT_INCLUDED": "VAT not included in price"
+          "TAX_INCLUDED": "Tax included in the price",
+          "TAX_NOT_INCLUDED": "Tax not included in the price"
         }
       },
       "auth": "**put_access_token_here**"
@@ -120,8 +130,8 @@ List of possible modifiers:
                   formatDatetime: 'DD.MM.YYYY HH:MI:SS',
                   formatName: '#LAST_NAME# #NAME# #SECOND_NAME#',
                   phrases: {
-                      TAX_INCLUDED: 'VAT included in price',
-                      TAX_NOT_INCLUDED: 'VAT not included in price'
+                      TAX_INCLUDED: 'Tax included in the price',
+                      TAX_NOT_INCLUDED: 'Tax not included in the price'
                   }
               }
           }
@@ -150,8 +160,8 @@ List of possible modifiers:
                   'formatDatetime' => 'DD.MM.YYYY HH:MI:SS',
                   'formatName' => '#LAST_NAME# #NAME# #SECOND_NAME#',
                   'phrases' => [
-                      'TAX_INCLUDED' => 'VAT included in price',
-                      'TAX_NOT_INCLUDED' => 'VAT not included in price',
+                      'TAX_INCLUDED' => 'Tax included in the price',
+                      'TAX_NOT_INCLUDED' => 'Tax not included in the price',
                   ],
               ],
           ]
@@ -177,8 +187,8 @@ List of possible modifiers:
               formatDatetime: 'DD.MM.YYYY HH:MI:SS',
               formatName: '#LAST_NAME# #NAME# #SECOND_NAME#',
               phrases: {
-                  TAX_INCLUDED: 'VAT included in price',
-                  TAX_NOT_INCLUDED: 'VAT not included in price'
+                  TAX_INCLUDED: 'Tax included in the price',
+                  TAX_NOT_INCLUDED: 'Tax not included in the price'
               }
           }
       },
@@ -211,8 +221,8 @@ List of possible modifiers:
               'formatDatetime' => 'DD.MM.YYYY HH:MI:SS',
               'formatName' => '#LAST_NAME# #NAME# #SECOND_NAME#',
               'phrases' => [
-                  'TAX_INCLUDED' => 'VAT included in price',
-                  'TAX_NOT_INCLUDED' => 'VAT not included in price',
+                  'TAX_INCLUDED' => 'Tax included in the price',
+                  'TAX_NOT_INCLUDED' => 'Tax not included in the price',
               ],
           ],
       ]
@@ -238,8 +248,8 @@ HTTP Status: **200**
             "formatDatetime": "DD.MM.YYYY HH:MI:SS",
             "formatName": "#LAST_NAME# #NAME# #SECOND_NAME#",
             "phrases": {
-                "TAX_INCLUDED": "VAT included in price",
-                "TAX_NOT_INCLUDED": "VAT not included in price"
+                "TAX_INCLUDED": "Tax included in the price",
+                "TAX_NOT_INCLUDED": "Tax not included in the price"
             }
         }
     },
@@ -284,7 +294,7 @@ HTTP Status: **200**
 || **id**
 [`string`](../../data-types.md) | Identifier of the custom region ||
 || **title**
-[`string`](../../data-types.md) | Name of the region ||
+[`string`](../../data-types.md) | Region name ||
 || **languageId**
 [`string`](../../data-types.md) | Language identifier for the region ||
 || **formatDate**
@@ -294,7 +304,12 @@ HTTP Status: **200**
 || **formatName**
 [`string`](../../data-types.md) | Full name template ||
 || **phrases**
-[`object`](../../data-types.md) | Set of phrases in the format `code: text` ||
+[`object`](../../data-types.md) | Set of phrases in the format `code: text`, where keys and values are strings.
+
+Examples of keys: `TAX_INCLUDED`, `TAX_NOT_INCLUDED`
+
+The list of template fields can be obtained using the method [documentgenerator.template.getfields](../templates/document-generator-template-get-fields.md)
+||
 |#
 
 ## Error Handling
@@ -308,18 +323,18 @@ HTTP Status: **400**
 }
 ```
 
-{% include notitle [Error Handling](../../../_includes/error-info.md) %}
+{% include notitle [error handling](../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
 || **Status** | **Code** | **Description** | **Value** ||
 || `400` | `100` | Could not find value for parameter {fields} | Required parameter `fields` is missing or empty ||
-|| `400` | `BX_EMPTY_REQUIRED` | Required field "TITLE" is not filled | Required field `title` is missing in the `fields` parameter ||
-|| `400` | `0` | You do not have permissions to modify templates | Insufficient rights to modify document generator templates ||
+|| `400` | `BX_EMPTY_REQUIRED` | Required field "TITLE" is not filled | The required field `title` is missing in the `fields` parameter ||
+|| `400` | `0` | You do not have permissions to modify templates | Insufficient permissions to modify document generator templates ||
 |#
 
-{% include [System Errors](../../../_includes/system-errors.md) %}
+{% include [system errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

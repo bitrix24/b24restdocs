@@ -14,17 +14,16 @@ The widget will not be displayed in the interface until the application installa
 
 ## Where the widget is embedded
 
-#|
-|| **Widget code** | **Location** ||
+#| 
+|| **Widget Code** | **Location** ||
 || `CALENDAR_GRIDVIEW` | Item in the list of calendar view types ||
 |#
 
 ## What the handler receives
 
-Data is sent as a POST request {.b24-info}
+Data is transmitted as a POST request {.b24-info}
 
 ```php
-
 Array
 (
     [DOMAIN] => xxx.bitrix24.com
@@ -39,7 +38,6 @@ Array
     [PLACEMENT] => CALENDAR_GRIDVIEW
     [PLACEMENT_OPTIONS] => {"viewRangeFrom":"2024-08-12","viewRangeTo":"2024-08-18"}
 )
-
 ```
 
 {% include [Note on required parameters](../../_includes/required.md) %}
@@ -52,20 +50,20 @@ The value of `PLACEMENT_OPTIONS` is a JSON string containing an array of one or 
 
 {% include [Note on required parameters](../../_includes/required.md) %}
 
-#|
+#| 
 || **Parameter** | **Description** ||
 || **viewRangeFrom*** 
 [`date`](../data-types.md) | The start of the date range currently displayed in the calendar.
 
-Can be used to retrieve a list of events to display in the widget using the [calendar.event.get](../calendar/calendar-event/calendar-event-get.md) method.
+This can be used to retrieve a list of events to display in the widget using the [calendar.event.get](../calendar/calendar-event/calendar-event-get.md) method.
 
-||
+|| 
 || **viewRangeTo*** 
 [`date`](../data-types.md) | The end of the date range currently displayed in the calendar.
 
-Can be used to retrieve a list of events to display in the widget using the [calendar.event.get](../calendar/calendar-event//calendar-event-get.md) method.
+This can be used to retrieve a list of events to display in the widget using the [calendar.event.get](../calendar/calendar-event//calendar-event-get.md) method.
 
-||
+|| 
 |#
 
 ## Continue exploring
@@ -73,7 +71,5 @@ Can be used to retrieve a list of events to display in the widget using the [cal
 - [{#T}](../calendar/calendar-grid-veiw.md)
 - [{#T}](./placement-bind.md)
 - [{#T}](./ui-interaction/index.md)
-- [{#T}](./ui-interaction/crm-card.md)
 - [{#T}](../../settings/interactivity/index.md)
-- [{#T}](./open-application.md)
-- [{#T}](./open-path.md)
+- [{#T}](./bx24-widget-methods.md)

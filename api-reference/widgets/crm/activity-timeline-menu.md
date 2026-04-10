@@ -1,10 +1,10 @@
-# Context Menu Item for the Deal in the CRM Element Card CRM_XXX_ACTIVITY_TIMELINE_MENU, CRM_DYNAMIC_XXX_ACTIVITY_TIMELINE_MENU
+# Context Menu Item for CRM Activity in CRM_XXX_ACTIVITY_TIMELINE_MENU, CRM_DYNAMIC_XXX_ACTIVITY_TIMELINE_MENU
 
 > Scope: [`crm`](../../scopes/permissions.md)
 
-You can add your context menu item for the deal in the CRM object cards: [leads](../../crm/leads/index.md), [deals](../../crm/deals/index.md), [estimates](../../crm/quote/index.md), [new invoices](../../crm/universal/invoice.md), [custom object types](../../crm/universal/index.md).
+You can add your context menu item for CRM objects: [leads](../../crm/leads/index.md), [deals](../../crm/deals/index.md), [estimates](../../crm/quote/index.md), [new invoices](../../crm/universal/invoice.md), and [custom object types](../../crm/universal/index.md).
 
-![Widget as a context menu item for the deal in the lead](./_images/CRM__ACTIVITY_TIMELINE_MENU.png "Widget as a context menu item for the deal in the lead")
+![Widget as a context menu item for a lead](./_images/CRM__ACTIVITY_TIMELINE_MENU.png "Widget as a context menu item for a lead")
 
 The specific widget placement code is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
 
@@ -14,15 +14,15 @@ The widget will not be displayed in the interface until the application installa
 
 {% endnote %}
 
-## Where the Widget is Embedded
+## Widget Placement
 
-#|
+#| 
 || **Widget Code** | **Location** ||
-|| `CRM_LEAD_ACTIVITY_TIMELINE_MENU` | Context menu item for the deal in the [lead](../../crm/leads/index.md) ||
-|| `CRM_DEAL_ACTIVITY_TIMELINE_MENU` | Context menu item for the deal in the [deal](../../crm/deals/index.md) ||
-|| `CRM_QUOTE_ACTIVITY_TIMELINE_MENU` | Context menu item for the deal in the [estimate](../../crm/quote/index.md) ||
-|| `CRM_SMART_INVOICE_ACTIVITY_TIMELINE_MENU` | Context menu item for the deal in the [new invoices](../../crm/universal/invoice.md) ||
-|| `CRM_DYNAMIC_XXX_ACTIVITY_TIMELINE_MENU` | Context menu item for the deal in custom CRM object types. Instead of XXX, specify the numeric identifier of the specific [custom object type](../../crm/universal/index.md). For example, `CRM_DYNAMIC_183_LIST_MENU` ||
+|| `CRM_LEAD_ACTIVITY_TIMELINE_MENU` | Context menu item for a [lead](../../crm/leads/index.md) ||
+|| `CRM_DEAL_ACTIVITY_TIMELINE_MENU` | Context menu item for a [deal](../../crm/deals/index.md) ||
+|| `CRM_QUOTE_ACTIVITY_TIMELINE_MENU` | Context menu item for an [estimate](../../crm/quote/index.md) ||
+|| `CRM_SMART_INVOICE_ACTIVITY_TIMELINE_MENU` | Context menu item for [new invoices](../../crm/universal/invoice.md) ||
+|| `CRM_DYNAMIC_XXX_ACTIVITY_TIMELINE_MENU` | Context menu item for custom CRM object types. Replace XXX with the numeric identifier of the specific [custom object type](../../crm/universal/index.md). For example, `CRM_DYNAMIC_183_LIST_MENU` ||
 |#
 
 ## What the Handler Receives
@@ -148,12 +148,12 @@ The value of `PLACEMENT_OPTIONS` is a JSON string containing an array of one or 
 
 {% include [Note on Required Parameters](../../../_includes/required.md) %}
 
-#|
+#| 
 || **Parameter** | **Description** ||
 || **ENTITY_ID*** 
-[`string`](../../data-types.md) | Identifier of the CRM object for which the widget was opened.
+[`string`](../../data-types.md) | The identifier of the CRM object for which the widget was opened.
 
-Can be used to retrieve additional information using the corresponding methods:
+It can be used to retrieve additional information using the corresponding methods:
 
 - any object type [crm.item.get](../../crm/universal/crm-item-get.md) specifying entityTypeId = '1' for leads, '2' for deals, and [etc.](../../crm/data-types.md#object_type)
 - lead [crm.lead.get](../../crm/leads/crm-lead-get.md)
@@ -164,34 +164,32 @@ In the case of embedding the widget in a custom type object, the type identifier
 
 ||
 || **ASSOCIATED_ENTITY_ID*** 
-[`string`](../../data-types.md) | Identifier of the CRM deal for which the widget was opened.
+[`string`](../../data-types.md) | The identifier of the CRM activity for which the widget was opened.
 
-Can be used to retrieve additional information using the method [crm.activity.get](../../crm/timeline/activities/activity-base/crm-activity-get.md)
+It can be used to retrieve additional information using the [crm.activity.get](../../crm/timeline/activities/activity-base/crm-activity-get.md) method.
 
 ||
 || **ASSOCIATED_ENTITY_TYPE_ID*** 
-[`string`](../../data-types.md) | Identifier of the deal entity type (Activity)
+[`string`](../../data-types.md) | The identifier of the activity entity type.
 
 ||
 || **TYPE_ID*** 
-[`string`](../../data-types.md) | Identifier of the event type
+[`string`](../../data-types.md) | The identifier of the event type.
 
 ||
 || **TYPE_CATEGORY_ID*** 
-[`string`](../../data-types.md) | Identifier of the timeline record type
+[`string`](../../data-types.md) | The identifier of the timeline record type.
 
 ||
 || **TIMELINE_ITEM_ID*** 
-[`string`](../../data-types.md) | Identifier of the timeline record
+[`string`](../../data-types.md) | The identifier of the timeline record.
 
 ||
 |#
 
-## Continue Exploring
+## Continue Learning
 
 - [{#T}](../placement-bind.md)
 - [{#T}](../ui-interaction/index.md)
-- [{#T}](../ui-interaction/crm-card.md)
 - [{#T}](../../../settings/interactivity/index.md)
-- [{#T}](../open-application.md)
-- [{#T}](../open-path.md)
+- [{#T}](../bx24-widget-methods.md)

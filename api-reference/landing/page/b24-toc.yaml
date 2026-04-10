@@ -1,21 +1,23 @@
-title: Entity Page
-href: index.md
-items:
-  - name: Fields
-    href: index.md
-  - name: Additional Fields
-    href: additional-fields.md
-  - name: Color Themes
-    href: color-themes.md
-  - name: Methods
-    include:
-      path: methods/b24-toc.yaml
-      mode: link
-  - name: Blocks
-    include:
-      path: block-methods/b24-toc.yaml
-      mode: link
-  - name: Special Pages
-    include:
-      path: special-pages/b24-toc.yaml
-      mode: link
+title: Object Page  
+href: index.md  
+items:  
+  - name: Overview of Methods  
+    href: index.md  
+  - name: Fields  
+    href: fields.md  
+  - name: Additional Fields  
+    href: additional-fields.md  
+  - name: Color Themes  
+    href: color-themes.md  
+  - name: Methods  
+    include:  
+      path: methods/b24-toc.yaml  
+      mode: link  
+  - name: Blocks  
+    include:  
+      path: block-methods/b24-toc.yaml  
+      mode: link  
+  - name: Special Pages  
+    include:  
+      path: special-pages/b24-toc.yaml  
+      mode: link  

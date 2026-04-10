@@ -6,11 +6,11 @@
 
 {% note tip "" %}
 
-If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can use the official REST documentation.
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so the assistant can utilize the official REST documentation.
 
 {% endnote %}
 
-The stage name is not stored in the "Stage" field of the CRM entity. The "Stage" field contains an identifier. You can correlate the name and identifier of the stage using methods for working with [reference books](../../../api-reference/crm/status/index.md) — system fields of the "list" type. To search for items by stage name, we will sequentially execute three methods:
+The stage name is not stored in the "Stage" field of the CRM entity. The "Stage" field contains an identifier. You can correlate the name and identifier of the stage using methods for working with [dictionaries](../../../api-reference/crm/status/index.md) — system fields of the "list" type. To search for items by stage name, we will sequentially execute three methods:
 
 1. [crm.category.list](../../../api-reference/crm/universal/category/crm-category-list.md) — retrieve the funnel identifier
 2. [crm.status.list](../../../api-reference/crm/status/crm-status-list.md) — retrieve the stage identifier in the funnel
@@ -18,8 +18,8 @@ The stage name is not stored in the "Stage" field of the CRM entity. The "Stage"
 
 ## 1. Retrieve the Funnel Identifier
 
-We will use the [crm.category.list](../../../api-reference/crm/universal/category/crm-category-list.md) method with the parameters:
-- `entityTypeId` — set to `2` for deals. This is the identifier for the [object type](../../../api-reference/crm/data-types.md#object_type). To find out the identifier of the smart process, execute the [crm.enum.ownertype](../../../api-reference/crm/auxiliary/enum/crm-enum-owner-type.md) method without parameters.
+We will use the [crm.category.list](../../../api-reference/crm/universal/category/crm-category-list.md) method with the following parameters:
+- `entityTypeId` — set to `2` for deals. This is the identifier for the [object type](../../../api-reference/crm/data-types.md#object_type). To find out the `entityTypeId` of the SPA, execute the [crm.enum.ownertype](../../../api-reference/crm/auxiliary/enum/crm-enum-owner-type.md) method without parameters.
 
 {% include [Example Note](../../../_includes/examples.md) %}
 
@@ -101,8 +101,8 @@ As a result, we obtained the deal funnels. We will identify the required funnel 
 We will use the [crm.status.list](../../../api-reference/crm/status/crm-status-list.md) method with the filter:
 
 - `ENTITY_ID` — set to `DEAL_STAGE_10`, where `10` is the funnel identifier obtained in step 1. 
-To obtain stages of the smart process, use a formula like `DYNAMIC_185_STAGE_11`, where `185` is the `ID` of the smart process, and `11` is the `ID` of the funnel.
-If the `ID` of the funnel is `0`, make the request for stages without adding `_ID`.
+To obtain the stages of the SPA, use a formula of the form `DYNAMIC_185_STAGE_11`, where `185` is the `entityTypeId` of the SPA, and `11` is the funnel `ID`. 
+If the funnel `ID` is `0`, make the request for stages without adding `_ID`.
 
 {% list tabs %}
 
@@ -274,8 +274,8 @@ As a result, we obtained a list of stages. We will identify the required stage b
 
 ## 3. Retrieve the List of Items at the Stage
 
-We will use the [crm.item.list](../../../api-reference/crm/universal/crm-item-list.md) method with the parameters:
-- `entityTypeId` — set to `2` for deals. This is the identifier for the [object type](../../../api-reference/crm/data-types.md#object_type). To find out the identifier of the smart process, execute the [crm.enum.ownertype](../../../api-reference/crm/auxiliary/enum/crm-enum-owner-type.md) method without parameters.
+We will use the [crm.item.list](../../../api-reference/crm/universal/crm-item-list.md) method with the following parameters:
+- `entityTypeId` — set to `2` for deals. This is the identifier for the [object type](../../../api-reference/crm/data-types.md#object_type). To find out the `entityTypeId` of the SPA, execute the [crm.enum.ownertype](../../../api-reference/crm/auxiliary/enum/crm-enum-owner-type.md) method without parameters.
 - `filter[stageId]` — set to `C10:PREPAYMENT_INVOICE`. This is the identifier of the stage obtained in step 2.
 - `select[]` — specify the fields of the items you want to retrieve. Without the `select` parameter, all fields, including custom ones, will be returned.
 
@@ -367,7 +367,7 @@ As a result, we obtained a list of items at the requested stage.
 }
 ```
 
-## Retrieve the Responsible Person's Data
+## Retrieve Responsible Person's Data
 
 In the obtained result, the `ID` of the employee responsible for the item is indicated. To display the first and last name of the employee, we will use the [user.get](../../../api-reference/user/user-get.md) method with the filter:
 
@@ -546,7 +546,7 @@ As a result, we will receive data about the employee, including the `NAME` and `
                                 table.push([
                                     "Deal ID",
                                     "Title",
-                                    "Responsible First Name",
+                                    "Responsible Name",
                                     "Responsible Last Name",
                                     "Expected Revenue"
                                 ]);
@@ -704,7 +704,7 @@ As a result, we will receive data about the employee, including the `NAME` and `
     $table[] = [
         "Deal ID",
         "Title",
-        "Responsible First Name",
+        "Responsible Name",
         "Responsible Last Name",
         "Expected Revenue"
     ];

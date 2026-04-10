@@ -1,8 +1,8 @@
-# Add Site landing.site.add
+# Add site landing.site.add
 
 > Scope: [`landing`](../../scopes/permissions.md)
 >
-> Who can execute the method: user with "create" access permission for sites  
+> Who can execute the method: a user with "create" access permission for sites  
 
 The method `landing.site.add` creates a new site and returns the identifier of the created site.
 
@@ -14,7 +14,7 @@ The method `landing.site.add` creates a new site and returns the identifier of t
 || **Name**
 `type` | **Description** ||
 || **scope**
-[`string`](../../data-types.md) | Internal scope for landings. It is not related to the REST scope `landing` in the method name. 
+[`string`](../../data-types.md) | Internal scope of landings. It is not related to the REST scope `landing` in the method name. 
 For `GROUP`, `KNOWLEDGE`, and `MAINPAGE`, the value of `scope` must match the value of `fields.TYPE` [(detailed description)](#type-scope) ||
 || **fields***
 [`object`](../../data-types.md) | Set of fields for the new site [(detailed description)](#fields) ||
@@ -30,7 +30,7 @@ For `GROUP`, `KNOWLEDGE`, and `MAINPAGE`, the value of `scope` must match the va
 || **TITLE***
 [`string`](../../data-types.md) | Title of the site, up to `255` characters ||
 || **CODE***
-[`string`](../../data-types.md) | Symbolic code of the site. If an empty string is passed, the code will be generated from the `TITLE` field. For codes consisting only of digits, the prefix `site` will be automatically added. 
+[`string`](../../data-types.md) | Symbolic code of the site. If an empty string is passed, the code will be generated from the `TITLE` field. For codes that consist only of digits, a prefix `site` will be automatically added. 
 
 If such a value already exists in the domain, a numeric suffix will be added, for example, `code2` or `code3` ||
 || **TYPE**
@@ -40,9 +40,9 @@ The value must correspond to the `scope` parameter [(detailed description)](#typ
 || **DOMAIN_ID**
 [`integer`](../../data-types.md) \| [`string`](../../data-types.md) | Domain of the site. The value depends on the platform.
 
-For Bitrix24, specify the domain name of the site. If the parameter is not filled or an empty string is passed, the domain will be generated automatically according to the system template.
+For Bitrix24, specify the domain name of the site. If the parameter is not filled or an empty string is passed, the domain will be generated automatically based on the system template.
 
-For 1C-Bitrix: Site Management, you need to provide the identifier of an already existing domain. Domain name as a string is not supported; the method will return an error. ||
+For 1C-Bitrix: Site Management, you need to pass the identifier of an already existing domain. Domain name as a string is not supported, the method will return an error ||
 || **DESCRIPTION**
 [`string`](../../data-types.md) | Description of the site, up to `255` characters ||
 || **XML_ID**
@@ -53,7 +53,7 @@ For 1C-Bitrix: Site Management, you need to provide the identifier of an already
 
 ### Correspondence between TYPE and scope {#type-scope}
 
-Site types and rules for selecting the `scope` parameter are described in the article [Working with Site Types and Scopes](../types.md).
+Site types and rules for selecting the `scope` parameter are described in the article [Working with site types and scopes](../types.md).
 
 #|
 || **fields.TYPE** | **scope in request** | **When to use** ||
@@ -223,7 +223,7 @@ Site types and rules for selecting the `scope` parameter are described in the ar
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -254,12 +254,12 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
     "error": "DOMAIN_IS_INCORRECT",
-    "error_description": "The site address is incorrect. You can only use the following characters: \"a-z\", \"0-9\", \"-\", \".\"."
+    "error_description": "The site address is entered incorrectly. You can only use the following characters: \"a-z\", \"0-9\", \"-\", \".\"."
 }
 ```
 
@@ -270,16 +270,16 @@ HTTP Status: **400**
 #|
 || **Code** | **Description** ||
 || `ACCESS_DENIED` | Access to create a site is denied: insufficient rights to create a site or an unavailable `TYPE` for the current scope is passed ||
-|| `SITE_LIMIT_REACHED` | Site limit reached: the plan or license does not allow creating another site ||
+|| `SITE_LIMIT_REACHED` | Site limit reached: the tariff or license does not allow creating another site ||
 || `DOMAIN_NOT_FOUND` | Domain does not exist ||
-|| `DOMAIN_IS_INCORRECT` | The site address is incorrect: an invalid domain name format is passed ||
+|| `DOMAIN_IS_INCORRECT` | The site address is entered incorrectly: an incorrect format of the domain name is passed ||
 || `DOMAIN_EXIST_TRASH` | The domain is already linked to a site in the trash: first unlink the domain from the site in the trash ||
 || `DOMAIN_DISABLE` | The word bitrix cannot be used in the domain: restriction for domains in Bitrix24 ||
 || `DOMAIN_EXIST` | Such a domain already exists: the domain is already taken ||
 || `SLASH_IS_NOT_ALLOWED` | Slash is not allowed in the site address: the character `/` is passed in `fields.CODE` ||
 || `CONTROLLER_ERROR_BADRESPONSE` | Unrecognized response from the registration service: error from the external domain registration service ||
 || `CONTROLLER_ERROR_BADLICENSE` | License expired or key is incorrect ||
-|| `CONTROLLER_ERROR_<ERROR_CODE>` | Error from the external domain registration service: error code depends on the response from the domain registration controller ||
+|| `CONTROLLER_ERROR_<ERROR_CODE>` | Error from the external domain registration service: the error code depends on the response from the domain registration controller ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

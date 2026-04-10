@@ -1,27 +1,38 @@
-# Introduction
+# Interactive Blocks: Overview
 
-{% note warning "We are still updating this page" %}
+Interactive blocks in `landing` add client-side behavior without the need for separate script development. For these blocks, you connect the required extension in the [block manifest](../manifest.md), configure the markup and attributes, after which the platform automatically initializes the behavior.
 
-Some data may be missing here — we will fill it in shortly.
+> Quick Navigation: [All Scenarios Section](#all-scenarios)
 
-{% endnote %}
+## Related Scenarios
 
-{% if build == 'dev' %}
+**Block Manifest.** The type of interactive scenario is determined by the set of connected extensions in `assets.ext`. The manifest can be obtained via [landing.block.getmanifestfile](../methods/landing-block-get-manifest-file.md).
 
-{% note alert "TO-DO _not exported to prod_" %}
+**Block Methods.** To analyze ready-made templates, use [landing.block.getrepository](../methods/landing-block-get-repository.md), then open the manifest of the selected block through [landing.block.getmanifestfile](../methods/landing-block-get-manifest-file.md).
 
-- Describe what interactive blocks are and what types exist?
+**Special Blocks.** If the task relates to menus, navigation, search, maps, or CRM forms, refer to the [Special Blocks](../special/index.md) section.
 
-{% endnote %}
+## Choosing a Scenario
 
-{% endif %}
+Open the subsection if you need to:
 
-In Bitrix.Sites, there is an option to create interactive blocks of several types. Generally, this requires:
+- connect a slider based on `js-carousel` and configure behavior through `data-*` attributes — [Sliders](./sliders.md),
+- connect image viewing in a gallery via `js-gallery-cards` and `data-fancybox` — [Galleries](./gallery.md),
+- add a countdown timer with an end date in `data-end-date` — [Countdown Timers](./timer.md).
 
-- ensuring the appropriate layout;
-- connecting a JS extension in the block's manifest;
-- specifying editable nodes or the block's subtype depending on the type.
+## Considerations for Configuration
 
-This section describes how to connect each type of interactive block.
+- The `landing_gallery_cards` extension connects with dependencies `landing_core` and `landing_fancybox`, while `landing_carousel` and `landing_countdown` connect with `landing_jquery`.
+- `landing_gallery_cards` operates on the CSS selector `.js-gallery-cards` and elements with the HTML attribute `data-fancybox`, while in edit mode, the gallery is forcibly disabled.
+- `landing_carousel` works on the CSS selector `.js-carousel`, and in edit mode, looping is forcibly disabled to avoid creating slide clones.
+- `landing_countdown` initializes nodes based on the CSS selector `.js-countdown`, responds to changes in the HTML attribute `data-end-date`, and reinitializes after changes to the cards.
+- When using both the slider and the gallery, first connect `landing_carousel`, then `landing_gallery_cards`.
 
-Of course, you have the option to create any of these types of blocks according to your own rules. In that case, they will not be interactive in the editor, and you will need to write client scripts yourself. In the case of documented capabilities, the system will handle everything for you.
+## Scenarios for Working with Interactive Blocks {#all-scenarios}
+
+#|
+|| **Documentation Section** | **Description** ||
+|| [Galleries](./gallery.md) | Describes connecting `landing_gallery_cards`, markup structure, and image behavior in the viewer ||
+|| [Sliders](./sliders.md) | Shows connecting `landing_carousel`, key `data-*` parameters, and behavior features in the editor ||
+|| [Countdown Timers](./timer.md) | Describes connecting `landing_countdown`, the format of `data-end-date`, and the markup of the timer ||
+|#

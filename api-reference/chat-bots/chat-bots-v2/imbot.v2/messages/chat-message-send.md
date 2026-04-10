@@ -8,7 +8,7 @@ The method `imbot.v2.Chat.Message.send` sends a message on behalf of the bot to 
 
 ## Method Parameters
 
-{% include [Parameter Note](../../../../../_includes/required.md) %}
+{% include [Parameter Notes](../../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -41,18 +41,20 @@ Pass the same botToken that was specified during the chat bot registration ||
 || **urlPreview**
 [`boolean`](../../../../data-types.md) | Show link previews. Allowed values: `true`, `false`. Default is `true` ||
 || **replyId**
-[`integer`](../../../../data-types.md) | ID of the message the bot is replying to ||
+[`integer`](../../../../data-types.md) | ID of the message being replied to by the bot ||
 || **templateId**
 [`string`](../../../../data-types.md) | UUID of the message template ||
 || **forwardIds**
 [`object`](../../../../data-types.md) | Messages to forward. Format: `{uuid: messageId}`, where `uuid` is an arbitrary UUID string as the key, `messageId` is the ID of the original message. In the response, `uuidMap` will return `{uuid: newMessageId}`.
 
-The bot can only forward messages from chats where it is a participant. Maximum of 100 messages ||
+The bot can only forward messages from chats in which it is a participant. Maximum of 100 messages ||
 |#
+
+> Boolean fields `system`, `urlPreview`, `skipConnector`, `silentConnector` accept values `true`, `false`, `"Y"`, `"N"`.
 
 ## Code Examples
 
-{% include [Example Note](../../../../../_includes/examples.md) %}
+{% include [Example Notes](../../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -238,15 +240,16 @@ HTTP Status: **400**, **403**
 || `BOT_OWNERSHIP_ERROR` | Bot is registered by another application | Bot is registered by another application ||
 || `ACCESS_DENIED` | Access denied | Bot is not a participant in the chat ||
 || `EMPTY_MESSAGE` | Message is empty | Empty message — no text or attachments ||
-|| `SENDING_FAILED` | Sending failed | Error sending the message ||
+|| `SENDING_FAILED` | Sending failed | Error sending message ||
 |#
 
 {% include [System Errors](../../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
-- [Update Message imbot.v2.Chat.Message.update](./chat-message-update.md)
-- [Delete Message imbot.v2.Chat.Message.delete](./chat-message-delete.md)
-- [Add Reaction to Message imbot.v2.Chat.Message.Reaction.add](./chat-message-reaction-add.md)
-- [Attachments in Messages ATTACH](./attachments/index.md)
-- [Working with Keyboards](./message-keyboards.md)
+- [API Change Log for imbot.v2](../../change-log.md)
+- [{#T}](./chat-message-update.md)
+- [{#T}](./chat-message-delete.md)
+- [{#T}](./chat-message-reaction-add.md)
+- [{#T}](./attachments/index.md)
+- [{#T}](./message-keyboards.md)

@@ -1,12 +1,12 @@
-# Additional Integration Features CRM_XXX_DETAIL_ACTIVITY, CRM_DYNAMIC_XXX_DETAIL_ACTIVITY
+# Additional Integration Features for CRM_XXX_DETAIL_ACTIVITY, CRM_DYNAMIC_XXX_DETAIL_ACTIVITY
 
 > Scope: [`crm`](../../scopes/permissions.md)
 >
-> Who can work with the integration: a user with access permission to modify the entity
+> Who can work with the integration: a user with access permission to modify the CRM entity
 
 With additional parameters, you can set the Bitrix24 interface for your menu item in the timeline.
 
-To add the integration, use the method [placement.bind](../placement-bind.md). The basic integration capabilities are described in the article [Button above the entity detail timeline](./detail-activity.md).
+To add the integration, use the method [placement.bind](../placement-bind.md). The basic integration capabilities are described in the article [Button Above the Timeline of the CRM Entity](./detail-activity.md).
 
 [Download an example application using the integration.](https://helpdesk.bitrix24.com/examples/timeline_activity_placement_einvoice.zip)
 
@@ -34,8 +34,8 @@ BX24.callMethod(
     'TITLE': 'My Integration',
     'OPTIONS': {
       'useBuiltInInterface': 'Y',
-      'newUserNotificationTitle': 'Meet the new application',
-      'newUserNotificationText': 'E-invoice will help manage invoices'
+      'newUserNotificationTitle': 'Welcome to the new application',
+      'newUserNotificationText': 'E-invoice will help you manage invoices'
     }
   }
 );
@@ -54,7 +54,7 @@ Interaction occurs through the method [BX24.placement.call](../ui-interaction/bx
 
 2. Rendering the interface. 
    
-   Once the application is loaded, it should call `setLayout` to render the initial state of the integration location.
+   Once the application is loaded, it should call `setLayout` to render the initial state of the integration point.
 
    ```js
    BX24.placement.call('setLayout', LayoutDto, callback);
@@ -62,53 +62,53 @@ Interaction occurs through the method [BX24.placement.call](../ui-interaction/bx
 
 3. Responding to actions.
 
-	If the application displays interactive elements in the interface, such as links, it can register a handler `bindLayoutEventCallback` to handle interactions with the elements.
+   If the application displays interactive elements in the interface, such as links, it can register a handler `bindLayoutEventCallback` to handle interactions with those elements.
 
-	```js
-	BX24.placement.call('bindLayoutEventCallback', null, callback);
-	```
+   ```js
+   BX24.placement.call('bindLayoutEventCallback', null, callback);
+   ```
 
 4. Managing element states.
 
-	The appearance and visibility of specific interface elements can be changed using `setLayoutItemState`.
+   You can change the appearance and visibility of a specific interface element through `setLayoutItemState`.
 
-	```js
-	BX24.placement.call('setLayoutItemState', { id: '...', visible: true/false, properties: {...} }, callback);
-	```
+   ```js
+   BX24.placement.call('setLayoutItemState', { id: '...', visible: true/false, properties: {...} }, callback);
+   ```
 
 5. Managing buttons.
 
-	The appearance of the buttons at the bottom of the interface can be changed using `setPrimaryButtonState` and `setSecondaryButtonState`.
+   You can change the appearance of the buttons at the bottom of the interface through `setPrimaryButtonState` and `setSecondaryButtonState`.
 
-	```js
-	BX24.placement.call('setPrimaryButtonState', {...}, callback);
-	BX24.placement.call('setSecondaryButtonState', {...}, callback);
-	```
+   ```js
+   BX24.placement.call('setPrimaryButtonState', {...}, callback);
+   BX24.placement.call('setSecondaryButtonState', {...}, callback);
+   ```
 
 6. Completing the process.
 
-	When the user's interaction with the integration is finished or if the user clicks "cancel," `finish` should be called. The timeline will switch to the default tab.
+   When the user's interaction with the integration is complete or if the user clicks "cancel," you need to call `finish`. The timeline will switch to the default tab.
 
-	```js
-	BX24.placement.call('finish');
-	```
+   ```js
+   BX24.placement.call('finish');
+   ```
 
 7. Locking the interface.
 
-	For long operations, such as saving, the interface can be locked by calling `lock`. To unlock, call `unlock`.
+   During long operations, such as saving, the interface can be locked by calling `lock`. To unlock, call `unlock`.
 
-	```js
-	BX24.placement.call('lock');   // lock
-	BX24.placement.call('unlock'); // unlock
-	```
+   ```js
+   BX24.placement.call('lock');   // lock
+   BX24.placement.call('unlock'); // unlock
+   ```
 
 8. Tracking changes to the entity.
 
-	To track changes to entity fields, for example, to redraw the interface based on the field value, you can register a handler `bindEntityUpdateCallback`. The callback will be called immediately after the fields are saved in the editor.
+   To track changes to the entity fields, for example, to redraw the interface based on the field value, you can register a handler `bindEntityUpdateCallback`. The callback will be invoked immediately after the fields are saved in the editor.
 
-	```js
-	BX24.placement.call('bindEntityUpdateCallback', null, callback);
-	```
+   ```js
+   BX24.placement.call('bindEntityUpdateCallback', null, callback);
+   ```
 
 ## Interface Appearance LayoutDto {#LayoutDto}
 
@@ -123,14 +123,14 @@ Interaction occurs through the method [BX24.placement.call](../ui-interaction/bx
 [`ButtonDto`](#buttondto) | Secondary button. Usually cancels the data processing ||
 |#
 
-Pressing active buttons triggers callbacks: 
+Clicking on active buttons triggers callbacks: 
 
 - `primaryButton` — callback `BX24.placement.call('bindPrimaryButtonClickCallback', null, callback)`,
 - `secondaryButton` — callback `BX24.placement.call('bindSecondaryButtonClickCallback', null, callback)`.
 
 ### ContentBlockDto {#contentblockdto}
 
-Content blocks of the main area can be combined and flexibly assembled into various interfaces.
+Content blocks in the main area can be combined and flexibly assembled into various interfaces.
 
 General structure of a block:
 
@@ -142,7 +142,7 @@ General structure of a block:
 }
 ```
 
-- `type` — block type, string,
+- `type` — type of the block, string,
 - `visible` — controls the visibility of the block, boolean field. Changing visibility allows for dynamic interfaces. Default = `true`.
 - `properties` — set of properties for a specific block.
 
@@ -153,19 +153,19 @@ General structure of a block:
 | `text` | [Text](#text) |
 | `link` | [Link](#link) |
 | `withTitle` | [Block with Title](#withTitle) |
-| `lineOfBlocks` | [Multiple content blocks in one line](#lineOfBlocks) |
+| `lineOfBlocks` | [Multiple Content Blocks in One Line](#lineOfBlocks) |
 | `dropdownMenu` | [Dropdown Menu](#dropdownMenu) |
 | `input` | [Text Input Field](#input) |
 | `textarea` | [Multiline Text Input Field](#textarea) |
-| `select` | [Dropdown Input Field](#select) |
+| `select` | [Input Field with List Selection](#select) |
 | `list` | [Unordered List](#list) |
 | `section` | [Section](#section) |
 
 ##### Text {#text}
 
-Block for displaying formatted text.
+A block displaying formatted text.
 
-{% include [Note on required parameters](../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -173,8 +173,7 @@ Block for displaying formatted text.
 || **value***
 [`string`](../../data-types.md) | Text ||
 || **multiline**
-[`boolean`](../../data-types.md) | Handle line breaks. If `true`, `\n` characters will be replaced with `<br>`. 
-Default is `false` ||
+[`boolean`](../../data-types.md) | Line break handling. If `true`, `\n` characters will be replaced with `<br>`. Default is `false` ||
 || **bold**
 [`boolean`](../../data-types.md) | Bold text. Default is `false` ||
 || **size**
@@ -214,7 +213,7 @@ Default is `false` ||
 
 ##### Link {#link}
 
-{% include [Note on required parameters](../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -222,7 +221,7 @@ Default is `false` ||
 || **text***
 [`string`](../../data-types.md) | Link text, HTML tags are not supported ||
 || **action***
-[`ActionDto`](#actiondto) | Action upon clicking the link ||
+[`ActionDto`](#actiondto) | Action on clicking the link ||
 || **size**
 [`string`](../../data-types.md) | Text size. Available values: 
 - `xs`, 
@@ -250,9 +249,9 @@ Default is `false` ||
 
 ##### Block with Title {#withTitle}
 
-The block displays a title and value. Another content block can be used as the value.
+The block displays a title and a value. Another content block can be used as the value.
 
-{% include [Note on required parameters](../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -270,7 +269,7 @@ The block displays a title and value. Another content block can be used as the v
 [`ContentBlockDto`](#contentblockdto) | Content block that serves as the value. Blocks of types `text`, `link`, `lineOfBlocks` are supported ||
 |#
 
-Example with a content block of type text:
+Example with a text content block:
 
 ```json
 {
@@ -289,7 +288,7 @@ Example with a content block of type text:
 
 ![withTitle1](_images/withTitle1.png)
 
-Example with a content block of type link:
+Example with a link content block:
 
 ```json
 {
@@ -317,7 +316,7 @@ Example with a content block of type link:
 
 The block displays multiple content blocks of type text or link in one line. This allows displaying text with different formatting and links in a single line.
 
-{% include [Note on required parameters](../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -363,7 +362,7 @@ The block displays multiple content blocks of type text or link in one line. Thi
 
 ##### Dropdown Menu {#dropdownMenu}
 
-{% include [Note on required parameters](../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -371,7 +370,7 @@ The block displays multiple content blocks of type text or link in one line. Thi
 || **selectedValue**
 [`string`](../../data-types.md) | Current selected value. If not filled, the first value from the list will be used ||
 || **values***
-[`object`](../../data-types.md) | Object where property names are the code of the value option `vendor`, and property values are the values that the user will see `vendor` ||
+[`object`](../../data-types.md) | An object where the property names are the code of the value option `vendor`, and the property values are the values that the user will see `supplier` ||
 |#
 
 ```json
@@ -381,7 +380,7 @@ The block displays multiple content blocks of type text or link in one line. Thi
     "selectedValue": "client",
     "values": {
       "": "- not selected -",
-      "vendor": "vendor",
+      "supplier": "supplier",
       "client": "client"
     }
   }
@@ -390,16 +389,16 @@ The block displays multiple content blocks of type text or link in one line. Thi
 
 ![dropdownMenu](_images/dropdownMenu.png)
 
-To track value changes, register the callback:
+To track value changes, register a callback:
 
 - `BX24.placement.call('bindValueChangeCallback', null, Callback)` to receive changes in any of the blocks
-- `BX24.placement.call('bindValueChangeCallback', 'block id', Callback)` to receive value changes only for that block.
+- `BX24.placement.call('bindValueChangeCallback', 'block id', Callback)` to receive changes in the value of only that block.
 
 When the value changes, the callback will receive the `id` of the dropdown block and its current value: `{id: "clientMenu", value: "client"}`.
 
 ##### Text Input Field {#input}
 
-{% include [Note on required parameters](../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -430,16 +429,16 @@ When the value changes, the callback will receive the `id` of the dropdown block
 
 ![input](_images/input.png)
 
-To track value changes, register the callback:
+To track value changes, register a callback:
 
 - `BX24.placement.call('bindValueChangeCallback', null, Callback)` to receive changes in any of the blocks
-- `BX24.placement.call('bindValueChangeCallback', 'block id', Callback)` to receive value changes only for that block.
+- `BX24.placement.call('bindValueChangeCallback', 'block id', Callback)` to receive changes in the value of only that block.
 
 When the value changes, the callback will receive the `id` of the text input field and its current value: `{id: "email", value: "aaa@mail.domain"}`.
 
 ##### Multiline Text Input Field {#textarea}
 
-{% include [Note on required parameters](../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -468,16 +467,16 @@ When the value changes, the callback will receive the `id` of the text input fie
 
 ![textarea](_images/textarea.png)
 
-To track value changes, register the callback:
+To track value changes, register a callback:
 
 - `BX24.placement.call('bindValueChangeCallback', null, Callback)` to receive changes in any of the blocks
-- `BX24.placement.call('bindValueChangeCallback', 'block id', Callback)` to receive value changes only for that block.
+- `BX24.placement.call('bindValueChangeCallback', 'block id', Callback)` to receive changes in the value of only that block.
 
 When the value changes, the callback will receive the `id` of the text input field and its current value:  `{id: "description", value: "Go through the gate\nTurn left"}`.
 
-##### Dropdown Input Field {#select}
+##### Input Field with List Selection {#select}
 
-{% include [Note on required parameters](../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -487,7 +486,7 @@ When the value changes, the callback will receive the `id` of the text input fie
 || **selectedValue**
 [`string`](../../data-types.md) | Current selected value. If not filled, the first value from the list will be used ||
 || **values***
-[`object`](../../data-types.md) | Object where property names are the code of the value option `nyc`, and property values are the values that the user will see `New York` ||
+[`object`](../../data-types.md) | An object where the property names are the code of the value option `nyc`, and the property values are the values that the user will see `New York` ||
 || **disabled**
 [`boolean`](../../data-types.md) | If `true` is passed, the field will be locked for editing. Default is `false` ||
 || **errorText**
@@ -511,16 +510,16 @@ When the value changes, the callback will receive the `id` of the text input fie
 
 ![select](_images/select.png)
 
-To track value changes, register the callback:
+To track value changes, register a callback:
 
 - `BX24.placement.call('bindValueChangeCallback', null, Callback)` to receive changes in any of the blocks
-- `BX24.placement.call('bindValueChangeCallback', 'block id', Callback)` to receive value changes only for that block.
+- `BX24.placement.call('bindValueChangeCallback', 'block id', Callback)` to receive changes in the value of only that block.
 
 When the value changes, the callback will receive the `id` of the field and its current value: `{id: "city", value: "nyc"}`.
 
 ##### Unordered List {#list}
 
-{% include [Note on required parameters](../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -537,7 +536,7 @@ When the value changes, the callback will receive the `id` of the field and its 
       "li1": {
         "type": "text",
         "properties": {
-          "value": "Importing CRM elements without details",
+          "value": "Import CRM elements without attributes",
           "color": "base_70"
         }
       },
@@ -570,7 +569,7 @@ When the value changes, the callback will receive the `id` of the field and its 
 
 The block displays a grouped set of blocks. An option with an image is possible.
 
-{% include [Note on required parameters](../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -601,7 +600,7 @@ Example with multiple blocks and an image:
   "type": "section",
   "properties": {
     "type": "withBorder",
-    "imageSrc": "https://helpdesk.bitrix24.com/examples/section.png",
+    "imageSrc": "https://www.example.com/images/content/products/box/bus.png",
     "blocks": {
       "header": {
         "type": "text",
@@ -625,7 +624,7 @@ Example with multiple blocks and an image:
             "li2": {
               "type": "text",
               "properties": {
-                "value": "The meeting will appear in your activities",
+                "value": "The meeting will appear in your tasks",
                 "color": "base_70"
               }
             }
@@ -649,7 +648,7 @@ Example with multiple blocks and an image:
 
 ![section](_images/section.png)
 
-Example with a single block without an image:
+Example with one block without an image:
 
 ```json
 {
@@ -673,7 +672,7 @@ Example with a single block without an image:
 
 ### ButtonDto {#buttondto}
 
-Button at the bottom of the interface.
+A button at the bottom of the interface.
 
 #|
 || **Name**
@@ -696,12 +695,12 @@ An action defines the response to a click on a specific element. Available types
 
 ##### Redirect {#click}
 
-Redirect can occur in two ways:
+Redirecting is possible in two variants:
 
 - slider, if it is a relative link to standard Bitrix24 objects that support working in a slider,
-- regular redirect in other cases.
+- regular link redirection in other cases.
 
-{% include [Note on required parameters](../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -721,7 +720,7 @@ Redirect can occur in two ways:
 
 ##### JS Event {#js}
 
-{% include [Note on required parameters](../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -750,7 +749,7 @@ Calling the action will open the slider of the application that registered the i
 * `entityTypeId` is the identifier of the object type to which the deal is linked,
 * `entityId` is the identifier of the element.
 
-{% include [Note on required parameters](../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -758,7 +757,7 @@ Calling the action will open the slider of the application that registered the i
 || **type***
 `const` | Action type. Must have the value `openRestApp` ||
 || **value**
-[`array`](../../data-types.md) | Array of arbitrary format, the data from which will be passed to the application slider ||
+[`array`](../../data-types.md) | An array of arbitrary format, the data from which will be passed to the application slider ||
 || **sliderParams**
 [`ActionSliderParamsDto`](#actionsliderparamsdto) | Parameters for opening the slider ||
 |#
@@ -773,7 +772,7 @@ Calling the action will open the slider of the application that registered the i
 || **leftBoundary**
 [`int`](../../data-types.md) | Slider full width of the browser window with a left margin, px. Cannot be used simultaneously with `width` ||
 || **title**
-[`string`](../../data-types.md) | Text for the browser window title when opening the slider ||
+[`string`](../../data-types.md) | Text of the browser window title when opening the slider ||
 |#
 
 ```json
@@ -784,7 +783,7 @@ Calling the action will open the slider of the application that registered the i
     "someImportant": "qwerty"
   },
   "sliderParams": {
-    "title": "This is the slider application title",
+    "title": "This is the application slider title",
     "width": 700
   }
 }
@@ -799,7 +798,7 @@ Calling the action will open the slider of the application that registered the i
 			"type": "section",
 			"properties": {
 				"type": "withBorder",
-				"imageSrc": "https://helpdesk.bitrix24.com/examples/section.png",
+				"imageSrc": "https://www.example.com/images/content/products/box/bus.png",
 				"blocks": {
 					"header": {
 						"type": "text",
@@ -814,7 +813,7 @@ Calling the action will open the slider of the application that registered the i
 						"properties": {
 							"blocks": {
 								"li1": {"type": "text", "properties": {"value": "The client will choose a convenient slot", "color": "base_70"}},
-								"li2": {"type": "text", "properties": {"value": "The meeting will appear in your activities", "color": "base_70"}}
+								"li2": {"type": "text", "properties": {"value": "The meeting will appear in your tasks", "color": "base_70"}}
 							}
 						}
 					},
@@ -845,12 +844,13 @@ Calling the action will open the slider of the application that registered the i
 
 ![example1](_images/example1.png)
 
+
 ```json
 {
 	"blocks": {
 		"errorMessage": {
 			"type": "text",
-			"properties": {"value": "Use all the capabilities of mobile SMS marketing\nSending SMS is easy to set up and use in Bitrix24 CRM\nSend messages directly from the deal, lead, client, invoice, or estimate card.", "size": "sm", "color": "base_70", "multiline": true}
+			"properties": {"value": "Use all the capabilities of mobile SMS marketing\nSending SMS is easy to set up and use in CRM Bitrix24\nSend messages directly from the deal, lead, client, invoice, or estimate card.", "size": "sm", "color": "base_70", "multiline": true}
 		},
 		"section1": {
 			"type": "section",
@@ -882,6 +882,5 @@ Calling the action will open the slider of the application that registered the i
 
 - [{#T}](../placement-bind.md)
 - [{#T}](../ui-interaction/index.md)
-- [{#T}](../ui-interaction/crm-card.md)
 - [{#T}](../../../settings/interactivity/index.md)
 - [{#T}](./detail-activity.md)

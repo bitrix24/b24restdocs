@@ -1,4 +1,4 @@
-# Upload a File to Chat im.v2.File.upload
+# Upload File to Chat im.v2.File.upload
 
 > Scope: [`im`](../../../../scopes/permissions.md)
 >
@@ -8,7 +8,7 @@ The method `im.v2.File.upload` uploads a file to the chat on behalf of the curre
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../../../_includes/required.md) %}
+{% include [Parameter Note](../../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -46,7 +46,7 @@ More details: [How to upload files](../../../../files/how-to-upload-files.md#how
 
 ## Code Examples
 
-{% include [Note on examples](../../../../../_includes/examples.md) %}
+{% include [Example Note](../../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -233,7 +233,7 @@ HTTP Code: **200**
 [`integer`](../../../../data-types.md) | Size of the file in bytes ||
 |#
 
-A complete description of all object fields can be found on the [Objects and Fields](../../entities.md) page.
+Complete description of all object fields can be found on the [Objects and Fields](../../entities.md) page.
 
 ## Error Handling
 
@@ -254,7 +254,7 @@ HTTP Status: **400**, **403**
 || **Code** | **Description** | **Value** ||
 || `FILE_EMPTY` | File name or content is empty | File name or content is not specified ||
 || `INVALID_CONTENT` | Invalid base64 content | Invalid Base64 ||
-|| `FOLDER_ERROR` | Failed to get chat folder | Failed to retrieve chat folder ||
+|| `FOLDER_ERROR` | Failed to get chat folder | Failed to get chat folder ||
 || `UPLOAD_FAILED` | File upload failed | File upload error ||
 || `SEND_FAILED` | Failed to send message | Message sending error ||
 || `FILE_TOO_LARGE` | File is too large | File size exceeds 100 MB ||
@@ -265,4 +265,5 @@ HTTP Status: **400**, **403**
 
 ## Continue Learning
 
-- [Get a Link to Download a File im.v2.File.download](./file-download.md)
+- [API imbot.v2 Change Log](../../change-log.md)
+- [{#T}](./file-download.md)

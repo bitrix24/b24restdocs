@@ -215,4 +215,4 @@ HTTP Status: **400**, **403**
 - [Update Sent Message imbot.message.update](./imbot-message-update.md)
 - [Set "Like" for the message imbot.message.like](./imbot-message-like.md)
 - [Event on Message Deletion ONIMBOTMESSAGEDELETE](./events/on-imbot-message-delete.md)
-- [EchoBot Example](https://dev.1c-bitrix.com/~b24bots)
+- [EchoBot Example](https://github.com/bitrix24com/bots)

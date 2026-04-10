@@ -2,6 +2,89 @@
 
 ## 2026
 
+### April 10, 2026
+
+- Updated the main page of the section [User Information](./api-reference/common/users/index.md). Corrected the introductory information, page structure, and links to methods
+- Updated the main page of the section [System Methods](./api-reference/common/system/index.md). Corrected the introductory information, relationships with other objects, and links to methods
+- Updated the main page of the section [Application Settings](./api-reference/common/settings/index.md). Corrected the introductory information, the context limitation note, and links to methods
+- Updated the main page of the section [CRM Automation Triggers](./api-reference/crm/automation/triggers/index.md). Added introductory information, as well as an overview of methods and relationships
+- Updated the main page of the section [Catalog Enumerations](./api-reference/catalog/enum/index.md)
+- Updated the main page of the section [Binding Price Types to Customer Groups](./api-reference/catalog/price-type/price-type-group/index.md)
+- Updated the main page of the section [Section Settings for Catalog Product Properties](./api-reference/catalog/product-property-section/index.md)
+- Updated the main page of the section [Custom Fields for Inventory Management Documents](./api-reference/catalog/userfield-document/index.md)
+- Updated the main page of the section [Template Object](./api-reference/landing/template/index.md)
+- Updated the main pages of the sections [Permissions](./api-reference/landing/rights/index.md), [Extended Model](./api-reference/landing/rights/extended-model/index.md), and [Role Model](./api-reference/landing/rights/role-model/index.md) in Sites and Stores
+- Updated the main page of the section [Special Site Pages](./api-reference/landing/page/special-pages/index.md)
+- Updated the main pages of the sections [Page Object](./api-reference/landing/page/index.md) and [Working with Pages](./api-reference/landing/page/methods/index.md)
+- Updated the page [Unbind Widget from Block](./api-reference/landing/embedding/landing-repo-unbind.md)
+- Updated the main page of the section [Push&Pull](./settings/interactivity/push-and-pull/index.md). Added introductory information, as well as an overview of methods and relationships
+- Updated the main page of the section [Custom Blocks](./api-reference/landing/user-blocks/index.md). Added introductory information, as well as an overview of methods and relationships
+- Updated the main page of the section [Custom Templates](./api-reference/landing/demos/index.md). Added introductory information, as well as an overview of methods and relationships
+- Updated the page [How to Prepare a Custom Template](./api-reference/landing/demos/introduction.md)
+- Updated the page [Template Localization](./api-reference/landing/demos/localization.md)
+- Updated the main page of the section [Data Stores](./api-reference/entity/entities/index.md). Added introductory information, as well as an overview of methods and relationships
+- Updated the main page of the section [Data Store Sections](./api-reference/entity/sections/index.md). Added introductory information, as well as an overview of methods and relationships
+- Updated the main page of the section [Data Store Items](./api-reference/entity/items/index.md). Added introductory information, as well as an overview of methods and relationships
+- Updated the main page of the section [Properties of Data Store Items](./api-reference/entity/items/properties/index.md). Added introductory information, as well as an overview of methods and relationships
+- Updated the main page of the section [Templates](./api-reference/document-generator/templates/index.md) in Document Generator. Added introductory information, as well as an overview of methods and relationships
+- Updated the main page of the section [Document Generator](./api-reference/document-generator/index.md). Added introductory information, as well as an overview of methods and relationships
+- Updated the main page of the section [Multifields](./api-reference/crm/auxiliary/multifield/index.md) in CRM. Added introductory information, as well as an overview of methods and relationships
+- Updated the main page of the section [Custom Fields](./api-reference/crm/universal/user-defined-fields/index.md) in CRM. Added introductory information, as well as an overview of methods and relationships
+- Updated the page [Overview of Events for Working with the WebRTC Client Call Card](./api-reference/widgets/ui-interaction/page-background-worker/events/index.md)
+- Added the page [Managing the WebRTC Client Call Card: Methods Overview](./api-reference/widgets/ui-interaction/page-background-worker/index.md)
+- Updated the main page of the section [Templates](./api-reference/tasks/template/index.md) in Tasks. Added introductory information, as well as an overview of methods and relationships
+- Updated the main page of the section [Duplicate Search Settings by Any Fields](./api-reference/crm/duplicates/volatile-type/index.md) in CRM. Added introductory information, as well as an overview of methods and relationships
+- Updated the main page of the section [Interactive Blocks](./api-reference/landing/block/interactive/index.md)
+- Updated the main page of the section [Open Channels](./api-reference/imopenlines/index.md)
+- Updated the main pages in the [Open Channels](./api-reference/imopenlines/openlines/index.md), [Operators](./api-reference/imopenlines/openlines/operators/index.md), and [Dialogs](./api-reference/imopenlines/openlines/sessions/index.md) subsections of Open Channels
+- Updated the main page of the section [BitrixGPT](./api-reference/ai/index.md)
+- Updated the main page of the section [Special Blocks](./api-reference/landing/block/special/index.md)
+- Added a page with a list of current changes in the Chat Bot API 2.0 [imbot.v2 API Changes](./api-reference/chat-bots/chat-bots-v2/change-log.md)
+- Added the method [imbot.v2.Revision.get](./api-reference/chat-bots/chat-bots-v2/imbot.v2/revision-get.md)
+- Updated the main page of the section [Widgets in Messenger](./api-reference/widgets/im/index.md) in Widgets. Added introductory information, as well as an overview of methods and relationships
+- Updated the page [Working with Site Types and Scopes](./api-reference/landing/types.md)
+- Updated the page [Template Fields](./api-reference/landing/template/fields.md)
+- Updated the page [Site Fields](./api-reference/landing/site/base-fields.md)
+- Updated the page [Additional Site Fields](./api-reference/landing/site/additional-fields.md)
+- Updated the main page of the section [Numerators](./api-reference/document-generator/numerators/index.md) in Document Generator. Added introductory information, as well as an overview of methods and relationships
+- Updated the main page of the section [Regions](./api-reference/document-generator/region/index.md) in Document Generator. Added introductory information, as well as an overview of methods and relationships
+- Updated the main page of the section [Roles](./api-reference/document-generator/role/index.md) in Document Generator. Added introductory information, as well as an overview of methods and relationships
+- Updated the main page of the section [Telephony](./api-reference/telephony/index.md)
+- Updated the main page of the section [SIP and Built-in Telephony](./api-reference/telephony/voximplant/index.md)
+- Updated the main page of the section [Line Management](./api-reference/telephony/voximplant/lines/index.md)
+- Updated the main page of the section [SIP Connection Management](./api-reference/telephony/voximplant/sip/index.md)
+- Updated the main page of the section [User Management](./api-reference/telephony/voximplant/users/index.md)
+- Updated documentation for methods [ai.engine.*](./api-reference/ai/index.md) in the BitrixGPT section
+- Updated the page [Additional Fields](./api-reference/landing/page/additional-fields.md)
+- Updated the page [Color Themes](./api-reference/landing/page/color-themes.md)
+- Updated the page [Menu Blocks](./api-reference/landing/block/special/menu.md)
+- Updated the page [Forms in Blocks](./api-reference/landing/block/special/crm-forms.md)
+- Updated the page [Maps in Blocks](./api-reference/landing/block/special/maps.md)
+- Updated the page [Navigation and Header](./api-reference/landing/block/special/navigation.md)
+- Updated the page [Search Forms](./api-reference/landing/block/special/search-forms.md)
+- Updated the page [Search Results](./api-reference/landing/block/special/search.md)
+- Updated the page [Manifest File](./api-reference/landing/block/manifest.md)
+- Updated the page [Attributes](./api-reference/landing/block/attributes.md)
+- Updated the page [Node Types](./api-reference/landing/block/node-types.md)
+- Updated the page [Extended Card Description](./api-reference/landing/block/extended-description.md)
+- Updated the page [Block Localization](./api-reference/landing/block/localization.md)
+- Added documentation for methods [crm.tracking.trace.*](./api-reference/crm/tracking/index.md) in the CRM End-to-End Analytics section
+- Updated the page [REST API Data Types and Parameter Formats](./api-reference/data-types.md)
+- Updated the page [Galleries](./api-reference/landing/block/interactive/gallery.md)
+- Updated the page [Countdown Timers](./api-reference/landing/block/interactive/timer.md)
+- Updated the page [Sliders](./api-reference/landing/block/interactive/sliders.md)
+- Updated documentation for methods in the [BX24 JS SDK](./sdk/bx24-js-sdk/additional-functions/index.md) section
+- Updated documentation for methods [landing.demos.*](./api-reference/landing/demos/index.md) in the Custom Templates section
+- Updated documentation for methods [landing.site.*](./api-reference/landing/embedding/knowledge-base/index.md) in the Knowledge Base Embedding Locations section
+- Updated documentation for methods [landing.repo.*](./api-reference/landing/user-blocks/index.md) in the Custom Blocks section
+- Updated documentation for methods [placement.*](./api-reference/widgets/placements.md) in the Widget Embedding Locations section
+- Updated documentation for methods [pull.application.*](./settings/interactivity/push-and-pull/index.md) in the Push&Pull section
+- Updated documentation for placements [LANDING_BLOCK_*](./api-reference/landing/embedding/block.md) and [LANDING_SETTINGS](./api-reference/landing/embedding/settings.md)
+- Updated documentation for the [CONTACT_CENTER](./api-reference/widgets/contact-center.md) placement
+- Updated the page [BX24 SDK Methods for Widgets](./api-reference/widgets/bx24-widget-methods.md)
+- Updated the page [CALL_CARD Call Card: Overview of Methods and Events](./api-reference/widgets/ui-interaction/call-card/index.md)
+- Updated the page [Interaction with UI: Methods Overview](./api-reference/widgets/ui-interaction/index.md)
+
 ### April 02, 2026
 
 - Consolidated updates in WebRTC Call Card docs: events [BackgroundCallCard*](./api-reference/widgets/ui-interaction/page-background-worker/events/index.md), Call Card interaction methods/events, and Page Background Worker call-card methods

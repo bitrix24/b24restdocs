@@ -4,7 +4,7 @@
 >
 > Who can subscribe: any user
 
-The `ONVOXIMPLANTCALLEND` event is triggered when a call ends and the call information is recorded in the history.
+The event `ONVOXIMPLANTCALLEND` is triggered when a call ends and information about the call is recorded in the history.
 
 {% note info "" %}
 
@@ -66,7 +66,7 @@ The structure is described [below](#data) ||
 || **ts**
 [`timestamp`](../../../data-types.md) | Date and time the event was sent from the [event queue](../../../events/index.md) ||
 || **auth**
-[`object`](../../../data-types.md) | Object containing the authorization parameters of the user on behalf of whom the event was triggered.
+[`object`](../../../data-types.md) | Object with authorization parameters of the user on behalf of whom the event was triggered.
 
 The structure is described [below](#auth) ||
 |#
@@ -97,7 +97,7 @@ Possible values:
 || **CALL_DURATION**
 [`integer`](../../../data-types.md) | Duration of the call in seconds ||
 || **CALL_START_DATE**
-[`datetime`](../../../data-types.md) | Date and time the call started in ISO-8601 format ||
+[`datetime`](../../../data-types.md) | Date and time the call started in ISO-8601 ||
 || **COST**
 [`double`](../../../data-types.md) | Cost of the call ||
 || **COST_CURRENCY**
@@ -134,4 +134,4 @@ Possible values:
 
 - [{#T}](./on-voximplant-call-init.md)
 - [{#T}](./on-voximplant-call-start.md)
-- [{#T}](../../voximplant-statistic-get.md)
+- [{#T}](../voximplant-statistic-get.md)

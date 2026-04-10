@@ -4,27 +4,27 @@
 >
 > Who can execute the method: a user with "modify settings" access permission for the page
 
-The method `landing.template.setLandingRef` sets the bindings of included areas for the page. It only works with page bindings and does not modify site bindings.
+The method `landing.template.setLandingRef` sets the bindings of included areas for the page. It only works with page bindings and does not alter site bindings.
 
-Included areas of the template are separate pages used as parts of the layout, such as the header, footer, or sidebar. For more details, refer to the article [Included Areas of the Template](./include-section.md).
+Included areas of the template are separate pages used as parts of the layout, such as the header, footer, or sidebar.
 
 ## Method Parameters
 
-{% include [Footnote on Required Parameters](../../../_includes/required.md) %}
+{% include [Footnote on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`](../../data-types.md) | The identifier of the page.
+[`integer`](../../data-types.md) | Identifier of the page.
 
-The page identifier can be obtained using the method [landing.landing.getList](../page/methods/landing-landing-get-list.md) ||
+The page identifier can be obtained using the [landing.landing.getList](../page/methods/landing-landing-get-list.md) method. ||
 || **data**
-[`object`](../../data-types.md) \| [`array`](../../data-types.md) | A set of bindings for the included areas of the page. [(detailed description)](#data)
+[`object`](../../data-types.md) \| [`array`](../../data-types.md) | Set of bindings for the included areas of the page. [(detailed description)](#data)
 
 Provide the complete final set of bindings for the page. The method will update existing bindings, add new ones, and remove those not present in `data`.
 
-If the parameter is not provided, or if an empty object `{}` or an empty array `[]` is passed, the method will remove all current bindings of included areas for the page ||
+If the parameter is not provided, an empty object `{}` or an empty array `[]` is passed, the method will remove all current bindings of included areas for the page. ||
 |#
 
 ### Parameter data {#data}
@@ -33,22 +33,22 @@ If the parameter is not provided, or if an empty object `{}` or an empty array `
 || **Name**
 `type` | **Description** ||
 || **<AREA_ID>**
-[`integer`](../../data-types.md) | The identifier of the page to be assigned to the corresponding included area.
+[`integer`](../../data-types.md) | Identifier of the page to be assigned to the corresponding included area.
 
-The key is the identifier of the template area, and the value is the page identifier.
+The key is the identifier of the template area, and the value is the identifier of the page.
 
-Area identifiers depend on the page template. They can be determined from the template, for example, through the method [landing.template.getlist](./landing-template-get-list.md) and the `CONTENT` field: in the markup, areas are designated as `#AREA_1#`, `#AREA_2#`, and so on.
+Area identifiers depend on the page template. They can be determined from the template, for example, through the [landing.template.getlist](./landing-template-get-list.md) method and the `CONTENT` field: in the markup, areas are denoted as `#AREA_1#`, `#AREA_2#`, and so on.
 
 In `data`, only the numeric part of such an identifier should be passed: `1`, `2`.
 
-If a key for a saved area is not provided in `data`, or if a value of `0`, an empty string, `null`, or a negative number is passed for it, the binding will be removed.
+If a key for a saved area is not provided in `data` or if a value of `0`, an empty string, `null`, or a negative number is passed for it, the binding will be removed.
 
-Ensure to provide correct identifiers for the area and the page. If such an area does not exist in the template or a page with such an identifier does not exist, the method will not report an error ||
+Ensure to provide correct identifiers for the area and page. If such an area does not exist in the template or a page with such an identifier does not exist, the method will not report an error. ||
 |#
 
 ## Code Examples
 
-{% include [Footnote on Examples](../../../_includes/examples.md) %}
+{% include [Footnote on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -210,8 +210,8 @@ HTTP Status: **200**
         "finish": 1774891242.107728,
         "duration": 1.1077280044555664,
         "processing": 0,
-        "date_start": "2026-03-30T20:20:41+02:00",
-        "date_finish": "2026-03-30T20:20:42+02:00",
+        "date_start": "2026-03-30T20:20:41+01:00",
+        "date_finish": "2026-03-30T20:20:42+01:00",
         "operating_reset_at": 1774891842,
         "operating": 0
     }
@@ -224,13 +224,13 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../data-types.md) | The result of the call.
+[`boolean`](../../data-types.md) | Result of the call.
 
-The method returns `true` if the request was processed without error. If the same bindings are already saved for the page, the method will return `true`.
+The method returns `true` if the request is processed without error. If the same bindings are already saved for the page, the method will return `true`.
 
-If the user does not have "modify settings" access permission for the page, the changes will not be applied. In this case, the method will return `true` ||
+If the user does not have "modify settings" access permission for the page, the changes will not be applied. In this case, the method will return `true`. ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the request execution time ||
+[`time`](../../data-types.md#time) | Information about the request execution time. ||
 |#
 
 ## Error Handling
@@ -244,18 +244,18 @@ HTTP Status: **400**
 }
 ```
 
-{% include notitle [Error Handling](../../../_includes/error-info.md) %}
+{% include notitle [error handling](../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
 || **Code** | **Description** ||
-|| `MISSING_PARAMS` | Required parameter `id` not provided ||
-|| `ENTITY_NOT_FOUND` | Page not found or unavailable ||
-|| `ACCESS_DENIED` | Insufficient permissions to modify page settings ||
+|| `MISSING_PARAMS` | Required parameter `id` is missing. ||
+|| `ENTITY_NOT_FOUND` | Page not found or unavailable. ||
+|| `ACCESS_DENIED` | Insufficient rights to modify page settings. ||
 |#
 
-{% include [System Errors](../../../_includes/system-errors.md) %}
+{% include [system errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

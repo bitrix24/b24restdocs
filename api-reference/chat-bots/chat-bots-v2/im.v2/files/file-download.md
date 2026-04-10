@@ -1,10 +1,10 @@
-# Get a Link to Download a File im.v2.File.download
+# Get Download Link for File im.v2.File.download
 
 > Scope: [`im`](../../../../scopes/permissions.md)
 >
 > Who can execute the method: authorized user
 
-The method `im.v2.File.download` returns a link to download a file from a chat.
+The method `im.v2.File.download` returns a link to download a file from the chat.
 
 ## Method Parameters
 
@@ -16,7 +16,7 @@ The method `im.v2.File.download` returns a link to download a file from a chat.
 || **dialogId***
 [`string`](../../../../data-types.md) | ID of the dialog. For group chats — `chat{chatId}`, for personal chats — `{userId}` ||
 || **fileId***
-[`integer`](../../../../data-types.md) | ID of the file on Drive. Can be obtained from the response of the [im.v2.File.upload](./file-upload.md) method ||
+[`integer`](../../../../data-types.md) | ID of the file on Drive. Can be obtained from the response of the method [im.v2.File.upload](./file-upload.md) ||
 |#
 
 ## Code Examples
@@ -156,7 +156,7 @@ HTTP Code: **200**
 || **result**
 [`object`](../../../../data-types.md) | Result of the operation ||
 || **result.downloadUrl**
-[`string`](../../../../data-types.md) | A one-time link to download the file. The link contains an authorization token, reuse is not guaranteed ||
+[`string`](../../../../data-types.md) | One-time link to download the file. The link contains an authorization token, reuse is not guaranteed ||
 || **time**
 [`time`](../../../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -178,7 +178,7 @@ HTTP Status: **400**, **403**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `FILE_NOT_FOUND` | File not found | The file was not found in the specified chat ||
+|| `FILE_NOT_FOUND` | File not found | File not found in the specified chat ||
 || `FILE_ACCESS_ERROR` | File access error | No permission to download the file — the file does not belong to the specified chat ||
 || `ACCESS_DENIED` | Access denied | No access to the chat ||
 |#
@@ -187,4 +187,5 @@ HTTP Status: **400**, **403**
 
 ## Continue Learning
 
-- [Upload a File to Chat im.v2.File.upload](./file-upload.md)
+- [API Change Log for imbot.v2](../../change-log.md)
+- [{#T}](./file-upload.md)

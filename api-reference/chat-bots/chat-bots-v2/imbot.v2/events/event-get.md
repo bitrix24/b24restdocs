@@ -1,4 +1,4 @@
-# Get Bot Events imbot.v2.Event.get
+# Get Events from imbot.v2.Event.get
 
 > Scope: [`imbot`](../../../../scopes/permissions.md)
 >
@@ -10,7 +10,7 @@ The method confirms the receipt of events with IDs less than the provided `offse
 
 {% note info "" %}
 
-Only one application can receive events for a specific bot — the one that registered it. If you need multiple independent agents, register a separate bot for each.
+Only one application—the one that registered the bot—can receive events for a specific bot. If multiple independent agents are needed, register a separate bot for each.
 
 {% endnote %}
 
@@ -19,23 +19,23 @@ Only one application can receive events for a specific bot — the one that regi
 This method is suitable if:
 
 - the bot does not have a public URL for incoming HTTP requests
-- events should be fetched by a single background agent (worker) on a schedule
-- explicit control of the event queue is needed through `offset` and `nextOffset`
-- you need to receive bot events `ONIMBOTV2*` and user events `ONIMV2*` in a single stream using `withUserEvents`
+- events need to be fetched by a single background agent (worker) on a schedule
+- explicit control of the event queue is required through `offset` and `nextOffset`
+- bot events `ONIMBOTV2*` and user events `ONIMV2*` need to be received in a single stream via `withUserEvents`
 
 ## Alternative: Webhook Mode
 
 Instead of polling, you can use webhook mode:
 
-- in [imbot.v2.Bot.register](../bots/bot-register.md), specify `fields.eventMode = webhook`
-- set `fields.webhookUrl` to receive incoming events
-- [example of a webhook handler](../../index.md#webhook)
+- In [imbot.v2.Bot.register](../bots/bot-register.md), specify `fields.eventMode = webhook`
+- Set `fields.webhookUrl` to receive incoming events
+- [Example of a webhook handler](../../index.md#webhook)
 
 Step-by-step setup for both options: [Quick Start](../../quick-start.md).
 
 ## Method Parameters
 
-{% include [Note on Parameters](../../../../../_includes/required.md) %}
+{% include [Parameter Note](../../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -59,9 +59,9 @@ Pass the same botToken that was specified during chat bot registration ||
 When `withUserEvents: true`, the method returns both bot events `ONIMBOTV2*` and user events `ONIMV2*` in a single response.
 
 Requirements:
-- the application must have the scope [`im`](../../../../scopes/permissions.md) in addition to `imbot`
-- the current user must be subscribed via [im.v2.Event.subscribe](../../im.v2/events/event-subscribe.md)
-- `userId` is determined from the authorization — specifying another user's ID is not possible
+- The application must have the [`im`](../../../../scopes/permissions.md) scope in addition to `imbot`
+- The current user must be subscribed via [im.v2.Event.subscribe](../../im.v2/events/event-subscribe.md)
+- `userId` is determined from the authorization—specifying someone else's is not possible
 
 One `offset` confirms both bot events and user events simultaneously.
 
@@ -181,7 +181,7 @@ One `offset` confirms both bot events and user events simultaneously.
 
 ## Code Examples
 
-{% include [Note on Examples](../../../../../_includes/examples.md) %}
+{% include [Example Note](../../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -304,7 +304,7 @@ HTTP Code: **200**
             {
                 "eventId": 1001,
                 "type": "ONIMBOTV2MESSAGEADD",
-                "date": "2025-01-15T10:30:00+02:00",
+                "date": "2025-01-15T10:30:00+01:00",
                 "data": {}
             }
         ],
@@ -316,8 +316,8 @@ HTTP Code: **200**
         "finish": 1728626400.234,
         "duration": 0.111,
         "processing": 0.045,
-        "date_start": "2024-10-11T10:00:00+02:00",
-        "date_finish": "2024-10-11T10:00:00+02:00"
+        "date_start": "2024-10-11T10:00:00+01:00",
+        "date_finish": "2024-10-11T10:00:00+01:00"
     }
 }
 ```
@@ -334,11 +334,11 @@ HTTP Code: **200**
 || **result.events[].eventId**
 [`integer`](../../../../data-types.md) | Event ID. Pass in the next call as `offset` for confirmation ||
 || **result.events[].type**
-[`string`](../../../../data-types.md) | Type of event. List of types is described [below](#event-types) ||
+[`string`](../../../../data-types.md) | Type of event. List of types described [below](#event-types) ||
 || **result.events[].date**
 [`datetime`](../../../../data-types.md) | Date and time of the event ||
 || **result.events[].data**
-[`object`](../../../../data-types.md) | Event data. The format depends on the type of event: [event descriptions](./events.md) ||
+[`object`](../../../../data-types.md) | Event data. Format depends on the event type: [event descriptions](./events.md) ||
 || **result.nextOffset**
 [`integer`](../../../../data-types.md) | Value for the next call `offset`. Confirms already processed events and shifts the queue cursor ||
 || **result.hasMore**
@@ -361,9 +361,9 @@ HTTP Code: **200**
 || `ONIMBOTV2REACTIONCHANGE` | Reaction changed ||
 |#
 
-Events are addressed to a specific bot — either by mentioning `@bot` or in a private chat. For bots of type `personal` and `supervisor`, all events in chats where the bot is present are delivered.
+Events are addressed to a specific bot—by mentioning `@bot` or in a private chat. For bots of type `personal` and `supervisor`, all events in chats where the bot is present are delivered.
 
-Detailed description of the data format for each event: [Event Formats for imbot.v2](./events.md).
+Detailed description of the data format for each event: [{#T}](./events.md).
 
 ## Error Handling
 
@@ -386,7 +386,7 @@ HTTP Status: **400**, **403**
 || `BOT_ID_REQUIRED` | Bot ID is required | `botId` not specified ||
 || `BOT_NOT_FOUND` | Bot not found | Bot not found ||
 || `BOT_OWNERSHIP_ERROR` | Bot is registered by another application | Bot registered by another application ||
-|| `SCOPE_ERROR` | Scope error | Missing scope `im` — required when using `withUserEvents: true` ||
+|| `SCOPE_ERROR` | Scope error | Missing `im` scope—required when using `withUserEvents: true` ||
 || `AUTH_ERROR` | Auth error | Unable to determine the current user ||
 || `USER_NOT_SUBSCRIBED` | User not subscribed | User not subscribed to events via [im.v2.Event.subscribe](../../im.v2/events/event-subscribe.md) ||
 |#
@@ -395,10 +395,11 @@ HTTP Status: **400**, **403**
 
 ## Continue Learning
 
-- [Chatbots 2.0: Quick Start](../../quick-start.md)
-- [Chatbots 2.0: Overview of Methods](../../index.md)
-- [Event Formats for imbot.v2](./events.md)
-- [Register a Bot imbot.v2.Bot.register](../bots/bot-register.md)
-- [Send Message imbot.v2.Chat.Message.send](../messages/chat-message-send.md)
-- [Get User Events im.v2.Event.get](../../im.v2/events/event-get.md)
-- [Subscribe to Events im.v2.Event.subscribe](../../im.v2/events/event-subscribe.md)
+- [API Change Log for imbot.v2](../../change-log.md)
+- [{#T}](../../quick-start.md)
+- [{#T}](../../index.md)
+- [{#T}](./events.md)
+- [{#T}](../bots/bot-register.md)
+- [{#T}](../messages/chat-message-send.md)
+- [{#T}](../../im.v2/events/event-get.md)
+- [{#T}](../../im.v2/events/event-subscribe.md)

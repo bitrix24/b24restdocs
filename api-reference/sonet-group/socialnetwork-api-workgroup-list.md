@@ -23,11 +23,11 @@ An additional prefix can be specified for the key to clarify the filter's behavi
 - `>` — greater than
 - `<=` — less than or equal to
 - `<` — less than
-- `%` — LIKE, substring search. The `%` symbol should not be included in the filter value
-- `=%` — LIKE, substring search. The `%` symbol should be included in the value
+- `%` — LIKE, substring search. The `%` symbol in the filter value does not need to be passed
+- `=%` — LIKE, substring search. The `%` symbol needs to be passed in the value
 - `%=` — LIKE (similar to `=%`)
-- `!%` — NOT LIKE, substring search. The `%` symbol should not be included in the filter value
-- `!=%` — NOT LIKE, substring search. The `%` symbol should be included in the value
+- `!%` — NOT LIKE, substring search. The `%` symbol in the filter value does not need to be passed
+- `!=%` — NOT LIKE, substring search. The `%` symbol needs to be passed in the value
 - `!%=` — NOT LIKE (similar to `!=%`)
 - `=` — equal, exact match (used by default)
 - `!=` — not equal
@@ -40,11 +40,11 @@ The method also always adds a filter by site:
 - for extranet users, the extranet site is used
 - for others — the site from `params[siteId]` or the current account site ||
 || **select**
-[`array`](../data-types.md) | An array containing the list of fields to be selected.
+[`array`](../data-types.md) | An array containing the list of fields to select.
 
 See below for the [list of available fields for selection](#selectable).
 
-If the parameter is not passed or is empty, only `ID` is selected ||
+If the parameter is not passed or is empty, only `ID` is selected. ||
 || **order**
 [`object`](../data-types.md) | A sorting object in the format `{"field_1": "order_1", ..., "field_N": "order_N"}`.
 
@@ -65,7 +65,7 @@ To get the second page, pass `50`; for the third — `100`, and so on.
 
 Formula: `start = (N - 1) * 50`, where `N` is the page number.
 
-If `-1` is passed, the response will not include the `total` field ||
+If `-1` is passed, the response will not include the `total` field. ||
 |#
 
 ### Available Fields for Filtering {#filterable}
@@ -127,7 +127,7 @@ If `-1` is passed, the response will not include the `total` field ||
 || **PROJECT**
 [`string`](../data-types.md) | Project status ||
 || **LANDING**
-[`string`](../data-types.md) | Group publication status ||
+[`string`](../data-types.md) | Group for publication status ||
 || **DATE_CREATE**
 [`datetime`](../data-types.md) | Creation date ||
 || **DATE_UPDATE**
@@ -141,11 +141,11 @@ If `-1` is passed, the response will not include the `total` field ||
 || **OWNER_ID**
 [`integer`](../data-types.md) | Owner identifier ||
 || **NUMBER_OF_MEMBERS**
-[`integer`](../data-types.md) | Number of members ||
+[`integer`](../data-types.md) | Number of participants ||
 || **NUMBER_OF_MODERATORS**
 [`integer`](../data-types.md) | Number of moderators ||
 || **INITIATE_PERMS**
-[`string`](../data-types.md) | Permissions for inviting members ||
+[`string`](../data-types.md) | Permissions to invite participants ||
 || **PROJECT_DATE_START**
 [`datetime`](../data-types.md) | Project start date ||
 || **PROJECT_DATE_FINISH**
@@ -175,11 +175,11 @@ If `-1` is passed, the response will not include the `total` field ||
 Possible values:
 - `Y` — disable permission check if the current user is an administrator
 
-If `Y` is passed by a non-administrator, the value is ignored ||
+If `Y` is passed by a non-administrator, the value is ignored. ||
 || **siteId**
 [`string`](../data-types.md) | Identifier of the site to be used in the automatic filter `SITE_ID` for regular users.
 
-For extranet users, this value is ignored: the method always uses the extranet site ||
+For extranet users, this value is ignored: the method always uses the extranet site. ||
 || **mode**
 [`string`](../data-types.md) | Response mode.
 
@@ -197,7 +197,7 @@ The `additionalData` field has the structure:
 || **mandatoryFeatures**
 [`array`](../data-types.md) | List of tool codes that should always be included in `additionalData` in `mobile` mode ||
 || **shouldSelectDialogId**
-[`string`](../data-types.md) | Whether to add the chat identifier `dialogId` field to the list item.
+[`string`](../data-types.md) | Whether to add a field with the chat identifier `dialogId` to the list item.
 
 Possible values:
 - `Y` — add `dialogId`
@@ -254,7 +254,7 @@ Default — `N` ||
         console.error('Request failed', error);
     }
 
-    // fetchListMethod: Selects data in parts using an iterator. Use for large volumes of data for efficient memory consumption.
+    // fetchListMethod: Retrieves data in parts using an iterator. Use for large volumes of data for efficient memory consumption.
     try {
         const generator = $b24.fetchListMethod(
             'socialnetwork.api.workgroup.list',
@@ -421,13 +421,13 @@ HTTP Status: **200**
 
 The structure of the object depends on the fields passed in `select` and the parameters in `params`.
 
-If no groups are found by the filter, `workgroups` will return an empty array ||
+If no groups are found by the filter, `workgroups` will return an empty array. ||
 || **next**
-[`integer`](../data-types.md) | Offset for the next page. This field is returned if there are more records ||
+[`integer`](../data-types.md) | Offset for the next page. The field is returned if there are more records. ||
 || **total**
-[`integer`](../data-types.md) | Total number of records. This field is not returned if the request is made with `start = -1` ||
+[`integer`](../data-types.md) | Total number of records. The field is not returned if the request is executed with `start = -1`. ||
 || **time**
-[`time`](../data-types.md#time) | Information about the request execution time ||
+[`time`](../data-types.md#time) | Information about the execution time of the request. ||
 |#
 
 ## Error Handling

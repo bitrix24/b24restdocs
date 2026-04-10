@@ -1,4 +1,4 @@
-# Dropdown Menu Item Above the Task List TASK_GROUP_LIST_TOOLBAR
+# Dropdown Menu Item Above the TASK_GROUP_LIST_TOOLBAR Task List
 
 > Scope: [`intranet`](../../scopes/permissions.md)
 
@@ -12,16 +12,16 @@ The widget will not be displayed in the interface until the application installa
 
 {% endnote %}
 
-## Where the widget is embedded
+## Where the Widget is Embedded
 
 #| 
 || **Widget Code** | **Location** ||
 || `TASK_GROUP_LIST_TOOLBAR` | Dropdown menu item above the task list ||
 |#
 
-## What the handler receives
+## What the Handler Receives
 
-Data is transmitted as a POST request {.b24-info}
+Data is sent as a POST request {.b24-info}
 
 ```php
 Array
@@ -40,15 +40,15 @@ Array
 )
 ```
 
-{% include [Note on required parameters](../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../_includes/required.md) %}
 
-{% include notitle [description of standard data](../_includes/widget_data.md) %}
+{% include notitle [Description of Standard Data](../_includes/widget_data.md) %}
 
 ### PLACEMENT_OPTIONS
 
 The value of `PLACEMENT_OPTIONS` is a JSON string containing an array of one or more keys.
 
-{% include [Note on required parameters](../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../_includes/required.md) %}
 
 #| 
 || **Parameter** | **Description** ||
@@ -60,11 +60,9 @@ It can be used to retrieve additional information using the [sonet.group.get](..
 || 
 |#
 
-## Continue Exploring
+## Continue Your Exploration
 
 - [{#T}](../placement-bind.md)
 - [{#T}](../ui-interaction/index.md)
-- [{#T}](../ui-interaction/crm-card.md)
 - [{#T}](../../../settings/interactivity/index.md)
-- [{#T}](../open-application.md)
-- [{#T}](../open-path.md)
+- [{#T}](../bx24-widget-methods.md)

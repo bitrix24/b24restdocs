@@ -1,11 +1,11 @@
-title: Interactive Blocks
-href: index.md
-items:
-  - name: Introduction
-    href: index.md
-  - name: Galleries
-    href: gallery.md
-  - name: Sliders
-    href: sliders.md
-  - name: Countdown Timers
-    href: timer.md
+title: Interactive Blocks  
+href: index.md  
+items:  
+  - name: Overview of Blocks  
+    href: index.md  
+  - name: Galleries  
+    href: gallery.md  
+  - name: Sliders  
+    href: sliders.md  
+  - name: Countdown Timers  
+    href: timer.md  

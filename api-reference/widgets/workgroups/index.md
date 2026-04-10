@@ -1,9 +1,8 @@
-# Main Dropdown Menu Item of the Project SONET_GROUP_DETAIL_TAB
+# Main Dropdown Menu Item for the Project SONET_GROUP_DETAIL_TAB
 
 > Scope: [`workgroups`](../../scopes/permissions.md)
 
 You can add your own item to the main dropdown menu of the project.
-
 The specific placement code for the widget is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
 
 {% note info "" %}
@@ -14,9 +13,9 @@ The widget will not be displayed in the interface until the application installa
 
 ## Where the Widget is Embedded
 
-#|
+#| 
 || **Widget Code** | **Location** ||
-|| `SONET_GROUP_DETAIL_TAB` | Main Dropdown Menu Item of the Project ||
+|| `SONET_GROUP_DETAIL_TAB` | Main dropdown menu item of the project ||
 |#
 
 ## What the Handler Receives
@@ -24,7 +23,6 @@ The widget will not be displayed in the interface until the application installa
 Data is transmitted as a POST request {.b24-info}
 
 ```php
-
 Array
 (
     [DOMAIN] => xxx.bitrix24.com
@@ -39,7 +37,6 @@ Array
     [PLACEMENT] => SONET_GROUP_DETAIL_TAB
     [PLACEMENT_OPTIONS] => {"GROUP_ID":"10"}
 )
-
 ```
 
 {% include [Note on Required Parameters](../../../_includes/required.md) %}
@@ -52,21 +49,19 @@ The value of `PLACEMENT_OPTIONS` is a JSON string containing an array of one or 
 
 {% include [Note on Required Parameters](../../../_includes/required.md) %}
 
-#|
+#| 
 || **Parameter** | **Description** ||
-|| **GROUP_ID***
-[`string`](../../data-types.md) | Identifier of the workgroup/project in which the widget was opened.
+|| **GROUP_ID*** 
+[`string`](../../data-types.md) | Identifier of the workgroup/project where the widget was opened.
 
 It can be used to retrieve additional information using the [sonet.group.get](../../sonet-group/sonet-group-get.md) method.
 
-||
+|| 
 |#
 
 ## Continue Exploring
 
 - [{#T}](../placement-bind.md)
 - [{#T}](../ui-interaction/index.md)
-- [{#T}](../ui-interaction/crm-card.md)
 - [{#T}](../../../settings/interactivity/index.md)
-- [{#T}](../open-application.md)
-- [{#T}](../open-path.md)
+- [{#T}](../bx24-widget-methods.md)

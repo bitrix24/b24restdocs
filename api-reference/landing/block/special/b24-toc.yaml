@@ -1,15 +1,17 @@
-title: Special Blocks
-href: index.md
-items:
-  - name: Menu Blocks
-    href: index.md
-  - name: Cards in Blocks
-    href: maps.md
-  - name: Navigation and Header
-    href: navigation.md
-  - name: Search Results
-    href: search.md
-  - name: Search Forms
-    href: search-forms.md
-  - name: Forms in Blocks
-    href: crm-forms.md
+title: Special Blocks  
+href: index.md  
+items:  
+  - name: Overview of Blocks  
+    href: index.md  
+  - name: Menu Blocks  
+    href: menu.md  
+  - name: Maps in Blocks  
+    href: maps.md  
+  - name: Navigation and Header  
+    href: navigation.md  
+  - name: Search Results  
+    href: search.md  
+  - name: Search Forms  
+    href: search-forms.md  
+  - name: Forms in Blocks  
+    href: crm-forms.md  

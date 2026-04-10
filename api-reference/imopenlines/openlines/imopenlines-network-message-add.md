@@ -4,12 +4,12 @@
 >
 > Who can execute the method: any user
 
-The method `imopenlines.network.message.add` sends a message to a user on behalf of an open channel connected in Bitrix24 Network.
+The method `imopenlines.network.message.add` sends a message to a user on behalf of the open channel connected in Bitrix24 Network.
 
-Method limitations:
+Method operation limitations:
 1. The method is unavailable during session authorization. It returns the error `WRONG_AUTH_TYPE` for session authorization.
-2. A message can be sent no more than once per user within a week. There are no limits for accounts with a Partner (NFR) license.
-3. The keyboard can only be used for formatting a button link to an external site.
+2. A message can be sent no more than once per user within one week. There are no limits for accounts with a Partner (NFR) license.
+3. The keyboard can only be used for formatting the link button to an external site.
 
 ## Method Parameters
 
@@ -23,9 +23,9 @@ Method limitations:
 || **USER_ID***
 [`integer`](../../data-types.md) | Identifier of the message recipient, for example `2` ||
 || **MESSAGE***
-[`string`](../../data-types.md) | Message text. 
+[`string`](../../data-types.md) | Text of the message. 
 
-How to format text is described in the article [formatting](../../chats/messages/formatting.md) ||
+How to format text — in the article [formatting](../../chats/messages/formatting.md) ||
 || **ATTACH**
 [`object`](../../data-types.md) | Attachment.
 
@@ -33,7 +33,7 @@ The format of the attachment is described in the article [How to use attachments
 || **KEYBOARD**
 [`object`](../../data-types.md) | Keyboard.
 
-How to create keyboards is described in the article [Working with keyboards](../../chats/messages/keyboards.md) ||
+How to create keyboards — in the article [Working with keyboards](../../chats/messages/keyboards.md) ||
 || **URL_PREVIEW**
 [`char`](../../data-types.md) | Link preview. Enabled `Y` by default. 
 

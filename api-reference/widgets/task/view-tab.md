@@ -1,12 +1,12 @@
-# Tab in the task card TASK_VIEW_TAB
+# Tab in the TASK_VIEW_TAB Task Card
 
 > Scope: [`task`](../../scopes/permissions.md)
 
-You can add your item in the right panel of the old task detail form.
+You can add your own tab in the task card.
 
-Starting from version `tasks 25.700.0`, a [new task card](../../tasks/tasks-new.md) has been released. The location of the `TASK_VIEW_TAB` item is no longer present in the new card. All widgets within the card are displayed in a single Applications block.
+Starting from version `tasks 25.700.0`, a [new task card](../../tasks/tasks-new.md) has been released. The `TASK_VIEW_TAB` item is not present in the new card. All integrations within the card are displayed in a single "Applications" block.
 
-Previously registered `TASK_VIEW_TAB` items continue to function and are displayed in the Applications block.
+Previously registered `TASK_VIEW_TAB` items continue to function and are displayed in the "Applications" block.
 
 ![Embedded applications](_images/widget.png)
 
@@ -14,23 +14,22 @@ The specific placement code for the widget is specified in the `PLACEMENT` param
 
 {% note info "" %}
 
-The widget will not be displayed in the interface until the application installation is complete. [Check the application installation](../../../settings/app-installation/installation-finish.md)
+The integration will not be displayed in the interface until the application installation is complete. [Check the application installation](../../../settings/app-installation/installation-finish.md)
 
 {% endnote %}
 
 ## Where the widget is embedded
 
-#|
-|| **Widget code** | **Location** ||
+#| 
+|| **Widget Code** | **Location** ||
 || `TASK_VIEW_TAB` | Tab in the task card ||
 |#
 
 ## What the handler receives
 
-Data is sent as a POST request {.b24-info}
+Data is transmitted as a POST request {.b24-info}
 
 ```php
-
 Array
 (
     [DOMAIN] => xxx.bitrix24.com
@@ -45,7 +44,6 @@ Array
     [PLACEMENT] => TASK_VIEW_TAB
     [PLACEMENT_OPTIONS] => {"taskId":"286"}
 )
-
 ```
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
@@ -58,21 +56,19 @@ The value of `PLACEMENT_OPTIONS` is a JSON string containing an array of one or 
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
 
-#|
+#| 
 || **Parameter** | **Description** ||
-|| **taskId***
+|| **taskId*** 
 [`string`](../../data-types.md) | The identifier of the task for which the widget was opened.
 
 It can be used to retrieve additional information using the [tasks.task.get](../../tasks/tasks-task-get.md) method.
 
-||
+|| 
 |#
 
 ## Continue exploring
 
 - [{#T}](../placement-bind.md)
 - [{#T}](../ui-interaction/index.md)
-- [{#T}](../ui-interaction/crm-card.md)
 - [{#T}](../../../settings/interactivity/index.md)
-- [{#T}](../open-application.md)
-- [{#T}](../open-path.md)
+- [{#T}](../bx24-widget-methods.md)

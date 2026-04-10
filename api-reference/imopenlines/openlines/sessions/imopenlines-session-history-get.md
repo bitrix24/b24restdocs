@@ -8,11 +8,11 @@ The method `imopenlines.session.history.get` returns the message history of an o
 
 ## Method Parameters
 
-{% include [Footnote on parameters](../../../../_includes/required.md) %}
+{% include [Parameter Note](../../../../_includes/required.md) %}
 
 #|
 || **Name**
-`Type` | **Description** ||
+`type` | **Description** ||
 || **SESSION_ID**
 [`integer`](../../../data-types.md) | Identifier of the open line session.
 
@@ -26,13 +26,13 @@ The identifier can be obtained using the [imopenlines.dialog.get](./imopenlines-
 The method accepts one of the parameters: `SESSION_ID` or `CHAT_ID`.
 
 - If `SESSION_ID` is provided, the method operates based on it.
-- If `SESSION_ID` is not provided, the method attempts to determine the last session by `CHAT_ID` sorted by `ID DESC`.
+- If `SESSION_ID` is not provided, the method attempts to determine the last session by `CHAT_ID` with sorting `ID DESC`.
 
 In practice, for stable results, it is recommended to provide `SESSION_ID`.
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../../_includes/examples.md) %}
+{% include [Example Note](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -161,7 +161,7 @@ HTTP Status: **200**
                 "chatid": "1763",
                 "senderid": "103",
                 "recipientid": "chat1763",
-                "date": "2026-03-11T13:12:46+02:00",
+                "date": "2026-03-11T13:12:46+01:00",
                 "text": "Open the task card and click Observers",
                 "textlegacy": "Open the task card and click Observers",
                 "params": {
@@ -174,7 +174,7 @@ HTTP Status: **200**
                 "chatid": "1763",
                 "senderid": "0",
                 "recipientid": "chat1763",
-                "date": "2026-03-11T13:09:25+02:00",
+                "date": "2026-03-11T13:09:25+01:00",
                 "text": "[b]A new lead has been created[/b]",
                 "textlegacy": "<b>A new lead has been created</b>",
                 "params": {
@@ -185,7 +185,7 @@ HTTP Status: **200**
                                 {
                                     "link": [
                                         {
-                                            "name": "Filling out the CRM form \"Contact Information Form for Open Lines\"",
+                                            "name": "Filling out the CRM form \"Contact Data Form for Open Lines\"",
                                             "link": "/crm/lead/details/1205/"
                                         }
                                     ]
@@ -245,7 +245,7 @@ HTTP Status: **200**
                 "externalAuthId": "socservices",
                 "status": "online",
                 "idle": false,
-                "lastActivityDate": "2026-03-11T13:14:35+02:00",
+                "lastActivityDate": "2026-03-11T13:14:35+01:00",
                 "mobileLastDate": false,
                 "desktopLastDate": false,
                 "departments": [1, 7],
@@ -293,7 +293,7 @@ HTTP Status: **200**
                     "587": false
                 },
                 "managerList": [103],
-                "dateCreate": "2026-03-11T12:08:52+02:00",
+                "dateCreate": "2026-03-11T12:08:52+01:00",
                 "type": "lines",
                 "entityLink": {
                     "type": "LINES",
@@ -327,7 +327,7 @@ HTTP Status: **200**
             "5437": {
                 "id": 5437,
                 "chatid": 1763,
-                "date": "2026-03-11T13:12:46+02:00",
+                "date": "2026-03-11T13:12:46+01:00",
                 "type": "image",
                 "name": "2311.png",
                 "extension": "png",
@@ -370,8 +370,8 @@ HTTP Status: **200**
         "finish": 1773224138.143344,
         "duration": 0.14334392547607422,
         "processing": 0,
-        "date_start": "2026-03-11T13:15:38+02:00",
-        "date_finish": "2026-03-11T13:15:38+02:00",
+        "date_start": "2026-03-11T13:15:38+01:00",
+        "date_finish": "2026-03-11T13:15:38+01:00",
         "operating_reset_at": 1773224738,
         "operating": 0
     }
@@ -382,7 +382,7 @@ HTTP Status: **200**
 
 #|
 || **Name**
-`Type` | **Description** ||
+`type` | **Description** ||
 || **result**
 [`object`](../../../data-types.md) | Root object of the response.
 
@@ -395,7 +395,7 @@ The structure of the object is described in detail [below](#result) ||
 
 #|
 || **Name**
-`Type` | **Description** ||
+`type` | **Description** ||
 || **chatId**
 [`integer`](../../../data-types.md) | Identifier of the chat ||
 || **canJoin**
@@ -407,7 +407,7 @@ The structure of the object is described in detail [below](#result) ||
 || **sessionVoteHead**
 [`integer`](../../../data-types.md) | Rating given by the supervisor ||
 || **sessionCommentHead**
-[`string`](../../../data-types.md) | Comment from the supervisor on the rating or `null` ||
+[`string`](../../../data-types.md) | Supervisor's comment on the rating or `null` ||
 || **userId**
 [`string`](../../../data-types.md) | Identifier of the chat in the format `chat<ID>` ||
 || **message**
@@ -454,7 +454,7 @@ The structure of the files object is described in detail [below](#files) ||
 
 #|
 || **Name**
-`Type` | **Description** ||
+`type` | **Description** ||
 || **<messageId>**
 [`object`](../../../data-types.md) | Message object.
 
@@ -465,7 +465,7 @@ The structure of the message object is described in detail [below](#message-item
 
 #|
 || **Name**
-`Type` | **Description** ||
+`type` | **Description** ||
 || **id**
 [`string`](../../../data-types.md) | Identifier of the message ||
 || **chatid**
@@ -488,7 +488,7 @@ The structure of the message object is described in detail [below](#message-item
 
 #|
 || **Name**
-`Type` | **Description** ||
+`type` | **Description** ||
 || **chat\<chatId\>**
 [`array`](../../../data-types.md) | Array of message identifiers related to the chat ||
 |#
@@ -497,7 +497,7 @@ The structure of the message object is described in detail [below](#message-item
 
 #|
 || **Name**
-`Type` | **Description** ||
+`type` | **Description** ||
 || **\<userId\>**
 [`object`](../../../data-types.md) | User data.
 
@@ -508,15 +508,15 @@ The structure of the user object is described in detail [below](#user-item) ||
 
 #|
 || **Name**
-`Type` | **Description** ||
+`type` | **Description** ||
 || **id**
 [`string`](../../../data-types.md) | Identifier of the user ||
 || **name**
-[`string`](../../../data-types.md) | Full name of the user ||
+[`string`](../../../data-types.md) | User's full name ||
 || **firstName**
-[`string`](../../../data-types.md) | First name of the user ||
+[`string`](../../../data-types.md) | User's first name ||
 || **lastName**
-[`string`](../../../data-types.md) | Last name of the user ||
+[`string`](../../../data-types.md) | User's last name ||
 || **workPosition**
 [`string`](../../../data-types.md) | Position or `null` ||
 || **avatar**
@@ -524,7 +524,7 @@ The structure of the user object is described in detail [below](#user-item) ||
 || **avatarId**
 [`integer`](../../../data-types.md) | Identifier of the avatar file or `null` ||
 || **gender**
-[`string`](../../../data-types.md) | Gender of the user ||
+[`string`](../../../data-types.md) | User's gender ||
 || **extranet**
 [`boolean`](../../../data-types.md) | Extranet user flag ||
 || **connector**
@@ -547,7 +547,7 @@ The structure of the user object is described in detail [below](#user-item) ||
 
 #|
 || **Name**
-`Type` | **Description** ||
+`type` | **Description** ||
 || **canvoteashead**
 [`object`](../../../data-types.md) | Object of the form `{"<CONFIG_ID>": <boolean>}`, where the key is the identifier of the open line settings `CONFIG_ID`, and the value `true/false` indicates whether the supervisor can evaluate the operator's work in the session of this line ||
 |#
@@ -556,7 +556,7 @@ The structure of the user object is described in detail [below](#user-item) ||
 
 #|
 || **Name**
-`Type` | **Description** ||
+`type` | **Description** ||
 || **\<departmentId\>**
 [`object`](../../../data-types.md) | Department data.
 
@@ -567,7 +567,7 @@ The structure of the department object is described in detail [below](#group-ite
 
 #|
 || **Name**
-`Type` | **Description** ||
+`type` | **Description** ||
 || **id**
 [`integer`](../../../data-types.md) | Identifier of the department ||
 || **users**
@@ -578,7 +578,7 @@ The structure of the department object is described in detail [below](#group-ite
 
 #|
 || **Name**
-`Type` | **Description** ||
+`type` | **Description** ||
 || **\<chatId\>**
 [`object`](../../../data-types.md) | Chat data.
 
@@ -589,7 +589,7 @@ The structure of the department object is described in detail [below](#chat-item
 
 #|
 || **Name**
-`Type` | **Description** ||
+`type` | **Description** ||
 || **id**
 [`string`](../../../data-types.md) | Identifier of the chat ||
 || **name**
@@ -621,7 +621,7 @@ The structure of the department object is described in detail [below](#chat-item
 || **entityLink**
 [`object`](../../../data-types.md) | Data linking the chat to the open line ||
 || **permissions**
-[`object`](../../../data-types.md) | Access permissions in the chat ||
+[`object`](../../../data-types.md) | Access rights in the chat ||
 || **textFieldEnabled**
 [`boolean`](../../../data-types.md) | Flag indicating the availability of the message input field ||
 || **backgroundId**
@@ -636,7 +636,7 @@ The structure of the department object is described in detail [below](#chat-item
 
 #|
 || **Name**
-`Type` | **Description** ||
+`type` | **Description** ||
 || **\<chatId\>**
 [`object`](../../../data-types.md) | Object with flags for blocking users in the chat: key — user identifier, value — `true` or `false` || ||
 |#
@@ -645,7 +645,7 @@ The structure of the department object is described in detail [below](#chat-item
 
 #|
 || **Name**
-`Type` | **Description** ||
+`type` | **Description** ||
 || **\<chatId\>**
 [`array`](../../../data-types.md) | Array of user identifiers that are in the chat ||
 |#
@@ -654,7 +654,7 @@ The structure of the department object is described in detail [below](#chat-item
 
 #|
 || **Name**
-`Type` | **Description** ||
+`type` | **Description** ||
 || **\<fileId\>**
 [`object`](../../../data-types.md) | File data. 
 
@@ -665,7 +665,7 @@ The structure of the object is described in detail [below](#file-item) ||
 
 #|
 || **Name**
-`Type` | **Description** ||
+`type` | **Description** ||
 || **id**
 [`integer`](../../../data-types.md) | Identifier of the file ||
 || **chatid**
@@ -725,9 +725,9 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `MISSING_REQUIRED_PARAM` | Session ID or Chat ID must be provided | Neither `SESSION_ID` nor `CHAT_ID` was provided ||
-|| `INVALID_SESSION_ID` | Unable to determine session ID from provided parameters | Unable to determine the session from the provided parameters ||
-|| `ACCESS_DENIED` | You cannot open this conversation as you do not have sufficient permissions | Insufficient permissions to view the history, session not found or unavailable ||
+|| `MISSING_REQUIRED_PARAM` | Session ID or Chat ID must be provided | `SESSION_ID` and `CHAT_ID` are not provided ||
+|| `INVALID_SESSION_ID` | Unable to determine session ID from provided parameters | Unable to determine session from the provided parameters ||
+|| `ACCESS_DENIED` | You cannot open this conversation as you do not have sufficient rights | Insufficient rights to view history, session not found or unavailable ||
 |#
 
 {% include [System Errors](../../../../_includes/system-errors.md) %}

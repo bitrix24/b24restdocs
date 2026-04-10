@@ -1,15 +1,15 @@
 title: General Methods  
 href: index.md  
 items:  
-  - name: About Special Pages  
+  - name: Overview of Methods  
     href: index.md  
-  - name: Set Up a Special Page  
+  - name: Set Special Page  
     href: landing-syspage-set.md  
-  - name: Retrieve a List of Pages  
+  - name: Get List of Pages  
     href: landing-syspage-get.md  
-  - name: Get the Address of a Special Page  
+  - name: Get Address of Special Page  
     href: landing-syspage-get-special-page.md  
   - name: Remove Page Bindings as Special  
     href: landing-syspage-delete-for-landing.md  
-  - name: Remove All Bindings of Special Pages on the Site  
+  - name: Remove All Bindings of Special Pages on Site  
     href: landing-syspage-delete-for-site.md  

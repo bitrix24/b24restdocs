@@ -1,228 +1,470 @@
 # Manifest File
 
-{% note warning "We are still updating this page" %}
+The manifest file accompanies each [block](./index.md) and describes:
 
-Some data may be missing — we will complete it soon.
+- editable elements in the block markup
+- styles available in the editor
+- additional attributes
+- connected resources
 
-{% endnote %}
+You can obtain the manifest file for a block using the method [landing.block.getmanifestfile](./methods/landing-block-get-manifest-file.md).
 
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- edits are needed to meet the writing standard
-
-{% endnote %}
-
-{% endif %}
-
-The manifest file accompanies each [block](./index.md) and describes the editable parts of the block, as well as its name, description, and JS/CSS files.
-
-## Examples
-
-{% note warning %}
-
-The output of the block must contain at least one tag, even if it is technical information. 
-For example: `<div>This block works only after publication</div>`.
-
-{% endnote %}
-
-Example of a block:
-
-```html
-<section class="landing-block container-fluid px-0 g-theme-business-bg-blue-dark-v1">
-    <div class="row no-gutters align-items-start">
-
-        <div class="landing-block-card js-animation fadeIn col-md-6 col-lg-6 g-flex-centered">
-            <div class="landing-block-node-card-container text-center g-pa-30 w-100">
-                <div class="landing-block-node-card-header text-uppercase u-heading-v2-4--bottom g-brd-primary g-mb-40">
-                    <h2 class="landing-block-node-title h1 u-heading-v2__title g-line-height-1_3 g-font-weight-600 g-font-size-40 g-color-white g-mb-minus-10">Help
-make money</h2>
-                </div>
-
-                <div class="landing-block-node-text g-color-gray-light-v2">
-                    <p>Sed feugiat porttitor nunc, non dignissim ipsum vestibulum in. Donec in blandit dolor. Vivamus a fringilla lorem, vel faucibus ante. Nunc
-ullamcorper, justo a iaculis elementum, enim orciviverra eros, fringilla porttitor lorem eros vel odio. Praesent egestas ac arcu ac convallis. Donec ut diam
-risus purus.</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="landing-block-card js-animation fadeIn col-md-6 col-lg-6 g-flex-centered">
-            <div class="landing-block-node-card-container text-center g-pa-30 w-100">
-                <div class="landing-block-node-card-header text-uppercase u-heading-v2-4--bottom g-brd-primary g-mb-40">
-                    <h2 class="landing-block-node-title h1 u-heading-v2__title g-line-height-1_3 g-font-weight-600 g-font-size-40 g-color-white g-mb-minus-10">Help
-make money</h2>
-                </div>
-
-                <div class="landing-block-node-text g-color-gray-light-v2">
-                    <p>Sed feugiat porttitor nunc, non dignissim ipsum vestibulum in. Donec in blandit dolor. Vivamus a fringilla lorem, vel faucibus ante. Nunc
-ullamcorper, justo a iaculis elementum, enim orciviverra eros, fringilla porttitor lorem eros vel odio. Praesent egestas ac arcu ac convallis. Donec ut diam
-risus purus.</p>
-                </div>
-            </div>
-        </div>
-
-    </div>
-</section>
-```
-
-{% note info %}
-
-Maintaining unique markup in the manifest is important only within a single block. Between blocks, identical selectors can have completely different meanings.
-
-{% endnote %}
-
-Here is how the manifest file for the block above might look:
+## Example of a Manifest File
 
 ```php
-<?php
-if (!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true)
-{
-    die();
-}
-
-use \Bitrix\Main\Localization\Loc;
-
-return array(
-    'block' => array(
-        'name' => "Text in Two Columns",
-        'section' => array('columns', 'text'),
-    ),
-    'cards' => array(
-        '.landing-block-card' => array(
-            'name' => "Column",
-            'label' => array(
-                '.landing-block-node-subtitle',
-                '.landing-block-node-title',
-            ),
-        ),
-    ),
-    'nodes' => array(
-        '.landing-block-node-title' => array(
-            'name' => "Title",
+$manifest = [
+    'block' => [
+        'name' => 'Text and Image in Two Columns',
+        'section' => ['text_image', 'columns'],
+        'type' => ['page', 'store', 'smn', 'knowledge', 'group', 'mainpage'],
+        'dynamic' => false,
+        'description' => 'Block with a title, text, button, and image',
+    ],
+    'cards' => [
+        '.landing-block-card' => [
+            'name' => 'Column',
+            'label' => ['.landing-block-node-title'],
+        ],
+    ],
+    'nodes' => [
+        '.landing-block-node-title' => [
+            'name' => 'Title',
             'type' => 'text',
-        ),
-        '.landing-block-node-text' => array(
-            'name' => "Text",
+        ],
+        '.landing-block-node-text' => [
+            'name' => 'Text',
             'type' => 'text',
-        ),
-    ),
-    'style' => array(
-        'block' => array(
-            'block-default',
-        ),
-        'nodes' => array(
-            '.landing-block-card' => array(
-                'name' => "Column",
-                'type' => array('columns', 'animation'),
-            ),
-            '.landing-block-node-title' => array(
-                'name' => "Title",
+        ],
+        '.landing-block-node-button' => [
+            'name' => 'Button',
+            'type' => 'link',
+        ],
+        '.landing-block-node-image' => [
+            'name' => 'Image',
+            'type' => 'img',
+            'dimensions' => [
+                'maxWidth' => 1200,
+                'maxHeight' => 1200,
+            ],
+            'allowInlineEdit' => false,
+            'useInDesigner' => true,
+        ],
+    ],
+    'style' => [
+        'block' => [
+            'type' => ['block-default'],
+        ],
+        'nodes' => [
+            '.landing-block-card' => [
+                'name' => 'Column',
+                'type' => ['columns', 'animation'],
+            ],
+            '.landing-block-node-title' => [
+                'title' => 'Title',
+                'type' => ['typo', 'heading'],
+            ],
+            '.landing-block-node-text' => [
+                'title' => 'Text',
                 'type' => 'typo',
-            ),
-            '.landing-block-node-text' => array(
-                'name' => "Text",
-                'type' => 'typo',
-            ),
-            '.landing-block-node-card-header' => array(
-                'name' => "Title",
-                'type' => 'border-color',
-            ),
-        ),
-    ),
-    'attrs' => array(
-        '.landing-block-node-text' => array(
-            'name' => 'Text Settings',
-            'type' => 'dropdown',
-            'attribute' => 'data-copy',
-            'items' => array(
-                'val1' => 'Value 1',
-                'val2' => 'Value 2',
-            ),
-        ),
-    ),
-    
-    'assets' => array(
-        'css' => array(
-            'https://site.com/aaa.css',
-        ),
-        'js' => array(
-            'https://site.com/aaa.js',
-        ),
-        'ext' => array(
-            'landing_form',
-        ),
-    ),
-);
+            ],
+            '.landing-block-node-button' => [
+                'title' => 'Button',
+                'type' => 'button',
+            ],
+            '.landing-block-node-image' => [
+                'name' => 'Image',
+                'type' => ['box'],
+            ],
+        ],
+    ],
+    'attrs' => [
+        '.landing-block-node-text' => [
+            [
+                'name' => 'Display Mode',
+                'type' => 'dropdown',
+                'attribute' => 'data-view',
+                'items' => [
+                    ['name' => 'Short', 'value' => 'short'],
+                    ['name' => 'Full', 'value' => 'full'],
+                ],
+            ],
+        ],
+    ],
+    'assets' => [
+        'css' => ['https://example.com/landing/custom-block.css'],
+        'js' => ['https://example.com/landing/custom-block.js'],
+        'ext' => ['landing_form'],
+    ],
+];
 ```
 
-## Manifest Fields for the Block
+## Manifest Keys
+
+The block manifest consists of a set of keys. Each key corresponds to a specific part of the block description: structure, editable elements, styles, attributes, and connected resources. Multiple keys can be used within a single manifest.
 
 ### Key block
 
-The **block** key contains the name and category of the block (or an array of categories). The system has a certain number of categories, here they are:
+The `block` key defines the basic properties of the block:
 
-```js
-array(
-    'cover' => Cover,
-    'about' => About the Project,
-    'title' => Title,
-    'text' => Text Block,
-    'image' => Image,
-    'gallery' => Gallery,
-    'phrase' => Quote,
-    'benefits' => Benefits,
-    'columns' => Columns,
-    'separator' => Separator,
-    'menu' => Menu,
-    'footer' => Website Footer,
-    'pages' => List of Pages,
-    'tiles' => Tile and Link,
-    'forms' => CRM Form,
-    'team' => Team,
-    'feedback' => Reviews,
-    'schedule' => Schedule,
-    'steps' => Steps,
-    'contacts' => Contacts,
-    'social' => Social Networks,
-    'tariffs' => Tariffs,
-    'partners' => Partners,
-    'other' => Other,
-    'popular' => Popular,
-    'sidebar' => Sidebar,
-    'video' => Video,
-    'text_image' => Text with Images,
-    'countdowns' => Timers for Promotions,
-    'separator' => Transitions and Separators,
-    'news' => News Feed,
-);
+- `name` — the name of the block
+- `section` — the section or array of sections in the block catalog. Current section codes can be obtained using the method [landing.block.getrepository](./methods/landing-block-get-repository.md)
+- `dynamic` — indicates whether the block supports dynamic mode. If set to `false`, the block cannot be used as dynamic
+- `subtype` — subtype of the special block, a single value or an array
+- `subtype_params` — subtype parameters
+- `type` — type of the site where the block is available. Supported site types: 
+  - `page` — regular sites and landing pages
+  - `store` — stores
+  - `smn` — service type for the "Sites24" section in BUS
+  - `knowledge` — knowledge bases
+  - `group` — knowledge bases for social network groups
+  - `mainpage` — main page of the account
+
+Depending on the edition and version of the product, additional service values for `type` may be present.
+
+### Key nodes
+
+The `nodes` key describes elements that can be edited as content. CSS selectors are used to specify nodes. It is recommended to choose clear structural classes as selectors, for example, with the prefix `landing-block-node-`.
+
+The same selector can be used in different blocks, but the node selector must not match the card selector of the same block.
+
+In `nodes`, the keys are the selectors of editable elements, and the values specify the node label, its type, and additional parameters. The type of the node determines how the element will be edited in the interface.
+
+Possible node types:
+
+- `text` — text content of the element
+- `img` — image 
+- `link` — link 
+- `icon` — icon
+- `embed` — embedded media content
+- `map` — map
+- `component` — embedded component
+- `styleimg` — image controlled through style settings
+
+More details: [Node Types](./node-types.md).
+
+### Key cards
+
+The `cards` key describes cards. Cards are used for repeatable content, such as lists of services, employees, or gallery items.
+
+In the basic version, it is sufficient to describe cards in the manifest, while more complex scenarios use advanced card management.
+
+Recommendations:
+
+- use separate selectors for cards and nodes
+- use clear structural classes, such as `landing-block-card-*`
+- do not mix cards of different selectors in one common parent without an advanced card scheme
+
+More about the advanced scheme: [Extended Card Description](./extended-description.md).
+
+### Key style
+
+The `style` key defines which style settings are available in the editor.
+
+When changing the appearance of blocks, CSS classes are usually modified rather than the inline `style` attribute of nodes. For example, when changing text size, the system may replace the conditional class `g-font-size-12` with `g-font-size-16`, rather than directly writing `font-size` into `style`.
+
+Structure:
+
+- `style.block` — styles for the entire block
+- `style.nodes` — styles for individual elements within the block by CSS selectors
+
+Style types:
+
+- `block-default` — basic styling settings for the block
+- `block-default-background` — basic block with a background
+- `block-default-background-height-vh` — block with a background and viewport height
+- `paddings` — outer and inner paddings
+- `margins` — outer margins
+- `box` — container settings (color, shadow, opacity)
+- `bg` — background color
+- `button` — button styles
+- `typo` — advanced typographic settings for text
+- `typo-simple` — simplified typography settings
+- `typo-link` — link styling
+- `navbar` — navigation bar settings
+- `navbar-bg-color` — navigation bar settings with background
+- `navbar-full` — advanced navigation bar settings
+- `block-default-background-overlay` — basic block with background overlay settings
+- `block-default-background-overlay-height-vh` — variant with overlay and screen height setting
+- `block-default-wo-background` — basic block without background settings
+- `block-default-wo-paddings` — block without padding settings
+- `block-default-wo-background-vh-animation` — block without background, with screen height setting and animation
+- `block-border` — block border settings
+- `container` — content container settings
+- `heading` — heading settings
+- `border-colors` — border colors and hover border colors
+- `background-gradient` — gradient background
+- `background-hover` — hover background
+- `widget` — styles for widgets
+
+The set of style types and parameters within each type is extensible and depends on the connected style manifests and product version.
+
+{% cut "Reference List of Style Types and Their Parameters" %}
+
+```php
+$styleTypes = [
+    'block-default' => [
+        'display',
+        'background',
+        'padding-top',
+        'padding-bottom',
+        'padding-left',
+        'padding-right',
+        'margin-top',
+    ],
+    'block-default-background' => [
+        'display',
+        'background',
+        'padding-top',
+        'padding-bottom',
+        'padding-left',
+        'padding-right',
+        'margin-top',
+    ],
+    'block-default-background-height-vh' => [
+        'display',
+        'background',
+        'height-vh',
+        'padding-top',
+        'padding-bottom',
+        'padding-left',
+        'padding-right',
+        'margin-top',
+    ],
+    'paddings' => [
+        'padding-top',
+        'padding-bottom',
+        'padding-left',
+        'padding-right',
+    ],
+    'margins' => [
+        'margin-top',
+        'margin-bottom',
+        'margin-left',
+        'margin-right',
+    ],
+    'box' => [
+        'background-color',
+        'box-shadow',
+        'opacity',
+    ],
+    'bg' => [
+        'background-color',
+    ],
+    'button' => [
+        'button-color',
+        'button-color-hover',
+        'button-type',
+        'button-size',
+        'button-padding',
+        'border-radius',
+        'color',
+        'color-hover',
+        'border-color-hover',
+        'font-family',
+        'text-transform',
+    ],
+    'typo' => [
+        'text-align',
+        'color',
+        'font-size',
+        'font-family',
+        'font-weight',
+        'text-decoration',
+        'text-transform',
+        'line-height',
+        'letter-spacing',
+        'word-break',
+        'text-shadow',
+        'padding-top',
+        'padding-left',
+        'padding-right',
+        'margin-bottom',
+    ],
+    'typo-simple' => [
+        'font-size',
+        'font-family',
+        'font-weight',
+        'text-decoration',
+        'text-transform',
+        'line-height',
+        'letter-spacing',
+    ],
+    'typo-link' => [
+        'color',
+        'color-hover',
+        'font-size',
+        'font-family',
+        'font-weight',
+        'text-decoration',
+        'text-transform',
+        'letter-spacing',
+        'text-shadow',
+    ],
+    'navbar' => [
+        'navbar-align',
+        'navbar-color',
+        'navbar-color-hover',
+    ],
+    'navbar-bg-color' => [
+        'navbar-align',
+        'navbar-color',
+        'navbar-bg',
+        'navbar-color-hover',
+        'navbar-bg-hover',
+    ],
+    'navbar-full' => [
+        'navbar-align',
+        'navbar-color',
+        'navbar-color-hover',
+        'navbar-color-fix-moment',
+        'navbar-color-fix-moment-hover',
+    ],
+    'block-default-background-overlay' => [
+        'display',
+        'background-attachment',
+        'background-size',
+        'padding-top',
+        'padding-bottom',
+        'padding-left',
+        'padding-right',
+        'margin-top',
+        'background-overlay',
+    ],
+    'block-default-background-overlay-height-vh' => [
+        'display',
+        'background-attachment',
+        'background-size',
+        'height-vh',
+        'padding-top',
+        'padding-bottom',
+        'padding-left',
+        'padding-right',
+        'margin-top',
+        'background-overlay',
+    ],
+    'block-default-wo-background' => [
+        'display',
+        'padding-top',
+        'padding-bottom',
+        'padding-left',
+        'padding-right',
+        'margin-top',
+    ],
+    'block-default-wo-paddings' => [
+        'display',
+        'background-color',
+    ],
+    'block-default-wo-background-vh-animation' => [
+        'display',
+        'padding-top',
+        'padding-bottom',
+        'padding-left',
+        'padding-right',
+        'margin-top',
+        'height-vh',
+        'animation',
+    ],
+    'block-border' => [
+        'background',
+        'block-border-type',
+        'block-border-margin',
+        'border-radius',
+        'block-border-position',
+    ],
+    'container' => [
+        'container-max-width',
+        'padding-left',
+        'padding-right',
+    ],
+    'heading' => [
+        'text-align',
+        'heading-v2',
+        'border-color',
+        'border-color-hover',
+        'margin-bottom',
+    ],
+    'border-colors' => [
+        'border-color',
+        'border-color-hover',
+    ],
+    'background-gradient' => [
+        'background-color',
+    ],
+    'background-hover' => [
+        'background-color-hover',
+    ],
+    'widget' => [
+        'background',
+        'widget-type',
+        'margin-top',
+        'margin-bottom',
+        'padding-top',
+        'padding-bottom',
+        'padding-left',
+        'padding-right',
+    ],
+];
 ```
 
-If the required category is not in the list, simply write its text in the manifest, and the category will be added.
+{% endcut %}
 
-In addition, this key can contain the following settings:
+### Key attrs
 
-- **dynamic** => false tells the block that it CANNOT be used as dynamic. (A very rare situation.)
-- **subtype** – type of special block, allows a single value or multiple values in the form of an array. (For on-premise.)
-- **subtype_params** – parameters of the special block. (For on-premise.)
-- **type** - can contain the type of site on which the block can work (by default, the block is shown everywhere). Currently supported:
-  - page: regular websites
-  - store: stores
-  - knowledge: knowledge bases
-  - group: social network group knowledge bases
+The `attrs` key describes additional parameters, the values of which are stored in the attributes of DOM elements.
+
+Attribute types:
+
+- `text` — single-line text field
+- `date` — date and time selection
+- `html` — multi-line text field
+- `dropdown` — dropdown list
+- `checkbox` — checkbox or group of checkboxes
+- `radio` — single choice from a list
+- `multiselect` — multiple selection
+- `image` — image selection
+- `icon` — icon selection
+- `link` — link with extended settings
+- `url` — simplified URL field
+- `slider` — single value slider
+- `range-slider` — range value slider
+- `palette` — selection from a palette
+- `color` — color selection
+- `sortable-list` — sortable list of values
+- `position` — selection of the position/direction of the element
+- `catalog-view` — settings for displaying catalog data
+- `filter` — filter settings
+- `user-select` — user selection
+- `dynamic_source` — selection of a dynamic data source
+
+More details: [Attributes](./attributes.md).
+
+### Keys lang_original and lang
+
+The `lang_original` and `lang` keys define the localization of labels in the block manifest.
+
+- `lang_original` — the original language of the phrases in the manifest
+- `lang` — a set of translations by language
+
+Recommendations:
+
+- set `lang_original` according to the actual language of the manifest
+- use the same phrase keys in `lang` as in the original manifest
+
+More details: [Block Localization](./localization.md).
 
 ### Key menu
 
-The menu on the site can very well be a regular HTML block, and a whole section in the block catalog is allocated for such blocks. The links of the menu items are simply edited like regular cards. But how to build a multi-level menu? You might have seen it in the Knowledge Base.
+The `menu` key is used when a multi-level menu with separate settings for root and child items is needed.
 
-For this, a separate entry in the manifest with the key menu is intended. Here is how such an entry looks:
+If only one level is sufficient, the menu can also be implemented as regular cards with links.
+
+Example of a multi-level menu:
 
 ```php
 'menu' => [
     '.landing-block-node-menu' => [
         'item' => '.landing-block-node-menu-item',
-        'name' => Loc::getMessage('LANDING_BLOCK_MENU_22-NAVBAR'),
+        'name' => 'Menu',
         'root' => [
             'ulClassName' => 'landing-block-node-menu navbar-nav',
             'liClassName' => 'landing-block-node-menu-item nav-item',
@@ -235,7 +477,7 @@ For this, a separate entry in the manifest with the key menu is intended. Here i
         ],
         'nodes' => [
             '.landing-block-node-menu-link' => [
-                'name' => Loc::getMessage('LANDING_BLOCK_MENU_22-LINK'),
+                'name' => 'Link',
                 'type' => 'link',
             ],
         ],
@@ -243,268 +485,59 @@ For this, a separate entry in the manifest with the key menu is intended. Here i
 ]
 ```
 
-The entry describes the following HTML:
+Main fields:
 
-```html
-<ul class="landing-block-node-menu navbar-nav">
-    <li class="landing-block-node-menu-item nav-item">
-        <a href="#" target="_self" class="landing-block-node-link nav-link">Bitrix24 Knowledge Base</a>
-    </li>
-    <li class="landing-block-node-menu-item">
-        <a href="#" target="_self" class="landing-block-node-link nav-link">Tasks and Projects</a>
-        <ul class="landing-block-node-menu">
-            <li class="landing-block-node-menu-item nav-item">
-            <a href="#" target="_self" class="landing-block-node-menu-link nav-link">Article example</a>
-            </li>
-        </ul>
-    </li>
-</ul>
-```
+- the key of the array `.landing-block-node-menu` — selector for the root `<ul>`
+- `item` — selector for `<li>` elements
+- `name` — name of the menu in the interface
+- `root` — classes for the root level of the menu: 
+  - `ulClassName` for the `<ul>` container
+  - `liClassName` for `<li>` items
+  - `aClassName` for `<a>` links
+- `children` — classes for child levels of the menu:
+    - `ulClassName` for nested `<ul>`
+    - `liClassName` for nested `<li>`,
+    - `aClassName` for `<a>` links in child items
+- `nodes` — editable elements within the menu item, such as a link
 
-Let's consider the keys of the menu block:
-
-- **Root of the array** (.landing-block-node-menu in this case) indicates the selector of the `<ul>` tag that should be defined as a menu. As you have already understood, there can be several multi-level menus within a single manifest.
-- **item** describes each `<li>` inside the `<ul>` list. That is, the `<li>` tags that will be defined as menu items.
-- **name** describes the name of the menu.
-- **root** describes the root `<ul>`. And **children** all root `<ul>`. `ulClassName` describes the classes of the `<ul>` tag, `liClassName` describes the classes of the `<li>` tag, and `aClassName` describes the classes of the `<a>` tag. In this case, the parent and child elements have the same structure. No additional tags are currently anticipated in the menu structure.
-- **nodes** describes the structure inside the `<li>`. Currently, this is just a link. A careful reader may guess that this item can describe any complex structure of each item. Correct, but this is not fully supported yet.
+Multiple multi-level menus can be described in a single manifest, meaning multiple root selectors in `menu`.
 
 ### Key assets
 
-The **assets** key contains the JS and CSS that need to be included when adding the block to the page. If multiple blocks use the same JS/CSS file, it’s not a problem; each file will only be included once.
+The `assets` key defines the JS and CSS resources that are connected when adding a block to the page.
 
-The **ext** key refers to the JS libraries of the Bitrix core. Currently, only libraries mentioned in special blocks and interactive blocks are allowed to be included.
+- `css` — external CSS files
+- `js` — external JS files
+- `ext` — core Bitrix JS extensions
 
-If you are using any third-party libraries in your code that are already connected to the main core (for example, jQuery), it is recommended to wrap the output commands in your script in a system method. This way, your code will successfully initialize after all system connections:
+If the same file is already included by another block, it will not be added again.
+
+The `ext` key is used to connect core libraries. Only supported extensions available in the block environment should be connected.
+
+Supported:
+
+- `landing_form` — logic and interfaces for form blocks
+- `landing_carousel` — logic for carousel/slider for cards and images
+- `landing_google_maps_new` — integration with Google Maps in the current scenario
+- `landing_map` — basic logic for maps in blocks
+- `landing_countdown` — countdown timer
+- `landing_gallery_cards` — gallery of cards/images
+- `landing_chat` — chat scenarios in landings
+
+For repository blocks, the extension for Vue widgets `landing.widgetvue` is additionally used.
+
+If the script uses libraries loaded by the core, it is better to wrap the initialization in `BX.ready(...)` to ensure the code runs after system connections:
 
 ```js
-BX.ready(function()
-{
+BX.ready(function () {
     console.log($(window));
 });
 ```
 
-### Key nodes
+## Animation
 
-The **nodes** key contains blocks whose content is allowed to be edited. Here and further, the ideology of **CSS selectors** is applied to indicate the final nodes. You should understand this to get a good grasp of the further API of blocks.
+For the animation to work properly:
 
-It is recommended to choose a meaningful class name as a selector. To distinguish regular classes from structural class selectors, it is advisable to give the name a meaningful prefix, for example, `"landing-block-node-"`. The same selector can be used in different blocks. The node selector **does not match** the [card selectors](#cards) of this block.
-
-In the nodes key, selectors whose content can be edited are listed as keys, along with the name of the node and its type. You can read more about [node types](#).
-
-Depending on the type of node and its specification in this block, it will become available for editing and will appear in the block content editing form.
-
-In addition to the type, names, and specific keys of a particular type, there are also common parameters for nodes of any type:
-
-- **allowInlineEdit** – if you pass a value of the key equal to `false`, then the data of the nodes will be prohibited from inline editing, but will still be available for editing through the block editing form.
-- **useInDesigner** - if you pass `false`, the element will be ignored in the block designer.
-- **group** – grouping of nodes; if you specify the same value for this key for several nodes (within one block), then clicking on any of the nodes will open the editing interface for the entire group of nodes.
-
-### Key style
-
-The **style** key is very similar to the nodes key, except that in this key, the permissible design is marked: which nodes are allowed to change their appearance, and what type they are.
-
-Style types can be as follows (including their combination in the form of an array):
-
-- **box** – block elements
-- **button** – links in the form of buttons
-- **typo** – all typography
-- **typo-simple** – simplified typography
-- **typo-link** – typography of links
-- **paddings** – all paddings
-- **navbar** – navigation blocks
-- **navbar-full** – full-width navigation blocks
-- and some others...
-
-These types determine what stylistic changes are available for editing in the user interface.
-
-{% cut "Full list of permissible types and what CSS styles it combines" %}
-
-```js
-array (
-    'block-default' => array (
-        0 => 'display',
-        1 => 'padding-top',
-        2 => 'padding-bottom',
-        3 => 'padding-left',
-        4 => 'padding-right',
-        5 => 'margin-top',
-        6 => 'background-color',
-        7 => 'background-gradient',
-    ),
-    'paddings' => array (
-        0 => 'padding-top',
-        1 => 'padding-bottom',
-        2 => 'padding-left',
-        3 => 'padding-right',
-    ),
-    'block-default-background-overlay' => array (
-        0 => 'display',
-        1 => 'background-attachment',
-        2 => 'padding-top',
-        3 => 'padding-bottom',
-        4 => 'padding-left',
-        5 => 'padding-right',
-        6 => 'margin-top',
-        7 => 'background-overlay',
-    ),
-    'block-default-background-overlay-paddings-x' => array (
-        0 => 'display',
-        1 => 'background-attachment',
-        2 => 'padding-left',
-        3 => 'padding-right',
-        4 => 'margin-top',
-        5 => 'background-overlay',
-    ),
-    'block-default-background-overlay-height-vh' => array (
-        0 => 'display',
-        1 => 'background-attachment',
-        2 => 'height-vh',
-        3 => 'padding-top',
-        4 => 'padding-bottom',
-        5 => 'padding-left',
-        6 => 'padding-right',
-        7 => 'margin-top',
-        8 => 'background-overlay',
-    ),
-    'block-default-wo-background' => array (
-        0 => 'display',
-        1 => 'padding-top',
-        2 => 'padding-bottom',
-        3 => 'padding-left',
-        4 => 'padding-right',
-        5 => 'margin-top',
-    ),
-    'block-default-wo-background-height-vh' => array (
-        0 => 'display',
-        1 => 'height-vh',
-        2 => 'padding-top',
-        3 => 'padding-bottom',
-        4 => 'padding-left',
-        5 => 'padding-right',
-        6 => 'margin-top',
-    ),
-    'block-default-wo-paddings' => array (
-        0 => 'display',
-        1 => 'background-color',
-        2 => 'background-gradient',
-    ),
-    'block-default-wo-background-vh-animation' => array (
-        0 => 'display',
-        1 => 'padding-top',
-        2 => 'padding-bottom',
-        3 => 'padding-left',
-        4 => 'padding-right',
-        5 => 'margin-top',
-        6 => 'height-vh',
-        7 => 'animation',
-    ),
-    'typo' => array (
-        0 => 'text-align',
-        1 => 'color',
-        2 => 'font-size',
-        3 => 'font-family',
-        4 => 'font-weight',
-        5 => 'text-decoration',
-        6 => 'text-transform',
-        7 => 'line-height',
-        8 => 'letter-spacing',
-        9 => 'text-shadow',
-    ),
-    'typo-simple' => array (
-        0 => 'font-size',
-        1 => 'font-family',
-        2 => 'font-weight',
-        3 => 'text-decoration',
-        4 => 'text-transform',
-        5 => 'line-height',
-        6 => 'letter-spacing',
-    ),
-    'typo-link' => array (
-        0 => 'color',
-        1 => 'color-hover',
-        2 => 'font-size',
-        3 => 'font-family',
-        4 => 'font-weight',
-        5 => 'text-decoration',
-        6 => 'text-transform',
-        7 => 'letter-spacing',
-        8 => 'text-shadow',
-    ),
-    'box' => array (
-        0 => 'background-color',
-        1 => 'background-gradient',
-        2 => 'box-shadow',
-        3 => 'opacity',
-        4 => 'padding-top',
-        5 => 'padding-bottom',
-    ),
-    'bg' => array (
-        0 => 'background-color',
-        1 => 'background-gradient',
-    ),
-    'button' => array (
-        0 => 'button-color',
-        1 => 'button-outline-color',
-        2 => 'border-width',
-        3 => 'border-radius',
-        4 => 'color',
-        5 => 'font-family',
-        6 => 'font-weight',
-        7 => 'text-decoration',
-        8 => 'text-transform',
-    ),
-    'navbar' => array (
-        0 => 'navbar-align',
-        1 => 'navbar-color',
-        2 => 'navbar-color-hover',
-    ),
-    'navbar-full' => array (
-        0 => 'navbar-align',
-        1 => 'navbar-color',
-        2 => 'navbar-color-hover',
-        3 => 'navbar-color-fix-moment',
-        4 => 'navbar-color-fix-moment-hover',
-    ),
-)
-```
-
-{% endcut %}
-
-### Key cards
-
-Contains the so-called cards of the block. This is repeatable content. For example, a list of services, employee photos, and so on. By marking the block this way, the interface will have functionality for cloning, deleting, and modifying cards.
-
-In its simplest form, it looks as indicated in the manifest. If you want, you can also explore advanced card management.
-
-It is recommended to choose a meaningful class name as a selector. To distinguish regular classes from structural class selectors, it is advisable to give the name a meaningful prefix. For example, `landing-block-card-`. The same selector can be used in different blocks. The card selector **does not match** the [node selectors](#key-nodes) of this block.
-
-{% note info %}
-
-Cards of one selector should not be with cards of another selector under one common parent. For cases with a common parent, use advanced cards.
-
-{% endnote %}
-
-### Key attrs
-
-For attribute descriptions, see the [separate page](./attributes.md).
-
-## Ideology of Changing Block Styles
-
-When changing the appearance of blocks, the **style** attribute of nodes is not modified. Only classes are changed. For example, if you want to change the font-size from 12 to 16, the system will change not 'font-size', but the conditional class g-fontsize12 to g-fontsize16.
-
-## For Animation to Work
-
-In the standard mechanism for animation to work, it is necessary:
-
-- for the node to have the class js-animation;
-- for the manifest of this node to have a setting in the style section - 'type' => 'animation';
-- for the animation to work immediately by default, it is also necessary to add one of the animation classes (in our block example - fadeIn), but this is not mandatory; the setting will work as is.
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not deployed to prod_" %}
-
-{% endnote %}
-
-{% endif %}
+- the node must have the class `js-animation`
+- in `style`, the type `animation` must be specified for this node
+- if necessary, you can immediately add an effect class, for example, `fadeIn`

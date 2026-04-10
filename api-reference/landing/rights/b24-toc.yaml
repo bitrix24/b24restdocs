@@ -1,19 +1,17 @@
-title: Access Permissions
-href: index.md
-items:
-  - name: Key Provisions
-    href: index.md
-  - name: Differences Between Models
-    href: distinction.md
-  - name: Switch Models
-    href: landing-role-enable.md
-  - name: Define Access Permission Models
-    href: landing-role-is-enabled.md
-  - name: Extended Model
-    include:
-      path: extended-model/b24-toc.yaml
-      mode: link
-  - name: Role-Based Model
-    include:
-      path: role-model/b24-toc.yaml
-      mode: link
+title: Access Permissions  
+href: index.md  
+items:  
+  - name: Overview of Methods  
+    href: index.md  
+  - name: Switch Models  
+    href: landing-role-enable.md  
+  - name: Define Access Permission Models  
+    href: landing-role-is-enabled.md  
+  - name: Extended Model  
+    include:  
+      path: extended-model/b24-toc.yaml  
+      mode: link  
+  - name: Role Model  
+    include:  
+      path: role-model/b24-toc.yaml  
+      mode: link  

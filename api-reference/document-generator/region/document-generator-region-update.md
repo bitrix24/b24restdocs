@@ -16,7 +16,7 @@ The method `documentgenerator.region.update` updates a user-defined region by it
 || **id***
 [`integer`](../../data-types.md) | Identifier of the user-defined region.
 
-You can obtain the identifier after [creating a region](./document-generator-region-add.md) or by using the [method to retrieve the list of regions](./document-generator-region-list.md) ||
+You can obtain the identifier after [creating a region](./document-generator-region-add.md) or by using the [method to get the list of regions](./document-generator-region-list.md) ||
 || **fields***
 [`object`](../../data-types.md) | Parameters for updating [(detailed description)](#fields) ||
 |#
@@ -35,9 +35,9 @@ You can obtain the identifier after [creating a region](./document-generator-reg
 || **formatDatetime**
 [`string`](../../data-types.md) | Date and time format ||
 || **formatName**
-[`string`](../../data-types.md) | Template for full name, for example `#LAST_NAME# #NAME# #SECOND_NAME#`.
+[`string`](../../data-types.md) | Full name template, for example `#LAST_NAME# #NAME# #SECOND_NAME#`.
 
-List of possible modifiers:
+Possible modifiers include:
 
 - `#TITLE#` — salutation
 - `#NAME#` — first name
@@ -55,7 +55,17 @@ List of possible modifiers:
 
 ||
 || **phrases**
-[`object`](../../data-types.md) | Set of region phrases in the format `code: text` ||
+[`object`](../../data-types.md) | Set of region phrases in the format `code: text`.
+
+The keys of the object are strings and can be defined arbitrarily depending on the template. The values of the keys are also strings.
+
+To understand which fields are used in the document template, retrieve their list using the [documentgenerator.template.getfields](../templates/document-generator-template-get-fields.md) method. This will help you determine which template values require their own language phrases.
+
+Examples:
+
+- `TAX_INCLUDED`: `Tax included in the price`
+- `TAX_NOT_INCLUDED`: `VAT not included in the price`
+||
 |#
 
 ## Code Examples
@@ -73,7 +83,7 @@ List of possible modifiers:
     -d '{
       "id": 1,
       "fields": {
-        "title": "Germany (Custom)",
+        "title": "Germany (User-defined)",
         "formatDate": "YYYY-MM-DD",
         "phrases": {
           "TAX_INCLUDED": "Tax included in the price"
@@ -92,7 +102,7 @@ List of possible modifiers:
     -d '{
       "id": 1,
       "fields": {
-        "title": "Germany (Custom)",
+        "title": "Germany (User-defined)",
         "formatDate": "YYYY-MM-DD",
         "phrases": {
           "TAX_INCLUDED": "Tax included in the price"
@@ -113,7 +123,7 @@ List of possible modifiers:
           {
               id: 1,
               fields: {
-                  title: 'Germany (Custom)',
+                  title: 'Germany (User-defined)',
                   formatDate: 'YYYY-MM-DD',
                   phrases: {
                       TAX_INCLUDED: 'Tax included in the price'
@@ -140,7 +150,7 @@ List of possible modifiers:
           [
               'id' => 1,
               'fields' => [
-                  'title' => 'Germany (Custom)',
+                  'title' => 'Germany (User-defined)',
                   'formatDate' => 'YYYY-MM-DD',
                   'phrases' => [
                       'TAX_INCLUDED' => 'Tax included in the price',
@@ -164,7 +174,7 @@ List of possible modifiers:
       {
           id: 1,
           fields: {
-              title: 'Germany (Custom)',
+              title: 'Germany (User-defined)',
               formatDate: 'YYYY-MM-DD',
               phrases: {
                   TAX_INCLUDED: 'Tax included in the price'
@@ -195,7 +205,7 @@ List of possible modifiers:
       [
           'id' => 1,
           'fields' => [
-              'title' => 'Germany (Custom)',
+              'title' => 'Germany (User-defined)',
               'formatDate' => 'YYYY-MM-DD',
               'phrases' => [
                   'TAX_INCLUDED' => 'Tax included in the price',
@@ -218,7 +228,7 @@ HTTP Status: **200**
     "result": {
         "region": {
             "id": "1",
-            "title": "Germany (Custom)",
+            "title": "Germany (User-defined)",
             "languageId": "de",
             "formatDate": "YYYY-MM-DD",
             "formatDatetime": "DD.MM.YYYY HH:MI:SS",
@@ -250,7 +260,7 @@ HTTP Status: **200**
 || **result**
 [`object`](../../data-types.md) | Root element of the response [(detailed description)](#result) ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the request execution time ||
+[`time`](../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
 #### Object result {#result}
@@ -278,9 +288,14 @@ HTTP Status: **200**
 || **formatDatetime**
 [`string`](../../data-types.md) | Date and time format ||
 || **formatName**
-[`string`](../../data-types.md) | Template for full name ||
+[`string`](../../data-types.md) | Full name template ||
 || **phrases**
-[`object`](../../data-types.md) | Set of phrases in the format `code: text` ||
+[`object`](../../data-types.md) | Set of phrases in the format `code: text`, where keys and values are strings.
+
+Examples of keys: `TAX_INCLUDED`, `TAX_NOT_INCLUDED`
+
+You can retrieve the list of template fields using the [documentgenerator.template.getfields](../templates/document-generator-template-get-fields.md) method.
+||
 |#
 
 ## Error Handling
@@ -300,9 +315,9 @@ HTTP Status: **400**
 
 #|
 || **Status** | **Code** | **Description** | **Value** ||
-|| `400` | `100` | Could not find value for parameter {id} | Required parameter `id` not provided ||
+|| `400` | `100` | Could not find value for parameter {id} | Required parameter `id` is missing ||
 || `400` | `0` | Region not found | The parameter `id` refers to a non-existent region ||
-|| `400` | `100` | Could not find value for parameter {fields} | Required parameter `fields` not provided ||
+|| `400` | `100` | Could not find value for parameter {fields} | Required parameter `fields` is missing ||
 || `400` | `0` | You do not have permissions to modify templates | Insufficient permissions to modify document generator templates ||
 |#
 

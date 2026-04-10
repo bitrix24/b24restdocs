@@ -1,388 +1,411 @@
 # Attributes
 
-{% note warning "We are still updating this page" %}
+Attributes are additional values that are stored in block elements and used in settings, JS logic, and conditional styling. For example, attributes can be used to store parameters for maps, links, display modes, and other block scenarios.
 
-Some data may be missing here — we will complete it soon.
+Attributes are registered under the `attrs` key in the [block manifest](./manifest.md). The `attrs` key links attributes with nodes and cards.
 
-{% endnote %}
+## Where to Describe the attrs Key
 
-{% if build == 'dev' %}
+The `attrs` key can be defined in several places within the manifest:
 
-{% note alert "TO-DO _not exported to prod_" %}
-
-- edits are needed to meet the writing standard
-
-{% endnote %}
-
-{% endif %}
-
-Using the **attrs** key in the [manifest](./manifest.md) of the block specifies a list of attributes for storing data associated with specific nodes. This is used everywhere – from default field values, counters to map settings, videos, and much more. Typically, a specific script accompanies the set of attributes that can work with all of this. Alternatively, attributes can participate in styling blocks by indicating in CSS that a card with a specific attribute has a different color (for example).
-
-Each attribute is described by:
-
-- name,
-- code,
-- type,
-- **items** key (in the case of a list type).
-
-## Placement Locations
-
-The **attrs** key in the manifest can be placed in the following locations:
-
-1. Directly at the root, as shown in the manifest example.
-```js
-'attrs':
-{
-    '.landing-block-node-text':
-    {
-        'name': 'Text settings',
-        'type': 'dropdown',
-        'attribute': 'data-copy'
-    }
-},
+1. At the root of the manifest:
+```php
+'attrs' => [
+    '.landing-block-node-text' => [
+        [
+            'name' => 'Text Setting',
+            'type' => 'dropdown',
+            'attribute' => 'data-copy',
+        ],
+    ],
+]
 ```
-2. In the style key, in which case the attribute is displayed in the form of design settings.
-```js
-'style':
-{
-    '.landing-block-node-card-button':
-    {
-        'name': 'Button',
-        'type': ['border-color', 'button', 'animation'],
-        'additional': {
-            'attrs': [
-                [
-                    'type': 'text',
-                    'name': 'Text field',
-                    'attribute': 'data-test-card-attr'
-                ]
-            ]
-        }
-    },
-}
+2. In `style.nodes`, in which case the field is displayed in the design form:
+```php
+'style' => [
+    'nodes' => [
+        '.landing-block-node-card-button' => [
+            'name' => 'Button',
+            'type' => ['border-color', 'button', 'animation'],
+            'additional' => [
+                'attrs' => [
+                    [
+                        'type' => 'text',
+                        'name' => 'Text field',
+                        'attribute' => 'data-test-card-attr',
+                    ],
+                ],
+            ],
+        ],
+    ],
+]
 ```
-3. In the card description. In this case, the attribute is applied directly to each card separately.
-```js
-'cards':
-{
-    '.landing-block-node-card-button':
-    {
-        'name': 'Card',
-        'additional': {
-            'attrs': [
+3. In `cards`, where the attribute is applied separately to each card:
+```php
+'cards' => [
+    '.landing-block-node-card-button' => [
+        'name' => 'Card',
+        'additional' => [
+            'attrs' => [
                 [
-                    'type': 'text',
-                    'name': 'Text field',
-                    'attribute': 'data-test-card-attr'
-                ]
-            ]
-        }
-    },
-}
+                    'type' => 'text',
+                    'name' => 'Text field',
+                    'attribute' => 'data-test-card-attr',
+                ],
+            ],
+        ],
+    ],
+]
 ```
 
 ## Grouping Attributes
 
-If you need to group some attributes, you can do it as follows:
+If you need to group some attributes, use the group container `attrs`:
 
-```js
-// root placement
-'attrs' => array(
-    '' => array(
-        array(
+```php
+'attrs' => [
+    '' => [
+        [
             'name' => 'Test group',
-            'attrs' => array(
-                array(
-                    "type" => "checkbox",
-                    // Override selector (if needed)
-                    "selector" => "bitrix:catalog.section",
-                    "name" => "",
-                    "items" => array(
-                        array("name" => "Display products", "value" => "1"),
-                        array("name" => "Display products 2", "value" => "2"),
-                        array("name" => "Display products 3", "value" => "3"),
-                    ),
-                    "attribute" => "data-checkbox"
-                ),
-                array(
-                    "type" => "checkbox",
-                    "name" => "",
-                    "items" => array(
-                        array("name" => "Display products 22", "value" => "1")
-                    ),
-                    "compact" => true,
-                    "attribute" => "data-checkbox2"
-                )
-            )
-        ),
-        array(
-            "type" => "checkbox",
-            "name" => "",
-            "items" => array(
-                array("name" => "Display products 33", "value" => "1")
-            ),
-            "attribute" => "data-checkbox3"
-        )
-    )
-)
-// style block (note that in the case of style, only either no groups or grouping within a single selector is supported)
-'additional' => array(
-    array(
-        'name' => 'Test group',
-        'attrs' => array(
-            array(
-                "type" => "text",
-                "name" => "Test",
-                "attribute" => "data-text"
-            ),
-            array(
-                "type" => "text",
-                "name" => "Test 2",
-                "attribute" => "data-text2"
-            )
-        )
-    )
-)
+            'attrs' => [
+                [
+                    'type' => 'checkbox',
+                    'selector' => 'bitrix:catalog.section',
+                    'name' => '',
+                    'items' => [
+                        ['name' => 'Product Display', 'value' => '1'],
+                        ['name' => 'Product Display 2', 'value' => '2'],
+                    ],
+                    'attribute' => 'data-checkbox',
+                ],
+                [
+                    'type' => 'checkbox',
+                    'name' => '',
+                    'items' => [
+                        ['name' => 'Product Display 22', 'value' => '1'],
+                    ],
+                    'compact' => true,
+                    'attribute' => 'data-checkbox2',
+                ],
+            ],
+        ],
+        [
+            'type' => 'checkbox',
+            'name' => '',
+            'items' => [
+                ['name' => 'Product Display 33', 'value' => '1'],
+            ],
+            'attribute' => 'data-checkbox3',
+        ],
+    ],
+]
 ```
 
-## Different Selectors
+In the `style.nodes` block, either placement without groups or grouping within a single selector is supported:
 
-If you want the attribute values to be saved in a different selector, simply specify a different selector for that specific attribute. (This can be useful to avoid adding unnecessary nodes for visual changes):
+```php
+'style' => [
+    'nodes' => [
+        '.landing-block-node-card-button' => [
+            'additional' => [
+                'attrs' => [
+                    [
+                        'name' => 'Test group',
+                        'attrs' => [
+                            [
+                                'type' => 'text',
+                                'name' => 'Test',
+                                'attribute' => 'data-text',
+                            ],
+                            [
+                                'type' => 'text',
+                                'name' => 'Test 2',
+                                'attribute' => 'data-text2',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ],
+    ],
+]
+```
 
-```js
-array(
-    'name' => 'Text field',
+## Overriding the Selector
+
+If the value should be stored not in the original selector, specify the `selector` for the specific attribute:
+
+```php
+[
+    'name' => 'Text Field',
     'type' => 'text',
     'attribute' => 'data-text-field',
-    'selector' => '.demo-another-selector'
-)
+    'selector' => '.demo-another-selector',
+]
 ```
+
+## Attribute Fields
+
+An attribute has common fields that are used across different types and define the basic settings for the field in the editor. In addition to these, there are type-dependent fields that work only for specific types.
+
+Common fields:
+
+- `name` — the name of the field in the interface
+- `attribute` — the name of the DOM attribute where the value is stored
+- `type` — the type of the field
+- `items` — the list of options
+- `value` — the default value, such as a string, object, or array
+- `selector` — overriding the save selector
+- `hidden` — registration without output in the editing interface
+- `attrs` — a group of nested attributes
+- `placeholder` — a hint for input
+- `compact` — compact display mode for the field
+
+Fields for specific types:
+
+- `textOnly` — simple text input mode without a visual editor, for `text`
+- `disableLink` — disable link editing, for `icon` and `image`
+- `disableBlocks` — disable block selection in the link selector, for `url`
+- `disableCustomURL` — disable manual input of arbitrary URL, for `url`
+- `time` — enable time selection, for `date`
+- `format` — format for saving date and time, for `date`
+- `dimensions` — image size restrictions, for `image`
+- `property` — target CSS property, for `palette`, `color`, `position`, `sortable-list`, `catalog-view`, `filter`
+- `html` — HTML markup for the filter, for `filter`
+- `filterId` — filter identifier, for `filter`
+- `hideSort` — hide sorting of sources, for `dynamic_source`
+- `sources` — list of available sources, for `dynamic_source`
+- `title` — field title, for `dynamic_source`
+- `stubText` — placeholder text, for `dynamic_source`
+- `useLink` — enable link mode, for `dynamic_source`
+- `linkType` — link type, for `dynamic_source`
+
+The necessity of fields depends on `type` and scenario. Generally, `attribute` is required, and for list types, `items` is necessary. The `name` field is recommended for proper display in the interface.
+
+If `type` is not specified, `text` is used by default.
 
 ## Attribute Types
 
-Attributes are a conditional storage for hidden values. For example, the starting coordinates of a map. Naturally, attributes make sense to introduce only in conjunction with some JS code that can use these attributes. Attributes need to be [registered in the manifest](./manifest.md) under the **attrs** key.
+The attribute type determines what control element will be in the editor and in what format the value will be saved in the element's attribute.
 
-Currently, the following attribute types are supported:
+Attribute types:
 
-- **text** - a regular text string.
-- **html** - a multiline text field.
-- **images** - an image with standard controls - selection from the computer or search in libraries.
-- **icon** - an icon.
-- **dropdown** - a dropdown list.
-- **checkbox** - a group of checkboxes. If you want to display a single checkbox, simply specify one value in items.
-- **multiselect** - a multiple selection list.
-- **link** - a link with standard controls.
-- **url** - a simplified version of a link: selection of a page/block or arbitrary URL.
-- **slider** / **range-slider** - slider options for an array of values.
-- **palette** - a color palette.
-- **sortable-list** - a sortable list of values. Sorting occurs by dragging elements with the mouse.
-- **position** - a set of arrows to indicate the position of an element in a block.
-- **date** - date and time selection.
+- `text` — single-line text field
+- `date` — date and time selection
+- `html` — multi-line text field
+- `dropdown` — dropdown list
+- `checkbox` — checkbox or group of checkboxes
+- `radio` — selection of one option from a list
+- `multiselect` — multiple selection
+- `image` — image selection
+- `icon` — icon selection
+- `link` — link with extended settings
+- `url` — simplified URL field
+- `slider` — single value slider
+- `range-slider` — range value slider
+- `palette` — selection from a palette
+- `color` — color selection
+- `sortable-list` — sortable list of values
+- `position` — selection of the position/direction of the element
+- `catalog-view` — settings for displaying catalog data
+- `filter` — filter settings
+- `user-select` — user selection
+- `dynamic_source` — selection of a dynamic data source
 
-Specific examples with these types can be found below. There you will also find additional options for variability.
-
-**Additionally**
-
-In addition to the specific properties of each type (see the example below), each type can have additional properties:
-
-- **hidden** - the attribute is registered but not displayed for editing in the block card, convenient for registering blocks when the sanitizer does not allow unregistered attributes.
-
-### Example
+## Example with Different Attribute Types
 
 ```php
-<?php
-$attrs = array(
-    ".landing-node" => array(
-        array(
-            "type" => "text",
-            "name" => "Test attr field",
-            "placeholder" => "Type your text",
-            "value" => "default_value",
-            "attribute" => "data-test-text",
-            "textOnly" => false //if true, the editor will not be connected during editing
-        ),
-    ),
-    array(
-        "type" => "image",
-        "name" => "Test attr image field",
-        "value" => array(
-            "src" => "http://bitrix24.com/bitrix/images/landing/app-store-badge.svg",
-            "alt" => "test alt"
-        ),
-        "attribute" => "data-test-image"
-    ),
-    array(
-        "type" => "icon",
-        "name" => "Test attr icon field",
-        "value" => array(
-            "classList" => array("fa", "fa-address-card")
-        ),
-        "attribute" => "data-test-icon"
-    ),
-    array(
-        "type" => "dropdown",
-        "name" => "Test attr dropdown field",
-        "items" => array(
-            array("name" => "#1", "value" => 1),
-            array("name" => "#2", "value" => 2),
-            array("name" => "#3", "value" => 3),
-            array("name" => "#4", "value" => 4)
-        ),
-        "value" => 3,
-        "attribute" => "data-test-dropdown"
-    ),
-    array(
-        'name' => 'Checkbox field',
-        'type' => 'checkbox',
-        'attribute' => 'data-test-checkbox',
-        'items' => array(
-            array('name' => 'Allow specifying product quantity', 'value' => '1', 'checked' => true),
-            array('name' => 'Allow notifications for out-of-stock products', 'value' => '2', 'checked' => true),
-            array('name' => 'Show discount percentage', 'value' => '3', 'checked' => true),
-            array('name' => 'Show old price', 'value' => '4', 'checked' => true),
-            array('name' => 'Allow product comparison', 'value' => '5', 'checked' => true)
-        )
-    ),
-    array(
-        'name' => 'Multi select field',
-        'type' => 'multiselect',
-        'attribute' => 'data-test-multiselect',
-        'items' => array(
-            array('name' => 'Allow specifying product quantity', 'value' => '1', 'selected' => true),
-            array('name' => 'Allow notifications for out-of-stock products', 'value' => '2', 'selected' => true),
-            array('name' => 'Show discount percentage', 'value' => '3'),
-            array('name' => 'Show old price', 'value' => '4', 'items' => array(
-                array('name' => 'Allow product comparison', 'value' => '41', 'selected' => true),
-                array('name' => 'Allow specifying product quantity', 'value' => '42', 'selected' => true),
-                array('name' => 'Allow notifications for out-of-stock products', 'value' => '43', 'selected' => true),
-                array('name' => 'Show discount percentage', 'value' => '44', 'selected' => true)
-            )),
-            array('name' => 'Allow product comparison', 'value' => '5'),
-            array('name' => 'Allow specifying product quantity', 'value' => '6'),
-            array('name' => 'Allow notifications for out-of-stock products', 'value' => '7', 'selected' => true)
-        )
-    ),
-    array(
-        "type" => "link",
-        "name" => "Test attr link field",
-        "value" => array(
-            "text" => "Link anchor",
-            "href" => "/test",
-            "target" => "_popup"
-        ),
-        "attribute" => "data-test-link"
-    ),
-    array(
-        "type" => "slider",
-        "name" => "Test attr slider field",
-        "items" => array(
-            array("name" => "1", "value" => 1),
-            array("name" => "2", "value" => 2),
-            array("name" => "3", "value" => 3),
-            array("name" => "4", "value" => 4),
-            array("name" => "5", "value" => 5)
-        ),
-        "value" => 2,
-        "attribute" => "data-test-slider"
-    ),
-    array(
-        "type" => "range-slider",
-        "name" => "Test attr range slider field",
-        "items" => array(
-            array("name" => "1", "value" => 1),
-            array("name" => "2", "value" => 2),
-            array("name" => "3", "value" => 3),
-            array("name" => "4", "value" => 4),
-            array("name" => "5", "value" => 5)
-        ),
-        "value" => array(
-            "from" => 3,
-            "to" => 5
-        ),
-        "attribute" => "data-test-range-slider"
-    ),
-    array(
-        "type" => "palette",
-        "name" => "Test attr palette field",
-        "items" => array(
-            array('name' => 'g-bg-lightblue', 'value' => 'g-bg-lightblue'),
-            array('name' => 'g-bg-lightblue-opacity-0_1', 'value' => 'g-bg-lightblue-opacity-0_1'),
-            array('name' => 'g-bg-lightblue-v1', 'value' => 'g-bg-lightblue-v1'),
-            array('name' => 'g-bg-lightblue-v1-opacity-0_1', 'value' => 'g-bg-lightblue-v1-opacity-0_1'),
-            array('name' => 'g-bg-darkblue', 'value' => 'g-bg-darkblue'),
-            array('name' => 'g-bg-darkblue-opacity-0_1', 'value' => 'g-bg-darkblue-opacity-0_1'),
-            array('name' => 'g-bg-indigo', 'value' => 'g-bg-indigo'),
-            array('name' => 'g-bg-indigo-opacity-0_1', 'value' => 'g-bg-indigo-opacity-0_1'),
-            array('name' => 'g-bg-red', 'value' => 'g-bg-red'),
-            array('name' => 'g-bg-red-opacity-0_1', 'value' => 'g-bg-red-opacity-0_1'),
-            array('name' => 'g-bg-red-opacity-0_2', 'value' => 'g-bg-red-opacity-0_2'),
-            array('name' => 'g-bg-red-opacity-0_5', 'value' => 'g-bg-red-opacity-0_5'),
-            array('name' => 'g-bg-red-opacity-0_8', 'value' => 'g-bg-red-opacity-0_8'),
-            array('name' => 'g-bg-lightred', 'value' => 'g-bg-lightred'),
-            array('name' => 'g-bg-lightred-opacity-0_1', 'value' => 'g-bg-lightred-opacity-0_1'),
-            array('name' => 'g-bg-darkred', 'value' => 'g-bg-darkred'),
-            array('name' => 'g-bg-darkred-opacity-0_1', 'value' => 'g-bg-darkred-opacity-0_1'),
-            array('name' => 'g-bg-purple', 'value' => 'g-bg-purple')
-        ),
-        "property" => "background-color",
-        "attribute" => "data-test-palette",
+$attrs = [
+    // text: text field
+    '.landing-block-node-text' => [
+        [
+            'name' => 'Caption',
+            'type' => 'text',
+            'attribute' => 'data-caption',
+            'placeholder' => 'Enter caption',
+            'textOnly' => true,
+        ],
+        // dropdown: list type
+        [
+            'name' => 'Display Mode',
+            'type' => 'dropdown',
+            'attribute' => 'data-view',
+            'items' => [
+                ['name' => 'Short', 'value' => 'short'],
+                ['name' => 'Full', 'value' => 'full'],
+            ],
+            'value' => 'short',
+        ],
+    ],
 
-        // Set if you need to get color by className from css
-        // "stylePath" => "/path/to/stylesheet.css",
+    // image: image field with restrictions
+    '.landing-block-node-image' => [
+        [
+            'name' => 'Image',
+            'type' => 'image',
+            'attribute' => 'data-card-image',
+            'dimensions' => [
+                'maxWidth' => 1200,
+                'maxHeight' => 1200,
+            ],
+        ],
+    ],
 
-        // Set if you need to get color from styles for pseudo-element (::before, ::after)
-        // "pseudo-element" => "::after",
+    // icon: icon selection
+    '.landing-block-node-icon' => [
+        [
+            'name' => 'Icon',
+            'type' => 'icon',
+            'attribute' => 'data-card-icon',
+            'value' => [
+                'classList' => ['fa', 'fa-address-card'],
+            ],
+        ],
+    ],
 
-        // Set if you need to get color from styles for pseudo-class (:hover, :active, ...)
-        // "pseudo-class" => ":hover"
-    ),
-    array(
-        "type" => "sortable-list",
-        "name" => "Product blocks",
-        "items" => array(
-            array("name" => 'head', "value" => "1"),
-            array("name" => "props", "value" => "2"),
-            array("name" => "tp", "value" => "3"),
-            array("name" => "qant", "value" => "4"),
-            array("name" => "quant2", "value" => "5"),
-            array("name" => "action", "value" => "6"),
-            array("name" => "comp", "value" => "7")
-        ),
-        "value" => array("1", "2", "3", "4", "5", "6", "7"),
-        "attribute" => "data-catalog-prop-sort"
-    ),
-    array(
-        "type" => "position",
-        "name" => "position",
-        "items" => array(
-            "top-left" => array("content" => "", "value" => "1"),
-            "top-center" => array("content" => "", "value" => "2"),
-            "top-right" => array("content" => "", "value" => "3"),
-            "middle-left" => array("content" => "", "value" => "4"),
-            "middle-center" => array("content" => "", "value" => "5"),
-            "middle-right" => array("content" => "", "value" => "6"),
-            "bottom-left" => array("content" => "", "value" => "7"),
-            "bottom-right" => array("content" => "", "value" => "8")
-        ),
-        "value" => "top-right",
-        "attribute" => "data-catalog-prop-position"
-    ),
-    array(
-        'name' => 'URL field',
-        'type' => 'url',
-        'value' => '#landing166',
-        'attribute' => 'data-test-url',
-        'disableBlocks' => true, // Disables block selection
-        'disableCustomURL' => false // Disables the ability to enter the URL manually
-    ),
-    array(
-        'name' => 'Datetime',
-        'type' => 'date',
-        'time' => true,//allow selection of exact time
-        'format' => 'ms',//'ms' (milliseconds) / 's' (seconds)
-        'value' => 1621584180000
-    )
-);
+    // link: link field with text, href, and target
+    '.landing-block-node-link' => [
+        [
+            'name' => 'Link',
+            'type' => 'link',
+            'attribute' => 'data-card-link',
+            'value' => [
+                'text' => 'Learn More',
+                'href' => '/about',
+                'target' => '_self',
+            ],
+        ],
+    ],
+
+    // multiselect: multiple selection, including nested items
+    '.landing-block-node-options' => [
+        [
+            'name' => 'Options',
+            'type' => 'multiselect',
+            'attribute' => 'data-options',
+            'items' => [
+                ['name' => 'Option 1', 'value' => '1', 'selected' => true],
+                ['name' => 'Option 2', 'value' => '2'],
+                [
+                    'name' => 'Group',
+                    'value' => 'group',
+                    'items' => [
+                        ['name' => 'Sub-option 1', 'value' => 'group-1', 'selected' => true],
+                        ['name' => 'Sub-option 2', 'value' => 'group-2'],
+                    ],
+                ],
+            ],
+        ],
+    ],
+
+    // slider: selection of a single value from a scale
+    '.landing-block-node-slider' => [
+        [
+            'name' => 'Number of Cards',
+            'type' => 'slider',
+            'attribute' => 'data-cards-count',
+            'items' => [
+                ['name' => '1', 'value' => 1],
+                ['name' => '2', 'value' => 2],
+                ['name' => '3', 'value' => 3],
+                ['name' => '4', 'value' => 4],
+            ],
+            'value' => 2,
+        ],
+    ],
+
+    // range-slider: selection of a range
+    '.landing-block-node-range' => [
+        [
+            'name' => 'Range of Values',
+            'type' => 'range-slider',
+            'attribute' => 'data-range',
+            'items' => [
+                ['name' => '1', 'value' => 1],
+                ['name' => '2', 'value' => 2],
+                ['name' => '3', 'value' => 3],
+                ['name' => '4', 'value' => 4],
+                ['name' => '5', 'value' => 5],
+            ],
+            'value' => [
+                'from' => 2,
+                'to' => 4,
+            ],
+        ],
+    ],
+
+    // sortable-list: sortable list
+    '.landing-block-node-sortable' => [
+        [
+            'name' => 'Block Order',
+            'type' => 'sortable-list',
+            'attribute' => 'data-sort-order',
+            'items' => [
+                ['name' => 'Header', 'value' => 'head'],
+                ['name' => 'Properties', 'value' => 'props'],
+                ['name' => 'Actions', 'value' => 'action'],
+            ],
+            'value' => ['head', 'props', 'action'],
+        ],
+    ],
+
+    // url: link with selection restrictions
+    '.landing-block-node-button' => [
+        [
+            'name' => 'Button Link',
+            'type' => 'url',
+            'attribute' => 'data-button-url',
+            'value' => '#landing166',
+            'disableBlocks' => true,
+            'disableCustomURL' => false,
+        ],
+    ],
+
+    // date: date and time with storage format
+    '.landing-block-node-date' => [
+        [
+            'name' => 'Publication Date',
+            'type' => 'date',
+            'attribute' => 'data-publish-date',
+            'time' => true,
+            'format' => 'ms',
+            'value' => 1621584180000,
+        ],
+    ],
+
+    // palette: palette reading color from CSS
+    '.landing-block-node-palette' => [
+        [
+            'name' => 'Background Color',
+            'type' => 'palette',
+            'attribute' => 'data-bg-color',
+            'property' => 'background-color',
+            // If you need to read the color not from standard styles
+            'stylePath' => '/bitrix/templates/my-site/styles.css',
+            // If the color is set via a pseudo-element
+            'pseudo-element' => '::after',
+            // If the color depends on the state of the element
+            'pseudo-class' => ':hover',
+            'items' => [
+                ['name' => 'g-bg-lightblue', 'value' => 'g-bg-lightblue'],
+                ['name' => 'g-bg-darkblue', 'value' => 'g-bg-darkblue'],
+            ],
+        ],
+    ],
+
+    // position: selection of position
+    '.landing-block-node-badge' => [
+        [
+            'name' => 'Badge Position',
+            'type' => 'position',
+            'attribute' => 'data-badge-position',
+            'items' => [
+                'top-left' => ['content' => '', 'value' => 'top-left'],
+                'top-center' => ['content' => '', 'value' => 'top-center'],
+                'top-right' => ['content' => '', 'value' => 'top-right'],
+            ],
+            'value' => 'top-right',
+        ],
+    ],
+];
 ```
-
-{% include [Note on examples](../../../_includes/examples.md) %}

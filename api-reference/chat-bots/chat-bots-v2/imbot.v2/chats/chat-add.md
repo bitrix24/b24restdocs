@@ -1,4 +1,4 @@
-# Create Group Chat imbot.v2.Chat.add
+# Create a Group Chat imbot.v2.Chat.add
 
 > Scope: [`imbot`](../../../../scopes/permissions.md)
 >
@@ -18,9 +18,9 @@ The method `imbot.v2.Chat.add` creates a new group chat on behalf of the bot. If
 || **botToken**
 [`string`](../../../../data-types.md) | Unique authorization token for the bot. Required for webhook authorization, not needed for OAuth.
 
-Pass the same botToken that was specified during the chat-bot registration ||
+Pass the same botToken that was specified during the chat bot registration ||
 || **fields**
-[`object`](../../../../data-types.md) | Properties of the created chat. The structure of the object is described [below](#fields) ||
+[`object`](../../../../data-types.md) | Properties of the chat being created. The structure of the object is described [below](#fields) ||
 |#
 
 ### Parameter fields {#fields}
@@ -303,7 +303,7 @@ HTTP Code: **200**
 [`string`](../../../../data-types.md) | User type ||
 |#
 
-A complete description of all object fields can be found on the [Objects and Fields](../../entities.md) page.
+Complete description of all object fields can be found on the [Objects and Fields](../../entities.md) page.
 
 ## Error Handling
 
@@ -332,7 +332,8 @@ HTTP Status: **400**, **403**
 
 ## Continue Learning
 
-- [Get Information About the Chat imbot.v2.Chat.get](./chat-get.md)
-- [Update Chat Properties imbot.v2.Chat.update](./chat-update.md)
-- [Add Participants to Chat imbot.v2.Chat.User.add](./chat-user-add.md)
-- [Leave Chat imbot.v2.Chat.leave](./chat-leave.md)
+- [API Change Log for imbot.v2](../../change-log.md)
+- [{#T}](./chat-get.md)
+- [{#T}](./chat-update.md)
+- [{#T}](./chat-user-add.md)
+- [{#T}](./chat-leave.md)

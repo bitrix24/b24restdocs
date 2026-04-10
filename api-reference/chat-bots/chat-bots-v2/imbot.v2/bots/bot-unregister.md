@@ -1,4 +1,4 @@
-# Unregister the bot imbot.v2.Bot.unregister
+# Remove the Automation rule imbot.v2.Bot.unregister
 
 > Scope: [`imbot`](../../../../scopes/permissions.md)
 >
@@ -8,7 +8,7 @@ The method `imbot.v2.Bot.unregister` removes the bot.
 
 ## Method Parameters
 
-{% include [Parameters Note](../../../../../_includes/required.md) %}
+{% include [Footnote on parameters](../../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -18,12 +18,12 @@ The method `imbot.v2.Bot.unregister` removes the bot.
 || **botToken**
 [`string`](../../../../data-types.md) | Unique authorization token for the bot. Required for webhook authorization, not needed for OAuth.
 
-Pass the same botToken that was specified during the chat bot registration ||
+Pass the same botToken that was specified during the chat-bot registration ||
 |#
 
 ## Code Examples
 
-{% include [Examples Note](../../../../../_includes/examples.md) %}
+{% include [Footnote on examples](../../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -172,7 +172,7 @@ HTTP Status: **400**, **403**
 || `BOT_TOKEN_NOT_SPECIFIED` | Bot token is not specified | `botToken` is not provided. Required for webhook authorization ||
 || `BOT_ID_REQUIRED` | Bot ID is required | `botId` is not provided ||
 || `BOT_NOT_FOUND` | Bot not found | Bot not found ||
-|| `BOT_OWNERSHIP_ERROR` | Bot is registered by another application | Bot is registered by another application ||
+|| `BOT_OWNERSHIP_ERROR` | Bot is registered by another application | Bot registered by another application ||
 || `BOT_UNREGISTER_FAILED` | Bot unregistration failed | Error deleting the bot ||
 |#
 
@@ -180,7 +180,8 @@ HTTP Status: **400**, **403**
 
 ## Continue Learning
 
-- [Register a Bot imbot.v2.Bot.register](./bot-register.md)
-- [Get Information About the Bot imbot.v2.Bot.get](./bot-get.md)
-- [List of Bots for the imbot.v2.Bot.list Application](./bot-list.md)
-- [Update the bot imbot.v2.Bot.update](./bot-update.md)
+- [API Change Log for imbot.v2](../../change-log.md)
+- [{#T}](./bot-register.md)
+- [{#T}](./bot-get.md)
+- [{#T}](./bot-list.md)
+- [{#T}](./bot-update.md)

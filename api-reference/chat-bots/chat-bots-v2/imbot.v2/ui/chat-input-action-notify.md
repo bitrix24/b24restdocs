@@ -4,11 +4,11 @@
 >
 > Who can execute the method: owner of the registered bot
 
-The method `imbot.v2.Chat.InputAction.notify` sends an action indicator from the bot to the chat — for example, "bot is typing".
+The method `imbot.v2.Chat.InputAction.notify` sends a bot action indicator to the chat — for example, "bot is typing".
 
 ## Method Parameters
 
-{% include [Footnote on parameters](../../../../../_includes/required.md) %}
+{% include [Footnote about parameters](../../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -18,13 +18,13 @@ The method `imbot.v2.Chat.InputAction.notify` sends an action indicator from the
 || **botToken**
 [`string`](../../../../data-types.md) | Unique authorization token for the bot. Required for webhook authorization, not needed for OAuth.
 
-Pass the same botToken that was specified during the registration of the chatbot. ||
+Pass the same botToken that was specified during the chat bot registration ||
 || **dialogId***
 [`string`](../../../../data-types.md) | Dialog ID. For group chats — `chat{chatId}`, for personal chats — `{userId}` ||
 || **statusMessageCode**
-[`string`](../../../../data-types.md) | Status code for the action. A list of available codes is described [below](#status-codes). If not specified, the standard "typing" indicator is displayed. ||
+[`string`](../../../../data-types.md) | Action status code. A list of available codes is described [below](#status-codes). If not specified, the standard "typing" indicator is displayed ||
 || **duration**
-[`integer`](../../../../data-types.md) | Duration of the indicator display in seconds (1–600). Default is determined by the server. ||
+[`integer`](../../../../data-types.md) | Duration of the indicator display in seconds (1–600). Default is determined by the server ||
 |#
 
 ### Available statusMessageCode {#status-codes}
@@ -46,7 +46,7 @@ Pass the same botToken that was specified during the registration of the chatbot
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../../../_includes/examples.md) %}
+{% include [Footnote about examples](../../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -184,7 +184,7 @@ HTTP Code: **200**
 || **Name**
 `Type` | **Description** ||
 || **result**
-[`boolean`](../../../../data-types.md) | `true` if the indicator was sent successfully ||
+[`boolean`](../../../../data-types.md) | `true` if the indicator was successfully sent ||
 || **time**
 [`time`](../../../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -217,5 +217,6 @@ HTTP Status: **400**, **403**
 
 ## Continue Learning
 
-- [Managing the Text Input Field imbot.v2.Chat.TextField.enabled](./chat-text-field-enabled.md)
-- [Send Message imbot.v2.Chat.Message.send](../messages/chat-message-send.md)
+- [API Change Log for imbot.v2](../../change-log.md)
+- [{#T}](./chat-text-field-enabled.md)
+- [{#T}](../messages/chat-message-send.md)

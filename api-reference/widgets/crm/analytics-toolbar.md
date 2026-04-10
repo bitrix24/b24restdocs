@@ -1,12 +1,12 @@
-# Dropdown Menu Item of the Top Button in CRM Analytics CRM_ANALYTICS_TOOLBAR
+# Dropdown Menu Item for the CRM Analytics Toolbar CRM_ANALYTICS_TOOLBAR
 
 > Scope: [`intranet`](../../scopes/permissions.md)
 
-You can add your own dropdown menu item to the top button in CRM Analytics.
+You can add your own dropdown menu item to the CRM Analytics toolbar.
 
 ![Widget as an item in the CRM Analytics toolbar](./_images/CRM_ANALYTICS_TOOLBAR.png "Widget as an item in the CRM Analytics toolbar")
 
-The specific placement code for the widget is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
+The specific widget placement code is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
 
 {% note info "" %}
 
@@ -16,17 +16,16 @@ The widget will not be displayed in the interface until the application installa
 
 ## Where the Widget is Embedded
 
-#|
+#| 
 || **Widget Code** | **Location** ||
-|| `CRM_ANALYTICS_TOOLBAR` | Dropdown menu item of the top button in CRM Analytics ||
+|| `CRM_ANALYTICS_TOOLBAR` | Dropdown menu item in the CRM Analytics toolbar ||
 |#
 
 ## What the Handler Receives
 
-Data is sent as a POST request {.b24-info}
+Data is transmitted as a POST request {.b24-info}
 
 ```php
-
 Array
 (
     [DOMAIN] => xxx.bitrix24.com
@@ -40,7 +39,6 @@ Array
     [status] => L
     [PLACEMENT] => CRM_ANALYTICS_TOOLBAR
 )
-
 ```
 
 {% include [Note on Required Parameters](../../../_includes/required.md) %}
@@ -55,7 +53,5 @@ In the current widget, the `PLACEMENT_OPTIONS` parameter is not passed.
 
 - [{#T}](../placement-bind.md)
 - [{#T}](../ui-interaction/index.md)
-- [{#T}](../ui-interaction/crm-card.md)
 - [{#T}](../../../settings/interactivity/index.md)
-- [{#T}](../open-application.md)
-- [{#T}](../open-path.md)
+- [{#T}](../bx24-widget-methods.md)

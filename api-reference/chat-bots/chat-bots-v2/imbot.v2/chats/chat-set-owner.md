@@ -183,8 +183,8 @@ HTTP Status: **400**, **403**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `BOT_TOKEN_NOT_SPECIFIED` | Bot token is not specified | `botToken` is not provided. Required for webhook authorization ||
-|| `BOT_ID_REQUIRED` | Bot ID is required | `botId` is not provided ||
+|| `BOT_TOKEN_NOT_SPECIFIED` | Bot token is not specified | Bot token is not specified. Required for webhook authorization ||
+|| `BOT_ID_REQUIRED` | Bot ID is required | Bot ID is required ||
 || `BOT_NOT_FOUND` | Bot not found | Bot not found ||
 || `BOT_OWNERSHIP_ERROR` | Bot is registered by another application | Bot is registered by another application ||
 || `ACCESS_DENIED` | Access denied | Bot is not a participant in the chat or is not the owner of the chat ||
@@ -194,5 +194,6 @@ HTTP Status: **400**, **403**
 
 ## Continue Learning
 
-- [Add Chat Managers imbot.v2.Chat.Manager.add](./chat-manager-add.md)
-- [Get Information About the Chat imbot.v2.Chat.get](./chat-get.md)
+- [API Change Log for imbot.v2](../../change-log.md)
+- [{#T}](./chat-manager-add.md)
+- [{#T}](./chat-get.md)

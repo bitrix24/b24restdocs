@@ -5,7 +5,7 @@ Chatbot messages support BB codes: text highlighting, quotes, links, line breaks
 {% note warning "" %}
 
 Currently, the platform only supports **BBCode**.  
-Support for **Markdown** will be available in future updates.  
+Support for **Markdown** will be added in future updates.  
 At this time, **Markdown is not supported**.
 
 {% endnote %}
@@ -29,7 +29,7 @@ Methods that support formatting:
 - [im.notify.personal.add](../../../../chats/notifications/im-notify-personal-add.md) — send a personal notification
 - [im.notify.system.add](../../../../chats/notifications/im-notify-system-add.md) — send a system notification
 
-**Deprecated Chatbots (`imbot`)**
+**Outdated Chatbots (`imbot`)**
 
 - [imbot.message.add](../../../outdated/messages/imbot-message-add.md) — send a message on behalf of the chatbot
 - [imbot.message.update](../../../outdated/messages/imbot-message-update.md) — update a sent message from the chatbot
@@ -39,7 +39,7 @@ Methods that support formatting:
 
 ### Text Formatting
 
-#|
+#| 
 || **Code** | **Purpose** | **Example** ||
 || `[b]...[/b]` | Bold text | `[b]bold[/b]` ||
 || `[i]...[/i]` | Italic | `[i]italic[/i]` ||
@@ -57,20 +57,20 @@ For `size`, a range of `8-30px` is used. For `color`, HEX values of 3 or 6 chara
 
 ### Links and Navigation
 
-#|
+#| 
 || **Code** | **Purpose** | **Example** ||
-|| `[url]...[/url]` | Link where the text equals the URL | `[url]https://example.com[/url]` ||
+|| `[url]...[/url]` | Link where text equals URL | `[url]https://example.com[/url]` ||
 || `[url=URL]...[/url]` | Link with custom text | `[url=https://example.com]text[/url]` ||
 || `[user=userId]...[/user]` | User mention | `[user=123]John[/user]` ||
 || `[user=all]...[/user]` | Mention all chat participants | `[user=all]Everyone[/user]` ||
-|| `[chat=chatId]...[/chat]` | Mention chat | `[chat=456]Group[/chat]` ||
+|| `[chat=chatId]...[/chat]` | Chat mention | `[chat=456]Group[/chat]` ||
 || `[chat=imol|ID]...[/chat]` | Mention open channel | `[chat=imol|789]Line[/chat]` ||
 || `[context=dialog/message]...[/context]` | Link to a message in a dialog | `[context=chat123/456]link[/context]` ||
 |#
 
 ### Quotes and Code
 
-#|
+#| 
 || **Code** | **Purpose** | **Example** ||
 || `>>text` | Quote line (at the beginning of the line) | `>>this is a quote` ||
 || `------ ... ------` | Full quote of a message | `------ ... ------` ||
@@ -79,7 +79,7 @@ For `size`, a range of `8-30px` is used. For `color`, HEX values of 3 or 6 chara
 
 ### Images and Icons
 
-#|
+#| 
 || **Code** | **Purpose** | **Example** ||
 || `[img size=SIZE]URL [/img]` | Insert image | `[img size=medium]https://example.com/pic.jpg [/img]` ||
 || `[icon=URL ...]` | Inline icon | `[icon=https://example.com/i.png size=20 title=smile]` ||
@@ -87,13 +87,13 @@ For `size`, a range of `8-30px` is used. For `color`, HEX values of 3 or 6 chara
 
 {% note info "" %}
 
-For the `img` tag, the `size` parameter is required: `small`, `medium`, `large`. A space is needed after the URL before `[/img]`.
+For the `img` tag, the `size` parameter is required: `small`, `medium`, `large`. A space is required after the URL before `[/img]`.
 
 {% endnote %}
 
 ### Actions and Calls
 
-#|
+#| 
 || **Code** | **Purpose** | **Example** ||
 || `[put=command]text[/put]` | Insert command into input field | `[put=/help]Help[/put]` ||
 || `[send=command]text[/send]` | Immediately send command | `[send=/start]Start[/send]` ||
@@ -103,15 +103,15 @@ For the `img` tag, the `size` parameter is required: `small`, `medium`, `large`.
 
 ### Date/Time and Files
 
-#|
+#| 
 || **Code** | **Purpose** | **Example** ||
 || `[timestamp=UNIX format=FORMAT]` | Formatted date/time in user's timezone | `[timestamp=1645844720 format=SHORT_TIME_FORMAT]` ||
 || `[disk=ID]` | Link to a file on Bitrix24.Drive | `[disk=123]` ||
 |#
 
-## Control Elements
+## Service Elements
 
-#|
+#| 
 || **Element** | **Purpose** ||
 || `[br]` | Line break ||
 || `\n` | Line break ||
@@ -135,8 +135,8 @@ For the `img` tag, the `size` parameter is required: `small`, `medium`, `large`.
 
 ```markdown
 First line[br]Second line
->>first line of the quote
->>second line of the quote
+>>first line of quote
+>>second line of quote
 ```
 
 ![Line Break Result](./_images/br1.png)
@@ -159,7 +159,9 @@ First line[br]Second line
 [icon=http://files.shelenkov.com/images/unicorn.png size=30 title=Unicorn]
 ```
 
-## Example of Sending a Message with Formatting
+![Link Result](./_images/unicorn.png)
+
+## Example of Sending a Formatted Message
 
 {% include [Example Notes](../../../../../_includes/examples.md) %}
 
@@ -171,7 +173,7 @@ First line[br]Second line
   curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"botId":456,"botToken":"my_bot_token","dialogId":"chat2725","fields":{"message":"[b]Important message[/b][br]Open [url=https://bitrix24.com]website[/url][br][send=/help]Help[/send]"}}' \
+    -d '{"botId":456,"botToken":"my_bot_token","dialogId":"chat2725","fields":{"message":"[b]Important message[/b][br]Open [url=https://bitrix24.com]site[/url][br][send=/help]Help[/send]"}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/imbot.v2.Chat.Message.send
   ```
 
@@ -181,7 +183,7 @@ First line[br]Second line
   curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"botId":456,"dialogId":"chat2725","fields":{"message":"[b]Important message[/b][br]Open [url=https://bitrix24.com]website[/url][br][send=/help]Help[/send]"},"auth":"**put_access_token_here**"}' \
+    -d '{"botId":456,"dialogId":"chat2725","fields":{"message":"[b]Important message[/b][br]Open [url=https://bitrix24.com]site[/url][br][send=/help]Help[/send]"},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/imbot.v2.Chat.Message.send
   ```
 
@@ -193,7 +195,7 @@ First line[br]Second line
           botId: 456,
           dialogId: 'chat2725',
           fields: {
-              message: '[b]Important message[/b][br]Open [url=https://bitrix24.com]website[/url][br][send=/help]Help[/send]',
+              message: '[b]Important message[/b][br]Open [url=https://bitrix24.com]site[/url][br][send=/help]Help[/send]',
           },
       });
 
@@ -216,7 +218,7 @@ First line[br]Second line
                   'botId' => 456,
                   'dialogId' => 'chat2725',
                   'fields' => [
-                      'message' => '[b]Important message[/b][br]Open [url=https://bitrix24.com]website[/url][br][send=/help]Help[/send]',
+                      'message' => '[b]Important message[/b][br]Open [url=https://bitrix24.com]site[/url][br][send=/help]Help[/send]',
                   ],
               ]
           );
@@ -241,7 +243,7 @@ First line[br]Second line
           botId: 456,
           dialogId: 'chat2725',
           fields: {
-              message: '[b]Important message[/b][br]Open [url=https://bitrix24.com]website[/url][br][send=/help]Help[/send]',
+              message: '[b]Important message[/b][br]Open [url=https://bitrix24.com]site[/url][br][send=/help]Help[/send]',
           },
       },
       function(result) {
@@ -265,7 +267,7 @@ First line[br]Second line
           'botId' => 456,
           'dialogId' => 'chat2725',
           'fields' => [
-              'message' => '[b]Important message[/b][br]Open [url=https://bitrix24.com]website[/url][br][send=/help]Help[/send]',
+              'message' => '[b]Important message[/b][br]Open [url=https://bitrix24.com]site[/url][br][send=/help]Help[/send]',
           ],
       ]
   );
@@ -281,7 +283,8 @@ First line[br]Second line
 
 ## Continue Learning
 
-- [Working with Keyboards](./message-keyboards.md)
-- [Attachments in Messages ATTACH](./attachments/index.md)
-- [Send Message imbot.v2.Chat.Message.send](./chat-message-send.md)
-- [Update Message imbot.v2.Chat.Message.update](./chat-message-update.md)
+- [API imbot.v2 Change Log](../../change-log.md)
+- [{#T}](./message-keyboards.md)
+- [{#T}](./attachments/index.md)
+- [{#T}](./chat-message-send.md)
+- [{#T}](./chat-message-update.md)

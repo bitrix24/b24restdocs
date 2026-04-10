@@ -1,57 +1,88 @@
-# View Template Object
+# Object View Template: Overview of Methods
 
-{% note warning "We are still updating this page" %}
+A view template is a structure that Bitrix24 uses to assemble a website page. It defines where the main content will be located and which additional design elements are included. The template does not store content; it only specifies the layout of the page sections.
 
-Some data may be missing — we will complete it soon.
+This helps avoid recreating the design for each page. Common elements are placed in separate areas and reused. For example, you can create a page with a header and connect it to all pages of the site. If the header changes, the updates will apply across all pages.
 
-{% endnote %}
+> Quick Navigation: [all methods](#all-methods)
 
-{% if build == 'dev' %}
+## How the Template Works at the Site and Page Level
 
-{% note alert "TO-DO _not exported to prod_" %}
+The template can be set at either the site or page level.
 
-- edits needed to meet writing standards
+**Site.** The site template defines the overall appearance of all pages. For instance, if a template with a header and footer is selected at the site level, this structure will be used by default on all pages. The site template identifier is passed in the [`TPL_ID`](../site/base-fields.md) field. The included areas at the site level are managed and modified using the [landing.template.getSiteRef](./landing-template-get-site-ref.md) and [landing.template.setSiteRef](./landing-template-set-site-ref.md) methods.
 
-{% endnote %}
+**Page.** A specific page can have its own template. This is necessary if the page needs to differ from the overall site structure. For example, the site may have a template with a sidebar, while a promotional landing page may not have a sidebar. The page template identifier is passed in the `TPL_ID` field of the [landing.landing.add](../page/methods/landing-landing-add.md) and [landing.landing.update](../page/methods/landing-landing-update.md) methods. The bindings for included areas for the page are managed by the [landing.template.getLandingRef](./landing-template-get-landing-ref.md) and [landing.template.setLandingRef](./landing-template-set-landing-ref.md) methods.
 
-{% endif %}
+**Priority of Settings.** If the settings for the site and page differ, Bitrix24 applies the page settings.
 
-The object describes the templates for the page view (with header, footer, sidebar).
+## System Templates
 
-> Quick navigation: [all methods](#all-methods)
+Bitrix24 includes ready-made view templates. These define the structure of the page: for example, whether it will have a header, footer, or sidebar. These templates are already configured in Bitrix24. It is not possible to create a new system template or modify an existing one.
 
-View templates describe the views of a specific site or page regarding how their layout appears:
+Each template has two identifiers:
 
-- With header and footer
-- With left sidebar
-- With right sidebar
-- Their variations
+-  `XML_ID` — the external code of the template. For example, `sidebar_right` is a template with a right sidebar, while `header_footer` is a template with a header and footer.
 
-The binding to the page is stronger than the binding to the site (if both the site and the page of that site are bound to different templates, the output will occur according to the page template grid). Each area of such a template is a separate page (with a set of blocks and other similar characteristics).
+-  `ID` — the internal identifier of the template.
 
-Currently, the system has several pre-installed view templates, and there is no option for third-party developers to expand them.
-
-Here is the list:
+The table below lists the external codes `XML_ID` of the system templates. To obtain the internal `ID` of a template by its `XML_ID`, use [landing.template.getlist](./landing-template-get-list.md).
 
 #|
-|| **External Code (XML_ID)** | **Name** ||
-|| **empty** | Empty ||
-|| **sidebar_left** | With left sidebar ||
-|| **sidebar_right** | With right sidebar ||
-|| **header_footer** | With header and footer ||
-|| **without_left** | Without left sidebar ||
-|| **without_right** | Without right sidebar ||
+|| **XML_ID** | **Name** ||
+|| `empty` | Empty ||
+|| `sidebar_left` | With left sidebar ||
+|| `sidebar_right` | With right sidebar ||
+|| `header_footer` | With header and footer ||
+|| `without_left` | Without left sidebar ||
+|| `without_right` | Without right sidebar ||
 |#
 
-Please note that template identifiers are not specified here; however, when passing to the [site](../site/base-fields.md) or [page](../page/index.md), you need to specify the identifier. To obtain the identifier directly, use the method [landing.template.getlist](./landing-template-get-list.md). You will receive a list of identifiers specific to your account.
+## How Included Areas Work
+
+Included areas are separate pages that are inserted into the template and used as recurring design elements: header, footer, or sidebar.
+
+For example, you can create a separate page with a menu and a banner in the header, bind it to the area `#AREA_1#`, and then this block will automatically appear on all pages of the site that use such a template.
+
+In the template, each area is designated as `#AREA_N#`, where `N` is the area number. For example:
+
+-  `#AREA_1#` — the first additional area,
+
+-  `#AREA_2#` — the second additional area.
+
+To configure the areas, you need to know:
+
+-  the identifier of the site or page for which the binding is saved, and the identifier of the page that needs to be inserted into the area. The site identifier can be obtained using the [landing.site.getList](../site/landing-site-get-list.md) method, while the page identifier can be obtained using the [landing.landing.getList](../page/methods/landing-landing-get-list.md) method,
+
+-  the area number from the `CONTENT` of the template. The `CONTENT` field is returned by the [landing.template.getlist](./landing-template-get-list.md) method, and its structure is described in the article [Template Fields](./fields.md),
+
+-  the final set of bindings for reading or writing. The necessary methods are listed in the [overview below](#all-methods).
 
 ## Overview of Methods {#all-methods}
+
+> Scope: [`landing`](../../scopes/permissions.md)
+>
+> Who can execute the method: depending on the method
+
+### View Templates
+
+#|
+|| **Method** | **Description** ||
+|| [landing.template.getlist](./landing-template-get-list.md) | Retrieves a list of view templates ||
+|#
+
+### Included Areas of the Site
+
+#|
+|| **Method** | **Description** ||
+|| [landing.template.getSiteRef](./landing-template-get-site-ref.md) | Retrieves a list of included areas for the site ||
+|| [landing.template.setSiteRef](./landing-template-set-site-ref.md) | Sets included areas for the site ||
+|#
+
+### Included Areas of the Page
 
 #|
 || **Method** | **Description** ||
 || [landing.template.getLandingRef](./landing-template-get-landing-ref.md) | Retrieves a list of included areas for the page ||
-|| [landing.template.getlist](./landing-template-get-list.md) | Retrieves a list of templates ||
-|| [landing.template.getSiteRef](./landing-template-get-site-ref.md) | Retrieves a list of included areas for the site ||
-|| [landing.template.setLandingRef](./landing-template-set-landing-ref.md) | Sets the included areas for the page ||
-|| [landing.template.setSiteRef](./landing-template-set-site-ref.md) | Sets the included areas for the site ||
+|| [landing.template.setLandingRef](./landing-template-set-landing-ref.md) | Sets included areas for the page ||
 |#

@@ -1,72 +1,57 @@
-# Open Popup BX24.openApplication
+# Open the Popup Window BX24.openApplication
 
-{% note warning "We are still updating this page" %}
-
-Some data may be missing here — we will complete it shortly.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- parameter types are not specified
-- parameter requirements are not indicated
-- examples are missing
-- success response is absent
-- error response is absent
-- the parameter list should probably be split into separate tables
-
-{% endnote %}
-
-{% endif %}
+The method `BX24.openApplication` opens a popup window with an application frame. You can pass parameters and a close handler to the application being opened.
 
 ```js
-void BX24.openApplication([
-    Object parameters[
-    Function closeCallback
-    ]
-]);
+void BX24.openApplication([Object params], [Function closeCallback], [Object settings])
 ```
-
-When the method `BX24.openApplication` is called, a popup window will open with the application frame. The application will receive data from the parameters parameter. The closeCallback handler will be invoked when the popup window is closed. The method can control the size, title, and label of the slider.
 
 ## Parameters
 
-#|
-|| **Parameter** | **Description** ||
-|| **parameters**
-[`unknown`](../../../api-reference/data-types.md) | An object with parameters that will be passed to the opened application as a JSON string ||
+#| 
+|| **Name**
+`type` | **Description** ||
+|| **params**
+`object` | An object of parameters that will be passed to the opened application ||
 || **closeCallback**
-[`unknown`](../../../api-reference/data-types.md) | The application close handler ||
-|| **bx24_width**
-[`unknown`](../../../api-reference/data-types.md) | The width of the slider ||
-|| **bx24_label**
-[`unknown`](../../../api-reference/data-types.md) | The title of the label ||
-|| **bx24_title**
-[`unknown`](../../../api-reference/data-types.md) | The title of the page ||
-|| **bx24_leftBoundary**
-[`unknown`](../../../api-reference/data-types.md) | The slider spans the full width with a left margin. Cannot be used simultaneously with bx24_width. ||
+`function` | A function that will be called after the popup window is closed ||
+|| **settings**
+`object` | Additional window settings. Keys from `settings` are automatically added to `params` with the prefix `bx24_` ||
 |#
 
-For placements `CRM_*_LIST_MENU`, it is blocked.
+### Settings Parameter {#settings}
 
-## Examples
+#| 
+|| **Name**
+`type` | **Description** ||
+|| **width**
+`integer` | Width of the slider. Passed as `bx24_width` ||
+|| **label**
+`object` | Parameters for the label. Passed as `bx24_label` ||
+|| **title**
+`string` | Page title. Passed as `bx24_title` ||
+|| **leftBoundary**
+`integer` | Left margin of the slider. Passed as `bx24_leftBoundary`. Not used simultaneously with `width` ||
+|#
 
-A unified example for BX24.openApplication and [BX24.closeApplication](./bx24-close-application.md)
+> In some contexts of opening the window, the parameters `bx24_label.bgColor` and `bx24_label.text` may not apply. Meanwhile, `bx24_label.color` may affect the color of the window's interface elements, such as the close icon.
 
-```js
+## Code Example
+
+{% include [Example Note](../../../_includes/examples.md) %}
+
+A unified example for `BX24.openApplication` and [BX24.closeApplication](./bx24-close-application.md):
+
+```php
 <script src="//api.bitrix24.com/api/v1/"></script>
 <?
-// parsing input data
 $placementOptions = array();
-if(array_key_exists('PLACEMENT_OPTIONS', $_REQUEST))
+if (array_key_exists('PLACEMENT_OPTIONS', $_REQUEST))
 {
     $placementOptions = json_decode($_REQUEST['PLACEMENT_OPTIONS'], true);
 }
 
-// if the application is not opened, display the open button; otherwise, display the close button
-if(!isset($placementOptions['opened']))
+if (!isset($placementOptions['opened']))
 {
 ?>
     <span onclick="openApplication()">Open</span>
@@ -78,23 +63,21 @@ else
     <span onclick="closeApplication()">Close</span>
 <?
 }
-
 ?>
 <script>
     function openApplication()
     {
         BX24.openApplication(
             {
-                'opened': true // data passed to the opened application
+                opened: true
             },
             function()
             {
-                // this handler will be triggered when the application is closed
-                alert('Application closed!')
+                alert('Application closed!');
             }
         );
 
-        setTimeout(closeApplication, 15000); // automatically close after 15 seconds
+        setTimeout(closeApplication, 15000);
     }
 
     function closeApplication()
@@ -104,26 +87,31 @@ else
 </script>
 ```
 
-Example with slider
+### Slider Example
 
 ```js
 BX24.openApplication(
-    {
-        'opened': true,
-        'bx24_width': 450,// int
-        'bx24_label': {
-            'bgColor':'pink', // aqua/green/orange/brown/pink/blue/grey/violet
-            'text': 'my task',
-            'color': '#07ff0e',
-        },
-        'bx24_title': 'my title', // str
-        //'bx24_leftBoundary': 300, //int
+    { opened: true },
+    function () {
+        console.log('Application closed');
     },
-    function()
     {
-        console.log('Application closed!')
+        width: 450,
+        label: {
+            bgColor: 'pink',
+            text: 'my task',
+            color: '#07ff0e'
+        },
+        title: 'my title'
     }
 );
 ```
 
-{% include [Note on examples](../../../_includes/examples.md) %}
+## Response Handling
+
+The method does not return data (`void`).
+
+## Continue Learning
+
+- [{#T}](./bx24-close-application.md)
+- [{#T}](./bx24-open-path.md)

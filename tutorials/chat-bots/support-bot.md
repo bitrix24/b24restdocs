@@ -14,7 +14,7 @@ To do this, follow these steps:
 
 ![Adding Bitrix24.Network](./_images/add_network01.png)
 
-- After that, the connection settings form for `Bitrix24.Network` will be available:
+- After that, the connection settings form for `Bitrix24.Network` will become available:
 
 ![Bitrix24.Network Settings](./_images/add_network02.png)
 
@@ -28,7 +28,7 @@ To do this, follow these steps:
 
 ![Creating or Selecting an Open Line](./_images/add_network000.png)
 
-You can automatically connect your open line to the user account using the method [imopenlines.network.join](../../api-reference/imopenlines/openlines/imopenlines-network-join.md):
+Using the method [imopenlines.network.join](../../api-reference/imopenlines/openlines/imopenlines-network-join.md), you can automatically connect your open line to the user account:
 
 ```php
 $result = restCommand(
@@ -50,6 +50,6 @@ Thank you for setting up, we will be happy to help if you have any questions —
 
 {% note info %}
 
-`restCommand` is a method for sending data to *Bitrix24*. This method is available in [EchoBot](https://github.com/bitrix24com/bots) and is presented here as an example. You can use your own function or the JavaScript method [BX24.callMethod](../../first-steps/how-to-use-examples.md), as well as [bitrix24-php-sdk](https://github.com/mesilov/bitrix24-php-sdk). You can also open such a support channel using the JavaScript method [BX24.im.openMessenger](../../sdk/bx24-js-sdk/additional-functions/bx24-im-open-messenger.md).
+`restCommand` is a method for sending data to *Bitrix24*, this method is available in [EchoBot](https://github.com/bitrix24com/bots) and is presented here as an example. You can use your own function or the javascript method [BX24.callMethod](../../first-steps/how-to-use-examples.md), as well as [bitrix24-php-sdk](https://github.com/mesilov/bitrix24-php-sdk). You can also open such a support channel through the javascript method [BX24.im.openMessenger](../../sdk/bx24-js-sdk/additional-functions/messenger-open-chat.md).
 
 {% endnote %}

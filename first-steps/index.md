@@ -10,7 +10,7 @@ Below is a recommended sequence for studying the documentation that will help yo
 
 {% note tip  "" %}
 
-To understand the architecture of applications, authorization principles, working with the REST API, and the environment structure, study the [application development course for Bitrix24](https://dev.1c-bitrix.com/learning/course/index.php?COURSE_ID=266&INDEX=Y).
+To understand the architecture of applications, authorization principles, working with the REST API, and the environment structure, study the [application development course for Bitrix24](https://helpdesk.bitrix24.com/courses/index.php?COURSE_ID=268).
 
 {% endnote %}
 

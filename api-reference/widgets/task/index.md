@@ -1,4 +1,4 @@
-# Context Menu Item of TASK_LIST_CONTEXT_MENU
+# Context Menu Item for TASK_LIST_CONTEXT_MENU
 
 > Scope: [`task`](../../scopes/permissions.md)
 
@@ -12,19 +12,18 @@ The widget will not be displayed in the interface until the application installa
 
 {% endnote %}
 
-## Where the widget is embedded
+## Where the Widget is Embedded
 
-#|
+#| 
 || **Widget Code** | **Location** ||
-|| `TASK_LIST_CONTEXT_MENU` | Context menu item of the list ||
+|| `TASK_LIST_CONTEXT_MENU` | Context menu item ||
 |#
 
-## What the handler receives
+## What the Handler Receives
 
-Data is sent as a POST request {.b24-info}
+Data is transmitted as a POST request {.b24-info}
 
 ```php
-
 Array
 (
     [DOMAIN] => xxx.bitrix24.com
@@ -39,34 +38,31 @@ Array
     [PLACEMENT] => TASK_LIST_CONTEXT_MENU
     [PLACEMENT_OPTIONS] => {"ID":"286"}
 )
-
 ```
 
-{% include [Note on required parameters](../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../_includes/required.md) %}
 
-{% include notitle [description of standard data](../_includes/widget_data.md) %}
+{% include notitle [Description of Standard Data](../_includes/widget_data.md) %}
 
 ### PLACEMENT_OPTIONS
 
 The value of `PLACEMENT_OPTIONS` is a JSON string containing an array of one or more keys.
 
-{% include [Note on required parameters](../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../_includes/required.md) %}
 
-#|
+#| 
 || **Parameter** | **Description** ||
-|| **ID***
+|| **ID*** 
 [`string`](../../data-types.md) | The identifier of the task for which the widget was opened.
 
 It can be used to retrieve additional information using the [tasks.task.get](../../tasks/tasks-task-get.md) method.
 
-||
+|| 
 |#
 
-## Continue exploring
+## Continue Your Exploration
 
 - [{#T}](../placement-bind.md)
 - [{#T}](../ui-interaction/index.md)
-- [{#T}](../ui-interaction/crm-card.md)
 - [{#T}](../../../settings/interactivity/index.md)
-- [{#T}](../open-application.md)
-- [{#T}](../open-path.md)
+- [{#T}](../bx24-widget-methods.md)

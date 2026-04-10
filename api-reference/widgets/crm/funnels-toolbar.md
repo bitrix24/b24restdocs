@@ -1,4 +1,4 @@
-# Menu Item in CRM Sales Funnels Toolbar
+# Menu Item in Sales Funnels CRM_FUNNELS_TOOLBAR
 
 > Scope: [`intranet`](../../scopes/permissions.md)
 
@@ -16,7 +16,7 @@ The widget will not be displayed in the interface until the application installa
 
 ## Where the Widget is Embedded
 
-#|
+#| 
 || **Widget Code** | **Location** ||
 || `CRM_FUNNELS_TOOLBAR` | Item in the sales funnels toolbar ||
 |#
@@ -26,7 +26,6 @@ The widget will not be displayed in the interface until the application installa
 Data is transmitted as a POST request {.b24-info}
 
 ```php
-
 Array
 (
     [DOMAIN] => xxx.bitrix24.com
@@ -40,12 +39,11 @@ Array
     [status] => L
     [PLACEMENT] => CRM_FUNNELS_TOOLBAR
 )
-
 ```
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Footnote on required parameters](../../../_includes/required.md) %}
 
-{% include notitle [Description of Standard Data](../_includes/widget_data.md) %}
+{% include notitle [description of standard data](../_includes/widget_data.md) %}
 
 ### PLACEMENT_OPTIONS
 
@@ -55,7 +53,5 @@ In the current widget, the `PLACEMENT_OPTIONS` parameter is not passed.
 
 - [{#T}](../placement-bind.md)
 - [{#T}](../ui-interaction/index.md)
-- [{#T}](../ui-interaction/crm-card.md)
 - [{#T}](../../../settings/interactivity/index.md)
-- [{#T}](../open-application.md)
-- [{#T}](../open-path.md)
+- [{#T}](../bx24-widget-methods.md)

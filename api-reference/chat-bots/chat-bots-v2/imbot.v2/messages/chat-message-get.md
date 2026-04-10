@@ -4,36 +4,36 @@
 >
 > Who can execute the method: owner of the registered bot
 
-The method `imbot.v2.Chat.Message.get` retrieves a message by its ID.
+The method `imbot.v2.Chat.Message.get` returns a message by its ID.
 
 Typical use-case: the bot received an event with `replyId` and wants to read the original message.
 
 {% note warning "" %}
 
-This method is only available for `supervisor` and `personal` type bots. For more details, see [Bot Types](../../../index.md#bot-types).
+The method is available only for `supervisor` and `personal` type bots. For more details, see [Bot Types](../../../index.md#bot-types).
 
 {% endnote %}
 
 ## Method Parameters
 
-{% include [Footnote on parameters](../../../../../_includes/required.md) %}
+{% include [Parameter Note](../../../../../_includes/required.md) %}
 
 #|
 || **Name**
 `Type` | **Description** ||
 || **botId***
-[`integer`](../../../../data-types.md) | ID of the bot ||
+[`integer`](../../../../data-types.md) | Bot ID ||
 || **botToken**
 [`string`](../../../../data-types.md) | Unique authorization token for the bot. Required for webhook authorization, not needed for OAuth.
 
-Use the same botToken that was specified during the registration of the chatbot. ||
+Pass the same botToken that was specified during the chat bot registration ||
 || **messageId***
-[`integer`](../../../../data-types.md) | ID of the message ||
+[`integer`](../../../../data-types.md) | Message ID ||
 |#
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../../../_includes/examples.md) %}
+{% include [Examples Note](../../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -208,7 +208,7 @@ HTTP Code: **200**
 || **text**
 [`string`](../../../../data-types.md) | Text of the message ||
 || **isSystem**
-[`boolean`](../../../../data-types.md) | System message indicator ||
+[`boolean`](../../../../data-types.md) | System message ||
 || **uuid**
 [`string`](../../../../data-types.md) | External identifier of the message ||
 || **forward**
@@ -236,7 +236,7 @@ HTTP Code: **200**
 [`string`](../../../../data-types.md) | Type of user ||
 |#
 
-A complete description of all object fields can be found on the [Objects and Fields](../../entities.md) page.
+Complete description of all object fields can be found on the [Objects and Fields](../../entities.md) page.
 
 ## Error Handling
 
@@ -258,15 +258,16 @@ HTTP Status: **400**, **403**
 || `BOT_TOKEN_NOT_SPECIFIED` | Bot token is not specified | `botToken` is not provided. Required for webhook authorization ||
 || `BOT_ID_REQUIRED` | Bot ID is required | `botId` is not provided ||
 || `BOT_NOT_FOUND` | Bot not found | Bot not found ||
-|| `BOT_OWNERSHIP_ERROR` | Bot is registered by another application | Bot is registered by another application ||
-|| `BOT_TYPE_NOT_ALLOWED` | Bot type not allowed | Method is only available for `supervisor` and `personal` type bots ||
+|| `BOT_OWNERSHIP_ERROR` | Bot is registered by another application | Bot registered by another application ||
+|| `BOT_TYPE_NOT_ALLOWED` | Bot type not allowed | Method available only for `supervisor` and `personal` type bots ||
 |#
 
 {% include [System Errors](../../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
-- [Get Message Context with imbot.v2.Chat.Message.getContext](./chat-message-get-context.md)
-- [Send Message imbot.v2.Chat.Message.send](./chat-message-send.md)
-- [Update Message imbot.v2.Chat.Message.update](./chat-message-update.md)
-- [Chatbots 2.0: Overview of Methods](../../index.md#bot-types)
+- [API Change Log for imbot.v2](../../change-log.md)
+- [{#T}](./chat-message-get-context.md)
+- [{#T}](./chat-message-send.md)
+- [{#T}](./chat-message-update.md)
+- [{#T}](../../index.md#bot-types)

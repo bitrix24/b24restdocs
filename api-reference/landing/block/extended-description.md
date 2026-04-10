@@ -1,128 +1,76 @@
 # Extended Description of Cards
 
-{% note warning "We are still updating this page" %}
+The extended description of cards is an advanced configuration of the `cards` key in the manifest, which allows for multiple card variations within a single list.
 
-Some data may be missing here — we will fill it in shortly.
+The basic principles of cards and nodes are outlined in the [block manifest](./manifest.md).
 
-{% endnote %}
+The extended description of cards is used when a single set of cards requires:
 
-{% if build == 'dev' %}
+- different sets of fields for cards in the same list, for example, just a phone number or phone number + e-mail + link
+- different layout options for identical objects
+- cards from predefined presets
 
-{% note alert "TO-DO _not exported to prod_" %}
+## Example of an Extended Card Description
 
-- edits are needed to meet the writing standard
-
-{% endnote %}
-
-{% endif %}
-
-To understand the principles of forming and working with cards, it is recommended to first familiarize yourself with the [manifest](./manifest.md).
-
-Extended cards were designed to address the following tasks:
-
-- Different sets of contacts (e-mail and phone, phone only, phone and social media).
-- The same set of fields but different graphical representations (social buttons).
-- And so on.
-All cards are collapsed into compact panels, with quick access to main functions: Sort, Edit, Delete.
-
-Clicking on the panel or the "Edit" button expands the panel into a card editing form.
-
-You can add either an empty card or a card from a preset.
-
-Composite and dynamic card headers are supported. The card title is formed from the data provided by the user. The header can be composed of text, images, icons, and links. Headers will be dynamically updated as the card values are edited.
-
-## Manifest of the Extended Card
-
-```js
+```php
 'cards' => [
     '.landing-block-card' => [
-        'name' => Loc::getMessage('LANDING_BLOCK_4_FEATURES_3_COLS_...'),
+        'name' => 'Contacts',
         'label' => [
             '.landing-block-node-element-icon',
-            '.landing-block-node-element-title'
+            '.landing-block-node-element-title',
         ],
         'presets' => [
-            'telegram' => [...],
-            'instagram' => [...],
-            'reddit' => [...],
-            'whatsapp' => [...],
-            'skype' => [...]
-        ]
-    ]
-]
-```
-
-**Key name**
-
-Defines the title of the card group. By default, it is used to form card titles like "Card 1", "Card 2".
-
-**Key label**
-
-Defines the rules for forming the card title. As a value, you can pass a node selector or an array of node selectors from which values should be taken to form the title.
-
-**Key presets**
-
-Defines the set of presets for the current card set. If the property value is not empty, a new card can only be added from a preset. It accepts an array of presets, with the preset identifiers as the keys of the array.
-
-## Preset
-
-```js
-'telegram' => [
-    'name' => ' Telegram',
-    'html' => '<html-code-of-preset>',
-    'values' => [
-        '.landing-block-node-element-title' => 'Telegram',
-        '.landing-block-node-element-text' => 'Any text ...',
-        '.landing-block-node-element-icon' => [
-            'type' => 'icon',
-            'classList' => [
-                'landing-block-node-element-icon',
-                'fa',
-                'fa-telegram'
-            ]
-        ]
+            'telegram' => [
+                'name' => 'Telegram',
+                'html' => '<html-preset-code>',
+                'values' => [
+                    '.landing-block-node-element-title' => 'Telegram',
+                    '.landing-block-node-element-text' => 'Any text ...',
+                    '.landing-block-node-element-icon' => [
+                        'type' => 'icon',
+                        'classList' => [
+                            'landing-block-node-element-icon',
+                            'fa',
+                            'fa-telegram',
+                        ],
+                    ],
+                ],
+                'disallow' => [
+                    '.landing-block-node-element-icon',
+                ],
+            ],
+        ],
     ],
-    'disallow' => [
-        '.landing-block-node-element-icon'
-    ]
-]
+],
 ```
 
-**Key name**
+## Fields of the Extended Card Description
 
-Defines the title of the preset. Supports HTML. Displayed in the dropdown list of presets.
+- `name` — the name of the card group in the interface
+- `label` — the rule for forming the card title. You can specify either a single node selector or an array of selectors
+- `presets` — a set of card presets. If `presets` is not empty, new cards are added from the presets. The value is an array where the keys are the preset identifiers
 
-**Key html**
+### Preset Fields
 
-The layout of the card. It may differ from the layout of other cards. When adding layout to a preset, it should be noted that only those nodes defined in nodes and not overridden in disallow will be editable.
+- `name` — the name of the preset in the list
+- `html` — the markup for the card in the preset. Only those nodes defined in `nodes` and not disabled via `disallow` can be edited
+- `values` — initial values for the nodes and fields of the card. The key is the node selector from `nodes`, and the value is the data in the format corresponding to the node type
+- `disallow` — a list of node selectors that cannot be edited
 
-**Key values**
+## Preset Markup
 
-Defines the values of nodes and fields of the card with which they will be initialized. The key is the node selector from nodes, and the value is the node value according to the node type.
+To link a card to a preset in the markup, specify the `data-card-preset` attribute with the preset code. The value of `data-card-preset` must match the key of the preset in `presets`.
 
-**Key disallow**
-
-Defines which nodes the user will not be able to edit. An array of selectors is expected as the value.
-
-## Layout of the Preset
-
-The layout of one preset is a repeatable block of code.
+The internal structure of the card may differ across different presets. For example, one variant may use a link inside `<li>`, while another may use an image instead of a link. However, it is recommended to keep the external container of the card uniform.
 
 Example:
 
 ```html
 <li class="landing-block-node-list-item col g-min-width-65 list-inline-item g-mr-0"
-	data-card-preset="telegram">
-	<a class="landing-block-node-list-item-link d-block g-py-15 g-px-30 g-bg-telegram--hover g-bg-telegram g-color-white text-center" href="#">
-		<i class="landing-block-node-list-item-icon fa fa-telegram"></i>
-	</a>
+    data-card-preset="telegram">
+    <a class="landing-block-node-list-item-link d-block g-py-15 g-px-30 g-bg-telegram--hover g-bg-telegram g-color-white text-center" href="#">
+        <i class="landing-block-node-list-item-icon fa fa-telegram"></i>
+    </a>
+</li>
 ```
-
-Ideologically, unlike a regular card, such repeatable contents can change. For example, in one `<li>` in the example above, there may be no link, or an image may be present instead.
-
-{% note info %}
-
-Please note that the content of the cards may differ, but it is better to keep the outer block consistent.
-Also, make sure to specify `data-card-preset="<preset code>"` in both the preset and the layout (see the example above).
-
-{% endnote %}

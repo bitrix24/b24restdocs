@@ -1,17 +1,113 @@
-# Open Channels in Bitrix24
+# Open Channels in Bitrix24: API for Lines and Connectors
 
-{% note warning "We are still updating this page" %}
+This section describes two related areas of the API.
+- [Open Channels](./openlines/index.md) — rules for processing inquiries within Bitrix24: operator queues, sessions, messages, chatbots, events, and CRM integration.
+- [Connectors](./imconnector/index.md) — connecting and maintaining external communication channels through which clients write to open channels.
 
-Some data may be missing here — we will fill it in shortly.
+> Quick navigation: [all methods and events](#all-methods)
+>
+> User documentation: [Contact Center and Open Channels](https://helpdesk.bitrix24.com/open/24095446/)
 
-{% endnote %}
+## How to Choose a Section
 
-{% if build == 'dev' %}
+#| 
+|| **Scenario** | **What to Use** ||
+|| Set up a line, operator queues, and inquiry processing rules | Methods from the [Open Channels](./openlines/index.md) section ||
+|| Connect your own external communication channel to Bitrix24 | Methods from the [Open Channels Connectors](./imconnector/index.md) section ||
+|| Connect an external open channel from another Bitrix24 to the current account | Method [imopenlines.network.join](./openlines/imopenlines-network-join.md) ||
+|| Subscribe to message, dialog, and status events | Events from the [Connectors Events](./imconnector/events/index.md) and [Open Channels Events](./openlines/events/index.md) sections ||
+|#
 
-{% note alert "TO-DO _not exported to prod_" %}
+## How Open Channels and Connectors are Related
 
-- from Sergei's file: what it is, how it works in general, where it can be improved, main scenarios.
+Both sets of methods are used for your own external channel: `imconnector.*` for registering and maintaining the connector, and `imopenlines.*` for configuring the line and processing dialogs. If you need to connect an external open channel from another Bitrix24 account without registering your own connector, use the method [imopenlines.network.join](./openlines/imopenlines-network-join.md).
 
-{% endnote %}
+## Relationships of Open Channels and Connectors with Other Objects
 
-{% endif %}
+**Chat.** The system processes inquiries as an open channel chat. Operations with messages, operators, and sessions are performed through the chat.
+
+**Session.** Within the chat, the inquiry proceeds as a session. To start a session, read history, connect an operator, and manage modes, use the group of methods [imopenlines.session.*](./openlines/sessions/index.md).
+
+**Operator.** The line distributes inquiries among operators from the queue. Queue configuration is done through `imopenlines.config.*`, while operator actions in an active dialog are handled through the group of methods [imopenlines.operator.*](./openlines/operators/index.md). To transfer a dialog to an operator, use `USER_ID`, which can be obtained through the methods [user.get](../user/user-get.md) and [user.search](../user/user-search.md).
+
+**External User.** A client from the external channel is linked to the dialog through `USER_CODE`. This identifier allows the system to determine which chat and session the inquiry belongs to.
+
+**Message.** The correspondence between the client and the operator is associated with the chat and session. To send messages and save quick replies, use the methods from the [Messages](./openlines/messages/index.md) section, and for reacting to message changes — the [Events](./openlines/events/index.md) section.
+
+**Chatbot.** The bot can send messages, transfer the dialog to an operator, and end the session using methods from the group [imopenlines.bot.*](./openlines/chat-bots/index.md).
+
+**CRM.** Open channel dialogs can be linked to CRM objects. To retrieve CRM chats, use the group of methods [imopenlines.crm.chat.*](./openlines/chats/index.md), and to create a lead based on the dialog outcome — the method [imopenlines.crm.lead.create](./openlines/sessions/imopenlines-crm-lead-create.md).
+
+**Universal Lists.** Quick replies are associated with the identifier `QUICK_ANSWERS_IBLOCK_ID`. You can obtain it using the method [imopenlines.config.get](./openlines/imopenlines-config-get.md), and set it when creating or updating a line using the methods [imopenlines.config.add](./openlines/imopenlines-config-add.md) and [imopenlines.config.update](./openlines/imopenlines-config-update.md).
+
+## Key Identifiers
+
+#| 
+|| **Identifier** | **Description** | **How to Obtain** ||
+|| `CHAT_ID` | Identifier of the open channel chat. Needed for actions with dialogs, messages, operators, and chatbots | [imopenlines.session.open](./openlines/sessions/imopenlines-session-open.md), [imopenlines.dialog.get](./openlines/sessions/imopenlines-dialog-get.md) ||
+|| `SESSION_ID` | Identifier of the session within the chat. Needed for reading history and managing the inquiry processing flow | [imopenlines.session.history.get](./openlines/sessions/imopenlines-session-history-get.md) ||
+|| `USER_CODE` | External code of the user from the communication channel. Needed to uniquely link the external client with the chat and session in the line | Generated by the external channel, used in [imopenlines.session.open](./openlines/sessions/imopenlines-session-open.md) ||
+|| `USER_ID` | Identifier of the Bitrix24 user. Needed for routing the dialog between operators and operator actions | [user.get](../user/user-get.md), [user.search](../user/user-search.md) ||
+|| `LINE`/`CONFIG_ID` | Identifier of the open channel. In the methods `imconnector.*`, the parameter `LINE` is usually used, while in the methods `imopenlines.config.*`, `CONFIG_ID` is used. This identifier is needed to retrieve line data, modify settings, and link connector messages | [imopenlines.config.get](./openlines/imopenlines-config-get.md), [imopenlines.config.list.get](./openlines/imopenlines-config-list-get.md), [imopenlines.config.update](./openlines/imopenlines-config-update.md) ||
+|| `CONNECTOR` | Identifier of the connector. Needed for the methods `imconnector.*` to work with the correct connected connector | Set during registration in [imconnector.register](./imconnector/imconnector-register.md) in the `ID` parameter, then passed, for example, in [imconnector.activate](./imconnector/imconnector-activate.md) and [imconnector.send.messages](./imconnector/imconnector-send-messages.md) ||
+|#
+
+## How to Get Started
+
+### Connect Your Own External Channel via Connector
+
+1. Register and activate the connector: [imconnector.register](./imconnector/imconnector-register.md), [imconnector.activate](./imconnector/imconnector-activate.md)
+2. Create an open channel and link it to the channel: [imopenlines.config.add](./openlines/imopenlines-config-add.md), [imconnector.connector.data.set](./imconnector/imconnector-connector-data-set.md)
+3. Check message sending and connector status: [imconnector.send.messages](./imconnector/imconnector-send-messages.md), [imconnector.status](./imconnector/imconnector-status.md)
+
+### Connect an External Open Channel from Another Bitrix24
+
+1. Connect the line using the method [imopenlines.network.join](./openlines/imopenlines-network-join.md)
+2. Check dialog processing: [imopenlines.session.open](./openlines/sessions/imopenlines-session-open.md), [imopenlines.operator.answer](./openlines/operators/imopenlines-operator-answer.md), [imopenlines.crm.message.add](./openlines/messages/imopenlines-crm-message-add.md)
+
+To automate, connect events: [Open Channels Events](./openlines/events/index.md), [Connectors Events](./imconnector/events/index.md)
+
+## Overview of Methods and Events {#all-methods}
+
+> Scope: [`imopenlines`](../scopes/permissions.md)
+>
+> Who can perform methods: depending on the method and access permissions to open channels
+
+### Open Channels
+
+#| 
+|| **Section** | **When to Use** | **Key Methods** ||
+|| Line Settings | Create a line, update settings, and retrieve parameters | [imopenlines.config.add](./openlines/imopenlines-config-add.md), [imopenlines.config.update](./openlines/imopenlines-config-update.md), [imopenlines.config.get](./openlines/imopenlines-config-get.md)
+
+ [All methods in the section](./openlines/index.md) ||
+|| Dialogs and Sessions | Find a chat, start a session, read history, and manage modes | [imopenlines.session.open](./openlines/sessions/imopenlines-session-open.md), [imopenlines.session.start](./openlines/sessions/imopenlines-session-start.md), [imopenlines.session.history.get](./openlines/sessions/imopenlines-session-history-get.md)
+
+[All methods in the section](./openlines/sessions/index.md) ||
+|| Operators | Transfer and finish a dialog, distribute inquiries among operators | [imopenlines.operator.answer](./openlines/operators/imopenlines-operator-answer.md), [imopenlines.operator.transfer](./openlines/operators/imopenlines-operator-transfer.md), [imopenlines.operator.finish](./openlines/operators/imopenlines-operator-finish.md)
+
+[All methods in the section](./openlines/operators/index.md) ||
+|| Messages | Send a message and save a quick reply | [imopenlines.crm.message.add](./openlines/messages/imopenlines-crm-message-add.md), [imopenlines.message.quick.save](./openlines/messages/imopenlines-message-quick-save.md)
+
+[All methods in the section](./openlines/messages/index.md) ||
+|| CRM Chats | Find a CRM chat and add participants | [imopenlines.crm.chat.get](./openlines/chats/imopenlines-crm-chat-get.md), [imopenlines.crm.chat.user.add](./openlines/chats/imopenlines-crm-chat-user-add.md)
+
+[All methods in the section](./openlines/chats/index.md) ||
+|| Chatbots | Automate the dialog using a chatbot | [imopenlines.bot.session.message.send](./openlines/chat-bots/imopenlines-bot-session-message-send.md), [imopenlines.bot.session.transfer](./openlines/chat-bots/imopenlines-bot-session-transfer.md)
+
+[All methods in the section](./openlines/chat-bots/index.md) ||
+|#
+
+Events: [Open Channels Events](./openlines/events/index.md)
+
+### Open Channels Connectors
+
+#| 
+|| **Section** | **When to Use** | **Key Methods** ||
+|| Registration and Connection | Register a channel and activate it in the account | [imconnector.register](./imconnector/imconnector-register.md), [imconnector.activate](./imconnector/imconnector-activate.md), [imconnector.connector.data.set](./imconnector/imconnector-connector-data-set.md) ||
+|| Message Exchange | Send, modify, and delete messages from the external channel | [imconnector.send.messages](./imconnector/imconnector-send-messages.md), [imconnector.update.messages](./imconnector/imconnector-update-messages.md), [imconnector.delete.messages](./imconnector/imconnector-delete-messages.md) ||
+|| Service Operations | Check the connector status, get a list, and disconnect channels | [imconnector.status](./imconnector/imconnector-status.md), [imconnector.list](./imconnector/imconnector-list.md), [imconnector.unregister](./imconnector/imconnector-unregister.md) ||
+|#
+
+All connector methods: [Open Channels Connectors](./imconnector/index.md)
+
+Events: [Connectors Events](./imconnector/events/index.md)

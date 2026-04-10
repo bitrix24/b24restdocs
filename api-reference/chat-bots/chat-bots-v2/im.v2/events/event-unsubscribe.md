@@ -1,4 +1,4 @@
-# Unsubscribe from Events im.v2.Event.unsubscribe
+# Unsubscribing from Events im.v2.Event.unsubscribe
 
 > Scope: [`im`](../../../../scopes/permissions.md)
 >
@@ -14,7 +14,7 @@ The method does not accept any parameters.
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../../../_includes/examples.md) %}
+{% include [Examples Note](../../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -128,7 +128,7 @@ HTTP Code: **200**
 || **Name**
 `Type` | **Description** ||
 || **result**
-[`boolean`](../../../../data-types.md) | `true` if the unsubscription was successful ||
+[`boolean`](../../../../data-types.md) | `true` if unsubscribed successfully ||
 || **time**
 [`time`](../../../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -141,5 +141,6 @@ HTTP Code: **200**
 
 ## Continue Learning
 
-- [Subscribe to Events im.v2.Event.subscribe](./event-subscribe.md)
-- [Get User Events im.v2.Event.get](./event-get.md)
+- [API Change Log imbot.v2](../../change-log.md)
+- [{#T}](./event-subscribe.md)
+- [{#T}](./event-get.md)

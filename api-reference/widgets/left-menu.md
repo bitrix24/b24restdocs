@@ -1,4 +1,4 @@
-# Widgets in the LEFT_MENU Main Menu
+# Widgets in the Main LEFT_MENU
 
 > Scope: [`basic`](../scopes/permissions.md)
 
@@ -14,19 +14,18 @@ The widget will not be displayed in the interface until the application installa
 
 {% endnote %}
 
-## Where the widget is embedded
+## Where the Widget is Embedded
 
 #| 
-|| **Placement Code** | **Location** ||
+|| **Widget Code** | **Location** ||
 || `LEFT_MENU` | Item in the main menu of the account ||
 |#
 
-## What the handler receives
+## What the Handler Receives
 
 Data is transmitted as a POST request {.b24-info}
 
 ```php
-
 Array
 (
     [handler] => 1
@@ -41,12 +40,11 @@ Array
     [status] => L
     [PLACEMENT] => LEFT_MENU
 )
-
 ```
 
-{% include notitle [Footnote on required parameters](../../_includes/required.md) %}
+{% include notitle [Footnote on Required Parameters](../../_includes/required.md) %}
 
-{% include notitle [description of standard data](_includes/widget_data.md) %}
+{% include notitle [Description of Standard Data](_includes/widget_data.md) %}
 
 ### PLACEMENT_OPTIONS
 
@@ -54,15 +52,13 @@ In the current widget, the `PLACEMENT_OPTIONS` parameter is not passed.
 
 {% note tip "Typical use-cases and scenarios" %}
 
-- [Application with its own page in the left menu](https://dev.quickbooks.com/learning/course/index.php?COURSE_ID=266&LESSON_ID=25538&LESSON_PATH=25398.25506.25530.25538)
+- [Application with its own page in the left menu](https://helpdesk.bitrix24.com/courses/index.php?COURSE_ID=268&LESSON_ID=26022)
 
 {% endnote %}
 
-## Continue your study
+## Continue Your Learning
 
 - [{#T}](./placement-bind.md)
 - [{#T}](./ui-interaction/index.md)
-- [{#T}](./ui-interaction/crm-card.md)
 - [{#T}](../../settings/interactivity/index.md)
-- [{#T}](./open-application.md)
-- [{#T}](./open-path.md)
+- [{#T}](./bx24-widget-methods.md)

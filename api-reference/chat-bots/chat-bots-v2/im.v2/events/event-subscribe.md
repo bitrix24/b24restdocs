@@ -128,7 +128,7 @@ HTTP Code: **200**
 || **Name**
 `Type` | **Description** ||
 || **result**
-[`boolean`](../../../../data-types.md) | `true` if subscription is successful ||
+[`boolean`](../../../../data-types.md) | `true` if the subscription was successful ||
 || **time**
 [`time`](../../../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -141,6 +141,7 @@ HTTP Code: **200**
 
 ## Continue Learning
 
-- [Get User Events im.v2.Event.get](./event-get.md)
-- [Unsubscribe from Events im.v2.Event.unsubscribe](./event-unsubscribe.md)
-- [Event Formats im.v2](./events.md)
+- [API Change Log imbot.v2](../../change-log.md)
+- [{#T}](./event-get.md)
+- [{#T}](./event-unsubscribe.md)
+- [{#T}](./events.md)

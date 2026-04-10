@@ -1,0 +1,9 @@
+title: Sales Intelligence  
+href: index.md  
+items:  
+  - name: Overview of Methods  
+    href: index.md  
+  - name: Create a Sales Intelligence Trace  
+    href: crm-tracking-trace-add.md  
+  - name: Delete a Sales Intelligence Trace  
+    href: crm-tracking-trace-delete.md  

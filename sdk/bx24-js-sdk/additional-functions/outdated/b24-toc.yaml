@@ -1,0 +1,13 @@
+title: Outdated Methods
+href: index.md
+items:
+  - name: Overview
+    href: index.md
+  - name: Call via Internal Communication
+    href: bx24-im-call-to.md
+  - name: Call a Phone Number
+    href: bx24-im-phone-to.md
+  - name: Open Messenger Window
+    href: bx24-im-open-messenger.md
+  - name: Open History Window
+    href: bx24-im-open-history.md

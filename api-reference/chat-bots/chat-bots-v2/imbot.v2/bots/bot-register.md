@@ -1,4 +1,4 @@
-# Register a Bot imbot.v2.Bot.register
+# Register a bot imbot.v2.Bot.register
 
 > Scope: [`imbot`](../../../../scopes/permissions.md)
 >
@@ -16,7 +16,7 @@ The method is idempotent: a repeated call with the same `fields.code` from the s
 || **Name**
 `Type` | **Description** ||
 || **fields***
-[`object`](../../../../data-types.md) | An object containing the bot parameters. Parameter descriptions are provided [below](#fields) ||
+[`object`](../../../../data-types.md) | An object with bot parameters. Parameter descriptions are provided [below](#fields) ||
 |#
 
 ### Parameter fields {#fields}
@@ -29,7 +29,7 @@ The method is idempotent: a repeated call with the same `fields.code` from the s
 || **botToken**
 [`string`](../../../../data-types.md) | Unique authorization token for the bot. Required for authorization via webhook, not needed for OAuth.
 
-Provide a unique botToken — this key will be tied to the chat bot and will be required for all subsequent calls to imbot.v2* via webhook ||
+Pass the unique botToken — this key will be tied to the chat bot and will be required for all subsequent calls to imbot.v2* via webhook ||
 || **properties***
 [`object`](../../../../data-types.md) | Properties of the bot's profile. Parameter descriptions are provided [below](#properties) ||
 || **type**
@@ -53,7 +53,7 @@ Default value: `fetch` ||
 || **isSupportOpenline**
 [`boolean`](../../../../data-types.md) | Enable support for Open Channels. Allowed values: `true`, `false`. Default is `false` ||
 || **backgroundId**
-[`string`](../../../../data-types.md) | Background of the bot's chat. Default is `null` — uses the background from user settings. Available values are in the [backgrounds table](#backgrounds) ||
+[`string`](../../../../data-types.md) | Background of the bot's chat. Default is `null` — uses the background from user settings. Available values are in the [backgrounds table](#backgrounds). An invalid value is normalized to `null` ||
 |#
 
 ### Parameter properties {#properties}
@@ -73,9 +73,9 @@ If not specified, it is assigned automatically ||
 || **gender**
 [`string`](../../../../data-types.md) | Gender. Allowed values: `M`, `F` ||
 || **avatar**
-[`file`](../../../../data-types.md) | Avatar. Provide a Base64 string without the prefix `data:*/*;base64,`.
+[`file`](../../../../data-types.md) | Avatar. Pass a Base64 string without the prefix `data:*/*;base64,`.
 
-How to prepare the data: [How to upload files](../../../../files/how-to-upload-files.md#how-to-encode-a-file-in-base64) ||
+How to prepare the data: [How to upload files](../../../../files/how-to-upload-files.md#how-to-encode-file-in-base64) ||
 |#
 
 ### Available Backgrounds {#backgrounds}
@@ -183,10 +183,10 @@ How to prepare the data: [How to upload files](../../../../files/how-to-upload-f
             ->getResponseData()
             ->getResult();
 
-        echo 'result: '. print_r($result, true);
+        echo 'result: ' . print_r($result, true);
     } catch (Throwable $exception) {
         error_log($exception->getMessage());
-        echo 'Error: '. $exception->getMessage();
+        echo 'Error: ' . $exception->getMessage();
     }
     ```
 
@@ -237,9 +237,9 @@ How to prepare the data: [How to upload files](../../../../files/how-to-upload-f
     );
 
     if (!empty($result['error'])) {
-        echo 'Error: '. $result['error_description'];
+        echo 'Error: ' . $result['error_description'];
     } else {
-        echo 'Bot ID: '. $result['result']['bot']['id'];
+        echo 'Bot ID: ' . $result['result']['bot']['id'];
     }
     ```
 
@@ -316,7 +316,7 @@ HTTP Code: **200**
 || **result.bot**
 [`Bot`](../../entities.md#bot) | Bot object in extended format (available only to the owner) [(detailed description)](#bot-object) ||
 || **result.users**
-[`User[]`](../../entities.md#user) | Array of related users [(detailed description)](#user-object) ||
+[`User[]`](../../entities.md#user) | Array of associated users [(detailed description)](#user-object) ||
 || **time**
 [`time`](../../../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -339,13 +339,13 @@ HTTP Code: **200**
 || **isReactionsEnabled**
 [`boolean`](../../../../data-types.md) | Reactions are enabled for bot messages ||
 || **backgroundId**
-[`integer`](../../../../data-types.md) | Identifier of the chat background ||
+[`string|null`](../../../../data-types.md) | ID of the chat background or `null` ||
 || **language**
 [`string`](../../../../data-types.md) | Language of the bot ||
 || **moduleId**
-[`string`](../../../../data-types.md) | Identifier of the module ||
+[`string`](../../../../data-types.md) | Module identifier ||
 || **appId**
-[`integer`](../../../../data-types.md) | Identifier of the application or `0` if the bot is not tied to an application ||
+[`string`](../../../../data-types.md) | ID of the application that registered the bot ||
 || **eventMode**
 [`string`](../../../../data-types.md) | Event delivery mode: `webhook` or `fetch` ||
 || **countMessage**
@@ -353,7 +353,7 @@ HTTP Code: **200**
 || **countCommand**
 [`integer`](../../../../data-types.md) | Number of registered commands ||
 || **countChat**
-[`integer`](../../../../data-types.md) | Number of chats for the bot ||
+[`integer`](../../../../data-types.md) | Number of bot chats ||
 || **countUser**
 [`integer`](../../../../data-types.md) | Number of users who interacted with the bot ||
 |#
@@ -429,11 +429,11 @@ HTTP Status: **400**, **403**
 || `BOT_TOKEN_NOT_SPECIFIED` | Bot token is not specified | `fields.botToken` is not specified. Required for authorization via webhook ||
 || `BOT_CODE_REQUIRED` | Bot code is required | Bot code (`fields.code`) is not specified ||
 || `BOT_PROPERTIES_REQUIRED` | Bot properties are required | Bot properties (name) are not specified ||
-|| `BOT_CODE_ALREADY_TAKEN` | Bot code is already taken | The bot code is already taken by another application ||
+|| `BOT_CODE_ALREADY_TAKEN` | Bot code is already taken | Bot code is already taken by another application ||
 || `BOT_INVALID_TYPE` | Invalid bot type | Invalid bot type. Allowed values: `bot`, `network`, `openline`, `supervisor`, `personal` ||
 || `BOT_INVALID_EVENT_MODE` | Invalid event mode | Invalid event delivery mode. Allowed values: `fetch`, `webhook` ||
 || `BOT_WEBHOOK_URL_REQUIRED` | Webhook URL is required | `fields.webhookUrl` is not specified when `fields.eventMode = webhook` ||
-|| `BOT_REGISTER_FAILED` | Bot registration failed | Error registering the bot ||
+|| `BOT_REGISTER_FAILED` | Bot registration failed | Bot registration error ||
 || `BOT_INVALID_CALLBACK` | Invalid callback URL | Invalid handler URL ||
 || `BOT_LIMIT_EXCEEDED` | Bot limit exceeded | Application bot limit exceeded (100 bots) ||
 || `BOT_AVATAR_INCORRECT_TYPE` | Avatar must be an image | Avatar must be an image (`image/*`) ||
@@ -444,8 +444,9 @@ HTTP Status: **400**, **403**
 
 ## Continue Learning
 
-- [Update the bot imbot.v2.Bot.update](./bot-update.md)
-- [Get Information About the Bot imbot.v2.Bot.get](./bot-get.md)
-- [List of Bots for the imbot.v2.Bot.list Application](./bot-list.md)
-- [Unregister the bot imbot.v2.Bot.unregister](./bot-unregister.md)
-- [Get Bot Events imbot.v2.Event.get](../events/event-get.md)
+- [API imbot.v2 Change Log](../../change-log.md)
+- [{#T}](./bot-update.md)
+- [{#T}](./bot-get.md)
+- [{#T}](./bot-list.md)
+- [{#T}](./bot-unregister.md)
+- [{#T}](../events/event-get.md)

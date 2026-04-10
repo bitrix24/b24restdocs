@@ -15,7 +15,7 @@ This section contains methods for managing chat interface elements on behalf of 
 >
 > Who can execute the methods: owner of a registered bot
 
-#|
+#| 
 || **Method** | **Description** ||
 || [imbot.v2.Chat.InputAction.notify](./chat-input-action-notify.md) | Displays the bot's action indicator ||
 || [imbot.v2.Chat.TextField.enabled](./chat-text-field-enabled.md) | Enables or disables the text input field ||
@@ -23,5 +23,6 @@ This section contains methods for managing chat interface elements on behalf of 
 
 ## Continue Your Exploration
 
-- [Chatbots 2.0: Overview of Methods](../../index.md)
+- [API Change Log for imbot.v2](../../change-log.md)
+- [{#T}](../../index.md)
 - [Messages imbot.v2](../messages/index.md)

@@ -8,7 +8,7 @@ A mapping table of methods and events between the deprecated API (imbot) and the
 
 {% note info "" %}
 
-Methods v1 and v2 operate in parallel. Bots registered through v1 are visible in v2 and vice versa. However, the event formats differ — a bot receives events only in the format of the API version through which it was registered.
+Methods v1 and v2 operate in parallel. Bots registered through v1 are visible in v2 and vice versa. However, the event formats differ — the bot receives events only in the format of the API version through which it was registered.
 
 {% endnote %}
 
@@ -27,7 +27,7 @@ Methods v1 and v2 operate in parallel. Bots registered through v1 are visible in
 || — | [imbot.v2.Chat.Message.read](./imbot.v2/messages/chat-message-read.md) | New method: mark messages as read ||
 || — | [imbot.v2.Chat.Message.Reaction.add](./imbot.v2/messages/chat-message-reaction-add.md) | New method: add a reaction ||
 || — | [imbot.v2.Chat.Message.Reaction.delete](./imbot.v2/messages/chat-message-reaction-delete.md) | New method: remove a reaction ||
-|| [imbot.message.like](../outdated/messages/imbot-message-like.md) | [imbot.v2.Chat.Message.Reaction.add](./imbot.v2/messages/chat-message-reaction-add.md), [imbot.v2.Chat.Message.Reaction.delete](./imbot.v2/messages/chat-message-reaction-delete.md) | In v2, setting and removing a reaction are split into two methods ||
+|| [imbot.message.like](../outdated/messages/imbot-message-like.md) | [imbot.v2.Chat.Message.Reaction.add](./imbot.v2/messages/chat-message-reaction-add.md), [imbot.v2.Chat.Message.Reaction.delete](./imbot.v2/messages/chat-message-reaction-delete.md) | In v2, setting and removing a reaction are separated into two methods ||
 || [imbot.chat.add](../outdated/chats/imbot-chat-add.md) | [imbot.v2.Chat.add](./imbot.v2/chats/chat-add.md) | Parameters in `fields.*` ||
 || [imbot.chat.get](../outdated/chats/imbot-chat-get.md) | [imbot.v2.Chat.get](./imbot.v2/chats/chat-get.md) | Returns a Chat object ||
 || [imbot.dialog.get](../outdated/chats/imbot-dialog-get.md) | [imbot.v2.Chat.get](./imbot.v2/chats/chat-get.md) | Returns a Chat object ||
@@ -39,10 +39,10 @@ Methods v1 and v2 operate in parallel. Bots registered through v1 are visible in
 || [imbot.chat.user.delete](../outdated/chats/imbot-chat-user-delete.md) | [imbot.v2.Chat.User.delete](./imbot.v2/chats/chat-user-delete.md) | — ||
 || [imbot.chat.user.list](../outdated/chats/imbot-chat-user-list.md) | [imbot.v2.Chat.User.list](./imbot.v2/chats/chat-user-list.md) | — ||
 || [imbot.chat.leave](../outdated/chats/imbot-chat-leave.md) | [imbot.v2.Chat.leave](./imbot.v2/chats/chat-leave.md) | — ||
-|| [imbot.chat.setManager](../outdated/chats/imbot-chat-set-manager.md) | [imbot.v2.Chat.Manager.add](./imbot.v2/chats/chat-manager-add.md), [imbot.v2.Chat.Manager.delete](./imbot.v2/chats/chat-manager-delete.md) | In v2, assigning and removing admin rights are split into two methods ||
+|| [imbot.chat.setManager](../outdated/chats/imbot-chat-set-manager.md) | [imbot.v2.Chat.Manager.add](./imbot.v2/chats/chat-manager-add.md), [imbot.v2.Chat.Manager.delete](./imbot.v2/chats/chat-manager-delete.md) | In v2, assigning and removing admin rights are separated into two methods ||
 || [imbot.chat.setOwner](../outdated/chats/imbot-chat-set-owner.md) | [imbot.v2.Chat.setOwner](./imbot.v2/chats/chat-set-owner.md) | — ||
 || [imbot.chat.sendTyping](../outdated/chats/imbot-chat-send-typing.md) | [imbot.v2.Chat.InputAction.notify](./imbot.v2/ui/chat-input-action-notify.md) | — ||
-|| — | [imbot.v2.Chat.TextField.enabled](./imbot.v2/ui/chat-text-field-enabled.md) | New method: manage the input field ||
+|| — | [imbot.v2.Chat.TextField.enabled](./imbot.v2/ui/chat-text-field-enabled.md) | New method: control the input field ||
 || [imbot.command.register](../outdated/commands/imbot-command-register.md) | [imbot.v2.Command.register](./imbot.v2/commands/command-register.md) | Parameters in `fields.*` ||
 || [imbot.command.update](../outdated/commands/imbot-command-update.md) | [imbot.v2.Command.update](./imbot.v2/commands/command-update.md) | Parameters in `fields.*` ||
 || — | [imbot.v2.Command.list](./imbot.v2/commands/command-list.md) | New method: list of bot commands ||
@@ -51,6 +51,7 @@ Methods v1 and v2 operate in parallel. Bots registered through v1 are visible in
 || — | [imbot.v2.Event.get](./imbot.v2/events/event-get.md) | New method: polling events (fetch mode) ||
 || — | [imbot.v2.File.upload](./imbot.v2/files/file-upload.md) | New method: upload a file to chat ||
 || — | [imbot.v2.File.download](./imbot.v2/files/file-download.md) | New method: get a download link ||
+|| — | [imbot.v2.Revision.get](./imbot.v2/revision-get.md) | New method: get API revision numbers ||
 |#
 
 ## Events
@@ -83,15 +84,22 @@ Methods v1 and v2 operate in parallel. Bots registered through v1 are visible in
 ### Method Parameters
 
 - v1: flat top-level parameters (`MESSAGE_ADD`, `BOT_ID`, `TYPE`, etc.)
-- v2: grouped in `fields.*` / `properties.*`, camelCase names
+- v2: grouping in `fields.*` / `properties.*`, camelCase names
 
 ### Authorization
 
 - v1: OAuth or webhook authorization with `CLIENT_ID` field
 - v2: OAuth or webhook authorization with `botToken`
 
-## Continue Learning
+## Changes within v2
 
-- [Register a Bot imbot.v2.Bot.register](./imbot.v2/bots/bot-register.md)
-- [Get Bot Events imbot.v2.Event.get](./imbot.v2/events/event-get.md)
-- [Automation Rule Platform: Overview of the Section](../index.md)
+The API `imbot.v2` continues to evolve. New features, fixes, and changes with loss of backward compatibility are published in the [API imbot.v2 Change Log](./change-log.md).
+
+If the format of a method's call or response changes, the previous version will continue to be supported for **6 months** from the date of the change publication.
+
+## Continue Exploring
+
+- [{#T}](./imbot.v2/bots/bot-register.md)
+- [{#T}](./imbot.v2/events/event-get.md)
+- [API imbot.v2 Change Log](./change-log.md)
+- [{#T}](../index.md)

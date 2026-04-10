@@ -2,13 +2,13 @@
 
 > Scope: [`documentgenerator`](../scopes/permissions.md)
 >
-> Who can execute the method: user with permission to create documents
+> Who can execute the method: a user with document creation permissions
 
 The method `documentgenerator.document.add` creates a new document based on a template.
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -24,7 +24,7 @@ Defaults to `Bitrix\DocumentGenerator\DataProvider\Rest` ||
 || **value***
 [`string`](../data-types.md) | External identifier of the object for which the document is being generated.
 
-The `value` format is defined by the integration. Use a consistent format within your application to search and filter documents.
+The format of `value` is defined by the integration. Use a consistent format within your application to search and filter documents.
 
 Recommended format: `<OBJECT_TYPE>_<ID>`, where:
 - `<OBJECT_TYPE>` — string code of the object type in uppercase
@@ -41,7 +41,7 @@ Examples of `value` for CRM objects:
 Examples of `value` for other objects:
 - order — `ORDER_1024`
 - supply contract — `SUPPLY_CONTRACT_2026_015`
-- record from external system — `ERP_DOC_A-7741`
+- external system record — `ERP_DOC_A-7741`
 
 ||
 || **values**
@@ -90,13 +90,13 @@ Types for which formatting can be specified:
 || **FORMAT**
 [`object`](../data-types.md) | Formatting parameters for the field type.
 
-`FORMAT` is not fixed to one value; it should be chosen according to your template and output requirements.
+`FORMAT` is not fixed to one value; it should be chosen based on your template and output requirements.
 
 For `DATE`, the `format` value is specified in the format of document generator date modifiers. Example: `{"format":"d.m.Y"}`
 
 For `NAME`:
 - `format` specifies the output template for name parts, e.g., `#NAME# #LAST_NAME#`
-- `case` specifies the case
+- `case` specifies the grammatical case
 
 {% note tip "User Documentation" %}
 
@@ -112,7 +112,7 @@ For `NAME`:
 
 ## Code Examples
 
-{% include [Note on examples](../../_includes/examples.md) %}
+{% include [Note on Examples](../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -122,7 +122,7 @@ For `NAME`:
   curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"templateId":53,"value":"SUPPLY_CONTRACT_2026_015","values":{"DocumentNumber":"SC-2026-001","CurrentDate":"2026-03-18T00:00:00+02:00","ClientName":"Ltd. Daisy","ClientPhone":"+1 999 123-45-67","Total":"125000","Comment":"Payment within 5 business days after signing","UserName":"John Smith"},"fields":{"CurrentDate":{"TYPE":"DATE","FORMAT":{"format":"d.m.Y"},"TITLE":"Contract Date"}},"stampsEnabled":1}' \
+    -d '{"templateId":53,"value":"SUPPLY_CONTRACT_2026_015","values":{"DocumentNumber":"SC-2026-001","CurrentDate":"2026-03-18T00:00:00+01:00","ClientName":"ABC Corp","ClientPhone":"+1 999 123-45-67","Total":"125000","Comment":"Payment within 5 business days after signing","UserName":"John Smith"},"fields":{"CurrentDate":{"TYPE":"DATE","FORMAT":{"format":"d.m.Y"},"TITLE":"Contract Date"}},"stampsEnabled":1}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/documentgenerator.document.add
   ```
 
@@ -132,7 +132,7 @@ For `NAME`:
   curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"templateId":53,"value":"SUPPLY_CONTRACT_2026_015","values":{"DocumentNumber":"SC-2026-001","CurrentDate":"2026-03-18T00:00:00+02:00","ClientName":"Ltd. Daisy","ClientPhone":"+1 999 123-45-67","Total":"125000","Comment":"Payment within 5 business days after signing","UserName":"John Smith"},"fields":{"CurrentDate":{"TYPE":"DATE","FORMAT":{"format":"d.m.Y"},"TITLE":"Contract Date"}},"stampsEnabled":1,"auth":"**put_access_token_here**"}' \
+    -d '{"templateId":53,"value":"SUPPLY_CONTRACT_2026_015","values":{"DocumentNumber":"SC-2026-001","CurrentDate":"2026-03-18T00:00:00+01:00","ClientName":"ABC Corp","ClientPhone":"+1 999 123-45-67","Total":"125000","Comment":"Payment within 5 business days after signing","UserName":"John Smith"},"fields":{"CurrentDate":{"TYPE":"DATE","FORMAT":{"format":"d.m.Y"},"TITLE":"Contract Date"}},"stampsEnabled":1,"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/documentgenerator.document.add
   ```
 
@@ -148,8 +148,8 @@ For `NAME`:
               value: 'SUPPLY_CONTRACT_2026_015',
               values: {
                   DocumentNumber: 'SC-2026-001',
-                  CurrentDate: '2026-03-18T00:00:00+02:00',
-                  ClientName: 'Ltd. Daisy',
+                  CurrentDate: '2026-03-18T00:00:00+01:00',
+                  ClientName: 'ABC Corp',
                   ClientPhone: '+1 999 123-45-67',
                   Total: '125000',
                   Comment: 'Payment within 5 business days after signing',
@@ -188,8 +188,8 @@ For `NAME`:
               'value' => 'SUPPLY_CONTRACT_2026_015',
               'values' => [
                   'DocumentNumber' => 'SC-2026-001',
-                  'CurrentDate' => '2026-03-18T00:00:00+02:00',
-                  'ClientName' => 'Ltd. Daisy',
+                  'CurrentDate' => '2026-03-18T00:00:00+01:00',
+                  'ClientName' => 'ABC Corp',
                   'ClientPhone' => '+1 999 123-45-67',
                   'Total' => '125000',
                   'Comment' => 'Payment within 5 business days after signing',
@@ -225,8 +225,8 @@ For `NAME`:
           value: 'SUPPLY_CONTRACT_2026_015',
           values: {
               DocumentNumber: 'SC-2026-001',
-              CurrentDate: '2026-03-18T00:00:00+02:00',
-              ClientName: 'Ltd. Daisy',
+              CurrentDate: '2026-03-18T00:00:00+01:00',
+              ClientName: 'ABC Corp',
               ClientPhone: '+1 999 123-45-67',
               Total: '125000',
               Comment: 'Payment within 5 business days after signing',
@@ -269,8 +269,8 @@ For `NAME`:
           'value' => 'SUPPLY_CONTRACT_2026_015',
           'values' => [
               'DocumentNumber' => 'SC-2026-001',
-              'CurrentDate' => '2026-03-18T00:00:00+02:00',
-              'ClientName' => 'Ltd. Daisy',
+              'CurrentDate' => '2026-03-18T00:00:00+01:00',
+              'ClientName' => 'ABC Corp',
               'ClientPhone' => '+1 999 123-45-67',
               'Total' => '125000',
               'Comment' => 'Payment within 5 business days after signing',
@@ -296,7 +296,7 @@ For `NAME`:
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -307,9 +307,9 @@ HTTP status: **200**
             "title": "SUPPLY_CONTRACT Template 1773843147554 SC-2026-001",
             "number": "SC-2026-001",
             "id": 51,
-            "createTime": "2026-03-18T17:27:48+02:00",
+            "createTime": "2026-03-18T17:27:48+01:00",
             "createdBy": 503,
-            "updateTime": "2026-03-18T17:27:48+02:00",
+            "updateTime": "2026-03-18T17:27:48+01:00",
             "updatedBy": null,
             "stampsEnabled": true,
             "isTransformationError": false,
@@ -319,8 +319,8 @@ HTTP status: **200**
                 "_creationMethod": "rest",
                 "stampsEnabled": true,
                 "DocumentNumber": "SC-2026-001",
-                "CurrentDate": "2026-03-18T00:00:00+02:00",
-                "ClientName": "Ltd. Daisy",
+                "CurrentDate": "2026-03-18T00:00:00+01:00",
+                "ClientName": "ABC Corp",
                 "ClientPhone": "+1 999 123-45-67",
                 "Total": "125000",
                 "Comment": "Payment within 5 business days after signing",
@@ -338,8 +338,8 @@ HTTP status: **200**
         "finish": 1773844068.572038,
         "duration": 0.572037935256958,
         "processing": 0,
-        "date_start": "2026-03-18T17:27:48+02:00",
-        "date_finish": "2026-03-18T17:27:48+02:00",
+        "date_start": "2026-03-18T17:27:48+01:00",
+        "date_finish": "2026-03-18T17:27:48+01:00",
         "operating_reset_at": 1773844668,
         "operating": 0.9536302089691162
     }
@@ -402,7 +402,7 @@ HTTP status: **200**
 || **createTime**
 [`datetime`](../data-types.md) | Document creation time ||
 || **updateTime**
-[`datetime`](../data-types.md) | Time of the last document update ||
+[`datetime`](../data-types.md) | Last update time of the document ||
 || **createdBy**
 [`integer`](../data-types.md) | Identifier of the document author ||
 || **updatedBy**
@@ -424,13 +424,13 @@ HTTP status: **200**
 
 {% note info "" %}
 
-File conversion to PDF is performed asynchronously. If the `pdfUrl` field is not filled immediately after creation, execute the [documentgenerator.document.get](./document-generator-document-get.md) method after 20-30 seconds.
+File conversion to PDF is performed asynchronously. If the `pdfUrl` field is not filled immediately after creation, re-invoke [documentgenerator.document.get](./document-generator-document-get.md) to check the conversion result.
 
 {% endnote %}
 
 ## Error Handling
 
-HTTP status: **400**, **403**
+HTTP Status: **400**, **403**
 
 ```json
 {
@@ -439,14 +439,14 @@ HTTP status: **400**, **403**
 }
 ```
 
-{% include notitle [error handling](../../_includes/error-info.md) %}
+{% include notitle [Error Handling](../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
 || **Status** | **Code** | **Description** | **Value** ||
-|| `400` | `100` | Bitrix\DocumentGenerator\Template constructor must be public | Required parameter `templateId` not provided ||
-|| `400` | `0` | Empty required parameter "value" | Required parameter `value` not provided ||
+|| `400` | `100` | Bitrix\DocumentGenerator\Template constructor must be is public | Required parameter `templateId` is not provided ||
+|| `400` | `0` | Empty required parameter "value" | Required parameter `value` is not provided ||
 || `400` | `0` | Cannot create document on deleted template | Cannot create a document based on a deleted template ||
 || `400` | `0` | Template not found | No template exists with the specified `templateId` ||
 || `400` | `0` | Cannot create document | Failed to create document ||
@@ -455,7 +455,7 @@ HTTP status: **400**, **403**
 || `403` | `DOCGEN_ACCESS_ERROR` | Access denied | Insufficient permissions to create document ||
 |#
 
-{% include [system errors](../../_includes/system-errors.md) %}
+{% include [System Errors](../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

@@ -1,14 +1,14 @@
-# Get the settings field descriptions for the custom field type crm.userfield.settings.fields
+# Get Field Settings Description for Custom Field Type crm.userfield.settings.fields
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-The method `crm.userfield.settings.fields` returns the settings field descriptions for the specified custom field type.
+The method `crm.userfield.settings.fields` returns the field settings description for the specified custom field type.
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -19,7 +19,7 @@ The method `crm.userfield.settings.fields` returns the settings field descriptio
 
 ## Code Examples
 
-{% include [Note on examples](../../../../_includes/examples.md) %}
+{% include [Note on Examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -166,9 +166,9 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | The root element of the response containing the field settings. The final list of fields depends on the type of the requested field ||
+[`object`](../../data-types.md) | The root element of the response containing field settings. The final list of fields depends on the type of the requested field ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the execution time of the request ||
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -188,7 +188,7 @@ HTTP Status: **400**
 
 #|
 || **Status** | **Code** | **Description** | **Value** ||
-|| `400` | Empty value | `error_description` | The parameter `type` is not provided or is empty ||
+|| `400` | Empty Value | Parameter 'type' is not specified or empty | The parameter `type` is not provided or an empty value is passed ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

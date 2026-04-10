@@ -8,7 +8,7 @@ The method `landing.landing.getpublicurl` returns the complete public URL of the
 
 ## Method Parameters
 
-{% include [Footnote on required parameters](../../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -21,7 +21,7 @@ The page identifier can be obtained using the [landing.landing.getList](./landin
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../../_includes/examples.md) %}
+{% include [Note on Examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -167,9 +167,9 @@ HTTP Status: **200**
 || **result**
 [`string`](../../../data-types.md) | Complete public URL of the page.
 
-For the main page of the site and the index page of the folder, the method returns the address without the `CODE` of the page. If the `RULE` field is filled in for the page, the address is also returned without adding the `CODE`.
+For the main page of the site and the index page of a folder, the method returns the address without the `CODE` of the page. If the `RULE` field is filled for the page, the address is also returned without adding the `CODE`.
 
-More about the `CODE` and `RULE` fields in the section [Page Object Fields](../index.md) ||
+More about the `CODE` and `RULE` fields can be found in the section [Fields of the Page Object](../fields.md) ||
 || **time**
 [`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -185,20 +185,20 @@ HTTP Status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../../_includes/error-info.md) %}
+{% include notitle [Error Handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
 || **Code** | **Description** ||
 || `MISSING_PARAMS` | Required parameter `lid` is missing ||
-|| `LANDING_NOT_EXIST` | Page not found: the `lid` contains the identifier of a non-existent, deleted, or inaccessible page ||
+|| `LANDING_NOT_EXIST` | Page not found: the `lid` contains an identifier of a non-existent, deleted, or inaccessible page ||
 || `ACCESS_DENIED` | Insufficient permissions to call the method ||
 || `TYPE_ERROR` | Data type error in the method call parameters ||
-|| `SYSTEM_ERROR` | Internal error while executing the method ||
+|| `SYSTEM_ERROR` | Internal error during method execution ||
 |#
 
-{% include [system errors](../../../../_includes/system-errors.md) %}
+{% include [System Errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

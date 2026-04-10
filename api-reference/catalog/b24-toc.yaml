@@ -1,91 +1,91 @@
-title: Trade Catalog
-href: index.md
-items: 
-  - name: List of Methods
-    href: index.md
-  - name: Data Types and Object Structure in the Catalog REST API
-    href: data-types.md
-  - name: Trade Catalog
-    include:
-      path: catalog/b24-toc.yaml
-      mode: link
-  - name: Enumerations
-    include:
-      path: enum/b24-toc.yaml
-      mode: link
-  - name: Margin
-    include:
-      path: extra/b24-toc.yaml
-      mode: link
-  - name: Unit of Measurement
-    include:
-      path: measure/b24-toc.yaml
-      mode: link
-  - name: Price
-    include:
-      path: price/b24-toc.yaml
-      mode: link
-  - name: Price Types
-    include:
-      path: price-type/b24-toc.yaml
-      mode: link
-  - name: Products
-    include:
-      path: product/b24-toc.yaml
-      mode: link
-  - name: Product and Variation Properties
-    include:
-      path: product-property/b24-toc.yaml
-      mode: link
-  - name: List Property Values
-    include:
-      path: product-property-enum/b24-toc.yaml
-      mode: link
-  - name: Product and Variation Property Parameters
-    include:
-      path: product-property-feature/b24-toc.yaml
-      mode: link
-  - name: Section Settings for Properties
-    include:
-      path: product-property-section/b24-toc.yaml
-      mode: link
-  - name: Product and Variation Images
-    include:
-      path: product-image/b24-toc.yaml
-      mode: link
-  - name: Unit of Measurement Ratio
-    include:
-      path: ratio/b24-toc.yaml
-      mode: link
-  - name: Price Rounding Rules
-    include:
-      path: rounding-rule/b24-toc.yaml
-      mode: link
-  - name: Catalog Sections
-    include:
-      path: section/b24-toc.yaml
-      mode: link
-  - name: Inventories
-    include:
-      path: store/b24-toc.yaml
-      mode: link
-  - name: Inventory Balances
-    include:
-      path: store-product/b24-toc.yaml
-      mode: link
-  - name: Inventory Management
-    include:
-      path: document/b24-toc.yaml
-      mode: link
-  - name: Custom Fields for Inventory Documents
-    include:
-      path: userfield-document/b24-toc.yaml
-      mode: link
-  - name: Working with CRM Vendors
-    include:
-      path: documentcontractor/b24-toc.yaml
-      mode: link
-  - name: VAT Rates
-    include:
-      path: vat/b24-toc.yaml
-      mode: link
+title: Trade Catalog  
+href: index.md  
+items:  
+  - name: List of Methods  
+    href: index.md  
+  - name: Data Types and Object Structure in the Catalog REST API  
+    href: data-types.md  
+  - name: Trade Catalog  
+    include:  
+      path: catalog/b24-toc.yaml  
+      mode: link  
+  - name: Enumerations  
+    include:  
+      path: enum/b24-toc.yaml  
+      mode: link  
+  - name: Markup  
+    include:  
+      path: extra/b24-toc.yaml  
+      mode: link  
+  - name: Unit of Measurement  
+    include:  
+      path: measure/b24-toc.yaml  
+      mode: link  
+  - name: Price  
+    include:  
+      path: price/b24-toc.yaml  
+      mode: link  
+  - name: Price Types  
+    include:  
+      path: price-type/b24-toc.yaml  
+      mode: link  
+  - name: Products  
+    include:  
+      path: product/b24-toc.yaml  
+      mode: link  
+  - name: Product and Variation Properties  
+    include:  
+      path: product-property/b24-toc.yaml  
+      mode: link  
+  - name: List Property Values  
+    include:  
+      path: product-property-enum/b24-toc.yaml  
+      mode: link  
+  - name: Product and Variation Property Parameters  
+    include:  
+      path: product-property-feature/b24-toc.yaml  
+      mode: link  
+  - name: Section Settings for Properties  
+    include:  
+      path: product-property-section/b24-toc.yaml  
+      mode: link  
+  - name: Product and Variation Images  
+    include:  
+      path: product-image/b24-toc.yaml  
+      mode: link  
+  - name: Unit of Measurement Ratio  
+    include:  
+      path: ratio/b24-toc.yaml  
+      mode: link  
+  - name: Price Rounding Rules  
+    include:  
+      path: rounding-rule/b24-toc.yaml  
+      mode: link  
+  - name: Catalog Sections  
+    include:  
+      path: section/b24-toc.yaml  
+      mode: link  
+  - name: Warehouses  
+    include:  
+      path: store/b24-toc.yaml  
+      mode: link  
+  - name: Warehouse Stock  
+    include:  
+      path: store-product/b24-toc.yaml  
+      mode: link  
+  - name: Warehouse Accounting  
+    include:  
+      path: document/b24-toc.yaml  
+      mode: link  
+  - name: Custom Fields for Warehouse Accounting Documents  
+    include:  
+      path: userfield-document/b24-toc.yaml  
+      mode: link  
+  - name: Working with CRM Vendors  
+    include:  
+      path: documentcontractor/b24-toc.yaml  
+      mode: link  
+  - name: VAT Rates  
+    include:  
+      path: vat/b24-toc.yaml  
+      mode: link  

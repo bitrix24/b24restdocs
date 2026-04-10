@@ -14,62 +14,62 @@ Field types depend on the context:
 
 A user of the system. Returned in the `user` fields and in the `users` collections.
 
-#|
+#|  
 || **Field**  
-`Type` | **Description** ||
+`Type` | **Description** ||  
 || **id**  
-[`integer`](../../data-types.md) | Unique identifier of the user ||
+[`integer`](../../data-types.md) | Unique identifier of the user ||  
 || **active**  
-[`boolean`](../../data-types.md) | Is the user active in the system? ||
+[`boolean`](../../data-types.md) | Is the user active in the system ||  
 || **name**  
-[`string`](../../data-types.md) | Full name ||
+[`string`](../../data-types.md) | Full name ||  
 || **firstName**  
-[`string`](../../data-types.md) | First name ||
+[`string`](../../data-types.md) | First name ||  
 || **lastName**  
-[`string`](../../data-types.md) | Last name ||
+[`string`](../../data-types.md) | Last name ||  
 || **workPosition**  
-[`string`](../../data-types.md) | Job title ||
+[`string`](../../data-types.md) | Job title ||  
 || **color**  
-[`string`](../../data-types.md) | Placeholder avatar color in HEX format, e.g., `#df532d` ||
+[`string`](../../data-types.md) | Avatar placeholder color in HEX format, e.g., `#df532d` ||  
 || **avatar**  
-[`string`](../../data-types.md) | Avatar URL. An empty string if no avatar is set ||
+[`string`](../../data-types.md) | Avatar URL. Empty string if no avatar is set ||  
 || **gender**  
-[`string`](../../data-types.md) | Gender: `M` — male, `F` — female ||
+[`string`](../../data-types.md) | Gender: `M` — male, `F` — female ||  
 || **birthday**  
-[`string`](../../data-types.md) | Date of birth. An empty string if not specified ||
+[`string`](../../data-types.md) | Date of birth. Empty string if not specified ||  
 || **extranet**  
-[`boolean`](../../data-types.md) | Is the user an extranet user? ||
+[`boolean`](../../data-types.md) | Is the user an extranet user ||  
 || **bot**  
-[`boolean`](../../data-types.md) | Is the user a bot? ||
+[`boolean`](../../data-types.md) | Is the user a bot ||  
 || **connector**  
-[`boolean`](../../data-types.md) | Is the user a connector for Open Channels? ||
+[`boolean`](../../data-types.md) | Is the user a connector of Open Channels ||  
 || **externalAuthId**  
-[`string`](../../data-types.md) | Type of external authentication: `default`, `bot`, `email`, `replica`, etc. ||
+[`string`](../../data-types.md) | Type of external authorization: `default`, `bot`, `email`, `replica`, etc. ||  
 || **status**  
-[`string`](../../data-types.md) | Status: `online`, `dnd` ||
+[`string`](../../data-types.md) | Status: `online`, `dnd` ||  
 || **idle**  
-[`string\|false`](../../data-types.md) | Start time of inactivity in ISO 8601 format, or `false` ||
+[`string\|false`](../../data-types.md) | Start time of inactivity in ISO 8601 format, or `false` ||  
 || **lastActivityDate**  
-[`string\|false`](../../data-types.md) | Date of last activity in ISO 8601 format, or `false` ||
+[`string\|false`](../../data-types.md) | Date of last activity in ISO 8601 format, or `false` ||  
 || **mobileLastDate**  
-[`string\|false`](../../data-types.md) | Date of last mobile login in ISO 8601 format, or `false` ||
+[`string\|false`](../../data-types.md) | Date of last mobile login in ISO 8601 format, or `false` ||  
 || **desktopLastDate**  
-[`string\|false`](../../data-types.md) | Date of last desktop login in ISO 8601 format, or `false` ||
+[`string\|false`](../../data-types.md) | Date of last desktop login in ISO 8601 format, or `false` ||  
 || **absent**  
-[`string\|false`](../../data-types.md) | Start date of absence in ISO 8601 format, or `false` ||
+[`string\|false`](../../data-types.md) | Date of start of absence in ISO 8601 format, or `false` ||  
 || **departments**  
-[`integer[]`](../../data-types.md) | Array of department IDs ||
+[`integer[]`](../../data-types.md) | Array of department IDs ||  
 || **phones**  
-[`object\|false`](../../data-types.md) | Object with phone numbers (`personalPhone`, `workPhone`, etc.) or `false` ||
+[`object\|false`](../../data-types.md) | Object with phone numbers (`personalPhone`, `workPhone`, etc.) or `false` ||  
 || **type**  
-[`string`](../../data-types.md) | Type: `employee`, `extranet`, `email`, `collaber`, `bot` ||
+[`string`](../../data-types.md) | Type: `employee`, `extranet`, `email`, `collaber`, `bot` ||  
 || **website**  
-[`string`](../../data-types.md) | Personal website ||
+[`string`](../../data-types.md) | Personal website ||  
 || **email**  
-[`string`](../../data-types.md) | Email ||
+[`string`](../../data-types.md) | Email ||  
 |#
 
-### Example User Object
+### Example of User Object
 
 ```json
 {
@@ -107,49 +107,49 @@ It has two formats: brief (public) and extended (for the bot owner only).
 
 ### Common Fields
 
-#|
+#|  
 || **Field**  
-`Type` | **Description** ||
+`Type` | **Description** ||  
 || **id**  
-[`integer`](../../data-types.md) | ID of the bot user ||
+[`integer`](../../data-types.md) | ID of the bot user ||  
 || **code**  
-[`string`](../../data-types.md) | Unique string code of the bot ||
+[`string`](../../data-types.md) | Unique string code of the bot ||  
 || **type**  
-[`string`](../../data-types.md) | Type of the bot. Description of types — [Bot Types](./index.md#bot-types) ||
+[`string`](../../data-types.md) | Type of bot. Description of types — [Bot Types](./index.md#bot-types) ||  
 || **isHidden**  
-[`boolean`](../../data-types.md) | Is the bot hidden from the contact list? ||
+[`boolean`](../../data-types.md) | Is the bot hidden from the contact list ||  
 || **isSupportOpenline**  
-[`boolean`](../../data-types.md) | Does the bot support working with Open Channels? ||
+[`boolean`](../../data-types.md) | Does the bot support working with Open Channels ||  
 || **isReactionsEnabled**  
-[`boolean`](../../data-types.md) | Are reactions to bot messages enabled? ||
+[`boolean`](../../data-types.md) | Are reactions to bot messages enabled ||  
 || **backgroundId**  
-[`string\|null`](../../data-types.md) | ID of the bot chat background or `null` ||
+[`string\|null`](../../data-types.md) | ID of the bot chat background or `null` ||  
 || **language**  
-[`string`](../../data-types.md) | Default language of the bot, e.g., `en`, `de` ||
+[`string`](../../data-types.md) | Default language of the bot, e.g., `en`, `de` ||  
 |#
 
 ### Additional Fields (for owner only)
 
-#|
+#|  
 || **Field**  
-`Type` | **Description** ||
+`Type` | **Description** ||  
 || **moduleId**  
-[`string`](../../data-types.md) | ID of the module to which the bot belongs ||
+[`string`](../../data-types.md) | ID of the module to which the bot belongs ||  
 || **appId**  
-[`string`](../../data-types.md) | ID of the application that registered the bot ||
+[`string`](../../data-types.md) | ID of the application that registered the bot ||  
 || **eventMode**  
-[`string`](../../data-types.md) | Event delivery mode: `webhook` or `fetch` ||
+[`string`](../../data-types.md) | Event delivery mode: `webhook` or `fetch` ||  
 || **countMessage**  
-[`integer`](../../data-types.md) | Number of processed messages ||
+[`integer`](../../data-types.md) | Number of processed messages ||  
 || **countCommand**  
-[`integer`](../../data-types.md) | Number of registered commands ||
+[`integer`](../../data-types.md) | Number of registered commands ||  
 || **countChat**  
-[`integer`](../../data-types.md) | Number of chats the bot is in ||
+[`integer`](../../data-types.md) | Number of chats the bot is in ||  
 || **countUser**  
-[`integer`](../../data-types.md) | Number of unique users ||
+[`integer`](../../data-types.md) | Number of unique users ||  
 |#
 
-### Example Bot Object (Extended Format)
+### Example of Bot Object (extended format)
 
 ```json
 {
@@ -175,93 +175,93 @@ It has two formats: brief (public) and extended (for the bot owner only).
 
 Chat. Returned in the `chat` field of the responses from the methods [imbot.v2.Chat.get](./imbot.v2/chats/chat-get.md), [imbot.v2.Chat.add](./imbot.v2/chats/chat-add.md), as well as in event data.
 
-#|
+#|  
 || **Field**  
-`Type` | **Description** ||
+`Type` | **Description** ||  
 || **id**  
-[`integer`](../../data-types.md) | Unique identifier of the chat ||
+[`integer`](../../data-types.md) | Unique identifier of the chat ||  
 || **dialogId**  
-[`string`](../../data-types.md) | Identifier of the dialog: `chat5` for group chats, `123` for personal chats ||
+[`string`](../../data-types.md) | Identifier of the dialog: `chat5` for group chats, `123` for personal chats ||  
 || **name**  
-[`string`](../../data-types.md) | Name of the chat ||
+[`string`](../../data-types.md) | Name of the chat ||  
 || **type**  
-[`string`](../../data-types.md) | Type: `chat`, `open`, `channel`, `openChannel`, `copilot`, `thread`, `generalChannel` ||
+[`string`](../../data-types.md) | Type: `chat`, `open`, `channel`, `openChannel`, `copilot`, `thread`, `generalChannel` ||  
 || **messageType**  
-[`string`](../../data-types.md) | Internal type: `C` (chat), `O` (open), `P` (private), etc. ||
+[`string`](../../data-types.md) | Internal type: `C` (chat), `O` (open), `P` (private), etc. ||  
 || **owner**  
-[`integer`](../../data-types.md) | ID of the chat owner ||
+[`integer`](../../data-types.md) | ID of the chat owner ||  
 || **color**  
-[`string\|null`](../../data-types.md) | Color of the chat in HEX format ||
+[`string\|null`](../../data-types.md) | Color of the chat in HEX format ||  
 || **avatar**  
-[`string`](../../data-types.md) | URL of the chat avatar. An empty string if not set ||
+[`string`](../../data-types.md) | URL of the chat avatar. Empty string if not set ||  
 || **description**  
-[`string`](../../data-types.md) | Description of the chat ||
+[`string`](../../data-types.md) | Description of the chat ||  
 || **extranet**  
-[`boolean`](../../data-types.md) | Does the chat contain extranet users? ||
+[`boolean`](../../data-types.md) | Does the chat contain extranet users ||  
 || **role**  
-[`string`](../../data-types.md) | Role of the current user: `owner`, `manager`, `member`, `guest`, `none` ||
+[`string`](../../data-types.md) | Role of the current user: `owner`, `manager`, `member`, `guest`, `none` ||  
 || **containsCollaber**  
-[`boolean`](../../data-types.md) | Does the chat contain collaborators? ||
+[`boolean`](../../data-types.md) | Does the chat contain collaborators ||  
 || **muteList**  
-[`array`](../../data-types.md) | List of user IDs who have disabled notifications. Absent in events — depends on the specific user ||
+[`array`](../../data-types.md) | List of user IDs who have disabled notifications. Absent in events — depends on the specific user ||  
 || **entityType**  
-[`string`](../../data-types.md) | Type of the object, e.g., `LINES` for Open Channels ||
+[`string`](../../data-types.md) | Type of the object, e.g., `LINES` for Open Channels ||  
 || **entityId**  
-[`string`](../../data-types.md) | Identifier of the element ||
+[`string`](../../data-types.md) | Identifier of the element ||  
 || **entityData1**  
-[`string`](../../data-types.md) | Additional data of the object (field 1) ||
+[`string`](../../data-types.md) | Additional data of the object (field 1) ||  
 || **entityData2**  
-[`string`](../../data-types.md) | Additional data of the object (field 2) ||
+[`string`](../../data-types.md) | Additional data of the object (field 2) ||  
 || **entityData3**  
-[`string`](../../data-types.md) | Additional data of the object (field 3) ||
+[`string`](../../data-types.md) | Additional data of the object (field 3) ||  
 || **entityLink**  
-[`object`](../../data-types.md) | Data link to an external object ||
+[`object`](../../data-types.md) | Data link to an external object ||  
 || **diskFolderId**  
-[`integer\|null`](../../data-types.md) | ID of the folder on Drive for chat files ||
+[`integer\|null`](../../data-types.md) | ID of the folder on Drive for chat files ||  
 || **permissions**  
-[`object`](../../data-types.md) | Access permissions for the current user ||
+[`object`](../../data-types.md) | Access permissions for the current user ||  
 || **parentChatId**  
-[`integer\|null`](../../data-types.md) | ID of the parent chat for threads ||
+[`integer\|null`](../../data-types.md) | ID of the parent chat for threads ||  
 || **parentMessageId**  
-[`integer\|null`](../../data-types.md) | ID of the parent message for threads ||
+[`integer\|null`](../../data-types.md) | ID of the parent message for threads ||  
 || **isNew**  
-[`boolean`](../../data-types.md) | Is the chat newly created? ||
+[`boolean`](../../data-types.md) | Is the chat newly created ||  
 || **textFieldEnabled**  
-[`string`](../../data-types.md) | Is the text input field enabled: `Y` or `N` ||
+[`string`](../../data-types.md) | Is the text input field enabled: `Y` or `N` ||  
 || **backgroundId**  
-[`string\|null`](../../data-types.md) | ID of the chat background or `null` ||
+[`string\|null`](../../data-types.md) | ID of the chat background or `null` ||  
 |#
 
-### Additional Fields (Only in Method Responses)
+### Additional Fields (only in method responses)
 
 Fields that are returned in method responses (e.g., [imbot.v2.Chat.get](./imbot.v2/chats/chat-get.md)), but are not passed in events.
 
-#|
+#|  
 || **Field**  
-`Type` | **Description** ||
+`Type` | **Description** ||  
 || **dateCreate**  
-[`string\|null`](../../data-types.md) | Date of chat creation in ISO 8601 format ||
+[`string\|null`](../../data-types.md) | Date of chat creation in ISO 8601 format ||  
 || **lastMessageId**  
-[`integer\|null`](../../data-types.md) | ID of the last message ||
+[`integer\|null`](../../data-types.md) | ID of the last message ||  
 || **lastId**  
-[`integer\|null`](../../data-types.md) | ID of the last read message ||
+[`integer\|null`](../../data-types.md) | ID of the last read message ||  
 || **managerList**  
-[`array`](../../data-types.md) | Array of chat manager IDs ||
+[`array`](../../data-types.md) | Array of chat manager IDs ||  
 || **messageCount**  
-[`integer`](../../data-types.md) | Number of messages in the chat ||
+[`integer`](../../data-types.md) | Number of messages in the chat ||  
 || **userCounter**  
-[`integer`](../../data-types.md) | Number of participants in the chat ||
+[`integer`](../../data-types.md) | Number of participants in the chat ||  
 || **unreadId**  
-[`integer\|null`](../../data-types.md) | ID of the first unread message ||
+[`integer\|null`](../../data-types.md) | ID of the first unread message ||  
 || **lastMessageViews**  
-[`string`](../../data-types.md) | JSON string with data on views of the last message ||
+[`string`](../../data-types.md) | JSON string with data on views of the last message ||  
 || **markedId**  
-[`integer\|null`](../../data-types.md) | ID of the marked message ||
+[`integer\|null`](../../data-types.md) | ID of the marked message ||  
 || **public**  
-[`object\|string`](../../data-types.md) | Public access settings ||
+[`object\|string`](../../data-types.md) | Public access settings ||  
 |#
 
-### Example Chat Object
+### Example of Chat Object
 
 ```json
 {
@@ -293,43 +293,43 @@ Fields that are returned in method responses (e.g., [imbot.v2.Chat.get](./imbot.
 
 Message. Returned in the `message` field of method responses and event data.
 
-#|
+#|  
 || **Field**  
-`Type` | **Description** ||
+`Type` | **Description** ||  
 || **id**  
-[`integer`](../../data-types.md) | Unique identifier of the message ||
+[`integer`](../../data-types.md) | Unique identifier of the message ||  
 || **chatId**  
-[`integer`](../../data-types.md) | ID of the chat ||
+[`integer`](../../data-types.md) | ID of the chat ||  
 || **authorId**  
-[`integer`](../../data-types.md) | ID of the author. `0` for system messages ||
+[`integer`](../../data-types.md) | ID of the author. `0` for system messages ||  
 || **date**  
-[`string\|null`](../../data-types.md) | Creation date in ISO 8601 format ||
+[`string\|null`](../../data-types.md) | Creation date in ISO 8601 format ||  
 || **text**  
-[`string`](../../data-types.md) | Text of the message. Maximum length — 20,000 characters. Longer messages are truncated with the suffix ` (...)` ||
+[`string`](../../data-types.md) | Text of the message. Maximum length — 20,000 characters. Longer messages are truncated with the suffix ` (...)` ||  
 || **isSystem**  
-[`boolean`](../../data-types.md) | Is the message a system message? ||
+[`boolean`](../../data-types.md) | Is the message a system message ||  
 || **uuid**  
-[`string`](../../data-types.md) | UUID for deduplication ||
+[`string`](../../data-types.md) | UUID for deduplication ||  
 || **forward**  
-[`object\|null`](../../data-types.md) | Information about forwarding: `{id, userId, chatId, date}` or `null` ||
+[`object\|null`](../../data-types.md) | Information about forwarding: `{id, userId, chatId, date}` or `null` ||  
 || **params**  
-[`object`](../../data-types.md) | Additional parameters: attach, keyboard, files, etc. ||
+[`object`](../../data-types.md) | Additional parameters: attach, keyboard, files, etc. ||  
 || **viewedByOthers**  
-[`boolean`](../../data-types.md) | Has the message been read by other participants? ||
+[`boolean`](../../data-types.md) | Has the message been read by other participants ||  
 |#
 
-### Additional Fields (Only in Method Responses)
+### Additional Fields (only in method responses)
 
-#|
+#|  
 || **Field**  
-`Type` | **Description** ||
+`Type` | **Description** ||  
 || **unread**  
-[`boolean`](../../data-types.md) | Unread for the current user ||
+[`boolean`](../../data-types.md) | Unread for the current user ||  
 || **viewed**  
-[`boolean`](../../data-types.md) | Viewed by the current user ||
+[`boolean`](../../data-types.md) | Viewed by the current user ||  
 |#
 
-### Example Message Object
+### Example of Message Object
 
 ```json
 {
@@ -350,38 +350,38 @@ Message. Returned in the `message` field of method responses and event data.
 
 File attached to a message. Returned in the `file` field of the response from the method [imbot.v2.File.upload](./imbot.v2/files/file-upload.md).
 
-#|
+#|  
 || **Field**  
-`Type` | **Description** ||
+`Type` | **Description** ||  
 || **id**  
-[`integer`](../../data-types.md) | ID of the file on Drive ||
+[`integer`](../../data-types.md) | ID of the file on Drive ||  
 || **chatId**  
-[`integer`](../../data-types.md) | ID of the chat ||
+[`integer`](../../data-types.md) | ID of the chat ||  
 || **date**  
-[`string\|null`](../../data-types.md) | Upload date in ISO 8601 format ||
+[`string\|null`](../../data-types.md) | Upload date in ISO 8601 format ||  
 || **type**  
-[`string`](../../data-types.md) | Content type: `file`, `image`, `video`, `audio` ||
+[`string`](../../data-types.md) | Content type: `file`, `image`, `video`, `audio` ||  
 || **name**  
-[`string`](../../data-types.md) | File name with extension ||
+[`string`](../../data-types.md) | File name with extension ||  
 || **extension**  
-[`string`](../../data-types.md) | File extension in lowercase ||
+[`string`](../../data-types.md) | File extension in lowercase ||  
 || **size**  
-[`integer`](../../data-types.md) | File size in bytes ||
+[`integer`](../../data-types.md) | File size in bytes ||  
 || **image**  
-[`object\|false`](../../data-types.md) | Preview sizes for images: `{"height": 600, "width": 800}`, or `false` ||
+[`object\|false`](../../data-types.md) | Preview sizes for images: `{"height": 600, "width": 800}`, or `false` ||  
 || **authorId**  
-[`integer`](../../data-types.md) | ID of the user who uploaded the file ||
+[`integer`](../../data-types.md) | ID of the user who uploaded the file ||  
 || **authorName**  
-[`string`](../../data-types.md) | Name of the user who uploaded the file ||
+[`string`](../../data-types.md) | Name of the user who uploaded the file ||  
 || **isTranscribable**  
-[`boolean`](../../data-types.md) | Is transcription of the file possible? ||
+[`boolean`](../../data-types.md) | Is transcription of the file possible ||  
 || **isVideoNote**  
-[`boolean`](../../data-types.md) | Is the file a video note? ||
+[`boolean`](../../data-types.md) | Is the file a video note ||  
 || **isVoiceNote**  
-[`boolean`](../../data-types.md) | Is the file a voice message? ||
+[`boolean`](../../data-types.md) | Is the file a voice message ||  
 |#
 
-### Example File Object
+### Example of File Object
 
 ```json
 {
@@ -405,32 +405,32 @@ File attached to a message. Returned in the `file` field of the response from th
 
 Slash command of the bot. Returned in the responses from the methods [imbot.v2.Command.register](./imbot.v2/commands/command-register.md), [imbot.v2.Command.update](./imbot.v2/commands/command-update.md), [imbot.v2.Command.list](./imbot.v2/commands/command-list.md).
 
-#|
+#|  
 || **Field**  
-`Type` | **Description** ||
+`Type` | **Description** ||  
 || **id**  
-[`integer`](../../data-types.md) | Unique identifier of the command ||
+[`integer`](../../data-types.md) | Unique identifier of the command ||  
 || **botId**  
-[`integer`](../../data-types.md) | ID of the bot that owns the command ||
+[`integer`](../../data-types.md) | ID of the bot that owns the command ||  
 || **command**  
-[`string`](../../data-types.md) | Command text with leading slash, e.g., `/help` ||
+[`string`](../../data-types.md) | Command text with leading slash, e.g., `/help` ||  
 || **common**  
-[`boolean`](../../data-types.md) | Is the command available in all chats (`true`) or only where the bot is present (`false`)? ||
+[`boolean`](../../data-types.md) | Is the command available in all chats (`true`) or only where the bot is present (`false`) ||  
 || **hidden**  
-[`boolean`](../../data-types.md) | Is the command hidden from the suggestion list? ||
+[`boolean`](../../data-types.md) | Is the command hidden from the suggestions list ||  
 || **extranetSupport**  
-[`boolean`](../../data-types.md) | Is the command available for extranet users? ||
+[`boolean`](../../data-types.md) | Is the command available for extranet users ||  
 || **title**  
-[`string`](../../data-types.md) | Title of the command in the account language. Only in method responses ||
+[`string`](../../data-types.md) | Title of the command in the portal language. Only in method responses ||  
 || **params**  
-[`string`](../../data-types.md) | Description of the command parameters in the account language. Only in method responses ||
+[`string`](../../data-types.md) | Description of the command parameters in the portal language. Only in method responses ||  
 || **category**  
-[`string`](../../data-types.md) | Name of the bot that owns the command. Only in method responses ||
+[`string`](../../data-types.md) | Name of the bot that owns the command. Only in method responses ||  
 || **context**  
-[`string`](../../data-types.md) | Context of the command call. Only in method responses ||
+[`string`](../../data-types.md) | Context of the command call. Only in method responses ||  
 |#
 
-### Example Command Object
+### Example of Command Object
 
 ```json
 {
@@ -449,7 +449,8 @@ Slash command of the bot. Returned in the responses from the methods [imbot.v2.C
 
 ## Continue Learning
 
-- [Chatbots 2.0: Overview of Methods](./index.md)
-- [Bots: Overview of Methods](./imbot.v2/bots/index.md)
-- [Event Formats for imbot.v2](./imbot.v2/events/events.md)
-- [Event Formats im.v2](./im.v2/events/events.md)
+- [API imbot.v2 Change Log](./change-log.md)  
+- [{#T}](./index.md)  
+- [{#T}](./imbot.v2/bots/index.md)  
+- [{#T}](./imbot.v2/events/events.md)  
+- [{#T}](./im.v2/events/events.md)  

@@ -1,4 +1,4 @@
-# Get Frame Dimensions BX24.getScrollSize
+# Get Frame Dimensions with BX24.getScrollSize
 
 The method `BX24.getScrollSize` returns the dimensions of the current frame's content as an object with the fields `scrollWidth` and `scrollHeight`.
 
@@ -12,6 +12,8 @@ No parameters.
 
 ## Code Example
 
+{% include [Example Footnote](../../../_includes/examples.md) %}
+
 ```js
 BX24.init(function () {
     const size = BX24.getScrollSize();
@@ -19,15 +21,13 @@ BX24.init(function () {
 });
 ```
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
-
 ## Response Handling
 
 The method synchronously returns an object containing the dimensions of the content.
 
 ### Returned Data
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **result**
@@ -36,7 +36,7 @@ The method synchronously returns an object containing the dimensions of the cont
 
 ### Object result {#result}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **scrollWidth**

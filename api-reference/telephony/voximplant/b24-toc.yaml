@@ -1,7 +1,7 @@
 title: voximplant  
 href: index.md  
-items:   
-  - name: Using SIP and Built-in Telephony  
+items:  
+  - name: Overview of Methods  
     href: index.md  
   - name: Start a Callback  
     href: voximplant-callback-start.md  
@@ -11,6 +11,8 @@ items:
     href: voximplant-infocall-start-with-text.md  
   - name: Get a List of Available Voices for Text-to-Speech  
     href: voximplant-tts-voices-get.md  
+  - name: Retrieve Call History  
+    href: voximplant-statistic-get.md  
   - name: Events  
     include:  
       path: events/b24-toc.yaml  

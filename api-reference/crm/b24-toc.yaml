@@ -3,12 +3,16 @@ href: index.md
 items:
   - name: CRM Objects and Methods
     href: index.md
-  - name: Data Types and Structure of Objects in the CRM REST API
+  - name: Data Types and Object Structure in the CRM REST API
     href: data-types.md 
   - name: Fields of Main CRM Objects
     href: main-entities-fields.md
   - name: Typical Use-Cases and Tutorials
     href: tutorials.md
+  - name: Sales Intelligence
+    include:
+      path: tracking/b24-toc.yaml
+      mode: link
   - name: Determine the Current CRM Operating Mode
     href: crm-settings-mode-get.md
   - name: Universal CRM Methods
@@ -39,7 +43,7 @@ items:
     include:
       path: requisites/b24-toc.yaml
       mode: link
-  - name: Timeline and Activities
+  - name: Timeline and Deals
     include:
       path: timeline/b24-toc.yaml
       mode: link
@@ -51,7 +55,7 @@ items:
     include:
       path: duplicates/b24-toc.yaml
       mode: link
-  - name: Reference Books
+  - name: Directories
     include:
       path: status/b24-toc.yaml
       mode: link

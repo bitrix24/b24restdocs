@@ -1,44 +1,50 @@
-# Interaction with the CALL_CARD
+# CALL_CARD: Overview of Methods and Events
 
-{% note warning "We are still updating this page" %}
+The `CALL_CARD` placement is used by applications that are embedded in the call card within the CRM. Through the JavaScript interface of the placement, the application can access data about the current call, manage the auto-closing of the card, and respond to changes in the client or the call state.
 
-Some data may be missing here — we will complete it soon.
+> Quick navigation: [all methods and events](#all-methods)
+>
+> User documentation: [Call Card](https://helpdesk.bitrix24.com/open/18493064/)
 
-{% endnote %}
+## Getting Started with CALL_CARD
 
-{% if build == 'dev' %}
+1. Open the application in the `CALL_CARD` placement.
+2. Retrieve the list of available commands and events via [BX24.placement.getInterface](../bx24-placement-get-interface.md).
+3. Invoke placement commands through [BX24.placement.call](../bx24-placement-call.md).
+4. Subscribe to call card events using [BX24.placement.bindEvent](../bx24-placement-bind-event.md).
 
-{% note alert "TO-DO _not exported to prod_" %}
+## How the Placement API Call Works
 
-- It would be good to provide a link to BX24.placement.getInterface, but it is not documented
-- Check permissions and scope
+In `CALL_CARD`, the commands and events of the placement are not standalone REST methods. The application interacts with them through a common JavaScript embedding interface.
 
-{% endnote %}
+To execute a placement command, pass its name to [BX24.placement.call](../bx24-placement-call.md). For `CALL_CARD`, these commands are `getStatus`, `disableAutoClose`, and `enableAutoClose`. The `getStatus` command returns data about the current call, while the auto-close management commands return an empty array upon successful invocation.
 
-{% endif %}
+To respond to changes in the card without making repeated requests, subscribe to events via [BX24.placement.bindEvent](../bx24-placement-bind-event.md). In `CALL_CARD`, the available events are `CallCard::EntityChanged`, `CallCard::CallStateChanged`, and `CallCard::BeforeClose`. The event handler may receive client data, call state with additional parameters, or a call without data if the card is closing.
+
+## Overview of Methods and Events {#all-methods}
 
 > Scope: [`telephony`](../../../scopes/permissions.md)
 >
-> Who can execute methods and subscribe to events: `any user`
+> Who can execute the methods: any user
 
-The placement `CALL_CARD` is designed for working with the call card in the CRM:
+{% list tabs %}
 
-The interface is returned by calling `BX24.placement.getInterface`.
+- Methods
 
-## Overview of Methods
+    #|
+    || **Method** | **Description** ||
+    || [getStatus](./get-status.md) | Retrieves information about the current call ||
+    || [disableAutoClose](./disable-auto-close.md) | Disables automatic closing of the card after the call ends ||
+    || [enableAutoClose](./enable-auto-close.md) | Enables automatic closing of the card after the call ends ||
+    |#
 
-#|
-|| **Method** | **Description** ||
-|| [getStatus](./get-status.md) | Returns information about the current call ||
-|| [disableAutoClose](./disable-auto-close.md) | Disables automatic closing of the card for 60 seconds after the call ends ||
-|| [enableAutoClose](./enable-auto-close.md) | Enables automatic closing of the card after the call ends ||
-|#
+- Events
 
-## Overview of Events
+    #|
+    || **Event** | **Triggered** ||
+    || [CallCard::EntityChanged](./call-card-entity-changed.md) | When the current client changes during a call campaign ||
+    || [CallCard::BeforeClose](./call-card-before-close.md) | Before the call card closes ||
+    || [CallCard::CallStateChanged](./call-card-call-state-changed.md) | When the state of the current call changes ||
+    |#
 
-#|
-|| **Event** | **Triggered** ||
-|| [CallCard::EntityChanged](./call-card-entity-changed.md) | When the current client changes in dial mode ||
-|| [CallCard::BeforeClose](./call-card-before-close.md) | Before closing the call card ||
-|| [CallCard::CallStateChanged](./call-card-call-state-changed.md) | When the state of the current call changes ||
-|#
+{% endlist %}

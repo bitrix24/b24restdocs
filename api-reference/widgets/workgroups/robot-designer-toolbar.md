@@ -1,10 +1,10 @@
-# Main dropdown menu item near the Automation rule settings TASK_ROBOT_DESIGNER_TOOLBAR
+# Main Dropdown Menu Item Near Automation Rules Settings TASK_ROBOT_DESIGNER_TOOLBAR
 
 > Scope: [`intranet`](../../scopes/permissions.md)
 
-You can add your main dropdown menu item near the Automation rule settings in workgroups.
+You can add your own main dropdown menu item near the Automation Rules settings in workgroups.
 
-The code for the specific widget placement is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
+The specific widget placement code is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
 
 {% note info "" %}
 
@@ -12,19 +12,18 @@ The widget will not be displayed in the interface until the application installa
 
 {% endnote %}
 
-## Where the widget is embedded
+## Where the Widget is Embedded
 
-#|
-|| **Widget code** | **Location** ||
-|| `TASK_ROBOT_DESIGNER_TOOLBAR` | Main dropdown menu item near the Automation rule settings ||
+#| 
+|| **Widget Code** | **Location** ||
+|| `TASK_ROBOT_DESIGNER_TOOLBAR` | Main dropdown menu item near Automation Rules settings ||
 |#
 
-## What the handler receives
+## What the Handler Receives
 
 Data is transmitted as a POST request {.b24-info}
 
 ```php
-
 Array
 (
     [DOMAIN] => xxx.bitrix24.com
@@ -39,34 +38,31 @@ Array
     [PLACEMENT] => TASK_ROBOT_DESIGNER_TOOLBAR
     [PLACEMENT_OPTIONS] => {"GROUP_ID":"10"}
 )
-
 ```
 
-{% include [Note on required parameters](../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../_includes/required.md) %}
 
-{% include notitle [description of standard data](../_includes/widget_data.md) %}
+{% include notitle [Description of Standard Data](../_includes/widget_data.md) %}
 
 ### PLACEMENT_OPTIONS
 
 The value of `PLACEMENT_OPTIONS` is a JSON string containing an array of one or more keys.
 
-{% include [Note on required parameters](../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../_includes/required.md) %}
 
-#|
+#| 
 || **Parameter** | **Description** ||
-|| **GROUP_ID***
+|| **GROUP_ID*** 
 [`string`](../../data-types.md) | Identifier of the workgroup/project in which the widget was opened.
 
-Can be used to obtain additional information using the [sonet.group.get](../../sonet-group/sonet-group-get.md) method.
+It can be used to retrieve additional information using the [sonet.group.get](../../sonet-group/sonet-group-get.md) method.
 
-||
+|| 
 |#
 
-## Continue exploring
+## Continue Your Exploration
 
 - [{#T}](../placement-bind.md)
 - [{#T}](../ui-interaction/index.md)
-- [{#T}](../ui-interaction/crm-card.md)
 - [{#T}](../../../settings/interactivity/index.md)
-- [{#T}](../open-application.md)
-- [{#T}](../open-path.md)
+- [{#T}](../bx24-widget-methods.md)

@@ -2,11 +2,11 @@
 
 > Scope: [`crm`](../../scopes/permissions.md)
 
-You can add your item to the context menu of CRM objects: [leads](../../crm/leads/index.md), [contacts](../../crm/contacts/index.md), [companies](../../crm/companies/index.md), [deals](../../crm/deals/index.md), [old invoices](../../crm/outdated/invoice/index.md), [estimates](../../crm/quote/index.md), [new invoices](../../crm/universal/invoice.md), [custom entity types](../../crm/universal/index.md).
+You can add your item to the context menu of CRM objects: [leads](../../crm/leads/index.md), [contacts](../../crm/contacts/index.md), [companies](../../crm/companies/index.md), [deals](../../crm/deals/index.md), [outdated invoices](../../crm/outdated/invoice/index.md), [estimates](../../crm/quote/index.md), [new invoices](../../crm/universal/invoice.md), [custom object types](../../crm/universal/index.md).
 
 ![Widget as a context menu item in Deal](./_images/CRM_DEAL_LIST_MENU.png "Widget as a context menu item in Deal")
 
-The specific widget placement code is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
+The specific placement code for the widget is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
 
 {% note info "" %}
 
@@ -16,17 +16,17 @@ The widget will not be displayed in the interface until the application installa
 
 ## Where the Widget is Embedded
 
-#|
+#| 
 || **Widget Code** | **Location** ||
 || `CRM_LEAD_LIST_MENU` | Context menu item for [lead](../../crm/leads/index.md) ||
 || `CRM_CONTACT_LIST_MENU` | Context menu item for [contact](../../crm/contacts/index.md) ||
 || `CRM_COMPANY_LIST_MENU` | Context menu item for [company](../../crm/companies/index.md) ||
 || `CRM_DEAL_LIST_MENU` | Context menu item for [deal](../../crm/deals/index.md) ||
-|| `CRM_INVOICE_LIST_MENU` | Context menu item for [old invoice](../../crm/outdated/invoice/index.md) ||
+|| `CRM_INVOICE_LIST_MENU` | Context menu item for [outdated invoice](../../crm/outdated/invoice/index.md) ||
 || `CRM_SMART_INVOICE_LIST_MENU` | Context menu item for [new invoice](../../crm/universal/invoice.md) ||
 || `CRM_QUOTE_LIST_MENU` | Context menu item for [estimate](../../crm/quote/index.md) ||
-|| `CRM_ACTIVITY_LIST_MENU` | Context menu item for [activity](../../crm/timeline/activities/index.md) ||
-|| `CRM_DYNAMIC_XXX_LIST_MENU` | Context menu item for custom CRM entity type. Instead of XXX, specify the numeric identifier of the specific [custom entity type](../../crm/universal/index.md). For example, `CRM_DYNAMIC_183_LIST_MENU` || 
+|| `CRM_ACTIVITY_LIST_MENU` | Context menu item for [CRM activity](../../crm/timeline/activities/index.md) ||
+|| `CRM_DYNAMIC_XXX_LIST_MENU` | Context menu item for custom CRM object type. Instead of XXX, specify the numeric identifier of the specific [custom object type](../../crm/universal/index.md). For example, `CRM_DYNAMIC_183_LIST_MENU` || 
 |#
 
 ## What the Handler Receives
@@ -115,7 +115,7 @@ Data is transmitted as a POST request {.b24-info}
         [status] => L
         [PLACEMENT] => CRM_COMPANY_LIST_MENU
         [PLACEMENT_OPTIONS] => {"ID":"2946"}
-    )
+    }
     
     ```
 
@@ -136,7 +136,7 @@ Data is transmitted as a POST request {.b24-info}
         [status] => L
         [PLACEMENT] => CRM_QUOTE_LIST_MENU
         [PLACEMENT_OPTIONS] => {"ID":"5"}
-    )
+    }
     
     ```
 
@@ -157,7 +157,7 @@ Data is transmitted as a POST request {.b24-info}
         [status] => L
         [PLACEMENT] => CRM_INVOICE_LIST_MENU
         [PLACEMENT_OPTIONS] => {"ID":"12"}
-    )
+    }
     
     ```
 
@@ -178,7 +178,7 @@ Data is transmitted as a POST request {.b24-info}
         [status] => L
         [PLACEMENT] => CRM_SMART_INVOICE_LIST_MENU
         [PLACEMENT_OPTIONS] => {"ID":"32"}
-    )
+    }
     
     ```
 
@@ -199,7 +199,7 @@ Data is transmitted as a POST request {.b24-info}
         [status] => L
         [PLACEMENT] => CRM_ACTIVITY_LIST_MENU
         [PLACEMENT_OPTIONS] => {"ID":"1465"}
-    )
+    }
     
     ```
 
@@ -225,22 +225,22 @@ Data is transmitted as a POST request {.b24-info}
 
 {% endlist %}
 
-{% include [Footnote on required parameters](../../../_includes/required.md) %}
+{% include [Footnote on Required Parameters](../../../_includes/required.md) %}
 
-{% include notitle [description of standard data](../_includes/widget_data.md) %}
+{% include notitle [Description of Standard Data](../_includes/widget_data.md) %}
 
 ### PLACEMENT_OPTIONS
 
 The value of `PLACEMENT_OPTIONS` is a JSON string containing an array of one or more keys.
 
-{% include [Footnote on required parameters](../../../_includes/required.md) %}
+{% include [Footnote on Required Parameters](../../../_includes/required.md) %}
 
-#|
+#| 
 || **Parameter** | **Description** ||
 || **ID*** 
 [`string`](../../data-types.md) | Identifier of the CRM object for which the widget was opened.
 
-Can be used to retrieve additional information using the corresponding methods:
+It can be used to retrieve additional information using the corresponding methods:
 
 - any object type [crm.item.get](../../crm/universal/crm-item-get.md) specifying entityTypeId = '1' for leads, '2' for deals, and [etc.](../../crm/data-types.md#object_type)
 - lead [crm.lead.get](../../crm/leads/crm-lead-get.md)
@@ -250,16 +250,14 @@ Can be used to retrieve additional information using the corresponding methods:
 - estimate [crm.quote.get](../../crm/quote/crm-quote-get.md)
 - activity [crm.activity.get](../../crm/timeline/activities/activity-base/crm-activity-get.md)
 
-In the case of embedding the widget in a custom type object, the type identifier can be obtained from the value of the `PLACEMENT` parameter. In the example above — `183`
+In the case of embedding the widget in a custom object type, the type identifier can be obtained from the value of the `PLACEMENT` parameter. In the example above — `183`
 
 ||
 |#
 
-## Continue Exploring
+## Continue Learning
 
 - [{#T}](../placement-bind.md)
 - [{#T}](../ui-interaction/index.md)
-- [{#T}](../ui-interaction/crm-card.md)
 - [{#T}](../../../settings/interactivity/index.md)
-- [{#T}](../open-application.md)
-- [{#T}](../open-path.md)
+- [{#T}](../bx24-widget-methods.md)

@@ -1,42 +1,55 @@
-# Delete user block landing.repo.unregister
-
-{% note warning "We are still updating this page" %}
-
-Some data may be missing here — we will complete it shortly.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not deployed to prod_" %}
-
-- parameter types are not specified
-- parameter requirements are not specified
-- examples are missing
-- success response is missing
-- error response is missing
-
-{% endnote %}
-
-{% endif %}
+# Delete User Block landing.repo.unregister
 
 > Scope: [`landing`](../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: user with View access permission in the Sites section
 
-The method `landing.repo.unregister` deletes a block. It returns *true* upon deletion or *false* if the block has already been deleted or did not exist.
+The method `landing.repo.unregister` deletes a user block by its code.
 
-## Parameters
+## Method Parameters
+
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
-|| **Method** | **Description** ||
-|| **code**
-[`unknown`](../../data-types.md) | Unique code of the block to be deleted. ||
+|| **Name**
+`type` | **Description** ||
+|| **code**^*^
+[`string`](../../data-types.md) | External code of the block (`XML_ID`).
+
+The code can be obtained, for example, from the result of the method [landing.repo.getList](./landing-repo-get-list.md) in the `XML_ID` field ||
 |#
 
-## Examples
+## Code Examples
+
+{% include [Note on examples](../../../_includes/examples.md) %}
+
+Example of deleting a block, where:
+- `code` — code of the block to be deleted
 
 {% list tabs %}
+
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+      -H "Content-Type: application/json" \
+      -d '{
+        "code": "myblockx"
+      }' \
+      "https://**put.your-domain-here**/rest/**user_id**/**webhook_code**/landing.repo.unregister.json"
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+      -H "Content-Type: application/json" \
+      -d '{
+        "code": "myblockx",
+        "auth": "**put_access_token_here**"
+      }' \
+      "https://**put.your-domain-here**/rest/landing.repo.unregister.json"
+    ```
 
 - JS
 
@@ -45,22 +58,17 @@ The method `landing.repo.unregister` deletes a block. It returns *true* upon del
     {
     	const response = await $b24.callMethod(
     		'landing.repo.unregister',
-    		{code: 'myblockx'}
+    		{
+    			code: 'myblockx'
+    		}
     	);
-    	
+
     	const result = response.getData().result;
-    	if(result.error())
-    	{
-    		console.error(result.error());
-    	}
-    	else
-    	{
-    		console.info(result);
-    	}
+    	console.info(result);
     }
-    catch(error)
+    catch (error)
     {
-    	console.error('Error:', error);
+    	console.error(error);
     }
     ```
 
@@ -76,20 +84,15 @@ The method `landing.repo.unregister` deletes a block. It returns *true* upon del
                     'code' => 'myblockx',
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
-        if ($result->error()) {
-            error_log($result->error());
-        } else {
-            echo 'Success: ' . print_r($result->data(), true);
-        }
-    
+
+        echo 'Success: ' . var_export($result, true);
     } catch (Throwable $e) {
         error_log($e->getMessage());
-        echo 'Error unregistering landing repo: ' . $e->getMessage();
+        echo 'Error unregistering block: ' . $e->getMessage();
     }
     ```
 
@@ -98,17 +101,120 @@ The method `landing.repo.unregister` deletes a block. It returns *true* upon del
     ```js
     BX24.callMethod(
         'landing.repo.unregister',
-        {code: 'myblockx'},
+        {
+            code: 'myblockx'
+        },
         function(result)
         {
-            if(result.error())
+            if (result.error())
+            {
                 console.error(result.error());
+            }
             else
+            {
                 console.info(result.data());
+            }
         }
     );
     ```
 
+- PHP CRest
+
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'landing.repo.unregister',
+        [
+            'code' => 'myblockx',
+        ]
+    );
+
+    if (isset($result['error']))
+    {
+        echo 'Error: ' . $result['error_description'];
+    }
+    else
+    {
+        echo '<pre>';
+        print_r($result['result']);
+        echo '</pre>';
+    }
+    ```
+
 {% endlist %}
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+## Response Handling
+
+HTTP Status: **200**
+
+```json
+{
+    "result": true,
+    "time": {
+        "start": 1774951693,
+        "finish": 1774951693.523505,
+        "duration": 0.5235049724578857,
+        "processing": 0,
+        "date_start": "2026-03-31T13:08:13+02:00",
+        "date_finish": "2026-03-31T13:08:13+02:00",
+        "operating_reset_at": 1774952293,
+        "operating": 0
+    }
+}
+```
+
+### Returned Data
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`boolean`](../../data-types.md) | Result of the deletion:
+
+- `true` — block found and deleted
+- `false` — `code` is not a string, empty, or block not found ||
+|| **time**
+[`time`](../../data-types.md#time) | Information about the request execution time ||
+|#
+
+## Error Handling
+
+HTTP Status: **400**
+
+```json
+{
+    "error": "ERROR_ARGUMENT",
+    "error_description": "The value of an argument 'code' has an invalid type",
+    "argument": "code"
+}
+```
+
+```json
+{
+    "error": "ACCESS_DENIED",
+    "error_description": "Insufficient permissions."
+}
+```
+
+{% include notitle [error handling](../../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+#|
+|| **Code** | **Description** | **Value** ||
+|| `MISSING_PARAMS` | Not enough call parameters, missing: code | Method call without `code` ||
+|| `ERROR_ARGUMENT` | The value of an argument 'code' has an invalid type | Parameter `code` passed in an incorrect type ||
+|| `ACCESS_DENIED` | Insufficient permissions | User did not pass general access checks ||
+|| `insufficient_scope` | Token lacks sufficient scope | Token does not contain `landing` scope ||
+|| `-` | Error deleting block | Failed to delete record from the repository ||
+|#
+
+{% include [system errors](../../../_includes/system-errors.md) %}
+
+## Continue Learning
+
+- [{#T}](./landing-repo-register.md)
+- [{#T}](./landing-repo-get-list.md)
+- [{#T}](./landing-repo-check-content.md)
+- [{#T}](./index.md)

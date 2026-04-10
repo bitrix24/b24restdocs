@@ -1,8 +1,10 @@
 title: Integration of a Custom WebRTC Client  
 href: index.md  
 items:  
-  - name: WebRTC Embedding Scenario  
+  - name: Overview of Methods  
     href: index.md  
+  - name: WebRTC Embedding Scenario  
+    href: webrtc-scenario.md  
   - name: Call Card  
     href: card.md  
   - name: Mute Operator's Microphone from the Application  
@@ -11,7 +13,7 @@ items:
     href: call-card-set-hold.md  
   - name: Change Call Card Interface State from the Application  
     href: call-card-set-ui-state.md  
-  - name: Retrieve List of Available Call Card Interface States  
+  - name: Get List of Available Call Card Interface States  
     href: call-card-get-list-ui-states.md  
   - name: Change Call Card Title from the Application  
     href: call-card-set-card-title.md  

@@ -8,7 +8,9 @@ items:
   - name: Objects and Fields  
     href: entities.md  
   - name: Migration from imbot to imbot.v2  
-    href: migration.md  
+    href: migration.md
+  - name: Change Log for API imbot.v2
+    href: change-log.md  
   - name: Methods  
     include:  
       path: imbot.v2/b24-toc.yaml  

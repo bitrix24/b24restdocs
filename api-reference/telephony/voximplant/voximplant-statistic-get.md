@@ -1,6 +1,6 @@
 # Get Call History List voximplant.statistic.get
 
-> Scope: [`telephony`](../scopes/permissions.md)
+> Scope: [`telephony`](../../scopes/permissions.md)
 >
 > Who can execute the method: user with Call Statistics — View permission
 
@@ -8,13 +8,13 @@ The method `voximplant.statistic.get` returns a list of calls from telephony sta
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **FILTER**
-[`object`](../data-types.md) | An object for filtering in the format `{"field_1": "value_1", ... "field_N": "value_N"}`.
+[`object`](../../data-types.md) | An object for filtering in the format `{"field_1": "value_1", ... "field_N": "value_N"}`.
 
 See the [list of available fields for filtering](#filterable) below.
 
@@ -35,13 +35,13 @@ Supported operators in the filter key:
 By default — no filtering
 ||
 || **SORT**
-[`string`](../data-types.md) | Sorting field.
+[`string`](../../data-types.md) | Sorting field.
 
 The same fields as in the [list of fields for filtering](#filterable) are used, except for `CALL_TYPE`.
 
 By default — no sorting ||
 || **ORDER**
-[`string`](../data-types.md) | Sorting direction.
+[`string`](../../data-types.md) | Sorting direction.
 
 Possible values:
 - `ASC` — ascending order
@@ -49,7 +49,7 @@ Possible values:
 
 By default — no sorting ||
 || **start**
-[`integer`](../data-types.md) | Pagination parameter.
+[`integer`](../../data-types.md) | Pagination parameter.
 
 The page size for results is 50 records.
 
@@ -66,23 +66,23 @@ Formula:
 || **Name**
 `type` | **Description** ||
 || **ID**
-[`integer`](../data-types.md) | Internal identifier of the statistics record ||
+[`integer`](../../data-types.md) | Internal identifier of the statistics record ||
 || **CALL_ID**
-[`string`](../data-types.md) | Call identifier ||
+[`string`](../../data-types.md) | Call identifier ||
 || **EXTERNAL_CALL_ID**
-[`string`](../data-types.md) | Call identifier on the external PBX/integration side ||
+[`string`](../../data-types.md) | Call identifier on the external PBX/integration side ||
 || **CALL_CATEGORY**
-[`string`](../data-types.md) | Call category ||
+[`string`](../../data-types.md) | Call category ||
 || **PORTAL_USER_ID**
-[`integer`](../data-types.md) | User identifier.
+[`integer`](../../data-types.md) | User identifier.
 
-The identifier can be obtained using the [user.get](../user/user-get.md) method ||
+The identifier can be obtained using the [user.get](../../user/user-get.md) method ||
 || **PORTAL_NUMBER**
-[`string`](../data-types.md) | Line number through which the call was made ||
+[`string`](../../data-types.md) | Line number through which the call was made ||
 || **PHONE_NUMBER**
-[`string`](../data-types.md) | Subscriber number ||
+[`string`](../../data-types.md) | Subscriber number ||
 || **CALL_TYPE**
-[`integer`](../data-types.md) | Type of call.
+[`integer`](../../data-types.md) | Type of call.
 
 Possible values:
 - `1` — outgoing
@@ -91,26 +91,26 @@ Possible values:
 - `4` — callback
 - `5` — informational call ||
 || **CALL_DURATION**
-[`integer`](../data-types.md) | Duration of the call in seconds ||
+[`integer`](../../data-types.md) | Duration of the call in seconds ||
 || **CALL_START_DATE**
-[`datetime`](../data-types.md) | Date and time of the call start in ISO-8601 format with timezone indication ||
+[`datetime`](../../data-types.md) | Date and time of the call start in ISO-8601 format with timezone indication ||
 || **CALL_LOG**
-[`string`](../data-types.md) | Call log URL ||
+[`string`](../../data-types.md) | Call log URL ||
 || **CALL_RECORD_URL**
-[`string`](../data-types.md) | Call recording URL ||
+[`string`](../../data-types.md) | Call recording URL ||
 || **CALL_VOTE**
-[`integer`](../data-types.md) | Call rating.
+[`integer`](../../data-types.md) | Call rating.
 
 Possible values:
 - `1`, `2`, `3`, `4`, `5`
 
 If the rating is absent — `0` or `null` ||
 || **COST**
-[`double`](../data-types.md) | Cost of the call ||
+[`double`](../../data-types.md) | Cost of the call ||
 || **COST_CURRENCY**
-[`string`](../data-types.md) | Currency of the call cost ||
+[`string`](../../data-types.md) | Currency of the call cost ||
 || **CALL_FAILED_CODE**
-[`string`](../data-types.md) | Call result code.
+[`string`](../../data-types.md) | Call result code.
 
 Possible values:
 - `200` — successful call
@@ -127,43 +127,43 @@ Possible values:
 - `423` — blocked
 - `OTHER` — undefined ||
 || **CALL_FAILED_REASON**
-[`string`](../data-types.md) | Text of the reason/result of the call ||
+[`string`](../../data-types.md) | Text of the reason/result of the call ||
 || **CRM_ENTITY_TYPE**
-[`string`](../data-types.md) | Type of CRM entity.
+[`string`](../../data-types.md) | Type of CRM entity.
 
 Possible values:
 - `CONTACT` — contact
 - `COMPANY` — company
 - `LEAD` — lead  ||
 || **CRM_ENTITY_ID**
-[`integer`](../data-types.md) | Identifier of the CRM entity from `CRM_ENTITY_TYPE` ||
+[`integer`](../../data-types.md) | Identifier of the CRM entity from `CRM_ENTITY_TYPE` ||
 || **CRM_ACTIVITY_ID**
-[`integer`](../data-types.md) | Identifier of the CRM activity for the call ||
+[`integer`](../../data-types.md) | Identifier of the CRM activity for the call ||
 || **REST_APP_ID**
-[`integer`](../data-types.md) | Application identifier ||
+[`integer`](../../data-types.md) | Application identifier ||
 || **REST_APP_NAME**
-[`string`](../data-types.md) | Application name ||
+[`string`](../../data-types.md) | Application name ||
 || **TRANSCRIPT_ID**
-[`integer`](../data-types.md) | Identifier of the call transcript ||
+[`integer`](../../data-types.md) | Identifier of the call transcript ||
 || **TRANSCRIPT_PENDING**
-[`string`](../data-types.md) | Indicator of pending transcription.
+[`string`](../../data-types.md) | Indicator of pending transcription.
 
 Possible values:
 - `Y` — transcription pending
 - `N` — transcription available or absent ||
 || **SESSION_ID**
-[`integer`](../data-types.md) | Session identifier on the telephony side ||
+[`integer`](../../data-types.md) | Session identifier on the telephony side ||
 || **REDIAL_ATTEMPT**
-[`integer`](../data-types.md) | Number of redial attempts (for callback scenarios) ||
+[`integer`](../../data-types.md) | Number of redial attempts (for callback scenarios) ||
 || **COMMENT**
-[`string`](../data-types.md) | Comment on the call ||
+[`string`](../../data-types.md) | Comment on the call ||
 || **RECORD_DURATION**
-[`integer`](../data-types.md) | Duration of the call recording file ||
+[`integer`](../../data-types.md) | Duration of the call recording file ||
 |#
 
 ## Code Examples
 
-{% include [Note on examples](../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -386,15 +386,15 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`array`](../data-types.md) | Array of statistics records. The composition of records depends on the `FILTER` conditions.
+[`array`](../../data-types.md) | Array of statistics records. The composition of records depends on the `FILTER` conditions.
 
 An empty array means there are no records matching the `FILTER` conditions ||
 || **total**
-[`integer`](../data-types.md) | Total number of records in the selection ||
+[`integer`](../../data-types.md) | Total number of records in the selection ||
 || **next**
-[`integer`](../data-types.md) | Offset for the next page (if any) ||
+[`integer`](../../data-types.md) | Offset for the next page (if any) ||
 || **time**
-[`time`](../data-types.md#time) | Information about the execution time of the request ||
+[`time`](../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
@@ -408,7 +408,7 @@ HTTP Status: **403**
 }
 ```
 
-{% include notitle [error handling](../../_includes/error-info.md) %}
+{% include notitle [error handling](../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
@@ -417,11 +417,11 @@ HTTP Status: **403**
 || `ACCESS_DENIED` | Access denied! | Insufficient permissions to view call statistics ||
 |#
 
-{% include [system errors](../../_includes/system-errors.md) %}
+{% include [system errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
-- [{#T}](./telephony-external-call-register.md)
-- [{#T}](./telephony-external-call-finish.md)
-- [{#T}](./telephony-external-call-attach-record.md)
-- [{#T}](./telephony-call-attach-transcription.md)
+- [{#T}](../telephony-external-call-register.md)
+- [{#T}](../telephony-external-call-finish.md)
+- [{#T}](../telephony-external-call-attach-record.md)
+- [{#T}](../telephony-call-attach-transcription.md)

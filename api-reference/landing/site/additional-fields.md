@@ -1,131 +1,185 @@
-# Additional Fields
+# Additional Website Fields
 
-{% note warning "We are still updating this page" %}
+Additional website fields are passed in the `ADDITIONAL_FIELDS` array when calling the methods [landing.site.add](./landing-site-add.md) and [landing.site.update](./landing-site-update.md).
 
-Some data may be missing here — we will complete it shortly.
+Filled values can be retrieved using the method [landing.site.getadditionalfields](./landing-site-get-additional-fields.md).
 
-{% endnote %}
+{% note info "" %}
 
-{% if build == 'dev' %}
+The method `landing.site.getadditionalfields` returns only non-empty website fields.
 
-{% note alert "TO-DO _not exported to prod_" %}
+For recording, use the field codes in the `ADDITIONAL_FIELDS` array, for example:
 
-- edits needed for writing standards
-- parameter types are not specified
-- parameter mandatory status is not indicated
-- links to pages that have not yet been created are not provided
-
-{% endnote %}
-
-{% endif %}
-
-Fields are read through the method [landing.site.getadditionalfields](./landing-site-get-additional-fields.md).
-
-{% note warning %}
-
-Below are the field codes that must be specified in the array with the key ADDITIONAL for writing to the entity. For example, `ADDITIONAL_FIELDS: {UP_SHOW: 'Y'}`.
+```json
+{
+    "ADDITIONAL_FIELDS": {
+        "THEME_CODE": "1construction",
+        "BACKGROUND_USE": "Y",
+        "BACKGROUND_COLOR": "#f4f7fb"
+    }
+}
+```
 
 {% endnote %}
+
+## What You Need to Know
+
+- The set of fields depends on the type of website, settings, and installed modules, so not all fields are available on every website.
+- For flag fields, the values `Y` and `N` are used.
+- If a field is empty, the method `landing.site.getadditionalfields` will not return it in the response.
+- The field `BACKGROUND_PICTURE` stores the file identifier when recorded, and the REST method usually returns the file URL in the response.
+
+## Theme and Fonts
 
 #|
-|| **Field** | **Description** | **Read** | **Write** ||
+|| **Field**
+`type` | **Description** ||
 || **THEME_CODE**
-[`unknown`](../../data-types.md) | Color palette. [Theme descriptions](../page/color-themes.md) | Yes | Yes ||
-|| **THEME_CODE_TYPO**
-[`unknown`](../../data-types.md) | Font settings. | Yes | Yes ||
-|| **B24BUTTON_CODE**
-[`unknown`](../../data-types.md) | Widget identifier on the site. The JS path to the widget is passed. For example, https://cdn.bitrix24.com/crm/loader_2_ibikwq.js | Yes | Yes ||
-|| **B24BUTTON_COLOR**
-[`unknown`](../../data-types.md) | Widget color, can take values: 
-- site (use the main color of the site);
-- button (use the color from the widget settings). | Yes | Yes ||
-|| **UP_SHOW**
-[`unknown`](../../data-types.md) | Show the Up button: Y/N. | Yes | Yes ||
+[`string`](../../data-types.md) | The color theme code of the website. Available values are listed in the section [Page Color Themes](../page/color-themes.md) ||
+|| **THEME_USE**
+[`string`](../../data-types.md) | Enable a custom color palette for the website: `Y` or `N` ||
+|| **THEME_COLOR**
+[`string`](../../data-types.md) | Custom theme color in HEX format, for example `#34bcf2` ||
+|| **THEMEFONTS_USE**
+[`string`](../../data-types.md) | Enable custom font settings for the website: `Y` or `N` ||
+|| **THEMEFONTS_CODE**
+[`string`](../../data-types.md) | Font for the main text ||
+|| **THEMEFONTS_CODE_H**
+[`string`](../../data-types.md) | Font for headings ||
+|| **THEMEFONTS_SIZE**
+[`string`](../../data-types.md) | Base text size. Supported values are `0.92857`, `1`, `1.14286` ||
+|| **THEMEFONTS_COLOR**
+[`string`](../../data-types.md) | Color of the main text in HEX format ||
+|| **THEMEFONTS_COLOR_H**
+[`string`](../../data-types.md) | Color of headings in HEX format ||
+|| **THEMEFONTS_LINE_HEIGHT**
+[`string`](../../data-types.md) | Line height. Supported values range from `0.7` to `2` ||
+|| **THEMEFONTS_FONT_WEIGHT**
+[`string`](../../data-types.md) | Font weight of the main text. Supported values range from `100` to `900` in increments of `100` ||
+|| **THEMEFONTS_FONT_WEIGHT_H**
+[`string`](../../data-types.md) | Font weight of headings. Supported values range from `100` to `900` in increments of `100` ||
 |#
 
-## Background Image
+## Bitrix24 Widget
 
 #|
-|| **Field** | **Description** | **Read** | **Write** ||
+|| **Field**
+`type` | **Description** ||
+|| **B24BUTTON_USE**
+[`string`](../../data-types.md) | Enable the Bitrix24 widget: `Y` or `N` ||
+|| **B24BUTTON_CODE**
+[`string`](../../data-types.md) | Code or URL of the Bitrix24 widget script. It can be obtained in the widget settings in CRM ||
+|| **B24BUTTON_COLOR**
+[`string`](../../data-types.md) | Source of the widget color. Supported values are `site`, `button`, `custom` ||
+|| **B24BUTTON_COLOR_VALUE**
+[`string`](../../data-types.md) | Custom widget color in HEX format. Used if `B24BUTTON_COLOR = custom` ||
+|#
+
+## Back to Top Button
+
+#|
+|| **Field**
+`type` | **Description** ||
+|| **UP_SHOW**
+[`string`](../../data-types.md) | Show the back to top button: `Y` or `N` ||
+|#
+
+## Website Background
+
+#|
+|| **Field**
+`type` | **Description** ||
 || **BACKGROUND_USE**
-[`unknown`](../../data-types.md) | Use functionality: Y/N | Yes | Yes ||
+[`string`](../../data-types.md) | Enable website background settings: `Y` or `N` ||
 || **BACKGROUND_PICTURE**
-[`unknown`](../../data-types.md) | Path to the image. | Yes | Yes ||
+[`string`](../../data-types.md) \| [`integer`](../../data-types.md) | Background image of the website. When recorded, the file identifier is passed; when read, the REST method usually returns the file URL ||
 || **BACKGROUND_POSITION**
-[`unknown`](../../data-types.md) | Positioning: center (stretch), repeat (tile). | Yes | Yes ||
+[`string`](../../data-types.md) | Background display mode. Supported values are `center`, `repeat`, `center_repeat_y`, `no_repeat` ||
 || **BACKGROUND_COLOR**
-[`unknown`](../../data-types.md) | Background color. | Yes | Yes ||
+[`string`](../../data-types.md) | Background color of the website in HEX format ||
 |#
 
 ## Analytics
 
+Analytics fields are not available on all plans. If analytics integrations are not available on your plan, enabling these fields will not activate counters.
+
 #|
-|| **Field** | **Description** | **Read** | **Write** ||
+|| **Field**
+`type` | **Description** ||
 || **GACOUNTER_USE**
-[`unknown`](../../data-types.md) | Use Google Analytics: Y/N. | Yes | Yes ||
+[`string`](../../data-types.md) | Enable Google Analytics: `Y` or `N` ||
 || **GACOUNTER_COUNTER**
-[`unknown`](../../data-types.md) | Google Analytics counter code. | Yes | Yes ||
+[`string`](../../data-types.md) | Identifier of the old format counter `UA-...`. For the current GA4 counter, use the field `GACOUNTER_COUNTER_GA4` ||
+|| **GACOUNTER_COUNTER_GA4**
+[`string`](../../data-types.md) | Identifier of the Google Analytics 4 counter in the format `G-...` ||
 || **GACOUNTER_SEND_CLICK**
-[`unknown`](../../data-types.md) | Send click data for buttons and links to Google Analytics. | Yes | Yes ||
+[`string`](../../data-types.md) | Send click events: `Y` or `N` ||
+|| **GACOUNTER_CLICK_TYPE**
+[`string`](../../data-types.md) | Where to get the signature for the click event. Supported values are `href` and `text` ||
 || **GACOUNTER_SEND_SHOW**
-[`unknown`](../../data-types.md) | Send data on page block views to Google Analytics. | Yes | Yes ||
+[`string`](../../data-types.md) | Send block show events: `Y` or `N` ||
 || **GTM_USE**
-[`unknown`](../../data-types.md) | Use Google Tag Manager. | Yes | Yes ||
+[`string`](../../data-types.md) | Enable Google Tag Manager: `Y` or `N` ||
 || **GTM_COUNTER**
-[`unknown`](../../data-types.md) | Google Tag Manager code. | Yes | Yes ||
+[`string`](../../data-types.md) | Identifier of the Google Tag Manager container ||
 |#
 
 ## Maps
 
 #|
-|| **Field** | **Description** | **Read** | **Write** ||
+|| **Field**
+`type` | **Description** ||
 || **GMAP_USE**
-[`unknown`](../../data-types.md) | Use Google Maps: Y/N. | Yes | Yes ||
+[`string`](../../data-types.md) | Enable Google Maps API: `Y` or `N` ||
 || **GMAP_CODE**
-[`unknown`](../../data-types.md) | Google Maps code. | Yes | Yes ||
+[`string`](../../data-types.md) | Google Maps API key. Maps are connected only if `GMAP_USE = Y` and this field is filled ||
 |#
 
-## Site View
+## Website View
 
 #|
-|| **Field** | **Description** | **Read** | **Write** ||
+|| **Field**
+`type` | **Description** ||
 || **VIEW_USE**
-[`unknown`](../../data-types.md) | Use view: Y/N. | Yes | Yes ||
+[`string`](../../data-types.md) | Enable special website view: `Y` or `N` ||
 || **VIEW_TYPE**
-[`unknown`](../../data-types.md) | View type: 
-- no (no view),
-- ltr (margin on top and sides),
-- all (margin on all sides). | Yes | Yes ||
+[`string`](../../data-types.md) | Type of view. Supported values are `no`, `ltr`, `all`, `mobile`, `adaptive` ||
 |#
 
 ## Robots.txt
 
 #|
-|| **Field** | **Description** | **Read** | **Write** ||
+|| **Field**
+`type` | **Description** ||
 || **ROBOTS_USE**
-[`unknown`](../../data-types.md) | Show your Robots.txt: Y/N. | Yes | Yes ||
+[`string`](../../data-types.md) | Enable custom `robots.txt`: `Y` or `N` ||
 || **ROBOTS_CONTENT**
-[`unknown`](../../data-types.md) | Content of robots.txt | Yes | Yes ||
+[`string`](../../data-types.md) | Content of the custom `robots.txt` ||
 |#
 
-## Custom HTML
+## Custom Code
+
+The fields `HEADBLOCK_*` are not available on all plans.
 
 #|
-|| **Field** | **Description** | **Read** | **Write** ||
+|| **Field**
+`type` | **Description** ||
 || **HEADBLOCK_USE**
-[`unknown`](../../data-types.md) | Use: Y/N. | Yes | Yes ||
+[`string`](../../data-types.md) | Enable custom HTML or JavaScript in `head`: `Y` or `N` ||
 || **HEADBLOCK_CODE**
-[`unknown`](../../data-types.md) | HEAD block, arbitrary HTML. | Yes | Yes ||
-|#
-
-## Custom CSS
-
-#|
-|| **Field** | **Description** | **Read** | **Write** ||
+[`string`](../../data-types.md) | Arbitrary HTML or JavaScript added to the website's `head` ||
 || **CSSBLOCK_USE**
-[`unknown`](../../data-types.md) | Use: Y/N. | Yes | Yes ||
+[`string`](../../data-types.md) | Enable custom CSS: `Y` or `N` ||
 || **CSSBLOCK_CODE**
-[`unknown`](../../data-types.md) | Arbitrary CSS code. | Yes | Yes ||
+[`string`](../../data-types.md) | Arbitrary CSS code for the website ||
 || **CSSBLOCK_FILE**
-[`unknown`](../../data-types.md) | Link to CSS file. | Yes | Yes ||
+[`string`](../../data-types.md) | Link to an external CSS file ||
 |#
+
+## Continue Learning
+
+- [landing.site.add](./landing-site-add.md)
+- [landing.site.update](./landing-site-update.md)
+- [landing.site.getadditionalfields](./landing-site-get-additional-fields.md)
+- [Website Fields](./base-fields.md)
+- [Page Color Themes](../page/color-themes.md)

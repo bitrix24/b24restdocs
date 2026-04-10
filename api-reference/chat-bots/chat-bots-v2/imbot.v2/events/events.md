@@ -2,22 +2,22 @@
 
 Description of all events that the bot receives via [imbot.v2.Event.get](./event-get.md) (FETCH mode) or through webhook.
 
-The fields of the `message`, `chat`, and `user` objects are described in [Objects and Fields of Chatbots 2.0](../../entities.md).
+The fields of the `message`, `chat`, and `user` objects are described in [{#T}](../../entities.md).
 
 ## Which Events to Process First
 
 The minimum set of events for a working bot:
 
 - [ONIMBOTV2MESSAGEADD](#onimbotv2messageadd) — incoming messages from users
-- [ONIMBOTV2COMMANDADD](#onimbotv2commandadd) — invocation of slash commands
-- [ONIMBOTV2JOINCHAT](#onimbotv2joinchat) — bot added to a chat (usually sends a greeting)
-- [ONIMBOTV2DELETE](#onimbotv2delete) — bot removal (resource cleanup)
+- [ONIMBOTV2COMMANDADD](#onimbotv2commandadd) — calls to slash commands
+- [ONIMBOTV2JOINCHAT](#onimbotv2joinchat) — adding the bot to a chat (usually sends a greeting)
+- [ONIMBOTV2DELETE](#onimbotv2delete) — removal of the bot (resource cleanup)
 
 Additionally, based on the scenario:
 
-- [ONIMBOTV2MESSAGEUPDATE](#onimbotv2messageupdate) and [ONIMBOTV2MESSAGEDELETE](#onimbotv2messagedelete) — if you support editing/deletion
+- [ONIMBOTV2MESSAGEUPDATE](#onimbotv2messageupdate) and [ONIMBOTV2MESSAGEDELETE](#onimbotv2messagedelete) — if you support editing/deleting
 - [ONIMBOTV2REACTIONCHANGE](#onimbotv2reactionchange) — if you track reactions
-- [ONIMBOTV2CONTEXTGET](#onimbotv2contextget) — if you use the input context of the dialogue
+- [ONIMBOTV2CONTEXTGET](#onimbotv2contextget) — if you use the incoming context of the dialogue
 
 ## Bot Object Format {#bot-format}
 
@@ -26,7 +26,7 @@ The content of the `bot` field depends on the event delivery mode.
 - **FETCH** (`imbot.v2.Event.get`) — full bot object, as in the response from [imbot.v2.Bot.get](../bots/bot-get.md)
 - **Webhook** — simplified object `{id, code, auth}`, where `auth` contains the OAuth token for callbacks
 
-Each webhook call contains data for **one** bot. If the application has registered multiple bots and the event pertains to several of them, the webhook is called separately for each.
+Each webhook call contains data for **one** bot. If the application has registered multiple bots and the event concerns several of them, the webhook is called separately for each.
 
 Example of the `bot` object in webhook mode:
 
@@ -41,7 +41,7 @@ Example of the `bot` object in webhook mode:
             "expires_in": "3600",
             "scope": "imbot",
             "domain": "some-domain.bitrix24.com",
-            "server_endpoint": "https://oauth.bitrix.info/rest/",
+            "server_endpoint": "https://oauth.bitrix24.info/rest/",
             "status": "F",
             "client_endpoint": "https://some-domain.bitrix24.com/rest/",
             "member_id": "bac1cd5c8940947a75e0d71b1a84e348",
@@ -94,7 +94,7 @@ A new message addressed to the bot. This occurs when a user sends a message in a
 || **message** | [`Message`](../../entities.md#message) | The sent message ||
 || **chat** | [`Chat`](../../entities.md#chat) | The chat in which the message was sent ||
 || **user** | [`User`](../../entities.md#user) | The author of the message ||
-|| **language** | `string` | Portal language (e.g., `en`, `de`) ||
+|| **language** | `string` | Portal language (e.g., `en`, `ru`) ||
 |#
 
 ### Example Data
@@ -122,7 +122,7 @@ A new message addressed to the bot. This occurs when a user sends a message in a
         "id": 789,
         "chatId": 5,
         "authorId": 1,
-        "date": "2025-01-15T10:30:00+01:00",
+        "date": "2025-01-15T10:30:00+02:00",
         "text": "Hello bot!",
         "isSystem": false,
         "uuid": "",
@@ -157,7 +157,7 @@ A new message addressed to the bot. This occurs when a user sends a message in a
         "externalAuthId": "default",
         "status": "online",
         "idle": false,
-        "lastActivityDate": "2025-01-15T10:29:00+01:00",
+        "lastActivityDate": "2025-01-15T10:29:00+02:00",
         "absent": false,
         "departments": [1],
         "phones": false,
@@ -263,7 +263,7 @@ The bot has been added to a chat or received an invitation.
         "externalAuthId": "default",
         "status": "online",
         "idle": false,
-        "lastActivityDate": "2025-01-15T10:29:00+01:00",
+        "lastActivityDate": "2025-01-15T10:29:00+02:00",
         "absent": false,
         "departments": [1],
         "phones": false,
@@ -312,7 +312,7 @@ The bot has been removed from the system. This is the last event the bot will re
 
 ## ONIMBOTV2CONTEXTGET {#onimbotv2contextget}
 
-The user opened a dialogue with the bot, passing arbitrary context data. The context is set by the calling party — for example, when navigating via a link with the `botContextData` parameter.
+The user opened a dialogue with the bot, passing arbitrary context data. The context is set by the calling party — for example, when following a link with the `botContextData` parameter.
 
 #|
 || **Field** | **Type** | **Description** ||
@@ -378,7 +378,7 @@ The user opened a dialogue with the bot, passing arbitrary context data. The con
         "externalAuthId": "default",
         "status": "online",
         "idle": false,
-        "lastActivityDate": "2025-01-15T10:29:00+01:00",
+        "lastActivityDate": "2025-01-15T10:29:00+02:00",
         "absent": false,
         "departments": [1],
         "phones": false,
@@ -410,7 +410,7 @@ The user invoked a slash command of the bot.
 || **Field** | **Type** | **Description** ||
 || **id** | `integer` | ID of the registered command ||
 || **command** | `string` | Invoked command (e.g., `/help`) ||
-|| **params** | `string` | Command parameters — text following the command ||
+|| **params** | `string` | Command parameters — text after the command ||
 || **context** | `string` | Invocation context: `textarea` — entered manually, `keyboard` — button pressed, `menu` — selected from context menu ||
 |#
 
@@ -451,7 +451,7 @@ If a single message contains multiple slash commands, an event is generated sepa
         "id": 790,
         "chatId": 5,
         "authorId": 1,
-        "date": "2025-01-15T10:30:00+01:00",
+        "date": "2025-01-15T10:30:00+02:00",
         "text": "/help topic",
         "isSystem": false,
         "uuid": "",
@@ -486,7 +486,7 @@ If a single message contains multiple slash commands, an event is generated sepa
         "externalAuthId": "default",
         "status": "online",
         "idle": false,
-        "lastActivityDate": "2025-01-15T10:29:00+01:00",
+        "lastActivityDate": "2025-01-15T10:29:00+02:00",
         "absent": false,
         "departments": [1],
         "phones": false,
@@ -540,7 +540,7 @@ A reaction to the bot's message has been added or removed.
         "id": 789,
         "chatId": 5,
         "authorId": 456,
-        "date": "2025-01-15T10:30:00+01:00",
+        "date": "2025-01-15T10:30:00+02:00",
         "text": "Hello! How can I help?",
         "isSystem": false,
         "uuid": "",
@@ -575,7 +575,7 @@ A reaction to the bot's message has been added or removed.
         "externalAuthId": "default",
         "status": "online",
         "idle": false,
-        "lastActivityDate": "2025-01-15T10:29:00+01:00",
+        "lastActivityDate": "2025-01-15T10:29:00+02:00",
         "absent": false,
         "departments": [1],
         "phones": false,
@@ -587,6 +587,7 @@ A reaction to the bot's message has been added or removed.
 
 ## Continue Learning
 
-- [Get Bot Events imbot.v2.Event.get](./event-get.md)
-- [Objects and Fields of Chatbots 2.0](../../entities.md)
-- [Add Reaction to Message imbot.v2.Chat.Message.Reaction.add](../messages/chat-message-reaction-add.md)
+- [API Change Log for imbot.v2](../../change-log.md)
+- [{#T}](./event-get.md)
+- [{#T}](../../entities.md)
+- [{#T}](../messages/chat-message-reaction-add.md)

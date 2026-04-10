@@ -1,14 +1,14 @@
-# Upload a File to Chat imbot.v2.File.upload
+# Upload File to Chat imbot.v2.File.upload
 
 > Scope: [`imbot`](../../../../scopes/permissions.md)
 >
 > Who can execute the method: owner of the registered bot
 
-The method `imbot.v2.File.upload` uploads a file to the chat on behalf of the bot. It combines three steps of the deprecated API into a single call: uploading the file to Drive, attaching it to the chat, and sending a message.
+The method `imbot.v2.File.upload` uploads a file to the chat on behalf of the bot. It combines three steps of the deprecated API into a single call: uploading the file to the Drive, attaching it to the chat, and sending a message.
 
 ## Method Parameters
 
-{% include [Parameter Notes](../../../../../_includes/required.md) %}
+{% include [Parameter Note](../../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -35,7 +35,7 @@ Pass the same botToken that was specified during the registration of the chat bo
 || **content***
 [`string`](../../../../data-types.md) | File content in [Base64](../../../../files/how-to-upload-files.md) encoding. Maximum size — 100 MB ||
 || **message**
-[`string`](../../../../data-types.md) | Text of the message sent along with the file ||
+[`string`](../../../../data-types.md) | Text message sent along with the file ||
 |#
 
 {% note info "" %}
@@ -46,13 +46,13 @@ How to prepare the value for `content`:
 2. Encode the content in Base64.
 3. Pass only the Base64 string, without the prefix `data:*/*;base64,`.
 
-For more details: [How to Upload Files](../../../../files/how-to-upload-files.md#how-to-encode-file-to-base64).
+More details: [How to upload files](../../../../files/how-to-upload-files.md#how-to-encode-file-to-base64).
 
 {% endnote %}
 
 ## Code Examples
 
-{% include [Example Notes](../../../../../_includes/examples.md) %}
+{% include [Example Note](../../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -235,7 +235,7 @@ HTTP Code: **200**
 [`integer`](../../../../data-types.md) | File size in bytes ||
 |#
 
-A complete description of all object fields can be found on the [Objects and Fields](../../entities.md) page.
+Complete description of all object fields can be found on the [Objects and Fields](../../entities.md) page.
 
 ## Error Handling
 
@@ -254,13 +254,13 @@ HTTP Status: **400**, **403**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `BOT_TOKEN_NOT_SPECIFIED` | Bot token is not specified | `botToken` is required for webhook authorization ||
+|| `BOT_TOKEN_NOT_SPECIFIED` | Bot token is not specified | `botToken` is not specified. Required for webhook authorization ||
 || `BOT_ID_REQUIRED` | Bot ID is required | `botId` is not specified ||
 || `BOT_NOT_FOUND` | Bot not found | Bot not found ||
 || `BOT_OWNERSHIP_ERROR` | Bot is registered by another application | Bot is registered by another application ||
 || `FILE_EMPTY` | File name or content is empty | File name or content is not specified ||
 || `FILE_INVALID_CONTENT` | Invalid base64 content | Invalid Base64 ||
-|| `FILE_FOLDER_ERROR` | Failed to get chat folder | Failed to retrieve chat folder ||
+|| `FILE_FOLDER_ERROR` | Failed to get chat folder | Failed to get chat folder ||
 || `FILE_UPLOAD_FAILED` | File upload failed | File upload error ||
 || `FILE_SEND_FAILED` | Failed to send message | Message sending error ||
 || `FILE_TOO_LARGE` | File is too large | File size exceeds 100 MB ||
@@ -270,5 +270,6 @@ HTTP Status: **400**, **403**
 
 ## Continue Learning
 
-- [Get a Link to Download the File imbot.v2.File.download](./file-download.md)
-- [Send Message imbot.v2.Chat.Message.send](../messages/chat-message-send.md)
+- [API imbot.v2 Change Log](../../change-log.md)
+- [{#T}](./file-download.md)
+- [{#T}](../messages/chat-message-send.md)

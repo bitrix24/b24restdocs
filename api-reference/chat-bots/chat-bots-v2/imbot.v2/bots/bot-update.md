@@ -1,10 +1,10 @@
-# Update the bot imbot.v2.Bot.update
+# Update the Automation rule imbot.v2.Bot.update
 
 > Scope: [`imbot`](../../../../scopes/permissions.md)
 >
-> Who can execute the method: owner of the registered bot
+> Who can execute the method: owner of the registered Automation rule
 
-The method `imbot.v2.Bot.update` updates the properties of the bot.
+The method `imbot.v2.Bot.update` updates the properties of the Automation rule.
 
 ## Method Parameters
 
@@ -14,56 +14,56 @@ The method `imbot.v2.Bot.update` updates the properties of the bot.
 || **Name**
 `Type` | **Description** ||
 || **botId***
-[`integer`](../../../../data-types.md) | Bot ID ||
+[`integer`](../../../../data-types.md) | ID of the Automation rule ||
 || **botToken**
-[`string`](../../../../data-types.md) | Unique authorization token for the bot. Required for authorization via webhook, not needed for OAuth.
+[`string`](../../../../data-types.md) | Unique authorization token for the Automation rule. Required for webhook authorization, not needed for OAuth.
 
-Pass the same botToken that was specified during the chat-bot registration ||
+Pass the same botToken that was specified during the registration of the chatbot ||
 || **fields***
 [`object`](../../../../data-types.md) | Fields to be updated. The structure of the object is described [below](#fields) ||
 |#
 
-### Fields Parameter {#fields}
+### Parameter fields {#fields}
 
 #|
 || **Name**
 `Type` | **Description** ||
 || **properties**
-[`object`](../../../../data-types.md) | Properties of the bot's profile. Parameter descriptions are provided [below](#properties) ||
+[`object`](../../../../data-types.md) | Properties of the Automation rule profile. Description of parameters — [below](#properties) ||
 || **isHidden**
-[`boolean`](../../../../data-types.md) | Hidden bot. Acceptable values: `true`, `false` ||
+[`boolean`](../../../../data-types.md) | Hidden Automation rule. Acceptable values: `true`, `false` ||
 || **isReactionsEnabled**
 [`boolean`](../../../../data-types.md) | Support for reactions. Acceptable values: `true`, `false` ||
 || **isSupportOpenline**
 [`boolean`](../../../../data-types.md) | Support for Open Channels. Acceptable values: `true`, `false` ||
 || **backgroundId**
-[`string`](../../../../data-types.md) | Background of the bot's chat. Pass `null` to reset to the user's background. Available values are in the [backgrounds table](./bot-register.md#backgrounds) ||
+[`string`](../../../../data-types.md) | Background of the Automation rule chat. Pass `null` to reset to the user's background. Available values are in the [backgrounds table](./bot-register.md#backgrounds). Invalid values are normalized to `null` ||
 || **eventMode**
 [`string`](../../../../data-types.md) | Event delivery mode: `fetch` or `webhook` ||
 || **webhookUrl**
 [`string`](../../../../data-types.md) | URL of the event handler (applies when `eventMode = webhook`) ||
 |#
 
-### Properties Parameter {#properties}
+### Parameter properties {#properties}
 
 #|
 || **Name**
 `Type` | **Description** ||
 || **name**
-[`string`](../../../../data-types.md) | Bot's name ||
+[`string`](../../../../data-types.md) | Name of the Automation rule ||
 || **lastName**
-[`string`](../../../../data-types.md) | Bot's last name ||
+[`string`](../../../../data-types.md) | Last name of the Automation rule ||
 || **workPosition**
-[`string`](../../../../data-types.md) | Bot's position (displayed in the profile) ||
+[`string`](../../../../data-types.md) | Position of the Automation rule (displayed in the profile) ||
 || **color**
 [`string`](../../../../data-types.md) | Avatar color, [available colors](../chats/chat-add.md#available-colors). 
-If specified incorrectly, it will be ignored ||
+If specified incorrectly — ignored ||
 || **gender**
 [`string`](../../../../data-types.md) | Gender. Acceptable values: `M`, `F` ||
 || **avatar**
 [`file`](../../../../data-types.md) | Avatar. Pass a Base64 string without the prefix `data:*/*;base64,`.
 
-How to prepare the data: [How to upload files](../../../../files/how-to-upload-files.md#how-to-encode-a-file-in-base64) ||
+How to prepare data: [How to upload files](../../../../files/how-to-upload-files.md#how-to-encode-file-in-base64) ||
 |#
 
 ## Code Examples
@@ -239,68 +239,68 @@ HTTP Code: **200**
 || **result**
 [`object`](../../../../data-types.md) | Result of the update ||
 || **result.bot**
-[`Bot`](../../entities.md#bot) | Updated bot object in extended format [(detailed description)](#bot-object) ||
+[`Bot`](../../entities.md#bot) | Updated Automation rule object in extended format [(detailed description)](#bot-object) ||
 || **result.users**
 [`User[]`](../../entities.md#user) | Array of related users [(detailed description)](#user-object) ||
 || **time**
 [`time`](../../../../data-types.md#time) | Information about the request execution time ||
 |#
 
-### Bot Object Fields {#bot-object}
+### Fields of the Bot Object {#bot-object}
 
 #|
 || **Field**
 `Type` | **Description** ||
 || **id**
-[`integer`](../../../../data-types.md) | Bot identifier ||
+[`integer`](../../../../data-types.md) | Identifier of the Automation rule ||
 || **code**
-[`string`](../../../../data-types.md) | Symbolic code of the bot ||
+[`string`](../../../../data-types.md) | Symbolic code of the Automation rule ||
 || **type**
-[`string`](../../../../data-types.md) | Type of the bot ||
+[`string`](../../../../data-types.md) | Type of the Automation rule ||
 || **isHidden**
-[`boolean`](../../../../data-types.md) | Bot is hidden from the contact list ||
+[`boolean`](../../../../data-types.md) | Automation rule is hidden from the contact list ||
 || **isSupportOpenline**
-[`boolean`](../../../../data-types.md) | Bot supports open lines ||
+[`boolean`](../../../../data-types.md) | Automation rule supports Open Channels ||
 || **isReactionsEnabled**
-[`boolean`](../../../../data-types.md) | Reactions are enabled for bot messages ||
+[`boolean`](../../../../data-types.md) | Reactions are enabled for messages from the Automation rule ||
 || **backgroundId**
-[`integer`](../../../../data-types.md) | Identifier of the chat background ||
+[`string|null`](../../../../data-types.md) | ID of the chat background or `null` ||
 || **language**
-[`string`](../../../../data-types.md) | Language of the bot ||
+[`string`](../../../../data-types.md) | Language of the Automation rule ||
 || **moduleId**
 [`string`](../../../../data-types.md) | Module identifier ||
 || **appId**
-[`integer`](../../../../data-types.md) | Application identifier or `0` if the bot is not linked to an application ||
+[`string`](../../../../data-types.md) | ID of the application that registered the Automation rule ||
 || **eventMode**
 [`string`](../../../../data-types.md) | Event delivery mode: `webhook` or `fetch` ||
 || **countMessage**
-[`integer`](../../../../data-types.md) | Number of messages sent by the bot ||
+[`integer`](../../../../data-types.md) | Number of messages sent by the Automation rule ||
 || **countCommand**
 [`integer`](../../../../data-types.md) | Number of registered commands ||
 || **countChat**
-[`integer`](../../../../data-types.md) | Number of bot chats ||
+[`integer`](../../../../data-types.md) | Number of chats of the Automation rule ||
 || **countUser**
-[`integer`](../../../../data-types.md) | Number of users who interacted with the bot ||
+[`integer`](../../../../data-types.md) | Number of users who interacted with the Automation rule ||
 |#
 
-### User Object Fields {#user-object}
+### Fields of the User Object {#user-object}
 
 #|
 || **Field**
 `Type` | **Description** ||
 || **id**
-[`integer`](../../../../data-types.md) | User identifier ||
+[`integer`](../../../../data-types.md) | Identifier of the user ||
 || **active**
 [`boolean`](../../../../data-types.md) | User is active ||
 || **name**
-[`string`](../../../../data-types.md) | User's first and last name ||
+[`string`](../../../../data-types.md) | Name and surname of the user ||
 || **bot**
 [`boolean`](../../../../data-types.md) | Indicates if the user is a bot ||
 || **type**
-[`string`](../../../../data-types.md) | Type of user ||
+[`string`](../../../../data-types.md) | Type of the user ||
 |#
 
-Complete descriptions of all object fields can be found on the [Objects and Fields](../../entities.md) page.
+Complete description of all object fields is available on the [Objects and Fields](../../entities.md) page.
 
 ## Error Handling
 
@@ -319,10 +319,10 @@ HTTP Status: **400**, **403**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `BOT_TOKEN_NOT_SPECIFIED` | Bot token is not specified | `botToken` is not specified. Required for authorization via webhook ||
+|| `BOT_TOKEN_NOT_SPECIFIED` | Bot token is not specified | `botToken` is not specified. Required for webhook authorization ||
 || `BOT_ID_REQUIRED` | Bot ID is required | `botId` is not specified ||
-|| `BOT_NOT_FOUND` | Bot not found | Bot not found ||
-|| `BOT_OWNERSHIP_ERROR` | Bot is registered by another application | Bot is registered by another application ||
+|| `BOT_NOT_FOUND` | Bot not found | Automation rule not found ||
+|| `BOT_OWNERSHIP_ERROR` | Bot is registered by another application | Automation rule is registered by another application ||
 || `BOT_INVALID_EVENT_MODE` | Invalid event mode | Invalid event delivery mode ||
 || `BOT_INVALID_CALLBACK` | Invalid callback URL | Invalid event handler URL ||
 || `BOT_AVATAR_INCORRECT_TYPE` | Avatar must be an image | Avatar must be an image (`image/*`) ||
@@ -333,7 +333,8 @@ HTTP Status: **400**, **403**
 
 ## Continue Learning
 
-- [Register a Bot imbot.v2.Bot.register](./bot-register.md)
-- [Get Information About the Bot imbot.v2.Bot.get](./bot-get.md)
-- [List of Bots for the imbot.v2.Bot.list Application](./bot-list.md)
-- [Unregister the bot imbot.v2.Bot.unregister](./bot-unregister.md)
+- [API imbot.v2 Change Log](../../change-log.md)
+- [{#T}](./bot-register.md)
+- [{#T}](./bot-get.md)
+- [{#T}](./bot-list.md)
+- [{#T}](./bot-unregister.md)

@@ -1,10 +1,10 @@
-# Update Custom Field of Requisite crm.requisite.userfield.update
+# Update Custom Field of CRM Requisite
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-This method updates an existing custom field of a requisite.
+This method updates an existing custom field of the requisite.
 
 ## Method Parameters
 
@@ -14,7 +14,7 @@ This method updates an existing custom field of a requisite.
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`](../../../data-types.md) | Identifier of the custom field. It can be obtained using the method [crm.requisite.userfield.list](./crm-requisite-userfield-list.md) ||
+[`integer`](../../../data-types.md) | Identifier of the custom field. Can be obtained using the method [crm.requisite.userfield.list](./crm-requisite-userfield-list.md) ||
 || **fields***
 [`object`](../../../data-types.md) | Set of fields — an object of the form `{"field": "value"[, ...]}`, the values of which need to be changed ||
 |#
@@ -25,7 +25,7 @@ This method updates an existing custom field of a requisite.
 || **Name**
 `type` | **Description** ||
 || **XML_ID**
-[`string`](../../../data-types.md) | External key. Used for exchange operations. Identifier of the object in the external information base. 
+[`string`](../../../data-types.md) | External key. Used for data exchange operations. Identifier of the object in the external information base. 
 
 The purpose of the field may change by the final developer ||
 || **SORT**
@@ -41,14 +41,14 @@ The purpose of the field may change by the final developer ||
 - `N` — no 
 ||
 || **SHOW_FILTER**
-[`char`](../../../data-types.md) | Whether to show in the list filter. Possible values:
+[`char`](../../../data-types.md) | Show in the list filter. Possible values:
 - `N` — do not show
 - `I` — exact match
 - `E` — mask
 - `S` — substring 
 ||
 || **SHOW_IN_LIST**
-[`char`](../../../data-types.md) | Whether to show in the list. Possible values:
+[`char`](../../../data-types.md) | Show in the list. Possible values:
 - `Y` — yes
 - `N` — no 
 ||
@@ -58,7 +58,7 @@ The purpose of the field may change by the final developer ||
 - `N` — no 
 ||
 || **IS_SEARCHABLE**
-[`char`](../../../data-types.md) | Whether the field values participate in search. Possible values:
+[`char`](../../../data-types.md) | Are field values included in the search. Possible values:
 - `Y` — yes
 - `N` — no 
 ||
@@ -265,7 +265,7 @@ HTTP Status: **40x**, **50x**
 }
 ```
 
-{% include notitle [Error Handling](../../../../_includes/error-info.md) %}
+{% include notitle [error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Errors
 
@@ -275,11 +275,11 @@ HTTP Status: **40x**, **50x**
 || Empty string | `The entity with ID '235' is not found` | Custom field with the specified identifier not found ||
 || Empty string | `ID is not defined or invalid` | Identifier of the custom field is not specified or has an invalid value ||
 || Empty string | `Access denied` | Insufficient access rights to modify the custom field ||
-|| `ERROR_CORE` | `Fail to update user field` | Failed to update the custom field ||
-|| `ERROR_CORE` | `Fail to save enumeration field values` | Failed to save values of the custom list-type field (e.g., when a duplicate external key of one of the values occurred) ||
+|| `ERROR_CORE` | `Fail to update user field` |  Failed to update the custom field ||
+|| `ERROR_CORE` | `Fail to save enumeration field values` | Failed to save values of the list-type custom field (e.g., when a duplicate external key of one of the values occurred) ||
 |#
 
-{% include [System Errors](../../../../_includes/system-errors.md) %}
+{% include [system errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

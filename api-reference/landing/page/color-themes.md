@@ -1,40 +1,45 @@
-# Color Themes
+# Page Color Themes
 
-{% note warning "We are still updating this page" %}
+This section lists the color theme codes for the `THEME_CODE` field.
 
-Some data may be missing here — we will complete it soon.
+You can set the value of `THEME_CODE` when creating and updating a page through the methods [landing.landing.add](./methods/landing-landing-add.md) and [landing.landing.update](./methods/landing-landing-update.md).
 
-{% endnote %}
+You can retrieve the current value of `THEME_CODE` using the method [landing.landing.getadditionalfields](./methods/landing-landing-get-additional-fields.md) if the field is filled.
 
-Currently, the system features color themes listed below. It's important to note that the template includes both a visual display theme (forms, colors) and a font theme. The website based on the template is always created with a specific color theme and a specific font theme. Typically, they match (the font theme is a small additional file). When a user changes the visual theme, the font theme remains unchanged and can only be modified programmatically by the developer. This is intentional system behavior.
+## Important Information
 
+- `THEME_CODE` defines the ready-made color palette for the page.
+- Font settings are stored separately in the `THEMEFONTS_*` fields.
+- If you need to set a custom color, use `THEME_USE = Y` and `THEME_COLOR = #RRGGBB`.
+- When migrating old typo settings, the module maps some color themes and font sets by theme code.
+
+## Available Themes
 #|
-|| **Theme Code** | **Theme Name** ||
-|| 1construction | Amber ||
-|| 2business | Purple-Blue ||
-|| 3corporate | Malibu ||
-|| accounting | Yellow-Green ||
-|| agency | Pastel Red ||
-|| app | Moderate Teal ||
-|| architecture | Sunset ||
-|| charity | Yellow ||
-|| consulting | Light Green Sea ||
-|| courses | Moderate Aquamarine ||
-|| event | Amaranth ||
-|| gym | Indigo Crayola ||
-|| lawyer | Carmine Pink ||
-|| music | Wild Watermelon ||
-|| photography | Oil ||
-|| real-estate | Orange Sunset ||
-|| restaurant | Raspberry ||
-|| shipping | Red ||
-|| spa | Citrus ||
-|| travel | Vermilion ||
-|| wedding | Cranberry ||
+|| **Theme Code** | **Description** ||
+|| `2business` | Purple-blue palette ||
+|| `3corporate` | Blue palette ||
+|| `app` | Turquoise palette ||
+|| `accounting` | Yellow-green palette ||
+|| `1construction` | Amber palette ||
+|| `real-estate` | Orange-red palette ||
+|| `photography` | Dark palette ||
+|| `gym` | Rich blue palette ||
+|| `wiki-dark` | Dark palette for wiki templates ||
+|| `consulting` | Green-turquoise palette ||
+|| `courses` | Aquamarine palette ||
+|| `spa` | Citrus palette ||
+|| `charity` | Yellow palette ||
+|| `twentyFourth` | Special palette with code `twentyFourth` ||
+|| `travel` | Vermilion palette ||
+|| `architecture` | Sunset shades palette ||
+|| `event` | Amaranth palette ||
+|| `lawyer` | Carmine-pink palette ||
+|| `restaurant` | Raspberry palette ||
+|| `shipping` | Red palette ||
+|| `agency` | Pastel-red palette ||
+|| `music` | Bright pink-red palette ||
+|| `wedding` | Cranberry palette ||
+|| `twentyThird` | Special palette with code `twentyThird` ||
 |#
 
-{% note info %}
-
-Theme names with numbers at the beginning are not a typo. Some themes are indeed named this way.
-
-{% endnote %}
+For a detailed description of all related fields, see the section [Additional Page Fields](./additional-fields.md).

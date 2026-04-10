@@ -6,16 +6,6 @@ Some data may be missing here — we will complete it shortly.
 
 {% endnote %}
 
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- The method crm.tracking.trace.add is mentioned on this page, but it is not documented anywhere.
-
-{% endnote %}
-
-{% endif %}
-
 > Scope: [`crm`](../../../api-reference/scopes/permissions.md)
 >
 > Who can execute the method: users with administrative access to the CRM section.
@@ -32,7 +22,7 @@ When creating CRM entities, there are three ways to transfer information for Sal
 
 Transfer the `UTM_SOURCE` field in the fields of the created entity.
 
-In this case, when the entity is created, if a configured source in Sales Intelligence with the same `UTM_SOURCE` is found, this source will be assigned to the entity, a corresponding icon will be displayed, and the entity will participate in the Sales Intelligence report.
+In this case, when creating the entity, if a configured source in Sales Intelligence with the same `UTM_SOURCE` is found, this source will be assigned to the entity, the corresponding icon will be displayed, and the entity will participate in the Sales Intelligence report.
 
 ## Complete Data
 
@@ -58,20 +48,20 @@ The value of the `TRACE` field must be either the identifier of the saved Sales 
 b24Tracker.guest.getTrace()
 ```
 
-The value of the `TRACE` field can be a number — the `ID` of the trace obtained by the method `crm.tracking.trace.add`.
+The value of the `TRACE` field can be a number — the `ID` of the trace obtained using the [crm.tracking.trace.add](../../../api-reference/crm/tracking/crm-tracking-trace-add.md) method.
 
 ## Creating a Trace and Obtaining Its ID
 
-The method creates a trace:
+The [crm.tracking.trace.add](../../../api-reference/crm/tracking/crm-tracking-trace-add.md) method creates a trace:
 
 ```bash
 crm.tracking.trace.add
 ?ENTITIES[0][TYPE]=CONTACT&ENTITIES[0][ID]=3215&ENTITIES[1][TYPE]=LEAD&ENTITIES[1][ID]=1&TRACE=
 ```
 
-The `TRACE` field is required, and the value is a string obtained from the method `b24Tracker.guest.getTrace`. See the example above.
+The `TRACE` field is required, and the value is a string obtained from the `b24Tracker.guest.getTrace` method. See the example above.
 
-The `ENTITIES` field is optional; it can list the entities associated with this trace:
+The `ENTITIES` field is optional, where you can list the entities associated with this trace:
 
 ```js
 ENTITIES: [

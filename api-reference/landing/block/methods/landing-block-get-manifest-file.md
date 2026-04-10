@@ -263,8 +263,8 @@ HTTP Status: **200**
         "finish": 1774521452.955493,
         "duration": 0.9554929733276367,
         "processing": 0,
-        "date_start": "2026-03-26T13:37:32+01:00",
-        "date_finish": "2026-03-26T13:37:32+01:00",
+        "date_start": "2026-03-26T13:37:32+02:00",
+        "date_finish": "2026-03-26T13:37:32+02:00",
         "operating_reset_at": 1774522052,
         "operating": 0
     }
@@ -286,7 +286,7 @@ If the block is not found, the code contains invalid characters, or a local repo
 [`time`](../../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
-### Result Object {#result}
+### Object result {#result}
 
 #|
 || **Name**
@@ -300,7 +300,7 @@ If the block is not found, the code contains invalid characters, or a local repo
 || **style**
 [`object`](../../../data-types.md) \| [`array`](../../../data-types.md) | Description of the available style settings of the block as declared in the manifest ||
 || **attrs**
-[`object`](../../../data-types.md) \| [`array`](../../../data-types.md) | Description of customizable attributes of the block, if specified ||
+[`object`](../../../data-types.md) \| [`array`](../../../data-types.md) | Description of the customizable attributes of the block, if specified ||
 || **assets**
 [`object`](../../../data-types.md) | Resources explicitly declared in the block manifest.
 
@@ -322,21 +322,21 @@ HTTP Status: **400**
 ```json
 {
     "error": "MISSING_PARAMS",
-    "error_description": "Insufficient call parameters, missing: code"
+    "error_description": "Not enough call parameters, missing: code"
 }
 ```
 
-{% include notitle [Error Handling](../../../../_includes/error-info.md) %}
+{% include notitle [error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
 || **Code** | **Description** ||
-|| `MISSING_PARAMS` | The required parameter `code` was not provided ||
+|| `MISSING_PARAMS` | The required parameter `code` is missing ||
 || `ACCESS_DENIED` | Access denied: the user does not have access to the "Sites and Stores" section ||
 |#
 
-{% include [System Errors](../../../../_includes/system-errors.md) %}
+{% include [system errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

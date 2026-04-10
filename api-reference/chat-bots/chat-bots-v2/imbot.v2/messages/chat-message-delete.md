@@ -4,13 +4,13 @@
 >
 > Who can execute the method: owner of the registered bot
 
-The method `imbot.v2.Chat.Message.delete` deletes a message. The bot can delete its own messages. If the bot is an administrator of the chat, it can delete any message.
+The method `imbot.v2.Chat.Message.delete` removes a message. The bot can delete its own messages. If the bot is an administrator of the chat, it can delete any message.
 
 Messages sent with the parameter `system: true` have `authorId = 0`. The bot will not be able to delete such a message unless it is an administrator of the chat.
 
 ## Method Parameters
 
-{% include [Footnote on parameters](../../../../../_includes/required.md) %}
+{% include [Footnote about parameters](../../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -20,16 +20,16 @@ Messages sent with the parameter `system: true` have `authorId = 0`. The bot wil
 || **botToken**
 [`string`](../../../../data-types.md) | Unique authorization token for the bot. Required for webhook authorization, not needed for OAuth.
 
-Pass the same botToken that was specified when registering the chatbot ||
+Use the same botToken that was specified during the registration of the chatbot ||
 || **messageId***
 [`integer`](../../../../data-types.md) | ID of the message to be deleted ||
 || **complete**
-[`boolean`](../../../../data-types.md) | Complete deletion from the database. Acceptable values: `true`, `false`. Default is `false` (soft delete) ||
+[`boolean`](../../../../data-types.md) | Complete removal from the database. Acceptable values: `true`, `false`. Default is `false` (soft delete) ||
 |#
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../../../_includes/examples.md) %}
+{% include [Footnote about examples](../../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -159,7 +159,7 @@ HTTP Code: **200**
 || **Name**
 `Type` | **Description** ||
 || **result**
-[`boolean`](../../../../data-types.md) | `true` if deletion was successful ||
+[`boolean`](../../../../data-types.md) | `true` if deletion is successful ||
 || **time**
 [`time`](../../../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -185,12 +185,13 @@ HTTP Status: **400**, **403**
 || `BOT_ID_REQUIRED` | Bot ID is required | `botId` is not provided ||
 || `BOT_NOT_FOUND` | Bot not found | Bot not found ||
 || `BOT_OWNERSHIP_ERROR` | Bot is registered by another application | Bot is registered by another application ||
-|| `ACCESS_DENIED` | Access denied | The message does not belong to the bot, and the bot is not an administrator of the chat, or the message does not exist ||
+|| `ACCESS_DENIED` | Access denied | The message does not belong to the bot and the bot is not an administrator of the chat, or the message does not exist ||
 |#
 
 {% include [System Errors](../../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
-- [Send Message imbot.v2.Chat.Message.send](./chat-message-send.md)
-- [Update Message imbot.v2.Chat.Message.update](./chat-message-update.md)
+- [API Change Log for imbot.v2](../../change-log.md)
+- [{#T}](./chat-message-send.md)
+- [{#T}](./chat-message-update.md)

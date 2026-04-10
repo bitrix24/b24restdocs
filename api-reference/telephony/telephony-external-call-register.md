@@ -6,7 +6,7 @@
 
 The method `telephony.externalCall.register` registers an external call in Bitrix24.
 
-To create a CRM activity for the call, you also need to call the method [telephony.externalcall.finish](./telephony-external-call-finish.md).
+To create a CRM activity for the call, you must also call the method [telephony.externalCall.finish](./telephony-external-call-finish.md).
 
 {% note info "" %}
 
@@ -16,7 +16,7 @@ The method works only in the context of an [application](../../settings/app-inst
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../_includes/required.md) %}
+{% include [Note on required parameters](../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -123,9 +123,9 @@ To find an existing registration, the following technical call parameters are us
 - `LINE_NUMBER` (if provided)
 - `EXTERNAL_CALL_ID` (if provided)
 
-The search is performed within the application and only among registrations from the last 30 minutes.
+The search is performed within the application and only among registrations made in the last 30 minutes.
 
-CRM fields and start time are not used as deduplication keys:
+The CRM fields and start time are not used as deduplication keys:
 - `CRM_ENTITY_TYPE`
 - `CRM_ENTITY_ID`
 - `CALL_START_DATE`
@@ -140,7 +140,7 @@ In click-to-call scenarios, where the call is created by Bitrix24 itself, the in
 
 ## Code Examples
 
-{% include [Note on Examples](../../_includes/examples.md) %}
+{% include [Note on examples](../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -150,7 +150,7 @@ In click-to-call scenarios, where the call is created by Bitrix24 itself, the in
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"USER_ID":1269,"PHONE_NUMBER":"19062195047","TYPE":2,"CRM_ENTITY_TYPE":"CONTACT","CRM_ENTITY_ID":797,"SHOW":1,"LINE_NUMBER":"3","EXTERNAL_CALL_ID":"asterisk-1710140185.18441","auth":"**put_access_token_here**"}' \
+    -d '{"USER_ID":1269,"PHONE_NUMBER":"79062195047","TYPE":2,"CRM_ENTITY_TYPE":"CONTACT","CRM_ENTITY_ID":797,"SHOW":1,"LINE_NUMBER":"3","EXTERNAL_CALL_ID":"asterisk-1710140185.18441","auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/telephony.externalCall.register
     ```
 
@@ -163,7 +163,7 @@ In click-to-call scenarios, where the call is created by Bitrix24 itself, the in
             'telephony.externalCall.register',
             {
                 USER_ID: 1269,
-                PHONE_NUMBER: '19062195047',
+                PHONE_NUMBER: '79062195047',
                 TYPE: 2,
                 CRM_ENTITY_TYPE: 'CONTACT',
                 CRM_ENTITY_ID: 797,
@@ -193,7 +193,7 @@ In click-to-call scenarios, where the call is created by Bitrix24 itself, the in
                 'telephony.externalCall.register',
                 [
                     'USER_ID' => 1269,
-                    'PHONE_NUMBER' => '19062195047',
+                    'PHONE_NUMBER' => '79062195047',
                     'TYPE' => 2,
                     'CRM_ENTITY_TYPE' => 'CONTACT',
                     'CRM_ENTITY_ID' => 797,
@@ -223,7 +223,7 @@ In click-to-call scenarios, where the call is created by Bitrix24 itself, the in
         "telephony.externalCall.register",
         {
             USER_ID: 1269,
-            PHONE_NUMBER: '19062195047',
+            PHONE_NUMBER: '79062195047',
             TYPE: 2,
             CRM_ENTITY_TYPE: 'CONTACT',
             CRM_ENTITY_ID: 797,
@@ -254,7 +254,7 @@ In click-to-call scenarios, where the call is created by Bitrix24 itself, the in
         'telephony.externalCall.register',
         [
             'USER_ID' => 1269,
-            'PHONE_NUMBER' => '19062195047',
+            'PHONE_NUMBER' => '79062195047',
             'TYPE' => 2,
             'CRM_ENTITY_TYPE' => 'CONTACT',
             'CRM_ENTITY_ID' => 797,
@@ -342,7 +342,7 @@ HTTP Status: **400**, **403**
 }
 ```
 
-{% include notitle [Error Handling](../../_includes/error-info.md) %}
+{% include notitle [error handling](../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
@@ -356,7 +356,7 @@ HTTP Status: **400**, **403**
 || `ERROR_CORE` | User is not found or is not active. | User not found or inactive. ||
 |#
 
-{% include [System Errors](../../_includes/system-errors.md) %}
+{% include [system errors](../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

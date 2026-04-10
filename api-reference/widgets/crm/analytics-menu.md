@@ -4,7 +4,7 @@
 
 You can add your item to the list of applications in CRM Analytics.
 
-![Widget as an application list item in CRM Analytics](./_images/CRM_ANALYTICS_MENU.png "Widget as an application list item in CRM Analytics")
+![Widget as an item in the CRM Analytics application list](./_images/CRM_ANALYTICS_MENU.png "Widget as an item in the CRM Analytics application list")
 
 The specific widget placement code is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
 
@@ -14,19 +14,18 @@ The widget will not be displayed in the interface until the application installa
 
 {% endnote %}
 
-## Where the widget is embedded
+## Where the Widget is Embedded
 
-#|
+#| 
 || **Widget Code** | **Location** ||
 || `CRM_ANALYTICS_MENU` | Item in the CRM Analytics application list ||
 |#
 
-## What the handler receives
+## What the Handler Receives
 
-Data is sent as a POST request {.b24-info}
+Data is transmitted as a POST request {.b24-info}
 
 ```php
-
 Array
 (
     [DOMAIN] => xxx.bitrix24.com
@@ -40,10 +39,9 @@ Array
     [status] => L
     [PLACEMENT] => CRM_ANALYTICS_MENU
 )
-
 ```
 
-{% include [Note on required parameters](../../../_includes/required.md) %}
+{% include [Footnote on required parameters](../../../_includes/required.md) %}
 
 {% include notitle [description of standard data](../_includes/widget_data.md) %}
 
@@ -51,11 +49,9 @@ Array
 
 In the current widget, the `PLACEMENT_OPTIONS` parameter is not passed.
 
-## Continue your exploration
+## Continue Your Exploration
 
 - [{#T}](../placement-bind.md)
 - [{#T}](../ui-interaction/index.md)
-- [{#T}](../ui-interaction/crm-card.md)
 - [{#T}](../../../settings/interactivity/index.md)
-- [{#T}](../open-application.md)
-- [{#T}](../open-path.md)
+- [{#T}](../bx24-widget-methods.md)

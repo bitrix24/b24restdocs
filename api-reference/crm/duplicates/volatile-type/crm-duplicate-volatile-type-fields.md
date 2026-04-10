@@ -1,4 +1,4 @@
-# Get a list of fields for duplicate search crm.duplicate.volatileType.fields
+# Get a List of Fields for Duplicate Search crm.duplicate.volatileType.fields
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
@@ -8,13 +8,13 @@ The method `crm.duplicate.volatileType.fields` returns a list of standard and cu
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../../_includes/required.md) %}
+{% include [Parameter Note](../../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **entityTypeId**
-[`integer`](../../../data-types.md) | Identifier of the object type. Possible values:
+[`integer`](../../../data-types.md) | Identifier for the object type. Possible values:
 - `1` — [lead](../../leads/index.md)
 - `3` — [contact](../../contacts/index.md)
 - `4` — [company](../../companies/index.md)
@@ -24,7 +24,7 @@ If not specified, fields for all types will be returned ||
 
 ## Code Examples
 
-{% include [Note on examples](../../../../_includes/examples.md) %}
+{% include [Example Note](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -140,7 +140,7 @@ If not specified, fields for all types will be returned ||
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -148,7 +148,7 @@ HTTP status: **200**
         {
             "entityTypeId": 1,
             "fieldCode": "TITLE",
-            "fieldTitle": "Lead Name"
+            "fieldTitle": "Lead Title"
         },
         {
             "entityTypeId": 1,
@@ -179,18 +179,18 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **entityTypeId**
-[`integer`](../../../data-types.md) | Object type ||
+[`integer`](../../../data-types.md) | Type of the object ||
 || **fieldCode**
 [`string`](../../../data-types.md) | Field code ||
 || **fieldTitle**
-[`string`](../../../data-types.md) | Field name ||
+[`string`](../../../data-types.md) | Field title ||
 || **time**
 [`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-The method does not return errors.
+Specific errors for the method are not highlighted.
 
 {% include [system errors](./../../../../_includes/system-errors.md) %}
 
@@ -198,4 +198,4 @@ The method does not return errors.
 
 - [crm.duplicate.volatileType.list](./crm-duplicate-volatile-type-list.md)
 - [crm.duplicate.volatileType.register](./crm-duplicate-volatile-type-register.md)
-- [crm.duplicate.volatileType.unregister](./crm-duplicate-volatile-type-unregister.md)
+- [crm.duplicate.volatileType.unregister](./crm-duplicate-volatile-type-unregister.md) 

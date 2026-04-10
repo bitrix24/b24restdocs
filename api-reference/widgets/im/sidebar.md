@@ -1,25 +1,25 @@
-# Widget for IM_SIDEBAR
+# Widget for the IM_SIDEBAR
 
 > Scope: [`im`](../../scopes/permissions.md)
 
-You can add your item to the chat sidebar.
+The widget adds its item to the chat sidebar.
 
-The widget code is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
+The embedding code is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
 
 {% note info "" %}
 
-The widget will not be displayed in the interface until the application installation is complete. [Check the application installation](../../../settings/app-installation/installation-finish.md)
+The embedding will not be displayed in the interface until the application installation is complete. [Check the application installation](../../../settings/app-installation/installation-finish.md)
 
 {% endnote %}
 
 ## Where the widget is embedded
 
 #| 
-|| **Widget Code** | **Location** ||
+|| **Embedding Code** | **Location** ||
 || `IM_SIDEBAR` | Item in the chat sidebar ||
 |#
 
-### Where to find it in the interface
+### Where it is located in the interface
 
 Open the chat and click the sidebar button on the right side of the top chat panel. In the opened sidebar, there is an *Applications* block at the bottom, which displays the application item with `PLACEMENT=IM_SIDEBAR`.
 
@@ -54,7 +54,7 @@ The value of `PLACEMENT_OPTIONS` is passed as a JSON string with the context of 
 
 For `IM_SIDEBAR`, the following key is passed in the context:
 
-- `dialogId` — the identifier of the current chat
+- `dialogId` — identifier of the current chat
 
 ## OPTIONS when registering via placement.bind
 
@@ -63,19 +63,15 @@ For `IM_SIDEBAR`, the `placement.bind` method supports `OPTIONS` parameters.
 {% include [Note on required parameters](../../../_includes/required.md) %}
 
 #| 
-|| **Parameter**
-`type` | **Description** ||
-|| **iconName*** 
-[`string`](../../data-types.md) | Label of the item in the interface. Up to 50 characters, Latin letters, spaces, and `-` are allowed ||
-|| **extranet**
-[`string`](../../data-types.md) | Access in the extranet, default is `N`.
+|| **Parameter** `type` | **Description** ||
+|| **iconName*** [`string`](../../data-types.md) | Label of the item in the interface. Up to 50 characters, Latin letters, space, and `-` are allowed ||
+|| **extranet** [`string`](../../data-types.md) | Access in the extranet, default is `N`.
 
 Possible values:
 - `N` — application is not available for extranet users
 - `Y` — application is available for extranet users
 ||
-|| **context**
-[`string`](../../data-types.md) | Display context, default is `ALL`. Multiple values can be passed using `;`.
+|| **context** [`string`](../../data-types.md) | Display context, default is `ALL`. Multiple values can be passed using `;`.
 
 Possible values:
 - `ALL` — all chats
@@ -86,15 +82,13 @@ Possible values:
 
 If `ALL` is passed along with other values, only `ALL` is used. An invalid value will cause a registration error
 ||
-|| **role**
-[`string`](../../data-types.md) | User role, default is `USER`.
+|| **role** [`string`](../../data-types.md) | User role, default is `USER`.
 
 Possible values:
 - `USER` — application is available to all users
 - `ADMIN` — application is available only to portal administrators
 ||
-|| **color**
-[`string`](../../data-types.md) | Icon color from the IM palette.
+|| **color** [`string`](../../data-types.md) | Icon color from the IM palette.
 
 Possible values:
 - `RED` — red
@@ -305,8 +299,8 @@ Possible values:
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](../placement-bind.md)
 - [{#T}](../ui-interaction/index.md)
+- [{#T}](../bx24-widget-methods.md)
 - [{#T}](../../../settings/interactivity/index.md)
-- [{#T}](../open-application.md)
-- [{#T}](../open-path.md)

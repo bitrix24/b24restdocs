@@ -1,35 +1,46 @@
-# Object Fields Template View
+# Template View Fields
 
-#|
-|| **Field** | **Description** | **Read** | **Write** ||
-|| **ID**
-[`integer`](../../data-types.md) | Template identifier | Yes | No ||
-|| **ACTIVE**
-[`string`](../../data-types.md) | Template activity
+Template view fields are used in the method [landing.template.getlist](./landing-template-get-list.md). This method only supports simple template fields. Fields with a dot in `select` and `filter`, such as `CREATED_BY.NAME`, are not supported.
 
-Possible values:
-`Y` — template is active
-`N` — template is inactive | Yes | No ||
-|| **AREA_COUNT**
-[`integer`](../../data-types.md) | Number of additional areas in the template, besides the main area `#CONTENT#` | Yes | No ||
-|| **SORT**
-[`integer`](../../data-types.md) | Template sorting order | Yes | No ||
-|| **TITLE**
-[`string`](../../data-types.md) | Template title. For system templates, the localized title is usually returned | Yes | No ||
-|| **XML_ID**
-[`string`](../../data-types.md) | External code of the template | Yes | No ||
-|| **CONTENT**
-[`string`](../../data-types.md) | HTML markup of the template with area macros, such as `#CONTENT#` and `#AREA_1#` | Yes | No ||
-|| **CREATED_BY_ID**
-[`integer`](../../data-types.md) | Identifier of the user who created the template. Only the identifier is returned via REST | Yes | No ||
-|| **MODIFIED_BY_ID**
-[`integer`](../../data-types.md) | Identifier of the user who last modified the template. Only the identifier is returned via REST | Yes | No ||
-|| **DATE_CREATE**
-[`datetime`](../../data-types.md) | Date and time of template creation | Yes | No ||
-|| **DATE_MODIFY**
-[`datetime`](../../data-types.md) | Date and time of the last modification of the template | Yes | No ||
+#| 
+|| **Field** 
+`type` | **Description** || 
+|| **ID** 
+[`integer`](../../data-types.md) | Identifier of the template view || 
+|| **ACTIVE** 
+[`string`](../../data-types.md) | Activity status of the template view 
+
+Possible values: 
+`Y` — template is active 
+`N` — template is inactive 
+
+Default — `Y` || 
+|| **AREA_COUNT** 
+[`integer`](../../data-types.md) | Number of additional areas in the template, besides the main area `#CONTENT#`. Additional areas are denoted in `CONTENT` by the macros `#AREA_1#`, `#AREA_2#`, and so on || 
+|| **SORT** 
+[`integer`](../../data-types.md) | Sorting order of the template || 
+|| **TITLE** 
+[`string`](../../data-types.md) | Title of the template. For system templates, the value may be localized for the current language of the account || 
+|| **XML_ID** 
+[`string`](../../data-types.md) | External code of the template. It is convenient to use for matching templates in integration without relying on the internal `ID` || 
+|| **CONTENT** 
+[`string`](../../data-types.md) | HTML markup of the template with area macros, such as `#CONTENT#`, `#AREA_1#`, `#AREA_2#` || 
+|| **CREATED_BY_ID** 
+[`integer`](../../data-types.md) | Identifier of the user who created the template || 
+|| **MODIFIED_BY_ID** 
+[`integer`](../../data-types.md) | Identifier of the user who last modified the template || 
+|| **DATE_CREATE** 
+[`datetime`](../../data-types.md) | Date and time of template creation. In the REST response, it is returned as a string. The format depends on the regional settings of the account, for example, `04/20/2020 12:48:10 pm` || 
+|| **DATE_MODIFY** 
+[`datetime`](../../data-types.md) | Date and time of the last modification of the template. In the REST response, it is returned as a string. The format depends on the regional settings of the account, for example, `04/20/2020 12:48:10 pm` || 
 |#
 
-In the method [landing.template.getlist](./landing-template-get-list.md), only simple fields of the template can be used.
+Through [landing.template.getlist](./landing-template-get-list.md), you can select, filter, sort, and group only the fields from the table above.
 
-For the author and last editor, only identifiers are available in the fields `CREATED_BY_ID` and `MODIFIED_BY_ID`.
+## Continue Learning
+
+- [{#T}](./landing-template-get-landing-ref.md) 
+- [{#T}](./landing-template-get-site-ref.md) 
+- [{#T}](./landing-template-get-list.md) 
+- [{#T}](./landing-template-set-landing-ref.md) 
+- [{#T}](./landing-template-set-site-ref.md) 

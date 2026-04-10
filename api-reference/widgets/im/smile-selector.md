@@ -1,35 +1,42 @@
-# Emoji Collection IM_SMILES_SELECTOR
+# Collection of IM_SMILES_SELECTOR Emojis
 
 {% note warning " " %}
+  
+**DEPRECATED**
 
-Starting from module version `im 25.1600.0`, the `IM_SMILES_SELECTOR` widget is no longer functional. Emojis have been replaced with [stickers](https://helpdesk.bitrix24.com/open/25866875/).
+The `IM_SMILES_SELECTOR` embedding has been deprecated since version `im 25.1600.0`. Emojis have been replaced with [stickers](https://helpdesk.bitrix24.com/open/25866875/).
 
 {% endnote %}
 
 > Scope: [`im`](../../scopes/permissions.md)
 
-You can extend the capabilities of emojis and Giphy (you can use your own sources for images or emojis).
+This page describes the deprecated embedding for enhancing the capabilities of emojis and Giphy. Use it only as archival reference.
 
-The specific widget placement code is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
+The embedding code is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
 
 {% note info "" %}
 
-The widget will not be displayed in the interface until the application installation is complete. [Check the application installation](../../../settings/app-installation/installation-finish.md)
+The embedding does not appear in the interface until the application installation is complete. [Check the application installation](../../../settings/app-installation/installation-finish.md)
 
 {% endnote %}
 
-## Where the widget is embedded
+## Where the Widget is Embedded
 
 #|
-|| **Widget code** | **Location** ||
-|| `IM_SMILES_SELECTOR` | Extends the capabilities of emojis and Giphy ||
+|| **Embedding Code** | **Location** ||
+|| `IM_SMILES_SELECTOR` | Enhances the capabilities of emojis and Giphy ||
 |#
 
-## What the handler receives
+### Embedding Status
 
-Data is sent as a POST request {.b24-info}
+`IM_SMILES_SELECTOR` is described for compatibility with older versions of the `im` module. For new integrations, use the current embedding points from the [section overview](./index.md).
+
+## What the Handler Receives
+
+Data is transmitted as a POST request {.b24-info}
 
 ```js
+
 'DOMAIN': 'xxx.bitrix24.com'
 'PROTOCOL': 1
 'LANG': 'en'
@@ -41,15 +48,16 @@ Data is sent as a POST request {.b24-info}
 'status': 'L'
 'PLACEMENT': 'CRM_DEAL_DETAIL_TAB'
 'PLACEMENT_OPTIONS': '{"ID":"3443"}'
+
 ```
 
-{% include [Note on required parameters](../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../_includes/required.md) %}
 
 #|
 || **Parameter**
 `type` | **Description** ||
 || **DOMAIN***
-[`string`](../../data-types.md) | The address of Bitrix24 where the widget handler was called ||
+[`string`](../../data-types.md) | The Bitrix24 address from which the widget handler was called ||
 || **PROTOCOL***
 [`string`](../../data-types.md) | Secure or non-secure HTTP protocol:
 
@@ -67,24 +75,23 @@ Data is sent as a POST request {.b24-info}
 || **REFRESH_ID**
 [`string`](../../data-types.md) | Refresh token [OAuth 2](../../../settings/oauth/simple-way.md) issued for the user who called the widget. Can be used to refresh the authorization token on behalf of this user ||
 || **member_id***
-[`string`](../../data-types.md) | Unique string identifier of Bitrix24 where the widget handler was called.  ||
+[`string`](../../data-types.md) | Unique string identifier of Bitrix24 from which the widget handler was called.  ||
 || **status**
-[`string`](../../data-types.md) | Type of application that registered the handler for this widget. Accepts values:
+[`string`](../../data-types.md) | Type of the application that registered the handler for this widget. Accepts values:
 
 - `L` - [local](../../../local-integrations/local-apps.md) application
 - `F` - [free mass-market](../../../market/index.md) application
 ||
 || **PLACEMENT***
-[`string`](../../data-types.md) | Code of the widget placement. You can use the same handler URL for all your widgets. The value that Bitrix24 will report in the `PLACEMENT` parameter will help determine from which specific widget placement your handler was called in each case ||
+[`string`](../../data-types.md) | Code of the widget embedding location. You can use the same handler URL for all your widgets. The value that Bitrix24 will report in the `PLACEMENT` parameter will help determine from which specific widget embedding location your handler was called in each case ||
 || **PLACEMENT_OPTIONS**
-[`string`](../../data-types.md) | Additional data in the form of a JSON string that defines the context of the widget execution. In this case, it is an array containing the numeric identifier of the CRM element in the detail form where the widget handler was called. The `PLACEMENT_OPTIONS` parameter, along with the `PLACEMENT` parameter, allows you to accurately determine for which specific CRM object the widget handler was called ||
+[`string`](../../data-types.md) | Additional data in the form of a JSON string defining the context of the widget execution. In this case, it is an array containing the numeric identifier of the CRM element in the card where the widget handler was called. The `PLACEMENT_OPTIONS` parameter, along with the `PLACEMENT` parameter, allows you to accurately determine for which specific CRM object the widget handler was called ||
 |#
 
-## Continue your exploration
+## Continue Your Study
 
+- [{#T}](./index.md)
 - [{#T}](../placement-bind.md)
 - [{#T}](../ui-interaction/index.md)
-- [{#T}](../ui-interaction/crm-card.md)
+- [{#T}](../bx24-widget-methods.md)
 - [{#T}](../../../settings/interactivity/index.md)
-- [{#T}](../open-application.md)
-- [{#T}](../open-path.md)

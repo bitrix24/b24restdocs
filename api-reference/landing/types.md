@@ -1,176 +1,103 @@
 # Working with Site Types and Scopes
 
-{% note warning "We are still updating this page" %}
+The type of site determines its purpose and how it interacts with Bitrix24. This affects how the site is created, which pages, blocks, and settings are available, and which `landing` methods can be used. For instance, different capabilities are available for a knowledge base and an online store.
 
-Some data may be missing — we will complete it shortly.
+{% note info "" %}
 
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- edits are needed to meet writing standards
+The `scope` parameter in landing methods is not related to the REST scope `landing` that you provide to the application or webhook.
 
 {% endnote %}
 
-{% endif %}
+## What You Need to Know
+
+- The `scope` parameter is not required for `PAGE`, `STORE`, and `SMN` types.
+- For `KNOWLEDGE`, `GROUP`, and `MAINPAGE`, you need to pass the top-level `scope` parameter.
+- If `scope` is not provided, methods will only work with `PAGE`, `STORE`, and `SMN` types.
+- The value of `scope` must match the site type or the filter value by type.
+- The scope affects not only the list of sites and pages but also the set of available blocks and site settings.
+- The `GROUP` type is only available on accounts that support group knowledge bases.
 
 ## Site Types
 
-Sites can be of the following types.
+#| 
+|| **Type** | **Description** | **`scope` in REST request** ||
+|| `PAGE` | Regular site | Do not pass ||
+|| `STORE` | Store | Do not pass ||
+|| `SMN` | Site of the Sites24 section in 1C-Bitrix: Site Management | Do not pass ||
+|| `KNOWLEDGE` | Knowledge base | `KNOWLEDGE` ||
+|| `GROUP` | Group knowledge base | `GROUP` ||
+|| `MAINPAGE` | Main page or vibe | `MAINPAGE` ||
+|#
 
-- Main:
-  - PAGE (from Home Page) - regular sites.
-  - STORE - stores.
-  - SMN - sites used in the Sites24 section in the administrative area of the BUS.
+## How Scope Works
 
-- Additional:
-  - KNOWLEDGE – knowledge bases.
-  - GROUP – knowledge bases of social network groups.
+Without the `scope` parameter, REST methods operate in standard mode and only see sites of types `PAGE`, `STORE`, and `SMN`. If you provide `scope`, the methods switch to the corresponding site type. For example, with `scope = "KNOWLEDGE"`, the lists of sites, pages, permissions, and available blocks will only work for knowledge bases.
 
-Currently, the extension of types is not supported.
+#| 
+|| **scope in request** | **Which site types the methods work with** | **When to use** | **Public path** ||
+|| do not pass | `PAGE`, `STORE`, `SMN` | Regular sites and stores | Depends on the domain and site settings ||
+|| `KNOWLEDGE` | `KNOWLEDGE` | Knowledge bases | `/knowledge/` ||
+|| `GROUP` | `GROUP` | Group knowledge bases | `/knowledge/group/` ||
+|| `MAINPAGE` | `MAINPAGE` | Main page and vibe | `/vibe/` ||
+|#
 
-## Scopes
+When creating a site, the value of `scope` must match `fields.TYPE`. When retrieving a list of sites or pages, the value of `scope` must match the filter value by type.
 
-In addition to the separation function at the component level, there is also a division by rights, known as scopes.
+## What Changes in Special Scopes
 
-If you are working with **main types**, no action is needed.
-If working with **additional types**, you need to set the scope before starting. In the case of REST, this can be done by passing an additional parameter **scope**.
+Special scopes not only change the selection of sites and pages.
 
-## Example
+#| 
+|| **Scope** | **What Changes for the User** ||
+|| `KNOWLEDGE` | Methods only work with knowledge bases. Some site settings are unavailable, such as SEO fields, analytics, pixels, custom code, favicon, cookies banner, Bitrix24 widget, catalog settings, and optimization. ||
+|| `GROUP` | Methods only work with group knowledge bases. The restrictions on settings are the same as for `KNOWLEDGE`. ||
+|| `MAINPAGE` | Methods only work with the main page and vibe. In addition to general restrictions, some design settings are unavailable, such as font themes, page appearance animation, and the back-to-top button. ||
+|#
 
-The example provides a method for retrieving a list of pages, but the rule applies to any other method, including working with rights and entity modifications.
+## How to Pass Scope in REST
 
-{% list tabs %}
+For regular sites, the `scope` parameter is not needed:
 
-- JS
-
-    ```js
-    // callListMethod: Retrieves all data at once. Use only for small selections (< 1000 items) due to high memory usage.
-    
-    const params = {
-        select: ['ID', 'TITLE'],
-        filter: {
-            TITLE: '%services%',
-            SITE_ID: 205
-        },
-        order: {
-            ID: 'DESC'
+```json
+{
+    "params": {
+        "filter": {
+            "TYPE": "PAGE"
         }
-    };
-    
-    try {
-        const response = await $b24.callListMethod(
-            'landing.landing.getList',
-            { params, scope: 'knowledge' }
-        );
-        const items = response.getData() || [];
-        for (const entity of items) {
-            console.log('Entity:', entity);
-        }
-    } catch (error) {
-        console.error('Request failed', error);
     }
-    
-    // fetchListMethod: Retrieves data in parts using an iterator. Use it for large data volumes to optimize memory usage.
-    
-    try {
-        const generator = $b24.fetchListMethod('landing.landing.getList', { params, scope: 'knowledge' }, 'ID');
-        for await (const page of generator) {
-            for (const entity of page) {
-                console.log('Entity:', entity);
-            }
+}
+```
+
+For a knowledge base, pass the top-level `scope`:
+
+```json
+{
+    "scope": "KNOWLEDGE",
+    "params": {
+        "filter": {
+            "TYPE": "KNOWLEDGE"
         }
-    } catch (error) {
-        console.error('Request failed', error);
     }
-    
-    // callMethod: Manually controls pagination through the start parameter. Use it for precise control of request batches. For large datasets, it is less efficient than fetchListMethod.
-    
-    try {
-        const response = await $b24.callMethod('landing.landing.getList', { params, scope: 'knowledge' }, 0);
-        const result = response.getData().result || [];
-        for (const entity of result) {
-            console.log('Entity:', entity);
-        }
-    } catch (error) {
-        console.error('Request failed', error);
+}
+```
+
+When creating a special type of site, `scope` and `fields.TYPE` must match:
+
+```json
+{
+    "scope": "MAINPAGE",
+    "fields": {
+        "TITLE": "Company Main Page",
+        "CODE": "mainpage",
+        "TYPE": "MAINPAGE"
     }
-    ```
+}
+```
 
-- PHP
+## Continue Your Learning
 
-    ```php
-    try {
-        $response = $b24Service
-            ->core
-            ->call(
-                'landing.landing.getList',
-                [
-                    'params' => [
-                        'select' => [
-                            'ID', 'TITLE'
-                        ],
-                        'filter' => [
-                            'TITLE'   => '%services%',
-                            'SITE_ID' => 205
-                        ],
-                        'order'  => [
-                            'ID' => 'DESC'
-                        ]
-                    ],
-                    'scope'  => 'knowledge'
-                ]
-            );
-    
-        $result = $response
-            ->getResponseData()
-            ->getResult();
-    
-        echo 'Success: ' . print_r($result, true);
-    
-    } catch (Throwable $e) {
-        error_log($e->getMessage());
-        echo 'Error getting landing list: ' . $e->getMessage();
-    }
-    ```
-
-- BX24.js
-
-    ```js
-    BX24.callMethod(
-        'landing.landing.getList',
-        {
-            params: {
-                select: [
-                    'ID', 'TITLE'
-                ],
-                filter: {
-                    TITLE: '%services%',
-                    SITE_ID: 205
-                },
-                order: {
-                    ID: 'DESC'
-                }
-            },
-            scope: 'knowledge'
-        },
-        function(result)
-        {
-            if(result.error())
-            {
-                console.error(result.error());
-            }
-            else
-            {
-                console.info(result.data());
-            }
-        }
-    );
-    ```
-
-{% endlist %}
-
-{% include [Footnote on examples](../../_includes/examples.md) %}
-
+- [{#T}](./site/landing-site-add.md)
+- [{#T}](./site/landing-site-get-list.md)
+- [{#T}](./page/methods/landing-landing-get-list.md)
+- [{#T}](./block/methods/landing-block-get-repository.md)
+- [{#T}](./page/block-methods/landing-landing-add-block.md)

@@ -8,7 +8,7 @@ The method `imbot.v2.Chat.User.list` returns a list of chat participants.
 
 ## Method Parameters
 
-{% include [Parameter Notes](../../../../../_includes/required.md) %}
+{% include [Footnote on parameters](../../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -33,7 +33,7 @@ Example: `{"id": "ASC"}` ||
 
 ## Code Examples
 
-{% include [Example Notes](../../../../../_includes/examples.md) %}
+{% include [Footnote on examples](../../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -226,8 +226,8 @@ HTTP Status: **400**, **403**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `BOT_TOKEN_NOT_SPECIFIED` | Bot token is not specified | `botToken` is not provided. Required for webhook authorization ||
-|| `BOT_ID_REQUIRED` | Bot ID is required | `botId` is not provided ||
+|| `BOT_TOKEN_NOT_SPECIFIED` | Bot token is not specified | `botToken` is required for webhook authorization ||
+|| `BOT_ID_REQUIRED` | Bot ID is required | `botId` is required ||
 || `BOT_NOT_FOUND` | Bot not found | Bot not found ||
 || `BOT_OWNERSHIP_ERROR` | Bot is registered by another application | Bot is registered by another application ||
 || `ACCESS_DENIED` | Access denied | Bot is not a participant in the chat ||
@@ -237,6 +237,7 @@ HTTP Status: **400**, **403**
 
 ## Continue Learning
 
-- [Add Participants to Chat imbot.v2.Chat.User.add](./chat-user-add.md)
-- [Remove a Participant from the Chat imbot.v2.Chat.User.delete](./chat-user-delete.md)
-- [Add Chat Managers imbot.v2.Chat.Manager.add](./chat-manager-add.md)
+- [API Change Log for imbot.v2](../../change-log.md)
+- [{#T}](./chat-user-add.md)
+- [{#T}](./chat-user-delete.md)
+- [{#T}](./chat-manager-add.md)

@@ -1,76 +1,62 @@
-# Close the window with the application BX24.closeApplication
+# Close the Window with the Application BX24.closeApplication
 
-{% note warning "We are still updating this page" %}
+The method `BX24.closeApplication` sends a command to close the pop-up window with the application.
 
-Some data may be missing here — we will complete it shortly.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- edits needed for writing standards
-- examples are missing
-- response on success is missing
-- response on error is missing
-
-{% endnote %}
-
-{% endif %}
+This method is recommended for use in integrations such as `CRM_*_LIST_MENU` from the [Widgets](https://apidocs.bitrix24.com/api-reference/widgets/index.html) section. For example, you can add a button that closes the application window.
 
 ```js
-void BX24.closeApplication();
+void BX24.closeApplication([Function callback])
 ```
 
-The method `BX24.closeApplication` closes the currently open modal window with the application (opened either through [BX24.openApplication](./bx24-open-application.md) or via the modal window of the embedding handler `CRM_*_LIST_MENU`).
+## Parameters
 
-It is recommended for use in `CRM_*_LIST_MENU`, for example, to display a close button. (By default, users have no way to return to the CRM other than closing the popup window by clicking the cross in the corner of the window.)
+#| 
+|| **Name** 
+`type` | **Description** ||
+|| **callback** 
+`function` | A callback function that is executed after the close window command is sent ||
+|#
 
-## Example
+## Code Example
 
-A unified example for [BX24.openApplication](./bx24-open-application.md) and BX24.closeApplication.
+{% include [Example Footnote](../../../_includes/examples.md) %}
+
+A unified example for [BX24.openApplication](./bx24-open-application.md) and `BX24.closeApplication`:
 
 ```php
 <script src="//api.bitrix24.com/api/v1/"></script>
-<?
-// parsing input data
+<?php
 $placementOptions = array();
-if(array_key_exists('PLACEMENT_OPTIONS', $_REQUEST))
+if (array_key_exists('PLACEMENT_OPTIONS', $_REQUEST))
 {
     $placementOptions = json_decode($_REQUEST['PLACEMENT_OPTIONS'], true);
 }
 
-// if the application is not opened, display the open button; otherwise, display the close button
-if(!isset($placementOptions['opened']))
+if (!isset($placementOptions['opened']))
 {
 ?>
     <span onclick="openApplication()">Open</span>
-<?
+<?php
 }
 else
 {
 ?>
     <span onclick="closeApplication()">Close</span>
-<?
+<?php
 }
-
 ?>
 <script>
     function openApplication()
     {
         BX24.openApplication(
-            {
-                'opened': true // data passed to the opened application
-            },
+            { opened: true },
             function()
             {
-                // this handler will be triggered when the application is closed
-                alert('Application closed!')
+                alert('Application closed!');
             }
         );
 
-        setTimeout(closeApplication, 15000); // automatically close after 15 seconds
+        setTimeout(closeApplication, 15000);
     }
 
     function closeApplication()
@@ -80,4 +66,35 @@ else
 </script>
 ```
 
-{% include [Note on examples](../../../_includes/examples.md) %}
+### Example with Slider
+
+```js
+BX24.openApplication(
+    { opened: true },
+    function () {
+        console.log('Application closed');
+    },
+    {
+        width: 450,
+        label: {
+            bgColor: 'pink',
+            text: 'my task',
+            color: '#07ff0e'
+        },
+        title: 'my title'
+    }
+);
+
+setTimeout(function () {
+    BX24.closeApplication();
+}, 15000);
+```
+
+## Response Handling
+
+The method does not return data (`void`).
+
+## Continue Learning
+
+- [{#T}](./bx24-open-application.md)
+- [{#T}](./bx24-open-path.md)

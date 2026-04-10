@@ -1,10 +1,10 @@
-# Event: ONVOXIMPLANTCALLSTART
+# Event of Call Start ONVOXIMPLANTCALLSTART
 
 > Scope: [`telephony`](../../../scopes/permissions.md)
 >
 > Who can subscribe: any user
 
-The `ONVOXIMPLANTCALLSTART` event is triggered at the beginning of a conversation: when the operator answers an incoming call or the subscriber answers an outgoing call.
+The event `ONVOXIMPLANTCALLSTART` is triggered at the beginning of a conversation: when the operator answers an incoming call or the subscriber answers an outgoing call.
 
 {% note info "" %}
 
@@ -14,7 +14,7 @@ Events will not be sent to the application until the installation is complete. [
 
 ## What the handler receives
 
-Data is transmitted as a POST request {.b24-info}
+Data is transmitted in the form of a POST request {.b24-info}
 
 ```json
 {
@@ -54,7 +54,7 @@ In this case — `ONVOXIMPLANTCALLSTART` ||
 
 The structure is described [below](#data) ||
 || **ts**
-[`timestamp`](../../../data-types.md) | Date and time the event was sent from the [event queue](../../../events/index.md) ||
+[`timestamp`](../../../data-types.md) | Date and time of the event sent from the [event queue](../../../events/index.md) ||
 || **auth**
 [`object`](../../../data-types.md) | Object with user authorization parameters on behalf of which the event was triggered.
 
@@ -80,4 +80,4 @@ The structure is described [below](#auth) ||
 
 - [{#T}](./on-voximplant-call-init.md)
 - [{#T}](./on-voximplant-call-end.md)
-- [{#T}](../../voximplant-statistic-get.md)
+- [{#T}](../voximplant-statistic-get.md)

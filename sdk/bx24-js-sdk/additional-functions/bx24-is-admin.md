@@ -1,6 +1,6 @@
-# Check User's Administrator Access with BX24.isAdmin
+# Check User Administrator Access with BX24.isAdmin
 
-The method `BX24.isAdmin` determines whether the current user has administrator rights on the account. This method works after [BX24.init](../system-functions/bx24-init.md).
+The method `BX24.isAdmin` determines whether the current user has administrator rights in Bitrix24. This method works after [BX24.init](../system-functions/bx24-init.md).
 
 ```js
 Boolean BX24.isAdmin()
@@ -12,7 +12,7 @@ No parameters.
 
 ## Code Example
 
-{% include [Example Notes](../../../_includes/examples.md) %}
+{% include [Example Footnote](../../../_includes/examples.md) %}
 
 ```js
 BX24.init(function () {
@@ -31,7 +31,7 @@ The method synchronously returns a result of type `boolean`.
 || **Name**  
 `type` | **Description** ||  
 || **result**  
-[`boolean`](../../../api-reference/data-types.md) | `true` if the current user has administrator rights on the account, otherwise `false` ||  
+[`boolean`](../../../api-reference/data-types.md) | `true` if the current user has administrator rights in Bitrix24, otherwise `false` ||  
 |#
 
 ## Continue Learning

@@ -8,7 +8,7 @@ The method `imbot.v2.Command.unregister` removes a bot's slash command.
 
 ## Method Parameters
 
-{% include [Parameters Note](../../../../../_includes/required.md) %}
+{% include [Footnote on parameters](../../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -25,7 +25,7 @@ Pass the same botToken that was specified during the chat bot registration ||
 
 ## Code Examples
 
-{% include [Examples Note](../../../../../_includes/examples.md) %}
+{% include [Footnote on examples](../../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -188,5 +188,6 @@ HTTP Status: **400**, **403**
 
 ## Continue Learning
 
-- [Register the Team imbot.v2.Command.register](./command-register.md)
-- [Get the List of imbot.v2.Command.list Commands](./command-list.md)
+- [API imbot.v2 Change Log](../../change-log.md)
+- [{#T}](./command-register.md)
+- [{#T}](./command-list.md)

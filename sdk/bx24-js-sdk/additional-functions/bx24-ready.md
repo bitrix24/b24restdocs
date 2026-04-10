@@ -1,27 +1,37 @@
-# Set Up the Event Handler for Document DOM Structure Readiness BX24.ready
+# Set Up the DOM Structure Readiness Handler BX24.ready
 
-{% note warning "We are still updating this page" %}
-
-Some data may be missing here — we will complete it shortly.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not deployed to prod_" %}
-
-- missing parameters or fields
-- missing examples
-- missing success response
-- missing error response
-- links to pages that have not yet been created (jQuery.ready or BX.ready) are not specified
-
-{% endnote %}
-
-{% endif %}
+The `BX24.ready` method adds a handler function that executes once the DOM structure of the document is ready. This means the handler will run when the page has been parsed by the browser and its elements are accessible to the script. The method works similarly to `jQuery.ready` or `BX.ready`. If a non-function parameter is passed, the call will be ignored.
 
 ```js
 void BX24.ready(Function handler)
 ```
 
-The function `BX24.ready` sets up an event handler for the "Document DOM structure is ready for use" event. It works similarly to jQuery.ready or BX.ready.
+## Parameters
+
+{% include [Note on required parameters](../../../_includes/required.md) %}
+
+#| 
+|| **Name** 
+`type` | **Description** ||
+|| **handler*** 
+`function` | The handler function that will be called once the DOM structure of the document is ready ||
+|#
+
+## Code Example
+
+{% include [Note on examples](../../../_includes/examples.md) %}
+
+```js
+BX24.ready(function () {
+    console.log('DOM is ready');
+});
+```
+
+## Response Handling
+
+The method does not return data (`void`).
+
+## Continue Learning
+
+- [{#T}](./bx24-is-ready.md)
+- [{#T}](../system-functions/bx24-init.md)

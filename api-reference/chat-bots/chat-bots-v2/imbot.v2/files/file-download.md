@@ -1,4 +1,4 @@
-# Get a Link to Download the File imbot.v2.File.download
+# Get Download Link for imbot.v2.File.download
 
 > Scope: [`imbot`](../../../../scopes/permissions.md)
 >
@@ -20,7 +20,7 @@ The method `imbot.v2.File.download` returns a link to download a file from the c
 
 Pass the same botToken that was specified during the chat bot registration ||
 || **fileId***
-[`integer`](../../../../data-types.md) | File ID on Drive. Can be obtained from the response of the method [imbot.v2.File.upload](./file-upload.md) ||
+[`integer`](../../../../data-types.md) | File ID on Drive. Can be obtained from the response of the [imbot.v2.File.upload](./file-upload.md) method ||
 |#
 
 ## Code Examples
@@ -160,7 +160,7 @@ HTTP Code: **200**
 || **result**
 [`object`](../../../../data-types.md) | Result of the operation ||
 || **result.downloadUrl**
-[`string`](../../../../data-types.md) | One-time link to download the file. The link contains an authorization token, reuse is not guaranteed ||
+[`string`](../../../../data-types.md) | One-time link to download the file. The link contains an authorization token; reuse is not guaranteed ||
 || **time**
 [`time`](../../../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -182,8 +182,8 @@ HTTP Status: **400**, **403**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `BOT_TOKEN_NOT_SPECIFIED` | Bot token is not specified | `botToken` is not provided. Required for webhook authorization ||
-|| `BOT_ID_REQUIRED` | Bot ID is required | `botId` is not provided ||
+|| `BOT_TOKEN_NOT_SPECIFIED` | Bot token is not specified | `botToken` is not specified. Required for webhook authorization ||
+|| `BOT_ID_REQUIRED` | Bot ID is required | `botId` is not specified ||
 || `BOT_NOT_FOUND` | Bot not found | Bot not found ||
 || `BOT_OWNERSHIP_ERROR` | Bot is registered by another application | Bot is registered by another application ||
 || `FILE_ACCESS_ERROR` | File access error | No permission to download the file ||
@@ -194,5 +194,6 @@ HTTP Status: **400**, **403**
 
 ## Continue Learning
 
-- [Upload a File to Chat imbot.v2.File.upload](./file-upload.md)
-- [Send Message imbot.v2.Chat.Message.send](../messages/chat-message-send.md)
+- [API Change Log for imbot.v2](../../change-log.md)
+- [{#T}](./file-upload.md)
+- [{#T}](../messages/chat-message-send.md)

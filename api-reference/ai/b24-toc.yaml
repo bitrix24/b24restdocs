@@ -1,7 +1,7 @@
 title: BitrixGPT  
 href: index.md  
 items:  
-  - name: AI in Bitrix24  
+  - name: Overview of Methods  
     href: index.md  
   - name: Register Service  
     href: ai-engine-register.md  

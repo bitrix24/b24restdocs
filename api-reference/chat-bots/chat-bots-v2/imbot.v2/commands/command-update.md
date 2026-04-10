@@ -8,7 +8,7 @@ The method `imbot.v2.Command.update` updates the bot's slash command.
 
 ## Method Parameters
 
-{% include [Parameters Note](../../../../../_includes/required.md) %}
+{% include [Parameter Note](../../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -33,7 +33,7 @@ Pass the same botToken that was specified during the chat bot registration ||
 || **command**
 [`string`](../../../../data-types.md) | New command (without `/`) ||
 || **title**
-[`object`](../../../../data-types.md) | Command title in different languages:
+[`object`](../../../../data-types.md) | Title of the command in different languages:
 
 - string value updates the translation
 - value `null` removes the translation
@@ -52,7 +52,7 @@ Example: `{"de": "Neu", "en": null}` will update `de` and remove `en` ||
 
 ## Code Examples
 
-{% include [Examples Note](../../../../../_includes/examples.md) %}
+{% include [Example Note](../../../../../_includes/examples.md) %}
 
 ### Example 1. Updating Translations
 
@@ -364,11 +364,11 @@ HTTP Code: **200**
 || **Field**
 `Type` | **Description** ||
 || **id**
-[`integer`](../../../../data-types.md) | Command identifier ||
+[`integer`](../../../../data-types.md) | Identifier of the command ||
 || **botId**
-[`integer`](../../../../data-types.md) | Bot identifier ||
+[`integer`](../../../../data-types.md) | Identifier of the bot ||
 || **command**
-[`string`](../../../../data-types.md) | Command text ||
+[`string`](../../../../data-types.md) | Text of the command ||
 || **common**
 [`boolean`](../../../../data-types.md) | Command available in all chats ||
 || **hidden**
@@ -400,7 +400,7 @@ HTTP Status: **400**, **403**
 || `BOT_ID_REQUIRED` | Bot ID is required | `botId` is not provided ||
 || `BOT_NOT_FOUND` | Bot not found | Bot not found ||
 || `BOT_OWNERSHIP_ERROR` | Bot is registered by another application | Bot is registered by another application ||
-|| `COMMAND_NOT_FOUND` | Command not found | Command not found or access denied ||
+|| `COMMAND_NOT_FOUND` | Command not found | Command not found or no access ||
 || `COMMAND_NAME_EMPTY` | Command name is empty | An empty command name was provided ||
 || `COMMAND_NAME_INVALID` | Command name is invalid | Command name must be a string ||
 || `COMMAND_ALREADY_EXISTS` | Command already exists | A command with this name is already registered for this bot ||
@@ -410,6 +410,7 @@ HTTP Status: **400**, **403**
 
 ## Continue Learning
 
-- [Register the Team imbot.v2.Command.register](./command-register.md)
-- [Get the List of imbot.v2.Command.list Commands](./command-list.md)
-- [Remove the imbot.v2.Command.unregister Command](./command-unregister.md)
+- [API Change Log for imbot.v2](../../change-log.md)
+- [{#T}](./command-register.md)
+- [{#T}](./command-list.md)
+- [{#T}](./command-unregister.md)

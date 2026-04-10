@@ -2,9 +2,9 @@
 
 > Scope: [`placement`](../../scopes/permissions.md)
 
-You can add an "invisible" widget that will be displayed on all pages of Bitrix24. This widget allows you to implement a scenario with an external [WebRTC client](../ui-interaction/page-background-worker/index.md) in telephony integrations, but it is not the only possible use case.
+You can add an "invisible" widget that will be displayed on all pages of Bitrix24. This widget enables the implementation of scenarios with an external [WebRTC client](../ui-interaction/page-background-worker/webrtc-scenario.md) in telephony integrations, but it is not the only possible use case.
 
-For example, using the [interactive interaction](../../../settings/interactivity/index.md) mechanism between backend and frontend applications, you can send a "signal" to the `PAGE_BACKGROUND_WORKER` widget, and upon receiving the "signal," open the application slider using the [openApplication](../open-application.md) method.
+For instance, using the [interactive interaction](../../../settings/interactivity/index.md) mechanism of backend and frontend applications, you can send a "signal" to the `PAGE_BACKGROUND_WORKER` widget, and upon receiving the "signal," open the application slider using the [openApplication](../bx24-widget-methods.md) method.
 
 The widget embedding code is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
 
@@ -20,7 +20,7 @@ Unlike other types of widgets, for `PAGE_BACKGROUND_WORKER`, the application can
 
 Since this widget loads on all pages, a handler that takes longer than 3-5 seconds to load may cause delays in rendering the Bitrix24 user interface. If this occurs more than 10 times within a day on the same Bitrix24, the handler will be automatically disabled.
 
-Bitrix24 will inform the application about the handler's disablement. To do this, in the [placement.bind](../placement-bind.md) method, you need to specify the URL in the `OPTIONS[errorHandlerUrl]` parameter. Bitrix24 will call this URL in case the `PAGE_BACKGROUND_WORKER` widget handler is disabled.
+Bitrix24 will notify the application about the handler's deactivation. To do this, in the [placement.bind](../placement-bind.md) method, you need to specify the URL in the `OPTIONS[errorHandlerUrl]` parameter. Bitrix24 will call this URL in case the `PAGE_BACKGROUND_WORKER` widget handler is disabled.
 
 {% list tabs %}
 
@@ -152,7 +152,7 @@ Bitrix24 will inform the application about the handler's disablement. To do this
 
 ## What the Handler Receives
 
-Data is sent as a POST request {.b24-info}
+Data is transmitted as a POST request {.b24-info}
 
 ```php
 
@@ -174,39 +174,37 @@ Array
 
 ```
 
-{% include [Note on required parameters](../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../_includes/required.md) %}
 
-{% include notitle [description of standard data](../_includes/widget_data.md) %}
+{% include notitle [Description of Standard Data](../_includes/widget_data.md) %}
 
 ### PLACEMENT_OPTIONS
 
 The value of `PLACEMENT_OPTIONS` is a JSON string containing an array of one or more keys.
 
-{% include [Note on required parameters](../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../_includes/required.md) %}
 
-#|
+#| 
 || **Parameter** | **Description** ||
-|| **ID***
+|| **ID*** 
 [`string`](../../data-types.md) | Always equals `PAGE_BACKGROUND_WORKER` and is used for internal purposes
 
-||
-|| **URI***
+|| 
+|| **URI*** 
 [`string`](../../data-types.md) | URL-encoded address of the current page where the widget was opened.
 
-||
+|| 
 |#
 
 {% note tip "Typical use-cases and scenarios" %}
 
-- [{#T}](../ui-interaction/page-background-worker/index.md)
+- [{#T}](../ui-interaction/page-background-worker/webrtc-scenario.md)
 
 {% endnote %}
 
-## Continue Learning
+## Continue Your Learning
 
 - [{#T}](../placement-bind.md)
 - [{#T}](../ui-interaction/index.md)
-- [{#T}](../ui-interaction/crm-card.md)
 - [{#T}](../../../settings/interactivity/index.md)
-- [{#T}](../open-application.md)
-- [{#T}](../open-path.md)
+- [{#T}](../bx24-widget-methods.md)

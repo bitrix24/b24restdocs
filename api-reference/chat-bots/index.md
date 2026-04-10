@@ -1,6 +1,6 @@
 # Automation Rule Platform: Overview of the Section
 
-This section consolidates the documentation for chatbot APIs in Bitrix24. It includes both the current methods of the new Automation Rule platform `imbot.v2` and the deprecated methods from the previous generation `imbot.*`.
+This section consolidates the documentation for the chatbot API in Bitrix24. It includes both the current methods of the new Automation Rule platform `imbot.v2` and the deprecated methods from the previous generation `imbot.*`.
 
 {% note tip "" %}
 
@@ -17,7 +17,7 @@ Chatbots can:
 - work with slash commands
 - upload and download files
 - manage group chats and participants
-- use keyboards, attachments, and other interface elements
+- utilize keyboards, attachments, and other interface elements
 
 ## Current API Version {#v2}
 
@@ -29,6 +29,12 @@ Chatbots can:
 
 If you are starting to create a new Chatbot, focus on this section.
 
+{% note info "" %}
+
+If the integration is already running in production or uses new fields and methods, first check the [Change Log for API imbot.v2](./chat-bots-v2/change-log.md). The entries are listed from newest to oldest.
+
+{% endnote %}
+
 ## Deprecated Methods {#outdated}
 
 [Deprecated API](./outdated/index.md) contains documentation for the previous version of methods `imbot.*`, `imbot.chat.*`, `imbot.message.*`, `imbot.command.*`, and related events.
@@ -37,7 +43,7 @@ These methods are retained to support existing integrations. For new solutions, 
 
 ## How to Choose a Section
 
-#|
+#| 
 || **If you need** | **Open the section** ||
 || To create a new chatbot, configure events, commands, messages, and files in the new architecture | [Chatbots 2.0](./chat-bots-v2/index.md) ||
 || To support an existing integration on `imbot.*` | [Deprecated API](./outdated/index.md) ||

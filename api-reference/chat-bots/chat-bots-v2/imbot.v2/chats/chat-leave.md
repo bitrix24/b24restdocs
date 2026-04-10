@@ -8,7 +8,7 @@ The method `imbot.v2.Chat.leave` removes the bot from the chat.
 
 ## Method Parameters
 
-{% include [Footnote on parameters](../../../../../_includes/required.md) %}
+{% include [Parameters Note](../../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -18,14 +18,14 @@ The method `imbot.v2.Chat.leave` removes the bot from the chat.
 || **botToken**
 [`string`](../../../../data-types.md) | Unique authorization token for the bot. Required for webhook authorization, not needed for OAuth.
 
-Pass the same botToken that was specified during the registration of the chat bot. ||
+Pass the same botToken that was specified during the registration of the chatbot ||
 || **dialogId***
 [`string`](../../../../data-types.md) | Dialog ID. For group chats — `chat{chatId}` ||
 |#
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../../../_includes/examples.md) %}
+{% include [Examples Note](../../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -177,8 +177,8 @@ HTTP Status: **400**, **403**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `BOT_TOKEN_NOT_SPECIFIED` | Bot token is not specified | `botToken` is not provided. Required for webhook authorization ||
-|| `BOT_ID_REQUIRED` | Bot ID is required | `botId` is not provided ||
+|| `BOT_TOKEN_NOT_SPECIFIED` | Bot token is not specified | `botToken` is required for webhook authorization ||
+|| `BOT_ID_REQUIRED` | Bot ID is required | `botId` is required ||
 || `BOT_NOT_FOUND` | Bot not found | Bot not found ||
 || `BOT_OWNERSHIP_ERROR` | Bot is registered by another application | Bot is registered by another application ||
 || `ACCESS_DENIED` | Access denied | Bot is not a participant in the chat ||
@@ -188,6 +188,7 @@ HTTP Status: **400**, **403**
 
 ## Continue Learning
 
-- [Add Participants to Chat imbot.v2.Chat.User.add](./chat-user-add.md)
-- [Remove a Participant from the Chat imbot.v2.Chat.User.delete](./chat-user-delete.md)
-- [Get Information About the Chat imbot.v2.Chat.get](./chat-get.md)
+- [API Change Log for imbot.v2](../../change-log.md)
+- [{#T}](./chat-user-add.md)
+- [{#T}](./chat-user-delete.md)
+- [{#T}](./chat-get.md)

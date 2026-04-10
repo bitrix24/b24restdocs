@@ -12,7 +12,7 @@ No parameters.
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+{% include [Example Footnote](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -97,6 +97,11 @@ No parameters.
 
 HTTP Status: **200**
 
+The response may contain two types of elements:
+
+- A pre-installed region, which typically has `code`, `title`, `languageId`
+- A custom region, which may additionally have `id`, `formatDate`, `formatDatetime`, `formatName`
+
 ```json
 {
     "result": {
@@ -105,21 +110,6 @@ HTTP Status: **200**
                 "code": "de",
                 "title": "Germany",
                 "languageId": "de"
-            },
-            "by": {
-                "code": "by",
-                "title": "Belarus",
-                "languageId": "ru"
-            },
-            "kz": {
-                "code": "kz",
-                "title": "Kazakhstan",
-                "languageId": "kz"
-            },
-            "ua": {
-                "code": "ua",
-                "title": "Ukraine",
-                "languageId": "ua"
             },
             "uk": {
                 "code": "uk",
@@ -192,16 +182,21 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **regions**
-[`object`](../../data-types.md) | List of regions, where the object key is the `code` of the region [(detailed description)](#regions) ||
+[`object`](../../data-types.md) | List of regions, where the object's key is the `code` of the region [(detailed description)](#regions) ||
 |#
 
 #### Object regions {#regions}
+
+The `regions` object can contain both pre-installed and custom regions.
+
+- For a pre-installed region, the fields `code`, `title`, `languageId` are usually available
+- For a custom region, additional fields `id`, `formatDate`, `formatDatetime`, `formatName` may be returned
 
 #|
 || **Name**
 `type` | **Description** ||
 || **id**
-[`string`](../../data-types.md) | Identifier of the custom region; this field may be absent for pre-installed regions ||
+[`string`](../../data-types.md) | Identifier of the custom region; this field may be absent for a pre-installed region ||
 || **code**
 [`string`](../../data-types.md) | Code of the region ||
 || **title**
@@ -233,7 +228,7 @@ HTTP Status: **400**
 
 #|
 || **Status** | **Code** | **Description** | **Value** ||
-|| `400` | `0` | You do not have permissions to modify templates | Insufficient rights to modify document generator templates ||
+|| `400` | `0` | You do not have permissions to modify templates | Insufficient permissions to modify document generator templates ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

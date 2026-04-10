@@ -1,4 +1,4 @@
-# Get Message Context with imbot.v2.Chat.Message.getContext
+# Get Context of Message imbot.v2.Chat.Message.getContext
 
 > Scope: [`imbot`](../../../../scopes/permissions.md)
 >
@@ -8,13 +8,13 @@ The method `imbot.v2.Chat.Message.getContext` returns a window of messages surro
 
 {% note warning "" %}
 
-This method is only available for `supervisor` and `personal` type bots. For more details, see [Bot Types](../../../index.md#bot-types).
+The method is only available for `supervisor` and `personal` type bots. For more details, see [Bot Types](../../../index.md#bot-types).
 
 {% endnote %}
 
 ## Method Parameters
 
-{% include [Parameters Note](../../../../../_includes/required.md) %}
+{% include [Footnote on parameters](../../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -28,12 +28,12 @@ Pass the same botToken that was specified during the chat bot registration ||
 || **messageId***
 [`integer`](../../../../data-types.md) | ID of the central message ||
 || **range**
-[`integer`](../../../../data-types.md) | Number of messages on each side of the central one (1–50). Default is `20` ||
+[`integer`](../../../../data-types.md) | Number of messages on each side of the central one (1–50). Default is `50` ||
 |#
 
 ## Code Examples
 
-{% include [Examples Note](../../../../../_includes/examples.md) %}
+{% include [Footnote on examples](../../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -271,7 +271,7 @@ HTTP Code: **200**
 [`string`](../../../../data-types.md) | Type of user ||
 |#
 
-For a complete description of all object fields, see the [Objects and Fields](../../entities.md) page.
+Complete description of all object fields can be found on the [Objects and Fields](../../entities.md) page.
 
 ### Pagination
 
@@ -299,12 +299,15 @@ HTTP Status: **400**, **403**
 || `BOT_NOT_FOUND` | Bot not found | Bot not found ||
 || `BOT_OWNERSHIP_ERROR` | Bot is registered by another application | Bot is registered by another application ||
 || `BOT_TYPE_NOT_ALLOWED` | Bot type not allowed | Method is only available for `supervisor` and `personal` type bots ||
+|| `MESSAGE_NOT_FOUND` | Message not found | Message not found ||
+|| `MESSAGE_ACCESS_DENIED` | Message access denied | Bot is not a participant in the chat with this message or does not have access to the history ||
 |#
 
 {% include [System Errors](../../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
-- [Get Message imbot.v2.Chat.Message.get](./chat-message-get.md)
-- [Send Message imbot.v2.Chat.Message.send](./chat-message-send.md)
-- [Chatbots 2.0: Overview of Methods](../../index.md#bot-types)
+- [API Change Log for imbot.v2](../../change-log.md)
+- [{#T}](./chat-message-get.md)
+- [{#T}](./chat-message-send.md)
+- [{#T}](../../index.md#bot-types)

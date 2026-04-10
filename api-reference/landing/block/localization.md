@@ -1,42 +1,41 @@
 # Localization of the Block
 
-{% note warning "We are still updating this page" %}
+The localization of the block is defined in the [manifest file](./manifest.md) and allows for the use of translated labels for different languages.
 
-Some data may be missing here — we will fill it in shortly.
+## Localization Keys in the Manifest
 
-{% endnote %}
+Two keys are used for localization:
 
-{% if build == 'dev' %}
+- `lang_original` - the original language of the phrases in the manifest
+- `lang` - the set of translations by language
 
-{% note alert "TO-DO _not exported to prod_" %}
+In the `lang` array, the keys are the original phrases from the manifest, and the values are the translations of those phrases.
 
-- edits are needed to meet the writing standard
+Example:
 
-{% endnote %}
-
-{% endif %}
-
-Localization of blocks is possible starting from version 18.5.6. Translation can be done into any number of languages. To localize:
-
-1. Create a block for your native language.
-2. In the manifest, add two keys:
-
-   ```js
-    'lang' => [
-        'en' => [
-            'Title with a separator on a light background' => 'Title with a separator on a light background (translated)'
-        ],
-        'de' => [
-            'Title with a separator on a light background' => 'Überschrift mit einem Trennzeichen auf einem hellen Hintergrund'
-        ]
+```php
+'lang_original' => 'en',
+'lang' => [
+    'de' => [
+        'Title with a separator on a light background' => 'Titel mit Trennlinie auf hellem Hintergrund',
+        'Title' => 'Uberschrift',
+        'Text' => 'Text',
+        'Button' => 'Schaltflache',
     ],
-    'lang_original' => 'ru'
-    ```
+    'fr' => [
+        'Title with a separator on a light background' => 'Titre avec separateur sur fond clair',
+        'Title' => 'Titre',
+        'Text' => 'Texte',
+        'Button' => 'Bouton',
+    ],
+],
+```
 
-    Where:
-    - **lang_original** – the language in which the block manifest is created. Note: specifically the phrases in the manifest.
-    - **lang** – all other languages, at least one, otherwise what is the point of localization. (No one prohibits creating blocks only for French and Russian, for example.)
+## How Localization is Applied
 
-Let's take a closer look at the **lang** array. Its keys list all possible fields name in your manifest. This includes the name of the block itself, as well as the names of nodes, styles, attributes, and their values.
+The system iterates through the manifest and searches for translations in the `lang` array for text labels:
 
-The system traverses the entire manifest, and if it encounters a key **name**, it looks for a suitable replacement in the language array (either the current language or en, if the account language differs from the block's native language) and replaces it.
+- first for the current language of the account
+- if there is no translation and `lang_original` differs from the current language of the account, the translation from `en` is used as a fallback
+
+If a suitable translation is not found, the original phrase from the `lang_original` language remains.

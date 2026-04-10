@@ -6,15 +6,15 @@
 
 This method creates a new custom field for the requisite.
 
-{% note info "Restrictions for the custom field character code" %}
+{% note info "Restrictions for the Symbolic Code of the Custom Field" %}
 
-The system limit for the field name is 20 characters. The custom field name always has the prefix `UF_CRM_`, meaning the actual length of the name is 13 characters.
+The system limitation for the field name is 20 characters. The custom field name always has the prefix `UF_CRM_`, meaning the actual length of the name is 13 characters.
 
 {% endnote %}
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -25,7 +25,7 @@ The system limit for the field name is 20 characters. The custom field name alwa
 
 ### Parameter fields
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -33,7 +33,7 @@ The system limit for the field name is 20 characters. The custom field name alwa
 || **ENTITY_ID***
 [`string`](../../../data-types.md) | The identifier of the entity to which the custom field belongs. For requisites, this is always `CRM_REQUISITE` ||
 || **FIELD_NAME***
-[`string`](../../../data-types.md) | Character code. For requisites, it always starts with the prefix `UF_CRM_` ||
+[`string`](../../../data-types.md) | Symbolic code. For requisites, it always starts with the prefix `UF_CRM_` ||
 || **USER_TYPE_ID***
 [`string`](../../../data-types.md) | Data type ([`string`](../../universal/user-defined-fields/crm-userfield-types.md), [`boolean`](../../universal/user-defined-fields/crm-userfield-types.md), [`double`](../../universal/user-defined-fields/crm-userfield-types.md), or [`datetime`](../../universal/user-defined-fields/crm-userfield-types.md)) ||
 || **XML_ID**
@@ -80,7 +80,7 @@ Defaults to `Y`
 Defaults to `Y` 
 ||
 || **IS_SEARCHABLE**
-[`char`](../../../data-types.md) | Are the field values included in the search. Possible values:
+[`char`](../../../data-types.md) | Are field values included in the search. Possible values:
 - `Y` — yes
 - `N` — no
 
@@ -97,14 +97,14 @@ Defaults to `N`
 || **HELP_MESSAGE**
 [`string`](../../../data-types.md) | Help ||
 || **LIST**
-[`uf_enum_element`](../../../data-types.md) | List elements. For more details, see the section [{#T}](../../universal/user-defined-fields/crm-userfield-enumeration-fields.md) ||
+[`uf_enum_element`](../../../data-types.md) | List elements. For detailed information, see the section [{#T}](../../universal/user-defined-fields/crm-userfield-enumeration-fields.md) ||
 || **SETTINGS**
-[`object`](../../../data-types.md) | Additional settings (dependent on type). For more details, see the section [{#T}](../../universal/user-defined-fields/crm-userfield-settings-fields.md) ||
+[`object`](../../../data-types.md) | Additional settings (dependent on type). For detailed information, see the section [{#T}](../../universal/user-defined-fields/crm-userfield-settings-fields.md) ||
 |#
 
 ## Code Examples
 
-{% include [Note on examples](../../../../_includes/examples.md) %}
+{% include [Note on Examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -288,7 +288,7 @@ HTTP Status: **200**
 || **result**
 [`integer`](../../../data-types.md) | Identifier of the created custom field ||
 || **time**
-[`time`](../../../data-types.md) | Information about the request execution time ||
+[`time`](../../../data-types.md) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
@@ -308,12 +308,12 @@ HTTP Status: **40x**, **50x**
 
 #|  
 || **Code** | **Error Text** | **Description** ||
-|| `ERROR_CORE` | `Field UF_CRM_NEWTECH_V1_STRING for object CRM_REQUISITE already exists` | Attempt to recreate a custom field with the same character code ||
+|| `ERROR_CORE` | `Field UF_CRM_NEWTECH_V1_STRING for object CRM_REQUISITE already exists` | Attempt to recreate a custom field with the same symbolic code ||
 || Empty string | `The 'USER_TYPE_ID' field is not found` | Data type for the custom field is not specified ||
-|| Empty string | `The 'FIELD_NAME' field is not found` | Character code for the custom field is not specified ||
+|| Empty string | `The 'FIELD_NAME' field is not found` | Symbolic code for the custom field is not specified ||
 || Empty string | `Access denied` | Insufficient access permissions to add a custom field ||
 || `ERROR_CORE` | `Fail to create new user field` | Failed to create a custom field ||
-|| `ERROR_CORE` | `Fail to save enumeration field values` | Failed to save values for the custom list-type field (e.g., when a duplicate external key occurs for one of the values) ||
+|| `ERROR_CORE` | `Fail to save enumeration field values` | Failed to save values for the custom list-type field (e.g., when there is a duplication of the external key of one of the values) ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

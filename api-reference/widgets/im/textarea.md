@@ -2,13 +2,13 @@
 
 > Scope: [`im`](../../scopes/permissions.md)
 
-You can add your item to the panel above the message input field.
+The widget adds its item to the panel above the message input field.
 
-The Widget code is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
+The embedding code is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
 
 {% note info "" %}
 
-The widget will not be displayed in the interface until the application installation is complete. [Check the application installation](../../../settings/app-installation/installation-finish.md)
+The embedding will not be displayed in the interface until the application installation is complete. [Check the application installation](../../../settings/app-installation/installation-finish.md)
 
 {% endnote %}
 
@@ -63,38 +63,32 @@ For `IM_TEXTAREA`, the `placement.bind` method supports `OPTIONS` parameters.
 {% include [Note on Required Parameters](../../../_includes/required.md) %}
 
 #| 
-|| **Parameter** 
-`type` | **Description** ||
-|| **iconName*** 
-[`string`](../../data-types.md) | Label of the item in the interface. Up to 50 characters, Latin letters, spaces, and `-` are allowed ||
-|| **extranet** 
-[`string`](../../data-types.md) | Access in the extranet, default is `N`.
+|| **Parameter** `type` | **Description** ||
+|| **iconName*** [`string`](../../data-types.md) | Label of the item in the interface. Up to 50 characters, Latin letters, spaces, and `-` are allowed ||
+|| **extranet** [`string`](../../data-types.md) | Access in the extranet, default is `N`.
 
 Possible values:
 - `N` — application is not available for extranet users
 - `Y` — application is available for extranet users
 ||
-|| **context** 
-[`string`](../../data-types.md) | Display context, default is `ALL`. Multiple values can be passed using `;`.
+|| **context** [`string`](../../data-types.md) | Display context, default is `ALL`. Multiple values can be passed using `;`.
 
 Possible values:
 - `ALL` — all chats
 - `USER` — personal chats of users, excluding chats with bots
 - `CHAT` — group chats, excluding `LINES` and `CRM`
-- `LINES` — open channel chats
+- `LINES` — open lines chats
 - `CRM` — chats created within CRM
 
-If `ALL` is passed along with other values, only `ALL` is used. An invalid value will cause a registration error
+If `ALL` is passed along with other values, only `ALL` is used. An incorrect value will cause a registration error
 ||
-|| **role** 
-[`string`](../../data-types.md) | User role, default is `USER`.
+|| **role** [`string`](../../data-types.md) | User role, default is `USER`.
 
 Possible values:
 - `USER` — application is available to all users
 - `ADMIN` — application is available only to portal administrators
 ||
-|| **color** 
-[`string`](../../data-types.md) | Icon color from the IM palette.
+|| **color** [`string`](../../data-types.md) | Icon color from the IM palette.
 
 Possible values:
 - `RED` — red
@@ -115,10 +109,8 @@ Possible values:
 - `GRAY` — gray
 - `GRAPHITE` — graphite
 ||
-|| **width** 
-[`integer`](../../data-types.md) | Width of the block in percentage, default is `100`, value must be greater than or equal to `0` ||
-|| **height** 
-[`integer`](../../data-types.md) | Height of the block in percentage, default is `100`, value must be greater than or equal to `0` ||
+|| **width** [`integer`](../../data-types.md) | Width of the block in percentage, default is `100`, value must be greater than or equal to `0` ||
+|| **height** [`integer`](../../data-types.md) | Height of the block in percentage, default is `100`, value must be greater than or equal to `0` ||
 |#
 
 ### Code Examples
@@ -319,8 +311,8 @@ Possible values:
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](../placement-bind.md)
 - [{#T}](../ui-interaction/index.md)
+- [{#T}](../bx24-widget-methods.md)
 - [{#T}](../../../settings/interactivity/index.md)
-- [{#T}](../open-application.md)
-- [{#T}](../open-path.md)

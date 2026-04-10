@@ -8,15 +8,15 @@ The method `im.v2.Event.get` retrieves events for the current user in polling mo
 
 {% note info "" %}
 
-To receive events, the user must first subscribe via [im.v2.Event.subscribe](./event-subscribe.md). Without a subscription, events are not recorded, and the method will return an empty array.
+To receive events, the user must be previously subscribed via [im.v2.Event.subscribe](./event-subscribe.md). Without a subscription, events are not recorded, and the method will return an empty array.
 
 {% endnote %}
 
-The method uses confirmation through `offset`: pass the `nextOffset` from the previous response to get the next batch of events.
+The method uses confirmation via `offset`: pass the `nextOffset` from the previous response to get the next batch of events.
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../../../_includes/required.md) %}
+{% include [Parameter Note](../../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -29,7 +29,7 @@ The method uses confirmation through `offset`: pass the `nextOffset` from the pr
 
 ## Code Examples
 
-{% include [Note on examples](../../../../../_includes/examples.md) %}
+{% include [Examples Note](../../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -148,7 +148,7 @@ HTTP Code: **200**
             {
                 "eventId": 2001,
                 "type": "ONIMV2MESSAGEADD",
-                "date": "2025-01-15T10:30:00+01:00",
+                "date": "2025-01-15T10:30:00+02:00",
                 "data": {}
             }
         ],
@@ -160,8 +160,8 @@ HTTP Code: **200**
         "finish": 1728626400.234,
         "duration": 0.111,
         "processing": 0.045,
-        "date_start": "2024-10-11T10:00:00+01:00",
-        "date_finish": "2024-10-11T10:00:00+01:00"
+        "date_start": "2024-10-11T10:00:00+02:00",
+        "date_finish": "2024-10-11T10:00:00+02:00"
     }
 }
 ```
@@ -178,11 +178,11 @@ HTTP Code: **200**
 || **result.events[].eventId**
 [`integer`](../../../../data-types.md) | Event ID. Pass in the next call as `offset` for confirmation ||
 || **result.events[].type**
-[`string`](../../../../data-types.md) | Type of event. A list of types is described [below](#event-types) ||
+[`string`](../../../../data-types.md) | Event type. List of types described [below](#event-types) ||
 || **result.events[].date**
 [`datetime`](../../../../data-types.md) | Date and time of the event ||
 || **result.events[].data**
-[`object`](../../../../data-types.md) | Event data. The format depends on the event type: [event descriptions](./events.md) ||
+[`object`](../../../../data-types.md) | Event data. Format depends on the event type: [event description](./events.md) ||
 || **result.nextOffset**
 [`integer`](../../../../data-types.md) | Offset for the next request. Pass in the `offset` parameter in the next call ||
 || **result.hasMore**
@@ -198,11 +198,11 @@ HTTP Code: **200**
 || `ONIMV2MESSAGEADD` | New message in chat ||
 || `ONIMV2MESSAGEUPDATE` | Message edited ||
 || `ONIMV2MESSAGEDELETE` | Message deleted ||
-|| `ONIMV2REACTIONCHANGE` | Reaction to message changed ||
-|| `ONIMV2JOINCHAT` | New participant in chat ||
+|| `ONIMV2REACTIONCHANGE` | Reaction to the message changed ||
+|| `ONIMV2JOINCHAT` | New participant in the chat ||
 |#
 
-Detailed description of the data format for each event: [Event Formats im.v2](./events.md).
+Detailed description of the data format for each event: [{#T}](./events.md).
 
 ## Exclusivity of Event Retrieval
 
@@ -210,7 +210,7 @@ Events for a specific user can only be received by **one application**. If multi
 
 This limitation is intentional: it is assumed that one agent should respond instantly to events. Multiple agents processing the same events for one user lead to duplicate and conflicting responses.
 
-If multiple independent handlers are needed, use different user contexts or webhook subscriptions.
+If multiple independent handlers are needed — use different user contexts or webhook subscriptions.
 
 ## Error Handling
 
@@ -222,6 +222,7 @@ The method does not generate specific errors. If the user is not subscribed via 
 
 ## Continue Learning
 
-- [Subscribe to Events im.v2.Event.subscribe](./event-subscribe.md)
-- [Unsubscribe from Events im.v2.Event.unsubscribe](./event-unsubscribe.md)
-- [Event Formats im.v2](./events.md)
+- [API Change Log imbot.v2](../../change-log.md)
+- [{#T}](./event-subscribe.md)
+- [{#T}](./event-unsubscribe.md)
+- [{#T}](./events.md)

@@ -1,26 +1,40 @@
-# Get the account address BX24.getDomain
+# Get Bitrix24 Address BX24.getDomain
 
-{% note warning "We are still updating this page" %}
-
-Some data may be missing here — we will complete it shortly.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not deployed to prod_" %}
-
-- examples are missing
-- success response is missing
-- error response is missing
-- links to pages that have not yet been created are not specified
-
-{% endnote %}
-
-{% endif %}
+The method `BX24.getDomain` returns the value of `PARAMS.DOMAIN`, which is stored during the library initialization. This is the domain of the current Bitrix24.
 
 ```js
-void BX24.getDomain()
+String BX24.getDomain()
 ```
 
-The method `BX24.getDomain` returns `window.location.host` of the parent window, i.e., it returns the address of the **Bitrix24** account. For example, the value might be: `helpdesk.bitrix24.com`.
+## Parameters
+
+No parameters.
+
+## Code Example
+
+{% include [Example Notes](../../../_includes/examples.md) %}
+
+```js
+BX24.init(function () {
+    const domain = BX24.getDomain();
+    console.log(domain);
+});
+```
+
+## Response Handling
+
+The method synchronously returns a result of type `string`.
+
+### Returned Data
+
+#|  
+|| **Name**  
+`type` | **Description** ||  
+|| **result**  
+[`string`](../../../api-reference/data-types.md) | The Bitrix24 domain without ports `80` and `443`, for example `mycompany.bitrix24.com` ||  
+|#
+
+## Continue Learning
+
+- [{#T}](../system-functions/bx24-init.md)  
+- [{#T}](./bx24-get-lang.md)  

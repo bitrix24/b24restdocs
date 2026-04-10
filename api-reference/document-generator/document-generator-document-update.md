@@ -73,7 +73,7 @@ For `NAME`:
 
 {% note tip "User Documentation" %}
 
-- [What are modifiers in document templates](https://helpdesk.bitrix24.com/open/18175702/)
+- [What are modifiers in document templates](https://helpdesk.bitrix24.com/open/25799327/)
 
 {% endnote %}
 ||

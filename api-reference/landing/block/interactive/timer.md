@@ -1,97 +1,83 @@
 # Countdown Timers
 
-{% note warning "We are still updating this page" %}
+To implement a timer in the [block manifest](../manifest.md), connect the `landing_countdown` extension.
 
-Some data may be missing here — we will complete it soon.
+## How to Configure the Timer
 
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- edits are needed to meet writing standards
-
-{% endnote %}
-
-{% endif %}
-
-In the [block manifest](../manifest.md), add the extension `landing_countdown`.
+The minimum configuration is as follows:
 
 ```php
-'assets' => array(
-    'ext' => array('landing_countdown'),
-),
+'assets' => [
+    'ext' => ['landing_countdown'],
+],
 ```
 
-In the **block** section of the manifest, add the key:
+Optionally, you can specify the block version:
 
 ```php
-'version' => '18.5.0'
+'block' => [
+    'version' => '18.5.0',
+],
 ```
 
-The version parameter is optional, but it will limit the addition of this block in versions earlier than specified, when the necessary assets did not yet exist.
+The `version` is used to restrict the addition of the block in older versions of the product where the necessary resources are not yet available.
 
-Add attributes for the countdown container node to the node that corresponds to the description and should act as the timer. For details, see the example.
+## What the Timer Extension Does
+
+The `landing_countdown` extension calculates the remaining time until `data-end-date` and updates the values of the elements `js-cd-days`, `js-cd-hours`, `js-cd-minutes`, and `js-cd-seconds`.
+
+## End Date Attribute
+
+For the timer container node, add the end date attribute:
 
 ```php
-'attrs' => array(
-    '.landing-block-node-date' => array(
-        'name' => Loc::getMessage('LANDING_BLOCK_51_2_COUNTDOWN_04--DATE'),
-        'time' => true,
-        'type' => 'date',
-        'format' => 'ms',
-        'attribute' => 'data-end-date',
-    ),
-),
+'attrs' => [
+    '.landing-block-node-date' => [
+        [
+            'name' => 'End Date',
+            'type' => 'date',
+            'time' => true,
+            'format' => 'ms',
+            'attribute' => 'data-end-date',
+        ],
+    ],
+],
 ```
 
-## Markup
+## Timer Markup
 
-The timer should contain 4 numeric elements, marked with the corresponding classes:
+The timer container must have the class `js-countdown`. Inside the container, there should be nodes:
 
-- **js-cd-days** - days
-- **js-cd-hours** - hours
-- **js-cd-minutes** - minutes
-- **js-cd-seconds** - seconds
+- `js-cd-days` — days
+- `js-cd-hours` — hours
+- `js-cd-minutes` — minutes
+- `js-cd-seconds` — seconds
 
-The ability to add a year is not available; we consider it impractical to create such long timers on the site.
+Optionally, you can add:
 
-Wrap the numbers in a common container marked with the class **js-countdown**. Pass the settings to this container using data attributes.
+- `js-cd-years` — years
+- `js-cd-month` — months
 
-- **data-end-date="1586690955000"** - the end date of the timer in Unix-time format in milliseconds. That is, the obtained Unix date should be multiplied by 1000.
-- **data-days-format="%D"** - format for displaying days
-- **data-hours-format="%H"** - format for displaying hours
-- **data-minutes-format="%M"** - format for displaying minutes
-- **data-seconds-format="%S"** - format for displaying seconds
+Supported attributes include:
 
-Two format options are available:
-- **"%S"** - outputs the number with leading zeros "03", but "18",
-- **"%-S"** - outputs only significant digits "3" or "18".
+- `data-end-date` — end date in Unix time in milliseconds
+- `data-start-date` — start date for calculations
+- `data-years-format` — format for displaying years
+- `data-month-format` — format for displaying months
+- `data-days-format` — format for displaying days
+- `data-hours-format` — format for displaying hours
+- `data-minutes-format` — format for displaying minutes
+- `data-seconds-format` — format for displaying seconds
+- `data-days-expired-classes` — classes added when the days value is zero
 
-Instead of **"%H"**, you can use **"%I"** or **"%-I"**. This value represents the total number of hours remaining (i.e., 1 day 6 hours becomes 30 hours). In this case, you need to remove data-days-format and the node .js-cd-days.
+Value formats:
 
-Optional parameter:
+- `%S` — with leading zero, e.g., `03`
+- `%-S` — without leading zero, e.g., `3`
 
-```html
-data-days-expired-classes="u-countdown--days-expiried"
-```
-
-When the number of days reaches zero, the timer can add a marking class. This will help you hide the zero days or highlight them in some way. We use the class **.u-countdown--days-hide** for this.
+For hours, you can use `%H` or `%I`/`%-I`. The `%I` and `%-I` formats display the total number of hours remaining until the timer ends. In this mode, it is common to remove `data-days-format` and the `js-cd-days` element.
 
 ## Example
-
-You can view examples of blocks of this type in our repository using the methods [landing.block.getmanifestfile](.) and [landing.block.getrepository](.). Their codes:
-
-- 51.2.countdown_04
-- 51.3.countdown_08
-- 51.3.countdown_08_wo_bg
-- 51.4.countdown_music
-- 51.5.countdown_event
-- 51.7.countdown_13
-- 51.1.countdown_01
-
-Example of a simple timer
 
 ```html
 <section class="landing_block g-pt-30 g-pb-30 g-bg-orange g-color-white">
@@ -101,8 +87,7 @@ Example of a simple timer
         data-hours-format="%H"
         data-minutes-format="%M"
         data-seconds-format="%S"
-        data-days-expired-classes="u-countdown--days-expiried"
-    >
+        data-days-expired-classes="u-countdown--days-expiried">
 
         <div class="landing-block-node-number u-countdown--days-hide d-inline-block g-mx-20">
             <div class="landing-block-node-number-number g-font-size-36 mb-0">
@@ -111,7 +96,7 @@ Example of a simple timer
         </div>
 
         <div class="landing-block-node-number-delimiter u-countdown--days-hide d-inline-block g-font-size-36">:</div>
-
+    
         <div class="landing-block-node-number d-inline-block g-mx-20">
             <div class="landing-block-node-number-number g-font-size-36 mb-0">
                 <span class="js-cd-hours">01</span>
@@ -133,9 +118,33 @@ Example of a simple timer
                 <span class="js-cd-seconds">52</span>
             </div>
         </div>
-
     </div>
 </section>
 ```
 
-{% include [Footnote about examples](../../../../_includes/examples.md) %}
+## Examples of Standard Blocks
+
+Examples of blocks of this type can be viewed in the repository through the methods [landing.block.getmanifestfile](../methods/landing-block-get-manifest-file.md) and [landing.block.getrepository](../methods/landing-block-get-repository.md).
+
+Codes for some standard blocks:
+
+- `51.2.countdown_04`
+- `51.3.countdown_08`
+- `51.3.countdown_08_wo_bg`
+- `51.4.countdown_music`
+- `51.5.countdown_event`
+- `51.7.countdown_13`
+- `51.1.countdown_01`
+
+## Important Considerations
+
+- `data-end-date` is passed in milliseconds
+- for `%I` and `%-I`, the total number of hours is displayed, without a separate days block
+- if you need to hide days after they reach zero, use `data-days-expired-classes`
+
+## Continue Learning
+
+- [Sliders](./sliders.md)
+- [Galleries](./gallery.md)
+- [Block Manifest File](../manifest.md)
+- [Node Types](../node-types.md)

@@ -1,27 +1,27 @@
-title: Chatbots
-href: index.md
-items:
-  - name: Overview of Outdated Chatbot Methods
-    href: index.md
-  - name: How to Send Commands and Extend the Authorization Key
-    href: send-command.md
-  - name: Chatbots
-    include:
-      path: bots/b24-toc.yaml
-      mode: link
-  - name: Chats
-    include:
-      path: chats/b24-toc.yaml
-      mode: link
-  - name: Messages
-    include:
-      path: messages/b24-toc.yaml
-      mode: link
-  - name: Commands
-    include:
-      path: commands/b24-toc.yaml
-      mode: link
-  - name: Events
-    include:
-      path: events/b24-toc.yaml
-      mode: link
+title: Chatbots  
+href: index.md  
+items:  
+  - name: Overview of Deprecated Chatbot Methods  
+    href: index.md  
+  - name: How to Call Deprecated Chatbot Methods and Update the Authorization Token  
+    href: send-command.md  
+  - name: Chatbots  
+    include:  
+      path: bots/b24-toc.yaml  
+      mode: link  
+  - name: Chats  
+    include:  
+      path: chats/b24-toc.yaml  
+      mode: link  
+  - name: Messages  
+    include:  
+      path: messages/b24-toc.yaml  
+      mode: link  
+  - name: Commands  
+    include:  
+      path: commands/b24-toc.yaml  
+      mode: link  
+  - name: Events  
+    include:  
+      path: events/b24-toc.yaml  
+      mode: link  

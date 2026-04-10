@@ -8,7 +8,7 @@ The method `imbot.v2.Chat.Message.Reaction.add` adds a bot reaction to a message
 
 ## Method Parameters
 
-{% include [Parameter Notes](../../../../../_includes/required.md) %}
+{% include [Footnote on parameters](../../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -18,11 +18,11 @@ The method `imbot.v2.Chat.Message.Reaction.add` adds a bot reaction to a message
 || **botToken**
 [`string`](../../../../data-types.md) | Unique authorization token for the bot. Required for webhook authorization, not needed for OAuth.
 
-Pass the same botToken that was specified during the chat-bot registration ||
+Pass the same botToken that was specified during the chat bot registration ||
 || **messageId***
 [`integer`](../../../../data-types.md) | Message ID ||
 || **reaction***
-[`string`](../../../../data-types.md) | Reaction code. A list of available codes is described [below](#reactions) ||
+[`string`](../../../../data-types.md) | Reaction code. The list of available codes is described [below](#reactions) ||
 |#
 
 ### Available Reaction Codes {#reactions}
@@ -36,30 +36,30 @@ Pass the same botToken that was specified during the chat-bot registration ||
 || `neutralFace` | Indifferent ||
 || `fire` | Fire! ||
 || `cry` | Sad ||
-|| `slightlySmilingFace` | Slightly smiling ||
+|| `slightlySmilingFace` | Smiling ||
 || `winkingFace` | Winking ||
 || `laugh` | Laughing ||
 || `kiss` | Admiring ||
 || `wonder` | Shocked ||
-|| `slightlyFrowningFace` | Slightly sad ||
+|| `slightlyFrowningFace` | Frowning ||
 || `loudlyCryingFace` | Crying loudly ||
 || `faceWithStuckOutTongue` | Tongue out ||
 || `faceWithStuckOutTongueAndWinkingEye` | Teasing ||
 || `smilingFaceWithSunglasses` | Cool ||
 || `confusedFace` | Not sure ||
 || `flushedFace` | Embarrassed ||
-|| `thinkingFace` | Thinking ||
+|| `thinkingFace` | Doubting ||
 || `angry` | Angry ||
 || `smilingFaceWithHorns` | Smirking ||
 || `faceWithThermometer` | Sick ||
 || `facepalm` | No comment ||
 || `poo` | Yuck ||
 || `flexedBiceps` | Strong ||
-|| `clappingHands` | Magnificent ||
+|| `clappingHands` | Awesome ||
 || `raisedHand` | High five ||
 || `smilingFaceWithHeartEyes` | Beautiful ||
 || `smilingFaceWithHearts` | Love it ||
-|| `pleadingFace` | Begging ||
+|| `pleadingFace` | Please ||
 || `relievedFace` | Zen ||
 || `foldedHands` | Thank you ||
 || `okHand` | OK ||
@@ -83,7 +83,7 @@ The list of reactions may expand or contract without prior notice.
 
 ## Code Examples
 
-{% include [Example Notes](../../../../../_includes/examples.md) %}
+{% include [Footnote on examples](../../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -239,12 +239,12 @@ HTTP Status: **400**, **403**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `BOT_TOKEN_NOT_SPECIFIED` | Bot token is not specified | `botToken` is required for webhook authorization ||
-|| `BOT_ID_REQUIRED` | Bot ID is required | `botId` is not specified ||
+|| `BOT_TOKEN_NOT_SPECIFIED` | Bot token is not specified | `botToken` is not provided. Required for webhook authorization ||
+|| `BOT_ID_REQUIRED` | Bot ID is required | `botId` is not provided ||
 || `BOT_NOT_FOUND` | Bot not found | Bot not found ||
 || `BOT_OWNERSHIP_ERROR` | Bot is registered by another application | Bot is registered by another application ||
 || `ACCESS_DENIED` | Access denied | Bot is not a participant in the chat with this message ||
-|| `REACTION_NOT_FOUND` | Reaction not found | A non-existent reaction code was specified ||
+|| `REACTION_NOT_FOUND` | Reaction not found | Non-existent reaction code specified ||
 || `REACTION_ALREADY_SET` | Reaction already set | This reaction is already set by the bot on this message ||
 |#
 
@@ -252,5 +252,6 @@ HTTP Status: **400**, **403**
 
 ## Continue Learning
 
-- [Delete Reaction from Message imbot.v2.Chat.Message.Reaction.delete](./chat-message-reaction-delete.md)
-- [Send Message imbot.v2.Chat.Message.send](./chat-message-send.md)
+- [API Change Log for imbot.v2](../../change-log.md)
+- [{#T}](./chat-message-reaction-delete.md)
+- [{#T}](./chat-message-send.md)

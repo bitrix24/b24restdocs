@@ -2,7 +2,7 @@
 
 > Scope: [`telephony`](../../../scopes/permissions.md)
 >
-> Who can execute the method: user with the Management of Numbers — modification access permission
+> Who can execute the method: user with the Manage Numbers — modify access permission
 
 The method `voximplant.line.outgoing.set` sets the default outgoing line.
 
@@ -13,15 +13,15 @@ The method `voximplant.line.outgoing.set` sets the default outgoing line.
 #|
 || **Name**
 `type` | **Description** ||
-|| **LINE_ID**
-[`string`](../../../data-types.md) | Identifier of the line.
+|| **LINE_ID***
+[`string`](../../../data-types.md) | Line identifier.
 
-Available identifiers can be obtained using the [voximplant.line.get](./voximplant-line-get.md) method ||
+Available identifiers can be retrieved using the [voximplant.line.get](./voximplant-line-get.md) method ||
 |#
 
 {% note info "" %}
 
-The change occurs only if `LINE_ID` exists among the available lines. If `LINE_ID` does not exist or is not specified, the method will return `1`, as it would upon a successful setting, but the configuration will not change.
+The method changes the outgoing line only if the provided `LINE_ID` exists among the available lines. If `LINE_ID` is not specified or not found, the method will return `1`, but the outgoing line setting will not change.
 
 {% endnote %}
 
@@ -165,7 +165,8 @@ HTTP Status: **200**
 || **result**
 [`integer`](../../../data-types.md) | Result of the method execution.
 
-`1` — line set ||
+`1` — request processed.
+Check the actual line using [voximplant.line.outgoing.get](./voximplant-line-outgoing-get.md), as an invalid `LINE_ID` will also return `1` ||
 || **time**
 [`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -187,7 +188,7 @@ HTTP Status: **403**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `ACCESS_DENIED` | `Access denied!` | Insufficient rights to modify the default outgoing line ||
+|| `ACCESS_DENIED` | `Access denied!` | Insufficient permissions to modify the default outgoing line ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

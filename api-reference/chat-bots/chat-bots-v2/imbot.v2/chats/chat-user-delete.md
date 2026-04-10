@@ -8,13 +8,13 @@ The method `imbot.v2.Chat.User.delete` removes a participant from the chat. The 
 
 {% note info "" %}
 
-If the user is not a participant of the chat, the method will return `true` (idempotent behavior).
+If the user is not a participant in the chat, the method will return `true` (idempotent behavior).
 
 {% endnote %}
 
 ## Method Parameters
 
-{% include [Footnote on parameters](../../../../../_includes/required.md) %}
+{% include [Parameter Note](../../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -24,16 +24,16 @@ If the user is not a participant of the chat, the method will return `true` (ide
 || **botToken**
 [`string`](../../../../data-types.md) | Unique authorization token for the bot. Required for webhook authorization, not needed for OAuth.
 
-Pass the same botToken that was specified during the chat-bot registration ||
+Pass the same botToken that was specified during the chat bot registration ||
 || **dialogId***
 [`string`](../../../../data-types.md) | Dialog ID. For group chats — `chat{chatId}` ||
 || **userId***
-[`integer`](../../../../data-types.md) | ID of the user to be removed ||
+[`integer`](../../../../data-types.md) | User ID to be removed ||
 |#
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../../../_includes/examples.md) %}
+{% include [Examples Note](../../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -189,17 +189,18 @@ HTTP Status: **400**, **403**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `BOT_TOKEN_NOT_SPECIFIED` | Bot token is not specified | Bot token is not provided. Required for webhook authorization ||
-|| `BOT_ID_REQUIRED` | Bot ID is required | Bot ID is not provided ||
+|| `BOT_TOKEN_NOT_SPECIFIED` | Bot token is not specified | Bot token is not specified. Required for webhook authorization ||
+|| `BOT_ID_REQUIRED` | Bot ID is required | Bot ID is required ||
 || `BOT_NOT_FOUND` | Bot not found | Bot not found ||
 || `BOT_OWNERSHIP_ERROR` | Bot is registered by another application | Bot is registered by another application ||
-|| `ACCESS_DENIED` | Access denied | Bot is not a participant of the chat or does not have permission to remove users ||
+|| `ACCESS_DENIED` | Access denied | Bot is not a participant in the chat or does not have permission to remove users ||
 |#
 
 {% include [System Errors](../../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
-- [Add Participants to Chat imbot.v2.Chat.User.add](./chat-user-add.md)
-- [List of Chat Participants imbot.v2.Chat.User.list](./chat-user-list.md)
-- [Leave Chat imbot.v2.Chat.leave](./chat-leave.md)
+- [API Change Log for imbot.v2](../../change-log.md)
+- [{#T}](./chat-user-add.md)
+- [{#T}](./chat-user-list.md)
+- [{#T}](./chat-leave.md)

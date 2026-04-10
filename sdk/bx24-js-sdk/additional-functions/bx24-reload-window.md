@@ -13,10 +13,11 @@ void BX24.reloadWindow([Function callback])
 `type` | **Description** ||
 || **callback**
 `function` | Callback function that is executed after the command to reload the page is sent ||
-
 |#
 
 ## Code Example
+
+{% include [Example Footnote](../../../_includes/examples.md) %}
 
 ```js
 BX24.init(function () {
@@ -26,9 +27,7 @@ BX24.init(function () {
 });
 ```
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
-
-## Handling the Response
+## Response Handling
 
 The method does not return any data (`void`).
 

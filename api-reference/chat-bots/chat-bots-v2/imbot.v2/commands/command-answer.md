@@ -1,16 +1,16 @@
-# Responding to the Command imbot.v2.Command.answer
+# Responding to the imbot.v2.Command.answer Command
 
 > Scope: [`imbot`](../../../../scopes/permissions.md)
 >
 > Who can execute the method: owner of the registered bot
 
-The method `imbot.v2.Command.answer` sends a bot's response to a slash command invocation.
+The `imbot.v2.Command.answer` method sends a bot's response to a slash command invocation.
 
 The bot can respond in the chat from which the command originated, even if the bot is not a participant in that chat. Access is granted temporarily based on the command token — `messageId` + `commandId`. If the bot is not a participant in the chat, the message is sent as a system message indicating the bot's name.
 
 ## Method Parameters
 
-{% include [Footnote on parameters](../../../../../_includes/required.md) %}
+{% include [Parameter Note](../../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -20,7 +20,7 @@ The bot can respond in the chat from which the command originated, even if the b
 || **botToken**
 [`string`](../../../../data-types.md) | Unique authorization token for the bot. Required for webhook authorization, not needed for OAuth.
 
-Pass the same botToken that was specified during the chat-bot registration ||
+Pass the same botToken that was specified during the chat bot registration ||
 || **commandId***
 [`integer`](../../../../data-types.md) | Command ID ||
 || **messageId***
@@ -31,7 +31,7 @@ Pass the same botToken that was specified during the chat-bot registration ||
 [`object`](../../../../data-types.md) | Fields of the response message. The structure of the object is described [below](#fields) ||
 |#
 
-### Parameter fields {#fields}
+### Fields Parameter {#fields}
 
 #|
 || **Name**
@@ -50,7 +50,7 @@ Pass the same botToken that was specified during the chat-bot registration ||
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../../../_includes/examples.md) %}
+{% include [Example Note](../../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -218,13 +218,14 @@ HTTP Status: **400**, **403**
 || `BOT_ID_REQUIRED` | Bot ID is required | `botId` is not provided ||
 || `BOT_NOT_FOUND` | Bot not found | Bot not found ||
 || `BOT_OWNERSHIP_ERROR` | Bot is registered by another application | Bot is registered by another application ||
-|| `COMMAND_ANSWER_FAILED` | Command answer failed | Error sending the response ||
+|| `COMMAND_ANSWER_FAILED` | Command answer failed | Error sending response ||
 |#
 
 {% include [System Errors](../../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
-- [Register the Team imbot.v2.Command.register](./command-register.md)
-- [Send Message imbot.v2.Chat.Message.send](../messages/chat-message-send.md)
-- [Get Bot Events imbot.v2.Event.get](../events/event-get.md)
+- [API Change Log for imbot.v2](../../change-log.md)
+- [{#T}](./command-register.md)
+- [{#T}](../messages/chat-message-send.md)
+- [{#T}](../events/event-get.md)

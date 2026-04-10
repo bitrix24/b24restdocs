@@ -1,27 +1,48 @@
-# Disable the function as an event handler BX24.unbind
+# Disable Function as Event Handler BX24.unbind
 
-{% note warning "We are still updating this page" %}
-
-Some data may be missing here — we will complete it shortly.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not deployed to prod_" %}
-
-- missing parameters or fields
-- missing examples
-- missing success response
-- missing error response
-- links to pages that have not yet been created (BX.unbind) are not specified
-
-{% endnote %}
-
-{% endif %}
+The method `BX24.unbind` removes the function `func` from the event handlers for `eventName` on the page element `element`.
 
 ```js
 void BX24.unbind(DOMNode element, String eventName, Function func)
 ```
 
-The method `BX24.unbind` removes the function `func` as the event handler for the event `eventName` of the object `element`. It is similar to BX.unbind.
+## Parameters
+
+{% include [Note on required parameters](../../../_includes/required.md) %}
+
+#| 
+|| **Name** 
+`type` | **Description** ||
+|| **element*** 
+`DOMNode` | The HTML element on the page (DOM element) for which the handler needs to be removed ||
+|| **eventName*** 
+`string` | The name of the event. For `mousewheel`, the `DOMMouseScroll` handler is also removed ||
+|| **func*** 
+`function` | The handler function to be removed ||
+|#
+
+## Code Example
+
+{% include [Note on examples](../../../_includes/examples.md) %}
+
+```js
+BX24.init(function () {
+    const button = document.getElementById('run-action');
+
+    function onClick() {
+        console.log('Button clicked');
+    }
+
+    BX24.bind(button, 'click', onClick);
+    BX24.unbind(button, 'click', onClick);
+});
+```
+
+## Response Handling
+
+The method does not return data (`void`).
+
+## Continue Learning
+
+- [{#T}](./bx24-bind.md)
+- [{#T}](./bx24-ready.md)

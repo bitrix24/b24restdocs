@@ -14,7 +14,7 @@ Non-existent or inactive users will be ignored without an error.
 
 ## Method Parameters
 
-{% include [Footnote on parameters](../../../../../_includes/required.md) %}
+{% include [Parameter Note](../../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -33,7 +33,7 @@ Pass the same botToken that was specified during the chat bot registration ||
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../../../_includes/examples.md) %}
+{% include [Example Note](../../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -200,6 +200,7 @@ HTTP Status: **400**, **403**
 
 ## Continue Learning
 
-- [Remove a Participant from the Chat imbot.v2.Chat.User.delete](./chat-user-delete.md)
-- [List of Chat Participants imbot.v2.Chat.User.list](./chat-user-list.md)
-- [Add Chat Managers imbot.v2.Chat.Manager.add](./chat-manager-add.md)
+- [API Change Log for imbot.v2](../../change-log.md)
+- [{#T}](./chat-user-delete.md)
+- [{#T}](./chat-user-list.md)
+- [{#T}](./chat-manager-add.md)

@@ -1,53 +1,69 @@
 # Regions in the Document Generator: Overview of Methods
 
-The methods in this section allow you to retrieve a list of regions, view a region by its code or identifier, as well as create, modify, and delete custom regions.
+Regions define local settings for document generator templates. They allow you to configure:
+- the region's language
+- date and datetime formats
+- the full name template
+- a set of localized phrases for the document
+
+There are two types of regions in the system: predefined and custom. A predefined region contains a ready-made set of settings, while a custom region allows you to specify your own settings.
 
 > Quick Navigation: [All Methods](#all-methods)
 
-## What Defines a Region
+## Getting Started
 
-Each template in the document generator is tied to a region. The region influences how data is formatted in the document:
+1. Retrieve the list of available regions using the [documentgenerator.region.list](./document-generator-region-list.md) method.
+2. If a predefined region suits your needs, use its code when [creating a template](../templates/document-generator-template-add.md) or [updating a template](../templates/document-generator-template-update.md) for documents.
+3. If you need your own local settings, create a custom region using the [documentgenerator.region.add](./document-generator-region-add.md) method.
+4. Obtain the settings for the desired region using the [documentgenerator.region.get](./document-generator-region-get.md) method.
+5. Modify the parameters of the custom region using the [documentgenerator.region.update](./document-generator-region-update.md) method.
+6. Delete any unnecessary custom region using the [documentgenerator.region.delete](./document-generator-region-delete.md) method.
 
-- region language `languageId`
-- date format `formatDate`
-- date and time format `formatDatetime`
-- full name format `formatName`
-- set of service phrases `phrases` used during text generation
+## Available Regions
 
-Predefined regions are stored in the system by region code, for example, `de`. Custom regions are created via REST and receive a numeric identifier. The method [documentgenerator.region.get](./document-generator-region-get.md) accepts both the region code and `id`.
+The [documentgenerator.region.list](./document-generator-region-list.md) method returns two types of regions:
 
-## Connection with Templates
+1. Predefined regions with a symbolic code, such as `fr` or `en`. In the method's response, the code is specified in the `code` field.
 
-The region is used in document generator templates and defines local rules for text and field value formatting.
+    ```json
+    "fr": {
+        "code": "fr",
+        "title": "France",
+        "languageId": "fr"
+    },
+    ```
 
-To work with templates, use the methods in the [Templates](../templates/index.md) section. After modifying the region parameters, the new settings will be applied during subsequent document generation in templates of that region.
+2. Custom regions with a numeric identifier, such as `5`. In the method's response, the identifier is specified in the `id` field.
 
-## Operational Features
+    ```json
+    "1": {
+        "id": "1",
+        "title": "United States (Custom)",
+        "languageId": "en",
+        "formatDate": "MM/DD/YYYY",
+        "formatDatetime": "MM/DD/YYYY HH:MI:SS",
+        "formatName": "#LAST_NAME# #FIRST_NAME# #MIDDLE_NAME#",
+        "code": "1"
+    }
+    ```
 
-A region cannot be deleted if there are active templates associated with it.
+## Relationship of Regions with Other Objects
 
-## Predefined Regions
+**Document Templates.** The region value is stored in the template data and defines the local settings that will be used when working with that template. To associate a region with a template, you need to pass the value in the `region` field when creating the template using the [documentgenerator.template.add](../templates/document-generator-template-add.md) method. For a predefined region, use `code`, and for a custom region, use `id`. You can change the template's region using the [documentgenerator.template.update](../templates/document-generator-template-update.md) method.
 
-The document generator offers the following predefined regions:
+## Considerations When Modifying and Deleting a Region
 
-- `de` — Germany
-- `by` — Belarus
-- `kz` — Kazakhstan
-- `ua` — Ukraine
-- `br` — Brazil
-- `sp` — Spain
-- `mx` — Mexico
-- `fr` — France
-- `uk` — United Kingdom
-- `pl` — Poland
+The [documentgenerator.region.update](./document-generator-region-update.md) and [documentgenerator.region.delete](./document-generator-region-delete.md) methods only work with custom regions.
+
+Deleting a region using the [documentgenerator.region.delete](./document-generator-region-delete.md) method may result in an error if templates are associated with it. Reassign the templates to another region or delete any unnecessary templates.
 
 ## Overview of Methods {#all-methods}
 
 > Scope: [`documentgenerator`](../../scopes/permissions.md)
 >
-> Who can execute the methods: users with permission to modify document generator templates
+> Who can execute the methods: a user with permission to modify document generator templates
 
-#| 
+#|
 || **Method** | **Description** ||
 || [documentgenerator.region.add](./document-generator-region-add.md) | Adds a custom region ||
 || [documentgenerator.region.update](./document-generator-region-update.md) | Updates a custom region ||

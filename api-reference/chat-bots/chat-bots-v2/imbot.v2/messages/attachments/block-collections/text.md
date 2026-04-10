@@ -1,21 +1,21 @@
 # MESSAGE Block
 
-The `MESSAGE` block outputs the text portion of the attachment.
+The `MESSAGE` block displays the text portion of the attachment.
 
-![Message Block](./_images/text.png){width=420}
+![MESSAGE Block](./_images/text.png){width=420}
 
 ## Block Parameters
 
-#|
-|| **Name**
+#| 
+|| **Name** 
 `type` | **Description** ||
-|| **MESSAGE***
+|| **MESSAGE*** 
 [`string`](../../../../../../data-types.md) | Text of the block. Supports BB codes ||
 |#
 
 ## Supported BB Codes
 
-#|
+#| 
 || **Code** | **Purpose** ||
 || `USER` | Mention a user with a link to their profile in the chat ||
 || `CHAT` | Link to the chat ||
@@ -32,7 +32,7 @@ The `MESSAGE` block outputs the text portion of the attachment.
 
 ## Example
 
-{% include [Example Notes](../../../../../../../_includes/examples.md) %}
+{% include [Example Note](../../../../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -56,6 +56,7 @@ The `MESSAGE` block outputs the text portion of the attachment.
 
 ## Continue Learning
 
-- [ATTACH Block Collection](./index.md)
-- [Block with DELIMITER](./delimiter.md)
-- [GRID Block](./grid.md)
+- [API imbot.v2 Change Log](../../../../change-log.md)
+- [{#T}](./index.md)
+- [{#T}](./delimiter.md)
+- [{#T}](./grid.md)

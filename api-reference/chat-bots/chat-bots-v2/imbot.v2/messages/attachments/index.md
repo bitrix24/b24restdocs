@@ -9,13 +9,13 @@ Methods that support working with `ATTACH`:
 **Chatbots 2.0 (`imbot.v2`)**
 
 - [imbot.v2.Chat.Message.send](../chat-message-send.md) — send a message on behalf of the chatbot
-- [imbot.v2.Chat.Message.update](../chat-message-update.md) — update the chatbot's message
-- [imbot.v2.Command.answer](../../commands/command-answer.md) — send the chatbot's response to a command
+- [imbot.v2.Chat.Message.update](../chat-message-update.md) — modify a chatbot message
+- [imbot.v2.Command.answer](../../commands/command-answer.md) — send a chatbot response to a command
 
 **Chats (`im`)**
 
-- [im.message.add](../../../../../chats/messages/im-message-add.md) — send a message in the chat
-- [im.message.update](../../../../../chats/messages/im-message-update.md) — update the sent message
+- [im.message.add](../../../../../chats/messages/im-message-add.md) — send a message in a chat
+- [im.message.update](../../../../../chats/messages/im-message-update.md) — modify a sent message
 
 **Notifications (`im.notify`)**
 
@@ -26,15 +26,15 @@ Methods that support working with `ATTACH`:
 **Deprecated Chatbots (`imbot`)**
 
 - [imbot.message.add](../../../../outdated/messages/imbot-message-add.md) — send a message on behalf of the chatbot
-- [imbot.message.update](../../../../outdated/messages/imbot-message-update.md) — update the sent message from the chatbot
-- [imbot.command.answer](../../../../outdated/commands/imbot-command-answer.md) — send the chatbot's response to a command
+- [imbot.message.update](../../../../outdated/messages/imbot-message-update.md) — modify a sent chatbot message
+- [imbot.command.answer](../../../../outdated/commands/imbot-command-answer.md) — send a chatbot response to a command
 
 ## ATTACH Object Formats
 
 You can pass `ATTACH` in one of two formats:
 
 1. Full form: an object with attachment metadata and an array of `BLOCKS`
-2. Short form: an array of blocks without wrapping
+2. Short form: an array of blocks without a wrapper
 
 ### Full Form ATTACH
 
@@ -63,7 +63,7 @@ You can pass `ATTACH` in one of two formats:
         'COLOR' => '#29619b',
         'BLOCKS' => [
             [...],
-            [...]
+            [...],
         ]
     ]
     ```
@@ -72,8 +72,8 @@ You can pass `ATTACH` in one of two formats:
 
 ### Full Form Fields
 
-#|
-|| **Field**
+#| 
+|| **Field** 
 `type` | **Description** ||
 || **ID**
 [`integer`](../../../../../data-types.md) | Identifier of the attachment within the message ||
@@ -82,7 +82,7 @@ You can pass `ATTACH` in one of two formats:
 || **COLOR**
 [`string`](../../../../../data-types.md) | Explicit HEX color of the attachment. Used for compatibility with older scripts and in some types of notifications ||
 || **BLOCKS**
-[`array`](../../../../../data-types.md) | Array of content blocks of the attachment. Block types are described in the [Block Collections](./block-collections/index.md) section ||
+[`array`](../../../../../data-types.md) | Array of content blocks in the attachment. Block types are described in the [Block Collections](./block-collections/index.md) section ||
 |#
 
 ### Example of Full Form
@@ -97,7 +97,7 @@ You can pass `ATTACH` in one of two formats:
     curl -X POST \
       -H "Content-Type: application/json" \
       -H "Accept: application/json" \
-      -d '{"botId":456,"botToken":"my_bot_token","dialogId":"chat20921","fields":{"message":"Attachment with primary color","attach":{"ID":1,"COLOR_TOKEN":"primary","COLOR":"#29619b","BLOCKS":[{"MESSAGE":"The API will be available in update [B]im 24.0.0[/B]"}]}}}' \
+      -d '{"botId":456,"botToken":"my_bot_token","dialogId":"chat20921","fields":{"message":"Attachment with primary color","attach":{"ID":1,"COLOR_TOKEN":"primary","COLOR":"#29619b","BLOCKS":[{"MESSAGE":"The API will be available in the update [B]im 24.0.0[/B]"}]}}}' \
       https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/imbot.v2.Chat.Message.send
     ```
 
@@ -107,7 +107,7 @@ You can pass `ATTACH` in one of two formats:
     curl -X POST \
       -H "Content-Type: application/json" \
       -H "Accept: application/json" \
-      -d '{"botId":456,"dialogId":"chat20921","fields":{"message":"Attachment with primary color","attach":{"ID":1,"COLOR_TOKEN":"primary","COLOR":"#29619b","BLOCKS":[{"MESSAGE":"The API will be available in update [B]im 24.0.0[/B]"}]}},"auth":"**put_access_token_here**"}' \
+      -d '{"botId":456,"dialogId":"chat20921","fields":{"message":"Attachment with primary color","attach":{"ID":1,"COLOR_TOKEN":"primary","COLOR":"#29619b","BLOCKS":[{"MESSAGE":"The API will be available in the update [B]im 24.0.0[/B]"}]}},"auth":"**put_access_token_here**"}' \
       https://**put_your_bitrix24_address**/rest/imbot.v2.Chat.Message.send
     ```
 
@@ -126,7 +126,7 @@ You can pass `ATTACH` in one of two formats:
             COLOR: '#29619b',
             BLOCKS: [
               {
-                MESSAGE: 'The API will be available in update [B]im 24.0.0[/B]'
+                MESSAGE: 'The API will be available in the update [B]im 24.0.0[/B]'
               }
             ]
           }
@@ -159,8 +159,8 @@ You can pass `ATTACH` in one of two formats:
                             'COLOR' => '#29619b',
                             'BLOCKS' => [
                                 [
-                                    'MESSAGE' => 'The API will be available in update [B]im 24.0.0[/B]'
-                                ]
+                                    'MESSAGE' => 'The API will be available in the update [B]im 24.0.0[/B]'
+                                }
                             ]
                         ]
                     ]
@@ -191,7 +191,7 @@ You can pass `ATTACH` in one of two formats:
                     COLOR: '#29619b',
                     BLOCKS: [
                         {
-                            MESSAGE: 'The API will be available in update [B]im 24.0.0[/B]'
+                            MESSAGE: 'The API will be available in the update [B]im 24.0.0[/B]'
                         }
                     ]
                 }
@@ -225,8 +225,8 @@ You can pass `ATTACH` in one of two formats:
                     'COLOR' => '#29619b',
                     'BLOCKS' => [
                         [
-                            'MESSAGE' => 'The API will be available in update [B]im 24.0.0[/B]'
-                        ]
+                            'MESSAGE' => 'The API will be available in the update [B]im 24.0.0[/B]'
+                        }
                     ]
                 ]
             ]
@@ -244,7 +244,7 @@ You can pass `ATTACH` in one of two formats:
 
 ### Short Form ATTACH
 
-If attachment metadata (`ID`, `COLOR_TOKEN`, `COLOR`) is not needed, you can pass an array of blocks directly:
+If attachment metadata (`ID`, `COLOR_TOKEN`, `COLOR`) is not needed, you can directly pass an array of blocks:
 
 {% list tabs %}
 
@@ -262,7 +262,7 @@ If attachment metadata (`ID`, `COLOR_TOKEN`, `COLOR`) is not needed, you can pas
     ```php
     'ATTACH' => [
         [...],
-        [...]
+        [...],
     ]
     ```
 
@@ -280,7 +280,7 @@ If attachment metadata (`ID`, `COLOR_TOKEN`, `COLOR`) is not needed, you can pas
     curl -X POST \
       -H "Content-Type: application/json" \
       -H "Accept: application/json" \
-      -d '{"botId":456,"botToken":"my_bot_token","dialogId":"chat20921","fields":{"message":"Text block","attach":[{"MESSAGE":"The API will be available in update [B]im 24.0.0[/B]"}]}}' \
+      -d '{"botId":456,"botToken":"my_bot_token","dialogId":"chat20921","fields":{"message":"Text block","attach":[{"MESSAGE":"The API will be available in the update [B]im 24.0.0[/B]"}]}}' \
       https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/imbot.v2.Chat.Message.send
     ```
 
@@ -290,7 +290,7 @@ If attachment metadata (`ID`, `COLOR_TOKEN`, `COLOR`) is not needed, you can pas
     curl -X POST \
       -H "Content-Type: application/json" \
       -H "Accept: application/json" \
-      -d '{"botId":456,"dialogId":"chat20921","fields":{"message":"Text block","attach":[{"MESSAGE":"The API will be available in update [B]im 24.0.0[/B]"}]},"auth":"**put_access_token_here**"}' \
+      -d '{"botId":456,"dialogId":"chat20921","fields":{"message":"Text block","attach":[{"MESSAGE":"The API will be available in the update [B]im 24.0.0[/B]"}]},"auth":"**put_access_token_here**"}' \
       https://**put_your_bitrix24_address**/rest/imbot.v2.Chat.Message.send
     ```
 
@@ -305,7 +305,7 @@ If attachment metadata (`ID`, `COLOR_TOKEN`, `COLOR`) is not needed, you can pas
           message: 'Text block',
           attach: [
             {
-              MESSAGE: 'The API will be available in update [B]im 24.0.0[/B]'
+              MESSAGE: 'The API will be available in the update [B]im 24.0.0[/B]'
             }
           ]
         }
@@ -333,7 +333,7 @@ If attachment metadata (`ID`, `COLOR_TOKEN`, `COLOR`) is not needed, you can pas
                         'message' => 'Text block',
                         'attach' => [
                             [
-                                'MESSAGE' => 'The API will be available in update [B]im 24.0.0[/B]'
+                                'MESSAGE' => 'The API will be available in the update [B]im 24.0.0[/B]'
                             ]
                         ]
                     ]
@@ -360,7 +360,7 @@ If attachment metadata (`ID`, `COLOR_TOKEN`, `COLOR`) is not needed, you can pas
                 message: 'Text block',
                 attach: [
                     {
-                        MESSAGE: 'The API will be available in update [B]im 24.0.0[/B]'
+                        MESSAGE: 'The API will be available in the update [B]im 24.0.0[/B]'
                     }
                 ]
             }
@@ -389,8 +389,8 @@ If attachment metadata (`ID`, `COLOR_TOKEN`, `COLOR`) is not needed, you can pas
                 'message' => 'Text block',
                 'attach' => [
                     [
-                        'MESSAGE' => 'The API will be available in update [B]im 24.0.0[/B]'
-                    ]
+                        'MESSAGE' => 'The API will be available in the update [B]im 24.0.0[/B]'
+                    }
                 ]
             ]
         ]
@@ -426,9 +426,10 @@ The content of `ATTACH` is not automatically transmitted in XMPP, email, and pus
 
 ## Continue Learning
 
-- [Attachment Builder ATTACH](./constructor.md)
-- [ATTACH Block Collection](./block-collections/index.md)
-- [Working with Keyboards](../message-keyboards.md)
-- [Send Message imbot.v2.Chat.Message.send](../chat-message-send.md)
-- [Update Message imbot.v2.Chat.Message.update](../chat-message-update.md)
-- [Send Notification im.notify](../../../../../chats/notifications/im-notify.md)
+- [API imbot.v2 Change Log](../../../change-log.md)
+- [{#T}](./constructor.md)
+- [{#T}](./block-collections/index.md)
+- [{#T}](../message-keyboards.md)
+- [{#T}](../chat-message-send.md)
+- [{#T}](../chat-message-update.md)
+- [{#T}](../../../../../chats/notifications/im-notify.md)

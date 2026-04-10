@@ -211,7 +211,7 @@ HTTP Code: **200**
 [`array`](../../../../data-types.md) | List of chat administrators ||
 |#
 
-Complete descriptions of all object fields can be found on the [Objects and Fields](../../entities.md) page.
+Complete description of all object fields can be found on the [Objects and Fields](../../entities.md) page.
 
 ## Error Handling
 
@@ -241,6 +241,7 @@ HTTP Status: **400**, **403**
 
 ## Continue Learning
 
-- [Create Group Chat imbot.v2.Chat.add](./chat-add.md)
-- [Update Chat Properties imbot.v2.Chat.update](./chat-update.md)
-- [List of Chat Participants imbot.v2.Chat.User.list](./chat-user-list.md)
+- [API imbot.v2 Change Log](../../change-log.md)
+- [{#T}](./chat-add.md)
+- [{#T}](./chat-update.md)
+- [{#T}](./chat-user-list.md)

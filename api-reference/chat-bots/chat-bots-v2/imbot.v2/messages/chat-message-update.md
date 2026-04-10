@@ -10,7 +10,7 @@ Messages sent with the parameter `system: true` cannot be updated—they have `a
 
 ## Method Parameters
 
-{% include [Parameter Notes](../../../../../_includes/required.md) %}
+{% include [Footnote on parameters](../../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -33,18 +33,18 @@ Pass the same botToken that was specified during the chat bot registration ||
 || **Name**
 `Type` | **Description** ||
 || **message**
-[`string`](../../../../data-types.md) | New text of the message. Maximum length is 20,000 characters ||
+[`string`](../../../../data-types.md) | New text of the message. Maximum length—20,000 characters ||
 || **attach**
 [`array`](../../../../data-types.md) | New attachments. More details: [How to use attachments](../../../../chats/messages/attachments.md) ||
 || **keyboard**
-[`array`](../../../../data-types.md) | New keyboard. More details: [Working with Keyboards](../../../../chats/messages/keyboards.md). To remove the keyboard, pass `"N"` ||
+[`array`](../../../../data-types.md) | New keyboard. More details: [Working with keyboards](../../../../chats/messages/keyboards.md). To remove the keyboard, pass `"N"` ||
 || **urlPreview**
 [`string`](../../../../data-types.md) | Show link previews. Acceptable values: `Y`, `N`. Default is `Y` ||
 |#
 
 ## Code Examples
 
-{% include [Example Notes](../../../../../_includes/examples.md) %}
+{% include [Footnote on examples](../../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -200,7 +200,7 @@ HTTP Status: **400**, **403**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `BOT_TOKEN_NOT_SPECIFIED` | Bot token is not specified | `botToken` is required for webhook authorization ||
+|| `BOT_TOKEN_NOT_SPECIFIED` | Bot token is not specified | `botToken` is not specified. Required for webhook authorization ||
 || `BOT_ID_REQUIRED` | Bot ID is required | `botId` is not specified ||
 || `BOT_NOT_FOUND` | Bot not found | Bot not found ||
 || `BOT_OWNERSHIP_ERROR` | Bot is registered by another application | Bot is registered by another application ||
@@ -211,5 +211,6 @@ HTTP Status: **400**, **403**
 
 ## Continue Learning
 
-- [Send Message imbot.v2.Chat.Message.send](./chat-message-send.md)
-- [Delete Message imbot.v2.Chat.Message.delete](./chat-message-delete.md)
+- [API Change Log imbot.v2](../../change-log.md)
+- [{#T}](./chat-message-send.md)
+- [{#T}](./chat-message-delete.md)

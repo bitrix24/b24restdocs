@@ -1,29 +1,31 @@
 title: Dialogs  
 href: imopenlines-session-open.md  
-items:  
-  - name: Retrieve chat by character code  
+items:   
+  - name: Overview of Methods  
+    href: index.md  
+  - name: Retrieve Chat by Symbolic Code  
     href: imopenlines-session-open.md  
-  - name: Start a new dialog  
+  - name: Start a New Dialog  
     href: imopenlines-session-start.md  
-  - name: Join a dialog  
+  - name: Join a Dialog  
     href: imopenlines-session-join.md  
-  - name: Get message history of the dialog  
+  - name: Get Dialog Message History  
     href: imopenlines-session-history-get.md  
-  - name: Take the dialog from the current operator  
+  - name: Take Over Dialog from Current Operator  
     href: imopenlines-session-intercept.md  
-  - name: Pin or unpin the dialog from the operator  
+  - name: Pin or Unpin Dialog from Operator  
     href: imopenlines-session-mode-pin.md  
-  - name: Pin all available dialogs to the operator  
+  - name: Pin All Available Dialogs to Operator  
     href: imopenlines-session-mode-pin-all.md  
-  - name: Unpin all dialogs from the operator  
+  - name: Unpin All Dialogs from Operator  
     href: imopenlines-session-mode-unpin-all.md  
-  - name: Switch the dialog to "silent" mode  
+  - name: Switch Dialog to "Silent" Mode  
     href: imopenlines-session-mode-silent.md  
-  - name: Rate the employee's performance in the dialog  
+  - name: Rate Employee's Performance in Dialog  
     href: imopenlines-session-head-vote.md  
-  - name: Start a new dialog based on a message  
+  - name: Start a New Dialog Based on Message  
     href: imopenlines-message-session-start.md  
-  - name: Create a lead based on the dialog  
+  - name: Create Lead Based on Dialog  
     href: imopenlines-crm-lead-create.md  
-  - name: Get information about the dialog  
+  - name: Get Information About Dialog  
     href: imopenlines-dialog-get.md  

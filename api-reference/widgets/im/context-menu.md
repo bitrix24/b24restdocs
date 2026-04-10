@@ -2,26 +2,26 @@
 
 > Scope: [`im`](../../scopes/permissions.md)
 
-You can add your item to the context menu of messages in the chat.
+The widget adds its item to the context menu of a message in the chat.
 
-The widget code is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
+The embedding code is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
 
 {% note info "" %}
 
-The widget will not be displayed in the interface until the application installation is complete. [Check the application installation](../../../settings/app-installation/installation-finish.md)
+The embedding will not be displayed in the interface until the application installation is complete. [Check the application installation](../../../settings/app-installation/installation-finish.md)
 
 {% endnote %}
 
 ## Where the Widget is Embedded
 
-#| 
-|| **Widget Code** | **Location** ||
+#|
+|| **Embedding Code** | **Location** ||
 || `IM_CONTEXT_MENU` | Message context menu item ||
 |#
 
 ### Where to Find It in the Interface
 
-Open any chat and hover over a message. In the message action bar, click the `...` button to open the context menu. Hover over *More* to reveal additional menu items. The application item with `PLACEMENT=IM_CONTEXT_MENU` will appear at the end of the action list above the message.
+Open any chat and hover over a message. In the message action bar, click the `...` button to open the context menu. Hover over *More* to reveal additional menu items. The application item with `PLACEMENT=IM_CONTEXT_MENU` appears at the end of the action list above the message.
 
 ## What the Handler Receives
 
@@ -50,9 +50,9 @@ Array
 
 ### PLACEMENT_OPTIONS
 
-The value of `PLACEMENT_OPTIONS` is passed as a JSON string containing the context of the call.
+The value of `PLACEMENT_OPTIONS` is passed as a JSON string with the context of the call.
 
-For `IM_CONTEXT_MENU`, the context includes the following keys:
+For `IM_CONTEXT_MENU`, the following keys are passed in the context:
 
 - `dialogId` — the identifier of the current chat
 - `messageId` — the identifier of the selected message
@@ -61,7 +61,9 @@ For `IM_CONTEXT_MENU`, the context includes the following keys:
 
 For `IM_CONTEXT_MENU`, the `placement.bind` method supports `OPTIONS` parameters.
 
-#| 
+{% include [Note on Required Parameters](../../../_includes/required.md) %}
+
+#|
 || **Parameter**
 `type` | **Description** ||
 || **extranet**
@@ -270,8 +272,8 @@ Possible values:
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](../placement-bind.md)
 - [{#T}](../ui-interaction/index.md)
+- [{#T}](../bx24-widget-methods.md)
 - [{#T}](../../../settings/interactivity/index.md)
-- [{#T}](../open-application.md)
-- [{#T}](../open-path.md)

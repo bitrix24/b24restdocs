@@ -14,7 +14,7 @@ The widget will not be displayed in the interface until the application installa
 
 ## Where the Widget is Embedded
 
-#|
+#| 
 || **Widget Code** | **Location** ||
 || `TELEPHONY_ANALYTICS_MENU` | Menu item in call analytics ||
 |#
@@ -24,7 +24,6 @@ The widget will not be displayed in the interface until the application installa
 Data is transmitted as a POST request {.b24-info}
 
 ```php
-
 Array
 (
     [DOMAIN] => xxx.bitrix24.com
@@ -38,7 +37,6 @@ Array
     [status] => L
     [PLACEMENT] => TELEPHONY_ANALYTICS_MENU
 )
-
 ```
 
 {% include [Note on Required Parameters](../../../_includes/required.md) %}
@@ -53,7 +51,5 @@ In the current widget, the `PLACEMENT_OPTIONS` parameter is not passed.
 
 - [{#T}](../placement-bind.md)
 - [{#T}](../ui-interaction/index.md)
-- [{#T}](../ui-interaction/crm-card.md)
 - [{#T}](../../../settings/interactivity/index.md)
-- [{#T}](../open-application.md)
-- [{#T}](../open-path.md)
+- [{#T}](../bx24-widget-methods.md)

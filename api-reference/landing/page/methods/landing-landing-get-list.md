@@ -14,15 +14,15 @@ By default, the method returns only pages on non-deleted sites with `DELETED = "
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **scope**
-[`string`](../../../data-types.md) | Internal scope of the landing pages. It is not related to the REST scope `landing` in the method name.
+[`string`](../../../data-types.md) | Internal scope of the landings. It is not related to the REST scope `landing` in the method name.
 
-For regular pages, this parameter is not needed. For `GROUP`, `KNOWLEDGE`, and `MAINPAGE`, pass the corresponding `scope`. More about choosing the value can be found in the article [Working with Site Types and Scopes](../../types.md) ||
+For regular pages, this parameter is not needed. For `GROUP`, `KNOWLEDGE`, and `MAINPAGE`, pass the corresponding `scope`. More about selecting values can be found in the article [Working with Site Types and Scopes](../../types.md) ||
 || **params**
 [`object`](../../../data-types.md) | Parameters for selecting pages [(detailed description)](#params) ||
 |#
@@ -33,11 +33,11 @@ For regular pages, this parameter is not needed. For `GROUP`, `KNOWLEDGE`, and `
 || **Name**
 `type` | **Description** ||
 || **select**
-[`string[]`](../../../data-types.md) | List of fields to select from [Page Object Fields](../index.md). If the parameter is not passed or is `null`, `["*"]` is used.
+[`string[]`](../../../data-types.md) | List of fields to select from [Page Object Fields](../fields.md). If the parameter is not passed or is equal to `null`, `["*"]` is used.
 
-The method only accepts simple field names. Elements with `.` are ignored. ||
+The method only accepts simple field names of the page. Elements with `.` are ignored. ||
 || **filter**
-[`object`](../../../data-types.md) | Filter by fields from [Page Object Fields](../index.md). If the parameter is not passed or is in an incorrect format, the selection is performed without custom conditions. Keys with `.` and `CHECK_PERMISSIONS` are ignored.
+[`object`](../../../data-types.md) | Filter by fields from [Page Object Fields](../fields.md). If the parameter is not passed or is in an incorrect format, the selection is performed without custom conditions. Keys with `.` and `CHECK_PERMISSIONS` are ignored.
 
 If `SITE_ID` is passed in the filter, the method additionally excludes pages that are in folders of that site marked as deleted.
 
@@ -49,7 +49,7 @@ The site identifier can be obtained using the method [landing.site.getList](../.
 || **limit**
 [`integer`](../../../data-types.md) | Limit on the number of rows in the selection at the ORM level. The method does not set its own default limit. ||
 || **offset**
-[`integer`](../../../data-types.md) | Offset for selection at the ORM level. ||
+[`integer`](../../../data-types.md) | Offset for the selection at the ORM level. ||
 || **get_preview**
 [`boolean`](../../../data-types.md) \| [`integer`](../../../data-types.md) | If the value evaluates to `true`, each result element includes a `PREVIEW` field with a link to the page preview. ||
 || **get_urls**
@@ -60,7 +60,7 @@ The site identifier can be obtained using the method [landing.site.getList](../.
 
 ## Code Examples
 
-{% include [Note on Examples](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -291,7 +291,7 @@ HTTP Status: **200**
         },
         {
             "ID": "573",
-            "TITLE": "Empty Page",
+            "TITLE": "Page Video",
             "SITE_ID": "3",
             "DATE_MODIFY": "10/10/2022 03:25:30 pm",
             "DOMAIN_ID": "5"
@@ -302,8 +302,8 @@ HTTP Status: **200**
         "finish": 1773712560.955928,
         "duration": 0.9559280872344971,
         "processing": 0,
-        "date_start": "2026-03-17T04:56:00+02:00",
-        "date_finish": "2026-03-17T04:56:00+02:00",
+        "date_start": "2026-03-17T04:56:00+01:00",
+        "date_finish": "2026-03-17T04:56:00+01:00",
         "operating_reset_at": 1773713160,
         "operating": 0
     }
@@ -327,7 +327,7 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **FIELD**
-[`string`](../../../data-types.md) \| `null` | Any field of the page from [Page Object Fields](../index.md), if it was requested in `params.select` or if `params.select` was not passed. ||
+[`string`](../../../data-types.md) \| `null` | Any field of the page from [Page Object Fields](../fields.md), if it is requested in `params.select` or if `params.select` is not passed. ||
 || **DOMAIN_ID**
 [`string`](../../../data-types.md) \| `null` | Identifier of the domain of the site to which the page is linked. Present in the response even if it is not specified in `params.select`. ||
 || **PUBLIC_URL**
@@ -335,7 +335,7 @@ HTTP Status: **200**
 || **PREVIEW**
 [`string`](../../../data-types.md) \| `null` | Link to the page preview. Returned only if the `get_preview` flag is enabled. ||
 || **IS_AREA**
-[`boolean`](../../../data-types.md) | Indicates that the page is used as an included area. Returned only if the `check_area` flag is enabled. ||
+[`boolean`](../../../data-types.md) | Indicates whether the page is used as an included area. Returned only if the `check_area` flag is enabled. ||
 |#
 
 ## Error Handling
@@ -357,7 +357,7 @@ HTTP Status: **400**
 || **Code** | **Description** ||
 || `ACCESS_DENIED` | Insufficient permissions to call the method. ||
 || `TYPE_ERROR` | Data type error in the method call parameters. ||
-|| `SYSTEM_ERROR` | Internal error during method execution. ||
+|| `SYSTEM_ERROR` | Internal error while executing the method. ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}
