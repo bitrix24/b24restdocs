@@ -1,5 +1,11 @@
 # Localization of Order and Delivery Statuses in Online Stores: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 [Order and Delivery Statuses](../status/index.md) can be adapted for different languages.
 
 > Quick navigation: [all methods](#all-methods)

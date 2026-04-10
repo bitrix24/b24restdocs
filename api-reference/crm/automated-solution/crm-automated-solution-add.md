@@ -1,5 +1,11 @@
 # Create Digital Workspace crm.automatedsolution.add
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 {% if build == 'dev' %}
 
 {% note alert "TO-DO _not exported to prod_" %}

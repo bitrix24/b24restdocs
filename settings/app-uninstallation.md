@@ -1,5 +1,11 @@
 # Deleting Applications
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 ## Local Applications
 
 The characteristic of local applications is that they are primarily intended for internal automation. In other words, the developer of a local application is often not an external party, but rather an employee or department of the company using its Bitrix24.

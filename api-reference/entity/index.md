@@ -1,5 +1,11 @@
 # Data Storage: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 Data storages allow developers to create applications that extend the capabilities of Bitrix24. They can store a variety of information: client records, inventory details, product information, and other data.
 
 Each storage represents an [information block](*iblock) and is available after registering the application in Bitrix24. There is no visual interface for the storage.

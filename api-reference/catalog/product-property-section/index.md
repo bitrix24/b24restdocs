@@ -1,5 +1,11 @@
 # Section Settings for Product Catalog: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 This section contains methods for reading and modifying section settings for product properties and variations. These settings define the behavior of the property in the smart filter: whether to display the property, how to display it, and what hint to show.
 
 > Quick Navigation: [All Methods](#all-methods)

@@ -1,5 +1,11 @@
 # Widget Embedding Locations
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 Almost every tool in Bitrix24 has locations for embedding widgets.
 
 Each application can register an unlimited number of widgets, even of the same type, as long as the embedding location allows it. For example, one application can add multiple tabs to a deal's detail form. Or several items to the dropdown context menu in the task list, and so on.

@@ -1,5 +1,11 @@
 # Shopping Cart in Online Store: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 The shopping cart is a temporary storage area where customers add products and services they intend to purchase. In the cart, customers can adjust the quantity of items, remove unwanted products, and view the total cost of their purchase. When the customer completes the purchase, the cart is linked to the order.
 
 This section gathers methods for working with cart items in created orders.

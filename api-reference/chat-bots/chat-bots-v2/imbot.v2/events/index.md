@@ -1,5 +1,11 @@
 # Events: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 This section describes how to retrieve events from the bot platform. The bot can operate in `fetch` mode, where it retrieves events via polling requests, or in `webhook` mode, where Bitrix24 sends events to the bot's URL.
 
 > Quick navigation: [all methods](#all-methods)

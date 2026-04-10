@@ -1,5 +1,11 @@
 # Set of Additional Content Blocks
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 The structure `RestAppLayoutDto` describes a set of additional content blocks for the [timeline entry](../index.md).
 
 ## Parameters of the `RestAppLayoutDto` Object

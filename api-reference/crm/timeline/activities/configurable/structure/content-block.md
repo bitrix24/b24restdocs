@@ -1,5 +1,11 @@
 # Content Block of Configurable Deal
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 Content blocks `ContentBlockDto` are the foundation of the content area of the timeline record. By combining these blocks, various interfaces can be flexibly assembled.
 
 This structure is used when creating [configurable deals](../../layout-blocks/index.md) and when enriching timeline records with [content blocks](../../../layout-blocks/index.md).

@@ -1,5 +1,11 @@
 # Objects and Fields of Chatbots 2.0
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 Description of the objects returned in the responses of the `im.v2` and `imbot.v2` methods, as well as in event data and webhook notifications.
 
 > Quick navigation: [User](#user) | [Bot](#bot) | [Chat](#chat) | [Message](#message) | [File](#file) | [Command](#command)

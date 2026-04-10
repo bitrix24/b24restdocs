@@ -1,5 +1,11 @@
 # SIP and Built-in Telephony: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 This section describes the workflow for working with built-in telephony and the SIP connector in Bitrix24.
 
 - Built-in telephony is the basic telephony mode in Bitrix24 for handling calls within the platform. Through the API in this mode, you can initiate calls, receive call events, manage outgoing lines, and configure users' SIP settings.

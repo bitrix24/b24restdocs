@@ -1,5 +1,11 @@
 # Working with Site Types and Scopes
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 The type of site determines its purpose and how it interacts with Bitrix24. This affects how the site is created, which pages, blocks, and settings are available, and which `landing` methods can be used. For instance, different capabilities are available for a knowledge base and an online store.
 
 {% note info "" %}

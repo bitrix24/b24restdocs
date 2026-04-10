@@ -1,5 +1,11 @@
 # Installation Wizard for Mass-Market Application
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 When an application is installed for the first time on Bitrix24, Bitrix24 opens the application slider and initially displays the URL specified in the "Installation Application Link" field within a frame.
 
 The user interface implemented at this URL serves as the "installation wizard" for the application, complete with any necessary business logic. This could be a configuration form for the application, an informational interface, etc.

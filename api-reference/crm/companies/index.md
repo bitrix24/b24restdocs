@@ -1,5 +1,11 @@
 # Companies in CRM: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 A company is a CRM object that stores client data for legal entities. The company card contains:
 * phone numbers, email addresses, and messenger identifiers in a special format. These allow direct communication with the client from Bitrix.
 * details for generating invoices, contracts, and any other types of printed documents based on templates.

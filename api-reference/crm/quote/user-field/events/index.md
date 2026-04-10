@@ -1,5 +1,11 @@
 # Overview of Events When Working with Custom Fields in Estimates
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 Events allow applications to respond to changes almost in real-time: receiving notifications about the creation, updating, or deletion of custom fields in estimates.
 
 Detailed work with events is described in the article [Concept and Benefits of Event Handling](../../../../events/index.md).

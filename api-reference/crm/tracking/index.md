@@ -1,5 +1,11 @@
 # Sales Intelligence in CRM: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 Sales Intelligence in CRM allows you to link leads, deals, contacts, companies, and estimates with their sources and acquisition paths.
 
 The methods in this section help create and utilize Sales Intelligence traces in the CRM REST API.

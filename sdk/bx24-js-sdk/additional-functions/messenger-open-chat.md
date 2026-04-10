@@ -1,5 +1,11 @@
 # Open Chat Messenger.openChat
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 The method `Messenger.openChat` opens a chat in the Bitrix24 Messenger interface. It is recommended to use this method instead of `BX24.im.openMessenger` and `BX24.im.openHistory`.
 
 ```js

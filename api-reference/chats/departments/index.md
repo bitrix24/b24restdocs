@@ -1,5 +1,11 @@
 # Departments in Chats: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 The methods `im.department.*` retrieve information about users in departments from the company's structure. They only work for company employees.
 
 > Quick Navigation: [All Methods and Events](#all-methods)

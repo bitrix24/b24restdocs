@@ -1,5 +1,11 @@
 # Delivery Services in Online Stores: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 Delivery services automate the calculation of shipping costs, order creation, and tracking their statuses. To connect a new delivery service, first create a [handler](../handler/index.md) for the delivery service.
 
 > Quick navigation: [all methods](#all-methods)

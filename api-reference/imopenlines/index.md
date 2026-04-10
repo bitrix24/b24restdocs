@@ -1,5 +1,11 @@
 # Open Channels in Bitrix24: API for Lines and Connectors
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 This section describes two related areas of the API.
 - [Open Channels](./openlines/index.md) — rules for processing inquiries within Bitrix24: operator queues, sessions, messages, chatbots, events, and CRM integration.
 - [Connectors](./imconnector/index.md) — connecting and maintaining external communication channels through which clients write to open channels.

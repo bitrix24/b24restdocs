@@ -1,5 +1,11 @@
 # Overview of Helper Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 The helper method groups include multiple fields, enumerations, and VAT rates.
 
 > Quick navigation: [all methods and events](#all-methods)

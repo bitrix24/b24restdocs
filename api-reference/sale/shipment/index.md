@@ -1,5 +1,11 @@
 # Shipments in the Online Store: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 Shipments allow you to see which products have been sent, in what quantities, and when. This helps manage delivery statuses. An order can be shipped in parts, meaning as several independent shipments. Each shipment has its own delivery service, status, and contents.
 
 > Quick navigation: [all methods](#all-methods)

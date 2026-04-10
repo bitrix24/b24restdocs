@@ -1,5 +1,11 @@
 # Set Product Rows for the Quote `crm.quote.productrows.set`
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 > Scope: [`crm`](../../scopes/permissions.md)
 >
 > Who can execute the method: a user with "edit" access permission for estimates

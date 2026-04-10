@@ -1,5 +1,11 @@
 # Features of List Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 In the REST API, there are several methods that return lists of entities—lists of deals, users, task comments, etc.
 
 Since the number of returned entities depends on specific conditions and parameters, *Bitrix24* returns them in "batches" of several items (currently no more than 50 at a time).

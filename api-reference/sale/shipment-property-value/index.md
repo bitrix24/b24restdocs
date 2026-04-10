@@ -1,5 +1,11 @@
 # Shipping Property Values in the Online Store: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 When creating a [shipping property](../shipment-property/index.md), you can immediately set values. In an order, there are three books that need to be shipped to different addresses. Create a shipping property called "Delivery Address" with three values. If the delivery address changes, update the shipping property value using the `sale.shipmentpropertyvalue.*` methods.
 
 > Quick navigation: [all methods](#all-methods)

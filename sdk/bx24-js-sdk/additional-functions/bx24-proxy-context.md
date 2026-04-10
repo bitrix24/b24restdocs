@@ -1,5 +1,11 @@
 # Get the Execution Context of the Proxy Function BX24.proxyContext
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 The method `BX24.proxyContext` returns the original context of the call within a proxy function created through [BX24.proxy](./bx24-proxy.md). Outside of such a call, the method returns `null`.
 
 ```js

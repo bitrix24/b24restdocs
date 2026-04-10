@@ -1,5 +1,11 @@
 # Open Channels Dialogs: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 Open Channels dialogs are chats with clients via messengers, social networks, or online chats.
 
 A dialog can consist of multiple sessions. Each session represents one cycle of handling requests: connecting an operator, exchanging messages, concluding, and evaluating.

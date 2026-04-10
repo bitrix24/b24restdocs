@@ -1,5 +1,11 @@
 # Quick Start
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 The Bitrix24 UI Kit is not just a component library. It is a **multi-layered system** that allows you to adapt the visual style of Bitrix24 depending on **how deeply you want to integrate** and what stack you are using.
 
 You can use the UI Kit as:

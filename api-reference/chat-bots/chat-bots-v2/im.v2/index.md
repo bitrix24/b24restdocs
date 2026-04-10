@@ -1,5 +1,11 @@
 # Working with Chat: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 The `im.v2` methods allow you to receive user events while working with chats and manage files in chats without registering a separate chat bot.
 
 {% note info "" %}

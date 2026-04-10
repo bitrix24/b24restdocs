@@ -1,5 +1,11 @@
 # Open Channels Connectors: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 Open Channels Connectors are a tool for integrating external messengers and social networks with Bitrix24. Connectors allow you to:
 
 - Respond to customer messages from various channels in a unified interface.

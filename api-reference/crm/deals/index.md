@@ -1,5 +1,11 @@
 # Deals in CRM: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 A deal is one of the key objects in CRM, where you can:
 
 * manage the sales process of a product or service, including tracking stages and accepting online payments

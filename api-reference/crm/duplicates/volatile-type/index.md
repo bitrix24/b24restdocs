@@ -1,5 +1,11 @@
 # Duplicate Search Settings for Any Fields: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 When there are many leads, contacts, and companies in the CRM, duplicates arise due to incomplete or inconsistently filled data.
 
 The methods `crm.duplicate.volatileType.*` extend the standard duplicate check and allow for the configuration of additional fields.

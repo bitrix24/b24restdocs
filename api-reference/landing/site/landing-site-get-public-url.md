@@ -1,5 +1,11 @@
 # Get Public URL of the Site landing.site.getPublicUrl
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 > Scope: [`landing`](../../scopes/permissions.md)
 >
 > Who can execute the method: a user with access to the "Sites and Stores" section

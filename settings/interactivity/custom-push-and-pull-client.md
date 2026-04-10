@@ -1,5 +1,11 @@
 # Custom Push&Pull Client
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 In this article, you will find information on how to write your own client. If you don't need a new client but just want to add interactivity to an existing application, you may find the article [{#T}](./push-and-pull-in-browser.md) useful.
 
 By connecting to RT servers, you can create a truly interactive application: the application's state changes, and the interface updates instantly without the need for AJAX requests.

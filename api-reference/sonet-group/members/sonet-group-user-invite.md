@@ -1,5 +1,11 @@
 # Invite users to group sonet_group.user.invite
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 > Scope: [`sonet`](../../scopes/permissions.md)
 >
 > Who can perform the method: a user with the permission to Invite to a group or project

@@ -1,5 +1,11 @@
 # Available Scopes in Bitrix24
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 #|
 || **Scope Code** | **Scope Name**| **Bitrix24 Tool**||
 || **ai_admin** | [Channel for registering a custom service for processing requests](../ai/index.md)| Copilot ||

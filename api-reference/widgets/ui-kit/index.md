@@ -1,5 +1,11 @@
 # Bitrix24 UI Kit: Building Interfaces That Speak the Same Language as the Platform
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 Creating an interface is not just about choosing buttons and colors. It's about whether the user feels that your application is **part of Bitrix24**, rather than something foreign squeezed into an iframe.
 
 [Bitrix24 UI Kit](https://bitrix24.github.io/b24ui/) is a library of components and design patterns created to:

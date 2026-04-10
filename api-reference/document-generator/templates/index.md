@@ -1,5 +1,11 @@
 # Document Generator Templates: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 A template serves as the foundation for creating a document: a `.docx` file with placeholders, a region, a numerator, and settings.
 
 > Quick Navigation: [All Methods](#all-methods)

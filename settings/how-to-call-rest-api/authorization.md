@@ -1,5 +1,11 @@
 # Authorization in REST
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 The Bitrix24 REST API is an API that can be accessed by making HTTP requests to specific addresses of a particular Bitrix24 account. In fact, such requests can be made from any software that supports the HTTP protocol.
 
 ```bash

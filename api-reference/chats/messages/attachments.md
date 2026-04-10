@@ -1,5 +1,11 @@
 # Attachments in Messages
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 `ATTACH` allows you to send structured content in a message: text blocks, links, images, files, dividers, and tables.
 
 Attachments are passed in the `ATTACH` parameter of the [im.message.add](./im-message-add.md) and [im.message.update](./im-message-update.md) methods.

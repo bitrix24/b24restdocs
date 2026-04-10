@@ -1,5 +1,11 @@
 # Update REST handler for payment system sale.paysystem.handler.update
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 > Scope: [`pay_system`](../scopes/permissions.md)
 >
 > Who can execute the method: CRM administrator (permission "Allow changing settings")

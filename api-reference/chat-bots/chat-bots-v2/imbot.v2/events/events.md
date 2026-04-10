@@ -1,5 +1,11 @@
 # Event Formats for imbot.v2
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 Description of all events that the bot receives via [imbot.v2.Event.get](./event-get.md) (FETCH mode) or through webhook.
 
 The fields of the `message`, `chat`, and `user` objects are described in [{#T}](../../entities.md).

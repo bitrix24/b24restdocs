@@ -1,5 +1,11 @@
 # Get a List of Offline Events with `event.offline.get`
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 > Who can execute the method: any user
 
 The method `event.offline.get` returns the first queued offline events to the application according to the filter settings. The availability of offline events can be checked using the [feature.get](../common/system/feature-get.md) method.

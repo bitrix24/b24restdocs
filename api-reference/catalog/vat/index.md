@@ -1,5 +1,11 @@
 # VAT Rates in the Trade Catalog: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 The VAT rate can be set for the entire catalog or for a specific product. The product's VAT rate takes precedence. The catalog rate is applied if the product rate is not specified.
 
 If a product or catalog has a VAT rate, general CRM taxes do not apply to them.

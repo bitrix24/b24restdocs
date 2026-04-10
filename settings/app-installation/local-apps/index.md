@@ -1,5 +1,11 @@
 # Overview of Installing Local Applications
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 Each local application can only operate on the Bitrix24 account where it was added.
 
 In fact, the action of "adding" or "creating" a local application is already equivalent to the installation procedure. For mass-market solutions, these actions differ—first, the solution must be added to the Developer's area, and only then can it be installed on a specific Bitrix24 account. For local applications, adding and installing are the same action.
@@ -25,9 +31,3 @@ Similarly, in the case of a static application, which consists of an archive wit
 In both cases, after saving the local application, it will already be available to users without any installation procedure.
 
 If your application does not have a user interface, you need to enable the "Uses only API" option. Even though you still do not need an "installation," you will still require REST API tokens for further use. In this case, you cannot do without a [callback handler](./installation-callback.md), which will receive a call from Bitrix24 immediately after the local application is added.
-
-{% note tip "" %}
-
-If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
-
-{% endnote %}

@@ -1,5 +1,11 @@
 # Company Structure: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 The company structure illustrates the hierarchy of departments that make up the organization. Each department lists its leaders, deputies, and subordinates.
 
 Technically, the company structure is an information block, and the departments are sections of that information block. You can obtain a list of departments using the [department.get](department-get.md) method.

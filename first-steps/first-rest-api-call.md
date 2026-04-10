@@ -1,5 +1,11 @@
 # How to Make Your First API Request
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 To make your first request to the REST API, use an inbound webhook. This is a ready-made tool for calling API methods with the permissions of the user who created the webhook.
 
 ## How to Create an Inbound Webhook

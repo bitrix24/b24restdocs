@@ -1,5 +1,11 @@
 # Extended Description of Cards
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 The extended description of cards is an advanced configuration of the `cards` key in the manifest, which allows for multiple card variations within a single list.
 
 The basic principles of cards and nodes are outlined in the [block manifest](./manifest.md).

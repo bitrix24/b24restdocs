@@ -1,5 +1,11 @@
 # Installation of Industry-Specific CRMs
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 An industry-specific CRM is a configuration solution based on CRM settings in the form of a set of deal types, lead stages, custom fields for all CRM entities, settings for Automation rules, workflows, etc., which can be saved as a single archive using the user functionality for exporting industry settings.
 
 This archive can be uploaded in the Developer's area in the application cards and published as an industry solution in the Bitrix24 Marketplace.

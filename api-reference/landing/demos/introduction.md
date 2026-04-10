@@ -1,5 +1,11 @@
 # How to Prepare a Custom Template
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 A custom template is created based on an existing website or page from the [Sites section](../site/index.md). The template is then exported and registered using the methods from the `landing.demos.*` section of the Bitrix24 application.
 
 This page outlines the general workflow. It explains how to prepare the source website, how to obtain the export, and what to pass to the methods in the `landing.demos.*` section.

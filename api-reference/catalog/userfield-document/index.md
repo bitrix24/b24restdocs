@@ -1,5 +1,11 @@
 # Custom Fields for Inventory Accounting Documents: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 This section contains methods for reading and updating the values of custom fields in inventory accounting documents. The creation and configuration of the custom fields themselves are performed in a separate section `userfieldconfig.*`.
 
 > Quick Navigation: [All Methods](#all-methods)

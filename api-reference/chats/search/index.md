@@ -1,5 +1,11 @@
 # Chat Search: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 The search functionality allows you to find group chats, departments, and employees. The search is managed by a group of methods `im.search.*`.
 
 All methods in the current version of the chat support standard pagination. You can customize the selection using the `OFFSET` and `LIMIT` parameters.

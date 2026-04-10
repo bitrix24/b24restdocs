@@ -1,5 +1,11 @@
 # CRM Automation Triggers: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 CRM automation triggers help the application transmit external events to the CRM. If a trigger is configured for an object, the event can move it to the appropriate stage or status.
 
 The group of methods `crm.automation.trigger.*` allows you to register an application trigger, retrieve a list of registered triggers, send an event to CRM automation, and delete an unnecessary trigger.

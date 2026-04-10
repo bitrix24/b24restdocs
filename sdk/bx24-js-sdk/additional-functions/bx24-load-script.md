@@ -1,5 +1,11 @@
 # Load the javascript file BX24.loadScript
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 The method `BX24.loadScript` loads and executes one or more javascript files. If an array is provided, the files are loaded sequentially. If the DOM is not yet ready, meaning the page has not been parsed by the browser and elements are not yet available for the script, execution is deferred until [BX24.ready](./bx24-ready.md).
 
 ```js

@@ -1,5 +1,11 @@
 # Smart Processes: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 A smart process is a versatile CRM object that can be customized to meet the needs of a company. For each smart process, Bitrix24 creates a separate section in the CRM. In this section, you can configure funnels and stages, Automation rules, fields, and connections with other Bitrix24 objects.
 
 > Quick navigation: [all methods and events](#all-methods)

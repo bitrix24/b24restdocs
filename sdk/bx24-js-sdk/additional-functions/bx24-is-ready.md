@@ -1,5 +1,11 @@
 # Check the Readiness of the DOM Structure with BX24.isReady
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 The method `BX24.isReady` checks whether the document's DOM structure is ready for operation. This method indicates that the page has been parsed by the browser and its elements are accessible for the script.
 
 ```js

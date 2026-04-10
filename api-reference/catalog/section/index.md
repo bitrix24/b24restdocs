@@ -1,5 +1,11 @@
 # Sections in the Trade Catalog: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 Sections are used to organize products and services in the catalog.
 
 A product or service can be linked to multiple sections. For example, the product "Bandana" can appear in the sections "For Sports," "Accessories," and "Headwear." One of the sections must be marked as primary to prevent search engines from considering the product "Bandana" as duplicate content.

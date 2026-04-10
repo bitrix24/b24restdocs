@@ -1,5 +1,11 @@
 # Navigation and Header
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 For blocks of this type, there is no need to specify a special `subtype` in the manifest. It is sufficient to add one of the markers to the block's markup:
 
 - `#title#`

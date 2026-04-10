@@ -1,5 +1,11 @@
 # Estimates in CRM: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 An estimate is a CRM entity that allows you to create printed documents and send them to clients before a deal.
 
 > Quick navigation: [all methods and events](#all-methods)

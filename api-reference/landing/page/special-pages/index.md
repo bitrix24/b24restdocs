@@ -1,5 +1,11 @@
 # Special Website Pages: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 In Bitrix24, a website page can be assigned a special type. For example, it can be designated as the main page, a catalog page, a cart page, or an order page.
 
 This is necessary for Bitrix24 to know which page to use in each scenario. For instance, if a page is assigned the type `cart`, Bitrix24 will use it as the website's cart page.

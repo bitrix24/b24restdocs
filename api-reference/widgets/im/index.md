@@ -1,5 +1,11 @@
 # Chat Widgets: Overview of Embedding Points
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 This section describes the embedding points for widgets in the Bitrix24 chat interface. Through these points, developers can add a button to the panel above the input field, a separate item in the chat sidebar, or an action in the context menu of a specific message.
 
 To register a widget, use the method [placement.bind](../placement-bind.md) and pass the required code in the `PLACEMENT` parameter.

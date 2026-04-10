@@ -1,5 +1,11 @@
 # Automatic Renewal of OAuth 2.0 Tokens
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 By storing the authorization `refresh_token` value on your side, the application can later use it to access the REST API without user involvement. The lifespan of the `refresh_token` is 180 days.
 
 At any time before the `refresh_token` expires, the application can make the following request:

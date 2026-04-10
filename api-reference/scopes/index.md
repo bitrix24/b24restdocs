@@ -1,5 +1,11 @@
 # Access Permissions for Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 Access permissions for executing specific REST API methods are managed through a scope mechanism (SCOPE). When you add a mass-market solution in the Partner's area or an on-premise solution to your specific Bitrix24, you specify the list of necessary Bitrix24 scopes required for the application to function.
 
 The binding to a specific scope is indicated in the description of each REST method at the very beginning. For example,

@@ -1,5 +1,11 @@
 # Property Groups in the Online Store: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 All order or shipment properties are grouped into categories: personal information, delivery details, company information, and contact information.
 
 Each payer type has its own groups. The payer type of a created property group cannot be changed.

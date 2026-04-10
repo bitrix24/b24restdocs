@@ -1,5 +1,11 @@
 # Push&Pull: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 The Push&Pull methods assist applications in transmitting and receiving data in real-time. They enable the application to obtain connection parameters, send events to a channel, and push notifications to the application user.
 
 The group of methods `pull.application.*` helps update the interface without reloading the page and sends notifications to mobile devices.

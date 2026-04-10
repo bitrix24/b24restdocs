@@ -1,5 +1,11 @@
 # Webhooks for Delivery Operations
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 Bitrix24 notifies the delivery service when certain events occur by sending HTTP requests in JSON format to specific URLs that were specified as parameters when creating the delivery service handler in the method [sale.delivery.handler.add](../handler/sale-delivery-handler-add.md). The list of such events includes:
 
 1. Delivery cost calculation — the manager wants to estimate the preliminary delivery cost

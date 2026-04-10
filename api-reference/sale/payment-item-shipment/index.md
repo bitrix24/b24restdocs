@@ -1,5 +1,11 @@
 # Linking Payments to Shipments in the Online Store: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 An order can include multiple products that need to be shipped in parts, meaning as several independent shipments. To allocate payments among shipments, use the linking of payments to shipments.
 
 > Quick navigation: [all methods](#all-methods)

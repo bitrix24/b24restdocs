@@ -1,5 +1,11 @@
 # AI in Bitrix24: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 The `ai` section helps connect your own AI service to Bitrix24. The methods in this section allow you to register new services, retrieve their list, and remove selected ones.
 
 {% note warning "Important" %}

@@ -1,5 +1,11 @@
 # How to create an activity from an application
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 Applications can create activities with a special type provider. Such an activity will have a corresponding [icon](*icon) in the timeline. Clicking on the activity will open the application in a slider with options in [PLACEMENT_OPTIONS](../../../../widgets/crm/detail-activity.md#placement_options)
 
 {% note warning %}

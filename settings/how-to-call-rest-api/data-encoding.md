@@ -1,5 +1,11 @@
 # Data Encoding
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 When sending REST requests, special characters in parameters can disrupt the URL structure. This can lead to errors or incorrect data.
 
 For example, if you need to create a lead with the name `John&Martin` via an incoming webhook, according to the documentation for the method [crm.lead.add](../../api-reference/crm/leads/crm-lead-add.md), the request URL should look like this:

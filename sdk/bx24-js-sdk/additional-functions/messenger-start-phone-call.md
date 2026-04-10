@@ -1,5 +1,11 @@
 # Start a Call to the Phone Number Messenger.startPhoneCall
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 The method `Messenger.startPhoneCall` initiates a call to a phone number in Bitrix24. It is recommended to use this method instead of `BX24.im.phoneTo`.
 
 ```js

@@ -1,5 +1,11 @@
 # Method Calls with Confirmation
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 Some methods require the account administrator's permission to be called. When such a method is invoked by the application, the account administrator will receive a notification asking to allow or deny the call, while the application will receive an error.
 
 The permission or denial is granted to a specific authorization token used to call the method. This means that the permission is valid for the lifetime of the token, and a new permission must be obtained when receiving the next token.

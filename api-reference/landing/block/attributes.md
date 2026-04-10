@@ -1,5 +1,11 @@
 # Attributes
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 Attributes are additional values that are stored in block elements and used in settings, JS logic, and conditional styling. For example, attributes can be used to store parameters for maps, links, display modes, and other block scenarios.
 
 Attributes are registered under the `attrs` key in the [block manifest](./manifest.md). The `attrs` key links attributes with nodes and cards.

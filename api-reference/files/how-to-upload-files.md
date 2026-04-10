@@ -1,5 +1,11 @@
 # How to Upload Files
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 In Bitrix24, there are two types of file fields.
 
 - **File.** This field is not linked to Drive; files are uploaded directly through a Base64 formatted string.

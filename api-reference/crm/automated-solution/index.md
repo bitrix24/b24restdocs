@@ -1,5 +1,11 @@
 # Digital Workspaces
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 Digital workspaces are a separate section for smart processes that are not tied to CRM. A workspace can consist of one or more processes. Each has its own cards, funnels, kanban stages, Automation rules, and other features.
 
 On the account, you can find them in the section *Automation > Digital Workspaces > List of Digital Workspaces*.

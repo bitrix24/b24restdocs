@@ -1,5 +1,11 @@
 # Parent Products: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 A parent product is a product with variations. For example, a t-shirt is a parent product, while a blue t-shirt in size M and a white t-shirt in size L are its variations. A parent product is not a standalone item. It consolidates variations and stores common information: name, description, category. Price, currency, VAT, unit of measurement, and stock quantity are specified separately for each variation.
 
 Differences between a parent product and a simple product:

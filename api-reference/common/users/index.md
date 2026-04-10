@@ -1,5 +1,11 @@
 # User Information: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 The methods in this group work exclusively with the current user: they retrieve basic profile data, check access permissions, and manage application settings.
 
 Information about other users can be obtained through the [Users](../../user/index.md) group of methods.

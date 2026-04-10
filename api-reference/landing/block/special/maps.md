@@ -1,5 +1,11 @@
 # Maps in Blocks
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 Blocks with maps use `subtype: map`. This subtype connects map settings, adds the necessary attributes, and prepares the block for use in the editor.
 
 In standard blocks for maps, the following approach is used:

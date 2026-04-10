@@ -1,5 +1,11 @@
 # Data Storage Elements: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 Data storage elements hold application information. They can store core fields, property values, and links to sections.
 
 The group of methods `entity.item.*` allows you to create elements, retrieve their list, modify parameters, and delete unnecessary ones.

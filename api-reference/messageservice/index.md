@@ -1,5 +1,11 @@
 # Message Providers: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 Message providers are services for integration with Bitrix24. They allow sending messages to clients. Communication channels can include SMS and other systems that identify the recipient by phone number.
 
 > Quick navigation: [all methods](#all-methods)

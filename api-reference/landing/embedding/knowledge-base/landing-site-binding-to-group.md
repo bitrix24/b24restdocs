@@ -1,5 +1,11 @@
 # Bind to Social Network Group landing.site.bindingToGroup
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 > Scope: [`landing`](../../../scopes/permissions.md)
 >
 > Who can execute the method: a user with the Posting in Extensions permission in the Knowledge Base section and editing rights for the Knowledge Base in the specified group.

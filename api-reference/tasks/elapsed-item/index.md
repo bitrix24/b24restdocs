@@ -1,5 +1,11 @@
 # Time Tracking in Tasks: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 With the Time Tracking in Tasks tool, you can:
 - monitor the time spent by an employee on specific tasks
 - enhance the transparency of task execution

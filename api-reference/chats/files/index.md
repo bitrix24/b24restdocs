@@ -1,5 +1,11 @@
 # Files in Chats: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 Currently, the basic scenario for working with files in chats has become simpler: there is no need to separately obtain the chat folder, upload the file through Drive methods, and then link it to the message.
 
 For new integrations, use the `im.v2` methods:

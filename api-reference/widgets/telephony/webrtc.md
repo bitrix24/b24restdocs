@@ -1,5 +1,11 @@
 # WebRTC
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 Bitrix24 allows you to embed an external WebRTC client into the web version of the product. To do this, you need to follow several steps:
 
 1. Upload your WebRTC client to a [special location](../universal/background-worker.md) for embedding widgets `PAGE_BACKGROUND_WORKER`;

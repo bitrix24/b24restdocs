@@ -1,5 +1,11 @@
 # Workflows and Automation Rules
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 > Quick navigation: [all methods and events](#all-methods)
 
 Workflows in Bitrix24 are a low-code tool that allows you to automate everyday tasks without needing deep programming knowledge. Users can easily configure various operations using ready-to-use actions.

@@ -1,5 +1,11 @@
 # Comments on News Feed Messages: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 Comments in the News Feed allow users to discuss posts, share opinions, and clarify details. Files can be attached to each comment.
 
 > Quick navigation: [all methods](#all-methods)

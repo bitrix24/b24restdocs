@@ -1,5 +1,11 @@
 # Files: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 This section contains methods for uploading files to the chat on behalf of the bot and obtaining a link to download an already uploaded file.
 
 > Quick navigation: [all methods](#all-methods)

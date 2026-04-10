@@ -1,5 +1,11 @@
 # Template View Fields
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 Template view fields are used in the method [landing.template.getlist](./landing-template-get-list.md). This method only supports simple template fields. Fields with a dot in `select` and `filter`, such as `CREATED_BY.NAME`, are not supported.
 
 #| 

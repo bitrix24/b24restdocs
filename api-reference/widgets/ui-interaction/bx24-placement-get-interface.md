@@ -1,5 +1,11 @@
 # Get Information About the JS Interface of the Current Placement BX24.placement.getInterface
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 > Scope: [`placement`](../../scopes/permissions.md)
 
 The method `BX24.placement.getInterface` allows you to retrieve information about the JS interface of the current placement: a list of available commands and events.

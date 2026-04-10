@@ -1,5 +1,11 @@
 # File Version: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 A file version is a saved snapshot of a file at a specific point in time. When a file is modified, the system creates a new version. This allows tracking the history of changes and restoring files to the desired state.
 
 > Quick navigation: [all methods](#all-methods) 

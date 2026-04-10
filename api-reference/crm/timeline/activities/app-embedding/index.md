@@ -1,5 +1,11 @@
 # Embedding Applications
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 External applications can add their elements to the activity interface.  
 See also the section [Embedding Applications](../../../../widgets/index.md).
 

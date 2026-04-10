@@ -1,5 +1,11 @@
 # Complete OAuth 2.0 Authorization Protocol
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 [OAuth](http://oauth.com/) is an open authorization protocol that allows a third party to gain limited access to a user's protected resources without needing to share their login and password.
 
 In Bitrix24, the OAuth protocol is used for [local](../../local-integrations/local-apps.md) and [mass-market](../../market/index.md) applications and is not used in the case of [local webhooks](../../local-integrations/local-webhooks.md).

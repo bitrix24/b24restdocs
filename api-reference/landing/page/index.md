@@ -1,5 +1,11 @@
 # Object Page: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 Methods help manage the page and its associated actions. With these methods, you can:
 
 - modify the page,

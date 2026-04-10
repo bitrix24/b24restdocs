@@ -1,5 +1,11 @@
 # Attachment Builder ATTACH
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 This page contains practical examples of assembling `ATTACH` from different types of blocks. The final attachment depends on the set and order of the blocks.
 
 ## Example 1. "Bug Tracker" Card

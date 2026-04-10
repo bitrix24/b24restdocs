@@ -1,5 +1,11 @@
 # How to Embed an Application in the CALENDAR_GRIDVIEW
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 You can embed an application into the calendar. At the top of the calendar, in the view types list, there is a place for embedding `CALENDAR_GRIDVIEW`, where you can add your item.
 
 For more details about the widget, refer to the article [Widget in the Calendar](../widgets/calendar.md).

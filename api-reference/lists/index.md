@@ -1,5 +1,11 @@
 # Universal Lists: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 Universal lists are a tool for creating and managing structured information. They allow you to create customizable tables with various types of fields: text, number, date, file, and others.
 
 Universal lists integrate with Bitrix24 modules, enabling data processing automation and access management. Imagine a list of employee vacation requests. A workflow is set up for the list, and access permissions are configured so that only the manager and HR department staff can modify the requests. As a result, when an employee submits a vacation request, the HR manager automatically receives a notification to review and approve or decline the request.

@@ -1,5 +1,11 @@
 # Contextual Applications
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 You can read about what contextual applications are [here](./chat-apps.md#contextual-applications).
 
 To work with the context, follow these steps:

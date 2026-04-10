@@ -1,5 +1,11 @@
 # Backlog in Scrum: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 The backlog is a list of all the team's tasks. Tasks, requests, ideas, and feedback are recorded and prioritized. Team members review the backlog and decide which tasks to take on in a [sprint](../sprint/index.md).
 
 > Quick navigation: [all methods and events](#all-methods) 

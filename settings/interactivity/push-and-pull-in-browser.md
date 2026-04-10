@@ -1,5 +1,11 @@
 # Push&Pull in the Browser
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 Let's look at how to work with the built-in Push & Pull client within the application. Here’s an example page for an application with a web interface:
 
 ```js

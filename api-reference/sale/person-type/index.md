@@ -1,5 +1,11 @@
 # Types of Payers in an Online Store: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 Customers are divided into individual and legal entities based on payer types. Each payer type has its own properties for placing an order. Depending on the selection, the user sees the corresponding fields, available payment systems, and delivery services.
 
 > Quick navigation: [all methods](#all-methods)

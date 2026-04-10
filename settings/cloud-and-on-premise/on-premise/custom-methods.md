@@ -1,5 +1,11 @@
 # Adding Custom Methods to the REST API of the On-Premise Version of Bitrix24
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 When creating custom applications for on-premise editions, there is a need to add new methods to the REST API.
 
 Steps to follow:

@@ -1,5 +1,11 @@
 # Attachments in Messages ATTACH
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 Attachments `ATTACH` allow you to add structured content to messages: text blocks, links, images, files, dividers, and tables.
 
 ![Attachments](./_images/attach1.png){width=520}

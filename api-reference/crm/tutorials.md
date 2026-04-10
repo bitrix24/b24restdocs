@@ -1,5 +1,11 @@
 # Typical use-cases and scenarios for REST API in CRM and tutorials
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 How can you quickly link a form on your website to the CRM? How can you automatically create deals with product items? How can you pass information for Sales Intelligence to Bitrix when creating a lead from your source?
 
 In this section, you will find ready-made examples for solving typical tasks related to CRM.

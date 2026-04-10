@@ -1,5 +1,11 @@
 # User Agreements: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 In Bitrix24, you can create user agreements. They are necessary if you process personal data, send newsletters, or perform other actions that require user consent.
 
 With the REST API, you can:

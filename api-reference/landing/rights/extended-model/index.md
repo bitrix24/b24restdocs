@@ -1,5 +1,11 @@
 # Extended Rights Model: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 The extended rights model allows for configuring access separately for each site. In this model, rights are set in the site settings—based on access permissions for employees, groups, and departments according to their access codes.
 
 For example, you can grant the marketing department the right to edit the promotions site, while all other employees can only view it.

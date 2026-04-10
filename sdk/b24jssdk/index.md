@@ -1,5 +1,11 @@
 # Installation and Usage of B24JsSDK
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 [B24JsSDK](https://github.com/bitrix24/b24jssdk) is the official library for working with the Bitrix24 REST API using JavaScript. Unlike [BX24.JS](../bx24-js-sdk/index.md), B24JsSDK offers the following advantages:
 
 1. Works both on the frontend in the browser and on the backend in Node.js;

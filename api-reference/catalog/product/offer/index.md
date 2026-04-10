@@ -1,5 +1,11 @@
 # Product Variations: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 Variations are different versions of a single product that differ in color and size. Each variation has its own price, image, and stock quantity.
 
 A variation is linked to a parent product, which contains general information: name, description, and category.

@@ -1,5 +1,11 @@
 # Data Storage: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 Data storage helps applications retain their own information in Bitrix24. You can save entities in the storage, group them by sections, and configure access permissions.
 
 The group of methods `entity.*` allows you to create storages, retrieve their list, modify parameters, manage permissions, and delete unnecessary ones.

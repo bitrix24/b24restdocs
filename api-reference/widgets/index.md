@@ -1,5 +1,11 @@
 # Widget Integration Mechanism
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 The REST API allows you to add your functionality to Bitrix24 in the form of widgets in various places within the user interface—such as the main menu of the account, in the item list menus, in CRM and task cards, etc.
 
 ## Basic Widget in the Left Menu

@@ -1,5 +1,11 @@
 # Delivery Service Handlers in Online Stores: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 Delivery service handlers are templates for connecting delivery services to Bitrix24. Handlers automatically calculate delivery costs, create orders, and track statuses.
 
 > Quick navigation: [all methods](#all-methods)

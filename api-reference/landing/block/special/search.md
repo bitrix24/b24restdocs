@@ -1,5 +1,11 @@
 # Search Results
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 The search results page works in conjunction with the [Search Forms](./search-forms.md) blocks. The search form sends a request to a separate page on the site, and this page displays the found pages through dynamic cards.
 
 ## Requirements for the Search Results Page

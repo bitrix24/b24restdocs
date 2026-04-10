@@ -1,5 +1,11 @@
 # How to Use Examples in Documentation
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 The documentation includes code examples for various programming languages in the method descriptions and additional tutorials. Each example is often presented in four formats: a curl request with parameters, JS code using the BX24.js library, PHP code using the CRest SDK, and PHP code using the official B24PhpSdk, as well as JS code using the official B24JsSdk.
 
 ## Curl Requests

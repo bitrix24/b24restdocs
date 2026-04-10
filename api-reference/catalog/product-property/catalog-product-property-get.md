@@ -1,5 +1,11 @@
 # Get Values of Product or Variation Property Fields catalog.productProperty.get
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
 > Who can execute the method: user with permission to view the catalog

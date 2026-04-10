@@ -1,5 +1,11 @@
 # How to Fix the "Site Does Not Allow Connection" Error When Opening the Application
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 In server applications, an error may occur when loading pages:
 
 {% note info "" %}

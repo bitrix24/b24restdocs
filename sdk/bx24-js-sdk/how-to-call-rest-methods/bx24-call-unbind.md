@@ -1,5 +1,11 @@
 # Call the interface to remove a registered event handler BX24.callUnbind
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 ```js
 BX24.callUnbind(
     String event,

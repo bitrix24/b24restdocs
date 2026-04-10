@@ -1,5 +1,11 @@
 # Chat Update: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 After creating a chat, you can assign a different owner or change its appearance. Who can change the appearance depends on the chat settings:
 -  all participants,
 -  the owner and chat administrators,

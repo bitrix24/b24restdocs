@@ -1,5 +1,11 @@
 # Task Templates: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 Task templates help to describe a typical workflow in advance and use a unified set of settings for new tasks. A template can save the task title and description, participants, deadlines, project, recurrence, checklist, and other fields.
 
 > Quick navigation: [all methods](#all-methods)

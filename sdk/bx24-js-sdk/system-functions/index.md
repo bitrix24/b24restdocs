@@ -1,5 +1,11 @@
 # Overview of System Functions
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 #|
 || **Function** | **Description** ||
 || [BX24.init](./bx24-init.md) | Adds an event handler for the "library is ready" event ||

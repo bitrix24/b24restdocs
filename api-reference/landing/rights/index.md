@@ -1,5 +1,11 @@
 # Access Rights in Websites and Stores: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 In Bitrix24, access to websites and stores can be managed using both extended and role-based access models. These methods allow you to check which model is currently enabled, switch between them if necessary, and configure access permissions as needed.
 
 If you need to set access rights specifically for a particular website, the [extended model](./extended-model/index.md) is suitable. In this model, access is defined at the website level. For example, you can allow a group of employees to edit one website while restricting others to view-only access.

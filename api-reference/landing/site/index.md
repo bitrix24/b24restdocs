@@ -1,5 +1,11 @@
 # Object Site: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 The Object Site allows you to create and configure various web pages: a company business card, an online store, and much more.
 
 You can retrieve a list of all sites in Bitrix24 using the method [landing.site.getList](./landing-site-get-list.md). To add a new site, use the method [landing.site.add](./landing-site-add.md).

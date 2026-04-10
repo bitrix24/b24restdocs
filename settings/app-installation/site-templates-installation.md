@@ -1,5 +1,11 @@
 # Installing Website Templates
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 A "website template" or "ready-made website" is a configuration solution in the form of a single-page or multi-page website, saved as a single archive using the user functionality for exporting the website.
 
 This archive can be uploaded in the Developer's area in the application's detail form and published as a ready-made solution in the Bitrix24 Marketplace.

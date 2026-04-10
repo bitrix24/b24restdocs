@@ -1,5 +1,11 @@
 # Custom Fields in CRM: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 Custom fields allow you to extend CRM cards to fit your own processes: adding additional attributes, storing internal classifiers, and transferring data between the CRM and external systems.
 
 This section describes universal methods that help understand the structure of a custom field: its characteristics, types, settings, and format of list values. These methods do not create a field in the object card but return reference information for configuring the field.

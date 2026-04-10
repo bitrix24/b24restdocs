@@ -1,5 +1,11 @@
 # Properties of the Shopping Cart in an Online Store: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 The properties of the cart are characteristics of the [cart items](../basket-item/index.md): size, color, article number, manufacturer.
 
 > Quick navigation: [all methods](#all-methods)

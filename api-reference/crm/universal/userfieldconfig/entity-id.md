@@ -1,5 +1,11 @@
 # EntityId Identifiers
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 The association of a field with a specific entity is determined by the value of the **entityId** field. Below are the identifiers for different entities:
 
 ## CRM

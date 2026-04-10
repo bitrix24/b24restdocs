@@ -1,5 +1,11 @@
 # Stages of Kanban and "My Planner": Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 Kanban is a tool that helps visually represent task management through columns and cards. Columns represent stages of work, while cards represent tasks. Kanban is used for managing tasks in groups and projects.
 
 "My Planner" is a task management mode presented in a Kanban format. Each employee will have their own stages in "My Planner."

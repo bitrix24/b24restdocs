@@ -1,5 +1,11 @@
 # Installation Wizard for Local Application
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 When a local application is added to Bitrix24 for the first time and the user, who is by definition the same Bitrix24 administrator that added the local application, accesses it, Bitrix24 initially displays the URL specified in the "Path for initial installation" field within the application slider.
 
 The user interface implemented at this URL serves as the application's "installation wizard" with any necessary business logic. This could be a configuration form for the application, an informational interface, etc.

@@ -1,5 +1,11 @@
 # CRM Vendors: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 {% note info "" %}
 
 CRM vendors are available starting from version 23.0.0 of the Trade Catalog module and REST API 23.100.0.

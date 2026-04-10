@@ -1,5 +1,11 @@
 # Change Log for API imbot.v2
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 The change log for API `imbot.v2`: new features, fixes, and changes with breaking changes. Entries are listed from newest to oldest.
 
 ## Entry Prefixes

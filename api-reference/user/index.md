@@ -1,5 +1,11 @@
 # Users: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 The user profile is a key object in Bitrix24. Without a user profile, an employee cannot utilize the corporate account and CRM. The user ID can be used to:
 - configure access permissions,
 - assign tasks among employees,

@@ -1,5 +1,11 @@
 # Application Authorization in Isolated Bitrix24 Box
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 Company security policies can impose various restrictions on internal and external network resources, which may prevent REST applications for Bitrix24 from accessing the on-premise Bitrix24 or external cloud services. However, there is a solution that allows you to develop applications using the standard REST API for Bitrix24 even in such cases.
 
 {% note alert %}

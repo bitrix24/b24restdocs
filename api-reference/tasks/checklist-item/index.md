@@ -1,5 +1,11 @@
 # Checklists: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 A checklist is a list of steps for a task. Each item in the checklist can be completed separately.
 
 > Quick navigation: [all methods and events](#all-methods) 

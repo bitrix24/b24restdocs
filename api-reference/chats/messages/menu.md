@@ -1,5 +1,11 @@
 # Working with Context Menu
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 The context menu is a set of actions within a message. You can add your own items to the context menu to open links or send commands to the bot.
 
 Methods that support context menu functionality:

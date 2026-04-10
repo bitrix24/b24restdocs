@@ -1,5 +1,11 @@
 # Event Handler
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 > Quick navigation: [all methods and events](#all-methods) 
 
 Events in Bitrix24 are notifications about data changes, such as the creation of a deal or the deletion of a product. When an application or webhook subscribes to an event, the system starts generating these notifications for it. To receive events, set up a handler.

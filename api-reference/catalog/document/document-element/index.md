@@ -1,5 +1,11 @@
 # Products in Inventory Management Document: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 The methods `catalog.document.element.*` add, modify, or remove product items in inventory management documents. You can specify the quantity and purchase price of the product, as well as the warehouse for receipt or write-off.
 
 > Quick navigation: [all methods](#all-methods)

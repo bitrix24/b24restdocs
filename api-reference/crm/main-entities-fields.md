@@ -1,5 +1,11 @@
 # Fields of Main CRM Objects
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 > **Attention!** A more complete list of fields can be found on the pages of methods that return the description of object fields. Such methods are named **crm.object_name.fields**.
 
 {% list tabs %}

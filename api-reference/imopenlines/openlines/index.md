@@ -1,5 +1,11 @@
 # Open Channels: Overview of Methods and Events
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 Open channels in Bitrix24 consolidate requests from external channels into a single stream and direct them to employees. The channel maintains routing rules, operator queues, auto-response scripts, working hours, and CRM integration.
 
 The workflow operates in a chain: a client writes to a connected channel, the system creates a chat and opens a session, after which the dialogue is assigned to an employee according to the channel's rules. Within the session, the operator responds to the client, transfers the dialogue, connects a colleague, or concludes the request.

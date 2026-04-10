@@ -1,5 +1,11 @@
 # Interaction with UI: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 This section describes client methods and scenarios through which the application interacts with the Bitrix24 interface without making REST requests to the server. The methods operate within the context of the current placement and exchange data via `postMessage`.
 
 Through this section, you can obtain the context of the current placement, learn about the list of available commands and events, subscribe to interface events, and invoke UI commands. Specialized interfaces with additional commands and events are available for certain placements.

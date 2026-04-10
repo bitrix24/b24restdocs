@@ -1,12 +1,12 @@
 # Automation Rule Platform: Overview of the Section
 
-This section consolidates the documentation for the chatbot API in Bitrix24. It includes both the current methods of the new Automation Rule platform `imbot.v2` and the deprecated methods from the previous generation `imbot.*`.
-
 {% note tip "" %}
 
 If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
 
 {% endnote %}
+
+This section consolidates the documentation for the chatbot API in Bitrix24. It includes both the current methods of the new Automation Rule platform `imbot.v2` and the deprecated methods from the previous generation `imbot.*`.
 
 ## Capabilities of Chatbots in Bitrix24
 

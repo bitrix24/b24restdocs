@@ -1,5 +1,11 @@
 # Product and Variation Images in the Trade Catalog: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 Different types of images can be added to products and variations:
 - `DETAIL_PICTURE` — detailed image, the field is available in the old product card,
 - `PREVIEW_PICTURE` — preview image, the field is available in the old product card,

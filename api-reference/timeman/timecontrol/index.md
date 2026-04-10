@@ -1,5 +1,11 @@
 # Time Tracking: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 Time tracking in Bitrix24 checks the compliance of an employee's working hours with the established schedule. The work schedule records:
 
 -  start and end of the workday

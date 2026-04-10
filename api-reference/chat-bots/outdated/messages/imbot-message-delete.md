@@ -1,5 +1,11 @@
 # Delete Message imbot.message.delete
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 > Scope: [`imbot`](../../../scopes/permissions.md)
 >
 > Who can execute the method: an authorized user of the application that registered the chat bot. The method only works with bots of this application.

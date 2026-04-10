@@ -1,5 +1,11 @@
 # Open the Popup Window BX24.openApplication
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 The method `BX24.openApplication` opens a popup window with an application frame. You can pass parameters and a close handler to the application being opened.
 
 ```js

@@ -1,5 +1,11 @@
 # Widgets Embedded in the Interface of Custom CRM Object Types
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 Widgets allow you to integrate custom functionality directly into the Bitrix24 interface. We have previously described this mechanism in the section [{#T}](../../widgets/index.md).
 
 Unlike standard embedding locations for widgets (such as in deals), for custom CRM object types, it is important to note that these locations become available only after specific custom object types are added to Bitrix24.

@@ -1,5 +1,11 @@
 # Messages: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 This section describes the methods for sending, modifying, deleting messages, reading history, and working with reactions on behalf of the chatbot.
 
 > Quick Navigation: [All Methods](#all-methods)

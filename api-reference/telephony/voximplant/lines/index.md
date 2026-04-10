@@ -1,5 +1,11 @@
 # Managing Lines: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 This section describes how to work with outgoing lines in telephony:
 
 - how to obtain a list of available lines

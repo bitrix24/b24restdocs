@@ -1,5 +1,11 @@
 # Open Channel Chats and CRM: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 Open channel chats are a space within Bitrix24 for communicating with clients through external systems: online chat on the site, messengers, and social networks. They allow linking dialogues to CRM cards, adding users or chatbots to the dialogues.
 
 > Quick navigation: [all methods](#all-methods)

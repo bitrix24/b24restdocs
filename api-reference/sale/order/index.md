@@ -1,5 +1,11 @@
 # Order in the Online Store: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 An order is a record of a purchase. An order contains customer data, a list of products or services, their quantity, cost, and the status of the order.
 
 > Quick navigation: [all methods](#all-methods)

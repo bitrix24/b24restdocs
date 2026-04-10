@@ -1,5 +1,11 @@
 # Differences in Using REST API in Cloud and On-Premise Bitrix24
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 Bitrix24 exists both as a cloud service and as on-premise installations on the client side.
 
 The advantage of REST applications is that they can operate in both environments in the same way, especially if certain nuances that may arise are considered during the application's development.

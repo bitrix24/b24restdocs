@@ -1,5 +1,11 @@
 # Setting Up and Using the REST API
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 This section contains answers to practical questions that arise during integration development:
 - how to securely access the REST,
 - configure different types of applications,

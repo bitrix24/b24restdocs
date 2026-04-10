@@ -1,5 +1,11 @@
 # Dropdown Menu Item for the Document Generator CRM_XXX_DOCUMENTGENERATOR_BUTTON
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 > Scope: [`intranet`](../../scopes/permissions.md)
 
 You can add your item to the dropdown menu of the document generator for CRM objects: [leads](../../crm/leads/index.md), [contacts](../../crm/contacts/index.md), [companies](../../crm/companies/index.md), [deals](../../crm/deals/index.md), [estimates](../../crm/quote/index.md), [new invoices](../../crm/universal/invoice.md), and [custom object types](../../crm/universal/index.md).

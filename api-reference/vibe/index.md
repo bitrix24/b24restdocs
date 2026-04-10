@@ -1,5 +1,11 @@
 # Widgets and Start page: the Vibe
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 The Vibe is the start page of *Bitrix24*, replacing the familiar [Feed](../log/index.md) and allowing for a more personalized interface (details in [article](https://helpdesk.bitrix24.com/open/22548692)).
 
 The administrator configures the page in the builder using ready-made blocks and widgets, similar to how it's done in [Sites](../landing/index.md). In addition to the system widgets of *Bitrix24*, developers can add their own using the appropriate REST API methods.

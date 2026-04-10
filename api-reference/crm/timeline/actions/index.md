@@ -1,5 +1,11 @@
 # Actions with Records in the Timeline: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 In the timeline of a CRM entity, you can pin 7 records. Pinned records will be displayed simultaneously under the form for creating a new activity and in their chronological place in the timeline.
 
 ## Connection with CRM Entities

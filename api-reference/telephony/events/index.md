@@ -1,5 +1,11 @@
 # Overview of Events in Telephony
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 Events allow applications to respond to changes almost in real-time: receiving notifications when a call is initiated through the CRM object or upon a request for a callback from the CRM widget.
 
 Detailed work with events is described in the article [Concept and Benefits of Event Processing](../../events/index.md).

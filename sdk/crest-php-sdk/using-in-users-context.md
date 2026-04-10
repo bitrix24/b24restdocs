@@ -1,5 +1,11 @@
 # Working in the Context of the Current User
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 By default, the CRest library operates under the user who installed the application. However, there are situations where it is necessary to make a request to the Bitrix24 account under a user whose tokens were sent to the page via POST. For example, when a user opens the widget of your application. To achieve this, you can inherit the methods of the CRest class:
 
 ```php

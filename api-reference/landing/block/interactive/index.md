@@ -1,5 +1,11 @@
 # Interactive Blocks: Overview
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 Interactive blocks in `landing` add client-side behavior without the need for separate script development. For these blocks, you connect the required extension in the [block manifest](../manifest.md), configure the markup and attributes, after which the platform automatically initializes the behavior.
 
 > Quick Navigation: [All Scenarios Section](#all-scenarios)

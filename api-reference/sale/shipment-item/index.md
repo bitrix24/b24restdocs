@@ -1,5 +1,11 @@
 # Shipment Table Section in the Online Store: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 The shipment table section contains information about each product included in the shipment: name, quantity, price.
 
 > Quick navigation: [all methods](#all-methods)

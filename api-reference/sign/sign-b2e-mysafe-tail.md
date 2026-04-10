@@ -1,5 +1,11 @@
 # Get a list of signed documents in the company's safe sign.b2e.mysafe.tail
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 > Scope: [`sign.b2e`](../scopes/permissions.md)
 >
 > Who can execute the method: a user with access to the "Company Safe" section. Available documents depend on the "Access to safe documents" permission level.

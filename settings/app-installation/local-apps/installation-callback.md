@@ -1,5 +1,11 @@
 # Installation Callback
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 When a local application is added with the option "Uses only API," it means that it does not have a basic interface in the left menu. Such an application can still register widgets in various embedding locations, but automatically, the item in the left menu will not be added by itself.
 
 This is a useful scenario for applications that do not require a separate user interface, settings, etc., and whose entire business logic is implemented, for example, in the form of automation event handlers.

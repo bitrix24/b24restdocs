@@ -1,5 +1,11 @@
 # FILE Block
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../../../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 The `FILE` block displays a file as an attachment element with its name and size.
 
 ![FILE Block](./_images/file.png){width=420}

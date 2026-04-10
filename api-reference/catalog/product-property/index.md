@@ -1,5 +1,11 @@
 # Product and Variation Properties: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 Products and variations have properties such as color, size, material, brand, and others. These properties help customers find and select products on the site.
 
 In Bitrix24, properties can be configured.

@@ -1,5 +1,11 @@
 # Get Information About the Call Context of BX24.placement.info
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 > Scope: [`placement`](../../scopes/permissions.md)
 
 The method `BX24.placement.info` retrieves information about the context of the embedding handler call.

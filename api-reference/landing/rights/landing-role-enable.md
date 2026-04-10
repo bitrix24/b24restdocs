@@ -1,5 +1,11 @@
 # Enable or Disable Role-Based Access Model landing.role.enable
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 > Scope: [`landing`](../../scopes/permissions.md)
 >
 > Who can execute the method: administrator or user with "full access" permission to the "Sites and Stores" section

@@ -4,6 +4,12 @@ title: Migration from imbot to imbot.v2
 
 # Migration from imbot to imbot.v2
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 A mapping table of methods and events between the deprecated API (imbot) and the new bot platform (imbot.v2).
 
 {% note info "" %}

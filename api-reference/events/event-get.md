@@ -1,5 +1,11 @@
 # Get a List of Registered Event Handlers event.get
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 > Who can execute the method: any user
 
 The `event.get` method allows you to retrieve a list of registered event handlers.

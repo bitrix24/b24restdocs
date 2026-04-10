@@ -1,5 +1,11 @@
 # Additional Website Fields
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 Additional website fields are passed in the `ADDITIONAL_FIELDS` array when calling the methods [landing.site.add](./landing-site-add.md) and [landing.site.update](./landing-site-update.md).
 
 Filled values can be retrieved using the method [landing.site.getadditionalfields](./landing-site-get-additional-fields.md).

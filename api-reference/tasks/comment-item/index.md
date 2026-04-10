@@ -1,5 +1,11 @@
 # Comments in Tasks: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 In task comments, participants ask questions, discuss the task, and track progress. Important notes can be left here, and results can be recorded.
 
 {% note warning "Comments do not work with version of the module `tasks 25.700.0` " %}

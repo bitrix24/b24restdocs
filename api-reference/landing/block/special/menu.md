@@ -1,5 +1,11 @@
 # Menu Blocks
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 Menu blocks are components that can be automatically populated with links. This behavior is enabled through `subtype: menu` in the `block` section of the [block manifest](../manifest.md).
 
 For blocks of this type in `landing`, two data sources are used:

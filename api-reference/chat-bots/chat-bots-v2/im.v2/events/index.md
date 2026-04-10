@@ -1,5 +1,11 @@
 # Events: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 This section describes the methods for subscribing to user events from the messenger and retrieving them in polling mode. Use these methods if the integration needs to read the stream of events on behalf of a user or application.
 
 > Quick navigation: [all methods](#all-methods)

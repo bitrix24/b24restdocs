@@ -1,5 +1,11 @@
 # Data Types and Object Structure in the REST API Catalog
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 Basic data types are listed in a separate [article](../data-types.md).
 
 In this article, we will explore the data types and object structure specific to the CRM Catalog.

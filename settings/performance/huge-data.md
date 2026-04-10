@@ -1,5 +1,11 @@
 # Retrieve Large Volumes of Data
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 Often, there is a need to import certain entities from the account via REST. However, when dealing with a large number of entities, the direct approach of setting a filter and passing `start = start + 50` in each subsequent request is not optimal. This is because using `start >= 0` requires an additional request to count the number of elements that meet the filter criteria for each request. This can be slow when there are many elements or when the filtering is complex.
 
 Therefore, if you do not need the count of elements (for example, if you only need the last 10 records), or if you are importing all records based on a filter, you should pass `start = -1`.

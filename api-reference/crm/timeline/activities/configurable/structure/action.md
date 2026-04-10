@@ -1,5 +1,11 @@
 # Click Reaction
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 `ActionDto` — the action defines the reaction to a click on a specific timeline record element. There are several different types of actions, each with its own format.
 
 ## Link Navigation

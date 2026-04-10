@@ -1,5 +1,11 @@
 # Scrum Tasks: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 Scrum tasks are standard Bitrix24 tasks with enhanced capabilities for working within the Scrum methodology. In Scrum, the team can:
 - assess task complexity using story points
 - attach tasks to epics

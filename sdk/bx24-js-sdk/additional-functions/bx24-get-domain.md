@@ -1,5 +1,11 @@
 # Get Bitrix24 Address BX24.getDomain
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 The method `BX24.getDomain` returns the value of `PARAMS.DOMAIN`, which is stored during the library initialization. This is the domain of the current Bitrix24.
 
 ```js

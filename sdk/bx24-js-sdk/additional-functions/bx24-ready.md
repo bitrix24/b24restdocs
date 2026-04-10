@@ -1,5 +1,11 @@
 # Set Up the DOM Structure Readiness Handler BX24.ready
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 The `BX24.ready` method adds a handler function that executes once the DOM structure of the document is ready. This means the handler will run when the page has been parsed by the browser and its elements are accessible to the script. The method works similarly to `jQuery.ready` or `BX.ready`. If a non-function parameter is passed, the call will be ignored.
 
 ```js

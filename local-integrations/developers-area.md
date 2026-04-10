@@ -1,5 +1,11 @@
 # Developer Resources in Bitrix24
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 In the **Developer Resources** section (*Applications > Developer Resources*), you'll find convenient tools to simplify the integration and enhancement of your Bitrix24:
 
 ![Developer Resources Section](./_images/dev_menu-n-sm.png)

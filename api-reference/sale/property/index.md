@@ -1,5 +1,11 @@
 # Order Properties in Online Store: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 Order properties are fields that the customer fills out when placing an order: name, phone number, delivery address. Each type of payer will have its own order properties.
 
 > Quick navigation: [all methods](#all-methods)

@@ -1,5 +1,11 @@
 # Office Networks: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 An office network is a group of IP addresses used within an organization's local network. Working with the ranges of IP addresses in the office network is done using the methods from the group timeman.networkrange.*.
 
 > Quick Navigation: [all methods and events](#all-methods)

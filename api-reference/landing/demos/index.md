@@ -1,5 +1,11 @@
 # Custom Templates: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 Custom templates allow you to add your own templates to the site and page creation wizard.
 
 The group of methods `landing.demos.*` helps manage custom templates. This section includes methods for registering, retrieving lists, and deleting templates. Separate methods are used for registered and file templates.

@@ -1,5 +1,11 @@
 # Sprints in Scrum: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 A sprint is a short iterative cycle during which a team accomplishes specific work. This format allows for obtaining a small but predictable result within a clear timeframe.
 
 > Quick navigation: [all methods and events](#all-methods) 

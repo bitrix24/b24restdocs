@@ -1,5 +1,11 @@
 # Set a Function as an Event Handler with BX24.bind
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 The method `BX24.bind` sets the function `func` as the event handler for the event `eventName` on the page element `element`.
 
 ```js

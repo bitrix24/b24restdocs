@@ -1,5 +1,11 @@
 # Overview of CRM Object Events
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 There are three types of events — for adding, updating, and deleting a SPA element.
 
 Events are triggered by actions on elements of ALL SPAs. Filtering by the desired type will need to be done on the event processing side.

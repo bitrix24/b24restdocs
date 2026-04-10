@@ -1,5 +1,11 @@
 # Principles of the Bitrix24 UI Kit Design
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 The Bitrix24 UI Kit is built on the idea of **interface affinity**: any application using the UI Kit should look and feel like a continuation of the Bitrix24 platform, rather than an external service embedded via iframe.
 
 Key principles underlying the library:

@@ -1,5 +1,11 @@
 # Currencies in CRM: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 Currency in CRM helps to work with clients from different countries. For example, the primary currency in which the company conducts transactions is rubles. The manager adds products priced in rubles to the deal, while the client pays in their preferred currency—tenge. The manager simply needs to change the currency of the deal in the detail form—Bitrix will automatically calculate the cost of the products in tenge based on the exchange rate set in the settings.
 
 > Quick navigation: [all methods and events](#all-methods) 

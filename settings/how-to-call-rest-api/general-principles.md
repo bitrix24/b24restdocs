@@ -1,5 +1,11 @@
 # How to Make a Request
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 As already mentioned in the article about [authorization in REST API](./authorization.md), a request to the REST API method is an HTTP request to a specific address of a particular Bitrix24 in the following format:
 
 ```http

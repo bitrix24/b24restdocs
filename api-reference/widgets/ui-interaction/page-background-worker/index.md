@@ -1,5 +1,11 @@
 # Managing the Call Card of a WebRTC Client: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 The `PAGE_BACKGROUND_WORKER` placement is utilized by telephony applications that need to interact with the call card from a background invisible frame on Bitrix24 pages. Through the JavaScript interface of the placement, the application can change the state of the card, manage operator actions, and handle interface events.
 
 > Quick navigation: [all methods and events](#all-methods)

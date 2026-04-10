@@ -1,5 +1,11 @@
 # Custom Blocks: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 Custom blocks are added to the application's repository for websites and pages.
 
 The group of methods `landing.repo.*` allows you to work with custom blocks. In this section, you can check the content, register a block in the repository, retrieve a list of custom blocks, and remove any unnecessary blocks.

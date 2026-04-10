@@ -1,5 +1,11 @@
 # Widget as a Link with REST_APP_URI Slider
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 > Scope: [`placement`](../../scopes/permissions.md)
 
 This integration does not have a separate, pre-defined button in the interface that allows users to open it independently. The application can simply send a link of a special format to any Bitrix24 tool that supports adding content with links:

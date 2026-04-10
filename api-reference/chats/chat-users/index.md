@@ -1,5 +1,11 @@
 # Chat Participants: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 Group chats facilitate communication among multiple users simultaneously. Manage chat participants using the methods im.chat.user.* and additional methods [im.dialog.users.list](./im-dialog-users-list.md), [im.chat.leave](./im-chat-leave.md).
 
 > Quick navigation: [all methods and events](#all-methods)

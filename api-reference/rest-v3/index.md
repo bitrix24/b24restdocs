@@ -1,5 +1,11 @@
 # Overview of REST API 3.0
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 REST 3.0 is a new version of the API in Bitrix24 that makes working with integrations more predictable and structured. Key improvements include:
 - a unified response format,
 - retrieving related data in a single request,

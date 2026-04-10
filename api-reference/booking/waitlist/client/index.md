@@ -1,5 +1,11 @@
 # Client on the Waitlist: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 You can add a client to the waitlist: either a contact or a company. The client will receive a notification when their entry is moved to a specific time.
 
 > Quick navigation: [all methods](#all-methods) 

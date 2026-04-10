@@ -1,5 +1,11 @@
 # Get Data for OAuth 2.0 BX24.getAuth
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 ```js
 BX24.getAuth(): boolean|object;
 ```

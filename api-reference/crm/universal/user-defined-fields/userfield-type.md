@@ -1,5 +1,11 @@
 # Custom Field Types in CRM
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 In CRM, you can create fields of two types:
 - standard: number, string, date, address, link, file, and so on,
 - custom: application integrations within the CRM detail form.

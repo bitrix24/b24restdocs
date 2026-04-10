@@ -1,5 +1,11 @@
 # Reference Guides in CRM: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 In the detail forms of CRM entities, there are two types of list fields:
 
 * Custom fields — these can be created, modified, and deleted using the methods crm.xx.userfield.*. For example, to create a custom list field in deals, use [crm.deal.userfield.add](../deals/user-defined-fields/crm-deal-userfield-add.md).

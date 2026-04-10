@@ -1,5 +1,11 @@
 # Finding and Processing Duplicates in CRM: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 When working with a large customer database, some CRM elements, such as leads, contacts, or companies, may repeat. The first call from a customer creates a contact with a name and phone number. An email from the same customer creates a new contact with a name and email address — this is a duplicate. Duplicate contacts can be merged.
 
 > Quick navigation: [all methods and events](#all-methods)

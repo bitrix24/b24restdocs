@@ -1,5 +1,11 @@
 # New Task Card: Overview of Changes
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 The new task card has moved comments to chat. The old task methods continue to function, except for operations involving comments. Changes are available starting from module version `tasks 25.700.0`.
 
 ## What Remains Unchanged

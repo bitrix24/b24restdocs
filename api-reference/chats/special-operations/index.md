@@ -1,5 +1,11 @@
 # Special Operations in Chats: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 Special operations help manage chats: marking messages as read, pinning chats, disabling notifications, or removing dialogues from the recent chats list.
 
 > Quick Navigation: [All Methods and Events](#all-methods) 

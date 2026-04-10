@@ -1,5 +1,11 @@
 # Working with Universal Lists: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 Universal lists can be used to keep track of any objects: documents, certificates, promotional materials, and more.
 
 Only a Bitrix24 administrator can create lists. They also configure the permissions: specifying who among the employees can edit the list and who does not have access to it.

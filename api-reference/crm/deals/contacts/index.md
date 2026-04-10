@@ -1,5 +1,11 @@
 # Linking Deals to Contacts: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 Using the group of methods `crm.deal.contact.*`, you can establish or remove the connection between contacts and a deal. Use the methods `crm.deal.contact.*` for working with a single contact, and the methods `crm.deal.contact.items.*` for managing a group of contacts.
 
 > Quick navigation: [all methods](#all-methods) 

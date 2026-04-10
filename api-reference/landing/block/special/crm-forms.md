@@ -1,5 +1,11 @@
 # Forms in Blocks
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 Forms in blocks operate through `subtype: form`. This subtype prepares the block for embedding CRM forms and adds form settings in the editor.
 
 ## Requirements for Block Functionality

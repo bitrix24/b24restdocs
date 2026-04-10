@@ -1,5 +1,11 @@
 # Localization of the Block
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 The localization of the block is defined in the [manifest file](./manifest.md) and allows for the use of translated labels for different languages.
 
 ## Localization Keys in the Manifest

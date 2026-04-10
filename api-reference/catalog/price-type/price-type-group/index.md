@@ -1,5 +1,11 @@
 # Binding Price Types to Customer Groups: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 This section describes the access rights of customer groups to price types in the Trade Catalog. The binding determines whether a customer group can only view the price or purchase the product at that price type.
 
 > Quick Navigation: [All Methods](#all-methods)

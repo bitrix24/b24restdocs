@@ -1,5 +1,11 @@
 # Chatbots 2.0: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 Chatbots 2.0 combine two sets of APIs:
 — The `imbot.v2` methods manage the bot's lifecycle, messages, commands, files, and chat management.
 — The `im.v2` methods allow applications or users to subscribe to messenger events and receive them in polling mode—where the application periodically requests accumulated events from the server without needing a public URL for incoming requests.

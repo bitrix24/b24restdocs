@@ -1,5 +1,11 @@
 # Setup Wizard for REST-only Applications
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 The setup wizard for REST-only applications is a built-in form in Bitrix24 for applications without an interface. When developing, you only need to describe the fields in JSON format. The setup wizard will automatically generate a step-by-step form, collect the data, and send it to the specified handler.
 
 Use the setup wizard:

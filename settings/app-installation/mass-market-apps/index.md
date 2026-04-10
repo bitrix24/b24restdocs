@@ -1,5 +1,11 @@
 # Overview of Installing Mass-Market Applications
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 Published mass-market solutions are installed by users on their Bitrix24 from the Bitrix24 Marketplace.
 
 Additionally, during the development phase, you can install the application from the Developer's area on any Bitrix24 to which you have administrative access.
@@ -30,9 +36,3 @@ Similarly, in the case of a static application, which is an archive containing H
 In both cases, after the application is installed, it will already be available to users without any "special" installation procedure.
 
 If your application does not have a user interface, you need to disable the option "Add your page and item to the main menu." Even though you still do not need an "installation" as such, you will still require REST API tokens for further use. In this case, you cannot do without a [callback handler](./installation-callback.md), which will receive a call from Bitrix24 immediately after the application is installed.
-
-{% note tip "" %}
-
-If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
-
-{% endnote %}

@@ -1,5 +1,11 @@
 # Universal List Fields: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 Fields define the format and type of information that can be stored in list items: one field for the title, another for the date, and a third for the text description. Each field has a specified type: String, Creation Date, and HTML/Text. A complete list of field types is described in the `FIELDS` parameter of the [lists.field.add](./lists-field-add.md) method. Through field types, universal lists are integrated with the CRM and Drive modules.
 
 {% note warning "" %}

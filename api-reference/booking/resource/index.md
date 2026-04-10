@@ -1,5 +1,11 @@
 # Resources: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 Resources are objects that can be reserved: rooms, equipment, services, and so on.
 
 > Quick navigation: [all methods](#all-methods) 

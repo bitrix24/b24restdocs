@@ -1,5 +1,11 @@
 # Create Delivery Request CREATE_DELIVERY_REQUEST_URL
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 The request is sent to the address specified in `CREATE_DELIVERY_REQUEST_URL` when creating a delivery handler using the method [sale.delivery.handler.add](../handler/sale-delivery-handler-add.md).
 
 ## Request Parameters

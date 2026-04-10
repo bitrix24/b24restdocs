@@ -1,5 +1,11 @@
 # Loading and Using CRest PHP SDK
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 Using the REST API allows for relatively straightforward solutions to many integration tasks with external sources or systems in Bitrix24, transferring data into Bitrix24, and much more. We have provided examples for the most common tasks that you can use as templates and modify to suit your needs.
 
 All examples in this section are written using PHP, so you need to place this code on a server accessible to you while adhering to the following technical requirements:

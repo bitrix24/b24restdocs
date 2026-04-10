@@ -1,5 +1,11 @@
 # Log Message Journal
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 The log message journal is a special type of timeline record. It contains less important data than other timeline entries and is distinguished by a muted gray background, drawing less attention.
 
 > Scope: [`crm`](../../../scopes/permissions.md)

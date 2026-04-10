@@ -1,5 +1,11 @@
 # General Recommendations
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 There are certain [limits](./limits.md) when working with the REST API of the cloud version of Bitrix24. In the case of [on-premise installation](../cloud-and-on-premise/on-premise/index.md), the limitations depend on the specific server infrastructure settings on which Bitrix24 operates, meaning that the limits can vary both upwards and downwards.
 
 However, there are several general recommendations that, if followed, will reduce the risk of your applications hitting the REST API limits.

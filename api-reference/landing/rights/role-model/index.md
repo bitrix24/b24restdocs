@@ -1,5 +1,11 @@
 # Role-Based Access Model: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 The role-based access model helps manage access to sites in Bitrix24 through roles. A role combines permissions with those to whom they are assigned: users, groups, and departments. This approach eliminates the need to configure access for each user individually—permissions are set once and applied immediately to everyone assigned to the role.
 
 For example, you can create a role called "Editor" and grant permission to edit website pages. Then, assign this role to the employees of a department. This way, all employees will receive the same permissions.

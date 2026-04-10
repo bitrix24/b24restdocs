@@ -1,5 +1,11 @@
 # Open Messenger Window BX24.im.openMessenger
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 {% note warning "DEPRECATED" %}
 
 The development of this method has been halted. Please use [Messenger.openChat](../messenger-open-chat.md).

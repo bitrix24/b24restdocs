@@ -1,5 +1,11 @@
 # Price Types in the Trade Catalog: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 A price type is an object in the Trade Catalog that allows management of various pricing categories for products and services. A single product can have multiple price types: wholesale, retail, partner.
 
 One of the price types must be designated as the base type. The base price type cannot be deleted.

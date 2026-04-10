@@ -1,5 +1,11 @@
 # Recurring Deals: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 Recurring deals are deals that are created based on a template. You can set the period and the number of repetitions for recurring deals. They will be automatically created in the selected Sales Funnel.
 
 > Quick navigation: [all methods and events](#all-methods) 

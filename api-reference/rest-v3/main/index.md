@@ -1,5 +1,11 @@
 # Event Log: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 The event log records user actions in Bitrix24: logins, password change requests, and various system operations. The available events depend on the Bitrix24 plan.
 
 > Quick navigation: [all methods](#all-methods)

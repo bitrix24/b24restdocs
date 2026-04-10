@@ -1,5 +1,11 @@
 # How to Test Your Handler for Bitrix24 Event Processing
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 After registering the handler ONAPPTEST, the method `event.test` is called manually. This triggers the specified event and allows you to verify that the handler is indeed capable of receiving event data.
 
 ## Step 1

@@ -1,5 +1,11 @@
 # CALL_CARD: Overview of Methods and Events
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 The `CALL_CARD` placement is used by applications that are embedded in the call card within the CRM. Through the JavaScript interface of the placement, the application can access data about the current call, manage the auto-closing of the card, and respond to changes in the client or the call state.
 
 > Quick navigation: [all methods and events](#all-methods)

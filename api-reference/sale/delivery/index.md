@@ -1,5 +1,11 @@
 # Delivery Services in Online Store: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 In Bitrix24, two delivery options are available by default: pickup and courier delivery. Configure additional methods so that customers can choose a convenient option. To do this:
 
 1. create a delivery service handler,

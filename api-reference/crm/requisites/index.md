@@ -1,5 +1,11 @@
 # Details in CRM: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 Details are separate CRM entities that store data used in closing deals: Tax Identification Number (TIN), Tax Registration Reason Code (TRRC), Primary State Registration Number (PSRN), banking details, and addresses. Everything necessary for document templates.
 
 The `Details` field is available:

@@ -1,5 +1,11 @@
 # Custom Fields in Tasks: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 In a task, there is a set of system fields: Assignee, watchers, due date, tags, and so on. If the system fields are insufficient, you can create your own—custom fields. Custom fields allow you to store information in various data formats: string, number, date with time, and yes/no.
 
 > Quick navigation: [all methods and events](#all-methods) 

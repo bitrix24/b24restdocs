@@ -1,5 +1,11 @@
 # Product Items
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 ## Description
 
 The REST methods from the **crm.item.productrow.\*** family allow you to work with product items linked to various CRM entities. These methods are universal and support any type of owner, except for old invoices:

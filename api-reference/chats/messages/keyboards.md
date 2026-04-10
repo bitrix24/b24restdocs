@@ -1,5 +1,11 @@
 # Working with Keyboards
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 `KEYBOARD` adds interactive buttons to a message: link navigation, command execution, text substitution in the input field, and other actions.
 
 The keyboard is passed in the `KEYBOARD` parameter when sending or updating a message: [im.message.add](./im-message-add.md), [im.message.update](./im-message-update.md).

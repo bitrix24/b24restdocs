@@ -1,5 +1,11 @@
 # Products in the Trade Catalog: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 Using REST methods, you can create simple products or services, as well as products with variations.
 
 A simple product or service is a single inventory item with a name and unit of measurement. A product variation is a trade offer where the product has additional characteristics: color and size. For each combination of characteristics, a separate inventory item with a unique SKU is created.

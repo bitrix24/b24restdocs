@@ -1,5 +1,11 @@
 # Timeline and Activities in CRM: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 The timeline is the primary workspace in the CRM entity detail form. It records:
 
 * system information about working with the entity: stage changes, payments, creating entities based on the current one

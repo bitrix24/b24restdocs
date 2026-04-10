@@ -1,5 +1,11 @@
 # Company Contacts: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 Using the group of methods `crm.company.contact.*`, you can manage the relationships between contacts and companies: establishing or removing connections for a contact or a group of contacts.
 
 > Quick navigation: [all methods](#all-methods) 

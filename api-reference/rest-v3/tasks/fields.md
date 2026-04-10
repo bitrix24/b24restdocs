@@ -1,5 +1,11 @@
 # Task Fields in REST 3.0
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 In the section [Task Object](#taskdto), all task fields are described, while other sections cover the fields of related objects. Some task fields are available as both an identifier number and as an object, for example, `creatorId` and `creator`. Use the identifier field in the methods for [creating](./tasks-task-add.md) and [updating](./tasks-task-update.md) a task. Use the object field in the method for [getting a task](./tasks-task-get.md). Instructions on how to work with the fields of related objects are described in the article [Overview of REST API 3.0](../index.md#connection).
 
 The rights to write and modify fields depend on the user's role in the task, group permission settings, employee hierarchy, task status, and certain flags in the task, such as `allowChangeDeadline`.

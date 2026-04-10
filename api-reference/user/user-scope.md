@@ -1,5 +1,11 @@
 # User Scope Versions
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 To ensure the security of employee data, different versions of the `User` scope are available for applications and webhooks with the [module version](../../settings/cloud-and-on-premise/on-premise/versions.md) **Rest 21.600.0**.
 
 - `user_brief` provides access to user information without contact details. This is sufficient for scenarios where displaying the user's full name in a third-party application's interface is required.

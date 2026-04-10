@@ -1,5 +1,11 @@
 # Main Dropdown Menu Item TASK_USER_LIST_TOOLBAR, TASK_GROUP_LIST_TOOLBAR
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 > Scope: [`intranet`](../../scopes/permissions.md)
 
 You can add your item to the main dropdown menu in user and group tasks.

@@ -1,5 +1,11 @@
 # Interaction of the Widget with the Messenger Input Field
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 To work with text in the chat input field, use the methods `$b24.parent.message.send`. This is convenient when you need to:
 
 - retrieve the current text from the chat

@@ -1,5 +1,11 @@
 # Notifications in Chats: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 A chat notification is a message containing information from the system or a user. The group of methods `im.notify.*` manages notifications.
 
 > Quick Navigation: [All Methods and Events](#all-methods)  

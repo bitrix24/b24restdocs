@@ -1,5 +1,11 @@
 # Warehouses in the Trade Catalog: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 Warehouses help manage inventory, movements, and receipts of goods. You will always know where the necessary items are located and can timely distribute them among warehouses.
 
 You can set access permissions for each warehouse. This way, employees will only see their own inventory documents and will not accidentally select another warehouse when creating new documents.

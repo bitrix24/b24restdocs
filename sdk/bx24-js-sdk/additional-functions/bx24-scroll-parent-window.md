@@ -1,5 +1,11 @@
 # Scroll Parent Window BX24.scrollParentWindow
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 The method `BX24.scrollParentWindow` sends a command to scroll the parent window to a specified vertical position. Starting from version `25.800.0` of the `rest` module, this method can be used in [embedding locations](../../../api-reference/widgets/index.md) of the application. The scroll will work if the application is not opened in a slider.
 
 ```js

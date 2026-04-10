@@ -1,5 +1,11 @@
 # Resource Booking: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 Resource booking is the ability to provide services for a specific time. A resource is something that clients book, such as a car, a meeting room, or a bowling lane.
 
 > Quick navigation: [all methods and events](#all-methods) 

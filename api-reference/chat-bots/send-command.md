@@ -1,5 +1,11 @@
 # How to Call Chatbot Methods and Update the Authorization Token
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 This page outlines the basic approach to calling REST methods for chatbots and explains when to update the OAuth token and when webhook authorization is sufficient.
 
 {% note info "" %}

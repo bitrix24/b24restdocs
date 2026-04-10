@@ -1,5 +1,11 @@
 # Overview of Events When Working with the WebRTC Client Call Card
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 The `BackgroundCallCard::*` events allow the application to respond to user actions in the call card and changes in the interface state without additional polling.
 
 {% note info "" %}

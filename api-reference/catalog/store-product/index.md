@@ -1,5 +1,11 @@
 # Inventory balances: overview of methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 Inventory balances indicate how much product is available at each inventory location. The methods `catalog.storeproduct.*` assist in:
 
 - synchronizing inventory balances between Bitrix24 and external systems,

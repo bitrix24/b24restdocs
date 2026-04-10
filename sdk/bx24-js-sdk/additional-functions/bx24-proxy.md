@@ -1,5 +1,11 @@
 # Get the BX24.proxy Function
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 The `BX24.proxy` method creates a proxy function for calling `func` in the context of `thisObject`. This method is similar to `BX.proxy`. When called again with the same `func` and `thisObject`, it returns the same proxy function.
 
 ```js

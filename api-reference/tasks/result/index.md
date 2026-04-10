@@ -1,5 +1,11 @@
 # Task Results: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 The result of a task is a fixed comment summarizing the work done on the task. The result is highlighted in a separate block within the task card, so it doesn't need to be searched among all comments. A task can have multiple results.
 
 > Quick access: [all methods and events](#all-methods) 

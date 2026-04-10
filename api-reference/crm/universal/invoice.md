@@ -1,5 +1,11 @@
 # Invoices: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 An invoice is the final stage of a deal. It is created when all discussions are complete and the terms of the agreement are agreed upon. Multiple invoices can be created for different products and services within a single deal.
 
 An invoice can be generated from a template and sent to the client as a document. In the invoice detail form, you can:

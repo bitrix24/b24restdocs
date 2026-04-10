@@ -1,5 +1,11 @@
 # Statuses of Payer Types in the Online Store: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 When creating a [payer type](../person-type/index.md), you can specify any name, but you need to define the status: 
 - `I` — individual,
 - `E` — legal entity.

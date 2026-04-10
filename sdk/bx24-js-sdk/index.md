@@ -1,5 +1,11 @@
 # Connecting and Using BX24.js
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 If your application implements a user interface within Bitrix24 (displayed on a special page or using embedding tools), you can take advantage of the capabilities of a special JS library. It:
 - first, serves as a JS SDK for REST, allowing you to access REST directly from the front-end of your application without delving into [authorization implementation](../../settings/oauth/index.md) via OAuth 2.0,
 - second, offers a range of additional features for interacting your application's user interface with the Bitrix24 interface:

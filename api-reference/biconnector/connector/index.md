@@ -1,5 +1,11 @@
 # Connector: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 The connector is a tool for integrating Bitrix24 with external data systems. It is responsible for connecting to third-party APIs and databases, importing data for analytics and reporting.
 
 Each connector contains settings for working with a specific source:

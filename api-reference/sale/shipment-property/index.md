@@ -1,5 +1,11 @@
 # Shipping Properties in the Online Store: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 Shipping properties are additional parameters that can be set for the shipment of goods: delivery address and method, shipment date. For example, in an order with three books that need to be sent to different addresses. To specify the address for each shipment, create shipping properties.
 
 > Quick navigation: [all methods](#all-methods)

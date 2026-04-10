@@ -1,5 +1,11 @@
 # Versioning of Modules in On-Premise Bitrix24
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 When developing applications, it's important to consider that the REST methods and events available for use in cloud Bitrix24 may not be accessible in specific on-premise installations.
 
 Firstly, the release schedule for updates in Bitrix24 for the on-premise version differs from that of the cloud version, as these updates require a separate testing cycle, among other considerations.

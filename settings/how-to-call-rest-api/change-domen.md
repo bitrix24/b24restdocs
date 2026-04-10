@@ -1,5 +1,11 @@
 # Features of REST Calls When Changing the Bitrix24 Address
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 New cloud Bitrix24 accounts are created with generated addresses in the format `b24-xxx.bitrix24.yy`. Users can change this address at any time, subject to certain limitations. These limitations depend on the plan being used.
 
 ## Why This Is Important to Keep in Mind

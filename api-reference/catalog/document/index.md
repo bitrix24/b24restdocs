@@ -1,5 +1,11 @@
 # Inventory management in the Trade Catalog: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 Inventory management is a tool that allows you to track the available and reserved quantity of products in warehouses.
 
 To add, move, or remove products from the inventory, use inventory management documents.

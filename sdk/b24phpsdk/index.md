@@ -1,5 +1,11 @@
 # Loading and Using B24PhpSDK
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 B24PhpSDK is the official and recommended library for working with the Bitrix24 REST API in PHP. Unlike the CRest SDK, B24PhpSDK offers a number of advantages:
 
 1. Support for code autocompletion and internal structures in VSCode, PHPStorm, PyCharm;

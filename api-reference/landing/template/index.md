@@ -1,5 +1,11 @@
 # Object View Template: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 A view template is a structure that Bitrix24 uses to assemble a website page. It defines where the main content will be located and which additional design elements are included. The template does not store content; it only specifies the layout of the page sections.
 
 This helps avoid recreating the design for each page. Common elements are placed in separate areas and reused. For example, you can create a page with a header and connect it to all pages of the site. If the header changes, the updates will apply across all pages.

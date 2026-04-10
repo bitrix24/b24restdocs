@@ -1,5 +1,11 @@
 # Statuses in the Online Store: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 Statuses allow tracking the stages of processing and fulfilling orders. Customers can see the current order status on the website and receive notifications via e-mail.
 
 There are two types of statuses:

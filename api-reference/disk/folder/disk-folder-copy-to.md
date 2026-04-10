@@ -1,5 +1,11 @@
 # Copy a folder and all its contents to the specified folder disk.folder.copyto
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 > Scope: [`disk`](../../scopes/permissions.md)
 >
 > Who can execute the method: a user with "Read" permission for the source folder and "Add" permission for the target folder

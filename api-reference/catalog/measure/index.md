@@ -1,5 +1,11 @@
 # Measurement Units in the Trade Catalog: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 Every product has a measurement unit: weight, quantity, volume, and so on. Bitrix24 offers popular options, but you can add your own.
 
 To set the primary measurement unit, specify the value `Y` in the `isDefault` parameter. Then, when creating a new product, it will be automatically selected in the detail form.

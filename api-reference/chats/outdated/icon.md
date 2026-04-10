@@ -1,5 +1,11 @@
 # Create an Application Icon for Chat
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 When creating an **Application Icon for Chat**, follow these guidelines:
 
 1. The icon must be in .PNG format and have a transparent background

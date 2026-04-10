@@ -1,5 +1,11 @@
 # Create a new CRM entity crm.item.add
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 > Scope: [`crm`](../../scopes/permissions.md)
 > 
 > Who can execute the method: any user with the "add" access permission for the CRM object

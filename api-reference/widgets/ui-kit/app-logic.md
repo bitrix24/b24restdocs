@@ -1,5 +1,11 @@
 # Integration of UI Kit with REST API and Business Logic
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 Transitioning to the new UI Kit may raise questions for developers, especially if you have previously created applications for Bitrix24 using PHP or utilized `BX24.js` in static HTML pages. In this section, we will explain how the approach to building interfaces has changed, what remains the same, and how the connection between the visual part of the UI Kit and the Bitrix24 REST API now works.
 
 ## How It Used to Be

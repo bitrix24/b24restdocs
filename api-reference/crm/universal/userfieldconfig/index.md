@@ -1,5 +1,11 @@
 # Custom Fields
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 Physically, the controller is located in the **main** module. However, it has been extracted as a separate **scope** for REST (it can be accessed via AJAX as *main.userfieldconfig.*).
 
 {% note info "" %}

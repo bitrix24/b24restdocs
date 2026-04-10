@@ -1,5 +1,11 @@
 # Kanban in Scrum: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 Kanban is a tool that helps visually represent task management in the form of columns and cards. Columns represent stages of work, while cards represent tasks. In the Scrum Kanban, the team can see all the tasks of the sprint and move them through the stages during the workflow.
 
 > Quick navigation: [all methods and events](#all-methods) 

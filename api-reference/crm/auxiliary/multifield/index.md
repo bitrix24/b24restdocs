@@ -1,5 +1,11 @@
 # Multiple Fields: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 Multiple fields are used for phone numbers, email addresses, and other contact information in leads, contacts, and companies.
 
 > Quick Navigation: [All Methods](#all-methods)

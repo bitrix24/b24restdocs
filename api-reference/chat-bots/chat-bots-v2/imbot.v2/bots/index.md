@@ -1,5 +1,11 @@
 # Bots: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 This section covers the lifecycle methods of a chat bot: registration, property updates, data retrieval, list viewing, and deletion.
 
 > Quick Navigation: [All Methods](#all-methods)

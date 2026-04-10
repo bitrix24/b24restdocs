@@ -1,5 +1,11 @@
 # Methods of BX24 SDK for Widgets
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 In widgets, you can use the JS methods `BX24.openApplication`, `BX24.openPath`, and `BX24.closeApplication`. These methods help open the application interface or standard Bitrix24 pages directly from the embedded widget without calling REST methods.
 
 For a detailed description of the syntax, parameters, and callback functions, refer to the section [Additional Functions of BX24.js](../../sdk/bx24-js-sdk/additional-functions/index.md).

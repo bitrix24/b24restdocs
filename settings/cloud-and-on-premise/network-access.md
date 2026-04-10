@@ -1,5 +1,11 @@
 # Required Network Access
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 In the case of using the on-premise Bitrix24, the company's network administrator must consider the need to open access for incoming/outgoing requests from REST applications in the security policy.
 
 For Bitrix24, the following must be opened:

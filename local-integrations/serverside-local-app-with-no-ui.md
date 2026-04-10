@@ -1,5 +1,11 @@
 # Server-side Local Application without User Interface
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 ## Installation
 
 The example consists of the [CRest SDK](https://github.com/bitrix-tools/crest/) and a PHP file with an example that you need to place on your web server before adding the application to your Bitrix24. The application can obtain user authorization from Bitrix24 and, while being outside of Bitrix24, access the REST API to retrieve the full name of the user who installed it.

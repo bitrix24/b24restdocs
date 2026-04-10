@@ -1,5 +1,11 @@
 # Search Forms
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 Search forms are blocks that contain an input field and a submit button. They send a request to the [search results page](./search.md).
 
 For such blocks in `landing`, `subtype: search` is used with the parameter `type: form`.

@@ -1,5 +1,11 @@
 # Data Storage Sections: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 Data storage sections help group elements within the application and build a hierarchy.
 
 The group of methods `entity.section.*` allows you to create sections, retrieve their list, modify parameters, and delete unnecessary ones.

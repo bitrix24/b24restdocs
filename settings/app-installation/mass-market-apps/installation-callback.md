@@ -1,5 +1,11 @@
 # Installation Callback
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 When the option "Add your page and item to the main menu" is not specified in the application card, it means that there is no basic interface in the left menu. Such an application can still register widgets in various embedding locations, but automatically, by itself, an item in the left menu will not be added.
 
 This is a useful scenario for applications that do not require a separate user interface, settings, etc., and whose entire business logic is implemented, for example, in the form of automation rules for event handlers.

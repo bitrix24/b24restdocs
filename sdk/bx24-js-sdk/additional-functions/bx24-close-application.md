@@ -1,5 +1,11 @@
 # Close the Window with the Application BX24.closeApplication
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 The method `BX24.closeApplication` sends a command to close the pop-up window with the application.
 
 This method is recommended for use in integrations such as `CRM_*_LIST_MENU` from the [Widgets](https://apidocs.bitrix24.com/api-reference/widgets/index.html) section. For example, you can add a button that closes the application window.

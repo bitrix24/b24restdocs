@@ -1,5 +1,11 @@
 # Polls, Votes: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 In the news feed and messenger, you can conduct employee polls and organize votes for response options. The poll creator can configure the anonymity of responses and the ability to revote.
 
 > Quick navigation: [all methods](#all-methods) 

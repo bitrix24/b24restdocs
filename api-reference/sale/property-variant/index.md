@@ -1,5 +1,11 @@
 # Order Property Options of ENUM Type in Online Store: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 [Order properties](../property/index.md) can be of various types:
 - `STRING` — string,
 - `Y/N` — yes/no,

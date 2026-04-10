@@ -1,5 +1,11 @@
 # About Chat Applications
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 {% note warning %}
 
 The embedding format for chat applications described in this chapter currently works correctly; however, for the New chat, applications need to be embedded in the [Rest Placement](../../widgets/im/index.md) format.

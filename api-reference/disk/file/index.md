@@ -1,5 +1,11 @@
 # Drive Files: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 You can store text documents, spreadsheets, presentations, images, and other information on Drive. Users can upload, edit, copy files, and configure access permissions for them.
 
 > Quick navigation: [all methods](#all-methods) 

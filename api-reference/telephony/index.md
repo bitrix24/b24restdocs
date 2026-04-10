@@ -1,5 +1,11 @@
 # Telephony: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 Bitrix24 telephony helps manage calls within the CRM: making and receiving calls, maintaining call history, linking calls to client records, and saving recordings.
 
 The REST API supports two scenarios for working with telephony:

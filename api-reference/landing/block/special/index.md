@@ -1,5 +1,11 @@
 # Special Blocks: Overview
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 Special blocks in `landing` address specific scenarios rather than general layout tasks: page navigation, menus, search, maps, and embedding CRM forms. The behavior of these blocks depends on the context of the site, the page, and the available objects.
 
 > Quick Navigation: [All scenarios section](#all-scenarios)

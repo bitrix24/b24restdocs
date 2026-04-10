@@ -1,5 +1,11 @@
 # Components and Templates
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 The Bitrix24 UI Kit is a library of **design-consistent components** that can be combined, extended, and adapted for specific tasks. The main goal is to accelerate development and ensure uniformity of interfaces across all applications integrated into Bitrix24.
 
 ## Categories of Components

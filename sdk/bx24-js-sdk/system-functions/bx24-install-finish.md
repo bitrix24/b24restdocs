@@ -1,5 +1,11 @@
 # Notify about the completion of the installer BX24.installFinish
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 ```js
 BX24.installFinish(): void;
 ```

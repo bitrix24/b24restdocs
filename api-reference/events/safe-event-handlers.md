@@ -1,5 +1,11 @@
 # Security in Handlers
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 The application developer in event handlers must ensure that the handler is being called by Bitrix24 and not by malicious actors. To achieve this, Bitrix24 passes an additional parameter **application_token** when invoking handlers.
 
 The first time, the parameter is sent to the event handler [`OnAppInstall`](../common/events/on-app-install.md) along with the authorization data of the user who installed the application. Using this authorization data, the `OnAppInstall` event handler can verify the validity of the received **access_token** and then store the application_token for future reference, allowing it to compare the received application_token with the stored one in its other event handlers.

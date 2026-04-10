@@ -1,5 +1,11 @@
 # Leads in CRM: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 A lead is the starting point of the Sales Funnel. Its card contains information about the client's interest in a product or service: filled CRM forms, e-mails, calls, and chats with the client.
 
 The main goal of working with leads is to determine their potential and convert them into deals for further selling of the product or service.

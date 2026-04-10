@@ -1,5 +1,11 @@
 # Features, Advantages, and Disadvantages of Offline Events
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 You can register an offline event handler using the same method [`event.bind`](event-bind.md). However, the parameters will differ slightly:
 
 #|

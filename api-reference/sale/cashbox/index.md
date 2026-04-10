@@ -1,5 +1,11 @@
 # Cash Registers in Online Stores: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 When you sell something through CRM, the purchase information goes to the cash register. The cash register generates a receipt and sends it to:
 - the fiscal data operator for reporting to the tax authorities,
 - the customer via SMS or e-mail.

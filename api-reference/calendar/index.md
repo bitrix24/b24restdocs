@@ -1,5 +1,11 @@
 # Calendar: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 The calendar helps users plan meetings, tasks, and events. Calendars can be managed using a group of methods [calendar.section.*](#base).
 
 Calendar events are scheduled activities or meetings. A group of methods [calendar.event.*](./calendar-event/index.md) is used to create, modify, retrieve, or delete events.

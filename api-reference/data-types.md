@@ -1,5 +1,11 @@
 # Data Types and Parameter Formats in REST API
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 This page describes the data types used in method parameters, object structures, and REST API responses. For each type, the value format and usage specifics are provided. This is a general dictionary of types: the exact field composition, acceptable values, and additional constraints should be checked on the specific method or object page.
 
 ## Basic Data Types {#standart-types}

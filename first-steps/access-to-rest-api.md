@@ -1,5 +1,11 @@
 # How to Access the REST API
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 The REST API in Bitrix24 is available only on paid plans. The subscription cost [depends on the plan](https://www.bitrix24.com/prices/).
 
 To access the REST API, check your current plan in the Subscription section of the main menu in Bitrix24. If the account is on a free plan, select and activate an appropriate plan.

@@ -1,5 +1,11 @@
 # Sources: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 A source is a separate connection to an external system in the BIconnector module. The source defines which specific data from the external system will be available for use in reports and analytics in Bitrix24.
 
 > Quick navigation: [all methods](#all-methods) 

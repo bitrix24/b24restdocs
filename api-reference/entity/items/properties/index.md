@@ -1,5 +1,11 @@
 # Properties of Data Storage Elements: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 The properties of data storage elements help store additional data within application elements. They allow for the definition of custom fields.
 
 The group of methods `entity.item.property.*` enables the creation of properties, retrieval of property lists, modification of parameters, and deletion of unnecessary properties.

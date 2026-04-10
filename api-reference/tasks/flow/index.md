@@ -1,5 +1,11 @@
 # Flows: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 Flows are a tool that automates the distribution and execution of tasks. Employees do not need to search for who will complete a task. They assign tasks to the department's flow, and it automatically assigns an assignee.
 
 In the flow, you can track the efficiency of task completion. Efficiency is calculated using the formula: `<number of overdue tasks> / <total number of tasks in the flow> * 100%`. To improve efficiency, change the type of task distribution or the flow team.

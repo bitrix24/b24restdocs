@@ -1,5 +1,11 @@
 # Get Frame Dimensions with BX24.getScrollSize
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 The method `BX24.getScrollSize` returns the dimensions of the current frame's content as an object with the fields `scrollWidth` and `scrollHeight`.
 
 ```js

@@ -1,5 +1,11 @@
 # Incoming Event Queue
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 The concept of an **"incoming queue"** for processing HTTP requests implies that you do not handle requests to your event handlers immediately as they arrive, but instead place them in a queue from which they are sequentially retrieved and processed by your server or a group of servers.
 
 ### Main Principle:

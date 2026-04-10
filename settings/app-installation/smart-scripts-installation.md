@@ -1,5 +1,11 @@
 # Installation of Solutions with "Smart Scenarios"
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 "Smart scenarios" are a configuration solution based on CRM Automation rules, embedded in deals, leads, companies, and contacts outside of the Sales Funnel. "Smart scenarios" can be saved as a single archive using the custom export functionality of industry settings.
 
 This archive can be uploaded in the Developer's area in the application detail form and published as a ready-made solution in the Bitrix24 Marketplace.

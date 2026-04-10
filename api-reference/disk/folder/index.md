@@ -1,5 +1,11 @@
 # Drive Folders: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 Folders in Bitrix24 Drive allow you to create a logical structure for storing files, such as by document types, dates, or clients. This makes it easier to search for and access the necessary information.
 
 > Quick navigation: [all methods](#all-methods) 

@@ -1,5 +1,11 @@
 # Get Language Identifier in Current Bitrix24 BX24.getLang
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 The method `BX24.getLang` returns the language identifier in the current Bitrix24. This method works after [BX24.init](../system-functions/bx24-init.md).
 
 ```js

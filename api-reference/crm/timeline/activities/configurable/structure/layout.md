@@ -1,5 +1,11 @@
 # Structure of Configurable Activity
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 The object that describes the appearance of the [timeline entry](../index.md) is a hierarchical structure of nested objects of various types.
 
 Each of the nested objects has its own set of fields and is described below in the form of DTO (Data Transfer Object).

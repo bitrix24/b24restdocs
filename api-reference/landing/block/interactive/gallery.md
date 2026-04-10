@@ -1,5 +1,11 @@
 # Galleries
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 The gallery uses standard markup for cards and image nodes. In the [block manifest](../manifest.md), include the `landing_gallery_cards` extension.
 
 ## How to Set Up the Gallery

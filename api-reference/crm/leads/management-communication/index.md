@@ -1,5 +1,11 @@
 # Linking Leads to Contacts: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 Using the group of methods `crm.lead.contact.*`, you can establish or remove the connection between contacts and leads. A lead linked to a contact becomes a duplicate.
 
 > Quick navigation: [all methods](#all-methods)

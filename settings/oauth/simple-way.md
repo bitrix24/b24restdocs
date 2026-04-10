@@ -1,5 +1,11 @@
 # Simplified Method for Obtaining OAuth 2.0 Tokens
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 The simplest scenario for accessing the REST API is when the application operates within the Bitrix24 interface. In this case, all necessary authorization data is provided to the application upon opening, and there is also the option to use the [js library](../../sdk/bx24-js-sdk/index.md) for making API calls.
 
 The application receives the following array of POST data:

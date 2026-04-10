@@ -1,5 +1,11 @@
 # Features of the REST API in the On-Premise Version of Bitrix24
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 In the cloud version of Bitrix24, the REST API is always available in the "latest version." However, updates for the on-premise version may be released some time after they appear in the cloud, due to the additional functionality in the on-premise Bitrix24 that requires extra time for compatibility testing.
 
 Moreover, in the case of a specific on-premise installation, there is no guarantee that the owner has installed the latest available updates or the necessary modules for the application in Bitrix24 (for example, nothing prevents the owner from completely disabling the telephony module in the on-premise Bitrix24). This means that when installing an application, there is no certainty about the availability of specific REST methods.

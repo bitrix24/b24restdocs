@@ -1,5 +1,11 @@
 # Create a list element lists.element.add
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 > Scope: [`lists`](../../scopes/permissions.md)
 >
 > Who can execute the method: a user with "Add" or "Edit" access permission for the required list

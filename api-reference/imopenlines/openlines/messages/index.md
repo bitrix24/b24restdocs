@@ -1,5 +1,11 @@
 # Open Channels Messages: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 Messages in open channel chats can be sent by employees and chatbots. Sent messages can be saved as quick reply templates for reuse. Each open channel chat is linked to a CRM entity.
 
 > Quick Navigation: [All Methods](#all-methods)

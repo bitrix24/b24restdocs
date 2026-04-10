@@ -1,5 +1,11 @@
 # Template Localization
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 Localization determines how a template displays its title, description, and other key phrases in the Bitrix24 language. This is set during the template registration through [landing.demos.register](./landing-demos-register.md).
 
 This article explains the structure of the `lang` and `lang_original` parameters. It also describes how the system selects translations and how to verify the saved localization through [landing.demos.getList](./landing-demos-get-list.md).

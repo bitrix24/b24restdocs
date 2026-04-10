@@ -1,5 +1,11 @@
 # Contacts in CRM: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 A contact is a CRM object that stores data about clients—individuals. The contact card contains phone numbers, email addresses, and messenger identifiers in a special format that allows communication with the client directly through Bitrix.
 
 > Quick navigation: [all methods and events](#all-methods) 

@@ -1,5 +1,11 @@
 # Workday: Overview of Methods
 
+{% note tip "" %}
+
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+
+{% endnote %}
+
 Time tracking in Bitrix24 records the hours worked by an employee. To do this, the employee marks the start and end of the workday in the system.
 
 The methods `timeman.*` are used to manage the workday of the token holder or webhook. To manage the workdays of other employees, the user needs access permission to edit others' workdays.
