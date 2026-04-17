@@ -1,4 +1,4 @@
-# Reassign the delivery item to another document crm.item.payment.delivery.setDelivery
+# Reassign Delivery Position to Another Document crm.item.payment.delivery.setDelivery
 
 {% note tip "" %}
 
@@ -8,29 +8,29 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
-> Who can execute the method: access permission to modify the payment order is required
+> Who can execute the method: access permission to modify the payment order is required.
 
-This method reassigns the delivery item to another delivery document.
+This method reassigns a delivery position to another delivery document.
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../../../_includes/required.md) %}
+{% include [Required parameters note](../../../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`](../../../../data-types.md) | Identifier of the delivery item in the payment.
-Can be obtained using the method [`crm.item.payment.delivery.list`](./crm-item-payment-delivery-list.md)  ||
+[`integer`](../../../../data-types.md) | Identifier of the delivery position in the payment.
+This can be obtained using the [`crm.item.payment.delivery.list`](./crm-item-payment-delivery-list.md) method. ||
 || **deliveryId***
 [`sale_order_shipment.id`](../../../../sale/data-types.md#sale_order_shipment) | Identifier of the delivery.
 
-Can be obtained using the method [`crm.item.delivery.list`](../../delivery/crm-item-delivery-list.md) (key id)  ||
+This can be obtained using the [`crm.item.delivery.list`](../../delivery/crm-item-delivery-list.md) method (key id). ||
 |#
 
 ## Code Examples
 
-{% include [Note on examples](../../../../../_includes/examples.md) %}
+{% include [Examples note](../../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -59,19 +59,19 @@ Can be obtained using the method [`crm.item.delivery.list`](../../delivery/crm-i
     ```js
     try
     {
-    	const response = await $b24.callMethod(
-    		'crm.item.payment.delivery.setDelivery', {
-    			id: 1201,
-    			deliveryId: 4073,
-    		}
-    	);
-    	
-    	const result = response.getData().result;
-    	console.log(result);
+        const response = await $b24.callMethod(
+            'crm.item.payment.delivery.setDelivery', {
+                id: 1201,
+                deliveryId: 4073,
+            }
+        );
+        
+        const result = response.getData().result;
+        console.log(result);
     }
     catch( error )
     {
-    	console.error(error);
+        console.error(error);
     }
     ```
 
@@ -141,7 +141,7 @@ Can be obtained using the method [`crm.item.delivery.list`](../../delivery/crm-i
 
 ## Successful Response
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -165,12 +165,12 @@ HTTP status: **200**
 || **result**
 [`boolean`](../../../../data-types.md) | Result of the operation ||
 || **time**
-[`time`](../../../../data-types.md) | Information about the request execution time ||
+[`time`](../../../../data-types.md) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {
@@ -185,11 +185,15 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `0` | Delivery item not found ||
+|| `0` | Delivery position not found ||
 || `0` | Access denied ||
 || `100` | Required fields not provided ||
 || `0` | Other errors (e.g., fatal errors) ||
 |#
+
+### Error Handling Features
+
+For business errors, the method may return `error: 0`. In this case, refer to `error_description` and match it with the list of errors above.
 
 {% include notitle [system errors](../../../../../_includes/system-errors.md) %}
 

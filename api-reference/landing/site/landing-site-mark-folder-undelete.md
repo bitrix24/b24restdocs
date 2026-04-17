@@ -10,19 +10,23 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: a user with "delete" access permission for the site to which the folder belongs
 
-The method `landing.site.markFolderUnDelete` restores a folder from the recycle bin and removes the deletion flag from this folder and the pages within it.
+The method `landing.site.markFolderUnDelete` restores a folder from the recycle bin and removes the deletion mark from this folder and the pages within it.
 
 ## Method Parameters
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
 
-#|
-|| **Name**
+#| 
+|| **Name** 
 `type` | **Description** ||
-|| **id***
+|| **scope** 
+[`string`](../../data-types.md) | Internal scope of the landing pages. It is not related to the REST scope `landing` in the method name.
+
+The value of `scope` must correspond to the type of site [(detailed description)](../types.md) ||
+|| **id*** 
 [`integer`](../../data-types.md) | Identifier of the folder.
 
-The folder identifier can be obtained using the [landing.site.getFolders](./landing-site-get-folders.md) method ||
+The folder identifier can be obtained using the method [landing.site.getFolders](./landing-site-get-folders.md) ||
 |#
 
 ## Code Examples
@@ -169,12 +173,12 @@ HTTP Status: **200**
 
 ### Returned Data
 
-#|
-|| **Name**
+#| 
+|| **Name** 
 `type` | **Description** ||
-|| **result**
+|| **result** 
 [`boolean`](../../data-types.md) | Returns `true` if the folder was successfully restored from the recycle bin ||
-|| **time**
+|| **time** 
 [`time`](../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
@@ -193,7 +197,7 @@ HTTP Status: **400**
 
 ### Possible Error Codes
 
-#|
+#| 
 || **Code** | **Description** ||
 || `MISSING_PARAMS` | Required parameter `id` is missing ||
 || `ACCESS_DENIED` | Folder not found or access to it is denied ||

@@ -8,7 +8,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`landing`](../../scopes/permissions.md)
 >
-> Who can execute the method: user with "delete" access permission for sites
+> Who can execute the method: a user with "delete" access permission for sites
 
 The method `landing.site.markDelete` marks the site as deleted and moves it to the trash.
 
@@ -16,10 +16,14 @@ The method `landing.site.markDelete` marks the site as deleted and moves it to t
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
-|| **id***
+|| **scope**
+[`string`](../../data-types.md) | Internal scope of landings. It is not related to the REST scope `landing` in the method name.
+
+The value of `scope` must correspond to the type of site [(detailed description)](../types.md) ||
+|| **id*** 
 [`integer`](../../data-types.md) | Identifier of the site.
 
 The site identifier can be obtained using the method [landing.site.getList](./landing-site-get-list.md) or from the result of the method [landing.site.add](./landing-site-add.md) ||
@@ -159,8 +163,8 @@ HTTP Status: **200**
         "finish": 1773282028.948274,
         "duration": 0.9482738971710205,
         "processing": 0,
-        "date_start": "2026-03-12T05:20:28+01:00",
-        "date_finish": "2026-03-12T05:20:28+01:00",
+        "date_start": "2026-03-12T05:20:28+02:00",
+        "date_finish": "2026-03-12T05:20:28+02:00",
         "operating_reset_at": 1773282628,
         "operating": 0
     }
@@ -169,13 +173,13 @@ HTTP Status: **200**
 
 ### Returned Data
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **result**
 [`integer`](../../data-types.md) | Identifier of the site marked as deleted ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the request execution time ||
+[`time`](../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
@@ -193,13 +197,13 @@ HTTP Status: **400**
 
 ### Possible Error Codes
 
-#|
+#| 
 || **Code** | **Description** ||
 || `MISSING_PARAMS` | Required parameter `id` is missing ||
-|| `ACCESS_DENIED` | Insufficient rights to modify the `DELETED` field of the site ||
+|| `ACCESS_DENIED` | Insufficient permissions to modify the `DELETED` field of the site ||
 || `ACCESS_DENIED_DELETED` | Deleting the site is not available when a domain provider is connected in Bitrix24 ||
 || `TYPE_ERROR` | Data type error in the method call parameters ||
-|| `SYSTEM_ERROR` | Internal error during method execution ||
+|| `SYSTEM_ERROR` | Internal error while executing the method ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

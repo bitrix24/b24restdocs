@@ -10,22 +10,22 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: administrator
 
-The method returns information about the margin by its ID.
+This method returns information about the margin based on its ID.
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../_includes/required.md) %}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
-|| **id***
+|| **id*** 
 [`catalog_extra.id`](../data-types.md#catalog_extra) | Margin ID ||
 |#
 
 ## Code Examples
 
-{% include [Note on examples](../../../_includes/examples.md) %}
+{% include [Note on Examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -54,26 +54,26 @@ The method returns information about the margin by its ID.
     ```js
     try
     {
-    	const response = await $b24.callMethod(
-    		'catalog.extra.get',
-    		{
-    			id: 1
-    		}
-    	);
-    	
-    	const result = response.getData().result;
-    	if(result.error())
-    	{
-    		console.error(result.error());
-    	}
-    	else
-    	{
-    		console.log(result);
-    	}
+        const response = await $b24.callMethod(
+            'catalog.extra.get',
+            {
+                id: 1
+            }
+        );
+        
+        const result = response.getData().result;
+        if(result.error())
+        {
+            console.error(result.error());
+        }
+        else
+        {
+            console.log(result);
+        }
     }
     catch(error)
     {
-    	console.error('Error:', error);
+        console.error('Error:', error);
     }
     ```
 
@@ -170,13 +170,13 @@ HTTP Status: **200**
 
 ### Returned Data
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
 || **extra**
-[`catalog_extra`](../data-types.md#catalog_price_type) | Object with information about the margin with the specified ID ||
+[`catalog_extra`](../data-types.md#catalog_extra) | Object containing information about the margin with the specified ID ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -196,13 +196,13 @@ HTTP Status: **400**
 
 ### Possible Error Codes
 
-#|
+#| 
 || **Code** | **Description** ||
 || `200040300010` | Insufficient permissions to read
 ||
-|| `202000000000` | No margin exists with this ID 
+|| `202000000000` | No margin exists with the specified ID 
 ||
-|| `100` | Parameter `id` not specified
+|| `100` | Parameter `id` is missing
 || 
 || `0` | Other errors (e.g., fatal errors)
 || 

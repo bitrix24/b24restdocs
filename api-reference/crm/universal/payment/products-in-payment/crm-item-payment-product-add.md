@@ -1,4 +1,4 @@
-# Add Product Item to Payment crm.item.payment.product.add
+# Adding a Product Item to Payment crm.item.payment.product.add
 
 {% note tip "" %}
 
@@ -8,32 +8,30 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
-> Who can execute the method: requires access permission to modify the order to which the product item is being added
+> Who can execute the method: access permission to modify the order to which the product item is being added is required.
 
 This method adds a product item to the payment.
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../../../_includes/required.md) %}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
-|| **paymentId***
-[`sale_order_payment.id`](../../../../sale/data-types.md#sale_order_payment) | Payment identifier.
-Can be obtained using the method [`sale.payment.list`](../../../../sale/payment/sale-payment-list.md)
- ||
- || **rowId***
-[`integer`](../../../../data-types.md) | Identifier of the product item in the CRM object.
-Can be obtained using [`crm.item.productrow.list`](../../../../crm/universal/product-rows/crm-item-productrow-list.md)
- ||
- || **quantity***
+|| **paymentId*** 
+[`sale_order_payment.id`](../../../../sale/data-types.md#sale_order_payment) | Identifier of the payment. 
+Can be obtained using the [`sale.payment.list`](../../../../sale/payment/sale-payment-list.md) method ||
+|| **rowId*** 
+[`integer`](../../../../data-types.md) | Identifier of the product item in the CRM object. 
+Can be obtained using [`crm.item.productrow.list`](../../../../crm/universal/product-rows/crm-item-productrow-list.md) ||
+|| **quantity*** 
 [`double`](../../../../data-types.md)| Quantity of the product ||
 |#
 
 ## Code Examples
 
-{% include [Note on examples](../../../../../_includes/examples.md) %}
+{% include [Note on Examples](../../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -62,20 +60,20 @@ Can be obtained using [`crm.item.productrow.list`](../../../../crm/universal/pro
     ```js
     try
     {
-    	const response = await $b24.callMethod(
-    		'crm.item.payment.product.add', {
-    			paymentId: 1039,
-    			rowId: 17587,
-    			quantity: 2
-    		}
-    	);
-    	
-    	const result = response.getData().result;
-    	console.log(result);
+        const response = await $b24.callMethod(
+            'crm.item.payment.product.add', {
+                paymentId: 1039,
+                rowId: 17587,
+                quantity: 2
+            }
+        );
+        
+        const result = response.getData().result;
+        console.log(result);
     }
     catch( error )
     {
-    	console.error(error);
+        console.error(error);
     }
     ```
 
@@ -148,7 +146,7 @@ Can be obtained using [`crm.item.productrow.list`](../../../../crm/universal/pro
 
 ## Successful Response
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -166,18 +164,18 @@ HTTP status: **200**
 
 ### Returned Data
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **result**
 [`integer`](../../../../data-types.md) | Identifier of the product item in the payment ||
 || **time**
-[`time`](../../../../data-types.md) | Information about the execution time of the request ||
+[`time`](../../../../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {
@@ -186,11 +184,11 @@ HTTP status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../../../_includes/error-info.md) %}
+{% include notitle [Error Handling](../../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
-#|
+#| 
 || **Code** | **Description** ||
 || `0` | Payment not found ||
 || `0` | Access denied ||
@@ -201,7 +199,11 @@ HTTP status: **400**
 || `0` | Other errors (e.g., fatal errors) ||
 |#
 
-{% include notitle [system errors](../../../../../_includes/system-errors.md) %}
+### Error Handling Features
+
+For business errors, the method may return `error: 0`. In this case, refer to `error_description` and match it against the list of errors above.
+
+{% include notitle [System Errors](../../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

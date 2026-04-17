@@ -8,37 +8,41 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`landing`](../../../scopes/permissions.md)
 >
-> Who can execute the method: user with "edit" access permission for the site
+> Who can execute the method: a user with "edit" access permission for the site
 
 The method `landing.block.removecard` removes a card from a block in the draft of a page.
 
-This method only works with cards described in the `cards` key of the block manifest. If the page is already published, the change will be visible to visitors after publication through the interface or via the method [landing.landing.publication](../../page/methods/landing-landing-publication.md).
+This method only works with cards described in the `cards` key of the block manifest. If the page is already published, the change will be visible to visitors after publication through the interface or by using the [landing.landing.publication](../../page/methods/landing-landing-publication.md) method.
 
 ## Method Parameters
 
-{% include [Footnote about required parameters](../../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../../_includes/required.md) %}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
-|| **lid***
+|| **scope**
+[`string`](../../../data-types.md) | Internal scope of landings. It is not related to the REST scope `landing` in the method name.
+
+The value of `scope` must correspond to the type of site [(detailed description)](../../types.md) ||
+|| **lid*** 
 [`integer`](../../../data-types.md) | Identifier of the page.
 
-The page identifier can be obtained using the method [landing.landing.getlist](../../page/methods/landing-landing-get-list.md) ||
-|| **block***
+The page identifier can be obtained using the [landing.landing.getlist](../../page/methods/landing-landing-get-list.md) method ||
+|| **block*** 
 [`integer`](../../../data-types.md) | Identifier of the block in the editable version of the page.
 
-The block identifier can be obtained using the method [landing.block.getlist](./landing-block-get-list.md) with the parameter `params.edit_mode = 1`. If you pass the block identifier from the published version of the page, the method may return an error ||
-|| **selector***
-[`string`](../../../data-types.md) | Selector of the card from the [section `cards` of the block manifest](../manifest.md#key-cards)
+The block identifier can be obtained using the [landing.block.getlist](./landing-block-get-list.md) method with the parameter `params.edit_mode = 1`. If you pass the block identifier from the published version of the page, the method may return an error ||
+|| **selector*** 
+[`string`](../../../data-types.md) | Selector of the card from the [cards section of the block manifest](../manifest.md#key-cards)
 
 The method searches for cards using this selector and removes the one whose index is specified after `@<index>`. The index is counted only among the found cards. The numbering starts from `0`: 
 - `.landing-block-card@0` removes the first found card, 
 - `.landing-block-card@2` removes the third found card.
 
-If the index is not specified and only `.landing-block-card` is provided, the method will return an error. If an empty or non-numeric value is specified after `@`, the method will interpret it as `0` and attempt to remove the first card.
+If the index is not specified and only `.landing-block-card` is passed, the method will return an error. If a blank or non-numeric value is specified after `@`, the method will interpret it as `0` and attempt to remove the first card.
 
-The method will also return an error if the selector is not in the manifest, if there are no cards in the block with that selector, or if the index is out of bounds of the list ||
+The method will also return an error if the selector is not present in the manifest, if there are no cards in the block with that selector, or if the index is out of bounds of the list ||
 || **preventHistory**
 [`boolean`](../../../data-types.md) | Do not add the action to the page change history.
 
@@ -51,7 +55,7 @@ Default is `false` ||
 
 ## Code Examples
 
-{% include [Footnote about examples](../../../../_includes/examples.md) %}
+{% include [Note on Examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -205,13 +209,13 @@ HTTP Status: **200**
 
 ### Returned Data
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **result**
 [`boolean`](../../../data-types.md) | Result of the card removal. Returns `true` upon successful execution ||
 || **time**
-[`time`](../../../data-types.md#time) | Information about the request execution time ||
+[`time`](../../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
@@ -229,13 +233,13 @@ HTTP Status: **400**
 
 ### Possible Error Codes
 
-#|
+#| 
 || **Code** | **Description** ||
 || `MISSING_PARAMS` | Required parameter `lid`, `block`, or `selector` is missing ||
 || `LANDING_NOT_EXIST` | Page with identifier `lid` not found or not accessible to the current user ||
 || `ACCESS_DENIED` | User does not have permission to edit the page and block ||
 || `BLOCK_NOT_FOUND` | Block with identifier `block` not found on page `lid` or not accessible in the editable version of the page ||
-|| `CARD_NOT_FOUND` | No card found in the block with selector `selector`. This error is returned if the position is not specified, the selector is not in `manifest.cards`, no cards are found by it, or the index is out of bounds of the found cards ||
+|| `CARD_NOT_FOUND` | No card found in the block with the selector `selector`. This error is returned if the position is not specified, the selector is not in `manifest.cards`, no cards are found for it, or the index is out of bounds of the found cards ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

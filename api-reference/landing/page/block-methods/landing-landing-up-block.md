@@ -8,23 +8,27 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`landing`](../../../scopes/permissions.md)
 >
-> Who can execute the method: user with "edit" access permission for the site
+> Who can execute the method: a user with "edit" access permission for the site
 
-The method `landing.landing.upblock` moves a block one position up in the page draft. If the page is already published, the change will be visible to visitors after the "Publish changes" command in the interface or after calling the method [landing.landing.publication](../methods/landing-landing-publication.md).
+The method `landing.landing.upblock` moves a block one position up in the draft of the page. If the page is already published, the change will be visible to visitors after the "Publish Changes" command in the interface or after calling the method [landing.landing.publication](../methods/landing-landing-publication.md).
 
 ## Method Parameters
 
 {% include [Note on required parameters](../../../../_includes/required.md) %}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
-|| **lid***
-[`integer`](../../../data-types.md) | Page identifier.
+|| **scope**
+[`string`](../../../data-types.md) | Internal scope of the landing. It is not related to the REST scope `landing` in the method name.
+
+The value of `scope` must correspond to the type of site [(detailed description)](../../types.md) ||
+|| **lid*** 
+[`integer`](../../../data-types.md) | Identifier of the page.
 
 The page identifier can be obtained using the method [landing.landing.getList](../methods/landing-landing-get-list.md), as well as from the results of the methods [landing.landing.add](../methods/landing-landing-add.md), [landing.landing.addByTemplate](../methods/landing-landing-add-by-template.md), and [landing.landing.copy](../methods/landing-landing-copy.md) ||
-|| **block***
-[`integer`](../../../data-types.md) | Block identifier in the editable version of the page.
+|| **block*** 
+[`integer`](../../../data-types.md) | Identifier of the block in the editable version of the page.
 
 The block identifier can be obtained using the method [landing.block.getList](../../block/methods/landing-block-get-list.md) with the parameter `params.edit_mode = 1` ||
 || **preventHistory**
@@ -181,13 +185,13 @@ HTTP Status: **200**
 
 ### Returned Data
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **result**
 [`boolean`](../../../data-types.md) | Result of the move. Returns `true` on successful execution ||
 || **time**
-[`time`](../../../data-types.md#time) | Information about the request execution time ||
+[`time`](../../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
@@ -197,7 +201,7 @@ HTTP Status: **400**
 ```json
 {
     "error": "BLOCK_WRONG_SORT",
-    "error_description": "Out of sort bounds or block not found"
+    "error_description": "Out of sorting bounds or block not found"
 }
 ```
 
@@ -205,14 +209,14 @@ HTTP Status: **400**
 
 ### Possible Error Codes
 
-#|
+#| 
 || **Code** | **Description** ||
-|| `MISSING_PARAMS` | Required parameter `lid` or `block` not provided ||
+|| `MISSING_PARAMS` | Required parameter `lid` or `block` is missing ||
 || `LANDING_NOT_EXIST` | Page with identifier `lid` not found or not accessible to the current user ||
 || `ACCESS_DENIED` | User does not have permission to call the method or does not have permission to edit the page `lid` ||
 || `BLOCK_NOT_FOUND` | Block with identifier `block` not found on page `lid`, already marked as deleted, or not accessible in the editable version of the page ||
-|| `BLOCK_WRONG_SORT` | Block is already at the top of the page, so it cannot be moved higher ||
-|| `TYPE_ERROR` | Incorrect type provided for parameter `lid`, `block`, or `preventHistory` ||
+|| `BLOCK_WRONG_SORT` | Block is already at the top of the page, so it cannot be moved up further ||
+|| `TYPE_ERROR` | Incorrect type passed in parameter `lid`, `block`, or `preventHistory` ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

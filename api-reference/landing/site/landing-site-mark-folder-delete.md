@@ -1,4 +1,4 @@
-# Mark Folder as Deleted landing.account.markFolderDelete
+# Mark a Folder as Deleted landing.site.markFolderDelete
 
 {% note tip "" %}
 
@@ -8,21 +8,25 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`landing`](../../scopes/permissions.md)
 >
-> Who can execute the method: a user with "delete" access permission for the site to which the folder belongs
+> Who can execute the method: a user with the "delete" access permission for the site to which the folder belongs
 
-The method `landing.account.markFolderDelete` marks a folder as deleted and moves it to the trash. Upon successful execution, the method also marks the pages within this folder and any nested folders as deleted.
+The method `landing.site.markFolderDelete` marks a folder as deleted and moves it to the trash. Upon successful execution, the method also marks the pages within this folder and any nested folders as deleted.
 
 ## Method Parameters
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
 
-#|
-|| **Name**
+#| 
+|| **Name** 
 `type` | **Description** ||
-|| **id***
+|| **scope** 
+[`string`](../../data-types.md) | Internal scope of the landing pages. It is not related to the REST scope `landing` in the method name.
+
+The value of `scope` must correspond to the type of site [(detailed description)](../types.md) ||
+|| **id*** 
 [`integer`](../../data-types.md) | Identifier of the folder.
 
-The folder identifier can be obtained using the [landing.account.getFolders](./landing-site-get-folders.md) method ||
+The folder identifier can be obtained using the [landing.site.getFolders](./landing-site-get-folders.md) method ||
 |#
 
 ## Code Examples
@@ -39,7 +43,7 @@ The folder identifier can be obtained using the [landing.account.getFolders](./l
       -d '{
         "id": 737
       }' \
-      "https://**put.your-domain-here**/rest/**user_id**/**webhook_code**/landing.account.markFolderDelete.json"
+      "https://**put.your-domain-here**/rest/**user_id**/**webhook_code**/landing.site.markFolderDelete.json"
     ```
 
 - cURL (OAuth)
@@ -51,7 +55,7 @@ The folder identifier can be obtained using the [landing.account.getFolders](./l
         "id": 737,
         "auth": "**put_access_token_here**"
       }' \
-      "https://**put.your-domain-here**/rest/landing.account.markFolderDelete.json"
+      "https://**put.your-domain-here**/rest/landing.site.markFolderDelete.json"
     ```
 
 - JS
@@ -59,19 +63,19 @@ The folder identifier can be obtained using the [landing.account.getFolders](./l
     ```js
     try
     {
-    	const response = await $b24.callMethod(
-    		'landing.account.markFolderDelete',
-    		{
-    			id: 737
-    		}
-    	);
+        const response = await $b24.callMethod(
+            'landing.site.markFolderDelete',
+            {
+                id: 737
+            }
+        );
 
-    	const result = response.getData().result;
-    	console.info(result);
+        const result = response.getData().result;
+        console.info(result);
     }
     catch (error)
     {
-    	console.error(error);
+        console.error(error);
     }
     ```
 
@@ -82,7 +86,7 @@ The folder identifier can be obtained using the [landing.account.getFolders](./l
         $response = $b24Service
             ->core
             ->call(
-                'landing.account.markFolderDelete',
+                'landing.site.markFolderDelete',
                 [
                     'id' => 737,
                 ]
@@ -103,7 +107,7 @@ The folder identifier can be obtained using the [landing.account.getFolders](./l
 
     ```js
     BX24.callMethod(
-        'landing.account.markFolderDelete',
+        'landing.site.markFolderDelete',
         {
             id: 737
         },
@@ -127,7 +131,7 @@ The folder identifier can be obtained using the [landing.account.getFolders](./l
     require_once('crest.php');
 
     $result = CRest::call(
-        'landing.account.markFolderDelete',
+        'landing.site.markFolderDelete',
         [
             'id' => 737,
         ]
@@ -169,12 +173,12 @@ HTTP Status: **200**
 
 ### Returned Data
 
-#|
-|| **Name**
+#| 
+|| **Name** 
 `type` | **Description** ||
-|| **result**
-[`boolean`](../../data-types.md) | Returns `true` if the folder was successfully marked as deleted ||
-|| **time**
+|| **result** 
+[`boolean`](../../data-types.md) | Returns `true` if the folder is successfully marked as deleted ||
+|| **time** 
 [`time`](../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
@@ -193,10 +197,10 @@ HTTP Status: **400**
 
 ### Possible Error Codes
 
-#|
+#| 
 || **Code** | **Description** ||
-|| `MISSING_PARAMS` | The required parameter `id` was not provided ||
-|| `ACCESS_DENIED` | The folder was not found or access to it is denied ||
+|| `MISSING_PARAMS` | Required parameter `id` is missing ||
+|| `ACCESS_DENIED` | Folder not found or access to it is denied ||
 || `FOLDER_CONTAINS_AREAS` | The folder or one of its nested folders contains included areas ||
 || `TYPE_ERROR` | Data type error in the method call parameters ||
 || `SYSTEM_ERROR` | Internal error during method execution ||

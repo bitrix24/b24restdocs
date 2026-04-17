@@ -1,4 +1,4 @@
-# Get the Manifest of the Block `landing.block.getmanifest`
+# Get the Manifest of the `landing.block.getmanifest` Method
 
 {% note tip "" %}
 
@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: a user with "view" access permission for pages
 
-The method `landing.block.getmanifest` returns a prepared manifest of the block placed on the page.
+The `landing.block.getmanifest` method returns a prepared manifest of the block placed on the page.
 
 It does not return the original file but rather the prepared data for a specific block. For example, localized titles, fields such as `code`, `preview`, `assets`, `timestamp`, and `callbacks`.
 
@@ -18,28 +18,32 @@ It does not return the original file but rather the prepared data for a specific
 
 {% include [Note on Required Parameters](../../../../_includes/required.md) %}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
-|| **lid***
+|| **scope**
+[`string`](../../../data-types.md) | Internal scope of the landing. It is not related to the REST scope `landing` in the method name.
+
+The value of `scope` must correspond to the type of site [(detailed description)](../../types.md) ||
+|| **lid*** 
 [`integer`](../../../data-types.md) | Page identifier.
 
-The page identifier can be obtained using the method [landing.landing.getlist](../../page/methods/landing-landing-get-list.md) ||
-|| **block***
+The page identifier can be obtained using the [landing.landing.getlist](../../page/methods/landing-landing-get-list.md) method ||
+|| **block*** 
 [`integer`](../../../data-types.md) | Block identifier. The block must belong to the page `lid` in the selected version of the page.
 
-The block identifier can be obtained using the method [landing.block.getlist](./landing-block-get-list.md) ||
+The block identifier can be obtained using the [landing.block.getlist](./landing-block-get-list.md) method ||
 || **params**
 [`object`](../../../data-types.md) | Additional parameters for reading the manifest [(detailed description)](#params) ||
 |#
 
 ### Parameter params {#params}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **edit_mode**
-[`boolean`](../../../data-types.md) \| [`integer`](../../../data-types.md) | If the value is converted to `true`, the method reads the draft of the page instead of the published version. By default, it is `false`.
+[`boolean`](../../../data-types.md) \| [`integer`](../../../data-types.md) | If the value is cast to `true`, the method reads the draft of the page instead of the published version. Default is `false`.
 
 Without this parameter, the method searches for the block only in the published version of the page. ||
 |#
@@ -198,13 +202,13 @@ HTTP Status: **200**
 {
     "result": {
         "block": {
-            "name": "Light Background Centered Form",
+            "name": "Form on a light background in the center",
             "section": [
                 "forms"
             ],
             "dynamic": false,
             "subtype": "form",
-            "attrsFormDescription": "<a href=\"/crm/webform/\" target=\"_blank\">Configure CRM Forms</a>"
+            "attrsFormDescription": "<a href=\"/crm/webform/\" target=\"_blank\">Configure CRM forms</a>"
         },
         "nodes": {
             "#wrapper": {
@@ -259,31 +263,31 @@ HTTP Status: **200**
                     "hidden": true
                 },
                 {
-                    "name": "CRM Form",
+                    "name": "CRM form",
                     "attribute": "data-b24form",
                     "items": [
                         {
-                            "name": "Feedback Form",
+                            "name": "Feedback form",
                             "value": "#crmFormInline3"
                         },
                         {
-                            "name": "Contact Information with Comment",
+                            "name": "Contact details with comment",
                             "value": "#crmFormInline39"
                         }
                     ],
                     "type": "list"
                 },
                 {
-                    "name": "Form Design",
+                    "name": "Form design",
                     "attribute": "data-b24form-use-style",
                     "type": "list",
                     "items": [
                         {
-                            "name": "Use Block Design",
+                            "name": "Use block design",
                             "value": "Y"
                         },
                         {
-                            "name": "Use CRM Form Design",
+                            "name": "Use CRM form design",
                             "value": "N"
                         }
                     ]
@@ -311,26 +315,26 @@ HTTP Status: **200**
 
 ### Returned Data
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../../data-types.md) | Prepared manifest of the block [(detailed description)](#result). The general format of the manifest is described in the article [Manifest File](../manifest.md).
+[`object`](../../../data-types.md) | The prepared manifest of the block [(detailed description)](#result). The general format of the manifest is described in the article [Manifest File](../manifest.md).
 
-Empty sections of the manifest may return as empty arrays `[]`, even if they usually contain an object with keys. ||
+Empty sections of the manifest may return as empty arrays `[]`, even if they usually contain an object with keys ||
 || **time**
-[`time`](../../../data-types.md#time) | Information about the execution time of the request. ||
+[`time`](../../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
 ### Object result {#result}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **block**
 [`object`](../../../data-types.md) | Main properties of the block from the manifest [(detailed description)](#block) ||
 || **cards**
-[`object`](../../../data-types.md) | Description of the block's cards, if any.
+[`object`](../../../data-types.md) | Description of the block cards, if any.
 
 If there are no cards, it may return an empty array `[]` ||
 || **nodes**
@@ -344,40 +348,40 @@ For nodes with a separate handler in the editor, the method also adds a `handler
 
 If there are no attributes, it may return an empty array `[]` ||
 || **menu**
-[`object`](../../../data-types.md) | Description of the block's menu, if any.
+[`object`](../../../data-types.md) | Description of the block menu, if any.
 
 If there is no menu, it may return an empty array `[]` ||
 || **style**
 [`object`](../../../data-types.md) | Description of available style settings for the block.
 
-If the original manifest does not separate styles into `style.block` and `style.nodes`, the method will sort them into these sections itself. ||
+If the original manifest does not separate styles into `style.block` and `style.nodes`, the method will sort them into these sections itself ||
 || **namespace**
 [`string`](../../../data-types.md) | Namespace of the block.
 
-For built-in blocks in Bitrix24, this is usually `bitrix`. For blocks from applications, the value is set by the application, so it may differ or be empty. ||
+For built-in blocks in Bitrix24, this is usually `bitrix`. For blocks from applications, the value is set by the application, so it may differ or be empty ||
 || **code**
 [`string`](../../../data-types.md) | Block code ||
 || **preview**
 [`string`](../../../data-types.md) | Relative path to the preview file `preview.jpg`.
 
-If the preview file is missing, an empty string will be returned. For blocks registered via REST API or applications, this field returns an empty string. ||
+If the preview file is missing, an empty string will be returned. For blocks registered via REST API or applications, this field returns an empty string ||
 || **assets**
 [`object`](../../../data-types.md) | Block resources [(detailed description)](#assets) ||
 || **timestamp**
 [`integer`](../../../data-types.md) | Time of the base manifest update in Unix Timestamp format.
 
-For a local block, this is the time the file `block.php` was modified. For a block from an application, this is the time of the last update of the block in the application. ||
+For a local block, this is the time of the file `block.php` modification. For a block from an application, this is the time of the last update of the block in the application ||
 || **callbacks**
-[`object`](../../../data-types.md) | Callback handlers from the block's manifest.
+[`object`](../../../data-types.md) | Callback handlers from the block manifest.
 
-The names of the handlers are converted to lowercase by the method. ||
+The names of the handlers are converted to lowercase by the method ||
 |#
 
 The `result` may contain other keys from the original manifest. Their composition depends on the specific block.
 
 ### Object block {#block}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **name**
@@ -390,11 +394,11 @@ The `result` may contain other keys from the original manifest. Their compositio
 [`string`](../../../data-types.md) \| [`string[]`](../../../data-types.md) | Subtype of the block, if specified ||
 |#
 
-The `block` object may contain other fields of the manifest. Their set depends on the specific block.
+In the `block` object, there may be other fields of the manifest. Their set depends on the specific block.
 
 ### Object assets {#assets}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **css**
@@ -402,23 +406,23 @@ The `block` object may contain other fields of the manifest. Their set depends o
 
 This includes paths from the manifest and any automatically found local `style.css`, if available.
 
-For design local blocks, `design_style.css` is automatically included instead of `style.css`. ||
+For design local blocks, `design_style.css` is automatically included instead of `style.css` ||
 || **js**
 [`string[]`](../../../data-types.md) | List of JS resources for the block.
 
-This includes paths from the manifest and any automatically found local `script.js`, if available. ||
+This includes paths from the manifest and any automatically found local `script.js`, if available ||
 || **ext**
 [`string[]`](../../../data-types.md) | List of client extensions for the block.
 
-For REST blocks, the method returns only extensions from the allowed list. ||
+For REST blocks, the method returns only extensions from the allowed list ||
 || **class**
 [`string[]`](../../../data-types.md) | Service paths to PHP classes of the block on the server.
 
-For most standard calls, this array is empty or not needed for client code. ||
+For most regular calls, this array is empty or not needed for client code ||
 || **callbacks**
 [`array`](../../../data-types.md) | List of callback functions from the `assets` section of the manifest, if declared.
 
-Unlike `result.callbacks`, this field pertains to the block's resources, not the block's handlers. ||
+Unlike `result.callbacks`, this field pertains to the resources of the block, not to the handlers of the block itself ||
 |#
 
 ## Error Handling
@@ -432,19 +436,19 @@ HTTP Status: **400**
 }
 ```
 
-{% include notitle [Error Handling](../../../../_includes/error-info.md) %}
+{% include notitle [error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
-#|
+#| 
 || **Code** | **Description** ||
 || `MISSING_PARAMS` | Required parameter `lid` or `block` is missing ||
-|| `ACCESS_DENIED` | The user does not have permission to view the page ||
-|| `LANDING_NOT_EXIST` | The page with identifier `lid` was not found, deleted, or is not accessible to the current user ||
-|| `BLOCK_NOT_FOUND` | The block with identifier `block` was not found on the page in the selected version ||
+|| `ACCESS_DENIED` | User does not have permission to view the page ||
+|| `LANDING_NOT_EXIST` | Page with identifier `lid` not found, deleted, or unavailable to the current user ||
+|| `BLOCK_NOT_FOUND` | Block with identifier `block` not found on the page in the selected version ||
 |#
 
-{% include [System Errors](../../../../_includes/system-errors.md) %}
+{% include [system errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

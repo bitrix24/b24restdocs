@@ -1,4 +1,4 @@
-# Get Property Value by ID sale.propertyvalue.get
+# Get Property Value with sale.propertyvalue.get
 
 {% note tip "" %}
 
@@ -10,16 +10,16 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: administrator
 
-This method retrieves the property value by ID.
+This method retrieves the property value by its identifier.
 
 ## Method Parameters
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
-|| **id***
+|| **id*** 
 [`sale_order_property_value.id`](../data-types.md) | Identifier of the order property value ||
 |#
 
@@ -54,18 +54,18 @@ This method retrieves the property value by ID.
     ```js
     try
     {
-    	const response = await $b24.callMethod(
-    		"sale.propertyvalue.get", {
-    			"id": 13176
-    		}
-    	);
-    	
-    	const result = response.getData().result;
-    	console.info(result);
+        const response = await $b24.callMethod(
+            "sale.propertyvalue.get", {
+                "id": 13176
+            }
+        );
+        
+        const result = response.getData().result;
+        console.info(result);
     }
     catch( error )
     {
-    	console.error(error);
+        console.error(error);
     }
     ```
 
@@ -160,7 +160,7 @@ HTTP Status: **200**
 
 ### Returned Data
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **result**
@@ -186,7 +186,7 @@ HTTP Status: **400**
 
 ### Possible Error Codes
 
-#|
+#| 
 || **Code** | **Description** ||
 || `201040400001` | Property value not found ||
 || `200040300010` | Insufficient permissions to read the property value ||

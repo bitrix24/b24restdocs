@@ -16,13 +16,17 @@ The method `landing.site.getPublicUrl` returns the complete public URL of a site
 
 {% include [Note on Required Parameters](../../../_includes/required.md) %}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
-|| **id***
+|| **scope**
+[`string`](../../data-types.md) | Internal scope of the landing pages. It is not related to the REST scope `landing` in the method name.
+
+The value of `scope` must correspond to the type of site [(detailed description)](../types.md) ||
+|| **id*** 
 [`integer`](../../data-types.md) \| [`array`](../../data-types.md) | Identifier of the site or an array of site identifiers. If a single identifier is provided, the `result` will return a URL string.
 
-If an array of identifiers is provided, the `result` will return an object of the form `{"<ID>": "<URL>"}` only for the found sites.
+If an array of identifiers is provided, the `result` will return an object in the form `{"<ID>": "<URL>"}` only for the found sites.
 
 The site identifier can be obtained using the method [landing.site.getList](./landing-site-get-list.md) or from the result of the method [landing.site.add](./landing-site-add.md) ||
 |#
@@ -174,13 +178,13 @@ HTTP Status: **200**
 
 ### Returned Data
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **result**
 [`string`](../../data-types.md) \| [`object`](../../data-types.md) \| [`array`](../../data-types.md) | The result depends on the type of the input parameter `id`.
 
-If a single `id` is provided, the method returns a string with the site URL. If an array of `id` is provided, the method returns an object of the form `{"<ID>": "<URL>"}` [(detailed description)](#result-map).
+If a single `id` is provided, the method returns a string with the site URL. If an array of `id` is provided, the method returns an object in the form `{"<ID>": "<URL>"}` [(detailed description)](#result-map).
 
 If the site is not found, an empty string `""` is returned for a single `id`, and an empty array `[]` may be returned for an array of `id` ||
 || **time**
@@ -189,11 +193,11 @@ If the site is not found, an empty string `""` is returned for a single `id`, an
 
 #### Result Object for Array of IDs {#result-map}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **<Site ID>**
-[`string`](../../data-types.md) | Complete public URL of the site. The URL may be returned without a trailing `/` ||
+[`string`](../../data-types.md) | Full public URL of the site. The URL may be returned without a trailing `/` ||
 |#
 
 ## Error Handling
@@ -203,7 +207,7 @@ HTTP Status: **400**
 ```json
 {
     "error": "MISSING_PARAMS",
-    "error_description": "Insufficient call parameters, missing: id"
+    "error_description": "Not enough parameters for the call, missing: id"
 }
 ```
 
@@ -211,9 +215,9 @@ HTTP Status: **400**
 
 ### Possible Error Codes
 
-#|
+#| 
 || **Code** | **Description** ||
-|| `MISSING_PARAMS` | The required parameter `id` was not provided ||
+|| `MISSING_PARAMS` | Required parameter `id` is missing ||
 || `ACCESS_DENIED` | Insufficient permissions to call the method ||
 || `TYPE_ERROR` | Data type error in the method call parameters ||
 || `SYSTEM_ERROR` | Internal error during method execution ||

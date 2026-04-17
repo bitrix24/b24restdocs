@@ -14,24 +14,28 @@ The method `landing.landing.removeEntities` removes specified blocks and their a
 
 ## Method Parameters
 
-{% include [Footnote on required parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
-|| **lid***
+|| **scope**
+[`string`](../../../data-types.md) | Internal scope of the landing. It is not related to the REST scope `landing` in the method name.
+
+The value of `scope` must correspond to the type of site [(detailed description)](../../types.md) ||
+|| **lid*** 
 [`integer`](../../../data-types.md) | Page identifier.
 
 The page identifier can be obtained using the method [landing.landing.getList](./landing-landing-get-list.md), as well as from the results of the methods [landing.landing.add](./landing-landing-add.md), [landing.landing.addByTemplate](./landing-landing-add-by-template.md), and [landing.landing.copy](./landing-landing-copy.md) ||
-|| **data***
-[`object`](../../../data-types.md) | A set of objects to be removed [(detailed description)](#data).
+|| **data*** 
+[`object`](../../../data-types.md) | Set of objects to be deleted [(detailed description)](#data).
 
-If no blocks or images are specified for removal, the page will remain unchanged. However, the method will still return `true` if the page exists ||
+If no blocks or images are specified for deletion, the page will remain unchanged. However, the method will still return `true` if the page exists ||
 |#
 
 ### Parameter data {#data}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **blocks**
@@ -39,32 +43,32 @@ If no blocks or images are specified for removal, the page will remain unchanged
 
 For each block, the method also deletes all associated images.
 
-If the list includes blocks that are not present on the page or blocks that the user cannot delete, the method will skip them. For an existing accessible page, it may return `true`, even if some or all blocks from the list were not removed ||
+If the list includes blocks that are not on the page or blocks that the user cannot delete, the method will skip them. For an existing accessible page, it may return `true` even if some or all blocks from the list were not deleted ||
 || **images**
-[`object[]`](../../../data-types.md) | Pairs of block and image identifiers for removing file bindings. The content of the block remains unchanged — use this when the image has already been removed from the block and you need to clear the remaining service record. [(detailed description)](#images).
+[`object[]`](../../../data-types.md) | Pairs of block and image identifiers for deleting file bindings. The content of the block remains unchanged — use this when the image has already been removed from the block and you need to clear the remaining service record. [(detailed description)](#images).
 
 The method will not return a separate error in three cases: if the block is not found, if it is already specified in the `blocks` parameter, or if the image is not associated with this block ||
 |#
 
 ### Parameter images {#images}
 
-{% include [Footnote on required parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
-|| **block***
+|| **block*** 
 [`integer`](../../../data-types.md) | Identifier of the block associated with the image file binding ||
-|| **image***
+|| **image*** 
 [`integer`](../../../data-types.md) | Internal identifier of the image file binding (`FILE_ID`) associated with the block `block`.
 
-For existing images, `FILE_ID` can be obtained using the method [landing.block.getcontent](../../block/methods/landing-block-get-content.md). In the response, you need to find the HTML block in the `content` field and check the value of the `data-fileid` attribute for the desired image
+For existing images, `FILE_ID` can be obtained using the method [landing.block.getcontent](../../block/methods/landing-block-get-content.md). In the response, you need to find the HTML of the block in the `content` field and check the value of the `data-fileid` attribute for the required image
 ||
 |#
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 This example demonstrates a mixed scenario: blocks from `blocks` are completely removed, while `images` elements clear file bindings for images in other blocks.
 
@@ -286,11 +290,11 @@ HTTP Status: **200**
 
 ### Returned Data
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../../data-types.md) | Result of the removal, returns `true` on success ||
+[`boolean`](../../../data-types.md) | Result of the deletion, returns `true` on success ||
 || **time**
 [`time`](../../../data-types.md#time) | Information about the execution time of the request ||
 |#
@@ -310,10 +314,10 @@ HTTP Status: **400**
 
 ### Possible Error Codes
 
-#|
+#| 
 || **Code** | **Description** ||
-|| `MISSING_PARAMS` | Required parameters are not provided: the request is missing `lid`, `data`, or both parameters ||
-|| `LANDING_NOT_EXIST` | The page is not found, deleted, or inaccessible to the current user ||
+|| `MISSING_PARAMS` | Required parameters are not set: `lid`, `data`, or both parameters are missing in the request ||
+|| `LANDING_NOT_EXIST` | Page not found, deleted, or inaccessible to the current user ||
 || `TYPE_ERROR` | Data type error in the method call parameters ||
 || `SYSTEM_ERROR` | Internal error during method execution ||
 |#

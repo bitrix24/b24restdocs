@@ -2,7 +2,7 @@
 
 {% note tip "" %}
 
-If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect the [MCP server](../../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
 
 {% endnote %}
 
@@ -10,25 +10,29 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: a user with "edit" access permission for the site
 
-The method `landing.landing.copy` duplicates a page and returns the identifier of the new page. This method can also copy a page marked as deleted and located in the trash.
+The method `landing.landing.copy` copies a page and returns the identifier of the new page. This method can also copy a page marked as deleted and located in the trash.
 
 ## Method Parameters
 
-{% include [Footnote on required parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
+|| **scope**
+[`string`](../../../data-types.md) | Internal scope of landings. It is not related to the REST scope `landing` in the method name.
+
+The value of `scope` must correspond to the type of site [(detailed description)](../../types.md) ||
 || **lid***
-[`integer`](../../../data-types.md) | Identifier of the original page.
+[`integer`](../../../data-types.md) | Identifier of the source page.
 
 The page identifier can be obtained using the method [landing.landing.getList](./landing-landing-get-list.md) ||
 || **toSiteId**
-[`integer`](../../../data-types.md) | Identifier of the target site. If this parameter is not provided or set to `0`, the copy will be created on the same site as the original page.
+[`integer`](../../../data-types.md) | Identifier of the target site. If this parameter is not provided or set to `0`, the copy will be created in the same site where the source page is located.
 
 The site identifier can be obtained using the method [landing.site.getList](../../site/landing-site-get-list.md) ||
 || **toFolderId**
-[`integer`](../../../data-types.md) | Identifier of the target folder. If this parameter is provided, the copy is created in the specified folder. The folder must belong to the target site `toSiteId`. 
+[`integer`](../../../data-types.md) | Identifier of the target folder. If this parameter is provided, the copy is created in the specified folder. The folder must belong to the target site `toSiteId`.
 
 If this parameter is not provided or set to `0`, the copy is created in the root of the target site. If the folder is not found or belongs to another site, the method does not return an error and creates the copy in the root of the target site.
 
@@ -42,7 +46,7 @@ If set to `true`, the new page is created as non-system (`SYS = N`)
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -200,7 +204,7 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`integer`](../../../data-types.md) | Identifier of the created page copy ||
+[`integer`](../../../data-types.md) | Identifier of the created copy of the page ||
 || **time**
 [`time`](../../../data-types.md#time) | Information about the execution time of the request ||
 |#
@@ -222,7 +226,7 @@ HTTP Status: **400 Bad Request**
 
 #|
 || **Code** | **Description** ||
-|| `LANDING_NOT_EXIST` | Landing not found. If the original page does not exist or is not accessible to the current user. Being in the trash does not trigger this error by itself. ||
+|| `LANDING_NOT_EXIST` | Landing not found. If the source page does not exist or is not accessible to the current user. Being in the trash does not trigger this error by itself ||
 || `SITE_NOT_FOUND` | Site not found. If `toSiteId` points to a non-existent site ||
 || `ACCESS_DENIED` | Access to create the page is denied. If the user does not have "edit" access permission for the site ||
 |#

@@ -1,14 +1,14 @@
-# Save to the block list landing.landing.favoriteBlock
+# Save to the list of blocks landing.landing.favoriteBlock
 
 {% note tip "" %}
 
-If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect the [MCP server](../../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
 
 {% endnote %}
 
 > Scope: [`landing`](../../../scopes/permissions.md)
 >
-> Who can execute the method: user with "edit" access permission for the site
+> Who can execute the method: a user with "edit" access permission for the site
 
 The method `landing.landing.favoriteBlock` creates a copy of a page block and saves it to the block list as a template. Upon successful execution, the method returns the identifier of the new block copy.
 
@@ -16,17 +16,21 @@ The method `landing.landing.favoriteBlock` creates a copy of a page block and sa
 
 {% include [Note on required parameters](../../../../_includes/required.md) %}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
-|| **lid***
-[`integer`](../../../data-types.md) | Page identifier.
+|| **scope**
+[`string`](../../../data-types.md) | Internal scope of the landing. It is not related to the REST scope `landing` in the method name.
 
-The page identifier can be obtained using the [landing.landing.getList](../methods/landing-landing-get-list.md) method, as well as from the results of the [landing.landing.add](../methods/landing-landing-add.md), [landing.landing.addByTemplate](../methods/landing-landing-add-by-template.md), and [landing.landing.copy](../methods/landing-landing-copy.md) methods ||
-|| **block***
-[`integer`](../../../data-types.md) | Block identifier.
+The value of `scope` must correspond to the type of site [(detailed description)](../../types.md) ||
+|| **lid*** 
+[`integer`](../../../data-types.md) | Identifier of the page.
 
-The block identifier can be obtained using the [landing.block.getList](../../block/methods/landing-block-get-list.md) method with the parameter `params.edit_mode = 1` ||
+The page identifier can be obtained using the method [landing.landing.getList](../methods/landing-landing-get-list.md), as well as from the results of the methods [landing.landing.add](../methods/landing-landing-add.md), [landing.landing.addByTemplate](../methods/landing-landing-add-by-template.md), and [landing.landing.copy](../methods/landing-landing-copy.md) ||
+|| **block*** 
+[`integer`](../../../data-types.md) | Identifier of the block.
+
+The block identifier can be obtained using the method [landing.block.getList](../../block/methods/landing-block-get-list.md) with the parameter `params.edit_mode = 1` ||
 || **meta**
 [`object`](../../../data-types.md) | Parameters of the saved block [(detailed description)](#meta).
 
@@ -35,27 +39,27 @@ If the parameter is not provided, the method saves a copy of the block without a
 
 ### Parameter meta {#meta}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **name**
 [`string`](../../../data-types.md) | Name of the saved block copy in the block list.
 
-This is the user-defined name of the saved copy. It does not replace the standard name of the block. If the parameter is not provided, the original block name is used ||
+This is the custom name of the saved copy. It does not replace the standard name of the block. If the parameter is not provided, the original name of the block is used ||
 || **section**
 [`array`](../../../data-types.md) \| [`string`](../../../data-types.md) | Section or list of sections where the saved block will be displayed. If the parameter is not provided, the block will be shown in the same sections as the original block.
 
-You can use section codes from the [landing.block.getrepository](../../block/methods/landing-block-get-repository.md) method. If you provide a code that does not exist in the standard repository, a separate section will be created for it ||
+You can use section codes from the method [landing.block.getrepository](../../block/methods/landing-block-get-repository.md). If you provide a code that does not exist in the standard repository, a separate section will be created for it ||
 || **preview**
 [`integer`](../../../data-types.md) | Identifier of the preview image file.
 
-Provide the file ID of the image that has been pre-uploaded using the [landing.block.uploadfile](../../block/methods/landing-block-upload-file.md) method for the original block. The method saves this ID as the preview for the saved block copy.
+Pass the ID of the file with the image, pre-uploaded using the method [landing.block.uploadfile](../../block/methods/landing-block-upload-file.md) for the original block. The method saves this ID as the preview of the saved block copy.
 
-If the file is already linked to the original block as a user preview, this link will only change after the method successfully completes. If the method fails, the link to the original block will not change. If the parameter is not provided or equals `0`, the user preview is not saved ||
+If the file is already linked to the original block as a custom preview, this link will only change after the method successfully completes. If the method fails, the link to the original block will not change. If the parameter is not provided or equals `0`, the custom preview is not saved ||
 || **tpl_code**
 [`string`](../../../data-types.md) | Template code of the page to which the saved block should be linked.
 
-Providing this parameter is equivalent to checking the "Link to current style" checkbox in the editor. The value can be taken from the `TPL_CODE` field of the page, for example from the response of the [landing.landing.getList](../methods/landing-landing-get-list.md) method.
+Providing this parameter is equivalent to checking the "Link to current style" checkbox in the editor. The value can be taken from the `TPL_CODE` field of the page, for example from the response of the method [landing.landing.getList](../methods/landing-landing-get-list.md).
 
 This parameter is saved along with the metadata of the saved block and is used by the editor when working with such blocks. If the parameter is not provided, no special link to the template code is saved ||
 |#
@@ -75,7 +79,7 @@ This parameter is saved along with the metadata of the saved block and is used b
         "lid": 351,
         "block": 6428,
         "meta": {
-          "name": "Block with Benefits",
+          "name": "Block with Advantages",
           "section": ["text", "features"],
           "preview": 918273,
           "tpl_code": "bitrix24"
@@ -93,7 +97,7 @@ This parameter is saved along with the metadata of the saved block and is used b
         "lid": 351,
         "block": 6428,
         "meta": {
-          "name": "Block with Benefits",
+          "name": "Block with Advantages",
           "section": ["text", "features"],
           "preview": 918273,
           "tpl_code": "bitrix24"
@@ -114,7 +118,7 @@ This parameter is saved along with the metadata of the saved block and is used b
                 lid: 351,
                 block: 6428,
                 meta: {
-                    name: 'Block with Benefits',
+                    name: 'Block with Advantages',
                     section: ['text', 'features'],
                     preview: 918273,
                     tpl_code: 'bitrix24'
@@ -143,7 +147,7 @@ This parameter is saved along with the metadata of the saved block and is used b
                     'lid' => 351,
                     'block' => 6428,
                     'meta' => [
-                        'name' => 'Block with Benefits',
+                        'name' => 'Block with Advantages',
                         'section' => ['text', 'features'],
                         'preview' => 918273,
                         'tpl_code' => 'bitrix24',
@@ -171,7 +175,7 @@ This parameter is saved along with the metadata of the saved block and is used b
             lid: 351,
             block: 6428,
             meta: {
-                name: 'Block with Benefits',
+                name: 'Block with Advantages',
                 section: ['text', 'features'],
                 preview: 918273,
                 tpl_code: 'bitrix24'
@@ -202,7 +206,7 @@ This parameter is saved along with the metadata of the saved block and is used b
             'lid' => 351,
             'block' => 6428,
             'meta' => [
-                'name' => 'Block with Benefits',
+                'name' => 'Block with Advantages',
                 'section' => ['text', 'features'],
                 'preview' => 918273,
                 'tpl_code' => 'bitrix24',
@@ -236,8 +240,8 @@ HTTP Status: **200**
         "finish": 1773958609.566006,
         "duration": 0.5660059452056885,
         "processing": 0,
-        "date_start": "2026-03-20T01:16:49+02:00",
-        "date_finish": "2026-03-20T01:16:49+02:00",
+        "date_start": "2026-03-20T01:16:49+01:00",
+        "date_finish": "2026-03-20T01:16:49+01:00",
         "operating_reset_at": 1773959209,
         "operating": 0.21611928939819336
     }
@@ -246,13 +250,13 @@ HTTP Status: **200**
 
 ### Returned Data
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **result**
 [`integer`](../../../data-types.md) | Identifier of the saved block copy ||
 || **time**
-[`time`](../../../data-types.md#time) | Information about the request execution time ||
+[`time`](../../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
@@ -270,14 +274,14 @@ HTTP Status: **400**
 
 ### Possible Error Codes
 
-#|
+#| 
 || **Code** | **Description** ||
 || `MISSING_PARAMS` | Required parameter `lid` or `block` is missing ||
 || `TYPE_ERROR` | Incorrect type provided for parameter `lid`, `block`, or `meta` ||
-|| `LANDING_NOT_EXIST` | Page not found or inaccessible to the current user. The error may refer to both the `lid` page and the page to which the copied block belongs ||
-|| `BLOCK_NOT_FOUND` | Block with identifier `block` not found among the blocks of the original page or inaccessible for copying. If the page to which the block belongs is not found, the method usually returns `LANDING_NOT_EXIST` ||
+|| `LANDING_NOT_EXIST` | Page not found or not accessible to the current user. The error may relate to both the `lid` page and the page to which the copied block belongs ||
+|| `BLOCK_NOT_FOUND` | Block with identifier `block` not found among the blocks of the original page or not available for copying. If the page to which the block belongs is not found, the method typically returns `LANDING_NOT_EXIST` ||
 || `BLOCK_CANT_BE_ADDED` | Failed to create a copy of the block in the block repository ||
-|| `BLOCK_WRONG_VERSION` | Block version not supported by the current version of the product ||
+|| `BLOCK_WRONG_VERSION` | Block version is not supported by the current version of the product ||
 || `ACCESS_DENIED` | Insufficient rights to modify the block ||
 |#
 

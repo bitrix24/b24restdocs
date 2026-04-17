@@ -1,4 +1,4 @@
-# Write information to the business process log bizproc.activity.log
+# Write Information to the Business Process Log bizproc.activity.log
 
 {% note tip "" %}
 
@@ -10,8 +10,8 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- need to clarify what the unique identifier is and why it is needed
-- the example is unclear. It needs a description and explanation of how it works or a link to a tutorial where this method is used in a real task
+- It needs clarification on what the unique identifier is and why it is needed.
+- The example is unclear. A description should be provided to explain how it works, or a link to a tutorial where this method is used in a real task should be added.
 
 {% endnote %}
 
@@ -21,17 +21,17 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: administrator
 
-The method logs information into the business process log. Event logging must be enabled in the business process template.
+This method logs information into the business process log. Event logging must be enabled in the business process template.
 
-{% note tip "User documentation" %}
+{% note tip "User Documentation" %}
 
-- [Business process debugging log: how to enable log storage](https://helpdesk.bitrix24.com/open/22095380/)
+- [Business Process Debug Log: How to Enable Log Storage](https://helpdesk.bitrix24.com/open/22095380/)
 
 {% endnote %}
 
-## Method parameters
+## Method Parameters
 
-{% include [Note on required parameters](../../../_includes/required.md) %}
+{% include [Footnote on Required Parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -39,16 +39,16 @@ The method logs information into the business process log. Event logging must be
 || **EVENT_TOKEN***
 [`string`](../../data-types.md) | A unique key required to send an event to the business process.
 
-The token is sent to the application action handler when the business process reaches the execution of this action.
+The token is sent to the application action handler when the business process reaches this action.
 
-Logging is possible if the application action is subscribed with `'USE_SUBSCRIPTION': 'Y'` during the execution of the business process. ||
+Logging is possible if the application action is subscribed with `'USE_SUBSCRIPTION': 'Y'` for the execution of the business process. ||
 || **LOG_MESSAGE***
-[`string`](../../data-types.md) | Message to log ||
+[`string`](../../data-types.md) | Message to be logged ||
 |#
 
-## Code examples
+## Code Examples
 
-{% include [Note on examples](../../../_includes/examples.md) %}
+{% include [Footnote on Examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -77,20 +77,20 @@ Logging is possible if the application action is subscribed with `'USE_SUBSCRIPT
     ```js
     try
     {
-    	const response = await $b24.callMethod(
-    		'bizproc.activity.log',
-    		{
-    			event_token: '55c1dc1c3f0d75.78875596|A51601_82584_96831_81132|hsyUws1j4XiwqPqN45eH66CcQtEvpUIP.47dd5d888e8e549d2c984713e12a4268e6e87d0208ca1f093ba1075e77f92e90',
-    			log_message: 'Please wait for answer!'
-    		}
-    	);
-    	
-    	const result = response.getData().result;
-    	alert("Success: " + result);
+        const response = await $b24.callMethod(
+            'bizproc.activity.log',
+            {
+                event_token: '55c1dc1c3f0d75.78875596|A51601_82584_96831_81132|hsyUws1j4XiwqPqN45eH66CcQtEvpUIP.47dd5d888e8e549d2c984713e12a4268e6e87d0208ca1f093ba1075e77f92e90',
+                log_message: 'Please wait for answer!'
+            }
+        );
+        
+        const result = response.getData().result;
+        alert("Success: " + result);
     }
     catch( error )
     {
-    	alert("Error: " + error);
+        alert("Error: " + error);
     }
     ```
 
@@ -154,9 +154,40 @@ Logging is possible if the application action is subscribed with `'USE_SUBSCRIPT
 
 {% endlist %}
 
-## Error handling
+## Response Handling
 
-HTTP status: **400**
+HTTP Status: **200**
+
+```json
+{
+    "result": true,
+    "time": {
+        "start": 1738152146.805903,
+        "finish": 1738152146.844209,
+        "duration": 0.03830695152282715,
+        "processing": 0.0035429000854492188,
+        "date_start": "2025-01-29T15:02:26+03:00",
+        "date_finish": "2025-01-29T15:02:26+03:00",
+        "operating_reset_at": 1738152746,
+        "operating": 0
+    }
+}
+```
+
+### Returned Data
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`boolean`](../../data-types.md) | Returns `true` if the log entry was successfully added ||
+|| **time**
+[`time`](../../data-types.md#time) | Information about the request execution time ||
+|#
+
+## Error Handling
+
+HTTP Status: **400**
 
 ```json
 {
@@ -165,20 +196,21 @@ HTTP status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../_includes/error-info.md) %}
+{% include notitle [Error Handling](../../../_includes/error-info.md) %}
 
-### Possible error codes
+### Possible Error Codes
 
 #|
-|| **Code** | **Error message** | **Description** ||
-|| `ERROR_EMPTY_LOG_MESSAGE` | Empty log message! | log entry text is not specified ||
+|| **Code** | **Error Message** | **Description** ||
+|| `ERROR_EMPTY_LOG_MESSAGE` | Empty log message! | Log message text is not provided ||
+|| `ACCESS_DENIED` | Access denied! | Insufficient permissions to call the method ||
 |#
 
 The method may also return errors from the business process.
 
-{% include [system errors](../../../_includes/system-errors.md) %}
+{% include [System Errors](../../../_includes/system-errors.md) %}
 
-## Continue exploring 
+## Continue Learning 
 
 - [{#T}](./index.md)
 - [{#T}](./bizproc-activity-add.md)

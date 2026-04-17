@@ -2,40 +2,44 @@
 
 {% note tip "" %}
 
-If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect the [MCP server](../../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
 
 {% endnote %}
 
 > Scope: [`landing`](../../../scopes/permissions.md)
 >
-> Who can execute the method: user with "edit" access permission for the site
+> Who can execute the method: a user with "edit" access permission for the site
 
-The method `landing.landing.addByTemplate` creates a page on the specified site using the template code and returns the identifier of the created page. The new page is created as inactive (`ACTIVE = N`).
+The method `landing.landing.addByTemplate` creates a page in the specified site based on the template code and returns the identifier of the created page. The new page is created as inactive (`ACTIVE = N`).
 
-If you need full control over the fields of the created page, use [landing.landing.add](./landing-landing-add.md).
+If you need to fully manage the fields of the created page, use [landing.landing.add](./landing-landing-add.md).
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
+|| **scope**
+[`string`](../../../data-types.md) | Internal scope of landings. It is not related to the REST scope `landing` in the method name.
+
+The value of `scope` must correspond to the type of site [(detailed description)](../../types.md) ||
 || **siteId***
 [`integer`](../../../data-types.md) | Identifier of the site where the page needs to be created.
 
 The site identifier can be obtained using the [landing.site.getList](../../site/landing-site-get-list.md) method or from the result of the [landing.site.add](../../site/landing-site-add.md) method ||
 || **code***
-[`string`](../../../data-types.md) | Code of the page template.
+[`string`](../../../data-types.md) | Template code for the page.
 
-A list of available templates can be obtained using the [landing.demos.getPageList](../../demos/landing-demos-get-page-list.md) method. The code depends on the templates available in Bitrix24. For example, the value may look like `krayt.monotovar@KraytPetShop` ||
+A list of available templates can be obtained using the [landing.demos.getPageList](../../demos/landing-demos-get-page-list.md) method. The code depends on the templates available in Bitrix24. For example, the value might look like `krayt.monotovar@KraytPetShop` ||
 || **fields**
 [`object`](../../../data-types.md) | Additional parameters for creating the page [(detailed description)](#fields) ||
 |#
 
 ### Parameter fields {#fields}
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -65,19 +69,19 @@ This parameter is used if the creation folder is not determined by `fields.ID` |
 || **SITE_TYPE**
 [`string`](../../../data-types.md) | Type of templates from which the page is created. Site types from the article [Working with Site Types and Scopes](../../types.md) are used.
 
-If not provided, the site type is taken. For sites of types `STORE` and `SMN`, the default value `PAGE` is used ||
+If not provided, the site type is taken. For sites of types `STORE` and `SMN`, the default value is `PAGE` ||
 || **PREPARE_BLOCKS**
-[`boolean`](../../../data-types.md) | Enables the preparation of template blocks when creating the page.
+[`boolean`](../../../data-types.md) | Enables preparation of template blocks when creating the page.
 
-Works only with `PREPARE_BLOCKS_DATA`. Pass boolean `true` ||
+Works only together with `PREPARE_BLOCKS_DATA`. Pass boolean `true` ||
 || **PREPARE_BLOCKS_DATA**
 [`object`](../../../data-types.md) | Additional data for preparing template blocks when creating the page.
 
 In `PREPARE_BLOCKS_DATA`, first specify the block code from the page template, and inside - parameters for this block [(detailed description)](#prepare-blocks-data) ||
 || **ADD_IN_MENU**
-[`string`](../../../data-types.md) | Flag for adding the created page to the site menu. Supports `Y` and `N`.
+[`string`](../../../data-types.md) | Flag for adding the created page to the site menu. Supported values are `Y` and `N`.
 
-The logic triggers only with the value `Y`, if the page is not already added to the menu via `BLOCK_ID` and `MENU_CODE`, and if `TITLE` is provided ||
+The logic triggers only when the value is `Y`, if the page is not already added to the menu through `BLOCK_ID` and `MENU_CODE`, and if `TITLE` is provided ||
 || **BLOCK_ID**
 [`integer`](../../../data-types.md) | Together with `MENU_CODE`, adds a link to the created page in the menu of the block with the specified identifier ||
 || **MENU_CODE**
@@ -86,11 +90,11 @@ The logic triggers only with the value `Y`, if the page is not already added to 
 
 ### Parameter PREPARE_BLOCKS_DATA {#prepare-blocks-data}
 
-Allows you to pass settings for individual template blocks even before creating the page.
+Allows you to pass settings for individual template blocks even before the page is created.
 
-Used only with `PREPARE_BLOCKS: true`. If `PREPARE_BLOCKS` is not provided or is not passed as boolean `true`, the parameter is ignored.
+Used only together with `PREPARE_BLOCKS: true`. If `PREPARE_BLOCKS` is not provided or is not passed as boolean `true`, the parameter is ignored.
 
-Object structure:
+Structure of the object:
 
 ```json
 {
@@ -107,11 +111,11 @@ Object structure:
 || **Name**
 `type` | **Description** ||
 || **ACTION**
-[`string`](../../../data-types.md) | What to do with the block. The value `changeComponentParams` is supported ||
+[`string`](../../../data-types.md) | What needs to be done with the block. The value `changeComponentParams` is supported ||
 || **PARAMS**
 [`object`](../../../data-types.md) | Component parameters that need to be substituted into the block when creating the page.
 
-Replacement applies only to parameters that are defined as empty strings in the block template ||
+Replacement applies only to parameters that are defined as an empty string in the block template ||
 |#
 
 The set of supported parameters depends on the specific block. For example, the following parameters may be used in blocks:
@@ -120,9 +124,9 @@ The set of supported parameters depends on the specific block. For example, the 
 || **Parameter** | **Description** ||
 || `IBLOCK_ID` | Identifier of the catalog information block ||
 || `SECTION_ID` | Identifier of the catalog section ||
-|| `ELEMENT_ID` | Identifier of the catalog item ||
+|| `ELEMENT_ID` | Identifier of the catalog element ||
 || `REQUISITE` | Identifier of the company requisite in the format `{COMPANY_ID}_{REQUISITE_ID}` for blocks `69.1.contacts` and `69.2.requisites` ||
-|| `BANK_REQUISITE` | Identifier of the bank requisite in the format `{COMPANY_ID}_{BANK_REQUISITE_ID}` for block `69.3.bank_requisites` ||
+|| `BANK_REQUISITE` | Identifier of the bank requisite in the format `{COMPANY_ID}_{BANK_REQUISITE_ID}` for the block `69.3.bank_requisites` ||
 |#
 
 The block code must match the block code in the template.
@@ -133,7 +137,7 @@ If the composition of blocks is not returned, create a test page and check the b
 
 ## Code Examples
 
-{% include [Note on examples](../../../../_includes/examples.md) %}
+{% include [Note on Examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -327,7 +331,7 @@ HTTP Status: **400**
 ```json
 {
     "error": "SITE_ERROR",
-    "error_description": "Site not found, or access to it is denied"
+    "error_description": "Site not found or access denied"
 }
 ```
 
@@ -337,12 +341,12 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `MISSING_PARAMS` | Required parameters are not provided: `siteId`, `code`, or both parameters are missing in the request ||
-|| `SITE_ERROR` | Site not found, or access to it is denied: a non-existent site is provided in `siteId` or the user does not have access to it ||
+|| `MISSING_PARAMS` | Required parameters are missing: `siteId`, `code`, or both parameters are absent in the request ||
+|| `SITE_ERROR` | Site not found or access denied: a non-existent site is provided in `siteId` or the user does not have access to it ||
 || `LANDING_ERROR` | Page or folder not found: an identifier of an element that does not exist in the specified site is provided in `fields.ID` ||
 || `ACCESS_DENIED` | Access to create the page is denied: the user does not have "edit" permission for the specified site ||
 || `FOLDER_NOT_FOUND` | Folder not found: a folder that does not belong to the specified site or does not exist is provided in `fields.FOLDER_ID` ||
-|| `WRONG_DATA` | Incorrect template data: failed to retrieve template data for the provided `code` ||
+|| `WRONG_DATA` | Invalid template data: unable to retrieve template data for the provided `code` ||
 || `SLASH_IS_NOT_ALLOWED` | Slash is not allowed in the landing address: the template contains an invalid address for the created page ||
 || `CANT_BE_EMPTY` | The page address cannot be empty: the template contains an empty address for the created page ||
 || `WRONG_CODE_FORMAT` | Invalid page address: the template contains an address in the format `<characters>_<number>_<number>`, for example `code_12_34` ||

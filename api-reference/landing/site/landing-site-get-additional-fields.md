@@ -14,20 +14,24 @@ The method `landing.site.getadditionalfields` retrieves additional fields of the
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../_includes/required.md) %}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
-|| **id***
-[`integer`](../../data-types.md) | Site identifier.
+|| **scope**
+[`string`](../../data-types.md) | Internal scope of the landing pages. It is not related to the REST scope `landing` in the method name.
+
+The value of `scope` must correspond to the type of site [(detailed description)](../types.md) ||
+|| **id*** 
+[`integer`](../../data-types.md) | Identifier of the site.
 
 The site identifier can be obtained using the method [landing.site.getList](./landing-site-get-list.md) or from the result of the method [landing.site.add](./landing-site-add.md) ||
 |#
 
 ## Code Examples
 
-{% include [Note on examples](../../../_includes/examples.md) %}
+{% include [Note on Examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -151,7 +155,7 @@ The site identifier can be obtained using the method [landing.site.getList](./la
 
 HTTP Status: **200**
 
-Below is a shortened example of the response. The actual set of fields depends on the specific site settings.
+Below is a shortened example of a response. The actual set of fields depends on the specific site settings.
 
 ```json
 {
@@ -197,7 +201,7 @@ Below is a shortened example of the response. The actual set of fields depends o
 
 ### Returned Data
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **result**
@@ -205,12 +209,12 @@ Below is a shortened example of the response. The actual set of fields depends o
 
 If there are no available fields, the method may return `null` or an empty array `[]` [(detailed description)](#result-fields) ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the request execution time ||
+[`time`](../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
 #### Result Object {#result-fields}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **<FIELD_CODE>**
@@ -228,7 +232,7 @@ HTTP Status: **400**
 ```json
 {
     "error": "MISSING_PARAMS",
-    "error_description": "Insufficient call parameters, missing: id"
+    "error_description": "Not enough call parameters, missing: id"
 }
 ```
 
@@ -236,10 +240,10 @@ HTTP Status: **400**
 
 ### Possible Error Codes
 
-#|
+#| 
 || **Code** | **Description** ||
-|| `MISSING_PARAMS` | The required parameter `id` was not provided ||
-|| `ACCESS_DENIED` | Insufficient permissions to call the method ||
+|| `MISSING_PARAMS` | Required parameter `id` is missing ||
+|| `ACCESS_DENIED` | Insufficient rights to call the method ||
 || `TYPE_ERROR` | Data type error in the method call parameters ||
 || `SYSTEM_ERROR` | Internal error while executing the method ||
 |#

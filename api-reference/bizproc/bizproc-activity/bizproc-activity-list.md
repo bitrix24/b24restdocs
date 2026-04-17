@@ -1,8 +1,8 @@
-# Get the list of actions for the bizproc.activity.list application
+# Get a List of Application Actions bizproc.activity.list
 
 {% note tip "" %}
 
-If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so the assistant can utilize the official REST documentation.
 
 {% endnote %}
 
@@ -10,15 +10,17 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: administrator
 
-This method retrieves the list of actions defined by the application.
+This method retrieves a list of actions set by the application.
 
 It only works in the context of the [application](../../../settings/app-installation/index.md).
 
-No parameters are required.
+## Method Parameters
+
+No parameters.
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+{% include [Examples Note](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -35,7 +37,7 @@ No parameters are required.
 - JS
 
     ```js
-    // callListMethod: Retrieves all data at once. Use only for small selections (< 1000 items) due to high memory usage.
+    // callListMethod: Retrieves all data at once. Use only for small datasets (< 1000 items) due to high memory load.
     
     try {
       const response = await $b24.callListMethod(
@@ -49,7 +51,7 @@ No parameters are required.
       console.error('Request failed', error)
     }
     
-    // fetchListMethod: Retrieves data in parts using an iterator. Use it for large data volumes to optimize memory usage.
+    // fetchListMethod: Retrieves data in chunks using an iterator. Use for large datasets for efficient memory consumption.
     
     try {
       const generator = $b24.fetchListMethod('bizproc.activity.list', {}, 'ID')
@@ -60,7 +62,7 @@ No parameters are required.
       console.error('Request failed', error)
     }
     
-    // callMethod: Manually controls pagination through the start parameter. Use it for precise control of request batches. For large datasets, it is less efficient than fetchListMethod.
+    // callMethod: Manually controls pagination through the start parameter. Use for precise control over request batches. Less efficient for large data than fetchListMethod.
     
     try {
       const response = await $b24.callMethod('bizproc.activity.list', {}, 0)
@@ -132,7 +134,7 @@ No parameters are required.
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -159,14 +161,14 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`array`](../../data-types.md) | List of action identifiers for the application ||
+[`array`](../../data-types.md) | List of application action identifiers ||
 || **time**
 [`time`](../../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {
@@ -182,7 +184,7 @@ HTTP status: **400**
 #|
 || **Code** | **Error Message** | **Description** ||
 || `ACCESS_DENIED` | Application context required | Application context is required ||
-|| `ACCESS_DENIED` | Access denied! | The method was not executed by an administrator ||
+|| `ACCESS_DENIED` | Access denied! | Method was not executed by an administrator ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
@@ -194,4 +196,3 @@ HTTP status: **400**
 - [{#T}](./bizproc-activity-update.md)
 - [{#T}](./bizproc-activity-delete.md)
 - [{#T}](./bizproc-activity-log.md)
-

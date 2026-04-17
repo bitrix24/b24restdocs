@@ -2,7 +2,7 @@
 
 {% note tip "" %}
 
-If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect the [MCP server](../../../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
 
 {% endnote %}
 
@@ -56,19 +56,19 @@ This method changes the quantity of a product in the payment line item.
     ```js
     try
     {
-    	const response = await $b24.callMethod(
-    		'crm.item.payment.product.setQuantity', {
-    			id: 1195,
-    			quantity: 3
-    		}
-    	);
-    	
-    	const result = response.getData().result;
-    	console.log(result);
+        const response = await $b24.callMethod(
+            'crm.item.payment.product.setQuantity', {
+                id: 1195,
+                quantity: 3
+            }
+        );
+        
+        const result = response.getData().result;
+        console.log(result);
     }
     catch( error )
     {
-    	console.error(error);
+        console.error(error);
     }
     ```
 
@@ -148,8 +148,8 @@ HTTP status: **200**
       "finish":1716282832.02954,
       "duration":0.7456350326538086,
       "processing":0.4978060722351074,
-      "date_start":"2024-05-21T12:13:51+03:00",
-      "date_finish":"2024-05-21T12:13:52+03:00"
+      "date_start":"2024-05-21T12:13:51+02:00",
+      "date_finish":"2024-05-21T12:13:52+02:00"
    }
 }
 ```
@@ -162,7 +162,7 @@ HTTP status: **200**
 || **result**
 [`boolean`](../../../../data-types.md) | Result of the operation ||
 || **time**
-[`time`](../../../../data-types.md) | Information about the request execution time ||
+[`time`](../../../../data-types.md) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
@@ -189,6 +189,10 @@ HTTP status: **400**
 || `100` | Required fields not provided ||
 || `0` | Other errors (e.g., fatal errors) ||
 |#
+
+### Error Handling Features
+
+For business errors, the method may return `error: 0`. In this case, refer to `error_description` and match it against the list of errors above.
 
 {% include notitle [system errors](../../../../../_includes/system-errors.md) %}
 

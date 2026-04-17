@@ -1,4 +1,4 @@
-# Document Generation with Images and Stamps
+# Generate a Document with Images and Stamps
 
 {% note tip "" %}
 
@@ -8,23 +8,13 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it shortly.
+Some data may be missing here — we will complete it shortly.
 
 {% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- There should be a description and a link to the material in the general section.
-
-{% endnote %}
-
-{% endif %}
 
 Let's consider a scenario where we need to insert images, a stamp, use modifiers for the date and name, and fill a table with several values.
 
-To pass complex data to the document, not just in string format, it is necessary to correctly form the `fields` parameter. First, let's fill in the image and stamp.
+To pass complex data to the document, not just in string format, it is essential to correctly form the `fields` parameter. First, let's fill in the image and the stamp.
 
 ```php
 $data = [
@@ -32,7 +22,7 @@ $data = [
     'providerClassName' => 'Bitrix\\DocumentGenerator\\DataProvider\\Rest',
     'value' => 1,
     'values' => [
-        'SomeDate' => '02/14/2018',
+        'SomeDate' => '14.02.2018',
         'SomeName' => 'Vladislav Gorelkin',
         'Stamp' => 'http://myrestapp.com/upload/stamp.png', // external path to the stamp file
         'Image' => 'http://myrestapp.com/upload/image.jpg', // external path to the image file

@@ -8,7 +8,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`landing`](../../scopes/permissions.md)
 >
-> Who can execute the method: a user with "modify settings" access permission for the site
+> Who can execute the method: a user with the "modify settings" access permission for the site
 
 The method `landing.site.update` updates the parameters of the site.
 
@@ -16,51 +16,55 @@ The method `landing.site.update` updates the parameters of the site.
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
-|| **id***
-[`integer`](../../data-types.md) | Site identifier.
+|| **scope**
+[`string`](../../data-types.md) | Internal scope of the landing. It is not related to the REST scope `landing` in the method name.
 
-The site identifier can be obtained using the [landing.site.getList](./landing-site-get-list.md) method or from the result of the [landing.site.add](./landing-site-add.md) method. ||
-|| **fields***
-[`object`](../../data-types.md) | A set of fields to update the site [(detailed description)](#fields) ||
+The value of `scope` must correspond to the type of site [(detailed description)](../types.md) ||
+|| **id*** 
+[`integer`](../../data-types.md) | Identifier of the site.
+
+The site identifier can be obtained using the [landing.site.getList](./landing-site-get-list.md) method or from the result of the [landing.site.add](./landing-site-add.md) method ||
+|| **fields*** 
+[`object`](../../data-types.md) | Set of fields to update the site [(detailed description)](#fields) ||
 |#
 
-### Parameter fields {#fields}
+### Fields Parameter {#fields}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **TITLE**
-[`string`](../../data-types.md) | Site title, up to `255` characters long. ||
+[`string`](../../data-types.md) | Title of the site, up to `255` characters ||
 || **CODE**
-[`string`](../../data-types.md) | Symbolic code of the site. When an empty string is passed, the code is generated from `TITLE` or from the string `site`. 
+[`string`](../../data-types.md) | Symbolic code of the site. If an empty string is passed, the code is generated from `TITLE` or from the string `site`. 
 
-The code cannot contain `/`, and a code consisting solely of digits receives the prefix `site`. The maximum length of the code is `253` characters. 
+The code cannot contain `/`, and a code consisting solely of digits receives the prefix `site`, with a maximum length of `253` characters. 
 
-If the code is already taken in the domain, a numeric suffix is automatically added to it. ||
+If the code is already taken in the domain, a numeric suffix is automatically added ||
 || **TYPE**
 [`string`](../../data-types.md) | Type of the site. Supported types are `PAGE`, `STORE`, `SMN`, `KNOWLEDGE`, `GROUP`, `MAINPAGE`. 
 
-This is the internal type of the landing page, which is associated with the internal `scope`. The `scope` parameter is not passed in `landing.site.update` [(detailed description)](../types.md) ||
+This is the internal type of the landing, related to the internal `scope` [(detailed description)](../types.md) ||
 || **DOMAIN_ID**
-[`integer`](../../data-types.md) \| [`string`](../../data-types.md) | Domain of the site. Usually, the domain name is passed. For sites of types `PAGE`, `STORE`, `SMN`, if the parameter is not passed or an empty string is passed, the parameter value is ignored. For `GROUP`, `KNOWLEDGE`, and `MAINPAGE`, the parameter is usually not passed.
+[`integer`](../../data-types.md) \| [`string`](../../data-types.md) | Domain of the site. Usually, the domain name is passed. For sites of types `PAGE`, `STORE`, `SMN`, if the parameter is not passed or an empty string is provided, the parameter value is ignored. For `GROUP`, `KNOWLEDGE`, and `MAINPAGE`, the parameter is usually not passed.
 
-For 1C-Bitrix: Site Management, pass the identifier of an existing domain. The domain name as a string is not supported, and the method will return an error. ||
+For 1C-Bitrix: Site Management, provide the identifier of an existing domain. A domain name as a string is not supported, and the method will return an error ||
 || **DESCRIPTION**
-[`string`](../../data-types.md) | Description of the site, up to `255` characters long. ||
+[`string`](../../data-types.md) | Description of the site, up to `255` characters ||
 || **XML_ID**
-[`string`](../../data-types.md) | External identifier of the site. ||
+[`string`](../../data-types.md) | External identifier of the site ||
 || **LANDING_ID_INDEX**
-[`integer`](../../data-types.md) | Identifier of the site page that will be the main one. ||
+[`integer`](../../data-types.md) | Identifier of the site page that will be the main one ||
 || **LANDING_ID_404**
-[`integer`](../../data-types.md) | Identifier of the 404 error page. ||
+[`integer`](../../data-types.md) | Identifier of the 404 error page ||
 || **LANDING_ID_503**
-[`integer`](../../data-types.md) | Identifier of the 503 error page. ||
+[`integer`](../../data-types.md) | Identifier of the 503 error page ||
 |#
 
-Page identifiers for `LANDING_ID_INDEX`, `LANDING_ID_404`, and `LANDING_ID_503` can be obtained using the [landing.landing.getList](../page/methods/landing-landing-get-list.md) method.
+Identifiers for the pages `LANDING_ID_INDEX`, `LANDING_ID_404`, and `LANDING_ID_503` can be obtained using the [landing.landing.getList](../page/methods/landing-landing-get-list.md) method.
 
 ## Code Examples
 
@@ -242,13 +246,13 @@ HTTP Status: **200**
 
 ### Returned Data
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../data-types.md) | `true` if the site was successfully updated. ||
+[`boolean`](../../data-types.md) | `true` if the site was successfully updated ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the execution time of the request. ||
+[`time`](../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
@@ -266,20 +270,20 @@ HTTP Status: **400**
 
 ### Possible Error Codes
 
-#|
+#| 
 || **Code** | **Description** ||
-|| `MISSING_PARAMS` | Required parameter `id` or `fields` is missing. ||
-|| `ACCESS_DENIED` | Insufficient rights to modify the site or specific fields. ||
-|| `DOMAIN_NOT_FOUND` | A non-existent domain was specified. ||
-|| `DOMAIN_IS_INCORRECT` | An incorrect format of the domain name was provided. ||
-|| `DOMAIN_EXIST_TRASH` | The domain is already linked to a site in the trash. ||
-|| `DOMAIN_DISABLE` | It is not allowed to use a prohibited domain name in Bitrix24. ||
-|| `DOMAIN_EXIST` | The domain is already occupied. ||
-|| `CODE_IS_NOT_UNIQUE` | The site code is not unique within the domain. ||
-|| `SLASH_IS_NOT_ALLOWED` | The character `/` was passed in `fields.CODE`. ||
-|| `CONTROLLER_ERROR_BADRESPONSE` | Unrecognized response from the external domain registration service. ||
-|| `CONTROLLER_ERROR_BADLICENSE` | License error in the external domain registration service. ||
-|| `CONTROLLER_ERROR_<ERROR_CODE>` | Error from the external domain registration service with code `<ERROR_CODE>`. ||
+|| `MISSING_PARAMS` | Required parameter `id` or `fields` is missing ||
+|| `ACCESS_DENIED` | Insufficient rights to modify the site or specific fields ||
+|| `DOMAIN_NOT_FOUND` | A non-existent domain was specified ||
+|| `DOMAIN_IS_INCORRECT` | An incorrect format of the domain name was provided ||
+|| `DOMAIN_EXIST_TRASH` | The domain is already linked to a site in the trash ||
+|| `DOMAIN_DISABLE` | A prohibited domain name cannot be used in Bitrix24 ||
+|| `DOMAIN_EXIST` | The domain is already occupied ||
+|| `CODE_IS_NOT_UNIQUE` | The site code is not unique within the domain ||
+|| `SLASH_IS_NOT_ALLOWED` | The character `/` was passed in `fields.CODE` ||
+|| `CONTROLLER_ERROR_BADRESPONSE` | Unrecognized response from the external domain registration service ||
+|| `CONTROLLER_ERROR_BADLICENSE` | License error in the external domain registration service ||
+|| `CONTROLLER_ERROR_<ERROR_CODE>` | Error from the external domain registration service with code `<ERROR_CODE>` ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

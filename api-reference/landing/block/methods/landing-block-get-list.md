@@ -14,17 +14,21 @@ The method `landing.block.getlist` returns a list of blocks for the selected pag
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../../_includes/required.md) %}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
-|| **lid***
+|| **scope**
+[`string`](../../../data-types.md) | Internal scope for landings. It is not related to the REST scope `landing` in the method name.
+
+The value of `scope` must correspond to the type of site [(detailed description)](../../types.md) ||
+|| **lid*** 
 [`integer`](../../../data-types.md) \| [`integer[]`](../../../data-types.md) | Identifier of the page or an array of page identifiers.
 
-Page identifiers can be obtained using the method [landing.landing.getList](../../page/methods/landing-landing-get-list.md).
+Page identifiers can be obtained using the method [landing.landing.getList](../../page/methods/landing-landing-get-list.md)
 
-If `lid` is passed as an array, the method combines the blocks of all specified pages into a single list. Each element in the response contains a `lid` field, which indicates the source page.
+If `lid` is passed as an array, the method combines blocks from all specified pages into a single list. Each element in the response contains a `lid` field, which indicates the source page.
 
 If an array is passed and at least one page is not found or is unavailable, the entire call results in an error. ||
 || **params**
@@ -33,23 +37,23 @@ If an array is passed and at least one page is not found or is unavailable, the 
 
 ### Parameter params {#params}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **edit_mode**
-[`boolean`](../../../data-types.md) \| [`integer`](../../../data-types.md) | If the value is converted to `true`, the method reads the draft of the page instead of the published version.
+[`boolean`](../../../data-types.md) \| [`integer`](../../../data-types.md) | If the value is cast to `true`, the method reads the draft version of the page instead of the published version.
 
-By default, it is `false`. Without this parameter, the method reads only published blocks. ||
+By default — `false`. Without this parameter, the method reads only published blocks. ||
 || **deleted**
-[`boolean`](../../../data-types.md) \| [`integer`](../../../data-types.md) | If the value is converted to `true`, the method returns only blocks marked as deleted.
+[`boolean`](../../../data-types.md) \| [`integer`](../../../data-types.md) | If the value is cast to `true`, the method returns only blocks marked as deleted.
 
-By default, it is `false`. This parameter only affects the selection of blocks. It does not include the search for deleted pages, so for a page in the trash, the method will return an error.
+By default — `false`. This parameter only affects the selection of blocks. It does not include the search for deleted pages, so for a page in the trash, the method will return an error.
 
 To retrieve deleted blocks, pass `deleted: true` along with `edit_mode: true`. The `deleted` parameter alone does not switch the method to draft mode.
 
 If `edit_mode` is not specified, the method will search for blocks only in the published version of the page. ||
 || **get_content**
-[`boolean`](../../../data-types.md) \| [`integer`](../../../data-types.md) | If `true` is passed, the method will add the `content`, `css`, and `js` fields to each result element. By default, it is `false`.
+[`boolean`](../../../data-types.md) \| [`integer`](../../../data-types.md) | If `true` is passed, the method will add the `content`, `css`, and `js` fields to each result element. By default — `false`.
 
 The `content` field contains the prepared HTML of the block along with the system container of the block, not the original saved content.
 
@@ -59,7 +63,7 @@ If `edit_mode` is on, the method will return the HTML of the draft. ||
 
 ## Code Examples
 
-{% include [Note on examples](../../../../_includes/examples.md) %}
+{% include [Note on Examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -240,8 +244,8 @@ HTTP Status: **200**
         "finish": 1774521039.570632,
         "duration": 0.5706319808959961,
         "processing": 0,
-        "date_start": "2026-03-26T13:30:39+03:00",
-        "date_finish": "2026-03-26T13:30:39+03:00",
+        "date_start": "2026-03-26T13:30:39+02:00",
+        "date_finish": "2026-03-26T13:30:39+02:00",
         "operating_reset_at": 1774521639,
         "operating": 0.48987889289855957
     }
@@ -250,24 +254,24 @@ HTTP Status: **200**
 
 ### Returned Data
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **result**
 [`object[]`](../../../data-types.md) | List of blocks [(detailed description)](#block).
 
-The method may return `result: []` without an error in three cases.
+The method can return `result: []` without an error in three cases.
 
 - There are no blocks on the page for the selected reading mode.
-- The page has not been published yet and `params.edit_mode` is not enabled.
-- The `deleted` filter did not find any matching blocks. ||
+- The page has not yet been published and `params.edit_mode` is not enabled.
+- The `deleted` filter did not find any suitable blocks. ||
 || **time**
 [`time`](../../../data-types.md#time) | Information about the execution time of the request. ||
 |#
 
 #### Block Object {#block}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **id**
@@ -285,7 +289,7 @@ An active block is displayed on the page. An inactive block is hidden. ||
 || **meta**
 [`object`](../../../data-types.md) | Service data of the block and page [(detailed description)](#meta).
 
-All values within `meta` are returned as strings. The format of string dates depends on the language settings of the account. ||
+All values within `meta` are returned as strings. The format of string dates depends on the language settings of Bitrix24. ||
 || **content**
 [`string`](../../../data-types.md) | Prepared HTML of the block. This field is returned only if `params.get_content` is enabled.
 
@@ -303,7 +307,7 @@ This field is returned only if `params.get_content` is enabled. If there are no 
 
 #### Meta Object {#meta}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **LID**
@@ -323,11 +327,11 @@ The format depends on the language settings of the account. ||
 
 The format depends on the language settings of the account. ||
 || **SITE_TYPE**
-[`string`](../../../data-types.md) | Type of the site to which the page belongs, for example `PAGE` or `STORE`. ||
+[`string`](../../../data-types.md) | Type of the site to which the page belongs, such as `PAGE` or `STORE`. ||
 || **LANDING_TITLE**
 [`string`](../../../data-types.md) | Title of the page to which the block belongs.
 
-If the title is not filled in, an empty string will be returned. ||
+If the title is not filled, an empty string will be returned. ||
 || **LANDING_TPL_CODE**
 [`string`](../../../data-types.md) | Code of the page template. ||
 || **SITE_TPL_CODE**
@@ -349,20 +353,20 @@ HTTP Status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../../_includes/error-info.md) %}
+{% include notitle [Error Handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
-#|
+#| 
 || **Code** | **Description** ||
-|| `MISSING_PARAMS` | The required top-level parameter `lid` is missing. ||
+|| `MISSING_PARAMS` | Required top-level parameter `lid` is not provided. ||
 || `LANDING_NOT_EXIST` | The page is not found, deleted, or unavailable to the current user. ||
 || `ACCESS_DENIED` | The user does not have permission to view sites. ||
 || `TYPE_ERROR` | Internal type mismatch error when calling the method. ||
 || `SYSTEM_ERROR` | Internal error during method execution. ||
 |#
 
-{% include [system errors](../../../../_includes/system-errors.md) %}
+{% include [System Errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

@@ -1,16 +1,16 @@
-# Publish a Website Folder landing.site.publicationFolder
+# Publish the Website Folder landing.site.publicationFolder
 
 {% note tip "" %}
 
-If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
 
 {% endnote %}
 
 > Scope: [`landing`](../../scopes/permissions.md)
 >
-> Who can execute the method: a user with "publication" access permission for the website to which the folder belongs.
+> Who can execute the method: a user with the "publication" access permission for the website to which the folder belongs.
 
-The method `landing.site.publicationFolder` publishes a website folder along with its chain of parent folders.
+The method `landing.site.publicationFolder` publishes the website folder and its chain of parent folders.
 
 ## Method Parameters
 
@@ -19,8 +19,12 @@ The method `landing.site.publicationFolder` publishes a website folder along wit
 #|
 || **Name**
 `type` | **Description** ||
-|| **folderId***
-[`integer`](../../data-types.md) | The identifier of the folder.
+|| **scope**
+[`string`](../../data-types.md) | Internal scope of the landing pages. It is not related to the REST scope `landing` in the method name.
+
+The value of `scope` must correspond to the type of website [(detailed description)](../types.md) ||
+|| **folderId*** 
+[`integer`](../../data-types.md) | Identifier of the folder.
 
 The folder identifier can be obtained using the [landing.site.getFolders](./landing-site-get-folders.md) method. ||
 || **mark**
@@ -183,7 +187,7 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../data-types.md) | Returns `true` if the folder is successfully published. ||
+[`boolean`](../../data-types.md) | Returns `true` if the folder is published successfully. ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the execution time of the request. ||
 |#
@@ -195,7 +199,7 @@ HTTP Status: **400**
 ```json
 {
     "error": "ACCESS_DENIED",
-    "error_description": "Folder not found or access denied."
+    "error_description": "Folder not found or access to it is denied."
 }
 ```
 
@@ -205,9 +209,9 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `MISSING_PARAMS` | Required parameter `folderId` not provided. ||
-|| `ACCESS_DENIED` | Folder not found, deleted, or access denied. ||
-|| `TYPE_ERROR` | Data type error in method call parameters. ||
+|| `MISSING_PARAMS` | Required parameter `folderId` is missing. ||
+|| `ACCESS_DENIED` | Folder not found, deleted, or access to it is denied. ||
+|| `TYPE_ERROR` | Data type error in the method call parameters. ||
 || `SYSTEM_ERROR` | Internal error during method execution. ||
 |#
 

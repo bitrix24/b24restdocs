@@ -2,13 +2,13 @@
 
 {% note tip "" %}
 
-If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect the [MCP server](../../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
 
 {% endnote %}
 
 > Scope: [`landing`](../../../scopes/permissions.md)
 >
-> Who can execute the method: user with "edit" access permission for the site
+> Who can execute the method: a user with "edit" access permission for the site
 
 The method `landing.landing.add` adds a page or folder to the specified site and returns the identifier of the created object. The new object is created as inactive (`ACTIVE = N`).
 
@@ -16,9 +16,13 @@ The method `landing.landing.add` adds a page or folder to the specified site and
 
 {% include [Note on required parameters](../../../../_includes/required.md) %}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
+|| **scope**
+[`string`](../../../data-types.md) | Internal scope of the landing. It is not related to the REST scope `landing` in the method name.
+
+The value of `scope` must correspond to the type of site [(detailed description)](../../types.md) ||
 || **fields***
 [`object`](../../../data-types.md) | Set of fields for the new page or folder [(detailed description)](#fields) ||
 |#
@@ -27,7 +31,7 @@ The method `landing.landing.add` adds a page or folder to the specified site and
 
 {% include [Note on required parameters](../../../../_includes/required.md) %}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **TITLE***
@@ -39,11 +43,11 @@ The site identifier can be obtained using the method [landing.site.getList](../.
 || **CODE**
 [`string`](../../../data-types.md) | Symbolic code of the page. It must not contain the character `/` and must not be in the format `<characters>_<number>_<number>`, for example `code_12_34`.
 
-If the field is not provided or a string consisting only of spaces is passed, the code will be generated from `TITLE`. If the transliterated code is empty, a string of 12 characters will be generated.
+If the field is not provided or a string consisting only of spaces is passed, the code will be generated from `TITLE`. If the transliterated code turns out to be empty, a string of 12 characters will be generated.
 
-An empty string `''` cannot be passed without the `FOLDER` parameter — the method will return an error. If the `FOLDER` parameter is passed with any value, an empty string is allowed, and the code will be generated from `TITLE`.
+An empty string `''` without the `FOLDER` parameter cannot be passed — the method will return an error. If the `FOLDER` parameter is passed with any value, an empty string is allowed, and the code will be generated from `TITLE`.
 
-If such a code is already in use within the site or folder after creation, a suffix of the form `_<4 random characters>` will be added to it ||
+If such a code is already used within the site or folder after creation, a suffix of the form `_<4 random characters>` will be added to it ||
 || **DESCRIPTION**
 [`string`](../../../data-types.md) | Arbitrary description of the page ||
 || **XML_ID**
@@ -59,13 +63,13 @@ The folder identifier can be obtained using the method [landing.site.getFolders]
 || **TPL_ID**
 [`integer`](../../../data-types.md) | Identifier of the page view template.
 
-The view template identifier can be obtained using the method [landing.template.getlist](../../template/landing-template-get-list.md) ||
+The identifier of the view template can be obtained using the method [landing.template.getlist](../../template/landing-template-get-list.md) ||
 || **ADDITIONAL_FIELDS**
-[`object`](../../../data-types.md) | Additional fields for the page. Available codes and values are described in the article [Additional Page Fields](../additional-fields.md) ||
+[`object`](../../../data-types.md) | Additional fields of the page. Available codes and values are described in the article [Additional Page Fields](../additional-fields.md) ||
 || **BLOCK_ID**
-[`integer`](../../../data-types.md) | Used with `MENU_CODE` to add a link to the menu of the block with the specified identifier after the page is created ||
+[`integer`](../../../data-types.md) | Used together with `MENU_CODE` to add a link to the menu of the block with the specified identifier after the page is created ||
 || **MENU_CODE**
-[`string`](../../../data-types.md) | Used with `BLOCK_ID` to specify the menu code in the block where the link to the created page should be added ||
+[`string`](../../../data-types.md) | Used together with `BLOCK_ID` to specify the menu code in the block where the link to the created page should be added ||
 |#
 
 ## Code Examples
@@ -81,7 +85,7 @@ The view template identifier can be obtained using the method [landing.template.
       -H "Content-Type: application/json" \
       -d '{
         "fields": {
-          "TITLE": "Spring Sale",
+          "TITLE": "Spring Promotion",
           "SITE_ID": 292,
           "CODE": "spring-sale",
           "DESCRIPTION": "Page for seasonal promotion",
@@ -100,7 +104,7 @@ The view template identifier can be obtained using the method [landing.template.
       -H "Content-Type: application/json" \
       -d '{
         "fields": {
-          "TITLE": "Spring Sale",
+          "TITLE": "Spring Promotion",
           "SITE_ID": 292,
           "CODE": "spring-sale",
           "DESCRIPTION": "Page for seasonal promotion",
@@ -122,7 +126,7 @@ The view template identifier can be obtained using the method [landing.template.
     		'landing.landing.add',
     		{
     			fields: {
-    				TITLE: 'Spring Sale',
+    				TITLE: 'Spring Promotion',
     				SITE_ID: 292,
     				CODE: 'spring-sale',
     				DESCRIPTION: 'Page for seasonal promotion',
@@ -152,7 +156,7 @@ The view template identifier can be obtained using the method [landing.template.
                 'landing.landing.add',
                 [
                     'fields' => [
-                        'TITLE' => 'Spring Sale',
+                        'TITLE' => 'Spring Promotion',
                         'SITE_ID' => 292,
                         'CODE' => 'spring-sale',
                         'DESCRIPTION' => 'Page for seasonal promotion',
@@ -181,7 +185,7 @@ The view template identifier can be obtained using the method [landing.template.
         'landing.landing.add',
         {
             fields: {
-                TITLE: 'Spring Sale',
+                TITLE: 'Spring Promotion',
                 SITE_ID: 292,
                 CODE: 'spring-sale',
                 DESCRIPTION: 'Page for seasonal promotion',
@@ -213,7 +217,7 @@ The view template identifier can be obtained using the method [landing.template.
         'landing.landing.add',
         [
             'fields' => [
-                'TITLE' => 'Spring Sale',
+                'TITLE' => 'Spring Promotion',
                 'SITE_ID' => 292,
                 'CODE' => 'spring-sale',
                 'DESCRIPTION' => 'Page for seasonal promotion',
@@ -266,13 +270,13 @@ HTTP Status: **200**
 
 ### Returned Data
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **result**
 [`integer`](../../../data-types.md) | Identifier of the created page or folder ||
 || **time**
-[`time`](../../../data-types.md#time) | Information about the request execution time ||
+[`time`](../../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
@@ -290,7 +294,7 @@ HTTP Status: **400**
 
 ### Possible Error Codes
 
-#|
+#| 
 || **Code** | **Description** ||
 || `MISSING_PARAMS` | Required top-level parameter `fields` is missing ||
 || `ACCESS_DENIED` | Access to create the page is denied: the user does not have "edit" permission for the specified site ||

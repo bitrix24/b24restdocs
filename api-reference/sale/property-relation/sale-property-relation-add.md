@@ -14,37 +14,37 @@ The method `sale.propertyRelation.add` adds a property binding.
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../_includes/required.md) %}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
-|| **fields***
-[`object`](../../data-types.md) | Field values for creating the property binding ||
+|| **fields*** 
+[`object`](../../data-types.md) | Field values for creating a property binding ||
 |#
 
 ### Parameter fields
 
-{% include [Note on required parameters](../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../_includes/required.md) %}
 
-#|
+#| 
 || **Parameter**
 `type` | **Description** ||
-|| **entityId***
-[`integer`](../../data-types.md) | Object identifier ||
-|| **entityType***
-[`string`](../../data-types.md) | Object type:
+|| **entityId*** 
+[`integer`](../../data-types.md) | Identifier of the object ||
+|| **entityType*** 
+[`string`](../../data-types.md) | Type of the object:
 - `P` — payment system
 - `D` — delivery
 - `L` — landing
 - `T` — trading platform ||
-|| **propertyId***
-[`sale_order_property.id`](../data-types.md) | Property identifier ||
+|| **propertyId*** 
+[`sale_order_property.id`](../data-types.md) | Identifier of the property ||
 |#
 
 ## Code Examples
 
-{% include [Note on examples](../../../_includes/examples.md) %}
+{% include [Note on Examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -73,23 +73,23 @@ The method `sale.propertyRelation.add` adds a property binding.
     ```js
     try
     {
-    	const response = await $b24.callMethod(
-    		'sale.propertyRelation.add',
-    		{
-    			fields: {
-    				entityId: 6,
-    				entityType: 'D',
-    				propertyId: 40
-    			}
-    		}
-    	);
-    	
-    	const result = response.getData().result;
-    	console.log(result);
+        const response = await $b24.callMethod(
+            'sale.propertyRelation.add',
+            {
+                fields: {
+                    entityId: 6,
+                    entityType: 'D',
+                    propertyId: 40
+                }
+            }
+        );
+        
+        const result = response.getData().result;
+        console.log(result);
     }
     catch( error )
     {
-    	console.error(error);
+        console.error(error);
     }
     ```
 
@@ -173,7 +173,7 @@ The method `sale.propertyRelation.add` adds a property binding.
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -189,28 +189,28 @@ HTTP status: **200**
         "finish": 1712244476.402808,
         "duration": 0.9075310230255127,
         "processing": 0.08538603782653809,
-        "date_start": "2024-04-04T18:27:55+02:00",
-        "date_finish": "2024-04-04T18:27:56+02:00"
+        "date_start": "2024-04-04T18:27:55+03:00",
+        "date_finish": "2024-04-04T18:27:56+03:00"
     }
 }
 ```
 
 ### Returned Data
 
-#|
+#| 
 || **Value** / **Type** | **Description** ||
 || **result**
 [`object`](../../data-types.md) | Root element of the response
  ||
-|| **propertyRelations**
-[`sale_order_property_relation`](../data-types.md) | Object with information about the created binding ||
+|| **propertyRelation**
+[`sale_order_property_relation`](../data-types.md) | Object containing information about the created binding ||
 || **time**
 [`time`](../../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {
@@ -219,11 +219,11 @@ HTTP status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../_includes/error-info.md) %}
+{% include notitle [Error Handling](../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
-#|
+#| 
 || **Code** | **Description** ||
 || `201650000001` | Binding with the specified values `entityId`, `entityType`, `propertyId` already exists
  ||
@@ -234,7 +234,7 @@ HTTP status: **400**
 || `0` | Other errors (e.g., fatal errors) ||
 |#
 
-{% include [system errors](../../../_includes/system-errors.md) %}
+{% include [System Errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning 
 

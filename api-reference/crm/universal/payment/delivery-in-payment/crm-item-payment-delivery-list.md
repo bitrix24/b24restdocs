@@ -8,28 +8,28 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
-> Who can execute the method: read access permission for the payment order is required
+> Who can execute the method: read access permission for payment order is required
 
 This method retrieves a list of delivery items for a specific payment.
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **paymentId***
 [`sale_order_payment.id`](../../../../sale/data-types.md#sale_order_payment) | Payment identifier.
-Can be obtained using the method [`sale.payment.list`](../../../../sale/payment/sale-payment-list.md) ||
+Can be obtained using the [`sale.payment.list`](../../../../sale/payment/sale-payment-list.md) method ||
 || **filter***
 [`object`](../../../../data-types.md) | Object for filtering selected delivery items in the format `{"field_1": "value_1", ... "field_N": "value_N"}`.
-
+ 
 Possible values for `field`:
 - `id`
 - `quantity`
 
-An additional prefix can be assigned to the key to specify the filter behavior. Possible prefix values:
+An additional prefix can be specified for the key to clarify the filter behavior. Possible prefix values:
 
 - `=` — equals, exact match (default)
 - `%` — LIKE, substring search. The % symbol should not be included in the filter value. The search looks for the substring in any position of the string
@@ -39,34 +39,36 @@ An additional prefix can be assigned to the key to specify the filter behavior. 
 - `!%` — NOT LIKE, substring search. The % symbol should not be included in the filter value. The search goes from both sides.
 - `>=` — greater than or equal to
 - `<=` — less than or equal to
-- `=%` — LIKE, substring search. The % symbol should be included in the value. Examples: 
+- `@` — IN, an array is passed as the value
+- `!@` — NOT IN, an array is passed as the value
+- `=%` — LIKE, substring search. The % symbol must be included in the value. Examples: 
     - `"mol%"` — searching for values starting with "mol"
     - `"%mol"` — searching for values ending with "mol"
     - `"%mol%"` — searching for values where "mol" can be in any position
 - `%=` — LIKE (see description above)
-- `!=%` — NOT LIKE, substring search. The % symbol should be included in the value. Examples:
+- `!=%` — NOT LIKE, substring search. The % symbol must be included in the value. Examples:
     - `"mol%"` — searching for values not starting with "mol"
     - `"%mol"` — searching for values not ending with "mol"
     - `"%mol%"` — searching for values where the substring "mol" is not present in any position
 - `!%=` — NOT LIKE (see description above)
 ||
 || **order**
-[`object`](../../../../data-types.md) | Object for sorting selected delivery items of the payment in the format `{"field_1": "order_1", ... "field_N": "order_N"}`.
-
+[`object`](../../../../data-types.md) | Object for sorting selected delivery items for payment in the format `{"field_1": "order_1", ... "field_N": "order_N"}`.
+ 
 Possible values for `field`:
 - `id`
 - `quantity`
-
+ 
 Possible values for `order`:
 
-- `asc` — in ascending order
-- `desc` — in descending order
- ||
+- `asc` — ascending order
+- `desc` — descending order
+||
 |#
 
 ## Code Examples
 
-{% include [Note on examples](../../../../../_includes/examples.md) %}
+{% include [Note on Examples](../../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -93,7 +95,7 @@ Possible values for `order`:
 - JS
 
     ```js
-    // callListMethod: Retrieves all data at once. Use only for small selections (< 1000 items) due to high memory usage.
+    // callListMethod: Retrieves all data at once. Use only for small selections (< 1000 items) due to high memory load.
     
     try {
       const response = await $b24.callListMethod(
@@ -113,7 +115,7 @@ Possible values for `order`:
       console.error('Request failed', error);
     }
     
-    // fetchListMethod: Retrieves data in parts using an iterator. Use it for large data volumes to optimize memory usage.
+    // fetchListMethod: Retrieves data in parts using an iterator. Use for large volumes of data for efficient memory consumption.
     
     try {
       const generator = $b24.fetchListMethod('crm.item.payment.delivery.list', {
@@ -130,7 +132,7 @@ Possible values for `order`:
       console.error('Request failed', error);
     }
     
-    // callMethod: Manually controls pagination through the start parameter. Use it for precise control of request batches. For large datasets, it is less efficient than fetchListMethod.
+    // callMethod: Manual control of pagination through the start parameter. Use for precise control over request batches. Less efficient for large data than fetchListMethod.
     
     try {
       const response = await $b24.callMethod('crm.item.payment.delivery.list', {
@@ -222,7 +224,7 @@ Possible values for `order`:
 
 ## Successful Response
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -251,9 +253,9 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-`crm_item_payment_delivery[]` | Array of objects containing information about the selected delivery items for the payment ||
+`crm_item_payment_delivery[]` | Array of objects containing information about the selected delivery items for payment ||
 || **time**
-[`time`](../../../../data-types.md) | Information about the execution time of the request ||
+[`time`](../../../../data-types.md) | Information about the request execution time ||
 |#
 
 ### Key result. Object of type crm_item_payment_delivery 
@@ -264,16 +266,16 @@ HTTP status: **200**
 || **id**
 [`integer`](../../../../data-types.md) | Identifier of the delivery item in the payment ||
 || **paymentId**
-[`sale_order_payment.id`](../../../../data-types.md#sale_order_payment) | Payment identifier  ||
+[`sale_order_payment.id`](../../../../sale/data-types.md#sale_order_payment) | Identifier of the payment ||
 || **quantity**
 [`double`](../../../../data-types.md) | Quantity ||
 || **deliveryId**
-[`sale_order_shipment.id`](../../../../data-types.md#sale_order_shipment)  | Delivery identifier ||
+[`sale_order_shipment.id`](../../../../sale/data-types.md#sale_order_shipment)  | Identifier of the delivery ||
 |#
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {
@@ -294,6 +296,10 @@ HTTP status: **400**
 || `0` | Other errors (e.g., fatal errors) ||
 |#
 
+### Error Handling Features
+
+For business errors, the method may return `error: 0`. In this case, refer to `error_description` and match it with the list of errors above.
+
 {% include notitle [system errors](../../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
@@ -301,4 +307,3 @@ HTTP status: **400**
 - [{#T}](./crm-item-payment-delivery-add.md)
 - [{#T}](./crm-item-payment-delivery-delete.md)
 - [{#T}](./crm-item-payment-delivery-set-delivery.md)
-

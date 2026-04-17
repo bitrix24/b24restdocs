@@ -19,19 +19,23 @@ The method `landing.site.updateFolder` updates the parameters of a site folder.
 #|
 || **Name**
 `type` | **Description** ||
-|| **siteId***
-[`integer`](../../data-types.md) | The identifier of the site to which the folder belongs.
+|| **scope**
+[`string`](../../data-types.md) | Internal scope of the landing. It is not related to the REST scope `landing` in the method name.
 
-The site identifier can be obtained using the [landing.site.getList](./landing-site-get-list.md) method. ||
-|| **folderId***
-[`integer`](../../data-types.md) | The identifier of the folder to be updated.
+The value of `scope` must correspond to the type of site [(detailed description)](../types.md) ||
+|| **siteId*** 
+[`integer`](../../data-types.md) | Identifier of the site to which the folder belongs.
 
-The folder identifier can be obtained using the [landing.site.getFolders](./landing-site-get-folders.md) method. ||
-|| **fields***
-[`object`](../../data-types.md) | A set of fields to update the folder [(detailed description)](#fields) ||
+The site identifier can be obtained using the [landing.site.getList](./landing-site-get-list.md) method ||
+|| **folderId*** 
+[`integer`](../../data-types.md) | Identifier of the folder to be updated.
+
+The folder identifier can be obtained using the [landing.site.getFolders](./landing-site-get-folders.md) method ||
+|| **fields*** 
+[`object`](../../data-types.md) | Set of fields to update the folder [(detailed description)](#fields) ||
 |#
 
-### Fields Parameter {#fields}
+### Parameter fields {#fields}
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
 
@@ -39,19 +43,19 @@ The folder identifier can be obtained using the [landing.site.getFolders](./land
 || **Name**
 `type` | **Description** ||
 || **TITLE**
-[`string`](../../data-types.md) | The name of the folder. ||
+[`string`](../../data-types.md) | Title of the folder ||
 || **CODE**
-[`string`](../../data-types.md) | The symbolic code of the folder for the URL. The code cannot contain the character `/`. 
+[`string`](../../data-types.md) | Symbolic code of the folder for the URL. The code cannot contain the character `/`. 
 
-If the parameter is not provided, the current value of the folder's `CODE` is used. ||
+If the parameter is not provided, the current value of `CODE` for the folder is used ||
 || **PARENT_ID**
-[`integer`](../../data-types.md) | The identifier of the parent folder. 
+[`integer`](../../data-types.md) | Identifier of the parent folder. 
 
-If the value is `0`, `null`, empty, or the parameter is not provided, the folder is moved to the root of the site. ||
+If the value is `0`, `null`, empty, or the parameter is not provided, the folder is moved to the root of the site ||
 || **INDEX_ID**
-[`integer`](../../data-types.md) | The identifier of the folder's index page. ||
+[`integer`](../../data-types.md) | Identifier of the index page of the folder ||
 || **ACTIVE**
-[`string`](../../data-types.md) | The active flag of the folder `Y/N`. ||
+[`string`](../../data-types.md) | Active flag for the folder `Y/N` ||
 |#
 
 ## Code Examples
@@ -250,9 +254,9 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../data-types.md) | Returns `true` if the folder was successfully updated. ||
+[`boolean`](../../data-types.md) | Returns `true` if the folder was successfully updated ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the execution time of the request. ||
+[`time`](../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
@@ -272,10 +276,10 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `MISSING_PARAMS` | Required parameter `siteId`, `folderId`, or `fields` is missing. ||
-|| `ACCESS_DENIED` | Site not found or access to it is denied. ||
-|| `FOLDER_IS_NOT_UNIQUE` | A folder with this name already exists. ||
-|| `SLASH_IS_NOT_ALLOWED` | Slash is not allowed in the folder address. ||
+|| `MISSING_PARAMS` | Required parameter `siteId`, `folderId`, or `fields` is missing ||
+|| `ACCESS_DENIED` | Site not found or access to it is denied ||
+|| `FOLDER_IS_NOT_UNIQUE` | A folder with this name already exists ||
+|| `SLASH_IS_NOT_ALLOWED` | Slash is not allowed in the folder address ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

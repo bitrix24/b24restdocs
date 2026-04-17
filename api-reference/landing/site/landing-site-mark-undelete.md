@@ -8,7 +8,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`landing`](../../scopes/permissions.md)
 >
-> Who can execute the method: user with "delete" access permission for sites
+> Who can execute the method: a user with the "delete" access permission for sites
 
 The method `landing.site.markUnDelete` restores a site from the recycle bin and removes the deletion flag. 
 After restoration, the site remains unpublished (`ACTIVE = "N"`).
@@ -17,10 +17,14 @@ After restoration, the site remains unpublished (`ACTIVE = "N"`).
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
-|| **id***
+|| **scope**
+[`string`](../../data-types.md) | Internal scope of landings. It is not related to the REST scope `landing` in the method name.
+
+The value of `scope` must correspond to the type of site [(detailed description)](../types.md) ||
+|| **id*** 
 [`integer`](../../data-types.md) | Identifier of the site.
 
 The site identifier can be obtained using the method [landing.site.getList](./landing-site-get-list.md) or from the result of the method [landing.site.add](./landing-site-add.md) ||
@@ -160,8 +164,8 @@ HTTP Status: **200**
         "finish": 1773284286.396013,
         "duration": 0.3960130214691162,
         "processing": 0,
-        "date_start": "2026-03-12T05:58:06+01:00",
-        "date_finish": "2026-03-12T05:58:06+01:00",
+        "date_start": "2026-03-12T05:58:06+02:00",
+        "date_finish": "2026-03-12T05:58:06+02:00",
         "operating_reset_at": 1773284886,
         "operating": 0
     }
@@ -170,7 +174,7 @@ HTTP Status: **200**
 
 ### Returned Data
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **result**
@@ -194,12 +198,12 @@ HTTP Status: **400**
 
 ### Possible Error Codes
 
-#|
+#| 
 || **Code** | **Description** ||
-|| `MISSING_PARAMS` | Required parameter `id` not provided ||
+|| `MISSING_PARAMS` | Required parameter `id` is missing ||
 || `ACCESS_DENIED` | Insufficient rights to modify the `DELETED` field of the site ||
-|| `TOTAL_SITE_REACHED` | Exceeded tariff limit on the number of sites or knowledge bases, site cannot be restored ||
-|| `TYPE_ERROR` | Data type error in method call parameters ||
+|| `TOTAL_SITE_REACHED` | The tariff limit on the number of sites or knowledge bases has been exceeded; the site cannot be restored ||
+|| `TYPE_ERROR` | Data type error in the method call parameters ||
 || `SYSTEM_ERROR` | Internal error during method execution ||
 |#
 

@@ -1,4 +1,4 @@
-# Get Available Languages for Translation catalog.priceTypeLang.getLanguages
+# Get Available Languages for Translation: catalog.priceTypeLang.getLanguages
 
 {% note tip "" %}
 
@@ -10,13 +10,15 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: administrator
 
-The method returns a list of available languages for translation.
+This method returns a list of available languages for translation.
+
+## Method Parameters
 
 No parameters.
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../../_includes/examples.md) %}
+{% include [Examples Note](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -45,17 +47,17 @@ No parameters.
     ```js
     try
     {
-    	const response = await $b24.callMethod(
-    		'catalog.priceTypeLang.getLanguages',
-    		{}
-    	);
-    	
-    	const result = response.getData().result;
-    	console.log(result);
+        const response = await $b24.callMethod(
+            'catalog.priceTypeLang.getLanguages',
+            {}
+        );
+        
+        const result = response.getData().result;
+        console.log(result);
     }
     catch( error )
     {
-    	console.error(error);
+        console.error(error);
     }
     ```
 
@@ -184,8 +186,8 @@ HTTP Status: **200**
             },
             {
                 "active": "Y",
-                "lid": "de",
-                "name": "German"
+                "lid": "ru",
+                "name": "Russian"
             },
             {
                 "active": "Y",
@@ -235,7 +237,7 @@ HTTP Status: **200**
 || **result**
 [`object`](../../../data-types.md) | Root element of the response ||
 || **languages**
-[`catalog_language[]`](../../data-types.md#catalog_language) | Array of objects with information about available translatable languages ||
+[`catalog_language[]`](../../data-types.md#catalog_language) | Array of objects containing information about available languages for translation ||
 || **time**
 [`time`](../../../data-types.md) | Information about the request execution time ||
 |#

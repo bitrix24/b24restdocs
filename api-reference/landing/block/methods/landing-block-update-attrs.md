@@ -1,4 +1,4 @@
-# Update Attributes of Elements in landing.block.updateattrs
+# Change Attributes of Block Elements landing.block.updateattrs
 
 {% note tip "" %}
 
@@ -8,30 +8,34 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`landing`](../../../scopes/permissions.md)
 >
-> Who can execute the method: user with "edit" access permission for the site
+> Who can execute the method: a user with "edit" access permission for the site
 
 The method `landing.block.updateattrs` updates the attributes of HTML elements within a block in the draft of a page.
 
-This method does not change the text, the entire HTML code of the block, or the styles. It only updates the attribute values of existing elements, such as `href`, `target`, `alt`, `title`, `data-*`, and `aria-*`.
+This method does not change the text, the entire HTML code of the block, or styles. It only updates the attribute values of already existing elements, such as `href`, `target`, `alt`, `title`, `data-*`, and `aria-*`.
 
-If the page is already published, changes will be visible to visitors after re-publishing through the interface or using the method [landing.landing.publication](../../page/methods/landing-landing-publication.md).
+If the page is already published, changes will be visible to visitors after re-publishing through the interface or using the [landing.landing.publication](../../page/methods/landing-landing-publication.md) method.
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
-|| **lid***
-[`integer`](../../../data-types.md) | Page identifier.
+|| **scope**
+[`string`](../../../data-types.md) | Internal scope of landings. It is not related to the REST scope `landing` in the method name.
 
-The page identifier can be obtained using the method [landing.landing.getList](../../page/methods/landing-landing-get-list.md) ||
-|| **block***
-[`integer`](../../../data-types.md) | Block identifier in the version of the page for editing.
+The value of `scope` must correspond to the type of site [(detailed description)](../../types.md) ||
+|| **lid*** 
+[`integer`](../../../data-types.md) | Identifier of the page.
 
-The block identifier can be obtained using the method [landing.block.getlist](./landing-block-get-list.md) with the parameter `params.edit_mode = 1`. If you pass the block identifier from the published version of the page, the method may return an error ||
-|| **data***
+The page identifier can be obtained using the [landing.landing.getList](../../page/methods/landing-landing-get-list.md) method ||
+|| **block*** 
+[`integer`](../../../data-types.md) | Identifier of the block in the version of the page for editing.
+
+The block identifier can be obtained using the [landing.block.getlist](./landing-block-get-list.md) method with the parameter `params.edit_mode = 1`. If you pass the block identifier from the published version of the page, the method may return an error ||
+|| **data*** 
 [`object`](../../../data-types.md) | Set of attributes to update [(detailed description)](#data) ||
 |#
 
@@ -41,24 +45,24 @@ The block identifier can be obtained using the method [landing.block.getlist](./
 || **Key**
 `type` | **Description** ||
 || **<selector>**
-[`object`](../../../data-types.md) | The key must match the CSS selector from the block manifest. The value must be an object of the form `{ '<attribute>': <value> }`.
+[`object`](../../../data-types.md) | The key must match the CSS selector from the block's manifest. The value must be an object of the form `{ '<attribute>': <value> }`.
 
 The method finds elements by the selector and assigns them new attribute values. If the selector appears multiple times, you can specify the position using `@`, for example, `.landing-block-node-text@1`. Positions are numbered starting from `0`.
 
 If the position is not specified, the method updates all found elements with that selector ||
 |#
 
-The allowed selectors and attributes are taken from the `style.nodes`, `attrs`, `cards`, and `style.block` sections of the block manifest. You can check them using the method [landing.block.getmanifest](./landing-block-get-manifest.md). If you are checking the block from the version of the page for editing, pass the parameter `params.edit_mode = 1` to `landing.block.getmanifest`.
+The allowed selectors and attributes are taken from the `style.nodes`, `attrs`, `cards`, and `style.block` sections of the block's manifest. You can check them using the [landing.block.getmanifest](./landing-block-get-manifest.md) method. If you are checking a block from the version of the page for editing, pass the parameter `params.edit_mode = 1` to `landing.block.getmanifest`.
 
 If the required attribute is described only in the `nodes` section of the manifest, use [landing.block.updatenodes](./landing-block-update-nodes.md). If the selector or attribute is not present in the supported sections of the manifest, the method will ignore it without an error.
 
 Use the method when you need to change the settings of an element through attributes, rather than its content. For example, you can change the link of a button, the `target` for opening in a new tab, the `alt` for an image, or `data-*` for a form.
 
-For instance, in a CRM form block, the method allows you to change the `data-b24form` attribute of the `.bitrix24forms` element and connect a different form. Acceptable values for such an attribute should be taken from the manifest of the specific block.
+For instance, in the CRM form block, the method allows you to change the `data-b24form` attribute of the `.bitrix24forms` element and connect a different form. The acceptable values for such an attribute should be taken from the manifest of the specific block.
 
-Strings, numbers, and boolean values are saved as HTML attributes. If you pass an array or object, the method converts them into a JSON string. The data format must correspond to the type of the attribute specified in the block manifest. The method does not check whether the passed value fits the logic of a specific block, so it is better to refer to the manifest. Examples of formats for different attribute types can be found in the article [Attribute Types](../attributes.md#attribute-types).
+Strings, numbers, and boolean values are saved as HTML attributes. If you pass an array or object, the method converts them into a JSON string. The data format must match the type of the attribute specified in the block's manifest. The method does not check whether the passed value is suitable for the logic of a specific block, so it is better to refer to the manifest. Examples of formats for different types of attributes can be found in the article [Attribute Types](../attributes.md).
 
-For example, if a repeating element in the manifest allows the `data-test-checkbox` attribute, the request for the second card might look like this:
+For example, if a repeating element in the manifest allows the attribute `data-test-checkbox`, the request for the second card might look like this:
 
 ```json
 {
@@ -68,7 +72,7 @@ For example, if a repeating element in the manifest allows the `data-test-checkb
 }
 ```
 
-For example, if the block contains a button:
+For example, if there is a button in the block:
 
 ```html
 <a class="landing-block-node-button" href="/old/" target="_self">Buy</a>
@@ -93,7 +97,7 @@ For dynamic block and component parameters, use [landing.block.updatenodes](./la
 
 ## Code Examples
 
-{% include [Note on Examples](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -257,7 +261,7 @@ For dynamic block and component parameters, use [landing.block.updatenodes](./la
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -288,7 +292,7 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -297,7 +301,7 @@ HTTP Status: **400**
 }
 ```
 
-{% include notitle [Error Handling](../../../../_includes/error-info.md) %}
+{% include notitle [error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
@@ -305,11 +309,11 @@ HTTP Status: **400**
 || **Code** | **Description** ||
 || `MISSING_PARAMS` | Required parameter `lid`, `block`, or `data` is missing ||
 || `ACCESS_DENIED` | Insufficient permissions to edit the site ||
-|| `LANDING_NOT_EXIST` | Page with identifier `lid` not found or not accessible to the current user ||
-|| `BLOCK_NOT_FOUND` | Block with identifier `block` not found on page `lid` or not accessible in the version of the page for editing ||
+|| `LANDING_NOT_EXIST` | The page with identifier `lid` is not found or is not accessible to the current user ||
+|| `BLOCK_NOT_FOUND` | The block with identifier `block` is not found on the page `lid` or is not accessible in the version of the page for editing ||
 |#
 
-{% include [System Errors](../../../../_includes/system-errors.md) %}
+{% include [system errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

@@ -16,11 +16,15 @@ The method `landing.landing.getpreview` returns the URL or relative path to the 
 
 {% include [Note on required parameters](../../../../_includes/required.md) %}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
-|| **lid***
-[`integer`](../../../data-types.md) | Page identifier.
+|| **scope**
+[`string`](../../../data-types.md) | Internal scope of the landing pages. It is not related to the REST scope `landing` in the method name.
+
+The value of `scope` must correspond to the type of site [(detailed description)](../../types.md) ||
+|| **lid*** 
+[`integer`](../../../data-types.md) | Identifier of the page.
 
 The page identifier can be obtained using the method [landing.landing.getList](./landing-landing-get-list.md) or from the result of the method [landing.landing.add](./landing-landing-add.md) ||
 |#
@@ -167,7 +171,7 @@ HTTP Status: **200**
 
 ### Returned Data
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **result**
@@ -175,7 +179,7 @@ HTTP Status: **200**
 
 The method returns the URL of the page preview, the path to the image, or `"/bitrix/images/landing/nopreview.jpg"` if no preview is set ||
 || **time**
-[`time`](../../../data-types.md#time) | Information about the request execution time ||
+[`time`](../../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
@@ -193,9 +197,9 @@ HTTP Status: **400**
 
 ### Possible Error Codes
 
-#|
+#| 
 || **Code** | **Description** ||
-|| `MISSING_PARAMS` | Insufficient call parameters, missing: `lid` ||
+|| `MISSING_PARAMS` | Insufficient parameters for the call, missing: `lid` ||
 || `LANDING_NOT_EXIST` | Landing not found. The method returns this code if the page is not found or the current user does not have permission to view it ||
 |#
 

@@ -1,4 +1,4 @@
-# Add System Deal crm.activity.add
+# Add System Activity crm.activity.add
 
 {% note tip "" %}
 
@@ -8,7 +8,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
-> Who can execute the method: user with permission to add a deal
+> Who can execute the method: user with permission to add an activity
 
 {% note warning "DEPRECATED" %}
 
@@ -16,7 +16,7 @@ Development of this method has been halted. Please use [crm.activity.todo.add](.
 
 {% endnote %}
 
-The method `crm.activity.add` creates a new system deal.
+The method `crm.activity.add` creates a new system activity.
 
 ## Method Parameters
 
@@ -26,7 +26,7 @@ The method `crm.activity.add` creates a new system deal.
 || **Name**
 `type` | **Description** ||
 || **fields***
-[`array`](../../../../data-types.md) | An array of values for the [deal fields](#fields) in the following structure:
+[`array`](../../../../data-types.md) | An array of values for the [activity fields](#fields) in the following structure:
 
 ```json
 fields:
@@ -62,25 +62,25 @@ There is an additional field `DISABLE_SENDING_MESSAGE_COPY`. It is intended to f
 || **OWNER_TYPE_ID***
 [`integer`](../../../data-types.md) | [Identifier of the CRM object type](../../../data-types.md#object_type) ||
 || **TYPE_ID***
-[`crm_enum_activitytype`](../../../data-types.md) | Type of the deal. To get available deal types, use the method [crm.enum.activitytype](../../../auxiliary/enum/outdated/crm-enum-activity-type.md). 
+[`crm_enum_activitytype`](../../../data-types.md) | Type of the activity. To get available activity types, use the method [crm.enum.activitytype](../../../auxiliary/enum/outdated/crm-enum-activity-type.md). 
 
-To create a deal with the type "task", use the [creation](../../../../tasks/tasks-task-add.md) or [modification](../../../../tasks/tasks-task-update.md) method and specify the CRM entity in the `UF_CRM_TASK` field ||
+To create an activity with the type "task", use the [creation](../../../../tasks/tasks-task-add.md) or [modification](../../../../tasks/tasks-task-update.md) method and specify the CRM entity in the `UF_CRM_TASK` field ||
 || **ASSOCIATED_ENTITY_ID**
-[`integer`](../../../../data-types.md) | Identifier of the entity associated with the deal ||
+[`integer`](../../../../data-types.md) | Identifier of the entity associated with the activity ||
 || **COMMUNICATIONS***
 [`crm_activity_communication`](../../../data-types.md) | [Description of communication](./crm-activity-communication-fields.md) ||
 || **DEADLINE**
-[`datetime`](../../../data-types.md) | Date and time of the deal's deadline. This field is not set directly; the value is taken from START_TIME for calls and meetings and from END_TIME for tasks ||
+[`datetime`](../../../data-types.md) | Date and time of the activity's deadline. This field is not set directly; the value is taken from START_TIME for calls and meetings and from END_TIME for tasks ||
 || **DESCRIPTION**
-[`string`](../../../data-types.md) | Text description of the deal ||
+[`string`](../../../data-types.md) | Text description of the activity ||
 || **DESCRIPTION_TYPE**
 [`crm.enum.contenttype`](../../../data-types.md) | Type of description ||
 || **DIRECTION**
-[`crm.enum.activitydirection`](../../../data-types.md) | Direction of the deal: incoming/outgoing. Relevant for calls and emails, not used for meetings ||
+[`crm.enum.activitydirection`](../../../data-types.md) | Direction of the activity: incoming/outgoing. Relevant for calls and emails, not used for meetings ||
 || **END_TIME**
-[`datetime`](../../../data-types.md) | Time of deal completion | ||
+[`datetime`](../../../data-types.md) | Time of activity completion | ||
 || **FILES**
-[`diskfile`](../../../data-types.md) | Files added to the deal ||
+[`diskfile`](../../../data-types.md) | Files added to the activity ||
 || **LOCATION**
 [`string`](../../../data-types.md) | Location ||
 || **NOTIFY_TYPE**
@@ -104,26 +104,26 @@ To create a deal with the type "task", use the [creation](../../../../tasks/task
 || **PROVIDER_PARAMS**
 [`object`](../../../data-types.md) | Additional provider parameters ||
 || **RESPONSIBLE_ID***
-[`user`](../../../data-types.md) | Identifier of the user responsible for the deal ||
+[`user`](../../../data-types.md) | Identifier of the user responsible for the activity ||
 || **SETTINGS**
 [`object`](../../../data-types.md) | Additional settings ||
 || **START_TIME**
-[`datetime`](../../../data-types.md) | Time when the deal starts ||
+[`datetime`](../../../data-types.md) | Time when the activity starts ||
 || **STATUS**
-[`crm_enum_activitystatus`](../../../data-types.md) | Status of the deal ||
+[`crm_enum_activitystatus`](../../../data-types.md) | Status of the activity ||
 || **SUBJECT**
-[`string`](../../../data-types.md) | Additional description of the deal ||
+[`string`](../../../data-types.md) | Additional description of the activity ||
 || **WEBDAV_ELEMENTS**
 [`diskfile`](../../../data-types.md) | Added files. Deprecated, kept for compatibility ||
 || **IS_INCOMING_CHANNEL**
-[`char`](../../../data-types.md) | Flag indicating whether the deal was created from an incoming channel (`Y`/`N`) ||
+[`char`](../../../data-types.md) | Flag indicating whether the activity was created from an incoming channel (`Y`/`N`) ||
 |#
 
 ### Usage Scenarios for Field Values
 
-For deals of type `e-mail`:
+For activities of type `e-mail`:
 - if the email should not be sent, set parameters `DIRECTION=2` and `COMPLETED='N'`;
-- if it is necessary to mark emails as completed, update the deals by setting the completion flag.
+- if it is necessary to mark emails as completed, update the activities by setting the completion flag.
 
 ## Code Examples
 
@@ -366,7 +366,7 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../../../data-types.md) | Result of the operation. Returns the identifier of the deal in the timeline on success, otherwise — `false` ||
+[`boolean`](../../../../data-types.md) | Result of the operation. Returns the identifier of the activity in the timeline on success, otherwise — `false` ||
 || **time**
 [`time`](../../../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -393,7 +393,7 @@ HTTP Status: **400**
 || `The field TYPE_ID is not defined or invalid` | The `TYPE_ID` field is not set ||
 || `The field COMMUNICATIONS is not defined or invalid` | The `COMMUNICATIONS` field is not set ||
 || `The only one communication is allowed for activity of specified type` | More than one contact is specified ||
-|| `Could not build binding. Please ensure that owner info and communications are defined correctly` | Connections for the deal are not specified ||
+|| `Could not build binding. Please ensure that owner info and communications are defined correctly` | Connections for the activity are not specified ||
 || 
 - `Email send error. Failed to load module "subscribe"`
 - `Email send error. Invalid data`
@@ -404,11 +404,11 @@ HTTP Status: **400**
 - `Email send error. Failed to save posting file. Please see details below`
 - `Email send error. Failed to update activity`
 - `Email send error. General error`
- | Errors related to "email" deals ||
-|| `The custom activity without provider is not supported in current context` | The deal type is not supported in the specified context ||
-|| `Use crm.activity.configurable.add for this activity provider` | Incorrect method call for configurable deal ||
+ | Errors related to "email" activities ||
+|| `The custom activity without provider is not supported in current context` | The activity type is not supported in the specified context ||
+|| `Use crm.activity.configurable.add for this activity provider` | Incorrect method call for configurable activity ||
 || `Access denied` | No permission to add entity in CRM ||
-|| `Application context required` | Incorrect `PROVIDER_ID` parameter for the deal created in the application context ||
+|| `Application context required` | Incorrect `PROVIDER_ID` parameter for the activity created in the application context ||
 |#
 
 {% include [System Errors](../../../../../_includes/system-errors.md) %}
@@ -423,3 +423,4 @@ HTTP Status: **400**
 - [{#T}](./crm-activity-fields.md)
 - [{#T}](../../../../../tutorials/crm/how-to-add-crm-objects/how-to-add-activity-to-contact.md)
 - [{#T}](../../../../../tutorials/crm/how-to-add-crm-objects/how-to-send-email.md)
+

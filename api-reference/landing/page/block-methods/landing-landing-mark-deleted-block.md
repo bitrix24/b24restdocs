@@ -1,4 +1,4 @@
-# Mark Block as Deleted `landing.landing.markdeletedblock`
+# Mark a Block as Deleted `landing.landing.markdeletedblock`
 
 {% note tip "" %}
 
@@ -8,7 +8,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`landing`](../../../scopes/permissions.md)
 >
-> Who can execute the method: user with "edit" access permission for the site
+> Who can execute the method: a user with "edit" access permission for the site
 
 The method `landing.landing.markdeletedblock` marks a page block as deleted but does not remove it from the database. The marked block can be restored using the method [landing.landing.markundeletedblock](./landing-landing-mark-undeleted-block.md).
 
@@ -16,17 +16,21 @@ If the page is already published, changes will be visible to visitors after the 
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../../_includes/required.md) %}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
-|| **lid***
-[`integer`](../../../data-types.md) | Page identifier.
+|| **scope**
+[`string`](../../../data-types.md) | Internal scope of the landing. It is not related to the REST scope `landing` in the method name.
+
+The value of `scope` must correspond to the type of site [(detailed description)](../../types.md) ||
+|| **lid*** 
+[`integer`](../../../data-types.md) | Identifier of the page.
 
 The page identifier can be obtained using the method [landing.landing.getList](../methods/landing-landing-get-list.md), as well as from the results of the methods [landing.landing.add](../methods/landing-landing-add.md), [landing.landing.addByTemplate](../methods/landing-landing-add-by-template.md), and [landing.landing.copy](../methods/landing-landing-copy.md) ||
-|| **block***
-[`integer`](../../../data-types.md) | Block identifier.
+|| **block*** 
+[`integer`](../../../data-types.md) | Identifier of the block.
 
 The block identifier can be obtained using the method [landing.block.getList](../../block/methods/landing-block-get-list.md) with the parameter `params.edit_mode = 1` ||
 || **mark**
@@ -39,7 +43,7 @@ If `false` is passed, the method will remove the deletion mark. This scenario ty
 
 ## Code Examples
 
-{% include [Note on examples](../../../../_includes/examples.md) %}
+{% include [Note on Examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -177,8 +181,8 @@ HTTP Status: **200**
         "finish": 1773970028.158387,
         "duration": 0.1583869457244873,
         "processing": 0,
-        "date_start": "2026-03-20T04:27:08+02:00",
-        "date_finish": "2026-03-20T04:27:08+02:00",
+        "date_start": "2026-03-20T04:27:08+01:00",
+        "date_finish": "2026-03-20T04:27:08+01:00",
         "operating_reset_at": 1773970628,
         "operating": 0
     }
@@ -187,7 +191,7 @@ HTTP Status: **200**
 
 ### Returned Data
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **result**
@@ -211,9 +215,9 @@ HTTP Status: **400**
 
 ### Possible Error Codes
 
-#|
+#| 
 || **Code** | **Description** ||
-|| `MISSING_PARAMS` | Required parameter `lid` or `block` not provided ||
+|| `MISSING_PARAMS` | Required parameter `lid` or `block` is missing ||
 || `LANDING_NOT_EXIST` | Page with identifier `lid` not found or not accessible to the current user ||
 || `ACCESS_DENIED` | Insufficient permissions to call `landing` methods or to modify the block ||
 || `BLOCK_NOT_FOUND` | Block with identifier `block` does not exist or does not belong to page `lid` ||

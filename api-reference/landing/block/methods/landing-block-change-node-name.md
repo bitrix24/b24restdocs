@@ -8,30 +8,34 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`landing`](../../../scopes/permissions.md)
 >
-> Who can execute the method: a user with "edit" access permission for the site containing the page
+> Who can execute the method: a user with "edit" access permission for the site containing the page.
 
 The method `landing.block.changeNodeName` changes the HTML tag of a block element in the draft of a page.
 
-If the page is already published, the changes will be visible to visitors after re-publishing through the interface or using the method [landing.landing.publication](../../page/methods/landing-landing-publication.md).
+If the page is already published, changes will be visible to visitors after re-publishing through the interface or using the method [landing.landing.publication](../../page/methods/landing-landing-publication.md).
 
 ## Method Parameters
 
 {% include [Note on required parameters](../../../../_includes/required.md) %}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
-|| **lid***
-[`integer`](../../../data-types.md) | Page identifier
+|| **scope**
+[`string`](../../../data-types.md) | Internal scope of landings. It is not related to the REST scope `landing` in the method name.
+
+The value of `scope` must correspond to the type of site [(detailed description)](../../types.md) ||
+|| **lid*** 
+[`integer`](../../../data-types.md) | Identifier of the page
 
 The page identifier can be obtained using the method [landing.landing.getList](../../page/methods/landing-landing-get-list.md) ||
-|| **block***
-[`integer`](../../../data-types.md) | Block identifier in the draft of the page
+|| **block*** 
+[`integer`](../../../data-types.md) | Identifier of the block in the draft of the page
 
 The block identifier can be obtained using the method [landing.block.getlist](./landing-block-get-list.md) with the parameter `params.edit_mode = 1`.
 
-Use the identifier specifically from the draft of the page. If you pass the block identifier from the published version or another version of the page, the changes will not be applied ||
-|| **data***
+Use the identifier specifically from the draft of the page. If you pass the identifier of a block from the published version or another version of the page, the changes will not be applied ||
+|| **data*** 
 [`object`](../../../data-types.md) | Set of changes for block elements [(detailed description)](#data) ||
 || **preventHistory**
 [`boolean`](../../../data-types.md) | If `true` is passed, the method will not add the action to the page change history
@@ -54,28 +58,28 @@ The `data` parameter is passed in the format:
 
 where:
 - `selector_n` — selector of the element from the block manifest
-- `tag_n` — new HTML tag name
+- `tag_n` — new name of the HTML tag
 
-#|
+#| 
 || **Key**
 `type` | **Description** ||
 || **<selector>**
-[`string`](../../../data-types.md) | New HTML tag name for the element specified in the key
+[`string`](../../../data-types.md) | New name of the HTML tag for the element specified in the key
 
-The key must match the selector of the element from the block manifest
+The key must match the selector of the element from the block manifest.
 
 For repeating elements, you can specify the position after the selector using `@`, for example, `.landing-block-node-title@1`. Positions are numbered starting from `0`.
 
 If the position is not specified, the method will change the first found element, which means it will work the same as `@0`.
 
-If you pass a selector that does not exist in the block manifest, or specify a position that does not exist in the block, the method will complete without error but will not change anything ||
+If you pass a selector that does not exist in the block manifest or specify a position that does not exist in the block, the method will complete without an error but will not change anything. ||
 |#
 
 ### Allowed Tag Values {#tag-values}
 
-The tag value is passed as a string. Leading and trailing spaces are removed, and case is ignored.
+The tag value is passed as a string. Leading and trailing spaces in the value are removed, and case is ignored.
 
-#|
+#| 
 || **Value** | **Description** ||
 || `h1` | First-level heading ||
 || `h2` | Second-level heading ||
@@ -261,8 +265,8 @@ HTTP Status: **200**
         "finish": 1774510990.1045,
         "duration": 0.10450005531311035,
         "processing": 0,
-        "date_start": "2026-03-26T10:43:10+01:00",
-        "date_finish": "2026-03-26T10:43:10+01:00",
+        "date_start": "2026-03-26T10:43:10+02:00",
+        "date_finish": "2026-03-26T10:43:10+02:00",
         "operating_reset_at": 1774511590,
         "operating": 0
     }
@@ -271,13 +275,13 @@ HTTP Status: **200**
 
 ### Returned Data
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **result**
 [`boolean`](../../../data-types.md) | Result of the tag change. If the request is successful, the method returns `true` ||
 || **time**
-[`time`](../../../data-types.md#time) | Information about the request execution time ||
+[`time`](../../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
@@ -295,11 +299,11 @@ HTTP Status: **400**
 
 ### Possible Error Codes
 
-#|
+#| 
 || **Code** | **Description** ||
 || `MISSING_PARAMS` | Required parameter `lid`, `block`, or `data` is missing ||
 || `LANDING_NOT_EXIST` | Page with identifier `lid` not found or not accessible to the current user ||
-|| `ACCESS_DENIED` | Insufficient permissions to edit the site ||
+|| `ACCESS_DENIED` | Insufficient rights to edit the site ||
 || `TYPE_ERROR` | Parameter `data` is passed in an incorrect format or tag value is not a string ||
 |#
 

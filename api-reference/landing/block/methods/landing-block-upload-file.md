@@ -12,7 +12,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 The method `landing.block.uploadfile` uploads an image and attaches it to the specified block.
 
-In response, the method returns the file identifier and a link to it in the `src` field. The image itself is not inserted into the block by the method. This means that after uploading, the file exists, but it is not yet displayed in the block's content. Typically, after `landing.block.uploadfile`, the [landing.block.updatenodes](./landing-block-update-nodes.md) method is called.
+In response, the method returns the file identifier and a link to it in the `src` field. The method does not insert the image into the block itself. This means that after uploading, the file exists, but it is not yet displayed in the block's content. Typically, after `landing.block.uploadfile`, the [landing.block.updatenodes](./landing-block-update-nodes.md) method is called.
 
 ## Method Parameters
 
@@ -21,29 +21,33 @@ In response, the method returns the file identifier and a link to it in the `src
 #|
 || **Name**
 `type` | **Description** ||
-|| **block***
-[`integer`](../../../data-types.md) | The identifier of the block to which the image should be attached.
+|| **scope**
+[`string`](../../../data-types.md) | Internal scope of landings. It is not related to the REST scope `landing` in the method name.
+
+The value of `scope` must correspond to the type of site [(detailed description)](../../types.md) ||
+|| **block*** 
+[`integer`](../../../data-types.md) | Identifier of the block to which the image needs to be attached.
 
 The method accepts the identifier of any existing block.
 
 The block identifier can be obtained using the [landing.block.getlist](./landing-block-get-list.md) method.
 
 If the image needs to be added to a draft of a published page, use the block identifier from the draft. Typically, this is done by calling [landing.block.getlist](./landing-block-get-list.md) with the parameter `params.edit_mode = 1` ||
-|| **picture***
-[`string`](../../../data-types.md) \| [`string[]`](../../../data-types.md) | The image to upload.
+|| **picture*** 
+[`string`](../../../data-types.md) \| [`string[]`](../../../data-types.md) | Image to upload.
 
 The method only accepts images. Two formats are supported:
 
 - Image URL,
 - Array `["file_name.png", "base64_content"]`.
 
-For the array, the file name must include the extension. In the second element of the array, only the Base64 content should be passed without the prefix `data:image/...;base64,`.
+For the array, the file name must include the extension. In the second element of the array, provide only the Base64 content without the prefix `data:image/...;base64,`.
 
 When saving, the file name may change. Cyrillic letters are transliterated by the method, and spaces and parentheses are replaced with `_`.
 
-More about preparing Base64: [How to Upload Files](../../../files/how-to-upload-files.md) ||
+More about preparing Base64: [How to upload files](../../../files/how-to-upload-files.md) ||
 || **ext**
-[`string`](../../../data-types.md) | The file extension for the URL upload, if it cannot be accurately determined from the address.
+[`string`](../../../data-types.md) | File extension for uploading via URL, if it cannot be accurately determined from the address.
 
 This parameter is only considered for `picture` passed as a URL. Specify the image file extension here.
 
@@ -53,7 +57,7 @@ If the parameter is not provided, the extension is determined automatically. For
 
 If the parameter is not provided, the image is saved without resizing ||
 || **temp**
-[`boolean`](../../../data-types.md) \| [`integer`](../../../data-types.md) | If the value is converted to `true`, the file is marked as temporary.
+[`boolean`](../../../data-types.md) \| [`integer`](../../../data-types.md) | If the value is cast to `true`, the file is marked as temporary.
 
 Default is `false` ||
 |#
@@ -64,11 +68,11 @@ Default is `false` ||
 || **Name**
 `type` | **Description** ||
 || **width**
-[`integer`](../../../data-types.md) | The target width of the image in pixels.
+[`integer`](../../../data-types.md) | Target width of the image in pixels.
 
 Resizing is performed only if `height` is also provided ||
 || **height**
-[`integer`](../../../data-types.md) | The target height of the image in pixels.
+[`integer`](../../../data-types.md) | Target height of the image in pixels.
 
 Resizing is performed only if `width` is also provided ||
 || **resize_type**
@@ -77,7 +81,7 @@ Resizing is performed only if `width` is also provided ||
 Possible values:
 `0` — fit the image within the specified dimensions while maintaining proportions,
 `1` — resize proportionally by the larger side,
-`2` — adjust the image to exact dimensions, cropping if necessary.
+`2` — adjust the image to exact dimensions, cropping it if necessary.
 
 Default is `1`. The parameter applies only to raster images ||
 |#
@@ -231,7 +235,7 @@ Default is `1`. The parameter applies only to raster images ||
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -278,7 +282,7 @@ Depending on the environment, either a relative path or a full URL may be return
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {

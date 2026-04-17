@@ -1,27 +1,27 @@
-title: Block Entity
-href: index.md
-items:
-  - name: About the Block Entity
-    href: index.md
-  - name: Manifest File
-    href: manifest.md
-  - name: Attributes
-    href: attributes.md
-  - name: Node Types
-    href: node-types.md
-  - name: Extended Description of Forms
-    href: extended-description.md
-  - name: Block Localization
-    href: localization.md
-  - name: Special Blocks
-    include:
-      path: special/b24-toc.yaml
-      mode: link
-  - name: Interactive Blocks
-    include:
-      path: interactive/b24-toc.yaml
-      mode: link
-  - name: Methods for Working with Blocks
-    include:
-      path: methods/b24-toc.yaml
-      mode: link
+title: Essence of Blocks  
+href: index.md  
+items:  
+  - name: Overview of Methods  
+    href: index.md  
+  - name: Manifest File  
+    href: manifest.md  
+  - name: Attributes  
+    href: attributes.md  
+  - name: Node Types  
+    href: node-types.md  
+  - name: Extended Description of Cards  
+    href: extended-description.md  
+  - name: Block Localization  
+    href: localization.md  
+  - name: Special Blocks  
+    include:  
+      path: special/b24-toc.yaml  
+      mode: link  
+  - name: Interactive Blocks  
+    include:  
+      path: interactive/b24-toc.yaml  
+      mode: link  
+  - name: Methods for Working with Blocks  
+    include:  
+      path: methods/b24-toc.yaml  
+      mode: link  

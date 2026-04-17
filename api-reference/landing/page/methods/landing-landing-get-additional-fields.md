@@ -8,26 +8,30 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`landing`](../../../scopes/permissions.md)
 >
-> Who can execute the method: user with "view" access permission for the site
+> Who can execute the method: a user with "view" access permission for the site
 
 The method `landing.landing.getadditionalfields` retrieves [additional fields](../additional-fields.md) of the page.
 
 ## Method Parameters
 
-{% include [Footnote on required parameters](../../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
+|| **scope**
+[`string`](../../../data-types.md) | Internal scope of the landing. It is not related to the REST scope `landing` in the method name.
+
+The value of `scope` must correspond to the type of site [(detailed description)](../../types.md) ||
 || **lid***
-[`integer`](../../../data-types.md) | Page identifier.
+[`integer`](../../../data-types.md) | Identifier of the page.
 
 The page identifier can be obtained using the [landing.landing.getList](./landing-landing-get-list.md) method, as well as from the results of the [landing.landing.add](./landing-landing-add.md), [landing.landing.addByTemplate](./landing-landing-add-by-template.md), and [landing.landing.copy](./landing-landing-copy.md) methods ||
 |#
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../../_includes/examples.md) %}
+{% include [Note on Examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -151,7 +155,7 @@ The page identifier can be obtained using the [landing.landing.getList](./landin
 
 HTTP Status: **200**
 
-Below is a shortened example of the response. The actual set of fields depends on the page settings and the additional fields connected to it.
+Below is a shortened example of a response. The actual set of fields depends on the page settings and the additional fields connected to it.
 
 ```json
 {
@@ -161,7 +165,7 @@ Below is a shortened example of the response. The actual set of fields depends o
         "METAMAIN_USE": "Y",
         "METAMAIN_TITLE": "Festival in New York. April 20-26, 2022. Buy tickets online",
         "METAOG_TITLE": "Festival in New York. April 20-26, 2022. Buy tickets online",
-        "METAOG_IMAGE": "https://cdn.com.bitrix24.com/.../cover_1x.webp",
+        "METAOG_IMAGE": "https://cdn.com/.../cover_1x.webp",
         "SETTINGS_PRICE_CODE": [
             "BASE"
         ],
@@ -189,14 +193,14 @@ Below is a shortened example of the response. The actual set of fields depends o
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../../data-types.md) \| [`array`](../../../data-types.md) | Set of additional fields of the page in the format `{"<FIELD_CODE>": "<VALUE>"}`.
+[`object`](../../../data-types.md) \| [`array`](../../../data-types.md) | A set of additional fields of the page in the format `{"<FIELD_CODE>": "<VALUE>"}`.
 
 If the page has no available non-empty additional fields, the method returns an empty array `[]` [(detailed description)](#result) ||
 || **time**
-[`time`](../../../data-types.md#time) | Information about the request execution time ||
+[`time`](../../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
-#### Result Object {#result}
+#### Object result {#result}
 
 #|
 || **Name**
@@ -204,7 +208,7 @@ If the page has no available non-empty additional fields, the method returns an 
 || **<FIELD_CODE>**
 [`string`](../../../data-types.md) \| [`integer`](../../../data-types.md) \| [`boolean`](../../../data-types.md) \| [`array`](../../../data-types.md) \| [`object`](../../../data-types.md) | Pair "field code → field value". The method returns only fields with non-empty values.  
 
-Available field codes are listed in the [Additional Fields of the Page](../additional-fields.md) section ||
+Available field codes are listed in the section [Additional Fields of the Page](../additional-fields.md) ||
 |#
 
 ## Error Handling
@@ -226,7 +230,7 @@ HTTP Status: **400**
 || **Code** | **Description** ||
 || `MISSING_PARAMS` | Required parameter `lid` is missing ||
 || `LANDING_NOT_EXIST` | Page not found: the `lid` parameter contains the identifier of a non-existent or inaccessible page ||
-|| `ACCESS_DENIED` | Insufficient permissions to call the method ||
+|| `ACCESS_DENIED` | Insufficient rights to call the method ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

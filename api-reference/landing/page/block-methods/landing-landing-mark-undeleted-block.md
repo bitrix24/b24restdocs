@@ -1,18 +1,18 @@
-# Mark a Block as Undeleted with `landing.landing.markundeletedblock`
+# Remove the deletion mark from the block `landing.landing.markundeletedblock`
 
 {% note tip "" %}
 
-If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect the [MCP server](../../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
 
 {% endnote %}
 
 > Scope: [`landing`](../../../scopes/permissions.md)
 >
-> Who can execute the method: user with "edit" access permission for the site
+> Who can execute the method: a user with "edit" access permission for the site
 
-The method `landing.landing.markundeletedblock` removes the deletion mark from a block.
+The method `landing.landing.markundeletedblock` removes the deletion mark from the block.
 
-If the page is already published, changes will be visible to visitors after the "Publish Changes" command in the interface or after calling the method [landing.landing.publication](../methods/landing-landing-publication.md).
+If the page is already published, the changes will be visible to visitors after the "Publish changes" command in the interface or after calling the method [landing.landing.publication](../methods/landing-landing-publication.md).
 
 The method only removes the deletion mark. If the block was hidden before deletion, it will remain hidden after restoration. To show such a block again, use [landing.landing.showblock](./landing-landing-show-block.md).
 
@@ -20,15 +20,19 @@ The method only removes the deletion mark. If the block was hidden before deleti
 
 {% include [Note on required parameters](../../../../_includes/required.md) %}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
-|| **lid***
-[`integer`](../../../data-types.md) | Page identifier.
+|| **scope**
+[`string`](../../../data-types.md) | Internal scope of landings. It is not related to the REST scope `landing` in the method name.
+
+The value of `scope` must correspond to the type of site [(detailed description)](../../types.md) ||
+|| **lid*** 
+[`integer`](../../../data-types.md) | Identifier of the page.
 
 The page identifier can be obtained using the method [landing.landing.getList](../methods/landing-landing-get-list.md), as well as from the results of the methods [landing.landing.add](../methods/landing-landing-add.md), [landing.landing.addByTemplate](../methods/landing-landing-add-by-template.md), and [landing.landing.copy](../methods/landing-landing-copy.md) ||
-|| **block***
-[`integer`](../../../data-types.md) | Block identifier.
+|| **block*** 
+[`integer`](../../../data-types.md) | Identifier of the block.
 
 To restore a deleted block, request it using the method [landing.block.getList](../../block/methods/landing-block-get-list.md) with the parameters `params.edit_mode = 1` and `params.deleted = 1`.
 
@@ -175,8 +179,8 @@ HTTP Status: **200**
         "finish": 1773972343.01137,
         "duration": 1.0113699436187744,
         "processing": 1,
-        "date_start": "2026-03-20T05:05:42+02:00",
-        "date_finish": "2026-03-20T05:05:43+02:00",
+        "date_start": "2026-03-20T05:05:42+01:00",
+        "date_finish": "2026-03-20T05:05:43+01:00",
         "operating_reset_at": 1773972942,
         "operating": 0
     }
@@ -185,13 +189,13 @@ HTTP Status: **200**
 
 ### Returned Data
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../../data-types.md) | Result of removing the deletion mark. Returns `true` on successful execution ||
+[`boolean`](../../../data-types.md) | The result of removing the deletion mark. Returns `true` on successful execution ||
 || **time**
-[`time`](../../../data-types.md#time) | Information about the request execution time ||
+[`time`](../../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
@@ -209,13 +213,13 @@ HTTP Status: **400**
 
 ### Possible Error Codes
 
-#|
+#| 
 || **Code** | **Description** ||
 || `MISSING_PARAMS` | Required parameter `lid` or `block` is missing ||
-|| `LANDING_NOT_EXIST` | Page with identifier `lid` not found or not accessible to the current user ||
+|| `LANDING_NOT_EXIST` | The page with identifier `lid` was not found or is not accessible to the current user ||
 || `ACCESS_DENIED` | Insufficient permissions to call the method ||
-|| `BLOCK_NOT_FOUND` | Block with identifier `block` does not exist or does not belong to page `lid` ||
-|| `TYPE_ERROR` | Incorrect type passed in parameter `lid`, `block`, or `preventHistory` ||
+|| `BLOCK_NOT_FOUND` | The block with identifier `block` does not exist or does not belong to the page `lid` ||
+|| `TYPE_ERROR` | An incorrect type was passed in the parameter `lid`, `block`, or `preventHistory` ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

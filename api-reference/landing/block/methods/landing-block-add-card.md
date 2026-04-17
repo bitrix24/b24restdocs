@@ -2,7 +2,7 @@
 
 {% note tip "" %}
 
-If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect the [MCP server](../../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
 
 {% endnote %}
 
@@ -12,24 +12,28 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 The method `landing.block.addcard` adds a card to a block in the draft of a page.
 
-This method works with cards described in the `cards` key of the block manifest. If the page is already published, changes will be visible to visitors after re-publishing through the interface or using the method [landing.landing.publication](../../page/methods/landing-landing-publication.md).
+This method works with cards described in the `cards` key of the block manifest. If the page is already published, changes will be visible to visitors after re-publishing through the interface or using the [landing.landing.publication](../../page/methods/landing-landing-publication.md) method.
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
-|| **lid***
-[`integer`](../../../data-types.md) | Page identifier.
+|| **scope**
+[`string`](../../../data-types.md) | Internal scope of landings. It is not related to the REST scope `landing` in the method name.
 
-The page identifier can be obtained using the method [landing.landing.getlist](../../page/methods/landing-landing-get-list.md) ||
-|| **block***
-[`integer`](../../../data-types.md) | Block identifier in the editable version of the page.
+The value of `scope` must correspond to the type of site [(detailed description)](../../types.md) ||
+|| **lid*** 
+[`integer`](../../../data-types.md) | Identifier of the page.
 
-The block identifier can be obtained using the method [landing.block.getlist](./landing-block-get-list.md) with the parameter `params.edit_mode = 1` ||
-|| **selector***
+The page identifier can be obtained using the [landing.landing.getlist](../../page/methods/landing-landing-get-list.md) method ||
+|| **block*** 
+[`integer`](../../../data-types.md) | Identifier of the block in the editable version of the page.
+
+The block identifier can be obtained using the [landing.block.getlist](./landing-block-get-list.md) method with the parameter `params.edit_mode = 1` ||
+|| **selector*** 
 [`string`](../../../data-types.md) | Selector of the card from the [key `cards` of the block manifest](../manifest.md#key-cards)
 
 After the selector, you can specify an index using `@<index>`. For example, `@0` will add a new card after the first found one, while `@2` will add it after the third.
@@ -38,13 +42,13 @@ If an index is specified, the method inserts the new card after the selected one
 
 After adding a card, the indices change. If you are adding multiple cards in succession, specify a new index in `selector` for each subsequent call.
 
-If the selector is not present in the manifest, if there are no cards in the block for this selector, or if a non-existent index is specified, the method will return an error.
+If the selector is not present in the manifest, there are no cards in the block for this selector, or a non-existent index is specified, the method will return an error.
 
 For more details on card selectors and the structure of the manifest, refer to the article [Block Manifest](../manifest.md#key-cards) ||
-|| **content***
+|| **content*** 
 [`string`](../../../data-types.md) | HTML of the new card.
 
-If you need to use the existing markup of the block as a basis, obtain the HTML using the method [landing.block.getcontent](./landing-block-get-content.md) and use the card structure from the current block.
+If you need to use existing markup from the block as a basis, obtain the HTML using the [landing.block.getcontent](./landing-block-get-content.md) method and use the card structure from the current block.
 
 If an empty string is passed or the content becomes empty after filtering, the method will behave like [landing.block.clonecard](./landing-block-clone-card.md) and create a copy of the card specified in `selector` ||
 || **preventHistory**
@@ -59,7 +63,7 @@ Default is `false` ||
 
 ## Code Examples
 
-{% include [Note on examples](../../../../_includes/examples.md) %}
+{% include [Note on Examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -223,7 +227,7 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../../data-types.md) | Result of adding the card. Returns `true` on successful execution; the identifier of the new card is not returned in the response ||
+[`boolean`](../../../data-types.md) | Result of adding the card. Returns `true` upon successful execution; the identifier of the new card is not returned in the response ||
 || **time**
 [`time`](../../../data-types.md#time) | Information about the execution time of the request ||
 |#
@@ -239,7 +243,7 @@ HTTP Status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../../_includes/error-info.md) %}
+{% include notitle [Error Handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
@@ -249,10 +253,10 @@ HTTP Status: **400**
 || `LANDING_NOT_EXIST` | Page with identifier `lid` not found or not accessible to the current user ||
 || `ACCESS_DENIED` | User does not have permission to edit the site ||
 || `BLOCK_NOT_FOUND` | Block with identifier `block` not found on page `lid` or not accessible in the draft of the page ||
-|| `CARD_NOT_FOUND` | No card found in the block for the selector `selector` ||
+|| `CARD_NOT_FOUND` | No card found in the block for selector `selector` ||
 |#
 
-{% include [system errors](../../../../_includes/system-errors.md) %}
+{% include [System Errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

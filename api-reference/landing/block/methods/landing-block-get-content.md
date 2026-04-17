@@ -8,27 +8,31 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`landing`](../../../scopes/permissions.md)
 >
-> Who can execute the method: user with "view" access permission for the site
+> Who can execute the method: a user with "view" access permission for the site
 
-The method `landing.block.getcontent` returns the ready HTML of the block, its resources, manifest, and service properties.
+The method `landing.block.getcontent` returns the ready HTML of the block, its resources, manifest, and service properties of the block.
 
 ## Method Parameters
 
 {% include [Note on Required Parameters](../../../../_includes/required.md) %}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
+|| **scope**
+[`string`](../../../data-types.md) | Internal scope of landings. It is not related to the REST scope `landing` in the method name.
+
+The value of `scope` must correspond to the type of site [(detailed description)](../../types.md) ||
 || **lid*** 
-[`integer`](../../../data-types.md) | Identifier of the page.
+[`integer`](../../../data-types.md) | Page identifier.
 
 The page identifier can be obtained using the method [landing.landing.getlist](../../page/methods/landing-landing-get-list.md) ||
 || **block*** 
-[`integer`](../../../data-types.md) | Identifier of the block.
+[`integer`](../../../data-types.md) | Block identifier.
 
 The block identifier can be obtained using the method [landing.block.getlist](./landing-block-get-list.md) ||
-|| **editMode** 
-[`boolean`](../../../data-types.md) | Mode for retrieving the block version.
+|| **editMode**
+[`boolean`](../../../data-types.md) | Mode for obtaining the version of the block.
 
 Possible values:
 `true` — return the draft of the block from the page,
@@ -37,22 +41,22 @@ Possible values:
 Default is `false`. When `editMode=true`, the method automatically includes the return of HTML for inactive blocks.
 
 If the page has not yet been published, a call without `editMode` may not find the block ||
-|| **params** 
+|| **params**
 [`object`](../../../data-types.md) | Additional parameters [(detailed description)](#params) ||
 |#
 
 ### Parameter params {#params}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
-|| **wrapper_show** 
+|| **wrapper_show**
 [`boolean`](../../../data-types.md) | Whether to return the external container of the block `<div class="block-wrapper">` in `result.content`.
 
 Possible values:
 `true` — return HTML along with the external container of the block used by the Bitrix24 page editor,
 `false` — return the HTML of the block without the container. Default is `true` ||
-|| **force_unactive** 
+|| **force_unactive**
 [`boolean`](../../../data-types.md) | Generate HTML even for inactive blocks.
 
 Possible values:
@@ -266,8 +270,8 @@ HTTP Status: **200**
         "finish": 1774520845.380018,
         "duration": 0.3800179958343506,
         "processing": 0,
-        "date_start": "2026-03-26T13:27:25+02:00",
-        "date_finish": "2026-03-26T13:27:25+02:00",
+        "date_start": "2026-03-26T13:27:25+01:00",
+        "date_finish": "2026-03-26T13:27:25+01:00",
         "operating_reset_at": 1774521445,
         "operating": 0
     }
@@ -276,27 +280,27 @@ HTTP Status: **200**
 
 ### Returned Data
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
-|| **result** 
+|| **result**
 [`object`](../../../data-types.md) | Block data [(detailed description)](#result) ||
-|| **time** 
-[`time`](../../../data-types.md#time) | Information about the request execution time ||
+|| **time**
+[`time`](../../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
 ### Object result {#result}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
-|| **id** 
-[`integer`](../../../data-types.md) | Identifier of the block ||
-|| **sections** 
-[`string`](../../../data-types.md) | Codes of the block sections from the manifest, concatenated into a string by commas ||
-|| **active** 
+|| **id**
+[`integer`](../../../data-types.md) | Block identifier ||
+|| **sections**
+[`string`](../../../data-types.md) | Codes of the block sections from the manifest, concatenated into a string ||
+|| **active**
 [`boolean`](../../../data-types.md) | Indicator of the block's activity ||
-|| **access** 
+|| **access**
 [`string`](../../../data-types.md) | Access level to the block. Possible values:
 
 `A` — access is closed to all blocks,
@@ -304,47 +308,47 @@ HTTP Status: **200**
 `V` — can edit only the design,
 `W` — can edit content and design without deletion,
 `X` — full access. ||
-|| **anchor** 
+|| **anchor**
 [`string`](../../../data-types.md) | Local anchor of the block.
 
 The value is used as the HTML attribute `id` for the external wrapper of the block and in links to the block within the page ||
-|| **php** 
+|| **php**
 [`boolean`](../../../data-types.md) | Indicator that there is PHP code in the original content of the block ||
-|| **designed** 
+|| **designed**
 [`boolean`](../../../data-types.md) | Indicator that the block has been modified in the designer ||
-|| **repoId** 
+|| **repoId**
 [`integer`](../../../data-types.md) | Identifier of the REST block from the repository or `null` if the block is not linked to a REST repository ||
-|| **content** 
+|| **content**
 [`string`](../../../data-types.md) | Ready HTML of the block for output on the page.
 
 Returns the final HTML after rendering, not the block template.
 
-If `params.wrapper_show=true`, the field returns HTML along with the external container of the block. If `params.wrapper_show=false`, only the HTML of the block is returned.
+If `params.wrapper_show=true`, the field returns HTML along with the external container of the block. If `params.wrapper_show=false`, it returns only the HTML of the block.
 
 If the block is inactive and `params.force_unactive=false`, the field returns an empty string ||
-|| **content_ext** 
+|| **content_ext**
 [`string`](../../../data-types.md) | Additional HTML code of connected extensions ||
-|| **css** 
-[`array`](../../../data-types.md) | List of CSS resources of the block and dependencies included during rendering.
+|| **css**
+[`array`](../../../data-types.md) | List of CSS resources of the block and dependencies connected during rendering.
 
-If there are no separate CSS inclusions, an empty array is returned ||
-|| **js** 
-[`array`](../../../data-types.md) | List of JS resources of the block and dependencies included during rendering.
+If there are no separate CSS connections, an empty array is returned ||
+|| **js**
+[`array`](../../../data-types.md) | List of JS resources of the block and dependencies connected during rendering.
 
 If `editMode=true` is requested for a REST block with `repoId` not equal to `null`, the block's own JS resources are not returned ||
-|| **assetStrings** 
+|| **assetStrings**
 [`array`](../../../data-types.md) | Initialization strings of resources to be added to the page ||
-|| **lang** 
+|| **lang**
 [`array`](../../../data-types.md) \| [`object`](../../../data-types.md) | Language messages of connected extensions in the format of `key: value` object.
 
-If there are no language messages for connected extensions, an empty array is returned ||
-|| **manifest** 
+If connected extensions have no language messages, an empty array is returned ||
+|| **manifest**
 [`object`](../../../data-types.md) | The complete manifest of the block. The general format is described in the article [Block Manifest](../manifest.md) ||
-|| **dynamicParams** 
+|| **dynamicParams**
 [`array`](../../../data-types.md) | Data source parameters for the dynamic block.
 
 For a static block, the field returns an empty array ||
-|| **requiredUserAction** 
+|| **requiredUserAction**
 [`array`](../../../data-types.md) | Additional action that needs to be performed after loading the block.
 
 The field is returned only in `editMode`, if an additional action is required from the user after loading the block ||
@@ -365,7 +369,7 @@ HTTP Status: **400**
 
 ### Possible Error Codes
 
-#|
+#| 
 || **Code** | **Description** ||
 || `MISSING_PARAMS` | Required top-level parameter `lid` or `block` is missing ||
 || `LANDING_NOT_EXIST` | Page with identifier `lid` not found or not accessible to the current user ||

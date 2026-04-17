@@ -8,21 +8,25 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`landing`](../../../scopes/permissions.md)
 >
-> Who can execute the method: a user with "publication" access permission for the site
+> Who can execute the method: a user with "publishing" access permission for the site
 
-The method `landing.landing.unpublic` removes a page from publication.
+The method `landing.landing.unpublic` unpublishes a page.
 
 ## Method Parameters
 
 {% include [Note on required parameters](../../../../_includes/required.md) %}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
-|| **lid***
-[`integer`](../../../data-types.md) | Page identifier.
+|| **scope**
+[`string`](../../../data-types.md) | Internal scope of the landing pages. It is not related to the REST scope `landing` in the method name.
 
-The page identifier can be obtained using the method [landing.landing.getList](./landing-landing-get-list.md), as well as from the results of the methods [landing.landing.add](./landing-landing-add.md), [landing.landing.addByTemplate](./landing-landing-add-by-template.md), and [landing.landing.copy](./landing-landing-copy.md) ||
+The value of `scope` must correspond to the type of site [(detailed description)](../../types.md) ||
+|| **lid*** 
+[`integer`](../../../data-types.md) | Identifier of the page.
+
+The page identifier can be obtained using the [landing.landing.getList](./landing-landing-get-list.md) method, as well as from the results of the [landing.landing.add](./landing-landing-add.md), [landing.landing.addByTemplate](./landing-landing-add-by-template.md), and [landing.landing.copy](./landing-landing-copy.md) methods ||
 |#
 
 ## Code Examples
@@ -159,8 +163,8 @@ HTTP Status: **200**
         "finish": 1773833175.205619,
         "duration": 1.2056190967559814,
         "processing": 0,
-        "date_start": "2026-03-18T14:26:14+02:00",
-        "date_finish": "2026-03-18T14:26:15+02:00",
+        "date_start": "2026-03-18T14:26:14+01:00",
+        "date_finish": "2026-03-18T14:26:15+01:00",
         "operating_reset_at": 1773833775,
         "operating": 0.14817094802856445
     }
@@ -169,7 +173,7 @@ HTTP Status: **200**
 
 ### Returned Data
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **result**
@@ -185,7 +189,7 @@ HTTP Status: **400**
 ```json
 {
     "error": "ACCESS_DENIED",
-    "error_description": "Access to publish the page is denied."
+    "error_description": "Publishing access to the page is denied."
 }
 ```
 
@@ -193,10 +197,10 @@ HTTP Status: **400**
 
 ### Possible Error Codes
 
-#|
+#| 
 || **Code** | **Description** ||
 || `MISSING_PARAMS` | The required parameter `lid` is missing ||
-|| `LANDING_NOT_EXIST` | The page was not found: the `lid` contains the identifier of a non-existent, deleted, or inaccessible page ||
+|| `LANDING_NOT_EXIST` | The page was not found: the `lid` provided refers to a non-existent, deleted, or inaccessible page. For knowledge base, group, and vibe pages, ensure that the `scope` parameter is provided ||
 || `ACCESS_DENIED` | Insufficient permissions to change the `ACTIVE` field of the page ||
 || `TYPE_ERROR` | Data type error in the method call parameters ||
 || `SYSTEM_ERROR` | Internal error during method execution ||

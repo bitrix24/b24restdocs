@@ -8,9 +8,11 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`landing`](../../scopes/permissions.md)
 >
-> Who can execute the method: a user with "publication" access permission for the site
+> Who can execute the method: a user with the "publishing" access permission for the site.
 
 The method `landing.site.unpublic` unpublishes the site and its pages, deactivating the site. For all non-deleted folders of the site, the method also disables activity.
+
+For the Knowledge Base, the method hides the site and its pages from users.
 
 ## Method Parameters
 
@@ -19,8 +21,12 @@ The method `landing.site.unpublic` unpublishes the site and its pages, deactivat
 #|
 || **Name**
 `type` | **Description** ||
+|| **scope**
+[`string`](../../data-types.md) | Internal scope of the landing. It is not related to the REST scope `landing` in the method name.
+
+The value of `scope` must correspond to the type of site [(detailed description)](../types.md) ||
 || **id***
-[`integer`](../../data-types.md) | The identifier of the site.
+[`integer`](../../data-types.md) | Identifier of the site.
 
 The site identifier can be obtained using the [landing.site.getList](./landing-site-get-list.md) method or from the result of the [landing.site.add](./landing-site-add.md) method ||
 |#
@@ -173,9 +179,9 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`integer`](../../data-types.md) | The identifier of the unpublished site ||
+[`integer`](../../data-types.md) | Identifier of the unpublished site ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the request execution time ||
+[`time`](../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
@@ -195,8 +201,8 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `MISSING_PARAMS` | The required parameter `id` is missing ||
-|| `ACCESS_DENIED` | Insufficient permissions to modify the `ACTIVE` field of the site ||
+|| `MISSING_PARAMS` | Required parameter `id` is missing ||
+|| `ACCESS_DENIED` | Insufficient rights to modify the `ACTIVE` field of the site ||
 || `TYPE_ERROR` | Data type error in the method call parameters ||
 || `SYSTEM_ERROR` | Internal error during method execution ||
 |#

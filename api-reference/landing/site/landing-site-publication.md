@@ -1,17 +1,19 @@
-# Publish Site landing.site.publication
+# Publish the site landing.site.publication
 
 {% note tip "" %}
 
-If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
 
 {% endnote %}
 
 > Scope: [`landing`](../../scopes/permissions.md)
 >
-> Who can execute the method: user with "publication" access permission for the site
+> Who can execute the method: a user with the "publication" access permission for the site
 
 The method `landing.site.publication` publishes the site and its pages. 
-If a page is inactive (`ACTIVE = "N"`), it remains unpublished (`PUBLIC = "N"`). When the method is called, non-deleted folders of the site are also activated (`DELETED = "N"`).
+If a page is inactive (`ACTIVE = "N"`), it remains unpublished (`PUBLIC = "N"`). When the method is called, non-deleted site folders (`DELETED = "N"`) are also activated.
+
+For the Knowledge Base, the method manages the visibility of the site and its pages for users.
 
 ## Method Parameters
 
@@ -20,10 +22,14 @@ If a page is inactive (`ACTIVE = "N"`), it remains unpublished (`PUBLIC = "N"`).
 #|
 || **Name**
 `type` | **Description** ||
+|| **scope**
+[`string`](../../data-types.md) | Internal scope of the landing pages. It is not related to the REST scope `landing` in the method name.
+
+The value of `scope` must correspond to the type of site [(detailed description)](../types.md) ||
 || **id***
 [`integer`](../../data-types.md) | Identifier of the site.
 
-The site identifier can be obtained using the method [landing.site.getList](./landing-site-get-list.md) or from the result of the method [landing.site.add](./landing-site-add.md) ||
+The site identifier can be obtained using the [landing.site.getList](./landing-site-get-list.md) method or from the result of the [landing.site.add](./landing-site-add.md) method ||
 |#
 
 ## Code Examples
@@ -160,8 +166,8 @@ HTTP Status: **200**
         "finish": 1773285117.990578,
         "duration": 0.9905779361724854,
         "processing": 0,
-        "date_start": "2026-03-12T06:11:57+01:00",
-        "date_finish": "2026-03-12T06:11:57+01:00",
+        "date_start": "2026-03-12T06:11:57+03:00",
+        "date_finish": "2026-03-12T06:11:57+03:00",
         "operating_reset_at": 1773285717,
         "operating": 0.13959693908691406
     }
@@ -176,7 +182,7 @@ HTTP Status: **200**
 || **result**
 [`integer`](../../data-types.md) | Identifier of the published site ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the request execution time ||
+[`time`](../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
@@ -199,16 +205,16 @@ HTTP Status: **400**
 || `MISSING_PARAMS` | Required parameter `id` is missing ||
 || `ACCESS_DENIED` | Publishing the site is not allowed ||
 || `PHONE_NOT_CONFIRMED` | Phone number confirmation is required for publishing ||
-|| `EMAIL_NOT_CONFIRMED` | Email confirmation is required for publishing ||
+|| `EMAIL_NOT_CONFIRMED` | E-mail confirmation is required for publishing ||
 || `URLCHECKER_FAIL` | Malicious content detected on the page ||
 || `PUBLIC_PAGE_REACHED` | There is a limit on the number of published pages in the tariff plan ||
-|| `LANDING_PAYMENT_FAILED` | The page was added from an application; a subscription to Bitrix24.Marketplace is required for publishing ||
-|| `LANDING_PAYMENT_FAILED_BLOCK` | The block was added from an application; a subscription to Bitrix24.Marketplace is required for publishing ||
+|| `LANDING_PAYMENT_FAILED` | The page was added from an application; a subscription to Bitrix24 Marketplace is required for publishing ||
+|| `LANDING_PAYMENT_FAILED_BLOCK` | The block was added from an application; a subscription to Bitrix24 Marketplace is required for publishing ||
 || `PUBLIC_SITE_REACHED` | There is a limit on the number of created or published sites in the tariff plan ||
 || `PUBLIC_SITE_REACHED_FREE` | Publishing sites is temporarily available only on paid plans ||
 || `PUBLIC_HTML_DISALLOWED[...]` | There is a limit on adding custom HTML code in the tariff plan ||
 || `LICENSE_EXPIRED` | Your product license has expired ||
-|| `TYPE_ERROR` | Data type error in method call parameters ||
+|| `TYPE_ERROR` | Data type error in the method call parameters ||
 || `SYSTEM_ERROR` | Internal error during method execution ||
 |#
 

@@ -1,4 +1,4 @@
-# Get Fields of Property Binding sale.propertyRelation.getFields
+# Get Fields of Property Binding `sale.propertyRelation.getFields`
 
 {% note tip "" %}
 
@@ -12,11 +12,13 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 The method `sale.propertyRelation.getFields` allows access to the available fields of property binding.
 
+## Method Parameters
+
 No parameters.
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+{% include [Examples Note](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -121,7 +123,7 @@ No parameters.
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -166,14 +168,14 @@ HTTP status: **200**
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
 || **propertyRelation**
-[`object`](../../data-types.md) | Object in the format `{"field_1": "value_1", ... "field_N": "value_N"}`, where `field` is the identifier of the object [`sale_order_property_relation`](../data-types.md), and `value` is an object of type [`rest_field_description`](../data-types.md) ||
+[`object`](../../data-types.md) | Object in the format `{"field_1": "value_1", ... "field_N": "value_N"}`, where `field` is the identifier of the object [`sale_order_property_relation`](../data-types.md), and `value` is an object of type [`rest_field_description`](../../data-types.md) ||
 || **time**
 [`time`](../../data-types.md) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {

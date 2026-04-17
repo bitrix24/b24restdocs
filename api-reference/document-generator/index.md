@@ -16,7 +16,7 @@ In Bitrix24, there are two groups of methods for working with the Document Gener
 
 Templates, documents, and input data created through `documentgenerator.*` do not provide access to CRM data. For CRM scenarios, use the section [Document Generator in CRM](../crm/document-generator/index.md).
 
-#|
+#| 
 ||  | Methods `documentgenerator.*` | Methods `crm.documentgenerator.*` ||
 || Where to Use | In REST application scenarios, when templates and documents are within the `documentgenerator` scope | In CRM scenarios, when the document is linked to a CRM object ||
 || What to Pass During Generation | 
@@ -30,56 +30,52 @@ Templates, documents, and input data created through `documentgenerator.*` do no
 
 ## How to Get Started
 
-To work with documents in the REST scenario of the Document Generator:
+To work with documents in the Document Generator REST scenario:
 
 1. Prepare a `.docx` template file with field placeholders.
-2. Create or select a [numerator](./numerators/index.md) and [region](./region/index.md), if needed for the template.
-3. Upload the template using the methods [documentgenerator.template.add](./templates/document-generator-template-add.md) or [documentgenerator.template.update](./templates/document-generator-template-update.md).
-4. Retrieve the template's field map using the method [documentgenerator.template.getfields](./templates/document-generator-template-get-fields.md).
-5. Create a document using the method [documentgenerator.document.add](./document-generator-document-add.md).
-6. Retrieve the document using the method [documentgenerator.document.get](./document-generator-document-get.md) if you need to check its status and obtain file links.
+2. Create or select a [numerator](./numerators/index.md) and [region](./region/index.md), if needed by the template.
+3. Upload the template using the [documentgenerator.template.add](./templates/document-generator-template-add.md) or [documentgenerator.template.update](./templates/document-generator-template-update.md) methods.
+4. Retrieve the template's field map using the [documentgenerator.template.getfields](./templates/document-generator-template-get-fields.md) method.
+5. Create a document using the [documentgenerator.document.add](./document-generator-document-add.md) method.
+6. Retrieve the document using the [documentgenerator.document.get](./document-generator-document-get.md) method if you need to check its status and obtain file links.
 7. Use [documentgenerator.document.list](./document-generator-document-list.md) if you need to find documents by template, external identifier, or other fields.
-8. Enable a public link using the method [documentgenerator.document.enablepublicurl](./document-generator-document-enable-public-url.md) if the document needs to be accessed outside your Bitrix24.
-9. Update the document using the method [documentgenerator.document.update](./document-generator-document-update.md) or delete it using the method [documentgenerator.document.delete](./document-generator-document-delete.md) if required by the scenario.
+8. Enable a public link using the [documentgenerator.document.enablepublicurl](./document-generator-document-enable-public-url.md) method if the document needs to be accessed outside your Bitrix24.
+9. Update the document using the [documentgenerator.document.update](./document-generator-document-update.md) method or delete it using the [documentgenerator.document.delete](./document-generator-document-delete.md) method if required by the scenario.
 10. Configure access permissions through the [Roles and Permissions](./role/index.md) section if the application needs to manage access to templates and documents.
 
 {% note tip "Typical Use-Cases and Scenarios" %}
 
-- [{#T}](./examples/index.md)
-- [{#T}](./examples/document-images-seals.md)
-- [{#T}](./examples/document-date-name.md)
-- [{#T}](./examples/document-table-data.md)
-- [{#T}](./examples/document-table-complex.md)
+- [Typical Use-Cases and Scenarios for the Document Generator: Overview of Cases](./examples/index.md)
 
 {% endnote %}
 
-## Linking to Other Objects
+## Connection with Other Objects
 
-**Document Templates.** A template defines the `.docx` file, region, numerator, and a set of settings that are then used when creating a document. To work with templates, use the group of methods [documentgenerator.template.*](./templates/index.md).
+**Document Templates.** A template specifies the `.docx` file, region, numerator, and a set of settings that are then used when creating a document. To work with templates, use the group of methods [documentgenerator.template.*](./templates/index.md).
 
 **Numerators.** A numerator defines the rule for generating the document number, which the template uses through the `numeratorId` field. You can work with numerators using the group of methods [documentgenerator.numerator.*](./numerators/index.md).
 
-**Regions.** A region defines the local settings of the template through the `region` field. For a pre-installed region, use `code`, and for a custom one — `id`. Management of regions is performed using the group of methods [documentgenerator.region.*](./region/index.md).
+**Regions.** A region specifies the local settings for the template through the `region` field. Use `code` for a pre-installed region and `id` for a custom one. Management of regions is performed using the group of methods [documentgenerator.region.*](./region/index.md).
 
-**Roles and Permissions.** Access permissions determine who can modify templates, documents, and Document Generator settings. To configure roles, use the group of methods [documentgenerator.role.*](./role/index.md).
+**Roles and Permissions.** Access permissions determine who can modify templates, documents, and settings of the Document Generator. To configure roles, use the group of methods [documentgenerator.role.*](./role/index.md).
 
 ## Feature of Document Conversion to PDF
 
-The conversion of a file to PDF is performed asynchronously. If the `pdfUrl` field is not filled immediately after the document is created, call the method [documentgenerator.document.get](./document-generator-document-get.md) to check the conversion result again.
+The conversion of a file to PDF is performed asynchronously. If the `pdfUrl` field is not filled immediately after the document is created, call the [documentgenerator.document.get](./document-generator-document-get.md) method to check the conversion result again.
 
 ## Overview of Methods {#all-methods}
 
 > Scope: [`documentgenerator`](../scopes/permissions.md)
 >
-> Who can execute the methods: depending on the method
+> Who can execute methods: depending on the method
 
 ### Documents
 
-#|
+#| 
 || **Method** | **Description** ||
 || [documentgenerator.document.add](./document-generator-document-add.md) | Creates a new document based on a template ||
 || [documentgenerator.document.update](./document-generator-document-update.md) | Modifies an existing document ||
-|| [documentgenerator.document.get](./document-generator-document-get.md) | Retrieves a document by its identifier ||
+|| [documentgenerator.document.get](./document-generator-document-get.md) | Retrieves a document by identifier ||
 || [documentgenerator.document.list](./document-generator-document-list.md) | Retrieves a list of documents ||
 || [documentgenerator.document.delete](./document-generator-document-delete.md) | Deletes a document ||
 || [documentgenerator.document.enablepublicurl](./document-generator-document-enable-public-url.md) | Enables or disables a public link to the document ||
@@ -88,11 +84,11 @@ The conversion of a file to PDF is performed asynchronously. If the `pdfUrl` fie
 
 ### Templates
 
-#|
+#| 
 || **Method** | **Description** ||
 || [documentgenerator.template.add](./templates/document-generator-template-add.md) | Uploads a new document template ||
 || [documentgenerator.template.update](./templates/document-generator-template-update.md) | Updates an existing document template ||
-|| [documentgenerator.template.get](./templates/document-generator-template-get.md) | Returns a document template by its identifier ||
+|| [documentgenerator.template.get](./templates/document-generator-template-get.md) | Returns a document template by identifier ||
 || [documentgenerator.template.list](./templates/document-generator-template-list.md) | Returns a list of document templates by filter ||
 || [documentgenerator.template.delete](./templates/document-generator-template-delete.md) | Deletes a document template ||
 || [documentgenerator.template.getfields](./templates/document-generator-template-get-fields.md) | Returns the field map of the template ||
@@ -100,18 +96,18 @@ The conversion of a file to PDF is performed asynchronously. If the `pdfUrl` fie
 
 ### Numerators
 
-#|
+#| 
 || **Method** | **Description** ||
 || [documentgenerator.numerator.add](./numerators/document-generator-numerator-add.md) | Adds a numerator ||
 || [documentgenerator.numerator.update](./numerators/document-generator-numerator-update.md) | Modifies a numerator ||
-|| [documentgenerator.numerator.get](./numerators/document-generator-numerator-get.md) | Retrieves a numerator by its identifier ||
+|| [documentgenerator.numerator.get](./numerators/document-generator-numerator-get.md) | Retrieves a numerator by identifier ||
 || [documentgenerator.numerator.list](./numerators/document-generator-numerator-list.md) | Retrieves a list of numerators ||
 || [documentgenerator.numerator.delete](./numerators/document-generator-numerator-delete.md) | Deletes a numerator ||
 |#
 
 ### Regions
 
-#|
+#| 
 || **Method** | **Description** ||
 || [documentgenerator.region.add](./region/document-generator-region-add.md) | Adds a custom region ||
 || [documentgenerator.region.update](./region/document-generator-region-update.md) | Updates a custom region ||
@@ -122,12 +118,12 @@ The conversion of a file to PDF is performed asynchronously. If the `pdfUrl` fie
 
 ### Roles and Permissions
 
-#|
+#| 
 || **Method** | **Description** ||
 || [documentgenerator.role.add](./role/document-generator-role-add.md) | Adds a role and returns its data with permissions ||
 || [documentgenerator.role.update](./role/document-generator-role-update.md) | Updates a role and returns the current role data ||
-|| [documentgenerator.role.get](./role/document-generator-role-get.md) | Returns a role by its identifier along with permissions ||
+|| [documentgenerator.role.get](./role/document-generator-role-get.md) | Returns a role by identifier along with permissions ||
 || [documentgenerator.role.list](./role/document-generator-role-list.md) | Returns a list of roles without detailed permission composition ||
-|| [documentgenerator.role.delete](./role/document-generator-role-delete.md) | Deletes a role by its identifier ||
+|| [documentgenerator.role.delete](./role/document-generator-role-delete.md) | Deletes a role by identifier ||
 || [documentgenerator.role.fillaccesses](./role/document-generator-role-fill-accesses.md) | Completely overwrites role bindings to access codes ||
 |#

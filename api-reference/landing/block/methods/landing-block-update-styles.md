@@ -1,4 +1,4 @@
-# Change Styles of Block landing.block.updateStyles
+# Update Styles for landing.block.updateStyles
 
 {% note tip "" %}
 
@@ -10,9 +10,9 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: a user with "edit" access permission for the site
 
-The method `landing.block.updateStyles` updates the CSS classes and inline styles of block elements in the draft version of the page.
+The method `landing.block.updateStyles` updates the CSS classes and inline styles of block elements in the draft of a page.
 
-If the page is already published, changes will be visible to visitors after re-publishing through the interface or using the method [landing.landing.publication](../../page/methods/landing-landing-publication.md).
+If the page is already published, changes will be visible to visitors after re-publishing through the interface or using the [landing.landing.publication](../../page/methods/landing-landing-publication.md) method.
 
 ## Method Parameters
 
@@ -21,15 +21,19 @@ If the page is already published, changes will be visible to visitors after re-p
 #|
 || **Name**
 `type` | **Description** ||
-|| **lid***
-[`integer`](../../../data-types.md) | Page identifier.
+|| **scope**
+[`string`](../../../data-types.md) | Internal scope of landings. It is not related to the REST scope `landing` in the method name.
 
-The page identifier can be obtained using the method [landing.landing.getList](../../page/methods/landing-landing-get-list.md) ||
-|| **block***
-[`integer`](../../../data-types.md) | Block identifier in the editable version of the page.
+The value of `scope` must correspond to the type of site [(detailed description)](../../types.md) ||
+|| **lid*** 
+[`integer`](../../../data-types.md) | Identifier of the page.
 
-The block identifier can be obtained using the method [landing.block.getlist](./landing-block-get-list.md) with the parameter `params.edit_mode = 1`. If the block identifier from the published version of the page is passed, the method may return an error ||
-|| **data***
+The page identifier can be obtained using the [landing.landing.getList](../../page/methods/landing-landing-get-list.md) method ||
+|| **block*** 
+[`integer`](../../../data-types.md) | Identifier of the block in the version of the page for editing.
+
+The block identifier can be obtained using the [landing.block.getlist](./landing-block-get-list.md) method with the parameter `params.edit_mode = 1`. If you pass the block identifier from the published version of the page, the method may return an error ||
+|| **data*** 
 [`object`](../../../data-types.md) | Object format:
 
 ```json
@@ -52,7 +56,7 @@ A detailed description of the selector value is provided [below](#selector-value
 || **preventHistory**
 [`boolean`](../../../data-types.md) | If `true` is passed, the method will not add the change to the page history.
 
-By default, it is `false` ||
+Default is `false` ||
 |#
 
 ### Parameter data {#data}
@@ -63,12 +67,12 @@ By default, it is `false` ||
 || **<selector>**
 [`string`](../../../data-types.md) \| [`array`](../../../data-types.md) \| [`object`](../../../data-types.md) | CSS selector from the `style` section of the block manifest or the special selector `#wrapper` for the block wrapper.
 
-If the same selector appears multiple times, you can specify the position using `@`, for example, `.landing-block-node-text@1`. Positions are numbered starting from `0`. If the position is not specified, the method applies changes to all found elements with that selector.
+If the same selector appears multiple times, you can specify the position using `@`, for example, `.landing-block-node-text@1`. Positions are numbered starting from `0`. If the position is not specified, the method applies changes to all found elements with this selector.
 
 The format of the value depends on the data being passed [(detailed description)](#selector-value) ||
 |#
 
-The method processes only those selectors that are described in the block manifest. The special selector `#wrapper` allows you to change the block wrapper. A list of available selectors can be obtained using the method [landing.block.getmanifest](./landing-block-get-manifest.md).
+The method only processes selectors that are described in the block manifest. The special selector `#wrapper` allows you to change the block wrapper. A list of available selectors can be obtained using the [landing.block.getmanifest](./landing-block-get-manifest.md) method.
 
 ### Selector Value {#selector-value}
 
@@ -78,7 +82,7 @@ The method processes only those selectors that are described in the block manife
 || **classList**
 [`array`](../../../data-types.md) | List of CSS classes for the element after the update.
 
-The method completely replaces the `class` attribute rather than adding classes to the current list ||
+The method completely replaces the `class` attribute instead of adding classes to the current list ||
 || **affect**
 [`array`](../../../data-types.md) | List of CSS properties to be removed from the inline styles of all nested elements of the found node. For example, `["text-align", "color"]` ||
 || **style**
@@ -91,7 +95,7 @@ Instead of an object, you can pass a string with a single class or an array of c
 
 {% note warning %}
 
-If system classes of the block, such as `landing-block-node-text`, are not included in `classList`, the element may stop being editable through the interface. The method completely replaces the list of classes.
+If system classes of the block, such as `landing-block-node-text`, are not included in `classList`, the element may stop being editable through the interface. The method completely replaces the class list.
 
 {% endnote %}
 
@@ -331,8 +335,8 @@ HTTP Status: **200**
         "finish": 1774520356.142134,
         "duration": 0.1421339511871338,
         "processing": 0,
-        "date_start": "2026-03-26T13:19:16+01:00",
-        "date_finish": "2026-03-26T13:19:16+01:00",
+        "date_start": "2026-03-26T13:19:16+02:00",
+        "date_finish": "2026-03-26T13:19:16+02:00",
         "operating_reset_at": 1774520956,
         "operating": 0
     }
@@ -345,9 +349,9 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../../data-types.md) | Result of the style update. If successful, the method returns `true` ||
+[`boolean`](../../../data-types.md) | Result of the style update. Upon successful execution, the method returns `true` ||
 || **time**
-[`time`](../../../data-types.md#time) | Information about the request execution time ||
+[`time`](../../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
@@ -369,8 +373,8 @@ HTTP Status: **400**
 || **Code** | **Description** ||
 || `MISSING_PARAMS` | Required parameter `lid`, `block`, or `data` is missing ||
 || `ACCESS_DENIED` | Insufficient permissions to edit the site ||
-|| `LANDING_NOT_EXIST` | Page with identifier `lid` not found or unavailable to the current user ||
-|| `BLOCK_NOT_FOUND` | Block with identifier `block` not found on page `lid` or unavailable in the editable version of the page ||
+|| `LANDING_NOT_EXIST` | Page with identifier `lid` not found or not accessible to the current user ||
+|| `BLOCK_NOT_FOUND` | Block with identifier `block` not found on page `lid` or not accessible in the version of the page for editing ||
 || `TYPE_ERROR` | Incorrect type of one of the method parameters, for example, `data` in an unsuitable format ||
 |#
 

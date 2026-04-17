@@ -10,29 +10,33 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: a user with "edit" access permission for the site
 
-The method `landing.block.changeAnchor` modifies or removes the custom anchor of a block in the draft of a page.
+The method `landing.block.changeAnchor` modifies or removes a custom anchor of a block in the draft of a page.
 
-If the page is already published, changes will be visible to visitors after publishing the updates through the interface or by using the method [landing.landing.publication](../../page/methods/landing-landing-publication.md).
+If the page is already published, changes will be visible to visitors after publishing the updates through the interface or using the method [landing.landing.publication](../../page/methods/landing-landing-publication.md).
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
+|| **scope**
+[`string`](../../../data-types.md) | Internal scope of landings. It is not related to the REST scope `landing` in the method name.
+
+The value of `scope` must correspond to the type of site [(detailed description)](../../types.md) ||
 || **lid***
-[`integer`](../../../data-types.md) | The identifier of the page.
+[`integer`](../../../data-types.md) | Identifier of the page.
 
 The page identifier can be obtained using the method [landing.landing.getList](../../page/methods/landing-landing-get-list.md) ||
 || **block***
-[`integer`](../../../data-types.md) | The identifier of the block in the draft of the page.
+[`integer`](../../../data-types.md) | Identifier of the block in the draft of the page.
 
 The block identifier can be obtained using the method [landing.block.getlist](./landing-block-get-list.md) with the parameter `params.edit_mode = true` ||
 || **data***
-[`string`](../../../data-types.md) | The new anchor of the block without the `#` symbol.
+[`string`](../../../data-types.md) | New anchor of the block without the `#` symbol.
 
-Pass the value as a string. The anchor must start with a letter `A-Z` or `a-z`, contain at least two characters, and may include only letters `A-Z` and `a-z`, digits `0-9`, and the characters `-`, `_`, `.`, `:`.
+Pass the value as a string. The anchor must start with a letter `A-Z` or `a-z`, contain at least two characters, and may include only letters `A-Z` and `a-z`, digits `0-9`, and symbols `-`, `_`, `.`, `:`.
 
 A single-character anchor is not allowed. For example, `a` will trigger an error. Examples of valid values: `about-us`, `Section_A`, `faq.v2`, `Tab:1` ||
 || **preventHistory**
@@ -47,7 +51,7 @@ Default is `false` ||
 
 ## Code Examples
 
-{% include [Note on examples](../../../../_includes/examples.md) %}
+{% include [Note on Examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -211,7 +215,7 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../../data-types.md) | The result of changing the anchor. If successful, the method returns `true` ||
+[`boolean`](../../../data-types.md) | The result of changing the anchor. Upon successful execution, the method returns `true` ||
 || **time**
 [`time`](../../../data-types.md#time) | Information about the execution time of the request ||
 |#
@@ -236,7 +240,7 @@ HTTP Status: **400**
 || `MISSING_PARAMS` | Required parameter `lid`, `block`, or `data` is missing ||
 || `LANDING_NOT_EXIST` | The page with identifier `lid` was not found or is not accessible to the current user ||
 || `BLOCK_NOT_FOUND` | The block with identifier `block` was not found in the draft of the page ||
-|| `ACCESS_DENIED` | Insufficient permissions to edit the site ||
+|| `ACCESS_DENIED` | Insufficient rights to edit the site ||
 || `BAD_ANCHOR` | An invalid anchor was provided: it does not start with a letter, contains forbidden characters, or consists of a single character ||
 |#
 

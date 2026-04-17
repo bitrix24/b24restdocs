@@ -8,47 +8,51 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`landing`](../../../scopes/permissions.md)
 >
-> Who can execute the method: user with "view" access permission for sites
+> Who can execute the method: a user with "view" access permission for sites
 
-The method `landing.block.getbyid` returns a single block of the page by its identifier.
+The method `landing.block.getbyid` returns a single block of a page by its identifier.
 
 ## Method Parameters
 
-{% include [Footnote on required parameters](../../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../../_includes/required.md) %}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
-|| **block***
+|| **scope**
+[`string`](../../../data-types.md) | Internal scope of landings. It is not related to the REST scope `landing` in the method name.
+
+The value of `scope` must correspond to the type of site [(detailed description)](../../types.md) ||
+|| **block*** 
 [`integer`](../../../data-types.md) | Block identifier.
 
-The block identifier can be obtained using the [landing.block.getlist](./landing-block-get-list.md) method. ||
+The block identifier can be obtained using the method [landing.block.getlist](./landing-block-get-list.md) ||
 || **params**
 [`object`](../../../data-types.md) | Additional parameters for reading the block [(detailed description)](#params) ||
 |#
 
 ### Parameter params {#params}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **edit_mode**
-[`boolean`](../../../data-types.md) \| [`integer`](../../../data-types.md) | If the value is cast to `true`, the method reads the draft version of the page instead of the published version.
+[`boolean`](../../../data-types.md) \| [`integer`](../../../data-types.md) | If set to `true`, the method reads the draft version of the page instead of the published version.
 
-Default is `false`. ||
+Default is `false` ||
 || **deleted**
-[`boolean`](../../../data-types.md) \| [`integer`](../../../data-types.md) | If the value is cast to `true`, the method searches for blocks marked as deleted.
+[`boolean`](../../../data-types.md) \| [`integer`](../../../data-types.md) | If set to `true`, the method searches for blocks marked as deleted.
 
-Default is `false`. To retrieve a deleted block, you need to pass `deleted: true` along with `edit_mode: true`. ||
+Default is `false`. To retrieve a deleted block, you must pass `deleted: true` along with `edit_mode: true` ||
 || **get_content**
-[`boolean`](../../../data-types.md) \| [`integer`](../../../data-types.md) | If the value is cast to `true`, the `result` additionally returns the fields `content`, `css`, and `js`.
+[`boolean`](../../../data-types.md) \| [`integer`](../../../data-types.md) | If set to `true`, the `result` additionally returns the fields `content`, `css`, and `js`.
 
-Default is `false`. The `content` field contains the prepared HTML of the block along with the system container of the block, not the original saved content. ||
+Default is `false`. The `content` field contains the prepared HTML of the block along with the system container of the block, not the original saved content ||
 |#
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../../_includes/examples.md) %}
+{% include [Note on Examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -237,20 +241,20 @@ HTTP Status: **200**
 
 ### Returned Data
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **result**
 [`object`](../../../data-types.md) | Data of the found block [(detailed description)](#result)
 
-The method does not return `result: []`. If the block is not found in the selected version of the page, the method ends with an error. ||
+The method does not return `result: []`. If the block is not found in the selected version of the page, the method ends with an error ||
 || **time**
 [`time`](../../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
 ### Object result {#result}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **id**
@@ -264,62 +268,62 @@ The method does not return `result: []`. If the block is not found in the select
 || **active**
 [`boolean`](../../../data-types.md) | Indicator of the block's activity.
 
-An active block is displayed on the page. An inactive block is hidden. ||
+An active block is displayed on the page. A non-active block is hidden ||
 || **meta**
 [`object`](../../../data-types.md) | Service data of the block and page [(detailed description)](#meta).
 
-All values within `meta` are returned as strings. The format of string dates depends on the language settings of Bitrix24. ||
+All values inside `meta` are returned as strings. The format of string dates depends on the language settings of Bitrix24 ||
 || **content**
-[`string`](../../../data-types.md) | Prepared HTML of the block. This field is returned only if `params.get_content` is enabled. ||
+[`string`](../../../data-types.md) | Prepared HTML of the block. The field is returned only if `params.get_content` is enabled ||
 || **css**
 [`string[]`](../../../data-types.md) | Paths to the CSS files of the block needed for its display.
 
-This field is returned only if `params.get_content` is enabled. If there are no separate CSS resources, an empty array will be returned. ||
+The field is returned only if `params.get_content` is enabled. If there are no separate CSS resources, an empty array will be returned ||
 || **js**
-[`string[]`](../../../data-types.md) | Paths to the JS files of the block needed for its operation. This field is returned only if `params.get_content` is enabled.
+[`string[]`](../../../data-types.md) | Paths to the JS files of the block needed for its operation. The field is returned only if `params.get_content` is enabled.
 
-If there are no separate JS resources, an empty array will be returned. ||
+If there are no separate JS resources, an empty array will be returned ||
 |#
 
 ### Object meta {#meta}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **LID**
 [`string`](../../../data-types.md) | Identifier of the block's page in string format.
 
-Duplicates the `lid` field. ||
+Duplicates the `lid` field ||
 || **CREATED_BY_ID**
-[`string`](../../../data-types.md) | Identifier of the user who created the block. ||
+[`string`](../../../data-types.md) | Identifier of the user who created the block ||
 || **DATE_CREATE**
-[`string`](../../../data-types.md) | Creation date of the block. ||
+[`string`](../../../data-types.md) | Date of block creation ||
 || **MODIFIED_BY_ID**
-[`string`](../../../data-types.md) | Identifier of the user who last modified the block. ||
+[`string`](../../../data-types.md) | Identifier of the user who last modified the block ||
 || **DATE_MODIFY**
-[`string`](../../../data-types.md) | Date of the last modification of the block. ||
+[`string`](../../../data-types.md) | Date of the last modification of the block ||
 || **SITE_TYPE**
-[`string`](../../../data-types.md) | Type of the site to which the page belongs, for example `PAGE` or `STORE`. ||
+[`string`](../../../data-types.md) | Type of the site to which the page belongs, for example `PAGE` or `STORE` ||
 || **LANDING_TITLE**
 [`string`](../../../data-types.md) | Title of the page to which the block belongs.
 
-If the title is not filled, an empty string will be returned. ||
+If the title is not filled, an empty string will be returned ||
 || **LANDING_TPL_CODE**
-[`string`](../../../data-types.md) | Code of the page template. ||
+[`string`](../../../data-types.md) | Code of the page template ||
 || **SITE_TPL_CODE**
-[`string`](../../../data-types.md) | Code of the site template. ||
+[`string`](../../../data-types.md) | Code of the site template ||
 || **XML_ID**
 [`string`](../../../data-types.md) | External identifier of the block.
 
-If it is not specified, an empty string will be returned. ||
+If it is not set, an empty string will be returned ||
 || **DESIGNER_MODE**
 [`string`](../../../data-types.md) | Service field of the designer mode.
 
-In the `landing.block.getbyid` method, it is returned as an empty string. ||
+In the method `landing.block.getbyid`, it is returned as an empty string ||
 || **FAVORITE_META**
 [`string`](../../../data-types.md) | Service data about saving the block in the user's favorite templates.
 
-If such data is not available, an empty string will be returned. If data is available, in this method the value may come as the string `"Array"`. ||
+If such data is not available, an empty string will be returned. If data is available, in this method the value may come as the string `"Array"` ||
 |#
 
 ## Error Handling
@@ -337,13 +341,13 @@ HTTP Status: **400**
 
 ### Possible Error Codes
 
-#|
+#| 
 || **Code** | **Description** ||
-|| `MISSING_PARAMS` | Insufficient call parameters, missing: `block`. ||
-|| `ACCESS_DENIED` | The user does not have access to the "Sites and Stores" section. ||
-|| `BLOCK_NOT_FOUND` | The block is not found in the selected version of the page, unavailable to the current user, or deleted. ||
-|| `TYPE_ERROR` | Internal type mismatch error during method call. ||
-|| `SYSTEM_ERROR` | Internal error during method execution. ||
+|| `MISSING_PARAMS` | Insufficient call parameters, missing: `block` ||
+|| `ACCESS_DENIED` | User does not have access to the "Sites and Stores" section ||
+|| `BLOCK_NOT_FOUND` | Block not found in the selected version of the page, unavailable to the current user, or deleted ||
+|| `TYPE_ERROR` | Internal type mismatch error during method call ||
+|| `SYSTEM_ERROR` | Internal error during method execution ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

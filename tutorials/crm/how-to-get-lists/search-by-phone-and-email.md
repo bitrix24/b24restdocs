@@ -336,7 +336,7 @@ The method [crm.contact.list](../../../api-reference/crm/contacts/crm-contact-li
         "EMAIL":[{
             "ID":"854",
             "VALUE_TYPE":"WORK",
-            "VALUE":"alekseev@ya.com",
+            "VALUE":"alekseev@example.com",
             "TYPE_ID":"EMAIL"
         }]
     }]

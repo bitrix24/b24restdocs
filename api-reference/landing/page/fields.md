@@ -1,117 +1,117 @@
-# Object Fields Page
+# Page Fields
 
-{% note warning "We are still updating this page" %}
+{% note tip "" %}
 
-Some data may be missing — we will complete it shortly.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- edits needed for writing standards
-- parameter types are not specified
-- links to pages that have not yet been created are not provided (view template)
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
 
 {% endnote %}
 
-{% endif %}
+Page fields are used in the method [landing.landing.getList](./methods/landing-landing-get-list.md).
 
-> Quick navigation: [all methods](#all-methods) 
+Some fields can be passed when creating and updating a page through the methods [landing.landing.add](./methods/landing-landing-add.md) and [landing.landing.update](./methods/landing-landing-update.md).
 
-#|
+Additional page fields are not stored with the main ones. They are passed separately in the `ADDITIONAL_FIELDS` array and read through [landing.landing.getadditionalfields](./methods/landing-landing-get-additional-fields.md).
 
-|| **Fields** | **Description** | **Read** | **Write** ||
+## What You Need to Know
+
+- The REST methods for the page object belong to the `landing` scope.
+- A new page created via `landing.landing.add` and `landing.landing.addByTemplate` is created unpublished with the value `ACTIVE = N`.
+- If a page is moved to the trash, it is automatically unpublished.
+- To publish and unpublish, use [landing.landing.publication](./methods/landing-landing-publication.md) and [landing.landing.unpublic](./methods/landing-landing-unpublic.md).
+
+## Main Fields
+
+#| 
+|| **Field**
+`type` | **Description** ||
 || **ID**
-[`unknown`](../../data-types.md) | Page identifier. Automatically generated and unique within the database. | Yes | No ||
-|| **CODE^*^**
-[`unknown`](../../data-types.md) | Unique symbolic code of the page. Added to the website address if it is not the main page. | Yes | Yes ||
-|| **RULE**
-[`unknown`](../../data-types.md) | Regular expression for displaying the page by mask. For example, the rule `section/([\d]+)` for a page at the root of the site will match all pages of the form `/section/<n>/`, where <n> is any number. | Yes | No ||
-|| **ACTIVE**
-[`unknown`](../../data-types.md) | Page activity: Y / N. | Yes | No ||
-|| **DELETED**
-[`unknown`](../../data-types.md) | Flag for [deleted page](*deleted_page): Y / N.  | Yes | Yes ||
-|| **TITLE^*^**
-[`unknown`](../../data-types.md) | Title of the page. | Yes | Yes ||
-|| **XML_ID**
-[`unknown`](../../data-types.md) | External key for developer needs. Not used by the service. | Yes | Yes ||
-|| **DESCRIPTION**
-[`unknown`](../../data-types.md) | Arbitrary description of the page. Displayed in the list of pages. | Yes | Yes ||
-|| **SITE_ID^*^**
-[`unknown`](../../data-types.md) | Identifier of the site to which the page is linked. | Yes | Yes ||
-|| **CREATED_BY_ID**
-[`unknown`](../../data-types.md) | Identifier of the user who created the page. | Yes | No ||
-|| **MODIFIED_BY_ID**
-[`unknown`](../../data-types.md) | Identifier of the user who modified the page. | Yes | No ||
-|| **DATE_CREATE**
-[`unknown`](../../data-types.md) | Creation date. | Yes | No ||
-|| **DATE_MODIFY**
-[`unknown`](../../data-types.md) | Modification date. | Yes | No ||
-|| **SITEMAP**
-[`unknown`](../../data-types.md) | The page is present in the sitemap (`/sitemap.xml`), Y / N. | Yes | Yes ||
+[`integer`](../../data-types.md) | Identifier of the page. In `landing.landing.getList`, this field is always present in the response ||
+|| **TITLE**
+[`string`](../../data-types.md) | Title of the page. This field is required when creating via `landing.landing.add` ||
+|| **CODE**
+[`string`](../../data-types.md) | Symbolic code of the page. It forms the page address within the site. When creating, if the field is not passed or a string of spaces is passed, the code is generated from `TITLE`.
+
+If the generated address matches the address of an already existing page in the same section of the site, the system will automatically add a suffix of 4 random characters to `CODE`, for example, `my-page_a1b2`. The final value of `CODE` may differ from the one passed ||
+|| **SITE_ID**
+[`integer`](../../data-types.md) | Identifier of the site to which the page belongs ||
 || **FOLDER_ID**
-[`unknown`](../../data-types.md) | Identifier of the folder where the page is located. | Yes | Yes ||
+[`integer`](../../data-types.md) | Identifier of the folder in which the page is located. If the value is empty or equals `0`, the page is in the root of the site ||
 || **TPL_ID**
-[`unknown`](../../data-types.md) | Identifier of the [view template](../template/index.md). | Yes | Yes ||
-|| **TPL_CODE**
-[`unknown`](../../data-types.md) | Identifier of the partner solution template on which the site was created. For example, bitrix.eshop. | Yes | No ||
+[`integer`](../../data-types.md) | Identifier of the [view template](../template/index.md) for the page. If the value is empty, the page uses the site template ||
+|| **ACTIVE**
+[`string`](../../data-types.md) | Publication status of the page.
+
+Possible values:
+`Y`  the page is published
+`N`  the page is not published
+
+A new page is created with the value `N`. To change the status, use [landing.landing.publication](./methods/landing-landing-publication.md) and [landing.landing.unpublic](./methods/landing-landing-unpublic.md) ||
+|| **DELETED**
+[`string`](../../data-types.md) | Trash flag.
+
+Possible values:
+`Y`  the page is in the trash
+`N`  the page is not in the trash
+
+When moved to the trash, the page automatically receives `ACTIVE = "N"`. For deletion and restoration, use [landing.landing.markDelete](./methods/landing-landing-mark-delete.md) and [landing.landing.markUnDelete](./methods/landing-landing-mark-undelete.md) ||
+|| **DESCRIPTION**
+[`string`](../../data-types.md) | Arbitrary description of the page. Displayed in the list of pages ||
+|| **XML_ID**
+[`string`](../../data-types.md) | External identifier of the page ||
+|| **SITEMAP**
+[`string`](../../data-types.md) | Flag for including the page in the sitemap.
+
+Possible values:
+`Y`  the page is included in `sitemap.xml`
+`N`  the page is not included in `sitemap.xml` ||
+|| **FOLDER**
+[`string`](../../data-types.md) | Indicator that the object is used as a folder in the site structure, rather than as a regular page.
+
+Possible values:
+`Y`  the object is a folder
+`N`  the object is a page
+
+A folder is needed to group pages within the site. It can be created using the method [landing.landing.add](./methods/landing-landing-add.md) by passing `FOLDER = Y` ||
+|| **RULE**
+[`string`](../../data-types.md) | Regular expression for displaying the page by mask. For example, the rule `section/([\d]+)` for a page in the root of the site will match addresses like `/section/<n>/`, where `<n>` is any number ||
+|| **CREATED_BY_ID**
+[`integer`](../../data-types.md) | Identifier of the user who created the page ||
+|| **MODIFIED_BY_ID**
+[`integer`](../../data-types.md) | Identifier of the user who last modified the page ||
+|| **DATE_CREATE**
+[`datetime`](../../data-types.md) | Date and time of page creation. The format depends on Bitrix24 settings ||
+|| **DATE_MODIFY**
+[`datetime`](../../data-types.md) | Date and time of the last modification of the page. The format depends on Bitrix24 settings ||
+|| **DATE_PUBLIC**
+[`datetime`](../../data-types.md) \| `null` | Date and time of page publication. Changing this field does not publish the page by itself. In the response, the value is returned as a string in the portal format or `null` for a page that has never been published ||
 |#
 
-{% include [Parameter Footnote](../../../_includes/required.md) %}
+## Calculated and Related Fields
 
-## Overview of Methods {#all-methods}
+These fields are not stored in the page table. The method `landing.landing.getList` returns them automatically or adds them based on separate selection flags.
 
-### Working with Blocks
-
-#|
-|| **Method** | **Description** | **Version** ||
-|| [landing.landing.addblock](./block-methods/landing-landing-add-block.md) | Method for adding a new block to the page. | ||
-|| [landing.landing.copyblock](./block-methods/landing-landing-copy-block.md) | Method for copying a block from one page to another. | ||
-|| [landing.landing.deleteblock](./block-methods/landing-landing-delete-block.md) | Method for deleting a block from the page. | ||
-|| [landing.landing.downblock](./block-methods/landing-landing-down-block.md) | Method for moving a block down one position on the page. | ||
-|| [landing.landing.favoriteBlock](./block-methods/landing-landing-favorite-block.md) | Method saves an existing block on the page to "My Blocks." | 21.800.0 ||
-|| [landing.landing.hideblock](./block-methods/landing-landing-hide-block.md) | Method hides a block from the page. | ||
-|| [landing.landing.markdeletedblock](./block-methods/landing-landing-mark-deleted-block.md) | Method marks a block as deleted but does not physically remove it. | ||
-|| [landing.landing.markundeletedblock](./block-methods/landing-landing-mark-undeleted-block.md) | Method restores a block from marked as deleted. | ||
-|| [landing.landing.moveblock](./block-methods/landing-landing-move-block.md) | Method for moving a block from one page to another. | ||
-|| [landing.landing.showblock](./block-methods/landing-landing-show-block.md) | Method shows a block on the page. | ||
-|| [landing.landing.unFavoriteBlock](./block-methods/landing-landing-unfavorite-block.md) | Method removes a block that was saved in "My Blocks." | 21.800.0 ||
-|| [landing.landing.upblock](./block-methods/landing-landing-up-block.md) | Method for moving a block up one position on the page. | ||
+#| 
+|| **Field**
+`type` | **Description** ||
+|| **DOMAIN_ID**
+[`integer`](../../data-types.md) \| [`string`](../../data-types.md) | Identifier of the site domain to which the page is linked. The method `landing.landing.getList` always adds this field to the result ||
+|| **PUBLIC_URL**
+[`string`](../../data-types.md) \| `null` | Full public URL of the page. Returned in `landing.landing.getList` if the `get_urls` flag is enabled, and as a separate value in the method [landing.landing.getpublicurl](./methods/landing-landing-get-public-url.md) ||
+|| **PREVIEW**
+[`string`](../../data-types.md) \| `null` | URL or relative path to the page preview. Returned in `landing.landing.getList` if the `get_preview` flag is enabled, and as a separate value in the method [landing.landing.getpreview](./methods/landing-landing-get-preview.md) ||
+|| **IS_AREA**
+[`boolean`](../../data-types.md) | Indicator that the page is used as an included area. Returned in `landing.landing.getList` if the `check_area` flag is enabled ||
 |#
 
-### Working with Pages
+## Continue Your Exploration
 
-#|
-|| **Method** | **Description** | **Version** ||
-|| [landing.landing.add](./methods/landing-landing-add.md) | Method for adding a page. | ||
-|| [landing.landing.addByTemplate](./methods/landing-landing-add-by-template.md) | Method for adding a Page by template. | ||
-|| [landing.landing.copy](./methods/landing-landing-copy.md) | Method copies the specified page. | ||
-|| [landing.landing.delete](./methods/landing-landing-delete.md) | Method for deleting a page. | ||
-|| [landing.landing.getadditionalfields](./methods/landing-landing-get-additional-fields.md) | Method for obtaining additional fields of the page. | ||
-|| [landing.landing.getlist](./methods/landing-landing-get-list.md) | Method for obtaining a list of pages. | ||
-|| [landing.landing.getpreview](./methods/landing-landing-get-preview.md) | Method returns the path to the page preview. | ||
-|| [landing.landing.getpublicurl](./methods/landing-landing-get-public-url.md) | Method returns the web address of the page. | ||
-|| [landing.landing.markDelete](./methods/landing-landing-mark-delete.md) | Method marks the page as deleted. | ||
-|| [landing.landing.markUnDelete](./methods/landing-landing-mark-undelete.md) | Method marks the page as not deleted. | ||
-|| [landing.landing.move](./methods/landing-landing-move.md) | Method moves the page to another site and/or folder. | 21.800.0 ||
-|| [landing.landing.publication](./methods/landing-landing-publication.md) | Method for publishing a page. | ||
-|| [landing.landing.removeEntities](./methods/landing-landing-remove-entities.md) | Method removes blocks and images from the page. | ||
-|| [landing.landing.resolveIdByPublicUrl](./methods/landing-landing-resolve-id-by-public-url.md) | Method returns the page identifier by the provided public URL. | 21.800.0 ||
-|| [landing.landing.unpublic](./methods/landing-landing-unpublic.md) | Method for unpublishing a page. | ||
-|| [landing.landing.update](./methods/landing-landing-update.md) | Method for modifying a page. | ||
-|#
-
-### Special Pages
-
-#|
-|| **Method** | **Description** ||
-|| [landing.syspage.deleteForLanding](./special-pages/landing-syspage-delete-for-landing.md) | Deletes all bindings of the page as special. ||
-|| [landing.syspage.deleteForSite](./special-pages/landing-syspage-delete-for-site.md) | Deletes all special pages. ||
-|| [landing.syspage.getSpecialPage](./special-pages/landing-syspage-get-special-page.md) | Gets the address of the special page of the site. ||
-|| [landing.syspage.get](./special-pages/landing-syspage-get.md) | Gets a list of special pages. ||
-|| [landing.syspage.set](./special-pages/landing-syspage-set.md) | Sets a special page for the site. ||
-|#
-
-[*deleted_page]: Marked as deleted entities do not appear in any requests. The system does not see them. Through REST, you can only access such entities by explicitly specifying DELETED=Y in the filtering.
+- [{#T}](./methods/landing-landing-add.md)
+- [{#T}](./methods/landing-landing-add-by-template.md)
+- [{#T}](./methods/landing-landing-update.md)
+- [{#T}](./methods/landing-landing-get-list.md)
+- [{#T}](./methods/landing-landing-get-additional-fields.md)
+- [{#T}](./methods/landing-landing-get-preview.md)
+- [{#T}](./methods/landing-landing-get-public-url.md)
+- [{#T}](./methods/landing-landing-mark-delete.md)
+- [{#T}](./methods/landing-landing-mark-undelete.md)
+- [{#T}](./additional-fields.md)

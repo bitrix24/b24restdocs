@@ -8,29 +8,33 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`landing`](../../../scopes/permissions.md)
 >
-> Who can execute the method: user with "edit" access permission for the site
+> Who can execute the method: a user with "edit" access permission for the site
 
-The method `landing.landing.moveblock` moves a block to the specified page and returns the identifier of the moved block. The block can be moved within the same page or to a different page.
+The method `landing.landing.moveblock` moves a block to the specified page and returns the identifier of the moved block. The block can be moved within the same page or to another page.
 
-If the pages are already published, changes will be visible to visitors after the "Publish changes" command in the interface or after calling the method [landing.landing.publication](../methods/landing-landing-publication.md).
+If the pages are already published, changes will be visible to visitors after the "Publish Changes" command in the interface or after calling the [landing.landing.publication](../methods/landing-landing-publication.md) method.
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
-|| **lid***
-[`integer`](../../../data-types.md) | Identifier of the page to which the block should be moved.
+|| **scope**
+[`string`](../../../data-types.md) | Internal scope of the landing. It is not related to the REST scope `landing` in the method name.
 
-The page identifier can be obtained using the method [landing.landing.getList](../methods/landing-landing-get-list.md), as well as from the results of the methods [landing.landing.add](../methods/landing-landing-add.md), [landing.landing.addByTemplate](../methods/landing-landing-add-by-template.md), and [landing.landing.copy](../methods/landing-landing-copy.md) ||
+The value of `scope` must correspond to the type of site [(detailed description)](../../types.md) ||
+|| **lid***
+[`integer`](../../../data-types.md) | Identifier of the page to which the block needs to be moved.
+
+The page identifier can be obtained using the [landing.landing.getList](../methods/landing-landing-get-list.md) method, as well as from the results of the [landing.landing.add](../methods/landing-landing-add.md), [landing.landing.addByTemplate](../methods/landing-landing-add-by-template.md), and [landing.landing.copy](../methods/landing-landing-copy.md) methods ||
 || **block***
 [`integer`](../../../data-types.md) | Identifier of the block.
 
-The block identifier should be obtained using the method [landing.block.getList](../../block/methods/landing-block-get-list.md) with the parameter `params.edit_mode = 1`. If the block is being moved from another page, request blocks from the source page.
+The block identifier should be obtained using the [landing.block.getList](../../block/methods/landing-block-get-list.md) method with the parameter `params.edit_mode = 1`. If the block is being moved from another page, request blocks from the source page.
 
-The block can be on another page or on the same page `lid`. Only an existing block that is not marked as deleted can be moved. ||
+The block can be located on another page or on the same page `lid`. Only existing blocks that are not marked as deleted can be moved. ||
 || **params**
 [`object`](../../../data-types.md) | Additional parameters for the move [(detailed description)](#params) ||
 |#
@@ -50,7 +54,7 @@ If the parameter is not provided, is set to `0`, or points to a block that does 
 
 ## Code Examples
 
-{% include [Note on examples](../../../../_includes/examples.md) %}
+{% include [Note on Examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -202,7 +206,7 @@ If the parameter is not provided, is set to `0`, or points to a block that does 
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -259,15 +263,15 @@ HTTP status: **200**
         "finish": 1774062200.463154,
         "duration": 0.4631540775299072,
         "processing": 0,
-        "date_start": "2026-03-21T06:03:20+02:00",
-        "date_finish": "2026-03-21T06:03:20+02:00",
+        "date_start": "2026-03-21T06:03:20+01:00",
+        "date_finish": "2026-03-21T06:03:20+01:00",
         "operating_reset_at": 1774062800,
         "operating": 0
     }
 }
 ```
 
-### Example Response without `RETURN_CONTENT`
+### Example Response Without `RETURN_CONTENT`
 
 ```json
 {
@@ -277,8 +281,8 @@ HTTP status: **200**
         "finish": 1774062265.312441,
         "duration": 0.3124408721923828,
         "processing": 0,
-        "date_start": "2026-03-21T06:04:25+02:00",
-        "date_finish": "2026-03-21T06:04:25+02:00",
+        "date_start": "2026-03-21T06:04:25+01:00",
+        "date_finish": "2026-03-21T06:04:25+01:00",
         "operating_reset_at": 1774062865,
         "operating": 0
     }
@@ -292,21 +296,21 @@ HTTP status: **200**
 || **result**
 [`integer`](../../../data-types.md) \| [`object`](../../../data-types.md) | Identifier of the moved block. If `params.RETURN_CONTENT = 'Y'` is provided, the method will return an object with a success flag and block data [(detailed description)](#result-content) ||
 || **time**
-[`time`](../../../data-types.md#time) | Information about the request execution time ||
+[`time`](../../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
-### Object result when `RETURN_CONTENT = 'Y'` {#result-content}
+### Result Object When `RETURN_CONTENT = 'Y'` {#result-content}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../../data-types.md) | Success flag for the move. Returns `true` on successful execution. ||
+[`boolean`](../../../data-types.md) | Success flag for the move. Returns `true` upon successful execution. ||
 || **content**
 [`object`](../../../data-types.md) | Data of the moved block [(detailed description)](#content) ||
 |#
 
-### Object content {#content}
+### Content Object {#content}
 
 #|
 || **Name**
@@ -316,18 +320,18 @@ HTTP status: **200**
 || **sections**
 [`string`](../../../data-types.md) | Codes of the block sections from the manifest, concatenated into a single string separated by commas ||
 || **active**
-[`boolean`](../../../data-types.md) | Active flag of the block ||
+[`boolean`](../../../data-types.md) | Active status of the block ||
 || **access**
 [`string`](../../../data-types.md) | Access level to the block. Possible values:
 `A` — the current user does not have permission to edit the page,
 `D` — access denied,
-`V` — can only edit the design, which is insufficient for moving the block,
+`V` — can only edit design, which is insufficient for moving the block,
 `W` — can edit content and design without deletion,
 `X` — full access ||
 || **anchor**
 [`string`](../../../data-types.md) | Local anchor of the block ||
 || **php**
-[`boolean`](../../../data-types.md) | Indicates whether there is PHP code in the block's content ||
+[`boolean`](../../../data-types.md) | Indicates whether there is PHP code in the block content ||
 || **designed**
 [`boolean`](../../../data-types.md) | Indicates whether the block is a designed block ||
 || **repoId**
@@ -341,7 +345,7 @@ HTTP status: **200**
 || **js**
 [`array`](../../../data-types.md) | List of JS resources for the block and related client libraries that need to be included for its operation.
 
-For REST blocks of the type `repo_<ID>`, this field returns an empty array. ||
+For REST blocks of the type `repo_<ID>`, this field returns an empty array ||
 || **assetStrings**
 [`array`](../../../data-types.md) | Initialization strings for resources that need to be added to the page ||
 || **lang**
@@ -351,14 +355,14 @@ For REST blocks of the type `repo_<ID>`, this field returns an empty array. ||
 || **dynamicParams**
 [`array`](../../../data-types.md) | Parameters of the dynamic block from `SOURCE_PARAMS`.
 
-For regular static blocks, this field usually returns an empty array. ||
+For regular static blocks, this field usually returns an empty array ||
 || **requiredUserAction**
-[`array`](../../../data-types.md) | This field contains the same data as `manifest.requiredUserAction`. It is returned when the user must perform additional actions on the client side after moving the block. ||
+[`array`](../../../data-types.md) | This field contains the same data as `manifest.requiredUserAction`. It is returned when the user needs to perform additional actions on the client side after moving the block ||
 |#
 
 ## Error Handling
 
-HTTP status: **400 Bad Request**
+HTTP Status: **400 Bad Request**
 
 ```json
 {
@@ -374,9 +378,9 @@ HTTP status: **400 Bad Request**
 #|
 || **Code** | **Description** ||
 || `MISSING_PARAMS` | Required parameter `lid` or `block` is missing ||
-|| `LANDING_NOT_EXIST` | Page with identifier `lid` not found or not accessible to the current user ||
+|| `LANDING_NOT_EXIST` | The page with identifier `lid` is not found or is not accessible to the current user ||
 || `ACCESS_DENIED` | Insufficient permissions to call the method ||
-|| `BLOCK_NOT_FOUND` | The source block with identifier `block` not found, not accessible to the current user, marked as deleted, provided from the published version of the page, or cannot be loaded from the source page ||
+|| `BLOCK_NOT_FOUND` | The source block with identifier `block` is not found, is not accessible to the current user, marked as deleted, provided from the published version of the page, or cannot be loaded from the source page ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

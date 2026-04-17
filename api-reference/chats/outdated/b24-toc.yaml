@@ -1,17 +1,17 @@
-title: Deprecated
-href: index.md
-items:
-  - name: Widgets for the old messenger and open lines
-    href: index.md
-  - name: About chat applications
-    href: chat-apps.md
-  - name: About creating an application
-    include:
-      path: create-app/b24-toc.yaml
-      mode: link
-  - name: Contextual applications
-    href: context.md
-  - name: Create a chat application icon
-    href: icon.md
-  - name: Create an IFRAME handler
-    href: iframe.md
+title: Deprecated  
+href: index.md  
+items:  
+  - name: Overview of Methods  
+    href: index.md  
+  - name: About Chat Applications  
+    href: chat-apps.md  
+  - name: About Creating an Application  
+    include:  
+      path: create-app/b24-toc.yaml  
+      mode: link  
+  - name: Contextual Applications  
+    href: context.md  
+  - name: Create a Chat Application Icon  
+    href: icon.md  
+  - name: Create an IFRAME Handler  
+    href: iframe.md  

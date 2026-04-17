@@ -6,13 +6,13 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-{% note info "Permissions" %}
+{% note info "Access" %}
 
 **Scope**: [`crm`](../../../../scopes/permissions.md) | **Who can subscribe**: `any user`
 
 {% endnote %}
 
-#|
+#| 
 || **Event** | **Triggered** ||
 || [onCrmInvoiceAdd](./on-crm-invoice-add.md) | when an invoice is created ||
 || [onCrmInvoiceDelete](./on-crm-invoice-delete.md) | when an invoice is deleted ||

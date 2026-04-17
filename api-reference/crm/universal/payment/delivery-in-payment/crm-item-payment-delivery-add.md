@@ -16,14 +16,14 @@ This method adds a delivery item to the payment.
 
 {% include [Note on required parameters](../../../../../_includes/required.md) %}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
-|| **paymentId***
-[`sale_order_payment.id`](../../../../sale/data-types.md#sale_order_payment) | Payment identifier.
+|| **paymentId*** 
+[`sale_order_payment.id`](../../../../sale/data-types.md#sale_order_payment) | Identifier of the payment. 
 Can be obtained using the method [`sale.payment.list`](../../../../sale/payment/sale-payment-list.md) ||
-|| **deliveryId***
-[`sale_order_shipment.id`](../../../../sale/data-types.md#sale_order_shipment) | Delivery identifier.
+|| **deliveryId*** 
+[`sale_order_shipment.id`](../../../../sale/data-types.md#sale_order_shipment) | Identifier of the delivery. 
 Can be obtained using the method [`crm.item.delivery.list`](../../delivery/crm-item-delivery-list.md) (key id) ||
 |#
 
@@ -58,19 +58,19 @@ Can be obtained using the method [`crm.item.delivery.list`](../../delivery/crm-i
     ```js
     try
     {
-    	const response = await $b24.callMethod(
-    		'crm.item.payment.delivery.add', {
-    			paymentId: 1039,
-    			deliveryId: 4072
-    		}
-    	);
-    	
-    	const result = response.getData().result;
-    	console.log(result);
+        const response = await $b24.callMethod(
+            'crm.item.payment.delivery.add', {
+                paymentId: 1039,
+                deliveryId: 4072
+            }
+        );
+        
+        const result = response.getData().result;
+        console.log(result);
     }
     catch( error )
     {
-    	console.error(error);
+        console.error(error);
     }
     ```
 
@@ -158,13 +158,13 @@ HTTP status: **200**
 
 ### Returned Data
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **result**
 [`integer`](../../../../data-types.md) | Identifier of the delivery item in the payment ||
 || **time**
-[`time`](../../../../data-types.md) | Information about the execution time of the request ||
+[`time`](../../../../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -182,7 +182,7 @@ HTTP status: **400**
 
 ### Possible Error Codes
 
-#|
+#| 
 || **Code** | **Description** ||
 || `0` | Payment not found ||
 || `0` | Access denied ||
@@ -190,6 +190,10 @@ HTTP status: **400**
 || `100` | Required parameters not provided ||
 || `0` | Other errors (e.g., fatal errors) ||
 |#
+
+### Error Handling Features
+
+For business errors, the method may return `error: 0`. In this case, refer to `error_description` and match it with the list of errors above.
 
 {% include notitle [system errors](../../../../../_includes/system-errors.md) %}
 

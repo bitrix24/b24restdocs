@@ -1,4 +1,4 @@
-# Get Available Fields of the Property Value sale.propertyvalue.getFields
+# Get Available Fields of the Property Value sale.propertyvalue.getfields
 
 {% note tip "" %}
 
@@ -12,11 +12,13 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 This method returns the available fields of the order property value options.
 
+## Method Parameters
+
 No parameters.
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+{% include [Examples Note](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -45,16 +47,16 @@ No parameters.
     ```js
     try
     {
-    	const response = await $b24.callMethod(
-    		"sale.propertyvalue.getFields", {}
-    	);
-    	
-    	const result = response.getData().result;
-    	console.info(result);
+        const response = await $b24.callMethod(
+            "sale.propertyvalue.getFields", {}
+        );
+        
+        const result = response.getData().result;
+        console.info(result);
     }
     catch( error )
     {
-    	console.error(error);
+        console.error(error);
     }
     ```
 
@@ -119,7 +121,7 @@ No parameters.
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -195,7 +197,7 @@ HTTP status: **200**
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {
@@ -210,7 +212,7 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `200040300020` | Insufficient permissions to read available fields of property values ||
+|| `200040300020` | Insufficient permissions to read available property value fields ||
 || `0` | Other errors (e.g., fatal errors) ||
 |#
 

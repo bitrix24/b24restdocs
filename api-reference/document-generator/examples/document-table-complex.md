@@ -1,4 +1,4 @@
-# Document Generation with Complex Tables
+# Generate a Document with Complex Tables
 
 {% note tip "" %}
 
@@ -8,33 +8,23 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it soon.
+Some data may be missing here — we will complete it shortly.
 
 {% endnote %}
 
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- There should be a description and a link to the material in the general section.
-
-{% endnote %}
-
-{% endif %}
-
-Starting from version 18.7.200 of the `documentgenerator` module, it is now possible to create documents with nested lists, meaning that one of the values in the first-level list can be another list (**Note:** this only works through REST and PHP API, it cannot be done through the interface).
+Starting from version 18.7.200 of the `documentgenerator` module, it is now possible to create documents with nested lists, meaning that one of the values in the first-level list can be another list (**Note:** this only works through REST and PHP API; it cannot be done through the interface).
 
 This can be useful when you need to insert multiple tables of the same structure but with a different number of rows.
 
-The main idea is that the **first-level list** should return **field names** for the inner lists as values. All descriptions and field values must be provided at once. In the field array, the outer list should come first (since fields are processed in the same order they are provided in the description).
+The main idea is that the **first-level list** should return **field names** for the inner lists as values. All descriptions and field values must be provided at once. In the field array, the outer list should come first (as fields are processed in the same order they are provided in the description).
 
-This method can be used in the **Table inside repeating blocks** or **Repeating blocks inside repeating blocks** schemes, but you cannot insert a table inside a table.
+This method can be used in the **Table within Repeating Blocks** or **Repeating Blocks within Repeating Blocks** schemes, but you cannot insert a table inside another table.
 
-## Example for the Table inside Repeating Blocks Scheme
+## Example for the Table within Repeating Blocks Scheme
 
 Upload the template using the [documentgenerator.template.add](../templates/index.md) method.
 
-After that, you can create a document that will contain two tables. Example input data:
+After that, you can create a [document](*document) that will contain two tables. Example input data:
 
 ```php
 // Description of values
@@ -81,7 +71,7 @@ After that, you can create a document that will contain two tables. Example inpu
 	'Event2Speakers' => [
 		[
 			'Name' => 'David Brown',
-			'Company' => 'Devils Corp.',
+			'Company' => 'Devils corp.',
 			'Position' => 'Chief',
 		],
 	],
@@ -121,13 +111,14 @@ After that, you can create a document that will contain two tables. Example inpu
 	'Event2SpeakersSpeakerName' => ['TITLE' => 'Event2SpeakersSpeakerName'],
 	'Event2SpeakersSpeakerCompany' => ['TITLE' => 'Event2SpeakersSpeakerCompany'],
 	'Event2SpeakersSpeakerPosition' => ['TITLE' => 'Event2SpeakersSpeakerPosition'],
+]
 ```
 
-## Example for the Repeating Blocks inside Repeating Blocks Scheme
+## Example for the Repeating Blocks within Repeating Blocks Scheme
 
 Upload the template using the [documentgenerator.template.add](../templates/index.md) method.
 
-After that, you can create a document. Example input data:
+After that, you can create a [document](*document2). Example [input](*input):
 
 ```php
 <?php
@@ -166,7 +157,7 @@ $data = [
 			],
 		],
 		// 'Events' => [
-		//	[
+		//	[ 
 		//		'Title' => 'Automation',
 		//		'Description' => 'Some description of the automation event',
 		//		'SpeakerName' => '__Event1SpeakersSpeakerName__',
@@ -178,9 +169,9 @@ $data = [
 		//	[
 		//		'Title' => 'Documents',
 		//		'Description' => 'This event is about document processing',
-		//		'SpeakerName' => '__Event2SpeakersSpeakerName__',
 		//		'BlockStart' => '__Event2Speakers.BLOCK_START__',
 		//		'BlockEnd' => '__Event2Speakers.BLOCK_END__',
+		//		'SpeakerName' => '__Event2SpeakersSpeakerName__',
 		//		'SpeakerCompany' => '__Event2SpeakersSpeakerCompany__',
 		//		'SpeakerPosition' => '__Event2SpeakersSpeakerPosition__',
 		//	],
@@ -210,7 +201,7 @@ $data = [
 		'Event2Speakers' => [
 			[
 				'Name' => 'David Brown',
-				'Company' => 'Devils Corp.',
+				'Company' => 'Devils corp.',
 				'Position' => 'Chief',
 			],
 		],

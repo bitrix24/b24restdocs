@@ -14,85 +14,85 @@ This method creates notifications for a delivery request.
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../../_includes/required.md) %}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
-|| **DELIVERY_ID***
+|| **DELIVERY_ID*** 
 [`sale_delivery_service.ID`](../../data-types.md) | Identifier of the delivery service related to the delivery request.
 
 You can obtain the identifiers of `sale_delivery_service.ID` for delivery services using the [sale.delivery.getlist](../delivery/sale-delivery-get-list.md) method.
-||
-|| **REQUEST_ID***
+|| 
+|| **REQUEST_ID*** 
 [`string`](../../../data-types.md) | Identifier of the delivery request.
 
 The identifier is assigned by the external system in response to the webhook for creating a delivery order (more details in the webhook description [Creating a Delivery Order](../webhooks/create-delivery-request.md)).
-||
-|| **ADDRESSEE***
+|| 
+|| **ADDRESSEE*** 
 [`string`](../../../data-types.md) | Recipient of the message.
 
 Possible values:
 - `MANAGER` — manager
-- `RECIPIENT` — recipient of the cargo
-||
-|| **MESSAGE***
+- `RECIPIENT` — cargo recipient
+|| 
+|| **MESSAGE*** 
 [`object`](../../../data-types.md) | Message (detailed description provided [below](#parametr-message))
-||
+|| 
 |#
 
 ### MESSAGE Parameter {#parametr-message}
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../../_includes/required.md) %}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
-|| **SUBJECT***
+|| **SUBJECT*** 
 [`string`](../../../data-types.md) | Subject of the message.
 
 At least one of the following fields must be filled: `SUBJECT`, `BODY`
-||
-|| **BODY***
+|| 
+|| **BODY*** 
 [`string`](../../../data-types.md) | Body of the message.
 
 The body of the message may use macros to replace time and monetary values.
 
 At least one of the following fields must be filled: `SUBJECT`, `BODY`
-||
-|| **STATUS**
+|| 
+|| **STATUS** 
 [`object`](../../../data-types.md) | Status of the message (detailed description provided [below](#parametr-status))
-||
-|| **MONEY_VALUES**
+|| 
+|| **MONEY_VALUES** 
 [`object`](../../../data-types.md) | Object in the format `key => value`. 
 
 Used to replace monetary values in the body of the message (see example below)
-||
+|| 
 |#
 
 ### STATUS Parameter {#parametr-status}
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../../_includes/required.md) %}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
-|| **MESSAGE***
+|| **MESSAGE*** 
 [`string`](../../../data-types.md) | Text name of the message status
-||
-|| **SEMANTIC***
+|| 
+|| **SEMANTIC*** 
 [`string`](../../../data-types.md) | Value of the status semantics.
 
 Possible values:
 - `success` — success
 - `process` — in process
 - `error` — error
-||
+|| 
 |#
 
 ## Code Examples
 
-{% include [Note on examples](../../../../_includes/examples.md) %}
+{% include [Note on Examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -121,35 +121,35 @@ Possible values:
     ```js
     try
     {
-    	const response = await $b24.callMethod(
-    		'sale.delivery.request.sendmessage', {
-    			DELIVERY_ID: 225,
-    			REQUEST_ID: "4757aca4931a4f029f49c0db4374d13d",
-    			ADDRESSEE: "MANAGER",
-    			MESSAGE: {
-    				SUBJECT: "Your order is on its way",
-    				BODY: "Estimated delivery price: #MONEY#",
-    				MONEY_VALUES: {
-    					"#MONEY#": 351.2,
-    				},
-    				STATUS: {
-    					MESSAGE: "Success",
-    					SEMANTIC: "success",
-    				},
-    			},
-    		}
-    	);
-    	
-    	const result = response.getData().result;
-    	if (result.error()) {
-    		console.error(result.error());
-    	} else {
-    		console.info(result);
-    	}
+        const response = await $b24.callMethod(
+            'sale.delivery.request.sendmessage', {
+                DELIVERY_ID: 225,
+                REQUEST_ID: "4757aca4931a4f029f49c0db4374d13d",
+                ADDRESSEE: "MANAGER",
+                MESSAGE: {
+                    SUBJECT: "Your order is on its way",
+                    BODY: "Estimated delivery price: #MONEY#",
+                    MONEY_VALUES: {
+                        "#MONEY#": 351.2,
+                    },
+                    STATUS: {
+                        MESSAGE: "Success",
+                        SEMANTIC: "success",
+                    },
+                },
+            }
+        );
+        
+        const result = response.getData().result;
+        if (result.error()) {
+            console.error(result.error());
+        } else {
+            console.info(result);
+        }
     }
     catch( error )
     {
-    	console.error(error);
+        console.error(error);
     }
     ```
 
@@ -255,7 +255,7 @@ Possible values:
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -273,7 +273,7 @@ HTTP status: **200**
 
 ### Returned Data
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **result**
@@ -284,7 +284,7 @@ HTTP status: **200**
 
 ## Error Handling
 
-HTTP status: **400**, **403**
+HTTP Status: **400**, **403**
 
 ```json
 {
@@ -293,11 +293,11 @@ HTTP status: **400**, **403**
 }
 ```
 
-{% include notitle [error handling](../../../../_includes/error-info.md) %}
+{% include notitle [Error Handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
-#|
+#| 
 || **Code** | **Description** | **Status** ||
 || `DELIVERY_ID_NOT_SPECIFIED` | Delivery service identifier not specified | `400` || 
 || `DELIVERY_NOT_FOUND` | Delivery service not found | `400` || 
@@ -308,7 +308,7 @@ HTTP status: **400**, **403**
 
 Allowed values:
 - `MANAGER` — manager
-- `RECIPIENT` — recipient of the cargo
+- `RECIPIENT` — cargo recipient
 | `400` ||
 || `MESSAGE_NOT_SPECIFIED` | Message not specified.
 
@@ -322,10 +322,10 @@ Either the subject or the body of the message must be specified
 | `400` ||
 || `REQUEST_SHIPMENT_NOT_FOUND` | Shipments linked to the specified delivery request not found
 | `400` ||
-|| `ACCESS_DENIED` | Insufficient rights to add the delivery service | `403` ||
+|| `ACCESS_DENIED` | Insufficient permissions to create a notification | `403` ||
 |#
 
-{% include [system errors](../../../../_includes/system-errors.md) %}
+{% include [System Errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

@@ -8,7 +8,7 @@
 || **copiedId**
 [`integer`](../../../../data-types.md) | Identifier of the original item when copied, if applicable ||
 || **userId**
-[`integer`](../../../../data-types.md) | Identifier of the user in the context of which the object was created ||
+[`integer`](../../../../data-types.md) | Identifier of the user in the context of which the object is created ||
 || **createdBy**
 [`integer`](../../../../data-types.md) | Identifier of the item creator ||
 || **parentId**
@@ -16,15 +16,15 @@
 || **title**
 [`string`](../../../../data-types.md) | Text of the checklist item ||
 || **sortIndex**
-[`integer`](../../../../data-types.md) | Sorting index. The lower the value, the higher the item appears in the list or sublist ||
+[`integer`](../../../../data-types.md) | Sorting index. The lower the value, the higher the item in the list or sublist ||
 || **displaySortIndex**
 [`string`](../../../../data-types.md) | Auxiliary value for display order ||
 || **isComplete**
-[`boolean`](../../../../data-types.md) | Status of item completion ||
+[`boolean`](../../../../data-types.md) | Status of the item completion ||
 || **isImportant**
-[`boolean`](../../../../data-types.md) | Importance flag for the item ||
+[`boolean`](../../../../data-types.md) | Importance flag of the item ||
 || **completedCount**
-[`integer`](../../../../data-types.md) | Number of completions for the item ||
+[`integer`](../../../../data-types.md) | Number of completions of the item ||
 || **members**
 [`array`](../../../../data-types.md) | Array of objects with [description of participants](#members).
 
@@ -47,7 +47,7 @@ If there is no data, an empty array `[]` is returned ||
 || **id**
 [`string`](../../../../data-types.md) | Identifier of the user ||
 || **type**
-[`string`](../../../../data-types.md) | User's role in the checklist item. Possible values:
+[`string`](../../../../data-types.md) | Role of the user in the checklist item. Possible values:
 - `A` — Participant
 - `U` — Observer ||
 || **name**
@@ -55,7 +55,7 @@ If there is no data, an empty array `[]` is returned ||
 || **personalPhoto**
 [`string`](../../../../data-types.md) | Identifier of the user's avatar file on Drive ||
 || **personalGender**
-[`string`](../../../../data-types.md) | User's gender. Possible values:
+[`string`](../../../../data-types.md) | Gender of the user. Possible values:
 - `M` — Male
 - `F` — Female ||
 || **image**
@@ -69,6 +69,6 @@ If there is no data, an empty array `[]` is returned ||
 #|
 || **Name**
 `type` | **Description** ||
-|| **<attachmentId>**
+|| **attachmentId**
 [`string`](../../../../data-types.md) | Identifier of the file on Drive in the format `n<fileId>`, where the key is the identifier of the attachment ||
 |#

@@ -2,7 +2,7 @@
 
 {% note tip "" %}
 
-If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
 
 {% endnote %}
 
@@ -16,34 +16,38 @@ The method `landing.site.addFolder` creates a folder in the specified site and r
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
-|| **siteId***
-[`integer`](../../data-types.md) | The identifier of the site where the folder needs to be created.
+|| **scope**
+[`string`](../../data-types.md) | Internal scope of the landing pages. It is not related to the REST scope `landing` in the method name.
 
-The site identifier can be obtained using the [landing.site.getList](./landing-site-get-list.md) method or from the result of the [landing.site.add](./landing-site-add.md) method ||
-|| **fields***
-[`object`](../../data-types.md) | A set of fields for the folder being created [(detailed description)](#fields) ||
+The value of `scope` must correspond to the type of site [(detailed description)](../types.md) ||
+|| **siteId*** 
+[`integer`](../../data-types.md) | Identifier of the site where the folder needs to be created.
+
+The site identifier can be obtained using the method [landing.site.getList](./landing-site-get-list.md) or from the result of the method [landing.site.add](./landing-site-add.md) ||
+|| **fields*** 
+[`object`](../../data-types.md) | Set of fields for the folder being created [(detailed description)](#fields) ||
 |#
 
 ### Parameter fields {#fields}
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
-|| **TITLE***
-[`string`](../../data-types.md) | The name of the folder, maximum length `255` characters ||
-|| **CODE**
-[`string`](../../data-types.md) | Symbolic code for the folder in the URL, maximum length `255` characters. If not provided or empty, the code is generated from `TITLE` using transliteration. 
+|| **TITLE*** 
+[`string`](../../data-types.md) | Title of the folder, maximum length `255` characters ||
+|| **CODE** 
+[`string`](../../data-types.md) | Symbolic code of the folder for the URL, maximum length `255` characters. If not provided or empty, the code is generated from `TITLE` using transliteration.
 
-If the code is empty after transliteration, a random string of length `12` characters is created ||
-|| **PARENT_ID**
-[`integer`](../../data-types.md) | The identifier of the parent folder. If the value is `0`, `null`, or empty, the folder is created at the root of the site ||
-|| **ACTIVE**
-[`string`](../../data-types.md) | Folder activity flag `Y/N`, default is `N` ||
+If the code is empty after transliteration, a random string of `12` characters is created ||
+|| **PARENT_ID** 
+[`integer`](../../data-types.md) | Identifier of the parent folder. If the value is `0`, `null`, or empty, the folder is created at the root of the site ||
+|| **ACTIVE** 
+[`string`](../../data-types.md) | Flag indicating the folder's activity `Y/N`, default is `N` ||
 |#
 
 ## Code Examples
@@ -226,11 +230,11 @@ HTTP Status: **200**
 
 ### Returned Data
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **result**
-[`integer`](../../data-types.md) | The identifier of the created folder ||
+[`integer`](../../data-types.md) | Identifier of the created folder ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the execution time of the request ||
 |#
@@ -250,12 +254,12 @@ HTTP Status: **400**
 
 ### Possible Error Codes
 
-#|
+#| 
 || **Code** | **Description** ||
 || `ACCESS_DENIED` | Site not found or access to it is denied ||
-|| `BX_EMPTY_REQUIRED` | A required field is not filled, such as `TITLE` or `CODE` ||
-|| `FOLDER_IS_NOT_UNIQUE` | A folder with this name already exists. This error occurs when there is a conflict with `CODE` within the site and the parent folder ||
-|| `SLASH_IS_NOT_ALLOWED` | The character `/` is present in `fields.CODE` ||
+|| `BX_EMPTY_REQUIRED` | Required field is not filled, such as `TITLE` or `CODE` ||
+|| `FOLDER_IS_NOT_UNIQUE` | A folder with this name is already defined. This error occurs when there is a conflict with `CODE` within the site and parent folder ||
+|| `SLASH_IS_NOT_ALLOWED` | The character `/` is passed in `fields.CODE` ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

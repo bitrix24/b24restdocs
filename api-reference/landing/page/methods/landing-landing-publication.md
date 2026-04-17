@@ -1,8 +1,8 @@
-# Publish Page landing.landing.publication
+# Publish the landing.landing.publication page
 
 {% note tip "" %}
 
-If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect the [MCP server](../../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
 
 {% endnote %}
 
@@ -14,6 +14,8 @@ The method `landing.landing.publication` publishes the page and makes it active.
 
 If the page is located in a folder, the method will publish that folder and all parent folders. After this, the site will become active.
 
+For Knowledge Base pages, the method manages the visibility of the page: making it available or hidden from users.
+
 ## Method Parameters
 
 {% include [Note on required parameters](../../../../_includes/required.md) %}
@@ -21,10 +23,14 @@ If the page is located in a folder, the method will publish that folder and all 
 #|
 || **Name**
 `type` | **Description** ||
+|| **scope**
+[`string`](../../../data-types.md) | Internal scope of the landing. It is not related to the REST scope `landing` in the method name.
+
+The value of `scope` must correspond to the type of site [(detailed description)](../../types.md) ||
 || **lid***
 [`integer`](../../../data-types.md) | Page identifier.
 
-The page identifier can be obtained using the method [landing.landing.getList](./landing-landing-get-list.md), as well as from the results of the methods [landing.landing.add](./landing-landing-add.md), [landing.landing.addByTemplate](./landing-landing-add-by-template.md), and [landing.landing.copy](./landing-landing-copy.md) ||
+The page identifier can be obtained using the [landing.landing.getList](./landing-landing-get-list.md) method, as well as from the results of the [landing.landing.add](./landing-landing-add.md), [landing.landing.addByTemplate](./landing-landing-add-by-template.md), and [landing.landing.copy](./landing-landing-copy.md) methods ||
 |#
 
 ## Code Examples
@@ -177,7 +183,7 @@ HTTP Status: **200**
 || **result**
 [`boolean`](../../../data-types.md) | Publication result. Returns `true` on success ||
 || **time**
-[`time`](../../../data-types.md#time) | Information about the request execution time ||
+[`time`](../../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
@@ -198,19 +204,19 @@ HTTP Status: **400**
 #|
 || **Code** | **Description** ||
 || `MISSING_PARAMS` | Required parameter `lid` is missing ||
-|| `LANDING_NOT_EXIST` | Page not found: the `lid` contains the identifier of a non-existent, deleted, or inaccessible page ||
+|| `LANDING_NOT_EXIST` | Page not found: the `lid` contains the identifier of a non-existent, deleted, or inaccessible page. For Knowledge Base pages, groups, and vibes, ensure that the `scope` parameter is provided ||
 || `PUBLIC_PAGE_REACHED` | The tariff plan has a limit on the number of published pages ||
-|| `LANDING_PAYMENT_FAILED` | The page was added from an application, a subscription to Bitrix24 Marketplace is required for publication ||
-|| `LANDING_PAYMENT_FAILED_BLOCK` | The page contains a block from an application, a subscription to Bitrix24 Marketplace is required for publication ||
+|| `LANDING_PAYMENT_FAILED` | The page was added from an application; a subscription to Bitrix24 Marketplace is required for publication ||
+|| `LANDING_PAYMENT_FAILED_BLOCK` | The page contains a block from an application; a subscription to Bitrix24 Marketplace is required for publication ||
 || `PUBLIC_SITE_REACHED` | The tariff plan has a limit on the number of created or published sites ||
-|| `PUBLIC_SITE_REACHED_FREE` | Site publication is temporarily available only on paid plans ||
-|| `PUBLIC_HTML_DISALLOWED[...]` | The tariff plan has a restriction on adding custom HTML code. In square brackets, the method returns the type of object and its identifier: `S<site_id>` for a site or `L<landing_id>` for a page ||
+|| `PUBLIC_SITE_REACHED_FREE` | Publishing sites is temporarily available only on paid plans ||
+|| `PUBLIC_HTML_DISALLOWED[...]` | The tariff plan has a limit on adding custom HTML code. In square brackets, the method returns the type of object and its identifier: `S<site_id>` for the site or `L<landing_id>` for the page ||
 || `PHONE_NOT_CONFIRMED` | Phone number confirmation is required for publication ||
 || `EMAIL_NOT_CONFIRMED` | E-mail confirmation is required for publication ||
 || `URLCHECKER_FAIL` | Malicious content detected on the page ||
 || `LICENSE_EXPIRED` | Your product license has expired ||
 || `TYPE_ERROR` | Data type error in method call parameters ||
-|| `SYSTEM_ERROR` | Internal error while executing the method ||
+|| `SYSTEM_ERROR` | Internal error during method execution ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

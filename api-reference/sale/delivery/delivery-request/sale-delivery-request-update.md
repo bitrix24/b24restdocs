@@ -14,7 +14,7 @@ This method updates the delivery request.
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -22,7 +22,7 @@ This method updates the delivery request.
 || **DELIVERY_ID***
 [`sale_delivery_service.ID`](../../data-types.md) | Identifier of the delivery service to which the delivery request belongs.
 
-You can obtain the identifiers of `sale_delivery_service.ID` delivery services using the [sale.delivery.getlist](../delivery/sale-delivery-get-list.md) method.
+You can obtain the identifiers of `sale_delivery_service.ID` for delivery services using the [sale.delivery.getlist](../delivery/sale-delivery-get-list.md) method.
 ||
 || **REQUEST_ID***
 [`string`](../../../data-types.md) | Identifier of the delivery request.
@@ -30,9 +30,9 @@ You can obtain the identifiers of `sale_delivery_service.ID` delivery services u
 The identifier is assigned by the external system in response to the webhook for creating a delivery order (more details in the webhook description [Creating a Delivery Order](../webhooks/create-delivery-request.md)).
 ||
 || **FINALIZE**
-[`string`](../../../data-types.md) | Indicator of the need to complete (finalize) the delivery request.
+[`string`](../../../data-types.md) | Indicator of the need to finalize the delivery request.
 
-It is implied that the indicator value should be set to `Y` when the delivery request is fulfilled.
+It is implied that the indicator value should be set to `Y` when the delivery request is completed.
 
 By default, if no value is provided, the request is not finalized.
 
@@ -57,7 +57,7 @@ Possible values:
 
 ### Parameter STATUS {#parametr-status}
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -65,7 +65,7 @@ Possible values:
 || **TEXT***
 [`string`](../../../data-types.md) | Text name of the delivery request status ||
 || **SEMANTIC***
-[`string`](../../../data-types.md) | Value of the status semantics.
+[`string`](../../../data-types.md) | Semantic value of the status.
 
 Possible values:
 - `process` — request in progress
@@ -75,7 +75,7 @@ Possible values:
 
 ### Parameter PROPERTIES {#parametr-properties}
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -94,7 +94,7 @@ Possible values:
 
 ## Code Examples
 
-{% include [Note on examples](../../../../_includes/examples.md) %}
+{% include [Note on Examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -303,7 +303,7 @@ Possible values:
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -325,14 +325,14 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../../data-types.md) | Result of updating the delivery request ||
+[`boolean`](../../../data-types.md) | Result of the delivery request update ||
 || **time**
 [`time`](../../../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-HTTP status: **400**, **403**
+HTTP Status: **400**, **403**
 
 ```json
 {
@@ -353,10 +353,10 @@ HTTP status: **400**, **403**
 || `REQUEST_NOT_FOUND` | Delivery request not found | `400` ||
 || `STATUS_UNEXPECTED_FORMAT` | Incorrect format of the `STATUS` parameter value | `400` ||
 || `STATUS_TEXT_NOT_SPECIFIED` | Status name value not specified | `400` ||
-|| `STATUS_SEMANTIC_NOT_SPECIFIED` | Status semantics value not specified | `400` ||
+|| `STATUS_SEMANTIC_NOT_SPECIFIED` | Semantic value of the status not specified | `400` ||
 || `PROPERTIES_UNEXPECTED_FORMAT` | Incorrect format of the `PROPERTIES` parameter value | `400` ||
 || `PROPERTY_VALUE_UNEXPECTED_FORMAT` | Incorrect format of one of the provided properties | `400` ||
-|| `PROPERTY_VALUE_TAGS_UNEXPECTED_FORMAT` | Incorrect format of the property tags value | `400` ||
+|| `PROPERTY_VALUE_TAGS_UNEXPECTED_FORMAT` | Incorrect format of the property tag values | `400` ||
 || `PROPERTY_VALUE_TAG_UNEXPECTED_FORMAT` | Incorrect format of the property tag value | `400` ||
 || `UNEXPECTED_REQUEST_FINALIZE_INDICATOR_VALUE` | Incorrect value of the `FINALIZE` parameter.
 
@@ -370,7 +370,7 @@ Allowed values: `Y`, `N`
  | `400` ||
  || `EMPTY_UPDATE_PAYLOAD` | Empty set of fields for updating the delivery request
  | `400` ||
-|| `ACCESS_DENIED` | Insufficient rights to add the delivery service | `403` ||
+|| `ACCESS_DENIED` | Insufficient permissions to update the delivery request | `403` ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

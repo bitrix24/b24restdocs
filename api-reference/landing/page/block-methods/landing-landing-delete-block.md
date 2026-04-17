@@ -8,38 +8,42 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`landing`](../../../scopes/permissions.md)
 >
-> Who can execute the method: user with "edit" access permission for the site
+> Who can execute the method: a user with "edit" access permission for the site
 
 The method `landing.landing.deleteblock` completely removes a block from the page.
 
 If the page is already published, changes will be visible to visitors after the "Publish Changes" command in the interface or after calling the method [landing.landing.publication](../methods/landing-landing-publication.md).
 
-Along with the block, related data is also deleted. Files and images are marked for deletion and then automatically removed if they are not used elsewhere.
+Along with the block, associated data is deleted. Files and images are marked for deletion and will be automatically removed if they are not used elsewhere.
 
 If you need to temporarily hide the block with the option to restore it, use [landing.landing.markdeletedblock](./landing-landing-mark-deleted-block.md).
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../../_includes/required.md) %}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
-|| **lid***
+|| **scope**
+[`string`](../../../data-types.md) | Internal scope of the landing. It is not related to the REST scope `landing` in the method name.
+
+The value of `scope` must correspond to the type of site [(detailed description)](../../types.md) ||
+|| **lid*** 
 [`integer`](../../../data-types.md) | Identifier of the page.
 
 The page identifier can be obtained using the method [landing.landing.getList](../methods/landing-landing-get-list.md), as well as from the results of the methods [landing.landing.add](../methods/landing-landing-add.md), [landing.landing.addByTemplate](../methods/landing-landing-add-by-template.md), and [landing.landing.copy](../methods/landing-landing-copy.md) ||
-|| **block***
+|| **block*** 
 [`integer`](../../../data-types.md) | Identifier of the block in the editable version of the page.
 
 The block identifier can be obtained using the method [landing.block.getList](../../block/methods/landing-block-get-list.md) with the parameter `params.edit_mode = 1`.
 
-The method works with an existing block from the page draft that has not yet been marked as deleted. If the block is already marked as deleted, does not belong to the page `lid`, or its identifier is taken from the published version of the page, the method will return an error ||
+The method works with an existing block from the page draft that has not yet been marked for deletion. If the block is already marked for deletion, does not belong to the page `lid`, or its identifier is taken from the published version of the page, the method will return an error ||
 |#
 
 ## Code Examples
 
-{% include [Note on examples](../../../../_includes/examples.md) %}
+{% include [Note on Examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -187,7 +191,7 @@ HTTP Status: **200**
 
 ### Returned Data
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **result**
@@ -211,12 +215,12 @@ HTTP Status: **400**
 
 ### Possible Error Codes
 
-#|
+#| 
 || **Code** | **Description** ||
-|| `MISSING_PARAMS` | Required top-level parameter `lid` or `block` is missing ||
+|| `MISSING_PARAMS` | Required top-level parameters `lid` or `block` are missing ||
 || `LANDING_NOT_EXIST` | Page with identifier `lid` not found or not accessible to the current user ||
-|| `ACCESS_DENIED` | User does not have permission to call landing methods or insufficient permissions to delete the block ||
-|| `BLOCK_NOT_FOUND` | Block with identifier `block` not found on page `lid`, already marked as deleted, or not available in the editable version of the page ||
+|| `ACCESS_DENIED` | User does not have permission to call landing methods or insufficient rights to delete the block ||
+|| `BLOCK_NOT_FOUND` | Block with identifier `block` not found on page `lid`, already marked for deletion, or not available in the editable version of the page ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

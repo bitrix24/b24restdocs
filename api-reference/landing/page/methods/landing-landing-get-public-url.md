@@ -8,7 +8,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`landing`](../../../scopes/permissions.md)
 >
-> Who can execute the method: a user with access to the "Sites and Stores" section and "view" permission for the site
+> Who can execute the method: a user with access to the "Sites and Stores" section and the "view" permission for the site.
 
 The method `landing.landing.getpublicurl` returns the complete public URL of the page.
 
@@ -16,13 +16,17 @@ The method `landing.landing.getpublicurl` returns the complete public URL of the
 
 {% include [Note on Required Parameters](../../../../_includes/required.md) %}
 
-#|
-|| **Name**
+#| 
+|| **Name** 
 `type` | **Description** ||
-|| **lid***
-[`integer`](../../../data-types.md) | Page identifier.
+|| **scope**
+[`string`](../../../data-types.md) | Internal scope of the landing pages. It is not related to the REST scope `landing` in the method name.
 
-The page identifier can be obtained using the [landing.landing.getList](./landing-landing-get-list.md) method, as well as from the results of the [landing.landing.add](./landing-landing-add.md), [landing.landing.addByTemplate](./landing-landing-add-by-template.md), and [landing.landing.copy](./landing-landing-copy.md) methods ||
+The value of `scope` must correspond to the type of site [(detailed description)](../../types.md) ||
+|| **lid*** 
+[`integer`](../../../data-types.md) | Identifier of the page.
+
+The page identifier can be obtained using the method [landing.landing.getList](./landing-landing-get-list.md), as well as from the results of the methods [landing.landing.add](./landing-landing-add.md), [landing.landing.addByTemplate](./landing-landing-add-by-template.md), and [landing.landing.copy](./landing-landing-copy.md) ||
 |#
 
 ## Code Examples
@@ -167,17 +171,17 @@ HTTP Status: **200**
 
 ### Returned Data
 
-#|
-|| **Name**
+#| 
+|| **Name** 
 `type` | **Description** ||
 || **result**
 [`string`](../../../data-types.md) | Complete public URL of the page.
 
-For the main page of the site and the index page of a folder, the method returns the address without the `CODE` of the page. If the `RULE` field is filled for the page, the address is also returned without adding the `CODE`.
+For the main page of the site and the index page of the folder, the method returns the address without the `CODE` of the page. If the page has the `RULE` field filled, the address is also returned without adding the `CODE`.
 
-More about the `CODE` and `RULE` fields can be found in the section [Fields of the Page Object](../fields.md) ||
+More about the `CODE` and `RULE` fields in the section [Page Object Fields](../fields.md) ||
 || **time**
-[`time`](../../../data-types.md#time) | Information about the request execution time ||
+[`time`](../../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
@@ -191,20 +195,20 @@ HTTP Status: **400**
 }
 ```
 
-{% include notitle [Error Handling](../../../../_includes/error-info.md) %}
+{% include notitle [error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
-#|
+#| 
 || **Code** | **Description** ||
 || `MISSING_PARAMS` | Required parameter `lid` is missing ||
 || `LANDING_NOT_EXIST` | Page not found: the `lid` contains an identifier of a non-existent, deleted, or inaccessible page ||
 || `ACCESS_DENIED` | Insufficient permissions to call the method ||
 || `TYPE_ERROR` | Data type error in the method call parameters ||
-|| `SYSTEM_ERROR` | Internal error during method execution ||
+|| `SYSTEM_ERROR` | Internal error while executing the method ||
 |#
 
-{% include [System Errors](../../../../_includes/system-errors.md) %}
+{% include [system errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

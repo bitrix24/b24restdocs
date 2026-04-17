@@ -6,23 +6,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-Write an article detailing which fields can be modified and which can only be read. Mention that system fields can only be modified with admin rights and explain why. Additionally, specify how the connection with CRM is implemented.
-
-{% endnote %}
-
-{% endif %}
-
-{% note warning "We are still updating this page" %}
-
-Some data may be missing here — we will complete it shortly.
-
-{% endnote %}
-
-The recording and modification of fields are carried out according to business logic and user permissions. This means it depends on the user's role, group permission settings, hierarchy, task status, and certain flags in the task, such as `allowChangeDeadline`.
+The recording and modification of fields are carried out according to business logic and user permissions. This means it depends on the user's role, group access permissions, hierarchy, task status, and certain flags in the task, such as `allowChangeDeadline`.
 
 #|
 || **Name**
@@ -43,22 +27,22 @@ It is `null` if there is no parent task ||
 [`string`](../data-types.md) | Task rating. Possible values:
 `N` — negative
 `P` — positive
-`null` — unrated ||
+`null` — no rating ||
 || **priority**
 [`string`](../data-types.md) | Task priority. Possible values:
 - `2` — high
 - `1` — medium
 - `0` — low ||
 || **multitask**
-[`string`](../data-types.md) | Indicator of "base task with subtasks". Possible values: 
+[`string`](../data-types.md) | Indicator of "base task with subtasks." Possible values: 
 - `Y` — yes
 - `N` — no  ||
 || **notViewed**
-[`string`](../data-types.md) | Indicator of "not viewed". Possible values: 
+[`string`](../data-types.md) | Indicator of "not viewed." Possible values: 
 - `Y` — not viewed
 - `N` — viewed  ||
 || **replicate**
-[`string`](../data-types.md) | Indicator of "repeat task". Possible values: 
+[`string`](../data-types.md) | Indicator of "repeat task." Possible values: 
 - `Y` — yes, make the task recurring
 - `N` — do not repeat ||
 || **stageId**
@@ -92,11 +76,11 @@ It is `null` if there is no parent task ||
 || **startDatePlan**
 [`string`](../data-types.md) | Planned start date.
 
-In the [creation](./tasks-task-add.md) and [update](./tasks-task-update.md) methods, along with `startDatePlan`, it is necessary to pass `endDatePlan` ||
+In the [create](./tasks-task-add.md) and [update](./tasks-task-update.md) methods, `endDatePlan` must be passed along with `startDatePlan` ||
 || **endDatePlan**
 [`string`](../data-types.md) | Planned end date.
 
-In the [creation](./tasks-task-add.md) and [update](./tasks-task-update.md) methods, along with `endDatePlan`, it is necessary to pass `startDatePlan` ||
+In the [create](./tasks-task-add.md) and [update](./tasks-task-update.md) methods, `startDatePlan` must be passed along with `endDatePlan` ||
 || **guid**
 [`string`](../data-types.md) | Task `GUID` identifier ||
 || **xmlId**
@@ -142,7 +126,7 @@ In the [creation](./tasks-task-add.md) and [update](./tasks-task-update.md) meth
 - `Y` — yes
 - `N` — no ||
 || **exchangeModified**
-[`string`](../data-types.md) | Date of synchronization modification in `ISO 8601` format ||
+[`string`](../data-types.md) | Date of modification by synchronization in `ISO 8601` format ||
 || **exchangeId**
 [`string`](../data-types.md) | Synchronization identifier ||
 || **outlookVersion**
@@ -154,15 +138,15 @@ In the [creation](./tasks-task-add.md) and [update](./tasks-task-update.md) meth
 || **durationFact**
 [`string`](../data-types.md) | Actual duration ||
 || **isMuted**
-[`string`](../data-types.md) | Indicator of "muted". Possible values: 
+[`string`](../data-types.md) | Indicator of "muted." Possible values: 
 - `Y` — enabled
 - `N` — disabled ||
 || **isPinned**
-[`string`](../data-types.md) | Indicator of "pinned". Possible values: 
+[`string`](../data-types.md) | Indicator of "pinned." Possible values: 
 - `Y` — enabled
 - `N` — disabled ||
 || **isPinnedInGroup**
-[`string`](../data-types.md) | Indicator of "pinned in group". Possible values: 
+[`string`](../data-types.md) | Indicator of "pinned in group." Possible values: 
 - `Y` — pinned
 - `N` — not pinned  ||
 || **flowId**
@@ -183,15 +167,15 @@ In the [creation](./tasks-task-add.md) and [update](./tasks-task-update.md) meth
 || **durationPlan**
 [`string`](../data-types.md) | Planned duration ||
 || **durationType**
-[`string`](../data-types.md) | Unit of planned duration. Possible values: `secs`, `mins`, `hours`, `days`, `weeks`, `months`, `years` ||
+[`string`](../data-types.md) | Unit of planned duration. Possible values: `secs`, `mins`, `hours`, `days`, `weeks`, `monts`, `years` ||
 || **favorite**
-[`string`](../data-types.md) | Indicator of "favorite". Possible values: 
+[`string`](../data-types.md) | Indicator of "favorite." Possible values: 
 - `Y` — added to favorites
 - `N` — not added to favorites ||
 || **groupId**
 [`string`](../data-types.md) | Identifier of the group to which the task is linked ||
 || **auditors**
-[`array`](../data-types.md) | List of user identifiers — observers of the task ||
+[`array`](../data-types.md) | List of user identifiers — task observers ||
 || **accomplices**
 [`array`](../data-types.md) | List of user identifiers — Participants ||
 || **checklist**
@@ -207,7 +191,7 @@ In the [creation](./tasks-task-add.md) and [update](./tasks-task-update.md) meth
 
 The key of the object is the user identifier, and the value is the object with [user description](#user) ||
 || **auditorsData**
-[`object`](../data-types.md) | Object with descriptions of users — observers of the task. 
+[`object`](../data-types.md) | Object with descriptions of users — task observers. 
 
 The key of the object is the user identifier, and the value is the object with [user description](#user) ||
 || **newCommentsCount**
@@ -231,14 +215,14 @@ The key of the object is the user identifier, and the value is the object with [
 || **ufMailMessage**
 [`string`](../data-types.md) | e-mail | ||
 || **UF_\***
-[`any`](../data-types.md) | User fields. 
+[`any`](../data-types.md) | Custom fields. 
 
 More details in the article [{#T}](./user-field/index.md) | ||
 |#
 
 {% note info "" %}
 
-To retrieve user fields of the task, use the selection methods [tasks.task.get](./tasks-task-get.md) and [tasks.task.list](./tasks-task-list.md). Specify the required fields in the `SELECT` parameter.
+To retrieve custom fields of the task, use the selection methods [tasks.task.get](./tasks-task-get.md) and [tasks.task.list](./tasks-task-list.md). Specify the required fields in the `SELECT` parameter.
 
 System fields `UF_CRM_TASK`, `UF_TASK_WEBDAV_FILES`, and `UF_MAIL_MESSAGE` are not returned by default. Specify one of these fields in `SELECT` — all three will be returned. In the response, the fields are returned in camelCase: `ufCrmTask`, `ufTaskWebdavFiles`, `ufMailMessage`.
 
@@ -272,13 +256,13 @@ System fields `UF_CRM_TASK`, `UF_TASK_WEBDAV_FILES`, and `UF_MAIL_MESSAGE` are n
 || **toggledBy**
 [`string`](../data-types.md) | Identifier of the user who changed the item's status ||
 || **toggledDate**
-[`string`](../data-types.md) | Date of status change in `ISO 8601` format ||
+[`string`](../data-types.md) | Date of the item's status change in `ISO 8601` format ||
 || **ufChecklistFiles**
 [`boolean`](../data-types.md) | Indicator of the presence of files in the item ||
 || **members**
-[`array`](../data-types.md) | List of participants in the item ||
+[`array`](../data-types.md) | List of item participants ||
 || **attachments**
-[`array`](../data-types.md) | List of attachments for the item ||
+[`array`](../data-types.md) | List of item attachments ||
 || **entityId**
 [`string`](../data-types.md) | Task identifier ||
 || **action**
@@ -352,7 +336,7 @@ System fields `UF_CRM_TASK`, `UF_TASK_WEBDAV_FILES`, and `UF_MAIL_MESSAGE` are n
 || **approve**
 [`boolean`](../data-types.md) | Approving the executor's work on the task is available when `taskControl` is enabled ||
 || **disapprove**
-[`boolean`](../data-types.md) | Choosing what the executor needs to finish on the task is available when `taskControl` is enabled ||
+[`boolean`](../data-types.md) | Selecting what the executor needs to finish on the task is available when `taskControl` is enabled ||
 || **start**
 [`boolean`](../data-types.md) | Starting execution is available ||
 || **pause**
@@ -360,7 +344,7 @@ System fields `UF_CRM_TASK`, `UF_TASK_WEBDAV_FILES`, and `UF_MAIL_MESSAGE` are n
 || **delegate**
 [`boolean`](../data-types.md) | Delegation is available ||
 || **remove**
-[`boolean`](../data-types.md) | Task removal is available ||
+[`boolean`](../data-types.md) | Removal of the task is available ||
 || **edit**
 [`boolean`](../data-types.md) | Editing is available ||
 || **defer**
@@ -386,7 +370,7 @@ System fields `UF_CRM_TASK`, `UF_TASK_WEBDAV_FILES`, and `UF_MAIL_MESSAGE` are n
 || **checklist.reorder**
 [`boolean`](../data-types.md) | Changing the order of checklist items is available ||
 || **elapsedtime.add**
-[`boolean`](../data-types.md) | Adding time tracking is available ||
+[`boolean`](../data-types.md) | Adding time logs is available ||
 || **dayplan.timer.toggle**
 [`boolean`](../data-types.md) | Managing the timer in the daily plan is available ||
 || **edit.plan**
@@ -432,21 +416,21 @@ System fields `UF_CRM_TASK`, `UF_TASK_WEBDAV_FILES`, and `UF_MAIL_MESSAGE` are n
 || **parentId**
 [`string`](../data-types.md) | Identifier of the parent ||
 || **title**
-[`string`](../data-types.md) | Title of the item ||
+[`string`](../data-types.md) | Item title ||
 || **sortIndex**
 [`string`](../data-types.md) | Sorting index ||
 || **displaySortIndex**
 [`string`](../data-types.md) | Displayed sorting index ||
 || **isComplete**
-[`boolean`](../data-types.md) | Indicator of item completion ||
+[`boolean`](../data-types.md) | Indicator of the item's completion ||
 || **isImportant**
-[`boolean`](../data-types.md) | Indicator of item importance ||
+[`boolean`](../data-types.md) | Indicator of the item's importance ||
 || **completedCount**
 [`integer`](../data-types.md) | Number of completed sub-items ||
 || **members**
-[`array`](../data-types.md) | Array of participants in the item ||
+[`array`](../data-types.md) | Array of item participants ||
 || **attachments**
-[`array`](../data-types.md) | Array of attachments for the item ||
+[`array`](../data-types.md) | Array of item attachments ||
 || **nodeId**
 [`string`](../data-types.md) | Identifier of the node ||
 |#

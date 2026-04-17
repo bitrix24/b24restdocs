@@ -2,30 +2,34 @@
 
 {% note tip "" %}
 
-If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect the [MCP server](../../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
 
 {% endnote %}
 
 > Scope: [`landing`](../../../scopes/permissions.md)
 >
-> Who can execute the method: user with "edit" access permission for the site
+> Who can execute the method: a user with "edit" access permission for the site
 
 The method `landing.landing.downblock` moves a block one position down in the page draft.
 
-If the page is already published, the change will be visible to visitors after the "Publish changes" command in the interface or after calling the method [landing.landing.publication](../methods/landing-landing-publication.md).
+If the page is already published, visitors will see the change after the "Publish Changes" command in the interface or after calling the method [landing.landing.publication](../methods/landing-landing-publication.md).
 
 ## Method Parameters
 
 {% include [Note on required parameters](../../../../_includes/required.md) %}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
-|| **lid***
+|| **scope**
+[`string`](../../../data-types.md) | Internal scope of the landing. It is not related to the REST scope `landing` in the method name.
+
+The value of `scope` must correspond to the type of site [(detailed description)](../../types.md) ||
+|| **lid*** 
 [`integer`](../../../data-types.md) | Page identifier.
 
 The page identifier can be obtained using the method [landing.landing.getList](../methods/landing-landing-get-list.md), as well as from the results of the methods [landing.landing.add](../methods/landing-landing-add.md), [landing.landing.addByTemplate](../methods/landing-landing-add-by-template.md), and [landing.landing.copy](../methods/landing-landing-copy.md) ||
-|| **block***
+|| **block*** 
 [`integer`](../../../data-types.md) | Block identifier in the editable version of the page.
 
 The block identifier can be obtained using the method [landing.block.getList](../../block/methods/landing-block-get-list.md) with the parameter `params.edit_mode = 1` ||
@@ -163,7 +167,7 @@ The block identifier can be obtained using the method [landing.block.getList](..
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -173,8 +177,8 @@ HTTP Status: **200**
         "finish": 1773940779.073966,
         "duration": 1.0739660263061523,
         "processing": 0,
-        "date_start": "2026-03-19T20:19:38+02:00",
-        "date_finish": "2026-03-19T20:19:39+02:00",
+        "date_start": "2026-03-19T20:19:38+01:00",
+        "date_finish": "2026-03-19T20:19:39+01:00",
         "operating_reset_at": 1773941379,
         "operating": 0
     }
@@ -183,7 +187,7 @@ HTTP Status: **200**
 
 ### Returned Data
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **result**
@@ -194,12 +198,12 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
     "error": "BLOCK_WRONG_SORT",
-    "error_description": "Out of sort bounds or block not found"
+    "error_description": "Out of sort range or block not found"
 }
 ```
 
@@ -207,12 +211,12 @@ HTTP Status: **400**
 
 ### Possible Error Codes
 
-#|
+#| 
 || **Code** | **Description** ||
 || `MISSING_PARAMS` | Required parameter `lid` or `block` is missing ||
 || `LANDING_NOT_EXIST` | Page with identifier `lid` not found or not accessible to the current user ||
 || `ACCESS_DENIED` | User does not have permission to call landing methods or does not have permission to edit page `lid` ||
-|| `BLOCK_NOT_FOUND` | Block with identifier `block` not found on page `lid`, already marked as deleted, or not available in the editable version of the page ||
+|| `BLOCK_NOT_FOUND` | Block with identifier `block` not found on page `lid`, already marked as deleted, or not accessible in the editable version of the page ||
 || `BLOCK_WRONG_SORT` | Block is already at the bottom of the page, so it cannot be moved down further ||
 || `TYPE_ERROR` | Incorrect type passed in parameter `lid`, `block`, or `preventHistory` ||
 |#

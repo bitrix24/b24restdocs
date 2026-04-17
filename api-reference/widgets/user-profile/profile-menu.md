@@ -2,7 +2,7 @@
 
 {% note tip "" %}
 
-If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
 
 {% endnote %}
 
@@ -18,16 +18,20 @@ The widget will not be displayed in the interface until the application installa
 
 {% endnote %}
 
-## Where the widget is embedded
+## Where the Widget is Embedded
 
 #| 
-|| **Widget code** | **Location** ||
+|| **Widget Code** | **Location** ||
 || `USER_PROFILE_MENU` | Context menu item in the profile ||
 |#
 
-## What the handler receives
+### Where to Find it in the Interface
 
-Data is sent as a POST request {.b24-info}
+In the upper right corner, open the user menu and click the *Extensions* button. The application item with `PLACEMENT=USER_PROFILE_MENU` appears in the opened context menu.
+
+## What the Handler Receives
+
+Data is transmitted as a POST request {.b24-info}
 
 ```php
 Array
@@ -46,15 +50,15 @@ Array
 )
 ```
 
-{% include [Note on required parameters](../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../_includes/required.md) %}
 
-{% include notitle [description of standard data](../_includes/widget_data.md) %}
+{% include notitle [Description of Standard Data](../_includes/widget_data.md) %}
 
 ### PLACEMENT_OPTIONS
 
 The value of `PLACEMENT_OPTIONS` is a JSON string containing an array of one or more keys.
 
-{% include [Note on required parameters](../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../_includes/required.md) %}
 
 #| 
 || **Parameter** | **Description** ||
@@ -66,7 +70,7 @@ It can be used to retrieve additional information using the [user.get](../../use
 || 
 |#
 
-## Continue your exploration
+## Continue Your Exploration
 
 - [{#T}](../placement-bind.md)
 - [{#T}](../ui-interaction/index.md)

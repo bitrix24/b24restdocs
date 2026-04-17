@@ -10,17 +10,21 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: a user with "publication" access permission for the website
 
-The method `landing.site.unPublicFolder` unpublishes a website folder and its chain of parent folders.
+The method `landing.site.unPublicFolder` unpublishes a website folder and its parent folder chain.
 
 ## Method Parameters
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
-|| **folderId***
-[`integer`](../../data-types.md) | The identifier of the folder.
+|| **scope**
+[`string`](../../data-types.md) | Internal scope of the landing pages. It is not related to the REST scope `landing` in the method name.
+
+The value of `scope` must correspond to the type of website [(detailed description)](../types.md) ||
+|| **folderId*** 
+[`integer`](../../data-types.md) | Identifier of the folder.
 
 The folder identifier can be obtained using the [landing.site.getFolders](./landing-site-get-folders.md) method ||
 |#
@@ -169,11 +173,11 @@ HTTP Status: **200**
 
 ### Returned Data
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../data-types.md) | Returns `true` if the folder and its chain of parent folders were successfully unpublished ||
+[`boolean`](../../data-types.md) | Returns `true` if the folder and its parent folder chain were successfully unpublished ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the execution time of the request ||
 |#
@@ -193,11 +197,11 @@ HTTP Status: **400**
 
 ### Possible Error Codes
 
-#|
+#| 
 || **Code** | **Description** ||
-|| `MISSING_PARAMS` | Required parameter `folderId` not provided ||
+|| `MISSING_PARAMS` | Required parameter `folderId` is missing ||
 || `ACCESS_DENIED` | Folder not found or access to it is denied ||
-|| `TYPE_ERROR` | Data type error in the method call parameters ||
+|| `TYPE_ERROR` | Data type error in method call parameters ||
 || `SYSTEM_ERROR` | Internal error during method execution ||
 |#
 

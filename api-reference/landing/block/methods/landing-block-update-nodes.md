@@ -14,25 +14,29 @@ The method `landing.block.updatenodes` updates the nodes of a block in the draft
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
-|| **lid***
-[`integer`](../../../data-types.md) | The identifier of the page.
+|| **scope**
+[`string`](../../../data-types.md) | Internal scope of the landing. It is not related to the REST scope `landing` in the method name.
+
+The value of `scope` must correspond to the type of site [(detailed description)](../../types.md) ||
+|| **lid*** 
+[`integer`](../../../data-types.md) | Identifier of the page.
 
 The page identifier can be obtained using the method [landing.landing.getList](../../page/methods/landing-landing-get-list.md) ||
-|| **block***
-[`integer`](../../../data-types.md) | The identifier of the block in the version of the page for editing.
+|| **block*** 
+[`integer`](../../../data-types.md) | Identifier of the block in the version of the page for editing.
 
-The block identifier can be obtained using the method [landing.block.getlist](./landing-block-get-list.md) with the parameter `params.edit_mode = 1`. If the identifier of a block from the published version of the page is passed, the method may return an error ||
-|| **data***
-[`object`](../../../data-types.md) | A set of changes for the block nodes and component parameters available for editing [(detailed description)](#data) ||
+The block identifier can be obtained using the method [landing.block.getlist](./landing-block-get-list.md) with the parameter `params.edit_mode = 1`. If you pass the block identifier from the published version of the page, the method may return an error ||
+|| **data*** 
+[`object`](../../../data-types.md) | Set of changes for the block nodes and component parameters available for editing [(detailed description)](#data) ||
 || **additional**
 [`object`](../../../data-types.md) | Additional save parameters [(detailed description)](#additional) ||
 || **preventHistory**
-[`boolean`](../../../data-types.md) | If `true` is passed, the method will not add the action to the page change history. Defaults to `false` ||
+[`boolean`](../../../data-types.md) | If set to `true`, the method will not add the action to the page change history. Default is `false` ||
 |#
 
 ### Parameter data {#data}
@@ -43,13 +47,13 @@ The block identifier can be obtained using the method [landing.block.getlist](./
 || **<selector>**
 [`string`](../../../data-types.md) \| [`object`](../../../data-types.md) \| [`array`](../../../data-types.md) | The key must match the selector from the block manifest.
 
-For repeating elements, the position can be specified using `@`, for example, `.landing-block-node-text@1`. Positions are numbered starting from `0`.
+For repeating elements, you can specify the position using `@`, for example, `.landing-block-node-text@1`. Positions are numbered starting from `0`.
 
 If the position is not specified, the behavior depends on the value format:
 
-- for node value, the method modifies the first found element,
-- for a value like `{attrs: {...}}` with a regular selector, the method updates all found elements,
-- for a component selector with `:`, for example, `bitrix:catalog.section`, the position is not used.
+- for node values, the method changes the first found element,
+- for values of the form `{attrs: {...}}` with a regular selector, the method updates all found elements,
+- for component selectors with `:`, for example, `bitrix:catalog.section`, the position is not used.
 
 The value format depends on the node type [(detailed description)](#value-formats) ||
 |#
@@ -60,7 +64,7 @@ The value format depends on the node type [(detailed description)](#value-format
 || **Node Type** | **Example Value** ||
 || `text` | `'New block text'` or `{text: 'New block text'}` ||
 || `img` | `{src: 'https://example.com/a.jpg', alt: 'Banner', src2x: 'https://example.com/a@2x.jpg'}` ||
-|| `link` | `{text: 'Learn more', href: 'https://example.com', target: '_blank', query: 'utm_source=test'}` ||
+|| `link` | `{text: 'Read more', href: 'https://example.com', target: '_blank', query: 'utm_source=test'}` ||
 || `icon` | `['fa', 'fa-telegram']` ||
 || `embed` | `{src: '//youtube.com/embed/123', source: 'https://youtube.com/watch?v=123'}` ||
 |#
@@ -69,20 +73,20 @@ The formats for other node types are described in the article [Node Types](../no
 
 Additional features of the formats:
 
-- `link` supports the fields `text`, `href`, `query`, `target`, `skipContent`, and `attrs`
+- `link` supports fields `text`, `href`, `query`, `target`, `skipContent`, and `attrs`
 - in `link.attrs`, only the attributes `data-embed` and `data-url` are saved
 - if `link.text` is not provided, the method will update `href`, `target`, and allowed attributes, but will not change the link text
-- if a link object is passed without `target`, the current value of `target` will be cleared
+- if a link object is provided without `target`, the current value of `target` will be cleared
 - if `link.attrs` is not provided or an empty object is passed, the current `data-embed` and `data-url` will be removed
-- `img` additionally supports the fields `src2x`, `id`, `id2x`, `isLazy`, `lazyOrigSrc`, `lazyOrigSrc2x`, `lazyOrigSrcset`, `lazyOrigStyle`
+- `img` additionally supports fields `src2x`, `id`, `id2x`, `isLazy`, `lazyOrigSrc`, `lazyOrigSrc2x`, `lazyOrigSrcset`, `lazyOrigStyle`
 - for `img`, it is recommended to pass the full image object. If `src` is not provided, the current image address will be cleared. If `src2x` is not provided, the value for the retina version will be cleared
-- for `img`, addresses `src` and `src2x` with `http://` will be replaced by `https://`
+- for `img`, addresses `src` and `src2x` starting with `http://` will be replaced with `https://`
 - for `img`, lazy loading is enabled only with the value `isLazy = 'Y'`
-- `embed` additionally supports the fields `preview` and `ratio`
+- `embed` additionally supports fields `preview` and `ratio`
 - for `embed`, it is recommended to pass the full object. If `preview` is not provided, the current preview will be removed
-- for `embed`, the `ratio` field is applied only with the new `src`
+- for `embed`, the `ratio` field is applied only with a new `src`
 
-If a value like `{attrs: {...}}` is passed, the method behaves differently depending on the selector:
+If a value of the form `{attrs: {...}}` is passed, the method behaves differently depending on the selector:
 
 - for a regular selector, it updates the node attributes,
 - for a component selector with `:`, for example, `bitrix:catalog.section`, it updates only those component parameters that are available for editing in the block manifest.
@@ -97,12 +101,12 @@ Selectors not present in the block manifest are ignored by the method. The same 
 || **appendMenu**
 [`boolean`](../../../data-types.md) | Adds new items to the current menu instead of completely replacing it. Works only for blocks that have a `menu` section described in the manifest.
 
-Defaults to `false` ||
+Default is `false` ||
 |#
 
 ## Code Examples
 
-{% include [Note on examples](../../../../_includes/examples.md) %}
+{% include [Note on Examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -121,7 +125,7 @@ Defaults to `false` ||
             "alt": "New banner"
           },
           ".landing-block-node-link": {
-            "text": "Learn more",
+            "text": "Read more",
             "href": "https://www.bitrix24.com",
             "target": "_blank"
           },
@@ -153,7 +157,7 @@ Defaults to `false` ||
             "alt": "New banner"
           },
           ".landing-block-node-link": {
-            "text": "Learn more",
+            "text": "Read more",
             "href": "https://www.bitrix24.com",
             "target": "_blank"
           },
@@ -188,7 +192,7 @@ Defaults to `false` ||
     					alt: 'New banner'
     				},
     				'.landing-block-node-link': {
-    					text: 'Learn more',
+    					text: 'Read more',
     					href: 'https://www.bitrix24.com',
     					target: '_blank'
     				},
@@ -228,7 +232,7 @@ Defaults to `false` ||
                             'alt' => 'New banner',
                         ],
                         '.landing-block-node-link' => [
-                            'text' => 'Learn more',
+                            'text' => 'Read more',
                             'href' => 'https://www.bitrix24.com',
                             'target' => '_blank',
                         ],
@@ -267,7 +271,7 @@ Defaults to `false` ||
                     alt: 'New banner'
                 },
                 '.landing-block-node-link': {
-                    text: 'Learn more',
+                    text: 'Read more',
                     href: 'https://www.bitrix24.com',
                     target: '_blank'
                 },
@@ -309,7 +313,7 @@ Defaults to `false` ||
                     'alt' => 'New banner',
                 ],
                 '.landing-block-node-link' => [
-                    'text' => 'Learn more',
+                    'text' => 'Read more',
                     'href' => 'https://www.bitrix24.com',
                     'target' => '_blank',
                 ],
@@ -387,7 +391,7 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../../data-types.md) | The result of the block update. If successful, the method returns `true` ||
+[`boolean`](../../../data-types.md) | Result of the block update. Upon successful execution, the method returns `true` ||
 || **time**
 [`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -410,11 +414,11 @@ HTTP Status: **400**
 #|
 || **Code** | **Description** ||
 || `MISSING_PARAMS` | Required parameter `lid`, `block`, or `data` is missing ||
-|| `TYPE_ERROR` | An incorrect type was passed in the parameter `lid`, `block`, `data`, `additional`, or `preventHistory` ||
-|| `LANDING_NOT_EXIST` | The page with identifier `lid` was not found or is not accessible to the current user ||
-|| `BLOCK_NOT_FOUND` | The block with identifier `block` was not found on page `lid` or is not available in the version of the page for editing ||
-|| `ACCESS_DENIED` | Insufficient rights to edit the site ||
-|| `NODES_NOT_FOUND` | No changes were passed in the `data` parameter for the block ||
+|| `TYPE_ERROR` | Incorrect type passed in parameter `lid`, `block`, `data`, `additional`, or `preventHistory` ||
+|| `LANDING_NOT_EXIST` | Page with identifier `lid` not found or not accessible to the current user ||
+|| `BLOCK_NOT_FOUND` | Block with identifier `block` not found on page `lid` or not accessible in the version of the page for editing ||
+|| `ACCESS_DENIED` | Insufficient permissions to edit the site ||
+|| `NODES_NOT_FOUND` | No changes passed for the block in the `data` parameter ||
 || `INCORRECT_AFFECTED` | The server could not confirm the saving of the modified HTML after updating the nodes with additional verification enabled ||
 |#
 

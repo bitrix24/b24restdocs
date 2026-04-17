@@ -19,8 +19,12 @@ The method `landing.site.getFolders` returns a list of site folders.
 #|
 || **Name**
 `type` | **Description** ||
+|| **scope**
+[`string`](../../data-types.md) | Internal scope of the landing pages. It is not related to the REST scope `landing` in the method name.
+
+The value of `scope` must correspond to the type of site [(detailed description)](../types.md) ||
 || **siteId***
-[`integer`](../../data-types.md) | The identifier of the site for which folders are requested.
+[`integer`](../../data-types.md) | Identifier of the site for which folders are requested.
 
 The site identifier can be obtained using the method [landing.site.getList](./landing-site-get-list.md) or from the result of the method [landing.site.add](./landing-site-add.md) ||
 || **filter**
@@ -33,29 +37,29 @@ The site identifier can be obtained using the method [landing.site.getList](./la
 || **Name**
 `type` | **Description** ||
 || **ID**
-[`integer`](../../data-types.md) | The identifier of the folder ||
+[`integer`](../../data-types.md) | Identifier of the folder ||
 || **PARENT_ID**
-[`integer`](../../data-types.md) \| `null` | The identifier of the parent folder. If `0`, `null`, `false`, or an empty string is passed, the value will be converted to `null`, which retrieves top-level folders ||
+[`integer`](../../data-types.md) \| `null` | Identifier of the parent folder. If `0`, `null`, `false`, or an empty string is passed, the value will be converted to `null`, which selects top-level folders ||
 || **INDEX_ID**
-[`integer`](../../data-types.md) | The identifier of the folder's index page ||
+[`integer`](../../data-types.md) | Identifier of the folder's index page ||
 || **ACTIVE**
 [`string`](../../data-types.md) | Active flag `Y/N` ||
 || **DELETED**
-[`string`](../../data-types.md) | Deleted flag `Y/N` ||
+[`string`](../../data-types.md) | Deletion flag `Y/N` ||
 || **=DELETED**
-[`string`](../../data-types.md) | Exact match for the deleted flag. If `DELETED` and `=DELETED` are not present in the request, the method automatically adds `=DELETED: "N"` ||
+[`string`](../../data-types.md) | Exact match for the deletion flag. If `DELETED` and `=DELETED` are not present in the request, the method automatically adds `=DELETED: "N"` ||
 || **TITLE**
-[`string`](../../data-types.md) | The title of the folder ||
+[`string`](../../data-types.md) | Title of the folder ||
 || **CODE**
-[`string`](../../data-types.md) | The symbolic code of the folder ||
+[`string`](../../data-types.md) | Symbolic code of the folder ||
 || **CREATED_BY_ID**
-[`integer`](../../data-types.md) | The identifier of the user who created the folder ||
+[`integer`](../../data-types.md) | Identifier of the user who created the folder ||
 || **MODIFIED_BY_ID**
-[`integer`](../../data-types.md) | The identifier of the user who modified the folder ||
+[`integer`](../../data-types.md) | Identifier of the user who modified the folder ||
 || **DATE_CREATE**
-[`datetime`](../../data-types.md) | The date and time the folder was created ||
+[`datetime`](../../data-types.md) | Date and time of folder creation ||
 || **DATE_MODIFY**
-[`datetime`](../../data-types.md) | The date and time the folder was modified ||
+[`datetime`](../../data-types.md) | Date and time of folder modification ||
 |#
 
 ## Code Examples
@@ -265,8 +269,8 @@ HTTP Status: **200**
         "finish": 1773257990.091689,
         "duration": 0.0916891098022461,
         "processing": 0,
-        "date_start": "2026-03-11T22:39:50+01:00",
-        "date_finish": "2026-03-11T22:39:50+01:00",
+        "date_start": "2026-03-11T22:39:50+03:00",
+        "date_finish": "2026-03-11T22:39:50+03:00",
         "operating_reset_at": 1773258590,
         "operating": 0
     }
@@ -279,7 +283,7 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object[]`](../../data-types.md) | A list of site folders [(detailed description)](#folder). The method may return `result: []` without an error if there are no folders on the site or if the user does not have "view" access permission for the specified site ||
+[`object[]`](../../data-types.md) | List of site folders [(detailed description)](#folder). The method may return `result: []` without an error if there are no folders on the site or if the user does not have "view" access permission for the specified site ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the execution time of the request ||
 |#
@@ -290,29 +294,29 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **ID**
-[`string`](../../data-types.md) | The identifier of the folder ||
+[`string`](../../data-types.md) | Identifier of the folder ||
 || **PARENT_ID**
-[`string`](../../data-types.md) \| `null` | The identifier of the parent folder ||
+[`string`](../../data-types.md) \| `null` | Identifier of the parent folder ||
 || **SITE_ID**
-[`string`](../../data-types.md) | The identifier of the site ||
+[`string`](../../data-types.md) | Identifier of the site ||
 || **INDEX_ID**
-[`string`](../../data-types.md) \| `null` | The identifier of the folder's index page ||
+[`string`](../../data-types.md) \| `null` | Identifier of the folder's index page ||
 || **ACTIVE**
 [`string`](../../data-types.md) | Active flag `Y/N` ||
 || **DELETED**
-[`string`](../../data-types.md) | Deleted flag `Y/N` ||
+[`string`](../../data-types.md) | Deletion flag `Y/N` ||
 || **TITLE**
-[`string`](../../data-types.md) | The title of the folder ||
+[`string`](../../data-types.md) | Title of the folder ||
 || **CODE**
-[`string`](../../data-types.md) | The symbolic code of the folder ||
+[`string`](../../data-types.md) | Symbolic code of the folder ||
 || **CREATED_BY_ID**
-[`string`](../../data-types.md) | The identifier of the user who created the folder ||
+[`string`](../../data-types.md) | Identifier of the user who created the folder ||
 || **MODIFIED_BY_ID**
-[`string`](../../data-types.md) | The identifier of the user who modified the folder ||
+[`string`](../../data-types.md) | Identifier of the user who modified the folder ||
 || **DATE_CREATE**
-[`string`](../../data-types.md) | The date and time of creation in string format ||
+[`string`](../../data-types.md) | Date and time of creation in string format ||
 || **DATE_MODIFY**
-[`string`](../../data-types.md) | The date and time of modification in string format ||
+[`string`](../../data-types.md) | Date and time of modification in string format ||
 |#
 
 ## Error Handling
@@ -322,7 +326,7 @@ HTTP Status: **400**
 ```json
 {
     "error": "MISSING_PARAMS",
-    "error_description": "Insufficient call parameters, missing: siteId"
+    "error_description": "Not enough parameters for the call, missing: siteId"
 }
 ```
 
@@ -332,10 +336,10 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `MISSING_PARAMS` | The required parameter `siteId` was not provided ||
+|| `MISSING_PARAMS` | The required parameter `siteId` is missing ||
 || `ACCESS_DENIED` | Insufficient general rights to call landing methods ||
 || `TYPE_ERROR` | Data type error in method call parameters ||
-|| `SYSTEM_ERROR` | Internal error during method execution ||
+|| `SYSTEM_ERROR` | Internal error while executing the method ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

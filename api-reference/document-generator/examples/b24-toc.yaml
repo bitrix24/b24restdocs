@@ -1,13 +1,15 @@
-title: Typical use-cases and scenarios
-href: index.md
-items: 
-  - name: Generating a simple document
-    href: index.md
-  - name: Generating a document with images and seals 
-    href: document-images-seals.md
-  - name: Generating a document with date and name modifiers 
-    href: document-date-name.md
-  - name: Generating a document with tabular data 
-    href: document-table-data.md
-  - name: Generating a document with complex tables
-    href: document-table-complex.md
+title: Typical use-cases and scenarios  
+href: index.md  
+items:   
+  - name: Overview of use-cases  
+    href: index.md  
+  - name: Generate a document with text  
+    href: document-text-data.md  
+  - name: Generate a document with images and seals  
+    href: document-images-seals.md  
+  - name: Generate a document with date and name modifiers  
+    href: document-date-name.md  
+  - name: Generate a document with tabular data  
+    href: document-table-data.md  
+  - name: Generate a document with complex tables  
+    href: document-table-complex.md  

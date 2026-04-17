@@ -1,7 +1,7 @@
 title: Trade Catalog  
 href: index.md  
 items:  
-  - name: List of Methods  
+  - name: Overview of Sections  
     href: index.md  
   - name: Data Types and Object Structure in the Catalog REST API  
     href: data-types.md  
@@ -37,7 +37,7 @@ items:
     include:  
       path: product-property/b24-toc.yaml  
       mode: link  
-  - name: List Property Values  
+  - name: Values of List Properties  
     include:  
       path: product-property-enum/b24-toc.yaml  
       mode: link  
@@ -69,7 +69,7 @@ items:
     include:  
       path: store/b24-toc.yaml  
       mode: link  
-  - name: Warehouse Stock  
+  - name: Stock by Warehouses  
     include:  
       path: store-product/b24-toc.yaml  
       mode: link  

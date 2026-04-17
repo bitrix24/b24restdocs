@@ -2,7 +2,7 @@
 
 {% note tip "" %}
 
-If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect the [MCP server](../../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
 
 {% endnote %}
 
@@ -10,24 +10,28 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: a user with "delete" access permission for the site
 
-The method `landing.landing.delete` removes the page along with its blocks and associated files.
+The method `landing.landing.delete` removes a page along with its blocks and associated files.
 
 ## Method Parameters
 
-{% include [Footnote on required parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
-|| **lid***
-[`integer`](../../../data-types.md) | The identifier of the page.
+|| **scope**
+[`string`](../../../data-types.md) | Internal scope of the landing pages. It is not related to the REST scope `landing` in the method name.
 
-The page identifier can be obtained using the method [landing.landing.getList](./landing-landing-get-list.md), as well as from the results of the methods [landing.landing.add](./landing-landing-add.md) and [landing.landing.copy](./landing-landing-copy.md) ||
+The value of `scope` must correspond to the type of site [(detailed description)](../../types.md) ||
+|| **lid*** 
+[`integer`](../../../data-types.md) | Page identifier.
+
+The page identifier can be obtained using the [landing.landing.getList](./landing-landing-get-list.md) method, as well as from the results of the [landing.landing.add](./landing-landing-add.md) and [landing.landing.copy](./landing-landing-copy.md) methods ||
 |#
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -169,11 +173,11 @@ HTTP Status: **200**
 
 ### Returned Data
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../../data-types.md) | The result of the deletion, returns `true` on success ||
+[`boolean`](../../../data-types.md) | The result of the deletion; returns `true` on success ||
 || **time**
 [`time`](../../../data-types.md#time) | Information about the execution time of the request ||
 |#
@@ -193,12 +197,12 @@ HTTP Status: **400**
 
 ### Possible Error Codes
 
-#|
+#| 
 || **Code** | **Description** ||
-|| `MISSING_PARAMS` | The required parameter `lid` is missing ||
-|| `LANDING_NOT_EXIST` | The page was not found or is not accessible to the current user ||
+|| `MISSING_PARAMS` | Required parameter `lid` is missing ||
+|| `LANDING_NOT_EXIST` | Page not found or not accessible to the current user ||
 || `ACCESS_DENIED` | Insufficient permissions to delete the page ||
-|| `LANDING_IS_LOCK` | The page is locked for deletion ||
+|| `LANDING_IS_LOCK` | Page is locked for deletion ||
 || `TYPE_ERROR` | Data type error in the method call parameters ||
 || `SYSTEM_ERROR` | Internal error during method execution ||
 |#

@@ -10,23 +10,23 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: requires access permission to modify the order from which the delivery item is removed.
 
-The method removes a delivery item from the payment.
+This method removes a delivery item from the payment.
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../../../_includes/required.md) %}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
-|| **id***
-[`integer`](../../../../data-types.md) | Identifier of the delivery item in the payment.
+|| **id*** 
+[`integer`](../../../../data-types.md) | Identifier of the delivery item in the payment. 
 Can be obtained using the method [`crm.item.payment.delivery.list`](./crm-item-payment-delivery-list.md)  ||
 |#
 
 ## Code Examples
 
-{% include [Note on examples](../../../../../_includes/examples.md) %}
+{% include [Note on Examples](../../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -55,18 +55,18 @@ Can be obtained using the method [`crm.item.payment.delivery.list`](./crm-item-p
     ```js
     try
     {
-    	const response = await $b24.callMethod(
-    		'crm.item.payment.delivery.delete', {
-    			id: 1199,
-    		}
-    	);
-    	
-    	const result = response.getData().result;
-    	console.log(result);
+        const response = await $b24.callMethod(
+            'crm.item.payment.delivery.delete', {
+                id: 1199,
+            }
+        );
+        
+        const result = response.getData().result;
+        console.log(result);
     }
     catch( error )
     {
-    	console.error(error);
+        console.error(error);
     }
     ```
 
@@ -133,7 +133,7 @@ Can be obtained using the method [`crm.item.payment.delivery.list`](./crm-item-p
 
 ## Successful Response
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -151,18 +151,18 @@ HTTP status: **200**
 
 ### Returned Data
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **result**
 [`boolean`](../../../../data-types.md) | Result of the operation ||
 || **time**
-[`time`](../../../../data-types.md) | Information about the request execution time ||
+[`time`](../../../../data-types.md) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {
@@ -175,13 +175,17 @@ HTTP status: **400**
 
 ### Possible Error Codes
 
-#|
+#| 
 || **Code** | **Description** ||
 || `0` | Delivery item not found ||
 || `0` | Access denied ||
 || `100` | Parameter id not specified ||
 || `0` | Other errors (e.g., fatal errors) ||
 |#
+
+### Error Handling Features
+
+For business errors, the method may return `error: 0`. In this case, refer to `error_description` and match it with the list of errors above.
 
 {% include notitle [system errors](../../../../../_includes/system-errors.md) %}
 

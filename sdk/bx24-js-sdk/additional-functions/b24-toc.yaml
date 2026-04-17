@@ -1,53 +1,53 @@
-title: Additional Features
-href: index.md
-items: 
-  - name: List of Additional Features
-    href: index.md
-  - name: Check User's Administrator Access
-    href: bx24-is-admin.md
-  - name: Get Language Identifier in Current Bitrix24
-    href: bx24-get-lang.md
-  - name: Change Frame Size
-    href: bx24-resize-window.md
-  - name: Adjust Frame Size to Content
-    href: bx24-fit-window.md
-  - name: Reload Page
-    href: bx24-reload-window.md
-  - name: Set Page Title
-    href: bx24-set-title.md
-  - name: Set Event Handler for DOM Ready State
-    href: bx24-ready.md
-  - name: Set DOM Ready State Flag
-    href: bx24-is-ready.md
-  - name: Get Proxy Function
-    href: bx24-proxy.md
-  - name: Close Application Window
-    href: bx24-close-application.md
-  - name: Get Bitrix24 Address
-    href: bx24-get-domain.md
-  - name: Open Popup Window
-    href: bx24-open-application.md
-  - name: Open Path in Slider
-    href: bx24-open-path.md
-  - name: Get Context Link
-    href: bx24-proxy-context.md
-  - name: Scroll Parent Window
-    href: bx24-scroll-parent-window.md
-  - name: Set Function as Event Handler
-    href: bx24-bind.md
-  - name: Disable Function as Event Handler
-    href: bx24-unbind.md
-  - name: Get Frame Dimensions
-    href: bx24-get-scroll-size.md
-  - name: Run JavaScript File
-    href: bx24-load-script.md
-  - name: Start Video Call
-    href: messenger-start-video-call.md
-  - name: Start Call to Phone Number
-    href: messenger-start-phone-call.md
-  - name: Open Chat
-    href: messenger-open-chat.md
-  - name: Deprecated Methods
-    include:
-      path: outdated/b24-toc.yaml
-      mode: link
+title: Interface, Navigation, and Context  
+href: index.md  
+items:  
+  - name: Overview of Methods  
+    href: index.md  
+  - name: Check User's Administrator Access  
+    href: bx24-is-admin.md  
+  - name: Get Language Identifier in Current Bitrix24  
+    href: bx24-get-lang.md  
+  - name: Resize Frame  
+    href: bx24-resize-window.md  
+  - name: Adjust Frame Size to Content  
+    href: bx24-fit-window.md  
+  - name: Reload Page  
+    href: bx24-reload-window.md  
+  - name: Set Page Title  
+    href: bx24-set-title.md  
+  - name: Set Event Handler for DOM Structure Readiness  
+    href: bx24-ready.md  
+  - name: Set Flag for DOM Structure Readiness  
+    href: bx24-is-ready.md  
+  - name: Get Proxy Function  
+    href: bx24-proxy.md  
+  - name: Close Application Window  
+    href: bx24-close-application.md  
+  - name: Get Bitrix24 Address  
+    href: bx24-get-domain.md  
+  - name: Open Popup Window  
+    href: bx24-open-application.md  
+  - name: Open Path in Slider  
+    href: bx24-open-path.md  
+  - name: Get Context Link  
+    href: bx24-proxy-context.md  
+  - name: Scroll Parent Window  
+    href: bx24-scroll-parent-window.md  
+  - name: Set Function as Event Handler  
+    href: bx24-bind.md  
+  - name: Disable Function as Event Handler  
+    href: bx24-unbind.md  
+  - name: Get Frame Dimensions  
+    href: bx24-get-scroll-size.md  
+  - name: Run JavaScript File  
+    href: bx24-load-script.md  
+  - name: Start Video Call  
+    href: messenger-start-video-call.md  
+  - name: Start Call to Phone Number  
+    href: messenger-start-phone-call.md  
+  - name: Open Chat  
+    href: messenger-open-chat.md  
+  - name: Deprecated Methods  
+    include:  
+      path: outdated/b24-toc.yaml  
+      mode: link  

@@ -1,4 +1,4 @@
-# Delete delivery request sale.delivery.request.delete
+# Delete Delivery Request sale.delivery.request.delete
 
 {% note tip "" %}
 
@@ -12,28 +12,28 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 This method deletes a delivery request.
 
-## Method parameters
+## Method Parameters
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../../_includes/required.md) %}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
-|| **DELIVERY_ID***
+|| **DELIVERY_ID*** 
 [`sale_delivery_service.ID`](../../data-types.md) | Identifier of the delivery service to which the delivery request belongs.
 
-You can obtain the identifiers of `sale_delivery_service.ID` delivery services using the [sale.delivery.getlist](../delivery/sale-delivery-get-list.md) method.
-||
-|| **REQUEST_ID***
+You can obtain the identifiers of `sale_delivery_service.ID` for delivery services using the [sale.delivery.getlist](../delivery/sale-delivery-get-list.md) method.
+|| 
+|| **REQUEST_ID*** 
 [`string`](../../../data-types.md) | Identifier of the delivery request.
 
-The identifier is assigned by the external system in response to the webhook for creating a delivery order (more details in the webhook description [Creating a delivery order](../webhooks/create-delivery-request.md))
-||
+The identifier is assigned by the external system in response to the webhook for creating a delivery order (more details in the webhook description [Creating a Delivery Order](../webhooks/create-delivery-request.md)).
+|| 
 |#
 
-## Code examples
+## Code Examples
 
-{% include [Note on examples](../../../../_includes/examples.md) %}
+{% include [Note on Examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -62,19 +62,19 @@ The identifier is assigned by the external system in response to the webhook for
     ```js
     try
     {
-    	const response = await $b24.callMethod(
-    		'sale.delivery.request.delete', {
-    			DELIVERY_ID: 225,
-    			REQUEST_ID: "4757aca4931a4f029f49c0db4374d13d",
-    		}
-    	);
-    	
-    	const result = response.getData().result;
-    	console.info(result);
+        const response = await $b24.callMethod(
+            'sale.delivery.request.delete', {
+                DELIVERY_ID: 225,
+                REQUEST_ID: "4757aca4931a4f029f49c0db4374d13d",
+            }
+        );
+        
+        const result = response.getData().result;
+        console.info(result);
     }
     catch( error )
     {
-    	console.error(error);
+        console.error(error);
     }
     ```
 
@@ -97,7 +97,7 @@ The identifier is assigned by the external system in response to the webhook for
             ->getResult();
     
         echo 'Success: ' . print_r($result, true);
-        // Your required data processing logic
+        // Your logic for processing data
         processData($result);
     
     } catch (Throwable $e) {
@@ -144,9 +144,9 @@ The identifier is assigned by the external system in response to the webhook for
 
 {% endlist %}
 
-## Response handling
+## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -162,20 +162,20 @@ HTTP status: **200**
 }
 ```
 
-### Returned data
+### Returned Data
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../../data-types.md) | Result of deleting the delivery request ||
+[`boolean`](../../../data-types.md) | Result of the delivery request deletion ||
 || **time**
 [`time`](../../../data-types.md) | Information about the request execution time ||
 |#
 
-## Error handling
+## Error Handling
 
-HTTP status: **400**, **403**
+HTTP Status: **400**, **403**
 
 ```json
 {
@@ -186,21 +186,21 @@ HTTP status: **400**, **403**
 
 {% include notitle [error handling](../../../../_includes/error-info.md) %}
 
-### Possible error codes
+### Possible Error Codes
 
-#|
+#| 
 || **Code** | **Description** | **Status** ||
 || `DELIVERY_ID_NOT_SPECIFIED` | Delivery service identifier not specified | `400` || 
 || `DELIVERY_NOT_FOUND` | Delivery service not found | `400` || 
-|| `REQUEST_ID_NOT_SPECIFIED` | delivery request identifier not specified | `400` ||
-|| `REQUEST_NOT_FOUND` | delivery request not found | `400` ||
+|| `REQUEST_ID_NOT_SPECIFIED` | Delivery request identifier not specified | `400` ||
+|| `REQUEST_NOT_FOUND` | Delivery request not found | `400` ||
 || `DELETE_REQUEST_INTERNAL_ERROR` | Error while attempting to delete the delivery request | `400` ||
-|| `ACCESS_DENIED` | Insufficient rights to add the delivery service | `403` ||
+|| `ACCESS_DENIED` | Insufficient permissions to delete the delivery request | `403` ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}
 
-## Continue exploring
+## Continue Learning
 
 - [{#T}](./sale-delivery-request-update.md)
 - [{#T}](./sale-delivery-request-send-message.md)

@@ -2,6 +2,40 @@
 
 ## 2026
 
+### April 17, 2026
+
+- Updated the page [Common methods and events: overview](./api-reference/common/index.md). Added introductory information, connections to other entities, and an overview of methods and events with tabs.
+- Updated the main page of the [Messages](./api-reference/chats/messages/index.md) section in Chats. Added a getting started scenario, connections to other entities, and updated the overview of methods.
+- Updated the main page of the [Block Object](./api-reference/landing/block/index.md) section in Sites and Stores. Added introductory information, connections to the page and repository, as well as an overview of methods.
+- Updated the page [Interactivity in applications: overview of scenarios and methods](./settings/interactivity/index.md).
+- Updated the page [Embedding locations in the Sites section: overview of methods](./api-reference/landing/embedding/index.md).
+- Updated the page [Embedding locations for the Knowledge Base: overview of methods](./api-reference/landing/embedding/knowledge-base/index.md).
+- Updated the page [Outdated methods for chat applications](./api-reference/chats/outdated/index.md).
+- Updated the page [Application actions: overview of methods](./api-reference/bizproc/bizproc-activity/index.md) in the Business Processes and Automation rules section.
+- Updated the page [How to call REST API methods](./settings/how-to-call-rest-api/index.md).
+- Updated the main page of the [Chats](./api-reference/chats/index.md) section. Added introductory information, as well as an overview of methods and connections.
+- Updated the main page of the [Universal widgets](./api-reference/widgets/universal/index.md) section in Widgets.
+- Updated the main page of the [Widgets in user profile](./api-reference/widgets/user-profile/index.md) section in Widgets.
+- Updated the page [Online store: overview of sections](./api-reference/sale/index.md).
+- Updated the main page of the [Events in the Online store](./api-reference/sale/events/index.md) section.
+- Updated the main page of the [Order property binding in the Online store](./api-reference/sale/property-relation/index.md) section.
+- Updated the main page of the [Order property values in the Online store](./api-reference/sale/property-value/index.md) section.
+- Updated the main page of the [Typical use-cases and scenarios](./api-reference/document-generator/examples/index.md) section in the Document Generator.
+- Updated the main pages of the [Initialization and authorization](./sdk/bx24-js-sdk/system-functions/index.md) and [Interface, navigation, and context](./sdk/bx24-js-sdk/additional-functions/index.md) sections in BX24 JS SDK. Corrected introductory information, connections to other entities, and links to methods.
+- Updated the main page of the [Events](./api-reference/common/events/index.md) section in Common methods and events.
+- Updated the main page of the [Deliveries](./api-reference/crm/universal/delivery/index.md) section in CRM. Added introductory information, as well as an overview of methods and connections.
+- Updated the main page of the [Payments and deliveries](./api-reference/crm/universal/payment/index.md) section in CRM. Added introductory information, as well as an overview of methods and connections.
+- Updated the main page of the [Product items in payments](./api-reference/crm/universal/payment/products-in-payment/index.md) section in CRM. Added introductory information, as well as an overview of methods and connections.
+- Updated the main page of the [Deliveries in payments](./api-reference/crm/universal/payment/delivery-in-payment/index.md) section in CRM. Added introductory information, as well as an overview of methods and connections.
+- Updated the page [Trade catalog: overview of sections](./api-reference/catalog/index.md).
+- Updated the main page of the [Markups in Trade catalog](./api-reference/catalog/extra/index.md) section.
+- Updated the main page of the [Measurement unit ratios in Trade catalog](./api-reference/catalog/ratio/index.md) section.
+- Updated the main page of the [List property values of products](./api-reference/catalog/product-property-enum/index.md) section.
+- Updated the main page of the [Product and variation property parameters](./api-reference/catalog/product-property-feature/index.md) section.
+- Updated the main page of the [Translations of price type names](./api-reference/catalog/price-type/price-type-lang/index.md) section.
+- Updated the main page of the [Template checklists](./api-reference/tasks/template/checklist/index.md) section in Tasks. Added introductory information, as well as an overview of methods and connections.
+- Updated the main pages of the [Additional services](./api-reference/sale/delivery/extra-service/index.md) and [Transport requests](./api-reference/sale/delivery/delivery-request/index.md) sections in the Online store. Added introductory information, as well as an overview of methods and connections.
+
 ### April 10, 2026
 
 - Updated the main page of the section [User Information](./api-reference/common/users/index.md). Corrected the introductory information, page structure, and links to methods

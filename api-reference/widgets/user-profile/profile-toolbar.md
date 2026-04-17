@@ -1,4 +1,4 @@
-# Context Menu Item for the Top Profile Button USER_PROFILE_TOOLBAR
+# Context Menu Item for the USER_PROFILE_TOOLBAR
 
 {% note tip "" %}
 
@@ -8,9 +8,9 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`user`](../../scopes/permissions.md)
 
-You can add your item to the context menu of the top profile button.
+You can add your item to the context menu of the upper profile button.
 
-The specific placement code for the widget is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
+The specific widget placement code is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
 
 {% note info "" %}
 
@@ -22,8 +22,12 @@ The widget will not be displayed in the interface until the application installa
 
 #| 
 || **Widget Code** | **Location** ||
-|| `USER_PROFILE_TOOLBAR` | Context menu item of the top profile button ||
+|| `USER_PROFILE_TOOLBAR` | Context menu item of the upper profile button ||
 |#
+
+### Where It Is Located in the Interface
+
+Open the user menu and navigate to the user profile card. The application item with `PLACEMENT=USER_PROFILE_TOOLBAR` appears in the context menu of the *Extensions* button in the upper right corner of the slider.
 
 ## What the Handler Receives
 

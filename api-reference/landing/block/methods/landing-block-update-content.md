@@ -2,7 +2,7 @@
 
 {% note tip "" %}
 
-If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect the [MCP server](../../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
 
 {% endnote %}
 
@@ -10,42 +10,46 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: a user with "edit" access permission for the site
 
-The method `landing.block.updatecontent` completely replaces the HTML content of a block in the draft of the page.
+The method `landing.block.updatecontent` completely replaces the HTML content of a block in the page draft.
 
 If you only need to change specific nodes, attributes, or styles of the block, use the methods [landing.block.updatenodes](./landing-block-update-nodes.md), [landing.block.updateattrs](./landing-block-update-attrs.md), and [landing.block.updateStyles](./landing-block-update-styles.md).
 
 ## Method Parameters
 
-{% include [Footnote on required parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
-|| **lid***  
-[`integer`](../../../data-types.md) | Page identifier.
+|| **scope**
+[`string`](../../../data-types.md) | Internal scope of landings. It is not related to the REST scope `landing` in the method name.
+
+The value of `scope` must correspond to the type of site [(detailed description)](../../types.md) ||
+|| **lid*** 
+[`integer`](../../../data-types.md) | Identifier of the page.
 
 The page identifier can be obtained using the method [landing.landing.getList](../../page/methods/landing-landing-get-list.md) ||
-|| **block***  
-[`integer`](../../../data-types.md) | Block identifier in the draft of the page.
+|| **block*** 
+[`integer`](../../../data-types.md) | Identifier of the block in the page draft.
 
 The block identifier can be obtained using the method [landing.block.getlist](./landing-block-get-list.md) with the parameter `params.edit_mode = 1`.
 
 If you pass the block identifier from the published version of the page, the method may return an error ||
-|| **content***  
+|| **content*** 
 [`string`](../../../data-types.md) | New HTML content of the block.
 
 The method completely replaces the current content of the block. The current HTML of the block can be obtained using the method [landing.block.getcontent](./landing-block-get-content.md) or the method [landing.block.getlist](./landing-block-get-list.md) with the parameter `params.get_content = true` ||
-|| **designed**  
+|| **designed**
 [`boolean`](../../../data-types.md) \| [`integer`](../../../data-types.md) \| [`string`](../../../data-types.md) | Marks the block as manually modified.
 
-To enable this flag, pass `true`, `"true"` or `1`. Any other value will not enable it. Default is `false` ||
-|| **preventHistory**  
+To enable this flag, pass `true`, `"true"`, or `1`. Any other value will not enable it. Default is `false` ||
+|| **preventHistory**
 [`boolean`](../../../data-types.md) | Do not add the change to the page history. Default is `false` ||
 |#
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -190,8 +194,8 @@ HTTP Status: **200**
         "finish": 1774524519.331829,
         "duration": 0.3318290710449219,
         "processing": 0,
-        "date_start": "2026-03-26T14:28:39+02:00",
-        "date_finish": "2026-03-26T14:28:39+02:00",
+        "date_start": "2026-03-26T14:28:39+01:00",
+        "date_finish": "2026-03-26T14:28:39+01:00",
         "operating_reset_at": 1774525119,
         "operating": 0
     }
@@ -210,8 +214,8 @@ HTTP Status: **200**
         "finish": 1774524519.102341,
         "duration": 0.1023409366607666,
         "processing": 0,
-        "date_start": "2026-03-26T14:28:39+02:00",
-        "date_finish": "2026-03-26T14:28:39+02:00",
+        "date_start": "2026-03-26T14:28:39+01:00",
+        "date_finish": "2026-03-26T14:28:39+01:00",
         "operating_reset_at": 1774525119,
         "operating": 0
     }
@@ -220,7 +224,7 @@ HTTP Status: **200**
 
 ### Returned Data
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **result**
@@ -228,7 +232,7 @@ HTTP Status: **200**
 
 If the method is called with `designed = true` for a block where custom design is not available, it will return `null` ||
 || **time**
-[`time`](../../../data-types.md#time) | Information about the execution time of the request ||
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -246,12 +250,12 @@ HTTP Status: **400**
 
 ### Possible Error Codes
 
-#|
+#| 
 || **Code** | **Description** ||
 || `MISSING_PARAMS` | Required parameter `lid`, `block`, or `content` is missing ||
 || `LANDING_NOT_EXIST` | Page with identifier `lid` not found or not accessible to the current user ||
-|| `BLOCK_NOT_FOUND` | Block with identifier `block` not found on page `lid` or not available in the draft ||
-|| `ACCESS_DENIED` | Insufficient permissions to edit the site ||
+|| `BLOCK_NOT_FOUND` | Block with identifier `block` not found on page `lid` or not accessible in the draft ||
+|| `ACCESS_DENIED` | Insufficient rights to edit the site ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

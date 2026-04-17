@@ -14,16 +14,20 @@ The method `landing.landing.resolveIdByPublicUrl` returns the page ID based on i
 
 ## Method Parameters
 
-{% include [Footnote on required parameters](../../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../../_includes/required.md) %}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
-|| **landingUrl***
+|| **scope**
+[`string`](../../../data-types.md) | Internal scope of the landing pages. It is not related to the REST scope `landing` in the method name.
+
+The value of `scope` must correspond to the type of site [(detailed description)](../../types.md) ||
+|| **landingUrl*** 
 [`string`](../../../data-types.md) | Relative public URL of the page within the site `siteId`, for example `/catalog/sale/`.
 
 Provide the path from the root of the site without the domain ||
-|| **siteId***
+|| **siteId*** 
 [`integer`](../../../data-types.md) | The ID of the site within which to find the page.
 
 The site ID can be obtained using the method [landing.site.getList](../../site/landing-site-get-list.md) ||
@@ -31,7 +35,7 @@ The site ID can be obtained using the method [landing.site.getList](../../site/l
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../../_includes/examples.md) %}
+{% include [Note on Examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -169,8 +173,8 @@ HTTP Status: **200**
         "finish": 1773830531.858353,
         "duration": 0.8583528995513916,
         "processing": 0,
-        "date_start": "2026-03-18T13:42:11+01:00",
-        "date_finish": "2026-03-18T13:42:11+01:00",
+        "date_start": "2026-03-18T13:42:11+03:00",
+        "date_finish": "2026-03-18T13:42:11+03:00",
         "operating_reset_at": 1773831131,
         "operating": 0
     }
@@ -179,7 +183,7 @@ HTTP Status: **200**
 
 ### Returned Data
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **result**
@@ -187,7 +191,7 @@ HTTP Status: **200**
 
 If a page with such a public URL is not found on the site `siteId`, the method returns `null` ||
 || **time**
-[`time`](../../../data-types.md#time) | Information about the request execution time ||
+[`time`](../../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
@@ -197,7 +201,7 @@ HTTP Status: **400**
 ```json
 {
     "error": "MISSING_PARAMS",
-    "error_description": "Not enough parameters provided, missing: landingUrl, siteId"
+    "error_description": "Not enough call parameters, missing: landingUrl, siteId"
 }
 ```
 
@@ -205,12 +209,12 @@ HTTP Status: **400**
 
 ### Possible Error Codes
 
-#|
+#| 
 || **Code** | **Description** ||
-|| `MISSING_PARAMS` | Required parameters `landingUrl`, `siteId` or one of them are missing ||
+|| `MISSING_PARAMS` | Required parameters `landingUrl`, `siteId` or one of them are not provided ||
 || `ACCESS_DENIED` | Insufficient permissions to call the method ||
 || `TYPE_ERROR` | Data type error in the method call parameters ||
-|| `SYSTEM_ERROR` | Internal error during method execution ||
+|| `SYSTEM_ERROR` | Internal error while executing the method ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

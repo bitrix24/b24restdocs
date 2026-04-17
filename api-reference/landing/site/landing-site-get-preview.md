@@ -1,4 +1,4 @@
-# Get URL Preview of the landing.site.getPreview
+# Get URL Preview of the Site landing.site.getPreview
 
 {% note tip "" %}
 
@@ -8,18 +8,22 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`landing`](../../scopes/permissions.md)
 >
-> Who can execute the method: user with "view" access permission for sites
+> Who can execute the method: a user with "view" access permission for sites
 
-The method `landing.site.getPreview` returns the URL of the preview for the site's index page.
+The method `landing.site.getPreview` returns the URL preview of the site's index page.
 
 ## Method Parameters
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
 
-#|
-|| **Name**
+#| 
+|| **Name** 
 `type` | **Description** ||
-|| **id***
+|| **scope** 
+[`string`](../../data-types.md) | Internal scope of the landing pages. It is not related to the REST scope `landing` in the method name.
+
+The value of `scope` must correspond to the type of site [(detailed description)](../types.md) ||
+|| **id*** 
 [`integer`](../../data-types.md) | Site identifier.
 
 The site identifier can be obtained using the method [landing.site.getList](./landing-site-get-list.md) or from the result of the method [landing.site.add](./landing-site-add.md) ||
@@ -167,15 +171,15 @@ HTTP Status: **200**
 
 ### Returned Data
 
-#|
-|| **Name**
+#| 
+|| **Name** 
 `type` | **Description** ||
-|| **result**
-[`string`](../../data-types.md) | URL or relative path to the preview image of the site's index page. 
+|| **result** 
+[`string`](../../data-types.md) | URL or relative path to the preview image of the site's index page.
 
-The method returns a string with the path or URL of the preview. Common variants include: `"/preview.jpg"` and `"/bitrix/images/landing/nopreview.jpg"` ||
-|| **time**
-[`time`](../../data-types.md#time) | Information about the execution time of the request ||
+The method returns a string with the path or URL of the preview. Common variants: `"/preview.jpg"` and `"/bitrix/images/landing/nopreview.jpg"` ||
+|| **time** 
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -185,7 +189,7 @@ HTTP Status: **400**
 ```json
 {
     "error": "MISSING_PARAMS",
-    "error_description": "Insufficient parameters for the call, missing: id"
+    "error_description": "Not enough parameters for the call, missing: id"
 }
 ```
 
@@ -193,10 +197,10 @@ HTTP Status: **400**
 
 ### Possible Error Codes
 
-#|
+#| 
 || **Status** | **Code** | **Description** | **Value** ||
-|| `400` | `MISSING_PARAMS` | error_description | Insufficient parameters for the call, missing: `id` ||
-|| `400` | `ACCESS_DENIED` | error_description | Insufficient rights to call the method ||
+|| `400` | `MISSING_PARAMS` | error_description | Not enough parameters for the call, missing: `id` ||
+|| `400` | `ACCESS_DENIED` | error_description | Not enough rights to call the method ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

@@ -1,8 +1,8 @@
-title: Widgets in User Profile
-items: 
-  - name: Widgets in User Profile
-    href: index.md
-  - name: Context Menu Item in Profile 
-    href: profile-menu.md
-  - name: Context Menu Item in Profile Top Button
-    href: profile-toolbar.md
+title: Widgets in User Profile  
+items:  
+  - name: Overview of Widgets  
+    href: index.md  
+  - name: Context Menu Item in Profile  
+    href: profile-menu.md  
+  - name: Context Menu Item of the Top Profile Button  
+    href: profile-toolbar.md  

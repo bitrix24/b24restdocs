@@ -2,42 +2,46 @@
 
 {% note tip "" %}
 
-If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect the [MCP server](../../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
 
 {% endnote %}
 
 > Scope: [`landing`](../../../scopes/permissions.md)
 >
-> Who can execute the method: user with "edit" access permission for the site
+> Who can execute the method: a user with "edit" access permission for the site
 
 The method `landing.landing.showblock` displays a block on the page that was previously hidden.
 
-If the page is already published, changes will be visible to visitors after the "Publish Changes" command in the interface or after calling the method [landing.landing.publication](../methods/landing-landing-publication.md).
+If the page is already published, changes will be visible to visitors after the "Publish Changes" command in the interface or after calling the [landing.landing.publication](../methods/landing-landing-publication.md) method.
 
-If the block is marked as deleted, first restore it using the method [landing.landing.markundeletedblock](./landing-landing-mark-undeleted-block.md).
+If the block is marked as deleted, first restore it using the [landing.landing.markundeletedblock](./landing-landing-mark-undeleted-block.md) method.
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../../_includes/required.md) %}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
-|| **lid***
-[`integer`](../../../data-types.md) | Page identifier.
+|| **scope**
+[`string`](../../../data-types.md) | Internal scope of the landing. It is not related to the REST scope `landing` in the method name.
 
-The page identifier can be obtained using the method [landing.landing.getList](../methods/landing-landing-get-list.md), as well as from the results of the methods [landing.landing.add](../methods/landing-landing-add.md), [landing.landing.addByTemplate](../methods/landing-landing-add-by-template.md), and [landing.landing.copy](../methods/landing-landing-copy.md) ||
-|| **block***
-[`integer`](../../../data-types.md) | Block identifier in the editable version of the page.
+The value of `scope` must correspond to the type of site [(detailed description)](../../types.md) ||
+|| **lid*** 
+[`integer`](../../../data-types.md) | Identifier of the page.
 
-The block identifier can be obtained using the method [landing.block.getList](../../block/methods/landing-block-get-list.md) with the parameter `params.edit_mode = 1`.
+The page identifier can be obtained using the [landing.landing.getList](../methods/landing-landing-get-list.md) method, as well as from the results of the [landing.landing.add](../methods/landing-landing-add.md), [landing.landing.addByTemplate](../methods/landing-landing-add-by-template.md), and [landing.landing.copy](../methods/landing-landing-copy.md) methods ||
+|| **block*** 
+[`integer`](../../../data-types.md) | Identifier of the block in the editable version of the page.
+
+The block identifier can be obtained using the [landing.block.getList](../../block/methods/landing-block-get-list.md) method with the parameter `params.edit_mode = 1`.
 
 If you pass the identifier of a block from another page, a deleted block, or a non-existent identifier, the method will return an error ||
 |#
 
 ## Code Examples
 
-{% include [Note on examples](../../../../_includes/examples.md) %}
+{% include [Note on Examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -175,8 +179,8 @@ HTTP Status: **200**
         "finish": 1773976642.154611,
         "duration": 0.15461111068725586,
         "processing": 0,
-        "date_start": "2026-03-20T06:17:22+02:00",
-        "date_finish": "2026-03-20T06:17:22+02:00",
+        "date_start": "2026-03-20T06:17:22+01:00",
+        "date_finish": "2026-03-20T06:17:22+01:00",
         "operating_reset_at": 1773977242,
         "operating": 0
     }
@@ -185,13 +189,13 @@ HTTP Status: **200**
 
 ### Returned Data
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **result**
 [`boolean`](../../../data-types.md) | Result of showing the block. Returns `true` on successful execution ||
 || **time**
-[`time`](../../../data-types.md#time) | Information about the request execution time ||
+[`time`](../../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
@@ -201,7 +205,7 @@ HTTP Status: **400**
 ```json
 {
     "error": "BLOCK_NOT_FOUND",
-    "error_description": "Block not found in the landing page"
+    "error_description": "Block not found in the landing"
 }
 ```
 
@@ -209,12 +213,12 @@ HTTP Status: **400**
 
 ### Possible Error Codes
 
-#|
+#| 
 || **Code** | **Description** ||
-|| `MISSING_PARAMS` | Required parameter `lid` or `block` not provided ||
+|| `MISSING_PARAMS` | Required parameter `lid` or `block` is missing ||
 || `LANDING_NOT_EXIST` | Page with identifier `lid` not found or not accessible to the current user ||
-|| `ACCESS_DENIED` | Insufficient permissions to modify the block ||
-|| `BLOCK_NOT_FOUND` | Block with identifier `block` not found on page `lid`, already marked as deleted, or not accessible ||
+|| `ACCESS_DENIED` | Insufficient rights to modify the block ||
+|| `BLOCK_NOT_FOUND` | Block with identifier `block` not found on page `lid`, already marked as deleted, or inaccessible ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

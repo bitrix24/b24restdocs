@@ -1,4 +1,4 @@
-# Remove product item from payment crm.item.payment.product.delete
+# Remove Product Item from Payment crm.item.payment.product.delete
 
 {% note tip "" %}
 
@@ -8,13 +8,13 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
-> Who can execute the method: requires access permission to modify the order from which the product item is removed.
+> Who can execute the method: access permission to modify the order from which the product item is being removed is required.
 
-The method removes a product item from the payment.
+This method removes a product item from the payment.
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -27,7 +27,7 @@ Can be obtained using [`crm.item.payment.product.list`](../../../../crm/universa
 
 ## Code Examples
 
-{% include [Note on examples](../../../../../_includes/examples.md) %}
+{% include [Note on Examples](../../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -56,18 +56,18 @@ Can be obtained using [`crm.item.payment.product.list`](../../../../crm/universa
     ```js
     try
     {
-    	const response = await $b24.callMethod(
-    		'crm.item.payment.product.delete', {
-    			id: 1194,
-    		}
-    	);
-    	
-    	const result = response.getData().result;
-    	console.log(result);
+        const response = await $b24.callMethod(
+            'crm.item.payment.product.delete', {
+                id: 1194,
+            }
+        );
+        
+        const result = response.getData().result;
+        console.log(result);
     }
     catch( error )
     {
-    	console.error(error);
+        console.error(error);
     }
     ```
 
@@ -134,7 +134,7 @@ Can be obtained using [`crm.item.payment.product.list`](../../../../crm/universa
 
 ## Successful Response
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -144,8 +144,8 @@ HTTP status: **200**
       "finish":1716281949.752528,
       "duration":0.764387845993042,
       "processing":0.488523006439209,
-      "date_start":"2024-05-21T11:59:08+03:00",
-      "date_finish":"2024-05-21T11:59:09+03:00"
+      "date_start":"2024-05-21T11:59:08+02:00",
+      "date_finish":"2024-05-21T11:59:09+02:00"
    }
 }
 ```
@@ -163,7 +163,7 @@ HTTP status: **200**
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {
@@ -172,7 +172,7 @@ HTTP status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../../../_includes/error-info.md) %}
+{% include notitle [Error Handling](../../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
@@ -184,10 +184,14 @@ HTTP status: **400**
 || `0` | Other errors (e.g., fatal errors) ||
 |#
 
-{% include notitle [system errors](../../../../../_includes/system-errors.md) %}
+### Error Handling Features
+
+For business errors, the method may return `error: 0`. In this case, refer to `error_description` and match it against the list of errors above.
+
+{% include notitle [System Errors](../../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
 - [{#T}](./crm-item-payment-product-add.md)
 - [{#T}](./crm-item-payment-product-list.md)
-- [{#T}](./crm-item-payment-product-delete.md)
+- [{#T}](./crm-item-payment-product-set-quantity.md)

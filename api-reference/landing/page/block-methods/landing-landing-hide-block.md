@@ -1,39 +1,43 @@
-# Hide block on page `landing.landing.hideblock`
+# Hide Block on Page `landing.landing.hideblock`
 
 {% note tip "" %}
 
-If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect the [MCP server](../../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
 
 {% endnote %}
 
 > Scope: [`landing`](../../../scopes/permissions.md)
 >
-> Who can execute the method: user with "edit" access permission for the site
+> Who can execute the method: a user with "edit" access permission for the site
 
 The method `landing.landing.hideblock` hides a block on the page. The hidden block remains in the draft of the page and can be shown again using the method [landing.landing.showblock](./landing-landing-show-block.md).
 
-If the page is already published, the change will be visible to visitors after the "Publish changes" command in the interface or after calling the method [landing.landing.publication](../methods/landing-landing-publication.md).
+If the page is already published, the change will be visible to visitors after the "Publish Changes" command in the interface or after calling the method [landing.landing.publication](../methods/landing-landing-publication.md).
 
-## Method parameters
+## Method Parameters
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
+|| **scope**
+[`string`](../../../data-types.md) | Internal scope of landings. It is not related to the REST scope `landing` in the method name.
+
+The value of `scope` must correspond to the type of site [(detailed description)](../../types.md) ||
 || **lid***
-[`integer`](../../../data-types.md) | Page identifier.
+[`integer`](../../../data-types.md) | Identifier of the page.
 
 The page identifier can be obtained using the method [landing.landing.getList](../methods/landing-landing-get-list.md), as well as from the results of the methods [landing.landing.add](../methods/landing-landing-add.md), [landing.landing.addByTemplate](../methods/landing-landing-add-by-template.md), and [landing.landing.copy](../methods/landing-landing-copy.md) ||
 || **block***
-[`integer`](../../../data-types.md) | Block identifier.
+[`integer`](../../../data-types.md) | Identifier of the block.
 
 The block identifier can be obtained using the method [landing.block.getList](../../block/methods/landing-block-get-list.md) with the parameter `params.edit_mode = 1` ||
 |#
 
-## Code examples
+## Code Examples
 
-{% include [Note on examples](../../../../_includes/examples.md) %}
+{% include [Note on Examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -159,9 +163,9 @@ The block identifier can be obtained using the method [landing.block.getList](..
 
 {% endlist %}
 
-## Response handling
+## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -171,28 +175,28 @@ HTTP status: **200**
         "finish": 1773969024.227401,
         "duration": 0.2274010181427002,
         "processing": 0,
-        "date_start": "2026-03-20T04:10:24+02:00",
-        "date_finish": "2026-03-20T04:10:24+02:00",
+        "date_start": "2026-03-20T04:10:24+01:00",
+        "date_finish": "2026-03-20T04:10:24+01:00",
         "operating_reset_at": 1773969624,
         "operating": 0
     }
 }
 ```
 
-### Returned data
+### Returned Data
 
 #|
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../../data-types.md) | Result of hiding, returns `true` on success ||
+[`boolean`](../../../data-types.md) | Result of the hide operation, returns `true` on success ||
 || **time**
 [`time`](../../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
-## Error handling
+## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {
@@ -203,19 +207,19 @@ HTTP status: **400**
 
 {% include notitle [error handling](../../../../_includes/error-info.md) %}
 
-### Possible error codes
+### Possible Error Codes
 
 #|
 || **Code** | **Description** ||
-|| `MISSING_PARAMS` | Required top-level parameter `lid` or `block` is missing ||
+|| `MISSING_PARAMS` | Required top-level parameters `lid` or `block` are missing ||
 || `LANDING_NOT_EXIST` | Page with identifier `lid` not found or not accessible to the current user ||
-|| `ACCESS_DENIED` | Insufficient rights to modify the block ||
-|| `BLOCK_NOT_FOUND` | Block with identifier `block` not found on page `lid`, already marked as deleted or not accessible ||
+|| `ACCESS_DENIED` | Insufficient permissions to modify the block ||
+|| `BLOCK_NOT_FOUND` | Block with identifier `block` not found on page `lid`, already marked as deleted, or inaccessible ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}
 
-## Continue exploring
+## Continue Learning
 
 - [{#T}](./landing-landing-add-block.md)
 - [{#T}](./landing-landing-copy-block.md)

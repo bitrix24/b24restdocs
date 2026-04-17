@@ -8,7 +8,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: read access permission for the delivery order is required
+> Who can execute the method: read access permission for the delivery order is required.
 
 This method retrieves brief information about the delivery.
 
@@ -16,10 +16,10 @@ This method retrieves brief information about the delivery.
 
 {% include [Note on required parameters](../../../../_includes/required.md) %}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
-|| **id***
+|| **id*** 
 [`sale_order_shipment.id`](../../../sale/data-types.md#sale_order_shipment) | Delivery identifier ||
 |#
 
@@ -54,18 +54,18 @@ This method retrieves brief information about the delivery.
     ```js
     try
     {
-    	const response = await $b24.callMethod(
-    		'crm.item.delivery.get', {
-    			id: 4077,
-    		}
-    	);
-    	
-    	const result = response.getData().result;
-    	console.log(result);
+        const response = await $b24.callMethod(
+            'crm.item.delivery.get', {
+                id: 4077,
+            }
+        );
+        
+        const result = response.getData().result;
+        console.log(result);
     }
     catch( error )
     {
-    	console.error(error);
+        console.error(error);
     }
     ```
 
@@ -132,7 +132,7 @@ This method retrieves brief information about the delivery.
 
 ## Successful Response
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -159,7 +159,7 @@ HTTP Status: **200**
 
 ### Returned Data
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **result**
@@ -171,7 +171,7 @@ HTTP Status: **200**
 ### Key result. Object of type 
 ### sale_order_shipment_crm_simple 
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **id**
@@ -185,20 +185,20 @@ Possible values:
 - `N` — no (not shipped)
  ||
 || **dateDeducted**
-[`datetime`](../../../data-types.md)  | Date of the shipped flag change ||
+[`datetime`](../../../data-types.md) | Date of the shipment's shipped flag change ||
 || **priceDelivery**
-[`double`](../../../data-types.md)  | Delivery cost ||
+[`double`](../../../data-types.md) | Delivery cost ||
 || **currency**
-[`string`](../../../data-types.md)  | Delivery currency ||
+[`string`](../../../data-types.md) | Delivery currency ||
 || **deliveryId**
-[`sale_delivery_service.ID`](../../../data-types.md#sale_delivery_service)  | Delivery service identifier ||
+[`sale_delivery_service.ID`](../../../data-types.md#sale_delivery_service) | Delivery service identifier ||
 || **deliveryName**
-[`string`](../../../data-types.md)  | Delivery service name ||
+[`string`](../../../data-types.md) | Delivery service name ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -211,9 +211,9 @@ HTTP Status: **400**
 
 ### Possible Error Codes
 
-#|
+#| 
 || **Code** | **Description** ||
-|| `0` | Payment not found or access denied ||
+|| `0` | Delivery not found or access denied ||
 || `100` | Parameter id not specified ||
 || `0` | Other errors (e.g., fatal errors) ||
 |#

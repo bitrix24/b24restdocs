@@ -1,4 +1,4 @@
-# Update Cards of Block landing.block.updateCards
+# Update Cards in landing.block.updateCards
 
 {% note tip "" %}
 
@@ -8,11 +8,11 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`landing`](../../../scopes/permissions.md)
 >
-> Who can execute the method: user with "edit" access permission for the site
+> Who can execute the method: a user with "edit" access permission for the site
 
-The method `landing.block.updateCards` updates the set of cards in the block and the nodes within those cards in the draft of the page.
+The method `landing.block.updateCards` updates a set of cards in a block and the nodes within those cards in the draft of the page.
 
-This method works with cards described in the `cards` key of the block manifest. If the page is already published, changes will be visible to visitors after publication through the interface or via the method [landing.landing.publication](../../page/methods/landing-landing-publication.md).
+This method works with cards described in the `cards` key of the block manifest. If the page is already published, changes will be visible to visitors after publication through the interface or by using the [landing.landing.publication](../../page/methods/landing-landing-publication.md) method.
 
 ## Method Parameters
 
@@ -21,15 +21,19 @@ This method works with cards described in the `cards` key of the block manifest.
 #|
 || **Name**
 `type` | **Description** ||
-|| **lid***
+|| **scope**
+[`string`](../../../data-types.md) | Internal scope of landings. It is not related to the REST scope `landing` in the method name.
+
+The value of `scope` must correspond to the type of site [(detailed description)](../../types.md) ||
+|| **lid*** 
 [`integer`](../../../data-types.md) | Identifier of the page.
 
-The page identifier can be obtained using the method [landing.landing.getlist](../../page/methods/landing-landing-get-list.md) ||
-|| **block***
+The page identifier can be obtained using the [landing.landing.getlist](../../page/methods/landing-landing-get-list.md) method ||
+|| **block*** 
 [`integer`](../../../data-types.md) | Identifier of the block in the draft of the page.
 
-The block identifier can be obtained using the method [landing.block.getlist](./landing-block-get-list.md) with the parameter `params.edit_mode = 1` ||
-|| **data***
+The block identifier can be obtained using the [landing.block.getlist](./landing-block-get-list.md) method with the parameter `params.edit_mode = 1` ||
+|| **data*** 
 [`object`](../../../data-types.md) | Set of changes for the block cards [(detailed description)](#data) ||
 |#
 
@@ -41,9 +45,9 @@ The block identifier can be obtained using the method [landing.block.getlist](./
 || **<card selector from manifest.cards>**
 [`object`](../../../data-types.md) | Card selector from the [cards section of the block manifest](../manifest.md#key-cards).
 
-The value describes the final set of cards for this selector and changes to their nodes [(detailed description)](#card-data).
+The value describes the final set of cards for this selector and the changes to their nodes [(detailed description)](#card-data).
 
-To find available card selectors and presets for a specific block, retrieve the manifest using the method [landing.block.getmanifest](./landing-block-get-manifest.md) ||
+To find available card selectors and presets for a specific block, retrieve the manifest using the [landing.block.getmanifest](./landing-block-get-manifest.md) method ||
 |#
 
 ### Object <card selector from manifest.cards> {#card-data}
@@ -75,7 +79,7 @@ Default - `card` ||
 
 For `card`, this is the index of the current card by selector, starting from `0`.
 
-For `preset`, this is the code of the preset from the block manifest ||
+For `preset`, this is the preset code from the block manifest ||
 |#
 
 If the `source` element does not contain `type`, the method uses the value `card`. If `value` is not provided, the method uses index `0`.
@@ -97,7 +101,7 @@ To create a new card from a preset, specify `type` with the value `preset` and p
 
 ### Element of the values array {#values}
 
-Each element of the `values` array must be an object containing one or more node changes.
+Each element of the `values` array must be an object that contains one or more node changes.
 
 #|
 || **Key**
@@ -105,9 +109,9 @@ Each element of the `values` array must be an object containing one or more node
 || **<node selector>@<position>**
 [`string`](../../../data-types.md) \| [`object`](../../../data-types.md) \| [`array`](../../../data-types.md) | Node selector within the card with position indicated by `@`.
 
-The position is numbered from `0` and indicates which card to change the node in after applying `source`.
+The position is numbered from `0` and indicates which card to modify the node in after applying `source`.
 
-The format of the value is the same as the `data` parameter in the method [landing.block.updatenodes](./landing-block-update-nodes.md).
+The format of the value is the same as the `data` parameter in the [landing.block.updatenodes](./landing-block-update-nodes.md) method.
 
 One object in the `values` array can contain multiple keys for different nodes and positions ||
 |#
@@ -118,11 +122,11 @@ If an element of the `values` array is not an object, the method will skip it wi
 "values": [
   {
     ".landing-block-node-title@0": "First Card",
-    ".landing-block-node-title@1": "Second Card"
+    ".landing-block-node-title@1": "Card from Preset"
   }
 ]
 ```
-For detailed formats of values for different types of nodes, refer to the article [landing.block.updatenodes](./landing-block-update-nodes.md) and the overview [Node Types](../node-types.md).
+For detailed information on value formats for different node types, refer to the article [landing.block.updatenodes](./landing-block-update-nodes.md) and the overview [Node Types](../node-types.md).
 
 ## Code Examples
 
@@ -384,8 +388,8 @@ HTTP Status: **200**
         "finish": 1774525085.858169,
         "duration": 0.8581690788269043,
         "processing": 0,
-        "date_start": "2026-03-26T14:38:05+01:00",
-        "date_finish": "2026-03-26T14:38:05+01:00",
+        "date_start": "2026-03-26T14:38:05+02:00",
+        "date_finish": "2026-03-26T14:38:05+02:00",
         "operating_reset_at": 1774525685,
         "operating": 0
     }
@@ -410,7 +414,7 @@ HTTP Status: **400**
 ```json
 {
     "error": "MISSING_PARAMS",
-    "error_description": "Insufficient call parameters, missing: data"
+    "error_description": "Not enough call parameters, missing: data"
 }
 ```
 
