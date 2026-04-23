@@ -1,20 +1,20 @@
-# Add REST handler for payment system sale.paysystem.handler.add
+# Add REST Handler for Payment System sale.paysystem.handler.add
 
 {% note tip "" %}
 
-If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../sdk/mcp.md) so the assistant can use the official REST documentation.
 
 {% endnote %}
 
 > Scope: [`pay_system`](../scopes/permissions.md)
 >
-> Who can execute the method: CRM administrator (permission "Allow to modify settings")
+> Who can execute the method: CRM administrator (permission "Allow changing settings")
 
 This method adds a REST handler for the payment system.
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -22,7 +22,7 @@ This method adds a REST handler for the payment system.
 || **NAME***
 [`string`](../data-types.md) | Name of the REST handler ||
 || **SORT**
-[`integer`](../data-types.md) | Sorting. Default is `100` ||
+[`integer`](../data-types.md) | Sorting order. Default is `100` ||
 || **CODE***
 [`string`](../data-types.md) | Code of the REST handler. Must be unique among all handlers ||
 || **SETTINGS***
@@ -31,25 +31,25 @@ This method adds a REST handler for the payment system.
 
 ### SETTINGS Parameter
 
-{% include [Note on required parameters](../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../_includes/required.md) %}
 
-Depending on the operating mode used, one of the following parameters must be present: `FORM_DATA`, `CHECKOUT_DATA`, `IFRAME_DATA`.
+Depending on the operating mode used, at least one of the following parameters must be present: `FORM_DATA`, `CHECKOUT_DATA`, `IFRAME_DATA`.
 
 #|
 || **Name**
 `type` | **Description** ||
 || **CODES***
-[`object`](../data-types.md) | List of handler parameters. The keys are parameter codes (`string`), and the values are parameter descriptions (detailed description provided [below](#parametr-codes)).
+[`object`](../data-types.md) | List of handler parameters. Keys are parameter codes (`string`), values are parameter descriptions (detailed description provided [below](#parametr-codes)).
 
 Parameter values will be available to the administrator for filling in the settings of the created payment system. They can be specified when adding the payment system in the method [sale.paysystem.add](./sale-pay-system-add.md) in the `SETTINGS` parameter and modified using the method [sale.paysystem.settings.update](./sale-pay-system-settings-update.md) ||
 || **FORM_DATA**
 [`object`](../data-types.md) | Form settings when using the operating mode in [form](#form) ||
 || **CHECKOUT_DATA**
-[`object`](../data-types.md) | Settings for the [Checkout](#checkout) mode (creating an order on the service side and redirecting the customer to this page for payment) ||
+[`object`](../data-types.md) | Settings for the [Checkout](#checkout) mode (creating an order on the service side and redirecting the buyer to this page for payment) ||
 || **IFRAME_DATA**
 [`object`](../data-types.md) | Settings for the page displayed in the [iframe](#iframe) on the seller's site on the payment page ||
 || **CLIENT_TYPE**
-[`string`](../data-types.md) | Type of customers with whom the handler can work. Available values:
+[`string`](../data-types.md) | Type of buyers that the handler can work with. Available values:
 - `b2c` — individuals
 - `b2b` — legal entities
 
@@ -69,7 +69,7 @@ Default value is `b2c`
 || **DESCRIPTION**
 [`string`](../data-types.md) | Description of the parameter ||
 || **SORT**
-[`int`](../data-types.md) | Sorting ||
+[`int`](../data-types.md) | Sorting order ||
 || **GROUP**
 [`string`](../data-types.md) | Code of the group to which the parameter belongs ||
 || **DEFAULT**
@@ -89,12 +89,12 @@ Default value is `b2c`
 || **Name**
 `type` | **Description** ||
 || **PROVIDER_KEY**
-[`string`](../data-types.md) | Key of the provider from which the default value will be taken. Possible values of the key are provided [below](#vozmozhnye-znacheniya-klyucha-provider_key) ||
+[`string`](../data-types.md) | Key of the provider from which the default value will be taken. Possible key values are listed [below](#vozmozhnye-znacheniya-klyucha-provider_key) ||
 || **PROVIDER_VALUE**
-[`string`](../data-types.md) | Code of the value that will be taken from the provider. Possible values of the key are provided [below](#vozmozhnye-znacheniya-klyucha-provider_value) ||
+[`string`](../data-types.md) | Code of the value that will be taken from the provider. Possible key values are listed [below](#vozmozhnye-znacheniya-klyucha-provider_value) ||
 |#
 
-### Possible values for the PROVIDER_KEY
+### Possible Values for PROVIDER_KEY 
 
 #|
 || **Name** | **Description** ||
@@ -102,18 +102,18 @@ Default value is `b2c`
 || **PROPERTY** | Invoice properties ||
 || **PAYMENT** | Payment ||
 || **USER** | User ||
-|| **VALUE** | Arbitrary string value ||
+|| **VALUE** | Arbitrary string type value ||
 || **Y\N** | Checkbox ||
 |#
 
-### Possible values for the PROVIDER_VALUE
+### Possible Values for PROVIDER_VALUE 
 
 #|
 || **Name** | **Description** ||
 || **ORDER** | 
-- `ID` — identifier (for invoices corresponds to `ID` of the invoice)
+- `ID` — identifier (for invoices corresponds to the `ID` of the invoice)
 - `ACCOUNT_NUMBER` — order number (for invoices corresponds to the invoice number)
-- `ORDER_TOPIC` — subject
+- `ORDER_TOPIC` — topic
 - `DATE_INSERT` — order date (for invoices corresponds to the invoice date)
 - `DATE_INSERT_DATE` — order date without time (for invoices corresponds to the invoice date)
 - `DATE_BILL` — date and time of issuance
@@ -124,7 +124,7 @@ Default value is `b2c`
 - `PRICE` — order cost (for invoices corresponds to the invoice cost)
 - `PRICE_DELIVERY` — delivery cost
 - `DISCOUNT_VALUE` — discount amount
-- `USER_ID` — customer code
+- `USER_ID` — buyer code
 - `PAY_SYSTEM_ID` — payment system code
 - `DELIVERY_ID` — delivery service code
 - `TAX_VALUE` — tax
@@ -151,7 +151,7 @@ Default value is `b2c`
 - `PAY_RETURN_COMMENT` — return comment
 ||
 || **USER** | 
-- `ID` — customer code,
+- `ID` — buyer code,
 - `LOGIN` — login
 - `NAME` — first name
 - `SECOND_NAME` — middle name
@@ -186,7 +186,7 @@ Default value is `b2c`
 
 ## Form Operating Mode {#form}
 
-When adding a handler, the `FORM_DATA` parameter must be passed in the `SETTINGS`. This method is suitable if no information is required from the customer or only a small set of data needs to be requested.
+When adding a handler, the `FORM_DATA` parameter must be passed. This method is suitable if no information needs to be requested from the buyer or if only a small set of data needs to be requested.
 
 Form fields are automatically displayed according to the design of the payment page.
 
@@ -198,20 +198,20 @@ Form data (the `FIELDS` values from `FORM_DATA`) will be sent to `ACTION_URI`. I
 || **BX_PAYSYSTEM_ID**
 [`sale_paysystem.ID`](../sale/data-types.md) | Identifier of the payment system through which the payment is made. Can be used to call the payment method [sale.paysystem.pay.payment](./sale-pay-system-pay-payment.md) ||
 || **BX_RETURN_URL**
-[`string`](../data-types.md) | URL of the store's site to which the user will be redirected ||
+[`string`](../data-types.md) | URL of the store site to which the user will be redirected ||
 |#
 
 ### Parameters Passed When Adding a Handler in the FORM_DATA Array
 
-{% include [Note on required parameters](../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
-|| **ACTION_URI*** 
+|| **ACTION_URI***
 [`string`](../data-types.md) | URL to which the form is sent ||
 || **METHOD**
-[`string`](../data-types.md) | HTTP method used when sending the form. Default is empty, in which case the GET method is used ||
+[`string`](../data-types.md) | HTTP method used when submitting the form. Default is empty, in which case the GET method is used ||
 || **FIELDS**
 [`object`](../data-types.md) | Description of form fields (detailed description provided [below](#parametr-fields)) ||
 || **PARAMS**
@@ -227,15 +227,15 @@ If both `FIELDS` and `PARAMS` are passed, only `FIELDS` will be used.
 
 ### FIELDS Parameter
 
-{% include [Note on required parameters](../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../_includes/required.md) %}
 
 Represents an array of descriptions of fields displayed in the form and sent to `ACTION_URI`. The key is the field code used as the field name in the form. The values are the field parameter objects.
 
 #|
 || **Name**
 `type` | **Description** ||
-|| **CODE*** 
-[`string`\|`object`](../data-types.md) | If the value of the `CODE` key is of type `string`, this value will be used to find a match between form fields and handler parameters (`CODES`). The name and value will be obtained from the handler parameters.
+|| **CODE***
+[`string`|`object`](../data-types.md) | If the value of the `CODE` key is of type `string`, this value will be used to find a match between form fields and handler parameters (`CODES`). The name and value will be obtained from the handler parameters.
 
 If an `object` is passed in the `CODE` key, a field will be added to the payment form according to the description in the array content (detailed description provided [below](#parametr-code))
 ||
@@ -263,7 +263,7 @@ Default value is `N`, the field is displayed in the form as `hidden` ||
 
 ### Code Examples
 
-{% include [Note on examples](../../_includes/examples.md) %}
+{% include [Note on Examples](../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -273,7 +273,7 @@ Default value is `N`, the field is displayed in the form as `hidden` ||
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"NAME":"Handler.Rest FORM","CODE":"resthandlerform","SORT":100,"SETTINGS":{"CURRENCY":["USD"],"CLIENT_TYPE":"b2c","FORM_DATA":{"ACTION_URI":"http://example.com/payment_form.php","METHOD":"POST","FIELDS":{"phone":{"VISIBLE":"Y","CODE":{"NAME":"Phone number","TYPE":"STRING"}},"selection":{"VISIBLE":"Y","CODE":{"NAME":"Selection illusion","INPUT":{"TYPE":"Y/N"}}},"paymentId":{"CODE":"PAYMENT_ID","VISIBLE":"Y"},"serviceid":{"CODE":"REST_SERVICE_ID"}}},"CODES":{"REST_SERVICE_ID":{"NAME":"Store number","DESCRIPTION":"Store number","SORT":"100"},"REST_SERVICE_KEY":{"NAME":"Secret key","DESCRIPTION":"Secret key","SORT":"300"},"PAYMENT_ID":{"NAME":"Payment number","SORT":"400","GROUP":"PAYMENT","DEFAULT":{"PROVIDER_KEY":"PAYMENT","PROVIDER_VALUE":"ACCOUNT_NUMBER"}},"PAYMENT_SHOULD_PAY":{"NAME":"Payment amount","SORT":"600","GROUP":"PAYMENT","DEFAULT":{"PROVIDER_KEY":"PAYMENT","PROVIDER_VALUE":"SUM"}},"PS_CHANGE_STATUS_PAY":{"NAME":"Automatic payment status change","SORT":"700","INPUT":{"TYPE":"Y/N"}},"PAYMENT_BUYER_ID":{"NAME":"Customer code","SORT":"1000","GROUP":"PAYMENT","DEFAULT":{"PROVIDER_KEY":"ORDER","PROVIDER_VALUE":"USER_ID"}},"PS_WORK_MODE":{"NAME":"Payment system operating mode","SORT":"1100","INPUT":{"TYPE":"ENUM","OPTIONS":{"TEST":"Test","REGULAR":"Live"}}}}}' \
+    -d '{"NAME":"Handler.Rest FORM","CODE":"resthandlerform","SORT":100,"SETTINGS":{"CURRENCY":["RUB"],"CLIENT_TYPE":"b2c","FORM_DATA":{"ACTION_URI":"http://example.com/payment_form.php","METHOD":"POST","FIELDS":{"phone":{"VISIBLE":"Y","CODE":{"NAME":"Phone Number","TYPE":"STRING"}},"selection":{"VISIBLE":"Y","CODE":{"NAME":"Illusion of Choice","INPUT":{"TYPE":"Y/N"}}},"paymentId":{"CODE":"PAYMENT_ID","VISIBLE":"Y"},"serviceid":{"CODE":"REST_SERVICE_ID"}}},"CODES":{"REST_SERVICE_ID":{"NAME":"Store Number","DESCRIPTION":"Store Number","SORT":"100"},"REST_SERVICE_KEY":{"NAME":"Secret Key","DESCRIPTION":"Secret Key","SORT":"300"},"PAYMENT_ID":{"NAME":"Payment Number","SORT":"400","GROUP":"PAYMENT","DEFAULT":{"PROVIDER_KEY":"PAYMENT","PROVIDER_VALUE":"ACCOUNT_NUMBER"}},"PAYMENT_SHOULD_PAY":{"NAME":"Payment Amount","SORT":"600","GROUP":"PAYMENT","DEFAULT":{"PROVIDER_KEY":"PAYMENT","PROVIDER_VALUE":"SUM"}},"PS_CHANGE_STATUS_PAY":{"NAME":"Automatic Payment Status Change","SORT":"700","INPUT":{"TYPE":"Y/N"}},"PAYMENT_BUYER_ID":{"NAME":"Buyer Code","SORT":"1000","GROUP":"PAYMENT","DEFAULT":{"PROVIDER_KEY":"ORDER","PROVIDER_VALUE":"USER_ID"}},"PS_WORK_MODE":{"NAME":"Payment System Operating Mode","SORT":"1100","INPUT":{"TYPE":"ENUM","OPTIONS":{"TEST":"Test","REGULAR":"Live"}}}}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/sale.paysystem.handler.add
     ```
 
@@ -283,7 +283,7 @@ Default value is `N`, the field is displayed in the form as `hidden` ||
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"NAME":"Handler.Rest FORM","CODE":"resthandlerform","SORT":100,"SETTINGS":{"CURRENCY":["USD"],"CLIENT_TYPE":"b2c","FORM_DATA":{"ACTION_URI":"http://example.com/payment_form.php","METHOD":"POST","FIELDS":{"phone":{"VISIBLE":"Y","CODE":{"NAME":"Phone number","TYPE":"STRING"}},"selection":{"VISIBLE":"Y","CODE":{"NAME":"Selection illusion","INPUT":{"TYPE":"Y/N"}}},"paymentId":{"CODE":"PAYMENT_ID","VISIBLE":"Y"},"serviceid":{"CODE":"REST_SERVICE_ID"}}},"CODES":{"REST_SERVICE_ID":{"NAME":"Store number","DESCRIPTION":"Store number","SORT":"100"},"REST_SERVICE_KEY":{"NAME":"Secret key","DESCRIPTION":"Secret key","SORT":"300"},"PAYMENT_ID":{"NAME":"Payment number","SORT":"400","GROUP":"PAYMENT","DEFAULT":{"PROVIDER_KEY":"PAYMENT","PROVIDER_VALUE":"ACCOUNT_NUMBER"}},"PAYMENT_SHOULD_PAY":{"NAME":"Payment amount","SORT":"600","GROUP":"PAYMENT","DEFAULT":{"PROVIDER_KEY":"PAYMENT","PROVIDER_VALUE":"SUM"}},"PS_CHANGE_STATUS_PAY":{"NAME":"Automatic payment status change","SORT":"700","INPUT":{"TYPE":"Y/N"}},"PAYMENT_BUYER_ID":{"NAME":"Customer code","SORT":"1000","GROUP":"PAYMENT","DEFAULT":{"PROVIDER_KEY":"ORDER","PROVIDER_VALUE":"USER_ID"}},"PS_WORK_MODE":{"NAME":"Payment system operating mode","SORT":"1100","INPUT":{"TYPE":"ENUM","OPTIONS":{"TEST":"Test","REGULAR":"Live"}}}},"auth":"**put_access_token_here**"}' \
+    -d '{"NAME":"Handler.Rest FORM","CODE":"resthandlerform","SORT":100,"SETTINGS":{"CURRENCY":["RUB"],"CLIENT_TYPE":"b2c","FORM_DATA":{"ACTION_URI":"http://example.com/payment_form.php","METHOD":"POST","FIELDS":{"phone":{"VISIBLE":"Y","CODE":{"NAME":"Phone Number","TYPE":"STRING"}},"selection":{"VISIBLE":"Y","CODE":{"NAME":"Illusion of Choice","INPUT":{"TYPE":"Y/N"}}},"paymentId":{"CODE":"PAYMENT_ID","VISIBLE":"Y"},"serviceid":{"CODE":"REST_SERVICE_ID"}}},"CODES":{"REST_SERVICE_ID":{"NAME":"Store Number","DESCRIPTION":"Store Number","SORT":"100"},"REST_SERVICE_KEY":{"NAME":"Secret Key","DESCRIPTION":"Secret Key","SORT":"300"},"PAYMENT_ID":{"NAME":"Payment Number","SORT":"400","GROUP":"PAYMENT","DEFAULT":{"PROVIDER_KEY":"PAYMENT","PROVIDER_VALUE":"ACCOUNT_NUMBER"}},"PAYMENT_SHOULD_PAY":{"NAME":"Payment Amount","SORT":"600","GROUP":"PAYMENT","DEFAULT":{"PROVIDER_KEY":"PAYMENT","PROVIDER_VALUE":"SUM"}},"PS_CHANGE_STATUS_PAY":{"NAME":"Automatic Payment Status Change","SORT":"700","INPUT":{"TYPE":"Y/N"}},"PAYMENT_BUYER_ID":{"NAME":"Buyer Code","SORT":"1000","GROUP":"PAYMENT","DEFAULT":{"PROVIDER_KEY":"ORDER","PROVIDER_VALUE":"USER_ID"}},"PS_WORK_MODE":{"NAME":"Payment System Operating Mode","SORT":"1100","INPUT":{"TYPE":"ENUM","OPTIONS":{"TEST":"Test","REGULAR":"Live"}}}},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/sale.paysystem.handler.add
     ```
 
@@ -292,113 +292,113 @@ Default value is `N`, the field is displayed in the form as `hidden` ||
     ```js
     try
     {
-    	const response = await $b24.callMethod(
-    		"sale.paysystem.handler.add",
-    		{
-    			"NAME": "Handler.Rest FORM",
-    			"CODE": "resthandlerform",
-    			"SORT": 100,
-    			"SETTINGS": {
-    				"CURRENCY": [
-    					"USD"
-    				],
-    				"CLIENT_TYPE": "b2c",
-    				"FORM_DATA": {
-    					"ACTION_URI": "http://example.com/payment_form.php",
-    					"METHOD": "POST",
-    					"FIELDS": {
-    						"phone": {
-    							"VISIBLE": "Y",
-    							"CODE": {
-    								"NAME": "Phone number",
-    								"TYPE": "STRING"
-    							}
-    						},
-    						"selection": {
-    							"VISIBLE": "Y",
-    							"CODE": {
-    								"NAME": "Selection illusion",
-    								"INPUT": {
-    									"TYPE": "Y/N"
-    								}
-    							}
-    						},
-    						"paymentId": {
-    							"CODE": "PAYMENT_ID",
-    							"VISIBLE": "Y"
-    						},
-    						"serviceid": {
-    							"CODE": "REST_SERVICE_ID"
-    						}
-    					}
-    				},
-    				"CODES": {
-    					"REST_SERVICE_ID": {
-    						"NAME": "Store number",
-    						"DESCRIPTION": "Store number",
-    						"SORT": "100"
-    					},
-    					"REST_SERVICE_KEY": {
-    						"NAME": "Secret key",
-    						"DESCRIPTION": "Secret key",
-    						"SORT": "300"
-    					},
-    					"PAYMENT_ID": {
-    						"NAME": "Payment number",
-    						"SORT": "400",
-    						"GROUP": "PAYMENT",
-    						"DEFAULT": {
-    							"PROVIDER_KEY": "PAYMENT",
-    							"PROVIDER_VALUE": "ACCOUNT_NUMBER"
-    						}
-    					},
-    					"PAYMENT_SHOULD_PAY": {
-    						"NAME": "Payment amount",
-    						"SORT": "600",
-    						"GROUP": "PAYMENT",
-    						"DEFAULT": {
-    							"PROVIDER_KEY": "PAYMENT",
-    							"PROVIDER_VALUE": "SUM"
-    						}
-    					},
-    					"PS_CHANGE_STATUS_PAY": {
-    						"NAME": "Automatic payment status change",
-    						"SORT": "700",
-    						"INPUT": {
-    							"TYPE": "Y/N"
-    						}
-    					},
-    					"PAYMENT_BUYER_ID": {
-    						"NAME": "Customer code",
-    						"SORT": "1000",
-    						"GROUP": "PAYMENT",
-    						"DEFAULT": {
-    							"PROVIDER_KEY": "ORDER",
-    							"PROVIDER_VALUE": "USER_ID"
-    						}
-    					},
-    					"PS_WORK_MODE": {
-    						"NAME": "Payment system operating mode",
-    						"SORT": "1100",
-    						"INPUT": {
-    							"TYPE": "ENUM",
-    							"OPTIONS": {
-    								"TEST": "Test",
-    								"REGULAR": "Live"
-    							}
-    						}
-    					}
-    				}
-    			}
-    		}
-    	);
-    	
-    	const result = response.getData().result;
-    	console.info(result);
+        const response = await $b24.callMethod(
+            "sale.paysystem.handler.add",
+            {
+                "NAME": "Handler.Rest FORM",
+                "CODE": "resthandlerform",
+                "SORT": 100,
+                "SETTINGS": {
+                    "CURRENCY": [
+                        "RUB"
+                    ],
+                    "CLIENT_TYPE": "b2c",
+                    "FORM_DATA": {
+                        "ACTION_URI": "http://example.com/payment_form.php",
+                        "METHOD": "POST",
+                        "FIELDS": {
+                            "phone": {
+                                "VISIBLE": "Y",
+                                "CODE": {
+                                    "NAME": "Phone Number",
+                                    "TYPE": "STRING"
+                                }
+                            },
+                            "selection": {
+                                "VISIBLE": "Y",
+                                "CODE": {
+                                    "NAME": "Illusion of Choice",
+                                    "INPUT": {
+                                        "TYPE": "Y/N"
+                                    }
+                                }
+                            },
+                            "paymentId": {
+                                "CODE": "PAYMENT_ID",
+                                "VISIBLE": "Y"
+                            },
+                            "serviceid": {
+                                "CODE": "REST_SERVICE_ID"
+                            }
+                        }
+                    },
+                    "CODES": {
+                        "REST_SERVICE_ID": {
+                            "NAME": "Store Number",
+                            "DESCRIPTION": "Store Number",
+                            "SORT": "100"
+                        },
+                        "REST_SERVICE_KEY": {
+                            "NAME": "Secret Key",
+                            "DESCRIPTION": "Secret Key",
+                            "SORT": "300"
+                        },
+                        "PAYMENT_ID": {
+                            "NAME": "Payment Number",
+                            "SORT": "400",
+                            "GROUP": "PAYMENT",
+                            "DEFAULT": {
+                                "PROVIDER_KEY": "PAYMENT",
+                                "PROVIDER_VALUE": "ACCOUNT_NUMBER"
+                            }
+                        },
+                        "PAYMENT_SHOULD_PAY": {
+                            "NAME": "Payment Amount",
+                            "SORT": "600",
+                            "GROUP": "PAYMENT",
+                            "DEFAULT": {
+                                "PROVIDER_KEY": "PAYMENT",
+                                "PROVIDER_VALUE": "SUM"
+                            }
+                        },
+                        "PS_CHANGE_STATUS_PAY": {
+                            "NAME": "Automatic Payment Status Change",
+                            "SORT": "700",
+                            "INPUT": {
+                                "TYPE": "Y/N"
+                            }
+                        },
+                        "PAYMENT_BUYER_ID": {
+                            "NAME": "Buyer Code",
+                            "SORT": "1000",
+                            "GROUP": "PAYMENT",
+                            "DEFAULT": {
+                                "PROVIDER_KEY": "ORDER",
+                                "PROVIDER_VALUE": "USER_ID"
+                            }
+                        },
+                        "PS_WORK_MODE": {
+                            "NAME": "Payment System Operating Mode",
+                            "SORT": "1100",
+                            "INPUT": {
+                                "TYPE": "ENUM",
+                                "OPTIONS": {
+                                    "TEST": "Test",
+                                    "REGULAR": "Live"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        );
+        
+        const result = response.getData().result;
+        console.info(result);
     }
     catch(error)
     {
-    	console.error(error);
+        console.error(error);
     }
     ```
 
@@ -415,7 +415,7 @@ Default value is `N`, the field is displayed in the form as `hidden` ||
                     'CODE'     => 'resthandlerform',
                     'SORT'     => 100,
                     'SETTINGS' => [
-                        'CURRENCY'    => ['USD'],
+                        'CURRENCY'    => ['RUB'],
                         'CLIENT_TYPE' => 'b2c',
                         'FORM_DATA'   => [
                             'ACTION_URI' => 'http://example.com/payment_form.php',
@@ -424,14 +424,14 @@ Default value is `N`, the field is displayed in the form as `hidden` ||
                                 'phone'     => [
                                     'VISIBLE' => 'Y',
                                     'CODE'    => [
-                                        'NAME' => 'Phone number',
+                                        'NAME' => 'Phone Number',
                                         'TYPE' => 'STRING',
                                     ],
                                 ],
                                 'selection' => [
                                     'VISIBLE' => 'Y',
                                     'CODE'    => [
-                                        'NAME' => 'Selection illusion',
+                                        'NAME' => 'Illusion of Choice',
                                         'INPUT' => [
                                             'TYPE' => 'Y/N',
                                         ],
@@ -448,17 +448,17 @@ Default value is `N`, the field is displayed in the form as `hidden` ||
                         ],
                         'CODES'      => [
                             'REST_SERVICE_ID'    => [
-                                'NAME'        => 'Store number',
-                                'DESCRIPTION' => 'Store number',
+                                'NAME'        => 'Store Number',
+                                'DESCRIPTION' => 'Store Number',
                                 'SORT'        => '100',
                             ],
                             'REST_SERVICE_KEY'   => [
-                                'NAME'        => 'Secret key',
-                                'DESCRIPTION' => 'Secret key',
+                                'NAME'        => 'Secret Key',
+                                'DESCRIPTION' => 'Secret Key',
                                 'SORT'        => '300',
                             ],
                             'PAYMENT_ID'         => [
-                                'NAME'    => 'Payment number',
+                                'NAME'    => 'Payment Number',
                                 'SORT'    => '400',
                                 'GROUP'   => 'PAYMENT',
                                 'DEFAULT' => [
@@ -467,7 +467,7 @@ Default value is `N`, the field is displayed in the form as `hidden` ||
                                 ],
                             ],
                             'PAYMENT_SHOULD_PAY' => [
-                                'NAME'    => 'Payment amount',
+                                'NAME'    => 'Payment Amount',
                                 'SORT'    => '600',
                                 'GROUP'   => 'PAYMENT',
                                 'DEFAULT' => [
@@ -476,14 +476,14 @@ Default value is `N`, the field is displayed in the form as `hidden` ||
                                 ],
                             ],
                             'PS_CHANGE_STATUS_PAY' => [
-                                'NAME'  => 'Automatic payment status change',
+                                'NAME'  => 'Automatic Payment Status Change',
                                 'SORT'  => '700',
                                 'INPUT' => [
                                     'TYPE' => 'Y/N',
                                 ],
                             ],
                             'PAYMENT_BUYER_ID'     => [
-                                'NAME'    => 'Customer code',
+                                'NAME'    => 'Buyer Code',
                                 'SORT'    => '1000',
                                 'GROUP'   => 'PAYMENT',
                                 'DEFAULT' => [
@@ -492,7 +492,7 @@ Default value is `N`, the field is displayed in the form as `hidden` ||
                                 ],
                             ],
                             'PS_WORK_MODE'        => [
-                                'NAME'  => 'Payment system operating mode',
+                                'NAME'  => 'Payment System Operating Mode',
                                 'SORT'  => '1100',
                                 'INPUT' => [
                                     'TYPE'    => 'ENUM',
@@ -530,7 +530,7 @@ Default value is `N`, the field is displayed in the form as `hidden` ||
             "SORT": 100,
             "SETTINGS": {
                 "CURRENCY": [
-                    "USD"
+                    "RUB"
                 ],
                 "CLIENT_TYPE": "b2c",
                 "FORM_DATA": {
@@ -540,14 +540,14 @@ Default value is `N`, the field is displayed in the form as `hidden` ||
                         "phone": {
                             "VISIBLE": "Y",
                             "CODE": {
-                                "NAME": "Phone number",
+                                "NAME": "Phone Number",
                                 "TYPE": "STRING"
                             }
                         },
                         "selection": {
                             "VISIBLE": "Y",
                             "CODE": {
-                                "NAME": "Selection illusion",
+                                "NAME": "Illusion of Choice",
                                 "INPUT": {
                                     "TYPE": "Y/N"
                                 }
@@ -564,17 +564,17 @@ Default value is `N`, the field is displayed in the form as `hidden` ||
                 },
                 "CODES": {
                     "REST_SERVICE_ID": {
-                        "NAME": "Store number",
-                        "DESCRIPTION": "Store number",
+                        "NAME": "Store Number",
+                        "DESCRIPTION": "Store Number",
                         "SORT": "100"
                     },
                     "REST_SERVICE_KEY": {
-                        "NAME": "Secret key",
-                        "DESCRIPTION": "Secret key",
+                        "NAME": "Secret Key",
+                        "DESCRIPTION": "Secret Key",
                         "SORT": "300"
                     },
                     "PAYMENT_ID": {
-                        "NAME": "Payment number",
+                        "NAME": "Payment Number",
                         "SORT": "400",
                         "GROUP": "PAYMENT",
                         "DEFAULT": {
@@ -583,7 +583,7 @@ Default value is `N`, the field is displayed in the form as `hidden` ||
                         }
                     },
                     "PAYMENT_SHOULD_PAY": {
-                        "NAME": "Payment amount",
+                        "NAME": "Payment Amount",
                         "SORT": "600",
                         "GROUP": "PAYMENT",
                         "DEFAULT": {
@@ -592,14 +592,14 @@ Default value is `N`, the field is displayed in the form as `hidden` ||
                         }
                     },
                     "PS_CHANGE_STATUS_PAY": {
-                        "NAME": "Automatic payment status change",
+                        "NAME": "Automatic Payment Status Change",
                         "SORT": "700",
                         "INPUT": {
                             "TYPE": "Y/N"
                         }
                     },
                     "PAYMENT_BUYER_ID": {
-                        "NAME": "Customer code",
+                        "NAME": "Buyer Code",
                         "SORT": "1000",
                         "GROUP": "PAYMENT",
                         "DEFAULT": {
@@ -608,7 +608,7 @@ Default value is `N`, the field is displayed in the form as `hidden` ||
                         }
                     },
                     "PS_WORK_MODE": {
-                        "NAME": "Payment system operating mode",
+                        "NAME": "Payment System Operating Mode",
                         "SORT": "1100",
                         "INPUT": {
                             "TYPE": "ENUM",
@@ -647,7 +647,7 @@ Default value is `N`, the field is displayed in the form as `hidden` ||
             'CODE' => 'resthandlerform',
             'SORT' => 100,
             'SETTINGS' => [
-                'CURRENCY' => ['USD'],
+                'CURRENCY' => ['RUB'],
                 'CLIENT_TYPE' => 'b2c',
                 'FORM_DATA' => [
                     'ACTION_URI' => 'http://example.com/payment_form.php',
@@ -656,23 +656,23 @@ Default value is `N`, the field is displayed in the form as `hidden` ||
                         'phone' => [
                             'VISIBLE' => 'Y',
                             'CODE' => [
-                                'NAME' => 'Phone number',
+                                'NAME' => 'Phone Number',
                                 'TYPE' => 'STRING'
                             ]
-                        },
+                        ],
                         'selection' => [
                             'VISIBLE' => 'Y',
                             'CODE' => [
-                                'NAME' => 'Selection illusion',
+                                'NAME' => 'Illusion of Choice',
                                 'INPUT' => [
                                     'TYPE' => 'Y/N'
                                 ]
                             ]
-                        },
+                        ],
                         'paymentId' => [
                             'CODE' => 'PAYMENT_ID',
                             'VISIBLE' => 'Y'
-                        },
+                        ],
                         'serviceid' => [
                             'CODE' => 'REST_SERVICE_ID'
                         ]
@@ -680,17 +680,17 @@ Default value is `N`, the field is displayed in the form as `hidden` ||
                 ],
                 'CODES' => [
                     'REST_SERVICE_ID' => [
-                        'NAME' => 'Store number',
-                        'DESCRIPTION' => 'Store number',
+                        'NAME' => 'Store Number',
+                        'DESCRIPTION' => 'Store Number',
                         'SORT' => '100'
                     ],
                     'REST_SERVICE_KEY' => [
-                        'NAME' => 'Secret key',
-                        'DESCRIPTION' => 'Secret key',
+                        'NAME' => 'Secret Key',
+                        'DESCRIPTION' => 'Secret Key',
                         'SORT' => '300'
                     ],
                     'PAYMENT_ID' => [
-                        'NAME' => 'Payment number',
+                        'NAME' => 'Payment Number',
                         'SORT' => '400',
                         'GROUP' => 'PAYMENT',
                         'DEFAULT' => [
@@ -699,7 +699,7 @@ Default value is `N`, the field is displayed in the form as `hidden` ||
                         ]
                     ],
                     'PAYMENT_SHOULD_PAY' => [
-                        'NAME' => 'Payment amount',
+                        'NAME' => 'Payment Amount',
                         'SORT' => '600',
                         'GROUP' => 'PAYMENT',
                         'DEFAULT' => [
@@ -708,14 +708,14 @@ Default value is `N`, the field is displayed in the form as `hidden` ||
                         ]
                     ],
                     'PS_CHANGE_STATUS_PAY' => [
-                        'NAME' => 'Automatic payment status change',
+                        'NAME' => 'Automatic Payment Status Change',
                         'SORT' => '700',
                         'INPUT' => [
                             'TYPE' => 'Y/N'
                         ]
                     ],
                     'PAYMENT_BUYER_ID' => [
-                        'NAME' => 'Customer code',
+                        'NAME' => 'Buyer Code',
                         'SORT' => '1000',
                         'GROUP' => 'PAYMENT',
                         'DEFAULT' => [
@@ -724,7 +724,7 @@ Default value is `N`, the field is displayed in the form as `hidden` ||
                         ]
                     ],
                     'PS_WORK_MODE' => [
-                        'NAME' => 'Payment system operating mode',
+                        'NAME' => 'Payment System Operating Mode',
                         'SORT' => '1100',
                         'INPUT' => [
                             'TYPE' => 'ENUM',
@@ -748,11 +748,11 @@ Default value is `N`, the field is displayed in the form as `hidden` ||
 
 ## Checkout Operating Mode {#checkout}
 
-When adding a handler, the `CHECKOUT_DATA` must be passed in the `SETTINGS`.
+When adding a handler, the `CHECKOUT_DATA` must be passed in the `SETTINGS` parameter.
 
 A script that will process the received data, create the payment, and return the identifier of the created payment and the URL of the payment page must be located at the address specified in `ACTION_URI`.
 
-Data for payment will be sent to `ACTION_URI` in the form of an array. It contains an array of system parameters in the `BX_SYSTEM_PARAMS` key and the `FIELDS` values from `CHECKOUT_DATA`, each as a separate key at the top level of the array.
+Data for payment will be sent to `ACTION_URI` in the form of an array. It contains an array of system parameters under the key `BX_SYSTEM_PARAMS` and the values of `FIELDS` from `CHECKOUT_DATA`, each as a separate key at the top level of the array. 
 
 Structure of the `BX_SYSTEM_PARAMS` array:
 
@@ -770,7 +770,7 @@ Structure of the `BX_SYSTEM_PARAMS` array:
 || **CURRENCY**
 [`string`](../data-types.md) | Currency ||
 || **EXTERNAL_PAYMENT_ID**
-[`string`](../data-types.md) | Identifier of the payment in the payment system (if any). For example, if a request has already been sent to `ACTION_URI` for the current payment ||
+[`string`](../data-types.md) | Identifier of the payment in the payment system (if any). For example, if a request for the current payment has already been sent to `ACTION_URI` ||
 |#
 
 In response to a request to `ACTION_URI`, the script must return the identifier of the created payment and the URL of the payment page.
@@ -784,9 +784,9 @@ In response to a request to `ACTION_URI`, the script must return the identifier 
 [`string`](../data-types.md) | Identifier of the payment in the payment system ||
 |#
 
-The customer will be redirected to the link from `PAYMENT_URL` automatically or by clicking the "Buy" button. If fields intended for filling through the form are passed among others in `FIELDS`, a form will be displayed to the customer.
+The buyer will be redirected to the link from `PAYMENT_URL` automatically or by clicking the "Buy" button. If fields intended for filling through the form are passed among others in `FIELDS`, a form will be displayed to the buyer.
 
-As a result, an array of errors can be returned in the `PAYMENT_ERRORS` key. The manager will see the errors in the timeline or on the payment page (depending on the template used).
+As a result, an array of errors can be returned under the key `PAYMENT_ERRORS`. The manager will see the errors in the timeline or on the payment page (depending on the template used).
 
 #|
 || **Name**
@@ -795,24 +795,24 @@ As a result, an array of errors can be returned in the `PAYMENT_ERRORS` key. The
 [`string[]`](../data-types.md) | List of errors that occurred during payment creation ||
 |#
 
-If nothing is returned, the default error will be used: `Error registering order in payment system`.
+If nothing is returned, the default error `Error registering order in payment system` will be used.
 
 ### Parameters Passed When Adding a Handler in the CHECKOUT_DATA Array
 
-{% include [Note on required parameters](../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
-|| **ACTION_URI*** 
+|| **ACTION_URI***
 [`string`](../data-types.md) | URL to which the request for payment creation is sent ||
 || **FIELDS**
-[`object`](../data-types.md) | Description of fields sent to `ACTION_URI`. The format is similar to the [FIELDS](#parametr-fields) field in the form operating mode (`FORM_DATA`) ||
+[`object`](../data-types.md) | Description of fields sent to `ACTION_URI`. The format is similar to the `FIELDS` field in the form operating mode (`FORM_DATA`) ||
 |#
 
 ### Code Examples
 
-{% include [Note on examples](../../_includes/examples.md) %}
+{% include [Note on Examples](../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -822,7 +822,7 @@ If nothing is returned, the default error will be used: `Error registering order
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"NAME":"Handler.Rest CHECKOUT","CODE":"resthandlercheckout","SORT":100,"SETTINGS":{"CURRENCY":["USD"],"CLIENT_TYPE":"b2c","CHECKOUT_DATA":{"ACTION_URI":"http://example.com/payment_checkout.php","FIELDS":{"serviceKey":{"CODE":"REST_SERVICE_KEY_CHECKOUT"},"serviceid":{"CODE":"REST_SERVICE_ID_CHECKOUT"}}},"CODES":{"REST_SERVICE_ID_CHECKOUT":{"NAME":"Store number","DESCRIPTION":"Store number","SORT":"100"},"REST_SERVICE_KEY_CHECKOUT":{"NAME":"Secret key","DESCRIPTION":"Secret key","SORT":"300"},"PS_WORK_MODE_CHECKOUT":{"NAME":"Payment system operating mode","SORT":"1100","INPUT":{"TYPE":"ENUM","OPTIONS":{"TEST":"Test","REGULAR":"Live"}}}}}' \
+    -d '{"NAME":"Handler.Rest CHECKOUT","CODE":"resthandlercheckout","SORT":100,"SETTINGS":{"CURRENCY":["RUB"],"CLIENT_TYPE":"b2c","CHECKOUT_DATA":{"ACTION_URI":"http://example.com/payment_checkout.php","FIELDS":{"serviceKey":{"CODE":"REST_SERVICE_KEY_CHECKOUT"},"serviceid":{"CODE":"REST_SERVICE_ID_CHECKOUT"}}},"CODES":{"REST_SERVICE_ID_CHECKOUT":{"NAME":"Store Number","DESCRIPTION":"Store Number","SORT":"100"},"REST_SERVICE_KEY_CHECKOUT":{"NAME":"Secret Key","DESCRIPTION":"Secret Key","SORT":"300"},"PS_WORK_MODE_CHECKOUT":{"NAME":"Payment System Operating Mode","SORT":"1100","INPUT":{"TYPE":"ENUM","OPTIONS":{"TEST":"Test","REGULAR":"Live"}}}}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/sale.paysystem.handler.add
     ```
 
@@ -832,7 +832,7 @@ If nothing is returned, the default error will be used: `Error registering order
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"NAME":"Handler.Rest CHECKOUT","CODE":"resthandlercheckout","SORT":100,"SETTINGS":{"CURRENCY":["USD"],"CLIENT_TYPE":"b2c","CHECKOUT_DATA":{"ACTION_URI":"http://example.com/payment_checkout.php","FIELDS":{"serviceKey":{"CODE":"REST_SERVICE_KEY_CHECKOUT"},"serviceid":{"CODE":"REST_SERVICE_ID_CHECKOUT"}}},"CODES":{"REST_SERVICE_ID_CHECKOUT":{"NAME":"Store number","DESCRIPTION":"Store number","SORT":"100"},"REST_SERVICE_KEY_CHECKOUT":{"NAME":"Secret key","DESCRIPTION":"Secret key","SORT":"300"},"PS_WORK_MODE_CHECKOUT":{"NAME":"Payment system operating mode","SORT":"1100","INPUT":{"TYPE":"ENUM","OPTIONS":{"TEST":"Test","REGULAR":"Live"}}}},"auth":"**put_access_token_here**"}' \
+    -d '{"NAME":"Handler.Rest CHECKOUT","CODE":"resthandlercheckout","SORT":100,"SETTINGS":{"CURRENCY":["RUB"],"CLIENT_TYPE":"b2c","CHECKOUT_DATA":{"ACTION_URI":"http://example.com/payment_checkout.php","FIELDS":{"serviceKey":{"CODE":"REST_SERVICE_KEY_CHECKOUT"},"serviceid":{"CODE":"REST_SERVICE_ID_CHECKOUT"}}},"CODES":{"REST_SERVICE_ID_CHECKOUT":{"NAME":"Store Number","DESCRIPTION":"Store Number","SORT":"100"},"REST_SERVICE_KEY_CHECKOUT":{"NAME":"Secret Key","DESCRIPTION":"Secret Key","SORT":"300"},"PS_WORK_MODE_CHECKOUT":{"NAME":"Payment System Operating Mode","SORT":"1100","INPUT":{"TYPE":"ENUM","OPTIONS":{"TEST":"Test","REGULAR":"Live"}}}},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/sale.paysystem.handler.add
     ```
 
@@ -841,61 +841,61 @@ If nothing is returned, the default error will be used: `Error registering order
     ```js
     try
     {
-    	const response = await $b24.callMethod(
-    		"sale.paysystem.handler.add",
-    		{
-    			"NAME": "Handler.Rest CHECKOUT",
-    			"CODE": "resthandlercheckout",
-    			"SORT": 100,
-    			"SETTINGS": {
-    				"CURRENCY": [
-    					"USD"
-    				],
-    				"CLIENT_TYPE": "b2c",
-    				"CHECKOUT_DATA": {
-    					"ACTION_URI": "http://example.com/payment_checkout.php",
-    					"FIELDS": {
-    						"serviceKey": {
-    							"CODE": "REST_SERVICE_KEY_CHECKOUT",
-    						},
-    						"serviceid": {
-    							"CODE": "REST_SERVICE_ID_CHECKOUT"
-    						}
-    					}
-    				},
-    				"CODES": {
-    					"REST_SERVICE_ID_CHECKOUT": {
-    						"NAME": "Store number",
-    						"DESCRIPTION": "Store number",
-    						"SORT": "100"
-    					},
-    					"REST_SERVICE_KEY_CHECKOUT": {
-    						"NAME": "Secret key",
-    						"DESCRIPTION": "Secret key",
-    						"SORT": "300"
-    					},
-    					"PS_WORK_MODE_CHECKOUT": {
-    						"NAME": "Payment system operating mode",
-    						"SORT": "1100",
-    						"INPUT": {
-    							"TYPE": "ENUM",
-    							"OPTIONS": {
-    								"TEST": "Test",
-    								"REGULAR": "Live"
-    							}
-    						}
-    					}
-    				}
-    			}
-    		}
-    	);
-    	
-    	const result = response.getData().result;
-    	console.info("Handler added with ID " + result);
+        const response = await $b24.callMethod(
+            "sale.paysystem.handler.add",
+            {
+                "NAME": "Handler.Rest CHECKOUT",
+                "CODE": "resthandlercheckout",
+                "SORT": 100,
+                "SETTINGS": {
+                    "CURRENCY": [
+                        "RUB"
+                    ],
+                    "CLIENT_TYPE": "b2c",
+                    "CHECKOUT_DATA": {
+                        "ACTION_URI": "http://example.com/payment_checkout.php",
+                        "FIELDS": {
+                            "serviceKey": {
+                                "CODE": "REST_SERVICE_KEY_CHECKOUT",
+                            },
+                            "serviceid": {
+                                "CODE": "REST_SERVICE_ID_CHECKOUT"
+                            }
+                        }
+                    },
+                    "CODES": {
+                        "REST_SERVICE_ID_CHECKOUT": {
+                            "NAME": "Store Number",
+                            "DESCRIPTION": "Store Number",
+                            "SORT": "100"
+                        },
+                        "REST_SERVICE_KEY_CHECKOUT": {
+                            "NAME": "Secret Key",
+                            "DESCRIPTION": "Secret Key",
+                            "SORT": "300"
+                        },
+                        "PS_WORK_MODE_CHECKOUT": {
+                            "NAME": "Payment System Operating Mode",
+                            "SORT": "1100",
+                            "INPUT": {
+                                "TYPE": "ENUM",
+                                "OPTIONS": {
+                                    "TEST": "Test",
+                                    "REGULAR": "Live"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        );
+        
+        const result = response.getData().result;
+        console.info("Handler added with ID " + result);
     }
     catch( error )
     {
-    	console.error(error);
+        console.error(error);
     }
     ```
 
@@ -912,7 +912,7 @@ If nothing is returned, the default error will be used: `Error registering order
                     'CODE'     => 'resthandlercheckout',
                     'SORT'     => 100,
                     'SETTINGS' => [
-                        'CURRENCY'    => ['USD'],
+                        'CURRENCY'    => ['RUB'],
                         'CLIENT_TYPE' => 'b2c',
                         'CHECKOUT_DATA' => [
                             'ACTION_URI' => 'http://example.com/payment_checkout.php',
@@ -927,17 +927,17 @@ If nothing is returned, the default error will be used: `Error registering order
                         ],
                         'CODES' => [
                             'REST_SERVICE_ID_CHECKOUT' => [
-                                'NAME'        => 'Store number',
-                                'DESCRIPTION' => 'Store number',
+                                'NAME'        => 'Store Number',
+                                'DESCRIPTION' => 'Store Number',
                                 'SORT'        => '100'
                             ],
                             'REST_SERVICE_KEY_CHECKOUT' => [
-                                'NAME'        => 'Secret key',
-                                'DESCRIPTION' => 'Secret key',
+                                'NAME'        => 'Secret Key',
+                                'DESCRIPTION' => 'Secret Key',
                                 'SORT'        => '300'
                             ],
                             'PS_WORK_MODE_CHECKOUT'     => [
-                                'NAME'  => 'Payment system operating mode',
+                                'NAME'  => 'Payment System Operating Mode',
                                 'SORT'  => '1100',
                                 'INPUT' => [
                                     'TYPE'    => 'ENUM',
@@ -975,7 +975,7 @@ If nothing is returned, the default error will be used: `Error registering order
             "SORT": 100,
             "SETTINGS": {
                 "CURRENCY": [
-                    "USD"
+                    "RUB"
                 ],
                 "CLIENT_TYPE": "b2c",
                 "CHECKOUT_DATA": {
@@ -991,17 +991,17 @@ If nothing is returned, the default error will be used: `Error registering order
                 },
                 "CODES": {
                     "REST_SERVICE_ID_CHECKOUT": {
-                        "NAME": "Store number",
-                        "DESCRIPTION": "Store number",
+                        "NAME": "Store Number",
+                        "DESCRIPTION": "Store Number",
                         "SORT": "100"
                     },
                     "REST_SERVICE_KEY_CHECKOUT": {
-                        "NAME": "Secret key",
-                        "DESCRIPTION": "Secret key",
+                        "NAME": "Secret Key",
+                        "DESCRIPTION": "Secret Key",
                         "SORT": "300"
                     },
                     "PS_WORK_MODE_CHECKOUT": {
-                        "NAME": "Payment system operating mode",
+                        "NAME": "Payment System Operating Mode",
                         "SORT": "1100",
                         "INPUT": {
                             "TYPE": "ENUM",
@@ -1040,7 +1040,7 @@ If nothing is returned, the default error will be used: `Error registering order
             'CODE' => 'resthandlercheckout',
             'SORT' => 100,
             'SETTINGS' => [
-                'CURRENCY'    => ['USD'],
+                'CURRENCY'    => ['RUB'],
                 'CLIENT_TYPE' => 'b2c',
                 'CHECKOUT_DATA' => [
                     'ACTION_URI' => 'http://example.com/payment_checkout.php',
@@ -1055,17 +1055,17 @@ If nothing is returned, the default error will be used: `Error registering order
                 ],
                 'CODES' => [
                     'REST_SERVICE_ID_CHECKOUT' => [
-                        'NAME' => 'Store number',
-                        'DESCRIPTION' => 'Store number',
+                        'NAME' => 'Store Number',
+                        'DESCRIPTION' => 'Store Number',
                         'SORT' => '100'
                     ],
                     'REST_SERVICE_KEY_CHECKOUT' => [
-                        'NAME' => 'Secret key',
-                        'DESCRIPTION' => 'Secret key',
+                        'NAME' => 'Secret Key',
+                        'DESCRIPTION' => 'Secret Key',
                         'SORT' => '300'
                     ],
                     'PS_WORK_MODE_CHECKOUT' => [
-                        'NAME' => 'Payment system operating mode',
+                        'NAME' => 'Payment System Operating Mode',
                         'SORT' => '1100',
                         'INPUT' => [
                             'TYPE' => 'ENUM',
@@ -1089,11 +1089,11 @@ If nothing is returned, the default error will be used: `Error registering order
 
 ## IFrame Operating Mode {#iframe}
 
-When adding a handler, the `IFRAME_DATA` must be passed in the `SETTINGS`.
+When adding a handler, the `IFRAME_DATA` must be passed in the `SETTINGS` parameter.
 
-A page that will be loaded in the iframe on the seller's site must be located at the address specified in `ACTION_URI`.
+A page that will be loaded in an iframe on the seller's site must be located at the address specified in `ACTION_URI`.
 
-When loading the iframe via the [Window.postMessage()](https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage) method, the `FIELDS` values from `IFRAME_DATA` will be sent to `ACTION_URI` (each as a separate key at the top level of the array), along with the following data:
+When loading the iframe via the [Window.postMessage()](https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage) method, the values of `FIELDS` from `IFRAME_DATA` will be sent to `ACTION_URI` (each as a separate key at the top level of the array), as well as the following data:
 
 #|
 || **Name**
@@ -1121,60 +1121,60 @@ Data sent in `BX_SYSTEM_PARAMS`:
 [`string`](../data-types.md) | Currency ||
 |#
 
-You can obtain values in the iframe through the `message` event handler, for example:
+You can get values in the iframe through the `message` event handler, for example:
 
 ```js
 document.addEventListener("DOMContentLoaded", function() {
-	window.addEventListener("message", function (event) {
-		// receiving data from the site (from the payment system)
-		var paymentData = event.data;
-		// working with BX_SYSTEM_PARAMS
-		if (paymentData.BX_SYSTEM_PARAMS)
-		{
-			// ...
-		}
-		// using site styles
-		if (paymentData.BX_COMPUTED_STYLE)
-		{
-			document.body.style.background = paymentData.BX_COMPUTED_STYLE.background;
-			document.body.style.color = paymentData.BX_COMPUTED_STYLE.color;
-		}
-	}, false);
+    window.addEventListener("message", function (event) {
+        // receiving data from the site (from the payment system)
+        var paymentData = event.data;
+        // working with BX_SYSTEM_PARAMS
+        if (paymentData.BX_SYSTEM_PARAMS)
+        {
+            // ...
+        }
+        // using site styles
+        if (paymentData.BX_COMPUTED_STYLE)
+        {
+            document.body.style.background = paymentData.BX_COMPUTED_STYLE.background;
+            document.body.style.color = paymentData.BX_COMPUTED_STYLE.color;
+        }
+    }, false);
 });
 ```
 
 By default, the width of the iframe is 100% of the parent element, and the height is 350px.
 
-The dimensions of the iframe can be changed. To do this, the iframe must send the height and/or width to the seller's site. For example:
+The dimensions of the iframe can be changed. To do this, the height and/or width must be sent from the iframe to the seller's site. For example:
 
 ```js
 document.addEventListener("DOMContentLoaded", function() {
-	var size = {
-		width: document.body.scrollWidth,
-		height: document.body.scrollHeight
-	};
-	// sending data to the seller's site
-	parent.postMessage(size, "*");
+    var size = {
+        width: document.body.scrollWidth,
+        height: document.body.scrollHeight
+    };
+    // sending data to the seller's site
+    parent.postMessage(size, "*");
 });
 ```
 `width` and `height` are reserved variable names, and only they are processed on the seller's site.
 
 ### Parameters Passed When Adding a Handler in the IFRAME_DATA Array
 
-{% include [Note on required parameters](../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
-|| **ACTION_URI*** 
-[`string`](../data-types.md) | URL of the page that will be displayed in the iframe element ||
+|| **ACTION_URI***
+[`string`](../data-types.md) | URL of the page that will be displayed in the iframe ||
 || **FIELDS**
-[`object`](../data-types.md) | Description of fields sent to the `iframe`. The format is similar to the [FIELDS](#parametr-fields) field in the form operating mode (`FORM_DATA`) ||
+[`object`](../data-types.md) | Description of fields sent to the `iframe`. The format is similar to the `FIELDS` field in the form operating mode (`FORM_DATA`) ||
 |#
 
 ### Code Examples
 
-{% include [Note on examples](../../_includes/examples.md) %}
+{% include [Note on Examples](../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -1184,7 +1184,7 @@ document.addEventListener("DOMContentLoaded", function() {
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"NAME":"Handler.Rest IFrame","CODE":"resthandleriframe","SORT":100,"SETTINGS":{"CURRENCY":["USD"],"CLIENT_TYPE":"b2c","IFRAME_DATA":{"ACTION_URI":"http://example.com/payment_iframe.php","FIELDS":{"serviceKey":{"CODE":"REST_SERVICE_KEY_IFRAME"},"serviceid":{"CODE":"REST_SERVICE_ID_IFRAME"}}},"CODES":{"REST_SERVICE_ID_IFRAME":{"NAME":"Store number","DESCRIPTION":"Store number","SORT":"100"},"REST_SERVICE_KEY_IFRAME":{"NAME":"Secret key","DESCRIPTION":"Secret key","SORT":"300"},"PS_WORK_MODE_IFRAME":{"NAME":"Payment system operating mode","SORT":"1100","INPUT":{"TYPE":"ENUM","OPTIONS":{"TEST":"Test","REGULAR":"Live"}}}}}' \
+    -d '{"NAME":"Handler.Rest IFrame","CODE":"resthandleriframe","SORT":100,"SETTINGS":{"CURRENCY":["RUB"],"CLIENT_TYPE":"b2c","IFRAME_DATA":{"ACTION_URI":"http://example.com/payment_iframe.php","FIELDS":{"serviceKey":{"CODE":"REST_SERVICE_KEY_IFRAME"},"serviceid":{"CODE":"REST_SERVICE_ID_IFRAME"}}},"CODES":{"REST_SERVICE_ID_IFRAME":{"NAME":"Store Number","DESCRIPTION":"Store Number","SORT":"100"},"REST_SERVICE_KEY_IFRAME":{"NAME":"Secret Key","DESCRIPTION":"Secret Key","SORT":"300"},"PS_WORK_MODE_IFRAME":{"NAME":"Payment System Operating Mode","SORT":"1100","INPUT":{"TYPE":"ENUM","OPTIONS":{"TEST":"Test","REGULAR":"Live"}}}}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/sale.paysystem.handler.add
     ```
 
@@ -1194,7 +1194,7 @@ document.addEventListener("DOMContentLoaded", function() {
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"NAME":"Handler.Rest IFrame","CODE":"resthandleriframe","SORT":100,"SETTINGS":{"CURRENCY":["USD"],"CLIENT_TYPE":"b2c","IFRAME_DATA":{"ACTION_URI":"http://example.com/payment_iframe.php","FIELDS":{"serviceKey":{"CODE":"REST_SERVICE_KEY_IFRAME"},"serviceid":{"CODE":"REST_SERVICE_ID_IFRAME"}}},"CODES":{"REST_SERVICE_ID_IFRAME":{"NAME":"Store number","DESCRIPTION":"Store number","SORT":"100"},"REST_SERVICE_KEY_IFRAME":{"NAME":"Secret key","DESCRIPTION":"Secret key","SORT":"300"},"PS_WORK_MODE_IFRAME":{"NAME":"Payment system operating mode","SORT":"1100","INPUT":{"TYPE":"ENUM","OPTIONS":{"TEST":"Test","REGULAR":"Live"}}}},"auth":"**put_access_token_here**"}' \
+    -d '{"NAME":"Handler.Rest IFrame","CODE":"resthandleriframe","SORT":100,"SETTINGS":{"CURRENCY":["RUB"],"CLIENT_TYPE":"b2c","IFRAME_DATA":{"ACTION_URI":"http://example.com/payment_iframe.php","FIELDS":{"serviceKey":{"CODE":"REST_SERVICE_KEY_IFRAME"},"serviceid":{"CODE":"REST_SERVICE_ID_IFRAME"}}},"CODES":{"REST_SERVICE_ID_IFRAME":{"NAME":"Store Number","DESCRIPTION":"Store Number","SORT":"100"},"REST_SERVICE_KEY_IFRAME":{"NAME":"Secret Key","DESCRIPTION":"Secret Key","SORT":"300"},"PS_WORK_MODE_IFRAME":{"NAME":"Payment System Operating Mode","SORT":"1100","INPUT":{"TYPE":"ENUM","OPTIONS":{"TEST":"Test","REGULAR":"Live"}}}},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/sale.paysystem.handler.add
     ```
 
@@ -1203,61 +1203,61 @@ document.addEventListener("DOMContentLoaded", function() {
     ```js
     try
     {
-    	const response = await $b24.callMethod(
-    		"sale.paysystem.handler.add",
-    		{
-    			"NAME": "Handler.Rest IFrame",
-    			"CODE": "resthandleriframe",
-    			"SORT": 100,
-    			"SETTINGS": {
-    				"CURRENCY": [
-    					"USD"
-    				],
-    				"CLIENT_TYPE": "b2c",
-    				"IFRAME_DATA": {
-    					"ACTION_URI": "http://example.com/payment_iframe.php",
-    					"FIELDS": {
-    						"serviceKey": {
-    							"CODE": "REST_SERVICE_KEY_IFRAME",
-    						},
-    						"serviceid": {
-    							"CODE": "REST_SERVICE_ID_IFRAME"
-    						}
-    					}
-    				},
-    				"CODES": {
-    					"REST_SERVICE_ID_IFRAME": {
-    						"NAME": "Store number",
-    						"DESCRIPTION": "Store number",
-    						"SORT": "100"
-    					},
-    					"REST_SERVICE_KEY_IFRAME": {
-    						"NAME": "Secret key",
-    						"DESCRIPTION": "Secret key",
-    						"SORT": "300"
-    					},
-    					"PS_WORK_MODE_IFRAME": {
-    						"NAME": "Payment system operating mode",
-    						"SORT": "1100",
-    						"INPUT": {
-    							"TYPE": "ENUM",
-    							"OPTIONS": {
-    								"TEST": "Test",
-    								"REGULAR": "Live"
-    							}
-    						}
-    					}
-    				}
-    			}
-    		}
-    	);
-    	
-    	const result = response.getData().result;
-    	console.info(result);
+        const response = await $b24.callMethod(
+            "sale.paysystem.handler.add",
+            {
+                "NAME": "Handler.Rest IFrame",
+                "CODE": "resthandleriframe",
+                "SORT": 100,
+                "SETTINGS": {
+                    "CURRENCY": [
+                        "RUB"
+                    ],
+                    "CLIENT_TYPE": "b2c",
+                    "IFRAME_DATA": {
+                        "ACTION_URI": "http://example.com/payment_iframe.php",
+                        "FIELDS": {
+                            "serviceKey": {
+                                "CODE": "REST_SERVICE_KEY_IFRAME",
+                            },
+                            "serviceid": {
+                                "CODE": "REST_SERVICE_ID_IFRAME"
+                            }
+                        }
+                    },
+                    "CODES": {
+                        "REST_SERVICE_ID_IFRAME": {
+                            "NAME": "Store Number",
+                            "DESCRIPTION": "Store Number",
+                            "SORT": "100"
+                        },
+                        "REST_SERVICE_KEY_IFRAME": {
+                            "NAME": "Secret Key",
+                            "DESCRIPTION": "Secret Key",
+                            "SORT": "300"
+                        },
+                        "PS_WORK_MODE_IFRAME": {
+                            "NAME": "Payment System Operating Mode",
+                            "SORT": "1100",
+                            "INPUT": {
+                                "TYPE": "ENUM",
+                                "OPTIONS": {
+                                    "TEST": "Test",
+                                    "REGULAR": "Live"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        );
+        
+        const result = response.getData().result;
+        console.info(result);
     }
     catch( error )
     {
-    	console.error(error);
+        console.error(error);
     }
     ```
 
@@ -1274,7 +1274,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     'CODE'     => 'resthandleriframe',
                     'SORT'     => 100,
                     'SETTINGS' => [
-                        'CURRENCY'    => ['USD'],
+                        'CURRENCY'    => ['RUB'],
                         'CLIENT_TYPE' => 'b2c',
                         'IFRAME_DATA' => [
                             'ACTION_URI' => 'http://example.com/payment_iframe.php',
@@ -1289,17 +1289,17 @@ document.addEventListener("DOMContentLoaded", function() {
                         ],
                         'CODES'      => [
                             'REST_SERVICE_ID_IFRAME' => [
-                                'NAME'        => 'Store number',
-                                'DESCRIPTION' => 'Store number',
+                                'NAME'        => 'Store Number',
+                                'DESCRIPTION' => 'Store Number',
                                 'SORT'        => '100'
                             ],
                             'REST_SERVICE_KEY_IFRAME' => [
-                                'NAME'        => 'Secret key',
-                                'DESCRIPTION' => 'Secret key',
+                                'NAME'        => 'Secret Key',
+                                'DESCRIPTION' => 'Secret Key',
                                 'SORT'        => '300'
                             ],
                             'PS_WORK_MODE_IFRAME'     => [
-                                'NAME'  => 'Payment system operating mode',
+                                'NAME'  => 'Payment System Operating Mode',
                                 'SORT'  => '1100',
                                 'INPUT' => [
                                     'TYPE'    => 'ENUM',
@@ -1337,7 +1337,7 @@ document.addEventListener("DOMContentLoaded", function() {
             "SORT": 100,
             "SETTINGS": {
                 "CURRENCY": [
-                    "USD"
+                    "RUB"
                 ],
                 "CLIENT_TYPE": "b2c",
                 "IFRAME_DATA": {
@@ -1353,17 +1353,17 @@ document.addEventListener("DOMContentLoaded", function() {
                 },
                 "CODES": {
                     "REST_SERVICE_ID_IFRAME": {
-                        "NAME": "Store number",
-                        "DESCRIPTION": "Store number",
+                        "NAME": "Store Number",
+                        "DESCRIPTION": "Store Number",
                         "SORT": "100"
                     },
                     "REST_SERVICE_KEY_IFRAME": {
-                        "NAME": "Secret key",
-                        "DESCRIPTION": "Secret key",
+                        "NAME": "Secret Key",
+                        "DESCRIPTION": "Secret Key",
                         "SORT": "300"
                     },
                     "PS_WORK_MODE_IFRAME": {
-                        "NAME": "Payment system operating mode",
+                        "NAME": "Payment System Operating Mode",
                         "SORT": "1100",
                         "INPUT": {
                             "TYPE": "ENUM",
@@ -1402,14 +1402,14 @@ document.addEventListener("DOMContentLoaded", function() {
             'CODE' => 'resthandleriframe',
             'SORT' => 100,
             'SETTINGS' => [
-                'CURRENCY'    => ['USD'],
+                'CURRENCY' => ['RUB'],
                 'CLIENT_TYPE' => 'b2c',
                 'IFRAME_DATA' => [
                     'ACTION_URI' => 'http://example.com/payment_iframe.php',
                     'FIELDS' => [
                         'serviceKey' => [
                             'CODE' => 'REST_SERVICE_KEY_IFRAME',
-                        ],
+                        },
                         'serviceid' => [
                             'CODE' => 'REST_SERVICE_ID_IFRAME'
                         ]
@@ -1417,17 +1417,17 @@ document.addEventListener("DOMContentLoaded", function() {
                 ],
                 'CODES' => [
                     'REST_SERVICE_ID_IFRAME' => [
-                        'NAME' => 'Store number',
-                        'DESCRIPTION' => 'Store number',
+                        'NAME' => 'Store Number',
+                        'DESCRIPTION' => 'Store Number',
                         'SORT' => '100'
                     ],
                     'REST_SERVICE_KEY_IFRAME' => [
-                        'NAME' => 'Secret key',
-                        'DESCRIPTION' => 'Secret key',
+                        'NAME' => 'Secret Key',
+                        'DESCRIPTION' => 'Secret Key',
                         'SORT' => '300'
                     ],
                     'PS_WORK_MODE_IFRAME' => [
-                        'NAME' => 'Payment system operating mode',
+                        'NAME' => 'Payment System Operating Mode',
                         'SORT' => '1100',
                         'INPUT' => [
                             'TYPE' => 'ENUM',
@@ -1451,7 +1451,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -1482,7 +1482,7 @@ HTTP status: **200**
 
 ## Error Handling
 
-HTTP status: **400**, **403**
+HTTP Status: **400**, **403**
 
 ```json
 {
@@ -1491,19 +1491,19 @@ HTTP status: **400**, **403**
 }
 ```
 
-{% include notitle [error handling](../../_includes/error-info.md) %}
+{% include notitle [Error Handling](../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
 || **Code** | **Description** | **Status** ||
-|| `ACCESS_DENIED` | Insufficient rights to add the handler | 403 ||
-|| `ERROR_CHECK_FAILURE` | A required field value is not specified or the value of one of the fields is specified incorrectly | 400 ||
+|| `ACCESS_DENIED` | Insufficient permissions to add the handler | 403 ||
+|| `ERROR_CHECK_FAILURE` | Required field value is not specified or one of the field values is incorrect | 400 ||
 || `ERROR_HANDLER_ALREADY_EXIST` | A handler with the code specified in the `CODE` parameter already exists in the system | 400 ||
 || `ERROR_HANDLER_ADD` | Other errors. For detailed information about the error, see `error_description` | 400 ||
 |#
 
-{% include [system errors](../../_includes/system-errors.md) %}
+{% include [System Errors](../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
@@ -1517,6 +1517,4 @@ HTTP status: **400**, **403**
 - [{#T}](./sale-pay-system-settings-update.md)
 - [{#T}](./sale-pay-system-delete.md)
 - [{#T}](./sale-pay-system-pay-payment.md)
-- [{#T}](./sale-pay-system-pay-invoice.md)
 - [{#T}](./sale-pay-system-settings-payment-get.md)
-- [{#T}](./sale-pay-system-settings-invoice-get.md)

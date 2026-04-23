@@ -1,8 +1,8 @@
-# Pay for an order through a specific payment system sale.paysystem.pay.payment
+# Pay for an Order via a Specific Payment System sale.paysystem.pay.payment
 
 {% note tip "" %}
 
-If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect the [MCP server](../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
 
 {% endnote %}
 
@@ -12,26 +12,26 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 This method is used to pay for an order through a specific payment system. It is called after processing the response from the payment system.
 
-To perform the payment, there must be a payment linked to the specified payment system in the system.
+To perform the payment, there must be a payment associated with the specified payment system in the system.
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../_includes/required.md) %}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
-|| **PAYMENT_ID***
+|| **PAYMENT_ID*** 
 [`sale_order_payment.id`](../sale/data-types.md) | Payment identifier
-||
-|| **PAY_SYSTEM_ID***
+|| 
+|| **PAY_SYSTEM_ID*** 
 [`sale_paysystem.ID`](../sale/data-types.md) | Payment system identifier
-||
+|| 
 |#
 
 ## Code Examples
 
-{% include [Note on examples](../../_includes/examples.md) %}
+{% include [Note on Examples](../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -60,20 +60,20 @@ To perform the payment, there must be a payment linked to the specified payment 
     ```js
     try
     {
-    	const response = await $b24.callMethod(
-    		'sale.paysystem.pay.payment',
-    		{
-    			"PAYMENT_ID": 1,
-    			"PAY_SYSTEM_ID": 1,
-    		}
-    	);
-    	
-    	const result = response.getData().result;
-    	console.dir(result);
+        const response = await $b24.callMethod(
+            'sale.paysystem.pay.payment',
+            {
+                "PAYMENT_ID": 1,
+                "PAY_SYSTEM_ID": 1,
+            }
+        );
+        
+        const result = response.getData().result;
+        console.dir(result);
     }
     catch( error )
     {
-    	console.error(error);
+        console.error(error);
     }
     ```
 
@@ -151,7 +151,7 @@ To perform the payment, there must be a payment linked to the specified payment 
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -171,7 +171,7 @@ HTTP status: **200**
 
 ### Returned Data
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **result**
@@ -182,11 +182,11 @@ HTTP status: **200**
 
 ## Error Handling
 
-HTTP status: **400**, **403**
+HTTP Status: **400**, **403**
 
 ```json
 {
-    "error": " ERROR_CHECK_FAILURE",
+    "error": "ERROR_CHECK_FAILURE",
     "error_description": "Pay system not found"
 }
 ```
@@ -195,10 +195,10 @@ HTTP status: **400**, **403**
 
 ### Possible Error Codes
 
-#|
+#| 
 || **Code** | **Description** | **Status** ||
 || `ACCESS_DENIED` | Insufficient permissions to change the payment status | 403 ||
-|| `ERROR_CHECK_FAILURE` | One of the required fields is missing, the specified payment system was not found, or the payment with the specified `ID` and payment system was not found (details can be found in the error description) | 400 ||
+|| `ERROR_CHECK_FAILURE` | One of the required fields is missing, the specified payment system is not found, or the payment with the specified `ID` and payment system is not found (details can be found in the error description) | 400 ||
 || `ERROR_PROCESS_REQUEST_RESULT` | Error processing the request by the payment system (details can be found in the error description) | 400 ||
 |#
 
@@ -216,6 +216,4 @@ HTTP status: **400**, **403**
 - [{#T}](./sale-pay-system-delete.md)
 - [{#T}](./sale-pay-system-settings-get.md)
 - [{#T}](./sale-pay-system-settings-update.md)
-- [{#T}](./sale-pay-system-pay-invoice.md)
 - [{#T}](./sale-pay-system-settings-payment-get.md)
-- [{#T}](./sale-pay-system-settings-invoice-get.md)

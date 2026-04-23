@@ -6,27 +6,25 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-> Method name: **crm.item.details.configuration.reset**
->
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: permission checks during method execution depend on the provided data:
+> Who can execute the method: access rights when executing the method depend on the provided data:
 >   - Any user has the right to reset their personal settings
 >   - A user can reset shared and others' settings only if they are an administrator
 
-The method resets the item card settings to their default values. It removes the personal settings of the specified user or the shared settings defined for all users.
+The method `crm.item.details.configuration.reset` resets the item card settings to their default values. It removes the personal settings of the specified user or the shared settings defined for all users.
 
-{% include [Notice about extras](./_includes/extras_notice.md) %}
+{% include [Extras Notice](./_includes/extras_notice.md) %}
 
 ## Method Parameters
 
-{% include [Footnote about required parameters](../../../../_includes/required.md) %}
+{% include [Required Parameters Note](../../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **entityTypeId***
-[`integer`][1] | Identifier of the [system](./../../index.md) or [user-defined type](./../user-defined-object-types/index.md) of CRM objects ||
+[`integer`][1] | Identifier of the [system](./../../index.md) or [custom type](./../user-defined-object-types/index.md) of CRM objects ||
 || **userId**
 [`user`][1] | Identifier of the user whose configuration you want to reset.
 
@@ -35,7 +33,7 @@ If the parameter is not provided, the `userId` of the user calling this method w
 Required only when requesting personal settings
 ||
 || **scope**
-[`string`][1] | Scope of the settings. Allowed values:
+[`string`][1] | Scope of the settings. Acceptable values:
 - `'P'` — personal settings
 - `'C'` — shared settings
 
@@ -66,7 +64,7 @@ Possible values:
 
 ## Code Examples
 
-{% include [Footnote about examples](../../../../_includes/examples.md) %}
+{% include [Examples Note](../../../../_includes/examples.md) %}
 
 Reset the shared configuration for deal cards in the funnel with `id = 9` for the user with `id = 1`
 
@@ -205,7 +203,7 @@ Reset the shared configuration for deal cards in the funnel with `id = 9` for th
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -228,14 +226,14 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`][1] | Root element of the response. Returns `true` in case of successful settings reset ||
+[`boolean`][1] | Root element of the response. Returns `true` if the settings were successfully reset ||
 || **time**
-[`time`][1] | Information about the request execution time ||
+[`time`][1] | Information about the execution time of the request ||
 |#
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {
@@ -249,7 +247,7 @@ HTTP status: **400**
 ### Possible Error Codes
 #|
 || **Code** | **Description** | **Value** ||
-|| Empty value | Parameter 'entityTypeId' is not defined | Required parameter `entityTypeId` not provided ||
+|| Empty value | Parameter 'entityTypeId' is not defined | Required parameter `entityTypeId` is missing ||
 || Empty value | The entity type '`entityTypeName`' is not supported in current context. | The method does not support this entity type ||
 || Empty value | Access denied. | The user does not have administrative rights ||
 |#

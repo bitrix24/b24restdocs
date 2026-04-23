@@ -1,29 +1,29 @@
-title: Workflows and Automation Rules
-href: index.md
-items:
-  - name: Overview
-    href: index.md
-  - name: Start Workflow
-    href: bizproc-workflow-start.md
-  - name: Get List of Workflows
+title: Workflows and Automation Rules  
+href: index.md  
+items:  
+  - name: Overview of Methods  
+    href: index.md  
+  - name: Start Workflow  
+    href: bizproc-workflow-start.md  
+  - name: Get List of Workflows  
     href: bizproc-workflow-instances.md    
-  - name: Stop Workflow
-    href: bizproc-workflow-terminate.md
-  - name: Delete Active Process
-    href: bizproc-workflow-kill.md
-  - name: Templates
-    include:
-      path: template/b24-toc.yaml
-      mode: link
-  - name: Tasks
-    include:
-      path: bizproc-task/b24-toc.yaml
-      mode: link
-  - name: Application Actions
-    include:
-      path: bizproc-activity/b24-toc.yaml
-      mode: link
-  - name: Application Automation Rules
-    include:
-      path: bizproc-robot/b24-toc.yaml
-      mode: link
+  - name: Stop Workflow  
+    href: bizproc-workflow-terminate.md  
+  - name: Delete Active Process  
+    href: bizproc-workflow-kill.md  
+  - name: Templates  
+    include:  
+      path: template/b24-toc.yaml  
+      mode: link  
+  - name: Tasks  
+    include:  
+      path: bizproc-task/b24-toc.yaml  
+      mode: link  
+  - name: Application Actions  
+    include:  
+      path: bizproc-activity/b24-toc.yaml  
+      mode: link  
+  - name: Application Automation Rules  
+    include:  
+      path: bizproc-robot/b24-toc.yaml  
+      mode: link  

@@ -1,4 +1,4 @@
-# Change the value of the property sale.propertyvalue.modify
+# Change the Value of the Property sale.propertyvalue.modify
 
 {% note tip "" %}
 
@@ -10,19 +10,19 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: administrator
 
-This method updates the values of order properties.
+This method updates the property values of an order.
 
-**Please note** that this method accepts **all** property values of the order as input. If any property values are not provided, their current values will be removed from the order as a result of the request.
+**Please note** that this method accepts **all** property values of the order as input. If values for any properties are not provided, their current values will be removed from the order as a result of the request.
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **fields***
-[`object`](../../data-types.md) | The root element that passes the request parameters in the form of a structure:
+[`object`](../../data-types.md) | The root element that transmits the request parameters in the form of a structure:
 
 ```json
 {
@@ -42,7 +42,7 @@ This method updates the values of order properties.
 
 ### Parameter fields
 
-{% include [Note on required parameters](../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -63,33 +63,41 @@ This method updates the values of order properties.
 
 ### Parameter order
 
-{% include [Note on required parameters](../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **id***
-[`sale_order.id`](../data-types.md) | Order ID ||
+[`sale_order.id`](../data-types.md) | Order identifier ||
 || **propertyValues***
-[`object[]`](../../data-types.md) | An array of objects (see the description of the `propertyValues` object [below](#parameter-propertyvalues)), containing the order property ID and property value ||
+[`object[]`](../../data-types.md) | An array of objects (see the description of the `propertyValues` object [below](#parametr-propertyvalues)), containing the order property identifier and property value ||
 |#
 
 ### Parameter propertyValues
 
-{% include [Note on required parameters](../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../_includes/required.md) %}
 
 #|
 || **Value**
 `type` | **Description** ||
 || **orderPropsId***
-[`sale_order_property.id`](../data-types.md) | Order property ID ||
+[`sale_order_property.id`](../data-types.md) | Order property identifier ||
 || **value***
-[`string`](../../data-types.md) | Order property value ||
+[`any`](../../data-types.md) | Order property value.
+
+For multiple order properties, an array of values can be transmitted.
+
+For properties of type `file`, an object in the format `{"fileData": ["value1", "value2"]}` should be provided:
+- `value1` — file name with extension,
+- `value2` — file in [base64](../../files/how-to-upload-files.md) format.
+
+To delete a file, use an object in the format `{"remove": "Y"}` ||
 |#
 
 ## Code Examples
 
-{% include [Note on examples](../../../_includes/examples.md) %}
+{% include [Note on Examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -362,7 +370,7 @@ This method updates the values of order properties.
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -387,7 +395,7 @@ HTTP status: **200**
             {
                 "code": "DOC",
                 "id": 13170,
-                "name": "Document confirming the right to purchase the product",
+                "name": "Document Confirming the Right to Purchase the Product",
                 "orderPropsId": 53,
                 "orderPropsXmlId": null,
                 "value": {
@@ -412,7 +420,7 @@ HTTP status: **200**
             {
                 "code": "MAX_DELIVERY_DAYS",
                 "id": 13171,
-                "name": "Deliver no later than (days after order)",
+                "name": "Deliver No Later Than (Days After Order)",
                 "orderPropsId": 54,
                 "orderPropsXmlId": null,
                 "value": "10"
@@ -478,14 +486,14 @@ HTTP status: **200**
 || **result**
 [`object`](../../data-types.md) | The root element of the response ||
 || **propertyValues**
-[`sale_order_property_value[]`](../data-types.md) | An array of objects containing information about order property values ||
+[`sale_order_property_value[]`](../data-types.md) | An array of objects containing information about the order property values ||
 || **time**
 [`time`](../../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {
@@ -500,10 +508,10 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `200040300020` | Insufficient rights to change order property values ||
-|| `100` | Parameter `fields` not specified or empty ||
+|| `200040300020` | Insufficient permissions to change order property values ||
+|| `100` | Parameter `fields` is not specified or is empty ||
 || `0` | Order not found ||
-|| `0` | Required parameters not specified ||
+|| `0` | Required parameters are not specified ||
 || `0` | Other errors (e.g., fatal errors) ||
 |#
 

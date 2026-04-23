@@ -1,8 +1,8 @@
-# Delete REST handler for payment system sale.paysystem.handler.delete
+# Delete the REST handler for the payment system sale.paysystem.handler.delete
 
 {% note tip "" %}
 
-If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../sdk/mcp.md) so the assistant can utilize the official REST documentation.
 
 {% endnote %}
 
@@ -54,19 +54,19 @@ This method deletes the REST handler for the payment system.
     ```js
     try
     {
-    	const response = await $b24.callMethod(
-    		"sale.paysystem.handler.delete",
-    		{
-    			'ID': 1
-    		}
-    	);
-    	
-    	const result = response.getData().result;
-    	console.info(result);
+        const response = await $b24.callMethod(
+            "sale.paysystem.handler.delete",
+            {
+                'ID': 1
+            }
+        );
+        
+        const result = response.getData().result;
+        console.info(result);
     }
     catch( error )
     {
-    	console.error(error);
+        console.error(error);
     }
     ```
 
@@ -208,6 +208,4 @@ HTTP status: **400**, **403**
 - [{#T}](./sale-pay-system-settings-update.md)
 - [{#T}](./sale-pay-system-delete.md)
 - [{#T}](./sale-pay-system-pay-payment.md)
-- [{#T}](./sale-pay-system-pay-invoice.md)
 - [{#T}](./sale-pay-system-settings-payment-get.md)
-- [{#T}](./sale-pay-system-settings-invoice-get.md)

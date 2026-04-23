@@ -9,10 +9,10 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
 > Who can execute the method: access rights during method execution depend on the provided data:
->   - Any user has the right to access their own and shared settings
+>   - Any user has the right to retrieve their own and shared settings
 >   - A user can access another user's settings only if they are an administrator
 
-The method returns the settings of the detail form for a specific CRM entity. It can work with both personal settings of the specified user and shared settings defined for all users.
+The method `crm.item.details.configuration.get` returns the settings of the detail form for a specific CRM object. It can work with both personal settings of the specified user and shared settings defined for all users.
 
 {% include [Extras Notice](./_includes/extras_notice.md) %}
 
@@ -24,7 +24,7 @@ The method returns the settings of the detail form for a specific CRM entity. It
 || **Name**
 `type` | **Description**                                                                                                                    ||
 || **entityTypeId***
-[`integer`][1] | Identifier of the [system](../../index.md) or [user-defined type](../user-defined-object-types/index.md) of CRM entities ||
+[`integer`][1] | Identifier of the [system](../../index.md) or [custom type](../user-defined-object-types/index.md) of CRM objects ||
 || **userId**
 [`user`][1] | Identifier of the user whose configuration you want to retrieve.
 
@@ -33,7 +33,7 @@ If this parameter is not provided, the `userId` of the user calling this method 
 Required only when requesting personal settings
 ||
 || **scope**
-[`string`][1] | Scope of the settings. Allowed values:
+[`string`][1] | Scope of the settings. Acceptable values:
 - `'P'` — personal settings
 - `'C'` — shared settings
 
@@ -46,10 +46,10 @@ By default, the value is `'P'`
 
 ### extras
 
-The `extras` parameter depends on the CRM entity.
+The `extras` parameter depends on the CRM object.
 
 #|
-|| **CRM Entity** | **Name** | **Description** ||
+|| **CRM Object** | **Name** | **Description** ||
 || **SPA** | `categoryId` | Identifier of the SPA funnel. Can be obtained using [`crm.category.list`](./../category/crm-category-list.md).
 
 If not specified, the default funnel identifier for this SPA will be used ||
@@ -68,7 +68,7 @@ Possible values:
 
 {% include [Examples Note](../../../../_includes/examples.md) %}
 
-1. Get the shared configuration of item details for deals in the funnel with `id = 9`, for the user with `id = 1`
+1. Retrieve the general configuration of item details for deals in the funnel with `id = 9`, for the user with `id = 1`
 
     {% list tabs %}
 
@@ -142,7 +142,7 @@ Possible values:
 
     {% endlist %}
 
-2. Get the personal configuration of item details for the SPA with `entityTypeId = 1032` in the funnel with `id = 5`
+2. Retrieve the personal configuration of item details for the SPA with `entityTypeId = 1032` in the funnel with `id = 5`
 
     {% list tabs %}
 
@@ -244,7 +244,7 @@ HTTP Status: **200**
                     "name": "CLIENT",
                     "optionFlags": "1",
                     "options": {
-                        "defaultCountry": "US"
+                        "defaultCountry": "DE"
                     }
                 },
                 {
@@ -361,7 +361,7 @@ Describes an individual section with fields within the item detail form
 
 #### section_element
 
-Configuration of an individual field within a section
+Configuration of an individual field within the section
 
 #|
 || **Name**
@@ -393,9 +393,9 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| Empty value | Parameter 'entityTypeId' is not defined | Required parameter `entityTypeId` is not provided ||
-|| Empty value | The entity type '`entityTypeName`' is not supported in the current context. | The method does not support this entity type || 
-|| Empty value | Access denied. | The user does not have administrative rights ||
+|| Empty Value | Parameter 'entityTypeId' is not defined | Required parameter `entityTypeId` is missing ||
+|| Empty Value | The entity type '`entityTypeName`' is not supported in the current context. | The method does not support this entity type || 
+|| Empty Value | Access denied. | The user does not have administrative rights ||
 |#
 
 {% include [System Errors](../../../../_includes/system-errors.md) %}

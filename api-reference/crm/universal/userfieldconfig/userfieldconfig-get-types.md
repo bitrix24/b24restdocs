@@ -2,19 +2,19 @@
 
 {% note tip "" %}
 
-If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../../sdk/mcp.md) so the assistant can utilize the official REST documentation.
 
 {% endnote %}
 
-> Scope: [`userfieldconfig`](../../../../scopes/permissions.md), module scope from `moduleId` (for example, [`crm`](../../../../scopes/permissions.md))
+> Scope: [`userfieldconfig`](../../../scopes/permissions.md), module scope from `moduleId` (e.g., [`crm`](../../../scopes/permissions.md))
 >
-> Who can execute the method: a user with read access permission to the object that owns the field in the `moduleId`
+> Who can execute the method: a user with read access to the object that owns the field in the `moduleId`
 
 The method `userfieldconfig.getTypes` returns a set of available user field types for the module.
 
 ## Method Parameters
 
-{% include [Parameter Note](../../../../../_includes/required.md) %}
+{% include [Parameter Note](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -25,7 +25,7 @@ The method `userfieldconfig.getTypes` returns a set of available user field type
 
 ## Code Examples
 
-{% include [Example Note](../../../../../_includes/examples.md) %}
+{% include [Examples Note](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -140,11 +140,11 @@ HTTP Status: **200**
         "types": {
             "crm": {
                 "userTypeId": "crm",
-                "description": "Link to CRM elements"
+                "description": "Linked to CRM entities"
             },
             "crm_status": {
                 "userTypeId": "crm_status",
-                "description": "Link to CRM directories"
+                "description": "Linked to CRM directories"
             },
             "money": {
                 "userTypeId": "money",
@@ -152,7 +152,7 @@ HTTP Status: **200**
             },
             "employee": {
                 "userTypeId": "employee",
-                "description": "Link to employee"
+                "description": "Linked to employee"
             },
             "rest_219_test": {
                 "userTypeId": "rest_219_test",
@@ -200,11 +200,11 @@ HTTP Status: **200**
             },
             "iblock_section": {
                 "userTypeId": "iblock_section",
-                "description": "Link to information block sections"
+                "description": "Linked to information block sections"
             },
             "iblock_element": {
                 "userTypeId": "iblock_element",
-                "description": "Link to information block elements"
+                "description": "Linked to information block elements"
             }
         }
     },
@@ -252,7 +252,7 @@ HTTP Status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../../../_includes/error-info.md) %}
+{% include notitle [error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
@@ -262,7 +262,7 @@ HTTP Status: **400**
 || `-` | No settings for UserFieldAccess | Access to user fields is not configured for the provided `moduleId` ||
 |#
 
-{% include [system errors](../../../../../_includes/system-errors.md) %}
+{% include [system errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

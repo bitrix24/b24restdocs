@@ -1,4 +1,4 @@
-# Inventory management in the Trade Catalog: Overview of Methods
+# Inventory Accounting in the Trade Catalog: Overview of Methods
 
 {% note tip "" %}
 
@@ -6,47 +6,44 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-Inventory management is a tool that allows you to track the available and reserved quantity of products in warehouses.
+Inventory accounting is a tool that allows you to track the available and reserved quantity of goods in warehouses.
 
-To add, move, or remove products from the inventory, use inventory management documents.
+To add, move, or remove goods from the warehouse, use inventory accounting documents.
 
 > Quick navigation: [all methods](#all-methods)
 > 
 > User documentation: 
-> - [Inventory management in Bitrix24](https://helpdesk.bitrix24.com/open/14821994/)
-> - [How to get started with inventory management](https://helpdesk.bitrix24.com/open/14836088/)
+> - [Bitrix24 Inventory Management](https://helpdesk.bitrix24.com/open/14821994/)
 
-## Inventory Management Documents
+## Inventory Accounting Documents
 
-The following types of documents are available in inventory management:
-- `A` – stock receipt of products,
-- `S` – stock adjustment of products,
-- `M` – transfer of products between warehouses,
-- `R` – return of products,
-- `D` – write-off of products.
+The following types of documents are available in inventory accounting:
+- `A` – goods arrival at the warehouse,
+- `S` – goods receipt,
+- `M` – goods transfer between warehouses,
+- `R` – goods return,
+- `D` – goods write-off.
 
-Set access permissions for each type of document. If access permissions are not configured, an employee will see an error when trying to open inventory management documents and will not be able to work with them.
+Set access permissions for each type of document. If access permissions are not configured, employees will see an error when attempting to open inventory accounting documents and will be unable to work with them.
 
-{% note tip "User documentation" %}
+{% note tip "User Documentation" %}
 
-- [Access permissions Inventory management documents](https://helpdesk.bitrix24.com/open/16103170/)
-- [Work with sales orders](https://helpdesk.bitrix24.com/open/18570124/)
-- [Create a stock receipt](https://helpdesk.bitrix24.com/open/22619814/)
+- [Access permissions for Inventory management documents](https://helpdesk.bitrix24.com/open/25829011/)
 - [Create a stock adjustment](https://helpdesk.bitrix24.com/open/22541392/)
-- [Reason for write-off](https://helpdesk.bitrix24.com/open/18043598/)
-- [Print Inventory Management documents](https://helpdesk.bitrix24.com/open/15832418/)
+- [Create a stock receipt](https://helpdesk.bitrix24.com/open/25801187/)
+- [Work with sales orders](https://helpdesk.bitrix24.com/open/18570124/)
 - [Write-offs](https://helpdesk.bitrix24.com/open/18044940/)
 - [Transfers](https://helpdesk.bitrix24.com/open/23188106/)
 
 {% endnote %}
 
-## Connection of Inventory Management Documents with Other Objects
+## Linking Inventory Accounting Documents with Other Objects
 
-**Products of the inventory management document.** Specify products for the inventory management document using the methods [catalog.document.element.*](./document-element/index.md).
+**Goods in the Inventory Accounting Document.** Specify the goods for the inventory accounting document using the methods [catalog.document.element.*](./document-element/index.md).
 
-**Warehouses.** Specify the warehouse for which you are creating the inventory management document. Use the methods [catalog.store.*](../store/index.md).
+**Warehouses.** Specify the warehouse for which you are creating the inventory accounting document. Use the methods [catalog.store.*](../store/index.md).
 
-**Custom fields of inventory management documents.** You can create additional fields for inventory management documents using the method [userfieldconfig.add](../../crm/universal/userfieldconfig/userfieldconfig/userfieldconfig-add.md), where `moduleId` — catalog, and `entityId` — CAT_STORE_DOCUMENT_DocumentTypeIdentifier. To view additional fields or change their values, use the methods [catalog.userfield.document.*](../userfield-document/index.md).
+**Custom Fields for Inventory Accounting Documents.** You can create additional fields for inventory accounting documents using the method [userfieldconfig.add](../../crm/universal/userfieldconfig/userfieldconfig-add.md), where `moduleId` is catalog, and `entityId` is CAT_STORE_DOCUMENT_DocumentTypeIdentifier. To view additional fields or change their values, use the methods [catalog.userfield.document.*](../userfield-document/index.md).
 
 ## Overview of Methods {#all-methods}
 
@@ -54,30 +51,30 @@ Set access permissions for each type of document. If access permissions are not 
 >
 > Who can execute methods: administrator
 
-### Main
+### Basic
 
-#|
+#| 
 || **Method** | **Description** ||
-|| [catalog.document.mode.status](./catalog-document-mode-status.md) | Checks if inventory management is enabled ||
-|| [catalog.document.add](./catalog-document-add.md) | Adds an inventory management document ||
-|| [catalog.document.conduct](./catalog-document-conduct.md) | Conducts an inventory management document ||
-|| [catalog.document.conductList](./catalog-document-conduct-list.md) | Conducts a group of inventory management documents ||
-|| [catalog.document.cancel](./catalog-document-cancel.md) | Cancels the conduct of an inventory management document by its identifier ||
-|| [catalog.document.cancelList](./catalog-document-cancel-list.md) | Cancels the conduct of a group of inventory management documents ||
-|| [catalog.document.update](./catalog-document-update.md) | Modifies an inventory management document ||
-|| [catalog.document.list](./catalog-document-list.md) | Returns a list of inventory management documents ||
-|| [catalog.document.delete](./catalog-document-delete.md) | Deletes an inventory management document ||
-|| [catalog.document.deleteList](./catalog-document-delete-list.md) | Deletes a group of inventory management documents ||
-|| [catalog.document.getFields](./catalog-document-get-fields.md) | Returns available fields of the inventory management document ||
+|| [catalog.document.mode.status](./catalog-document-mode-status.md) | Checks if inventory accounting is enabled ||
+|| [catalog.document.add](./catalog-document-add.md) | Adds an inventory accounting document ||
+|| [catalog.document.conduct](./catalog-document-conduct.md) | Conducts an inventory accounting document ||
+|| [catalog.document.conductList](./catalog-document-conduct-list.md) | Conducts a group of inventory accounting documents ||
+|| [catalog.document.cancel](./catalog-document-cancel.md) | Cancels the conduct of an inventory accounting document by its identifier ||
+|| [catalog.document.cancelList](./catalog-document-cancel-list.md) | Cancels the conduct of a group of inventory accounting documents ||
+|| [catalog.document.update](./catalog-document-update.md) | Updates an inventory accounting document ||
+|| [catalog.document.list](./catalog-document-list.md) | Returns a list of inventory accounting documents ||
+|| [catalog.document.delete](./catalog-document-delete.md) | Deletes an inventory accounting document ||
+|| [catalog.document.deleteList](./catalog-document-delete-list.md) | Deletes a group of inventory accounting documents ||
+|| [catalog.document.getFields](./catalog-document-get-fields.md) | Returns available fields of the inventory accounting document ||
 |#
 
-### Products of the Inventory Management Document
+### Goods in the Inventory Accounting Document
 
-#|
+#| 
 || **Method** | **Description** ||
-|| [catalog.document.element.add](./document-element/catalog-document-element-add.md) | Adds a product to the inventory management document ||
-|| [catalog.document.element.update](./document-element/catalog-document-element-update.md) | Modifies a product in the inventory management document ||
-|| [catalog.document.element.list](./document-element/catalog-document-element-list.md) | Returns a list of products in the inventory management document ||
-|| [catalog.document.element.delete](./document-element/catalog-document-element-delete.md) | Deletes a product from the inventory management document ||
-|| [catalog.document.element.getFields](./document-element/catalog-document-element-get-fields.md) | Returns a list of available fields for products in the inventory management document ||
+|| [catalog.document.element.add](./document-element/catalog-document-element-add.md) | Adds a good to the inventory accounting document ||
+|| [catalog.document.element.update](./document-element/catalog-document-element-update.md) | Updates a good in the inventory accounting document ||
+|| [catalog.document.element.list](./document-element/catalog-document-element-list.md) | Returns a list of goods in the inventory accounting document ||
+|| [catalog.document.element.delete](./document-element/catalog-document-element-delete.md) | Deletes a good from the inventory accounting document ||
+|| [catalog.document.element.getFields](./document-element/catalog-document-element-get-fields.md) | Returns a list of available fields for goods in the inventory accounting document ||
 |#

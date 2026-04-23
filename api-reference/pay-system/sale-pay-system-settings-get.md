@@ -2,7 +2,7 @@
 
 {% note tip "" %}
 
-If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect the [MCP server](../../sdk/mcp.md) so the assistant can utilize the official REST documentation.
 
 {% endnote %}
 
@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: CRM administrator (permission "Allow to modify settings")
 
-The method returns the settings of the payment system. The structure of the settings is defined when adding the payment system handler in the method [sale.paysystem.handler.add](./sale-pay-system-handler-add.md) under the `CODES` key of the `SETTINGS` parameter.
+This method returns the settings of the payment system. The structure of the settings is defined when adding the payment system handler in the method [sale.paysystem.handler.add](./sale-pay-system-handler-add.md) under the `CODES` key of the `SETTINGS` parameter.
 
 ## Method Parameters
 
@@ -20,10 +20,10 @@ The method returns the settings of the payment system. The structure of the sett
 || **Name**
 `type` | **Description** ||
 || **ID***
-[`sale_paysystem.ID`](../sale/data-types.md) | Identifier of the payment system for which to retrieve settings
+[`sale_paysystem.ID`](../sale/data-types.md) | Identifier of the payment system for which settings are to be retrieved
 ||
 || **PERSON_TYPE_ID***
-[`sale_person_type.id`](../sale/data-types.md) | Identifier of the payer type for which to retrieve settings. To get default settings, pass `0`
+[`sale_person_type.id`](../sale/data-types.md) | Identifier of the payer type for which settings are to be retrieved. To get default settings, pass `0`
 ||
 |#
 
@@ -58,20 +58,20 @@ The method returns the settings of the payment system. The structure of the sett
     ```js
     try
     {
-    	const response = await $b24.callMethod(
-    		'sale.paysystem.settings.get',
-    		{
-    			'ID': 11,
-    			'PERSON_TYPE_ID': 1,
-    		}
-    	);
-    	
-    	const result = response.getData().result;
-    	console.dir(result);
+        const response = await $b24.callMethod(
+            'sale.paysystem.settings.get',
+            {
+                'ID': 11,
+                'PERSON_TYPE_ID': 1,
+            }
+        );
+        
+        const result = response.getData().result;
+        console.dir(result);
     }
     catch( error )
     {
-    	console.error(error);
+        console.error(error);
     }
     ```
 
@@ -190,7 +190,7 @@ HTTP Status: **400**, **403**
 
 ```json
 {
-    "error": " ERROR_CHECK_FAILURE",
+    "error": "ERROR_CHECK_FAILURE",
     "error_description": "Pay system not found"
 }
 ```
@@ -202,7 +202,7 @@ HTTP Status: **400**, **403**
 #|
 || **Code** | **Description** | **Status** ||
 || `ACCESS_DENIED` | Insufficient permissions to read settings | 403 ||
-|| `ERROR_CHECK_FAILURE` | One of the required fields is missing or the specified payment system was not found (details in the error description) | 400 ||
+|| `ERROR_CHECK_FAILURE` | One of the required fields is not specified or the specified payment system is not found (details in the error description) | 400 ||
 |#
 
 {% include [system errors](../../_includes/system-errors.md) %}
@@ -219,6 +219,4 @@ HTTP Status: **400**, **403**
 - [{#T}](./sale-pay-system-settings-update.md)
 - [{#T}](./sale-pay-system-delete.md)
 - [{#T}](./sale-pay-system-pay-payment.md)
-- [{#T}](./sale-pay-system-pay-invoice.md)
 - [{#T}](./sale-pay-system-settings-payment-get.md)
-- [{#T}](./sale-pay-system-settings-invoice-get.md)

@@ -1,4 +1,4 @@
-# Get CRM Timeline Comment Fields
+# Get Fields of crm.timeline.comment.fields
 
 {% note tip "" %}
 
@@ -10,13 +10,13 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: `any user`
 
-This method retrieves fields of the "Comment" type deal.
+This method retrieves the fields of a "Comment" type deal.
 
-No parameters.
+No parameters required.
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../../_includes/examples.md) %}
+{% include [Examples Note](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -45,16 +45,16 @@ No parameters.
     ```js
     try
     {
-    	const response = await $b24.callMethod(
-    		'crm.timeline.comment.fields'
-    	);
-    	
-    	const result = response.getData().result;
-    	console.dir(result);
+        const response = await $b24.callMethod(
+            'crm.timeline.comment.fields'
+        );
+        
+        const result = response.getData().result;
+        console.dir(result);
     }
     catch( error )
     {
-    	console.error(error);
+        console.error(error);
     }
     ```
 
@@ -201,14 +201,14 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../../data-types.md) | Root element of the response, containing all [comment fields](#fields) ||
+[`object`](../../../data-types.md) | Root element of the response containing all [comment fields](#fields) ||
 || **time**
 [`time`](../../../data-types.md) | Information about the request execution time ||
 |#
 
 #### List of Fields {#fields}
 
-{% include [Footnote on required parameters](../../../../_includes/required.md) %}
+{% include [Required Parameters Note](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -235,7 +235,7 @@ Values:
 || **COMMENT**
 [`string`](../../../data-types.md) | Comment text ||
 || **FILES**
-[`attached_diskfile`](../../../data-types.md) | List of files. An array of values described by [rules](../../../files/how-to-upload-files.md) ||
+[`attached_diskfile`](../../../data-types.md) | List of files. Array of values described by [rules](../../../files/how-to-upload-files.md) ||
 |#
 
 ## Error Handling
@@ -254,8 +254,8 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `0` | Other errors (e.g., fatal errors) ||
+|| **Code** | **Error Message** | **Description** ||
+|| `0` | error | Other errors (e.g., fatal errors) ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

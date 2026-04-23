@@ -2,19 +2,19 @@
 
 {% note tip "" %}
 
-If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
 
 {% endnote %}
 
-> Scope: [`userfieldconfig`](../../../../scopes/permissions.md), module scope from `moduleId` (for example, [`crm`](../../../../scopes/permissions.md))
+> Scope: [`userfieldconfig`](../../../scopes/permissions.md), module scope from `moduleId` (e.g., [`crm`](../../../scopes/permissions.md))
 >
 > Who can execute the method: a user with read access permission to the object that owns the fields in the `moduleId`
 
-The method `userfieldconfig.list` returns a list of user field settings based on the filter.
+The method `userfieldconfig.list` returns a list of user field settings based on a filter.
 
 ## Method Parameters
 
-{% include [Parameter Note](../../../../../_includes/required.md) %}
+{% include [Note on Parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -68,7 +68,7 @@ By default:
 - `field_n` - name of the field by which the selection of user fields will be filtered
 - `value_n` - filter value
 
-All conditions on individual fields are combined using `AND`.
+All conditions for individual fields are combined using `AND`.
 
 See below [the list of available fields for filtering](#filterable)
 ||
@@ -84,9 +84,9 @@ Use the `next` parameter value from the previous response ||
 || **Name**
 `type` | **Description** ||
 || **\***
-[`string`](../../../data-types.md) | Return all standard field settings ||
+[`string`](../../../data-types.md) | Return all standard settings fields ||
 || **language**
-[`string`](../../../data-types.md) | Language identifier for language fields, for example `de` or `en` ||
+[`string`](../../../data-types.md) | Language identifier for language fields, e.g., `de` or `en` ||
 || **id**
 [`string`](../../../data-types.md) | Identifier of the field setting ||
 || **entityId**
@@ -110,7 +110,7 @@ Use the `next` parameter value from the previous response ||
 || **editInList**
 [`string`](../../../data-types.md) | Is editing the value allowed in the list? Possible values: `Y` or `N` ||
 || **isSearchable**
-[`string`](../../../data-types.md) | Are the field values included in the search? Possible values: `Y` or `N` ||
+[`string`](../../../data-types.md) | Are the field values searchable? Possible values: `Y` or `N` ||
 || **settings**
 [`string`](../../../data-types.md) | Additional settings for the field ||
 || **languageId**
@@ -148,12 +148,12 @@ Use the `next` parameter value from the previous response ||
 || **editInList**
 [`boolean`](../../../data-types.md) | Is editing allowed by the user? Possible values: `Y` or `N` ||
 || **isSearchable**
-[`boolean`](../../../data-types.md) | Are the field values included in the search? Possible values: `Y` or `N` ||
+[`boolean`](../../../data-types.md) | Are the field values searchable? Possible values: `Y` or `N` ||
 |#
 
 ## Code Examples
 
-{% include [Example Note](../../../../../_includes/examples.md) %}
+{% include [Note on Examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -368,7 +368,7 @@ HTTP Status: **200**
 || **next**
 [`integer`](../../../data-types.md) | Offset for the next page.
 
-The field is returned if the number of found items exceeds 50 ||
+Field is returned if the number of found items exceeds 50 ||
 || **time**
 [`time`](../../../data-types.md#time) | Information about the execution time of the request ||
 |#
@@ -412,7 +412,7 @@ Possible values: `N`, `I`, `E`, `S` ||
 || **editInList**
 [`boolean`](../../../data-types.md) | Is editing allowed in the list? Possible values: `Y` or `N` ||
 || **isSearchable**
-[`boolean`](../../../data-types.md) | Are the field values included in the search? Possible values: `Y` or `N` ||
+[`boolean`](../../../data-types.md) | Are the field values searchable? Possible values: `Y` or `N` ||
 || **settings**
 [`object`](../../../data-types.md) | Additional settings for the field.
 
@@ -428,11 +428,11 @@ The composition of keys depends on `userTypeId` ||
 || **errorMessage**
 [`lang_map`](../../../data-types.md) | Error message ||
 || **helpMessage**
-[`lang_map`](../../../data-types.md) | Help message ||
+[`lang_map`](../../../data-types.md) | Help ||
 || **enum**
-[`object[]`](../../../data-types.md) | List elements for `userTypeId = enumeration`.
+[`object[]`](../../../data-types.md) | List items for `userTypeId = enumeration`.
 
-The field may be absent for other types ||
+Field may be absent for other types ||
 |#
 
 ## Error Handling
@@ -446,7 +446,7 @@ HTTP Status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../../../_includes/error-info.md) %}
+{% include notitle [error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
@@ -457,7 +457,7 @@ HTTP Status: **400**
 || `-` | No settings for UserFieldAccess | Access to user fields is not configured for the provided `moduleId` ||
 |#
 
-{% include [system errors](../../../../../_includes/system-errors.md) %}
+{% include [system errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

@@ -7,29 +7,29 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 {% endnote %}
 
 In CRM, you can create fields of two types:
-- standard: number, string, date, address, link, file, and so on,
+- standard: number, string, date, address, link, file, etc.,
 - custom: application integrations within the CRM detail form.
 
 With custom fields, you can:
 
 - display data in the CRM detail form that does not fit standard field types. The field value is stored in Bitrix24, while the application shows it within the field and, if necessary, supplements it with data from its service.
-- create interface elements in CRM detail forms. For example, you can display buttons within the field to control the application.
-- integrate external services into the CRM detail form. For instance, you can display dynamic information in the field. Each time the detail form is opened, the field will make a request to the application handler and automatically load fresh data.
+- create interface elements in CRM detail forms. For example, display buttons within the field to control the application.
+- integrate external services into the CRM detail form. For instance, display dynamic information in the field. Each time the detail form is opened, the field will make a request to the application handler and automatically load fresh data.
 
 > Quick navigation: [all methods](#all-methods)
 >
-> User documentation: [Working with custom fields](https://helpdesk.bitrix24.com/open/22048980/)
+> User documentation: [Custom fields in CRM](https://helpdesk.bitrix24.com/open/22067852/)
 
 ## Connection with CRM Objects
 
 Custom field types can be added to:
-- [deals](../../deals/index.md) — use the methods [crm.deal.userfield.add](../../deals/user-defined-fields/crm-deal-userfield-add.md) or [userfieldconfig.add](../userfieldconfig/userfieldconfig/userfieldconfig-add.md),
-- [leads](../../leads/index.md) — [crm.lead.userfield.add](../../leads/userfield/crm-lead-userfield-add.md) or [userfieldconfig.add](../userfieldconfig/userfieldconfig/userfieldconfig-add.md),
-- [contacts](../../contacts/index.md) — [crm.contact.userfield.add](../../contacts/userfield/crm-contact-userfield-add.md) or [userfieldconfig.add](../userfieldconfig/userfieldconfig/userfieldconfig-add.md),
-- [companies](../../companies/index.md) — [crm.company.userfield.add](../../companies/userfields/crm-company-userfield-add.md) or [userfieldconfig.add](../userfieldconfig/userfieldconfig/userfieldconfig-add.md),
-- [new invoices](../invoice.md) — [userfieldconfig.add](../userfieldconfig/userfieldconfig/userfieldconfig-add.md),
-- [estimates](../../quote/index.md) — [crm.quote.userfield.add](../../quote/user-field/crm-quote-user-field-add.md) or [userfieldconfig.add](../userfieldconfig/userfieldconfig/userfieldconfig-add.md),
-- [SPAs](../index.md) — [userfieldconfig.add](../userfieldconfig/userfieldconfig/userfieldconfig-add.md).
+- [deals](../../deals/index.md) — use methods [crm.deal.userfield.add](../../deals/user-defined-fields/crm-deal-userfield-add.md) or [userfieldconfig.add](../userfieldconfig/userfieldconfig-add.md),
+- [leads](../../leads/index.md) — [crm.lead.userfield.add](../../leads/userfield/crm-lead-userfield-add.md) or [userfieldconfig.add](../userfieldconfig/userfieldconfig-add.md),
+- [contacts](../../contacts/index.md) — [crm.contact.userfield.add](../../contacts/userfield/crm-contact-userfield-add.md) or [userfieldconfig.add](../userfieldconfig/userfieldconfig-add.md),
+- [companies](../../companies/index.md) — [crm.company.userfield.add](../../companies/userfields/crm-company-userfield-add.md) or [userfieldconfig.add](../userfieldconfig/userfieldconfig-add.md),
+- [new invoices](../invoice.md) — [userfieldconfig.add](../userfieldconfig/userfieldconfig-add.md),
+- [estimates](../../quote/index.md) — [crm.quote.userfield.add](../../quote/user-field/crm-quote-user-field-add.md) or [userfieldconfig.add](../userfieldconfig/userfieldconfig-add.md),
+- [SPAs](../index.md) — [userfieldconfig.add](../userfieldconfig/userfieldconfig-add.md).
 
 In the `USER_TYPE_ID` field, pass the value in the form `rest_#ID_application#_#USER_TYPE_ID#`. For example, for an application with `ID: 123` and `USER_TYPE_ID: userfield1`, the value will be `rest_123_test_userfield1`.
 
@@ -69,13 +69,13 @@ If the field was created without errors, but the content is not loading:
 
    - do not use local addresses: localhost, 192.168.* and other addresses accessible only from the local network,
 
-   - check the handler's accessibility using public "website availability" services.
+   - check the handler's availability using public "website availability" services.
 
-3. Verify:
+3. Check:
 
    - the correctness of the SSL certificate if HTTPS is used,
 
-   - the absence of blocks in .htaccess or firewall on the handler server,
+   - the absence of blocks in .htaccess or firewall on the handler's server,
 
    - the returned HTTP codes; it should be 200 OK.
 

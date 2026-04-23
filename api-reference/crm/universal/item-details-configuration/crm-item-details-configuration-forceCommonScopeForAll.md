@@ -1,4 +1,4 @@
-# Set Common Detail for All Users crm.item.details.configuration.forceCommonScopeForAll
+# Set a Common Detail Form for All Users crm.item.details.configuration.forceCommonScopeForAll
 
 {% note tip "" %}
 
@@ -10,26 +10,26 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: Administrator
 
-This method forcibly sets a common detail for all users, removing their personal detail configuration.
+The method `crm.item.details.configuration.forceCommonScopeForAll` enforces a common detail form for all users, removing their personal detail form settings.
 
-{% include [Notice about extras](./_includes/extras_notice.md) %}
+{% include [Extras Notice](./_includes/extras_notice.md) %}
 
 ## Method Parameters
 
-{% include [Footnote about parameters](../../../../_includes/required.md) %}
+{% include [Parameters Note](../../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **entityTypeId***
-[`integer`][1] | Identifier of the [system](./../../index.md) or [user-defined type](./../user-defined-object-types/index.md) of CRM objects ||
+[`integer`][1] | Identifier of the [system](./../../index.md) or [custom type](./../user-defined-object-types/index.md) of CRM entities ||
 || **extras**
 [`object`][1] | Additional parameters. Possible values and their structure are described [below](#extras) ||
 |#
 
 ### extras
 
-The `extras` parameter depends on the CRM object.
+The parameter in `extras` depends on the CRM object.
 
 #|
 || **CRM Object** | **Name** | **Description** ||
@@ -49,9 +49,9 @@ Possible values:
 
 ## Code Examples
 
-{% include [Footnote about examples](../../../../_includes/examples.md) %}
+{% include [Examples Note](../../../../_includes/examples.md) %}
 
-Set a common detail for deals in the funnel with `id = 9`
+Set a common detail form for deals in the funnel with `id = 9`
 
 {% list tabs %}
 
@@ -205,7 +205,7 @@ HTTP Status: **200**
 || **result**
 [`boolean`][1] | Root element of the response. Returns `true` on success ||
 || **time**
-[`time`][1] | Information about the execution time of the request ||
+[`time`][1] | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -225,7 +225,7 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| Empty value | Parameter 'entityTypeId' is not defined | Required parameter `entityTypeId` not provided ||
+|| Empty value | Parameter 'entityTypeId' is not defined | Required parameter `entityTypeId` is missing ||
 || Empty value | The entity type '`entityTypeName`' is not supported in current context. | The method does not support this entity type ||
 || Empty value | Access denied. | The user does not have administrative rights ||
 |#

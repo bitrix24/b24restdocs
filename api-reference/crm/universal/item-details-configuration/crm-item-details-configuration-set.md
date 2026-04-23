@@ -1,4 +1,4 @@
-# Set Parameters for CRM Item Card crm.item.details.configuration.set
+# Set Parameters for crm.item.details.configuration.set
 
 {% note tip "" %}
 
@@ -6,21 +6,19 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-> Method name: **crm.item.details.configuration.set**
->
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: access permission checks depend on the provided data:
->   - Any user can set their personal settings
+> Who can execute the method: access rights when executing the method depend on the provided data:
+>   - Any user has the right to set their personal settings
 >   - A user can set common and others' settings only if they are an administrator
 
-The method sets the settings for the card of a specific CRM object. It records personal settings for the specified user or common settings for all users.
+The method `crm.item.details.configuration.set` sets the settings for the card of a specific CRM object. It records the personal settings of the specified user or common settings for all users.
 
 {% include [Extras Notice](./_includes/extras_notice.md) %}
 
 ## Method Parameters
 
-{% include [Required Parameters Notice](../../../../_includes/required.md) %}
+{% include [Required Parameters Note](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -52,7 +50,7 @@ By default, the value is `'P'`
 
 Describes a specific section with fields within the item card.
 
-{% include [Required Parameters Notice](../../../../_includes/required.md) %}
+{% include [Required Parameters Note](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -73,15 +71,15 @@ Currently, only the value `'section'` is available ||
 
 Configuration of a specific field within the section.
 
-{% include [Required Parameters Notice](../../../../_includes/required.md) %}
+{% include [Required Parameters Note](../../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **name***
-[`string`][1] | Field identifier. The list of available fields can be found using [`crm.item.fields`](../crm-item-fields.md) ||
+[`string`][1] | Field identifier. A list of available fields can be obtained using [`crm.item.fields`](../crm-item-fields.md) ||
 || **optionFlags**
-[`integer`][1] | Should the field always be shown:
+[`integer`][1] | Should the field always be displayed:
 - `1` — yes
 - `0` — no
 
@@ -96,25 +94,25 @@ By default, the value is `0` ||
 || **Name**
 `type` | **Fields where the option is available** | **Description** | **Default** ||
 || **defaultAddressType**
-[`integer`][1] | `ADDRESS` | Identifier of the default address type. To find possible address types, use [`crm.enum.addresstype`][2] | `Computed` ||
+[`integer`][1] | `ADDRESS` | Identifier of the default address type. To find out possible address types, use [`crm.enum.addresstype`][2] | `Computed` ||
 || **defaultCountry** 
 [`string`][1] | `PHONE`
 `CLIENT`
 `COMPANY`
 `CONTACT`
-`MYCOMPANY_ID` | Country code for the default phone number format — a string of two Latin letters. For example, `"GB"`              | `Computed` ||
+`MYCOMPANY_ID` | Country code for the default phone number format — a string of two Latin letters. For example, `"DE"`              | `Computed` ||
 || **isPayButtonVisible**
-[`boolean`][1] | `OPPORTUNITY_WITH_CURRENCY` | Is the payment acceptance button shown.
+[`boolean`][1] | `OPPORTUNITY_WITH_CURRENCY` | Is the payment acceptance button displayed.
 
 Possible values:
-- `'true'` — shown
+- `'true'` — displayed
 - `'false'` — hidden 
 | `'true'` ||
 || **isPaymentDocumentsVisible**
-[`boolean`][1] | `OPPORTUNITY_WITH_CURRENCY` | Is the "Payment and Delivery" block shown.
+[`boolean`][1] | `OPPORTUNITY_WITH_CURRENCY` | Is the "Payment and Delivery" block displayed.
 
 Possible values: 
-- `'true'` — shown
+- `'true'` — displayed
 - `'false'` — hidden 
 | `'true'` ||
 |#
@@ -127,10 +125,10 @@ The `extras` parameter depends on the CRM object.
 || **CRM Object** | **Name** | **Description** ||
 || **SPA** | `categoryId` | Identifier of the SPA funnel. Can be obtained using [`crm.category.list`](./../category/crm-category-list.md).
 
-If not specified, the default funnel identifier for this SPA will be used ||
+If not specified, the default funnel identifier for this SPA is used ||
 || **Deal** | `dealCategoryId` | Identifier of the deal funnel. Can be obtained using [`crm.category.list`](./../category/crm-category-list.md).
 
-If not specified, the default funnel identifier for deals will be used ||
+If not specified, the default funnel identifier for deals is used ||
 || **Lead** | `leadCustomerType` | Type of leads. 
 
 Possible values:
@@ -141,22 +139,22 @@ Possible values:
 
 ## Code Examples
 
-{% include [Examples Notice](../../../../_includes/examples.md) %}
+{% include [Examples Note](../../../../_includes/examples.md) %}
 
-For the user with `id = 1`, set the following configuration for the item card
+For a user with `id = 1`, set the following configuration for item cards
 
 - Section 1 - **Personal Data**
     - **First Name**
-        - Show always
+        - Always show
     - **Last Name**
-        - Show always
+        - Always show
     - **Middle Name**
     - **Date of Birth**
     - **Phone**
-        - Show always
+        - Always show
         - Default country: **United Kingdom(+44)**
     - **Address**
-        - Show always
+        - Always show
         - Default address type: **Registration Address** (see [`crm.enum.addresstype`][2])
 - Section 2 - **Basic Information**
     - **Contact Type**
@@ -507,9 +505,13 @@ For the user with `id = 1`, set the following configuration for the item card
 
 {% endlist %}
 
+### Result
+
+![Example of the resulting configuration](./_images/result-item-details-configuration-example.png)
+
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -539,7 +541,7 @@ HTTP status: **200**
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {
@@ -548,25 +550,25 @@ HTTP status: **400**
 }
 ```
 
-{% include notitle [Error Handling](../../../../_includes/error-info.md) %}
+{% include notitle [error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
 || **Code** | **Description** | **Value** ||
-|| Empty value | Parameter 'entityTypeId' is not defined | Required parameter `entityTypeId` not provided ||
-|| Empty value | The entity type '`entityTypeName`' is not supported in the current context. | The method does not support this entity type ||
+|| Empty value | Parameter 'entityTypeId' is not defined | Required parameter `entityTypeId` is not provided ||
+|| Empty value | The entity type '`entityTypeName`' is not supported in current context. | The method does not support this entity type ||
 || Empty value | Access denied. | The user does not have administrative rights ||
-|| Empty value | Parameter 'data' must be an array. | A non-array was provided in `data` ||
-|| Empty value | The data must be an indexed array. | A non-indexed array was provided in `data` ||
-|| Empty value | There are no data to write. | An empty array was provided in `data` ||
-|| Empty value | Section at index `i` has type `data[i].type`. The expected type is 'section'. | The value in `data[i].type` is different from `'section'` || 
-|| Empty value | Section at index `i` does not have a name. | An empty value was provided in `data[i].name` ||
-|| Empty value | Section at index `i` does not have a title. | An empty value was provided in `data[i].title` ||
-|| Empty value | Element at index `j` in section at index `i` does not have a name. | An empty value was provided in `data[i].elements[j].name` ||
+|| Empty value | Parameter 'data' must be array. | `data` is not an array ||
+|| Empty value | The data must be indexed array. | `data` is not an indexed array ||
+|| Empty value | There are no data to write. | `data` is an empty array ||
+|| Empty value | Section at index `i` have type `data[i].type`. The expected type is 'section'. | `data[i].type` contains a value other than `'section'` || 
+|| Empty value | Section at index `i` does not have name. | `data[i].name` is empty ||
+|| Empty value | Section at index `i` does not have title. | `data[i].title` is empty ||
+|| Empty value | Element at index `j` in section at index `i` does not have name. | `data[i].elements[j].name` is empty ||
 |#
 
-{% include [System Errors](./../../../../_includes/system-errors.md) %}
+{% include [system errors](./../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

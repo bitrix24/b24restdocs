@@ -1,4 +1,4 @@
-# Universal Methods for Core Elements 
+# Universal CRM Methods: Overview of Methods and Events
 
 {% note tip "" %}
 
@@ -6,35 +6,48 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-{% note warning "We are still updating this page" %}
+The methods `crm.item.*` manage CRM entities: leads, deals, contacts, companies, invoices, estimates, and SPA elements.
 
-Some data may be missing — we will fill it in shortly.
+A unified interface simplifies working with different entities. Instead of separate commands for each entity, use universal methods with the type identifier `entityTypeId`.
 
-{% endnote %}
+> Quick navigation: [all methods and events](#all-methods)
 
-{% if build == 'dev' %}
+## Getting Started
 
-{% note alert "TO-DO _not exported to prod_" %}
+1. Determine the CRM entity type `entityTypeId`. Obtain the value from the [CRM object types directory](../../data-types.md#object_type) or the [SPA section](./user-defined-object-types/index.md).
+2. Retrieve the list of available fields for this type using the [crm.item.fields](./crm-item-fields.md) method.
+3. Create a new entity using the [crm.item.add](./crm-item-add.md) method or get a list of existing entities using the [crm.item.list](./crm-item-list.md) method.
+4. Retrieve data for a specific entity using the [crm.item.get](./crm-item-get.md) method.
+5. Modify the entity using the [crm.item.update](./crm-item-update.md) method or delete it using the [crm.item.delete](./crm-item-delete.md) method.
 
-- discussing leads, deals, … smart processes, providing a link to object types.
+## Relationships of Universal Methods with Other Entities
 
-{% endnote %}
+**CRM Entity Type.** The type is defined by the `entityTypeId` parameter. It determines the structure of fields and the logic of the method.
 
-{% endif %}
+**CRM Entity.** A specific record is identified by the pair `entityTypeId` and `id`. This combination is used in the core methods `crm.item.*`.
 
-The methods `crm.item.*` provide capabilities for managing various CRM entities such as leads, deals, contacts, companies, invoices, estimates, and SPA elements. They allow you to retrieve fields, add, update, delete, and get lists of elements.
+**Requisites.** Link company and contact requisites using the [crm.requisite.link.*](../requisites/links/index.md) methods.
 
-## Features of Working with Field Names
+**Parent Relationships.** Entities are linked through the `parentId` and `parentEntityTypeId` fields:
 
-In the database, the names of element fields are stored in `UPPER_CASE` format. However, when working through REST, we convert them to `camelCase`. For example, the field `ASSIGNED_BY_ID` is transformed into `assignedById`.
+- `fields` returns information about parent fields
+- `get` provides values for parent fields
+- `list` filters, sorts, and adds parent field values to the selection
+- `add` and `update` support changing the values of these fields
 
-Custom field names, in addition to the `_` character and letters, can contain numbers. Typically, they are separated, for instance, the field `UF_CRM_10_5186744711` is converted to `ufCrm10_5186744711`.
+## Field Naming Conventions
 
-To make the code more readable, underscores between numbers are retained, while others are removed.
+In the database, fields are stored in `UPPER_CASE` format, while in REST, names are used in `camelCase`.
 
-Problems arise when letters and numbers in a field are mixed together. For example, `UF_CRM_10_DIGIT10` is transformed into `ufCrm10Digit10`. When converting back, there is no way to determine whether the original field was named `UF_CRM_10_DIGIT10` or `UF_CRM_10_DIGIT_10`.
+Example: `ASSIGNED_BY_ID` becomes `assignedById`.
 
-To resolve such conflicts, starting from version **CRM 21.1800.0**, a mechanism for preliminary analysis of field names was implemented. If conflicts are detected, the field name is not converted to `camelCase` and remains as is.
+For custom fields, the conversion is more complex because original names often contain numbers and underscores.
+
+Standard case: `UF_CRM_10_5186744711` becomes `ufCrm10_5186744711`. Underscores between numeric blocks are preserved, while others are removed.
+
+A problem arises when letters and numbers are mixed. For example, `UF_CRM_10_DIGIT10` converts to `ufCrm10Digit10`. During reverse conversion, it is impossible to determine whether the original field was `UF_CRM_10_DIGIT10` or `UF_CRM_10_DIGIT_10`.
+
+Starting from **CRM 21.1800.0**, the system checks for such conflicts before conversion. If the name becomes ambiguous, it is returned in its original `UPPER_CASE` form.
 
 #|
 || **UPPER_CASE** | **camelCase** ||
@@ -45,41 +58,53 @@ To resolve such conflicts, starting from version **CRM 21.1800.0**, a mechanism 
 || `UF_CRM_1747309879` | `ufCrm_1747309879` ||
 |#
 
-Starting from version **CRM 25.0.0**, a parameter `useOriginalUfNames` was added to the methods crm.item.* to control the format of custom field names in requests and responses: 
-- `Y` — original custom field names, for example `UF_CRM_2_1639669411830`
-- `N` — custom field names in camelCase, for example `ufCrm2_1639669411830`
+Starting from **CRM 25.0.0**, the methods `crm.item.*` support the `useOriginalUfNames` parameter, which controls the format of custom field names in requests and responses:
 
-By default, custom field names are passed and returned in `camelCase`.
+- `Y` — original custom field names, e.g., `UF_CRM_2_1639669411830`
+- `N` — custom field names in `camelCase`, e.g., `ufCrm2_1639669411830`
 
-## Binding to Requisites
+By default, `N` is used.
 
-To manage the binding of requisites, you can use the methods [crm.requisite.link.*](../requisites/links/index.md).
+## Use Cases
 
-## Starting from crm 21.800.0
+- Configure the entity structure and fields: [CRM Object Fields](./object-fields.md), [Custom Fields](./user-defined-fields/index.md), [Custom Field Settings](./userfieldconfig/index.md)
+- Work with SPAs and stages: [SPAs](./user-defined-object-types/index.md), [CRM Funnels](./category/index.md)
+- Manage the composition of a deal or invoice: [Product Items](./product-rows/index.md), [Payments and Deliveries](./payment/index.md), [Deliveries](./delivery/index.md), [Invoices](./invoice.md)
+- Configure the detail form and interface: [Manage Item Detail Forms](./item-details-configuration/index.md), [Widgets](./widgets.md)
+- Bulk upload and link data: [Import](./import/index.md), [Link CRM with Online Store Orders](./order-entity/index.md)
 
-Support for parent fields when working with CRM elements is introduced.
+## Overview of Methods and Events {#all-methods}
 
-Each field has a code `parentId + {parentEntityTypeId}`.
+> Scope: [`crm`](../../scopes/permissions.md)
+>
+> Who can execute methods: depending on the method
 
-- The `fields` method in the field list will return information about fields with parents.
-- The `get` method will return the values of parent fields.
-- The `list` method will filter, sort, and include values of parent fields in the selection.
-- The `add` and `update` methods will support changes to the values of these fields.
+{% list tabs %}
 
-## REST Methods
+- Methods
 
-- [{#T}](crm-item-fields.md)
-- [{#T}](crm-item-add.md)
-- [{#T}](crm-item-update.md)
-- [{#T}](crm-item-delete.md)
-- [{#T}](crm-item-list.md)
+  #|
+  || **Method** | **Description** ||
+  || [crm.item.add](./crm-item-add.md) | Creates a CRM entity ||
+  || [crm.item.update](./crm-item-update.md) | Modifies fields of a CRM entity ||
+  || [crm.item.get](./crm-item-get.md) | Returns data of a CRM entity by identifier ||
+  || [crm.item.list](./crm-item-list.md) | Returns a list of CRM entities ||
+  || [crm.item.delete](./crm-item-delete.md) | Deletes a CRM entity ||
+  || [crm.item.fields](./crm-item-fields.md) | Returns the description of CRM entity fields ||
+  |#
 
-## Events on SPA Elements
+- Events
 
-- [{#T}](events/on-crm-dynamic-item-add.md)
-- [{#T}](events/on-crm-dynamic-item-update.md)
-- [{#T}](events/on-crm-dynamic-item-delete.md)
+  #|
+  || **Event** | **Triggered By** ||
+  || [onCrmDynamicItemAdd](./events/on-crm-dynamic-item-add.md) | After adding a SPA entity ||
+  || [onCrmDynamicItemUpdate](./events/on-crm-dynamic-item-update.md) | After updating a SPA entity ||
+  || [onCrmDynamicItemDelete](./events/on-crm-dynamic-item-delete.md) | After deleting a SPA entity ||
+  |#
+
+{% endlist %}
 
 ## Continue Learning
 
+- [{#T}](./invoice.md)
 - [{#T}](../../../tutorials/crm/how-to-add-crm-objects/how-to-add-user-field-to-spa.md)

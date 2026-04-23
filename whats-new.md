@@ -2,6 +2,46 @@
 
 ## 2026
 
+### April 23, 2026
+
+- Updated the page [Security Recommendations for REST API Applications](./settings/cloud-and-on-premise/security-recommendations.md)
+- Updated the main page of the section [Websites and Stores](./api-reference/landing/index.md). Added explanations for choosing methods for working with blocks
+- Updated the page [Working with Page Blocks](./api-reference/landing/page/block-methods/index.md). Added a method selection table based on tasks
+- Updated the page [How to Work with Files](./api-reference/files/index.md). Added introductory information, types of file fields, relationships with other objects, and method selection
+- Updated the page [Editing Data in CRM](./tutorials/crm/how-to-edit-crm-objects/index.md). Added introductory information, relationships with CRM objects, and an overview of scenarios
+- Updated the page [Getting Lists in CRM](./tutorials/crm/how-to-get-lists/index.md). Added introductory information, relationships with CRM objects, and an overview of scenarios
+- Updated the main page of the section [System Activity](./api-reference/crm/timeline/activities/activity-base/index.md) in CRM. Added introductory information, a getting started scenario, relationships with other objects, and an overview of methods
+- Updated the main page of the section [Activity Relationships with CRM Entities](./api-reference/crm/timeline/activities/binding/index.md). Added introductory information, a getting started scenario, operational features, and relationships with other objects
+- Updated the main page of the section [Timeline Record Bindings with CRM Entities](./api-reference/crm/timeline/bindings/index.md). Added introductory information, a getting started scenario, relationships with other objects, and an overview of methods
+- Updated the main page of the section [Notes on Timeline Records](./api-reference/crm/timeline/note/index.md). Added introductory information, a getting started scenario, relationships with other objects, and an overview of methods
+- Added new methods [sign.b2e.document.send](./api-reference/sign/sign-b2e-document-send.md), [sign.b2e.document.get](./api-reference/sign/sign-b2e-document-get.md), [sign.b2e.company.provider.list](./api-reference/sign/sign-b2e-company-provider-list.md) and events [OnSignB2eDocumentStatusChanged](./api-reference/sign/events/on-sign-b2e-document-status-changed.md), [OnSignB2eMemberStatusChanged](./api-reference/sign/events/on-sign-b2e-member-status-changed.md) in the section [Signature](./api-reference/sign/index.md)
+- Updated the main page of the section [Additional Timeline Content Blocks](./api-reference/crm/timeline/layout-blocks/index.md)
+- Updated the main page of the section [Application Automation Rules](./api-reference/bizproc/bizproc-robot/index.md)
+- Updated the main page of the section [CRM](./api-reference/crm/index.md). Added introductory information, relationships with other objects, and an overview of sections and methods
+- Updated the main page of the section [Log Message Journal](./api-reference/crm/timeline/logmessage/index.md)
+- Updated the main page of the section [Log Message Icons](./api-reference/crm/timeline/logmessage/icons/index.md)
+- Updated the main page of the section [Log Message Logos](./api-reference/crm/timeline/logmessage/logo/index.md)
+- Updated the main page of the section [Methods for Working with Blocks](./api-reference/landing/block/methods/index.md) in Websites and Stores. Added introductory information, as well as an overview of methods and relationships
+- Updated the main page of the section [Managing Entity Detail Forms](./api-reference/crm/universal/item-details-configuration/index.md) in CRM. Added introductory information, as well as an overview of methods and relationships
+- Updated the main page of the section [Comments](./api-reference/crm/timeline/comments/index.md) in CRM. Added introductory information, as well as an overview of methods and relationships
+- Updated the main page of the section [Events](./api-reference/crm/timeline/comments/events/index.md) in CRM Comments
+- Updated the main page of the section [Events When Working with CRM Activities](./api-reference/crm/timeline/activities/events/index.md). Added introductory information and an overview of events
+- Updated the main page of the section [Events When Working with Requisites](./api-reference/crm/requisites/events/index.md). Added introductory information and an overview of events
+- Updated the page [CRM Automation: Overview of Methods](./api-reference/crm/automation/index.md). Added introductory information, getting started scenarios, and relationships with other objects
+- Updated the main page of the section [CRM Automation Triggers](./api-reference/crm/automation/triggers/index.md). Added introductory information and a getting started scenario
+- Updated the page [Document Generator: Overview of Methods and Events](./api-reference/crm/document-generator/index.md). Added introductory information, a getting started scenario, relationships with other objects, and an overview of methods and events
+- Updated the main page of the section [Documents](./api-reference/crm/document-generator/documents/index.md) in the Document Generator. Added introductory information and a getting started scenario
+- Updated the main page of the section [Document Templates](./api-reference/crm/document-generator/templates/index.md) in the Document Generator. Added introductory information, a getting started scenario, and relationships with other objects
+- Updated the main page of the section [Numbering Systems](./api-reference/crm/document-generator/numerator/index.md) in the Document Generator. Added introductory information, a getting started scenario, and important limitations
+- Updated the main page of the section [CRM Sales Funnels](./api-reference/crm/universal/category/index.md). Added introductory information, a getting started scenario, and relationships with other objects
+- Updated the main page of the section [BIconnector](./api-reference/biconnector/index.md)
+- Updated the main page of the section [Custom Field Settings](./api-reference/crm/universal/userfieldconfig/index.md) in CRM
+- Updated the main page of the section [Payment Systems](./api-reference/pay-system/index.md). Added introductory information, as well as an overview of methods and relationships
+- Updated the main page of the section [CRM Connection with Online Store Orders](./api-reference/crm/universal/order-entity/index.md). Added introductory information, as well as an overview of methods and relationships
+- Updated the main page of the section [Universal CRM Methods](./api-reference/crm/universal/index.md). Added introductory information, as well as an overview of methods and relationships
+- Updated the main page of the section [Custom CRM Type Events](./api-reference/crm/universal/events/type/index.md)
+- Updated the main page of the section [System Dialogs](./sdk/bx24-js-sdk/system-dialogues/index.md)
+
 ### April 17, 2026
 
 - Updated the page [Common methods and events: overview](./api-reference/common/index.md). Added introductory information, connections to other entities, and an overview of methods and events with tabs.
@@ -126,7 +166,7 @@
 - Consolidated updates in the Landing section: Template Object methods (`landing.template.*`), Block methods (`landing.block.*`), and Special Pages methods (`landing.syspage.*`)
 - Consolidated updates in Data Storage: [entity.*](./api-reference/entity/entities/index.md), [entity.section.*](./api-reference/entity/sections/index.md), [entity.item.*](./api-reference/entity/items/index.md), and [entity.item.property.*](./api-reference/entity/items/properties/index.md)
 - Consolidated updates in the Document Generator: [documentgenerator.region.*](./api-reference/document-generator/region/index.md), [documentgenerator.numerator.*](./api-reference/document-generator/numerators/index.md), [documentgenerator.template.*](./api-reference/document-generator/templates/index.md), and [crm.documentgenerator.document.*](./api-reference/crm/document-generator/documents/index.md)
-- Updated CRM universal custom fields methods [userfieldconfig.*](./api-reference/crm/universal/userfieldconfig/userfieldconfig/index.md)
+- Updated CRM universal custom fields methods [userfieldconfig.*](./api-reference/crm/universal/userfieldconfig/index.md)
 - Consolidated updates in the Trade Catalog: [catalog.enum.*](./api-reference/catalog/enum/index.md), [catalog.priceTypeGroup.*](./api-reference/catalog/price-type/price-type-group/index.md), [catalog.productPropertyEnum.*](./api-reference/catalog/product-property-enum/index.md), [catalog.productPropertyFeature.*](./api-reference/catalog/product-property-feature/index.md), [catalog.productPropertySection.*](./api-reference/catalog/product-property-section/index.md), [catalog.userfield.document.*](./api-reference/catalog/userfield-document/index.md), and [Data Types and Object Structure in the Catalog REST API](./api-reference/catalog/data-types.md)
 - Updated [messageservice.sender.*](./api-reference/messageservice/index.md) and [socialnetwork.api.workgroup.list](./api-reference/sonet-group/socialnetwork-api-workgroup-list.md)
 - Added new methods for [Chatbots 2.0](./api-reference/chat-bots/chat-bots-v2/index.md)

@@ -2,7 +2,7 @@
 
 {% note tip "" %}
 
-If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so the assistant can utilize the official REST documentation.
 
 {% endnote %}
 
@@ -12,19 +12,19 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 The method `bizproc.task.list` retrieves a list of workflow tasks.
 
-A portal administrator can request all tasks or tasks for any user. A regular user can only request their own tasks or those of their subordinate.
+A portal administrator can request all tasks or tasks of any user. A regular user can only request their own tasks or those of their subordinates.
 
-When requesting their own tasks, the `USER_ID` filter does not need to be specified.
+To request their own tasks, the `USER_ID` filter does not need to be specified.
 
 {% note info "" %}
 
-In cloud Bitrix24, information about tasks is available for 24 hours after the workflow is completed.
+In cloud Bitrix24, task information is available for one day after the workflow is completed.
 
 {% endnote %}
 
 ## Method Parameters
 
-{% include [Note on Parameters](../../../_includes/required.md) %}
+{% include [Footnote on parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -42,9 +42,9 @@ By default, it returns the fields `ENTITY`, `DOCUMENT_ID`, `ID`, `WORKFLOW_ID`, 
 
 If `USER_ID` is present in the filter, user subordination is checked:
 - a manager can request a list of tasks for their subordinates
-- an administrator can request tasks for any users without restrictions 
+- an administrator can request tasks of any users without restrictions 
 
-If the method is called by a non-administrator and the `USER_ID` filter is not specified, it defaults to selecting tasks for the current user
+If the method is called by a non-administrator and the `USER_ID` filter is not specified, it defaults to selecting tasks of the current user
 ||
 || **ORDER**
 [`object`](../../data-types.md) | An object for sorting the list of tasks in the format `{"field_1": "value_1", ... "field_N": "value_N"}`, where
@@ -70,7 +70,7 @@ The formula for calculating the `start` parameter value:
 
 ## Code Examples
 
-{% include [Note on Examples](../../../_includes/examples.md) %}
+{% include [Footnote on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -408,8 +408,8 @@ HTTP Status: **200**
             "DOCUMENT_NAME": "Partner Conference",
             "DESCRIPTION": "",
             "NAME": "Add Contractor Information",
-            "MODIFIED": "2025-02-05T09:06:19+01:00",
-            "WORKFLOW_STARTED": "2025-02-05T09:06:19+01:00",
+            "MODIFIED": "2025-02-05T09:06:19+02:00",
+            "WORKFLOW_STARTED": "2025-02-05T09:06:19+02:00",
             "WORKFLOW_STARTED_BY": "1",
             "OVERDUE_DATE": null,
             "WORKFLOW_TEMPLATE_ID": "565",
@@ -476,8 +476,8 @@ HTTP Status: **200**
         "finish": 1738735796.510215,
         "duration": 0.037192106246948242,
         "processing": 0.0080459117889404297,
-        "date_start": "2025-02-05T09:09:56+01:00",
-        "date_finish": "2025-02-05T09:09:56+01:00",
+        "date_start": "2025-02-05T09:09:56+02:00",
+        "date_finish": "2025-02-05T09:09:56+02:00",
         "operating_reset_at": 1738736396,
         "operating": 0
     }
@@ -498,7 +498,7 @@ Each object contains [fields](#fields) of the task specified in the `SELECT` par
 || **total**
 [`integer`](../../data-types.md) | The total number of records found ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the request execution time ||
+[`time`](../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
 #### Task Fields {#fields}
@@ -519,7 +519,7 @@ Each object contains [fields](#fields) of the task specified in the `SELECT` par
 || **MODIFIED**
 [`datetime`](../../data-types.md) | Modification date ||
 || **WORKFLOW_STARTED**
-[`datatime`](../../data-types.md) | Workflow start date ||
+[`datetime`](../../data-types.md) | Workflow start date ||
 || **WORKFLOW_STARTED_BY**
 [`user`](../../data-types.md) | Who started the workflow ||
 || **OVERDUE_DATE**
@@ -547,7 +547,6 @@ Each object contains [fields](#fields) of the task specified in the `SELECT` par
 - `1` — approved
 - `2` — rejected
 - `3` — completed ||
-
 || **MODULE_ID**
 [`string`](../../data-types.md) | Module identifier by document ||
 || **ENTITY**
@@ -643,7 +642,7 @@ Values depend on the parameter type. Examples:
     "3": "Third Option",
 },
 ```
-- for the CRM Binding type `'E:ECrm'`, these are the available object types
+- for the CRM binding type `'E:ECrm'`, these are the available object types
 ```json
 "Options": {
     "LEAD": "N",

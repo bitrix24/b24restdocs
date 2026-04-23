@@ -1,4 +1,4 @@
-# Update the Numerator crm.documentgenerator.numerator.update
+# Update the crm.documentgenerator.numerator.update
 
 {% note tip "" %}
 
@@ -8,7 +8,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: user with "edit" access permission for document generator templates
+> Who can execute the method: a user with the "modify" access permission for document generator templates.
 
 The method `crm.documentgenerator.numerator.update` updates an existing numerator.
 
@@ -51,7 +51,7 @@ The list of fields is [below](#parameter-fields) ||
 || **template**
 [`string`](../../data-types.md) | Number template, for example `{NUMBER}` ||
 || **settings**
-[`object`](../../data-types.md) | Generator settings. Parameter descriptions are [below](#parameter-settings) ||
+[`object`](../../data-types.md) | Generator settings. Description of parameters is [below](#parameter-settings) ||
 |#
 
 ### Parameter settings {#parameter-settings}
@@ -60,7 +60,7 @@ The list of fields is [below](#parameter-fields) ||
 || **Name**
 `type` | **Description** ||
 || **Bitrix_Main_Numerator_Generator_SequentNumberGenerator**
-[`object`](../../data-types.md) | Settings for sequential numbering. Parameter descriptions are [below](#parameter-sequent-settings) ||
+[`object`](../../data-types.md) | Settings for sequential numbering. Description of parameters is [below](#parameter-sequent-settings) ||
 |#
 
 #### Parameters Bitrix_Main_Numerator_Generator_SequentNumberGenerator {#parameter-sequent-settings}
@@ -71,13 +71,13 @@ The list of fields is [below](#parameter-fields) ||
 || **start**
 [`integer`](../../data-types.md) | Initial value of the counter. Default is `1` ||
 || **step**
-[`integer`](../../data-types.md) | Step for increasing the counter. Default is `1` ||
+[`integer`](../../data-types.md) | Step for incrementing the counter. Default is `1` ||
 || **length**
 [`integer`](../../data-types.md) | Minimum length of the number. Default is `0` ||
 || **padString**
 [`string`](../../data-types.md) | Padding character on the left when `length > 0`. Default is `'0'` ||
 || **periodicBy**
-[`string`](../../data-types.md) | Counter reset period:
+[`string`](../../data-types.md) | Reset period for the counter:
 - `''` — no reset
 - `day` — daily
 - `month` — monthly
@@ -85,12 +85,12 @@ The list of fields is [below](#parameter-fields) ||
 || **timezone**
 [`string`](../../data-types.md) | Timezone identifier for periodic reset, for example `Europe/Berlin` ||
 || **isDirectNumeration**
-[`boolean`](../../data-types.md) | Direct numbering flag. Default is `false` ||
+[`boolean`](../../data-types.md) | Indicator of direct numbering. Default is `false` ||
 |#
 
 ## Code Examples
 
-{% include [Example Note](../../../../_includes/examples.md) %}
+{% include [Examples Note](../../../../_includes/examples.md) %}
 
 Example of updating a numerator:
 - new template — `INV-{NUMBER}`
@@ -305,7 +305,7 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | Root element of the response. Contains numerator data in the format [`result`](#result) ||
+[`object`](../../data-types.md) | Root element of the response. Contains numerator data directly in the format [`result`](#result), without additional wrapping `numerator` — unlike the methods [crm.documentgenerator.numerator.add](./crm-document-generator-numerator-add.md) and [crm.documentgenerator.numerator.get](./crm-document-generator-numerator-get.md) ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -324,7 +324,28 @@ HTTP Status: **200**
 || **code**
 [`string`](../../data-types.md) | Symbolic code of the numerator. Can be `null` ||
 || **settings**
-[`object`](../../data-types.md) | Saved generator settings ||
+[`object`](../../data-types.md) | Saved settings for sequential numbering of type [`settings`](#settings) ||
+|#
+
+#### Type settings {#settings}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **start**
+[`integer`](../../data-types.md) | Initial value of the counter ||
+|| **step**
+[`integer`](../../data-types.md) | Step for incrementing the counter ||
+|| **length**
+[`integer`](../../data-types.md) | Minimum length of the number ||
+|| **padString**
+[`string`](../../data-types.md) | Padding character on the left ||
+|| **periodicBy**
+[`string`](../../data-types.md) | Reset period for the counter: `null`, `day`, `month`, or `year` ||
+|| **timezone**
+[`string`](../../data-types.md) | Timezone identifier for periodic reset. Can be `null` ||
+|| **isDirectNumeration**
+[`boolean`](../../data-types.md) | Indicator of direct numbering ||
 |#
 
 ## Error Handling
@@ -344,12 +365,12 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `100` | `Could not find value for parameter {fields}` | Required parameter `fields` not provided ||
+|| `100` | `Could not find value for parameter {fields}` | Required parameter `fields` is missing ||
 || `100` | `Bitrix\Main\Numerator\Numerator constructor must be is public` | Internal error while creating the numerator object ||
-|| `100` | Invalid value {...} to match with parameter {fields}. Should be value of type array. | Parameter `fields` not passed as an array/object ||
+|| `100` | Invalid value {...} to match with parameter {fields}. Should be value of type array. | Parameter `fields` is not passed as an array/object ||
 || `100` | `Could not construct parameter {numerator}` | Numerator with the specified `id` not found ||
 || `DOCGEN_ACCESS_ERROR` | `Access denied` | No access to the numerator. The method only updates numerators created via REST ||
-|| `Empty value` | `You do not have permissions to modify templates` | Insufficient rights to modify document generator templates ||
+|| `Empty value` | `You do not have permissions to modify templates` | Insufficient permissions to modify document generator templates ||
 || `Empty value` | `Module documentgenerator is not installed` | The `documentgenerator` module is unavailable ||
 |#
 

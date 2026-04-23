@@ -1,4 +1,4 @@
-# Add New Numerator crm.documentgenerator.numerator.add
+# Add a New Numerator crm.documentgenerator.numerator.add
 
 {% note tip "" %}
 
@@ -8,19 +8,19 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: user with "edit" access permission for document generator templates
+> Who can execute the method: a user with "modify" access permission for document generator templates
 
 The method `crm.documentgenerator.numerator.add` creates a new numerator.
 
 ## Method Parameters
 
-{% include [Parameter Notes](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **fields***
-[`object`](../../data-types.md) | Object with numerator parameters in the following format:
+[`object`](../../data-types.md) | An object with numerator parameters in the following format:
 
 ```json
 {
@@ -39,15 +39,15 @@ The list of fields is [below](#parameter-fields) ||
 
 ### Parameter fields {#parameter-fields}
 
-{% include [Parameter Notes](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **name***
-[`string`](../../data-types.md) | Name of the numerator ||
+[`string`](../../data-types.md) | The name of the numerator ||
 || **template***
-[`string`](../../data-types.md) | Number template, for example `{NUMBER}` ||
+[`string`](../../data-types.md) | The number template, for example `{NUMBER}` ||
 || **settings**
 [`object`](../../data-types.md) | Generator settings. Parameter descriptions are [below](#parameter-settings). ||
 |#
@@ -67,31 +67,31 @@ The list of fields is [below](#parameter-fields) ||
 || **Name**
 `type` | **Description** ||
 || **start**
-[`integer`](../../data-types.md) | Initial counter value. Default is `1` ||
+[`integer`](../../data-types.md) | The initial value of the counter. Default is `1` ||
 || **step**
-[`integer`](../../data-types.md) | Counter increment step. Default is `1` ||
+[`integer`](../../data-types.md) | The increment step of the counter. Default is `1` ||
 || **length**
-[`integer`](../../data-types.md) | Minimum number length. Default is `0` ||
+[`integer`](../../data-types.md) | The minimum length of the number. Default is `0` ||
 || **padString**
-[`string`](../../data-types.md) | Padding character on the left when `length > 0`. Default is `'0'` ||
+[`string`](../../data-types.md) | The left padding character when `length > 0`. Default is `'0'` ||
 || **periodicBy**
-[`string`](../../data-types.md) | Counter reset period:
+[`string`](../../data-types.md) | The reset period for the counter:
 - `''` — no reset
 - `day` — daily
 - `month` — monthly
 - `year` — yearly ||
 || **timezone**
-[`string`](../../data-types.md) | Timezone identifier for periodic reset, for example `Europe/Berlin` ||
+[`string`](../../data-types.md) | The timezone identifier for periodic reset, for example `Europe/Berlin` ||
 || **isDirectNumeration**
-[`boolean`](../../data-types.md) | Direct numbering flag. Default is `false` ||
+[`boolean`](../../data-types.md) | Indicator of direct numbering. Default is `false` ||
 |#
 
 ## Code Examples
 
-{% include [Example Notes](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 Example of creating a numerator:
-- name — `Numerator from REST`
+- name — `REST Numerator`
 - template — `{NUMBER}`
 - starting number — from `1`, step `1`
 
@@ -103,7 +103,7 @@ Example of creating a numerator:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"name":"Numerator from REST","template":"{NUMBER}","settings":{"Bitrix_Main_Numerator_Generator_SequentNumberGenerator":{"start":1,"step":1,"length":6,"padString":"0","periodicBy":"","timezone":"","isDirectNumeration":false}}}}' \
+    -d '{"fields":{"name":"REST Numerator","template":"{NUMBER}","settings":{"Bitrix_Main_Numerator_Generator_SequentNumberGenerator":{"start":1,"step":1,"length":6,"padString":"0","periodicBy":"","timezone":"","isDirectNumeration":false}}}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.documentgenerator.numerator.add
     ```
 
@@ -113,7 +113,7 @@ Example of creating a numerator:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"name":"Numerator from REST","template":"{NUMBER}","settings":{"Bitrix_Main_Numerator_Generator_SequentNumberGenerator":{"start":1,"step":1,"length":6,"padString":"0","periodicBy":"","timezone":"","isDirectNumeration":false}}},"auth":"**put_access_token_here**"}' \
+    -d '{"fields":{"name":"REST Numerator","template":"{NUMBER}","settings":{"Bitrix_Main_Numerator_Generator_SequentNumberGenerator":{"start":1,"step":1,"length":6,"padString":"0","periodicBy":"","timezone":"","isDirectNumeration":false}}},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/crm.documentgenerator.numerator.add
     ```
 
@@ -126,7 +126,7 @@ Example of creating a numerator:
     		'crm.documentgenerator.numerator.add',
     		{
     			fields: {
-    				name: 'Numerator from REST',
+    				name: 'REST Numerator',
     				template: '{NUMBER}',
     				settings: {
     					Bitrix_Main_Numerator_Generator_SequentNumberGenerator: {
@@ -162,7 +162,7 @@ Example of creating a numerator:
                 'crm.documentgenerator.numerator.add',
                 [
                     'fields' => [
-                        'name' => 'Numerator from REST',
+                        'name' => 'REST Numerator',
                         'template' => '{NUMBER}',
                         'settings' => [
                             'Bitrix_Main_Numerator_Generator_SequentNumberGenerator' => [
@@ -200,7 +200,7 @@ Example of creating a numerator:
         'crm.documentgenerator.numerator.add',
         {
             fields: {
-                name: 'Numerator from REST',
+                name: 'REST Numerator',
                 template: '{NUMBER}',
                 settings: {
                     Bitrix_Main_Numerator_Generator_SequentNumberGenerator: {
@@ -233,7 +233,7 @@ Example of creating a numerator:
         'crm.documentgenerator.numerator.add',
         [
             'fields' => [
-                'name' => 'Numerator from REST',
+                'name' => 'REST Numerator',
                 'template' => '{NUMBER}',
                 'settings' => [
                     'Bitrix_Main_Numerator_Generator_SequentNumberGenerator' => [
@@ -265,7 +265,7 @@ HTTP Status: **200**
 {
     "result": {
         "numerator": {
-            "name": "Numerator from REST",
+            "name": "REST Numerator",
             "template": "{NUMBER}",
             "id": 45,
             "code": null,
@@ -301,7 +301,7 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | Root element of the response. Contains the [`numerator`](#numerator) object ||
+[`object`](../../data-types.md) | The root element of the response. Contains the [`numerator`](#numerator) object ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -312,15 +312,36 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **id**
-[`integer`](../../data-types.md) | Identifier of the numerator ||
+[`integer`](../../data-types.md) | The identifier of the numerator ||
 || **name**
-[`string`](../../data-types.md) | Name of the numerator ||
+[`string`](../../data-types.md) | The name of the numerator ||
 || **template**
-[`string`](../../data-types.md) | Number template ||
+[`string`](../../data-types.md) | The number template ||
 || **code**
-[`string`](../../data-types.md) | Symbolic code of the numerator. Can be `null` ||
+[`string`](../../data-types.md) | The symbolic code of the numerator. Can be `null` ||
 || **settings**
-[`object`](../../data-types.md) | Saved generator settings ||
+[`object`](../../data-types.md) | Saved settings for sequential numbering of type [`settings`](#settings) ||
+|#
+
+#### Type settings {#settings}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **start**
+[`integer`](../../data-types.md) | The initial value of the counter ||
+|| **step**
+[`integer`](../../data-types.md) | The increment step of the counter ||
+|| **length**
+[`integer`](../../data-types.md) | The minimum length of the number ||
+|| **padString**
+[`string`](../../data-types.md) | The left padding character ||
+|| **periodicBy**
+[`string`](../../data-types.md) | The reset period for the counter: `null`, `day`, `month`, or `year` ||
+|| **timezone**
+[`string`](../../data-types.md) | The timezone identifier for periodic reset. Can be `null` ||
+|| **isDirectNumeration**
+[`boolean`](../../data-types.md) | Indicator of direct numbering ||
 |#
 
 ## Error Handling
@@ -340,8 +361,8 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `100` | Invalid value {...} to match with parameter {fields}. Should be value of type array. | Parameter `fields` was not passed as an array/object ||
-|| `0` | `Empty required fields: ...` | Required fields were not provided ||
+|| `100` | Invalid value {...} to match with parameter {fields}. Should be value of type array. | The `fields` parameter was not passed as an array/object ||
+|| `0` | `Empty required fields: ...` | Required fields are missing ||
 || `Empty value` | `You do not have permissions to modify templates` | Insufficient permissions to modify document generator templates ||
 || `Empty value` | `Module documentgenerator is not installed` | The `documentgenerator` module is unavailable ||
 |#

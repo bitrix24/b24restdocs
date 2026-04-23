@@ -1,0 +1,9 @@
+title: Outdated Methods  
+href: index.md  
+items:  
+  - name: Overview of Methods  
+    href: index.md  
+  - name: Pay Invoice through a Specific Payment System  
+    href: sale-pay-system-pay-invoice.md  
+  - name: Get Payment System Settings for a Specific Invoice  
+    href: sale-pay-system-settings-invoice-get.md  

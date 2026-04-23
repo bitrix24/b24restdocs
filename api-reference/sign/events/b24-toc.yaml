@@ -1,0 +1,9 @@
+title: KEDO Events  
+href: index.md  
+items:  
+  - name: Overview of Events  
+    href: index.md  
+  - name: When Document Status Changes  
+    href: on-sign-b2e-document-status-changed.md  
+  - name: When Participant Status Changes  
+    href: on-sign-b2e-member-status-changed.md  

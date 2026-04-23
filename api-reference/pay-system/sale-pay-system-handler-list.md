@@ -1,4 +1,4 @@
-# Get a list of REST handlers for the payment system sale.paysystem.handler.list
+# Get a List of REST Handlers for the Payment System sale.paysystem.handler.list
 
 {% note tip "" %}
 
@@ -8,11 +8,11 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`pay_system`](../scopes/permissions.md)
 >
-> Who can execute the method: CRM administrator (permission "Allow to change settings")
+> Who can execute the method: CRM administrator (permission "Allow to modify settings")
 
-The method returns a list of REST handlers for the payment system.
+This method returns a list of REST handlers for the payment system.
 
-No parameters.
+No parameters required.
 
 ## Code Examples
 
@@ -43,7 +43,7 @@ No parameters.
 - JS
 
     ```js
-    // callListMethod: Retrieves all data at once. Use only for small selections (< 1000 items) due to high memory usage.
+    // callListMethod: Retrieves all data at once. Use only for small datasets (< 1000 items) due to high memory load.
     
     try {
       const response = await $b24.callListMethod(
@@ -57,7 +57,7 @@ No parameters.
       console.error('Request failed', error)
     }
     
-    // fetchListMethod: Retrieves data in parts using an iterator. Use it for large data volumes to optimize memory usage.
+    // fetchListMethod: Retrieves data in chunks using an iterator. Use for large datasets for efficient memory consumption.
     
     try {
       const generator = $b24.fetchListMethod('sale.paysystem.handler.list', {}, 'ID')
@@ -68,7 +68,7 @@ No parameters.
       console.error('Request failed', error)
     }
     
-    // callMethod: Manually controls pagination through the start parameter. Use it for precise control of request batches. For large datasets, it is less efficient than fetchListMethod.
+    // callMethod: Manual control of pagination through the start parameter. Use for precise control over request batches. Less efficient for large data than fetchListMethod.
     
     try {
       const response = await $b24.callMethod('sale.paysystem.handler.list', {}, 0)
@@ -141,7 +141,7 @@ No parameters.
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -153,7 +153,7 @@ HTTP status: **200**
             "SORT": "100",
             "SETTINGS": {
                 "CURRENCY": [
-                    "USD"
+                    "EUR"
                 ],
                 "FORM_DATA": {
                     "ACTION_URI": "http://example.com/payment_form.php",
@@ -252,7 +252,7 @@ HTTP status: **200**
 
 ## Error Handling
 
-HTTP status: **403**
+HTTP Status: **403**
 
 ```json
 {
@@ -267,7 +267,7 @@ HTTP status: **403**
 
 #|
 || **Code** | **Description** | **Status** ||
-|| `ACCESS_DENIED` | Access denied. The application is trying to modify a handler added by another application, or insufficient rights to update the handler | 403 ||
+|| `ACCESS_DENIED` | Access denied. The application is trying to modify a handler added by another application, or lacks sufficient rights to update the handler | 403 ||
 |#
 
 {% include [system errors](../../_includes/system-errors.md) %}
@@ -284,7 +284,4 @@ HTTP status: **403**
 - [{#T}](./sale-pay-system-settings-update.md)
 - [{#T}](./sale-pay-system-delete.md)
 - [{#T}](./sale-pay-system-pay-payment.md)
-- [{#T}](./sale-pay-system-pay-invoice.md)
 - [{#T}](./sale-pay-system-settings-payment-get.md)
-- [{#T}](./sale-pay-system-settings-invoice-get.md)
-

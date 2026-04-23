@@ -1,8 +1,8 @@
-# Get Available Fields of the Property Value sale.propertyvalue.getfields
+# Get Available Fields of the Property Value `sale.propertyvalue.getfields`
 
 {% note tip "" %}
 
-If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so the assistant can utilize the official REST documentation.
 
 {% endnote %}
 
@@ -167,7 +167,7 @@ HTTP Status: **200**
                 "isImmutable": false,
                 "isReadOnly": false,
                 "isRequired": true,
-                "type": "string"
+                "type": "any"
             }
         }
     },
@@ -190,7 +190,7 @@ HTTP Status: **200**
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
 || **propertyValue**
-[`object`](../../data-types.md) | Object in the format `{"field_1": "value_1", ... "field_N": "value_N"}`, where `field` is the identifier of the object [sale_order_property_value](../data-types.md), and `value` is an object of type [rest_field_description](../../data-types.md) ||
+[`object`](../../data-types.md) | An object in the format `{"field_1": "value_1", ... "field_N": "value_N"}`, where `field` is the identifier of the object [sale_order_property_value](../data-types.md), and `value` is an object of type [rest_field_description](../data-types.md) ||
 || **time**
 [`time`](../../data-types.md) | Information about the request execution time ||
 |#
@@ -206,17 +206,17 @@ HTTP Status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../_includes/error-info.md) %}
+{% include notitle [Error Handling](../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
 || **Code** | **Description** ||
-|| `200040300020` | Insufficient permissions to read available property value fields ||
+|| `200040300020` | Insufficient permissions to read available fields of property values ||
 || `0` | Other errors (e.g., fatal errors) ||
 |#
 
-{% include [system errors](../../../_includes/system-errors.md) %}
+{% include [System Errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

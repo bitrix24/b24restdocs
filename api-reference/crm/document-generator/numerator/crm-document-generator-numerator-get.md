@@ -1,4 +1,4 @@
-# Get Information about the Numerator crm.documentgenerator.numerator.get
+# Get Information About the Numerator crm.documentgenerator.numerator.get
 
 {% note tip "" %}
 
@@ -8,13 +8,13 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: user with "edit" access permission for document generator templates
+> Who can execute the method: a user with "modify" access permission for document generator templates
 
 The method `crm.documentgenerator.numerator.get` returns information about the numerator by its identifier.
 
 ## Method Parameters
 
-{% include [Footnote on parameters](../../../../_includes/required.md) %}
+{% include [Parameter Note](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -25,9 +25,9 @@ The method `crm.documentgenerator.numerator.get` returns information about the n
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../../_includes/examples.md) %}
+{% include [Examples Note](../../../../_includes/examples.md) %}
 
-Example of retrieving the numerator with `id = 45`.
+Example of retrieving a numerator with `id = 45`.
 
 {% list tabs %}
 
@@ -165,8 +165,8 @@ HTTP Status: **200**
         "finish": 1773747475.904903,
         "duration": 0.9049029350280762,
         "processing": 0,
-        "date_start": "2026-03-17T14:37:55+02:00",
-        "date_finish": "2026-03-17T14:37:55+02:00",
+        "date_start": "2026-03-17T14:37:55+01:00",
+        "date_finish": "2026-03-17T14:37:55+01:00",
         "operating_reset_at": 1773748075,
         "operating": 0
     }
@@ -181,7 +181,7 @@ HTTP Status: **200**
 || **result**
 [`object`](../../data-types.md) | Root element of the response. Contains the [`numerator`](#numerator) object ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the request execution time ||
+[`time`](../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
 #### Type numerator {#numerator}
@@ -198,7 +198,28 @@ HTTP Status: **200**
 || **code**
 [`string`](../../data-types.md) | Symbolic code of the numerator. Can be `null` ||
 || **settings**
-[`object`](../../data-types.md) | Saved settings of the generators ||
+[`object`](../../data-types.md) | Saved settings for sequential numbering of type [`settings`](#settings) ||
+|#
+
+#### Type settings {#settings}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **start**
+[`integer`](../../data-types.md) | Initial value of the counter ||
+|| **step**
+[`integer`](../../data-types.md) | Increment step of the counter ||
+|| **length**
+[`integer`](../../data-types.md) | Minimum length of the number ||
+|| **padString**
+[`string`](../../data-types.md) | Padding character on the left ||
+|| **periodicBy**
+[`string`](../../data-types.md) | Period for resetting the counter: `null`, `day`, `month`, or `year` ||
+|| **timezone**
+[`string`](../../data-types.md) | Timezone identifier for periodic reset. Can be `null` ||
+|| **isDirectNumeration**
+[`boolean`](../../data-types.md) | Indicator of direct numbering ||
 |#
 
 ## Error Handling

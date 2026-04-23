@@ -8,7 +8,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`pay_system`](../scopes/permissions.md)
 >
-> Who can execute the method: CRM administrator (permission "Allow changing settings")
+> Who can execute the method: CRM administrator (permission "Allow to change settings")
 
 This method updates the payment system settings. The structure of the settings is defined when adding the payment system handler in the method [sale.paysystem.handler.add](./sale-pay-system-handler-add.md) under the `CODES` key of the `SETTINGS` parameter.
 
@@ -120,7 +120,7 @@ This method updates the payment system settings. The structure of the settings i
             ->getResult();
     
         echo 'Success: ' . print_r($result, true);
-        // Your required data processing logic
+        // Your logic for processing data
         processData($result);
     
     } catch (Throwable $e) {
@@ -208,7 +208,7 @@ HTTP Status: **200**
 || **result**
 [`boolean`](../data-types.md) | Result of updating the payment system settings ||
 || **time**
-[`time`](../data-types.md) | Information about the execution time of the request ||
+[`time`](../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -217,7 +217,7 @@ HTTP Status: **400**, **403**
 
 ```json
 {
-    "error": " ERROR_CHECK_FAILURE",
+    "error": "ERROR_CHECK_FAILURE",
     "error_description": "Pay system not found"
 }
 ```
@@ -228,9 +228,9 @@ HTTP Status: **400**, **403**
 
 #|
 || **Code** | **Description** | **Status** ||
-|| `ACCESS_DENIED` | Insufficient rights to read settings | 403 ||
-|| `ERROR_CHECK_FAILURE` | One of the required fields is missing or the specified payment system was not found (details in the error description) | 400 ||
-|| `ERROR_HANDLER_NOT_FOUND` | The `SETTINGS` field is missing or an empty object was passed | 400 ||
+|| `ACCESS_DENIED` | Insufficient permissions to read settings | 403 ||
+|| `ERROR_CHECK_FAILURE` | Value of one of the required fields is not specified or the specified payment system is not found (details in the error description) | 400 ||
+|| `ERROR_HANDLER_NOT_FOUND` | Value of the `SETTINGS` field is not specified or an empty object is passed | 400 ||
 |#
 
 {% include [system errors](../../_includes/system-errors.md) %}
@@ -247,6 +247,4 @@ HTTP Status: **400**, **403**
 - [{#T}](./sale-pay-system-settings-get.md)
 - [{#T}](./sale-pay-system-delete.md)
 - [{#T}](./sale-pay-system-pay-payment.md)
-- [{#T}](./sale-pay-system-pay-invoice.md)
 - [{#T}](./sale-pay-system-settings-payment-get.md)
-- [{#T}](./sale-pay-system-settings-invoice-get.md)

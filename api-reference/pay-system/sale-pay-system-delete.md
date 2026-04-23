@@ -8,7 +8,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`pay_system`](../scopes/permissions.md)
 >
-> Who can execute the method: CRM administrator (access permission "Allow to modify settings")
+> Who can execute the method: CRM administrator (permission "Allow changing settings")
 
 This method deletes a payment system.
 
@@ -16,7 +16,7 @@ This method deletes a payment system.
 
 {% include [Note on required parameters](../../_includes/required.md) %}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **ID***
@@ -54,19 +54,19 @@ This method deletes a payment system.
     ```js
     try
     {
-    	const response = await $b24.callMethod(
-    		'sale.paysystem.delete',
-    		{
-    			"ID": 1
-    		}
-    	);
-    	
-    	const result = response.getData().result;
-    	console.info(result);
+        const response = await $b24.callMethod(
+            'sale.paysystem.delete',
+            {
+                "ID": 1
+            }
+        );
+        
+        const result = response.getData().result;
+        console.info(result);
     }
     catch( error )
     {
-    	console.error(error);
+        console.error(error);
     }
     ```
 
@@ -140,7 +140,7 @@ This method deletes a payment system.
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -160,18 +160,18 @@ HTTP status: **200**
 
 ### Returned Data
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../data-types.md) | Result of deleting the payment system ||
+[`boolean`](../data-types.md) | Result of the payment system deletion ||
 || **time**
-[`time`](../data-types.md) | Information about the execution time of the request ||
+[`time`](../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-HTTP status: **400**, **403**
+HTTP Status: **400**, **403**
 
 ```json
 {
@@ -184,11 +184,11 @@ HTTP status: **400**, **403**
 
 ### Possible Error Codes
 
-#|
+#| 
 || **Code** | **Description** | **Status** ||
 || `ACCESS_DENIED` | Access denied. The application is trying to modify a payment system added by another application, or there are insufficient rights to delete the payment system | 403 ||
 || `ERROR_PAY_SYSTEM_NOT_FOUND` | Payment system with the specified `ID` not found | 400 ||
-|| `ERROR_CHECK_FAILURE` | Parameter `ID` not specified | 400 ||
+|| `ERROR_CHECK_FAILURE` | Parameter `ID` is not specified | 400 ||
 |#
 
 {% include [system errors](../../_includes/system-errors.md) %}
@@ -205,6 +205,4 @@ HTTP status: **400**, **403**
 - [{#T}](./sale-pay-system-settings-get.md)
 - [{#T}](./sale-pay-system-settings-update.md)
 - [{#T}](./sale-pay-system-pay-payment.md)
-- [{#T}](./sale-pay-system-pay-invoice.md)
 - [{#T}](./sale-pay-system-settings-payment-get.md)
-- [{#T}](./sale-pay-system-settings-invoice-get.md)

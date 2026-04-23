@@ -1,4 +1,4 @@
-# Get the list of numerators crm.documentgenerator.numerator.list
+# Get the List of Numerators crm.documentgenerator.numerator.list
 
 {% note tip "" %}
 
@@ -8,7 +8,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: a user with "edit" access permission for document generator templates
+> Who can execute the method: a user with "modify" access permission for document generator templates
 
 The method `crm.documentgenerator.numerator.list` returns a list of numerators.
 
@@ -18,12 +18,12 @@ The method `crm.documentgenerator.numerator.list` returns a list of numerators.
 || **Name**
 `type` | **Description** ||
 || **start**
-[`integer`](../../data-types.md) | Offset for pagination. More details in the article [Features of list methods](../../../../settings/how-to-call-rest-api/list-methods-pecularities.md) ||
+[`integer`](../../data-types.md) | Offset for pagination. More details in the article [Features of List Methods](../../../../settings/how-to-call-rest-api/list-methods-pecularities.md) ||
 |#
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../../_includes/examples.md) %}
+{% include [Examples Note](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -133,7 +133,7 @@ The method `crm.documentgenerator.numerator.list` returns a list of numerators.
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -177,8 +177,8 @@ HTTP status: **200**
         "finish": 1773750210.283658,
         "duration": 0.2836580276489258,
         "processing": 0,
-        "date_start": "2026-03-17T15:23:30+02:00",
-        "date_finish": "2026-03-17T15:23:30+02:00",
+        "date_start": "2026-03-17T15:23:30+01:00",
+        "date_finish": "2026-03-17T15:23:30+01:00",
         "operating_reset_at": 1773750810,
         "operating": 0
     }
@@ -193,12 +193,12 @@ HTTP status: **200**
 || **result**
 [`object`](../../data-types.md) | Root element of the response. Contains an array of [`numerators`](#numerators) ||
 || **total**
-[`integer`](../../data-types.md) | Number of numerators on the current page ||
+[`integer`](../../data-types.md) | Total number of numerators ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the request execution time ||
+[`time`](../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
-#### Array of numerators {#numerators}
+#### Array numerators {#numerators}
 
 #|
 || **Name**
@@ -210,12 +210,33 @@ HTTP status: **200**
 || **template**
 [`string`](../../data-types.md) | Number template ||
 || **settings**
-[`object`](../../data-types.md) | Saved settings of the generators ||
+[`object`](../../data-types.md) | Saved settings for sequential numbering of type [`settings`](#settings) ||
+|#
+
+#### Type settings {#settings}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **start**
+[`integer`](../../data-types.md) | Initial value of the counter ||
+|| **step**
+[`integer`](../../data-types.md) | Step for increasing the counter ||
+|| **length**
+[`integer`](../../data-types.md) | Minimum length of the number ||
+|| **padString**
+[`string`](../../data-types.md) | Padding character on the left ||
+|| **periodicBy**
+[`string`](../../data-types.md) | Period for resetting the counter: `null`, `day`, `month`, or `year` ||
+|| **timezone**
+[`string`](../../data-types.md) | Timezone identifier for periodic reset. Can be `null` ||
+|| **isDirectNumeration**
+[`boolean`](../../data-types.md) | Indicator of direct numbering ||
 |#
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {

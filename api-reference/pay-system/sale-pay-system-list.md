@@ -1,18 +1,18 @@
-# Get a list of payment systems sale.paysystem.list
+# Get a List of Payment Systems sale.paysystem.list
 
 {% note tip "" %}
 
-If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../sdk/mcp.md) so the assistant can utilize the official REST documentation.
 
 {% endnote %}
 
 > Scope: [`pay_system`](../scopes/permissions.md)
 >
-> Who can execute the method: CRM administrator (permission "Allow to change settings")
+> Who can execute the method: CRM administrator (permission "Allow to modify settings")
 
-The method returns a list of payment systems.
+This method returns a list of payment systems.
 
-## Method parameters
+## Method Parameters
 
 #|
 || **Name**
@@ -34,14 +34,14 @@ An additional prefix can be specified for the key to clarify the filter behavior
 - `<` — less than
 - `@` — IN, an array is passed as the value
 - `!@` — NOT IN, an array is passed as the value
-- `%` — LIKE, substring search. The `%` symbol in the filter value does not need to be passed. The search looks for the substring in any position of the string.
-- `=%` — LIKE, substring search. The `%` symbol needs to be passed in the value. Examples:
+- `%` — LIKE, substring search. The `%` character does not need to be passed in the filter value. The search looks for the substring in any position of the string.
+- `=%` — LIKE, substring search. The `%` character needs to be passed in the value. Examples:
     - `"mol%"` — searches for values starting with "mol"
     - `"%mol"` — searches for values ending with "mol"
     - `"%mol%"` — searches for values where "mol" can be in any position
 - `%=` — LIKE (similar to `=%`)
-- `!%` — NOT LIKE, substring search. The `%` symbol in the filter value does not need to be passed. The search goes from both sides.
-- `!=%` — NOT LIKE, substring search. The `%` symbol needs to be passed in the value. Examples:
+- `!%` — NOT LIKE, substring search. The `%` character does not need to be passed in the filter value. The search goes from both sides.
+- `!=%` — NOT LIKE, substring search. The `%` character needs to be passed in the value. Examples:
     - `"mol%"` — searches for values not starting with "mol"
     - `"%mol"` — searches for values not ending with "mol"
     - `"%mol%"` — searches for values where the substring "mol" is not present in any position
@@ -61,9 +61,9 @@ Possible values for `order`:
 ||
 |#
 
-## Code examples
+## Code Examples
 
-{% include [Footnote on examples](../../_includes/examples.md) %}
+{% include [Note on Examples](../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -73,7 +73,7 @@ Possible values for `order`:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"SELECT":["ID","PERSON_TYPE_ID","NAME","PSA_NAME","SORT","DESCRIPTION","ACTION_FILE","RESULT_FILE","NEW_WINDOW","PLAN","PS_MODE","HAVE_PAYMENT","HAVE_ACTION","HAVE_RESULT","HAVE_PREPAY","HAVE_PRICE","HAVE_RESULT_RECEIVE","ENCODING","ACTIVE","ALLOW_EDIT_PAYMENT","IS_CASH","AUTO_CHANGE_QUICKBOOKS","CAN_PRINT_CHECK","ENTITY_REGISTRY_TYPE","XML_ID"],"FILTER":{"@ID":[117,118]},"ORDER":{"SORT":"ASC","ID":"DESC"}}' \
+    -d '{"SELECT":["ID","PERSON_TYPE_ID","NAME","PSA_NAME","SORT","DESCRIPTION","ACTION_FILE","RESULT_FILE","NEW_WINDOW","TARIF","PS_MODE","HAVE_PAYMENT","HAVE_ACTION","HAVE_RESULT","HAVE_PREPAY","HAVE_PRICE","HAVE_RESULT_RECEIVE","ENCODING","ACTIVE","ALLOW_EDIT_PAYMENT","IS_CASH","AUTO_CHANGE_1C","CAN_PRINT_CHECK","ENTITY_REGISTRY_TYPE","XML_ID"],"FILTER":{"@ID":[117,118]},"ORDER":{"SORT":"ASC","ID":"DESC"}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/sale.paysystem.list
     ```
 
@@ -83,14 +83,14 @@ Possible values for `order`:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"SELECT":["ID","PERSON_TYPE_ID","NAME","PSA_NAME","SORT","DESCRIPTION","ACTION_FILE","RESULT_FILE","NEW_WINDOW","PLAN","PS_MODE","HAVE_PAYMENT","HAVE_ACTION","HAVE_RESULT","HAVE_PREPAY","HAVE_PRICE","HAVE_RESULT_RECEIVE","ENCODING","ACTIVE","ALLOW_EDIT_PAYMENT","IS_CASH","AUTO_CHANGE_QUICKBOOKS","CAN_PRINT_CHECK","ENTITY_REGISTRY_TYPE","XML_ID"],"FILTER":{"@ID":[117,118]},"ORDER":{"SORT":"ASC","ID":"DESC"},"auth":"**put_access_token_here**"}' \
+    -d '{"SELECT":["ID","PERSON_TYPE_ID","NAME","PSA_NAME","SORT","DESCRIPTION","ACTION_FILE","RESULT_FILE","NEW_WINDOW","TARIF","PS_MODE","HAVE_PAYMENT","HAVE_ACTION","HAVE_RESULT","HAVE_PREPAY","HAVE_PRICE","HAVE_RESULT_RECEIVE","ENCODING","ACTIVE","ALLOW_EDIT_PAYMENT","IS_CASH","AUTO_CHANGE_1C","CAN_PRINT_CHECK","ENTITY_REGISTRY_TYPE","XML_ID"],"FILTER":{"@ID":[117,118]},"ORDER":{"SORT":"ASC","ID":"DESC"},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/sale.paysystem.list
     ```
 
 - JS
 
     ```js
-    // callListMethod: Retrieves all data at once. Use only for small selections (< 1000 items) due to high memory usage.
+    // callListMethod: Retrieves all data at once. Use only for small selections (< 1000 items) due to high memory load.
     
     try {
       const response = await $b24.callListMethod(
@@ -106,7 +106,7 @@ Possible values for `order`:
             "ACTION_FILE",
             "RESULT_FILE",
             "NEW_WINDOW",
-            "PLAN",
+            "TARIF",
             "PS_MODE",
             "HAVE_PAYMENT",
             "HAVE_ACTION",
@@ -118,7 +118,7 @@ Possible values for `order`:
             "ACTIVE",
             "ALLOW_EDIT_PAYMENT",
             "IS_CASH",
-            "AUTO_CHANGE_QUICKBOOKS",
+            "AUTO_CHANGE_1C",
             "CAN_PRINT_CHECK",
             "ENTITY_REGISTRY_TYPE",
             "XML_ID",
@@ -139,7 +139,7 @@ Possible values for `order`:
       console.error('Request failed', error);
     }
     
-    // fetchListMethod: Retrieves data in parts using an iterator. Use it for large data volumes to optimize memory usage.
+    // fetchListMethod: Retrieves data in parts using an iterator. Use for large volumes of data for efficient memory consumption.
     
     try {
       const generator = $b24.fetchListMethod('sale.paysystem.list', {
@@ -153,7 +153,7 @@ Possible values for `order`:
           "ACTION_FILE",
           "RESULT_FILE",
           "NEW_WINDOW",
-          "PLAN",
+          "TARIF",
           "PS_MODE",
           "HAVE_PAYMENT",
           "HAVE_ACTION",
@@ -165,7 +165,7 @@ Possible values for `order`:
           "ACTIVE",
           "ALLOW_EDIT_PAYMENT",
           "IS_CASH",
-          "AUTO_CHANGE_QUICKBOOKS",
+          "AUTO_CHANGE_1C",
           "CAN_PRINT_CHECK",
           "ENTITY_REGISTRY_TYPE",
           "XML_ID",
@@ -185,7 +185,7 @@ Possible values for `order`:
       console.error('Request failed', error);
     }
     
-    // callMethod: Manually controls pagination through the start parameter. Use it for precise control of request batches. For large datasets, it is less efficient than fetchListMethod.
+    // callMethod: Manual control of pagination through the start parameter. Use for precise control over request batches. Less efficient for large data than fetchListMethod.
     
     try {
       const response = await $b24.callMethod('sale.paysystem.list', {
@@ -199,7 +199,7 @@ Possible values for `order`:
           "ACTION_FILE",
           "RESULT_FILE",
           "NEW_WINDOW",
-          "PLAN",
+          "TARIF",
           "PS_MODE",
           "HAVE_PAYMENT",
           "HAVE_ACTION",
@@ -211,7 +211,7 @@ Possible values for `order`:
           "ACTIVE",
           "ALLOW_EDIT_PAYMENT",
           "IS_CASH",
-          "AUTO_CHANGE_QUICKBOOKS",
+          "AUTO_CHANGE_1C",
           "CAN_PRINT_CHECK",
           "ENTITY_REGISTRY_TYPE",
           "XML_ID",
@@ -250,7 +250,7 @@ Possible values for `order`:
                         "ACTION_FILE",
                         "RESULT_FILE",
                         "NEW_WINDOW",
-                        "PLAN",
+                        "TARIF",
                         "PS_MODE",
                         "HAVE_PAYMENT",
                         "HAVE_ACTION",
@@ -262,7 +262,7 @@ Possible values for `order`:
                         "ACTIVE",
                         "ALLOW_EDIT_PAYMENT",
                         "IS_CASH",
-                        "AUTO_CHANGE_QUICKBOOKS",
+                        "AUTO_CHANGE_1C",
                         "CAN_PRINT_CHECK",
                         "ENTITY_REGISTRY_TYPE",
                         "XML_ID",
@@ -304,7 +304,7 @@ Possible values for `order`:
                 "ACTION_FILE",
                 "RESULT_FILE",
                 "NEW_WINDOW",
-                "PLAN",
+                "TARIF",
                 "PS_MODE",
                 "HAVE_PAYMENT",
                 "HAVE_ACTION",
@@ -316,7 +316,7 @@ Possible values for `order`:
                 "ACTIVE",
                 "ALLOW_EDIT_PAYMENT",
                 "IS_CASH",
-                "AUTO_CHANGE_QUICKBOOKS",
+                "AUTO_CHANGE_1C",
                 "CAN_PRINT_CHECK",
                 "ENTITY_REGISTRY_TYPE",
                 "XML_ID",
@@ -357,7 +357,7 @@ Possible values for `order`:
                 "ACTION_FILE",
                 "RESULT_FILE",
                 "NEW_WINDOW",
-                "PLAN",
+                "TARIF",
                 "PS_MODE",
                 "HAVE_PAYMENT",
                 "HAVE_ACTION",
@@ -369,7 +369,7 @@ Possible values for `order`:
                 "ACTIVE",
                 "ALLOW_EDIT_PAYMENT",
                 "IS_CASH",
-                "AUTO_CHANGE_QUICKBOOKS",
+                "AUTO_CHANGE_1C",
                 "CAN_PRINT_CHECK",
                 "ENTITY_REGISTRY_TYPE",
                 "XML_ID",
@@ -391,9 +391,9 @@ Possible values for `order`:
 
 {% endlist %}
 
-## Response handling
+## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -416,14 +416,14 @@ HTTP status: **200**
             "ACTIVE":"Y",
             "ALLOW_EDIT_PAYMENT":"Y",
             "IS_CASH":"N",
-            "AUTO_CHANGE_QUICKBOOKS":"N",
+            "AUTO_CHANGE_1C":"N",
             "CAN_PRINT_CHECK":"N",
             "ENTITY_REGISTRY_TYPE":"ORDER",
             "XML_ID":"my_ps_id",
             "ID":118,
             "PERSON_TYPE_ID":3,
             "SORT":100,
-            "PLAN":null
+            "TARIFF":null
         },
         {
             "NAME":"Card Payment",
@@ -443,14 +443,14 @@ HTTP status: **200**
             "ACTIVE":"Y",
             "ALLOW_EDIT_PAYMENT":"Y",
             "IS_CASH":"N",
-            "AUTO_CHANGE_QUICKBOOKS":"N",
+            "AUTO_CHANGE_1C":"N",
             "CAN_PRINT_CHECK":"N",
             "ENTITY_REGISTRY_TYPE":"ORDER",
             "XML_ID":"my_ps_id",
             "ID":117,
             "PERSON_TYPE_ID":3,
             "SORT":100,
-            "PLAN":null
+            "TARIFF":null
         }
     ],
     "time":{
@@ -464,20 +464,20 @@ HTTP status: **200**
 }
 ```
 
-### Returned data
+### Returned Data
 
 #|
 || **Name**
 `type` | **Description** ||
 || **result**
-[`sale_paysystem[]`](../sale/data-types.md) | An array of objects with information about the selected payment systems ||
+[`sale_paysystem[]`](../sale/data-types.md) | An array of objects containing information about the selected payment systems ||
 || **time**
 [`time`](../data-types.md) | Information about the execution time of the request ||
 |#
 
-## Error handling
+## Error Handling
 
-HTTP status: **400**, **403**
+HTTP Status: **400**, **403**
 
 ```json
 {
@@ -488,17 +488,17 @@ HTTP status: **400**, **403**
 
 {% include notitle [error handling](../../_includes/error-info.md) %}
 
-### Possible error codes
+### Possible Error Codes
 
 #|
 || **Code** | **Description** | **Status** ||
-|| `ERROR_CHECK_FAILURE` | Error validating incoming parameters (details can be found in the error description) | 400 ||
-|| `ACCESS_DENIED` | Insufficient rights to obtain the list of payment systems | 403 ||
+|| `ERROR_CHECK_FAILURE` | Validation error of incoming parameters (details see in the error description) | 400 ||
+|| `ACCESS_DENIED` | Insufficient rights to retrieve the list of payment systems | 403 ||
 |#
 
 {% include [system errors](../../_includes/system-errors.md) %}
 
-## Continue exploring
+## Continue Learning
 
 - [{#T}](./sale-pay-system-handler-add.md)
 - [{#T}](./sale-pay-system-handler-update.md)
@@ -510,7 +510,4 @@ HTTP status: **400**, **403**
 - [{#T}](./sale-pay-system-settings-update.md)
 - [{#T}](./sale-pay-system-delete.md)
 - [{#T}](./sale-pay-system-pay-payment.md)
-- [{#T}](./sale-pay-system-pay-invoice.md)
 - [{#T}](./sale-pay-system-settings-payment-get.md)
-- [{#T}](./sale-pay-system-settings-invoice-get.md)
-

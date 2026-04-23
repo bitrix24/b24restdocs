@@ -1,4 +1,4 @@
-# Get a List of Comments crm.timeline.comment.list
+# Get a List of Comments from crm.timeline.comment.list
 
 {% note tip "" %}
 
@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: a user with read access to CRM entities
 
-The method `crm.timeline.comment.list` retrieves a list of all comments associated with the specified CRM entity.
+The method `crm.timeline.comment.list` retrieves a list of all comments associated with a specified CRM entity.
 
 ## Method Parameters
 
@@ -18,11 +18,11 @@ The method `crm.timeline.comment.list` retrieves a list of all comments associat
 || **Name**
 `type` | **Description** ||
 || **select**
-[`array`](../../../data-types.md) | An array of fields to select. Pass the fields of the [result](./crm-timeline-comment-fields.md#fields) object. If not provided or an empty array is passed, all fields will be returned ||
+[`array`](../../../data-types.md) | An array of fields to be selected. Pass the fields of the [result](./crm-timeline-comment-fields.md#fields) object. If not provided or an empty array is passed, all fields will be returned. ||
 || **filter***
 [`object`](../../../data-types.md) | An object for filtering the selected comments in the format `{"field_1": "value_1", ... "field_N": "value_N"}`.
 
-The filter works with two required fields:
+The filter works on two mandatory fields:
 - `ENTITY_ID` — ID of the CRM entity to which the comment is attached
 - `ENTITY_TYPE` — [type of CRM object](../../data-types.md#object_type), for example: `deal`, `lead`, `contact`, `company`
 ||
@@ -39,19 +39,21 @@ Possible values for `order`:
 || **start**
 [`integer`](../../../data-types.md) | This parameter is used for managing pagination.
 
-The page size of results is always static: 50 records.
+The page size for results is always static: 50 records.
 
-To select the second page of results, you need to pass the value `50`. To select the third page of results, the value is `100`, and so on.
+If the parameter is not provided, the default value `0` (first page) is used.
+
+To select the second page of results, you need to pass the value `50`. To select the third page, the value should be `100`, and so on.
 
 The formula for calculating the `start` parameter value:
 
-`start = (N-1) * 50`, where `N` — the desired page number
+`start = (N-1) * 50`, where `N` is the desired page number
 ||
 |#
 
 ## Code Examples
 
-{% include [Note on Examples](../../../../_includes/examples.md) %}
+{% include [Examples Note](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -78,7 +80,7 @@ The formula for calculating the `start` parameter value:
 - JS
 
     ```js
-    // callListMethod: Retrieves all data at once. Use only for small selections (< 1000 items) due to high memory usage.
+    // callListMethod: Retrieves all data at once. Use only for small datasets (< 1000 items) due to high memory load.
     
     try {
       const response = await $b24.callListMethod(
@@ -106,7 +108,7 @@ The formula for calculating the `start` parameter value:
       console.error('Request failed', error);
     }
     
-    // fetchListMethod: Retrieves data in parts using an iterator. Use it for large data volumes to optimize memory usage.
+    // fetchListMethod: Retrieves data in chunks using an iterator. Use for large datasets for efficient memory consumption.
     
     try {
       const generator = $b24.fetchListMethod('crm.timeline.comment.list', {
@@ -131,7 +133,7 @@ The formula for calculating the `start` parameter value:
       console.error('Request failed', error);
     }
     
-    // callMethod: Manually controls pagination through the start parameter. Use it for precise control of request batches. For large datasets, it is less efficient than fetchListMethod.
+    // callMethod: Manual control of pagination through the start parameter. Use for precise control over request batches. Less efficient for large data than fetchListMethod.
     
     try {
       const response = await $b24.callMethod('crm.timeline.comment.list', {
@@ -305,7 +307,7 @@ HTTP Status: **200**
                     "urlShow": "https://my.bitrix24.com/disk/showFile/931/?&ncc=1&ts=1718366521&filename=2.gif",
                     "urlDownload": "https://my.bitrix24.com/disk/downloadFile/931/?&ncc=1&filename=2.gif"
                 }
-            },
+            }
         },
         {
             "ID": "1000",
@@ -314,7 +316,7 @@ HTTP Status: **200**
             "CREATED": "2020-03-02T12:00:00+02:00",
             "COMMENT": "Test comment",
             "AUTHOR_ID": "1",
-            "FILES": {},
+            "FILES": {}
         }
     ],
     "total": 2,

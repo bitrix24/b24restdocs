@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: any user
 
-The method `userfieldtype.add` registers a new user field type. After registering the type, create a user field using the method [userfieldconfig.add](../../crm/universal/userfieldconfig/userfieldconfig/userfieldconfig-add.md).
+The method `userfieldtype.add` registers a new type of user fields. After registering the type, create a user field using the [userfieldconfig.add](../../crm/universal/userfieldconfig/userfieldconfig-add.md) method.
 
 When opening a card with a user type field, an array `PLACEMENT_OPTIONS` containing data about the field and entity is passed to the application handler.
 
@@ -34,32 +34,32 @@ When opening a card with a user type field, an array `PLACEMENT_OPTIONS` contain
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../_includes/required.md) %}
 
-#|
-|| **Name**
+#| 
+|| **Name** 
 `type` | **Description** | **Restrictions** ||
-|| **USER_TYPE_ID***
-[`string`](../../data-types.md) | String code for the type | 
+|| **USER_TYPE_ID*** 
+[`string`](../../data-types.md) | String code of the type | 
 - a-z0-9
 - must be unique
 - the final code is formed as `rest_<APP_ID>_<USER_TYPE_ID>` and cannot exceed 50 characters, so the length of `USER_TYPE_ID` must be no more than `50 - length("rest_<APP_ID>_")` ||
-|| **HANDLER***
+|| **HANDLER*** 
 [`URL`](../../data-types.md) | Address of the user type handler | 
 - in the same domain as the main application address
 - must be unique ||
-|| **TITLE**
+|| **TITLE** 
 [`string`](../../data-types.md) | Text title of the type. Will be displayed in the administrative interface for user field settings | ||
-|| **DESCRIPTION**
+|| **DESCRIPTION** 
 [`string`](../../data-types.md) | Text description of the type. Will be displayed in the administrative interface for user field settings | ||
-|| **OPTIONS**
-[`array`](../../data-types.md) | Additional settings. Currently, one key is available: `height` — specifies the height of the user field in pixels. Any positive value will apply.
-Default is `0`. If `0` is specified, the standard height for displaying this placement will be used | ||
+|| **OPTIONS** 
+[`array`](../../data-types.md) | Additional settings. Currently, one key is available: `height` — specifies the height of the user field in pixels. Any positive value will apply. 
+Default is `0`. If `0` is specified, the standard height for displaying this integration will be used | ||
 |#
 
 ## Code Examples
 
-{% include [Note on examples](../../../_includes/examples.md) %}
+{% include [Note on Examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -105,25 +105,25 @@ Default is `0`. If `0` is specified, the standard height for displaying this pla
     ```js
     try
     {
-    	const response = await $b24.callMethod(
-    		'userfieldtype.add',
-    		{
-    			USER_TYPE_ID: 'test_type',
-    			HANDLER: 'https://www.myapplication.com/handler/',
-    			TITLE: 'Updated test type',
-    			DESCRIPTION: 'Test userfield type for documentation with updated description',
-    			OPTIONS: {
-    				height: 60,
-    			},
-    		}
-    	);
-    	
-    	const result = response.getData().result;
-    	console.log(result);
+        const response = await $b24.callMethod(
+            'userfieldtype.add',
+            {
+                USER_TYPE_ID: 'test_type',
+                HANDLER: 'https://www.myapplication.com/handler/',
+                TITLE: 'Updated test type',
+                DESCRIPTION: 'Test userfield type for documentation with updated description',
+                OPTIONS: {
+                    height: 60,
+                },
+            }
+        );
+        
+        const result = response.getData().result;
+        console.log(result);
     }
     catch( error )
     {
-    	console.error(error);
+        console.error(error);
     }
     ```
 
@@ -231,13 +231,13 @@ HTTP Status: **200**
 
 ### Returned Data
 
-#|
-|| **Name**
+#| 
+|| **Name** 
 `type` | **Description** ||
-|| **result**
+|| **result** 
 [`boolean`](../../data-types.md) | Result of registering the new user field type ||
-|| **time**
-[`time`](../../data-types.md) | Information about the request execution time ||
+|| **time** 
+[`time`](../../data-types.md) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
@@ -251,23 +251,23 @@ HTTP Status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../_includes/error-info.md) %} 
+{% include notitle [Error Handling](../../../_includes/error-info.md) %} 
 
 ### Possible Error Codes
 
-#|
+#| 
 || **Code** | **Error Message** | **Description** ||
 || `ERROR_CORE` | Unable to set placement handler: Handler already binded | `HANDLER` is already occupied by another user field type of this application or `USER_TYPE_ID` is already used by another application ||
 || `ERROR_ARGUMENT` | Argument 'USER_TYPE_ID' is null or empty | `USER_TYPE_ID` is not specified ||
 || `ERROR_ARGUMENT` | Argument 'HANDLER' is null or empty | `HANDLER` is not specified ||
 |#
 
-{% include [system errors](../../../_includes/system-errors.md) %}
+{% include [System Errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
 - [{#T}](./userfieldtype-update.md)
 - [{#T}](./userfieldtype-list.md)
 - [{#T}](./userfieldtype-delete.md)
-- [{#T}](../../crm/universal/userfieldconfig/userfieldconfig/userfieldconfig-add.md)
+- [{#T}](../../crm/universal/userfieldconfig/userfieldconfig-add.md)
 - [{#T}](../../crm/universal/user-defined-fields/userfield-type.md)

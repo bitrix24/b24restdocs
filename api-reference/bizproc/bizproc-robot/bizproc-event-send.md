@@ -1,4 +1,4 @@
-# Return parameters to the action or Automation rule bizproc.event.send
+# Return Parameters to Action or Automation Rule bizproc.event.send
 
 {% note tip "" %}
 
@@ -10,30 +10,39 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: any user
 
-The method returns the output parameters of the action specified in the action description.
+This method returns the output parameters to the Automation rule or action that were specified during the registration or update of the Automation rule or action.
 
 ## Method Parameters
 
 #|
 || **Name**
 `type` | **Description**||
-|| **EVENT_TOKEN** | A special token that is sent to the application handler when the action or Automation rule is executed. The value of this token is received by the handler of the Automation rule or business process action in the array of input data passed.
+|| **EVENT_TOKEN**
+[`string`](../../data-types.md) | A special token that is sent to the application handler when the action or Automation rule is executed. The value of this token is received by the handler in the input data array.
 
-An event can be sent if the application action is subscribed with `'USE_SUBSCRIPTION': 'Y'` to the execution of the business process or Automation rules ||
-|| **RETURN_VALUES** | An array of returned values from the action or Automation rule. It specifies the values of properties that were registered as additional results `RETURN_PROPERTIES` by the methods:
+An event can be sent if the Automation rule or action is registered with `'USE_SUBSCRIPTION': 'Y'` ||
+|| **RETURN_VALUES**
+[`object`](../../data-types.md) | An array of returned values from the action or Automation rule. It specifies the values of properties that were registered as additional results `RETURN_PROPERTIES` by the methods:
 - [bizproc.robot.add](./bizproc-robot-add.md), [bizproc.robot.update](./bizproc-robot-update.md)
 - [bizproc.activity.add](../bizproc-activity/bizproc-activity-add.md), [bizproc.activity.update](../bizproc-activity/bizproc-activity-update.md) ||
-|| **LOG_MESSAGE** | Text for the business process log.
+|| **LOG_MESSAGE**
+[`string`](../../data-types.md) | Text for the business process log.
 
 By default, it has the value "Received response from the application."
 
-Logging of events must be [enabled in the template](https://helpdesk.bitrix24.com/open/22095380/) of the business process
+Event logging must be enabled in the business process template
 ||
 |#
 
+{% note info "" %}
+
+`EVENT_TOKEN` must be valid and current. If the token is invalid or expired, the method will return an access error `ACCESS_DENIED`
+
+{% endnote %}
+
 ## Code Examples
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+{% include [Examples Note](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -62,11 +71,10 @@ Logging of events must be [enabled in the template](https://helpdesk.bitrix24.co
     		}
     	);
     	
-    	const result = response.getData().result;
-    	if(result.error())
-    		alert("Error: " + result.error());
+    	if(response.error())
+    		alert("Error: " + response.error());
     	else
-    		alert("Success: " + result);
+    		alert("Success: " + response.getData().result);
     }
     catch( error )
     {
@@ -148,11 +156,56 @@ Logging of events must be [enabled in the template](https://helpdesk.bitrix24.co
 
 {% endlist %}
 
+## Response Handling
+
+HTTP Status: **200**
+
+```json
+{
+    "result": true,
+    "time": {
+        "start": 1738152544.203554,
+        "finish": 1738152544.248411,
+        "duration": 0.044857025146484375,
+        "processing": 0.0039920806884765625,
+        "date_start": "2025-01-29T15:09:04+01:00",
+        "date_finish": "2025-01-29T15:09:04+01:00",
+        "operating_reset_at": 1738153144,
+        "operating": 0
+    }
+}
+```
+
+### Returned Data
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`boolean`](../../data-types.md) | Returns `true` if the values were successfully sent to the process ||
+|| **time**
+[`time`](../../data-types.md#time) | Information about the request execution time ||
+|#
+
 ## Error Handling
+
+HTTP Status: **403**
+
+```json
+{
+    "error": "ACCESS_DENIED",
+    "error_description": "Access denied!"
+}
+```
+
+{% include notitle [error handling](../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
-The method may return an error code and text from the business process or Automation rule.
+#|
+|| **Code** | **Message** | **Description** ||
+|| `ACCESS_DENIED` | Access denied! | Invalid or expired `EVENT_TOKEN` ||
+|#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 

@@ -1,11 +1,11 @@
-title: Events
-href: index.md
-items:
-  - name: Overview of Events
-    href: index.md
-  - name: On Creating a New CRM Activity of Type "Comment"
-    href: on-Crm-Timeline-Comment-Add.md
-  - name: On Updating a CRM Activity of Type "Comment"
-    href: on-Crm-Timeline-Comment-Update.md
-  - name: On Deleting a CRM Activity of Type "Comment"
-    href: on-Crm-Timeline-Comment-Delete.md
+title: Events  
+href: index.md  
+items:  
+  - name: Overview of Events  
+    href: index.md  
+  - name: When Creating a New CRM Activity of Type "Comment"  
+    href: on-Crm-Timeline-Comment-Add.md  
+  - name: When Updating a CRM Activity of Type "Comment"  
+    href: on-Crm-Timeline-Comment-Update.md  
+  - name: When Deleting a CRM Activity of Type "Comment"  
+    href: on-Crm-Timeline-Comment-Delete.md  

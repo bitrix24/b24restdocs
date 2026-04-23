@@ -20,7 +20,7 @@ This method adds a new logo.
 || **Name**
 `type` | **Description** ||
 || **code***
-[`string`](../../../../data-types.md) | Logo code (for example, `info`) ||
+[`string`](../../../../data-types.md) | Logo code (e.g., `info`) ||
 || **fileContent***
 [`string`](../../../../data-types.md) | Base64 encoded content of the logo file.
 
@@ -45,8 +45,8 @@ File requirements:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"ENTITY_ID":10,"ENTITY_TYPE":"deal","COMMENT":"New comment was added","AUTHOR_ID":5,"FILES":[["1.gif","R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=="],["2.gif","R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=="]]}}' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.timeline.comment.add
+    -d '{"code":"info","fileContent":"iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAIAAABvFaqvAAABhWlDQ1BJQ0MgcHJvZmlsZQAAKJF9kT1Iw0AcxV9TRdGqgx1UHDLUgmBBVMRRq1CECqFWaNXB5NIvaNKQpLg4Cq4FBz8Wqw4uzro6uAqC4AeIo5OToouU"}' \
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.timeline.logo.add
     ```
 
 - cURL (OAuth)
@@ -55,8 +55,8 @@ File requirements:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"ENTITY_ID":10,"ENTITY_TYPE":"deal","COMMENT":"New comment was added","AUTHOR_ID":5,"FILES":[["1.gif","R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=="],["2.gif","R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=="]]},"auth":"**put_access_token_here**"}' \
-    https://**put_your_bitrix24_address**/rest/crm.timeline.comment.add
+    -d '{"code":"info","fileContent":"iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAIAAABvFaqvAAABhWlDQ1BJQ0MgcHJvZmlsZQAAKJF9kT1Iw0AcxV9TRdGqgx1UHDLUgmBBVMRRq1CECqFWaNXB5NIvaNKQpLg4Cq4FBz8Wqw4uzro6uAqC4AeIo5OToouU","auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/crm.timeline.logo.add
     ```
 
 - JS
@@ -142,18 +142,10 @@ File requirements:
     require_once('crest.php');
 
     $result = CRest::call(
-        'crm.timeline.comment.add',
+        'crm.timeline.logo.add',
         [
-            'fields' => [
-                'ENTITY_ID' => 10,
-                'ENTITY_TYPE' => 'deal',
-                'COMMENT' => 'New comment was added',
-                'AUTHOR_ID' => 5,
-                'FILES' => [
-                    ["1.gif", "R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=="],
-                    ["2.gif", "R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=="]
-                ]
-            ]
+            'code' => 'info',
+            'fileContent' => 'iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAIAAABvFaqvAAABhWlDQ1BJQ0MgcHJvZmlsZQAAKJF9kT1Iw0AcxV9TRdGqgx1UHDLUgmBBVMRRq1CECqFWaNXB5NIvaNKQpLg4Cq4FBz8Wqw4uzro6uAqC4AeIo5OToouU'
         ]
     );
 
@@ -236,7 +228,7 @@ HTTP Status: **400**
 #|
 || **Code** | **Description** ||
 || `ACCESS_DENIED` | Access denied ||
-|| `INVALID_ARG_VALUE` | Invalid `fileContent` parameter specified ||
+|| `INVALID_ARG_VALUE` | Invalid parameter `fileContent` specified ||
 || `FILE_SAVE_ERROR` | Unable to save the provided logo file ||
 || `100` | Required fields not provided ||
 || `0` | Other errors (e.g., fatal) ||

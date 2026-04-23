@@ -1,8 +1,8 @@
-# Start a business process bizproc.workflow.start
+# Start Business Process bizproc.workflow.start
 
 {% note tip "" %}
 
-If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect the [MCP server](../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
 
 {% endnote %}
 
@@ -24,7 +24,7 @@ You can only start a business process using REST on paid plans, demo licenses, a
 || **TEMPLATE_ID***
 [`integer`](../data-types.md) | Identifier of the business process template ||
 || **DOCUMENT_ID***
-[`array`](../data-types.md) | Identifier of the document to start the business process in the format [`module`, `object`, `ID_element`].
+[`array`](../data-types.md) | Identifier of the document to start the business process in the format [`module`, `object`, `ELEMENT_ID`].
 
 Examples of entries for different document types:
 
@@ -32,18 +32,19 @@ Examples of entries for different document types:
 - Company — `['crm', 'CCrmDocumentCompany', 'COMPANY_777']`
 - Contact — `['crm', 'CCrmDocumentContact', 'CONTACT_777']`
 - Deal — `['crm', 'CCrmDocumentDeal', 'DEAL_777']`
-- Drive file — `['disk', 'Bitrix\\Disk\\BizProcDocument', '777']`
-- News feed process document — `['lists', 'BizprocDocument', '777']`
-- Lists document — `['lists', 'Bitrix\\Lists\\BizprocDocumentLists', '777']`
-- Smart process element — `['crm', 'Bitrix\\Crm\\Integration\\BizProc\\Document\\Dynamic', 'DYNAMIC_147_1']`, where `147` is the `ID` of the smart process, and `1` is the `ID` of the smart process element
-- Invoice — `['crm', 'Bitrix\\Crm\\Integration\\BizProc\\Document\\SmartInvoice', 'SMART_INVOICE_3']`
+- Estimate — `['crm', 'Bitrix\Crm\Integration\BizProc\Document\Quote', 'QUOTE_777']`
+- Drive file — `['disk', 'Bitrix\Disk\BizProcDocument', '777']`
+- Document in news feed — `['lists', 'BizprocDocument', '777']`
+- List document — `['lists', 'Bitrix\Lists\BizprocDocumentLists', '777']`
+- Smart process element — `['crm', 'Bitrix\Crm\Integration\BizProc\Document\Dynamic', 'DYNAMIC_147_1']`, where `147` is the `ID` of the smart process, and `1` is the `ID` of the smart process element
+- Invoice — `['crm', 'Bitrix\Crm\Integration\BizProc\Document\SmartInvoice', 'SMART_INVOICE_3']`
 ||
 || **PARAMETERS**
-[`object`](../data-types.md) | Values of the business process template parameters.
+[`object`](../data-types.md) | Values for the parameters of the business process template.
 
 Used if the template has parameters.
 
-To pass a value to a parameter of type "User binding," use the format `user_ID`. For example:
+To pass a value to a parameter of the "User binding" type, use the format `user_ID`. For example:
 
 ```php
 PARAMETERS: {
@@ -136,7 +137,7 @@ PARAMETERS: {
             ->getResult();
     
         echo 'Success: ' . print_r($result, true);
-        // Your logic for processing data
+        // Your data processing logic
         processData($result);
     
     } catch (Throwable $e) {
@@ -200,7 +201,7 @@ PARAMETERS: {
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -228,12 +229,12 @@ HTTP status: **200**
 
 Returns the identifier of the started business process ||
 || **time**
-[`time`](../data-types.md) | Information about the request execution time ||
+[`time`](../data-types.md) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {
@@ -248,14 +249,14 @@ HTTP status: **400**
 
 #|
 || **Status** |**Code** | **Description** | **Value** ||
-|| `400` | `ERROR_WRONG_WORKFLOW_ID` | Empty TEMPLATE_ID | An empty input parameter `TEMPLATE_ID` was provided ||
-|| `400` | `ERROR_WRONG_WORKFLOW_ID` | Template not found | The business process template was not found for the provided `TEMPLATE_ID` ||
-|| `400` | Empty value | Wrong DOCUMENT_ID! | An incorrect `DOCUMENT_ID` was provided ||
-|| `400` | Empty value | Incorrect document type! | Unable to determine the document type from the provided `DOCUMENT_ID` ||
+|| `400` | `ERROR_WRONG_WORKFLOW_ID` | Empty TEMPLATE_ID | Empty input parameter `TEMPLATE_ID` was passed ||
+|| `400` | `ERROR_WRONG_WORKFLOW_ID` | Template not found | Business process template not found for the provided `TEMPLATE_ID` ||
+|| `400` | Empty value | Wrong DOCUMENT_ID! | Incorrect `DOCUMENT_ID` was passed ||
+|| `400` | Empty value | Incorrect document type! | Unable to determine document type from the provided `DOCUMENT_ID` ||
 || `400` | Empty value | Template type and DOCUMENT_ID mismatch! | The document type in the template does not match the type determined from `DOCUMENT_ID`.
 
-Attempting to start the template on the wrong entity for which it was created ||
-|| `403` | `ACCESS_DENIED` | Access denied! | The method was not executed by an administrator ||
+Attempting to start the template on an entity for which it was not created ||
+|| `403` | `ACCESS_DENIED` | Access denied! | Method was not executed by an administrator ||
 |#
 
 {% include [system errors](../../_includes/system-errors.md) %}

@@ -2,53 +2,42 @@
 
 {% note tip "" %}
 
-If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
 
 {% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- It needs clarification on what the unique identifier is and why it is needed.
-- The example is unclear. A description should be provided to explain how it works, or a link to a tutorial where this method is used in a real task should be added.
-
-{% endnote %}
-
-{% endif %}
 
 > Scope: [`bizproc`](../../scopes/permissions.md)
 >
-> Who can execute the method: administrator
+> Who can execute the method: any user
 
 This method logs information into the business process log. Event logging must be enabled in the business process template.
 
-{% note tip "User Documentation" %}
-
-- [Business Process Debug Log: How to Enable Log Storage](https://helpdesk.bitrix24.com/open/22095380/)
-
-{% endnote %}
-
 ## Method Parameters
 
-{% include [Footnote on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../_includes/required.md) %}
 
-#|
+#| 
 || **Name**
-`type` | **Description**||
-|| **EVENT_TOKEN***
+`type` | **Description** ||
+|| **EVENT_TOKEN*** 
 [`string`](../../data-types.md) | A unique key required to send an event to the business process.
 
 The token is sent to the application action handler when the business process reaches this action.
 
-Logging is possible if the application action is subscribed with `'USE_SUBSCRIPTION': 'Y'` for the execution of the business process. ||
-|| **LOG_MESSAGE***
+Logging is possible if the `USE_SUBSCRIPTION` parameter is set to `'Y'` during the registration or update of the action in [bizproc.activity.add](./bizproc-activity-add.md) or [bizproc.activity.update](./bizproc-activity-update.md) ||
+|| **LOG_MESSAGE*** 
 [`string`](../../data-types.md) | Message to be logged ||
 |#
 
+{% note info "" %}
+
+`EVENT_TOKEN` must be valid and current. If the token is invalid or expired, the method will return an access error `ACCESS_DENIED`.
+
+{% endnote %}
+
 ## Code Examples
 
-{% include [Footnote on Examples](../../../_includes/examples.md) %}
+{% include [Note on Examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -166,8 +155,8 @@ HTTP Status: **200**
         "finish": 1738152146.844209,
         "duration": 0.03830695152282715,
         "processing": 0.0035429000854492188,
-        "date_start": "2025-01-29T15:02:26+03:00",
-        "date_finish": "2025-01-29T15:02:26+03:00",
+        "date_start": "2025-01-29T15:02:26+01:00",
+        "date_finish": "2025-01-29T15:02:26+01:00",
         "operating_reset_at": 1738152746,
         "operating": 0
     }
@@ -176,11 +165,11 @@ HTTP Status: **200**
 
 ### Returned Data
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../data-types.md) | Returns `true` if the log entry was successfully added ||
+[`boolean`](../../data-types.md) | Returns `true` if the log entry was added successfully ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -196,21 +185,20 @@ HTTP Status: **400**
 }
 ```
 
-{% include notitle [Error Handling](../../../_includes/error-info.md) %}
+{% include notitle [error handling](../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
-#|
+#| 
 || **Code** | **Error Message** | **Description** ||
-|| `ERROR_EMPTY_LOG_MESSAGE` | Empty log message! | Log message text is not provided ||
-|| `ACCESS_DENIED` | Access denied! | Insufficient permissions to call the method ||
+|| `ERROR_EMPTY_LOG_MESSAGE` | Empty log message! | Log entry text is not specified ||
+|| `ACCESS_DENIED` | Access denied! | Invalid or expired `EVENT_TOKEN` ||
+|| Depends on the business process error | Depends on the business process error | Error returned from the execution of the business process ||
 |#
 
-The method may also return errors from the business process.
+{% include [system errors](../../../_includes/system-errors.md) %}
 
-{% include [System Errors](../../../_includes/system-errors.md) %}
-
-## Continue Learning 
+## Continue Learning
 
 - [{#T}](./index.md)
 - [{#T}](./bizproc-activity-add.md)

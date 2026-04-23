@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: `any user`
 
-This method deletes a "Comment" type activity.
+This method deletes a "Comment" type deal.
 
 ## Method Parameters
 
@@ -20,11 +20,11 @@ This method deletes a "Comment" type activity.
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`](../../../data-types.md) | Integer identifier of the "Comment" type activity (for example, `1`). Identifiers can be obtained using the [`crm.timeline.comment.list`](./crm-timeline-comment-list.md) method ||
+[`integer`](../../../data-types.md) | Integer identifier of the "Comment" type deal (e.g., `1`). Identifiers can be obtained using the [`crm.timeline.comment.list`](./crm-timeline-comment-list.md) method ||
 || **ownerTypeId**
-[`integer`](../../data-types.md#object_type) | [Integer identifier of the CRM entity type](../../data-types.md#object_type) to which the comment is attached (for example, `2` for a deal) ||
+[`integer`](../../data-types.md#object_type) | [Integer identifier of the CRM object type](../../data-types.md#object_type) to which the comment is linked (e.g., `2` for a deal) ||
 || **ownerId**
-[`integer`](../../../data-types.md) | Integer identifier of the CRM entity to which the comment is attached (for example, `1`). A list of identifiers can be obtained using the [`crm.timeline.bindings.list`](../bindings/crm-timeline-bindings-list.md) method (field `ENTITY_ID`) ||
+[`integer`](../../../data-types.md) | Integer identifier of the CRM entity to which the comment is linked (e.g., `1`). A list of identifiers can be obtained using the [`crm.timeline.bindings.list`](../bindings/crm-timeline-bindings-list.md) method (field `ENTITY_ID`) ||
 |#
 
 {% note warning %}
@@ -64,28 +64,28 @@ When specifying `ownerTypeId` and `ownerId`, if the comment is linked to multipl
     ```js
     try
     {
-    	const response = await $b24.callMethod(
-    		'crm.timeline.comment.delete',
-    		{
-    			id: 999,
-    			ownerTypeId: 2,
-    			ownerId: 10,
-    		}
-    	);
-    	
-    	const result = response.getData().result;
-    	if (result.error())
-    	{
-    		console.error(result.error());
-    	}
-    	else
-    	{
-    		console.dir(result);
-    	}
+        const response = await $b24.callMethod(
+            'crm.timeline.comment.delete',
+            {
+                id: 999,
+                ownerTypeId: 2,
+                ownerId: 10,
+            }
+        );
+        
+        const result = response.getData().result;
+        if (result.error())
+        {
+            console.error(result.error());
+        }
+        else
+        {
+            console.dir(result);
+        }
     }
     catch( error )
     {
-    	console.error('Error:', error);
+        console.error('Error:', error);
     }
     ```
 
@@ -162,7 +162,7 @@ When specifying `ownerTypeId` and `ownerId`, if the comment is linked to multipl
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -191,7 +191,7 @@ HTTP status: **200**
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {
@@ -210,7 +210,7 @@ HTTP status: **400**
 || `NOT_FOUND` | Element not found ||
 || `MULTIPLE_BINDINGS` | Element has bindings to multiple entities ||
 || `OWNER_NOT_FOUND` | Owner of the element not found ||
-|| `100` | Required fields not provided ||
+|| `100` | Required fields are not provided ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

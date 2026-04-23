@@ -1,44 +1,44 @@
-# Get payment system settings for a specific invoice sale.paysystem.settings.invoice.get
+# Get Payment System Settings for a Specific Invoice sale.paysystem.settings.invoice.get
 
 {% note tip "" %}
 
-If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so the assistant can utilize the official REST documentation.
 
 {% endnote %}
 
-> Scope: [`pay_system`](../scopes/permissions.md)
+> Scope: [`pay_system`](../../scopes/permissions.md)
 >
 > Who can execute the method: a user with permissions to create and edit CRM invoices (legacy version)
 
-The method returns the payment system settings for a specific invoice (legacy version).
+This method returns the payment system settings for a specific invoice (legacy version).
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **INVOICE_ID***
-[`integer`](../data-types.md) | Identifier of the legacy invoice. To retrieve information about invoices, use the service [crm.invoice.*](../crm/outdated/invoice/index.md)
+[`integer`](../../data-types.md) | Identifier of the legacy invoice. The service [crm.invoice.*](../../crm/outdated/invoice/index.md) is used to retrieve information about invoices.
 ||
 || **PAY_SYSTEM_ID**
-[`sale_paysystem.ID`](../sale/data-types.md) | Identifier of the payment system
+[`sale_paysystem.ID`](../../sale/data-types.md) | Identifier of the payment system
 ||
 || **BX_REST_HANDLER**
-[`sale_paysystem.ACTION_FILE`](../sale/data-types.md) | Symbolic identifier of the payment system REST handler
+[`sale_paysystem.ACTION_FILE`](../../sale/data-types.md) | Symbolic identifier of the payment system handler
 ||
 |#
 
-You must pass either the `PAY_SYSTEM_ID` parameter or the `BX_REST_HANDLER`:
-- when passing `PAY_SYSTEM_ID`, the payment system with the specified identifier is used
-- when passing `BX_REST_HANDLER`, the first found payment system with the specified handler is used
+You must provide either the `PAY_SYSTEM_ID` parameter or the `BX_REST_HANDLER` parameter:
+- When providing `PAY_SYSTEM_ID`, the payment system with the specified identifier is used.
+- When providing `BX_REST_HANDLER`, the first found payment system with the specified handler is used.
 
-If both parameters are passed, the `PAY_SYSTEM_ID` parameter takes precedence.
+If both parameters are provided, the `PAY_SYSTEM_ID` parameter takes precedence.
 
 ## Code Examples
 
-{% include [Note on examples](../../_includes/examples.md) %}
+{% include [Note on Examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -67,20 +67,20 @@ If both parameters are passed, the `PAY_SYSTEM_ID` parameter takes precedence.
     ```js
     try
     {
-    	const response = await $b24.callMethod(
-    		'sale.paysystem.settings.invoice.get',
-    		{
-    			"INVOICE_ID": 10,
-    			"PAY_SYSTEM_ID": 11
-    		}
-    	);
-    	
-    	const result = response.getData().result;
-    	console.dir(result);
+        const response = await $b24.callMethod(
+            'sale.paysystem.settings.invoice.get',
+            {
+                "INVOICE_ID": 10,
+                "PAY_SYSTEM_ID": 11
+            }
+        );
+        
+        const result = response.getData().result;
+        console.dir(result);
     }
     catch( error )
     {
-    	console.error(error);
+        console.error(error);
     }
     ```
 
@@ -157,7 +157,7 @@ If both parameters are passed, the `PAY_SYSTEM_ID` parameter takes precedence.
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -185,54 +185,42 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../data-types.md) | Root element of the response. 
+[`object`](../../data-types.md) | Root element of the response. 
 
-The keys of the object are the parameter codes specified when adding the handler via [sale.paysystem.handler.add](./sale-pay-system-handler-add.md) in the `CODES` parameter. 
+The keys of the object are the parameter codes specified when adding the handler via [sale.paysystem.handler.add](../sale-pay-system-handler-add.md) in the `CODES` parameter. 
 
 The values of the object are the parameter values:
 - either filled in manually by the user when creating the payment system
-- or specified when adding the payment system via [sale.paysystem.add](./sale-pay-system-add.md)
+- or specified when adding the payment system via [sale.paysystem.add](../sale-pay-system-add.md)
 ||
 || **time**
-[`time`](../data-types.md) | Information about the execution time of the request ||
+[`time`](../../data-types.md) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
 
-HTTP status: **400**, **403**
+HTTP Status: **400**, **403**
 
 ```json
 {
-    "error": " ERROR_CHECK_FAILURE",
+    "error": "ERROR_CHECK_FAILURE",
     "error_description": "Pay system not found"
 }
 ```
 
-{% include notitle [error handling](../../_includes/error-info.md) %}
+{% include notitle [error handling](../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
 || **Code** | **Description** | **Status** ||
 || `ACCESS_DENIED` | Insufficient permissions to retrieve settings | 403 ||
-|| `ERROR_CHECK_FAILURE` | One of the required fields is missing or the payment system with the specified `ID` or `bx_rest_handler` was not found (see error description for details) | 400 ||
+|| `ERROR_CHECK_FAILURE` | One of the required fields is not specified or the payment system with the specified `ID` or `bx_rest_handler` is not found (details in the error description) | 400 ||
 || `ERROR_INTERNAL_INVOICE_NOT_FOUND` | The specified invoice was not found | 400 ||
 |#
 
-{% include [system errors](../../_includes/system-errors.md) %}
+{% include [system errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
-- [{#T}](./sale-pay-system-handler-add.md)
-- [{#T}](./sale-pay-system-handler-update.md)
-- [{#T}](./sale-pay-system-handler-list.md)
-- [{#T}](./sale-pay-system-handler-delete.md)
-- [{#T}](./sale-pay-system-add.md)
-- [{#T}](./sale-pay-system-update.md)
-- [{#T}](./sale-pay-system-list.md)
-- [{#T}](./sale-pay-system-settings-get.md)
-- [{#T}](./sale-pay-system-settings-update.md)
-- [{#T}](./sale-pay-system-delete.md)
-- [{#T}](./sale-pay-system-pay-payment.md)
 - [{#T}](./sale-pay-system-pay-invoice.md)
-- [{#T}](./sale-pay-system-settings-payment-get.md)

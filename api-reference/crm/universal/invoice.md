@@ -64,7 +64,7 @@ BX24.callMethod(
 
 The main workspace in invoices is the General tab of the detail form. It consists of two parts:
 
-- The left part contains fields with information. If the system fields are insufficient, you can create your own custom fields. They allow you to store information in various data formats: string, number, link, address, and others. To create, modify, retrieve, or delete custom fields for invoices, use the group of methods [userfieldconfig.*](./userfieldconfig/userfieldconfig/userfieldconfig-add.md).
+- The left part contains fields with information. If the system fields are insufficient, you can create your own custom fields. These allow you to store information in various data formats: string, number, link, address, and others. To create, modify, retrieve, or delete custom fields for invoices, use the group of methods [userfieldconfig.*](./userfieldconfig/userfieldconfig-add.md).
 
 - The right part contains the invoice timeline. In it, you can create, edit, filter, and delete CRM activities — the group of methods [crm.activity.*](../timeline/activities/index.md), and timeline records — the group of methods [crm.timeline.*](../timeline/index.md).
 
@@ -150,14 +150,14 @@ CRM Object Identifier **entityTypeId** — `31`
 
 CRM Object Identifier **entityId** — `CRM_SMART_INVOICE`
 
-#|
+#| 
 || **Method** | **Description** ||
-|| [userfieldconfig.add](./userfieldconfig/userfieldconfig/userfieldconfig-add.md) | Creates a custom field ||
-|| [userfieldconfig.update](./userfieldconfig/userfieldconfig/userfieldconfig-update.md) | Modifies field settings ||
-|| [userfieldconfig.get](./userfieldconfig/userfieldconfig/userfieldconfig-get.md) | Returns the settings of a custom field by identifier ||
-|| [userfieldconfig.getTypes](./userfieldconfig/userfieldconfig/userfieldconfig-get-types.md) | Returns the set of available types of custom fields for the module ||
-|| [userfieldconfig.list](./userfieldconfig/userfieldconfig/userfieldconfig-list.md) | Returns a list of custom field settings ||
-|| [userfieldconfig.delete](./userfieldconfig/userfieldconfig/userfieldconfig-delete.md) | Deletes a custom field ||
+|| [userfieldconfig.add](./userfieldconfig/userfieldconfig-add.md) | Creates a custom field ||
+|| [userfieldconfig.update](./userfieldconfig/userfieldconfig-update.md) | Modifies field settings ||
+|| [userfieldconfig.get](./userfieldconfig/userfieldconfig-get.md) | Returns custom field settings by identifier ||
+|| [userfieldconfig.getTypes](./userfieldconfig/userfieldconfig-get-types.md) | Returns the set of available custom field types for the module ||
+|| [userfieldconfig.list](./userfieldconfig/userfieldconfig-list.md) | Returns a list of custom field settings ||
+|| [userfieldconfig.delete](./userfieldconfig/userfieldconfig-delete.md) | Deletes a custom field ||
 |#
 
 ### Product Items

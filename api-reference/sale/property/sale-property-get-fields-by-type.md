@@ -1,8 +1,8 @@
-# Get Fields and Settings of Order Property for a Specific Property Type sale.property.getfieldsbytype
+# Get Fields and Settings of Order Properties for a Specific Property Type sale.property.getfieldsbytype
 
 {% note tip "" %}
 
-If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so the assistant can utilize the official REST documentation.
 
 {% endnote %}
 
@@ -14,13 +14,13 @@ This method retrieves the available fields of order properties by property type.
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../_includes/required.md) %}
 
-#|
-|| **Name**
+#| 
+|| **Name** 
 `type` | **Description** ||
-|| **type***
-[`string`](../../data-types.md) | Order property type
+|| **type*** 
+[`string`](../../data-types.md) | Order property type 
 Possible values:
 - `STRING`
 - `Y/N`
@@ -36,7 +36,7 @@ Possible values:
 
 ## Code Examples
 
-{% include [Note on examples](../../../_includes/examples.md) %}
+{% include [Note on Examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -65,18 +65,18 @@ Possible values:
     ```js
     try
     {
-    	const response = await $b24.callMethod(
-    		"sale.property.getfieldsbytype", {
-    			"type": "NUMBER",
-    		}
-    	);
-    	
-    	const result = response.getData().result;
-    	console.info(result);
+        const response = await $b24.callMethod(
+            "sale.property.getfieldsbytype", {
+                "type": "NUMBER",
+            }
+        );
+        
+        const result = response.getData().result;
+        console.info(result);
     }
     catch( error )
     {
-    	console.error(error);
+        console.error(error);
     }
     ```
 
@@ -145,155 +145,155 @@ Possible values:
 
 ## Successful Response
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
-   "result": {
-      "property": {
-         "active": {
-            "isImmutable": false,
-            "isReadOnly": false,
-            "isRequired": false,
-            "type": "char"
+   "result":{
+      "property":{
+         "active":{
+            "isImmutable":false,
+            "isReadOnly":false,
+            "isRequired":false,
+            "type":"char"
          },
-         "code": {
-            "isImmutable": false,
-            "isReadOnly": false,
-            "isRequired": false,
-            "type": "string"
+         "code":{
+            "isImmutable":false,
+            "isReadOnly":false,
+            "isRequired":false,
+            "type":"string"
          },
-         "defaultValue": {
-            "isImmutable": false,
-            "isReadOnly": false,
-            "isRequired": false,
-            "type": "string"
+         "defaultValue":{
+            "isImmutable":false,
+            "isReadOnly":false,
+            "isRequired":false,
+            "type":"any"
          },
-         "description": {
-            "isImmutable": false,
-            "isReadOnly": false,
-            "isRequired": false,
-            "type": "string"
+         "description":{
+            "isImmutable":false,
+            "isReadOnly":false,
+            "isRequired":false,
+            "type":"string"
          },
-         "id": {
-            "isImmutable": false,
-            "isReadOnly": true,
-            "isRequired": false,
-            "type": "integer"
+         "id":{
+            "isImmutable":false,
+            "isReadOnly":true,
+            "isRequired":false,
+            "type":"integer"
          },
-         "isFiltered": {
-            "isImmutable": false,
-            "isReadOnly": false,
-            "isRequired": false,
-            "type": "char"
+         "isFiltered":{
+            "isImmutable":false,
+            "isReadOnly":false,
+            "isRequired":false,
+            "type":"char"
          },
-         "multiple": {
-            "isImmutable": false,
-            "isReadOnly": false,
-            "isRequired": false,
-            "type": "char"
+         "multiple":{
+            "isImmutable":false,
+            "isReadOnly":false,
+            "isRequired":false,
+            "type":"char"
          },
-         "name": {
-            "isImmutable": false,
-            "isReadOnly": false,
-            "isRequired": true,
-            "type": "string"
+         "name":{
+            "isImmutable":false,
+            "isReadOnly":false,
+            "isRequired":true,
+            "type":"string"
          },
-         "personTypeId": {
-            "isImmutable": true,
-            "isReadOnly": false,
-            "isRequired": true,
-            "type": "integer"
+         "personTypeId":{
+            "isImmutable":true,
+            "isReadOnly":false,
+            "isRequired":true,
+            "type":"integer"
          },
-         "propsGroupId": {
-            "isImmutable": true,
-            "isReadOnly": false,
-            "isRequired": true,
-            "type": "integer"
+         "propsGroupId":{
+            "isImmutable":true,
+            "isReadOnly":false,
+            "isRequired":true,
+            "type":"integer"
          },
-         "required": {
-            "isImmutable": false,
-            "isReadOnly": false,
-            "isRequired": false,
-            "type": "char"
+         "required":{
+            "isImmutable":false,
+            "isReadOnly":false,
+            "isRequired":false,
+            "type":"char"
          },
-         "settings": {
-            "fields": {
-               "max": {
-                  "isImmutable": false,
-                  "isReadOnly": false,
-                  "isRequired": false,
-                  "type": "integer"
+         "settings":{
+            "fields":{
+               "max":{
+                  "isImmutable":false,
+                  "isReadOnly":false,
+                  "isRequired":false,
+                  "type":"integer"
                },
-               "min": {
-                  "isImmutable": false,
-                  "isReadOnly": false,
-                  "isRequired": false,
-                  "type": "integer"
+               "min":{
+                  "isImmutable":false,
+                  "isReadOnly":false,
+                  "isRequired":false,
+                  "type":"integer"
                },
-               "step": {
-                  "isImmutable": false,
-                  "isReadOnly": false,
-                  "isRequired": false,
-                  "type": "integer"
+               "step":{
+                  "isImmutable":false,
+                  "isReadOnly":false,
+                  "isRequired":false,
+                  "type":"integer"
                }
             },
-            "isImmutable": false,
-            "isReadOnly": false,
-            "isRequired": false,
-            "type": "datatype"
+            "isImmutable":false,
+            "isReadOnly":false,
+            "isRequired":false,
+            "type":"datatype"
          },
-         "sort": {
-            "isImmutable": false,
-            "isReadOnly": false,
-            "isRequired": false,
-            "type": "integer"
+         "sort":{
+            "isImmutable":false,
+            "isReadOnly":false,
+            "isRequired":false,
+            "type":"integer"
          },
-         "type": {
-            "isImmutable": true,
-            "isReadOnly": false,
-            "isRequired": true,
-            "type": "string"
+         "type":{
+            "isImmutable":true,
+            "isReadOnly":false,
+            "isRequired":true,
+            "type":"string"
          },
-         "userProps": {
-            "isImmutable": false,
-            "isReadOnly": false,
-            "isRequired": false,
-            "type": "char"
+         "userProps":{
+            "isImmutable":false,
+            "isReadOnly":false,
+            "isRequired":false,
+            "type":"char"
          },
-         "util": {
-            "isImmutable": false,
-            "isReadOnly": false,
-            "isRequired": false,
-            "type": "char"
+         "util":{
+            "isImmutable":false,
+            "isReadOnly":false,
+            "isRequired":false,
+            "type":"char"
          },
-         "xmlId": {
-            "isImmutable": false,
-            "isReadOnly": false,
-            "isRequired": false,
-            "type": "string"
+         "xmlId":{
+            "isImmutable":false,
+            "isReadOnly":false,
+            "isRequired":false,
+            "type":"string"
          }
       }
    },
-   "time": {
-      "start": 1712325081.703631,
-      "finish": 1712325082.067712,
-      "duration": 0.36408114433288574,
-      "processing": 0.023890972137451172,
-      "date_start": "2024-04-05T16:51:21+02:00",
-      "date_finish": "2024-04-05T16:51:22+02:00"
+   "time":{
+      "start":1712325081.703631,
+      "finish":1712325082.067712,
+      "duration":0.36408114433288574,
+      "processing":0.023890972137451172,
+      "date_start":"2024-04-05T16:51:21+02:00",
+      "date_finish":"2024-04-05T16:51:22+02:00"
    }
 }
 ```
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {
-   "error": 0,
-   "error_description": "error"
+   "error":0,
+   "error_description":"error"
 }
 ```
 
@@ -301,9 +301,9 @@ HTTP status: **400**
 
 ### Possible Error Codes
 
-#|
+#| 
 || **Code** | **Description** ||
-|| `200040300010` | Insufficient permissions to read available fields of order properties ||
+|| `200040300010` | Insufficient permissions to read available order property fields ||
 || `0` | Other errors (e.g., fatal errors) ||
 |#
 

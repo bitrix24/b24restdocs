@@ -2,11 +2,11 @@
 
 {% note tip "" %}
 
-If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
 
 {% endnote %}
 
-> Scope: [`userfieldconfig`](../../../../scopes/permissions.md), module scope from `moduleId` (for example, [`crm`](../../../../scopes/permissions.md))
+> Scope: [`userfieldconfig`](../../../scopes/permissions.md), module scope from `moduleId` (for example, [`crm`](../../../scopes/permissions.md))
 >
 > Who can execute the method: a user with permission to modify object settings in the `moduleId` module (for `crm` — permission "Allow to modify settings")
 
@@ -14,7 +14,7 @@ The `userfieldconfig.add` method adds a new custom field.
 
 ## Method Parameters
 
-{% include [Parameter Note](../../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -31,7 +31,7 @@ The `userfieldconfig.add` method adds a new custom field.
 || **Name**
 `type` | **Description** ||
 || **entityId***
-[`string`](../../../data-types.md) | Identifier of the object for which the field is created. The format depends on the module, for example `CRM_7` for SPA ||
+[`string`](../../../data-types.md) | Identifier of the object for which the field is created. The format depends on the module, for example, `CRM_7` for SPA ||
 || **fieldName***
 [`string`](../../../data-types.md) | Field code in the format `UF_{OBJECT_IDENTIFIER}_{POSTFIX}`. The code must be unique within the object. Allowed characters are `A-Z`, `0-9`, `_`. Maximum length of the code is 50 characters ||
 || **userTypeId***
@@ -41,21 +41,21 @@ The `userfieldconfig.add` method adds a new custom field.
 || **sort**
 [`integer`](../../../data-types.md) | Sort index. Default is `100` ||
 || **multiple**
-[`boolean`](../../../data-types.md) | Indicates whether the field is multiple. Possible values: `Y` or `N`. Default is `N` ||
+[`boolean`](../../../data-types.md) | Whether the field is multiple. Possible values: `Y` or `N`. Default is `N` ||
 || **mandatory**
-[`boolean`](../../../data-types.md) | Indicates whether the field is mandatory. Possible values: `Y` or `N`. Default is `N` ||
+[`boolean`](../../../data-types.md) | Whether the field is mandatory. Possible values: `Y` or `N`. Default is `N` ||
 || **showFilter**
 [`boolean`](../../../data-types.md) | Whether to show the field in the filter. Possible values: `Y` or `N`. Default is `N` ||
 || **editInList**
 [`boolean`](../../../data-types.md) | Whether to allow editing the value in the list. Possible values: `Y` or `N` ||
 || **isSearchable**
-[`boolean`](../../../data-types.md) | Whether the field values are included in the search. Possible values: `Y` or `N` ||
+[`boolean`](../../../data-types.md) | Whether the field values participate in the search. Possible values: `Y` or `N` ||
 || **settings**
 [`object`](../../../data-types.md) | Additional field settings. The set of keys depends on `userTypeId` [(detailed description)](#settings) ||
 || **editFormLabel**
-[`string`](../../../data-types.md)\|[`lang_map`](../../../data-types.md#lang_map) | Label in the edit form. When a string is passed, it is used as a general value; when `lang_map` is passed, labels can be set by languages ||
+[`string`](../../../data-types.md)\|[`lang_map`](../../../data-types.md#lang_map) | Label in the edit form. When a string is passed, it is used as a general value; when a `lang_map` is passed, labels can be set by languages ||
 || **helpMessage**
-[`string`](../../../data-types.md)\|[`lang_map`](../../../data-types.md#lang_map) | Help text. When a string is passed, it is used as a general value; when `lang_map` is passed, help can be set by languages ||
+[`string`](../../../data-types.md)\|[`lang_map`](../../../data-types.md#lang_map) | Help text. When a string is passed, it is used as a general value; when a `lang_map` is passed, help texts can be set by languages ||
 || **enum**
 [`uf_enum_element[]`](#uf_enum_element) | Value options for fields of type `enumeration` ||
 |#
@@ -202,7 +202,7 @@ Each field type has its own set of keys in `settings`.
     || **MAX_SHOW_SIZE**
     [`integer`](../../../data-types.md) | Maximum file size for display ||
     || **MAX_ALLOWED_SIZE**
-    [`integer`](../../../data-types.md) | Maximum allowed file size ||
+    [`integer`](../../../data-types.md) | Maximum allowable file size ||
     || **EXTENSIONS**
     [`string[]`](../../../data-types.md) | List of allowed extensions ||
     || **TARGET_BLANK**
@@ -246,8 +246,8 @@ Each field type has its own set of keys in `settings`.
     #|
     || **Name**
     `type` | **Description** ||
-    || **ENTITY_TYPE**
-    [`string`](../../../data-types.md) | Identifier of the CRM reference type. Possible values can be obtained using the [`crm.status.entity.types`](../../../status/crm-status-entity-types.md) method ||
+|| **ENTITY_TYPE**
+[`string`](../../../data-types.md) | Identifier of the CRM reference type. Possible values can be obtained using the [`crm.status.entity.types`](../../status/crm-status-entity-types.md) method ||
     |#
 
 - crm
@@ -300,7 +300,7 @@ Each field type has its own set of keys in `settings`.
 
 ## Code Examples
 
-{% include [Example Note](../../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -512,21 +512,26 @@ HTTP Status: **200**
             },
             "languageId": {
                 "en": "en",
+                "ru": "ru"
             },
             "editFormLabel": {
-                "en": "List of characteristics",
+                "en": "List of characteristics"
             },
             "listColumnLabel": {
                 "en": null,
+                "ru": null
             },
             "listFilterLabel": {
                 "en": null,
+                "ru": null
             },
             "errorMessage": {
                 "en": null,
+                "ru": null
             },
             "helpMessage": {
                 "en": null,
+                "ru": null
             },
             "enum": [
                 {
@@ -622,7 +627,7 @@ HTTP Status: **200**
 || **errorMessage**
 [`lang_map`](../../../data-types.md) | Error message text ||
 || **helpMessage**
-[`lang_map`](../../../data-types.md) | Field help ||
+[`lang_map`](../../../data-types.md) | Help text for the field ||
 || **enum**
 [`object[]`](../../../data-types.md) | Value options. This field is returned only for `userTypeId = enumeration` ||
 |#
@@ -638,22 +643,22 @@ HTTP Status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../../../_includes/error-info.md) %}
+{% include notitle [error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
 || **Code** | **Description** | **Value** ||
 || `-` | Access denied | Insufficient permissions to create a custom field ||
-|| `-` | You cannot create custom fields | This error may be returned if `field.fieldName` does not start with `UF_{entityId}_` ||
-|| `-` | The 'USER_TYPE_ID' field is not found | Required `field.userTypeId` is not provided ||
-|| `-` | The 'FIELD_NAME' field is not found | Required `field.fieldName` is not provided ||
+|| `-` | You cannot create custom fields | This error may occur if `field.fieldName` does not start with `UF_{entityId}_` ||
+|| `-` | The 'USER_TYPE_ID' field is not found | Mandatory `field.userTypeId` not provided ||
+|| `-` | The 'FIELD_NAME' field is not found | Mandatory `field.fieldName` not provided ||
 || `-` | Field ... already exists | The provided `field.fieldName` is already in use for this object ||
 || `-` | Fail to create new user field | Error creating the field on the server side ||
 || `-` | Fail to save enumeration field values | Error saving list values for type `enumeration` ||
 |#
 
-{% include [system errors](../../../../../_includes/system-errors.md) %}
+{% include [system errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

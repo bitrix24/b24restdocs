@@ -2,34 +2,34 @@
 
 {% note tip "" %}
 
-If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
 
 {% endnote %}
 
-> Scope: [`userfieldconfig`](../../../../scopes/permissions.md), module scope from `moduleId` (for example, [`crm`](../../../../scopes/permissions.md))
+> Scope: [`userfieldconfig`](../../../scopes/permissions.md), module scope from `moduleId` (for example, [`crm`](../../../scopes/permissions.md))
 >
-> Who can execute the method: a user with read access permission to the object that owns the field in the `moduleId`
+> Who can execute the method: a user with read access to the object that owns the field in the `moduleId`
 
 The `userfieldconfig.get` method returns the settings of a user field by its identifier.
 
 ## Method Parameters
 
-{% include [Footnote on parameters](../../../../../_includes/required.md) %}
+{% include [Note on Parameters](../../../../_includes/required.md) %}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
-|| **moduleId***
+|| **moduleId*** 
 [`string`](../../../data-types.md) | Identifier of the module where the field is located ||
-|| **id***
+|| **id*** 
 [`integer`](../../../data-types.md) | Identifier of the user field settings.
 
-The identifier can be obtained using the [userfieldconfig.list](./userfieldconfig-list.md) method or when creating the field with the [userfieldconfig.add](./userfieldconfig-add.md) method ||
+The identifier can be obtained using the [userfieldconfig.list](./userfieldconfig-list.md) method or when creating a field with the [userfieldconfig.add](./userfieldconfig-add.md) method ||
 |#
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../../../_includes/examples.md) %}
+{% include [Note on Examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -58,20 +58,20 @@ The identifier can be obtained using the [userfieldconfig.list](./userfieldconfi
     ```js
     try
     {
-    	const response = await $b24.callMethod(
-    		'userfieldconfig.get',
-    		{
-    			moduleId: 'crm',
-    			id: 7095,
-    		}
-    	);
+        const response = await $b24.callMethod(
+            'userfieldconfig.get',
+            {
+                moduleId: 'crm',
+                id: 7095,
+            }
+        );
 
-    	const result = response.getData().result;
-    	console.info(result);
+        const result = response.getData().result;
+        console.info(result);
     }
     catch (error)
     {
-    	console.error(error);
+        console.error(error);
     }
     ```
 
@@ -223,7 +223,7 @@ HTTP Status: **200**
 
 ### Returned Data
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **result**
@@ -234,7 +234,7 @@ HTTP Status: **200**
 
 #### Result Object {#result}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **field**
@@ -243,7 +243,7 @@ HTTP Status: **200**
 
 ##### Field Object {#result_field}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **id**
@@ -261,7 +261,7 @@ HTTP Status: **200**
 || **multiple**
 [`boolean`](../../../data-types.md) | Flag for multiple values (`Y`/`N`) ||
 || **mandatory**
-[`boolean`](../../../data-types.md) | Flag for mandatory field (`Y`/`N`) ||
+[`boolean`](../../../data-types.md) | Flag for required field (`Y`/`N`) ||
 || **showFilter**
 [`boolean`](../../../data-types.md) | Flag for showing the field in the filter ||
 || **showInList**
@@ -285,11 +285,11 @@ The composition of keys depends on `userTypeId` ||
 || **errorMessage**
 [`lang_map`](../../../data-types.md) | Error message text ||
 || **helpMessage**
-[`lang_map`](../../../data-types.md) | Field help message ||
+[`lang_map`](../../../data-types.md) | Field help text ||
 || **enum**
 [`object[]`](../../../data-types.md) | Value options.
 
-This field is returned only for `userTypeId = enumeration` ||
+The field is returned only for `userTypeId = enumeration` ||
 |#
 
 ## Error Handling
@@ -303,18 +303,18 @@ HTTP Status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../../../_includes/error-info.md) %}
+{% include notitle [error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
-#|
+#| 
 || **Code** | **Description** | **Value** ||
-|| `-` | You do not have permission to view user field settings | Insufficient rights to view the field. This error may also be returned if the field with the provided `id` has already been deleted or is unavailable in the context of `moduleId` ||
+|| `-` | You do not have permission to view user field settings | Insufficient rights to view the field. This same error may be returned if the field with the provided `id` has already been deleted or is unavailable in the context of `moduleId` ||
 || `-` | The current method required more scopes. (crm) | The application does not have the required scope for the module from `moduleId` ||
 || `-` | No settings for UserFieldAccess | Access to user fields is not configured for the provided `moduleId` ||
 |#
 
-{% include [system errors](../../../../../_includes/system-errors.md) %}
+{% include [system errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

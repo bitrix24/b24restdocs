@@ -1,11 +1,17 @@
-title: Custom Field Settings
-href: index.md
-items: 
-  - name: Custom Field Settings
-    href: index.md
-  - name: Entity Identifiers (entityId)
-    href: entity-id.md
-  - name: Working with Custom Fields
-    include:
-      path: userfieldconfig/b24-toc.yaml
-      mode: link
+title: Custom Field Settings  
+href: index.md  
+items:  
+  - name: Overview of Methods  
+    href: index.md  
+  - name: Add Custom Field  
+    href: userfieldconfig-add.md  
+  - name: Delete Custom Field Settings  
+    href: userfieldconfig-delete.md  
+  - name: Retrieve Custom Field Settings Data  
+    href: userfieldconfig-get.md  
+  - name: Get Available Custom Field Types  
+    href: userfieldconfig-get-types.md  
+  - name: List Custom Field Settings  
+    href: userfieldconfig-list.md  
+  - name: Update Custom Field Values  
+    href: userfieldconfig-update.md  

@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: `any user`
 
-This method updates a "Comment" type activity in the timeline.
+This method updates a "Comment" type deal in the timeline.
 
 ## Method Parameters
 
@@ -20,9 +20,9 @@ This method updates a "Comment" type activity in the timeline.
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`](../../../data-types.md) | Integer identifier of the "Comment" type activity (for example, `1`). Identifiers can be obtained using the [`crm.timeline.comment.list`](./crm-timeline-comment-list.md) method ||
+[`integer`](../../../data-types.md) | Integer identifier of the "Comment" type deal (e.g., `1`). You can obtain identifiers using the [`crm.timeline.comment.list`](./crm-timeline-comment-list.md) method ||
 || **fields***
-[`object`](../../../data-types.md) | Values of the fields (detailed description provided [below](#parametr-fields)) for updating the "Comment" type activity in the structure:
+[`object`](../../../data-types.md) | Field values (detailed description provided [below](#parametr-fields)) for updating the "Comment" type deal in the following structure:
 
 ```js
 fields:
@@ -49,9 +49,9 @@ Starting from version crm 23.100.0, only parameters with the key `fields` in low
 
 ||
 || **ownerTypeId**
-[`integer`](../../data-types.md) | [Integer identifier of the CRM entity type](../../data-types.md#object_type) to which the comment is attached (for example, `2` for a deal) ||
+[`integer`](../../data-types.md) | [Integer identifier of the CRM object type](../../data-types.md#object_type) to which the comment is attached (e.g., `2` for a deal) ||
 || **ownerId**
-[`integer`](../../../data-types.md) | Integer identifier of the CRM entity to which the comment is attached (for example, `1`). A list of identifiers can be obtained using the [`crm.timeline.bindings.list`](../bindings/crm-timeline-bindings-list.md) method (field `ENTITY_ID`) ||
+[`integer`](../../../data-types.md) | Integer identifier of the CRM entity to which the comment is attached (e.g., `1`). You can obtain a list of identifiers using the [`crm.timeline.bindings.list`](../bindings/crm-timeline-bindings-list.md) method (field `ENTITY_ID`) ||
 |#
 
 ### Parameter fields
@@ -62,7 +62,7 @@ Starting from version crm 23.100.0, only parameters with the key `fields` in low
 || **COMMENT**
 [`string`](../../../data-types.md) | Text of the comment ||
 || **FILES**
-[`attached_diskfile`](../../../data-types.md) | List of files. An array of values described by [rules](../../../files/how-to-update-files.md) ||
+[`attached_diskfile`](../../../data-types.md) | List of files. An array of values described according to [the rules](../../../files/how-to-update-files.md) ||
 |#
 
 ## Code Examples
@@ -243,7 +243,7 @@ HTTP Status: **200**
 || **result**
 [`integer`](../../../data-types.md) | Returns the integer identifier of the updated comment ||
 || **time**
-[`time`](../../../data-types.md) | Information about the execution time of the request ||
+[`time`](../../../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -263,9 +263,9 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `OWNER_NOT_FOUND` | Owner of the item not found ||
+|| `OWNER_NOT_FOUND` | Owner of the entity not found ||
 || `ACCESS_DENIED` | Insufficient permissions ||
-|| `NOT_FOUND` | Item not found ||
+|| `NOT_FOUND` | Entity not found ||
 || `INVALID_ARG_VALUE` | Empty comment ||
 || `100` | Required fields not provided ||
 |#

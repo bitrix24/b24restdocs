@@ -1,44 +1,44 @@
-# Pay an invoice through a specific payment system sale.paysystem.pay.invoice
+# Pay Invoice Through a Specific Payment System sale.paysystem.pay.invoice
 
 {% note tip "" %}
 
-If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
 
 {% endnote %}
 
-> Scope: [`pay_system`](../scopes/permissions.md)
+> Scope: [`pay_system`](../../scopes/permissions.md)
 >
-> Who can execute the method: a user with permissions to create and edit CRM invoices (old version)
+> Who can execute the method: a user with permissions to create and edit CRM invoices (legacy version)
 
-This method is used to pay an invoice (old version) through a specific payment system. It is called after processing the response from the payment system.
+This method is used to pay an invoice (legacy version) through a specific payment system. It is called after processing the response from the payment system.
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../_includes/required.md) %}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
-|| **INVOICE_ID***
-[`integer`](../data-types.md) | Identifier of the old version invoice. To retrieve information about invoices, use the service [crm.invoice.*](../crm/outdated/invoice/index.md)
-||
-|| **PAY_SYSTEM_ID**
-[`sale_paysystem.ID`](../sale/data-types.md) | Identifier of the payment system
-||
-|| **BX_REST_HANDLER**
-[`string`](../data-types.md) | Symbolic identifier of the payment system's REST handler.
+|| **INVOICE_ID*** 
+[`integer`](../../data-types.md) | Identifier of the legacy invoice. The service [crm.invoice.*](../../crm/outdated/invoice/index.md) is used to retrieve invoice information.
+|| 
+|| **PAY_SYSTEM_ID** 
+[`sale_paysystem.ID`](../../sale/data-types.md) | Identifier of the payment system
+|| 
+|| **BX_REST_HANDLER** 
+[`string`](../../data-types.md) | Symbolic identifier of the REST handler for the payment system.
 
-You must pass either the `PAY_SYSTEM_ID` parameter or the `BX_REST_HANDLER`:
-- when passing `PAY_SYSTEM_ID`, the payment system with the specified identifier is used 
-- when passing `BX_REST_HANDLER`, the first found payment system with the specified handler is used 
+You must provide either the `PAY_SYSTEM_ID` parameter or the `BX_REST_HANDLER`:
+- When providing `PAY_SYSTEM_ID`, the payment system with the specified identifier is used.
+- When providing `BX_REST_HANDLER`, the first found payment system with the specified handler is used.
 
-If both parameters are passed, the `PAY_SYSTEM_ID` parameter takes precedence.
-||
+If both parameters are provided, the `PAY_SYSTEM_ID` parameter takes precedence.
+|| 
 |#
 
 ## Code Examples
 
-{% include [Note on examples](../../_includes/examples.md) %}
+{% include [Note on Examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -67,20 +67,20 @@ If both parameters are passed, the `PAY_SYSTEM_ID` parameter takes precedence.
     ```js
     try
     {
-    	const response = await $b24.callMethod(
-    		'sale.paysystem.pay.invoice',
-    		{
-    			"INVOICE_ID": 2,
-    			"PAY_SYSTEM_ID": 31,
-    		}
-    	);
-    	
-    	const result = response.getData().result;
-    	console.dir(result);
+        const response = await $b24.callMethod(
+            'sale.paysystem.pay.invoice',
+            {
+                "INVOICE_ID": 2,
+                "PAY_SYSTEM_ID": 31,
+            }
+        );
+        
+        const result = response.getData().result;
+        console.dir(result);
     }
     catch( error )
     {
-    	console.error(error);
+        console.error(error);
     }
     ```
 
@@ -155,7 +155,7 @@ If both parameters are passed, the `PAY_SYSTEM_ID` parameter takes precedence.
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -175,31 +175,31 @@ HTTP status: **200**
 
 ### Returned Data
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../data-types.md) | Result of the invoice payment ||
+[`boolean`](../../data-types.md) | Result of the invoice payment ||
 || **time**
-[`time`](../data-types.md) | Information about the request execution time ||
+[`time`](../../data-types.md) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {
-    "error": " ERROR_CHECK_FAILURE",
+    "error": "ERROR_CHECK_FAILURE",
     "error_description": "Pay system not found"
 }
 ```
 
-{% include notitle [error handling](../../_includes/error-info.md) %}
+{% include notitle [error handling](../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
-#|
+#| 
 || **Code** | **Description** | **Status** ||
 || `ACCESS_DENIED` | Insufficient permissions to pay the invoice | 403 ||
 || `ERROR_CHECK_FAILURE` | One of the required fields is missing, the payment system with the specified REST handler was not found, or the invoice with the specified `ID` was not found (details can be found in the error description) | 400 ||
@@ -208,20 +208,8 @@ HTTP status: **400**
 || `ERROR_PROCESS_REQUEST_RESULT` | Payment system with the specified `ID` was not found or an error occurred while processing the request by the payment system (details can be found in the error description) | 400 ||
 |#
 
-{% include [system errors](../../_includes/system-errors.md) %}
+{% include [system errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
-- [{#T}](./sale-pay-system-handler-add.md)
-- [{#T}](./sale-pay-system-handler-update.md)
-- [{#T}](./sale-pay-system-handler-list.md)
-- [{#T}](./sale-pay-system-handler-delete.md)
-- [{#T}](./sale-pay-system-add.md)
-- [{#T}](./sale-pay-system-update.md)
-- [{#T}](./sale-pay-system-list.md)
-- [{#T}](./sale-pay-system-delete.md)
-- [{#T}](./sale-pay-system-settings-get.md)
-- [{#T}](./sale-pay-system-settings-update.md)
-- [{#T}](./sale-pay-system-pay-payment.md)
-- [{#T}](./sale-pay-system-settings-payment-get.md)
 - [{#T}](./sale-pay-system-settings-invoice-get.md)

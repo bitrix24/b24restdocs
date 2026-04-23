@@ -1,19 +1,19 @@
-title: Get Lists
-href: index.md
-items: 
-  - name: How to Get Lists
-    href: index.md
-  - name: How to Find Duplicates in CRM by Phone and Email
-    href: search-by-phone-and-email.md
-  - name: How to Get a List of Activities from Deals
-    href: get-activity-list-by-deals.md
-  - name: How to Get a List of Stages with Semantics for CRM Entities
-    href: how-to-get-stages-with-semantics.md
-  - name: How to Get a Sales Funnel for a Given Direction
-    href: how-to-get-deal-funnels.md
-  - name: How to Get a Client's Address from CRM
-    href: how-to-get-address.md
-  - name: How to Get a List of Vendors
-    href: how-to-get-contractors.md
-  - name: How to Filter Elements by Stage Name
-    href: how-to-get-elements-by-stage-filter.md
+title: Get Lists  
+href: index.md  
+items:  
+  - name: How to Get Lists  
+    href: index.md  
+  - name: How to Find Duplicates in CRM by Phone and Email  
+    href: search-by-phone-and-email.md  
+  - name: How to Get Activity List from Deals  
+    href: get-activity-list-by-deals.md  
+  - name: How to Get Stages with Semantics for CRM Entities  
+    href: how-to-get-stages-with-semantics.md  
+  - name: How to Get a Sales Funnel for a Specific Direction  
+    href: how-to-get-deal-funnels.md  
+  - name: How to Get Client Address from CRM  
+    href: how-to-get-address.md  
+  - name: How to Get a List of Vendors  
+    href: how-to-get-contractors.md  
+  - name: How to Filter Entities by Stage Name  
+    href: how-to-get-elements-by-stage-filter.md  

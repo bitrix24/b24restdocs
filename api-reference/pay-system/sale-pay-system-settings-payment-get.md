@@ -1,8 +1,8 @@
-# Get Payment System Settings for Specific Payment sale.paysystem.settings.payment.get
+# Get Payment System Settings for a Specific Payment sale.paysystem.settings.payment.get
 
 {% note tip "" %}
 
-If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../sdk/mcp.md) so the assistant can utilize the official REST documentation.
 
 {% endnote %}
 
@@ -10,11 +10,11 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: a user with permissions to create and edit orders in CRM
 
-The method returns the payment system settings for a specific payment.
+This method returns the payment system settings for a specific payment.
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -29,7 +29,7 @@ The method returns the payment system settings for a specific payment.
 
 ## Code Examples
 
-{% include [Note on examples](../../_includes/examples.md) %}
+{% include [Note on Examples](../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -58,20 +58,20 @@ The method returns the payment system settings for a specific payment.
     ```js
     try
     {
-    	const response = await $b24.callMethod(
-    		'sale.paysystem.settings.payment.get',
-    		{
-    			"PAYMENT_ID": 10,
-    			"PAY_SYSTEM_ID": 11
-    		}
-    	);
-    	
-    	const result = response.getData().result;
-    	console.dir(result);
+        const response = await $b24.callMethod(
+            'sale.paysystem.settings.payment.get',
+            {
+                "PAYMENT_ID": 10,
+                "PAY_SYSTEM_ID": 11
+            }
+        );
+        
+        const result = response.getData().result;
+        console.dir(result);
     }
     catch( error )
     {
-    	console.error(error);
+        console.error(error);
     }
     ```
 
@@ -174,7 +174,7 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../data-types.md) | Root element of the response. 
+[`object`](../data-types.md) | The root element of the response. 
 
 The keys of the object are the parameter codes specified when adding the handler via [sale.paysystem.handler.add](./sale-pay-system-handler-add.md) in the `CODES` parameter. 
 
@@ -204,8 +204,8 @@ HTTP Status: **400**, **403**
 #|
 || **Code** | **Description** | **Status** ||
 || `ACCESS_DENIED` | Insufficient permissions to retrieve settings | 403 ||
-|| `ERROR_CHECK_FAILURE` | One of the required fields is missing, the payment system with the specified `ID` is not found, or the payment with the specified `ID` linked to the specified payment system is not found (details in the error description) | 400 ||
-|| `ERROR_INTERNAL_ORDER_NOT_FOUND` | The order linked to the specified payment is not found | 400 ||
+|| `ERROR_CHECK_FAILURE` | One of the required fields is not specified, the payment system with the specified `ID` is not found, or the payment with the specified `ID` linked to the specified payment system is not found (details in the error description) | 400 ||
+|| `ERROR_INTERNAL_ORDER_NOT_FOUND` | Order not found that is linked to the specified payment | 400 ||
 |#
 
 {% include [system errors](../../_includes/system-errors.md) %}
@@ -223,5 +223,3 @@ HTTP Status: **400**, **403**
 - [{#T}](./sale-pay-system-settings-update.md)
 - [{#T}](./sale-pay-system-delete.md)
 - [{#T}](./sale-pay-system-pay-payment.md)
-- [{#T}](./sale-pay-system-pay-invoice.md)
-- [{#T}](./sale-pay-system-settings-invoice-get.md)

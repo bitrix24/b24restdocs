@@ -1,4 +1,4 @@
-# Update Custom Field Values for Inventory Documents `catalog.userfield.document.update`
+# Update User Field Values for Inventory Accounting Documents catalog.userfield.document.update
 
 {% note tip "" %}
 
@@ -10,36 +10,36 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: a user with "Create and Edit" access permission for the required document type
 
-The method `catalog.userfield.document.update` updates the values of custom fields for inventory documents.
+The method `catalog.userfield.document.update` updates the values of user fields in inventory accounting documents.
 
 ## Method Parameters
 
 {% include [Note on Required Parameters](../../../_includes/required.md) %}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
-|| **documentId***
-[`catalog_document.id`](../data-types.md#catalog_document) | Identifier of the inventory document. The identifier can be obtained using the [catalog.document.list](../document/catalog-document-list.md) method ||
-|| **fields***
-[`object`](#fields) | Fields to update ([detailed description](#fields)) ||
+|| **documentId*** 
+[`catalog_document.id`](../data-types.md#catalog_document) | Identifier of the inventory accounting document. The identifier can be obtained using the [catalog.document.list](../document/catalog-document-list.md) method ||
+|| **fields*** 
+[`object`](#fields) | Fields to be updated ([detailed description](#fields)) ||
 |#
 
 ### Parameter fields {#fields}
 
 {% include [Note on Required Parameters](../../../_includes/required.md) %}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
-|| **documentType***
-[`string`](../../data-types.md) | Type of the inventory document.
+|| **documentType*** 
+[`string`](../../data-types.md) | Type of the inventory accounting document.
 
-Allowed values: [types of inventory documents](../enum/catalog-enum-get-store-document-types.md) ||
-|| **fieldN**
-[`mixed`](../../data-types.md) | Value of the custom field, where `N` is the identifier of the custom field, for example, `field287`.
+Allowed values: [types of inventory accounting documents](../enum/catalog-enum-get-store-document-types.md) ||
+|| **fieldN** 
+[`mixed`](../../data-types.md) | Value of the user field, where `N` is the identifier of the user field, for example `field287`.
 
-Identifiers and settings for custom fields can be obtained using the [userfieldconfig.list](../../crm/universal/userfieldconfig/userfieldconfig/userfieldconfig-list.md) method ||
+Identifiers and settings for user fields can be obtained using the [userfieldconfig.list](../../crm/universal/userfieldconfig/userfieldconfig-list.md) method ||
 |#
 
 ## Code Examples
@@ -194,13 +194,13 @@ HTTP Code: **200**
 
 ### Returned Data
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
 || **document**
-[`catalog_userfield_document`](../data-types.md#catalog_userfield_document) | Object with updated values of the document's custom fields ||
+[`catalog_userfield_document`](../data-types.md#catalog_userfield_document) | Object with updated values of the document's user fields ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -220,10 +220,10 @@ HTTP Code: **400**
 
 ### Possible Error Codes
 
-#|
+#| 
 || **Code** | **Description** | **Value** ||
 || `0` | The specified document does not exist | Document with the specified `documentId` not found ||
-|| `0` | Access Denied | Insufficient permissions to modify the document of the selected type ||
+|| `0` | Access Denied | Insufficient rights to modify the document of the selected type ||
 |#
 
 {% include [System Errors](../../../_includes/system-errors.md) %}
@@ -232,4 +232,4 @@ HTTP Code: **400**
 
 - [{#T}](./catalog-userfield-document-list.md)
 - [{#T}](../enum/catalog-enum-get-store-document-types.md)
-- [{#T}](../../crm/universal/userfieldconfig/userfieldconfig/userfieldconfig-list.md)
+- [{#T}](../../crm/universal/userfieldconfig/userfieldconfig-list.md)

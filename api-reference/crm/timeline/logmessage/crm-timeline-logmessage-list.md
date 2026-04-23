@@ -1,4 +1,4 @@
-# Get the list of log entries crm.timeline.logmessage.list
+# Get a List of Timeline Log Entries crm.timeline.logmessage.list
 
 {% note tip "" %}
 
@@ -8,48 +8,48 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: `user with read access permission for the CRM entity containing the record`
+> Who can execute the method: `user with read access permission to the CRM entity containing the record`
 
 This method retrieves a list of timeline log entries.
 
 {% note info "" %}
 
-It is important to note that the method can only retrieve data about records that were previously added using [`crm.timeline.logmessage.add`](./crm-timeline-logmessage-add.md). System records cannot be retrieved using `crm.timeline.logmessage.list`.
+It is important to note that the method can only retrieve data for records that were previously added using [`crm.timeline.logmessage.add`](./crm-timeline-logmessage-add.md). System entries cannot be retrieved using `crm.timeline.logmessage.list`.
 
 {% endnote %}
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../../_includes/required.md) %}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
-|| **entityTypeId***
+|| **entityTypeId*** 
 [`integer`](../../../data-types.md) | [Identifier of the entity type](../../data-types.md#object_type) for which to retrieve the list of log entries (e.g., `1` — lead) ||
-|| **entityId***
+|| **entityId*** 
 [`integer`](../../../data-types.md) | Identifier of the entity item for which to retrieve the list of log entries (e.g., `1`) ||
-|| **order**
+|| **order** 
 [`object`](../../../data-types.md) | List for sorting, where the key is the field and the value is `asc` or `desc`.
 
 By default, `desc` is used.
 
-Sorting is supported only by the **id** and **created** fields ||
-|| **start**
-[`integer`](../../../data-types.md) | This parameter is used to manage pagination.
+Sorting is only supported by the **id** and **created** fields. ||
+|| **start** 
+[`integer`](../../../data-types.md) | This parameter is used for pagination control.
 
-The page size of results is always static: 10 entries.
+The page size is always static: 10 entries.
 
 To select the second page of results, you need to pass the value `10`. To select the third page of results — the value `20`, and so on.
 
 The formula for calculating the `start` parameter value:
 
-`start = (N - 1) * 10`, where `N` is the desired page number ||
+`start = (N - 1) * 10`, where `N` is the desired page number. ||
 |#
 
 ## Code Examples
 
-{% include [Note on examples](../../../../_includes/examples.md) %}
+{% include [Note on Examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -59,7 +59,7 @@ The formula for calculating the `start` parameter value:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"entityTypeId":1,"entityId":1,"order":{"created":"desc"},"start":1}' \
+    -d '{"entityTypeId":1,"entityId":1,"order":{"created":"desc"},"start":0}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.timeline.logmessage.list
     ```
 
@@ -69,14 +69,14 @@ The formula for calculating the `start` parameter value:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"entityTypeId":1,"entityId":1,"order":{"created":"desc"},"start":1,"auth":"**put_access_token_here**"}' \
+    -d '{"entityTypeId":1,"entityId":1,"order":{"created":"desc"},"start":0,"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/crm.timeline.logmessage.list
     ```
 
 - JS
 
     ```js
-    // callListMethod: Retrieves all data at once. Use only for small selections (< 1000 items) due to high memory usage.
+    // callListMethod: Retrieves all data at once. Use only for small selections (< 1000 items) due to high memory load.
     
     try {
       const response = await $b24.callListMethod(
@@ -85,7 +85,7 @@ The formula for calculating the `start` parameter value:
           entityTypeId: 1,
           entityId: 1,
           order: { created: "desc" },
-          start: 1,
+          start: 0,
         },
         (progress) => { console.log('Progress:', progress) }
       )
@@ -95,10 +95,10 @@ The formula for calculating the `start` parameter value:
       console.error('Request failed', error)
     }
     
-    // fetchListMethod: Retrieves data in parts using an iterator. Use it for large data volumes to optimize memory usage.
+    // fetchListMethod: Retrieves data in parts using an iterator. Use for large volumes of data for efficient memory consumption.
     
     try {
-      const generator = $b24.fetchListMethod('crm.timeline.logmessage.list', { entityTypeId: 1, entityId: 1, order: { created: "desc" }, start: 1 }, 'ID')
+      const generator = $b24.fetchListMethod('crm.timeline.logmessage.list', { entityTypeId: 1, entityId: 1, order: { created: "desc" }, start: 0 }, 'ID')
       for await (const page of generator) {
         for (const entity of page) { console.log('Entity:', entity) }
       }
@@ -106,10 +106,10 @@ The formula for calculating the `start` parameter value:
       console.error('Request failed', error)
     }
     
-    // callMethod: Manually controls pagination through the start parameter. Use it for precise control of request batches. For large datasets, it is less efficient than fetchListMethod.
+    // callMethod: Manual control of pagination through the start parameter. Use for precise control over request batches. Less efficient for large data than fetchListMethod.
     
     try {
-      const response = await $b24.callMethod('crm.timeline.logmessage.list', { entityTypeId: 1, entityId: 1, order: { created: "desc" }, start: 1 }, 0)
+      const response = await $b24.callMethod('crm.timeline.logmessage.list', { entityTypeId: 1, entityId: 1, order: { created: "desc" }, start: 0 }, 0)
       const result = response.getData().result || []
       for (const entity of result) { console.log('Entity:', entity) }
     } catch (error) {
@@ -129,7 +129,7 @@ The formula for calculating the `start` parameter value:
                     'entityTypeId' => 1,
                     'entityId'     => 1,
                     'order'        => ['created' => 'desc'],
-                    'start'        => 1,
+                    'start'        => 0,
                 ]
             );
     
@@ -158,7 +158,7 @@ The formula for calculating the `start` parameter value:
             entityTypeId: 1,
             entityId: 1,
             order: { created: "desc" },
-            start: 1,
+            start: 0,
         },
         result => {
             if (result.error())
@@ -180,7 +180,7 @@ The formula for calculating the `start` parameter value:
             'entityTypeId' => 1,
             'entityId' => 1,
             'order' => ['created' => 'desc'],
-            'start' => 1
+            'start' => 0
         ]
     );
 
@@ -231,7 +231,7 @@ HTTP Status: **200**
 
 ### Returned Data
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **result**
@@ -241,7 +241,7 @@ The `result` field contains an array, each entry of which contains an associativ
 || **total**
 [`integer`](../../../data-types.md) | The total number of records found ||
 || **time**
-[`time`](../../../data-types.md) | Information about the execution time of the request ||
+[`time`](../../../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -259,17 +259,16 @@ HTTP Status: **400**
 
 ### Possible Error Codes
 
-#|
+#| 
 || **Code** | **Description** ||
-|| `100` | Required fields not provided ||
+|| `100` | Required fields are not provided ||
 || `0` | Other errors (e.g., fatal) ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}
 
-## Continue Exploring 
+## Continue Learning
 
 - [{#T}](./crm-timeline-logmessage-add.md)
 - [{#T}](./crm-timeline-logmessage-get.md)
 - [{#T}](./crm-timeline-logmessage-delete.md)
-

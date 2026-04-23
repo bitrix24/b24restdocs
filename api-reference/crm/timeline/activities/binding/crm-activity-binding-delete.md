@@ -1,4 +1,4 @@
-# Delete the connection of the activity with the CRM entity crm.activity.binding.delete
+# Delete the deal's connection with the CRM entity crm.activity.binding.delete
 
 {% note tip "" %}
 
@@ -10,21 +10,21 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: user with permission to edit CRM entities
 
-The method `crm.activity.binding.delete` removes the connection of the activity with the CRM entity. If the activity is linked to only one entity, this connection cannot be deleted.
+The method `crm.activity.binding.delete` removes the connection of a deal with a CRM entity. If the deal is linked to only one entity, this connection cannot be deleted.
 
 ## Method Parameters
 
 {% include [Note on required parameters](../../../../../_includes/required.md) %}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
-|| **activityId***
-[`integer`](../../../../data-types.md) | Integer identifier of the activity in the timeline, for example `999` ||
-|| **entityTypeId***
-[`integer`](../../../../data-types.md) | [Integer identifier of the CRM entity type](../../../data-types.md#object_type) to which the activity is being unlinked, for example `2` for a deal ||
-|| **entityId***
-[`integer`](../../../../data-types.md) | Integer identifier of the CRM entity to which the activity is being unlinked, for example `1`  ||
+|| **activityId*** 
+[`integer`](../../../../data-types.md) | Integer identifier of the deal in the timeline, for example `999` ||
+|| **entityTypeId*** 
+[`integer`](../../../../data-types.md) | [Integer identifier of the CRM entity type](../../../data-types.md#object_type) to which the deal connection is being removed, for example `2` for a deal ||
+|| **entityId*** 
+[`integer`](../../../../data-types.md) | Integer identifier of the CRM entity to which the deal connection is being removed, for example `1` ||
 |#
 
 ## Code Examples
@@ -58,21 +58,21 @@ The method `crm.activity.binding.delete` removes the connection of the activity 
     ```js
     try
     {
-    	const response = await $b24.callMethod(
-    		'crm.activity.binding.delete',
-    		{
-    			activityId: 999, // Activity ID
-    			entityTypeId: 2, // CRM entity type ID
-    			entityId: 1 // CRM entity ID
-    		}
-    	);
-    	
-    	const result = response.getData().result;
-    	console.log('Result:', result);
+        const response = await $b24.callMethod(
+            'crm.activity.binding.delete',
+            {
+                activityId: 999, // Deal ID
+                entityTypeId: 2, // CRM entity type ID
+                entityId: 1 // CRM entity ID
+            }
+        );
+        
+        const result = response.getData().result;
+        console.log('Result:', result);
     }
     catch( error )
     {
-    	console.error('Error:', error);
+        console.error('Error:', error);
     }
     ```
 
@@ -85,7 +85,7 @@ The method `crm.activity.binding.delete` removes the connection of the activity 
             ->call(
                 'crm.activity.binding.delete',
                 [
-                    'activityId'   => 999, // Activity ID
+                    'activityId'   => 999, // Deal ID
                     'entityTypeId' => 2, // CRM entity type ID
                     'entityId'     => 1 // CRM entity ID
                 ]
@@ -109,7 +109,7 @@ The method `crm.activity.binding.delete` removes the connection of the activity 
     BX24.callMethod(
         'crm.activity.binding.delete',
         {
-            activityId: 999, // Activity ID
+            activityId: 999, // Deal ID
             entityTypeId: 2, // CRM entity type ID
             entityId: 1 // CRM entity ID
         },
@@ -131,7 +131,7 @@ The method `crm.activity.binding.delete` removes the connection of the activity 
     $result = CRest::call(
         'crm.activity.binding.delete',
         [
-            'activityId' => 999, // Activity ID
+            'activityId' => 999, // Deal ID
             'entityTypeId' => 2, // CRM entity type ID
             'entityId' => 1 // CRM entity ID
         ]
@@ -166,13 +166,13 @@ HTTP Status: **200**
 
 ### Returned Data
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **result**
 [`boolean`](../../../../data-types.md) | Result of the operation. Returns `true` if the connection was successfully deleted, otherwise `false` ||
 || **time**
-[`time`](../../../../data-types.md#time) | Information about the execution time of the request ||
+[`time`](../../../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -182,7 +182,7 @@ HTTP Status: **400**
 ```json
 {
     "error": "NOT_FOUND",
-    "error_description": "Entity not found"
+    "error_description": "Element not found"
 }
 ```
 
@@ -190,19 +190,19 @@ HTTP Status: **400**
 
 ### Possible Error Codes
 
-#|
+#| 
 || **Code** | **Description** ||
-|| `100` | Required fields not provided ||
-|| `NOT_FOUND` | Entity not found ||
-|| `OWNER_NOT_FOUND` | Owner of the entity not found ||
+|| `100` | Required fields are not provided ||
+|| `NOT_FOUND` | Element not found ||
+|| `OWNER_NOT_FOUND` | Owner of the element not found ||
 || `ACCESS_DENIED` | Insufficient permissions to perform the operation ||
-|| `BINDING_NOT_FOUND` | Activity not linked to this entity ||
-|| `LAST_BINDING_CANNOT_BE_DELETED` | Cannot delete the only binding of the activity to the entity ||
+|| `BINDING_NOT_FOUND` | Deal is not linked to this entity ||
+|| `LAST_BINDING_CANNOT_BE_DELETED` | Cannot delete the only binding of the deal to the entity ||
 |#
 
 {% include [system errors](../../../../../_includes/system-errors.md) %}
 
-## Continue Learning 
+## Continue Learning
 
 - [{#T}](./crm-activity-binding-list.md)
 - [{#T}](./crm-activity-binding-add.md)

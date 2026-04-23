@@ -1,9 +1,19 @@
-title: Signature
-href: index.md
-items:
-  - name: Overview of Methods
-    href: index.md
-  - name: List of User-Signed Documents
-    href: sign-b2e-personal-tail.md
-  - name: List of Signed Documents in the Company's Safe
-    href: sign-b2e-mysafe-tail.md
+title: Signature  
+href: index.md  
+items:  
+  - name: Overview of Methods  
+    href: index.md  
+  - name: Send Document for Signature  
+    href: sign-b2e-document-send.md  
+  - name: Retrieve Document  
+    href: sign-b2e-document-get.md  
+  - name: Get Company Provider List  
+    href: sign-b2e-company-provider-list.md  
+  - name: List of User-Signed Documents  
+    href: sign-b2e-personal-tail.md  
+  - name: List of Signed Documents in Company Safe  
+    href: sign-b2e-mysafe-tail.md  
+  - name: Events  
+    include:  
+      path: events/b24-toc.yaml  
+      mode: link  

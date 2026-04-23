@@ -1,4 +1,4 @@
-# Get a set of additional content blocks for the timeline record crm.timeline.layout.blocks.get
+# Retrieve a Set of Additional Content Blocks for the Timeline Record crm.timeline.layout.blocks.get
 
 {% note tip "" %}
 
@@ -12,20 +12,20 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 The method `crm.timeline.layout.blocks.get` retrieves a set of additional content blocks for a timeline record.
 
-Within the application, you can only obtain the set of additional content blocks that has been installed through this application.
+Within the application, you can only obtain the set of additional content blocks that has been established through this application.
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../../_includes/required.md) %}
 
-#|
-|| **Name**
+#| 
+|| **Name** 
 `type` | **Description** ||
-|| **entityTypeId***
-[`integer`](../../../data-types.md) | Identifier of the CRM object type to which the timeline record is linked ||
-|| **entityId***
-[`integer`](../../../data-types.md) | Identifier of the CRM object to which the timeline record is linked ||
-|| **timelineId***
+|| **entityTypeId*** 
+[`integer`](../../../data-types.md) | Identifier of the CRM entity type associated with the timeline record ||
+|| **entityId*** 
+[`integer`](../../../data-types.md) | Identifier of the CRM entity associated with the timeline record ||
+|| **timelineId*** 
 [`integer`](../../../data-types.md) | Identifier of the timeline record ||
 |#
 
@@ -33,7 +33,7 @@ Within the application, you can only obtain the set of additional content blocks
 
 Retrieve a set of additional content blocks for the timeline record with `id = 8`, linked to the deal with `id = 4`:
 
-{% include [Note on examples](../../../../_includes/examples.md) %}
+{% include [Note on Examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -62,21 +62,21 @@ Retrieve a set of additional content blocks for the timeline record with `id = 8
     ```js
     try
     {
-    	const response = await $b24.callMethod(
-    		'crm.timeline.layout.blocks.get',
-    		{
-    			entityTypeId: 2, // Deal
-    			entityId: 4,     // Deal ID
-    			timelineId: 8,   // ID of the timeline record linked to this deal
-    		}
-    	);
-    	
-    	const result = response.getData().result;
-    	console.info(result);
+        const response = await $b24.callMethod(
+            'crm.timeline.layout.blocks.get',
+            {
+                entityTypeId: 2, // Deal
+                entityId: 4,     // Deal ID
+                timelineId: 8,   // ID of the timeline record linked to this deal
+            }
+        );
+        
+        const result = response.getData().result;
+        console.info(result);
     }
     catch( error )
     {
-    	console.error(error);
+        console.error(error);
     }
     ```
 
@@ -94,18 +94,18 @@ Retrieve a set of additional content blocks for the timeline record with `id = 8
                     'timelineId'   => 8, // ID of the timeline record linked to this deal
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
+
         if ($result->error()) {
             error_log($result->error());
             echo 'Error: ' . $result->error();
         } else {
             echo 'Success: ' . print_r($result->data(), true);
         }
-    
+
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error getting timeline layout blocks: ' . $e->getMessage();
@@ -153,65 +153,94 @@ Retrieve a set of additional content blocks for the timeline record with `id = 8
 
 ## Response Handling
 
-HTTP status: **200**
-
-Returns an `object` with the key `layout`, containing [RestAppLayoutDto](../activities/configurable/structure/rest-app-layout-dto.md).
+HTTP Status: **200**
 
 ```json
 {
-    "layout": {
-        "blocks": {
-            "block_1": {
-                "type": "text",
-                "properties": {
-                    "value": "Hello!\nWe are starting.",
-                    "multiline": true,
-                    "bold": true,
-                    "color": "base_90"
-                }
-            },
-            "block_2": {
-                "type": "largeText",
-                "properties": {
-                    "value": "Hello!\nWe are starting.\nWe are continuing.\nWe are still working on this.\nWe are continuing.\nWe are close to the result.\nGoodbye."
-                }
-            },
-            "block_3": {
-                "type": "link",
-                "properties": {
-                    "text": "Open deal",
-                    "bold": true,
-                    "action": {
-                        "type": "redirect",
-                        "uri": "/crm/deal/details/123/"
+    "result": {
+        "layout": {
+            "blocks": {
+                "block_1": {
+                    "type": "text",
+                    "properties": {
+                        "value": "Hello!\nWe are starting.",
+                        "multiline": true,
+                        "bold": true,
+                        "color": "base_90"
                     }
-                }
-            },
-            "block_4": {
-                "type": "withTitle",
-                "properties": {
-                    "title": "Title",
-                    "block": {
-                        "type": "text",
-                        "properties": {
-                            "value": "Some value"
+                },
+                "block_2": {
+                    "type": "largeText",
+                    "properties": {
+                        "value": "Hello!\nWe are starting.\nWe are continuing.\nWe are still working on this.\nWe are continuing.\nWe are close to the result.\nGoodbye."
+                    }
+                },
+                "block_3": {
+                    "type": "link",
+                    "properties": {
+                        "text": "Open Deal",
+                        "bold": true,
+                        "action": {
+                            "type": "redirect",
+                            "uri": "/crm/deal/details/123/"
+                        }
+                    }
+                },
+                "block_4": {
+                    "type": "withTitle",
+                    "properties": {
+                        "title": "Title",
+                        "block": {
+                            "type": "text",
+                            "properties": {
+                                "value": "Some value"
+                            }
                         }
                     }
                 }
             }
         }
+    },
+    "time": {
+        "start": 1753341040.475739,
+        "finish": 1753341040.582705,
+        "duration": 0.10696601867675781,
+        "processing": 0.04708504676818848,
+        "date_start": "2025-07-24T17:57:20+00:00",
+        "date_finish": "2025-07-24T17:57:20+00:00",
+        "operating": 0
     }
 }
 ```
 
+### Returned Data
+
+#| 
+|| **Name** 
+`type` | **Description** ||
+|| **result** 
+[`object`](../../../data-types.md) | Root element of the response ||
+|| **time** 
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
+|#
+
+#### Result Object
+
+#| 
+|| **Name** 
+`type` | **Description** ||
+|| **layout** 
+[`RestAppLayoutDto`](../activities/configurable/structure/rest-app-layout-dto.md) | Set of additional content blocks established by the application for the timeline record ||
+|#
+
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {
     "error": "ERROR_WRONG_CONTEXT",
-    "error_description": "The method can only be called in the context of a rest application"
+    "error_description": "Method call is only possible in the context of a REST application"
 }
 ```
 
@@ -219,17 +248,17 @@ HTTP status: **400**
 
 ### Possible Error Codes
 
-#|
+#| 
 || **Code** | **Description** ||
-|| `ERROR_WRONG_CONTEXT` | The method can only be called in the context of a rest application ||
-|| `OWNER_NOT_FOUND` | The element to which the timeline record is linked was not found ||
-|| `NOT_FOUND` | The timeline record was not found ||
+|| `ERROR_WRONG_CONTEXT` | Method call is only possible in the context of a REST application ||
+|| `OWNER_NOT_FOUND` | The element associated with the timeline record was not found ||
+|| `NOT_FOUND` | Timeline record not found ||
 || `ACCESS_DENIED` | Access denied ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}
 
-## Continue Learning 
+## Continue Learning
 
 - [{#T}](./index.md)
 - [{#T}](./crm-timeline-layout-blocks-set.md)

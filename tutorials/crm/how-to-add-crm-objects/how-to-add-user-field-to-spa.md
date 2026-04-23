@@ -6,25 +6,25 @@
 
 {% note tip "" %}
 
-If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so the assistant can utilize the official REST documentation.
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
 
 {% endnote %}
 
-Custom fields extend the functionality of CRM to meet your business needs:
+Custom fields enhance the functionality of the CRM to meet your business needs:
 
-- You can create fields to store information in various formats: string, money, number, address, file, and more.
+- You can create fields to store information in various formats: string, money, number, address, file, and others.
 
-- You can configure field characteristics: names for different languages, multi-field flag, rounding settings for numeric fields, and others.
+- You can configure field characteristics: names for different languages, multiple field flag, rounding settings for numeric fields, and more.
 
 To create a custom field in a smart process, we will sequentially execute two methods:
 
 1. [crm.type.list](../../../api-reference/crm/universal/user-defined-object-types/crm-type-list.md) — retrieve the ID of the smart process.
 
-2. [userfieldconfig.add](../../../api-reference/crm/universal/userfieldconfig/userfieldconfig/userfieldconfig-add.md) — create a custom field in the smart process.
+2. [userfieldconfig.add](../../../api-reference/crm/universal/userfieldconfig/userfieldconfig-add.md) — create a custom field in the smart process.
 
 ## 1. Retrieve the Smart Process ID {#spa-id}
 
-To obtain the ID of the smart process, we use the [crm.type.list](../../../api-reference/crm/universal/user-defined-object-types/crm-type-list.md) method with the filter:
+To obtain the ID of the smart process, we use the [crm.type.list](../../../api-reference/crm/universal/user-defined-object-types/crm-type-list.md) method with a filter:
 
 - `title` — specify the name of the smart process.
 
@@ -62,7 +62,7 @@ To obtain the ID of the smart process, we use the [crm.type.list](../../../api-r
 
 {% endlist %}
 
-As a result, we will receive the id — this is the ordinal number of the smart process in Bitrix24. In the example, `id`: `7`.
+As a result, we will receive the ID — this is the ordinal number of the smart process in Bitrix24. In the example, `id`: `7`.
 
 ```json
 {
@@ -102,7 +102,7 @@ As a result, we will receive the id — this is the ordinal number of the smart 
 
 ## 2. Create a Custom Field in the Smart Process
 
-To create a custom field, we use the [userfieldconfig.add](../../../api-reference/crm/universal/userfieldconfig/userfieldconfig/userfieldconfig-add.md) method with the following parameters:
+To create a custom field, we use the [userfieldconfig.add](../../../api-reference/crm/universal/userfieldconfig/userfieldconfig-add.md) method with the following parameters:
 
 - `moduleId` — the identifier of the module in which the method will create the field, a required parameter. The module for smart processes is `crm`.
 
@@ -112,7 +112,7 @@ To create a custom field, we use the [userfieldconfig.add](../../../api-referenc
 
 - `field[userTypeId]` — the identifier of the [field type](../../../api-reference/crm/universal/user-defined-fields/crm-userfield-types.md), a required parameter. In the example, we will specify `enumeration` to create a list-type field, and we will pass the list values in a separate `enum` array.
 
-- `field[multiple]` — the multi-field flag, an optional parameter. The multiplicity flag cannot be changed after the field is created.
+- `field[multiple]` — the multiple field flag, an optional parameter. The multiplicity flag cannot be changed after the field is created.
 
 - `field[editFormLabel]` — an array of names for displaying the field in Bitrix24 in different languages. An optional parameter; if no name is provided, the field code will be displayed in Bitrix24.
 
@@ -129,9 +129,8 @@ To create a custom field, we use the [userfieldconfig.add](../../../api-referenc
                 entityId: 'CRM_7', // Object identifier
                 fieldName: 'UF_CRM_7_NEW_REST_LIST', // Field code
                 userTypeId: 'enumeration', // Field type identifier
-                multiple: 'Y', // Multi-field flag
+                multiple: 'Y', // Multiple field flag
                 editFormLabel: { 
-                    'de': 'Merkmal Liste', // Field name in German
                     'en': 'List of characteristics' // Field name in English
                 },
                 enum: [ // List field values
@@ -164,9 +163,8 @@ To create a custom field, we use the [userfieldconfig.add](../../../api-referenc
                 'entityId' => 'CRM_7', // Object identifier
                 'fieldName' => 'UF_CRM_7_NEW_REST_LIST', // Field code
                 'userTypeId' => 'enumeration', // Field type identifier
-                'multiple' => 'Y', // Multi-field flag
+                'multiple' => 'Y', // Multiple field flag
                 'editFormLabel' => [
-                    'de' => 'Merkmal Liste', // Field name in German
                     'en' => 'List of characteristics' // Field name in English
                 ],
                 'enum' => [ // List field values
@@ -213,28 +211,22 @@ As a result, we will receive the data of the created field.
                 "SHOW_NO_VALUE": "Y"
             },
             "languageId": {
-                "en": "en",
-                "de": "de"
+                "en": "en"
             },
             "editFormLabel": {
-                "en": "List of characteristics",
-                "de": "Merkmal Liste"
+                "en": "List of characteristics"
             },
             "listColumnLabel": {
-                "en": null,
-                "de": null
+                "en": null
             },
             "listFilterLabel": {
-                "en": null,
-                "de": null
+                "en": null
             },
             "errorMessage": {
-                "en": null,
-                "de": null
+                "en": null
             },
             "helpMessage": {
-                "en": null,
-                "de": null
+                "en": null
             },
             "enum": [
                 {
@@ -303,7 +295,6 @@ As a result, we will receive the data of the created field.
                     userTypeId: 'enumeration',
                     multiple: 'Y',
                     editFormLabel: {
-                        'de': 'Merkmal Liste',
                         'en': 'List of characteristics'
                     },
                     enum: [
@@ -374,7 +365,6 @@ As a result, we will receive the data of the created field.
                 'userTypeId' => 'enumeration',
                 'multiple' => 'Y',
                 'editFormLabel' => [
-                    'de' => 'Merkmal Liste',
                     'en' => 'List of characteristics'
                 ],
                 'enum' => [

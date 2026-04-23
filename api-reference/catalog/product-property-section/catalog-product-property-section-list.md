@@ -1,34 +1,42 @@
-# Retrieve a List of Section Settings for catalog.productPropertySection.list
+# Get a List of Section Settings for catalog.productPropertySection.list
 
 {% note tip "" %}
 
-If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so the assistant can utilize the official REST documentation.
 
 {% endnote %}
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute the method: a user with the "View Product Catalog" access permission
+> Who can execute the method: a user with the "View product catalog" access permission
 
-The method `catalog.productPropertySection.list` returns a list of section settings for product properties and variations based on the filter.
+The method `catalog.productPropertySection.list` returns a list of section settings for product properties and variations based on a filter.
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
-#|
-|| **Name**
+#| 
+|| **Name** 
 `type` | **Description** ||
-|| **select**
-[`array`](../../data-types.md) | An array containing the list of fields to select (see fields of the object [catalog_product_property_section](../data-types.md#catalog_product_property_section)).
+|| **select** 
+[`array`](../../data-types.md) | An array containing the list of fields to be selected.
 
-If the parameter is not provided, all fields will be selected. ||
-|| **filter**
+Available fields:
+
+- `displayExpanded` — whether the property is displayed expanded in the filter
+- `displayType` — the type of property in the smart filter
+- `filterHint` — hint in the smart filter for visitors
+- `propertyId` — the identifier of the product or variation property
+- `smartFilter` — whether the property is displayed in the smart filter
+
+By default, all available fields are returned. ||
+|| **filter** 
 [`object`](../../data-types.md) | An object for filtering the selected settings in the format `{"field_1": "value_1", ... "field_N": "value_N"}`.
 
-Possible values for `field` correspond to the fields of the object [catalog_product_property_section](../data-types.md#catalog_product_property_section).
+Possible values for `field` correspond to the fields available in the `select` parameter.
 
-An additional prefix can be specified for the key to clarify the filter behavior. Possible prefix values:
+An additional prefix can be assigned to the key to specify the filter behavior. Possible prefix values:
 - `>=` — greater than or equal to
 - `>` — greater than
 - `<=` — less than or equal to
@@ -39,36 +47,36 @@ An additional prefix can be specified for the key to clarify the filter behavior
 - `!%` — NOT LIKE, substring search. The `%` symbol should not be included in the filter value
 - `!=%` — NOT LIKE, substring search. The `%` symbol should be included in the value
 - `!%=` — NOT LIKE (similar to `!=%`)
-- `=` — equal to, exact match (used by default)
-- `!=` — not equal to
-- `!` — not equal to
+- `=` — equal, exact match (used by default)
+- `!=` — not equal
+- `!` — not equal
 
-If `propertyId` is not provided, the method selects section settings for all properties in the product catalogs. If a `propertyId` is provided that does not exist or does not belong to the product catalog, the method will return an empty list. ||
-|| **order**
+If `propertyId` is not provided, the method selects section settings for all properties in the trade catalogs. If a `propertyId` is provided that does not exist or does not belong to the trade catalog, the method will return an empty list. ||
+|| **order** 
 [`object`](../../data-types.md) | An object for sorting the selected settings in the format `{"field_1": "order_1", ... "field_N": "order_N"}`.
 
-Possible values for `field` correspond to the fields of the object [catalog_product_property_section](../data-types.md#catalog_product_property_section).
+Possible values for `field` correspond to the fields available in the `select` parameter.
 
 Possible values for `order`:
 - `ASC` — in ascending order
 - `DESC` — in descending order
 
 If the parameter is not provided, sorting `propertyId ASC` is applied. ||
-|| **start**
-[`integer`](../../data-types.md) | This parameter is used to manage pagination.
+|| **start** 
+[`integer`](../../data-types.md) | The parameter is used to control pagination.
 
-The page size for results is always static — 50 records.
+The page size of results is always static — 50 records.
 
 To select the second page of results, pass the value `50`. To select the third page of results — `100`, and so on.
 
 The formula for calculating the `start` parameter value: `start = (N - 1) * 50`, where `N` is the desired page number.
 
-If you pass the value `-1`, the response will not include the `total` field. ||
+If the value `-1` is passed, the response will not include the `total` field. ||
 |#
 
 ## Code Examples
 
-{% include [Note on Examples](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -113,7 +121,7 @@ If you pass the value `-1`, the response will not include the `total` field. ||
     console.error('Request failed', error)
     }
 
-    // fetchListMethod: Selects data in parts using an iterator. Use for large volumes of data for efficient memory consumption.
+    // fetchListMethod: Retrieves data in parts using an iterator. Use for large volumes of data for efficient memory consumption.
 
     try {
     const generator = $b24.fetchListMethod('catalog.productPropertySection.list', {
@@ -240,18 +248,18 @@ HTTP Status: **200**
 
 ### Returned Data
 
-#|
-|| **Name**
+#| 
+|| **Name** 
 `type` | **Description** ||
-|| **result**
+|| **result** 
 [`object`](../../data-types.md) | The root object of the response ||
-|| **productPropertySections**
-[`catalog_product_property_section[]`](../data-types.md#catalog_product_property_section) | An array of section setting objects ||
-|| **next**
-[`integer`](../../data-types.md) | Offset for the next page. This field is returned if there are more records ||
-|| **total**
-[`integer`](../../data-types.md) | Total number of records. This field is not returned if the request was made with `start = -1` ||
-|| **time**
+|| **productPropertySections** 
+[`catalog_product_property_section[]`](../data-types.md#catalog_product_property_section) | An array of objects for section property settings ||
+|| **next** 
+[`integer`](../../data-types.md) | Offset for the next page. The field is returned if there are more records ||
+|| **total** 
+[`integer`](../../data-types.md) | Total number of records. The field is not returned if the request is executed with `start = -1` ||
+|| **time** 
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
@@ -270,12 +278,12 @@ HTTP Status: **400**
 
 ### Possible Error Codes
 
-#|
+#| 
 || **Code** | **Description** | **Value** ||
-|| `0` | Access Denied | Insufficient permissions to view the catalog ||
-|| `100` | Invalid value {wrong_type} to match with parameter {filter}. Should be value of type array. | Invalid data type for the value of the `filter` parameter ||
-|| `100` | Invalid value {wrong_type} to match with parameter {select}. Should be value of type array. | Invalid data type for the value of the `select` parameter ||
-|| `100` | Invalid value {wrong_type} to match with parameter {order}. Should be value of type array. | Invalid data type for the value of the `order` parameter ||
+|| `0` | Access Denied | Insufficient rights to view the catalog ||
+|| `100` | Invalid value {wrong_type} to match with parameter {filter}. Should be value of type array. | Invalid data type for the `filter` parameter value ||
+|| `100` | Invalid value {wrong_type} to match with parameter {select}. Should be value of type array. | Invalid data type for the `select` parameter value ||
+|| `100` | Invalid value {wrong_type} to match with parameter {order}. Should be value of type array. | Invalid data type for the `order` parameter value ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
