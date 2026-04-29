@@ -66,6 +66,27 @@ We will use the method [user.get](../../api-reference/user/user-get.md) with the
     );
     ```
 
+- Python
+
+    ```python
+    from b24pysdk import BitrixWebhook, Client
+
+    client = Client(
+        BitrixWebhook(
+            domain="your-domain.bitrix24.com",
+            auth_token="your-webhook-token",
+        )
+    )
+
+    result = client.user.get(
+        filter={
+            "NAME": "employee's name",
+            "LAST_NAME": "employee's last name",
+            "ACTIVE": 0,
+        }
+    ).response.result
+    ```
+
 {% endlist %}
 
 As a result, we will obtain the `ID` of the terminated employee.
@@ -172,6 +193,17 @@ We will use the method [bizproc.task.list](../../api-reference/bizproc/bizproc-t
             ]
         ]
     );
+    ```
+
+- Python
+
+    ```python
+    result = client.bizproc.task.list(
+        filter={
+            "USER_ID": 29,
+            "STATUS": 0,
+        }
+    ).response.result
     ```
 
 {% endlist %}
@@ -297,6 +329,14 @@ We will use the method [bizproc.workflow.kill](../../api-reference/bizproc/bizpr
             'ID' => '67e3db8e581121.72266518'
         ]
     );
+    ```
+
+- Python
+
+    ```python
+    result = client.bizproc.workflow.kill(
+        bitrix_id="67e3db8e581121.72266518",
+    ).response.result
     ```
 
 {% endlist %}
@@ -480,6 +520,73 @@ In the example, all found processes are deleted in a loop. If you need to delete
 
     // Start the process
     processEmployeeTasks($firstName, $lastName);
+    ```
+
+- Python
+
+    ```python
+    from typing import Optional
+
+    from b24pysdk import BitrixWebhook, Client
+    from b24pysdk.errors import BitrixAPIError
+
+
+    def get_user_id(client, first_name: str, last_name: str) -> Optional[int]:
+        try:
+            users = client.user.get(
+                filter={
+                    "NAME": first_name,
+                    "LAST_NAME": last_name,
+                    "ACTIVE": 0,
+                },
+            ).response.result
+        except BitrixAPIError as error:
+            print(f"Error: {error}")
+            return None
+
+        if not users:
+            return None
+        return int(users[0]["ID"])
+
+
+    def get_user_tasks(client, user_id: int) -> list[str]:
+        tasks = client.bizproc.task.list(
+            filter={
+                "USER_ID": user_id,
+                "STATUS": 0,
+            },
+        ).response.result
+
+        return [task["WORKFLOW_ID"] for task in tasks]
+
+
+    def kill_workflows(client, workflow_ids: list[str]) -> None:
+        for workflow_id in workflow_ids:
+            try:
+                client.bizproc.workflow.kill(bitrix_id=workflow_id).response
+            except BitrixAPIError as error:
+                print(f"Error: {error}")
+
+
+    def process_employee_tasks(client, first_name: str, last_name: str) -> None:
+        user_id = get_user_id(client, first_name, last_name)
+        if user_id is None:
+            return
+        workflow_ids = get_user_tasks(client, user_id)
+        kill_workflows(client, workflow_ids)
+
+
+    client = Client(
+        BitrixWebhook(
+            domain="your-domain.bitrix24.com",
+            auth_token="your-webhook-token",
+        )
+    )
+
+    first_name = input("Enter the employee's first name: ")
+    last_name = input("Enter the employee's last name: ")
+
+    process_employee_tasks(client, first_name, last_name)
     ```
 
 {% endlist %}

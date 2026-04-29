@@ -160,6 +160,75 @@ We will register the handler using [sale.cashbox.handler.add](../../api-referenc
    echo '</PRE>';
    ```
 
+- Python
+
+   ```python
+   from b24pysdk import BitrixWebhook, Client
+   from b24pysdk.errors import BitrixAPIError
+
+
+   client = Client(
+       BitrixWebhook(
+           domain="your-domain.bitrix24.com",
+           auth_token="your-webhook-token",
+       )
+   )
+
+   try:
+       response = client.sale.cashbox.handler.add(
+       code="my_rest_cashbox",
+       name="My REST Cash Register",
+       sort=100,
+       settings={
+           "PRINT_URL": "http://example.com/rest_print.php",
+           "CHECK_URL": "http://example.com/rest_check.php",
+           "CONFIG": {
+               "AUTH": {
+                   "LABEL": "Authorization",
+                   "ITEMS": {
+                       "LOGIN": {
+                           "TYPE": "STRING",
+                           "REQUIRED": "Y",
+                           "LABEL": "Login",
+                       },
+                       "PASSWORD": {
+                           "TYPE": "STRING",
+                           "REQUIRED": "Y",
+                           "LABEL": "Password",
+                       },
+                   },
+               },
+               "COMPANY": {
+                   "LABEL": "Organization Data",
+                   "ITEMS": {
+                       "INN": {
+                           "TYPE": "STRING",
+                           "REQUIRED": "Y",
+                           "LABEL": "Organization INN",
+                       }
+                   },
+               },
+               "INTERACTION": {
+                   "LABEL": "Cash Register Interaction Settings",
+                   "ITEMS": {
+                       "MODE": {
+                           "TYPE": "ENUM",
+                           "LABEL": "Cash Register Operation Mode",
+                           "OPTIONS": {
+                               "ACTIVE": "active",
+                               "TEST": "test",
+                           },
+                       }
+                   },
+               },
+           },
+       },
+       ).response
+       print(response.result)
+   except BitrixAPIError as error:
+       print(error)
+   ```
+
 {% endlist %}
 
 If the handler is successfully added, the method will return its identifier. If you receive an `error`, check the description of possible errors in the documentation for the method [sale.cashbox.handler.add](../../api-reference/sale/cashbox/sale-cashbox-handler-add.md).
@@ -281,6 +350,36 @@ We will add the cash register using [sale.cashbox.add](../../api-reference/sale/
    echo '<PRE>';
    print_r($result);
    echo '</PRE>';
+   ```
+
+- Python
+
+   ```python
+   try:
+       response = client.sale.cashbox.add(
+       rest_code="my_rest_cashbox",
+       name="REST Cash Register",
+       email="owner@example.com",
+       number_kkm="1",
+       ofd="bx_firstofd",
+       use_offline=True,
+       active=True,
+       settings={
+           "AUTH": {
+               "LOGIN": "rest_login",
+               "PASSWORD": "rest_password",
+           },
+           "COMPANY": {
+               "INN": "1234567890",
+           },
+           "INTERACTION": {
+               "MODE": "ACTIVE",
+           },
+       },
+       ).response
+       print(response.result)
+   except BitrixAPIError as error:
+       print(error)
    ```
 
 {% endlist %}
@@ -454,6 +553,25 @@ Prepare the fields for `sale.cashbox.check.apply`.
    print_r($result);
    echo '</PRE>';
    ```
+
+- Python
+
+    ```python
+    try:
+        response = client.sale.cashbox.check.apply(
+        uuid="00112233-4455-6677-8899-aabbccddeeff",
+        print_end_time="1609459200",
+        reg_number_kkt="000111222333",
+        fiscal_doc_attr="33445500",
+        fiscal_doc_number="123",
+        fiscal_receipt_number="10",
+        fn_number="0011223344556677",
+        shift_number="12",
+        ).response
+        print(response.result)
+    except BitrixAPIError as error:
+        print(error)
+    ```
 
 {% endlist %}
 

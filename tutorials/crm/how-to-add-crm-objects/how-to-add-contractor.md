@@ -1,4 +1,4 @@
-# How to Create a Vendor in CRM
+﻿# How to Create a Vendor in CRM
 
 > Scope: [`crm`](../../../api-reference/scopes/permissions.md)
 >
@@ -62,6 +62,24 @@ We will use the method [crm.category.list](../../../api-reference/crm/universal/
             ]
         ]
     );
+    ``` 
+
+- Python
+
+    ```python
+    from b24pysdk import BitrixWebhook, Client
+
+
+    client = Client(BitrixWebhook(domain="your-domain.bitrix24.ru", auth_token="your-webhook"))
+
+    response = client.crm.category.list(
+        entity_type_id=3,
+        filter={
+            "code": "CATALOG_CONTRACTOR_CONTACT",
+        },
+    ).response
+
+    print(response.result)
     ```
 
 {% endlist %}
@@ -157,6 +175,27 @@ The system stores phone and email as an array of multi-fields `fm`. Each element
             ]
         ]
     );
+    ```
+
+- Python
+
+    ```python
+    response = client.crm.item.add(
+        entity_type_id=3,
+        fields={
+            "name": "John",
+            "lastName": "Doe",
+            "categoryId": 15,
+            "fm": [
+                {"typeId": "PHONE", "valueType": "WORK", "value": "+1 900 000 00 00"},
+                {"typeId": "PHONE", "valueType": "MOBILE", "value": "+1 495 111 22 33"},
+                {"typeId": "EMAIL", "valueType": "WORK", "value": "supplier@example.com"},
+            ],
+            "comments": "Electronics Supplier",
+        },
+    ).response
+
+    print(response.result)
     ```
 
 {% endlist %}
@@ -366,6 +405,55 @@ The vendor ID, in this example `id`: `2449`, should be used in the inventory acc
     } else {
         print_r($resultItem['result']);
     }
+    ```
+
+- Python
+
+    ```python
+    from b24pysdk import BitrixWebhook, Client
+    from b24pysdk.errors import BitrixAPIError
+
+
+    client = Client(BitrixWebhook(domain="your-domain.bitrix24.ru", auth_token="your-webhook"))
+
+    entity_type_id = 3  # 3 - contact; for company use 4
+    category_code = "CATALOG_CONTRACTOR_CONTACT"  # for company use CATALOG_CONTRACTOR_COMPANY
+
+    try:
+        category_response = client.crm.category.list(
+            entity_type_id=entity_type_id,
+            filter={
+                "code": category_code,
+            },
+        ).response
+    except BitrixAPIError as error:
+        print(error)
+    else:
+        categories = category_response.result.get("categories") or []
+        if not categories:
+            print("Vendor category not found")
+        else:
+            category_id = categories[0]["id"]
+
+            try:
+                item_response = client.crm.item.add(
+                    entity_type_id=entity_type_id,
+                    fields={
+                        "name": "John",
+                        "lastName": "Doe",
+                        "categoryId": category_id,
+                        "fm": [
+                            {"typeId": "PHONE", "valueType": "WORK", "value": "+1 900 000 00 00"},
+                            {"typeId": "PHONE", "valueType": "MOBILE", "value": "+1 495 111 22 33"},
+                            {"typeId": "EMAIL", "valueType": "WORK", "value": "supplier@example.com"},
+                        ],
+                        "comments": "Electronics Supplier",
+                    },
+                ).response
+            except BitrixAPIError as error:
+                print(error)
+            else:
+                print(item_response.result)
     ```
 
 {% endlist %}

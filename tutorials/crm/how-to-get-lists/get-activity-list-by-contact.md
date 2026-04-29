@@ -72,4 +72,36 @@ To use the examples in PHP, configure the *CRest* class and include the **crest.
     echo '</pre>';
     ```
 
+- Python
+
+    ```python
+    from b24pysdk import BitrixWebhook, Client
+    from b24pysdk.errors import BitrixAPIError
+
+    client = Client(
+        BitrixWebhook(
+            domain="your-domain.bitrix24.com",
+            auth_token="your-webhook-token",
+        )
+    )
+
+    contact_id = 1
+
+    try:
+        activities = client.crm.activity.list(
+            filter={
+                "COMPLETED": "N",
+                "OWNER_ID": contact_id,
+                "OWNER_TYPE_ID": 3,
+            },
+            select=[
+                "*",
+                "COMMUNICATIONS",
+            ],
+        ).response.result
+        print(activities)
+    except BitrixAPIError as error:
+        print(error)
+    ```
+
 {% endlist %}

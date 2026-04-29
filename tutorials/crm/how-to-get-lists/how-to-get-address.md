@@ -76,6 +76,32 @@ To retrieve the requisites, we use the crm.requisite.list method with the follow
     print_r($result);
     echo '</PRE>';
     ```
+
+- Python
+
+    ```python
+    from b24pysdk import BitrixWebhook, Client
+    from b24pysdk.errors import BitrixAPIError
+
+    client = Client(
+        BitrixWebhook(
+            domain="your-domain.bitrix24.com",
+            auth_token="your-webhook-token",
+        )
+    )
+
+    result = client.crm.requisite.list(
+        filter={
+            "ENTITY_TYPE_ID": "3",
+            "ENTITY_ID": "2429",
+        },
+        select=[
+            "ID",
+            "ENTITY_TYPE_ID",
+            "ENTITY_ID",
+        ],
+    ).response.result
+    ```
 {% endlist %}
 
 We obtained the requisite ID `361` — a parameter necessary for the next request.
@@ -140,6 +166,18 @@ To obtain the address, we use the crm.address.list method with the following fil
     echo '<PRE>';
     print_r($result);
     echo '</PRE>';
+    ```
+
+- Python
+
+    ```python
+    result = client.crm.address.list(
+        filter={
+            "ENTITY_TYPE_ID": 8,
+            "ENTITY_ID": 361,
+            "TYPE_ID": 11,
+        }
+    ).response.result
     ```
 {% endlist %}
 
@@ -307,4 +345,63 @@ We received the delivery address data for the contact.
             }
         }
     ```
+- Python
+
+    ```python
+    from b24pysdk import BitrixWebhook, Client
+
+    client = Client(
+        BitrixWebhook(
+            domain="your-domain.bitrix24.com",
+            auth_token="your-webhook-token",
+        )
+    )
+
+    contact_id = "your_contact_ID_here"
+
+    try:
+        requisites = client.crm.requisite.list(
+            filter={
+                "ENTITY_TYPE_ID": 3,
+                "ENTITY_ID": contact_id,
+            },
+            select=["ID"],
+        ).response.result
+    except BitrixAPIError as error:
+        print(f"Error: {error}")
+    else:
+        if requisites:
+            requisite_id = requisites[0]["ID"]
+            print(f"Requisite ID: {requisite_id}")
+
+            try:
+                addresses = client.crm.address.list(
+                    filter={
+                        "ENTITY_TYPE_ID": 8,
+                        "ENTITY_ID": requisite_id,
+                        "TYPE_ID": 11,
+                    }
+                ).response.result
+            except BitrixAPIError as error:
+                print(f"Error: {error}")
+            else:
+                if addresses:
+                    print("Address\tCity\tPostal Code\tCountry")
+                    for address in addresses:
+                        print(
+                            "\t".join(
+                                [
+                                    str(address.get("ADDRESS_1") or "Not specified"),
+                                    str(address.get("CITY") or "Not specified"),
+                                    str(address.get("POSTAL_CODE") or "Not specified"),
+                                    str(address.get("COUNTRY") or "Not specified"),
+                                ]
+                            )
+                        )
+                else:
+                    print("Delivery address not found.")
+        else:
+            print("Requisite not found.")
+    ```
+
 {% endlist %}

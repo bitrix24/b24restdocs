@@ -72,6 +72,31 @@ Uploading the file to the drive is a necessary step, as the `UF_FORUM_MESSAGE_DO
     );
     ```
 
+- Python
+
+    ```python
+    from b24pysdk import BitrixWebhook, Client
+
+
+    client = Client(
+        BitrixWebhook(
+            domain="your-domain.bitrix24.com",
+            auth_token="your-webhook-token",
+        )
+    )
+
+    response = client.disk.folder.uploadfile(
+        bitrix_id=1739,
+        data={
+            "NAME": "file.pdf",
+        },
+        file_content=[
+            "file555.pdf",
+            "/9j/4AAQSkZJRgABAQEASABIAAD/2wBDAAQDAwQDAwQEAwQ///+dAYq6YFKoAv/AFnAa6ArKv8AAtFJVppxCEAulxQ2DWgfMR//2Q==",
+        ],
+    ).response
+    ```
+
 {% endlist %}
 
 As a result of uploading the file to the drive, we receive two different file ID values:
@@ -151,6 +176,21 @@ To create a comment in a task, we use the method [task.commentitem.add](../../ap
             ]
         ]
     );
+    ```
+
+- Python
+
+    ```python
+    response = client.task.commentitem.add(
+        task_id=3711,
+        fields={
+            "POST_MESSAGE": "comment for test",
+            "AUTHOR_ID": 29,
+            "UF_FORUM_MESSAGE_DOC": [
+                "n6687",
+            ],
+        },
+    ).response
     ```
 
 {% endlist %}
@@ -307,6 +347,62 @@ In the received result, there is no information about the file attached to the c
 
     // Call the function to upload a file and create a comment
     uploadFileToDrive();
+    ```
+
+- Python
+
+    ```python
+    from b24pysdk import BitrixWebhook, Client
+    from b24pysdk.errors import BitrixAPIError
+
+
+    def upload_file_to_drive(client):
+        folder_id = 1739
+        file_name = "file_name"
+        file_content_base64 = "file_content_Base64"
+
+        try:
+            result = client.disk.folder.uploadfile(
+                bitrix_id=folder_id,
+                data={"NAME": file_name},
+                file_content=[file_name, file_content_base64],
+            ).response.result
+        except BitrixAPIError as error:
+            print(f"Error uploading file: {error}")
+        else:
+            print("File successfully uploaded!")
+            file_id = result["ID"]
+            create_comment_with_file(client, file_id)
+
+
+    def create_comment_with_file(client, file_id):
+        task_id = "TASK_ID"
+        comment_message = "comment_text"
+        author_id = "AUTHOR_ID"
+
+        try:
+            client.task.commentitem.add(
+                task_id=task_id,
+                fields={
+                    "POST_MESSAGE": comment_message,
+                    "AUTHOR_ID": author_id,
+                    "UF_FORUM_MESSAGE_DOC": [f"n{file_id}"],
+                },
+            ).response
+        except BitrixAPIError as error:
+            print(f"Error creating comment: {error}")
+        else:
+            print("Comment successfully created!")
+
+
+    client = Client(
+        BitrixWebhook(
+            domain="your-domain.bitrix24.com",
+            auth_token="your-webhook-token",
+        )
+    )
+
+    upload_file_to_drive(client)
     ```
 
 {% endlist %}

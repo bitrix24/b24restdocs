@@ -64,6 +64,26 @@ We will use the [crm.category.list](../../../api-reference/crm/universal/categor
     );
     ```
 
+- Python
+  
+    ```python
+    from b24pysdk import BitrixWebhook, Client
+
+    client = Client(
+        BitrixWebhook(
+            domain="your-domain.bitrix24.com",
+            auth_token="your-webhook-token",
+        )
+    )
+
+    result = client.crm.category.list(
+        entity_type_id=3,
+        filter={
+            "code": "CATALOG_CONTRACTOR_CONTACT",
+        },
+    ).response.result
+    ```
+
 {% endlist %}
 
 As a result, we will obtain the category ID. In the example, `id`:`15`. The ID may vary across different Bitrix24 instances.
@@ -129,6 +149,18 @@ We will filter the items using the [crm.item.list](../../../api-reference/crm/un
             ]
         ]
     );
+    ```
+
+- Python
+  
+    ```python
+    result = client.crm.item.list(
+        entity_type_id=3,
+        select=["id", "name", "lastName", "categoryId"],
+        filter={
+            "categoryId": 15,
+        },
+    ).response.result
     ```
 
 {% endlist %}
@@ -259,6 +291,51 @@ The vendor IDs, in this example `id`: `2185` and `id`: `2443`, should be used in
     } else {
         print_r($resultItems['result']);
     }
+    ```
+
+- Python
+
+    ```python
+    from b24pysdk import BitrixWebhook, Client
+    from b24pysdk.errors import BitrixAPIError
+
+    client = Client(
+        BitrixWebhook(
+            domain="your-domain.bitrix24.com",
+            auth_token="your-webhook-token",
+        )
+    )
+
+    entity_type_id = 3
+
+    category_code = (
+        "CATALOG_CONTRACTOR_CONTACT"
+        if entity_type_id == 3
+        else "CATALOG_CONTRACTOR_COMPANY"
+    )
+
+    try:
+        categories = client.crm.category.list(
+            entity_type_id=entity_type_id,
+            filter={"code": category_code},
+        ).response.result.get("categories", [])
+    except BitrixAPIError as error:
+        print(error)
+    else:
+        if not categories:
+            print("Vendor category not found")
+        else:
+            try:
+                items_result = client.crm.item.list(
+                    entity_type_id=entity_type_id,
+                    select=["id", "name", "lastName", "categoryId"],
+                    filter={"categoryId": categories[0]["id"]},
+                    order={"ID": "DESC"},
+                ).response.result
+            except BitrixAPIError as error:
+                print(error)
+            else:
+                print(items_result)
     ```
 
 {% endlist %}
