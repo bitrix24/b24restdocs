@@ -28,7 +28,7 @@ If each user should have their own values, use the method group `user.option.*`.
 
 **User Binding.** The methods [user.option.set](./user-option-set.md) and [user.option.get](./user-option-get.md) save and read not the general application settings, but the settings of a specific user. Use them when different users should have different values, such as for personal interface settings.
 
-## Connection with Other Objects
+## Relationships with Other Objects
 
 **Application.** The group of methods [System Methods](../system/index.md) checks the application context, available scopes, and the presence of the method on the account. For example, [app.info](../system/app-info.md) retrieves information about the application, while [scope](../system/scope.md) returns a list of available scopes.
 

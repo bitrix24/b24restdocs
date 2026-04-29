@@ -12,7 +12,7 @@ This section describes the access rights of customer groups to price types in th
 >
 > User Documentation: [How to Set Access Permissions for the Product Catalog](https://helpdesk.bitrix24.com/open/25386568/)
 
-## Connection with Other Objects
+## Relationships with Other Objects
 
 **Price Type.** The binding is created for a specific price type in the `catalogGroupId` field. You can obtain the price type identifier using the methods [catalog.priceType.list](../catalog-price-type-list.md) and [catalog.priceType.get](../catalog-price-type-get.md).
 

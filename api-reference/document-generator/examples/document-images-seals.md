@@ -6,37 +6,44 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-{% note warning "We are still updating this page" %}
+Images, stamps, and signatures for template placeholders are passed to the method [documentgenerator.document.add](../document-generator-document-add.md) as file links in `values`. The files are downloaded from the specified URL and inserted into the document during generation.
 
-Some data may be missing here — we will complete it shortly.
+## When to Use
 
-{% endnote %}
+- When you need to insert an image from an external link
+- When you need to add a stamp or signature in a template field
 
-Let's consider a scenario where we need to insert images, a stamp, use modifiers for the date and name, and fill a table with several values.
+## What to Include in the Request
 
-To pass complex data to the document, not just in string format, it is essential to correctly form the `fields` parameter. First, let's fill in the image and the stamp.
+- In `values`, provide absolute URLs for the files. The file URL must be accessible by Bitrix24 without additional authorization.
+- In `fields`, specify the type for the field code:
+  - `IMAGE` — image field
+  - `STAMP` — stamp or signature field
+- The field codes in `values` and `fields` must match the placeholder codes in the template.
+
+## Example
 
 ```php
 $data = [
     'templateId' => 203,
     'providerClassName' => 'Bitrix\\DocumentGenerator\\DataProvider\\Rest',
-    'value' => 1,
+    'value' => 'ORDER_1024',
     'values' => [
-        'SomeDate' => '14.02.2018',
-        'SomeName' => 'Vladislav Gorelkin',
-        'Stamp' => 'http://myrestapp.com/upload/stamp.png', // external path to the stamp file
-        'Image' => 'http://myrestapp.com/upload/image.jpg', // external path to the image file
+        'Stamp' => 'https://myrestapp.example/upload/stamp.png', // external path to the stamp file
+        'Image' => 'https://myrestapp.example/upload/image.jpg', // external path to the image file
     ],
     'fields' => [
         'Stamp' => ['TYPE' => 'STAMP'], // field type - stamp
         'Image' => ['TYPE' => 'IMAGE'], // field type - image
     ]
 ];
-$url = $webHookUrl.$prefix.'.document.add/';
+$url = $webHookUrl.'documentgenerator.document.add/';
 ```
 
-In the `fields` array, you can specify the field type using the `TYPE` key:
-- for "Image" fields, the type is `STAMP`
-- for "Stamp or Signature" fields, the type is `IMAGE`
+## Continue Learning
 
-In the `values` array, you need to specify the absolute path to the file as values. The file will be downloaded from this address and inserted into the document.
+- [{#T}](./document-text-data.md)
+- [{#T}](./document-date-name.md)
+- [{#T}](./document-table-data.md)
+- [{#T}](./document-table-complex.md)
+- [{#T}](./index.md)

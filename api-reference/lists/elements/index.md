@@ -12,7 +12,7 @@ Each list element consists of fields. You can add new fields and configure them 
 >
 > User documentation: [How to add list elements](https://helpdesk.bitrix24.com/open/16701764/)
 
-## Connection with Other Objects
+## Relationships with Other Objects
 
 **Universal Lists.** Elements are created within lists. To add an element to a list, specify the parameters `IBLOCK_TYPE_ID`, `IBLOCK_ID`, and `IBLOCK_CODE`. Values can be obtained using the method [lists.get](../lists/lists-get.md).
 

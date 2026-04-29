@@ -32,7 +32,7 @@ To collect consents for processing personal data, use the standard agreement. Ad
 
 {% endnote %}
 
-## Connection with Other Objects
+## Relationships with Other Objects
 
 **Users.** Consents can be linked to users through the `USER_ID` parameter. To obtain the user ID, use the [user.get](../user/user-get.md) and [user.search](../user/user-search.md) methods.
 

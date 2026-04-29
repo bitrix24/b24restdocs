@@ -38,7 +38,7 @@ To set up the link:
 4. Check the result using the [landing.site.getGroupBindings](./landing-site-get-group-bindings.md) method. If the method returns `false`, check the bindings: only one Knowledge Base can be linked to a single group.
 5. If the link is no longer needed, it can be removed using the [landing.site.unbindingFromGroup](./landing-site-unbinding-from-group.md) method.
 
-## Connection with Other Objects
+## Relationships with Other Objects
 
 **Site.** The Knowledge Base is represented as a separate site in the `landing` module. The site ID `id` is needed for the linking and unlinking methods.
 

@@ -46,7 +46,7 @@ Application actions are primarily suitable for supporting existing integrations 
 - The methods [bizproc.activity.add](./bizproc-activity-add.md), [bizproc.activity.update](./bizproc-activity-update.md), [bizproc.activity.list](./bizproc-activity-list.md), [bizproc.activity.delete](./bizproc-activity-delete.md) only work in the context of the installed application.
 - For [bizproc.activity.log](./bizproc-activity-log.md) and [bizproc.event.send](../bizproc-robot/bizproc-event-send.md), a unique key `EVENT_TOKEN` is required, which is sent to the `HANDLER` during the execution of the action in the workflow.
 
-## Connection with Other Objects
+## Relationships with Other Objects
 
 - **Workflow Templates.** The action becomes available in the designer after registration via [bizproc.activity.add](./bizproc-activity-add.md) and is used within the template when it is launched.
 - **Document Type.** Through `DOCUMENT_TYPE` and `FILTER`, the action is linked to the appropriate document type and is displayed only in the relevant context.

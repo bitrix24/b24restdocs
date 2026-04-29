@@ -1,8 +1,8 @@
-# Retrieve a List of Custom Field Values for Warehouse Accounting Documents catalog.userfield.document.list
+# Get a List of Custom Field Values for Inventory Accounting Documents catalog.userfield.document.list
 
 {% note tip "" %}
 
-If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so the assistant can utilize the official REST documentation.
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
 
 {% endnote %}
 
@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: a user with the "View Product Catalog" access permission
 
-The method `catalog.userfield.document.list` returns a paginated list of custom field values for warehouse accounting documents.
+The method `catalog.userfield.document.list` returns a paginated list of custom field values for inventory accounting documents.
 
 ## Method Parameters
 
@@ -20,17 +20,17 @@ The method `catalog.userfield.document.list` returns a paginated list of custom 
 || **Name**
 `type` | **Description** ||
 || **select***
-[`array`](../../data-types.md) | An array containing the list of fields to select (see fields of the [catalog_userfield_document](../data-types.md#catalog_userfield_document) object).
+[`array`](../../data-types.md) | An array containing the list of fields to select (see the fields of the [catalog_userfield_document](../data-types.md#catalog_userfield_document) object).
 
-Make sure to include `documentType` — [the type of warehouse accounting document](../enum/catalog-enum-get-store-document-types.md) ||
+Make sure to include `documentType` — [the type of inventory accounting document](../enum/catalog-enum-get-store-document-types.md) ||
 || **filter***
-[`object`](../../data-types.md) | An object for filtering selected records in the format `{"field_1": "value_1", ... "field_N": "value_N"}`.
+[`object`](../../data-types.md) | An object for filtering the selected records in the format `{"field_1": "value_1", ... "field_N": "value_N"}`.
 
 Possible values for `field` correspond to the fields of the [catalog_userfield_document](../data-types.md#catalog_userfield_document) object.
 
-You must specify `documentType` — [the type of warehouse accounting document](../enum/catalog-enum-get-store-document-types.md).
+You must specify `documentType` — [the type of inventory accounting document](../enum/catalog-enum-get-store-document-types.md).
 
-You can add an additional prefix to the key to specify the filter behavior. Possible prefix values:
+You can add an additional prefix to the key to clarify the filter's behavior. Possible prefix values:
 - `>=` — greater than or equal to
 - `>` — greater than
 - `<=` — less than or equal to
@@ -46,7 +46,7 @@ You can add an additional prefix to the key to specify the filter behavior. Poss
 - `!` — not equal
 ||
 || **order**
-[`object`](../../data-types.md) | Sorting object in the format `{"field_1": "order_1", ..., "field_N": "order_N"}`.
+[`object`](../../data-types.md) | A sorting object in the format `{"field_1": "order_1", ..., "field_N": "order_N"}`.
 
 Possible values for `field` correspond to the fields of the [catalog_userfield_document](../data-types.md#catalog_userfield_document) object.
 
@@ -55,11 +55,11 @@ Possible values for `order`:
 - `asc` — in ascending order
 - `desc` — in descending order
 
-If the parameter is not provided, sorting `documentId ASC` is applied ||
+If the parameter is not provided, the sorting `documentId ASC` is applied ||
 || **start** 
 [`integer`](../../data-types.md)| This parameter is used to manage pagination.
 
-The page size is always static — 50 records.
+The page size for results is always static — 50 records.
 
 To select the second page of results, pass the value `50`. To select the third page of results — the value `100`, and so on.
 
@@ -179,14 +179,17 @@ The formula for calculating the `start` parameter value:
         {
             select: ['documentType', 'documentId', 'field7097'],
             filter: { documentType: 'A', documentId: 81 },
-            order:  { documentId: 'ASC' },
-            start:  0
+            order:  { documentId: 'ASC' }
         },
         function(result) {
             if (result.error()) {
                 console.error(result.error());
             } else {
                 console.log(result.data());
+
+                if (result.more()) {
+                    result.next();
+                }
             }
         }
     );
@@ -249,13 +252,13 @@ HTTP Code: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | Root element of the response ||
+[`object`](../../data-types.md) | The root element of the response ||
 || **documents**
-[`catalog_userfield_document[]`](../data-types.md#catalog_userfield_document) | List of objects with custom field values for documents. The composition of fields depends on the `select` parameter ||
+[`catalog_userfield_document[]`](../data-types.md#catalog_userfield_document) | A list of objects with values of custom fields for documents. The composition of fields depends on the `select` parameter ||
 || **next**
 [`integer`](../../data-types.md) | Offset for the next page. This field is returned if there are more records ||
 || **total**
-[`integer`](../../data-types.md) | Total number of records. This field is not returned if the request is executed with `start = -1` ||
+[`integer`](../../data-types.md) | The total number of records. This field is not returned if the request is executed with `start = -1` ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the execution time of the request ||
 |#
@@ -279,7 +282,7 @@ HTTP Code: **400**
 || **Code** | **Description** | **Value** ||
 || `0` | The documentType field is not specified in the select parameter | The `documentType` is not specified in the `select` parameter ||
 || `0` | The documentType field is not specified in the filter parameter | The `documentType` is not specified in the `filter` parameter ||
-|| `0` | Access Denied | Insufficient permissions to read custom field values for documents ||
+|| `0` | Access Denied | Insufficient rights to read the values of custom fields for documents ||
 |#
 
 {% include [System Errors](../../../_includes/system-errors.md) %}

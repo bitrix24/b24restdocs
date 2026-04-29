@@ -1,4 +1,4 @@
-# Get the List of Templates documentgenerator.template.list
+# Get a List of documentgenerator.template.list Templates
 
 {% note tip "" %}
 
@@ -24,7 +24,7 @@ The method `documentgenerator.template.list` returns a list of templates based o
 
 For `field_N`, use fields from the [fields table](#list-fields).
 
-To retrieve access codes and providers, add `users` and `providers` fields to `select` ||
+To retrieve access codes and providers, add the `users` and `providers` fields to `select` ||
 || **order**
 [`object`](../../data-types.md) | An object for sorting templates in the format `{"field_1":"value_1", ... "field_N":"value_N"}`.
 
@@ -39,7 +39,7 @@ For `field_N`, use fields from the [fields table](#list-fields).
 
 For `field_N`, use fields from the [fields table](#list-fields).
 
-You can add a prefix to the keys `field_n` to specify the filter operation. Possible prefix values:
+You can add a prefix to the `field_n` keys to specify the filter operation. Possible prefix values:
 - `>=` — greater than or equal to
 - `>` — greater than
 - `<=` — less than or equal to
@@ -58,9 +58,9 @@ You can add a prefix to the keys `field_n` to specify the filter operation. Poss
 
 By default, the filter `isDeleted = "N"` is applied ||
 || **start**
-[`integer`](../../data-types.md) | This parameter is used for pagination control.
+[`integer`](../../data-types.md) | This parameter is used to manage pagination.
 
-The page size of results is always static — 50 records.
+The page size for results is always static — 50 records.
 
 To select the second page of results, you need to pass the value `50`. To select the third page of results — the value `100`, and so on.
 
@@ -84,11 +84,11 @@ The formula for calculating the `start` parameter value:
 || **name**
 [`string`](../../data-types.md) | Template name ||
 || **code**
-[`string`](../../data-types.md) | Symbolic code of the template ||
+[`string`](../../data-types.md) | Template symbolic code ||
 || **region**
 [`string`](../../data-types.md) | Template region ||
 || **sort**
-[`integer`](../../data-types.md) | Sorting index ||
+[`integer`](../../data-types.md) | Sort index ||
 || **createTime**
 [`datetime`](../../data-types.md) | Creation date and time ||
 || **updateTime**
@@ -234,8 +234,7 @@ The formula for calculating the `start` parameter value:
               region: 'de',
               active: 'Y',
               '>=createTime': '2026-03-18T00:00:00+01:00'
-          },
-          start: 0
+          }
       },
       function(result)
       {
@@ -246,6 +245,11 @@ The formula for calculating the `start` parameter value:
           else
           {
               console.log(result.data());
+
+              if (result.more())
+              {
+                  result.next();
+              }
           }
       }
   );
@@ -374,11 +378,11 @@ HTTP Status: **200**
 || **name**
 [`string`](../../data-types.md) | Template name ||
 || **code**
-[`string`](../../data-types.md) | Symbolic code of the template ||
+[`string`](../../data-types.md) | Template symbolic code ||
 || **region**
 [`string`](../../data-types.md) | Template region ||
 || **sort**
-[`string`](../../data-types.md) | Sorting index ||
+[`string`](../../data-types.md) | Sort index ||
 || **createTime**
 [`datetime`](../../data-types.md) | Creation date and time ||
 || **updateTime**
@@ -392,7 +396,7 @@ HTTP Status: **200**
 || **fileId**
 [`string`](../../data-types.md) | Template file identifier ||
 || **bodyType**
-[`string`](../../data-types.md) | Class of the body type of the template ||
+[`string`](../../data-types.md) | Class of the template body type ||
 || **numeratorId**
 [`string`](../../data-types.md) | Identifier of the numerator ||
 || **withStamps**

@@ -41,7 +41,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 - When creating a document from a template, the link between the template and the Sales Funnel is not automatically checked — the document is created even if the template is configured for a different funnel.
 - The `pdfUrl` and `imageUrl` links may be absent immediately after creating or updating the document, as conversion is performed asynchronously. If you need the links right away, repeat the request using the method [crm.documentgenerator.document.get](./documents/crm-document-generator-document-get.md) after 30-40 seconds.
 
-## Connection with Other Objects
+## Relationships with Other Objects
 
 **Numerators.** The numerator sets the number template and counter for documents. The document template uses it via the `numeratorId` parameter. If you are creating a new numerator, take the `id` from the response of [crm.documentgenerator.numerator.add](./numerator/crm-document-generator-numerator-add.md). If you are using an existing one, obtain the `id` using the method [crm.documentgenerator.numerator.list](./numerator/crm-document-generator-numerator-list.md).
 

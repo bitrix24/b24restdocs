@@ -26,7 +26,7 @@ The REST API supports two scenarios for working with telephony:
 || Subscribe to external telephony events | [Events](./events/index.md) ||
 |#
 
-## Connection with Other Objects
+## Relationships with Other Objects
 
 **User.** The identifier `USER_ID` links the call and SIP settings to the employee. You can obtain `USER_ID` using the [user.get](../user/user-get.md) method. Pass `USER_ID` to [telephony.externalCall.show](./telephony-external-call-show.md) and methods in the [User Management](./voximplant/users/index.md) section.
 

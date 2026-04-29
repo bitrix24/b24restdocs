@@ -1,8 +1,8 @@
-# Get the List of Sections entity.section.get
+# Get a List of Sections with entity.section.get
 
 {% note tip "" %}
 
-If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so the assistant can utilize the official REST documentation.
 
 {% endnote %}
 
@@ -10,11 +10,11 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: any user upon application authorization
 
-The method `entity.section.get` retrieves the list of sections from the application's data storage.
+The `entity.section.get` method retrieves a list of sections from the application's data storage.
 
 {% note info "" %}
 
-The method works only in the context of the [application](../../../settings/app-installation/index.md).
+The method works only in the context of an [application](../../../settings/app-installation/index.md).
 
 {% endnote %}
 
@@ -23,7 +23,7 @@ The method works only in the context of the [application](../../../settings/app-
 
 {% include [Note on parameters](../../../_includes/required.md) %}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **ENTITY**^*^
@@ -46,9 +46,9 @@ where:
 - `field_n` — sorting field
 - `value_n` — sorting direction: `ASC` or `DESC`
 
-Refer to the [Section Type](#section) for the list of available sorting fields.
+Refer to the [Section Type](#section) for a list of available sorting fields.
 
-By default, `{"ID":"ASC"}` is used.
+The default is `{"ID":"ASC"}`.
 
 Example: `{"NAME":"ASC","ID":"DESC"}` ||
 || **FILTER**
@@ -67,7 +67,7 @@ where:
 - `field_n` — filtering field
 - `value_n` — filter value
 
-Refer to the [Section Type](#section) for the list of available filtering fields.
+Refer to the [Section Type](#section) for a list of available filtering fields.
 
 You can add prefixes to the keys `field_n`:
 - `>=` — greater than or equal to
@@ -86,10 +86,10 @@ You can add prefixes to the keys `field_n`:
 
 The page size is fixed at `50` records.
 
-The formula to obtain the N-th page:
+The formula for obtaining the N-th page:
 `start = (N - 1) * 50`
 
-For more details, refer to the article [Features of List Methods](../../../settings/how-to-call-rest-api/list-methods-pecularities.md) ||
+More details can be found in the article [Features of List Methods](../../../settings/how-to-call-rest-api/list-methods-pecularities.md) ||
 |#
 
 ## Code Examples
@@ -118,22 +118,22 @@ Example of retrieving sections from the storage, where:
     ```js
     try
     {
-    	const response = await $b24.callMethod(
-    		'entity.section.get',
-    		{
-    			ENTITY: 'dish',
-    			SORT: { NAME: 'ASC' },
-    			FILTER: { ACTIVE: 'Y' },
-    			start: 0,
-    		}
-    	);
+        const response = await $b24.callMethod(
+            'entity.section.get',
+            {
+                ENTITY: 'dish',
+                SORT: { NAME: 'ASC' },
+                FILTER: { ACTIVE: 'Y' },
+                start: 0,
+            }
+        );
 
-    	const result = response.getData().result;
-    	console.info(result);
+        const result = response.getData().result;
+        console.info(result);
     }
     catch (error)
     {
-    	console.error('Error:', error);
+        console.error('Error:', error);
     }
     ```
 
@@ -176,13 +176,18 @@ Example of retrieving sections from the storage, where:
             ENTITY: 'dish',
             SORT: { NAME: 'ASC' },
             FILTER: { ACTIVE: 'Y' },
-            start: 0,
         },
         (result) => {
-            result.error()
-                ? console.error(result.error())
-                : console.info(result.data())
-            ;
+            if (result.error()) {
+                console.error(result.error());
+                return;
+            }
+
+            console.info(result.data());
+
+            if (result.more()) {
+                result.next();
+            }
         },
     );
     ```
@@ -309,11 +314,11 @@ HTTP Status: **200**
 
 ### Returned Data
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **result**
-[`section[]`](#section) | List of sections in the storage ||
+[`section[]`](#section) | List of storage sections ||
 || **total**
 [`integer`](../../data-types.md) | Total number of sections in the selection ||
 || **next**
@@ -324,7 +329,7 @@ HTTP Status: **200**
 
 #### Section Type {#section}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **ID**
@@ -346,9 +351,9 @@ HTTP Status: **200**
 || **NAME**
 [`string`](../../data-types.md) | Name of the section ||
 || **PICTURE**
-[`string`](../../data-types.md) | URL of the section image or `null` ||
+[`string`](../../data-types.md) | URL of the section picture or `null` ||
 || **DETAIL_PICTURE**
-[`string`](../../data-types.md) | URL of the detailed section image or `null` ||
+[`string`](../../data-types.md) | URL of the detailed section picture or `null` ||
 || **DESCRIPTION**
 [`string`](../../data-types.md) | Description of the section ||
 || **LEFT_MARGIN**
@@ -386,11 +391,11 @@ HTTP Status: **400**
 
 ### Possible Error Codes
 
-#|
+#| 
 || **Code** | **Description** | **Value** ||
-|| `ERROR_ARGUMENT` | Argument 'ENTITY' is null or empty | The `ENTITY` parameter was not provided or is empty after cleaning ||
-|| `ERROR_ARGUMENT` | Entity code is too long. Max length is N characters. | The `ENTITY` value is too long ||
-|| `ERROR_ENTITY_NOT_FOUND` | Entity not found | The storage with the provided `ENTITY` was not found ||
+|| `ERROR_ARGUMENT` | Argument 'ENTITY' is null or empty | Parameter `ENTITY` is not provided or is empty after cleanup ||
+|| `ERROR_ARGUMENT` | Entity code is too long. Max length is N characters. | `ENTITY` value is too long ||
+|| `ERROR_ENTITY_NOT_FOUND` | Entity not found | Storage with the provided `ENTITY` not found ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

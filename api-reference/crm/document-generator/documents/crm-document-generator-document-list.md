@@ -14,7 +14,7 @@ The method `crm.documentgenerator.document.list` returns a list of documents bas
 
 ## Method Parameters
 
-{% include [Footnote on parameters](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -26,7 +26,7 @@ You can use:
 - `'*'` — to select all standard fields of the document
 - an explicit list of fields, for example, `['id','title','number','entityId','createTime']`
 
-Refer to the section [Document Type](#document) for the list of fields.
+Refer to the [Document Type](#document) section for the list of fields.
 
 By default, `['*']` is used. ||
 || **filter**
@@ -55,7 +55,7 @@ You can add prefixes to the keys `field_n`:
 - `=` — equal (default)
 - `!=` or `!` — not equal
 
-Refer to the section [Document Type](#document) for the list of available fields for filtering. ||
+Refer to the [Document Type](#document) section for the list of available fields for filtering. ||
 || **order**
 [`object`](../../data-types.md) | An object in the following format:
 
@@ -72,7 +72,7 @@ where:
 - `field_n` — the name of the sorting field
 - `value_n` — the sorting direction: `ASC` or `DESC`
 
-Refer to the section [Document Type](#document) for the list of fields for sorting.
+Refer to the [Document Type](#document) section for the list of fields for sorting.
 
 Example: `{"id":"DESC","createTime":"ASC"}` ||
 || **start**
@@ -88,7 +88,7 @@ For more details, refer to the article [Features of List Methods](../../../../se
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 Example of retrieving a list of documents where:
 - fields `id`, `title`, `number`, `entityId`, `createTime` are selected
@@ -181,13 +181,18 @@ Example of retrieving a list of documents where:
             select: ['id', 'title', 'number', 'entityId', 'createTime'],
             order: { id: 'desc' },
             filter: { entityTypeId: 2, entityId: 101 },
-            start: 0,
         },
         (result) => {
-            result.error()
-                ? console.error(result.error())
-                : console.info(result.data())
-            ;
+            if (result.error()) {
+                console.error(result.error());
+                return;
+            }
+
+            console.info(result.data());
+
+            if (result.more()) {
+                result.next();
+            }
         },
     );
     ```
@@ -230,8 +235,8 @@ HTTP Status: **200**
                 "fileId": "283",
                 "imageId": "285",
                 "pdfId": "287",
-                "createTime": "2026-03-20T13:51:45+01:00",
-                "updateTime": "2026-03-20T14:42:38+01:00",
+                "createTime": "2026-03-20T13:51:45+02:00",
+                "updateTime": "2026-03-20T14:42:38+02:00",
                 "values": {
                     "_creationMethod": "rest",
                     "stampsEnabled": true
@@ -256,8 +261,8 @@ HTTP Status: **200**
                 "fileId": "271",
                 "imageId": "273",
                 "pdfId": "275",
-                "createTime": "2026-03-20T13:28:26+01:00",
-                "updateTime": "2026-03-20T13:28:26+01:00",
+                "createTime": "2026-03-20T13:28:26+02:00",
+                "updateTime": "2026-03-20T13:28:26+02:00",
                 "values": {
                     "_creationMethod": "rest",
                     "stampsEnabled": true
@@ -282,8 +287,8 @@ HTTP Status: **200**
         "finish": 1774009414.09833,
         "duration": 0.09833002090454102,
         "processing": 0,
-        "date_start": "2026-03-20T15:23:34+01:00",
-        "date_finish": "2026-03-20T15:23:34+01:00",
+        "date_start": "2026-03-20T15:23:34+02:00",
+        "date_finish": "2026-03-20T15:23:34+02:00",
         "operating_reset_at": 1774010014,
         "operating": 0
     }
@@ -296,7 +301,7 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | The root object of the response. Contains the structure [`result`](#result) ||
+[`object`](../../data-types.md) | The root object of the response. Contains the structure of [`result`](#result) ||
 || **total**
 [`integer`](../../data-types.md) | The total number of documents matching the filter ||
 || **next**
@@ -305,16 +310,16 @@ HTTP Status: **200**
 [`time`](../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
-#### Type result {#result}
+#### Result Type {#result}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **documents**
-[`object[]`](../../data-types.md) | An array of documents. The structure of each element is described in the type [`document`](#document) ||
+[`object[]`](../../data-types.md) | An array of documents. The structure of each element is described in the [`document`](#document) type ||
 |#
 
-#### Type document {#document}
+#### Document Type {#document}
 
 The composition of fields depends on the `select` parameter.
 
@@ -362,7 +367,7 @@ The composition of fields depends on the `select` parameter.
 || **imageUrlMachine**
 [`string`](../../data-types.md) | Link to the document image for machine access ||
 || **stampsEnabled**
-[`boolean`](../../data-types.md) | Indicator of stamp and signature substitution ||
+[`boolean`](../../data-types.md) | Indicates whether stamps and signatures can be applied ||
 |#
 
 ## Error Handling

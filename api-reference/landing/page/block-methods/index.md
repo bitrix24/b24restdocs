@@ -48,7 +48,7 @@ The `scope` parameter defines the internal type of the site or page. It is not r
 || Save a block to "My Blocks" or remove it from saved | [landing.landing.favoriteBlock](./landing-landing-favorite-block.md) or [landing.landing.unFavoriteBlock](./landing-landing-unfavorite-block.md) ||
 |#
 
-## Connection with Other Objects
+## Relationships with Other Objects
 
 **List of Page Blocks.** The [landing.block.getList](../../block/methods/landing-block-get-list.md) method returns the composition of the page and the current state of its blocks.
 

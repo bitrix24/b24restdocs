@@ -1,4 +1,4 @@
-# Generate Document with Date and Name Modifiers
+# Generate a Document with Date and Name Modifiers
 
 {% note tip "" %}
 
@@ -6,51 +6,85 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-{% note warning "We are still updating this page" %}
+Modifiers in document templates are formatting rules that control how field values, such as dates or full names, are displayed.
 
-Some data may be missing here — we will complete it shortly.
+Input data can be pre-formatted in the application or passed through REST.
+
+## When to Use
+
+- You need to format a date using the document generator.
+- You need to display a full name in a specified format.
+
+## What to Include in the Request
+
+Date and name modifiers are applied to the values of the template placeholders through the `values` and `fields` parameters of the [documentgenerator.document.add](../document-generator-document-add.md) method.
+
+{% note tip "User Documentation" %}
+
+- [Modifiers in document templates](https://helpdesk.bitrix24.com/open/25799327/)
 
 {% endnote %}
 
-The description of document modifiers is available on [helpdesk](https://helpdesk.bitrix24.com/open/18175702/).
+### For Date
 
-Using modifiers for dates and names through REST is not mandatory — the input can be pre-formatted by the application itself. However, it can be convenient. Therefore, REST provides the option to use modifiers. To do this, you need to pass the appropriate field type in `fields`. Additionally, you can pass a default format under the key `FORMAT` in `fields`. If a modifier is specified for this field in the template itself, the template modifier will be applied.
+- In `values`, pass the date in Atom format, for example, `2026-03-18T00:00:00+03:00`.
+- In `fields`, specify the field type: `TYPE` = `DATE`.
+- If necessary, set the default output format via `FORMAT['format']`:
 
-## Date
+	- `d` — day of the month with leading zero
+	- `j` — day of the month without leading zero
+	- `m` — month number with leading zero
+	- `n` — month number without leading zero
+	- `F` — full month name
+	- `y` — year in two digits
+	- `Y` — year in four digits
+	- `H` — hours in 24-hour format with leading zero
+	- `i` — minutes with leading zero
+	- `s` — seconds with leading zero
 
-To ensure that modifiers work for date-type fields, they must be passed in the following format:
-- In `values`, the date should be provided in atom format (as in all methods).
-- In `fields`, `TYPE` = `DATE`.
-- Also, in `fields`, you can pass a default modifier under the key `FORMAT['format']` (just like in the template).
+Date and time formatting symbols can be combined:
 
-## Name
+- `d.m.y` — `28.03.26`
+- `j F, Y` — `28 March, 2026`
+- `H:i:s` — `10:24:18`
+- `Y-m-d H:i:s` — `2026-03-28 10:24:18`
 
-To ensure that modifiers work for name-type fields, they must be passed in the following format:
-- In `values`, the name should be provided as an array.
+### For Name
 
-```php
-[
-    'NAME' => 'Igor', // first name
-    'LAST_NAME' => 'Ivanov', // last name
-    'SECOND_NAME' => 'Petrovich', // patronymic
-    'GENDER' => 'M', // gender
-]
-```
+- In `values`, pass the name as an array with parts of the full name:
 
-The `GENDER` key can explicitly specify the gender (`M` - male, `F` - female). If the gender is not specified, the module will attempt to determine it based on the patronymic. If the patronymic is not provided, the gender will not be determined, and declension will not work.
+	```php
+	[
+		'NAME' => 'Igor', // first name
+		'LAST_NAME' => 'Ivanov', // last name
+		'SECOND_NAME' => 'Petrovich', // patronymic
+		'GENDER' => 'M', // gender
+	]
+	```
 
-- In `fields`, `TYPE` = `NAME`.
-- In `fields`, you can pass a default format under the key `FORMAT['format']`.
-- In `fields`, you can pass a default case under the key `FORMAT['case']`.
+The `GENDER` key can explicitly specify the gender: `M` or `F`. If the gender is not specified, the module will attempt to determine it based on the patronymic. If both `GENDER` and the patronymic are not provided, the gender will not be determined, and declension will not work.
+
+- In `fields`, specify the field type: `TYPE` = `NAME`.
+- In `FORMAT['format']`, you can pass the output template:
+
+	- `#TITLE#` — salutation
+	- `#NAME#` — first name
+	- `#LAST_NAME#` — last name
+	- `#SECOND_NAME#` — patronymic
+	- `#NAME_SHORT#` — first letter of the first name with a dot
+	- `#LAST_NAME_SHORT#` — first letter of the last name with a dot
+	- `#SECOND_NAME_SHORT#` — first letter of the patronymic with a dot
+
+## Example
 
 ```php
 $data = [
 	'templateId' => 203,
 	'providerClassName' => 'Bitrix\\DocumentGenerator\\DataProvider\\Rest',
-	'value' => 1,
+	'value' => 'ORDER_1024',
 	'values' => [
-		'SomeDate' => '2018-10-10T14:30:18+02:00', // value provided in atom format
-		'SomeName' => [ // name provided as an array
+		'SomeDate' => '2026-03-18T00:00:00+03:00', // value passed in atom format
+		'SomeName' => [ // name passed as an array
 			'NAME' => 'Vladislav',
 			'LAST_NAME' => 'Gorelkin',
 			'GENDER' => 'M',
@@ -66,11 +100,18 @@ $data = [
 		'SomeName' => [
 			'TYPE' => 'NAME',
 			'FORMAT' => [ // here you can pass the default field format
-				'case' => 0, // case code
 				'format' => '#NAME# #LAST_NAME#' // output format
 			]
 		], // field type - name
 	]
 ];
-$url = $webHookUrl.$prefix.'.document.add/';
+$url = $webHookUrl.'documentgenerator.document.add/';
 ```
+
+## Continue Learning
+
+- [{#T}](./document-text-data.md)
+- [{#T}](./document-table-data.md)
+- [{#T}](./document-table-complex.md)
+- [{#T}](./document-images-seals.md)
+- [{#T}](./index.md)

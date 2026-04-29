@@ -1,4 +1,4 @@
-# Get the list of warehouse accounting documents catalog.document.list
+# Get a List of Warehouse Accounting Documents catalog.document.list
 
 {% note tip "" %}
 
@@ -8,13 +8,13 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute the method: user with the "View product catalog" permission
+> Who can execute the method: a user with the "View product catalog" access permission
 
-The method `catalog.document.list` returns a paginated list of warehouse accounting documents. By default, filters are added to the request that limit the selection to the available document types and the current user's permissions.
+The method `catalog.document.list` returns a paginated list of warehouse accounting documents. By default, filters are applied to the request, limiting the selection to the available document types and the current user's permissions.
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -37,13 +37,13 @@ An additional prefix can be specified for the key to clarify the filter's behavi
 - `!=`, `!` — not equal
 - `@` — IN, an array is passed as the value
 - `!@` — NOT IN, an array is passed as the value
-- `%` — LIKE, substring search. The `%` character should not be included in the filter value. The search looks for the substring in any position of the string
-- `=%` — LIKE, substring search. The `%` character should be included in the value. Examples:
+- `%` — LIKE, substring search. The `%` symbol should not be included in the filter value. The search looks for the substring in any position of the string.
+- `=%` — LIKE, substring search. The `%` symbol must be included in the value. Examples:
     - `"mol%"` — searches for values starting with "mol"
     - `"%mol"` — searches for values ending with "mol"
     - `"%mol%"` — searches for values where "mol" can be in any position
-- `!%` — NOT LIKE, substring search. The `%` character should not be included in the filter value. The search goes from both sides
-- `!=%` — NOT LIKE, substring search. The `%` character should be included in the value. Examples:
+- `!%` — NOT LIKE, substring search. The `%` symbol should not be included in the filter value. The search goes from both sides.
+- `!=%` — NOT LIKE, substring search. The `%` symbol must be included in the value. Examples:
     - `"mol%"` — searches for values not starting with "mol"
     - `"%mol"` — searches for values not ending with "mol"
     - `"%mol%"` — searches for values where the substring "mol" is not present in any position
@@ -77,7 +77,7 @@ Or pass the value from the `next` key in the response. ||
 
 ## Code Examples
 
-{% include [Note on examples](../../../_includes/examples.md) %}
+{% include [Note on Examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -212,8 +212,7 @@ Or pass the value from the `next` key in the response. ||
         {
             select: ['id', 'docType', 'title', 'status'],
             filter: { '>=dateCreate': '2025-10-01T00:00:00+02:00', '<=dateCreate': '2025-10-15T23:59:59+02:00' },
-            order:  { id: 'ASC' },
-            start:  '50'
+            order:  { id: 'ASC' }
         },
         function(result)
         {
@@ -309,20 +308,20 @@ HTTP Code: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | Root element of the response ||
+[`object`](../../data-types.md) | The root element of the response ||
 || **documents**
-[`catalog_document[]`](../data-types.md#catalog_document) | List of documents, the response structure depends on the `select` parameter ||
+[`catalog_document[]`](../data-types.md#catalog_document) | A list of documents, the response structure depends on the `select` parameter ||
 || **next**
-[`integer`](../../data-types.md) | Offset pointer for the next page. Pass the value to the `start` parameter to get the next 50 records ||
+[`integer`](../../data-types.md) | Offset pointer for the next page. Pass this value to the `start` parameter to get the next 50 records ||
 || **total**
-[`integer`](../../data-types.md) | Total number of documents ||
+[`integer`](../../data-types.md) | The total number of documents ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-{% include notitle [error handling](../../../_includes/error-info.md) %}
+{% include notitle [Error Handling](../../../_includes/error-info.md) %}
 
 HTTP Code: **400**
 
@@ -340,7 +339,7 @@ HTTP Code: **400**
 || `0` | Insufficient permissions to save the document | The user does not have permission to view ||
 |#
 
-{% include [System errors](../../../_includes/system-errors.md) %}
+{% include [System Errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

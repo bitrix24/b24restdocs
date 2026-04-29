@@ -42,7 +42,7 @@ The `scope` parameter is necessary in methods that search for a page, change its
 
 For instance, if the page belongs to the knowledge base, the call should include `scope=knowledge`. This way, the method will search for and modify the page within the knowledge base. Without this parameter, the page may not be found. The rules for selecting values and their relation to site types are described in the article [Working with Site Types and Scopes](../types.md).
 
-## Connection with Other Objects
+## Relationships with Other Objects
 
 A page in Bitrix24 is always connected with other objects. The site sets the overall context, blocks provide content, and special pages define the page's purpose on the site.
 

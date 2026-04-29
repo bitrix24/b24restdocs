@@ -1,4 +1,4 @@
-# Get Item by Id crm.item.get
+# Get Element by Id crm.item.get
 
 {% note tip "" %}
 
@@ -8,24 +8,26 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`crm`](../../scopes/permissions.md)
 > 
-> Who can execute the method: any user with "read" access permission for CRM object elements
+> Who can execute the method: any user with "read" access permission for CRM entities
 
-The method returns information about an item by its identifier and the identifier of the CRM object type.
+This method returns information about an entity based on its identifier and the identifier of the CRM object type.
 
 ## Method Parameters
 
 {% include [Note on parameters](../../../_includes/required.md) %}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
-|| **entityTypeId***
-[`integer`][1] | Identifier of the [system](./index.md) or [user-defined type](./user-defined-object-types/index.md) whose item we want to retrieve ||
-|| **id***
-[`integer`][1] | Identifier of the item whose information we want to obtain.
+|| **entityTypeId*** 
+[`integer`][1] | Identifier of the [system](../data-types.md#object_type) or [custom type](./user-defined-object-types/index.md) whose element we want to retrieve.
 
-It can be retrieved using the [`crm.item.list`](./crm-item-list.md) method or when creating an item with [`crm.item.add`](./crm-item-add.md) ||
-|| **useOriginalUfNames**
+Numeric values for system types (Lead — 1, Deal — 2, Contact — 3, Company — 4, Invoice — 31, etc.) are listed in the [CRM object types reference](../data-types.md#object_type). The identifier for a smart process can be obtained using the [crm.type.list](./user-defined-object-types/crm-type-list.md) method. ||
+|| **id*** 
+[`integer`][1] | Identifier of the element whose information we want to retrieve.
+
+This can be obtained using the [`crm.item.list`](./crm-item-list.md) method or when creating an element with the [`crm.item.add`](./crm-item-add.md) method. ||
+|| **useOriginalUfNames** 
 [`boolean`][1] | This parameter is used to control the format of custom field names in the response.   
 Possible values:
 
@@ -39,7 +41,7 @@ Default is `N` ||
 
 {% include [Note on examples](../../../_includes/examples.md) %}
 
-Get information about a lead with `id = 250`
+Retrieve information about a lead with `id = 250`
 
 {% list tabs %}
 
@@ -68,21 +70,21 @@ Get information about a lead with `id = 250`
     ```js
     try
     {
-    	const response = await $b24.callMethod(
-    		'crm.item.get',
-    		{
-    			entityTypeId: 1,
-    			id: 250,
-    			useOriginalUfNames: 'N',
-    		}
-    	);
-    	
-    	const result = response.getData().result;
-    	console.info(result);
+        const response = await $b24.callMethod(
+            'crm.item.get',
+            {
+                entityTypeId: 1,
+                id: 250,
+                useOriginalUfNames: 'N',
+            }
+        );
+        
+        const result = response.getData().result;
+        console.info(result);
     }
     catch( error )
     {
-    	console.error(error);
+        console.error(error);
     }
     ```
 
@@ -209,13 +211,13 @@ HTTP Status: **200**
             "stageSemanticId": "P",
             "productId": null,
             "opportunity": 999.9,
-            "currencyId": "USD",
+            "currencyId": "EUR",
             "sourceId": "TRADE_SHOW",
             "sourceDescription": "Admin Exhibition",
             "title": "Lead #250",
-            "name": "James",
-            "lastName": "Johnson",
-            "secondName": "Alexander",
+            "name": "Admin",
+            "lastName": "Adminov",
+            "secondName": "Adminovich",
             "shortName": null,
             "companyTitle": "Administrative Company",
             "post": "Admin",
@@ -232,7 +234,7 @@ HTTP Status: **200**
             "hasImol": "N",
             "login": null,
             "isReturnCustomer": "N",
-            "searchContent": "250 Lead #250 James Johnson Alexander Administrative Company 999.90 US Dollar 6111111111 111111111 11111111 1111111 111111 11111 1111 111 nqzva rknzcyr pbz In Process Exhibition Exhibition about Admin City Admin [O]Comment about admin[/O] 321",
+            "searchContent": "250 Lead #250 Adminov Admin Adminovich Administrative Company 999.90 Euro 6111111111 111111111 11111111 1111111 111111 11111 1111 111 nqzva rknzcyr pbz In Process Exhibition Admin Exhibition Admin [O]Comment about admin[/O] 321",
             "isManualOpportunity": "Y",
             "movedBy": 1,
             "movedTime": "2024-07-22T17:00:08+02:00",
@@ -284,13 +286,13 @@ HTTP Status: **200**
 
 ### Returned Data
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **result**
 [`object`][1] | Root element of the response. Contains a single key `item` ||
 || **item**
-[`item`](./object-fields.md) | Information about the item, [field description](./object-fields.md) ||
+[`item`](./object-fields.md) | Information about the entity, [field description](./object-fields.md) ||
 || **time**
 [`time`][1] | Object containing information about the request execution time ||
 |#
@@ -309,7 +311,7 @@ HTTP Status: **400**, **403**
 ```json
 {
     "error": "NOT_FOUND",
-    "error_description": "Item not found"
+    "error_description": "Element not found"
 }
 ```
 
@@ -317,12 +319,12 @@ HTTP Status: **400**, **403**
 
 ### Possible Error Codes
 
-#|
+#| 
 || **Status** | **Code**                          | **Description**                                     | **Value**                                                    ||
-|| `403`      | `allowed_only_intranet_user`     | Action allowed only for intranet users            | User is not an intranet user                                 ||
-|| `400`      | `NOT_FOUND`                      | SPA not found                                      | Occurs when an invalid `entityTypeId` is passed             ||
-|| `400`      | `NOT_FOUND`                      | Item not found                                    | Item with the given `id` of type `entityTypeId` does not exist ||
-|| `400`      | `ACCESS_DENIED`                  | You do not have permission to view this item      | User does not have read access permission for items of type `entityTypeId` ||
+|| `403`      | `allowed_only_intranet_user`     | Action is allowed only for intranet users         | User is not an intranet user                                 ||
+|| `400`      | `NOT_FOUND`                      | Smart process not found                             | Occurs when an invalid `entityTypeId` is passed             ||
+|| `400`      | `NOT_FOUND`                      | Element not found                                   | Element with the provided `id` of type `entityTypeId` does not exist ||
+|| `400`      | `ACCESS_DENIED`                  | You do not have permission to view this element    | User does not have read access permission for elements of type `entityTypeId` ||
 |#
 
 {% include [system errors](./../../../_includes/system-errors.md) %}

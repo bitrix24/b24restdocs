@@ -60,7 +60,7 @@ By default, only the Bitrix24 administrator can edit the catalog and configure a
 
 {% endnote %}
 
-## Catalog Connection with Other Objects
+## Relationships with Other Objects
 
 **CRM.** Catalog data is used in the product lines of deals, invoices, and estimates: the product ID, price, discount, and VAT are transmitted. For scenarios involving vendors, use the methods from the section [Working with CRM Vendors](./documentcontractor/index.md).
 

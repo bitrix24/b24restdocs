@@ -14,15 +14,15 @@ The `user.get` method allows you to retrieve a filtered list of users. The metho
 
 {% note info "" %}
 
-The method does not return Bitrix24 Partners. The list of user fields in Bitrix24 that will be obtained as a result of executing the method depends on the application's/webhook's scope. Details about accessing user data can be found in the [article](index.md).
+The method does not return integrators. The list of user fields in Bitrix24 that will be obtained as a result of executing the method depends on the application's/webhook's scope. Details about accessing user data can be found in the [article](index.md).
 
 {% endnote %}
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../_includes/required.md) %}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **sort**
@@ -35,41 +35,41 @@ The method does not return Bitrix24 Partners. The list of user fields in Bitrix2
 [`string`](../data-types.md) | You can additionally specify any parameters from [user.add](./user-add.md) for filtering by their values. In addition to the main fields, additional ones are available:
 - `UF_DEPARTMENT` — company structure affiliation;
 - `UF_PHONE_INNER` — internal phone number;
-- `IS_ONLINE` — [Y\|N] allows showing only authorized users or not.
+- `IS_ONLINE` — [Y\|N] allows you to show only authorized users or not.
 - `NAME_SEARCH` — quick search by personal data.
 - `USER_TYPE` — user type. Can take the following values: 
     - `employee` — employee, 
     - `extranet` — extranet user, 
     - `email` — email user
-- `ACTIVE` — when set to *true* excludes dismissed users.
+- `ACTIVE` — when set to *true*, excludes dismissed users from the request.
   
-Filtering parameters can take array values.
-An additional prefix can be assigned to the key, specifying the filter's behavior. Possible prefix values:
+Filtering parameters can accept array values.
+An additional prefix can be assigned to the key to specify the filter's behavior. Possible prefix values:
 
 - `>=` — greater than or equal to
 - `>` — greater than
 - `<=` — less than or equal to
 - `<` — less than
-- `@` — IN (an array is passed as a value)
-- `!@`— NOT IN (an array is passed as a value)
+- `@` — IN (an array is passed as the value)
+- `!@`— NOT IN (an array is passed as the value)
 - `%` — LIKE, substring search. The `%` symbol in the filter value does not need to be passed. The search looks for a substring in any position of the string.
 - `=%` — LIKE, substring search. The `%` symbol needs to be passed in the value. Examples:
-    - "mol%" — searching for values starting with "mol"
-    - "%mol" — searching for values ending with "mol"
-    - "%mol%" — searching for values where "mol" can be in any position
+    - "mol%" — looking for values starting with "mol"
+    - "%mol" — looking for values ending with "mol"
+    - "%mol%" — looking for values where "mol" can be in any position
 
 - `%=` — LIKE (see description above)
 
 - `!%` — NOT LIKE, substring search. The `%` symbol in the filter value does not need to be passed. The search goes from both sides.
 
 - `!=%` — NOT LIKE, substring search. The `%` symbol needs to be passed in the value. Examples:
-    - "mol%" — searching for values not starting with "mol"
-    - "%mol" — searching for values not ending with "mol"
-    - "%mol%" — searching for values where the substring "mol" is not in any position
+    - "mol%" — looking for values not starting with "mol"
+    - "%mol" — looking for values not ending with "mol"
+    - "%mol%" — looking for values where the substring "mol" is not present in any position.
 
 - `!%=` — NOT LIKE (see description above)
 
-- `=` — equal, exact match (used by default)
+- `=` — equals, exact match (used by default)
 - `!=` - not equal
 - `!` — not equal
 
@@ -90,7 +90,7 @@ The formula for calculating the `start` parameter value:
 
 ## Code Examples
 
-{% include [Note on examples](../../_includes/examples.md) %}
+{% include [Note on Examples](../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -189,15 +189,22 @@ The formula for calculating the `start` parameter value:
         {
             "UF_DEPARTMENT": 1,
             "SORT": "ID",
-            "ORDER": "asc",
-            "start": 10
+            "ORDER": "asc"
         },
         function(result)
         {
-            if(result.error())
+            if (result.error())
+            {
                 console.error(result.error());
-            else
-                console.dir(result.data());
+                return;
+            }
+
+            console.dir(result.data());
+
+            if (result.more())
+            {
+                result.next();
+            }
         }
     );
     ```
@@ -283,7 +290,7 @@ The formula for calculating the `start` parameter value:
                     'filter' => [
                         'NAME' => 'Iva%'
                     ]
-                }
+                ]
             );
     
         $result = $response
@@ -513,7 +520,7 @@ The formula for calculating the `start` parameter value:
                     'filter' => [
                         '@PERSONAL_CITY' => ['New York', 'Los Angeles']
                     ]
-                }
+                ]
             );
     
         $result = $response
@@ -605,8 +612,8 @@ HTTP Status: **200**
             {
                 "ID": "3",
                 "ACTIVE": true,
-                "NAME": "John",
-                "LAST_NAME": "Doe",
+                "NAME": "Ivan",
+                "LAST_NAME": "Ivanov",
                 "EMAIL": "test@gmail.com",
                 "LAST_LOGIN": "2024-07-24T09:01:55+00:00",
                 "DATE_REGISTER": "2024-07-22T00:00:00+00:00",
@@ -638,11 +645,11 @@ HTTP Status: **200**
 
 ### Returned Data
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../data-types.md) | The root element of the response, which contains the filtered list of users ||
+[`object`](../data-types.md) | The root element of the response that contains the filtered list of users ||
 || **total**
 [`integer`](../data-types.md) | The total number of records found ||
 || **time**

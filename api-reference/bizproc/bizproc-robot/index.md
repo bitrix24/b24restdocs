@@ -55,7 +55,7 @@ The script then operates as follows:
 - The methods for managing Automation Rules [bizproc.robot.add](./bizproc-robot-add.md), [bizproc.robot.update](./bizproc-robot-update.md), [bizproc.robot.list](./bizproc-robot-list.md), [bizproc.robot.delete](./bizproc-robot-delete.md) only work in the context of the installed application.
 - For [bizproc.event.send](./bizproc-event-send.md), a valid `EVENT_TOKEN` is required; otherwise, the method will return an access error.
 
-## Connection with Other Objects
+## Relationships with Other Objects
 
 - **CRM Objects.** Through `DOCUMENT_TYPE` and `FILTER`, the Automation Rule connects with leads, deals, and other document types where it should be available.
 - **Application Actions.** Automation Rules and actions use a common internal mechanism, so it is important to choose a primary path for new scenarios when designing the integration.

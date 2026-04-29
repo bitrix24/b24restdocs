@@ -1,4 +1,4 @@
-# Get the list of roles documentgenerator.role.list
+# Get a List of Roles documentgenerator.role.list
 
 {% note tip "" %}
 
@@ -18,9 +18,9 @@ The method `documentgenerator.role.list` returns a list of roles without detaili
 || **Name**
 `type` | **Description** ||
 || **start**
-[`integer`](../../data-types.md) | This parameter is used for managing pagination.
+[`integer`](../../data-types.md) | This parameter is used to control pagination.
 
-The page size of results is always static — 50 records.
+The page size for results is always static — 50 records.
 
 To select the second page of results, you need to pass the value `50`. To select the third page of results — the value `100`, and so on.
 
@@ -31,7 +31,7 @@ The formula for calculating the `start` parameter value:
 
 ## Code Examples
 
-{% include [Note on examples](../../../_includes/examples.md) %}
+{% include [Examples Note](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -99,9 +99,7 @@ The formula for calculating the `start` parameter value:
   ```js
   BX24.callMethod(
       'documentgenerator.role.list',
-      {
-          start: 0
-      },
+      {},
       function(result)
       {
           if (result.error())
@@ -111,6 +109,11 @@ The formula for calculating the `start` parameter value:
           else
           {
               console.log(result.data());
+
+              if (result.more())
+              {
+                  result.next();
+              }
           }
       }
   );
@@ -135,7 +138,7 @@ The formula for calculating the `start` parameter value:
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -164,8 +167,8 @@ HTTP status: **200**
         "finish": 1774015085.612552,
         "duration": 0.6125519275665283,
         "processing": 0,
-        "date_start": "2026-03-20T16:58:05+02:00",
-        "date_finish": "2026-03-20T16:58:05+02:00",
+        "date_start": "2026-03-20T16:58:05+01:00",
+        "date_finish": "2026-03-20T16:58:05+01:00",
         "operating_reset_at": 1774015685,
         "operating": 0
     }
@@ -178,9 +181,9 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | The root element of the response [(detailed description)](#result) ||
+[`object`](../../data-types.md) | Root element of the response [(detailed description)](#result) ||
 || **total**
-[`integer`](../../data-types.md) | The number of roles in the current selection ||
+[`integer`](../../data-types.md) | Number of roles in the current selection ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the execution time of the request ||
 |#
@@ -194,7 +197,7 @@ HTTP status: **200**
 [`array`](../../data-types.md) | List of roles [(detailed description)](#roles) ||
 |#
 
-#### Roles Array Element {#roles}
+#### Role Array Element {#roles}
 
 #|
 || **Name**
@@ -204,12 +207,12 @@ HTTP status: **200**
 || **name**
 [`string`](../../data-types.md) | Role name ||
 || **code**
-[`string`](../../data-types.md) | Role symbolic code ||
+[`string`](../../data-types.md) | Symbolic code of the role ||
 |#
 
 ## Error Handling
 
-HTTP status: **400**, **403**
+HTTP Status: **400**, **403**
 
 ```json
 {
@@ -225,7 +228,7 @@ HTTP status: **400**, **403**
 #|
 || **Status** | **Code** | **Description** | **Value** ||
 || `400` | `0` | You do not have permissions to modify settings | Insufficient rights to modify document generator settings ||
-|| `403` | `DOCGEN_ACCESS_ERROR` | Your plan does not support this operation | The plan does not allow for permission differentiation for the document generator ||
+|| `403` | `DOCGEN_ACCESS_ERROR` | Your plan does not support this operation | The plan does not allow for permission segregation for the document generator ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

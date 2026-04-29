@@ -12,7 +12,7 @@ A contact is a CRM object that stores data about clients—individuals. The cont
 > 
 > User documentation: [contacts in Bitrix24](https://helpdesk.bitrix24.com/open/8401859/) 
 
-## Contact Connection with Other CRM Objects
+## Relationships with Other CRM Objects
 
 **Deal, lead, SPA.** Any CRM object that has the standard field `Client` is connected to contacts. The connection is managed through groups of methods for [deals](../deals/index.md), [leads](../leads/index.md), and [SPAs](../universal/index.md). 
 

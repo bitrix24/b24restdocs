@@ -1,4 +1,4 @@
-# Get the list of items (positions) in the cart sale.basketitem.list
+# Get a List of Items (Positions) in the Cart sale.basketitem.list
 
 {% note tip "" %}
 
@@ -10,39 +10,39 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: store manager
 
-The method returns a set of cart items filtered by the specified criteria.
+This method returns a set of items (positions) in the cart filtered by the specified criteria.
 
 ## Method Parameters
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **select**
 [`array`](../../data-types.md) | 
 An array of fields to be selected (see fields of the [sale_basket_item](../data-types.md) object).
 
-If the array is not provided or an empty array is passed, all available fields of the product catalogs will be selected.
+If the array is not provided or is empty, all available fields from the trade catalogs will be selected.
 ||
 || **filter**
 [`object`](../../data-types.md) | An object for filtering the selected records in the format `{"field_1": "value_1", ... "field_N": "value_N"}`.
 
 Possible values for `field` correspond to the fields of the [sale_basket_item](../data-types.md) object.
 
-An additional prefix can be specified for the key to clarify the filter behavior. Possible prefix values:
+An additional prefix can be specified for the key to clarify the filter's behavior. Possible prefix values:
 - `>=` — greater than or equal to
 - `>` — greater than
 - `<=` — less than or equal to
 - `<` — less than
 - `@` — IN, an array is passed as the value
 - `!@` — NOT IN, an array is passed as the value
-- `%` — LIKE, substring search. The `%` symbol does not need to be passed in the filter value. The search looks for the substring in any position of the string
-- `=%` — LIKE, substring search. The `%` symbol needs to be passed in the value. Examples:
+- `%` — LIKE, substring search. The `%` character does not need to be passed in the filter value. The search looks for the substring in any position of the string.
+- `=%` — LIKE, substring search. The `%` character must be passed in the value. Examples:
     - `"mol%"` — searches for values starting with "mol"
     - `"%mol"` — searches for values ending with "mol"
     - `"%mol%"` — searches for values where "mol" can be in any position
 - `%=` — LIKE (similar to `=%`)
-- `!%` — NOT LIKE, substring search. The `%` symbol does not need to be passed in the filter value. The search goes from both sides
-- `!=%` — NOT LIKE, substring search. The `%` symbol needs to be passed in the value. Examples:
+- `!%` — NOT LIKE, substring search. The `%` character does not need to be passed in the filter value. The search goes from both sides.
+- `!=%` — NOT LIKE, substring search. The `%` character must be passed in the value. Examples:
     - `"mol%"` — searches for values not starting with "mol"
     - `"%mol"` — searches for values not ending with "mol"
     - `"%mol%"` — searches for values where the substring "mol" is not present in any position
@@ -61,7 +61,7 @@ Possible values for `order`:
 - `desc` — in descending order
 ||
 || **start**
-[`integer`](../../data-types.md) | This parameter is used for pagination control.
+[`integer`](../../data-types.md) | This parameter is used to manage pagination.
 
 The page size of results is always static — 50 records.
 
@@ -69,13 +69,13 @@ To select the second page of results, pass the value `50`. To select the third p
 
 The formula for calculating the `start` parameter value:
 
-`start = (N-1) * 50`, where `N` — the desired page number
+`start = (N-1) * 50`, where `N` is the desired page number
 ||
 |#
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+{% include [Examples Note](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -102,7 +102,7 @@ The formula for calculating the `start` parameter value:
 - JS
 
     ```js
-    // callListMethod: Retrieves all data at once. Use only for small selections (< 1000 items) due to high memory usage.
+    // callListMethod: Retrieves all data at once. Use only for small selections (< 1000 items) due to high memory load.
     
     const parameters = {
         select: [
@@ -134,7 +134,7 @@ The formula for calculating the `start` parameter value:
         console.error('Request failed', error);
     }
     
-    // fetchListMethod: Retrieves data in parts using an iterator. Use it for large data volumes to optimize memory usage.
+    // fetchListMethod: Retrieves data in parts using an iterator. Use for large volumes of data for efficient memory consumption.
     
     try {
         const generator = $b24.fetchListMethod('sale.basketitem.list', parameters, 'id');
@@ -145,7 +145,7 @@ The formula for calculating the `start` parameter value:
         console.error('Request failed', error);
     }
     
-    // callMethod: Manually controls pagination through the start parameter. Use it for precise control of request batches. For large datasets, it is less efficient than fetchListMethod.
+    // callMethod: Manual control of pagination through the start parameter. Use for precise control over request batches. Less efficient for large data than fetchListMethod.
     
     try {
         const response = await $b24.callMethod('sale.basketitem.list', parameters, 0);
@@ -188,7 +188,7 @@ The formula for calculating the `start` parameter value:
             ->getResult();
     
         echo 'Success: ' . print_r($result, true);
-        // Your logic for processing data
+        // Your data processing logic
         processData($result);
     
     } catch (Throwable $e) {
@@ -217,7 +217,6 @@ The formula for calculating the `start` parameter value:
             order: {
                 id: 'desc',
             },
-            start: 0,
         },
     )
         .then(
@@ -230,6 +229,11 @@ The formula for calculating the `start` parameter value:
                 else
                 {
                     console.log(result.data);
+
+                    if (result.more())
+                    {
+                        result.next();
+                    }
                 }
             },
             function(error)
@@ -322,13 +326,13 @@ HTTP Status: **200**
 
 ### Returned Data
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
 || **basketItems**
-[`sale_basket_item[]`](../data-types.md) | An array of objects containing information about the selected cart items ||
+[`sale_basket_item[]`](../data-types.md) | An array of objects containing information about the selected items (positions) in the order cart ||
 || **total**
 [`integer`](../../data-types.md) | Total number of records found ||
 || **time**
@@ -350,7 +354,7 @@ HTTP Status: **400**
 
 ### Possible Error Codes
 
-#|
+#| 
 || **Code** | **Description** ||
 || `200040300010` | Insufficient permissions to read
 || 
@@ -370,4 +374,3 @@ HTTP Status: **400**
 - [{#T}](./sale-basket-item-add-catalog-product.md)
 - [{#T}](./sale-basket-item-update-catalog-product.md)
 - [{#T}](./sale-basket-item-get-catalog-product-fields.md)
-

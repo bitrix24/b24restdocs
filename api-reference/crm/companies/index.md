@@ -14,7 +14,7 @@ A company is a CRM object that stores client data for legal entities. The compan
 > 
 > User documentation: [companies in Bitrix24](https://helpdesk.bitrix24.com/open/10709996/) 
 
-## Company Connection with Other CRM Objects
+## Relationships with Other CRM Objects
 
 **Deal, lead, SPA.** Any CRM object that has the standard field `Client` is linked to a company. The connection is managed through groups of methods for [deals](../deals/index.md), [leads](../leads/index.md), [SPAs](../universal/index.md), using the `COMPANY_ID` field.
 

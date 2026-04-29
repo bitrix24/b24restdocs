@@ -10,7 +10,7 @@ You can add a client to the waitlist: either a contact or a company. The client 
 
 > Quick navigation: [all methods](#all-methods) 
 
-## Connection with Other Objects
+## Relationships with Other Objects
 
 **Waitlist.** To add or replace a client, use the `ID` of the waitlist entry in the `waitListId` parameter of the [booking.v1.waitlist.client.*](./index.md) methods. You can obtain the `ID` of the entry using the [creation](../booking-v1-waitlist-add.md) or [filtering](../booking-v1-waitlist-list.md) methods.
 

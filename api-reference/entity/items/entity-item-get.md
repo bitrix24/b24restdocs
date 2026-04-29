@@ -14,7 +14,7 @@ The `entity.item.get` method retrieves a list of items from the application's da
 
 {% note info "" %}
 
-This method works only in the context of the [application](../../../settings/app-installation/index.md).
+This method works only in the context of an [application](../../../settings/app-installation/index.md).
 
 {% endnote %}
 
@@ -22,7 +22,7 @@ This method works only in the context of the [application](../../../settings/app
 
 {% include [Footnote on parameters](../../../_includes/required.md) %}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **ENTITY**^*^
@@ -30,7 +30,7 @@ This method works only in the context of the [application](../../../settings/app
 
 You can obtain the identifier using the [entity.get](../entities/entity-get.md) method. ||
 || **SORT**
-[`object`](../../data-types.md) | Object in the following format:
+[`object`](../../data-types.md) | Object format:
 
 ```
 {
@@ -49,7 +49,7 @@ Refer to the [Item Type](#item) section for a list of available sorting fields.
 
 By default, `{"ID":"ASC"}` is used. ||
 || **FILTER**
-[`object`](../../data-types.md) | Object in the following format:
+[`object`](../../data-types.md) | Object format:
 
 ```
 {
@@ -86,7 +86,7 @@ The page size is fixed at `50` records.
 The formula for obtaining the N-th page:
 `start = (N - 1) * 50`
 
-For more details, see the article [Features of List Methods](../../../settings/how-to-call-rest-api/list-methods-pecularities.md) ||
+For more details, refer to the article [Features of List Methods](../../../settings/how-to-call-rest-api/list-methods-pecularities.md) ||
 |#
 
 ## Code Examples
@@ -115,28 +115,28 @@ Example of retrieving storage items where:
     ```js
     try
     {
-    	const response = await $b24.callMethod(
-    		'entity.item.get',
-    		{
-    			ENTITY: 'dish_v2',
-    			SORT: {
-    				DATE_ACTIVE_FROM: 'ASC',
-    				ID: 'ASC',
-    			},
-    			FILTER: {
-    				'>=DATE_ACTIVE_FROM': '2026-03-01T00:00:00+01:00',
-    				'<DATE_ACTIVE_FROM': '2026-04-01T00:00:00+01:00',
-    			},
-    			start: 0,
-    		}
-    	);
+        const response = await $b24.callMethod(
+            'entity.item.get',
+            {
+                ENTITY: 'dish_v2',
+                SORT: {
+                    DATE_ACTIVE_FROM: 'ASC',
+                    ID: 'ASC',
+                },
+                FILTER: {
+                    '>=DATE_ACTIVE_FROM': '2026-03-01T00:00:00+01:00',
+                    '<DATE_ACTIVE_FROM': '2026-04-01T00:00:00+01:00',
+                },
+                start: 0,
+            }
+        );
 
-    	const result = response.getData().result;
-    	console.info(result);
+        const result = response.getData().result;
+        console.info(result);
     }
     catch (error)
     {
-    	console.error('Error:', error);
+        console.error('Error:', error);
     }
     ```
 
@@ -191,13 +191,18 @@ Example of retrieving storage items where:
                 '>=DATE_ACTIVE_FROM': '2026-03-01T00:00:00+01:00',
                 '<DATE_ACTIVE_FROM': '2026-04-01T00:00:00+01:00',
             },
-            start: 0,
         },
         (result) => {
-            result.error()
-                ? console.error(result.error())
-                : console.info(result.data())
-            ;
+            if (result.error()) {
+                console.error(result.error());
+                return;
+            }
+
+            console.info(result.data());
+
+            if (result.more()) {
+                result.next();
+            }
         },
     );
     ```
@@ -273,7 +278,7 @@ HTTP Status: **200**
 
 ### Returned Data
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **result**
@@ -288,7 +293,7 @@ HTTP Status: **200**
 
 #### Item Type {#item}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **ID**
@@ -304,11 +309,11 @@ HTTP Status: **200**
 || **ACTIVE**
 [`string`](../../data-types.md) | Active flag (`Y` or `N`) ||
 || **DATE_ACTIVE_FROM**
-[`datetime`](../../data-types.md) \| [`string`](../../data-types.md) | Start date of activity or an empty string ||
+[`datetime`](../../data-types.md) \| [`string`](../../data-types.md) | Start date of activity or empty string ||
 || **DATE_ACTIVE_TO**
-[`datetime`](../../data-types.md) \| [`string`](../../data-types.md) | End date of activity or an empty string ||
+[`datetime`](../../data-types.md) \| [`string`](../../data-types.md) | End date of activity or empty string ||
 || **SORT**
-[`integer`](../../data-types.md) | Sort index ||
+[`integer`](../../data-types.md) | Sorting index ||
 || **NAME**
 [`string`](../../data-types.md) | Name of the item ||
 || **PREVIEW_PICTURE**
@@ -326,7 +331,7 @@ HTTP Status: **200**
 || **SECTION**
 [`integer`](../../data-types.md) \| [`null`](../../data-types.md) | Identifier of the section ||
 || **PROPERTY_VALUES**
-[`object`](../../data-types.md) | Object of property values in the format `{"CODE": value}`. This field is present if the storage has properties.
+[`object`](../../data-types.md) | Object of property values in the format `{"CODE": value}`. The field is present if the storage has properties.
 
 You can obtain a list of available property codes using the [entity.item.property.get](./properties/entity-item-property-get.md) method. ||
 |#
@@ -354,13 +359,13 @@ HTTP Status: **400**
 
 ### Possible Error Codes
 
-#|
+#| 
 || **Code** | **Description** | **Value** ||
-|| `ERROR_ARGUMENT` | Argument 'ENTITY' is null or empty | The `ENTITY` parameter was not provided or is empty after cleaning ||
-|| `ERROR_ARGUMENT` | Entity code is too long. Max length is N characters. | The `ENTITY` value is too long ||
-|| `ERROR_ARGUMENT` | Filter validator errors | Invalid values were provided for the `FILTER` parameter ||
-|| `ERROR_ENTITY_NOT_FOUND` | Entity not found | The storage with the provided `ENTITY` was not found ||
-|| `ACCESS_DENIED` | Access denied! Application context required | No application context (`clientId`) ||
+|| `ERROR_ARGUMENT` | Argument 'ENTITY' is null or empty | The `ENTITY` parameter is not provided or is empty after cleanup. ||
+|| `ERROR_ARGUMENT` | Entity code is too long. Max length is N characters. | The `ENTITY` value is too long. ||
+|| `ERROR_ARGUMENT` | Filter validator errors | Invalid values were provided for the `FILTER` parameter. ||
+|| `ERROR_ENTITY_NOT_FOUND` | Entity not found | The storage with the provided `ENTITY` was not found. ||
+|| `ACCESS_DENIED` | Access denied! Application context required | No application context (`clientId`). ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

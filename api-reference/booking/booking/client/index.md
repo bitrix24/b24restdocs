@@ -10,7 +10,7 @@ You can add a client to a resource booking: either a contact or a company. Messa
 
 > Quick navigation: [all methods](#all-methods)
 
-## Connection with Other Objects
+## Relationships with Other Objects
 
 **Booking.** Use the `ID` of the booking in the `bookingId` parameter of the [booking.v1.booking.client.*](./index.md) methods to add or replace a client. You can obtain the `ID` of the booking using the [creation](../booking-v1-booking-add.md) or [filtering](../booking-v1-booking-list.md) methods.
 

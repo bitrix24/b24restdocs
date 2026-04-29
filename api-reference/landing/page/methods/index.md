@@ -26,7 +26,7 @@ For example, you can create a promotional page within a store's website, publish
 4. To find the page and check its parameters, use [landing.landing.getList](./landing-landing-get-list.md), [landing.landing.getadditionalfields](./landing-landing-get-additional-fields.md), [landing.landing.getpreview](./landing-landing-get-preview.md), and [landing.landing.getpublicurl](./landing-landing-get-public-url.md).
 5. After configuration, publish the page using the method [landing.landing.publication](./landing-landing-publication.md). If you need to hide the page, use [landing.landing.unpublic](./landing-landing-unpublic.md).
 
-## Connection with Other Objects
+## Relationships with Other Objects
 
 A page in Bitrix24 is linked to other objects. The site provides the overall context, the folder indicates the page's location in the structure, the view template defines the layout, blocks form the content, and special pages determine its role on the site.
 

@@ -26,7 +26,7 @@ In Bitrix24, there are two main scenarios for working with interactivity: the ap
 
 **Custom Push&Pull Client.** This is used if the built-in browser functionality is insufficient for the application. This option is appropriate if the application operates separately from the Bitrix24 interface and needs to maintain a connection with real-time servers, receive events, and recover the connection in case of a drop. [Custom Push&Pull Client](./custom-push-and-pull-client.md).
 
-## Connection with Other Sections
+## Relationships with Other Sections
 
 **Applications.** Installation and launch scenarios are described in the section [Application Installation Options in Bitrix24](../app-installation/index.md).
 

@@ -1,4 +1,4 @@
-# Get List of Numerators documentgenerator.numerator.list
+# Get the List of Numerators documentgenerator.numerator.list
 
 {% note tip "" %}
 
@@ -14,7 +14,7 @@ The method `documentgenerator.numerator.list` returns a list of numerators for t
 
 ## Method Parameters
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **start**
@@ -22,7 +22,7 @@ The method `documentgenerator.numerator.list` returns a list of numerators for t
 
 The page size of results is always static: 50 items.
 
-To select the second page of results, you need to pass the value `50`. To select the third page of results, you need to pass `100`, and so on.
+To select the second page of results, you must pass the value `50`. To select the third page of results, you must pass `100`, and so on.
 
 The formula for calculating the `start` value:
 
@@ -99,9 +99,7 @@ The formula for calculating the `start` value:
   ```js
   BX24.callMethod(
       'documentgenerator.numerator.list',
-      {
-          start: 0
-      },
+      {},
       function(result)
       {
           if (result.error())
@@ -111,6 +109,11 @@ The formula for calculating the `start` value:
           else
           {
               console.log(result.data());
+
+              if (result.more())
+              {
+                  result.next();
+              }
           }
       }
   );
@@ -192,20 +195,20 @@ HTTP Status: **200**
 
 ### Returned Data
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | Root element of the response [(detailed description)](#result) ||
+[`object`](../../data-types.md) | The root element of the response [(detailed description)](#result) ||
 || **total**
-[`integer`](../../data-types.md) | Number of numerators in the current selection ||
+[`integer`](../../data-types.md) | The number of numerators in the current selection ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
 #### Result Object {#result}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **numerators**
@@ -214,7 +217,7 @@ HTTP Status: **200**
 
 #### Numerators Array Element {#numerators}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **id**
@@ -231,7 +234,7 @@ HTTP Status: **200**
 
 #### Settings Object {#numerators-settings}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **Bitrix_Main_Numerator_Generator_SequentNumberGenerator**
@@ -240,7 +243,7 @@ HTTP Status: **200**
 
 #### Bitrix_Main_Numerator_Generator_SequentNumberGenerator Object {#numerators-settings-sequent}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **start**
@@ -252,7 +255,7 @@ HTTP Status: **200**
 || **padString**
 [`string`](../../data-types.md) | Padding character on the left when `length > 0` ||
 || **periodicBy**
-[`string`](../../data-types.md) | Period for resetting the counter. Can be `null` ||
+[`string`](../../data-types.md) | Reset period of the counter. Can be `null` ||
 || **timezone**
 [`string`](../../data-types.md) | Timezone identifier for periodic reset. Can be `null` ||
 || **isDirectNumeration**
@@ -274,7 +277,7 @@ HTTP Status: **400**
 
 ### Possible Error Codes
 
-#|
+#| 
 || **Status** | **Code** | **Description** | **Value** ||
 || `400` | `0` | You do not have permissions to modify templates | Insufficient rights to modify document generator templates ||
 |#

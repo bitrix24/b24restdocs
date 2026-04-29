@@ -1,4 +1,4 @@
-# Create a new CRM entity crm.item.add
+# Create a New CRM Entity crm.item.add
 
 {% note tip "" %}
 
@@ -8,36 +8,38 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`crm`](../../scopes/permissions.md)
 > 
-> Who can execute the method: any user with the "add" access permission for the CRM object
+> Who can execute the method: any user with the "add" access permission for the CRM entity
 
-This method is a universal way to create objects in CRM. With it, you can create various types of objects, such as deals, contacts, companies, and others.
+This method is a universal approach for creating objects in CRM. It allows you to create various types of objects, such as deals, contacts, companies, and others.
 
 To create an object, you need to pass the appropriate parameters, including the object type and its information: title, description, contact details, and other specifics.
 
-After a successful request, a new object is created.
+Upon successful execution of the request, a new object is created.
 
-This method provides a flexible way to automate the process of creating objects and integrate CRM with other systems.
+This method provides a flexible opportunity to automate the process of creating objects and integrate CRM with other systems.
 
 When creating an entity, a standard series of checks, modifications, and automatic actions are performed:
 
 - access permissions are checked
 - required fields are validated
-- required fields dependent on stages are validated
+- dependent required fields based on stages are validated
 - field values are checked for correctness
 - default values are assigned to fields
 - automation rules are triggered after saving
 
-Next, we will look in detail at how to use this method and what parameters need to be passed.
+Next, we will take a closer look at how to use this method and what parameters need to be passed.
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Parameter Note](../../../_includes/required.md) %}
 
 #|
 || **Name**
-`type`          | **Description**                                                                                                                        ||
+`type` | **Description** ||
 || **entityTypeId***
-[`integer`][1] | Identifier of the [system](./index.md) or [user-defined type](user-defined-object-types/index.md) whose element we want to create ||
+[`integer`][1] | Identifier of the [system](../data-types.md#object_type) or [custom type](./user-defined-object-types/index.md) whose element we want to create.
+
+Numeric values for system types (Lead — 1, Deal — 2, Contact — 3, Company — 4, Invoice — 31, etc.) are listed in the [CRM object types reference](../data-types.md#object_type). The identifier of the smart process can be obtained using the [crm.type.list](./user-defined-object-types/crm-type-list.md) method. ||
 || **fields***
 [`object`][1]  | Object format.
 
@@ -58,21 +60,20 @@ Each CRM entity type has its own set of fields. This means that the set of field
 
 The list of available fields for each entity type is described [below](#parametr-fields).
 
-An incorrect field in `fields` will be ignored
-||
+An incorrect field in `fields` will be ignored. ||
 || **useOriginalUfNames**
 [`boolean`][1] | Parameter to control the format of custom field names in the request and response.   
 Possible values:
 
-- `Y` — original names of custom fields, for example `UF_CRM_2_1639669411830`
-- `N` — custom field names in camelCase, for example `ufCrm2_1639669411830`
+- `Y` — original names of custom fields, e.g., `UF_CRM_2_1639669411830`
+- `N` — custom field names in camelCase, e.g., `ufCrm2_1639669411830`
 
 Default is `N` ||
 |#
 
 ### Parameter fields
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Parameter Note](../../../_includes/required.md) %}
 
 {% list tabs %}
 
@@ -87,15 +88,15 @@ Default is `N` ||
   [`string`][1] | Title of the entity.
 
   By default, it is generated using the template `{entityTypeName} #{id}`, where
-  - `entityTypeName` — name of the entity
-  - `id` — identifier of the element
+  - `entityTypeName` — entity name
+  - `id` — entity identifier
   
   For example, for a lead with `id = 13` — 'Lead #13' 
   ||
   || **honorific**
-  [`crm_status`](../data-types.md) | String identifier of the lead's honorific (for example, `'HNR_RU_1' = 'Mr.'`).
+  [`crm_status`](../data-types.md) | String identifier for the lead's address (e.g., `'HNR_RU_1' = 'Mr.'`).
 
-  The list of available honorifics can be obtained using [`crm.status.list`][2] with the filter `{ ENTITY_ID: "HONOFIRIC" }`.
+  The list of available addresses can be obtained using [`crm.status.list`][2] with the filter `{ ENTITY_ID: "HONOFIRIC" }`.
 
   Default is `null` ||
   || **name**
@@ -119,7 +120,7 @@ Default is `N` ||
 
   Default is `null` ||
   || **sourceId**
-  [`crm_status`](../data-types.md) | String identifier of the source.
+  [`crm_status`](../data-types.md) | String identifier for the source.
   
   For example, `'CALL' = 'Call'`.
   
@@ -131,7 +132,7 @@ Default is `N` ||
 
   Default is `null` ||
   || **stageId**
-  [`crm_status`](../data-types.md) | String identifier of the entity's stage.
+  [`crm_status`](../data-types.md) | String identifier for the stage of the entity.
   
   For example, `'NEW' = 'Unprocessed'`.
 
@@ -147,11 +148,11 @@ Default is `N` ||
 
   Default is `null` ||
   || **currencyId**
-  [`crm_currency`](../data-types.md) | Identifier of the entity's currency.
+  [`crm_currency`](../data-types.md) | Identifier of the currency for the entity.
 
   Default is the default currency  ||
   || **isManualOpportunity**
-  [`boolean`][1] | Mode of calculating the amount. Possible values:
+  [`boolean`][1] | Mode for calculating the amount. Possible values:
 
   - `Y` — manual
   - `N` — automatic
@@ -162,12 +163,12 @@ Default is `N` ||
 
   Default is `null` ||
   || **opened**
-  [`boolean`][1] | Is the entity available to everyone? Possible values:
+  [`boolean`][1] | Whether the entity is available to everyone. Possible values:
 
   - `Y` — yes
   - `N` — no
 
-  Default is `Y`. The default value can be changed in CRM settings  ||
+  Default is `Y`. The default value can be changed in the CRM settings  ||
   || **comments**
   [`text`][1] | Comment.
 
@@ -179,19 +180,19 @@ Default is `N` ||
   || **companyId**
   [`crm_company`](../data-types.md) | Identifier of the company linked to the entity.
 
-  The list of companies can be obtained using the method [`crm.item.list`](crm-item-list.md) with `entityTypeId = 4`.
+  The list of companies can be obtained using the [`crm.item.list`](crm-item-list.md) method with `entityTypeId = 4`.
 
   Default is `null` ||
   || **contactId**
   [`crm_contact`](../data-types.md) | Identifier of the contact linked to the entity.
 
-  The list of contacts can be obtained using the method [`crm.item.list`](crm-item-list.md) with `entityTypeId = 3`.
+  The list of contacts can be obtained using the [`crm.item.list`](crm-item-list.md) method with `entityTypeId = 3`.
 
   Default is `null` ||
   || **contactIds**
   [`crm_contact[]`](../data-types.md) | List of identifiers of contacts linked to the entity.
 
-  The list of contacts can be obtained using the method [`crm.item.list`](crm-item-list.md) with `entityTypeId = 3`.
+  The list of contacts can be obtained using the [`crm.item.list`](crm-item-list.md) method with `entityTypeId = 3`.
 
   Default is `null` ||
   || **originatorId**
@@ -207,11 +208,11 @@ Default is `N` ||
 
   Default is `null` ||
   || **observers**
-  [`user[]`][1] | Array of user identifiers who will be Observers in the entity.
+  [`user[]`][1] | Array of identifiers of users who will be observers in the entity.
 
   Default is `null` ||
   || **utmSource**
-  [`string`][1] | Advertising system. For example: Google Ads, Facebook Ads, and others.
+  [`string`][1] | Advertising system. For example: Google Ads, Bing Ads, etc.
 
   Default is `null` ||
   || **utmMedium**
@@ -230,7 +231,7 @@ Default is `N` ||
 
   Default is `null` ||
   || **utmTerm**
-  [`string`][1] | Search term of the campaign. For example, keywords for contextual advertising.
+  [`string`][1] | Search condition of the campaign. For example, keywords for contextual advertising.
 
   Default is `null` ||
   || **ufCrm...**
@@ -243,12 +244,12 @@ Default is `N` ||
   To upload a file, the value of the custom field must be an array where the first element is the file name and the second is the content of the file encoded in [base64](../../files/how-to-upload-files.md).
   ||
   || **parentId...**
-  [`crm_entity`](../data-types.md) | Parent field. An element of another type of CRM object linked to this element.
+  [`crm_entity`](../data-types.md) | Parent field. An element of another type of CRM object that is linked to this element.
 
   Each such field has the code `parentId + {parentEntityTypeId}`
   ||
   || **fm**
-  [`multifield[]`][1] | Array of multifields.
+  [`multifield[]`](../data-types.md) | Array of multifields.
 
   More about multifields can be read in the section [{#T}](../data-types.md#crm_multifield)
 
@@ -269,7 +270,7 @@ Default is `N` ||
       },
       {
         "valueType": "WORK",
-        "value": "bitrix@bitrix.com",
+        "value": "example@example.com",
         "typeId": "EMAIL"
       }
     ]
@@ -286,175 +287,175 @@ Default is `N` ||
   || **Name**
   `type` | **Description** ||
   || **title**
-  [`string`][1] | Title of the entity
+  [`string`][1] | Title of the entity.
 
   By default, it is generated using the template `{entityTypeName} #{id}`, where
-  - `entityTypeName` — name of the entity
-  - `id` — identifier of the entity
+  - `entityTypeName` — entity name
+  - `id` — entity identifier
   For example, for a deal with `id = 13` => 'Deal #13' ||
   || **typeId**
-  [`crm_status`](../data-types.md) | String identifier of the entity type.
+  [`crm_status`](../data-types.md) | String identifier for the entity type.
 
   For example, for a deal: `'SALE' = 'Sale'`
 
   The list of available entity types can be obtained using [`crm.status.list`][2] with the filter `{ ENTITY_ID: "DEAL_TYPE" }`
 
-  By default — the first available entity type ||
+  Default is the first available entity type ||
   || **categoryId**
   [`integer`][1] | Identifier of the [direction](./category/index.md) (funnel) of the deal.
 
-  By default — `0` (general) ||
+  Default is `0` (general) ||
   || **stageId**
-  [`crm_status`](../data-types.md) | String identifier of the entity stage. 
+  [`crm_status`](../data-types.md) | String identifier for the stage of the entity. 
   
-  For example, `'NEW' = 'Not Processed'`.
+  For example, `'NEW' = 'Unprocessed'`.
 
   The list of available stages can be obtained using [`crm.status.list`][2] with the filter:
-    - If the deal is in the general funnel (direction) — `{ ENTITY_ID: "DEAL_STAGE" }`
+    - If the deal is in the general funnel (direction)  — `{ ENTITY_ID: "DEAL_STAGE" }`
     - If the deal is not in the general funnel (direction) — `{ ENTITY_ID: "DEAL_STAGE_{categoryId}" }`, where
       `categoryId` is the identifier of the funnel ([direction](./category/index.md)) of the deal
 
-  By default — the first available stage relative to the funnel ||
+  Default is the first available stage relative to the funnel ||
   || **isRecurring**
-  [`boolean`][1] | Is the deal recurring? Possible values:
+  [`boolean`][1] | Whether the deal is recurring. Possible values:
 
   - `Y` — yes
   - `N` — no
 
-  By default — `N`||
+  Default is `N`||
   || **probability**
   [`integer`][1] | Probability %.
 
-  By default — `null` ||
+  Default is `null` ||
   || **currencyId**
-  [`crm_currency`](../data-types.md) | Identifier of the currency of the entity.
+  [`crm_currency`](../data-types.md) | Identifier of the currency for the entity.
 
-  By default — default currency ||
+  Default is the default currency ||
   || **isManualOpportunity**
-  [`boolean`][1] | Mode of calculating the amount. Possible values:
+  [`boolean`][1] | Mode for calculating the amount. Possible values:
 
   - `Y` — manual
   - `N` — automatic
 
-  By default — `N` ||
+  Default is `N` ||
   || **opportunity**
   [`double`][1] | Amount.
 
-  By default — `null` ||
+  Default is `null` ||
   || **taxValue**
   [`double`][1] | Tax amount.
 
-  By default — `null` ||
+  Default is `null` ||
   || **companyId**
   [`crm_company`](../data-types.md) | Identifier of the company linked to the entity.
 
-  The list of companies can be obtained using the method [`crm.item.list`](crm-item-list.md) with `entityTypeId = 4`.
+  The list of companies can be obtained using the [`crm.item.list`](crm-item-list.md) method with `entityTypeId = 4`.
 
-  By default — `null` ||
+  Default is `null` ||
   || **contactId**
   [`crm_contact`](../data-types.md) | Identifier of the contact linked to the entity.
 
-  The list of contacts can be obtained using the method [`crm.item.list`](crm-item-list.md) with `entityTypeId = 3`.
+  The list of contacts can be obtained using the [`crm.item.list`](crm-item-list.md) method with `entityTypeId = 3`.
 
-  By default — `null` ||
+  Default is `null` ||
   || **contactIds**
   [`crm_contact[]`](../data-types.md) | List of identifiers of contacts linked to the entity.
 
-  The list of contacts can be obtained using the method [`crm.item.list`](crm-item-list.md) with `entityTypeId = 3`.
+  The list of contacts can be obtained using the [`crm.item.list`](crm-item-list.md) method with `entityTypeId = 3`.
 
-  By default — `null` ||
+  Default is `null` ||
   || **quoteId**
   [`crm_quote`](../data-types.md) | Identifier of the estimate that will be linked to the deal ||
   || **begindate**
   [`date`][1] | Start date of the entity.
 
-  By default — creation date ||
+  Default is the creation date ||
   || **closedate**
   [`date`][1] | End date of the entity.
 
-  By default — creation date + 7 days ||
+  Default is the creation date of the entity + 7 days ||
   || **opened**
-  [`boolean`][1] | Is the entity available to everyone? Possible values:
+  [`boolean`][1] | Whether the entity is available to everyone. Possible values:
 
   - `Y` — yes
   - `N` — no
 
-  By default — `Y`. The default value can be changed in the CRM settings ||
+  Default is `Y`. The default value can be changed in the CRM settings ||
   || **comments**
   [`text`][1] | Comment.
 
-  By default — `null` ||
+  Default is `null` ||
   || **assignedById**
-  [`user`][1] | Identifier of the person responsible for the entity.
+  [`user`][1] | Identifier of the user responsible for the entity.
 
-  By default — identifier of the user calling the method ||
+  Default is the identifier of the user calling the method ||
   || **sourceId**
-  [`crm_status`](../data-types.md) | String identifier of the source. 
+  [`crm_status`](../data-types.md) | String identifier for the source. 
   
   For example, `'CALL' = 'Call'`.
   
   The list of available sources can be obtained using [`crm.status.list`][2] with the filter `{ ENTITY_ID: "SOURCE" }`.
 
-  By default — the first available source ||
+  Default is the first available source ||
   || **sourceDescription**
   [`text`][1] | Additional information about the source.
 
-  By default — `null`||
+  Default is `null`||
   || **leadId**
   [`crm_lead`](../data-types.md) | Identifier of the lead based on which the entity is created.
 
-  By default — `null`||
+  Default is `null`||
   || **additionalInfo**
   [`string`][1] | Additional information.
 
-  By default — `null` ||
+  Default is `null` ||
   || **originatorId**
   [`string`][1] | External source.
 
-  By default — `null`||
+  Default is `null`||
   || **originId**
   [`string`][1] | Identifier of the entity in the external source.
 
-  By default — `null`||
+  Default is `null`||
   || **observers**
-  [`user[]`][1] | Array of user identifiers who will be Observers in the entity.
+  [`user[]`][1] | Array of identifiers of users who will be observers in the entity.
 
-  By default — `null` ||
+  Default is `null` ||
   || **locationId**
-  [`location`][1] | Identifier of the location. System field.
+  [`location`][1] | Identifier of the location. Service field.
 
-  By default — `null` ||
+  Default is `null` ||
   || **utmSource**
-  [`string`][1] | Advertising system. Google Ads, Google AdWords, and others.
+  [`string`][1] | Advertising system. Google Ads, Bing Ads, etc.
 
-  By default — `null` ||
+  Default is `null` ||
   || **utmMedium**
   [`string`][1] | Type of traffic. Possible values:
   
   - CPC — ads
   - CPM — banners
 
-  By default — `null` ||
+  Default is `null` ||
   || **utmCampaign** [`string`][1] | Identifier of the advertising campaign.
 
-  By default — `null` ||
+  Default is `null` ||
   || **utmContent**
   [`string`][1] | Content of the campaign. For example, for contextual ads.
 
-  By default — `null` ||
+  Default is `null` ||
   || **utmTerm**
   [`string`][1] | Search condition of the campaign. For example, keywords for contextual advertising.
 
-  By default — `null` ||
+  Default is `null` ||
   || **ufCrm...**
-  [`crm_userfield`](../data-types.md) | User-defined field. See section [{#T}](./user-defined-fields/index.md)
+  [`crm_userfield`](../data-types.md) | Custom field. See the section [{#T}](./user-defined-fields/index.md)
 
     - Values of multiple fields are passed as an array
-    - To upload a file, the value of the user-defined field must be an array where the first element is the file name and the second is the content of the file encoded in [base64](../../files/how-to-upload-files.md).
+    - To upload a file, the value of the custom field must be an array where the first element is the file name, and the second is the content of the file encoded in [base64](../../files/how-to-upload-files.md).
   
   ||
   || **parentId...**
-  [`crm_entity`](../data-types.md) | Parent field. An element of another type of CRM object linked to this element.
+  [`crm_entity`](../data-types.md) | Parent field. An element of another type of CRM object that is linked to this element.
 
   Each such field has the code `parentId + {parentEntityTypeId}` 
   ||
@@ -468,308 +469,143 @@ Default is `N` ||
   || **Name**
   `type` | **Description** ||
   || **honorific**
-  [`crm_status`](../data-types.md) | String identifier of the contact's salutation. 
+  [`crm_status`](../data-types.md) | String identifier for the contact's address. 
   
-  For example, `'HNR_US_1' = 'Mr.'`.
+  For example, `'HNR_RU_1' = 'Mr.'`.
 
-  The list of available salutations can be obtained using [`crm.status.list`][2] with the filter `{ ENTITY_ID: "HONOFIRIC" }`.
+  The list of available addresses can be obtained using [`crm.status.list`][2] with the filter `{ ENTITY_ID: "HONOFIRIC" }`.
 
-  By default — `null` ||
+  Default is `null` ||
   || **name**
   [`string`][1] | First name.
 
-  By default — `null` ||
+  Default is `null` ||
   || **secondName**
   [`string`][1] | Middle name.
 
-  By default — `null` ||
+  Default is `null` ||
   || **lastName**
   [`string`][1] | Last name.
 
-  By default — `null` ||
+  Default is `null` ||
   || **photo**
-  [`file`][1] | Photograph.
+  [`file`][1] | Photo.
 
-  By default — `null` ||
+  Default is `null` ||
   || **birthdate**
   [`date`][1] | Date of birth.
 
-  By default — `null` ||
+  Default is `null` ||
   || **typeId**
-  [`crm_status`](../data-types.md) | String identifier of the entity type.
+  [`crm_status`](../data-types.md) | String identifier for the entity type.
   
   For example, for a deal: `'SALE' = 'Sale'`.
   
   The list of available entity types can be obtained using [`crm.status.list`][2] with the filter `{ ENTITY_ID: "CONTACT_TYPE" }`.
 
-  By default — the first available entity type  ||
+  Default is the first available entity type  ||
   || **sourceId**
-  [`crm_status`](../data-types.md) | String identifier of the source.
+  [`crm_status`](../data-types.md) | String identifier for the source.
   
   For example, `'CALL' = 'Call'`.
   
   The list of available sources can be obtained using [`crm.status.list`][2] with the filter `{ ENTITY_ID: "SOURCE" }`.
 
-  By default — the first available source  ||
+  Default is the first available source  ||
   || **sourceDescription**
   [`text`][1] | Additional information about the source.
 
-  By default — `null` ||
+  Default is `null` ||
   || **post**
   [`string`][1] | Position.
 
-  By default — `null` ||
+  Default is `null` ||
   || **comments**
   [`text`][1] | Comment.
 
-  By default — `null` ||
+  Default is `null` ||
   || **opened**
-  [`boolean`][1] | Is the entity available to everyone? Possible values:
+  [`boolean`][1] | Whether the entity is available to everyone. Possible values:
 
   - `Y` — yes
   - `N` — no
 
-  By default — `Y`. The default value can be changed in the CRM settings  ||
+  Default is `Y`. The default value can be changed in the CRM settings  ||
   || **export**
-  [`boolean`][1] | Is the contact included in the export?
+  [`boolean`][1] | Whether the contact is included in the export.
 
-  By default — `Y` ||
+  Default is `Y` ||
   || **assignedById**
-  [`user`][1] | Identifier of the person responsible for the entity.
+  [`user`][1] | Identifier of the user responsible for the entity.
 
-  By default — identifier of the user calling the method ||
+  Default is the identifier of the user calling the method ||
   || **companyId**
   [`crm_company`](../data-types.md) | Identifier of the company linked to the entity.
 
-  The list of companies can be obtained using the method [`crm.item.list`](crm-item-list.md) with `entityTypeId = 4`.
+  The list of companies can be obtained using the [`crm.item.list`](crm-item-list.md) method with `entityTypeId = 4`.
 
-  By default — `null` ||
+  Default is `null` ||
   || **companyIds**
   [`crm_company`](../data-types.md)     | Array of identifiers of companies that will be linked to the entity ||
   || **leadId**
   [`crm_lead`](../data-types.md) | Identifier of the lead based on which the entity is created.
 
-  By default — `null` ||
+  Default is `null` ||
   || **originatorId**
   [`string`][1] | External source.
 
-  By default — `null` ||
+  Default is `null` ||
   || **originId**
   [`string`][1] | Identifier of the entity in the external source.
 
-  By default — `null` ||
+  Default is `null` ||
   || **originVersion**
   [`string`][1]          | Version of the original.
 
-  By default — `null` ||
+  Default is `null` ||
   || **observers**
-  [`user[]`][1] | Array of user identifiers who will be Observers in the entity.
+  [`user[]`][1] | Array of identifiers of users who will be observers in the entity.
 
-  By default — `null` ||
+  Default is `null` ||
   || **utmSource**
-  [`string`][1] | Advertising system. Google Ads, Google AdWords, and others.
+  [`string`][1] | Advertising system. Google Ads, Bing Ads, etc.
 
-  By default — `null` ||
+  Default is `null` ||
   || **utmMedium**
   [`string`][1] | Type of traffic. Possible values:
   
   - CPC — ads
   - CPM — banners
 
-  By default — `null` ||
+  Default is `null` ||
   || **utmCampaign**
   [`string`][1] | Identifier of the advertising campaign.
 
-  By default — `null` ||
+  Default is `null` ||
   || **utmContent**
   [`string`][1] | Content of the campaign. For example, for contextual ads.
 
-  By default — `null` ||
+  Default is `null` ||
   || **utmTerm**
   [`string`][1] | Search condition of the campaign. For example, keywords for contextual advertising.
 
-  By default — `null` ||
+  Default is `null` ||
   || **ufCrm...**
-  [`crm_userfield`](../data-types.md) | User-defined field. See section [{#T}](./user-defined-fields/index.md)
+  [`crm_userfield`](../data-types.md) | Custom field. See the section [{#T}](./user-defined-fields/index.md)
 
     - Values of multiple fields are passed as an array
-    - To upload a file, the value of the user-defined field must be an array where the first element is the file name and the second is the content of the file encoded in [base64](../../files/how-to-upload-files.md).
+    - To upload a file, the value of the custom field must be an array where the first element is the file name, and the second is the content of the file encoded in [base64](../../files/how-to-upload-files.md).
 
   ||
   || **parentId...**
-  [`crm_entity`](../data-types.md) | Parent field. An element of another type of CRM object linked to this element.
+  [`crm_entity`](../data-types.md) | Parent field. An element of another type of CRM object that is linked to this element.
 
-  Each such field has the code `parentId + {parentEntityTypeId}`
+  Each such field has the code `parentId + {parentEntityTypeId}` 
   ||
   || **fm**
-  [`multifield[]`][1] | Array of multi-fields.
+  [`multifield[]`](../data-types.md) | Array of multifields.
 
-  More about multi-fields can be read in section [{#T}](../data-types.md#crm_multifield)
-
-  Structure of a multi-field:
-
-    - `typeId` — Type of the multi-field
-    - `valueType` — Type of value
-    - `value` — Value
-
-  Example:
-
-    ```bash
-    fm: [
-      {
-        "valueType": "WORK",
-        "value": "+19999999999",
-        "typeId": "PHONE"
-      },
-      {
-        "valueType": "WORK",
-        "value": "bitrix@bitrix.com",
-        "typeId": "EMAIL"
-      }
-    ]
-    ```
-  By default — `null`||
-  |#
-
-- Company
-
-  CRM object identifier **entityTypeId:** `4`
-
-  #|
-  || **Name**
-  `type` | **Description** ||
-  || **title**
-  [`string`][1] | Name of the entity.
-
-  By default, it is generated using the template `{entityTypeName} #{id}`, where
-  
-  - `entityTypeName` — name of the entity
-  - `id` — identifier of the entity
-  
-  For example, for a company with `id = 13` => 'Company #13' ||
-  || **typeId**
-  [`crm_status`](../data-types.md) | String identifier of the entity type.
-  
-  For example, for a deal: `'SALE' = 'Sale'`.
-  
-  The list of available entity types can be obtained using [`crm.status.list`][2] with the filter `{ ENTITY_ID: "COMPANY_TYPE" }`.
-
-  By default — the first available entity type ||
-  || **logo**
-  [`file`][1] | Logo.
-
-  By default — `null` ||
-  || **bankingDetails**
-  [`string`][1] | Banking details.
-
-  By default — `null` ||
-  || **industry**
-  [`crm_status`](../data-types.md) | String identifier of the industry type. 
-  
-  For example, `'IT' = 'Information Technology'`.
-  
-  The list of available industry types can be obtained using the method [`crm.status.list`][2] with the filter `{ ENTITY_ID: "INDUSTRY"}`.
-
-  By default — the first available industry type ||
-  || **employees**
-  [`crm_status`](../data-types.md) | String identifier of the number of employees type.
-  
-  The value is taken from the available list, for example, `'EMPLOYEES_1' = 'less than 50'`.
-
-  The list of available employee counts can be obtained using the method [`crm.status.list`][2] with the filter `{ ENTITY_ID: "EMPLOYEES" }`.
-
-  By default — the first available employee count type ||
-  || **currencyId**
-  [`crm_currency`](../data-types.md) | Identifier of the entity's currency.
-
-  By default — default currency ||
-  || **revenue**
-  [`double`][1] | Annual revenue.
-
-  By default — `0` ||
-  || **opened**
-  [`boolean`][1] | Is the entity available to everyone? Possible values:
-
-  - `Y` — yes
-  - `N` — no
-
-  By default — `Y`. The default value can be changed in the CRM settings ||
-  || **comments**
-  [`text`][1] | Comment.
-
-  By default — `null` ||
-  || **isMyCompany**
-  [`boolean`][1] | Is the company my company?
-
-  By default — `N` ||
-  || **assignedById**
-  [`user`][1] | Identifier of the person responsible for the entity.
-
-  By default — identifier of the user calling the method ||
-  || **contactIds**
-  [`crm_contact[]`](../data-types.md) | List of contact identifiers linked to the entity.
-
-  The list of contacts can be obtained using the method [`crm.item.list`](crm-item-list.md) with `entityTypeId = 3`.
-
-  By default — `null`||
-  || **leadId**
-  [`crm_lead`](../data-types.md) | Identifier of the lead based on which the entity is created.
-
-  By default — `null`||
-  || **originatorId**
-  [`string`][1] | External source.
-
-  By default — `null` ||
-  || **originId**
-  [`string`][1] | Identifier of the entity in the external source.
-
-  By default — `null` ||
-  || **originVersion**
-  [`string`][1] | Version of the original.
-
-  By default — `null` ||
-  || **observers**
-  [`user[]`][1] | Array of user identifiers who will be Observers in the entity.
-
-  By default — `null` ||
-  || **utmSource**
-  [`string`][1] | Advertising system. Google Ads, Facebook Ads, and others.
-
-  By default — `null` ||
-  || **utmMedium**
-  [`string`][1] | Type of traffic. Possible values:
-  - CPC — ads
-  - CPM — banners
-
-  By default — `null` ||
-  || **utmCampaign**
-  [`string`][1] | Identifier of the advertising campaign.
-
-  By default — `null` ||
-  || **utmContent**
-  [`string`][1] | Content of the campaign. For example, for contextual ads.
-
-  By default — `null` ||
-  || **utmTerm**
-  [`string`][1] | Search condition of the campaign. For example, keywords for contextual advertising.
-
-  By default — `null` ||
-  || **ufCrm...**
-  [`crm_userfield`](../data-types.md) | User-defined field. See section [{#T}](./user-defined-fields/index.md)
-
-    - Values of multiple fields are passed as an array
-    - To upload a file, the value of the user-defined field must be an array where the first element is the file name and the second is the content of the file encoded in [base64](../../files/how-to-upload-files.md)
-
-  ||
-  || **parentId...**
-  [`crm_entity`](../data-types.md) | Parent field. An element of another type of CRM object linked to this element.
-
-  Each such field has the code `parentId + {parentEntityTypeId}`
-  ||
-  || **fm**
-  [`multifield[]`][1] | Array of multifields.
-
-  More about multifields can be read in section [{#T}](../data-types.md#crm_multifield)
+  More about multifields can be read in the section [{#T}](../data-types.md#crm_multifield)
 
   Structure of a multifield:
 
@@ -788,13 +624,178 @@ Default is `N` ||
       },
       {
         "valueType": "WORK",
-        "value": "bitrix@bitrix.com",
+        "value": "example@example.com",
         "typeId": "EMAIL"
       }
     ]
-
     ```
-  By default — `null`||
+  Default is `null`||
+  |#
+
+- Company
+
+  CRM object identifier **entityTypeId:** `4`
+
+  #|
+  || **Name**
+  `type` | **Description** ||
+  || **title**
+  [`string`][1] | Title of the entity.
+
+  By default, it is generated using the template `{entityTypeName} #{id}`, where
+  
+  - `entityTypeName` — entity name
+  - `id` — entity identifier
+  
+  For example, for a company with `id = 13` => 'Company #13' ||
+  || **typeId**
+  [`crm_status`](../data-types.md) | String identifier for the entity type.
+  
+  For example, for a deal: `'SALE' = 'Sale'`.
+  
+  The list of available entity types can be obtained using [`crm.status.list`][2] with the filter `{ ENTITY_ID: "COMPANY_TYPE" }`.
+
+  Default is the first available entity type ||
+  || **logo**
+  [`file`][1] | Logo.
+
+  Default is `null` ||
+  || **bankingDetails**
+  [`string`][1] | Banking details.
+
+  Default is `null` ||
+  || **industry**
+  [`crm_status`](../data-types.md) | String identifier for the industry type. 
+  
+  For example, `'IT' = 'Information Technology'`.
+  
+  The list of available industry types can be obtained using the [`crm.status.list`][2] method with the filter `{ ENTITY_ID: "INDUSTRY"}`.
+
+  Default is the first available industry type ||
+  || **employees**
+  [`crm_status`](../data-types.md) | String identifier for the number of employees.
+  
+  The value is taken from the available list, for example, `'EMPLOYEES_1' = 'less than 50'`.
+
+  The list of available employee counts can be obtained using the [`crm.status.list`][2] method with the filter `{ ENTITY_ID: "EMPLOYEES" }`.
+
+  Default is the first available employee count ||
+  || **currencyId**
+  [`crm_currency`](../data-types.md) | Identifier of the currency for the entity.
+
+  Default is the default currency ||
+  || **revenue**
+  [`double`][1] | Annual revenue.
+
+  Default is `0` ||
+  || **opened**
+  [`boolean`][1] | Whether the entity is available to everyone. Possible values:
+
+  - `Y` — yes
+  - `N` — no
+
+  Default is `Y`. The default value can be changed in the CRM settings ||
+  || **comments**
+  [`text`][1] | Comment.
+
+  Default is `null` ||
+  || **isMyCompany**
+  [`boolean`][1] | Whether the company is my company.
+
+  Default is `N` ||
+  || **assignedById**
+  [`user`][1] | Identifier of the user responsible for the entity.
+
+  Default is the identifier of the user calling the method ||
+  || **contactIds**
+  [`crm_contact[]`](../data-types.md) | List of identifiers of contacts linked to the entity.
+
+  The list of contacts can be obtained using the [`crm.item.list`](crm-item-list.md) method with `entityTypeId = 3`.
+
+  Default is `null`||
+  || **leadId**
+  [`crm_lead`](../data-types.md) | Identifier of the lead based on which the entity is created.
+
+  Default is `null`||
+  || **originatorId**
+  [`string`][1] | External source.
+
+  Default is `null` ||
+  || **originId**
+  [`string`][1] | Identifier of the entity in the external source.
+
+  Default is `null` ||
+  || **originVersion**
+  [`string`][1] | Version of the original.
+
+  Default is `null` ||
+  || **observers**
+  [`user[]`][1] | Array of identifiers of users who will be observers in the entity.
+
+  Default is `null` ||
+  || **utmSource**
+  [`string`][1] | Advertising system. Google Ads, Bing Ads, etc.
+
+  Default is `null` ||
+  || **utmMedium**
+  [`string`][1] | Type of traffic. Possible values:
+  - CPC — ads
+  - CPM — banners
+
+  Default is `null` ||
+  || **utmCampaign**
+  [`string`][1] | Identifier of the advertising campaign.
+
+  Default is `null` ||
+  || **utmContent**
+  [`string`][1] | Content of the campaign. For example, for contextual ads.
+
+  Default is `null` ||
+  || **utmTerm**
+  [`string`][1] | Search condition of the campaign. For example, keywords for contextual advertising.
+
+  Default is `null` ||
+  || **ufCrm...**
+  [`crm_userfield`](../data-types.md) | Custom field. See the section [{#T}](./user-defined-fields/index.md)
+
+    - Values of multiple fields are passed as an array
+    - To upload a file, the value of the custom field must be an array where the first element is the file name, and the second is the content of the file encoded in [base64](../../files/how-to-upload-files.md)
+
+  ||
+  || **parentId...**
+  [`crm_entity`](../data-types.md) | Parent field. An element of another type of CRM object that is linked to this element.
+
+  Each such field has the code `parentId + {parentEntityTypeId}` 
+  ||
+  || **fm**
+  [`multifield[]`](../data-types.md) | Array of multifields.
+
+  More about multifields can be read in the section [{#T}](../data-types.md#crm_multifield)
+
+  Structure of a multifield:
+
+    - `typeId` — Type of multifield
+    - `valueType` — Type of value
+    - `value` — Value
+
+  Example:
+
+    ```bash
+    fm: [
+      {
+        "valueType": "WORK",
+        "value": "+19999999999",
+        "typeId": "PHONE"
+      },
+      {
+        "valueType": "WORK",
+        "value": "example@example.com",
+        "typeId": "EMAIL"
+      }
+    ]
+    ```
+
+  Default is `null`||
   |#
 
 - Estimate
@@ -805,162 +806,162 @@ Default is `N` ||
   || **Name**
   `type` | **Description** ||
   || **title**
-  [`string`][1] | Name of the entity.
+  [`string`][1] | Title of the entity.
 
   By default, it is generated using the template `{entityTypeName} #{id}`, where
-  - `entityTypeName` — name of the entity
-  - `id` — identifier of the entity
+  - `entityTypeName` — entity name
+  - `id` — entity identifier
   
   For example, for an estimate with `id = 13` => 'Estimate #13' ||
   || **assignedById**
-  [`user`][1] | Identifier of the person responsible for the entity.
+  [`user`][1] | Identifier of the user responsible for the entity.
 
-  By default — identifier of the user calling the method ||
+  Default is the identifier of the user calling the method ||
   || **opened**
-  [`boolean`][1] | Is the entity available to everyone? Possible values:
+  [`boolean`][1] | Whether the entity is available to everyone. Possible values:
 
   - `Y` — yes
   - `N` — no
 
-  By default — `Y`. The default value can be changed in the CRM settings ||
+  Default is `Y`. The default value can be changed in the CRM settings ||
   || **content**
   [`text`][1] | Content.
 
-  By default — `null` ||
+  Default is `null` ||
   || **terms**
   [`text`][1] | Terms.
 
-  By default — `null` ||
+  Default is `null` ||
   || **comments**
   [`text`][1] | Comment.
 
-  By default — `null` ||
+  Default is `null` ||
   || **dealId**
   [`crm_deal`](../data-types.md)        | Identifier of the linked deal.
 
-  By default — `null` ||
+  Default is `null` ||
   || **leadId**
   [`crm_lead`](../data-types.md) | Identifier of the lead based on which the entity is created.
 
-  By default — `null` ||
+  Default is `null` ||
   || **storageTypeId**
   [`integer`][1] | Identifier of the storage type. Possible values:
   - `1` — file
   - `2` — WebDAV
   - `3` — Drive
 
-  By default:
-  1. If the `disk` module is installed -> Drive
-  2. If the `webdav` module is installed -> WebDAV
+  Default:
+  1. If the `disk` module is enabled -> Drive
+  2. If the `webdav` module is enabled -> WebDAV
   3. File 
   ||
   || **storageElementIds**
   [`integer`][1] | Array of files.
 
-  By default — `null` ||
+  Default is `null` ||
   || **webformId**
   [`integer`][1] | Identifier of the CRM Form.
 
-  By default — `null` ||
+  Default is `null` ||
   || **companyId**
   [`crm_company`](../data-types.md) | Identifier of the company linked to the entity.
 
-  The list of companies can be obtained using the method [`crm.item.list`](crm-item-list.md) with `entityTypeId = 4`.
+  The list of companies can be obtained using the [`crm.item.list`](crm-item-list.md) method with `entityTypeId = 4`.
 
-  By default — `null` ||
+  Default is `null` ||
   || **contactId**
   [`crm_contact`](../data-types.md) | Identifier of the contact linked to the entity.
 
-  The list of contacts can be obtained using the method [`crm.item.list`](crm-item-list.md) with `entityTypeId = 3`
+  The list of contacts can be obtained using the [`crm.item.list`](crm-item-list.md) method with `entityTypeId = 3`
 
-  By default — `null` ||
+  Default is `null` ||
   || **contactIds**
-  [`crm_contact[]`](../data-types.md) | List of contact identifiers linked to the entity.
+  [`crm_contact[]`](../data-types.md) | List of identifiers of contacts linked to the entity.
 
-  The list of contacts can be obtained using the method [`crm.item.list`](crm-item-list.md) with `entityTypeId = 3`.
+  The list of contacts can be obtained using the [`crm.item.list`](crm-item-list.md) method with `entityTypeId = 3`.
 
-  By default — `null` ||
+  Default is `null` ||
   || **locationId**
-  [`location`][1] | Identifier of the location. System field.
+  [`location`][1] | Identifier of the location. Service field.
 
-  By default — `null` ||
+  Default is `null` ||
   || **currencyId**
-  [`crm_currency`](../data-types.md) | Identifier of the entity's currency.
+  [`crm_currency`](../data-types.md) | Identifier of the currency for the entity.
 
-  By default — default currency ||
+  Default is the default currency ||
   || **isManualOpportunity**
-  [`boolean`][1] | Mode of calculating the amount.
+  [`boolean`][1] | Mode for calculating the amount.
 
   - `Y` — manual
   - `N` — automatic
 
-  By default — `N` ||
+  Default is `N` ||
   || **opportunity**
   [`double`][1] | Amount.
 
-  By default — `null` ||
+  Default is `null` ||
   || **taxValue**
   [`double`][1] | Tax amount.
 
-  By default — `null` ||
+  Default is `null` ||
   || **stageId**
-  [`crm_status`](../data-types.md) | String identifier of the entity's stage. 
+  [`crm_status`](../data-types.md) | String identifier for the stage of the entity. 
   
   For example, `'DRAFT' = 'New'`.
 
   The list of available stages can be obtained using [`crm.status.list`][2] with the filter `{ ENTITY_ID: "QUOTE_STATUS" }`.
 
-  By default — the first available stage ||
+  Default is the first available stage ||
   || **begindate**
   [`date`][1] | Start date of the entity.
 
-  By default — creation date of the entity ||
+  Default is the creation date of the entity ||
   || **closedate**
   [`date`][1] | End date of the entity.
 
-  By default — creation date of the entity + 7 days ||
+  Default is the creation date of the entity + 7 days ||
   || **actualDate**
   [`date`][1] | Valid until.
 
-  By default — creation date of the entity + 7 days ||
+  Default is the creation date of the entity + 7 days ||
   || **mycompanyId**
   [`crm_company`](../data-types.md) | Identifier of my company.
 
-  By default — identifier of the first available "my" company ||
+  Default is the identifier of the first available "my" company ||
   || **utmSource**
-  [`string`][1] | Advertising system. Google Ads, Facebook Ads, and others.
+  [`string`][1] | Advertising system. Google Ads, Bing Ads, etc.
 
-  By default — `null` ||
+  Default is `null` ||
   || **utmMedium**
   [`string`][1] | Type of traffic.
   
   - CPC — ads
   - CPM — banners
 
-  By default — `null` ||
+  Default is `null` ||
   || **utmCampaign**
   [`string`][1] | Identifier of the advertising campaign.
 
-  By default — `null` ||
+  Default is `null` ||
   || **utmContent**
   [`string`][1] | Content of the campaign. For example, for contextual ads.
 
-  By default — `null` ||
+  Default is `null` ||
   || **utmTerm**
   [`string`][1] | Search condition of the campaign. For example, keywords for contextual advertising.
 
-  By default — `null` ||
+  Default is `null` ||
   || **ufCrm...**
-  [`crm_userfield`](../data-types.md) | User-defined field. See section [{#T}](./user-defined-fields/index.md).
+  [`crm_userfield`](../data-types.md) | Custom field. See the section [{#T}](./user-defined-fields/index.md).
 
   - Values of multiple fields are passed as an array
-  - To upload a file, the value of the user-defined field must be an array where the first element is the file name and the second is the content of the file encoded in [base64](../../files/how-to-upload-files.md).
+  - To upload a file, the value of the custom field must be an array where the first element is the file name, and the second is the content of the file encoded in [base64](../../files/how-to-upload-files.md).
 
   ||
   || **parentId...**
-  [`crm_entity`](../data-types.md) | Parent field. An element of another type of CRM object linked to this element.
+  [`crm_entity`](../data-types.md) | Parent field. An element of another type of CRM object that is linked to this element.
 
-  Each such field has the code `parentId + {parentEntityTypeId}`
+  Each such field has the code `parentId + {parentEntityTypeId}` 
   ||
   |#
 
@@ -972,127 +973,126 @@ Default is `N` ||
   || **Name**
   `type` | **Description** ||
   || **title**
-  [`string`][1] | Name of the entity.
+  [`string`][1] | Title of the entity.
 
   By default, it is generated using the template `{entityTypeName} #{id}`, where
   
-  - `entityTypeName` — name of the entity
-  - `id` — identifier of the entity
+  - `entityTypeName` — entity name
+  - `id` — entity identifier
   
-  For example, for an invoice with `id = 13` => 'Invoice #13'
-  ||
+  For example, for an invoice with `id = 13` => 'Invoice #13' ||
   || **xmlId**
   [`string`][1] | External code.
 
-  By default — `null` ||
+  Default is `null` ||
   || **assignedById**
-  [`user`][1] | Identifier of the person responsible for the entity.
+  [`user`][1] | Identifier of the user responsible for the entity.
 
-  By default — identifier of the user calling the method ||
+  Default is the identifier of the user calling the method ||
   || **opened**
-  [`boolean`][1] | Indicates whether the entity is accessible to everyone. Possible values:
+  [`boolean`][1] | Whether the entity is available to everyone. Possible values:
 
   - `Y` — yes
   - `N` — no
 
-  By default — `Y`. The default value can be changed in the CRM settings ||
+  Default is `Y`. The default value can be changed in the CRM settings ||
   || **webformId**
   [`integer`][1] | Identifier of the CRM Form.
 
-  By default — `null` ||
+  Default is `null` ||
   || **begindate**
   [`date`][1] | Start date of the entity.
 
-  By default — creation date of the entity ||
+  Default is the creation date of the entity ||
   || **closedate**
   [`date`][1] | End date of the entity.
 
-  By default — creation date of the entity + 7 days ||
+  Default is the creation date of the entity + 7 days ||
   || **companyId**
   [`crm_company`](../data-types.md) | Identifier of the company linked to the entity.
 
   The list of companies can be obtained using the [`crm.item.list`](crm-item-list.md) method with `entityTypeId = 4`.
 
-  By default — `null` ||
+  Default is `null` ||
   || **contactId**
   [`crm_contact`](../data-types.md) | Identifier of the contact linked to the entity.
 
   The list of contacts can be obtained using the [`crm.item.list`](crm-item-list.md) method with `entityTypeId = 3`.
 
-  By default — `null` ||
+  Default is `null` ||
   || **contactIds**
   [`crm_contact[]`](../data-types.md) | List of identifiers of contacts linked to the entity.
 
   The list of contacts can be obtained using the [`crm.item.list`](crm-item-list.md) method with `entityTypeId = 3`.
 
-  By default — `null` ||
+  Default is `null` ||
   || **observers**
-  [`user[]`][1] | Array of user identifiers who will be Observers in the entity.
+  [`user[]`][1] | Array of identifiers of users who will be observers in the entity.
 
-  By default — `null` ||
+  Default is `null` ||
   || **stageId**
-  [`crm_status`](../data-types.md) | String identifier of the stage of the entity. 
+  [`crm_status`](../data-types.md) | String identifier for the stage of the entity. 
   
   For example, `'DT31_13:N' = 'New'`.
 
-  The list of available stages can be found using [`crm.status.list`][2], applying the filter: `{ ENTITY_ID: "SMART_INVOICE_STAGE_{categoryId}" }`, where
-  `categoryId` — identifier of the default invoice funnel. It can be found using [`crm.category.list`](category/crm-category-list.md) with `entityTypeId = 31`.
+  The list of available stages can be obtained using [`crm.status.list`][2], with the filter: `{ ENTITY_ID: "SMART_INVOICE_STAGE_{categoryId}" }`, where
+  `categoryId` is the identifier of the default invoice funnel. It can be obtained using [`crm.category.list`](category/crm-category-list.md) with `entityTypeId = 31`.
 
-  By default — the first available stage ||
+  Default is the first available stage ||
   || **sourceId**
-  [`crm_status`](../data-types.md) | String identifier of the source.
+  [`crm_status`](../data-types.md) | String identifier for the source.
   
   For example, `'CALL' = 'Call'`.
   
-  The list of available sources can be found using [`crm.status.list`][2] applying the filter `{ ENTITY_ID: "SOURCE" }`.
+  The list of available sources can be obtained using [`crm.status.list`][2] with the filter `{ ENTITY_ID: "SOURCE" }`.
 
-  By default — the first available source ||
+  Default is the first available source ||
   || **sourceDescription**
   [`text`][1] | Additional information about the source.
 
-  By default — `null` ||
+  Default is `null` ||
   || **currencyId**
-  [`crm_currency`](../data-types.md) | Identifier of the currency of the entity.
+  [`crm_currency`](../data-types.md) | Identifier of the currency for the entity.
 
-  By default — default currency ||
+  Default is the default currency ||
   || **isManualOpportunity**
-  [`boolean`][1] | Mode of calculating the amount. Possible values:
+  [`boolean`][1] | Mode for calculating the amount. Possible values:
 
   - `Y` — manual
   - `N` — automatic
 
-  By default — `N` ||
+  Default is `N` ||
   || **opportunity**
   [`double`][1] | Amount.
 
-  By default — `null` ||
+  Default is `null` ||
   || **taxValue**
   [`double`][1] | Tax amount.
 
-  By default — `null` ||
+  Default is `null` ||
   || **mycompanyId**
   [`crm_company`](../data-types.md) | Identifier of my company.
 
-  By default — identifier of the first available "my" company ||
+  Default is the identifier of the first available "my" company ||
   || **comments**
   [`text`][1] | Comment.
 
-  By default — `null` ||
+  Default is `null` ||
   || **locationId**
-  [`location`][1] | Identifier of the location. System field.
+  [`location`][1] | Identifier of the location. Service field.
 
-  By default — `null` ||
+  Default is `null` ||
   || **ufCrm...**
-  [`crm_userfield`](../data-types.md) | Custom field. See section [{#T}](./user-defined-fields/index.md).
+  [`crm_userfield`](../data-types.md) | Custom field. See the section [{#T}](./user-defined-fields/index.md).
 
     - Values of multiple fields are passed as an array
-    - To upload a file, the value of the custom field must be an array where the first element is the file name and the second is the content of the file encoded in [base64](../../files/how-to-upload-files.md).
+    - To upload a file, the value of the custom field must be an array where the first element is the file name, and the second is the content of the file encoded in [base64](../../files/how-to-upload-files.md).
 
   ||
   || **parentId...**
-  [`crm_entity`](../data-types.md) | Parent field. An element of another type of CRM object linked to this element.
+  [`crm_entity`](../data-types.md) | Parent field. An element of another type of CRM object that is linked to this element.
 
-  Each such field has the code `parentId + {parentEntityTypeId}`
+  Each such field has the code `parentId + {parentEntityTypeId}` 
   ||
   |#
 
@@ -1104,150 +1104,150 @@ Default is `N` ||
   || **Name**
   `type` | **Description** ||
   || **title**
-  [`string`][1] | Name of the entity.
+  [`string`][1] | Title of the entity.
 
   By default, it is generated using the template `{entityTypeName} #{id}`, where
   - `entityTypeName` — name of the smart process
-  - `id` — identifier of the entity
+  - `id` — entity identifier
   
-  For example, for the smart process element "HR" with `id = 13` => 'HR #13'  ||
+  For example, for the smart process "HR" with `id = 13` => 'HR #13'  ||
   || **xmlId**
   [`string`][1] | External code.
 
-  By default — `null` ||
+  Default is `null` ||
   || **assignedById**
-  [`user`][1] | Identifier of the person responsible for the entity.
+  [`user`][1] | Identifier of the user responsible for the entity.
 
-  By default — identifier of the user calling the method  ||
+  Default is the identifier of the user calling the method  ||
   || **opened**
-  [`boolean`][1] | Indicates whether the entity is accessible to everyone.
+  [`boolean`][1] | Whether the entity is available to everyone.
 
   - `Y` — yes
   - `N` — no
 
-  By default — `Y`. The default value can be changed in the CRM settings  ||
+  Default is `Y`. The default value can be changed in the CRM settings  ||
   || **webformId**
   [`integer`][1] | Identifier of the CRM Form.
 
-  By default — `null` ||
+  Default is `null` ||
   || **begindate**
   [`date`][1] | Start date of the entity.
 
-  Available only when the `isBeginCloseDatesEnabled` setting is enabled for the corresponding smart process.
+  Available only if the `isBeginCloseDatesEnabled` setting is enabled for the corresponding smart process.
 
-  By default — creation date of the entity  ||
+  Default is the creation date of the entity  ||
   || **closedate**
   [`date`][1] | End date of the entity.
 
-  Available only when the `isBeginCloseDatesEnabled` setting is enabled for the corresponding smart process.
+  Available only if the `isBeginCloseDatesEnabled` setting is enabled for the corresponding smart process.
 
-  By default — creation date of the entity + 7 days  ||
+  Default is the creation date of the entity + 7 days  ||
   || **companyId**
   [`crm_company`](../data-types.md) | Identifier of the company linked to the entity.
 
   The list of companies can be obtained using the [`crm.item.list`](crm-item-list.md) method with `entityTypeId = 4`.
 
-  Available only when the `isClientEnabled` setting is enabled for the corresponding smart process.
+  Available only if the `isClientEnabled` setting is enabled for the corresponding smart process.
 
-  By default — `null` ||
+  Default is `null` ||
   || **contactId**
   [`crm_contact`](../data-types.md) | Identifier of the contact linked to the entity.
 
   The list of contacts can be obtained using the [`crm.item.list`](crm-item-list.md) method with `entityTypeId = 3`.
 
-  Available only when the `isClientEnabled` setting is enabled for the corresponding smart process.
+  Available only if the `isClientEnabled` setting is enabled for the corresponding smart process.
 
-  By default — `null` ||
+  Default is `null` ||
   || **contactIds**
   [`crm_contact[]`](../data-types.md) | List of identifiers of contacts linked to the entity.
 
   The list of contacts can be obtained using the [`crm.item.list`](crm-item-list.md) method with `entityTypeId = 3`.
 
-  Available only when the `isClientEnabled` setting is enabled for the corresponding smart process.
+  Available only if the `isClientEnabled` setting is enabled for the corresponding smart process.
 
-  By default — `null` ||
+  Default is `null` ||
   || **observers**
-  [`user[]`][1] | Array of user identifiers who will be Observers in the entity.
+  [`user[]`][1] | Array of identifiers of users who will be observers in the entity.
 
-  Available only when the `isObserversEnabled` setting is enabled for the corresponding smart process.
+  Available only if the `isObserversEnabled` setting is enabled for the corresponding smart process.
 
-  By default — `null` ||
+  Default is `null` ||
   || **categoryId**
   [`crm_category`](../data-types.md) | Identifier of the funnel of the smart process entity.
 
-  The list of available funnels can be found using the [`crm.category.list`](category/crm-category-list.md) applying the corresponding `entityTypeId` ||
+  The list of available funnels can be obtained using the [`crm.category.list`](category/crm-category-list.md) with the corresponding `entityTypeId` ||
   || **stageId**
-  [`crm_status`](../data-types.md) | String identifier of the stage of the entity. 
+  [`crm_status`](../data-types.md) | String identifier for the stage of the entity. 
   
   For example, `'DT1220_30:NEW' = 'Start'`.
 
-  The list of available stages can be found using [`crm.status.list`][2] applying the filter `{ ENTITY_ID: "DYNAMIC_{entityTypeId}_STAGE_{categoryId}" }`, where
+  The list of available stages can be obtained using [`crm.status.list`][2] with the filter `{ ENTITY_ID: "DYNAMIC_{entityTypeId}_STAGE_{categoryId}" }`, where
   - `entityTypeId` — identifier of the smart process type
-  - `categoryId` — identifier of the funnel (direction) of the smart process element
+  - `categoryId` — identifier of the funnel (direction) of the smart process entity
 
   [More about funnels (directions)](category/index.md).
 
-  Available only when the `isStagesEnabled` setting is enabled for the corresponding smart process.
+  Available only if the `isStagesEnabled` setting is enabled for the corresponding smart process.
 
-  By default — the first available stage relative to the funnel  ||
+  Default is the first available stage relative to the funnel  ||
   || **sourceId**
-  [`crm_status`](../data-types.md) | String identifier of the source. (for example, `'CALL' = 'Call'`).
+  [`crm_status`](../data-types.md) | String identifier for the source. (for example, `'CALL' = 'Call'`).
   
-  The list of available sources can be found using [`crm.status.list`][2] applying the filter `{ ENTITY_ID: "SOURCE" }`.
+  The list of available sources can be obtained using [`crm.status.list`][2] with the filter `{ ENTITY_ID: "SOURCE" }`.
 
-  Available only when the `isSourceEnabled` setting is enabled for the corresponding smart process.
+  Available only if the `isSourceEnabled` setting is enabled for the corresponding smart process.
 
-  By default — the first available source  ||
+  Default is the first available source  ||
   || **sourceDescription**
   [`text`][1] | Additional information about the source.
 
-  Available only when the `isSourceEnabled` setting is enabled for the corresponding smart process.
+  Available only if the `isSourceEnabled` setting is enabled for the corresponding smart process.
 
-  By default — `null` ||
+  Default is `null` ||
   || **currencyId**
-  [`crm_currency`](../data-types.md) | Identifier of the currency of the entity.
+  [`crm_currency`](../data-types.md) | Identifier of the currency for the entity.
 
-  Available only when the `isLinkWithProductsEnabled` setting is enabled for the corresponding smart process.
+  Available only if the `isLinkWithProductsEnabled` setting is enabled for the corresponding smart process.
 
-  By default — default currency  ||
+  Default is the default currency  ||
   || **isManualOpportunity**
-  [`boolean`][1] | Mode of calculating the amount. Possible values:
+  [`boolean`][1] | Mode for calculating the amount. Possible values:
 
   - `Y` — manual
   - `N` — automatic
 
-  Available only when the `isLinkWithProductsEnabled` setting is enabled for the corresponding smart process.
+  Available only if the `isLinkWithProductsEnabled` setting is enabled for the corresponding smart process.
 
-  By default — `N` ||
+  Default is `N` ||
   || **opportunity**
   [`double`][1] | Amount.
 
-  Available only when the `isLinkWithProductsEnabled` setting is enabled for the corresponding smart process.
+  Available only if the `isLinkWithProductsEnabled` setting is enabled for the corresponding smart process.
 
-  By default — `null` ||
+  Default is `null` ||
   || **taxValue**
   [`double`][1] | Tax amount.
 
-  Available only when the `isLinkWithProductsEnabled` setting is enabled for the corresponding smart process.
+  Available only if the `isLinkWithProductsEnabled` setting is enabled for the corresponding smart process.
 
-  By default — `null` ||
+  Default is `null` ||
   || **mycompanyId**
   [`crm_company`](../data-types.md) | Identifier of my company.
 
-  Available only when the `isMycompanyEnabled` setting is enabled for the corresponding smart process.
+  Available only if the `isMycompanyEnabled` setting is enabled for the corresponding smart process.
 
-  By default — Identifier of the first available "my" company ||
+  Default is the identifier of the first available "my" company ||
   || **ufCrm...**
-  [`crm_userfield`](../data-types.md) | Custom field. See section [{#T}](./user-defined-fields/index.md).
+  [`crm_userfield`](../data-types.md) | Custom field. See the section [{#T}](./user-defined-fields/index.md).
 
     - Values of multiple fields are passed as an array
-    - To upload a file, the value of the custom field must be an array where the first element is the file name and the second is the content of the file encoded in [base64](../../files/how-to-upload-files.md).
+    - To upload a file, the value of the custom field must be an array where the first element is the file name, and the second is the content of the file encoded in [base64](../../files/how-to-upload-files.md).
 
   ||
   || **parentId...**
-  [`crm_entity`](../data-types.md) | Parent field. An element of another type of CRM object linked to this element.
+  [`crm_entity`](../data-types.md) | Parent field. An element of another type of CRM object that is linked to this element.
 
-  Each such field has the code `parentId + {parentEntityTypeId}`
+  Each such field has the code `parentId + {parentEntityTypeId}` 
   ||
   |#
 
@@ -1261,7 +1261,7 @@ Default is `N` ||
 
 ## Code Examples
 
-{% include [Footnote about examples](../../../_includes/examples.md) %}
+{% include [Footnote on examples](../../../_includes/examples.md) %}
 
 1. Example of creating a deal
 
@@ -1287,7 +1287,7 @@ Default is `N` ||
         https://**put_your_bitrix24_address**/rest/crm.item.add
         ```
 
-    - BX24.js
+    - JS
 
         ```js
         const formatDate = (date) => {
@@ -1301,7 +1301,7 @@ Default is `N` ||
         const monthAgo = new Date(now.getTime() - 30 * day);
 
         const commentsExample = `
-        Example comment within the deal
+        Example comment inside the deal
 
         [B]Bold text[/B]
         [I]Italic[/I]
@@ -1368,7 +1368,7 @@ Default is `N` ||
         );
         ```
 
-    - PHP CRest
+    - PHP
 
         ```php
         require_once('crest.php');
@@ -1415,7 +1415,7 @@ Default is `N` ||
         echo '</PRE>';
         ```
 
-   - PHP
+   - PHP (B24PhpSdk)
 
         ```php
        try {
@@ -1713,7 +1713,7 @@ Default is `N` ||
         https://**put_your_bitrix24_address**/rest/crm.item.add
         ```
 
-    - BX24.js
+    - JS
 
         ```js
         const greenPixelInBase64 = "iVBORw0KGgoAAAANSUhEUgAAAIAAAAAMCAYAAACqTLVoAAAALklEQVR42u3SAQEAAAQDsEsuOj3YMqwy6fBWCSCAAAIgAAIgAAIgAAIgAAJw3QLOrRH1U/gU4gAAAABJRU5ErkJggg==";
@@ -1749,7 +1749,7 @@ Default is `N` ||
         );
         ```
 
-    - PHP CRest
+    - PHP
 
         ```php
         require_once('crest.php');
@@ -1784,13 +1784,13 @@ Default is `N` ||
 
     {% endlist %}
 
-## Response Processing
+## Response Handling
 
 HTTP Status: **200**
 
 {% note info %}
 
-Disabled fields always return `null`
+Disabled fields always return `null`.
 
 {% endnote %}
 
@@ -1811,7 +1811,7 @@ Disabled fields always return `null`
             "companyId": 5,
             "contactId": 4,
             "quoteId": 7,
-            "title": "New deal (specifically for the example of REST methods)",
+            "title": "New deal (specifically for the REST methods example)",
             "productId": null,
             "categoryId": 9,
             "stageId": "C9:UC_KN8KFI",
@@ -1827,7 +1827,7 @@ Disabled fields always return `null`
             "taxValue": 0,
             "currencyId": "USD",
             "probability": 50,
-            "comments": "\nExample comment within the deal\n\n[B]Bold text[/B]\n[I]Italic[/I]\n[U]Underlined[/U]\n[S]Strikethrough[/S]\n[B][I][U][S]Mix[/S][/U][/I][/B]\n\n[LIST]\n[*]List item #1\n[*]List item #2\n[*]List item #3\n[/LIST]\n\n[LIST=1]\n[*]Numbered list item #1\n[*]Numbered list item #2\n[*]Numbered list item #3\n[/LIST]\n",
+            "comments": "\nExample comment inside the deal\n\n[B]Bold text[/B]\n[I]Italic[/I]\n[U]Underlined[/U]\n[S]Strikethrough[/S]\n[B][I][U][S]Mix[/S][/U][/I][/B]\n\n[LIST]\n[*]List item #1\n[*]List item #2\n[*]List item #3\n[/LIST]\n\n[LIST=1]\n[*]Numbered list item #1\n[*]Numbered list item #2\n[*]Numbered list item #3\n[/LIST]\n",
             "begindate": "2024-06-18T02:00:00+02:00",
             "begindateShort": null,
             "closedate": "2024-07-30T02:00:00+02:00",
@@ -1856,10 +1856,7 @@ Disabled fields always return `null`
             "lostAmount": null,
             "hasProducts": null,
             "ufCrm_1721244707107": 1111.1,
-            "parentId1220": [
-                "1",
-                "2"
-            ],
+            "parentId1220": 2,
             "utmSource": "google",
             "utmMedium": "CPC",
             "utmCampaign": null,
@@ -1888,35 +1885,34 @@ Disabled fields always return `null`
 }
 ```
 
-
 {% note info " " %}
 
-By default, names of user-defined fields are passed and returned in camelCase, for example `ufCrm2_1639669411830`.
-When passing the parameter `useOriginalUfNames` with the value `Y`, user-defined fields will be returned with their original names, for example `UF_CRM_2_1639669411830`.
+By default, custom field names are passed and returned in camelCase, for example `ufCrm2_1639669411830`.
+When passing the parameter `useOriginalUfNames` with the value `Y`, custom fields will be returned with their original names, for example `UF_CRM_2_1639669411830`.
 
 {% endnote %}
 
 ### Returned Data
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`][1] | The root element of the response, contains a single key `item` ||
+[`object`][1] | Root element of the response, contains a single key `item` ||
 || **item**
-[`item`](./object-fields.md) | Information about the created item, [field descriptions](./object-fields.md) ||
+[`item`](./object-fields.md) | Information about the created item, [field description](./object-fields.md) ||
 || **time**
 [`time`][1] | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-HTTP status: **400**, **403**
+HTTP Status: **400**, **403**
 
 ```json
 {
     "error": "NOT_FOUND",
-    "error_description": "SPA not found"
+    "error_description": "Smart process not found"
 }
 ```
 
@@ -1924,21 +1920,20 @@ HTTP status: **400**, **403**
 
 ### Possible Error Codes
 
-#|
-|| **Status** | **Code**                           | **Description**                                                       | **Value**                                                                                    ||
-|| `403`      | `allowed_only_intranet_user`      | Action allowed only for intranet users                   | User is not an intranet user                                                 ||
-|| `400`      | `NOT_FOUND`                       | SPA not found                                            | Occurs when an invalid `entityTypeId` is passed                                              ||
-|| `400`      | `ACCESS_DENIED`                   | Access denied                                                    | User does not have permission to add items of type `entityTypeId`                             ||
-|| `400`      | `CRM_FIELD_ERROR_VALUE_NOT_VALID` | Invalid value for field "`field`"                                   | Incorrect value for field `field`                                                     ||
-|| `400`      | `100`                             | Expected iterable value for multiple field, but got `type` instead | One of the multiple fields received a value of type `type`, while an iterable type was expected ||
-|| `400`      | `CREATE_DYNAMIC_ITEM_RESTRICTED`  | You cannot create a new item due to your plan restrictions | Plan restrictions do not allow creating SPA items                              ||
+#| 
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `403` | `allowed_only_intranet_user` | Action allowed only for intranet users | User is not an intranet user ||
+|| `400`| `NOT_FOUND` | Smart process not found | Occurs when an invalid `entityTypeId` is passed ||
+|| `400` | `ACCESS_DENIED` | Access denied | User does not have permission to add items of type `entityTypeId` ||
+|| `400` | `CRM_FIELD_ERROR_VALUE_NOT_VALID` | Invalid value for field "`field`" | Incorrect value passed for field `field` ||
+|| `400` | `100` | Expected iterable value for multiple field, but got `type` instead | One of the multiple fields received a value of type `type`, while an iterable type was expected ||
+|| `400` | `CREATE_DYNAMIC_ITEM_RESTRICTED`  | You cannot create a new item due to your plan restrictions     | Plan restrictions do not allow creating SPA items ||
 |#
 
 {% include [system errors](./../../../_includes/system-errors.md) %}
 
 
 ## Continue Learning
-
 
 - [{#T}](crm-item-update.md)
 - [{#T}](crm-item-get.md)
@@ -1949,5 +1944,4 @@ HTTP status: **400**, **403**
 - [{#T}](../../../tutorials/crm/how-to-add-crm-objects/how-to-add-contractor.md)
 
 [1]: ../../data-types.md
-[2]: ../status/crm-status-list.md  
-  
+[2]: ../status/crm-status-list.md

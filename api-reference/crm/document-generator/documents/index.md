@@ -35,7 +35,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 The `pdfUrl` and `imageUrl` links may not be available immediately after creating or updating the document, as the conversion is performed asynchronously. If you need the links right away, repeat the request using the [crm.documentgenerator.document.get](./crm-document-generator-document-get.md) method after 30-40 seconds.
 
-## Connection with Other Objects
+## Relationships with Other Objects
 
 **Document Templates.** To create a document from a template, pass the `templateId` to the [crm.documentgenerator.document.add](./crm-document-generator-document-add.md) method. Obtain the `templateId` from the response of [crm.documentgenerator.template.add](../templates/crm-document-generator-template-add.md) or retrieve it from the list using the [crm.documentgenerator.template.list](../templates/crm-document-generator-template-list.md) method.
 

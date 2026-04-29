@@ -1,8 +1,8 @@
-# Get a list of epics tasks.api.scrum.epic.list
+# Get a List of Epics tasks.api.scrum.epic.list
 
 {% note tip "" %}
 
-If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect the [MCP server](../../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
 
 {% endnote %}
 
@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: any user
 
-The method returns a list of epics.
+This method returns a list of epics.
 
 ## Method Parameters
 
@@ -18,9 +18,9 @@ The method returns a list of epics.
 || **Name**
 `type` | **Description** ||
 || **order**
-[`array`](../../../data-types.md) | An array for sorting the result in the format `{'sorting_field': 'sorting_direction' [, ...]}`. 
+[`array`](../../../data-types.md) | An array for sorting the result in the format `{'sort_field': 'sort_direction' [, ...]}`. 
 
-Sorting direction can take the following values:
+The sort direction can take the following values:
 - `asc` — ascending
 - `desc` — descending
 
@@ -29,23 +29,23 @@ Possible values for the array elements correspond to the fields in the response 
 || **filter**
 [`array`](../../../data-types.md) | An array in the format `{'filter_field': 'filter_value' [, ...]}`.
 
-The key can have an additional prefix that specifies the filter behavior.
+An additional prefix can be specified for the key to clarify the filter behavior.
 
 Possible prefix values:
 - `=` — equals (works with arrays as well)
-- `%` — LIKE, substring search. The % symbol in the filter value does not need to be passed. The search looks for the substring in any position of the string
+- `%` — LIKE, substring search. The `%` symbol does not need to be included in the filter value. The search looks for the substring in any position of the string.
 - `>` — greater than
 - `<` — less than
 - `!=` — not equal
-- `!%` — NOT LIKE, substring search. The % symbol in the filter value does not need to be passed. The search goes from both sides.
+- `!%` — NOT LIKE, substring search. The `%` symbol does not need to be included in the filter value. The search goes from both sides.
 - `>=` — greater than or equal to
 - `<=` — less than or equal to
-- `=%` — LIKE, substring search. The % symbol needs to be passed in the value. Examples:
+- `=%` — LIKE, substring search. The `%` symbol must be included in the value. Examples:
   - `"mol%"` — searching for values starting with "mol"
   - `"%mol"` — searching for values ending with "mol"
   - `"%mol%"` — searching for values where "mol" can be in any position
 - `%=` — LIKE (see description above)
-- `!=%` — NOT LIKE, substring search. The % symbol needs to be passed in the value. Examples:
+- `!=%` — NOT LIKE, substring search. The `%` symbol must be included in the value. Examples:
   - `"mol%"` — searching for values not starting with "mol"
   - `"%mol"` — searching for values not ending with "mol"
   - `"%mol%"` — searching for values where the substring "mol" is not present in any position
@@ -61,7 +61,7 @@ Possible values for the array elements correspond to the fields in the response 
 
 If the array contains the value `"*"`, all available fields will be returned.
 
-The default value is an empty array `array()`. This means that all fields from the main query table will be returned
+The default value is an empty array `array()`. This means that all fields from the main query table will be returned.
 ||
 || **start**
 [`integer`](../../../data-types.md) | The page number of the output. Works for HTTPS requests.
@@ -71,13 +71,13 @@ The page size of results is always static: 50 records.
 To select the second page of results, you need to pass the value `50`. To select the third page of results, the value is `100`, and so on.
 
 The formula for calculating the `start` parameter value:
-`start = (N-1) * 50`, where `N` is the desired page number
+`start = (N-1) * 50`, where `N` is the desired page number.
 ||
 |#
 
 ## Code Examples
 
-{% include [Note on examples](../../../../_includes/examples.md) %}
+{% include [Examples Note](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -134,7 +134,7 @@ The formula for calculating the `start` parameter value:
 - JS
 
     ```js
-    // callListMethod: Retrieves all data at once. Use only for small selections (< 1000 items) due to high memory usage.
+    // callListMethod: Retrieves all data at once. Use only for small selections (< 1000 items) due to high memory load.
     
     const groupId = 143;
     try {
@@ -166,7 +166,7 @@ The formula for calculating the `start` parameter value:
       console.error('Request failed', error);
     }
     
-    // fetchListMethod: Retrieves data in parts using an iterator. Use it for large data volumes to optimize memory usage.
+    // fetchListMethod: Retrieves data in chunks using an iterator. Use for large volumes of data for efficient memory consumption.
     
     const groupId = 143;
     try {
@@ -195,7 +195,7 @@ The formula for calculating the `start` parameter value:
       console.error('Request failed', error);
     }
     
-    // callMethod: Manually controls pagination through the start parameter. Use it for precise control of request batches. For large datasets, it is less efficient than fetchListMethod.
+    // callMethod: Manual control of pagination through the start parameter. Use for precise control over request batches. Less efficient for large data than fetchListMethod.
     
     const groupId = 143;
     try {
@@ -285,12 +285,22 @@ The formula for calculating the `start` parameter value:
                 'ID': 'asc',
                 'NAME': 'desc'
             },
-            select: ['ID', 'NAME', 'DESCRIPTION', 'CREATED_BY', 'MODIFIED_BY', 'COLOR'],
-            start: 0
+            select: ['ID', 'NAME', 'DESCRIPTION', 'CREATED_BY', 'MODIFIED_BY', 'COLOR']
         },
         function(res)
         {
-            console.log(res);
+            if (res.error())
+            {
+                console.error(res.error());
+                return;
+            }
+
+            console.log(res.data());
+
+            if (res.more())
+            {
+                res.next();
+            }
         }
     );
     ```
@@ -298,9 +308,9 @@ The formula for calculating the `start` parameter value:
 - PHP CRest
 
     ```php
-    require_once('crest.php'); // include CRest PHP SDK
+    require_once('crest.php'); // connecting CRest PHP SDK
 
-    // execute a request to the REST API
+    // executing a request to the REST API
     $result = CRest::call(
         'tasks.api.scrum.epic.list',
         [
@@ -336,7 +346,7 @@ The formula for calculating the `start` parameter value:
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 [
@@ -369,23 +379,23 @@ HTTP status: **200**
 || **id**
 [`integer`](../../../data-types.md) | Epic identifier ||
 || **groupId**
-[`integer`](../../../data-types.md) | Group identifier (scrum) to which the epic is linked ||
+[`integer`](../../../data-types.md) | Identifier of the group (scrum) to which the epic is linked ||
 || **name**
-[`string`](../../../data-types.md) | Epic name ||
+[`string`](../../../data-types.md) | Name of the epic ||
 || **description**
-[`string`](../../../data-types.md) | Epic description ||
+[`string`](../../../data-types.md) | Description of the epic ||
 || **createdBy**
 [`integer`](../../../data-types.md) | Identifier of the user who created the epic ||
 || **modifiedBy**
 [`integer`](../../../data-types.md) | Identifier of the user who last modified the epic ||
 || **color**
-[`string`](../../../data-types.md) | Epic color in HEX format ||
+[`string`](../../../data-types.md) | Color of the epic in HEX format ||
 
 |#
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {
@@ -413,4 +423,3 @@ HTTP status: **400**
 - [{#T}](./tasks-api-scrum-epic-get.md)
 - [{#T}](./tasks-api-scrum-epic-delete.md)
 - [{#T}](./tasks-api-scrum-epic-get-fields.md)
-

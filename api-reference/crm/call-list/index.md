@@ -15,7 +15,7 @@ A call list is a CRM activity from which multiple clients can be called consecut
 > 
 > User documentation: [Calling in Bitrix24](https://helpdesk.bitrix24.com/open/21815426/)
 
-## Connection with Other Objects
+## Relationships with Other Objects
 
 **Contact**. To call multiple contacts, specify an array of `ID` contacts in the [creation](./crm-calllist-add.md) or [update](./crm-calllist-update.md) method of the call list. You can obtain the `ID` of contacts using the [crm.item.list](../../crm/universal/crm-item-list.md) method with the parameter `entityTypeId = 3`.
 

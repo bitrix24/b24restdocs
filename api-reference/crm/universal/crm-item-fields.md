@@ -1,14 +1,14 @@
-# Get Fields of CRM Item `crm.item.fields`
+# Retrieve Fields of CRM Item
 
 {% note tip "" %}
 
-If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so the assistant can utilize the official REST documentation.
 
 {% endnote %}
 
 > Scope: [`crm`](../../scopes/permissions.md)
 > 
-> Who can execute the method: any user with "read" access permission for CRM object elements
+> Who can execute the method: any user with "read" access permission for CRM object elements.
 
 This method retrieves a list of fields and their configuration for elements of type `entityTypeId`.
 
@@ -20,14 +20,16 @@ Elements belonging to different types of CRM objects will have different sets of
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Footnote on parameters](../../../_includes/required.md) %}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
-|| **entityTypeId***
-[`integer`][1] | Identifier of the [system](./index.md) or [custom type](./user-defined-object-types/index.md) whose fields we want to retrieve ||
-|| **useOriginalUfNames**
+|| **entityTypeId*** 
+[`integer`][1] | Identifier of the [system](../data-types.md#object_type) or [custom type](./user-defined-object-types/index.md) whose fields we want to retrieve.
+
+Numeric values for system types (Lead — 1, Deal — 2, Contact — 3, Company — 4, Invoice — 31, etc.) are listed in the [CRM object types reference](../data-types.md#object_type). The identifier for the SPA can be obtained using the [crm.type.list](./user-defined-object-types/crm-type-list.md) method. ||
+|| **useOriginalUfNames** 
 [`boolean`][1] | This parameter controls the format of custom field names in the response.   
 Possible values:
 
@@ -39,9 +41,9 @@ Default is `N` ||
 
 ## Code Examples
 
-{% include [Note on examples](../../../_includes/examples.md) %}
+{% include [Footnote on examples](../../../_includes/examples.md) %}
 
-Get the list of fields for elements of the SPA with `entityTypeId = 1268`
+Retrieve the list of fields for SPA elements with `entityTypeId = 1268`
 
 {% list tabs %}
 
@@ -70,20 +72,20 @@ Get the list of fields for elements of the SPA with `entityTypeId = 1268`
     ```js
     try
     {
-    	const response = await $b24.callMethod(
-    		'crm.item.fields',
-    		{
-    			entityTypeId: 1268,
-    			useOriginalUfNames: 'N',
-    		}
-    	);
-    	
-    	const result = response.getData().result;
-    	console.info(result);
+        const response = await $b24.callMethod(
+            'crm.item.fields',
+            {
+                entityTypeId: 1268,
+                useOriginalUfNames: 'N',
+            }
+        );
+        
+        const result = response.getData().result;
+        console.info(result);
     }
     catch( error )
     {
-    	console.error(error);
+        console.error(error);
     }
     ```
 
@@ -121,23 +123,23 @@ Get the list of fields for elements of the SPA with `entityTypeId = 1268`
 - BX24.js
 
     ```js
-        BX24.callMethod(
-            'crm.item.fields',
+    BX24.callMethod(
+        'crm.item.fields',
+        {
+            entityTypeId: 1268,
+            useOriginalUfNames: 'N',
+        },
+        (result) => {
+            if (result.error())
             {
-                entityTypeId: 1268,
-                useOriginalUfNames: 'N',
-            },
-            (result) => {
-                if (result.error())
-                {
-                    console.error(result.error());
+                console.error(result.error());
 
-                    return;
-                }
+                return;
+            }
 
-                console.info(result.data());
-            },
-        );
+            console.info(result.data());
+        },
+    );
     ```
 
 - PHP CRest
@@ -185,7 +187,7 @@ HTTP Status: **200**
                 "isImmutable": false,
                 "isMultiple": false,
                 "isDynamic": false,
-                "title": "Name",
+                "title": "Title",
                 "upperName": "TITLE"
             },
             "xmlId": {
@@ -412,7 +414,7 @@ HTTP Status: **200**
                 "isImmutable": false,
                 "isMultiple": false,
                 "isDynamic": false,
-                "title": "Additional Information about the Source",
+                "title": "Additional Source Information",
                 "upperName": "SOURCE_DESCRIPTION"
             },
             "currencyId": {
@@ -545,7 +547,7 @@ HTTP Status: **200**
 
 ### Returned Data
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **result**
@@ -565,7 +567,7 @@ where:
 - `field_n` — field of the element
 - `value_n` — information about the field in the format [`crm_rest_field_description`](../data-types.md#crm_rest_field_description)
 
-||
+|| 
 || **time**
 [`time`][1]   | Information about the request execution time ||
 |#
@@ -573,7 +575,7 @@ where:
 {% note info " " %}
 
 By default, custom field names are returned in camelCase, e.g., `ufCrm2_1639669411830`.
-When passing the parameter `useOriginalUfNames` with the value `Y`, custom fields will be returned with their original names, e.g., `UF_CRM_2_1639669411830`.
+When passing the `useOriginalUfNames` parameter with the value `Y`, custom fields will be returned with their original names, e.g., `UF_CRM_2_1639669411830`.
 
 {% endnote %}
 
@@ -590,10 +592,9 @@ HTTP Status: **400**, **403**
 
 {% include notitle [error handling](../../../_includes/error-info.md) %}
 
-
 ### Possible Error Codes
 
-#|
+#| 
 || **Status** | **Code** | **Description** | **Value** ||
 || `403`      | `allowed_only_intranet_user` | Action allowed only for intranet users | User is not an intranet user                 ||
 || `400`      | `NOT_FOUND` | SPA not found                          | Occurs when an invalid `entityTypeId` is passed              ||

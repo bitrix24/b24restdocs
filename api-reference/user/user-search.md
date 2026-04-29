@@ -1,4 +1,4 @@
-# Get a list of users with search by personal data user.search
+# Get a List of Users with Search by Personal Data user.search
 
 {% note tip "" %}
 
@@ -10,11 +10,11 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: any user
 
-The `user.search` method allows you to retrieve a list of users with accelerated search by personal data (first name, last name, middle name, department name, job title). It operates in two modes: quickly using **Fulltext Index** and a slower option through [right LIKE](*key_right LIKE) (support is determined automatically).
+The `user.search` method allows you to retrieve a list of users with accelerated search based on personal data (first name, last name, patronymic, department name, job title). It operates in two modes: quickly using **Fulltext Index** and a slower option through [right LIKE](*key_right LIKE) (support is determined automatically).
 
 {% note info "" %}
 
-The list of user fields in Bitrix24 that will be obtained as a result of executing the method depends on the application's/webhook's scope. Details about accessing user data can be found in [the article](index.md).
+The list of user fields in Bitrix24 that will be returned as a result of executing the method depends on the application's/webhook's scope. Details about accessing user data can be found in the [article](index.md).
 
 {% endnote %}
 
@@ -22,9 +22,9 @@ The method inherits the behavior of the [user.get](./user-get.md) method, and al
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../_includes/required.md) %}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **FILTER**
@@ -38,7 +38,7 @@ The method inherits the behavior of the [user.get](./user-get.md) method, and al
     - `extranet` — extranet user
     - `email` — email user
 
-Or `FIND` — the field that will search in all listed fields.
+Or `FIND` — a field that will search across all listed fields.
 
 {% note info "" %}
 
@@ -52,22 +52,22 @@ The method can work either with filtering using the FIND key or with all other f
 - `ASC` — ascending
 - `DESC` — descending ||
 || **ADMIN_MODE**
-[`boolean`](../data-types.md) | [Key for operation](*key_Key for operation) in administrator mode. Used to obtain data about any users ||
+[`boolean`](../data-types.md) | [Key for operation](*key_Key for operation) in administrator mode. Used to retrieve data about any users ||
 || **start**
-[`integer`](../data-types.md) | The parameter is used to manage pagination.
+[`integer`](../data-types.md) | This parameter is used for managing pagination.
 
-The page size of results is always static: 50 records.
+The page size for results is always static: 50 records.
 
 To select the second page of results, you need to pass the value `50`. To select the third page of results — the value `100`, and so on.
 
 The formula for calculating the `start` parameter value:
 
-`start = (N-1) * 50`, where `N` — the number of the desired page ||
+`start = (N-1) * 50`, where `N` — the desired page number ||
 |#
 
 ## Code Examples
 
-{% include [Note on examples](../../_includes/examples.md) %}
+{% include [Note on Examples](../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -107,22 +107,22 @@ The formula for calculating the `start` parameter value:
     ```js
     try
     {
-    	const response = await $b24.callMethod(
-    		'user.search',
-    		{
-    			'UF_DEPARTMENT': 1,
-    			'SORT': 'ID',
-    			'ORDER': 'asc',
-    			'start': 10
-    		}
-    	);
-    	
-    	const result = response.getData().result;
-    	console.dir(result);
+        const response = await $b24.callMethod(
+            'user.search',
+            {
+                'UF_DEPARTMENT': 1,
+                'SORT': 'ID',
+                'ORDER': 'asc',
+                'start': 10
+            }
+        );
+        
+        const result = response.getData().result;
+        console.dir(result);
     }
     catch(error)
     {
-    	console.error('Error:', error);
+        console.error('Error:', error);
     }
     ```
 
@@ -166,15 +166,22 @@ The formula for calculating the `start` parameter value:
         {
             "UF_DEPARTMENT": 1,
             "SORT": "ID",
-            "ORDER": "asc",
-            "start": 10
+            "ORDER": "asc"
         },
         function(result)
         {
-            if(result.error())
+            if (result.error())
+            {
                 console.error(result.error());
-            else
-                console.dir(result.data());
+                return;
+            }
+
+            console.dir(result.data());
+
+            if (result.more())
+            {
+                result.next();
+            }
         }
     );
     ```
@@ -203,7 +210,7 @@ The formula for calculating the `start` parameter value:
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
     {
@@ -211,10 +218,10 @@ HTTP status: **200**
             {
                 "ID": "1",
                 "ACTIVE": true,
-                "NAME": "Vadim",
-                "LAST_NAME": "Valeev",
+                "NAME": "John",
+                "LAST_NAME": "Doe",
                 "SECOND_NAME": "",
-                "EMAIL": "v.r.valeev@bitrix.com",
+                "EMAIL": "j.doe@bitrix.com",
                 "LAST_LOGIN": "2024-07-25T13:06:54+00:00",
                 "DATE_REGISTER": "2024-07-15T00:00:00+00:00",
                 "TIME_ZONE": "",
@@ -237,8 +244,8 @@ HTTP status: **200**
             {
                 "ID": "3",
                 "ACTIVE": true,
-                "NAME": "Danielle",
-                "LAST_NAME": "Foster",
+                "NAME": "Michael",
+                "LAST_NAME": "Smith",
                 "EMAIL": "test@gmail.com",
                 "LAST_LOGIN": "2024-07-24T09:01:55+00:00",
                 "DATE_REGISTER": "2024-07-22T00:00:00+00:00",
@@ -270,7 +277,7 @@ HTTP status: **200**
 
 ### Returned Data
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **result**
@@ -293,4 +300,4 @@ HTTP status: **200**
 - [{#T}](./user-current.md)
 - [{#T}](./user-fields.md)
 
-[*key_right LIKE]: USER_NAME LIKE "Text%" - this is called right like, when the search is performed only on text that starts with the specified phrase but can contain different endings - this search is significantly faster than two-way like "%text%" or left-sided "%text" - due to the architecture of storing indexed fields in the database.
+[*key_right LIKE]: USER_NAME LIKE "Text%" - this is called right like, where the search is performed only on text that starts with the specified phrase but can contain different endings - this search is significantly faster than two-way like "%text%" or left-sided "%text" - due to the architecture of storing indexed fields in the database.

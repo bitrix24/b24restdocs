@@ -1,4 +1,4 @@
-# Get a list of vendor bindings to documents catalog.documentcontractor.list
+# Get a List of Vendor Bindings to Documents catalog.documentcontractor.list
 
 {% note tip "" %}
 
@@ -8,25 +8,25 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute the method: a user with the following permissions:
+> Who can execute the method: a user with the following access permissions:
 > — "View" on the document type "Incoming",
-> — "View Warehouse Accounting section"
-> — "View Product Catalog"    
+> — "View" on the Inventory Accounting section,
+> — "View" on the Product Catalog    
 
-The method `catalog.documentcontractor.list` returns a list of vendor bindings to warehouse accounting documents. By default, filters are added to the request that limit the selection based on the current user's permissions.
+The method `catalog.documentcontractor.list` returns a list of vendor bindings to inventory accounting documents. By default, filters are applied to the request that limit the selection based on the current user's permissions.
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../_includes/required.md) %}
 
-#|
-|| **Name**
-`type` | **Description** || 
-|| **select**
-[`array`](../../data-types.md) | An array of fields from [catalog_documentcontractor](../data-types.md#catalog_documentcontractor) that need to be selected.
+#|  
+|| **Name**  
+`type` | **Description** ||  
+|| **select**  
+[`array`](../../data-types.md) | An array containing the list of fields from [catalog_documentcontractor](../data-types.md#catalog_documentcontractor) that need to be selected.
 
-If the array is not provided or an empty array is passed, all available fields of the document will be selected. ||
-|| **filter**
+If the array is not provided or an empty array is passed, all available fields of the document will be selected. ||  
+|| **filter**  
 [`object`](../../data-types.md) | An object for filtering the selected bindings in the format `{"field_1": "value_1", ..., "field_N": "value_N"}`.
 
 Possible values for `field` correspond to the fields of the [catalog_documentcontractor](../data-types.md#catalog_documentcontractor) object.
@@ -40,21 +40,21 @@ An additional prefix can be specified for the key to clarify the filter's behavi
 - `!=`, `!` — not equal
 - `@` — IN, an array is passed as the value
 - `!@` — NOT IN, an array is passed as the value
-- `%` — LIKE, substring search. The `%` character should not be included in the filter value. The search looks for the substring in any position of the string.
-- `=%` — LIKE, substring search. The `%` character should be included in the value. Examples:
+- `%` — LIKE, substring search. The `%` symbol should not be included in the filter value. The search looks for the substring in any position of the string.
+- `=%` — LIKE, substring search. The `%` symbol must be included in the value. Examples:
     - `"mol%"` — searches for values starting with "mol"
     - `"%mol"` — searches for values ending with "mol"
     - `"%mol%"` — searches for values where "mol" can be in any position
-- `!%` — NOT LIKE, substring search. The `%` character should not be included in the filter value. The search goes from both sides.
-- `!=%` — NOT LIKE, substring search. The `%` character should be included in the value. Examples:
+- `!%` — NOT LIKE, substring search. The `%` symbol should not be included in the filter value. The search is conducted from both sides.
+- `!=%` — NOT LIKE, substring search. The `%` symbol must be included in the value. Examples:
     - `"mol%"` — searches for values not starting with "mol"
     - `"%mol"` — searches for values not ending with "mol"
-    - `"%mol%"` — searches for values where the substring "mol" is not present in any position
+    - `"%mol%"` — searches for values where the substring "mol" is absent in any position
 - `=` — equal, exact match, used by default
 - `!=` — not equal
 - `!` — not equal
-|| 
-|| **order**
+||  
+|| **order**  
 [`object`](../../data-types.md) | An object for sorting the selected documents in the format `{"field_1": "order_1", ... "field_N": "order_N"}`.
 
 Possible values for `field` correspond to the fields of the [catalog_documentcontractor](../data-types.md#catalog_documentcontractor) object.
@@ -64,23 +64,23 @@ Possible values for `order`:
 - `asc` — in ascending order
 - `desc` — in descending order 
 
-By default, results are sorted in ascending order by `id`. ||
-|| **start**
+By default, results are sorted in ascending order by `id`. ||  
+|| **start**  
 [`integer`](../../data-types.md) | This parameter is used to manage pagination.
 
 The page size is 50 records.
 
-To select the second page of results, pass the value `50`. To select the third page of results — the value `100`, and so on.
+To select the second page of results, pass the value `50`. To select the third page of results, pass the value `100`, and so on.
 
 The formula for calculating the `start` parameter value:
 
 `start = (N-1) * 50`, where `N` is the desired page number. 
-Or pass the value from the `next` key in the response. ||
-|#
+Or pass the value from the `next` key in the response. ||  
+|#  
 
 ## Code Examples
 
-{% include [Note on examples](../../../_includes/examples.md) %}
+{% include [Note on Examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -128,7 +128,7 @@ Or pass the value from the `next` key in the response. ||
     console.error('Request failed', error)
     }
 
-    // fetchListMethod: Retrieves data in parts using an iterator.
+    // fetchListMethod: Selects data in parts using an iterator.
     // Use for large volumes of data for efficient memory consumption.
 
     try {
@@ -200,8 +200,7 @@ Or pass the value from the `next` key in the response. ||
         {
             select: ["id", "documentId"],
             filter: { "documentId": 7 },
-            order: { "id": "ASC" },
-            start: 0
+            order: { "id": "ASC" }
         },
         function(result)
         {
@@ -212,16 +211,15 @@ Or pass the value from the `next` key in the response. ||
             else
             {
                 console.log(result.data());
-                
-                // If there is a next page
+
                 if (result.more())
                 {
-                    console.log('Next page start: ' + result.next());
+                    result.next();
                 }
             }
         }
     );
-    ```	
+    ```    
 
 - PHP CRest
 
@@ -275,24 +273,24 @@ HTTP Code: **200**
 
 ### Returned Data
 
-#|
-|| **Name**
-`type` | **Description** ||
-|| **result**
-[`object`](../../data-types.md) | The root element of the response ||
-|| **documentContractor**
-[`catalog_documentContractor[]`](../data-types.md#catalog_documentContractor) | A list of contractor bindings, the response structure depends on the `select` parameter || 
-|| **next**
-[`integer`](../../data-types.md) | Offset pointer for the next page. Pass the value in the `start` parameter to get the next 50 records ||
-|| **total**
-[`integer`](../../data-types.md) | The total number of documents ||
-|| **time**
-[`time`](../../data-types.md#time) | Information about the request execution time ||
-|#
+#|  
+|| **Name**  
+`type` | **Description** ||  
+|| **result**  
+[`object`](../../data-types.md) | The root element of the response ||  
+|| **documentContractor**  
+[`catalog_documentContractor[]`](../data-types.md#catalog_documentContractor) | A list of contractor bindings; the response structure depends on the `select` parameter ||  
+|| **next**  
+[`integer`](../../data-types.md) | Offset pointer for the next page. Pass this value to the `start` parameter to retrieve the next 50 records ||  
+|| **total**  
+[`integer`](../../data-types.md) | The total number of documents ||  
+|| **time**  
+[`time`](../../data-types.md#time) | Information about the request execution time ||  
+|#  
 
 ## Error Handling
 
-{% include notitle [error handling](../../../_includes/error-info.md) %}
+{% include notitle [Error Handling](../../../_includes/error-info.md) %}
 
 HTTP Code: **400**
 
@@ -306,9 +304,9 @@ HTTP Code: **400**
 ### Possible Error Codes  
 
 #|  
-|| **Code** | **Description** | **Value** ||
+|| **Code** | **Description** | **Value** ||  
 || `0` | Access denied | Insufficient permissions to view the document or bindings ||  
-|| `0` | Contractors should be provided by CRM | The CRM module is not active as a contractor provider ||  
+|| `0` | Contractors should be provided by CRM | The CRM module is not active as a vendor for contractors ||  
 |# 
 
 {% include [System Errors](../../../_includes/system-errors.md) %}

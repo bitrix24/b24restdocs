@@ -6,11 +6,11 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-> Scope: [`userfieldconfig`](../../../scopes/permissions.md), module scope from `moduleId` (e.g., [`crm`](../../../scopes/permissions.md))
+> Scope: [`userfieldconfig`](../../../scopes/permissions.md), module scope from `moduleId` (for example, [`crm`](../../../scopes/permissions.md))
 >
 > Who can execute the method: a user with read access permission to the object that owns the fields in the `moduleId`
 
-The method `userfieldconfig.list` returns a list of user field settings based on a filter.
+The method `userfieldconfig.list` returns a list of user field settings based on the filter.
 
 ## Method Parameters
 
@@ -20,7 +20,7 @@ The method `userfieldconfig.list` returns a list of user field settings based on
 || **Name**
 `type` | **Description** ||
 || **moduleId***
-[`string`](../../../data-types.md) | Identifier of the module in which the fields are being searched ||
+[`string`](../../../data-types.md) | The identifier of the module in which the fields are being searched ||
 || **select**
 [`object`](../../../data-types.md) | Set of fields to return [(detailed description)](#select) ||
 || **order**
@@ -34,8 +34,8 @@ The method `userfieldconfig.list` returns a list of user field settings based on
 }
 ```
 
-- `field_n` - name of the field by which the selection will be sorted
-- `value_n` - value of type `string`, equal to:
+- `field_n` - the name of the field by which the selection will be sorted
+- `value_n` - a `string` value equal to:
   - `ASC` - ascending sort
   - `DESC` - descending sort
 
@@ -65,7 +65,7 @@ By default:
 }
 ```
 
-- `field_n` - name of the field by which the selection of user fields will be filtered
+- `field_n` - the name of the field by which the selection of user fields will be filtered
 - `value_n` - filter value
 
 All conditions for individual fields are combined using `AND`.
@@ -86,7 +86,7 @@ Use the `next` parameter value from the previous response ||
 || **\***
 [`string`](../../../data-types.md) | Return all standard settings fields ||
 || **language**
-[`string`](../../../data-types.md) | Language identifier for language fields, e.g., `de` or `en` ||
+[`string`](../../../data-types.md) | Language identifier for language fields, for example `de` or `en` ||
 || **id**
 [`string`](../../../data-types.md) | Identifier of the field setting ||
 || **entityId**
@@ -100,24 +100,24 @@ Use the `next` parameter value from the previous response ||
 || **sort**
 [`string`](../../../data-types.md) | Sort index ||
 || **multiple**
-[`string`](../../../data-types.md) | Is the user field multiple? Possible values: `Y` or `N` ||
+[`string`](../../../data-types.md) | Whether the user field is multiple. Possible values: `Y` or `N` ||
 || **mandatory**
-[`string`](../../../data-types.md) | Is the user field mandatory? Possible values: `Y` or `N` ||
+[`string`](../../../data-types.md) | Whether the user field is mandatory. Possible values: `Y` or `N` ||
 || **showFilter**
-[`string`](../../../data-types.md) | Should the field be shown in the list filter? Possible values: `N`, `I`, `E`, `S` ||
+[`string`](../../../data-types.md) | Whether to show the field in the list filter. Possible values: `N`, `I`, `E`, `S` ||
 || **showInList**
-[`string`](../../../data-types.md) | Should the field be shown in the list? Possible values: `Y` or `N` ||
+[`string`](../../../data-types.md) | Whether to show the field in the list. Possible values: `Y` or `N` ||
 || **editInList**
-[`string`](../../../data-types.md) | Is editing the value allowed in the list? Possible values: `Y` or `N` ||
+[`string`](../../../data-types.md) | Whether to allow editing the value in the list. Possible values: `Y` or `N` ||
 || **isSearchable**
-[`string`](../../../data-types.md) | Are the field values searchable? Possible values: `Y` or `N` ||
+[`string`](../../../data-types.md) | Whether the field values are searchable. Possible values: `Y` or `N` ||
 || **settings**
 [`string`](../../../data-types.md) | Additional settings for the field ||
 || **languageId**
 [`string`](../../../data-types.md) | [Language identifier](../../../data-types.md#lang-ids). When this parameter is passed, a set of language fields in the selected language is returned:
 - `editFormLabel` - label in the edit form
 - `listColumnLabel` - header in the list
-- `listFilterLabel` - filter label in the list
+- `listFilterLabel` - label of the filter in the list
 - `errorMessage` - error message
 - `helpMessage` - help ||
 |#
@@ -138,17 +138,17 @@ Use the `next` parameter value from the previous response ||
 || **sort**
 [`integer`](../../../data-types.md) | Sort index ||
 || **multiple**
-[`boolean`](../../../data-types.md) | Is the user field multiple? Possible values: `Y` or `N` ||
+[`boolean`](../../../data-types.md) | Whether the user field is multiple. Possible values: `Y` or `N` ||
 || **mandatory**
-[`boolean`](../../../data-types.md) | Is the user field mandatory? Possible values: `Y` or `N` ||
+[`boolean`](../../../data-types.md) | Whether the user field is mandatory. Possible values: `Y` or `N` ||
 || **showFilter**
-[`char`](../../../data-types.md) | Should it be shown in the list filter? Possible values: `N`, `I`, `E`, `S` ||
+[`char`](../../../data-types.md) | Whether to show in the list filter. Possible values: `N`, `I`, `E`, `S` ||
 || **showInList**
-[`boolean`](../../../data-types.md) | Should it be shown in the list? Possible values: `Y` or `N` ||
+[`boolean`](../../../data-types.md) | Whether to show in the list. Possible values: `Y` or `N` ||
 || **editInList**
-[`boolean`](../../../data-types.md) | Is editing allowed by the user? Possible values: `Y` or `N` ||
+[`boolean`](../../../data-types.md) | Whether to allow user editing. Possible values: `Y` or `N` ||
 || **isSearchable**
-[`boolean`](../../../data-types.md) | Are the field values searchable? Possible values: `Y` or `N` ||
+[`boolean`](../../../data-types.md) | Whether the field values are searchable. Possible values: `Y` or `N` ||
 |#
 
 ## Code Examples
@@ -261,13 +261,18 @@ Use the `next` parameter value from the previous response ||
             filter: {
                 multiple: 'Y',
             },
-            start: 0,
         },
         (result) => {
-            result.error()
-                ? console.error(result.error())
-                : console.info(result.data())
-            ;
+            if (result.error()) {
+                console.error(result.error());
+                return;
+            }
+
+            console.info(result.data());
+
+            if (result.more()) {
+                result.next();
+            }
         },
     );
     ```
@@ -364,7 +369,7 @@ HTTP Status: **200**
 || **result**
 [`object`](../../../data-types.md) | Root element of the response [(detailed description)](#result) ||
 || **total**
-[`integer`](../../../data-types.md) | Total number of found settings ||
+[`integer`](../../../data-types.md) | Total number of settings found ||
 || **next**
 [`integer`](../../../data-types.md) | Offset for the next page.
 
@@ -400,19 +405,19 @@ Field is returned if the number of found items exceeds 50 ||
 || **sort**
 [`integer`](../../../data-types.md) | Sort index ||
 || **multiple**
-[`boolean`](../../../data-types.md) | Is the user field multiple? Possible values: `Y` or `N` ||
+[`boolean`](../../../data-types.md) | Whether the user field is multiple. Possible values: `Y` or `N` ||
 || **mandatory**
-[`boolean`](../../../data-types.md) | Is the user field mandatory? Possible values: `Y` or `N` ||
+[`boolean`](../../../data-types.md) | Whether the user field is mandatory. Possible values: `Y` or `N` ||
 || **showFilter**
 [`char`](../../../data-types.md) | Display mode in the filter.
 
 Possible values: `N`, `I`, `E`, `S` ||
 || **showInList**
-[`boolean`](../../../data-types.md) | Should the field be shown in the list? Possible values: `Y` or `N` ||
+[`boolean`](../../../data-types.md) | Whether to show the field in the list. Possible values: `Y` or `N` ||
 || **editInList**
-[`boolean`](../../../data-types.md) | Is editing allowed in the list? Possible values: `Y` or `N` ||
+[`boolean`](../../../data-types.md) | Whether to allow editing the value in the list. Possible values: `Y` or `N` ||
 || **isSearchable**
-[`boolean`](../../../data-types.md) | Are the field values searchable? Possible values: `Y` or `N` ||
+[`boolean`](../../../data-types.md) | Whether the field values are searchable. Possible values: `Y` or `N` ||
 || **settings**
 [`object`](../../../data-types.md) | Additional settings for the field.
 
@@ -424,13 +429,13 @@ The composition of keys depends on `userTypeId` ||
 || **listColumnLabel**
 [`lang_map`](../../../data-types.md) | Header in the list ||
 || **listFilterLabel**
-[`lang_map`](../../../data-types.md) | Filter label in the list ||
+[`lang_map`](../../../data-types.md) | Label of the filter in the list ||
 || **errorMessage**
 [`lang_map`](../../../data-types.md) | Error message ||
 || **helpMessage**
 [`lang_map`](../../../data-types.md) | Help ||
 || **enum**
-[`object[]`](../../../data-types.md) | List items for `userTypeId = enumeration`.
+[`object[]`](../../../data-types.md) | List elements for `userTypeId = enumeration`.
 
 Field may be absent for other types ||
 |#

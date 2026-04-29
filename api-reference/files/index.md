@@ -15,7 +15,7 @@ Files can be transmitted to Bitrix24 fields in Base64 format or uploaded to Driv
 - **File.** The field is not linked to Drive. It accepts a Base64 string or an array containing the file name and Base64 string.
 - **File (Drive).** The field is linked to Drive. It stores the `ID` of the Drive object. The methods [disk.folder.uploadfile](../disk/folder/disk-folder-upload-file.md), [disk.storage.uploadfile](../disk/storage/disk-storage-upload-file.md), and [disk.file.*](../disk/file/index.md) are suitable for uploading and updating such files.
 
-## Connection with Other Objects
+## Relationships with Other Objects
 
 Files are associated with CRM entities, Drive, catalogs, chats, tasks, sites, and other Bitrix24 tools.
 

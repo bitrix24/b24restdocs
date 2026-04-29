@@ -14,7 +14,7 @@ Calendar events are scheduled activities or meetings. A group of methods [calend
 > 
 > User documentation: [Bitrix24 calendar](https://helpdesk.bitrix24.com/section/47483/)
 
-## Calendar Connection with Other Objects
+## Relationships with Other Objects
 
 **User.** The calendar is linked to a user by the calendar owner's ID `ownerId` for the calendar type `user`. The user ID can be obtained using the method [user.get](../user/user-get.md).
 

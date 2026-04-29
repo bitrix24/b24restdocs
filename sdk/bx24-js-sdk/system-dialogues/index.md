@@ -24,7 +24,7 @@ System dialogs open within the Bitrix24 interface and operate outside the applic
 4. Use the obtained values in the next application action: REST call, filter, permission settings, or form filling.
 5. Save the selection result in the interface state so that the user can continue the scenario without re-selection.
 
-## Connection with Other Objects
+## Relationships with Other Objects
 
 **User.** The methods [BX24.selectUser](./bx24-select-user.md) and [BX24.selectUsers](./bx24-select-users.md) return the selected employees to the `callback` handler and assist in passing their identifiers to subsequent REST calls.
 

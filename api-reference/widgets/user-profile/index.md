@@ -85,7 +85,7 @@ The value of `PLACEMENT_OPTIONS` is passed as a JSON string with the context of 
 || [USER_PROFILE_TOOLBAR](./profile-toolbar.md) | `USER_ID` | The identifier of the user whose profile the widget is opened in ||
 |#
 
-## Connection with Other Objects
+## Relationships with Other Objects
 
 **User.** The `USER_ID` parameter in `PLACEMENT_OPTIONS` indicates for which user the handler was called. You can obtain user information by ID using the [user.get](../../user/user-get.md) method.
 

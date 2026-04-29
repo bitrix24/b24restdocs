@@ -10,7 +10,7 @@ This section contains methods for reading and updating the values of custom fiel
 
 > Quick navigation: [all methods](#all-methods)
 
-## Connection with Other Objects
+## Relationships with Other Objects
 
 **Custom Fields.** Fields are created and configured using the methods in the [userfieldconfig.*](../../crm/universal/userfieldconfig/index.md) section. For inventory accounting documents, use `moduleId = catalog` and `entityId` in the format `CAT_STORE_DOCUMENT_<documentType>`, for example, `CAT_STORE_DOCUMENT_A`.
 

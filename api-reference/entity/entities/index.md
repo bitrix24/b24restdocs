@@ -41,7 +41,7 @@ Access permissions can be set when creating the storage, modified along with its
 || Retrieve or change only access permissions | [entity.rights](./entity-rights.md) method ||
 |#
 
-## Connection with Other Objects
+## Relationships with Other Objects
 
 **Storage Sections.** After creating a storage, you can group entities by sections. Use the [entity.section.*](../sections/index.md) methods to work with sections.
 

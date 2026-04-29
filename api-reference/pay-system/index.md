@@ -12,7 +12,7 @@ This section consolidates methods for registering a handler, creating a payment 
 
 > Quick navigation: [all methods](#all-methods)
 
-## Connection with Other Objects
+## Relationships with Other Objects
 
 The payment system operates in conjunction with the payer type, payment, order, and handler. These connections determine the availability of the system and the external service through which the payment is processed.
 

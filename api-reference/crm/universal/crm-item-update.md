@@ -1,4 +1,4 @@
-# Update CRM Item: crm.item.update
+# Update CRM Item
 
 {% note tip "" %}
 
@@ -8,32 +8,34 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`crm`](../../scopes/permissions.md)
 > 
-> Who can execute the method: any user with "edit" access permission for CRM entity items
+> Who can execute the method: any user with the "modify" access permission for CRM entity items.
 
-This method updates an item of a specific type in the CRM object by assigning new values from the `fields` parameter.
+This method updates an item of a specific type in the CRM by assigning new values from the `fields` parameter.
 
 When updating an item, a standard series of checks, modifications, and automatic actions are performed:
-- access permissions are verified
-- required fields are checked for completion if the item's stage has changed within the same direction
-- dependent required fields are checked for completion if the item's stage has changed within the same direction
-- the correctness of field entries is verified
-- default values are assigned to fields
-- if it turns out that no field values have been changed before saving, the save **is not performed**
-- automation rules are triggered after saving
+- Access permissions are verified.
+- Required fields are checked for completion if the item's stage has changed within the same direction.
+- Required fields dependent on stages are checked for completion if the item's stage has changed within the same direction.
+- The correctness of field entries is verified.
+- Default values are assigned to fields.
+- If it turns out that no field values have been changed before saving, the save **is not performed**.
+- Automation rules are triggered after saving.
 
 ## Method Parameters
 
-{% include [Parameter Notes](../../../_includes/required.md) %}
+{% include [Parameter Note](../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **entityTypeId***
-[`integer`][1] | Identifier of the [system](./index.md) or [user-defined type](./user-defined-object-types/index.md) whose item we want to change ||
-|| **id^*^**
-[`integer`][1] | Identifier of the item we want to change.
+[`integer`][1] | Identifier of the [system](../data-types.md#object_type) or [custom type](./user-defined-object-types/index.md) whose item we want to modify.
 
-Can be obtained using the [`crm.item.list`](crm-item-list.md) or [`crm.item.add`](crm-item-add.md) methods ||
+Numerical values for system types (Lead — 1, Deal — 2, Contact — 3, Company — 4, Invoice — 31, etc.) are listed in the [CRM object types reference](../data-types.md#object_type). The identifier of the smart process can be obtained using the [crm.type.list](./user-defined-object-types/crm-type-list.md) method. ||
+|| **id^*^**
+[`integer`][1] | Identifier of the item we want to modify.
+
+Can be obtained using the [`crm.item.list`](crm-item-list.md) or [`crm.item.add`](crm-item-add.md) methods. ||
 || **fields***
 [`object`][1] | Object in the format
 ```
@@ -48,15 +50,15 @@ where
 - `field_n` — field name
 - `value_n` — new field value
 
-Each type of CRM entity has its own set of fields. This means that the set of fields for changing a Lead does not have to match the set of fields for changing a Contact or SPA.
+Each CRM entity type has its own set of fields. This means that the set of fields for modifying a Lead does not have to match the set of fields for modifying a Contact or Smart Process.
 
-The list of available fields for each type of entity is described [below](#parametr-fields).
+The list of available fields for each entity type is described [below](#parametr-fields).
 
 An incorrect field in `fields` will be ignored.
 
 {% note info %}
 
-Only those fields that need to be changed should be passed in `fields`
+Only those fields that need to be changed should be passed in `fields`.
 
 {% endnote %}
 
@@ -65,7 +67,7 @@ Only those fields that need to be changed should be passed in `fields`
 [`boolean`][1] | Parameter to control the format of custom field names in the request and response.   
 Possible values:
 
-- `Y` — original custom field names, e.g., `UF_CRM_2_1639669411830`
+- `Y` — original names of custom fields, e.g., `UF_CRM_2_1639669411830`
 - `N` — custom field names in camelCase, e.g., `ufCrm2_1639669411830`
 
 Default — `N` ||
@@ -73,22 +75,22 @@ Default — `N` ||
 
 ### Parameter fields
 
-{% include [Parameter Notes](../../../_includes/required.md) %}
+{% include [Parameter Note](../../../_includes/required.md) %}
 
 {% list tabs %}
 
 - Lead
 
-  CRM object identifier **entityTypeId:** `1`
+  Identifier of the CRM object **entityTypeId:** `1`
 
   #|
   || **Name**
   `type` | **Description** ||
   || **title**
-  [`string`][1] | Item title 
+  [`string`][1] | Name of the item 
   ||
   || **honorific**
-  [`crm_status`](../data-types.md) | String identifier for the lead's honorific (e.g., `'HNR_RU_1' = 'Mr.'`).
+  [`crm_status`](../data-types.md) | String identifier of the lead's honorific (e.g., `'HNR_RU_1' = 'Mr.'`).
 
   The list of available honorifics can be obtained using [`crm.status.list`][2] with the filter `{ ENTITY_ID: "HONOFIRIC" }` ||
   || **name**
@@ -102,7 +104,7 @@ Default — `N` ||
   || **companyTitle**
   [`string`][1] | Company name ||
   || **sourceId**
-  [`crm_status`](../data-types.md) | String identifier for the source.
+  [`crm_status`](../data-types.md) | String identifier of the source.
   
   For example, `'CALL' = 'Call'`.
   
@@ -110,7 +112,7 @@ Default — `N` ||
   || **sourceDescription**
   [`text`][1] | Additional information about the source ||
   || **stageId**
-  [`crm_status`](../data-types.md) | String identifier for the item's stage.
+  [`crm_status`](../data-types.md) | String identifier of the item's stage.
   
   For example, `'NEW' = 'Unprocessed'`.
 
@@ -122,7 +124,7 @@ Default — `N` ||
   || **currencyId**
   [`crm_currency`](../data-types.md) | Identifier of the item's currency  ||
   || **isManualOpportunity**
-  [`boolean`][1] | Opportunity calculation mode. Possible values:
+  [`boolean`][1] | Mode of calculating the amount. Possible values:
 
   - `Y` — manual
   - `N` — automatic
@@ -158,11 +160,11 @@ Default — `N` ||
   || **webformId**
   [`integer`][1] | Identifier of the CRM Form ||
   || **observers**
-  [`user[]`][1] | Array of user identifiers who will be observers in the item ||
+  [`user[]`][1] | Array of identifiers of users who will be observers of the item ||
   || **utmSource**
   [`string`][1] | Advertising system. For example: Google Ads, Bing Ads, etc. ||
   || **utmMedium**
-  [`string`][1] | Traffic type. Possible values:
+  [`string`][1] | Type of traffic. Possible values:
   
   - CPC — ads
   - CPM — banners ||
@@ -171,7 +173,7 @@ Default — `N` ||
   || **utmContent**
   [`string`][1] | Content of the campaign. For example, for contextual ads ||
   || **utmTerm**
-  [`string`][1] | Search condition of the campaign. For example, keywords for contextual advertising ||
+  [`string`][1] | Search term of the campaign. For example, keywords for contextual advertising ||
   || **ufCrm...**
   [`crm_userfield`](../data-types.md) | Custom field. 
   
@@ -179,10 +181,10 @@ Default — `N` ||
   
   Values of multiple fields are passed as an array.
   
-  To upload a file, the value of the custom field must be an array where the first element is the file name and the second is the content of the file encoded in [base64](../../files/how-to-update-files.md).
+  To upload a file, the value of the custom field must be passed as an array, where the first element is the file name, and the second is the content of the file encoded in [base64](../../files/how-to-update-files.md).
   ||
   || **parentId...**
-  [`crm_entity`](../data-types.md) | Parent field. An element of another type of CRM object linked to this item.
+  [`crm_entity`](../data-types.md) | Parent field. An element of another type of CRM object that is linked to this element.
 
   Each such field has the code `parentId + {parentEntityTypeId}` 
   ||
@@ -209,7 +211,7 @@ Default — `N` ||
         },
         "16": {
             "valueType": "WORK",
-            "value": "bitrix@bitrix.com",
+            "value": "example@example.com",
             "typeId": "EMAIL"
         }
     }
@@ -221,15 +223,15 @@ Default — `N` ||
 
 - Deal
 
-  CRM object identifier **entityTypeId:** `2`
+  Identifier of the CRM object **entityTypeId:** `2`
 
   #|
   || **Name**
   `type` | **Description** ||
   || **title**
-  [`string`][1] | Item title ||
+  [`string`][1] | Name of the item ||
   || **typeId**
-  [`crm_status`](../data-types.md) | String identifier for the entity type.
+  [`crm_status`](../data-types.md) | String identifier of the entity type.
 
   For example, for a deal: `'SALE' = 'Sale'`
 
@@ -237,7 +239,7 @@ Default — `N` ||
   || **categoryId**
   [`integer`][1] | Identifier of the [direction](./category/index.md) (funnel) of the deal ||
   || **stageId**
-  [`crm_status`](../data-types.md) | String identifier for the item's stage. 
+  [`crm_status`](../data-types.md) | String identifier of the item's stage. 
   
   For example, `'NEW' = 'Unprocessed'`.
 
@@ -257,7 +259,7 @@ Default — `N` ||
   || **currencyId**
   [`crm_currency`](../data-types.md) | Identifier of the item's currency ||
   || **isManualOpportunity**
-  [`boolean`][1] | Opportunity calculation mode. Possible values:
+  [`boolean`][1] | Mode of calculating the amount. Possible values:
 
   - `Y` — manual
   - `N` — automatic
@@ -295,7 +297,7 @@ Default — `N` ||
   || **assignedById**
   [`user`][1] | Identifier of the person responsible for the item ||
   || **sourceId**
-  [`crm_status`](../data-types.md) | String identifier for the source. 
+  [`crm_status`](../data-types.md) | String identifier of the source. 
   
   For example, `'CALL' = 'Call'`.
   
@@ -311,13 +313,13 @@ Default — `N` ||
   || **originId**
   [`string`][1] | Identifier of the item in the external source ||
   || **observers**
-  [`user[]`][1] | Array of user identifiers who will be observers in the item ||
+  [`user[]`][1] | Array of identifiers of users who will be observers of the item ||
   || **locationId**
   [`location`][1] | Identifier of the location. Service field  ||
   || **utmSource**
   [`string`][1] | Advertising system. Google Ads, Bing Ads, etc. ||
   || **utmMedium**
-  [`string`][1] | Traffic type. Possible values:
+  [`string`][1] | Type of traffic. Possible values:
   
   - CPC — ads
   - CPM — banners ||
@@ -325,16 +327,16 @@ Default — `N` ||
   || **utmContent**
   [`string`][1] | Content of the campaign. For example, for contextual ads ||
   || **utmTerm**
-  [`string`][1] | Search condition of the campaign. For example, keywords for contextual advertising ||
+  [`string`][1] | Search term of the campaign. For example, keywords for contextual advertising ||
   || **ufCrm...**
   [`crm_userfield`](../data-types.md) | Custom field. See the section [{#T}](./user-defined-fields/index.md)
 
     - Values of multiple fields are passed as an array
-    - To upload a file, the value of the custom field must be an array where the first element is the file name and the second is the content of the file encoded in [base64](../../files/how-to-update-files.md).
+    - To upload a file, the value of the custom field must be passed as an array, where the first element is the file name, and the second is the content of the file encoded in [base64](../../files/how-to-update-files.md).
   
   ||
   || **parentId...**
-  [`crm_entity`](../data-types.md) | Parent field. An element of another type of CRM object linked to this item.
+  [`crm_entity`](../data-types.md) | Parent field. An element of another type of CRM object that is linked to this element.
 
   Each such field has the code `parentId + {parentEntityTypeId}` 
   ||
@@ -343,13 +345,13 @@ Default — `N` ||
 
 - Contact
 
-  CRM object identifier **entityTypeId:** `3`
+  Identifier of the CRM object **entityTypeId:** `3`
 
   #|
   || **Name**
   `type` | **Description** ||
   || **honorific**
-  [`crm_status`](../data-types.md) | String identifier for the contact's honorific. 
+  [`crm_status`](../data-types.md) | String identifier of the contact's honorific. 
   
   For example, `'HNR_RU_1' = 'Mr.'`.
 
@@ -365,13 +367,13 @@ Default — `N` ||
   || **birthdate**
   [`date`][1] | Date of birth ||
   || **typeId**
-  [`crm_status`](../data-types.md) | String identifier for the entity type.
+  [`crm_status`](../data-types.md) | String identifier of the entity type.
   
   For example, for a deal: `'SALE' = 'Sale'`.
   
   The list of available entity types can be obtained using [`crm.status.list`][2] with the filter `{ ENTITY_ID: "CONTACT_TYPE" }`  ||
   || **sourceId**
-  [`crm_status`](../data-types.md) | String identifier for the source.
+  [`crm_status`](../data-types.md) | String identifier of the source.
   
   For example, `'CALL' = 'Call'`.
   
@@ -407,11 +409,11 @@ Default — `N` ||
   || **originVersion**
   [`string`][1]          | Version of the original ||
   || **observers**
-  [`user[]`][1] | Array of user identifiers who will be observers in the item ||
+  [`user[]`][1] | Array of identifiers of users who will be observers of the item ||
   || **utmSource**
   [`string`][1] | Advertising system. Google Ads, Bing Ads, etc. ||
   || **utmMedium**
-  [`string`][1] | Traffic type. Possible values:
+  [`string`][1] | Type of traffic. Possible values:
   
   - CPC — ads
   - CPM — banners ||
@@ -420,16 +422,16 @@ Default — `N` ||
   || **utmContent**
   [`string`][1] | Content of the campaign. For example, for contextual ads ||
   || **utmTerm**
-  [`string`][1] | Search condition of the campaign. For example, keywords for contextual advertising ||
+  [`string`][1] | Search term of the campaign. For example, keywords for contextual advertising ||
   || **ufCrm...**
   [`crm_userfield`](../data-types.md) | Custom field. See the section [{#T}](./user-defined-fields/index.md)
 
     - Values of multiple fields are passed as an array
-    - To upload a file, the value of the custom field must be an array where the first element is the file name and the second is the content of the file encoded in [base64](../../files/how-to-update-files.md).
+    - To upload a file, the value of the custom field must be passed as an array, where the first element is the file name, and the second is the content of the file encoded in [base64](../../files/how-to-update-files.md).
 
   ||
   || **parentId...**
-  [`crm_entity`](../data-types.md) | Parent field. An element of another type of CRM object linked to this item.
+  [`crm_entity`](../data-types.md) | Parent field. An element of another type of CRM object that is linked to this element.
 
   Each such field has the code `parentId + {parentEntityTypeId}`
   ||
@@ -456,7 +458,7 @@ Default — `N` ||
         },
         "16": {
             "valueType": "WORK",
-            "value": "bitrix@bitrix.com",
+            "value": "example@example.com",
             "typeId": "EMAIL"
         }
     }
@@ -468,15 +470,15 @@ Default — `N` ||
 
 - Company
 
-  CRM object identifier **entityTypeId:** `4`
+  Identifier of the CRM object **entityTypeId:** `4`
 
   #|
   || **Name**
   `type` | **Description** ||
   || **title**
-  [`string`][1] | Item title ||
+  [`string`][1] | Name of the item ||
   || **typeId**
-  [`crm_status`](../data-types.md) | String identifier for the entity type.
+  [`crm_status`](../data-types.md) | String identifier of the entity type.
   
   For example, for a deal: `'SALE' = 'Sale'`.
   
@@ -486,13 +488,13 @@ Default — `N` ||
   || **bankingDetails**
   [`string`][1] | Banking details ||
   || **industry**
-  [`crm_status`](../data-types.md) | String identifier for the industry type. 
+  [`crm_status`](../data-types.md) | String identifier of the industry type. 
   
   For example, `'IT' = 'Information Technology'`.
   
   The list of available industry types can be obtained using the [`crm.status.list`][2] method with the filter `{ ENTITY_ID: "INDUSTRY"}` ||
   || **employees**
-  [`crm_status`](../data-types.md) | String identifier for the number of employees.
+  [`crm_status`](../data-types.md) | String identifier of the number of employees type.
   
   The value is taken from the available list, for example, `'EMPLOYEES_1' = 'less than 50'`.
 
@@ -500,7 +502,7 @@ Default — `N` ||
   || **currencyId**
   [`crm_currency`](../data-types.md) | Identifier of the item's currency ||
   || **revenue**
-  [`double`][1] | Annual revenue ||
+  [`double`][1] | Annual turnover ||
   || **opened**
   [`boolean`][1] | Is the item available to everyone? Possible values:
 
@@ -526,11 +528,11 @@ Default — `N` ||
   || **originVersion**
   [`string`][1] | Version of the original ||
   || **observers**
-  [`user[]`][1] | Array of user identifiers who will be observers in the item ||
+  [`user[]`][1] | Array of identifiers of users who will be observers of the item ||
   || **utmSource**
   [`string`][1] | Advertising system. Google Ads, Bing Ads, etc. ||
   || **utmMedium**
-  [`string`][1] | Traffic type. Possible values:
+  [`string`][1] | Type of traffic. Possible values:
   - CPC — ads
   - CPM — banners ||
   || **utmCampaign**
@@ -538,19 +540,18 @@ Default — `N` ||
   || **utmContent**
   [`string`][1] | Content of the campaign. For example, for contextual ads ||
   || **utmTerm**
-  [`string`][1] | Search condition of the campaign. For example, keywords for contextual advertising ||
+  [`string`][1] | Search term of the campaign. For example, keywords for contextual advertising ||
   || **ufCrm...**
   [`crm_userfield`](../data-types.md) | Custom field. See the section [{#T}](./user-defined-fields/index.md)
 
     - Values of multiple fields are passed as an array
-    - To upload a file, the value of the custom field must be an array where the first element is the file name and the second is the content of the file encoded in [base64](../../files/how-to-update-files.md)
+    - To upload a file, the value of the custom field must be passed as an array, where the first element is the file name, and the second is the content of the file encoded in [base64](../../files/how-to-update-files.md)
 
   ||
   || **parentId...**
-  [`crm_entity`](../data-types.md) | Parent field. An element of another type of CRM object linked to this item.
+  [`crm_entity`](../data-types.md) | Parent field. An element of another type of CRM object that is linked to this element.
 
-  Each such field has the code `parentId + {parentEntityTypeId}`
-  ||
+  Each such field has the code `parentId + {parentEntityTypeId}` ||
   || **fm**
   [`multifield[]`](../data-types.md) | Array of multifields.
 
@@ -574,7 +575,7 @@ Default — `N` ||
         },
         "16": {
             "valueType": "WORK",
-            "value": "bitrix@bitrix.com",
+            "value": "example@example.com",
             "typeId": "EMAIL"
         }
     }
@@ -586,13 +587,13 @@ Default — `N` ||
 
 - Estimate
 
-  CRM object identifier **entityTypeId:** `7`
+  Identifier of the CRM object  **entityTypeId:** `7`
 
   #|
   || **Name**
   `type` | **Description** ||
   || **title**
-  [`string`][1] | Item title ||
+  [`string`][1] | Name of the item ||
   || **assignedById**
   [`user`][1] | Identifier of the person responsible for the item ||
   || **opened**
@@ -615,7 +616,7 @@ Default — `N` ||
   [`integer`][1] | Identifier of the storage type. Possible values:
   - `1` — file
   - `2` — WebDAV
-  - `3` — Drive
+  - `3` — drive
   ||
   || **storageElementIds**
   [`integer`][1] | Array of files ||
@@ -638,7 +639,7 @@ Default — `N` ||
   || **currencyId**
   [`crm_currency`](../data-types.md) | Identifier of the item's currency ||
   || **isManualOpportunity**
-  [`boolean`][1] | Opportunity calculation mode.
+  [`boolean`][1] | Mode of calculating the amount.
 
   - `Y` — manual
   - `N` — automatic
@@ -648,7 +649,7 @@ Default — `N` ||
   || **taxValue**
   [`double`][1] | Tax amount ||
   || **stageId**
-  [`crm_status`](../data-types.md) | String identifier for the item's stage. 
+  [`crm_status`](../data-types.md) | String identifier of the item's stage. 
   
   For example, `'DRAFT' = 'New'`.
 
@@ -664,7 +665,7 @@ Default — `N` ||
   || **utmSource**
   [`string`][1] | Advertising system. Google Ads, Bing Ads, etc. ||
   || **utmMedium**
-  [`string`][1] | Traffic type.
+  [`string`][1] | Type of traffic.
   
   - CPC — ads
   - CPM — banners ||
@@ -673,31 +674,30 @@ Default — `N` ||
   || **utmContent**
   [`string`][1] | Content of the campaign. For example, for contextual ads ||
   || **utmTerm**
-  [`string`][1] | Search condition of the campaign. For example, keywords for contextual advertising ||
+  [`string`][1] | Search term of the campaign. For example, keywords for contextual advertising ||
   || **ufCrm...**
   [`crm_userfield`](../data-types.md) | Custom field. See the section [{#T}](./user-defined-fields/index.md).
 
   - Values of multiple fields are passed as an array
-  - To upload a file, the value of the custom field must be an array where the first element is the file name and the second is the content of the file encoded in [base64](../../files/how-to-update-files.md).
+  - To upload a file, the value of the custom field must be passed as an array, where the first element is the file name, and the second is the content of the file encoded in [base64](../../files/how-to-update-files.md).
 
   ||
   || **parentId...**
-  [`crm_entity`](../data-types.md) | Parent field. An element of another type of CRM object linked to this item.
+  [`crm_entity`](../data-types.md) | Parent field. An element of another type of CRM object that is linked to this element.
 
-  Each such field has the code `parentId + {parentEntityTypeId}`
-  ||
+  Each such field has the code `parentId + {parentEntityTypeId}` ||
   |#
 
 
 - Invoice
 
-  CRM object identifier **entityTypeId:** `31`
+  Identifier of the CRM object **entityTypeId:** `31`
 
   #|
   || **Name**
   `type` | **Description** ||
   || **title**
-  [`string`][1] | Item title
+  [`string`][1] | Name of the item
   ||
   || **xmlId**
   [`string`][1] | External code ||
@@ -728,16 +728,16 @@ Default — `N` ||
 
   The list of contacts can be obtained using the [`crm.item.list`](crm-item-list.md) method with `entityTypeId = 3` ||
   || **observers**
-  [`user[]`][1] | Array of user identifiers who will be observers in the item ||
+  [`user[]`][1] | Array of identifiers of users who will be observers of the item ||
   || **stageId**
-  [`crm_status`](../data-types.md) | String identifier for the item's stage. 
+  [`crm_status`](../data-types.md) | String identifier of the item's stage. 
   
   For example, `'DT31_13:N' = 'New'`.
 
   The list of available stages can be obtained using [`crm.status.list`][2] with the filter: `{ ENTITY_ID: "SMART_INVOICE_STAGE_{categoryId}" }`, where
   `categoryId` — identifier of the default invoice funnel. It can be obtained using [`crm.category.list`](category/crm-category-list.md) with `entityTypeId = 31` ||
   || **sourceId**
-  [`crm_status`](../data-types.md) | String identifier for the source.
+  [`crm_status`](../data-types.md) | String identifier of the source.
   
   For example, `'CALL' = 'Call'`.
   
@@ -747,7 +747,7 @@ Default — `N` ||
   || **currencyId**
   [`crm_currency`](../data-types.md) | Identifier of the item's currency ||
   || **isManualOpportunity**
-  [`boolean`][1] | Opportunity calculation mode. Possible values:
+  [`boolean`][1] | Mode of calculating the amount. Possible values:
 
   - `Y` — manual
   - `N` — automatic
@@ -766,32 +766,31 @@ Default — `N` ||
   [`crm_userfield`](../data-types.md) | Custom field. See the section [{#T}](./user-defined-fields/index.md).
 
     - Values of multiple fields are passed as an array
-    - To upload a file, the value of the custom field must be an array where the first element is the file name and the second is the content of the file encoded in [base64](../../files/how-to-update-files.md).
+    - To upload a file, the value of the custom field must be passed as an array, where the first element is the file name, and the second is the content of the file encoded in [base64](../../files/how-to-update-files.md).
 
   ||
   || **parentId...**
-  [`crm_entity`](../data-types.md) | Parent field. An element of another type of CRM object linked to this item.
+  [`crm_entity`](../data-types.md) | Parent field. An element of another type of CRM object that is linked to this element.
 
-  Each such field has the code `parentId + {parentEntityTypeId}`
-  ||
+  Each such field has the code `parentId + {parentEntityTypeId}` ||
   |#
 
 
-- SPA
+- Smart Process
 
-  CRM object identifier **entityTypeId:** can be obtained using the [`crm.type.list`](user-defined-object-types/crm-type-list.md) method or created using the [`crm.type.add`](user-defined-object-types/crm-type-add.md) method.
+  Identifier of the CRM object **entityTypeId:** can be obtained using the [`crm.type.list`](user-defined-object-types/crm-type-list.md) method or created using the [`crm.type.add`](user-defined-object-types/crm-type-add.md) method.
 
   #|
   || **Name**
   `type` | **Description** ||
   || **title**
-  [`string`][1] | Item title  ||
+  [`string`][1] | Name of the item  ||
   || **xmlId**
   [`string`][1] | External code ||
   || **assignedById**
   [`user`][1] | Identifier of the person responsible for the item  ||
   || **opened**
-  [`boolean`][1] | Is the item available to everyone?
+  [`boolean`][1] | Is the item available to everyone.
 
   - `Y` — yes
   - `N` — no
@@ -801,112 +800,111 @@ Default — `N` ||
   || **begindate**
   [`date`][1] | Start date of the item.
 
-  Available only when the `isBeginCloseDatesEnabled` setting is enabled for the corresponding SPA.
+  Available only when the `isBeginCloseDatesEnabled` setting is enabled for the corresponding smart process.
   ||
   || **closedate**
   [`date`][1] | End date of the item.
 
-  Available only when the `isBeginCloseDatesEnabled` setting is enabled for the corresponding SPA ||
+  Available only when the `isBeginCloseDatesEnabled` setting is enabled for the corresponding smart process ||
   || **companyId**
   [`crm_company`](../data-types.md) | Identifier of the company linked to the item.
 
   The list of companies can be obtained using the [`crm.item.list`](crm-item-list.md) method with `entityTypeId = 4`.
 
-  Available only when the `isClientEnabled` setting is enabled for the corresponding SPA ||
+  Available only when the `isClientEnabled` setting is enabled for the corresponding smart process ||
   || **contactId**
   [`crm_contact`](../data-types.md) | Identifier of the contact linked to the item.
 
   The list of contacts can be obtained using the [`crm.item.list`](crm-item-list.md) method with `entityTypeId = 3`.
 
-  Available only when the `isClientEnabled` setting is enabled for the corresponding SPA ||
+  Available only when the `isClientEnabled` setting is enabled for the corresponding smart process ||
   || **contactIds**
   [`crm_contact[]`](../data-types.md) | List of identifiers of contacts linked to the item.
 
   The list of contacts can be obtained using the [`crm.item.list`](crm-item-list.md) method with `entityTypeId = 3`.
 
-  Available only when the `isClientEnabled` setting is enabled for the corresponding SPA ||
+  Available only when the `isClientEnabled` setting is enabled for the corresponding smart process ||
   || **observers**
-  [`user[]`][1] | Array of user identifiers who will be observers in the item.
+  [`user[]`][1] | Array of identifiers of users who will be observers of the item.
 
-  Available only when the `isObserversEnabled` setting is enabled for the corresponding SPA ||
+  Available only when the `isObserversEnabled` setting is enabled for the corresponding smart process ||
   || **categoryId**
-  [`crm_category`](../data-types.md) | Identifier of the funnel of the SPA item. 
+  [`crm_category`](../data-types.md) | Identifier of the funnel of the smart process item. 
 
-  If the identifier is not specified, the SPA will be moved to the main funnel.
+  If the identifier is not specified, the smart process will be moved to the main funnel.
 
-  The list of available funnels can be obtained using the [`crm.category.list`](category/crm-category-list.md) with the corresponding `entityTypeId` ||
+  The list of available funnels can be obtained using [`crm.category.list`](category/crm-category-list.md) with the corresponding `entityTypeId` ||
   || **stageId**
-  [`crm_status`](../data-types.md) | String identifier for the item's stage. 
+  [`crm_status`](../data-types.md) | String identifier of the item's stage. 
   
   For example, `'DT1220_30:NEW' = 'Start'`.
 
   The list of available stages can be obtained using [`crm.status.list`][2] with the filter `{ ENTITY_ID: "DYNAMIC_{entityTypeId}_STAGE_{categoryId}" }`, where
-  - `entityTypeId` — identifier of the SPA type
-  - `categoryId` — identifier of the funnel (direction) of the SPA item
+  - `entityTypeId` — identifier of the smart process type
+  - `categoryId` — identifier of the funnel (direction) of the smart process item
 
   [More about funnels (directions)](category/index.md).
 
-  Available only when the `isStagesEnabled` setting is enabled for the corresponding SPA  ||
+  Available only when the `isStagesEnabled` setting is enabled for the corresponding smart process  ||
   || **sourceId**
-  [`crm_status`](../data-types.md) | String identifier for the source. (for example, `'CALL' = 'Call'`).
+  [`crm_status`](../data-types.md) | String identifier of the source. (for example, `'CALL' = 'Call'`).
   
   The list of available sources can be obtained using [`crm.status.list`][2] with the filter `{ ENTITY_ID: "SOURCE" }`.
 
-  Available only when the `isSourceEnabled` setting is enabled for the corresponding SPA  ||
+  Available only when the `isSourceEnabled` setting is enabled for the corresponding smart process  ||
   || **sourceDescription**
   [`text`][1] | Additional information about the source.
 
-  Available only when the `isSourceEnabled` setting is enabled for the corresponding SPA ||
+  Available only when the `isSourceEnabled` setting is enabled for the corresponding smart process ||
   || **currencyId**
   [`crm_currency`](../data-types.md) | Identifier of the item's currency.
 
-  Available only when the `isLinkWithProductsEnabled` setting is enabled for the corresponding SPA  ||
+  Available only when the `isLinkWithProductsEnabled` setting is enabled for the corresponding smart process  ||
   || **isManualOpportunity**
-  [`boolean`][1] | Opportunity calculation mode. Possible values:
+  [`boolean`][1] | Mode of calculating the amount. Possible values:
 
   - `Y` — manual
   - `N` — automatic
 
-  Available only when the `isLinkWithProductsEnabled` setting is enabled for the corresponding SPA ||
+  Available only when the `isLinkWithProductsEnabled` setting is enabled for the corresponding smart process ||
   || **opportunity**
   [`double`][1] | Amount.
 
-  Available only when the `isLinkWithProductsEnabled` setting is enabled for the corresponding SPA ||
+  Available only when the `isLinkWithProductsEnabled` setting is enabled for the corresponding smart process ||
   || **taxValue**
   [`double`][1] | Tax amount.
 
-  Available only when the `isLinkWithProductsEnabled` setting is enabled for the corresponding SPA ||
+  Available only when the `isLinkWithProductsEnabled` setting is enabled for the corresponding smart process ||
   || **mycompanyId**
   [`crm_company`](../data-types.md) | Identifier of my company.
 
-  Available only when the `isMycompanyEnabled` setting is enabled for the corresponding SPA ||
+  Available only when the `isMycompanyEnabled` setting is enabled for the corresponding smart process ||
   || **ufCrm...**
   [`crm_userfield`](../data-types.md) | Custom field. See the section [{#T}](./user-defined-fields/index.md).
 
     - Values of multiple fields are passed as an array
-    - To upload a file, the value of the custom field must be an array where the first element is the file name and the second is the content of the file encoded in [base64](../../files/how-to-update-files.md).
+    - To upload a file, the value of the custom field must be passed as an array, where the first element is the file name, and the second is the content of the file encoded in [base64](../../files/how-to-update-files.md).
 
   ||
   || **parentId...**
-  [`crm_entity`](../data-types.md) | Parent field. An element of another type of CRM object linked to this item.
+  [`crm_entity`](../data-types.md) | Parent field. An element of another type of CRM object that is linked to this element.
 
-  Each such field has the code `parentId + {parentEntityTypeId}`
-  ||
+  Each such field has the code `parentId + {parentEntityTypeId}` ||
   |#
 
-  {% note info "SPA Settings" %}
+  {% note info "Smart Process Settings" %}
 
-  More about managing SPA settings can be read in [{#T}](./user-defined-object-types/index.md)
+  You can read more about managing smart process settings in [{#T}](./user-defined-object-types/index.md)
 
   {% endnote %}
 
 {% endlist %}
 
-## How to Update a Custom Field of Type File
+## How to Update a File Type Custom Field
 
 1. Upload a new file instead of the old one (non-multiple field)
 
-    To replace a file in a non-multiple field, simply upload the new file. The old one will be automatically deleted.
+    To replace a file in a non-multiple field, simply upload a new file. The old one will be automatically deleted.
 
     ```json
     {
@@ -919,15 +917,15 @@ Default — `N` ||
     }
     ```
 
-2. Remove the value of the custom field of type file
+2. Remove the value of the file type custom field
 
     To do this, simply pass an empty string (`''`) instead of the value.
 
-3. Leave the value of the non-multiple field of type file unchanged
+3. Leave the value of the non-multiple file type field unchanged
 
-    The simplest option is not to add a key with this field in `fields`.
+    The simplest option is to not add the key with this field in `fields`.
     
-    But if you need to pass it and not change it, then the value should be passed as a list where the key `id` will be the file identifier.
+    But if you need to pass it and not change it, then the value should be passed as a list, where the key `id` will be the identifier of the file.
 
     ```json
     {
@@ -945,13 +943,13 @@ Default — `N` ||
     
     {% endnote %}
 
-4. Working with a multiple field of type file
+4. Working with a multiple file type field
 
     The value of a multiple field is an array. Each element of the array is subject to the same rules as for non-multiple values.
 
-    **How to Partially Overwrite Values of a Multiple Field of Type File**
+    **How to partially overwrite the values of a multiple file type field**
 
-    For example, the current values in the multiple field of type file are `[12, 255, 44]`.
+    For example, currently, the multiple file type field contains values `[12, 255, 44]`.
 
     You need to keep files `12` and `44`, and upload a new one instead of `255`.
 
@@ -1152,7 +1150,7 @@ HTTP Status: **200**
             "originatorId": null,
             "originId": null,
             "additionalInfo": "Updating deal via REST",
-            "searchContent": "351 Deal #351 10200.00 US Dollar No Invented Invented Sale Title2134234233 23.07.2024 31.07.2024",
+            "searchContent": "351 Deal #351 10200.00 US Dollar No Did Not Think Sale Title2134234233 23.07.2024 31.07.2024",
             "orderStage": null,
             "movedBy": 1,
             "movedTime": "2024-07-23T18:19:21+02:00",
@@ -1200,7 +1198,7 @@ HTTP Status: **200**
 || **result**
 [`object`][1] | Root element of the response, contains a single key `item` ||
 || **item**
-[`item`](./object-fields.md) | Information about the updated item, [field descriptions](./object-fields.md) ||
+[`item`](./object-fields.md) | Information about the updated item, [description of fields](./object-fields.md) ||
 || **time**
 [`time`][1] | Information about the execution time of the request ||
 |#
@@ -1219,26 +1217,26 @@ HTTP Status: **400**, **403**
 ```json
 {
     "error": "NOT_FOUND",
-    "error_description": "SPA not found"
+    "error_description": "Smart process not found"
 }
 ```
 
-{% include notitle [Error Handling](../../../_includes/error-info.md) %}
+{% include notitle [error handling](../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
 || **Status** | **Code**                           | **Description**                                                       | **Value**                                                                                    ||
 || `403`      | `allowed_only_intranet_user`      | Action is allowed only for intranet users                           | User is not an intranet user                                                               ||
-|| `400`      | `NOT_FOUND`                       | SPA not found                                                        | Occurs when an invalid `entityTypeId` is passed                                          ||
-|| `400`      | `ACCESS_DENIED`                   | Access denied                                                        | User does not have permission to modify items of type `entityTypeId`                      ||
+|| `400`      | `NOT_FOUND`                       | Smart process not found                                            | Occurs when an invalid `entityTypeId` is passed                                          ||
+|| `400`      | `ACCESS_DENIED`                   | Access denied                                                    | User does not have permission to modify items of type `entityTypeId`                      ||
 || `400`      | `CRM_FIELD_ERROR_VALUE_NOT_VALID` | Invalid value for field "`field`"                                   | Incorrect value passed for field `field`                                                  ||
 || `400`      | `100`                             | Expected iterable value for multiple field, but got `type` instead | One of the multiple fields received a value of type `type`, while an iterable type was expected ||
-|| `400`      | `-`                               | Insufficient rights to change the stage                             | If a user attempts to change the stage of an item without sufficient rights               ||
-|| `400`      | `UPDATE_DYNAMIC_ITEM_RESTRICTED`  | You cannot change the item due to your plan's restrictions         | Plan restrictions do not allow changing SPA items                                         ||
+|| `400`      | `-`                               | Insufficient rights to change the stage                                  | If the user tries to change the stage of the item while lacking sufficient rights      ||
+|| `400`      | `UPDATE_DYNAMIC_ITEM_RESTRICTED`  | You cannot modify the item due to your plan's restrictions      | Plan restrictions do not allow modifying smart process items                               ||
 |#
 
-{% include [System Errors](./../../../_includes/system-errors.md) %}
+{% include [system errors](./../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

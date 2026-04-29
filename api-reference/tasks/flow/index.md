@@ -22,7 +22,7 @@ In the flow, you can track the efficiency of task completion. Efficiency is calc
 
 If there are no employees left in the flow team with queue distribution or self-assignment, the flow will automatically switch to manual distribution mode. The flow administrator will become the moderator and receive a notification.
 
-## Flow Connection with Other Objects
+## Relationships with Other Objects
 
 **Group.** The flow is linked to a group by the identifier `groupId`. The identifier can be obtained using the method [creating a new group](../../sonet-group/sonet-group-create.md) or the method [getting a list of groups](../../sonet-group/socialnetwork-api-workgroup-list.md). If the group identifier is not specified when creating the flow, a new group will be created.
 

@@ -1,4 +1,4 @@
-# Get the list of basket properties sale.basketproperties.list
+# Get a List of Basket Properties sale.basketproperties.list
 
 {% note tip "" %}
 
@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: store manager
 
-The method returns a set of properties for the items (positions) in the basket, selected by filter.
+This method returns a set of properties for the items (positions) in the basket, selected based on a filter.
 
 ## Method Parameters
 
@@ -18,9 +18,9 @@ The method returns a set of properties for the items (positions) in the basket, 
 || **Name**
 `type` | **Description** ||
 || **select**
-[`array`](../../data-types.md) | An array containing the list of fields to select (see fields of the object [`sale_basket_item_property`](../data-types.md#sale_basket_item_property)).
+[`array`](../../data-types.md) | An array containing the list of fields to be selected (see fields of the object [`sale_basket_item_property`](../data-types.md#sale_basket_item_property)).
 
-If the array is not provided or an empty array is passed, all available fields of the item properties (positions) in the basket will be selected. ||
+If the array is not provided or an empty array is passed, all available fields of the basket item properties will be selected. ||
 || **filter**
 [`object`](../../data-types.md) | An object for filtering the selected catalog sections in the format `{"field_1": "value_1", ... "field_N": "value_N"}`.
 
@@ -33,7 +33,7 @@ An additional prefix can be specified for the key to clarify the filter behavior
 - `<` — less than
 - `@` — IN (an array is passed as the value)
 - `!@` — NOT IN (an array is passed as the value)
-- `%` — LIKE, substring search. The % symbol in the filter value does not need to be passed. The search looks for a substring in any position of the string.
+- `%` — LIKE, substring search. The % symbol in the filter value does not need to be passed. The search looks for the substring in any position of the string.
 - `=%` — LIKE, substring search. The % symbol needs to be passed in the value. Examples:
   - `"mol%"` — searching for values starting with "mol"
   - `"%mol"` — searching for values ending with "mol"
@@ -43,7 +43,7 @@ An additional prefix can be specified for the key to clarify the filter behavior
 - `!=%` — NOT LIKE, substring search. The % symbol needs to be passed in the value. Examples:
   - `"mol%"` — searching for values not starting with "mol"
   - `"%mol"` — searching for values not ending with "mol"
-  - `"%mol%"` — searching for values where the substring "mol" is not in any position
+  - `"%mol%"` — searching for values where the substring "mol" is not present in any position
 - `!%=` – NOT LIKE (see description above)
 - `=` exact match (used by default)
 - `!=` — not equal
@@ -68,7 +68,7 @@ start = (N-1) * 50, where N is the desired page number
 
 ## Code Examples
 
-{% include [Note on examples](../../../_includes/examples.md) %}
+{% include [Note on Examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -95,7 +95,7 @@ start = (N-1) * 50, where N is the desired page number
 - JS
 
     ```js
-    // callListMethod: Retrieves all data at once. Use only for small selections (< 1000 items) due to high memory usage.
+    // callListMethod: Retrieves all data at once. Use only for small selections (< 1000 items) due to high memory load.
     
     try {
       const response = await $b24.callListMethod(
@@ -125,7 +125,7 @@ start = (N-1) * 50, where N is the desired page number
       console.error('Request failed', error);
     }
     
-    // fetchListMethod: Retrieves data in parts using an iterator. Use it for large data volumes to optimize memory usage.
+    // fetchListMethod: Retrieves data in parts using an iterator. Use for large volumes of data for efficient memory consumption.
     
     try {
       const generator = $b24.fetchListMethod('sale.basketproperties.list', {
@@ -153,7 +153,7 @@ start = (N-1) * 50, where N is the desired page number
       console.error('Request failed', error);
     }
     
-    // callMethod: Manually controls pagination through the start parameter. Use it for precise control of request batches. For large datasets, it is less efficient than fetchListMethod.
+    // callMethod: Manual control of pagination through the start parameter. Use for precise control over request batches. Less efficient for large data than fetchListMethod.
     
     try {
       const response = await $b24.callMethod('sale.basketproperties.list', {
@@ -212,7 +212,7 @@ start = (N-1) * 50, where N is the desired page number
             ->getResult();
     
         echo 'Success: ' . print_r($result, true);
-        // Your logic for processing data
+        // Your data processing logic here
         processData($result);
     
     } catch (Throwable $e) {
@@ -240,7 +240,6 @@ start = (N-1) * 50, where N is the desired page number
             order: {
                 id: 'desc',
             },
-            start: 0,
         },
     )
         .then(
@@ -253,6 +252,11 @@ start = (N-1) * 50, where N is the desired page number
                 else
                 {
                     console.log(result.data);
+
+                    if (result.more())
+                    {
+                        result.next();
+                    }
                 }
             },
             function(error)
@@ -329,7 +333,7 @@ HTTP Status: **200**
 || **result**
 [`object`](../../data-types.md) | The root element of the response ||
 || **basketProperties**
-[`sale_basket_item_property[]`](../data-types.md#sale_basket_item_property) | An array of objects with information about the selected properties of items (positions) in the basket in orders ||
+[`sale_basket_item_property[]`](../data-types.md#sale_basket_item_property) | An array of objects containing information about the selected properties of items (positions) in the basket for orders ||
 || **total**
 [`integer`](../../data-types.md) | The total number of records found ||
 || **time**
@@ -367,4 +371,3 @@ HTTP Status: **400**
 - [{#T}](./sale-basket-properties-get.md)
 - [{#T}](./sale-basket-properties-delete.md)
 - [{#T}](./sale-basket-properties-get-fields.md)
-

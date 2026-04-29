@@ -32,7 +32,7 @@ No separate scopes are needed for the methods in this section. Additional restri
 
 **Application Settings.** Store general integration parameters through `app.option.*`, and personal user settings through `user.option.*`.
 
-## Connection with Other Objects
+## Relationships with Other Objects
 
 This section is connected with the application, the current user, and access permissions.
 

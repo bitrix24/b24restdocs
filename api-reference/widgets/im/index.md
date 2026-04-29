@@ -103,7 +103,7 @@ The value of `PLACEMENT_OPTIONS` is passed as a JSON string with the context of 
 || [IM_CONTEXT_MENU](./context-menu.md) | `dialogId`, `messageId` | Identifier of the current chat and selected message ||
 |#
 
-## Connection with Other Objects
+## Relationships with Other Objects
 
 **Chat.** The `dialogId` parameter in `PLACEMENT_OPTIONS` indicates which chat the handler was invoked for. You can retrieve information about the chat by its identifier using the method [im.dialog.get](../../chats/im-dialog-get.md).
 

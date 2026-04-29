@@ -1,4 +1,4 @@
-# Import a single record crm.item.import
+# Import One Record crm.item.import
 
 {% note tip "" %}
 
@@ -8,23 +8,25 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: any user with "import" access permission for the CRM object
+> Who can execute the method: any user with the "import" access permission for the CRM object.
 
 A universal method for importing objects into CRM.
 
-You can read about the differences between the import logic and the logic of regular element addition in the article [{#T}](./index.md).
+You can read about the differences between the import logic and the standard addition of elements in the article [{#T}](./index.md).
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type`          | **Description** ||
 || **entityTypeId***
-[`integer`][3] | Identifier of the system or [user-defined type](../user-defined-object-types/index.md) for which the element needs to be created ||
+[`integer`][3] | The identifier of the [system](../../data-types.md#object_type) or [custom type](../user-defined-object-types/index.md) for which you need to create an element.
+
+Numerical values for system types (Lead — 1, Deal — 2, Contact — 3, Company — 4, Invoice — 31, etc.) are provided in the [CRM object types reference](../../data-types.md#object_type). The identifier of the SPA can be obtained using the [crm.type.list](../user-defined-object-types/crm-type-list.md) method. ||
 || **fields***
-[`object`][3]  | Object format:
+[`object`][3]  | An object in the following format:
 
 ```js
 {
@@ -35,10 +37,10 @@ You can read about the differences between the import logic and the logic of reg
 }
 ```
 
-- `field_n` — field name
-- `value_n` — field value
+- `field_n` — the name of the field
+- `value_n` — the value of the field
 
-For multi-fields, such as `PHONE`, `EMAIL`, pass the data in the [crm_multifield](../../data-types.md#crm_multifield) structure:
+For multi-fields, such as `PHONE`, `EMAIL`, provide data in the [crm_multifield](../../data-types.md#crm_multifield) structure:
 
 ```js
 {
@@ -56,9 +58,9 @@ For multi-fields, such as `PHONE`, `EMAIL`, pass the data in the [crm_multifield
 }
 ```
 
-- `field_name` — field name, for example `PHONE`
-- `VALUE` — field value, for example a phone number
-- `VALUE_TYPE` — value type, for example `WORK`
+- `field_name` — the name of the field, for example, `PHONE`
+- `VALUE` — the value of the field, for example, a phone number
+- `VALUE_TYPE` — the type of value, for example, `WORK`
 
 Each CRM object has its own set of fields. This means that the set of fields for creating a Lead does not have to match the set of fields for creating a Contact or SPA.
 
@@ -74,24 +76,24 @@ You can also find out the set of fields using the universal method [crm.item.fie
 - [crm.quote.fields](../../quote/crm-quote-fields.md)
 ||
 || **useOriginalUfNames**
-[`boolean`][1] | Parameter to control the format of user field names in the request and response.   
+[`boolean`][1] | A parameter to control the format of custom field names in the request and response.   
 Possible values:
 
-- `Y` — original user field names, for example `UF_CRM_2_1639669411830`
-- `N` — user field names in camelCase, for example `ufCrm2_1639669411830`
+- `Y` — original names of custom fields, for example, `UF_CRM_2_1639669411830`
+- `N` — names of custom fields in camelCase, for example, `ufCrm2_1639669411830`
 
 Default is `N` ||
 |#
 
 {% include [Parameter fields in different entities](../../_include/crm-entity-fields-list.md) %}
 
-To upload a file, the value of the user field must be an array where the first element is the file name and the second is the base64 encoded content of the file.
+To upload a file, the value of the custom field must be an array where the first element is the file name and the second is the base64 encoded content of the file.
 
 ## Code Examples
 
-{% include [Note on examples](../../../../_includes/examples.md) %}
+{% include [Note on Examples](../../../../_includes/examples.md) %}
 
-1. How to import a deal
+1. How to Import a Deal
 
    {% list tabs %}
 
@@ -101,7 +103,7 @@ To upload a file, the value of the user field must be an array where the first e
         curl -X POST \
         -H "Content-Type: application/json" \
         -H "Accept: application/json" \
-        -d '{"entityTypeId":2,"fields":{"title":"New Deal (specifically for the REST methods example)","typeId":"SERVICE","categoryId":9,"stageId":"C9:UC_KN8KFI","isReccurring":"Y","probability":50,"currencyId":"USD","isManualOpportunity":"Y","opportunity":999.99,"taxValue":99.9,"companyId":5,"contactId":4,"contactIds":[4,5],"quoteId":7,"begindate":"formatDate(monthAgo)","closedate":"formatDate(twelveDaysInAdvance)","opened":"N","comments":"commentsExample","assignedById":6,"sourceId":"WEB","sourceDescription":"There should be additional description about the source","leadId":102,"additionalInfo":"There should be additional information","observers":[2,3],"utmSource":"google","utmMedium":"CPC","ufCrm_1721244707107":1111.1,"parentId1220":2}}' \
+        -d '{"entityTypeId":2,"fields":{"title":"New Deal (specifically for REST method example)","typeId":"SERVICE","categoryId":9,"stageId":"C9:UC_KN8KFI","isReccurring":"Y","probability":50,"currencyId":"USD","isManualOpportunity":"Y","opportunity":999.99,"taxValue":99.9,"companyId":5,"contactId":4,"contactIds":[4,5],"quoteId":7,"begindate":"formatDate(monthAgo)","closedate":"formatDate(twelveDaysInAdvance)","opened":"N","comments":"commentsExample","assignedById":6,"sourceId":"WEB","sourceDescription":"There should be additional description about the source","leadId":102,"additionalInfo":"There should be additional information","observers":[2,3],"utmSource":"google","utmMedium":"CPC","ufCrm_1721244707107":1111.1,"parentId1220":2}}' \
         https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.item.import
         ```
 
@@ -111,7 +113,7 @@ To upload a file, the value of the user field must be an array where the first e
         curl -X POST \
         -H "Content-Type: application/json" \
         -H "Accept: application/json" \
-        -d '{"entityTypeId":2,"fields":{"title":"New Deal (specifically for the REST methods example)","typeId":"SERVICE","categoryId":9,"stageId":"C9:UC_KN8KFI","isReccurring":"Y","probability":50,"currencyId":"USD","isManualOpportunity":"Y","opportunity":999.99,"taxValue":99.9,"companyId":5,"contactId":4,"contactIds":[4,5],"quoteId":7,"begindate":"formatDate(monthAgo)","closedate":"formatDate(twelveDaysInAdvance)","opened":"N","comments":"commentsExample","assignedById":6,"sourceId":"WEB","sourceDescription":"There should be additional description about the source","leadId":102,"additionalInfo":"There should be additional information","observers":[2,3],"utmSource":"google","utmMedium":"CPC","ufCrm_1721244707107":1111.1,"parentId1220":2},"auth":"**put_access_token_here**"}' \
+        -d '{"entityTypeId":2,"fields":{"title":"New Deal (specifically for REST method example)","typeId":"SERVICE","categoryId":9,"stageId":"C9:UC_KN8KFI","isReccurring":"Y","probability":50,"currencyId":"USD","isManualOpportunity":"Y","opportunity":999.99,"taxValue":99.9,"companyId":5,"contactId":4,"contactIds":[4,5],"quoteId":7,"begindate":"formatDate(monthAgo)","closedate":"formatDate(twelveDaysInAdvance)","opened":"N","comments":"commentsExample","assignedById":6,"sourceId":"WEB","sourceDescription":"There should be additional description about the source","leadId":102,"additionalInfo":"There should be additional information","observers":[2,3],"utmSource":"google","utmMedium":"CPC","ufCrm_1721244707107":1111.1,"parentId1220":2},"auth":"**put_access_token_here**"}' \
         https://**put_your_bitrix24_address**/rest/crm.item.import
         ```
 
@@ -129,7 +131,7 @@ To upload a file, the value of the user field must be an array where the first e
         const monthAgo = new Date(now.getTime() - 30 * day);
 
         const commentsExample = `
-        Example comment inside the deal
+        Example comment within the deal
 
         [B]Bold text[/B]
         [I]Italic[/I]
@@ -156,7 +158,7 @@ To upload a file, the value of the user field must be an array where the first e
                 entityTypeId: 2,
                 fields: 
                 {
-                    title: "New Deal (specifically for the REST methods example)",
+                    title: "New Deal (specifically for REST method example)",
                     typeId: "SERVICE",
                     categoryId: 9,
                     stageId: "C9:UC_KN8KFI",
@@ -206,7 +208,7 @@ To upload a file, the value of the user field must be an array where the first e
             [
                 'entityTypeId' => 2,
                 'fields' => [
-                    'title' => "New Deal (specifically for the REST methods example)",
+                    'title' => "New Deal (specifically for REST method example)",
                     'typeId' => "SERVICE",
                     'categoryId' => 9,
                     'stageId' => "C9:UC_KN8KFI",
@@ -246,11 +248,11 @@ To upload a file, the value of the user field must be an array where the first e
    {% endlist %}
 
 
-2. How to create an SPA element with a set of user fields
+2. How to Create an SPA Element with a Set of Custom Fields
 
-    {% cut "User fields involved in the example" %}
+    {% cut "Custom Fields Used in the Example" %}
 
-    {% include [Set of user fields](../../_include/user-fields-for-examples-cut.md) %}
+    {% include [Set of Custom Fields](../../_include/user-fields-for-examples-cut.md) %}
 
     {% endcut %}
 
@@ -265,7 +267,7 @@ To upload a file, the value of the user field must be an array where the first e
         -d '{
             "entityTypeId": 1302,
             "fields": {
-                "ufCrm44_1721812760630": "String for user field of type String",
+                "ufCrm44_1721812760630": "String for custom field of type String",
                 "ufCrm44_1721812814433": 81,
                 "ufCrm44_1721812853419": "'"$(date '+%Y-%m-%d')"'",
                 "ufCrm44_1721812885588": [
@@ -293,7 +295,7 @@ To upload a file, the value of the user field must be an array where the first e
         -d '{
             "entityTypeId": 1302,
             "fields": {
-                "ufCrm44_1721812760630": "String for user field of type String",
+                "ufCrm44_1721812760630": "String for custom field of type String",
                 "ufCrm44_1721812814433": 81,
                 "ufCrm44_1721812853419": "'"$(date '+%Y-%m-%d')"'",
                 "ufCrm44_1721812885588": [
@@ -323,7 +325,7 @@ To upload a file, the value of the user field must be an array where the first e
             {
                 entityTypeId: 1302,
                 fields: {
-                    ufCrm44_1721812760630: "String for user field of type String",
+                    ufCrm44_1721812760630: "String for custom field of type String",
                     ufCrm44_1721812814433: 81,
                     ufCrm44_1721812853419: (new Date()).toISOString().slice(0, 10),
                     ufCrm44_1721812885588: [
@@ -359,7 +361,7 @@ To upload a file, the value of the user field must be an array where the first e
             [
                 'entityTypeId' => 1302,
                 'fields' => [
-                    'ufCrm44_1721812760630' => "String for user field of type String",
+                    'ufCrm44_1721812760630' => "String for custom field of type String",
                     'ufCrm44_1721812814433' => 81,
                     'ufCrm44_1721812853419' => date('Y-m-d'),
                     'ufCrm44_1721812885588' => [
@@ -415,7 +417,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`][3] | Root element of the response. 
+[`object`][3] | The root element of the response. 
 
 Contains a single key — `item` ||
 || **item**
@@ -423,15 +425,15 @@ Contains a single key — `item` ||
 
 Contains a single key — `id` ||
 || **id**
-[`int`][3] | Identifier of the created element ||
+[`int`][3] | The identifier of the created element ||
 || **time**
-[`time`][3] | Information about the request execution time ||
+[`time`][3] | Information about the execution time of the request ||
 |#
 
 {% note info " " %}
 
-By default, user field names are passed and returned in camelCase, for example `ufCrm2_1639669411830`.
-When passing the parameter `useOriginalUfNames` with the value `Y`, user fields will be returned with original names, for example `UF_CRM_2_1639669411830`.
+By default, custom field names are passed and returned in camelCase, for example, `ufCrm2_1639669411830`.
+When passing the `useOriginalUfNames` parameter with the value `Y`, custom fields will be returned with their original names, for example, `UF_CRM_2_1639669411830`.
 
 {% endnote %}
 
@@ -452,13 +454,13 @@ HTTP status: **401**, **400**, **403**
 
 #|
 || **Status** | **Code**                           | **Description**                                                       | **Value**                                                                                    ||
-|| `400`      | `NOT_FOUND`                       | SPA not found                                                       | Occurs when an invalid `entityTypeId` is passed                                              ||
-|| `400`      | `ACCESS_DENIED`                   | Access denied                                                     | The user does not have permission to add elements of type `entityTypeId`                             ||
-|| `400`      | `CRM_FIELD_ERROR_VALUE_NOT_VALID` | Invalid value for field "`field`"                                   | An incorrect value for the field `field` was passed.
+|| `400`      | `NOT_FOUND`                       | SPA not found                                                      | Occurs when an invalid `entityTypeId` is passed                                              ||
+|| `400`      | `ACCESS_DENIED`                   | Access denied                                                    | The user does not have permission to add elements of type `entityTypeId`                             ||
+|| `400`      | `CRM_FIELD_ERROR_VALUE_NOT_VALID` | Invalid value for field "`field`"                                   | An incorrect value for the field `field` was provided.
 
 For system fields of type `createdTime`, if the request is not made by an administrator ||
-|| `400`      | `100`                             | Expected iterable value for multiple field, but got `type` instead | One of the multi-fields received a value of type `type`, while an iterable type was expected. This can also occur with an incorrect request (invalid JSON or request headers) ||
-|| `400`      | `CREATE_DYNAMIC_ITEM_RESTRICTED`  | You cannot create a new element due to your plan restrictions | Plan restrictions do not allow creating SPA elements                              ||
+|| `400`      | `100`                             | Expected iterable value for multiple field, but got `type` instead | A value of type `type` was passed to one of the multiple fields, while an iterable type was expected. This can also occur with an incorrect request (invalid JSON or request headers) ||
+|| `400`      | `CREATE_DYNAMIC_ITEM_RESTRICTED`  | You cannot create a new item due to your plan's restrictions | Plan restrictions do not allow the creation of SPA elements                              ||
 || `401`      | `INVALID_CREDENTIALS`             | Invalid authorization data for the request                            | Incorrect `user ID` and/or code in the request path                                       ||
 || `403`      | `allowed_only_intranet_user`      | Action allowed only for intranet users                   | The user is not an intranet user                                                 ||
 |#

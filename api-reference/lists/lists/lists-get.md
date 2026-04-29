@@ -1,4 +1,4 @@
-# Get Data from Universal List or Array of Lists lists.get
+# Retrieve Data from Universal List or Array of Lists: lists.get
 
 {% note tip "" %}
 
@@ -8,46 +8,45 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`lists`](../../scopes/permissions.md)
 >
-> Who can execute the method: user with "Read" access permission for lists
+> Who can execute the method: a user with "Read" access permission for lists
 
 The `lists.get` method returns a universal list or an array of lists.
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../_includes/required.md) %}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
-|| **IBLOCK_TYPE_ID***
+|| **IBLOCK_TYPE_ID*** 
 [`string`](../../data-types.md) | Identifier of the information block type. Possible values: 
 - `lists` — list information block type 
 - `bitrix_processes` — processes information block type 
 - `lists_socnet` — group lists information block type
 
 The identifier can be obtained using the [lists.get.iblock.type.id](./lists-get-iblock-type-id.md) method ||
-|| **IBLOCK_ID**
+|| **IBLOCK_ID** 
 [`integer`](../../data-types.md) | Identifier of the information block ||
 || **IBLOCK_CODE** 
 [`string`](../../data-types.md) | Symbolic code of the information block
 
 {% note info "" %}
 
-When requesting without `IBLOCK_ID` or `IBLOCK_CODE`, all lists of the specified type available to the user are returned.
+When requesting without `IBLOCK_ID` or `IBLOCK_CODE`, all lists of the specified type available to the user will be returned.
 
 {% endnote %} ||
-|| **SOCNET_GROUP_ID**
+|| **SOCNET_GROUP_ID** 
 [`integer`](../../data-types.md) | Group identifier. Required for group lists; otherwise, an access error will occur.
 
-The identifier can be obtained using the [socialnetwork.api.workgroup.list](../../sonet-group/socialnetwork-api-workgroup-list.md), [sonet_group.get](../../sonet-group/sonet-group-get.md), and [sonet_group.user.groups](../../sonet-group/sonet-group-user-groups.md) methods
-||
-|| **IBLOCK_ORDER**
+The identifier can be obtained using the [socialnetwork.api.workgroup.list](../../sonet-group/socialnetwork-api-workgroup-list.md), [sonet_group.get](../../sonet-group/sonet-group-get.md), and [sonet_group.user.groups](../../sonet-group/sonet-group-user-groups.md) methods ||
+|| **IBLOCK_ORDER** 
 [`object`](../../data-types.md) | Object for sorting list fields in the format `{"field_1": "value_1", ... "field_N": "value_N"}`.
 
 The sorting direction can take the following values:
 - `asc` — ascending
 - `desc` — descending 
-  
+
 Allowed fields:
 - `ID` - list identifier
 - `IBLOCK_TYPE` - information block type
@@ -56,23 +55,22 @@ Allowed fields:
 - `SORT` - sorting
 - `TIMESTAMP_X` - last modification time
 
-Default value — `decs`
-||
-|| **start**
-[`integer`](../../data-types.md) | Parameter used for managing pagination.
+Default value — `decs` ||
+|| **start** 
+[`integer`](../../data-types.md) | Parameter used for pagination control.
 
-The page size of results is always static — 50 records.
+The result page size is always static — 50 records.
 
 To select the second page of results, you need to pass the value `50`. To select the third page of results — the value `100`, and so on.
 
 The formula for calculating the `start` parameter value:
 
-`start = (N - 1) * 50`, where `N` — the number of the desired page ||
+`start = (N - 1) * 50`, where `N` is the desired page number ||
 |#
 
 ## Code Examples
 
-{% include [Note on examples](../../../_includes/examples.md) %}
+{% include [Note on Examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -164,14 +162,17 @@ The formula for calculating the `start` parameter value:
          IBLOCK_ORDER: {
            SORT: 'asc',
            NAME: 'asc'
-         },
-         start: 0
+         }
       },
          function(result) {
              if (result.error()) {
                 console.error(result.error());
              } else {
                 console.log(result.data());
+
+                if (result.more()) {
+                   result.next();
+                }
              }
          }
     );
@@ -231,6 +232,7 @@ HTTP Status: **200**
         "RSS_FILE_ACTIVE": "N",
         "RSS_FILE_LIMIT": null,
         "RSS_FILE_DAYS": null,
+        "RSS_YANDEX_ACTIVE": "N",
         "XML_ID": null,
         "TMP_ID": null,
         "INDEX_ELEMENT": "Y",
@@ -274,16 +276,16 @@ HTTP Status: **200**
 
 ### Returned Data
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
-|| **result**
+|| **result** 
 [`array`](../../data-types.md) | Data of the list or array of lists.
 
 An empty array means that no lists were found ||
-|| **total**
+|| **total** 
 [`integer`](../../data-types.md) | Total number of lists ||
-|| **time**
+|| **time** 
 [`time`](../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
@@ -302,9 +304,9 @@ HTTP Status: **400**
 
 ### Possible Error Codes
 
-#|
+#| 
 || **Code** | **Description** | **Value** ||
-|| `ERROR_REQUIRED_PARAMETERS_MISSING` | Required parameter `X` is missing | Required parameter not provided ||
+|| `ERROR_REQUIRED_PARAMETERS_MISSING` | Required parameter `X` is missing | Required parameter is missing ||
 || `ACCESS_DENIED` | Access denied | Insufficient rights to read the list ||
 |#
 

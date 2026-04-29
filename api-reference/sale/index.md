@@ -64,7 +64,7 @@ Access permissions for the Sites and Stores sections are shared. If you change t
 
 {% endnote %}
 
-## Connection with Other Objects
+## Relationships with Other Objects
 
 **CRM.** Orders and payments from the online store are used in CRM scenarios where the composition of the order, cost, and statuses are important. To work with orders, use the [Order](./order/index.md) section, for payments — [Payments](./payment/index.md), and for tracking changes — [Events](./events/index.md).
 

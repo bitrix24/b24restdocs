@@ -88,7 +88,7 @@ The value of `PLACEMENT_OPTIONS` is passed as a JSON string with the launch cont
 || [PAGE_BACKGROUND_WORKER](./background-worker.md) | `ID`, `URI` | Widget code and the address of the current page where the handler was launched ||
 |#
 
-## Connection with Other Objects
+## Relationships with Other Objects
 
 **Application Slider.** For scenarios where the application interface needs to be opened after a background signal, use the [JavaScript methods for widgets](../bx24-widget-methods.md).
 

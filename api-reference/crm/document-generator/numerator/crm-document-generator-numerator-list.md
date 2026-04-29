@@ -14,7 +14,7 @@ The method `crm.documentgenerator.numerator.list` returns a list of numerators.
 
 ## Method Parameters
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **start**
@@ -100,14 +100,18 @@ The method `crm.documentgenerator.numerator.list` returns a list of numerators.
     ```js
     BX24.callMethod(
         'crm.documentgenerator.numerator.list',
-        {
-            start: 0,
-        },
+        {},
         (result) => {
-            result.error()
-                ? console.error(result.error())
-                : console.info(result.data())
-            ;
+            if (result.error()) {
+                console.error(result.error());
+                return;
+            }
+
+            console.info(result.data());
+
+            if (result.more()) {
+                result.next();
+            }
         },
     );
     ```
@@ -187,7 +191,7 @@ HTTP Status: **200**
 
 ### Returned Data
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **result**
@@ -198,9 +202,9 @@ HTTP Status: **200**
 [`time`](../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
-#### Array numerators {#numerators}
+#### Array of numerators {#numerators}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **id**
@@ -215,13 +219,13 @@ HTTP Status: **200**
 
 #### Type settings {#settings}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **start**
 [`integer`](../../data-types.md) | Initial value of the counter ||
 || **step**
-[`integer`](../../data-types.md) | Step for increasing the counter ||
+[`integer`](../../data-types.md) | Increment step of the counter ||
 || **length**
 [`integer`](../../data-types.md) | Minimum length of the number ||
 || **padString**
@@ -229,7 +233,7 @@ HTTP Status: **200**
 || **periodicBy**
 [`string`](../../data-types.md) | Period for resetting the counter: `null`, `day`, `month`, or `year` ||
 || **timezone**
-[`string`](../../data-types.md) | Timezone identifier for periodic reset. Can be `null` ||
+[`string`](../../data-types.md) | Time zone identifier for periodic reset. Can be `null` ||
 || **isDirectNumeration**
 [`boolean`](../../data-types.md) | Indicator of direct numbering ||
 |#
@@ -249,7 +253,7 @@ HTTP Status: **400**
 
 ### Possible Error Codes
 
-#|
+#| 
 || **Code** | **Description** | **Value** ||
 || `Empty value` | `You do not have permissions to modify templates` | Insufficient permissions to modify document generator templates ||
 || `Empty value` | `Module documentgenerator is not installed` | The `documentgenerator` module is unavailable ||

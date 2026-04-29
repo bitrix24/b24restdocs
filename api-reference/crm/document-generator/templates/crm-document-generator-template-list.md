@@ -1,4 +1,4 @@
-# Get the list of document templates crm.documentgenerator.template.list
+# Get a List of Document Templates crm.documentgenerator.template.list
 
 {% note tip "" %}
 
@@ -8,33 +8,33 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: user with "edit" access permission for document generator templates
+> Who can execute the method: a user with "modify" access permission for document generator templates
 
 The method `crm.documentgenerator.template.list` returns a list of document templates.
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../../_includes/required.md) %}
+{% include [Note on Parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **select**
-[`array`](../../data-types.md) | List of fields to return for the templates.
+[`array`](../../data-types.md) | A list of fields to return for the templates.
 
 You can use:
 - `'*'` — to select all standard fields of the template
 - an explicit list of fields, for example `["id","name","region","active"]`
 
 Additionally, the following are supported:
-- `entityTypeId` — array of template bindings to CRM entities
-- `users` — array of access permission codes
+- `entityTypeId` — an array of template bindings to CRM entities
+- `users` — an array of access permission codes
 
 Main fields for `select`: `id`, `name`, `region`, `code`, `active`, `moduleId`, `numeratorId`, `withStamps`, `isDeleted`, `sort`, `createTime`, `updateTime`
 
-See the list of template fields in the section [`Type template`](#template). By default, `["*"]` is used. ||
+See the list of template fields in the [`Type template`](#template) section. By default, `["*"]` is used. ||
 || **filter**
-[`object`](../../data-types.md) | Object format:
+[`object`](../../data-types.md) | An object in the format:
 
 ```
 {
@@ -46,8 +46,8 @@ See the list of template fields in the section [`Type template`](#template). By 
 ```
 
 where:
-- `field_n` — name of the field for filtering
-- `value_n` — filter value
+- `field_n` — the name of the field for filtering
+- `value_n` — the filter value
 
 You can add prefixes to the keys `field_n`:
 - `>=` — greater than or equal to
@@ -61,12 +61,12 @@ You can add prefixes to the keys `field_n`:
 
 Features:
 - if `isDeleted` is not provided, the filter `isDeleted = "N"` is applied
-- the filter `moduleId` is forcibly limited to the value `crm`
+- the `moduleId` filter is forcibly limited to the value `crm`
 - you can filter by `entityTypeId`, for example `["2","2_category_37"]`
 
 Main fields for `filter`: `id`, `name`, `region`, `code`, `active`, `moduleId`, `numeratorId`, `withStamps`, `isDeleted`, `sort`, `createTime`, `updateTime`, `entityTypeId` ||
 || **order**
-[`object`](../../data-types.md) | Object format:
+[`object`](../../data-types.md) | An object in the format:
 
 ```
 {
@@ -78,8 +78,8 @@ Main fields for `filter`: `id`, `name`, `region`, `code`, `active`, `moduleId`, 
 ```
 
 where:
-- `field_n` — name of the sorting field
-- `value_n` — sorting direction: `ASC` or `DESC`
+- `field_n` — the name of the sorting field
+- `value_n` — the sorting direction: `ASC` or `DESC`
 
 Main fields for `order`: `id`, `name`, `region`, `code`, `active`, `moduleId`, `numeratorId`, `withStamps`, `isDeleted`, `sort`, `createTime`, `updateTime`
 
@@ -89,20 +89,20 @@ Example: `{"id":"DESC","sort":"ASC"}` ||
 
 The page size is fixed: `50` records.
 
-Formula for obtaining the N-th page:
+The formula for obtaining the N-th page:
 `start = (N - 1) * 50`
 
-More details in the article [Features of list methods](../../../../settings/how-to-call-rest-api/list-methods-pecularities.md) ||
+More details in the article [Features of List Methods](../../../../settings/how-to-call-rest-api/list-methods-pecularities.md) ||
 |#
 
 ## Code Examples
 
-{% include [Note on examples](../../../../_includes/examples.md) %}
+{% include [Note on Examples](../../../../_includes/examples.md) %}
 
-Example of obtaining a list of templates where:
+Example of retrieving a list of templates where:
 - fields `id`, `name`, `region`, `entityTypeId`, `users` are selected
 - sorting by `id` in descending order
-- filter by region `de` and activity `Y`
+- filtering by region `de` and activity `Y`
 - starting offset — `0`
 
 {% list tabs %}
@@ -190,13 +190,18 @@ Example of obtaining a list of templates where:
             select: ['id', 'name', 'region', 'entityTypeId', 'users'],
             order: { id: 'desc' },
             filter: { region: 'de', active: 'Y' },
-            start: 0,
         },
         (result) => {
-            result.error()
-                ? console.error(result.error())
-                : console.info(result.data())
-            ;
+            if (result.error()) {
+                console.error(result.error());
+                return;
+            }
+
+            console.info(result.data());
+
+            if (result.more()) {
+                result.next();
+            }
         },
     );
     ```
@@ -211,7 +216,7 @@ Example of obtaining a list of templates where:
         [
             'select' => ['id', 'name', 'region', 'entityTypeId', 'users'],
             'order' => ['id' => 'desc'],
-            'filter' => ['region': 'de', 'active': 'Y'],
+            'filter' => ['region' => 'de', 'active' => 'Y'],
             'start' => 0,
         ]
     );
@@ -225,7 +230,7 @@ Example of obtaining a list of templates where:
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -233,7 +238,7 @@ HTTP status: **200**
         "templates": {
             "39": {
                 "id": "39",
-                "name": "Demonstration of product implementation",
+                "name": "Demo Product Implementation",
                 "region": "de",
                 "download": "https://mysite.com/bitrix/services/main/ajax.php?action=crm.documentgenerator.template.download&SITE_ID=s1&id=39",
                 "users": [
@@ -247,7 +252,7 @@ HTTP status: **200**
             },
             "37": {
                 "id": "37",
-                "name": "Act of write-off of products (Germany)",
+                "name": "Goods Write-off Act (Germany)",
                 "region": "de",
                 "download": "https://mysite.com/bitrix/services/main/ajax.php?action=crm.documentgenerator.template.download&SITE_ID=s1&id=37",
                 "users": [
@@ -267,8 +272,8 @@ HTTP status: **200**
         "finish": 1773845479.829607,
         "duration": 0.8296070098876953,
         "processing": 0,
-        "date_start": "2026-03-18T17:51:19+02:00",
-        "date_finish": "2026-03-18T17:51:19+02:00",
+        "date_start": "2026-03-18T17:51:19+01:00",
+        "date_finish": "2026-03-18T17:51:19+01:00",
         "operating_reset_at": 1773846079,
         "operating": 0
     }
@@ -281,11 +286,11 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | Root element of the response. Contains the object [`templates`](#templates) ||
+[`object`](../../data-types.md) | The root element of the response. Contains the object [`templates`](#templates) ||
 || **total**
-[`integer`](../../data-types.md) | Total number of templates matching the filter ||
+[`integer`](../../data-types.md) | The total number of templates matching the filter ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the execution time of the request ||
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 #### Object templates {#templates}
@@ -298,42 +303,42 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **id**
-[`string`](../../data-types.md) | Identifier of the template ||
+[`string`](../../data-types.md) | The identifier of the template ||
 || **name**
-[`string`](../../data-types.md) | Name of the template ||
+[`string`](../../data-types.md) | The name of the template ||
 || **region**
-[`string`](../../data-types.md) | Region of the template ||
+[`string`](../../data-types.md) | The region of the template ||
 || **download**
-[`string`](../../data-types.md) | Link to download the template ||
+[`string`](../../data-types.md) | The link to download the template ||
 || **users**
-[`array`](../../data-types.md) | Array of user or access group codes ||
+[`array`](../../data-types.md) | An array of user or access group codes ||
 || **entityTypeId**
-[`array`](../../data-types.md) | Array of bindings to object types ||
+[`array`](../../data-types.md) | An array of bindings to object types ||
 || **downloadMachine**
-[`string`](../../data-types.md) | Link for machine download of the template ||
+[`string`](../../data-types.md) | The link for machine downloading of the template ||
 || **code**
-[`string`](../../data-types.md) | Symbolic code of the template. Can be `null` ||
+[`string`](../../data-types.md) | The symbolic code of the template. Can be `null` ||
 || **active**
-[`char`](../../data-types.md) | Activity status (`Y`/`N`) ||
+[`char`](../../data-types.md) | The activity status (`Y`/`N`) ||
 || **moduleId**
-[`string`](../../data-types.md) | Identifier of the module owning the template ||
+[`string`](../../data-types.md) | The identifier of the template owner module ||
 || **numeratorId**
-[`integer`](../../data-types.md) | Identifier of the numerator ||
+[`integer`](../../data-types.md) | The identifier of the numerator ||
 || **withStamps**
-[`char`](../../data-types.md) | Indicator of stamp usage (`Y`/`N`) ||
+[`char`](../../data-types.md) | The indication of stamp usage (`Y`/`N`) ||
 || **isDeleted**
-[`char`](../../data-types.md) | Indicator of deletion (`Y`/`N`) ||
+[`char`](../../data-types.md) | The indication of deletion (`Y`/`N`) ||
 || **sort**
-[`integer`](../../data-types.md) | Sorting index ||
+[`integer`](../../data-types.md) | The sorting index ||
 || **createTime**
-[`datetime`](../../data-types.md) | Time of template creation ||
+[`datetime`](../../data-types.md) | The creation time of the template ||
 || **updateTime**
-[`datetime`](../../data-types.md) | Time of last template update ||
+[`datetime`](../../data-types.md) | The last update time of the template ||
 |#
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {
@@ -361,5 +366,5 @@ HTTP status: **400**
 - [{#T}](./crm-document-generator-template-update.md)
 - [{#T}](./crm-document-generator-template-get.md)
 - [{#T}](./crm-document-generator-template-delete.md)
-- [Get the fields of the document template crm.documentgenerator.template.getfields](./crm-document-generator-template-get-fields.md)
+- [Get Document Template Fields crm.documentgenerator.template.getfields](./crm-document-generator-template-get-fields.md)
 - [{#T}](../../../../tutorials/crm/how-to-add-crm-objects/how-to-generate-documents.md)

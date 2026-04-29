@@ -22,7 +22,7 @@ The configuration process consists of five steps.
 4. Save the new set of rights using the method [landing.site.setRights](./landing-site-set-rights.md).
 5. After configuration, verify the result under the appropriate user or in the Bitrix24 interface. The method [landing.site.getRights](./landing-site-get-rights.md) shows only the rights of the current user and does not return the complete list of rules saved for the site.
 
-## Connection with Other Objects
+## Relationships with Other Objects
 
 The extended rights model is associated with sites, access codes, and the selected rights model in Bitrix24.
 

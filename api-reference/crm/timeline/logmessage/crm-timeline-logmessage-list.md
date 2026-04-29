@@ -8,13 +8,13 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: `user with read access permission to the CRM entity containing the record`
+> Who can execute the method: `user with read access permission for the CRM entity containing the record`
 
 This method retrieves a list of timeline log entries.
 
 {% note info "" %}
 
-It is important to note that the method can only retrieve data for records that were previously added using [`crm.timeline.logmessage.add`](./crm-timeline-logmessage-add.md). System entries cannot be retrieved using `crm.timeline.logmessage.list`.
+It is important to note that the method can only retrieve data for entries that were previously added using [`crm.timeline.logmessage.add`](./crm-timeline-logmessage-add.md). System entries cannot be retrieved using `crm.timeline.logmessage.list`.
 
 {% endnote %}
 
@@ -34,15 +34,15 @@ It is important to note that the method can only retrieve data for records that 
 
 By default, `desc` is used.
 
-Sorting is only supported by the **id** and **created** fields. ||
+Sorting is supported only by the **id** and **created** fields. ||
 || **start** 
-[`integer`](../../../data-types.md) | This parameter is used for pagination control.
+[`integer`](../../../data-types.md) | This parameter is used to manage pagination.
 
-The page size is always static: 10 entries.
+The page size of results is always static: 10 entries.
 
-To select the second page of results, you need to pass the value `10`. To select the third page of results — the value `20`, and so on.
+To select the second page of results, you must pass the value `10`. To select the third page of results — the value `20`, and so on.
 
-The formula for calculating the `start` parameter value:
+The formula for calculating the value of the `start` parameter:
 
 `start = (N - 1) * 10`, where `N` is the desired page number. ||
 |#
@@ -76,7 +76,7 @@ The formula for calculating the `start` parameter value:
 - JS
 
     ```js
-    // callListMethod: Retrieves all data at once. Use only for small selections (< 1000 items) due to high memory load.
+    // callListMethod: Retrieves all data at once. Use only for small datasets (< 1000 items) due to high memory load.
     
     try {
       const response = await $b24.callListMethod(
@@ -95,7 +95,7 @@ The formula for calculating the `start` parameter value:
       console.error('Request failed', error)
     }
     
-    // fetchListMethod: Retrieves data in parts using an iterator. Use for large volumes of data for efficient memory consumption.
+    // fetchListMethod: Retrieves data in chunks using an iterator. Use for large datasets for efficient memory consumption.
     
     try {
       const generator = $b24.fetchListMethod('crm.timeline.logmessage.list', { entityTypeId: 1, entityId: 1, order: { created: "desc" }, start: 0 }, 'ID')
@@ -158,13 +158,18 @@ The formula for calculating the `start` parameter value:
             entityTypeId: 1,
             entityId: 1,
             order: { created: "desc" },
-            start: 0,
         },
         result => {
-            if (result.error())
+            if (result.error()) {
                 console.error(result.error());
-            else
-                console.dir(result.data());
+                return;
+            }
+
+            console.dir(result.data());
+
+            if (result.more()) {
+                result.next();
+            }
         }
     );
     ```
@@ -241,7 +246,7 @@ The `result` field contains an array, each entry of which contains an associativ
 || **total**
 [`integer`](../../../data-types.md) | The total number of records found ||
 || **time**
-[`time`](../../../data-types.md) | Information about the request execution time ||
+[`time`](../../../data-types.md) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
@@ -261,13 +266,13 @@ HTTP Status: **400**
 
 #| 
 || **Code** | **Description** ||
-|| `100` | Required fields are not provided ||
+|| `100` | Required fields are missing ||
 || `0` | Other errors (e.g., fatal) ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}
 
-## Continue Learning
+## Continue Learning 
 
 - [{#T}](./crm-timeline-logmessage-add.md)
 - [{#T}](./crm-timeline-logmessage-get.md)

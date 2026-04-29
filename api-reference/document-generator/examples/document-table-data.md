@@ -2,36 +2,47 @@
 
 {% note tip "" %}
 
-If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect the [MCP server](../../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
 
 {% endnote %}
 
-{% note warning "We are still updating this page" %}
+Tabular data for template placeholders is passed to the method [documentgenerator.document.add](../document-generator-document-add.md) as an array of strings in `values`. In `fields`, you need to specify the table provider so that the generator processes the array as repeating rows.
 
-Some data may be missing here — we will complete it shortly.
+## When to Use
 
-{% endnote %}
+- When you need to fill a single table with rows of the same structure
+- Each row of the table contains a simple set of values, such as name, price, and image
+- When you need to display the row number within the table
 
-In our test template, there is a table where you need to insert an image, the name, and the price of the product. Modifiers for prices cannot be used in the document generator's REST, so the price will need to be passed as a formatted string.
+## What to Pass in the Request
 
-Below is a working example of the code, followed by details.
+- In `fields['Table']['PROVIDER']`, specify `Bitrix\\DocumentGenerator\\DataProvider\\ArrayDataProvider` so that the generator processes `values['Table']` as a list of table rows
+- In `fields['Table']['OPTIONS']`, specify:
+  - `ITEM_NAME` — the internal name of the array element
+  - `ITEM_PROVIDER` — `Bitrix\\DocumentGenerator\\DataProvider\\HashDataProvider`
+- In `values['Table']`, pass the list of table rows
+- For table placeholders, such as `TableItemName` and `TableItemPrice`, provide the data access chain: `Table.Item.Name`, `Table.Item.Price`
+- For images in the table, specify `TYPE = IMAGE` in `fields`
+- For the row number, you can use `Table.INDEX`
+
+## Example
 
 ```php
 $data = [
 	'templateId' => 203,
-	'providerClassName' => '\\Bitrix\\DocumentGenerator\\DataProvider\\Rest',
-	'value' => 1,
+	'providerClassName' => 'Bitrix\\DocumentGenerator\\DataProvider\\Rest',
+	'value' => 'ORDER_1024',
 	'values' => [
 		'Table' => [
 			[
 				'Name' => 'Item name 1',
 				'Price' => '$111.23',
-				'Image' => 'http://myrestapp.com/upload/stamp.png'
+				'Image' => 'https://myrestapp.example/upload/product-1.png'
 			],
 			[
 				'Name' => 'Item name 2',
 				'Price' => '$222.34',
-				'Image' => 'http://myrestapp.com/upload/stamp.png'
+				'Image' => 'https://myrestapp.example/upload/product-2.png'
 			],
 		],
 		'TableItemName' => 'Table.Item.Name',
@@ -50,24 +61,26 @@ $data = [
 		'TableItemImage' => ['TYPE' => 'IMAGE'],
 	],
 ];
-$url = $webHookUrl.$prefix.'.document.add/';
+$url = $webHookUrl.'documentgenerator.document.add/';
 ```
 
-Please note that a table is inserted into the template, which contains three fields: `{TableItemName}`, `{TableItemImage}`, and `{TableItemPrice}`. First, let's look at how the `fields` array is populated.
+## How It Works
 
-1. We pass the settings for the Table field. This field is not explicitly present in the template, but we need it to pass an array of values for the table under this key.
-2. For this field, it is essential to specify the provider: `fields['Table']['PROVIDER'] = 'Bitrix\\DocumentGenerator\\DataProvider\\ArrayDataProvider'`. This indicates that an array of values will be received under this key.
-3. We need to fill in the provider's options array: `fields['Table']['OPTIONS']['ITEM_NAME'] = 'Item'`. Here, we have provided the internal key that the provider will use to access the elements of the array.
-4. This specifies that each element of the `Table` field array under the key `Item` is a simple hash.
-```php
-fields['Table']['OPTIONS']['ITEM_PROVIDER'] = 'Bitrix\\DocumentGenerator\\DataProvider\\HashDataProvider'
-```
-5. We indicate that the `TableItemImage` field is an image — this is standard.
+In the example, it is assumed that the template contains a table with fields `{TableItemName}`, `{TableItemImage}`, `{TableItemPrice}`.
 
-Now, regarding the `values` array.
+1. The `Table` field is used as a container for the array of rows. This placeholder may not exist in the template, but it is necessary to pass the array of values for the table.
+2. By `ITEM_NAME = Item`, the provider reads each row element as an `Item` object.
+3. By `ITEM_PROVIDER = HashDataProvider`, the elements are read as a simple hash.
+4. Fields like `TableItem...` reference values through the chain `Table.Item.<Key>`, where `<Key>` is the key of the internal associative array, such as `Name`, `Price`, or `Image`.
 
-1. Under the `Table` key, we pass a simple array (with sequential index keys). Each element of the array is an associative array where the key is the right part of the field, excluding `Table` (the name of the array field) and `Item` (the name of the internal key).
-2. As values for the table fields, we pass a chain to retrieve values from the provider. This is constructed as sequential provider codes separated by a dot. In our case, it will be `Table` — the name of the array field from which the values are obtained. Then a dot. Next, `Item` — the name of the internal key of the `Table` provider, which returns the elements of the array. Then a dot. Finally, the key of the internal associative array from the `Table` elements.
-3. The `ArrayDataProvider` has an internal variable `INDEX`, which indicates the current item number (starting from 1). To insert the sequential number into the `{TableIndex}` field within the table, we specify `values['TableIndex'] = 'Table.INDEX'`.
+`Table.INDEX` returns the current row number, starting from `1`.
 
-If a regular string is specified as the value for a field, it will be inserted into the table as is in all rows.
+If a regular string is specified as the value of a field, it will be inserted into the table as is in all rows.
+
+## Continue Learning
+
+- [{#T}](./document-text-data.md)
+- [{#T}](./document-date-name.md)
+- [{#T}](./document-table-complex.md)
+- [{#T}](./document-images-seals.md)
+- [{#T}](./index.md)

@@ -12,7 +12,7 @@ Sections help organize data and simplify navigation within lists. They group rec
 >
 > User documentation: [How to create and configure a list in Bitrix24](https://helpdesk.bitrix24.com/open/25744043/)
 
-## Connection with Other Objects
+## Relationships with Other Objects
 
 **Universal lists.** Each section belongs to a specific list. To add a section to a list, you need to specify the parameters `IBLOCK_TYPE_ID`, `IBLOCK_ID`, and `IBLOCK_CODE`. Values can be obtained using the [lists.get](../lists/lists-get.md) method.
 

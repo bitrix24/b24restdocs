@@ -2,6 +2,11 @@
 
 ## 2026
 
+### April 29, 2026
+
+- Updated the pages [How to Add Data to CRM: Overview of Use-Cases and Scenarios](./tutorials/crm/how-to-add-crm-objects/index.md) and [Typical Use-Cases and Scenarios in Open Channels](./tutorials/openlines/index.md)
+- Updated the use-cases in the section [Typical Use-Cases and Scenarios of the Document Generator](./api-reference/document-generator/examples/index.md). Added explanations on data preparation for document generation
+
 ### April 23, 2026
 
 - Updated the page [Security Recommendations for REST API Applications](./settings/cloud-and-on-premise/security-recommendations.md)

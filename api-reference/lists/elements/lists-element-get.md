@@ -1,4 +1,4 @@
-# Get parameters of an element or a list of elements lists.element.get
+# Get Element Parameters or List of Elements lists.element.get
 
 {% note tip "" %}
 
@@ -12,9 +12,9 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 The method `lists.element.get` returns an element or a list of elements.
 
-## Method parameters
+## Method Parameters
 
-{% include [Note on required parameters](../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -53,7 +53,7 @@ To retrieve element data, at least one of the parameters must be specified: `ELE
 
 {% endnote %} ||
 || **SELECT**
-[`array`](../../data-types.md) | Array containing a list of fields to select. If no fields are specified, all available fields are returned by default.
+[`array`](../../data-types.md) | An array containing a list of fields to select. If no fields are specified, all available fields are returned by default.
 
 Available fields:
 - `ID` — element identifier
@@ -63,7 +63,7 @@ Available fields:
 - `CREATED_BY` — identifier of the user who created the element
 - `CREATED_USER_NAME` — name of the user who created the element (deprecated)
 - `ACTIVE_TO` — end date of activity (deprecated)
-- `BP_PUBLISHED` — publication within the workflow (deprecated)
+- `BP_PUBLISHED` — publication within the business process (deprecated)
 - `DATE_CREATE` — element creation date
 - `PREVIEW_TEXT` — preview text (deprecated)
 - `DETAIL_TEXT` — detailed text (deprecated)
@@ -74,15 +74,15 @@ Available fields:
 
   The property identifier can be obtained using the [lists.field.get](../fields/lists-field-get.md) method.
 
-||
+|| 
 || **FILTER**
-[`object`] | Object for filtering element fields in the format `{"field_1": "value_1", ... "field_N": "value_N"}`. The filterable field can take the following values: 
+[`object`] | An object for filtering element fields in the format `{"field_1": "value_1", ... "field_N": "value_N"}`. The filterable field can take the following values: 
 
 - `NAME` — element name
 - `IBLOCK_SECTION_ID` — identifier of the section to which the element is added
 - `CREATED_BY` — identifier of the user who created the element
 - `ACTIVE_TO` — end date of activity (deprecated)
-- `BP_PUBLISHED` — publication within the workflow (deprecated)
+- `BP_PUBLISHED` — publication within the business process (deprecated)
 - `DATE_CREATE` — element creation date
 - `PREVIEW_TEXT` — preview text (deprecated)
 - `DETAIL_TEXT` — detailed text (deprecated)
@@ -102,13 +102,13 @@ An additional prefix can be assigned to the key to specify the filter behavior. 
 - `!=`, `!` — not equal
 - `@` — IN, an array is passed as the value
 - `!@` — NOT IN, an array is passed as the value
-- `%` — LIKE, substring search. The `%` character should not be passed in the filter value. The search looks for the substring in any position of the string
-- `=%` — LIKE, substring search. The `%` character should be passed in the value. Examples:
+- `%` — LIKE, substring search. The `%` character should not be included in the filter value. The search looks for the substring in any position of the string
+- `=%` — LIKE, substring search. The `%` character should be included in the value. Examples:
     - `"mol%"` — searches for values starting with "mol"
     - `"%mol"` — searches for values ending with "mol"
     - `"%mol%"` — searches for values where "mol" can be in any position
-- `!%` — NOT LIKE, substring search. The `%` character should not be passed in the filter value. The search goes from both sides
-- `!=%` — NOT LIKE, substring search. The `%` character should be passed in the value. Examples:
+- `!%` — NOT LIKE, substring search. The `%` character should not be included in the filter value. The search goes from both sides
+- `!=%` — NOT LIKE, substring search. The `%` character should be included in the value. Examples:
     - `"mol%"` — searches for values not starting with "mol"
     - `"%mol"` — searches for values not ending with "mol"
     - `"%mol%"` — searches for values where the substring "mol" is not present in any position
@@ -116,37 +116,38 @@ An additional prefix can be assigned to the key to specify the filter behavior. 
 - `!=` — not equal
 - `!` — not equal
 
-If no element identifier is provided and no filtering conditions are set, all elements of the list will be returned
+If no element identifier is provided and no filtering conditions are specified, all elements of the list will be returned
 ||
 || **ELEMENT_ORDER**
-[`object`](../../data-types.md) | Object for sorting element fields in the format `{"field_1": "value_1", ... "field_N": "value_N"}`.
+[`object`](../../data-types.md) | An object for sorting element fields in the format `{"field_1": "value_1", ... "field_N": "value_N"}`.
 
-Sorting direction can take the following values:
+The sorting direction can take the following values:
 - `asc` — ascending
 - `desc` — descending
   
-Sorting of multiple properties and the following properties is not supported:
+Sorting of multiple properties, as well as properties of the following types, is not supported:
 - `S:Money` — money type
 - `PREVIEW_TEXT`
 - `DETAIL_TEXT`
-- `S:ECrm` — CRM element binding type
+- `S:ECrm` — binding to CRM elements
+- `S:map_yandex` — binding to Yandex.Map
 - `S:DiskFile` — File type (Drive)
 - `IBLOCK_SECTION_ID` ||
 || **start**
-[`integer`](../../data-types.md) | Parameter used for managing pagination.
+[`integer`](../../data-types.md) | This parameter is used to manage pagination.
 
-The page size of results is always static — 50 records.
+The result page size is always static — 50 records.
 
-To select the second page of results, the value `50` must be passed. To select the third page of results — the value `100`, and so on.
+To select the second page of results, you must pass the value `50`. To select the third page of results — the value `100`, and so on.
 
 The formula for calculating the `start` parameter value:
 
-`start = (N - 1) * 50`, where `N` — the number of the desired page ||
+`start = (N - 1) * 50`, where `N` — the desired page number ||
 |#
 
-## Code examples
+## Code Examples
 
-{% include [Note on examples](../../../_includes/examples.md) %}
+{% include [Note on Examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -280,14 +281,17 @@ The formula for calculating the `start` parameter value:
             },
             ELEMENT_ORDER: {
                 NAME: 'asc'
-            },
-            start: 0
+            }
         },
         function(res) {
             if (res.error()) {
                 console.error(res.error());
             } else {
                 console.log(res.data());
+
+                if (res.more()) {
+                    res.next();
+                }
             }
         }
     );
@@ -332,16 +336,16 @@ The formula for calculating the `start` parameter value:
 
 {% endlist %}
 
-## Response handling
+## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
     "result": [
         {
         "ID": "6999",
-        "NAME": "Test element",
+        "NAME": "Test Element",
         "IBLOCK_SECTION_ID": null,
         "CREATED_BY": "1269",
         "CODE": "test_element",
@@ -360,15 +364,15 @@ HTTP status: **200**
         "finish": 1763656328.442951,
         "duration": 0.442950963973999,
         "processing": 0,
-        "date_start": "2025-11-19T14:32:08+02:00",
-        "date_finish": "2025-11-19T14:32:08+02:00",
+        "date_start": "2025-11-19T14:32:08+01:00",
+        "date_finish": "2025-11-19T14:32:08+01:00",
         "operating_reset_at": 1763656928,
         "operating": 0
     }
 }
 ```
 
-### Returned data
+### Returned Data
 
 #|
 || **Name**
@@ -383,9 +387,9 @@ An empty array means that there are no elements in the list, or the elements do 
 [`time`](../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
-## Error handling
+## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {
@@ -396,18 +400,18 @@ HTTP status: **400**
 
 {% include notitle [error handling](../../../_includes/error-info.md) %}
 
-### Possible error codes
+### Possible Error Codes
 
 #|
 || **Code** | **Description** | **Value** ||
 || `ERROR_REQUIRED_PARAMETERS_MISSING` | Required parameter `X` is missing | Required parameter is missing ||
 || `ERROR_IBLOCK_NOT_FOUND` | Iblock not found | Information block not found ||
-|| `ACCESS_DENIED` | Access denied | Insufficient rights to read the element ||
+|| `ACCESS_DENIED` | Access denied | Insufficient permissions to read the element ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
-## Continue learning 
+## Continue Learning 
 
 - [{#T}](./lists-element-add.md)
 - [{#T}](./lists-element-update.md)

@@ -1,4 +1,4 @@
-# Delete CRM Item - crm.item.delete
+# Delete CRM Item: crm.item.delete
 
 {% note tip "" %}
 
@@ -8,30 +8,32 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`crm`](../../scopes/permissions.md)
 > 
-> Who can execute the method: any user with the "delete" access permission for CRM object items
+> Who can execute the method: any user with the "delete" permission for CRM object elements.
 
-This method deletes a CRM object item by its item ID and item type ID.
+This method deletes a CRM object element by its item ID and entity type ID.
 
 ## Method Parameters
 
-{% include [Footnote on parameters](../../../_includes/required.md) %}
+{% include [Note on parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **entityTypeId***
-[`integer`][1] | The ID of the [system](./index.md) or [user-defined type](./user-defined-object-types/index.md) whose item we want to delete ||
-|| **id***
-[`integer`][1] | The ID of the item to be deleted.
+[`integer`][1] | The identifier of the [system](../data-types.md#object_type) or [custom type](./user-defined-object-types/index.md) whose element we want to delete.
 
-This can be obtained using the [`crm.item.list`](./crm-item-list.md) method or when creating an item with [`crm.item.add`](./crm-item-add.md) ||
+Numerical values for system types (Lead — 1, Deal — 2, Contact — 3, Company — 4, Invoice — 31, etc.) are listed in the [CRM object types reference](../data-types.md#object_type). The identifier of the SPA can be obtained using the [crm.type.list](./user-defined-object-types/crm-type-list.md) method. ||
+|| **id***
+[`integer`][1] | The identifier of the item to be deleted.
+
+It can be obtained using the [`crm.item.list`](./crm-item-list.md) method or when creating an item with [`crm.item.add`](./crm-item-add.md). ||
 |#
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
-Deleting an item with `id = 1`, belonging to a smart process with `entityTypeId = 1268`
+Deleting an item with `id = 1`, belonging to the SPA with `entityTypeId = 1268`.
 
 {% list tabs %}
 
@@ -60,20 +62,20 @@ Deleting an item with `id = 1`, belonging to a smart process with `entityTypeId 
     ```js
     try
     {
-    	const response = await $b24.callMethod(
-    		'crm.item.delete',
-    		{
-    			entityTypeId: 1268,
-    			id: 1,
-    		}
-    	);
-    	
-    	const result = response.getData().result;
-    	console.info(result);
+        const response = await $b24.callMethod(
+            'crm.item.delete',
+            {
+                entityTypeId: 1268,
+                id: 1,
+            }
+        );
+        
+        const result = response.getData().result;
+        console.info(result);
     }
     catch( error )
     {
-    	console.error(error);
+        console.error(error);
     }
     ```
 
@@ -111,23 +113,23 @@ Deleting an item with `id = 1`, belonging to a smart process with `entityTypeId 
 - BX24.js
 
     ```js
-        BX24.callMethod(
-            'crm.item.delete',
+    BX24.callMethod(
+        'crm.item.delete',
+        {
+            entityTypeId: 1268,
+            id: 1,
+        },
+        (result) => {
+            if (result.error())
             {
-                entityTypeId: 1268,
-                id: 1,
-            },
-            (result) => {
-                if (result.error())
-                {
-                    console.error(result.error());
+                console.error(result.error());
 
-                    return;
-                }
+                return;
+            }
 
-                console.info(result.data());
-            },
-        );
+            console.info(result.data());
+        },
+    );
     ```
 
 - PHP CRest
@@ -152,7 +154,7 @@ Deleting an item with `id = 1`, belonging to a smart process with `entityTypeId 
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -177,14 +179,14 @@ HTTP status: **200**
 || **result**
 [`array`][1] | The root element of the response.
 
-Returns an empty array `[]` in case of success ||
+Returns an empty array `[]` in case of success. ||
 || **time**
-[`time`][1] | Information about the request execution time ||
+[`time`][1] | Information about the execution time of the request. ||
 |#
 
 ## Error Handling
 
-HTTP status: **400**, **403**
+HTTP Status: **400**, **403**
 
 ```json
 {
@@ -199,14 +201,13 @@ HTTP status: **400**, **403**
 
 #|
 || **Code**                          | **Description**                                     | **Value**                                                      ||
-|| `allowed_only_intranet_user`     | Action allowed only for intranet users            | User is not an intranet user                                   ||
-|| `NOT_FOUND`                      | Smart process not found                             | Occurs when an invalid `entityTypeId` is passed               ||
-|| `NOT_FOUND`                      | Item not found                                     | An item with the given `id` of type `entityTypeId` does not exist ||
-|| `ACCESS_DENIED`                  | Access denied                                       | User does not have permission to delete items of type `entityTypeId` ||
+|| `allowed_only_intranet_user`     | Action allowed only for intranet users             | User is not an intranet user                                   ||
+|| `NOT_FOUND`                      | SPA not found                                      | Occurs when an invalid `entityTypeId` is passed              ||
+|| `NOT_FOUND`                      | Item not found                                    | An item with the given `id` of type `entityTypeId` does not exist. ||
+|| `ACCESS_DENIED`                  | Access denied                                      | User does not have permission to delete items of type `entityTypeId`. ||
 |#
 
 {% include [system errors](./../../../_includes/system-errors.md) %}
-
 
 ## Continue Learning
 

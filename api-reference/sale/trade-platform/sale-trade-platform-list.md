@@ -1,4 +1,4 @@
-# Get a list of order sources sale.tradePlatform.list
+# Get a List of Order Sources: sale.tradePlatform.list
 
 {% note tip "" %}
 
@@ -8,7 +8,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`sale`](../../scopes/permissions.md)
 >
-> Who can execute the method: any user with the "View product catalog" access permission
+> Who can execute the method: any user with the "View product catalog" access permission.
 
 The method `sale.tradePlatform.list` retrieves a list of order sources.
 
@@ -20,28 +20,28 @@ The method `sale.tradePlatform.list` retrieves a list of order sources.
 || **select**
 [`array`](../../data-types.md) | An array containing the list of fields to select (see fields of the [sale_order_trade_platform](../data-types.md#sale_order_trade_platform) object) ||
 || **filter**
-[`object`](../../data-types.md) | A list of fields for filtering. When specifying multiple fields, AND logic is used.
+[`object`](../../data-types.md) | A list of fields for filtering. When specifying multiple fields, AND logic is applied.
 
 The fields correspond to the fields of the [sale_order_trade_platform](../data-types.md#sale_order_trade_platform) object.
 
-An additional prefix can be assigned to the key to clarify the filter behavior. Possible prefix values:
+An additional prefix can be assigned to the key to clarify the filter's behavior. Possible prefix values:
 - `=` — equals (works with arrays as well)
-- `%` — LIKE, substring search. The % symbol in the filter value does not need to be passed. The search looks for the substring in any position of the string
+- `%` — LIKE, substring search. The % symbol in the filter value does not need to be passed. The search looks for the substring in any position of the string.
 - `>` — greater than
 - `<` — less than
 - `!=` — not equal
-- `!%` — NOT LIKE, substring search. The % symbol in the filter value does not need to be passed. The search goes from both sides.
+- `!%` — NOT LIKE, substring search. The % symbol in the filter value does not need to be passed. The search is conducted from both sides.
 - `>=` — greater than or equal to
 - `<=` — less than or equal to
-- `=%` — LIKE, substring search. The % symbol needs to be passed in the value. Examples: 
+- `=%` — LIKE, substring search. The % symbol must be passed in the value. Examples: 
     - `"mol%"` — searching for values starting with "mol"
     - `"%mol"` — searching for values ending with "mol"
     - `"%mol%"` — searching for values where "mol" can be in any position
 - `%=` — LIKE (see description above)
-- `!=%` — NOT LIKE, substring search. The % symbol needs to be passed in the value. Examples:
+- `!=%` — NOT LIKE, substring search. The % symbol must be passed in the value. Examples:
     - `"mol%"` — searching for values not starting with "mol"
     - `"%mol"` — searching for values not ending with "mol"
-    - `"%mol%"` — searching for values where the substring "mol" is not present in any position
+    - `"%mol%"` — searching for values where the substring "mol" is absent in any position
 - `!%=` — NOT LIKE (see description above)
  ||
 || **order**
@@ -49,7 +49,7 @@ An additional prefix can be assigned to the key to clarify the filter behavior. 
 
 The fields correspond to the fields of the [sale_order_trade_platform](../data-types.md#sale_order_trade_platform) object. ||
 || **start**
-[`int`](../../data-types.md) | This parameter is used for managing pagination.
+[`int`](../../data-types.md) | This parameter is used for pagination control.
  
 The page size of results is always static: 50 records.
  
@@ -57,13 +57,13 @@ To select the second page of results, you need to pass the value `50`. To select
  
 The formula for calculating the `start` parameter value:
  
-`start = (N-1) * 50`, where `N` is the desired page number
+`start = (N-1) * 50`, where `N` is the desired page number.
 ||
 |#
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+{% include [Note on Examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -90,7 +90,7 @@ The formula for calculating the `start` parameter value:
 - JS
 
     ```js
-    // callListMethod: Retrieves all data at once. Use only for small selections (< 1000 items) due to high memory usage.
+    // callListMethod: Retrieves all data at once. Use only for small selections (< 1000 items) due to high memory load.
     
     try {
       const response = await $b24.callListMethod(
@@ -109,7 +109,7 @@ The formula for calculating the `start` parameter value:
       console.error('Request failed', error)
     }
     
-    // fetchListMethod: Retrieves data in parts using an iterator. Use it for large data volumes to optimize memory usage.
+    // fetchListMethod: Retrieves data in parts using an iterator. Use for large volumes of data for efficient memory consumption.
     
     try {
       const generator = $b24.fetchListMethod('sale.tradePlatform.list', { select: ['id', 'code'], filter: {'%code': 'smart'}, order: {'code': 'asc'}, start: 0 }, 'ID')
@@ -120,7 +120,7 @@ The formula for calculating the `start` parameter value:
       console.error('Request failed', error)
     }
     
-    // callMethod: Manually controls pagination through the start parameter. Use it for precise control of request batches. For large datasets, it is less efficient than fetchListMethod.
+    // callMethod: Manual control of pagination through the start parameter. Use for precise control over request batches. Less efficient for large data than fetchListMethod.
     
     try {
       const response = await $b24.callMethod('sale.tradePlatform.list', { select: ['id', 'code'], filter: {'%code': 'smart'}, order: {'code': 'asc'}, start: 0 }, 0)
@@ -170,7 +170,6 @@ The formula for calculating the `start` parameter value:
             select: ['id', 'code'],
             filter: {'%code': 'smart'},
             order: {'code': 'asc'},
-            start: 0,
         }, 
         function(result) 
         { 
@@ -181,6 +180,11 @@ The formula for calculating the `start` parameter value:
             else
             {
                 console.dir(result);
+
+                if (result.more())
+                {
+                    result.next();
+                }
             } 
         } 
     );
@@ -210,7 +214,7 @@ The formula for calculating the `start` parameter value:
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -240,20 +244,20 @@ HTTP status: **200**
 
 #|
 || **Name**
-`type` | **Description** ||
+`Type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | The root element of the response ||
+[`object`](../../data-types.md) | Root element of the response ||
 || **tradePlatforms**
-[`sale_order_trade_platform[]`](../data-types.md#sale_order_trade_platform) | An array of objects with information about order sources ||
+[`sale_order_trade_platform[]`](../data-types.md#sale_order_trade_platform) | An array of objects containing information about order sources ||
 || **total**
-[`integer`](../../data-types.md) | The total number of records found ||
+[`integer`](../../data-types.md) | Total number of records found ||
 || **time**
 [`time`](../../data-types.md) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {
@@ -277,4 +281,3 @@ HTTP status: **400**
 
 - [{#T}](./index.md)
 - [{#T}](./sale-trade-platform-get-fields.md)
-

@@ -10,7 +10,7 @@ The methods `catalog.document.element.*` add, modify, or remove product items in
 
 > Quick navigation: [all methods](#all-methods)
 
-## Connection with Other Objects
+## Relationships with Other Objects
 
 **Inventory Management Documents.** Specify the document ID in the `docId` field to process:
 - product receipt to the warehouse,

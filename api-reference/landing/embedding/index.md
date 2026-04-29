@@ -45,7 +45,7 @@ To configure:
 3. For the menu, use the methods [landing.site.bindingToMenu](./knowledge-base/landing-site-binding-to-menu.md), [landing.site.getMenuBindings](./knowledge-base/landing-site-get-menu-bindings.md), [landing.site.unbindingFromMenu](./knowledge-base/landing-site-unbinding-from-menu.md).
 4. For the group, use the methods [landing.site.bindingToGroup](./knowledge-base/landing-site-binding-to-group.md), [landing.site.getGroupBindings](./knowledge-base/landing-site-get-group-bindings.md), [landing.site.unbindingFromGroup](./knowledge-base/landing-site-unbinding-from-group.md).
 
-## Connection with Other Sections
+## Relationships with Other Sections
 
 **Sites and Pages.** The embedding location [LANDING_SETTINGS](./settings.md) works in the editor for [sites](../site/index.md) and [pages](../page/index.md). Therefore, the site and page identifiers are passed to the handler.
 

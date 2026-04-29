@@ -12,7 +12,7 @@ In the news feed and messenger, you can conduct employee polls and organize vote
 >
 > User documentation: [Polls in Bitrix24 chats: how to create and configure](https://helpdesk.bitrix24.com/open/25418811/), [Poll in the News Feed](https://helpdesk.bitrix24.com/open/25743835/)
 
-## Connection with Other Objects
+## Relationships with Other Objects
 
 **News Feed.** A poll in the news feed is linked to a post. Obtain the `ID` of the post in Bitrix24 using the [log.blogpost.get](../log/log-blogpost-get.md) method. Use the `ID` of the post in the vote.AttachedVote.* methods to manage the voting and retrieve its results.
 

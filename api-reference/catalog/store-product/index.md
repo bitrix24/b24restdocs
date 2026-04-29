@@ -16,7 +16,7 @@ Inventory balances indicate how much product is available at each inventory loca
 
 > Quick navigation: [all methods](#all-methods)
 
-## Connection with other objects
+## Relationships with Other objects
 
 **Inventories.** To select inventory balances at a specific location, specify the inventory location's `ID` in the filter of the method [catalog.storeproduct.list](./catalog-store-product-list.md). The inventory location's `ID` can be obtained using the method [catalog.store.list](../store/catalog-store-list.md).
 

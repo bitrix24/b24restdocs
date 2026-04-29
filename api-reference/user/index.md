@@ -28,7 +28,7 @@ Use the method:
 
 {% endnote %}
 
-## Connection with Other Objects
+## Relationships with Other Objects
 
 **CRM.** The user `ID` is used in system fields:
 

@@ -49,7 +49,7 @@ To work with documents in the Document Generator REST scenario:
 
 {% endnote %}
 
-## Connection with Other Objects
+## Relationships with Other Objects
 
 **Document Templates.** A template specifies the `.docx` file, region, numerator, and a set of settings that are then used when creating a document. To work with templates, use the group of methods [documentgenerator.template.*](./templates/index.md).
 

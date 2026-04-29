@@ -33,7 +33,7 @@ Permissions for working with task templates depend on the access settings in tas
 
 {% endnote %}
 
-## Connection with Other Objects
+## Relationships with Other Objects
 
 **Tasks.** The template stores the settings for the future task: title, description, deadlines, responsible persons, observers, checklist, and other parameters. Use the methods from the [Tasks](../index.md) section to work with tasks.
 
