@@ -61,6 +61,25 @@ We will use the method [crm.type.list](../../../api-reference/crm/universal/user
     $entityTypeId = $result['result']['types'][0]['entityTypeId'];
     ```
 
+- Python
+
+    ```python
+    from b24pysdk import BitrixWebhook, Client
+
+    client = Client(
+        BitrixWebhook(
+            domain="your-domain.bitrix24.com",
+            auth_token="your-webhook-token",
+        )
+    )
+
+    entity_type_id = int(
+        client.crm.type.list(
+            filter={"title": "Equipment Purchase"},
+        ).response.result["types"][0]["entityTypeId"]
+    )
+    ```
+
 {% endlist %}
 
 As a result, we will obtain and save the `entityTypeId` of the required smart process.
@@ -162,6 +181,20 @@ We will use the method [crm.category.add](../../../api-reference/crm/universal/c
     $categoryId = $result['result']['category']['id'];
     ```
 
+- Python
+  
+    ```python
+    category_id = int(
+        client.crm.category.add(
+            entity_type_id=entity_type_id,
+            fields={
+                "name": "New Funnel",
+                "sort": 100,
+            },
+        ).response.result["category"]["id"]
+    )
+    ```
+
 {% endlist %}
 
 As a result, we will obtain and save the `id` of the created funnel.
@@ -229,6 +262,15 @@ We will use the method [crm.status.list](../../../api-reference/crm/status/crm-s
         [ 'filter' => [ 'ENTITY_ID' => $entityId ] ]
     );
     $stages = $result['result'];
+    ```
+
+- Python
+  
+    ```python
+    entity_id = f"DYNAMIC_{entity_type_id}_STAGE_{category_id}"
+    stages = client.crm.status.list(
+        filter={"ENTITY_ID": entity_id},
+    ).response.result
     ```
 
 {% endlist %}
@@ -363,6 +405,17 @@ We will use the method [crm.status.update](../../../api-reference/crm/status/crm
     );
     ```
 
+- Python
+  
+    ```python
+    client.crm.status.update(
+        stage_id,
+        fields={
+            "NAME": "New Name",
+        },
+    ).response
+    ```
+
 {% endlist %}
 
 As a result, we will receive `true`, indicating that the stage has been successfully modified. If you receive an `error` in the result, refer to the documentation for the method [crm.status.update](../../../api-reference/crm/status/crm-status-update.md) for possible error descriptions.
@@ -439,6 +492,20 @@ We will use the method [crm.status.add](../../../api-reference/crm/status/crm-st
         ]
     );
     $newStageId = $result['result'];
+    ```
+
+- Python
+  
+    ```python
+    new_stage_id = client.crm.status.add(
+        fields={
+            "ENTITY_ID": entity_id,
+            "STATUS_ID": f"DT{entity_type_id}_{category_id}:MY_STAGE",
+            "NAME": "My Stage",
+            "SORT": 60,
+            "SEMANTICS": "F",
+        }
+    ).response.result
     ```
 
 {% endlist %}
@@ -729,6 +796,114 @@ In this example, we create a new funnel in the smart process, change the name of
     foreach ($tableData as $row) {
         echo "In Progress: " . $row['In Progress'] . " | Success: " . $row['Success'] . " | Failure: " . $row['Failure'] . "\n";
     }
+    ```
+
+- Python
+  
+    ```python
+    from b24pysdk import BitrixWebhook, Client
+    from b24pysdk.errors import BitrixAPIError
+
+
+    def print_stages_table(stages):
+        columns = {
+            "In Progress": [],
+            "Success": [],
+            "Failure": [],
+        }
+
+        for stage in stages:
+            semantics = (stage.get("EXTRA") or {}).get("SEMANTICS") or stage.get("SEMANTICS")
+            if semantics == "S":
+                columns["Success"].append(stage["NAME"])
+            elif semantics == "F":
+                columns["Failure"].append(stage["NAME"])
+            else:
+                columns["In Progress"].append(stage["NAME"])
+
+        max_rows = max(
+            len(columns["In Progress"]),
+            len(columns["Success"]),
+            len(columns["Failure"]),
+        )
+
+        table_data = []
+        for index in range(max_rows):
+            table_data.append(
+                {
+                    "In Progress": columns["In Progress"][index] if index < len(columns["In Progress"]) else "",
+                    "Success": columns["Success"][index] if index < len(columns["Success"]) else "",
+                    "Failure": columns["Failure"][index] if index < len(columns["Failure"]) else "",
+                }
+            )
+
+        for row in table_data:
+            print(
+                "In Progress: "
+                + row["In Progress"]
+                + " | Success: "
+                + row["Success"]
+                + " | Failure: "
+                + row["Failure"]
+            )
+
+
+    client = Client(
+        BitrixWebhook(
+            domain="your-domain.bitrix24.com",
+            auth_token="your-webhook-token",
+        )
+    )
+
+    try:
+        entity_type_id = int(
+            client.crm.type.list(
+                filter={"title": "Equipment Purchase"},
+            ).response.result["types"][0]["entityTypeId"]
+        )
+
+        category_id = int(
+            client.crm.category.add(
+                entity_type_id=entity_type_id,
+                fields={
+                    "name": "New Funnel",
+                    "sort": 100,
+                },
+            ).response.result["category"]["id"]
+        )
+        entity_id = f"DYNAMIC_{entity_type_id}_STAGE_{category_id}"
+
+        stages = client.crm.status.list(
+            filter={"ENTITY_ID": entity_id},
+        ).response.result
+
+        if stages:
+            first_stage_id = int(stages[0]["ID"])
+            client.crm.status.update(
+                first_stage_id,
+                fields={
+                    "NAME": "First Stage",
+                },
+            ).response
+
+        client.crm.status.add(
+            fields={
+                "ENTITY_ID": entity_id,
+                "STATUS_ID": f"DT{entity_type_id}_{category_id}:MY_STAGE",
+                "NAME": "My Stage",
+                "SORT": 60,
+                "SEMANTICS": "F",
+            }
+        ).response
+
+        stages = client.crm.status.list(
+            filter={"ENTITY_ID": entity_id},
+        ).response.result
+    except BitrixAPIError as error:
+        print(f"Error: {error}")
+    else:
+        print("Stages Table:")
+        print_stages_table(stages)
     ```
 
 {% endlist %}

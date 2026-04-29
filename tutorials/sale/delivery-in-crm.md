@@ -151,6 +151,59 @@ For more details on the request and response formats, refer to the section [Webh
     echo '</PRE>';
     ```
 
+- Python
+
+    ```python
+    from b24pysdk import BitrixWebhook, Client
+    from b24pysdk.errors import BitrixAPIError
+
+    client = Client(
+        BitrixWebhook(
+            domain="your-domain.bitrix24.com",
+            auth_token="your-webhook-token",
+        )
+    )
+
+    try:
+        response = client.sale.delivery.handler.add(
+        code="uber",
+        name="Uber",
+        settings={
+            "CALCULATE_URL": "https://gateway.bx/calculate.php",
+            "CREATE_DELIVERY_REQUEST_URL": "https://gateway.bx/create_delivery_request.php",
+            "CANCEL_DELIVERY_REQUEST_URL": "https://gateway.bx/cancel_delivery_request.php",
+            "HAS_CALLBACK_TRACKING_SUPPORT": "Y",
+            "CONFIG": [
+                {
+                    "TYPE": "STRING",
+                    "CODE": "MY_FIRST_SETTING",
+                    "NAME": "My first setting",
+                },
+                {
+                    "TYPE": "STRING",
+                    "CODE": "MY_SECOND_SETTING",
+                    "NAME": "My second setting",
+                },
+            ],
+        },
+        profiles=[
+            {
+                "NAME": "Taxi",
+                "CODE": "TAXI",
+                "DESCRIPTION": "Taxi Delivery",
+            },
+            {
+                "NAME": "Cargo",
+                "CODE": "CARGO",
+                "DESCRIPTION": "Cargo Delivery",
+            },
+        ],
+        ).response
+        print(response.result)
+    except BitrixAPIError as error:
+        print(error)
+    ```
+
 {% endlist %}
 
 If the handler is successfully added, the method will return its identifier. If you receive an `error`, refer to the documentation for possible errors in the method [sale.delivery.handler.add](../../api-reference/sale/delivery/handler/sale-delivery-handler-add.md).
@@ -244,6 +297,31 @@ We will create a delivery service using the method [sale.delivery.add](../../api
     echo '<PRE>';
     print_r($result);
     echo '</PRE>';
+    ```
+
+- Python
+
+    ```python
+    try:
+        response = client.sale.delivery.add(
+        rest_code="uber",
+        name="Uber Taxi",
+        currency="USD",
+        active=True,
+        config=[
+            {
+                "CODE": "MY_FIRST_SETTING",
+                "VALUE": "My first setting value",
+            },
+            {
+                "CODE": "MY_SECOND_SETTING",
+                "VALUE": "My second setting value",
+            },
+        ],
+        ).response
+        print(response.result)
+    except BitrixAPIError as error:
+        print(error)
     ```
 
 {% endlist %}
@@ -375,6 +453,27 @@ We will pass an object `fields` with the values for the `Address From` property.
     echo '</PRE>';
     ```
 
+- Python
+
+    ```python
+    try:
+        response = client.sale.shipmentproperty.add(
+        fields={
+            "personTypeId": 3,
+            "propsGroupId": 6,
+            "name": "Address From",
+            "active": "Y",
+            "sort": "100",
+            "type": "ADDRESS",
+            "required": "Y",
+            "isAddressFrom": "Y",
+        },
+        ).response
+        print(response.result)
+    except BitrixAPIError as error:
+        print(error)
+    ```
+
 {% endlist %}
 
 If the property is successfully added, the method will return a `property` object with the property identifier. If you receive an `error`, refer to the documentation for possible errors in the method [sale.shipmentproperty.add](../../api-reference/sale/shipment-property/sale-shipment-property-add.md).
@@ -470,6 +569,27 @@ In the `fields` object for the `Address To` property, we will pass the name `Add
     echo '</PRE>';
     ```
 
+- Python
+
+    ```python
+    try:
+        response = client.sale.shipmentproperty.add(
+        fields={
+            "personTypeId": 3,
+            "propsGroupId": 6,
+            "name": "Address To",
+            "active": "Y",
+            "sort": "100",
+            "type": "ADDRESS",
+            "required": "Y",
+            "isAddressTo": "Y",
+        },
+        ).response
+        print(response.result)
+    except BitrixAPIError as error:
+        print(error)
+    ```
+
 {% endlist %}
 
 If the property is successfully added, the method will return a `property` object with the property identifier. If you receive an `error`, refer to the documentation for possible errors in the method [sale.shipmentproperty.add](../../api-reference/sale/shipment-property/sale-shipment-property-add.md).
@@ -556,6 +676,22 @@ To link the properties `Address From` and `Address To` to the profiles `Taxi` an
             ]
         ]
     );
+    ```
+
+- Python
+
+    ```python
+    try:
+        response = client.sale.propertyrelation.add(
+        fields={
+            "entityId": 227,
+            "entityType": "D",
+            "propertyId": 102,
+        },
+        ).response
+        print(response.result)
+    except BitrixAPIError as error:
+        print(error)
     ```
 
 {% endlist %}
@@ -658,6 +794,23 @@ To add an additional service to the delivery service, we will call the method [s
     echo '<PRE>';
     print_r($result);
     echo '</PRE>';
+    ```
+
+- Python
+
+    ```python
+    try:
+        response = client.sale.delivery.extra.service.add(
+        delivery_id=227,
+        type="checkbox",
+        name="Door Delivery",
+        active=True,
+        code="door_delivery",
+        price=1000,
+        ).response
+        print(response.result)
+    except BitrixAPIError as error:
+        print(error)
     ```
 
 {% endlist %}

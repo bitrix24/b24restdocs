@@ -92,6 +92,36 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
     echo '</PRE>';
     ```
 
+- Python
+
+    ```python
+    from b24pysdk import BitrixWebhook, Client
+    from b24pysdk.errors import BitrixAPIError
+
+    client = Client(
+        BitrixWebhook(
+            domain="your-domain.bitrix24.com",
+            auth_token="your-webhook-token",
+        )
+    )
+
+    try:
+        result = client.sale.basketitem.add(
+            fields={
+                "orderId": 5147,
+                "quantity": 4,
+                "productId": 6544,
+                "currency": "EUR",
+                "price": 1100,
+                "discountPrice": -1070,
+                "customPrice": "Y",
+            },
+        ).response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(error)
+    ```
+
 {% endlist %}
 
 ## Result

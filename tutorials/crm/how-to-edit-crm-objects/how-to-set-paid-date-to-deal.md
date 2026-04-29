@@ -63,6 +63,26 @@ To get the identifier of the deal field, we use the method [crm.deal.userfield.l
     );
     ```
 
+- Python
+  
+    ```python
+    from b24pysdk import BitrixWebhook, Client
+
+    client = Client(
+        BitrixWebhook(
+            domain="your-domain.bitrix24.com",
+            auth_token="your-webhook-token",
+        )
+    )
+
+    result = client.crm.deal.userfield.list(
+        filter={
+            "LANG": "en",
+            "USER_TYPE_ID": "date",
+        }
+    ).response.result
+    ```
+
 {% endlist %}
 
 As a result, we will obtain information about all deal fields of type "Date". We will identify the appropriate field by its name in the `EDIT_FORM_LABEL` parameter. The field identifier will be taken from the `FIELD_NAME` field.
@@ -184,6 +204,15 @@ We use the method [crm.item.payment.list](../../../api-reference/crm/universal/p
     );
     ```
 
+- Python
+  
+    ```python
+    result = client.crm.item.payment.list(
+        entity_id=6917,
+        entity_type_id=2,
+    ).response.result
+    ```
+
 {% endlist %}
 
 As a result, we will obtain a list of payments with fields for the deal. We will take the payment date from the `datePaid` field.
@@ -245,6 +274,17 @@ To modify the deal field and record the payment date, we use the method [crm.dea
     );
     ```
 
+- Python
+  
+    ```python
+    result = client.crm.deal.update(
+        bitrix_id=6917,
+        fields={
+            "UF_CRM_1723209318": "2025-04-29T13:03:20+02:00",
+        },
+    ).response.result
+    ```
+
 {% endlist %}
 
 As a result, we will receive `true`, indicating that the deal has been successfully updated. If you receive an `error` in the result, refer to the documentation for the method [crm.deal.update](../../../api-reference/crm/deals/crm-deal-update.md#error-handling) to understand possible errors.
@@ -285,6 +325,14 @@ The result does not contain information about the deal fields. To verify whether
             'id' => 6917
         ]
     );
+    ```
+
+- Python
+  
+    ```python
+    result = client.crm.deal.get(
+        bitrix_id=6917,
+    ).response.result
     ```
 
 {% endlist %}
@@ -493,6 +541,68 @@ As a result, we will obtain the values of all deal fields, including custom fiel
             }
         }
     }
+    ```
+
+- Python
+
+    ```python
+    from b24pysdk import BitrixWebhook, Client
+    from b24pysdk.errors import BitrixAPIError
+
+    client = Client(
+        BitrixWebhook(
+            domain="your-domain.bitrix24.com",
+            auth_token="your-webhook-token",
+        )
+    )
+
+    try:
+        user_fields = client.crm.deal.userfield.list(
+            filter={
+                "LANG": "en",
+                "USER_TYPE_ID": "date",
+            }
+        ).response.result
+    except BitrixAPIError as error:
+        print(f"Error: {error}")
+    else:
+        date_field = next(
+            (
+                field
+                for field in user_fields
+                if field.get("EDIT_FORM_LABEL") == "Payment Date"
+            ),
+            None,
+        )
+
+        if date_field:
+            print("FIELD_NAME for 'Payment Date':", date_field["FIELD_NAME"])
+
+            deal_id = int(input("Enter the deal ID: "))
+
+            try:
+                payments = client.crm.item.payment.list(
+                    entity_type_id=2,
+                    entity_id=deal_id,
+                ).response.result
+            except BitrixAPIError as error:
+                print(f"Error: {error}")
+            else:
+                if payments:
+                    date_paid = payments[0]["datePaid"]
+                    print("Payment Date:", date_paid)
+
+                    try:
+                        client.crm.deal.update(
+                            bitrix_id=deal_id,
+                            fields={
+                                date_field["FIELD_NAME"]: date_paid,
+                            },
+                        ).response
+                    except BitrixAPIError as error:
+                        print(f"Error: {error}")
+                    else:
+                        print("Deal successfully updated")
     ```
 
 {% endlist %}

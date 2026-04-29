@@ -61,6 +61,26 @@ To obtain the type identifier, we use the [crm.type.list](../../../api-reference
     );
     ```
 
+- Python
+
+    ```python
+    from b24pysdk import BitrixWebhook, Client
+
+
+    client = Client(
+        BitrixWebhook(
+            domain="your-domain.bitrix24.com",
+            auth_token="your-webhook-token",
+        )
+    )
+
+    response = client.crm.type.list(
+        filter={
+            "title": "Equipment Purchase",
+        }
+    ).response
+    ```
+
 {% endlist %}
 
 As a result, we obtain two ID values:
@@ -143,6 +163,18 @@ To add a comment, we use the [crm.timeline.comment.add](../../../api-reference/c
             ]
         ]
     );
+    ```
+
+- Python
+
+    ```python
+    response = client.crm.timeline.comment.add(
+        fields={
+            "ENTITY_ID": 19,
+            "ENTITY_TYPE": "DYNAMIC_177",
+            "COMMENT": "Confirm the purchase via email!",
+        }
+    ).response
     ```
 
 {% endlist %}
@@ -285,6 +317,61 @@ We have added a comment to the timeline of the smart process entity and received
 
     // Call the function to find the smart process and add a comment
     findSPA();
+    ```
+
+- Python
+
+    ```python
+    from b24pysdk import BitrixWebhook, Client
+    from b24pysdk.errors import BitrixAPIError
+
+
+    def find_spa(client):
+        spa_title = "your_smart_process_name"
+
+        try:
+            resp = client.crm.type.list(
+                filter={"title": spa_title},
+            ).response
+        except BitrixAPIError as error:
+            print(f"Error finding smart process: {error}")
+            return
+
+        types = resp.result["types"]
+        if types:
+            spa_id = types[0]["entityTypeId"]
+            print(f"Smart process found: {spa_id}")
+            create_comment(client, spa_id)
+        else:
+            print("Smart process not found or data is empty")
+
+
+    def create_comment(client, spa_id):
+        element_id = "your_element_ID"
+        comment_text = "your_comment"
+
+        try:
+            client.crm.timeline.comment.add(
+                fields={
+                    "ENTITY_ID": element_id,
+                    "ENTITY_TYPE": f"DYNAMIC_{spa_id}",
+                    "COMMENT": comment_text,
+                },
+            ).response
+        except BitrixAPIError as error:
+            print(f"Error creating comment: {error}")
+        else:
+            print("Comment added")
+
+
+    client = Client(
+        BitrixWebhook(
+            domain="your-domain.bitrix24.com",
+            auth_token="your-webhook-token",
+        )
+    )
+
+    find_spa(client)
     ```
 
 {% endlist %}
