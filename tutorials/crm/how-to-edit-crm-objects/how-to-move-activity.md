@@ -63,6 +63,26 @@ We will use the method [crm.activity.list](../../../api-reference/crm/timeline/a
     );
     ```
 
+- Python
+
+    ```python
+    from b24pysdk import BitrixWebhook, Client
+
+    client = Client(
+        BitrixWebhook(
+            domain="your-domain.bitrix24.com",
+            auth_token="your-webhook-token",
+        )
+    )
+
+    result = client.crm.activity.list(
+        filter={
+            "OWNER_TYPE_ID": 1,
+            "OWNER_ID": 1000977,
+        }
+    ).response.result
+    ```
+
 {% endlist %}
 
 As a result, we will receive all deals associated with the specified entity.
@@ -230,6 +250,20 @@ All required fields for leads in your Bitrix24 must be specified in the method; 
     );
     ```
 
+- Python
+
+    ```python
+    result = client.crm.lead.add(
+        fields={
+            "TITLE": "Second Lead",
+            "ASSIGNED_BY_ID": 1,
+        },
+        params={
+            "REGISTER_SONET_EVENT": "Y",
+        },
+    ).response.result
+    ```
+
 {% endlist %}
 
 As a result, we will receive the ID of the created lead.
@@ -288,6 +322,18 @@ To transfer the deal, we will use the method [crm.activity.binding.move](../../.
             'targetEntityId' => 1000979 
         ]
     );
+    ```
+
+- Python
+
+    ```python
+    result = client.crm.activity.binding.move(
+        activity_id=7687,
+        source_entity_type_id=1,
+        source_entity_id=1000977,
+        target_entity_type_id=1,
+        target_entity_id=1000979,
+    ).response.result
     ```
 
 {% endlist %}
@@ -474,6 +520,79 @@ As a result, we will receive `true`, indicating that the deal transfer was succe
 
     // Execute the function
     transferActivity($firstLeadId, $searchPhrase);
+    ```
+
+- Python
+
+    ```python
+    from b24pysdk import BitrixWebhook, Client
+    from b24pysdk.errors import BitrixAPIError
+
+
+    def transfer_activity(client, first_lead_id, search_phrase):
+        try:
+            activities = client.crm.activity.list(
+                filter={
+                    "OWNER_TYPE_ID": 1,
+                    "OWNER_ID": first_lead_id,
+                }
+            ).response.result
+        except BitrixAPIError as error:
+            print(f"Error: {error}")
+            return
+
+        target_activity = None
+        for activity in activities:
+            if search_phrase in str(activity.get("DESCRIPTION") or ""):
+                target_activity = activity
+                break
+
+        if target_activity is None:
+            print(f"No activity found with description containing '{search_phrase}'.")
+            return
+
+        activity_id = int(target_activity["ID"])
+
+        try:
+            new_lead_id = client.crm.lead.add(
+                fields={
+                    "TITLE": "Second Lead",
+                    "ASSIGNED_BY_ID": 1,
+                },
+                params={
+                    "REGISTER_SONET_EVENT": "Y",
+                },
+            ).response.result
+        except BitrixAPIError as error:
+            print(f"Error: {error}")
+            return
+
+        try:
+            result = client.crm.activity.binding.move(
+                activity_id=activity_id,
+                source_entity_type_id=1,
+                source_entity_id=first_lead_id,
+                target_entity_type_id=1,
+                target_entity_id=new_lead_id,
+            ).response.result
+        except BitrixAPIError as error:
+            print(f"Error: {error}")
+        else:
+            if result:
+                print("Deal successfully transferred.")
+
+
+    client = Client(
+        BitrixWebhook(
+            domain="your-domain.bitrix24.com",
+            auth_token="your-webhook-token",
+        )
+    )
+
+    first_lead_id = int(input("Enter the ID of the first lead: "))
+    search_phrase = input("Enter the phrase to search in the email body: ")
+
+    transfer_activity(client, first_lead_id, search_phrase)
     ```
 
 {% endlist %}

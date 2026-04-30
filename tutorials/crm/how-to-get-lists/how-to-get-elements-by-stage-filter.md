@@ -48,6 +48,24 @@ We will use the [crm.category.list](../../../api-reference/crm/universal/categor
     );
     ```
 
+- Python
+  
+    ```python
+    from b24pysdk import BitrixWebhook, Client
+    from b24pysdk.errors import BitrixAPIError
+
+    client = Client(
+        BitrixWebhook(
+            domain="your-domain.bitrix24.com",
+            auth_token="your-webhook-token",
+        )
+    )
+
+    result = client.crm.category.list(
+        entity_type_id=2,
+    ).response.result
+    ```
+
 {% endlist %}
 
 As a result, we obtained the deal funnels. We will identify the required funnel by its name in the `name` field. The funnel identifier will be taken from the `id` field.
@@ -130,6 +148,16 @@ If the funnel `ID` is `0`, make the request for stages without adding `_ID`.
             ]
         ]
     );
+    ```
+
+- Python
+  
+    ```python
+    result = client.crm.status.list(
+        filter={
+            "ENTITY_ID": "DEAL_STAGE_10",
+        }
+    ).response.result
     ```
 
 {% endlist %}
@@ -323,6 +351,18 @@ We will use the [crm.item.list](../../../api-reference/crm/universal/crm-item-li
     );
     ```
 
+- Python
+  
+    ```python
+    result = client.crm.item.list(
+        entity_type_id=2,
+        select=["id", "title", "assignedById", "opportunity"],
+        filter={
+            "stageId": ["C10:PREPAYMENT_INVOICE"],
+        },
+    ).response.result
+    ```
+
 {% endlist %}
 
 As a result, we obtained a list of items at the requested stage.
@@ -397,6 +437,14 @@ In the obtained result, the `ID` of the employee responsible for the item is ind
             'ID' => 29
         ]
     );
+    ```
+
+- Python
+  
+    ```python
+    result = client.user.get(
+        filter={"ID": 29},
+    ).response.result
     ```
 
 {% endlist %}
@@ -725,6 +773,88 @@ As a result, we will receive data about the employee, including the `NAME` and `
     foreach ($table as $row) {
         echo implode("\t", $row) . "\n";
     }
+    ```
+
+- Python
+
+    ```python
+    from b24pysdk import BitrixWebhook, Client
+
+    client = Client(
+        BitrixWebhook(
+            domain="your-domain.bitrix24.com",
+            auth_token="your-webhook-token",
+        )
+    )
+
+    funnel_name = input("Enter the name of the deal funnel: ")
+
+    try:
+        categories = client.crm.category.list(entity_type_id=2).response.result.get("categories", [])
+        selected_funnel = next(
+            (c for c in categories if c.get("name") == funnel_name),
+            None,
+        )
+
+        if not selected_funnel:
+            print("Funnel not found.")
+        else:
+            stage_name = input("Enter the name of the stage: ")
+            funnel_id = int(selected_funnel["id"])
+            entity_id = "DEAL_STAGE" if funnel_id == 0 else f"DEAL_STAGE_{funnel_id}"
+            stages = client.crm.status.list(filter={"ENTITY_ID": entity_id}).response.result
+            selected_stage = next(
+                (s for s in stages if s.get("NAME") == stage_name),
+                None,
+            )
+
+            if not selected_stage:
+                print("Stage not found.")
+            else:
+                items = client.crm.item.list(
+                    entity_type_id=2,
+                    select=["id", "title", "assignedById", "opportunity"],
+                    filter={"stageId": selected_stage["STATUS_ID"]},
+                ).response.result.get("items", [])
+
+                user_ids = sorted({int(item["assignedById"]) for item in items if item.get("assignedById")})
+                users = client.user.get(filter={"ID": user_ids}).response.result if user_ids else []
+                user_map = {
+                    int(user["ID"]): {
+                        "name": user.get("NAME", ""),
+                        "lastName": user.get("LAST_NAME", ""),
+                    }
+                    for user in users
+                }
+
+                table = []
+
+                table.append(
+                    [
+                        "Deal ID",
+                        "Title",
+                        "Responsible Name",
+                        "Responsible Last Name",
+                        "Expected Revenue",
+                    ]
+                )
+
+                for deal in items:
+                    responsible = user_map.get(int(deal["assignedById"]), {"name": "Unknown", "lastName": "Unknown"})
+                    table.append(
+                        [
+                            str(deal["id"]),
+                            str(deal.get("title", "")),
+                            str(responsible["name"]),
+                            str(responsible["lastName"]),
+                            str(deal.get("opportunity", 0)),
+                        ]
+                    )
+
+                for row in table:
+                    print("\t".join(row))
+    except BitrixAPIError as error:
+        print(f"Error: {error}")
     ```
 
 {% endlist %}

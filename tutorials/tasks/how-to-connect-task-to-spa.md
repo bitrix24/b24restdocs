@@ -48,6 +48,21 @@ To obtain the smart process identifier, we use the [crm.enum.ownertype](../../ap
     );
     ```
 
+- Python
+
+    ```python
+    from b24pysdk import BitrixWebhook, Client
+
+    client = Client(
+        BitrixWebhook(
+            domain="your-domain.bitrix24.com",
+            auth_token="your-webhook-token",
+        )
+    )
+
+    result = client.crm.enum.ownertype().response.result
+    ```
+
 {% endlist %}
 
 The method returns four different identifiers:
@@ -192,6 +207,18 @@ To obtain the ID of the smart process element, we use the [crm.item.list](../../
     );
     ```
 
+- Python
+  
+    ```python
+    result = client.crm.item.list(
+        entity_type_id=177,
+        select=["id", "title"],
+        filter={
+            "title": "Washing Machine",
+        },
+    ).response.result
+    ```
+
 {% endlist %}
 
 As a result, we obtained the ID of the smart process element — a parameter necessary for the next request.
@@ -259,6 +286,22 @@ To create a task, we use the [tasks.task.add](../../api-reference/tasks/tasks-ta
         }
     );
     ```
+
+
+- Python
+  
+    ```python
+    result = client.tasks.task.add(
+        fields={
+            "TITLE": "task for test",
+            "RESPONSIBLE_ID": 1,
+            "UF_CRM_TASK": [
+                "Tb1_29",
+            ],
+        }
+    ).response.result
+    ```
+
 
 {% endlist %}
 
@@ -436,6 +479,16 @@ The obtained result does not contain information about the linked CRM entities. 
         ]
     );
     ```
+
+- Python
+  
+    ```python
+    result = client.tasks.task.get(
+        bitrix_id=3731,
+        select=["ID", "UF_CRM_TASK"],
+    ).response.result
+    ```
+  
 
 {% endlist %}
 
@@ -651,6 +704,78 @@ As a result, we obtained the value of the `ufCrmTask` field: `Tb1_29`. The smart
 
     // Calling the function to create the task
     createTaskWithSmartProcess($smartProcessName, $itemName, $responsibleId, $taskTitle);
+    ```
+
+- Python
+
+    ```python
+    from b24pysdk import BitrixWebhook, Client
+    from b24pysdk.errors import BitrixAPIError
+
+    smart_process_name = "smart_process_name"
+    item_name = "item_name"
+    responsible_id = "RESPONSIBLE_ID"
+    task_title = "task_title"
+
+
+    def create_task_with_smart_process(client, smart_process_name, item_name, responsible_id, task_title):
+        try:
+            result = client.crm.enum.ownertype().response.result
+        except BitrixAPIError as error:
+            print(f"Error retrieving entity types: {error}")
+            return
+
+        smart_process = None
+        for process in result:
+            if process["NAME"] == smart_process_name:
+                smart_process = process
+                break
+
+        if smart_process is None:
+            print("Smart process not found")
+            return
+
+        symbol_code_short = smart_process["SYMBOL_CODE_SHORT"]
+
+        try:
+            item_result = client.crm.item.list(
+                entity_type_id=int(smart_process["ID"]),
+                select=["id", "title"],
+                filter={"title": item_name},
+            ).response.result
+        except BitrixAPIError as error:
+            print(f"Error retrieving smart process elements: {error}")
+            return
+
+        if len(item_result["items"]) == 0:
+            print("Smart process element not found")
+            return
+
+        item_id = item_result["items"][0]["id"]
+
+        try:
+            task_result = client.tasks.task.add(
+                fields={
+                    "TITLE": task_title,
+                    "RESPONSIBLE_ID": responsible_id,
+                    "UF_CRM_TASK": [f"{symbol_code_short}_{item_id}"],
+                }
+            ).response.result
+        except BitrixAPIError as error:
+            print(f"Error creating task: {error}")
+        else:
+            print("Task successfully created!")
+            print(task_result)
+
+
+    client = Client(
+        BitrixWebhook(
+            domain="your-domain.bitrix24.com",
+            auth_token="your-webhook-token",
+        )
+    )
+
+    create_task_with_smart_process(client, smart_process_name, item_name, responsible_id, task_title)
     ```
 
 {% endlist %}

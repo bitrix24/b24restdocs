@@ -65,6 +65,26 @@ We will use the method [crm.activity.list](../../../api-reference/crm/timeline/a
     );
     ```
 
+- Python
+
+    ```python
+    from b24pysdk import BitrixWebhook, Client
+
+    client = Client(
+        BitrixWebhook(
+            domain="your-domain.bitrix24.com",
+            auth_token="your-webhook-token",
+        )
+    )
+
+    result = client.crm.activity.list(
+        filter={
+            "OWNER_TYPE_ID": 1,
+            "OWNER_ID": 1000977,
+        }
+    ).response.result
+    ```
+
 {% endlist %}
 
 As a result, we will receive all activities associated with the specified entity.
@@ -168,6 +188,17 @@ To limit the returned fields, we will add the `select` parameter and specify onl
     );
     ```
 
+- Python
+
+    ```python
+    result = client.crm.company.list(
+        filter={
+            "TITLE": "Company_Name",
+        },
+        select=["ID", "TITLE"],
+    ).response.result
+    ```
+
 {% endlist %}
 
 As a result, we will receive the company ID — `ID`: `173`.
@@ -224,6 +255,16 @@ To bind the activity and the company, we will use the method [crm.activity.bindi
     );
     ```
 
+- Python
+
+    ```python
+    result = client.crm.activity.binding.add(
+        activity_id=7685,
+        entity_type_id=4,
+        entity_id=173,
+    ).response.result
+    ```
+
 {% endlist %}
 
 As a result, we will receive `true`, indicating that the binding for the activity was successfully created. If you receive an `error` in the result, refer to the documentation for the method [crm.activity.binding.add](../../../api-reference/crm/timeline/activities/binding/crm-activity-binding-add.md) to understand possible errors.
@@ -272,6 +313,16 @@ We will use the method [crm.activity.binding.delete](../../../api-reference/crm/
             'entityId' => 1000977 
         ]
     );
+    ```
+
+- Python
+
+    ```python
+    result = client.crm.activity.binding.delete(
+        activity_id=7685,
+        entity_type_id=1,
+        entity_id=1000977,
+    ).response.result
     ```
 
 {% endlist %}
@@ -481,5 +532,86 @@ As a result, we will receive `true`, indicating that the binding of the activity
     // Execute the function
     transferActivityToCompany($leadId, $companyName);
     ``` 
+
+- Python
+
+    ```python
+    from b24pysdk import BitrixWebhook, Client
+    from b24pysdk.errors import BitrixAPIError
+
+
+    def transfer_activity_to_company(client, lead_id, company_name):
+        try:
+            activity_result = client.crm.activity.list(
+                filter={
+                    "OWNER_TYPE_ID": 1,
+                    "OWNER_ID": lead_id,
+                }
+            ).response.result
+        except BitrixAPIError as error:
+            print(f"Error: {error}")
+            return
+
+        if not activity_result:
+            print("No activities found for the specified lead.")
+            return
+
+        activity_id = activity_result[0]["ID"]
+
+        try:
+            company_result = client.crm.company.list(
+                filter={"TITLE": company_name},
+                select=["ID", "TITLE"],
+            ).response.result
+        except BitrixAPIError as error:
+            print(f"Error: {error}")
+            return
+
+        if not company_result:
+            print("No company found with the specified name.")
+            return
+
+        company_id = company_result[0]["ID"]
+
+        try:
+            add_result = client.crm.activity.binding.add(
+                activity_id=activity_id,
+                entity_type_id=4,
+                entity_id=company_id,
+            ).response.result
+        except BitrixAPIError as error:
+            print(f"Error: {error}")
+            return
+
+        if not add_result:
+            return
+
+        print("Activity successfully bound to the company.")
+
+        try:
+            delete_result = client.crm.activity.binding.delete(
+                activity_id=activity_id,
+                entity_type_id=1,
+                entity_id=lead_id,
+            ).response.result
+        except BitrixAPIError as error:
+            print(f"Error: {error}")
+        else:
+            if delete_result:
+                print("Activity successfully unbound from the lead.")
+
+
+    client = Client(
+        BitrixWebhook(
+            domain="your-domain.bitrix24.com",
+            auth_token="your-webhook-token",
+        )
+    )
+
+    lead_id = int(input("Enter the lead ID: "))
+    company_name = input("Enter the company name: ")
+
+    transfer_activity_to_company(client, lead_id, company_name)
+    ```
 
 {% endlist %}
