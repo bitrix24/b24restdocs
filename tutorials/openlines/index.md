@@ -12,7 +12,7 @@ A reference guide for methods, events, and parameters is available in the sectio
 
 ## Open Channels Connector
 
-The connector links an external channel with an open line. The external service transmits client messages to Bitrix24. Employee responses are sent back to this service.
+The connector links an external channel with an Open Channel. The external service transmits client messages to Bitrix24. Employee responses are sent back to this service.
 
 This approach is suitable for cases where the integration manages the public part of the chat and maintains the dialogue state on its side. The website sends messages using the method [imconnector.send.messages](../../api-reference/imopenlines/imconnector/imconnector-send-messages.md). The event handler receives responses from Bitrix24 and confirms delivery via [imconnector.send.status.delivery](../../api-reference/imopenlines/imconnector/imconnector-send-status-delivery.md).
 
@@ -22,13 +22,13 @@ The article about the connector describes the complete cycle of connecting an ex
 
 1. Register the connector in Bitrix24 using the method [imconnector.register](../../api-reference/imopenlines/imconnector/imconnector-register.md).
 2. Subscribe the application to the event [OnImConnectorMessageAdd](../../api-reference/imopenlines/imconnector/events/on-im-connector-message-add.md) for new messages.
-3. Activate the connector for the selected open line.
+3. Activate the connector for the selected Open Channel.
 4. Transmit visitor messages from the website to Bitrix24.
 5. Receive operator responses and confirm delivery.
 
 ## Technical Requirements
 
-- Use application authorization. The example utilizes the [CRest PHP SDK](../../sdk/crest-php-sdk/index.md). Webhooks are not suitable because the connector is registered as part of the application, receives events, and works with open line settings.
+- Use application authorization. The example utilizes the [CRest PHP SDK](../../sdk/crest-php-sdk/index.md). Webhooks are not suitable because the connector is registered as part of the application, receives events, and works with Open Channel settings.
 - Host the event handler on a server accessible via HTTPS.
 - Store the dialogue history in a database for reliability.
 - Record the connector ID and use it when registering, sending messages, and processing events.
