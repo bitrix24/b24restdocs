@@ -56,6 +56,26 @@ To obtain specialized settings for the "Number" type — `double`, we use the me
     }
     ```
 
+- Python
+  
+    ```python
+    from b24pysdk import BitrixWebhook, Client
+    from b24pysdk.errors import BitrixAPIError
+
+    client = Client(
+        BitrixWebhook(
+            domain="your-domain.bitrix24.com",
+            auth_token="your-webhook-token",
+        )
+    )
+
+    try:
+        result = client.crm.userfield.settings.fields(type="double").response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(f"Error: {error}")
+    ```
+
 {% endlist %}
 
 As a result, we will receive two settings: default value and precision.
@@ -141,6 +161,38 @@ To create a custom field, we use the method [userfieldconfig.add](../../../api-r
             ]
         ]
     );
+    ```
+
+- Python
+
+    ```python
+    from b24pysdk import BitrixWebhook, Client
+
+    client = Client(
+        BitrixWebhook(
+            domain="your-domain.bitrix24.com",
+            auth_token="your-webhook-token",
+        )
+    )
+
+    try:
+        field = client.userfieldconfig.add(
+            module_id="crm",
+            field={
+                "entityId": "CRM_DEAL",
+                "fieldName": "UF_CRM_DEAL_NEW_DOUBLE_FIELD",
+                "userTypeId": "double",
+                "editFormLabel": {
+                    "en": "PRECISION double",
+                },
+                "settings": {
+                    "PRECISION": 3,
+                },
+            },
+        ).response.result["field"]
+        print(field)
+    except BitrixAPIError as error:
+        print(f"Error: {error}")
     ```
 
 {% endlist %}
@@ -236,6 +288,17 @@ To get the field ID, we use the method [crm.deal.userfield.list](../../../api-re
             ]
         ]
     );
+    ```
+
+- Python
+  
+    ```python
+    fields = client.crm.deal.userfield.list(
+        filter={
+            "LANG": "en",
+            "USER_TYPE_ID": "double",
+        }
+    ).response.result
     ```
 
 {% endlist %}
@@ -348,6 +411,20 @@ To change the setting of an existing field, we use the method [userfieldconfig.u
             ]
         ]
     );
+    ```
+
+- Python
+  
+    ```python
+    field = client.userfieldconfig.update(
+        module_id="crm",
+        bitrix_id=6807,
+        field={
+            "settings": {
+                "PRECISION": 3,
+            }
+        },
+    ).response.result["field"]
     ```
 
 {% endlist %}
@@ -532,6 +609,62 @@ As a result, we will receive the data of the modified field.
 
     // Run the function
     updateUserField($fieldName);
+    ```
+
+- Python
+  
+    ```python
+    from b24pysdk import BitrixWebhook, Client
+    from b24pysdk.errors import BitrixAPIError
+
+
+    def update_user_field(client, field_name: str) -> None:
+        try:
+            fields = client.crm.deal.userfield.list(
+                filter={
+                    "LANG": "en",
+                    "USER_TYPE_ID": "double",
+                }
+            ).response.result
+        except BitrixAPIError as error:
+            print(f"Error: {error}")
+            return
+
+        field_id = None
+        for field in fields:
+            if field["EDIT_FORM_LABEL"] == field_name:
+                field_id = int(field["ID"])
+                break
+
+        if field_id is None:
+            print("Field with the specified name not found.")
+            return
+
+        try:
+            client.userfieldconfig.update(
+                module_id="crm",
+                bitrix_id=field_id,
+                field={
+                    "settings": {
+                        "PRECISION": 3
+                    }
+                },
+            ).response
+        except BitrixAPIError as error:
+            print(f"Error: {error}")
+        else:
+            print("Field settings successfully updated.")
+
+
+    client = Client(
+        BitrixWebhook(
+            domain="your-domain.bitrix24.com",
+            auth_token="your-webhook-token",
+        )
+    )
+
+    field_name = input("Enter the field name: ")
+    update_user_field(client, field_name)
     ```
 
 {% endlist %}

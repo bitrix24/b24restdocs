@@ -86,6 +86,40 @@ In this example, the application adds a robot that has 2 parameters of type `str
     echo '</PRE>';
     ```
 
+- Python
+
+    ```python
+    from b24pysdk import BitrixWebhook, Client
+
+    client = Client(
+        BitrixWebhook(
+            domain="your-domain.bitrix24.com",
+            auth_token="your-webhook-token",
+        )
+    )
+
+    result = client.bizproc.robot.add(
+        code="robot",
+        handler="http://handler.com",
+        auth_user_id=1,
+        name="Example of Robot Embedding",
+        use_placement=True,
+        placement_handler="http://handler.com",
+        properties={
+            "string": {
+                "Name": "Parameter 1",
+                "Type": "string",
+            },
+            "stringm": {
+                "Name": "Parameter 2",
+                "Type": "string",
+                "Multiple": "Y",
+                "Default": ["value 1", "value 2"],
+            },
+        },
+    ).response
+    ```
+
 {% endlist %}
 
 To allow parameters to be configured through the application, when adding the robot, you need to pass the parameters `USE_PLACEMENT=Y` and the handler `PLACEMENT_HANDLER`.

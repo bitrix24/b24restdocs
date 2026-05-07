@@ -76,6 +76,30 @@ Uploading the file to the drive is a necessary step since the `UF_TASK_WEBDAV_FI
     echo '</PRE>';
     ```
 
+- Python
+
+    ```python
+    from b24pysdk import BitrixWebhook, Client
+
+    client = Client(
+        BitrixWebhook(
+            domain="your-domain.bitrix24.com",
+            auth_token="your-webhook-token",
+        )
+    )
+
+    result = client.disk.folder.uploadfile(
+        bitrix_id=1739,
+        data={
+            "NAME": "ava555.jpg",
+        },
+        file_content=[
+            "avatar.jpg",
+            "/9j/4AAQSkZJRgABAQEASABIAAD/2wBDAAQDAwQDAwQEAwQ///+dAYq6YFKoAv/AFnAa6ArKv8AAtFJVppxCEAulxQ2DWgfMR//2Q==",
+        ],
+    ).response.result
+    ```
+
 {% endlist %}
 
 As a result of uploading the file to the drive, we receive two different file ID values:
@@ -157,6 +181,20 @@ To create a task, we use the method [tasks.task.add](../../api-reference/tasks/t
     echo '<PRE>';
     print_r($result);
     echo '</PRE>';
+    ```
+
+- Python
+
+    ```python
+    result = client.tasks.task.add(
+        fields={
+            "TITLE": "task for test",
+            "RESPONSIBLE_ID": 1,
+            "UF_TASK_WEBDAV_FILES": [
+                "n6687",
+            ],
+        }
+    ).response.result
     ```
 
 {% endlist %}
@@ -445,6 +483,62 @@ As a result of [tasks.task.get](../../api-reference/tasks/tasks-task-get.md), we
 
     // Call the function to upload the file and create the task
     uploadFileToDrive();
+    ```
+
+- Python
+
+    ```python
+    from b24pysdk import BitrixWebhook, Client
+    from b24pysdk.errors import BitrixAPIError
+
+
+    def upload_file_to_drive(client):
+        folder_id = "your_folder_ID"
+        file_name = "your_file_name"
+        file_content_base64 = "your_file_content_Base64"
+
+        try:
+            result = client.disk.folder.uploadfile(
+                bitrix_id=folder_id,
+                data={"NAME": file_name},
+                file_content=[file_name, file_content_base64],
+            ).response.result
+        except BitrixAPIError as error:
+            print(f"Error uploading file: {error}")
+        else:
+            print("File uploaded successfully!")
+            file_id = result["ID"]
+            create_task_with_file(client, file_id)
+
+
+    def create_task_with_file(client, file_id):
+        task_title = "your_task_title"
+        task_description = "your_task_description"
+        responsible_id = "your_responsible_ID"
+
+        try:
+            client.tasks.task.add(
+                fields={
+                    "TITLE": task_title,
+                    "DESCRIPTION": task_description,
+                    "RESPONSIBLE_ID": responsible_id,
+                    "UF_TASK_WEBDAV_FILES": [f"n{file_id}"],
+                },
+            ).response
+        except BitrixAPIError as error:
+            print(f"Error creating task: {error}")
+        else:
+            print("Task created successfully!")
+
+
+    client = Client(
+        BitrixWebhook(
+            domain="your-domain.bitrix24.com",
+            auth_token="your-webhook-token",
+        )
+    )
+
+    upload_file_to_drive(client)
     ```
 
 {% endlist %}

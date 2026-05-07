@@ -50,6 +50,14 @@ Let's define the main variables that we will use during the document generation 
    $sDocName = 'Product Demonstration Implementation';
    ```
 
+-  Python
+
+   ```python
+   file_path = "template.docx"
+   deal_id = 1
+   document_name = "Product Demonstration Implementation"
+   ```
+
 {% endlist %}
 
 ## 1. Create a Document Number Generator
@@ -95,6 +103,26 @@ We will create a number generator for documents using [crm.documentgenerator.num
            ]
        ]
    );
+   ```
+
+-  Python
+
+   ```python
+   from b24pysdk import BitrixWebhook, Client
+
+   client = Client(
+       BitrixWebhook(
+           domain="your-domain.bitrix24.com",
+           auth_token="your-webhook-token",
+       )
+   )
+
+   res_num = client.crm.documentgenerator.numerator.add(
+       fields={
+           "name": "Rest Numerator",
+           "template": "{NUMBER}",
+       }
+   ).response.result
    ```
 
 {% endlist %}
@@ -207,6 +235,26 @@ In [crm.documentgenerator.template.add](../../../api-reference/crm/document-gene
    );
    ```
 
+-  Python
+
+   ```python
+   import base64
+
+   with open(file_path, "rb") as file:
+       file_content = base64.b64encode(file.read()).decode("ascii")
+
+   res_template = client.crm.documentgenerator.template.add(
+       fields={
+           "name": document_name,
+           "numeratorId": res_num["numerator"]["id"],
+           "region": "de",
+           "users": ["UA"],
+           "entityTypeId": ["2"],
+           "file": file_content,
+       }
+   ).response.result
+   ```
+
 {% endlist %}
 
 The method [crm.documentgenerator.template.add](../../../api-reference/crm/document-generator/templates/crm-document-generator-template-add.md) will return an object `resTemplate` with information about the template.
@@ -273,6 +321,18 @@ If the template is successfully uploaded, we will create a document for the deal
            'entityId' => $iDealID,
        ]
    );
+   ```
+
+-  Python
+
+   ```python
+   res_doc = client.crm.documentgenerator.document.add(
+       template_id=int(res_template["template"]["id"]),
+       entity_type_id=2,
+       entity_id=deal_id,
+       values={},
+       stamps_enabled=False,
+   ).response.result
    ```
 
 {% endlist %}
@@ -449,5 +509,68 @@ The document will be generated, and the method [crm.documentgenerator.document.a
        echo json_encode(['message' => 'Document not created']);
    }
    ```
+
+- Python
+
+    ```python
+    import base64
+
+    from b24pysdk import BitrixWebhook, Client
+    from b24pysdk.errors import BitrixAPIError
+
+    client = Client(
+        BitrixWebhook(
+            domain="your-domain.bitrix24.com",
+            auth_token="your-webhook-token",
+        )
+    )
+
+    template_path = "template.docx"
+    deal_id = 1
+    document_name = "Product Demonstration Implementation"
+
+    try:
+        numerator = client.crm.documentgenerator.numerator.add(
+            fields={
+                "name": "Rest Numerator",
+                "template": "{NUMBER}",
+            }
+        ).response.result["numerator"]
+    except BitrixAPIError as error:
+        print(f"Number generator not added: {error}")
+    else:
+        with open(template_path, "rb") as file:
+            template_content = base64.b64encode(file.read()).decode("ascii")
+
+        try:
+            template = client.crm.documentgenerator.template.add(
+                fields={
+                    "name": document_name,
+                    "numeratorId": numerator["id"],
+                    "region": "de",
+                    "users": ["UA"],
+                    "entityTypeId": ["2"],
+                    "file": template_content,
+                }
+            ).response.result["template"]
+        except BitrixAPIError as error:
+            print(f"Template not added: {error}")
+        else:
+            try:
+                document = client.crm.documentgenerator.document.add(
+                    template_id=int(template["id"]),
+                    entity_type_id=2,
+                    entity_id=deal_id,
+                    values={},
+                    stamps_enabled=False,
+                ).response.result["document"]
+            except BitrixAPIError as error:
+                print(f"Document not created: {error}")
+            else:
+                if document:
+                    print("Document created")
+                else:
+                    print("Document not created")
+    ```
 
 {% endlist %}

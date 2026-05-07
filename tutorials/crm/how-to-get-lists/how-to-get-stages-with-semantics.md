@@ -68,6 +68,24 @@ Let's retrieve the description of stages with semantics for leads. To do this, w
     );
     ```
 
+-  Python
+
+    ```python
+    from b24pysdk import BitrixWebhook, Client
+
+    client = Client(
+        BitrixWebhook(
+            domain="your-domain.bitrix24.com",
+            auth_token="your-webhook-token",
+        )
+    )
+
+    result = client.crm.status.list(
+        order={"SORT": "ASC"},
+        filter={"ENTITY_ID": "STATUS"},
+    ).response.result
+    ```
+
 {% endlist %}
 
 As a result, we will receive an array of objects, where each object is a description of a stage.
@@ -347,5 +365,80 @@ The code outputs tables with a list of stages for leads and quotes.
        }
    }
    ```
+
+- Python
+
+    ```python
+    from b24pysdk import BitrixWebhook, Client
+    from b24pysdk.errors import BitrixAPIError
+
+
+    def load_statuses(client, entity_id: str) -> list:
+        return client.crm.status.list(
+            filter={"ENTITY_ID": entity_id},
+            select=["STATUS_ID", "NAME", "EXTRA"],
+            order={"SORT": "ASC"},
+        ).response.result
+
+
+    def group_statuses_by_semantics(statuses: list) -> dict:
+        groups = {"success": [], "process": [], "failure": []}
+        for item in statuses:
+            semantics = (item.get("EXTRA") or {}).get("SEMANTICS", "")
+            name = item.get("NAME") or item.get("STATUS_ID")
+            if semantics == "success":
+                groups["success"].append(name)
+            elif semantics == "failure":
+                groups["failure"].append(name)
+            else:
+                groups["process"].append(name)
+        return groups
+
+
+    def build_table_rows(groups: dict) -> list:
+        success = groups["success"]
+        process = groups["process"]
+        failure = groups["failure"]
+        max_len = max(len(success), len(process), len(failure))
+
+        success = success + [""] * (max_len - len(success))
+        process = process + [""] * (max_len - len(process))
+        failure = failure + [""] * (max_len - len(failure))
+
+        rows = []
+        for i in range(max_len):
+            rows.append([success[i], process[i], failure[i]])
+        return rows
+
+
+    client = Client(
+        BitrixWebhook(
+            domain="your-domain.bitrix24.com",
+            auth_token="your-webhook-token",
+        )
+    )
+
+    entities = [
+        {"title": "Lead Statuses", "entity_id": "STATUS"},
+        {"title": "Quote Statuses", "entity_id": "QUOTE_STATUS"},
+    ]
+
+    try:
+        tables = {}
+        for entity in entities:
+            statuses = load_statuses(client, entity["entity_id"])
+            if not statuses:
+                continue
+            groups = group_statuses_by_semantics(statuses)
+            tables[entity["title"]] = build_table_rows(groups)
+
+        for title, rows in tables.items():
+            print(title)
+            print("Success\tIn Progress\tFailure")
+            for row in rows:
+                print("\t".join(row))
+    except BitrixAPIError as error:
+        print(f"Loading error: {error}")
+    ```
 
 {% endlist %}
