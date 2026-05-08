@@ -10,11 +10,17 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: administrator
 
-The method `timeman.timecontrol.settings.set` sets the settings for the time control module.
+The method `timeman.timecontrol.settings.set` sets the configurations for the time control module.
+
+{% note warning "" %}
+
+Data collection for time control begins once the corresponding registration settings are activated. It is not possible to retrieve data for the period prior to activation — the system does not retain historical information retrospectively.
+
+{% endnote %}
 
 ## Method Parameters
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **ACTIVE**
@@ -38,7 +44,7 @@ The method `timeman.timecontrol.settings.set` sets the settings for the time con
 || **REPORT_REQUEST_USERS**
 [`array`](../../data-types.md) | Array of user IDs for whom report requests are required.
 
-Filled if `REPORT_REQUEST_USERS` is set to `user` ||
+Filled if `REPORT_REQUEST_TYPE` is set to `user` ||
 || **REPORT_SIMPLE_TYPE**
 [`string`](../../data-types.md) | Type of simple report. Possible values:
 - `all` — for everyone
@@ -47,7 +53,7 @@ Filled if `REPORT_REQUEST_USERS` is set to `user` ||
 || **REPORT_SIMPLE_USERS**
 [`array`](../../data-types.md) | Array of user IDs with access to the simple report.
 
-Filled if `REPORT_SIMPLE_USERS` is set to `user` ||
+Filled if `REPORT_SIMPLE_TYPE` is set to `user` ||
 || **REPORT_FULL_TYPE**
 [`string`](../../data-types.md) | Type of full report. Possible values:
 - `all` — for everyone
@@ -56,7 +62,7 @@ Filled if `REPORT_SIMPLE_USERS` is set to `user` ||
 || **REPORT_FULL_USERS**
 [`array`](../../data-types.md) | Array of user IDs with access to the full report.
 
-Filled if `REPORT_FULL_USERS` is set to `user`  ||
+Filled if `REPORT_FULL_TYPE` is set to `user`  ||
 |#
 
 ## Code Examples
@@ -90,26 +96,26 @@ Filled if `REPORT_FULL_USERS` is set to `user`  ||
     ```js
     try
     {
-    	const response = await $b24.callMethod(
-    		'timeman.timecontrol.settings.set',
-    		{
-    			'ACTIVE': true,
-    			'MINIMUM_IDLE_FOR_REPORT': 15,
-    			'REGISTER_OFFLINE': true,
-    			'REGISTER_IDLE': true,
-    			'REGISTER_DESKTOP': true,
-    			'REPORT_REQUEST_TYPE': 'all',
-    			'REPORT_SIMPLE_TYPE': 'all',
-    			'REPORT_FULL_TYPE': 'all'
-    		}
-    	);
-    	
-    	const result = response.getData().result;
-    	console.info(result);
+        const response = await $b24.callMethod(
+            'timeman.timecontrol.settings.set',
+            {
+                'ACTIVE': true,
+                'MINIMUM_IDLE_FOR_REPORT': 15,
+                'REGISTER_OFFLINE': true,
+                'REGISTER_IDLE': true,
+                'REGISTER_DESKTOP': true,
+                'REPORT_REQUEST_TYPE': 'all',
+                'REPORT_SIMPLE_TYPE': 'all',
+                'REPORT_FULL_TYPE': 'all'
+            }
+        );
+        
+        const result = response.getData().result;
+        console.info(result);
     }
     catch( error )
     {
-    	console.error(error);
+        console.error(error);
     }
     ```
 
@@ -138,7 +144,7 @@ Filled if `REPORT_FULL_USERS` is set to `user`  ||
             ->getResult();
     
         echo 'Success: ' . print_r($result, true);
-        // Your required data processing logic
+        // Your logic for processing data
         processData($result);
     
     } catch (Throwable $e) {
@@ -220,13 +226,13 @@ HTTP Status: **200**
 
 ### Returned Data
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **result**
 [`boolean`](../../data-types.md) | Execution result.
 
-Returns `true` if the settings are successfully saved ||
+Returns `true` if the settings were successfully saved ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -246,7 +252,7 @@ HTTP Status: **400**
 
 ### Possible Error Codes
 
-#|
+#| 
 || **Code** | **Description** | **Value** ||
 || `ACCESS_ERROR` | You don't have access to use this method | You do not have access to this method ||
 |#

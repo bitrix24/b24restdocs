@@ -2,6 +2,10 @@
 
 ## 2026
 
+### May 08, 2026
+
+- Updated the page [How to Integrate External Telephony with Bitrix24](./tutorials/telephony/index.md)
+
 ### April 29, 2026
 
 - Updated the pages [How to Add Data to CRM: Overview of Use-Cases and Scenarios](./tutorials/crm/how-to-add-crm-objects/index.md) and [Typical Use-Cases and Scenarios in Open Channels](./tutorials/openlines/index.md)

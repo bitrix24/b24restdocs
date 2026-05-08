@@ -20,9 +20,9 @@ The method `im.department.managers.get` retrieves a list of managers for the spe
 || **Name**
 `type` | **Description** ||
 || **ID***
-[`array`](../../data-types.md) | An array of department IDs. You can pass a string with a JSON array of IDs.
+[`array`](../../data-types.md) | An array of department identifiers. You can pass a string with a JSON array of identifiers.
 
-You can obtain the department ID using the [get department list](../../departments/department-get.md) method or the [search departments by name](../search/im-search-department-list.md) method. ||
+You can obtain the department ID using the [get department list](../../departments/department-get.md) or the [search departments by name](../search/im-search-department-list.md) ||
 || **USER_DATA**
 [`string`](../../data-types.md) | Return detailed user data.  
 
@@ -270,16 +270,86 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | The root object where the key is the department ID, and the value:
-- when `USER_DATA = 'N'` contains an array of manager IDs,
-- when `USER_DATA = 'Y'` contains an array of objects with descriptions of the users — department managers [(detailed description)](#user-object) ||
+[`object`](../../data-types.md) | The root object where the key is the department identifier, and the value:
+- when `USER_DATA = 'N'` contains an array of manager identifiers,
+- when `USER_DATA = 'Y'` contains an array of objects describing the users — department managers [(detailed description)](#user-object) ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ### User Object {#user-object}
 
-{% include [User Object Tables](./_includes/user-object-tables.md) %}
+#|
+|| **Name**
+`type` | **Description** ||
+|| **id**
+[`integer`](../../data-types.md) | User identifier ||
+|| **active**
+[`boolean`](../../data-types.md) | User activity status ||
+|| **name**
+[`string`](../../data-types.md) | User's full name ||
+|| **first_name**
+[`string`](../../data-types.md) | User's first name ||
+|| **last_name**
+[`string`](../../data-types.md) | User's last name ||
+|| **work_position**
+[`string`](../../data-types.md) | User's job title ||
+|| **color**
+[`string`](../../data-types.md) | User's color in hex format ||
+|| **avatar**
+[`string`](../../data-types.md) | Link to the avatar ||
+|| **avatar_hr**
+[`string`](../../data-types.md) | Link to the high-resolution avatar ||
+|| **gender**
+[`string`](../../data-types.md) | User's gender ||
+|| **birthday**
+[`string`](../../data-types.md) | Birthday in `DD-MM` format or an empty string ||
+|| **extranet**
+[`boolean`](../../data-types.md) | External user status ||
+|| **network**
+[`boolean`](../../data-types.md) | Bitrix24 Network user status ||
+|| **bot**
+[`boolean`](../../data-types.md) | Bot status ||
+|| **connector**
+[`boolean`](../../data-types.md) | Open Channels user status ||
+|| **external_auth_id**
+[`string`](../../data-types.md) | External authorization code ||
+|| **status**
+[`string`](../../data-types.md) | User status ||
+|| **idle**
+[`datetime`](../../data-types.md) | User's idle date or `false` ||
+|| **last_activity_date**
+[`datetime`](../../data-types.md) | User's last activity date ||
+|| **mobile_last_date**
+[`datetime`](../../data-types.md) | User's last activity date in the mobile app or `false` ||
+|| **desktop_last_date**
+[`datetime`](../../data-types.md) | User's last activity date in the desktop app or `false` ||
+|| **absent**
+[`datetime`](../../data-types.md) | User's absence end date or `false` ||
+|| **departments**
+[`array`](../../data-types.md) | Array of department identifiers ||
+|| **phones**
+[`object`](../../data-types.md) | User's phones or `false` [(detailed description)](#phones) ||
+|| **bot_data**
+[`object`](../../data-types.md) | Bot data or `null` ||
+|| **type**
+[`string`](../../data-types.md) | User type ||
+|| **website**
+[`string`](../../data-types.md) | User's website ||
+|| **email**
+[`string`](../../data-types.md) | User's email ||
+|#
+
+#### Phones Object {#phones}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **personal_mobile**
+[`string`](../../data-types.md) | Mobile phone ||
+|| **inner_phone**
+[`string`](../../data-types.md) | Internal phone ||
+|#
 
 ## Error Handling
 
@@ -298,7 +368,7 @@ HTTP Status: **400**
 
 #|
 || **Status** | **Code** | **Description** | **Value** ||
-|| `400` | `ID_EMPTY` | Department ID can't be empty | The required parameter `ID` is not provided, is incorrectly passed, or is empty ||
+|| `400` | `ID_EMPTY` | Department ID can't be empty | The required parameter `ID` is missing, incorrectly provided, or empty ||
 || `403` | `ACCESS_ERROR` | Only intranet users have access to this method | The method is not available for extranet users and bots ||
 |#
 

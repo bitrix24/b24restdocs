@@ -24,7 +24,7 @@ Notifications are sorted first by descending creation date, then by descending i
 || **SEARCH_TEXT**
 [`string`](../../data-types.md) | Search text. If `SEARCH_TYPE` and `SEARCH_DATE` are not specified, the string length must be at least `3` characters ||
 || **SEARCH_TYPE**
-[`string`](../../data-types.md) | Filter by notification type in the format `MODULE` or ```MODULE|EVENT```. Predefined values can be obtained using the method [im.notify.schema.get](./im-notify-schema-get.md) ||
+[`string`](../../data-types.md) | Filter by notification type in the format `MODULE` or ```MODULE|EVENT```. Ready values can be obtained using the method [im.notify.schema.get](./im-notify-schema-get.md) ||
 || **SEARCH_TYPES**
 [`array`](../../data-types.md) | Array of filters by notification types in the format `MODULE` or ```MODULE|EVENT``` ||
 || **SEARCH_DATE**
@@ -266,7 +266,7 @@ The structure of the object is described in detail [below](#result-object) ||
 || **Name**
 `Type` | **Description** ||
 || **chat_id**
-[`integer`](../../data-types.md) | Identifier of the system chat for notifications ||
+[`integer`](../../data-types.md) | Identifier of the system notification chat ||
 || **total_results**
 [`integer`](../../data-types.md) | Total number of search results. This field is returned only on the first page of the search ||
 || **notifications**
@@ -287,7 +287,7 @@ The structure of the object is described in detail [below](#user-object) ||
 || **id**
 [`integer`](../../data-types.md) | Identifier of the notification ||
 || **chat_id**
-[`integer`](../../data-types.md) | Identifier of the system chat for notifications ||
+[`integer`](../../data-types.md) | Identifier of the system notification chat ||
 || **author_id**
 [`integer`](../../data-types.md) | Identifier of the notification author ||
 || **date**
@@ -319,7 +319,77 @@ The structure of the object is described in detail [below](#user-object) ||
 
 ### User Object {#user-object}
 
-{% include [User Object Tables](../_includes/user-object-tables.md) %}
+#|
+|| **Name**
+`Type` | **Description** ||
+|| **id**
+[`integer`](../../data-types.md) | Identifier of the user ||
+|| **active**
+[`boolean`](../../data-types.md) | User's active status ||
+|| **name**
+[`string`](../../data-types.md) | User's full name ||
+|| **first_name**
+[`string`](../../data-types.md) | User's first name ||
+|| **last_name**
+[`string`](../../data-types.md) | User's last name ||
+|| **work_position**
+[`string`](../../data-types.md) | User's position ||
+|| **color**
+[`string`](../../data-types.md) | User's color in hex format ||
+|| **avatar**
+[`string`](../../data-types.md) | Link to the avatar ||
+|| **avatar_hr**
+[`string`](../../data-types.md) | Link to the high-resolution avatar ||
+|| **gender**
+[`string`](../../data-types.md) | User's gender ||
+|| **birthday**
+[`string`](../../data-types.md) | Birthday in `DD-MM` format or an empty string ||
+|| **extranet**
+[`boolean`](../../data-types.md) | External user status ||
+|| **network**
+[`boolean`](../../data-types.md) | Bitrix24 Network user status ||
+|| **bot**
+[`boolean`](../../data-types.md) | Bot status ||
+|| **connector**
+[`boolean`](../../data-types.md) | Open Channels user status ||
+|| **external_auth_id**
+[`string`](../../data-types.md) | External authorization code ||
+|| **status**
+[`string`](../../data-types.md) | User's status ||
+|| **idle**
+[`datetime`](../../data-types.md) | User's idle date or `false` ||
+|| **last_activity_date**
+[`datetime`](../../data-types.md) | User's last activity date ||
+|| **mobile_last_date**
+[`datetime`](../../data-types.md) | User's last activity date in the mobile application or `false` ||
+|| **desktop_last_date**
+[`datetime`](../../data-types.md) | User's last activity date in the desktop application or `false` ||
+|| **absent**
+[`datetime`](../../data-types.md) | User's absence end date or `false` ||
+|| **departments**
+[`array`](../../data-types.md) | Array of department identifiers ||
+|| **phones**
+[`object`](../../data-types.md) | User's phones or `false` [(detailed description)](#phones) ||
+|| **bot_data**
+[`object`](../../data-types.md) | Bot data or `null` ||
+|| **type**
+[`string`](../../data-types.md) | User type ||
+|| **website**
+[`string`](../../data-types.md) | User's website ||
+|| **email**
+[`string`](../../data-types.md) | User's email ||
+|#
+
+#### Phones Object {#phones}
+
+#|
+|| **Name**
+`Type` | **Description** ||
+|| **personal_mobile**
+[`string`](../../data-types.md) | Mobile phone ||
+|| **inner_phone**
+[`string`](../../data-types.md) | Internal phone ||
+|#
 
 ## Error Handling
 

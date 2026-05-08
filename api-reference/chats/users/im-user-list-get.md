@@ -12,26 +12,26 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 The method `im.user.list.get` returns data about users based on a list of identifiers.
 
-If the current user is an extranet user, the method will return data only for users from their extranet groups. User identifiers outside these groups will be skipped without an error.
+If the current user is an extranet user, the method will return data only for users from their extranet groups. User identifiers outside these groups will be skipped without error.
 
 ## Method Parameters
 
 {% include [Footnote on parameters](../../../_includes/required.md) %}
 
-#|
+#| 
 || **Name**
 `Type` | **Description** ||
-|| **ID***
+|| **ID*** 
 [`array`](../../data-types.md) 
 [`string`](../../data-types.md) | An array of user identifiers or a JSON string containing an array.
 
 User identifiers can be obtained using the methods [user.get](../../user/user-get.md), [user.search](../../user/user-search.md), or [im.chat.user.list](../chat-users/im-chat-user-list.md) ||
 || **AVATAR_HR**
-[`string`](../../data-types.md) | A parameter to request the `avatar_hr` field with the high-resolution avatar URL. Acceptable values: `Y` or `N`, default is `N`.
+[`string`](../../data-types.md) | Parameter to request the `avatar_hr` field with the high-resolution avatar URL. Acceptable values: `Y` or `N`, default is `N`.
 
 Currently, the `avatar_hr` field is always returned, regardless of the parameter value ||
 || **RESULT_TYPE**
-[`string`](../../data-types.md) | Format of the `result`. The value `array` will return a standard array of user objects, while any other value will return an object with user identifier keys ||
+[`string`](../../data-types.md) | Format of the `result`. The value `array` will return a standard array of user objects, any other value will return an object with user identifier keys ||
 |#
 
 ## Code Examples
@@ -235,7 +235,7 @@ HTTP Code: **200**
 
 ## Returned Data
 
-#|
+#| 
 || **Name**
 `Type` | **Description** ||
 || **result**
@@ -249,7 +249,77 @@ The structure of the user object is described in detail [below](#user-object) ||
 
 ### User Object {#user-object}
 
-{% include [User Object Tables](../_includes/user-object-tables.md) %}
+#| 
+|| **Name**
+`Type` | **Description** ||
+|| **id**
+[`integer`](../../data-types.md) | User identifier ||
+|| **active**
+[`boolean`](../../data-types.md) | User activity status ||
+|| **name**
+[`string`](../../data-types.md) | User's full name ||
+|| **first_name**
+[`string`](../../data-types.md) | User's first name ||
+|| **last_name**
+[`string`](../../data-types.md) | User's last name ||
+|| **work_position**
+[`string`](../../data-types.md) | User's job title ||
+|| **color**
+[`string`](../../data-types.md) | User's color in hex format ||
+|| **avatar**
+[`string`](../../data-types.md) | Link to the avatar ||
+|| **avatar_hr**
+[`string`](../../data-types.md) | Link to the high-resolution avatar ||
+|| **gender**
+[`string`](../../data-types.md) | User's gender ||
+|| **birthday**
+[`string`](../../data-types.md) | Birthday in `DD-MM` format or an empty string ||
+|| **extranet**
+[`boolean`](../../data-types.md) | Extranet user status ||
+|| **network**
+[`boolean`](../../data-types.md) | Bitrix24 Network user status ||
+|| **bot**
+[`boolean`](../../data-types.md) | Bot status ||
+|| **connector**
+[`boolean`](../../data-types.md) | Open Channels user status ||
+|| **external_auth_id**
+[`string`](../../data-types.md) | External authorization code ||
+|| **status**
+[`string`](../../data-types.md) | User status ||
+|| **idle**
+[`datetime`](../../data-types.md) | User's idle date or `false` ||
+|| **last_activity_date**
+[`datetime`](../../data-types.md) | User's last activity date ||
+|| **mobile_last_date**
+[`datetime`](../../data-types.md) | User's last activity date in the mobile app or `false` ||
+|| **desktop_last_date**
+[`datetime`](../../data-types.md) | User's last activity date in the desktop app or `false` ||
+|| **absent**
+[`datetime`](../../data-types.md) | User's absence end date or `false` ||
+|| **departments**
+[`array`](../../data-types.md) | Array of department identifiers ||
+|| **phones**
+[`object`](../../data-types.md) | User's phones or `false` [(detailed description)](#phones) ||
+|| **bot_data**
+[`object`](../../data-types.md) | Bot data or `null` ||
+|| **type**
+[`string`](../../data-types.md) | User type ||
+|| **website**
+[`string`](../../data-types.md) | User's website ||
+|| **email**
+[`string`](../../data-types.md) | User's email ||
+|#
+
+#### Phones Object {#phones}
+
+#| 
+|| **Name**
+`Type` | **Description** ||
+|| **personal_mobile**
+[`string`](../../data-types.md) | Mobile phone ||
+|| **inner_phone**
+[`string`](../../data-types.md) | Internal phone ||
+|#
 
 ## Error Handling
 

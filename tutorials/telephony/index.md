@@ -1,346 +1,275 @@
-# Key User Scenarios and Example
-
-{% note warning "We are still updating this page" %}
-
-Some data may be missing — we will complete it shortly.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- edits needed to meet writing standards
-
-{% endnote %}
-
-{% endif %}
+# How to Integrate External Telephony with Bitrix24
 
 {% note tip "" %}
 
-If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../sdk/mcp.md) so the assistant can utilize the official REST documentation.
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
 
 {% endnote %}
 
-1. An incoming call to the PBX on a specific user's internal number should display the call card for the employee in Bitrix24, using the method [telephony.externalcall.register](../../api-reference/telephony/telephony-external-call-register.md).
+External telephony transmits call data from the PBX to Bitrix24: client number, user, line, call status, and recording. Bitrix24 displays the call detail form to the employee, links the call to the CRM, and saves the result in the statistics.
 
-2. An incoming call from an unknown number, not registered in the CRM, should enter a processing queue from the list of users who are supposed to answer incoming calls:
-   - Simultaneous queue: all employees who are not currently answering other calls will simultaneously see the call card when one of them starts answering the call, while the others will lose the card. First, we use `telephony.externalcall.register` for the first in the queue, then [telephony.externalcall.show](../../api-reference/telephony/telephony-external-call-show.md) for the others.
-   - Sequential queue: each employee in the queue who is not currently answering other calls will see the call card for a certain period, 3-5-7 seconds. If the employee does not start answering the call, the card disappears, and the call is transferred to the next in line. First, we use `telephony.externalcall.register` for the first in the queue, then [telephony.externalcall.hide](../../api-reference/telephony/telephony-external-call-hide.md) and `telephony.externalcall.show` for the next.
+To integrate external telephony, we will follow six steps:
 
-3. An incoming call from a known number is displayed as a call card in Bitrix24 for the manager responsible for the corresponding CRM entity. First, `telephony.externalcall.register` is called with `SHOW = 0`, which will return either `CREATED_LEAD` if the phone was not found in the CRM and a new lead was created, or a pair of `CRM_ENTITY_TYPE` and `CRM_ENTITY_ID` indicating the found existing client. Simultaneously, `CRM_ACTIVITY_ID` is returned with the identifier of the new CRM activity, where the call will be recorded later. Knowing the identifier of the entity in the CRM, we can use CRM methods to obtain the identifier of the manager responsible for the client, transfer the call to them, and show them the call card using `telephony.externalcall.show`.
+1. Build the application and handlers for the PBX and Bitrix24
+2. Register the incoming call
+3. Display the call detail form to a group of employees
+4. Route the call to the responsible manager
+5. Handle the outgoing call from the CRM
+6. Complete the call and save the result
 
-4. An employee in Bitrix24 clicks on the phone number in the CRM interface. The application initiates an outgoing call to the specified number on the PBX side, triggering the event `onexternalcallstart`, and the employee sees the call card using `telephony.externalcall.register`.
+We will also discuss a scenario where the call needs to be recorded without displaying the detail form.
 
-5. The call is completed, whether incoming or outgoing. The fact of the call and the recording are recorded in relation to the CRM entity using [telephony.externalcall.finish](../../api-reference/telephony/telephony-external-call-finish.md). If the recording of the conversation is not ready at the time of call completion, we first simply hide the call card using `telephony.externalcall.hide`, and then, when the recording is ready, we call `telephony.externalcall.finish`.
+## 1. Build the Application
 
-6. An incoming call occurred on the PBX at a time when there was no connection between the PBX and Bitrix24 for some reason. After the connection is restored, information about the occurred call is recorded in Bitrix24, following points 1-3, but without displaying the call card – a sequential call to the methods `telephony.externalcall.register` with the parameter `SHOW = 0` and `telephony.externalcall.finish`.
+A working integration typically consists of two parts:
 
-{% note info %}
+- server application
+- handlers for the PBX and Bitrix24
 
-To ensure the recording is added to the call during the calling scenario, applications must pass `CALL_LIST_ID` that they receive in the [event](../../api-reference/telephony/events/on-external-call-start.md) at the start of the call.
+1. Create a [local application](../../settings/app-installation/local-apps/index.md) or an application for the Marketplace.
+2. Complete the application installation and save the authorization according to the [application installation rules](../../settings/app-installation/installation-finish.md).
+3. Register the external line using the [telephony.externalLine.add](../../api-reference/telephony/telephony-external-line-add.md) method. Pass the line number in the `LINE_NUMBER` parameter of the [telephony.externalCall.register](../../api-reference/telephony/telephony-external-call-register.md) method.
+4. Subscribe the application to [ONEXTERNALCALLSTART](../../api-reference/telephony/events/on-external-call-start.md) using the [event.bind](../../api-reference/events/event-bind.md) method if you need to initiate outgoing calls from the CRM.
+5. Create a handler for incoming events from the PBX. It should call methods based on the call status:
+   - [telephony.externalCall.register](../../api-reference/telephony/telephony-external-call-register.md) — register the call
+   - [telephony.externalCall.show](../../api-reference/telephony/telephony-external-call-show.md) — display the call detail form
+   - [telephony.externalCall.hide](../../api-reference/telephony/telephony-external-call-hide.md) — hide the call detail form
+   - [telephony.externalCall.finish](../../api-reference/telephony/telephony-external-call-finish.md) — complete the call
+6. Create a handler for [ONEXTERNALCALLSTART](../../api-reference/telephony/events/on-external-call-start.md). It should accept the following event data:
+   - `CALL_ID` — the identifier of the call that needs to be completed after the conversation
+   - `PHONE_NUMBER` — the client number to call
+   - `USER_ID` — the identifier of the employee who initiated the call
 
-{% endnote %}
+   After that, the handler initiates the call on the PBX side and completes the same `CALL_ID` using the [telephony.externalCall.finish](../../api-reference/telephony/telephony-external-call-finish.md) method.
+7. If the call recording is available after the call is completed, attach it using the [telephony.externalCall.attachRecord](../../api-reference/telephony/telephony-external-call-attach-record.md) method.
+
+For PHP applications, you can use the [CRest PHP SDK](../../sdk/crest-php-sdk/index.md). Do not store tokens in a public application file and do not disable SSL certificate verification for REST requests.
+
+## 2. Register the Incoming Call
+
+When the PBX receives an incoming call, invoke the [telephony.externalCall.register](../../api-reference/telephony/telephony-external-call-register.md) method. Pass the following parameters:
+
+- `USER_ID` — the identifier of the employee to whom the call detail form should be displayed
+- `PHONE_NUMBER` — the client number
+- `TYPE = 2` — incoming call
+- `LINE_NUMBER` — the external line number
+- `EXTERNAL_CALL_ID` — a unique identifier for the call on the PBX side
+
+The method will return a `CALL_ID`. This identifier is needed for subsequent actions with the call:
+
+- display the detail form using [telephony.externalCall.show](../../api-reference/telephony/telephony-external-call-show.md)
+- hide the detail form using [telephony.externalCall.hide](../../api-reference/telephony/telephony-external-call-hide.md)
+- complete the call using [telephony.externalCall.finish](../../api-reference/telephony/telephony-external-call-finish.md)
+- add a recording using [telephony.externalCall.attachRecord](../../api-reference/telephony/telephony-external-call-attach-record.md)
+
+If you pass `SHOW = 1` or do not pass `SHOW`, the detail form will open for the user specified in `USER_ID`.
+
+## 3. Display the Call to a Group of Employees
+
+For a queue of operators, first register the call using the [telephony.externalCall.register](../../api-reference/telephony/telephony-external-call-register.md) method, and then manage the detail form using `CALL_ID`.
+
+For the queue, you can register the call for the first operator and then display the detail form to other employees using the [telephony.externalCall.show](../../api-reference/telephony/telephony-external-call-show.md) method.
+
+**Simultaneous Queue.** Pass an array of employee identifiers in the `USER_ID` parameter of the [telephony.externalCall.show](../../api-reference/telephony/telephony-external-call-show.md) method. Bitrix24 will display the detail form to multiple employees. When the PBX selects an operator, hide the detail form from the others using the [telephony.externalCall.hide](../../api-reference/telephony/telephony-external-call-hide.md) method.
+
+**Sequential Queue.** Display the detail form to the first employee using the [telephony.externalCall.show](../../api-reference/telephony/telephony-external-call-show.md) method. If the employee does not answer within the time set in the PBX, hide the detail form using the [telephony.externalCall.hide](../../api-reference/telephony/telephony-external-call-hide.md) method and show it to the next employee using the [telephony.externalCall.show](../../api-reference/telephony/telephony-external-call-show.md) method.
+
+In the example, the detail form is first shown to three employees. When the employee with identifier `1270` answers the call, the detail form is hidden from the others.
+
+{% list tabs %}
+
+- JS
+
+    ```js
+    const queue = [1269, 1270, 1271];
+
+    await $b24.callMethod(
+        'telephony.externalCall.show',
+        {
+            CALL_ID: callId,
+            USER_ID: queue
+        }
+    );
+
+    const answeredUserId = 1270;
+    const usersToHide = queue.filter((userId) => userId !== answeredUserId);
+
+    await $b24.callMethod(
+        'telephony.externalCall.hide',
+        {
+            CALL_ID: callId,
+            USER_ID: usersToHide
+        }
+    );
+    ```
+
+- PHP
+
+    ```php
+    $queue = [1269, 1270, 1271];
+
+    CRest::call(
+        'telephony.externalCall.show',
+        [
+            'CALL_ID' => $callId,
+            'USER_ID' => $queue
+        ]
+    );
+
+    $answeredUserId = 1270;
+    $usersToHide = array_values(
+        array_filter(
+            $queue,
+            fn($userId) => $userId !== $answeredUserId
+        )
+    );
+
+    CRest::call(
+        'telephony.externalCall.hide',
+        [
+            'CALL_ID' => $callId,
+            'USER_ID' => $usersToHide
+        ]
+    );
+    ```
+
+{% endlist %}
+
+## 4. Route the Call to the Responsible Manager
+
+If you need to display the incoming call to the responsible manager, first register the call with `SHOW = 0` using the [telephony.externalCall.register](../../api-reference/telephony/telephony-external-call-register.md) method. Bitrix24 will check the number in the CRM and return the data of the found or created object:
+
+- `CRM_ENTITY_TYPE` — the type of the found CRM object
+- `CRM_ENTITY_ID` — the identifier of the found CRM object
+- `CRM_CREATED_LEAD` — the identifier of the created lead if auto-creation is enabled
+- `CRM_CREATED_ENTITIES` — an array of created CRM objects if auto-creation is enabled
+
+Using the found CRM object, retrieve the responsible employee using the CRM methods and pass their identifier to the [telephony.externalCall.show](../../api-reference/telephony/telephony-external-call-show.md) method. If you only need to find the client by phone without registering the call, use [telephony.externalCall.searchCrmEntities](../../api-reference/telephony/telephony-external-call-search-crm-entities.md).
+
+## 5. Handle the Outgoing Call from the CRM
+
+When an employee clicks on a phone number in the CRM, Bitrix24 registers the call and sends the application the [ONEXTERNALCALLSTART](../../api-reference/telephony/events/on-external-call-start.md) event. The event handler receives:
+
+- `PHONE_NUMBER` — the client number
+- `USER_ID` — the identifier of the employee who initiated the call
+- `CALL_ID` — the identifier of the registered call
+- `LINE_NUMBER` — the external line number
+- `CRM_ENTITY_TYPE` — the type of the CRM object from which the call was initiated
+- `CRM_ENTITY_ID` — the identifier of the CRM object
+- `CALL_LIST_ID` — the identifier of the call list if the call was initiated from a call list
+
+After receiving the [ONEXTERNALCALLSTART](../../api-reference/telephony/events/on-external-call-start.md) event, the application should initiate the call on the PBX side. When the conversation ends, complete the same `CALL_ID` using the [telephony.externalCall.finish](../../api-reference/telephony/telephony-external-call-finish.md) method.
+
+If the call is from a call list, use the `CALL_LIST_ID` from the [ONEXTERNALCALLSTART](../../api-reference/telephony/events/on-external-call-start.md) when processing the call on the application side. Complete the call using the `CALL_ID` from the event so that the result is saved in connection with the call list.
+
+## 6. Complete the Call and Save the Result
+
+After the conversation ends, invoke the [telephony.externalCall.finish](../../api-reference/telephony/telephony-external-call-finish.md) method. This method hides the call detail form, saves the record in the statistics, and creates or updates the CRM activity for the call.
+
+Pass the following parameters to [telephony.externalCall.finish](../../api-reference/telephony/telephony-external-call-finish.md):
+
+- `CALL_ID` — the identifier from [telephony.externalCall.register](../../api-reference/telephony/telephony-external-call-register.md) or [ONEXTERNALCALLSTART](../../api-reference/telephony/events/on-external-call-start.md)
+- `USER_ID` — the employee for whom the call should be saved
+- `DURATION` — the duration of the conversation in seconds
+- `STATUS_CODE` — the result of the call, for example, `200` for a successful conversation or `304` for a missed incoming call
+
+If the recording of the conversation is not yet ready, use one of two approaches:
+
+- invoke [telephony.externalCall.finish](../../api-reference/telephony/telephony-external-call-finish.md) without the recording to immediately save the call in the statistics and CRM activity. When the recording is ready, attach it using the [telephony.externalCall.attachRecord](../../api-reference/telephony/telephony-external-call-attach-record.md) method.
+- hide the detail form using the [telephony.externalCall.hide](../../api-reference/telephony/telephony-external-call-hide.md) method, and invoke [telephony.externalCall.finish](../../api-reference/telephony/telephony-external-call-finish.md) after the recording is ready. In this case, the call will appear in the statistics and CRM activity only after invoking [telephony.externalCall.finish](../../api-reference/telephony/telephony-external-call-finish.md).
+
+After attaching the recording, you can add a transcription using the [telephony.call.attachTranscription](../../api-reference/telephony/telephony-call-attach-transcription.md) method. This method works only for completed calls that are already in the statistics.
+
+## Record the Call Without Displaying the Detail Form
+
+If the connection between the PBX and Bitrix24 was unavailable during the call, you can save the call record without the detail form after the connection is restored. To do this, invoke [telephony.externalCall.register](../../api-reference/telephony/telephony-external-call-register.md) with `SHOW = 0`, and then [telephony.externalCall.finish](../../api-reference/telephony/telephony-external-call-finish.md) with the actual call data.
+
+This scenario does not show the call to the employee in real-time but preserves the history, statistics, and CRM activity.
 
 ## Example
 
-```php
-<?php
-/**
- * Created by PhpStorm.
- * User: John
- * Date: 01.11.16
- * Time: 10:44
- */
-// ini_set('display_errors','Off');
-// forming the URL of our script for use in AJAX requests from the application interface
-$script_url = ($_SERVER['SERVER_PORT'] == 443 ? 'https' : 'http') . '://' . $_SERVER['SERVER_NAME'] . (in_array($_SERVER['SERVER_PORT'],
-    array(80, 443)) ? '' : ':' . $_SERVER['SERVER_PORT']) . $_SERVER['SCRIPT_NAME'];
-$appsConfig = array();
-$b24domain = $_REQUEST['DOMAIN'];
-// if we received an outgoing call event, authorization is passed through the auth node in the request array
-// but we only need the domain from there, we have already saved the authorization by this time
-if (!empty($_REQUEST['auth'])) {
-    $b24domain = $_REQUEST['auth']['domain'];
-}
-$configFileName = '/config_' . trim(str_replace('.', '_', $b24domain)) . '.php';
-echo getcwd().$configFileName."<br/>";
-if (file_exists(getcwd() . $configFileName)) {
-    include_once getcwd() . $configFileName;
-} else {
-    // saving tokens for the user setting up the application
-    $appsConfig = $_REQUEST;
-    saveParams($appsConfig);
-    // registering the outgoing call event
-    restCommand('event.bind', array(
-        "event" => 'ONEXTERNALCALLSTART',
-        "handler" => $script_url."?action=outcoming",
-    ),
-    $b24domain, $appsConfig['AUTH_ID']);
-    /* test event to check the mechanism
-    restCommand('event.bind', array(
-        "event" => 'ONAPPTEST',
-        "handler" => $script_url."?action=test",
-        ),
-        $b24domain, $appsConfig['AUTH_ID']);
-    */
-}
-$action = $_REQUEST['action'];
-// we just launched the application in the Bitrix24 interface
-if ($action == '') {
-?>
-<html>
-<head>
-    <meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-<!-- Latest compiled and minified CSS -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-<!-- Optional theme -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
-<!-- Latest compiled and minified JavaScript -->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-    <script src="//api.bitrix24.com/api/v1"></script>
-</head>
-<body>
-<div class="form-group">
-    <label for="IncomingNumber">Incoming call number</label>
-    <input type="text" class="form-control" id="incomingNumber" placeholder="phone">
-</div>
-<div class="form-group">
-    <label for="user1">User 1</label>
-    <input type="text" class="form-control" id="user1" placeholder="user id" value="1">
-</div>
-<div class="form-group">
-    <label for="user2">User 2 (for call transfer)</label>
-    <input type="text" class="form-control" id="user2" placeholder="user id">
-</div>
-<a class="btn btn-default" href="#" role="button" id="incoming">Incoming</a>
-<a class="btn btn-default" href="#" role="button" id="redirect">Redirect</a>
-<a class="btn btn-default" href="#" role="button" id="drop">Drop</a>
-<a class="btn btn-default" href="#" role="button" id="test">Event test</a>
-<div id="debug"></div>
-<?php
-    // if you're curious, you can see what authorization parameters Bitrix24 sends to the application script
-    // when the application is executed in a frame within Bitrix24
-    //echo "<pre>";
-    //print_r($_REQUEST);
-    //echo "</pre>";
-?>
-<script>
-    $( "#incoming" ).on( "click", function( event ) {
-        // here we simulate the operation of an external PBX, in particular, receiving an incoming call
-        // hence AJAX, passing authorization parameters, etc.
-        // in real practice, REST telephony will be called from the PBX side, where we have already saved
-        // the authorization tokens (see $appsConfig) and we know which Bitrix24 to send
-        // the REST call to, which users to show the card to, etc.
-        auth = BX24.getAuth();
-        $.ajax({
-            url: "<?=$script_url?>",
-            data: {
-                action: 'incoming',
-                user1: $( "#user1" ).val(),
-                phone: $( "#incomingNumber" ).val(),
-                DOMAIN: auth['domain']
-            },
-            success: function( result ) {
-                $( "#debug" ).html( result );
-            }
-        });
-    });
-    $( "#redirect" ).on( "click", function( event ) {
-        auth = BX24.getAuth();
-        $.ajax({
-            url: "<?=$script_url?>",
-            data: {
-                action: 'redirect',
-                user1: $( "#user1" ).val(),
-                user2: $( "#user2" ).val(),
-                DOMAIN: auth['domain']
-            },
-            success: function( result ) {
-                $( "#debug" ).html( result );
-            }
-        });
-    });
-    $( "#drop" ).on( "click", function( event ) {
-        auth = BX24.getAuth();
-        $.ajax({
-            url: "<?=$script_url?>",
-            data: {
-                action: 'drop',
-                user1: $( "#user1" ).val(),
-                user2: $( "#user2" ).val(),
-                DOMAIN: auth['domain']
-            },
-            success: function( result ) {
-                $( "#debug" ).html( result );
-            }
-        });
-    });
-    /* initiating a test event on the server-side script, nothing important
-    $( "#test" ).on( "click", function( event ) {
-        auth = BX24.getAuth();
-        $.ajax({
-            url: "<?=$script_url?>",
-            data: {
-                action: 'eventtest',
-                DOMAIN: auth['domain']
-            },
-            success: function( result ) {
-                $( "#debug" ).html( result );
-            }
-        });
-    });
-    */
-</script>
-</body>
-</html>
-<?php } else {
-    switch ($action) {
-        case 'test': writeToLog(array('test' => $_REQUEST), 'telephony test event');
-                break;
-        case 'outcoming':
-            writeToLog(array('outcoming' => $_REQUEST), 'telephony event');
-            $result = restCommand('telephony.externalCall.register',
-                array(
-                    "USER_ID" => $_REQUEST['data']['USER_ID'],
-                    "PHONE_NUMBER"   => $_REQUEST['data']['PHONE_NUMBER'],
-                    "TYPE" => '1',
-                    "CRM_CREATE" => 1
-                ),
-                $b24domain, $appsConfig['AUTH_ID']);
-            $appsConfig['CALL'] = $result['result'];
-            saveParams($appsConfig);
-            break;
-        case 'eventtest':
-            writeToLog(array('eventtest' => $_REQUEST), 'test event call');
-            $result = restCommand('event.test',
-                array(
-                ),
-                $b24domain, $appsConfig['AUTH_ID']);
-            echo "test event call";
-            break;
-        case 'incoming':
-            $result = restCommand('telephony.externalCall.register',
-                array(
-                    "USER_ID" => $_REQUEST['user1'],
-                    "PHONE_NUMBER"   => $_REQUEST['phone'],
-                    "TYPE" => '2',
-                    "CRM_CREATE" => true
-                ),
-                $b24domain, $appsConfig['AUTH_ID']);
-            $appsConfig['CALL'] = $result['result'];
-            saveParams($appsConfig);
-            echo "incoming <pre>";
-            print_r($appsConfig);
-            echo "</pre>";
-            break;
-        case 'redirect':
-            echo "redirect <pre>";
-            print_r($appsConfig);
-            echo "</pre>";
-            if ($appsConfig['CALL']['CALL_ID'] != '') {
-                $result = restCommand('telephony.externalCall.hide',
-                    array(
-                        "CALL_ID" => $appsConfig['CALL']['CALL_ID'],
-                        "USER_ID" => $_REQUEST['user1']
-                    ),
-                    $b24domain, $appsConfig['AUTH_ID']);
-                $result = restCommand('telephony.externalCall.show',
-                    array(
-                        "CALL_ID" => $appsConfig['CALL']['CALL_ID'],
-                        "USER_ID" => $_REQUEST['user2']
-                    ),
-                    $b24domain, $appsConfig['AUTH_ID']);
-            }
-            echo "redirected to ".$_REQUEST['user2'];
-            break;
-        case 'drop':
-            writeToLog(array('config' => $appsConfig), 'call is finishing');
-            if ($appsConfig['CALL']['CALL_ID'] != '') {
-                $result = restCommand('telephony.externalCall.finish',
-                    array(
-                        "CALL_ID" => $appsConfig['CALL']['CALL_ID'],
-                        "USER_ID" => $_REQUEST['user1'],
-                        "DURATION"   => '120',
-                        "STATUS_CODE" => '200',
-                        "ADD_TO_CHAT" => true
-                    ),
-                    $b24domain, $appsConfig['AUTH_ID']);
-                $appsConfig['CALL'] = $result['result'];
-                saveParams($appsConfig);
-                echo "finished <pre>";
-                print_r($appsConfig);
-                echo "</pre>";
-                writeToLog(array('request' => $_REQUEST, 'config' => $appsConfig), 'call is finished');
-            }
-            echo "dropped and saved";
-        break;
-    }
-}
-?>
-/**
- * Save application configuration.
- *
- * @param $params
- *
- * @return bool
- */
-function saveParams($params) {
-    $config = "<?php\n";
-    $config .= "\$appsConfig = " . var_export($params, true) . ";\n";
-    $config .= "?>";
-    $configFileName = '/config_' . trim(str_replace('.', '_', $_REQUEST['DOMAIN'])) . '.php';
-    file_put_contents(getcwd() . $configFileName, $config);
-    return true;
-}
-/**
- * Send rest query to Bitrix24.
- *
- * @param	   $method - Rest method, ex: methods
- * @param array $params - Method params, ex: array()
- * @param array $auth   - Authorize data, ex: array('domain' => 'https://test.bitrix24.com', 'access_token' => '7inpwszbuu8vnwr5jmabqa467rqur7u6')
- *
- * @return mixed
- */
-function restCommand($method, array $params = array(), $auth_domain, $access_token) {
-    $queryUrl  = 'https://' . $auth_domain . '/rest/' . $method;
-    $queryData = http_build_query(array_merge($params, array('auth' => $access_token)));
-    writeToLog(array('URL' => $queryUrl, 'PARAMS' => array_merge($params, array("auth" => $access_token))), 'telephony send data');
-    $curl = curl_init();
-    curl_setopt_array($curl, array(
-        CURLOPT_SSL_VERIFYPEER => 0,
-        CURLOPT_POST		   => 1,
-        CURLOPT_HEADER		 => 0,
-        CURLOPT_RETURNTRANSFER => 1,
-        CURLOPT_URL			=> $queryUrl,
-        CURLOPT_POSTFIELDS	 => $queryData,
-        CURLOPT_VERBOSE		 => 1
-    ));
-    $result = curl_exec($curl);
-    writeToLog(array('raw' => $result), 'telephony got data');
-    curl_close($curl);
-    $result = json_decode($result, 1);
-    return $result;
-}
-/**
- * Write data to log file.
- *
- * @param mixed  $data
- * @param string $title
- *
- * @return bool
- */
-function writeToLog($data, $title = '') {
-    $log = "\n------------------------\n";
-    $log .= date("Y.m.d G:i:s") . "\n";
-    $log .= (strlen($title) > 0 ? $title : 'DEBUG') . "\n";
-    $log .= print_r($data, 1);
-    $log .= "\n------------------------\n";
-    file_put_contents(getcwd() . '/tel.log', $log, FILE_APPEND);
-    return true;
-}
-?>
-```
+The example demonstrates the minimal cycle for an incoming call: registration, displaying the detail form to another employee, and completion.
 
-{% include [Example Note](../../_includes/examples.md) %}
+{% list tabs %}
+
+- JS
+
+    ```js
+    const registerResult = await $b24.callMethod(
+        'telephony.externalCall.register',
+        {
+            USER_ID: 1269,
+            PHONE_NUMBER: '19061234567',
+            TYPE: 2,
+            LINE_NUMBER: '3',
+            EXTERNAL_CALL_ID: 'asterisk-1773130778.18441',
+            SHOW: 1
+        }
+    );
+
+    const callId = registerResult.getData().result.CALL_ID;
+
+    await $b24.callMethod(
+        'telephony.externalCall.show',
+        {
+            CALL_ID: callId,
+            USER_ID: 1270
+        }
+    );
+
+    await $b24.callMethod(
+        'telephony.externalCall.finish',
+        {
+            CALL_ID: callId,
+            USER_ID: 1270,
+            DURATION: 95,
+            STATUS_CODE: '200',
+            ADD_TO_CHAT: 1
+        }
+    );
+    ```
+
+- PHP
+
+    ```php
+    $registerResult = CRest::call(
+        'telephony.externalCall.register',
+        [
+            'USER_ID' => 1269,
+            'PHONE_NUMBER' => '19061234567',
+            'TYPE' => 2,
+            'LINE_NUMBER' => '3',
+            'EXTERNAL_CALL_ID' => 'asterisk-1773130778.18441',
+            'SHOW' => 1
+        ]
+    );
+
+    $callId = $registerResult['result']['CALL_ID'];
+
+    CRest::call(
+        'telephony.externalCall.show',
+        [
+            'CALL_ID' => $callId,
+            'USER_ID' => 1270
+        ]
+    );
+
+    CRest::call(
+        'telephony.externalCall.finish',
+        [
+            'CALL_ID' => $callId,
+            'USER_ID' => 1270,
+            'DURATION' => 95,
+            'STATUS_CODE' => '200',
+            'ADD_TO_CHAT' => 1
+        ]
+    );
+    ```
+
+{% endlist %}
+
+## Continue Your Learning
+
+- [Overview of Telephony Methods](../../api-reference/telephony/index.md)
+- [Telephony Events](../../api-reference/telephony/events/index.md)
+- [CALL_CARD Tab in the Call Detail Form](../../api-reference/widgets/telephony/index.md)

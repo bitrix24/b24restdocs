@@ -18,7 +18,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 Basic data types are listed in a separate [article](../data-types.md).
 
-In this article, we will discuss the data types and object structure specific to CRM.
+In this article, we will discuss the data types and object structures specific to CRM.
 
 ## Data Types
 
@@ -46,14 +46,14 @@ where
 `lang_n` - [Language identifier](#lang-ids)
 `value_n` - Value for language `lang_n`
 ||
-|| [`crm_item_product_row`](#crm_item_product_row) | Integer identifier of the product row in the CRM object. Product row identifiers can be retrieved using the method [crm.item.productrow.list](../crm/universal/product-rows/crm-item-productrow-list.md). ||
-|| [`crm_multifield`](#crm_multifield) | Object describing a "multifield". Multifields are used to store phone numbers, email addresses, and other contact information. In leads, contacts, and companies, fields of this type include `PHONE`, `EMAIL`, `WEB`, and `IM`. ||
+|| [`crm_item_product_row`](#crm_item_product_row) | Integer identifier of the product row of a CRM object. Product row identifiers can be obtained using the method [crm.item.productrow.list](../crm/universal/product-rows/crm-item-productrow-list.md). ||
+|| [`crm_multifield`](#crm_multifield) | Object describing a "multifield". Multifields are used to store phone numbers, email addresses, and other contact information. In leads, contacts, and companies, fields of this type are `PHONE`, `EMAIL`, `WEB`, and `IM`. ||
 || [`crm_currency`](#crm_currency) | Object describing currency. ||
 || [`crm_currency_localization`](#crm_currency_localization) | Object describing currency localization. ||
 || [`crm_orderentity`](#crm_orderentity) | Object describing the connection between CRM and online store orders. ||
 || [`type`](#type) | Object describing a custom CRM object type (SPA). ||
 || [`type.relations`](#typerelations) | Object containing relationships to other CRM entities. ||
-|| [`relation`](#relation) | Object describing a linked CRM element. ||
+|| [`relation`](#relation) | Object describing a related CRM element. ||
 || [`type.linkedUserFields`](#typelinkeduserfields) | Object describing a set of fields in which the SPA should be displayed. ||
 |#
 
@@ -102,7 +102,7 @@ Can take values `WORK`, `MOBILE`, `FAX`, `HOME`, `PAGER`, `MAILING`, `OTHER` for
 || **priceNetto**
 [`double`](../data-types.md) | Price per unit of the product row excluding discounts and taxes. ||
 || **priceBrutto**
-[`double`](../data-types.md) | Price per unit of the product row, including taxes but excluding discounts. ||
+[`double`](../data-types.md) | Price per unit of the product row including taxes but excluding discounts. ||
 || **quantity**
 [`double`](../data-types.md) | Quantity of the product. ||
 || **discountTypeId**
@@ -117,7 +117,7 @@ Possible values:
 || **taxRate**
 [`double`](../data-types.md) | Tax rate in percentage. ||
 || **taxIncluded**
-[`string`](../data-types.md) | Indicator of whether the tax is included in the price.
+[`string`](../data-types.md) | Indicator of whether tax is included in the price.
 Possible values:
 - `Y` – tax included
 - `N` – tax not included. ||
@@ -138,8 +138,8 @@ Possible values:
 - `2` - Bundle
 - `3` - Product with trade offers
 - `4` - Trade offer
-- `5` - Trade offer with no product (not specified or deleted)
-- `6` - Specific type, indicates an invalid product with trade offers
+- `5` - Trade offer without a product (not specified or deleted)
+- `6` - Specific type indicating an invalid product with trade offers
 - `7` — Service. ||
 || **storeId**
 [`integer`](../data-types.md) | Identifier of the warehouse. ||
@@ -161,11 +161,11 @@ For the base currency, it is always equal to `1`. ||
 || **CURRENCY**
 [`string`](../data-types.md) | Currency identifier. Corresponds to ISO 4217 standard. ||
 || **DATE_UPDATE**
-[`datetime`](../data-types.md) | Date of last modification. ||
+[`datetime`](../data-types.md) | Date of the last change. ||
 || **SORT**
 [`integer`](../data-types.md) | Sorting. ||
 || **LID**
-[`string`](../data-types.md) | Language code for which [localization parameters](#crm_currency_localization) are returned. ||
+[`string`](../data-types.md) | Language code for which the [localization parameters](#crm_currency_localization) are returned. ||
 || **DECIMALS**
 [`integer`](../data-types.md) | Number of decimal places for the fractional part (localization parameter). ||
 || **DEC_POINT**
@@ -178,8 +178,8 @@ For the base currency, it is always equal to `1`. ||
 [`string`](../data-types.md) | Thousands separator (localization parameter). ||
 || **LANG**
 [`object`](../data-types.md) | Currency localizations.
-Object with a list of available localizations in the format `{"lang_1": "value_1", ... "lang_N": "value_N"}`, where `lang_N` — language identifier, and `value` — object of type [crm_currency_localization](#crm_currency_localization).
-Language identifier is a string of two Latin letters. Possible values can be found in the [table of language identifiers](#lang-ids). ||
+An object with a list of available localizations in the format `{"lang_1": "value_1", ... "lang_N": "value_N"}`, where `lang_N` is the language identifier, and `value` is an object of type [crm_currency_localization](#crm_currency_localization).
+The language identifier is a string of two Latin letters. Possible values can be found in the [table of language identifiers](#lang-ids). ||
 |#
 
 ### crm_currency_localization
@@ -196,7 +196,7 @@ Default value — `2`. ||
 
 Default value — `.` (dot symbol). ||
 || **FORMAT_STRING**
-[`string`](../data-types.md) | Format template. Must contain the symbol # — the value of the price will be substituted in its place.
+[`string`](../data-types.md) | Format template. Must contain the symbol # — the value will be substituted in its place.
 
 Default value — `#`.
 
@@ -222,12 +222,12 @@ Default value — ` ` (space). ||
 Default value — `S`.
 
 When creating or modifying localization, if a value is specified for the `THOUSANDS_VARIANT` field, the value in `THOUSANDS_SEP` will be ignored and replaced according to the list:
-- `N` — empty, no thousands separator. Example: 12345678.
-- `C` — comma. Example: 12,345,678.
-- `D` — dot. Example: 12.345.678.
-- `S` — space. Example: 12 345 678.
-- `B` — non-breaking space. Example: 12 345 678.
-    This differs from the previous option in that when line breaks occur, the result is not split into parts.
+- `N` — empty, no thousands separator. Example: 12345678
+- `C` — comma. Example: 12,345,678
+- `D` — dot. Example: 12.345.678
+- `S` — space. Example: 12 345 678
+- `B` — non-breaking space. Example: 12 345 678
+    Differs from the previous option in that when line breaks occur, the result is not split into parts.
 
 If a thousands separator is not needed, the `THOUSANDS_VARIANT` field must be explicitly passed with the value `N`. An empty string in the `THOUSANDS_SEP` field is not allowed. ||
 |#
@@ -305,11 +305,11 @@ If a thousands separator is not needed, the `THOUSANDS_VARIANT` field must be ex
 || **customSections**
 [`array`](../data-types.md)    | List of all digital workplaces.
 
-This parameter is deprecated. To work with digital workplaces, use the methods [`crm.automatedsolution.*`](./automated-solution/index.md). ||
+This parameter is deprecated. For working with digital workplaces, use the methods [`crm.automatedsolution.*`](./automated-solution/index.md). ||
 || **customSectionId**
 [`integer`](../data-types.md)  | Identifier of the digital workplace.
 
-This parameter is deprecated. To work with digital workplaces, use the methods [`crm.automatedsolution.*`](./automated-solution/index.md). ||
+This parameter is deprecated. For working with digital workplaces, use the methods [`crm.automatedsolution.*`](./automated-solution/index.md). ||
 |#
 
 ### type.relations
@@ -329,9 +329,9 @@ This parameter is deprecated. To work with digital workplaces, use the methods [
 || **Value**
 `type` | **Description** ||
 || **entityTypeId**     
-[`integer`](../data-types.md)  | Identifier of the [system](./universal/index.md) or [user-defined type](./universal/user-defined-object-types/index.md) of CRM entity. ||
+[`integer`](../data-types.md)  | Identifier of the [system](./universal/index.md) or [user-defined type](./universal/user-defined-object-types/index.md) of the CRM entity. ||
 || **isChildrenListEnabled**
-[`boolean`](../data-types.md)  | Should the linked element be added to the card? ||
+[`boolean`](../data-types.md)  | Should the related element be added to the card? ||
 || **isPredefined**        
 [`boolean`](../data-types.md)  | Is this relationship predefined (system)? ||
 |#
@@ -394,9 +394,9 @@ This parameter is deprecated. To work with digital workplaces, use the methods [
 || **isDynamic**
 [`boolean`](../data-types.md) | Is the field user-defined? ||
 || **title**
-[`string`](../data-types.md)  | Title of the field. ||
+[`string`](../data-types.md)  | Name of the field. ||
 || **upperName**
-[`string`](../data-types.md)  | Title of the field in uppercase. ||
+[`string`](../data-types.md)  | Name of the field in uppercase. ||
 |#
 
 ### Description of User Field Type Address {#crm_user_field_address}
@@ -408,25 +408,25 @@ A detailed description of the components of an address can be found in the artic
 || **Name** 
 `type` | **Description** | **Example** ||
 || **ADDRESS_1**
-[`string`](../data-types.md)  | Street, house number | Small Znamensky Lane 7/10 b2 ||
+[`string`](../data-types.md)  | Street, house number | 350 5th Avenue ||
 || **ADDRESS_2**
-[`string`](../data-types.md) | Apartment, office, room, floor | 5 ||
+[`string`](../data-types.md) | Apartment, office, room, floor | Suite 120 ||
 || **POSTAL_CODE**
-[`string`](../data-types.md) | Postal code | 119019 ||
+[`string`](../data-types.md) | Postal code | 10118 ||
 || **CITY**
 [`string`](../data-types.md) | Settlement | New York ||
 || **REGION**
-[`string`](../data-types.md) | District | Arbat District ||
+[`string`](../data-types.md) | District | Manhattan ||
 || **PROVINCE**
 [`string`](../data-types.md) | Region | New York ||
 || **COUNTRY**
-[`string`](../data-types.md) | Country | USA ||
+[`string`](../data-types.md) | Country | US ||
 || **LATITUDE**
-[`string`](../data-types.md)  | Latitude coordinates | 55.748289 ||
+[`string`](../data-types.md)  | Latitude coordinates | 40.748441 ||
 || **LONGITUDE**
-[`string`](../data-types.md)  | Longitude coordinates | 37.60504 ||
+[`string`](../data-types.md)  | Longitude coordinates | -73.985664 ||
 || **LOC_ADDR_ID**
-[`string`](../data-types.md)  | Location address identifier | 10 ||
+[`string`](../data-types.md)  | Location address identifier | 8842193 ||
 |#
 
 ## CRM Object Types {#object_type}
@@ -455,12 +455,26 @@ For new integrations, use the "Invoice (new)" with `entityTypeId = 31` (`SMART_I
 
 {% endnote %}
 
-> The table describes the SPA with type identifier 128 and identifier 1.
->
-> Type identifiers for SPAs range from 128 to 191 (inclusive), or have a value greater than 1030 (inclusive) and are even.
->
-> Type identifiers for SPAs deleted to the recycle bin range from 192 to 255 (inclusive), or have a value greater than 1030 and are odd.
->
-> To determine the prefix of the SPA, you need to:
-> - convert the identifier from decimal to hexadecimal. For an identifier equal to 128, we get the value 80.
-> - take the resulting value in lowercase and prepend the Latin letter T to it. Thus, we get the prefix — T80.
+### Format of Values for User Field "Binding to CRM Elements" {#crm-binding-format}
+
+User fields of type `crm` accept values in the format `{PREFIX}_{ID}`, where `PREFIX` is the short symbolic code of the type (`entityTypeAbbr`) from the table above, and `ID` is the numeric identifier of the element.
+
+**Single Binding** — string:
+
+#|
+|| **Object Type** | **Example Value** ||
+|| Lead | `L_4` ||
+|| Deal | `D_1` ||
+|| Contact | `C_2` ||
+|| Company | `CO_3` ||
+|| Invoice (new) | `SI_7` ||
+|| SPA | `T80_6` ||
+|#
+
+**Multiple Binding** (field with `isMultiple: true`) — array of strings:
+
+```json
+["C_123", "CO_456"]
+```
+
+For SPAs, the PREFIX is calculated from `entityTypeId`: the value is converted to hexadecimal representation in lowercase, then the prefix `T` is added. Example: `entityTypeId = 128` → `80` → PREFIX `T80`.

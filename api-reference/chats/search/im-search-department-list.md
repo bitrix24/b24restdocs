@@ -19,9 +19,9 @@ The method `im.search.department.list` performs a search for departments by thei
 #|
 || **Name**
 `Type` | **Description** ||
-|| **FIND***  
+|| **FIND***
 [`string`](../../data-types.md) | Search phrase for finding the full name of the department (field [full_name](../departments/im-department-get.md#department)) ||
-|| **USER_DATA**  
+|| **USER_DATA**
 [`string`](../../data-types.md) | Return the manager's data in the field [manager_user_data](#manager_user_data). 
 
 Available values: 
@@ -29,9 +29,9 @@ Available values:
 - `N` — no
 
 Default value — `N` ||
-|| **OFFSET**  
+|| **OFFSET**
 [`integer`](../../data-types.md) | Offset for the department selection. Default is `0` ||
-|| **LIMIT**  
+|| **LIMIT**
 [`integer`](../../data-types.md) | Number of items in the selection. Default is `10`. Maximum value is `50` ||
 |#
 
@@ -216,15 +216,15 @@ HTTP Code: **200**
 #|
 || **Name**
 `Type` | **Description** ||
-|| **result**  
+|| **result**
 [`array`](../../data-types.md) | List of found departments.
 
 The structure of the department object is described in detail [below](#department-object) ||
-|| **total**  
+|| **total**
 [`integer`](../../data-types.md) | Total number of found departments ||
-|| **next**  
+|| **next**
 [`integer`](../../data-types.md) | Offset for the next page. This field is returned if there is a next page ||
-|| **time**  
+|| **time**
 [`time`](../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
@@ -233,23 +233,93 @@ The structure of the department object is described in detail [below](#departmen
 #|
 || **Name**
 `Type` | **Description** ||
-|| **id**  
+|| **id**
 [`integer`](../../data-types.md) | Department identifier ||
-|| **name**  
+|| **name**
 [`string`](../../data-types.md) | Short name of the department ||
-|| **full_name**  
+|| **full_name**
 [`string`](../../data-types.md) | Full name of the department ||
-|| **manager_user_id**  
+|| **manager_user_id**
 [`integer`](../../data-types.md) | Identifier of the department manager ||
-|| **manager_user_data**  
-[`object`](../../data-types.md) | Data of the department manager. This object is returned only when `USER_DATA = 'Y'`.
+|| **manager_user_data**
+[`object`](../../data-types.md) | Data of the department manager. The object is returned only when `USER_DATA = 'Y'`.
 
 The structure of the manager object is described in detail [below](#manager_user_data) ||
 |#
 
 #### Manager User Data Object {#manager_user_data}
 
-{% include [User Object Tables](../_includes/user-object-tables.md) %}
+#|
+|| **Name**
+`Type` | **Description** ||
+|| **id**
+[`integer`](../../data-types.md) | User identifier ||
+|| **active**
+[`boolean`](../../data-types.md) | User's active status ||
+|| **name**
+[`string`](../../data-types.md) | User's full name ||
+|| **first_name**
+[`string`](../../data-types.md) | User's first name ||
+|| **last_name**
+[`string`](../../data-types.md) | User's last name ||
+|| **work_position**
+[`string`](../../data-types.md) | User's position ||
+|| **color**
+[`string`](../../data-types.md) | User's color in hex format ||
+|| **avatar**
+[`string`](../../data-types.md) | Link to avatar ||
+|| **avatar_hr**
+[`string`](../../data-types.md) | Link to high-resolution avatar ||
+|| **gender**
+[`string`](../../data-types.md) | User's gender ||
+|| **birthday**
+[`string`](../../data-types.md) | Birthday in `DD-MM` format or an empty string ||
+|| **extranet**
+[`boolean`](../../data-types.md) | External user status ||
+|| **network**
+[`boolean`](../../data-types.md) | Bitrix24 Network user status ||
+|| **bot**
+[`boolean`](../../data-types.md) | Bot status ||
+|| **connector**
+[`boolean`](../../data-types.md) | Open Channels user status ||
+|| **external_auth_id**
+[`string`](../../data-types.md) | External authorization code ||
+|| **status**
+[`string`](../../data-types.md) | User's status ||
+|| **idle**
+[`datetime`](../../data-types.md) | User's idle date or `false` ||
+|| **last_activity_date**
+[`datetime`](../../data-types.md) | User's last activity date ||
+|| **mobile_last_date**
+[`datetime`](../../data-types.md) | User's last activity date in the mobile app or `false` ||
+|| **desktop_last_date**
+[`datetime`](../../data-types.md) | User's last activity date in the desktop app or `false` ||
+|| **absent**
+[`datetime`](../../data-types.md) | User's absence end date or `false` ||
+|| **departments**
+[`array`](../../data-types.md) | Array of department identifiers ||
+|| **phones**
+[`object`](../../data-types.md) | User's phones or `false` [(detailed description)](#phones) ||
+|| **bot_data**
+[`object`](../../data-types.md) | Bot data or `null` ||
+|| **type**
+[`string`](../../data-types.md) | User type ||
+|| **website**
+[`string`](../../data-types.md) | User's website ||
+|| **email**
+[`string`](../../data-types.md) | User's email ||
+|#
+
+#### Phones Object {#phones}
+
+#|
+|| **Name**
+`Type` | **Description** ||
+|| **personal_mobile**
+[`string`](../../data-types.md) | Mobile phone ||
+|| **inner_phone**
+[`string`](../../data-types.md) | Internal phone ||
+|#
 
 ## Error Handling
 

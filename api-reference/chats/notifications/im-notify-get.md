@@ -12,7 +12,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 The method `im.notify.get` returns a list of user notifications in parts. The next part is requested using `LAST_ID` and `LAST_TYPE`.
 
-Notifications are sorted first by descending creation date, then by descending identifiers.
+Notification sorting: first by descending creation date, then by descending identifiers.
 
 ## Method Parameters
 
@@ -22,7 +22,7 @@ Notifications are sorted first by descending creation date, then by descending i
 || **Name**
 `Type` | **Description** ||
 || **LAST_ID**
-[`integer`](../../data-types.md) | Identifier of the last notification from the previous page to load the next one. Typically taken from the `id` field of the last element in the `notifications` array in the response of the previous step or in the response of [im.notify.history.search](./im-notify-history-search.md)
+[`integer`](../../data-types.md) | Identifier of the last notification from the previous page to load the next one. Typically taken from the `id` field of the last element in the `notifications` array in the response of the previous selection step or in the response of [im.notify.history.search](./im-notify-history-search.md)
 
 The notification identifier is also returned by the methods [im.notify](./im-notify.md), [im.notify.personal.add](./im-notify-personal-add.md), and [im.notify.system.add](./im-notify-system-add.md).
 
@@ -31,19 +31,19 @@ This parameter should be used together with `LAST_TYPE` ||
 [`integer`](../../data-types.md) | Technical pagination cursor.
 
 Allowed values: 
-- `1` — continue fetching from the confirmations stage
-- `3` — continue fetching from the regular notifications stage
+- `1` — continue selection from the confirmations stage
+- `3` — continue selection from the regular notifications stage
 
 This parameter should be used together with `LAST_ID`.
 
-For values other than `1` and `3`, the server does not return a separate error. ||
+For values other than `1` and `3`, the server does not return a separate error ||
 || **LIMIT**
-[`integer`](../../data-types.md) | Number of notifications per page. Default value is `50`. Maximum value is `50`. ||
+[`integer`](../../data-types.md) | Number of notifications per page. Default value is `50`. Maximum value is `50` ||
 || **CONVERT_TEXT**
-[`string`](../../data-types.md) | Convert notification text. Value `Y` enables conversion, any other value disables it. ||
+[`string`](../../data-types.md) | Convert notification text. Value `Y` enables conversion, any other value disables it ||
 |#
 
-On a single page, the method can return a mixed set of notifications: first confirmations, then regular notifications to reach `LIMIT`.
+On one page, the method can return a mixed set of notifications: first confirmations, then regular notifications to reach `LIMIT`.
 
 For stable pagination:
 
@@ -247,11 +247,11 @@ HTTP Code: **200**
 || **Name**
 `Type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | Object containing notification data. 
+[`object`](../../data-types.md) | Object containing notification data.
 
 The structure of the object is described in detail [below](#result-object) ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the request execution time ||
+[`time`](../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
 ### Result Object {#result-object}
@@ -266,7 +266,7 @@ The structure of the object is described in detail [below](#result-object) ||
 || **chat_id**
 [`integer`](../../data-types.md) | Identifier of the system notification chat ||
 || **notifications**
-[`array`](../../data-types.md) | List of notifications. 
+[`array`](../../data-types.md) | List of notifications.
 
 The structure of the object is described in detail [below](#notification-object) ||
 || **users**
@@ -309,7 +309,7 @@ If the user does not have a system notification chat or it contains no messages,
 || **notify_read**
 [`string`](../../data-types.md) | Read status of the notification: `Y` or `N` ||
 || **notify_buttons**
-[`string`](../../data-types.md) | JSON keyboard for confirmation-type notifications. This field is not always present ||
+[`string`](../../data-types.md) | JSON keyboard for confirmation type notifications. This field is not always present ||
 || **params**
 [`object`](../../data-types.md) 
 [`null`](../../data-types.md) | Additional parameters of the notification ||
@@ -317,7 +317,77 @@ If the user does not have a system notification chat or it contains no messages,
 
 #### Users Object {#users-object}
 
-{% include [User Object Tables](../_includes/user-object-tables.md) %}
+#|
+|| **Name**
+`Type` | **Description** ||
+|| **id**
+[`integer`](../../data-types.md) | Identifier of the user ||
+|| **active**
+[`boolean`](../../data-types.md) | User's activity status ||
+|| **name**
+[`string`](../../data-types.md) | User's full name ||
+|| **first_name**
+[`string`](../../data-types.md) | User's first name ||
+|| **last_name**
+[`string`](../../data-types.md) | User's last name ||
+|| **work_position**
+[`string`](../../data-types.md) | User's position ||
+|| **color**
+[`string`](../../data-types.md) | User's color in hex format ||
+|| **avatar**
+[`string`](../../data-types.md) | Link to the avatar ||
+|| **avatar_hr**
+[`string`](../../data-types.md) | Link to the high-resolution avatar ||
+|| **gender**
+[`string`](../../data-types.md) | User's gender ||
+|| **birthday**
+[`string`](../../data-types.md) | Birthday in `DD-MM` format or an empty string ||
+|| **extranet**
+[`boolean`](../../data-types.md) | Extranet user status ||
+|| **network**
+[`boolean`](../../data-types.md) | Bitrix24 Network user status ||
+|| **bot**
+[`boolean`](../../data-types.md) | Bot status ||
+|| **connector**
+[`boolean`](../../data-types.md) | Open Channels user status ||
+|| **external_auth_id**
+[`string`](../../data-types.md) | External authorization code ||
+|| **status**
+[`string`](../../data-types.md) | User's status ||
+|| **idle**
+[`datetime`](../../data-types.md) | User's idle date or `false` ||
+|| **last_activity_date**
+[`datetime`](../../data-types.md) | User's last activity date ||
+|| **mobile_last_date**
+[`datetime`](../../data-types.md) | User's last activity date in the mobile app or `false` ||
+|| **desktop_last_date**
+[`datetime`](../../data-types.md) | User's last activity date in the desktop app or `false` ||
+|| **absent**
+[`datetime`](../../data-types.md) | User's absence end date or `false` ||
+|| **departments**
+[`array`](../../data-types.md) | Array of department identifiers ||
+|| **phones**
+[`object`](../../data-types.md) | User's phones or `false` [(detailed description)](#phones) ||
+|| **bot_data**
+[`object`](../../data-types.md) | Bot data or `null` ||
+|| **type**
+[`string`](../../data-types.md) | User type ||
+|| **website**
+[`string`](../../data-types.md) | User's website ||
+|| **email**
+[`string`](../../data-types.md) | User's email ||
+|#
+
+#### Phones Object {#phones}
+
+#|
+|| **Name**
+`Type` | **Description** ||
+|| **personal_mobile**
+[`string`](../../data-types.md) | Mobile phone ||
+|| **inner_phone**
+[`string`](../../data-types.md) | Internal phone ||
+|#
 
 ## Error Handling
 
@@ -336,7 +406,7 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `LAST_ID_AND_LAST_TYPE` | Parameters LAST_ID and LAST_TYPE should be used together | Only one parameter from the pair `LAST_ID` and `LAST_TYPE` was provided ||
+|| `LAST_ID_AND_LAST_TYPE` | Parameters LAST_ID and LAST_TYPE should be used together | Only one parameter from the pair `LAST_ID` and `LAST_TYPE` was passed ||
 || `LAST_ID_STRING` | Last notification ID can't be string | The `LAST_ID` parameter contains a non-numeric value ||
 |#
 

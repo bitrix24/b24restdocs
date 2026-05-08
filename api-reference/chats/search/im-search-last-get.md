@@ -268,7 +268,7 @@ The structure of the item object is described in detail [below](#last-item-objec
 `Type` | **Description** ||
 || **id**
 [`string`](../../data-types.md) 
-[`integer`](../../data-types.md) | Identifier of the chat or user identifier for a personal dialog ||
+[`integer`](../../data-types.md) | Identifier of the chat or user identifier for personal dialog ||
 || **type**
 [`string`](../../data-types.md) | Record type: `chat` or `user` ||
 || **avatar**
@@ -278,11 +278,11 @@ The structure of the object is described in detail [below](#avatar-object) ||
 || **title**
 [`string`](../../data-types.md) | Title of the record ||
 || **user**
-[`object`](../../data-types.md) | User data for records of type `user`.
+[`object`](../../data-types.md) | User data for `user` type record.
 
 The structure of the object is described in detail [below](#user-object) ||
 || **chat**
-[`object`](../../data-types.md) | Chat data for records of type `chat`.
+[`object`](../../data-types.md) | Chat data for `chat` type record.
 
 The structure of the object is described in detail [below](#chat-object) ||
 |#
@@ -300,7 +300,77 @@ The structure of the object is described in detail [below](#chat-object) ||
 
 ### User Object {#user-object}
 
-{% include [User Object Tables](../_includes/user-object-tables.md) %}
+#|
+|| **Name**
+`Type` | **Description** ||
+|| **id**
+[`integer`](../../data-types.md) | User identifier ||
+|| **active**
+[`boolean`](../../data-types.md) | User activity status ||
+|| **name**
+[`string`](../../data-types.md) | User's full name ||
+|| **first_name**
+[`string`](../../data-types.md) | User's first name ||
+|| **last_name**
+[`string`](../../data-types.md) | User's last name ||
+|| **work_position**
+[`string`](../../data-types.md) | User's job title ||
+|| **color**
+[`string`](../../data-types.md) | User's color in hex format ||
+|| **avatar**
+[`string`](../../data-types.md) | Link to the avatar ||
+|| **avatar_hr**
+[`string`](../../data-types.md) | Link to the high-resolution avatar ||
+|| **gender**
+[`string`](../../data-types.md) | User's gender ||
+|| **birthday**
+[`string`](../../data-types.md) | Birthday in `DD-MM` format or an empty string ||
+|| **extranet**
+[`boolean`](../../data-types.md) | Extranet user status ||
+|| **network**
+[`boolean`](../../data-types.md) | Bitrix24 Network user status ||
+|| **bot**
+[`boolean`](../../data-types.md) | Bot status ||
+|| **connector**
+[`boolean`](../../data-types.md) | Open Channels user status ||
+|| **external_auth_id**
+[`string`](../../data-types.md) | External authorization code ||
+|| **status**
+[`string`](../../data-types.md) | User status ||
+|| **idle**
+[`datetime`](../../data-types.md) | User idle date or `false` ||
+|| **last_activity_date**
+[`datetime`](../../data-types.md) | User's last activity date ||
+|| **mobile_last_date**
+[`datetime`](../../data-types.md) | Last activity date in the mobile app or `false` ||
+|| **desktop_last_date**
+[`datetime`](../../data-types.md) | Last activity date in the desktop app or `false` ||
+|| **absent**
+[`datetime`](../../data-types.md) | Date of the user's absence end or `false` ||
+|| **departments**
+[`array`](../../data-types.md) | Array of department identifiers ||
+|| **phones**
+[`object`](../../data-types.md) | User's phones or `false` [(detailed description)](#phones) ||
+|| **bot_data**
+[`object`](../../data-types.md) | Bot data or `null` ||
+|| **type**
+[`string`](../../data-types.md) | User type ||
+|| **website**
+[`string`](../../data-types.md) | User's website ||
+|| **email**
+[`string`](../../data-types.md) | User's email ||
+|#
+
+#### Phones Object {#phones}
+
+#|
+|| **Name**
+`Type` | **Description** ||
+|| **personal_mobile**
+[`string`](../../data-types.md) | Mobile phone ||
+|| **inner_phone**
+[`string`](../../data-types.md) | Internal phone ||
+|#
 
 ### Chat Object {#chat-object}
 
@@ -308,20 +378,20 @@ The structure of the object is described in detail [below](#chat-object) ||
 || **Name**
 `Type` | **Description** ||
 || **id**
-[`integer`](../../data-types.md) | Identifier of the chat ||
+[`integer`](../../data-types.md) | Chat identifier ||
 || **name**
-[`string`](../../data-types.md) | Name of the chat ||
+[`string`](../../data-types.md) | Chat name ||
 || **owner**
-[`integer`](../../data-types.md) | Identifier of the chat owner ||
+[`integer`](../../data-types.md) | Chat owner identifier ||
 || **extranet**
-[`boolean`](../../data-types.md) | Indicates participation of extranet users in the chat ||
+[`boolean`](../../data-types.md) | Extranet user participation status in the chat ||
 || **avatar**
 [`string`](../../data-types.md) 
 [`null`](../../data-types.md) | Link to the chat avatar ||
 || **color**
-[`string`](../../data-types.md) | Color of the chat in HEX format ||
+[`string`](../../data-types.md) | Chat color in HEX format ||
 || **type**
-[`string`](../../data-types.md) | Type of chat ||
+[`string`](../../data-types.md) | Chat type ||
 || **entity_type**
 [`string`](../../data-types.md) | Type of the object to which the chat is linked ||
 || **entity_id**
@@ -333,11 +403,11 @@ The structure of the object is described in detail [below](#chat-object) ||
 || **entity_data_3**
 [`string`](../../data-types.md) | Additional data of the chat object — field 3 ||
 || **mute_list**
-[`object`](../../data-types.md) | List of users with muted notifications ||
+[`object`](../../data-types.md) | List of users with notifications turned off ||
 || **date_create**
-[`string`](../../data-types.md) | Creation date of the chat in ISO 8601 format (RFC3339) ||
+[`string`](../../data-types.md) | Chat creation date in ISO 8601 format (RFC3339) ||
 || **message_type**
-[`string`](../../data-types.md) | Type of message ||
+[`string`](../../data-types.md) | Message type ||
 |#
 
 ## Error Handling

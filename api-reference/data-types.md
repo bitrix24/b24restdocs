@@ -6,14 +6,14 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-This page describes the data types used in method parameters, object structures, and REST API responses. For each type, the value format and usage specifics are provided. This is a general dictionary of types: the exact field composition, acceptable values, and additional constraints should be checked on the specific method or object page.
+This page describes the data types used in method parameters, object structures, and REST API responses. For each type, the value format and usage specifics are provided. This is a general dictionary of types: the exact field composition, allowed values, and additional constraints should be checked on the specific method or object page.
 
 ## Basic Data Types {#standart-types}
 
 #|
 || **Type** | **Description** ||
 || `integer` | An integer. For example, `10116` ||
-|| `boolean` | A boolean value. Most often takes values `Y` or `N`. In some methods, it may accept values `0` or `1` ||
+|| `boolean` | A boolean value. Most often takes values `Y` or `N`. In some methods, it may take values `0` or `1` ||
 || `char` | A fixed-length string type, usually `CHAR(1)`. Often used as a substitute for `boolean` and stores `Y` or `N` ||
 || `double` | A floating-point number. For example, `100.15` ||
 || `date` | A date in the format `YYYY-MM-DD`. For example, `2025-12-28`, December 28, 2025 ||
@@ -21,7 +21,7 @@ This page describes the data types used in method parameters, object structures,
 || `timestamp` | A date and time in Unix Timestamp format, usually an integer representing the number of seconds since January 1, 1970. For example, `1719826800` ||
 || `string` | A single-line string value. For example, `Supply Agreement` ||
 || `text` | A multi-line string value, applicable in some special fields of objects ||
-|| `file` | An attached file. It can take a numeric value with a unique file identifier in the system or a value in the form of an array describing the file parameters. 
+|| `file` | An attached file. Can take a numeric value with a unique file identifier in the system or a value in the form of an array describing the file parameters. 
 
 For more information on working with files, read the articles:
 - [How to Upload Files](./files/how-to-upload-files.md)
@@ -48,24 +48,29 @@ For more information on working with files, read the articles:
 ||
 || `function` | A function. Used in JavaScript examples and Bitrix24 js interfaces to describe a handler ||
 || `callable` | A callable handler, usually a callback function. In JavaScript, this can be a regular function or its shorthand notation using `=>` ||
-|| `any` | Various data types can serve as the parameter value ||
+|| `any` | Various data types can serve as parameter values ||
 |#
 
 {% note tip "Date and Time Features" %}
 
-When working with fields of types _date_ and _datetime_, please note that each user in Bitrix24 can have their own time zone specified in the settings. The Bitrix24 user interface displays dates and times, adapting them to the specific user; however, at the API level, all dates and times are stored considering the server parameters.
+When working with fields of types _date_ and _datetime_, note that each user in Bitrix24 can have their own time zone specified in the settings. The Bitrix24 user interface displays dates and times adapted to the specific user; however, at the API level, all dates and times are stored according to the server parameters.
 
 {% endnote %}
 
 ## Data Types for Object References and Directories {#standart-objects}
 
-Bitrix24 object fields can contain values that reference other objects or values from directories. Technically, such values are most often stored and indicated as integer identifiers of specific objects or directory elements. However, for convenience and to emphasize such relationships, we will use special types in the documentation, such as `_crm_company_` or `_crm_status_`. Below are examples of such types with links to methods for obtaining possible values.
+Fields of Bitrix24 objects can contain values that reference other objects or values from directories. Technically, such values are most often stored and indicated as integer identifiers of specific objects or directory elements. However, for convenience and to emphasize such relationships, we will use special types in the documentation, such as `_crm_company_` or `_crm_status_`. Below are examples of such types with links to methods for obtaining possible values.
 
 #|
 || **Type** | **Description** ||
 || `user` | An integer identifier of a Bitrix24 user, for example, `1`. 
 
 User identifiers can be obtained using the [user.get](./user/user-get.md) method ||
+|| `crm` | Binding to CRM elements. The value is passed in the format `{PREFIX}_{ID}`, where `PREFIX` is a short character code for the CRM object type, and `ID` is the numeric identifier of the element. For example, `D_1` is a deal with identifier 1, `C_2` is a contact with identifier 2.
+
+For multiple bindings, an array of strings is passed: `["C_123", "CO_456"]`.
+
+The complete list of PREFIX and rules for calculating PREFIX for smart processes are described in the section [Value Format for the Custom Field "Binding to CRM Elements"](./crm/data-types.md#crm-binding-format) ||
 |#
 
 Data directories for various Bitrix24 tools:
@@ -78,7 +83,7 @@ Data directories for various Bitrix24 tools:
 
 The `time` object is present in the responses to all REST requests and contains information about the request execution time.
 
-The composition of the `time` object fields may vary depending on the method and environment. In its full version, the response may contain all fields from the example below.
+The composition of the `time` object fields may vary depending on the method and environment. In the full version, the response may contain all fields from the example below.
 
 Example structure:
 
@@ -101,19 +106,19 @@ Example structure:
 || **Name**
 `type` | **Description** ||
 || **start**
-`double` | A timestamp in Unix Timestamp format for the moment the request is initialized. Returned as a number with a fractional part because time is transmitted in seconds with millisecond precision ||
+`double` | A Unix Timestamp for the moment the request is initialized. Returned as a number with a fractional part because the time is transmitted in seconds with millisecond precision ||
 || **finish**
-`double` | A timestamp in Unix Timestamp format for the moment the request execution is completed. Returned as a number with a fractional part because time is transmitted in seconds with millisecond precision ||
+`double` | A Unix Timestamp for the moment the request execution is completed. Returned as a number with a fractional part because the time is transmitted in seconds with millisecond precision ||
 || **duration**
 `double` | The duration of the request execution in seconds, i.e., the difference between `finish` and `start` ||
 || **processing**
 `double` | The time taken to process the request in seconds ||
 || **date_start**
-`string` | A string representation of the date and time of the request initialization moment ||
+`string` | A string representation of the date and time of the request initialization ||
 || **date_finish**
-`string` | A string representation of the date and time of the request completion moment ||
+`string` | A string representation of the date and time of the request completion ||
 || **operating_reset_at**
-`timestamp` | A timestamp in Unix Timestamp format for the moment when a portion of the method's resource consumption limit will be released. Usually returned as an integer
+`timestamp` | A Unix Timestamp for the moment when part of the resource limit for the method will be released. Usually returned as an integer
 
 For more details, see the article [operation limit](../limits.md) ||
 || **operating**

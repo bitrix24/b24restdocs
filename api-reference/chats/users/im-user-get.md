@@ -1,4 +1,4 @@
-# Get User Data with im.user.get
+# Get User Data im.user.get
 
 {% note tip "" %}
 
@@ -8,7 +8,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`im`](../../scopes/permissions.md)
 >
-> Who can execute this method: any user
+> Who can execute the method: any user
 
 The method `im.user.get` retrieves data about the current user or a user by `ID`.
 
@@ -22,7 +22,7 @@ The method `im.user.get` retrieves data about the current user or a user by `ID`
 || **ID**
 [`integer`](../../data-types.md) | User identifier. If not provided, the method will return data for the current user.
 
-You can obtain the user ID using the methods [user.get](../../user/user-get.md), [user.search](../../user/user-search.md), or [im.chat.user.list](../chat-users/im-chat-user-list.md) ||
+You can obtain the user identifier using the methods [user.get](../../user/user-get.md), [user.search](../../user/user-search.md), or [im.chat.user.list](../chat-users/im-chat-user-list.md) ||
 || **AVATAR_HR**
 [`string`](../../data-types.md) | Parameter to request the `avatar_hr` field with the high-resolution avatar URL. Acceptable values: `Y` or `N`, default is `N`.
 
@@ -203,7 +203,77 @@ The structure of the object is described in detail [below](#result-object) ||
 
 ### Result Object {#result-object}
 
-{% include [User Object Tables](../_includes/user-object-tables.md) %}
+#|
+|| **Name**
+`Type` | **Description** ||
+|| **id**
+[`integer`](../../data-types.md) | User identifier ||
+|| **active**
+[`boolean`](../../data-types.md) | User activity status ||
+|| **name**
+[`string`](../../data-types.md) | User's full name ||
+|| **first_name**
+[`string`](../../data-types.md) | User's first name ||
+|| **last_name**
+[`string`](../../data-types.md) | User's last name ||
+|| **work_position**
+[`string`](../../data-types.md) | User's job title ||
+|| **color**
+[`string`](../../data-types.md) | User's color in hex format ||
+|| **avatar**
+[`string`](../../data-types.md) | Link to the avatar ||
+|| **avatar_hr**
+[`string`](../../data-types.md) | Link to the high-resolution avatar ||
+|| **gender**
+[`string`](../../data-types.md) | User's gender ||
+|| **birthday**
+[`string`](../../data-types.md) | Birthday in `DD-MM` format or an empty string ||
+|| **extranet**
+[`boolean`](../../data-types.md) | External user status ||
+|| **network**
+[`boolean`](../../data-types.md) | Bitrix24 Network user status ||
+|| **bot**
+[`boolean`](../../data-types.md) | Bot status ||
+|| **connector**
+[`boolean`](../../data-types.md) | Open Channels user status ||
+|| **external_auth_id**
+[`string`](../../data-types.md) | External authorization code ||
+|| **status**
+[`string`](../../data-types.md) | User status ||
+|| **idle**
+[`datetime`](../../data-types.md) | User's idle date or `false` ||
+|| **last_activity_date**
+[`datetime`](../../data-types.md) | User's last activity date ||
+|| **mobile_last_date**
+[`datetime`](../../data-types.md) | Last activity date in the mobile app or `false` ||
+|| **desktop_last_date**
+[`datetime`](../../data-types.md) | Last activity date in the desktop app or `false` ||
+|| **absent**
+[`datetime`](../../data-types.md) | User's absence end date or `false` ||
+|| **departments**
+[`array`](../../data-types.md) | Array of department identifiers ||
+|| **phones**
+[`object`](../../data-types.md) | User's phones or `false` [(detailed description)](#phones) ||
+|| **bot_data**
+[`object`](../../data-types.md) | Bot data or `null` ||
+|| **type**
+[`string`](../../data-types.md) | User type ||
+|| **website**
+[`string`](../../data-types.md) | User's website ||
+|| **email**
+[`string`](../../data-types.md) | User's email ||
+|#
+
+#### Phones Object {#phones}
+
+#|
+|| **Name**
+`Type` | **Description** ||
+|| **personal_mobile**
+[`string`](../../data-types.md) | Mobile phone ||
+|| **inner_phone**
+[`string`](../../data-types.md) | Internal phone ||
+|#
 
 ## Error Handling
 
@@ -224,7 +294,7 @@ HTTP Status: **400**
 || **Code** | **Description** | **Value** ||
 || `ID_EMPTY` | User ID can't be empty | Provided `ID <= 0` ||
 || `USER_NOT_EXISTS` | User does not exist | User with the specified `ID` not found ||
-|| `ACCESS_DENIED` | You can request only users who are part of your extranet group | The current extranet user requests a user not from their extranet group ||
+|| `ACCESS_DENIED` | You can request only users who are part of your extranet group | The current extranet user is requesting a user not from their extranet group ||
 |#
 
 {% include [System Errors](../../../_includes/system-errors.md) %}

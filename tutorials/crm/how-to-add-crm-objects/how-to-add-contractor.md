@@ -1,4 +1,4 @@
-﻿# How to Create a Vendor in CRM
+# How to Create a Vendor in CRM
 
 > Scope: [`crm`](../../../api-reference/scopes/permissions.md)
 >
