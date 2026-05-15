@@ -323,8 +323,6 @@ HTTP Status: **200**
 }
 ```
 
-{% endlist %}
-
 If a contact has 2 different details to which addresses are linked:
 
 HTTP Status: **200**

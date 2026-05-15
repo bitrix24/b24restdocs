@@ -72,7 +72,7 @@ The structure is described [below](#fields) ||
 The structure is described [below](#auth) ||
 |#
 
-### Parameter FIELDS {% #fields %}
+### Parameter FIELDS {#fields}
 
 #|
 || **Parameter**

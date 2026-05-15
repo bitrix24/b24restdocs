@@ -23,9 +23,7 @@ Enumeration elements for "Address Type" can be obtained using the method [crm.en
 
 Identifiers for object types can be obtained using the method [crm.enum.ownertype](../../auxiliary/enum/crm-enum-owner-type.md).
 
-Addresses can only be linked to Requisites (which are already linked to companies or contacts) or Leads. For backward compatibility, the ability to link Addresses to Contacts or Companies has been retained. However, this linkage is only possible on some older accounts where the old address handling mode was specifically enabled by technical support.
-
-{% endnote %} | Yes | Yes | Yes | Yes ||
+Addresses can only be linked to Requisites (which are already linked to companies or contacts) or Leads. For backward compatibility, the ability to link Addresses to Contacts or Companies has been retained. However, this linkage is only possible on some older accounts where the old address handling mode was specifically enabled by technical support. | Yes | Yes | Yes | Yes ||
 || **ENTITY_ID**
 [`string`](../../../data-types.md) | Identifier for the parent object | Yes | Yes | Yes | Yes ||
 || **ADDRESS_1**

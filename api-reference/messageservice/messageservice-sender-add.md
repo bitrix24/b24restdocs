@@ -30,7 +30,9 @@ Allowed characters: `a-z`, `A-Z`, `0-9`, `.`, `-`, `_` ||
 
 Supported value: `SMS` ||
 || **HANDLER***
-[`string`](../data-types.md) | Application handler URL that is called when sending a message ||
+[`string`](../data-types.md) | Application handler URL that is called when sending a message.
+
+The data that comes to the handler is described [below](#handler) ||
 || **NAME***
 [`string` \| `object`](../data-types.md) | Provider name.
 
@@ -57,6 +59,66 @@ Can be a string or an associative array of localized strings like:
 },
 ```
 ||
+|#
+
+## What Comes to the Handler {#handler}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **module_id**
+[`string`](../data-types.md) | Module from which the message was sent.
+
+Possible values:
+- `crm` — message sent from the CRM card
+- `bizproc` — message sent from Workflows or a CRM automation rule ||
+|| **bindings**
+[`array`](../data-types.md) | Array of message bindings to CRM entities.
+
+Parameter comes if `module_id` equals `crm` ||
+|| **workflow_id**
+[`string`](../data-types.md) | Workflow identifier.
+
+Parameter comes if `module_id` equals `bizproc` ||
+|| **document_id**
+[`array`](../data-types.md) | Identifier of the workflow document.
+
+Parameter comes if `module_id` equals `bizproc` ||
+|| **document_type**
+[`array`](../data-types.md) | Type of the workflow document.
+
+Parameter comes if `module_id` equals `bizproc` ||
+|| **properties**
+[`object`](../data-types.md) | Object with [message parameters](#properties) ||
+|| **type**
+[`string`](../data-types.md) | Provider type.
+
+Possible value: `SMS` ||
+|| **code**
+[`string`](../data-types.md) | Provider code ||
+|| **message_id**
+[`string`](../data-types.md) | Unique message identifier.
+
+Use it in the [messageservice.message.status.update](./messageservice-message-status-update.md) method to update the message status ||
+|| **message_to**
+[`string`](../data-types.md) | Recipient's message number ||
+|| **message_body**
+[`string`](../data-types.md) | Message text ||
+|| **ts**
+[`integer`](../data-types.md) | Time of the request in Unix Timestamp format ||
+|| **auth**
+[`object`](../data-types.md) | Application authorization data ||
+|#
+
+### Properties Object {#properties}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **phone_number**
+[`string`](../data-types.md) | Recipient's message number ||
+|| **message_text**
+[`string`](../data-types.md) | Message text ||
 |#
 
 ## Code Examples

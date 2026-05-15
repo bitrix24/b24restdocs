@@ -2,6 +2,10 @@
 
 ## 2026
 
+### May 15, 2026
+
+- Added a description of the methods for working with [Task Results](./api-reference/rest-v3/tasks/result/index.md) REST 3.0
+
 ### May 08, 2026
 
 - Updated the page [How to Integrate External Telephony with Bitrix24](./tutorials/telephony/index.md)

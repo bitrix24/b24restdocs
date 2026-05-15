@@ -74,8 +74,6 @@ When registering multiple commands, specify the same URL in `EVENT_COMMAND_ADD`,
 
 {% endnote %}
 
-{% endnote %}
-
 ## Code Examples
 
 {% include [Note on Examples](../../../../_includes/examples.md) %}

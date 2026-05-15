@@ -13,6 +13,10 @@ items:
     href: tasks-task-chat-message-send.md
   - name: Attach Files to Task
     href: tasks-task-file-attach.md
+  - name: Result
+    include:
+      path: result/b24-toc.yaml
+      mode: link
   - name: Get Task
     href: tasks-task-get.md
   - name: Delete Task

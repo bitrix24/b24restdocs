@@ -20,7 +20,7 @@ Open channel chats are a space within Bitrix24 for communicating with clients th
 
 **Chatbot**. A bot can be added to the chat. Work with bots should be done using the methods [imopenlines.bot.*](../../../imopenlines/openlines/chat-bots/index.md).
 
-{% note info"" %}
+{% note info "" %}
 
 To add a bot to an open channel chat, it must have the scope [crm](../../../scopes/permissions.md).
 

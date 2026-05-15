@@ -8,11 +8,11 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 Tasks in Bitrix24 are a tool for organizing work, ranging from simple assignments to complex projects. They enable teams to track execution, manage deadlines, and distribute responsibilities.
 
-> Quick navigation: [all methods](#all-methods) 
-> 
-> User Documentation: [Bitrix24 Tasks](https://helpdesk.bitrix24.com/open/18034564/) 
+> Quick navigation: [all methods](#all-methods)
+>
+> User Documentation: [Bitrix24 Tasks](https://helpdesk.bitrix24.com/open/18034564/)
 
-In [REST 3.0](../index.md), task methods have received an updated architecture, a unified response format, and support for relationships between objects. REST 3.0 now covers basic operations on tasks, working with task chat, attaching files, and methods for retrieving field schemas (`*.field.list` / `*.field.get`). Everything related to checklists, time tracking, results, and history is available in REST v2.
+In [REST 3.0](../index.md), task methods have received an updated architecture, a unified response format, and support for relationships between objects. REST 3.0 now covers basic operations on tasks, working with task chat, attaching files, task results, and methods for retrieving field schemas (`*.field.list` / `*.field.get`). Everything related to checklists, time tracking, and history is available in REST v2.
 
 ## Task Card
 
@@ -70,6 +70,8 @@ The listed fields are returned as objects in the method [tasks.task.get](./tasks
 
 {% endnote %}
 
+**Task Results.** The result captures the outcome of the work on the task. To work with results, use the methods in the section [Task Results in REST 3.0](./result/index.md). They allow you to manually add a result, create it from a message in the task chat, modify the result text, retrieve a list of results, and delete unnecessary results.
+
 **CRM Objects.** You can link CRM objects to a task: leads, contacts, companies, deals, invoices, and SPAs. The identifiers of such objects are passed in the `crmItemIds` field in a prefixed format, for example, `C_3` for a contact. Data about related CRM objects is not available directly — they should be requested separately through [CRM methods](../../crm/index.md).
 
 **Drive Files.** You can upload files from Drive to the task.
@@ -80,7 +82,7 @@ The listed fields are returned as objects in the method [tasks.task.get](./tasks
 
 Pass the obtained file identifier to the method [tasks.task.file.attach](./tasks-task-file-attach.md).
 
-{% note tip " " %} 
+{% note tip " " %}
 
 A description of all task fields and fields of related objects is available in the article [Task Fields in REST 3.0](./fields.md).
 
@@ -102,7 +104,7 @@ To perform other actions with chat messages, use the messenger methods:
 
 The task card can be extended with widgets — external applications embedded in the interface. This allows users to work with integrations without leaving the task card.
 
-{% note tip " " %} 
+{% note tip " " %}
 
 [Widget Embedding Mechanism](../../widgets/index.md)
 
@@ -134,8 +136,6 @@ The following capabilities work only through REST v2:
 
 - Working with checklists [task.checklistitem.*](../../tasks/checklist-item/index.md)
 
-- Retrieving task results [tasks.task.result.list](../../tasks/result/tasks-task-result-list.md)
-
 - Tracking elapsed time [task.elapseditem.*](../../tasks//elapsed-item/index.md)
 
 - Managing custom fields [task.item.userfield.*](../../tasks/user-field/index.md)
@@ -160,6 +160,11 @@ The following capabilities work only through REST v2:
 || [tasks.task.file.attach](./tasks-task-file-attach.md) | Attaches Drive files to the task ||
 || [tasks.task.get](./tasks-task-get.md) | Retrieves task data with support for relationships via `select` ||
 || [tasks.task.chat.message.send](./tasks-task-chat-message-send.md) | Sends a message in the task chat ||
+|| [tasks.task.result.add](./result/tasks-task-result-add.md) | Adds a result to the task ||
+|| [tasks.task.result.addfromchatmessage](./result/tasks-task-result-addfromchatmessage.md) | Creates a result from a task chat message ||
+|| [tasks.task.result.update](./result/tasks-task-result-update.md) | Updates the result text ||
+|| [tasks.task.result.list](./result/tasks-task-result-list.md) | Returns a list of task results ||
+|| [tasks.task.result.delete](./result/tasks-task-result-delete.md) | Deletes a task result ||
 || [tasks.task.update](./tasks-task-update.md) | Updates the task ||
 || [tasks.task.delete](./tasks-task-delete.md) | Deletes the task ||
 || [tasks.task.access.get](./tasks-task-access-get.md) | Checks access permissions for the task ||
@@ -171,7 +176,7 @@ The following capabilities work only through REST v2:
 || [tasks.task.file.field.get](./tasks-task-file-field-get.md) | Returns the description of task file fields by name ||
 || [tasks.task.chat.message.field.list](./tasks-task-chat-message-field-list.md) | Returns a list of task chat message fields ||
 || [tasks.task.chat.message.field.get](./tasks-task-chat-message-field-get.md) | Returns the description of a task chat message field by name ||
-|# 
+|#
 
 ## Continue Learning
 
