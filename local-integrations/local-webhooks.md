@@ -20,7 +20,7 @@ A local webhook is a simplified way to access the methods and events of the Bitr
 
 {% note tip "" %}
 
-If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect the [MCP server](../sdk/mcp.md) so that the assistant can utilize the official REST documentation.
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect the [MCP server](../ai-tools/mcp.md) so that the assistant can utilize the official REST documentation.
 
 {% endnote %}
 

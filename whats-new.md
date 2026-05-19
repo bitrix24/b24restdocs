@@ -390,7 +390,7 @@
 
 ### October 8, 2025
 
-- Added the article [MCP server for working with Bitrix24 REST API](./sdk/mcp.md)
+- Added the article [MCP server for working with Bitrix24 REST API](./ai-tools/mcp.md)
 
 ### October 2, 2025
 

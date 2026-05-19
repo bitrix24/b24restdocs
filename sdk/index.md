@@ -40,6 +40,6 @@ Use CRest PHP SDK:
 
 ## Additional Tools
 
-[MCP](./mcp.md) is an auxiliary service for AI assistants in the development environment. MCP provides AI assistants with structured data and specifications for REST API methods, helps generate correct code, and speeds up application creation.
+[MCP](../ai-tools/mcp.md) is an auxiliary service for AI assistants in the development environment. MCP provides AI assistants with structured data and specifications for REST API methods, helps generate correct code, and speeds up application creation.
 
 [UI Kit](../api-reference/widgets/ui-kit/index.md) is a set of Vue components for creating interfaces in the Bitrix24 brand style. It ensures consistency in visual language and accelerates frontend development.
