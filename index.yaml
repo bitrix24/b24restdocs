@@ -33,36 +33,214 @@ blocks:
 
   - type: 'extended-features-block'
     title:
-      text: 'Quick Start'
+      text: 'Quick start'
     items:
-      - title: 'How to Begin'
-        icon: './_images/img_restapi_icon_01.svg'
+      - title: 'Where to start'
+        icon: '_images/img_restapi_icon_01.svg'
         text: 'Learn how the documentation is structured and how to use the API'
         buttons:
-          - text: 'Learn More'
+          - text: 'Learn more'
             theme: 'outlined'
             size: 'promo'
             url: '/first-steps/index.html'
-      - title: 'How to Get Access'
-        icon: './_images/img_restapi_icon_02.svg'
-        text: 'Review the requirements for the Bitrix24 plan and start exploring the Developer resources within the product'
+      - title: 'How to get access'
+        icon: '_images/img_restapi_icon_02.svg'
+        text: 'Review the Bitrix24 plan requirements and start exploring Developer resources inside the product'
         buttons:
-          - text: 'Learn More'
+          - text: 'Review access'
             theme: 'outlined'
             size: 'promo'
             url: '/first-steps/access-to-rest-api.html'
-      - title: 'How to Make a Request'
-        icon: './_images/img_restapi_icon_03.svg'
-        text: 'Get a practical guide for your first Bitrix24 REST API call'
+      - title: 'How to make a request'
+        icon: '_images/img_restapi_icon_03.svg'
+        text: 'Follow a practical guide for your first Bitrix24 REST API call'
         buttons:
-          - text: 'Try It'
+          - text: 'Try it'
             theme: 'outlined'
             size: 'promo'
             url: '/first-steps/first-rest-api-call.html'
 
   - type: 'card-layout-block'
-    title: 'Typical Use-Cases and Scenarios'
-    description: If you need quick solutions for your practical tasks, start with <a href="/tutorials/index.html">this section</a>. Then you can adapt our examples to your situation, using the full range of REST API methods.
+    title: 'How the REST API is structured'
+    colSizes:
+      all: 12
+      md: 4
+      sm: 6
+    children:
+      - type: 'basic-card'
+        title: 'API versions'
+        text: 'Bitrix24 uses two REST API versions: REST and REST 3.0. They differ by call path, the format of some responses, and the documentation coverage. Before you start, check which REST version your scenario uses.'
+        links:
+          - text: 'Compare REST versions'
+            theme: 'normal'
+            url: '/api-reference/rest-v3/index.html'
+      - type: 'basic-card'
+        title: 'Method naming'
+        text: 'A method name often helps identify the API area and the type of operation. However, the name alone is not enough to determine exact behavior, parameters, and limits. Use the name as a guide, and check the details in the API reference.'
+        links:
+          - text: 'API reference'
+            theme: 'normal'
+            url: '/api-reference/index.html'
+      - type: 'basic-card'
+        title: 'Method response'
+        text: 'REST API methods return JSON responses. The structure of a successful response and the error format depend on the REST version and the specific method. See the method description for the exact response fields.'
+        links:
+          - text: 'Error codes'
+            theme: 'normal'
+            url: '/error-codes.html'
+
+  - type: 'card-layout-block'
+    title: 'Choosing an integration scenario'
+    description: 'In Bitrix24, you can use webhooks and different types of applications. First decide whether you need a webhook or an application, then choose the right scenario based on architecture and interface requirements.'
+    colSizes:
+      all: 12
+      md: 6
+      sm: 6
+    children:
+      - type: 'layout-item'
+        content:
+          title: 'Quick calls to individual methods without building an application'
+          text: 'Use this for simple scenarios when you need to call individual methods quickly, without application server logic or a user interface in a slider.'
+          links:
+            - text: 'Webhook'
+              theme: 'normal'
+              url: '/local-integrations/local-webhooks.html'
+      - type: 'layout-item'
+        content:
+          title: 'Static page inside Bitrix24 without server logic'
+          text: 'Use this for simple local applications that open inside the account, do not run server logic, and do not send requests to an external server.'
+          links:
+            - text: 'Local application'
+              theme: 'normal'
+              url: '/local-integrations/local-apps.html'
+      - type: 'layout-item'
+        content:
+          title: 'Server logic with an interface in a slider'
+          text: 'This works for both local and mass-market applications. The choice depends on whether the solution is needed for one account only or will be published in Bitrix24 Market.'
+          links:
+            - text: 'Local application'
+              theme: 'normal'
+              url: '/local-integrations/local-apps.html'
+            - text: 'Mass-market application'
+              theme: 'normal'
+              url: '/market/index.html'
+      - type: 'layout-item'
+        content:
+          title: 'Server logic without an interface'
+          text: 'This works for both local and mass-market applications. Use this scenario when the application runs in the background and the user does not open it in a slider.'
+          links:
+            - text: 'Local application'
+              theme: 'normal'
+              url: '/local-integrations/local-apps.html'
+            - text: 'Mass-market application'
+              theme: 'normal'
+              url: '/market/index.html'
+
+  - dots: true
+    type: 'slider-block'
+    title:
+      text: 'Popular API sections'
+    description: 'A short list of sections developers often start with. See the <a href="/api-reference/index.html">API reference</a> for the full list of available features.'
+    children:
+      - type: 'basic-card'
+        title: 'CRM'
+        text: 'Leads, deals, contacts, companies, and smart processes'
+        buttons:
+          - text: 'CRM: API methods'
+            theme: 'outlined'
+            size: 'promo'
+            url: '/api-reference/crm/index.html'
+      - type: 'basic-card'
+        title: 'Tasks'
+        text: 'Tasks, checklists, comments, stages, and flows'
+        buttons:
+          - text: 'Tasks: API methods'
+            theme: 'outlined'
+            size: 'promo'
+            url: '/api-reference/tasks/index.html'
+      - type: 'basic-card'
+        title: 'Chats'
+        text: 'Chats, messages, notifications, and dialog operations'
+        buttons:
+          - text: 'Chats: API methods'
+            theme: 'outlined'
+            size: 'promo'
+            url: '/api-reference/chats/index.html'
+      - type: 'basic-card'
+        title: 'Catalog'
+        text: 'Products, prices, sections, properties, and stock balances'
+        buttons:
+          - text: 'Catalog: API methods'
+            theme: 'outlined'
+            size: 'promo'
+            url: '/api-reference/catalog/index.html'
+      - type: 'basic-card'
+        title: 'Users'
+        text: 'Users, company structure, and custom user fields'
+        buttons:
+          - text: 'Users: API methods'
+            theme: 'outlined'
+            size: 'promo'
+            url: '/api-reference/user/index.html'
+      - type: 'basic-card'
+        title: 'Calendar'
+        text: 'Events, calendars, resources, and booking'
+        buttons:
+          - text: 'Calendar: API methods'
+            theme: 'outlined'
+            size: 'promo'
+            url: '/api-reference/calendar/index.html'
+    arrows: false
+
+  - type: 'card-layout-block'
+    title: 'Key concepts'
+    colSizes:
+      all: 12
+      md: 4
+      sm: 6
+    children:
+      - type: 'basic-card'
+        title: 'Scope'
+        text: 'Calling a method requires the appropriate access permissions. The set of permissions depends on the integration scenario and the specific method. Check the requirements on the method page and in the scope description.'
+        links:
+          - text: 'Access permissions'
+            theme: 'normal'
+            url: '/api-reference/scopes/index.html'
+      - type: 'basic-card'
+        title: 'Limits'
+        text: 'Bitrix24 applies limits to request intensity and method resource usage. Before making bulk calls, review the limits and recommendations for reducing load.'
+        links:
+          - text: 'REST API limits'
+            theme: 'normal'
+            url: '/limits.html'
+      - type: 'basic-card'
+        title: 'Batch'
+        text: 'The batch method lets you combine several calls into one request and reduce the load on limits.'
+        links:
+          - text: 'How to use batch'
+            theme: 'normal'
+            url: '/settings/how-to-call-rest-api/batch.html'
+      - type: 'basic-card'
+        title: 'Pagination'
+        text: 'Many list methods return data in parts. The way results are paginated and the pagination parameters depend on the method and REST version. Check the details in the description of the specific method.'
+        links:
+          - text: 'List method specifics'
+            theme: 'normal'
+            url: '/settings/how-to-call-rest-api/list-methods-pecularities.html'
+      - type: 'basic-card'
+        title: 'Files'
+        text: 'Bitrix24 supports different scenarios for working with file fields. The way a file is passed depends on the field type and method. Before uploading, updating, or deleting a file, check which scenario the method supports.'
+        links:
+          - text: 'How to upload files'
+            theme: 'normal'
+            url: '/api-reference/files/how-to-upload-files.html'
+          - text: 'How to update and delete files'
+            theme: 'normal'
+            url: '/api-reference/files/how-to-update-files.html'
+
+  - type: 'card-layout-block'
+    title: 'Tutorials and common scenarios'
+    description: If you need a ready-made scenario for a practical task, start with <a href="/tutorials/index.html">Tutorials and Common Scenarios</a>. This section contains integration examples and typical tasks. For exact parameters and limits, use the specific method pages in the API reference.
     colSizes:
       all: 12
       md: 4
@@ -71,49 +249,51 @@ blocks:
       - type: 'layout-item'
         content:
           title: '<a href="/tutorials/crm/index.html">CRM</a>'
-          text: 'How to quickly link a form on your website to CRM? How to automatically create deals with product items? How to pass information for Sales Intelligence to Bitrix when creating a lead from your source?'
+          text: 'How to quickly link a website form to CRM? How to automatically create deals with product items? How to pass information for Sales Intelligence to Bitrix24 when creating a lead from your own source?'
         media:
-          image: './_images/img_restapi_banner_s_01.png'
+          image: '_images/img_restapi_banner_s_01.png'
           disableCompress: true
         fullScreen: true
         border: true
         disableCompress: true
       - type: 'layout-item'
         content:
-          title: '<a href="/tutorials/sale/index.html">Online Sales</a>'
-          text: 'How to quickly generate an order for an online store? How to get a payment link to send to the client? How to connect your online cash register?'
+          title: '<a href="/tutorials/sale/index.html">Online sales</a>'
+          text: 'How to quickly create an online store order? How to get a payment link to send to a client? How to connect your online cash register?'
         media:
-          image: './_images/img_restapi_banner_s_02.png'
+          image: '_images/img_restapi_banner_s_02.png'
           disableCompress: true
         fullScreen: true
         border: true
         disableCompress: true
       - type: 'layout-item'
         content:
-          title: '<a href="/tutorials/index.html">And Much More</a>'
-          text: 'Import data, integrate your telephony, use a product catalog — dozens of ready-made practical examples.'
+          title: '<a href="/tutorials/index.html">And much more</a>'
+          text: 'Import data, integrate your telephony, use the product catalog, and explore dozens of ready-made practical examples.'
         media:
-          image: './_images/img_restapi_banner_s_03.png'
+          image: '_images/img_restapi_banner_s_03.png'
           disableCompress: true
         fullScreen: true
         border: true
         disableCompress: true
         links:
-          - text: 'Find an Example'
+          - text: 'Find an example'
             theme: 'normal'
-            url: '/'
+            url: '/tutorials/index.html'
 
   - type: 'filter-block'
     centered: true
     title:
-      text: 'Learn More Details'
+      text: 'Learn more'
     tags:
       - id: 'one'
-        label: 'Local Integrations'
+        label: 'Local integrations'
       - id: 'two'
         label: 'Bitrix24 Market'
       - id: 'three'
-        label: 'API Reference'
+        label: 'API reference'
+      - id: 'four'
+        label: 'Development libraries'
     colSizes:
       all: 12
       xl: 12
@@ -125,13 +305,13 @@ blocks:
         card:
           type: 'layout-item'
           media:
-            image: './_images/local-integrations.png'
+            image: '_images/local-integrations.png'
             disableCompress: true
           border: true
           content:
             links:
-              - text: 'View Documentation'
-                url: './local-integrations/index.html'
+              - text: 'View documentation'
+                url: './local-integrations/'
                 theme: 'normal'
                 arrow: true
                 color: #54BA7E
@@ -141,12 +321,12 @@ blocks:
         card:
           type: 'layout-item'
           media:
-            image: './_images/market.png'
+            image: '_images/market.png'
             disableCompress: true
           border: true
           content:
             links:
-              - text: 'View Documentation'
+              - text: 'View documentation'
                 url: 'market'
                 theme: 'normal'
                 arrow: true
@@ -156,25 +336,40 @@ blocks:
         card:
           type: 'layout-item'
           media:
-            image: './_images/api-reference.png'
+            image: '_images/api-reference.png'
             disableCompress: true
           border: true
           content:
             links:
-              - text: 'View Documentation'
-                url: './api-reference/index.html'
+              - text: 'View documentation'
+                url: 'api-reference'
+                theme: 'normal'
+                arrow: true
+                color: #54BA7E
+      - tags:
+          - 'four'
+        card:
+          type: 'layout-item'
+          media:
+            image: '_images/sdk.jpg'
+            disableCompress: true
+          border: true
+          content:
+            links:
+              - text: 'View documentation'
+                url: 'sdk'
                 theme: 'normal'
                 arrow: true
                 color: #54BA7E
 
   - type: 'card-layout-block'
-    title: 'Community and Communication with Bitrix24'
+    title: 'Community and communication with Bitrix24'
     children:
       - type: 'background-card'
-        title: 'Improve Documentation'
-        text: 'We have made the source code of our documentation publicly available. You can help us improve.'
+        title: 'Improve documentation'
+        text: 'We have made the documentation source code publicly available. You can help us make it better.'
         background:
-          src: './_images/img_restapi_banner_l_01.png'
+          src: '_images/img_restapi_banner_l_01.png'
           disableCompress: true
         paddingBottom: 'm'
         buttons:
@@ -184,10 +379,10 @@ blocks:
         border: none
         theme: 'light'
       - type: 'background-card'
-        title: 'Connect with Colleagues'
-        text: 'If you didn’t find the answer to your question in the official documentation, join the developer community — it’s the best environment for sharing experiences.'
+        title: 'Connect with colleagues'
+        text: 'If you did not find an answer in the official documentation, join the developer community. It is the best place to share experience.'
         background:
-          src: './_images/img_restapi_banner_l_02.png'
+          src: '_images/img_restapi_banner_l_02.png'
           disableCompress: true
         paddingBottom: 'm'
         buttons:
@@ -197,10 +392,10 @@ blocks:
         border: none
         theme: 'light'
       - type: 'background-card'
-        title: 'Contact Support'
-        text: 'Our technical support helps partners and clients resolve issues. We are always open to dialogue!'
+        title: 'Contact support'
+        text: 'Our technical support team helps partners and clients resolve issues. We are always open to dialogue.'
         background:
-          src: './_images/img_restapi_banner_l_03.png'
+          src: '_images/img_restapi_banner_l_03.png'
           disableCompress: true
         paddingBottom: 'm'
         buttons:
@@ -212,8 +407,8 @@ blocks:
 
   - type: 'icons-block'
     size: 'm'
-    title: 'Join Us'
+    title: 'Join us'
     items:
-      - src: './_images/telegram.svg'
+      - src: '_images/telegram.svg'
         text: 'B24 REST and Apps'
         url: 'https://t.me/b24_dev'
