@@ -55,8 +55,6 @@ The structure of the object is described in detail [below](#icon-disabled) ||
 [`boolean`](../../data-types.md) | Adds the operator's signature to messages. Default value is `true` ||
 || **CHAT_GROUP**
 [`boolean`](../../data-types.md) | Indicates the chat processing mode of the connector: `true` — grouping by `chat.id` (group chat), `false` — by `user.id` (one-on-one chat). Default value is `false` ||
-|| **COMMENT**
-[`string`](../../data-types.md) | Text explanation displayed in the connector settings block in the slider ||
 |#
 
 ### ICON Parameter {#icon}
@@ -122,7 +120,6 @@ The structure of the object is described in detail [below](#icon-disabled) ||
         "NEED_SYSTEM_MESSAGES": true,
         "NEED_SIGNATURE": true,
         "CHAT_GROUP": false,
-        "COMMENT": "Channel settings",
         "auth": "**put_access_token_here**"
       }' \
       https://**put_your_bitrix24_address**/rest/imconnector.register
@@ -152,7 +149,6 @@ The structure of the object is described in detail [below](#icon-disabled) ||
       NEED_SYSTEM_MESSAGES: true,
       NEED_SIGNATURE: true,
       CHAT_GROUP: false,
-      COMMENT: 'Channel settings',
     };
 
     const response = await $b24.callMethod('imconnector.register', payload);
@@ -185,7 +181,6 @@ The structure of the object is described in detail [below](#icon-disabled) ||
             'NEED_SYSTEM_MESSAGES' => true,
             'NEED_SIGNATURE' => true,
             'CHAT_GROUP' => false,
-            'COMMENT' => 'Channel settings',
         ]
     );
     ```
@@ -216,7 +211,6 @@ The structure of the object is described in detail [below](#icon-disabled) ||
         NEED_SYSTEM_MESSAGES: true,
         NEED_SIGNATURE: true,
         CHAT_GROUP: false,
-        COMMENT: 'Channel settings',
       },
       function(result) {
         console.log(result.data());
@@ -250,7 +244,6 @@ The structure of the object is described in detail [below](#icon-disabled) ||
             'NEED_SYSTEM_MESSAGES' => true,
             'NEED_SIGNATURE' => true,
             'CHAT_GROUP' => false,
-            'COMMENT' => 'Channel settings',
         ]
     );
     ```

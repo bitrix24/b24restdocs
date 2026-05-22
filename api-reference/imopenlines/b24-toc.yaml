@@ -3,8 +3,6 @@ href: index.md
 items: 
   - name: Open Channels in Bitrix24
     href: index.md
-  - name: Scenarios Using Open Channels
-    href: tutorials.md
   - name: Open Channels Connectors
     include:
       path: imconnector/b24-toc.yaml

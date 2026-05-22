@@ -2,6 +2,11 @@
 
 ## 2026
 
+### May 22, 2026
+
+- Added descriptions of the [tasks.task.pin](./api-reference/tasks/tasks-task-pin.md) and [tasks.task.unpin](./api-reference/tasks/tasks-task-unpin.md) methods
+- Updated the tutorials [How to Use End-to-End Analytics Data](./tutorials/crm/how-to-use-analitycs/index.md) and [How to Send Data to CRM End-to-End Analytics](./tutorials/crm/how-to-use-analitycs/info-to-analitics.md)
+
 ### May 15, 2026
 
 - Added a description of the methods for working with [Task Results](./api-reference/rest-v3/tasks/result/index.md) REST 3.0

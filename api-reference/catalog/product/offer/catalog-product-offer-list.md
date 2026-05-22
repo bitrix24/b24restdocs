@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: administrator
 
-The method returns a list of product variations based on the filter.
+The method returns a list of product variations based on a filter.
 
 ## Method Parameters
 
@@ -19,41 +19,63 @@ The method returns a list of product variations based on the filter.
 `type` | **Description** ||
 || **select**
 [`array`](../../../data-types.md) | 
-An array of fields to select (see fields of the [catalog_product_offer](../../data-types.md#catalog_product_offer) object).
+An array containing a list of fields that must be selected (see the fields of the [catalog_product_offer](../../data-types.md#catalog_product_offer) object).
 
 Required fields: `id`, `iblockId`
 ||
 || **filter**
-[`object`](../../../data-types.md) | An object for filtering the selected product variations in the format `{"field_1": "value_1", ... "field_N": "value_N"}`.
+[`object`](../../../data-types.md) | An object for filtering selected product variations in `{"field_1": "value_1", ... "field_N": "value_N"}` format.
 
 Possible values for `field` correspond to the fields of the [catalog_product_offer](../../data-types.md#catalog_product_offer) object. 
 
-Required fields: `iblockId` — the identifier of the information block of the trade catalog for variations. 
-To obtain existing identifiers of information blocks of trade catalogs, you need to use [catalog.catalog.list](../../catalog/catalog-catalog-list.md). The variations information block has the `productIblockId` field filled.
+Required fields: `iblockId` — the identifier of the trade catalog information block for variations. 
+To obtain existing identifiers of trade catalog information blocks, you must use [catalog.catalog.list](../../catalog/catalog-catalog-list.md). The variations information block has the `productIblockId` field populated.
 
-An additional prefix can be assigned to the key to specify the filter's behavior. Possible prefix values:
+A prefix can be assigned to the key to specify the filter behavior. Possible prefix values:
 - `>=` — greater than or equal to
 - `>` — greater than
 - `<=` — less than or equal to
 - `<` — less than
-- `%` — LIKE, substring search. The `%` symbol in the filter value does not need to be passed. The search looks for the substring in any position of the string
-- `=%` — LIKE, substring search. The `%` symbol needs to be passed in the value. Examples:
+- `%` — LIKE, substring search. The `%` character does not need to be passed in the filter value. The search looks for a substring in any position of the string.
+- `=%` — LIKE, substring search. The `%` character must be passed in the value. Examples:
     - `"mol%"` — searches for values starting with "mol"
     - `"%mol"` — searches for values ending with "mol"
     - `"%mol%"` — searches for values where "mol" can be in any position
 - `%=` — LIKE (similar to `=%`)
-- `!%` — NOT LIKE, substring search. The `%` symbol in the filter value does not need to be passed. The search goes from both sides
-- `!=%` — NOT LIKE, substring search. The `%` symbol needs to be passed in the value. Examples:
+- `!%` — NOT LIKE, substring search. The `%` character does not need to be passed in the filter value. The search goes from both sides.
+- `!=%` — NOT LIKE, substring search. The `%` character must be passed in the value. Examples:
     - `"mol%"` — searches for values not starting with "mol"
     - `"%mol"` — searches for values not ending with "mol"
-    - `"%mol%"` — searches for values where the substring "mol" is not present in any position
+    - `"%mol%"` — searches for values where the "mol" substring is not present in any position
 - `!%=` — NOT LIKE (similar to `!=%`)
-- `=` — equals, exact match (used by default). For IN search, multiple values can be passed as an array 
+- `=` — equal, exact match (used by default). For IN searches, multiple values can be passed as an array.
 - `!=` — not equal
-- `!` — not equal. For NOT IN search, multiple values can be passed as an array ||
+- `!` — not equal. For NOT IN searches, multiple values can be passed as an array.
+
+For `propertyN` properties, the value format in `filter` depends on the condition type:
+- if you are filtering a date or datetime type property by range, use the prefix in the key and pass the value in the `value` field
+- if you are filtering a numeric, string, or list property by exact match, pass the value directly without `value`
+- for `IN` and NOT IN searches, an array of values can be passed.
+
+Examples of filtering by properties:
+
+```js
+filter: {
+    iblockId: 24,
+    '>=property424': {
+        value: '2025-05-29T12:00:00+03:00'
+    },
+    '<=property424': {
+        value: '2025-05-30T13:00:00+03:00'
+    },
+    property996: 9636,
+    property997: [9636, 568, 570, 9658],
+}
+```
+||
 || **order**
 [`object`](../../../data-types.md) | 
-An object for sorting the selected product variations in the format `{"field_1": "order_1", ... "field_N": "order_N"}`.
+An object for sorting selected product variations in `{"field_1": "order_1", ... "field_N": "order_N"}` format.
 
 Possible values for `field` correspond to the fields of the [catalog_product_offer](../../data-types.md#catalog_product_offer) object.
 
@@ -62,21 +84,21 @@ Possible values for `order`:
 - `desc` — in descending order
 ||
 || **start**
-[`integer`](../../../data-types.md) | This parameter is used to manage pagination.
+[`integer`](../../../data-types.md) | The parameter is used to control pagination.
 
-The page size of results is always static — 50 records.
+The results page size is always static — 50 records.
 
-To select the second page of results, pass the value `50`. To select the third page of results — the value `100`, and so on.
+To select the second page of results, pass the value `50`. To select the third page of results — the value `100` and so on.
 
-The formula for calculating the `start` parameter value:
+Formula for calculating the `start` parameter value:
 
-`start = (N-1) * 50`, where `N` — the desired page number
+`start = (N-1) * 50`, where `N` — the number of the required page
 ||
 |#
 
-{% note warning "Working with product price" %}
+{% note warning "Working with variation prices" %}
 
-To get the prices of variations, use the methods [catalog.price.*](../../price/index.md).
+To retrieve variation prices, use the [catalog.price.*](../../price/index.md) methods.
 
 {% endnote %}
 
@@ -109,7 +131,7 @@ To get the prices of variations, use the methods [catalog.price.*](../../price/i
 - JS
 
     ```js
-    // callListMethod: Retrieves all data at once. Use only for small selections (< 1000 items) due to high memory usage.
+    // callListMethod: Retrieves all data at once. Use only for small datasets (< 1000 items) due to high memory usage.
     
     const selectFields = [
         "id",
@@ -181,7 +203,7 @@ To get the prices of variations, use the methods [catalog.price.*](../../price/i
         console.error('Request failed', error);
     }
     
-    // fetchListMethod: Retrieves data in parts using an iterator. Use it for large data volumes to optimize memory usage.
+    // fetchListMethod is preferred for large datasets. It retrieves data in chunks using a generator and keeps memory usage efficient.
     
     try {
         const generator = $b24.fetchListMethod('catalog.product.offer.list', {
@@ -202,7 +224,7 @@ To get the prices of variations, use the methods [catalog.price.*](../../price/i
         console.error('Request failed', error);
     }
     
-    // callMethod: Manually controls pagination through the start parameter. Use it for precise control of request batches. For large datasets, it is less efficient than fetchListMethod.
+    // callMethod: Manually controls pagination through the start parameter. Use it for precise control over request batches. For large datasets, it is less efficient than fetchListMethod.
     
     try {
         const response = await $b24.callMethod('catalog.product.offer.list', {
@@ -462,9 +484,9 @@ HTTP status: **200**
                 "canBuyZero": "Y",
                 "code": "Product",
                 "createdBy": 1,
-                "dateActiveFrom": "2024-05-28T10:00:00+02:00",
-                "dateActiveTo": "2024-05-29T10:00:00+02:00",
-                "dateCreate": "2024-05-27T10:00:00+02:00",
+                "dateActiveFrom": "2024-05-28T10:00:00+03:00",
+                "dateActiveTo": "2024-05-29T10:00:00+03:00",
+                "dateCreate": "2024-05-27T10:00:00+03:00",
                 "detailPicture": {
                     "id": "6538",
                     "url": "\/rest\/catalog.product.download?fields%5BfieldName%5D=detailPicture\u0026fields%5BfileId%5D=6538\u0026fields%5BproductId%5D=1286",
@@ -479,7 +501,7 @@ HTTP status: **200**
                 "length": 100,
                 "measure": 5,
                 "modifiedBy": 1,
-                "name": "Product Variation",
+                "name": "Product variation",
                 "parentId": {
                     "value": "1275",
                     "valueId": "9867"
@@ -491,7 +513,7 @@ HTTP status: **200**
                 },
                 "previewText": null,
                 "previewTextType": "text",
-                "purchasingCurrency": "USD",
+                "purchasingCurrency": "RUB",
                 "purchasingPrice": 1000,
                 "quantity": 10,
                 "quantityReserved": 1,
@@ -500,7 +522,7 @@ HTTP status: **200**
                 "recurSchemeType": "D",
                 "sort": 100,
                 "subscribe": "Y",
-                "timestampX": "2024-06-17T12:29:59+02:00",
+                "timestampX": "2024-06-17T12:29:59+03:00",
                 "trialPriceId": null,
                 "type": 4,
                 "vatId": 1,
@@ -518,8 +540,8 @@ HTTP status: **200**
         "finish": 1718625858.937026,
         "duration": 0.6454451084136963,
         "processing": 0.2336890697479248,
-        "date_start": "2024-06-17T15:04:18+02:00",
-        "date_finish": "2024-06-17T15:04:18+02:00"
+        "date_start": "2024-06-17T15:04:18+03:00",
+        "date_finish": "2024-06-17T15:04:18+03:00"
     }
 }
 ```
@@ -530,13 +552,13 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../../data-types.md) | Root element of the response ||
+[`object`](../../../data-types.md) | Root response item ||
 || **offers**
-[`catalog_product_offer[]`](../../data-types.md#catalog_product_offer) | Array of objects with information about the selected product variations ||
+[`catalog_product_offer[]`](../../data-types.md#catalog_product_offer) | An array of objects containing information about the selected product variations ||
 || **total**
 [`integer`](../../../data-types.md) | Total number of records found ||
 || **time**
-[`time`](../../../data-types.md) | Information about the execution time of the request ||
+[`time`](../../../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -550,23 +572,19 @@ HTTP status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
 || **Code** | **Description** ||
-|| `200040300010` | Insufficient rights to read the trade catalog
-|| 
-|| `0` | Fields `id`, `iblockId` not specified in the selection fields
-|| 
-|| `0` | Field `iblockId` not specified in the filter
-|| 
-|| `0` | Other errors (e.g., fatal errors)
-|| 
+|| `200040300010` | Insufficient permissions to read the trade catalog ||
+|| `0` | Fields `id`, `iblockId` are not specified in the selection fields ||
+|| `0` | Field `iblockId` is not specified in the filter ||
+|| `0` | Other errors (e.g., fatal errors) ||
 |#
 
-{% include [system errors](../../../../_includes/system-errors.md) %}
+{% include [System errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
@@ -576,4 +594,3 @@ HTTP status: **400**
 - [{#T}](./catalog-product-offer-download.md)
 - [{#T}](./catalog-product-offer-delete.md)
 - [{#T}](./catalog-product-offer-get-fields-by-filter.md)
-

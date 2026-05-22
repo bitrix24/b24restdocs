@@ -92,7 +92,7 @@ Disk
 
 ## Get List of Templates
 
-To obtain a list of all templates in the account, use the method [bizproc.workflow.template.list](./bizproc-workflow-template-list.html). To get a list of application templates, specify the `FILTER` parameter with the `SYSTEM_CODE` field and the symbolic code of the application, for example, `"SYSTEM_CODE": "rest_app_5"`.
+To obtain a list of all templates in the account, use the method [bizproc.workflow.template.list](./bizproc-workflow-template-list.md). To get a list of application templates, specify the `FILTER` parameter with the `SYSTEM_CODE` field and the symbolic code of the application, for example, `"SYSTEM_CODE": "rest_app_5"`.
 
 ## Overview of Methods {#all-methods}
 

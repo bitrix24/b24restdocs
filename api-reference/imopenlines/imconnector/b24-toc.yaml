@@ -3,8 +3,6 @@ href: index.md
 items:  
   - name: Overview of Methods  
     href: index.md  
-  - name: Typical Use-Cases  
-    href: tutorials.md  
   - name: Register a Connector  
     href: imconnector-register.md  
   - name: Activate a Connector  

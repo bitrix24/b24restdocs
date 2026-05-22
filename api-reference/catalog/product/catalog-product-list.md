@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: administrator
 
-This method retrieves a list of products from the trade catalog based on the filter.
+The method retrieves a list of products from the trade catalog based on a filter.
 
 ## Method Parameters
 
@@ -18,40 +18,62 @@ This method retrieves a list of products from the trade catalog based on the fil
 || **Name**
 `type` | **Description** ||
 || **select** 
-[`array`](../../data-types.md)| An array containing the list of fields to select (see fields of the [catalog_product](../data-types.md#catalog_product) object).
+[`array`](../../data-types.md)| An array containing a list of fields that need to be selected (see the [catalog_product](../data-types.md#catalog_product) object fields).
 
 Required fields: `id`, `iblockId`
  ||
 || **filter** 
-[`object`](../../data-types.md)| An object for filtering the selected products in the format `{"field_1": "value_1", ... "field_N": "value_N"}`.
+[`object`](../../data-types.md)| An object for filtering selected products in `{"field_1": "value_1", ... "field_N": "value_N"}` format.
 
 Possible values for `field` correspond to the fields of the [catalog_product](../data-types.md#catalog_product) object.
 
 Required fields: `iblockId`.
 
-An additional prefix can be assigned to the key to specify the filter behavior. Possible prefix values:
+A key can be assigned an additional prefix that clarifies the filter's behavior. Possible prefix values:
 - `>=` — greater than or equal to
 - `>` — greater than
 - `<=` — less than or equal to
 - `<` — less than
-- `%` — LIKE, substring search. The `%` symbol in the filter value does not need to be passed. The search looks for the substring in any position of the string.
-- `=%` — LIKE, substring search. The `%` symbol needs to be passed in the value. Examples:
+- `%` — LIKE, substring search. The `%` symbol does not need to be passed in the filter value. The search finds the substring in any position of the string.
+- `=%` — LIKE, substring search. The `%` symbol must be passed in the value. Examples:
   - `"mol%"` — searching for values starting with "mol"
   - `"%mol"` — searching for values ending with "mol"
   - `"%mol%"` — searching for values where "mol" can be in any position
 - `%=` — LIKE (similar to `=%`)
-- `!%` — NOT LIKE, substring search. The `%` symbol in the filter value does not need to be passed. The search goes from both sides.
-- `!=%` — NOT LIKE, substring search. The `%` symbol needs to be passed in the value. Examples:
+- `!%` — NOT LIKE, substring search. The `%` symbol does not need to be passed in the filter value. The search goes from both sides.
+- `!=%` — NOT LIKE, substring search. The `%` symbol must be passed in the value. Examples:
   - `"mol%"` — searching for values not starting with "mol"
   - `"%mol"` — searching for values not ending with "mol"
-  - `"%mol%"` — searching for values where the substring "mol" is not present in any position
+  - `"%mol%"` — searching for values where the "mol" substring is not present in any position
 - `!%=` — NOT LIKE (similar to `!=%`)
-- `=` — equal, exact match (used by default). For IN search, multiple values can be passed as an array 
+- `=` — equal, exact match (used by default). For IN search, you can pass multiple values as an array 
 - `!=` — not equal
-- `!` — not equal. For NOT IN search, multiple values can be passed as an array
- ||
+- `!` — not equal. For NOT IN search, you can pass multiple values as an array
+
+For `propertyN` properties, the value format in `filter` depends on the condition type:
+- if filtering a date or date-time type property by range, use the prefix in the key and pass the value in the `value` field
+- if filtering a numeric, string, or list property by exact match, pass the value directly, without `value`
+- for `IN` and NOT IN search, you can pass an array of values
+
+Examples of filtering by properties:
+
+```js
+filter: {
+    iblockId: 23,
+    '>=property424': {
+        value: '2025-05-29T12:00:00+03:00' 
+    },
+    '<=property424': {
+        value: '2025-05-30T13:00:00+03:00'
+    },
+    property996: 9636,
+    property997: [9636, 568, 570, 9658],
+}
+```
+
+||
 || **order**
-[`object`](../../data-types.md)| An object for sorting the selected products in the format `{"field_1": "order_1", ... "field_N": "order_N"}`.
+[`object`](../../data-types.md)| Object for sorting selected products in `{"field_1": "order_1", ... "field_N": "order_N"}` format.
 
 Possible values for `field` correspond to the fields of the [catalog_product](../data-types.md#catalog_product) object.
 
@@ -61,21 +83,21 @@ Possible values for order:
 - `desc` — in descending order
  ||
 || **start** 
-[`string`](../../data-types.md)| This parameter is used to control pagination.
+[`string`](../../data-types.md)| The parameter is used to control pagination.
 
-The page size of results is always static — 50 records.
+The results page size is always static — 50 records.
 
-To select the second page of results, you need to pass the value — `50`. To select the third page of results, the value — `100`, and so on.
+To select the second page of results, you need to pass the value — `50`. To select the third page of results, the value is — `100` and so on.
 
-The formula for calculating the `start` parameter value:
+Formula for calculating the `start` parameter value:
 
-`start = (N-1) * 50`, where `N` — the desired page number
+`start = (N-1) * 50`, where `N` — the required page number
  ||
 |#
 
-{% note warning "Working with product price" %}
+{% note warning "Working with product prices" %}
 
-To get product prices, use the methods [catalog.price.*](../price/index.md).
+To retrieve product prices, use the [catalog.price.*](../price/index.md) methods.
 
 {% endnote %}
 
@@ -108,7 +130,7 @@ To get product prices, use the methods [catalog.price.*](../price/index.md).
 - JS
 
     ```js
-    // callListMethod: Retrieves all data at once. Use only for small selections (< 1000 items) due to high memory usage.
+    // callListMethod: Retrieves all data at once. Use only for small datasets (< 1000 items) due to high memory usage.
     
     try {
       const response = await $b24.callListMethod(
@@ -177,7 +199,7 @@ To get product prices, use the methods [catalog.price.*](../price/index.md).
       console.error('Request failed', error);
     }
     
-    // fetchListMethod: Retrieves data in parts using an iterator. Use it for large data volumes to optimize memory usage.
+    // fetchListMethod is preferred for large datasets. It retrieves data in chunks using a generator and keeps memory usage efficient.
     
     try {
       const generator = $b24.fetchListMethod('catalog.product.list', {
@@ -243,7 +265,7 @@ To get product prices, use the methods [catalog.price.*](../price/index.md).
       console.error('Request failed', error);
     }
     
-    // callMethod: Manually controls pagination through the start parameter. Use it for precise control of request batches. For large datasets, it is less efficient than fetchListMethod.
+    // callMethod: Manually controls pagination through the start parameter. Use it for precise control over request batches. For large datasets, it is less efficient than fetchListMethod.
     
     try {
       const response = await $b24.callMethod('catalog.product.list', {
@@ -492,9 +514,9 @@ HTTP status: **200**
                 "canBuyZero": "Y",
                 "code": "Product",
                 "createdBy": 1,
-                "dateActiveFrom": "2024-05-28T10:00:00+02:00",
-                "dateActiveTo": "2024-05-29T10:00:00+02:00",
-                "dateCreate": "2024-05-27T10:00:00+02:00",
+                "dateActiveFrom": "2024-05-28T10:00:00+03:00",
+                "dateActiveTo": "2024-05-29T10:00:00+03:00",
+                "dateCreate": "2024-05-27T10:00:00+03:00",
                 "detailPicture": {
                     "id": "6439",
                     "url": "\/rest\/catalog.product.download?fields%5BfieldName%5D=detailPicture\u0026fields%5BfileId%5D=6439\u0026fields%5BproductId%5D=1243",
@@ -531,7 +553,7 @@ HTTP status: **200**
                         "valueId": "9737"
                     }
                 ],
-                "purchasingCurrency": "USD",
+                "purchasingCurrency": "RUB",
                 "purchasingPrice": 1000,
                 "quantity": 10,
                 "quantityReserved": 1,
@@ -540,7 +562,7 @@ HTTP status: **200**
                 "recurSchemeType": "D",
                 "sort": 100,
                 "subscribe": "Y",
-                "timestampX": "2024-06-05T10:05:06+02:00",
+                "timestampX": "2024-06-05T10:05:06+03:00",
                 "trialPriceId": 175,
                 "type": 1,
                 "vatId": 1,
@@ -558,8 +580,8 @@ HTTP status: **200**
         "finish": 1717661049.079089,
         "duration": 0.7764449119567871,
         "processing": 0.3525362014770508,
-        "date_start": "2024-06-06T11:04:08+02:00",
-        "date_finish": "2024-06-06T11:04:09+02:00"
+        "date_start": "2024-06-06T11:04:08+03:00",
+        "date_finish": "2024-06-06T11:04:09+03:00"
     }
 }
 ```
@@ -570,13 +592,13 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | Root element of the response ||
+[`object`](../../data-types.md) | Root response item ||
 || **products**
-[`catalog_product[]`](../data-types.md#catalog_product) | Array of objects with information about the selected products ||
+[`catalog_product[]`](../data-types.md#catalog_product) | Array of objects containing information about the selected products ||
 || **total**
 [`integer`](../../data-types.md) | Total number of records found ||
 || **time**
-[`time`](../../data-types.md) | Information about the request execution time ||
+[`time`](../../data-types.md) | Request execution time information ||
 |#
 
 ## Error Handling
@@ -590,21 +612,21 @@ HTTP status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
 || **Code** | **Description** ||
-|| `200040300010` | Insufficient rights to read the trade catalog ||
-|| `0` | Fields `id`, `iblockId` not specified in the selection fields ||
-|| `0` | Field `iblockId` not specified in the filter ||
+|| `200040300010` | Insufficient permissions to read the trade catalog ||
+|| `0` | Fields `id`, `iblockId` are not specified in the selection fields ||
+|| `0` | Field `iblockId` is not specified in the filter ||
 || `0` | Other errors (e.g., fatal errors) ||
 |#
 
-{% include [system errors](../../../_includes/system-errors.md) %}
+{% include [System errors](../../../_includes/system-errors.md) %}
 
-## Continue Learning 
+## Continue Learning
 
 - [{#T}](./catalog-product-add.md)
 - [{#T}](./catalog-product-update.md)
@@ -612,4 +634,3 @@ HTTP status: **400**
 - [{#T}](./catalog-product-download.md)
 - [{#T}](./catalog-product-delete.md)
 - [{#T}](./catalog-product-get-fields-by-filter.md)
-

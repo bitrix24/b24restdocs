@@ -1,4 +1,4 @@
-# Get the list of services catalog.product.service.list
+# Get a list of services catalog.product.service.list
 
 {% note tip "" %}
 
@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: administrator
 
-The method returns a list of services based on the filter.
+The method returns a list of services based on a filter.
 
 ## Method Parameters
 
@@ -19,40 +19,62 @@ The method returns a list of services based on the filter.
 `type` | **Description** ||
 || **select**
 [`array`](../../../data-types.md) | 
-An array of fields to select (see fields of the [catalog_product_service](../../data-types.md#catalog_product_service) object).
+An array containing a list of fields that must be selected (see the fields of the [catalog_product_service](../../data-types.md#catalog_product_service) object).
 
 Required fields: `id`, `iblockId`
 ||
 || **filter**
-[`object`](../../../data-types.md) | An object for filtering the selected services in the format `{"field_1": "value_1", ... "field_N": "value_N"}`.
+[`object`](../../../data-types.md) | An object for filtering selected services in `{"field_1": "value_1", ... "field_N": "value_N"}` format.
 
 Possible values for `field` correspond to the fields of the [catalog_product_service](../../data-types.md#catalog_product_service) object. 
 
 Required fields: `iblockId`.
 
-An additional prefix can be set for the key to specify the filter behavior. Possible prefix values:
+A key can be assigned an additional prefix to specify the filter behavior. Possible prefix values:
 - `>=` — greater than or equal to
 - `>` — greater than
 - `<=` — less than or equal to
 - `<` — less than
-- `%` — LIKE, substring search. The `%` symbol in the filter value should not be passed. The search looks for the substring in any position of the string
-- `=%` — LIKE, substring search. The `%` symbol should be passed in the value. Examples:
+- `%` — LIKE, substring search. The `%` character does not need to be passed in the filter value. The search looks for a substring in any position of the string
+- `=%` — LIKE, substring search. The `%` character must be passed in the value. Examples:
     - `"mol%"` — searches for values starting with "mol"
     - `"%mol"` — searches for values ending with "mol"
     - `"%mol%"` — searches for values where "mol" can be in any position
 - `%=` — LIKE (similar to `=%`)
-- `!%` — NOT LIKE, substring search. The `%` symbol in the filter value should not be passed. The search goes from both sides
-- `!=%` — NOT LIKE, substring search. The `%` symbol should be passed in the value. Examples:
-    - `"mol%"` — searches for values not starting with "mol"
-    - `"%mol"` — searches for values not ending with "mol"
+- `!%` — NOT LIKE, substring search. The `%` character does not need to be passed in the filter value. The search is performed from both sides
+- `!=%` — NOT LIKE, substring search. The `%` character must be passed in the value. Examples:
+    - `"mol%"` — searches for values that do not start with "mol"
+    - `"%mol"` — searches for values that do not end with "mol"
     - `"%mol%"` — searches for values where the substring "mol" is not present in any position
 - `!%=` — NOT LIKE (similar to `!=%`)
-- `=` — equal, exact match (used by default). For IN search, multiple values can be passed as an array 
+- `=` — equal, exact match (used by default). For IN search, you can pass multiple values as an array 
 - `!=` — not equal
-- `!` — not equal. For NOT IN search, multiple values can be passed as an array ||
+- `!` — not equal. For NOT IN search, you can pass multiple values as an array
+
+For `propertyN` properties, the value format in `filter` depends on the condition type:
+- if you are filtering a date or date-time type property by range, use a prefix in the key and pass the value in the `value` field
+- if you are filtering a numeric, string, or list property by exact match, pass the value directly, without `value`
+- for `IN` and NOT IN searches, you can pass an array of values
+
+Examples of filtering by properties:
+
+```js
+filter: {
+    iblockId: 14,
+    '>=property424': {
+        value: '2025-05-29T12:00:00+03:00'
+    },
+    '<=property424': {
+        value: '2025-05-30T13:00:00+03:00'
+    },
+    property996: 9636,
+    property997: [9636, 568, 570, 9658],
+}
+```
+||
 || **order**
 [`object`](../../../data-types.md) | 
-An object for sorting the selected services in the format `{"field_1": "order_1", ... "field_N": "order_N"}`.
+An object for sorting selected services in `{"field_1": "order_1", ... "field_N": "order_N"}` format.
 
 Possible values for `field` correspond to the fields of the [catalog_product_service](../../data-types.md#catalog_product_service) object.
 
@@ -61,21 +83,21 @@ Possible values for `order`:
 - `desc` — in descending order
 ||
 || **start**
-[`integer`](../../../data-types.md) | This parameter is used to manage pagination.
+[`integer`](../../../data-types.md) | The parameter is used to control pagination.
 
-The page size of results is always static — 50 records.
+The results page size is always static — 50 records.
 
-To select the second page of results, pass the value `50`. To select the third page of results — the value `100`, and so on.
+To select the second page of results, pass the value `50`. To select the third page of results — the value `100` and so on.
 
-The formula for calculating the `start` parameter value:
+Formula for calculating the `start` parameter value:
 
-`start = (N-1) * 50`, where `N` — the desired page number
+`start = (N-1) * 50`, where `N` — the number of the desired page
 ||
 |#
 
 {% note warning "Working with service prices" %}
 
-To get service prices, use the [catalog.price.*](../../price/index.md) methods.
+To retrieve service prices, use the [catalog.price.*](../../price/index.md) methods.
 
 {% endnote %}
 
@@ -108,7 +130,7 @@ To get service prices, use the [catalog.price.*](../../price/index.md) methods.
 - JS
 
     ```js
-    // callListMethod: Retrieves all data at once. Use only for small selections (< 1000 items) due to high memory usage.
+    // callListMethod: Retrieves all data at once. Use only for small datasets (< 1000 items) due to high memory usage.
     
     try {
       const response = await $b24.callListMethod(
@@ -160,7 +182,7 @@ To get service prices, use the [catalog.price.*](../../price/index.md) methods.
       console.error('Request failed', error);
     }
     
-    // fetchListMethod: Retrieves data in parts using an iterator. Use it for large data volumes to optimize memory usage.
+    // fetchListMethod: Retrieves data in chunks using an iterator. Use it for large datasets to keep memory usage efficient.
     
     try {
       const generator = $b24.fetchListMethod('catalog.product.service.list', {
@@ -209,7 +231,7 @@ To get service prices, use the [catalog.price.*](../../price/index.md) methods.
       console.error('Request failed', error);
     }
     
-    // callMethod: Manually controls pagination through the start parameter. Use it for precise control of request batches. For large datasets, it is less efficient than fetchListMethod.
+    // callMethod: Manually controls pagination through the start parameter. Use it for precise control over request batches. For large datasets, it is less efficient than fetchListMethod.
     
     try {
       const response = await $b24.callMethod('catalog.product.service.list', {
@@ -315,7 +337,7 @@ To get service prices, use the [catalog.price.*](../../price/index.md) methods.
     
     } catch (Throwable $e) {
         error_log($e->getMessage());
-        echo 'Error fetching product list: ' . $e->getMessage();
+        echo 'Error fetching service list: ' . $e->getMessage();
     }
     ```
 
@@ -441,9 +463,9 @@ HTTP status: **200**
                 "bundle": "N",
                 "code": "service",
                 "createdBy": 1,
-                "dateActiveFrom": "2024-05-28T10:00:00+02:00",
-                "dateActiveTo": "2024-05-29T10:00:00+02:00",
-                "dateCreate": "2024-05-27T10:00:00+02:00",
+                "dateActiveFrom": "2024-05-28T10:00:00+03:00",
+                "dateActiveTo": "2024-05-29T10:00:00+03:00",
+                "dateCreate": "2024-05-27T10:00:00+03:00",
                 "detailPicture": {
                     "id": "6497",
                     "url": "\/rest\/catalog.product.download?fields%5BfieldName%5D=detailPicture\u0026fields%5BfileId%5D=6497\u0026fields%5BproductId%5D=1265",
@@ -464,7 +486,7 @@ HTTP status: **200**
                 "previewText": null,
                 "previewTextType": "text",
                 "sort": 100,
-                "timestampX": "2024-06-14T11:59:04+02:00",
+                "timestampX": "2024-06-14T11:59:04+03:00",
                 "type": 7,
                 "vatId": 1,
                 "vatIncluded": "Y",
@@ -478,8 +500,8 @@ HTTP status: **200**
         "finish": 1718363637.984081,
         "duration": 0.7021360397338867,
         "processing": 0.2966270446777344,
-        "date_start": "2024-06-14T14:13:57+02:00",
-        "date_finish": "2024-06-14T14:13:57+02:00"
+        "date_start": "2024-06-14T14:13:57+03:00",
+        "date_finish": "2024-06-14T14:13:57+03:00"
     }
 }
 ```
@@ -490,9 +512,9 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../../data-types.md) | Root element of the response ||
+[`object`](../../../data-types.md) | Root response item ||
 || **services**
-[`catalog_product_service[]`](../../data-types.md#catalog_product_service) | Array of objects with information about the selected services ||
+[`catalog_product_service[]`](../../data-types.md#catalog_product_service) | Array of objects containing information about the selected services ||
 || **total**
 [`integer`](../../../data-types.md) | Total number of records found ||
 || **time**
@@ -510,23 +532,19 @@ HTTP status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
 || **Code** | **Description** ||
-|| `200040300010` | Insufficient rights to read the commercial catalog
-|| 
-|| `0` | Fields `id`, `iblockId` not specified in the selection fields
-|| 
-|| `0` | Field `iblockId` not specified in the filter
-|| 
-|| `0` | Other errors (e.g., fatal errors)
-|| 
+|| `200040300010` | Insufficient permissions to read the trade catalog ||
+|| `0` | Fields `id`, `iblockId` are not specified in the selection fields ||
+|| `0` | Field `iblockId` is not specified in the filter ||
+|| `0` | Other errors (e.g., fatal errors) ||
 |#
 
-{% include [system errors](../../../../_includes/system-errors.md) %}
+{% include [System errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
@@ -536,4 +554,3 @@ HTTP status: **400**
 - [{#T}](./catalog-product-service-download.md)
 - [{#T}](./catalog-product-service-delete.md)
 - [{#T}](./catalog-product-service-get-fields-by-filter.md)
-

@@ -21,4 +21,4 @@ Methods for managing digital workspaces:
 - [{#T}](./crm-automated-solution-delete.md)
 - [{#T}](./crm-automated-solution-fields.md)
 
-The on-premise version of Bitrix24 is available starting from CRM version [24.300.0](../../cloud-and-on-premise/on-premise/versions.html).
+The on-premise version of Bitrix24 is available starting from CRM version [24.300.0](../../../settings/cloud-and-on-premise/on-premise/versions.md).

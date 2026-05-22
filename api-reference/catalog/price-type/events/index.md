@@ -30,7 +30,7 @@ An example of a handler code for the event is described in the article [How to T
 
 #|
 || **Event** | **Triggered** ||
-|| [CATALOG.PRICE.TYPE.ON.ADD](catalog-price-type-on-add.md)| When a price type is added manually or via the [catalog.priceType.add](../catalog-price-type-add.html) method ||
-|| [CATALOG.PRICE.TYPE.ON.UPDATE](catalog-price-type-on-update.md)| When a price type is updated manually or via the [catalog.priceType.update](../catalog-price-type-update.html) method ||
-|| [CATALOG.PRICE.TYPE.ON.DELETE](catalog-price-type-on-delete.md)| When a price type is deleted manually or via the [catalog.priceType.delete](../catalog-price-type-delete.html) method ||
+|| [CATALOG.PRICE.TYPE.ON.ADD](catalog-price-type-on-add.md)| When a price type is added manually or via the [catalog.priceType.add](../catalog-price-type-add.md) method ||
+|| [CATALOG.PRICE.TYPE.ON.UPDATE](catalog-price-type-on-update.md)| When a price type is updated manually or via the [catalog.priceType.update](../catalog-price-type-update.md) method ||
+|| [CATALOG.PRICE.TYPE.ON.DELETE](catalog-price-type-on-delete.md)| When a price type is deleted manually or via the [catalog.priceType.delete](../catalog-price-type-delete.md) method ||
 |#

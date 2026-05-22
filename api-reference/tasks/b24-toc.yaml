@@ -35,6 +35,10 @@ items:
     href: tasks-task-favorite-add.md
   - name: Remove Task from Favorites
     href: tasks-task-favorite-remove.md
+  - name: Pin task
+    href: tasks-task-pin.md
+  - name: Unpin task
+    href: tasks-task-unpin.md
   - name: Task History
     href: tasks-task-history-list.md
   - name: Start Watching Task
