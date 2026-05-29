@@ -251,6 +251,20 @@ HTTP Status: **200**
             "imol": "",
             "email": "admin@example.com",
             "phone": "+16111111111",
+            "fm": [
+                {
+                    "id": 101,
+                    "valueType": "WORK",
+                    "value": "+16111111111",
+                    "typeId": "PHONE"
+                },
+                {
+                    "id": 102,
+                    "valueType": "WORK",
+                    "value": "admin@example.com",
+                    "typeId": "EMAIL"
+                }
+            ],
             "ufCrm_1720019876534": "321",
             "parentId1222": null,
             "parentId1226": null,
@@ -297,10 +311,18 @@ HTTP Status: **200**
 [`time`][1] | Object containing information about the request execution time ||
 |#
 
+The response contains the `fm` field — an array of all system multiple fields (phone, e-mail, and others) in a structured format. Each item in the array contains:
+- `id` — the record identifier (required for updating or deleting via [`crm.item.update`](./crm-item-update.md))
+- `typeId` — the field type: `PHONE`, `EMAIL`, `WEB`, `IM`
+- `valueType` — the value subtype: `WORK`, `MOBILE`, `HOME`, `MAILING`, `OTHER`
+- `value` — the value
+
+The `phoneWork`, `phoneMobile`, `emailWork` and similar fields are flat aliases for convenient access to the first value of the corresponding type in `fm`. They do not replace `fm` and do not allow managing multiple values of the same type.
+
 {% note info " " %}
 
-By default, custom field names are returned in camelCase, e.g., `ufCrm2_1639669411830`.
-When passing the parameter `useOriginalUfNames` with the value `Y`, custom fields will be returned with their original names, e.g., `UF_CRM_2_1639669411830`.
+By default, custom field names are returned in camelCase, for example `ufCrm2_1639669411830`.
+When passing the `useOriginalUfNames` parameter with the value `Y`, custom fields will be returned with their original names, for example `UF_CRM_2_1639669411830`.
 
 {% endnote %}
 

@@ -1,0 +1,35 @@
+title: E-mails
+href: index.md
+items:
+  - name: Methods Overview
+    href: index.md
+  - name: Get List of E-mails
+    href: mail-message-list.md
+  - name: Get E-mail
+    href: mail-message-get.md
+  - name: Get E-mail Thread
+    href: mail-message-thread.md
+  - name: Send E-mail
+    href: mail-message-send.md
+  - name: Reply to E-mail
+    href: mail-message-reply.md
+  - name: Forward E-mail
+    href: mail-message-forward.md
+  - name: Move E-mails to Folder
+    href: mail-message-movetofolder.md
+  - name: Create CRM Activity from E-mail
+    href: mail-message-createcrmactivity.md
+  - name: Remove E-mail Link to CRM Activity
+    href: mail-message-removecrmactivity.md
+  - name: Create Task from E-mail
+    href: mail-message-createtask.md
+  - name: Create Calendar Event from E-mail
+    href: mail-message-createcalendarevent.md
+  - name: Create Chat from E-mail
+    href: mail-message-createchat.md
+  - name: Create News Feed Message from E-mail
+    href: mail-message-createfeedpost.md
+  - name: Get List of E-mail Fields
+    href: mail-message-field-list.md
+  - name: Get E-mail Field
+    href: mail-message-field-get.md

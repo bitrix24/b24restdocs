@@ -1,0 +1,15 @@
+title: Mailboxes
+href: index.md
+items:
+  - name: Methods Overview
+    href: index.md
+  - name: Get List of Mailboxes
+    href: mail-mailbox-list.md
+  - name: Get Mailbox
+    href: mail-mailbox-get.md
+  - name: Get Senders
+    href: mail-mailbox-senders.md
+  - name: Get List of Mailbox Fields
+    href: mail-mailbox-field-list.md
+  - name: Get Mailbox Field
+    href: mail-mailbox-field-get.md

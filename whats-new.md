@@ -2,6 +2,16 @@
 
 ## 2026
 
+### May 29, 2026
+
+- Added a section for working with [mail methods in REST 3.0](./api-reference/rest-v3/mail/index.md)
+- Updated the main page [REST API Reference: Bitrix24 tools and methods](./api-reference/index.md)
+- Updated the tutorial [Business Processes and Robots: typical scenarios](./tutorials/bizproc/index.md)
+- Updated the tutorial [How to embed widgets in CRM](./tutorials/crm/crm-widgets/index.md)
+- Updated the tutorial [Online sales: typical scenarios](./tutorials/sale/index.md)
+- Updated the tutorial [Tasks: typical scenarios](./tutorials/tasks/index.md)
+- Added the subsection [Autofilling details in the CRM card](./api-reference/widgets/crm/requisites-autocomplete/index.md) in Widgets. Described embedding points for autofilling client details and bank details
+
 ### May 22, 2026
 
 - Added descriptions of the [tasks.task.pin](./api-reference/tasks/tasks-task-pin.md) and [tasks.task.unpin](./api-reference/tasks/tasks-task-unpin.md) methods

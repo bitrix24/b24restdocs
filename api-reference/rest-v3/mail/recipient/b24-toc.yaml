@@ -1,0 +1,13 @@
+title: Recipients
+href: index.md
+items:
+  - name: Methods Overview
+    href: index.md
+  - name: Get List of Contacts
+    href: mail-recipient-listcontacts.md
+  - name: Get List of Employees
+    href: mail-recipient-listemployees.md
+  - name: Get List of Recipient Fields
+    href: mail-recipient-field-list.md
+  - name: Get Recipient Field
+    href: mail-recipient-field-get.md

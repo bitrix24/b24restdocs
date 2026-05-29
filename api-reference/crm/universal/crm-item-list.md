@@ -26,11 +26,13 @@ CRM object items will not be included in the final selection if the user does no
 
 Numerical values for system types (Lead — 1, Deal — 2, Contact — 3, Company — 4, Invoice — 31, etc.) are listed in the [CRM object types reference](../data-types.md#object_type). The identifier of the smart process can be obtained using the [crm.type.list](./user-defined-object-types/crm-type-list.md) method. ||
 || **select**
-[`array`][1] | List of fields that should be populated in the items of the selection.
+[`array`][1] | List of fields that must be populated for the items in the selection.
 
-Can contain only field names or `'*'`.
+May contain only item field names or `'*'`.
 
-A list of all available fields for selection can be obtained using the [`crm.item.fields`](./crm-item-fields.md) method. A list of standard fields is available in the article [CRM Object Fields](./object-fields.md).
+The list of all available fields for selection can be found using the [`crm.item.fields`](./crm-item-fields.md) method. The list of standard fields is available in the article [CRM Object Fields](./object-fields.md)
+
+The `fm` field (multiple fields: phones, e-mail, messengers) is not a CRM object field and cannot be explicitly requested via `select`. To receive `fm` in the response, pass `select: ['*']`
 ||
 || **filter**
 [`object`][1] |

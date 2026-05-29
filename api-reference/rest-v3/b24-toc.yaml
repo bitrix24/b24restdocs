@@ -7,6 +7,10 @@ items:
     include:
       path: main/b24-toc.yaml
       mode: link
+  - name: Mail
+    include:
+      path: mail/b24-toc.yaml
+      mode: link
   - name: Tasks
     include:
       path: tasks/b24-toc.yaml

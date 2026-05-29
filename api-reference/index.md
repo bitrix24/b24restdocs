@@ -1,4 +1,4 @@
-# Bitrix24 Tools Available for Developers
+# REST API Reference: Bitrix24 tools and methods
 
 {% note tip "" %}
 
@@ -6,82 +6,102 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-Bitrix24 is a comprehensive suite of interconnected business tools. The deep integration among them and a unified REST API allow for the creation of highly flexible automation scenarios.
+Using the REST API, an application works with Bitrix24 tools. For example, it can create a deal in the CRM, retrieve a task, upload a file to Drive, process a data change event, or embed a widget into a card.
 
-The main tools available through the REST API can be divided into the following key sections:
+> Quick links: [all reference sections](#all-methods)
 
-```mermaid
-%%{init: { "theme": "forest" } }%%
-mindmap
-((REST API))
-    [Information Management]
-        (Disk24)
-        (Application Storage)
-        (Smart Processes)
-        (Universal Lists)
-    [Communications]
-        (Telephony)
-        (Chats)
-        (Chatbots)
-        (SMS/Messages)
-        (Notifications)
-        (News)
-        (Open Lines)
-    [Company Management]
-        (Employees)
-        (Work Time Management)
-        (Company Structure)
-        (Mail Services)
-    [Execution Discipline]
-        (Projects)
-        (Scrum)
-        (Calendar)
-        (Tasks)
-    [Sales]
-        (CRM)
-        (Inventory Management)
-        (Payments)
-        (Deliveries)
-        (Cash Registers)
-        (Online Stores)
-        (Sites/Landing Pages)
-        (Document Generator)
-```
-By understanding the needs required to implement the necessary scenario, you will be able to find descriptions of the methods for these tools in the documentation.
+## How to use the reference
 
-It is important to utilize the existing functionality of Bitrix24, eliminating the need to write everything from scratch. It is essential to seek new interaction scenarios between the existing tools that are part of Bitrix24. Such scenarios open up vast opportunities and can be relatively simple to implement technically.
+Start with what is already known: what data the application should retrieve or change, which method needs to be called, or which permissions to grant.
 
-## Bitrix24 Tool
+For example, to work with customers, open [CRM](./crm/index.md). It contains methods for leads, deals, contacts, companies, and other CRM objects. For tasks, the [Tasks](./tasks/index.md) section is suitable; for files, use [Drive](./disk/index.md); for online store orders, use [Online store](./sale/index.md).
 
-Bitrix24 is a comprehensive product that combines many different tools integrated with each other. This integration allows developers to offer users complete business scenarios using multiple tools.
+If you know the name of a method, look for it in the relevant section or via search. From the names of many methods, you can understand which object the method works with and what action it performs: [crm.deal.add](./crm/deals/crm-deal-add.md) creates a deal, [tasks.task.get](./tasks/tasks-task-get.md) retrieves a task, [disk.file.get](./disk/file/disk-file-get.md) retrieves a file.
 
-The API reference contains descriptions of the available methods, events, and widgets for the corresponding Bitrix24 tools.
+If the name of the required method is unknown, open the [reference sections overview](#all-methods) and choose the appropriate section. The section page contains a list of methods and links to related materials.
 
-1. [{#T}](../api-reference/common/index.md)
-2. [{#T}](../api-reference/biconnector/index.md)
-3. [{#T}](../api-reference/crm/index.md)
-4. [{#T}](../api-reference/ai/index.md)
-5. [News Feed](../api-reference/log/index.md)
-6. [{#T}](../api-reference/sale/index.md)
-7. [Users](../api-reference/user/index.md)
-8. [Workflows](../api-reference/bizproc/index.md)
-9. [Tasks](../api-reference/tasks/index.md)
-10. [Document Generator](../api-reference/document-generator/index.md)
-11. [{#T}](../api-reference/calendar/index.md)
-12. [Payment Systems](../api-reference/pay-system/index.md)
-13. [{#T}](../api-reference/departments/index.md)
-14. [{#T}](../api-reference/user-consent/index.md)
-15. [Workgroups and Projects](../api-reference/sonet-group/sonet-group-create.md)
-16. [Open Channels](../api-reference/imopenlines/index.md)
-17. [Online Booking](../api-reference/booking/index.md)
-18. [Chatbots](../api-reference/chat-bots/index.md)
-19. [Chats](../api-reference/chats/index.md)
-20. [Sites and Stores](../api-reference/landing/index.md)
-21. [Message Providers, SMS Providers](../api-reference/messageservice/index.md)
-22. [Universal Lists](../api-reference/lists/index.md)
-23. [Work Time Accounting](../api-reference/timeman/index.md)
-24. [Data Storage](../api-reference/entity/index.md)
-25. [Trade Catalog](../api-reference/catalog/index.md)
-26. [Telephony](../api-reference/telephony/index.md)
-27. [Drive](../api-reference/disk/index.md)
-28. [Mail Services](../api-reference/mailservice/index.md)
+Check the application permissions in the [Method scopes](./scopes/index.md) section. A scope determines which groups of methods an application can access via the REST API. It is specified when configuring application permissions.
+
+A scope does not grant access to all data by itself. The application will only see the data that the user executing the request has access to.
+
+## What information is on the method pages
+
+Method pages help prepare individual requests. They specify what action the method performs, which parameters to pass, and what response the server will return.
+
+They do not describe a complete workflow. If you need to solve a task entirely, start with the tool's overview page or check the [Tutorials](../tutorials/index.md).
+
+## Reference sections overview {#all-methods}
+
+### REST API basics
+
+#|
+|| **Section** | **Description** ||
+|| [Data types and parameter formats](./data-types.md) | Basic types, date formats, files, and complex parameters ||
+|| [Method scopes](./scopes/index.md) | Application permissions to method groups ||
+|| [Common methods and events](./common/index.md) | System methods, application settings, users, and common events ||
+|| [Events](./events/index.md) | Registration, deletion, and processing of REST API events ||
+|| [REST 3.0](./rest-v3/index.md) | Methods and rules of the new REST API version ||
+|| [Deprecated methods](./outdated/index.md) | Methods to support existing integrations ||
+|#
+
+### Sales and customers
+
+#|
+|| **Section** | **Description** ||
+|| [CRM](./crm/index.md) | Leads, deals, contacts, companies, SPAs, and related objects ||
+|| [Online Store](./sale/index.md) | Orders, cart, payments, shipments, cash registers, and store events ||
+|| [Product Catalog](./catalog/index.md) | Products, offers, prices, warehouses, and warehouse documents ||
+|| [Payment Systems](./pay-system/index.md) | Payment processors and payment settings ||
+|| [Document Generator](./document-generator/index.md) | Documents, templates, numbering, and roles ||
+|| [Signature](./sign/index.md) | Electronic document signing ||
+|#
+
+### Automation and company operations
+
+#|
+|| **Section** | **Description** ||
+|| [Business Processes and Robots](./bizproc/index.md) | Templates, tasks, robots, and business process actions ||
+|| [Tasks](./tasks/index.md) | Tasks, checklists, comments, templates, stages, and flows ||
+|| [Workgroups and Projects](./sonet-group/index.md) | Workgroups, projects, participants, and scrum ||
+|| [Calendar](./calendar/index.md) | Calendars, events, and resources ||
+|| [Company Structure](./departments/index.md) | Company departments ||
+|| [Time Tracking](./timeman/index.md) | Working time, schedules, and time control ||
+|| [Users](./user/index.md) | Users and user fields ||
+|#
+
+### Communications
+
+#|
+|| **Section** | **Description** ||
+|| [Chats](./chats/index.md) | Chats, messages, files, users, and notifications ||
+|| [Bot Platform](./chat-bots/index.md) | Chatbots, commands, messages, and bot events ||
+|| [Open Channels](./imopenlines/index.md) | Open Channels, sessions, operators, chats, and connectors ||
+|| [Telephony](./telephony/index.md) | Telephony, calls, and Voximplant lines ||
+|| [Messaging providers, SMS providers](./messageservice/index.md) | Messaging providers and SMS providers ||
+|| [News Feed](./log/index.md) | News, comments, and feed events ||
+|| [Email Services](./mailservice/index.md) | Email services ||
+|#
+
+### Data, files, and content
+
+#|
+|| **Section** | **Description** ||
+|| [Drive](./disk/index.md) | Files, folders, data store, versions, and permissions ||
+|| [How to work with files](./files/index.md) | File transfer formats in REST API ||
+|| [Data store](./entity/index.md) | Data store and application data items ||
+|| [Universal Lists](./lists/index.md) | Lists, sections, fields, and items ||
+|| [Sites and stores](./landing/index.md) | Sites, pages, blocks, templates, and permissions ||
+|| [Online booking](./booking/index.md) | Resources, bookings, waiting lists, clients, and events ||
+|| [Surveys, polls](./vote/index.md) | Surveys and polls ||
+|| [User agreements](./user-consent/index.md) | User agreements ||
+|#
+
+### Platform capabilities
+
+#|
+|| **Section** | **Description** ||
+|| [Widgets](./widgets/index.md) | Application interface embedding points in Bitrix24 ||
+|| [BIconnector](./biconnector/index.md) | Sources, connectors, and BI analytics datasets ||
+|| [BitrixGPT](./ai/index.md) | Bitrix24 AI capabilities ||
+|| [Vibe](./vibe/index.md) | Vibe widgets and interactive items ||
+|#

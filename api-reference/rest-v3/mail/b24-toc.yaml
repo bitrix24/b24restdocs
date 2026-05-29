@@ -1,0 +1,17 @@
+title: Webmail
+href: index.md
+items:
+  - name: Section Overview
+    href: index.md
+  - name: Mailboxes
+    include:
+      path: mailbox/b24-toc.yaml
+      mode: link
+  - name: E-mails
+    include:
+      path: message/b24-toc.yaml
+      mode: link
+  - name: Recipients
+    include:
+      path: recipient/b24-toc.yaml
+      mode: link

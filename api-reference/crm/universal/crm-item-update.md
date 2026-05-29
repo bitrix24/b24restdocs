@@ -436,34 +436,43 @@ Default — `N` ||
   Each such field has the code `parentId + {parentEntityTypeId}`
   ||
   || **fm**
-  [`multifield[]`](../data-types.md) | Array of multifields.
+  [`multifield[]`](../data-types.md) | An array of multi-fields (phones, e-mail, messengers).
 
-  More about multifields can be read in the section [{#T}](../data-types.md#crm_multifield)
+    Structure of each item:
+    - `typeId` — multi-field type: `PHONE`, `EMAIL`, `WEB`, `IM`
+    - `valueType` — value subtype: `WORK`, `MOBILE`, `HOME`, `MAILING`, `OTHER`
+    - `value` — value
 
-  Structure of a multifield:
+    The item key in the object determines the operation:
 
-    - `id` — Unique identifier of the multifield. If no multifield with this id exists, a new multifield will be created
-    - `typeId` — Type of the multifield
-    - `valueType` — Type of value
-    - `value` — Value
+    **Add** a new value — use keys `n0`, `n1`, `n2` ...:
 
-  Example:
-
-  ```bash
-    fm: {
-        "15": {
-            "valueType": "WORK",
-            "value": "+19999999999",
-            "typeId": "PHONE"
-        },
-        "16": {
-            "valueType": "WORK",
-            "value": "example@example.com",
-            "typeId": "EMAIL"
-        }
+    ```json
+    "fm": {
+      "n0": { "typeId": "PHONE", "valueType": "WORK", "value": "+19991234567" },
+      "n1": { "typeId": "EMAIL", "valueType": "WORK", "value": "new@example.com" }
     }
-  ```
-  Default — `null`
+    ```
+
+**Update** an existing value — use the numeric `id` of the record (taken from the [`crm.item.get`](./crm-item-get.md) response in the `fm` field):
+
+    ```json
+    "fm": {
+      "15": { "typeId": "PHONE", "valueType": "MOBILE", "value": "+19990000000" }
+    }
+    ```
+
+**Delete** a value — pass the numeric `id` of the record and an empty `value`:
+
+    ```json
+    "fm": {
+      "16": { "typeId": "EMAIL", "value": "" }
+    }
+    ```
+
+Operations can be combined in a single request.
+
+Default — `null`
   ||
   |#
 
@@ -552,37 +561,46 @@ Default — `N` ||
   [`crm_entity`](../data-types.md) | Parent field. An element of another type of CRM object that is linked to this element.
 
   Each such field has the code `parentId + {parentEntityTypeId}` ||
-  || **fm**
-  [`multifield[]`](../data-types.md) | Array of multifields.
+    || **fm**
+    [`multifield[]`](../data-types.md) | An array of multi-fields (phones, e-mail, messengers).
 
-  More about multifields can be read in the section [{#T}](../data-types.md#crm_multifield)
+    Structure of each item:
+    - `typeId` — multi-field type: `PHONE`, `EMAIL`, `WEB`, `IM`
+    - `valueType` — value subtype: `WORK`, `MOBILE`, `HOME`, `MAILING`, `OTHER`
+    - `value` — value
 
-  Structure of a multifield:
+    The item key in the object determines the operation:
 
-    - `id` — Unique identifier of the multifield. If no multifield with this id exists, a new multifield will be created
-    - `typeId` — Type of the multifield
-    - `valueType` — Type of value
-    - `value` — Value
+    **Add** a new value — use keys `n0`, `n1`, `n2` ...:
 
-  Example:
-
-  ```bash
-    fm: {
-        "15": {
-            "valueType": "WORK",
-            "value": "+19999999999",
-            "typeId": "PHONE"
-        },
-        "16": {
-            "valueType": "WORK",
-            "value": "example@example.com",
-            "typeId": "EMAIL"
-        }
+    ```json
+    "fm": {
+      "n0": { "typeId": "PHONE", "valueType": "WORK", "value": "+19991234567" },
+      "n1": { "typeId": "EMAIL", "valueType": "WORK", "value": "new@example.com" }
     }
-  ```
-  Default — `null`
-  ||
-  |#
+    ```
+
+**Update** an existing value — use the numeric `id` of the record (taken from the [`crm.item.get`](./crm-item-get.md) response in the `fm` field):
+
+    ```json
+    "fm": {
+      "15": { "typeId": "PHONE", "valueType": "MOBILE", "value": "+19990000000" }
+    }
+    ```
+
+**Delete** a value — pass the numeric `id` of the record and an empty `value`:
+  
+    ```json
+    "fm": {
+      "16": { "typeId": "EMAIL", "value": "" }
+    }
+    ```
+
+Operations can be combined in a single request.
+
+Default — `null`
+    ||
+    |#
 
 
 - Estimate

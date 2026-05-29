@@ -1,0 +1,9 @@
+title: Autofilling details in the CRM card
+href: index.md
+items:
+  - name: Overview
+    href: index.md
+  - name: Client details autofill point in CRM
+    href: requisite-autocomplete.md
+  - name: Bank details autofill point in CRM
+    href: bank-detail-autocomplete.md

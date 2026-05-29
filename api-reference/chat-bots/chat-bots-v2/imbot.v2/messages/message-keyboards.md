@@ -46,6 +46,7 @@ If the `KEYBOARD` does not contain the `BUTTONS` key, the server will automatica
   ```json
   {
       "KEYBOARD": {
+          "BOT_ID": 456,
           "BUTTONS": [
               {"TEXT": "Button", "LINK": "https://example.com"}
           ]
@@ -174,7 +175,7 @@ The option with `APP_ID` and `APP_PARAMS` parameters is used in chats of [Open C
   curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"botId":456,"botToken":"my_bot_token","dialogId":"chat2725","fields":{"message":"Select an action","keyboard":{"BUTTONS":[{"TEXT":"Open website","LINK":"https://www.example.com/"},{"TYPE":"NEWLINE"},{"TEXT":"Insert command","ACTION":"PUT","ACTION_VALUE":"/help"}]}}}' \
+    -d '{"botId":456,"botToken":"my_bot_token","dialogId":"chat2725","fields":{"message":"Select action","keyboard":{"BOT_ID":456,"BUTTONS":[{"TEXT":"Open website","LINK":"https://www.example.com/"},{"TYPE":"NEWLINE"},{"TEXT":"Insert command","ACTION":"PUT","ACTION_VALUE":"/help"}]}}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/imbot.v2.Chat.Message.send
   ```
 
@@ -184,7 +185,7 @@ The option with `APP_ID` and `APP_PARAMS` parameters is used in chats of [Open C
   curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"botId":456,"dialogId":"chat2725","fields":{"message":"Select an action","keyboard":{"BUTTONS":[{"TEXT":"Open website","LINK":"https://www.example.com/"},{"TYPE":"NEWLINE"},{"TEXT":"Insert command","ACTION":"PUT","ACTION_VALUE":"/help"}]}},"auth":"**put_access_token_here**"}' \
+    -d '{"botId":456,"dialogId":"chat2725","fields":{"message":"Select an action","keyboard":{"BOT_ID":456,"BUTTONS":[{"TEXT":"Open website","LINK":"https://www.example.com/"},{"TYPE":"NEWLINE"},{"TEXT":"Insert command","ACTION":"PUT","ACTION_VALUE":"/help"}]}},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/imbot.v2.Chat.Message.send
   ```
 
@@ -198,6 +199,7 @@ The option with `APP_ID` and `APP_PARAMS` parameters is used in chats of [Open C
           fields: {
               message: 'Select an action',
               keyboard: {
+                  BOT_ID: 456,
                   BUTTONS: [
                       { TEXT: 'Open website', LINK: 'https://www.example.com/' },
                       { TYPE: 'NEWLINE' },
@@ -228,6 +230,7 @@ The option with `APP_ID` and `APP_PARAMS` parameters is used in chats of [Open C
                   'fields' => [
                       'message' => 'Select an action',
                       'keyboard' => [
+                          'BOT_ID' => 456,
                           'BUTTONS' => [
                               ['TEXT' => 'Open website', 'LINK' => 'https://www.example.com/'],
                               ['TYPE' => 'NEWLINE'],
@@ -260,6 +263,7 @@ The option with `APP_ID` and `APP_PARAMS` parameters is used in chats of [Open C
           fields: {
               message: 'Select an action',
               keyboard: {
+                  BOT_ID: 456,
                   BUTTONS: [
                       { TEXT: 'Open website', LINK: 'https://www.example.com/' },
                       { TYPE: 'NEWLINE' },
@@ -291,6 +295,7 @@ The option with `APP_ID` and `APP_PARAMS` parameters is used in chats of [Open C
           'fields' => [
               'message' => 'Select an action',
               'keyboard' => [
+                  'BOT_ID' => 456,
                   'BUTTONS' => [
                       ['TEXT' => 'Open website', 'LINK' => 'https://www.example.com/'],
                       ['TYPE' => 'NEWLINE'],
@@ -310,13 +315,15 @@ The option with `APP_ID` and `APP_PARAMS` parameters is used in chats of [Open C
 
 {% endlist %}
 
-## How to Update or Remove a Keyboard
+## How to update or delete a keyboard
 
 To update buttons, use the following methods:
 
 - [imbot.v2.Chat.Message.update](./chat-message-update.md)
 - [im.message.update](../../../../chats/messages/im-message-update.md)
 - [imbot.message.update](../../../outdated/messages/imbot-message-update.md)
+
+When updating a keyboard, specify `BOT_ID` inside the `keyboard` object, at the same level as `BUTTONS`. If you pass only `BUTTONS`, the button command may not be routed to the correct bot.
 
 To disable button display, pass:
 
