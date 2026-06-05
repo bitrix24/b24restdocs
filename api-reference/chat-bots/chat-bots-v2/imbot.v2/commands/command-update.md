@@ -1,4 +1,4 @@
-# Update the imbot.v2.Command.update
+# Update the imbot.v2.Command.update Team
 
 {% note tip "" %}
 
@@ -14,7 +14,7 @@ The method `imbot.v2.Command.update` updates the bot's slash command.
 
 ## Method Parameters
 
-{% include [Parameter Note](../../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -24,7 +24,7 @@ The method `imbot.v2.Command.update` updates the bot's slash command.
 || **botToken**
 [`string`](../../../../data-types.md) | Unique authorization token for the bot. Required for webhook authorization, not needed for OAuth.
 
-Pass the same botToken that was specified during the chat bot registration ||
+Pass the same botToken that was specified during the chat-bot registration ||
 || **commandId***
 [`integer`](../../../../data-types.md) | Command ID ||
 || **fields***
@@ -39,7 +39,7 @@ Pass the same botToken that was specified during the chat bot registration ||
 || **command**
 [`string`](../../../../data-types.md) | New command (without `/`) ||
 || **title**
-[`object`](../../../../data-types.md) | Title of the command in different languages:
+[`object`](../../../../data-types.md) | Command title in different languages:
 
 - string value updates the translation
 - value `null` removes the translation
@@ -49,16 +49,18 @@ Example: `{"de": "Neu", "en": null}` will update `de` and remove `en` ||
 || **params**
 [`object`](../../../../data-types.md) | Description of parameters in different languages. Similar to `title`, applies only to those languages provided in `title` ||
 || **common**
-[`string`](../../../../data-types.md) | Common command. Allowed values: `Y`, `N` ||
+[`boolean`](../../../../data-types.md) | Common command. Allowed values: `true`, `false` ||
 || **hidden**
-[`string`](../../../../data-types.md) | Hidden command. Allowed values: `Y`, `N` ||
+[`boolean`](../../../../data-types.md) | Hidden command. Allowed values: `true`, `false` ||
 || **extranetSupport**
-[`string`](../../../../data-types.md) | Extranet support. Allowed values: `Y`, `N` ||
+[`boolean`](../../../../data-types.md) | Extranet support. Allowed values: `true`, `false` ||
 |#
+
+> Boolean parameters accept `true` and `false`. If the client does not support JSON boolean, strings `"Y"` and `"N"` can be passed.
 
 ## Code Examples
 
-{% include [Example Note](../../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../../_includes/examples.md) %}
 
 ### Example 1. Updating Translations
 
@@ -326,7 +328,7 @@ Update `de` and remove `en`. To delete, pass `null` as the value.
 
 ## Response Handling
 
-HTTP Code: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -370,11 +372,11 @@ HTTP Code: **200**
 || **Field**
 `Type` | **Description** ||
 || **id**
-[`integer`](../../../../data-types.md) | Identifier of the command ||
+[`integer`](../../../../data-types.md) | Command identifier ||
 || **botId**
-[`integer`](../../../../data-types.md) | Identifier of the bot ||
+[`integer`](../../../../data-types.md) | Bot identifier ||
 || **command**
-[`string`](../../../../data-types.md) | Text of the command ||
+[`string`](../../../../data-types.md) | Command text ||
 || **common**
 [`boolean`](../../../../data-types.md) | Command available in all chats ||
 || **hidden**
@@ -402,21 +404,21 @@ HTTP Status: **400**, **403**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `BOT_TOKEN_NOT_SPECIFIED` | Bot token is not specified | `botToken` is not provided. Required for webhook authorization ||
-|| `BOT_ID_REQUIRED` | Bot ID is required | `botId` is not provided ||
+|| `BOT_TOKEN_NOT_SPECIFIED` | Bot token is not specified | `botToken` is not specified. Required for webhook authorization ||
+|| `BOT_ID_REQUIRED` | Bot ID is required | `botId` is not specified ||
 || `BOT_NOT_FOUND` | Bot not found | Bot not found ||
-|| `BOT_OWNERSHIP_ERROR` | Bot is registered by another application | Bot is registered by another application ||
+|| `BOT_OWNERSHIP_ERROR` | Bot is registered by another application | Bot registered by another application ||
 || `COMMAND_NOT_FOUND` | Command not found | Command not found or no access ||
-|| `COMMAND_NAME_EMPTY` | Command name is empty | An empty command name was provided ||
+|| `COMMAND_NAME_EMPTY` | Command name is empty | Empty command name provided ||
 || `COMMAND_NAME_INVALID` | Command name is invalid | Command name must be a string ||
-|| `COMMAND_ALREADY_EXISTS` | Command already exists | A command with this name is already registered for this bot ||
+|| `COMMAND_ALREADY_EXISTS` | Command already exists | Command with this name is already registered for this bot ||
 |#
 
 {% include [System Errors](../../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
-- [API Change Log for imbot.v2](../../change-log.md)
+- [API imbot.v2 Change Log](../../change-log.md)
 - [{#T}](./command-register.md)
 - [{#T}](./command-list.md)
 - [{#T}](./command-unregister.md)

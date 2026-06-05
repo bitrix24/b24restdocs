@@ -1,4 +1,4 @@
-# Update Custom Field task.item.userfield.update
+# Update User Field task.item.userfield.update
 
 {% note tip "" %}
 
@@ -10,58 +10,58 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: administrator
 
-The method `task.item.userfield.update` updates the parameters of a task's custom field.
+The method `task.item.userfield.update` updates the parameters of a task's user field.
 
 ## Method Parameters
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
-|| **ID***
-[`integer`](../../data-types.md) | Identifier of the custom field.
+|| **ID*** 
+[`integer`](../../data-types.md) | Identifier of the user field.
 
-The identifier of the task's custom field can be obtained when [creating the field](./task-item-user-field-add.md) or by using the [method to get the list of fields](./task-item-user-field-get-list.md) ||
-|| **DATA***
+The identifier of the task's user field can be obtained when [creating a field](./task-item-user-field-add.md) or by using the [method to get the list of fields](./task-item-user-field-get-list.md) ||
+|| **DATA*** 
 [`object`](../../data-types.md) | Set of parameters to be updated for the field [(detailed description)](#data) ||
 |#
 
 ### DATA Parameter {#data}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
-|| **XML_ID**
+|| **XML_ID** 
 [`string`](../../data-types.md) | External identifier ||
-|| **EDIT_FORM_LABEL**
+|| **EDIT_FORM_LABEL** 
 [`object`](../../data-types.md) | Label in the edit form [(detailed description)](#edit_form_label) ||
-|| **LABEL**
-[`string`](../../data-types.md) | Name of the custom field ||
-|| **SORT**
-[`integer`](../../data-types.md) | Sorting
-||
-|| **MULTIPLE**
+|| **LABEL** 
+[`string`](../../data-types.md) | Name of the user field ||
+|| **SORT** 
+[`integer`](../../data-types.md) | Sorting ||
+|| **MULTIPLE** 
 [`string`](../../data-types.md) | Multiple value. Possible values:
 - `Y` — multiple
 - `N` — single
 
 Applicable for types `string`, `double`, `datetime`. For the `boolean` type, `N` is always used ||
-|| **MANDATORY**
+|| **MANDATORY** 
 [`string`](../../data-types.md) | Mandatory value. Possible values:
 - `Y` — mandatory
-- `N` — optional
-||
-|| **SETTINGS**
+- `N` — optional ||
+|| **SETTINGS** 
 [`object`](../../data-types.md) | Additional settings for the field type [(detailed description)](#settings) ||
 |#
 
 ### EDIT_FORM_LABEL Parameter {#edit_form_label}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
-|| **en**
+|| **ru** 
+[`string`](../../data-types.md) | Label in Russian ||
+|| **en** 
 [`string`](../../data-types.md) | Label in English ||
 |#
 
@@ -73,33 +73,33 @@ The fields of the `SETTINGS` object depend on the `USER_TYPE_ID` type.
 
 - string
 
-    #|
+    #| 
     || **Name**
     `type` | **Description** ||
-    || **DEFAULT_VALUE**
+    || **DEFAULT_VALUE** 
     [`string`](../../data-types.md) | Default value ||
-    || **ROWS**
+    || **ROWS** 
     [`integer`](../../data-types.md) | Number of rows in the input field ||
     |#
 
 - double
 
-    #|
+    #| 
     || **Name**
     `type` | **Description** ||
-    || **DEFAULT_VALUE**
+    || **DEFAULT_VALUE** 
     [`double`](../../data-types.md) | Default value ||
     |#
 
 - datetime
 
-    #|
+    #| 
     || **Name**
     `type` | **Description** ||
-    || **DEFAULT_VALUE**
+    || **DEFAULT_VALUE** 
      | Default value. Described as an object with two parameters:
-    1. `TYPE` [`string`](../../data-types.md) — mode for setting the default value
-        - `NONE` — no default value set
+    1. `TYPE` [`string`](../../data-types.md) — mode for filling the default value
+        - `NONE` — no default value is set
         - `FIXED` — uses the value from `VALUE`
         - `NOW` — uses the current time
     2. `VALUE` [`datetime`](../../data-types.md) — value for the `FIXED` type
@@ -116,14 +116,14 @@ The fields of the `SETTINGS` object depend on the `USER_TYPE_ID` type.
 
 - boolean
 
-    #|
+    #| 
     || **Name**
     `type` | **Description** ||
-    || **DEFAULT_VALUE**
+    || **DEFAULT_VALUE** 
     [`integer`](../../data-types.md) | Default value:
     - `0` — no
     - `1` — yes ||
-    || **DISPLAY**
+    || **DISPLAY** 
     [`string`](../../data-types.md) | Display option for the value:
     - `CHECKBOX` — checkbox
     - `RADIO` — radio buttons
@@ -175,31 +175,88 @@ The fields of the `SETTINGS` object depend on the `USER_TYPE_ID` type.
     https://**put_your_bitrix24_address**/rest/task.item.userfield.update
     ```
 
-- JS
+- JS (TS)
 
-    ```js
-    try
-    {
-        const response = await $b24.callMethod(
-            'task.item.userfield.update',
-            {
-                ID: 1325,
-                DATA: {
-                    EDIT_FORM_LABEL: {
-                        en: 'Description of client request'
-                    },
-                    MANDATORY: 'N'
-                }
-            }
-        );
+    ```ts
+    // This snippet is an ES module: top-level await requires type="module" or a bundler.
+    // $b24 is an already-initialized SDK instance (see the SDK "Get started" guide).
+    import { Text } from '@bitrix24/b24jssdk'
+    import type { B24Frame } from '@bitrix24/b24jssdk'
 
-        const result = response.getData().result;
-        console.log(result);
+    declare const $b24: B24Frame
+
+    // Shape of the payload returned in result (match the "response handling" section of the page)
+    type UpdateUserFieldResult = boolean
+
+    try {
+      const response = await $b24.actions.v2.call.make<UpdateUserFieldResult>({
+        method: 'task.item.userfield.update',
+        params: {
+          ID: 1325,
+          DATA: {
+            EDIT_FORM_LABEL: {
+              en: 'Description of client request',
+            },
+            MANDATORY: 'N',
+          },
+        },
+        requestId: Text.getUuidRfc4122()
+      })
+
+      // The payload is available only on a successful response
+      if (!response.isSuccess) {
+        console.error(response.getErrorMessages().join('; '))
+      } else {
+        const result = response.getData()!.result
+        console.info('Field updated successfully:', result)
+      }
+    } catch (error) {
+      // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+      console.error(error)
     }
-    catch (error)
-    {
-        console.error(error);
-    }
+    ```
+
+- JS (UMD)
+
+    ```html
+    <!-- Load the SDK (UMD build); it is exposed as the global B24Js -->
+    <script src="https://unpkg.com/@bitrix24/b24jssdk@1/dist/umd/index.min.js"></script>
+    <script>
+      async function updateUserField() {
+        try {
+          // Initialize the SDK inside a Bitrix24 frame
+          const $b24 = await B24Js.initializeB24Frame()
+
+          const response = await $b24.actions.v2.call.make({
+            method: 'task.item.userfield.update',
+            params: {
+              ID: 1325,
+              DATA: {
+                EDIT_FORM_LABEL: {
+                  en: 'Description of client request',
+                },
+                MANDATORY: 'N',
+              },
+            },
+            requestId: B24Js.Text.getUuidRfc4122()
+          })
+
+          // The payload is available only on a successful response
+          if (!response.isSuccess) {
+            console.error(response.getErrorMessages().join('; '))
+            return
+          }
+
+          const result = response.getData().result
+          console.info('Field updated successfully:', result)
+        } catch (error) {
+          // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+          console.error(error)
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', updateUserField)
+    </script>
     ```
 
 - PHP
@@ -294,8 +351,8 @@ HTTP Status: **200**
         "finish": 1740000000.100000,
         "duration": 0.100000,
         "processing": 0.080000,
-        "date_start": "2025-02-20T10:00:00+01:00",
-        "date_finish": "2025-02-20T10:00:00+01:00",
+        "date_start": "2025-02-20T10:00:00+02:00",
+        "date_finish": "2025-02-20T10:00:00+02:00",
         "operating_reset_at": 1740003600,
         "operating": 0.080000
     }
@@ -304,12 +361,12 @@ HTTP Status: **200**
 
 ### Returned Data
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
-|| **result**
+|| **result** 
 [`boolean`](../../data-types.md) | Returns `true` if the field was successfully updated ||
-|| **time**
+|| **time** 
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
@@ -328,12 +385,12 @@ HTTP Status: **400**
 
 ### Possible Error Codes
 
-#|
+#| 
 || **Status** | **Code** | **Description** | **Value** ||
 || `400` | `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#0; Invalid arguments for Bitrix\Tasks\Integration\Rest\Task\UserField::update; 0/TE | Required parameters `ID` and `DATA` are not provided ||
 || `400` | `ERROR_CORE` | ID is not defined or invalid | A non-numeric value or a value `<= 0` was passed to the `ID` parameter ||
-|| `400` | `ERROR_NOT_FOUND` | The entity with ID '{ID}' is not found | The custom field with the specified `ID` was not found ||
-|| `400` | `ERROR_CORE` | Access denied | Insufficient permissions to modify the custom field ||
+|| `400` | `ERROR_NOT_FOUND` | The entity with ID '{ID}' is not found | The user field with the specified `ID` was not found ||
+|| `400` | `ERROR_CORE` | Access denied | Insufficient permissions to modify the user field ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

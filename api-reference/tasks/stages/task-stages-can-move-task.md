@@ -1,4 +1,4 @@
-# Check the ability to move a task task.stages.canmovetask
+# Check the Ability to Move Task task.stages.canmovetask
 
 {% note tip "" %}
 
@@ -9,26 +9,26 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 > Scope: [`task`](../../scopes/permissions.md)
 >
 > Who can execute the method:
-> - any user for stages of "My Planner"
+> - any user for "My Plan" stages
 > - any user with access to the group for kanban stages
 
-The method checks whether the current user can move tasks in the specified object.
+This method checks whether the current user can move tasks in the specified object.
 
 ## Method Parameters
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
-|| **entityId***
+|| **entityId*** 
 [`integer`](../../data-types.md) | `ID` of the object ||
-|| **entityType***
+|| **entityType*** 
 [`string`](../../data-types.md) | Type of the object: 
 - `U` — user
 - `G` — group
 
-In the case of `U` ("My Planner") — the value `true` will be returned only if the `entityId` contains the identifier of the current user ||
+In the case of `U` ("My Plan"), the value `true` will only be returned if the `entityId` contains the identifier of the current user ||
 |#
 
 ## Code Examples
@@ -46,7 +46,7 @@ In the case of `U` ("My Planner") — the value `true` will be returned only if 
     "entityId": 1,
     "entityType": "U"
     }' \
-    https://your-domain.bitrix24.com/rest/_USER_ID_/_CODE_/task.stages.canmovetask
+    https://your-domain.com/rest/_USER_ID_/_CODE_/task.stages.canmovetask
     ```
 
 - cURL (OAuth)
@@ -59,29 +59,78 @@ In the case of `U` ("My Planner") — the value `true` will be returned only if 
     "entityId": 1,
     "entityType": "U"
     }' \
-    https://your-domain.bitrix24.com/rest/task.stages.canmovetask
+    https://your-domain.com/rest/task.stages.canmovetask
     ```
 
-- JS
+- JS (TS)
 
-    ```js
-    try
-    {
-    	const response = await $b24.callMethod(
-    		'task.stages.canmovetask',
-    		{
-    			entityId: entityId,
-    			entityType: entityType
-    		}
-    	);
-    	
-    	const result = response.getData().result;
-    	console.log(result);
+    ```ts
+    // This snippet is an ES module: top-level await requires type="module" or a bundler.
+    // $b24 is an already-initialized SDK instance (see the SDK "Get started" guide).
+    import { Text } from '@bitrix24/b24jssdk'
+    import type { B24Frame } from '@bitrix24/b24jssdk'
+
+    declare const $b24: B24Frame
+
+    try {
+      const response = await $b24.actions.v2.call.make<boolean>({
+        method: 'task.stages.canmovetask',
+        params: {
+          entityId: 1,
+          entityType: 'U',
+        },
+        requestId: Text.getUuidRfc4122()
+      })
+
+      // The payload is available only on a successful response
+      if (!response.isSuccess) {
+        console.error(response.getErrorMessages().join('; '))
+      } else {
+        const result = response.getData()!.result
+        console.info('Can move task:', result)
+      }
+    } catch (error) {
+      // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+      console.error(error)
     }
-    catch( error )
-    {
-    	console.error('Error:', error);
-    }
+    ```
+
+- JS (UMD)
+
+    ```html
+    <!-- Load the SDK (UMD build); it is exposed as the global B24Js -->
+    <script src="https://unpkg.com/@bitrix24/b24jssdk@1/dist/umd/index.min.js"></script>
+    <script>
+      async function checkCanMoveTask() {
+        try {
+          // Initialize the SDK inside a Bitrix24 frame
+          const $b24 = await B24Js.initializeB24Frame()
+
+          const response = await $b24.actions.v2.call.make({
+            method: 'task.stages.canmovetask',
+            params: {
+              entityId: 1,
+              entityType: 'U',
+            },
+            requestId: B24Js.Text.getUuidRfc4122()
+          })
+
+          // The payload is available only on a successful response
+          if (!response.isSuccess) {
+            console.error(response.getErrorMessages().join('; '))
+            return
+          }
+
+          const result = response.getData().result
+          console.info('Can move task:', result)
+        } catch (error) {
+          // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+          console.error(error)
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', checkCanMoveTask)
+    </script>
     ```
 
 - PHP
@@ -134,12 +183,12 @@ In the case of `U` ("My Planner") — the value `true` will be returned only if 
 - PHP CRest
 
     ```php
-    require_once('crest.php'); // include CRest PHP SDK
+    require_once('crest.php'); // connecting CRest PHP SDK
 
     $entityId = 1;
     $entityType = 'U';
 
-    // execute request to REST API
+    // executing the request to the REST API
     $result = CRest::call(
         'task.stages.canmovetask',
         [
@@ -148,7 +197,7 @@ In the case of `U` ("My Planner") — the value `true` will be returned only if 
         ]
     );
 
-    // Process the response from Bitrix24
+    // Processing the response from Bitrix24
     if ($result['error']) {
         echo 'Error: '.$result['error_description'];
     } else {
@@ -170,14 +219,14 @@ HTTP Status: **200**
 
 ### Returned Data
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **result** 
 [`boolean`](../../data-types.md) | Returns `true` if the current user can move the task.
 
 Otherwise — `false`
-||
+|| 
 |#
 
 ## Error Handling

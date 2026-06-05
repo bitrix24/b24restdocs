@@ -12,30 +12,30 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 The method `imbot.v2.Chat.TextField.enabled` enables or disables the text input field in the chat.
 
-This method works in both group and personal chats with the bot. Access is verified based on the bot's membership in the chat, so `ACCESS_DENIED` is returned only if the bot is not a participant in the specified dialogue.
+The method works in both group and personal chats with the bot. Access is verified based on the bot's membership in the chat, so `ACCESS_DENIED` is returned only if the bot is not a participant in the specified dialogue.
 
 ## Method Parameters
 
-{% include [Footnote on parameters](../../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../../_includes/required.md) %}
 
-#|
-|| **Name**
+#| 
+|| **Name** 
 `Type` | **Description** ||
-|| **botId***
+|| **botId*** 
 [`integer`](../../../../data-types.md) | Bot ID ||
-|| **botToken**
+|| **botToken** 
 [`string`](../../../../data-types.md) | Unique authorization token for the bot. Required for webhook authorization, not needed for OAuth.
 
 Pass the same botToken that was specified during the registration of the chatbot ||
-|| **dialogId***
+|| **dialogId*** 
 [`string`](../../../../data-types.md) | Dialogue ID. For group chats — `chat{chatId}`, for personal chats — `{userId}` ||
-|| **enabled**
+|| **enabled** 
 [`boolean`](../../../../data-types.md) | Control the input field: `true` — enable, `false` — disable. Default is `true` ||
 |#
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -147,11 +147,13 @@ Pass the same botToken that was specified during the registration of the chatbot
 
 ## Response Handling
 
-HTTP Code: **200**
+HTTP Status: **200**
 
 ```json
 {
-    "result": true,
+    "result": {
+        "result": true
+    },
     "time": {
         "start": 1728626400.123,
         "finish": 1728626400.234,
@@ -165,12 +167,14 @@ HTTP Code: **200**
 
 ## Returned Data
 
-#|
-|| **Name**
+#| 
+|| **Name** 
 `Type` | **Description** ||
-|| **result**
+|| **result** 
+[`object`](../../../../data-types.md) | Result of the operation ||
+|| **result.result** 
 [`boolean`](../../../../data-types.md) | `true` if the setting was successfully updated ||
-|| **time**
+|| **time** 
 [`time`](../../../../data-types.md#time) | Information about the request execution time ||
 |#
 
@@ -189,10 +193,10 @@ HTTP Status: **400**, **403**
 
 ### Possible Error Codes
 
-#|
+#| 
 || **Code** | **Description** | **Value** ||
-|| `BOT_TOKEN_NOT_SPECIFIED` | Bot token is not specified | Bot token is not specified. Required for webhook authorization ||
-|| `BOT_ID_REQUIRED` | Bot ID is required | Bot ID is required ||
+|| `BOT_TOKEN_NOT_SPECIFIED` | Bot token is not specified | `botToken` is not provided. Required for webhook authorization ||
+|| `BOT_ID_REQUIRED` | Bot ID is required | `botId` is not provided ||
 || `BOT_NOT_FOUND` | Bot not found | Bot not found ||
 || `BOT_OWNERSHIP_ERROR` | Bot is registered by another application | Bot is registered by another application ||
 || `ACCESS_DENIED` | Access denied | Bot is not a participant in the chat ||

@@ -1,4 +1,4 @@
-# Update User Data user.update
+# Update user data user.update
 
 {% note tip "" %}
 
@@ -10,11 +10,11 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: administrator
 
-The `user.update` method updates user data. It can only be executed on behalf of a user with user invitation rights.
+The `user.update` method updates user data. This is only possible on behalf of a user with user invitation rights.
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../_includes/required.md) %}
+{% include [Note on parameters](../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -22,11 +22,11 @@ The `user.update` method updates user data. It can only be executed on behalf of
 || **ID***
 [`integer`](../data-types.md) | User identifier ||
 || **ACTIVE**
-[`boolean`](../data-types.md) | User activity status. Possible values: 
+[`boolean`](../data-types.md) | User activity flag. Possible values: 
 - `Y` — employee is active,
-- `N` — employee is terminated ||
+- `N` — employee is dismissed ||
 || **EMAIL**
-[`string`](../data-types.md) | User e-mail ||
+[`string`](../data-types.md) | User E-mail ||
 || **NAME**
 [`string`](../data-types.md) | First name ||
 || **LAST_NAME**
@@ -38,11 +38,11 @@ The `user.update` method updates user data. It can only be executed on behalf of
 || **PERSONAL_PROFESSION**
 [`string`](../data-types.md) | Profession ||
 || **PERSONAL_WWW**
-[`string`](../data-types.md) | Personal webpage ||
+[`string`](../data-types.md) | Homepage ||
 || **PERSONAL_BIRTHDAY**
 [`string`](../data-types.md) | Date of birth ||
 || **PERSONAL_PHOTO**
-[`array`](../data-types.md) | Photo, pass an array with the filename and a string in [Base64](../files/how-to-upload-files.md) ||
+[`array`](../data-types.md) | Photo, pass an array containing the file name and a [Base64](../files/how-to-upload-files.md) string ||
 || **PERSONAL_ICQ**
 [`string`](../data-types.md) | ICQ ||
 || **PERSONAL_PHONE**
@@ -54,17 +54,17 @@ The `user.update` method updates user data. It can only be executed on behalf of
 || **PERSONAL_PAGER**
 [`string`](../data-types.md) | Pager ||
 || **PERSONAL_STREET**
-[`string`](../data-types.md) | Street of residence ||
+[`string`](../data-types.md) | Residential street ||
 || **PERSONAL_CITY**
-[`string`](../data-types.md) | City of residence ||
+[`string`](../data-types.md) | Residential city ||
 || **PERSONAL_STATE**
-[`string`](../data-types.md) | State ||
+[`string`](../data-types.md) | Region / territory ||
 || **PERSONAL_ZIP**
 [`string`](../data-types.md) | Postal code ||
 || **PERSONAL_COUNTRY**
 [`string`](../data-types.md) | Country ||
 || **PERSONAL_MAILBOX**
-[`string`](../data-types.md) | Mailbox ||
+[`string`](../data-types.md) | P.O. Box ||
 || **PERSONAL_NOTES**
 [`string`](../data-types.md) | Additional notes ||
 || **WORK_PHONE**
@@ -72,7 +72,7 @@ The `user.update` method updates user data. It can only be executed on behalf of
 || **WORK_COMPANY**
 [`string`](../data-types.md) | Company ||
 || **WORK_POSITION**
-[`string`](../data-types.md) | Position ||
+[`string`](../data-types.md) | Job title ||
 || **WORK_DEPARTMENT**
 [`string`](../data-types.md) | Department ||
 || **WORK_WWW**
@@ -86,7 +86,7 @@ The `user.update` method updates user data. It can only be executed on behalf of
 || **WORK_MAILBOX**
 [`string`](../data-types.md) | WORK_MAILBOX ||
 || **WORK_CITY**
-[`string`](../data-types.md) | City of work ||
+[`string`](../data-types.md) | Work city ||
 || **WORK_STATE**
 [`string`](../data-types.md) | WORK_STATE ||
 || **WORK_ZIP**
@@ -104,7 +104,7 @@ The `user.update` method updates user data. It can only be executed on behalf of
 || **UF_ZOOM**
 [`string`](../data-types.md) | Zoom ||
 || **UF_DEPARTMENT**
-[`string`](../data-types.md) | Departments ||
+[`string`](../data-types.md) | Department ||
 || **UF_INTERESTS**
 [`string`](../data-types.md) | Interests ||
 || **UF_SKILLS**
@@ -116,7 +116,7 @@ The `user.update` method updates user data. It can only be executed on behalf of
 || **UF_LINKEDIN**
 [`string`](../data-types.md) | LinkedIn ||
 || **UF_FACEBOOK**
-[`string`](../data-types.md) | Facebook ||
+[`string`](../data-types.md) | Facebook** ||
 || **UF_TWITTER**
 [`string`](../data-types.md) | Twitter ||
 || **UF_SKYPE**
@@ -124,8 +124,11 @@ The `user.update` method updates user data. It can only be executed on behalf of
 || **UF_DISTRICT**
 [`string`](../data-types.md) | District ||
 || **UF_PHONE_INNER**
-[`string`](../data-types.md) | Internal phone ||
+[`string`](../data-types.md) | Extension number ||
 |#
+
+\
+**Belongs to Meta Platforms, Inc., which is recognized as extremist and banned in the Russian Federation.*
 
 ## Code Examples
 
@@ -162,34 +165,80 @@ The `user.update` method updates user data. It can only be executed on behalf of
     https://**put_your_bitrix24_address**/rest/user.update
     ```
 
-- JS
+- JS (TS)
 
-    ```js
-    try
-    {
-    	const response = await $b24.callMethod(
-    		"user.update",
-    		{
-    			"ID": 1,
-    			"NAME": "Administrator",
-    			"LAST_NAME": "SomeLastName"
-    		}
-    	);
-    	
-    	const result = response.getData().result;
-    	if(result.error())
-    	{
-    		console.error(result.error());
-    	}
-    	else
-    	{
-    		console.dir(result);
-    	}
+    ```ts
+    // This snippet is an ES module: top-level await requires type="module" or a bundler.
+    // $b24 is an already-initialized SDK instance (see the SDK "Get started" guide).
+    import { Text } from '@bitrix24/b24jssdk'
+    import type { B24Frame } from '@bitrix24/b24jssdk'
+
+    declare const $b24: B24Frame
+
+    // Shape of the payload returned in result (match the "response handling" section of the page)
+    type UserUpdateResult = boolean
+
+    try {
+      const response = await $b24.actions.v2.call.make<UserUpdateResult>({
+        method: 'user.update',
+        params: {
+          ID: 1,
+          NAME: 'Administrator',
+          LAST_NAME: 'SomeLastName',
+        },
+        requestId: Text.getUuidRfc4122()
+      })
+
+      // The payload is available only on a successful response
+      if (!response.isSuccess) {
+        console.error(response.getErrorMessages().join('; '))
+      } else {
+        const result = response.getData()!.result
+        console.info('User updated successfully:', result)
+      }
+    } catch (error) {
+      // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+      console.error(error)
     }
-    catch(error)
-    {
-    	console.error('Error:', error);
-    }
+    ```
+
+- JS (UMD)
+
+    ```html
+    <!-- Load the SDK (UMD build); it is exposed as the global B24Js -->
+    <script src="https://unpkg.com/@bitrix24/b24jssdk@1/dist/umd/index.min.js"></script>
+    <script>
+      async function updateUser() {
+        try {
+          // Initialize the SDK inside a Bitrix24 frame
+          const $b24 = await B24Js.initializeB24Frame()
+
+          const response = await $b24.actions.v2.call.make({
+            method: 'user.update',
+            params: {
+              ID: 1,
+              NAME: 'Administrator',
+              LAST_NAME: 'SomeLastName',
+            },
+            requestId: B24Js.Text.getUuidRfc4122()
+          })
+
+          // The payload is available only on a successful response
+          if (!response.isSuccess) {
+            console.error(response.getErrorMessages().join('; '))
+            return
+          }
+
+          const result = response.getData().result
+          console.info('User updated successfully:', result)
+        } catch (error) {
+          // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+          console.error(error)
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', updateUser)
+    </script>
     ```
 
 - PHP
@@ -289,9 +338,9 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../data-types.md) | Success of execution ||
+[`boolean`](../data-types.md) | Success status ||
 || **time**
-[`time`](../data-types.md) | Information about the execution time of the request ||
+[`time`](../data-types.md) | Request execution time information ||
 |#
 
 ## Error Handling
@@ -305,20 +354,20 @@ HTTP status: **400**
 }
 ```
 
-{% include notitle [error handling](../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
-|| **Code** | **Error Message** | **Description** ||
-|| `ERROR_CORE` | access_denied | Invalid user `ID` provided ||
+|| **Code** | **Error message** | **Description** ||
+|| `ERROR_CORE` | access_denied | Invalid user `ID` passed ||
 || `ERROR_CORE` | access_denied | User does not have permission to call the method ||
-|| `ERROR_CORE` |  | Invalid user `ID` provided ||
+|| `ERROR_CORE` |  | Invalid user `ID` passed||
 |#
 
-{% include [system errors](../../_includes/system-errors.md) %}
+{% include [System errors](../../_includes/system-errors.md) %}
 
-## Continue Learning 
+## Continue Learning
 
 - [{#T}](./user-add.md)
 - [{#T}](./user-get.md)

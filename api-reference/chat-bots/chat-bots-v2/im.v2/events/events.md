@@ -6,7 +6,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-Description of all events that the user application receives via [im.v2.Event.get](./event-get.md).
+This document describes all events that a user application receives via [im.v2.Event.get](./event-get.md).
 
 The fields of the `message`, `chat`, and `user` objects are described in [{#T}](../../entities.md).
 
@@ -14,11 +14,11 @@ The fields of the `message`, `chat`, and `user` objects are described in [{#T}](
 
 ## Differences from Method Responses
 
-In these events, the `chat` and `user` objects are returned in a shortened format:
+In these events, the `chat` and `user` objects are returned in a simplified format:
 
-- The `chat` object does not contain the `role` and `muteList` fields — these depend on the specific user and cannot be the same for all recipients.
-- The `user` object does not contain the `network`, `botData`, and `avatarHr` fields.
-- The online status fields (`idle`, `lastActivityDate`, `mobileLastDate`, `desktopLastDate`) are always set to `false`.
+- the `chat` object does not contain the `role` and `muteList` fields — these depend on the specific user and cannot be the same for all recipients
+- the `user` object does not contain the `network`, `botData`, and `avatarHr` fields
+- the online status fields (`idle`, `lastActivityDate`, `mobileLastDate`, `desktopLastDate`) are always set to `false`
 
 {% note info "" %}
 
@@ -36,10 +36,10 @@ A new message in the chat that the subscribed user is part of.
 
 #| 
 || **Field** | **Type** | **Description** ||
-|| **message** | [`Message`](../../entities.md#message) | The sent message. The description of the object's fields — [Message](../../entities.md#message) ||
-|| **chat** | [`Chat`](../../entities.md#chat) | The chat where the message was sent. The description of the object's fields — [Chat](../../entities.md#chat) ||
-|| **user** | [`User`](../../entities.md#user) | The author of the message. The description of the object's fields — [User](../../entities.md#user) ||
-|| **language** | `string` | The language of the account (e.g., `en`, `de`) ||
+|| **message** | [`Message`](../../entities.md#message) | The sent message. Field descriptions for the object — [Message](../../entities.md#message) ||
+|| **chat** | [`Chat`](../../entities.md#chat) | The chat where the message was sent. Field descriptions for the object — [Chat](../../entities.md#chat) ||
+|| **user** | [`User`](../../entities.md#user) | The author of the message. Field descriptions for the object — [User](../../entities.md#user) ||
+|| **language** | `string` | The language of Bitrix24 (e.g., `en`, `de`) ||
 |#
 
 ### Example Data
@@ -123,10 +123,10 @@ A message in the chat has been edited.
 
 #| 
 || **Field** | **Type** | **Description** ||
-|| **message** | [`Message`](../../entities.md#message) | The updated message. The description of the object's fields — [Message](../../entities.md#message) ||
-|| **chat** | [`Chat`](../../entities.md#chat) | The chat where the message was edited. The description of the object's fields — [Chat](../../entities.md#chat) ||
-|| **user** | [`User`](../../entities.md#user) | The author of the message. The description of the object's fields — [User](../../entities.md#user) ||
-|| **language** | `string` | The language of the account ||
+|| **message** | [`Message`](../../entities.md#message) | The updated message. Field descriptions for the object — [Message](../../entities.md#message) ||
+|| **chat** | [`Chat`](../../entities.md#chat) | The chat where the message was edited. Field descriptions for the object — [Chat](../../entities.md#chat) ||
+|| **user** | [`User`](../../entities.md#user) | The author of the message. Field descriptions for the object — [User](../../entities.md#user) ||
+|| **language** | `string` | The language of Bitrix24 ||
 |#
 
 The data format is identical to [ONIMV2MESSAGEADD](#onimv2messageadd). The `message` field contains the updated text.
@@ -140,9 +140,9 @@ A message in the chat has been deleted.
 #| 
 || **Field** | **Type** | **Description** ||
 || **messageId** | `integer` | ID of the deleted message ||
-|| **chat** | [`Chat`](../../entities.md#chat) | The chat where the message was deleted. The description of the object's fields — [Chat](../../entities.md#chat) ||
-|| **user** | [`User`](../../entities.md#user) | The author of the message. The description of the object's fields — [User](../../entities.md#user) ||
-|| **language** | `string` | The language of the account ||
+|| **chat** | [`Chat`](../../entities.md#chat) | The chat where the message was deleted. Field descriptions for the object — [Chat](../../entities.md#chat) ||
+|| **user** | [`User`](../../entities.md#user) | The author of the message. Field descriptions for the object — [User](../../entities.md#user) ||
+|| **language** | `string` | The language of Bitrix24 ||
 |#
 
 ---
@@ -155,10 +155,10 @@ A reaction to a message in the chat has been added or removed.
 || **Field** | **Type** | **Description** ||
 || **reaction** | `string` | Reaction code (e.g., `like`) ||
 || **action** | `string` | Action: `add` — reaction added, `delete` — removed ||
-|| **message** | [`Message`](../../entities.md#message) | The message to which the reaction has changed. The description of the object's fields — [Message](../../entities.md#message) ||
-|| **chat** | [`Chat`](../../entities.md#chat) | The chat. The description of the object's fields — [Chat](../../entities.md#chat) ||
-|| **user** | [`User`](../../entities.md#user) | The user who changed the reaction. The description of the object's fields — [User](../../entities.md#user) ||
-|| **language** | `string` | The language of the account ||
+|| **message** | [`Message`](../../entities.md#message) | The message to which the reaction has changed. Field descriptions for the object — [Message](../../entities.md#message) ||
+|| **chat** | [`Chat`](../../entities.md#chat) | The chat. Field descriptions for the object — [Chat](../../entities.md#chat) ||
+|| **user** | [`User`](../../entities.md#user) | The user who changed the reaction. Field descriptions for the object — [User](../../entities.md#user) ||
+|| **language** | `string` | The language of Bitrix24 ||
 |#
 
 ---
@@ -170,14 +170,14 @@ A new participant has been added to the chat.
 #| 
 || **Field** | **Type** | **Description** ||
 || **dialogId** | `string` | ID of the dialog (e.g., `chat5`) ||
-|| **chat** | [`Chat`](../../entities.md#chat) | The chat to which the participant has been added. The description of the object's fields — [Chat](../../entities.md#chat) ||
-|| **user** | [`User`](../../entities.md#user) | The added user. The description of the object's fields — [User](../../entities.md#user) ||
-|| **language** | `string` | The language of the account ||
+|| **chat** | [`Chat`](../../entities.md#chat) | The chat to which the participant has been added. Field descriptions for the object — [Chat](../../entities.md#chat) ||
+|| **user** | [`User`](../../entities.md#user) | The added user. Field descriptions for the object — [User](../../entities.md#user) ||
+|| **language** | `string` | The language of Bitrix24 ||
 |#
 
 ## Continue Learning
 
-- [API imbot.v2 Change Log](../../change-log.md)
+- [API Change Log imbot.v2](../../change-log.md)
 - [{#T}](./event-get.md)
 - [{#T}](./event-subscribe.md)
 - [{#T}](../../entities.md)

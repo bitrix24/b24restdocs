@@ -1,4 +1,4 @@
-# Delete the link between tasks task.dependence.delete
+# Remove Dependency Between Tasks task.dependence.delete
 
 {% note tip "" %}
 
@@ -53,25 +53,78 @@ The task identifier can be obtained when [creating a new task](./tasks-task-add.
     https://**put_your_bitrix24_address**/rest/task.dependence.delete
     ```
 
-- JS
+- JS (TS)
 
-    ```js
-    try
-    {
-    	const response = await $b24.callMethod(
-    		'task.dependence.delete', {
-    			"taskIdFrom": 100,
-    			"taskIdTo": 101,
-    		}
-    	);
-    	
-    	const result = response.getData().result;
-    	console.info(result);
+    ```ts
+    // This snippet is an ES module: top-level await requires type="module" or a bundler.
+    // $b24 is an already-initialized SDK instance (see the SDK "Get started" guide).
+    import { Text } from '@bitrix24/b24jssdk'
+    import type { B24Frame } from '@bitrix24/b24jssdk'
+
+    declare const $b24: B24Frame
+
+    // Shape of the payload returned in result (empty array on success)
+    type DeleteDependenceResult = never[]
+
+    try {
+      const response = await $b24.actions.v2.call.make<DeleteDependenceResult>({
+        method: 'task.dependence.delete',
+        params: {
+          taskIdFrom: 100,
+          taskIdTo: 101,
+        },
+        requestId: Text.getUuidRfc4122()
+      })
+
+      // The payload is available only on a successful response
+      if (!response.isSuccess) {
+        console.error(response.getErrorMessages().join('; '))
+      } else {
+        const result = response.getData()!.result
+        console.info('Dependency deleted successfully, result:', result)
+      }
+    } catch (error) {
+      // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+      console.error(error)
     }
-    catch( error )
-    {
-    	console.error(error);
-    }
+    ```
+
+- JS (UMD)
+
+    ```html
+    <!-- Load the SDK (UMD build); it is exposed as the global B24Js -->
+    <script src="https://unpkg.com/@bitrix24/b24jssdk@1/dist/umd/index.min.js"></script>
+    <script>
+      async function deleteDependence() {
+        try {
+          // Initialize the SDK inside a Bitrix24 frame
+          const $b24 = await B24Js.initializeB24Frame()
+
+          const response = await $b24.actions.v2.call.make({
+            method: 'task.dependence.delete',
+            params: {
+              taskIdFrom: 100,
+              taskIdTo: 101,
+            },
+            requestId: B24Js.Text.getUuidRfc4122()
+          })
+
+          // The payload is available only on a successful response
+          if (!response.isSuccess) {
+            console.error(response.getErrorMessages().join('; '))
+            return
+          }
+
+          const result = response.getData().result
+          console.info('Dependency deleted successfully, result:', result)
+        } catch (error) {
+          // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+          console.error(error)
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', deleteDependence)
+    </script>
     ```
 
 - PHP
@@ -182,7 +235,7 @@ HTTP status: **400**
 ```json
 {
     "error": "ILLEGAL_NEW_LINK",
-    "error_description": "The link between tasks does not exist"
+    "error_description": "The dependency between tasks does not exist"
 }
 ```
 
@@ -192,8 +245,8 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `ILLEGAL_NEW_LINK` | The link between tasks does not exist ||
-|| `ACTION_NOT_ALLOWED` | It is not possible to delete the link between tasks ||
+|| `ILLEGAL_NEW_LINK` | The dependency between tasks does not exist ||
+|| `ACTION_NOT_ALLOWED` | It is not possible to delete the dependency between tasks ||
 |#
 
 {% include [system errors](../../_includes/system-errors.md) %}

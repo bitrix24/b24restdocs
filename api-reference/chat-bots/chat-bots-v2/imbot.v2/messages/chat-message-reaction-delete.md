@@ -14,7 +14,7 @@ The method `imbot.v2.Chat.Message.Reaction.delete` removes the bot's reaction fr
 
 ## Method Parameters
 
-{% include [Footnote on parameters](../../../../../_includes/required.md) %}
+{% include [Note on Parameters](../../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -24,16 +24,16 @@ The method `imbot.v2.Chat.Message.Reaction.delete` removes the bot's reaction fr
 || **botToken**
 [`string`](../../../../data-types.md) | Unique authorization token for the bot. Required for webhook authorization, not needed for OAuth.
 
-Pass the same botToken that was specified during the chat bot registration ||
+Pass the same botToken that was specified during the chat-bot registration ||
 || **messageId***
 [`integer`](../../../../data-types.md) | Message ID ||
 || **reaction***
-[`string`](../../../../data-types.md) | Reaction code to be removed. List of available codes: [imbot.v2.Chat.Message.Reaction.add](./chat-message-reaction-add.md#reactions) ||
+[`string`](../../../../data-types.md) | Reaction code to remove. List of available codes: [imbot.v2.Chat.Message.Reaction.add](./chat-message-reaction-add.md#reactions) ||
 |#
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../../../_includes/examples.md) %}
+{% include [Note on Examples](../../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -145,11 +145,13 @@ Pass the same botToken that was specified during the chat bot registration ||
 
 ## Response Handling
 
-HTTP Code: **200**
+HTTP Status: **200**
 
 ```json
 {
-    "result": true,
+    "result": {
+        "result": true
+    },
     "time": {
         "start": 1728626400.123,
         "finish": 1728626400.234,
@@ -167,6 +169,8 @@ HTTP Code: **200**
 || **Name**
 `Type` | **Description** ||
 || **result**
+[`object`](../../../../data-types.md) | Result of the operation ||
+|| **result.result**
 [`boolean`](../../../../data-types.md) | `true` if the reaction was successfully removed ||
 || **time**
 [`time`](../../../../data-types.md#time) | Information about the request execution time ||
@@ -189,12 +193,12 @@ HTTP Status: **400**, **403**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `BOT_TOKEN_NOT_SPECIFIED` | Bot token is not specified | Bot token is not specified. Required for webhook authorization ||
-|| `BOT_ID_REQUIRED` | Bot ID is required | Bot ID is not specified ||
+|| `BOT_TOKEN_NOT_SPECIFIED` | Bot token is not specified | Bot token not provided. Required for webhook authorization ||
+|| `BOT_ID_REQUIRED` | Bot ID is required | Bot ID not provided ||
 || `BOT_NOT_FOUND` | Bot not found | Bot not found ||
-|| `BOT_OWNERSHIP_ERROR` | Bot is registered by another application | Bot is registered by another application ||
+|| `BOT_OWNERSHIP_ERROR` | Bot is registered by another application | Bot registered by another application ||
 || `ACCESS_DENIED` | Access denied | Bot is not a participant in the chat with this message ||
-|| `REACTION_NOT_FOUND` | Reaction not found | The specified reaction code does not exist ||
+|| `REACTION_NOT_FOUND` | Reaction not found | Non-existent reaction code specified ||
 |#
 
 {% include [System Errors](../../../../../_includes/system-errors.md) %}

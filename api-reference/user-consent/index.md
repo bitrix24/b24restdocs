@@ -38,7 +38,7 @@ To collect consents for processing personal data, use the standard agreement. Ad
 
 {% note tip "User Documentation" %}
 
-- [Сollect customer consent via a CRM form](https://helpdesk.bitrix24.com/open/25821939/)
+- [Collect customer consent via a CRM form](https://helpdesk.bitrix24.com/open/25821939/)
 - [Obtain consent for personal data processing in Open Channels](https://helpdesk.bitrix24.com/open/25828127/)
 - [Consent to receive newsletters](https://helpdesk.bitrix24.com/open/23269576/)
 - [Personal data processing](https://helpdesk.bitrix24.com/open/14190482/)

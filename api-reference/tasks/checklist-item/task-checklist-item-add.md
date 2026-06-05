@@ -1,4 +1,4 @@
-# Add checklist item task.checklistitem.add
+# Add Checklist Item with task.checklistitem.add
 
 {% note tip "" %}
 
@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method:
 > - any user with access to edit the task
-> - creator, assignee, and participants of the task
+> - Creator, Participant, and other Participants of the task
 
 The method `task.checklistitem.add` adds a new checklist item to a task.
 
@@ -18,50 +18,50 @@ You can check permissions for adding an item using the method [task.checklistite
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Parameter Note](../../../_includes/required.md) %}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
-|| **TASKID***
+|| **TASKID*** 
 [`integer`](../../data-types.md) | Task identifier.
 
 The task identifier can be obtained when [creating a new task](../tasks-task-add.md) or using the [get task list method](../tasks-task-list.md) ||
-|| **FIELDS***
+|| **FIELDS*** 
 [`object`](../../data-types.md) | Object with [checklist item fields](#fields) ||
 |#
 
 ### FIELDS Parameter {#fields}
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Parameter Note](../../../_includes/required.md) %}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
-|| **TITLE***
+|| **TITLE*** 
 [`string`](../../data-types.md) | Text of the checklist item.
 
 If `PARENT_ID` is passed with a value of `0`, then `TITLE` is the name of the checklist ||
-|| **SORT_INDEX**
+|| **SORT_INDEX** 
 [`integer`](../../data-types.md) | Sort index. The lower the value, the higher the item in the list or sublist ||
-|| **IS_COMPLETE**
+|| **IS_COMPLETE** 
 [`boolean`](../../data-types.md) | Status of the item. Possible values:
 - `Y` — completed
 - `N` — not completed
 
 Default is `N` ||
-|| **IS_IMPORTANT**
+|| **IS_IMPORTANT** 
 [`boolean`](../../data-types.md) | Mark indicating that the item is important. Possible values:
 - `Y` — important
-- `N` — regular ||
-|| **MEMBERS**
-[`object`](../../data-types.md) | Object describing the participants of the checklist item. Key — user identifier, value — object with participant type parameter `TYPE`. Possible participant type values:
-- `'TYPE': 'A'` — participant
-- `'TYPE': 'U'` — observer
+- `N` — normal ||
+|| **MEMBERS** 
+[`object`](../../data-types.md) | Object describing the participants of the checklist item. Key — user identifier, value — object with the participant type parameter `TYPE`. Possible participant type values:
+- `'TYPE': 'A'` — Participant
+- `'TYPE': 'U'` — Observer
 
 The system will add checklist item participants to the task in the same roles
  ||
-|| **PARENT_ID**
+|| **PARENT_ID** 
 [`integer`](../../data-types.md) | Identifier of the parent item. Use for nested checklists.
 
 - If `PARENT_ID` is passed with a value of `0`, the system will create a new checklist in the task
@@ -73,7 +73,7 @@ The system will add checklist item participants to the task in the same roles
 
 ## Code Examples
 
-{% include [Note on examples](../../../_includes/examples.md) %}
+{% include [Example Note](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -83,7 +83,7 @@ The system will add checklist item participants to the task in the same roles
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"TASKID":13,"FIELDS":{"TITLE":"Prepare report","PARENT_ID":457,"SORT_INDEX":200,"IS_COMPLETE":"N","IS_IMPORTANT":"Y","MEMBERS":{"547":{"TYPE":"A"}}}}' \
+    -d '{"TASKID":13,"FIELDS":{"TITLE":"Prepare the report","PARENT_ID":457,"SORT_INDEX":200,"IS_COMPLETE":"N","IS_IMPORTANT":"Y","MEMBERS":{"547":{"TYPE":"A"}}}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/task.checklistitem.add
     ```
 
@@ -93,42 +93,104 @@ The system will add checklist item participants to the task in the same roles
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"TASKID":13,"FIELDS":{"TITLE":"Prepare report","PARENT_ID":457,"SORT_INDEX":200,"IS_COMPLETE":"N","IS_IMPORTANT":"Y","MEMBERS":{"547":{"TYPE":"A"}}},"auth":"**put_access_token_here**"}' \
+    -d '{"TASKID":13,"FIELDS":{"TITLE":"Prepare the report","PARENT_ID":457,"SORT_INDEX":200,"IS_COMPLETE":"N","IS_IMPORTANT":"Y","MEMBERS":{"547":{"TYPE":"A"}}},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/task.checklistitem.add
     ```
 
-- JS
+- JS (TS)
 
-    ```javascript
-    try
-    {
-        const response = await $b24.callMethod(
-            'task.checklistitem.add',
-            {
-                TASKID: 13,
-                FIELDS: {
-                    TITLE: 'Prepare report',
-                    PARENT_ID: 457,
-                    SORT_INDEX: 200,
-                    IS_COMPLETE: 'N',
-                    IS_IMPORTANT: 'Y',
-                    MEMBERS: {
-                        547: {
-                            TYPE: 'A'
-                        }
-                    }
-                }
-            }
-        );
-        
-        const result = response.getData().result;
-        console.log('Created checklist item with ID:', result);
-        processResult(result);
+    ```ts
+    // This snippet is an ES module: top-level await requires type="module" or a bundler.
+    // $b24 is an already-initialized SDK instance (see the SDK "Get started" guide).
+    import { Text } from '@bitrix24/b24jssdk'
+    import type { B24Frame } from '@bitrix24/b24jssdk'
+
+    declare const $b24: B24Frame
+
+    // Shape of the payload returned in result (match the "response handling" section of the page)
+    type ChecklistItemAddResult = number
+
+    try {
+      const response = await $b24.actions.v2.call.make<ChecklistItemAddResult>({
+        method: 'task.checklistitem.add',
+        params: {
+          TASKID: 13,
+          FIELDS: {
+            TITLE: 'Prepare the report',
+            PARENT_ID: 457,
+            SORT_INDEX: 200,
+            IS_COMPLETE: 'N',
+            IS_IMPORTANT: 'Y',
+            MEMBERS: {
+              547: {
+                TYPE: 'A',
+              },
+            },
+          },
+        },
+        requestId: Text.getUuidRfc4122()
+      })
+
+      // The payload is available only on a successful response
+      if (!response.isSuccess) {
+        console.error(response.getErrorMessages().join('; '))
+      } else {
+        const result = response.getData()!.result
+        console.info('Created checklist item with ID:', result)
+      }
+    } catch (error) {
+      // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+      console.error(error)
     }
-    catch( error )
-    {
-        console.error('Error:', error);
-    }
+    ```
+
+- JS (UMD)
+
+    ```html
+    <!-- Load the SDK (UMD build); it is exposed as the global B24Js -->
+    <script src="https://unpkg.com/@bitrix24/b24jssdk@1/dist/umd/index.min.js"></script>
+    <script>
+      async function addChecklistItem() {
+        try {
+          // Initialize the SDK inside a Bitrix24 frame
+          const $b24 = await B24Js.initializeB24Frame()
+
+          const response = await $b24.actions.v2.call.make({
+            method: 'task.checklistitem.add',
+            params: {
+              TASKID: 13,
+              FIELDS: {
+                TITLE: 'Prepare the report',
+                PARENT_ID: 457,
+                SORT_INDEX: 200,
+                IS_COMPLETE: 'N',
+                IS_IMPORTANT: 'Y',
+                MEMBERS: {
+                  547: {
+                    TYPE: 'A',
+                  },
+                },
+              },
+            },
+            requestId: B24Js.Text.getUuidRfc4122()
+          })
+
+          // The payload is available only on a successful response
+          if (!response.isSuccess) {
+            console.error(response.getErrorMessages().join('; '))
+            return
+          }
+
+          const result = response.getData().result
+          console.info('Created checklist item with ID:', result)
+        } catch (error) {
+          // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+          console.error(error)
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', addChecklistItem)
+    </script>
     ```
 
 - PHP
@@ -142,7 +204,7 @@ The system will add checklist item participants to the task in the same roles
                 [
                     'TASKID' => 13,
                     'FIELDS' => [
-                        'TITLE' => 'Prepare report',
+                        'TITLE' => 'Prepare the report',
                         'PARENT_ID' => 457,
                         'SORT_INDEX' => 200,
                         'IS_COMPLETE' => 'N',
@@ -177,7 +239,7 @@ The system will add checklist item participants to the task in the same roles
         {
             'TASKID': 13,
             'FIELDS': {
-                'TITLE': 'Prepare report',
+                'TITLE': 'Prepare the report',
                 'PARENT_ID': 457,
                 'SORT_INDEX': 200,
                 'IS_COMPLETE': 'N',
@@ -206,7 +268,7 @@ The system will add checklist item participants to the task in the same roles
         [
             'TASKID' => 13,
             'FIELDS' => [
-                'TITLE' => 'Prepare report',
+                'TITLE' => 'Prepare the report',
                 'PARENT_ID' => 457,
                 'SORT_INDEX' => 200,
                 'IS_COMPLETE' => 'N',
@@ -229,7 +291,7 @@ The system will add checklist item participants to the task in the same roles
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -239,8 +301,8 @@ HTTP status: **200**
         "finish": 1762431908.259832,
         "duration": 1.2598319053649902,
         "processing": 0,
-        "date_start": "2025-11-06T15:25:07+02:00",
-        "date_finish": "2025-11-06T15:25:08+02:00",
+        "date_start": "2025-11-06T15:25:07+01:00",
+        "date_finish": "2025-11-06T15:25:08+01:00",
         "operating_reset_at": 1762432508,
         "operating": 0.24803590774536133
     }
@@ -249,7 +311,7 @@ HTTP status: **200**
 
 ### Returned Data
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **result**
@@ -260,7 +322,7 @@ HTTP status: **200**
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {
@@ -273,10 +335,10 @@ HTTP status: **400**
 
 ### Possible Error Codes
 
-#|
+#| 
 || **Code** | **Description** | **Value**  ||
 || `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#8; Adding item: action not allowed; 8/TE/ACTION_FAILED_TO_BE_PROCESSED<br> | No access to the task or insufficient permissions to work with checklists in the task ||
-|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #0 (taskId) for method ctaskchecklistitem::add() expected to be of type "integer", but given something else.; 256/TE/WRONG_ARGUMENTS | Required parameter `TASKID` not provided or incorrect type specified for `TASKID` ||
+|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #0 (taskId) for method ctaskchecklistitem::add() expected to be of type "integer", but given something else.; 256/TE/WRONG_ARGUMENTS | Required parameter `TASKID` not provided or incorrect type for `TASKID` ||
 || `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #1 (arFields) expected by method ctaskchecklistitem::add(), but not given.; 256/TE/WRONG_ARGUMENTS<br> | Required parameter `FIELDS` not provided or empty ||
 || `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#8; Item name not specified; 8/TE/ACTION_FAILED_TO_BE_PROCESSED<br> | Required field `TITLE` not provided in the `FIELDS` parameter ||
 |#

@@ -8,7 +8,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 Chatbots 2.0 combine two sets of APIs:
 — The `imbot.v2` methods manage the bot's lifecycle, messages, commands, files, and chat management.
-— The `im.v2` methods allow applications or users to subscribe to messenger events and receive them in polling mode—where the application periodically requests accumulated events from the server without needing a public URL for incoming requests.
+— The `im.v2` methods allow the application or user to subscribe to messenger events and receive them in polling mode — where the application periodically requests accumulated events from the server without needing a public URL for incoming requests.
 
 > Quick navigation: [Quick Start](./quick-start.md) | [Change Log](./change-log.md) | [Authorization](#auth) | [Bot Types](#bot-types) | [Events](#event-modes) | [Limits](#limits) | [All Methods](#all-methods)
 
@@ -23,7 +23,7 @@ Chatbots 2.0 combine two sets of APIs:
 
 {% note info "" %}
 
-If the integration is already live or uses new fields and methods, first check the [Change Log for API imbot.v2](./change-log.md). Entries are listed from newest to oldest.
+If the integration is already working in production or uses new fields and methods, first check the [Change Log for API imbot.v2](./change-log.md). Entries are listed from newest to oldest.
 
 {% endnote %}
 
@@ -34,15 +34,15 @@ A typical workflow with the new API:
 1. Register the bot via [imbot.v2.Bot.register](./imbot.v2/bots/bot-register.md).
 2. Set up event reception via [imbot.v2.Event.get](./imbot.v2/events/event-get.md) or [im.v2.Event.subscribe](./im.v2/events/event-subscribe.md).
 3. Send a message using [imbot.v2.Chat.Message.send](./imbot.v2/messages/chat-message-send.md).
-4. Read the original message by `replyId` through [imbot.v2.Chat.Message.get](./imbot.v2/messages/chat-message-get.md)—only for `supervisor` and `personal` type bots.
-5. Get the dialogue context via [imbot.v2.Chat.Message.getContext](./imbot.v2/messages/chat-message-get-context.md)—only for `supervisor` and `personal` type bots.
-6. Upload files via [imbot.v2.File.upload](./imbot.v2/files/file-upload.md) and download them via [imbot.v2.File.download](./imbot.v2/files/file-download.md).
+4. Read the original message by `replyId` via [imbot.v2.Chat.Message.get](./imbot.v2/messages/chat-message-get.md) — only for `supervisor` and `personal` type bots.
+5. Get the dialogue context via [imbot.v2.Chat.Message.getContext](./imbot.v2/messages/chat-message-get-context.md) — only for `supervisor` and `personal` type bots.
+6. Upload files via [imbot.v2.File.upload](./imbot.v2/files/file-upload.md) and download via [imbot.v2.File.download](./imbot.v2/files/file-download.md).
 
 For a detailed step-by-step scenario with cURL examples: [Quick Start](./quick-start.md).
 
 ## Authorization {#auth}
 
-Chatbots 2.0 support two authorization methods.
+Chatbots 2.0 support two methods of authorization.
 
 ### Webhook
 
@@ -53,7 +53,7 @@ POST https://{account}/rest/{user_id}/{webhook_token}/{method_name}
 Content-Type: application/json
 ```
 
-In webhook authorization, the `botToken` parameter is required for `imbot.v2` methods. This is a random string that you set when registering the bot and then use in all calls on behalf of that bot.
+In webhook authorization, the `botToken` parameter is mandatory for `imbot.v2` methods. This is a string you set when registering the bot and then use in all calls on behalf of that bot.
 
 ### OAuth
 
@@ -64,23 +64,23 @@ POST https://{account}/rest/{method_name}?auth={access_token}
 Content-Type: application/json
 ```
 
-In OAuth authorization, the `botToken` parameter for `imbot.v2` is not needed because the bot is tied to the application via `client_id`.
+In OAuth authorization, the `botToken` parameter for `imbot.v2` is not needed because the bot is linked to the application via `client_id`.
 
 ## Bot Types {#bot-types}
 
 The `fields.type` parameter when registering the bot determines its behavior in chats.
 
-#| 
+#|
 || **Type** | **Description** | **Event Visibility in Group Chats** ||
-|| `bot` | Regular bot. Responds to mentions of `@bot` in group chats and direct messages | Receives events only when mentioned `@bot` or in one-on-one dialogue ||
-|| `supervisor` | System observer. Sees all messages in chats where it is present | Receives all events without mention ||
-|| `personal` | Personal assistant. Sees all messages in chats where it is present | Receives all events without mention—similar to `supervisor`. Searching for such a bot among chats is restricted for certain user groups ||
+|| `bot` | Regular bot. Responds to mentions of `@bot` in group chats and personal messages | Receives events only when mentioned `@bot` or in one-on-one dialogue ||
+|| `supervisor` | System observer. Sees all messages in chats where it is a member | Receives all events without mention ||
+|| `personal` | Personal assistant. Sees all messages in chats where it is a member | Receives all events without mention — similar to `supervisor`. Searching for such a bot among chats is limited for certain user groups ||
 || `openline` | Bot for Open Channels | Behavior is similar to `bot` ||
 |#
 
 The default type `bot` is suitable for most scenarios.
 
-The `personal` type is recommended for AI assistants that require full context of group dialogue. Bots of this type will be hidden from search for users who do not have access to them in the future.
+The `personal` type is recommended for AI assistants that require full context of group dialogue. Bots of this type will be hidden from search for users who do not have access.
 
 {% note warning "" %}
 
@@ -105,7 +105,7 @@ All methods return a JSON response in a unified wrapper:
 }
 ```
 
-- `result` — data returned by the method
+- `result` — data of the method's response
 - `time` — metadata about execution time
 
 In case of an error, instead of `result`, it returns:
@@ -117,9 +117,9 @@ In case of an error, instead of `result`, it returns:
 }
 ```
 
-The `error` field is stable and suitable for programmatic processing (switch/case). The `error_description` field is intended for logging—its text may change.
+The `error` field is stable and suitable for programmatic processing (switch/case). The `error_description` field is intended for logging — its text may change.
 
-### Example Error Handling
+### Example of Error Handling
 
 ```php
 $result = CRest::call('imbot.v2.Chat.Message.send', [
@@ -147,29 +147,29 @@ Error codes for each method are listed in the section "Possible Error Codes" on 
 
 ## Boolean Parameters
 
-Boolean parameters accept `true` / `false`. If your client does not support sending JSON booleans, you can pass the strings `"Y"` / `"N"`—the API accepts both options.
+Boolean parameters accept `true` / `false`. If your client does not support sending JSON boolean, you can pass strings `"Y"` / `"N"` — the API accepts both options.
 
 ## Format of dialogId {#dialog-id}
 
 The `dialogId` parameter is a universal identifier for the dialogue. It is used in methods for working with chats, messages, and files.
 
-#| 
+#|
 || **Chat Type** | **Format** | **Example** | **Description** ||
-|| Personal (P2P) | `"{userId}"` | `"5"` | String with the user ID. A dialogue with the bot is created automatically ||
+|| Personal (P2P) | `"{userId}"` | `"5"` | String with user ID. A dialogue with the bot is created automatically ||
 || Group | `"chat{chatId}"` | `"chat142"` | String with the prefix `chat` and chat ID ||
 |#
 
-In personal chats, `dialogId` always contains the ID of the **counterparty**. If user 1 writes to bot 5—the bot in the event will receive `dialogId = "1"`, and the user will receive `dialogId = "5"`. Use the `dialogId` from the event for responses—it already points to the correct dialogue.
+In personal chats, `dialogId` always contains the ID of the **counterpart**. If user 1 writes to bot 5 — the bot in the event will receive `dialogId = "1"`, and the user will receive `dialogId = "5"`. Use the `dialogId` from the event for responses — it already points to the correct dialogue.
 
-`dialogId` is used in methods for working with chats, messages, and files such as `Chat.Message.send`, `Chat.get`, `File.upload`, etc. Other methods use their own identifiers: `botId` (Bot.update, Event.get), `commandId` (Command.update), `fileId` (File.download). The methods `im.v2.Event.*` do not use `dialogId`.
+`dialogId` is used in methods for working with chats, messages, and files `Chat.Message.send`, `Chat.get`, `File.upload`, and so on. Other methods use their own identifiers: `botId` (Bot.update, Event.get), `commandId` (Command.update), `fileId` (File.download). The methods `im.v2.Event.*` do not use `dialogId`.
 
 ## Event Delivery Modes {#event-modes}
 
-When registering the bot, the `eventMode` is selected.
+When registering a bot, the `eventMode` is selected.
 
-#| 
+#|
 || **Mode** | **Description** | **When to Use** ||
-|| `fetch` | The bot retrieves events itself via [imbot.v2.Event.get](./imbot.v2/events/event-get.md) | For AI agents, server bots, and integrations without a permanent HTTP server ||
+|| `fetch` | The bot retrieves events via [imbot.v2.Event.get](./imbot.v2/events/event-get.md) | For AI agents, server bots, and integrations without a permanent HTTP server ||
 || `webhook` | Bitrix24 sends events to the bot's URL via HTTP POST | For bots with a dedicated HTTP server ||
 |#
 
@@ -210,7 +210,7 @@ while (true) {
 }
 ```
 
-Recommended interval: **5–30 seconds** when there are no new events. If `hasMore = true` — the next request should have a minimum pause of 2 seconds.
+Recommended interval: **5–30 seconds** when there are no new events. If `hasMore = true` — the next request should have a minimum pause of two seconds.
 
 ### Webhook Handler (webhook mode) {#webhook}
 
@@ -228,7 +228,7 @@ if (empty($data['event'])) {
 $eventType = $data['event'];
 $eventData = $data['data'] ?? [];
 
-// In webhook mode, all scalar values come as strings—cast types explicitly
+// In webhook mode, all scalar values come as strings — cast types explicitly
 switch ($eventType) {
     case 'ONIMBOTV2MESSAGEADD':
         $botId    = (int)($eventData['bot']['id'] ?? 0);
@@ -267,9 +267,9 @@ http_response_code(200);
 echo json_encode(['status' => 'ok']);
 ```
 
-The platform expects an HTTP 200 response from the handler. In case of delivery failure, retries are not guaranteed—use fetch mode for reliability.
+The platform expects an HTTP 200 response from the handler. In case of delivery failure, retries are not guaranteed — for reliability, use fetch mode.
 
-## Additional Messaging Features
+## Additional Message Features
 
 When sending messages via [imbot.v2.Chat.Message.send](./imbot.v2/messages/chat-message-send.md), the following are available:
 
@@ -281,7 +281,7 @@ When sending messages via [imbot.v2.Chat.Message.send](./imbot.v2/messages/chat-
 
 General limits of the Bitrix24 REST API also apply to the bot platform methods. More details: [REST API Limits](../../../limits.md).
 
-#| 
+#|
 || **Limit** | **Value** ||
 || Rate limit | 2 requests per second per application ||
 || When exceeding rate limit | HTTP 429 — use exponential backoff ||
@@ -291,9 +291,15 @@ General limits of the Bitrix24 REST API also apply to the bot platform methods. 
 || Events per request for `Event.get` | 1–1000 (default 100) ||
 |#
 
+## Bot Context
+
+The Bot Context mechanism allows passing arbitrary JSON data to the bot when opening a chat — via a web link with the `BOT_CONTEXT` parameter, through a `bx` deep link for the application, or via JS API `Messenger.openChatWithBotContext()`. The bot receives the context through the event [ONIMBOTV2CONTEXTGET](./imbot.v2/events/events.md#onimbotv2contextget) and can immediately launch the necessary scenario: open a card, issue a coupon, or start authorization.
+
+Detailed descriptions of link formats, events, and security recommendations: [Bot Context](./imbot.v2/bot-context.md).
+
 ## API Revisions and Compatibility
 
-Bitrix24 cloud and on-premise versions may have different API revisions. To find out which revision is installed on a specific account, use [imbot.v2.Revision.get](./imbot.v2/revision-get.md).
+Bitrix24 cloud and on-premise versions may have different API revisions. To find out which revision is installed in a specific Bitrix24, use [imbot.v2.Revision.get](./imbot.v2/revision-get.md).
 
 New features, fixes, and breaking changes that affect integration compatibility are collected on the [Change Log for API imbot.v2](./change-log.md).
 
@@ -307,7 +313,7 @@ New features, fixes, and breaking changes that affect integration compatibility 
 
 **Bots**
 
-#| 
+#|
 || **Method** | **Description** ||
 || [imbot.v2.Bot.register](./imbot.v2/bots/bot-register.md) | Registers a new bot ||
 || [imbot.v2.Bot.update](./imbot.v2/bots/bot-update.md) | Updates bot properties ||
@@ -318,7 +324,7 @@ New features, fixes, and breaking changes that affect integration compatibility 
 
 **Chats**
 
-#| 
+#|
 || **Method** | **Description** ||
 || [imbot.v2.Chat.add](./imbot.v2/chats/chat-add.md) | Creates a group chat ||
 || [imbot.v2.Chat.get](./imbot.v2/chats/chat-get.md) | Returns information about the chat ||
@@ -334,7 +340,7 @@ New features, fixes, and breaking changes that affect integration compatibility 
 
 **Messages**
 
-#| 
+#|
 || **Method** | **Description** ||
 || [imbot.v2.Chat.Message.send](./imbot.v2/messages/chat-message-send.md) | Sends a message in the chat ||
 || [imbot.v2.Chat.Message.update](./imbot.v2/messages/chat-message-update.md) | Updates the bot's message ||
@@ -348,18 +354,18 @@ New features, fixes, and breaking changes that affect integration compatibility 
 
 **Commands**
 
-#| 
+#|
 || **Method** | **Description** ||
 || [imbot.v2.Command.register](./imbot.v2/commands/command-register.md) | Registers a slash command ||
 || [imbot.v2.Command.update](./imbot.v2/commands/command-update.md) | Updates the command ||
 || [imbot.v2.Command.list](./imbot.v2/commands/command-list.md) | Returns a list of the bot's commands ||
 || [imbot.v2.Command.unregister](./imbot.v2/commands/command-unregister.md) | Deletes the command ||
-|| [imbot.v2.Command.answer](./imbot.v2/commands/command-answer.md) | Responds to a command call ||
+|| [imbot.v2.Command.answer](./imbot.v2/commands/command-answer.md) | Responds to the command call ||
 |#
 
 **Interface**
 
-#| 
+#|
 || **Method** | **Description** ||
 || [imbot.v2.Chat.InputAction.notify](./imbot.v2/ui/chat-input-action-notify.md) | Shows the bot's action indicator ||
 || [imbot.v2.Chat.TextField.enabled](./imbot.v2/ui/chat-text-field-enabled.md) | Enables or disables the text input field ||
@@ -367,7 +373,7 @@ New features, fixes, and breaking changes that affect integration compatibility 
 
 **Events**
 
-#| 
+#|
 || **Method** | **Description** ||
 || [imbot.v2.Event.get](./imbot.v2/events/event-get.md) | Returns bot events in polling mode ||
 |#
@@ -376,7 +382,7 @@ A separate reference for event formats: [imbot.v2/events/events.md](./imbot.v2/e
 
 **Files**
 
-#| 
+#|
 || **Method** | **Description** ||
 || [imbot.v2.File.upload](./imbot.v2/files/file-upload.md) | Uploads a file to the chat ||
 || [imbot.v2.File.download](./imbot.v2/files/file-download.md) | Returns a link to download the file ||
@@ -384,7 +390,7 @@ A separate reference for event formats: [imbot.v2/events/events.md](./imbot.v2/e
 
 **API Revisions**
 
-#| 
+#|
 || **Method** | **Description** ||
 || [imbot.v2.Revision.get](./imbot.v2/revision-get.md) | Returns API and client protocol revision numbers ||
 |#
@@ -397,22 +403,22 @@ A separate reference for event formats: [imbot.v2/events/events.md](./imbot.v2/e
 
 **Events**
 
-#| 
+#|
 || **Method** | **Description** ||
-|| [im.v2.Event.subscribe](./im.v2/events/event-subscribe.md) | Subscribes to event recording ||
-|| [im.v2.Event.unsubscribe](./im.v2/events/event-unsubscribe.md) | Unsubscribes from event recording ||
+|| [im.v2.Event.subscribe](./im.v2/events/event-subscribe.md) | Subscribes to event records ||
+|| [im.v2.Event.unsubscribe](./im.v2/events/event-unsubscribe.md) | Unsubscribes from event records ||
 || [im.v2.Event.get](./im.v2/events/event-get.md) | Returns events in polling mode ||
 |#
 
 **Files**
 
-#| 
+#|
 || **Method** | **Description** ||
 || [im.v2.File.upload](./im.v2/files/file-upload.md) | Uploads a file to the chat ||
 || [im.v2.File.download](./im.v2/files/file-download.md) | Returns a link to download the file ||
 |#
 
-## Continue Your Learning
+## Continue Learning
 
 - [Change Log for API imbot.v2](./change-log.md)
 - [{#T}](./quick-start.md)

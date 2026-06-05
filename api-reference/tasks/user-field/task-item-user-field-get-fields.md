@@ -1,4 +1,4 @@
-# Get Custom Field Data with task.item.userfield.getfields
+# Get User Field Fields with task.item.userfield.getfields
 
 {% note tip "" %}
 
@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: any user
 
-The method `task.item.userfield.getfields` retrieves a list of fields for custom task fields.
+The method `task.item.userfield.getfields` retrieves a list of fields for task custom fields.
 
 ## Method Parameters
 
@@ -18,7 +18,7 @@ No parameters.
 
 ## Code Examples
 
-{% include [Example Notes](../../../_includes/examples.md) %}
+{% include [Examples Note](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -43,23 +43,81 @@ No parameters.
     https://**put_your_bitrix24_address**/rest/task.item.userfield.getfields
     ```
 
-- JS
+- JS (TS)
 
-    ```js
-    try
-    {
-        const response = await $b24.callMethod(
-            'task.item.userfield.getfields',
-            {}
-        );
+    ```ts
+    // This snippet is an ES module: top-level await requires type="module" or a bundler.
+    // $b24 is an already-initialized SDK instance (see the SDK "Get started" guide).
+    import { Text } from '@bitrix24/b24jssdk'
+    import type { B24Frame } from '@bitrix24/b24jssdk'
 
-        const result = response.getData().result;
-        console.log(result);
+    declare const $b24: B24Frame
+
+    // Shape of each field descriptor returned in result
+    type FieldDescriptor = {
+      type: string
+      title: string
+      isReadOnly?: boolean
+      isImmutable?: boolean
+      isMultiple?: boolean
     }
-    catch (error)
-    {
-        console.error(error);
+
+    // Shape of the payload returned in result (match the "response handling" section of the page)
+    type GetFieldsResult = Record<string, FieldDescriptor>
+
+    try {
+      const response = await $b24.actions.v2.call.make<GetFieldsResult>({
+        method: 'task.item.userfield.getfields',
+        params: {},
+        requestId: Text.getUuidRfc4122()
+      })
+
+      // The payload is available only on a successful response
+      if (!response.isSuccess) {
+        console.error(response.getErrorMessages().join('; '))
+      } else {
+        const result = response.getData()!.result
+        console.info('Available user field schema keys:', Object.keys(result))
+      }
+    } catch (error) {
+      // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+      console.error(error)
     }
+    ```
+
+- JS (UMD)
+
+    ```html
+    <!-- Load the SDK (UMD build); it is exposed as the global B24Js -->
+    <script src="https://unpkg.com/@bitrix24/b24jssdk@1/dist/umd/index.min.js"></script>
+    <script>
+      async function getFields() {
+        try {
+          // Initialize the SDK inside a Bitrix24 frame
+          const $b24 = await B24Js.initializeB24Frame()
+
+          const response = await $b24.actions.v2.call.make({
+            method: 'task.item.userfield.getfields',
+            params: {},
+            requestId: B24Js.Text.getUuidRfc4122()
+          })
+
+          // The payload is available only on a successful response
+          if (!response.isSuccess) {
+            console.error(response.getErrorMessages().join('; '))
+            return
+          }
+
+          const result = response.getData().result
+          console.info('Available user field schema keys:', Object.keys(result))
+        } catch (error) {
+          // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+          console.error(error)
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', getFields)
+    </script>
     ```
 
 - PHP
@@ -204,7 +262,7 @@ HTTP Status: **200**
         },
         "SETTINGS": {
             "type": "object",
-            "title": "Additional Settings (dependent on type)"
+            "title": "Additional Settings (depends on type)"
         }
     },
     "total": 0,
@@ -227,7 +285,7 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | Description of available custom field properties. Each key of the object contains a field description [(detailed description)](#result) ||
+[`object`](../../data-types.md) | Description of available user field fields. Each key of the object contains a field description [(detailed description)](#result) ||
 || **total**
 [`integer`](../../data-types.md) | Currently returns `0` ||
 || **time**
@@ -272,7 +330,7 @@ HTTP Status: **200**
 || **ERROR_MESSAGE**
 [`string`](../../data-types.md) | Error Message ||
 || **HELP_MESSAGE**
-[`string`](../../data-types.md) | Help ||
+[`string`](../../data-types.md) | Help Message ||
 || **LIST**
 [`uf_enum_element`](../../data-types.md) | List Elements. Multiple ||
 || **SETTINGS**
@@ -298,9 +356,9 @@ HTTP Status: **200**
 
 ## Error Handling
 
-{% include notitle [Error Handling](../../../_includes/error-info.md) %}
+{% include notitle [error handling](../../../_includes/error-info.md) %}
 
-{% include [System Errors](../../../_includes/system-errors.md) %}
+{% include [system errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

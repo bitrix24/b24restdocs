@@ -1,4 +1,4 @@
-# Get API Revisions imbot.v2.Revision.get
+# Get API revisions imbot.v2.Revision.get
 
 {% note tip "" %}
 
@@ -53,7 +53,7 @@ else
 
 ## Code Examples
 
-{% include [Example Notes](../../../../_includes/examples.md) %}
+{% include [Examples Note](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -113,7 +113,7 @@ else
 
 ## Response Handling
 
-HTTP Code: **200**
+HTTP Status: **200**
 
 ```json
 {

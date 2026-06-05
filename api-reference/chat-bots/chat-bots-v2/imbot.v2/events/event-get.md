@@ -16,32 +16,32 @@ The method confirms the receipt of events with IDs less than the provided `offse
 
 {% note info "" %}
 
-Only one application—the one that registered the bot—can receive events for a specific bot. If multiple independent agents are needed, register a separate bot for each.
+Only one application can receive events for a specific bot — the one that registered it. If you need multiple independent agents, register a separate bot for each.
 
 {% endnote %}
 
 ## When to Use `imbot.v2.Event.get`
 
-This method is suitable if:
+The method is suitable if:
 
-- the bot does not have a public URL for incoming HTTP requests
-- events need to be fetched by a single background agent (worker) on a schedule
-- explicit control of the event queue is required through `offset` and `nextOffset`
-- bot events `ONIMBOTV2*` and user events `ONIMV2*` need to be received in a single stream via `withUserEvents`
+- The bot does not have a public URL for incoming HTTP requests.
+- Events need to be retrieved by a single background agent (worker) on a schedule.
+- Explicit control over the event queue is required through `offset` and `nextOffset`.
+- You need to receive bot events `ONIMBOTV2*` and user events `ONIMV2*` in a single thread via `withUserEvents`.
 
 ## Alternative: Webhook Mode
 
 Instead of polling, you can use webhook mode:
 
-- In [imbot.v2.Bot.register](../bots/bot-register.md), specify `fields.eventMode = webhook`
-- Set `fields.webhookUrl` to receive incoming events
-- [Example of a webhook handler](../../index.md#webhook)
+- In [imbot.v2.Bot.register](../bots/bot-register.md), specify `fields.eventMode = webhook`.
+- Set `fields.webhookUrl` to receive incoming events.
+- [Example of a webhook handler](../../index.md#webhook).
 
 Step-by-step setup for both options: [Quick Start](../../quick-start.md).
 
 ## Method Parameters
 
-{% include [Parameter Note](../../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -51,7 +51,7 @@ Step-by-step setup for both options: [Quick Start](../../quick-start.md).
 || **botToken**
 [`string`](../../../../data-types.md) | Unique authorization token for the bot. Required for webhook authorization, not needed for OAuth.
 
-Pass the same botToken that was specified during chat bot registration ||
+Pass the same botToken that was specified during the chat bot registration ||
 || **offset**
 [`integer`](../../../../data-types.md) | Confirms all events with IDs less than the specified value. Not passed on the first call ||
 || **limit**
@@ -62,12 +62,12 @@ Pass the same botToken that was specified during chat bot registration ||
 
 ### Retrieving Bot and User Events {#combined-fetch}
 
-When `withUserEvents: true`, the method returns both bot events `ONIMBOTV2*` and user events `ONIMV2*` in a single response.
+When `withUserEvents: true`, the method returns bot events `ONIMBOTV2*` and user events `ONIMV2*` in a single response.
 
 Requirements:
-- The application must have the [`im`](../../../../scopes/permissions.md) scope in addition to `imbot`
-- The current user must be subscribed via [im.v2.Event.subscribe](../../im.v2/events/event-subscribe.md)
-- `userId` is determined from the authorization—specifying someone else's is not possible
+- The application must have the scope [`im`](../../../../scopes/permissions.md) in addition to `imbot`.
+- The current user must be subscribed via [im.v2.Event.subscribe](../../im.v2/events/event-subscribe.md).
+- `userId` is determined from the authorization — specifying someone else's is not possible.
 
 One `offset` confirms both bot events and user events simultaneously.
 
@@ -187,7 +187,7 @@ One `offset` confirms both bot events and user events simultaneously.
 
 ## Code Examples
 
-{% include [Example Note](../../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -301,7 +301,7 @@ One `offset` confirms both bot events and user events simultaneously.
 
 ## Response Handling
 
-HTTP Code: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -310,7 +310,7 @@ HTTP Code: **200**
             {
                 "eventId": 1001,
                 "type": "ONIMBOTV2MESSAGEADD",
-                "date": "2025-01-15T10:30:00+01:00",
+                "date": "2025-01-15T10:30:00+02:00",
                 "data": {}
             }
         ],
@@ -322,8 +322,8 @@ HTTP Code: **200**
         "finish": 1728626400.234,
         "duration": 0.111,
         "processing": 0.045,
-        "date_start": "2024-10-11T10:00:00+01:00",
-        "date_finish": "2024-10-11T10:00:00+01:00"
+        "date_start": "2024-10-11T10:00:00+02:00",
+        "date_finish": "2024-10-11T10:00:00+02:00"
     }
 }
 ```
@@ -362,12 +362,12 @@ HTTP Code: **200**
 || `ONIMBOTV2MESSAGEDELETE` | Message deleted ||
 || `ONIMBOTV2JOINCHAT` | Bot added to chat ||
 || `ONIMBOTV2DELETE` | Bot removed ||
-|| `ONIMBOTV2CONTEXTGET` | Context of chat call passed ||
+|| `ONIMBOTV2CONTEXTGET` | Context of the chat call passed ||
 || `ONIMBOTV2COMMANDADD` | Slash command invoked ||
 || `ONIMBOTV2REACTIONCHANGE` | Reaction changed ||
 |#
 
-Events are addressed to a specific bot—by mentioning `@bot` or in a private chat. For bots of type `personal` and `supervisor`, all events in chats where the bot is present are delivered.
+Events are addressed to a specific bot — by mentioning `@bot` or in a private chat. For bots of type `personal` and `supervisor`, all events in chats where the bot is present are delivered.
 
 Detailed description of the data format for each event: [{#T}](./events.md).
 
@@ -388,12 +388,12 @@ HTTP Status: **400**, **403**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `BOT_TOKEN_NOT_SPECIFIED` | Bot token is not specified | `botToken` not specified. Required for webhook authorization ||
-|| `BOT_ID_REQUIRED` | Bot ID is required | `botId` not specified ||
+|| `BOT_TOKEN_NOT_SPECIFIED` | Bot token is not specified | `botToken` not provided. Required for webhook authorization ||
+|| `BOT_ID_REQUIRED` | Bot ID is required | `botId` not provided ||
 || `BOT_NOT_FOUND` | Bot not found | Bot not found ||
 || `BOT_OWNERSHIP_ERROR` | Bot is registered by another application | Bot registered by another application ||
-|| `SCOPE_ERROR` | Scope error | Missing `im` scope—required when using `withUserEvents: true` ||
-|| `AUTH_ERROR` | Auth error | Unable to determine the current user ||
+|| `SCOPE_ERROR` | Scope error | Missing scope `im` — required when using `withUserEvents: true` ||
+|| `AUTH_ERROR` | Auth error | Failed to determine the current user ||
 || `USER_NOT_SUBSCRIBED` | User not subscribed | User not subscribed to events via [im.v2.Event.subscribe](../../im.v2/events/event-subscribe.md) ||
 |#
 

@@ -1,33 +1,35 @@
-title: Methods  
-href: bots/index.md  
-items:  
-  - name: Bots  
-    include:  
-      path: bots/b24-toc.yaml  
-      mode: link  
-  - name: Chats  
-    include:  
-      path: chats/b24-toc.yaml  
-      mode: link  
-  - name: Messages  
-    include:  
-      path: messages/b24-toc.yaml  
-      mode: link  
-  - name: Commands  
-    include:  
-      path: commands/b24-toc.yaml  
-      mode: link  
-  - name: Interface  
-    include:  
-      path: ui/b24-toc.yaml  
-      mode: link  
-  - name: Events  
-    include:  
-      path: events/b24-toc.yaml  
-      mode: link  
-  - name: Files  
-    include:  
-      path: files/b24-toc.yaml  
-      mode: link  
-  - name: API Revisions  
-    href: revision-get.md  
+title: Methods
+href: bots/index.md
+items:
+  - name: Bots
+    include:
+      path: bots/b24-toc.yaml
+      mode: link
+  - name: Chats
+    include:
+      path: chats/b24-toc.yaml
+      mode: link
+  - name: Messages
+    include:
+      path: messages/b24-toc.yaml
+      mode: link
+  - name: Commands
+    include:
+      path: commands/b24-toc.yaml
+      mode: link
+  - name: Interface
+    include:
+      path: ui/b24-toc.yaml
+      mode: link
+  - name: Events
+    include:
+      path: events/b24-toc.yaml
+      mode: link
+  - name: Files
+    include:
+      path: files/b24-toc.yaml
+      mode: link
+  - name: Passing Context to the Bot When Opening a Chat
+    href: bot-context.md
+  - name: API Revisions
+    href: revision-get.md

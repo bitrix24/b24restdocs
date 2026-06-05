@@ -2,6 +2,17 @@
 
 ## 2026
 
+### June 5, 2026
+
+- Added methods to the section [Time Tracking Records](./api-reference/rest-v3/timeman/index.md)
+- Added methods to the section [Departments and Teams](./api-reference/rest-v3/humanresources/node/index.md)
+- Added methods to the section [Department and Team Participants](./api-reference/rest-v3/humanresources/node-member/index.md)
+- Updated the page [Method Permissions and Scopes](./api-reference/scopes/index.md)
+- Updated the page [Data Import into CRM: Overview of Methods](./api-reference/crm/universal/import/index.md)
+- Updated the page [Product Items in CRM Entities: Overview of Methods](./api-reference/crm/universal/product-rows/index.md)
+- Updated the page [Overview of Events When Working with Smart Process Entities](./api-reference/crm/universal/events/index.md)
+- Added the article [Passing Context to the Bot When Opening a Chat](./api-reference/chat-bots/chat-bots-v2/imbot.v2/bot-context.md)
+
 ### May 29, 2026
 
 - Added a section for working with [mail methods in REST 3.0](./api-reference/rest-v3/mail/index.md)

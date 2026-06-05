@@ -1,4 +1,4 @@
-# Delete a Kanban or "My Planner" Stage task.stages.delete
+# Delete a Kanban or "My Plan" Stage task.stages.delete
 
 {% note tip "" %}
 
@@ -9,16 +9,16 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 > Scope: [`task`](../../scopes/permissions.md)
 >
 > Who can execute the method:
-> - any user for "My Planner" stages
+> - any user for "My Plan" stages
 > - any user with group access for Kanban stages
 
-This method deletes a Kanban or "My Planner" stage.
+This method deletes a Kanban or "My Plan" stage.
 
-It takes the `id` of the stage as input. The stage is checked for sufficient access permission, as well as for the absence of tasks within it.
+It accepts the `id` of the stage as input. The stage is checked for sufficient access permission levels and whether it contains any tasks.
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../_includes/required.md) %}
+{% include [Required parameters note](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -26,12 +26,12 @@ It takes the `id` of the stage as input. The stage is checked for sufficient acc
 || **id***
 [`integer`](../../data-types.md) | Identifier of the stage to be deleted ||
 || **isAdmin**
-[`boolean`](../../data-types.md) | If set to `true`, permission checks will not occur, provided the requester is an account administrator ||
+[`boolean`](../../data-types.md) | If set to `true`, permission checks will be skipped, provided the requester is an administrator of the account ||
 |#
 
 ## Code Examples
 
-{% include [Note on examples](../../../_includes/examples.md) %}
+{% include [Examples note](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -58,25 +58,73 @@ It takes the `id` of the stage as input. The stage is checked for sufficient acc
     https://your-domain.bitrix24.com/rest/task.stages.delete
     ```
 
-- JS
+- JS (TS)
 
-    ```js
-    try
-    {
-    	const response = await $b24.callMethod(
-    		'task.stages.delete',
-    		{
-    			id: stageId,
-    		}
-    	);
-    	
-    	const result = response.getData().result;
-    	console.log(result);
+    ```ts
+    // This snippet is an ES module: top-level await requires type="module" or a bundler.
+    // $b24 is an already-initialized SDK instance (see the SDK "Get started" guide).
+    import { Text } from '@bitrix24/b24jssdk'
+    import type { B24Frame } from '@bitrix24/b24jssdk'
+
+    declare const $b24: B24Frame
+
+    try {
+      const response = await $b24.actions.v2.call.make<boolean>({
+        method: 'task.stages.delete',
+        params: {
+          id: 5,
+        },
+        requestId: Text.getUuidRfc4122()
+      })
+
+      // The payload is available only on a successful response
+      if (!response.isSuccess) {
+        console.error(response.getErrorMessages().join('; '))
+      } else {
+        const result = response.getData()!.result
+        console.info('Stage deleted:', result)
+      }
+    } catch (error) {
+      // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+      console.error(error)
     }
-    catch( error )
-    {
-    	console.error('Error:', error);
-    }
+    ```
+
+- JS (UMD)
+
+    ```html
+    <!-- Load the SDK (UMD build); it is exposed as the global B24Js -->
+    <script src="https://unpkg.com/@bitrix24/b24jssdk@1/dist/umd/index.min.js"></script>
+    <script>
+      async function deleteStage() {
+        try {
+          // Initialize the SDK inside a Bitrix24 frame
+          const $b24 = await B24Js.initializeB24Frame()
+
+          const response = await $b24.actions.v2.call.make({
+            method: 'task.stages.delete',
+            params: {
+              id: 5,
+            },
+            requestId: B24Js.Text.getUuidRfc4122()
+          })
+
+          // The payload is available only on a successful response
+          if (!response.isSuccess) {
+            console.error(response.getErrorMessages().join('; '))
+            return
+          }
+
+          const result = response.getData().result
+          console.info('Stage deleted:', result)
+        } catch (error) {
+          // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+          console.error(error)
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', deleteStage)
+    </script>
     ```
 
 - PHP
@@ -98,7 +146,7 @@ It takes the `id` of the stage as input. The stage is checked for sufficient acc
             ->getResult();
     
         echo 'Success: ' . print_r($result, true);
-        // Your required data processing logic
+        // Your logic for processing data
         processData($result);
     
     } catch (Throwable $e) {
@@ -138,7 +186,7 @@ It takes the `id` of the stage as input. The stage is checked for sufficient acc
         ]
     );
 
-    // Handle response from Bitrix24
+    // Process response from Bitrix24
     if ($result['error']) {
         echo 'Error: '.$result['error_description'];
     } else {
@@ -175,7 +223,7 @@ HTTP Status: **400**
 ```json
 {
     "error": "CANT_DELETE_FIRST",
-    "error_description": "Cannot delete the first stage. Move the stage to delete it"
+    "error_description": "Cannot delete the first stage. Move the stage to delete it."
 }
 ```
 

@@ -8,30 +8,30 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`task`](../../../scopes/permissions.md)
 >
-> Who can execute the method: user with permissions to modify the task template
+> Who can execute the method: a user with permissions to modify the task template
 
 The method `tasks.template.checklist.renew` removes the completion mark from a checklist item of the task template.
 
 ## Method Parameters
 
-{% include [Footnote on required parameters](../../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../../_includes/required.md) %}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
-|| **templateId***
+|| **templateId*** 
 [`integer`](../../../data-types.md) | Identifier of the task template.
 
 The identifier of the task template can be obtained when [creating a new template](../tasks-template-add.md) ||
-|| **checkListItemId***
+|| **checkListItemId*** 
 [`integer`](../../../data-types.md) | Identifier of the checklist item.
 
-The identifier of the checklist item can be obtained when [creating a new item](./tasks-template-checklist-add.md) or by using the method [to get the list of items](./tasks-template-checklist-list.md) ||
+The identifier of the checklist item can be obtained when [creating a new item](./tasks-template-checklist-add.md) or by using the [method to get the list of items](./tasks-template-checklist-list.md) ||
 |#
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../../_includes/examples.md) %}
+{% include [Note on Examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -62,26 +62,96 @@ The identifier of the checklist item can be obtained when [creating a new item](
     https://**put_your_bitrix24_address**/rest/tasks.template.checklist.renew
     ```
 
-- JS
+- JS (TS)
 
-    ```js
-    try
-    {
-        const response = await $b24.callMethod(
-            'tasks.template.checklist.renew',
-            {
-                templateId: 139,
-                checkListItemId: 27
-            }
-        );
+    ```ts
+    // This snippet is an ES module: top-level await requires type="module" or a bundler.
+    // $b24 is an already-initialized SDK instance (see the SDK "Get started" guide).
+    import { Text } from '@bitrix24/b24jssdk'
+    import type { B24Frame } from '@bitrix24/b24jssdk'
 
-        const result = response.getData().result;
-        console.log(result);
+    declare const $b24: B24Frame
+
+    // Shape of the payload returned in result (match the "response handling" section of the page)
+    type ChecklistRenewResult = {
+      checkListItem: {
+        id: number
+        copiedId: number | null
+        userId: number
+        createdBy: number | null
+        parentId: number | null
+        title: string
+        sortIndex: number
+        displaySortIndex: string
+        isComplete: boolean
+        isImportant: boolean
+        completedCount: number
+        members: unknown[]
+        attachments: unknown[]
+        nodeId: number | null
+        templateId: number
+      }
     }
-    catch (error)
-    {
-        console.error(error);
+
+    try {
+      const response = await $b24.actions.v2.call.make<ChecklistRenewResult>({
+        method: 'tasks.template.checklist.renew',
+        params: {
+          templateId: 139,
+          checkListItemId: 27,
+        },
+        requestId: Text.getUuidRfc4122()
+      })
+
+      // The payload is available only on a successful response
+      if (!response.isSuccess) {
+        console.error(response.getErrorMessages().join('; '))
+      } else {
+        const result = response.getData()!.result
+        console.info(result.checkListItem)
+      }
+    } catch (error) {
+      // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+      console.error(error)
     }
+    ```
+
+- JS (UMD)
+
+    ```html
+    <!-- Load the SDK (UMD build); it is exposed as the global B24Js -->
+    <script src="https://unpkg.com/@bitrix24/b24jssdk@1/dist/umd/index.min.js"></script>
+    <script>
+      async function renewChecklistItem() {
+        try {
+          // Initialize the SDK inside a Bitrix24 frame
+          const $b24 = await B24Js.initializeB24Frame()
+
+          const response = await $b24.actions.v2.call.make({
+            method: 'tasks.template.checklist.renew',
+            params: {
+              templateId: 139,
+              checkListItemId: 27,
+            },
+            requestId: B24Js.Text.getUuidRfc4122()
+          })
+
+          // The payload is available only on a successful response
+          if (!response.isSuccess) {
+            console.error(response.getErrorMessages().join('; '))
+            return
+          }
+
+          const result = response.getData().result
+          console.info(result.checkListItem)
+        } catch (error) {
+          // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+          console.error(error)
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', renewChecklistItem)
+    </script>
     ```
 
 - PHP
@@ -189,25 +259,25 @@ HTTP Status: **200**
 
 ### Returned Data
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../../data-types.md) | Object containing the response data [(detailed description)](#result) ||
+[`object`](../../../data-types.md) | Object with response data [(detailed description)](#result) ||
 || **time**
 [`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
 
-#### Object result {#result}
+#### Result Object {#result}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **checkListItem**
 [`object`](../../../data-types.md) | Checklist item after renewal [(detailed description)](#checklistitem) ||
 |#
 
-{% include [Decoding the checkListItem object](./_includes/checklist-item-response.md) %}
+{% include [Decoding the checkListItem Object](./_includes/checklist-item-response.md) %}
 
 ## Error Handling
 
@@ -224,13 +294,13 @@ HTTP Status: **400**
 
 ### Possible Error Codes
 
-#|
+#| 
 || **Status** | **Code** | **Description** | **Value** ||
-|| `400` | `100` | Could not find value for parameter {templateId} | Required parameter `templateId` not provided ||
-|| `400` | `100` | Bitrix\Tasks\CheckList\Internals\CheckList All parameters in the constructor must have real class type | Required parameter `checkListItemId` not provided ||
-|| `400` | `0` | Bitrix\Tasks\CheckList\CheckListFacade::onAfterUpdate(): Argument #1 ($taskId) must be of type int, string given, called in /var/www/html/bitrix/modules/tasks/lib/checklist/checklistfacade.php on line 313 | Empty or invalid type `templateId` provided ||
-|| `400` | `0` | Incorrect value [] for field [ENTITY_ID] in item [, ] | Non-existent, empty, or invalid type `checkListItemId` provided ||
-|| `400` | `0` | Changing the status of the item: action unavailable | User does not have permission to modify the task template ||
+|| `400` | `100` | Could not find value for parameter {templateId} | Required parameter `templateId` is missing ||
+|| `400` | `100` | Bitrix\Tasks\CheckList\Internals\CheckList All parameters in the constructor must have real class type | Required parameter `checkListItemId` is missing ||
+|| `400` | `0` | Bitrix\Tasks\CheckList\CheckListFacade::onAfterUpdate(): Argument #1 ($taskId) must be of type int, string given, called in /var/www/html/bitrix/modules/tasks/lib/checklist/checklistfacade.php on line 313 | Empty or invalid type for `templateId` ||
+|| `400` | `0` | Incorrect value [] for field [ENTITY_ID] in item [, ] | Non-existent, empty, or invalid type for `checkListItemId` ||
+|| `400` | `0` | Changing the status of the item: action not available | User does not have permission to modify the task template ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

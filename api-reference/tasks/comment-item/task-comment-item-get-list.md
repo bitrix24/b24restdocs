@@ -1,4 +1,4 @@
-# Get List of Comments task.commentitem.getlist
+# Get the List of Comments task.commentitem.getlist
 
 {% note tip "" %}
 
@@ -8,13 +8,13 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`task`](../../scopes/permissions.md)
 >
-> Who can execute the method: any user with read access permission to the task or higher
+> Who can execute the method: any user with read access permission for the task or higher.
 
-The method `task.commentitem.getlist` retrieves a list of comments for a task.
+The method `task.commentitem.getlist` retrieves a list of task comments.
 
 {% note warning "DEPRECATED" %}
 
-The development of this method has been halted since version `tasks 25.700.0`. The method task.commentitem.getlist does not work in the [new task card](../tasks-new.md); use the method [im.dialog.messages.get](../../chats/messages/im-dialog-messages-get.md) for working with task chat.
+Development of this method has been halted since version `tasks 25.700.0`. The method task.commentitem.getlist does not work in the [new task card](../tasks-new.md); use the [im.dialog.messages.get](../../chats/messages/im-dialog-messages-get.md) method to work with task chat.
 
 {% endnote %}
 
@@ -26,17 +26,17 @@ Pass parameters in the request according to the order in the table. If the order
 
 {% endnote %}
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Parameter Notes](../../../_includes/required.md) %}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
-|| **TASKID***
+|| **TASKID*** 
 [`integer`](../../data-types.md) | Task identifier.
 
-The task identifier can be obtained when [creating a new task](../tasks-task-add.md) or by using the [get task list method](../tasks-task-list.md) ||
+The task identifier can be obtained when [creating a new task](../tasks-task-add.md) or by using the [get task list](../tasks-task-list.md) method. ||
 || **ORDER**
-[`object`](../../data-types.md) | An object for sorting the result in the format `{"field": "sort value", ... }`.
+[`object`](../../data-types.md) | An object for sorting the result in the form `{"field": "sort value", ... }`.
 
 You can sort by the following fields:
 - `ID` — comment identifier 
@@ -49,9 +49,9 @@ The sorting direction can take the following values:
 - `asc` — ascending
 - `desc` — descending
 
-By default, the result is sorted in descending order by comment identifier ||
+By default, the result is sorted in descending order by comment identifier. ||
 || **FILTER**
-[`object`](../../data-types.md) | An object for filtering the result in the format `{"field": "filter value", ... }`. The value of the filtered field can be a single value or an array of values.
+[`object`](../../data-types.md) | An object for filtering the result in the form `{"field": "filter value", ... }`. The value of the filtered field can be a single value or an array of values.
 
 You can filter by the following fields: 
 - `ID` — comment identifier
@@ -61,17 +61,17 @@ You can filter by the following fields:
 
 You can specify a prefix for the filtered field indicating the type of filtering:
 - `!` — not equal
-- `<=`— less than or equal to
+- `<=` — less than or equal to
 - `<` — less than
-- `>=`— greater than or equal to
+- `>=` — greater than or equal to
 - `>` — greater than
  
-By default, records are not filtered ||
+By default, records are not filtered. ||
 |#
 
 ## Code Examples
 
-{% include [Note on examples](../../../_includes/examples.md) %}
+{% include [Example Notes](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -95,70 +95,116 @@ By default, records are not filtered ||
     https://**put_your_bitrix24_address**/rest/task.commentitem.getlist
     ```
 
-- JS
+- JS (TS)
 
-    ```js
-    // callListMethod: Retrieves all data at once. Use only for small selections (< 1000 items) due to high memory load.
-    
-    try {
-      const response = await $b24.callListMethod(
-        'task.commentitem.getlist',
-        {
-          "TASKID": 8017,
-          "ORDER": {
-            "POST_DATE": "asc",
-          },
-          "FILTER": {
-            "AUTHOR_ID": 503,
-            ">=POST_DATE": "2025-01-01",
-          }
-        },
-        (progress) => { console.log('Progress:', progress) }
-      )
-      const items = response.getData() || []
-      for (const entity of items) { console.log('Entity:', entity) }
-    } catch (error) {
-      console.error('Request failed', error)
+    ```ts
+    // This snippet is an ES module: top-level await requires type="module" or a bundler.
+    // $b24 is an already-initialized SDK instance (see the SDK "Get started" guide).
+    import { Text } from '@bitrix24/b24jssdk'
+    import type { B24Frame, ISODate } from '@bitrix24/b24jssdk'
+
+    declare const $b24: B24Frame
+
+    // Shape of each comment item returned in the result array
+    type TaskCommentItem = {
+      ID: string
+      AUTHOR_ID: string
+      AUTHOR_NAME: string
+      AUTHOR_EMAIL: string
+      POST_DATE: ISODate | null
+      POST_MESSAGE: string
+      POST_MESSAGE_HTML: string | null
+      ATTACHED_OBJECTS: Record<string, {
+        ATTACHMENT_ID: string
+        NAME: string
+        SIZE: string
+        FILE_ID: string
+        DOWNLOAD_URL: string
+        VIEW_URL: string
+      }>
     }
-    
-    // fetchListMethod: Retrieves data in parts using an iterator. Use for large volumes of data for efficient memory consumption.
-    
+
     try {
-      const generator = $b24.fetchListMethod('task.commentitem.getlist', {
-        "TASKID": 8017,
-        "ORDER": {
-          "POST_DATE": "asc",
+      // task.commentitem.getlist returns a single page (max 50 records). For the whole result set
+      // use a list helper: $b24.actions.v2.callList.make() returns every record as one
+      // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
+      // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
+      // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
+      const response = await $b24.actions.v2.call.make<TaskCommentItem[]>({
+        method: 'task.commentitem.getlist',
+        params: {
+          TASKID: 8017,
+          ORDER: {
+            POST_DATE: 'asc',
+          },
+          FILTER: {
+            AUTHOR_ID: 503,
+            '>=POST_DATE': '2025-01-01',
+          },
         },
-        "FILTER": {
-          "AUTHOR_ID": 503,
-          ">=POST_DATE": "2025-01-01",
-        }
-      }, 'ID')
-      for await (const page of generator) {
-        for (const entity of page) { console.log('Entity:', entity) }
+        requestId: Text.getUuidRfc4122()
+      })
+
+      // The payload is available only on a successful response
+      if (!response.isSuccess) {
+        console.error(response.getErrorMessages().join('; '))
+      } else {
+        const result = response.getData()!.result
+        console.info('Comments fetched:', result.length, result)
       }
     } catch (error) {
-      console.error('Request failed', error)
+      // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+      console.error(error)
     }
-    
-    // callMethod: Manual control of pagination through the start parameter. Use for precise control over request batches. Less efficient for large data than fetchListMethod.
-    
-    try {
-      const response = await $b24.callMethod('task.commentitem.getlist', {
-        "TASKID": 8017,
-        "ORDER": {
-          "POST_DATE": "asc",
-        },
-        "FILTER": {
-          "AUTHOR_ID": 503,
-          ">=POST_DATE": "2025-01-01",
+    ```
+
+- JS (UMD)
+
+    ```html
+    <!-- Load the SDK (UMD build); it is exposed as the global B24Js -->
+    <script src="https://unpkg.com/@bitrix24/b24jssdk@1/dist/umd/index.min.js"></script>
+    <script>
+      async function getTaskCommentList() {
+        try {
+          // Initialize the SDK inside a Bitrix24 frame
+          const $b24 = await B24Js.initializeB24Frame()
+
+          // task.commentitem.getlist returns a single page (max 50 records). For the whole result set
+          // use a list helper: $b24.actions.v2.callList.make() returns every record as one
+          // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
+          // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
+          // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
+          const response = await $b24.actions.v2.call.make({
+            method: 'task.commentitem.getlist',
+            params: {
+              TASKID: 8017,
+              ORDER: {
+                POST_DATE: 'asc',
+              },
+              FILTER: {
+                AUTHOR_ID: 503,
+                '>=POST_DATE': '2025-01-01',
+              },
+            },
+            requestId: B24Js.Text.getUuidRfc4122()
+          })
+
+          // The payload is available only on a successful response
+          if (!response.isSuccess) {
+            console.error(response.getErrorMessages().join('; '))
+            return
+          }
+
+          const result = response.getData().result
+          console.info('Comments fetched:', result.length, result)
+        } catch (error) {
+          // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+          console.error(error)
         }
-      }, 0)
-      const result = response.getData().result || []
-      for (const entity of result) { console.log('Entity:', entity) }
-    } catch (error) {
-      console.error('Request failed', error)
-    }
+      }
+
+      document.addEventListener('DOMContentLoaded', getTaskCommentList)
+    </script>
     ```
 
 - PHP
@@ -186,7 +232,7 @@ By default, records are not filtered ||
             ->getResult();
     
         echo 'Success: ' . print_r($result, true);
-        // Your logic for processing data
+        // Your logic for processing the data
         processData($result);
     
     } catch (Throwable $e) {
@@ -303,48 +349,48 @@ HTTP Status: **200**
 
 ### Returned Data
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **result**
-[`array`](../../data-types.md) | An array of objects. Each object contains a description of a comment ||
+[`array`](../../data-types.md) | An array of objects. Each object contains a description of the comment. ||
 || **POST_MESSAGE_HTML**
-[`string`](../../data-types.md) | HTML code of the comment ||
+[`string`](../../data-types.md) | HTML code of the comment. ||
 || **ID**
-[`string`](../../data-types.md) | Comment identifier ||
+[`string`](../../data-types.md) | Comment identifier. ||
 || **AUTHOR_ID**
-[`string`](../../data-types.md) | Comment author's identifier ||
+[`string`](../../data-types.md) | Comment author's identifier. ||
 || **AUTHOR_NAME**
-[`string`](../../data-types.md) | Comment author's name ||
+[`string`](../../data-types.md) | Comment author's name. ||
 || **AUTHOR_EMAIL**
-[`string`](../../data-types.md) | Comment author's email ||
+[`string`](../../data-types.md) | Comment author's email. ||
 || **POST_DATE**
-[`string`](../../data-types.md) | Date and time of comment creation ||
+[`string`](../../data-types.md) | Date and time of comment creation. ||
 || **POST_MESSAGE**
-[`string`](../../data-types.md) | Text of the comment ||
+[`string`](../../data-types.md) | Text of the comment. ||
 || **ATTACHED_OBJECTS**
-[`object`](../../data-types.md) | An object containing information about attachments. The key of the object is the attachment identifier, and the value is an object with [file description](#attached-objects) ||
+[`object`](../../data-types.md) | An object containing information about attachments. The key of the object is the attachment identifier, and the value is an object with [file description](#attached-objects). ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the request execution time ||
+[`time`](../../data-types.md#time) | Information about the request execution time. ||
 |#
 
 ### ATTACHED_OBJECTS Object {#attached-objects}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **ATTACHMENT_ID**
-[`string`](../../data-types.md) | Attachment identifier ||
+[`string`](../../data-types.md) | Attachment identifier. ||
 || **NAME**
-[`string`](../../data-types.md) | File name ||
+[`string`](../../data-types.md) | File name. ||
 || **SIZE**
-[`string`](../../data-types.md) | File size in bytes ||
+[`string`](../../data-types.md) | File size in bytes. ||
 || **FILE_ID**
-[`string`](../../data-types.md) | File identifier on Drive ||
+[`string`](../../data-types.md) | File identifier on Drive. ||
 || **DOWNLOAD_URL**
-[`string`](../../data-types.md) | URL for downloading the file ||
+[`string`](../../data-types.md) | URL for downloading the file. ||
 || **VIEW_URL**
-[`string`](../../data-types.md) | URL for viewing the file ||
+[`string`](../../data-types.md) | URL for viewing the file. ||
 |#
 
 ## Error Handling
@@ -358,19 +404,19 @@ HTTP Status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../_includes/error-info.md) %}
+{% include notitle [Error Handling](../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
-#|
+#| 
 || **Code** | **Description**  | **Value** ||
-|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#8; Action failed; 8/TE/ACTION_FAILED_TO_BE_PROCESSED | An incorrect parameter value is specified or there are no access permissions to the task ||
-|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #0 (taskId) for method ctaskcommentitem::getlist() expected to be of type "integer", but given something else.; 256/TE/WRONG_ARGUMENTS | An incorrect type of value is specified for the parameter, for example, for `TASKID` ||
-|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #1 (arOrder) for method ctaskcommentitem::getlist() must not contain key ">=POST_DATE".; 256/TE/WRONG_ARGUMENTS | Parameters are specified in the wrong order ||
-|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #2 (arFilter) for method ctaskcommentitem::getlist() must not contain key "%POST_DATE".; 256/TE/WRONG_ARGUMENTS | The parameter name or prefix for filtering is incorrectly specified ||
+|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#8; Action failed; 8/TE/ACTION_FAILED_TO_BE_PROCESSED | Invalid parameter value specified or no access permission to the task. ||
+|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #0 (taskId) for method ctaskcommentitem::getlist() expected to be of type "integer", but given something else.; 256/TE/WRONG_ARGUMENTS | Invalid type of value specified for the parameter, for example, for `TASKID`. ||
+|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #1 (arOrder) for method ctaskcommentitem::getlist() must not contain key ">=POST_DATE".; 256/TE/WRONG_ARGUMENTS | Parameters are specified in the wrong order. ||
+|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #2 (arFilter) for method ctaskcommentitem::getlist() must not contain key "%POST_DATE".; 256/TE/WRONG_ARGUMENTS | Incorrect parameter name or prefix specified for filtering. ||
 |#
 
-{% include [system errors](../../../_includes/system-errors.md) %}
+{% include [System Errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning 
 

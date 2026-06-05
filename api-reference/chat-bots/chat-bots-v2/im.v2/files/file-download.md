@@ -1,4 +1,4 @@
-# Get Download Link for File im.v2.File.download
+# Get a Link to Download a File im.v2.File.download
 
 {% note tip "" %}
 
@@ -14,20 +14,20 @@ The method `im.v2.File.download` returns a link to download a file from the chat
 
 ## Method Parameters
 
-{% include [Footnote on parameters](../../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../../_includes/required.md) %}
 
-#|
-|| **Name**
+#| 
+|| **Name** 
 `Type` | **Description** ||
-|| **dialogId***
+|| **dialogId*** 
 [`string`](../../../../data-types.md) | ID of the dialog. For group chats — `chat{chatId}`, for personal chats — `{userId}` ||
-|| **fileId***
+|| **fileId*** 
 [`integer`](../../../../data-types.md) | ID of the file on Drive. Can be obtained from the response of the method [im.v2.File.upload](./file-upload.md) ||
 |#
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -136,7 +136,7 @@ The method `im.v2.File.download` returns a link to download a file from the chat
 
 ## Response Handling
 
-HTTP Code: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -156,14 +156,14 @@ HTTP Code: **200**
 
 ## Returned Data
 
-#|
-|| **Name**
+#| 
+|| **Name** 
 `Type` | **Description** ||
-|| **result**
+|| **result** 
 [`object`](../../../../data-types.md) | Result of the operation ||
-|| **result.downloadUrl**
+|| **result.downloadUrl** 
 [`string`](../../../../data-types.md) | One-time link to download the file. The link contains an authorization token, reuse is not guaranteed ||
-|| **time**
+|| **time** 
 [`time`](../../../../data-types.md#time) | Information about the request execution time ||
 |#
 
@@ -182,7 +182,7 @@ HTTP Status: **400**, **403**
 
 ### Possible Error Codes
 
-#|
+#| 
 || **Code** | **Description** | **Value** ||
 || `FILE_NOT_FOUND` | File not found | File not found in the specified chat ||
 || `FILE_ACCESS_ERROR` | File access error | No permission to download the file — the file does not belong to the specified chat ||
@@ -193,5 +193,5 @@ HTTP Status: **400**, **403**
 
 ## Continue Learning
 
-- [API Change Log for imbot.v2](../../change-log.md)
+- [API Change Log imbot.v2](../../change-log.md)
 - [{#T}](./file-upload.md)

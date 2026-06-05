@@ -20,7 +20,7 @@ Events will not be sent to the application until the installation is complete. [
 
 ## What the handler receives
 
-Data is sent as a POST request {.b24-info}
+Data is transmitted as a POST request {.b24-info}
 
 ```json
 array(
@@ -49,16 +49,16 @@ array(
 
 {% include notitle [Footnote on parameters](../../../_includes/required.md) %}
 
-#|
-|| **Parameter**
+#| 
+|| **Parameter** 
 `type` | **Description** ||
-|| **event***
-[`string`](../../data-types.md) | Symbolic event code, in this case `OnTaskUpdate`||
-|| **data***
-[`array`](../../data-types.md) | Array with the updated task data ||
-|| **ts***
+|| **event*** 
+[`string`](../../data-types.md) | Symbolic event code, in this case `OnTaskUpdate` ||
+|| **data*** 
+[`array`](../../data-types.md) | Array with data of the updated task ||
+|| **ts*** 
 [`timestamp`](../../data-types.md) | Date and time of the event sent from the [event queue](../../events/index.md) ||
-|| **auth***
+|| **auth*** 
 [`array`](../../data-types.md) | Authorization parameters and information about the account where the event occurred ||
 |#
 
@@ -66,16 +66,16 @@ array(
 
 {% include notitle [Footnote on parameters](../../../_includes/required.md) %}
 
-#|
-|| **Name**
+#| 
+|| **Name** 
 `type` | **Description** ||
-|| **FIELDS_BEFORE***
-[`undefined`\|`object`](../../data-types.md) | Task fields before the event (detailed description provided [below](#fields_before)). If no task fields are available, this field will contain the value `undefined` ||
-|| **FIELDS_AFTER***
-[`undefined`\|`object`](../../data-types.md) | Task fields after the event (detailed description provided [below](#fields_after)). If no task fields are available, this field will contain the value `undefined` ||
-|| **IS_ACCESSIBLE_BEFORE***
+|| **FIELDS_BEFORE*** 
+[`undefined`\|`object`](../../data-types.md) | Fields of the task before the event (detailed description provided [below](#fields_before)). If no task fields are available, this field will contain the value `undefined` ||
+|| **FIELDS_AFTER*** 
+[`undefined`\|`object`](../../data-types.md) | Fields of the task after the event (detailed description provided [below](#fields_after)). If no task fields are available, this field will contain the value `undefined` ||
+|| **IS_ACCESSIBLE_BEFORE*** 
 [`string`](../../data-types.md) | Whether the task was readable before the event (detailed description provided [below](#is_accessible_before)) ||
-|| **IS_ACCESSIBLE_AFTER***
+|| **IS_ACCESSIBLE_AFTER*** 
 [`string`](../../data-types.md) | Whether the task became readable after the event (detailed description provided [below](#is_accessible_after)) ||
 |#
 
@@ -83,10 +83,10 @@ array(
 
 {% include notitle [Footnote on parameters](../../../_includes/required.md) %}
 
-#|
-|| **Name**
+#| 
+|| **Name** 
 `type` | **Description** ||
-|| **ID***
+|| **ID*** 
 [`integer`](../../data-types.md) | Identifier of the updated task ||
 |#
 
@@ -94,10 +94,10 @@ array(
 
 {% include notitle [Footnote on parameters](../../../_includes/required.md) %}
 
-#|
-|| **Name**
+#| 
+|| **Name** 
 `type` | **Description** ||
-|| **ID***
+|| **ID*** 
 [`integer`](../../data-types.md) | Identifier of the updated task ||
 |#
 
@@ -105,10 +105,10 @@ array(
 
 {% include notitle [Footnote on parameters](../../../_includes/required.md) %}
 
-#|
-|| **Name**
+#| 
+|| **Name** 
 `type` | **Description** ||
-|| **IS_ACCESSIBLE_BEFORE***
+|| **IS_ACCESSIBLE_BEFORE*** 
 [`string`](../../data-types.md) | Possible values:
 - `Y` (Yes) — yes
 - `N` (No) — no
@@ -119,16 +119,15 @@ array(
 
 {% include notitle [Footnote on parameters](../../../_includes/required.md) %}
 
-#|
-|| **Name**
+#| 
+|| **Name** 
 `type` | **Description** ||
-|| **IS_ACCESSIBLE_AFTER***
+|| **IS_ACCESSIBLE_AFTER*** 
 [`string`](../../data-types.md) | Possible values:
 - `Y` (Yes) — yes
 - `N` (No) — no
 - `undefined` — not defined or check not performed ||
   |#
-
 
 ## Code Examples
 
@@ -136,31 +135,81 @@ array(
 
 {% list tabs %}
 
-- JS
+- JS (TS)
 
+    ```ts
+    // This snippet is an ES module: top-level await requires type="module" or a bundler.
+    // $b24 is an already-initialized SDK instance (see the SDK "Get started" guide).
+    import { Text } from '@bitrix24/b24jssdk'
+    import type { B24Frame } from '@bitrix24/b24jssdk'
 
-    ```js
-    try
-    {
-    	const response = await $b24.callMethod(
-    		'event.bind',
-    		{
-    			"event": "onTaskUpdate",
-    			"handler": "https://example.com/handler.php"
-    		}
-    	);
-    	
-    	const result = response.getData().result;
-    	console.info(result);
-    }
-    catch( error )
-    {
-    	console.error(error);
+    declare const $b24: B24Frame
+
+    // Shape of the payload returned in result (event.bind returns true on success)
+    type EventBindResult = boolean
+
+    try {
+      const response = await $b24.actions.v2.call.make<EventBindResult>({
+        method: 'event.bind',
+        params: {
+          event: 'onTaskUpdate',
+          handler: 'https://example.com/handler.php',
+        },
+        requestId: Text.getUuidRfc4122()
+      })
+
+      // The payload is available only on a successful response
+      if (!response.isSuccess) {
+        console.error(response.getErrorMessages().join('; '))
+      } else {
+        const result = response.getData()!.result
+        console.info('Event bound successfully:', result)
+      }
+    } catch (error) {
+      // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+      console.error(error)
     }
     ```
 
-- PHP
+- JS (UMD)
 
+    ```html
+    <!-- Load the SDK (UMD build); it is exposed as the global B24Js -->
+    <script src="https://unpkg.com/@bitrix24/b24jssdk@1/dist/umd/index.min.js"></script>
+    <script>
+      async function bindTaskUpdateEvent() {
+        try {
+          // Initialize the SDK inside a Bitrix24 frame
+          const $b24 = await B24Js.initializeB24Frame()
+
+          const response = await $b24.actions.v2.call.make({
+            method: 'event.bind',
+            params: {
+              event: 'onTaskUpdate',
+              handler: 'https://example.com/handler.php',
+            },
+            requestId: B24Js.Text.getUuidRfc4122()
+          })
+
+          // The payload is available only on a successful response
+          if (!response.isSuccess) {
+            console.error(response.getErrorMessages().join('; '))
+            return
+          }
+
+          const result = response.getData().result
+          console.info('Event bound successfully:', result)
+        } catch (error) {
+          // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+          console.error(error)
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', bindTaskUpdateEvent)
+    </script>
+    ```
+
+- PHP
 
     ```php
     try {

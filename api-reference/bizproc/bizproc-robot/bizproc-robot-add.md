@@ -12,7 +12,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 The method `bizproc.robot.add` registers a new Automation rule.
 
-It only works in the context of an [application](../../../settings/app-installation/index.md).
+It works only in the context of an [application](../../../settings/app-installation/index.md).
 
 ## Method Parameters
 
@@ -28,7 +28,7 @@ Allowed characters are `a-z`, `A-Z`, `0-9`, dot, hyphen, and underscore `_` ||
 || **HANDLER*** 
 [`string`](../../data-types.md) | URL to which the Automation rule will send data via the Bitrix24 queue server.
 
-The link must have the same domain where the application is installed  ||
+The link must have the same domain where the application is installed ||
 || **AUTH_USER_ID** 
 [`integer`](../../data-types.md) | Identifier of the user whose token will be passed to the application ||
 || **USE_SUBSCRIPTION** 
@@ -36,11 +36,11 @@ The link must have the same domain where the application is installed  ||
 - `Y` — yes
 - `N` — no
 
-||
+By default, the parameter is empty, which is equivalent to waiting for a response from the application. The Automation rule does not wait for a response only when explicitly set to `N` ||
 || **NAME*** 
 [`string` \| `object`](../../data-types.md) | Name of the Automation rule.
 
-It can be a string or an associative array of localized strings in the following format:
+It can be a string or an associative array of localized strings like:
 
 ```js
 'NAME': {
@@ -48,13 +48,11 @@ It can be a string or an associative array of localized strings in the following
     'en': 'Automation rule name',
     ...
 },
-```
-
- ||
+``` ||
 || **DESCRIPTION** 
 [`string` \| `object`](../../data-types.md) | Description of the Automation rule.
 
-It can be a string or an associative array of localized strings in the following format:
+It can be a string or an associative array of localized strings like:
 
 ```js
 'DESCRIPTION': {
@@ -62,8 +60,7 @@ It can be a string or an associative array of localized strings in the following
     'en': 'Automation rule description',
     ...
 },
-```
- ||
+``` ||
 || **PROPERTIES** 
 [`object`](../../data-types.md) | Object with parameters of the Automation rule. Contains objects, each describing a [parameter of the Automation rule](#property).
 
@@ -75,7 +72,7 @@ This parameter controls the ability of the Automation rule to wait for a respons
 
 The system name of the parameter must start with a letter and can contain characters `a-z`, `A-Z`, `0-9`, and underscore `_` ||
 || **DOCUMENT_TYPE** 
-[`array`](../../data-types.md) | Document type that will determine the data types for the `PROPERTIES` and `RETURN_PROPERTIES` parameters. Consists of three string-type elements: 
+[`array`](../../data-types.md) | Document type that will determine the data types for the `PROPERTIES` and `RETURN_PROPERTIES` parameters. Consists of three string-type elements:
 - module identifier
 - object identifier
 - document type
@@ -91,15 +88,15 @@ Possible value options:
 
 ||
 || **FILTER** 
-[`object`](../../data-types.md) | Object with rules for restricting the Automation rule by document type and edition.
+[`object`](../../data-types.md) | Object with rules to limit the Automation rule by document type and edition.
 
-May contain keys:
+It may contain keys:
 - `INCLUDE` — array of rules where the Automation rule will be displayed
 - `EXCLUDE` — array of rules where the Automation rule will be hidden
 
 Each rule in the array can be a string or an array of document types in full or partial form.
 
-To restrict Automation rules by Bitrix24 edition, specify:
+To limit Automation rules by Bitrix24 edition, specify:
 - `b24` — for cloud
 - `box` — for on-premise
 
@@ -150,7 +147,7 @@ Examples:
   - `text` — text
   - `user` — user  ||
 || **Options** 
-[`array`](../../data-types.md) | Array of values for the parameter of type list `'TYPE': select'` in the format:
+[`array`](../../data-types.md) | Array of values for the parameter of type list `'TYPE': select'` like:
 
 ```js
 [
@@ -205,7 +202,7 @@ Below are examples of `PROPERTY` objects for different parameter types.
           'en': 'Save document'
       },
       'Description': {
-          'de': 'Einen fortlaufenden Nummer zuweisen',
+          'de': 'Ordnen Sie eine fortlaufende Nummer zu',
           'en': 'Assign a sequential number'
       },
       'Type': 'bool',
@@ -411,7 +408,7 @@ Below are examples of `PROPERTY` objects for different parameter types.
                     'Type' => 'user',
                     'Default' => 'Author;'
                 ]
-            },
+            ],
             'FILTER' => [
                 'INCLUDE' => [
                     ['crm', 'CCrmDocumentDeal'],
@@ -470,7 +467,7 @@ HTTP Status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../_includes/error-info.md) %}
+{% include notitle [Error Handling](../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
@@ -478,23 +475,23 @@ HTTP Status: **400**
 || **Code** | **Error Message** | **Description** ||
 || `ACCESS_DENIED` | Application context required | Application context is required ||
 || `ACCESS_DENIED` | Access denied! | Method executed by a non-administrator ||
-|| `ERROR_ACTIVITY_VALIDATION_FAILURE` | Empty data! | Required fields with information are not specified ||
-|| `ERROR_ACTIVITY_VALIDATION_FAILURE` | Empty activity code! | Automation rule code is not specified ||
-|| `ERROR_ACTIVITY_VALIDATION_FAILURE` | Wrong activity code! | Invalid Automation rule code ||
+|| `ERROR_ACTIVITY_VALIDATION_FAILURE` | Empty data! | Required fields are not provided ||
+|| `ERROR_ACTIVITY_VALIDATION_FAILURE` | Empty activity code! | Activity code is not specified ||
+|| `ERROR_ACTIVITY_VALIDATION_FAILURE` | Wrong activity code! | Invalid activity code ||
 || `ERROR_UNSUPPORTED_PROTOCOL` | Unsupported handler protocol | Invalid handler protocol http, https ||
 || `ERROR_WRONG_HANDLER_URL` | Wrong handler URL | Invalid handler URL ||
-|| `ERROR_ACTIVITY_VALIDATION_FAILURE` | Empty activity NAME! | Automation rule name is not specified ||
+|| `ERROR_ACTIVITY_VALIDATION_FAILURE` | Empty activity NAME! | Activity name is not specified ||
 || `ERROR_ACTIVITY_VALIDATION_FAILURE` | Wrong properties array! | Incorrectly filled `PROPERTIES` or `RETURN_PROPERTIES` parameters ||
 || `ERROR_ACTIVITY_VALIDATION_FAILURE` | Wrong property key <key>! | Invalid property identifier ||
 || `ERROR_ACTIVITY_VALIDATION_FAILURE` | Empty property NAME <key>! | Property name is not specified ||
 || `ERROR_ACTIVITY_VALIDATION_FAILURE` | Wrong activity FILTER! | Invalid filter ||
 || `ERROR_ACTIVITY_VALIDATION_FAILURE` | Wrong activity DOCUMENT_TYPE! | Invalid `DOCUMENT_TYPE` ||
 || `ERROR_ACTIVITY_ALREADY_INSTALLED` | Activity or Automation rule already installed! | An Automation rule with this code is already installed ||
-|| `ERROR_ACTIVITY_ADD_FAILURE` | Activity or Automation rule already added! | Automation rule has already been added ||
+|| `ERROR_ACTIVITY_ADD_FAILURE` | Activity or Automation rule already added! | The Automation rule has already been added ||
 || `ERROR_ACTIVITY_ADD_FAILURE` | Activity save error! | Failed to save the Automation rule, system error ||
 |#
 
-{% include [system errors](../../../_includes/system-errors.md) %}
+{% include [System Errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning 
 

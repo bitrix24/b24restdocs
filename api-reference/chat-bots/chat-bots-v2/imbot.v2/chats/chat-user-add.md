@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: owner of the registered bot
 
-The method `imbot.v2.Chat.User.add` adds participants to a chat. The bot must be an administrator of the chat.
+The method `imbot.v2.Chat.User.add` adds participants to the chat. The bot must be an administrator of the chat.
 
 {% note info "" %}
 
@@ -22,24 +22,24 @@ Non-existent or inactive users will be ignored without an error.
 
 {% include [Parameter Note](../../../../../_includes/required.md) %}
 
-#|
-|| **Name**
+#| 
+|| **Name** 
 `Type` | **Description** ||
-|| **botId***
+|| **botId*** 
 [`integer`](../../../../data-types.md) | Bot ID ||
-|| **botToken**
+|| **botToken** 
 [`string`](../../../../data-types.md) | Unique authorization token for the bot. Required for webhook authorization, not needed for OAuth.
 
-Pass the same botToken that was specified during the chat bot registration ||
-|| **dialogId***
+Pass the same botToken that was specified during the bot registration ||
+|| **dialogId*** 
 [`string`](../../../../data-types.md) | Dialog ID. For group chats — `chat{chatId}` ||
-|| **userIds***
+|| **userIds*** 
 [`integer[]`](../../../../data-types.md) | Array of user IDs to add ||
 |#
 
 ## Code Examples
 
-{% include [Example Note](../../../../../_includes/examples.md) %}
+{% include [Examples Note](../../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -151,11 +151,13 @@ Pass the same botToken that was specified during the chat bot registration ||
 
 ## Response Handling
 
-HTTP Code: **200**
+HTTP Status: **200**
 
 ```json
 {
-    "result": true,
+    "result": {
+        "result": true
+    },
     "time": {
         "start": 1728626400.123,
         "finish": 1728626400.234,
@@ -169,12 +171,14 @@ HTTP Code: **200**
 
 ## Returned Data
 
-#|
-|| **Name**
+#| 
+|| **Name** 
 `Type` | **Description** ||
-|| **result**
+|| **result** 
+[`object`](../../../../data-types.md) | Result of the operation ||
+|| **result.result** 
 [`boolean`](../../../../data-types.md) | `true` if added successfully ||
-|| **time**
+|| **time** 
 [`time`](../../../../data-types.md#time) | Information about the request execution time ||
 |#
 
@@ -193,12 +197,12 @@ HTTP Status: **400**, **403**
 
 ### Possible Error Codes
 
-#|
+#| 
 || **Code** | **Description** | **Value** ||
-|| `BOT_TOKEN_NOT_SPECIFIED` | Bot token is not specified | `botToken` is not provided. Required for webhook authorization ||
-|| `BOT_ID_REQUIRED` | Bot ID is required | `botId` is not provided ||
+|| `BOT_TOKEN_NOT_SPECIFIED` | Bot token is not specified | `botToken` is not specified. Required for webhook authorization ||
+|| `BOT_ID_REQUIRED` | Bot ID is required | `botId` is not specified ||
 || `BOT_NOT_FOUND` | Bot not found | Bot not found ||
-|| `BOT_OWNERSHIP_ERROR` | Bot is registered by another application | Bot is registered by another application ||
+|| `BOT_OWNERSHIP_ERROR` | Bot is registered by another application | Bot registered by another application ||
 || `ACCESS_DENIED` | Access denied | Bot is not a participant in the chat or does not have permission to add users ||
 |#
 
@@ -206,7 +210,7 @@ HTTP Status: **400**, **403**
 
 ## Continue Learning
 
-- [API Change Log for imbot.v2](../../change-log.md)
+- [API imbot.v2 Change Log](../../change-log.md)
 - [{#T}](./chat-user-delete.md)
 - [{#T}](./chat-user-list.md)
 - [{#T}](./chat-manager-add.md)

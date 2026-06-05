@@ -112,7 +112,7 @@ The method does not accept any parameters.
 
 ## Response Handling
 
-HTTP Code: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -147,6 +147,6 @@ HTTP Code: **200**
 
 ## Continue Learning
 
-- [API Change Log imbot.v2](../../change-log.md)
+- [API imbot.v2 Change Log](../../change-log.md)
 - [{#T}](./event-subscribe.md)
 - [{#T}](./event-get.md)

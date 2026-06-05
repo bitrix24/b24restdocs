@@ -1,4 +1,4 @@
-# Create a link between tasks task.dependence.add
+# Create a Link Between Tasks task.dependence.add
 
 {% note tip "" %}
 
@@ -14,16 +14,16 @@ This method creates a dependency of one task on another.
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../_includes/required.md) %}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
-|| **taskIdFrom***
-[`integer`](../data-types.md) | The identifier of the task from which the dependency is created ||
-|| **taskIdTo***
-[`integer`](../data-types.md) | The identifier of the task for which the dependency is created ||
-|| **linkType***
+|| **taskIdFrom*** 
+[`integer`](../data-types.md) | Identifier of the task from which the dependency is created ||
+|| **taskIdTo*** 
+[`integer`](../data-types.md) | Identifier of the task for which the dependency is created ||
+|| **linkType*** 
 [`integer`](../data-types.md) | Type of dependency:
 - `0` — start-start link 
 - `1` — start-finish link 
@@ -32,11 +32,11 @@ This method creates a dependency of one task on another.
 ||
 |#
 
-The task identifier can be obtained when [creating a new task](./tasks-task-add.md) or by using the [getting the list of tasks](./tasks-task-list.md) method.
+The task identifier can be obtained when [creating a new task](./tasks-task-add.md) or by using the [get task list](./tasks-task-list.md) method.
 
 ## Code Examples
 
-{% include [Note on examples](../../_includes/examples.md) %}
+{% include [Note on Examples](../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -60,26 +60,80 @@ The task identifier can be obtained when [creating a new task](./tasks-task-add.
     https://**put_your_bitrix24_address**/rest/task.dependence.add
     ```
 
-- JS
+- JS (TS)
 
-    ```js
-    try
-    {
-    	const response = await $b24.callMethod(
-    		'task.dependence.add', {
-    			"taskIdFrom": 100,
-    			"taskIdTo": 101,
-    			"linkType": 0
-    		}
-    	);
-    	
-    	const result = response.getData().result;
-    	console.info(result);
+    ```ts
+    // This snippet is an ES module: top-level await requires type="module" or a bundler.
+    // $b24 is an already-initialized SDK instance (see the SDK "Get started" guide).
+    import { Text } from '@bitrix24/b24jssdk'
+    import type { B24Frame } from '@bitrix24/b24jssdk'
+
+    declare const $b24: B24Frame
+
+    // Shape of the payload returned in result (empty array on success)
+    type DependenceAddResult = unknown[]
+
+    try {
+      const response = await $b24.actions.v2.call.make<DependenceAddResult>({
+        method: 'task.dependence.add',
+        params: {
+          taskIdFrom: 100,
+          taskIdTo: 101,
+          linkType: 0,
+        },
+        requestId: Text.getUuidRfc4122()
+      })
+
+      // The payload is available only on a successful response
+      if (!response.isSuccess) {
+        console.error(response.getErrorMessages().join('; '))
+      } else {
+        const result = response.getData()!.result
+        console.info('Dependence added, result:', result)
+      }
+    } catch (error) {
+      // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+      console.error(error)
     }
-    catch( error )
-    {
-    	console.error(error);
-    }
+    ```
+
+- JS (UMD)
+
+    ```html
+    <!-- Load the SDK (UMD build); it is exposed as the global B24Js -->
+    <script src="https://unpkg.com/@bitrix24/b24jssdk@1/dist/umd/index.min.js"></script>
+    <script>
+      async function addTaskDependence() {
+        try {
+          // Initialize the SDK inside a Bitrix24 frame
+          const $b24 = await B24Js.initializeB24Frame()
+
+          const response = await $b24.actions.v2.call.make({
+            method: 'task.dependence.add',
+            params: {
+              taskIdFrom: 100,
+              taskIdTo: 101,
+              linkType: 0,
+            },
+            requestId: B24Js.Text.getUuidRfc4122()
+          })
+
+          // The payload is available only on a successful response
+          if (!response.isSuccess) {
+            console.error(response.getErrorMessages().join('; '))
+            return
+          }
+
+          const result = response.getData().result
+          console.info('Dependence added, result:', result)
+        } catch (error) {
+          // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+          console.error(error)
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', addTaskDependence)
+    </script>
     ```
 
 - PHP
@@ -150,9 +204,9 @@ The task identifier can be obtained when [creating a new task](./tasks-task-add.
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
-Example of a successfully executed request
+Example of a successful request
 
 ```json
 {
@@ -172,18 +226,18 @@ Example of a successfully executed request
 
 ### Returned Data
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../data-types.md) | In case of success, contains an empty array ||
+[`object`](../data-types.md) | On success, contains an empty array ||
 || **time**
-[`time`](../data-types.md) | Information about the execution time of the request ||
+[`time`](../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {
@@ -192,17 +246,17 @@ HTTP status: **400**
 }
 ```
 
-{% include notitle [error handling](../../_includes/error-info.md) %}
+{% include notitle [Error Handling](../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
-#|
+#| 
 || **Code** | **Description** ||
 || `ILLEGAL_NEW_LINK` | A link between tasks already exists ||
 || `ACTION_NOT_ALLOWED` | Unable to add a link between tasks ||
 |#
 
-{% include [system errors](../../_includes/system-errors.md) %}
+{% include [System Errors](../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

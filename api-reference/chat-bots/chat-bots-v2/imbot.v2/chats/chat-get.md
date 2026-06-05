@@ -14,7 +14,7 @@ The method `imbot.v2.Chat.get` returns information about the chat. The bot must 
 
 ## Method Parameters
 
-{% include [Footnote on parameters](../../../../../_includes/required.md) %}
+{% include [Parameter Note](../../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -24,14 +24,14 @@ The method `imbot.v2.Chat.get` returns information about the chat. The bot must 
 || **botToken**
 [`string`](../../../../data-types.md) | Unique authorization token for the bot. Required for webhook authorization, not needed for OAuth.
 
-Pass the same botToken that was specified during the registration of the chat bot ||
+Pass the same botToken that was specified during the registration of the chatbot ||
 || **dialogId***
 [`string`](../../../../data-types.md) | Dialog ID. For group chats — `chat{chatId}`, for personal chats — `{userId}` ||
 |#
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../../../_includes/examples.md) %}
+{% include [Examples Note](../../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -139,7 +139,7 @@ Pass the same botToken that was specified during the registration of the chat bo
 
 ## Response Handling
 
-HTTP Code: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -149,15 +149,38 @@ HTTP Code: **200**
             "dialogId": "chat5",
             "name": "Support Chat",
             "description": "",
+            "type": "chat",
+            "messageType": "C",
             "owner": 456,
             "color": "#4ba984",
             "avatar": "",
-            "type": "chat",
+            "extranet": false,
+            "containsCollaber": false,
+            "entityType": "",
+            "entityId": "",
+            "entityData1": "",
+            "entityData2": "",
+            "entityData3": "",
+            "entityLink": {},
+            "diskFolderId": 42,
             "role": "owner",
+            "permissions": {},
+            "muteList": [],
+            "parentChatId": null,
+            "parentMessageId": null,
+            "isNew": false,
+            "textFieldEnabled": "Y",
+            "backgroundId": null,
             "dateCreate": "2025-01-15T10:00:00+01:00",
             "lastMessageId": 789,
-            "muteList": [],
-            "managerList": []
+            "lastMessageViews": "{}",
+            "lastId": 789,
+            "managerList": [],
+            "markedId": null,
+            "messageCount": 15,
+            "public": "",
+            "unreadId": null,
+            "userCounter": 3
         }
     },
     "time": {
@@ -184,40 +207,40 @@ HTTP Code: **200**
 [`time`](../../../../data-types.md#time) | Information about the request execution time ||
 |#
 
-### Fields of the Chat Object {#chat-object}
+### Chat Object Fields {#chat-object}
 
 #|
 || **Field**
 `Type` | **Description** ||
 || **id**
-[`integer`](../../../../data-types.md) | Chat identifier ||
+[`integer`](../../../../data-types.md) | Unique identifier of the chat ||
 || **dialogId**
-[`string`](../../../../data-types.md) | Dialog identifier ||
+[`string`](../../../../data-types.md) | Dialog identifier: `chat5` for group chats, `123` for personal chats ||
 || **name**
-[`string`](../../../../data-types.md) | Chat name ||
+[`string`](../../../../data-types.md) | Name of the chat ||
 || **description**
-[`string`](../../../../data-types.md) | Chat description ||
-|| **owner**
-[`integer`](../../../../data-types.md) | Chat owner identifier ||
-|| **color**
-[`string`](../../../../data-types.md) | Chat color ||
-|| **avatar**
-[`string`](../../../../data-types.md) | Avatar URL ||
+[`string`](../../../../data-types.md) | Description of the chat ||
 || **type**
-[`string`](../../../../data-types.md) | Chat type ||
+[`string`](../../../../data-types.md) | Type of chat: `chat`, `open`, `channel`, and others ||
+|| **owner**
+[`integer`](../../../../data-types.md) | ID of the chat owner ||
+|| **color**
+[`string\|null`](../../../../data-types.md) | Color of the chat in HEX format ||
+|| **avatar**
+[`string`](../../../../data-types.md) | URL of the chat avatar. Empty string if not set ||
 || **role**
-[`string`](../../../../data-types.md) | Bot's role in the chat ||
+[`string`](../../../../data-types.md) | Role of the current user: `owner`, `manager`, `member`, `guest`, `none` ||
 || **dateCreate**
-[`string`](../../../../data-types.md) | Chat creation date ||
+[`string\|null`](../../../../data-types.md) | Creation date of the chat in ISO 8601 format ||
 || **lastMessageId**
-[`integer`](../../../../data-types.md) | Identifier of the last message ||
+[`integer\|null`](../../../../data-types.md) | ID of the last message ||
 || **muteList**
-[`array`](../../../../data-types.md) | List of users with notifications turned off ||
+[`array`](../../../../data-types.md) | List of user IDs who have disabled notifications ||
 || **managerList**
-[`array`](../../../../data-types.md) | List of chat administrators ||
+[`array`](../../../../data-types.md) | Array of chat manager IDs ||
 |#
 
-Complete description of all object fields can be found on the [Objects and Fields](../../entities.md) page.
+Full description of all fields can be found on the page [Objects and Fields — Chat](../../entities.md#chat).
 
 ## Error Handling
 
@@ -236,10 +259,10 @@ HTTP Status: **400**, **403**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `BOT_TOKEN_NOT_SPECIFIED` | Bot token is not specified | `botToken` is not specified. Required for webhook authorization ||
-|| `BOT_ID_REQUIRED` | Bot ID is required | `botId` is not specified ||
+|| `BOT_TOKEN_NOT_SPECIFIED` | Bot token is not specified | `botToken` not specified. Required for webhook authorization ||
+|| `BOT_ID_REQUIRED` | Bot ID is required | `botId` not specified ||
 || `BOT_NOT_FOUND` | Bot not found | Bot not found ||
-|| `BOT_OWNERSHIP_ERROR` | Bot is registered by another application | Bot is registered by another application ||
+|| `BOT_OWNERSHIP_ERROR` | Bot is registered by another application | Bot registered by another application ||
 || `ACCESS_DENIED` | Access denied | Bot is not a participant in the chat ||
 |#
 

@@ -14,7 +14,7 @@ A brief scenario for launching a chatbot on `imbot.v2`: creating a webhook, regi
 
 {% note info "" %}
 
-Before you begin, check the [API Change Log for imbot.v2](./change-log.md). It contains new features, fixes, and breaking changes, with entries listed from newest to oldest.
+Before you begin, check the [API imbot.v2 Change Log](./change-log.md). It contains new features, fixes, and breaking changes, with entries listed from newest to oldest.
 
 {% endnote %}
 
@@ -94,9 +94,9 @@ curl -X POST 'https://example.bitrix24.com/rest/1/webhook_token/imbot.v2.Chat.Me
   }'
 ```
 
-### 5. Upload File to Chat {#files}
+### 5. Upload a File in Chat {#files}
 
-Use [imbot.v2.File.upload](./imbot.v2/files/file-upload.md) to send a file in the chat on behalf of the bot.
+Use [imbot.v2.File.upload](./imbot.v2/files/file-upload.md) to send a file in chat on behalf of the bot.
 
 ```bash
 curl -X POST 'https://example.bitrix24.com/rest/1/webhook_token/imbot.v2.File.upload' \
@@ -126,7 +126,7 @@ curl -X POST 'https://example.bitrix24.com/rest/1/webhook_token/imbot.v2.File.do
 
 ## Additional Messaging Features
 
-When sending messages through [imbot.v2.Chat.Message.send](./imbot.v2/messages/chat-message-send.md), the following features are available:
+When sending messages via [imbot.v2.Chat.Message.send](./imbot.v2/messages/chat-message-send.md), the following are available:
 
 - [Text Formatting (BB Codes)](./imbot.v2/messages/message-formatting.md): bold, italic, links, quotes, code, and other BB codes
 - [Attachments (Attach)](./imbot.v2/messages/attachments/index.md): structured blocks with images, tables, grids, and other elements
@@ -134,13 +134,13 @@ When sending messages through [imbot.v2.Chat.Message.send](./imbot.v2/messages/c
 
 ## API Revisions and Compatibility
 
-Bitrix24 cloud and on-premise versions may have different API revisions. To find out which revision is installed on a specific account, use [imbot.v2.Revision.get](./imbot.v2/revision-get.md).
+Bitrix24 cloud and on-premise versions may have different API revisions. To find out which revision is installed in a specific Bitrix24, use [imbot.v2.Revision.get](./imbot.v2/revision-get.md).
 
-New features, fixes, and changes with loss of backward compatibility are compiled on the [API Change Log for imbot.v2](./change-log.md). If the integration is already working in production, this page should be checked first.
+New features, fixes, and changes with loss of backward compatibility are compiled on the [API imbot.v2 Change Log](./change-log.md). If the integration is already working in production, this page should be checked first.
 
 ## Learning Path
 
-1. [API Change Log for imbot.v2](./change-log.md)
+1. [API imbot.v2 Change Log](./change-log.md)
 2. [imbot.v2.Bot.register](./imbot.v2/bots/bot-register.md)
 3. [imbot.v2.Event.get](./imbot.v2/events/event-get.md)
 4. [imbot.v2 Events](./imbot.v2/events/events.md)
@@ -152,7 +152,7 @@ New features, fixes, and changes with loss of backward compatibility are compile
 
 ## Continue Learning
 
-- [API Change Log for imbot.v2](./change-log.md)
+- [API imbot.v2 Change Log](./change-log.md)
 - [{#T}](./index.md)
 - [{#T}](./imbot.v2/bots/bot-register.md)
 - [{#T}](./imbot.v2/events/event-get.md)

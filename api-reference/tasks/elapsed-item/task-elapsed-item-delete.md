@@ -14,7 +14,7 @@ This method deletes a time entry.
 
 {% note info %}
 
-You can check the permission to delete using the special method [task.elapseditem.isactionallowed](./task-elapsed-item-is-action-allowed.md)
+You can check the permission to delete using the special method [task.elapseditem.isactionallowed](./task-elapsed-item-is-action-allowed.md).
 
 {% endnote %}
 
@@ -22,17 +22,17 @@ You can check the permission to delete using the special method [task.elapsedite
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
-|| **TASKID***
+|| **TASKID*** 
 [`integer`](../../data-types.md) | Task identifier.
 
-The task identifier can be obtained when [creating a new task](../tasks-task-add.md) or by using the [getting task list method](../tasks-task-list.md) ||
-|| **ITEMID***
+You can obtain the task identifier when [creating a new task](../tasks-task-add.md) or by using the [get task list](../tasks-task-list.md) method. ||
+|| **ITEMID*** 
 [`integer`](../../data-types.md) | Time entry identifier.
 
-It can be obtained when [creating a new entry](./task-elapsed-item-add.md) or by using the [getting time entry list method](./task-elapsed-item-get-list.md) ||
+You can obtain it when [creating a new entry](./task-elapsed-item-add.md) or by using the [get time entry list](./task-elapsed-item-get-list.md) method. ||
 |#
 
 {% note warning %}
@@ -67,26 +67,79 @@ It is mandatory to follow the specified order of parameters in the request as sh
     https://**put_your_bitrix24_address**/rest/task.elapseditem.delete
     ```
 
-- JS
+- JS (TS)
 
-    ```js
-    try
-    {
-    	const response = await $b24.callMethod(
-    		'task.elapseditem.delete',
-    		{
-    			"TASKID": 691,
-    			"ITEMID": 5,
-    		}
-    	);
-    	
-    	const result = response.getData().result;
-    	console.info(result);
+    ```ts
+    // This snippet is an ES module: top-level await requires type="module" or a bundler.
+    // $b24 is an already-initialized SDK instance (see the SDK "Get started" guide).
+    import { Text } from '@bitrix24/b24jssdk'
+    import type { B24Frame } from '@bitrix24/b24jssdk'
+
+    declare const $b24: B24Frame
+
+    // The server returns result:null on successful delete
+    // Shape of the payload returned in result (match the "response handling" section of the page)
+    type DeleteElapsedItemResult = null
+
+    try {
+      const response = await $b24.actions.v2.call.make<DeleteElapsedItemResult>({
+        method: 'task.elapseditem.delete',
+        params: {
+          TASKID: 691,
+          ITEMID: 5,
+        },
+        requestId: Text.getUuidRfc4122()
+      })
+
+      // The payload is available only on a successful response
+      if (!response.isSuccess) {
+        console.error(response.getErrorMessages().join('; '))
+      } else {
+        const result = response.getData()!.result
+        console.info('Elapsed item deleted successfully, result:', result)
+      }
+    } catch (error) {
+      // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+      console.error(error)
     }
-    catch( error )
-    {
-    	console.error(error);
-    }
+    ```
+
+- JS (UMD)
+
+    ```html
+    <!-- Load the SDK (UMD build); it is exposed as the global B24Js -->
+    <script src="https://unpkg.com/@bitrix24/b24jssdk@1/dist/umd/index.min.js"></script>
+    <script>
+      async function deleteElapsedItem() {
+        try {
+          // Initialize the SDK inside a Bitrix24 frame
+          const $b24 = await B24Js.initializeB24Frame()
+
+          const response = await $b24.actions.v2.call.make({
+            method: 'task.elapseditem.delete',
+            params: {
+              TASKID: 691,
+              ITEMID: 5,
+            },
+            requestId: B24Js.Text.getUuidRfc4122()
+          })
+
+          // The payload is available only on a successful response
+          if (!response.isSuccess) {
+            console.error(response.getErrorMessages().join('; '))
+            return
+          }
+
+          const result = response.getData().result
+          console.info('Elapsed item deleted successfully, result:', result)
+        } catch (error) {
+          // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+          console.error(error)
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', deleteElapsedItem)
+    </script>
     ```
 
 - PHP
@@ -160,9 +213,9 @@ It is mandatory to follow the specified order of parameters in the request as sh
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
-In case of successful request execution, the server will return `result:null`
+In case of a successful request, the server will return `result:null`.
 
 ```json
 {
@@ -172,15 +225,15 @@ In case of successful request execution, the server will return `result:null`
         "finish": 1712137817.605804,
         "duration": 0.26182007789611816,
         "processing": 0.018325090408325195,
-        "date_start": "2024-04-03T12:50:17+03:00",
-        "date_finish": "2024-04-03T12:50:17+03:00"
+        "date_start": "2024-04-03T12:50:17+02:00",
+        "date_finish": "2024-04-03T12:50:17+02:00"
     }
 }
 ```
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {
@@ -193,7 +246,7 @@ HTTP status: **400**
 
 ### Possible Error Codes
 
-#|
+#| 
 || **Code** | **Description** ||
 || `0x000001` | Task not found ||
 || `0x100002` | Access denied ||

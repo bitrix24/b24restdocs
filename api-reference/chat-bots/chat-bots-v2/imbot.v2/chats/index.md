@@ -6,7 +6,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-This section describes methods for creating group chats on behalf of a bot and managing participants, owners, and managers.
+The methods allow you to create group chats on behalf of a bot and manage participants, owners, and managers.
 
 > Quick navigation: [all methods](#all-methods)
 
@@ -33,7 +33,7 @@ This section describes methods for creating group chats on behalf of a bot and m
 || [imbot.v2.Chat.User.add](./chat-user-add.md) | Adds participants to the chat ||
 || [imbot.v2.Chat.User.delete](./chat-user-delete.md) | Removes a participant from the chat ||
 || [imbot.v2.Chat.leave](./chat-leave.md) | Leaves the chat ||
-|| [imbot.v2.Chat.User.list](./chat-user-list.md) | Returns a list of chat participants ||
+|| [imbot.v2.Chat.User.list](./chat-user-list.md) | Returns the list of chat participants ||
 || [imbot.v2.Chat.Manager.add](./chat-manager-add.md) | Adds chat managers ||
 || [imbot.v2.Chat.Manager.delete](./chat-manager-delete.md) | Removes chat managers ||
 || [imbot.v2.Chat.setOwner](./chat-set-owner.md) | Assigns a new owner to the chat ||
@@ -41,6 +41,6 @@ This section describes methods for creating group chats on behalf of a bot and m
 
 ## Continue Your Exploration
 
-- [API Change Log for imbot.v2](../../change-log.md)
+- [API imbot.v2 Change Log](../../change-log.md)
 - [{#T}](../../index.md)
-- [Messages for imbot.v2](../messages/index.md)
+- [imbot.v2 Messages](../messages/index.md)

@@ -1,0 +1,13 @@
+title: Team and Department Participants  
+href: index.md  
+items:  
+  - name: Overview of Methods  
+    href: index.md  
+  - name: Add Participants  
+    href: humanresources-node-member-add.md  
+  - name: Update Participant Composition  
+    href: humanresources-node-member-set.md  
+  - name: Move Participants  
+    href: humanresources-node-member-move.md  
+  - name: Remove Participants  
+    href: humanresources-node-member-remove.md  

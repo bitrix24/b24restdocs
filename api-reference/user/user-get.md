@@ -1,4 +1,4 @@
-# Get a List of Users by Filter user.get
+# Get a list of users by filter user.get
 
 {% note tip "" %}
 
@@ -10,66 +10,66 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: any user
 
-The `user.get` method allows you to retrieve a filtered list of users. The method returns all users except for: bots, email users, users for Open Channels, and Replica users.
+The `user.get` method allows you to retrieve a filtered list of users. The method returns all users except for: bots, e-mail users, Open Channels users, and Replica users.
 
 {% note info "" %}
 
-The method does not return integrators. The list of user fields in Bitrix24 that will be obtained as a result of executing the method depends on the application's/webhook's scope. Details about accessing user data can be found in the [article](index.md).
+The method does not return integrators. The list of Bitrix24 user fields that will be retrieved as a result of the method execution depends on the scope of the application/webhook. Details regarding access to user data can be found in the [article](index.md).
 
 {% endnote %}
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../_includes/required.md) %}
+{% include [Note on parameters](../../_includes/required.md) %}
 
-#| 
+#|
 || **Name**
 `type` | **Description** ||
 || **sort**
-[`string`](../data-types.md) | The field by which the results are sorted. Sorting works on all fields from [user.add](./user-add.md) ||
+[`string`](../data-types.md) | The field by which the results are sorted. Sorting works for all fields from [user.add](./user-add.md) ||
 || **order**
 [`string`](../data-types.md) | Sorting direction:
 - `ASC` — ascending
 - `DESC` — descending ||
 || **FILTER**
-[`string`](../data-types.md) | You can additionally specify any parameters from [user.add](./user-add.md) for filtering by their values. In addition to the main fields, additional ones are available:
-- `UF_DEPARTMENT` — company structure affiliation;
-- `UF_PHONE_INNER` — internal phone number;
-- `IS_ONLINE` — [Y\|N] allows you to show only authorized users or not.
+[`string`](../data-types.md) | Additionally, you can specify any parameters from [user.add](./user-add.md) to filter by their values. In addition to the main fields, the following additional ones are available:
+- `UF_DEPARTMENT` — belonging to the company structure;
+- `UF_PHONE_INNER` — internal telephone number;
+- `IS_ONLINE` — [Y\|N] allows showing only authorized or non-authorized users.
 - `NAME_SEARCH` — quick search by personal data.
 - `USER_TYPE` — user type. Can take the following values: 
     - `employee` — employee, 
     - `extranet` — extranet user, 
-    - `email` — email user
-- `ACTIVE` — when set to *true*, excludes dismissed users from the request.
+    - `email` — mail user
+- `ACTIVE` — when set to *true*, excludes terminated users from the request.
   
-Filtering parameters can accept array values.
-An additional prefix can be assigned to the key to specify the filter's behavior. Possible prefix values:
+Filtering parameters can take array values.
+A key can be assigned an additional prefix that clarifies the filter behavior. Possible prefix values:
 
 - `>=` — greater than or equal to
 - `>` — greater than
 - `<=` — less than or equal to
 - `<` — less than
-- `@` — IN (an array is passed as the value)
-- `!@`— NOT IN (an array is passed as the value)
-- `%` — LIKE, substring search. The `%` symbol in the filter value does not need to be passed. The search looks for a substring in any position of the string.
-- `=%` — LIKE, substring search. The `%` symbol needs to be passed in the value. Examples:
-    - "mol%" — looking for values starting with "mol"
-    - "%mol" — looking for values ending with "mol"
-    - "%mol%" — looking for values where "mol" can be in any position
+- `@` — IN (an array is passed as a value)
+- `!@`— NOT IN (an array is passed as a value)
+- `%` — LIKE, substring search. The `%` symbol does not need to be passed in the filter value. The search looks for a substring in any position of the string
+- `=%` — LIKE, substring search. The `%` symbol must be passed in the value. Examples:
+    - "mol%" — searching for values starting with "mol"
+    - "%mol" — searching for values ending with "mol"
+    - "%mol%" — searching for values where "mol" can be in any position
 
 - `%=` — LIKE (see description above)
 
-- `!%` — NOT LIKE, substring search. The `%` symbol in the filter value does not need to be passed. The search goes from both sides.
+- `!%` — NOT LIKE, substring search. The `%` symbol does not need to be passed in the filter value. The search goes from both sides.
 
-- `!=%` — NOT LIKE, substring search. The `%` symbol needs to be passed in the value. Examples:
-    - "mol%" — looking for values not starting with "mol"
-    - "%mol" — looking for values not ending with "mol"
-    - "%mol%" — looking for values where the substring "mol" is not present in any position.
+- `!=%` — NOT LIKE, substring search. The `%` symbol must be passed in the value. Examples:
+    - "mol%" — searching for values that do not start with "mol"
+    - "%mol" — searching for values that do not end with "mol"
+    - "%mol%" — searching for values where the substring "mol" is not present in any position
 
 - `!%=` — NOT LIKE (see description above)
 
-- `=` — equals, exact match (used by default)
+- `=` — equal, exact match (used by default)
 - `!=` - not equal
 - `!` — not equal
 
@@ -77,20 +77,20 @@ An additional prefix can be assigned to the key to specify the filter's behavior
 || **ADMIN_MODE**
 [`boolean`](../data-types.md) | [Key for operation](*key_Key for operation) in administrator mode. Used to obtain data about any users ||
 || **start**
-[`integer`](../data-types.md) | This parameter is used for managing pagination.
+[`integer`](../data-types.md) | The parameter is used to control pagination.
 
-The page size of results is always static: 50 records.
+The results page size is always static: 50 records.
 
-To select the second page of results, you need to pass the value `50`. To select the third page of results — the value `100`, and so on.
+To select the second page of results, you must pass the value `50`. To select the third page of results — the value `100` and so on.
 
-The formula for calculating the `start` parameter value:
+Formula for calculating the value of the `start` parameter:
 
-`start = (N-1) * 50`, where `N` — the desired page number ||
+`start = (N-1) * 50`, where `N` — the number of the desired page ||
 |#
 
 ## Code Examples
 
-{% include [Note on Examples](../../_includes/examples.md) %}
+{% include [Note on examples](../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -125,28 +125,110 @@ The formula for calculating the `start` parameter value:
     https://**put_your_bitrix24_address**/rest/user.get
     ```
 
-- JS
+- JS (TS)
 
-    ```js
-    try
-    {
-    	const response = await $b24.callMethod(
-    		'user.get',
-    		{
-    			'UF_DEPARTMENT': 1,
-    			'SORT': 'ID',
-    			'ORDER': 'asc',
-    			'start': 10
-    		}
-    	);
-    	
-    	const result = response.getData().result;
-    	console.dir(result);
+    ```ts
+    // This snippet is an ES module: top-level await requires type="module" or a bundler.
+    // $b24 is an already-initialized SDK instance (see the SDK "Get started" guide).
+    import { Text } from '@bitrix24/b24jssdk'
+    import type { B24Frame, ISODate } from '@bitrix24/b24jssdk'
+
+    declare const $b24: B24Frame
+
+    type UserData = {
+      ID: string
+      ACTIVE: boolean
+      NAME: string
+      LAST_NAME: string
+      SECOND_NAME: string
+      EMAIL: string
+      LAST_LOGIN: ISODate | ''
+      DATE_REGISTER: ISODate | ''
+      TIME_ZONE: string
+      IS_ONLINE: string
+      PERSONAL_GENDER: string
+      PERSONAL_BIRTHDAY: ISODate | ''
+      PERSONAL_CITY: string
+      WORK_PHONE: string
+      WORK_POSITION: string
+      UF_EMPLOYMENT_DATE: string
+      UF_DEPARTMENT: number[]
+      USER_TYPE: string
     }
-    catch( error )
-    {
-    	console.error('Error:', error);
+
+    try {
+      // user.get returns a single page (max 50 records). For the whole result set
+      // use a list helper: $b24.actions.v2.callList.make() returns every record as one
+      // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
+      // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
+      // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
+      const response = await $b24.actions.v2.call.make<UserData[]>({
+        method: 'user.get',
+        params: {
+          UF_DEPARTMENT: 1,
+          SORT: 'ID',
+          ORDER: 'asc',
+          start: 10,
+        },
+        requestId: Text.getUuidRfc4122()
+      })
+
+      // The payload is available only on a successful response
+      if (!response.isSuccess) {
+        console.error(response.getErrorMessages().join('; '))
+      } else {
+        const result = response.getData()!.result
+        console.info(`Fetched ${result.length} users:`, result.map(u => `${u.NAME} ${u.LAST_NAME}`))
+      }
+    } catch (error) {
+      // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+      console.error(error)
     }
+    ```
+
+- JS (UMD)
+
+    ```html
+    <!-- Load the SDK (UMD build); it is exposed as the global B24Js -->
+    <script src="https://unpkg.com/@bitrix24/b24jssdk@1/dist/umd/index.min.js"></script>
+    <script>
+      async function getUsers() {
+        try {
+          // Initialize the SDK inside a Bitrix24 frame
+          const $b24 = await B24Js.initializeB24Frame()
+
+          // user.get returns a single page (max 50 records). For the whole result set
+          // use a list helper: $b24.actions.v2.callList.make() returns every record as one
+          // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
+          // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
+          // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
+          const response = await $b24.actions.v2.call.make({
+            method: 'user.get',
+            params: {
+              UF_DEPARTMENT: 1,
+              SORT: 'ID',
+              ORDER: 'asc',
+              start: 10,
+            },
+            requestId: B24Js.Text.getUuidRfc4122()
+          })
+
+          // The payload is available only on a successful response
+          if (!response.isSuccess) {
+            console.error(response.getErrorMessages().join('; '))
+            return
+          }
+
+          const result = response.getData().result
+          console.info(`Fetched ${result.length} users:`, result.map(u => `${u.NAME} ${u.LAST_NAME}`))
+        } catch (error) {
+          // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+          console.error(error)
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', getUsers)
+    </script>
     ```
 
 - PHP
@@ -231,7 +313,7 @@ The formula for calculating the `start` parameter value:
 
 {% endlist %}
 
-### Filtering by Name Starting with "Iva"
+### Filtering by a name starting with "John"
 
 {% list tabs %}
 
@@ -241,7 +323,7 @@ The formula for calculating the `start` parameter value:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"filter":{"NAME":"Iva%"}}' \
+    -d '{"filter":{"NAME":"Iv%"}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/user.get
     ```
 
@@ -251,31 +333,104 @@ The formula for calculating the `start` parameter value:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"filter":{"NAME":"Iva%"},"auth":"**put_access_token_here**"}' \
+    -d '{"filter":{"NAME":"Iv%"},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/user.get
     ```
 
-- JS
+- JS (TS)
 
-    ```js
-    try
-    {
-    	const response = await $b24.callMethod(
-    		'user.get',
-    		{
-    			filter: {
-    				"NAME": "Iva%"
-    			}
-    		}
-    	);
-    	
-    	const result = response.getData().result;
-    	console.log(result);
+    ```ts
+    // This snippet is an ES module: top-level await requires type="module" or a bundler.
+    // $b24 is an already-initialized SDK instance (see the SDK "Get started" guide).
+    import { Text } from '@bitrix24/b24jssdk'
+    import type { B24Frame, ISODate } from '@bitrix24/b24jssdk'
+
+    declare const $b24: B24Frame
+
+    type UserData = {
+      ID: string
+      ACTIVE: boolean
+      NAME: string
+      LAST_NAME: string
+      EMAIL: string
+      LAST_LOGIN: ISODate | ''
+      DATE_REGISTER: ISODate | ''
+      IS_ONLINE: string
+      UF_DEPARTMENT: number[]
+      USER_TYPE: string
     }
-    catch( error )
-    {
-    	console.error(error);
+
+    try {
+      // user.get returns a single page (max 50 records). For the whole result set
+      // use a list helper: $b24.actions.v2.callList.make() returns every record as one
+      // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
+      // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
+      // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
+      const response = await $b24.actions.v2.call.make<UserData[]>({
+        method: 'user.get',
+        params: {
+          filter: {
+            NAME: 'Iva%',
+          },
+        },
+        requestId: Text.getUuidRfc4122()
+      })
+
+      // The payload is available only on a successful response
+      if (!response.isSuccess) {
+        console.error(response.getErrorMessages().join('; '))
+      } else {
+        const result = response.getData()!.result
+        console.info(`Fetched ${result.length} users:`, result.map(u => `${u.NAME} ${u.LAST_NAME}`))
+      }
+    } catch (error) {
+      // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+      console.error(error)
     }
+    ```
+
+- JS (UMD)
+
+    ```html
+    <!-- Load the SDK (UMD build); it is exposed as the global B24Js -->
+    <script src="https://unpkg.com/@bitrix24/b24jssdk@1/dist/umd/index.min.js"></script>
+    <script>
+      async function getUsersByName() {
+        try {
+          // Initialize the SDK inside a Bitrix24 frame
+          const $b24 = await B24Js.initializeB24Frame()
+
+          // user.get returns a single page (max 50 records). For the whole result set
+          // use a list helper: $b24.actions.v2.callList.make() returns every record as one
+          // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
+          // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
+          // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
+          const response = await $b24.actions.v2.call.make({
+            method: 'user.get',
+            params: {
+              filter: {
+                NAME: 'Iva%',
+              },
+            },
+            requestId: B24Js.Text.getUuidRfc4122()
+          })
+
+          // The payload is available only on a successful response
+          if (!response.isSuccess) {
+            console.error(response.getErrorMessages().join('; '))
+            return
+          }
+
+          const result = response.getData().result
+          console.info(`Fetched ${result.length} users:`, result.map(u => `${u.NAME} ${u.LAST_NAME}`))
+        } catch (error) {
+          // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+          console.error(error)
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', getUsersByName)
+    </script>
     ```
 
 - PHP
@@ -288,7 +443,7 @@ The formula for calculating the `start` parameter value:
                 'user.get',
                 [
                     'filter' => [
-                        'NAME' => 'Iva%'
+                        'NAME' => 'Iv%'
                     ]
                 ]
             );
@@ -312,7 +467,7 @@ The formula for calculating the `start` parameter value:
         "user.get",
         {
             filter: {
-                "NAME": "Iva%"
+                "NAME": "Iv%"
             }
         },
         function(result) {
@@ -334,7 +489,7 @@ The formula for calculating the `start` parameter value:
         'user.get',
         [
             'filter' => [
-                'NAME' => 'Iva%'
+                'NAME' => 'Iv%'
             ]
         ]
     );
@@ -346,7 +501,7 @@ The formula for calculating the `start` parameter value:
 
 {% endlist %}
 
-### Filtering by Last Name Not Containing "ov"
+### Filtering by a last name not containing "son"
 
 {% list tabs %}
 
@@ -356,7 +511,7 @@ The formula for calculating the `start` parameter value:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"filter":{"!%LAST_NAME":"ov"}}' \
+    -d '{"filter":{"!%LAST_NAME":"an"}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/user.get
     ```
 
@@ -366,31 +521,104 @@ The formula for calculating the `start` parameter value:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"filter":{"!%LAST_NAME":"ov"},"auth":"**put_access_token_here**"}' \
+    -d '{"filter":{"!%LAST_NAME":"an"},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/user.get
     ```
 
-- JS
+- JS (TS)
 
-    ```js
-    try
-    {
-    	const response = await $b24.callMethod(
-    		"user.get",
-    		{
-    			filter: {
-    				"!%LAST_NAME": "ov"
-    			}
-    		}
-    	);
-    	
-    	const result = response.getData().result;
-    	console.log(result);
+    ```ts
+    // This snippet is an ES module: top-level await requires type="module" or a bundler.
+    // $b24 is an already-initialized SDK instance (see the SDK "Get started" guide).
+    import { Text } from '@bitrix24/b24jssdk'
+    import type { B24Frame, ISODate } from '@bitrix24/b24jssdk'
+
+    declare const $b24: B24Frame
+
+    type UserData = {
+      ID: string
+      ACTIVE: boolean
+      NAME: string
+      LAST_NAME: string
+      EMAIL: string
+      LAST_LOGIN: ISODate | ''
+      DATE_REGISTER: ISODate | ''
+      IS_ONLINE: string
+      UF_DEPARTMENT: number[]
+      USER_TYPE: string
     }
-    catch( error )
-    {
-    	console.error(error);
+
+    try {
+      // user.get returns a single page (max 50 records). For the whole result set
+      // use a list helper: $b24.actions.v2.callList.make() returns every record as one
+      // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
+      // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
+      // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
+      const response = await $b24.actions.v2.call.make<UserData[]>({
+        method: 'user.get',
+        params: {
+          filter: {
+            '!%LAST_NAME': 'ov',
+          },
+        },
+        requestId: Text.getUuidRfc4122()
+      })
+
+      // The payload is available only on a successful response
+      if (!response.isSuccess) {
+        console.error(response.getErrorMessages().join('; '))
+      } else {
+        const result = response.getData()!.result
+        console.info(`Fetched ${result.length} users:`, result.map(u => `${u.NAME} ${u.LAST_NAME}`))
+      }
+    } catch (error) {
+      // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+      console.error(error)
     }
+    ```
+
+- JS (UMD)
+
+    ```html
+    <!-- Load the SDK (UMD build); it is exposed as the global B24Js -->
+    <script src="https://unpkg.com/@bitrix24/b24jssdk@1/dist/umd/index.min.js"></script>
+    <script>
+      async function getUsersByLastName() {
+        try {
+          // Initialize the SDK inside a Bitrix24 frame
+          const $b24 = await B24Js.initializeB24Frame()
+
+          // user.get returns a single page (max 50 records). For the whole result set
+          // use a list helper: $b24.actions.v2.callList.make() returns every record as one
+          // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
+          // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
+          // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
+          const response = await $b24.actions.v2.call.make({
+            method: 'user.get',
+            params: {
+              filter: {
+                '!%LAST_NAME': 'ov',
+              },
+            },
+            requestId: B24Js.Text.getUuidRfc4122()
+          })
+
+          // The payload is available only on a successful response
+          if (!response.isSuccess) {
+            console.error(response.getErrorMessages().join('; '))
+            return
+          }
+
+          const result = response.getData().result
+          console.info(`Fetched ${result.length} users:`, result.map(u => `${u.NAME} ${u.LAST_NAME}`))
+        } catch (error) {
+          // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+          console.error(error)
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', getUsersByLastName)
+    </script>
     ```
 
 - PHP
@@ -403,7 +631,7 @@ The formula for calculating the `start` parameter value:
                 'user.get',
                 [
                     'filter' => [
-                        '!%LAST_NAME' => 'ov',
+                        '!%LAST_NAME' => 'an',
                     ],
                 ]
             );
@@ -427,7 +655,7 @@ The formula for calculating the `start` parameter value:
         "user.get",
         {
             filter: {
-                "!%LAST_NAME": "ov"
+                "!%LAST_NAME": "an"
             }
         },
         function(result) {
@@ -449,7 +677,7 @@ The formula for calculating the `start` parameter value:
         'user.get',
         [
             'filter' => [
-                '!%LAST_NAME' => 'ov'
+                '!%LAST_NAME' => 'an'
             ]
         ]
     );
@@ -461,7 +689,7 @@ The formula for calculating the `start` parameter value:
 
 {% endlist %}
 
-### Filtering by Multiple Cities of Residence
+### Filtering by several cities of residence
 
 {% list tabs %}
 
@@ -485,27 +713,101 @@ The formula for calculating the `start` parameter value:
     https://**put_your_bitrix24_address**/rest/user.get
     ```
 
-- JS
+- JS (TS)
 
-    ```js
-    try
-    {
-    	const response = await $b24.callMethod(
-    		'user.get',
-    		{
-    			filter: {
-    				'@PERSONAL_CITY': ['New York', 'Los Angeles']
-    			}
-    		}
-    	);
-    	
-    	const result = response.getData().result;
-    	console.log(result);
+    ```ts
+    // This snippet is an ES module: top-level await requires type="module" or a bundler.
+    // $b24 is an already-initialized SDK instance (see the SDK "Get started" guide).
+    import { Text } from '@bitrix24/b24jssdk'
+    import type { B24Frame, ISODate } from '@bitrix24/b24jssdk'
+
+    declare const $b24: B24Frame
+
+    type UserData = {
+      ID: string
+      ACTIVE: boolean
+      NAME: string
+      LAST_NAME: string
+      EMAIL: string
+      LAST_LOGIN: ISODate | ''
+      DATE_REGISTER: ISODate | ''
+      IS_ONLINE: string
+      PERSONAL_CITY: string
+      UF_DEPARTMENT: number[]
+      USER_TYPE: string
     }
-    catch( error )
-    {
-    	console.error(error);
+
+    try {
+      // user.get returns a single page (max 50 records). For the whole result set
+      // use a list helper: $b24.actions.v2.callList.make() returns every record as one
+      // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
+      // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
+      // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
+      const response = await $b24.actions.v2.call.make<UserData[]>({
+        method: 'user.get',
+        params: {
+          filter: {
+            '@PERSONAL_CITY': ['New York', 'Los Angeles'],
+          },
+        },
+        requestId: Text.getUuidRfc4122()
+      })
+
+      // The payload is available only on a successful response
+      if (!response.isSuccess) {
+        console.error(response.getErrorMessages().join('; '))
+      } else {
+        const result = response.getData()!.result
+        console.info(`Fetched ${result.length} users:`, result.map(u => `${u.NAME} ${u.LAST_NAME} (${u.PERSONAL_CITY})`))
+      }
+    } catch (error) {
+      // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+      console.error(error)
     }
+    ```
+
+- JS (UMD)
+
+    ```html
+    <!-- Load the SDK (UMD build); it is exposed as the global B24Js -->
+    <script src="https://unpkg.com/@bitrix24/b24jssdk@1/dist/umd/index.min.js"></script>
+    <script>
+      async function getUsersByCity() {
+        try {
+          // Initialize the SDK inside a Bitrix24 frame
+          const $b24 = await B24Js.initializeB24Frame()
+
+          // user.get returns a single page (max 50 records). For the whole result set
+          // use a list helper: $b24.actions.v2.callList.make() returns every record as one
+          // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
+          // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
+          // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
+          const response = await $b24.actions.v2.call.make({
+            method: 'user.get',
+            params: {
+              filter: {
+                '@PERSONAL_CITY': ['New York', 'Los Angeles'],
+              },
+            },
+            requestId: B24Js.Text.getUuidRfc4122()
+          })
+
+          // The payload is available only on a successful response
+          if (!response.isSuccess) {
+            console.error(response.getErrorMessages().join('; '))
+            return
+          }
+
+          const result = response.getData().result
+          console.info(`Fetched ${result.length} users:`, result.map(u => `${u.NAME} ${u.LAST_NAME} (${u.PERSONAL_CITY})`))
+        } catch (error) {
+          // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+          console.error(error)
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', getUsersByCity)
+    </script>
     ```
 
 - PHP
@@ -578,7 +880,7 @@ The formula for calculating the `start` parameter value:
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
     {
@@ -612,8 +914,8 @@ HTTP Status: **200**
             {
                 "ID": "3",
                 "ACTIVE": true,
-                "NAME": "Ivan",
-                "LAST_NAME": "Ivanov",
+                "NAME": "John",
+                "LAST_NAME": "Smith",
                 "EMAIL": "test@gmail.com",
                 "LAST_LOGIN": "2024-07-24T09:01:55+00:00",
                 "DATE_REGISTER": "2024-07-22T00:00:00+00:00",
@@ -645,22 +947,22 @@ HTTP Status: **200**
 
 ### Returned Data
 
-#| 
+#|
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../data-types.md) | The root element of the response that contains the filtered list of users ||
+[`object`](../data-types.md) | The response root element, which contains the filtered list of users ||
 || **total**
 [`integer`](../data-types.md) | The total number of records found ||
 || **time**
-[`time`](../data-types.md) | Information about the execution time of the request ||
+[`time`](../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-{% include [system errors](../../_includes/system-errors.md) %}
+{% include [System errors](../../_includes/system-errors.md) %}
 
-## Continue Learning 
+## Continue Learning
 
 - [{#T}](./user-add.md)
 - [{#T}](./user-update.md)
@@ -671,4 +973,4 @@ HTTP Status: **200**
 - [{#T}](../../tutorials/crm/how-to-add-crm-objects/how-to-send-email.md)
 - [{#T}](../../tutorials/crm/how-to-get-lists/get-activity-list-by-deals.md)
 
-[*key_Key for operation]: `'ADMIN_MODE': 'True'`
+[*key_Key for work]: `'ADMIN_MODE': 'True'`

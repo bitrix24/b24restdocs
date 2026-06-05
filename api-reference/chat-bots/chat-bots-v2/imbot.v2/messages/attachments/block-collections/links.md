@@ -54,7 +54,7 @@ If you specifically need the format of an expanded link preview, use `RICH_LINK`
     ```js
     {
         LINK: {
-            PREVIEW: 'https://example.com/bitrix/templates/1c-bitrix-new/images/logo.png',
+            PREVIEW: 'https://example.com/bitrix/templates/bitrix-new/images/logo.png',
             WIDTH: 1000,
             HEIGHT: 638,
             NAME: 'Ticket #12345: New API for the "Web Messenger" Module',
@@ -69,7 +69,7 @@ If you specifically need the format of an expanded link preview, use `RICH_LINK`
     ```php
     [
         'LINK' => [
-            'PREVIEW' => 'https://dev.example..com/bitrix/templates/1c-bitrix-new/images/logo.png',
+            'PREVIEW' => 'https://dev.example..com/bitrix/templates/bitrix-new/images/logo.png',
             'WIDTH' => 1000,
             'HEIGHT' => 638,
             'NAME' => 'Ticket #12345: New API for the "Web Messenger" Module',

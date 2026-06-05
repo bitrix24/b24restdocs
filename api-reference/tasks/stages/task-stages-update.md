@@ -1,4 +1,4 @@
-# Update the stage of the kanban or "My Planner" task.stages.update
+# Update Kanban Stage or "My Plan" task.stages.update
 
 {% note tip "" %}
 
@@ -9,31 +9,31 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 > Scope: [`task`](../../scopes/permissions.md)
 >
 > Who can execute the method:
-> - any user for "My Planner" stages
-> - any user with access to the group for kanban stages
+> - any user for "My Plan" stages
+> - any user with access to the group for Kanban stages
 
-The method updates the stages of the kanban or "My Planner".
+This method updates Kanban stages or "My Plan".
 
-The method is also used to move a stage from one position to another. To do this, simply pass the required `AFTER_ID`.
+The method can also be used to move a stage from one position to another. To do this, simply pass the required `AFTER_ID`.
 
 ## Method Parameters
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
-|| **id***
+|| **id*** 
 [`integer`](../../data-types.md) | Identifier of the stage ||
-|| **fields***
-[`array`](../../data-types.md) | Field values (detailed description provided [below](#parametr-fields)) for updating the kanban or "My Planner" stage ||
-|| **isAdmin**
-[`boolean`](../../data-types.md) | If set to `true`, permission checks will not occur, provided that the requester is an administrator of the account ||
+|| **fields*** 
+[`array`](../../data-types.md) | Field values (detailed description provided [below](#parametr-fields)) for updating the Kanban stage or "My Plan" ||
+|| **isAdmin** 
+[`boolean`](../../data-types.md) | If set to `true`, permission checks will not occur, provided the requester is an administrator of the account ||
 |#
 
 ### Parameter fields
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **TITLE** [`string`](../../data-types.md) | Title of the stage ||
@@ -43,7 +43,7 @@ The method is also used to move a stage from one position to another. To do this
 If not specified or equal to `0`, it will be added at the beginning ||
 |#
 
-When updating a group stage with insufficient permission level, an access error is returned.
+When updating a group stage with insufficient permission levels, an access error will be displayed.
 
 ## Code Examples
 
@@ -84,26 +84,83 @@ When updating a group stage with insufficient permission level, an access error 
     https://your-domain.bitrix24.com/rest/task.stages.update
     ```
 
-- JS
+- JS (TS)
 
-    ```js
-    try
-    {
-    	const response = await $b24.callMethod(
-    		'task.stages.update',
-    		{
-    			id: stageId,
-    			fields: fields
-    		}
-    	);
-    	
-    	const result = response.getData().result;
-    	console.log(result);
+    ```ts
+    // This snippet is an ES module: top-level await requires type="module" or a bundler.
+    // $b24 is an already-initialized SDK instance (see the SDK "Get started" guide).
+    import { Text } from '@bitrix24/b24jssdk'
+    import type { B24Frame } from '@bitrix24/b24jssdk'
+
+    declare const $b24: B24Frame
+
+    try {
+      const response = await $b24.actions.v2.call.make<boolean>({
+        method: 'task.stages.update',
+        params: {
+          id: 5,
+          fields: {
+            TITLE: 'New Stage',
+            SORT: 200,
+            COLOR: 'FF5733',
+          },
+        },
+        requestId: Text.getUuidRfc4122()
+      })
+
+      // The payload is available only on a successful response
+      if (!response.isSuccess) {
+        console.error(response.getErrorMessages().join('; '))
+      } else {
+        const result = response.getData()!.result
+        console.info('Stage updated:', result)
+      }
+    } catch (error) {
+      // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+      console.error(error)
     }
-    catch( error )
-    {
-    	console.error('Error:', error);
-    }
+    ```
+
+- JS (UMD)
+
+    ```html
+    <!-- Load the SDK (UMD build); it is exposed as the global B24Js -->
+    <script src="https://unpkg.com/@bitrix24/b24jssdk@1/dist/umd/index.min.js"></script>
+    <script>
+      async function updateStage() {
+        try {
+          // Initialize the SDK inside a Bitrix24 frame
+          const $b24 = await B24Js.initializeB24Frame()
+
+          const response = await $b24.actions.v2.call.make({
+            method: 'task.stages.update',
+            params: {
+              id: 5,
+              fields: {
+                TITLE: 'New Stage',
+                SORT: 200,
+                COLOR: 'FF5733',
+              },
+            },
+            requestId: B24Js.Text.getUuidRfc4122()
+          })
+
+          // The payload is available only on a successful response
+          if (!response.isSuccess) {
+            console.error(response.getErrorMessages().join('; '))
+            return
+          }
+
+          const result = response.getData().result
+          console.info('Stage updated:', result)
+        } catch (error) {
+          // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+          console.error(error)
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', updateStage)
+    </script>
     ```
 
 - PHP
@@ -164,7 +221,7 @@ When updating a group stage with insufficient permission level, an access error 
 - PHP CRest
 
     ```php
-    require_once('crest.php'); // connect CRest PHP SDK
+    require_once('crest.php'); // include CRest PHP SDK
 
     $stageId = 5;
     $fields = [
@@ -182,7 +239,7 @@ When updating a group stage with insufficient permission level, an access error 
         ]
     );
 
-    // Process the response from Bitrix24
+    // Handle response from Bitrix24
     if ($result['error']) {
         echo 'Error: '.$result['error_description'];
     } else {
@@ -204,7 +261,7 @@ HTTP Status: 200
 
 ### Returned Data
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **result** 
@@ -227,7 +284,7 @@ HTTP status: **400**
 
 ### Possible Error Codes
 
-#|
+#| 
 || **Code** | **Description** ||
 || `ACCESS_DENIED` | You cannot modify stages in this group ||
 || `NOT_FOUND` | Stage not found ||

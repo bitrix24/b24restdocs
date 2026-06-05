@@ -12,21 +12,21 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 The method `imbot.v2.Bot.get` returns information about the bot. It is used to verify the bot's installation.
 
-For the owner application, it returns an extended format (including `moduleId`, `appId`, `eventMode`, and counters). For other applications, it returns a brief format.
+For the owner application, it returns an extended format including `moduleId`, `eventMode`, and counters. For other applications, it returns a brief format.
 
 ## Method Parameters
 
-{% include [Parameter Notes](../../../../../_includes/required.md) %}
+{% include [Note on Parameters](../../../../../_includes/required.md) %}
 
-#|
-|| **Name**
+#| 
+|| **Name** 
 `Type` | **Description** ||
-|| **botId**
+|| **botId** 
 [`integer`](../../../../data-types.md) | Bot ID. Required if `code` is not specified ||
-|| **code**
+|| **code** 
 [`string`](../../../../data-types.md) | Bot code. Required if `botId` is not specified ||
-|| **botToken**
-[`string`](../../../../data-types.md) | Unique authorization token for the bot. Required for webhook authorization, not needed for OAuth.
+|| **botToken** 
+[`string`](../../../../data-types.md) | Unique bot authorization token. Required for webhook authorization, not needed for OAuth.
 
 Pass the same botToken that was specified during the chatbot registration ||
 |#
@@ -39,7 +39,7 @@ You must provide one of the parameters: `botId` or `code`.
 
 ## Code Examples
 
-{% include [Example Notes](../../../../../_includes/examples.md) %}
+{% include [Note on Examples](../../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -141,7 +141,7 @@ You must provide one of the parameters: `botId` or `code`.
 
 ## Response Handling
 
-HTTP Code: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -156,7 +156,6 @@ HTTP Code: **200**
             "backgroundId": null,
             "language": "de",
             "moduleId": "rest",
-            "appId": "local.67890abcdef12.34567890",
             "eventMode": "fetch",
             "countMessage": 150,
             "countCommand": 3,
@@ -186,74 +185,72 @@ HTTP Code: **200**
 
 ## Returned Data
 
-#|
-|| **Name**
+#| 
+|| **Name** 
 `Type` | **Description** ||
-|| **result**
+|| **result** 
 [`object`](../../../../data-types.md) | Result of the request ||
-|| **result.bot**
-[`Bot`](../../entities.md#bot) | Bot object. Extended format for the owner, brief for others [(detailed description)](#bot-object) ||
-|| **result.users**
-[`User[]`](../../entities.md#user) | Array of associated users [(detailed description)](#user-object) ||
-|| **time**
+|| **result.bot** 
+[`Bot`](../../entities.md#bot) | Bot object. Extended format for the owner, brief format for others [(detailed description)](#bot-object) ||
+|| **result.users** 
+[`User[]`](../../entities.md#user) | Array of related users [(detailed description)](#user-object) ||
+|| **time** 
 [`time`](../../../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ### Fields of the Bot Object {#bot-object}
 
-#|
-|| **Field**
+#| 
+|| **Field** 
 `Type` | **Description** ||
-|| **id**
+|| **id** 
 [`integer`](../../../../data-types.md) | Bot identifier ||
-|| **code**
+|| **code** 
 [`string`](../../../../data-types.md) | Symbolic code of the bot ||
-|| **type**
+|| **type** 
 [`string`](../../../../data-types.md) | Type of the bot ||
-|| **isHidden**
+|| **isHidden** 
 [`boolean`](../../../../data-types.md) | Bot is hidden from the contact list ||
-|| **isSupportOpenline**
+|| **isSupportOpenline** 
 [`boolean`](../../../../data-types.md) | Bot supports open channels ||
-|| **isReactionsEnabled**
+|| **isReactionsEnabled** 
 [`boolean`](../../../../data-types.md) | Reactions are enabled for bot messages ||
-|| **backgroundId**
+|| **backgroundId** 
 [`string|null`](../../../../data-types.md) | Chat background ID or `null` ||
-|| **language**
+|| **language** 
 [`string`](../../../../data-types.md) | Language of the bot ||
-|| **moduleId**
+|| **moduleId** 
 [`string`](../../../../data-types.md) | Module identifier ||
-|| **appId**
-[`string`](../../../../data-types.md) | ID of the application that registered the bot ||
-|| **eventMode**
+|| **eventMode** 
 [`string`](../../../../data-types.md) | Event delivery mode: `webhook` or `fetch` ||
-|| **countMessage**
+|| **countMessage** 
 [`integer`](../../../../data-types.md) | Number of messages sent by the bot ||
-|| **countCommand**
+|| **countCommand** 
 [`integer`](../../../../data-types.md) | Number of registered commands ||
-|| **countChat**
-[`integer`](../../../../data-types.md) | Number of chats for the bot ||
-|| **countUser**
-[`integer`](../../../../data-types.md) | Number of users who interacted with the bot ||
+|| **countChat** 
+[`integer`](../../../../data-types.md) | Number of bot chats ||
+|| **countUser** 
+[`integer`](../../../../data-types.md) | Number of users interacting with the bot ||
 |#
 
 ### Fields of the User Object {#user-object}
 
-#|
-|| **Field**
+#| 
+|| **Field** 
 `Type` | **Description** ||
-|| **id**
+|| **id** 
 [`integer`](../../../../data-types.md) | User identifier ||
-|| **active**
+|| **active** 
 [`boolean`](../../../../data-types.md) | User is active ||
-|| **name**
+|| **name** 
 [`string`](../../../../data-types.md) | User's first and last name ||
-|| **bot**
+|| **bot** 
 [`boolean`](../../../../data-types.md) | Indicates if the user is a bot ||
-|| **type**
+|| **type** 
 [`string`](../../../../data-types.md) | Type of user ||
 |#
 
-A complete description of all object fields can be found on the [Objects and Fields](../../entities.md) page.
+Full description of all object fields can be found on the [Objects and Fields](../../entities.md) page.
 
 ## Error Handling
 
@@ -270,9 +267,9 @@ HTTP Status: **400**, **403**
 
 ### Possible Error Codes
 
-#|
+#| 
 || **Code** | **Description** | **Value** ||
-|| `BOT_TOKEN_NOT_SPECIFIED` | Bot token is not specified | `botToken` is not specified. Required for webhook authorization ||
+|| `BOT_TOKEN_NOT_SPECIFIED` | Bot token is not specified | `botToken` is required for webhook authorization ||
 || `PARAMS_REQUIRED` | Required parameters are missing | Neither `botId` nor `code` is provided ||
 || `BOT_NOT_FOUND` | Bot not found | Bot not found ||
 |#
@@ -281,7 +278,7 @@ HTTP Status: **400**, **403**
 
 ## Continue Learning
 
-- [API imbot.v2 Change Log](../../change-log.md)
+- [API Change Log for imbot.v2](../../change-log.md)
 - [{#T}](./bot-register.md)
 - [{#T}](./bot-update.md)
 - [{#T}](./bot-list.md)

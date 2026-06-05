@@ -1,4 +1,4 @@
-# Get Context of Message imbot.v2.Chat.Message.getContext
+# Get Message Context with imbot.v2.Chat.Message.getContext
 
 {% note tip "" %}
 
@@ -14,32 +14,32 @@ The method `imbot.v2.Chat.Message.getContext` returns a window of messages surro
 
 {% note warning "" %}
 
-The method is only available for `supervisor` and `personal` type bots. For more details, see [Bot Types](../../../index.md#bot-types).
+The method is available only for `supervisor` and `personal` type bots. For more details, see [Bot Types](../../index.md#bot-types).
 
 {% endnote %}
 
 ## Method Parameters
 
-{% include [Footnote on parameters](../../../../../_includes/required.md) %}
+{% include [Parameters Note](../../../../../_includes/required.md) %}
 
-#|
-|| **Name**
+#| 
+|| **Name** 
 `Type` | **Description** ||
-|| **botId***
+|| **botId*** 
 [`integer`](../../../../data-types.md) | Bot ID ||
-|| **botToken**
+|| **botToken** 
 [`string`](../../../../data-types.md) | Unique authorization token for the bot. Required for webhook authorization, not needed for OAuth.
 
-Pass the same botToken that was specified during the chat bot registration ||
-|| **messageId***
+Pass the same botToken that was specified during the chat bot registration. ||
+|| **messageId*** 
 [`integer`](../../../../data-types.md) | ID of the central message ||
-|| **range**
+|| **range** 
 [`integer`](../../../../data-types.md) | Number of messages on each side of the central one (1–50). Default is `50` ||
 |#
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../../../_includes/examples.md) %}
+{% include [Examples Note](../../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -153,7 +153,7 @@ Pass the same botToken that was specified during the chat bot registration ||
 
 ## Response Handling
 
-HTTP Code: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -216,64 +216,64 @@ HTTP Code: **200**
 
 ## Returned Data
 
-#|
-|| **Name**
+#| 
+|| **Name** 
 `Type` | **Description** ||
-|| **result**
+|| **result** 
 [`object`](../../../../data-types.md) | Result of the request ||
-|| **result.messages**
+|| **result.messages** 
 [`Message[]`](../../entities.md#message) | Array of messages from oldest to newest [(detailed description)](#message-object) ||
-|| **result.users**
-[`User[]`](../../entities.md#user) | Authors of the messages [(detailed description)](#user-object) ||
-|| **result.hasPrevPage**
+|| **result.users** 
+[`User[]`](../../entities.md#user) | Authors of messages [(detailed description)](#user-object) ||
+|| **result.hasPrevPage** 
 [`boolean`](../../../../data-types.md) | Are there earlier messages ||
-|| **result.hasNextPage**
+|| **result.hasNextPage** 
 [`boolean`](../../../../data-types.md) | Are there later messages ||
-|| **time**
+|| **time** 
 [`time`](../../../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ### Fields of the Message Object {#message-object}
 
-#|
-|| **Field**
+#| 
+|| **Field** 
 `Type` | **Description** ||
-|| **id**
+|| **id** 
 [`integer`](../../../../data-types.md) | Identifier of the message ||
-|| **chatId**
+|| **chatId** 
 [`integer`](../../../../data-types.md) | Identifier of the chat ||
-|| **authorId**
+|| **authorId** 
 [`integer`](../../../../data-types.md) | Identifier of the message author ||
-|| **date**
+|| **date** 
 [`string`](../../../../data-types.md) | Date the message was sent ||
-|| **text**
+|| **text** 
 [`string`](../../../../data-types.md) | Text of the message ||
-|| **isSystem**
+|| **isSystem** 
 [`boolean`](../../../../data-types.md) | System message ||
-|| **uuid**
+|| **uuid** 
 [`string`](../../../../data-types.md) | External identifier of the message ||
-|| **forward**
+|| **forward** 
 [`object`](../../../../data-types.md) | Data about the forwarded message ||
-|| **params**
+|| **params** 
 [`object`](../../../../data-types.md) | Additional parameters of the message ||
-|| **viewedByOthers**
+|| **viewedByOthers** 
 [`boolean`](../../../../data-types.md) | Message viewed by other participants ||
 |#
 
 ### Fields of the User Object {#user-object}
 
-#|
-|| **Field**
+#| 
+|| **Field** 
 `Type` | **Description** ||
-|| **id**
+|| **id** 
 [`integer`](../../../../data-types.md) | Identifier of the user ||
-|| **active**
+|| **active** 
 [`boolean`](../../../../data-types.md) | User is active ||
-|| **name**
+|| **name** 
 [`string`](../../../../data-types.md) | User's first and last name ||
-|| **bot**
+|| **bot** 
 [`boolean`](../../../../data-types.md) | Indicates if the user is a bot ||
-|| **type**
+|| **type** 
 [`string`](../../../../data-types.md) | Type of user ||
 |#
 
@@ -298,13 +298,13 @@ HTTP Status: **400**, **403**
 
 ### Possible Error Codes
 
-#|
+#| 
 || **Code** | **Description** | **Value** ||
 || `BOT_TOKEN_NOT_SPECIFIED` | Bot token is not specified | `botToken` is not provided. Required for webhook authorization ||
 || `BOT_ID_REQUIRED` | Bot ID is required | `botId` is not provided ||
 || `BOT_NOT_FOUND` | Bot not found | Bot not found ||
-|| `BOT_OWNERSHIP_ERROR` | Bot is registered by another application | Bot is registered by another application ||
-|| `BOT_TYPE_NOT_ALLOWED` | Bot type not allowed | Method is only available for `supervisor` and `personal` type bots ||
+|| `BOT_OWNERSHIP_ERROR` | Bot is registered by another application | Bot registered by another application ||
+|| `BOT_TYPE_NOT_ALLOWED` | Bot type not allowed | Method available only for `supervisor` and `personal` type bots ||
 || `MESSAGE_NOT_FOUND` | Message not found | Message not found ||
 || `MESSAGE_ACCESS_DENIED` | Message access denied | Bot is not a participant in the chat with this message or does not have access to the history ||
 |#
@@ -313,7 +313,7 @@ HTTP Status: **400**, **403**
 
 ## Continue Learning
 
-- [API Change Log for imbot.v2](../../change-log.md)
+- [API imbot.v2 Change Log](../../change-log.md)
 - [{#T}](./chat-message-get.md)
 - [{#T}](./chat-message-send.md)
 - [{#T}](../../index.md#bot-types)

@@ -10,30 +10,30 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: owner of the registered bot
 
-The method `imbot.v2.Chat.Manager.delete` removes users from the chat manager list. The bot must be the owner of the chat.
+The method `imbot.v2.Chat.Manager.delete` removes users from the chat managers list. The bot must be the owner of the chat.
 
 ## Method Parameters
 
-{% include [Footnote on parameters](../../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../../_includes/required.md) %}
 
-#|
+#| 
 || **Name**
 `Type` | **Description** ||
-|| **botId***
+|| **botId*** 
 [`integer`](../../../../data-types.md) | Bot ID ||
-|| **botToken**
+|| **botToken** 
 [`string`](../../../../data-types.md) | Unique authorization token for the bot. Required for webhook authorization, not needed for OAuth.
 
 Pass the same botToken that was specified during the chat bot registration ||
-|| **dialogId***
+|| **dialogId*** 
 [`string`](../../../../data-types.md) | Dialog ID. For group chats — `chat{chatId}` ||
-|| **userIds***
+|| **userIds*** 
 [`integer[]`](../../../../data-types.md) | Array of user IDs to remove the manager role ||
 |#
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -145,11 +145,13 @@ Pass the same botToken that was specified during the chat bot registration ||
 
 ## Response Handling
 
-HTTP Code: **200**
+HTTP Status: **200**
 
 ```json
 {
-    "result": true,
+    "result": {
+        "result": true
+    },
     "time": {
         "start": 1728626400.123,
         "finish": 1728626400.234,
@@ -163,12 +165,14 @@ HTTP Code: **200**
 
 ## Returned Data
 
-#|
+#| 
 || **Name**
 `Type` | **Description** ||
-|| **result**
-[`boolean`](../../../../data-types.md) | `true` if managers are successfully removed ||
-|| **time**
+|| **result** 
+[`object`](../../../../data-types.md) | Result of the operation ||
+|| **result.result** 
+[`boolean`](../../../../data-types.md) | `true` if managers were successfully removed ||
+|| **time** 
 [`time`](../../../../data-types.md#time) | Information about the request execution time ||
 |#
 
@@ -187,7 +191,7 @@ HTTP Status: **400**, **403**
 
 ### Possible Error Codes
 
-#|
+#| 
 || **Code** | **Description** | **Value** ||
 || `BOT_TOKEN_NOT_SPECIFIED` | Bot token is not specified | Bot token is not specified. Required for webhook authorization ||
 || `BOT_ID_REQUIRED` | Bot ID is required | Bot ID is required ||

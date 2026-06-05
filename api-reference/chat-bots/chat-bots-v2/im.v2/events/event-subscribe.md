@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: authorized user
 
-The method `im.v2.Event.subscribe` subscribes the current user to event logging. After subscribing, message events are recorded in the log and become accessible through [im.v2.Event.get](./event-get.md).
+The method `im.v2.Event.subscribe` subscribes the current user to event logging. After subscribing, message events are logged and become accessible through [im.v2.Event.get](./event-get.md).
 
 The method is idempotent: repeated calls are safe and do not result in an error.
 
@@ -112,7 +112,7 @@ The method does not accept any parameters.
 
 ## Response Handling
 
-HTTP Code: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -134,7 +134,7 @@ HTTP Code: **200**
 || **Name**
 `Type` | **Description** ||
 || **result**
-[`boolean`](../../../../data-types.md) | `true` if the subscription was successful ||
+[`boolean`](../../../../data-types.md) | `true` if subscription is successful ||
 || **time**
 [`time`](../../../../data-types.md#time) | Information about the request execution time ||
 |#

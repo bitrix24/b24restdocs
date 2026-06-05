@@ -158,6 +158,39 @@ The method `crm.activity.todo.updateDeadline` changes the deadline of a universa
     echo '</PRE>';
     ```
 
+- Python
+
+    Example
+
+    ```python
+    from datetime import datetime, timedelta
+
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.activity.todo.update_deadline(
+            bitrix_id=999,
+            owner_type_id=2,
+            owner_id=101,
+            value=datetime.now() + timedelta(days=3),
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
 {% endlist %}
 
 ## Response Handling

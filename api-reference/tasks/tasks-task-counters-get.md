@@ -1,4 +1,4 @@
-# Get User Task Counters tasks.task.counters.get
+# Get User Counters tasks.task.counters.get
 
 {% note tip "" %}
 
@@ -16,29 +16,29 @@ The method `tasks.task.counters.get` retrieves task counter values for the speci
 
 {% include [Note on parameters](../../_includes/required.md) %}
 
-#|
-|| **Name**
+#| 
+|| **Name** 
 `type` | **Description** ||
-|| **userId**
+|| **userId** 
 [`integer`](../data-types.md) | The identifier of the user for whom to retrieve counters.
 
 By default, the current user is used.
 
-The user identifier can be obtained using the [get user list](../user/user-get.md) method. ||
-|| **groupId**
+The user ID can be obtained using the [get user list](../user/user-get.md) method. ||
+|| **groupId** 
 [`integer`](../data-types.md) | The identifier of the group for which to retrieve task counters.
 
 Pass `0` or omit the parameter to consider all groups.
 
-You can obtain the identifier using the [create new group](../sonet-group/sonet-group-create.md) method or the [get group list](../sonet-group/socialnetwork-api-workgroup-list.md) method. ||
-|| **type**
+The identifier can be obtained using the [create new group](../sonet-group/sonet-group-create.md) method or the [get group list](../sonet-group/socialnetwork-api-workgroup-list.md) method. ||
+|| **type** 
 [`string`](../data-types.md) | The role for which to retrieve counters. Possible roles:
 - `view_all` — all roles
 - `view_role_responsible` — responsible
 - `view_role_accomplice` — accomplice
 - `view_role_auditor` — auditor
 - `view_role_originator` — originator
- 
+
 By default, the role `view_all` is used. ||
 |#
 
@@ -68,28 +68,89 @@ By default, the role `view_all` is used. ||
     https://**put_your_bitrix24_address**/rest/tasks.task.counters.get
     ```
 
-- JS
+- JS (TS)
 
-    ```javascript
-    try
-    {
-        const response = await $b24.callMethod(
-            'tasks.task.counters.get',
-            {
-                userId: 547,
-                groupId: 0,
-                type: 'view_all',
-            }
-        );
-        
-        const result = response.getData().result;
-        console.log('Task counters:', result);
-        processResult(result);
+    ```ts
+    // This snippet is an ES module: top-level await requires type="module" or a bundler.
+    // $b24 is an already-initialized SDK instance (see the SDK "Get started" guide).
+    import { Text } from '@bitrix24/b24jssdk'
+    import type { B24Frame } from '@bitrix24/b24jssdk'
+
+    declare const $b24: B24Frame
+
+    // Shape of the payload returned in result (match the "response handling" section of the page)
+    type CounterInfo = {
+      counter: number
+      code: number
     }
-    catch( error )
-    {
-        console.error('Error:', error);
+
+    // Shape of the payload returned in result (match the "response handling" section of the page)
+    type CountersGetResult = {
+      expired?: CounterInfo
+      new_comments?: CounterInfo
     }
+
+    try {
+      const response = await $b24.actions.v2.call.make<CountersGetResult>({
+        method: 'tasks.task.counters.get',
+        params: {
+          userId: 547,
+          groupId: 0,
+          type: 'view_all',
+        },
+        requestId: Text.getUuidRfc4122()
+      })
+
+      // The payload is available only on a successful response
+      if (!response.isSuccess) {
+        console.error(response.getErrorMessages().join('; '))
+      } else {
+        const result = response.getData()!.result
+        console.info('Task counters:', result)
+      }
+    } catch (error) {
+      // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+      console.error(error)
+    }
+    ```
+
+- JS (UMD)
+
+    ```html
+    <!-- Load the SDK (UMD build); it is exposed as the global B24Js -->
+    <script src="https://unpkg.com/@bitrix24/b24jssdk@1/dist/umd/index.min.js"></script>
+    <script>
+      async function getTaskCounters() {
+        try {
+          // Initialize the SDK inside a Bitrix24 frame
+          const $b24 = await B24Js.initializeB24Frame()
+
+          const response = await $b24.actions.v2.call.make({
+            method: 'tasks.task.counters.get',
+            params: {
+              userId: 547,
+              groupId: 0,
+              type: 'view_all',
+            },
+            requestId: B24Js.Text.getUuidRfc4122()
+          })
+
+          // The payload is available only on a successful response
+          if (!response.isSuccess) {
+            console.error(response.getErrorMessages().join('; '))
+            return
+          }
+
+          const result = response.getData().result
+          console.info('Task counters:', result)
+        } catch (error) {
+          // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+          console.error(error)
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', getTaskCounters)
+    </script>
     ```
 
 - PHP
@@ -160,7 +221,7 @@ By default, the role `view_all` is used. ||
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -190,10 +251,10 @@ HTTP status: **200**
 
 ### Returned Data
 
-#|
-|| **Name**
+#| 
+|| **Name** 
 `type` | **Description** ||
-|| **result**
+|| **result** 
 [`object`](../data-types.md) | An object where the key is the counter name and the value is an object with [counter description](#counter).
 
 Counter values:
@@ -201,26 +262,26 @@ Counter values:
 - `expired` — overdue tasks
 
 Returns an empty array `"result":[]` if the user does not exist or does not have permission to retrieve the specified user's counters. ||
-|| **total**
-[`integer`](../data-types.md) | Currently not used. Always returns the value `1`. ||
-|| **time**
-[`time`](../data-types.md#time) | Information about the request execution time. ||
+|| **total** 
+[`integer`](../data-types.md) | Currently not used. Always returns the value `1` ||
+|| **time** 
+[`time`](../data-types.md#time) | Information about the request execution time ||
 |#
 
 #### Counter Object {#counter}
 
-#|
-|| **Name**
+#| 
+|| **Name** 
 `type` | **Description** ||
-|| **counter**
-[`integer`](../data-types.md) | The count. ||
-|| **code**
-[`integer`](../data-types.md) | Internal counter code. ||
+|| **counter** 
+[`integer`](../data-types.md) | The count ||
+|| **code** 
+[`integer`](../data-types.md) | Internal counter code ||
 |#
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {
@@ -233,9 +294,9 @@ HTTP status: **400**
 
 ### Possible Error Codes
 
-#|
+#| 
 || **Code** | **Description** | **Value** ||
-|| `0` | Invalid value {value} to match with parameter {userId}. Should be a value of type int. | The value of incorrect type is specified in the `userId` parameter. ||
+|| `0` | Invalid value {value} to match with parameter {userId}. Should be value of type int. | The value of incorrect type is specified in the `userId` parameter. ||
 || `0` | Group not found or access denied. (internal error) | The group does not exist or access is denied. ||
 |#
 

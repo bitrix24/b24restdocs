@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it soon.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -16,7 +16,7 @@ Some data may be missing — we will complete it soon.
 
 {% endif %}
 
-A local webhook is a simplified way to access the methods and events of the Bitrix24 REST API, specifically designed for use within a single account.
+A local webhook is a simplified way to access the methods and events of the Bitrix24 REST API, specifically designed for use within a single portal.
 
 {% note tip "" %}
 
@@ -46,7 +46,7 @@ Despite these limitations, for the vast majority of integration tasks within a s
 
 {% endnote %}
 
-You can create an incoming webhook from the **Developer resources** section (*Applications > Developer resources, "Ready-made scenarios" tab > Other > Incoming webhook*).
+You can create an incoming webhook from the **Developer resources** section (*Applications > Developer resources, tab "Ready-made scenarios" > Other > Incoming webhook*).
 
 In the opened form:
 
@@ -61,7 +61,7 @@ The request generator will provide a sample URL that should be used when sending
 
 **The URL consists of:**
 
-- **doc-test-b24.bitrix24.com** — the address of your Bitrix24.
+- **doc-test-b24.bitrix24.com** — your Bitrix24 address.
 - **/rest** — indicating that the work is being done through REST with webhooks.
 - **/1** — the identifier of the user who created the webhook.
 - **/173glortu42lvpju** — the secret code.
@@ -82,15 +82,15 @@ For some scenarios, it would be convenient for our automation to trigger automat
 
 {% endnote %}
 
-> **Attention!** An active license is required for the outgoing webhook to work in the on-premise version of Bitrix24; it will not function on demo accounts.
+> **Attention!** An active license is required for the outgoing webhook to work in the on-premise version of Bitrix24; it will not work on demo portals.
 
-You can create an outgoing webhook from the **Developer resources** section (*Applications > Developer resources, "Ready-made scenarios" tab > Other > Outgoing webhook*).
+You can create an outgoing webhook from the **Developer resources** section (*Applications > Developer resources, tab "Ready-made scenarios" > Other > Outgoing webhook*).
 
 In the opened form:
 
 1. Change the name of the webhook.
 2. Specify **the URL of your handler** — the page on an external resource where the webhook will send requests.
-3. Choose the event that will trigger the webhook.
+3. Select the event that will trigger the webhook.
 
     When creating an outgoing webhook, a token will be generated as a string of random characters. This code will allow you to verify within the handler that the handler was indeed called by your Bitrix24.
 
@@ -162,3 +162,4 @@ To ensure the outgoing webhook works, make sure that the necessary [network acce
 ## Continue Learning
 
 - [{#T}](local-apps.md)
+- [{#T}](../settings/system-user.md)

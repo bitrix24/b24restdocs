@@ -10,28 +10,28 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: owner of the registered bot
 
-The method `imbot.v2.Command.unregister` removes a bot's slash command.
+The method `imbot.v2.Command.unregister` removes the bot's slash command.
 
 ## Method Parameters
 
-{% include [Footnote on parameters](../../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../../_includes/required.md) %}
 
-#|
-|| **Name**
+#| 
+|| **Name** 
 `Type` | **Description** ||
-|| **botId***
+|| **botId*** 
 [`integer`](../../../../data-types.md) | Bot ID ||
-|| **botToken**
+|| **botToken** 
 [`string`](../../../../data-types.md) | Unique authorization token for the bot. Required for webhook authorization, not needed for OAuth.
 
-Pass the same botToken that was specified during the chat bot registration ||
-|| **commandId***
+Pass the same botToken that was specified during the chat-bot registration ||
+|| **commandId*** 
 [`integer`](../../../../data-types.md) | Command ID ||
 |#
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -139,11 +139,13 @@ Pass the same botToken that was specified during the chat bot registration ||
 
 ## Response Handling
 
-HTTP Code: **200**
+HTTP Status: **200**
 
 ```json
 {
-    "result": true,
+    "result": {
+        "result": true
+    },
     "time": {
         "start": 1728626400.123,
         "finish": 1728626400.234,
@@ -157,12 +159,14 @@ HTTP Code: **200**
 
 ## Returned Data
 
-#|
-|| **Name**
+#| 
+|| **Name** 
 `Type` | **Description** ||
-|| **result**
-[`boolean`](../../../../data-types.md) | `true` if deletion is successful ||
-|| **time**
+|| **result** 
+[`object`](../../../../data-types.md) | Result of the operation ||
+|| **result.result** 
+[`boolean`](../../../../data-types.md) | `true` if deletion was successful ||
+|| **time** 
 [`time`](../../../../data-types.md#time) | Information about the request execution time ||
 |#
 
@@ -181,13 +185,13 @@ HTTP Status: **400**, **403**
 
 ### Possible Error Codes
 
-#|
+#| 
 || **Code** | **Description** | **Value** ||
-|| `BOT_TOKEN_NOT_SPECIFIED` | Bot token is not specified | `botToken` is not provided. Required for webhook authorization ||
-|| `BOT_ID_REQUIRED` | Bot ID is required | `botId` is not provided ||
+|| `BOT_TOKEN_NOT_SPECIFIED` | Bot token is not specified | Bot token is not specified. Required for webhook authorization ||
+|| `BOT_ID_REQUIRED` | Bot ID is required | Bot ID is not specified ||
 || `BOT_NOT_FOUND` | Bot not found | Bot not found ||
 || `BOT_OWNERSHIP_ERROR` | Bot is registered by another application | Bot is registered by another application ||
-|| `COMMAND_NOT_FOUND` | Command not found | Command not found or access is denied ||
+|| `COMMAND_NOT_FOUND` | Command not found | Command not found or access denied ||
 |#
 
 {% include [System Errors](../../../../../_includes/system-errors.md) %}

@@ -20,7 +20,7 @@ The method `tasks.task.history.list` retrieves the history of changes for a task
 || **Name**
 `type` | **Description** ||
 || **taskId***
-[`integer`](../data-types.md) | The identifier of the task for which to retrieve the history.
+[`integer`](../data-types.md) | The identifier of the task for which the history needs to be retrieved.
 
 The task identifier can be obtained when [creating a new task](./tasks-task-add.md) or by using the [get task list method](./tasks-task-list.md) ||
 || **filter**
@@ -63,60 +63,109 @@ By default, records are sorted in descending order by creation time, meaning fro
     https://**put_your_bitrix24_address**/rest/tasks.task.history.list
     ```
 
-- JS
+- JS (TS)
 
-    ```javascript
-    // callListMethod: Retrieves all data at once.
-    // Use only for small selections (< 1000 items) due to high
-    // memory load.
+    ```ts
+    // This snippet is an ES module: top-level await requires type="module" or a bundler.
+    // $b24 is an already-initialized SDK instance (see the SDK "Get started" guide).
+    import { Text } from '@bitrix24/b24jssdk'
+    import type { B24Frame, ISODate } from '@bitrix24/b24jssdk'
+
+    declare const $b24: B24Frame
+
+    // Shape of the payload returned in result (match the "response handling" section of the page)
+    type TaskHistoryResult = {
+      list: Array<{
+        id: number
+        createdDate: ISODate
+        field: string
+        value: {
+          from: string | null
+          to: string | null
+        }
+        user: {
+          id: number
+          name: string
+          lastName: string
+          secondName: string
+          login: string
+        }
+      }>
+    }
 
     try {
-    const response = await $b24.callListMethod(
-        'tasks.task.history.list',
-        {
-            taskId: 8137,
-            filter: { FIELD: 'COMMENT' },
-            order: { createdDate: 'ASC' }
+      // tasks.task.history.list returns a single page (max 50 records). For the whole result set
+      // use a list helper: $b24.actions.v2.callList.make() returns every record as one
+      // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
+      // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
+      // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
+      const response = await $b24.actions.v2.call.make<TaskHistoryResult>({
+        method: 'tasks.task.history.list',
+        params: {
+          taskId: 8137,
+          filter: { FIELD: 'COMMENT' },
+          order: { createdDate: 'ASC' },
+          start: 0,
         },
-        (progress) => { console.log('Progress:', progress) }
-    );
-    const items = response.getData() || [];
-    for (const entity of items) { console.log('Entity:', entity) }
+        requestId: Text.getUuidRfc4122()
+      })
+
+      // The payload is available only on a successful response
+      if (!response.isSuccess) {
+        console.error(response.getErrorMessages().join('; '))
+      } else {
+        const result = response.getData()!.result
+        console.info('History entries:', result.list.length, result.list)
+      }
     } catch (error) {
-    console.error('Request failed', error)
+      // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+      console.error(error)
     }
+    ```
 
-    // fetchListMethod: Retrieves data in parts using an iterator.
-    // Use for large volumes of data for efficient memory consumption.
+- JS (UMD)
 
-    try {
-    const generator = $b24.fetchListMethod('tasks.task.history.list', {
-        taskId: 8137,
-        filter: { FIELD: 'COMMENT' },
-        order: { createdDate: 'ASC' }
-    }, 'ID');
-    for await (const page of generator) {
-        for (const entity of page) { console.log('Entity:', entity) }
-    }
-    } catch (error) {
-    console.error('Request failed', error)
-    }
+    ```html
+    <!-- Load the SDK (UMD build); it is exposed as the global B24Js -->
+    <script src="https://unpkg.com/@bitrix24/b24jssdk@1/dist/umd/index.min.js"></script>
+    <script>
+      async function fetchTaskHistory() {
+        try {
+          // Initialize the SDK inside a Bitrix24 frame
+          const $b24 = await B24Js.initializeB24Frame()
 
-    // callMethod: Manual control of pagination through the start parameter.
-    // Use for precise control over request batches.
-    // Less efficient for large data than fetchListMethod.
+          // tasks.task.history.list returns a single page (max 50 records). For the whole result set
+          // use a list helper: $b24.actions.v2.callList.make() returns every record as one
+          // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
+          // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
+          // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
+          const response = await $b24.actions.v2.call.make({
+            method: 'tasks.task.history.list',
+            params: {
+              taskId: 8137,
+              filter: { FIELD: 'COMMENT' },
+              order: { createdDate: 'ASC' },
+              start: 0,
+            },
+            requestId: B24Js.Text.getUuidRfc4122()
+          })
 
-    try {
-    const response = await $b24.callMethod('tasks.task.history.list', {
-        taskId: 8137,
-        filter: { FIELD: 'COMMENT' },
-        order: { createdDate: 'ASC' }
-    }, 0);
-    const result = response.getData().result || [];
-    for (const entity of result) { console.log('Entity:', entity) }
-    } catch (error) {
-    console.error('Request failed', error)
-    }
+          // The payload is available only on a successful response
+          if (!response.isSuccess) {
+            console.error(response.getErrorMessages().join('; '))
+            return
+          }
+
+          const result = response.getData().result
+          console.info('History entries:', result.list.length, result.list)
+        } catch (error) {
+          // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+          console.error(error)
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', fetchTaskHistory)
+    </script>
     ```
 
 - PHP
@@ -203,10 +252,10 @@ HTTP Status: **200**
                 },
                 "user": {
                     "id": 503,
-                    "name": "Danielle",
-                    "lastName": "Foster",
+                    "name": "Maria",
+                    "lastName": "Johnson",
                     "secondName": "",
-                    "login": "danielle@mysite.com"
+                    "login": "maria@mysite.com"
                 }
             },
             {
@@ -219,10 +268,10 @@ HTTP Status: **200**
                 },
                 "user": {
                     "id": 503,
-                    "name": "Danielle",
-                    "lastName": "Foster",
+                    "name": "Maria",
+                    "lastName": "Johnson",
                     "secondName": "",
-                    "login": "danielle@mysite.com"
+                    "login": "maria@mysite.com"
                 }
             },
             {
@@ -235,10 +284,10 @@ HTTP Status: **200**
                 },
                 "user": {
                     "id": 503,
-                    "name": "Danielle",
-                    "lastName": "Foster",
+                    "name": "Maria",
+                    "lastName": "Johnson",
                     "secondName": "",
-                    "login": "danielle@mysite.com"
+                    "login": "maria@mysite.com"
                 }
             },
             {
@@ -251,10 +300,10 @@ HTTP Status: **200**
                 },
                 "user": {
                     "id": 503,
-                    "name": "Danielle",
-                    "lastName": "Foster",
+                    "name": "Maria",
+                    "lastName": "Johnson",
                     "secondName": "",
-                    "login": "danielle@mysite.com"
+                    "login": "maria@mysite.com"
                 }
             },
             {
@@ -267,10 +316,74 @@ HTTP Status: **200**
                 },
                 "user": {
                     "id": 503,
-                    "name": "Danielle",
-                    "lastName": "Foster",
+                    "name": "Maria",
+                    "lastName": "Johnson",
                     "secondName": "",
-                    "login": "danielle@mysite.com"
+                    "login": "maria@mysite.com"
+                }
+            },
+            {
+                "id": 16369,
+                "createdDate": "2025-09-25T14:09:45+02:00",
+                "field": "CHECKLIST_ITEM_CREATE",
+                "value": {
+                    "from": "",
+                    "to": "Sign the contract"
+                },
+                "user": {
+                    "id": 503,
+                    "name": "Maria",
+                    "lastName": "Johnson",
+                    "secondName": "",
+                    "login": "maria@mysite.com"
+                }
+            },
+            {
+                "id": 16371,
+                "createdDate": "2025-09-25T14:09:57+02:00",
+                "field": "AUDITORS",
+                "value": {
+                    "from": "",
+                    "to": "547"
+                },
+                "user": {
+                    "id": 503,
+                    "name": "Maria",
+                    "lastName": "Johnson",
+                    "secondName": "",
+                    "login": "maria@mysite.com"
+                }
+            },
+            {
+                "id": 16375,
+                "createdDate": "2025-09-25T14:09:57+02:00",
+                "field": "COMMENT",
+                "value": {
+                    "from": null,
+                    "to": "3411"
+                },
+                "user": {
+                    "id": 503,
+                    "name": "Maria",
+                    "lastName": "Johnson",
+                    "secondName": "",
+                    "login": "maria@mysite.com"
+                }
+            },
+            {
+                "id": 16373,
+                "createdDate": "2025-09-25T14:09:58+02:00",
+                "field": "COMMENT",
+                "value": {
+                    "from": null,
+                    "to": "3413"
+                },
+                "user": {
+                    "id": 503,
+                    "name": "Maria",
+                    "lastName": "Johnson",
+                    "secondName": "",
+                    "login": "maria@mysite.com"
                 }
             }
         ],
@@ -311,55 +424,55 @@ Returns an empty array `"list":[]` if the task does not exist ||
 || **createdDate**
 [`string`](../data-types.md) | Date and time of the event creation in ISO 8601 format ||
 || **field**
-[`string`](../data-types.md) | Type of history event. Possible values for `field`:
+[`string`](../data-types.md) | Type of the history event. Possible values for `field`:
 
-- `TITLE` — task title change
-- `DESCRIPTION` — task description change
-- `REAL_STATUS` — actual status change
-- `STATUS` — task status change
-- `PRIORITY` — priority change
-- `MARK` — task rating change
-- `COMMENT` — comment addition
-- `DELETE` — task deletion
-- `NEW` — new task creation
-- `RENEW` — task restoration
-- `MOVE_TO_BACKLOG` — move task to backlog
-- `MOVE_TO_SPRINT` — move task to sprint
+- `TITLE` — change of task title
+- `DESCRIPTION` — change of task description
+- `REAL_STATUS` — change of actual status
+- `STATUS` — change of task status
+- `PRIORITY` — change of priority
+- `MARK` — change of task rating
+- `COMMENT` — addition of a comment
+- `DELETE` — deletion of a task
+- `NEW` — creation of a new task
+- `RENEW` — restoration of a task
+- `MOVE_TO_BACKLOG` — moving a task to the backlog
+- `MOVE_TO_SPRINT` — moving a task to a sprint
 - `PARENT_ID` — change of parent task
-- `GROUP_ID` — change of workgroup/project
-- `STAGE_ID` — stage change
+- `GROUP_ID` — change of working group/project
+- `STAGE_ID` — change of stage
 - `CREATED_BY` — change of task author
-- `RESPONSIBLE_ID` — change of assignee
+- `RESPONSIBLE_ID` — change of executor
 - `ACCOMPLICES` — change of participants
 - `AUDITORS` — change of auditors
-- `DEADLINE` — deadline change
-- `START_DATE_PLAN` — planned start date change
-- `END_DATE_PLAN` — planned end date change
-- `DURATION_PLAN` — planned duration change
-- `DURATION_PLAN_SECONDS` — planned duration change in seconds
-- `DURATION_FACT` — actual duration change
-- `TIME_ESTIMATE` — time estimate change
-- `TIME_SPENT_IN_LOGS` — actual time spent change in logs
-- `TAGS` — task tags change
+- `DEADLINE` — change of deadline
+- `START_DATE_PLAN` — change of planned start date
+- `END_DATE_PLAN` — change of planned end date
+- `DURATION_PLAN` — change of planned duration
+- `DURATION_PLAN_SECONDS` — change of planned duration in seconds
+- `DURATION_FACT` — change of actual duration
+- `TIME_ESTIMATE` — change of time estimate
+- `TIME_SPENT_IN_LOGS` — change of actual time spent in logs
+- `TAGS` — change of task tags
 - `DEPENDS_ON` — change of task dependencies
 - `FILES` — change of file list
 - `UF_TASK_WEBDAV_FILES` — change of user field with files
-- `CHECKLIST_ITEM_CREATE` — checklist item creation
-- `CHECKLIST_ITEM_RENAME` — checklist item renaming
-- `CHECKLIST_ITEM_REMOVE` — checklist item removal
-- `CHECKLIST_ITEM_CHECK` — checklist item marked as completed
-- `CHECKLIST_ITEM_UNCHECK` — checklist item unmarked as completed
-- `ADD_IN_REPORT` — change of "add to report" flag
+- `CHECKLIST_ITEM_CREATE` — creation of a checklist item
+- `CHECKLIST_ITEM_RENAME` — renaming of a checklist item
+- `CHECKLIST_ITEM_REMOVE` — deletion of a checklist item
+- `CHECKLIST_ITEM_CHECK` — marking a checklist item as completed
+- `CHECKLIST_ITEM_UNCHECK` — unchecking a checklist item
+- `ADD_IN_REPORT` — change of the "add to report" flag
 - `TASK_CONTROL` — change of result control
-- `ALLOW_TIME_TRACKING` — enable or disable time tracking
-- `ALLOW_CHANGE_DEADLINE` — allow or disallow deadline changes
+- `ALLOW_TIME_TRACKING` — enabling or disabling time tracking
+- `ALLOW_CHANGE_DEADLINE` — allowing or prohibiting deadline changes
 - `FLOW_ID` — change of flow ||
 || **value**
 [`object`](../data-types.md) | The object describes what change occurred:
 - `from` — value before the change
 - `to` — value after the change
 
-The type of value depends on the event: for a new comment — `ID` of the comment, for checklist item change — text of the item, for adding an auditor — user identifier, and so on ||
+The type of value depends on the event: for a new comment — `ID` of the comment, for a checklist item change — text of the item, for adding an auditor — user identifier, and so on ||
 || **user**
 [`object`](../data-types.md) | An object with [user description](#user) who performed the action ||
 |#
@@ -398,7 +511,7 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `100` | CTaskItem All parameters in the constructor must have real class type (internal error) | Required parameter `taskId` is missing ||
+|| `100` | CTaskItem All parameters in the constructor must have real class type (internal error) | Required parameter `taskId` is not specified ||
 || `0` | wrong task id (internal error) | The value of `taskId` is of incorrect type ||
 || `0` | Access denied. (internal error) | The user does not have access to the task ||
 |#

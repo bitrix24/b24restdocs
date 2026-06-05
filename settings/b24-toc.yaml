@@ -1,31 +1,33 @@
-title: Setting Up and Using REST  
-href: index.md  
-items:  
-  - name: Section Overview  
-    href: index.md  
-  - name: How to Call REST Methods  
-    include:  
-      path: how-to-call-rest-api/b24-toc.yaml  
-      mode: link  
-  - name: OAuth in Bitrix24  
-    include:  
-      path: oauth/b24-toc.yaml  
-      mode: link  
-  - name: Installing Applications  
-    include:  
-      path: app-installation/b24-toc.yaml  
-      mode: link  
-  - name: Uninstalling Applications  
-    href: app-uninstallation.md  
-  - name: Interactivity  
-    include:  
-      path: interactivity/b24-toc.yaml  
-      mode: link  
-  - name: Performance  
-    include:  
-      path: performance/b24-toc.yaml  
-      mode: link  
-  - name: Cloud and On-Premise Bitrix24  
-    include:  
-      path: cloud-and-on-premise/b24-toc.yaml  
-      mode: link  
+title: REST setup and usage
+href: index.md
+items:
+  - name: Section Overview
+    href: index.md
+  - name: How to call REST methods
+    include:
+      path: how-to-call-rest-api/b24-toc.yaml
+      mode: link
+  - name: OAuth in Bitrix24
+    include:
+      path: oauth/b24-toc.yaml
+      mode: link
+  - name: App installation
+    include:
+      path: app-installation/b24-toc.yaml
+      mode: link
+  - name: App removal
+    href: app-uninstallation.md
+  - name: System user
+    href: system-user.md
+  - name: Interactivity
+    include:
+      path: interactivity/b24-toc.yaml
+      mode: link
+  - name: Performance
+    include:
+      path: performance/b24-toc.yaml
+      mode: link
+  - name: Bitrix24 Cloud and Self-hosted
+    include:
+      path: cloud-and-on-premise/b24-toc.yaml
+      mode: link

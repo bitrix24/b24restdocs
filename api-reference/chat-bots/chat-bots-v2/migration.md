@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-A mapping table of methods and events between the deprecated API (imbot) and the new bot platform (imbot.v2).
+Table of method and event correspondence between the deprecated API (imbot) and the new bot platform (imbot.v2).
 
 {% note info "" %}
 
@@ -23,8 +23,8 @@ Methods v1 and v2 operate in parallel. Bots registered through v1 are visible in
 #|
 || **v1** | **v2** | **Changes** ||
 || [imbot.register](../outdated/bots/imbot-register.md) | [imbot.v2.Bot.register](./imbot.v2/bots/bot-register.md) | Parameters are nested in `fields.*`, added `fields.eventMode` (fetch/webhook) ||
-|| [imbot.update](../outdated/bots/imbot-update.md) | [imbot.v2.Bot.update](./imbot.v2/bots/bot-update.md) | Parameters are nested in `fields.*` ||
-|| [imbot.unregister](../outdated/bots/imbot-unregister.md) | [imbot.v2.Bot.unregister](./imbot.v2/bots/bot-unregister.md) | No changes ||
+|| [imbot.update](../outdated/bots/imbot-update.md) | [imbot.v2.Bot.update](./imbot.v2/bots/bot-update.md) | Parameters are nested in `fields.*`. Changing `webhookUrl` or `eventMode` automatically rebuilds subscriptions `ONIMBOTV2*` — manual `event.unbind` is not needed ||
+|| [imbot.unregister](../outdated/bots/imbot-unregister.md) | [imbot.v2.Bot.unregister](./imbot.v2/bots/bot-unregister.md) | Subscriptions `ONIMBOTV2*` are cleaned automatically — workaround with manual `event.unbind` after unregister is not needed ||
 || [imbot.bot.list](../outdated/bots/imbot-bot-list.md) | [imbot.v2.Bot.list](./imbot.v2/bots/bot-list.md) | Returns an array of Bot objects instead of a flat list ||
 || — | [imbot.v2.Bot.get](./imbot.v2/bots/bot-get.md) | New method: retrieve a single bot by ID ||
 || [imbot.message.add](../outdated/messages/imbot-message-add.md) | [imbot.v2.Chat.Message.send](./imbot.v2/messages/chat-message-send.md) | Text and parameters in `fields.*` ||
@@ -37,9 +37,9 @@ Methods v1 and v2 operate in parallel. Bots registered through v1 are visible in
 || [imbot.chat.add](../outdated/chats/imbot-chat-add.md) | [imbot.v2.Chat.add](./imbot.v2/chats/chat-add.md) | Parameters in `fields.*` ||
 || [imbot.chat.get](../outdated/chats/imbot-chat-get.md) | [imbot.v2.Chat.get](./imbot.v2/chats/chat-get.md) | Returns a Chat object ||
 || [imbot.dialog.get](../outdated/chats/imbot-dialog-get.md) | [imbot.v2.Chat.get](./imbot.v2/chats/chat-get.md) | Returns a Chat object ||
-|| [imbot.chat.updateTitle](../outdated/chats/imbot-chat-update-title.md) | [imbot.v2.Chat.update](./imbot.v2/chats/chat-update.md) | In v2, changing the title is done through a universal chat properties update ||
-|| [imbot.chat.updateColor](../outdated/chats/imbot-chat-update-color.md) | [imbot.v2.Chat.update](./imbot.v2/chats/chat-update.md) | In v2, changing the color is done through a universal chat properties update ||
-|| [imbot.chat.updateAvatar](../outdated/chats/imbot-chat-update-avatar.md) | [imbot.v2.Chat.update](./imbot.v2/chats/chat-update.md) | In v2, changing the avatar is done through a universal chat properties update ||
+|| [imbot.chat.updateTitle](../outdated/chats/imbot-chat-update-title.md) | [imbot.v2.Chat.update](./imbot.v2/chats/chat-update.md) | In v2, changing the title is done through a universal chat property update ||
+|| [imbot.chat.updateColor](../outdated/chats/imbot-chat-update-color.md) | [imbot.v2.Chat.update](./imbot.v2/chats/chat-update.md) | In v2, changing the color is done through a universal chat property update ||
+|| [imbot.chat.updateAvatar](../outdated/chats/imbot-chat-update-avatar.md) | [imbot.v2.Chat.update](./imbot.v2/chats/chat-update.md) | In v2, changing the avatar is done through a universal chat property update ||
 || — | [imbot.v2.Chat.update](./imbot.v2/chats/chat-update.md) | New universal method: update chat properties ||
 || [imbot.chat.user.add](../outdated/chats/imbot-chat-user-add.md) | [imbot.v2.Chat.User.add](./imbot.v2/chats/chat-user-add.md) | — ||
 || [imbot.chat.user.delete](../outdated/chats/imbot-chat-user-delete.md) | [imbot.v2.Chat.User.delete](./imbot.v2/chats/chat-user-delete.md) | — ||
@@ -101,9 +101,9 @@ Methods v1 and v2 operate in parallel. Bots registered through v1 are visible in
 
 The API `imbot.v2` continues to evolve. New features, fixes, and changes with loss of backward compatibility are published in the [API imbot.v2 Change Log](./change-log.md).
 
-If the format of a method's call or response changes, the previous version will continue to be supported for **6 months** from the date of the change publication.
+If the method call or response format changes, the previous version will continue to be supported for **6 months** from the date of the change publication.
 
-## Continue Exploring
+## Continue Learning
 
 - [{#T}](./imbot.v2/bots/bot-register.md)
 - [{#T}](./imbot.v2/events/event-get.md)

@@ -1,4 +1,4 @@
-# Register a new event handler event.bind
+# Register a New Event Handler event.bind
 
 {% note tip "" %}
 
@@ -8,12 +8,12 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Who can execute the method: any user
 
-The method `event.bind` registers a new event handler.
+The `event.bind` method registers a new event handler.
 
-The method works only in the context of [application](../../settings/app-installation/index.md) authorization. It can operate both under a user with portal administration rights and under a regular user. The method for a user without administrator rights is available with limitations:
+This method works only in the context of authorizing the [application](../../settings/app-installation/index.md). It can operate under a user with portal administration rights as well as under a regular user. The method for a user without administrator rights is available with limitations:
 
-1. Offline events are not available; attempting to set them will raise an exception.
-2. Events are set on behalf of the current user (see the description of the `auth_type` parameter). Explicitly specifying an `auth_type` different from the `ID` of the current user will also raise an exception.
+1. Offline events are not available; attempting to set them will generate an exception.
+2. Events are set on behalf of the current user (see the description of the `auth_type` parameter). Explicitly specifying an `auth_type` different from the current user's `ID` will also generate an exception.
 
 {% note info %}
 
@@ -31,28 +31,30 @@ When deleting and updating the application, its actions will be removed. Therefo
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../_includes/required.md) %}
 
-#|
-|| **Name**
+#| 
+|| **Name** 
 `type` | **Description** ||
-|| **event***
+|| **event*** 
 [`string`](../data-types.md) | Event name ||
-|| **handler***
+|| **handler*** 
 [`string`](../data-types.md) | Link to the event handler ||
-|| **auth_type**
-[`integer`](../data-types.md) | User ID under which the event handler is authorized. By default, the authorization of the user whose actions triggered the event will be used ||
-|| **event_type**
-[`string`](../data-types.md) | Values: `online\|offline`. By default, `event_type=online`, and the method's behavior does not change. If `event_type=offline` is called, the method works with [offline events](./offline-events.md) ||
-|| **auth_connector**
+|| **auth_type** 
+[`integer`](../data-types.md) | Identifier of the user under whom the event handler is authorized. By default, the authorization of the user whose actions triggered the event will be used ||
+|| **event_type** 
+[`string`](../data-types.md) | Values: `online|offline`. By default, `event_type=online`, and the method's behavior remains unchanged. If `event_type=offline` is called, the method works with [offline events](./offline-events.md) ||
+|| **auth_connector** 
 [`string`](../data-types.md) | Source key. This parameter is intended for [offline events](./offline-events.md). It allows excluding false event triggers ||
-|| **options**
-[`string`](../data-types.md) | Additional settings for the registered event, if any ||
+|| **options** 
+[`object`](../data-types.md) | Additional settings for the registered event. The set of fields depends on the event.
+
+For the `ONOFFLINEEVENT` event, the `minTimeout` parameter is supported — the minimum interval between notifications in seconds. Default is 1. More details in the article [{#T}](./on-offline-event.md#min-timeout) ||
 |#
 
 ## Code Examples
 
-{% include [Note on examples](../../_includes/examples.md) %}
+{% include [Note on Examples](../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -104,7 +106,7 @@ When deleting and updating the application, its actions will be removed. Therefo
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -123,18 +125,18 @@ HTTP status: **200**
 
 ### Returned Data
 
-#|
-|| **Name**
+#| 
+|| **Name** 
 `type` | **Description** ||
-|| **result**
+|| **result** 
 [`boolean`](../data-types.md) | Success of execution ||
-|| **time**
+|| **time** 
 [`time`](../data-types.md) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {
@@ -143,16 +145,16 @@ HTTP status: **400**
 }
 ```
 
-{% include notitle [error handling](../../_includes/error-info.md) %}
+{% include notitle [Error Handling](../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
-#|
+#| 
 || **Code** | **Error Message** | **Description** ||
-|| `ERROR_EVENT_NOT_FOUND` | Event not found | Incorrect event specified ||
+|| `ERROR_EVENT_NOT_FOUND` | Event not found | The event is incorrectly specified ||
 |#
 
-{% include [system errors](../../_includes/system-errors.md) %}
+{% include [System Errors](../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

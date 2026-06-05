@@ -6,16 +6,16 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-This section covers the lifecycle methods of a chat bot: registration, property updates, data retrieval, list viewing, and deletion.
+The methods manage the lifecycle of a chat bot: registration, property modification, data retrieval, list viewing, and deletion.
 
-> Quick Navigation: [All Methods](#all-methods)
+> Quick navigation: [all methods](#all-methods)
 
 ## How to Work with Bots
 
 1. Register the bot using [imbot.v2.Bot.register](./bot-register.md).
 2. If necessary, update the properties using [imbot.v2.Bot.update](./bot-update.md).
 3. Retrieve data for a single bot using [imbot.v2.Bot.get](./bot-get.md) or a list using [imbot.v2.Bot.list](./bot-list.md).
-4. Unregister the bot using [imbot.v2.Bot.unregister](./bot-unregister.md) if it is no longer needed.
+4. Delete the bot using [imbot.v2.Bot.unregister](./bot-unregister.md) if it is no longer needed.
 
 ## Overview of Methods {#all-methods}
 
@@ -36,4 +36,4 @@ This section covers the lifecycle methods of a chat bot: registration, property 
 
 - [API Change Log for imbot.v2](../../change-log.md)
 - [{#T}](../../index.md)
-- [Chats in imbot.v2](../chats/index.md)
+- [Chats imbot.v2](../chats/index.md)

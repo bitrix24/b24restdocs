@@ -1,4 +1,4 @@
-# Add Custom Field user.userfield.add
+# Add custom field user.userfield.add
 
 {% note tip "" %}
 
@@ -10,31 +10,31 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: administrator
 
-The method `user.userfield.add` adds a custom field.
+The `user.userfield.add` method adds a custom field.
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../_includes/required.md) %}
+{% include [Note on parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **fields***
-[`object`](../../data-types.md)| Values of the fields to add a new custom field ||
+[`object`](../../data-types.md)| Field values for adding a new custom field ||
 |#
 
 ### Parameter fields
 
-{% include [Note on required parameters](../../../_includes/required.md) %}
+{% include [Note on parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **FIELD_NAME***
-[`string`](../../data-types.md)| Name (code) of the field. Prefixed with `UF_USR_`
+[`string`](../../data-types.md)| Field name (code). Supplemented with prefix `UF_USR_`
  ||
 || **USER_TYPE_ID***
-[`string`](../../data-types.md)| Type of the custom field. Possible values:
+[`string`](../../data-types.md)| Custom field type. Possible values:
 - `string` — string
 - `integer` — integer
 - `double` — number
@@ -44,63 +44,63 @@ The method `user.userfield.add` adds a custom field.
 - `file` — file
 - `enumeration` — list
 - `url` — link
-- `address` — Google map address
+- `address` — Google Maps address
 - `money` — money
-- `iblock_section` — Binding to the information block section
-- `iblock_element` — Binding to the information block element
-- `employee` — Binding to the user
-- `crm` — Binding to the CRM entity
-- `crm_status` — Binding to the CRM directory ||
+- `iblock_section` — Link to infoblock section
+- `iblock_element` — Link to infoblock item
+- `employee` — Link to user
+- `crm` — Link to CRM item
+- `crm_status` — Link to CRM directory ||
 || **XML_ID**
 [`string`](../../data-types.md)| External code ||
 || **SORT**
-[`integer`](../../data-types.md)| Sorting order ||
+[`integer`](../../data-types.md)| Sort order ||
 || **MULTIPLE**
-[`boolean`](../../data-types.md)| Is the field multiple. Possible values:
+[`boolean`](../../data-types.md)| Whether the field is multiple. Possible values:
 - `Y` — yes
 - `N` — no
  ||
 || **MANDATORY**
-[`boolean`](../../data-types.md)| Is the custom field mandatory. Possible values:
+[`boolean`](../../data-types.md)| Whether the custom field is required. Possible values:
 - `Y` — yes
 - `N` — no ||
 || **SHOW_FILTER**
-[`boolean`](../../data-types.md)| Show the field in the list filter. Possible values:
+[`boolean`](../../data-types.md)| Whether to show the field in the list filter. Possible values:
 - `Y` — yes
 - `N` — no ||
 || **SHOW_IN_LIST**
-[`boolean`](../../data-types.md)| Show the field in the list. Possible values:
+[`boolean`](../../data-types.md)| Whether to show the field in the list. Possible values:
 - `Y` — yes
 - `N` — no ||
 - || **EDIT_IN_LIST**
-[`boolean`](../../data-types.md)| Edit the field in the list. Possible values:
+[`boolean`](../../data-types.md)| Whether to edit the field in the list. Possible values:
 - `Y` — yes
 - `N` — no ||
 - || **IS_SEARCHABLE**
-[`boolean`](../../data-types.md)| Is the field searchable. Possible values:
+[`boolean`](../../data-types.md)| Whether the field is included in search. Possible values:
 - `Y` — yes
 - `N` — no ||
 || **SETTINGS**
-[`object`](../../data-types.md)| Object in the format `{"field_1": "value_1", ... "field_N": "value_N"}` for passing additional settings for custom fields. Settings are described [below](#settings) ||
+[`object`](../../data-types.md)| An object in `{"field_1": "value_1", ... "field_N": "value_N"}` format to pass additional custom field settings. Settings are described [below](#settings) ||
 || **EDIT_FORM_LABEL**
-[`string`](../../data-types.md)| Label in the edit form. You can pass a string or an object with labels by languages in the format `{"de": "...", "en": "..."}`. When passing a string, the value will be set for all languages ||
+[`string`](../../data-types.md)| Label in the editing form. You can pass a string or an object with labels by language in `{"de": "...", "en": "..."}` format. If a string is passed, the value will be set for all languages ||
 || **LIST_COLUMN_LABEL**
-[`string`](../../data-types.md)| Column header in the list. You can pass a string or an object with labels by languages in the format `{"de": "...", "en": "..."}`. When passing a string, the value will be set for all languages ||
+[`string`](../../data-types.md)| Column header in the list. You can pass a string or an object with labels by language in `{"de": "...", "en": "..."}` format. If a string is passed, the value will be set for all languages ||
 || **LIST_FILTER_LABEL**
-[`string`](../../data-types.md)| Filter header in the list. You can pass a string or an object with labels by languages in the format `{"de": "...", "en": "..."}`. When passing a string, the value will be set for all languages ||
+[`string`](../../data-types.md)| Filter header in the list. You can pass a string or an object with labels by language in `{"de": "...", "en": "..."}` format. If a string is passed, the value will be set for all languages ||
 || **ERROR_MESSAGE**
-[`string`](../../data-types.md)| Error message for invalid input. You can pass a string or an object with texts by languages in the format `{"de": "...", "en": "..."}`. When passing a string, the value will be set for all languages ||
+[`string`](../../data-types.md)| Error message for invalid input. You can pass a string or an object with texts by language in `{"de": "...", "en": "..."}` format. If a string is passed, the value will be set for all languages ||
 || **HELP_MESSAGE**
-[`string`](../../data-types.md)| Help text for the field. You can pass a string or an object with texts by languages in the format `{"de": "...", "en": "..."}`. When passing a string, the value will be set for all languages ||
+[`string`](../../data-types.md)| Tooltip text for the field. You can pass a string or an object with texts by language in `{"de": "...", "en": "..."}` format. If a string is passed, the value will be set for all languages ||
 || **LABEL**
-[`string`](../../data-types.md)| Default name of the custom field. 
+[`string`](../../data-types.md)| Default custom field name. 
 
-The value will be set in the fields `LIST_FILTER_LABEL`, `LIST_COLUMN_LABEL`, `EDIT_FORM_LABEL`, `ERROR_MESSAGE`, `HELP_MESSAGE`, if no value is provided ||
+The value will be set in fields `LIST_FILTER_LABEL`, `LIST_COLUMN_LABEL`, `EDIT_FORM_LABEL`, `ERROR_MESSAGE`, `HELP_MESSAGE` if no value is provided in them ||
 |#
 
 ### Parameter SETTINGS {#settings}
 
-Each type of custom field has its own set of additional settings.
+Each custom field type has its own set of additional configurations.
 
 {% list tabs %}
 
@@ -112,11 +112,11 @@ Each type of custom field has its own set of additional settings.
     || **DEFAULT_VALUE**
     [`string`](../../data-types.md) | Default value.
 
-    Default is `''` ||
+    Default `''` ||
     || **ROWS**
-    [`integer`](../../data-types.md) | Number of rows in the input field. Must be greater than 0.
+    [`integer`](../../data-types.md) | Number of lines in the input field. Must be greater than 0.
 
-    Default is `1` ||
+    Default `1` ||
     |#
 
 - integer
@@ -136,9 +136,9 @@ Each type of custom field has its own set of additional settings.
     || **DEFAULT_VALUE**
     [`double`](../../data-types.md) | Default value ||
     || **PRECISION**
-    [`integer`](../../data-types.md) | Precision of the number. Must be greater than or equal to 0.
+    [`integer`](../../data-types.md) | Number precision. Must be greater than or equal to 0.
 
-    Default is `2` ||
+    Default `2` ||
     |#
 
 - boolean
@@ -147,20 +147,20 @@ Each type of custom field has its own set of additional settings.
     || **Name**
     `type` | **Description** ||
     || **DEFAULT_VALUE**
-    [`integer`](../../data-types.md) | Default value, where `1` — yes, `0` — no.
+    [`integer`](../../data-types.md) | Default value, where `1` is yes, `0` is no.
 
     Possible values:
     - `>= 1` -> 1
     - `<= 0` -> 0
 
-    Default is `0` ||
+    Default `0` ||
     || **DISPLAY**
     [`string`](../../data-types.md) | Appearance. Possible values:
     - `CHECKBOX` — checkbox
     - `RADIO` — radio buttons
     - `DROPDOWN` — dropdown list
 
-    Default is `CHECKBOX` ||
+    Default `CHECKBOX` ||
     |#
 
 - date|datetime
@@ -184,8 +184,8 @@ Each type of custom field has its own set of additional settings.
     - `VALUE` — default value of type `datetime` or `date`
     - `TYPE` — type of the default value:
       - `NONE` — do not set a default value
-      - `NOW` — use the current time/date
-      - `FIXED` — use the time/date from `VALUE`
+      - `NOW` — use current time/date
+      - `FIXED` — use time/date from `VALUE`
 
     Default value:
 
@@ -194,7 +194,7 @@ Each type of custom field has its own set of additional settings.
         VALUE: '',
         TYPE: 'NONE',
     }
-    ``` 
+    ```
     ||
     |#
 
@@ -206,16 +206,16 @@ Each type of custom field has its own set of additional settings.
     || **DISPLAY**
     [`string`](../../data-types.md) | Appearance. Possible values:
     - `LIST` — list
-    - `UI` — input list
+    - `UI` — editable list
     - `CHECKBOX` — checkboxes
     - `DIALOG` — entity selection dialog
 
-    Default is `LIST` ||
-    || **LIST_HEIGHT** | Height of the list. Must be greater than 0.
+    Default `LIST` ||
+    || **LIST_HEIGHT** | List height. Must be greater than 0.
 
     Available only when `DISPLAY = LIST` or `DISPLAY = UI`.
 
-    Default is `1` ||
+    Default `1` ||
     |#
 
 - iblock_section|iblock_element
@@ -224,31 +224,31 @@ Each type of custom field has its own set of additional settings.
     || **Name**
     `type` | **Description** ||
     || **IBLOCK_TYPE_ID**
-    [`string`](../../data-types.md) | Identifier of the information block type.
+    [`string`](../../data-types.md) | Infoblock type identifier.
 
-    Default is `''` ||
+    Default `''` ||
     || **IBLOCK_ID**
-    [`string`](../../data-types.md) | Identifier of the information block.
+    [`string`](../../data-types.md) | Information block identifier.
 
-    Default is `0` ||
+    Default `0` ||
     || **DEFAULT_VALUE**
     [`string`](../../data-types.md) | Default value.
 
-    Default is `''` ||
+    Default `''` ||
     || **DISPLAY**
     [`string`](../../data-types.md) | Appearance. Possible values:
     - `DIALOG` — dialog
-    - `UI` — input list
+    - `UI` — editable list
     - `LIST` — list
     - `CHECKBOX` — checkboxes
 
-    Default is `LIST` ||
+    Default `LIST` ||
     || **LIST_HEIGHT**
-    [`integer`](../../data-types.md) | Height of the list. Must be greater than 0.
+    [`integer`](../../data-types.md) | List height. Must be greater than 0.
 
-    Default is `1` ||
+    Default `1` ||
     || **ACTIVE_FILTER**
-    [`boolean`](../../data-types.md) | Show elements with the active flag enabled. Possible values:
+    [`boolean`](../../data-types.md) | Whether to show items with the activity flag enabled. Possible values:
     - `Y` — yes
     - `N` — no
 
@@ -261,51 +261,110 @@ Each type of custom field has its own set of additional settings.
     || **Name**
     `type` | **Description** ||
     || **ENTITY_TYPE**
-    [`string`](../../data-types.md) | Identifier of the directory type.
+    [`string`](../../data-types.md) | Directory type identifier.
 
     Use [`crm.status.entity.types`](../../crm/status/crm-status-entity-types.md) to find possible values.
 
-    Default is `''` ||
+    Default `''` ||
     |#
 
 - crm
 
-    If none of the following options are provided, the binding to leads will be enabled by default (`LEAD = Y`).
+    If none of the following options are passed, linking to leads (`LEAD = Y`) will be enabled by default.
 
     #|
     || **Name**
     `type` | **Description** ||
     || **LEAD**
-    [`boolean`](../../data-types.md) | Is the binding to [Leads](../../crm/leads/index.md) enabled. Possible values:
+    [`boolean`](../../data-types.md) | Whether binding to [Leads](../../crm/leads/index.md) is enabled. Possible values:
     - `Y` — yes
     - `N` — no
 
     Default is `N` ||
     || **CONTACT**
-    [`boolean`](../../data-types.md) | Is the binding to [Contacts](../../crm/contacts/index.md) enabled. Possible values:
+    [`boolean`](../../data-types.md) | Whether binding to [Contacts](../../crm/contacts/index.md) is enabled. Possible values:
     - `Y` — yes
     - `N` — no
 
     Default is `N` ||
     || **COMPANY**
-    [`boolean`](../../data-types.md) | Is the binding to [Companies](../../crm/companies/index.md) enabled. Possible values:
+    [`boolean`](../../data-types.md) | Whether binding to [Companies](../../crm/companies/index.md) is enabled. Possible values:
     - `Y` — yes
     - `N` — no
 
     Default is `N` ||
     || **DEAL**
-    [`boolean`](../../data-types.md) | Is the binding to [Deals](../../crm/deals/index.md) enabled. Possible values:
+    [`boolean`](../../data-types.md) | Whether binding to [Deals](../../crm/deals/index.md) is enabled. Possible values:
     - `Y` — yes
     - `N` — no
 
     Default is `N` ||
     |#
 
+- Python
+
+    Example
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    fields = {
+        "FIELD_NAME": "UF_USR_SKILLS_PROFILE",
+        "USER_TYPE_ID": "string",
+        "XML_ID": "UF_USR_SKILLS_PROFILE",
+        "SORT": 150,
+        "MULTIPLE": "N",
+        "MANDATORY": "N",
+        "SHOW_FILTER": "Y",
+        "SHOW_IN_LIST": "Y",
+        "EDIT_IN_LIST": "Y",
+        "IS_SEARCHABLE": "Y",
+        "SETTINGS": {
+            "DEFAULT_VALUE": "Python integration engineer",
+            "ROWS": 3,
+        },
+        "EDIT_FORM_LABEL": {
+            "en": "Skills profile",
+        },
+        "LIST_COLUMN_LABEL": {
+            "en": "Skills profile",
+        },
+        "LIST_FILTER_LABEL": {
+            "en": "Skills profile",
+        },
+        "ERROR_MESSAGE": {
+            "en": "Skills profile is invalid",
+        },
+        "HELP_MESSAGE": {
+            "en": "Store a short integration skills summary.",
+        },
+        "LABEL": "Skills profile",
+    }
+
+    try:
+        bitrix_response = client.user.userfield.add(
+            fields=fields,
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print("Bitrix SDK error", error.message, sep="\n")
+    except Exception as error:
+        print("Unexpected error", error, sep="\n")
+    ```
 {% endlist %}
 
 {% note info "" %}
 
-If you need to create a custom field with an added custom type via the API, you must specify `rest_<app_number>_<USER_TYPE_ID of the added type>` in the `USER_TYPE_ID` field. For example, `rest_436278_test_type`.
+If it is necessary to create a custom field with an added custom type via the API, you must specify `rest_<app_number>_<added_type_USER_TYPE_ID>` in the `USER_TYPE_ID` field. For example, `rest_436278_test_type`.
 
 {% endnote %}
 
@@ -334,9 +393,9 @@ If you need to create a custom field with an added custom type via the API, you 
             "SETTINGS": {
                 "DEAL": "Y"
             },
-            "LABEL": "Binding to CRM deals",
+            "LABEL": "CRM Deal Linking",
             "EDIT_FORM_LABEL": {
-                "de": "Binding to CRM deals"
+                "de": "CRM Deal Linking"
             }
         }
     }' \
@@ -362,9 +421,9 @@ If you need to create a custom field with an added custom type via the API, you 
             "SETTINGS": {
                 "DEAL": "Y"
             },
-            "LABEL": "Binding to CRM deals",
+            "LABEL": "CRM Deal Linking",
             "EDIT_FORM_LABEL": {
-                "de": "Binding to CRM deals"
+                "de": "CRM Deal Linking"
             }
         },
         "auth": "**put_access_token_here**"
@@ -372,43 +431,110 @@ If you need to create a custom field with an added custom type via the API, you 
     https://**put_your_bitrix24_address**/rest/user.userfield.add
     ```
     
-- JS
+- JS (TS)
 
-    ```javascript
-    try
-    {
-        const response = await $b24.callMethod(
-            'user.userfield.add',
-            {
-                fields: {
-                    FIELD_NAME: 'UF_USER_DEALS',
-                    USER_TYPE_ID: 'crm',
-                    XML_ID: 'UF_CRM_DEALS',
-                    SORT: 100,
-                    MULTIPLE: 'Y',
-                    MANDATORY: 'N',
-                    SHOW_FILTER: 'N',
-                    SHOW_IN_LIST: 'Y',
-                    EDIT_IN_LIST: 'Y',
-                    SETTINGS: {
-                        DEAL: 'Y',
-                    },
-                    LABEL: 'Binding to CRM deals',
-                    EDIT_FORM_LABEL: {
-                        de: 'Binding to CRM deals'
-                    },
-                }
-            }
-        );
+    ```ts
+    // This snippet is an ES module: top-level await requires type="module" or a bundler.
+    // $b24 is an already-initialized SDK instance (see the SDK "Get started" guide).
+    import { Text } from '@bitrix24/b24jssdk'
+    import type { B24Frame } from '@bitrix24/b24jssdk'
 
-        const result = response.getData().result;
-        console.log('Created element with ID:', result);
-        processResult(result);
+    declare const $b24: B24Frame
+
+    // Shape of the payload returned in result (match the "response handling" section of the page)
+    type AddUserFieldResult = number
+
+    try {
+      const response = await $b24.actions.v2.call.make<AddUserFieldResult>({
+        method: 'user.userfield.add',
+        params: {
+          fields: {
+            FIELD_NAME: 'UF_USER_DEALS',
+            USER_TYPE_ID: 'crm',
+            XML_ID: 'UF_CRM_DEALS',
+            SORT: 100,
+            MULTIPLE: 'Y',
+            MANDATORY: 'N',
+            SHOW_FILTER: 'N',
+            SHOW_IN_LIST: 'Y',
+            EDIT_IN_LIST: 'Y',
+            SETTINGS: {
+              DEAL: 'Y',
+            },
+            LABEL: 'CRM deals binding',
+            EDIT_FORM_LABEL: {
+              ru: 'CRM deals binding',
+            },
+          },
+        },
+        requestId: Text.getUuidRfc4122()
+      })
+
+      // The payload is available only on a successful response
+      if (!response.isSuccess) {
+        console.error(response.getErrorMessages().join('; '))
+      } else {
+        const result = response.getData()!.result
+        console.info('Created user field with ID:', result)
+      }
+    } catch (error) {
+      // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+      console.error(error)
     }
-    catch( error )
-    {
-        console.error('Error:', error);
-    }
+    ```
+
+- JS (UMD)
+
+    ```html
+    <!-- Load the SDK (UMD build); it is exposed as the global B24Js -->
+    <script src="https://unpkg.com/@bitrix24/b24jssdk@1/dist/umd/index.min.js"></script>
+    <script>
+      async function addUserField() {
+        try {
+          // Initialize the SDK inside a Bitrix24 frame
+          const $b24 = await B24Js.initializeB24Frame()
+
+          const response = await $b24.actions.v2.call.make({
+            method: 'user.userfield.add',
+            params: {
+              fields: {
+                FIELD_NAME: 'UF_USER_DEALS',
+                USER_TYPE_ID: 'crm',
+                XML_ID: 'UF_CRM_DEALS',
+                SORT: 100,
+                MULTIPLE: 'Y',
+                MANDATORY: 'N',
+                SHOW_FILTER: 'N',
+                SHOW_IN_LIST: 'Y',
+                EDIT_IN_LIST: 'Y',
+                SETTINGS: {
+                  DEAL: 'Y',
+                },
+                LABEL: 'CRM deals binding',
+                EDIT_FORM_LABEL: {
+                  ru: 'CRM deals binding',
+                },
+              },
+            },
+            requestId: B24Js.Text.getUuidRfc4122()
+          })
+
+          // The payload is available only on a successful response
+          if (!response.isSuccess) {
+            console.error(response.getErrorMessages().join('; '))
+            return
+          }
+
+          const result = response.getData().result
+          console.info('Created user field with ID:', result)
+        } catch (error) {
+          // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+          console.error(error)
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', addUserField)
+    </script>
     ```
 
 - PHP
@@ -433,9 +559,9 @@ If you need to create a custom field with an added custom type via the API, you 
                         'SETTINGS' => [
                             'DEAL' => 'Y',
                         ],
-                        'LABEL' => 'Binding to CRM deals',
+                        'LABEL' => 'CRM Deal Linking',
                         'EDIT_FORM_LABEL' => [
-                            'de' => 'Binding to CRM deals'
+                            'de' => 'CRM Deal Linking'
                         ],
                     ]
                 ]
@@ -473,9 +599,9 @@ If you need to create a custom field with an added custom type via the API, you 
                 SETTINGS: {
                     DEAL: "Y",
                 },
-                LABEL: "Binding to CRM deals",
+                LABEL: "CRM Deal Linking",
                 EDIT_FORM_LABEL: {
-                    de: "Binding to CRM deals"
+                    ru: "CRM Deal Linking"
                 },
             },
         },
@@ -510,9 +636,9 @@ If you need to create a custom field with an added custom type via the API, you 
                 'SETTINGS' => [
                     'DEAL' => 'Y',
                 ],
-                'LABEL' => 'Binding to CRM deals',
+                'LABEL' => 'CRM Deal Linking',
                 'EDIT_FORM_LABEL' => [
-                    'de' => 'Binding to CRM deals'
+                    'de' => 'CRM Deal Linking'
                 ],
             ]
         ]
@@ -552,7 +678,7 @@ HTTP status: **200**
 || **result**
 [`integer`](../../data-types.md) | Identifier of the created custom field ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the request execution time ||
+[`time`](../../data-types.md#time) | Request execution time information ||
 |#
 
 ## Error Handling
@@ -566,23 +692,23 @@ HTTP status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
 || **Code** | **Description** | **Value** ||
-|| ERROR_ARGUMENT | Argument 'USER_TYPE_ID' is null or empty | `USER_TYPE_ID` is not set ||
-|| ERROR_ARGUMENT | Argument 'HANDLER' is null or empty | `HANDLER` is not set ||
-|| ERROR_CORE | Field \*** for the USER object already exists | Field \*** for the `USER` object already exists ||
-|| ERROR_CORE | Fail to create new user field | Error creating field ||
-|| Empty string | The \u0027FIELD_NAME\u0027 field is not found. | Mandatory field `FIELD_NAME` is not set ||
-|| Empty string | The \u0027USER_TYPE_ID\u0027 field is not found. | Mandatory field `USER_TYPE_ID` is not set ||
+|| ERROR_ARGUMENT | Argument 'USER_TYPE_ID' is null or empty | Not specified `USER_TYPE_ID` ||
+|| ERROR_ARGUMENT | Argument 'HANDLER' is null or empty | Not specified `HANDLER` ||
+|| ERROR_CORE | Field \*** for USER object already exists | Field \*** for `USER` object already exists ||
+|| ERROR_CORE | Fail to create new user field | Error while creating field ||
+|| Empty string | The \u0027FIELD_NAME\u0027 field is not found. | Mandatory field `FIELD_NAME` is not specified ||
+|| Empty string | The \u0027USER_TYPE_ID\u0027 field is not found. | Mandatory field `USER_TYPE_ID` is not specified ||
 |#
 
-{% include [system errors](../../../_includes/system-errors.md) %}
+{% include [System errors](../../../_includes/system-errors.md) %}
 
-## Continue Learning 
+## Continue Learning
 
 - [{#T}](./user-userfield-update.md)
 - [{#T}](./user-userfield-list.md)

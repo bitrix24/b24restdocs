@@ -14,7 +14,7 @@ The method `imbot.v2.File.upload` uploads a file to the chat on behalf of the bo
 
 ## Method Parameters
 
-{% include [Parameter Note](../../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -24,7 +24,7 @@ The method `imbot.v2.File.upload` uploads a file to the chat on behalf of the bo
 || **botToken**
 [`string`](../../../../data-types.md) | Unique authorization token for the bot. Required for webhook authorization, not needed for OAuth.
 
-Pass the same botToken that was specified during the registration of the chat bot ||
+Pass the same botToken that was specified during the chat bot registration ||
 || **dialogId***
 [`string`](../../../../data-types.md) | Dialog ID. For group chats — `chat{chatId}`, for personal chats — `{userId}` ||
 || **fields***
@@ -41,7 +41,7 @@ Pass the same botToken that was specified during the registration of the chat bo
 || **content***
 [`string`](../../../../data-types.md) | File content in [Base64](../../../../files/how-to-upload-files.md) encoding. Maximum size — 100 MB ||
 || **message**
-[`string`](../../../../data-types.md) | Text message sent along with the file ||
+[`string`](../../../../data-types.md) | Text of the message sent along with the file ||
 |#
 
 {% note info "" %}
@@ -52,13 +52,13 @@ How to prepare the value for `content`:
 2. Encode the content in Base64.
 3. Pass only the Base64 string, without the prefix `data:*/*;base64,`.
 
-More details: [How to upload files](../../../../files/how-to-upload-files.md#how-to-encode-file-to-base64).
+More details: [How to upload files](../../../../files/how-to-upload-files.md#how-to-encode-file-in-base64).
 
 {% endnote %}
 
 ## Code Examples
 
-{% include [Example Note](../../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -178,7 +178,7 @@ More details: [How to upload files](../../../../files/how-to-upload-files.md#how
 
 ## Response Handling
 
-HTTP Code: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -241,7 +241,7 @@ HTTP Code: **200**
 [`integer`](../../../../data-types.md) | File size in bytes ||
 |#
 
-Complete description of all object fields can be found on the [Objects and Fields](../../entities.md) page.
+Complete descriptions of all object fields can be found on the [Objects and Fields](../../entities.md) page.
 
 ## Error Handling
 
@@ -263,7 +263,7 @@ HTTP Status: **400**, **403**
 || `BOT_TOKEN_NOT_SPECIFIED` | Bot token is not specified | `botToken` is not specified. Required for webhook authorization ||
 || `BOT_ID_REQUIRED` | Bot ID is required | `botId` is not specified ||
 || `BOT_NOT_FOUND` | Bot not found | Bot not found ||
-|| `BOT_OWNERSHIP_ERROR` | Bot is registered by another application | Bot is registered by another application ||
+|| `BOT_OWNERSHIP_ERROR` | Bot is registered by another application | Bot registered by another application ||
 || `FILE_EMPTY` | File name or content is empty | File name or content is not specified ||
 || `FILE_INVALID_CONTENT` | Invalid base64 content | Invalid Base64 ||
 || `FILE_FOLDER_ERROR` | Failed to get chat folder | Failed to get chat folder ||

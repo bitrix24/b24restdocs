@@ -1,4 +1,4 @@
-# Get the list of fields tasks.task.getFields
+# Get the List of Fields tasks.task.getFields
 
 {% note tip "" %}
 
@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: any user
 
-The method `tasks.task.getFields` returns the description of standard and custom fields of a task.
+The method `tasks.task.getFields` returns a description of standard and custom fields of a task.
 
 ## Method Parameters
 
@@ -18,7 +18,7 @@ No parameters.
 
 ## Code Examples
 
-{% include [Examples note](../../_includes/examples.md) %}
+{% include [Examples Note](../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -42,25 +42,85 @@ No parameters.
     https://**put_your_bitrix24_address**/rest/tasks.task.getFields
     ```
 
-- JS
+- JS (TS)
 
-    ```javascript
-    try
-    {
-        const response = await $b24.callMethod(
-            'tasks.task.getFields',
-            {}
-        );
-        
-        const result = response.getData().result;
-        console.log('Task fields:', result);
-        
-        processResult(result);
+    ```ts
+    // This snippet is an ES module: top-level await requires type="module" or a bundler.
+    // $b24 is an already-initialized SDK instance (see the SDK "Get started" guide).
+    import { Text } from '@bitrix24/b24jssdk'
+    import type { B24Frame } from '@bitrix24/b24jssdk'
+
+    declare const $b24: B24Frame
+
+    // A single field descriptor and the map returned in result.fields
+    type TaskFieldDescription = {
+      title: string | null
+      type: string
+      required?: boolean
+      primary?: boolean
+      default?: unknown
+      values?: Record<string, string> | string[]
     }
-    catch( error )
-    {
-        console.error('Error:', error);
+    // Shape of the payload returned in result (match the "response handling" section of the page)
+    type TaskFieldsResult = {
+      fields: Record<string, TaskFieldDescription>
     }
+
+    try {
+      // tasks.task.getFields takes no parameters
+      const response = await $b24.actions.v2.call.make<TaskFieldsResult>({
+        method: 'tasks.task.getFields',
+        params: {},
+        requestId: Text.getUuidRfc4122() // optional unique tracking id for this request
+      })
+
+      // The payload is available only on a successful response
+      if (!response.isSuccess) {
+        console.error(response.getErrorMessages().join('; '))
+      } else {
+        const fields = response.getData()!.result.fields
+        console.info(`Loaded ${Object.keys(fields).length} task fields`)
+      }
+    } catch (error) {
+      // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+      console.error(error)
+    }
+    ```
+
+- JS (UMD)
+
+    ```html
+    <!-- Load the SDK (UMD build); it is exposed as the global B24Js -->
+    <script src="https://unpkg.com/@bitrix24/b24jssdk@1/dist/umd/index.min.js"></script>
+    <script>
+      async function loadTaskFields() {
+        try {
+          // Initialize the SDK inside a Bitrix24 frame
+          const $b24 = await B24Js.initializeB24Frame()
+
+          // tasks.task.getFields takes no parameters
+          const response = await $b24.actions.v2.call.make({
+            method: 'tasks.task.getFields',
+            params: {},
+            requestId: B24Js.Text.getUuidRfc4122() // optional unique tracking id for this request
+          })
+
+          // The payload is available only on a successful response
+          if (!response.isSuccess) {
+            console.error(response.getErrorMessages().join('; '))
+            return
+          }
+
+          const fields = response.getData().result.fields
+          console.info(`Loaded ${Object.keys(fields).length} task fields`)
+        } catch (error) {
+          // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+          console.error(error)
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', loadTaskFields)
+    </script>
     ```
 
 - PHP
@@ -119,7 +179,7 @@ No parameters.
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -131,7 +191,7 @@ HTTP status: **200**
                 "primary": true
             },
             "PARENT_ID": {
-                "title": "Base task ID",
+                "title": "Base Task ID",
                 "type": "integer",
                 "default": 0
             },
@@ -169,7 +229,7 @@ HTTP status: **200**
                 "values": {
                     "2": "Pending",
                     "3": "In Progress",
-                    "4": "Awaiting Control",
+                    "4": "Awaiting Review",
                     "5": "Completed",
                     "6": "Deferred"
                 },
@@ -194,7 +254,7 @@ HTTP status: **200**
                 "default": "N"
             },
             "REPLICATE": {
-                "title": "Recurring task",
+                "title": "Recurring Task",
                 "type": "enum",
                 "values": {
                     "Y": "Yes",
@@ -232,7 +292,7 @@ HTTP status: **200**
                 "type": "datetime"
             },
             "RESPONSIBLE_ID": {
-                "title": "Assignee",
+                "title": "Participant",
                 "type": "integer",
                 "required": true
             },
@@ -245,28 +305,28 @@ HTTP status: **200**
                 "type": "array"
             },
             "CHANGED_BY": {
-                "title": "Changed by",
+                "title": "Modified By",
                 "type": "integer"
             },
             "CHANGED_DATE": {
-                "title": "Change date",
+                "title": "Modification Date",
                 "type": "datetime"
             },
             "STATUS_CHANGED_BY": {
-                "title": "Status changed by",
+                "title": "Status Changed By",
                 "type": "integer"
             },
             "STATUS_CHANGED_DATE": {
-                "title": "Status change date",
+                "title": "Status Change Date",
                 "type": "datetime"
             },
             "CLOSED_BY": {
-                "title": "Closed by",
+                "title": "Closed By",
                 "type": "integer",
                 "default": null
             },
             "CLOSED_DATE": {
-                "title": "Closing date",
+                "title": "Closure Date",
                 "type": "datetime",
                 "default": null
             },
@@ -276,7 +336,7 @@ HTTP status: **200**
                 "default": null
             },
             "DATE_START": {
-                "title": "Start date",
+                "title": "Start Date",
                 "type": "datetime",
                 "default": null
             },
@@ -286,12 +346,12 @@ HTTP status: **200**
                 "default": null
             },
             "START_DATE_PLAN": {
-                "title": "Planned start",
+                "title": "Planned Start",
                 "type": "datetime",
                 "default": null
             },
             "END_DATE_PLAN": {
-                "title": "Planned completion",
+                "title": "Planned Completion",
                 "type": "datetime",
                 "default": null
             },
@@ -306,7 +366,7 @@ HTTP status: **200**
                 "default": null
             },
             "COMMENTS_COUNT": {
-                "title": "Number of comments",
+                "title": "Number of Comments",
                 "type": "integer",
                 "default": 0
             },
@@ -339,7 +399,7 @@ HTTP status: **200**
                 "default": "N"
             },
             "TASK_CONTROL": {
-                "title": "Accept work",
+                "title": "Accept Work",
                 "type": "enum",
                 "values": {
                     "Y": "Yes",
@@ -348,7 +408,7 @@ HTTP status: **200**
                 "default": "N"
             },
             "ADD_IN_REPORT": {
-                "title": "Add to report",
+                "title": "Add to Report",
                 "type": "enum",
                 "values": {
                     "Y": "Yes",
@@ -357,7 +417,7 @@ HTTP status: **200**
                 "default": "N"
             },
             "FORKED_BY_TEMPLATE_ID": {
-                "title": "Created from template",
+                "title": "Created from Template",
                 "type": "enum",
                 "values": {
                     "Y": "Yes",
@@ -366,15 +426,15 @@ HTTP status: **200**
                 "default": "N"
             },
             "TIME_ESTIMATE": {
-                "title": "Estimated time",
+                "title": "Estimated Time",
                 "type": "integer"
             },
             "TIME_SPENT_IN_LOGS": {
-                "title": "Time spent from change history",
+                "title": "Time Spent from Change History",
                 "type": "integer"
             },
             "MATCH_WORK_TIME": {
-                "title": "Skip weekends",
+                "title": "Skip Weekends",
                 "type": "integer"
             },
             "FORUM_TOPIC_ID": {
@@ -390,7 +450,7 @@ HTTP status: **200**
                 "type": "string"
             },
             "SUBORDINATE": {
-                "title": "Subordinate task",
+                "title": "Subordinate Task",
                 "type": "enum",
                 "values": {
                     "Y": "Yes",
@@ -423,11 +483,11 @@ HTTP status: **200**
                 "default": null
             },
             "VIEWED_DATE": {
-                "title": "Last viewed date",
+                "title": "Last Viewed Date",
                 "type": "datetime"
             },
             "SORTING": {
-                "title": "Sorting index",
+                "title": "Sorting Index",
                 "type": "double"
             },
             "DURATION_PLAN": {
@@ -451,7 +511,7 @@ HTTP status: **200**
                     "hours",
                     "days",
                     "weeks",
-                    "monts",
+                    "months",
                     "years"
                 ],
                 "default": "days"
@@ -489,11 +549,11 @@ HTTP status: **200**
                 "default": 0
             },
             "UF_CRM_TASK": {
-                "title": "CRM entities",
+                "title": "CRM Entities",
                 "type": "crm"
             },
             "UF_TASK_WEBDAV_FILES": {
-                "title": "Upload files",
+                "title": "Upload Files",
                 "type": "disk_file"
             },
             "UF_MAIL_MESSAGE": {
@@ -501,7 +561,7 @@ HTTP status: **200**
                 "type": "mail_message"
             },
             "UF_NEW_TASKS_FIELD": {
-                "title": "New task field",
+                "title": "New Task Field",
                 "type": "string"
             }
         }
@@ -522,7 +582,7 @@ HTTP status: **200**
 ### Returned Data
 
 #|
-|| **Title**
+|| **Name**
 `type` | **Description** ||
 || **result**
 [`object`](../data-types.md) | Object with [task field descriptions](./fields.md) ||

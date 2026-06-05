@@ -1,4 +1,4 @@
-# Get a set of contacts associated with a deal crm.deal.contact.items.get
+# Retrieve a Set of Contacts Associated with a Specified Deal crm.deal.contact.items.get
 
 {% note tip "" %}
 
@@ -6,60 +6,74 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-{% note warning "We are still updating this page" %}
-
-Some data may be missing — we will complete it shortly.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- parameter type is not specified
-- examples are missing (in other languages)
-- response in case of error is missing
-
-{% endnote %}
-
-{% endif %}
-
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: a user with "read" access permission for deals
 
 The method `crm.deal.contact.items.get` returns a set of contacts associated with the specified deal.
 
+## Method Parameters
+
+{% include [Note on Parameters](../../../../_includes/required.md) %}
+
 #|
-|| **Parameter** | **Description** ||
-|| **id**^*^ | Identifier of the deal. ||
+|| **Name**
+`type` | **Description** ||
+|| **id***
+[`integer`](../../../data-types.md) | Identifier of the deal
+
+This can be obtained using the methods [crm.deal.list](../crm-deal-list.md) or [crm.deal.add](../crm-deal-add.md) ||
 |#
 
-{% include [Footnote about parameters](../../../../_includes/required.md) %}
+## Code Examples
 
-## Example
+{% include [Note on Examples](../../../../_includes/examples.md) %}
+
+Example of retrieving all linked contacts for a deal with `id = 1875`.
 
 {% list tabs %}
+
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"id":1875}' \
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.deal.contact.items.get
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"id":1875,"auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/crm.deal.contact.items.get
+    ```
 
 - JS
 
     ```js
     try
     {
-    	const id = prompt("Enter ID");
     	const response = await $b24.callMethod(
-    		"crm.deal.contact.items.get",
+    		'crm.deal.contact.items.get',
     		{
-    			id: id
+    			id: 1875,
     		}
     	);
     	
     	const result = response.getData().result;
-    	console.dir(result);
+    	result.error()
+    		? console.error(result.error())
+    		: console.info(result)
+    	;
     }
-    catch(error)
+    catch( error )
     {
-    	console.error(error);
+    	console.error('Error:', error);
     }
     ```
 
@@ -67,54 +81,189 @@ The method `crm.deal.contact.items.get` returns a set of contacts associated wit
 
     ```php
     try {
-        $dealId = 123; // Replace with the actual deal ID
-        $result = $serviceBuilder
-            ->getCRMScope()
-            ->dealContact()
-            ->itemsGet($dealId);
-
-        foreach ($result->getDealContacts() as $item) {
-            print("CONTACT_ID: " . $item->CONTACT_ID . "\n");
-            print("SORT: " . $item->SORT . "\n");
-            print("ROLE_ID: " . $item->ROLE_ID . "\n");
-            print("IS_PRIMARY: " . $item->IS_PRIMARY . "\n");
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.deal.contact.items.get',
+                [
+                    'id' => 1875,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Data: ' . print_r($result->data(), true);
         }
+    
     } catch (Throwable $e) {
-        print("Error: " . $e->getMessage());
+        error_log($e->getMessage());
+        echo 'Error getting deal contact items: ' . $e->getMessage();
     }
     ```
 
 - BX24.js
 
     ```js
-    var id = prompt("Enter ID");
     BX24.callMethod(
-        "crm.deal.contact.items.get",
+        'crm.deal.contact.items.get',
         {
-            id: id
+            id: 1875,
         },
-        function(result)
-        {
-            if(result.error())
-                console.error(result.error());
-            else
-                console.dir(result.data());
-        }
+        (result) => {
+            result.error()
+                ? console.error(result.error())
+                : console.info(result.data())
+            ;
+        },
     );
     ```
 
+- PHP CRest
+
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'crm.deal.contact.items.get',
+        [
+            'id' => 1875
+        ]
+    );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
+    ```
+
+- Python
+
+    Example
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.deal.contact.items.get(bitrix_id=123).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
 {% endlist %}
 
-{% include [Footnote about examples](../../../../_includes/examples.md) %}
+## Response Handling
 
-## Response in case of success
+HTTP Status: **200**
 
-The result is returned as an array of objects, each containing the following fields:
+```json
+{
+    "result": [
+        {
+            "CONTACT_ID": 55,
+            "SORT": 100,
+            "ROLE_ID": 0,
+            "IS_PRIMARY": "Y"
+        },
+        {
+            "CONTACT_ID": 54,
+            "SORT": 200,
+            "ROLE_ID": 0,
+            "IS_PRIMARY": "N"
+        },
+        {
+            "CONTACT_ID": 56,
+            "SORT": 400,
+            "ROLE_ID": 0,
+            "IS_PRIMARY": "N"
+        }
+    ],
+    "time": {
+        "start": 1773231773,
+        "finish": 1773231773.901404,
+        "duration": 0.9014039039611816,
+        "processing": 0,
+        "date_start": "2026-03-11T15:22:53+02:00",
+        "date_finish": "2026-03-11T15:22:53+02:00",
+        "operating_reset_at": 1773232373,
+        "operating": 0
+    }
+}
+```
+
+### Returned Data
 
 #|
-|| **Field** | **Description** ||
-|| **CONTACT_ID** | Identifier of the contact ||
-|| **SORT** | Sort index ||
-|| **ROLE_ID** | Identifier of the role (reserved) ||
-|| **IS_PRIMARY** | Flag for primary contact ||
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`deal_contact_binding[]`](#deal_contact_binding) | Root element of the response. Contains an array with information about contacts linked to the deal ||
+|| **time**
+[`time`](../../../data-types.md#time) | Information about the execution time of the request ||
 |#
+
+### Parameter deal_contact_binding {#deal_contact_binding}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **CONTACT_ID**
+[`integer`](../../../data-types.md) | Identifier of the contact ||
+|| **SORT**
+[`integer`](../../../data-types.md) | Sorting index ||
+|| **ROLE_ID**
+[`integer`](../../../data-types.md) | Role identifier (system field) ||
+|| **IS_PRIMARY**
+[`char`](../../../data-types.md) | Indicates whether the binding is primary. Possible values:
+- `Y` — yes
+- `N` — no ||
+|#
+
+## Error Handling
+
+HTTP Status: **400**
+
+```json
+{
+    "error": "",
+    "error_description": "Not found."
+}
+```
+
+{% include notitle [error handling](../../../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+#|
+|| **Code** | **Description** | **Value** ||
+|| `-` | `The parameter ownerEntityID is invalid or not defined.` | The provided `id` is less than 1 or not provided at all ||
+|| `-` | `Access denied.` | The user does not have permission to read deals ||
+|| `ACCESS_DENIED` | `Access denied!` | No permission to read the deal ||
+|| `-` | `Not found.` | The deal with the provided `id` was not found ||
+|#
+
+{% include [system errors](../../../../_includes/system-errors.md) %}
+
+## Continue Learning
+
+- [{#T}](./crm-deal-contact-add.md)
+- [{#T}](./crm-deal-contact-delete.md)
+- [{#T}](./crm-deal-contact-fields.md)
+- [{#T}](./crm-deal-contact-items-set.md)
+- [{#T}](./crm-deal-contact-items-delete.md)

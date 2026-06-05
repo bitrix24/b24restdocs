@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: administrator
 
-The method `user.userfield.list` retrieves a list of custom fields based on the filter.
+The `user.userfield.list` method retrieves a list of custom fields by filter.
 
 ## Method Parameters
 
@@ -18,47 +18,47 @@ The method `user.userfield.list` retrieves a list of custom fields based on the 
 || **Name**
 `type` | **Description** ||
 || **order**
-[`string`](../../data-types.md)\|[`array`](../../data-types.md) | Sorting of the selected custom fields in the format `{"field_1": "order_1", ... "field_N": "order_N"}`.
+[`string`](../../data-types.md)\|[`array`](../../data-types.md) | Sorting of selected custom fields in `{"field_1": "order_1", ... "field_N": "order_N"}` format.
 
 Possible values for `field_N`:
 
-- `ID` — identifier of the custom field
-- `FIELD_NAME` — name of the field
-- `USER_TYPE_ID` — data type of the field
+- `ID` — custom field identifier
+- `FIELD_NAME` — field name
+- `USER_TYPE_ID` — field data type
 - `XML_ID` — external code
-- `SORT` — sorting order of the field
-- `MULTIPLE` — ability to input multiple values
-- `MANDATORY` — requirement for filling
-- `SHOW_FILTER` — display of the field in the user list filter
-- `SHOW_IN_LIST` — display of the field in the user list
-- `EDIT_IN_LIST` — ability to edit the field in the user list
-- `IS_SEARCHABLE` — ability to search by the field
+- `SORT` — field sorting order
+- `MULTIPLE` — multi-value capability
+- `MANDATORY` — mandatory field
+- `SHOW_FILTER` — show field in user list filter
+- `SHOW_IN_LIST` — show field in user list
+- `EDIT_IN_LIST` — field editing capability in user list
+- `IS_SEARCHABLE` — field search capability
 
 Possible values for `order_N`:
 
-- `asc` — in ascending order
-- `desc` — in descending order
+- `asc` — ascending
+- `desc` — descending
  ||
 || **filter** 
-[`array`](../../data-types.md)| Filter for the selected custom fields in the format `{"field_1": "value_1", ... "field_N": "value_N"}`.
+[`array`](../../data-types.md)| Filter of selected custom fields in `{"field_1": "value_1", ... "field_N": "value_N"}` format.
 
-Possible values for `field_N` are similar to those in sorting.
+Possible values for `field_N` are similar to the fields in sorting.
 
-An additional prefix can be assigned to the key to clarify the filter behavior. Possible prefix values:
+A key can be assigned an additional prefix to specify the filter behavior. Possible prefix values:
 - `>=` — greater than or equal to
 - `>` — greater than
 - `<=` — less than or equal to
 - `<` — less than
-- `@` — IN (an array is passed as the value)
-- `!@` — NOT IN (an array is passed as the value)
-- `%` — LIKE, substring search. The `%` symbol should not be passed in the filter value. The search looks for the substring in any position of the string.
-- `=%` — LIKE, substring search. The `%` symbol should be passed in the value. Examples:
+- `@` — IN (an array is passed as a value)
+- `!@` — NOT IN (an array is passed as a value)
+- `%` — LIKE, substring search. The `%` character does not need to be passed in the filter value. The search looks for the substring in any position of the string.
+- `=%` — LIKE, substring search. The `%` character must be passed in the value. Examples:
   - `"mol%"` — searching for values starting with "mol"
   - `"%mol"` — searching for values ending with "mol"
   - `"%mol%"` — searching for values where "mol" can be in any position
 - `%=` — LIKE (similar to `=%`)
-- `!%` — NOT LIKE, substring search. The `%` symbol should not be passed in the filter value. The search goes from both sides.
-- `!=%` — NOT LIKE, substring search. The `%` symbol should be passed in the value. Examples:
+- `!%` — NOT LIKE, substring search. The `%` character does not need to be passed in the filter value. The search goes from both sides.
+- `!=%` — NOT LIKE, substring search. The `%` character must be passed in the value. Examples:
   - `"mol%"` — searching for values not starting with "mol"
   - `"%mol"` — searching for values not ending with "mol"
   - `"%mol%"` — searching for values where the substring "mol" is not present in any position
@@ -71,7 +71,7 @@ An additional prefix can be assigned to the key to clarify the filter behavior. 
 
 ## Code Examples
 
-{% include [Examples Note](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -95,64 +95,107 @@ An additional prefix can be assigned to the key to clarify the filter behavior. 
     https://**put_your_bitrix24_address**/rest/user.userfield.list
     ```
 
-- JS
+- JS (TS)
 
-    ```js
-    // callListMethod: Retrieves all data at once. Use only for small selections (< 1000 items) due to high memory usage.
-    
-    try {
-      const response = await $b24.callListMethod(
-        'user.userfield.list',
-        {
-          order: {
-            id: 'desc',
-          },
-          filter: {
-            id: 13
-          },
-        },
-        (progress) => { console.log('Progress:', progress) }
-      )
-      const items = response.getData() || []
-      for (const entity of items) { console.log('Entity:', entity) }
-    } catch (error) {
-      console.error('Request failed', error)
+    ```ts
+    // This snippet is an ES module: top-level await requires type="module" or a bundler.
+    // $b24 is an already-initialized SDK instance (see the SDK "Get started" guide).
+    import { Text } from '@bitrix24/b24jssdk'
+    import type { B24Frame } from '@bitrix24/b24jssdk'
+
+    declare const $b24: B24Frame
+
+    // Shape of each user field returned in result[]
+    type UserUserfieldItem = {
+      ID: string
+      ENTITY_ID: string
+      FIELD_NAME: string
+      USER_TYPE_ID: string
+      XML_ID: string | null
+      SORT: string
+      MULTIPLE: 'Y' | 'N'
+      MANDATORY: 'Y' | 'N'
+      SHOW_FILTER: string
+      SHOW_IN_LIST: 'Y' | 'N'
+      EDIT_IN_LIST: 'Y' | 'N'
+      IS_SEARCHABLE: 'Y' | 'N'
+      SETTINGS: Record<string, unknown>
+      LIST?: Array<{ ID: string; SORT: string; VALUE: string; DEF: 'Y' | 'N'; XML_ID: string }>
     }
-    
-    // fetchListMethod: Retrieves data in parts using an iterator. Use it for large data volumes to optimize memory usage.
-    
+
+    // user.userfield.list returns a single page (max 50 records). For the whole result set
+    // use a list helper: $b24.actions.v2.callList.make() returns every record as one
+    // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
+    // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
+    // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
+
     try {
-      const generator = $b24.fetchListMethod('user.userfield.list', {
-        order: {
-          id: 'desc',
+      const response = await $b24.actions.v2.call.make<UserUserfieldItem[]>({
+        method: 'user.userfield.list',
+        params: {
+          order: { id: 'desc' },
+          filter: { id: 13 },
+          start: 0,
         },
-        filter: {
-          id: 13
-        },
-      }, 'ID')
-      for await (const page of generator) {
-        for (const entity of page) { console.log('Entity:', entity) }
+        requestId: Text.getUuidRfc4122()
+      })
+
+      // The payload is available only on a successful response
+      if (!response.isSuccess) {
+        console.error(response.getErrorMessages().join('; '))
+      } else {
+        const result = response.getData()!.result
+        console.info('Loaded user fields:', result.length, result)
       }
     } catch (error) {
-      console.error('Request failed', error)
+      // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+      console.error(error)
     }
-    
-    // callMethod: Manually controls pagination through the start parameter. Use it for precise control of request batches. For large datasets, it is less efficient than fetchListMethod.
-    
-    try {
-      const response = await $b24.callMethod('user.userfield.list', {
-        order: {
-          id: 'desc',
-        },
-        filter: {
-          id: 13
-        },
-      }, 0)
-      const result = response.getData().result || []
-      for (const entity of result) { console.log('Entity:', entity) }
-    } catch (error) {
-      console.error('Request failed', error)
-    }
+    ```
+
+- JS (UMD)
+
+    ```html
+    <!-- Load the SDK (UMD build); it is exposed as the global B24Js -->
+    <script src="https://unpkg.com/@bitrix24/b24jssdk@1/dist/umd/index.min.js"></script>
+    <script>
+      async function listUserUserfields() {
+        try {
+          // Initialize the SDK inside a Bitrix24 frame
+          const $b24 = await B24Js.initializeB24Frame()
+
+          // user.userfield.list returns a single page (max 50 records). For the whole result set
+          // use a list helper: $b24.actions.v2.callList.make() returns every record as one
+          // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
+          // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
+          // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
+
+          const response = await $b24.actions.v2.call.make({
+            method: 'user.userfield.list',
+            params: {
+              order: { id: 'desc' },
+              filter: { id: 13 },
+              start: 0,
+            },
+            requestId: B24Js.Text.getUuidRfc4122()
+          })
+
+          // The payload is available only on a successful response
+          if (!response.isSuccess) {
+            console.error(response.getErrorMessages().join('; '))
+            return
+          }
+
+          const result = response.getData().result
+          console.info('Loaded user fields:', result.length, result)
+        } catch (error) {
+          // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+          console.error(error)
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', listUserUserfields)
+    </script>
     ```
 
 - PHP
@@ -178,7 +221,7 @@ An additional prefix can be assigned to the key to clarify the filter behavior. 
             ->getResult();
     
         echo 'Success: ' . print_r($result, true);
-        // Your logic for processing data
+        // The data processing logic you need
         processData($result);
     
     } catch (Throwable $e) {
@@ -220,7 +263,7 @@ An additional prefix can be assigned to the key to clarify the filter behavior. 
         [
             'order' => [
                 'id' => 'desc',
-            ],
+            ]
             'filter' => [
                 'id' => 13,
             ],
@@ -232,6 +275,110 @@ An additional prefix can be assigned to the key to clarify the filter behavior. 
     echo '</PRE>';
     ```
 
+- Python
+
+    Example
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    order = {
+        "ID": "desc",
+        "SORT": "asc",
+    }
+    filter = {
+        "USER_TYPE_ID": "string",
+        "SHOW_IN_LIST": "Y",
+    }
+
+    try:
+        bitrix_response = client.user.userfield.list(
+            order=order,
+            filter=filter,
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print("Bitrix SDK error", error.message, sep="\n")
+    except Exception as error:
+        print("Unexpected error", error, sep="\n")
+    ```
+
+    Example `as_list`
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    order = {
+        "ID": "desc",
+    }
+    filter = {
+        "SHOW_IN_LIST": "Y",
+    }
+
+    try:
+        bitrix_response = client.user.userfield.list(
+            order=order,
+            filter=filter,
+        ).as_list().response
+        result = bitrix_response.result
+        for item in result:
+            print(item)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print("Bitrix SDK error", error.message, sep="\n")
+    except Exception as error:
+        print("Unexpected error", error, sep="\n")
+    ```
+
+    Example `as_list_fast`
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    order = {
+        "ID": "desc",
+    }
+    filter = {
+        "SHOW_IN_LIST": "Y",
+    }
+
+    try:
+        bitrix_response = client.user.userfield.list(
+            order=order,
+            filter=filter,
+        ).as_list_fast(descending=True).response
+        result = bitrix_response.result
+        for item in result:
+            print(item)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print("Bitrix SDK error", error.message, sep="\n")
+    except Exception as error:
+        print("Unexpected error", error, sep="\n")
+    ```
 {% endlist %}
 
 ## Response Handling
@@ -254,7 +401,7 @@ HTTP status: **200**
             "SHOW_IN_LIST":"Y",
             "EDIT_IN_LIST":"Y",
             "IS_SEARCHABLE":"N",
-            "SETTINGS": {
+            "SETTINGS":{
                 "DISPLAY":"UI",
                 "LIST_HEIGHT":1,
                 "CAPTION_NO_VALUE":"",
@@ -297,13 +444,13 @@ HTTP status: **200**
             "SHOW_IN_LIST":"Y",
             "EDIT_IN_LIST":"Y",
             "IS_SEARCHABLE":"N",
-            "SETTINGS": {
+            "SETTINGS":{
                 "DEFAULT_VALUE":""
             }
         }
     ],
     "total":2,
-    "time": {
+    "time":{
         "start":1747313326.788124,
         "finish":1747313328.641663,
         "duration":1.853538990020752,
@@ -321,11 +468,11 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | Root element of the response ||
+[`object`](../../data-types.md) | Response root element ||
 || **total**
 [`integer`](../../data-types.md) | Total number of records found ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the execution time of the request ||
+[`time`](../../data-types.md#time) | Query execution time information ||
 |#
 
 ## Error Handling
@@ -339,21 +486,20 @@ HTTP status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
 || **Code** | **Description** | **Value** ||
-|| Empty string | Access denied. | A field with such `id` does not exist or access is denied ||
-|| Empty string | ID is not defined or invalid | `id` is not specified or is invalid ||
+|| Empty string | Access denied. | A field with this `id` does not exist or access is denied ||
+|| Empty string | ID is not defined or invalid | `id` is not set or is invalid ||
 |#
 
-{% include [system errors](../../../_includes/system-errors.md) %}
+{% include [System errors](../../../_includes/system-errors.md) %}
 
-## Continue Learning 
+## Continue Learning
 
 - [{#T}](./user-userfield-add.md)
 - [{#T}](./user-userfield-update.md)
 - [{#T}](./user-userfield-delete.md)
-

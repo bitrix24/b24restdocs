@@ -16,13 +16,13 @@ Typical use-case: the bot received an event with `replyId` and wants to read the
 
 {% note warning "" %}
 
-The method is available only for `supervisor` and `personal` type bots. For more details, see [Bot Types](../../../index.md#bot-types).
+The method is available only for `supervisor` and `personal` type bots. For more details, see [Bot Types](../../index.md#bot-types).
 
 {% endnote %}
 
 ## Method Parameters
 
-{% include [Parameter Note](../../../../../_includes/required.md) %}
+{% include [Parameters Note](../../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -147,7 +147,7 @@ Pass the same botToken that was specified during the chat bot registration ||
 
 ## Response Handling
 
-HTTP Code: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -204,13 +204,13 @@ HTTP Code: **200**
 || **Field**
 `Type` | **Description** ||
 || **id**
-[`integer`](../../../../data-types.md) | Identifier of the message ||
+[`integer`](../../../../data-types.md) | Message identifier ||
 || **chatId**
-[`integer`](../../../../data-types.md) | Identifier of the chat ||
+[`integer`](../../../../data-types.md) | Chat identifier ||
 || **authorId**
-[`integer`](../../../../data-types.md) | Identifier of the message author ||
+[`integer`](../../../../data-types.md) | Author identifier of the message ||
 || **date**
-[`string`](../../../../data-types.md) | Date the message was sent ||
+[`string`](../../../../data-types.md) | Date of message sending ||
 || **text**
 [`string`](../../../../data-types.md) | Text of the message ||
 || **isSystem**
@@ -231,7 +231,7 @@ HTTP Code: **200**
 || **Field**
 `Type` | **Description** ||
 || **id**
-[`integer`](../../../../data-types.md) | Identifier of the user ||
+[`integer`](../../../../data-types.md) | User identifier ||
 || **active**
 [`boolean`](../../../../data-types.md) | User is active ||
 || **name**
@@ -239,7 +239,7 @@ HTTP Code: **200**
 || **bot**
 [`boolean`](../../../../data-types.md) | Indicates if the user is a bot ||
 || **type**
-[`string`](../../../../data-types.md) | Type of user ||
+[`string`](../../../../data-types.md) | User type ||
 |#
 
 Complete description of all object fields can be found on the [Objects and Fields](../../entities.md) page.
@@ -265,7 +265,7 @@ HTTP Status: **400**, **403**
 || `BOT_ID_REQUIRED` | Bot ID is required | `botId` is not provided ||
 || `BOT_NOT_FOUND` | Bot not found | Bot not found ||
 || `BOT_OWNERSHIP_ERROR` | Bot is registered by another application | Bot registered by another application ||
-|| `BOT_TYPE_NOT_ALLOWED` | Bot type not allowed | Method available only for `supervisor` and `personal` type bots ||
+|| `BOT_TYPE_NOT_ALLOWED` | Bot type not allowed | Method is available only for `supervisor` and `personal` type bots ||
 |#
 
 {% include [System Errors](../../../../../_includes/system-errors.md) %}

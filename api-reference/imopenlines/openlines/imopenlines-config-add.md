@@ -662,4 +662,4 @@ HTTP Status: **200**
 - [{#T}](./imopenlines-config-get.md)
 - [{#T}](./imopenlines-config-list-get.md)
 - [{#T}](./imopenlines-config-delete.md)
-- хХ№ЕЪъ(ю.шьщзутдштуы-сщташп-зфер-пуеюьв)
+- [{#T}](./imopenlines-config-path-get.md)

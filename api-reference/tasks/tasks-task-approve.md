@@ -1,4 +1,4 @@
-# Approve Task tasks.task.approve
+# Approve Task: tasks.task.approve
 
 {% note tip "" %}
 
@@ -8,28 +8,28 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`task`](../scopes/permissions.md)
 >
-> Who can execute the method: task creator or administrator
+> Who can execute the method: task Creator or administrator
 
-The method `tasks.task.approve` accepts the work of the assignee on a task when task control is enabled and changes the task status to Completed.
+The method `tasks.task.approve` accepts the work of the Participant on the task when task control is enabled and changes the task status to Completed.
 
-You can check the permission to accept the work of the assignee on the task using the [check access to the task](./tasks-task-get-access.md) method.
+You can check the access permission to approve the Participant's work on the task using the [check access to task method](./tasks-task-get-access.md).
 
 ## Method Parameters
 
-{% include [Note on parameters](../../_includes/required.md) %}
+{% include [Parameters Note](../../_includes/required.md) %}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
-|| **taskId***
-[`integer`](../data-types.md) | Task identifier.
+|| **taskId*** 
+[`integer`](../data-types.md) | The identifier of the task.
 
-The task identifier can be obtained when [creating a new task](./tasks-task-add.md) or using the [get task list](./tasks-task-list.md) method ||
+The task identifier can be obtained when [creating a new task](./tasks-task-add.md) or using the [get task list method](./tasks-task-list.md) ||
 |#
 
 ## Code Examples
 
-{% include [Note on examples](../../_includes/examples.md) %}
+{% include [Examples Note](../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -53,27 +53,83 @@ The task identifier can be obtained when [creating a new task](./tasks-task-add.
     https://**put_your_bitrix24_address**/rest/tasks.task.approve
     ```
 
-- JS
+- JS (TS)
 
-    ```javascript
-    try
-    {
-        const response = await $b24.callMethod(
-            'tasks.task.approve',
-            {
-                taskId: 8017,
-            }
-        );
-        
-        const result = response.getData().result;
-        console.log('Approved task with ID:', result);
-        
-        processResult(result);
+    ```ts
+    // This snippet is an ES module: top-level await requires type="module" or a bundler.
+    // $b24 is an already-initialized SDK instance (see the SDK "Get started" guide).
+    import { Text } from '@bitrix24/b24jssdk'
+    import type { B24Frame } from '@bitrix24/b24jssdk'
+
+    declare const $b24: B24Frame
+
+    // Shape of the payload returned in result (match the "response handling" section of the page)
+    type TaskApproveResult = {
+      task: {
+        id: string
+        title: string
+        status: string
+        [key: string]: unknown
+      }
     }
-    catch( error )
-    {
-        console.error('Error:', error);
+
+    try {
+      const response = await $b24.actions.v2.call.make<TaskApproveResult>({
+        method: 'tasks.task.approve',
+        params: {
+          taskId: 8017,
+        },
+        requestId: Text.getUuidRfc4122()
+      })
+
+      // The payload is available only on a successful response
+      if (!response.isSuccess) {
+        console.error(response.getErrorMessages().join('; '))
+      } else {
+        const result = response.getData()!.result
+        console.info('Approved task:', result.task.id, result.task.title, 'status:', result.task.status)
+      }
+    } catch (error) {
+      // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+      console.error(error)
     }
+    ```
+
+- JS (UMD)
+
+    ```html
+    <!-- Load the SDK (UMD build); it is exposed as the global B24Js -->
+    <script src="https://unpkg.com/@bitrix24/b24jssdk@1/dist/umd/index.min.js"></script>
+    <script>
+      async function approveTask() {
+        try {
+          // Initialize the SDK inside a Bitrix24 frame
+          const $b24 = await B24Js.initializeB24Frame()
+
+          const response = await $b24.actions.v2.call.make({
+            method: 'tasks.task.approve',
+            params: {
+              taskId: 8017,
+            },
+            requestId: B24Js.Text.getUuidRfc4122()
+          })
+
+          // The payload is available only on a successful response
+          if (!response.isSuccess) {
+            console.error(response.getErrorMessages().join('; '))
+            return
+          }
+
+          const result = response.getData().result
+          console.info('Approved task:', result.task.id, result.task.title, 'status:', result.task.status)
+        } catch (error) {
+          // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+          console.error(error)
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', approveTask)
+    </script>
     ```
 
 - PHP
@@ -280,7 +336,7 @@ HTTP Status: **200**
             },
             "group": {
                 "id": "129",
-                "name": "New Flow",
+                "name": "New Stream",
                 "opened": false,
                 "membersCount": 1,
                 "image": "/bitrix/images/socialnetwork/workgroup/folder.png",
@@ -288,14 +344,14 @@ HTTP Status: **200**
             },
             "creator": {
                 "id": "503",
-                "name": "Natalie Brooks",
+                "name": "Maria Johnson",
                 "link": "/company/personal/user/503/",
                 "icon": "https://mysite.com/b17053/resize_cache/45749/c0120a8d7c10d63c83e32398d1ec4d9e/main/c89/c89c6b7301880958ea704b5a8470635c/4R5A1256.png",
                 "workPosition": "Administrator"
             },
             "responsible": {
                 "id": "547",
-                "name": "Megan",
+                "name": "Maria",
                 "link": "/company/personal/user/547/",
                 "icon": "/bitrix/images/tasks/default_avatar.png",
                 "workPosition": "Tester"
@@ -304,14 +360,14 @@ HTTP Status: **200**
             "auditorsData": {
                 "103": {
                     "id": "103",
-                    "name": "Emily Smith",
+                    "name": "Svetlana Johnson",
                     "link": "/company/personal/user/103/",
                     "icon": "https://mysite.com/b17053/resize_cache/8644/c0120a8d7c10d63c83e32398d1ec4d9e/main/45f/45fff10d17d398a5583184c8350cd197/buh.jpg",
                     "workPosition": "Accountant"
                 },
                 "503": {
                     "id": "503",
-                    "name": "Natalie Brooks",
+                    "name": "Maria Johnson",
                     "link": "/company/personal/user/503/",
                     "icon": "https://mysite.com/b17053/resize_cache/45749/c0120a8d7c10d63c83e32398d1ec4d9e/main/c89/c89c6b7301880958ea704b5a8470635c/4R5A1256.png",
                     "workPosition": "Administrator"
@@ -473,7 +529,7 @@ HTTP Status: **200**
 
 ### Returned Data
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **result**
@@ -499,10 +555,10 @@ HTTP Status: **400**
 
 ### Possible Error Codes
 
-#|
+#| 
 || **Code** | **Description** | **Value** ||
-|| `0` | wrong task id | The `taskId` parameter has an incorrect type ||
-|| `1048582` | Action on the task is not allowed | The user does not have permission to accept work on the task ||
+|| `0` | wrong task id | The value of `taskId` is of an incorrect type ||
+|| `1048582` | Action on the task is not allowed | The user does not have permission to approve the work on the task ||
 || `100` | CTaskItem All parameters in the constructor must have real class type | The required parameter `taskId` is not specified ||
 |#
 

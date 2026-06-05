@@ -14,31 +14,31 @@ The method `task.checklistitem.isactionallowed` checks whether an action is perm
 
 ## Method Parameters
 
-{% include [Footnote on parameters](../../../_includes/required.md) %}
+{% include [Note on parameters](../../../_includes/required.md) %}
 
-#|
-|| **Name**
+#| 
+|| **Name** 
 `type` | **Description** ||
-|| **TASKID***
+|| **TASKID*** 
 [`integer`](../../data-types.md) | Task identifier.
 
-The task identifier can be obtained when [creating a new task](../tasks-task-add.md) or by using the [method to get the task list](../tasks-task-list.md) ||
-|| **ITEMID***
+The task identifier can be obtained when [creating a new task](../tasks-task-add.md) or by using the [get task list](../tasks-task-list.md) method. ||
+|| **ITEMID*** 
 [`integer`](../../data-types.md) | Checklist item identifier.
 
-The item identifier can be obtained when [adding a new item](./task-checklist-item-add.md) or by using the [method to get the checklist item list](./task-checklist-item-get-list.md) ||
-|| **ACTIONID***
+The item identifier can be obtained when [adding a new item](./task-checklist-item-add.md) or by using the [get checklist item list](./task-checklist-item-get-list.md) method. ||
+|| **ACTIONID*** 
 [`integer`](../../data-types.md) | Identifier of the action being checked:
 - `1` — add item `ACTION_ADD`
 - `2` — modify item `ACTION_MODIFY`
-- `3` — delete item `ACTION_REMOVE`
-- `4` — mark as complete `ACTION_TOGGLE`
-- `5` — move item `ACTION_REORDER` ||
+- `3` — remove item `ACTION_REMOVE`
+- `4` — mark as completed `ACTION_TOGGLE`
+- `5` — reorder item `ACTION_REORDER` ||
 |#
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -62,28 +62,77 @@ The item identifier can be obtained when [adding a new item](./task-checklist-it
     https://**put_your_bitrix24_address**/rest/task.checklistitem.isactionallowed
     ```
 
-- JS
+- JS (TS)
 
-    ```javascript
-    try
-    {
-        const response = await $b24.callMethod(
-            'task.checklistitem.isactionallowed',
-            {
-                TASKID: 8017,
-                ITEMID: 475,
-                ACTIONID: 2
-            }
-        );
-        
-        const result = response.getData().result;
-        console.log('Action allowed:', result);
-        processResult(result);
+    ```ts
+    // This snippet is an ES module: top-level await requires type="module" or a bundler.
+    // $b24 is an already-initialized SDK instance (see the SDK "Get started" guide).
+    import { Text } from '@bitrix24/b24jssdk'
+    import type { B24Frame } from '@bitrix24/b24jssdk'
+
+    declare const $b24: B24Frame
+
+    try {
+      const response = await $b24.actions.v2.call.make<boolean>({
+        method: 'task.checklistitem.isactionallowed',
+        params: {
+          TASKID: 8017,
+          ITEMID: 475,
+          ACTIONID: 2,
+        },
+        requestId: Text.getUuidRfc4122()
+      })
+
+      // The payload is available only on a successful response
+      if (!response.isSuccess) {
+        console.error(response.getErrorMessages().join('; '))
+      } else {
+        const result = response.getData()!.result
+        console.info('Action allowed:', result)
+      }
+    } catch (error) {
+      // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+      console.error(error)
     }
-    catch( error )
-    {
-        console.error('Error:', error);
-    }
+    ```
+
+- JS (UMD)
+
+    ```html
+    <!-- Load the SDK (UMD build); it is exposed as the global B24Js -->
+    <script src="https://unpkg.com/@bitrix24/b24jssdk@1/dist/umd/index.min.js"></script>
+    <script>
+      async function checkActionAllowed() {
+        try {
+          // Initialize the SDK inside a Bitrix24 frame
+          const $b24 = await B24Js.initializeB24Frame()
+
+          const response = await $b24.actions.v2.call.make({
+            method: 'task.checklistitem.isactionallowed',
+            params: {
+              TASKID: 8017,
+              ITEMID: 475,
+              ACTIONID: 2,
+            },
+            requestId: B24Js.Text.getUuidRfc4122()
+          })
+
+          // The payload is available only on a successful response
+          if (!response.isSuccess) {
+            console.error(response.getErrorMessages().join('; '))
+            return
+          }
+
+          const result = response.getData().result
+          console.info('Action allowed:', result)
+        } catch (error) {
+          // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+          console.error(error)
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', checkActionAllowed)
+    </script>
     ```
 
 - PHP
@@ -174,14 +223,14 @@ HTTP Status: **200**
 
 ### Returned Data
 
-#|
-|| **Name**
+#| 
+|| **Name** 
 `type` | **Description** ||
-|| **result**
+|| **result** 
 [`boolean`](../../data-types.md) | Result of the check:
 - `true` — action is allowed
 - `false` — action is not allowed or non-existent identifiers were provided ||
-|| **time**
+|| **time** 
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
@@ -200,10 +249,10 @@ HTTP Status: **400**
 
 ### Possible Error Codes
 
-#|
+#| 
 || **Code** | **Description** | **Value** ||
-|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #2 (actionId) expected by method ctaskchecklistitem::isactionallowed(), but not given.; 256/TE/WRONG_ARGUMENTS | Required parameter not specified: `TASKID`, `ITEMID` or `ACTIONID` ||
-|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #0 (taskId) for method ctaskchecklistitem::isactionallowed() expected to be of type "integer", but given something else.; 256/TE/WRONG_ARGUMENTS | Incorrect value type provided for parameters `TASKID`, `ITEMID` or `ACTIONID` ||
+|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #2 (actionId) expected by method ctaskchecklistitem::isactionallowed(), but not given.; 256/TE/WRONG_ARGUMENTS | Required parameter not provided: `TASKID`, `ITEMID`, or `ACTIONID` ||
+|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #0 (taskId) for method ctaskchecklistitem::isactionallowed() expected to be of type "integer", but given something else.; 256/TE/WRONG_ARGUMENTS | Incorrect value type provided for parameters `TASKID`, `ITEMID`, or `ACTIONID` ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

@@ -1,4 +1,4 @@
-# Get a list of methods and their description task.checklistitem.getmanifest
+# Get the List of Methods and Their Description task.checklistitem.getmanifest
 
 {% note tip "" %}
 
@@ -10,9 +10,9 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: any user
 
-The method `task.checklistitem.getmanifest` retrieves information about the methods for working with task checklist items `task.checklistitem.*`.
+The method `task.checklistitem.getmanifest` retrieves information about methods for working with task checklist items `task.checklistitem.*`.
 
-It is recommended to use the result only as a reference, as the structure of the method's response can be changed by the developer at any time.
+It is recommended to use the result only as a reference, as the response structure may change at any time by the developer.
 
 ## Method Parameters
 
@@ -44,24 +44,72 @@ No parameters.
     https://**put_your_bitrix24_address**/rest/task.checklistitem.getmanifest
     ```
 
-- JS
+- JS (TS)
 
-    ```javascript
-    try
-    {
-        const response = await $b24.callMethod(
-            'task.checklistitem.getmanifest',
-            []
-        );
-        
-        const result = response.getData().result;
-        console.log('Manifest data:', result);
-        processResult(result);
+    ```ts
+    // This snippet is an ES module: top-level await requires type="module" or a bundler.
+    // $b24 is an already-initialized SDK instance (see the SDK "Get started" guide).
+    import { Text } from '@bitrix24/b24jssdk'
+    import type { B24Frame } from '@bitrix24/b24jssdk'
+
+    declare const $b24: B24Frame
+
+    // Shape of the payload returned in result (match the "response handling" section of the page)
+    type ManifestResult = Record<string, unknown>
+
+    try {
+      const response = await $b24.actions.v2.call.make<ManifestResult>({
+        method: 'task.checklistitem.getmanifest',
+        params: {},
+        requestId: Text.getUuidRfc4122()
+      })
+
+      // The payload is available only on a successful response
+      if (!response.isSuccess) {
+        console.error(response.getErrorMessages().join('; '))
+      } else {
+        const result = response.getData()!.result
+        console.info(result)
+      }
+    } catch (error) {
+      // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+      console.error(error)
     }
-    catch( error )
-    {
-        console.error('Error:', error);
-    }
+    ```
+
+- JS (UMD)
+
+    ```html
+    <!-- Load the SDK (UMD build); it is exposed as the global B24Js -->
+    <script src="https://unpkg.com/@bitrix24/b24jssdk@1/dist/umd/index.min.js"></script>
+    <script>
+      async function getChecklistItemManifest() {
+        try {
+          // Initialize the SDK inside a Bitrix24 frame
+          const $b24 = await B24Js.initializeB24Frame()
+
+          const response = await $b24.actions.v2.call.make({
+            method: 'task.checklistitem.getmanifest',
+            params: {},
+            requestId: B24Js.Text.getUuidRfc4122()
+          })
+
+          // The payload is available only on a successful response
+          if (!response.isSuccess) {
+            console.error(response.getErrorMessages().join('; '))
+            return
+          }
+
+          const result = response.getData().result
+          console.info(result)
+        } catch (error) {
+          // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+          console.error(error)
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', getChecklistItemManifest)
+    </script>
     ```
 
 - PHP
@@ -121,7 +169,7 @@ No parameters.
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -370,8 +418,8 @@ HTTP status: **200**
         "finish": 1769070877.009113,
         "duration": 1.009113073348999,
         "processing": 0,
-        "date_start": "2026-01-22T11:34:36+01:00",
-        "date_finish": "2026-01-22T11:34:37+01:00",
+        "date_start": "2026-01-22T11:34:36+02:00",
+        "date_finish": "2026-01-22T11:34:37+02:00",
         "operating_reset_at": 1769071477,
         "operating": 0
     }
@@ -384,7 +432,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | Object describing the methods `task.checklistitem.*` ||
+[`object`](../../data-types.md) | Object describing methods `task.checklistitem.*` ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#

@@ -14,7 +14,7 @@ The method `im.v2.File.upload` uploads a file to the chat on behalf of the curre
 
 ## Method Parameters
 
-{% include [Parameter Note](../../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -42,17 +42,17 @@ The method `im.v2.File.upload` uploads a file to the chat on behalf of the curre
 
 How to prepare the value for `fields.content`:
 
-1. Read the file in binary mode.
+1. Read the file in binary format.
 2. Encode the content in Base64.
 3. Pass only the Base64 string, without the prefix `data:*/*;base64,`.
 
-More details: [How to upload files](../../../../files/how-to-upload-files.md#how-to-encode-file-to-base64).
+More details: [How to upload files](../../../../files/how-to-upload-files.md#how-to-encode-file-in-base64).
 
 {% endnote %}
 
 ## Code Examples
 
-{% include [Example Note](../../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -176,7 +176,7 @@ More details: [How to upload files](../../../../files/how-to-upload-files.md#how
 
 ## Response Handling
 
-HTTP Code: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -239,7 +239,7 @@ HTTP Code: **200**
 [`integer`](../../../../data-types.md) | Size of the file in bytes ||
 |#
 
-Complete description of all object fields can be found on the [Objects and Fields](../../entities.md) page.
+A complete description of all object fields can be found on the [Objects and Fields](../../entities.md) page.
 
 ## Error Handling
 

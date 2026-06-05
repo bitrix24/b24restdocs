@@ -1,4 +1,4 @@
-# Get Checklist Item of Task Template tasks.template.checklist.get
+# Get Checklist Item from Task Template tasks.template.checklist.get
 
 {% note tip "" %}
 
@@ -8,30 +8,30 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`task`](../../../scopes/permissions.md)
 >
-> Who can execute the method: user with read access permission for the task template
+> Who can execute the method: a user with read access permission for the task template
 
 The method `tasks.template.checklist.get` returns a single checklist item from the task template.
 
 ## Method Parameters
 
-{% include [Footnote on required parameters](../../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../../_includes/required.md) %}
 
-#|
-|| **Name**
+#| 
+|| **Name** 
 `type` | **Description** ||
-|| **templateId***
+|| **templateId*** 
 [`integer`](../../../data-types.md) | Identifier of the task template.
 
-The identifier of the task template can be obtained when [creating a new template](../tasks-template-add.md) ||
-|| **checkListItemId***
+The task template identifier can be obtained when [creating a new template](../tasks-template-add.md) ||
+|| **checkListItemId*** 
 [`integer`](../../../data-types.md) | Identifier of the checklist item in the template.
 
-The identifier of the checklist item can be obtained when [creating a new item](./tasks-template-checklist-add.md) or by using the [method to get the list of items](./tasks-template-checklist-list.md) ||
+The checklist item identifier can be obtained when [creating a new item](./tasks-template-checklist-add.md) or by using the [method to get the list of items](./tasks-template-checklist-list.md) ||
 |#
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../../_includes/examples.md) %}
+{% include [Note on Examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -62,26 +62,96 @@ The identifier of the checklist item can be obtained when [creating a new item](
     https://**put_your_bitrix24_address**/rest/tasks.template.checklist.get
     ```
 
-- JS
+- JS (TS)
 
-    ```js
-    try
-    {
-        const response = await $b24.callMethod(
-            'tasks.template.checklist.get',
-            {
-                templateId: 139,
-                checkListItemId: 37
-            }
-        );
+    ```ts
+    // This snippet is an ES module: top-level await requires type="module" or a bundler.
+    // $b24 is an already-initialized SDK instance (see the SDK "Get started" guide).
+    import { Text } from '@bitrix24/b24jssdk'
+    import type { B24Frame } from '@bitrix24/b24jssdk'
 
-        const result = response.getData().result;
-        console.log(result);
+    declare const $b24: B24Frame
+
+    // Shape of the payload returned in result (match the "response handling" section of the page)
+    type CheckListItemResult = {
+      checkListItem: {
+        id: number
+        copiedId: number | null
+        userId: number
+        createdBy: number | null
+        parentId: number | null
+        title: string
+        sortIndex: number
+        displaySortIndex: string
+        isComplete: boolean
+        isImportant: boolean
+        completedCount: number
+        members: object[]
+        attachments: Record<string, string>
+        nodeId: number | null
+        templateId: number
+      }
     }
-    catch (error)
-    {
-        console.error(error);
+
+    try {
+      const response = await $b24.actions.v2.call.make<CheckListItemResult>({
+        method: 'tasks.template.checklist.get',
+        params: {
+          templateId: 139,
+          checkListItemId: 37,
+        },
+        requestId: Text.getUuidRfc4122()
+      })
+
+      // The payload is available only on a successful response
+      if (!response.isSuccess) {
+        console.error(response.getErrorMessages().join('; '))
+      } else {
+        const result = response.getData()!.result
+        console.info(result.checkListItem)
+      }
+    } catch (error) {
+      // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+      console.error(error)
     }
+    ```
+
+- JS (UMD)
+
+    ```html
+    <!-- Load the SDK (UMD build); it is exposed as the global B24Js -->
+    <script src="https://unpkg.com/@bitrix24/b24jssdk@1/dist/umd/index.min.js"></script>
+    <script>
+      async function getChecklistItem() {
+        try {
+          // Initialize the SDK inside a Bitrix24 frame
+          const $b24 = await B24Js.initializeB24Frame()
+
+          const response = await $b24.actions.v2.call.make({
+            method: 'tasks.template.checklist.get',
+            params: {
+              templateId: 139,
+              checkListItemId: 37,
+            },
+            requestId: B24Js.Text.getUuidRfc4122()
+          })
+
+          // The payload is available only on a successful response
+          if (!response.isSuccess) {
+            console.error(response.getErrorMessages().join('; '))
+            return
+          }
+
+          const result = response.getData().result
+          console.info(result.checkListItem)
+        } catch (error) {
+          // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+          console.error(error)
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', getChecklistItem)
+    </script>
     ```
 
 - PHP
@@ -202,29 +272,29 @@ HTTP Status: **200**
 
 ### Returned Data
 
-#|
-|| **Name**
+#| 
+|| **Name** 
 `type` | **Description** ||
-|| **result**
+|| **result** 
 [`object`](../../../data-types.md) | Object containing the response data [(detailed description)](#result) ||
-|| **time**
+|| **time** 
 [`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
 
-#### Object result {#result}
+#### Result Object {#result}
 
-#|
-|| **Name**
+#| 
+|| **Name** 
 `type` | **Description** ||
-|| **checkListItem**
+|| **checkListItem** 
 [`object`](../../../data-types.md) | Data of the checklist item [(detailed description)](#checklistitem).
 
 Contains empty field values:
-- if an empty or incorrectly typed `templateId` is specified
-- if a non-existent, empty, or incorrectly typed `checkListItemId` is specified ||
+- if an empty or incorrect type `templateId` is specified
+- if a non-existent, empty, or incorrect type `checkListItemId` is specified ||
 |#
 
-{% include [Decoding the checkListItem object](./_includes/checklist-item-response.md) %}
+{% include [Decoding the checkListItem Object](./_includes/checklist-item-response.md) %}
 
 ## Error Handling
 
@@ -241,7 +311,7 @@ HTTP Status: **400**
 
 ### Possible Error Codes
 
-#|
+#| 
 || **Status** | **Code** | **Description** | **Value** ||
 || `400` | `100` | Could not find value for parameter {templateId} | Required parameter `templateId` is missing ||
 || `400` | `100` | Bitrix\Tasks\CheckList\Internals\CheckList All parameters in the constructor must have real class type | Required parameter `checkListItemId` is missing ||

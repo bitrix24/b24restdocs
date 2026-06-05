@@ -1,4 +1,4 @@
-# List of Bots for the imbot.v2.Bot.list Application
+# List of Bots in the imbot.v2.Bot.list Application
 
 {% note tip "" %}
 
@@ -10,11 +10,11 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: owner of the registered bot
 
-The method `imbot.v2.Bot.list` returns a list of bots for the current application in an extended format.
+The `imbot.v2.Bot.list` method returns a list of bots for the current application in an extended format.
 
 ## Method Parameters
 
-{% include [Footnote on parameters](../../../../../_includes/required.md) %}
+{% include [Note on Parameters](../../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -22,7 +22,7 @@ The method `imbot.v2.Bot.list` returns a list of bots for the current applicatio
 || **botToken**
 [`string`](../../../../data-types.md) | Unique authorization token for the bot. Required for webhook authorization, not needed for OAuth.
 
-Pass the same botToken that was specified during the chat bot registration ||
+Pass the same botToken that was specified during the chatbot registration ||
 || **filter**
 [`object`](../../../../data-types.md) | Filter for results.
 
@@ -36,7 +36,7 @@ Available filter fields:
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../../../_includes/examples.md) %}
+{% include [Note on Examples](../../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -146,7 +146,7 @@ Available filter fields:
 
 ## Response Handling
 
-HTTP Code: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -162,7 +162,6 @@ HTTP Code: **200**
                 "backgroundId": null,
                 "language": "de",
                 "moduleId": "rest",
-                "appId": "local.67890abcdef12.34567890",
                 "eventMode": "fetch",
                 "countMessage": 150,
                 "countCommand": 3,
@@ -232,8 +231,6 @@ HTTP Code: **200**
 [`string`](../../../../data-types.md) | Language of the bot ||
 || **moduleId**
 [`string`](../../../../data-types.md) | Module identifier ||
-|| **appId**
-[`string`](../../../../data-types.md) | ID of the application that registered the bot ||
 || **eventMode**
 [`string`](../../../../data-types.md) | Event delivery mode: `webhook` or `fetch` ||
 || **countMessage**
@@ -267,7 +264,7 @@ Complete description of all object fields is available on the [Objects and Field
 
 {% note info "" %}
 
-The method always returns a successful response. If the application has no bots or an unknown value for `filter.type` is passed, an empty array `bots` is returned.
+The method always returns a successful response. If the application has no bots or an unknown value for `filter.type` is provided, an empty array `bots` is returned.
 
 {% endnote %}
 

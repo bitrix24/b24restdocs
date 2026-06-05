@@ -23,22 +23,22 @@ Access to the data depends on permissions:
 || **Name**
 `type` | **Description** ||
 || **taskId**
-[`integer`](../data-types.md) | The ID of the task. 
+[`integer`](../data-types.md) | Task ID. 
 
-The task ID can be obtained when [creating a new task](./tasks-task-add.md) or by using the [get task list method](./tasks-task-list.md) ||
+The task ID can be obtained when [creating a new task](./tasks-task-add.md) or by using the [get task list](./tasks-task-list.md) method. ||
 || **select**
 [`array`](../data-types.md) | An array of record fields that will be returned by the method. You can specify only the fields you need. If the array contains the value `"*"`, all available fields will be returned. 
 
-By default, it returns all fields except for custom ones. It is recommended to specify specific fields in the selection, as default fields may change.
+By default, it returns all fields except for custom ones. It is recommended to specify particular fields in the selection, as default fields may change.
 
-System fields `UF_CRM_TASK`, `UF_TASK_WEBDAV_FILES`, and `UF_MAIL_MESSAGE` are not returned by default. Specify one of these fields in `SELECT` to retrieve their values. 
+System fields `UF_CRM_TASK`, `UF_TASK_WEBDAV_FILES`, and `UF_MAIL_MESSAGE` are not returned by default. Specify one of these fields in `SELECT` to get their values. 
 
-To retrieve custom fields, include them in `SELECT`. You can find the names of custom fields using the [tasks.task.getFields](./tasks-task-get-fields.md) method. ||
+To retrieve custom fields, specify them in `SELECT`. You can find the names of custom fields using the [tasks.task.getFields](./tasks-task-get-fields.md) method. ||
 |#
 
 {% note info "" %}
 
-The field `CHAT_ID`, the chat ID for the [new task card](tasks-new.md), is returned by default. Use its value to work with [chat methods](../chats/index.md).
+The `CHAT_ID` field, which is the chat ID for the [new task card](tasks-new.md), is returned by default. Use its value to work with [chat](../chats/index.md) methods.
 
 {% endnote %}
 
@@ -68,36 +68,110 @@ The field `CHAT_ID`, the chat ID for the [new task card](tasks-new.md), is retur
     https://**put_your_bitrix24_address**/rest/tasks.task.get
     ```
 
-- JS
+- JS (TS)
 
-    ```javascript
-    try
-    {
-        const response = await $b24.callMethod(
-            'tasks.task.get',
-            {
-                taskId: 8017,
-                select: [
-                    'ID',
-                    'TITLE',
-                    'DESCRIPTION',
-                    'CREATED_BY',
-                    'RESPONSIBLE_ID',
-                    'DEADLINE',
-                    'UF_CRM_TASK',
-                    'UF_TASK_WEBDAV_FILES'
-                ]
-            }
-        );
-        
-        const result = response.getData().result;
-        console.log('Fetched task:', result);
-        processResult(result);
+    ```ts
+    // This snippet is an ES module: top-level await requires type="module" or a bundler.
+    // $b24 is an already-initialized SDK instance (see the SDK "Get started" guide).
+    import { Text } from '@bitrix24/b24jssdk'
+    import type { B24Frame, ISODate } from '@bitrix24/b24jssdk'
+
+    declare const $b24: B24Frame
+
+    // result.task limited to the requested (select) fields, in the SDK camelCase form
+    // Shape of the payload returned in result (match the "response handling" section of the page)
+    type TaskGetResult = {
+      task: {
+        id: string
+        title: string
+        description: string
+        createdBy: string
+        responsibleId: string
+        deadline: ISODate | null
+        ufCrmTask: string[]
+        ufTaskWebdavFiles: number[]
+      }
     }
-    catch( error )
-    {
-        console.error('Error:', error);
+
+    try {
+      const response = await $b24.actions.v2.call.make<TaskGetResult>({
+        method: 'tasks.task.get',
+        params: {
+          taskId: 8017, // ID of the task to read
+          // Request only the fields you need
+          select: [
+            'ID',
+            'TITLE',
+            'DESCRIPTION',
+            'CREATED_BY',
+            'RESPONSIBLE_ID',
+            'DEADLINE',
+            'UF_CRM_TASK',
+            'UF_TASK_WEBDAV_FILES'
+          ]
+        },
+        requestId: Text.getUuidRfc4122() // optional unique tracking id for this request
+      })
+
+      // The payload is available only on a successful response
+      if (!response.isSuccess) {
+        console.error(response.getErrorMessages().join('; '))
+      } else {
+        const task = response.getData()!.result.task
+        console.info(`Fetched task ${task.id}: ${task.title}`)
+      }
+    } catch (error) {
+      // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+      console.error(error)
     }
+    ```
+
+- JS (UMD)
+
+    ```html
+    <!-- Load the SDK (UMD build); it is exposed as the global B24Js -->
+    <script src="https://unpkg.com/@bitrix24/b24jssdk@1/dist/umd/index.min.js"></script>
+    <script>
+      async function getTask() {
+        try {
+          // Initialize the SDK inside a Bitrix24 frame
+          const $b24 = await B24Js.initializeB24Frame()
+
+          const response = await $b24.actions.v2.call.make({
+            method: 'tasks.task.get',
+            params: {
+              taskId: 8017, // ID of the task to read
+              // Request only the fields you need
+              select: [
+                'ID',
+                'TITLE',
+                'DESCRIPTION',
+                'CREATED_BY',
+                'RESPONSIBLE_ID',
+                'DEADLINE',
+                'UF_CRM_TASK',
+                'UF_TASK_WEBDAV_FILES'
+              ]
+            },
+            requestId: B24Js.Text.getUuidRfc4122() // optional unique tracking id for this request
+          })
+
+          // The payload is available only on a successful response
+          if (!response.isSuccess) {
+            console.error(response.getErrorMessages().join('; '))
+            return
+          }
+
+          const task = response.getData().result.task
+          console.info(`Fetched task ${task.id}: ${task.title}`)
+        } catch (error) {
+          // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+          console.error(error)
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', getTask)
+    </script>
     ```
 
 - PHP
@@ -274,13 +348,13 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../data-types.md) | An object containing the response data.
+[`object`](../data-types.md) | Object with response data.
 
-Returns an empty array `"result":[],` if the task does not exist or the user does not have access to the task ||
+Returns an empty array `"result":[],` if the task does not exist or the user does not have access to the task. ||
 || **task**
-[`object`](../data-types.md) | An object with the [task description](./fields.md) after the operation is executed ||
+[`object`](../data-types.md) | Object with [task description](./fields.md) after the operation is performed. ||
 || **time**
-[`time`](../data-types.md#time) | Information about the request execution time ||
+[`time`](../data-types.md#time) | Information about the request execution time. ||
 |#
 
 ## Error Handling
@@ -300,9 +374,9 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `0` | wrong task id | The value in the `taskId` parameter is of an incorrect type ||
-|| `100` | CTaskItem All parameters in the constructor must have real class type (internal error) | The required parameter `taskId` was not provided ||
-|| `100` | Invalid value {} to match with parameter {select}. Should be value of type array. (internal error) | The `select` parameter was provided empty or contains invalid values ||
+|| `0` | wrong task id | The value of the `taskId` parameter is of an incorrect type. ||
+|| `100` | CTaskItem All parameters in the constructor must have real class type (internal error) | The required parameter `taskId` is missing. ||
+|| `100` | Invalid value {} to match with parameter {select}. Should be value of type array. (internal error) | The `select` parameter is empty or contains invalid values. ||
 |#
 
 {% include [system errors](../../_includes/system-errors.md) %}

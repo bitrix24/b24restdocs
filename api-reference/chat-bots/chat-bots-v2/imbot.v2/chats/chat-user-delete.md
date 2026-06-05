@@ -20,26 +20,26 @@ If the user is not a participant in the chat, the method will return `true` (ide
 
 ## Method Parameters
 
-{% include [Parameter Note](../../../../../_includes/required.md) %}
+{% include [Footnote on parameters](../../../../../_includes/required.md) %}
 
-#|
-|| **Name**
+#| 
+|| **Name** 
 `Type` | **Description** ||
-|| **botId***
+|| **botId*** 
 [`integer`](../../../../data-types.md) | Bot ID ||
-|| **botToken**
+|| **botToken** 
 [`string`](../../../../data-types.md) | Unique authorization token for the bot. Required for webhook authorization, not needed for OAuth.
 
 Pass the same botToken that was specified during the chat bot registration ||
-|| **dialogId***
+|| **dialogId*** 
 [`string`](../../../../data-types.md) | Dialog ID. For group chats — `chat{chatId}` ||
-|| **userId***
+|| **userId*** 
 [`integer`](../../../../data-types.md) | User ID to be removed ||
 |#
 
 ## Code Examples
 
-{% include [Examples Note](../../../../../_includes/examples.md) %}
+{% include [Footnote on examples](../../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -151,11 +151,13 @@ Pass the same botToken that was specified during the chat bot registration ||
 
 ## Response Handling
 
-HTTP Code: **200**
+HTTP Status: **200**
 
 ```json
 {
-    "result": true,
+    "result": {
+        "result": true
+    },
     "time": {
         "start": 1728626400.123,
         "finish": 1728626400.234,
@@ -169,12 +171,14 @@ HTTP Code: **200**
 
 ## Returned Data
 
-#|
-|| **Name**
+#| 
+|| **Name** 
 `Type` | **Description** ||
-|| **result**
-[`boolean`](../../../../data-types.md) | `true` if the removal was successful ||
-|| **time**
+|| **result** 
+[`object`](../../../../data-types.md) | Result of the operation ||
+|| **result.result** 
+[`boolean`](../../../../data-types.md) | `true` if deletion was successful ||
+|| **time** 
 [`time`](../../../../data-types.md#time) | Information about the request execution time ||
 |#
 
@@ -193,10 +197,10 @@ HTTP Status: **400**, **403**
 
 ### Possible Error Codes
 
-#|
+#| 
 || **Code** | **Description** | **Value** ||
-|| `BOT_TOKEN_NOT_SPECIFIED` | Bot token is not specified | Bot token is not specified. Required for webhook authorization ||
-|| `BOT_ID_REQUIRED` | Bot ID is required | Bot ID is required ||
+|| `BOT_TOKEN_NOT_SPECIFIED` | Bot token is not specified | `botToken` is not provided. Required for webhook authorization ||
+|| `BOT_ID_REQUIRED` | Bot ID is required | `botId` is not provided ||
 || `BOT_NOT_FOUND` | Bot not found | Bot not found ||
 || `BOT_OWNERSHIP_ERROR` | Bot is registered by another application | Bot is registered by another application ||
 || `ACCESS_DENIED` | Access denied | Bot is not a participant in the chat or does not have permission to remove users ||

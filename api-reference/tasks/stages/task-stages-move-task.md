@@ -1,4 +1,4 @@
-# Move a task from one stage to another task.stages.movetask
+# Move Task from One Stage to Another task.stages.movetask
 
 {% note tip "" %}
 
@@ -9,29 +9,29 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 > Scope: [`task`](../../scopes/permissions.md)
 >
 > Who can execute the method:
-> - any user for stages in "My Planner"
+> - any user for stages of "My Plan"
 > - any user with access to the group for kanban stages
 
-The method moves a task from one stage to another and allows changing the position of the task within the kanban of the group or "My Planner".
+This method moves a task from one stage to another and allows you to change the position of the task within the group's kanban or "My Plan".
 
 The method works as follows:
-- If a group stage is provided, the movement occurs within the group's kanban.
-- If "My Planner" stage is provided, the movement occurs within it.
+- If a group stage is provided, the move occurs within the group's kanban.
+- If "My Plan" stage is provided, the move occurs within it.
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../_includes/required.md) %}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
-|| **id***
+|| **id*** 
 [`integer`](../../data-types.md) | Task identifier ||
-|| **stageId***
+|| **stageId*** 
 [`integer`](../../data-types.md) | `ID` of the stage to which the task should be moved ||
-|| **before**
+|| **before** 
 [`integer`](../../data-types.md) | `ID` of the task before which the task should be placed in the stage ||
-|| **after**
+|| **after** 
 [`integer`](../../data-types.md) | `ID` of the task after which the task should be placed in the stage ||
 |#
 
@@ -39,7 +39,7 @@ The method works as follows:
 
 The `before` and `after` parameters are mutually exclusive. You must specify either one or the other.
 
-If both parameters are not filled, the task is added to the column of the stage according to the project settings or "My Planner".
+If both parameters are not filled, the task is added to the stage column according to the project or "My Plan" settings.
 
 {% endnote %}
 
@@ -76,28 +76,82 @@ If both parameters are not filled, the task is added to the column of the stage 
     https://your-domain.bitrix24.com/rest/task.stages.movetask
     ```
 
-- JS
+- JS (TS)
 
-    ```js
-    try
-    {
-    	const response = await $b24.callMethod(
-    		'task.stages.movetask',
-    		{
-    			id: taskId,
-    			stageId: stageId,
-    			before: 3,
-    			after: 4
-    		}
-    	);
-    	
-    	const result = response.getData().result;
-    	console.log(result);
+    ```ts
+    // This snippet is an ES module: top-level await requires type="module" or a bundler.
+    // $b24 is an already-initialized SDK instance (see the SDK "Get started" guide).
+    import { Text } from '@bitrix24/b24jssdk'
+    import type { B24Frame } from '@bitrix24/b24jssdk'
+
+    declare const $b24: B24Frame
+
+    // Shape of the payload returned in result (match the "response handling" section of the page)
+    type MoveTaskResult = boolean
+
+    try {
+      const response = await $b24.actions.v2.call.make<MoveTaskResult>({
+        method: 'task.stages.movetask',
+        params: {
+          id: 1,
+          stageId: 2,
+          before: 3,
+          after: 4,
+        },
+        requestId: Text.getUuidRfc4122()
+      })
+
+      // The payload is available only on a successful response
+      if (!response.isSuccess) {
+        console.error(response.getErrorMessages().join('; '))
+      } else {
+        const result = response.getData()!.result
+        console.info('Task moved successfully:', result)
+      }
+    } catch (error) {
+      // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+      console.error(error)
     }
-    catch( error )
-    {
-    	console.error('Error:', error);
-    }
+    ```
+
+- JS (UMD)
+
+    ```html
+    <!-- Load the SDK (UMD build); it is exposed as the global B24Js -->
+    <script src="https://unpkg.com/@bitrix24/b24jssdk@1/dist/umd/index.min.js"></script>
+    <script>
+      async function moveTask() {
+        try {
+          // Initialize the SDK inside a Bitrix24 frame
+          const $b24 = await B24Js.initializeB24Frame()
+
+          const response = await $b24.actions.v2.call.make({
+            method: 'task.stages.movetask',
+            params: {
+              id: 1,
+              stageId: 2,
+              before: 3,
+              after: 4,
+            },
+            requestId: B24Js.Text.getUuidRfc4122()
+          })
+
+          // The payload is available only on a successful response
+          if (!response.isSuccess) {
+            console.error(response.getErrorMessages().join('; '))
+            return
+          }
+
+          const result = response.getData().result
+          console.info('Task moved successfully:', result)
+        } catch (error) {
+          // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+          console.error(error)
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', moveTask)
+    </script>
     ```
 
 - PHP
@@ -169,7 +223,7 @@ If both parameters are not filled, the task is added to the column of the stage 
         ]
     );
 
-    // Process response from Bitrix24
+    // Process the response from Bitrix24
     if ($result['error']) {
         echo 'Error: '.$result['error_description'];
     } else {
@@ -191,11 +245,11 @@ HTTP Status: **200**
 
 ### Returned Data
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **result** 
-[`boolean`](../../data-types.md) | Returns `true` if the stage was successfully moved
+[`boolean`](../../data-types.md) | Returns `true` if the stage move was successful
 ||
 |#
 
@@ -214,7 +268,7 @@ HTTP Status: **400**
 
 ### Possible Error Codes
 
-#|
+#| 
 || **Code** | **Description** ||
 || `ACCESS_DENIED_MOVE` | You cannot move this task ||
 || `TASK_NOT_FOUND` | Task not found or access to it is denied ||

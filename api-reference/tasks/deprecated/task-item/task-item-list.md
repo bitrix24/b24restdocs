@@ -1,4 +1,4 @@
-# Get Task List: task.item.list
+# Get the List of Tasks task.item.list
 
 {% note tip "" %}
 
@@ -10,11 +10,11 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: any user
 
-This method returns an array of tasks, each containing an array of fields (similar to the array returned by [task.item.getdata](task-item-get-data.md)).
+The method returns an array of tasks, each containing an array of fields (similar to the array returned by [task.item.getdata](task-item-get-data.md)).
 
 {% note warning "DEPRECATED" %}
 
-Development of this method has been halted. Please use [tasks.task.list](../../tasks-task-list.md).
+The development of this method has been halted. Please use [tasks.task.list](../../tasks-task-list.md).
 
 {% endnote %}
 
@@ -24,7 +24,7 @@ Development of this method has been halted. Please use [tasks.task.list](../../t
 || **Name**
 `type` | **Description** ||
 || **ORDER**
-[`object`](../../../data-types.md) | An array in the format `{'sorting_field': 'sorting_direction' [, ...]}` for sorting the results. The sorting field can take the following values: 
+[`object`](../../../data-types.md) | An array of the form `{'sorting_field': 'sorting_direction' [, ...]}` for sorting the result. The sorting field can take the following values: 
 - `TITLE` — task title 
 - `DATE_START` — start date 
 - `DEADLINE` — deadline 
@@ -39,9 +39,9 @@ The sorting direction can take the following values:
 - `asc` — ascending 
 - `desc` — descending 
    
-This is an optional parameter. By default, it is sorted in descending order by task ID. ||
+Optional parameter. By default, it is sorted in descending order by task ID. ||
 || **FILTER**
-[`object`](../../../data-types.md) | An array in the format `{'filter_field': 'filter_value' [, ...]}`. The filter field can take the following values:
+[`object`](../../../data-types.md) | An array of the form `{'filter_field': 'filter_value' [, ...]}`. The filter field can take the following values:
 - `ID` — task ID
 - `PARENT_ID` — parent task ID
 - `GROUP_ID` — working group ID
@@ -73,10 +73,10 @@ This is an optional parameter. By default, it is sorted in descending order by t
 - `CHANGED_DATE` — last modification date
 - `ACCOMPLICE` — co-participant ID
 - `AUDITOR` — auditor ID
-- `DEPENDS_ON` — ID of the preceding task
+- `DEPENDS_ON` — previous task ID
 - `ONLY_ROOT_TASKS` — only tasks that are not sub-tasks (root tasks), as well as sub-tasks of the parent task to which the current user does not have access (Y\|N)
 
-A filter type can be specified before the filter field name:
+Before the name of the filter field, you can specify the type of filtering:
 - `!` — not equal
 - `<` — less than
 - `<=` — less than or equal to
@@ -85,18 +85,18 @@ A filter type can be specified before the filter field name:
 
 Filter values can be a single value or an array.
 
-This is an optional parameter. By default, records are not filtered.
+Optional parameter. By default, records are not filtered.
 
 For the method `task.item.list`, sorting must be specified for filtering. Filtering without sorting returns all tasks.
 ||
 || **PARAMS**
-[`array`](../../../data-types.md) | An array for call options. An element is an array `NAV_PARAMS` in the format `{'call_option': 'value' [, ...]}`, containing the following options:
-- `nPageSize` — number of items per page. A limit of 50 tasks has been imposed for pagination to reduce load.
-- `iNumPage` — page number for pagination. ||
+[`array`](../../../data-types.md) | An array for call options. The element is an array `NAV_PARAMS` of the form `{'call_option': 'value' [, ...]}`, containing the following options:
+- `nPageSize` — number of items per page. To limit the load on pagination, a limit of 50 tasks is imposed.
+- `iNumPage` — page number in pagination. ||
 || **SELECT**
 [`array`](../../../data-types.md) | An array of record fields that will be returned by the method. If the array contains the value `"*"`, all available fields will be returned. 
 
-The default value (an empty array `array()`) means that all fields from the main query table will be returned. ||
+The default value (empty array `array()`) means that all fields of the main query table will be returned. ||
 |#
 
 Maintaining the order of parameters in the request is mandatory. If violated, the request will be executed with errors.
@@ -105,9 +105,9 @@ However, if some parameters need to be skipped, they still need to be passed, bu
 
 ## Code Examples
 
-{% include [Examples Note](../../../../_includes/examples.md) %}
+{% include [Example Note](../../../../_includes/examples.md) %}
 
-Get a list of all tasks (pagination will default to 50 items per page).
+Get the list of all tasks (pagination will default to 50 items per page).
 
 {% list tabs %}
 
@@ -131,43 +131,82 @@ Get a list of all tasks (pagination will default to 50 items per page).
     https://**put_your_bitrix24_address**/rest/task.item.list?auth=**put_access_token_here**
     ```
 
-- JS
+- JS (TS)
 
-    ```js
-    // callListMethod: Retrieves all data at once. Use only for small selections (< 1000 items) due to high memory load.
-    
+    ```ts
+    // This snippet is an ES module: top-level await requires type="module" or a bundler.
+    // $b24 is an already-initialized SDK instance (see the SDK "Get started" guide).
+    import { Text } from '@bitrix24/b24jssdk'
+    import type { B24Frame } from '@bitrix24/b24jssdk'
+
+    declare const $b24: B24Frame
+
+    // Shape of the payload returned in result (each task is a map of field values)
+    type TaskItemListResult = Record<string, unknown>[]
+
     try {
-      const response = await $b24.callListMethod(
-        'task.item.list',
-        {},
-        (progress) => { console.log('Progress:', progress) }
-      )
-      const items = response.getData() || []
-      for (const entity of items) { console.log('Entity:', entity) }
-    } catch (error) {
-      console.error('Request failed', error)
-    }
-    
-    // fetchListMethod: Retrieves data in parts using an iterator. Use for large volumes of data for efficient memory consumption.
-    
-    try {
-      const generator = $b24.fetchListMethod('task.item.list', {}, 'ID')
-      for await (const page of generator) {
-        for (const entity of page) { console.log('Entity:', entity) }
+      // task.item.list returns a single page (max 50 records). For the whole result set
+      // use a list helper: $b24.actions.v2.callList.make() returns every record as one
+      // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
+      // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
+      // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
+      const response = await $b24.actions.v2.call.make<TaskItemListResult>({
+        method: 'task.item.list',
+        params: {},
+        requestId: Text.getUuidRfc4122()
+      })
+
+      // The payload is available only on a successful response
+      if (!response.isSuccess) {
+        console.error(response.getErrorMessages().join('; '))
+      } else {
+        const result = response.getData()!.result
+        console.info('Tasks fetched:', result.length)
       }
     } catch (error) {
-      console.error('Request failed', error)
+      // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+      console.error(error)
     }
-    
-    // callMethod: Manual control of pagination through the start parameter. Use for precise control over request batches. Less efficient for large data than fetchListMethod.
-    
-    try {
-      const response = await $b24.callMethod('task.item.list', {}, 0)
-      const result = response.getData().result || []
-      for (const entity of result) { console.log('Entity:', entity) }
-    } catch (error) {
-      console.error('Request failed', error)
-    }
+    ```
+
+- JS (UMD)
+
+    ```html
+    <!-- Load the SDK (UMD build); it is exposed as the global B24Js -->
+    <script src="https://unpkg.com/@bitrix24/b24jssdk@1/dist/umd/index.min.js"></script>
+    <script>
+      async function fetchTaskList() {
+        try {
+          // Initialize the SDK inside a Bitrix24 frame
+          const $b24 = await B24Js.initializeB24Frame()
+
+          // task.item.list returns a single page (max 50 records). For the whole result set
+          // use a list helper: $b24.actions.v2.callList.make() returns every record as one
+          // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
+          // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
+          // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
+          const response = await $b24.actions.v2.call.make({
+            method: 'task.item.list',
+            params: {},
+            requestId: B24Js.Text.getUuidRfc4122()
+          })
+
+          // The payload is available only on a successful response
+          if (!response.isSuccess) {
+            console.error(response.getErrorMessages().join('; '))
+            return
+          }
+
+          const result = response.getData().result
+          console.info('Tasks fetched:', result.length)
+        } catch (error) {
+          // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+          console.error(error)
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', fetchTaskList)
+    </script>
     ```
 
 - PHP
@@ -225,7 +264,7 @@ Get a list of all tasks (pagination will default to 50 items per page).
 
 {% endlist %}
 
-Get a list of tasks with IDs 1, 2, 3, 4, 5, 6, selecting only the fields `ID` and `TITLE`. Pagination mode — 2 items per page, 2nd page. Sorting by ID — descending.
+Get the list of tasks with IDs 1, 2, 3, 4, 5, 6, selecting only the fields `ID` and `TITLE`. Pagination mode — 2 items per page, 2nd page. Sorting by ID — descending.
 
 {% list tabs %}
 
@@ -249,70 +288,100 @@ Get a list of tasks with IDs 1, 2, 3, 4, 5, 6, selecting only the fields `ID` an
     https://**put_your_bitrix24_address**/rest/task.item.list
     ```
 
-- JS
+- JS (TS)
 
-    ```js
-    // callListMethod: Retrieves all data at once. Use only for small selections (< 1000 items) due to high memory load.
-    
+    ```ts
+    // This snippet is an ES module: top-level await requires type="module" or a bundler.
+    // $b24 is an already-initialized SDK instance (see the SDK "Get started" guide).
+    import { Text } from '@bitrix24/b24jssdk'
+    import type { B24Frame } from '@bitrix24/b24jssdk'
+
+    declare const $b24: B24Frame
+
+    // Shape of the payload returned in result (each task is a map of field values)
+    type TaskItemListResult = Record<string, unknown>[]
+
     try {
-      const response = await $b24.callListMethod(
-        'task.item.list',
-        [
-          {ID: 'desc'},        // Sorting by ID — descending.
-          {ID: [1, 2, 3, 4, 5, 6]},    // Filter
-          {
-            NAV_PARAMS: { // pagination
-              nPageSize: 2,    // 2 items per page.
-              iNumPage: 2    // page number 2        
-            }
-          }
-        ],
-        (progress) => { console.log('Progress:', progress) }
-      );
-      const items = response.getData() || [];
-      for (const entity of items) { console.log('Entity:', entity); }
-    } catch (error) {
-      console.error('Request failed', error);
-    }
-    
-    // fetchListMethod: Retrieves data in parts using an iterator. Use for large volumes of data for efficient memory consumption.
-    
-    try {
-      const generator = $b24.fetchListMethod('task.item.list', [
-        {ID: 'desc'},        // Sorting by ID — descending.
-        {ID: [1, 2, 3, 4, 5, 6]},    // Filter
-        {
-          NAV_PARAMS: { // pagination
-            nPageSize: 2,    // 2 items per page.
-            iNumPage: 2    // page number 2        
-          }
-        }
-      ], 'ID');
-      for await (const page of generator) {
-        for (const entity of page) { console.log('Entity:', entity); }
+      // task.item.list returns a single page (max 50 records). For the whole result set
+      // use a list helper: $b24.actions.v2.callList.make() returns every record as one
+      // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
+      // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
+      // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
+      const response = await $b24.actions.v2.call.make<TaskItemListResult>({
+        method: 'task.item.list',
+        params: {
+          order: { ID: 'desc' },
+          filter: { ID: [1, 2, 3, 4, 5, 6] },
+          params: {
+            NAV_PARAMS: {
+              nPageSize: 2,
+              iNumPage: 2,
+            },
+          },
+        },
+        requestId: Text.getUuidRfc4122()
+      })
+
+      // The payload is available only on a successful response
+      if (!response.isSuccess) {
+        console.error(response.getErrorMessages().join('; '))
+      } else {
+        const result = response.getData()!.result
+        console.info('Tasks on page:', result.length)
       }
     } catch (error) {
-      console.error('Request failed', error);
+      // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+      console.error(error)
     }
-    
-    // callMethod: Manual control of pagination through the start parameter. Use for precise control over request batches. Less efficient for large data than fetchListMethod.
-    
-    try {
-      const response = await $b24.callMethod('task.item.list', [
-        {ID: 'desc'},        // Sorting by ID — descending.
-        {ID: [1, 2, 3, 4, 5, 6]},    // Filter
-        {
-          NAV_PARAMS: { // pagination
-            nPageSize: 2,    // 2 items per page.
-            iNumPage: 2    // page number 2        
+    ```
+
+- JS (UMD)
+
+    ```html
+    <!-- Load the SDK (UMD build); it is exposed as the global B24Js -->
+    <script src="https://unpkg.com/@bitrix24/b24jssdk@1/dist/umd/index.min.js"></script>
+    <script>
+      async function fetchFilteredTaskList() {
+        try {
+          // Initialize the SDK inside a Bitrix24 frame
+          const $b24 = await B24Js.initializeB24Frame()
+
+          // task.item.list returns a single page (max 50 records). For the whole result set
+          // use a list helper: $b24.actions.v2.callList.make() returns every record as one
+          // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
+          // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
+          // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
+          const response = await $b24.actions.v2.call.make({
+            method: 'task.item.list',
+            params: {
+              order: { ID: 'desc' },
+              filter: { ID: [1, 2, 3, 4, 5, 6] },
+              params: {
+                NAV_PARAMS: {
+                  nPageSize: 2,
+                  iNumPage: 2,
+                },
+              },
+            },
+            requestId: B24Js.Text.getUuidRfc4122()
+          })
+
+          // The payload is available only on a successful response
+          if (!response.isSuccess) {
+            console.error(response.getErrorMessages().join('; '))
+            return
           }
+
+          const result = response.getData().result
+          console.info('Tasks on page:', result.length)
+        } catch (error) {
+          // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+          console.error(error)
         }
-      ], 0);
-      const result = response.getData().result || [];
-      for (const entity of result) { console.log('Entity:', entity); }
-    } catch (error) {
-      console.error('Request failed', error);
-    }
+      }
+
+      document.addEventListener('DOMContentLoaded', fetchFilteredTaskList)
+    </script>
     ```
 
 - PHP
@@ -340,7 +409,7 @@ Get a list of tasks with IDs 1, 2, 3, 4, 5, 6, selecting only the fields `ID` an
             ->getResult();
     
         echo 'Success: ' . print_r($result, true);
-        // Your data processing logic
+        // Your logic for processing data
         processData($result);
     
     } catch (Throwable $e) {

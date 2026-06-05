@@ -14,7 +14,7 @@ The method `imbot.v2.Chat.Message.send` sends a message on behalf of the bot to 
 
 ## Method Parameters
 
-{% include [Parameter Notes](../../../../../_includes/required.md) %}
+{% include [Parameter Note](../../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -24,7 +24,7 @@ The method `imbot.v2.Chat.Message.send` sends a message on behalf of the bot to 
 || **botToken**
 [`string`](../../../../data-types.md) | Unique authorization token for the bot. Required for webhook authorization, not needed for OAuth.
 
-Pass the same botToken that was specified during the chat bot registration ||
+Pass the same botToken that was specified during the chat-bot registration ||
 || **dialogId***
 [`string`](../../../../data-types.md) | Dialog ID. For group chats — `chat{chatId}`, for personal chats — `{userId}` ||
 || **fields**
@@ -41,26 +41,26 @@ Pass the same botToken that was specified during the chat bot registration ||
 || **attach**
 [`array`](../../../../data-types.md) | Attachments. More details: [How to use attachments](./attachments/index.md) ||
 || **keyboard**
-[`array`](../../../../data-types.md) | Keyboard with buttons. More details: [Working with Keyboards](./message-keyboards.md) ||
+[`array`](../../../../data-types.md) | Keyboard with buttons. More details: [Working with keyboards](./message-keyboards.md) ||
 || **system**
 [`boolean`](../../../../data-types.md) | System message. Allowed values: `true`, `false`. Default is `false` ||
 || **urlPreview**
 [`boolean`](../../../../data-types.md) | Show link previews. Allowed values: `true`, `false`. Default is `true` ||
 || **replyId**
-[`integer`](../../../../data-types.md) | ID of the message being replied to by the bot ||
+[`integer`](../../../../data-types.md) | ID of the message the bot is replying to ||
 || **templateId**
 [`string`](../../../../data-types.md) | UUID of the message template ||
 || **forwardIds**
 [`object`](../../../../data-types.md) | Messages to forward. Format: `{uuid: messageId}`, where `uuid` is an arbitrary UUID string as the key, `messageId` is the ID of the original message. In the response, `uuidMap` will return `{uuid: newMessageId}`.
 
-The bot can only forward messages from chats in which it is a participant. Maximum of 100 messages ||
+The bot can only forward messages from chats where it is a participant. Maximum of 100 messages ||
 |#
 
-> Boolean fields `system`, `urlPreview`, `skipConnector`, `silentConnector` accept values `true`, `false`, `"Y"`, `"N"`.
+> Boolean parameters accept `true` and `false`. If the client does not support JSON boolean, strings `"Y"` and `"N"` can be passed.
 
 ## Code Examples
 
-{% include [Example Notes](../../../../../_includes/examples.md) %}
+{% include [Examples Note](../../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -189,7 +189,7 @@ The bot can only forward messages from chats in which it is a participant. Maxim
 
 ## Response Handling
 
-HTTP Code: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -240,8 +240,8 @@ HTTP Status: **400**, **403**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `BOT_TOKEN_NOT_SPECIFIED` | Bot token is not specified | `botToken` is not provided. Required for webhook authorization ||
-|| `BOT_ID_REQUIRED` | Bot ID is required | `botId` is not provided ||
+|| `BOT_TOKEN_NOT_SPECIFIED` | Bot token is not specified | `botToken` is not specified. Required for webhook authorization ||
+|| `BOT_ID_REQUIRED` | Bot ID is required | `botId` is not specified ||
 || `BOT_NOT_FOUND` | Bot not found | Bot not found ||
 || `BOT_OWNERSHIP_ERROR` | Bot is registered by another application | Bot is registered by another application ||
 || `ACCESS_DENIED` | Access denied | Bot is not a participant in the chat ||

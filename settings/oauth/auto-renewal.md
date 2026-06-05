@@ -1,4 +1,4 @@
-# Automatic Renewal of OAuth 2.0 Tokens
+# OAuth 2.0 token automatic renewal
 
 {% note tip "" %}
 
@@ -6,9 +6,9 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-By storing the authorization `refresh_token` value on your side, the application can later use it to access the REST API without user involvement. The lifespan of the `refresh_token` is 180 days.
+By retaining the `refresh_token` refresh token value on its side, the application may subsequently use it to gain access to the REST API without user intervention. Lifetime `refresh_token` is 180 days.
 
-At any time before the `refresh_token` expires, the application can make the following request:
+At any time before the expiration of `refresh_token`, the application can make the following request:
 
 ```bash
 https://oauth.bitrix.info/oauth/token/?
@@ -20,14 +20,14 @@ https://oauth.bitrix.info/oauth/token/?
 
 **Parameters:**
 
-{% include [Note on required parameters](../../_includes/required.md) %}
+{% include [Note on parameters](../../_includes/required.md) %}
 
-- **grant_type*** — parameter indicating the type of authorization data to be validated. Must be set to `refresh_token`;
-- **client_id*** — application code obtained in the partner's account upon application registration, or on the account for local applications;
-- **client_secret*** — secret key of the application, obtained in the partner's account upon application registration or on the account for local applications;
-- **refresh_token*** — value of the stored authorization renewal token.
+- **grant_type*** — a parameter indicating the type of authorization data to be validated. It must have the value `refresh_token`;
+- **client_id*** — the application code obtained in the partner cabinet during application registration, or on the portal in the case of a local application;
+- **client_secret*** — the application secret key obtained in the partner cabinet during application registration, or on the portal in the case of a local application;
+- **refresh_token*** — the value of the retained refresh token.
 
-In response, the application will receive a `json` of the following format:
+In response, the application will receive `json` of the following type:
 
 ```json
 GET /oauth/token/
@@ -37,26 +37,34 @@ Content-Type: application/json
 
 {
     "access_token": "ydtj8pho532wydb5ixk78ol7uqlb7sch",
-    "client_endpoint": "https://account.bitrix24.com/rest/",
+    "client_endpoint": "https://portal.bitrix24.com/rest/",
     "domain": "oauth.bitrix.info",
+    "expires": 1780319382,
     "expires_in": 3600,
     "member_id": "a223c6b3710f85df22e9377d6c4f7553",
     "refresh_token": "3s6lr4kr3cv2od4v853gvrchb875bwxb",
     "scope": "app",
     "server_endpoint": "https://oauth.bitrix.info/rest/",
-    "status": "T"
+    "status": "T",
+    "user_id": 67
 }
 ```
 
-Significant data in the response:
+Significant response data:
 
-- **access_token** — the main authorization token required for accessing the REST API (lifespan — 1 hour)
-- **refresh_token** — new value of the additional authorization token used to extend the stored authorization
-- **client_endpoint** — address of the portal's REST interface
-- **server_endpoint** — address of the server's REST interface
-- **status** — status of the application on the account
+- **access_token** — the primary authorization token required to access the REST API (lifetime — 1 hour)
+- **refresh_token** — a new value of the additional authorization token used to renew the retained authorization
+- **client_endpoint** — the portal's REST interface address
+- **server_endpoint** — the server's REST interface address
+- **status** — the application status on the portal
+- **expires** — the expiration moment of `access_token` in Unix time format
+- **expires_in** — the lifetime of `access_token` in seconds
+- **scope** — a comma-separated list of REST API access rights granted to the application
+- **domain** — the authorization server domain
+- **member_id** — the unique identifier of the portal
+- **user_id** — the identifier of the user for whom the token was issued
 
-At this stage, the application may encounter an authorization error. For example, if the trial or paid period has expired, or if the application has been removed from the account.
+At this stage, the application may receive an authorization error. For example, if the trial or paid period has expired, or the application was removed from the portal.
 
 ```json
 {
@@ -65,25 +73,25 @@ At this stage, the application may encounter an authorization error. For example
 }
 ```
 
-## When to Update Stored Tokens?
+## When should you renew retained tokens?
 
-If your application's scenario requires constant background data exchange with Bitrix24 without user involvement, you need to consider storing refresh tokens and the mechanism for their use.
+If your application scenario requires constant background data exchange with Bitrix24 without user involvement, you must plan the storage of refresh tokens and a mechanism for their use.
 
-As mentioned earlier, the `refresh_token` remains valid for 180 days. This means that if your application does not access Bitrix24 frequently "on its own" to implement application functionality, you only need to contact the authorization server once every 180 days to refresh the stored tokens.
+As previously stated, `refresh_token` remains valid for 180 days. This means that if your application, for some reason, does not contact Bitrix24 "on its own" more frequently to implement application functionality, it is sufficient to contact the authorization server once every 180 days just to renew the retained tokens.
 
 {% note alert "" %}
 
-We have encountered cases where application developers "just in case" called the authorization server to refresh the token before every REST request. This is an incorrect scenario that creates unnecessary load. The same applies to scenarios with automatic "token refresh" every hour or every day — this is excessive.
+We have encountered cases where application developers "just in case" first "ping" the authorization server to renew the token before every REST request. This is an incorrect scenario that creates unnecessary load. The same applies to scenarios with automatic "token renewal" once an hour, or once a day — this is redundant.
 
-Moreover, by creating unnecessary load on the authorization server, you risk having your application blocked by automation at some point.
+Moreover, by creating unnecessary load on the authorization server, you risk your application being blocked by automation at some point.
 
 {% endnote %}
 
-## Recommended Logic for Working with Tokens
+## Recommended token handling logic
 
-- Store the obtained pairs of `access_token` and `refresh_token` on your side;
-- Use the stored `access_token` to make requests;
-- If a specific `access_token` has become invalid, you will receive the corresponding error in response. At this point, you should:
-  - Make a request to the authorization server to obtain a new pair of tokens using the stored `refresh_token`;
-  - Save the new pair of tokens on your side;
-  - Repeat the request to the REST method with the same parameters as before, but with the new `access_token`.
+- Retain the received `access_token` and `refresh_token` token pairs on your side;
+- Use the saved `access_token` to perform requests;
+- If a specific `access_token` becomes invalid, you will receive a corresponding error in response. At this point, you must:
+  - Make a request to the authorization server to obtain a new token pair using the saved `refresh_token`;
+  - Retain the new token pair on your side;
+  - Repeat the REST method request with the same parameters as before, but with the new `access_token`.

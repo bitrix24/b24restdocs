@@ -1,4 +1,4 @@
-# Pin a task tasks.task.pin
+# Pin a Task: tasks.task.pin
 
 {% note tip "" %}
 
@@ -10,16 +10,16 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: any user with read access to the task
 
-The `tasks.task.pin` method pins a task in the current user's task list.
+The method `tasks.task.pin` pins a task in the current user's task list.
 
 ## Method Parameters
 
 {% include [Note on parameters](../../_includes/required.md) %}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
-|| **id***
+|| **id*** 
 [`integer`](../data-types.md) | Task identifier.
 
 The task identifier can be obtained when [creating a new task](./tasks-task-add.md) or by using the [get task list method](./tasks-task-list.md) ||
@@ -51,27 +51,85 @@ The task identifier can be obtained when [creating a new task](./tasks-task-add.
     https://**put_your_bitrix24_address**/rest/tasks.task.pin
     ```
 
-- JS
+- JS (TS)
 
-    ```javascript
-    try
-    {
-        const response = await $b24.callMethod(
-            'tasks.task.pin',
-            {
-                id: 3897,
-            }
-        );
+    ```ts
+    // This snippet is an ES module: top-level await requires type="module" or a bundler.
+    // $b24 is an already-initialized SDK instance (see the SDK "Get started" guide).
+    import { Text } from '@bitrix24/b24jssdk'
+    import type { B24Frame, ISODate } from '@bitrix24/b24jssdk'
 
-        const result = response.getData().result;
-        console.log('Pinned task:', result.task);
+    declare const $b24: B24Frame
 
-        processResult(result);
+    // Shape of the payload returned in result (match the "response handling" section of the page)
+    type TaskPinResult = {
+      task: {
+        id: string
+        title: string
+        status: string
+        isPinned: string
+        createdDate: ISODate | null
+        deadline: ISODate | null
+      }
     }
-    catch( error )
-    {
-        console.error('Error:', error);
+
+    try {
+      const response = await $b24.actions.v2.call.make<TaskPinResult>({
+        method: 'tasks.task.pin',
+        params: {
+          id: 3897,
+        },
+        requestId: Text.getUuidRfc4122()
+      })
+
+      // The payload is available only on a successful response
+      if (!response.isSuccess) {
+        console.error(response.getErrorMessages().join('; '))
+      } else {
+        const result = response.getData()!.result
+        console.info('Pinned task:', result.task.id, result.task.title, result.task.isPinned)
+      }
+    } catch (error) {
+      // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+      console.error(error)
     }
+    ```
+
+- JS (UMD)
+
+    ```html
+    <!-- Load the SDK (UMD build); it is exposed as the global B24Js -->
+    <script src="https://unpkg.com/@bitrix24/b24jssdk@1/dist/umd/index.min.js"></script>
+    <script>
+      async function pinTask() {
+        try {
+          // Initialize the SDK inside a Bitrix24 frame
+          const $b24 = await B24Js.initializeB24Frame()
+
+          const response = await $b24.actions.v2.call.make({
+            method: 'tasks.task.pin',
+            params: {
+              id: 3897,
+            },
+            requestId: B24Js.Text.getUuidRfc4122()
+          })
+
+          // The payload is available only on a successful response
+          if (!response.isSuccess) {
+            console.error(response.getErrorMessages().join('; '))
+            return
+          }
+
+          const result = response.getData().result
+          console.info('Pinned task:', result.task.id, result.task.title, result.task.isPinned)
+        } catch (error) {
+          // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+          console.error(error)
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', pinTask)
+    </script>
     ```
 
 - PHP
@@ -136,7 +194,7 @@ The task identifier can be obtained when [creating a new task](./tasks-task-add.
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -144,7 +202,7 @@ HTTP status: **200**
         "task": {
             "id": "3897",
             "parentId": null,
-            "title": "Example task",
+            "title": "Task Example",
             "description": "",
             "mark": null,
             "priority": "1",
@@ -155,16 +213,16 @@ HTTP status: **200**
             "sprintId": null,
             "backlogId": null,
             "createdBy": "503",
-            "createdDate": "2026-05-21T11:50:16+03:00",
+            "createdDate": "2026-05-21T11:50:16+02:00",
             "responsibleId": "503",
             "changedBy": "503",
-            "changedDate": "2026-05-21T11:50:16+03:00",
+            "changedDate": "2026-05-21T11:50:16+02:00",
             "statusChangedBy": null,
             "closedBy": null,
             "closedDate": null,
-            "activityDate": "2026-05-21T11:50:16+03:00",
+            "activityDate": "2026-05-21T11:50:16+02:00",
             "dateStart": null,
-            "deadline": "2026-05-26T22:00:00+03:00",
+            "deadline": "2026-05-26T22:00:00+02:00",
             "startDatePlan": null,
             "endDatePlan": null,
             "guid": "{b3757070-422d-4221-82bd-ed1b8ec26c35}",
@@ -196,7 +254,7 @@ HTTP status: **200**
             "chatId": 3619,
             "descriptionInBbcode": "Y",
             "status": "2",
-            "statusChangedDate": "2026-05-21T11:50:16+03:00",
+            "statusChangedDate": "2026-05-21T11:50:16+02:00",
             "durationPlan": null,
             "durationType": "days",
             "favorite": "N",
@@ -207,14 +265,14 @@ HTTP status: **200**
             "group": [],
             "creator": {
                 "id": "503",
-                "name": "Mary Smith",
+                "name": "Maria Johnson",
                 "link": "/company/personal/user/503/",
                 "icon": "https://mysite.com/path/to/avatar.png",
                 "workPosition": null
             },
             "responsible": {
                 "id": "503",
-                "name": "Mary Smith",
+                "name": "Maria Johnson",
                 "link": "/company/personal/user/503/",
                 "icon": "https://mysite.com/path/to/avatar.png",
                 "workPosition": null
@@ -281,8 +339,8 @@ HTTP status: **200**
         "finish": 1779353517.987214,
         "duration": 0.9872140884399414,
         "processing": 0,
-        "date_start": "2026-05-21T11:51:57+03:00",
-        "date_finish": "2026-05-21T11:51:57+03:00",
+        "date_start": "2026-05-21T11:51:57+02:00",
+        "date_finish": "2026-05-21T11:51:57+02:00",
         "operating_reset_at": 1779354117,
         "operating": 0
     }
@@ -291,13 +349,13 @@ HTTP status: **200**
 
 ### Returned Data
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **result**
 [`object`](../data-types.md) | Object with response data.
 
-Returns an empty array `"result":[]`, if the user does not have access to the task or the task with the specified `id` does not exist ||
+Returns an empty array `"result":[]` if the user does not have access to the task or if the task with the specified `id` does not exist ||
 || **task**
 [`object`](../data-types.md) | Object with [task description](./fields.md) after pinning ||
 || **time**
@@ -306,7 +364,7 @@ Returns an empty array `"result":[]`, if the user does not have access to the ta
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {
@@ -315,16 +373,17 @@ HTTP status: **400**
 }
 ```
 
-{% include notitle [Error handling](../../_includes/error-info.md) %}
+{% include notitle [error handling](../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
-#|
+#| 
 || **Code** | **Description** | **Value** ||
-|| `0` | wrong task id | The value specified in the `id` parameter is of an incorrect type ||
+|| `0` | wrong task id | The value of the `id` parameter is of an incorrect type ||
+|| `100` | CTaskItem All parameters in the constructor must have real class type | The `id` parameter is not provided ||
 |#
 
-{% include [System errors](../../_includes/system-errors.md) %}
+{% include [system errors](../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

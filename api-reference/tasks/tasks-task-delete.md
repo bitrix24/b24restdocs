@@ -10,9 +10,9 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: any user with permission to delete a task
 
-The method `tasks.task.delete` removes a task.
+The method `tasks.task.delete` deletes a task.
 
-You can check the permission to delete a task using the [task access check method](./tasks-task-get-access.md).
+You can check the permission to delete a task using the [check access to task](./tasks-task-get-access.md) method.
 
 ## Method Parameters
 
@@ -22,9 +22,9 @@ You can check the permission to delete a task using the [task access check metho
 || **Name**
 `type` | **Description** ||
 || **taskId***
-[`integer`](../data-types.md) | Identifier of the task.
+[`integer`](../data-types.md) | The identifier of the task.
 
-The task identifier can be obtained when [creating a new task](./tasks-task-add.md) or by using the [get task list method](./tasks-task-list.md) ||
+The task identifier can be obtained when [creating a new task](./tasks-task-add.md) or using the [get task list](./tasks-task-list.md) method ||
 |#
 
 ## Code Examples
@@ -53,27 +53,79 @@ The task identifier can be obtained when [creating a new task](./tasks-task-add.
     https://**put_your_bitrix24_address**/rest/tasks.task.delete
     ```
 
-- JS
+- JS (TS)
 
-    ```javascript
-    try
-    {
-        const response = await $b24.callMethod(
-            'tasks.task.delete',
-            {
-                taskId: 8131,
-            }
-        );
-        
-        const result = response.getData().result;
-        console.log('Deleted task with ID:', result);
-        
-        processResult(result);
+    ```ts
+    // This snippet is an ES module: top-level await requires type="module" or a bundler.
+    // $b24 is an already-initialized SDK instance (see the SDK "Get started" guide).
+    import { Text } from '@bitrix24/b24jssdk'
+    import type { B24Frame } from '@bitrix24/b24jssdk'
+
+    declare const $b24: B24Frame
+
+    // The API wraps the deletion flag: result.task === true on success
+    // Shape of the payload returned in result (match the "response handling" section of the page)
+    type TaskDeleteResult = {
+      task: boolean
     }
-    catch( error )
-    {
-        console.error('Error:', error);
+
+    try {
+      const response = await $b24.actions.v2.call.make<TaskDeleteResult>({
+        method: 'tasks.task.delete',
+        params: {
+          taskId: 8131 // ID of the task to delete
+        },
+        requestId: Text.getUuidRfc4122() // optional unique tracking id for this request
+      })
+
+      // The payload is available only on a successful response
+      if (!response.isSuccess) {
+        console.error(response.getErrorMessages().join('; '))
+      } else if (response.getData()!.result.task) {
+        console.info('Task deleted successfully')
+      }
+    } catch (error) {
+      // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+      console.error(error)
     }
+    ```
+
+- JS (UMD)
+
+    ```html
+    <!-- Load the SDK (UMD build); it is exposed as the global B24Js -->
+    <script src="https://unpkg.com/@bitrix24/b24jssdk@1/dist/umd/index.min.js"></script>
+    <script>
+      async function deleteTask() {
+        try {
+          // Initialize the SDK inside a Bitrix24 frame
+          const $b24 = await B24Js.initializeB24Frame()
+
+          const response = await $b24.actions.v2.call.make({
+            method: 'tasks.task.delete',
+            params: {
+              taskId: 8131 // ID of the task to delete
+            },
+            requestId: B24Js.Text.getUuidRfc4122() // optional unique tracking id for this request
+          })
+
+          // The payload is available only on a successful response
+          if (!response.isSuccess) {
+            console.error(response.getErrorMessages().join('; '))
+            return
+          }
+
+          if (response.getData().result.task) {
+            console.info('Task deleted successfully')
+          }
+        } catch (error) {
+          // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+          console.error(error)
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', deleteTask)
+    </script>
     ```
 
 - PHP
@@ -188,7 +240,7 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `0` | wrong task id | The value in the `taskId` parameter is of an incorrect type ||
+|| `0` | wrong task id | The `taskId` parameter has an invalid type ||
 || `1048582` | No access to delete the task | The user does not have access to the task or lacks permission to delete the task ||
 || `100` | CTaskItem All parameters in the constructor must have real class type | The required parameter `taskId` is missing ||
 |#

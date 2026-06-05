@@ -1,4 +1,4 @@
-# Update User Field user.userfield.update
+# Update custom field user.userfield.update
 
 {% note tip "" %}
 
@@ -10,22 +10,22 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: administrator
 
-The method `user.userfield.update` updates a user field.
+The `user.userfield.update` method updates a custom field.
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../_includes/required.md) %}
+{% include [Note on parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **id*** 
-[`integer`](../../data-types.md)| Identifier of the user field.
+[`integer`](../../data-types.md)| Custom field identifier.
 
-To obtain the identifiers of user fields, use the method [user.userfield.list](./user-userfield-list.md)
+To obtain custom field identifiers, use the [user.userfield.list](./user-userfield-list.md) method.
  ||
 || **fields**
-[`object`](../../data-types.md)| Values of the fields to update the user field ||
+[`object`](../../data-types.md)| Field values for updating the custom field ||
 |#
 
 ### Parameter fields
@@ -38,7 +38,7 @@ To obtain the identifiers of user fields, use the method [user.userfield.list](.
 || **SORT**
 [`integer`](../../data-types.md)| Sort order ||
 || **MANDATORY**
-[`boolean`](../../data-types.md)| Whether the user field is mandatory. Possible values:
+[`boolean`](../../data-types.md)| Whether the custom field is mandatory. Possible values:
 - `Y` — yes
 - `N` — no ||
 || **SHOW_FILTER**
@@ -50,34 +50,34 @@ To obtain the identifiers of user fields, use the method [user.userfield.list](.
 - `Y` — yes
 - `N` — no ||
 - || **EDIT_IN_LIST**
-[`boolean`](../../data-types.md)| Whether to edit the field in the list. Possible values:
+[`boolean`](../../data-types.md)| Whether to allow editing the field in the list. Possible values:
 - `Y` — yes
 - `N` — no ||
 - || **IS_SEARCHABLE**
-[`boolean`](../../data-types.md)| Whether the field is searchable. Possible values:
+[`boolean`](../../data-types.md)| Whether the field is included in the search. Possible values:
 - `Y` — yes
 - `N` — no ||
 || **SETTINGS**
-[`object`](../../data-types.md)| An object in the format `{"field_1": "value_1", ... "field_N": "value_N"}` for passing additional settings for user fields. Settings are described [below](#settings) ||
+[`object`](../../data-types.md)| An object in `{"field_1": "value_1", ... "field_N": "value_N"}` format to pass additional custom field settings. Settings are described [below](#settings) ||
 || **EDIT_FORM_LABEL**
-[`string`](../../data-types.md)| Label in the edit form. You can pass a string or an object with labels by languages in the format `{"de": "...", "en": "..."}`. When passing a string, the value will be set for all languages ||
+[`string`](../../data-types.md)| Caption in the edit form. You can pass a string or an object with language-specific captions in `{"de": "...", "en": "..."}` format. If a string is passed, the value will be applied to all languages ||
 || **LIST_COLUMN_LABEL**
-[`string`](../../data-types.md)| Column header in the list. You can pass a string or an object with labels by languages in the format `{"de": "...", "en": "..."}`. When passing a string, the value will be set for all languages ||
+[`string`](../../data-types.md)| Column header in the list. You can pass a string or an object with language-specific captions in `{"de": "...", "en": "..."}` format. If a string is passed, the value will be applied to all languages ||
 || **LIST_FILTER_LABEL**
-[`string`](../../data-types.md)| Filter header in the list. You can pass a string or an object with labels by languages in the format `{"de": "...", "en": "..."}`. When passing a string, the value will be set for all languages ||
+[`string`](../../data-types.md)| Filter header in the list. You can pass a string or an object with language-specific captions in `{"de": "...", "en": "..."}` format. If a string is passed, the value will be applied to all languages ||
 || **ERROR_MESSAGE**
-[`string`](../../data-types.md)| Error message for invalid input. You can pass a string or an object with texts by languages in the format `{"de": "...", "en": "..."}`. When passing a string, the value will be set for all languages ||
+[`string`](../../data-types.md)| Error message for invalid input. You can pass a string or an object with language-specific texts in `{"de": "...", "en": "..."}` format. If a string is passed, the value will be applied to all languages ||
 || **HELP_MESSAGE**
-[`string`](../../data-types.md)| Help text for the field. You can pass a string or an object with texts by languages in the format `{"de": "...", "en": "..."}`. When passing a string, the value will be set for all languages ||
+[`string`](../../data-types.md)| Tooltip text for the field. You can pass a string or an object with language-specific texts in `{"de": "...", "en": "..."}` format. If a string is passed, the value will be applied to all languages ||
 || **LABEL**
-[`string`](../../data-types.md)| Default name of the user field. 
+[`string`](../../data-types.md)| Default custom field name. 
 
-The value will be set in the fields `LIST_FILTER_LABEL`, `LIST_COLUMN_LABEL`, `EDIT_FORM_LABEL`, `ERROR_MESSAGE`, `HELP_MESSAGE`, if no value is provided ||
+The value will be set in fields `LIST_FILTER_LABEL`, `LIST_COLUMN_LABEL`, `EDIT_FORM_LABEL`, `ERROR_MESSAGE`, `HELP_MESSAGE` if no value is provided for them ||
 |#
 
 ### Parameter SETTINGS {#settings}
 
-Each type of user field has its own set of additional settings.
+Each type of custom field has its own set of additional configurations.
 
 {% list tabs %}
 
@@ -89,11 +89,11 @@ Each type of user field has its own set of additional settings.
     || **DEFAULT_VALUE**
     [`string`](../../data-types.md) | Default value.
 
-    Default is `''` ||
+    Default `''` ||
     || **ROWS**
-    [`integer`](../../data-types.md) | Number of rows in the input field. Must be greater than 0.
+    [`integer`](../../data-types.md) | Number of lines in the input field. Must be greater than 0.
 
-    Default is `1` ||
+    Default `1` ||
     |#
 
 - integer
@@ -113,9 +113,9 @@ Each type of user field has its own set of additional settings.
     || **DEFAULT_VALUE**
     [`double`](../../data-types.md) | Default value ||
     || **PRECISION**
-    [`integer`](../../data-types.md) | Precision of the number. Must be greater than or equal to 0.
+    [`integer`](../../data-types.md) | Number precision. Must be greater than or equal to 0.
 
-    Default is `2` ||
+    Default `2` ||
     |#
 
 - boolean
@@ -124,20 +124,20 @@ Each type of user field has its own set of additional settings.
     || **Name**
     `type` | **Description** ||
     || **DEFAULT_VALUE**
-    [`integer`](../../data-types.md) | Default value, where `1` — yes, `0` — no.
+    [`integer`](../../data-types.md) | Default value, where `1` is yes, `0` is no.
 
     Possible values:
     - `>= 1` -> 1
     - `<= 0` -> 0
 
-    Default is `0` ||
+    Default `0` ||
     || **DISPLAY**
     [`string`](../../data-types.md) | Appearance. Possible values:
     - `CHECKBOX` — checkbox
     - `RADIO` — radio buttons
     - `DROPDOWN` — dropdown list
 
-    Default is `CHECKBOX` ||
+    Default `CHECKBOX` ||
     |#
 
 - datetime
@@ -161,8 +161,8 @@ Each type of user field has its own set of additional settings.
     - `VALUE` — default value of type `datetime` or `date`
     - `TYPE` — type of default value:
       - `NONE` — do not set a default value
-      - `NOW` — use the current time/date
-      - `FIXED` — use the time/date from `VALUE`
+      - `NOW` — use current time/date
+      - `FIXED` — use time/date from `VALUE`
 
     Default value:
 
@@ -183,16 +183,16 @@ Each type of user field has its own set of additional settings.
     || **DISPLAY**
     [`string`](../../data-types.md) | Appearance. Possible values:
     - `LIST` — list
-    - `UI` — input list
+    - `UI` — editable list
     - `CHECKBOX` — checkboxes
     - `DIALOG` — entity selection dialog
 
-    Default is `LIST` ||
-    || **LIST_HEIGHT** | Height of the list. Must be greater than 0.
+    Default `LIST` ||
+    || **LIST_HEIGHT** | List height. Must be greater than 0.
 
     Available only when `DISPLAY = LIST` or `DISPLAY = UI`.
 
-    Default is `1` ||
+    Default `1` ||
     |#
 
 - iblock_section|iblock_element
@@ -201,31 +201,31 @@ Each type of user field has its own set of additional settings.
     || **Name**
     `type` | **Description** ||
     || **IBLOCK_TYPE_ID**
-    [`string`](../../data-types.md) | Identifier of the information block type.
+    [`string`](../../data-types.md) | Iblock type identifier.
 
-    Default is `''` ||
+    Default `''` ||
     || **IBLOCK_ID**
-    [`string`](../../data-types.md) | Identifier of the information block.
+    [`string`](../../data-types.md) | Information block identifier.
 
-    Default is `0` ||
+    Default `0` ||
     || **DEFAULT_VALUE**
     [`string`](../../data-types.md) | Default value.
 
-    Default is `''` ||
+    Default `''` ||
     || **DISPLAY**
     [`string`](../../data-types.md) | Appearance. Possible values:
     - `DIALOG` — dialog
-    - `UI` — input list
+    - `UI` — editable list
     - `LIST` — list
     - `CHECKBOX` — checkboxes
 
-    Default is `LIST` ||
+    Default `LIST` ||
     || **LIST_HEIGHT**
-    [`integer`](../../data-types.md) | Height of the list. Must be greater than 0.
+    [`integer`](../../data-types.md) | List height. Must be greater than 0.
 
-    Default is `1` ||
+    Default `1` ||
     || **ACTIVE_FILTER**
-    [`boolean`](../../data-types.md) | Whether to show elements with the active flag. Possible values:
+    [`boolean`](../../data-types.md) | Whether to show items with the activity flag enabled. Possible values:
     - `Y` — yes
     - `N` — no
 
@@ -238,46 +238,104 @@ Each type of user field has its own set of additional settings.
     || **Name**
     `type` | **Description** ||
     || **ENTITY_TYPE**
-    [`string`](../../data-types.md) | Identifier of the reference type.
+    [`string`](../../data-types.md) | Directory type identifier.
 
     Use [`crm.status.entity.types`](../../crm/status/crm-status-entity-types.md) to find possible values.
 
-    Default is `''` ||
+    Default `''` ||
     |#
 
 - crm
 
-    If none of the following options are provided, the binding to leads will be enabled by default (`LEAD = Y`).
+    If none of the following options are passed, linking to leads (`LEAD = Y`) will be enabled by default.
 
     #|
     || **Name**
     `type` | **Description** ||
     || **LEAD**
-    [`boolean`](../../data-types.md) | Is the binding to [Leads](../../crm/leads/index.md) enabled? Possible values:
+    [`boolean`](../../data-types.md) | Whether binding to [Leads](../../crm/leads/index.md) is enabled. Possible values:
     - `Y` — yes
     - `N` — no
 
     Default is `N` ||
     || **CONTACT**
-    [`boolean`](../../data-types.md) | Is the binding to [Contacts](../../crm/contacts/index.md) enabled? Possible values:
+    [`boolean`](../../data-types.md) | Whether binding to [Contacts](../../crm/contacts/index.md) is enabled. Possible values:
     - `Y` — yes
     - `N` — no
 
     Default is `N` ||
     || **COMPANY**
-    [`boolean`](../../data-types.md) | Is the binding to [Companies](../../crm/companies/index.md) enabled? Possible values:
+    [`boolean`](../../data-types.md) | Whether binding to [Companies](../../crm/companies/index.md) is enabled. Possible values:
     - `Y` — yes
     - `N` — no
 
     Default is `N` ||
     || **DEAL**
-    [`boolean`](../../data-types.md) | Is the binding to [Deals](../../crm/deals/index.md) enabled? Possible values:
+    [`boolean`](../../data-types.md) | Whether binding to [Deals](../../crm/deals/index.md) is enabled. Possible values:
     - `Y` — yes
     - `N` — no
 
     Default is `N` ||
     |#
 
+- Python
+
+    Example
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    bitrix_id = 176
+    fields = {
+        "XML_ID": "UF_USR_SKILLS_PROFILE_V2",
+        "SORT": 200,
+        "MANDATORY": "N",
+        "SHOW_FILTER": "Y",
+        "SHOW_IN_LIST": "Y",
+        "EDIT_IN_LIST": "Y",
+        "IS_SEARCHABLE": "Y",
+        "SETTINGS": {
+            "DEFAULT_VALUE": "Senior Python integration engineer",
+            "ROWS": 4,
+        },
+        "EDIT_FORM_LABEL": {
+            "en": "Skills profile",
+        },
+        "LIST_COLUMN_LABEL": {
+            "en": "Skills profile",
+        },
+        "LIST_FILTER_LABEL": {
+            "en": "Skills profile",
+        },
+        "ERROR_MESSAGE": {
+            "en": "Skills profile is invalid",
+        },
+        "HELP_MESSAGE": {
+            "en": "Update the short integration skills summary.",
+        },
+        "LABEL": "Skills profile",
+    }
+
+    try:
+        bitrix_response = client.user.userfield.update(
+            bitrix_id=bitrix_id,
+            fields=fields,
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print("Bitrix SDK error", error.message, sep="\n")
+    except Exception as error:
+        print("Unexpected error", error, sep="\n")
+    ```
 {% endlist %}
 
 
@@ -322,31 +380,86 @@ Each type of user field has its own set of additional settings.
     https://**put_your_bitrix24_address**/rest/user.userfield.update
     ```
 
-- JS
+- JS (TS)
 
-    ```javascript
-    try
-    {
-        const response = await $b24.callMethod(
-            'user.userfield.update',
-            {
-                id: 42,
-                fields: {
-                    SORT: 150,
-                    LIST_FILTER_LABEL: 'New Title',
-                    LIST_COLUMN_LABEL: 'New List Title',
-                }
-            }
-        );
+    ```ts
+    // This snippet is an ES module: top-level await requires type="module" or a bundler.
+    // $b24 is an already-initialized SDK instance (see the SDK "Get started" guide).
+    import { Text } from '@bitrix24/b24jssdk'
+    import type { B24Frame } from '@bitrix24/b24jssdk'
 
-        const result = response.getData().result;
-        console.log('Updated element with ID:', result);
-        processResult(result);
+    declare const $b24: B24Frame
+
+    // Shape of the payload returned in result (match the "response handling" section of the page)
+    type UpdateUserFieldResult = boolean
+
+    try {
+      const response = await $b24.actions.v2.call.make<UpdateUserFieldResult>({
+        method: 'user.userfield.update',
+        params: {
+          id: 42,
+          fields: {
+            SORT: 150,
+            LIST_FILTER_LABEL: 'New Title',
+            LIST_COLUMN_LABEL: 'New List Title',
+          },
+        },
+        requestId: Text.getUuidRfc4122()
+      })
+
+      // The payload is available only on a successful response
+      if (!response.isSuccess) {
+        console.error(response.getErrorMessages().join('; '))
+      } else {
+        const result = response.getData()!.result
+        console.info('User field updated:', result)
+      }
+    } catch (error) {
+      // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+      console.error(error)
     }
-    catch( error )
-    {
-        console.error('Error:', error);
-    }
+    ```
+
+- JS (UMD)
+
+    ```html
+    <!-- Load the SDK (UMD build); it is exposed as the global B24Js -->
+    <script src="https://unpkg.com/@bitrix24/b24jssdk@1/dist/umd/index.min.js"></script>
+    <script>
+      async function updateUserField() {
+        try {
+          // Initialize the SDK inside a Bitrix24 frame
+          const $b24 = await B24Js.initializeB24Frame()
+
+          const response = await $b24.actions.v2.call.make({
+            method: 'user.userfield.update',
+            params: {
+              id: 42,
+              fields: {
+                SORT: 150,
+                LIST_FILTER_LABEL: 'New Title',
+                LIST_COLUMN_LABEL: 'New List Title',
+              },
+            },
+            requestId: B24Js.Text.getUuidRfc4122()
+          })
+
+          // The payload is available only on a successful response
+          if (!response.isSuccess) {
+            console.error(response.getErrorMessages().join('; '))
+            return
+          }
+
+          const result = response.getData().result
+          console.info('User field updated:', result)
+        } catch (error) {
+          // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+          console.error(error)
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', updateUserField)
+    </script>
     ```
 
 - PHP
@@ -451,9 +564,9 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../data-types.md) | Contains `true` in case of successful update of the user field||
+[`boolean`](../../data-types.md) | Contains `true` in case of a successful custom field update||
 || **time**
-[`time`](../../data-types.md#time) | Information about the execution time of the request ||
+[`time`](../../data-types.md#time) | Request execution time information ||
 |#
 
 ## Error Handling
@@ -467,19 +580,19 @@ HTTP status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
 || **Code** | **Description** | **Value** ||
-|| Empty string | Access denied. | Field with such `id` does not exist or access is denied ||
-|| Empty string | ID is not defined or invalid | `id` is not set or entered incorrectly ||
+|| Empty string | Access denied. | A field with this `id` does not exist or access is denied ||
+|| Empty string | ID is not defined or invalid | Not specified or an invalid `id` was entered ||
 |#
 
-{% include [system errors](../../../_includes/system-errors.md) %}
+{% include [System errors](../../../_includes/system-errors.md) %}
 
-## Continue Learning 
+## Continue Learning
 
 - [{#T}](./user-userfield-add.md)
 - [{#T}](./user-userfield-list.md)

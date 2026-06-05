@@ -283,6 +283,57 @@ For the activity with `id = 8`, linked to the activity with `id = 4`, we will se
     echo '';
     ```
 
+- Python
+
+    Example
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.activity.layout.blocks.set(
+            entity_type_id=2,
+            entity_id=101,
+            activity_id=999,
+            layout={
+                "blocks": {
+                    "summary": {
+                        "type": "text",
+                        "properties": {
+                            "value": "Proposal is ready",
+                            "multiline": True,
+                            "bold": True,
+                            "color": "base_90",
+                        },
+                    },
+                    "dealLink": {
+                        "type": "link",
+                        "properties": {
+                            "text": "Open deal",
+                            "bold": True,
+                            "action": {"type": "redirect", "uri": "/crm/deal/details/101/"},
+                        },
+                    },
+                },
+            },
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
 {% endlist %}
 
 ## Appearance

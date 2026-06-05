@@ -10,9 +10,9 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: any user with access to the task
 
-The method `tasks.task.result.addFromComment` pins a comment as the result of a task.
+The method `tasks.task.result.addFromComment` pins a comment as the result of task execution.
 
-A user can pin only their own comment as a result. An administrator can pin any user's comment, becoming the author of the result.
+A user can pin only their own comment as a result. An administrator can pin any user's comment, making them the author of the result.
 
 {% note warning " " %}
 
@@ -22,20 +22,20 @@ When working with the [new task detail form](../tasks-new.md) with chat from ver
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Parameter Note](../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **commentId***
-[`integer`](../../data-types.md) | The identifier of the comment to be pinned as the result.
+[`integer`](../../data-types.md) | The identifier of the comment to be pinned as a result.
 
-The comment identifier can be obtained when [adding a new comment](../comment-item/task-comment-item-add.md) or using the [method for retrieving the list of comments](../comment-item/task-comment-item-get-list.md) ||
+The comment identifier can be obtained when [adding a new comment](../comment-item/task-comment-item-add.md) or by using the [method to get the list of comments](../comment-item/task-comment-item-get-list.md) ||
 |#
 
 ## Code Examples
 
-{% include [Note on examples](../../../_includes/examples.md) %}
+{% include [Examples Note](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -59,27 +59,87 @@ The comment identifier can be obtained when [adding a new comment](../comment-it
     https://**put_your_bitrix24_address**/rest/tasks.task.result.addFromComment
     ```
 
-- JS
+- JS (TS)
 
-    ```javascript
-    try
-    {
-        const response = await $b24.callMethod(
-            'tasks.task.result.addFromComment',
-            {
-                commentId: 3199,
-            }
-        );
-        
-        const result = response.getData().result;
-        console.log('Task result added from comment:', result);
-        
-        processResult(result);
+    ```ts
+    // This snippet is an ES module: top-level await requires type="module" or a bundler.
+    // $b24 is an already-initialized SDK instance (see the SDK "Get started" guide).
+    import { Text } from '@bitrix24/b24jssdk'
+    import type { B24Frame, ISODate } from '@bitrix24/b24jssdk'
+
+    declare const $b24: B24Frame
+
+    // Shape of the payload returned in result (match the "response handling" section of the page)
+    type TaskResultAddResult = {
+      id: number
+      taskId: number
+      commentId: number
+      createdBy: number
+      createdAt: ISODate
+      updatedAt: ISODate
+      status: number
+      text: string
+      formattedText: string
+      files: null
     }
-    catch( error )
-    {
-        console.error('Error:', error);
+
+    try {
+      const response = await $b24.actions.v2.call.make<TaskResultAddResult>({
+        method: 'tasks.task.result.addFromComment',
+        params: {
+          commentId: 3199,
+        },
+        requestId: Text.getUuidRfc4122()
+      })
+
+      // The payload is available only on a successful response
+      if (!response.isSuccess) {
+        console.error(response.getErrorMessages().join('; '))
+      } else {
+        const result = response.getData()!.result
+        console.info(result.id, result.taskId, result.text)
+      }
+    } catch (error) {
+      // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+      console.error(error)
     }
+    ```
+
+- JS (UMD)
+
+    ```html
+    <!-- Load the SDK (UMD build); it is exposed as the global B24Js -->
+    <script src="https://unpkg.com/@bitrix24/b24jssdk@1/dist/umd/index.min.js"></script>
+    <script>
+      async function addTaskResultFromComment() {
+        try {
+          // Initialize the SDK inside a Bitrix24 frame
+          const $b24 = await B24Js.initializeB24Frame()
+
+          const response = await $b24.actions.v2.call.make({
+            method: 'tasks.task.result.addFromComment',
+            params: {
+              commentId: 3199,
+            },
+            requestId: B24Js.Text.getUuidRfc4122()
+          })
+
+          // The payload is available only on a successful response
+          if (!response.isSuccess) {
+            console.error(response.getErrorMessages().join('; '))
+            return
+          }
+
+          const result = response.getData().result
+          console.info(result.id, result.taskId, result.text)
+        } catch (error) {
+          // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+          console.error(error)
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', addTaskResultFromComment)
+    </script>
     ```
 
 - PHP
@@ -144,7 +204,7 @@ The comment identifier can be obtained when [adding a new comment](../comment-it
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -185,13 +245,13 @@ HTTP status: **200**
 || **taskId**
 [`integer`](../../data-types.md) | The identifier of the task ||
 || **commentId**
-[`integer`](../../data-types.md) | The identifier of the comment pinned as the result ||
+[`integer`](../../data-types.md) | The identifier of the comment pinned as a result ||
 || **createdBy**
 [`integer`](../../data-types.md) | The identifier of the user who pinned the result ||
 || **createdAt**
 [`string`](../../data-types.md) | The date and time the result was pinned in ISO 8601 format ||
 || **updatedAt**
-[`string`](../../data-types.md) | The date and time of the last update of the result in ISO 8601 format ||
+[`string`](../../data-types.md) | The date and time of the last modification of the result in ISO 8601 format ||
 || **status**
 [`integer`](../../data-types.md) | The status of the result. Possible values:
 - `0` — result is open
@@ -199,23 +259,23 @@ HTTP status: **200**
 
 The result becomes closed after the task is completed and retains this status after the task is resumed. Only new results in an unfinished task will be open.
 
-A comment with an open result cannot be added again as a result. If the result is closed, adding is possible
+A comment with an open result cannot be added again to the result. If the result is closed, adding is possible
  ||
 || **text**
 [`string`](../../data-types.md) | The text of the result ||
 || **formattedText**
 [`string`](../../data-types.md) | The formatted text of the result ||
 || **files**
-`null` | Has the value `null`. 
+`null` | Has a value of `null`. 
 
-The list of files attached to the result can be obtained using the [tasks.task.result.list](./tasks-task-result-list.md) method ||
+The list of files attached to the result can be obtained using the method [tasks.task.result.list](./tasks-task-result-list.md) ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the time taken for the request ||
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {
@@ -232,8 +292,8 @@ HTTP status: **400**
 || **Code** | **Description** | **Value** ||
 || `0` | Access denied. | The user does not have permission to access the task or the comment does not belong to the user ||
 || `0` | Result already exists. | The comment is already pinned as a result ||
-|| `100` | Invalid value {value} to match with parameter {commentId}. Should be value of type int. | An invalid type value was passed in the `commentId` parameter. It should be of type `integer` ||
-|| `0` | Comment not found. | A comment with that identifier does not exist ||
+|| `100` | Invalid value {value} to match with parameter {commentId}. Should be value of type int. | The parameter `commentId` has an invalid type value. It should be of type `integer` ||
+|| `0` | Comment not found. | A comment with such an identifier does not exist ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

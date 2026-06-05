@@ -6,20 +6,20 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-This section contains methods for managing chat interface elements on behalf of the bot: the action indicator and the availability of the input field.
+The methods control the chat interface elements on behalf of the bot: the action indicator and the availability of the input field.
 
-> Quick Navigation: [All Methods](#all-methods)
+> Quick navigation: [all methods](#all-methods)
 
 ## What Can Be Changed in the Interface
 
-- Show the user the bot's action indicator
-- Temporarily enable or disable the text input field
+- show the user the bot's action indicator
+- temporarily enable or disable the text input field
 
 ## Overview of Methods {#all-methods}
 
 > Scope: [`imbot`](../../../../scopes/permissions.md)
 >
-> Who can execute the methods: owner of a registered bot
+> Who can execute the methods: owner of the registered bot
 
 #| 
 || **Method** | **Description** ||
@@ -31,4 +31,4 @@ This section contains methods for managing chat interface elements on behalf of 
 
 - [API Change Log for imbot.v2](../../change-log.md)
 - [{#T}](../../index.md)
-- [Messages imbot.v2](../messages/index.md)
+- [Messages for imbot.v2](../messages/index.md)

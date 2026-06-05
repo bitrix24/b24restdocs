@@ -10,11 +10,11 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: any user
 
-This method updates the parameters of the specified time entry.
+This method modifies the parameters of the specified time entry.
 
 {% note info %}
 
-You can check the permission to modify using the special method [task.elapseditem.isactionallowed](./task-elapsed-item-is-action-allowed.md)
+You can check the permission to modify using the special method [task.elapseditem.isactionallowed](./task-elapsed-item-is-action-allowed.md).
 
 {% endnote %}
 
@@ -28,11 +28,11 @@ You can check the permission to modify using the special method [task.elapsedite
 || **TASKID***
 [`integer`](../../data-types.md) | Task identifier.
 
-The task identifier can be obtained when [creating a new task](../tasks-task-add.md) or by using the [get task list method](../tasks-task-list.md) ||
+You can obtain the task identifier when [creating a new task](../tasks-task-add.md) or by using the [get task list method](../tasks-task-list.md) ||
 || **ITEMID***
 [`integer`](../../data-types.md) | Time entry identifier.
 
-It can be obtained when [creating a new entry](./task-elapsed-item-add.md) or by using the [get time entry list method](./task-elapsed-item-get-list.md) ||
+You can obtain it when [creating a new entry](./task-elapsed-item-add.md) or by using the [get time entry list method](./task-elapsed-item-get-list.md) ||
 || **ARFIELDS***
 [`object`](../../data-types.md) | An object containing user records, time, and comments (detailed description provided below) in the following structure:
 
@@ -64,7 +64,7 @@ It can be obtained when [creating a new entry](./task-elapsed-item-add.md) or by
 
 {% note warning %}
 
-It is mandatory to follow the specified order of parameters in the request as shown in the tables. Otherwise, the request will be executed with errors.
+It is mandatory to follow the specified order of parameters in the request as shown in the tables. Otherwise, the request will execute with errors.
 
 {% endnote %}
 
@@ -94,30 +94,87 @@ It is mandatory to follow the specified order of parameters in the request as sh
     https://**put_your_bitrix24_address**/rest/task.elapseditem.update
     ```
 
-- JS
+- JS (TS)
 
-    ```js
-    try
-    {
-    	const response = await $b24.callMethod(
-    		'task.elapseditem.update',
-    		{
-    			"TASKID": 691,
-    			"ITEMID": 5,
-    			"ARFIELDS": {
-    				"SECONDS": 113, 
-    				"COMMENT_TEXT": "comment text",
-    			},
-    		}
-    	);
-    	
-    	const result = response.getData().result;
-    	console.info(result);
+    ```ts
+    // This snippet is an ES module: top-level await requires type="module" or a bundler.
+    // $b24 is an already-initialized SDK instance (see the SDK "Get started" guide).
+    import { Text } from '@bitrix24/b24jssdk'
+    import type { B24Frame } from '@bitrix24/b24jssdk'
+
+    declare const $b24: B24Frame
+
+    // The method returns null on success
+    // Shape of the payload returned in result (match the "response handling" section of the page)
+    type UpdateElapsedItemResult = null
+
+    try {
+      const response = await $b24.actions.v2.call.make<UpdateElapsedItemResult>({
+        method: 'task.elapseditem.update',
+        params: {
+          TASKID: 691,
+          ITEMID: 5,
+          ARFIELDS: {
+            SECONDS: 113,
+            COMMENT_TEXT: 'comment text',
+          },
+        },
+        requestId: Text.getUuidRfc4122()
+      })
+
+      // The payload is available only on a successful response
+      if (!response.isSuccess) {
+        console.error(response.getErrorMessages().join('; '))
+      } else {
+        const result = response.getData()!.result
+        console.info('Elapsed item updated successfully, result:', result)
+      }
+    } catch (error) {
+      // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+      console.error(error)
     }
-    catch( error )
-    {
-    	console.error(error);
-    }
+    ```
+
+- JS (UMD)
+
+    ```html
+    <!-- Load the SDK (UMD build); it is exposed as the global B24Js -->
+    <script src="https://unpkg.com/@bitrix24/b24jssdk@1/dist/umd/index.min.js"></script>
+    <script>
+      async function updateElapsedItem() {
+        try {
+          // Initialize the SDK inside a Bitrix24 frame
+          const $b24 = await B24Js.initializeB24Frame()
+
+          const response = await $b24.actions.v2.call.make({
+            method: 'task.elapseditem.update',
+            params: {
+              TASKID: 691,
+              ITEMID: 5,
+              ARFIELDS: {
+                SECONDS: 113,
+                COMMENT_TEXT: 'comment text',
+              },
+            },
+            requestId: B24Js.Text.getUuidRfc4122()
+          })
+
+          // The payload is available only on a successful response
+          if (!response.isSuccess) {
+            console.error(response.getErrorMessages().join('; '))
+            return
+          }
+
+          const result = response.getData().result
+          console.info('Elapsed item updated successfully, result:', result)
+        } catch (error) {
+          // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+          console.error(error)
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', updateElapsedItem)
+    </script>
     ```
 
 - PHP
@@ -201,9 +258,9 @@ It is mandatory to follow the specified order of parameters in the request as sh
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
-In case of a successful request, the server will return `result:null`
+In case of a successful request execution, the server will return `result:null`
 
 ```json
 {
@@ -221,7 +278,7 @@ In case of a successful request, the server will return `result:null`
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {

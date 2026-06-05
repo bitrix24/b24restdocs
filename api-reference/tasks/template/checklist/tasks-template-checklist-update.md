@@ -8,13 +8,13 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`task`](../../../scopes/permissions.md)
 >
-> Who can execute the method: user with permissions to modify the task template
+> Who can execute the method: a user with permissions to modify the task template.
 
 The method `tasks.template.checklist.update` updates a checklist item of the task template.
 
 ## Method Parameters
 
-{% include [Footnote on required parameters](../../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -26,7 +26,7 @@ The identifier of the task template can be obtained when [creating a new templat
 || **checkListItemId***
 [`integer`](../../../data-types.md) | Identifier of the checklist item.
 
-The identifier of the checklist item can be obtained when [creating a new item](./tasks-template-checklist-add.md) or by using the method [getting the list of items](./tasks-template-checklist-list.md) ||
+The identifier of the checklist item can be obtained when [creating a new item](./tasks-template-checklist-add.md) or by using the [method to get the list of items](./tasks-template-checklist-list.md) ||
 || **fields***
 [`object`](../../../data-types.md) | Fields to update the checklist item [(detailed description)](#fields) ||
 |#
@@ -37,17 +37,17 @@ The identifier of the checklist item can be obtained when [creating a new item](
 || **Name**
 `type` | **Description** ||
 || **TITLE**
-[`string`](../../../data-types.md) | Text of the checklist item
+[`string`](../../../data-types.md) | Text of the checklist item.
 
-If `PARENT_ID` is passed with a value of `0`, then `TITLE` is the name of the checklist ||
+If `PARENT_ID` is passed with a value of `0`, then `TITLE` is the name of the checklist. ||
 || **PARENT_ID**
-[`integer`](../../../data-types.md) | Identifier of the parent item. Use for nested checklists
+[`integer`](../../../data-types.md) | Identifier of the parent item. Use for nested checklists.
 
-- If `PARENT_ID` is passed with a value of `0`, the system will create a new checklist in the task template
-- If there is no checklist item with the specified `PARENT_ID` in the template, the system will create a new checklist
-- If the main checklist item is moved under another checklist item, it will move along with its sub-items while maintaining the hierarchy. The checklists will merge into one ||
+- If `PARENT_ID` is passed with a value of `0`, the system will create a new checklist in the task template.
+- If there is no checklist item in the template with the specified `PARENT_ID`, the system will create a new checklist.
+- If the main checklist item is moved under another checklist item, it will move along with its sub-items while maintaining the hierarchy. The checklists will merge into one. ||
 || **SORT_INDEX**
-[`integer`](../../../data-types.md) | Sort index. The lower the value, the higher the item in the list or sublist ||
+[`integer`](../../../data-types.md) | Sort index. The lower the value, the higher the item in the list or sublist. ||
 || **IS_COMPLETE**
 [`boolean`](../../../data-types.md) | Completion status of the item. Possible values:
 - `Y` — completed
@@ -61,14 +61,14 @@ If `PARENT_ID` is passed with a value of `0`, then `TITLE` is the name of the ch
 - `'TYPE': 'A'` — Participant
 - `'TYPE': 'U'` — Observer
 
-The `MEMBERS` field is completely replaced. To retain current participants, pass them along with new values
+The `MEMBERS` field is completely replaced. To retain current participants, pass them along with new values.
 
-The system will add checklist item participants to the task in the same roles ||
+The system will add the checklist item participants to the task in the same roles. ||
 |#
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../../_includes/examples.md) %}
+{% include [Note on Examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -82,7 +82,7 @@ The system will add checklist item participants to the task in the same roles ||
       "templateId": 139,
       "checkListItemId": 37,
       "fields": {
-        "TITLE": "4. Prepare the dashboard and send the link"
+        "TITLE": "4. Prepare dashboard and send the link"
       }
     }' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/tasks.template.checklist.update
@@ -98,36 +98,113 @@ The system will add checklist item participants to the task in the same roles ||
       "templateId": 139,
       "checkListItemId": 37,
       "fields": {
-        "TITLE": "4. Prepare the dashboard and send the link"
+        "TITLE": "4. Prepare dashboard and send the link"
       },
       "auth": "**put_access_token_here**"
     }' \
     https://**put_your_bitrix24_address**/rest/tasks.template.checklist.update
     ```
 
-- JS
+- JS (TS)
 
-    ```js
-    try
-    {
-        const response = await $b24.callMethod(
-            'tasks.template.checklist.update',
-            {
-                templateId: 139,
-                checkListItemId: 37,
-                fields: {
-                    TITLE: '4. Prepare the dashboard and send the link'
-                }
-            }
-        );
+    ```ts
+    // This snippet is an ES module: top-level await requires type="module" or a bundler.
+    // $b24 is an already-initialized SDK instance (see the SDK "Get started" guide).
+    import { Text } from '@bitrix24/b24jssdk'
+    import type { B24Frame } from '@bitrix24/b24jssdk'
 
-        const result = response.getData().result;
-        console.log(result);
+    declare const $b24: B24Frame
+
+    // Shape of the payload returned in result (match the "response handling" section of the page)
+    type CheckListItemResult = {
+      checkListItem: {
+        id: number
+        copiedId: number | null
+        userId: number
+        createdBy: number | null
+        parentId: number
+        title: string
+        sortIndex: number
+        displaySortIndex: string
+        isComplete: boolean
+        isImportant: boolean
+        completedCount: number
+        members: Array<{
+          id: string
+          type: string
+          name: string
+        }>
+        attachments: unknown[]
+        nodeId: number | null
+        templateId: number
+      }
     }
-    catch (error)
-    {
-        console.error(error);
+
+    try {
+      const response = await $b24.actions.v2.call.make<CheckListItemResult>({
+        method: 'tasks.template.checklist.update',
+        params: {
+          templateId: 139,
+          checkListItemId: 37,
+          fields: {
+            TITLE: '4. Prepare dashboard and send the link',
+          },
+        },
+        requestId: Text.getUuidRfc4122()
+      })
+
+      // The payload is available only on a successful response
+      if (!response.isSuccess) {
+        console.error(response.getErrorMessages().join('; '))
+      } else {
+        const result = response.getData()!.result
+        console.info(result.checkListItem)
+      }
+    } catch (error) {
+      // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+      console.error(error)
     }
+    ```
+
+- JS (UMD)
+
+    ```html
+    <!-- Load the SDK (UMD build); it is exposed as the global B24Js -->
+    <script src="https://unpkg.com/@bitrix24/b24jssdk@1/dist/umd/index.min.js"></script>
+    <script>
+      async function updateChecklistItem() {
+        try {
+          // Initialize the SDK inside a Bitrix24 frame
+          const $b24 = await B24Js.initializeB24Frame()
+
+          const response = await $b24.actions.v2.call.make({
+            method: 'tasks.template.checklist.update',
+            params: {
+              templateId: 139,
+              checkListItemId: 37,
+              fields: {
+                TITLE: '4. Prepare dashboard and send the link',
+              },
+            },
+            requestId: B24Js.Text.getUuidRfc4122()
+          })
+
+          // The payload is available only on a successful response
+          if (!response.isSuccess) {
+            console.error(response.getErrorMessages().join('; '))
+            return
+          }
+
+          const result = response.getData().result
+          console.info(result.checkListItem)
+        } catch (error) {
+          // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+          console.error(error)
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', updateChecklistItem)
+    </script>
     ```
 
 - PHP
@@ -142,7 +219,7 @@ The system will add checklist item participants to the task in the same roles ||
                     'templateId' => 139,
                     'checkListItemId' => 37,
                     'fields' => [
-                        'TITLE' => '4. Prepare the dashboard and send the link'
+                        'TITLE' => '4. Prepare dashboard and send the link'
                     ]
                 ]
             );
@@ -166,7 +243,7 @@ The system will add checklist item participants to the task in the same roles ||
             templateId: 139,
             checkListItemId: 37,
             fields: {
-                TITLE: '4. Prepare the dashboard and send the link'
+                TITLE: '4. Prepare dashboard and send the link'
             }
         },
         function(result)
@@ -194,7 +271,7 @@ The system will add checklist item participants to the task in the same roles ||
             'templateId' => 139,
             'checkListItemId' => 37,
             'fields' => [
-                'TITLE' => '4. Prepare the dashboard and send the link'
+                'TITLE' => '4. Prepare dashboard and send the link'
             ]
         ]
     );
@@ -217,7 +294,7 @@ HTTP Status: **200**
             "userId": 503,
             "createdBy": null,
             "parentId": 23,
-            "title": "4. Prepare the dashboard and send the link",
+            "title": "4. Prepare dashboard and send the link",
             "sortIndex": 3,
             "displaySortIndex": "",
             "isComplete": false,
@@ -227,7 +304,7 @@ HTTP Status: **200**
                 {
                     "id": "547",
                     "type": "A",
-                    "name": "Anna Peterson",
+                    "name": "Anna Smith",
                     "personalPhoto": "57129",
                     "personalGender": "",
                     "image": "https://mysite.com/b17053/resize_cache/57129/c0120a8d7c10d63c83e32398d1ec4d9e/main/137/137bfa78b877be117e75f1ac8652834a/anna.png",
@@ -272,7 +349,7 @@ HTTP Status: **200**
 [`object`](../../../data-types.md) | Updated checklist item [(detailed description)](#checklistitem) ||
 |#
 
-{% include [Decoding the checkListItem object](./_includes/checklist-item-response.md) %}
+{% include [Decoding the checkListItem Object](./_includes/checklist-item-response.md) %}
 
 ## Error Handling
 
@@ -291,12 +368,12 @@ HTTP Status: **400**
 
 #|
 || **Status** | **Code** | **Description** | **Value** ||
-|| `400` | `100` | Could not find value for parameter {templateId} | Required parameter `templateId` not provided ||
-|| `400` | `100` | Bitrix\Tasks\CheckList\Internals\CheckList All parameters in the constructor must have real class type | Required parameter `checkListItemId` not provided ||
-|| `400` | `100` | Could not find value for parameter {fields} | Required parameter `fields` not provided or empty ||
-|| `400` | `0` | Bitrix\Tasks\CheckList\CheckListFacade::onAfterUpdate(): Argument #1 ($taskId) must be of type int, string given, called in /var/www/html/bitrix/modules/tasks/lib/checklist/checklistfacade.php on line 313 | Empty or incorrect type `templateId` provided ||
-|| `400` | `0` | Incorrect value [] for field [ENTITY_ID] in item [, Item name] | Non-existent, empty, or incorrect type `checkListItemId` provided ||
-|| `400` | `0` | Changing item: action not available | User does not have permission to modify the task template ||
+|| `400` | `100` | Could not find value for parameter {templateId} | Required parameter `templateId` is missing. ||
+|| `400` | `100` | Bitrix\Tasks\CheckList\Internals\CheckList All parameters in the constructor must have real class type | Required parameter `checkListItemId` is missing. ||
+|| `400` | `100` | Could not find value for parameter {fields} | Required parameter `fields` is missing or empty. ||
+|| `400` | `0` | Bitrix\Tasks\CheckList\CheckListFacade::onAfterUpdate(): Argument #1 ($taskId) must be of type int, string given, called in /var/www/html/bitrix/modules/tasks/lib/checklist/checklistfacade.php on line 313 | Empty or invalid type `templateId` provided. ||
+|| `400` | `0` | Invalid value [] for field [ENTITY_ID] in item [, Checklist item name] | Non-existent, empty, or invalid type `checkListItemId` provided. ||
+|| `400` | `0` | Updating item: action not available | User does not have permission to modify the task template. ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

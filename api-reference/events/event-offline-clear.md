@@ -1,4 +1,4 @@
-# Clear records in the offline event queue event.offline.clear
+# Clear Records in the Offline Events Queue event.offline.clear
 
 {% note tip "" %}
 
@@ -8,28 +8,28 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Who can execute the method: any user
 
-The method `event.offline.clear` clears records in the offline event queue. The availability of offline events can be checked through the method [feature.get](../common/system/feature-get.md).
+The `event.offline.clear` method clears records in the offline events queue. The availability of offline events can be checked using the [feature.get](../common/system/feature-get.md) method.
 
-The method works only in the context of application authorization [application](../../settings/app-installation/index.md).
+This method works only in the context of authorizing the [application](../../settings/app-installation/index.md).
 
-## Method parameters
+## Method Parameters
 
-{% include [Note on required parameters](../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../_includes/required.md) %}
 
-#|
-|| **Name**
+#| 
+|| **Name** 
 `type` | **Description** ||
-|| **process_id***
-[`string`](../data-types.md) | Identifier of the process that handles the records ||
-|| **id**
-[`array`](../data-types.md) | Array of identifiers of the records to be cleared. By default, all records marked with the provided `process_id` will be cleared ||
-|| **message_id**
-[`array`](../data-types.md) | Array of values of the `MESSAGE_ID` field of the records to be cleared. Ignored if the `id` parameter is specified. By default, all records marked with the provided `process_id` will be cleared ||
+|| **process_id*** 
+[`string`](../data-types.md) | Identifier of the reserved event package. It is returned by the [event.offline.get](./event-offline-get.md) method when called with the `clear=0` parameter. The [event.offline.list](./event-offline-list.md) method does not return `process_id` ||
+|| **id** 
+[`array`](../data-types.md) | Array of identifiers of records to be cleared. By default, all records marked with the provided `process_id` will be cleared ||
+|| **message_id** 
+[`array`](../data-types.md) | Array of values of the `MESSAGE_ID` field of records to be cleared. Ignored if the `id` parameter is specified. By default, all records marked with the provided `process_id` will be cleared ||
 |#
 
-## Code examples
+## Code Examples
 
-{% include [Note on examples](../../_includes/examples.md) %}
+{% include [Note on Examples](../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -52,27 +52,27 @@ The method works only in the context of application authorization [application](
     ```js
     try
     {
-    	const response = await $b24.callMethod(
-    		'event.offline.clear',
-    		{
-    			'process_id': 'yh3gu929sf0d32lsfysqas2y1hlpp09q',
-    			'id': [2]
-    		}
-    	);
-    	
-    	const result = response.getData().result;
-    	if(result.error())
-    	{
-    		console.error(result.error());
-    	}
-    	else
-    	{
-    		console.dir(result);
-    	}
+        const response = await $b24.callMethod(
+            'event.offline.clear',
+            {
+                'process_id': 'yh3gu929sf0d32lsfysqas2y1hlpp09q',
+                'id': [2]
+            }
+        );
+        
+        const result = response.getData().result;
+        if(result.error())
+        {
+            console.error(result.error());
+        }
+        else
+        {
+            console.dir(result);
+        }
     }
     catch(error)
     {
-    	console.error('Error:', error);
+        console.error('Error:', error);
     }
     ```
 
@@ -145,9 +145,9 @@ The method works only in the context of application authorization [application](
 
 {% endlist %}
 
-## Response handling
+## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -164,23 +164,23 @@ HTTP status: **200**
 }
 ```
 
-### Returned data
+### Returned Data
 
-#|
-|| **Name**
+#| 
+|| **Name** 
 `type` | **Description** ||
-|| **result**
+|| **result** 
 [`boolean`](../data-types.md) | Success of execution ||
-|| **time**
+|| **time** 
 [`time`](../data-types.md) | Information about the execution time of the request ||
 |#
 
-## Error handling
+## Error Handling
 
-{% include [system errors](../../_includes/system-errors.md) %}
+{% include [System Errors](../../_includes/system-errors.md) %}
 
 
-## Continue learning
+## Continue Learning
 
 - [{#T}](./events.md)
 - [{#T}](./event-bind.md)

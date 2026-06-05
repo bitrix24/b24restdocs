@@ -1,4 +1,4 @@
-# Remove the Automation rule imbot.v2.Bot.unregister
+# Delete the bot imbot.v2.Bot.unregister
 
 {% note tip "" %}
 
@@ -10,18 +10,18 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: owner of the registered bot
 
-The method `imbot.v2.Bot.unregister` removes the bot.
+The method `imbot.v2.Bot.unregister` deletes the bot.
 
 ## Method Parameters
 
-{% include [Footnote on parameters](../../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../../_includes/required.md) %}
 
-#|
-|| **Name**
+#| 
+|| **Name** 
 `Type` | **Description** ||
-|| **botId***
+|| **botId*** 
 [`integer`](../../../../data-types.md) | Bot ID ||
-|| **botToken**
+|| **botToken** 
 [`string`](../../../../data-types.md) | Unique authorization token for the bot. Required for webhook authorization, not needed for OAuth.
 
 Pass the same botToken that was specified during the chat-bot registration ||
@@ -29,7 +29,7 @@ Pass the same botToken that was specified during the chat-bot registration ||
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -131,11 +131,13 @@ Pass the same botToken that was specified during the chat-bot registration ||
 
 ## Response Handling
 
-HTTP Code: **200**
+HTTP status: **200**
 
 ```json
 {
-    "result": true,
+    "result": {
+        "result": true
+    },
     "time": {
         "start": 1728626400.123,
         "finish": 1728626400.234,
@@ -149,18 +151,30 @@ HTTP Code: **200**
 
 ## Returned Data
 
-#|
-|| **Name**
+#| 
+|| **Name** 
 `Type` | **Description** ||
-|| **result**
-[`boolean`](../../../../data-types.md) | `true` if the deletion was successful ||
-|| **time**
+|| **result** 
+[`object`](../../../../data-types.md) | Result of the operation ||
+|| **result.result** 
+[`boolean`](../../../../data-types.md) | `true` if deletion was successful ||
+|| **time** 
 [`time`](../../../../data-types.md#time) | Information about the request execution time ||
 |#
 
+## Automatic Removal of Event Subscriptions {#event-subscriptions}
+
+After successfully executing `Bot.unregister`, all subscriptions of the deleted bot to events `ONIMBOTV2*` **are automatically removed** — regardless of whether the bot was in `webhook` or `fetch` mode. An additional call to [event.unbind](../../../../events/event-unbind.md) is not required.
+
+{% note info "" %}
+
+**OAuth applications with multiple bots:** if there are other active bots under the same `clientId` in the application, the automatic cleanup is skipped to avoid affecting their subscriptions. Subscriptions will be removed when the last bot of the application is deleted or along with the application itself when processing the `OnRestAppDelete` event.
+
+{% endnote %}
+
 ## Error Handling
 
-HTTP Status: **400**, **403**
+HTTP status: **400**, **403**
 
 ```json
 {
@@ -173,12 +187,12 @@ HTTP Status: **400**, **403**
 
 ### Possible Error Codes
 
-#|
+#| 
 || **Code** | **Description** | **Value** ||
 || `BOT_TOKEN_NOT_SPECIFIED` | Bot token is not specified | `botToken` is not provided. Required for webhook authorization ||
 || `BOT_ID_REQUIRED` | Bot ID is required | `botId` is not provided ||
 || `BOT_NOT_FOUND` | Bot not found | Bot not found ||
-|| `BOT_OWNERSHIP_ERROR` | Bot is registered by another application | Bot registered by another application ||
+|| `BOT_OWNERSHIP_ERROR` | Bot is registered by another application | Bot is registered by another application ||
 || `BOT_UNREGISTER_FAILED` | Bot unregistration failed | Error deleting the bot ||
 |#
 
@@ -186,7 +200,7 @@ HTTP Status: **400**, **403**
 
 ## Continue Learning
 
-- [API Change Log for imbot.v2](../../change-log.md)
+- [API imbot.v2 Change Log](../../change-log.md)
 - [{#T}](./bot-register.md)
 - [{#T}](./bot-get.md)
 - [{#T}](./bot-list.md)

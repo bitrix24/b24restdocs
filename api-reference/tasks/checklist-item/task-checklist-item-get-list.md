@@ -1,4 +1,4 @@
-# Get the list of checklist items task.checklistitem.getlist
+# Get the List of Checklist Items task.checklistitem.getlist
 
 {% note tip "" %}
 
@@ -8,27 +8,27 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`task`](../../scopes/permissions.md)
 >
-> Who can execute the method: any user with read access permission for the task or higher
+> Who can execute the method: any user with read access permission to the task or higher.
 
 The method `task.checklistitem.getlist` retrieves a list of checklist items in a task.
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Parameter Note](../../../_includes/required.md) %}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
-|| **TASKID***
-[`integer`](../../data-types.md) | Task identifier.
+|| **TASKID*** 
+[`integer`](../../data-types.md) | Identifier of the task.
 
 The identifier can be obtained when [creating a task](../tasks-task-add.md) or by using the [get task list method](../tasks-task-list.md) ||
-|| **ORDER**
+|| **ORDER** 
 [`object`](../../data-types.md) | An object for sorting the result in the form `{"field": "sort value", ... }`.
 
 You can sort by the following fields:
-- `ID` — checklist item identifier
-- `PARENT_ID` — parent item identifier
+- `ID` — identifier of the checklist item
+- `PARENT_ID` — identifier of the parent item
 - `CREATED_BY` — identifier of the item author
 - `TITLE` — text of the checklist item
 - `SORT_INDEX` — sort index
@@ -46,7 +46,7 @@ By default, the result is sorted by `ID` in descending order ||
 
 ## Code Examples
 
-{% include [Note on examples](../../../_includes/examples.md) %}
+{% include [Examples Note](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -70,63 +70,121 @@ By default, the result is sorted by `ID` in descending order ||
     https://**put_your_bitrix24_address**/rest/task.checklistitem.getlist
     ```
 
-- JS
+- JS (TS)
 
-    ```javascript
-    // callListMethod: Retrieves all data at once.
-    // Use only for small selections (< 1000 items) due to high
-    // memory load.
+    ```ts
+    // This snippet is an ES module: top-level await requires type="module" or a bundler.
+    // $b24 is an already-initialized SDK instance (see the SDK "Get started" guide).
+    import { Text } from '@bitrix24/b24jssdk'
+    import type { B24Frame, ISODate } from '@bitrix24/b24jssdk'
+
+    declare const $b24: B24Frame
+
+    type ChecklistItem = {
+      ID: string
+      TASK_ID: string
+      PARENT_ID: string
+      CREATED_BY: string
+      TITLE: string
+      SORT_INDEX: string
+      IS_COMPLETE: 'Y' | 'N'
+      IS_IMPORTANT: 'Y' | 'N'
+      TOGGLED_BY: string | null
+      TOGGLED_DATE: ISODate | null
+      MEMBERS: Array<{
+        ID: string
+        TYPE: string
+        NAME: string
+        PERSONAL_PHOTO: string
+        PERSONAL_GENDER: string
+        IMAGE: string
+        IS_COLLABER: boolean
+      }>
+      ATTACHMENTS: Record<string, {
+        ATTACHMENT_ID: number
+        NAME: string
+        SIZE: string
+        FILE_ID: string
+        DOWNLOAD_URL: string
+        VIEW_URL: string
+      }>
+    }
 
     try {
-    const response = await $b24.callListMethod(
-        'task.checklistitem.getlist',
-        {
-        TASKID: 8017,
-        ORDER: {
-            IS_COMPLETE: 'ASC'
-        }
+      // task.checklistitem.getlist returns a single page (max 50 records). For the whole result set
+      // use a list helper: $b24.actions.v2.callList.make() returns every record as one
+      // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
+      // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
+      // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
+      const response = await $b24.actions.v2.call.make<ChecklistItem[]>({
+        method: 'task.checklistitem.getlist',
+        params: {
+          TASKID: 8017,
+          ORDER: {
+            IS_COMPLETE: 'ASC',
+          },
+          start: 0,
         },
-        (progress: number) => { console.log('Progress:', progress) }
-    );
-    const items = response.getData() || [];
-    for (const entity of items) { console.log('Entity:', entity) }
-    } catch (error: any) {
-    console.error('Request failed', error)
+        requestId: Text.getUuidRfc4122()
+      })
+
+      // The payload is available only on a successful response
+      if (!response.isSuccess) {
+        console.error(response.getErrorMessages().join('; '))
+      } else {
+        const result = response.getData()!.result
+        console.info('Checklist items count:', result.length, 'First item:', result[0]?.ID, result[0]?.TITLE)
+      }
+    } catch (error) {
+      // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+      console.error(error)
     }
+    ```
 
-    // fetchListMethod: Retrieves data in parts using an iterator.
-    // Use for large volumes of data for efficient memory consumption.
+- JS (UMD)
 
-    try {
-    const generator = $b24.fetchListMethod('task.checklistitem.getlist', {
-        TASKID: 8017,
-        ORDER: {
-        IS_COMPLETE: 'ASC'
+    ```html
+    <!-- Load the SDK (UMD build); it is exposed as the global B24Js -->
+    <script src="https://unpkg.com/@bitrix24/b24jssdk@1/dist/umd/index.min.js"></script>
+    <script>
+      async function getChecklistItems() {
+        try {
+          // Initialize the SDK inside a Bitrix24 frame
+          const $b24 = await B24Js.initializeB24Frame()
+
+          // task.checklistitem.getlist returns a single page (max 50 records). For the whole result set
+          // use a list helper: $b24.actions.v2.callList.make() returns every record as one
+          // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
+          // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
+          // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
+          const response = await $b24.actions.v2.call.make({
+            method: 'task.checklistitem.getlist',
+            params: {
+              TASKID: 8017,
+              ORDER: {
+                IS_COMPLETE: 'ASC',
+              },
+              start: 0,
+            },
+            requestId: B24Js.Text.getUuidRfc4122()
+          })
+
+          // The payload is available only on a successful response
+          if (!response.isSuccess) {
+            console.error(response.getErrorMessages().join('; '))
+            return
+          }
+
+          const result = response.getData().result
+          console.info('Checklist items count:', result.length, 'First item:', result[0]?.ID, result[0]?.TITLE)
+        } catch (error) {
+          // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+          console.error(error)
         }
-    }, 'ID');
-    for await (const page of generator) {
-        for (const entity of page) { console.log('Entity:', entity) }
-    }
-    } catch (error: any) {
-    console.error('Request failed', error)
-    }
+      }
 
-    // callMethod: Manual control of pagination through the start parameter.
-    // Use for precise control over request batches.
-    // Less efficient for large data than fetchListMethod.
-
-    try {
-    const response = await $b24.callMethod('task.checklistitem.getlist', {
-        TASKID: 8017,
-        ORDER: {
-        IS_COMPLETE: 'ASC'
-        }
-    }, 0);
-    const result = response.getData().result || [];
-    for (const entity of result) { console.log('Entity:', entity) }
-    } catch (error: any) {
-    console.error('Request failed', error)
-    }
+      document.addEventListener('DOMContentLoaded', getChecklistItems)
+    </script>
     ```
 
 - PHP
@@ -200,7 +258,7 @@ By default, the result is sorted by `ID` in descending order ||
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -238,7 +296,7 @@ HTTP status: **200**
                 },
                 "1115": {
                     "ATTACHMENT_ID": 1115,
-                    "NAME": "Document list.xlsx",
+                    "NAME": "Document List.xlsx",
                     "SIZE": "14675",
                     "FILE_ID": "5067",
                     "DOWNLOAD_URL": "/bitrix/tools/disk/uf.php?attachedId=1115&action=download&ncc=1",
@@ -279,7 +337,7 @@ HTTP status: **200**
             "TASK_ID": "8017",
             "PARENT_ID": "447",
             "CREATED_BY": "503",
-            "TITLE": "Agree with the manager Andrew Smith Andrew Johnson",
+            "TITLE": "Agree with the manager Andrew Smith John Doe",
             "SORT_INDEX": "2",
             "IS_COMPLETE": "N",
             "IS_IMPORTANT": "N",
@@ -298,7 +356,7 @@ HTTP status: **200**
                 {
                     "ID": "11",
                     "TYPE": "U",
-                    "NAME": "Andrew Johnson",
+                    "NAME": "John Doe",
                     "PERSONAL_PHOTO": "231",
                     "PERSONAL_GENDER": "",
                     "IMAGE": "https://mysite.com/b17053/resize_cache/231/c0120a8d7c10d63c83e32398d1ec4d9e/main/026bf59e161a0bd50f401d3796800651/66b.jpg",
@@ -354,7 +412,7 @@ HTTP status: **200**
             "TASK_ID": "8017",
             "PARENT_ID": "447",
             "CREATED_BY": "503",
-            "TITLE": "Arrange a meeting Andrew Johnson",
+            "TITLE": "Arrange a meeting John Doe",
             "SORT_INDEX": "0",
             "IS_COMPLETE": "Y",
             "IS_IMPORTANT": "N",
@@ -364,7 +422,7 @@ HTTP status: **200**
                 {
                     "ID": "11",
                     "TYPE": "U",
-                    "NAME": "Andrew Johnson",
+                    "NAME": "John Doe",
                     "PERSONAL_PHOTO": "231",
                     "PERSONAL_GENDER": "",
                     "IMAGE": "https://mysite.com/b17053/resize_cache/231/c0120a8d7c10d63c83e32398d1ec4d9e/main/026bf59e161a0bd50f401d3796800651/66b.jpg",
@@ -389,107 +447,107 @@ HTTP status: **200**
 
 ### Returned Data
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
-|| **result**
+|| **result** 
 [`array`](../../data-types.md) | A list of objects with [description of checklist item fields](#result-fields) ||
-|| **time**
+|| **time** 
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 #### Fields of the result object {#result-fields}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
-|| **ID**
-[`string`](../../data-types.md) | Checklist item identifier ||
-|| **TASK_ID**
+|| **ID** 
+[`string`](../../data-types.md) | Identifier of the checklist item ||
+|| **TASK_ID** 
 [`string`](../../data-types.md) | Identifier of the task to which the item belongs ||
-|| **PARENT_ID**
+|| **PARENT_ID** 
 [`string`](../../data-types.md) | Identifier of the parent item.
 
 A value of `0` indicates a root item ||
-|| **CREATED_BY**
+|| **CREATED_BY** 
 [`string`](../../data-types.md) | Identifier of the item author ||
-|| **TITLE**
+|| **TITLE** 
 [`string`](../../data-types.md) | Text of the checklist item.
 
 If `PARENT_ID = 0`, the field contains the name of the checklist ||
-|| **SORT_INDEX**
+|| **SORT_INDEX** 
 [`string`](../../data-types.md) | Sort index.
 
 The smaller the value, the higher the item in the list or sublist ||
-|| **IS_COMPLETE**
+|| **IS_COMPLETE** 
 [`boolean`](../../data-types.md) | Completion status of the item. Possible values:
 - `Y` — completed,
 - `N` — not completed ||
-|| **IS_IMPORTANT**
+|| **IS_IMPORTANT** 
 [`boolean`](../../data-types.md) | Importance mark of the item. Possible values:
 - `Y` — important,
-- `N` — ordinary ||
-|| **TOGGLED_BY**
+- `N` — regular ||
+|| **TOGGLED_BY** 
 [`string`](../../data-types.md) | Identifier of the user who last changed the item's status.
 
 Can be `null` if the status has not been changed ||
-|| **TOGGLED_DATE**
+|| **TOGGLED_DATE** 
 [`string`](../../data-types.md) | Date and time of the item's status change in `ISO 8601` format ||
-|| **MEMBERS**
+|| **MEMBERS** 
 [`array`](../../data-types.md) | A list of objects with [description of participants](#members) ||
-|| **ATTACHMENTS**
+|| **ATTACHMENTS** 
 [`object`](../../data-types.md) | An object with [description of attached files](#attachments).
 
-The key is the attachment file identifier `ATTACHMENT_ID` ||
+The key is the identifier of the attached file `ATTACHMENT_ID` ||
 |#
 
 #### Members Object {#members}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
-|| **ID**
-[`string`](../../data-types.md) | User identifier ||
-|| **TYPE**
+|| **ID** 
+[`string`](../../data-types.md) | Identifier of the user ||
+|| **TYPE** 
 [`string`](../../data-types.md) | User's role in the checklist item. Possible values:
-- `A` — participant,
-- `U` — observer ||
-|| **NAME**
+- `A` — Participant,
+- `U` — Observer ||
+|| **NAME** 
 [`string`](../../data-types.md) | User's name ||
-|| **PERSONAL_PHOTO**
+|| **PERSONAL_PHOTO** 
 [`string`](../../data-types.md) | Identifier of the user's avatar file on Drive ||
-|| **PERSONAL_GENDER**
+|| **PERSONAL_GENDER** 
 [`string`](../../data-types.md) | User's gender. Possible values:
 - `M` — male,
 - `F` — female ||
-|| **IMAGE**
+|| **IMAGE** 
 [`string`](../../data-types.md) | Link to the user's avatar ||
-|| **IS_COLLABER**
+|| **IS_COLLABER** 
 [`boolean`](../../data-types.md) | Indicates that the user is an external participant ||
 |#
 
 #### Attachments Object {#attachments}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
-|| **ATTACHMENT_ID**
-[`integer`](../../data-types.md) | Attachment identifier ||
-|| **NAME**
+|| **ATTACHMENT_ID** 
+[`integer`](../../data-types.md) | Identifier of the attachment ||
+|| **NAME** 
 [`string`](../../data-types.md) | File name ||
-|| **SIZE**
+|| **SIZE** 
 [`string`](../../data-types.md) | File size in bytes ||
-|| **FILE_ID**
-[`string`](../../data-types.md) | File identifier on Drive ||
-|| **DOWNLOAD_URL**
+|| **FILE_ID** 
+[`string`](../../data-types.md) | Identifier of the file on Drive ||
+|| **DOWNLOAD_URL** 
 [`string`](../../data-types.md) | Link to download the file ||
-|| **VIEW_URL**
+|| **VIEW_URL** 
 [`string`](../../data-types.md) | Link to view the file in the browser ||
 |#
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {
@@ -502,11 +560,11 @@ HTTP status: **400**
 
 ### Possible Error Codes
 
-#|
+#| 
 || **Code** | **Description** | **Value**  ||
-|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#8; Action failed; 8\/TE\/ACTION_FAILED_TO_BE_PROCESSED\u003Cbr\u003E | The user does not have access to the task ||
-|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #0 (taskId) for method ctaskchecklistitem::getlist() expected to be of type \u0022integer\u0022, but given something else.; 256\/TE\/WRONG_ARGUMENTS\u003Cbr\u003E | The required parameter `TASKID` is not provided or an incorrect type is specified ||
-|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #1 (arOrder) for method ctaskchecklistitem::getlist() must not contain key \u0022IS_COMPLETED\u0022.; 256\/TE\/WRONG_ARGUMENTS\u003Cbr\u003E | An invalid field is specified in `ORDER` ||
+|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#8; Action failed; 8\/TE\/ACTION_FAILED_TO_BE_PROCESSED\u003Cbr\u003E | User does not have access to the task ||
+|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #0 (taskId) for method ctaskchecklistitem::getlist() expected to be of type \u0022integer\u0022, but given something else.; 256\/TE\/WRONG_ARGUMENTS\u003Cbr\u003E | Required parameter `TASKID` is missing or has an incorrect type ||
+|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #1 (arOrder) for method ctaskchecklistitem::getlist() must not contain key \u0022IS_COMPLETED\u0022.; 256\/TE\/WRONG_ARGUMENTS\u003Cbr\u003E | An invalid field was specified in `ORDER` ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

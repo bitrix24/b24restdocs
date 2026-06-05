@@ -1,4 +1,4 @@
-# Get checklist item task.checklistitem.get
+# Get Checklist Item task.checklistitem.get
 
 {% note tip "" %}
 
@@ -8,7 +8,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`task`](../../scopes/permissions.md)
 >
-> Who can execute the method: any user with read access permission for the task or higher
+> Who can execute the method: any user with read access permission for the task or higher.
 
 The method `task.checklistitem.get` retrieves the description of a checklist item by its identifier.
 
@@ -20,24 +20,24 @@ Pass parameters in the request according to the order in the table. If the order
 
 {% endnote %}
 
-{% include [Footnote about parameters](../../../_includes/required.md) %}
+{% include [Parameter Note](../../../_includes/required.md) %}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
-|| **TASKID***
+|| **TASKID*** 
 [`integer`](../../data-types.md) | Task identifier.
 
-The identifier can be obtained when [creating a task](../tasks-task-add.md) or by using the [method to get the list of tasks](../tasks-task-list.md) ||
-|| **ITEMID***
+The identifier can be obtained when [creating a task](../tasks-task-add.md) or by using the [get task list method](../tasks-task-list.md) ||
+|| **ITEMID*** 
 [`integer`](../../data-types.md) | Checklist item identifier.
 
-The item identifier can be obtained when [adding a new item](./task-checklist-item-add.md) or by using the [method to get the list of checklist items](./task-checklist-item-get-list.md) ||
+The item identifier can be obtained when [adding a new item](./task-checklist-item-add.md) or by using the [get checklist item list method](./task-checklist-item-get-list.md) ||
 |#
 
 ## Code Examples
 
-{% include [Footnote about examples](../../../_includes/examples.md) %}
+{% include [Example Note](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -61,27 +61,106 @@ The item identifier can be obtained when [adding a new item](./task-checklist-it
     https://**put_your_bitrix24_address**/rest/task.checklistitem.get
     ```
 
-- JS
+- JS (TS)
 
-    ```javascript
-    try
-    {
-        const response = await $b24.callMethod(
-            'task.checklistitem.get',
-            {
-                TASKID: 8017,
-                ITEMID: 479
-            }
-        );
-        
-        const result = response.getData().result;
-        console.log('Retrieved checklist item:', result);
-        processResult(result);
+    ```ts
+    // This snippet is an ES module: top-level await requires type="module" or a bundler.
+    // $b24 is an already-initialized SDK instance (see the SDK "Get started" guide).
+    import { Text } from '@bitrix24/b24jssdk'
+    import type { B24Frame } from '@bitrix24/b24jssdk'
+
+    declare const $b24: B24Frame
+
+    // Shape of the payload returned in result (match the "response handling" section of the page)
+    type ChecklistItemResult = {
+      ID: string
+      TASK_ID: string
+      PARENT_ID: string
+      CREATED_BY: string
+      TITLE: string
+      SORT_INDEX: string
+      IS_COMPLETE: string
+      IS_IMPORTANT: string
+      TOGGLED_BY: string | null
+      TOGGLED_DATE: string
+      MEMBERS: Array<{
+        ID: string
+        TYPE: string
+        NAME: string
+        PERSONAL_PHOTO: string
+        PERSONAL_GENDER: string
+        IMAGE: string
+        IS_COLLABER: boolean
+      }>
+      ATTACHMENTS: Record<string, {
+        ATTACHMENT_ID: number
+        NAME: string
+        SIZE: string
+        FILE_ID: string
+        DOWNLOAD_URL: string
+        VIEW_URL: string
+      }>
     }
-    catch( error )
-    {
-        console.error('Error:', error);
+
+    try {
+      const response = await $b24.actions.v2.call.make<ChecklistItemResult>({
+        method: 'task.checklistitem.get',
+        params: {
+          TASKID: 8017,
+          ITEMID: 479,
+        },
+        requestId: Text.getUuidRfc4122()
+      })
+
+      // The payload is available only on a successful response
+      if (!response.isSuccess) {
+        console.error(response.getErrorMessages().join('; '))
+      } else {
+        const result = response.getData()!.result
+        console.info('Checklist item:', result.ID, result.TITLE, 'complete:', result.IS_COMPLETE)
+      }
+    } catch (error) {
+      // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+      console.error(error)
     }
+    ```
+
+- JS (UMD)
+
+    ```html
+    <!-- Load the SDK (UMD build); it is exposed as the global B24Js -->
+    <script src="https://unpkg.com/@bitrix24/b24jssdk@1/dist/umd/index.min.js"></script>
+    <script>
+      async function getChecklistItem() {
+        try {
+          // Initialize the SDK inside a Bitrix24 frame
+          const $b24 = await B24Js.initializeB24Frame()
+
+          const response = await $b24.actions.v2.call.make({
+            method: 'task.checklistitem.get',
+            params: {
+              TASKID: 8017,
+              ITEMID: 479,
+            },
+            requestId: B24Js.Text.getUuidRfc4122()
+          })
+
+          // The payload is available only on a successful response
+          if (!response.isSuccess) {
+            console.error(response.getErrorMessages().join('; '))
+            return
+          }
+
+          const result = response.getData().result
+          console.info('Checklist item:', result.ID, result.TITLE, 'complete:', result.IS_COMPLETE)
+        } catch (error) {
+          // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+          console.error(error)
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', getChecklistItem)
+    </script>
     ```
 
 - PHP
@@ -149,7 +228,7 @@ The item identifier can be obtained when [adding a new item](./task-checklist-it
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -158,7 +237,7 @@ HTTP status: **200**
         "TASK_ID": "8017",
         "PARENT_ID": "457",
         "CREATED_BY": "503",
-        "TITLE": "Prepare report Andrew Smith Sarah Johnson Andrew Brown",
+        "TITLE": "Prepare report Andrew Smith Jessica Johnson Andrew Brown",
         "SORT_INDEX": "4",
         "IS_COMPLETE": "N",
         "IS_IMPORTANT": "Y",
@@ -186,7 +265,7 @@ HTTP status: **200**
             {
                 "ID": "103",
                 "TYPE": "A",
-                "NAME": "Sarah Johnson",
+                "NAME": "Jessica Johnson",
                 "PERSONAL_PHOTO": "8644",
                 "PERSONAL_GENDER": "F",
                 "IMAGE": "https://mysite.com/b17053/resize_cache/8644/c0120a8d7c10d63c83e32398d1ec4d9e/main/45f/45fff10d17d398a5583184c8350cd197/buh.jpg",
@@ -196,7 +275,7 @@ HTTP status: **200**
         "ATTACHMENTS": {
             "1111": {
                 "ATTACHMENT_ID": 1111,
-                "NAME": "Invoice for client.pdf",
+                "NAME": "Invoice for Client.pdf",
                 "SIZE": "148238",
                 "FILE_ID": "989",
                 "DOWNLOAD_URL": "/bitrix/tools/disk/uf.php?attachedId=1111&action=download&ncc=1",
@@ -219,7 +298,7 @@ HTTP status: **200**
 
 ### Returned Data
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **result**
@@ -230,7 +309,7 @@ HTTP status: **200**
 
 #### Fields of the result object {#result-fields}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **ID**
@@ -270,20 +349,20 @@ Can be `null` if the status has not been changed ||
 || **ATTACHMENTS**
 [`object`](../../data-types.md) | Object with [description of attached files](#attachments).
 
-Key — identifier of the file attachment `ATTACHMENT_ID` ||
+Key — attachment file identifier `ATTACHMENT_ID` ||
 |#
 
 #### Members Object {#members}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **ID**
 [`string`](../../data-types.md) | User identifier ||
 || **TYPE**
 [`string`](../../data-types.md) | User's role in the checklist item. Possible values:
-- `A` — participant,
-- `U` — observer ||
+- `A` — Participant,
+- `U` — Observer ||
 || **NAME**
 [`string`](../../data-types.md) | User's name ||
 || **PERSONAL_PHOTO**
@@ -300,17 +379,17 @@ Key — identifier of the file attachment `ATTACHMENT_ID` ||
 
 #### Attachments Object {#attachments}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **ATTACHMENT_ID**
-[`integer`](../../data-types.md) | Identifier of the attachment ||
+[`integer`](../../data-types.md) | Attachment identifier ||
 || **NAME**
 [`string`](../../data-types.md) | File name ||
 || **SIZE**
 [`string`](../../data-types.md) | File size in bytes ||
 || **FILE_ID**
-[`string`](../../data-types.md) | Identifier of the file on Drive ||
+[`string`](../../data-types.md) | File identifier on Drive ||
 || **DOWNLOAD_URL**
 [`string`](../../data-types.md) | Link to download the file ||
 || **VIEW_URL**
@@ -319,7 +398,7 @@ Key — identifier of the file attachment `ATTACHMENT_ID` ||
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {
@@ -332,14 +411,14 @@ HTTP status: **400**
 
 ### Possible Error Codes
 
-#|
+#| 
 || **Code** | **Description** | **Value**  ||
-|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #1 (itemId) expected by method ctaskchecklistitem::get(), but not given.; 256\/TE\/WRONG_ARGUMENTS\u003Cbr\u003E | Required parameters `TASKID` and `ITEMID` not provided  ||
+|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #1 (itemId) expected by method ctaskchecklistitem::get(), but not given.; 256\/TE\/WRONG_ARGUMENTS\u003Cbr\u003E | Required parameters `TASKID` and `ITEMID` are not provided ||
 || `ERROR_CORE` | error_description":"TASKS_ERROR_EXCEPTION_#256; Param #0 (taskId) for method ctaskchecklistitem::get() expected to be of type \u0022integer\u0022, but given something else.; 256\/TE\/WRONG_ARGUMENTS\u003Cbr\u003E | Incorrect type of value for `TASKID` or `ITEMID` ||
 || `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#512; Check listitem not found or not accessible; 512\/TE\/ITEM_NOT_FOUND_OR_NOT_ACCESSIBLE\u003Cbr\u003E | Possible reasons:
-- the order of parameters in the method is violated
-- the specified `TASKID` or `ITEMID` does not exist
-- the user does not have access permission to the task ||
+- parameter order in the method is violated
+- specified `TASKID` or `ITEMID` does not exist
+- user does not have access permission to the task ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

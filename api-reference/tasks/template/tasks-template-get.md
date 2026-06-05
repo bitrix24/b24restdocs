@@ -8,31 +8,31 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`task`](../../scopes/permissions.md)
 >
-> Who can execute the method: user with permission to view the template
+> Who can execute the method: a user with permission to view the template
 
 The method `tasks.template.get` returns the task template data by its ID.
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
-|| **templateId***
+|| **templateId*** 
 [`integer`](../../data-types.md) | The ID of the task template.
 
 The task template ID can be obtained when [creating a new template](./tasks-template-add.md) ||
-|| **params**
+|| **params** 
 [`object`](../../data-types.md) | Additional selection parameters [(detailed description)](#params) ||
 |#
 
 ### Parameter params {#params}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
-|| **select**
+|| **select** 
 [`array`](../../data-types.md) | An array of fields to return. 
 
 By default, `['*', 'UF_*']` is used — select all fields and custom fields ||
@@ -40,7 +40,7 @@ By default, `['*', 'UF_*']` is used — select all fields and custom fields ||
 
 ## Code Examples
 
-{% include [Note on Examples](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -69,25 +69,84 @@ By default, `['*', 'UF_*']` is used — select all fields and custom fields ||
     https://**put_your_bitrix24_address**/rest/tasks.template.get
     ```
 
-- JS
+- JS (TS)
 
-    ```js
-    try
-    {
-        const response = await $b24.callMethod(
-            'tasks.template.get',
-            {
-                templateId: 139
-            }
-        );
+    ```ts
+    // This snippet is an ES module: top-level await requires type="module" or a bundler.
+    // $b24 is an already-initialized SDK instance (see the SDK "Get started" guide).
+    import { Text } from '@bitrix24/b24jssdk'
+    import type { B24Frame } from '@bitrix24/b24jssdk'
 
-        const result = response.getData().result;
-        console.log(result);
+    declare const $b24: B24Frame
+
+    // Shape of the payload returned in result (match the "response handling" section of the page)
+    type TaskTemplateResult = {
+      ID: string
+      TITLE: string
+      DESCRIPTION: string
+      RESPONSIBLE_ID: string
+      CREATED_BY: string
+      REPLICATE: string
+      STATUS: string
     }
-    catch (error)
-    {
-        console.error(error);
+
+    try {
+      const response = await $b24.actions.v2.call.make<TaskTemplateResult>({
+        method: 'tasks.template.get',
+        params: {
+          templateId: 139,
+        },
+        requestId: Text.getUuidRfc4122()
+      })
+
+      // The payload is available only on a successful response
+      if (!response.isSuccess) {
+        console.error(response.getErrorMessages().join('; '))
+      } else {
+        const result = response.getData()!.result
+        console.info(result.ID, result.TITLE, result.RESPONSIBLE_ID)
+      }
+    } catch (error) {
+      // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+      console.error(error)
     }
+    ```
+
+- JS (UMD)
+
+    ```html
+    <!-- Load the SDK (UMD build); it is exposed as the global B24Js -->
+    <script src="https://unpkg.com/@bitrix24/b24jssdk@1/dist/umd/index.min.js"></script>
+    <script>
+      async function getTaskTemplate() {
+        try {
+          // Initialize the SDK inside a Bitrix24 frame
+          const $b24 = await B24Js.initializeB24Frame()
+
+          const response = await $b24.actions.v2.call.make({
+            method: 'tasks.template.get',
+            params: {
+              templateId: 139,
+            },
+            requestId: B24Js.Text.getUuidRfc4122()
+          })
+
+          // The payload is available only on a successful response
+          if (!response.isSuccess) {
+            console.error(response.getErrorMessages().join('; '))
+            return
+          }
+
+          const result = response.getData().result
+          console.info(result.ID, result.TITLE, result.RESPONSIBLE_ID)
+        } catch (error) {
+          // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+          console.error(error)
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', getTaskTemplate)
+    </script>
     ```
 
 - PHP
@@ -197,14 +256,14 @@ HTTP Status: **200**
         "TEMPLATE_CHILDREN_COUNT": "0",
         "CREATED_BY_NAME": "John",
         "CREATED_BY_LAST_NAME": "Doe",
-        "CREATED_BY_SECOND_NAME": "Smith",
+        "CREATED_BY_SECOND_NAME": "Michael",
         "CREATED_BY_LOGIN": "john.doe@example.com",
         "CREATED_BY_WORK_POSITION": "Employee",
         "CREATED_BY_PHOTO": "10001",
         "RESPONSIBLE_NAME": "Peter",
-        "RESPONSIBLE_LAST_NAME": "Peters",
-        "RESPONSIBLE_SECOND_NAME": "Petrovich",
-        "RESPONSIBLE_LOGIN": "peter.peters@example.com",
+        "RESPONSIBLE_LAST_NAME": "Smith",
+        "RESPONSIBLE_SECOND_NAME": "John",
+        "RESPONSIBLE_LOGIN": "peter.smith@example.com",
         "RESPONSIBLE_WORK_POSITION": "Employee",
         "RESPONSIBLE_PHOTO": "10002",
         "SCENARIO": "default",
@@ -231,124 +290,124 @@ HTTP Status: **200**
 
 ### Returned Data
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
-|| **result**
+|| **result** 
 [`object`](../../data-types.md) | Task template data [(detailed description)](#result).
 
 Returns `false`:
 - if `templateId` is passed empty
 - if a template with the specified `templateId` does not exist
 - if the user does not have permission to view the template ||
-|| **time**
+|| **time** 
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 #### Object result {#result}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
-|| **ID**
+|| **ID** 
 [`integer`](../../data-types.md) | The ID of the task template ||
-|| **TITLE**
-[`string`](../../data-types.md) | The title of the template ||
-|| **DESCRIPTION**
+|| **TITLE** 
+[`string`](../../data-types.md) | The name of the template ||
+|| **DESCRIPTION** 
 [`string`](../../data-types.md) | The description of the template ||
-|| **DESCRIPTION_IN_BBCODE**
+|| **DESCRIPTION_IN_BBCODE** 
 [`string`](../../data-types.md) | Indicator that the description is stored in BBCode format ||
-|| **PRIORITY**
+|| **PRIORITY** 
 [`integer`](../../data-types.md) | The priority of the task ||
-|| **STATUS**
+|| **STATUS** 
 [`integer`](../../data-types.md) | The status of the template ||
-|| **STAGE_ID**
-[`integer`](../../data-types.md) | The ID of the stage ||
-|| **RESPONSIBLE_ID**
+|| **STAGE_ID** 
+[`integer`](../../data-types.md) | The stage ID ||
+|| **RESPONSIBLE_ID** 
 [`integer`](../../data-types.md) | The ID of the responsible person ||
-|| **DEADLINE_AFTER**
+|| **DEADLINE_AFTER** 
 [`datetime`](../../data-types.md) | Deadline offset relative to the creation date of the task template ||
-|| **START_DATE_PLAN_AFTER**
+|| **START_DATE_PLAN_AFTER** 
 [`string`](../../data-types.md) | Planned start date offset in seconds ||
-|| **END_DATE_PLAN_AFTER**
+|| **END_DATE_PLAN_AFTER** 
 [`string`](../../data-types.md) | Planned end date offset in seconds ||
-|| **REPLICATE**
+|| **REPLICATE** 
 [`string`](../../data-types.md) | Indicator of a recurring task ||
-|| **CREATED_BY**
+|| **CREATED_BY** 
 [`integer`](../../data-types.md) | The ID of the Creator ||
-|| **XML_ID**
+|| **XML_ID** 
 [`string`](../../data-types.md) | External ID of the template ||
-|| **ALLOW_CHANGE_DEADLINE**
-[`string`](../../data-types.md) | Indicator that the responsible person can change the deadline ||
-|| **ALLOW_TIME_TRACKING**
-[`string`](../../data-types.md) | Indicator of time tracking for tasks based on the template ||
-|| **TASK_CONTROL**
+|| **ALLOW_CHANGE_DEADLINE** 
+[`string`](../../data-types.md) | Indicator that the executor can change the deadline ||
+|| **ALLOW_TIME_TRACKING** 
+[`string`](../../data-types.md) | Indicator for time tracking for tasks based on the template ||
+|| **TASK_CONTROL** 
 [`string`](../../data-types.md) | Indicator of the need to accept the work ||
-|| **ADD_IN_REPORT**
-[`string`](../../data-types.md) | Indicator of including the task in the performance report ||
-|| **GROUP_ID**
-[`integer`](../../data-types.md) | The ID of the project ||
-|| **PARENT_ID**
+|| **ADD_IN_REPORT** 
+[`string`](../../data-types.md) | Indicator for including the task in the performance report ||
+|| **GROUP_ID** 
+[`integer`](../../data-types.md) | The project ID ||
+|| **PARENT_ID** 
 [`integer`](../../data-types.md) | The ID of the parent template ||
-|| **MULTITASK**
+|| **MULTITASK** 
 [`string`](../../data-types.md) | Indicator of a multi-task ||
-|| **SITE_ID**
-[`string`](../../data-types.md) | The ID of the site ||
-|| **ACCOMPLICES**
+|| **SITE_ID** 
+[`string`](../../data-types.md) | The site ID ||
+|| **ACCOMPLICES** 
 [`string`](../../data-types.md) | Serialized list of Participants ||
-|| **AUDITORS**
+|| **AUDITORS** 
 [`string`](../../data-types.md) | Serialized list of auditors ||
-|| **RESPONSIBLES**
-[`string`](../../data-types.md) | Serialized list of responsibles ||
-|| **FILES**
+|| **RESPONSIBLES** 
+[`string`](../../data-types.md) | Serialized list of responsible persons ||
+|| **FILES** 
 [`array`](../../data-types.md) | List of template files ||
-|| **TAGS**
+|| **TAGS** 
 [`array`](../../data-types.md) | List of template tags ||
-|| **DEPENDS_ON**
+|| **DEPENDS_ON** 
 [`array`](../../data-types.md) | List of template dependencies ||
-|| **MATCH_WORK_TIME**
-[`string`](../../data-types.md) | Indicator of considering working time when calculating deadlines ||
-|| **TASK_ID**
+|| **MATCH_WORK_TIME** 
+[`string`](../../data-types.md) | Indicator for considering working time when calculating deadlines ||
+|| **TASK_ID** 
 [`integer`](../../data-types.md) | The ID of the related task ||
-|| **TPARAM_TYPE**
-[`integer`](../../data-types.md) | Type of additional parameters for the template ||
-|| **TPARAM_REPLICATION_COUNT**
-[`integer`](../../data-types.md) | Number of tasks already created based on the replication rule ||
-|| **REPLICATE_PARAMS**
-[`string`](../../data-types.md) | Serialized replication parameters ||
-|| **BASE_TEMPLATE_ID**
+|| **TPARAM_TYPE** 
+[`integer`](../../data-types.md) | Type of additional template parameters ||
+|| **TPARAM_REPLICATION_COUNT** 
+[`integer`](../../data-types.md) | The number of tasks already created by the repetition rule ||
+|| **REPLICATE_PARAMS** 
+[`string`](../../data-types.md) | Serialized repetition parameters ||
+|| **BASE_TEMPLATE_ID** 
 [`integer`](../../data-types.md) | The ID of the base template ||
-|| **TEMPLATE_CHILDREN_COUNT**
-[`integer`](../../data-types.md) | Number of child templates ||
-|| **CREATED_BY_NAME**
-[`string`](../../data-types.md) | Creator's first name ||
-|| **CREATED_BY_LAST_NAME**
-[`string`](../../data-types.md) | Creator's last name ||
-|| **CREATED_BY_SECOND_NAME**
-[`string`](../../data-types.md) | Creator's middle name ||
-|| **CREATED_BY_LOGIN**
-[`string`](../../data-types.md) | Creator's login ||
-|| **CREATED_BY_WORK_POSITION**
-[`string`](../../data-types.md) | Creator's position ||
-|| **CREATED_BY_PHOTO**
-[`integer`](../../data-types.md) | Creator's photo ID ||
-|| **RESPONSIBLE_NAME**
-[`string`](../../data-types.md) | Responsible person's first name ||
-|| **RESPONSIBLE_LAST_NAME**
-[`string`](../../data-types.md) | Responsible person's last name ||
-|| **RESPONSIBLE_SECOND_NAME**
-[`string`](../../data-types.md) | Responsible person's middle name ||
-|| **RESPONSIBLE_LOGIN**
-[`string`](../../data-types.md) | Responsible person's login ||
-|| **RESPONSIBLE_WORK_POSITION**
-[`string`](../../data-types.md) | Responsible person's position ||
-|| **RESPONSIBLE_PHOTO**
-[`integer`](../../data-types.md) | Responsible person's photo ID ||
-|| **SCENARIO**
-[`string`](../../data-types.md) | Template creation scenario ||
-|| **UF_CRM_TASK**
+|| **TEMPLATE_CHILDREN_COUNT** 
+[`integer`](../../data-types.md) | The number of child templates ||
+|| **CREATED_BY_NAME** 
+[`string`](../../data-types.md) | The name of the Creator ||
+|| **CREATED_BY_LAST_NAME** 
+[`string`](../../data-types.md) | The last name of the Creator ||
+|| **CREATED_BY_SECOND_NAME** 
+[`string`](../../data-types.md) | The middle name of the Creator ||
+|| **CREATED_BY_LOGIN** 
+[`string`](../../data-types.md) | The login of the Creator ||
+|| **CREATED_BY_WORK_POSITION** 
+[`string`](../../data-types.md) | The position of the Creator ||
+|| **CREATED_BY_PHOTO** 
+[`integer`](../../data-types.md) | The ID of the Creator's photo ||
+|| **RESPONSIBLE_NAME** 
+[`string`](../../data-types.md) | The name of the responsible person ||
+|| **RESPONSIBLE_LAST_NAME** 
+[`string`](../../data-types.md) | The last name of the responsible person ||
+|| **RESPONSIBLE_SECOND_NAME** 
+[`string`](../../data-types.md) | The middle name of the responsible person ||
+|| **RESPONSIBLE_LOGIN** 
+[`string`](../../data-types.md) | The login of the responsible person ||
+|| **RESPONSIBLE_WORK_POSITION** 
+[`string`](../../data-types.md) | The position of the responsible person ||
+|| **RESPONSIBLE_PHOTO** 
+[`integer`](../../data-types.md) | The ID of the responsible person's photo ||
+|| **SCENARIO** 
+[`string`](../../data-types.md) | The scenario for creating the template ||
+|| **UF_CRM_TASK** 
 [`array`](../../data-types.md) | Links to CRM objects ||
-|| **UF_TASK_WEBDAV_FILES**
+|| **UF_TASK_WEBDAV_FILES** 
 [`array`](../../data-types.md) | IDs of Drive files linked to the template ||
 |#
 
@@ -367,9 +426,9 @@ HTTP Status: **400**
 
 ### Possible Error Codes
 
-#|
+#| 
 || **Status** | **Code** | **Description** | **Value** ||
-|| `400` | `100` | Could not find value for parameter {templateId} | Required parameter `templateId` not provided ||
+|| `400` | `100` | Could not find value for parameter {templateId} | Required parameter `templateId` is missing ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

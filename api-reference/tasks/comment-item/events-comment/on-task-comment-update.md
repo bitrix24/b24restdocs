@@ -18,11 +18,11 @@ Events will not be sent to the application until the installation is complete. [
 
 {% endnote %}
 
-## What the handler receives
+## What the Handler Receives
 
 Data is transmitted as a POST request {.b24-info}
 
-When working with the old task card before module version `tasks 25.700.0`:
+When working with the old task detail form prior to module version `tasks 25.700.0`:
 
 ```json
 array(
@@ -51,7 +51,7 @@ array(
 
 {% note warning " " %}
 
-When working with a new task card with chat from version `tasks 25.700.0`, the event does not function.
+When working with the new task detail form with chat from module version `tasks 25.700.0`, the event does not work.
 
 {% endnote %}
 
@@ -61,7 +61,7 @@ When working with a new task card with chat from version `tasks 25.700.0`, the e
 || **Parameter**
 `type` | **Description** ||
 || **event***
-[`string`](../../../data-types.md) | Symbolic event code, in this case `OnTaskUpdate`||
+[`string`](../../../data-types.md) | Symbolic code of the event, in this case `OnTaskUpdate`||
 || **data***
 [`array`](../../../data-types.md) | Array with task comment data ||
 || **ts***
@@ -78,13 +78,13 @@ When working with a new task card with chat from version `tasks 25.700.0`, the e
 || **Name**
 `type` | **Description** ||
 || **FIELDS_BEFORE***
-[`undefined`\|`object`](../../../data-types.md) | Fields of the comment and task before the event (detailed description provided [below](#fields_before)). If no task fields are available, this field will contain the value `undefined` ||
+[`undefined`\|`object`](../../../data-types.md) | Fields of the comment and task before the event (detailed description provided [below](#fields_before)). If there are no available task fields, this field will contain the value `undefined` ||
 || **FIELDS_AFTER***
-[`undefined`\|`object`](../../../data-types.md) | Fields of the comment and task after the event (detailed description provided [below](#fields_after)). If no task fields are available, this field will contain the value `undefined` ||
+[`undefined`\|`object`](../../../data-types.md) | Fields of the comment and task after the event (detailed description provided [below](#fields_after)). If there are no available task fields, this field will contain the value `undefined` ||
 || **IS_ACCESSIBLE_BEFORE***
-[`string`](../../../data-types.md) | Was the task readable before the event (detailed description provided [below](#is_accessible_before)) ||
+[`string`](../../../data-types.md) | Whether the task was readable before the event (detailed description provided [below](#is_accessible_before)) ||
 || **IS_ACCESSIBLE_AFTER***
-[`string`](../../../data-types.md) | Is the task readable after the event (detailed description provided [below](#is_accessible_after)) ||
+[`string`](../../../data-types.md) | Whether the task became readable after the event (detailed description provided [below](#is_accessible_after)) ||
 |#
 
 ### Field FIELDS_BEFORE {#fields_before}
@@ -112,7 +112,7 @@ When working with a new task card with chat from version `tasks 25.700.0`, the e
 || **TASK_ID***
 [`integer`](../../../data-types.md) | Identifier of the task to which the comment belongs ||
 || **ACTION***
-[`string`](../../../data-types.md) | Action, in this case will always be `EDIT` ||
+[`string`](../../../data-types.md) | Action, which will always be `EDIT` in this case ||
 |#
 
 ### Field IS_ACCESSIBLE_BEFORE {#is_accessible_before}
@@ -149,31 +149,81 @@ When working with a new task card with chat from version `tasks 25.700.0`, the e
 
 {% list tabs %}
 
-- JS
+- JS (TS)
 
+    ```ts
+    // This snippet is an ES module: top-level await requires type="module" or a bundler.
+    // $b24 is an already-initialized SDK instance (see the SDK "Get started" guide).
+    import { Text } from '@bitrix24/b24jssdk'
+    import type { B24Frame } from '@bitrix24/b24jssdk'
 
-    ```js
-    try
-    {
-    	const response = await $b24.callMethod(
-    		'event.bind',
-    		{
-    			"event": "OnTaskCommentUpdate",
-    			"handler": "https://example.com/handler.php"
-    		}
-    	);
-    	
-    	const result = response.getData().result;
-    	console.info(result);
-    }
-    catch( error )
-    {
-    	console.error(error);
+    declare const $b24: B24Frame
+
+    // Shape of the payload returned in result (event.bind returns true on success)
+    type BindEventResult = boolean
+
+    try {
+      const response = await $b24.actions.v2.call.make<BindEventResult>({
+        method: 'event.bind',
+        params: {
+          event: 'OnTaskCommentUpdate',
+          handler: 'https://example.com/handler.php',
+        },
+        requestId: Text.getUuidRfc4122()
+      })
+
+      // The payload is available only on a successful response
+      if (!response.isSuccess) {
+        console.error(response.getErrorMessages().join('; '))
+      } else {
+        const result = response.getData()!.result
+        console.info('Event bound successfully:', result)
+      }
+    } catch (error) {
+      // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+      console.error(error)
     }
     ```
 
-- PHP
+- JS (UMD)
 
+    ```html
+    <!-- Load the SDK (UMD build); it is exposed as the global B24Js -->
+    <script src="https://unpkg.com/@bitrix24/b24jssdk@1/dist/umd/index.min.js"></script>
+    <script>
+      async function bindOnTaskCommentUpdate() {
+        try {
+          // Initialize the SDK inside a Bitrix24 frame
+          const $b24 = await B24Js.initializeB24Frame()
+
+          const response = await $b24.actions.v2.call.make({
+            method: 'event.bind',
+            params: {
+              event: 'OnTaskCommentUpdate',
+              handler: 'https://example.com/handler.php',
+            },
+            requestId: B24Js.Text.getUuidRfc4122()
+          })
+
+          // The payload is available only on a successful response
+          if (!response.isSuccess) {
+            console.error(response.getErrorMessages().join('; '))
+            return
+          }
+
+          const result = response.getData().result
+          console.info('Event bound successfully:', result)
+        } catch (error) {
+          // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+          console.error(error)
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', bindOnTaskCommentUpdate)
+    </script>
+    ```
+
+- PHP
 
     ```php
     try {

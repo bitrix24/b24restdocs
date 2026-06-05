@@ -1,4 +1,4 @@
-# Check the existence of the Flow tasks.flow.Flow.isExists
+# Check the Existence of tasks.flow.Flow.isExists
 
 {% note tip "" %}
 
@@ -16,17 +16,17 @@ The method `tasks.flow.Flow.isExists` checks whether a flow with the specified n
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **flowData*** 
-[`object`](../../data-types.md) | Object containing data to check the existence of the flow ||
+[`object`](../../data-types.md) | Object containing data to check for flow existence ||
 || **name*** 
 [`string`](../../data-types.md) | The name of the flow to check ||
 || **id** 
-[`integer`](../../data-types.md) | The identifier of the flow to exclude from the check (optional). 
+[`integer`](../../data-types.md) | Identifier of the flow to exclude from the check (optional). 
 
-You can obtain the identifier using the method to create a new flow [tasks.flow.Flow.create](./tasks-flow-flow-create.md) or by retrieving a task [tasks.task.get](../tasks-task-get.md) for a task from the flow ||
+You can obtain the identifier using the method for creating a new flow [tasks.flow.Flow.create](./tasks-flow-flow-create.md) or by retrieving a task [tasks.task.get](../tasks-task-get.md) for a task from the flow ||
 |#
 
 ## Code Examples
@@ -62,27 +62,82 @@ You can obtain the identifier using the method to create a new flow [tasks.flow.
     https://your-domain.bitrix24.com/rest/tasks.flow.Flow.isExists
     ```
 
-- JS
+- JS (TS)
 
-    ```js
-    try
-    {
-    	const response = await $b24.callMethod(
-    		'tasks.flow.Flow.isExists',
-    		{
-    			flowData: {
-    				name: 'Flow Name'
-    			}
-    		}
-    	);
-    	
-    	const result = response.getData().result;
-    	console.info(result);
+    ```ts
+    // This snippet is an ES module: top-level await requires type="module" or a bundler.
+    // $b24 is an already-initialized SDK instance (see the SDK "Get started" guide).
+    import { Text } from '@bitrix24/b24jssdk'
+    import type { B24Frame } from '@bitrix24/b24jssdk'
+
+    declare const $b24: B24Frame
+
+    // Shape of the payload returned in result (match the "response handling" section of the page)
+    type FlowIsExistsResult = {
+      exists: boolean
     }
-    catch( error )
-    {
-    	console.error(error);
+
+    try {
+      const response = await $b24.actions.v2.call.make<FlowIsExistsResult>({
+        method: 'tasks.flow.Flow.isExists',
+        params: {
+          flowData: {
+            name: 'Flow Name',
+          },
+        },
+        requestId: Text.getUuidRfc4122()
+      })
+
+      // The payload is available only on a successful response
+      if (!response.isSuccess) {
+        console.error(response.getErrorMessages().join('; '))
+      } else {
+        const result = response.getData()!.result
+        console.info('Flow exists:', result.exists)
+      }
+    } catch (error) {
+      // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+      console.error(error)
     }
+    ```
+
+- JS (UMD)
+
+    ```html
+    <!-- Load the SDK (UMD build); it is exposed as the global B24Js -->
+    <script src="https://unpkg.com/@bitrix24/b24jssdk@1/dist/umd/index.min.js"></script>
+    <script>
+      async function checkFlowIsExists() {
+        try {
+          // Initialize the SDK inside a Bitrix24 frame
+          const $b24 = await B24Js.initializeB24Frame()
+
+          const response = await $b24.actions.v2.call.make({
+            method: 'tasks.flow.Flow.isExists',
+            params: {
+              flowData: {
+                name: 'Flow Name',
+              },
+            },
+            requestId: B24Js.Text.getUuidRfc4122()
+          })
+
+          // The payload is available only on a successful response
+          if (!response.isSuccess) {
+            console.error(response.getErrorMessages().join('; '))
+            return
+          }
+
+          const result = response.getData().result
+          console.info('Flow exists:', result.exists)
+        } catch (error) {
+          // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+          console.error(error)
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', checkFlowIsExists)
+    </script>
     ```
 
 - PHP
@@ -145,7 +200,7 @@ You can obtain the identifier using the method to create a new flow [tasks.flow.
         "name" => "Flow Name"
     ];
 
-    // executing the request to the REST API
+    // executing a request to the REST API
     $result = CRest::call(
         'tasks.flow.Flow.isExists',
         [
@@ -165,7 +220,7 @@ You can obtain the identifier using the method to create a new flow [tasks.flow.
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -177,7 +232,7 @@ HTTP status: **200**
 
 ### Returned Data
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **result** 
@@ -188,7 +243,7 @@ HTTP status: **200**
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {
@@ -201,7 +256,7 @@ HTTP status: **400**
 
 ### Possible Error Codes
 
-#|
+#| 
 || **Code** | **Description** | **Additional Information** ||
 || `0` | Access denied or flow not found | The account plan does not allow working with flows or the user does not have permission to perform the check ||
 || `0` | `Unknown error` | An unknown error occurred ||

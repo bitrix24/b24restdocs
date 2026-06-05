@@ -287,9 +287,9 @@ After these actions, a message will appear in the general chat indicating that a
 
 For the on-premise version of _Bitrix24_, the process is slightly different:
 
-1. Install and activate the PHP extension **cURL** on your server for the application to work correctly. In the BitrixVM virtual machine, this can be done through the menu: *7. Manage pool web servers > [1. Manage PHP extensions](https://dev.bitrixsoft.com/learning/course/index.php?COURSE_ID=37&LESSON_ID=29362)*
+1. Install and activate the PHP extension **cURL** on your server for the application to work correctly. In the BitrixVM virtual machine, this can be done through the menu: *7. Manage pool web servers > [1. Manage PHP extensions](https://training.bitrix24.com/support/training/course/index.php?COURSE_ID=113&LESSON_ID=29999)*
 2. Place the folder with the chatbot on your server or on your product installation
-3. The application files must be accessible externally without authorization. Set the folder with the chatbot to "read for unauthorized users". Access rights settings are performed in [folder properties](https://dev.bitrixsoft.com/learning/course/index.php?COURSE_ID=35&LESSON_ID=2019)
+3. The application files must be accessible externally without authorization. Set the folder with the chatbot to "read for unauthorized users". Access rights settings are performed in folder properties
 4. On the account, go to the local applications installation interface *Applications > Developer resources > Other > Local application*
 5. Fill in the settings similarly to the instructions for the cloud account:
 

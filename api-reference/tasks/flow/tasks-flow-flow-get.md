@@ -1,4 +1,4 @@
-# Get Flow tasks.flow.Flow.get
+# Get tasks.flow.Flow.get
 
 {% note tip "" %}
 
@@ -53,25 +53,101 @@ You can obtain the identifier by creating a new flow using the method [tasks.flo
     https://your-domain.bitrix24.com/rest/tasks.flow.Flow.get
     ```
 
-- JS
+- JS (TS)
 
-    ```js
-    try
-    {
-    	const response = await $b24.callMethod(
-    		'tasks.flow.Flow.get',
-    		{
-    			flowId: 517
-    		}
-    	);
-    	
-    	const result = response.getData().result;
-    	console.info(result);
+    ```ts
+    // This snippet is an ES module: top-level await requires type="module" or a bundler.
+    // $b24 is an already-initialized SDK instance (see the SDK "Get started" guide).
+    import { Text } from '@bitrix24/b24jssdk'
+    import type { B24Frame, ISODate } from '@bitrix24/b24jssdk'
+
+    declare const $b24: B24Frame
+
+    // Shape of the payload returned in result (match the "response handling" section of the page)
+    type FlowGetResult = {
+      id: number,
+      creatorId: number,
+      ownerId: number,
+      groupId: number,
+      templateId: number,
+      efficiency: number,
+      active: boolean,
+      plannedCompletionTime: number,
+      activity: ISODate | null,
+      name: string,
+      description: string,
+      distributionType: string,
+      responsibleList: string[][],
+      demo: boolean,
+      responsibleCanChangeDeadline: boolean,
+      matchWorkTime: boolean,
+      taskControl: boolean,
+      notifyAtHalfTime: boolean,
+      notifyOnQueueOverflow: number | null,
+      notifyOnTasksInProgressOverflow: number | null,
+      notifyWhenEfficiencyDecreases: number | null,
+      taskCreators: string[][],
+      team: string[][],
+      trialFeatureEnabled: boolean,
     }
-    catch( error )
-    {
-    	console.error(error);
+
+    try {
+      const response = await $b24.actions.v2.call.make<FlowGetResult>({
+        method: 'tasks.flow.Flow.get',
+        params: {
+          flowId: 517,
+        },
+        requestId: Text.getUuidRfc4122()
+      })
+
+      // The payload is available only on a successful response
+      if (!response.isSuccess) {
+        console.error(response.getErrorMessages().join('; '))
+      } else {
+        const result = response.getData()!.result
+        console.info('Flow:', result.id, result.name, result.active)
+      }
+    } catch (error) {
+      // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+      console.error(error)
     }
+    ```
+
+- JS (UMD)
+
+    ```html
+    <!-- Load the SDK (UMD build); it is exposed as the global B24Js -->
+    <script src="https://unpkg.com/@bitrix24/b24jssdk@1/dist/umd/index.min.js"></script>
+    <script>
+      async function getFlow() {
+        try {
+          // Initialize the SDK inside a Bitrix24 frame
+          const $b24 = await B24Js.initializeB24Frame()
+
+          const response = await $b24.actions.v2.call.make({
+            method: 'tasks.flow.Flow.get',
+            params: {
+              flowId: 517,
+            },
+            requestId: B24Js.Text.getUuidRfc4122()
+          })
+
+          // The payload is available only on a successful response
+          if (!response.isSuccess) {
+            console.error(response.getErrorMessages().join('; '))
+            return
+          }
+
+          const result = response.getData().result
+          console.info('Flow:', result.id, result.name, result.active)
+        } catch (error) {
+          // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+          console.error(error)
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', getFlow)
+    </script>
     ```
 
 - PHP
@@ -122,11 +198,11 @@ You can obtain the identifier by creating a new flow using the method [tasks.flo
 - PHP CRest
 
     ```php
-    require_once('crest.php'); // connecting CRest PHP SDK
+    require_once('crest.php'); // include CRest PHP SDK
 
     $flowId = 517;
 
-    // executing request to REST API
+    // execute request to REST API
     $result = CRest::call(
         'tasks.flow.Flow.get',
         [
@@ -134,7 +210,7 @@ You can obtain the identifier by creating a new flow using the method [tasks.flo
         ]
     );
 
-    // Processing response from Bitrix24
+    // Process the response from Bitrix24
     if ($result['error']) {
         echo 'Error: '.$result['error_description'];
     } else {
@@ -146,7 +222,7 @@ You can obtain the identifier by creating a new flow using the method [tasks.flo
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -200,7 +276,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result** 
-[`object`](../../data-types.md) | Object with flow data ||
+[`object`](../../data-types.md) | Object containing flow data ||
 || **id** 
 [`integer`](../../data-types.md) | Flow identifier ||
 || **creatorId** 
@@ -234,13 +310,13 @@ HTTP status: **200**
 || **matchWorkTime** 
 [`boolean`](../../data-types.md) | Should weekends and holidays be skipped when calculating the task deadline ||
 || **taskControl** 
-[`boolean`](../../data-types.md) | Should the completed task be sent to the creator for review ||
+[`boolean`](../../data-types.md) | Should the completed task be sent to the Creator for review ||
 || **notifyAtHalfTime** 
-[`boolean`](../../data-types.md) | Should the assignee be notified at half the task deadline ||
+[`boolean`](../../data-types.md) | Should the performer be notified at half the task deadline ||
 || **notifyOnQueueOverflow** 
-[`integer`](../../data-types.md) | Number of tasks in the queue, exceeding which a notification will be sent to the flow administrator (if `null`, notifications are disabled) ||
+[`integer`](../../data-types.md) | Number of tasks in the queue, exceeding which will send a notification to the flow administrator (if `null`, notifications are disabled) ||
 || **notifyOnTasksInProgressOverflow** 
-[`integer`](../../data-types.md) | Number of tasks in progress, exceeding which a notification will be sent to the flow administrator (if `null`, notifications are disabled) ||
+[`integer`](../../data-types.md) | Number of tasks in progress, exceeding which will send a notification to the flow administrator (if `null`, notifications are disabled) ||
 || **notifyWhenEfficiencyDecreases** 
 [`integer`](../../data-types.md) | Efficiency in percentage, below which a notification will be sent to the flow administrator (if `null`, notifications are disabled) ||
 || **taskCreators** 
@@ -259,7 +335,7 @@ For queue distribution and self-distribution, the team is the same as in `respon
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {

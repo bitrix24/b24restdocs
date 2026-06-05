@@ -14,26 +14,26 @@ The method `tasks.task.getaccess` checks the available actions for users on a ta
 
 ## Method Parameters
 
-{% include [Footnote about parameters](../../_includes/required.md) %}
+{% include [Note on parameters](../../_includes/required.md) %}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
-|| **taskId***
+|| **taskId*** 
 [`integer`](../data-types.md) | Task identifier.
 
-The task identifier can be obtained when [creating a new task](./tasks-task-add.md) or by using the [get task list method](./tasks-task-list.md) ||
-|| **users**
-[`array`](../data-types.md) | Array of user identifiers for which access needs to be checked.
+The task identifier can be obtained when [creating a new task](./tasks-task-add.md) or by using the [get task list](./tasks-task-list.md) method. ||
+|| **users** 
+[`array`](../data-types.md) | An array of user identifiers for whom access needs to be checked.
 
 By default, the current user is used.
 
-The user identifier can be obtained using the [get user list method](../user/user-get.md) ||
+The user identifier can be obtained using the [get user list](../user/user-get.md) method. ||
 |#
 
 ## Code Examples
 
-{% include [Footnote about examples](../../_includes/examples.md) %}
+{% include [Note on examples](../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -57,28 +57,80 @@ The user identifier can be obtained using the [get user list method](../user/use
     https://**put_your_bitrix24_address**/rest/tasks.task.getaccess
     ```
 
-- JS
+- JS (TS)
 
-    ```javascript
-    try
-    {
-        const response = await $b24.callMethod(
-            'tasks.task.getaccess',
-            {
-                taskId: 8017,
-                users: [503, 547],
-            }
-        );
-        
-        const result = response.getData().result;
-        console.log('Access data:', result);
-        
-        processResult(result);
+    ```ts
+    // This snippet is an ES module: top-level await requires type="module" or a bundler.
+    // $b24 is an already-initialized SDK instance (see the SDK "Get started" guide).
+    import { Text } from '@bitrix24/b24jssdk'
+    import type { B24Frame } from '@bitrix24/b24jssdk'
+
+    declare const $b24: B24Frame
+
+    // Shape of the payload returned in result (match the "response handling" section of the page)
+    type TaskAccessResult = {
+      allowedActions: Record<string, Record<string, boolean>>
     }
-    catch( error )
-    {
-        console.error('Error:', error);
+
+    try {
+      const response = await $b24.actions.v2.call.make<TaskAccessResult>({
+        method: 'tasks.task.getaccess',
+        params: {
+          taskId: 8017,
+          users: [503, 547],
+        },
+        requestId: Text.getUuidRfc4122()
+      })
+
+      // The payload is available only on a successful response
+      if (!response.isSuccess) {
+        console.error(response.getErrorMessages().join('; '))
+      } else {
+        const result = response.getData()!.result
+        console.info('Allowed actions by user:', result.allowedActions)
+      }
+    } catch (error) {
+      // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+      console.error(error)
     }
+    ```
+
+- JS (UMD)
+
+    ```html
+    <!-- Load the SDK (UMD build); it is exposed as the global B24Js -->
+    <script src="https://unpkg.com/@bitrix24/b24jssdk@1/dist/umd/index.min.js"></script>
+    <script>
+      async function getTaskAccess() {
+        try {
+          // Initialize the SDK inside a Bitrix24 frame
+          const $b24 = await B24Js.initializeB24Frame()
+
+          const response = await $b24.actions.v2.call.make({
+            method: 'tasks.task.getaccess',
+            params: {
+              taskId: 8017,
+              users: [503, 547],
+            },
+            requestId: B24Js.Text.getUuidRfc4122()
+          })
+
+          // The payload is available only on a successful response
+          if (!response.isSuccess) {
+            console.error(response.getErrorMessages().join('; '))
+            return
+          }
+
+          const result = response.getData().result
+          console.info('Allowed actions by user:', result.allowedActions)
+        } catch (error) {
+          // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+          console.error(error)
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', getTaskAccess)
+    </script>
     ```
 
 - PHP
@@ -207,13 +259,13 @@ HTTP Status: **200**
 
 ### Returned Data
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../data-types.md) | Root element of the response.
+[`object`](../data-types.md) | The root element of the response.
 
-Contains an object with a description of available actions for each user ||
+Contains an object describing the available actions for each user. ||
 || **allowedActions**
 [`object`](../data-types.md) | An object where the key is the `user ID`, and the value is an object with [description of available actions](./fields.md#action) on the task.
 
@@ -221,13 +273,13 @@ If the user executing the method does not have access to the task, an empty arra
 
 {% note info "" %}
 
-For non-existent users from the `users` parameter, the method will return a response with a value of `false` for all actions.
+For non-existent users from the `users` parameter, the method will return a response with `false` for all actions.
 
 {% endnote %}
 
-||
+ ||
 || **time**
-[`time`](../data-types.md#time) | Information about the request execution time ||
+[`time`](../data-types.md#time) | Information about the request execution time. ||
 |#
 
 ## Error Handling
@@ -245,11 +297,11 @@ HTTP Status: **400**
 
 ### Possible Error Codes
 
-#|
+#| 
 || **Code** | **Description** | **Value** ||
-|| `0` | wrong task id | The value in the `taskId` parameter is of an incorrect type ||
-|| `100` | Invalid value {} to match with parameter {users}. Should be value of type array. | An incorrect value was specified in the `users` parameter ||
-|| `100` | CTaskItem All parameters in the constructor must have real class type | The required parameter `taskId` was not specified ||
+|| `0` | wrong task id | The value in the `taskId` parameter is of an incorrect type. ||
+|| `100` | Invalid value {} to match with parameter {users}. Should be value of type array. | An incorrect value is specified in the `users` parameter. ||
+|| `100` | CTaskItem All parameters in the constructor must have real class type | The required parameter `taskId` is not specified. ||
 |#
 
 {% include [system errors](../../_includes/system-errors.md) %}

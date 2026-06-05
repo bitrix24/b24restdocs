@@ -10,11 +10,11 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: owner of the registered bot
 
-The method `imbot.v2.Chat.InputAction.notify` sends a bot action indicator to the chat — for example, "bot is typing".
+The method `imbot.v2.Chat.InputAction.notify` sends a bot action indicator in the chat — for example, "bot is typing."
 
 ## Method Parameters
 
-{% include [Footnote about parameters](../../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -28,7 +28,7 @@ Pass the same botToken that was specified during the chat bot registration ||
 || **dialogId***
 [`string`](../../../../data-types.md) | Dialog ID. For group chats — `chat{chatId}`, for personal chats — `{userId}` ||
 || **statusMessageCode**
-[`string`](../../../../data-types.md) | Action status code. A list of available codes is described [below](#status-codes). If not specified, the standard "typing" indicator is displayed ||
+[`string`](../../../../data-types.md) | Status code of the action. A list of available codes is described [below](#status-codes). If not specified, the standard "typing" indicator is displayed ||
 || **duration**
 [`integer`](../../../../data-types.md) | Duration of the indicator display in seconds (1–600). Default is determined by the server ||
 |#
@@ -52,7 +52,7 @@ Pass the same botToken that was specified during the chat bot registration ||
 
 ## Code Examples
 
-{% include [Footnote about examples](../../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -168,11 +168,13 @@ Pass the same botToken that was specified during the chat bot registration ||
 
 ## Response Handling
 
-HTTP Code: **200**
+HTTP Status: **200**
 
 ```json
 {
-    "result": true,
+    "result": {
+        "result": true
+    },
     "time": {
         "start": 1728626400.123,
         "finish": 1728626400.234,
@@ -190,7 +192,9 @@ HTTP Code: **200**
 || **Name**
 `Type` | **Description** ||
 || **result**
-[`boolean`](../../../../data-types.md) | `true` if the indicator was successfully sent ||
+[`object`](../../../../data-types.md) | Result of the operation ||
+|| **result.result**
+[`boolean`](../../../../data-types.md) | `true` if the indicator was sent successfully ||
 || **time**
 [`time`](../../../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -212,7 +216,7 @@ HTTP Status: **400**, **403**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `BOT_TOKEN_NOT_SPECIFIED` | Bot token is not specified | `botToken` is required for webhook authorization ||
+|| `BOT_TOKEN_NOT_SPECIFIED` | Bot token is not specified | `botToken` is not specified. Required for webhook authorization ||
 || `BOT_ID_REQUIRED` | Bot ID is required | `botId` is not specified ||
 || `BOT_NOT_FOUND` | Bot not found | Bot not found ||
 || `BOT_OWNERSHIP_ERROR` | Bot is registered by another application | Bot is registered by another application ||
@@ -223,6 +227,6 @@ HTTP Status: **400**, **403**
 
 ## Continue Learning
 
-- [API Change Log for imbot.v2](../../change-log.md)
+- [API imbot.v2 Change Log](../../change-log.md)
 - [{#T}](./chat-text-field-enabled.md)
 - [{#T}](../messages/chat-message-send.md)

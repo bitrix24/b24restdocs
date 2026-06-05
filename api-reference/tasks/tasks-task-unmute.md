@@ -1,4 +1,4 @@
-# Disable "Mute" mode tasks.task.unmute
+# Disable "Mute" Mode tasks.task.unmute
 
 {% note tip "" %}
 
@@ -14,20 +14,20 @@ The method `tasks.task.unmute` disables the "Mute" mode for a task.
 
 ## Method Parameters
 
-{% include [Footnote on parameters](../../_includes/required.md) %}
+{% include [Note on parameters](../../_includes/required.md) %}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
-|| **id***
-[`integer`](../data-types.md) | Task identifier.
+|| **id*** 
+[`integer`](../data-types.md) | Task identifier. 
 
-The task identifier can be obtained when [creating a new task](./tasks-task-add.md) or by using the [get task list method](./tasks-task-list.md) ||
+The task identifier can be obtained when [creating a new task](./tasks-task-add.md) or by using the [get task list](./tasks-task-list.md) method. ||
 |#
 
 ## Code Examples
 
-{% include [Footnote on examples](../../_includes/examples.md) %}
+{% include [Note on examples](../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -51,27 +51,83 @@ The task identifier can be obtained when [creating a new task](./tasks-task-add.
     https://**put_your_bitrix24_address**/rest/tasks.task.unmute
     ```
 
-- JS
+- JS (TS)
 
-    ```javascript
-    try
-    {
-        const response = await $b24.callMethod(
-            'tasks.task.unmute',
-            {
-                id: 8017,
-            }
-        );
-        
-        const result = response.getData().result;
-        console.log('Unmuted task with ID:', result);
-        
-        processResult(result);
+    ```ts
+    // This snippet is an ES module: top-level await requires type="module" or a bundler.
+    // $b24 is an already-initialized SDK instance (see the SDK "Get started" guide).
+    import { Text } from '@bitrix24/b24jssdk'
+    import type { B24Frame } from '@bitrix24/b24jssdk'
+
+    declare const $b24: B24Frame
+
+    // Shape of the payload returned in result.task
+    type TaskUnmuteResult = {
+      task: {
+        id: string
+        isMuted: string
+        title: string
+        status: string
+      }
     }
-    catch( error )
-    {
-        console.error('Error:', error);
+
+    try {
+      const response = await $b24.actions.v2.call.make<TaskUnmuteResult>({
+        method: 'tasks.task.unmute',
+        params: {
+          id: 8017,
+        },
+        requestId: Text.getUuidRfc4122()
+      })
+
+      // The payload is available only on a successful response
+      if (!response.isSuccess) {
+        console.error(response.getErrorMessages().join('; '))
+      } else {
+        const result = response.getData()!.result
+        console.info('Task unmuted:', result.task.id, '| isMuted:', result.task.isMuted, '| title:', result.task.title)
+      }
+    } catch (error) {
+      // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+      console.error(error)
     }
+    ```
+
+- JS (UMD)
+
+    ```html
+    <!-- Load the SDK (UMD build); it is exposed as the global B24Js -->
+    <script src="https://unpkg.com/@bitrix24/b24jssdk@1/dist/umd/index.min.js"></script>
+    <script>
+      async function unmuteTask() {
+        try {
+          // Initialize the SDK inside a Bitrix24 frame
+          const $b24 = await B24Js.initializeB24Frame()
+
+          const response = await $b24.actions.v2.call.make({
+            method: 'tasks.task.unmute',
+            params: {
+              id: 8017,
+            },
+            requestId: B24Js.Text.getUuidRfc4122()
+          })
+
+          // The payload is available only on a successful response
+          if (!response.isSuccess) {
+            console.error(response.getErrorMessages().join('; '))
+            return
+          }
+
+          const result = response.getData().result
+          console.info('Task unmuted:', result.task.id, '| isMuted:', result.task.isMuted, '| title:', result.task.title)
+        } catch (error) {
+          // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+          console.error(error)
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', unmuteTask)
+    </script>
     ```
 
 - PHP
@@ -136,7 +192,7 @@ The task identifier can be obtained when [creating a new task](./tasks-task-add.
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -282,62 +338,62 @@ HTTP status: **200**
             },
             "group": {
                 "id": "129",
-                "name": "Workgroup",
+                "name": "Work Group",
                 "opened": false,
                 "membersCount": 1,
-                "image": "/bitrix/images/socialnetwork/workgroup/folder.png",
+                "image": "\/bitrix\/images\/socialnetwork\/workgroup\/folder.png",
                 "additionalData": []
             },
             "creator": {
                 "id": "503",
-                "name": "Samantha Cooper",
-                "link": "/company/personal/user/503/",
-                "icon": "https://mysite.com/b17053/resize_cache/45749/c0120a8d7c10d63c83e32398d1ec4d9e/main/c89/c89c6b7301880958ea704b5a8470635c/4R5A1256.png",
+                "name": "Maria Johnson",
+                "link": "\/company\/personal\/user\/503\/",
+                "icon": "https:\/\/mysite.com\/b17053\/resize_cache\/45749\/c0120a8d7c10d63c83e32398d1ec4d9e\/main\/c89\/c89c6b7301880958ea704b5a8470635c\/4R5A1256.png",
                 "workPosition": "Administrator"
             },
             "responsible": {
                 "id": "503",
-                "name": "Samantha Cooper",
-                "link": "/company/personal/user/503/",
-                "icon": "https://mysite.com/b17053/resize_cache/45749/c0120a8d7c10d63c83e32398d1ec4d9e/main/c89/c89c6b7301880958ea704b5a8470635c/4R5A1256.png",
+                "name": "Maria Johnson",
+                "link": "\/company\/personal\/user\/503\/",
+                "icon": "https:\/\/mysite.com\/b17053\/resize_cache\/45749\/c0120a8d7c10d63c83e32398d1ec4d9e\/main\/c89\/c89c6b7301880958ea704b5a8470635c\/4R5A1256.png",
                 "workPosition": "Administrator"
             },
             "accomplicesData": {
                 "3": {
                     "id": "3",
-                    "name": "Frank Mitchell",
-                    "link": "/company/personal/user/3/",
-                    "icon": "https://mysite.com/b17053/resize_cache/249/c0120a8d7c10d63c83e32398d1ec4d9e/main/cd526b0644e7ff4d794ea41cb36bc423/odmin.png",
+                    "name": "Andrew Smith",
+                    "link": "\/company\/personal\/user\/3\/",
+                    "icon": "https:\/\/mysite.com\/b17053\/resize_cache\/249\/c0120a8d7c10d63c83e32398d1ec4d9e\/main\/cd526b0644e7ff4d794ea41cb36bc423\/odmin.png",
                     "workPosition": "System Administrator"
                 },
                 "11": {
                     "id": "11",
-                    "name": "Raymond Carter",
-                    "link": "/company/personal/user/11/",
-                    "icon": "https://mysite.com/b17053/resize_cache/231/c0120a8d7c10d63c83e32398d1ec4d9e/main/026bf59e161a0bd50f401d3796800651/66b.jpg",
+                    "name": "Andrew Johnson",
+                    "link": "\/company\/personal\/user\/11\/",
+                    "icon": "https:\/\/mysite.com\/b17053\/resize_cache\/231\/c0120a8d7c10d63c83e32398d1ec4d9e\/main\/026bf59e161a0bd50f401d3796800651\/66b.jpg",
                     "workPosition": "Specialist"
                 }
             },
             "auditorsData": {
                 "61": {
                     "id": "61",
-                    "name": "Samuel Evans",
-                    "link": "/company/personal/user/61/",
-                    "icon": "https://mysite.com/b17053/resize_cache/8674/c0120a8d7c10d63c83e32398d1ec4d9e/main/7b5/7b52e4c2304ec0520dab3d4261e9ca1f/sp.jpg",
+                    "name": "Ivan Brown",
+                    "link": "\/company\/personal\/user\/61\/",
+                    "icon": "https:\/\/mysite.com\/b17053\/resize_cache\/8674\/c0120a8d7c10d63c83e32398d1ec4d9e\/main\/7b5\/7b52e4c2304ec0520dab3d4261e9ca1f\/sp.jpg",
                     "workPosition": "Marketer"
                 },
                 "103": {
                     "id": "103",
-                    "name": "Emily Smith",
-                    "link": "/company/personal/user/103/",
-                    "icon": "https://mysite.com/b17053/resize_cache/8644/c0120a8d7c10d63c83e32398d1ec4d9e/main/45f/45fff10d17d398a5583184c8350cd197/buh.jpg",
+                    "name": "Svetlana Green",
+                    "link": "\/company\/personal\/user\/103\/",
+                    "icon": "https:\/\/mysite.com\/b17053\/resize_cache\/8644\/c0120a8d7c10d63c83e32398d1ec4d9e\/main\/45f\/45fff10d17d398a5583184c8350cd197\/buh.jpg",
                     "workPosition": "Accountant"
                 },
                 "547": {
                     "id": "547",
-                    "name": "Amanda",
-                    "link": "/company/personal/user/547/",
-                    "icon": "/bitrix/images/tasks/default_avatar.png",
+                    "name": "Maria",
+                    "link": "\/company\/personal\/user\/547\/",
+                    "icon": "\/bitrix\/images\/tasks\/default_avatar.png",
                     "workPosition": "Tester"
                 }
             },
@@ -497,22 +553,22 @@ HTTP status: **200**
 
 ### Returned Data
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **result**
 [`object`](../data-types.md) | Object with response data.
 
-Returns an empty array `"result":[]` if the user does not have access to the task or if the task with the specified `id` does not exist ||
+Returns an empty array `"result":[]` if the user does not have access to the task or if the task with the specified `id` does not exist. ||
 || **task**
-[`object`](../data-types.md) | Object with [task description](./fields.md) after the operation is performed ||
+[`object`](../data-types.md) | Object with [task description](./fields.md) after the operation is performed. ||
 || **time**
-[`time`](../data-types.md#time) | Information about the request execution time ||
+[`time`](../data-types.md#time) | Information about the request execution time. ||
 |#
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {
@@ -525,9 +581,9 @@ HTTP status: **400**
 
 ### Possible Error Codes
 
-#|
+#| 
 || **Code** | **Description** | **Value** ||
-|| `0` | wrong task id | The value of the `id` parameter is of an incorrect type ||
+|| `0` | wrong task id | The value in the `id` parameter is of an incorrect type. ||
 |#
 
 {% include [system errors](../../_includes/system-errors.md) %}

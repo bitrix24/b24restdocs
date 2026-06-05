@@ -10,53 +10,53 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: owner of the registered bot
 
-The `imbot.v2.Command.answer` method sends a bot's response to a slash command invocation.
+The `imbot.v2.Command.answer` method sends the bot's response to a slash command call.
 
-The bot can respond in the chat from which the command originated, even if the bot is not a participant in that chat. Access is granted temporarily based on the command token — `messageId` + `commandId`. If the bot is not a participant in the chat, the message is sent as a system message indicating the bot's name.
+The bot can respond in the chat from which the command originated, even if the bot is not a participant in that chat. Access is temporarily granted based on the command token — `messageId` + `commandId`. If the bot is not a participant in the chat, the message is sent as a system message indicating the bot's name.
 
 ## Method Parameters
 
-{% include [Parameter Note](../../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../../_includes/required.md) %}
 
-#|
+#| 
 || **Name**
 `Type` | **Description** ||
-|| **botId***
+|| **botId*** 
 [`integer`](../../../../data-types.md) | Bot ID ||
-|| **botToken**
+|| **botToken** 
 [`string`](../../../../data-types.md) | Unique authorization token for the bot. Required for webhook authorization, not needed for OAuth.
 
 Pass the same botToken that was specified during the chat bot registration ||
-|| **commandId***
+|| **commandId*** 
 [`integer`](../../../../data-types.md) | Command ID ||
-|| **messageId***
+|| **messageId*** 
 [`integer`](../../../../data-types.md) | Message ID with the command ||
-|| **dialogId***
+|| **dialogId*** 
 [`string`](../../../../data-types.md) | Dialog ID. For group chats — `chat{chatId}`, for personal chats — `{userId}` ||
-|| **fields**
+|| **fields** 
 [`object`](../../../../data-types.md) | Fields of the response message. The structure of the object is described [below](#fields) ||
 |#
 
-### Fields Parameter {#fields}
+### Parameter fields {#fields}
 
-#|
+#| 
 || **Name**
 `Type` | **Description** ||
-|| **message**
+|| **message** 
 [`string`](../../../../data-types.md) | Response text. Maximum length — 20,000 characters ||
-|| **attach**
+|| **attach** 
 [`array`](../../../../data-types.md) | Attachments. More details: [How to use attachments](../../../../chats/messages/attachments.md) ||
-|| **keyboard**
+|| **keyboard** 
 [`array`](../../../../data-types.md) | Keyboard. More details: [Working with keyboards](../../../../chats/messages/keyboards.md) ||
-|| **system**
+|| **system** 
 [`boolean`](../../../../data-types.md) | System message. Allowed values: `true`, `false`. Default is `false` ||
-|| **urlPreview**
+|| **urlPreview** 
 [`boolean`](../../../../data-types.md) | Show link previews. Allowed values: `true`, `false`. Default is `true` ||
 |#
 
 ## Code Examples
 
-{% include [Example Note](../../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -176,11 +176,13 @@ Pass the same botToken that was specified during the chat bot registration ||
 
 ## Response Handling
 
-HTTP Code: **200**
+HTTP Status: **200**
 
 ```json
 {
-    "result": true,
+    "result": {
+        "result": true
+    },
     "time": {
         "start": 1728626400.123,
         "finish": 1728626400.234,
@@ -194,12 +196,14 @@ HTTP Code: **200**
 
 ## Returned Data
 
-#|
+#| 
 || **Name**
 `Type` | **Description** ||
-|| **result**
+|| **result** 
+[`object`](../../../../data-types.md) | Result of the operation ||
+|| **result.result** 
 [`boolean`](../../../../data-types.md) | `true` if the response was successfully sent ||
-|| **time**
+|| **time** 
 [`time`](../../../../data-types.md#time) | Information about the request execution time ||
 |#
 
@@ -218,7 +222,7 @@ HTTP Status: **400**, **403**
 
 ### Possible Error Codes
 
-#|
+#| 
 || **Code** | **Description** | **Value** ||
 || `BOT_TOKEN_NOT_SPECIFIED` | Bot token is not specified | `botToken` is not provided. Required for webhook authorization ||
 || `BOT_ID_REQUIRED` | Bot ID is required | `botId` is not provided ||
@@ -231,7 +235,7 @@ HTTP Status: **400**, **403**
 
 ## Continue Learning
 
-- [API Change Log for imbot.v2](../../change-log.md)
+- [API imbot.v2 Change Log](../../change-log.md)
 - [{#T}](./command-register.md)
 - [{#T}](../messages/chat-message-send.md)
 - [{#T}](../events/event-get.md)

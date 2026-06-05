@@ -1,4 +1,4 @@
-# Get the List of Commands imbot.v2.Command.list
+# Get a List of Commands imbot.v2.Command.list
 
 {% note tip "" %}
 
@@ -10,18 +10,18 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: owner of the registered bot
 
-The method `imbot.v2.Command.list` returns a list of all commands of the bot.
+The method `imbot.v2.Command.list` returns a list of all bot commands.
 
 ## Method Parameters
 
-{% include [Footnote on parameters](../../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../../_includes/required.md) %}
 
-#|
+#| 
 || **Name**
 `Type` | **Description** ||
-|| **botId***
+|| **botId*** 
 [`integer`](../../../../data-types.md) | Bot ID ||
-|| **botToken**
+|| **botToken** 
 [`string`](../../../../data-types.md) | Unique authorization token for the bot. Required for webhook authorization, not needed for OAuth.
 
 Pass the same botToken that was specified during the chatbot registration ||
@@ -29,7 +29,7 @@ Pass the same botToken that was specified during the chatbot registration ||
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -133,7 +133,7 @@ Pass the same botToken that was specified during the chatbot registration ||
 
 ## Response Handling
 
-HTTP Code: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -166,7 +166,7 @@ HTTP Code: **200**
 
 ## Returned Data
 
-#|
+#| 
 || **Name**
 `Type` | **Description** ||
 || **result**
@@ -179,7 +179,7 @@ HTTP Code: **200**
 
 ### Fields of the Command Object {#command-object}
 
-#|
+#| 
 || **Field**
 `Type` | **Description** ||
 || **id**
@@ -189,22 +189,22 @@ HTTP Code: **200**
 || **command**
 [`string`](../../../../data-types.md) | Command text ||
 || **title**
-[`string`](../../../../data-types.md) | Command title in the current account's language with fallback to the default language ||
+[`string`](../../../../data-types.md) | Command title in the current Bitrix24 language with fallback to the default language ||
 || **params**
-[`string`](../../../../data-types.md) | Description of command parameters in the current account's language with fallback to the default language ||
+[`string`](../../../../data-types.md) | Description of command parameters in the current Bitrix24 language with fallback to the default language ||
 || **common**
-[`boolean`](../../../../data-types.md) | Command is available in all chats ||
+[`boolean`](../../../../data-types.md) | Command available in all chats ||
 || **hidden**
-[`boolean`](../../../../data-types.md) | Command is hidden from the list of commands ||
+[`boolean`](../../../../data-types.md) | Command hidden from the command list ||
 || **extranetSupport**
-[`boolean`](../../../../data-types.md) | Command is available to extranet users ||
+[`boolean`](../../../../data-types.md) | Command available to extranet users ||
 || **category**
 [`string`](../../../../data-types.md) | Command category ||
 || **context**
 [`string`](../../../../data-types.md) | Context of command usage ||
 |#
 
-Complete description of all object fields can be found on the [Objects and Fields](../../entities.md) page.
+Full description of all object fields can be found on the [Objects and Fields](../../entities.md) page.
 
 ## Error Handling
 
@@ -221,12 +221,12 @@ HTTP Status: **400**, **403**
 
 ### Possible Error Codes
 
-#|
+#| 
 || **Code** | **Description** | **Value** ||
-|| `BOT_TOKEN_NOT_SPECIFIED` | Bot token is not specified | `botToken` is not provided. Required for webhook authorization ||
-|| `BOT_ID_REQUIRED` | Bot ID is required | `botId` is not provided ||
+|| `BOT_TOKEN_NOT_SPECIFIED` | Bot token is not specified | `botToken` not specified. Required for webhook authorization ||
+|| `BOT_ID_REQUIRED` | Bot ID is required | `botId` not specified ||
 || `BOT_NOT_FOUND` | Bot not found | Bot not found ||
-|| `BOT_OWNERSHIP_ERROR` | Bot is registered by another application | Bot is registered by another application ||
+|| `BOT_OWNERSHIP_ERROR` | Bot is registered by another application | Bot registered by another application ||
 |#
 
 {% include [System Errors](../../../../../_includes/system-errors.md) %}

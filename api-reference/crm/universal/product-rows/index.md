@@ -1,4 +1,4 @@
-# Product Items
+# Product Items in CRM Objects: Overview of Methods
 
 {% note tip "" %}
 
@@ -6,40 +6,49 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-## Description
+Product items are lines of goods or services in a CRM card. They store the details of a sale: name, price, quantity, discounts, and taxes. Based on this data, the CRM calculates the total amount for a lead, deal, estimate, invoice, or SPA.
 
-The REST methods from the **crm.item.productrow.\*** family allow you to work with product items linked to various CRM entities. These methods are universal and support any type of owner, except for old invoices:
+> Quick navigation: [all methods](#all-methods)
 
-* leads
-* deals
-* contacts
-* companies
-* estimates
-* new invoices
-* SPAs
+## How to Work with Product Items
 
-## Access Permissions
+Each product item is associated with a CRM object: lead, deal, estimate, new invoice, or SPA. To add a product, replace the product list, or retrieve products from a CRM object, specify `ownerType` and `ownerId`.
 
-When calling REST methods, the access permissions of the user making the call are taken into account. Product items are not a standalone CRM entity and are always linked to some CRM object that acts as their owner. Therefore, during all operations, the user's permissions to access and manage the owner object (estimate, SPA, etc.) are checked. For example, if a user does not have read access to a particular entity, they will not be able to read its product items.
+For example, for a deal with ID `13142`, pass `ownerType: "D"` and `ownerId: 13142`. The code `D` represents a deal; for other codes, refer to the [CRM object types directory](../../data-types.md#object_type). The object identifier can be obtained using the [crm.item.list](../crm-item-list.md) method or from the response of the [crm.item.add](../crm-item-add.md) method.
 
-## Automatic Actions After Any Change
+1. Retrieve the field descriptions of the product item using the [crm.item.productrow.fields](./crm-item-productrow-fields.md) method. This method will help you understand what values can be passed when adding or modifying an item.
+2. Add a single product item using the [crm.item.productrow.add](./crm-item-productrow-add.md) method. If you need to replace the entire product list in the CRM object, use the [crm.item.productrow.set](./crm-item-productrow-set.md) method.
+3. Retrieve the product items of the CRM object using the [crm.item.productrow.list](./crm-item-productrow-list.md) method. If you need a single item, pass its identifier to the [crm.item.productrow.get](./crm-item-productrow-get.md) method.
+4. Modify a product item using the [crm.item.productrow.update](./crm-item-productrow-update.md) method or delete it using the [crm.item.productrow.delete](./crm-item-productrow-delete.md) method if the product is no longer needed in the CRM object.
 
-After any changes made to product items, all standard checks and procedures that occur when modifying a CRM object will be executed, including recalculating the total amount and triggering Automation rules after saving. This applies to all methods that create or modify product items: [crm.item.productrow.add](./crm-item-productrow-add.md), [crm.item.productrow.update](./crm-item-productrow-update.md), [crm.item.productrow.set](./crm-item-productrow-set.md).
+## Important Considerations
 
-## Overview of Methods
+- Access to product items depends on access to the CRM object they belong to. If a user cannot open a deal, invoice, or SPA, they will not be able to retrieve or modify its product items.
+- The [crm.item.productrow.*](#all-methods) methods do not work with old invoices. For new integrations with invoices, use the [crm.item.*](../invoice.md) methods.
+- The [crm.item.productrow.set](./crm-item-productrow-set.md) method replaces the entire list of product items in the CRM object with the provided set. If you need to add a single item, use [crm.item.productrow.add](./crm-item-productrow-add.md).
+
+## Relationship with Other Objects
+
+**CRM Entities.** Product items are related to a specific CRM entity. The relationship is defined through `ownerType` and `ownerId` in the [crm.item.productrow.add](./crm-item-productrow-add.md), [crm.item.productrow.set](./crm-item-productrow-set.md), [crm.item.productrow.list](./crm-item-productrow-list.md), and [crm.item.productrow.getAvailableForPayment](./crm-item-productrow-get-available-for-payment.md) methods.
+
+**Product Catalog.** A product item can be linked to a catalog product through the `productId` field in the [crm.item.productrow.add](./crm-item-productrow-add.md) and [crm.item.productrow.set](./crm-item-productrow-set.md) methods. If you pass `productId` but do not pass `productName` or `measureCode`, the CRM will use the product name and unit of measure from the catalog.
+
+**Payment.** The [crm.item.productrow.getAvailableForPayment](./crm-item-productrow-get-available-for-payment.md) method retrieves product items from the CRM object for which payment has not yet been issued to the client. The CRM object is specified through `ownerType` and `ownerId`.
+
+## Overview of Methods {#all-methods}
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can perform the methods: depending on the method
+> Who can perform the method: depends on the method
 
-#|
+#| 
 || **Method** | **Description** ||
 || [crm.item.productrow.add](./crm-item-productrow-add.md) | Adds a product item ||
 || [crm.item.productrow.update](./crm-item-productrow-update.md) | Updates a product item ||
-|| [crm.item.productrow.get](./crm-item-productrow-get.md) | Retrieves information about a product item by id ||
-|| [crm.item.productrow.set](./crm-item-productrow-set.md) | Links a product item to a CRM object ||
+|| [crm.item.productrow.get](./crm-item-productrow-get.md) | Retrieves information about a product item ||
 || [crm.item.productrow.list](./crm-item-productrow-list.md) | Retrieves a list of product items ||
-|| [crm.item.productrow.getAvailableForPayment](./crm-item-productrow-get-available-for-payment.md) | Retrieves a list of unpaid products ||
 || [crm.item.productrow.delete](./crm-item-productrow-delete.md) | Deletes a product item ||
-|| [crm.item.productrow.fields](./crm-item-productrow-fields.md) | Retrieves a list of product item fields ||
+|| [crm.item.productrow.set](./crm-item-productrow-set.md) | Saves a set of product items in the CRM object ||
+|| [crm.item.productrow.getAvailableForPayment](./crm-item-productrow-get-available-for-payment.md) | Retrieves product items without issued payment ||
+|| [crm.item.productrow.fields](./crm-item-productrow-fields.md) | Retrieves the field descriptions of product items ||
 |#

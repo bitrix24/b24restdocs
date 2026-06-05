@@ -18,7 +18,7 @@ Events will not be sent to the application until the installation is complete. [
 
 {% endnote %}
 
-## What the handler receives
+## What the Handler Receives
 
 Data is transmitted as a POST request {.b24-info}
 
@@ -49,16 +49,16 @@ array(
 
 {% include notitle [Footnote on parameters](../../../_includes/required.md) %}
 
-#|
-|| **Parameter**
+#| 
+|| **Parameter** 
 `type` | **Description** ||
-|| **event***
-[`string`](../../data-types.md) | Symbolic event code, in this case `OnTaskDelete`||
-|| **data***
+|| **event*** 
+[`string`](../../data-types.md) | Symbolic event code, in this case `OnTaskDelete` ||
+|| **data*** 
 [`array`](../../data-types.md) | Array with data of the deleted task ||
-|| **ts***
+|| **ts*** 
 [`timestamp`](../../data-types.md) | Date and time of the event sent from the [event queue](../../events/index.md) ||
-|| **auth***
+|| **auth*** 
 [`array`](../../data-types.md) | Authorization parameters and information about the account where the event occurred ||
 |#
 
@@ -66,27 +66,27 @@ array(
 
 {% include notitle [Footnote on parameters](../../../_includes/required.md) %}
 
-#|
-|| **Name**
+#| 
+|| **Name** 
 `type` | **Description** ||
-|| **FIELDS_BEFORE***
-[`undefined`\|`object`](../../data-types.md) | Fields of the task before the event (detailed description provided [below](#fields_before)). If there are no available task fields, this field will contain the value `undefined` ||
-|| **FIELDS_AFTER***
-[`undefined`\|`object`](../../data-types.md) | Fields of the task after the event (detailed description provided [below](#fields_after)). If there are no available task fields, this field will contain the value `undefined` ||
-|| **IS_ACCESSIBLE_BEFORE***
-[`string`](../../data-types.md) | Whether the task was readable before the event (detailed description provided [below](#is_accessible_before)) ||
-|| **IS_ACCESSIBLE_AFTER***
-[`string`](../../data-types.md) | Whether the task became readable after the event (detailed description provided [below](#is_accessible_after)) ||
+|| **FIELDS_BEFORE*** 
+[`undefined`\|`object`](../../data-types.md) | Fields of the task before the event (detailed description provided [below](#fields_before)). If no fields are available, this field will contain the value `undefined` ||
+|| **FIELDS_AFTER*** 
+[`undefined`\|`object`](../../data-types.md) | Fields of the task after the event (detailed description provided [below](#fields_after)). If no fields are available, this field will contain the value `undefined` ||
+|| **IS_ACCESSIBLE_BEFORE*** 
+[`string`](../../data-types.md) | Whether the task was accessible for reading before the event (detailed description provided [below](#is_accessible_before)) ||
+|| **IS_ACCESSIBLE_AFTER*** 
+[`string`](../../data-types.md) | Whether the task became accessible for reading after the event (detailed description provided [below](#is_accessible_after)) ||
 |#
 
 ### Field FIELDS_BEFORE {#fields_before}
 
 {% include notitle [Footnote on parameters](../../../_includes/required.md) %}
 
-#|
-|| **Name**
+#| 
+|| **Name** 
 `type` | **Description** ||
-|| **ID***
+|| **ID*** 
 [`integer`](../../data-types.md) | Identifier of the deleted task ||
 |#
 
@@ -96,10 +96,10 @@ array(
 
 {% include notitle [Footnote on parameters](../../../_includes/required.md) %}
 
-#|
-|| **Name**
+#| 
+|| **Name** 
 `type` | **Description** ||
-|| **ID***
+|| **ID*** 
 [`integer`](../../data-types.md) | Identifier of the deleted task ||
 |#
 
@@ -107,30 +107,29 @@ array(
 
 {% include notitle [Footnote on parameters](../../../_includes/required.md) %}
 
-#|
-|| **Name**
+#| 
+|| **Name** 
 `type` | **Description** ||
-|| **IS_ACCESSIBLE_BEFORE***
+|| **IS_ACCESSIBLE_BEFORE*** 
 [`string`](../../data-types.md) | Possible values:
 - `Y` (Yes) — yes
 - `N` (No) — no
-- `undefined` — not defined or check was not performed ||
+- `undefined` — not defined or check not performed ||
   |#
 
 ### Field IS_ACCESSIBLE_AFTER {#is_accessible_after}
 
 {% include notitle [Footnote on parameters](../../../_includes/required.md) %}
 
-#|
-|| **Name**
+#| 
+|| **Name** 
 `type` | **Description** ||
-|| **IS_ACCESSIBLE_AFTER***
+|| **IS_ACCESSIBLE_AFTER*** 
 [`string`](../../data-types.md) | Possible values:
 - `Y` (Yes) — yes
 - `N` (No) — no
-- `undefined` — not defined or check was not performed ||
+- `undefined` — not defined or check not performed ||
   |#
-
 
 ## Code Examples
 
@@ -138,31 +137,81 @@ array(
 
 {% list tabs %}
 
-- JS
+- JS (TS)
 
+    ```ts
+    // This snippet is an ES module: top-level await requires type="module" or a bundler.
+    // $b24 is an already-initialized SDK instance (see the SDK "Get started" guide).
+    import { Text } from '@bitrix24/b24jssdk'
+    import type { B24Frame } from '@bitrix24/b24jssdk'
 
-    ```js
-    try
-    {
-    	const response = await $b24.callMethod(
-    		'event.bind',
-    		{
-    			"event": "onTaskDelete",
-    			"handler": "https://example.com/handler.php"
-    		}
-    	);
-    	
-    	const result = response.getData().result;
-    	console.info(result);
-    }
-    catch( error )
-    {
-    	console.error(error);
+    declare const $b24: B24Frame
+
+    // Shape of the payload returned in result (match the "response handling" section of the page)
+    type BindEventResult = boolean
+
+    try {
+      const response = await $b24.actions.v2.call.make<BindEventResult>({
+        method: 'event.bind',
+        params: {
+          event: 'onTaskDelete',
+          handler: 'https://example.com/handler.php',
+        },
+        requestId: Text.getUuidRfc4122()
+      })
+
+      // The payload is available only on a successful response
+      if (!response.isSuccess) {
+        console.error(response.getErrorMessages().join('; '))
+      } else {
+        const result = response.getData()!.result
+        console.info('Event bound successfully:', result)
+      }
+    } catch (error) {
+      // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+      console.error(error)
     }
     ```
 
-- PHP
+- JS (UMD)
 
+    ```html
+    <!-- Load the SDK (UMD build); it is exposed as the global B24Js -->
+    <script src="https://unpkg.com/@bitrix24/b24jssdk@1/dist/umd/index.min.js"></script>
+    <script>
+      async function bindTaskDeleteEvent() {
+        try {
+          // Initialize the SDK inside a Bitrix24 frame
+          const $b24 = await B24Js.initializeB24Frame()
+
+          const response = await $b24.actions.v2.call.make({
+            method: 'event.bind',
+            params: {
+              event: 'onTaskDelete',
+              handler: 'https://example.com/handler.php',
+            },
+            requestId: B24Js.Text.getUuidRfc4122()
+          })
+
+          // The payload is available only on a successful response
+          if (!response.isSuccess) {
+            console.error(response.getErrorMessages().join('; '))
+            return
+          }
+
+          const result = response.getData().result
+          console.info('Event bound successfully:', result)
+        } catch (error) {
+          // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+          console.error(error)
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', bindTaskDeleteEvent)
+    </script>
+    ```
+
+- PHP
 
     ```php
     try {

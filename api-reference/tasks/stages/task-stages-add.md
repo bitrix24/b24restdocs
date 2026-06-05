@@ -1,4 +1,4 @@
-# Add a Kanban or "My Planner" Stage task.stages.add
+# Add a Kanban or "My Plan" Stage task.stages.add
 
 {% note tip "" %}
 
@@ -9,10 +9,10 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 > Scope: [`task`](../../scopes/permissions.md)
 >
 > Who can execute the method:
-> - any user for "My Planner" stages
+> - any user for "My Plan" stages
 > - any user with group access for Kanban stages
 
-The method adds a Kanban or "My Planner" stage.
+The method adds a Kanban or "My Plan" stage.
 
 ## Method Parameters
 
@@ -24,7 +24,7 @@ The method adds a Kanban or "My Planner" stage.
 || **fields***
 [`object`](../../data-types.md) | Field values (detailed description provided [below](#parametr-fields)) for adding a new stage ||
 || **isAdmin**
-[`boolean`](../../data-types.md) | If set to `true`, permission checks will not occur, provided the requester is an account administrator ||
+[`boolean`](../../data-types.md) | If set to `true`, permission checks will not occur, provided the requester is an administrator of the account ||
 |#
 
 ### Parameter fields
@@ -47,9 +47,9 @@ If not specified or equal to `0`, it will be added at the beginning ||
 
 Can equal the `ID` of the group, in which case the stage will be added to the group's Kanban.
 
-If equal to `0` or absent, the stage is added to "My Planner" of the current user.
+If equal to `0` or absent, the stage will be added to "My Plan" of the current user.
 
-An access permission error will be displayed if the permission level is insufficient ||
+An access error will be returned if the permission level is insufficient ||
 |#
 
 ## Code Examples
@@ -65,7 +65,7 @@ An access permission error will be displayed if the permission level is insuffic
     -H "Content-Type: application/json" \
     -d '{
     "fields": {
-        "TITLE": "Stage Title",
+        "TITLE": "Stage title",
         "COLOR": "#FFAAEE",
         "AFTER_ID": 1,
         "ENTITY_ID": 1
@@ -83,7 +83,7 @@ An access permission error will be displayed if the permission level is insuffic
     -H "Authorization: YOUR_ACCESS_TOKEN" \
     -d '{
     "fields": {
-        "TITLE": "Stage Title",
+        "TITLE": "Stage title",
         "COLOR": "#FFAAEE",
         "AFTER_ID": 1,
         "ENTITY_ID": 1
@@ -93,31 +93,89 @@ An access permission error will be displayed if the permission level is insuffic
     https://your-domain.bitrix24.com/rest/task.stages.add
     ```
 
-- JS
+- JS (TS)
 
-    ```js
-    try
-    {
-    	const response = await $b24.callMethod(
-    		'task.stages.add',
-    		{
-    			fields: {
-    				TITLE: 'Stage Title',
-    				COLOR: '#FFAAEE',
-    				AFTER_ID: 1,
-    				ENTITY_ID: 1
-    			},
-    			isAdmin: false,
-    		}
-    	);
-    	
-    	const result = response.getData().result;
-    	console.info(result);
+    ```ts
+    // This snippet is an ES module: top-level await requires type="module" or a bundler.
+    // $b24 is an already-initialized SDK instance (see the SDK "Get started" guide).
+    import { Text } from '@bitrix24/b24jssdk'
+    import type { B24Frame } from '@bitrix24/b24jssdk'
+
+    declare const $b24: B24Frame
+
+    // ID of the added stage returned in result
+    // Shape of the payload returned in result (match the "response handling" section of the page)
+    type StageAddResult = number
+
+    try {
+      const response = await $b24.actions.v2.call.make<StageAddResult>({
+        method: 'task.stages.add',
+        params: {
+          fields: {
+            TITLE: 'Stage title',
+            COLOR: '#FFAAEE',
+            AFTER_ID: 1,
+            ENTITY_ID: 1,
+          },
+          isAdmin: false,
+        },
+        requestId: Text.getUuidRfc4122()
+      })
+
+      // The payload is available only on a successful response
+      if (!response.isSuccess) {
+        console.error(response.getErrorMessages().join('; '))
+      } else {
+        const result = response.getData()!.result
+        console.info('New stage ID:', result)
+      }
+    } catch (error) {
+      // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+      console.error(error)
     }
-    catch( error )
-    {
-    	console.error(error);
-    }
+    ```
+
+- JS (UMD)
+
+    ```html
+    <!-- Load the SDK (UMD build); it is exposed as the global B24Js -->
+    <script src="https://unpkg.com/@bitrix24/b24jssdk@1/dist/umd/index.min.js"></script>
+    <script>
+      async function addTaskStage() {
+        try {
+          // Initialize the SDK inside a Bitrix24 frame
+          const $b24 = await B24Js.initializeB24Frame()
+
+          const response = await $b24.actions.v2.call.make({
+            method: 'task.stages.add',
+            params: {
+              fields: {
+                TITLE: 'Stage title',
+                COLOR: '#FFAAEE',
+                AFTER_ID: 1,
+                ENTITY_ID: 1,
+              },
+              isAdmin: false,
+            },
+            requestId: B24Js.Text.getUuidRfc4122()
+          })
+
+          // The payload is available only on a successful response
+          if (!response.isSuccess) {
+            console.error(response.getErrorMessages().join('; '))
+            return
+          }
+
+          const result = response.getData().result
+          console.info('New stage ID:', result)
+        } catch (error) {
+          // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+          console.error(error)
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', addTaskStage)
+    </script>
     ```
 
 - PHP
@@ -130,7 +188,7 @@ An access permission error will be displayed if the permission level is insuffic
                 'task.stages.add',
                 [
                     'fields' => [
-                        'TITLE'    => 'Stage Title',
+                        'TITLE'    => 'Stage title',
                         'COLOR'    => '#FFAAEE',
                         'AFTER_ID' => 1,
                         'ENTITY_ID' => 1
@@ -144,7 +202,7 @@ An access permission error will be displayed if the permission level is insuffic
             ->getResult();
     
         echo 'Success: ' . print_r($result, true);
-        // Your data processing logic
+        // Your logic for processing data
         processData($result);
     
     } catch (Throwable $e) {
@@ -160,7 +218,7 @@ An access permission error will be displayed if the permission level is insuffic
         'task.stages.add',
         {
             fields: {
-                TITLE: 'Stage Title',
+                TITLE: 'Stage title',
                 COLOR: '#FFAAEE',
                 AFTER_ID: 1,
                 ENTITY_ID: 1
@@ -183,7 +241,7 @@ An access permission error will be displayed if the permission level is insuffic
     require_once('crest.php'); // include CRest PHP SDK
 
     $fields = [
-        "TITLE" => "Stage Title",
+        "TITLE" => "Stage title",
         "COLOR" => "#FFAAEE",
         "AFTER_ID" => 1,
         "ENTITY_ID" => 1
@@ -198,7 +256,7 @@ An access permission error will be displayed if the permission level is insuffic
         ]
     );
 
-    // Process response from Bitrix24
+    // Process the response from Bitrix24
     if ($result['error']) {
         echo 'Error: '.$result['error_description'];
     } else {
@@ -210,7 +268,7 @@ An access permission error will be displayed if the permission level is insuffic
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -229,7 +287,7 @@ HTTP status: **200**
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {
@@ -245,7 +303,7 @@ HTTP status: **400**
 #|
 || **Code** | **Description** ||
 || `EMPTY_TITLE` | Stage title is not specified ||
-|| `ACCESS_DENIED` | You cannot manage stages ||
+|| `ACCESS_DENIED` | You do not have permission to manage stages ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

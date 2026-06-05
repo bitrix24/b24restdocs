@@ -1,4 +1,4 @@
-# Get the list of Kanban stages or "My Planner" task.stages.get
+# Get the List of Kanban Stages or "My Plan" task.stages.get
 
 {% note tip "" %}
 
@@ -9,31 +9,31 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 > Scope: [`task`](../../scopes/permissions.md)
 >
 > Who can execute the method: 
-> - any user for "My Planner" stages
-> - any user with access to the group for Kanban stages
+> - any user for "My Plan" stages
+> - any user with group access for Kanban stages
 
-The method retrieves the stages of the Kanban or "My Planner".
+This method retrieves the Kanban stages or "My Plan".
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../_includes/required.md) %}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **entityId*** 
 [`integer`](../../data-types.md) | Identifier of the object.
 
 Possible values:
-- `ID` of the group — the method will retrieve the stages of the group's Kanban. An access error will be returned if the permission level is insufficient.
-- `0` — the method will retrieve the stages of "My Planner" for the current user. ||
-|| **isAdmin**
+- `ID` of the group — the method will retrieve the Kanban stages of the group. An access error will be returned if the permission level is insufficient.
+- `0` — the method will retrieve the stages of "My Plan" for the current user. ||
+|| **isAdmin** 
 [`boolean`](../../data-types.md) | If set to `true`, permission checks will not occur, provided that the requester is an administrator of the account. ||
 |#
 
 ## Code Examples
 
-{% include [Note on examples](../../../_includes/examples.md) %}
+{% include [Note on Examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -60,25 +60,91 @@ Possible values:
     https://your-domain.bitrix24.com/rest/task.stages.get
     ```
 
-- JS
+- JS (TS)
 
-    ```js
-    try
-    {
-    	const response = await $b24.callMethod(
-    		'task.stages.get',
-    		{
-    			entityId: entityId,
-    		}
-    	);
-    	
-    	const result = response.getData().result;
-    	console.log(result);
+    ```ts
+    // This snippet is an ES module: top-level await requires type="module" or a bundler.
+    // $b24 is an already-initialized SDK instance (see the SDK "Get started" guide).
+    import { Text } from '@bitrix24/b24jssdk'
+    import type { B24Frame } from '@bitrix24/b24jssdk'
+
+    declare const $b24: B24Frame
+
+    // Shape of each stage in the result map
+    type StageInfo = {
+      ID: string
+      TITLE: string
+      SORT: string
+      COLOR: string
+      SYSTEM_TYPE: string | null
+      ENTITY_ID: string
+      ENTITY_TYPE: string
+      ADDITIONAL_FILTER: unknown[]
+      TO_UPDATE: unknown[]
+      TO_UPDATE_ACCESS: null
     }
-    catch( error )
-    {
-    	console.error('Error:', error);
+
+    // result is a map of stage ID → StageInfo
+    // Shape of the payload returned in result (match the "response handling" section of the page)
+    type StagesGetResult = Record<string, StageInfo>
+
+    try {
+      const response = await $b24.actions.v2.call.make<StagesGetResult>({
+        method: 'task.stages.get',
+        params: {
+          entityId: 0,
+        },
+        requestId: Text.getUuidRfc4122()
+      })
+
+      // The payload is available only on a successful response
+      if (!response.isSuccess) {
+        console.error(response.getErrorMessages().join('; '))
+      } else {
+        const result = response.getData()!.result
+        console.info('Stages:', Object.values(result).map(s => `${s.ID}: ${s.TITLE}`))
+      }
+    } catch (error) {
+      // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+      console.error(error)
     }
+    ```
+
+- JS (UMD)
+
+    ```html
+    <!-- Load the SDK (UMD build); it is exposed as the global B24Js -->
+    <script src="https://unpkg.com/@bitrix24/b24jssdk@1/dist/umd/index.min.js"></script>
+    <script>
+      async function getTaskStages() {
+        try {
+          // Initialize the SDK inside a Bitrix24 frame
+          const $b24 = await B24Js.initializeB24Frame()
+
+          const response = await $b24.actions.v2.call.make({
+            method: 'task.stages.get',
+            params: {
+              entityId: 0,
+            },
+            requestId: B24Js.Text.getUuidRfc4122()
+          })
+
+          // The payload is available only on a successful response
+          if (!response.isSuccess) {
+            console.error(response.getErrorMessages().join('; '))
+            return
+          }
+
+          const result = response.getData().result
+          console.info('Stages:', Object.values(result).map(s => `${s.ID}: ${s.TITLE}`))
+        } catch (error) {
+          // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+          console.error(error)
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', getTaskStages)
+    </script>
     ```
 
 - PHP
@@ -168,7 +234,7 @@ HTTP Status: **200**
         },
         "6": {
          "ID": "6",
-         "TITLE": "I will do it this week",
+         "TITLE": "I Will Do It This Week",
          "SORT": "200",
          "COLOR": "47D1E2",
          "SYSTEM_TYPE": null,
@@ -184,15 +250,15 @@ HTTP Status: **200**
 
 ## Returned Data
 
-#|
+#| 
 || **Field**
 `type` | **Description** ||
 || **result** 
-`object` | An object containing data about the Kanban / My Planner stages, with stage identifiers as keys. ||
+`object` | An object containing data about the Kanban / My Plan stages, with stage IDs as keys. ||
 || **ID** 
 `integer` | Identifier of the stage. ||
 || **TITLE** 
-`string` | Name. ||
+`string` | Title. ||
 || **SORT** 
 `integer` | Sorting. ||
 || **COLOR** 
@@ -208,13 +274,13 @@ HTTP Status: **200**
 
 System parameter. Always has the value of an empty array. ||
 || **TO_UPDATE** 
-`array` | Array of items to update.
+`array` | Array of elements to update.
 
 System parameter. Always has the value of an empty array. ||
 || **TO_UPDATE_ACCESS** 
 `null` | Functions applied to the task when moving to this stage.
 
-System parameter. Always has the value `null`. ||
+System parameter. Always has the value of `null`. ||
 |#
 
 ## Error Handling
@@ -232,8 +298,8 @@ HTTP Status: **400**
 
 ### Possible Error Codes
 
-#|
-|| **Code** | **Value** ||
+#| 
+|| **Code** | **Description** ||
 || `ACCESS_DENIED` | You cannot view stages in this group. ||
 |#
 

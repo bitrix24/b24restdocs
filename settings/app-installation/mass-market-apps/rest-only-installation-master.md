@@ -1,4 +1,4 @@
-# Setup Wizard for REST-only Applications
+# Configuration wizard for REST-only applications
 
 {% note tip "" %}
 
@@ -6,46 +6,48 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-The setup wizard for REST-only applications is a built-in form in Bitrix24 for applications without an interface. When developing, you only need to describe the fields in JSON format. The setup wizard will automatically generate a step-by-step form, collect the data, and send it to the specified handler.
+The REST-only application configuration wizard is a built-in Bitrix24 form for applications without a user interface. During development, it is sufficient to describe the fields in JSON format. The configuration wizard will automatically generate a step-by-step form, collect the data, and send it to the specified handler.
 
-Use the setup wizard:
+Use the configuration wizard:
 
-- if the application does not have its own interface,
-- for simple settings: text input in a field, selecting an option from a list,
-- for an interface in the style of Bitrix24, without a separate UI,
-- if the data from the callback handler for the installation event is insufficient.
+- if the application has no interface of its own,
+- simple configurations are required: text input in a line, selecting an option from a list,
+- a Bitrix24-style interface is needed without a separate UI,
+- data from the installation event callback handler is insufficient.
 
-## How the Wizard Works
+## How the wizard works
 
-Specify the `URL_SETTINGS` parameter when registering the application in the developer's area. If the parameter is filled, after installing the application, the user will see a slider with the setup form.
+Specify the `URL_SETTINGS` parameter in the **Application settings** field when registering an application in the developer console, in the REST-only section. If the parameter is filled, the user will see a slider with a configuration form after installing the application.
 
-### Form Lifecycle
+If the `URL_SETTINGS` parameter is not filled, the configuration form will not open and Bitrix24 will not send a request to retrieve the form configuration.
+
+### Form lifecycle
 
 1. The user installs the application.
-2. Bitrix24 makes a POST request to `URL_SETTINGS`.
-3. The application returns the JSON configuration of the form.
-4. Bitrix24 displays the form in the slider.
-5. When `updateForm: true`, Bitrix24 requests `URL_SETTINGS` again.
-6. The user clicks "Save," and the data is sent to `form.action`.
-7. The application returns `success` or a list of errors. On `success`, Bitrix24 closes the slider and, if necessary, redirects to `form.redirect`.
+2. Bitrix24 makes a POST request to `URL_SETTINGS` with the `event: OnAppSettingsInstall` parameter.
+3. The application returns a JSON form configuration.
+4. Bitrix24 displays the form in a slider.
+5. Upon `updateForm: true`, Bitrix24 requests `URL_SETTINGS` again with the `event: OnAppSettingsChange` parameter.
+6. The user clicks "Save", and the data is sent to `form.action`.
+7. The application returns `success` or a list of errors. Upon `success`, Bitrix24 closes the slider and, if necessary, performs a redirect to `form.redirect`.
 
 ![form lifecycle](./_images/form_cycle.png)
 
-## Structure of JSON Configuration
+## JSON configuration structure
 
 The configuration consists of three blocks:
 
-- header,
+- a header,
 - steps with fields,
-- save parameters.
+- saving parameters.
 
 ### Header
 
-The header sets the title of the settings page and the version of the builder.
+The header defines the name of the settings page and the builder version.
 
 ```json
 {
-  "title": "Wizard Title",
+  "title": "Master Name",
   "version": "1"
 }
 ```
@@ -56,9 +58,9 @@ The header sets the title of the settings page and the version of the builder.
 || **Name**
 `type` | **Description** ||
 || **title*** 
-`string` | Title in the interface ||
+`string` | Interface heading ||
 || **version*** 
-`string` | Version of the builder, always `"1"` ||
+`string` | Builder version, always `"1"` ||
 |#
 
 ### Steps
@@ -69,14 +71,14 @@ The header sets the title of the settings page and the version of the builder.
 {
   "id": "step1",
   "title": "API Key",
-  "description": "Enter the access key",
+  "description": "Enter access key",
   "fields": [
     {
       "id": "api-key",
       "name": "api-key",
       "type": "input",
       "label": "API Key",
-      "placeholder": "Enter API Key"
+      "placeholder": "Enter API key"
     }
   ]
 }
@@ -88,18 +90,18 @@ The header sets the title of the settings page and the version of the builder.
 || **Name**
 `type` | **Description** ||
 || **id*** 
-`string` | Unique identifier of the step ||
+`string` | Unique step identifier ||
 || **title*** 
-`string` | Title of the step ||
+`string` | Step heading ||
 || **description** 
 `string` | Explanatory text ||
 || **help** 
-`boolean` | Flag to display the help icon ||
+`boolean` | Help icon display flag ||
 || **fields*** 
 `array` | Array of fields, [detailed description](#fields) ||
 |#
 
-#### Fields Parameter {#fields}
+#### Parameter fields {#fields}
 
 {% include [Note on parameters](../../../_includes/required.md) %}
 
@@ -107,30 +109,31 @@ The header sets the title of the settings page and the version of the builder.
 || **Name**
 `type` | **Description** ||
 || **id*** 
-`string` | Identifier of the field ||
+`string` | Field identifier ||
 || **name*** 
-`string` | Name of the field, key in the data ||
+`string` | Field name, key in data ||
 || **type*** 
-`string` | Type of the field: 
-- `input` — data input field,
-- `dropdown-list` — list ||
+`string` | Field type: 
+- `input` — data input string,
+- dropdown-list — list ||
 || **label** 
 `string` | Label above the field ||
 || **placeholder** 
-`string` | Hint inside the field ||
+`string` | Placeholder inside the field ||
 || **value** 
 `string` | Default value ||
 || **items** 
-`array` | List of options for `dropdown-list` ||
+`array` | List of options for dropdown-list ||
 || **updateForm** 
-`boolean` | Flag to update the form when the field changes ||
+`boolean` | Form refresh flag on field change ||
 |#
 
-If the `updateForm` parameter is set to `true`, Bitrix24 will request `URL_SETTINGS` again and pass the current field values in the request. This allows updating the form while the user is filling it out. For example, you can add a new field with a list of regions based on the selected value in the country field.
+If the `updateForm` parameter is equal to `true`, Bitrix24 will request again `URL_SETTINGS` and pass the current field values in the request.
+This allows the form to be updated while the user is filling it out. For example, you can add a new field with a list of regions depending on the value selected in the country field.
 
-### Save Parameters
+### Saving parameters
 
-The `form` block describes where to send the data and which buttons to display.
+The `form` block describes where to send the data and which buttons to show.
 
 ```json
 "form": {
@@ -149,20 +152,20 @@ The `form` block describes where to send the data and which buttons to display.
 || **Name**
 `type` | **Description** ||
 || **id*** 
-`string` | Identifier of the form ||
+`string` | Form identifier ||
 || **action*** 
-`string` | URL of the save handler ||
+`string` | Save handler URL ||
 || **clientId*** 
-`string` | Identifier of the application client_id ||
+`string` | Application identifier client_id ||
 || **redirect** 
-`string` | Path after successful saving ||
+`string` | Path after successful save ||
 || **saveCaption** 
-`string` | Label of the "Save" button ||
+`string` | "Save" button label ||
 || **cancelCaption** 
-`string` | Label of the "Cancel" button ||
+`string` | "Cancel" button label ||
 |#
 
-## Example Configuration
+## Configuration example
 
 ```json
 {
@@ -172,14 +175,14 @@ The `form` block describes where to send the data and which buttons to display.
     {
       "id": "step1",
       "title": "API Key",
-      "description": "Enter the key from your Storecove account",
+      "description": "Specify the key from your Storecove account",
       "fields": [
         {
           "id": "api-key",
           "name": "api-key",
           "type": "input",
           "label": "Storecove API Key",
-          "placeholder": "Enter API Key"
+          "placeholder": "Enter API key"
         }
       ]
     },
@@ -191,8 +194,9 @@ The `form` block describes where to send the data and which buttons to display.
           "id": "country",
           "name": "country",
           "type": "dropdown-list",
-          "label": "Your Country",
+          "label": "Your country",
           "items": [
+            { "value": "RU", "name": "United States" },
             { "value": "DE", "name": "Germany" },
             { "value": "US", "name": "United States" }
           ],
@@ -202,7 +206,7 @@ The `form` block describes where to send the data and which buttons to display.
     },
     {
       "id": "step3",
-      "title": "Company Details",
+      "title": "Company details",
       "fields": [
         {
           "id": "vat-id",
@@ -225,9 +229,48 @@ The `form` block describes where to send the data and which buttons to display.
 }
 ```
 
-## URL_SETTINGS Handler
+## URL_SETTINGS handler
 
-Bitrix24 sends a POST request to `URL_SETTINGS` to obtain the form configuration.
+Bitrix24 sends a POST request to `URL_SETTINGS` to retrieve the form configurations. The values `OnAppSettingsInstall`, `OnAppSettingsDisplay`, and `OnAppSettingsChange` are not separate events. These are values of the `event` parameter, which the application uses to determine the request scenario.
+
+In response to the request, the application must return a JSON form configuration. If the response is correct, Bitrix24 will display the form in the interface.
+
+### Call scenarios
+
+In the examples, the `auth` object is abbreviated.
+
+`OnAppSettingsInstall` is passed after the application is installed.
+
+```json
+{
+  "event": "OnAppSettingsInstall",
+  "auth": {}
+}
+```
+
+`OnAppSettingsDisplay` is passed when a user manually opens the application settings from the application card.
+
+```json
+{
+  "event": "OnAppSettingsDisplay",
+  "auth": {}
+}
+```
+
+`OnAppSettingsChange` is passed when a user changes the value of a field with the `updateForm: true` parameter. An object is additionally passed in the request `data` with the current field values.
+
+```json
+{
+  "event": "OnAppSettingsChange",
+  "data": {
+    "api-key": "cc1107f4-...",
+    "country": "DE"
+  },
+  "auth": {}
+}
+```
+
+Example of a POST request in PHP:
 
 ```php
 [
@@ -238,7 +281,7 @@ Bitrix24 sends a POST request to `URL_SETTINGS` to obtain the form configuration
     'expires' => 1768385511,
     'expires_in' => 3600,
     'scope' => 'crm,bizproc,appform,user_brief,placement,catalog',
-    'domain' => 'some-domain.bitrix24.com',
+    'domain' => 'some-domain.bitrix24.ru',
     'server_endpoint' => 'https://oauth.bitrix.info/rest/',
     'status' => 'F',
     'client_endpoint' => 'https://some-domain.bitrix24.com/rest/',
@@ -255,19 +298,19 @@ Bitrix24 sends a POST request to `URL_SETTINGS` to obtain the form configuration
 || **Name**
 `type` | **Description** ||
 || **event** 
-`string` | Type of event:
-- `OnAppSettingsInstall` - when the application is installed,
-- `OnAppSettingsChange` - when a field with `updateForm: true` is changed,
-- `OnAppSettingsDisplay` - when the application settings are opened ||
+`string` | Request scenario:
+- `OnAppSettingsInstall` — after application installation
+- `OnAppSettingsDisplay` — when opening application settings
+- `OnAppSettingsChange` — when changing a field with `updateForm: true` ||
 || **data**
-`object` | Current values of the form fields ||
+`object` | Current form field values. Passed for `OnAppSettingsChange` ||
 || **auth**
 `object` | Authorization data ||
 |#
 
-## Post-Save Handler
+## Post-save handler
 
-When the user clicks "Save," Bitrix24 sends the form data to the address specified in the `form.action` field.
+When a user clicks "Save", Bitrix24 sends the form data to the address specified in the `form.action` field.
 
 ```php
 $_POST = [
@@ -281,7 +324,7 @@ $_POST = [
     'expires' => 1768385511,
     'expires_in' => 3600,
     'scope' => 'crm,bizproc,appform,user_brief,placement,catalog',
-    'domain' => 'some-domain.bitrix24.com',
+    'domain' => 'some-domain.bitrix24.ru',
     'server_endpoint' => 'https://oauth.bitrix.info/rest/',
     'status' => 'F',
     'client_endpoint' => 'https://some-domain.bitrix24.com/rest/',
@@ -303,9 +346,9 @@ $apiKey = $data['api-key'] ?? null;
 $country = $data['country'] ?? null;
 ```
 
-### Successful Response
+### Successful response
 
-A successful response informs Bitrix24 that the data has been saved. After this, the slider closes. If the `form.redirect` parameter is set, a redirect will occur to the address specified in the parameter.
+A successful response informs Bitrix24 that the data has been retained. After this, the slider closes. If the `form.redirect` parameter is set, a redirect to the address in the parameter will be performed.
 
 ```php
 header("HTTP/1.1 200 OK");
@@ -313,9 +356,9 @@ header("Content-Type: application/json");
 echo json_encode(['status' => 'success']);
 ```
 
-### Error Response
+### Error response
 
-If the data is incorrect, return HTTP 400 and a list of errors. The `field` should match the value of `name` in the configuration.
+If the data is incorrect, return HTTP 400 and a list of errors. The `field` field must match the `name` value in the configuration.
 
 ```php
 header("HTTP/1.1 400 Bad Request");
@@ -331,7 +374,7 @@ echo json_encode([
 
 Bitrix24 displays errors under the corresponding fields. You can return multiple errors for a single field.
 
-#### Example Handler for Returning Status
+#### Example handler for returning a status
 
 ```php
 <?php
@@ -367,16 +410,16 @@ exit();
 ?>
 ```
 
-## Deprecated Method for Displaying the Form
+## Deprecated form display method
 
-The `appform.show` method is an alternative way to open the form via the push event `showForm`.
+The `appform.show` method is an alternative way to open the form via the `showForm` push event.
 
 Features:
 
-- requires an active user session in Bitrix24, otherwise the event is lost,
-- needs `access_token` to call on behalf of the user.
+- an active user session in Bitrix24 is required, otherwise the event is lost,
+- `access_token` is required to call on behalf of the user.
 
-### Example of Calling appform.show via PHP SDK
+### Example of calling appform.show via PHP SDK
 
 ```php
 use Bitrix24\SDK\Core\Credentials\ApplicationProfile;
@@ -402,7 +445,7 @@ $serviceBuilder = ServiceBuilderFactory::createServiceBuilderFromPlacementReques
 );
 
 $config = [
-    'title' => 'Push-initiated Form',
+    'title' => 'Push-initiated form',
     'version' => '1',
     'steps' => [
         [
@@ -430,4 +473,4 @@ try {
 }
 ```
 
-The primary method is the automatic request to `URL_SETTINGS` after the application is installed. The `appform.show` method is deprecated.
+The primary method is an automatic request to `URL_SETTINGS` after the application is installed. The `appform.show` method is deprecated.

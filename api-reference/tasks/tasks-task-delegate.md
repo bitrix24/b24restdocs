@@ -8,15 +8,15 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`task`](../scopes/permissions.md)
 >
-> Who can execute the method: any user with the right to delegate a task
+> Who can execute the method: any user with task delegation rights
 
 The method `tasks.task.delegate` changes the responsible person and delegates the task to another user.
 
-You can check the right to delegate a task using the [check access to the task](./tasks-task-get-access.md) method.
+You can check the right to delegate a task using the [check access to task](./tasks-task-get-access.md) method.
 
 ## Method Parameters
 
-{% include [Footnote about parameters](../../_includes/required.md) %}
+{% include [Note on parameters](../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -24,16 +24,16 @@ You can check the right to delegate a task using the [check access to the task](
 || **taskId***
 [`integer`](../data-types.md) | Task identifier.
 
-The task identifier can be obtained when [creating a new task](./tasks-task-add.md) or by using the [getting the task list](./tasks-task-list.md) method ||
+The task identifier can be obtained when [creating a new task](./tasks-task-add.md) or using the [get task list](./tasks-task-list.md) method. ||
 || **userId***
 [`integer`](../data-types.md) | Identifier of the user to whom the task is delegated.
 
-The user identifier can be obtained using the [getting the user list](../user/user-get.md) method ||
+The user identifier can be obtained using the [get user list](../user/user-get.md) method. ||
 |#
 
 ## Code Examples
 
-{% include [Footnote about examples](../../_includes/examples.md) %}
+{% include [Note on examples](../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -57,28 +57,85 @@ The user identifier can be obtained using the [getting the user list](../user/us
     https://**put_your_bitrix24_address**/rest/tasks.task.delegate
     ```
 
-- JS
+- JS (TS)
 
-    ```javascript
-    try
-    {
-        const response = await $b24.callMethod(
-            'tasks.task.delegate',
-            {
-                taskId: 8017,
-                userId: 547,
-            }
-        );
-        
-        const result = response.getData().result;
-        console.log('Delegated task with ID:', result);
-        
-        processResult(result);
+    ```ts
+    // This snippet is an ES module: top-level await requires type="module" or a bundler.
+    // $b24 is an already-initialized SDK instance (see the SDK "Get started" guide).
+    import { Text } from '@bitrix24/b24jssdk'
+    import type { B24Frame } from '@bitrix24/b24jssdk'
+
+    declare const $b24: B24Frame
+
+    // Shape of the payload returned in result (match the "response handling" section of the page)
+    type TaskDelegateResult = {
+      task: {
+        id: string
+        title: string
+        responsibleId: string
+        status: string
+      }
     }
-    catch( error )
-    {
-        console.error('Error:', error);
+
+    try {
+      const response = await $b24.actions.v2.call.make<TaskDelegateResult>({
+        method: 'tasks.task.delegate',
+        params: {
+          taskId: 8017,
+          userId: 547,
+        },
+        requestId: Text.getUuidRfc4122()
+      })
+
+      // The payload is available only on a successful response
+      if (!response.isSuccess) {
+        console.error(response.getErrorMessages().join('; '))
+      } else {
+        const result = response.getData()!.result
+        console.info('Delegated task ID:', result.task.id, 'New responsible:', result.task.responsibleId)
+      }
+    } catch (error) {
+      // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+      console.error(error)
     }
+    ```
+
+- JS (UMD)
+
+    ```html
+    <!-- Load the SDK (UMD build); it is exposed as the global B24Js -->
+    <script src="https://unpkg.com/@bitrix24/b24jssdk@1/dist/umd/index.min.js"></script>
+    <script>
+      async function delegateTask() {
+        try {
+          // Initialize the SDK inside a Bitrix24 frame
+          const $b24 = await B24Js.initializeB24Frame()
+
+          const response = await $b24.actions.v2.call.make({
+            method: 'tasks.task.delegate',
+            params: {
+              taskId: 8017,
+              userId: 547,
+            },
+            requestId: B24Js.Text.getUuidRfc4122()
+          })
+
+          // The payload is available only on a successful response
+          if (!response.isSuccess) {
+            console.error(response.getErrorMessages().join('; '))
+            return
+          }
+
+          const result = response.getData().result
+          console.info('Delegated task ID:', result.task.id, 'New responsible:', result.task.responsibleId)
+        } catch (error) {
+          // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+          console.error(error)
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', delegateTask)
+    </script>
     ```
 
 - PHP
@@ -299,14 +356,14 @@ HTTP Status: **200**
             },
             "creator": {
                 "id": "503",
-                "name": "Amanda Taylor",
+                "name": "Maria Johnson",
                 "link": "/company/personal/user/503/",
                 "icon": "https://mysite.com/b17053/resize_cache/45749/c0120a8d7c10d63c83e32398d1ec4d9e/main/c89/c89c6b7301880958ea704b5a8470635c/4R5A1256.png",
                 "workPosition": "Administrator"
             },
             "responsible": {
                 "id": "547",
-                "name": "Nicole",
+                "name": "Maria",
                 "link": "/company/personal/user/547/",
                 "icon": "/bitrix/images/tasks/default_avatar.png",
                 "workPosition": "Tester"
@@ -314,7 +371,7 @@ HTTP Status: **200**
             "accomplicesData": {
                 "3": {
                     "id": "3",
-                    "name": "Kevin Wright",
+                    "name": "Andrew Karpov",
                     "link": "/company/personal/user/3/",
                     "icon": "https://mysite.com/b17053/resize_cache/249/c0120a8d7c10d63c83e32398d1ec4d9e/main/cd526b0644e7ff4d794ea41cb36bc423/odmin.png",
                     "workPosition": "System Administrator"
@@ -323,21 +380,21 @@ HTTP Status: **200**
             "auditorsData": {
                 "61": {
                     "id": "61",
-                    "name": "Brian Thompson",
+                    "name": "Ivan Petrov",
                     "link": "/company/personal/user/61/",
                     "icon": "https://mysite.com/b17053/resize_cache/8674/c0120a8d7c10d63c83e32398d1ec4d9e/main/7b5/7b52e4c2304ec0520dab3d4261e9ca1f/sp.jpg",
                     "workPosition": "Marketer"
                 },
                 "103": {
                     "id": "103",
-                    "name": "Emily Smith",
+                    "name": "Svetlana Ivanova",
                     "link": "/company/personal/user/103/",
                     "icon": "https://mysite.com/b17053/resize_cache/8644/c0120a8d7c10d63c83e32398d1ec4d9e/main/45f/45fff10d17d398a5583184c8350cd197/buh.jpg",
                     "workPosition": "Accountant"
                 },
                 "503": {
                     "id": "503",
-                    "name": "Amanda Taylor",
+                    "name": "Maria Johnson",
                     "link": "/company/personal/user/503/",
                     "icon": "https://mysite.com/b17053/resize_cache/45749/c0120a8d7c10d63c83e32398d1ec4d9e/main/c89/c89c6b7301880958ea704b5a8470635c/4R5A1256.png",
                     "workPosition": "Administrator"
@@ -528,9 +585,9 @@ HTTP Status: **400**
 #|
 || **Code** | **Description** | **Value** ||
 || `0` | wrong task id | The value of `taskId` is of an incorrect type ||
-|| `0` | Action on the task is not allowed | The user does not have permission to delegate the task ||
-|| `100` | Could not find value for parameter \{userId\} | The required parameter `userId` is not specified ||
-|| `100` | CTaskItem All parameters in the constructor must have real class type | The required parameter `taskId` is not specified ||
+|| `0` | Action on the task is not allowed | The user does not have rights to delegate the task ||
+|| `100` | Could not find value for parameter {userId} | The required parameter `userId` is missing ||
+|| `100` | CTaskItem All parameters in the constructor must have real class type | The required parameter `taskId` is missing ||
 |#
 
 {% include [system errors](../../_includes/system-errors.md) %}

@@ -1,4 +1,4 @@
-# Delete User Field user.userfield.delete
+# Delete custom field user.userfield.delete
 
 {% note tip "" %}
 
@@ -10,19 +10,19 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: administrator
 
-The method `user.userfield.delete` removes a user field.
+The `user.userfield.delete` method deletes a custom field.
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../_includes/required.md) %}
+{% include [Note on parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **id*** 
-[`integer`](../../data-types.md)| Identifier of the user field.
+[`integer`](../../data-types.md)| Custom field identifier.
 
-To obtain the identifiers of user fields, use the method [user.userfield.list](./user-userfield-list.md)
+To get custom field identifiers, use the [user.userfield.list](./user-userfield-list.md) method.
  ||
 |#
 
@@ -52,25 +52,76 @@ To obtain the identifiers of user fields, use the method [user.userfield.list](.
     https://**put_your_bitrix24_address**/rest/user.userfield.delete
     ```
 
-- JS
+- JS (TS)
 
-    ```js
-    try
-    {
-    	const response = await $b24.callMethod(
-    		'user.userfield.delete',
-    		{
-    			id: 123,
-    		}
-    	);
-    	
-    	const result = response.getData().result;
-    	console.info(result);
+    ```ts
+    // This snippet is an ES module: top-level await requires type="module" or a bundler.
+    // $b24 is an already-initialized SDK instance (see the SDK "Get started" guide).
+    import { Text } from '@bitrix24/b24jssdk'
+    import type { B24Frame } from '@bitrix24/b24jssdk'
+
+    declare const $b24: B24Frame
+
+    // Shape of the payload returned in result (match the "response handling" section of the page)
+    type DeleteUserFieldResult = boolean
+
+    try {
+      const response = await $b24.actions.v2.call.make<DeleteUserFieldResult>({
+        method: 'user.userfield.delete',
+        params: {
+          id: 123,
+        },
+        requestId: Text.getUuidRfc4122()
+      })
+
+      // The payload is available only on a successful response
+      if (!response.isSuccess) {
+        console.error(response.getErrorMessages().join('; '))
+      } else {
+        const result = response.getData()!.result
+        console.info('User field deleted:', result)
+      }
+    } catch (error) {
+      // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+      console.error(error)
     }
-    catch( error )
-    {
-    	console.error(error);
-    }
+    ```
+
+- JS (UMD)
+
+    ```html
+    <!-- Load the SDK (UMD build); it is exposed as the global B24Js -->
+    <script src="https://unpkg.com/@bitrix24/b24jssdk@1/dist/umd/index.min.js"></script>
+    <script>
+      async function deleteUserField() {
+        try {
+          // Initialize the SDK inside a Bitrix24 frame
+          const $b24 = await B24Js.initializeB24Frame()
+
+          const response = await $b24.actions.v2.call.make({
+            method: 'user.userfield.delete',
+            params: {
+              id: 123,
+            },
+            requestId: B24Js.Text.getUuidRfc4122()
+          })
+
+          // The payload is available only on a successful response
+          if (!response.isSuccess) {
+            console.error(response.getErrorMessages().join('; '))
+            return
+          }
+
+          const result = response.getData().result
+          console.info('User field deleted:', result)
+        } catch (error) {
+          // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+          console.error(error)
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', deleteUserField)
+    </script>
     ```
 
 - PHP
@@ -91,7 +142,7 @@ To obtain the identifiers of user fields, use the method [user.userfield.list](.
             ->getResult();
     
         echo 'Success: ' . print_r($result, true);
-        // Your logic for processing data
+        // The data processing logic you need
         processData($result);
     
     } catch (Throwable $e) {
@@ -135,6 +186,34 @@ To obtain the identifiers of user fields, use the method [user.userfield.list](.
     echo '</PRE>';
     ```
 
+- Python
+
+    Example
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    bitrix_id = 176
+
+    try:
+        bitrix_response = client.user.userfield.delete(
+            bitrix_id=bitrix_id,
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print("Bitrix SDK error", error.message, sep="\n")
+    except Exception as error:
+        print("Unexpected error", error, sep="\n")
+    ```
 {% endlist %}
 
 ## Response Handling
@@ -162,9 +241,9 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../data-types.md) | Result of deleting the user field ||
+[`boolean`](../../data-types.md) | Result of custom field deletion ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the execution time of the request ||
+[`time`](../../data-types.md#time) | Request execution time information ||
 |#
 
 ## Error Handling
@@ -178,19 +257,19 @@ HTTP status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
 || **Code** | **Description** | **Value** ||
-|| Empty string | Access denied. | A field with such `id` does not exist or access is denied ||
-|| Empty string | ID is not defined or invalid | `id` is not specified or is incorrect ||
+|| Empty string | Access denied. | Field with such `id` does not exist or access is denied ||
+|| Empty string | ID is not defined or invalid | Not specified or incorrect `id` entered ||
 |#
 
-{% include [system errors](../../../_includes/system-errors.md) %}
+{% include [System errors](../../../_includes/system-errors.md) %}
 
-## Continue Learning 
+## Continue Learning
 
 - [{#T}](./user-userfield-add.md)
 - [{#T}](./user-userfield-update.md)

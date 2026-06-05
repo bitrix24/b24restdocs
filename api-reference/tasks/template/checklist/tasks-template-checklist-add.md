@@ -8,55 +8,55 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`task`](../../../scopes/permissions.md)
 >
-> Who can execute the method: user with permissions to modify the task template
+> Who can execute the method: a user with permissions to modify the task template
 
-The method `tasks.template.checklist.add` adds a checklist item to a task template.
+The method `tasks.template.checklist.add` adds a checklist item to the task template.
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../../_includes/required.md) %}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
-|| **templateId***
+|| **templateId*** 
 [`integer`](../../../data-types.md) | Identifier of the task template.
 
-The task template identifier can be obtained when [creating a new template](../tasks-template-add.md) ||
-|| **fields***
-[`object`](../../../data-types.md) | Fields of the checklist item being created [(detailed description)](#fields) ||
+The identifier of the task template can be obtained when [creating a new template](../tasks-template-add.md) ||
+|| **fields*** 
+[`object`](../../../data-types.md) | Fields of the created checklist item [(detailed description)](#fields) ||
 |#
 
 ### Parameter fields {#fields}
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../../_includes/required.md) %}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
-|| **TITLE***
+|| **TITLE*** 
 [`string`](../../../data-types.md) | Text of the checklist item
 
 If `PARENT_ID` is passed with a value of `0`, then `TITLE` is the name of the checklist ||
-|| **PARENT_ID***
+|| **PARENT_ID*** 
 [`integer`](../../../data-types.md) | Identifier of the parent item.
 
 To create a new checklist, pass `PARENT_ID` with a value of `0`.
 
 If there is no checklist item in the template with the specified `PARENT_ID`, the system will create a new checklist ||
-|| **SORT_INDEX**
+|| **SORT_INDEX** 
 [`integer`](../../../data-types.md) | Sort index. The lower the value, the higher the item in the list or sublist ||
-|| **IS_COMPLETE**
+|| **IS_COMPLETE** 
 [`boolean`](../../../data-types.md) | Status of the item. Possible values:
 - `Y` — completed
 - `N` — not completed
 
 Default is `N` ||
-|| **IS_IMPORTANT**
+|| **IS_IMPORTANT** 
 [`boolean`](../../../data-types.md) | Mark indicating that the item is important. Possible values:
 - `Y` — important
-- `N` — regular ||
-|| **MEMBERS**
+- `N` — ordinary ||
+|| **MEMBERS** 
 [`object`](../../../data-types.md) | Object describing the participants of the checklist item. Key — user identifier, value — object with the participant type parameter `TYPE`. Possible participant type values:
 - `'TYPE': 'A'` — Participant
 - `'TYPE': 'U'` — Observer
@@ -66,7 +66,7 @@ The system will add the participants of the checklist item to the task in the sa
 
 ## Code Examples
 
-{% include [Note on examples](../../../../_includes/examples.md) %}
+{% include [Note on Examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -79,7 +79,7 @@ The system will add the participants of the checklist item to the task in the sa
     -d '{
       "templateId": 139,
       "fields": {
-        "TITLE": "4. Prepare Dashboard",
+        "TITLE": "4. Prepare the dashboard",
         "PARENT_ID": 23,
         "SORT_INDEX": 200,
         "IS_COMPLETE": "N",
@@ -103,7 +103,7 @@ The system will add the participants of the checklist item to the task in the sa
     -d '{
       "templateId": 139,
       "fields": {
-        "TITLE": "4. Prepare Dashboard",
+        "TITLE": "4. Prepare the dashboard",
         "PARENT_ID": 23,
         "SORT_INDEX": 200,
         "IS_COMPLETE": "N",
@@ -119,37 +119,118 @@ The system will add the participants of the checklist item to the task in the sa
     https://**put_your_bitrix24_address**/rest/tasks.template.checklist.add
     ```
 
-- JS
+- JS (TS)
 
-    ```js
-    try
-    {
-        const response = await $b24.callMethod(
-            'tasks.template.checklist.add',
-            {
-                templateId: 139,
-                fields: {
-                    TITLE: '4. Prepare Dashboard',
-                    PARENT_ID: 23,
-                    SORT_INDEX: 200,
-                    IS_COMPLETE: 'N',
-                    IS_IMPORTANT: 'Y',
-                    MEMBERS: {
-                        547: {
-                            TYPE: 'A'
-                        }
-                    }
-                }
-            }
-        );
+    ```ts
+    // This snippet is an ES module: top-level await requires type="module" or a bundler.
+    // $b24 is an already-initialized SDK instance (see the SDK "Get started" guide).
+    import { Text } from '@bitrix24/b24jssdk'
+    import type { B24Frame } from '@bitrix24/b24jssdk'
 
-        const result = response.getData().result;
-        console.log(result);
+    declare const $b24: B24Frame
+
+    // Shape of the payload returned in result (match the "response handling" section of the page)
+    type ChecklistItemResult = {
+      checkListItem: {
+        id: number
+        copiedId: number | null
+        userId: number
+        createdBy: number
+        parentId: number
+        title: string
+        sortIndex: number
+        displaySortIndex: string
+        isComplete: boolean
+        isImportant: boolean
+        completedCount: number
+        members: { type: string; id: number }[]
+        attachments: unknown[]
+        nodeId: number | null
+        templateId: number
+      }
     }
-    catch (error)
-    {
-        console.error(error);
+
+    try {
+      const response = await $b24.actions.v2.call.make<ChecklistItemResult>({
+        method: 'tasks.template.checklist.add',
+        params: {
+          templateId: 139,
+          fields: {
+            TITLE: '4. Prepare the dashboard',
+            PARENT_ID: 23,
+            SORT_INDEX: 200,
+            IS_COMPLETE: 'N',
+            IS_IMPORTANT: 'Y',
+            MEMBERS: {
+              547: {
+                TYPE: 'A',
+              },
+            },
+          },
+        },
+        requestId: Text.getUuidRfc4122()
+      })
+
+      // The payload is available only on a successful response
+      if (!response.isSuccess) {
+        console.error(response.getErrorMessages().join('; '))
+      } else {
+        const result = response.getData()!.result
+        console.info(result.checkListItem.id, result.checkListItem.title, result.checkListItem.isComplete)
+      }
+    } catch (error) {
+      // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+      console.error(error)
     }
+    ```
+
+- JS (UMD)
+
+    ```html
+    <!-- Load the SDK (UMD build); it is exposed as the global B24Js -->
+    <script src="https://unpkg.com/@bitrix24/b24jssdk@1/dist/umd/index.min.js"></script>
+    <script>
+      async function addChecklistItem() {
+        try {
+          // Initialize the SDK inside a Bitrix24 frame
+          const $b24 = await B24Js.initializeB24Frame()
+
+          const response = await $b24.actions.v2.call.make({
+            method: 'tasks.template.checklist.add',
+            params: {
+              templateId: 139,
+              fields: {
+                TITLE: '4. Prepare the dashboard',
+                PARENT_ID: 23,
+                SORT_INDEX: 200,
+                IS_COMPLETE: 'N',
+                IS_IMPORTANT: 'Y',
+                MEMBERS: {
+                  547: {
+                    TYPE: 'A',
+                  },
+                },
+              },
+            },
+            requestId: B24Js.Text.getUuidRfc4122()
+          })
+
+          // The payload is available only on a successful response
+          if (!response.isSuccess) {
+            console.error(response.getErrorMessages().join('; '))
+            return
+          }
+
+          const result = response.getData().result
+          console.info(result.checkListItem.id, result.checkListItem.title, result.checkListItem.isComplete)
+        } catch (error) {
+          // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+          console.error(error)
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', addChecklistItem)
+    </script>
     ```
 
 - PHP
@@ -163,7 +244,7 @@ The system will add the participants of the checklist item to the task in the sa
                 [
                     'templateId' => 139,
                     'fields' => [
-                        'TITLE' => '4. Prepare Dashboard',
+                        'TITLE' => '4. Prepare the dashboard',
                         'PARENT_ID' => 23,
                         'SORT_INDEX' => 200,
                         'IS_COMPLETE' => 'N',
@@ -195,7 +276,7 @@ The system will add the participants of the checklist item to the task in the sa
         {
             templateId: 139,
             fields: {
-                TITLE: '4. Prepare Dashboard',
+                TITLE: '4. Prepare the dashboard',
                 PARENT_ID: 23,
                 SORT_INDEX: 200,
                 IS_COMPLETE: 'N',
@@ -231,7 +312,7 @@ The system will add the participants of the checklist item to the task in the sa
         [
             'templateId' => 139,
             'fields' => [
-                'TITLE' => '4. Prepare Dashboard',
+                'TITLE' => '4. Prepare the dashboard',
                 'PARENT_ID' => 23,
                 'SORT_INDEX' => 200,
                 'IS_COMPLETE' => 'N',
@@ -263,7 +344,7 @@ HTTP Status: **200**
             "userId": 503,
             "createdBy": 503,
             "parentId": 23,
-            "title": "4. Prepare Dashboard",
+            "title": "4. Prepare the dashboard",
             "sortIndex": 200,
             "displaySortIndex": "",
             "isComplete": false,
@@ -295,7 +376,7 @@ HTTP Status: **200**
 
 ### Returned Data
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **result**
@@ -306,14 +387,14 @@ HTTP Status: **200**
 
 #### Object result {#result}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **checkListItem**
 [`object`](../../../data-types.md) | Created checklist item [(detailed description)](#checklistitem) ||
 |#
 
-{% include [Decoding the checkListItem object](./_includes/checklist-item-response.md) %}
+{% include [Decoding the checkListItem Object](./_includes/checklist-item-response.md) %}
 
 ## Error Handling
 
@@ -322,7 +403,7 @@ HTTP Status: **400**
 ```json
 {
     "error": "0",
-    "error_description": "Invalid value [] for field [PARENT_ID] in item [, New item]"
+    "error_description": "Invalid value [] for field [PARENT_ID] in element [, New item]"
 }
 ```
 
@@ -330,13 +411,13 @@ HTTP Status: **400**
 
 ### Possible Error Codes
 
-#|
+#| 
 || **Status** | **Code** | **Description** | **Value** ||
-|| `400` | `100` | Could not find value for parameter {templateId} | Required parameter `templateId` not provided ||
-|| `400` | `100` | Could not find value for parameter {fields} | Required parameter `fields` not provided ||
-|| `400` | `0` | Item name not specified | Required parameter `fields.TITLE` not provided or invalid value passed ||
-|| `400` | `0` | Invalid value [] for field [PARENT_ID] in item [, Item name] | Required parameter `fields.PARENT_ID` not provided or invalid value passed ||
-|| `400` | `0` | Adding item: action not available | User does not have permission to add checklist item in the task template ||
+|| `400` | `100` | Could not find value for parameter {templateId} | Required parameter `templateId` is missing ||
+|| `400` | `100` | Could not find value for parameter {fields} | Required parameter `fields` is missing ||
+|| `400` | `0` | Item name is not specified | Required parameter `fields.TITLE` is missing or has an invalid value ||
+|| `400` | `0` | Invalid value [] for field [PARENT_ID] in element [, Item name] | Required parameter `fields.PARENT_ID` is missing or has an invalid value ||
+|| `400` | `0` | Adding item: action is not available | User does not have permission to add a checklist item to the task template ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

@@ -14,15 +14,15 @@ The method `tasks.task.add` adds a new task.
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../_includes/required.md) %}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
-|| **fields***
+|| **fields*** 
 [`object`](../data-types.md) | Values of [task fields](./fields.md). Required fields for creating a task:
 - `TITLE` — task title
-- `RESPONSIBLE_ID` — responsible person's identifier
+- `RESPONSIBLE_ID` — responsible person's ID
 
 {% note warning "" %}
 
@@ -47,14 +47,14 @@ SE_PARAMETER: [
     }
 ]
 ```
-||
+|| 
 |#
 
 ## Code Examples
 
-{% include [Note on examples](../../_includes/examples.md) %}
+{% include [Note on Examples](../../_includes/examples.md) %}
 
-Let's add a task with files and CRM entity bindings. To attach a file to the task, you need to add the character `n` before the file identifier.
+Let's add a task with files and CRM entity bindings. To attach a file to the task, you need to add the character `n` before the file ID.
 
 {% list tabs %}
 
@@ -78,42 +78,97 @@ Let's add a task with files and CRM entity bindings. To attach a file to the tas
     https://**put_your_bitrix24_address**/rest/tasks.task.add
     ```
 
-- JS
+- JS (TS)
 
-    ```js
-    try
-    {
-        const response = await $b24.callMethod(
-            "tasks.task.add",
-            {
-                fields: {               
-                    TITLE: "Task Title", // Task title
-                    DEADLINE: "2025-12-31T23:59:59", // Deadline
-                    CREATED_BY: 456, // Creator's identifier
-                    RESPONSIBLE_ID: 123, // Responsible person's identifier
-                    // Example of passing multiple values in the UF_CRM_TASK field
-                    UF_CRM_TASK: [
-                        "L_4", // Binding to lead
-                        "C_7", // Binding to contact
-                        "CO_5", // Binding to company
-                        "D_10" // Binding to deal
-                    ],
-                    // Example of passing multiple files in the UF_TASK_WEBDAV_FILES field
-                    UF_TASK_WEBDAV_FILES: [
-                        "n12345", // Identifier of the first disk file
-                        "n67890" // Identifier of the second disk file
-                    ]
-                }
-            }
-        );
-        
-        const result = response.getData().result;
-        console.info("Task successfully created with ID " + result.task.id);
+    ```ts
+    // This snippet is an ES module: top-level await requires type="module" or a bundler.
+    // $b24 is an already-initialized SDK instance (see the SDK "Get started" guide).
+    import { Text } from '@bitrix24/b24jssdk'
+    import type { B24Frame } from '@bitrix24/b24jssdk'
+
+    declare const $b24: B24Frame
+
+    // Minimal shape of result.task; the API returns the full task object
+    // Shape of the payload returned in result (match the "response handling" section of the page)
+    type TaskAddResult = {
+      task: { id: string }
     }
-    catch( error )
-    {
-        console.error(error);
+
+    try {
+      const response = await $b24.actions.v2.call.make<TaskAddResult>({
+        method: 'tasks.task.add',
+        params: {
+          fields: {
+            TITLE: 'Task title', // Task title (required)
+            DEADLINE: '2025-12-31T23:59:59', // Deadline, ISO 8601
+            CREATED_BY: 456, // Creator ID
+            RESPONSIBLE_ID: 123, // Responsible person ID (required)
+            // Bind the task to several CRM entities via UF_CRM_TASK
+            UF_CRM_TASK: ['L_4', 'C_7', 'CO_5', 'D_10'], // Lead 4 / Contact 7 / Company 5 / Deal 10
+            // Attach several Drive files via UF_TASK_WEBDAV_FILES (prefix IDs with "n")
+            UF_TASK_WEBDAV_FILES: ['n12345', 'n67890']
+          }
+        },
+        requestId: Text.getUuidRfc4122() // optional unique tracking id for this request
+      })
+
+      // The payload is available only on a successful response
+      if (!response.isSuccess) {
+        console.error(response.getErrorMessages().join('; '))
+      } else {
+        const result = response.getData()!.result
+        console.info(`Task created with ID ${result.task.id}`)
+      }
+    } catch (error) {
+      // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+      console.error(error)
     }
+    ```
+
+- JS (UMD)
+
+    ```html
+    <!-- Load the SDK (UMD build); it is exposed as the global B24Js -->
+    <script src="https://unpkg.com/@bitrix24/b24jssdk@1/dist/umd/index.min.js"></script>
+    <script>
+      async function createTask() {
+        try {
+          // Initialize the SDK inside a Bitrix24 frame
+          const $b24 = await B24Js.initializeB24Frame()
+
+          const response = await $b24.actions.v2.call.make({
+            method: 'tasks.task.add',
+            params: {
+              fields: {
+                TITLE: 'Task title', // Task title (required)
+                DEADLINE: '2025-12-31T23:59:59', // Deadline, ISO 8601
+                CREATED_BY: 456, // Creator ID
+                RESPONSIBLE_ID: 123, // Responsible person ID (required)
+                // Bind the task to several CRM entities via UF_CRM_TASK
+                UF_CRM_TASK: ['L_4', 'C_7', 'CO_5', 'D_10'], // Lead 4 / Contact 7 / Company 5 / Deal 10
+                // Attach several Drive files via UF_TASK_WEBDAV_FILES (prefix IDs with "n")
+                UF_TASK_WEBDAV_FILES: ['n12345', 'n67890']
+              }
+            },
+            requestId: B24Js.Text.getUuidRfc4122() // optional unique tracking id for this request
+          })
+
+          // The payload is available only on a successful response
+          if (!response.isSuccess) {
+            console.error(response.getErrorMessages().join('; '))
+            return
+          }
+
+          const result = response.getData().result
+          console.info(`Task created with ID ${result.task.id}`)
+        } catch (error) {
+          // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+          console.error(error)
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', createTask)
+    </script>
     ```
 
 - PHP
@@ -165,8 +220,8 @@ Let's add a task with files and CRM entity bindings. To attach a file to the tas
             fields: {               
                 TITLE: "Task Title", // Task title
                 DEADLINE: "2025-12-31T23:59:59", // Deadline
-                CREATED_BY: 456, // Creator's identifier
-                RESPONSIBLE_ID: 123, // Responsible person's identifier
+                CREATED_BY: 456, // Creator ID
+                RESPONSIBLE_ID: 123, // Responsible person ID
                 // Example of passing multiple values in the UF_CRM_TASK field
                 UF_CRM_TASK: [
                     "L_4", // Binding to lead
@@ -176,8 +231,8 @@ Let's add a task with files and CRM entity bindings. To attach a file to the tas
                 ],
                 // Example of passing multiple files in the UF_TASK_WEBDAV_FILES field
                 UF_TASK_WEBDAV_FILES: [
-                    "n12345", // Identifier of the first disk file
-                    "n67890" // Identifier of the second disk file
+                    "n12345", // ID of the first Drive file
+                    "n67890" // ID of the second Drive file
                 ]
             }
         },
@@ -202,8 +257,8 @@ Let's add a task with files and CRM entity bindings. To attach a file to the tas
             'fields' => [
                 'TITLE' => 'Task Title', // Task title
                 'DEADLINE' => '2025-12-31T23:59:59', // Deadline
-                'CREATED_BY' => 456, // Creator's identifier
-                'RESPONSIBLE_ID' => 123, // Responsible person's identifier
+                'CREATED_BY' => 456, // Creator ID
+                'RESPONSIBLE_ID' => 123, // Responsible person ID
                 // Example of passing multiple values in the UF_CRM_TASK field
                 'UF_CRM_TASK' => [
                     'L_4', // Binding to lead
@@ -213,8 +268,8 @@ Let's add a task with files and CRM entity bindings. To attach a file to the tas
                 ],
                 // Example of passing multiple files in the UF_TASK_WEBDAV_FILES field
                 'UF_TASK_WEBDAV_FILES' => [
-                    'n12345', // Identifier of the first disk file
-                    'n67890' // Identifier of the second disk file
+                    'n12345', // ID of the first Drive file
+                    'n67890' // ID of the second Drive file
                 ]
             ]
         }
@@ -380,7 +435,7 @@ HTTP Status: **200**
 ```
 ### Returned Data
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **result**
@@ -398,28 +453,28 @@ HTTP Status: **400**
 ```json
 {
     "error": "ERROR_CORE",
-    "error_description": "Task title not specified\u003Cbr\u003E"
+    "error_description": "Task title is not specified\u003Cbr\u003E"
 }
 ```
 
-{% include notitle [error handling](../../_includes/error-info.md) %}
+{% include notitle [Error Handling](../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
-#|
+#| 
 || **Code** | **Description** | **Value** ||
-|| `100` | Could not find value for parameter {fields} (internal error) | Parameter `fields` not passed or passed empty ||
-|| `ERROR_CORE` | User specified in the "Responsible" field not found | An identifier of a non-existent user is specified in the `RESPONSIBLE_ID` field ||
+|| `100` | Could not find value for parameter {fields} (internal error) | Parameter `fields` is not passed or is empty ||
+|| `ERROR_CORE` | User specified in the "Responsible" field not found | The ID specified in `RESPONSIBLE_ID` does not correspond to an existing user ||
 || `ERROR_CORE` | Responsible person not specified | The `RESPONSIBLE_ID` field is not filled ||
 || `ERROR_CORE` | Task title not specified | The `TITLE` field is not filled ||
-|| `ERROR_CORE` | No value entered for required field {field_name} | Required custom field with the specified name is not filled ||
-|| `ERROR_CORE` | Invalid status | An incorrect value is specified in the `STATUS` field ||
-|| `ERROR_CORE` | Task specified in the "Parent Task" field not found | An identifier of a non-existent task is specified in the `PARENT_ID` field ||
-|| `ERROR_CORE` | In scheduling deadlines, the end date is earlier than the start date | The date and time in the `END_DATE_PLAN` field is earlier than in `START_DATE_PLAN` ||
-|| `ERROR_CORE` | In scheduling deadlines, the task duration is too long | The value in the `END_DATE_PLAN` field specifies a date that is too far in the future ||
+|| `ERROR_CORE` | Required field {field_name} value not entered | A required custom field with the specified name is not filled ||
+|| `ERROR_CORE` | Incorrect status | An incorrect value is specified in the `STATUS` field ||
+|| `ERROR_CORE` | Task specified in the "Parent Task" field not found | The ID specified in `PARENT_ID` does not correspond to an existing task ||
+|| `ERROR_CORE` | The end date in scheduling is earlier than the start date | The date and time in the `END_DATE_PLAN` field is earlier than in `START_DATE_PLAN` ||
+|| `ERROR_CORE` | The specified task duration is too long | The date in the `END_DATE_PLAN` field is too far in the future ||
 |#
 
-{% include [system errors](../../_includes/system-errors.md) %}
+{% include [System Errors](../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

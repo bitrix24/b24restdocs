@@ -6,7 +6,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-This section describes the methods for subscribing to user events from the messenger and retrieving them in polling mode. Use these methods if the integration needs to read the stream of events on behalf of a user or application.
+The methods subscribe the user to messenger events and return them in polling mode. Use them if the integration needs to read the stream of events on behalf of the user or application.
 
 > Quick navigation: [all methods](#all-methods)
 
@@ -21,7 +21,7 @@ This section describes the methods for subscribing to user events from the messe
 
 Polling is a mode of receiving events where the application periodically requests accumulated events from the server. The server does not know the application's address and does not send anything on its own—it only accumulates a queue and delivers it upon request.
 
-This distinguishes polling from webhook: in webhook mode, Bitrix24 calls the application's URL for each new event. Polling is convenient if the application does not have a permanent HTTP server or a public URL.
+This distinguishes polling from webhook: in webhook mode, Bitrix24 calls the application's URL with each new event. Polling is convenient if the application does not have a permanent HTTP server or public URL.
 
 {% endnote %}
 
@@ -29,7 +29,7 @@ This distinguishes polling from webhook: in webhook mode, Bitrix24 calls the app
 
 > Scope: [`im`](../../../../scopes/permissions.md)
 >
-> Who can execute the methods: a user or an application with access to the messenger
+> Who can execute methods: user or application with access to the messenger
 
 #| 
 || **Method** | **Description** ||

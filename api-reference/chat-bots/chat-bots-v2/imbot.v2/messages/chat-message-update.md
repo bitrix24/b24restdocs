@@ -16,7 +16,7 @@ Messages sent with the parameter `system: true` cannot be updated—they have `a
 
 ## Method Parameters
 
-{% include [Footnote on parameters](../../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -50,7 +50,7 @@ Pass the same botToken that was specified during the chat bot registration ||
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -162,11 +162,13 @@ Pass the same botToken that was specified during the chat bot registration ||
 
 ## Response Handling
 
-HTTP Code: **200**
+HTTP Status: **200**
 
 ```json
 {
-    "result": true,
+    "result": {
+        "result": true
+    },
     "time": {
         "start": 1728626400.123,
         "finish": 1728626400.234,
@@ -184,9 +186,11 @@ HTTP Code: **200**
 || **Name**
 `Type` | **Description** ||
 || **result**
+[`object`](../../../../data-types.md) | Result of the operation ||
+|| **result.result**
 [`boolean`](../../../../data-types.md) | `true` if the update was successful ||
 || **time**
-[`time`](../../../../data-types.md#time) | Information about the execution time of the request ||
+[`time`](../../../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -206,17 +210,17 @@ HTTP Status: **400**, **403**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `BOT_TOKEN_NOT_SPECIFIED` | Bot token is not specified | `botToken` is not specified. Required for webhook authorization ||
-|| `BOT_ID_REQUIRED` | Bot ID is required | `botId` is not specified ||
+|| `BOT_TOKEN_NOT_SPECIFIED` | Bot token is not specified | Bot token not specified. Required for webhook authorization ||
+|| `BOT_ID_REQUIRED` | Bot ID is required | Bot ID not specified ||
 || `BOT_NOT_FOUND` | Bot not found | Bot not found ||
-|| `BOT_OWNERSHIP_ERROR` | Bot is registered by another application | Bot is registered by another application ||
-|| `ACCESS_DENIED` | Access denied | The message does not belong to the bot or does not exist. The bot can only update its own messages ||
+|| `BOT_OWNERSHIP_ERROR` | Bot is registered by another application | Bot registered by another application ||
+|| `ACCESS_DENIED` | Access denied | Message does not belong to the bot or does not exist. The bot can only update its own messages ||
 |#
 
 {% include [System Errors](../../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
-- [API Change Log imbot.v2](../../change-log.md)
+- [API Change Log for imbot.v2](../../change-log.md)
 - [{#T}](./chat-message-send.md)
 - [{#T}](./chat-message-delete.md)

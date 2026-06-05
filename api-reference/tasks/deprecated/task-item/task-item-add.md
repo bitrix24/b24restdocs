@@ -14,7 +14,7 @@ This method creates a new task and returns the identifier of the added task. The
 
 {% note warning "DEPRECATED" %}
 
-Development of this method has been halted. Please use [tasks.task.add](../../tasks-task-add.md).
+Development of this method has been halted. Use [tasks.task.add](../../tasks-task-add.md).
 
 {% endnote %}
 
@@ -29,7 +29,7 @@ Development of this method has been halted. Please use [tasks.task.add](../../ta
 
 ## Code Examples
 
-{% include [Example Note](../../../../_includes/examples.md) %}
+{% include [Examples Note](../../../../_includes/examples.md) %}
 
 Creating a task.
 
@@ -41,7 +41,7 @@ Creating a task.
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"TITLE":"created via REST API at **current_datetime_here**","RESPONSIBLE_ID":1,"DEADLINE":"2013-05-13T16:06:06+02:00"}}' \
+    -d '{"fields":{"TITLE":"created via REST API at **current_datetime_here**","RESPONSIBLE_ID":1,"DEADLINE":"2013-05-13T16:06:06+03:00"}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/task.item.add
     ```
 
@@ -51,29 +51,89 @@ Creating a task.
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"TITLE":"created via REST API at **current_datetime_here**","RESPONSIBLE_ID":1,"DEADLINE":"2013-05-13T16:06:06+02:00"},"auth":"**put_access_token_here**"}' \
+    -d '{"fields":{"TITLE":"created via REST API at **current_datetime_here**","RESPONSIBLE_ID":1,"DEADLINE":"2013-05-13T16:06:06+03:00"},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/task.item.add
     ```
 
-- JS
+- JS (TS)
 
-    ```js
-    try
-    {
-    	const dt = new Date();
-    	const response = await $b24.callMethod(
-    		'task.item.add',
-    		[{TITLE: 'created via REST API at ' + dt.toLocaleString(), RESPONSIBLE_ID: 1, DEADLINE: '2013-05-13T16:06:06+02:00'}]
-    	);
-    	
-    	const result = response.getData().result;
-    	console.info(result);
-    	console.log(result);
+    ```ts
+    // This snippet is an ES module: top-level await requires type="module" or a bundler.
+    // $b24 is an already-initialized SDK instance (see the SDK "Get started" guide).
+    import { Text } from '@bitrix24/b24jssdk'
+    import type { B24Frame } from '@bitrix24/b24jssdk'
+
+    declare const $b24: B24Frame
+
+    // task.item.add returns the ID of the newly created task
+    // Shape of the payload returned in result (match the "response handling" section of the page)
+    type TaskItemAddResult = number
+
+    try {
+      const response = await $b24.actions.v2.call.make<TaskItemAddResult>({
+        method: 'task.item.add',
+        params: {
+          fields: {
+            TITLE: 'created via REST API at ' + new Date().toLocaleString(),
+            RESPONSIBLE_ID: 1,
+            DEADLINE: '2013-05-13T16:06:06+03:00',
+          },
+        },
+        requestId: Text.getUuidRfc4122()
+      })
+
+      // The payload is available only on a successful response
+      if (!response.isSuccess) {
+        console.error(response.getErrorMessages().join('; '))
+      } else {
+        const result = response.getData()!.result
+        console.info('New task ID:', result)
+      }
+    } catch (error) {
+      // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+      console.error(error)
     }
-    catch( error )
-    {
-    	console.error('Error:', error);
-    }
+    ```
+
+- JS (UMD)
+
+    ```html
+    <!-- Load the SDK (UMD build); it is exposed as the global B24Js -->
+    <script src="https://unpkg.com/@bitrix24/b24jssdk@1/dist/umd/index.min.js"></script>
+    <script>
+      async function addTaskItem() {
+        try {
+          // Initialize the SDK inside a Bitrix24 frame
+          const $b24 = await B24Js.initializeB24Frame()
+
+          const response = await $b24.actions.v2.call.make({
+            method: 'task.item.add',
+            params: {
+              fields: {
+                TITLE: 'created via REST API at ' + new Date().toLocaleString(),
+                RESPONSIBLE_ID: 1,
+                DEADLINE: '2013-05-13T16:06:06+03:00',
+              },
+            },
+            requestId: B24Js.Text.getUuidRfc4122()
+          })
+
+          // The payload is available only on a successful response
+          if (!response.isSuccess) {
+            console.error(response.getErrorMessages().join('; '))
+            return
+          }
+
+          const result = response.getData().result
+          console.info('New task ID:', result)
+        } catch (error) {
+          // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+          console.error(error)
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', addTaskItem)
+    </script>
     ```
 
 - PHP
@@ -89,7 +149,7 @@ Creating a task.
                     [
                         'TITLE'         => 'created via REST API at ' . $dt->format('Y-m-d H:i:s'),
                         'RESPONSIBLE_ID' => 1,
-                        'DEADLINE'      => '2013-05-13T16:06:06+02:00',
+                        'DEADLINE'      => '2013-05-13T16:06:06+03:00',
                     ],
                 ]
             );
@@ -99,7 +159,7 @@ Creating a task.
             ->getResult();
     
         echo 'Success: ' . print_r($result, true);
-        // Your required data processing logic
+        // Your logic for processing data
         processData($result);
     
     } catch (Throwable $e) {
@@ -114,7 +174,7 @@ Creating a task.
     var dt = new Date();
     BX24.callMethod(
         'task.item.add',
-        [{TITLE: 'created via REST API at ' + dt.toLocaleString(), RESPONSIBLE_ID: 1, DEADLINE: '2013-05-13T16:06:06+02:00'}],
+        [{TITLE: 'created via REST API at ' + dt.toLocaleString(), RESPONSIBLE_ID: 1, DEADLINE: '2013-05-13T16:06:06+03:00'}],
         function(result)
         {
             console.info(result.data());
@@ -137,7 +197,7 @@ Creating a task.
             'fields' => [
                 'TITLE' => $title,
                 'RESPONSIBLE_ID' => 1,
-                'DEADLINE' => '2013-05-13T16:06:06+02:00'
+                'DEADLINE' => '2013-05-13T16:06:06+03:00'
             ]
         ]
     );
@@ -173,24 +233,83 @@ Example of recording values with CRM.
     https://**put_your_bitrix24_address**/rest/task.item.update
     ```
 
-- JS
+- JS (TS)
 
-    ```js
-    try
-    {
-    	const response = await $b24.callMethod(
-    		'task.item.update',
-    		[1, {UF_CRM_TASK: ["L_4", "C_7", "CO_5", "D_10"]}]
-    	);
-    	
-    	const result = response.getData().result;
-    	console.info(result);
-    	console.log(result);
+    ```ts
+    // This snippet is an ES module: top-level await requires type="module" or a bundler.
+    // $b24 is an already-initialized SDK instance (see the SDK "Get started" guide).
+    import { Text } from '@bitrix24/b24jssdk'
+    import type { B24Frame } from '@bitrix24/b24jssdk'
+
+    declare const $b24: B24Frame
+
+    // task.item.update returns true on success
+    // Shape of the payload returned in result (match the "response handling" section of the page)
+    type TaskItemUpdateResult = boolean
+
+    try {
+      const response = await $b24.actions.v2.call.make<TaskItemUpdateResult>({
+        method: 'task.item.update',
+        params: {
+          TASKID: 1,
+          FIELDS: {
+            UF_CRM_TASK: ['L_4', 'C_7', 'CO_5', 'D_10'],
+          },
+        },
+        requestId: Text.getUuidRfc4122()
+      })
+
+      // The payload is available only on a successful response
+      if (!response.isSuccess) {
+        console.error(response.getErrorMessages().join('; '))
+      } else {
+        const result = response.getData()!.result
+        console.info('Task CRM fields updated:', result)
+      }
+    } catch (error) {
+      // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+      console.error(error)
     }
-    catch( error )
-    {
-    	console.error('Error:', error);
-    }
+    ```
+
+- JS (UMD)
+
+    ```html
+    <!-- Load the SDK (UMD build); it is exposed as the global B24Js -->
+    <script src="https://unpkg.com/@bitrix24/b24jssdk@1/dist/umd/index.min.js"></script>
+    <script>
+      async function updateTaskCrmFields() {
+        try {
+          // Initialize the SDK inside a Bitrix24 frame
+          const $b24 = await B24Js.initializeB24Frame()
+
+          const response = await $b24.actions.v2.call.make({
+            method: 'task.item.update',
+            params: {
+              TASKID: 1,
+              FIELDS: {
+                UF_CRM_TASK: ['L_4', 'C_7', 'CO_5', 'D_10'],
+              },
+            },
+            requestId: B24Js.Text.getUuidRfc4122()
+          })
+
+          // The payload is available only on a successful response
+          if (!response.isSuccess) {
+            console.error(response.getErrorMessages().join('; '))
+            return
+          }
+
+          const result = response.getData().result
+          console.info('Task CRM fields updated:', result)
+        } catch (error) {
+          // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+          console.error(error)
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', updateTaskCrmFields)
+    </script>
     ```
 
 - PHP
@@ -212,7 +331,7 @@ Example of recording values with CRM.
             ->getResult();
     
         echo 'Success: ' . print_r($result, true);
-        // Your required data processing logic
+        // Your logic for processing data
         processData($result);
     
     } catch (Throwable $e) {
@@ -257,7 +376,7 @@ Example of recording values with CRM.
 
 {% endlist %}
 
-The numbers represent the `ID` of the corresponding values. The value `L_4` indicates a link to a lead task with `ID = 4`. Multiple links of the same type can be specified, for example, `L_4, L_5`.
+The numbers are the `ID` of the corresponding values. The value `L_4` indicates a link to the lead task with `ID = 4`. You can set multiple links of the same type, for example, `L_4, L_5`.
 
 - `L` — lead
 - `C` — contact

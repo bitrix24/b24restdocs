@@ -1,4 +1,4 @@
-# Features, Advantages, and Disadvantages of Offline Events
+# Offline Events
 
 {% note tip "" %}
 
@@ -6,130 +6,880 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-You can register an offline event handler using the same method [`event.bind`](event-bind.md). However, the parameters will differ slightly:
+Offline events are a mechanism for receiving events where Bitrix24 does not call the application handler but saves changes in a queue on the Bitrix24 side. The application retrieves accumulated events using the `event.offline.*` methods.
 
-#|
-|| **Parameter**
-`type` | **Description** ||
-|| **event**
-`string` | Event name ||
-|| **event_type**
-`string` | Must be `offline` ||
-|| **auth_connector**
-`string` | Source key. Allows you to [exclude false triggers](#how-to-avoid-cycles) ||
-|| **options**
-`array` | Additional settings for the registered event. Possible values depend on the specific event ||
-|#
-
-First, you need to set the `event_type` parameter to `offline`.
-
-Secondly, there is no longer a need to specify the `handler` parameter, as it will not be Bitrix24 calling your handler; instead, the application will need to call Bitrix24 to get information about the events that occurred.
+This mechanism is suitable for applications that cannot accept incoming calls: they operate behind a firewall, on an internal network, or are temporarily unavailable.
 
 ## How Offline Events Work
 
-Unlike regular events, offline events do not trigger external application handlers but log the changes that occurred.
+A regular event triggers an external application handler via a URL. An offline event, instead of triggering, records the change in a queue on the Bitrix24 side.
 
-The application can retrieve data from this log using the [event.offline.list](event-offline-list.md) and [event.offline.get](event-offline-get.md) methods.
-
-In the case of multiple changes to the same object, for example, when a user edits a single deal, the log will contain only one entry for that. The entry will be marked with the date and time of the most recent change.
-
-No matter how many times we change the same deal, it will not add new offline events one after another; instead, it will update the existing information. If the same deal is updated 1000 times, there will be only one entry in the offline events indicating which deal was changed.
+The queue does not store the history of all changes but rather the current state of the object. If the same deal is modified 1000 times, only one record with the timestamp of the last change will remain in the queue. This record contains the event name and the identifiers of the modified object—the application retrieves the current data using object retrieval methods.
 
 ## Why Offline Events Are Needed
 
-The purpose of offline events is primarily for synchronizing data between Bitrix24 and an external system.
+Offline events are used for synchronizing Bitrix24 data with an external system when real-time response is not required.
 
-Such tasks often do not require real-time responses. For these tasks, it is not necessary to react immediately to every change.
+For synchronization, it is important to know which objects have changed since the last request, rather than every individual change. Therefore, the queue only retains the latest state of the object.
 
-It is important that when your application queries Bitrix24, you are fully aware of which Bitrix24 objects have been changed, added, or deleted since the last time the application accessed Bitrix24.
-
-Even if the same deal has been changed a hundred times, to synchronize this deal with an external system, it is sufficient to take only the current state of the deal at the time of synchronization.
-
-That is why Bitrix24 does not log every change of the same object in the offline events. This significantly simplifies application development for you.
-
-## How to Build Work with Offline Events
+## Working with Offline Events
 
 ![How to Build Work with Offline Events](./_images/how_to_build_work_with_offline_events.png "How to Build Work with Offline Events")
 
-At regular intervals, your application should request a list of occurred events.
+1. Register the offline event handler using the [event.bind](./event-bind.md) method with the parameter `event_type = offline`.
+2. Retrieve events from the queue at the desired frequency using the [event.offline.get](./event-offline-get.md) method or read the queue without changes using the [event.offline.list](./event-offline-list.md) method.
+3. Obtain the current data of the modified objects using their retrieval methods and pass it to the external system.
+4. Confirm processing—remove events from the queue to avoid receiving them again on the next request.
 
-Then, using standard REST API methods, the application should retrieve the current information about the changed objects and send the updated data to the external system, etc.
+### Availability Check
 
-Most importantly, in the final step, the application must inform Bitrix24 that these events have been processed by the application and that there is no need to retain information about them.
+The confirmation processing mode is available on certain plans. Check availability using the [feature.get](../common/system/feature-get.md) method with the code `rest_offline_extended`.
 
-If this is not done, each time you access the list of offline events, you will receive more and more accumulated events.
+{% include [Examples Note](../../_includes/examples.md) %}
 
-### Method event.offline.get
+{% list tabs %}
 
-Using `event.offline.get`, you can parse all accumulated events, retrieving them in batches of 50.
+- cURL (OAuth)
 
-The method is optimized for asynchronous use. This means that each parallel call to `event.offline.get` will reliably receive its events, without overlapping with other events, regardless of how intensively you request this data.
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"CODE":"rest_offline_extended","auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/feature.get
+    ```
 
-Moreover, each call to the `event.offline.get` method with default parameters will not only retrieve the next 50 log entries but will also delete those entries.
+- JS
 
-Consequently, there may be a situation where your application made a request to `event.offline.get`, but for some reason (due to memory overflow, network issues, etc.) did not process those events. However, on the Bitrix24 side, the information about those events has already been deleted and cannot be restored.
+    ```js
+    try
+    {
+        const response = await $b24.callMethod(
+            'feature.get',
+            {
+                CODE: 'rest_offline_extended'
+            }
+        );
 
-To ensure the processing of all offline events, you can call the `event.offline.get` method with the parameter `clear = 0`. In this case, the batch of returned events will not be deleted in Bitrix24. Instead, it will be marked with a unique identifier `process_id` and "hidden."
+        console.log(response.getData().result);
+    }
+    catch( error )
+    {
+        console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'feature.get',
+                [
+                    'CODE' => 'rest_offline_extended'
+                ]
+            );
+
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+
+        echo 'Success: ' . print_r($result, true);
+
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
+    BX24.callMethod(
+        "feature.get",
+        {
+            "CODE": "rest_offline_extended"
+        },
+        function(result)
+        {
+            if(result.error())
+                console.error(result.error());
+            else
+                console.dir(result.data());
+        }
+    );
+    ```
+
+- PHP CRest
+
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'feature.get',
+        [
+            'CODE' => 'rest_offline_extended'
+        ]
+    );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
+    ```
+
+{% endlist %}
+
+### Registering the Handler
+
+Register the offline handler using the [event.bind](./event-bind.md) method. Specify `event_type = offline` and do not provide `handler`—the handler URL is not needed.
+
+{% list tabs %}
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"event":"ONCRMDEALUPDATE","event_type":"offline","auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/event.bind
+    ```
+
+- JS
+
+    ```js
+    try
+    {
+        const response = await $b24.callMethod(
+            'event.bind',
+            {
+                event: 'ONCRMDEALUPDATE',
+                event_type: 'offline'
+            }
+        );
+
+        console.log(response.getData().result);
+    }
+    catch( error )
+    {
+        console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'event.bind',
+                [
+                    'event' => 'ONCRMDEALUPDATE',
+                    'event_type' => 'offline'
+                ]
+            );
+
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+
+        echo 'Success: ' . print_r($result, true);
+
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
+    BX24.callMethod(
+        "event.bind",
+        {
+            "event": "ONCRMDEALUPDATE",
+            "event_type": "offline"
+        },
+        function(result)
+        {
+            if(result.error())
+                console.error(result.error());
+            else
+                console.dir(result.data());
+        }
+    );
+    ```
+
+- PHP CRest
+
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'event.bind',
+        [
+            'event' => 'ONCRMDEALUPDATE',
+            'event_type' => 'offline'
+        ]
+    );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
+    ```
+
+{% endlist %}
+
+### Retrieving and Processing Events
+
+The queue can be retrieved in two ways.
+
+#### Retrieval with Deletion
+
+The [event.offline.get](./event-offline-get.md) method returns the first records from the queue and immediately deletes them. The batch size is set by the `limit` parameter, defaulting to 50.
+
+{% list tabs %}
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"limit":50,"auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/event.offline.get
+    ```
+
+- JS
+
+    ```js
+    try
+    {
+        const response = await $b24.callMethod(
+            'event.offline.get',
+            {
+                limit: 50
+            }
+        );
+
+        const events = response.getData().result.events;
+        for (const event of events) {
+            console.log(event.EVENT_NAME, event.MESSAGE_ID);
+        }
+    }
+    catch( error )
+    {
+        console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'event.offline.get',
+                [
+                    'limit' => 50
+                ]
+            );
+
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+
+        foreach ($result['events'] as $event) {
+            echo $event['EVENT_NAME'] . ' ' . $event['MESSAGE_ID'] . PHP_EOL;
+        }
+
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
+    BX24.callMethod(
+        "event.offline.get",
+        {
+            "limit": 50
+        },
+        function(result)
+        {
+            if(result.error())
+            {
+                console.error(result.error());
+                return;
+            }
+
+            result.data().events.forEach(function(event)
+            {
+                console.log(event.EVENT_NAME, event.MESSAGE_ID);
+            });
+        }
+    );
+    ```
+
+- PHP CRest
+
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'event.offline.get',
+        [
+            'limit' => 50
+        ]
+    );
+
+    foreach ($result['result']['events'] as $event) {
+        echo $event['EVENT_NAME'] . ' ' . $event['MESSAGE_ID'] . PHP_EOL;
+    }
+    ```
+
+{% endlist %}
+
+In this case, deleted events cannot be restored. If the application retrieves events but fails to process them due to an error, the data will be lost.
+
+#### Retrieval with Reservation
+
+To avoid losing events during a failure, separate retrieval and confirmation.
 
 ![Method event.offline.get](./_images/method_event_offline_get.png "Method event.offline.get")
 
-After processing the received events, the application must inform Bitrix24 that these events can be deleted.
+1. Call [event.offline.get](./event-offline-get.md) with the parameter `clear = 0`. The method does not delete events but marks the batch with the identifier `process_id` and hides it from other requests. The identifier is returned in the response.
+2. Process the retrieved events.
+3. Confirm processing using the [event.offline.clear](./event-offline-clear.md) method, passing `process_id`. To delete only part of the records from the batch, additionally pass `message_id`.
 
-To do this, the application should call the [method `event.offline.clear`](event-offline-clear.md), specifying the `process_id` parameter — the unique identifier obtained when calling the `event.offline.get` method, and optionally specifying the `message_id` parameter as an array of identifiers for specific events that need to be deleted.
+The reserved batch is stored for up to 30 days and is then automatically deleted.
 
-## How to Avoid Cycles in Processing {#how-to-avoid-cycles}
+{% list tabs %}
 
-Imagine a situation where your application receives an event about a deal change.
+- cURL (OAuth)
 
-Then it requests the current information about the deal using the corresponding REST API method. After that, it wants to change the same deal in Bitrix24 based on its business logic. For this, the application calls the `crm.deal.update` method.
+    ```bash
+    # Step 1. Reserve the batch
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"clear":0,"limit":50,"auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/event.offline.get
+
+    # Step 2. Confirm processing
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"process_id":"**put_process_id_here**","auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/event.offline.clear
+    ```
+
+- JS
+
+    ```js
+    try
+    {
+        // Step 1. Reserve the batch
+        const response = await $b24.callMethod(
+            'event.offline.get',
+            {
+                clear: 0,
+                limit: 50
+            }
+        );
+
+        const { process_id, events } = response.getData().result;
+
+        // Step 2. Process events
+        for (const event of events) {
+            console.log(event.EVENT_NAME, event.MESSAGE_ID);
+        }
+
+        // Step 3. Confirm processing
+        await $b24.callMethod(
+            'event.offline.clear',
+            {
+                process_id: process_id
+            }
+        );
+    }
+    catch( error )
+    {
+        console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        // Step 1. Reserve the batch
+        $response = $b24Service
+            ->core
+            ->call(
+                'event.offline.get',
+                [
+                    'clear' => 0,
+                    'limit' => 50
+                ]
+            );
+
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+
+        $processId = $result['process_id'];
+
+        // Step 2. Process events
+        foreach ($result['events'] as $event) {
+            echo $event['EVENT_NAME'] . ' ' . $event['MESSAGE_ID'] . PHP_EOL;
+        }
+
+        // Step 3. Confirm processing
+        $b24Service
+            ->core
+            ->call(
+                'event.offline.clear',
+                [
+                    'process_id' => $processId
+                ]
+            );
+
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
+    // Step 1. Reserve the batch
+    BX24.callMethod(
+        "event.offline.get",
+        {
+            "clear": 0,
+            "limit": 50
+        },
+        function(result)
+        {
+            if(result.error())
+            {
+                console.error(result.error());
+                return;
+            }
+
+            var data = result.data();
+
+            // Step 2. Process events
+            data.events.forEach(function(event)
+            {
+                console.log(event.EVENT_NAME, event.MESSAGE_ID);
+            });
+
+            // Step 3. Confirm processing
+            BX24.callMethod(
+                "event.offline.clear",
+                {
+                    "process_id": data.process_id
+                },
+                function(clearResult)
+                {
+                    if(clearResult.error())
+                        console.error(clearResult.error());
+                    else
+                        console.dir(clearResult.data());
+                }
+            );
+        }
+    );
+    ```
+
+- PHP CRest
+
+    ```php
+    require_once('crest.php');
+
+    // Step 1. Reserve the batch
+    $response = CRest::call(
+        'event.offline.get',
+        [
+            'clear' => 0,
+            'limit' => 50
+        ]
+    );
+
+    $processId = $response['result']['process_id'];
+
+    // Step 2. Process events
+    foreach ($response['result']['events'] as $event) {
+        echo $event['EVENT_NAME'] . ' ' . $event['MESSAGE_ID'] . PHP_EOL;
+    }
+
+    // Step 3. Confirm processing
+    CRest::call(
+        'event.offline.clear',
+        [
+            'process_id' => $processId
+        ]
+    );
+    ```
+
+{% endlist %}
+
+The `event.offline.get` method supports parallel requests: each will receive its own set of records that do not overlap with others.
+
+### Error Registration
+
+If events fail to process, mark them using the [event.offline.error](./event-offline-error.md) method. Pass `process_id` and an array of `message_id` for the erroneous records.
+
+{% list tabs %}
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"process_id":"**put_process_id_here**","message_id":["**put_message_id_here**"],"auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/event.offline.error
+    ```
+
+- JS
+
+    ```js
+    try
+    {
+        const response = await $b24.callMethod(
+            'event.offline.error',
+            {
+                process_id: processId,
+                message_id: [messageId]
+            }
+        );
+
+        console.log(response.getData().result);
+    }
+    catch( error )
+    {
+        console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'event.offline.error',
+                [
+                    'process_id' => $processId,
+                    'message_id' => [$messageId]
+                ]
+            );
+
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+
+        echo 'Success: ' . print_r($result, true);
+
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
+    BX24.callMethod(
+        "event.offline.error",
+        {
+            "process_id": processId,
+            "message_id": [messageId]
+        },
+        function(result)
+        {
+            if(result.error())
+                console.error(result.error());
+            else
+                console.dir(result.data());
+        }
+    );
+    ```
+
+- PHP CRest
+
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'event.offline.error',
+        [
+            'process_id' => $processId,
+            'message_id' => [$messageId]
+        ]
+    );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
+    ```
+
+{% endlist %}
+
+## How to Avoid Cycles {#how-to-avoid-cycles}
+
+The application receives an event about a deal change, requests the current data, and modifies the same deal using the `crm.deal.update` method. Calling `crm.deal.update` adds an event back to the queue—this creates a cycle.
 
 ![How to Avoid Cycles](./_images/how_to_avoid_cycles.png "How to Avoid Cycles")
 
-In the case of regular events, as soon as the application calls the `crm.deal.update` method, Bitrix24 immediately sends the `ONCRMDEALUPDATE` event to the handler registered by the application.
+To break the cycle, use the `auth_connector` parameter—a source key. It creates a separate queue tied to the exchange channel between Bitrix24 and the application.
 
-This creates a closed loop where changing the deal on the Bitrix24 side triggers the handler in the application, which changes the deal data in Bitrix24, which triggers the handler in the application, which… and so on.
+Specify `auth_connector` when registering the handler:
 
-Handling such a situation requires certain conditions in the application.
+{% list tabs %}
 
-In the case of offline events, such a cycle can be avoided. To do this, when registering the offline event handler, you need to specify the `auth_connector` parameter.
+- cURL (OAuth)
 
-This creates a separate queue of offline events tied to a specific data exchange channel between Bitrix24 and the application.
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"event":"ONCRMDEALUPDATE","event_type":"offline","auth_connector":"my_connector","auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/event.bind
+    ```
 
-Then, you need to use this same parameter when you call `crm.deal.update` if you want to change data in Bitrix24 without triggering a repeated offline event.
+- JS
 
-![How to Avoid Cycles 2](./_images/how_to_avoid_cycles_2.png "How to Avoid Cycles 2")
+    ```js
+    try
+    {
+        const response = await $b24.callMethod(
+            'event.bind',
+            {
+                event: 'ONCRMDEALUPDATE',
+                event_type: 'offline',
+                auth_connector: 'my_connector'
+            }
+        );
 
-The entire scheme using the `auth_connector` parameter is designed so that when the application modifies data, it informs Bitrix24: do not notify me about changes that I initiated myself.
+        console.log(response.getData().result);
+    }
+    catch( error )
+    {
+        console.error('Error:', error);
+    }
+    ```
 
-The conclusion is that if you are using the offline event mechanism in Bitrix24, all modifying requests from your application should be executed with the `auth_connector` parameter to avoid unnecessary events. This will greatly simplify your life.
+- PHP
 
-It is worth noting that this parameter is currently supported in Bitrix24 on the Pro plan and above. Keep this in mind during development.
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'event.bind',
+                [
+                    'event' => 'ONCRMDEALUPDATE',
+                    'event_type' => 'offline',
+                    'auth_connector' => 'my_connector'
+                ]
+            );
 
-## Disadvantages of the Offline Event Mechanism
+        $result = $response
+            ->getResponseData()
+            ->getResult();
 
-The offline event mechanism has its advantages, but you should also understand the downsides of this approach.
+        echo 'Success: ' . print_r($result, true);
 
-First, unlike regular events, where Bitrix24 calls your handlers, with offline events, you will need to create some mechanism that periodically queries Bitrix24. This is especially non-trivial for [mass-market applications](../../market/index.md) that may be installed on hundreds or thousands of different Bitrix24 instances.
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error: ' . $e->getMessage();
+    }
+    ```
 
-Secondly, since your application will be querying Bitrix24 for new events via the REST API, the usual rate limits on requests per second and total execution time for requests will apply. You can learn more about the limits from the [relevant article](../../limits.md).
+- BX24.js
 
-The main takeaway is that retrieving offline events may take longer than it would for regular online events.
+    ```js
+    BX24.callMethod(
+        "event.bind",
+        {
+            "event": "ONCRMDEALUPDATE",
+            "event_type": "offline",
+            "auth_connector": "my_connector"
+        },
+        function(result)
+        {
+            if(result.error())
+                console.error(result.error());
+            else
+                console.dir(result.data());
+        }
+    );
+    ```
 
-## "Tricks" for Using Offline Events
+- PHP CRest
 
-However, there is a clever possibility that somewhat combines the advantages of online and offline events.
+    ```php
+    require_once('crest.php');
 
-Namely, the [special event](on-offline-event.md) `ONOFFLINEEVENT`. By subscribing to it in the usual way, that is, by specifying your handler on the application side, you will receive calls to this handler if new entries appear in the offline events queue.
+    $result = CRest::call(
+        'event.bind',
+        [
+            'event' => 'ONCRMDEALUPDATE',
+            'event_type' => 'offline',
+            'auth_connector' => 'my_connector'
+        ]
+    );
 
-In the `minTimeout` parameter, you can specify a timeout in seconds. In this case, your handler will only be called if the specified number of seconds has passed since the last call.
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
+    ```
 
-This setting is very convenient if you do not want your application to receive signals too frequently when there may be too few offline events accumulated.
+{% endlist %}
 
-Thus, your application, on one hand, automatically receives a signal from Bitrix24 that it is time to fetch offline events. This means you do not need to devise a scheme for periodic polling of Bitrix24.
+Pass the same `auth_connector` in modifying calls. Then Bitrix24 will not record in the queue the change initiated by the application itself.
 
-On the other hand, you can independently retrieve the events that interest you from the offline events queue with all the advantages of this mechanism.
+![How to Avoid Cycles](./_images/how_to_avoid_cycles_2.png "How to Avoid Cycles")
 
-## Continue Your Learning
+{% list tabs %}
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"id":1,"fields":{"TITLE":"New Title"},"auth_connector":"my_connector","auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/crm.deal.update
+    ```
+
+- JS
+
+    ```js
+    try
+    {
+        const response = await $b24.callMethod(
+            'crm.deal.update',
+            {
+                id: 1,
+                fields: {
+                    TITLE: 'New Title'
+                },
+                auth_connector: 'my_connector'
+            }
+        );
+
+        console.log(response.getData().result);
+    }
+    catch( error )
+    {
+        console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.deal.update',
+                [
+                    'id' => 1,
+                    'fields' => [
+                        'TITLE' => 'New Title'
+                    ],
+                    'auth_connector' => 'my_connector'
+                ]
+            );
+
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+
+        echo 'Success: ' . print_r($result, true);
+
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
+    BX24.callMethod(
+        "crm.deal.update",
+        {
+            "id": 1,
+            "fields": {
+                "TITLE": "New Title"
+            },
+            "auth_connector": "my_connector"
+        },
+        function(result)
+        {
+            if(result.error())
+                console.error(result.error());
+            else
+                console.dir(result.data());
+        }
+    );
+    ```
+
+- PHP CRest
+
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'crm.deal.update',
+        [
+            'id' => 1,
+            'fields' => [
+                'TITLE' => 'New Title'
+            ],
+            'auth_connector' => 'my_connector'
+        ]
+    );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
+    ```
+
+{% endlist %}
+
+To retrieve events from this queue, pass the same `auth_connector` in the [event.offline.get](./event-offline-get.md) and [event.offline.list](./event-offline-list.md) methods. Without a matching value, the methods will only return events without a source.
+
+The `auth_connector` parameter is available on the Professional plan and above.
+
+## Notification Instead of Periodic Polling
+
+To avoid polling the queue on a timer, subscribe to the [onOfflineEvent](./on-offline-event.md) event in the usual way—by specifying the handler URL. Bitrix24 will call the handler when new records appear in the queue.
+
+The event itself does not pass data—it is a signal to retrieve events from the queue using the `event.offline.*` methods. The minimum interval between notifications is set by the `minTimeout` parameter. More details in the article [{#T}](./on-offline-event.md).
+
+## Mechanism Limitations
+
+- The application polls Bitrix24 at a specified frequency. For [mass-market applications](../../market/index.md) installed on multiple Bitrix24 instances, this is a separate engineering task.
+- Requests to the queue are subject to [limits](../../limits.md) on the number of requests per second and total execution time.
+- Retrieving events via REST takes longer than calling a handler for a regular event.
+
+## Continue Learning
 
 - [{#T}](./events.md)
 - [{#T}](./event-bind.md)

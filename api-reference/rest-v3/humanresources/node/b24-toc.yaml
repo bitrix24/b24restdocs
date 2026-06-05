@@ -1,0 +1,25 @@
+title: Departments and Teams  
+href: index.md  
+items:  
+  - name: Overview of Methods  
+    href: index.md  
+  - name: Create Department  
+    href: humanresources-node-add.md  
+  - name: Update Department  
+    href: humanresources-node-edit.md  
+  - name: Get Department  
+    href: humanresources-node-get.md  
+  - name: Get List of Departments  
+    href: humanresources-node-list.md  
+  - name: Find Departments  
+    href: humanresources-node-search.md  
+  - name: Get Child Departments  
+    href: humanresources-node-children.md  
+  - name: Get Number of Departments  
+    href: humanresources-node-count.md  
+  - name: Move Department  
+    href: humanresources-node-move.md  
+  - name: Get List of Department Fields  
+    href: humanresources-node-field-list.md  
+  - name: Get Department Field  
+    href: humanresources-node-field-get.md  

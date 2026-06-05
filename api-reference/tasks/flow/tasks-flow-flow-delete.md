@@ -8,23 +8,23 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`task`](../../scopes/permissions.md)
 >
-> Who can execute the method: the creator or administrator of the flow
+> Who can execute the method: Creator or administrator of the flow
 
-The method `tasks.flow.Flow.delete` removes a flow by its identifier.
+The method `tasks.flow.Flow.delete` deletes a flow by its identifier.
 
 ## Method Parameters
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **flowData*** 
-[`object`](../../data-types.md) | Object containing data to delete the flow ||
+[`object`](../../data-types.md) | Object containing data for deleting the flow ||
 || **flowData.id*** 
 [`integer`](../../data-types.md) | Identifier of the flow to be deleted. 
 
-You can obtain the identifier by creating a new flow using the method [tasks.flow.Flow.create](./tasks-flow-flow-create.md) or by retrieving a task using the method [tasks.task.get](../tasks-task-get.md) for a task from the flow ||
+You can obtain the identifier using the method for creating a new flow [tasks.flow.Flow.create](./tasks-flow-flow-create.md) or by retrieving a task [tasks.task.get](../tasks-task-get.md) for a task from the flow ||
 |#
 
 ## Code Examples
@@ -43,7 +43,7 @@ You can obtain the identifier by creating a new flow using the method [tasks.flo
             "id": 517
         }
     }' \
-    https://your-domain.bitrix24.com/rest/_USER_ID_/_CODE_/tasks.flow.Flow.delete
+    https://your-domain.com/rest/_USER_ID_/_CODE_/tasks.flow.Flow.delete
     ```
 
 - cURL (oAuth)
@@ -57,30 +57,85 @@ You can obtain the identifier by creating a new flow using the method [tasks.flo
             "id": 517
         }
     }' \
-    https://your-domain.bitrix24.com/rest/tasks.flow.Flow.delete
+    https://your-domain.com/rest/tasks.flow.Flow.delete
     ```
 
-- JS
+- JS (TS)
 
-    ```js
-    try
-    {
-    	const response = await $b24.callMethod(
-    		'tasks.flow.Flow.delete',
-    		{
-    			flowData: {
-    				id: 517
-    			}
-    		}
-    	);
-    	
-    	const result = response.getData().result;
-    	console.info(result);
+    ```ts
+    // This snippet is an ES module: top-level await requires type="module" or a bundler.
+    // $b24 is an already-initialized SDK instance (see the SDK "Get started" guide).
+    import { Text } from '@bitrix24/b24jssdk'
+    import type { B24Frame } from '@bitrix24/b24jssdk'
+
+    declare const $b24: B24Frame
+
+    // Shape of the payload returned in result (match the "response handling" section of the page)
+    type FlowDeleteResult = {
+      deleted: boolean,
     }
-    catch( error )
-    {
-    	console.error(error);
+
+    try {
+      const response = await $b24.actions.v2.call.make<FlowDeleteResult>({
+        method: 'tasks.flow.Flow.delete',
+        params: {
+          flowData: {
+            id: 517,
+          },
+        },
+        requestId: Text.getUuidRfc4122()
+      })
+
+      // The payload is available only on a successful response
+      if (!response.isSuccess) {
+        console.error(response.getErrorMessages().join('; '))
+      } else {
+        const result = response.getData()!.result
+        console.info('Flow deleted:', result.deleted)
+      }
+    } catch (error) {
+      // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+      console.error(error)
     }
+    ```
+
+- JS (UMD)
+
+    ```html
+    <!-- Load the SDK (UMD build); it is exposed as the global B24Js -->
+    <script src="https://unpkg.com/@bitrix24/b24jssdk@1/dist/umd/index.min.js"></script>
+    <script>
+      async function deleteFlow() {
+        try {
+          // Initialize the SDK inside a Bitrix24 frame
+          const $b24 = await B24Js.initializeB24Frame()
+
+          const response = await $b24.actions.v2.call.make({
+            method: 'tasks.flow.Flow.delete',
+            params: {
+              flowData: {
+                id: 517,
+              },
+            },
+            requestId: B24Js.Text.getUuidRfc4122()
+          })
+
+          // The payload is available only on a successful response
+          if (!response.isSuccess) {
+            console.error(response.getErrorMessages().join('; '))
+            return
+          }
+
+          const result = response.getData().result
+          console.info('Flow deleted:', result.deleted)
+        } catch (error) {
+          // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+          console.error(error)
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', deleteFlow)
+    </script>
     ```
 
 - PHP
@@ -137,13 +192,13 @@ You can obtain the identifier by creating a new flow using the method [tasks.flo
 - PHP CRest
 
     ```php
-    require_once('crest.php'); // connecting CRest PHP SDK
+    require_once('crest.php'); // include CRest PHP SDK
 
     $flowData = [
         "id" => 517
     ];
 
-    // executing the request to the REST API
+    // execute request to REST API
     $result = CRest::call(
         'tasks.flow.Flow.delete',
         [
@@ -151,7 +206,7 @@ You can obtain the identifier by creating a new flow using the method [tasks.flo
         ]
     );
 
-    // Processing the response from Bitrix24
+    // Handle response from Bitrix24
     if ($result['error']) {
         echo 'Error: '.$result['error_description'];
     } else {
@@ -175,7 +230,7 @@ HTTP Status: **200**
 
 ### Returned Data
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **result** 
@@ -199,7 +254,7 @@ HTTP Status: **400**
 
 ### Possible Error Codes
 
-#|
+#| 
 || **Code** | **Description** | **Additional Information** ||
 || `0` | Access denied or flow not found | The account plan does not allow working with flows or the user does not have permission to delete the flow ||
 || `0` | `Flow not found` | The flow with the specified identifier was not found ||

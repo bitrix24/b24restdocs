@@ -6,35 +6,41 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-{% note warning "We are still updating this page" %}
-
-Some data may be missing here — we will fill it in shortly.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- examples are missing (in other languages)
-- success response is missing
-- error response is missing
-
-{% endnote %}
-
-{% endif %}
-
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-The method `crm.deal.contact.fields` returns the description of the fields used by the methods of the `crm.deal.contact.*` family, namely [crm.deal.contact.items.get](./crm-deal-contact-items-get.md), [crm.deal.contact.items.set](./crm-deal-contact-items-set.md), [crm.deal.contact.add](./crm-deal-contact-add.md), etc.
+The method `crm.deal.contact.fields` returns a description of the fields for the deal-contact connection.
 
-Without parameters.
+## Method Parameters
 
-## Example
+No parameters.
+
+## Code Examples
+
+{% include [Examples Note](../../../../_includes/examples.md) %}
 
 {% list tabs %}
+
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{}' \
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.deal.contact.fields
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/crm.deal.contact.fields
+    ```
 
 - JS
 
@@ -42,21 +48,17 @@ Without parameters.
     try
     {
     	const response = await $b24.callMethod(
-    		"crm.deal.contact.fields",
+    		'crm.deal.contact.fields',
     		{}
     	);
     	
     	const result = response.getData().result;
-    	if(result.error())
-    	{
-    		console.error(result.error());
-    	}
-    	else
-    	{
-    		console.dir(result);
-    	}
+    	result.error()
+    		? console.error(result.error())
+    		: console.info(result)
+    	;
     }
-    catch(error)
+    catch( error )
     {
     	console.error('Error:', error);
     }
@@ -78,7 +80,7 @@ Without parameters.
             ->getResult();
     
         if ($result->error()) {
-            error_log($result->error());
+            echo 'Error: ' . $result->error();
         } else {
             echo 'Success: ' . print_r($result->data(), true);
         }
@@ -93,30 +95,139 @@ Without parameters.
 
     ```js
     BX24.callMethod(
-        "crm.deal.contact.fields",
+        'crm.deal.contact.fields',
         {},
-        function(result)
-        {
-            if(result.error())
-                console.error(result.error());
-            else
-                console.dir(result.data());
-        }
+        (result) => {
+            result.error()
+                ? console.error(result.error())
+                : console.info(result.data())
+            ;
+        },
     );
     ```
 
+- PHP CRest
+
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'crm.deal.contact.fields',
+        []
+    );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
+    ```
+
+- Python
+
+    Example
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.deal.contact.fields().response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
 {% endlist %}
 
-{% include [Footnote on examples](../../../../_includes/examples.md) %}
+## Response Handling
 
-## Returned Fields
+HTTP Status: **200**
+
+```json
+{
+    "result": {
+        "SORT": {
+            "type": "integer",
+            "isRequired": false,
+            "isReadOnly": false,
+            "isImmutable": false,
+            "isMultiple": false,
+            "isDynamic": false,
+            "title": "Sorting"
+        },
+        "IS_PRIMARY": {
+            "type": "char",
+            "isRequired": false,
+            "isReadOnly": false,
+            "isImmutable": false,
+            "isMultiple": false,
+            "isDynamic": false,
+            "title": "Primary"
+        },
+        "CONTACT_ID": {
+            "type": "integer",
+            "isRequired": true,
+            "isReadOnly": false,
+            "isImmutable": false,
+            "isMultiple": false,
+            "isDynamic": false,
+            "title": "Contact"
+        }
+    },
+    "time": {
+        "start": 1773230541,
+        "finish": 1773230541.362716,
+        "duration": 0.3627159595489502,
+        "processing": 0,
+        "date_start": "2026-03-11T15:02:21+01:00",
+        "date_finish": "2026-03-11T15:02:21+01:00",
+        "operating_reset_at": 1773231141,
+        "operating": 0
+    }
+}
+```
+
+### Returned Data
 
 #|
-|| **Field** | **Description** ||
-|| **SORT**
-[`integer`](../../../data-types.md) | Sort index (number). Determines the order in which linked contacts will be displayed in the deal. ||
-|| **IS_PRIMARY**
-[`char`](../../../data-types.md) | [Y/N] Indicates whether the binding is primary. There is always a primary contact in the deal. For it, `IS_PRIMARY=Y`, for others `IS_PRIMARY=N`. ||
-|| **CONTACT_ID**
-[`integer`](../../../data-types.md) | Identifier of the contact linked to the deal (number). ||
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`object`](../../../data-types.md) | An object in the format:
+```
+{
+    field_1: value_1,
+    field_2: value_2,
+    ...
+    field_n: value_n,
+}
+```
+
+where:
+- `field_n` — field of the object
+- `value_n` — information about the field in the format [crm_rest_field_description](../../data-types.md#crm_rest_field_description) ||
+|| **time**
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
+
+## Error Handling
+
+{% include [system errors](../../../../_includes/system-errors.md) %}
+
+## Continue Learning
+
+- [{#T}](./crm-deal-contact-add.md)
+- [{#T}](./crm-deal-contact-delete.md)
+- [{#T}](./crm-deal-contact-items-get.md)
+- [{#T}](./crm-deal-contact-items-set.md)
+- [{#T}](./crm-deal-contact-items-delete.md)

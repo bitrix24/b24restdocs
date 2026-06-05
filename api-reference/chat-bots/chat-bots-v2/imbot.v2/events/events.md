@@ -6,18 +6,22 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-Description of all events that the bot receives via [imbot.v2.Event.get](./event-get.md) (FETCH mode) or through webhook.
+This document describes all events that the bot receives through [imbot.v2.Event.get](./event-get.md) (FETCH mode) or via webhook.
 
-The fields of the `message`, `chat`, and `user` objects are described in [{#T}](../../entities.md).
+The fields of the objects `message`, `chat`, and `user` are described in [{#T}](../../entities.md).
 
-## Which Events to Process First
+## Automatic Subscription Management
+
+The bot's subscription to events `ONIMBOTV2*` is automatically created when [imbot.v2.Bot.register](../bots/bot-register.md) is called with `eventMode: "webhook"`, updated when [imbot.v2.Bot.update](../bots/bot-update.md) is called (when `webhookUrl` or `eventMode` changes), and removed when [imbot.v2.Bot.unregister](../bots/bot-unregister.md) is called or when switching to `fetch` mode. Manual calls to [event.bind](https://apidocs.bitrix24.ru/api-reference/events/event-bind.html) / [event.unbind](https://apidocs.bitrix24.ru/api-reference/events/event-unbind.html) are not required and may lead to discrepancies with internal accounting.
+
+## Which Events to Handle First
 
 The minimum set of events for a working bot:
 
 - [ONIMBOTV2MESSAGEADD](#onimbotv2messageadd) — incoming messages from users
 - [ONIMBOTV2COMMANDADD](#onimbotv2commandadd) — calls to slash commands
-- [ONIMBOTV2JOINCHAT](#onimbotv2joinchat) — adding the bot to a chat (usually sends a greeting)
-- [ONIMBOTV2DELETE](#onimbotv2delete) — removal of the bot (resource cleanup)
+- [ONIMBOTV2JOINCHAT](#onimbotv2joinchat) — the bot being added to a chat (usually sends a greeting)
+- [ONIMBOTV2DELETE](#onimbotv2delete) — the bot being removed (cleaning up resources)
 
 Additionally, based on the scenario:
 
@@ -47,7 +51,7 @@ Example of the `bot` object in webhook mode:
             "expires_in": "3600",
             "scope": "imbot",
             "domain": "some-domain.bitrix24.com",
-            "server_endpoint": "https://oauth.bitrix24.info/rest/",
+            "server_endpoint": "https://oauth.bitrix.info/rest/",
             "status": "F",
             "client_endpoint": "https://some-domain.bitrix24.com/rest/",
             "member_id": "bac1cd5c8940947a75e0d71b1a84e348",
@@ -61,6 +65,46 @@ Example of the `bot` object in webhook mode:
 }
 ```
 
+### Webhook Notification Structure {#webhook-payload}
+
+In webhook mode, the POST request contains **two different `auth`**:
+
+- **top-level `auth`** — the entire request's conversion, always present;
+- **`data.bot.auth`** — OAuth tokens for the specific bot for callbacks.
+
+```json
+{
+    "event": "ONIMBOTV2MESSAGEADD",
+    "data": {
+        "bot": {
+            "id": 456,
+            "code": "support_bot",
+            "auth": {"access_token": "...", "refresh_token": "...", "application_token": "..."}
+        },
+        "message": {},
+        "chat": {},
+        "user": {}
+    },
+    "ts": 1772093963,
+    "auth": {
+        "domain": "your-account.bitrix24.com",
+        "application_token": "..."
+    }
+}
+```
+
+{% note warning "" %}
+
+To verify the authenticity of the webhook, use the `application_token` from the **top level** — `auth.application_token`, not from `data.bot.auth.application_token`.
+
+{% endnote %}
+
+The request arrives as `application/x-www-form-urlencoded` via `http_build_query`, so the keys have PHP format: `data[bot][id]=...`, `auth[application_token]=...`.
+
+### Chat Object in Events {#chat-in-events}
+
+The `chat` object in events does not contain the fields `role` and `muteList` — these fields depend on the specific user and cannot be the same for all event recipients.
+
 ### Auth Parameter {#auth}
 
 {% include notitle [Table with keys in the auth array](../../../../../_includes/auth-params-in-events.md) %}
@@ -69,8 +113,8 @@ Example of the `bot` object in webhook mode:
 
 The `auth` field depends on the event delivery mode:
 
-- in **Webhook** mode (`bot` is sent to the specified handler), the `auth` field is present and contains tokens for callback authorization
-- in **FETCH** mode (`imbot.v2.Event.get`), the `auth` field in the `bot` object is not returned, as tokens are not required
+- In **Webhook** mode (the `bot` is sent to the specified handler), the `auth` field is present and contains tokens for authorizing callbacks.
+- In **FETCH** mode (`imbot.v2.Event.get`), the `auth` field in the `bot` object is not returned, as tokens are not required.
 
 {% endnote %}
 
@@ -98,9 +142,9 @@ A new message addressed to the bot. This occurs when a user sends a message in a
 || **Field** | **Type** | **Description** ||
 || **bot** | `object` | [Bot object](#bot-format) ||
 || **message** | [`Message`](../../entities.md#message) | The sent message ||
-|| **chat** | [`Chat`](../../entities.md#chat) | The chat in which the message was sent ||
+|| **chat** | [`Chat`](../../entities.md#chat) | The chat where the message was sent ||
 || **user** | [`User`](../../entities.md#user) | The author of the message ||
-|| **language** | `string` | Portal language (e.g., `en`, `ru`) ||
+|| **language** | `string` | Bitrix24 language (e.g., `en`, `de`) ||
 |#
 
 ### Example Data
@@ -117,7 +161,6 @@ A new message addressed to the bot. This occurs when a user sends a message in a
         "backgroundId": null,
         "language": "en",
         "moduleId": "rest",
-        "appId": "custom123abc",
         "eventMode": "fetch",
         "countMessage": 150,
         "countCommand": 3,
@@ -183,9 +226,9 @@ A message in the bot's chat has been edited.
 || **Field** | **Type** | **Description** ||
 || **bot** | `object` | [Bot object](#bot-format) ||
 || **message** | [`Message`](../../entities.md#message) | The updated message ||
-|| **chat** | [`Chat`](../../entities.md#chat) | The chat in which the message was edited ||
+|| **chat** | [`Chat`](../../entities.md#chat) | The chat where the message was edited ||
 || **user** | [`User`](../../entities.md#user) | The author of the message ||
-|| **language** | `string` | Portal language ||
+|| **language** | `string` | Bitrix24 language ||
 |#
 
 The data format is identical to [ONIMBOTV2MESSAGEADD](#onimbotv2messageadd). The `message` field contains the updated text.
@@ -200,9 +243,9 @@ A message in the bot's chat has been deleted.
 || **Field** | **Type** | **Description** ||
 || **bot** | `object` | [Bot object](#bot-format) ||
 || **messageId** | `integer` | ID of the deleted message ||
-|| **chat** | [`Chat`](../../entities.md#chat) | The chat in which the message was deleted ||
+|| **chat** | [`Chat`](../../entities.md#chat) | The chat where the message was deleted ||
 || **user** | [`User`](../../entities.md#user) | The author of the deleted message ||
-|| **language** | `string` | Portal language ||
+|| **language** | `string` | Bitrix24 language ||
 |#
 
 ---
@@ -217,7 +260,7 @@ The bot has been added to a chat or received an invitation.
 || **dialogId** | `string` | ID of the dialog (e.g., `chat5`) ||
 || **chat** | [`Chat`](../../entities.md#chat) | The chat to which the bot was added ||
 || **user** | [`User`](../../entities.md#user) | The user who added the bot ||
-|| **language** | `string` | Portal language ||
+|| **language** | `string` | Bitrix24 language ||
 |#
 
 ### Example Data
@@ -234,7 +277,6 @@ The bot has been added to a chat or received an invitation.
         "backgroundId": null,
         "language": "en",
         "moduleId": "rest",
-        "appId": "custom123abc",
         "eventMode": "fetch",
         "countMessage": 150,
         "countCommand": 3,
@@ -304,7 +346,6 @@ The bot has been removed from the system. This is the last event the bot will re
         "backgroundId": null,
         "language": "en",
         "moduleId": "rest",
-        "appId": "custom123abc",
         "eventMode": "fetch",
         "countMessage": 150,
         "countCommand": 3,
@@ -318,7 +359,7 @@ The bot has been removed from the system. This is the last event the bot will re
 
 ## ONIMBOTV2CONTEXTGET {#onimbotv2contextget}
 
-The user opened a dialogue with the bot, passing arbitrary context data. The context is set by the calling party — for example, when following a link with the `botContextData` parameter.
+The user has opened a dialogue with the bot, passing arbitrary context data. The context is set by the calling party — for example, when navigating via a link with the `botContextData` parameter.
 
 #|
 || **Field** | **Type** | **Description** ||
@@ -327,7 +368,7 @@ The user opened a dialogue with the bot, passing arbitrary context data. The con
 || **context** | `object` | Arbitrary data passed when opening the dialog ||
 || **chat** | [`Chat`](../../entities.md#chat) | The chat ||
 || **user** | [`User`](../../entities.md#user) | The user who opened the dialog ||
-|| **language** | `string` | Portal language ||
+|| **language** | `string` | Bitrix24 language ||
 |#
 
 ### Example Data
@@ -344,7 +385,6 @@ The user opened a dialogue with the bot, passing arbitrary context data. The con
         "backgroundId": null,
         "language": "en",
         "moduleId": "rest",
-        "appId": "custom123abc",
         "eventMode": "fetch",
         "countMessage": 150,
         "countCommand": 3,
@@ -398,7 +438,7 @@ The user opened a dialogue with the bot, passing arbitrary context data. The con
 
 ## ONIMBOTV2COMMANDADD {#onimbotv2commandadd}
 
-The user invoked a slash command of the bot.
+The user has invoked a slash command for the bot.
 
 #|
 || **Field** | **Type** | **Description** ||
@@ -407,7 +447,7 @@ The user invoked a slash command of the bot.
 || **message** | [`Message`](../../entities.md#message) | The message with the command ||
 || **chat** | [`Chat`](../../entities.md#chat) | The chat from which the command was invoked ||
 || **user** | [`User`](../../entities.md#user) | The user who invoked the command ||
-|| **language** | `string` | Portal language ||
+|| **language** | `string` | Bitrix24 language ||
 |#
 
 ### Command Object {#command-object}
@@ -415,8 +455,8 @@ The user invoked a slash command of the bot.
 #|
 || **Field** | **Type** | **Description** ||
 || **id** | `integer` | ID of the registered command ||
-|| **command** | `string` | Invoked command (e.g., `/help`) ||
-|| **params** | `string` | Command parameters — text after the command ||
+|| **command** | `string` | The invoked command (e.g., `/help`) ||
+|| **params** | `string` | Command parameters — text following the command ||
 || **context** | `string` | Invocation context: `textarea` — entered manually, `keyboard` — button pressed, `menu` — selected from context menu ||
 |#
 
@@ -440,7 +480,6 @@ If a single message contains multiple slash commands, an event is generated sepa
         "backgroundId": null,
         "language": "en",
         "moduleId": "rest",
-        "appId": "custom123abc",
         "eventMode": "fetch",
         "countMessage": 150,
         "countCommand": 3,
@@ -511,12 +550,12 @@ A reaction to the bot's message has been added or removed.
 #|
 || **Field** | **Type** | **Description** ||
 || **bot** | `object` | [Bot object](#bot-format) ||
-|| **reaction** | `string` | Reaction code (e.g., `like`). A list of codes can be found in [imbot.v2.Chat.Message.Reaction.add](../messages/chat-message-reaction-add.md#reactions) ||
+|| **reaction** | `string` | Reaction code (e.g., `like`). The list of codes is in [imbot.v2.Chat.Message.Reaction.add](../messages/chat-message-reaction-add.md#reactions) ||
 || **action** | `string` | Action: `add` — reaction added, `delete` — removed ||
 || **message** | [`Message`](../../entities.md#message) | The message to which the reaction was added ||
 || **chat** | [`Chat`](../../entities.md#chat) | The chat ||
 || **user** | [`User`](../../entities.md#user) | The user who changed the reaction ||
-|| **language** | `string` | Portal language ||
+|| **language** | `string` | Bitrix24 language ||
 |#
 
 ### Example Data
@@ -533,7 +572,6 @@ A reaction to the bot's message has been added or removed.
         "backgroundId": null,
         "language": "en",
         "moduleId": "rest",
-        "appId": "custom123abc",
         "eventMode": "fetch",
         "countMessage": 150,
         "countCommand": 3,

@@ -200,7 +200,7 @@ If not specified or incorrect, it will be assigned automatically ||
 
 ## Response Handling
 
-HTTP Code: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -210,27 +210,84 @@ HTTP Code: **200**
             "dialogId": "chat5",
             "name": "Support Chat",
             "description": "",
+            "type": "chat",
+            "messageType": "C",
             "owner": 456,
             "color": "#4ba984",
             "avatar": "",
-            "type": "chat",
+            "extranet": false,
+            "containsCollaber": false,
+            "entityType": "",
+            "entityId": "",
+            "entityData1": "",
+            "entityData2": "",
+            "entityData3": "",
+            "entityLink": {},
+            "diskFolderId": 42,
             "role": "owner",
-            "dateCreate": "2025-01-15T10:00:00+01:00",
-            "lastMessageId": null,
+            "permissions": {},
             "muteList": [],
-            "managerList": []
+            "parentChatId": null,
+            "parentMessageId": null,
+            "isNew": true,
+            "textFieldEnabled": "Y",
+            "backgroundId": null,
+            "dateCreate": "2025-01-15T10:00:00+02:00",
+            "lastMessageId": 789,
+            "lastMessageViews": "{}",
+            "lastId": null,
+            "managerList": [],
+            "markedId": null,
+            "messageCount": 1,
+            "public": "",
+            "unreadId": null,
+            "userCounter": 3
         },
         "users": [
             {
                 "id": 1,
                 "active": true,
                 "name": "John Smith",
+                "firstName": "John",
+                "lastName": "Smith",
+                "workPosition": "Developer",
+                "color": "#ab7761",
+                "avatar": "",
+                "gender": "M",
+                "birthday": "15-03",
+                "extranet": false,
+                "bot": false,
+                "connector": false,
+                "externalAuthId": "default",
+                "status": "online",
+                "idle": false,
+                "lastActivityDate": "2025-01-15T14:25:00+02:00",
+                "absent": false,
+                "departments": [7],
+                "phones": false,
                 "type": "employee"
             },
             {
                 "id": 2,
                 "active": true,
                 "name": "Anna Davis",
+                "firstName": "Anna",
+                "lastName": "Davis",
+                "workPosition": "Manager",
+                "color": "#5b7e91",
+                "avatar": "",
+                "gender": "F",
+                "birthday": "22-08",
+                "extranet": false,
+                "bot": false,
+                "connector": false,
+                "externalAuthId": "default",
+                "status": "online",
+                "idle": false,
+                "lastActivityDate": "2025-01-15T14:20:00+02:00",
+                "absent": false,
+                "departments": [12],
+                "phones": false,
                 "type": "employee"
             }
         ]
@@ -240,8 +297,8 @@ HTTP Code: **200**
         "finish": 1728626400.234,
         "duration": 0.111,
         "processing": 0.045,
-        "date_start": "2024-10-11T10:00:00+01:00",
-        "date_finish": "2024-10-11T10:00:00+01:00"
+        "date_start": "2024-10-11T10:00:00+02:00",
+        "date_finish": "2024-10-11T10:00:00+02:00"
     }
 }
 ```
@@ -267,32 +324,34 @@ HTTP Code: **200**
 || **Field**
 `Type` | **Description** ||
 || **id**
-[`integer`](../../../../data-types.md) | Chat identifier ||
+[`integer`](../../../../data-types.md) | Unique identifier of the chat ||
 || **dialogId**
-[`string`](../../../../data-types.md) | Dialog identifier ||
+[`string`](../../../../data-types.md) | Identifier of the dialog: `chat5` for group chats, `123` for personal chats ||
 || **name**
-[`string`](../../../../data-types.md) | Chat name ||
+[`string`](../../../../data-types.md) | Chat title ||
 || **description**
 [`string`](../../../../data-types.md) | Chat description ||
-|| **owner**
-[`integer`](../../../../data-types.md) | Chat owner identifier ||
-|| **color**
-[`string`](../../../../data-types.md) | Chat color ||
-|| **avatar**
-[`string`](../../../../data-types.md) | Avatar URL ||
 || **type**
-[`string`](../../../../data-types.md) | Chat type ||
+[`string`](../../../../data-types.md) | Type of chat: `chat`, `open`, `channel`, and others ||
+|| **owner**
+[`integer`](../../../../data-types.md) | ID of the chat owner ||
+|| **color**
+[`string\|null`](../../../../data-types.md) | Chat color in HEX format ||
+|| **avatar**
+[`string`](../../../../data-types.md) | URL of the chat avatar. An empty string if not set ||
 || **role**
-[`string`](../../../../data-types.md) | Bot's role in the chat ||
+[`string`](../../../../data-types.md) | Role of the current user: `owner`, `manager`, `member`, `guest`, `none` ||
 || **dateCreate**
-[`string`](../../../../data-types.md) | Chat creation date ||
+[`string\|null`](../../../../data-types.md) | Date of chat creation in ISO 8601 format ||
 || **lastMessageId**
-[`integer`](../../../../data-types.md) | Identifier of the last message ||
+[`integer\|null`](../../../../data-types.md) | ID of the last message ||
 || **muteList**
-[`array`](../../../../data-types.md) | List of users with notifications turned off ||
+[`array`](../../../../data-types.md) | List of user IDs who have disabled notifications ||
 || **managerList**
-[`array`](../../../../data-types.md) | List of chat administrators ||
+[`array`](../../../../data-types.md) | Array of chat managers' IDs ||
 |#
+
+Complete description of all fields is available on the page [Objects and Fields — Chat](../../entities.md#chat).
 
 ### Fields of the User Object {#user-object}
 
@@ -300,16 +359,16 @@ HTTP Code: **200**
 || **Field**
 `Type` | **Description** ||
 || **id**
-[`integer`](../../../../data-types.md) | User identifier ||
+[`integer`](../../../../data-types.md) | Unique identifier of the user ||
 || **active**
-[`boolean`](../../../../data-types.md) | User is active ||
+[`boolean`](../../../../data-types.md) | Is the user active in the system ||
 || **name**
-[`string`](../../../../data-types.md) | User's first and last name ||
+[`string`](../../../../data-types.md) | Full name ||
 || **type**
-[`string`](../../../../data-types.md) | User type ||
+[`string`](../../../../data-types.md) | Type of user: `employee`, `extranet`, `bot`, and others ||
 |#
 
-Complete description of all object fields can be found on the [Objects and Fields](../../entities.md) page.
+Complete description of all fields is available on the page [Objects and Fields — User](../../entities.md#user).
 
 ## Error Handling
 
@@ -338,7 +397,7 @@ HTTP Status: **400**, **403**
 
 ## Continue Learning
 
-- [API Change Log for imbot.v2](../../change-log.md)
+- [API Change Log imbot.v2](../../change-log.md)
 - [{#T}](./chat-get.md)
 - [{#T}](./chat-update.md)
 - [{#T}](./chat-user-add.md)

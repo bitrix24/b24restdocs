@@ -14,23 +14,23 @@ This method delegates a task to a new user.
 
 {% note warning "DEPRECATED" %}
 
-The development of this method has been halted. Please use [tasks.task.delegate](../../tasks-task-delegate.md).
+Development of this method has been halted. Use [tasks.task.delegate](../../tasks-task-delegate.md).
 
 {% endnote %}
 
 ## Method Parameters
 
-#|
+#| 
 || **Name** | **Description** ||
 || **TASKID** | Task identifier ||
 || **USERID** | Identifier of the new executor (responsible) ||
 |#
 
-It is essential to maintain the order of parameters in the request. Any deviation will result in errors during execution.
+It is mandatory to follow the order of parameters in the request. If this order is violated, the request will be executed with errors.
 
 ## Code Examples
 
-{% include [Examples Note](../../../../_includes/examples.md) %}
+{% include [Examples note](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -54,24 +54,73 @@ It is essential to maintain the order of parameters in the request. Any deviatio
     https://**put_your_bitrix24_address**/rest/task.item.delegate
     ```
 
-- JS
+- JS (TS)
 
-    ```js
-    try
-    {
-    	const response = await $b24.callMethod(
-    		'task.item.delegate',
-    		[13, 3]
-    	);
-    	
-    	const result = response.getData().result;
-    	console.info(result);
-    	console.log(result);
+    ```ts
+    // This snippet is an ES module: top-level await requires type="module" or a bundler.
+    // $b24 is an already-initialized SDK instance (see the SDK "Get started" guide).
+    import { Text } from '@bitrix24/b24jssdk'
+    import type { B24Frame } from '@bitrix24/b24jssdk'
+
+    declare const $b24: B24Frame
+
+    // TODO: verify API version — the page has no JSON response shape
+    // Shape of the payload returned in result (match the "response handling" section of the page)
+    type DelegateResult = boolean
+
+    try {
+      const response = await $b24.actions.v2.call.make<DelegateResult>({
+        method: 'task.item.delegate',
+        params: [13, 3],
+        requestId: Text.getUuidRfc4122()
+      })
+
+      // The payload is available only on a successful response
+      if (!response.isSuccess) {
+        console.error(response.getErrorMessages().join('; '))
+      } else {
+        const result = response.getData()!.result
+        console.info('Task delegated:', result)
+      }
+    } catch (error) {
+      // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+      console.error(error)
     }
-    catch( error )
-    {
-    	console.error('Error:', error);
-    }
+    ```
+
+- JS (UMD)
+
+    ```html
+    <!-- Load the SDK (UMD build); it is exposed as the global B24Js -->
+    <script src="https://unpkg.com/@bitrix24/b24jssdk@1/dist/umd/index.min.js"></script>
+    <script>
+      async function delegateTask() {
+        try {
+          // Initialize the SDK inside a Bitrix24 frame
+          const $b24 = await B24Js.initializeB24Frame()
+
+          const response = await $b24.actions.v2.call.make({
+            method: 'task.item.delegate',
+            params: [13, 3],
+            requestId: B24Js.Text.getUuidRfc4122()
+          })
+
+          // The payload is available only on a successful response
+          if (!response.isSuccess) {
+            console.error(response.getErrorMessages().join('; '))
+            return
+          }
+
+          const result = response.getData().result
+          console.info('Task delegated:', result)
+        } catch (error) {
+          // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+          console.error(error)
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', delegateTask)
+    </script>
     ```
 
 - PHP
@@ -90,7 +139,7 @@ It is essential to maintain the order of parameters in the request. Any deviatio
             ->getResult();
     
         echo 'Success: ' . print_r($result, true);
-        // Your desired data processing logic
+        // Your logic for processing data
         processData($result);
     
     } catch (Throwable $e) {

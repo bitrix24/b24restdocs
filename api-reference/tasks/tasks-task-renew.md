@@ -1,4 +1,4 @@
-# Renew a task after its completion tasks.task.renew
+# Renew a Task After Completion: tasks.task.renew
 
 {% note tip "" %}
 
@@ -10,26 +10,26 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: 
 > - any user with access to edit the task
-> - Creator, Assignee, and Participants of the task
+> - Creator, Participant, and other Participants of the task
 
-The method `tasks.task.renew` resumes a task after it has been completed.
+The method `tasks.task.renew` renews a task after it has been completed.
 
 ## Method Parameters
 
-{% include [Note on parameters](../../_includes/required.md) %}
+{% include [Note on Parameters](../../_includes/required.md) %}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
-|| **taskId***
-[`integer`](../data-types.md) | Task identifier. 
+|| **taskId*** 
+[`integer`](../data-types.md) | The identifier of the task. 
 
 The task identifier can be obtained when [creating a new task](./tasks-task-add.md) or by using the [get task list method](./tasks-task-list.md) ||
 |#
 
 ## Code Examples
 
-{% include [Note on examples](../../_includes/examples.md) %}
+{% include [Note on Examples](../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -53,27 +53,82 @@ The task identifier can be obtained when [creating a new task](./tasks-task-add.
     https://**put_your_bitrix24_address**/rest/tasks.task.renew
     ```
 
-- JS
+- JS (TS)
 
-    ```javascript
-    try
-    {
-        const response = await $b24.callMethod(
-            'tasks.task.renew',
-            {
-                taskId: 1,
-            }
-        );
-        
-        const result = response.getData().result;
-        console.log('Deferred task with ID:', result);
-        
-        processResult(result);
+    ```ts
+    // This snippet is an ES module: top-level await requires type="module" or a bundler.
+    // $b24 is an already-initialized SDK instance (see the SDK "Get started" guide).
+    import { Text } from '@bitrix24/b24jssdk'
+    import type { B24Frame } from '@bitrix24/b24jssdk'
+
+    declare const $b24: B24Frame
+
+    // Shape of the payload returned in result (match the "response handling" section of the page)
+    type TaskRenewResult = {
+      task: {
+        id: string
+        title: string
+        status: string
+      }
     }
-    catch( error )
-    {
-        console.error('Error:', error);
+
+    try {
+      const response = await $b24.actions.v2.call.make<TaskRenewResult>({
+        method: 'tasks.task.renew',
+        params: {
+          taskId: 1,
+        },
+        requestId: Text.getUuidRfc4122()
+      })
+
+      // The payload is available only on a successful response
+      if (!response.isSuccess) {
+        console.error(response.getErrorMessages().join('; '))
+      } else {
+        const result = response.getData()!.result
+        console.info('Renewed task:', result.task.id, result.task.title, result.task.status)
+      }
+    } catch (error) {
+      // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+      console.error(error)
     }
+    ```
+
+- JS (UMD)
+
+    ```html
+    <!-- Load the SDK (UMD build); it is exposed as the global B24Js -->
+    <script src="https://unpkg.com/@bitrix24/b24jssdk@1/dist/umd/index.min.js"></script>
+    <script>
+      async function renewTask() {
+        try {
+          // Initialize the SDK inside a Bitrix24 frame
+          const $b24 = await B24Js.initializeB24Frame()
+
+          const response = await $b24.actions.v2.call.make({
+            method: 'tasks.task.renew',
+            params: {
+              taskId: 1,
+            },
+            requestId: B24Js.Text.getUuidRfc4122()
+          })
+
+          // The payload is available only on a successful response
+          if (!response.isSuccess) {
+            console.error(response.getErrorMessages().join('; '))
+            return
+          }
+
+          const result = response.getData().result
+          console.info('Renewed task:', result.task.id, result.task.title, result.task.status)
+        } catch (error) {
+          // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+          console.error(error)
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', renewTask)
+    </script>
     ```
 
 - PHP
@@ -138,7 +193,7 @@ The task identifier can be obtained when [creating a new task](./tasks-task-add.
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -284,62 +339,62 @@ HTTP status: **200**
             },
             "group": {
                 "id": "125",
-                "name": "Workgroup",
+                "name": "Working Group",
                 "opened": false,
                 "membersCount": 1,
-                "image": "/bitrix/images/socialnetwork/workgroup/bag.png",
+                "image": "\/bitrix\/images\/socialnetwork\/workgroup\/bag.png",
                 "additionalData": []
             },
             "creator": {
                 "id": "503",
-                "name": "Megan Foster",
-                "link": "/company/personal/user/503/",
-                "icon": "https://mysite.com/b17053/resize_cache/45749/c0120a8d7c10d63c83e32398d1ec4d9e/main/c89/c89c6b7301880958ea704b5a8470635c/4R5A1256.png",
+                "name": "Maria Johnson",
+                "link": "\/company\/personal\/user\/503\/",
+                "icon": "https:\/\/mysite.com\/b17053\/resize_cache\/45749\/c0120a8d7c10d63c83e32398d1ec4d9e\/main\/c89\/c89c6b7301880958ea704b5a8470635c\/4R5A1256.png",
                 "workPosition": "Administrator"
             },
             "responsible": {
                 "id": "503",
-                "name": "Megan Foster",
-                "link": "/company/personal/user/503/",
-                "icon": "https://mysite.com/b17053/resize_cache/45749/c0120a8d7c10d63c83e32398d1ec4d9e/main/c89/c89c6b7301880958ea704b5a8470635c/4R5A1256.png",
+                "name": "Maria Johnson",
+                "link": "\/company\/personal\/user\/503\/",
+                "icon": "https:\/\/mysite.com\/b17053\/resize_cache\/45749\/c0120a8d7c10d63c83e32398d1ec4d9e\/main\/c89\/c89c6b7301880958ea704b5a8470635c\/4R5A1256.png",
                 "workPosition": "Administrator"
             },
             "accomplicesData": {
                 "3": {
                     "id": "3",
-                    "name": "Steven Walker",
-                    "link": "/company/personal/user/3/",
-                    "icon": "https://mysite.com/b17053/resize_cache/249/c0120a8d7c10d63c83e32398d1ec4d9e/main/cd526b0644e7ff4d794ea41cb36bc423/odmin.png",
+                    "name": "Andrew Karpov",
+                    "link": "\/company\/personal\/user\/3\/",
+                    "icon": "https:\/\/mysite.com\/b17053\/resize_cache\/249\/c0120a8d7c10d63c83e32398d1ec4d9e\/main\/cd526b0644e7ff4d794ea41cb36bc423\/odmin.png",
                     "workPosition": "System Administrator"
                 },
                 "11": {
                     "id": "11",
-                    "name": "Paul Young",
-                    "link": "/company/personal/user/11/",
-                    "icon": "https://mysite.com/b17053/resize_cache/231/c0120a8d7c10d63c83e32398d1ec4d9e/main/026bf59e161a0bd50f401d3796800651/66b.jpg",
+                    "name": "Andrew Sergeev",
+                    "link": "\/company\/personal\/user\/11\/",
+                    "icon": "https:\/\/mysite.com\/b17053\/resize_cache\/231\/c0120a8d7c10d63c83e32398d1ec4d9e\/main\/026bf59e161a0bd50f401d3796800651\/66b.jpg",
                     "workPosition": "Specialist"
                 }
             },
             "auditorsData": {
                 "61": {
                     "id": "61",
-                    "name": "Jason Allen",
-                    "link": "/company/personal/user/61/",
-                    "icon": "https://mysite.com/b17053/resize_cache/8674/c0120a8d7c10d63c83e32398d1ec4d9e/main/7b5/7b52e4c2304ec0520dab3d4261e9ca1f/sp.jpg",
+                    "name": "Ivan Petrov",
+                    "link": "\/company\/personal\/user\/61\/",
+                    "icon": "https:\/\/mysite.com\/b17053\/resize_cache\/8674\/c0120a8d7c10d63c83e32398d1ec4d9e\/main\/7b5\/7b52e4c2304ec0520dab3d4261e9ca1f\/sp.jpg",
                     "workPosition": "Marketer"
                 },
                 "103": {
                     "id": "103",
-                    "name": "Emily Smith",
-                    "link": "/company/personal/user/103/",
-                    "icon": "https://mysite.com/b17053/resize_cache/8644/c0120a8d7c10d63c83e32398d1ec4d9e/main/45f/45fff10d17d398a5583184c8350cd197/buh.jpg",
+                    "name": "Svetlana Ivanova",
+                    "link": "\/company\/personal\/user\/103\/",
+                    "icon": "https:\/\/mysite.com\/b17053\/resize_cache\/8644\/c0120a8d7c10d63c83e32398d1ec4d9e\/main\/45f\/45fff10d17d398a5583184c8350cd197\/buh.jpg",
                     "workPosition": "Accountant"
                 },
                 "547": {
                     "id": "547",
-                    "name": "Laura",
-                    "link": "/company/personal/user/547/",
-                    "icon": "/bitrix/images/tasks/default_avatar.png",
+                    "name": "Maria",
+                    "link": "\/company\/personal\/user\/547\/",
+                    "icon": "\/bitrix\/images\/tasks\/default_avatar.png",
                     "workPosition": "Tester"
                 }
             },
@@ -499,11 +554,11 @@ HTTP status: **200**
 
 ### Returned Data
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../data-types.md) | Object with response data ||
+[`object`](../data-types.md) | Object containing the response data ||
 || **task**
 [`object`](../data-types.md) | Object with [task description](./fields.md) after the operation is performed ||
 || **time**
@@ -512,7 +567,7 @@ HTTP status: **200**
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {
@@ -525,9 +580,9 @@ HTTP status: **400**
 
 ### Possible Error Codes
 
-#|
+#| 
 || **Code** | **Description** | **Value** ||
-|| `0` | wrong task id | The value in the `taskId` parameter is of an incorrect type ||
+|| `0` | wrong task id | The `taskId` parameter contains an invalid type ||
 || `1048582` | Action on the task is not allowed | This error is returned in cases:
 - the task with the specified `ID` does not exist
 - no access to the task

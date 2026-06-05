@@ -1,4 +1,4 @@
-# Move Checklist Item task.checklistitem.moveafteritem
+# Move Checklist Item with `task.checklistitem.moveafteritem`
 
 {% note tip "" %}
 
@@ -9,12 +9,12 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 > Scope: [`task`](../../scopes/permissions.md)
 >
 > Permissions to execute the method:
-> - any user with edit access to the task
-> - Creator, Performer, and Participants of the task
+> - any user with editing access to the task
+> - Creator, Participant, and other Participants of the task
 
 The method `task.checklistitem.moveafteritem` moves the checklist item `itemId` to a position after the element `afterItemId`.
 
-Both elements must belong to the same task `taskId`. The elements can be in different sublists, but after the move, `itemId` will have the same `PARENT_ID` as `afterItemId`.
+Both elements must belong to the same task `taskId`. The elements can be in different sublists, but after the move, `itemId` will receive the same `PARENT_ID` as `afterItemId`.
 
 You can check permissions to modify the item using the method [task.checklistitem.isactionallowed](./task-checklist-item-is-action-allowed.md).
 
@@ -22,23 +22,23 @@ You can check permissions to modify the item using the method [task.checklistite
 
 {% include [Required parameters](../../../_includes/required.md) %}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
-|| **TASKID***
+|| **TASKID*** 
 [`integer`](../../data-types.md) | Identifier of the task.
 
-The task identifier can be obtained when [creating a new task](../tasks-task-add.md) or by using the method [get task list](../tasks-task-list.md) ||
-|| **ITEMID***
+The task identifier can be obtained when [creating a new task](../tasks-task-add.md) or using the method [get task list](../tasks-task-list.md) ||
+|| **ITEMID*** 
 [`integer`](../../data-types.md) | Identifier of the checklist item being moved.
 
-The checklist item identifier can be obtained when [creating an item](./task-checklist-item-add.md) or by using the method [get checklist item list](./task-checklist-item-get-list.md) ||
-|| **AFTERITEMID***
+The checklist item identifier can be obtained when [creating an item](./task-checklist-item-add.md) or using the method [get checklist item list](./task-checklist-item-get-list.md) ||
+|| **AFTERITEMID*** 
 [`integer`](../../data-types.md) | Identifier of the checklist item after which the moving item should be placed.
 
 The item must belong to the same task as `ITEMID`.
 
-The checklist item identifier can be obtained when [creating an item](./task-checklist-item-add.md) or by using the method [get checklist item list](./task-checklist-item-get-list.md) ||
+The checklist item identifier can be obtained when [creating an item](./task-checklist-item-add.md) or using the method [get checklist item list](./task-checklist-item-get-list.md) ||
 |#
 
 ## Code Examples
@@ -67,28 +67,81 @@ The checklist item identifier can be obtained when [creating an item](./task-che
     https://**put_your_bitrix24_address**/rest/task.checklistitem.moveafteritem
     ```
 
-- JS
+- JS (TS)
 
-    ```javascript
-    try
-    {
-        const response = await $b24.callMethod(
-            'task.checklistitem.moveafteritem',
-            {
-                TASKID: 13,
-                ITEMID: 475,
-                AFTERITEMID: 447
-            }
-        );
-        
-        const result = response.getData().result;
-        console.log('Moved checklist item:', result);
-        processResult(result);
+    ```ts
+    // This snippet is an ES module: top-level await requires type="module" or a bundler.
+    // $b24 is an already-initialized SDK instance (see the SDK "Get started" guide).
+    import { Text } from '@bitrix24/b24jssdk'
+    import type { B24Frame } from '@bitrix24/b24jssdk'
+
+    declare const $b24: B24Frame
+
+    // result is null when the item is successfully moved
+    // Shape of the payload returned in result (match the "response handling" section of the page)
+    type MoveChecklistItemResult = null
+
+    try {
+      const response = await $b24.actions.v2.call.make<MoveChecklistItemResult>({
+        method: 'task.checklistitem.moveafteritem',
+        params: {
+          TASKID: 13,
+          ITEMID: 475,
+          AFTERITEMID: 447,
+        },
+        requestId: Text.getUuidRfc4122()
+      })
+
+      // The payload is available only on a successful response
+      if (!response.isSuccess) {
+        console.error(response.getErrorMessages().join('; '))
+      } else {
+        const result = response.getData()!.result
+        console.info('Checklist item moved successfully, result:', result)
+      }
+    } catch (error) {
+      // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+      console.error(error)
     }
-    catch( error )
-    {
-        console.error('Error:', error);
-    }
+    ```
+
+- JS (UMD)
+
+    ```html
+    <!-- Load the SDK (UMD build); it is exposed as the global B24Js -->
+    <script src="https://unpkg.com/@bitrix24/b24jssdk@1/dist/umd/index.min.js"></script>
+    <script>
+      async function moveChecklistItem() {
+        try {
+          // Initialize the SDK inside a Bitrix24 frame
+          const $b24 = await B24Js.initializeB24Frame()
+
+          const response = await $b24.actions.v2.call.make({
+            method: 'task.checklistitem.moveafteritem',
+            params: {
+              TASKID: 13,
+              ITEMID: 475,
+              AFTERITEMID: 447,
+            },
+            requestId: B24Js.Text.getUuidRfc4122()
+          })
+
+          // The payload is available only on a successful response
+          if (!response.isSuccess) {
+            console.error(response.getErrorMessages().join('; '))
+            return
+          }
+
+          const result = response.getData().result
+          console.info('Checklist item moved successfully, result:', result)
+        } catch (error) {
+          // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+          console.error(error)
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', moveChecklistItem)
+    </script>
     ```
 
 - PHP
@@ -179,13 +232,13 @@ HTTP Status: **200**
 
 ### Returned Data
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **result**
-`null` | Returns `null` if the item was successfully moved ||
+`null` | Returns `null` if the item is successfully moved ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the execution time of the request ||
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -203,11 +256,11 @@ HTTP Status: **400**
 
 ### Possible Error Codes
 
-#|
+#| 
 || **Code** | **Description** | **Value**  ||
 || `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #1 (itemId) expected by method ctaskchecklistitem::moveafteritem(), but not given.; 256/TE/WRONG_ARGUMENTS<br> | Required parameter `TASKID`, `ITEMID`, or `AFTERITEMID` is missing ||
-|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #0 (taskId) for method ctaskchecklistitem::moveafteritem() expected to be of type "integer", but given something else.; 256/TE/WRONG_ARGUMENTS<br> | Incorrect type provided for `TASKID`, `ITEMID`, or `AFTERITEMID` ||
-|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#8; Moving item: action not allowed; 8/TE/ACTION_FAILED_TO_BE_PROCESSED<br> | User does not have access to the task or lacks permissions to perform the action ||
+|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #0 (taskId) for method ctaskchecklistitem::moveafteritem() expected to be of type "integer", but given something else.; 256/TE/WRONG_ARGUMENTS<br> | Incorrect value type for `TASKID`, `ITEMID`, or `AFTERITEMID` ||
+|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#8; Moving item: action not allowed; 8/TE/ACTION_FAILED_TO_BE_PROCESSED<br> | User does not have access rights to the task or lacks permissions to perform the action ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

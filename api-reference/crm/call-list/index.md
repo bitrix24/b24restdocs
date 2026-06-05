@@ -197,6 +197,45 @@ There is no method for deleting a call list among the call list methods. You can
     }
     ```
 
+- Python
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.activity.list(
+            filter={
+                "SUBJECT": "Call campaign #13",
+            },
+            select=["ID"],
+        ).response
+        result = bitrix_response.result
+
+        if not result:
+            print("Activity named 'Call campaign #13' was not found.")
+        else:
+            activity_id = int(result[0]["ID"])
+            delete_response = client.crm.activity.delete(
+                bitrix_id=activity_id,
+            ).response
+            delete_result = delete_response.result
+            print(delete_result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - BX24.js
 
     ```javascript

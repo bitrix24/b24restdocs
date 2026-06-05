@@ -10,13 +10,13 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: any user with access to the task
 
-The method `tasks.task.result.deleteFromComment` removes the pinning of a comment as the result of a task. To delete a comment from the result, use the method [task.commentitem.delete](../comment-item/task-comment-item-delete.md).
+The method `tasks.task.result.deleteFromComment` unpins a comment as the result of a task. To remove a comment from the result, use the method [task.commentitem.delete](../comment-item/task-comment-item-delete.md).
 
-A user can only unpin their own comment. An administrator can unpin any user's comment.
+A user can only unpin their own comment. An administrator can unpin comments from any user.
 
 {% note warning " " %}
 
-When working with the [new task detail form](../tasks-new.md) with chat from version `tasks 25.700.0`, the method does not work.
+When working with the [new task card](../tasks-new.md) with chat from version `tasks 25.700.0`, the method does not work.
 
 {% endnote %}
 
@@ -24,13 +24,13 @@ When working with the [new task detail form](../tasks-new.md) with chat from ver
 
 {% include [Note on parameters](../../../_includes/required.md) %}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
-|| **commentId***
-[`integer`](../../data-types.md) | The identifier of the comment for which the result needs to be unpinned.
+|| **commentId*** 
+[`integer`](../../data-types.md) | The identifier of the comment for which the result needs to be unpinned. 
 
-The comment identifier can be obtained when [adding a new comment](../comment-item/task-comment-item-add.md) or by using the [method to get the list of comments](../comment-item/task-comment-item-get-list.md) for the task ||
+The comment identifier can be obtained when [adding a new comment](../comment-item/task-comment-item-add.md) or by using the [get list of comments](../comment-item/task-comment-item-get-list.md) method for the task ||
 |#
 
 ## Code Examples
@@ -59,27 +59,77 @@ The comment identifier can be obtained when [adding a new comment](../comment-it
     https://**put_your_bitrix24_address**/rest/tasks.task.result.deleteFromComment
     ```
 
-- JS
+- JS (TS)
 
-    ```javascript
-    try
-    {
-        const response = await $b24.callMethod(
-            'tasks.task.result.deleteFromComment',
-            {
-                commentId: 3199,
-            }
-        );
-        
-        const result = response.getData().result;
-        console.log('Deleted comment with ID:', result);
-        
-        processResult(result);
+    ```ts
+    // This snippet is an ES module: top-level await requires type="module" or a bundler.
+    // $b24 is an already-initialized SDK instance (see the SDK "Get started" guide).
+    import { Text } from '@bitrix24/b24jssdk'
+    import type { B24Frame } from '@bitrix24/b24jssdk'
+
+    declare const $b24: B24Frame
+
+    // result is null on success (the comment was unfixed from the task result)
+    // Shape of the payload returned in result (match the "response handling" section of the page)
+    type DeleteFromCommentResult = null
+
+    try {
+      const response = await $b24.actions.v2.call.make<DeleteFromCommentResult>({
+        method: 'tasks.task.result.deleteFromComment',
+        params: {
+          commentId: 3199,
+        },
+        requestId: Text.getUuidRfc4122()
+      })
+
+      // The payload is available only on a successful response
+      if (!response.isSuccess) {
+        console.error(response.getErrorMessages().join('; '))
+      } else {
+        const result = response.getData()!.result
+        console.info('Comment successfully unfixed from task result:', result)
+      }
+    } catch (error) {
+      // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+      console.error(error)
     }
-    catch( error )
-    {
-        console.error('Error:', error);
-    }
+    ```
+
+- JS (UMD)
+
+    ```html
+    <!-- Load the SDK (UMD build); it is exposed as the global B24Js -->
+    <script src="https://unpkg.com/@bitrix24/b24jssdk@1/dist/umd/index.min.js"></script>
+    <script>
+      async function deleteFromComment() {
+        try {
+          // Initialize the SDK inside a Bitrix24 frame
+          const $b24 = await B24Js.initializeB24Frame()
+
+          const response = await $b24.actions.v2.call.make({
+            method: 'tasks.task.result.deleteFromComment',
+            params: {
+              commentId: 3199,
+            },
+            requestId: B24Js.Text.getUuidRfc4122()
+          })
+
+          // The payload is available only on a successful response
+          if (!response.isSuccess) {
+            console.error(response.getErrorMessages().join('; '))
+            return
+          }
+
+          const result = response.getData().result
+          console.info('Comment successfully unfixed from task result:', result)
+        } catch (error) {
+          // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+          console.error(error)
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', deleteFromComment)
+    </script>
     ```
 
 - PHP
@@ -144,7 +194,7 @@ The comment identifier can be obtained when [adding a new comment](../comment-it
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -164,7 +214,7 @@ HTTP status: **200**
 
 ### Returned Data
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **result**
@@ -175,7 +225,7 @@ HTTP status: **200**
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {
@@ -188,10 +238,10 @@ HTTP status: **400**
 
 ### Possible Error Codes
 
-#|
+#| 
 || **Code** | **Description** | **Value** ||
-|| `0` | Access denied. | The user does not have access permission to the task or the comment does not belong to the user ||
-|| `100` | Invalid value {value} to match with parameter {commentId}. Should be value of type int. | The parameter `commentId` has an invalid type. It should be of type `integer` ||
+|| `0` | Access denied. | The user does not have access rights to the task or the comment does not belong to the user ||
+|| `100` | Invalid value {value} to match with parameter {commentId}. Should be value of type int. | The value of incorrect type was passed in the `commentId` parameter. It should be of type `integer` ||
 || `0` | Comment not found. | A comment with such an identifier does not exist ||
 |#
 

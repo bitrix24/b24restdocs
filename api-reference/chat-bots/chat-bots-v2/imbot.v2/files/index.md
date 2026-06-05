@@ -6,14 +6,14 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-This section contains methods for uploading files to the chat on behalf of the bot and obtaining a link to download an already uploaded file.
+The methods allow you to upload files to the chat on behalf of the bot and obtain a download link for the already uploaded file.
 
 > Quick navigation: [all methods](#all-methods)
 
 ## How to Work with Files
 
-- Use [imbot.v2.File.upload](./file-upload.md) to upload a file to the chat and, if necessary, send it along with a message.
-- Use [imbot.v2.File.download](./file-download.md) to obtain a link for downloading the file.
+- use [imbot.v2.File.upload](./file-upload.md) to upload a file to the chat and, if necessary, send it along with a message.
+- use [imbot.v2.File.download](./file-download.md) to get a link for downloading the file.
 
 ## Overview of Methods {#all-methods}
 
@@ -29,6 +29,6 @@ This section contains methods for uploading files to the chat on behalf of the b
 
 ## Continue Your Exploration
 
-- [API Change Log for imbot.v2](../../change-log.md)
+- [API imbot.v2 Change Log](../../change-log.md)
 - [{#T}](../../index.md)
-- [Messages for imbot.v2](../messages/index.md)
+- [Messages imbot.v2](../messages/index.md)

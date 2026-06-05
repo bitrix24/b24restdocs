@@ -1,4 +1,4 @@
-# Get Download Link for imbot.v2.File.download
+# Get a Link to Download the File imbot.v2.File.download
 
 {% note tip "" %}
 
@@ -14,24 +14,24 @@ The method `imbot.v2.File.download` returns a link to download a file from the c
 
 ## Method Parameters
 
-{% include [Footnote on parameters](../../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../../_includes/required.md) %}
 
-#|
-|| **Name**
+#| 
+|| **Name** 
 `Type` | **Description** ||
-|| **botId***
+|| **botId*** 
 [`integer`](../../../../data-types.md) | Bot ID ||
-|| **botToken**
+|| **botToken** 
 [`string`](../../../../data-types.md) | Unique authorization token for the bot. Required for webhook authorization, not needed for OAuth.
 
-Pass the same botToken that was specified during the chat bot registration ||
-|| **fileId***
-[`integer`](../../../../data-types.md) | File ID on Drive. Can be obtained from the response of the [imbot.v2.File.upload](./file-upload.md) method ||
+Pass the same botToken that was specified during the chat-bot registration ||
+|| **fileId*** 
+[`integer`](../../../../data-types.md) | File ID on Drive. Can be obtained from the response of the method [imbot.v2.File.upload](./file-upload.md) ||
 |#
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -140,7 +140,7 @@ Pass the same botToken that was specified during the chat bot registration ||
 
 ## Response Handling
 
-HTTP Code: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -160,14 +160,14 @@ HTTP Code: **200**
 
 ## Returned Data
 
-#|
-|| **Name**
+#| 
+|| **Name** 
 `Type` | **Description** ||
-|| **result**
+|| **result** 
 [`object`](../../../../data-types.md) | Result of the operation ||
-|| **result.downloadUrl**
-[`string`](../../../../data-types.md) | One-time link to download the file. The link contains an authorization token; reuse is not guaranteed ||
-|| **time**
+|| **result.downloadUrl** 
+[`string`](../../../../data-types.md) | One-time link to download the file. The link contains an authorization token, reuse is not guaranteed ||
+|| **time** 
 [`time`](../../../../data-types.md#time) | Information about the request execution time ||
 |#
 
@@ -186,10 +186,10 @@ HTTP Status: **400**, **403**
 
 ### Possible Error Codes
 
-#|
+#| 
 || **Code** | **Description** | **Value** ||
-|| `BOT_TOKEN_NOT_SPECIFIED` | Bot token is not specified | `botToken` is not specified. Required for webhook authorization ||
-|| `BOT_ID_REQUIRED` | Bot ID is required | `botId` is not specified ||
+|| `BOT_TOKEN_NOT_SPECIFIED` | Bot token is not specified | Bot token is not specified. Required for webhook authorization ||
+|| `BOT_ID_REQUIRED` | Bot ID is required | Bot ID is required ||
 || `BOT_NOT_FOUND` | Bot not found | Bot not found ||
 || `BOT_OWNERSHIP_ERROR` | Bot is registered by another application | Bot is registered by another application ||
 || `FILE_ACCESS_ERROR` | File access error | No permission to download the file ||

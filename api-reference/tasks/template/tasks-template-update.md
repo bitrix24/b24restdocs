@@ -8,7 +8,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`task`](../../scopes/permissions.md)
 >
-> Who can execute the method: user with template editing access permission
+> Who can execute the method: a user with template editing access permission
 
 The method `tasks.template.update` updates an existing task template.
 
@@ -16,15 +16,15 @@ The method `tasks.template.update` updates an existing task template.
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
-|| **templateId***
-[`integer`](../../data-types.md) | Identifier of the task template.
+|| **templateId*** 
+[`integer`](../../data-types.md) | The identifier of the task template.
 
 The task template identifier can be obtained when [creating a new template](./tasks-template-add.md) ||
-|| **fields***
-[`object`](../../data-types.md) | Fields of the template that need to be modified.
+|| **fields*** 
+[`object`](../../data-types.md) | The fields of the template that need to be changed.
 
 The fields and value types correspond to the description on the [Task Template Fields](./fields.md) page ||
 |#
@@ -44,8 +44,8 @@ The fields and value types correspond to the description on the [Task Template F
     -d '{
       "templateId": 139,
       "fields": {
-        "TITLE": "Preparation of Weekly Project Status and Approval",
-        "DESCRIPTION": "Updated task template for preparing the weekly project status and final approval before submission",
+        "TITLE": "Preparation of weekly project status and approval",
+        "DESCRIPTION": "Updated task template for preparing weekly project status and final approval before sending",
         "PRIORITY": 1,
         "TASK_CONTROL": "Y",
         "ADD_IN_REPORT": "Y",
@@ -64,8 +64,8 @@ The fields and value types correspond to the description on the [Task Template F
     -d '{
       "templateId": 139,
       "fields": {
-        "TITLE": "Preparation of Weekly Project Status and Approval",
-        "DESCRIPTION": "Updated task template for preparing the weekly project status and final approval before submission",
+        "TITLE": "Preparation of weekly project status and approval",
+        "DESCRIPTION": "Updated task template for preparing weekly project status and final approval before sending",
         "PRIORITY": 1,
         "TASK_CONTROL": "Y",
         "ADD_IN_REPORT": "Y",
@@ -76,33 +76,92 @@ The fields and value types correspond to the description on the [Task Template F
     https://**put_your_bitrix24_address**/rest/tasks.template.update
     ```
 
-- JS
+- JS (TS)
 
-    ```js
-    try
-    {
-        const response = await $b24.callMethod(
-            'tasks.template.update',
-            {
-                templateId: 139,
-                fields: {
-                    TITLE: 'Preparation of Weekly Project Status and Approval',
-                    DESCRIPTION: 'Updated task template for preparing the weekly project status and final approval before submission',
-                    PRIORITY: 1,
-                    TASK_CONTROL: 'Y',
-                    ADD_IN_REPORT: 'Y',
-                    UF_CRM_TASK: ['L_1179', 'D_1833']
-                }
-            }
-        );
+    ```ts
+    // This snippet is an ES module: top-level await requires type="module" or a bundler.
+    // $b24 is an already-initialized SDK instance (see the SDK "Get started" guide).
+    import { Text } from '@bitrix24/b24jssdk'
+    import type { B24Frame } from '@bitrix24/b24jssdk'
 
-        const result = response.getData().result;
-        console.log(result);
+    declare const $b24: B24Frame
+
+    // Shape of the payload returned in result (match the "response handling" section of the page)
+    type TemplateUpdateResult = boolean
+
+    try {
+      const response = await $b24.actions.v2.call.make<TemplateUpdateResult>({
+        method: 'tasks.template.update',
+        params: {
+          templateId: 139,
+          fields: {
+            TITLE: 'Preparation of weekly project status and approval',
+            DESCRIPTION: 'Updated task template for preparing weekly project status and final approval before sending',
+            PRIORITY: 1,
+            TASK_CONTROL: 'Y',
+            ADD_IN_REPORT: 'Y',
+            UF_CRM_TASK: ['L_1179', 'D_1833'],
+          },
+        },
+        requestId: Text.getUuidRfc4122()
+      })
+
+      // The payload is available only on a successful response
+      if (!response.isSuccess) {
+        console.error(response.getErrorMessages().join('; '))
+      } else {
+        const result = response.getData()!.result
+        console.info('Template updated:', result)
+      }
+    } catch (error) {
+      // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+      console.error(error)
     }
-    catch (error)
-    {
-        console.error(error);
-    }
+    ```
+
+- JS (UMD)
+
+    ```html
+    <!-- Load the SDK (UMD build); it is exposed as the global B24Js -->
+    <script src="https://unpkg.com/@bitrix24/b24jssdk@1/dist/umd/index.min.js"></script>
+    <script>
+      async function updateTemplate() {
+        try {
+          // Initialize the SDK inside a Bitrix24 frame
+          const $b24 = await B24Js.initializeB24Frame()
+
+          const response = await $b24.actions.v2.call.make({
+            method: 'tasks.template.update',
+            params: {
+              templateId: 139,
+              fields: {
+                TITLE: 'Preparation of weekly project status and approval',
+                DESCRIPTION: 'Updated task template for preparing weekly project status and final approval before sending',
+                PRIORITY: 1,
+                TASK_CONTROL: 'Y',
+                ADD_IN_REPORT: 'Y',
+                UF_CRM_TASK: ['L_1179', 'D_1833'],
+              },
+            },
+            requestId: B24Js.Text.getUuidRfc4122()
+          })
+
+          // The payload is available only on a successful response
+          if (!response.isSuccess) {
+            console.error(response.getErrorMessages().join('; '))
+            return
+          }
+
+          const result = response.getData().result
+          console.info('Template updated:', result)
+        } catch (error) {
+          // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+          console.error(error)
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', updateTemplate)
+    </script>
     ```
 
 - PHP
@@ -116,8 +175,8 @@ The fields and value types correspond to the description on the [Task Template F
                 [
                     'templateId' => 139,
                     'fields' => [
-                        'TITLE' => 'Preparation of Weekly Project Status and Approval',
-                        'DESCRIPTION' => 'Updated task template for preparing the weekly project status and final approval before submission',
+                        'TITLE' => 'Preparation of weekly project status and approval',
+                        'DESCRIPTION' => 'Updated task template for preparing weekly project status and final approval before sending',
                         'PRIORITY' => 1,
                         'TASK_CONTROL' => 'Y',
                         'ADD_IN_REPORT' => 'Y',
@@ -145,8 +204,8 @@ The fields and value types correspond to the description on the [Task Template F
         {
             templateId: 139,
             fields: {
-                TITLE: 'Preparation of Weekly Project Status and Approval',
-                DESCRIPTION: 'Updated task template for preparing the weekly project status and final approval before submission',
+                TITLE: 'Preparation of weekly project status and approval',
+                DESCRIPTION: 'Updated task template for preparing weekly project status and final approval before sending',
                 PRIORITY: 1,
                 TASK_CONTROL: 'Y',
                 ADD_IN_REPORT: 'Y',
@@ -177,8 +236,8 @@ The fields and value types correspond to the description on the [Task Template F
         [
             'templateId' => 139,
             'fields' => [
-                'TITLE' => 'Preparation of Weekly Project Status and Approval',
-                'DESCRIPTION' => 'Updated task template for preparing the weekly project status and final approval before submission',
+                'TITLE' => 'Preparation of weekly project status and approval',
+                'DESCRIPTION' => 'Updated task template for preparing weekly project status and final approval before sending',
                 'PRIORITY' => 1,
                 'TASK_CONTROL' => 'Y',
                 'ADD_IN_REPORT' => 'Y',
@@ -214,14 +273,14 @@ HTTP Status: **200**
 
 ### Returned Data
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **result**
 [`boolean`](../../data-types.md) | Returns `true` if the template was successfully updated.
 
 Returns `false`
-- if the template with the specified `templateId` does not exist
+- if a template with the specified `templateId` does not exist
 - if the user does not have access permission to edit the template ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
@@ -242,11 +301,11 @@ HTTP Status: **400**
 
 ### Possible Error Codes
 
-#|
+#| 
 || **Status** | **Code** | **Description** | **Value** ||
-|| `400` | `100` | Could not find value for parameter {templateId} | Required parameter `templateId` not provided ||
-|| `400` | `100` | Invalid value {} to match with parameter {templateId}. Should be value of type int. | Parameter `templateId` was provided incorrectly or is empty ||
-|| `400` | `100` | Could not find value for parameter {fields} | Required parameter `fields` not provided ||
+|| `400` | `100` | Could not find value for parameter {templateId} | Required parameter `templateId` is missing ||
+|| `400` | `100` | Invalid value {} to match with parameter {templateId}. Should be value of type int. | The `templateId` parameter is invalid or empty ||
+|| `400` | `100` | Could not find value for parameter {fields} | Required parameter `fields` is missing ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

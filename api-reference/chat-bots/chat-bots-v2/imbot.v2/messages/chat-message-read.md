@@ -14,26 +14,26 @@ The method `imbot.v2.Chat.Message.read` marks messages as read on behalf of the 
 
 ## Method Parameters
 
-{% include [Footnote about parameters](../../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../../_includes/required.md) %}
 
-#|
-|| **Name**
+#| 
+|| **Name** 
 `Type` | **Description** ||
-|| **botId***
+|| **botId*** 
 [`integer`](../../../../data-types.md) | Bot ID ||
-|| **botToken**
+|| **botToken** 
 [`string`](../../../../data-types.md) | Unique authorization token for the bot. Required for webhook authorization, not needed for OAuth.
 
 Pass the same botToken that was specified during the chat bot registration ||
-|| **dialogId***
+|| **dialogId*** 
 [`string`](../../../../data-types.md) | Dialog ID. For group chats — `chat{chatId}`, for personal chats — `{userId}` ||
-|| **messageId**
-[`integer`](../../../../data-types.md) | Read all messages up to and including this one. If not specified, it will read all messages in the chat ||
+|| **messageId** 
+[`integer`](../../../../data-types.md) | Read all messages up to and including this one. If not specified — reads all messages in the chat ||
 |#
 
 ## Code Examples
 
-{% include [Footnote about examples](../../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -145,7 +145,7 @@ Pass the same botToken that was specified during the chat bot registration ||
 
 ## Response Handling
 
-HTTP Code: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -168,20 +168,20 @@ HTTP Code: **200**
 
 ## Returned Data
 
-#|
-|| **Name**
+#| 
+|| **Name** 
 `Type` | **Description** ||
-|| **result**
+|| **result** 
 [`object`](../../../../data-types.md) | Result of the operation ||
-|| **result.chatId**
+|| **result.chatId** 
 [`integer`](../../../../data-types.md) | Chat ID ||
-|| **result.lastId**
+|| **result.lastId** 
 [`integer`](../../../../data-types.md) | ID of the last read message ||
-|| **result.counter**
-[`integer`](../../../../data-types.md) | Remaining count of unread messages ||
-|| **result.viewedMessages**
+|| **result.counter** 
+[`integer`](../../../../data-types.md) | Remaining counter of unread messages ||
+|| **result.viewedMessages** 
 [`integer[]`](../../../../data-types.md) | Array of IDs of viewed messages ||
-|| **time**
+|| **time** 
 [`time`](../../../../data-types.md#time) | Information about the request execution time ||
 |#
 
@@ -200,12 +200,12 @@ HTTP Status: **400**, **403**
 
 ### Possible Error Codes
 
-#|
+#| 
 || **Code** | **Description** | **Value** ||
-|| `BOT_TOKEN_NOT_SPECIFIED` | Bot token is not specified | `botToken` is not specified. Required for webhook authorization ||
+|| `BOT_TOKEN_NOT_SPECIFIED` | Bot token is not specified | `botToken` is not provided. Required for webhook authorization ||
 || `BOT_ID_REQUIRED` | Bot ID is required | `botId` is not specified ||
 || `BOT_NOT_FOUND` | Bot not found | Bot not found ||
-|| `BOT_OWNERSHIP_ERROR` | Bot is registered by another application | Bot registered by another application ||
+|| `BOT_OWNERSHIP_ERROR` | Bot is registered by another application | Bot is registered by another application ||
 || `ACCESS_DENIED` | Access denied | Bot is not a participant in the chat ||
 || `MESSAGE_NOT_FOUND` | Message not found | The specified message was not found or is unavailable ||
 |#

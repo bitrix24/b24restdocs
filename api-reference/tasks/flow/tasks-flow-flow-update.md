@@ -1,4 +1,4 @@
-# Update Flow tasks.flow.Flow.update
+# Update the Flow tasks.flow.Flow.update
 
 {% note tip "" %}
 
@@ -8,7 +8,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`task`](../../scopes/permissions.md)
 >
-> Who can execute the method: the creator or administrator of the flow
+> Who can execute the method: Creator or administrator of the flow
 
 The method `tasks.flow.Flow.update` modifies the flow.
 
@@ -16,18 +16,18 @@ The method `tasks.flow.Flow.update` modifies the flow.
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **flowData*** 
-[`object`](../../data-types.md) | Field values for modifying the flow (detailed description provided below) ||
+[`object`](../../data-types.md) | Field values to modify the flow (detailed description below) ||
 |#
 
 ### Parameter flowData
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **id*** 
@@ -43,7 +43,7 @@ To check the name, you can use the method [tasks.flow.Flow.isExists](./tasks-flo
 || **groupId** 
 [`integer`](../../data-types.md) | Identifier of the group to which the flow will be linked. 
 
-If not specified, a new group will be automatically created ||
+If not specified, a new group is automatically created ||
 || **ownerId** 
 [`integer`](../../data-types.md) | Identifier of the flow administrator. 
 
@@ -59,13 +59,13 @@ If not specified, the creator of the flow will be the administrator ||
 - `queue` — distribution by queue
 - `himself` — self-distribution
 
-More about distribution types can be found in the article [{#T}](./index.md) ||
+More about distribution types in the article [{#T}](./index.md) ||
 || **responsibleList*** 
 [`array`](../../data-types.md) | Identifiers of employees who will receive tasks.
 
 For manual distribution, specify the identifier of the flow moderator.
 
-For self-distribution or queue distribution, specify the identifiers of employees or departments. For example:
+For self-distribution or queue distribution, specify identifiers of employees or departments. For example:
 
 ```js
 [
@@ -101,15 +101,15 @@ To allow all users to add tasks, specify the value `{"meta-user": "all-users"}` 
 
 Accepts values `0` and `1`. Default is `1` ||
 || **responsibleCanChangeDeadline** 
-[`integer`](../../data-types.md) | Can the responsible person change the task deadline? 
+[`integer`](../../data-types.md) | Can the responsible person change the task deadline. 
 
 Accepts values `0` and `1`. Default is `0` ||
 || **notifyAtHalfTime** 
-[`integer`](../../data-types.md) | Notify the assignee at half the task deadline. 
+[`integer`](../../data-types.md) | Notify the performer at half the task deadline. 
 
 Accepts values `0` and `1`. Default is `0` ||
 || **taskControl** 
-[`integer`](../../data-types.md) | Send the completed task to the creator for review. 
+[`integer`](../../data-types.md) | Send the completed task to the Creator for review. 
 
 Accepts values `0` and `1`. Default is `0` ||
 || **notifyOnQueueOverflow** 
@@ -121,7 +121,7 @@ Default is `null` (do not notify) ||
 
 Default is `50` ||
 || **notifyWhenEfficiencyDecreases** 
-[`integer`](../../data-types.md) | Notify the flow administrator when efficiency drops below this parameter. 
+[`integer`](../../data-types.md) | Notify the flow administrator when efficiency falls below this parameter. 
 
 Default is `null` (do not notify) ||
 |#
@@ -175,43 +175,137 @@ Default is `null` (do not notify) ||
     https://your-domain.bitrix24.com/rest/tasks.flow.Flow.update
     ```
 
-- JS
+- JS (TS)
 
-    ```js
-    try
-    {
-        const response = await $b24.callMethod(
-            'tasks.flow.Flow.update',
-            {
-                flowData: {
-                    id: 517,
-                    name: 'Updated Flow Name',
-                    description: 'Updated description',
-                    plannedCompletionTime: 7200,
-                    distributionType: 'manually',
-                    responsibleList: [
-                        [
-                            'user','3'
-                        ]
-                    ],
-                    taskCreators: [
-                        [
-                            'meta-user','all-users'
-                        ]
-                    ],
-                    matchWorkTime: 1,
-                    notifyAtHalfTime: 0
-                }
-            }
-        );
-        
-        const result = response.getData().result;
-        console.info(result);
+    ```ts
+    // This snippet is an ES module: top-level await requires type="module" or a bundler.
+    // $b24 is an already-initialized SDK instance (see the SDK "Get started" guide).
+    import { Text } from '@bitrix24/b24jssdk'
+    import type { B24Frame, ISODate } from '@bitrix24/b24jssdk'
+
+    declare const $b24: B24Frame
+
+    // Shape of the payload returned in result (match the "response handling" section of the page)
+    type FlowUpdateResult = {
+      id: number
+      creatorId: number
+      ownerId: number
+      groupId: number
+      templateId: number
+      efficiency: number
+      active: boolean
+      plannedCompletionTime: number
+      activity: ISODate
+      name: string
+      description: string
+      distributionType: string
+      responsibleList: string[][]
+      demo: boolean
+      responsibleCanChangeDeadline: boolean
+      matchWorkTime: boolean
+      taskControl: boolean
+      notifyAtHalfTime: boolean
+      notifyOnQueueOverflow: number | null
+      notifyOnTasksInProgressOverflow: number
+      notifyWhenEfficiencyDecreases: number | null
+      taskCreators: string[][]
+      team: string[][]
+      trialFeatureEnabled: boolean
     }
-    catch( error )
-    {
-        console.error(error);
+
+    try {
+      const response = await $b24.actions.v2.call.make<FlowUpdateResult>({
+        method: 'tasks.flow.Flow.update',
+        params: {
+          flowData: {
+            id: 517,
+            name: 'Updated Flow Name',
+            description: 'Updated description',
+            plannedCompletionTime: 7200,
+            distributionType: 'manually',
+            responsibleList: [
+              [
+                'user', '3',
+              ],
+            ],
+            taskCreators: [
+              [
+                'meta-user', 'all-users',
+              ],
+            ],
+            matchWorkTime: 1,
+            notifyAtHalfTime: 0,
+          },
+        },
+        requestId: Text.getUuidRfc4122()
+      })
+
+      // The payload is available only on a successful response
+      if (!response.isSuccess) {
+        console.error(response.getErrorMessages().join('; '))
+      } else {
+        const result = response.getData()!.result
+        console.info('Updated flow:', result.id, result.name, result.distributionType)
+      }
+    } catch (error) {
+      // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+      console.error(error)
     }
+    ```
+
+- JS (UMD)
+
+    ```html
+    <!-- Load the SDK (UMD build); it is exposed as the global B24Js -->
+    <script src="https://unpkg.com/@bitrix24/b24jssdk@1/dist/umd/index.min.js"></script>
+    <script>
+      async function updateFlow() {
+        try {
+          // Initialize the SDK inside a Bitrix24 frame
+          const $b24 = await B24Js.initializeB24Frame()
+
+          const response = await $b24.actions.v2.call.make({
+            method: 'tasks.flow.Flow.update',
+            params: {
+              flowData: {
+                id: 517,
+                name: 'Updated Flow Name',
+                description: 'Updated description',
+                plannedCompletionTime: 7200,
+                distributionType: 'manually',
+                responsibleList: [
+                  [
+                    'user', '3',
+                  ],
+                ],
+                taskCreators: [
+                  [
+                    'meta-user', 'all-users',
+                  ],
+                ],
+                matchWorkTime: 1,
+                notifyAtHalfTime: 0,
+              },
+            },
+            requestId: B24Js.Text.getUuidRfc4122()
+          })
+
+          // The payload is available only on a successful response
+          if (!response.isSuccess) {
+            console.error(response.getErrorMessages().join('; '))
+            return
+          }
+
+          const result = response.getData().result
+          console.info('Updated flow:', result.id, result.name, result.distributionType)
+        } catch (error) {
+          // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+          console.error(error)
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', updateFlow)
+    </script>
     ```
 
 - PHP
@@ -306,7 +400,7 @@ Default is `null` (do not notify) ||
         "notifyAtHalfTime" => 0
     ];
 
-    // execute request to REST API
+    // execute the request to the REST API
     $result = CRest::call(
         'tasks.flow.Flow.update',
         [
@@ -314,7 +408,7 @@ Default is `null` (do not notify) ||
         ]
     );
 
-    // Process the response from Bitrix24
+    // Handle the response from Bitrix24
     if ($result['error']) {
         echo 'Error: '.$result['error_description'];
     } else {
@@ -376,7 +470,7 @@ HTTP Status: **200**
 
 ### Returned Data
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **result** 
@@ -410,13 +504,13 @@ HTTP Status: **200**
 || **demo** 
 [`boolean`](../../data-types.md) | Indicates whether the flow is a demo. System parameter. Read-only ||
 || **responsibleCanChangeDeadline** 
-[`boolean`](../../data-types.md) | Can the responsible person change the task deadline? ||
+[`boolean`](../../data-types.md) | Can the responsible person change the task deadline ||
 || **matchWorkTime** 
-[`boolean`](../../data-types.md) | Should weekends and holidays be skipped when calculating the task deadline? ||
+[`boolean`](../../data-types.md) | Whether to skip weekends and holidays when calculating the task deadline ||
 || **taskControl** 
-[`boolean`](../../data-types.md) | Should the completed task be sent to the creator for review? ||
+[`boolean`](../../data-types.md) | Whether to send the completed task to the Creator for review ||
 || **notifyAtHalfTime** 
-[`boolean`](../../data-types.md) | Should the assignee be notified at half the task deadline? ||
+[`boolean`](../../data-types.md) | Whether to notify the performer at half the task deadline ||
 || **notifyOnQueueOverflow** 
 [`integer`](../../data-types.md) | Number of tasks in the queue, exceeding which will send a notification to the flow administrator (if `null`, notifications are disabled) ||
 || **notifyOnTasksInProgressOverflow** 
@@ -452,9 +546,9 @@ HTTP Status: **400**
 
 ### Possible Error Codes
 
-#|
+#| 
 || **Code** | **Description** | **Additional Information** ||
-|| `0` | Access denied or flow not found | The account plan does not allow working with flows or the user does not have permission to modify the flow ||
+|| `0` | Access denied or flow not found | The portal plan does not allow working with flows or the user does not have permission to modify the flow ||
 || `0` | `Unknown error` | Unknown error ||
 || `0` | `'distributionType': field's value has an invalid value` | Invalid value for `distributionType`. Similar for other parameters ||
 || `0` | A flow with this name already exists | ||

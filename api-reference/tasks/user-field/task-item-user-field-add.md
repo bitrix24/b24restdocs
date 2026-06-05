@@ -16,7 +16,7 @@ When creating a custom field, it is mandatory to use the prefix `UF_` in the fie
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -54,7 +54,7 @@ Supported values:
 - `Y` — multiple
 - `N` — single
 
-Applicable for types `string`, `double`, `datetime`. For the `boolean` type, `N` is always used ||
+Applies to types `string`, `double`, `datetime`. For type `boolean`, `N` is always used ||
 || **MANDATORY**
 [`string`](../../data-types.md) | Mandatory value. Possible values:
 - `Y` — mandatory
@@ -108,11 +108,11 @@ The fields of the `SETTINGS` object depend on the `USER_TYPE_ID` type.
     `type` | **Description** ||
     || **DEFAULT_VALUE**
      | Default value. Described as an object with two parameters:
-    1. `TYPE` [`string`](../../data-types.md) — mode for setting the default value
-        - `NONE` — no default value is set
+    1. `TYPE` [`string`](../../data-types.md) — mode for filling the default value
+        - `NONE` — default value is not set
         - `FIXED` — uses the value from `VALUE`
         - `NOW` — uses the current time
-    2. `VALUE` [`datetime`](../../data-types.md) — value for the `FIXED` type
+    2. `VALUE` [`datetime`](../../data-types.md) — value for type `FIXED`
     
     ```js
     DEFAULT_VALUE: {
@@ -144,7 +144,7 @@ The fields of the `SETTINGS` object depend on the `USER_TYPE_ID` type.
 
 ## Code Examples
 
-{% include [Note on examples](../../../_includes/examples.md) %}
+{% include [Note on Examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -168,7 +168,7 @@ The fields of the `SETTINGS` object depend on the `USER_TYPE_ID` type.
         "MULTIPLE": "N",
         "MANDATORY": "Y",
         "SETTINGS": {
-          "DEFAULT_VALUE": "Clarify the goal and expected outcome",
+          "DEFAULT_VALUE": "Clarify the goal and expected result",
           "ROWS": 10
         }
       }
@@ -196,7 +196,7 @@ The fields of the `SETTINGS` object depend on the `USER_TYPE_ID` type.
         "MULTIPLE": "N",
         "MANDATORY": "Y",
         "SETTINGS": {
-          "DEFAULT_VALUE": "Clarify the goal and expected outcome",
+          "DEFAULT_VALUE": "Clarify the goal and expected result",
           "ROWS": 10
         }
       },
@@ -205,41 +205,105 @@ The fields of the `SETTINGS` object depend on the `USER_TYPE_ID` type.
     https://**put_your_bitrix24_address**/rest/task.item.userfield.add
     ```
 
-- JS
+- JS (TS)
 
-    ```js
-    try
-    {
-        const response = await $b24.callMethod(
-            'task.item.userfield.add',
-            {
-                PARAMS: {
-                    USER_TYPE_ID: 'string',
-                    FIELD_NAME: 'UF_TASK_CLIENT_REQUEST',
-                    XML_ID: 'UF_TASK_CLIENT_REQUEST',
-                    EDIT_FORM_LABEL: {
-                        de: 'Kundenanfrage',
-                        en: 'Client request'
-                    },
-                    LABEL: 'Client request',
-                    SORT: 220,
-                    MULTIPLE: 'N',
-                    MANDATORY: 'Y',
-                    SETTINGS: {
-                        DEFAULT_VALUE: 'Clarify the goal and expected outcome',
-                        ROWS: 10
-                    }
-                }
-            }
-        );
+    ```ts
+    // This snippet is an ES module: top-level await requires type="module" or a bundler.
+    // $b24 is an already-initialized SDK instance (see the SDK "Get started" guide).
+    import { Text } from '@bitrix24/b24jssdk'
+    import type { B24Frame } from '@bitrix24/b24jssdk'
 
-        const result = response.getData().result;
-        console.log(result);
+    declare const $b24: B24Frame
+
+    try {
+      const response = await $b24.actions.v2.call.make<number>({
+        method: 'task.item.userfield.add',
+        params: {
+          PARAMS: {
+            USER_TYPE_ID: 'string',
+            FIELD_NAME: 'UF_TASK_CLIENT_REQUEST',
+            XML_ID: 'UF_TASK_CLIENT_REQUEST',
+            EDIT_FORM_LABEL: {
+              de: 'Kundenanfrage',
+              en: 'Client request',
+            },
+            LABEL: 'Client request',
+            SORT: 220,
+            MULTIPLE: 'N',
+            MANDATORY: 'Y',
+            SETTINGS: {
+              DEFAULT_VALUE: 'Clarify the goal and expected result',
+              ROWS: 10,
+            },
+          },
+        },
+        requestId: Text.getUuidRfc4122()
+      })
+
+      // The payload is available only on a successful response
+      if (!response.isSuccess) {
+        console.error(response.getErrorMessages().join('; '))
+      } else {
+        const result = response.getData()!.result
+        console.info('Created user field ID:', result)
+      }
+    } catch (error) {
+      // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+      console.error(error)
     }
-    catch (error)
-    {
-        console.error(error);
-    }
+    ```
+
+- JS (UMD)
+
+    ```html
+    <!-- Load the SDK (UMD build); it is exposed as the global B24Js -->
+    <script src="https://unpkg.com/@bitrix24/b24jssdk@1/dist/umd/index.min.js"></script>
+    <script>
+      async function addTaskUserField() {
+        try {
+          // Initialize the SDK inside a Bitrix24 frame
+          const $b24 = await B24Js.initializeB24Frame()
+
+          const response = await $b24.actions.v2.call.make({
+            method: 'task.item.userfield.add',
+            params: {
+              PARAMS: {
+                USER_TYPE_ID: 'string',
+                FIELD_NAME: 'UF_TASK_CLIENT_REQUEST',
+                XML_ID: 'UF_TASK_CLIENT_REQUEST',
+                EDIT_FORM_LABEL: {
+                  de: 'Kundenanfrage',
+                  en: 'Client request',
+                },
+                LABEL: 'Client request',
+                SORT: 220,
+                MULTIPLE: 'N',
+                MANDATORY: 'Y',
+                SETTINGS: {
+                  DEFAULT_VALUE: 'Clarify the goal and expected result',
+                  ROWS: 10,
+                },
+              },
+            },
+            requestId: B24Js.Text.getUuidRfc4122()
+          })
+
+          // The payload is available only on a successful response
+          if (!response.isSuccess) {
+            console.error(response.getErrorMessages().join('; '))
+            return
+          }
+
+          const result = response.getData().result
+          console.info('Created user field ID:', result)
+        } catch (error) {
+          // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+          console.error(error)
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', addTaskUserField)
+    </script>
     ```
 
 - PHP
@@ -264,7 +328,7 @@ The fields of the `SETTINGS` object depend on the `USER_TYPE_ID` type.
                         'MULTIPLE' => 'N',
                         'MANDATORY' => 'Y',
                         'SETTINGS' => [
-                            'DEFAULT_VALUE' => 'Clarify the goal and expected outcome',
+                            'DEFAULT_VALUE' => 'Clarify the goal and expected result',
                             'ROWS' => 10
                         ]
                     ]
@@ -300,7 +364,7 @@ The fields of the `SETTINGS` object depend on the `USER_TYPE_ID` type.
                 MULTIPLE: 'N',
                 MANDATORY: 'Y',
                 SETTINGS: {
-                    DEFAULT_VALUE: 'Clarify the goal and expected outcome',
+                    DEFAULT_VALUE: 'Clarify the goal and expected result',
                     ROWS: 10
                 }
             }
@@ -340,7 +404,7 @@ The fields of the `SETTINGS` object depend on the `USER_TYPE_ID` type.
                 'MULTIPLE' => 'N',
                 'MANDATORY' => 'Y',
                 'SETTINGS' => [
-                    'DEFAULT_VALUE' => 'Clarify the goal and expected outcome',
+                    'DEFAULT_VALUE' => 'Clarify the goal and expected result',
                     'ROWS' => 10
                 ]
             ]
@@ -394,20 +458,20 @@ HTTP Status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../_includes/error-info.md) %}
+{% include notitle [Error Handling](../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
 || **Status** | **Code** | **Description** | **Value** ||
-|| `400` | `ERROR_CORE` | The 'USER_TYPE_ID' field is not found | The `USER_TYPE_ID` parameter is missing or has an empty value ||
+|| `400` | `ERROR_CORE` | The 'USER_TYPE_ID' field is not found | The parameter `USER_TYPE_ID` is not provided or is empty ||
 || `400` | `ERROR_CORE` | Invalid user type specified. | An invalid or non-existent user field type is specified in the `USER_TYPE_ID` parameter ||
-|| `400` | `ERROR_CORE` | The 'FIELD_NAME' field is not found | The `FIELD_NAME` parameter is missing or has an empty value ||
+|| `400` | `ERROR_CORE` | The 'FIELD_NAME' field is not found | The parameter `FIELD_NAME` is not provided or is empty ||
 || `400` | `ERROR_CORE` | The field UF_TASK_CLIENT_REQUEST for the object TASKS_TASK already exists. | The `FIELD_NAME` parameter specifies a custom field name that already exists in the system ||
 || `400` | `ERROR_CORE` | Access denied | Insufficient permissions to create a custom field ||
 |#
 
-{% include [system errors](../../../_includes/system-errors.md) %}
+{% include [System Errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

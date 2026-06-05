@@ -1,4 +1,4 @@
-# Invite User user.add
+# Invite a user user.add
 
 {% note tip "" %}
 
@@ -10,19 +10,19 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: administrator
 
-The method `user.add` invites a user. This can only be done on behalf of a user with the rights to invite users, typically an administrator. Upon success, a standard invitation will be sent to the account. The `result` returns the identifier of the new user.
+The `user.add` method invites a user. This is only possible on behalf of a user with user invitation rights, typically an administrator. Upon success, the user will be sent a standard invitation to the account. In `result`, the identifier of the new user is returned.
 
-If you need to add an extranet user, you must pass the fields: `EXTRANET: Y` and `SONET_GROUP_ID: [...]`. If you need to add an intranet user, it is **mandatory** to pass: `UF_DEPARTMENT: [...]`.
+If you need to add an extranet user, you must pass the following fields: `EXTRANET: Y` and `SONET_GROUP_ID: [...]`. If you need to add an intranet user, the following **must** be provided:`UF_DEPARTMENT: [...]`.
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../_includes/required.md) %}
+{% include [Note on parameters](../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **EMAIL***
-[`string`](../data-types.md) | User's e-mail ||
+[`string`](../data-types.md) | User e-mail ||
 || **NAME**
 [`string`](../data-types.md) | First name ||
 || **LAST_NAME**
@@ -34,11 +34,11 @@ If you need to add an extranet user, you must pass the fields: `EXTRANET: Y` and
 || **PERSONAL_PROFESSION**
 [`string`](../data-types.md) | Profession ||
 || **PERSONAL_WWW**
-[`string`](../data-types.md) | Personal webpage ||
+[`string`](../data-types.md) | Home page ||
 || **PERSONAL_BIRTHDAY**
 [`string`](../data-types.md) | Date of birth ||
 || **PERSONAL_PHOTO**
-[`array`](../data-types.md) | Photo, pass an array with the filename and a string in [Base64](../files/how-to-upload-files.md) ||
+[`array`](../data-types.md) | Photo, pass an array containing the file name and a [Base64](../files/how-to-upload-files.md) string ||
 || **PERSONAL_ICQ**
 [`string`](../data-types.md) | ICQ ||
 || **PERSONAL_PHONE**
@@ -50,25 +50,25 @@ If you need to add an extranet user, you must pass the fields: `EXTRANET: Y` and
 || **PERSONAL_PAGER**
 [`string`](../data-types.md) | Pager ||
 || **PERSONAL_STREET**
-[`string`](../data-types.md) | Street address ||
+[`string`](../data-types.md) | Residential street ||
 || **PERSONAL_CITY**
 [`string`](../data-types.md) | City of residence ||
 || **PERSONAL_STATE**
-[`string`](../data-types.md) | State/Region ||
+[`string`](../data-types.md) | Region / province ||
 || **PERSONAL_ZIP**
-[`string`](../data-types.md) | Zip code ||
+[`string`](../data-types.md) | Postal code ||
 || **PERSONAL_COUNTRY**
 [`string`](../data-types.md) | Country ||
 || **PERSONAL_MAILBOX**
-[`string`](../data-types.md) | Mailbox ||
+[`string`](../data-types.md) | P.O. box ||
 || **PERSONAL_NOTES**
 [`string`](../data-types.md) | Additional notes ||
 || **WORK_PHONE**
 [`string`](../data-types.md) | Company phone ||
 || **WORK_COMPANY**
-[`string`](../data-types.md) | Company ||
+[`string`](../data-types.md) | company ||
 || **WORK_POSITION**
-[`string`](../data-types.md) | Position ||
+[`string`](../data-types.md) | Job title ||
 || **WORK_DEPARTMENT**
 [`string`](../data-types.md) | Department ||
 || **WORK_WWW**
@@ -82,7 +82,7 @@ If you need to add an extranet user, you must pass the fields: `EXTRANET: Y` and
 || **WORK_MAILBOX**
 [`string`](../data-types.md) | WORK_MAILBOX ||
 || **WORK_CITY**
-[`string`](../data-types.md) | City of work ||
+[`string`](../data-types.md) | Work city ||
 || **WORK_STATE**
 [`string`](../data-types.md) | WORK_STATE ||
 || **WORK_ZIP**
@@ -100,7 +100,7 @@ If you need to add an extranet user, you must pass the fields: `EXTRANET: Y` and
 || **UF_ZOOM**
 [`string`](../data-types.md) | Zoom ||
 || **UF_DEPARTMENT**
-[`string`](../data-types.md) | Departments ||
+[`string`](../data-types.md) | Department ||
 || **UF_INTERESTS**
 [`string`](../data-types.md) | Interests ||
 || **UF_SKILLS**
@@ -112,7 +112,7 @@ If you need to add an extranet user, you must pass the fields: `EXTRANET: Y` and
 || **UF_LINKEDIN**
 [`string`](../data-types.md) | LinkedIn ||
 || **UF_FACEBOOK**
-[`string`](../data-types.md) | Facebook ||
+[`string`](../data-types.md) | Facebook** ||
 || **UF_TWITTER**
 [`string`](../data-types.md) | Twitter ||
 || **UF_SKYPE**
@@ -120,8 +120,11 @@ If you need to add an extranet user, you must pass the fields: `EXTRANET: Y` and
 || **UF_DISTRICT**
 [`string`](../data-types.md) | District ||
 || **UF_PHONE_INNER**
-[`string`](../data-types.md) | Internal phone ||
+[`string`](../data-types.md) | Extension ||
 |#
+
+\
+**Belongs to Meta Platforms, Inc.*
 
 ## Code Examples
 
@@ -156,26 +159,75 @@ If you need to add an extranet user, you must pass the fields: `EXTRANET: Y` and
     https://**put_your_bitrix24_address**/rest/user.add
     ```
 
-- JS
+- JS (TS)
 
-    ```js
-    try
-    {
-    	const response = await $b24.callMethod(
-    		'user.add',
-    		{
-    			'EMAIL': 'newuser1@example.com',
-    			'UF_DEPARTMENT': [1]
-    		}
-    	);
-    	
-    	const result = response.getData().result;
-    	console.dir(result);
+    ```ts
+    // This snippet is an ES module: top-level await requires type="module" or a bundler.
+    // $b24 is an already-initialized SDK instance (see the SDK "Get started" guide).
+    import { Text } from '@bitrix24/b24jssdk'
+    import type { B24Frame } from '@bitrix24/b24jssdk'
+
+    declare const $b24: B24Frame
+
+    try {
+      const response = await $b24.actions.v2.call.make<number>({
+        method: 'user.add',
+        params: {
+          EMAIL: 'newuser1@example.com',
+          UF_DEPARTMENT: [1]
+        },
+        requestId: Text.getUuidRfc4122()
+      })
+
+      // The payload is available only on a successful response
+      if (!response.isSuccess) {
+        console.error(response.getErrorMessages().join('; '))
+      } else {
+        const result = response.getData()!.result
+        console.info('New user ID:', result)
+      }
+    } catch (error) {
+      // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+      console.error(error)
     }
-    catch( error )
-    {
-    	console.error('Error:', error);
-    }
+    ```
+
+- JS (UMD)
+
+    ```html
+    <!-- Load the SDK (UMD build); it is exposed as the global B24Js -->
+    <script src="https://unpkg.com/@bitrix24/b24jssdk@1/dist/umd/index.min.js"></script>
+    <script>
+      async function addUser() {
+        try {
+          // Initialize the SDK inside a Bitrix24 frame
+          const $b24 = await B24Js.initializeB24Frame()
+
+          const response = await $b24.actions.v2.call.make({
+            method: 'user.add',
+            params: {
+              EMAIL: 'newuser1@example.com',
+              UF_DEPARTMENT: [1]
+            },
+            requestId: B24Js.Text.getUuidRfc4122()
+          })
+
+          // The payload is available only on a successful response
+          if (!response.isSuccess) {
+            console.error(response.getErrorMessages().join('; '))
+            return
+          }
+
+          const result = response.getData().result
+          console.info('New user ID:', result)
+        } catch (error) {
+          // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+          console.error(error)
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', addUser)
+    </script>
     ```
 
 - PHP
@@ -249,7 +301,7 @@ If you need to add an extranet user, you must pass the fields: `EXTRANET: Y` and
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
     {
@@ -272,14 +324,14 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`integer`](../data-types.md) | Identifier of the new user ||
+[`integer`](../data-types.md) | New user identifier ||
 || **time**
-[`time`](../data-types.md) | Information about the request execution time ||
+[`time`](../data-types.md) | Request execution time information ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -289,23 +341,23 @@ HTTP Status: **400**
 }
 ```
 
-{% include notitle [error handling](../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
-|| **Code** | **Error Message** | **Description** ||
-|| `ERROR_ARGUMENT` | wrong_email | The `EMAIL` parameter is missing or an incorrect e-mail is provided ||
-|| `ERROR_ARGUMENT` | User with this email already exists | Attempt to register a user with an email that is already taken ||
-|| `ERROR_CORE` | access_denied | The user does not have permission to call the method ||
-|| `ERROR_ARGUMENT` | user_count_exceeded | The number of users has been exceeded ||
+|| **Code** | **Error message** | **Description** ||
+|| `ERROR_ARGUMENT` | wrong_email | Parameter `EMAIL` was not passed or an invalid e-mail was passed ||
+|| `ERROR_ARGUMENT` | A user with this email already exists | Attempt to register a user with an e-mail that is already taken ||
+|| `ERROR_CORE` | access_denied | User does not have permission to call the method ||
+|| `ERROR_ARGUMENT` | user_count_exceeded | User limit exceeded ||
 || `ERROR_GROUPID` | Group code not specified | Group code not specified when adding a user to the extranet ||
-|| `ERROR_NO_GROUP` | Group specified incorrectly | Incorrect group specified when adding a user ||
-|| `ERROR_ARGUMENT` | no_extranet_field | The method call did not specify which group the user should belong to ||
+|| `ERROR_NO_GROUP` | Group is specified incorrectly | Group is incorrectly specified when adding a user ||
+|| `ERROR_ARGUMENT` | no_extranet_field | When calling the method, the group the user should belong to was not specified ||
 || `ERROR_CORE` |  | Error updating user fields ||
 |#
 
-{% include [system errors](../../_includes/system-errors.md) %}
+{% include [System errors](../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

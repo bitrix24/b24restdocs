@@ -10,51 +10,51 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: owner of the registered bot
 
-The method `imbot.v2.Command.register` registers a bot's slash command.
+The method `imbot.v2.Command.register` registers a bot slash command.
 
 The method is idempotent: a repeated call with the same `command` for the same bot from the same application returns the existing command without updating the data. To update, use [imbot.v2.Command.update](./command-update.md).
 
 {% note warning "" %}
 
-The method call format has changed: command parameters are now passed in the `fields` object. The old flat format will be supported until 30.09.2026. For more details, see [API Change Log for imbot.v2](../../change-log.md#command-register-fields).
+The method call format has changed: command parameters are now passed in the `fields` object. The old flat format will be supported until 30.09.2026. For more details, see [API imbot.v2 Change Log](../../change-log.md#command-register-fields).
 
 {% endnote %}
 
 ## Method Parameters
 
-{% include [Footnote on parameters](../../../../../_includes/required.md) %}
+{% include [Parameter Note](../../../../../_includes/required.md) %}
 
-#| 
+#|
 || **Name**
 `Type` | **Description** ||
-|| **botId*** 
+|| **botId***
 [`integer`](../../../../data-types.md) | Bot ID ||
-|| **botToken** 
+|| **botToken**
 [`string`](../../../../data-types.md) | Unique authorization token for the bot. Required for webhook authorization, not needed for OAuth.
 
-Pass the same `botToken` that was specified when registering the chatbot ||
-|| **fields*** 
+Pass the same `botToken` that was specified during the chat bot registration ||
+|| **fields***
 [`object`](../../../../data-types.md) | Object with command parameters [(detailed description)](#fields) ||
 |#
 
 ### Parameter fields {#fields}
 
-#| 
+#|
 || **Name**
 `Type` | **Description** ||
-|| **command*** 
+|| **command***
 [`string`](../../../../data-types.md) | Command without the `/` symbol. For example: `help` ||
-|| **title** 
-[`object`](../../../../data-types.md) | Title of the command in different languages. An object `{langCode: text}`, where `langCode` is a two-letter lowercase language code: `en`, `de`, etc.
+|| **title**
+[`object`](../../../../data-types.md) | Title of the command in different languages. An object `{langCode: text}`, where `langCode` is the two-letter language code in lowercase: `en`, `de`, etc.
 
 Displayed in the list of available commands. Required for visible commands `hidden: false`. For hidden commands `hidden: true`, it can be omitted ||
-|| **params** 
+|| **params**
 [`object`](../../../../data-types.md) | Description of command parameters in different languages. An object `{langCode: text}`, similar to `title`. Displayed as a hint next to the command ||
-|| **common** 
+|| **common**
 [`boolean`](../../../../data-types.md) | Common command. Acceptable values: `true`, `false`. Default is `false`. For more details, see [Common and Local Commands](#common-types) ||
-|| **hidden** 
+|| **hidden**
 [`boolean`](../../../../data-types.md) | Hidden command. Acceptable values: `true`, `false`. Default is `false` ||
-|| **extranetSupport** 
+|| **extranetSupport**
 [`boolean`](../../../../data-types.md) | Extranet support. Acceptable values: `true`, `false`. Default is `false` ||
 |#
 
@@ -69,14 +69,14 @@ The `common` parameter defines where the command is available:
 
 Typical use-cases:
 
-- Common commands are suitable for global actions, such as searching or help without the bot needing to be present in the chat
-- Local commands are suitable for actions tied to a specific bot and the context of its chat
+- Common commands are suitable for global actions, such as searching or help without the bot needing to be present in the chat.
+- Local commands are suitable for actions tied to a specific bot and the context of its chat.
 
-The event for command invocation: [ONIMBOTV2COMMANDADD](../events/events.md#onimbotv2commandadd).
+The event for invoking the command: [ONIMBOTV2COMMANDADD](../events/events.md#onimbotv2commandadd).
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../../../_includes/examples.md) %}
+{% include [Examples Note](../../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -200,7 +200,7 @@ The event for command invocation: [ONIMBOTV2COMMANDADD](../events/events.md#onim
 
 ## Response Handling
 
-HTTP Code: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -227,7 +227,7 @@ HTTP Code: **200**
 
 ## Returned Data
 
-#| 
+#|
 || **Name**
 `Type` | **Description** ||
 || **result**
@@ -240,7 +240,7 @@ HTTP Code: **200**
 
 ### Fields of the Command Object {#command-object}
 
-#| 
+#|
 || **Field**
 `Type` | **Description** ||
 || **id**
@@ -257,11 +257,11 @@ HTTP Code: **200**
 [`boolean`](../../../../data-types.md) | Command available to extranet users ||
 |#
 
-A complete description of all object fields can be found on the [Objects and Fields](../../entities.md) page.
+Complete description of all object fields can be found on the [Objects and Fields](../../entities.md) page.
 
 ## Error Handling
 
-HTTP Status: **400**, **403**
+HTTP status: **400**, **403**
 
 ```json
 {
@@ -274,16 +274,16 @@ HTTP Status: **400**, **403**
 
 ### Possible Error Codes
 
-#| 
+#|
 || **Code** | **Description** | **Value** ||
-|| `BOT_TOKEN_NOT_SPECIFIED` | Bot token is not specified | `botToken` is not provided. Required for webhook authorization ||
-|| `BOT_ID_REQUIRED` | Bot ID is required | `botId` is not provided ||
+|| `BOT_TOKEN_NOT_SPECIFIED` | Bot token is not specified | `botToken` is not specified. Required for webhook authorization ||
+|| `BOT_ID_REQUIRED` | Bot ID is required | `botId` is not specified ||
 || `BOT_NOT_FOUND` | Bot not found | Bot not found ||
-|| `BOT_OWNERSHIP_ERROR` | Bot is registered by another application | Bot is registered by another application ||
+|| `BOT_OWNERSHIP_ERROR` | Bot is registered by another application | Bot registered by another application ||
 || `COMMAND_NAME_INVALID` | Command name is invalid | Command name must be a string ||
 || `COMMAND_REQUIRED` | Command is required | Command (`fields.command`) is not specified ||
 || `COMMAND_TITLE_REQUIRED` | Command title is required | `fields.title` is not specified for visible command `fields.hidden: false` ||
-|| `COMMAND_REGISTER_FAILED` | Command registration failed | Error occurred during command registration ||
+|| `COMMAND_REGISTER_FAILED` | Command registration failed | Error registering command ||
 |#
 
 {% include [System Errors](../../../../../_includes/system-errors.md) %}
@@ -294,4 +294,4 @@ HTTP Status: **400**, **403**
 - [{#T}](./command-list.md)
 - [{#T}](./command-unregister.md)
 - [{#T}](./command-answer.md)
-- [API Change Log for imbot.v2](../../change-log.md#command-register-fields) — the method call format has changed, the old format will be supported until 2026-09
+- [API imbot.v2 Change Log](../../change-log.md#command-register-fields) — the method call format has changed, the old format is supported until 2026-09

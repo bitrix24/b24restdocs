@@ -1,4 +1,4 @@
-# Change the pending control task status to "not completed" task.item.disapprove
+# Translate a pending control task to "not executed" status task.item.disapprove
 
 {% note tip "" %}
 
@@ -10,24 +10,24 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: any user
 
-This method changes the status of a pending control task to "not completed."
+This method translates a pending control task to "not executed" status.
 
 {% note warning "DEPRECATED" %}
 
-Development of this method has been halted. Please use [tasks.task.disapprove](../../tasks-task-disapprove.md).
+The development of this method has been halted. Use [tasks.task.disapprove](../../tasks-task-disapprove.md).
 
 {% endnote %}
 
 ## Method Parameters
 
-#|
+#| 
 || **Name** | **Description** ||
 || **TASKID** | Task identifier ||
 |#
 
 ## Code Examples
 
-{% include [Examples Note](../../../../_includes/examples.md) %}
+{% include [Examples note](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -51,24 +51,76 @@ Development of this method has been halted. Please use [tasks.task.disapprove](.
     https://**put_your_bitrix24_address**/rest/task.item.disapprove
     ```
 
-- JS
+- JS (TS)
 
-    ```js
-    try
-    {
-    	const response = await $b24.callMethod(
-    		'task.item.disapprove',
-    		[13]
-    	);
-    	
-    	const result = response.getData().result;
-    	console.info(result);
-    	console.log(result);
+    ```ts
+    // This snippet is an ES module: top-level await requires type="module" or a bundler.
+    // $b24 is an already-initialized SDK instance (see the SDK "Get started" guide).
+    import { Text } from '@bitrix24/b24jssdk'
+    import type { B24Frame } from '@bitrix24/b24jssdk'
+
+    declare const $b24: B24Frame
+
+    // Shape of the payload returned in result (match the "response handling" section of the page)
+    type DisapproveResult = boolean
+
+    try {
+      const response = await $b24.actions.v2.call.make<DisapproveResult>({
+        method: 'task.item.disapprove',
+        params: {
+          TASKID: 13,
+        },
+        requestId: Text.getUuidRfc4122()
+      })
+
+      // The payload is available only on a successful response
+      if (!response.isSuccess) {
+        console.error(response.getErrorMessages().join('; '))
+      } else {
+        const result = response.getData()!.result
+        console.info('Disapprove result:', result)
+      }
+    } catch (error) {
+      // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+      console.error(error)
     }
-    catch( error )
-    {
-    	console.error('Error:', error);
-    }
+    ```
+
+- JS (UMD)
+
+    ```html
+    <!-- Load the SDK (UMD build); it is exposed as the global B24Js -->
+    <script src="https://unpkg.com/@bitrix24/b24jssdk@1/dist/umd/index.min.js"></script>
+    <script>
+      async function disapproveTaskItem() {
+        try {
+          // Initialize the SDK inside a Bitrix24 frame
+          const $b24 = await B24Js.initializeB24Frame()
+
+          const response = await $b24.actions.v2.call.make({
+            method: 'task.item.disapprove',
+            params: {
+              TASKID: 13,
+            },
+            requestId: B24Js.Text.getUuidRfc4122()
+          })
+
+          // The payload is available only on a successful response
+          if (!response.isSuccess) {
+            console.error(response.getErrorMessages().join('; '))
+            return
+          }
+
+          const result = response.getData().result
+          console.info('Disapprove result:', result)
+        } catch (error) {
+          // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+          console.error(error)
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', disapproveTaskItem)
+    </script>
     ```
 
 - PHP

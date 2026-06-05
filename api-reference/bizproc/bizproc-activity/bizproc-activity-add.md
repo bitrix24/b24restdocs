@@ -10,11 +10,11 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: administrator
 
-This method adds a new action for use in workflows.
+Adds a new action for use in workflows.
 
 The method works only in the context of an [application](../../../settings/app-installation/index.md).
 
-Each document generates its own set of field types. For example, in CRM, there is a field of type Address `UF:address`. To use this field type in your actions, specify the CRM document type in `DOCUMENT_TYPE` and describe the field properties in `PROPERTIES`.
+Each document generates its own set of field types. For example, in CRM, there is a field of type Address `UF:address`. To use this field type in your actions, specify the CRM document type in `DOCUMENT_TYPE` and describe the field type properties in `PROPERTIES`.
 
 ## Method Parameters
 
@@ -24,21 +24,21 @@ Each document generates its own set of field types. For example, in CRM, there i
 || **Name**
 `type` | **Description** ||
 || **CODE*** 
-[`string`](../../data-types.md) | Internal identifier of the action. It must be unique within the application.
+[`string`](../../data-types.md) | Internal identifier of the action. It is unique within the application.
 
 Allowed characters are `a-z`, `A-Z`, `0-9`, dot, hyphen, and underscore `_` ||
 || **HANDLER*** 
 [`string`](../../data-types.md) | URL to which the action will send data via the Bitrix24 queue server.
 
-The link must have the same domain where the application is installed  ||
+The link must have the same domain where the application is installed ||
 || **AUTH_USER_ID** 
 [`integer`](../../data-types.md) | Identifier of the user whose token will be passed to the application ||
 || **USE_SUBSCRIPTION** 
-[`boolean`](../../data-types.md) | Should the action wait for a response from the application. Possible values:
+[`boolean`](../../data-types.md) | Should the action wait for a response from the application? Possible values:
 - `Y` — yes
 - `N` — no
 
-||
+By default, the parameter is empty, which is equivalent to waiting for a response from the application. The action does not wait for a response only when explicitly set to `N` ||
 || **NAME*** 
 [`string` \| `object`](../../data-types.md) | Name of the action.
 
@@ -102,9 +102,9 @@ Possible value options:
 
 ||
 || **FILTER** 
-[`object`](../../data-types.md) | Object with rules to restrict the action by document type and edition.
+[`object`](../../data-types.md) | Object with rules for restricting the action by document type and edition.
 
-It can contain keys:
+Can contain keys:
 - `INCLUDE` — array of rules where the action will be displayed
 - `EXCLUDE` — array of rules where the action will be hidden
 
@@ -115,13 +115,13 @@ To restrict the action by Bitrix24 edition, specify:
 - `box` — for on-premise
 
 Examples:
-1. Exclude the action for on-premise Bitrix24
+1. Exclude action for on-premise Bitrix24
     ```js
     FILTER: {
         EXCLUDE: [ 'box' ]
     }
     ```
-2. Display the action only for the Lists module
+2. Display action only for the Lists module
     ```js
     FILTER: {
         INCLUDE: [
@@ -129,7 +129,7 @@ Examples:
         ]
     }
     ```
-3. Display the action only for the Lists module and deals from CRM
+3. Display action only for the Lists module and deals from CRM
     ```js
     FILTER: {
         INCLUDE: [
@@ -181,11 +181,11 @@ Examples:
 ```
 ||
 || **Required** 
-[`boolean`](../../data-types.md) | Requirement of the parameter. Possible values:
+[`boolean`](../../data-types.md) | Parameter requirement. Possible values:
 - `Y` — yes
 - `N` — no ||
 || **Multiple** 
-[`boolean`](../../data-types.md) | Multiplicity of the parameter. Possible values:
+[`boolean`](../../data-types.md) | Parameter multiplicity. Possible values:
 - `Y` — yes
 - `N` — no ||
 || **Default** 
@@ -291,63 +291,63 @@ Below are examples of `PROPERTY` objects for different parameter types.
     ```js
     try
     {
-        const response = await $b24.callMethod(
-            'bizproc.activity.add',
-            {
-                'CODE': 'md5_action',
-                'HANDLER': 'https://your_domain/ping.php',
-                'AUTH_USER_ID': 1,
-                'USE_SUBSCRIPTION': 'Y',
-                'NAME': {
-                    'de': 'MD5 Generator',
-                    'en': 'MD5 generator'
-                },
-                'DESCRIPTION': {
-                    'de': 'Die Aktion gibt den MD5-Hash des Eingabeparameters zurück',
-                    'en': 'Activity returns MD5 hash of input parameter'
-                },
-                'PROPERTIES': {
-                    'inputString': {
-                        'Name': {
-                            'de': 'Eingabestring',
-                            'en': 'Input string'
-                        },
-                        'Description': {
-                            'de': 'Geben Sie den String ein, den Sie hashen möchten',
-                            'en': 'Input string for hashing'
-                        },
-                        'Type': 'string',
-                        'Required': 'Y',
-                        'Multiple': 'N',
-                        'Default': '{=Document:NAME}'
-                    }
-                },
-                'RETURN_PROPERTIES': {
-                    'outputString': {
-                        'Name': {
-                            'de': 'MD5',
-                            'en': 'MD5'
-                        },
-                        'Type': 'string',
-                        'Multiple': 'N',
-                        'Default': null
-                    }
-                },
-                'DOCUMENT_TYPE': ['lists', 'BizprocDocument', 'iblock_164'],
-                'FILTER': {
-                    INCLUDE: [
-                        ['lists']
-                    ]
-                }
-            }
-        );
-        
-        const result = response.getData().result;
-        alert("Success: " + result);
+    	const response = await $b24.callMethod(
+    		'bizproc.activity.add',
+    		{
+    			'CODE': 'md5_action',
+    			'HANDLER': 'https://your_domain/ping.php',
+    			'AUTH_USER_ID': 1,
+    			'USE_SUBSCRIPTION': 'Y',
+    			'NAME': {
+    				'de': 'MD5 Generator',
+    				'en': 'MD5 generator'
+    			},
+    			'DESCRIPTION': {
+    				'de': 'Die Aktion gibt den MD5-Hash des Eingabeparameters zurück',
+    				'en': 'Activity returns MD5 hash of input parameter'
+    			},
+    			'PROPERTIES': {
+    				'inputString': {
+    					'Name': {
+    						'de': 'Eingabestring',
+    						'en': 'Input string'
+    					},
+    					'Description': {
+    						'de': 'Geben Sie den String ein, den Sie hashen möchten',
+    						'en': 'Input string for hashing'
+    					},
+    					'Type': 'string',
+    					'Required': 'Y',
+    					'Multiple': 'N',
+    					'Default': '{=Document:NAME}'
+    				}
+    			},
+    			'RETURN_PROPERTIES': {
+    				'outputString': {
+    					'Name': {
+    						'de': 'MD5',
+    						'en': 'MD5'
+    					},
+    					'Type': 'string',
+    					'Multiple': 'N',
+    					'Default': null
+    				}
+    			},
+    			'DOCUMENT_TYPE': ['lists', 'BizprocDocument', 'iblock_164'],
+    			'FILTER': {
+    				INCLUDE: [
+    					['lists']
+    				]
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	alert("Success: " + result);
     }
     catch( error )
     {
-        alert("Error: " + error);
+    	alert("Error: " + error);
     }
     ```
 
@@ -535,7 +535,7 @@ Below are examples of `PROPERTY` objects for different parameter types.
                     ['lists']
                 ]
             ]
-        ]
+        }
     );
 
     echo '<PRE>';
@@ -573,7 +573,7 @@ HTTP Status: **200**
 || **result** 
 [`boolean`](../../data-types.md) | Returns `true` if the action was successfully added ||
 || **time** 
-[`time`](../../data-types.md#time) | Information about the execution time of the request ||
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -600,15 +600,15 @@ HTTP Status: **400**
 || `ERROR_ACTIVITY_VALIDATION_FAILURE` | Wrong activity code! | Invalid activity code ||
 || `ERROR_UNSUPPORTED_PROTOCOL` | Unsupported handler protocol | Invalid handler protocol http, https ||
 || `ERROR_WRONG_HANDLER_URL` | Wrong handler URL | Invalid handler URL ||
-|| `ERROR_ACTIVITY_VALIDATION_FAILURE` | Empty activity NAME! | Activity name is not specified ||
+|| `ERROR_ACTIVITY_VALIDATION_FAILURE` | Empty activity NAME! | Action name is not specified ||
 || `ERROR_ACTIVITY_VALIDATION_FAILURE` | Wrong properties array! | Incorrectly filled `PROPERTIES` or `RETURN_PROPERTIES` parameters ||
 || `ERROR_ACTIVITY_VALIDATION_FAILURE` | Wrong property key <key>! | Invalid property identifier ||
 || `ERROR_ACTIVITY_VALIDATION_FAILURE` | Empty property NAME <key>! | Property name is not specified ||
 || `ERROR_ACTIVITY_VALIDATION_FAILURE` | Wrong activity FILTER! | Invalid filter ||
 || `ERROR_ACTIVITY_VALIDATION_FAILURE` | Wrong activity DOCUMENT_TYPE! | Invalid `DOCUMENT_TYPE` ||
-|| `ERROR_ACTIVITY_ALREADY_INSTALLED` | Activity or Robot already installed! | An action with this code is already installed ||
-|| `ERROR_ACTIVITY_ADD_FAILURE` | Activity or Robot already added! | The action has already been added ||
-|| `ERROR_ACTIVITY_ADD_FAILURE` | Activity save error! | Failed to save the action, system error ||
+|| `ERROR_ACTIVITY_ALREADY_INSTALLED` | Activity or Robot already installed! | Action with this code is already installed ||
+|| `ERROR_ACTIVITY_ADD_FAILURE` | Activity or Robot already added! | Action has already been added ||
+|| `ERROR_ACTIVITY_ADD_FAILURE` | Activity save error! | Failed to save action, system error ||
 |#
 
 {% include [System Errors](../../../_includes/system-errors.md) %}

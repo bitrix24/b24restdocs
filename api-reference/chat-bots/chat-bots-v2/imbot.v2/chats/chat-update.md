@@ -10,45 +10,45 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: owner of the registered bot
 
-The method `imbot.v2.Chat.update` updates the properties of a chat. It combines the update of the title, description, color, and avatar in a single call.
+The method `imbot.v2.Chat.update` updates chat properties. It combines the update of the title, description, color, and avatar in a single call.
 
 ## Method Parameters
 
-{% include [Parameter Note](../../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../../_includes/required.md) %}
 
-#|
-|| **Name**
+#| 
+|| **Name** 
 `Type` | **Description** ||
-|| **botId***
+|| **botId*** 
 [`integer`](../../../../data-types.md) | Bot ID ||
-|| **botToken**
+|| **botToken** 
 [`string`](../../../../data-types.md) | Unique authorization token for the bot. Required for webhook authorization, not needed for OAuth.
 
 Pass the same botToken that was specified during the chat bot registration ||
-|| **dialogId***
+|| **dialogId*** 
 [`string`](../../../../data-types.md) | Dialog ID. For group chats — `chat{chatId}`, for personal chats — `{userId}` ||
-|| **fields***
+|| **fields*** 
 [`object`](../../../../data-types.md) | Properties of the chat to be updated. The structure of the object is described [below](#fields) ||
 |#
 
 ### Parameter fields {#fields}
 
-#|
-|| **Name**
+#| 
+|| **Name** 
 `Type` | **Description** ||
-|| **title**
+|| **title** 
 [`string`](../../../../data-types.md) | New chat title ||
-|| **description**
+|| **description** 
 [`string`](../../../../data-types.md) | New chat description ||
-|| **color**
+|| **color** 
 [`string`](../../../../data-types.md) | Chat color — [available colors](#available-colors) ||
-|| **avatar**
+|| **avatar** 
 [`file`](../../../../data-types.md) | New chat avatar in [Base64](../../../../files/how-to-upload-files.md) format ||
 |#
 
 ### Available Colors {#available-colors}
 
-#|
+#| 
 || **Code** | **HEX** ||
 || `red` | `#df532d` ||
 || `green` | `#64a513` ||
@@ -70,7 +70,7 @@ Pass the same botToken that was specified during the chat bot registration ||
 
 ## Code Examples
 
-{% include [Example Note](../../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -194,11 +194,13 @@ Pass the same botToken that was specified during the chat bot registration ||
 
 ## Response Handling
 
-HTTP Code: **200**
+HTTP Status: **200**
 
 ```json
 {
-    "result": true,
+    "result": {
+        "result": true
+    },
     "time": {
         "start": 1728626400.123,
         "finish": 1728626400.234,
@@ -212,12 +214,14 @@ HTTP Code: **200**
 
 ## Returned Data
 
-#|
-|| **Name**
+#| 
+|| **Name** 
 `Type` | **Description** ||
-|| **result**
+|| **result** 
+[`object`](../../../../data-types.md) | Result of the operation ||
+|| **result.result** 
 [`boolean`](../../../../data-types.md) | `true` if the update was successful ||
-|| **time**
+|| **time** 
 [`time`](../../../../data-types.md#time) | Information about the request execution time ||
 |#
 
@@ -236,10 +240,10 @@ HTTP Status: **400**, **403**
 
 ### Possible Error Codes
 
-#|
+#| 
 || **Code** | **Description** | **Value** ||
-|| `BOT_TOKEN_NOT_SPECIFIED` | Bot token is not specified | `botToken` is not provided. Required for webhook authorization ||
-|| `BOT_ID_REQUIRED` | Bot ID is required | `botId` is not provided ||
+|| `BOT_TOKEN_NOT_SPECIFIED` | Bot token is not specified | Bot token is required for webhook authorization ||
+|| `BOT_ID_REQUIRED` | Bot ID is required | Bot ID is not specified ||
 || `BOT_NOT_FOUND` | Bot not found | Bot not found ||
 || `BOT_OWNERSHIP_ERROR` | Bot is registered by another application | Bot is registered by another application ||
 || `ACCESS_DENIED` | Access denied | Bot is not a participant in the chat ||
@@ -249,7 +253,7 @@ HTTP Status: **400**, **403**
 
 ## Continue Learning
 
-- [API Change Log imbot.v2](../../change-log.md)
+- [API imbot.v2 Change Log](../../change-log.md)
 - [{#T}](./chat-add.md)
 - [{#T}](./chat-get.md)
 - [{#T}](./chat-user-add.md)

@@ -1,4 +1,4 @@
-# Get a list of time spent records task.elapseditem.getlist
+# Get a List of Time Tracking Records task.elapseditem.getlist
 
 {% note tip "" %}
 
@@ -10,11 +10,11 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: any user
 
-The method returns a list of time spent records for a task.
+This method returns a list of time tracking records for a task.
 
 ## Method Parameters
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **TASKID**
@@ -26,19 +26,18 @@ The task identifier can be obtained when [creating a new task](../tasks-task-add
 || **FILTER**
 [`object`](../../data-types.md) | Object for filtering the result (detailed description provided below) ||
 || **SELECT**
-[`array`](../../data-types.md) | Array of fields of records that will be returned by the method. You can specify only the fields that are necessary. If the array contains the value `"*"`, all available fields will be returned.
+[`array`](../../data-types.md) | Array of fields of records that will be returned by the method. You can specify only the fields you need. If the array contains the value `"*"`, all available fields will be returned.
 
-By default, all fields of the main query table will be returned ||
+By default, all fields of the main request table will be returned ||
 || **PARAMS**
-[`object`](../../data-types.md) | Object for call options. The element is an object `NAV_PARAMS` of the form `{'call option': 'value' [, ...]}` (detailed description provided below) in the structure ||
+[`object`](../../data-types.md) | Object for call options. The element is an object `NAV_PARAMS` of the form `{'call option': 'value' [, ...]}` (detailed description provided below) in structure ||
 |#
 
 {% note warning %}
 
-It is mandatory to follow the order of parameters specified in the table in the request. Otherwise, the request will execute with errors.
+It is mandatory to follow the specified order of parameters in the request as shown in the table. Otherwise, the request will execute with errors.
 
 {% endnote %}
-
 
 {% note info %}
 
@@ -51,15 +50,15 @@ Features of manually adding information about work time that was actually perfor
 
 ### ORDER Parameter
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **ID**
-[`string`](../../data-types.md) | Identifier of the time spent record. Can take values:
+[`string`](../../data-types.md) | Identifier of the time tracking record. Can take values:
 - `asc` — ascending
 - `desc` — descending ||
 || **USER_ID**
-[`string`](../../data-types.md) | Identifier of the user on behalf of whom the time spent record was made. Can take values:
+[`string`](../../data-types.md) | Identifier of the user on behalf of whom the time tracking record was made. Can take values:
 - `asc` — ascending
 - `desc` — descending ||
 || **MINUTES**
@@ -84,16 +83,15 @@ Features of manually adding information about work time that was actually perfor
 - `desc` — descending ||
 |#
 
-
 ### FILTER Parameter
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **ID**
-[`integer`](../../data-types.md) | Identifier of the time spent record ||
+[`integer`](../../data-types.md) | Identifier of the time tracking record ||
 || **USER_ID**
-[`integer`](../../data-types.md) | Identifier of the user on behalf of whom the time spent record was made ||
+[`integer`](../../data-types.md) | Identifier of the user on behalf of whom the time tracking record was made ||
 || **CREATED_DATE**
 [`datetime`](../../data-types.md) | Record creation date ||
 |#
@@ -103,17 +101,17 @@ Features of manually adding information about work time that was actually perfor
 Before the name of the filtered field, you can specify the type of filtering:
 - "!" — not equal
 - "<" — less than
-- "<=" — less than or equal to
+- "<=" — less than or equal
 - ">" — greater than
-- ">=" — greater than or equal to
+- ">=" — greater than or equal
 
-*'filter values'* — single value or array
+*'filter values'* — a single value or an array
 
 {% endnote %}
 
 ### NAV_PARAMS Parameter
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **nPageSize**
@@ -124,7 +122,7 @@ Before the name of the filtered field, you can specify the type of filtering:
 
 ## Code Examples
 
-{% include [Examples note](../../../_includes/examples.md) %}
+{% include [Examples Note](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -148,56 +146,111 @@ Before the name of the filtered field, you can specify the type of filtering:
     https://**put_your_bitrix24_address**/rest/task.elapseditem.getlist
     ```
 
-- JS
+- JS (TS)
 
+    ```ts
+    // This snippet is an ES module: top-level await requires type="module" or a bundler.
+    // $b24 is an already-initialized SDK instance (see the SDK "Get started" guide).
+    import { Text } from '@bitrix24/b24jssdk'
+    import type { B24Frame, ISODate } from '@bitrix24/b24jssdk'
 
-    ```js
-    // callListMethod: Retrieves all data at once. Use only for small selections (< 1000 items) due to high memory usage.
-    
-    try {
-      const response = await $b24.callListMethod(
-        'task.elapseditem.getlist',
-        [
-          1, 
-          {'ID': 'desc'},
-          {'<ID': 50}
-        ],
-        (progress) => { console.log('Progress:', progress) }
-      )
-      const items = response.getData() || []
-      for (const entity of items) { console.log('Entity:', entity) }
-    } catch (error) {
-      console.error('Request failed', error)
+    declare const $b24: B24Frame
+
+    type ElapsedItem = {
+      ID: string
+      TASK_ID: string
+      USER_ID: string
+      COMMENT_TEXT: string
+      SECONDS: string
+      MINUTES: string
+      SOURCE: string
+      CREATED_DATE: ISODate | null
+      DATE_START: ISODate | null
+      DATE_STOP: ISODate | null
     }
-    
-    // fetchListMethod: Retrieves data in parts using an iterator. Use it for large data volumes to optimize memory usage.
-    
+
     try {
-      const generator = $b24.fetchListMethod('task.elapseditem.getlist', [{'ID': 'desc'}, {'>=CREATED_DATE': '2024-02-16'}, ['ID', 'TASK_ID'], {"NAV_PARAMS":{"nPageSize":2}}], 'ID')
-      for await (const page of generator) {
-        for (const entity of page) { console.log('Entity:', entity) }
+      // task.elapseditem.getlist returns a single page (max 50 records). For the whole result set
+      // use a list helper: $b24.actions.v2.callList.make() returns every record as one
+      // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
+      // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
+      // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
+      const response = await $b24.actions.v2.call.make<ElapsedItem[]>({
+        method: 'task.elapseditem.getlist',
+        params: {
+          TASKID: 1,
+          ORDER: { ID: 'desc' },
+          FILTER: { '>=CREATED_DATE': '2024-02-16' },
+          SELECT: ['ID', 'TASK_ID'],
+          PARAMS: { NAV_PARAMS: { nPageSize: 2 } },
+        },
+        requestId: Text.getUuidRfc4122()
+      })
+
+      // The payload is available only on a successful response
+      if (!response.isSuccess) {
+        console.error(response.getErrorMessages().join('; '))
+      } else {
+        const result = response.getData()!.result
+        console.info('Elapsed items count:', result.length, 'First item:', result[0])
       }
     } catch (error) {
-      console.error('Request failed', error)
+      // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+      console.error(error)
     }
-    
-    // callMethod: Manually controls pagination through the start parameter. Use it for precise control of request batches. For large datasets, it is less efficient than fetchListMethod.
-    
-    try {
-      const response = await $b24.callMethod('task.elapseditem.getlist', [{'ID': 'desc'}, {'>=CREATED_DATE': '2024-02-16'}, ['ID', 'TASK_ID'], {"NAV_PARAMS":{"nPageSize":2}}], 0)
-      const result = response.getData().result || []
-      for (const entity of result) { console.log('Entity:', entity) }
-    } catch (error) {
-      console.error('Request failed', error)
-    }
+    ```
+
+- JS (UMD)
+
+    ```html
+    <!-- Load the SDK (UMD build); it is exposed as the global B24Js -->
+    <script src="https://unpkg.com/@bitrix24/b24jssdk@1/dist/umd/index.min.js"></script>
+    <script>
+      async function getElapsedItems() {
+        try {
+          // Initialize the SDK inside a Bitrix24 frame
+          const $b24 = await B24Js.initializeB24Frame()
+
+          // task.elapseditem.getlist returns a single page (max 50 records). For the whole result set
+          // use a list helper: $b24.actions.v2.callList.make() returns every record as one
+          // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
+          // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
+          // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
+          const response = await $b24.actions.v2.call.make({
+            method: 'task.elapseditem.getlist',
+            params: {
+              TASKID: 1,
+              ORDER: { ID: 'desc' },
+              FILTER: { '>=CREATED_DATE': '2024-02-16' },
+              SELECT: ['ID', 'TASK_ID'],
+              PARAMS: { NAV_PARAMS: { nPageSize: 2 } },
+            },
+            requestId: B24Js.Text.getUuidRfc4122()
+          })
+
+          // The payload is available only on a successful response
+          if (!response.isSuccess) {
+            console.error(response.getErrorMessages().join('; '))
+            return
+          }
+
+          const result = response.getData().result
+          console.info('Elapsed items count:', result.length, 'First item:', result[0])
+        } catch (error) {
+          // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+          console.error(error)
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', getElapsedItems)
+    </script>
     ```
 
 - PHP
 
-
     ```php
     try {
-        // Get all time spent records sorted by ID in descending order.
+        // Get all time tracking records sorted by ID in descending order.
         // Only records with ID less than 50 will be filtered.
         $response1 = $b24Service
             ->core
@@ -222,7 +275,7 @@ Before the name of the filtered field, you can specify the type of filtering:
     }
     
     try {
-        // Retrieve a sample of time spent based on general filtering conditions. For example, select data on labor costs from a specified date:
+        // Get a sample of time tracking based on general filtering conditions. For example, select data on labor costs from a specified date:
         $response2 = $b24Service
             ->core
             ->call(
@@ -254,7 +307,7 @@ Before the name of the filtered field, you can specify the type of filtering:
 - BX24.js
 
     ```js
-    // Get all time spent records sorted by ID in descending order.
+    // Get all time tracking records sorted by ID in descending order.
     // Only records with ID less than 50 will be filtered.
     BX24.callMethod(
         'task.elapseditem.getlist',
@@ -271,15 +324,15 @@ Before the name of the filtered field, you can specify the type of filtering:
             }
         }
     );
-    // Retrieve a sample of time spent based on general filtering conditions. For example, select data on labor costs from a specified date:
+    // Get a sample of time tracking based on general filtering conditions. For example, select data on labor costs from a specified date:
     BX24.callMethod(
         'task.elapseditem.getlist',
         [
             {'ID': 'desc'}, 
             {'>=CREATED_DATE': '2024-02-16'},
             ['ID', 'TASK_ID'],
-            {"NAV_PARAMS": {
-                    "nPageSize": 2
+            {"NAV_PARAMS":{
+                    "nPageSize":2
                 }
             },
         ],
@@ -301,7 +354,7 @@ Before the name of the filtered field, you can specify the type of filtering:
     $result = CRest::call(
         'task.elapseditem.getlist',
         [
-            "ORDER" => ["ID" => "DESC"],            // Sorting by ID - descending
+            "ORDER" => ["ID" => "DESC"],            // Sort by ID - descending
             "FILTER" => [">ID" => 1],               // Filter
             "SELECT" => ['ID', 'TASK_ID'],          // Selection - only ID of the record and task
             "PARAMS" => ['NAV_PARAMS' => [          // Pagination
@@ -321,7 +374,7 @@ Before the name of the filtered field, you can specify the type of filtering:
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -353,20 +406,20 @@ HTTP status: **200**
 
 ### Returned Data
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **result**
-[`array`](../../data-types.md) | Array of objects with information about time spent records for the task ||
+[`array`](../../data-types.md) | Array of objects with information about time tracking records for the task ||
 || **total**
 [`integer`](../../data-types.md) | Total number of records found ||
 || **time**
-[`time`](../../data-types.md) | Information about the execution time of the request ||
+[`time`](../../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {
@@ -379,7 +432,7 @@ HTTP status: **400**
 
 ### Possible Error Codes
 
-#|
+#| 
 || **Code** | **Description** ||
 || `0x100002` | Access denied ||
 || `0x000004` | Action not allowed ||
@@ -398,4 +451,3 @@ HTTP status: **400**
 - [{#T}](./task-elapsed-item-delete.md)
 - [{#T}](./task-elapsed-item-is-action-allowed.md)
 - [{#T}](./task-elapsed-item-get-manifest.md)
-

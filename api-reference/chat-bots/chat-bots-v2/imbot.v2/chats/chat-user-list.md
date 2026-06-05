@@ -14,32 +14,32 @@ The method `imbot.v2.Chat.User.list` returns a list of chat participants.
 
 ## Method Parameters
 
-{% include [Footnote on parameters](../../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../../_includes/required.md) %}
 
-#|
-|| **Name**
+#| 
+|| **Name** 
 `Type` | **Description** ||
-|| **botId***
+|| **botId*** 
 [`integer`](../../../../data-types.md) | Bot ID ||
-|| **botToken**
+|| **botToken** 
 [`string`](../../../../data-types.md) | Unique authorization token for the bot. Required for webhook authorization, not needed for OAuth.
 
 Pass the same botToken that was specified during the chat bot registration ||
-|| **dialogId***
+|| **dialogId*** 
 [`string`](../../../../data-types.md) | Dialog ID. For group chats — `chat{chatId}` ||
-|| **order**
+|| **order** 
 [`object`](../../../../data-types.md) | Sorting.
 
 Available fields: `id`, `lastSendMessageId`, `userId`. Value: `ASC` or `DESC`.
 
 Example: `{"id": "ASC"}` ||
-|| **limit**
+|| **limit** 
 [`integer`](../../../../data-types.md) | Number of records (1–200). Default is `50` ||
 |#
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -157,7 +157,7 @@ Example: `{"id": "ASC"}` ||
 
 ## Response Handling
 
-HTTP Code: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -172,9 +172,17 @@ HTTP Code: **200**
             "color": "#ab7761",
             "avatar": "",
             "gender": "M",
+            "birthday": "15-03",
             "extranet": false,
             "bot": false,
+            "connector": false,
+            "externalAuthId": "default",
             "status": "online",
+            "idle": false,
+            "lastActivityDate": "2025-01-15T14:25:00+01:00",
+            "absent": false,
+            "departments": [7],
+            "phones": false,
             "type": "employee"
         },
         {
@@ -187,9 +195,17 @@ HTTP Code: **200**
             "color": "#5b7e91",
             "avatar": "",
             "gender": "F",
+            "birthday": "22-08",
             "extranet": false,
             "bot": false,
+            "connector": false,
+            "externalAuthId": "default",
             "status": "online",
+            "idle": false,
+            "lastActivityDate": "2025-01-15T14:20:00+01:00",
+            "absent": false,
+            "departments": [12],
+            "phones": false,
             "type": "employee"
         }
     ],
@@ -198,20 +214,20 @@ HTTP Code: **200**
         "finish": 1728626400.234,
         "duration": 0.111,
         "processing": 0.045,
-        "date_start": "2024-10-11T10:00:00+02:00",
-        "date_finish": "2024-10-11T10:00:00+02:00"
+        "date_start": "2024-10-11T10:00:00+01:00",
+        "date_finish": "2024-10-11T10:00:00+01:00"
     }
 }
 ```
 
 ## Returned Data
 
-#|
-|| **Name**
+#| 
+|| **Name** 
 `Type` | **Description** ||
-|| **result**
-[`User[]`](../../entities.md#user) | Array of chat participants. Field descriptions for the object — [User](../../entities.md#user) ||
-|| **time**
+|| **result** 
+[`User[]`](../../entities.md#user) | Array of chat participants. Description of object fields — [User](../../entities.md#user) ||
+|| **time** 
 [`time`](../../../../data-types.md#time) | Information about the request execution time ||
 |#
 
@@ -230,12 +246,12 @@ HTTP Status: **400**, **403**
 
 ### Possible Error Codes
 
-#|
+#| 
 || **Code** | **Description** | **Value** ||
-|| `BOT_TOKEN_NOT_SPECIFIED` | Bot token is not specified | `botToken` is required for webhook authorization ||
-|| `BOT_ID_REQUIRED` | Bot ID is required | `botId` is required ||
+|| `BOT_TOKEN_NOT_SPECIFIED` | Bot token is not specified | `botToken` is not specified. Required for webhook authorization ||
+|| `BOT_ID_REQUIRED` | Bot ID is required | `botId` is not specified ||
 || `BOT_NOT_FOUND` | Bot not found | Bot not found ||
-|| `BOT_OWNERSHIP_ERROR` | Bot is registered by another application | Bot is registered by another application ||
+|| `BOT_OWNERSHIP_ERROR` | Bot is registered by another application | Bot registered by another application ||
 || `ACCESS_DENIED` | Access denied | Bot is not a participant in the chat ||
 |#
 

@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can subscribe: any user
 
-The event triggers after a comment is deleted in a task.
+The event is triggered after a comment is deleted in a task.
 
 {% note info "" %}
 
@@ -18,11 +18,11 @@ Events will not be sent to the application until the installation is complete. [
 
 {% endnote %}
 
-## What the handler receives
+## What the Handler Receives
 
 Data is transmitted as a POST request {.b24-info}
 
-When working with the old task card prior to module version `tasks 25.700.0`:
+When working with the old task detail form prior to module version `tasks 25.700.0`:
 
 ```json
 array(
@@ -51,96 +51,96 @@ array(
 
 {% note warning " " %}
 
-When working with a new task card with chat from version `tasks 25.700.0`, the event does not function.
+When working with the new task detail form with chat from module version `tasks 25.700.0`, the event does not work.
 
 {% endnote %}
 
 {% include notitle [Footnote on parameters](../../../../_includes/required.md) %}
 
-#|
-|| **Parameter**
-`type` | **Description** ||
-|| **event***
-[`string`](../../../data-types.md) | Symbolic event code, in this case `OnTaskDelete`||
-|| **data***
-[`array`](../../../data-types.md) | Array with task comment data ||
-|| **ts***
-[`timestamp`](../../../data-types.md) | Date and time of the event sent from the [event queue](../../../events/index.md) ||
-|| **auth***
-[`array`](../../../data-types.md) | Authorization parameters and information about the account where the event occurred ||
+#| 
+|| **Parameter** 
+`type` | **Description** || 
+|| **event*** 
+[`string`](../../../data-types.md) | Symbolic event code, in this case `OnTaskDelete` || 
+|| **data*** 
+[`array`](../../../data-types.md) | Array with task comment data || 
+|| **ts*** 
+[`timestamp`](../../../data-types.md) | Date and time of event sending from the [event queue](../../../events/index.md) || 
+|| **auth*** 
+[`array`](../../../data-types.md) | Authorization parameters and data about the account where the event occurred || 
 |#
 
 ### Parameter data[]
 
 {% include notitle [Footnote on parameters](../../../../_includes/required.md) %}
 
-#|
-|| **Name**
-`type` | **Description** ||
-|| **FIELDS_BEFORE***
-[`undefined`\|`object`](../../../data-types.md) | Fields of the comment and task before the event (detailed description provided [below](#fields_before)). If no task fields are available, this field will contain the value `undefined` ||
-|| **FIELDS_AFTER***
-[`undefined`\|`object`](../../../data-types.md) | Fields of the comment and task after the event (detailed description provided [below](#fields_after)). If no task fields are available, this field will contain the value `undefined` ||
-|| **IS_ACCESSIBLE_BEFORE***
-[`string`](../../../data-types.md) | Was the task readable before the event (detailed description provided [below](#is_accessible_before)) ||
-|| **IS_ACCESSIBLE_AFTER***
-[`string`](../../../data-types.md) | Is the task readable after the event (detailed description provided [below](#is_accessible_after)) ||
+#| 
+|| **Name** 
+`type` | **Description** || 
+|| **FIELDS_BEFORE*** 
+[`undefined`\|`object`](../../../data-types.md) | Fields of the comment and task before the event (detailed description provided [below](#fields_before)). If there are no available task fields, this field will contain the value `undefined` || 
+|| **FIELDS_AFTER*** 
+[`undefined`\|`object`](../../../data-types.md) | Fields of the comment and task after the event (detailed description provided [below](#fields_after)). If there are no available task fields, this field will contain the value `undefined` || 
+|| **IS_ACCESSIBLE_BEFORE*** 
+[`string`](../../../data-types.md) | Whether the task was accessible for reading before the event (detailed description provided [below](#is_accessible_before)) || 
+|| **IS_ACCESSIBLE_AFTER*** 
+[`string`](../../../data-types.md) | Whether the task became accessible for reading after the event (detailed description provided [below](#is_accessible_after)) || 
 |#
 
 ### Field FIELDS_BEFORE {#fields_before}
 
 {% include notitle [Footnote on parameters](../../../../_includes/required.md) %}
 
-#|
-|| **Name**
-`type` | **Description** ||
-|| **ID***
-[`integer`](../../../data-types.md) | Identifier of the deleted comment ||
-|| **TASK_ID***
-[`integer`](../../../data-types.md) | Identifier of the task to which the comment belonged ||
+#| 
+|| **Name** 
+`type` | **Description** || 
+|| **ID*** 
+[`integer`](../../../data-types.md) | Identifier of the deleted comment || 
+|| **TASK_ID*** 
+[`integer`](../../../data-types.md) | Identifier of the task to which the comment belonged || 
 |#
 
 ### Field FIELDS_AFTER {#fields_after}
 
 {% include notitle [Footnote on parameters](../../../../_includes/required.md) %}
 
-#|
-|| **Name**
-`type` | **Description** ||
-|| **ID***
-[`integer`](../../../data-types.md) | Identifier of the deleted comment ||
-|| **TASK_ID***
-[`integer`](../../../data-types.md) | Identifier of the task to which the comment belonged ||
-|| **ACTION***
-[`string`](../../../data-types.md) | Action, in this case will always be `DEL` ||
+#| 
+|| **Name** 
+`type` | **Description** || 
+|| **ID*** 
+[`integer`](../../../data-types.md) | Identifier of the deleted comment || 
+|| **TASK_ID*** 
+[`integer`](../../../data-types.md) | Identifier of the task to which the comment belonged || 
+|| **ACTION*** 
+[`string`](../../../data-types.md) | Action, which in this case will always be `DEL` || 
 |#
 
 ### Field IS_ACCESSIBLE_BEFORE {#is_accessible_before}
 
 {% include notitle [Footnote on parameters](../../../../_includes/required.md) %}
 
-#|
-|| **Name**
-`type` | **Description** ||
-|| **IS_ACCESSIBLE_BEFORE***
-[`string`](../../../data-types.md) | Possible values:
-- `Y` (Yes) — yes
-- `N` (No) — no
-- `undefined` — not defined or check not performed ||
+#| 
+|| **Name** 
+`type` | **Description** || 
+|| **IS_ACCESSIBLE_BEFORE*** 
+[`string`](../../../data-types.md) | Possible values: 
+- `Y` (Yes) — yes 
+- `N` (No) — no 
+- `undefined` — not defined or check was not performed || 
   |#
 
 ### Field IS_ACCESSIBLE_AFTER {#is_accessible_after}
 
 {% include notitle [Footnote on parameters](../../../../_includes/required.md) %}
 
-#|
-|| **Name**
-`type` | **Description** ||
-|| **IS_ACCESSIBLE_AFTER***
-[`string`](../../../data-types.md) | Possible values:
-- `Y` (Yes) — yes
-- `N` (No) — no
-- `undefined` — not defined or check not performed ||
+#| 
+|| **Name** 
+`type` | **Description** || 
+|| **IS_ACCESSIBLE_AFTER*** 
+[`string`](../../../data-types.md) | Possible values: 
+- `Y` (Yes) — yes 
+- `N` (No) — no 
+- `undefined` — not defined or check was not performed || 
   |#
 
 ## Code Examples
@@ -149,31 +149,81 @@ When working with a new task card with chat from version `tasks 25.700.0`, the e
 
 {% list tabs %}
 
-- JS
+- JS (TS)
 
+    ```ts
+    // This snippet is an ES module: top-level await requires type="module" or a bundler.
+    // $b24 is an already-initialized SDK instance (see the SDK "Get started" guide).
+    import { Text } from '@bitrix24/b24jssdk'
+    import type { B24Frame } from '@bitrix24/b24jssdk'
 
-    ```js
-    try
-    {
-    	const response = await $b24.callMethod(
-    		'event.bind',
-    		{
-    			"event": "OnTaskCommentDelete",
-    			"handler": "https://example.com/handler.php"
-    		}
-    	);
-    	
-    	const result = response.getData().result;
-    	console.info(result);
-    }
-    catch( error )
-    {
-    	console.error(error);
+    declare const $b24: B24Frame
+
+    // Shape of the payload returned in result (event.bind returns true on success)
+    type EventBindResult = boolean
+
+    try {
+      const response = await $b24.actions.v2.call.make<EventBindResult>({
+        method: 'event.bind',
+        params: {
+          event: 'OnTaskCommentDelete',
+          handler: 'https://example.com/handler.php',
+        },
+        requestId: Text.getUuidRfc4122()
+      })
+
+      // The payload is available only on a successful response
+      if (!response.isSuccess) {
+        console.error(response.getErrorMessages().join('; '))
+      } else {
+        const result = response.getData()!.result
+        console.info('Event bound successfully:', result)
+      }
+    } catch (error) {
+      // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+      console.error(error)
     }
     ```
 
-- PHP
+- JS (UMD)
 
+    ```html
+    <!-- Load the SDK (UMD build); it is exposed as the global B24Js -->
+    <script src="https://unpkg.com/@bitrix24/b24jssdk@1/dist/umd/index.min.js"></script>
+    <script>
+      async function bindOnTaskCommentDeleteEvent() {
+        try {
+          // Initialize the SDK inside a Bitrix24 frame
+          const $b24 = await B24Js.initializeB24Frame()
+
+          const response = await $b24.actions.v2.call.make({
+            method: 'event.bind',
+            params: {
+              event: 'OnTaskCommentDelete',
+              handler: 'https://example.com/handler.php',
+            },
+            requestId: B24Js.Text.getUuidRfc4122()
+          })
+
+          // The payload is available only on a successful response
+          if (!response.isSuccess) {
+            console.error(response.getErrorMessages().join('; '))
+            return
+          }
+
+          const result = response.getData().result
+          console.info('Event bound successfully:', result)
+        } catch (error) {
+          // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+          console.error(error)
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', bindOnTaskCommentDeleteEvent)
+    </script>
+    ```
+
+- PHP
 
     ```php
     try {
@@ -239,7 +289,6 @@ When working with a new task card with chat from version `tasks 25.700.0`, the e
     ```
 
 {% endlist %}
-
 
 ## Continue Learning
 

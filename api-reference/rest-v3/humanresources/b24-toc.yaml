@@ -1,0 +1,13 @@
+title: Company Structure  
+href: index.md  
+items:  
+  - name: Overview of Sections  
+    href: index.md  
+  - name: Departments and Teams  
+    include:  
+      path: node/b24-toc.yaml  
+      mode: link  
+  - name: Participants of Departments and Teams  
+    include:  
+      path: node-member/b24-toc.yaml  
+      mode: link  

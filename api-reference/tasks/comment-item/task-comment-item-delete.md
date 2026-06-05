@@ -1,4 +1,4 @@
-# Delete Comment `task.commentitem.delete`
+# Delete Comment task.commentitem.delete
 
 {% note tip "" %}
 
@@ -10,11 +10,11 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: administrator
 
-The method `task.commentitem.delete` removes a comment.
+The method `task.commentitem.delete` deletes a comment.
 
 {% note warning "DEPRECATED" %}
 
-Development of this method has been halted since version `tasks 25.700.0`. The method `task.commentitem.delete` does not work in the [new task card](../tasks-new.md); please use the method [im.message.delete](../../chats/messages/im-message-delete.md) for managing task chat.
+The development of this method has been halted since version `tasks 25.700.0`. The method task.commentitem.delete does not work in the [new task card](../tasks-new.md); use the [im.message.delete](../../chats/messages/im-message-delete.md) method for working with task chats.
 
 {% endnote %}
 
@@ -26,16 +26,16 @@ Pass parameters in the request according to the order in the table. If the order
 
 {% endnote %}
 
-{% include [Footnote on parameters](../../../_includes/required.md) %}
+{% include [Parameter Note](../../../_includes/required.md) %}
 
-#|
-|| **Name**
+#| 
+|| **Name** 
 `type` | **Description** ||
-|| **TASKID***
+|| **TASKID*** 
 [`integer`](../../data-types.md) | Task identifier.
 
 The task identifier can be obtained when [creating a new task](../tasks-task-add.md) or by using the [get task list](../tasks-task-list.md) method. ||
-|| **ITEMID***
+|| **ITEMID*** 
 [`integer`](../../data-types.md) | Comment identifier.
 
 The comment identifier can be obtained when [adding a new comment](./task-comment-item-add.md) or by using the [get comment list](./task-comment-item-get-list.md) method. ||
@@ -43,7 +43,7 @@ The comment identifier can be obtained when [adding a new comment](./task-commen
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+{% include [Example Note](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -67,27 +67,78 @@ The comment identifier can be obtained when [adding a new comment](./task-commen
     https://**put_your_bitrix24_address**/rest/task.commentitem.delete
     ```
 
-- JS
+- JS (TS)
 
-    ```js
-    try
-    {
-        const response = await $b24.callMethod(
-            'task.commentitem.delete',
-            {
-                "TASKID": 8017,
-                "ITEMID": 3155
-            }
-        );
-        
-        const result = response.getData().result;
-        console.info(result);
-        console.log(result);
+    ```ts
+    // This snippet is an ES module: top-level await requires type="module" or a bundler.
+    // $b24 is an already-initialized SDK instance (see the SDK "Get started" guide).
+    import { Text } from '@bitrix24/b24jssdk'
+    import type { B24Frame } from '@bitrix24/b24jssdk'
+
+    declare const $b24: B24Frame
+
+    // Shape of the payload returned in result (match the "response handling" section of the page)
+    type DeleteCommentResult = boolean
+
+    try {
+      const response = await $b24.actions.v2.call.make<DeleteCommentResult>({
+        method: 'task.commentitem.delete',
+        params: {
+          TASKID: 8017,
+          ITEMID: 3155,
+        },
+        requestId: Text.getUuidRfc4122()
+      })
+
+      // The payload is available only on a successful response
+      if (!response.isSuccess) {
+        console.error(response.getErrorMessages().join('; '))
+      } else {
+        const result = response.getData()!.result
+        console.info('Comment deleted:', result)
+      }
+    } catch (error) {
+      // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+      console.error(error)
     }
-    catch( error )
-    {
-        console.error('Error:', error);
-    }
+    ```
+
+- JS (UMD)
+
+    ```html
+    <!-- Load the SDK (UMD build); it is exposed as the global B24Js -->
+    <script src="https://unpkg.com/@bitrix24/b24jssdk@1/dist/umd/index.min.js"></script>
+    <script>
+      async function deleteComment() {
+        try {
+          // Initialize the SDK inside a Bitrix24 frame
+          const $b24 = await B24Js.initializeB24Frame()
+
+          const response = await $b24.actions.v2.call.make({
+            method: 'task.commentitem.delete',
+            params: {
+              TASKID: 8017,
+              ITEMID: 3155,
+            },
+            requestId: B24Js.Text.getUuidRfc4122()
+          })
+
+          // The payload is available only on a successful response
+          if (!response.isSuccess) {
+            console.error(response.getErrorMessages().join('; '))
+            return
+          }
+
+          const result = response.getData().result
+          console.info('Comment deleted:', result)
+        } catch (error) {
+          // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+          console.error(error)
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', deleteComment)
+    </script>
     ```
 
 - PHP
@@ -176,12 +227,12 @@ HTTP Status: **200**
 
 ### Returned Data
 
-#|
-|| **Name**
+#| 
+|| **Name** 
 `type` | **Description** ||
-|| **result**
+|| **result** 
 [`boolean`](../../data-types.md) | Returns `true` if the comment was successfully deleted. ||
-|| **time**
+|| **time** 
 [`time`](../../data-types.md#time) | Information about the request execution time. ||
 |#
 
@@ -200,20 +251,20 @@ HTTP Status: **400**
 
 ### Possible Error Codes
 
-#|
+#| 
 || **Code** | **Description** | **Value** ||
-|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #1 (itemId) expected by method ctaskcommentitem::delete(), but not given.; 256/TE/WRONG_ARGUMENTS | Required parameter not specified, for example, `ITEMID`. ||
-|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#4; Action is not allowed; 4/TE/ACTION_NOT_ALLOWED | This error is returned in several cases:
+|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #1 (itemId) expected by method ctaskcommentitem::delete(), but not given.; 256/TE/WRONG_ARGUMENTS | Required parameter not specified, e.g., `ITEMID`. ||
+|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#4; Action is not allowed; 4/TE/ACTION_NOT_ALLOWED | Error returned in several cases:
 - Incorrect parameter order
 - No access permission to the task
 - Cannot delete another user's comment unless you are an administrator
 - The specified task or comment does not exist. ||
-|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #0 (taskId) for method ctaskcommentitem::delete() expected to be of type "integer", but given something else.; 256/TE/WRONG_ARGUMENTS | An incorrect type of value was provided for the parameter, for example, for `TASKID`. ||
+|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #0 (taskId) for method ctaskcommentitem::delete() expected to be of type "integer", but given something else.; 256/TE/WRONG_ARGUMENTS | Incorrect value type specified for the parameter, e.g., for `TASKID`. ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
-## Continue Learning
+## Continue Learning 
 
 - [{#T}](./index.md)
 - [{#T}](./task-comment-item-add.md)

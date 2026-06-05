@@ -1,4 +1,4 @@
-# Get Comment by Identifier task.commentitem.get
+# Get Comment by ID task.commentitem.get
 
 {% note tip "" %}
 
@@ -8,13 +8,13 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`task`](../../scopes/permissions.md)
 >
-> Who can execute the method: any user with read access permission for the task or higher
+> Who can execute the method: any user with read access permission to the task or higher.
 
-The method `task.commentitem.get` retrieves a comment by its identifier.
+The method `task.commentitem.get` retrieves a comment by its ID.
 
 {% note warning "DEPRECATED" %}
 
-Development of this method has been halted since version `tasks 25.700.0`. The method task.commentitem.get does not work in the [new task card](../tasks-new.md); use the method [im.dialog.messages.get](../../chats/messages/im-dialog-messages-get.md) for working with task chat.
+Development of this method has been halted since version `tasks 25.700.0`. The method task.commentitem.get does not work in the [new task card](../tasks-new.md); use the [im.dialog.messages.get](../../chats/messages/im-dialog-messages-get.md) method to work with task chat.
 
 {% endnote %}
 
@@ -26,24 +26,24 @@ Pass parameters in the request according to the order in the table. If the order
 
 {% endnote %}
 
-{% include [Footnote on parameters](../../../_includes/required.md) %}
+{% include [Parameter Note](../../../_includes/required.md) %}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
-|| **TASKID***
-[`integer`](../../data-types.md) | Task identifier.
+|| **TASKID*** 
+[`integer`](../../data-types.md) | Task ID.
 
-The task identifier can be obtained when [creating a new task](../tasks-task-add.md) or by using the [get task list](../tasks-task-list.md) method. ||
-|| **ITEMID***
-[`integer`](../../data-types.md) | Comment identifier.
+The task ID can be obtained when [creating a new task](../tasks-task-add.md) or by using the [get task list](../tasks-task-list.md) method. ||
+|| **ITEMID*** 
+[`integer`](../../data-types.md) | Comment ID.
 
-The comment identifier can be obtained when [adding a new comment](./task-comment-item-add.md) or by using the [get comment list](./task-comment-item-get-list.md) method. ||
+The comment ID can be obtained when [adding a new comment](./task-comment-item-add.md) or by using the [get comment list](./task-comment-item-get-list.md) method. ||
 |#
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+{% include [Example Note](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -67,27 +67,96 @@ The comment identifier can be obtained when [adding a new comment](./task-commen
     https://**put_your_bitrix24_address**/rest/task.commentitem.get
     ```
 
-- JS
+- JS (TS)
 
-    ```js
-    try
-    {
-    	const response = await $b24.callMethod(
-    		'task.commentitem.get',
-    		{
-    			"TASKID": 8017,
-    			"ITEMID": 3157
-    		}
-    	);
-    	
-    	const result = response.getData().result;
-    	console.info(result);
-    	console.log(result);
+    ```ts
+    // This snippet is an ES module: top-level await requires type="module" or a bundler.
+    // $b24 is an already-initialized SDK instance (see the SDK "Get started" guide).
+    import { Text } from '@bitrix24/b24jssdk'
+    import type { B24Frame, ISODate } from '@bitrix24/b24jssdk'
+
+    declare const $b24: B24Frame
+
+    type AttachedObject = {
+      ATTACHMENT_ID: string
+      NAME: string
+      SIZE: string
+      FILE_ID: string
+      DOWNLOAD_URL: string
+      VIEW_URL: string
     }
-    catch( error )
-    {
-    	console.error('Error:', error);
+
+    // Shape of the payload returned in result (match the "response handling" section of the page)
+    type CommentItemGetResult = {
+      POST_MESSAGE_HTML: string | null
+      ID: string
+      AUTHOR_ID: string
+      AUTHOR_NAME: string
+      AUTHOR_EMAIL: string
+      POST_DATE: ISODate | null
+      POST_MESSAGE: string
+      ATTACHED_OBJECTS: Record<string, AttachedObject>
     }
+
+    try {
+      const response = await $b24.actions.v2.call.make<CommentItemGetResult>({
+        method: 'task.commentitem.get',
+        params: {
+          TASKID: 8017,
+          ITEMID: 3157,
+        },
+        requestId: Text.getUuidRfc4122()
+      })
+
+      // The payload is available only on a successful response
+      if (!response.isSuccess) {
+        console.error(response.getErrorMessages().join('; '))
+      } else {
+        const result = response.getData()!.result
+        console.info(result.ID, result.POST_MESSAGE, result.POST_DATE)
+      }
+    } catch (error) {
+      // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+      console.error(error)
+    }
+    ```
+
+- JS (UMD)
+
+    ```html
+    <!-- Load the SDK (UMD build); it is exposed as the global B24Js -->
+    <script src="https://unpkg.com/@bitrix24/b24jssdk@1/dist/umd/index.min.js"></script>
+    <script>
+      async function getCommentItem() {
+        try {
+          // Initialize the SDK inside a Bitrix24 frame
+          const $b24 = await B24Js.initializeB24Frame()
+
+          const response = await $b24.actions.v2.call.make({
+            method: 'task.commentitem.get',
+            params: {
+              TASKID: 8017,
+              ITEMID: 3157,
+            },
+            requestId: B24Js.Text.getUuidRfc4122()
+          })
+
+          // The payload is available only on a successful response
+          if (!response.isSuccess) {
+            console.error(response.getErrorMessages().join('; '))
+            return
+          }
+
+          const result = response.getData().result
+          console.info(result.ID, result.POST_MESSAGE, result.POST_DATE)
+        } catch (error) {
+          // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+          console.error(error)
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', getCommentItem)
+    </script>
     ```
 
 - PHP
@@ -202,7 +271,7 @@ HTTP Status: **200**
 
 ### Returned Data
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **result**
@@ -210,36 +279,36 @@ HTTP Status: **200**
 || **POST_MESSAGE_HTML**
 [`string`](../../data-types.md) | HTML code of the comment ||
 || **ID**
-[`string`](../../data-types.md) | Comment identifier ||
+[`string`](../../data-types.md) | Comment ID ||
 || **AUTHOR_ID**
-[`string`](../../data-types.md) | Comment author's identifier ||
+[`string`](../../data-types.md) | Comment author's ID ||
 || **AUTHOR_NAME**
 [`string`](../../data-types.md) | Comment author's name ||
 || **AUTHOR_EMAIL**
 [`string`](../../data-types.md) | Comment author's email ||
 || **POST_DATE**
-[`string`](../../data-types.md) | Date and time of comment creation ||
+[`string`](../../data-types.md) | Date and time the comment was created ||
 || **POST_MESSAGE**
 [`string`](../../data-types.md) | Comment text ||
 || **ATTACHED_OBJECTS**
-[`object`](../../data-types.md) | Object containing information about attachments. The key of the object is the attachment identifier, and the value is the object with [file description](#attached-objects) ||
+[`object`](../../data-types.md) | Object containing information about attachments. The key of the object is the attachment ID, and the value is the object with [file description](#attached-objects) ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ### ATTACHED_OBJECTS Object {#attached-objects}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **ATTACHMENT_ID**
-[`string`](../../data-types.md) | Attachment identifier ||
+[`string`](../../data-types.md) | Attachment ID ||
 || **NAME**
 [`string`](../../data-types.md) | File name ||
 || **SIZE**
 [`string`](../../data-types.md) | File size in bytes ||
 || **FILE_ID**
-[`string`](../../data-types.md) | File identifier on Drive ||
+[`string`](../../data-types.md) | File ID on Drive ||
 || **DOWNLOAD_URL**
 [`string`](../../data-types.md) | URL for downloading the file ||
 || **VIEW_URL**
@@ -261,14 +330,14 @@ HTTP Status: **400**
 
 ### Possible Error Codes
 
-#|
+#| 
 || **Code** | **Description** | **Value** ||
-|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#512; Check listitem not found or not accessible; 512/TE/ITEM_NOT_FOUND_OR_NOT_ACCESSIBLE | This error is returned in the following cases:
-- Incorrect order of parameters in the method
-- Task or comment with the specified identifier not found
+|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#512; Check listitem not found or not accessible; 512/TE/ITEM_NOT_FOUND_OR_NOT_ACCESSIBLE | The error is returned in the following cases:
+- Incorrect parameter order in the method
+- Task or comment with the specified ID not found
 - No access permission to the task ||
-|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #0 (taskId) for method ctaskcommentitem::get() expected to be of type "integer", but given something else.; 256/TE/WRONG_ARGUMENTS | An incorrect value type was provided for the parameter, for example, for `TASKID` ||
-|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #1 (itemId) expected by method ctaskcommentitem::get(), but not given.; 256/TE/WRONG_ARGUMENTS | A required parameter was not provided, for example, `ITEMID` ||
+|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #0 (taskId) for method ctaskcommentitem::get() expected to be of type "integer", but given something else.; 256/TE/WRONG_ARGUMENTS | Incorrect value type for the parameter, for example, for `TASKID` ||
+|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #1 (itemId) expected by method ctaskcommentitem::get(), but not given.; 256/TE/WRONG_ARGUMENTS | Required parameter not provided, for example, `ITEMID` ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

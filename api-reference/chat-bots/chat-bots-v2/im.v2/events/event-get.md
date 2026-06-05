@@ -1,4 +1,4 @@
-# Get User Events im.v2.Event.get
+# Retrieve User Events im.v2.Event.get
 
 {% note tip "" %}
 
@@ -22,20 +22,20 @@ The method uses confirmation via `offset`: pass the `nextOffset` from the previo
 
 ## Method Parameters
 
-{% include [Parameter Note](../../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../../_includes/required.md) %}
 
 #|
 || **Name**
 `Type` | **Description** ||
 || **offset**
-[`integer`](../../../../data-types.md) | Confirms processed events and returns events starting from this value. Pass the `nextOffset` from the previous response ||
+[`integer`](../../../../data-types.md) | Confirms processed events and returns events starting from this value. Pass `nextOffset` from the previous response ||
 || **limit**
 [`integer`](../../../../data-types.md) | Maximum number of events returned (1–1000). Default is `100` ||
 |#
 
 ## Code Examples
 
-{% include [Examples Note](../../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -145,7 +145,7 @@ The method uses confirmation via `offset`: pass the `nextOffset` from the previo
 
 ## Response Handling
 
-HTTP Code: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -188,7 +188,7 @@ HTTP Code: **200**
 || **result.events[].date**
 [`datetime`](../../../../data-types.md) | Date and time of the event ||
 || **result.events[].data**
-[`object`](../../../../data-types.md) | Event data. Format depends on the event type: [event description](./events.md) ||
+[`object`](../../../../data-types.md) | Event data. Format depends on the event type: [event descriptions](./events.md) ||
 || **result.nextOffset**
 [`integer`](../../../../data-types.md) | Offset for the next request. Pass in the `offset` parameter in the next call ||
 || **result.hasMore**
@@ -204,23 +204,23 @@ HTTP Code: **200**
 || `ONIMV2MESSAGEADD` | New message in chat ||
 || `ONIMV2MESSAGEUPDATE` | Message edited ||
 || `ONIMV2MESSAGEDELETE` | Message deleted ||
-|| `ONIMV2REACTIONCHANGE` | Reaction to the message changed ||
-|| `ONIMV2JOINCHAT` | New participant in the chat ||
+|| `ONIMV2REACTIONCHANGE` | Reaction to message changed ||
+|| `ONIMV2JOINCHAT` | New participant in chat ||
 |#
 
 Detailed description of the data format for each event: [{#T}](./events.md).
 
 ## Exclusivity of Event Retrieval
 
-Events for a specific user can only be received by **one application**. If multiple applications subscribe to the same user, the call with `offset` confirms and removes records for all — applications will "steal" events from each other.
+Events for a specific user can only be retrieved by **one application**. If multiple applications subscribe to the same user, the call with `offset` confirms and removes records for all — applications will "steal" events from each other.
 
 This limitation is intentional: it is assumed that one agent should respond instantly to events. Multiple agents processing the same events for one user lead to duplicate and conflicting responses.
 
-If multiple independent handlers are needed — use different user contexts or webhook subscriptions.
+If multiple independent handlers are needed, use different user contexts or webhook subscriptions.
 
 ## Error Handling
 
-The method does not generate specific errors. If the user is not subscribed via [im.v2.Event.subscribe](./event-subscribe.md), the method will return an empty array `events`.
+The method does not generate specific errors. If the user is not subscribed via [im.v2.Event.subscribe](./event-subscribe.md), the method will return an empty `events` array.
 
 {% include notitle [Error Handling](../../../../../_includes/error-info.md) %}
 
@@ -228,7 +228,7 @@ The method does not generate specific errors. If the user is not subscribed via 
 
 ## Continue Learning
 
-- [API Change Log imbot.v2](../../change-log.md)
+- [API imbot.v2 Change Log](../../change-log.md)
 - [{#T}](./event-subscribe.md)
 - [{#T}](./event-unsubscribe.md)
 - [{#T}](./events.md)

@@ -1,4 +1,4 @@
-# Get User Field of Task by ID task.item.userfield.get
+# Get Custom Task Field by ID task.item.userfield.get
 
 {% note tip "" %}
 
@@ -10,19 +10,19 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: any user
 
-The method `task.item.userfield.get` retrieves the description of a user field of a task by its ID.
+The method `task.item.userfield.get` retrieves the description of a custom task field by its ID.
 
 ## Method Parameters
 
 {% include [Note on Required Parameters](../../../_includes/required.md) %}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
-|| **ID***
-[`integer`](../../data-types.md) | Identifier of the user field.
+|| **ID*** 
+[`integer`](../../data-types.md) | Identifier of the custom field.
 
-The identifier of the task's user field can be obtained when [creating the field](./task-item-user-field-add.md) or by using the [method to get the list of fields](./task-item-user-field-get-list.md) ||
+The identifier of the task's custom field can be obtained when [creating the field](./task-item-user-field-add.md) or by using the [method to get the list of fields](./task-item-user-field-get-list.md) ||
 |#
 
 ## Code Examples
@@ -56,25 +56,103 @@ The identifier of the task's user field can be obtained when [creating the field
     https://**put_your_bitrix24_address**/rest/task.item.userfield.get
     ```
 
-- JS
+- JS (TS)
 
-    ```js
-    try
-    {
-        const response = await $b24.callMethod(
-            'task.item.userfield.get',
-            {
-                ID: 1325
-            }
-        );
+    ```ts
+    // This snippet is an ES module: top-level await requires type="module" or a bundler.
+    // $b24 is an already-initialized SDK instance (see the SDK "Get started" guide).
+    import { Text } from '@bitrix24/b24jssdk'
+    import type { B24Frame } from '@bitrix24/b24jssdk'
 
-        const result = response.getData().result;
-        console.log(result);
+    declare const $b24: B24Frame
+
+    // Shape of the user field object returned in result
+    // Shape of the payload returned in result (match the "response handling" section of the page)
+    type UserFieldResult = {
+      ID: string
+      ENTITY_ID: string
+      FIELD_NAME: string
+      USER_TYPE_ID: string
+      XML_ID: string
+      SORT: string
+      MULTIPLE: string
+      MANDATORY: string
+      SHOW_FILTER: string
+      SHOW_IN_LIST: string
+      EDIT_IN_LIST: string
+      IS_SEARCHABLE: string
+      EDIT_FORM_LABEL: Record<string, string>
+      LIST_COLUMN_LABEL: Record<string, string>
+      LIST_FILTER_LABEL: Record<string, string>
+      ERROR_MESSAGE: Record<string, string>
+      HELP_MESSAGE: Record<string, string>
+      SETTINGS: {
+        SIZE: number
+        ROWS: number
+        REGEXP: string
+        MIN_LENGTH: number
+        MAX_LENGTH: number
+        DEFAULT_VALUE: string
+      }
     }
-    catch (error)
-    {
-        console.error(error);
+
+    try {
+      const response = await $b24.actions.v2.call.make<UserFieldResult>({
+        method: 'task.item.userfield.get',
+        params: {
+          ID: 1325,
+        },
+        requestId: Text.getUuidRfc4122()
+      })
+
+      // The payload is available only on a successful response
+      if (!response.isSuccess) {
+        console.error(response.getErrorMessages().join('; '))
+      } else {
+        const result = response.getData()!.result
+        console.info(result.ID, result.FIELD_NAME, result.USER_TYPE_ID)
+      }
+    } catch (error) {
+      // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+      console.error(error)
     }
+    ```
+
+- JS (UMD)
+
+    ```html
+    <!-- Load the SDK (UMD build); it is exposed as the global B24Js -->
+    <script src="https://unpkg.com/@bitrix24/b24jssdk@1/dist/umd/index.min.js"></script>
+    <script>
+      async function getUserField() {
+        try {
+          // Initialize the SDK inside a Bitrix24 frame
+          const $b24 = await B24Js.initializeB24Frame()
+
+          const response = await $b24.actions.v2.call.make({
+            method: 'task.item.userfield.get',
+            params: {
+              ID: 1325,
+            },
+            requestId: B24Js.Text.getUuidRfc4122()
+          })
+
+          // The payload is available only on a successful response
+          if (!response.isSuccess) {
+            console.error(response.getErrorMessages().join('; '))
+            return
+          }
+
+          const result = response.getData().result
+          console.info(result.ID, result.FIELD_NAME, result.USER_TYPE_ID)
+        } catch (error) {
+          // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+          console.error(error)
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', getUserField)
+    </script>
     ```
 
 - PHP
@@ -164,7 +242,7 @@ HTTP Status: **200**
             "REGEXP": "",
             "MIN_LENGTH": 0,
             "MAX_LENGTH": 0,
-            "DEFAULT_VALUE": "Clarify the goal and expected outcome"
+            "DEFAULT_VALUE": "Clarify the goal and expected result"
         },
         "EDIT_FORM_LABEL": {
             "ar": "",
@@ -174,19 +252,19 @@ HTTP Status: **200**
             ...
         },
         "LIST_COLUMN_LABEL": {
-            "en": "Сlient request",
+            "en": "Client request",
             ...
         },
         "LIST_FILTER_LABEL": {
-            "en": "Сlient request",
+            "en": "Client request",
             ...
         },
         "ERROR_MESSAGE": {
-            "en": "Сlient request",
+            "en": "Client request",
             ...
         },
         "HELP_MESSAGE": {
-            "en": "Сlient request",
+            "en": "Client request",
             ...
         }
     },
@@ -206,40 +284,40 @@ HTTP Status: **200**
 
 ### Returned Data
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | User field object [(detailed description)](#result) ||
+[`object`](../../data-types.md) | Object of the custom field [(detailed description)](#result) ||
 || **total**
 [`integer`](../../data-types.md) | Currently returns `0` ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the execution time of the request ||
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
-#### Result Object {#result}
+#### Object result {#result}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **ID**
-[`integer`](../../data-types.md) | Identifier of the user field ||
+[`integer`](../../data-types.md) | Identifier of the custom field ||
 || **ENTITY_ID**
-[`string`](../../data-types.md) | Code of the object to which the field is linked ||
+[`string`](../../data-types.md) | Code of the object to which the field is attached ||
 || **FIELD_NAME**
-[`string`](../../data-types.md) | Code of the user field ||
+[`string`](../../data-types.md) | Code of the custom field ||
 || **USER_TYPE_ID**
 [`string`](../../data-types.md) | Data type ||
 || **XML_ID**
 [`string`](../../data-types.md) | External identifier ||
 || **SORT**
-[`integer`](../../data-types.md) | Sort order ||
+[`integer`](../../data-types.md) | Sorting order ||
 || **MULTIPLE**
-[`char`](../../data-types.md) | Indicates multiple values. Possible values:
+[`char`](../../data-types.md) | Indicator of multiple values. Possible values:
 - `Y` — multiple
 - `N` — single ||
 || **MANDATORY**
-[`char`](../../data-types.md) | Indicates required field. Possible values:
+[`char`](../../data-types.md) | Indicator of a required field. Possible values:
 - `Y` — required
 - `N` — not required ||
 || **SHOW_FILTER**
@@ -264,13 +342,13 @@ HTTP Status: **200**
 [`object`](../../data-types.md) | Additional field settings [(detailed description)](#settings) ||
 |#
 
-#### SETTINGS Object {#settings}
+#### Object SETTINGS {#settings}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **SIZE**
-[`integer`](../../data-types.md) | Input field width ||
+[`integer`](../../data-types.md) | Width of the input field ||
 || **ROWS**
 [`integer`](../../data-types.md) | Number of rows in the input field ||
 || **REGEXP**
@@ -298,11 +376,11 @@ HTTP Status: **400**
 
 ### Possible Error Codes
 
-#|
+#| 
 || **Status** | **Code** | **Description** | **Value** ||
-|| `400` | `ERROR_CORE` | No parameters found | Required parameter `ID` not provided ||
+|| `400` | `ERROR_CORE` | No parameters found | Required parameter `ID` is missing ||
 || `400` | `ERROR_CORE` | ID is not defined or invalid | Non-numeric value or value `<= 0` provided for parameter `ID` ||
-|| `400` | `ERROR_NOT_FOUND` | The entity with ID '{ID}' is not found | User field with the specified `ID` not found ||
+|| `400` | `ERROR_NOT_FOUND` | The entity with ID '{ID}' is not found | Custom field with the specified `ID` not found ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

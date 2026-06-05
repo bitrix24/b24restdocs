@@ -8,13 +8,13 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`task`](../../scopes/permissions.md)
 >
-> Who can execute the method: user with template creation permission
+> Who can execute the method: a user with the permission to create a template
 
 The method `tasks.template.add` creates a new task template.
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -32,7 +32,7 @@ Required fields for creating a template:
 
 ## Code Examples
 
-{% include [Note on examples](../../../_includes/examples.md) %}
+{% include [Note on Examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -45,8 +45,8 @@ Required fields for creating a template:
     -d '{
       "fields": {
         "PARENT_ID": 8131,
-        "TITLE": "Preparation of weekly project status",
-        "DESCRIPTION": "Task template for preparing and agreeing on the weekly project status with the team and manager",
+        "TITLE": "Weekly project status preparation",
+        "DESCRIPTION": "Task template for preparing and approving weekly project status with the team and manager",
         "PRIORITY": 2,
         "CREATED_BY": 101,
         "RESPONSIBLE_ID": 102,
@@ -76,8 +76,8 @@ Required fields for creating a template:
     -d '{
       "fields": {
         "PARENT_ID": 8131,
-        "TITLE": "Preparation of weekly project status",
-        "DESCRIPTION": "Task template for preparing and agreeing on the weekly project status with the team and manager",
+        "TITLE": "Weekly project status preparation",
+        "DESCRIPTION": "Task template for preparing and approving weekly project status with the team and manager",
         "PRIORITY": 2,
         "CREATED_BY": 101,
         "RESPONSIBLE_ID": 102,
@@ -99,44 +99,115 @@ Required fields for creating a template:
     https://**put_your_bitrix24_address**/rest/tasks.template.add
     ```
 
-- JS
+- JS (TS)
 
-    ```js
-    try
-    {
-        const response = await $b24.callMethod(
-            'tasks.template.add',
-            {
-                fields: {
-                    PARENT_ID: 8131,
-                    TITLE: 'Preparation of weekly project status',
-                    DESCRIPTION: 'Task template for preparing and agreeing on the weekly project status with the team and manager',
-                    PRIORITY: 2,
-                    CREATED_BY: 101,
-                    RESPONSIBLE_ID: 102,
-                    REPLICATE: 'Y',
-                    START_DATE_PLAN_AFTER: '32400',
-                    END_DATE_PLAN_AFTER: '97200',
-                    REPLICATE_PARAMS: {
-                        PERIOD: 'weekly',
-                        EVERY_WEEK: 1,
-                        WEEK_DAYS: [2],
-                        TIME: '11:00',
-                        REPEAT_TILL: 'endless',
-                        START_DATE: '03/16/2026 00:00:00',
-                    },
-                    UF_CRM_TASK: ['L_1179', 'D_1833'],
-                }
-            }
-        );
+    ```ts
+    // This snippet is an ES module: top-level await requires type="module" or a bundler.
+    // $b24 is an already-initialized SDK instance (see the SDK "Get started" guide).
+    import { Text } from '@bitrix24/b24jssdk'
+    import type { B24Frame } from '@bitrix24/b24jssdk'
 
-        const result = response.getData().result;
-        console.log(result);
+    declare const $b24: B24Frame
+
+    // The result field contains the ID of the created template
+    // Shape of the payload returned in result (match the "response handling" section of the page)
+    type TemplateAddResult = number
+
+    try {
+      const response = await $b24.actions.v2.call.make<TemplateAddResult>({
+        method: 'tasks.template.add',
+        params: {
+          fields: {
+            PARENT_ID: 8131,
+            TITLE: 'Weekly project status preparation',
+            DESCRIPTION: 'Task template for preparing and approving weekly project status with the team and manager',
+            PRIORITY: 2,
+            CREATED_BY: 101,
+            RESPONSIBLE_ID: 102,
+            REPLICATE: 'Y',
+            START_DATE_PLAN_AFTER: '32400',
+            END_DATE_PLAN_AFTER: '97200',
+            REPLICATE_PARAMS: {
+              PERIOD: 'weekly',
+              EVERY_WEEK: 1,
+              WEEK_DAYS: [2],
+              TIME: '11:00',
+              REPEAT_TILL: 'endless',
+              START_DATE: '03/16/2026 00:00:00',
+            },
+            UF_CRM_TASK: ['L_1179', 'D_1833'],
+          },
+        },
+        requestId: Text.getUuidRfc4122()
+      })
+
+      // The payload is available only on a successful response
+      if (!response.isSuccess) {
+        console.error(response.getErrorMessages().join('; '))
+      } else {
+        const result = response.getData()!.result
+        console.info('Created template ID:', result)
+      }
+    } catch (error) {
+      // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+      console.error(error)
     }
-    catch (error)
-    {
-        console.error(error);
-    }
+    ```
+
+- JS (UMD)
+
+    ```html
+    <!-- Load the SDK (UMD build); it is exposed as the global B24Js -->
+    <script src="https://unpkg.com/@bitrix24/b24jssdk@1/dist/umd/index.min.js"></script>
+    <script>
+      async function addTemplate() {
+        try {
+          // Initialize the SDK inside a Bitrix24 frame
+          const $b24 = await B24Js.initializeB24Frame()
+
+          const response = await $b24.actions.v2.call.make({
+            method: 'tasks.template.add',
+            params: {
+              fields: {
+                PARENT_ID: 8131,
+                TITLE: 'Weekly project status preparation',
+                DESCRIPTION: 'Task template for preparing and approving weekly project status with the team and manager',
+                PRIORITY: 2,
+                CREATED_BY: 101,
+                RESPONSIBLE_ID: 102,
+                REPLICATE: 'Y',
+                START_DATE_PLAN_AFTER: '32400',
+                END_DATE_PLAN_AFTER: '97200',
+                REPLICATE_PARAMS: {
+                  PERIOD: 'weekly',
+                  EVERY_WEEK: 1,
+                  WEEK_DAYS: [2],
+                  TIME: '11:00',
+                  REPEAT_TILL: 'endless',
+                  START_DATE: '03/16/2026 00:00:00',
+                },
+                UF_CRM_TASK: ['L_1179', 'D_1833'],
+              },
+            },
+            requestId: B24Js.Text.getUuidRfc4122()
+          })
+
+          // The payload is available only on a successful response
+          if (!response.isSuccess) {
+            console.error(response.getErrorMessages().join('; '))
+            return
+          }
+
+          const result = response.getData().result
+          console.info('Created template ID:', result)
+        } catch (error) {
+          // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+          console.error(error)
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', addTemplate)
+    </script>
     ```
 
 - PHP
@@ -150,8 +221,8 @@ Required fields for creating a template:
                 [
                     'fields' => [
                         'PARENT_ID' => 8131,
-                        'TITLE' => 'Preparation of weekly project status',
-                        'DESCRIPTION' => 'Task template for preparing and agreeing on the weekly project status with the team and manager',
+                        'TITLE' => 'Weekly project status preparation',
+                        'DESCRIPTION' => 'Task template for preparing and approving weekly project status with the team and manager',
                         'PRIORITY' => 2,
                         'CREATED_BY' => 101,
                         'RESPONSIBLE_ID' => 102,
@@ -190,8 +261,8 @@ Required fields for creating a template:
         {
             fields: {
                 PARENT_ID: 8131,
-                TITLE: 'Preparation of weekly project status',
-                DESCRIPTION: 'Task template for preparing and agreeing on the weekly project status with the team and manager',
+                TITLE: 'Weekly project status preparation',
+                DESCRIPTION: 'Task template for preparing and approving weekly project status with the team and manager',
                 PRIORITY: 2,
                 CREATED_BY: 101,
                 RESPONSIBLE_ID: 102,
@@ -233,8 +304,8 @@ Required fields for creating a template:
         [
             'fields' => [
                 'PARENT_ID' => 8131,
-                'TITLE' => 'Preparation of weekly project status',
-                'DESCRIPTION' => 'Task template for preparing and agreeing on the weekly project status with the team and manager',
+                'TITLE' => 'Weekly project status preparation',
+                'DESCRIPTION' => 'Task template for preparing and approving weekly project status with the team and manager',
                 'PRIORITY' => 2,
                 'CREATED_BY' => 101,
                 'RESPONSIBLE_ID' => 102,
@@ -309,8 +380,8 @@ HTTP Status: **400**
 
 #|
 || **Status** | **Code** | **Description** | **Value** ||
-|| `400` | `100` | Could not find value for parameter {fields} | Required parameter `fields` not provided or is empty ||
-|| `400` | `0` | Access denied | Insufficient permissions to create the template ||
+|| `400` | `100` | Could not find value for parameter {fields} | Required parameter `fields` is missing or empty ||
+|| `400` | `0` | Access denied | Insufficient permissions to create a template ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

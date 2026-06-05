@@ -10,9 +10,9 @@ The `im.v2` methods allow you to receive user events while working with chats an
 
 {% note info "" %}
 
-The `im.v2` section contains next-generation methods for working with chats. Currently, there are fewer methods than in the main section, but they will gradually replace the existing implementations.
+`im.v2` is a new generation of methods for working with chats. Currently, there are fewer of them than in the main section, but they will gradually replace the existing implementations.
 
-If you need the already existing messenger methods, use the section [Chats with User](../../../chats/index.md).
+The already existing messenger methods are available in the [Chats with User](../../../chats/index.md) section.
 
 {% endnote %}
 
@@ -29,22 +29,22 @@ User events in `im.v2` do not support webhook mode, unlike chat bot events. Even
 
 {% note info "What is polling mode" %}
 
-Polling is an event retrieval mode where the application periodically requests accumulated events from the server. The server does not know the application's address and does not send anything on its own—it only accumulates the queue and delivers it upon request.
+Polling is a mode of receiving events where the application periodically requests accumulated events from the server. The server does not know the application's address and does not send anything on its own—it only accumulates the queue and delivers it upon request.
 
-This distinguishes polling from webhook: in webhook mode, Bitrix24 calls the application's URL with each new event. Polling is convenient if the application does not have a permanent HTTP server or public URL.
+This distinguishes polling from webhook: in webhook mode, Bitrix24 calls the application's URL for each new event. Polling is convenient if the application does not have a permanent HTTP server or public URL.
 
 {% endnote %}
 
 ## Working with Files
 
-- Upload a file to the chat via [im.v2.File.upload](./files/file-upload.md)
-- Get a download link for the uploaded file via [im.v2.File.download](./files/file-download.md)
+- Upload a file to the chat via [im.v2.File.upload](./files/file-upload.md).
+- Get a download link for the uploaded file via [im.v2.File.download](./files/file-download.md).
 
 ## Overview of Methods {#all-methods}
 
 > Scope: [`im`](../../../scopes/permissions.md)
 >
-> Who can execute the methods: user or application with access to the messenger
+> Who can perform methods: user or application with access to the messenger
 
 ### Events
 
@@ -53,7 +53,7 @@ This distinguishes polling from webhook: in webhook mode, Bitrix24 calls the app
 || [im.v2.Event.subscribe](./events/event-subscribe.md) | Subscribes to event records ||
 || [im.v2.Event.unsubscribe](./events/event-unsubscribe.md) | Stops event recording ||
 || [im.v2.Event.get](./events/event-get.md) | Returns events in polling mode ||
-|| [im.v2 Events](./events/events.md) | Description of event formats and payload structure ||
+|| [im.v2 Events](./events/events.md) | Description of event formats and data structures ||
 |#
 
 ### Files
@@ -61,10 +61,10 @@ This distinguishes polling from webhook: in webhook mode, Bitrix24 calls the app
 #| 
 || **Method** | **Description** ||
 || [im.v2.File.upload](./files/file-upload.md) | Uploads a file to the chat ||
-|| [im.v2.File.download](./files/file-download.md) | Returns a link for downloading the file ||
+|| [im.v2.File.download](./files/file-download.md) | Returns a link to download the file ||
 |#
 
-## Continue Your Learning
+## Continue Your Study
 
 - [API imbot.v2 Change Log](../change-log.md)
 - [im.v2 Events](./events/index.md)

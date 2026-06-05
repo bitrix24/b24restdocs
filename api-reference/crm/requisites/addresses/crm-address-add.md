@@ -228,6 +228,46 @@ If at least one string field is specified, only the specified fields will be sav
     echo '</PRE>';
     ```
 
+- Python
+
+    Example
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.address.add(
+            fields={
+                "TYPE_ID": 1,
+                "ENTITY_TYPE_ID": 8,
+                "ENTITY_ID": 7335,
+                "ADDRESS_1": "15 Main Street",
+                "ADDRESS_2": "Suite 300",
+                "CITY": "Boston",
+                "POSTAL_CODE": "02110",
+                "REGION": "Suffolk County",
+                "PROVINCE": "Massachusetts",
+                "COUNTRY": "United States",
+                "COUNTRY_CODE": "US",
+            },
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
 {% endlist %}
 
 ## Response Handling

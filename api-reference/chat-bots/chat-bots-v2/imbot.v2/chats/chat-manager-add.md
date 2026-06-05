@@ -34,12 +34,12 @@ Pass the same botToken that was specified during the chat bot registration ||
 || **dialogId***
 [`string`](../../../../data-types.md) | Dialog ID. For group chats — `chat{chatId}` ||
 || **userIds***
-[`integer[]`](../../../../data-types.md) | Array of user IDs to be assigned as managers ||
+[`integer[]`](../../../../data-types.md) | Array of user IDs to assign as managers ||
 |#
 
 ## Code Examples
 
-{% include [Example Note](../../../../../_includes/examples.md) %}
+{% include [Examples Note](../../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -151,11 +151,13 @@ Pass the same botToken that was specified during the chat bot registration ||
 
 ## Response Handling
 
-HTTP Code: **200**
+HTTP Status: **200**
 
 ```json
 {
-    "result": true,
+    "result": {
+        "result": true
+    },
     "time": {
         "start": 1728626400.123,
         "finish": 1728626400.234,
@@ -173,7 +175,9 @@ HTTP Code: **200**
 || **Name**
 `Type` | **Description** ||
 || **result**
-[`boolean`](../../../../data-types.md) | `true` when managers are successfully added ||
+[`object`](../../../../data-types.md) | Result of the operation ||
+|| **result.result**
+[`boolean`](../../../../data-types.md) | `true` if managers were successfully added ||
 || **time**
 [`time`](../../../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -196,17 +200,17 @@ HTTP Status: **400**, **403**
 #|
 || **Code** | **Description** | **Value** ||
 || `BOT_TOKEN_NOT_SPECIFIED` | Bot token is not specified | Bot token is not specified. Required for webhook authorization ||
-|| `BOT_ID_REQUIRED` | Bot ID is required | Bot ID is required ||
+|| `BOT_ID_REQUIRED` | Bot ID is required | Bot ID is not specified ||
 || `EMPTY_USER_IDS` | Empty user IDs | User IDs array is not provided or is empty ||
 || `BOT_NOT_FOUND` | Bot not found | Bot not found ||
 || `BOT_OWNERSHIP_ERROR` | Bot is registered by another application | Bot is registered by another application ||
-|| `ACCESS_DENIED` | Access denied | Bot is not a participant in the chat or does not have permissions (owner role required) ||
+|| `ACCESS_DENIED` | Access denied | Bot is not a participant in the chat or lacks permissions (owner role required) ||
 |#
 
 {% include [System Errors](../../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
-- [API Change Log imbot.v2](../../change-log.md)
+- [API Change Log for imbot.v2](../../change-log.md)
 - [{#T}](./chat-manager-delete.md)
 - [{#T}](./chat-set-owner.md)
