@@ -300,7 +300,7 @@ Default — `30` ||
                 'LIST': {
                     '10': { 'VALUE': 'Planning', 'SORT': 10, 'DEF': 'Y' },
                     '20': { 'VALUE': 'In Development', 'SORT': 20, 'DEF': 'N' }
-                },Э
+                },
                 'LIST_TEXT_VALUES': 'Testing\nCompleted\nDeferred',
                 'SETTINGS': {
                     'SHOW_ADD_FORM': 'Y',

@@ -1,0 +1,9 @@
+title: Department and Team Communications  
+href: index.md  
+items:  
+  - name: Overview of Methods  
+    href: index.md  
+  - name: Retrieve Communications  
+    href: humanresources-node-communication-list.md  
+  - name: Modify Communications  
+    href: humanresources-node-communication-edit.md  

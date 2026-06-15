@@ -267,94 +267,205 @@ Default is `No` ||
     https://**put_your_bitrix24_address**/rest/crm.contact.add
     ```
 
-- JS
+- JS (TS)
 
-    ```js
-    try
-    {
-        const response = await $b24.callMethod(
-            'crm.contact.add',
-            {
-                fields: {
-                    HONORIFIC: "HNR_RU_1",
-                    NAME: "John",
-                    SECOND_NAME: "Doe",
-                    LAST_NAME: "Smith",
-                    PHOTO: {
-                        fileData: document.getElementById('photo'),
-                    },
-                    BIRTHDATE: '11.11.2001',
-                    TYPE_ID: "PARTNER",
-                    SOURCE_ID: "WEB",
-                    SOURCE_DESCRIPTION: "*Additional information about the source*",
-                    POST: "Administrator",
-                    COMMENTS: `
-                        Example comment within the contact
+    ```ts
+    // This snippet is an ES module: top-level await requires type="module" or a bundler.
+    // $b24 is an already-initialized SDK instance (see the SDK "Get started" guide).
+    import { Text } from '@bitrix24/b24jssdk'
+    import type { B24Frame } from '@bitrix24/b24jssdk'
 
-                        [B]Bold text[/B]
-                        [I]Italic[/I]
-                        [U]Underlined[/U]
-                        [S]Strikethrough[/S]
-                        [B][I][U][S]Mix[/S][/U][/I][/B]
+    declare const $b24: B24Frame
 
-                        [LIST]
-                        [*]List item #1
-                        [*]List item #2
-                        [*]List item #3
-                        [/LIST]
+    try {
+      const response = await $b24.actions.v2.call.make<number>({
+        method: 'crm.contact.add',
+        params: {
+          fields: {
+            HONORIFIC: 'HNR_RU_1',
+            NAME: 'Ivan',
+            SECOND_NAME: 'Ivanovich',
+            LAST_NAME: 'Ivanov',
+            PHOTO: {
+              fileData: document.getElementById('photo'),
+            },
+            BIRTHDATE: '11.11.2001',
+            TYPE_ID: 'PARTNER',
+            SOURCE_ID: 'WEB',
+            SOURCE_DESCRIPTION: '*Additional source details*',
+            POST: 'Administrator',
+            COMMENTS: `
+              Example comment inside the contact
 
-                        [LIST=1]
-                        [*]Numbered list item #1
-                        [*]Numbered list item #2
-                        [*]Numbered list item #3
-                        [/LIST]
-                    `,
-                    OPENED: "Y",
-                    EXPORT: "N",
-                    ASSIGNED_BY_ID: 6,
-                    COMPANY_ID: 12,
-                    COMPANY_IDS: [12, 13, 15],
-                    UTM_SOURCE: "google",
-                    UTM_MEDIUM: "CPC",
-                    UTM_CAMPAIGN: "summer_sale",
-                    UTM_CONTENT: "header_banner",
-                    UTM_TERM: "discount",
-                    PHONE: [
-                        {
-                            VALUE: "+1333333555",
-                            VALUE_TYPE: "WORK",
-                        },
-                        {
-                            VALUE: "+15599888666",
-                            VALUE_TYPE: "HOME",
-                        }
-                    ],
-                    EMAIL: [
-                        {
-                            VALUE: "john.smith@example.mailing",
-                            VALUE_TYPE: "MAILING",
-                        },
-                        {
-                            VALUE: "john.smith@example.work",
-                            VALUE_TYPE: "WORK",
-                        }
-                    ],
-                    UF_CRM_1720697698689: "Example value of a custom field with type \"String\"",
-                    PARENT_ID_1224: 12,
+              [B]Bold text[/B]
+              [I]Italic[/I]
+              [U]Underlined[/U]
+              [S]Strikethrough[/S]
+              [B][I][U][S]Mix[/S][/U][/I][/B]
+
+              [LIST]
+              [*]List item #1
+              [*]List item #2
+              [*]List item #3
+              [/LIST]
+
+              [LIST=1]
+              [*]Numbered list item #1
+              [*]Numbered list item #2
+              [*]Numbered list item #3
+              [/LIST]
+            `,
+            OPENED: 'Y',
+            EXPORT: 'N',
+            ASSIGNED_BY_ID: 6,
+            COMPANY_ID: 12,
+            COMPANY_IDS: [12, 13, 15],
+            UTM_SOURCE: 'yandex',
+            UTM_MEDIUM: 'CPC',
+            UTM_CAMPAIGN: 'summer_sale',
+            UTM_CONTENT: 'header_banner',
+            UTM_TERM: 'discount',
+            PHONE: [
+              {
+                VALUE: '+7333333555',
+                VALUE_TYPE: 'WORK',
+              },
+              {
+                VALUE: '+35599888666',
+                VALUE_TYPE: 'HOME',
+              },
+            ],
+            EMAIL: [
+              {
+                VALUE: 'ivanov@example.mailing',
+                VALUE_TYPE: 'MAILING',
+              },
+              {
+                VALUE: 'ivanov@example.work',
+                VALUE_TYPE: 'WORK',
+              },
+            ],
+            UF_CRM_1720697698689: 'Example value of a custom field of type "String"',
+            PARENT_ID_1224: 12,
+          },
+        },
+        requestId: Text.getUuidRfc4122()
+      })
+
+      // The payload is available only on a successful response
+      if (!response.isSuccess) {
+        console.error(response.getErrorMessages().join('; '))
+      } else {
+        const result = response.getData()!.result
+        console.info('Created contact id:', result)
+      }
+    } catch (error) {
+      // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+      console.error(error)
+    }
+    ```
+
+- JS (UMD)
+
+    ```html
+    <!-- Load the SDK (UMD build); it is exposed as the global B24Js -->
+    <script src="https://unpkg.com/@bitrix24/b24jssdk@1/dist/umd/index.min.js"></script>
+    <script>
+      async function addContact() {
+        try {
+          // Initialize the SDK inside a Bitrix24 frame
+          const $b24 = await B24Js.initializeB24Frame()
+
+          const response = await $b24.actions.v2.call.make({
+            method: 'crm.contact.add',
+            params: {
+              fields: {
+                HONORIFIC: 'HNR_RU_1',
+                NAME: 'Ivan',
+                SECOND_NAME: 'Ivanovich',
+                LAST_NAME: 'Ivanov',
+                PHOTO: {
+                  fileData: document.getElementById('photo'),
                 },
-            }
-        );
-        
-        const result = response.getData().result;
-        result.error()
-            ? console.error(result.error())
-            : console.info(result)
-        ;
-    }
-    catch( error )
-    {
-        console.error(error);
-    }
+                BIRTHDATE: '11.11.2001',
+                TYPE_ID: 'PARTNER',
+                SOURCE_ID: 'WEB',
+                SOURCE_DESCRIPTION: '*Additional source details*',
+                POST: 'Administrator',
+                COMMENTS: `
+                  Example comment inside the contact
+
+                  [B]Bold text[/B]
+                  [I]Italic[/I]
+                  [U]Underlined[/U]
+                  [S]Strikethrough[/S]
+                  [B][I][U][S]Mix[/S][/U][/I][/B]
+
+                  [LIST]
+                  [*]List item #1
+                  [*]List item #2
+                  [*]List item #3
+                  [/LIST]
+
+                  [LIST=1]
+                  [*]Numbered list item #1
+                  [*]Numbered list item #2
+                  [*]Numbered list item #3
+                  [/LIST]
+                `,
+                OPENED: 'Y',
+                EXPORT: 'N',
+                ASSIGNED_BY_ID: 6,
+                COMPANY_ID: 12,
+                COMPANY_IDS: [12, 13, 15],
+                UTM_SOURCE: 'yandex',
+                UTM_MEDIUM: 'CPC',
+                UTM_CAMPAIGN: 'summer_sale',
+                UTM_CONTENT: 'header_banner',
+                UTM_TERM: 'discount',
+                PHONE: [
+                  {
+                    VALUE: '+7333333555',
+                    VALUE_TYPE: 'WORK',
+                  },
+                  {
+                    VALUE: '+35599888666',
+                    VALUE_TYPE: 'HOME',
+                  },
+                ],
+                EMAIL: [
+                  {
+                    VALUE: 'ivanov@example.mailing',
+                    VALUE_TYPE: 'MAILING',
+                  },
+                  {
+                    VALUE: 'ivanov@example.work',
+                    VALUE_TYPE: 'WORK',
+                  },
+                ],
+                UF_CRM_1720697698689: 'Example value of a custom field of type "String"',
+                PARENT_ID_1224: 12,
+              },
+            },
+            requestId: B24Js.Text.getUuidRfc4122()
+          })
+
+          // The payload is available only on a successful response
+          if (!response.isSuccess) {
+            console.error(response.getErrorMessages().join('; '))
+            return
+          }
+
+          const result = response.getData().result
+          console.info('Created contact id:', result)
+        } catch (error) {
+          // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+          console.error(error)
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', addContact)
+    </script>
     ```
 
 - PHP

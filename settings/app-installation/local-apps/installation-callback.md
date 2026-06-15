@@ -58,7 +58,7 @@ Form an authorization link and open it in a browser as the user who is granting 
 <?php
 const CLIENT_ID = 'local.000000000000000000000000';
 
-$domain = 'example.bitrix24.ru';
+$domain = 'example.bitrix24.com';
 
 $authorizeUrl = 'https://' . $domain . '/oauth/authorize/?' . http_build_query([
     'client_id' => CLIENT_ID,

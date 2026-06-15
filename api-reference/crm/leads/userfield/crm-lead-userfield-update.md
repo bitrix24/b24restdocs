@@ -529,6 +529,60 @@ For multiple fields, multiple `DEF = Y` are allowed. For non-multiple fields, th
     echo '</PRE>';
     ```
 
+- Python
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.lead.userfield.update(
+            bitrix_id=536,
+            fields={
+                "MANDATORY": "N",
+                "SHOW_FILTER": "N",
+                "SETTINGS": {
+                    "DEFAULT_VALUE": "Hello, World! Default value (changed)",
+                    "ROWS": 10,
+                },
+                "SORT": 2000,
+                "EDIT_IN_LIST": "N",
+                "LIST_FILTER_LABEL": "Hello, World! Filter (changed)",
+                "LIST_COLUMN_LABEL": {
+                    "en": "Hello, World! Column (changed)",
+                    "de": "Hallo, Welt! Spalte (geändert)",
+                },
+                "EDIT_FORM_LABEL": {
+                    "en": "Hello, World! Edit (changed)",
+                    "de": "Hallo, Welt! Bearbeiten (geändert)",
+                },
+                "ERROR_MESSAGE": {
+                    "en": "Hello, World! Error (changed)",
+                    "de": "Hallo, Welt! Fehler (geändert)",
+                },
+                "HELP_MESSAGE": {
+                    "en": "Hello, World! Help (changed)",
+                    "de": "Hallo, Welt! Hilfe (geändert)",
+                },
+            },
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 {% endlist %}
 
 

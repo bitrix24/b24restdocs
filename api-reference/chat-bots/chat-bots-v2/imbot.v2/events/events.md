@@ -12,7 +12,7 @@ The fields of the objects `message`, `chat`, and `user` are described in [{#T}](
 
 ## Automatic Subscription Management
 
-The bot's subscription to events `ONIMBOTV2*` is automatically created when [imbot.v2.Bot.register](../bots/bot-register.md) is called with `eventMode: "webhook"`, updated when [imbot.v2.Bot.update](../bots/bot-update.md) is called (when `webhookUrl` or `eventMode` changes), and removed when [imbot.v2.Bot.unregister](../bots/bot-unregister.md) is called or when switching to `fetch` mode. Manual calls to [event.bind](https://apidocs.bitrix24.ru/api-reference/events/event-bind.html) / [event.unbind](https://apidocs.bitrix24.ru/api-reference/events/event-unbind.html) are not required and may lead to discrepancies with internal accounting.
+The bot's subscription to events `ONIMBOTV2*` is automatically created when [imbot.v2.Bot.register](../bots/bot-register.md) is called with `eventMode: "webhook"`, updated when [imbot.v2.Bot.update](../bots/bot-update.md) is called (when `webhookUrl` or `eventMode` changes), and removed when [imbot.v2.Bot.unregister](../bots/bot-unregister.md) is called or when switching to `fetch` mode. Manual calls to [event.bind](https://apidocs.bitrix24.com/api-reference/events/event-bind.html) / [event.unbind](https://apidocs.bitrix24.com/api-reference/events/event-unbind.html) are not required and may lead to discrepancies with internal accounting.
 
 ## Which Events to Handle First
 

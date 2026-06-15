@@ -1,0 +1,17 @@
+title: Employees
+href: index.md
+items:
+  - name: Overview of Methods
+    href: index.md
+  - name: Find Employees
+    href: humanresources-employee-search.md
+  - name: Get Employee Subordinates
+    href: humanresources-employee-subordinates.md
+  - name: Get Number of Employees
+    href: humanresources-employee-count.md
+  - name: Get Employees in Multiple Departments
+    href: humanresources-employee-multidepartment.md
+  - name: Get Employee Field List
+    href: humanresources-employee-field-list.md
+  - name: Get Employee Field
+    href: humanresources-employee-field-get.md

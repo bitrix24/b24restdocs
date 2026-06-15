@@ -38,6 +38,19 @@ Use CRest PHP SDK:
 - if you plan to develop a local application for internal needs,
 - if minimal configuration for working with [webhooks](../local-integrations/local-webhooks.md) or [OAuth](../settings/oauth/index.md) is required.
 
+## Python SDK
+
+[B24PySDK](./b24pysdk/index.md) is the official Python SDK for the Bitrix24 REST API. It provides a convenient Python interface to API methods, supports authorization through [webhooks](../local-integrations/local-webhooks.md) and the [OAuth protocol](../settings/oauth/index.md), checks types and parameters of requests before sending, returns data in native Python data structures, and standardizes API error handling.
+
+The SDK includes integrations for Django, FastAPI, and Flask: they help validate the data that Bitrix24 sends when opening an application, handling events, and working with business processes.
+
+Use B24PySDK:
+
+- if you are developing an application, integration, or automation in Python,
+- if you need to work with the Bitrix24 REST API without manually assembling HTTP requests,
+- if IDE autocompletion, request parameter validation, and predictable response structures are important,
+- if you plan a backend application that needs to reliably handle authorization, events, and API errors.
+
 ## Additional Tools
 
 [MCP](../ai-tools/mcp.md) is an auxiliary service for AI assistants in the development environment. MCP provides AI assistants with structured data and specifications for REST API methods, helps generate correct code, and speeds up application creation.

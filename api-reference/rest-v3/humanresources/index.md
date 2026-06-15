@@ -8,10 +8,12 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 The company structure illustrates the departments that make up the organization and how they are interconnected. Each department and team can define the roles of participants: leader, deputy, and staff members. This helps maintain an up-to-date organizational chart, quickly locate the necessary department or employee, configure collaborative work, and utilize the structure in related Bitrix24 tools.
 
-The methods in this section work with two groups of objects:
+The methods in this section work with several groups of objects:
 
-- [Departments and Teams](./node/index.md) — create departments and teams, retrieve their lists, data, child elements, and field descriptions.
-- [Department and Team Members](./node-member/index.md) — add users, assign roles, transfer, and remove participants.
+- [Departments and Teams](./node/index.md) — create departments and teams, retrieve their list, data, child elements, and field descriptions.
+- [Department and Team Members](./node-member/index.md) — add users, set roles, transfer and remove participants.
+- [Department and Team Communications](./node-communication/index.md) — retrieve and modify related chats, channels, and collabs.
+- [Employees](./employee/index.md) — search for employees, retrieve counters and data about subordinates or part-timers.
 
 > Quick navigation: [all methods](#all-methods)
 >
@@ -19,11 +21,13 @@ The methods in this section work with two groups of objects:
 
 ## Getting Started
 
-1. Retrieve the list of departments or teams via [humanresources.node.list](./node/humanresources-node-list.md) to identify the required `id`.
-2. Check the data of a department or team through [humanresources.node.get](./node/humanresources-node-get.md) if the identifier is already known.
-3. Create a new department or team via [humanresources.node.add](./node/humanresources-node-add.md) or modify their properties through [humanresources.node.edit](./node/humanresources-node-edit.md).
-4. Obtain user identifiers using the [user.get](../../user/user-get.md) method if you need to prepare the list of participants.
-5. Add participants via [humanresources.node.member.add](./node-member/humanresources-node-member-add.md) or set the complete composition through [humanresources.node.member.set](./node-member/humanresources-node-member-set.md).
+1. Retrieve the list of departments or teams through [humanresources.node.list](./node/humanresources-node-list.md) to determine the required `id`.
+2. Check the data of the department or team through [humanresources.node.get](./node/humanresources-node-get.md) if the identifier is already known.
+3. Create a new department or team through [humanresources.node.add](./node/humanresources-node-add.md) or modify their properties through [humanresources.node.edit](./node/humanresources-node-edit.md).
+4. Obtain user identifiers using the [user.get](../../user/user-get.md) method if you need to prepare the participant list.
+5. Add participants through [humanresources.node.member.add](./node-member/humanresources-node-member-add.md) or set the full composition through [humanresources.node.member.set](./node-member/humanresources-node-member-set.md).
+6. Configure related chats, channels, and collabs using the [humanresources.node.communication.edit](./node-communication/humanresources-node-communication-edit.md) method if separate communications are needed for the department or team.
+7. Find employees using the [humanresources.employee.search](./employee/humanresources-employee-search.md) method if you need to obtain employee data, check subordinates, or find employees across multiple departments.
 
 ## Limitations and Recommendations
 
@@ -41,9 +45,11 @@ The methods in this section work with two groups of objects:
 
 ## Connection with Other Objects
 
-**Users.** To add, transfer, and remove participants, user identifiers `userIds` are required. These can be obtained using the [user.get](../../user/user-get.md) method.
+**Users.** To add, transfer, and remove participants, user identifiers `userIds` are needed. These can be obtained using the [user.get](../../user/user-get.md) method.
 
-**Chats, Channels, and Collabs.** When creating a department or team, the [humanresources.node.add](./node/humanresources-node-add.md) method allows you to create or link related chats, channels, and collabs immediately.
+**Chats, Channels, and Collabs.** When creating a department or team, the [humanresources.node.add](./node/humanresources-node-add.md) method allows you to create or link related chats, channels, and collabs immediately. After establishing the connection, you can retrieve it using the [humanresources.node.communication.list](./node-communication/humanresources-node-communication-list.md) method and modify it using the [humanresources.node.communication.edit](./node-communication/humanresources-node-communication-edit.md) method.
+
+**Employees.** The methods [humanresources.employee.search](./employee/humanresources-employee-search.md), [humanresources.employee.subordinates](./employee/humanresources-employee-subordinates.md), and [humanresources.employee.multidepartment](./employee/humanresources-employee-multidepartment.md) help find users in the company structure and check their connections with departments.
 
 ## Overview of Methods {#all-methods}
 
@@ -77,8 +83,30 @@ The methods in this section work with two groups of objects:
 || [humanresources.node.member.remove](./node-member/humanresources-node-member-remove.md) | Removes users from a department or team ||
 |#
 
+### Department and Team Communications
+
+#|
+|| **Method** | **Description** ||
+|| [humanresources.node.communication.edit](./node-communication/humanresources-node-communication-edit.md) | Modifies related chats, channels, or collabs of a department or team ||
+|| [humanresources.node.communication.list](./node-communication/humanresources-node-communication-list.md) | Returns related chats, channels, and collabs of a department or team ||
+|#
+
+### Employees
+
+#|
+|| **Method** | **Description** ||
+|| [humanresources.employee.search](./employee/humanresources-employee-search.md) | Searches for employees by name ||
+|| [humanresources.employee.subordinates](./employee/humanresources-employee-subordinates.md) | Returns subordinates of a user by departments ||
+|| [humanresources.employee.count](./employee/humanresources-employee-count.md) | Returns the number of employees in the company structure ||
+|| [humanresources.employee.multidepartment](./employee/humanresources-employee-multidepartment.md) | Returns employees who belong to multiple departments ||
+|| [humanresources.employee.field.list](./employee/humanresources-employee-field-list.md) | Returns a list of fields for an employee ||
+|| [humanresources.employee.field.get](./employee/humanresources-employee-field-get.md) | Returns the description of a field for an employee ||
+|#
+
 ## Continue Learning
 
 - [{#T}](./node/index.md)
 - [{#T}](./node-member/index.md)
+- [{#T}](./node-communication/index.md)
+- [{#T}](./employee/index.md)
 - [{#T}](../index.md)

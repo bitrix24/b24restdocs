@@ -104,63 +104,97 @@ Or pass the value from the `next` key in the response. ||
     https://**put_your_bitrix24_address**/rest/catalog.documentcontractor.list
     ```
 
-- JS
+- JS (TS)
 
-    ```js  
-    // callListMethod: Retrieves all data at once.
-    // Use only for small selections (< 1000 items) due to high
-    // memory load.
+    ```ts
+    // This snippet is an ES module: top-level await requires type="module" or a bundler.
+    // $b24 is an already-initialized SDK instance (see the SDK "Get started" guide).
+    import { Text } from '@bitrix24/b24jssdk'
+    import type { B24Frame } from '@bitrix24/b24jssdk'
+
+    declare const $b24: B24Frame
+
+    // Shape of the payload returned in result (match the "response handling" section of the page)
+    type DocumentContractorResult = {
+      documentContractor: {
+        id: number
+        documentId: number
+      }[]
+    }
 
     try {
-    const response = await $b24.callListMethod(
-        'catalog.documentcontractor.list',
-        {
-        select: ["id", "documentId"],
-        filter: { "documentId": 7 },
-        order: { "id": "ASC" },
-        start: 0
+      // catalog.documentcontractor.list returns a single page (max 50 records). For the whole result set
+      // use a list helper: $b24.actions.v2.callList.make() returns every record as one
+      // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
+      // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
+      // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
+      const response = await $b24.actions.v2.call.make<DocumentContractorResult>({
+        method: 'catalog.documentcontractor.list',
+        params: {
+          select: ['id', 'documentId'],
+          filter: { documentId: 7 },
+          order: { id: 'ASC' },
+          start: 0,
         },
-        (progress) => { console.log('Progress:', progress) }
-    );
-    const items = response.getData() || [];
-    for (const entity of items) { console.log('Entity:', entity) }
+        requestId: Text.getUuidRfc4122()
+      })
+
+      // The payload is available only on a successful response
+      if (!response.isSuccess) {
+        console.error(response.getErrorMessages().join('; '))
+      } else {
+        const result = response.getData()!.result
+        console.info(result.documentContractor.length, result.documentContractor)
+      }
     } catch (error) {
-    console.error('Request failed', error)
+      // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+      console.error(error)
     }
+    ```
 
-    // fetchListMethod: Selects data in parts using an iterator.
-    // Use for large volumes of data for efficient memory consumption.
+- JS (UMD)
 
-    try {
-    const generator = $b24.fetchListMethod('catalog.documentcontractor.list', {
-        select: ["id", "documentId"],
-        filter: { "documentId": 7 },
-        order: { "id": "ASC" },
-        start: 0
-    }, 'ID');
-    for await (const page of generator) {
-        for (const entity of page) { console.log('Entity:', entity) }
-    }
-    } catch (error) {
-    console.error('Request failed', error)
-    }
+    ```html
+    <!-- Load the SDK (UMD build); it is exposed as the global B24Js -->
+    <script src="https://unpkg.com/@bitrix24/b24jssdk@1/dist/umd/index.min.js"></script>
+    <script>
+      async function fetchDocumentContractorList() {
+        try {
+          // Initialize the SDK inside a Bitrix24 frame
+          const $b24 = await B24Js.initializeB24Frame()
 
-    // callMethod: Manual control of pagination through the start parameter.
-    // Use for precise control over request batches.
-    // Less efficient for large data than fetchListMethod.
+          // catalog.documentcontractor.list returns a single page (max 50 records). For the whole result set
+          // use a list helper: $b24.actions.v2.callList.make() returns every record as one
+          // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
+          // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
+          // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
+          const response = await $b24.actions.v2.call.make({
+            method: 'catalog.documentcontractor.list',
+            params: {
+              select: ['id', 'documentId'],
+              filter: { documentId: 7 },
+              order: { id: 'ASC' },
+              start: 0,
+            },
+            requestId: B24Js.Text.getUuidRfc4122()
+          })
 
-    try {
-    const response = await $b24.callMethod('catalog.documentcontractor.list', {
-        select: ["id", "documentId"],
-        filter: { "documentId": 7 },
-        order: { "id": "ASC" },
-        start: 0
-    }, 0);
-    const result = response.getData().result || [];
-    for (const entity of result) { console.log('Entity:', entity) }
-    } catch (error) {
-    console.error('Request failed', error)
-    }
+          // The payload is available only on a successful response
+          if (!response.isSuccess) {
+            console.error(response.getErrorMessages().join('; '))
+            return
+          }
+
+          const result = response.getData().result
+          console.info(result.documentContractor.length, result.documentContractor)
+        } catch (error) {
+          // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+          console.error(error)
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', fetchDocumentContractorList)
+    </script>
     ```
 
 - PHP
@@ -219,7 +253,7 @@ Or pass the value from the `next` key in the response. ||
             }
         }
     );
-    ```    
+    ```	
 
 - PHP CRest
 

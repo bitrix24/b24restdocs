@@ -128,121 +128,244 @@ To retrieve variation prices, use the [catalog.price.*](../../price/index.md) me
     https://**put_your_bitrix24_address**/rest/catalog.product.offer.list
     ```
 
-- JS
+- JS (TS)
 
-    ```js
-    // callListMethod: Retrieves all data at once. Use only for small datasets (< 1000 items) due to high memory usage.
-    
-    const selectFields = [
-        "id",
-        "iblockId",
-        "name",
-        "active",
-        "available",
-        "barcodeMulti",
-        "bundle",
-        "canBuyZero",
-        "code",
-        "createdBy",
-        "dateActiveFrom",
-        "dateActiveTo",
-        "dateCreate",
-        "detailPicture",
-        "detailText",
-        "detailTextType",
-        "height",
-        "iblockSectionId",
-        "length",
-        "measure",
-        "modifiedBy",
-        "previewPicture",
-        "previewText",
-        "previewTextType",
-        "purchasingCurrency",
-        "purchasingPrice",
-        "quantity",
-        "quantityReserved",
-        "quantityTrace",
-        "recurSchemeLength",
-        "recurSchemeType",
-        "sort",
-        "subscribe",
-        "timestampX",
-        "trialPriceId",
-        "type",
-        "vatId",
-        "vatIncluded",
-        "weight",
-        "width",
-        "withoutOrder",
-        "xmlId",
-        "parentId",
-        "property258",
-        "property259",
-    ];
-    
-    try {
-        const response = await $b24.callListMethod(
-            'catalog.product.offer.list',
-            {
-                "select": selectFields,
-                "filter": {
-                    "iblockId": 24,
-                    ">id": 10,
-                    "vatId": [1, 2],
-                },
-                "order": {
-                    "id": "desc",
-                }
-            },
-            (progress) => { console.log('Progress:', progress) }
-        );
-        const items = response.getData() || [];
-        for (const entity of items) { console.log('Entity:', entity); }
-    } catch (error) {
-        console.error('Request failed', error);
+    ```ts
+    // This snippet is an ES module: top-level await requires type="module" or a bundler.
+    // $b24 is an already-initialized SDK instance (see the SDK "Get started" guide).
+    import { Text } from '@bitrix24/b24jssdk'
+    import type { B24Frame, ISODate } from '@bitrix24/b24jssdk'
+
+    declare const $b24: B24Frame
+
+    type ProductOffer = {
+      id: number
+      iblockId: number
+      name: string
+      active: string
+      available: string
+      barcodeMulti: string
+      bundle: string
+      canBuyZero: string
+      code: string
+      createdBy: number
+      dateActiveFrom: ISODate | null
+      dateActiveTo: ISODate | null
+      dateCreate: ISODate | null
+      detailPicture: { id: string; url: string; urlMachine: string } | null
+      detailText: string | null
+      detailTextType: string
+      height: number
+      iblockSectionId: number | null
+      length: number
+      measure: number
+      modifiedBy: number
+      parentId: { value: string; valueId: string }
+      previewPicture: { id: string; url: string; urlMachine: string } | null
+      previewText: string | null
+      previewTextType: string
+      purchasingCurrency: string
+      purchasingPrice: number
+      quantity: number
+      quantityReserved: number
+      quantityTrace: string
+      recurSchemeLength: number | null
+      recurSchemeType: string
+      sort: number
+      subscribe: string
+      timestampX: ISODate | null
+      trialPriceId: number | null
+      type: number
+      vatId: number
+      vatIncluded: string
+      weight: number
+      width: number
+      withoutOrder: string
+      xmlId: string
     }
-    
-    // fetchListMethod is preferred for large datasets. It retrieves data in chunks using a generator and keeps memory usage efficient.
-    
+
+    // Shape of the payload returned in result (match the "response handling" section of the page)
+    type ProductOfferListResult = {
+      offers: ProductOffer[]
+    }
+
     try {
-        const generator = $b24.fetchListMethod('catalog.product.offer.list', {
-            "select": selectFields,
-            "filter": {
-                "iblockId": 24,
-                ">id": 10,
-                "vatId": [1, 2],
+      // catalog.product.offer.list returns a single page (max 50 records). For the whole result set
+      // use a list helper: $b24.actions.v2.callList.make() returns every record as one
+      // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
+      // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
+      // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
+      const response = await $b24.actions.v2.call.make<ProductOfferListResult>({
+        method: 'catalog.product.offer.list',
+        params: {
+          select: [
+            'id',
+            'iblockId',
+            'name',
+            'active',
+            'available',
+            'barcodeMulti',
+            'bundle',
+            'canBuyZero',
+            'code',
+            'createdBy',
+            'dateActiveFrom',
+            'dateActiveTo',
+            'dateCreate',
+            'detailPicture',
+            'detailText',
+            'detailTextType',
+            'height',
+            'iblockSectionId',
+            'length',
+            'measure',
+            'modifiedBy',
+            'previewPicture',
+            'previewText',
+            'previewTextType',
+            'purchasingCurrency',
+            'purchasingPrice',
+            'quantity',
+            'quantityReserved',
+            'quantityTrace',
+            'recurSchemeLength',
+            'recurSchemeType',
+            'sort',
+            'subscribe',
+            'timestampX',
+            'trialPriceId',
+            'type',
+            'vatId',
+            'vatIncluded',
+            'weight',
+            'width',
+            'withoutOrder',
+            'xmlId',
+            'parentId',
+            'property258',
+            'property259',
+          ],
+          filter: {
+            iblockId: 24,
+            '>id': 10,
+            vatId: [1, 2],
+          },
+          order: {
+            id: 'desc',
+          },
+          start: 0,
+        },
+        requestId: Text.getUuidRfc4122()
+      })
+
+      // The payload is available only on a successful response
+      if (!response.isSuccess) {
+        console.error(response.getErrorMessages().join('; '))
+      } else {
+        const result = response.getData()!.result
+        console.info('Offers count:', result.offers.length, 'First offer:', result.offers[0])
+      }
+    } catch (error) {
+      // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+      console.error(error)
+    }
+    ```
+
+- JS (UMD)
+
+    ```html
+    <!-- Load the SDK (UMD build); it is exposed as the global B24Js -->
+    <script src="https://unpkg.com/@bitrix24/b24jssdk@1/dist/umd/index.min.js"></script>
+    <script>
+      async function listProductOffers() {
+        try {
+          // Initialize the SDK inside a Bitrix24 frame
+          const $b24 = await B24Js.initializeB24Frame()
+
+          // catalog.product.offer.list returns a single page (max 50 records). For the whole result set
+          // use a list helper: $b24.actions.v2.callList.make() returns every record as one
+          // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
+          // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
+          // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
+          const response = await $b24.actions.v2.call.make({
+            method: 'catalog.product.offer.list',
+            params: {
+              select: [
+                'id',
+                'iblockId',
+                'name',
+                'active',
+                'available',
+                'barcodeMulti',
+                'bundle',
+                'canBuyZero',
+                'code',
+                'createdBy',
+                'dateActiveFrom',
+                'dateActiveTo',
+                'dateCreate',
+                'detailPicture',
+                'detailText',
+                'detailTextType',
+                'height',
+                'iblockSectionId',
+                'length',
+                'measure',
+                'modifiedBy',
+                'previewPicture',
+                'previewText',
+                'previewTextType',
+                'purchasingCurrency',
+                'purchasingPrice',
+                'quantity',
+                'quantityReserved',
+                'quantityTrace',
+                'recurSchemeLength',
+                'recurSchemeType',
+                'sort',
+                'subscribe',
+                'timestampX',
+                'trialPriceId',
+                'type',
+                'vatId',
+                'vatIncluded',
+                'weight',
+                'width',
+                'withoutOrder',
+                'xmlId',
+                'parentId',
+                'property258',
+                'property259',
+              ],
+              filter: {
+                iblockId: 24,
+                '>id': 10,
+                vatId: [1, 2],
+              },
+              order: {
+                id: 'desc',
+              },
+              start: 0,
             },
-            "order": {
-                "id": "desc",
-            }
-        }, 'id');
-        for await (const page of generator) {
-            for (const entity of page) { console.log('Entity:', entity); }
+            requestId: B24Js.Text.getUuidRfc4122()
+          })
+
+          // The payload is available only on a successful response
+          if (!response.isSuccess) {
+            console.error(response.getErrorMessages().join('; '))
+            return
+          }
+
+          const result = response.getData().result
+          console.info('Offers count:', result.offers.length, 'First offer:', result.offers[0])
+        } catch (error) {
+          // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+          console.error(error)
         }
-    } catch (error) {
-        console.error('Request failed', error);
-    }
-    
-    // callMethod: Manually controls pagination through the start parameter. Use it for precise control over request batches. For large datasets, it is less efficient than fetchListMethod.
-    
-    try {
-        const response = await $b24.callMethod('catalog.product.offer.list', {
-            "select": selectFields,
-            "filter": {
-                "iblockId": 24,
-                ">id": 10,
-                "vatId": [1, 2],
-            },
-            "order": {
-                "id": "desc",
-            }
-        }, 0);
-        const result = response.getData().result || [];
-        for (const entity of result) { console.log('Entity:', entity); }
-    } catch (error) {
-        console.error('Request failed', error);
-    }
+      }
+
+      document.addEventListener('DOMContentLoaded', listProductOffers)
+    </script>
     ```
 
 - PHP
@@ -572,7 +695,7 @@ HTTP status: **400**
 }
 ```
 
-{% include notitle [Error handling](../../../../_includes/error-info.md) %}
+{% include notitle [error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 

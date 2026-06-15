@@ -2,6 +2,12 @@
 
 ## 2026
 
+### June 10, 2026
+
+- Added methods to the [Department and Team Communications](./api-reference/rest-v3/humanresources/node-communication/index.md) section
+- Added methods to the [Employees](./api-reference/rest-v3/humanresources/employee/index.md) section
+- Updated the main page of the [Embedding Applications in CRM Activities](./api-reference/crm/timeline/activities/app-embedding/index.md) section
+
 ### June 5, 2026
 
 - Added methods to the section [Time Tracking Records](./api-reference/rest-v3/timeman/index.md)

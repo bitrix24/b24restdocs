@@ -12,6 +12,8 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 The `user.get` method allows you to retrieve a filtered list of users. The method returns all users except for: bots, e-mail users, Open Channels users, and Replica users.
 
+By default, the method sorts users by ascending `ID`.
+
 {% note info "" %}
 
 The method does not return integrators. The list of Bitrix24 user fields that will be retrieved as a result of the method execution depends on the scope of the application/webhook. Details regarding access to user data can be found in the [article](index.md).
