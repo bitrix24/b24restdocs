@@ -1,4 +1,4 @@
-# Get Invoice Status by ID `crm.invoice.status.get`
+# Get Invoice Status by ID crm.invoice.status.get
 
 {% note tip "" %}
 

@@ -19,6 +19,8 @@ items:
       mode: link
   - name: Get Task
     href: tasks-task-get.md
+  - name: Get Task List
+    href: tasks-task-list.md
   - name: Delete Task
     href: tasks-task-delete.md
   - name: Check Access Permissions

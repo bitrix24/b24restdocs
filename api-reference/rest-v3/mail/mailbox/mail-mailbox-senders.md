@@ -32,7 +32,7 @@ The `mail.mailbox.senders` method returns a list of senders available to the cur
 
 {% note info "" %}
 
-The new API call differs by adding the `/api/` parameter to the request:
+The new API call differs by adding the `/api/` segment to the request URL:
 
 `https://{install_address}/rest/api/{user_id}/{webhook_token}/mail.mailbox.senders`
 
@@ -60,36 +60,95 @@ The new API call differs by adding the `/api/` parameter to the request:
     https://**put_your_bitrix24_address**/rest/api/mail.mailbox.senders
     ```
 
-- JS
+- JS (TS)
 
-    SDKs do not yet support the /rest/api/ address in calls. Use direct HTTP requests, for example, via curl, fetch.
+    ```ts
+    // This snippet is an ES module: top-level await requires type="module" or a bundler.
+    // $b24 is an already-initialized SDK instance (see the SDK "Get started" guide).
+    import { Text } from '@bitrix24/b24jssdk'
+    import type { B24Frame } from '@bitrix24/b24jssdk'
 
-    ```javascript
-    try
-    {
-        const response = await $b24.callMethod(
-            'mail.mailbox.senders',
-            {
-                pagination: {
-                    page: 1,
-                    limit: 20,
-                    offset: 0
-                }
-            }
-        );
+    declare const $b24: B24Frame
 
-        const result = response.getData().result;
-        console.log('Sender list:', result);
+    // Shape of the payload returned in result (match the "response handling" section of the page)
+    type MailboxSendersResult = {
+      items: {
+        email: string
+        name: string
+        sender: string
+      }[]
     }
-    catch( error )
-    {
-        console.error('Error:', error);
+
+    try {
+      const response = await $b24.actions.v3.call.make<MailboxSendersResult>({
+        method: 'mail.mailbox.senders',
+        params: {
+          pagination: {
+            page: 1,
+            limit: 20,
+            offset: 0,
+          },
+        },
+        requestId: Text.getUuidRfc4122()
+      })
+
+      // The payload is available only on a successful response
+      if (!response.isSuccess) {
+        console.error(response.getErrorMessages().join('; '))
+      } else {
+        const result = response.getData()!.result
+        console.info('Senders:', result.items)
+      }
+    } catch (error) {
+      // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+      console.error(error)
     }
+    ```
+
+- JS (UMD)
+
+    ```html
+    <!-- Load the SDK (UMD build); it is exposed as the global B24Js -->
+    <script src="https://unpkg.com/@bitrix24/b24jssdk@1/dist/umd/index.min.js"></script>
+    <script>
+      async function getMailboxSenders() {
+        try {
+          // Initialize the SDK inside a Bitrix24 frame
+          const $b24 = await B24Js.initializeB24Frame()
+
+          const response = await $b24.actions.v3.call.make({
+            method: 'mail.mailbox.senders',
+            params: {
+              pagination: {
+                page: 1,
+                limit: 20,
+                offset: 0,
+              },
+            },
+            requestId: B24Js.Text.getUuidRfc4122()
+          })
+
+          // The payload is available only on a successful response
+          if (!response.isSuccess) {
+            console.error(response.getErrorMessages().join('; '))
+            return
+          }
+
+          const result = response.getData().result
+          console.info('Senders:', result.items)
+        } catch (error) {
+          // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+          console.error(error)
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', getMailboxSenders)
+    </script>
     ```
 
 - PHP
 
-    SDKs do not yet support the /rest/api/ address in calls. Use direct HTTP requests, for example, via curl, fetch.
+    SDKs do not yet support the `/rest/api/` address in calls. Use direct HTTP requests, for example, via `curl` or `fetch`.
 
     ```php
     try {
@@ -120,7 +179,7 @@ The new API call differs by adding the `/api/` parameter to the request:
 
 - BX24.js
 
-    SDKs do not yet support the /rest/api/ address in calls. Use direct HTTP requests, for example, via curl, fetch.
+    SDKs do not yet support the `/rest/api/` address in calls. Use direct HTTP requests, for example, via `curl` or `fetch`.
 
     ```js
     BX24.callMethod(
@@ -141,7 +200,7 @@ The new API call differs by adding the `/api/` parameter to the request:
 
 - PHP CRest
 
-    SDKs do not yet support the /rest/api/ address in calls. Use direct HTTP requests, for example, via curl, fetch.
+    SDKs do not yet support the `/rest/api/` address in calls. Use direct HTTP requests, for example, via `curl` or `fetch`.
 
     ```php
     require_once('crest.php');

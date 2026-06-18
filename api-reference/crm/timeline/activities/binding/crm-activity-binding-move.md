@@ -57,29 +57,81 @@ The method `crm.activity.binding.move` updates the connection of a deal with a C
     https://**put_your_bitrix24_address**/rest/crm.activity.binding.move
     ```
 
-- JS
+- JS (TS)
 
-    ```js
-    try
-    {
-        const response = await $b24.callMethod(
-            'crm.activity.binding.move',
-            {
-                activityId: 999, // ID of the deal
-                sourceEntityTypeId: 2, // Type of the object to which the deal is linked
-                sourceEntityId: 1, // ID of the entity to which the deal is linked
-                targetEntityTypeId: 2, // Type of the object to which the deal will be linked
-                targetEntityId: 100 // ID of the entity to which the deal will be linked
-            }
-        );
-        
-        const result = response.getData().result;
-        console.log('Result:', result);
+    ```ts
+    // This snippet is an ES module: top-level await requires type="module" or a bundler.
+    // $b24 is an already-initialized SDK instance (see the SDK "Get started" guide).
+    import { Text } from '@bitrix24/b24jssdk'
+    import type { B24Frame } from '@bitrix24/b24jssdk'
+
+    declare const $b24: B24Frame
+
+    try {
+      const response = await $b24.actions.v2.call.make<boolean>({
+        method: 'crm.activity.binding.move',
+        params: {
+          activityId: 999, // activity ID
+          sourceEntityTypeId: 2, // type of the CRM object the activity is currently bound to
+          sourceEntityId: 1, // ID of the CRM element the activity is currently bound to
+          targetEntityTypeId: 2, // type of the CRM object to bind the activity to
+          targetEntityId: 100, // ID of the CRM element to bind the activity to
+        },
+        requestId: Text.getUuidRfc4122()
+      })
+
+      // The payload is available only on a successful response
+      if (!response.isSuccess) {
+        console.error(response.getErrorMessages().join('; '))
+      } else {
+        const result = response.getData()!.result
+        console.info('Binding moved successfully:', result)
+      }
+    } catch (error) {
+      // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+      console.error(error)
     }
-    catch( error )
-    {
-        console.error('Error:', error);
-    }
+    ```
+
+- JS (UMD)
+
+    ```html
+    <!-- Load the SDK (UMD build); it is exposed as the global B24Js -->
+    <script src="https://unpkg.com/@bitrix24/b24jssdk@1/dist/umd/index.min.js"></script>
+    <script>
+      async function moveActivityBinding() {
+        try {
+          // Initialize the SDK inside a Bitrix24 frame
+          const $b24 = await B24Js.initializeB24Frame()
+
+          const response = await $b24.actions.v2.call.make({
+            method: 'crm.activity.binding.move',
+            params: {
+              activityId: 999, // activity ID
+              sourceEntityTypeId: 2, // type of the CRM object the activity is currently bound to
+              sourceEntityId: 1, // ID of the CRM element the activity is currently bound to
+              targetEntityTypeId: 2, // type of the CRM object to bind the activity to
+              targetEntityId: 100, // ID of the CRM element to bind the activity to
+            },
+            requestId: B24Js.Text.getUuidRfc4122()
+          })
+
+          // The payload is available only on a successful response
+          if (!response.isSuccess) {
+            console.error(response.getErrorMessages().join('; '))
+            return
+          }
+
+          const result = response.getData().result
+          console.info('Binding moved successfully:', result)
+        } catch (error) {
+          // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+          console.error(error)
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', moveActivityBinding)
+    </script>
     ```
 
 - PHP

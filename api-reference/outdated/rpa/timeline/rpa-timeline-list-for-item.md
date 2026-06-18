@@ -1,4 +1,4 @@
-# Get the Timeline Records List for the `rpa.timeline.listForItem` Element
+# Get the Timeline Records List for the rpa.timeline.listForItem Element
 
 {% note tip "" %}
 

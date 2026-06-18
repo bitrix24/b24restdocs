@@ -1,4 +1,4 @@
-# Get Invoice Status Fields `crm.invoice.status.fields`
+# Get Invoice Status Fields crm.invoice.status.fields
 
 {% note tip "" %}
 

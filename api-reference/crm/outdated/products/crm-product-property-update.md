@@ -1,4 +1,4 @@
-# Update Product Property `crm.product.property.update`
+# Update Product Property crm.product.property.update
 
 {% note tip "" %}
 

@@ -1,4 +1,4 @@
-# Add Product Property `crm.product.property.add`
+# Add Product Property crm.product.property.add
 
 {% note tip "" %}
 

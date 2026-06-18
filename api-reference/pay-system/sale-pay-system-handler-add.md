@@ -287,119 +287,257 @@ Default value is `N`, the field is displayed in the form as `hidden` ||
     https://**put_your_bitrix24_address**/rest/sale.paysystem.handler.add
     ```
 
-- JS
+- JS (TS)
 
-    ```js
-    try
-    {
-        const response = await $b24.callMethod(
-            "sale.paysystem.handler.add",
-            {
-                "NAME": "Handler.Rest FORM",
-                "CODE": "resthandlerform",
-                "SORT": 100,
-                "SETTINGS": {
-                    "CURRENCY": [
-                        "RUB"
-                    ],
-                    "CLIENT_TYPE": "b2c",
-                    "FORM_DATA": {
-                        "ACTION_URI": "http://example.com/payment_form.php",
-                        "METHOD": "POST",
-                        "FIELDS": {
-                            "phone": {
-                                "VISIBLE": "Y",
-                                "CODE": {
-                                    "NAME": "Phone Number",
-                                    "TYPE": "STRING"
-                                }
-                            },
-                            "selection": {
-                                "VISIBLE": "Y",
-                                "CODE": {
-                                    "NAME": "Illusion of Choice",
-                                    "INPUT": {
-                                        "TYPE": "Y/N"
-                                    }
-                                }
-                            },
-                            "paymentId": {
-                                "CODE": "PAYMENT_ID",
-                                "VISIBLE": "Y"
-                            },
-                            "serviceid": {
-                                "CODE": "REST_SERVICE_ID"
-                            }
-                        }
+    ```ts
+    // This snippet is an ES module: top-level await requires type="module" or a bundler.
+    // $b24 is an already-initialized SDK instance (see the SDK "Get started" guide).
+    import { Text } from '@bitrix24/b24jssdk'
+    import type { B24Frame } from '@bitrix24/b24jssdk'
+
+    declare const $b24: B24Frame
+
+    try {
+      const response = await $b24.actions.v2.call.make<number>({
+        method: 'sale.paysystem.handler.add',
+        params: {
+          NAME: 'Rest handler FORM',
+          CODE: 'resthandlerform',
+          SORT: 100,
+          SETTINGS: {
+            CURRENCY: ['RUB'],
+            CLIENT_TYPE: 'b2c',
+            FORM_DATA: {
+              ACTION_URI: 'http://example.com/payment_form.php',
+              METHOD: 'POST',
+              FIELDS: {
+                phone: {
+                  VISIBLE: 'Y',
+                  CODE: {
+                    NAME: 'Phone number',
+                    TYPE: 'STRING',
+                  },
+                },
+                selection: {
+                  VISIBLE: 'Y',
+                  CODE: {
+                    NAME: 'Illusion of choice',
+                    INPUT: {
+                      TYPE: 'Y/N',
                     },
-                    "CODES": {
-                        "REST_SERVICE_ID": {
-                            "NAME": "Store Number",
-                            "DESCRIPTION": "Store Number",
-                            "SORT": "100"
-                        },
-                        "REST_SERVICE_KEY": {
-                            "NAME": "Secret Key",
-                            "DESCRIPTION": "Secret Key",
-                            "SORT": "300"
-                        },
-                        "PAYMENT_ID": {
-                            "NAME": "Payment Number",
-                            "SORT": "400",
-                            "GROUP": "PAYMENT",
-                            "DEFAULT": {
-                                "PROVIDER_KEY": "PAYMENT",
-                                "PROVIDER_VALUE": "ACCOUNT_NUMBER"
-                            }
-                        },
-                        "PAYMENT_SHOULD_PAY": {
-                            "NAME": "Payment Amount",
-                            "SORT": "600",
-                            "GROUP": "PAYMENT",
-                            "DEFAULT": {
-                                "PROVIDER_KEY": "PAYMENT",
-                                "PROVIDER_VALUE": "SUM"
-                            }
-                        },
-                        "PS_CHANGE_STATUS_PAY": {
-                            "NAME": "Automatic Payment Status Change",
-                            "SORT": "700",
-                            "INPUT": {
-                                "TYPE": "Y/N"
-                            }
-                        },
-                        "PAYMENT_BUYER_ID": {
-                            "NAME": "Buyer Code",
-                            "SORT": "1000",
-                            "GROUP": "PAYMENT",
-                            "DEFAULT": {
-                                "PROVIDER_KEY": "ORDER",
-                                "PROVIDER_VALUE": "USER_ID"
-                            }
-                        },
-                        "PS_WORK_MODE": {
-                            "NAME": "Payment System Operating Mode",
-                            "SORT": "1100",
-                            "INPUT": {
-                                "TYPE": "ENUM",
-                                "OPTIONS": {
-                                    "TEST": "Test",
-                                    "REGULAR": "Live"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        );
-        
-        const result = response.getData().result;
-        console.info(result);
+                  },
+                },
+                paymentId: {
+                  CODE: 'PAYMENT_ID',
+                  VISIBLE: 'Y',
+                },
+                serviceid: {
+                  CODE: 'REST_SERVICE_ID',
+                },
+              },
+            },
+            CODES: {
+              REST_SERVICE_ID: {
+                NAME: 'Shop ID',
+                DESCRIPTION: 'Shop ID',
+                SORT: '100',
+              },
+              REST_SERVICE_KEY: {
+                NAME: 'Secret key',
+                DESCRIPTION: 'Secret key',
+                SORT: '300',
+              },
+              PAYMENT_ID: {
+                NAME: 'Payment number',
+                SORT: '400',
+                GROUP: 'PAYMENT',
+                DEFAULT: {
+                  PROVIDER_KEY: 'PAYMENT',
+                  PROVIDER_VALUE: 'ACCOUNT_NUMBER',
+                },
+              },
+              PAYMENT_SHOULD_PAY: {
+                NAME: 'Payment amount',
+                SORT: '600',
+                GROUP: 'PAYMENT',
+                DEFAULT: {
+                  PROVIDER_KEY: 'PAYMENT',
+                  PROVIDER_VALUE: 'SUM',
+                },
+              },
+              PS_CHANGE_STATUS_PAY: {
+                NAME: 'Automatic payment status change',
+                SORT: '700',
+                INPUT: {
+                  TYPE: 'Y/N',
+                },
+              },
+              PAYMENT_BUYER_ID: {
+                NAME: 'Buyer ID',
+                SORT: '1000',
+                GROUP: 'PAYMENT',
+                DEFAULT: {
+                  PROVIDER_KEY: 'ORDER',
+                  PROVIDER_VALUE: 'USER_ID',
+                },
+              },
+              PS_WORK_MODE: {
+                NAME: 'Payment system work mode',
+                SORT: '1100',
+                INPUT: {
+                  TYPE: 'ENUM',
+                  OPTIONS: {
+                    TEST: 'Test',
+                    REGULAR: 'Live',
+                  },
+                },
+              },
+            },
+          },
+        },
+        requestId: Text.getUuidRfc4122()
+      })
+
+      // The payload is available only on a successful response
+      if (!response.isSuccess) {
+        console.error(response.getErrorMessages().join('; '))
+      } else {
+        const result = response.getData()!.result
+        console.info('Handler added with ID:', result)
+      }
+    } catch (error) {
+      // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+      console.error(error)
     }
-    catch(error)
-    {
-        console.error(error);
-    }
+    ```
+
+- JS (UMD)
+
+    ```html
+    <!-- Load the SDK (UMD build); it is exposed as the global B24Js -->
+    <script src="https://unpkg.com/@bitrix24/b24jssdk@1/dist/umd/index.min.js"></script>
+    <script>
+      async function addPaySystemHandlerForm() {
+        try {
+          // Initialize the SDK inside a Bitrix24 frame
+          const $b24 = await B24Js.initializeB24Frame()
+
+          const response = await $b24.actions.v2.call.make({
+            method: 'sale.paysystem.handler.add',
+            params: {
+              NAME: 'Rest handler FORM',
+              CODE: 'resthandlerform',
+              SORT: 100,
+              SETTINGS: {
+                CURRENCY: ['RUB'],
+                CLIENT_TYPE: 'b2c',
+                FORM_DATA: {
+                  ACTION_URI: 'http://example.com/payment_form.php',
+                  METHOD: 'POST',
+                  FIELDS: {
+                    phone: {
+                      VISIBLE: 'Y',
+                      CODE: {
+                        NAME: 'Phone number',
+                        TYPE: 'STRING',
+                      },
+                    },
+                    selection: {
+                      VISIBLE: 'Y',
+                      CODE: {
+                        NAME: 'Illusion of choice',
+                        INPUT: {
+                          TYPE: 'Y/N',
+                        },
+                      },
+                    },
+                    paymentId: {
+                      CODE: 'PAYMENT_ID',
+                      VISIBLE: 'Y',
+                    },
+                    serviceid: {
+                      CODE: 'REST_SERVICE_ID',
+                    },
+                  },
+                },
+                CODES: {
+                  REST_SERVICE_ID: {
+                    NAME: 'Shop ID',
+                    DESCRIPTION: 'Shop ID',
+                    SORT: '100',
+                  },
+                  REST_SERVICE_KEY: {
+                    NAME: 'Secret key',
+                    DESCRIPTION: 'Secret key',
+                    SORT: '300',
+                  },
+                  PAYMENT_ID: {
+                    NAME: 'Payment number',
+                    SORT: '400',
+                    GROUP: 'PAYMENT',
+                    DEFAULT: {
+                      PROVIDER_KEY: 'PAYMENT',
+                      PROVIDER_VALUE: 'ACCOUNT_NUMBER',
+                    },
+                  },
+                  PAYMENT_SHOULD_PAY: {
+                    NAME: 'Payment amount',
+                    SORT: '600',
+                    GROUP: 'PAYMENT',
+                    DEFAULT: {
+                      PROVIDER_KEY: 'PAYMENT',
+                      PROVIDER_VALUE: 'SUM',
+                    },
+                  },
+                  PS_CHANGE_STATUS_PAY: {
+                    NAME: 'Automatic payment status change',
+                    SORT: '700',
+                    INPUT: {
+                      TYPE: 'Y/N',
+                    },
+                  },
+                  PAYMENT_BUYER_ID: {
+                    NAME: 'Buyer ID',
+                    SORT: '1000',
+                    GROUP: 'PAYMENT',
+                    DEFAULT: {
+                      PROVIDER_KEY: 'ORDER',
+                      PROVIDER_VALUE: 'USER_ID',
+                    },
+                  },
+                  PS_WORK_MODE: {
+                    NAME: 'Payment system work mode',
+                    SORT: '1100',
+                    INPUT: {
+                      TYPE: 'ENUM',
+                      OPTIONS: {
+                        TEST: 'Test',
+                        REGULAR: 'Live',
+                      },
+                    },
+                  },
+                },
+              },
+            },
+            requestId: B24Js.Text.getUuidRfc4122()
+          })
+
+          // The payload is available only on a successful response
+          if (!response.isSuccess) {
+            console.error(response.getErrorMessages().join('; '))
+            return
+          }
+
+          const result = response.getData().result
+          console.info('Handler added with ID:', result)
+        } catch (error) {
+          // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+          console.error(error)
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', addPaySystemHandlerForm)
+    </script>
     ```
 
 - PHP
@@ -836,67 +974,153 @@ If nothing is returned, the default error `Error registering order in payment sy
     https://**put_your_bitrix24_address**/rest/sale.paysystem.handler.add
     ```
 
-- JS
+- JS (TS)
 
-    ```js
-    try
-    {
-        const response = await $b24.callMethod(
-            "sale.paysystem.handler.add",
-            {
-                "NAME": "Handler.Rest CHECKOUT",
-                "CODE": "resthandlercheckout",
-                "SORT": 100,
-                "SETTINGS": {
-                    "CURRENCY": [
-                        "RUB"
-                    ],
-                    "CLIENT_TYPE": "b2c",
-                    "CHECKOUT_DATA": {
-                        "ACTION_URI": "http://example.com/payment_checkout.php",
-                        "FIELDS": {
-                            "serviceKey": {
-                                "CODE": "REST_SERVICE_KEY_CHECKOUT",
-                            },
-                            "serviceid": {
-                                "CODE": "REST_SERVICE_ID_CHECKOUT"
-                            }
-                        }
+    ```ts
+    // This snippet is an ES module: top-level await requires type="module" or a bundler.
+    // $b24 is an already-initialized SDK instance (see the SDK "Get started" guide).
+    import { Text } from '@bitrix24/b24jssdk'
+    import type { B24Frame } from '@bitrix24/b24jssdk'
+
+    declare const $b24: B24Frame
+
+    try {
+      const response = await $b24.actions.v2.call.make<number>({
+        method: 'sale.paysystem.handler.add',
+        params: {
+          NAME: 'Rest handler CHECKOUT',
+          CODE: 'resthandlercheckout',
+          SORT: 100,
+          SETTINGS: {
+            CURRENCY: ['RUB'],
+            CLIENT_TYPE: 'b2c',
+            CHECKOUT_DATA: {
+              ACTION_URI: 'http://example.com/payment_checkout.php',
+              FIELDS: {
+                serviceKey: {
+                  CODE: 'REST_SERVICE_KEY_CHECKOUT',
+                },
+                serviceid: {
+                  CODE: 'REST_SERVICE_ID_CHECKOUT',
+                },
+              },
+            },
+            CODES: {
+              REST_SERVICE_ID_CHECKOUT: {
+                NAME: 'Shop ID',
+                DESCRIPTION: 'Shop ID',
+                SORT: '100',
+              },
+              REST_SERVICE_KEY_CHECKOUT: {
+                NAME: 'Secret key',
+                DESCRIPTION: 'Secret key',
+                SORT: '300',
+              },
+              PS_WORK_MODE_CHECKOUT: {
+                NAME: 'Payment system work mode',
+                SORT: '1100',
+                INPUT: {
+                  TYPE: 'ENUM',
+                  OPTIONS: {
+                    TEST: 'Test',
+                    REGULAR: 'Live',
+                  },
+                },
+              },
+            },
+          },
+        },
+        requestId: Text.getUuidRfc4122()
+      })
+
+      // The payload is available only on a successful response
+      if (!response.isSuccess) {
+        console.error(response.getErrorMessages().join('; '))
+      } else {
+        const result = response.getData()!.result
+        console.info('Handler added with ID:', result)
+      }
+    } catch (error) {
+      // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+      console.error(error)
+    }
+    ```
+
+- JS (UMD)
+
+    ```html
+    <!-- Load the SDK (UMD build); it is exposed as the global B24Js -->
+    <script src="https://unpkg.com/@bitrix24/b24jssdk@1/dist/umd/index.min.js"></script>
+    <script>
+      async function addPaySystemHandlerCheckout() {
+        try {
+          // Initialize the SDK inside a Bitrix24 frame
+          const $b24 = await B24Js.initializeB24Frame()
+
+          const response = await $b24.actions.v2.call.make({
+            method: 'sale.paysystem.handler.add',
+            params: {
+              NAME: 'Rest handler CHECKOUT',
+              CODE: 'resthandlercheckout',
+              SORT: 100,
+              SETTINGS: {
+                CURRENCY: ['RUB'],
+                CLIENT_TYPE: 'b2c',
+                CHECKOUT_DATA: {
+                  ACTION_URI: 'http://example.com/payment_checkout.php',
+                  FIELDS: {
+                    serviceKey: {
+                      CODE: 'REST_SERVICE_KEY_CHECKOUT',
                     },
-                    "CODES": {
-                        "REST_SERVICE_ID_CHECKOUT": {
-                            "NAME": "Store Number",
-                            "DESCRIPTION": "Store Number",
-                            "SORT": "100"
-                        },
-                        "REST_SERVICE_KEY_CHECKOUT": {
-                            "NAME": "Secret Key",
-                            "DESCRIPTION": "Secret Key",
-                            "SORT": "300"
-                        },
-                        "PS_WORK_MODE_CHECKOUT": {
-                            "NAME": "Payment System Operating Mode",
-                            "SORT": "1100",
-                            "INPUT": {
-                                "TYPE": "ENUM",
-                                "OPTIONS": {
-                                    "TEST": "Test",
-                                    "REGULAR": "Live"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        );
-        
-        const result = response.getData().result;
-        console.info("Handler added with ID " + result);
-    }
-    catch( error )
-    {
-        console.error(error);
-    }
+                    serviceid: {
+                      CODE: 'REST_SERVICE_ID_CHECKOUT',
+                    },
+                  },
+                },
+                CODES: {
+                  REST_SERVICE_ID_CHECKOUT: {
+                    NAME: 'Shop ID',
+                    DESCRIPTION: 'Shop ID',
+                    SORT: '100',
+                  },
+                  REST_SERVICE_KEY_CHECKOUT: {
+                    NAME: 'Secret key',
+                    DESCRIPTION: 'Secret key',
+                    SORT: '300',
+                  },
+                  PS_WORK_MODE_CHECKOUT: {
+                    NAME: 'Payment system work mode',
+                    SORT: '1100',
+                    INPUT: {
+                      TYPE: 'ENUM',
+                      OPTIONS: {
+                        TEST: 'Test',
+                        REGULAR: 'Live',
+                      },
+                    },
+                  },
+                },
+              },
+            },
+            requestId: B24Js.Text.getUuidRfc4122()
+          })
+
+          // The payload is available only on a successful response
+          if (!response.isSuccess) {
+            console.error(response.getErrorMessages().join('; '))
+            return
+          }
+
+          const result = response.getData().result
+          console.info('Handler added with ID:', result)
+        } catch (error) {
+          // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+          console.error(error)
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', addPaySystemHandlerCheckout)
+    </script>
     ```
 
 - PHP
@@ -1198,67 +1422,153 @@ document.addEventListener("DOMContentLoaded", function() {
     https://**put_your_bitrix24_address**/rest/sale.paysystem.handler.add
     ```
 
-- JS
+- JS (TS)
 
-    ```js
-    try
-    {
-        const response = await $b24.callMethod(
-            "sale.paysystem.handler.add",
-            {
-                "NAME": "Handler.Rest IFrame",
-                "CODE": "resthandleriframe",
-                "SORT": 100,
-                "SETTINGS": {
-                    "CURRENCY": [
-                        "RUB"
-                    ],
-                    "CLIENT_TYPE": "b2c",
-                    "IFRAME_DATA": {
-                        "ACTION_URI": "http://example.com/payment_iframe.php",
-                        "FIELDS": {
-                            "serviceKey": {
-                                "CODE": "REST_SERVICE_KEY_IFRAME",
-                            },
-                            "serviceid": {
-                                "CODE": "REST_SERVICE_ID_IFRAME"
-                            }
-                        }
+    ```ts
+    // This snippet is an ES module: top-level await requires type="module" or a bundler.
+    // $b24 is an already-initialized SDK instance (see the SDK "Get started" guide).
+    import { Text } from '@bitrix24/b24jssdk'
+    import type { B24Frame } from '@bitrix24/b24jssdk'
+
+    declare const $b24: B24Frame
+
+    try {
+      const response = await $b24.actions.v2.call.make<number>({
+        method: 'sale.paysystem.handler.add',
+        params: {
+          NAME: 'Rest handler IFrame',
+          CODE: 'resthandleriframe',
+          SORT: 100,
+          SETTINGS: {
+            CURRENCY: ['RUB'],
+            CLIENT_TYPE: 'b2c',
+            IFRAME_DATA: {
+              ACTION_URI: 'http://example.com/payment_iframe.php',
+              FIELDS: {
+                serviceKey: {
+                  CODE: 'REST_SERVICE_KEY_IFRAME',
+                },
+                serviceid: {
+                  CODE: 'REST_SERVICE_ID_IFRAME',
+                },
+              },
+            },
+            CODES: {
+              REST_SERVICE_ID_IFRAME: {
+                NAME: 'Shop ID',
+                DESCRIPTION: 'Shop ID',
+                SORT: '100',
+              },
+              REST_SERVICE_KEY_IFRAME: {
+                NAME: 'Secret key',
+                DESCRIPTION: 'Secret key',
+                SORT: '300',
+              },
+              PS_WORK_MODE_IFRAME: {
+                NAME: 'Payment system work mode',
+                SORT: '1100',
+                INPUT: {
+                  TYPE: 'ENUM',
+                  OPTIONS: {
+                    TEST: 'Test',
+                    REGULAR: 'Live',
+                  },
+                },
+              },
+            },
+          },
+        },
+        requestId: Text.getUuidRfc4122()
+      })
+
+      // The payload is available only on a successful response
+      if (!response.isSuccess) {
+        console.error(response.getErrorMessages().join('; '))
+      } else {
+        const result = response.getData()!.result
+        console.info('Handler added with ID:', result)
+      }
+    } catch (error) {
+      // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+      console.error(error)
+    }
+    ```
+
+- JS (UMD)
+
+    ```html
+    <!-- Load the SDK (UMD build); it is exposed as the global B24Js -->
+    <script src="https://unpkg.com/@bitrix24/b24jssdk@1/dist/umd/index.min.js"></script>
+    <script>
+      async function addPaySystemHandlerIframe() {
+        try {
+          // Initialize the SDK inside a Bitrix24 frame
+          const $b24 = await B24Js.initializeB24Frame()
+
+          const response = await $b24.actions.v2.call.make({
+            method: 'sale.paysystem.handler.add',
+            params: {
+              NAME: 'Rest handler IFrame',
+              CODE: 'resthandleriframe',
+              SORT: 100,
+              SETTINGS: {
+                CURRENCY: ['RUB'],
+                CLIENT_TYPE: 'b2c',
+                IFRAME_DATA: {
+                  ACTION_URI: 'http://example.com/payment_iframe.php',
+                  FIELDS: {
+                    serviceKey: {
+                      CODE: 'REST_SERVICE_KEY_IFRAME',
                     },
-                    "CODES": {
-                        "REST_SERVICE_ID_IFRAME": {
-                            "NAME": "Store Number",
-                            "DESCRIPTION": "Store Number",
-                            "SORT": "100"
-                        },
-                        "REST_SERVICE_KEY_IFRAME": {
-                            "NAME": "Secret Key",
-                            "DESCRIPTION": "Secret Key",
-                            "SORT": "300"
-                        },
-                        "PS_WORK_MODE_IFRAME": {
-                            "NAME": "Payment System Operating Mode",
-                            "SORT": "1100",
-                            "INPUT": {
-                                "TYPE": "ENUM",
-                                "OPTIONS": {
-                                    "TEST": "Test",
-                                    "REGULAR": "Live"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        );
-        
-        const result = response.getData().result;
-        console.info(result);
-    }
-    catch( error )
-    {
-        console.error(error);
-    }
+                    serviceid: {
+                      CODE: 'REST_SERVICE_ID_IFRAME',
+                    },
+                  },
+                },
+                CODES: {
+                  REST_SERVICE_ID_IFRAME: {
+                    NAME: 'Shop ID',
+                    DESCRIPTION: 'Shop ID',
+                    SORT: '100',
+                  },
+                  REST_SERVICE_KEY_IFRAME: {
+                    NAME: 'Secret key',
+                    DESCRIPTION: 'Secret key',
+                    SORT: '300',
+                  },
+                  PS_WORK_MODE_IFRAME: {
+                    NAME: 'Payment system work mode',
+                    SORT: '1100',
+                    INPUT: {
+                      TYPE: 'ENUM',
+                      OPTIONS: {
+                        TEST: 'Test',
+                        REGULAR: 'Live',
+                      },
+                    },
+                  },
+                },
+              },
+            },
+            requestId: B24Js.Text.getUuidRfc4122()
+          })
+
+          // The payload is available only on a successful response
+          if (!response.isSuccess) {
+            console.error(response.getErrorMessages().join('; '))
+            return
+          }
+
+          const result = response.getData().result
+          console.info('Handler added with ID:', result)
+        } catch (error) {
+          // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+          console.error(error)
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', addPaySystemHandlerIframe)
+    </script>
     ```
 
 - PHP

@@ -1,4 +1,4 @@
-# Upload a New Version of a File `disk.file.uploadversion`
+# Upload a New Version of a File disk.file.uploadversion
 
 {% note tip "" %}
 

@@ -1,4 +1,4 @@
-# Get CRM Lead Fields `crm.lead.fields`
+# Get CRM Lead Fields crm.lead.fields
 
 {% note tip "" %}
 

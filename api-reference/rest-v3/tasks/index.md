@@ -152,13 +152,14 @@ The following capabilities work only through REST v2:
 
 > Scope: [`tasks`](../../scopes/permissions.md)
 >
-> Who can execute the method: depending on the method
+> Who can execute the method: depends on the method
 
 #|
 || **Method** | **Description** ||
 || [tasks.task.add](./tasks-task-add.md) | Creates a new task ||
 || [tasks.task.file.attach](./tasks-task-file-attach.md) | Attaches Drive files to the task ||
 || [tasks.task.get](./tasks-task-get.md) | Retrieves task data with support for relationships via `select` ||
+|| [tasks.task.list](./tasks-task-list.md) | Returns a list of tasks based on the specified conditions ||
 || [tasks.task.chat.message.send](./tasks-task-chat-message-send.md) | Sends a message in the task chat ||
 || [tasks.task.result.add](./result/tasks-task-result-add.md) | Adds a result to the task ||
 || [tasks.task.result.addfromchatmessage](./result/tasks-task-result-addfromchatmessage.md) | Creates a result from a task chat message ||

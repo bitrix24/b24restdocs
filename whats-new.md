@@ -2,6 +2,11 @@
 
 ## 2026
 
+### June 18, 2026
+
+- Added new method [tasks.task.list](./api-reference/rest-v3/tasks/tasks-task-list.md)
+- Updated the main page of the [Embedding Applications into CRM Activities](./api-reference/crm/timeline/activities/app-embedding/index.md) section
+
 ### June 10, 2026
 
 - Added methods to the [Department and Team Communications](./api-reference/rest-v3/humanresources/node-communication/index.md) section
@@ -23,7 +28,7 @@
 
 - Added a section for working with [mail methods in REST 3.0](./api-reference/rest-v3/mail/index.md)
 - Updated the main page [REST API Reference: Bitrix24 tools and methods](./api-reference/index.md)
-- Updated the tutorial [Business Processes and Robots: typical scenarios](./tutorials/bizproc/index.md)
+- Updated the tutorial [Workflows and Automation rules: typical scenarios](./tutorials/bizproc/index.md)
 - Updated the tutorial [How to embed widgets in CRM](./tutorials/crm/crm-widgets/index.md)
 - Updated the tutorial [Online sales: typical scenarios](./tutorials/sale/index.md)
 - Updated the tutorial [Tasks: typical scenarios](./tutorials/tasks/index.md)

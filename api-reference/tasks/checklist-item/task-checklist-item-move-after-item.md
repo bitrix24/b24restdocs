@@ -1,4 +1,4 @@
-# Move Checklist Item with `task.checklistitem.moveafteritem`
+# Move Checklist Item with task.checklistitem.moveafteritem
 
 {% note tip "" %}
 

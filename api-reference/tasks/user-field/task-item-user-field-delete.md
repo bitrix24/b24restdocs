@@ -1,4 +1,4 @@
-# Delete User Field `task.item.userfield.delete`
+# Delete User Field task.item.userfield.delete
 
 {% note tip "" %}
 

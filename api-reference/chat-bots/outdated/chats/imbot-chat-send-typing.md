@@ -1,4 +1,4 @@
-# Send Typing Indicator `imbot.chat.sendTyping`
+# Send Typing Indicator imbot.chat.sendTyping
 
 {% note tip "" %}
 

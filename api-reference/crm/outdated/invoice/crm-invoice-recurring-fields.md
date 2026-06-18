@@ -1,4 +1,4 @@
-# Get Full Template of Recurring Invoice Fields `crm.invoice.recurring.fields`
+# Get Full Template of Recurring Invoice Fields crm.invoice.recurring.fields
 
 {% note tip "" %}
 

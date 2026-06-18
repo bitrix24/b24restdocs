@@ -1,4 +1,4 @@
-# Update the Recurring Deal Template Settings `crm.deal.recurring.update`
+# Update the Recurring Deal Template Settings crm.deal.recurring.update
 
 {% note tip "" %}
 

@@ -1,4 +1,4 @@
-# Delete CRM Status Element `crm.status.delete`
+# Delete CRM Status Element crm.status.delete
 
 {% note tip "" %}
 

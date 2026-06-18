@@ -31,7 +31,7 @@ The identifier can be obtained using the [humanresources.node.list](../node/huma
 
 {% note info "" %}
 
-The call to the new API differs by adding the `/api/` parameter in the request:
+The new API call differs by adding the `/api/` segment to the request URL:
 
 ```plaintext
 https://{installation_address}/rest/api/{user_id}/{webhook_token}/humanresources.node.communication.list
@@ -62,32 +62,109 @@ https://{installation_address}/rest/api/{user_id}/{webhook_token}/humanresources
     ```
 
 
-- JS
+- JS (TS)
 
-    SDKs do not currently support calls to the `/rest/api/` address. Use direct HTTP requests, for example, with curl or fetch.
+    ```ts
+    // This snippet is an ES module: top-level await requires type="module" or a bundler.
+    // $b24 is an already-initialized SDK instance (see the SDK "Get started" guide).
+    import { Text } from '@bitrix24/b24jssdk'
+    import type { B24Frame } from '@bitrix24/b24jssdk'
 
-    ```javascript
-    try
-    {
-        const response = await $b24.callMethod(
-            'humanresources.node.communication.list',
-            {
-                id: 15
-            }
-        );
+    declare const $b24: B24Frame
 
-        const result = response.getData().result;
-        console.log(result);
+    type CommunicationItem = {
+      avatar: string | null
+      color?: string
+      dialogId: string
+      hasAccess: boolean
+      id: number
+      isExtranet?: boolean
+      originalNodeId: number | null
+      subtitle: string
+      title: string
+      type: string
     }
-    catch (error)
-    {
-        console.error('Error:', error);
+
+    // Shape of the payload returned in result (match the "response handling" section of the page)
+    type NodeCommunicationListResult = {
+      channels: CommunicationItem[]
+      channelsNoAccess: number
+      chats: CommunicationItem[]
+      chatsNoAccess: number
+      collabs: CommunicationItem[]
+      collabsNoAccess: number
     }
+
+    try {
+      const response = await $b24.actions.v3.call.make<NodeCommunicationListResult>({
+        method: 'humanresources.node.communication.list',
+        params: {
+          id: 15,
+        },
+        requestId: Text.getUuidRfc4122()
+      })
+
+      // The payload is available only on a successful response
+      if (!response.isSuccess) {
+        console.error(response.getErrorMessages().join('; '))
+      } else {
+        const result = response.getData()!.result
+        console.info(
+          'Channels:', result.channels,
+          'Chats:', result.chats,
+          'Collabs:', result.collabs
+        )
+      }
+    } catch (error) {
+      // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+      console.error(error)
+    }
+    ```
+
+- JS (UMD)
+
+    ```html
+    <!-- Load the SDK (UMD build); it is exposed as the global B24Js -->
+    <script src="https://unpkg.com/@bitrix24/b24jssdk@1/dist/umd/index.min.js"></script>
+    <script>
+      async function fetchNodeCommunications() {
+        try {
+          // Initialize the SDK inside a Bitrix24 frame
+          const $b24 = await B24Js.initializeB24Frame()
+
+          const response = await $b24.actions.v3.call.make({
+            method: 'humanresources.node.communication.list',
+            params: {
+              id: 15,
+            },
+            requestId: B24Js.Text.getUuidRfc4122()
+          })
+
+          // The payload is available only on a successful response
+          if (!response.isSuccess) {
+            console.error(response.getErrorMessages().join('; '))
+            return
+          }
+
+          const result = response.getData().result
+          console.info(
+            'Channels:', result.channels,
+            'Chats:', result.chats,
+            'Collabs:', result.collabs
+          )
+        } catch (error) {
+          // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+          console.error(error)
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', fetchNodeCommunications)
+    </script>
     ```
 
 - PHP
 
-    SDKs do not currently support calls to the `/rest/api/` address. Use direct HTTP requests, for example, with curl or fetch.
+    SDKs do not yet support the `/rest/api/` address in calls. Use direct HTTP requests, for example, via `curl` or `fetch`.
 
     ```php
     try {
@@ -114,7 +191,7 @@ https://{installation_address}/rest/api/{user_id}/{webhook_token}/humanresources
 
 - BX24.js
 
-    SDKs do not currently support calls to the `/rest/api/` address. Use direct HTTP requests, for example, with curl or fetch.
+    SDKs do not yet support the `/rest/api/` address in calls. Use direct HTTP requests, for example, via `curl` or `fetch`.
 
     ```js
     BX24.callMethod(
@@ -131,7 +208,7 @@ https://{installation_address}/rest/api/{user_id}/{webhook_token}/humanresources
 
 - PHP CRest
 
-    SDKs do not currently support calls to the `/rest/api/` address. Use direct HTTP requests, for example, with curl or fetch.
+    SDKs do not yet support the `/rest/api/` address in calls. Use direct HTTP requests, for example, via `curl` or `fetch`.
 
     ```php
     require_once('crest.php');

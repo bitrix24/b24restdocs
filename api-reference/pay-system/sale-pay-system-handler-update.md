@@ -66,91 +66,201 @@ This method updates the REST handler for the payment system.
     https://**put_your_bitrix24_address**/rest/sale.paysystem.handler.update
     ```
 
-- JS
+- JS (TS)
 
-    ```js
-    try
-    {
-        const response = await $b24.callMethod(
-            "sale.paysystem.handler.update",
-            {
-                'ID': 3,
-                'FIELDS': {
-                    'CODE': 'newresthandlercode',
-                    'NAME': 'New Handler Name',
-                    'SORT': 200,
-                    'SETTINGS': {
-                        "CURRENCY": [
-                            "EUR", "CHF"
-                        ],
-                        "FORM_DATA": {
-                            "ACTION_URI": "http://example.com/payment_form.php",
-                            "METHOD": "POST",
-                            "PARAMS": {
-                                "serviceid": "REST_SERVICE_ID_2",
-                                "invoiceNumber": "PAYMENT_ID_2",
-                                "Sum": "PAYMENT_SHOULD_PAY_2",
-                                "customer": "PAYMENT_BUYER_ID_2"
-                            }
-                        },
-                        "CODES": {
-                            "REST_SERVICE_ID_2": {
-                                "NAME": "Store Number",
-                                "DESCRIPTION": "Store Number",
-                                "SORT": "100"
-                            },
-                            "REST_SERVICE_KEY_2": {
-                                "NAME": "Secret Key",
-                                "DESCRIPTION": "Secret Key",
-                                "SORT": "300"
-                            },
-                            "PAYMENT_ID_2": {
-                                "NAME": "Payment Number",
-                                "SORT": "400",
-                                "GROUP": "PAYMENT",
-                                "DEFAULT": {
-                                    "PROVIDER_KEY": "PAYMENT",
-                                    "PROVIDER_VALUE": "ACCOUNT_NUMBER"
-                                }
-                            },
-                            "PAYMENT_SHOULD_PAY_2": {
-                                "NAME": "Payment Amount",
-                                "SORT": "600",
-                                "GROUP": "PAYMENT",
-                                "DEFAULT": {
-                                    "PROVIDER_KEY": "PAYMENT",
-                                    "PROVIDER_VALUE": "SUM"
-                                }
-                            },
-                            "PS_CHANGE_STATUS_PAY_2": {
-                                "NAME": "Automatic Payment Status Change",
-                                "SORT": "700",
-                                "INPUT": {
-                                    "TYPE": "Y/N"
-                                }
-                            },
-                            "PAYMENT_BUYER_ID_2": {
-                                "NAME": "Buyer Code",
-                                "SORT": "1000",
-                                "GROUP": "PAYMENT",
-                                "DEFAULT": {
-                                    "PROVIDER_KEY": "ORDER",
-                                    "PROVIDER_VALUE": "USER_ID"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        );
+    ```ts
+    // This snippet is an ES module: top-level await requires type="module" or a bundler.
+    // $b24 is an already-initialized SDK instance (see the SDK "Get started" guide).
+    import { Text } from '@bitrix24/b24jssdk'
+    import type { B24Frame } from '@bitrix24/b24jssdk'
 
-        const result = response.getData().result;
-        console.info(result);
+    declare const $b24: B24Frame
+
+    try {
+      const response = await $b24.actions.v2.call.make<boolean>({
+        method: 'sale.paysystem.handler.update',
+        params: {
+          ID: 3,
+          FIELDS: {
+            CODE: 'newresthandlercode',
+            NAME: 'New handler name',
+            SORT: 200,
+            SETTINGS: {
+              CURRENCY: ['RUB', 'BYN'],
+              FORM_DATA: {
+                ACTION_URI: 'http://example.com/payment_form.php',
+                METHOD: 'POST',
+                PARAMS: {
+                  serviceid: 'REST_SERVICE_ID_2',
+                  invoiceNumber: 'PAYMENT_ID_2',
+                  Sum: 'PAYMENT_SHOULD_PAY_2',
+                  customer: 'PAYMENT_BUYER_ID_2',
+                },
+              },
+              CODES: {
+                REST_SERVICE_ID_2: {
+                  NAME: 'Store number',
+                  DESCRIPTION: 'Store number',
+                  SORT: '100',
+                },
+                REST_SERVICE_KEY_2: {
+                  NAME: 'Secret key',
+                  DESCRIPTION: 'Secret key',
+                  SORT: '300',
+                },
+                PAYMENT_ID_2: {
+                  NAME: 'Payment number',
+                  SORT: '400',
+                  GROUP: 'PAYMENT',
+                  DEFAULT: {
+                    PROVIDER_KEY: 'PAYMENT',
+                    PROVIDER_VALUE: 'ACCOUNT_NUMBER',
+                  },
+                },
+                PAYMENT_SHOULD_PAY_2: {
+                  NAME: 'Payment amount',
+                  SORT: '600',
+                  GROUP: 'PAYMENT',
+                  DEFAULT: {
+                    PROVIDER_KEY: 'PAYMENT',
+                    PROVIDER_VALUE: 'SUM',
+                  },
+                },
+                PS_CHANGE_STATUS_PAY_2: {
+                  NAME: 'Automatic payment status change',
+                  SORT: '700',
+                  INPUT: {
+                    TYPE: 'Y/N',
+                  },
+                },
+                PAYMENT_BUYER_ID_2: {
+                  NAME: 'Customer code',
+                  SORT: '1000',
+                  GROUP: 'PAYMENT',
+                  DEFAULT: {
+                    PROVIDER_KEY: 'ORDER',
+                    PROVIDER_VALUE: 'USER_ID',
+                  },
+                },
+              },
+            },
+          },
+        },
+        requestId: Text.getUuidRfc4122()
+      })
+
+      // The payload is available only on a successful response
+      if (!response.isSuccess) {
+        console.error(response.getErrorMessages().join('; '))
+      } else {
+        const result = response.getData()!.result
+        console.info('Handler updated:', result)
+      }
+    } catch (error) {
+      // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+      console.error(error)
     }
-    catch( error )
-    {
-        console.error(error);
-    }
+    ```
+
+- JS (UMD)
+
+    ```html
+    <!-- Load the SDK (UMD build); it is exposed as the global B24Js -->
+    <script src="https://unpkg.com/@bitrix24/b24jssdk@1/dist/umd/index.min.js"></script>
+    <script>
+      async function updatePaySystemHandler() {
+        try {
+          // Initialize the SDK inside a Bitrix24 frame
+          const $b24 = await B24Js.initializeB24Frame()
+
+          const response = await $b24.actions.v2.call.make({
+            method: 'sale.paysystem.handler.update',
+            params: {
+              ID: 3,
+              FIELDS: {
+                CODE: 'newresthandlercode',
+                NAME: 'New handler name',
+                SORT: 200,
+                SETTINGS: {
+                  CURRENCY: ['RUB', 'BYN'],
+                  FORM_DATA: {
+                    ACTION_URI: 'http://example.com/payment_form.php',
+                    METHOD: 'POST',
+                    PARAMS: {
+                      serviceid: 'REST_SERVICE_ID_2',
+                      invoiceNumber: 'PAYMENT_ID_2',
+                      Sum: 'PAYMENT_SHOULD_PAY_2',
+                      customer: 'PAYMENT_BUYER_ID_2',
+                    },
+                  },
+                  CODES: {
+                    REST_SERVICE_ID_2: {
+                      NAME: 'Store number',
+                      DESCRIPTION: 'Store number',
+                      SORT: '100',
+                    },
+                    REST_SERVICE_KEY_2: {
+                      NAME: 'Secret key',
+                      DESCRIPTION: 'Secret key',
+                      SORT: '300',
+                    },
+                    PAYMENT_ID_2: {
+                      NAME: 'Payment number',
+                      SORT: '400',
+                      GROUP: 'PAYMENT',
+                      DEFAULT: {
+                        PROVIDER_KEY: 'PAYMENT',
+                        PROVIDER_VALUE: 'ACCOUNT_NUMBER',
+                      },
+                    },
+                    PAYMENT_SHOULD_PAY_2: {
+                      NAME: 'Payment amount',
+                      SORT: '600',
+                      GROUP: 'PAYMENT',
+                      DEFAULT: {
+                        PROVIDER_KEY: 'PAYMENT',
+                        PROVIDER_VALUE: 'SUM',
+                      },
+                    },
+                    PS_CHANGE_STATUS_PAY_2: {
+                      NAME: 'Automatic payment status change',
+                      SORT: '700',
+                      INPUT: {
+                        TYPE: 'Y/N',
+                      },
+                    },
+                    PAYMENT_BUYER_ID_2: {
+                      NAME: 'Customer code',
+                      SORT: '1000',
+                      GROUP: 'PAYMENT',
+                      DEFAULT: {
+                        PROVIDER_KEY: 'ORDER',
+                        PROVIDER_VALUE: 'USER_ID',
+                      },
+                    },
+                  },
+                },
+              },
+            },
+            requestId: B24Js.Text.getUuidRfc4122()
+          })
+
+          // The payload is available only on a successful response
+          if (!response.isSuccess) {
+            console.error(response.getErrorMessages().join('; '))
+            return
+          }
+
+          const result = response.getData().result
+          console.info('Handler updated:', result)
+        } catch (error) {
+          // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+          console.error(error)
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', updatePaySystemHandler)
+    </script>
     ```
 
 - PHP

@@ -1,4 +1,4 @@
-# Update Comment `task.commentitem.update`
+# Update Comment task.commentitem.update
 
 {% note tip "" %}
 

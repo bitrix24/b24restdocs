@@ -33,7 +33,7 @@ The task identifier can be obtained when [creating a new task](./tasks-task-add.
 
 {% note info "" %}
 
-The call to the new API differs by the addition of the `/api/` parameter in the request:
+The new API call differs by adding the `/api/` segment to the request URL:
 
 `https://{installation_address}/rest/api/{user_id}/{webhook_token}/tasks.task.delete`
 
@@ -61,34 +61,83 @@ The call to the new API differs by the addition of the `/api/` parameter in the 
     https://**put_your_bitrix24_address**/rest/api/tasks.task.delete
     ```
 
-- JS
+- JS (TS)
 
-    The SDK does not yet support calls to the /rest/api/ address. Use direct HTTP requests, for example, via curl or fetch.
+    ```ts
+    // This snippet is an ES module: top-level await requires type="module" or a bundler.
+    // $b24 is an already-initialized SDK instance (see the SDK "Get started" guide).
+    import { Text } from '@bitrix24/b24jssdk'
+    import type { B24Frame } from '@bitrix24/b24jssdk'
 
-    ```javascript
-    try
-    {
-        const response = await $b24.callMethod(
-            'tasks.task.delete',
-            {
-                id: 8131,
-            }
-        );
-        
-        const result = response.getData().result;
-        console.log('Deleted task:', result);
-        
-        processResult(result);
+    declare const $b24: B24Frame
+
+    // Shape of the payload returned in result (match the "response handling" section of the page)
+    type DeleteTaskResult = {
+      result: boolean
     }
-    catch( error )
-    {
-        console.error('Error:', error);
+
+    try {
+      const response = await $b24.actions.v3.call.make<DeleteTaskResult>({
+        method: 'tasks.task.delete',
+        params: {
+          id: 8131,
+        },
+        requestId: Text.getUuidRfc4122()
+      })
+
+      // The payload is available only on a successful response
+      if (!response.isSuccess) {
+        console.error(response.getErrorMessages().join('; '))
+      } else {
+        const result = response.getData()!.result
+        console.info('Task deleted:', result.result)
+      }
+    } catch (error) {
+      // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+      console.error(error)
     }
+    ```
+
+- JS (UMD)
+
+    ```html
+    <!-- Load the SDK (UMD build); it is exposed as the global B24Js -->
+    <script src="https://unpkg.com/@bitrix24/b24jssdk@1/dist/umd/index.min.js"></script>
+    <script>
+      async function deleteTask() {
+        try {
+          // Initialize the SDK inside a Bitrix24 frame
+          const $b24 = await B24Js.initializeB24Frame()
+
+          const response = await $b24.actions.v3.call.make({
+            method: 'tasks.task.delete',
+            params: {
+              id: 8131,
+            },
+            requestId: B24Js.Text.getUuidRfc4122()
+          })
+
+          // The payload is available only on a successful response
+          if (!response.isSuccess) {
+            console.error(response.getErrorMessages().join('; '))
+            return
+          }
+
+          const result = response.getData().result
+          console.info('Task deleted:', result.result)
+        } catch (error) {
+          // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+          console.error(error)
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', deleteTask)
+    </script>
     ```
 
 - PHP
 
-    The SDK does not yet support calls to the /rest/api/ address. Use direct HTTP requests, for example, via curl or fetch.
+    SDKs do not yet support the `/rest/api/` address in calls. Use direct HTTP requests, for example, via `curl` or `fetch`.
 
     ```php
     try {
@@ -115,7 +164,7 @@ The call to the new API differs by the addition of the `/api/` parameter in the 
 
 - BX24.js
 
-    The SDK does not yet support calls to the /rest/api/ address. Use direct HTTP requests, for example, via curl or fetch.
+    SDKs do not yet support the `/rest/api/` address in calls. Use direct HTTP requests, for example, via `curl` or `fetch`.
 
     ```js
     BX24.callMethod(
@@ -132,7 +181,7 @@ The call to the new API differs by the addition of the `/api/` parameter in the 
 
 - PHP CRest
 
-    The SDK does not yet support calls to the /rest/api/ address. Use direct HTTP requests, for example, via curl or fetch.
+    SDKs do not yet support the `/rest/api/` address in calls. Use direct HTTP requests, for example, via `curl` or `fetch`.
 
     ```php
     require_once('crest.php');

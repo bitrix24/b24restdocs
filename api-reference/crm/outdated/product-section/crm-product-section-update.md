@@ -1,4 +1,4 @@
-# Update Product Section `crm.productsection.update`
+# Update Product Section crm.productsection.update
 
 {% note tip "" %}
 

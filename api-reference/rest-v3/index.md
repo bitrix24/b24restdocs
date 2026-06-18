@@ -67,7 +67,7 @@ https://**put_your_bitrix24_address**/rest/api/tasks.task.chat.message.send
 
 {% note info "" %}
 
-SDKs do not yet support the address `/rest/api/` in calls. Use direct HTTP requests, for example, via `curl`, `fetch`.
+SDKs do not yet support the `/rest/api/` address in calls. Use direct HTTP requests, for example, via `curl` or `fetch`.
 
 {% endnote %}
 
