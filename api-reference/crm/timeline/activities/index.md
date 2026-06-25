@@ -50,7 +50,7 @@ The methods [crm.activity.delete](./activity-base/crm-activity-delete.md) (delet
 
 ## Universal Activities
 
-Universal activities are a type of activity with extended settings. In the card of a universal activity, you can synchronize the activity with the calendar, choose a meeting location with the client, add colleagues, select a client from a CRM entity, categorize activities by color, and choose a meeting room. Extended settings are available to employees on the Bitrix24 side.
+Universal activities are a type of activity with extended settings. In the card of a universal activity, you can synchronize the activity with the calendar, choose a meeting location with the client, add colleagues, select a client from a CRM object, categorize activities by color, and choose a meeting room. Extended settings are available to employees on the Bitrix24 side.
 
 To create a universal activity, use the method [crm.activity.todo.add](./todo/crm-activity-todo-add.md). To change the deadline of the activity — use the method [crm.activity.todo.updateDeadline](./todo/crm-activity-todo-update-deadline.md), and to change the description of the activity — [crm.activity.todo.updateDescription](./todo/crm-activity-todo-update-description.md).
 

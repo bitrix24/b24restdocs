@@ -14,7 +14,7 @@ This method updates the requisite template.
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -25,9 +25,9 @@ This method updates the requisite template.
 [`array`](../../../data-types.md) | Set of template fields — an object of the form `{"field": "value"[, ...]}`, the values of which need to be changed ||
 |#
 
-### fields Parameter
+### Parameter fields
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -35,7 +35,7 @@ This method updates the requisite template.
 || **NAME***
 [`string`](../../../data-types.md) | Name of the requisite ||
 || **XML_ID**
-[`string`](../../../data-types.md) | External key. Used for exchange operations. Identifier of the external information base object. 
+[`string`](../../../data-types.md) |External key. Used for exchange operations. Identifier of the external information base object. 
 
 The purpose of the field may change by the final developer. 
 
@@ -43,7 +43,7 @@ Each application ensures the uniqueness of values in this field. It is recommend
 
 Values of the form `#CRM_REQUISITE_PRESET_DEF_...` are reserved in CRM for identifying templates that are used by default. These identifiers should not be used for your purposes, as this may lead to logic violations ||
 || **ACTIVE**
-[`char`](../../../data-types.md) | Activity status. Uses values `Y` or `N`. Determines the availability of the template in the selection list when adding requisites ||
+[`char`](../../../data-types.md) | Activity status. Values `Y` or `N` are used. Determines the availability of the template in the selection list when adding requisites ||
 || **SORT**
 [`integer`](../../../data-types.md) | Sorting ||
 |#
@@ -60,7 +60,7 @@ Values of the form `#CRM_REQUISITE_PRESET_DEF_...` are reserved in CRM for ident
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":347,"fields":{"NAME":"IP (archive)","ACTIVE":"N"}}' \
+    -d '{"id":347,"fields":{"NAME":"Smith LLC (archive)","ACTIVE":"N"}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.requisite.preset.update
     ```
 
@@ -70,7 +70,7 @@ Values of the form `#CRM_REQUISITE_PRESET_DEF_...` are reserved in CRM for ident
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":347,"fields":{"NAME":"IP (archive)","ACTIVE":"N"},"auth":"**put_access_token_here**"}' \
+    -d '{"id":347,"fields":{"NAME":"Smith LLC (archive)","ACTIVE":"N"},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/crm.requisite.preset.update
     ```
 
@@ -162,7 +162,7 @@ Values of the form `#CRM_REQUISITE_PRESET_DEF_...` are reserved in CRM for ident
                 [
                     'id' => 347,
                     'fields' => [
-                        'NAME' => 'IP (archive)',
+                        'NAME' => 'Smith LLC (archive)',
                         'ACTIVE' => 'N',
                     ],
                 ]
@@ -190,10 +190,10 @@ Values of the form `#CRM_REQUISITE_PRESET_DEF_...` are reserved in CRM for ident
     BX24.callMethod(
         "crm.requisite.preset.update",
         {
-            id: 347,    // Identifier of the template to be updated.
+            id: 347,    // Template identifier to be changed.
             fields:
             {
-                "NAME": "IP (archive)",
+                "NAME": "Smith LLC (archive)",
                 "ACTIVE": "N"
             }
         },
@@ -220,7 +220,7 @@ Values of the form `#CRM_REQUISITE_PRESET_DEF_...` are reserved in CRM for ident
             'id' => 347,
             'fields' =>
             [
-                'NAME' => 'IP (archive)',
+                'NAME' => 'Smith LLC (archive)',
                 'ACTIVE' => 'N'
             ]
         ]
@@ -229,6 +229,37 @@ Values of the form `#CRM_REQUISITE_PRESET_DEF_...` are reserved in CRM for ident
     echo '<PRE>';
     print_r($result);
     echo '</PRE>';
+    ```
+
+- Python
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.requisite.preset.update(
+            bitrix_id=347,
+            fields={
+                "NAME": "Smith LLC (archive)",
+                "ACTIVE": "N",
+            },
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
     ```
 
 {% endlist %}
@@ -277,17 +308,17 @@ HTTP status: **40x**, **50x**
 }
 ```
 
-{% include notitle [error handling](../../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
-#|  
+#|
 || **Code** | **Description** ||
 || `The Preset with ID '347' is not found` | Template with the specified identifier not found ||
 || `Access denied` | Insufficient access permissions to update the template ||
 |#
 
-{% include [system errors](../../../../_includes/system-errors.md) %}
+{% include [System errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

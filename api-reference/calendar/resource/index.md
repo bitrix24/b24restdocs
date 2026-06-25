@@ -18,7 +18,7 @@ In Bitrix24, resource booking is done through a custom CRM field of type `resour
 
 Resource availability can be tracked in the CRM Calendar. Technically, a resource is a section of the calendar, and booking is a calendar event.
 
-The method [calendar.resource.add](./calendar-resource-add.md) adds a new resource. The resource will only appear in the system. It can be linked to a custom field of a CRM entity only through the detail form of the entity in edit mode.
+The method [calendar.resource.add](./calendar-resource-add.md) adds a new resource. The resource will only appear in the system. It can be linked to a custom field of a CRM object only through the detail form of the entity in edit mode.
 
 Resource bookings can be retrieved using the method [calendar.resource.booking.list](./calendar-resource-booking-list.md). A booking has a set of fields similar to the fields of a calendar event. Some fields remain empty as they are not relevant for booking.
 

@@ -37,7 +37,7 @@ Currently, this can only be:
 - `3` — contact
 - `4` — company
 
-Identifiers of all CRM entity types can be obtained from the method [crm.enum.ownertype](../../auxiliary/enum/crm-enum-owner-type.md)
+Identifiers of all CRM object types can be obtained from the method [crm.enum.ownertype](../../auxiliary/enum/crm-enum-owner-type.md)
 
  | Yes | Yes | Yes | Yes ||
 || **ENTITY_ID***

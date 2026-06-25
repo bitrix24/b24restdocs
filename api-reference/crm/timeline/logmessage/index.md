@@ -16,7 +16,7 @@ The log record journal serves as a utility for secondary events in the timeline.
 
 1. Add a record using the [crm.timeline.logmessage.add](./crm-timeline-logmessage-add.md) method.
 2. Retrieve a record by its ID using the [crm.timeline.logmessage.get](./crm-timeline-logmessage-get.md) method.
-3. Output a list of records for a CRM entity using the [crm.timeline.logmessage.list](./crm-timeline-logmessage-list.md) method.
+3. Output a list of records for a CRM object using the [crm.timeline.logmessage.list](./crm-timeline-logmessage-list.md) method.
 4. Delete a record using the [crm.timeline.logmessage.delete](./crm-timeline-logmessage-delete.md) method if it is no longer needed.
 5. Customize the appearance of the record through the [icon](./icons/index.md) and [logo](./logo/index.md) sections.
 
@@ -27,7 +27,7 @@ The log record journal serves as a utility for secondary events in the timeline.
 
 ## Relationship with Other Objects
 
-**CRM Entities.** A log record is created for a specific CRM entity through the `fields.entityTypeId` and `fields.entityId` fields of the [crm.timeline.logmessage.add](./crm-timeline-logmessage-add.md) method.
+**CRM Entities.** A log record is created for a specific CRM object through the `fields.entityTypeId` and `fields.entityId` fields of the [crm.timeline.logmessage.add](./crm-timeline-logmessage-add.md) method.
 
 **Log Record Icons.** The set of icons can be managed using the [crm.timeline.icon.*](./icons/index.md) methods, and then the icon code is used in `fields.iconCode` when creating a record.
 

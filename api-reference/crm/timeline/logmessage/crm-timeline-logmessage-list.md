@@ -8,34 +8,34 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: `user with read access permission for the CRM entity containing the record`
+> Who can execute the method: a user with read permissions for the CRM object containing the record
 
-This method retrieves a list of timeline log entries.
+Retrieves a list of timeline log entries.
 
 {% note info "" %}
 
-It is important to note that the method can only retrieve data for entries that were previously added using [`crm.timeline.logmessage.add`](./crm-timeline-logmessage-add.md). System entries cannot be retrieved using `crm.timeline.logmessage.list`.
+It is important to note that the method can only retrieve data about entries that were previously added using [`crm.timeline.logmessage.add`](./crm-timeline-logmessage-add.md). System entries cannot be retrieved using `crm.timeline.logmessage.list`.
 
 {% endnote %}
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
-#| 
+#|
 || **Name**
 `type` | **Description** ||
-|| **entityTypeId*** 
+|| **entityTypeId***
 [`integer`](../../../data-types.md) | [Identifier of the entity type](../../data-types.md#object_type) for which to retrieve the list of log entries (e.g., `1` — lead) ||
-|| **entityId*** 
+|| **entityId***
 [`integer`](../../../data-types.md) | Identifier of the entity item for which to retrieve the list of log entries (e.g., `1`) ||
-|| **order** 
+|| **order**
 [`object`](../../../data-types.md) | List for sorting, where the key is the field and the value is `asc` or `desc`.
 
 By default, `desc` is used.
 
 Sorting is supported only by the **id** and **created** fields. ||
-|| **start** 
+|| **start**
 [`integer`](../../../data-types.md) | This parameter is used to manage pagination.
 
 The page size of results is always static: 10 entries.
@@ -49,7 +49,7 @@ The formula for calculating the value of the `start` parameter:
 
 ## Code Examples
 
-{% include [Note on Examples](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -225,6 +225,106 @@ The formula for calculating the value of the `start` parameter:
     );
     ```
 
+- Python
+
+    Example
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.timeline.logmessage.list(
+            entity_type_id=1,
+            entity_id=1,
+            order={
+                "created": "desc"
+            },
+            start=0,
+        )
+        result = bitrix_response.response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected Error: {error}")
+    ```
+
+    Example `as_list`
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.timeline.logmessage.list(
+            entity_type_id=1,
+            entity_id=1,
+            order={
+                "created": "desc"
+            },
+            start=0,
+        ).as_list().response
+        result = bitrix_response.result
+        for item in result:
+            print(item)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected Error: {error}")
+    ```
+
+    Example `as_list_fast`
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.timeline.logmessage.list(
+            entity_type_id=1,
+            entity_id=1,
+            order={
+                "created": "desc"
+            },
+            start=0,
+        ).as_list_fast(descending=True).response
+        result = bitrix_response.result
+        for item in result:
+            print(item)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected Error: {error}")
+    ```
+
 - PHP CRest
 
     ```php
@@ -249,7 +349,7 @@ The formula for calculating the value of the `start` parameter:
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -287,7 +387,7 @@ HTTP Status: **200**
 
 ### Returned Data
 
-#| 
+#|
 || **Name**
 `type` | **Description** ||
 || **result**
@@ -297,12 +397,12 @@ The `result` field contains an array, each entry of which contains an associativ
 || **total**
 [`integer`](../../../data-types.md) | The total number of records found ||
 || **time**
-[`time`](../../../data-types.md) | Information about the execution time of the request ||
+[`time`](../../../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -311,19 +411,19 @@ HTTP Status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
-#| 
+#|
 || **Code** | **Description** ||
-|| `100` | Required fields are missing ||
+|| `100` | Required fields are not provided ||
 || `0` | Other errors (e.g., fatal) ||
 |#
 
-{% include [system errors](../../../../_includes/system-errors.md) %}
+{% include [System errors](../../../../_includes/system-errors.md) %}
 
-## Continue Learning 
+## Continue Learning
 
 - [{#T}](./crm-timeline-logmessage-add.md)
 - [{#T}](./crm-timeline-logmessage-get.md)

@@ -1,4 +1,4 @@
-# Get information about a product item by id crm.item.productrow.get
+# Get Information About a Product Item by Id crm.item.productrow.get
 
 {% note tip "" %}
 
@@ -10,17 +10,17 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: requires read access permission for the object to which the product items are linked
 
-This method retrieves information about a product item in the CRM.
+Retrieves information about a product item in the CRM.
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **id***
-[`crm_item_product_row.id`](../../data-types.md#crm_item_product_row) | Identifier of the product item ||
+[`crm_item_product_row.id`](../../data-types.md#crm_item_product_row) | Identifier of the product row. ||
 |#
 
 ## Code Examples
@@ -172,6 +172,35 @@ This method retrieves information about a product item in the CRM.
     }
     ```
 
+- Python
+
+    Example
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.item.productrow.get(
+            bitrix_id=17622,
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - BX24.js
 
     ```js
@@ -208,7 +237,7 @@ This method retrieves information about a product item in the CRM.
 
 {% endlist %}
 
-## Successful Response
+## Response on Success
 
 HTTP status: **200**
 
@@ -246,8 +275,8 @@ HTTP status: **200**
       "finish":1716821358.701454,
       "duration":0.43317389488220215,
       "processing":0.240645170211792,
-      "date_start":"2024-05-27T17:49:18+02:00",
-      "date_finish":"2024-05-27T17:49:18+02:00"
+      "date_start":"2024-05-27T17:49:18+03:00",
+      "date_finish":"2024-05-27T17:49:18+03:00"
    }
 }
 ```
@@ -272,11 +301,11 @@ HTTP status: **400**
 ```json
 {
    "error":"NOT_FOUND",
-   "error_description":"Element not found"
+   "error_description":"Item not found"
 }
 ```
 
-{% include notitle [error handling](../../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
@@ -289,7 +318,7 @@ HTTP status: **400**
 || `0` | Other errors (e.g., fatal errors) ||
 |#
 
-{% include notitle [system errors](../../../../_includes/system-errors.md) %}
+{% include notitle [System errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

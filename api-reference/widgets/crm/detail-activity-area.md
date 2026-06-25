@@ -8,11 +8,11 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`crm`](../../scopes/permissions.md)
 >
-> Who can work with the integration: a user with access permission to modify the CRM entity
+> Who can work with the integration: a user with access permission to modify the CRM object
 
 With additional parameters, you can set the Bitrix24 interface for your menu item in the timeline.
 
-To add the integration, use the method [placement.bind](../placement-bind.md). The basic integration capabilities are described in the article [Button Above the Timeline of the CRM Entity](./detail-activity.md).
+To add the integration, use the method [placement.bind](../placement-bind.md). The basic integration capabilities are described in the article [Button Above the Timeline of the CRM object](./detail-activity.md).
 
 [Download an example application using the integration.](https://helpdesk.bitrix24.com/examples/timeline_activity_placement_einvoice.zip)
 

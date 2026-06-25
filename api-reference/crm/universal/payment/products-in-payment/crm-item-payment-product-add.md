@@ -8,30 +8,32 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
-> Who can execute the method: access permission to modify the order to which the product item is being added is required.
+> Who can execute the method: access permission to modify the order to which the product item is being added is required
 
 This method adds a product item to the payment.
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../../_includes/required.md) %}
 
-#| 
+#|
 || **Name**
 `type` | **Description** ||
-|| **paymentId*** 
+|| **paymentId***
 [`sale_order_payment.id`](../../../../sale/data-types.md#sale_order_payment) | Identifier of the payment. 
-Can be obtained using the [`sale.payment.list`](../../../../sale/payment/sale-payment-list.md) method ||
-|| **rowId*** 
-[`integer`](../../../../data-types.md) | Identifier of the product item in the CRM object. 
-Can be obtained using [`crm.item.productrow.list`](../../../../crm/universal/product-rows/crm-item-productrow-list.md) ||
-|| **quantity*** 
-[`double`](../../../../data-types.md)| Quantity of the product ||
+Can be obtained using the method [`sale.payment.list`](../../../../sale/payment/sale-payment-list.md)
+ ||
+ || **rowId***
+[`integer`](../../../../data-types.md) | Product item identifier in the CRM object.
+Can be obtained using [`crm.item.productrow.list`](../../../../crm/universal/product-rows/crm-item-productrow-list.md)
+ ||
+ || **quantity***
+[`double`](../../../../data-types.md)| Product quantity ||
 |#
 
 ## Code Examples
 
-{% include [Note on Examples](../../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -155,6 +157,37 @@ Can be obtained using [`crm.item.productrow.list`](../../../../crm/universal/pro
     }
     ```
 
+- Python
+
+    Example
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.item.payment.product.add(
+            payment_id=1039,
+            row_id=17587,
+            quantity=2,
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected Error: {error}")
+    ```
+
 - BX24.js
 
     ```js
@@ -195,9 +228,9 @@ Can be obtained using [`crm.item.productrow.list`](../../../../crm/universal/pro
 
 {% endlist %}
 
-## Successful Response
+## Response on Success
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -207,15 +240,15 @@ HTTP Status: **200**
       "finish":1716276649.261574,
       "duration":0.9120709896087646,
       "processing":0.6422691345214844,
-      "date_start":"2024-05-21T10:30:48+02:00",
-      "date_finish":"2024-05-21T10:30:49+02:00"
+      "date_start":"2024-05-21T10:30:48+03:00",
+      "date_finish":"2024-05-21T10:30:49+03:00"
    }
 }
 ```
 
 ### Returned Data
 
-#| 
+#|
 || **Name**
 `type` | **Description** ||
 || **result**
@@ -226,7 +259,7 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -235,26 +268,26 @@ HTTP Status: **400**
 }
 ```
 
-{% include notitle [Error Handling](../../../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
-#| 
+#|
 || **Code** | **Description** ||
 || `0` | Payment not found ||
 || `0` | Access denied ||
 || `0` | Product item not found ||
 || `0` | Insufficient product quantity to add to payment ||
 || `0` | Product quantity cannot be less than or equal to 0 ||
-|| `100` | Required fields not provided ||
+|| `100` | Required fields are not provided ||
 || `0` | Other errors (e.g., fatal errors) ||
 |#
 
 ### Error Handling Features
 
-For business errors, the method may return `error: 0`. In this case, refer to `error_description` and match it against the list of errors above.
+For business errors, the method may return `error: 0`. In this case, refer to `error_description` and match it with the list of errors above.
 
-{% include notitle [System Errors](../../../../../_includes/system-errors.md) %}
+{% include notitle [System errors](../../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

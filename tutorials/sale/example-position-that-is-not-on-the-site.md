@@ -1,4 +1,4 @@
-# Create a Position with a Product That Does Not Exist on the Site (2 pcs at a price of 900 RUB)
+# Create a Position with a Product That Does Not Exist on the Site (2 pcs at a price of 900 USD)
 
 {% note tip "" %}
 
@@ -16,7 +16,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"orderId":5147,"productId":0,"name":"Trial Product","quantity":2,"basePrice":1000,"price":900,"discountPrice":100,"customPrice":"Y","canBuy":"Y","weight":40,"measureCode":"768","measureName":"pcs","sort":400,"xmlId":"BasketPositionId","dimensions":"a:3:{s:5:\"WIDTH\";i:244;s:6:\"HEIGHT\";i:100;s:6:\"LENGTH\";i:31;}","vatRate":10,"vatIncluded":"Y","productXmlId":"ProductKey","currency":"RUB"}}' \
+    -d '{"fields":{"orderId":5147,"productId":0,"name":"Trial Product","quantity":2,"basePrice":1000,"price":900,"discountPrice":100,"customPrice":"Y","canBuy":"Y","weight":40,"measureCode":"768","measureName":"pcs","sort":400,"xmlId":"BasketPositionId","dimensions":"a:3:{s:5:\"WIDTH\";i:244;s:6:\"HEIGHT\";i:100;s:6:\"LENGTH\";i:31;}","vatRate":10,"vatIncluded":"Y","productXmlId":"ProductKey","currency":"USD"}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/sale.basketitem.add
     ```
 
@@ -26,7 +26,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"orderId":5147,"productId":0,"name":"Trial Product","quantity":2,"basePrice":1000,"price":900,"discountPrice":100,"customPrice":"Y","canBuy":"Y","weight":40,"measureCode":"768","measureName":"pcs","sort":400,"xmlId":"BasketPositionId","dimensions":"a:3:{s:5:\"WIDTH\";i:244;s:6:\"HEIGHT\";i:100;s:6:\"LENGTH\";i:31;}","vatRate":10,"vatIncluded":"Y","productXmlId":"ProductKey","currency":"RUB"},"auth":"**put_access_token_here**"}' \
+    -d '{"fields":{"orderId":5147,"productId":0,"name":"Trial Product","quantity":2,"basePrice":1000,"price":900,"discountPrice":100,"customPrice":"Y","canBuy":"Y","weight":40,"measureCode":"768","measureName":"pcs","sort":400,"xmlId":"BasketPositionId","dimensions":"a:3:{s:5:\"WIDTH\";i:244;s:6:\"HEIGHT\";i:100;s:6:\"LENGTH\";i:31;}","vatRate":10,"vatIncluded":"Y","productXmlId":"ProductKey","currency":"USD"},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/sale.basketitem.add
     ```
 
@@ -55,7 +55,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
                 vatRate: 10,
                 vatIncluded: 'Y',
                 productXmlId: 'ProductKey',
-                currency: 'RUB',
+                currency: 'USD',
             }
         },
     )
@@ -106,7 +106,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
                 'vatRate' => 10,
                 'vatIncluded' => 'Y',
                 'productXmlId' => 'ProductKey',
-                'currency' => 'RUB',
+                'currency' => 'USD',
             ]
         ]
     );
@@ -150,7 +150,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
                 "vatRate": 10,
                 "vatIncluded": "Y",
                 "productXmlId": "ProductKey",
-                "currency": "RUB",
+                "currency": "USD",
             },
         ).response.result
         print(result)
@@ -168,7 +168,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
         "basketItem": {
             "basePrice": 1000,
             "canBuy": "Y",
-            "currency": "RUB",
+            "currency": "USD",
             "customPrice": "Y",
             "dateInsert": "2024-04-23T18:51:28+02:00",
             "dateUpdate": "2024-04-23T18:51:28+02:00",

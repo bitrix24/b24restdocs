@@ -1,4 +1,4 @@
-# Get Description of CRM Requisite Link Fields
+# Get Description of CRM Requisite Link Fields crm.requisite.link.fields
 
 {% note tip "" %}
 
@@ -10,13 +10,13 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: any user
 
-The method returns a formal description of the requisite link fields.
+The method `crm.requisite.link.fields` returns a formal description of the requisite link fields.
 
 No parameters.
 
 ## Code Examples
 
-{% include [Examples Note](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -176,11 +176,36 @@ No parameters.
     echo '</PRE>';
     ```
 
+- Python
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.requisite.link.fields().response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 {% endlist %}
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -192,7 +217,7 @@ HTTP Status: **200**
             "isImmutable": true,
             "isMultiple": false,
             "isDynamic": false,
-            "title": "Object Type ID"
+            "title": "Object type ID"
         },
         "ENTITY_ID": {
             "type": "integer",
@@ -210,7 +235,7 @@ HTTP Status: **200**
             "isImmutable": false,
             "isMultiple": false,
             "isDynamic": false,
-            "title": "Link to Requisites"
+            "title": "Link to details"
         },
         "BANK_DETAIL_ID": {
             "type": "integer",
@@ -219,7 +244,7 @@ HTTP Status: **200**
             "isImmutable": false,
             "isMultiple": false,
             "isDynamic": false,
-            "title": "Link to Bank Requisites"
+            "title": "Link to bank details"
         },
         "MC_REQUISITE_ID": {
             "type": "integer",
@@ -228,7 +253,7 @@ HTTP Status: **200**
             "isImmutable": false,
             "isMultiple": false,
             "isDynamic": false,
-            "title": "Link to My Company's Requisites"
+            "title": "Link to my company's details"
         },
         "MC_BANK_DETAIL_ID": {
             "type": "integer",
@@ -237,7 +262,7 @@ HTTP Status: **200**
             "isImmutable": false,
             "isMultiple": false,
             "isDynamic": false,
-            "title": "Link to My Company's Bank Requisites"
+            "title": "Link to my company's bank details"
         }
     },
     "time": {
@@ -325,7 +350,7 @@ Bank requisite identifiers can be obtained using the method [crm.requisite.bankd
 - false — no
 ||
 || **isMultiple**
-[`boolean`](../../../data-types.md) | "Multiple" attribute. Possible values:
+[`boolean`](../../../data-types.md) | "Immutable" attribute. Possible values:
 - true — yes
 - false — no
 ||
@@ -340,7 +365,7 @@ Bank requisite identifiers can be obtained using the method [crm.requisite.bankd
 
 ## Error Handling
 
-{% include [system errors](../../../../_includes/system-errors.md) %}
+{% include [System errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

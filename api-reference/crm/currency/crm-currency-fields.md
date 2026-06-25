@@ -16,7 +16,7 @@ No parameters.
 
 ## Code Examples
 
-{% include [Example Notes](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -145,6 +145,31 @@ No parameters.
     }
     ```
 
+- Python
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.currency.fields().response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - BX24.js
 
     ```js
@@ -189,7 +214,7 @@ No parameters.
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -210,7 +235,7 @@ HTTP Status: **200**
             "isImmutable": false,
             "isMultiple": false,
             "isDynamic": false,
-            "title": "Nominal"
+            "title": "Face value"
         },
         "AMOUNT": {
             "type": "double",
@@ -219,7 +244,7 @@ HTTP Status: **200**
             "isImmutable": false,
             "isMultiple": false,
             "isDynamic": false,
-            "title": "Exchange Rate"
+            "title": "Exchange rate"
         },
         "BASE": {
             "type": "char",
@@ -228,7 +253,7 @@ HTTP Status: **200**
             "isImmutable": false,
             "isMultiple": false,
             "isDynamic": false,
-            "title": "Base Currency"
+            "title": "Base currency"
         },
         "SORT": {
             "type": "int",
@@ -246,7 +271,7 @@ HTTP Status: **200**
             "isImmutable": false,
             "isMultiple": false,
             "isDynamic": false,
-            "title": "Date Updated"
+            "title": "Date modified"
         },
         "LID": {
             "type": "string",
@@ -255,7 +280,7 @@ HTTP Status: **200**
             "isImmutable": false,
             "isMultiple": false,
             "isDynamic": false,
-            "title": "Site"
+            "title": "Website"
         },
         "FORMAT_STRING": {
             "type": "string",
@@ -264,7 +289,7 @@ HTTP Status: **200**
             "isImmutable": false,
             "isMultiple": false,
             "isDynamic": false,
-            "title": "Format String for Currency Output"
+            "title": "Currency output format string"
         },
         "FULL_NAME": {
             "type": "string",
@@ -282,7 +307,7 @@ HTTP Status: **200**
             "isImmutable": false,
             "isMultiple": false,
             "isDynamic": false,
-            "title": "Decimal Point for Output"
+            "title": "Decimal point for output"
         },
         "THOUSANDS_SEP": {
             "type": "string",
@@ -291,7 +316,7 @@ HTTP Status: **200**
             "isImmutable": false,
             "isMultiple": false,
             "isDynamic": false,
-            "title": "Thousands Separator for Output"
+            "title": "Custom thousands separator for output"
         },
         "DECIMALS": {
             "type": "int",
@@ -300,7 +325,7 @@ HTTP Status: **200**
             "isImmutable": false,
             "isMultiple": false,
             "isDynamic": false,
-            "title": "Number of Decimal Places"
+            "title": "Number of decimal places"
         },
         "LANG": {
             "type": "currency_localization",
@@ -309,7 +334,7 @@ HTTP Status: **200**
             "isImmutable": false,
             "isMultiple": true,
             "isDynamic": false,
-            "title": "Language Binding"
+            "title": "Language binding"
         }
     },
     "time": {
@@ -337,7 +362,7 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -346,18 +371,18 @@ HTTP Status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
 || **Code** | **Description** | **Value** ||
-|| Empty string | Access denied. | Insufficient access rights ||
+|| Empty string | Access denied. | Insufficient access rights. ||
 |#
 
-{% include [system errors](../../../_includes/system-errors.md) %}
+{% include [System errors](../../../_includes/system-errors.md) %}
 
-## Continue Learning 
+## Continue Learning
 
 - [{#T}](./crm-currency-add.md)
 - [{#T}](./crm-currency-update.md)

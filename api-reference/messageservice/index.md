@@ -1,4 +1,4 @@
-# Message Providers: Overview of Methods
+# Message Providers: Methods Overview
 
 {% note tip "" %}
 
@@ -6,15 +6,15 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-Message providers are services for integration with Bitrix24. They allow sending messages to clients. Communication channels can include SMS and other systems that identify the recipient by phone number.
+Message providers are services for integration with Bitrix24. They allow you to send messages to customers. Communication channels can include SMS and other systems that identify the recipient by phone number.
 
-> Quick navigation: [all methods](#all-methods)
+> Quick navigation: [All Methods](#all-methods)
 
-## Connection of Providers with Other Objects
+## Connection with Other Objects
 
-**CRM**. A message can be sent from the CRM detail form.
+**CRM**. A message can be sent from a CRM card.
 
-**Workflows**. A message can be sent automatically from a workflow action or Automation rule in CRM. The provider is specified in the workflow settings only through the Bitrix24 interface.
+**Workflows**. A message can be sent automatically from a workflow action or a CRM automation rule. The provider is specified in the workflow configurations only via the Bitrix24 interface.
 
 {% note tip "User Documentation" %}
 
@@ -24,13 +24,13 @@ Message providers are services for integration with Bitrix24. They allow sending
 
 ## Message Delivery Status
 
-The unique message identifier `message_id` allows you to call the method [messageservice.message.status.update](./messageservice-message-status-update.md). This method sets the delivery status for a message sent via the provider.
+The message Unique ID `message_id` allows you to call the [messageservice.message.status.update](./messageservice-message-status-update.md) method. The method sets the delivery status for a message sent using a provider.
 
 ## Overview of Methods {#all-methods}
 
 > Scope: [`messageservice`](../scopes/permissions)
 >
-> Who can perform the method: administrator
+> Who can execute the method: administrator
 
 #|
 || **Method** | **Description** ||
@@ -43,4 +43,4 @@ The unique message identifier `message_id` allows you to call the method [messag
 
 ## Continue Learning
 
--  [{#T}](./tutorial.md)
+-  [{#T}](../../tutorials/messageservice/index.md)

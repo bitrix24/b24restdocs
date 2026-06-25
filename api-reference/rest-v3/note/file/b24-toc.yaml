@@ -1,0 +1,13 @@
+title: Files
+href: index.md
+items:
+  - name: Overview of Methods
+    href: index.md
+  - name: Upload File to Document
+    href: note-file-add.md
+  - name: Get Document File Data
+    href: note-file-get.md
+  - name: Get Document File Field
+    href: note-file-field-get.md
+  - name: Get Document File Fields List
+    href: note-file-field-list.md

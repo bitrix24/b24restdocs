@@ -18,7 +18,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 1. Create a funnel using the [crm.category.add](./crm-category-add.md) method.
 
-2. Link the funnel to the desired CRM entity in the [crm.item.add](../crm-item-add.md) or [crm.item.update](../crm-item-update.md) methods by passing the funnel's `id` as `categoryId`.
+2. Link the funnel to the desired CRM object in the [crm.item.add](../crm-item-add.md) or [crm.item.update](../crm-item-update.md) methods by passing the funnel's `id` as `categoryId`.
 
 3. To check the settings of a specific funnel, retrieve its data by `id` using the [crm.category.get](./crm-category-get.md) method.
 

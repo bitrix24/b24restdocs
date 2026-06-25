@@ -8,13 +8,13 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: `any user`
+> Who can execute the method: any user
 
-This method deletes a "Comment" type deal.
+Deletes a deal of the "Comment" type.
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -24,7 +24,7 @@ This method deletes a "Comment" type deal.
 || **ownerTypeId**
 [`integer`](../../data-types.md#object_type) | [Integer identifier of the CRM object type](../../data-types.md#object_type) to which the comment is linked (e.g., `2` for a deal) ||
 || **ownerId**
-[`integer`](../../../data-types.md) | Integer identifier of the CRM entity to which the comment is linked (e.g., `1`). A list of identifiers can be obtained using the [`crm.timeline.bindings.list`](../bindings/crm-timeline-bindings-list.md) method (field `ENTITY_ID`) ||
+[`integer`](../../../data-types.md) | Integer identifier of the CRM object to which the comment is linked (e.g., `1`). A list of identifiers can be obtained using the [`crm.timeline.bindings.list`](../bindings/crm-timeline-bindings-list.md) method (field `ENTITY_ID`) ||
 |#
 
 {% note warning %}
@@ -182,6 +182,37 @@ When specifying `ownerTypeId` and `ownerId`, if the comment is linked to multipl
     );
     ```
 
+- Python
+
+    Example
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.timeline.comment.delete(
+            bitrix_id=999,
+            owner_type_id=2,
+            owner_id=10,
+        )
+        result = bitrix_response.response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - PHP CRest
 
     ```php
@@ -205,7 +236,7 @@ When specifying `ownerTypeId` and `ownerId`, if the comment is linked to multipl
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -214,8 +245,8 @@ HTTP Status: **200**
         "start": 1715091541.642592,
         "finish": 1715091541.730599,
         "duration": 0.08800697326660156,
-        "date_start": "2024-05-03T17:19:01+02:00",
-        "date_finish": "2024-05-03T17:19:01+02:00",
+        "date_start": "2024-05-03T17:19:01+03:00",
+        "date_finish": "2024-05-03T17:19:01+03:00",
         "operating": 0
     }
 }
@@ -234,7 +265,7 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -243,7 +274,7 @@ HTTP Status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
@@ -252,11 +283,11 @@ HTTP Status: **400**
 || `ACCESS_DENIED` | Insufficient permissions ||
 || `NOT_FOUND` | Element not found ||
 || `MULTIPLE_BINDINGS` | Element has bindings to multiple entities ||
-|| `OWNER_NOT_FOUND` | Owner of the element not found ||
+|| `OWNER_NOT_FOUND` | Owner of the item not found ||
 || `100` | Required fields are not provided ||
 |#
 
-{% include [system errors](../../../../_includes/system-errors.md) %}
+{% include [System errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

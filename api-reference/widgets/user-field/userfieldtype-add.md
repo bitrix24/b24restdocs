@@ -6,9 +6,9 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-> Scope: [`depending on the placement`](../../scopes/permissions.md)
+> Scope: [depending on the placement](../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: administrator
 
 The method `userfieldtype.add` registers a new type of user fields. After registering the type, create a user field using the [userfieldconfig.add](../../crm/universal/userfieldconfig/userfieldconfig-add.md) method.
 
@@ -34,32 +34,32 @@ When opening a card with a user type field, an array `PLACEMENT_OPTIONS` contain
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on parameters](../../../_includes/required.md) %}
 
-#| 
-|| **Name** 
+#|
+|| **Name**
 `type` | **Description** | **Restrictions** ||
-|| **USER_TYPE_ID*** 
-[`string`](../../data-types.md) | String code of the type | 
+|| **USER_TYPE_ID***
+[`string`](../../data-types.md) | String type code | 
 - a-z0-9
 - must be unique
 - the final code is formed as `rest_<APP_ID>_<USER_TYPE_ID>` and cannot exceed 50 characters, so the length of `USER_TYPE_ID` must be no more than `50 - length("rest_<APP_ID>_")` ||
-|| **HANDLER*** 
-[`URL`](../../data-types.md) | Address of the user type handler | 
+|| **HANDLER***
+[`URL`](../../data-types.md) | Custom type handler address | 
 - in the same domain as the main application address
 - must be unique ||
-|| **TITLE** 
-[`string`](../../data-types.md) | Text title of the type. Will be displayed in the administrative interface for user field settings | ||
-|| **DESCRIPTION** 
-[`string`](../../data-types.md) | Text description of the type. Will be displayed in the administrative interface for user field settings | ||
-|| **OPTIONS** 
-[`array`](../../data-types.md) | Additional settings. Currently, one key is available: `height` — specifies the height of the user field in pixels. Any positive value will apply. 
-Default is `0`. If `0` is specified, the standard height for displaying this integration will be used | ||
+|| **TITLE**
+[`string`](../../data-types.md) | Textual type name. Will be displayed in the custom field settings administrative interface | ||
+|| **DESCRIPTION**
+[`string`](../../data-types.md) | Textual type description. Will be displayed in the custom field settings administrative interface | ||
+|| **OPTIONS**
+[`array`](../../data-types.md) | Additional settings. Currently, one key is available: `height` — specifies the custom field height in pixels. Any positive value will be applied.
+Default — `0`. If specified `0`, the standard height for displaying this widget will be used | ||
 |#
 
 ## Code Examples
 
-{% include [Note on Examples](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -250,7 +250,7 @@ Default is `0`. If `0` is specified, the standard height for displaying this int
         [
             'USER_TYPE_ID' => 'test_type',
             'HANDLER' => 'https://www.myapplication.com/handler/',
-            'TITLE' => 'Updated test type',
+            'TITLE' => 'Upd ated test type',
             'DESCRIPTION' => 'Test userfield type for documentation with updated description',
             'OPTIONS' => [
                 'height' => 60
@@ -267,7 +267,7 @@ Default is `0`. If `0` is specified, the standard height for displaying this int
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -285,18 +285,18 @@ HTTP Status: **200**
 
 ### Returned Data
 
-#| 
-|| **Name** 
+#|
+|| **Name**
 `type` | **Description** ||
-|| **result** 
+|| **result**
 [`boolean`](../../data-types.md) | Result of registering the new user field type ||
-|| **time** 
-[`time`](../../data-types.md) | Information about the execution time of the request ||
+|| **time**
+[`time`](../../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -305,18 +305,18 @@ HTTP Status: **400**
 }
 ```
 
-{% include notitle [Error Handling](../../../_includes/error-info.md) %} 
+{% include notitle [Error handling](../../../_includes/error-info.md) %} 
 
 ### Possible Error Codes
 
-#| 
-|| **Code** | **Error Message** | **Description** ||
+#|
+|| **Code** | **Error message** | **Description** ||
 || `ERROR_CORE` | Unable to set placement handler: Handler already binded | `HANDLER` is already occupied by another user field type of this application or `USER_TYPE_ID` is already used by another application ||
-|| `ERROR_ARGUMENT` | Argument 'USER_TYPE_ID' is null or empty | `USER_TYPE_ID` is not specified ||
-|| `ERROR_ARGUMENT` | Argument 'HANDLER' is null or empty | `HANDLER` is not specified ||
+|| `ERROR_ARGUMENT` | Argument 'USER_TYPE_ID' is null or empty | `USER_TYPE_ID` is not set ||
+|| `ERROR_ARGUMENT` | Argument 'HANDLER' is null or empty | `HANDLER` is not set ||
 |#
 
-{% include [System Errors](../../../_includes/system-errors.md) %}
+{% include [System errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

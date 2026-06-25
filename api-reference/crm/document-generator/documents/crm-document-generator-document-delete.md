@@ -8,13 +8,13 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: a user with "edit" access permission for document generator documents
+> Who can execute the method: a user with "edit" access permission for document generator documents.
 
 The method `crm.documentgenerator.document.delete` removes a document.
 
 ## Method Parameters
 
-{% include [Footnote on parameters](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -25,7 +25,7 @@ The method `crm.documentgenerator.document.delete` removes a document.
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 Example of deleting a document with `id = 61`.
 
@@ -147,6 +147,31 @@ Example of deleting a document with `id = 61`.
     }
     ```
 
+- Python
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.documentgenerator.document.delete(bitrix_id=61).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - BX24.js
 
     ```js
@@ -185,7 +210,7 @@ Example of deleting a document with `id = 61`.
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -195,8 +220,8 @@ HTTP Status: **200**
         "finish": 1774012673.417656,
         "duration": 2.4176559448242188,
         "processing": 2,
-        "date_start": "2026-03-20T16:17:51+01:00",
-        "date_finish": "2026-03-20T16:17:53+01:00",
+        "date_start": "2026-03-20T16:17:51+03:00",
+        "date_finish": "2026-03-20T16:17:53+03:00",
         "operating_reset_at": 1774013271,
         "operating": 1.5586001873016357
     }
@@ -216,7 +241,8 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
+
 
 ```json
 {
@@ -225,7 +251,7 @@ HTTP Status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
@@ -234,11 +260,11 @@ HTTP Status: **400**
 || `100` | Bitrix\\DocumentGenerator\\Document constructor must be is public | Required parameter `id` not provided ||
 || `0` | Document not found | Document with the specified `id` not found ||
 || `DOCGEN_ACCESS_ERROR` | Access denied | No access to the document ||
-|| `Empty value` | Document not found | Document does not belong to the `crm` module ||
-|| `Empty value` | Module documentgenerator is not installed | The `documentgenerator` module is unavailable ||
+|| Empty value | Document not found | Document does not belong to the `crm` module ||
+|| Empty value | Module documentgenerator is not installed | The `documentgenerator` module is not available ||
 |#
 
-{% include [system errors](../../../../_includes/system-errors.md) %}
+{% include [System errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

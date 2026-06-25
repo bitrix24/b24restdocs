@@ -16,7 +16,7 @@ No parameters.
 
 ## Code Examples
 
-{% include [Examples Note](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -176,11 +176,36 @@ No parameters.
     echo '</PRE>';
     ```
 
+- Python
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.requisite.bankdetail.fields().response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 {% endlist %}
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -291,7 +316,7 @@ HTTP Status: **200**
             "isImmutable": false,
             "isMultiple": false,
             "isDynamic": false,
-            "title": "Sorting"
+            "title": "Sort Order"
         },
         "RQ_BANK_NAME": {
             "type": "string",
@@ -345,7 +370,7 @@ HTTP Status: **200**
             "isImmutable": false,
             "isMultiple": false,
             "isDynamic": false,
-            "title": "BIK"
+            "title": "Routing Number"
         },
         "RQ_MFO": {
             "type": "string",
@@ -417,7 +442,7 @@ HTTP Status: **200**
             "isImmutable": false,
             "isMultiple": false,
             "isDynamic": false,
-            "title": "IBAN"
+            "title": "RQ_IBAN"
         },
         "RQ_SWIFT": {
             "type": "string",
@@ -428,14 +453,14 @@ HTTP Status: **200**
             "isDynamic": false,
             "title": "SWIFT"
         },
-        "RQ_BIC": {
+        "RQ_BIK": {
             "type": "string",
             "isRequired": false,
             "isReadOnly": false,
             "isImmutable": false,
             "isMultiple": false,
             "isDynamic": false,
-            "title": "RQ_BIC"
+            "title": "RQ_BIK"
         },
         "RQ_CODEB": {
             "type": "string",
@@ -512,27 +537,28 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **ID**
-[`integer`](../../../data-types.md) | Identifier of the bank detail. Created automatically and unique within the account ||
+[`integer`](../../../data-types.md) | Identifier of the bank details. Automatically created and unique within the account ||
 || **ENTITY_ID**
-[`integer`](../../../data-types.md) | Identifier of the parent object. Currently, it can only be the identifier of the detail. 
+[`integer`](../../../data-types.md) | Identifier of the parent object. Currently can only be the identifier of the requisite. 
 
-Identifiers of details can be obtained using the method [`crm.requisite.list`](../universal/crm-requisite-list.md) ||
+Identifiers of requisites can be obtained using the method [`crm.requisite.list`](../universal/crm-requisite-list.md) ||
 || **COUNTRY_ID**
-[`integer`](../../../data-types.md) | Identifier of the country corresponding to the set of bank detail fields (see the method [crm.requisite.preset.countries](../presets/crm-requisite-preset-countries.md) for available values).
+[`integer`](../../../data-types.md) | Identifier of the country corresponding to the set of bank details fields (see method [crm.requisite.preset.countries](../presets/crm-requisite-preset-countries.md) for available values).
 
-The country code of the bank detail matches the country code in the linked detail template, the identifier of which is specified in the `ENTITY_ID` field ||
+The country code of the bank details matches the country code in the linked requisite template, the identifier of which is specified in the `ENTITY_ID` field 
+||
 || **DATE_CREATE**
-[`datetime`](../../../data-types.md) | Creation date ||
+[`datetime`](../../../data-types.md) | Create date ||
 || **DATE_MODIFY**
 [`datetime`](../../../data-types.md) | Modification date ||
 || **CREATED_BY_ID**
-[`user`](../../../data-types.md) | Identifier of the user who created the detail ||
+[`user`](../../../data-types.md) | Identifier of the user who created the requisite ||
 || **MODIFY_BY_ID**
-[`user`](../../../data-types.md) | Identifier of the user who modified the detail ||
+[`user`](../../../data-types.md) | Identifier of the user who modified the requisite ||
 || **NAME**
-[`string`](../../../data-types.md) | Name of the bank detail ||
+[`string`](../../../data-types.md) | Name of the bank details ||
 || **CODE**
-[`string`](../../../data-types.md) | Symbolic code of the detail ||
+[`string`](../../../data-types.md) | Symbolic code of the requisite ||
 || **XML_ID**
 [`string`](../../../data-types.md) | External key. Used for exchange operations. Identifier of the object in the external information base. 
 
@@ -540,7 +566,7 @@ The purpose of the field may change by the final developer. Each application ens
 
 It is recommended to use a unique prefix to avoid collisions with other applications ||
 || **ACTIVE**
-[`char`](../../../data-types.md) | Activity status. Values `Y` or `N` are used. 
+[`char`](../../../data-types.md) | Activity indicator. Uses values `Y` or `N`. 
 
 Currently, the field does not actually affect anything ||
 || **SORT**
@@ -574,15 +600,15 @@ Currently, the field does not actually affect anything ||
 || **RQ_IIK**
 [`string`](../../../data-types.md) | IIK ||
 || **RQ_ACC_CURRENCY**
-[`string`](../../../data-types.md) | Account Currency ||
+[`string`](../../../data-types.md) | Currency of the account ||
 || **RQ_COR_ACC_NUM**
-[`string`](../../../data-types.md) | Correspondent Account ||
+[`string`](../../../data-types.md) | Correspondent account ||
 || **RQ_IBAN**
 [`string`](../../../data-types.md) | IBAN ||
 || **RQ_SWIFT**
 [`string`](../../../data-types.md) | SWIFT ||
-|| **RQ_BIC**
-[`string`](../../../data-types.md) | BIC ||
+|| **RQ_BIK**
+[`string`](../../../data-types.md) | BIK ||
 || **COMMENTS**
 [`string`](../../../data-types.md) | Comment ||
 || **ORIGINATOR_ID**
@@ -597,27 +623,27 @@ Currently, the field does not actually affect anything ||
 || **type**
 [`string`](../../../data-types.md) | Field type ||
 || **isRequired**
-[`boolean`](../../../data-types.md) | Required attribute. Possible values:
+[`boolean`](../../../data-types.md) | "Required" attribute. Possible values:
 - true — yes
 - false — no
 ||
 || **isReadOnly**
-[`boolean`](../../../data-types.md) | Read-only attribute. Possible values:
+[`boolean`](../../../data-types.md) | "Read-only" attribute. Possible values:
 - true — yes
 - false — no 
 ||
 || **isImmutable**
-[`boolean`](../../../data-types.md) | Immutable attribute. Possible values:
+[`boolean`](../../../data-types.md) | "Immutable" attribute. Possible values:
 - true — yes
 - false — no 
 ||
 || **isMultiple**
-[`boolean`](../../../data-types.md) | Multi-field attribute. Possible values:
+[`boolean`](../../../data-types.md) | "Multiple" attribute. Possible values:
 - true — yes
 - false — no
 ||
 || **isDynamic**
-[`boolean`](../../../data-types.md) | Custom attribute. Possible values:
+[`boolean`](../../../data-types.md) | "Custom" attribute. Possible values:
 - true — yes
 - false — no
 ||
@@ -627,7 +653,7 @@ Currently, the field does not actually affect anything ||
 
 ## Error Handling
 
-{% include [system errors](../../../../_includes/system-errors.md) %}
+{% include [System errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

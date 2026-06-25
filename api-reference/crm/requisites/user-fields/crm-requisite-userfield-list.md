@@ -1,4 +1,4 @@
-# Get a list of custom fields of the requisite by filter crm.requisite.userfield.list
+# Get a List of Custom Fields of the Requisite by Filter crm.requisite.userfield.list
 
 {% note tip "" %}
 
@@ -10,11 +10,11 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: any user
 
-The method returns a list of custom fields of the requisite based on the filter.
+Retrieves a list of custom fields for the specified entity based on the filter.
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -58,7 +58,7 @@ Possible values for `value` correspond to [field descriptions](#fields-descripti
 ||
 |#
 
-### Description of custom field of requisite {#fields-description}
+### Description of Custom Field of Requisite {#fields-description}
 
 #|
 || **Name**
@@ -66,11 +66,11 @@ Possible values for `value` correspond to [field descriptions](#fields-descripti
 || **ID**
 [`int`](../../../data-types.md) | Identifier of the custom field ||
 || **ENTITY_ID**
-[`string`](../../../data-types.md) | Identifier of the entity to which the custom field belongs. For requisites, this is always `CRM_REQUISITE` ||
+[`string`](../../../data-types.md) | The identifier of the entity to which the custom field belongs. For requisites, this is always `CRM_REQUISITE` ||
 || **FIELD_NAME^*^**
 [`string`](../../../data-types.md) | Symbolic code. For requisites, it always starts with the prefix `UF_CRM_` ||
 || **USER_TYPE_ID^*^**
-[`string`](../../../data-types.md) | Data type ([`string`](../../universal/user-defined-fields/crm-userfield-types.md), [`boolean`](../../universal/user-defined-fields/crm-userfield-types.md), [`double`](../../universal/user-defined-fields/crm-userfield-types.md) or [`datetime`](../../universal/user-defined-fields/crm-userfield-types.md)) ||
+[`string`](../../../data-types.md) | Data type ([`string`](../../universal/user-defined-fields/crm-userfield-types.md), [`boolean`](../../universal/user-defined-fields/crm-userfield-types.md), [`double`](../../universal/user-defined-fields/crm-userfield-types.md), or [`datetime`](../../universal/user-defined-fields/crm-userfield-types.md)) ||
 || **XML_ID**
 [`string`](../../../data-types.md) | External key. Used for exchange operations. Identifier of the object in the external information base. 
 
@@ -78,12 +78,12 @@ The purpose of the field may change by the final developer ||
 || **SORT**
 [`int`](../../../data-types.md) | Sorting ||
 || **MULTIPLE**
-[`char`](../../../data-types.md) | Multiplicity indicator. Possible values:
+[`char`](../../../data-types.md) | Indicator of multiplicity. Possible values:
 - `Y` — yes
 - `N` — no 
 ||
 || **MANDATORY**
-[`char`](../../../data-types.md) | Mandatory indicator. Possible values:
+[`char`](../../../data-types.md) | Indicator of mandatory status. Possible values:
 - `Y` — yes
 - `N` — no 
 ||
@@ -95,17 +95,17 @@ The purpose of the field may change by the final developer ||
 - `S` — substring 
 ||
 || **SHOW_IN_LIST**
-[`char`](../../../data-types.md) | Show in the list. Possible values:
+[`char`](../../../data-types.md) | Whether to show in the list. Possible values:
 - `Y` — yes
 - `N` — no 
 ||
 || **EDIT_IN_LIST**
-[`char`](../../../data-types.md) | Allow user editing. Possible values:
+[`char`](../../../data-types.md) | Allow user editing? Possible values:
 - `Y` — yes
 - `N` — no 
 ||
 || **IS_SEARCHABLE**
-[`char`](../../../data-types.md) | Are field values included in search. Possible values:
+[`char`](../../../data-types.md) | Whether the field values participate in search. Possible values:
 - `Y` — yes
 - `N` — no 
 ||
@@ -122,7 +122,7 @@ The purpose of the field may change by the final developer ||
 || **LIST**
 [`uf_enum_element`](../../../data-types.md) | List elements. For detailed information, see the section [{#T}](../../universal/user-defined-fields/crm-userfield-enumeration-fields.md) ||
 || **SETTINGS**
-[`object`](../../../data-types.md) | Additional settings (depend on type). For detailed information, see the section [{#T}](../../universal/user-defined-fields/crm-userfield-settings-fields.md) ||
+[`object`](../../../data-types.md) | Additional settings (dependent on type). For detailed information, see the section [{#T}](../../universal/user-defined-fields/crm-userfield-settings-fields.md) ||
 |#
 
 ## Code Examples
@@ -137,7 +137,7 @@ The purpose of the field may change by the final developer ||
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"order":{"SORT":"ASC"},"filter":{"MANDATORY":"N","LANG":"en"}}' \
+    -d '{"order":{"SORT":"ASC"},"filter":{"MANDATORY":"N","LANG":"de"}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.requisite.userfield.list
     ```
 
@@ -147,7 +147,7 @@ The purpose of the field may change by the final developer ||
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"order":{"SORT":"ASC"},"filter":{"MANDATORY":"N","LANG":"en"},"auth":"**put_access_token_here**"}' \
+    -d '{"order":{"SORT":"ASC"},"filter":{"MANDATORY":"N","LANG":"de"},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/crm.requisite.userfield.list
     ```
 
@@ -193,7 +193,7 @@ The purpose of the field may change by the final developer ||
         method: 'crm.requisite.userfield.list',
         params: {
           order: { SORT: 'ASC' },
-          filter: { MANDATORY: 'N', LANG: 'ru' },
+          filter: { MANDATORY: 'N', LANG: 'de' },
           start: 0,
         },
         requestId: Text.getUuidRfc4122()
@@ -232,7 +232,7 @@ The purpose of the field may change by the final developer ||
             method: 'crm.requisite.userfield.list',
             params: {
               order: { SORT: 'ASC' },
-              filter: { MANDATORY: 'N', LANG: 'ru' },
+              filter: { MANDATORY: 'N', LANG: 'de' },
               start: 0,
             },
             requestId: B24Js.Text.getUuidRfc4122()
@@ -266,7 +266,7 @@ The purpose of the field may change by the final developer ||
                 'crm.requisite.userfield.list',
                 [
                     'order' => ['SORT' => 'ASC'],
-                    'filter' => ['MANDATORY' => 'N', 'LANG' => 'en']
+                    'filter' => ['MANDATORY' => 'N', 'LANG' => 'de']
                 ]
             );
     
@@ -286,6 +286,109 @@ The purpose of the field may change by the final developer ||
     }
     ```
 
+- Python
+
+    Example
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.requisite.userfield.list(
+            order={
+                "SORT": "ASC",
+            },
+            filter={
+                "MANDATORY": "N",
+                "LANG": "de",
+            },
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
+    Example `as_list`
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.requisite.userfield.list(
+            order={
+                "SORT": "ASC",
+            },
+            filter={
+                "MANDATORY": "N",
+                "LANG": "de",
+            },
+        ).as_list().response
+        result = bitrix_response.result
+        for item in result:
+            print(item)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
+    Example `as_list_fast`
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.requisite.userfield.list(
+            order={
+                "SORT": "ASC",
+            },
+            filter={
+                "MANDATORY": "N",
+                "LANG": "de",
+            },
+        ).as_list_fast(descending=True).response
+        result = bitrix_response.result
+        for item in result:
+            print(item)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - BX24.js
 
     ```js
@@ -293,7 +396,7 @@ The purpose of the field may change by the final developer ||
         "crm.requisite.userfield.list",
         {
             order: { "SORT": "ASC" },
-            filter: { "MANDATORY": "N", "LANG": "en" }
+            filter: { "MANDATORY": "N", "LANG": "de" }
         },
         function(result)
         {
@@ -318,7 +421,7 @@ The purpose of the field may change by the final developer ||
         'crm.requisite.userfield.list',
         [
             'order' => ['SORT' => 'ASC'],
-            'filter' => ['MANDATORY' => 'N', 'LANG': 'en']
+            'filter' => ['MANDATORY' => 'N', 'LANG' => 'de']
         ]
     );
 
@@ -466,9 +569,9 @@ HTTP status: **200**
 || **result**
 [`array`](../../../data-types.md)| Array of objects with information from the selected custom fields. Each element contains the selected [fields describing the custom field of the requisite](#fields-description) ||
 || **total**
-[`integer`](../../../data-types.md) | Total number of records found ||
+[`integer`](../../../data-types.md) | The total number of records found ||
 || **time**
-[`time`](../../../data-types.md) | Information about the execution time of the request ||
+[`time`](../../../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -482,16 +585,16 @@ HTTP status: **40x**, **50x**
 }
 ```
 
-{% include notitle [error handling](../../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Errors
 
-#|  
-|| **Error Text** | **Description** ||
+#|
+|| **Error text** | **Description** ||
 || `Access denied` | Insufficient access permissions to retrieve the list of custom fields of the requisite ||
 |#
 
-{% include [system errors](../../../../_includes/system-errors.md) %}
+{% include [System errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
@@ -499,4 +602,3 @@ HTTP status: **40x**, **50x**
 - [{#T}](./crm-requisite-userfield-update.md)
 - [{#T}](./crm-requisite-userfield-get.md)
 - [{#T}](./crm-requisite-userfield-delete.md)
-

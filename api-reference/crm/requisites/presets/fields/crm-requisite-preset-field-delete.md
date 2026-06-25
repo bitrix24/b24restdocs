@@ -10,11 +10,11 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: any user
 
-This method deletes a custom field from the requisite template.
+Deletes a custom field from a company details template.
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -162,16 +162,48 @@ Template identifiers can be obtained using the [crm.requisite.preset.list](../cr
     }
     ```
 
+- Python
+
+    Example
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.requisite.preset.field.delete(
+            bitrix_id=27,
+            preset={
+                "ID": 1,
+            },
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - BX24.js
 
     ```js
     BX24.callMethod(
         "crm.requisite.preset.field.delete",
         {
-            ID: 27,        // Identifier of the custom field to be deleted from the template
+            ID: 27,        // Custom field ID to be removed from the template
             preset:
             {
-                "ID": 1    // Identifier of the requisite template
+                "ID": 1    // Billing template ID
             }
         },
         function(result)
@@ -234,7 +266,7 @@ HTTP status: **200**
 - `false` — not deleted 
 ||
 || **time**
-[`time`](../../../../data-types.md) | Information about the execution time of the request ||
+[`time`](../../../../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -248,19 +280,19 @@ HTTP status: **40x**, **50x**
 }
 ```
 
-{% include notitle [error handling](../../../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
-#|  
+#|
 || **Code** | **Description** ||
 || `The PresetField with ID '27' is not found` | The field with the specified identifier was not found. ||
-|| `The Preset with ID '1' is not found` | The template with the specified identifier was not found. ||
+|| `The Preset with ID '1' is not found` | Template with the specified identifier not found ||
 || `ID is not defined or invalid` | The template identifier is not specified or has an invalid value. ||
 || `Access denied` | Insufficient access permissions to delete the field from the requisite template. ||
 |#
 
-{% include [system errors](../../../../../_includes/system-errors.md) %}
+{% include [System errors](../../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

@@ -273,7 +273,7 @@ Default value is `N`, the field is displayed in the form as `hidden` ||
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"NAME":"Handler.Rest FORM","CODE":"resthandlerform","SORT":100,"SETTINGS":{"CURRENCY":["RUB"],"CLIENT_TYPE":"b2c","FORM_DATA":{"ACTION_URI":"http://example.com/payment_form.php","METHOD":"POST","FIELDS":{"phone":{"VISIBLE":"Y","CODE":{"NAME":"Phone Number","TYPE":"STRING"}},"selection":{"VISIBLE":"Y","CODE":{"NAME":"Illusion of Choice","INPUT":{"TYPE":"Y/N"}}},"paymentId":{"CODE":"PAYMENT_ID","VISIBLE":"Y"},"serviceid":{"CODE":"REST_SERVICE_ID"}}},"CODES":{"REST_SERVICE_ID":{"NAME":"Store Number","DESCRIPTION":"Store Number","SORT":"100"},"REST_SERVICE_KEY":{"NAME":"Secret Key","DESCRIPTION":"Secret Key","SORT":"300"},"PAYMENT_ID":{"NAME":"Payment Number","SORT":"400","GROUP":"PAYMENT","DEFAULT":{"PROVIDER_KEY":"PAYMENT","PROVIDER_VALUE":"ACCOUNT_NUMBER"}},"PAYMENT_SHOULD_PAY":{"NAME":"Payment Amount","SORT":"600","GROUP":"PAYMENT","DEFAULT":{"PROVIDER_KEY":"PAYMENT","PROVIDER_VALUE":"SUM"}},"PS_CHANGE_STATUS_PAY":{"NAME":"Automatic Payment Status Change","SORT":"700","INPUT":{"TYPE":"Y/N"}},"PAYMENT_BUYER_ID":{"NAME":"Buyer Code","SORT":"1000","GROUP":"PAYMENT","DEFAULT":{"PROVIDER_KEY":"ORDER","PROVIDER_VALUE":"USER_ID"}},"PS_WORK_MODE":{"NAME":"Payment System Operating Mode","SORT":"1100","INPUT":{"TYPE":"ENUM","OPTIONS":{"TEST":"Test","REGULAR":"Live"}}}}}' \
+    -d '{"NAME":"Handler.Rest FORM","CODE":"resthandlerform","SORT":100,"SETTINGS":{"CURRENCY":["USD"],"CLIENT_TYPE":"b2c","FORM_DATA":{"ACTION_URI":"http://example.com/payment_form.php","METHOD":"POST","FIELDS":{"phone":{"VISIBLE":"Y","CODE":{"NAME":"Phone Number","TYPE":"STRING"}},"selection":{"VISIBLE":"Y","CODE":{"NAME":"Illusion of Choice","INPUT":{"TYPE":"Y/N"}}},"paymentId":{"CODE":"PAYMENT_ID","VISIBLE":"Y"},"serviceid":{"CODE":"REST_SERVICE_ID"}}},"CODES":{"REST_SERVICE_ID":{"NAME":"Store Number","DESCRIPTION":"Store Number","SORT":"100"},"REST_SERVICE_KEY":{"NAME":"Secret Key","DESCRIPTION":"Secret Key","SORT":"300"},"PAYMENT_ID":{"NAME":"Payment Number","SORT":"400","GROUP":"PAYMENT","DEFAULT":{"PROVIDER_KEY":"PAYMENT","PROVIDER_VALUE":"ACCOUNT_NUMBER"}},"PAYMENT_SHOULD_PAY":{"NAME":"Payment Amount","SORT":"600","GROUP":"PAYMENT","DEFAULT":{"PROVIDER_KEY":"PAYMENT","PROVIDER_VALUE":"SUM"}},"PS_CHANGE_STATUS_PAY":{"NAME":"Automatic Payment Status Change","SORT":"700","INPUT":{"TYPE":"Y/N"}},"PAYMENT_BUYER_ID":{"NAME":"Buyer Code","SORT":"1000","GROUP":"PAYMENT","DEFAULT":{"PROVIDER_KEY":"ORDER","PROVIDER_VALUE":"USER_ID"}},"PS_WORK_MODE":{"NAME":"Payment System Operating Mode","SORT":"1100","INPUT":{"TYPE":"ENUM","OPTIONS":{"TEST":"Test","REGULAR":"Live"}}}}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/sale.paysystem.handler.add
     ```
 
@@ -283,7 +283,7 @@ Default value is `N`, the field is displayed in the form as `hidden` ||
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"NAME":"Handler.Rest FORM","CODE":"resthandlerform","SORT":100,"SETTINGS":{"CURRENCY":["RUB"],"CLIENT_TYPE":"b2c","FORM_DATA":{"ACTION_URI":"http://example.com/payment_form.php","METHOD":"POST","FIELDS":{"phone":{"VISIBLE":"Y","CODE":{"NAME":"Phone Number","TYPE":"STRING"}},"selection":{"VISIBLE":"Y","CODE":{"NAME":"Illusion of Choice","INPUT":{"TYPE":"Y/N"}}},"paymentId":{"CODE":"PAYMENT_ID","VISIBLE":"Y"},"serviceid":{"CODE":"REST_SERVICE_ID"}}},"CODES":{"REST_SERVICE_ID":{"NAME":"Store Number","DESCRIPTION":"Store Number","SORT":"100"},"REST_SERVICE_KEY":{"NAME":"Secret Key","DESCRIPTION":"Secret Key","SORT":"300"},"PAYMENT_ID":{"NAME":"Payment Number","SORT":"400","GROUP":"PAYMENT","DEFAULT":{"PROVIDER_KEY":"PAYMENT","PROVIDER_VALUE":"ACCOUNT_NUMBER"}},"PAYMENT_SHOULD_PAY":{"NAME":"Payment Amount","SORT":"600","GROUP":"PAYMENT","DEFAULT":{"PROVIDER_KEY":"PAYMENT","PROVIDER_VALUE":"SUM"}},"PS_CHANGE_STATUS_PAY":{"NAME":"Automatic Payment Status Change","SORT":"700","INPUT":{"TYPE":"Y/N"}},"PAYMENT_BUYER_ID":{"NAME":"Buyer Code","SORT":"1000","GROUP":"PAYMENT","DEFAULT":{"PROVIDER_KEY":"ORDER","PROVIDER_VALUE":"USER_ID"}},"PS_WORK_MODE":{"NAME":"Payment System Operating Mode","SORT":"1100","INPUT":{"TYPE":"ENUM","OPTIONS":{"TEST":"Test","REGULAR":"Live"}}}},"auth":"**put_access_token_here**"}' \
+    -d '{"NAME":"Handler.Rest FORM","CODE":"resthandlerform","SORT":100,"SETTINGS":{"CURRENCY":["USD"],"CLIENT_TYPE":"b2c","FORM_DATA":{"ACTION_URI":"http://example.com/payment_form.php","METHOD":"POST","FIELDS":{"phone":{"VISIBLE":"Y","CODE":{"NAME":"Phone Number","TYPE":"STRING"}},"selection":{"VISIBLE":"Y","CODE":{"NAME":"Illusion of Choice","INPUT":{"TYPE":"Y/N"}}},"paymentId":{"CODE":"PAYMENT_ID","VISIBLE":"Y"},"serviceid":{"CODE":"REST_SERVICE_ID"}}},"CODES":{"REST_SERVICE_ID":{"NAME":"Store Number","DESCRIPTION":"Store Number","SORT":"100"},"REST_SERVICE_KEY":{"NAME":"Secret Key","DESCRIPTION":"Secret Key","SORT":"300"},"PAYMENT_ID":{"NAME":"Payment Number","SORT":"400","GROUP":"PAYMENT","DEFAULT":{"PROVIDER_KEY":"PAYMENT","PROVIDER_VALUE":"ACCOUNT_NUMBER"}},"PAYMENT_SHOULD_PAY":{"NAME":"Payment Amount","SORT":"600","GROUP":"PAYMENT","DEFAULT":{"PROVIDER_KEY":"PAYMENT","PROVIDER_VALUE":"SUM"}},"PS_CHANGE_STATUS_PAY":{"NAME":"Automatic Payment Status Change","SORT":"700","INPUT":{"TYPE":"Y/N"}},"PAYMENT_BUYER_ID":{"NAME":"Buyer Code","SORT":"1000","GROUP":"PAYMENT","DEFAULT":{"PROVIDER_KEY":"ORDER","PROVIDER_VALUE":"USER_ID"}},"PS_WORK_MODE":{"NAME":"Payment System Operating Mode","SORT":"1100","INPUT":{"TYPE":"ENUM","OPTIONS":{"TEST":"Test","REGULAR":"Live"}}}},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/sale.paysystem.handler.add
     ```
 
@@ -305,7 +305,7 @@ Default value is `N`, the field is displayed in the form as `hidden` ||
           CODE: 'resthandlerform',
           SORT: 100,
           SETTINGS: {
-            CURRENCY: ['RUB'],
+            CURRENCY: ['USD'],
             CLIENT_TYPE: 'b2c',
             FORM_DATA: {
               ACTION_URI: 'http://example.com/payment_form.php',
@@ -429,7 +429,7 @@ Default value is `N`, the field is displayed in the form as `hidden` ||
               CODE: 'resthandlerform',
               SORT: 100,
               SETTINGS: {
-                CURRENCY: ['RUB'],
+                CURRENCY: ['USD'],
                 CLIENT_TYPE: 'b2c',
                 FORM_DATA: {
                   ACTION_URI: 'http://example.com/payment_form.php',
@@ -553,7 +553,7 @@ Default value is `N`, the field is displayed in the form as `hidden` ||
                     'CODE'     => 'resthandlerform',
                     'SORT'     => 100,
                     'SETTINGS' => [
-                        'CURRENCY'    => ['RUB'],
+                        'CURRENCY'    => ['USD'],
                         'CLIENT_TYPE' => 'b2c',
                         'FORM_DATA'   => [
                             'ACTION_URI' => 'http://example.com/payment_form.php',
@@ -668,7 +668,7 @@ Default value is `N`, the field is displayed in the form as `hidden` ||
             "SORT": 100,
             "SETTINGS": {
                 "CURRENCY": [
-                    "RUB"
+                    "USD"
                 ],
                 "CLIENT_TYPE": "b2c",
                 "FORM_DATA": {
@@ -785,7 +785,7 @@ Default value is `N`, the field is displayed in the form as `hidden` ||
             'CODE' => 'resthandlerform',
             'SORT' => 100,
             'SETTINGS' => [
-                'CURRENCY' => ['RUB'],
+                'CURRENCY' => ['USD'],
                 'CLIENT_TYPE' => 'b2c',
                 'FORM_DATA' => [
                     'ACTION_URI' => 'http://example.com/payment_form.php',
@@ -960,7 +960,7 @@ If nothing is returned, the default error `Error registering order in payment sy
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"NAME":"Handler.Rest CHECKOUT","CODE":"resthandlercheckout","SORT":100,"SETTINGS":{"CURRENCY":["RUB"],"CLIENT_TYPE":"b2c","CHECKOUT_DATA":{"ACTION_URI":"http://example.com/payment_checkout.php","FIELDS":{"serviceKey":{"CODE":"REST_SERVICE_KEY_CHECKOUT"},"serviceid":{"CODE":"REST_SERVICE_ID_CHECKOUT"}}},"CODES":{"REST_SERVICE_ID_CHECKOUT":{"NAME":"Store Number","DESCRIPTION":"Store Number","SORT":"100"},"REST_SERVICE_KEY_CHECKOUT":{"NAME":"Secret Key","DESCRIPTION":"Secret Key","SORT":"300"},"PS_WORK_MODE_CHECKOUT":{"NAME":"Payment System Operating Mode","SORT":"1100","INPUT":{"TYPE":"ENUM","OPTIONS":{"TEST":"Test","REGULAR":"Live"}}}}}' \
+    -d '{"NAME":"Handler.Rest CHECKOUT","CODE":"resthandlercheckout","SORT":100,"SETTINGS":{"CURRENCY":["USD"],"CLIENT_TYPE":"b2c","CHECKOUT_DATA":{"ACTION_URI":"http://example.com/payment_checkout.php","FIELDS":{"serviceKey":{"CODE":"REST_SERVICE_KEY_CHECKOUT"},"serviceid":{"CODE":"REST_SERVICE_ID_CHECKOUT"}}},"CODES":{"REST_SERVICE_ID_CHECKOUT":{"NAME":"Store Number","DESCRIPTION":"Store Number","SORT":"100"},"REST_SERVICE_KEY_CHECKOUT":{"NAME":"Secret Key","DESCRIPTION":"Secret Key","SORT":"300"},"PS_WORK_MODE_CHECKOUT":{"NAME":"Payment System Operating Mode","SORT":"1100","INPUT":{"TYPE":"ENUM","OPTIONS":{"TEST":"Test","REGULAR":"Live"}}}}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/sale.paysystem.handler.add
     ```
 
@@ -970,7 +970,7 @@ If nothing is returned, the default error `Error registering order in payment sy
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"NAME":"Handler.Rest CHECKOUT","CODE":"resthandlercheckout","SORT":100,"SETTINGS":{"CURRENCY":["RUB"],"CLIENT_TYPE":"b2c","CHECKOUT_DATA":{"ACTION_URI":"http://example.com/payment_checkout.php","FIELDS":{"serviceKey":{"CODE":"REST_SERVICE_KEY_CHECKOUT"},"serviceid":{"CODE":"REST_SERVICE_ID_CHECKOUT"}}},"CODES":{"REST_SERVICE_ID_CHECKOUT":{"NAME":"Store Number","DESCRIPTION":"Store Number","SORT":"100"},"REST_SERVICE_KEY_CHECKOUT":{"NAME":"Secret Key","DESCRIPTION":"Secret Key","SORT":"300"},"PS_WORK_MODE_CHECKOUT":{"NAME":"Payment System Operating Mode","SORT":"1100","INPUT":{"TYPE":"ENUM","OPTIONS":{"TEST":"Test","REGULAR":"Live"}}}},"auth":"**put_access_token_here**"}' \
+    -d '{"NAME":"Handler.Rest CHECKOUT","CODE":"resthandlercheckout","SORT":100,"SETTINGS":{"CURRENCY":["USD"],"CLIENT_TYPE":"b2c","CHECKOUT_DATA":{"ACTION_URI":"http://example.com/payment_checkout.php","FIELDS":{"serviceKey":{"CODE":"REST_SERVICE_KEY_CHECKOUT"},"serviceid":{"CODE":"REST_SERVICE_ID_CHECKOUT"}}},"CODES":{"REST_SERVICE_ID_CHECKOUT":{"NAME":"Store Number","DESCRIPTION":"Store Number","SORT":"100"},"REST_SERVICE_KEY_CHECKOUT":{"NAME":"Secret Key","DESCRIPTION":"Secret Key","SORT":"300"},"PS_WORK_MODE_CHECKOUT":{"NAME":"Payment System Operating Mode","SORT":"1100","INPUT":{"TYPE":"ENUM","OPTIONS":{"TEST":"Test","REGULAR":"Live"}}}},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/sale.paysystem.handler.add
     ```
 
@@ -992,7 +992,7 @@ If nothing is returned, the default error `Error registering order in payment sy
           CODE: 'resthandlercheckout',
           SORT: 100,
           SETTINGS: {
-            CURRENCY: ['RUB'],
+            CURRENCY: ['USD'],
             CLIENT_TYPE: 'b2c',
             CHECKOUT_DATA: {
               ACTION_URI: 'http://example.com/payment_checkout.php',
@@ -1064,7 +1064,7 @@ If nothing is returned, the default error `Error registering order in payment sy
               CODE: 'resthandlercheckout',
               SORT: 100,
               SETTINGS: {
-                CURRENCY: ['RUB'],
+                CURRENCY: ['USD'],
                 CLIENT_TYPE: 'b2c',
                 CHECKOUT_DATA: {
                   ACTION_URI: 'http://example.com/payment_checkout.php',
@@ -1136,7 +1136,7 @@ If nothing is returned, the default error `Error registering order in payment sy
                     'CODE'     => 'resthandlercheckout',
                     'SORT'     => 100,
                     'SETTINGS' => [
-                        'CURRENCY'    => ['RUB'],
+                        'CURRENCY'    => ['USD'],
                         'CLIENT_TYPE' => 'b2c',
                         'CHECKOUT_DATA' => [
                             'ACTION_URI' => 'http://example.com/payment_checkout.php',
@@ -1199,7 +1199,7 @@ If nothing is returned, the default error `Error registering order in payment sy
             "SORT": 100,
             "SETTINGS": {
                 "CURRENCY": [
-                    "RUB"
+                    "USD"
                 ],
                 "CLIENT_TYPE": "b2c",
                 "CHECKOUT_DATA": {
@@ -1264,7 +1264,7 @@ If nothing is returned, the default error `Error registering order in payment sy
             'CODE' => 'resthandlercheckout',
             'SORT' => 100,
             'SETTINGS' => [
-                'CURRENCY'    => ['RUB'],
+                'CURRENCY'    => ['USD'],
                 'CLIENT_TYPE' => 'b2c',
                 'CHECKOUT_DATA' => [
                     'ACTION_URI' => 'http://example.com/payment_checkout.php',
@@ -1408,7 +1408,7 @@ document.addEventListener("DOMContentLoaded", function() {
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"NAME":"Handler.Rest IFrame","CODE":"resthandleriframe","SORT":100,"SETTINGS":{"CURRENCY":["RUB"],"CLIENT_TYPE":"b2c","IFRAME_DATA":{"ACTION_URI":"http://example.com/payment_iframe.php","FIELDS":{"serviceKey":{"CODE":"REST_SERVICE_KEY_IFRAME"},"serviceid":{"CODE":"REST_SERVICE_ID_IFRAME"}}},"CODES":{"REST_SERVICE_ID_IFRAME":{"NAME":"Store Number","DESCRIPTION":"Store Number","SORT":"100"},"REST_SERVICE_KEY_IFRAME":{"NAME":"Secret Key","DESCRIPTION":"Secret Key","SORT":"300"},"PS_WORK_MODE_IFRAME":{"NAME":"Payment System Operating Mode","SORT":"1100","INPUT":{"TYPE":"ENUM","OPTIONS":{"TEST":"Test","REGULAR":"Live"}}}}}' \
+    -d '{"NAME":"Handler.Rest IFrame","CODE":"resthandleriframe","SORT":100,"SETTINGS":{"CURRENCY":["USD"],"CLIENT_TYPE":"b2c","IFRAME_DATA":{"ACTION_URI":"http://example.com/payment_iframe.php","FIELDS":{"serviceKey":{"CODE":"REST_SERVICE_KEY_IFRAME"},"serviceid":{"CODE":"REST_SERVICE_ID_IFRAME"}}},"CODES":{"REST_SERVICE_ID_IFRAME":{"NAME":"Store Number","DESCRIPTION":"Store Number","SORT":"100"},"REST_SERVICE_KEY_IFRAME":{"NAME":"Secret Key","DESCRIPTION":"Secret Key","SORT":"300"},"PS_WORK_MODE_IFRAME":{"NAME":"Payment System Operating Mode","SORT":"1100","INPUT":{"TYPE":"ENUM","OPTIONS":{"TEST":"Test","REGULAR":"Live"}}}}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/sale.paysystem.handler.add
     ```
 
@@ -1418,7 +1418,7 @@ document.addEventListener("DOMContentLoaded", function() {
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"NAME":"Handler.Rest IFrame","CODE":"resthandleriframe","SORT":100,"SETTINGS":{"CURRENCY":["RUB"],"CLIENT_TYPE":"b2c","IFRAME_DATA":{"ACTION_URI":"http://example.com/payment_iframe.php","FIELDS":{"serviceKey":{"CODE":"REST_SERVICE_KEY_IFRAME"},"serviceid":{"CODE":"REST_SERVICE_ID_IFRAME"}}},"CODES":{"REST_SERVICE_ID_IFRAME":{"NAME":"Store Number","DESCRIPTION":"Store Number","SORT":"100"},"REST_SERVICE_KEY_IFRAME":{"NAME":"Secret Key","DESCRIPTION":"Secret Key","SORT":"300"},"PS_WORK_MODE_IFRAME":{"NAME":"Payment System Operating Mode","SORT":"1100","INPUT":{"TYPE":"ENUM","OPTIONS":{"TEST":"Test","REGULAR":"Live"}}}},"auth":"**put_access_token_here**"}' \
+    -d '{"NAME":"Handler.Rest IFrame","CODE":"resthandleriframe","SORT":100,"SETTINGS":{"CURRENCY":["USD"],"CLIENT_TYPE":"b2c","IFRAME_DATA":{"ACTION_URI":"http://example.com/payment_iframe.php","FIELDS":{"serviceKey":{"CODE":"REST_SERVICE_KEY_IFRAME"},"serviceid":{"CODE":"REST_SERVICE_ID_IFRAME"}}},"CODES":{"REST_SERVICE_ID_IFRAME":{"NAME":"Store Number","DESCRIPTION":"Store Number","SORT":"100"},"REST_SERVICE_KEY_IFRAME":{"NAME":"Secret Key","DESCRIPTION":"Secret Key","SORT":"300"},"PS_WORK_MODE_IFRAME":{"NAME":"Payment System Operating Mode","SORT":"1100","INPUT":{"TYPE":"ENUM","OPTIONS":{"TEST":"Test","REGULAR":"Live"}}}},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/sale.paysystem.handler.add
     ```
 
@@ -1440,7 +1440,7 @@ document.addEventListener("DOMContentLoaded", function() {
           CODE: 'resthandleriframe',
           SORT: 100,
           SETTINGS: {
-            CURRENCY: ['RUB'],
+            CURRENCY: ['USD'],
             CLIENT_TYPE: 'b2c',
             IFRAME_DATA: {
               ACTION_URI: 'http://example.com/payment_iframe.php',
@@ -1512,7 +1512,7 @@ document.addEventListener("DOMContentLoaded", function() {
               CODE: 'resthandleriframe',
               SORT: 100,
               SETTINGS: {
-                CURRENCY: ['RUB'],
+                CURRENCY: ['USD'],
                 CLIENT_TYPE: 'b2c',
                 IFRAME_DATA: {
                   ACTION_URI: 'http://example.com/payment_iframe.php',
@@ -1584,7 +1584,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     'CODE'     => 'resthandleriframe',
                     'SORT'     => 100,
                     'SETTINGS' => [
-                        'CURRENCY'    => ['RUB'],
+                        'CURRENCY'    => ['USD'],
                         'CLIENT_TYPE' => 'b2c',
                         'IFRAME_DATA' => [
                             'ACTION_URI' => 'http://example.com/payment_iframe.php',
@@ -1647,7 +1647,7 @@ document.addEventListener("DOMContentLoaded", function() {
             "SORT": 100,
             "SETTINGS": {
                 "CURRENCY": [
-                    "RUB"
+                    "USD"
                 ],
                 "CLIENT_TYPE": "b2c",
                 "IFRAME_DATA": {
@@ -1712,7 +1712,7 @@ document.addEventListener("DOMContentLoaded", function() {
             'CODE' => 'resthandleriframe',
             'SORT' => 100,
             'SETTINGS' => [
-                'CURRENCY' => ['RUB'],
+                'CURRENCY' => ['USD'],
                 'CLIENT_TYPE' => 'b2c',
                 'IFRAME_DATA' => [
                     'ACTION_URI' => 'http://example.com/payment_iframe.php',

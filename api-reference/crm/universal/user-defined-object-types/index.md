@@ -6,7 +6,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-A Smart Process is a versatile CRM entity that can be customized to meet the needs of a company. For each Smart Process, Bitrix24 creates a separate section in the CRM. In this section, you can configure Sales Funnels and stages, Automation rules, fields, and connections to other Bitrix24 entities.
+A Smart Process is a versatile CRM object that can be customized to meet the needs of a company. For each Smart Process, Bitrix24 creates a separate section in the CRM. In this section, you can configure Sales Funnels and stages, Automation rules, fields, and connections to other Bitrix24 entities.
 
 > Quick Navigation: [All Methods and Events](#all-methods)
 >
@@ -24,7 +24,7 @@ The Smart Process can be transferred from the CRM section to the Automation sect
 
 ## Connections with Other Entities
 
-**CRM Entities.** A Smart Process can be [linked](./crm-type-add.md#relations) to leads, deals, and other CRM entities. The linked entity will be accessible through the field `parentId{ID}`, where `{ID}` is the numeric identifier of the CRM entity.
+**CRM Entities.** A Smart Process can be [linked](./crm-type-add.md#relations) to leads, deals, and other CRM entities. The linked entity will be accessible through the field `parentId{ID}`, where `{ID}` is the numeric identifier of the CRM object.
 
 **Client.** This field in the Smart Process detail form consists of the associated company and contacts. There is one company in the field; change the linked company through the `companyId` field. There can be multiple contacts in the "Client" field. Interaction with contacts is managed through the `contactIds` field — pass an array of contact IDs in this field. Enable the field with the `isClientEnabled` option in the [crm.type.add](./crm-type-add.md) or [crm.type.update](./crm-type-update.md) methods.
 

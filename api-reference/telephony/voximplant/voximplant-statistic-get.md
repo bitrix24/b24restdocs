@@ -135,14 +135,14 @@ Possible values:
 || **CALL_FAILED_REASON**
 [`string`](../../data-types.md) | Text of the reason/result of the call ||
 || **CRM_ENTITY_TYPE**
-[`string`](../../data-types.md) | Type of CRM entity.
+[`string`](../../data-types.md) | Type of CRM object.
 
 Possible values:
 - `CONTACT` — contact
 - `COMPANY` — company
 - `LEAD` — lead  ||
 || **CRM_ENTITY_ID**
-[`integer`](../../data-types.md) | Identifier of the CRM entity from `CRM_ENTITY_TYPE` ||
+[`integer`](../../data-types.md) | Identifier of the CRM object from `CRM_ENTITY_TYPE` ||
 || **CRM_ACTIVITY_ID**
 [`integer`](../../data-types.md) | Identifier of the CRM activity for the call ||
 || **REST_APP_ID**

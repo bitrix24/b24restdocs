@@ -1,0 +1,31 @@
+title: Documents
+href: index.md
+items:
+  - name: Overview of Methods
+    href: index.md
+  - name: Create Document
+    href: note-document-add.md
+  - name: Update Document
+    href: note-document-update.md
+  - name: Retrieve Document
+    href: note-document-get.md
+  - name: Move Document to Trash
+    href: note-document-delete.md
+  - name: Archive Document
+    href: note-document-archive.md
+  - name: Get Document Tree
+    href: note-document-tree-list.md
+  - name: Find Documents
+    href: note-document-search-list.md
+  - name: Get Document Field
+    href: note-document-field-get.md
+  - name: Get List of Document Fields
+    href: note-document-field-list.md
+  - name: Get Document Tree Field
+    href: note-document-tree-field-get.md
+  - name: Get Document Tree Fields List
+    href: note-document-tree-field-list.md
+  - name: Get Document Search Field
+    href: note-document-search-field-get.md
+  - name: Get Document Search Fields List
+    href: note-document-search-field-list.md

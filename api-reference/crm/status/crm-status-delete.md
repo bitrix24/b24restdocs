@@ -154,6 +154,35 @@ Deleting a regular element.
     }
     ```
 
+- Python
+
+    Example
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.status.delete(
+            bitrix_id=123,
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - BX24.js
 
     ```js
@@ -359,7 +388,7 @@ Deleting a system element.
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -369,8 +398,8 @@ HTTP Status: **200**
         "finish": 1752145688.842539,
         "duration": 0.03414416313171387,
         "processing": 0.010373115539550781,
-        "date_start": "2025-07-10T14:08:08+02:00",
-        "date_finish": "2025-07-10T14:08:08+02:00",
+        "date_start": "2025-07-10T14:08:08+03:00",
+        "date_finish": "2025-07-10T14:08:08+03:00",
         "operating_reset_at": 1752146288,
         "operating": 0
     }
@@ -383,23 +412,23 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result** 
-[`boolean`](../../data-types.md) | Root element of the response, contains `true` on success ||
+[`boolean`](../../data-types.md) | Root element of the response, contains `true` in case of success ||
 || **time** 
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
     "error": "Invalid identifier.",
-    "error_description": "An invalid identifier was provided."
+    "error_description": "An invalid identifier was passed."
 }
 ```
 
-{% include notitle [error handling](../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
@@ -413,7 +442,7 @@ HTTP Status: **400**
 || `400`     | `Error on deleting status.` | Error while deleting the element ||
 |#
 
-{% include [system errors](../../../_includes/system-errors.md) %}
+{% include [System errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
@@ -421,4 +450,4 @@ HTTP Status: **400**
 - [{#T}](./crm-status-list.md)
 - [{#T}](./crm-status-get.md)
 - [{#T}](./crm-status-add.md)
-- [{#T}](./crm-status-update.md)
+- [{#T}](./crm-status-update.md) 

@@ -59,7 +59,7 @@ The method `telephony.externalCall.searchCrmEntities` returns CRM entities based
 
     declare const $b24: B24Frame
 
-    // Shape of each CRM entity returned in result[]
+    // Shape of each CRM object returned in result[]
     type CrmEntityResult = {
       CRM_ENTITY_TYPE: string
       CRM_ENTITY_ID: number
@@ -258,18 +258,18 @@ HTTP Status: **200**
 || **result**
 [`array`](../data-types.md) | An array of found CRM entities ||
 || **CRM_ENTITY_TYPE**
-[`string`](../data-types.md) | Type of the CRM entity.
+[`string`](../data-types.md) | Type of the CRM object.
 
 Possible values:
 - `CONTACT` — contact
 - `LEAD` — lead
 - `COMPANY` — company ||
 || **CRM_ENTITY_ID**
-[`integer`](../data-types.md) | Identifier of the CRM entity ||
+[`integer`](../data-types.md) | Identifier of the CRM object ||
 || **ASSIGNED_BY_ID**
 [`integer`](../data-types.md) | Identifier of the responsible employee ||
 || **NAME**
-[`string`](../data-types.md) | Name or full name of the found CRM entity ||
+[`string`](../data-types.md) | Name or full name of the found CRM object ||
 || **ASSIGNED_BY**
 [`object`](../data-types.md) | Data of the [responsible employee](#result-assigned-by) ||
 || **time**

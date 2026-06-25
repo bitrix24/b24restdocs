@@ -329,7 +329,7 @@ This parameter is deprecated. For working with digital workplaces, use the metho
 || **Value**
 `type` | **Description** ||
 || **entityTypeId**     
-[`integer`](../data-types.md)  | Identifier of the [system](./universal/index.md) or [user-defined type](./universal/user-defined-object-types/index.md) of the CRM entity. ||
+[`integer`](../data-types.md)  | Identifier of the [system](./universal/index.md) or [user-defined type](./universal/user-defined-object-types/index.md) of the CRM object. ||
 || **isChildrenListEnabled**
 [`boolean`](../data-types.md)  | Should the related element be added to the card? ||
 || **isPredefined**        

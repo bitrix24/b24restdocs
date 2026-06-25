@@ -8,15 +8,15 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: `any user`
+> Who can execute the method: any user
 
-This method retrieves a list of available fields for linking CRM entities and timeline records.
+Retrieves a list of available fields for linking CRM entities and timeline records.
 
 No parameters.
 
 ## Code Examples
 
-{% include [Examples Note](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -144,6 +144,33 @@ No parameters.
     }
     ```
 
+- Python
+
+    Example
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.timeline.bindings.fields().response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - BX24.js
 
     ```js
@@ -197,7 +224,7 @@ HTTP status: **200**
             "isImmutable": true,
             "isMultiple": false,
             "isDynamic": false,
-            "title": "Entity ID"
+            "title": "Item ID"
         },
         "ENTITY_TYPE": {
             "type": "string",
@@ -206,15 +233,15 @@ HTTP status: **200**
             "isImmutable": true,
             "isMultiple": false,
             "isDynamic": false,
-            "title": "Entity type"
+            "title": "Item type"
         }
     },
     "time": {
         "start": 1715091541.642592,
         "finish": 1715091541.730599,
         "duration": 0.08800697326660156,
-        "date_start": "2024-05-03T17:19:01+02:00",
-        "date_finish": "2024-05-03T17:19:01+02:00",
+        "date_start": "2024-05-03T17:19:01+03:00",
+        "date_finish": "2024-05-03T17:19:01+03:00",
         "operating": 0
     }
 }
@@ -233,7 +260,7 @@ HTTP status: **200**
 
 #### List of Fields {#fields}
 
-{% include [Note on Required Parameters](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -241,7 +268,7 @@ HTTP status: **200**
 || **OWNER_ID***
 [`integer`](../../../data-types.md) | Identifier of the timeline record. Read-only ||
 || **ENTITY_ID***
-[`integer`](../../../data-types.md) | `ID` of the CRM entity to which the comment is linked. Immutable ||
+[`integer`](../../../data-types.md) | `ID` of the CRM object to which the comment is linked. Immutable ||
 || **ENTITY_TYPE***
 [`string`](../../../data-types.md) | Type of the entity to which the comment is linked. Immutable. Possible values:
 - `lead` — lead
@@ -263,7 +290,7 @@ HTTP status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
@@ -272,9 +299,9 @@ HTTP status: **400**
 || `0` | Other errors (e.g., fatal errors) ||
 |#
 
-{% include [system errors](../../../../_includes/system-errors.md) %}
+{% include [System errors](../../../../_includes/system-errors.md) %}
 
-## Continue Learning 
+## Continue Learning
 
 - [{#T}](./crm-timeline-bindings-bind.md)
 - [{#T}](./crm-timeline-bindings-list.md)

@@ -103,9 +103,9 @@ Possible values:
 || **CALL_ID**
 [`string`](../../data-types.md) | Identifier of the call created when registering the external call ||
 || **CRM_ENTITY_TYPE**
-[`string`](../../data-types.md) | Type of the CRM entity from which the call was initiated ||
+[`string`](../../data-types.md) | Type of the CRM object from which the call was initiated ||
 || **CRM_ENTITY_ID**
-[`integer`](../../data-types.md) | Identifier of the CRM entity whose type is specified in `CRM_ENTITY_TYPE` ||
+[`integer`](../../data-types.md) | Identifier of the CRM object whose type is specified in `CRM_ENTITY_TYPE` ||
 |#
 
 ### Parameter auth {#auth}

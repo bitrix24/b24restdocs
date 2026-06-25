@@ -1,4 +1,4 @@
-# Update the product row of a CRM object crm.item.productrow.update
+# Update the Product Row of a CRM Object crm.item.productrow.update
 
 {% note tip "" %}
 
@@ -10,17 +10,17 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: requires access permission to modify the CRM object whose product row is being updated.
 
-This method updates the product row of a CRM object.
+Updates the product row of a CRM object.
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **id***
-[`crm_item_product_row.id`](../../data-types.md#crm_item_product_row) | Identifier of the product row ||
+[`crm_item_product_row.id`](../../data-types.md#crm_item_product_row) | Identifier of the product row. ||
 || **fields***
 [`object`](../../../data-types.md) | Object containing field values for updating the product row of the CRM object ||
 |#
@@ -31,11 +31,11 @@ This method updates the product row of a CRM object.
 || **Name**
 `type` | **Description** ||
 || **productId**
-[`catalog_product.id`](../../../catalog/data-types.md#catalog_product) | Identifier of the product from the catalog ||
+[`catalog_product.id`](../../../catalog/data-types.md#catalog_product) | Identifier of the product from the catalog. ||
 || **productName**
-[`string`](../../../data-types.md) | Name of the product in the product row ||
+[`string`](../../../data-types.md) | Name of the product in the product row. ||
 || **price**
-[`double`](../../../data-types.md) | Price per unit of the product row, including discounts and taxes ||
+[`double`](../../../data-types.md) | Price per unit of the product row, including discounts and taxes. ||
 || **quantity**
 [`double`](../../../data-types.md) | Quantity of the product ||
 || **discountTypeId**
@@ -44,18 +44,18 @@ Possible values:
 - `1` — absolute value
 - `2` — percentage value ||
 || **discountRate**
-[`double`](../../../data-types.md) | Discount value in percentage (if using the percentage discount type) ||
+[`double`](../../../data-types.md) | The discount value in percentage (if using the percentage discount type) ||
 || **discountSum**
-[`double`](../../../data-types.md) | Absolute discount value (if using the absolute discount type) ||
+[`double`](../../../data-types.md) | The absolute value of the discount (if using the absolute discount type) ||
 || **taxRate**
-[`double`](../../../data-types.md) | Tax rate in percentage ||
+[`double`](../../../data-types.md) | Tax rate in percentage. ||
 || **taxIncluded**
 [`string`](../../../data-types.md) | Indicator of whether tax is included in the price.
 Possible values:
 - `Y` – tax included
 - `N` – tax not included  ||
 || **measureCode**
-[`catalog_measure.code`](../../../catalog/data-types.md#catalog_measure) | Unit of measure code ||
+[`catalog_measure.code`](../../../catalog/data-types.md#catalog_measure) | Code of the unit of measurement ||
 || **sort**
 [`integer`](../../../data-types.md) | Sorting ||
 |#
@@ -241,6 +241,46 @@ Possible values:
     }
     ```
 
+- Python
+
+    Example
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.item.productrow.update(
+            bitrix_id=17648,
+            fields={
+                "productId": 9621,
+                "price": 90000,
+                "quantity": 3,
+                "discountTypeId": 2,
+                "discountRate": 10,
+                "taxRate": 10,
+                "taxIncluded": "Y",
+                "measureCode": 796,
+                "sort": 20,
+            },
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - BX24.js
 
     ```js
@@ -299,7 +339,7 @@ Possible values:
 
 {% endlist %}
 
-## Successful Response
+## Response on Success
 
 HTTP status: **200**
 
@@ -336,8 +376,8 @@ HTTP status: **200**
       "finish":1716890010.275307,
       "duration":1.5610928535461426,
       "processing":1.3967258930206299,
-      "date_start":"2024-05-28T12:53:28+02:00",
-      "date_finish":"2024-05-28T12:53:30+02:00"
+      "date_start":"2024-05-28T12:53:28+03:00",
+      "date_finish":"2024-05-28T12:53:30+03:00"
    }
 }
 ```
@@ -352,7 +392,7 @@ HTTP status: **200**
 || **productRow**
 [`crm_item_product_row`](../../data-types.md#crm_item_product_row) | Object containing information about the updated product row ||
 || **time**
-[`time`](../../../data-types.md) | Information about the execution time of the request ||
+[`time`](../../../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -362,25 +402,25 @@ HTTP status: **400**
 ```json
 {
    "error":"NOT_FOUND",
-   "error_description":"Element not found"
+   "error_description":"Item not found"
 }
 ```
 
-{% include notitle [error handling](../../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
 || **Code** | **Description** ||
-|| `ENTITY_TYPE_NOT_SUPPORTED` | Working with this type of object is not supported ||
+|| `ENTITY_TYPE_NOT_SUPPORTED` | Working with this type of objects is not supported ||
 || `ACCESS_DENIED` | Access denied ||
-|| `NOT_FOUND` | Product row not found ||
+|| `NOT_FOUND` | Product item not found ||
 || `INVALID_ARG_VALUE` | Unknown field or the provided field is not available for update ||
 || `100` | Required parameters not provided ||
 || `0` | Other errors (e.g., fatal errors) ||
 |#
 
-{% include notitle [system errors](../../../../_includes/system-errors.md) %}
+{% include notitle [System errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

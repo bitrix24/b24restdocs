@@ -6,7 +6,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-The timeline is the primary workspace in the CRM entity detail form. It records:
+The timeline is the primary workspace in the CRM object detail form. It records:
 
 * system information about working with the entity: stage changes, payments, creating entities based on the current one
 * user information: CRM activities (tasks, e-mails, calls) and timeline entries (comments, documents generated from templates, application log entries)
@@ -35,7 +35,7 @@ You can manage the relationships of timeline entries with CRM entities using the
 
 ## Widgets
 
-You can embed an application into activities and timeline entries. Thanks to the embedding, you can use the application without leaving the CRM entity detail form. For embedding, there are special places in the timeline:
+You can embed an application into activities and timeline entries. Thanks to the embedding, you can use the application without leaving the CRM object detail form. For embedding, there are special places in the timeline:
 
 * [Button above the timeline of the entity detail form](../../widgets/crm/detail-activity.md) `CRM_XXX_DETAIL_ACTIVITY`, `CRM_DYNAMIC_XXX_DETAIL_ACTIVITY`
 * [Context menu item of the activity in the entity detail form](../../widgets/crm/activity-timeline-menu.md) `CRM_XXX_ACTIVITY_TIMELINE_MENU`
@@ -73,7 +73,7 @@ You can embed an application into activities and timeline entries. Thanks to the
     || [crm.timeline.comment.add](./comments/crm-timeline-comment-add.md)   | Adds a new comment to the timeline ||
     || [crm.timeline.comment.update](./comments/crm-timeline-comment-update.md)  |  Updates a comment ||
     || [crm.timeline.comment.get](./comments/crm-timeline-comment-get.md)   |  Retrieves information about a comment ||
-    || [crm.timeline.comment.list](./comments/crm-timeline-comment-list.md) |  Retrieves a list of all comments for the CRM entity ||
+    || [crm.timeline.comment.list](./comments/crm-timeline-comment-list.md) |  Retrieves a list of all comments for the CRM object ||
     || [crm.timeline.comment.delete](./comments/crm-timeline-comment-delete.md)  |  Deletes a comment ||
     || [crm.timeline.comment.fields](./comments/crm-timeline-comment-fields.md)  | Retrieves a list of timeline comment fields ||
     |#
@@ -103,9 +103,9 @@ You can embed an application into activities and timeline entries. Thanks to the
 
 #|
 || **Method** | **Description** ||
-|| [crm.timeline.bindings.bind](./bindings/crm-timeline-bindings-bind.md) | Adds a relationship between a timeline entry and a CRM entity ||
+|| [crm.timeline.bindings.bind](./bindings/crm-timeline-bindings-bind.md) | Adds a relationship between a timeline entry and a CRM object ||
 || [crm.timeline.bindings.list](./bindings/crm-timeline-bindings-list.md) | Retrieves a list of relationships for a timeline entry ||
-|| [crm.timeline.bindings.unbind](./bindings/crm-timeline-bindings-unbind.md) | Removes the relationship between a timeline entry and a CRM entity ||
+|| [crm.timeline.bindings.unbind](./bindings/crm-timeline-bindings-unbind.md) | Removes the relationship between a timeline entry and a CRM object ||
 || [crm.timeline.bindings.fields](./bindings/crm-timeline-bindings-fields.md) | Retrieves the fields of the relationship between CRM entities and timeline entries ||
 |#
 

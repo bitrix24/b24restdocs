@@ -16,7 +16,7 @@ For successful registration, the requisite IDs must belong to the client and sel
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -27,7 +27,7 @@ For successful registration, the requisite IDs must belong to the client and sel
 
 ### Parameter fields
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -40,9 +40,9 @@ The following types can be used:
 - old invoice (value `5`)
 - estimate (value `7`)
 - new invoice (value `31`)
-- other dynamic objects (for possible values, see the method [crm.type.list](../../universal/user-defined-object-types/crm-type-list.md)).
+- other dynamic objects (to get possible values, see the method [crm.type.list](../../universal/user-defined-object-types/crm-type-list.md)).
 
-You can obtain CRM object type identifiers using the method [crm.enum.ownertype](../../auxiliary/enum/crm-enum-owner-type.md) 
+Object type identifiers can be obtained using the method [crm.enum.ownertype](../../auxiliary/enum/crm-enum-owner-type.md) 
 ||
 || **ENTITY_ID***
 [`integer`](../../../data-types.md) | Identifier of the object to which the link belongs. 
@@ -215,10 +215,10 @@ Bank requisite identifiers can be obtained using the method [crm.requisite.bankd
             fields: {
                 ENTITY_TYPE_ID: 31,
                 ENTITY_ID: 315,
-                REQUISITE_ID: 60,       // Identifier of the requisite belonging to the buyer
-                BANK_DETAIL_ID: 24,     // Identifier of the bank requisite belonging to the buyer
-                MC_REQUISITE_ID: 2,     // Identifier of the requisite belonging to the selling company
-                MC_BANK_DETAIL_ID: 2    // Identifier of the bank requisite belonging to the selling company
+                REQUISITE_ID: 60,       // Buyer's payment detail identifier
+                BANK_DETAIL_ID: 24,     // Buyer's bank detail identifier
+                MC_REQUISITE_ID: 2,     // Seller company's payment detail identifier
+                MC_BANK_DETAIL_ID: 2    // Seller company's bank detail identifier
             }
         },
         function (result)
@@ -254,6 +254,40 @@ Bank requisite identifiers can be obtained using the method [crm.requisite.bankd
     echo '<PRE>';
     print_r($result);
     echo '</PRE>';
+    ```
+
+- Python
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.requisite.link.register(
+            fields={
+                "ENTITY_TYPE_ID": 31,
+                "ENTITY_ID": 315,
+                "REQUISITE_ID": 60,
+                "BANK_DETAIL_ID": 24,
+                "MC_REQUISITE_ID": 2,
+                "MC_BANK_DETAIL_ID": 2,
+            },
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
     ```
 
 {% endlist %}
@@ -302,14 +336,14 @@ HTTP status: **40x**, **50x**
 }
 ```
 
-{% include notitle [error handling](../../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
-#|  
+#|
 || **Code** | **Description** ||
-|| `ENTITY_TYPE_ID is not defined or invalid` | Object type identifier is not set or has an invalid value ||
-|| `ENTITY_ID is not defined or invalid` | Object identifier is not set or has an invalid value ||
+|| `ENTITY_TYPE_ID is not defined or invalid` | The object type identifier is not set or has an invalid value ||
+|| `ENTITY_ID is not defined or invalid` | The object identifier is not set or has an invalid value ||
 || `REQUISITE_ID is not defined or invalid` | Client requisite identifier is not set or has an invalid value ||
 || `BANK_DETAIL_ID is not defined or invalid` | Client bank requisite identifier is not set or has an invalid value ||
 || `MC_REQUISITE_ID is not defined or invalid` | My company requisite identifier is not set or has an invalid value ||
@@ -324,7 +358,7 @@ HTTP status: **40x**, **50x**
 || `The BankDetail of your company with ID '2' is not assigned to Requisite of your company with ID '2'` | My company bank requisite with the specified identifier does not belong to the specified requisite ||
 |#
 
-{% include [system errors](../../../../_includes/system-errors.md) %}
+{% include [System errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

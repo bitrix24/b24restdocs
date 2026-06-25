@@ -148,7 +148,7 @@ Examples:
       params: {
         id: 1,
         fields: {
-          title: 'Russia (Custom)',
+          title: 'Germany (Custom)',
           formatDate: 'YYYY-MM-DD',
           phrases: {
             TAX_INCLUDED: 'Tax is included in the price',
@@ -187,7 +187,7 @@ Examples:
           params: {
             id: 1,
             fields: {
-              title: 'Russia (Custom)',
+              title: 'Germany (Custom)',
               formatDate: 'YYYY-MM-DD',
               phrases: {
                 TAX_INCLUDED: 'Tax is included in the price',

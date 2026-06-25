@@ -15,7 +15,7 @@ The method `crm.activity.binding.list` retrieves a list of all bindings for the 
 The method will return an array, where each element will be an array containing:
 
 - `entityTypeId` — integer identifier of the [CRM object type](../../../data-types.md#object_type)
-- `entityId` — integer identifier of the CRM entity
+- `entityId` — integer identifier of the CRM object
 
 The result will only include entities that the current user has read access to.
 
@@ -275,7 +275,7 @@ HTTP status: **200**
 [`array`](../../../../data-types.md) | Result of the operation. Returns an array, where each element will be an array containing:
 
 - `entityTypeId` — integer identifier of the [CRM object type](../../../data-types.md#object_type)
-- `entityId` — integer identifier of the CRM entity
+- `entityId` — integer identifier of the CRM object
 ||
 || **time**
 [`time`](../../../../data-types.md#time) | Information about the execution time of the request ||

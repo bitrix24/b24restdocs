@@ -8,7 +8,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`crm`](../../scopes/permissions.md)
 > 
-> Who can execute the method: any user with "read" access permission for CRM object elements.
+> Who can execute the method: any user with "read" access permission for CRM object elements
 
 This method retrieves a list of items of a specific type from the CRM object.
 
@@ -16,7 +16,7 @@ CRM object items will not be included in the final selection if the user does no
 
 ## Method Parameters
 
-{% include [Parameters Note](../../../_includes/required.md) %}
+{% include [Note on parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -26,11 +26,11 @@ CRM object items will not be included in the final selection if the user does no
 
 Numerical values for system types (Lead — 1, Deal — 2, Contact — 3, Company — 4, Invoice — 31, etc.) are listed in the [CRM object types reference](../data-types.md#object_type). The identifier of the smart process can be obtained using the [crm.type.list](./user-defined-object-types/crm-type-list.md) method. ||
 || **select**
-[`array`][1] | List of fields that must be populated for the items in the selection.
+[`array`][1] | List of fields that must be filled for items in the selection.
 
-May contain only item field names or `'*'`.
+It can contain only item field names or `'*'`.
 
-The list of all available fields for selection can be found using the [`crm.item.fields`](./crm-item-fields.md) method. The list of standard fields is available in the article [CRM Object Fields](./object-fields.md)
+The list of all available fields for selection can be found using the [`crm.item.fields`](./crm-item-fields.md) method. The list of standard fields is available in the article [CRM object fields](./object-fields.md)
 
 The `fm` field (multiple fields: phones, e-mail, messengers) is not a CRM object field and cannot be explicitly requested via `select`. To receive `fm` in the response, pass `select: ['*']`
 ||
@@ -90,23 +90,23 @@ Object format:
 }
 ```
 where
-- `field_n` — name of the field by which the selection of items will be sorted
-- `value_n` — string value equal to:
-  - `ASC` — ascending order
-  - `DESC` — descending order
+- `field_n` — the name of the field by which the items selection will be sorted
+- `value_n` — a value of type `string` equal to:
+  - `ASC` — sorting in ascending order
+  - `DESC` — sorting in descending order
 
-A list of all available fields for sorting can be obtained using the [`crm.item.fields`](./crm-item-fields.md) method. A list of standard fields is available in the article [CRM Object Fields](./object-fields.md).
+The list of all available fields for sorting can be found using the [`crm.item.fields`](./crm-item-fields.md) method. The list of standard fields is available in the article [CRM object fields](./object-fields.md)
 ||
 || **start**
-[`integer`][1] | This parameter is used to manage pagination.
+[`integer`][1] | This parameter is used to control pagination.
 
-The result page size is always static — 50 records.
+The page size of results is always static — 50 records.
 
-To select the second page of results, pass the value `50`. To select the third page of results — pass the value `100`, and so on.
+To select the second page of results, pass the value `50`. To select the third page of results — the value `100`, and so on.
 
 The formula for calculating the `start` parameter value:
 
-`start = (N-1) * 50`, where `N` — the desired page number.
+`start = (N-1) * 50`, where `N` — the number of the desired page
 ||
 || **useOriginalUfNames**
 [`boolean`][1] | Parameter to control the format of custom field names in the request and response.   
@@ -123,7 +123,7 @@ Default is `N`. ||
 Retrieve a list of leads where:
 1. First name or last name is not empty.
 2. They are in the status "In Progress" or "Unprocessed".
-3. They came from sources "Advertising" or "Website".
+3. They came from sources "Ads" or "Sites".
 4. They are assigned to managers with IDs 1 or 6.
 5. They have a deal amount between 5000 and 20000.
 6. The calculation mode for the amount is manual.
@@ -354,6 +354,187 @@ For clarity, we will select only the fields we need:
     }
     ```
 
+- Python
+
+    Example
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.item.list(
+            entity_type_id=1,
+            select=[
+                "id",
+                "title",
+                "lastName",
+                "name",
+                "stageId",
+                "sourceId",
+                "assignedById",
+                "opportunity",
+                "isManualOpportunity",
+            ],
+            filter={
+                "0": {
+                    "logic": "OR",
+                    "0": {
+                        "!=name": "",
+                    },
+                    "1": {
+                        "!=lastName": "",
+                    },
+                },
+                "@stageId": ["NEW", "IN_PROCESS"],
+                "@sourceId": ["WEB", "ADVERTISING"],
+                "@assignedById": [1, 6],
+                ">=opportunity": 5000,
+                "<=opportunity": 20000,
+                "isManualOpportunity": "Y",
+            },
+            order={
+                "lastName": "ASC",
+                "name": "ASC",
+            },
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
+    Example `as_list`
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.item.list(
+            entity_type_id=1,
+            select=[
+                "id",
+                "title",
+                "lastName",
+                "name",
+                "stageId",
+                "sourceId",
+                "assignedById",
+                "opportunity",
+                "isManualOpportunity",
+            ],
+            filter={
+                "0": {
+                    "logic": "OR",
+                    "0": {
+                        "!=name": "",
+                    },
+                    "1": {
+                        "!=lastName": "",
+                    },
+                },
+                "@stageId": ["NEW", "IN_PROCESS"],
+                "@sourceId": ["WEB", "ADVERTISING"],
+                "@assignedById": [1, 6],
+                ">=opportunity": 5000,
+                "<=opportunity": 20000,
+                "isManualOpportunity": "Y",
+            },
+            order={
+                "lastName": "ASC",
+                "name": "ASC",
+            },
+        ).as_list().response
+        result = bitrix_response.result
+        for item in result:
+            print(item)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
+    Example `as_list_fast`
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.item.list(
+            entity_type_id=1,
+            select=[
+                "id",
+                "title",
+                "lastName",
+                "name",
+                "stageId",
+                "sourceId",
+                "assignedById",
+                "opportunity",
+                "isManualOpportunity",
+            ],
+            filter={
+                "0": {
+                    "logic": "OR",
+                    "0": {
+                        "!=name": "",
+                    },
+                    "1": {
+                        "!=lastName": "",
+                    },
+                },
+                "@stageId": ["NEW", "IN_PROCESS"],
+                "@sourceId": ["WEB", "ADVERTISING"],
+                "@assignedById": [1, 6],
+                ">=opportunity": 5000,
+                "<=opportunity": 20000,
+                "isManualOpportunity": "Y",
+            },
+            order={
+                "lastName": "ASC",
+                "name": "ASC",
+            },
+        ).as_list_fast(descending=True).response
+        result = bitrix_response.result
+        for item in result:
+            print(item)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - BX24.js
 
     ```js
@@ -465,7 +646,7 @@ Filter deals `entityTypeId = 2` by two creation dates. For each date, set the st
 For clarity, we will select only the fields we need:
 * Identifier `id`
 * Title `title`
-* Creation date `createdTime`
+* Create date `createdTime`
 
 {% list tabs %}
 
@@ -722,7 +903,7 @@ For clarity, we will select only the fields we need:
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -747,7 +928,7 @@ HTTP Status: **200**
                 "sourceId": "WEB",
                 "title": "Lead #255",
                 "name": "John",
-                "lastName": "Doe",
+                "lastName": "Smith",
                 "isManualOpportunity": "Y"
             },
             {
@@ -768,7 +949,7 @@ HTTP Status: **200**
                 "opportunity": 19000,
                 "sourceId": "ADVERTISING",
                 "title": "Lead #254",
-                "name": "Cat",
+                "name": "Smith",
                 "lastName": "Smith",
                 "isManualOpportunity": "Y"
             }
@@ -793,31 +974,31 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`][1] | Root element of the response. Contains a single key `items`. ||
+[`object`][1] | The root element of the response. Contains a single key `items` ||
 || **items**
 [`item[]`](./object-fields.md) | Array with information about the found items.
 
 Returned fields depend on the `select` parameter, [field descriptions](./object-fields.md). ||
 || **total**
-[`integer`][1] | Total number of found items. ||
+[`integer`][1] | The total number of found items ||
 || **next**
 [`integer`][1] | Contains the value to be passed in the next request in the `start` parameter to get the next batch of data.
 
 The `next` parameter appears in the response if the number of items matching your request exceeds `50`. ||
 || **time**
-[`time`][1] | Information about the request execution time. ||
+[`time`][1] | Information about the request execution time ||
 |#
 
 {% note info " " %}
 
-By default, custom field names are passed and returned in camelCase, e.g., `ufCrm2_1639669411830`.
-When passing the `useOriginalUfNames` parameter with the value `Y`, custom fields will be returned with their original names, e.g., `UF_CRM_2_1639669411830`.
+By default, custom field names are passed and returned in camelCase, for example `ufCrm2_1639669411830`.
+When passing the parameter `useOriginalUfNames` with the value `Y`, custom fields will be returned with their original names, for example `UF_CRM_2_1639669411830`.
 
 {% endnote %}
 
 ## Error Handling
 
-HTTP Status: **400**, **403**
+HTTP status: **400**, **403**
 
 ```json
 {
@@ -826,21 +1007,21 @@ HTTP Status: **400**, **403**
 }
 ```
 
-{% include notitle [error handling](../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
 || **Status** | **Code**                          | **Description**                                             | **Value**                                          ||
-|| `403`      | `allowed_only_intranet_user`     | Action allowed only for intranet users                     | User is not an intranet user                      ||
-|| `400`      | `NOT_FOUND`                      | Smart process not found                                    | Occurs when an invalid `entityTypeId` is passed   ||
-|| `400`      | `INVALID_ARG_VALUE`              | Invalid filter: field '`field`' is not allowed in filter  | The field `field` passed in `filter` is not available for filtering. ||
-|| `400`      | `INVALID_ARG_VALUE`              | Invalid filter: field '`field`' has invalid value        | The value passed for the field `field` in `filter` is incorrect. ||
-|| `400`      | `INVALID_ARG_VALUE`              | Invalid order: field '`field`' is not allowed in order   | The field `field` passed in `order` is not available for sorting. ||
-|| `400`      | `INVALID_ARG_VALUE`              | Invalid order: allowed sort directions are `ASC, DESC`. But got '`orderValue`' for field '`field`' | The value `orderValue` passed for the field `field` in the `order` parameter is incorrect. ||
+|| `403`      | `allowed_only_intranet_user`     | Action is allowed for intranet users only         | User is not an intranet user       ||
+|| `400`      | `NOT_FOUND`                      | SPA not found                                  | Occurs when an invalid `entityTypeId` is passed    ||
+|| `400`      | `INVALID_ARG_VALUE`              | Invalid filter: field '`field`' is not allowed in filter | The field `filter` passed in `field` is not available for filtering ||
+|| `400`      | `INVALID_ARG_VALUE`              | Invalid filter: field '`field`' has invalid value        | The value passed for field `field` in `filter` is incorrect ||
+|| `400`      | `INVALID_ARG_VALUE`              | Invalid order: field '`field`' is not allowed in order   | The field `order` passed in `field` is not available for sorting ||
+|| `400`      | `INVALID_ARG_VALUE`              | Invalid order: allowed sort directions are `ASC, DESC`. But got '`orderValue`' for field '`field`' | The value `orderValue` passed for field `field` in the `order` parameter is incorrect ||
 |#
 
-{% include [system errors](./../../../_includes/system-errors.md) %}
+{% include [System errors](./../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
@@ -854,5 +1035,5 @@ HTTP Status: **400**, **403**
 - [{#T}](../../../tutorials/crm/how-to-get-lists/how-to-get-elements-by-stage-filter.md)
 - [{#T}](../../../tutorials/crm/how-to-get-lists/get-activity-list-by-deals.md)
 - [{#T}](../../../tutorials/crm/how-to-get-lists/how-to-get-contractors.md)
-
+  
 [1]: ../../data-types.md

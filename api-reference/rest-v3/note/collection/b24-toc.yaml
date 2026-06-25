@@ -1,0 +1,21 @@
+title: Knowledge Bases
+href: index.md
+items:
+  - name: Overview of Methods
+    href: index.md
+  - name: Create Knowledge Base
+    href: note-collection-add.md
+  - name: Rename Knowledge Base
+    href: note-collection-update.md
+  - name: Get Knowledge Base
+    href: note-collection-get.md
+  - name: Get Knowledge Bases List
+    href: note-collection-list.md
+  - name: Move Knowledge Base to Trash
+    href: note-collection-delete.md
+  - name: Archive Knowledge Base
+    href: note-collection-archive.md
+  - name: Get Knowledge Base Field
+    href: note-collection-field-get.md
+  - name: Get Knowledge Base Fields List
+    href: note-collection-field-list.md

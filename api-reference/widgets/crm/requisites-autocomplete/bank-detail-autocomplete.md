@@ -111,7 +111,7 @@ BX24.placement.call(
         data: [
             {
                 id: 'bank-044525225',
-                name: 'Acme Corp',
+                name: 'Ltd. Superbank',
                 phone: '+1 495 000-00-00',
                 web: 'https://bank.example.com'
             }
@@ -186,7 +186,7 @@ Bank detail fields:
 || **RQ_BANK_NAME**
 [`string`](../../../data-types.md) | Bank name in bank details ||
 || **RQ_BIK**
-[`string`](../../../data-types.md) | Bank BIC ||
+[`string`](../../../data-types.md) | Bank BIK ||
 || **RQ_BANK_ADDR**
 [`string`](../../../data-types.md) | Bank address ||
 || **RQ_COR_ACC_NUM**

@@ -1,4 +1,4 @@
-# Delete the deal's connection with the CRM entity crm.activity.binding.delete
+# Delete the deal's connection with the CRM object crm.activity.binding.delete
 
 {% note tip "" %}
 
@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: user with permission to edit CRM entities
 
-The method `crm.activity.binding.delete` removes the connection of a deal with a CRM entity. If the deal is linked to only one entity, this connection cannot be deleted.
+The method `crm.activity.binding.delete` removes the connection of a deal with a CRM object. If the deal is linked to only one entity, this connection cannot be deleted.
 
 ## Method Parameters
 
@@ -22,9 +22,9 @@ The method `crm.activity.binding.delete` removes the connection of a deal with a
 || **activityId*** 
 [`integer`](../../../../data-types.md) | Integer identifier of the deal in the timeline, for example `999` ||
 || **entityTypeId*** 
-[`integer`](../../../../data-types.md) | [Integer identifier of the CRM entity type](../../../data-types.md#object_type) to which the deal connection is being removed, for example `2` for a deal ||
+[`integer`](../../../../data-types.md) | [Integer identifier of the CRM object type](../../../data-types.md#object_type) to which the deal connection is being removed, for example `2` for a deal ||
 || **entityId*** 
-[`integer`](../../../../data-types.md) | Integer identifier of the CRM entity to which the deal connection is being removed, for example `1` ||
+[`integer`](../../../../data-types.md) | Integer identifier of the CRM object to which the deal connection is being removed, for example `1` ||
 |#
 
 ## Code Examples
@@ -136,8 +136,8 @@ The method `crm.activity.binding.delete` removes the connection of a deal with a
                 'crm.activity.binding.delete',
                 [
                     'activityId'   => 999, // Deal ID
-                    'entityTypeId' => 2, // CRM entity type ID
-                    'entityId'     => 1 // CRM entity ID
+                    'entityTypeId' => 2, // CRM object type ID
+                    'entityId'     => 1 // CRM object ID
                 ]
             );
     
@@ -160,8 +160,8 @@ The method `crm.activity.binding.delete` removes the connection of a deal with a
         'crm.activity.binding.delete',
         {
             activityId: 999, // Deal ID
-            entityTypeId: 2, // CRM entity type ID
-            entityId: 1 // CRM entity ID
+            entityTypeId: 2, // CRM object type ID
+            entityId: 1 // CRM object ID
         },
         function(result) {
             if (result.error()) {
@@ -182,8 +182,8 @@ The method `crm.activity.binding.delete` removes the connection of a deal with a
         'crm.activity.binding.delete',
         [
             'activityId' => 999, // Deal ID
-            'entityTypeId' => 2, // CRM entity type ID
-            'entityId' => 1 // CRM entity ID
+            'entityTypeId' => 2, // CRM object type ID
+            'entityId' => 1 // CRM object ID
         ]
     );
 

@@ -2,7 +2,7 @@
 
 > Scope: [`crm`](../../../api-reference/scopes/permissions.md)
 >
-> Who can execute the method: users with permission to modify the CRM entity
+> Who can execute the method: users with permission to modify the CRM object
 
 {% note tip "" %}
 
@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-The key parameter for adding a comment to a CRM entity is the [object type identifier](../../../api-reference/crm/data-types.md#object_type). This identifier indicates which type of object the comment will be added to: a deal, a lead, or a specific smart process. The identifier is used in the parameters `OWNER_TYPE`, `OWNER_TYPE_ID`, `ENTITY_TYPE`, and `ENTITY_TYPE_ID` of the method groups [crm.item.*](../../../api-reference/crm/universal/index.md), [crm.timeline.*](../../../api-reference/crm/timeline/index.md), and [crm.activity.*](../../../api-reference/crm/timeline/activities/index.md).
+The key parameter for adding a comment to a CRM object is the [object type identifier](../../../api-reference/crm/data-types.md#object_type). This identifier indicates which type of object the comment will be added to: a deal, a lead, or a specific smart process. The identifier is used in the parameters `OWNER_TYPE`, `OWNER_TYPE_ID`, `ENTITY_TYPE`, and `ENTITY_TYPE_ID` of the method groups [crm.item.*](../../../api-reference/crm/universal/index.md), [crm.timeline.*](../../../api-reference/crm/timeline/index.md), and [crm.activity.*](../../../api-reference/crm/timeline/activities/index.md).
 
 In CRM, there are two types of object identifiers:
 * **Predefined** — these are identifiers for [leads](../../../api-reference/crm/leads/index.md), [deals](../../../api-reference/crm/deals/index.md), [companies](../../../api-reference/crm/companies/index.md), [contacts](../../../api-reference/crm/contacts/index.md), [invoices](../../../api-reference/crm/universal/invoice.md), and [estimates](../../../api-reference/crm/quote/index.md). The identifiers for predefined objects can be found in the [documentation](../../../api-reference/crm/data-types.md#object_type).

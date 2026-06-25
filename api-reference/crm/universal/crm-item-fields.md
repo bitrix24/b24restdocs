@@ -2,7 +2,7 @@
 
 {% note tip "" %}
 
-If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../ai-tools/mcp.md) so the assistant can utilize the official REST documentation.
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../ai-tools/mcp.md) so that the assistant can utilize the official REST documentation.
 
 {% endnote %}
 
@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 > 
 > Who can execute the method: any user with "read" access permission for CRM object elements.
 
-This method retrieves a list of fields and their configuration for elements of type `entityTypeId`.
+This method retrieves a list of fields and their configurations for elements of type `entityTypeId`.
 
 {% note warning %}
 
@@ -20,16 +20,16 @@ Elements belonging to different types of CRM objects will have different sets of
 
 ## Method Parameters
 
-{% include [Footnote on parameters](../../../_includes/required.md) %}
+{% include [Note on parameters](../../../_includes/required.md) %}
 
-#| 
+#|
 || **Name**
 `type` | **Description** ||
-|| **entityTypeId*** 
+|| **entityTypeId***
 [`integer`][1] | Identifier of the [system](../data-types.md#object_type) or [custom type](./user-defined-object-types/index.md) whose fields we want to retrieve.
 
 Numeric values for system types (Lead — 1, Deal — 2, Contact — 3, Company — 4, Invoice — 31, etc.) are listed in the [CRM object types reference](../data-types.md#object_type). The identifier for the SPA can be obtained using the [crm.type.list](./user-defined-object-types/crm-type-list.md) method. ||
-|| **useOriginalUfNames** 
+|| **useOriginalUfNames**
 [`boolean`][1] | This parameter controls the format of custom field names in the response.   
 Possible values:
 
@@ -41,7 +41,7 @@ Default is `N` ||
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 Retrieve the list of fields for SPA elements with `entityTypeId = 1268`
 
@@ -190,26 +190,56 @@ Retrieve the list of fields for SPA elements with `entityTypeId = 1268`
     }
     ```
 
+- Python
+
+    Example
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.item.fields(
+            entity_type_id=1268,
+            use_original_uf_names=False,
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - BX24.js
 
     ```js
-    BX24.callMethod(
-        'crm.item.fields',
-        {
-            entityTypeId: 1268,
-            useOriginalUfNames: 'N',
-        },
-        (result) => {
-            if (result.error())
+        BX24.callMethod(
+            'crm.item.fields',
             {
-                console.error(result.error());
+                entityTypeId: 1268,
+                useOriginalUfNames: 'N',
+            },
+            (result) => {
+                if (result.error())
+                {
+                    console.error(result.error());
 
-                return;
-            }
+                    return;
+                }
 
-            console.info(result.data());
-        },
-    );
+                console.info(result.data());
+            },
+        );
     ```
 
 - PHP CRest
@@ -234,7 +264,7 @@ Retrieve the list of fields for SPA elements with `entityTypeId = 1268`
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -257,7 +287,7 @@ HTTP Status: **200**
                 "isImmutable": false,
                 "isMultiple": false,
                 "isDynamic": false,
-                "title": "Title",
+                "title": "Name",
                 "upperName": "TITLE"
             },
             "xmlId": {
@@ -267,7 +297,7 @@ HTTP Status: **200**
                 "isImmutable": false,
                 "isMultiple": false,
                 "isDynamic": false,
-                "title": "External Code",
+                "title": "External code",
                 "upperName": "XML_ID"
             },
             "createdTime": {
@@ -277,7 +307,7 @@ HTTP Status: **200**
                 "isImmutable": false,
                 "isMultiple": false,
                 "isDynamic": false,
-                "title": "Created Time",
+                "title": "Created at",
                 "upperName": "CREATED_TIME"
             },
             "updatedTime": {
@@ -287,7 +317,7 @@ HTTP Status: **200**
                 "isImmutable": false,
                 "isMultiple": false,
                 "isDynamic": false,
-                "title": "Updated Time",
+                "title": "Updated at",
                 "upperName": "UPDATED_TIME"
             },
             "createdBy": {
@@ -297,7 +327,7 @@ HTTP Status: **200**
                 "isImmutable": false,
                 "isMultiple": false,
                 "isDynamic": false,
-                "title": "Created By",
+                "title": "Created by",
                 "upperName": "CREATED_BY"
             },
             "updatedBy": {
@@ -307,7 +337,7 @@ HTTP Status: **200**
                 "isImmutable": false,
                 "isMultiple": false,
                 "isDynamic": false,
-                "title": "Updated By",
+                "title": "Updated by",
                 "upperName": "UPDATED_BY"
             },
             "assignedById": {
@@ -317,7 +347,7 @@ HTTP Status: **200**
                 "isImmutable": false,
                 "isMultiple": false,
                 "isDynamic": false,
-                "title": "Responsible",
+                "title": "Assigned to",
                 "upperName": "ASSIGNED_BY_ID"
             },
             "opened": {
@@ -327,7 +357,7 @@ HTTP Status: **200**
                 "isImmutable": false,
                 "isMultiple": false,
                 "isDynamic": false,
-                "title": "Available to All",
+                "title": "Publicly available",
                 "upperName": "OPENED"
             },
             "webformId": {
@@ -337,7 +367,7 @@ HTTP Status: **200**
                 "isImmutable": false,
                 "isMultiple": false,
                 "isDynamic": false,
-                "title": "Created by CRM Form",
+                "title": "Created by CRM form",
                 "upperName": "WEBFORM_ID"
             },
             "begindate": {
@@ -347,7 +377,7 @@ HTTP Status: **200**
                 "isImmutable": false,
                 "isMultiple": false,
                 "isDynamic": false,
-                "title": "Start Date",
+                "title": "Start date",
                 "upperName": "BEGINDATE"
             },
             "closedate": {
@@ -357,7 +387,7 @@ HTTP Status: **200**
                 "isImmutable": false,
                 "isMultiple": false,
                 "isDynamic": false,
-                "title": "End Date",
+                "title": "End date",
                 "upperName": "CLOSEDATE"
             },
             "companyId": {
@@ -421,7 +451,7 @@ HTTP Status: **200**
                 "isImmutable": false,
                 "isMultiple": false,
                 "isDynamic": false,
-                "title": "Sales Funnel",
+                "title": "Pipeline",
                 "upperName": "CATEGORY_ID"
             },
             "movedTime": {
@@ -431,7 +461,7 @@ HTTP Status: **200**
                 "isImmutable": false,
                 "isMultiple": false,
                 "isDynamic": false,
-                "title": "Moved Time",
+                "title": "Moved at",
                 "upperName": "MOVED_TIME"
             },
             "movedBy": {
@@ -441,7 +471,7 @@ HTTP Status: **200**
                 "isImmutable": false,
                 "isMultiple": false,
                 "isDynamic": false,
-                "title": "Moved By",
+                "title": "Moved by",
                 "upperName": "MOVED_BY"
             },
             "stageId": {
@@ -463,7 +493,7 @@ HTTP Status: **200**
                 "isMultiple": false,
                 "isDynamic": false,
                 "statusType": "DYNAMIC_1268_STAGE_52",
-                "title": "Previous Stage",
+                "title": "Previous stage",
                 "upperName": "PREVIOUS_STAGE_ID"
             },
             "sourceId": {
@@ -484,7 +514,7 @@ HTTP Status: **200**
                 "isImmutable": false,
                 "isMultiple": false,
                 "isDynamic": false,
-                "title": "Additional Source Information",
+                "title": "Additional source info",
                 "upperName": "SOURCE_DESCRIPTION"
             },
             "currencyId": {
@@ -504,7 +534,7 @@ HTTP Status: **200**
                 "isImmutable": false,
                 "isMultiple": false,
                 "isDynamic": false,
-                "title": "Manual Opportunity Mode",
+                "title": "Amount calculation mode",
                 "upperName": "IS_MANUAL_OPPORTUNITY"
             },
             "opportunity": {
@@ -524,7 +554,7 @@ HTTP Status: **200**
                 "isImmutable": false,
                 "isMultiple": false,
                 "isDynamic": false,
-                "title": "Tax Amount",
+                "title": "Tax amount",
                 "upperName": "TAX_VALUE"
             },
             "mycompanyId": {
@@ -534,7 +564,7 @@ HTTP Status: **200**
                 "isImmutable": false,
                 "isMultiple": false,
                 "isDynamic": false,
-                "title": "Your Company Details",
+                "title": "Your company details",
                 "settings": {
                     "isMyCompany": true,
                     "parentEntityTypeId": 4,
@@ -549,7 +579,7 @@ HTTP Status: **200**
                 "isImmutable": false,
                 "isMultiple": false,
                 "isDynamic": false,
-                "title": "Last Activity By",
+                "title": "Last activity in timeline by",
                 "upperName": "LAST_ACTIVITY_BY"
             },
             "lastActivityTime": {
@@ -559,7 +589,7 @@ HTTP Status: **200**
                 "isImmutable": false,
                 "isMultiple": false,
                 "isDynamic": false,
-                "title": "Last Activity",
+                "title": "Last activity",
                 "upperName": "LAST_ACTIVITY_TIME"
             },
             "parentId1": {
@@ -595,7 +625,7 @@ HTTP Status: **200**
                 "isImmutable": false,
                 "isMultiple": false,
                 "isDynamic": false,
-                "title": "SPA #16",
+                "title": "Smart Process #16",
                 "settings": {
                     "parentEntityTypeId": 1248
                 },
@@ -617,7 +647,7 @@ HTTP Status: **200**
 
 ### Returned Data
 
-#| 
+#|
 || **Name**
 `type` | **Description** ||
 || **result**
@@ -637,7 +667,7 @@ where:
 - `field_n` — field of the element
 - `value_n` — information about the field in the format [`crm_rest_field_description`](../data-types.md#crm_rest_field_description)
 
-|| 
+||
 || **time**
 [`time`][1]   | Information about the request execution time ||
 |#
@@ -645,33 +675,34 @@ where:
 {% note info " " %}
 
 By default, custom field names are returned in camelCase, e.g., `ufCrm2_1639669411830`.
-When passing the `useOriginalUfNames` parameter with the value `Y`, custom fields will be returned with their original names, e.g., `UF_CRM_2_1639669411830`.
+When passing the parameter `useOriginalUfNames` with the value `Y`, custom fields will be returned with their original names, for example `UF_CRM_2_1639669411830`.
 
 {% endnote %}
 
 ## Error Handling
 
-HTTP Status: **400**, **403**
+HTTP status: **400**, **403**
 
 ```json
 {
     "error": "NOT_FOUND", 
-    "error_description": "SPA not found"
+    "error_description": "Smart process not found"
 }
 ```
 
-{% include notitle [error handling](../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../_includes/error-info.md) %}
+
 
 ### Possible Error Codes
 
-#| 
+#|
 || **Status** | **Code** | **Description** | **Value** ||
-|| `403`      | `allowed_only_intranet_user` | Action allowed only for intranet users | User is not an intranet user                 ||
+|| `403`      | `allowed_only_intranet_user` | Action is allowed only to intranet users | User is not an intranet user                 ||
 || `400`      | `NOT_FOUND` | SPA not found                          | Occurs when an invalid `entityTypeId` is passed              ||
-|| `400`      | `ACCESS_DENIED` | You do not have permission to view this element        | User does not have read access permission for elements of type `entityTypeId` ||
+|| `400`      | `ACCESS_DENIED` | You do not have permission to view this item        | User does not have read access permission for elements of type `entityTypeId` ||
 |#
 
-{% include [system errors](./../../../_includes/system-errors.md) %}
+{% include [System errors](./../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

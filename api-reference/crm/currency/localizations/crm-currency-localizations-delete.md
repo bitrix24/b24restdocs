@@ -1,4 +1,4 @@
-# Delete currency localizations crm.currency.localizations.delete
+# Delete Currency Localizations crm.currency.localizations.delete
 
 {% note tip "" %}
 
@@ -14,7 +14,7 @@ This method deletes currency localizations for the specified languages.
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 #|
 ||  **Name**
@@ -24,7 +24,7 @@ This method deletes currency localizations for the specified languages.
 
 Corresponds to the ISO 4217 standard.
 
-The identifier can be obtained using the [crm.currency.list](../crm-currency-list.md) method.
+The identifier can be obtained using the [crm.currency.list](../crm-currency-list.md) method
  ||
 || **lids***
 [`array`](../../../data-types.md) | Array of language identifiers for which localizations need to be deleted ||
@@ -42,8 +42,8 @@ The identifier can be obtained using the [crm.currency.list](../crm-currency-lis
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":5}' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.automatedsolution.delete
+    -d '{"id":"CLF","lids":["en","de"]}' \
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.currency.localizations.delete
     ```
 
 - cURL (OAuth)
@@ -52,8 +52,8 @@ The identifier can be obtained using the [crm.currency.list](../crm-currency-lis
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":5,"auth":"**put_access_token_here**"}' \
-    https://**put_your_bitrix24_address**/rest/crm.automatedsolution.delete
+    -d '{"id":"CLF","lids":["en","de"],"auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/crm.currency.localizations.delete
     ```
 
 - JS (TS)
@@ -156,6 +156,37 @@ The identifier can be obtained using the [crm.currency.list](../crm-currency-lis
     }
     ```
 
+- Python
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.currency.localizations.delete(
+            bitrix_id="CLF",
+            lids=[
+                "en",
+                "de",
+            ],
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected Error: {error}")
+    ```
+
 - BX24.js
 
     ```js
@@ -194,9 +225,13 @@ The identifier can be obtained using the [crm.currency.list](../crm-currency-lis
     require_once('crest.php');
 
     $result = CRest::call(
-        'crm.automatedsolution.delete',
+        'crm.currency.localizations.delete',
         [
-            'id' => 5
+            'id'   => 'CLF',
+            'lids' => [
+                'en',
+                'de'
+            ]
         ]
     );
 
@@ -254,19 +289,19 @@ HTTP status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
 || **Code** | **Description** | **Value** ||
-|| Empty string | Access denied. | Insufficient access rights ||
+|| Empty string | Access denied. | Insufficient access rights. ||
 || Empty string | The parameter id is invalid or not defined | Empty currency identifier ||
 |#
 
-{% include [system errors](../../../../_includes/system-errors.md) %}
+{% include [System errors](../../../../_includes/system-errors.md) %}
 
-## Continue Learning 
+## Continue Learning
 
 - [{#T}](./crm-currency-localizations-get.md)
 - [{#T}](./crm-currency-localizations-set.md)

@@ -147,6 +147,31 @@ The method `crm.duplicate.volatileType.unregister` removes a custom field from t
     }
     ```
 
+- Python
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.duplicate.volatile_type.unregister(bitrix_id=101).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - BX24.js
 
     ```js
@@ -185,7 +210,7 @@ The method `crm.duplicate.volatileType.unregister` removes a custom field from t
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -195,8 +220,8 @@ HTTP Status: **200**
         "finish": 1750935024.719883,
         "duration": 0.1169898509979248,
         "processing": 0.05846285820007324,
-        "date_start": "2025-06-26T13:50:24+02:00",
-        "date_finish": "2025-06-26T13:50:24+02:00",
+        "date_start": "2025-06-26T13:50:24+03:00",
+        "date_finish": "2025-06-26T13:50:24+03:00",
         "operating_reset_at": 1750935624,
         "operating": 0
     }
@@ -211,12 +236,12 @@ HTTP Status: **200**
 || **result**
 [`boolean`](../../../data-types.md) | Root element of the response, contains `true` in case of success ||
 || **time**
-[`time`](../../../data-types.md#time) | Information about the execution time of the request ||
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -225,7 +250,7 @@ HTTP Status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
@@ -234,10 +259,10 @@ HTTP Status: **400**
 || `400` | `TYPE_IS_NOT_ASSIGNED` | Identifier of the added field record not found ||
 |#
 
-{% include [system errors](./../../../../_includes/system-errors.md) %}
+{% include [System errors](./../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
 - [crm.duplicate.volatileType.fields](./crm-duplicate-volatile-type-fields.md)
 - [crm.duplicate.volatileType.list](./crm-duplicate-volatile-type-list.md)
-- [crm.duplicate.volatileType.register](./crm-duplicate-volatile-type-register.md)
+- [crm.duplicate.volatileType.register](./crm-duplicate-volatile-type-register.md) 

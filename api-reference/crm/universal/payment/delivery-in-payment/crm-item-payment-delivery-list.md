@@ -14,14 +14,14 @@ This method retrieves a list of delivery items for a specific payment.
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **paymentId***
-[`sale_order_payment.id`](../../../../sale/data-types.md#sale_order_payment) | Payment identifier.
-Can be obtained using the [`sale.payment.list`](../../../../sale/payment/sale-payment-list.md) method ||
+[`sale_order_payment.id`](../../../../sale/data-types.md#sale_order_payment) | Identifier of the payment. 
+Can be obtained using the method [`sale.payment.list`](../../../../sale/payment/sale-payment-list.md) ||
 || **filter***
 [`object`](../../../../data-types.md) | Object for filtering selected delivery items in the format `{"field_1": "value_1", ... "field_N": "value_N"}`.
  
@@ -63,12 +63,12 @@ Possible values for `order`:
 
 - `asc` — ascending order
 - `desc` — descending order
-||
+ ||
 |#
 
 ## Code Examples
 
-{% include [Note on Examples](../../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -218,6 +218,103 @@ Possible values for `order`:
     }
     ```
 
+- Python
+
+    Example
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.item.payment.delivery.list(
+            payment_id=1040,
+            filter={
+                "@id": [1201],
+                ">=quantity": 1,
+            },
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
+    Example `as_list`
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.item.payment.delivery.list(
+            payment_id=1040,
+            filter={
+                "@id": [1201],
+                ">=quantity": 1,
+            },
+        ).as_list().response
+        result = bitrix_response.result
+        for item in result:
+            print(item)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
+    Example `as_list_fast`
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.item.payment.delivery.list(
+            payment_id=1040,
+            filter={
+                "@id": [1201],
+                ">=quantity": 1,
+            },
+        ).as_list_fast(descending=True).response
+        result = bitrix_response.result
+        for item in result:
+            print(item)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - BX24.js
 
     ```js
@@ -262,9 +359,9 @@ Possible values for `order`:
 
 {% endlist %}
 
-## Successful Response
+## Response on Success
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -281,8 +378,8 @@ HTTP Status: **200**
       "finish":1716301849.095721,
       "duration":0.30313706398010254,
       "processing":0.05563783645629883,
-      "date_start":"2024-05-21T17:30:48+02:00",
-      "date_finish":"2024-05-21T17:30:49+02:00"
+      "date_start":"2024-05-21T17:30:48+03:00",
+      "date_finish":"2024-05-21T17:30:49+03:00"
    }
 }
 ```
@@ -306,16 +403,16 @@ HTTP Status: **200**
 || **id**
 [`integer`](../../../../data-types.md) | Identifier of the delivery item in the payment ||
 || **paymentId**
-[`sale_order_payment.id`](../../../../sale/data-types.md#sale_order_payment) | Identifier of the payment ||
+[`sale_order_payment.id`](../../../../sale/data-types.md#sale_order_payment) | Payment identifier  ||
 || **quantity**
 [`double`](../../../../data-types.md) | Quantity ||
 || **deliveryId**
-[`sale_order_shipment.id`](../../../../sale/data-types.md#sale_order_shipment)  | Identifier of the delivery ||
+[`sale_order_shipment.id`](../../../../sale/data-types.md#sale_order_shipment)  | Delivery identifier ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -324,7 +421,7 @@ HTTP Status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
@@ -340,7 +437,7 @@ HTTP Status: **400**
 
 For business errors, the method may return `error: 0`. In this case, refer to `error_description` and match it with the list of errors above.
 
-{% include notitle [system errors](../../../../../_includes/system-errors.md) %}
+{% include notitle [System errors](../../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

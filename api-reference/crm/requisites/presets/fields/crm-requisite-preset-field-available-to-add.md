@@ -10,11 +10,11 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: any user
 
-The method returns fields available for addition to the specified requisite template.
+Returns the fields available for addition to the specified company details template.
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -157,6 +157,37 @@ Fields with the prefix `UF_` in the response are custom fields (see [methods](..
     }
     ```
 
+- Python
+
+    Example
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.requisite.preset.field.availabletoadd(
+            preset={
+                "ID": 27,
+            },
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - BX24.js
 
     ```js
@@ -199,7 +230,7 @@ Fields with the prefix `UF_` in the response are custom fields (see [methods](..
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -252,7 +283,7 @@ HTTP Status: **200**
 || **result**
 [`array`](../../../../data-types.md) | An array with the names of fields that can be added to the specified requisite template ||
 || **time**
-[`time`](../../../../data-types.md) | Information about the execution time of the request ||
+[`time`](../../../../data-types.md) | Information about the request execution time ||
 |#
 
 ### Field Descriptions
@@ -261,11 +292,11 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **RQ_FIRST_NAME**
-[`string`](../../../../data-types.md) | First name ||
+[`string`](../../../../data-types.md) | First Name ||
 || **RQ_LAST_NAME**
-[`string`](../../../../data-types.md) | Last name ||
+[`string`](../../../../data-types.md) | Last Name ||
 || **RQ_SECOND_NAME**
-[`string`](../../../../data-types.md) | Middle name ||
+[`string`](../../../../data-types.md) | Patronymic ||
 || **RQ_COMPANY_NAME**
 [`string`](../../../../data-types.md) | Short name of the organization ||
 || **RQ_COMPANY_FULL_NAME**
@@ -297,21 +328,21 @@ HTTP Status: **200**
 || **RQ_IDENT_DOC_DEP_CODE**
 [`string`](../../../../data-types.md) | Department code ||
 || **RQ_INN**
-[`string`](../../../../data-types.md) | Tax Identification Number ||
+[`string`](../../../../data-types.md) | TIN ||
 || **RQ_KPP**
-[`string`](../../../../data-types.md) | Tax Registration Reason Code ||
+[`string`](../../../../data-types.md) | KPP ||
 || **RQ_IFNS**
-[`string`](../../../../data-types.md) | Tax Authority Code ||
+[`string`](../../../../data-types.md) | IFNS ||
 || **RQ_OGRN**
-[`string`](../../../../data-types.md) | Primary State Registration Number ||
+[`string`](../../../../data-types.md) | OGRN ||
 || **RQ_OGRNIP**
-[`string`](../../../../data-types.md) | Individual Entrepreneur Registration Number ||
+[`string`](../../../../data-types.md) | OGRNIP ||
 || **RQ_OKPO**
-[`string`](../../../../data-types.md) | All-Russian Classifier of Enterprises and Organizations Code ||
+[`string`](../../../../data-types.md) | OKPO ||
 || **RQ_OKTMO**
-[`string`](../../../../data-types.md) | All-Russian Classifier of Territories Code ||
+[`string`](../../../../data-types.md) | OKTMO ||
 || **RQ_OKVED**
-[`string`](../../../../data-types.md) | All-Russian Classifier of Economic Activities Code ||
+[`string`](../../../../data-types.md) | OKVED ||
 || **RQ_ST_CERT_SER**
 [`string`](../../../../data-types.md) | Series of State Registration Certificate ||
 || **RQ_ST_CERT_NUM**
@@ -330,7 +361,7 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **40x**, **50x**
+HTTP status: **40x**, **50x**
 
 ```json
 {
@@ -339,16 +370,16 @@ HTTP Status: **40x**, **50x**
 }
 ```
 
-{% include notitle [error handling](../../../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
-#|  
+#|
 || **Code** | **Description** ||
-|| `Template not found` | The template for which to retrieve the list of available fields was not found ||
+|| Template not found | The template for which to retrieve the list of available fields was not found ||
 |#
 
-{% include [system errors](../../../../../_includes/system-errors.md) %}
+{% include [System errors](../../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

@@ -10,7 +10,8 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: any user
 
-The method `crm.status.entity.items` returns all directory items by the identifier `ENTITY_ID`, sorted by the `SORT` field. This method is similar to [crm.status.list](crm-status-list.md), except that the latter allows you to define sorting rules.
+The `crm.status.entity.items` method retrieves all directory items by the `ENTITY_ID` identifier, sorted by the `SORT` field. 
+This method is similar to [crm.status.list](crm-status-list.md), except that the latter allows you to define sorting rules.
 
 ## Method Parameters
 
@@ -20,7 +21,7 @@ The method `crm.status.entity.items` returns all directory items by the identifi
 || **Name**
 `type` | **Description** ||
 || **entityId*** 
-[`string`](../../data-types.md) | Type of the directory, for example `DEAL_STAGE`, `SOURCE`. You can get a list of types using the method [crm.status.entity.types](./crm-status-entity-types.md) ||
+[`string`](../../data-types.md) | Type of directory, for example `DEAL_STAGE`, `SOURCE`. You can get the list of types using the method [crm.status.entity.types](./crm-status-entity-types.md) ||
 |#
 
 ## Code Examples
@@ -155,6 +156,35 @@ The method `crm.status.entity.items` returns all directory items by the identifi
     }
     ```
 
+- Python
+
+    Example
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.status.entity.items(
+            entity_id="DEAL_STAGE",
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - BX24.js
 
     ```js
@@ -204,37 +234,37 @@ HTTP status: **200**
             "STATUS_ID": "NEW"
         },
         {
-            "NAME": "Document Preparation",
+            "NAME": "Document preparation",
             "SORT": 20,
             "STATUS_ID": "PREPARATION"
         },
         {
-            "NAME": "Prepayment Invoice",
+            "NAME": "Prepayment invoice",
             "SORT": 30,
             "STATUS_ID": "PREPAYMENT_INVOICE"
         },
         {
-            "NAME": "In Progress",
+            "NAME": "In progress",
             "SORT": 40,
             "STATUS_ID": "EXECUTING"
         },
         {
-            "NAME": "Final Invoice",
+            "NAME": "Final invoice",
             "SORT": 50,
             "STATUS_ID": "FINAL_INVOICE"
         },
         {
-            "NAME": "Deal Won",
+            "NAME": "Deal successful",
             "SORT": 60,
             "STATUS_ID": "WON"
         },
         {
-            "NAME": "Deal Lost",
+            "NAME": "Deal failed",
             "SORT": 70,
             "STATUS_ID": "LOSE"
         },
         {
-            "NAME": "Analyzing Cause of Loss",
+            "NAME": "Failure reason analysis",
             "SORT": 80,
             "STATUS_ID": "APOLOGY"
         }
@@ -244,8 +274,8 @@ HTTP status: **200**
         "finish": 1752144806.76889,
         "duration": 0.06553196907043457,
         "processing": 0.010729789733886719,
-        "date_start": "2025-07-10T13:53:26+02:00",
-        "date_finish": "2025-07-10T13:53:26+02:00",
+        "date_start": "2025-07-10T13:53:26+03:00",
+        "date_finish": "2025-07-10T13:53:26+03:00",
         "operating_reset_at": 1752145406,
         "operating": 0
     }
@@ -270,11 +300,11 @@ HTTP status: **400**
 ```json
 {
     "error": "The parameter entityId is not defined or invalid.",
-    "error_description": "The identifier of the directory is not specified or is incorrect."
+    "error_description": "The directory ID is not specified or is incorrect."
 }
 ```
 
-{% include notitle [error handling](../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
@@ -284,7 +314,7 @@ HTTP status: **400**
 || `400`     | `The parameter entityId is not defined or invalid.` | The identifier of the directory is not specified or is incorrect ||
 |#
 
-{% include [system errors](../../../_includes/system-errors.md) %}
+{% include [System errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

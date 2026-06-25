@@ -12,7 +12,7 @@ Online store orders can be linked to CRM entities. This allows you to use order 
 
 ## Linking to Other Entities
 
-**Online Store Orders.** The order identifier `orderId` links the order record to a CRM entity.
+**Online Store Orders.** The order identifier `orderId` links the order record to a CRM object.
 
 **CRM Entities.** The linking is supported for deals and invoices using the parameter pair `ownerTypeId` and `ownerId`. The first defines the type of entity, while the second specifies the identifier of a particular deal or invoice.
 
@@ -34,8 +34,8 @@ Online store orders can be linked to CRM entities. This allows you to use order 
 
 #|
 || **Method** | **Description** ||
-|| [crm.orderentity.add](./crm-order-entity-add.md) | Creates a link between an order and a CRM entity ||
+|| [crm.orderentity.add](./crm-order-entity-add.md) | Creates a link between an order and a CRM object ||
 || [crm.orderentity.list](./crm-order-entity-list.md) | Returns a list of links between orders and CRM entities ||
-|| [crm.orderentity.deleteByFilter](./crm-order-entity-delete-by-filter.md) | Deletes a link between an order and a CRM entity ||
+|| [crm.orderentity.deleteByFilter](./crm-order-entity-delete-by-filter.md) | Deletes a link between an order and a CRM object ||
 || [crm.orderentity.getFields](./crm-order-entity-get-fields.md) | Returns the fields of the order link ||
 |#

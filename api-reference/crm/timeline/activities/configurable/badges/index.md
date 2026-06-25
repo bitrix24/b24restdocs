@@ -8,7 +8,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Quick navigation: [all methods](#all-methods)
 
-A `badge` is an icon on the card of a CRM entity in the kanban. The badge helps highlight entities that require attention. If multiple badges are added to an entity, only the most recently added badge will be displayed.
+A `badge` is an icon on the card of a CRM object in the kanban. The badge helps highlight entities that require attention. If multiple badges are added to an entity, only the most recently added badge will be displayed.
 
 ![Last badge](./_images/badge.png)
 

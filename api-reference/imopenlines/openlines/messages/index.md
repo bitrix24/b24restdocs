@@ -6,7 +6,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-Messages in open channel chats can be sent by employees and chatbots. Sent messages can be saved as quick reply templates for reuse. Each open channel chat is linked to a CRM entity.
+Messages in open channel chats can be sent by employees and chatbots. Sent messages can be saved as quick reply templates for reuse. Each open channel chat is linked to a CRM object.
 
 > Quick Navigation: [All Methods](#all-methods)
 
@@ -36,7 +36,7 @@ Messages in open channel chats can be sent by employees and chatbots. Sent messa
 
 ## How to Send a Message from CRM
 
-1. Find the chat linked to the CRM entity. Use the [imopenlines.crm.chat.get](../chats/imopenlines-crm-chat-get.md) or [imopenlines.dialog.get](../sessions/imopenlines-dialog-get.md) method.
+1. Find the chat linked to the CRM object. Use the [imopenlines.crm.chat.get](../chats/imopenlines-crm-chat-get.md) or [imopenlines.dialog.get](../sessions/imopenlines-dialog-get.md) method.
 2. Retrieve the ID of the employee or chatbot using the [user.get](../../../user/user-get.md), [user.search](../../../user/user-search.md), or [imbot.bot.list](../../../chat-bots/outdated/bots/imbot-bot-list.md) methods.
 3. Pass the data to the [imopenlines.crm.message.add](./imopenlines-crm-message-add.md) method to send the message.
 
@@ -53,6 +53,6 @@ Messages in open channel chats can be sent by employees and chatbots. Sent messa
 
 #|
 || **Method** | **Description** ||
-|| [imopenlines.crm.message.add](./imopenlines-crm-message-add.md) | Sends a message in the chat linked to the CRM entity ||
+|| [imopenlines.crm.message.add](./imopenlines-crm-message-add.md) | Sends a message in the chat linked to the CRM object ||
 || [imopenlines.message.quick.save](./imopenlines-message-quick-save.md) | Saves a message as a quick reply || 
 |#

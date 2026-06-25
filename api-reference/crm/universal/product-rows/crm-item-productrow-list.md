@@ -1,4 +1,4 @@
-# Get product rows of the CRM object crm.item.productrow.list
+# Get Product Rows of the CRM Object crm.item.productrow.list
 
 {% note tip "" %}
 
@@ -8,13 +8,13 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: requires read access permission for the CRM object whose product rows are being selected.
+> Who can execute the method: requires read access permission for the CRM object whose product rows are being selected
 
-The method retrieves product rows of the CRM object.
+Retrieves product rows of the CRM object.
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -63,15 +63,15 @@ Possible values for `order`:
 - `desc` — in descending order
  ||
 || **start**
-[`integer`](../../../data-types.md) | Parameter used for managing pagination.
-
+[`integer`](../../../data-types.md) | This parameter is used for pagination control.
+ 
 The page size of results is always static: 50 records.
-
+ 
 To select the second page of results, you need to pass the value `50`. To select the third page of results, the value is `100`, and so on.
-
-The formula for calculating the value of the `start` parameter:
-
-`start = (N-1) * 50`, where `N` — the number of the desired page
+ 
+The formula for calculating the `start` parameter value:
+ 
+`start = (N-1) * 50`, where `N` is the desired page number
  ||
 |#
 
@@ -257,6 +257,112 @@ The formula for calculating the value of the `start` parameter:
     }
     ```
 
+- Python
+
+    Example
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.item.productrow.list(
+            filter={
+                "=ownerType": "D",
+                "=ownerId": 13142,
+                ">price": 5000,
+            },
+            order={
+                "price": "desc",
+            },
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
+    Example `as_list`
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.item.productrow.list(
+            filter={
+                "=ownerType": "D",
+                "=ownerId": 13142,
+                ">price": 5000,
+            },
+            order={
+                "price": "desc",
+            },
+        ).as_list().response
+        result = bitrix_response.result
+        for item in result:
+            print(item)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
+    Example `as_list_fast`
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.item.productrow.list(
+            filter={
+                "=ownerType": "D",
+                "=ownerId": 13142,
+                ">price": 5000,
+            },
+            order={
+                "price": "desc",
+            },
+        ).as_list_fast(descending=True).response
+        result = bitrix_response.result
+        for item in result:
+            print(item)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - BX24.js
 
     ```js
@@ -307,74 +413,74 @@ The formula for calculating the value of the `start` parameter:
 
 {% endlist %}
 
-## Successful Response
+## Response on Success
 
 HTTP status: **200**
 
 ```json
 {
-   "result": {
-      "productRows": [
+   "result":{
+      "productRows":[
          {
-            "id": 17649,
-            "ownerId": 13142,
-            "ownerType": "D",
-            "productId": 9621,
-            "productName": "iphone 14",
-            "price": 90000,
-            "priceAccount": 90000,
-            "priceExclusive": 81818.18,
-            "priceNetto": 90909.09,
-            "priceBrutto": 100000,
-            "quantity": 3,
-            "discountTypeId": 2,
-            "discountRate": 10,
-            "discountSum": 9090.91,
-            "taxRate": 10,
-            "taxIncluded": "Y",
-            "customized": "Y",
-            "measureCode": 796,
-            "measureName": "pcs",
-            "sort": 20,
-            "xmlId": "sale_basket_8147",
-            "type": 4,
+            "id":17649,
+            "ownerId":13142,
+            "ownerType":"D",
+            "productId":9621,
+            "productName":"iphone 14",
+            "price":90000,
+            "priceAccount":90000,
+            "priceExclusive":81818.18,
+            "priceNetto":90909.09,
+            "priceBrutto":100000,
+            "quantity":3,
+            "discountTypeId":2,
+            "discountRate":10,
+            "discountSum":9090.91,
+            "taxRate":10,
+            "taxIncluded":"Y",
+            "customized":"Y",
+            "measureCode":796,
+            "measureName":"pcs",
+            "sort":20,
+            "xmlId":"sale_basket_8147",
+            "type":4,
             "storeId": 19
          },
          {
-            "id": 17650,
-            "ownerId": 13142,
-            "ownerType": "D",
-            "productId": 9623,
-            "productName": "iphone 10xs",
-            "price": 5550,
-            "priceAccount": 5550,
-            "priceExclusive": 5550,
-            "priceNetto": 5550,
-            "priceBrutto": 5550,
-            "quantity": 1,
-            "discountTypeId": 2,
-            "discountRate": 0,
-            "discountSum": 0,
-            "taxRate": null,
-            "taxIncluded": "Y",
-            "customized": "Y",
-            "measureCode": 6,
-            "measureName": "m",
-            "sort": 10,
-            "xmlId": "sale_basket_8148",
-            "type": 4,
+            "id":17650,
+            "ownerId":13142,
+            "ownerType":"D",
+            "productId":9623,
+            "productName":"iphone 10xs",
+            "price":5550,
+            "priceAccount":5550,
+            "priceExclusive":5550,
+            "priceNetto":5550,
+            "priceBrutto":5550,
+            "quantity":1,
+            "discountTypeId":2,
+            "discountRate":0,
+            "discountSum":0,
+            "taxRate":null,
+            "taxIncluded":"Y",
+            "customized":"Y",
+            "measureCode":6,
+            "measureName":"m",
+            "sort":10,
+            "xmlId":"sale_basket_8148",
+            "type":4,
             "storeId": 17
          }
       ]
    },
-   "total": 2,
-   "time": {
-      "start": 1716905609.186602,
-      "finish": 1716905609.434087,
-      "duration": 0.24748492240905762,
-      "processing": 0.06894516944885254,
-      "date_start": "2024-05-28T17:13:29+02:00",
-      "date_finish": "2024-05-28T17:13:29+02:00"
+   "total":2,
+   "time":{
+      "start":1716905609.186602,
+      "finish":1716905609.434087,
+      "duration":0.24748492240905762,
+      "processing":0.06894516944885254,
+      "date_start":"2024-05-28T17:13:29+03:00",
+      "date_finish":"2024-05-28T17:13:29+03:00"
    }
 }
 ```
@@ -387,11 +493,11 @@ HTTP status: **200**
 || **result**
 [`object`](../../../data-types.md) | Root element of the response ||
 || **productRows**
-[`crm_item_product_row[]`](../../data-types.md#crm_item_product_row) | Array of objects containing information about the selected product rows of the CRM object ||
+[`crm_item_product_row[]`](../../data-types.md#crm_item_product_row) | Array of objects containing information about the selected product rows of the CRM object  ||
 || **total**
-[`integer`](../../../data-types.md) | Total number of records found ||
+[`integer`](../../../data-types.md) | The total number of records found ||
 || **time**
-[`time`](../../../data-types.md) | Information about the execution time of the request ||
+[`time`](../../../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -400,12 +506,12 @@ HTTP status: **400**
 
 ```json
 {
-   "error": "ACCESS_DENIED",
-   "error_description": "Access denied"
+   "error":"ACCESS_DENIED",
+   "error_description":"Access denied"
 }
 ```
 
-{% include notitle [error handling](../../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
@@ -417,7 +523,7 @@ HTTP status: **400**
 || `0` | Other errors (e.g., fatal errors) ||
 |#
 
-{% include notitle [system errors](../../../../_includes/system-errors.md) %}
+{% include notitle [System errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
@@ -429,4 +535,3 @@ HTTP status: **400**
 - [{#T}](./crm-item-productrow-update.md)
 - [{#T}](./crm-item-productrow-get-available-for-payment.md)
 - [{#T}](./crm-item-productrow-delete.md)
-

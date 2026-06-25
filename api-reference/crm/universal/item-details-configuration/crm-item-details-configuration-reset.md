@@ -8,7 +8,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: access rights when executing the method depend on the provided data:
+> Who can execute the method: access rights during method execution depend on the provided data:
 >   - Any user has the right to reset their personal settings
 >   - A user can reset shared and others' settings only if they are an administrator
 
@@ -18,13 +18,13 @@ The method `crm.item.details.configuration.reset` resets the item card settings 
 
 ## Method Parameters
 
-{% include [Required Parameters Note](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **entityTypeId***
-[`integer`][1] | Identifier of the [system](./../../index.md) or [custom type](./../user-defined-object-types/index.md) of CRM objects ||
+[`integer`][1] | Identifier of the [system](./../../index.md) or [custom type](./../user-defined-object-types/index.md) of CRM entities ||
 || **userId**
 [`user`][1] | Identifier of the user whose configuration you want to reset.
 
@@ -42,18 +42,18 @@ By default, the value is `'P'` ||
 [`object`][1] | Additional parameters. Possible values and their structure are described [below](#extras) ||
 |#
 
-### extras
+### Parameter extras
 
-The `extras` parameter depends on the CRM object.
+The parameter in `extras` depends on the CRM object.
 
 #|
 || **CRM Object** | **Name** | **Description** ||
 || **SPA** | `categoryId` | Identifier of the SPA funnel. Can be obtained using [`crm.category.list`](./../category/crm-category-list.md).
 
-If not specified, the default funnel identifier for this SPA will be used ||
+If not specified, the default funnel identifier for this SPA is used ||
 || **Deal** | `dealCategoryId` | Identifier of the deal funnel. Can be obtained using [`crm.category.list`](./../category/crm-category-list.md).
 
-If not specified, the default funnel identifier for deals will be used ||
+If not specified, the default funnel identifier for deals is used ||
 || **Lead** | `leadCustomerType` | Type of leads. 
 
 Possible values:
@@ -64,9 +64,9 @@ Possible values:
 
 ## Code Examples
 
-{% include [Examples Note](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
-Reset the shared configuration for deal cards in the funnel with `id = 9` for the user with `id = 1`
+Reset the shared configuration for deal cards in the pipeline with `id = 9` for the user with `id = 1`
 
 {% list tabs %}
 
@@ -204,6 +204,40 @@ Reset the shared configuration for deal cards in the funnel with `id = 9` for th
     }
     ```
 
+- Python
+
+    Example
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.item.details.configuration.reset(
+            entity_type_id=2,
+            user_id=1,
+            scope="C",
+            extras={
+                "dealCategoryId": 9,
+            },
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - BX24.js
 
     ```js
@@ -256,7 +290,7 @@ Reset the shared configuration for deal cards in the funnel with `id = 9` for th
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -281,12 +315,12 @@ HTTP Status: **200**
 || **result**
 [`boolean`][1] | Root element of the response. Returns `true` if the settings were successfully reset ||
 || **time**
-[`time`][1] | Information about the execution time of the request ||
+[`time`][1] | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -295,17 +329,18 @@ HTTP Status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
+
 #|
 || **Code** | **Description** | **Value** ||
-|| Empty value | Parameter 'entityTypeId' is not defined | Required parameter `entityTypeId` is missing ||
+|| Empty value | Parameter 'entityTypeId' is not defined | Required parameter `entityTypeId` not provided ||
 || Empty value | The entity type '`entityTypeName`' is not supported in current context. | The method does not support this entity type ||
 || Empty value | Access denied. | The user does not have administrative rights ||
 |#
 
-{% include [system errors](./../../../../_includes/system-errors.md) %}
+{% include [System errors](./../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

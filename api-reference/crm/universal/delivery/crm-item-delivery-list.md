@@ -1,4 +1,4 @@
-# Get the list of deliveries for a CRM entity crm.item.delivery.list
+# Get the List of Deliveries for a CRM object crm.item.delivery.list
 
 {% note tip "" %}
 
@@ -8,23 +8,23 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: requires read access permission for the crm entity from which deliveries are selected.
+> Who can execute the method: requires read access permission for the CRM object from which deliveries are selected.
 
-This method retrieves the list of deliveries for a specific crm entity.
+Retrieves a list of deliveries for a specific CRM object.
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **entityId***
-[`integer`](../../../data-types.md) | Identifier of the crm entity ||
+[`integer`](../../../data-types.md) | Identifier of the CRM object ||
 || **entityTypeId***
-[`integer`](../../../data-types.md) | Identifier of the [`crm entity type`](../../data-types.md#crm-entity-type)  ||
+[`integer`](../../../data-types.md) | Identifier of the [CRM object type](../../data-types.md#crm-entity-type)  ||
 || **filter**
-[`object`](../../../data-types.md) | Additional filter for cases when you need to get not all deliveries of the crm entity, but based on a more specific filter. 
+[`object`](../../../data-types.md) | Additional filter for cases when you need to get not all deliveries of the CRM object, but based on a more specific filter. 
 The format of the `filter` parameter corresponds to what is described in the [`sale.shipment.list`](../../../sale/shipment/sale-shipment-list.md) method ||
 || **order**
 [`object`](../../../data-types.md) | The format of the `order` parameter corresponds to what is described in the [`sale.shipment.list`](../../../sale/shipment/sale-shipment-list.md) method ||
@@ -187,6 +187,103 @@ The format of the `filter` parameter corresponds to what is described in the [`s
     }
     ```
 
+- Python
+
+    Example
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.item.delivery.list(
+            entity_id=13127,
+            entity_type_id=2,
+            filter={
+                "@id": [4077, 4078],
+            },
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
+    Example `as_list`
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.item.delivery.list(
+            entity_id=13127,
+            entity_type_id=2,
+            filter={
+                "@id": [4077, 4078],
+            },
+        ).as_list().response
+        result = bitrix_response.result
+        for item in result:
+            print(item)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
+    Example `as_list_fast`
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.item.delivery.list(
+            entity_id=13127,
+            entity_type_id=2,
+            filter={
+                "@id": [4077, 4078],
+            },
+        ).as_list_fast(descending=True).response
+        result = bitrix_response.result
+        for item in result:
+            print(item)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - BX24.js
 
     ```js
@@ -231,7 +328,7 @@ The format of the `filter` parameter corresponds to what is described in the [`s
 
 {% endlist %}
 
-## Successful Response
+## Response on Success
 
 HTTP status: **200**
 
@@ -264,8 +361,8 @@ HTTP status: **200**
       "finish":1716369036.734466,
       "duration":0.4876110553741455,
       "processing":0.18442106246948242,
-      "date_start":"2024-05-22T12:10:36+02:00",
-      "date_finish":"2024-05-22T12:10:36+02:00"
+      "date_start":"2024-05-22T12:10:36+03:00",
+      "date_finish":"2024-05-22T12:10:36+03:00"
    }
 }
 ```
@@ -278,7 +375,7 @@ HTTP status: **200**
 || **result**
 [`sale_order_shipment_crm_simple`](./crm-item-delivery-get.md#sale_order_shipment_crm_simple) | Array of objects containing brief information about the selected deliveries ||
 || **time**
-[`time`](../../../data-types.md) | Information about the execution time of the request ||
+[`time`](../../../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -292,20 +389,19 @@ HTTP status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
 || **Code** | **Description** ||
 || `0` | Access denied ||
-|| `100` | Required fields not provided ||
+|| `100` | Required fields are not provided ||
 || `0` | Other errors (e.g., fatal errors) ||
 |#
 
-{% include notitle [system errors](../../../../_includes/system-errors.md) %}
+{% include notitle [System errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
 - [{#T}](./crm-item-delivery-get.md)
-

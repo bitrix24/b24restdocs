@@ -16,7 +16,7 @@ For the languages used on the account, localization parameters must be specified
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../_includes/required.md) %}
+{% include [Note on parameters](../../../_includes/required.md) %}
 
 #|
 ||  **Name**
@@ -40,7 +40,7 @@ fields: {
 
 ### Parameter fields
 
-{% include [Note on required parameters](../../../_includes/required.md) %}
+{% include [Note on parameters](../../../_includes/required.md) %}
 
 #|
 ||  **Name**
@@ -270,7 +270,7 @@ Allowed values are described in the [reference](../data-types.md#crm_currency_lo
                     'AMOUNT_CNT' => 1,
                     'SORT' => 9000,
                     'LANG' => [
-                        'ru' => [
+                        'de' => [
                             'DECIMALS' => 2,
                             'DEC_POINT' => '.',
                             'FORMAT_STRING' => '# CNY',
@@ -294,6 +294,57 @@ Allowed values are described in the [reference](../data-types.md#crm_currency_lo
         echo '<PRE>';
         print_r($result);
         echo '</PRE>';
+        ```
+
+    - Python
+
+        ```python
+        from b24pysdk.client import BaseClient
+        from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+        client: BaseClient
+
+        try:
+            bitrix_response = client.crm.currency.add(
+                fields={
+                    "CURRENCY": "CNY",
+                    "BASE": "N",
+                    "AMOUNT": 12.2251,
+                    "AMOUNT_CNT": 1,
+                    "SORT": 9000,
+                    "LANG": {
+                        "de": {
+                            "DECIMALS": 2,
+                            "DEC_POINT": ".",
+                            "FORMAT_STRING": "# CNY",
+                            "FULL_NAME": "yuan",
+                            "HIDE_ZERO": "Y",
+                            "THOUSANDS_VARIANT": "S",
+                        },
+                        "en": {
+                            "DECIMALS": 2,
+                            "DEC_POINT": ",",
+                            "FORMAT_STRING": "# CNY",
+                            "FULL_NAME": "yuan",
+                            "HIDE_ZERO": "Y",
+                            "THOUSANDS_SEP": ".",
+                        },
+                    },
+                },
+            ).response
+            result = bitrix_response.result
+            print(result)
+        except BitrixAPIError as error:
+            print(
+                "Bitrix API Error",
+                f"error: {error.error}",
+                f"error_description: {error.error_description}",
+                sep="\n",
+            )
+        except BitrixSDKException as error:
+            print(f"Bitrix SDK Error: {error.message}")
+        except Exception as error:
+            print(f"Unexpected error: {error}")
         ```
 
     {% endlist %}
@@ -455,18 +506,18 @@ Allowed values are described in the [reference](../data-types.md#crm_currency_lo
                     'AMOUNT_CNT' => 10000,
                     'SORT' => 8000,
                     'LANG' => [
-                        'ru' => [
+                        'de' => [
                             'DECIMALS' => 2,
                             'DEC_POINT' => '.',
                             'FORMAT_STRING' => 'Rp#',
-                            'FULL_NAME' => 'rupiah',
+                            'FULL_NAME' => 'rupee',
                             'HIDE_ZERO' => 'Y',
                             'THOUSANDS_VARIANT' => 'C',
                         ],
                         'en' => [
                             'DECIMALS' => 2,
                             'DEC_POINT' => '.',
-                            'FORMAT_STRING' => '# CNY',
+                            'FORMAT_STRING' => 'Rp#',
                             'FULL_NAME' => 'rupee',
                             'HIDE_ZERO' => 'Y',
                             'THOUSANDS_VARIANT' => 'C',
@@ -479,6 +530,56 @@ Allowed values are described in the [reference](../data-types.md#crm_currency_lo
         echo '<PRE>';
         print_r($result);
         echo '</PRE>';
+        ```
+
+    - Python
+
+        ```python
+        from b24pysdk.client import BaseClient
+        from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+        client: BaseClient
+
+        try:
+            bitrix_response = client.crm.currency.add(
+                fields={
+                    "CURRENCY": "IDR",
+                    "AMOUNT": 54.8738,
+                    "AMOUNT_CNT": 10000,
+                    "SORT": 8000,
+                    "LANG": {
+                        "de": {
+                            "DECIMALS": 2,
+                            "DEC_POINT": ".",
+                            "FORMAT_STRING": "Rp#",
+                            "FULL_NAME": "rupee",
+                            "HIDE_ZERO": "Y",
+                            "THOUSANDS_VARIANT": "C",
+                        },
+                        "en": {
+                            "DECIMALS": 2,
+                            "DEC_POINT": ".",
+                            "FORMAT_STRING": "# CNY",
+                            "FULL_NAME": "rupee",
+                            "HIDE_ZERO": "Y",
+                            "THOUSANDS_VARIANT": "C",
+                        },
+                    },
+                },
+            ).response
+            result = bitrix_response.result
+            print(result)
+        except BitrixAPIError as error:
+            print(
+                "Bitrix API Error",
+                f"error: {error.error}",
+                f"error_description: {error.error_description}",
+                sep="\n",
+            )
+        except BitrixSDKException as error:
+            print(f"Bitrix SDK Error: {error.message}")
+        except Exception as error:
+            print(f"Unexpected error: {error}")
         ```
 
     {% endlist %}
@@ -510,7 +611,7 @@ HTTP status: **200**
 || **result**
 [`crm_currency.CURRENCY`](../data-types.md#crm_currency) | Identifier of the created currency. ||
 || **time**
-[`time`](../../data-types.md) | Information about the request execution time. ||
+[`time`](../../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -524,21 +625,23 @@ HTTP status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
 || **Code** | **Description** | **Value** ||
 || Empty string | Access denied. | Insufficient access rights. ||
-|| Empty string | The "Currency" module is not found! Please install the "Currency" module. |  ||
-|| `ERROR_CORE` | Undefined array key "#FIELD#" | Required field #FIELD# is not specified (the missing field code will be substituted instead of #FIELD#) ||
-|| `ERROR_CORE` | Other errors in the data for creating the currency. |  ||
+|| Empty string | "Currencies" module not found! Please install the "Currencies" module. |  ||
+|| `ERROR_CORE` | Undefined array key "#FIELD#" | Required field #FIELD
+
+# Is Not Specified (the Missing Field Code Will Be Substituted Instead of #FIELD#) ||
+|| `ERROR_CORE` | Other errors in the data for creating the currency |  ||
 |#
 
-{% include [system errors](../../../_includes/system-errors.md) %}
+{% include [System errors](../../../_includes/system-errors.md) %}
 
-## Continue Learning 
+## Continue Learning
 
 - [{#T}](./crm-currency-update.md)
 - [{#T}](./crm-currency-get.md)

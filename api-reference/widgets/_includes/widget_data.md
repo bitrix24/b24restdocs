@@ -30,5 +30,5 @@
 || **PLACEMENT***
 [`string`](../../data-types.md) | Code for the widget embedding location. You can use the same handler URL for all your widgets. The value that Bitrix24 will report in the `PLACEMENT` parameter will help determine from which specific widget embedding location your handler was invoked in each case ||
 || **PLACEMENT_OPTIONS**
-[`string`](../../data-types.md) | Additional data in the form of a JSON string that defines the context of the widget execution. For example, this could be an array containing the numeric identifier of the CRM entity in the detail form where the widget handler was invoked, etc. The `PLACEMENT_OPTIONS` parameter, along with the `PLACEMENT` parameter, allows you to accurately determine for which specific widget embedding location and object the widget handler was invoked. ||
+[`string`](../../data-types.md) | Additional data in the form of a JSON string that defines the context of the widget execution. For example, this could be an array containing the numeric identifier of the CRM object in the detail form where the widget handler was invoked, etc. The `PLACEMENT_OPTIONS` parameter, along with the `PLACEMENT` parameter, allows you to accurately determine for which specific widget embedding location and object the widget handler was invoked. ||
 |#

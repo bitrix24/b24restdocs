@@ -1,4 +1,4 @@
-# Get Document Template Fields crm.documentgenerator.template.getfields
+# Get crm.documentgenerator.template.getfields Document Template Fields
 
 {% note tip "" %}
 
@@ -8,7 +8,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: a user with "edit" access permission for document generator templates
+> Who can execute the method: a user with "modify" access permission for Document Generator templates
 
 The method `crm.documentgenerator.template.getfields` returns a card of template fields: which fields are available, their current values, default values, and service indicators.
 
@@ -20,11 +20,11 @@ The method `crm.documentgenerator.template.getfields` returns a card of template
 || **Name**
 `type` | **Description** ||
 || **id**^*^
-[`integer`](../../data-types.md) | Template identifier ||
+[`integer`](../../data-types.md) | Identifier of the template ||
 || **entityTypeId**^*^
-[`integer`](../../data-types.md) | Identifier of the CRM entity type. Needed to select the data provider ||
+[`integer`](../../data-types.md) | Identifier of the CRM object type. Needed to select the data provider ||
 || **entityId**
-[`integer`](../../data-types.md) | Identifier of the CRM entity whose data will be used to compute field values ||
+[`integer`](../../data-types.md) | Identifier of the CRM object whose data will be used to compute field values ||
 || **values**
 [`object`](../../data-types.md) | Object format:
 
@@ -49,7 +49,7 @@ If `values` is not passed, the method will return the card of fields based on th
 ||
 |#
 
-### Values Parameter {#parameter-values-fields}
+### Parameter Values {#parameter-values-fields}
 
 The composition of the `values` keys is determined by the template, data provider, and context (`entityTypeId`, `entityId`), so it may vary in different scenarios.
 
@@ -97,23 +97,23 @@ The composition of the `values` keys is determined by the template, data provide
 || **TotalRaw**
 [`string`](../../data-types.md) | Total original prices ||
 || **TaxesTaxTitle**
-[`array`](../../data-types.md) \| [`string`](../../data-types.md) | Title ||
+[`array`](../../data-types.md) \| [`string`](../../data-types.md) | Heading ||
 || **TaxesTaxRate**
 [`array`](../../data-types.md) \| [`string`](../../data-types.md) | Rate ||
 || **TaxesTaxValue**
-[`array`](../../data-types.md) \| [`string`](../../data-types.md) | Total ||
+[`array`](../../data-types.md) \| [`string`](../../data-types.md) | Amount ||
 || **TotalSum**
 [`string`](../../data-types.md) | Total amount ||
 || **MyCompanyAssignedName**
-[`string`](../../data-types.md) | First name ||
+[`string`](../../data-types.md) | First Name ||
 || **MyCompanyAssignedLastName**
-[`string`](../../data-types.md) | Last name ||
+[`string`](../../data-types.md) | Last Name ||
 || **MyCompanyAssignedPersonalPhone**
 [`string`](../../data-types.md) | Phone ||
 || **MyCompanyAssignedEmail**
 [`string`](../../data-types.md) | E-Mail ||
 || **DocumentTitle**
-[`string`](../../data-types.md) | Document title ||
+[`string`](../../data-types.md) | Document name ||
 || **MY_COMPANY**
 [`array`](../../data-types.md) | My company ||
 |#
@@ -124,8 +124,8 @@ The composition of the `values` keys is determined by the template, data provide
 
 Example of retrieving document template fields, where:
 - template identifier — `1`
-- CRM entity type identifier — `2` (deal)
-- CRM entity identifier — `123`
+- CRM object type identifier — `2` (deal)
+- CRM object identifier — `123`
 - field value `DocumentNumber` — `2026-001`
 
 {% list tabs %}
@@ -276,6 +276,38 @@ Example of retrieving document template fields, where:
     }
     ```
 
+- Python
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.documentgenerator.template.getfields(
+            bitrix_id=1,
+            entity_type_id=2,
+            entity_id=123,
+            values={
+                "DocumentNumber": "2026-001",
+            },
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - BX24.js
 
     ```js
@@ -324,7 +356,7 @@ Example of retrieving document template fields, where:
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -346,13 +378,13 @@ HTTP Status: **200**
                 "type": "IMAGE",
                 "group": [
                     "Document",
-                    "My company"
+                    "My Company"
                 ],
                 "chain": "this.SOURCE.MY_COMPANY.UF_LOGO",
                 "default": null
             },
             "MY_COMPANY": {
-                "title": "My company",
+                "title": "My Company",
                 "value": [
                     {
                         "value": "340",
@@ -361,13 +393,13 @@ HTTP Status: **200**
                     },
                     {
                         "value": "358",
-                        "title": "Bitrix-Development",
+                        "title": "Bitrix Development",
                         "selected": false
                     }
                 ],
                 "group": [
                     "Document",
-                    "My company"
+                    "My Company"
                 ]
             }
         }
@@ -377,8 +409,8 @@ HTTP Status: **200**
         "finish": 1773821944.196063,
         "duration": 0.19606304168701172,
         "processing": 0,
-        "date_start": "2026-03-18T11:19:04+02:00",
-        "date_finish": "2026-03-18T11:19:04+02:00",
+        "date_start": "2026-03-18T11:19:04+03:00",
+        "date_finish": "2026-03-18T11:19:04+03:00",
         "operating_reset_at": 1773822544,
         "operating": 0
     }
@@ -393,7 +425,7 @@ HTTP Status: **200**
 || **result**
 [`object`](../../data-types.md) | Root element of the response. Contains the [`templateFields`](#templatefields) object ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the execution time of the request ||
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 #### Result Type {#result}
@@ -405,7 +437,7 @@ HTTP Status: **200**
 [`object`](../../data-types.md) | Object of template fields, where the key is the field code and the value is the [`templateField`](#templatefield) structure ||
 |#
 
-#### TemplateField Type {#templatefield}
+#### templateField Type {#templatefield}
 
 #|
 || **Name**
@@ -423,12 +455,12 @@ HTTP Status: **200**
 || **group**
 [`array`](../../data-types.md) | Groups to which the field belongs ||
 || **chain**
-[`string`](../../data-types.md) | Field path in the data provider, e.g., `this.SOURCE.MY_COMPANY.UF_LOGO` ||
+[`string`](../../data-types.md) | Path of the field in the data provider, e.g., `this.SOURCE.MY_COMPANY.UF_LOGO` ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -437,7 +469,7 @@ HTTP Status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
@@ -445,13 +477,13 @@ HTTP Status: **400**
 || **Code** | **Description** | **Value** ||
 || `DOCGEN_ACCESS_ERROR` | Access denied | No access to the template or insufficient rights to work with document generator templates ||
 || `0` | Template not found | Template with the specified `id` not found or unavailable ||
-|| `100` | Bitrix\\DocumentGenerator\\Template constructor must be is public | Required parameter not passed ||
-|| `Empty value` | Cannot get fields from deleted template | Cannot get fields from a deleted template ||
-|| `Empty value` | You do not have permissions to modify templates | Insufficient rights to modify document generator templates ||
-|| `Empty value` | Module documentgenerator is not installed | The `documentgenerator` module is unavailable ||
+|| `100` | Bitrix\\DocumentGenerator\\Template constructor must be is public | A required parameter was not provided ||
+|| Empty value | Cannot get fields from deleted template | Cannot get fields from a deleted template ||
+|| Empty value | You do not have permissions to modify templates | Insufficient permissions to modify document generator templates ||
+|| Empty value | Module documentgenerator is not installed | The `documentgenerator` module is not available ||
 |#
 
-{% include [system errors](../../../../_includes/system-errors.md) %}
+{% include [System errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

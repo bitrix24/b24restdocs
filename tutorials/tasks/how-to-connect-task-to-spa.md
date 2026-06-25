@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-The key parameter for attaching a task to a CRM entity is the [object type identifier](../../api-reference/crm/data-types.md#object_type). This identifier indicates which type of object the relationship will be added to: a deal, a lead, or a specific smart process.
+The key parameter for attaching a task to a CRM object is the [object type identifier](../../api-reference/crm/data-types.md#object_type). This identifier indicates which type of object the relationship will be added to: a deal, a lead, or a specific smart process.
 
 To create a task and attach it to a smart process, we will sequentially execute three methods:
 
@@ -68,15 +68,15 @@ To obtain the smart process identifier, we use the [crm.enum.ownertype](../../ap
 The method returns four different identifiers:
 
 ```JSON
-     "ID": 130, // entityTypeId — obtained to find the CRM entity by filter
+     "ID": 130, // entityTypeId — obtained to find the CRM object by filter
      "NAME": "All Inclusive", // name
      "SYMBOL_CODE": "DYNAMIC_130", // symbolic code
-     "SYMBOL_CODE_SHORT": "T82" // short symbolic code — obtained to link the CRM entity to the task
+     "SYMBOL_CODE_SHORT": "T82" // short symbolic code — obtained to link the CRM object to the task
 ```
 
-`ID` is obtained to find the CRM entity by filter.
+`ID` is obtained to find the CRM object by filter.
 
-`SYMBOL_CODE_SHORT` is obtained to link the CRM entity to the task.
+`SYMBOL_CODE_SHORT` is obtained to link the CRM object to the task.
 
 ```JSON
 {

@@ -1,4 +1,4 @@
-# Get a list of custom fields for companies crm.company.userfield.list
+# Get a List of Custom Fields for Companies crm.company.userfield.list
 
 {% note tip "" %}
 
@@ -8,7 +8,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: user with read access permission for companies
+> Who can execute the method: a user with read access permission for companies
 
 The method `crm.company.userfield.list` returns a list of custom fields for companies based on the filter.
 
@@ -65,7 +65,7 @@ By default:
 ||
 |#
 
-### Available fields for filtering {#filterable}
+### Available Fields for Filtering {#filterable}
 
 #|
 || **Name**
@@ -97,18 +97,18 @@ By default:
 || **XML_ID**
 [`string`](../../../data-types.md) | External code ||
 || **SORT**
-[`integer`](../../../data-types.md) | Sort index ||
+[`integer`](../../../data-types.md) | Sorting index ||
 || **MULTIPLE**
-[`boolean`](../../../data-types.md) | Whether the custom field is multiple.
+[`boolean`](../../../data-types.md) | Is the custom field multiple.
 Possible values:
 - `Y` — yes
 - `N` — no ||
 || **MANDATORY**
-[`boolean`](../../../data-types.md) | Whether the custom field is mandatory. Possible values:
+[`boolean`](../../../data-types.md) | Is the custom field mandatory. Possible values:
 - `Y` — yes
 - `N` — no ||
 || **SHOW_FILTER**
-[`char`](../../../data-types.md) | Whether to show in the list filter. Possible values:
+[`char`](../../../data-types.md) | Show in the list filter. Possible values:
 - `N` — do not show
 - `I` — exact match
 - `E` — mask
@@ -119,13 +119,14 @@ Possible values:
 - `N` — no
 ||
 || **EDIT_IN_LIST**
-[`boolean`](../../../data-types.md) | Whether to allow user editing. Possible values:
+[`boolean`](../../../data-types.md) | Allow user editing? Possible values:
 - `Y` — yes
 - `N` — no ||
 || **IS_SEARCHABLE**
 [`boolean`](../../../data-types.md) | Whether the field values participate in search. Possible values:
 - `Y` — yes
-- `N` — no ||
+- `N` — no
+||
 || **LANG**
 [`string`](../../../data-types.md) | [Language identifier](../../data-types.md#lang-ids). When filtering by this parameter, a set of fields with values in the provided language will be returned:
 - `EDIT_FORM_LABEL` — label in the edit form
@@ -137,7 +138,7 @@ Possible values:
 
 ## Code Examples
 
-{% include [Examples note](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 Get a list of custom fields that:
 - are multiple,
@@ -202,7 +203,7 @@ Get a list of custom fields that:
           filter: {
             MULTIPLE: 'Y',
             MANDATORY: 'Y',
-            LANG: 'ru',
+            LANG: 'de',
           },
           order: {
             USER_TYPE_ID: 'ASC',
@@ -248,7 +249,7 @@ Get a list of custom fields that:
               filter: {
                 MULTIPLE: 'Y',
                 MANDATORY: 'Y',
-                LANG: 'ru',
+                LANG: 'de',
               },
               order: {
                 USER_TYPE_ID: 'ASC',
@@ -312,6 +313,109 @@ Get a list of custom fields that:
         error_log($e->getMessage());
         echo 'Error fetching company user fields: ' . $e->getMessage();
     }
+    ```
+
+- Python
+
+    Example
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.company.userfield.list(
+            filter={
+                "MULTIPLE": "Y",
+                "MANDATORY": "Y",
+                "LANG": "de",
+            },
+            order={
+                "USER_TYPE_ID": "ASC",
+                "SORT": "ASC",
+            },
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
+    Example `as_list`
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.company.userfield.list(
+            filter={
+                "MULTIPLE": "Y",
+                "MANDATORY": "Y",
+                "LANG": "de",
+            },
+            order={"ID": "ASC"},
+        ).as_list().response
+        result = bitrix_response.result
+        for item in result:
+            print(item)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
+    Example `as_list_fast`
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.company.userfield.list(
+            filter={
+                "MULTIPLE": "Y",
+                "MANDATORY": "Y",
+                "LANG": "de",
+            },
+            order={"ID": "DESC"},
+        ).as_list_fast(descending=True).response
+        result = bitrix_response.result
+        for item in result:
+            print(item)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
     ```
 
 - BX24.js
@@ -423,14 +527,14 @@ HTTP status: **200**
                 {
                     "ID": "3157",
                     "SORT": "10",
-                    "VALUE": "Children's Radio",
+                    "VALUE": "Kids Radio",
                     "DEF": "N",
                     "XML_ID": "79b4c576f96e65eb40f390e45c0dc802"
                 },
                 {
                     "ID": "3159",
                     "SORT": "20",
-                    "VALUE": "Shanson Radio",
+                    "VALUE": "Chanson Radio",
                     "DEF": "N",
                     "XML_ID": "d3ffd89a825f218f5efd79dffd38fbbf"
                 },
@@ -451,7 +555,7 @@ HTTP status: **200**
                 {
                     "ID": "3181",
                     "SORT": "130",
-                    "VALUE": "DFM Yuriev-Polsky",
+                    "VALUE": "DFM Yuryev-Polsky",
                     "DEF": "N",
                     "XML_ID": "fc1c5e6b4a9fd20b4749240b8dbac41a"
                 }
@@ -479,9 +583,9 @@ HTTP status: **200**
                 "EXTENSIONS": [],
                 "TARGET_BLANK": "Y"
             },
-            "EDIT_FORM_LABEL": "Estimate (files)",
-            "LIST_COLUMN_LABEL": "Estimate (files)",
-            "LIST_FILTER_LABEL": "Estimate (files)",
+            "EDIT_FORM_LABEL": "KP (files)",
+            "LIST_COLUMN_LABEL": "KP (files)",
+            "LIST_FILTER_LABEL": "KP (files)",
             "ERROR_MESSAGE": null,
             "HELP_MESSAGE": null
         },
@@ -560,9 +664,9 @@ HTTP status: **200**
                 "TIMEZONE": "Europe/Berlin",
                 "USE_USER_TIMEZONE": "N"
             },
-            "EDIT_FORM_LABEL": "MEETING ROOM BOOKING",
-            "LIST_COLUMN_LABEL": "MEETING ROOM BOOKING",
-            "LIST_FILTER_LABEL": "MEETING ROOM BOOKING",
+            "EDIT_FORM_LABEL": "BOOK MEETING",
+            "LIST_COLUMN_LABEL": "BOOK MEETING",
+            "LIST_FILTER_LABEL": "BOOK MEETING",
             "ERROR_MESSAGE": null,
             "HELP_MESSAGE": null
         },
@@ -585,13 +689,13 @@ HTTP status: **200**
                 "REGEXP": "",
                 "MIN_LENGTH": 0,
                 "MAX_LENGTH": 0,
-                "DEFAULT_VALUE": "Hello, world! Default value (modified)"
+                "DEFAULT_VALUE": "Hello, world! Default value (changed)"
             },
-            "EDIT_FORM_LABEL": "Hello, world! Edit (modified)",
-            "LIST_COLUMN_LABEL": "Hello, world! Column (modified)",
-            "LIST_FILTER_LABEL": "Hello, world! Filter (modified)",
-            "ERROR_MESSAGE": "Hello, world! Error (modified)",
-            "HELP_MESSAGE": "Hello, world! Help (modified)"
+            "EDIT_FORM_LABEL": "Hello, world! Edit (changed)",
+            "LIST_COLUMN_LABEL": "Hello, world! Column (changed)",
+            "LIST_FILTER_LABEL": "Hello, world! Filter (changed)",
+            "ERROR_MESSAGE": "Hello, world! Error (changed)",
+            "HELP_MESSAGE": "Hello, world! Help (changed)"
         }
     ],
     "total": 5,
@@ -600,8 +704,8 @@ HTTP status: **200**
         "finish": 1753793143.529472,
         "duration": 0.30964016914367676,
         "processing": 0.06361007690429688,
-        "date_start": "2025-07-29T15:45:43+02:00",
-        "date_finish": "2025-07-29T15:45:43+02:00",
+        "date_start": "2025-07-29T15:45:43+03:00",
+        "date_finish": "2025-07-29T15:45:43+03:00",
         "operating_reset_at": 1753793743,
         "operating": 0
     }
@@ -620,7 +724,7 @@ The structure of an individual custom field depends on its type. The fields `EDI
 || **total**
 [`integer`](../../../data-types.md) | Number of found custom fields ||
 || **time**
-[`time`](../../../data-types.md#time) | Information about the execution time of the request ||
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -634,7 +738,7 @@ HTTP status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
@@ -643,7 +747,7 @@ HTTP status: **400**
 || `400`     | Parameter 'order' must be array | The provided `order` is not an object ||
 || `400`     | Parameter 'filter' must be array | The provided `filter` is not an object ||
 |#
-{% include [system errors](../../../../_includes/system-errors.md) %}
+{% include [System errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

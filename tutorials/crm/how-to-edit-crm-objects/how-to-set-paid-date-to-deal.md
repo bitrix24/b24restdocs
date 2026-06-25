@@ -2,7 +2,7 @@
 
 > Scope: [`crm`](../../../api-reference/scopes/permissions.md)
 >
-> Who can execute the method: users with permission to modify the CRM entity
+> Who can execute the method: users with permission to modify the CRM object
 
 {% note tip "" %}
 

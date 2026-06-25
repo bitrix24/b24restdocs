@@ -14,7 +14,7 @@ This method creates a new requisites template.
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -25,7 +25,7 @@ This method creates a new requisites template.
 
 ### Parameter fields
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -65,7 +65,7 @@ Values of the form `#CRM_REQUISITE_PRESET_DEF_...` are reserved in CRM for ident
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"ENTITY_TYPE_ID":8,"COUNTRY_ID":1,"NAME":"IP","XML_ID":"EXAMPLE_COMPANY__VALUE_1","ACTIVE":"Y","SORT":520}}' \
+    -d '{"fields":{"ENTITY_TYPE_ID":8,"COUNTRY_ID":1,"NAME":"LLC","XML_ID":"EXAMPLE_COMPANY__VALUE_1","ACTIVE":"Y","SORT":520}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.requisite.preset.add
     ```
 
@@ -75,7 +75,7 @@ Values of the form `#CRM_REQUISITE_PRESET_DEF_...` are reserved in CRM for ident
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"ENTITY_TYPE_ID":8,"COUNTRY_ID":1,"NAME":"IP","XML_ID":"EXAMPLE_COMPANY__VALUE_1","ACTIVE":"Y","SORT":520},"auth":"**put_access_token_here**"}' \
+    -d '{"fields":{"ENTITY_TYPE_ID":8,"COUNTRY_ID":1,"NAME":"LLC","XML_ID":"EXAMPLE_COMPANY__VALUE_1","ACTIVE":"Y","SORT":520},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/crm.requisite.preset.add
     ```
 
@@ -95,7 +95,7 @@ Values of the form `#CRM_REQUISITE_PRESET_DEF_...` are reserved in CRM for ident
         params: {
           fields: {
             ENTITY_TYPE_ID: 8,    // For a requisite preset, always use "Requisite" (ID 8), see crm.enum.ownertype
-            COUNTRY_ID: 1,        // Russia
+            COUNTRY_ID: 1,
             NAME: 'Sole Proprietor',
             XML_ID: 'EXAMPLE_COMPANY__VALUE_1',    // Unique external identifier
             ACTIVE: 'Y',
@@ -134,7 +134,7 @@ Values of the form `#CRM_REQUISITE_PRESET_DEF_...` are reserved in CRM for ident
             params: {
               fields: {
                 ENTITY_TYPE_ID: 8,    // For a requisite preset, always use "Requisite" (ID 8), see crm.enum.ownertype
-                COUNTRY_ID: 1,        // Russia
+                COUNTRY_ID: 1,
                 NAME: 'Sole Proprietor',
                 XML_ID: 'EXAMPLE_COMPANY__VALUE_1',    // Unique external identifier
                 ACTIVE: 'Y',
@@ -174,7 +174,7 @@ Values of the form `#CRM_REQUISITE_PRESET_DEF_...` are reserved in CRM for ident
                     'fields' => [
                         'ENTITY_TYPE_ID' => 8,
                         'COUNTRY_ID'     => 1,
-                        'NAME'           => 'IP',
+                        'NAME'           => 'LLC',
                         'XML_ID'         => 'EXAMPLE_COMPANY__VALUE_1',
                         'ACTIVE'         => 'Y',
                         'SORT'           => 520,
@@ -186,11 +186,11 @@ Values of the form `#CRM_REQUISITE_PRESET_DEF_...` are reserved in CRM for ident
             ->getResponseData()
             ->getResult();
     
-        echo 'Template created with ID ' . $result;
+        echo 'Template with ID has been created ' . $result;
     
     } catch (Throwable $e) {
         error_log($e->getMessage());
-        echo 'Error creating template: ' . $e->getMessage();
+        echo 'Error while creating template: ' . $e->getMessage();
     }
     ```
 
@@ -202,12 +202,12 @@ Values of the form `#CRM_REQUISITE_PRESET_DEF_...` are reserved in CRM for ident
         {
             fields:
             {
-                "ENTITY_TYPE_ID": 8,    // For the requisites template, "Requisite" (identifier 8) is always specified, see crm.enum.ownertype
-                "COUNTRY_ID": 1,        // USA
-                "NAME": "IP",
+                "ENTITY_TYPE_ID": 8,    // For the details template, "Detail" (identifier 8) is always specified, see crm.enum.ownertype
+                "COUNTRY_ID": 1,        // United States
+                "NAME": "LLC",
                 "XML_ID": "EXAMPLE_COMPANY__VALUE_1",    // Unique external identifier
                 "ACTIVE": "Y",
-                "SORT": 520    // Order in the list of templates
+                "SORT": 520    // Order in the template list
             }
         },
         function(result)
@@ -215,7 +215,7 @@ Values of the form `#CRM_REQUISITE_PRESET_DEF_...` are reserved in CRM for ident
             if(result.error())
                 console.error(result.error());
             else
-                console.info("Template created with ID " + result.data());
+                console.info("Template with ID has been created " + result.data());
         }
     );
     ```
@@ -232,7 +232,7 @@ Values of the form `#CRM_REQUISITE_PRESET_DEF_...` are reserved in CRM for ident
             [
                 'ENTITY_TYPE_ID' => 8,
                 'COUNTRY_ID' => 1,
-                'NAME' => 'IP',
+                'NAME' => 'LLC',
                 'XML_ID' => 'EXAMPLE_COMPANY__VALUE_1',
                 'ACTIVE' => 'Y',
                 'SORT' => 520
@@ -243,6 +243,40 @@ Values of the form `#CRM_REQUISITE_PRESET_DEF_...` are reserved in CRM for ident
     echo '<PRE>';
     print_r($result);
     echo '</PRE>';
+    ```
+
+- Python
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.requisite.preset.add(
+            fields={
+                "ENTITY_TYPE_ID": 8,
+                "COUNTRY_ID": 1,
+                "NAME": "LLC",
+                "XML_ID": "EXAMPLE_COMPANY__VALUE_1",
+                "ACTIVE": "Y",
+                "SORT": 520,
+            },
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
     ```
 
 {% endlist %}
@@ -287,7 +321,7 @@ HTTP status: **40x**, **50x**
     "error_description": "ENTITY_TYPE_ID is not defined or invalid"
 }
 ```
-{% include notitle [error handling](../../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
@@ -297,7 +331,7 @@ HTTP status: **40x**, **50x**
 || `Access denied` | Insufficient access permissions to add the template ||
 |#
 
-{% include [system errors](../../../../_includes/system-errors.md) %}
+{% include [System errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
@@ -307,3 +341,5 @@ HTTP status: **40x**, **50x**
 - [{#T}](./crm-requisite-preset-list.md)
 - [{#T}](./crm-requisite-preset-delete.md)
 - [{#T}](./crm-requisite-preset-fields.md)
+
+

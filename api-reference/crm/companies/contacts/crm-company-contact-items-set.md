@@ -8,13 +8,13 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: user with "Edit" access permission for companies
+> Who can execute the method: a user with "Edit" access permission for companies
 
 The method `crm.company.contact.items.set` sets a set of contacts associated with the specified company.
 
 ## Method Parameters
 
-{% include [Parameter Notes](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -30,13 +30,13 @@ The identifier can be obtained using the methods [crm.company.list](../crm-compa
 
 ### Structure of the Binding Object {#company_contact_binding}
 
-{% include [Parameter Notes](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **CONTACT_ID***
-[`crm_entity`](../../data-types.md) | Identifier of the contact that will be associated with the company.
+[`crm_entity`](../../data-types.md) | Identifier of the contact to be linked to the company.
 
 The identifier can be obtained using the method [crm.item.list](../../universal/crm-item-list.md) with `entityTypeId = 3` ||
 || **IS_PRIMARY**
@@ -58,7 +58,7 @@ If an existing binding is provided without the `SORT` parameter, the default val
 
 ## Code Examples
 
-{% include [Example Notes](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -217,7 +217,7 @@ If an existing binding is provided without the `SORT` parameter, the default val
             echo 'Error: ' . $result->error();
         } else {
             echo 'Success: ' . print_r($result->data(), true);
-            // Your logic for processing data
+            // The data processing logic you need
             processData($result->data());
         }
     
@@ -225,6 +225,50 @@ If an existing binding is provided without the `SORT` parameter, the default val
         error_log($e->getMessage());
         echo 'Error setting contact items for company: ' . $e->getMessage();
     }
+    ```
+
+- Python
+
+    Example
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.company.contact.items.set(
+            bitrix_id=32,
+            items=[
+                {
+                    "CONTACT_ID": 8,
+                    "IS_PRIMARY": "Y",
+                    "SORT": 100,
+                },
+                {
+                    "CONTACT_ID": 9,
+                    "SORT": 200,
+                },
+                {
+                    "CONTACT_ID": 10,
+                    "SORT": 400,
+                },
+            ],
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
     ```
 
 - BX24.js
@@ -295,7 +339,7 @@ If an existing binding is provided without the `SORT` parameter, the default val
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -320,12 +364,12 @@ HTTP Status: **200**
 || **result**
 [`boolean`](../../../data-types.md) | Root element of the response. Contains `true` in case of success ||
 || **time**
-[`time`](../../../data-types.md#time) | Information about the execution time of the request ||
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -334,7 +378,7 @@ HTTP Status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
@@ -346,7 +390,7 @@ HTTP Status: **400**
 || `-`     | `Not found` | The company with the provided `id` was not found ||
 |#
 
-{% include [system errors](../../../../_includes/system-errors.md) %}
+{% include [System errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

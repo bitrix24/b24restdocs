@@ -201,7 +201,7 @@ The value of `PLACEMENT_OPTIONS` is a JSON string containing an array of one or 
 #| 
 || **Parameter** | **Description** ||
 || **ID*** 
-[`string`](../../data-types.md) | Identifier of the CRM entity for which the widget was opened.
+[`string`](../../data-types.md) | Identifier of the CRM object for which the widget was opened.
 
 It can be used to retrieve additional information using the corresponding methods:
 

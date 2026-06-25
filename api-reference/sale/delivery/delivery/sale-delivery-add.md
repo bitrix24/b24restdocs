@@ -124,7 +124,7 @@ The structure of the settings (code, name, data type) is defined when creating o
         params: {
           REST_CODE: 'uber',
           NAME: 'Uber Taxi',
-          CURRENCY: 'RUB',
+          CURRENCY: 'USD',
           DESCRIPTION: 'Uber Taxi Description',
           SORT: '500',
           ACTIVE: 'Y',
@@ -170,7 +170,7 @@ The structure of the settings (code, name, data type) is defined when creating o
             params: {
               REST_CODE: 'uber',
               NAME: 'Uber Taxi',
-              CURRENCY: 'RUB',
+              CURRENCY: 'USD',
               DESCRIPTION: 'Uber Taxi Description',
               SORT: '500',
               ACTIVE: 'Y',

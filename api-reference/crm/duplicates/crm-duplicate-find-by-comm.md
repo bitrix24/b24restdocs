@@ -1,4 +1,4 @@
-# Get leads, contacts, and companies with matching data crm.duplicate.findbycomm
+# Get Leads, Contacts, and Companies with Matching Data crm.duplicate.findbycomm
 
 {% note tip "" %}
 
@@ -14,7 +14,7 @@ The method `crm.duplicate.findbycomm` returns the identifiers of leads, contacts
 
 ## Method Parameters
 
-{% include [Footnote on parameters](../../../_includes/required.md) %}
+{% include [Note on parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -42,7 +42,7 @@ If 20 or more duplicates are found for one object, the other types are not retur
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -52,7 +52,7 @@ If 20 or more duplicates are found for one object, the other types are not retur
     curl -X POST \
          -H "Content-Type: application/json" \
          -H "Accept: application/json" \
-         -d '{"entity_type":"CONTACT","type":"PHONE","values":["1234567","11223355"]}' \
+         -d '{"entity_type":"CONTACT","type":"PHONE","values":["8976543","11223355"]}' \
          https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.duplicate.findbycomm
     ```
 
@@ -62,7 +62,7 @@ If 20 or more duplicates are found for one object, the other types are not retur
     curl -X POST \
          -H "Content-Type: application/json" \
          -H "Accept: application/json" \
-         -d '{"auth":"**put_access_token_here**","entity_type":"CONTACT","type":"PHONE","values":["1234567","11223355"]}' \
+         -d '{"auth":"**put_access_token_here**","entity_type":"CONTACT","type":"PHONE","values":["8976543","11223355"]}' \
          https://**put_your_bitrix24_address**/rest/crm.duplicate.findbycomm
     ```
 
@@ -157,7 +157,7 @@ If 20 or more duplicates are found for one object, the other types are not retur
                 [
                     'entity_type' => 'CONTACT',
                     'type'        => 'PHONE',
-                    'values'      => ['1234567', '11223355'],
+                    'values'      => ['8976543', '11223355'],
                 ]
             );
     
@@ -177,6 +177,35 @@ If 20 or more duplicates are found for one object, the other types are not retur
     }
     ```
 
+- Python
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.duplicate.findbycomm(
+            entity_type="CONTACT",
+            type="PHONE",
+            values=["8976543", "11223355"],
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - BX24.js
 
     ```js
@@ -185,7 +214,7 @@ If 20 or more duplicates are found for one object, the other types are not retur
         {
             entity_type: "CONTACT",
             type: "PHONE",
-            values: ["1234567", "11223355"]
+            values: ["8976543", "11223355"]
         },
         function(result) {
             if(result.error())
@@ -206,7 +235,7 @@ If 20 or more duplicates are found for one object, the other types are not retur
         [
             'entity_type' => 'CONTACT',
             'type' => 'PHONE',
-            'values' => ['1234567', '11223355']
+            'values' => ['8976543', '11223355']
         ]
     );
 
@@ -231,8 +260,8 @@ HTTP status: **200**
         "finish": 1750684060.724903,
         "duration": 0.05211806297302246,
         "processing": 0.018191099166870117,
-        "date_start": "2025-06-23T16:07:40+02:00",
-        "date_finish": "2025-06-23T16:07:40+02:00",
+        "date_start": "2025-06-23T16:07:40+03:00",
+        "date_finish": "2025-06-23T16:07:40+03:00",
         "operating_reset_at": 1750684660,
         "operating": 0
     }
@@ -251,7 +280,7 @@ HTTP status: **200**
 || **COMPANY**
 [`integer[]`](../../data-types.md) | Array of identifiers of found companies ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the execution time of the request ||
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -265,7 +294,7 @@ HTTP status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
@@ -277,7 +306,7 @@ HTTP status: **400**
 || `400` | `Communication values is not defined` | Required parameter `values` is not specified ||
 |#
 
-{% include [system errors](./../../../_includes/system-errors.md) %}
+{% include [System errors](./../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

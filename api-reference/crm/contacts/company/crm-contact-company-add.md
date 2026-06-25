@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: any user with "edit" access permission for contacts
 
-The method `crm.contact.company.add` adds a company to the specified contact.
+The method `crm.contact.company.add` links a company to the specified contact.
 
 ## Method Parameters
 
@@ -67,6 +67,7 @@ Passing `IS_PRIMARY = Y` for a new and not first link overrides the existing pri
 
 By default, `i + 10`, where `i` is the maximum sort index of existing links for the current contact or `0` if there are none ||
 |#
+
 
 ## Code Examples
 
@@ -211,6 +212,40 @@ Example of adding a contact-company link, where:
     }
     ```
 
+- Python
+
+    Example
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.contact.company.add(
+            bitrix_id=54,
+            fields={
+                "COMPANY_ID": 32,
+                "IS_PRIMARY": "Y",
+                "SORT": 1000,
+            },
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - BX24.js
 
     ```js
@@ -286,7 +321,7 @@ HTTP status: **200**
 - `false` — on failure (most likely the company you are trying to add is already linked)
 ||
 || **time**
-[`time`][1] | Information about the execution time of the request ||
+[`time`][1] | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -300,14 +335,14 @@ HTTP status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
 || **Code** | **Description** | **Value** ||
 || `-`     | `The parameter 'ownerEntityID' is invalid or not defined` | The `id` is less than 0 or not provided at all ||
-|| `-`     | `The parameter 'fields' must be array` | The `fields` is not an object ||
+|| `-`     | `The parameter 'fields' must be array` | The `fields` parameter is not an object ||
 || `ACCESS_DENIED` | `Access denied!` | The user does not have permission to edit contacts ||
 || `-`     | `Not found` | Contact with the provided `id` not found ||
 || `-`     | `The parameter 'fields' is not valid` | Can occur for several reasons:
@@ -315,7 +350,7 @@ HTTP status: **400**
 - if the provided parameter `fields.COMPANY_ID` is less than or equal to 0 ||
 |#
 
-{% include [system errors](../../../../_includes/system-errors.md) %}
+{% include [System errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

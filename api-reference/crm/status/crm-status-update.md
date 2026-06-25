@@ -8,7 +8,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`crm`](../../scopes/permissions.md)
 >
-> Who can execute the method: user with CRM administrator rights
+> Who can execute the method: User with CRM administrator rights
 
 The method `crm.status.update` updates the parameters of an existing CRM status element.
 
@@ -25,7 +25,7 @@ The method `crm.status.update` updates the parameters of an existing CRM status 
 [`object`](../../data-types.md) | Array of fields to update. The list of available fields is described [below](#fields)  ||
 |#
 
-### Fields Parameter {#fields}
+### Parameter fields {#fields}
 
 #|
 || **Name**
@@ -50,7 +50,7 @@ The method `crm.status.update` updates the parameters of an existing CRM status 
     curl -X POST \
          -H "Content-Type: application/json" \
          -H "Accept: application/json" \
-         -d '{"id":123,"fields":{"NAME":"New Name","COLOR":"#00A9F4"}}' \
+         -d '{"id":123,"fields":{"NAME":"New name","COLOR":"#00A9F4"}}' \
          https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.status.update
     ```
 
@@ -60,7 +60,7 @@ The method `crm.status.update` updates the parameters of an existing CRM status 
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":123,"fields":{"NAME":"New Name","COLOR":"#00A9F4"},"auth":"**put_access_token_here**"}' \
+    -d '{"id":123,"fields":{"NAME":"New name","COLOR":"#00A9F4"},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/crm.status.update
     ```
 
@@ -152,7 +152,7 @@ The method `crm.status.update` updates the parameters of an existing CRM status 
                 [
                     'id' => 123,
                     'fields' => [
-                        'NAME' => 'New Name',
+                        'NAME' => 'New name',
                         'COLOR' => '#00A9F4'
                     ]
                 ]
@@ -175,6 +175,39 @@ The method `crm.status.update` updates the parameters of an existing CRM status 
     }
     ```
 
+- Python
+
+    Example
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.status.update(
+            bitrix_id=123,
+            fields={
+                "NAME": "New name",
+                "COLOR": "#00A9F4",
+            },
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - BX24.js
 
     ```js
@@ -183,7 +216,7 @@ The method `crm.status.update` updates the parameters of an existing CRM status 
         {
             id: 123,
             fields: {
-                NAME: "New Name",
+                NAME: "New name",
                 COLOR: "#00A9F4"
             }
         },
@@ -206,7 +239,7 @@ The method `crm.status.update` updates the parameters of an existing CRM status 
         [
             'id' => 123,
             'fields' => [
-                'NAME' => 'New Name',
+                'NAME' => 'New name',
                 'COLOR' => '#00A9F4'
             ]
         ]
@@ -221,7 +254,7 @@ The method `crm.status.update` updates the parameters of an existing CRM status 
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -231,8 +264,8 @@ HTTP Status: **200**
         "finish": 1752149050.842422,
         "duration": 0.036585092544555664,
         "processing": 0.009345054626464844,
-        "date_start": "2025-07-10T15:04:10+02:00",
-        "date_finish": "2025-07-10T15:04:10+02:00",
+        "date_start": "2025-07-10T15:04:10+03:00",
+        "date_finish": "2025-07-10T15:04:10+03:00",
         "operating_reset_at": 1752149650,
         "operating": 0
     }
@@ -247,33 +280,33 @@ HTTP Status: **200**
 || **result**
 [`boolean`](../../data-types.md) | Root element of the response, contains `true` in case of success ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the execution time of the request ||
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
     "error": "Invalid identifier.",
-    "error_description": "An invalid identifier was provided."
+    "error_description": "An incorrect identifier was passed."
 }
 ```
 
-{% include notitle [error handling](../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `400`     | `Access denied.` | No rights to perform the operation ||
+|| `400`     | `Access denied.` | No permission to perform the operation ||
 || `400`     | `Invalid identifier.` | An invalid identifier was provided ||
 || `400`     | `Status is not found.` | Element not found ||
 || `400`     | `Error on updating status.` | Error while updating the element ||
 |#
 
-{% include [system errors](../../../_includes/system-errors.md) %}
+{% include [System errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

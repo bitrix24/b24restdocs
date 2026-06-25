@@ -1,4 +1,4 @@
-# Add a deal binding to a CRM entity crm.activity.binding.add
+# Add a deal binding to a CRM object crm.activity.binding.add
 
 {% note tip "" %}
 
@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: user with editing access permission for CRM entities
 
-The method `crm.activity.binding.add` adds a binding of a deal to a CRM entity.
+The method `crm.activity.binding.add` adds a binding of a deal to a CRM object.
 
 {% note info "Limit" %}
 
@@ -31,7 +31,7 @@ The maximum number of bindings for a single deal is 100 CRM entities.
 || **entityTypeId***
 [`integer`](../../../../data-types.md) | [Integer identifier of the CRM object type](../../../data-types.md#object_type) to which the deal should be bound, for example `2` for a deal ||
 || **entityId***
-[`integer`](../../../../data-types.md) | Integer identifier of the CRM entity to which the deal should be bound, for example `1`  ||
+[`integer`](../../../../data-types.md) | Integer identifier of the CRM object to which the deal should be bound, for example `1`  ||
 |#
 
 ## Code Examples
@@ -144,7 +144,7 @@ The maximum number of bindings for a single deal is 100 CRM entities.
                 [
                     'activityId'   => 999, // Deal ID
                     'entityTypeId' => 2, // CRM object type ID
-                    'entityId'     => 1 // CRM entity ID
+                    'entityId'     => 1 // CRM object ID
                 ]
             );
     
@@ -170,7 +170,7 @@ The maximum number of bindings for a single deal is 100 CRM entities.
         {
             activityId: 999, // Deal ID
             entityTypeId: 2, // CRM object type ID
-            entityId: 1 // CRM entity ID
+            entityId: 1 // CRM object ID
         },
         function(result) {
             if (result.error()) {
@@ -192,7 +192,7 @@ The maximum number of bindings for a single deal is 100 CRM entities.
         [
             'activityId' => 999, // Deal ID
             'entityTypeId' => 2, // CRM object type ID
-            'entityId' => 1 // CRM entity ID
+            'entityId' => 1 // CRM object ID
         ]
     );
 

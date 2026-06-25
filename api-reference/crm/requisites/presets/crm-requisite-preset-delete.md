@@ -1,4 +1,4 @@
-# Delete the CRM Requisite Template crm.requisite.preset.delete
+# Delete Company Details Template crm.requisite.preset.delete
 
 {% note tip "" %}
 
@@ -10,11 +10,11 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: any user
 
-This method deletes a requisite template by its identifier.
+Deletes a company details template by its identifier.
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -129,7 +129,7 @@ Searching for templates by country binding:
             ->call(
                 'crm.requisite.preset.delete',
                 [
-                    'id' => 347,    // Identifier of the template to be deleted
+                    'id' => 347,    // Template deletion ID
                 ]
             );
     
@@ -155,7 +155,7 @@ Searching for templates by country binding:
     BX24.callMethod(
         "crm.requisite.preset.delete",
         {
-            id: 347    // Identifier of the template to be deleted
+            id: 347    // Template deletion ID
         },
         function(result)
         {
@@ -182,6 +182,31 @@ Searching for templates by country binding:
     echo '<PRE>';
     print_r($result);
     echo '</PRE>';
+    ```
+
+- Python
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.requisite.preset.delete(bitrix_id=347).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
     ```
 
 {% endlist %}
@@ -230,18 +255,18 @@ HTTP status: **40x**, **50x**
 }
 ```
 
-{% include notitle [error handling](../../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
-#|  
+#|
 || **Code** | **Description** ||
 || `The Preset with ID '347' is not found` | Template with the specified identifier not found ||
-|| `You cannot delete the template as requisites have already been created for it` | Cannot delete the template for which requisites have been created. To delete the template, first delete the requisites ||
+|| You cannot delete the template because requisites have already been created for it | Cannot delete the template for which requisites have been created. To delete the template, first delete the requisites ||
 || `Access denied` | Insufficient access permissions to delete the template ||
 |#
 
-{% include [system errors](../../../../_includes/system-errors.md) %}
+{% include [System errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

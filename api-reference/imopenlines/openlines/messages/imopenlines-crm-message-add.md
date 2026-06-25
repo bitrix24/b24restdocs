@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: any user
 
-The method `imopenlines.crm.message.add` sends a message on behalf of an employee or bot in a chat linked to a CRM entity.
+The method `imopenlines.crm.message.add` sends a message on behalf of an employee or bot in a chat linked to a CRM object.
 
 ## Method Parameters
 
@@ -20,16 +20,16 @@ The method `imopenlines.crm.message.add` sends a message on behalf of an employe
 || **Name**
 `Type` | **Description** ||
 || **CRM_ENTITY_TYPE***  
-[`string`](../../../data-types.md) | Type of the CRM entity:
+[`string`](../../../data-types.md) | Type of the CRM object:
 - lead — lead
 - deal — deal
 - company — company
 - contact — contact
  ||
 || **CRM_ENTITY***  
-[`integer`](../../../data-types.md) | Identifier of the CRM entity linked to the chat.
+[`integer`](../../../data-types.md) | Identifier of the CRM object linked to the chat.
 
-You can obtain a list of entities of a specific CRM entity type using the method [crm.item.list](../../../crm/universal/crm-item-list.md) ||
+You can obtain a list of entities of a specific CRM object type using the method [crm.item.list](../../../crm/universal/crm-item-list.md) ||
 || **USER_ID***  
 [`integer`](../../../data-types.md) | Identifier of the message sender — user or bot, who must be a participant in the chat.
 
@@ -37,7 +37,7 @@ You can obtain the user ID using the method [user.get](../../../user/user-get.md
 
 A list of chat bots can be obtained using the method [imbot.bot.list](../../../chat-bots/outdated/bots/imbot-bot-list.md) ||
 || **CHAT_ID***  
-[`integer`](../../../data-types.md) | Identifier of the open channel chat linked to the CRM entity. 
+[`integer`](../../../data-types.md) | Identifier of the open channel chat linked to the CRM object. 
 
 You can obtain the chat ID using the method [imopenlines.crm.chat.get](../chats/imopenlines-crm-chat-get.md) or [imopenlines.dialog.get](../sessions/imopenlines-dialog-get.md) ||
 || **MESSAGE***  
@@ -264,7 +264,7 @@ HTTP Code: **400**
 ```json
 {
     "error": "CHAT_NOT_IN_CRM",
-    "error_description": "Chat does not belong to the CRM entity being checked"
+    "error_description": "Chat does not belong to the CRM object being checked"
 }
 ```
 
@@ -274,9 +274,9 @@ HTTP Code: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `CHAT_NOT_IN_CRM`| Chat does not belong to the CRM entity being checked | Chat is not linked to the CRM ||
+|| `CHAT_NOT_IN_CRM`| Chat does not belong to the CRM object being checked | Chat is not linked to the CRM ||
 || `CANCELED`| You cannot send messages to the specified chat | User does not have access to the chat ||
-|| `ACCESS_DENIED`| Access denied! User doesn't have access to this entity | User does not have access to the CRM entity ||
+|| `ACCESS_DENIED`| Access denied! User doesn't have access to this entity | User does not have access to the CRM object ||
 || `ERROR_ARGUMENT` | Argument `CRM_ENTITY_TYPE` is null or empty | Invalid required parameter `CRM_ENTITY_TYPE` ||
 || `ERROR_ARGUMENT` | Argument `CRM_ENTITY` is null or empty | Invalid required parameter `CRM_ENTITY` ||
 || `ERROR_ARGUMENT` | Argument `USER_ID` is null or empty | Invalid required parameter `USER_ID` ||

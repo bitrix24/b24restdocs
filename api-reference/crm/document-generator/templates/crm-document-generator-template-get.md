@@ -8,24 +8,24 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: user with "edit" access permission for document generator templates
+> Who can execute the method: a user with "modify" access permission for document generator templates
 
 The method `crm.documentgenerator.template.get` returns information about a template by its identifier.
 
 ## Method Parameters
 
-{% include [Footnote about parameters](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **id**^*^
-[`integer`](../../data-types.md) | Template identifier ||
+[`integer`](../../data-types.md) | Identifier of the template ||
 |#
 
 ## Code Examples
 
-{% include [Footnote about examples](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 Example of retrieving a document template, where:
 - template identifier — `41`
@@ -170,6 +170,31 @@ Example of retrieving a document template, where:
     }
     ```
 
+- Python
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.documentgenerator.template.get(bitrix_id=41).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - BX24.js
 
     ```js
@@ -208,7 +233,7 @@ Example of retrieving a document template, where:
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -232,8 +257,8 @@ HTTP Status: **200**
             "entityTypeId": [
                 "2"
             ],
-            "createTime": "2026-03-18T15:54:20+02:00",
-            "updateTime": "2026-03-18T17:26:29+02:00"
+            "createTime": "2026-03-18T15:54:20+03:00",
+            "updateTime": "2026-03-18T17:26:29+03:00"
         }
     },
     "time": {
@@ -241,8 +266,8 @@ HTTP Status: **200**
         "finish": 1773846100.102531,
         "duration": 0.10253095626831055,
         "processing": 0,
-        "date_start": "2026-03-18T18:01:40+02:00",
-        "date_finish": "2026-03-18T18:01:40+02:00",
+        "date_start": "2026-03-18T18:01:40+03:00",
+        "date_finish": "2026-03-18T18:01:40+03:00",
         "operating_reset_at": 1773846700,
         "operating": 0
     }
@@ -260,13 +285,13 @@ HTTP Status: **200**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
-#### Type template {#template}
+#### Template Type {#template}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **id**
-[`string`](../../data-types.md) | Template identifier ||
+[`string`](../../data-types.md) | Identifier of the template ||
 || **name**
 [`string`](../../data-types.md) | Template name ||
 || **region**
@@ -282,17 +307,17 @@ HTTP Status: **200**
 || **moduleId**
 [`string`](../../data-types.md) | Module identifier ||
 || **numeratorId**
-[`string`](../../data-types.md) | Numerator identifier ||
+[`string`](../../data-types.md) | The identifier of the numerator ||
 || **withStamps**
 [`char`](../../data-types.md) | Include stamp and signature: `Y` or `N` ||
 || **users**
 [`object`](../../data-types.md) | Object of access permission codes in the format `{"UA":"UA"}` ||
 || **isDeleted**
-[`char`](../../data-types.md) | Template deletion status: `Y` or `N` ||
+[`char`](../../data-types.md) | Template deletion flag: `Y` or `N` ||
 || **sort**
-[`string`](../../data-types.md) | Sort index ||
+[`string`](../../data-types.md) | Sorting index ||
 || **entityTypeId**
-[`array`](../../data-types.md) | Array of CRM entity identifiers for which the template is available ||
+[`array`](../../data-types.md) | Array of CRM object identifiers for which the template is available ||
 || **createTime**
 [`datetime`](../../data-types.md) | Date and time of template creation ||
 || **updateTime**
@@ -301,7 +326,7 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -310,7 +335,7 @@ HTTP Status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
@@ -318,11 +343,11 @@ HTTP Status: **400**
 || **Code** | **Description** | **Value** ||
 || `0` | Template not found | Template with the specified `id` not found or unavailable ||
 || `DOCGEN_ACCESS_ERROR` | Access denied | No access to the template ||
-|| `Empty value` | You do not have permissions to modify templates | Insufficient rights to modify document generator templates ||
-|| `Empty value` | Module documentgenerator is not installed | The `documentgenerator` module is unavailable ||
+|| Empty value | You do not have permissions to modify templates | Insufficient permissions to modify document generator templates ||
+|| Empty value | Module documentgenerator is not installed | The `documentgenerator` module is not available ||
 |#
 
-{% include [system errors](../../../../_includes/system-errors.md) %}
+{% include [System errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

@@ -1,4 +1,4 @@
-# Get a list of requisites templates by filter crm.requisite.preset.list
+# Get a List of Requisites Templates by Filter crm.requisite.preset.list
 
 {% note tip "" %}
 
@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: any user
 
-The method returns a list of requisites templates based on the filter.
+Retrieves a list of company details templates based on the filter.
 
 ## Method Parameters
 
@@ -71,46 +71,47 @@ The formula for calculating the `start` parameter value:
 ||
 |#
 
-### Description of requisites template fields {#fields}
+### Description of Requisites Template Fields {#fields}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **ID**
-[`integer`](../../../data-types.md) | Identifier of the requisite. Automatically created and unique within the account. ||
+[`integer`](../../../data-types.md) | Identifier of the requisite. Created automatically and unique within the account ||
 || **ENTITY_TYPE_ID**
-[`integer`](../../../data-types.md) | Identifier of the parent object's type.
+[`integer`](../../../data-types.md) | Identifier of the parent object type.
 
-The identifiers of CRM object types are provided by the method [crm.enum.ownertype](../../auxiliary/enum/crm-enum-owner-type.md). ||
+The identifiers of CRM object types are provided by the method [crm.enum.ownertype](../../auxiliary/enum/crm-enum-owner-type.md) 
+||
 || **COUNTRY_ID**
-[`integer`](../../../data-types.md) | Identifier of the country corresponding to the set of requisites template fields (to get available values, see the method [crm.requisite.preset.countries](./crm-requisite-preset-countries.md)). ||
+[`integer`](../../../data-types.md) | Identifier of the country corresponding to the set of fields in the requisites template (for available values, see the method [crm.requisite.preset.countries](./crm-requisite-preset-countries.md)) ||
 || **DATE_CREATE**
-[`datetime`](../../../data-types.md) | Creation date. ||
+[`datetime`](../../../data-types.md) | Create date ||
 || **DATE_MODIFY**
-[`datetime`](../../../data-types.md) | Modification date. Contains an empty string if the template has not been modified since creation. ||
+[`datetime`](../../../data-types.md) | Modification date. Contains an empty string if the template has not been changed since creation ||
 || **CREATED_BY_ID**
-[`user`](../../../data-types.md) | Identifier of the user who created the requisite. ||
+[`user`](../../../data-types.md) | Identifier of the user who created the requisite ||
 || **MODIFY_BY_ID**
-[`user`](../../../data-types.md) | Identifier of the user who modified the requisite. ||
+[`user`](../../../data-types.md) | Identifier of the user who modified the requisite ||
 || **NAME**
-[`string`](../../../data-types.md) | Name of the requisite. ||
+[`string`](../../../data-types.md) | Name of the requisite ||
 || **XML_ID**
-[`string`](../../../data-types.md) | External key. Used for exchange operations. Identifier of the object in the external information base. 
+[`string`](../../../data-types.md) | External key. Used for exchange operations. Identifier of the external information base object. 
 
 The purpose of the field may change by the final developer. 
 
 Each application ensures the uniqueness of values in this field. It is recommended to use a unique prefix to avoid collisions with other applications. 
 
-Values of the form `#CRM_REQUISITE_PRESET_DEF_...` are reserved in CRM for identifying templates that are used by default. These identifiers should not be used for your purposes, as this may lead to logic violations. ||
+Values of the form `#CRM_REQUISITE_PRESET_DEF_...` are reserved in CRM for identifying templates that are used by default. These identifiers should not be used for your purposes, as this may lead to logic violations ||
 || **ACTIVE**
-[`char`](../../../data-types.md) | Activity status. Uses values `Y` or `N`. Determines the availability of the template in the selection list when adding requisites. ||
+[`char`](../../../data-types.md) | Activity status. Values `Y` or `N` are used. Determines the availability of the template in the selection list when adding requisites ||
 || **SORT**
-[`integer`](../../../data-types.md) | Sorting. ||
+[`integer`](../../../data-types.md) | Sorting ||
 |#
 
 ## Code Examples
 
-{% include [Examples note](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 Searching for templates by country binding:
 
@@ -301,6 +302,98 @@ Searching for templates by country binding:
     echo '</PRE>';
     ```
 
+- Python
+
+    Example
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.requisite.preset.list(
+            order={"ID": "ASC"},
+            filter={"COUNTRY_ID": "1"},
+            select=["ID", "NAME"],
+            start=0,
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
+    Example `as_list`
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.requisite.preset.list(
+            order={"ID": "ASC"},
+            filter={"COUNTRY_ID": "1"},
+            select=["ID", "NAME"],
+        ).as_list().response
+        result = bitrix_response.result
+        for item in result:
+            print(item)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
+    Example `as_list_fast`
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.requisite.preset.list(
+            filter={"COUNTRY_ID": "1"},
+            select=["ID", "NAME"],
+            order={"ID": "DESC"},
+        ).as_list_fast(descending=True).response
+        result = bitrix_response.result
+        for item in result:
+            print(item)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 {% endlist %}
 
 ## Response Handling
@@ -316,7 +409,7 @@ HTTP status: **200**
         },
         {
             "ID": "2",
-            "NAME": "Sole Proprietor"
+            "NAME": "Sole Proprietorship"
         },
         {
             "ID": "3",
@@ -348,9 +441,9 @@ HTTP status: **200**
 || **result**
 [`array`](../../../data-types.md)| An array of objects with information about the selected templates. Each element contains the selected [template fields](#fields). ||
 || **total**
-[`integer`](../../../data-types.md) | Total number of records found. ||
+[`integer`](../../../data-types.md) | The total number of records found ||
 || **time**
-[`time`](../../../data-types.md) | Information about the execution time of the request. ||
+[`time`](../../../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -364,7 +457,7 @@ HTTP status: **40x**, **50x**
 }
 ```
 
-{% include notitle [error handling](../../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
@@ -373,9 +466,9 @@ HTTP status: **40x**, **50x**
 || `Access denied` | Insufficient access permissions to retrieve the list of templates. ||
 |#
 
-{% include [system errors](../../../../_includes/system-errors.md) %}
+{% include [System errors](../../../../_includes/system-errors.md) %}
 
-## Continue Learning 
+## Continue Learning
 
 - [{#T}](./crm-requisite-preset-add.md)
 - [{#T}](./crm-requisite-preset-update.md)
@@ -385,4 +478,3 @@ HTTP status: **40x**, **50x**
 - [{#T}](./crm-requisite-preset-fields.md)
 - [{#T}](../../../../tutorials/crm/how-to-add-crm-objects/how-to-add-company-with-requisite.md)
 - [{#T}](../../../../tutorials/crm/how-to-add-crm-objects/how-to-add-contact-with-requisite.md)
-

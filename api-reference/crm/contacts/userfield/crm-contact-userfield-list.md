@@ -1,4 +1,4 @@
-# Get a list of custom fields for contacts crm.contact.userfield.list
+# Get a List of Custom Fields for Contacts crm.contact.userfield.list
 
 {% note tip "" %}
 
@@ -104,7 +104,7 @@ By default:
 || **XML_ID**
 [`string`][1] | External code ||
 || **SORT**
-[`integer`][1] | Sort index ||
+[`integer`][1] | Sorting index ||
 || **MULTIPLE**
 [`boolean`][1] | Is the custom field multiple (`Y` — yes / `N` — no) ||
 || **MANDATORY**
@@ -140,7 +140,7 @@ This parameter does not affect anything within `crm`
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 Get a list of custom fields that:
 1. are multiple
@@ -207,7 +207,7 @@ Set the following sort order for this selection: field type and sort index in as
           filter: {
             MULTIPLE: 'Y',
             MANDATORY: 'Y',
-            LANG: 'ru',
+            LANG: 'de',
           },
           order: {
             USER_TYPE_ID: 'ASC',
@@ -253,7 +253,7 @@ Set the following sort order for this selection: field type and sort index in as
               filter: {
                 MULTIPLE: 'Y',
                 MANDATORY: 'Y',
-                LANG: 'ru',
+                LANG: 'de',
               },
               order: {
                 USER_TYPE_ID: 'ASC',
@@ -318,6 +318,107 @@ Set the following sort order for this selection: field type and sort index in as
         error_log($e->getMessage());
         echo 'Error fetching user fields: ' . $e->getMessage();
     }
+    ```
+
+- Python
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.contact.userfield.list(
+            filter={
+                "MULTIPLE": "Y",
+                "MANDATORY": "Y",
+                "LANG": "de",
+            },
+            order={
+                "USER_TYPE_ID": "ASC",
+                "SORT": "ASC",
+            },
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
+    Example `as_list`
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.contact.userfield.list(
+            filter={
+                "MULTIPLE": "Y",
+                "MANDATORY": "Y",
+                "LANG": "de",
+            },
+            order={"ID": "ASC"},
+        ).as_list().response
+        result = bitrix_response.result
+        for item in result:
+            print(item)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
+    Example `as_list_fast`
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.contact.userfield.list(
+            filter={
+                "MULTIPLE": "Y",
+                "MANDATORY": "Y",
+                "LANG": "de",
+            },
+            order={"ID": "DESC"},
+        ).as_list_fast(descending=True).response
+        result = bitrix_response.result
+        for item in result:
+            print(item)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
     ```
 
 - BX24.js
@@ -395,9 +496,9 @@ HTTP status: **200**
         "SETTINGS": {
             "SHOW_MAP": "Y"
         },
-        "EDIT_FORM_LABEL": "Custom Field (Address)",
-        "LIST_COLUMN_LABEL": "Custom Field (Address)",
-        "LIST_FILTER_LABEL": "Custom Field (Address)",
+        "EDIT_FORM_LABEL": "Custom field (Address)",
+        "LIST_COLUMN_LABEL": "Custom field (Address)",
+        "LIST_FILTER_LABEL": "Custom field (Address)",
         "ERROR_MESSAGE": null,
         "HELP_MESSAGE": null
         },
@@ -423,9 +524,9 @@ HTTP status: **200**
             "DYNAMIC_1278": "Y",
             "LEAD": null
         },
-        "EDIT_FORM_LABEL": "Custom Field (Binding to CRM Elements)",
-        "LIST_COLUMN_LABEL": "Custom Field (Binding to CRM Elements)",
-        "LIST_FILTER_LABEL": "Custom Field (Binding to CRM Elements)",
+        "EDIT_FORM_LABEL": "Custom field (CRM object link)",
+        "LIST_COLUMN_LABEL": "Custom field (CRM object link)",
+        "LIST_FILTER_LABEL": "Custom field (CRM object link)",
         "ERROR_MESSAGE": null,
         "HELP_MESSAGE": null
         },
@@ -448,9 +549,9 @@ HTTP status: **200**
             "TYPE": "FIXED"
             }
         },
-        "EDIT_FORM_LABEL": "Custom Field (Date)",
-        "LIST_COLUMN_LABEL": "Custom Field (Date)",
-        "LIST_FILTER_LABEL": "Custom Field (Date)",
+        "EDIT_FORM_LABEL": "Custom field (Date)",
+        "LIST_COLUMN_LABEL": "Custom field (Date)",
+        "LIST_FILTER_LABEL": "Custom field (Date)",
         "ERROR_MESSAGE": null,
         "HELP_MESSAGE": null
         },
@@ -474,9 +575,9 @@ HTTP status: **200**
             "MAX_VALUE": 0,
             "DEFAULT_VALUE": 150
         },
-        "EDIT_FORM_LABEL": "Custom Field (Number)",
-        "LIST_COLUMN_LABEL": "Custom Field (Number)",
-        "LIST_FILTER_LABEL": "Custom Field (Number)",
+        "EDIT_FORM_LABEL": "Custom field (Number)",
+        "LIST_COLUMN_LABEL": "Custom field (Number)",
+        "LIST_FILTER_LABEL": "Custom field (Number)",
         "ERROR_MESSAGE": null,
         "HELP_MESSAGE": null
         },
@@ -494,9 +595,9 @@ HTTP status: **200**
         "EDIT_IN_LIST": "Y",
         "IS_SEARCHABLE": "N",
         "SETTINGS": [],
-        "EDIT_FORM_LABEL": "Custom Field (Employee)",
-        "LIST_COLUMN_LABEL": "Custom Field (Employee)",
-        "LIST_FILTER_LABEL": "Custom Field (Employee)",
+        "EDIT_FORM_LABEL": "Custom field (Employee)",
+        "LIST_COLUMN_LABEL": "Custom field (Employee)",
+        "LIST_FILTER_LABEL": "Custom field (Employee)",
         "ERROR_MESSAGE": null,
         "HELP_MESSAGE": null
         },
@@ -522,9 +623,9 @@ HTTP status: **200**
             "EXTENSIONS": [],
             "TARGET_BLANK": "Y"
         },
-        "EDIT_FORM_LABEL": "Custom Field (File)",
-        "LIST_COLUMN_LABEL": "Custom Field (File)",
-        "LIST_FILTER_LABEL": "Custom Field (File)",
+        "EDIT_FORM_LABEL": "Custom field (File)",
+        "LIST_COLUMN_LABEL": "Custom field (File)",
+        "LIST_FILTER_LABEL": "Custom field (File)",
         "ERROR_MESSAGE": null,
         "HELP_MESSAGE": null
         }
@@ -554,7 +655,7 @@ The structure of an individual custom field is identical to [`userfield`](./crm-
 || **total**
 [`integer`][1] | Number of found custom fields ||
 || **time**
-[`time`](../../../data-types.md#time) | Information about the execution time of the request ||
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -568,7 +669,7 @@ HTTP status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
@@ -579,7 +680,7 @@ HTTP status: **400**
 || `-`     | `Access denied` | The user does not have administrative rights ||
 |#
 
-{% include [system errors](../../../../_includes/system-errors.md) %}
+{% include [System errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
@@ -589,4 +690,3 @@ HTTP status: **400**
 - [{#T}](./crm-contact-userfield-delete.md)
 
 [1]: ../../../data-types.md
-

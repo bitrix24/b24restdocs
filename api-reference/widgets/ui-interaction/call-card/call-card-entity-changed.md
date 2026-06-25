@@ -40,9 +40,9 @@ callback({
 || **PHONE_NUMBER***
 [`string`](../../../data-types.md) | The client's phone number ||
 || **CRM_ENTITY_TYPE***
-[`string`](../../../data-types.md) | The type of the CRM entity associated with the call ||
+[`string`](../../../data-types.md) | The type of the CRM object associated with the call ||
 || **CRM_ENTITY_ID***
-[`integer`](../../../data-types.md) | The identifier of the CRM entity associated with the call ||
+[`integer`](../../../data-types.md) | The identifier of the CRM object associated with the call ||
 |#
 
 ## Event Subscription Parameters

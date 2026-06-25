@@ -6,7 +6,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-An estimate is a CRM entity that allows you to create printed documents and send them to clients before a deal.
+An estimate is a CRM object that allows you to create printed documents and send them to clients before a deal.
 
 > Quick navigation: [all methods and events](#all-methods)
 > 
@@ -42,7 +42,7 @@ The main workspace in an estimate is the General tab of its detail form. It cons
 - [CRM Detail Form: Features and Settings](https://helpdesk.bitrix24.com/open/22879716/)
 - [System Fields in CRM](https://helpdesk.bitrix24.com/open/18529390/)
 - [Custom Fields in CRM](https://helpdesk.bitrix24.com/open/22067852/)
-- [Timeline in CRM Entity](https://helpdesk.bitrix24.com/open/16767378/)
+- [Timeline in CRM object](https://helpdesk.bitrix24.com/open/16767378/)
 
 {% endnote %}
 

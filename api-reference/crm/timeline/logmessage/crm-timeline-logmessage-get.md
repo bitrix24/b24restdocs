@@ -8,7 +8,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: `user with read access permission to the CRM entity containing the entry`
+> Who can execute the method: a user with read permissions for the CRM item containing the record
 
 This method retrieves information about a timeline log entry.
 
@@ -20,7 +20,7 @@ It is important to note that the method can only retrieve data about entries tha
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -28,7 +28,7 @@ It is important to note that the method can only retrieve data about entries tha
 || **id***
 [`integer`](../../../data-types.md) | Integer identifier of the timeline entry (for example, `1`).
 
-Identifiers can be obtained using the method [`crm.timeline.logmessage.list`](./crm-timeline-logmessage-list.md) ||
+You can obtain identifiers using the [`crm.timeline.logmessage.list`](./crm-timeline-logmessage-list.md) method ||
 |#
 
 ## Code Examples
@@ -184,6 +184,35 @@ Identifiers can be obtained using the method [`crm.timeline.logmessage.list`](./
     );
     ```
 
+- Python
+
+    Example
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.timeline.logmessage.get(
+            bitrix_id=1,
+        )
+        result = bitrix_response.response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - PHP CRest
 
     ```php
@@ -205,7 +234,7 @@ Identifiers can be obtained using the method [`crm.timeline.logmessage.list`](./
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -247,7 +276,7 @@ The `result` field contains the [logMessage](./crm-timeline-logmessage-add.md#lo
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -256,18 +285,18 @@ HTTP Status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
 || **Code** | **Description** ||
 || `NOT_FOUND` | The timeline entry with the specified `id` does not exist ||
-|| `100` | Required fields were not provided ||
+|| `100` | Required fields are not provided ||
 || `0` | Other errors (e.g., fatal) ||
 |#
 
-{% include [system errors](../../../../_includes/system-errors.md) %}
+{% include [System errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

@@ -14,7 +14,7 @@ This method retrieves the requisite by its identifier `id`.
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -211,11 +211,36 @@ The identifier can be obtained using the [crm.requisite.list](./crm-requisite-li
     echo '</PRE>';
     ```
 
+- Python
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.requisite.get(bitrix_id=27).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 {% endlist %}
 
-## Successful Response
+## Response on Success
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -241,9 +266,9 @@ HTTP Status: **200**
         "RQ_SECOND_NAME": null,
         "RQ_COMPANY_ID": null,
         "RQ_COMPANY_NAME": "Ltd. \"QuickBooks and other similar platforms\"",
-        "RQ_COMPANY_FULL_NAME": "LIMITED LIABILITY COMPANY \"QuickBooks and other similar platforms\"",
+        "RQ_COMPANY_FULL_NAME": "LIMITED LIABILITY COMPANY \"QuickBooks and other similar platforms\""
         "RQ_COMPANY_REG_DATE": "06.04.2007",
-        "RQ_DIRECTOR": "RYZHIKOV SERGEY VLADIMIROVICH",
+        "RQ_DIRECTOR": "SMITH JOHN",
         "RQ_ACCOUNTANT": null,
         "RQ_CEO_NAME": null,
         "RQ_CEO_WORK_POS": null,
@@ -259,7 +284,7 @@ HTTP Status: **200**
         "RQ_IDENT_DOC_DATE": null,
         "RQ_IDENT_DOC_ISSUED_BY": null,
         "RQ_IDENT_DOC_DEP_CODE": null,
-        "RQ_INN": "7717586110",
+        "RQ_INN": "1717586110",
         "RQ_KPP": "770501001",
         "RQ_USRLE": null,
         "RQ_IFNS": null,
@@ -316,12 +341,12 @@ HTTP Status: **200**
 || **result**
 `Object`| An object containing the values of [requisite fields](./index.md#fields) ||
 || **time**
-[`time`](../../../data-types.md) | Information about the execution time of the request ||
+[`time`](../../../data-types.md) | Information about the request execution time ||
 |#
 
-## Error Response
+## Response on Error
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -330,17 +355,17 @@ HTTP Status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Errors
 
-#|  
-|| **Code** | **Error Text** | **Description** ||
+#|
+|| **Code** | **Error text** | **Description** ||
 || Empty string | The Requisite with ID '27' is not found | The requisite with the specified identifier was not found ||
 || Empty string | Access denied. | Insufficient access permissions to retrieve the requisite ||
 |#
 
-{% include [system errors](../../../../_includes/system-errors.md) %}
+{% include [System errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

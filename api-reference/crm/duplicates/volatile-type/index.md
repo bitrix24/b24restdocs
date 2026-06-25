@@ -18,10 +18,10 @@ To search for duplicates based solely on phone numbers and emails, use [crm.dupl
 
 ## Connection of Duplicate Search Settings with CRM Entities
 
-The `entityTypeId` parameter specifies the type of CRM entity and determines which objects the methods work with regarding additional search fields.
+The `entityTypeId` parameter specifies the type of CRM object and determines which objects the methods work with regarding additional search fields.
 
 #| 
-|| **CRM Entity Type** | **entityTypeId** ||
+|| **CRM object Type** | **entityTypeId** ||
 || Lead | `1` ||
 || Contact | `3` ||
 || Company | `4` ||

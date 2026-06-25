@@ -8,7 +8,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
-> Who can execute the method: a user with permission to edit the CRM entity for which the activity is being updated.
+> Who can execute the method: a user with permission to edit the CRM object for which the activity is being updated
 
 The method `crm.activity.todo.updateResponsibleUser` updates the responsible user for the universal activity.
 
@@ -24,7 +24,7 @@ The method `crm.activity.todo.updateResponsibleUser` updates the responsible use
 || **ownerTypeId***
 [`integer`](../../../../data-types.md) | [Identifier of the CRM object type](../../../data-types.md#object_type) to which the activity is linked, for example `2` for a deal ||
 || **ownerId***
-[`integer`](../../../../data-types.md) | Identifier of the CRM entity to which the activity is linked, for example `1` ||
+[`integer`](../../../../data-types.md) | Identifier of the CRM object to which the activity is linked, for example `1` ||
 || **responsibleId***
 [`integer`](../../../../data-types.md) | Identifier of the user who will become responsible for the activity, for example `1` ||
 |#
@@ -290,7 +290,7 @@ HTTP status: **400**
 #|
 || **Code** | **Description** ||
 || `100` | Required fields are missing ||
-|| `NOT_FOUND` | CRM entity not found ||
+|| `NOT_FOUND` | CRM object not found ||
 || `ACCESS_DENIED` | Insufficient permissions to perform the operation ||
 || `OWNER_NOT_FOUND` | Owner of the entity not found ||
 || `CAN_NOT_UPDATE_RESPONSIBLE_USER_COMPLETED_TODO` | Cannot change the responsible user in a closed activity ||

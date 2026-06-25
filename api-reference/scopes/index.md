@@ -18,7 +18,7 @@ Start not with a list of all scopes, but with the application's scenario. Identi
 
 For example, the application connects external telephony and directly calls the methods [telephony.externalCall.register](../telephony/telephony-external-call-register.md) and [telephony.externalCall.finish](../telephony/telephony-external-call-finish.md). Since the application calls telephony methods, the `telephony` scope is required in its settings.
 
-The `crm` scope is not needed for these actions, even though telephony methods may interact with CRM within Bitrix24: [telephony.externalCall.register](../telephony/telephony-external-call-register.md) can automatically create a CRM entity, such as a lead, while [telephony.externalCall.finish](../telephony/telephony-external-call-finish.md) saves the call in a CRM activity.
+The `crm` scope is not needed for these actions, even though telephony methods may interact with CRM within Bitrix24: [telephony.externalCall.register](../telephony/telephony-external-call-register.md) can automatically create a CRM object, such as a lead, while [telephony.externalCall.finish](../telephony/telephony-external-call-finish.md) saves the call in a CRM activity.
 
 The `crm` scope is only necessary if the application itself sends requests to CRM methods, such as [crm.lead.add](../crm/leads/crm-lead-add.md) or [crm.activity.add](../crm/timeline/activities/activity-base/crm-activity-add.md).
 

@@ -14,7 +14,7 @@ This method removes the link between requisites and the object.
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -29,12 +29,12 @@ The following types can be used:
 - new invoice (value `31`)
 - other dynamic objects (to get possible values, see the method [crm.type.list](../../universal/user-defined-object-types/crm-type-list.md)).
 
-Identifiers of CRM object types can be obtained using the method [crm.enum.ownertype](../../auxiliary/enum/crm-enum-owner-type.md) 
+Object type identifiers can be obtained using the method [crm.enum.ownertype](../../auxiliary/enum/crm-enum-owner-type.md) 
 ||
 || **entityId***
 [`integer`](../../../data-types.md) | Identifier of the object to which the link belongs. 
 
-Identifiers of objects can be obtained using the following methods: [crm.deal.list](../../deals/crm-deal-list.md), [crm.quote.list](../../quote/crm-quote-list.md), [crm.item.list](../../universal/crm-item-list.md) ||
+Object identifiers can be obtained using the following methods: [crm.deal.list](../../deals/crm-deal-list.md), [crm.quote.list](../../quote/crm-quote-list.md), [crm.item.list](../../universal/crm-item-list.md) ||
 |#
 
 ## Code Examples
@@ -200,6 +200,34 @@ Identifiers of objects can be obtained using the following methods: [crm.deal.li
     echo '</PRE>';
     ```
 
+- Python
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.requisite.link.unregister(
+            entity_type_id=31,
+            entity_id=315,
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 {% endlist %}
 
 ## Response Handling
@@ -246,18 +274,18 @@ HTTP status: **40x**, **50x**
 }
 ```
 
-{% include notitle [error handling](../../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
-#|  
+#|
 || **Code** | **Description** ||
-|| `entityTypeId is not defined or invalid` | Object type identifier is not set or has an invalid value ||
-|| `entityId is not defined or invalid` | Object identifier is not set or has an invalid value ||
+|| `entityTypeId is not defined or invalid` | The object type identifier is not set or has an invalid value ||
+|| `entityId is not defined or invalid` | The object identifier is not set or has an invalid value ||
 || `Access denied` | Insufficient access permissions to remove the requisite link ||
 |#
 
-{% include [system errors](../../../../_includes/system-errors.md) %}
+{% include [System errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

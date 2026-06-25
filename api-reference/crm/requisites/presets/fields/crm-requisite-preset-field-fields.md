@@ -10,13 +10,13 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: any user
 
-This method returns a formal description of the fields that describe the customizable field of the requisite template.
+Returns a formal description of the fields that describe the customizable field of the required template.
 
 No parameters.
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -145,6 +145,33 @@ No parameters.
     }
     ```
 
+- Python
+
+    Example
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.requisite.preset.field.fields().response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - BX24.js
 
     ```js
@@ -180,7 +207,7 @@ No parameters.
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -210,7 +237,7 @@ HTTP Status: **200**
             "isImmutable": false,
             "isMultiple": false,
             "isDynamic": false,
-            "title": "Title in Template"
+            "title": "Template Name"
         },
         "SORT": {
             "type": "integer",
@@ -228,7 +255,7 @@ HTTP Status: **200**
             "isImmutable": false,
             "isMultiple": false,
             "isDynamic": false,
-            "title": "Show in Short List"
+            "title": "Show in brief list"
         }
     },
     "time": {
@@ -246,10 +273,10 @@ HTTP Status: **200**
 ### Returned Data
 
 #|
-|| **Title**
+|| **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../../../data-types.md) | An object in the format `{"field_1": "value_1", ... "field_N": "value_N"}`, where `field` is the field identifier, and `value` is the object with [field attributes](#attribute) ||
+[`object`](../../../../data-types.md) | An object in the format `{"field_1": "value_1", ... "field_N": "value_N"}`, where `field` is the field identifier and `value` is the object with [field attributes](#attribute) ||
 || **time**
 [`time`](../../../../data-types.md) | Information about the request execution time ||
 |#
@@ -257,27 +284,27 @@ HTTP Status: **200**
 ### Description of Fields Describing the Customizable Field of the Requisite Template
 
 #|
-||  **Title**
+||  **Name**
 `type` | **Description** ||
 || **ID**
 [`integer`](../../../../data-types.md) | Field identifier. Created automatically and unique within the template ||
 || **FIELD_NAME**
 [`string`](../../../../data-types.md) | Field name ||
 || **FIELD_TITLE**
-[`string`](../../../../data-types.md) | Alternative field name for the requisite.
+[`string`](../../../../data-types.md) | An alternative name for the field in the requisite.
 
 The alternative name is displayed in various forms for filling out requisites. Depending on the specific form, the alternative name may or may not be used 
 ||
 || **SORT**
-[`integer`](../../../../data-types.md) | Sorting. Order in the list of template fields ||
+[`integer`](../../../../data-types.md) | Sorting. The order in the list of template fields ||
 || **IN_SHORT_LIST**
-[`char`](../../../../data-types.md) | Show in short list. Deprecated field, currently not used. Retained for backward compatibility. Can take values `Y` or `N` ||
+[`char`](../../../../data-types.md) | Show in the short list. Deprecated field, currently not used. Retained for backward compatibility. Can take values `Y` or `N` ||
 |#
 
 ### Description of Attributes {#attribute}
 
 #|
-|| **Title**
+|| **Name**
 `type` | **Description** ||
 || **type**
 [`string`](../../../../data-types.md) | Field type ||
@@ -312,7 +339,7 @@ The alternative name is displayed in various forms for filling out requisites. D
 
 ## Error Handling
 
-{% include [system errors](../../../../../_includes/system-errors.md) %}
+{% include [System errors](../../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

@@ -8,19 +8,19 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: `any user`
+> Who can execute the method: any user
 
-This method updates a "Comment" type deal in the timeline.
+This method adds a "Comment" type activity to the timeline.
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`](../../../data-types.md) | Integer identifier of the "Comment" type deal (e.g., `1`). You can obtain identifiers using the [`crm.timeline.comment.list`](./crm-timeline-comment-list.md) method ||
+[`integer`](../../../data-types.md) | Integer identifier of the "Comment" type deal (e.g., `1`). Identifiers can be obtained using the [`crm.timeline.comment.list`](./crm-timeline-comment-list.md) method ||
 || **fields***
 [`object`](../../../data-types.md) | Field values (detailed description provided [below](#parametr-fields)) for updating the "Comment" type deal in the following structure:
 
@@ -49,10 +49,11 @@ Starting from version crm 23.100.0, only parameters with the key `fields` in low
 
 ||
 || **ownerTypeId**
-[`integer`](../../data-types.md) | [Integer identifier of the CRM object type](../../data-types.md#object_type) to which the comment is attached (e.g., `2` for a deal) ||
+[`integer`](../../data-types.md) | [Integer identifier of the CRM object type](../../data-types.md#object_type) to which the comment is linked (e.g., `2` for a deal) ||
 || **ownerId**
-[`integer`](../../../data-types.md) | Integer identifier of the CRM entity to which the comment is attached (e.g., `1`). You can obtain a list of identifiers using the [`crm.timeline.bindings.list`](../bindings/crm-timeline-bindings-list.md) method (field `ENTITY_ID`) ||
+[`integer`](../../../data-types.md) | Integer identifier of the CRM object to which the comment is attached (e.g., `1`). You can obtain a list of identifiers using the [`crm.timeline.bindings.list`](../bindings/crm-timeline-bindings-list.md) method (field `ENTITY_ID`) ||
 |#
+
 
 ### Parameter fields
 
@@ -60,9 +61,9 @@ Starting from version crm 23.100.0, only parameters with the key `fields` in low
 || **Name**
 `type` | **Description** ||
 || **COMMENT**
-[`string`](../../../data-types.md) | Text of the comment ||
+[`string`](../../../data-types.md) | The text of the comment ||
 || **FILES**
-[`attached_diskfile`](../../../data-types.md) | List of files. An array of values described according to [the rules](../../../files/how-to-update-files.md) ||
+[`attached_diskfile`](../../../data-types.md) | List of files. An array of values described according to the [rules](../../../files/how-to-update-files.md) ||
 |#
 
 ## Code Examples
@@ -199,13 +200,49 @@ Starting from version crm 23.100.0, only parameters with the key `fields` in low
             ->getResult();
     
         echo 'Success: ' . print_r($result, true);
-        // Your required data processing logic
+        // The data processing logic you need
         processData($result);
     
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error updating timeline comment: ' . $e->getMessage();
     }
+    ```
+
+- Python
+
+    Example
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.timeline.comment.update(
+            bitrix_id=999,
+            fields={
+                "COMMENT": "Comment was changed",
+                "FILES": [
+                    ["1.gif", "R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=="],
+                    ["2.gif", "R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=="],
+                ],
+            },
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
     ```
 
 - BX24.js
@@ -267,7 +304,7 @@ Starting from version crm 23.100.0, only parameters with the key `fields` in low
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -276,8 +313,8 @@ HTTP Status: **200**
         "start": 1715091541.642592,
         "finish": 1715091541.730599,
         "duration": 0.08800697326660156,
-        "date_start": "2024-05-03T17:19:01+02:00",
-        "date_finish": "2024-05-03T17:19:01+02:00",
+        "date_start": "2024-05-03T17:19:01+03:00",
+        "date_finish": "2024-05-03T17:19:01+03:00",
         "operating": 0
     }
 }
@@ -296,7 +333,7 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -305,22 +342,22 @@ HTTP Status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
 || **Code** | **Description** ||
-|| `OWNER_NOT_FOUND` | Owner of the entity not found ||
+|| `OWNER_NOT_FOUND` | Owner of the item not found ||
 || `ACCESS_DENIED` | Insufficient permissions ||
-|| `NOT_FOUND` | Entity not found ||
+|| `NOT_FOUND` | Element not found ||
 || `INVALID_ARG_VALUE` | Empty comment ||
-|| `100` | Required fields not provided ||
+|| `100` | Required fields are not provided ||
 |#
 
-{% include [system errors](../../../../_includes/system-errors.md) %}
+{% include [System errors](../../../../_includes/system-errors.md) %}
 
-## Continue Learning 
+## Continue Learning
 
 - [{#T}](./crm-timeline-comment-add.md)
 - [{#T}](./crm-timeline-comment-get.md)

@@ -14,7 +14,7 @@ This method updates localizations for a currency or adds them if the localizatio
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 #|
 ||  **Name** /
@@ -202,6 +202,49 @@ Existing localizations that are not passed to the method will not be changed.
     }
     ```
 
+- Python
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.currency.localizations.set(
+            bitrix_id="CLF",
+            localizations={
+                "en": {
+                    "FULL_NAME": "Unidad de Fomento",
+                    "FORMAT_STRING": "CLF#VALUE#",
+                    "DEC_POINT": ".",
+                    "THOUSANDS_VARIANT": "C",
+                    "DECIMALS": 4,
+                },
+                "de": {
+                    "FULL_NAME": "Einheit der Entwicklung",
+                    "FORMAT_STRING": "#VALUE# CLF",
+                    "DEC_POINT": ".",
+                    "THOUSANDS_VARIANT": "B",
+                    "DECIMALS": 4,
+                },
+            },
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - BX24.js
 
     ```js
@@ -217,9 +260,11 @@ Existing localizations that are not passed to the method will not be changed.
                     THOUSANDS_VARIANT: 'C',
                     DECIMALS: 4,
                 },
-                de: {
+                ru: {
                     FULL_NAME: 'Einheit der Entwicklung',
-                    FORMAT_STRING: '#VALUE# CLF',
+                    FORMAT_STRING: '#VALUE
+
+# CLF',
                     DEC_POINT: '.',
                     THOUSANDS_VARIANT: 'B',
                     DECIMALS: 4,
@@ -265,7 +310,9 @@ Existing localizations that are not passed to the method will not be changed.
                 ],
                 'de' => [
                     'FULL_NAME' => 'Einheit der Entwicklung',
-                    'FORMAT_STRING' => '#VALUE# CLF',
+                    'FORMAT_STRING' => '#VALUE
+
+# CLF',
                     'DEC_POINT' => '.',
                     'THOUSANDS_VARIANT' => 'B',
                     'DECIMALS' => 4,
@@ -283,7 +330,7 @@ Existing localizations that are not passed to the method will not be changed.
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -319,7 +366,7 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -328,19 +375,19 @@ HTTP Status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
 || **Code** | **Description** | **Value** ||
-|| Empty string | Access denied. | Insufficient access permissions ||
+|| Empty string | Access denied. | Insufficient access rights. ||
 || Empty string | The parameter id is invalid or not defined. | Empty currency identifier ||
 |#
 
-{% include [system errors](../../../../_includes/system-errors.md) %}
+{% include [System errors](../../../../_includes/system-errors.md) %}
 
-## Continue Learning 
+## Continue Learning
 
 - [{#T}](./crm-currency-localizations-get.md)
 - [{#T}](./crm-currency-localizations-delete.md)

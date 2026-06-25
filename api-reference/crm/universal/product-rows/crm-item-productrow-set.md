@@ -10,22 +10,23 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: requires access permission to modify the CRM object for which the product row is being set.
 
-This method saves the product row of a CRM object. Please note that this method will overwrite all existing product rows associated with the object. Thus, it replaces the existing product rows with those that were sent.
+Saves the product row of a CRM object. Please note that this method will overwrite all existing product rows associated with the object. Thus, it replaces the existing product rows with those that were sent.
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **ownerId***
-[`integer`](../../../data-types.md) | Identifier of the CRM object ||
+[`integer`](../../../data-types.md) | Identifier of the CRM object. ||
 || **ownerType***
-[`string`](../../../data-types.md) | Identifier of the [`CRM object type`](../../data-types.md#object_type). Pass the [Short symbolic code of the type](../../data-types.md#object_type) ||
+[`string`](../../../data-types.md) | Identifier of the [CRM object type](../../data-types.md#object_type). Pass the [Short symbolic code of the type](../../data-types.md#object_type) ||
 || **productRows***
 [`object[]`](../../../data-types.md) | Array of objects containing information about the product rows to be saved in the object ||
 |#
+
 
 ### Parameter productRows
 
@@ -33,36 +34,34 @@ This method saves the product row of a CRM object. Please note that this method 
 || **Name**
 `type` | **Description** ||
 || **productId**
-[`catalog_product.id`](../../../catalog/data-types.md#catalog_product) | Identifier of the product from the catalog ||
+[`catalog_product.id`](../../../catalog/data-types.md#catalog_product) | Identifier of the product from the catalog. ||
 || **productName**
-[`string`](../../../data-types.md) | Name of the product in the product row.
-If not provided and **productId** is given, the product name from the product catalog will be used ||
+[`string`](../../../data-types.md) | Product name in the product position.
+If not provided and a **productId** is provided, the product name from the product catalog is used.  ||
 || **price**
-[`double`](../../../data-types.md) | Price per unit of the product row, including discounts and taxes ||
+[`double`](../../../data-types.md) | Price per unit of the product row, including discounts and taxes. ||
 || **quantity**
-[`double`](../../../data-types.md) | Quantity of the product. 
-Default is 1 ||
+[`double`](../../../data-types.md) | Quantity of the product. Default is 1 ||
 || **discountTypeId**
-[`integer`](../../../data-types.md) | Type of discount.
-Possible values:
+[`integer`](../../../data-types.md) | Type of discount. Possible values:
 - `1` — absolute value
 - `2` — percentage value
 Default is 2 ||
 || **discountRate**
-[`double`](../../../data-types.md) | Discount value in percentage (if using the percentage discount type) ||
+[`double`](../../../data-types.md) | The discount value in percentage (if using the percentage discount type) ||
 || **discountSum**
-[`double`](../../../data-types.md) | Absolute discount value (if using the absolute discount type) ||
+[`double`](../../../data-types.md) | The absolute value of the discount (if using the absolute discount type) ||
 || **taxRate**
-[`double`](../../../data-types.md) | Tax rate in percentage ||
+[`double`](../../../data-types.md) | Tax rate in percentage. ||
 || **taxIncluded**
-[`string`](../../../data-types.md) | Indicator of whether tax is included in the price.
-Possible values:
+[`string`](../../../data-types.md) | Indicator of whether the tax is included in the price. Possible values:
 - `Y` – tax included
 - `N` – tax not included
 Default is N ||
 || **measureCode**
-[`catalog_measure.code`](../../../catalog/data-types.md#catalog_measure) | Unit of measure code.
-If not provided and **productId** is given, the unit of measure from the product catalog will be used ||
+[`catalog_measure.code`](../../../catalog/data-types.md#catalog_measure) | Unit of measurement code.
+If not provided and a **productId** is provided, the unit of measurement from the product catalog is used.
+||
 || **sort**
 [`integer`](../../../data-types.md) | Sorting ||
 |#
@@ -260,6 +259,50 @@ If not provided and **productId** is given, the unit of measure from the product
     }
     ```
 
+- Python
+
+    Example
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.item.productrow.set(
+            owner_type="D",
+            owner_id=13143,
+            product_rows=[
+                {
+                    "productId": 9621,
+                    "price": 99999.99,
+                    "quantity": 1,
+                    "sort": 10,
+                },
+                {
+                    "productId": 9623,
+                    "price": 15900,
+                    "quantity": 2,
+                    "sort": 10,
+                },
+            ],
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - BX24.js
 
     ```js
@@ -326,71 +369,71 @@ If not provided and **productId** is given, the unit of measure from the product
 
 {% endlist %}
 
-## Successful Response
+## Response on Success
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
-   "result": {
-      "productRows": [
+   "result":{
+      "productRows":[
          {
-            "id": 17654,
-            "ownerId": 13143,
-            "ownerType": "D",
-            "productId": 9621,
-            "productName": "iphone 14",
-            "price": 99999.99,
-            "priceAccount": 99999.99,
-            "priceExclusive": 99999.99,
-            "priceNetto": 99999.99,
-            "priceBrutto": 99999.99,
-            "quantity": 1,
-            "discountTypeId": 2,
-            "discountRate": 0,
-            "discountSum": 0,
-            "taxRate": null,
-            "taxIncluded": "N",
-            "customized": "Y",
-            "measureCode": 796,
-            "measureName": "pcs",
-            "sort": 10,
-            "xmlId": "",
-            "type": 4
+            "id":17654,
+            "ownerId":13143,
+            "ownerType":"D",
+            "productId":9621,
+            "productName":"iphone 14",
+            "price":99999.99,
+            "priceAccount":99999.99,
+            "priceExclusive":99999.99,
+            "priceNetto":99999.99,
+            "priceBrutto":99999.99,
+            "quantity":1,
+            "discountTypeId":2,
+            "discountRate":0,
+            "discountSum":0,
+            "taxRate":null,
+            "taxIncluded":"N",
+            "customized":"Y",
+            "measureCode":796,
+            "measureName":"pcs",
+            "sort":10,
+            "xmlId":"",
+            "type":4
          },
          {
-            "id": 17655,
-            "ownerId": 13143,
-            "ownerType": "D",
-            "productId": 9623,
-            "productName": "iphone 10xs",
-            "price": 15900,
-            "priceAccount": 15900,
-            "priceExclusive": 15900,
-            "priceNetto": 15900,
-            "priceBrutto": 15900,
-            "quantity": 2,
-            "discountTypeId": 2,
-            "discountRate": 0,
-            "discountSum": 0,
-            "taxRate": null,
-            "taxIncluded": "N",
-            "customized": "Y",
-            "measureCode": 796,
-            "measureName": "pcs",
-            "sort": 10,
-            "xmlId": "",
-            "type": 4
+            "id":17655,
+            "ownerId":13143,
+            "ownerType":"D",
+            "productId":9623,
+            "productName":"iphone 10xs",
+            "price":15900,
+            "priceAccount":15900,
+            "priceExclusive":15900,
+            "priceNetto":15900,
+            "priceBrutto":15900,
+            "quantity":2,
+            "discountTypeId":2,
+            "discountRate":0,
+            "discountSum":0,
+            "taxRate":null,
+            "taxIncluded":"N",
+            "customized":"Y",
+            "measureCode":796,
+            "measureName":"pcs",
+            "sort":10,
+            "xmlId":"",
+            "type":4
          }
       ]
    },
-   "time": {
-      "start": 1716895718.887229,
-      "finish": 1716895719.316293,
-      "duration": 0.4290640354156494,
-      "processing": 0.20114707946777344,
-      "date_start": "2024-05-28T14:28:38+02:00",
-      "date_finish": "2024-05-28T14:28:39+02:00"
+   "time":{
+      "start":1716895718.887229,
+      "finish":1716895719.316293,
+      "duration":0.4290640354156494,
+      "processing":0.20114707946777344,
+      "date_start":"2024-05-28T14:28:38+03:00",
+      "date_finish":"2024-05-28T14:28:39+03:00"
    }
 }
 ```
@@ -405,21 +448,21 @@ HTTP Status: **200**
 || **productRow**
 [`crm_item_product_row[]`](../../data-types.md#crm_item_product_row) | Array of objects containing information about all product rows of the CRM object ||
 || **time**
-[`time`](../../../data-types.md) | Information about the execution time of the request ||
+[`time`](../../../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
-   "error": "OWNER_NOT_FOUND",
-   "error_description": "Owner was not found"
+   "error":"OWNER_NOT_FOUND",
+   "error_description":"Owner was not found"
 }
 ```
 
-{% include notitle [error handling](../../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
@@ -428,11 +471,11 @@ HTTP Status: **400**
 || `ENTITY_TYPE_NOT_SUPPORTED` | Working with this type of objects is not supported ||
 || `ACCESS_DENIED` | Access denied ||
 || `OWNER_NOT_FOUND` | The provided CRM object was not found ||
-|| `100` | Required parameters were not provided ||
+|| `100` | Required parameters not provided ||
 || `0` | Other errors (e.g., fatal errors) ||
 |#
 
-{% include notitle [system errors](../../../../_includes/system-errors.md) %}
+{% include notitle [System errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

@@ -1,4 +1,4 @@
-# Get the list of currencies crm.currency.list
+# Get the List of Currencies crm.currency.list
 
 {% note tip "" %}
 
@@ -10,11 +10,11 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: any user with access to CRM settings
 
-This method retrieves the list of currencies created on the account.
+Retrieves a list of currencies created on the account.
 
 {% note info %}
 
-Localization parameters (settings dependent on language) will be returned for the current language of the account.
+Localization parameters (settings dependent on language) will be returned for the current account language.
 
 {% endnote %}
 
@@ -36,7 +36,7 @@ Possible values for `order_N`:
 
 ## Code Examples
 
-{% include [Examples note](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -184,13 +184,105 @@ Possible values for `order_N`:
             ->getResult();
     
         echo 'Success: ' . print_r($result, true);
-        // Your logic for processing data
+        // The data processing logic you need
         processData($result);
     
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error: ' . $e->getMessage();
     }
+    ```
+
+- Python
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.currency.list(
+            order={
+                "sort": "asc",
+                "currency": "asc",
+            },
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
+    `as_list` Example
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.currency.list(
+            order={
+                "sort": "asc",
+                "currency": "asc",
+            },
+        ).as_list().response
+        result = bitrix_response.result
+        for item in result:
+            print(item)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
+    `as_list_fast` Example
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.currency.list(
+            order={
+                "sort": "asc",
+                "currency": "asc",
+            },
+        ).as_list_fast(descending=True).response
+        result = bitrix_response.result
+        for item in result:
+            print(item)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
     ```
 
 - BX24.js
@@ -333,7 +425,7 @@ HTTP status: **200**
 || **total**
 [`integer`](../../data-types.md) | Currently always has a value of `0` ||
 || **time**
-[`time`](../../data-types.md) | Information about the execution time of the request ||
+[`time`](../../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -347,23 +439,22 @@ HTTP status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
 || **Code** | **Description** | **Value** ||
-|| Empty string | Access denied. | Insufficient access permissions ||
+|| Empty string | Access denied. | Insufficient access rights. ||
 || Empty string | Failed to get list. General error. | Currency module not installed ||
 |#
 
-{% include [system errors](../../../_includes/system-errors.md) %}
+{% include [System errors](../../../_includes/system-errors.md) %}
 
-## Continue Learning 
+## Continue Learning
 
 - [{#T}](./crm-currency-add.md)
 - [{#T}](./crm-currency-update.md)
 - [{#T}](./crm-currency-get.md)
 - [{#T}](./crm-currency-delete.md)
 - [{#T}](./crm-currency-fields.md)
-

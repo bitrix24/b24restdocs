@@ -8,9 +8,9 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`imopenlines`](../../../scopes/permissions.md)
 >
-> Who can execute the method: any user with access to the CRM entity
+> Who can execute the method: any user with access to the CRM object
 
-The method `imopenlines.crm.chat.getLastId` retrieves the identifier of the last chat associated with the CRM entity.
+The method `imopenlines.crm.chat.getLastId` retrieves the identifier of the last chat associated with the CRM object.
 
 ## Method Parameters
 
@@ -20,13 +20,13 @@ The method `imopenlines.crm.chat.getLastId` retrieves the identifier of the last
 || **Name**
 `type` | **Description** ||
 || **CRM_ENTITY_TYPE***
-[`string`](../../../data-types.md) | Type of the CRM entity. Possible values:
+[`string`](../../../data-types.md) | Type of the CRM object. Possible values:
 - `lead` — lead
 - `deal` — deal
 - `company` — company
 - `contact` — contact ||
 || **CRM_ENTITY***
-[`integer`](../../../data-types.md) | Identifier of the CRM entity.
+[`integer`](../../../data-types.md) | Identifier of the CRM object.
 
 You can obtain the identifier using the universal method [getting a list of CRM entities](../../../crm/universal/crm-item-list.md) ||
 |#
@@ -242,11 +242,11 @@ HTTP Status: **400**
 #|
 || **Status** | **Code** | **Description** | **Value** ||
 || `400` | `CRM_CHAT_EMPTY_CRM_DATA` | Empty CRM data | Required parameters `CRM_ENTITY_TYPE` and `CRM_ENTITY` are not provided ||
-|| `400` | `CRM_CHAT_EMPTY_CRM_DATA` | Could not find CRM entity | Possible reasons:
-- No chat found for the specified CRM entity
+|| `400` | `CRM_CHAT_EMPTY_CRM_DATA` | Could not find CRM object | Possible reasons:
+- No chat found for the specified CRM object
 - Invalid `CRM_ENTITY_TYPE` specified
 - Non-existent `CRM_ENTITY` specified
-- User does not have access to the CRM entity ||
+- User does not have access to the CRM object ||
 || `400` | `ERROR_ARGUMENT` | The value of an argument CRM_ENTITY has an invalid type | The `CRM_ENTITY` parameter is provided in an incorrect format ||
 |#
 

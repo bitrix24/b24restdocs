@@ -106,7 +106,7 @@ This parameter is deprecated. For working with digital workplaces, use the metho
 || **Name**
 `type` | **Description** | **Default** ||
 || **entityTypeId***
-[`integer`][1] | Identifier of the [system](../index.md) or [custom type](./index.md) of the CRM entity | `-` ||
+[`integer`][1] | Identifier of the [system](../index.md) or [custom type](./index.md) of the CRM object | `-` ||
 || **isChildrenListEnabled**
 [`boolean`][1] | Should the linked element be added to the card. 
 

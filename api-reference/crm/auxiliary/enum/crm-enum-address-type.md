@@ -18,7 +18,7 @@ No parameters.
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -173,6 +173,31 @@ No parameters.
     echo '</PRE>';
     ```
 
+- Python
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.enum.addresstype().response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 {% endlist %}
 
 ## Response Handling
@@ -184,37 +209,37 @@ HTTP status: **200**
 "result": [
     {
      "ID": 11,
-     "NAME": "Delivery Address",
+     "NAME": "Shipping address",
      "SYMBOL_CODE": null,
      "SYMBOL_CODE_SHORT": null
     },
     {
      "ID": 1,
-     "NAME": "Actual Address",
+     "NAME": "Physical address",
      "SYMBOL_CODE": null,
      "SYMBOL_CODE_SHORT": null
     },
     {
      "ID": 6,
-     "NAME": "Legal Address",
+     "NAME": "Legal address",
      "SYMBOL_CODE": null,
      "SYMBOL_CODE_SHORT": null
     },
     {
      "ID": 4,
-     "NAME": "Registration Address",
+     "NAME": "Registered address",
      "SYMBOL_CODE": null,
      "SYMBOL_CODE_SHORT": null
     },
     {
      "ID": 8,
-     "NAME": "Correspondence Address",
+     "NAME": "Mailing address",
      "SYMBOL_CODE": null,
      "SYMBOL_CODE_SHORT": null
     },
     {
      "ID": 9,
-     "NAME": "Beneficiary Address",
+     "NAME": "Beneficiary address",
      "SYMBOL_CODE": null,
      "SYMBOL_CODE_SHORT": null
     }
@@ -224,8 +249,8 @@ HTTP status: **200**
     "finish": 1750152255.967967,
     "duration": 0.03664898872375488,
     "processing": 0.0003609657287597656,
-    "date_start": "2025-06-17T12:24:15+02:00",
-    "date_finish": "2025-06-17T12:24:15+02:00",
+    "date_start": "2025-06-17T12:24:15+03:00",
+    "date_finish": "2025-06-17T12:24:15+03:00",
     "operating_reset_at": 1750152855,
     "operating": 0
 }
@@ -243,7 +268,7 @@ HTTP status: **200**
 [`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
 
-#### Fields of the result array {#result}
+#### Fields of the Result Array {#result}
 
 #|
 || **Name**
@@ -262,7 +287,7 @@ HTTP status: **200**
 
 The method does not return errors.
 
-{% include [system errors](../../../../_includes/system-errors.md) %}
+{% include [System errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

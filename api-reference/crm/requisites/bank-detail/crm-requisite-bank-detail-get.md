@@ -1,4 +1,4 @@
-# Get bank details by id crm.requisite.bankdetail.get
+# Get Bank Details by Id crm.requisite.bankdetail.get
 
 {% note tip "" %}
 
@@ -14,7 +14,7 @@ The method returns bank details by identifier.
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -90,7 +90,7 @@ Identifiers of bank details can be obtained using the method [`crm.requisite.ban
       RQ_COR_ACC_NUM: string | null
       RQ_IBAN: string | null
       RQ_SWIFT: string | null
-      RQ_BIC: string | null
+      RQ_BIK: string | null
       RQ_CODEB: string | null
       RQ_CODEG: string | null
       RQ_RIB: string | null
@@ -217,6 +217,31 @@ Identifiers of bank details can be obtained using the method [`crm.requisite.ban
     echo '</PRE>';
     ```
 
+- Python
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.requisite.bankdetail.get(bitrix_id=357).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 {% endlist %}
 
 ## Response Handling
@@ -241,7 +266,7 @@ HTTP status: **200**
         "SORT": "600",
         "RQ_BANK_NAME": "Ltd. Superbank",
         "RQ_BANK_CODE": null,
-        "RQ_BANK_ADDR": "117312, New York, 19 Miller St., House 19",
+        "RQ_BANK_ADDR": "117312, New York, 19 Miller St.",
         "RQ_BANK_ROUTE_NUM": null,
         "RQ_BIK": "044525225",
         "RQ_MFO": null,
@@ -253,7 +278,7 @@ HTTP status: **200**
         "RQ_COR_ACC_NUM": "30101810400000000225",
         "RQ_IBAN": null,
         "RQ_SWIFT": null,
-        "RQ_BIC": null,
+        "RQ_BIK": null,
         "RQ_CODEB": null,
         "RQ_CODEG": null,
         "RQ_RIB": null,
@@ -305,7 +330,7 @@ Identifiers of requisites can be obtained using the method [`crm.requisite.list`
 The country code of the bank details matches the country code in the linked requisite template, the identifier of which is specified in the `ENTITY_ID` field 
 ||
 || **DATE_CREATE**
-[`datetime`](../../../data-types.md) | Creation date ||
+[`datetime`](../../../data-types.md) | Create date ||
 || **DATE_MODIFY**
 [`datetime`](../../../data-types.md) | Modification date ||
 || **CREATED_BY_ID**
@@ -340,11 +365,11 @@ Currently, the field does not actually affect anything ||
 || **RQ_BIK**
 [`string`](../../../data-types.md) | BIK ||
 || **RQ_CODEB**
-[`string`](../../../data-types.md) | Code Banque (for country FR) ||
+[`string`](../../../data-types.md) | Bank Code (for country FR) ||
 || **RQ_CODEG**
-[`string`](../../../data-types.md) | Code Guichet (for country FR) ||
+[`string`](../../../data-types.md) | Branch Code (for country FR) ||
 || **RQ_RIB**
-[`string`](../../../data-types.md) | Clé RIB (for country FR) ||
+[`string`](../../../data-types.md) | RIB Key (for country FR) ||
 || **RQ_MFO**
 [`string`](../../../data-types.md) | MFO ||
 || **RQ_ACC_NAME**
@@ -352,9 +377,9 @@ Currently, the field does not actually affect anything ||
 || **RQ_ACC_NUM**
 [`string`](../../../data-types.md) | Bank Account Number ||
 || **RQ_ACC_TYPE**
-[`string`](../../../data-types.md) | Tipo da conta (for country BR) ||
+[`string`](../../../data-types.md) | Account Type (for country BR) ||
 || **RQ_AGENCY_NAME**
-[`string`](../../../data-types.md) | Agência (for country BR) ||
+[`string`](../../../data-types.md) | Agency (for country BR) ||
 || **RQ_IIK**
 [`string`](../../../data-types.md) | IIK ||
 || **RQ_ACC_CURRENCY**
@@ -365,8 +390,8 @@ Currently, the field does not actually affect anything ||
 [`string`](../../../data-types.md) | IBAN ||
 || **RQ_SWIFT**
 [`string`](../../../data-types.md) | SWIFT ||
-|| **RQ_BIC**
-[`string`](../../../data-types.md) | BIC ||
+|| **RQ_BIK**
+[`string`](../../../data-types.md) | BIK ||
 || **COMMENTS**
 [`string`](../../../data-types.md) | Comment ||
 || **ORIGINATOR_ID**
@@ -384,18 +409,18 @@ HTTP status: **40x**, **50x**
 }
 ```
 
-{% include notitle [error handling](../../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Errors
 
-#|  
-|| **Error Text** | **Description** ||
+#|
+|| **Error text** | **Description** ||
 || `ID is not defined or invalid` | The identifier of the bank details is not defined or has an invalid value ||
-|| `The RequisiteBankDetail with ID '357' is not found` | The bank details with the specified identifier were not found ||
+|| `The RequisiteBankDetail with ID '357' is not found` | The bank detail with the specified identifier was not found ||
 || `Access denied` | Insufficient access permissions to retrieve bank details ||
 |#
 
-{% include [system errors](../../../../_includes/system-errors.md) %}
+{% include [System errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

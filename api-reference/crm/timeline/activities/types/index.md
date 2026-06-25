@@ -8,7 +8,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Quick navigation: [all methods](#all-methods) 
 > 
-> User documentation: [Timeline in CRM entity](https://helpdesk.bitrix24.com/open/16767378/)
+> User documentation: [Timeline in CRM object](https://helpdesk.bitrix24.com/open/16767378/)
 
 Applications can register custom activity types: upload a custom icon and specify the type name. For example, you can create your own activity type with an icon and name of your application.
 

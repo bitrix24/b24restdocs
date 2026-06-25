@@ -8,13 +8,13 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: user with "edit" access permission for document generator templates
+> Who can execute the method: a user with "modify" access permission for document generator templates
 
 The method `crm.documentgenerator.template.add` adds a new document template.
 
 ## Method Parameters
 
-{% include [Parameter Notes](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -25,7 +25,7 @@ The method `crm.documentgenerator.template.add` adds a new document template.
 
 ### Parameter fields {#fields}
 
-{% include [Parameter Notes](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -37,9 +37,9 @@ The method `crm.documentgenerator.template.add` adds a new document template.
 || **numeratorId**^*^
 [`integer`](../../data-types.md) | Identifier of the numerator. A list of available numerators can be obtained using the method [crm.documentgenerator.numerator.list](../numerator/crm-document-generator-numerator-list.md) ||
 || **region**^*^
-[`string`](../../data-types.md) | Template region, for example `de` ||
+[`string`](../../data-types.md) | Template region, for example `ru` ||
 || **entityTypeId**^*^
-[`array`](../../data-types.md) | Array of CRM entity identifiers for which the template is available.
+[`array`](../../data-types.md) | Array of CRM object identifiers for which the template is available.
 
 Typical values:
 - `1` — lead
@@ -79,18 +79,18 @@ If the parameter is not provided or is empty, the current user (`U<id>`) is auto
 || **withStamps**
 [`char`](../../data-types.md) | Include stamp and signature: `Y` or `N`. Default is `N` ||
 || **sort**
-[`integer`](../../data-types.md) | Sort index ||
+[`integer`](../../data-types.md) | Sorting index ||
 |#
 
 ## Code Examples
 
-{% include [Example Notes](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 Example of adding a document template where:
-- template name — `Estimate Template from REST`
+- template name — REST Proposal Template
 - numerator identifier — `49`
-- template region — `de`
-- CRM entity identifiers — `2` and `2_category_0`
+- template region — `ru`
+- CRM object identifiers — `2` and `2_category_0`
 - access permission code — `UA`
 
 {% list tabs %}
@@ -101,7 +101,7 @@ Example of adding a document template where:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"name":"Estimate Template from REST","file":["template.docx","**base64_encoded_content**"],"numeratorId":49,"region":"de","entityTypeId":["2","2_category_0"],"users":["UA"],"active":"Y","withStamps":"N","sort":500}}' \
+    -d '{"fields":{"name":"REST Proposal Template","file":["template.docx","**base64_encoded_content**"],"numeratorId":49,"region":"de","entityTypeId":["2","2_category_0"],"users":["UA"],"active":"Y","withStamps":"N","sort":500}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.documentgenerator.template.add
     ```
 
@@ -111,7 +111,7 @@ Example of adding a document template where:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"name":"Estimate Template from REST","file":["template.docx","**base64_encoded_content**"],"numeratorId":49,"region":"de","entityTypeId":["2","2_category_0"],"users":["UA"],"active":"Y","withStamps":"N","sort":500},"auth":"**put_access_token_here**"}' \
+    -d '{"fields":{"name":"REST Proposal Template","file":["template.docx","**base64_encoded_content**"],"numeratorId":49,"region":"de","entityTypeId":["2","2_category_0"],"users":["UA"],"active":"Y","withStamps":"N","sort":500},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/crm.documentgenerator.template.add
     ```
 
@@ -155,7 +155,7 @@ Example of adding a document template where:
             name: 'Template KP from REST',
             file: ['template.docx', '**base64_encoded_content**'],
             numeratorId: 49,
-            region: 'ru',
+            region: 'de',
             entityTypeId: ['2', '2_category_0'],
             users: ['UA'],
             active: 'Y',
@@ -197,7 +197,7 @@ Example of adding a document template where:
                 name: 'Template KP from REST',
                 file: ['template.docx', '**base64_encoded_content**'],
                 numeratorId: 49,
-                region: 'ru',
+                region: 'de',
                 entityTypeId: ['2', '2_category_0'],
                 users: ['UA'],
                 active: 'Y',
@@ -236,7 +236,7 @@ Example of adding a document template where:
                 'crm.documentgenerator.template.add',
                 [
                     'fields' => [
-                        'name' => 'Estimate Template from REST',
+                        'name' => 'REST Proposal Template',
                         'file' => [
                             'template.docx',
                             '**base64_encoded_content**',
@@ -266,6 +266,43 @@ Example of adding a document template where:
     }
     ```
 
+- Python
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.documentgenerator.template.add(
+            fields={
+                "name": "REST Proposal Template",
+                "file": ["template.docx", "**base64_encoded_content**"],
+                "numeratorId": 49,
+                "region": "de",
+                "entityTypeId": ["2", "2_category_0"],
+                "users": ["UA"],
+                "active": "Y",
+                "withStamps": "N",
+                "sort": 500,
+            },
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected Error: {error}")
+    ```
+
 - BX24.js
 
     ```js
@@ -273,7 +310,7 @@ Example of adding a document template where:
         'crm.documentgenerator.template.add',
         {
             fields: {
-                name: 'Estimate Template from REST',
+                name: 'REST Proposal Template',
                 file: ['template.docx', '**base64_encoded_content**'],
                 numeratorId: 49,
                 region: 'de',
@@ -302,7 +339,7 @@ Example of adding a document template where:
         'crm.documentgenerator.template.add',
         [
             'fields' => [
-                'name' => 'Estimate Template from REST',
+                'name' => 'REST Proposal Template',
                 'file' => [
                     'template.docx',
                     '**base64_encoded_content**',
@@ -327,14 +364,14 @@ Example of adding a document template where:
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
     "result": {
         "template": {
             "id": "41",
-            "name": "Template from File",
+            "name": "Template from file",
             "region": "de",
             "code": null,
             "download": "https://mysite.com/bitrix/services/main/ajax.php?action=crm.documentgenerator.template.download&SITE_ID=s1&id=41",
@@ -351,8 +388,8 @@ HTTP Status: **200**
             "entityTypeId": [
                 "2"
             ],
-            "createTime": "2026-03-18T15:54:20+02:00",
-            "updateTime": "2026-03-18T15:54:20+02:00"
+            "createTime": "2026-03-18T15:54:20+03:00",
+            "updateTime": "2026-03-18T15:54:20+03:00"
         }
     },
     "time": {
@@ -360,8 +397,8 @@ HTTP Status: **200**
         "finish": 1773838460.813945,
         "duration": 1.8139450550079346,
         "processing": 1,
-        "date_start": "2026-03-18T15:54:19+02:00",
-        "date_finish": "2026-03-18T15:54:20+02:00",
+        "date_start": "2026-03-18T15:54:19+03:00",
+        "date_finish": "2026-03-18T15:54:20+03:00",
         "operating_reset_at": 1773839059,
         "operating": 1.0305089950561523
     }
@@ -379,13 +416,13 @@ HTTP Status: **200**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
-#### Type template {#template}
+#### Template Type {#template}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **id**
-[`string`](../../data-types.md) | Template identifier ||
+[`string`](../../data-types.md) | Identifier of the template ||
 || **name**
 [`string`](../../data-types.md) | Template name ||
 || **region**
@@ -401,7 +438,7 @@ HTTP Status: **200**
 || **moduleId**
 [`string`](../../data-types.md) | Module identifier ||
 || **numeratorId**
-[`string`](../../data-types.md) | Identifier of the numerator ||
+[`string`](../../data-types.md) | The identifier of the numerator ||
 || **withStamps**
 [`char`](../../data-types.md) | Include stamp and signature: `Y` or `N` ||
 || **users**
@@ -409,9 +446,9 @@ HTTP Status: **200**
 || **isDeleted**
 [`char`](../../data-types.md) | Template deletion flag: `Y` or `N` ||
 || **sort**
-[`string`](../../data-types.md) | Sort index ||
+[`string`](../../data-types.md) | Sorting index ||
 || **entityTypeId**
-[`array`](../../data-types.md) | Array of CRM entity identifiers for which the template is available ||
+[`array`](../../data-types.md) | Array of CRM object identifiers for which the template is available ||
 || **createTime**
 [`datetime`](../../data-types.md) | Date and time of template creation ||
 || **updateTime**
@@ -420,7 +457,7 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -429,7 +466,7 @@ HTTP Status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
@@ -440,11 +477,11 @@ HTTP Status: **400**
 || `0` | Empty required fields: name, numeratorId, region, entityTypeId | Required fields not provided in the `fields` object ||
 || `0` | Missing file content | Template file not provided in `fields.file` ||
 || `0` | Could not save file | Failed to save the template file ||
-|| `Empty value` | You do not have permissions to modify templates | Insufficient permissions to modify document generator templates ||
-|| `Empty value` | Module documentgenerator is not installed | The `documentgenerator` module is unavailable ||
+|| Empty value | You do not have permissions to modify templates | Insufficient permissions to modify document generator templates ||
+|| Empty value | Module documentgenerator is not installed | The `documentgenerator` module is not available ||
 |#
 
-{% include [system errors](../../../../_includes/system-errors.md) %}
+{% include [System errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

@@ -2,6 +2,16 @@
 
 ## 2026
 
+### June 25, 2026
+
+- Added methods for the section [Knowledge Base 2.0](./api-reference/rest-v3/note/collection/index.md)
+- Added methods for the section [Documents in Knowledge Base 2.0](./api-reference/rest-v3/note/document/index.md)
+- Updated the page [How to Embed a Widget into a Lead as a Custom Field](./tutorials/crm/crm-widgets/widget-as-field-in-lead-page.md)
+- Updated the tutorial [Open Channels: Common Scenarios](./tutorials/openlines/index.md)
+- Updated the tutorial [How to Connect an SMS Provider to Bitrix24](./tutorials/messageservice/index.md)
+- Updated the page [Bitrix24 UI Kit: Overview](./api-reference/widgets/ui-kit/index.md)
+- Updated the tutorial [How to Use Sales Intelligence When Creating a Lead](./tutorials/crm/how-to-use-analitycs/use-analitics-for-add-lead.md)
+
 ### June 18, 2026
 
 - Added new method [tasks.task.list](./api-reference/rest-v3/tasks/tasks-task-list.md)

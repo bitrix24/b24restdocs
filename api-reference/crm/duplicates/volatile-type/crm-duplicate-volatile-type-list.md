@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: administrator
 
-The method `crm.duplicate.volatileType.list` returns a list of custom fields that are already being used to search for duplicates in leads, contacts, and companies.
+The method `crm.duplicate.volatileType.list` returns a list of custom fields currently used to search for duplicates in leads, contacts, and companies.
 
 ## Method Parameters
 
@@ -18,7 +18,7 @@ No parameters.
 
 ## Code Examples
 
-{% include [Examples Note](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -156,6 +156,83 @@ No parameters.
     }
     ```
 
+- Python
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.duplicate.volatile_type.list().response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
+    `as_list` Example
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.duplicate.volatile_type.list().as_list().response
+        result = bitrix_response.result
+        for item in result:
+            print(item)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
+    `as_list_fast` Example
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.duplicate.volatile_type.list().as_list_fast(descending=True).response
+        result = bitrix_response.result
+        for item in result:
+            print(item)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - BX24.js
 
     ```js
@@ -190,7 +267,7 @@ No parameters.
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -206,8 +283,8 @@ HTTP Status: **200**
         "finish": 1750934651.578262,
         "duration": 0.06480717658996582,
         "processing": 0.017321109771728516,
-        "date_start": "2025-06-26T13:44:11+02:00",
-        "date_finish": "2025-06-26T13:44:11+02:00",
+        "date_start": "2025-06-26T13:44:11+03:00",
+        "date_finish": "2025-06-26T13:44:11+03:00",
         "operating_reset_at": 1750935251,
         "operating": 0
     }
@@ -222,7 +299,7 @@ HTTP Status: **200**
 || **id**
 [`integer`](../../../data-types.md) | Record identifier ||
 || **entityTypeId**
-[`integer`](../../../data-types.md) | Object type ||
+[`integer`](../../../data-types.md) | Type of the object ||
 || **fieldCode**
 [`string`](../../../data-types.md) | Field code ||
 || **time**[`time`](../../../data-types.md#time) | Information about the request execution time ||
@@ -230,12 +307,12 @@ HTTP Status: **200**
 
 ## Error Handling
 
-Specific method errors are not highlighted.
+Specific errors for the method are not highlighted.
 
-{% include [system errors](./../../../../_includes/system-errors.md) %}
+{% include [System errors](./../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
 - [crm.duplicate.volatileType.fields](./crm-duplicate-volatile-type-fields.md)
 - [crm.duplicate.volatileType.register](./crm-duplicate-volatile-type-register.md)
-- [crm.duplicate.volatileType.unregister](./crm-duplicate-volatile-type-unregister.md) 
+- [crm.duplicate.volatileType.unregister](./crm-duplicate-volatile-type-unregister.md)

@@ -51,7 +51,7 @@ If not specified, the current user's ID is used.
 [`object`](../../../data-types.md) | Additional parameters [(detailed description)](#parameter-extras) ||
 |#
 
-### Extras Parameter {#parameter-extras}
+### Parameter extras Parameter {#parameter-extras}
 
 {% include [Parameter Note](../../../../_includes/required.md) %}
 

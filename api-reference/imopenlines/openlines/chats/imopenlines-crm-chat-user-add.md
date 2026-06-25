@@ -8,9 +8,9 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`imopenlines`](../../../scopes/permissions.md)
 >
-> Who can execute the method: any user with access to the CRM entity
+> Who can execute the method: any user with access to the CRM object
 
-The method `imopenlines.crm.chat.user.add` adds a user to a chat associated with a CRM entity.
+The method `imopenlines.crm.chat.user.add` adds a user to a chat associated with a CRM object.
 
 ## Method Parameters
 
@@ -20,13 +20,13 @@ The method `imopenlines.crm.chat.user.add` adds a user to a chat associated with
 || **Name**
 `type` | **Description** ||
 || **CRM_ENTITY_TYPE***
-[`string`](../../../data-types.md) | Type of the CRM entity. Possible values:
+[`string`](../../../data-types.md) | Type of the CRM object. Possible values:
 - `lead` — lead
 - `deal` — deal
 - `company` — company
 - `contact` — contact ||
 || **CRM_ENTITY***
-[`integer`](../../../data-types.md) | Identifier of the CRM entity.
+[`integer`](../../../data-types.md) | Identifier of the CRM object.
 
 You can obtain the identifier using the universal method [get CRM item list](../../../crm/universal/crm-item-list.md) ||
 || **USER_ID***
@@ -36,9 +36,9 @@ You can obtain the user identifier using the [user.get](../../../user/user-get.m
 || **CHAT_ID**
 [`integer`](../../../data-types.md) | Identifier of the chat.
 
-By default, the last chat associated with the CRM entity is used.
+By default, the last chat associated with the CRM object is used.
 
-You can obtain the identifiers of chats associated with the CRM entity using the [imopenlines.crm.chat.get](./imopenlines-crm-chat-get.md) method ||
+You can obtain the identifiers of chats associated with the CRM object using the [imopenlines.crm.chat.get](./imopenlines-crm-chat-get.md) method ||
 |#
 
 ## Code Examples
@@ -241,7 +241,7 @@ HTTP Status: **200**
 || **result**
 [`integer`](../../../data-types.md) | Identifier of the chat to which the user has been added.
 
-If `CHAT_ID` is not provided and no chat is found for the CRM entity, the method will return `"result":0` ||
+If `CHAT_ID` is not provided and no chat is found for the CRM object, the method will return `"result":0` ||
 || **time**
 [`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -253,7 +253,7 @@ HTTP Status: **400**, **403**
 ```json
 {
     "error": "CHAT_NOT_IN_CRM",
-    "error_description": "Chat does not belong to the CRM entity being checked"
+    "error_description": "Chat does not belong to the CRM object being checked"
 }
 ```
 
@@ -263,14 +263,14 @@ HTTP Status: **400**, **403**
 
 #|
 || **Status** | **Code** | **Description** | **Value** ||
-|| `403` | `ACCESS_DENIED` | Access denied! You don't have access to join user to chat | The user executing the method does not have permission to add users to the CRM entity chat ||
-|| `403` | `ACCESS_DENIED` | Access denied! This user does not have access to the chat because he does not have access to this CRM entity | The user `USER_ID` does not have access to the CRM entity ||
+|| `403` | `ACCESS_DENIED` | Access denied! You don't have access to join user to chat | The user executing the method does not have permission to add users to the CRM object chat ||
+|| `403` | `ACCESS_DENIED` | Access denied! This user does not have access to the chat because he does not have access to this CRM object | The user `USER_ID` does not have access to the CRM object ||
 || `400` | `ERROR_ARGUMENT` | Argument CRM_ENTITY_TYPE is null or empty | Required parameter `CRM_ENTITY_TYPE` is not provided ||
 || `400` | `ERROR_ARGUMENT` | Argument CRM_ENTITY is null or empty | Required parameter `CRM_ENTITY` is not provided ||
 || `400` | `ERROR_ARGUMENT` | The value of an argument `CRM_ENTITY` has an invalid type | The `CRM_ENTITY` parameter is provided in an incorrect format ||
 || `400` | `ERROR_ARGUMENT` | Argument Empty USER_ID is null or empty | Required parameter `USER_ID` is not provided ||
 || `400` | `IM_NOT_INSTALLED` | Module im is not installed | The `im` module is not installed ||
-|| `400` | `CHAT_NOT_IN_CRM` | Chat does not belong to the CRM entity being checked | The chat `CHAT_ID` is not associated with the CRM entity ||
+|| `400` | `CHAT_NOT_IN_CRM` | Chat does not belong to the CRM object being checked | The chat `CHAT_ID` is not associated with the CRM object ||
 || `400` | `CRM_CHAT_USER_NOT_ACTIVE` | Current user has no access to users list outside open line | The current user does not have access to the user list outside the open line ||
 |#
 

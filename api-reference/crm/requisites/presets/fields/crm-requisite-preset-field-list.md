@@ -1,4 +1,4 @@
-# Get a list of all customizable fields for a specified CRM requisites template crm.requisite.preset.field.list
+# Get a List of All Customizable Fields for a Specified CRM Requisites Template crm.requisite.preset.field.list
 
 {% note tip "" %}
 
@@ -10,11 +10,11 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: any user
 
-The method returns a list of all customizable fields for a specific requisites template.
+Returns a list of all customizable fields for a specific company details template.
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -155,7 +155,7 @@ The method returns a list of all customizable fields for a specific requisites t
                     'preset' => [
                         'ID' => 27
                     ]
-                }
+                ]
             );
     
         $result = $response
@@ -172,6 +172,97 @@ The method returns a list of all customizable fields for a specific requisites t
         error_log($e->getMessage());
         echo 'Error fetching preset field list: ' . $e->getMessage();
     }
+    ```
+
+- Python
+
+    Example
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.requisite.preset.field.list(
+            preset={
+                "ID": 27,
+            },
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
+    Example `as_list`
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.requisite.preset.field.list(
+            preset={
+                "ID": 27,
+            },
+        ).as_list().response
+        result = bitrix_response.result
+        for item in result:
+            print(item)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
+    Example `as_list_fast`
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.requisite.preset.field.list(
+            preset={
+                "ID": 27,
+            },
+        ).as_list_fast(descending=True).response
+        result = bitrix_response.result
+        for item in result:
+            print(item)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
     ```
 
 - BX24.js
@@ -216,7 +307,7 @@ The method returns a list of all customizable fields for a specific requisites t
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -349,20 +440,21 @@ HTTP Status: **200**
 || **total**
 [`integer`](../../../../data-types.md) | The total number of records found ||
 || **time**
-[`time`](../../../../data-types.md) | Information about the execution time of the request ||
+[`time`](../../../../data-types.md) | Information about the request execution time ||
 |#
 
-### Fields Describing the Customizable Field of the Requisites Template {#fields}
+### Fields Describing The {#fields}
 
+Customizable Field of the Requisites Template
 #|
 ||  **Name**
 `type` | **Description** ||
 || **ID**
-[`integer`](../../../../data-types.md) | The identifier of the field. Created automatically and unique within the template ||
+[`integer`](../../../../data-types.md) | Field identifier. Created automatically and unique within the template ||
 || **FIELD_NAME**
-[`string`](../../../../data-types.md) | The name of the field ||
+[`string`](../../../../data-types.md) | Field name ||
 || **FIELD_TITLE**
-[`string`](../../../../data-types.md) | An alternative name for the field for the requisite.
+[`string`](../../../../data-types.md) | An alternative name for the field in the requisite.
 
 The alternative name is displayed in various forms for filling out requisites. Depending on the specific form, the alternative name may or may not be used 
 ||
@@ -374,7 +466,7 @@ The alternative name is displayed in various forms for filling out requisites. D
 
 ## Error Handling
 
-HTTP Status: **40x**, **50x**
+HTTP status: **40x**, **50x**
 
 ```json
 {
@@ -383,17 +475,17 @@ HTTP Status: **40x**, **50x**
 }
 ```
 
-{% include notitle [error handling](../../../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
-#|  
+#|
 || **Code** | **Description** ||
-|| `The Preset with ID '27' is not found` | The template with the specified identifier was not found ||
+|| `The Preset with ID '27' is not found` | Template with the specified identifier not found ||
 || `Access denied` | Insufficient access permissions to retrieve the list of customizable fields of the template ||
 |#
 
-{% include [system errors](../../../../../_includes/system-errors.md) %}
+{% include [System errors](../../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
@@ -403,4 +495,3 @@ HTTP Status: **40x**, **50x**
 - [{#T}](./crm-requisite-preset-field-get.md)
 - [{#T}](./crm-requisite-preset-field-delete.md)
 - [{#T}](./crm-requisite-preset-field-fields.md)
-

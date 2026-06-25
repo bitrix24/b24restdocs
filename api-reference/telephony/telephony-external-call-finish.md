@@ -419,9 +419,9 @@ Possible values:
 || **COMMENT**
 [`string`](../data-types.md) | Comment on the call ||
 || **CRM_ENTITY_TYPE**
-[`string`](../data-types.md) | Type of the CRM entity associated with the call ||
+[`string`](../data-types.md) | Type of the CRM object associated with the call ||
 || **CRM_ENTITY_ID**
-[`integer`](../data-types.md) | Identifier of the CRM entity associated with the call ||
+[`integer`](../data-types.md) | Identifier of the CRM object associated with the call ||
 || **ERRORS**
 [`object`](../data-types.md) | Additional processing errors (if any) ||
 || **time**

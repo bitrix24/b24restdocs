@@ -8,20 +8,20 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
-> Who can execute the method: read access permission for payment order is required.
+> Who can execute the method: read access permission for payment order is required
 
 This method retrieves a list of product items (goods or services) associated with a specific payment.
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **paymentId***
-[`sale_order_payment.id`](../../../../sale/data-types.md#sale_order_payment) | Identifier of the payment.
-Can be obtained using the [`sale.payment.list`](../../../../sale/payment/sale-payment-list.md) method ||
+[`sale_order_payment.id`](../../../../sale/data-types.md#sale_order_payment) | Identifier of the payment. 
+Can be obtained using the method [`sale.payment.list`](../../../../sale/payment/sale-payment-list.md) ||
 || **filter***
 [`object`](../../../../data-types.md) | Object for filtering selected payment product items in the format `{"field_1": "value_1", ... "field_N": "value_N"}`.
 
@@ -63,12 +63,12 @@ Possible values for `order`:
 
 - `asc` — in ascending order
 - `desc` — in descending order
-||
+ ||
 |#
 
 ## Code Examples
 
-{% include [Note on Examples](../../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -218,6 +218,103 @@ Possible values for `order`:
     }
     ```
 
+- Python
+
+    Example
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.item.payment.product.list(
+            payment_id=1039,
+            filter={
+                ">=quantity": 2,
+                "@id": [1195, 1196],
+            },
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
+    Example `as_list`
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.item.payment.product.list(
+            payment_id=1039,
+            filter={
+                ">=quantity": 2,
+                "@id": [1195, 1196],
+            },
+        ).as_list().response
+        result = bitrix_response.result
+        for item in result:
+            print(item)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
+    Example `as_list_fast`
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.item.payment.product.list(
+            payment_id=1039,
+            filter={
+                ">=quantity": 2,
+                "@id": [1195, 1196],
+            },
+        ).as_list_fast(descending=True).response
+        result = bitrix_response.result
+        for item in result:
+            print(item)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - BX24.js
 
     ```js
@@ -262,9 +359,9 @@ Possible values for `order`:
 
 {% endlist %}
 
-## Successful Response
+## Response on Success
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -287,8 +384,8 @@ HTTP Status: **200**
       "finish":1716286140.802505,
       "duration":0.3125889301300049,
       "processing":0.053195953369140625,
-      "date_start":"2024-05-21T13:09:00+02:00",
-      "date_finish":"2024-05-21T13:09:00+02:00"
+      "date_start":"2024-05-21T13:09:00+03:00",
+      "date_finish":"2024-05-21T13:09:00+03:00"
    }
 }
 ```
@@ -301,10 +398,10 @@ HTTP Status: **200**
 || **result**
 `crm_item_payment_product[]` | Array of objects containing information about the selected payment product items ||
 || **time**
-[`time`](../../../../data-types.md) | Information about the execution time of the request ||
+[`time`](../../../../data-types.md) | Information about the request execution time ||
 |#
 
-### Key result. Object of type crm_item_payment_product 
+### Key Result. Object of Type Crm_Item_Payment_Product
 
 #|
 || **Name**
@@ -312,16 +409,16 @@ HTTP Status: **200**
 || **id**
 [`integer`](../../../../data-types.md) | Identifier of the product item in the payment ||
 || **paymentId**
-[`sale_order_payment.id`](../../../../sale/data-types.md#sale_order_payment) | Identifier of the payment ||
+[`sale_order_payment.id`](../../../../sale/data-types.md#sale_order_payment) | Payment identifier ||
 || **quantity**
 [`double`](../../../../data-types.md) | Quantity of the product ||
 || **rowId**
-[`integer`](../../../../data-types.md) | Identifier of the product item in the CRM entity ||
+[`integer`](../../../../data-types.md) | Identifier of the product item in the CRM object ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -330,7 +427,7 @@ HTTP Status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
@@ -338,7 +435,7 @@ HTTP Status: **400**
 || **Code** | **Description** ||
 || `0` | Payment not found ||
 || `0` | Access denied ||
-|| `100` | Required fields not provided ||
+|| `100` | Required fields are not provided ||
 || `0` | Other errors (e.g., fatal errors) ||
 |#
 
@@ -346,7 +443,7 @@ HTTP Status: **400**
 
 For business errors, the method may return `error: 0`. In this case, refer to `error_description` and match it with the list of errors above.
 
-{% include notitle [system errors](../../../../../_includes/system-errors.md) %}
+{% include notitle [System errors](../../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

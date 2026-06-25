@@ -8,13 +8,13 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: `any user`
+> Who can execute the method: any user
 
-This method adds a new activity of type "Comment" to the timeline.
+Adds a new activity of type "Comment" to the timeline.
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -55,7 +55,7 @@ Starting from crm version 23.100.0, the method only accepts parameters with the 
 
 ### Parameter fields {#parametr-fields}
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -209,13 +209,50 @@ The value can be obtained using the method [`crm.item.list`](../../universal/crm
             ->getResult();
     
         echo 'Success: ' . print_r($result, true);
-        // Your required data processing logic
+        // The data processing logic you need
         processData($result);
     
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error adding timeline comment: ' . $e->getMessage();
     }
+    ```
+
+- Python
+
+    Example
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.timeline.comment.add(
+            fields={
+                "ENTITY_ID": 10,
+                "ENTITY_TYPE": "deal",
+                "COMMENT": "New comment was added",
+                "FILES": [
+                    ["1.gif", "R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=="],
+                    ["2.gif", "R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=="],
+                ],
+            },
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
     ```
 
 - BX24.js
@@ -278,7 +315,7 @@ The value can be obtained using the method [`crm.item.list`](../../universal/crm
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -287,8 +324,8 @@ HTTP Status: **200**
         "start": 1715091541.642592,
         "finish": 1715091541.730599,
         "duration": 0.08800697326660156,
-        "date_start": "2024-05-03T17:19:01+02:00",
-        "date_finish": "2024-05-03T17:19:01+02:00",
+        "date_start": "2024-05-03T17:19:01+03:00",
+        "date_finish": "2024-05-03T17:19:01+03:00",
         "operating": 0
     }
 }
@@ -302,12 +339,12 @@ HTTP Status: **200**
 || **result**
 [`integer`](../../../data-types.md) | Returns the integer identifier of the added comment ||
 || **time**
-[`time`](../../../data-types.md) | Information about the execution time of the request ||
+[`time`](../../../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -316,20 +353,20 @@ HTTP Status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
 || **Code** | **Description** ||
-|| `OWNER_NOT_FOUND` | Owner of the element not found ||
+|| `OWNER_NOT_FOUND` | Owner of the item not found ||
 || `ACCESS_DENIED` | Insufficient permissions ||
 || `NOT_FOUND` | Element not found ||
 || `INVALID_ARG_VALUE` | Empty comment ||
-|| `100` | Required fields not provided ||
+|| `100` | Required fields are not provided ||
 |#
 
-{% include [system errors](../../../../_includes/system-errors.md) %}
+{% include [System errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

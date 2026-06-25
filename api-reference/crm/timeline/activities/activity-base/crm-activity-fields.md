@@ -645,7 +645,7 @@ HTTP status: **200**
 || **ID***
 [`integer`](../../../data-types.md) | Activity ID | Read-only ||
 || **OWNER_ID***
-[`integer`](../../../data-types.md) | CRM entity ID | Can be changed using the [crm.activity.binding.move](../binding/crm-activity-binding-move.md) method ||
+[`integer`](../../../data-types.md) | CRM object ID | Can be changed using the [crm.activity.binding.move](../binding/crm-activity-binding-move.md) method ||
 || **OWNER_TYPE_ID***
 [`integer`](../../../data-types.md) | [CRM object type ID](../../../data-types.md#object_type) | Immutable ||
 || **TYPE_ID***

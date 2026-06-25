@@ -1,4 +1,4 @@
-# Get Fields of CRM Enumeration Elements crm.enum.fields
+# Get Enumeration Item Fields crm.enum.fields
 
 {% note tip "" %}
 
@@ -18,7 +18,7 @@ No parameters.
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -178,6 +178,31 @@ No parameters.
     echo '</PRE>';
     ```
 
+- Python
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.enum.fields().response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 {% endlist %}
 
 ## Response Handling
@@ -212,7 +237,7 @@ HTTP status: **200**
         "isImmutable": false,
         "isMultiple": false,
         "isDynamic": false,
-        "title": "Symbol Code"
+        "title": "Symbol code"
     },
     "SYMBOL_CODE_SHORT": {
         "type": "string",
@@ -221,7 +246,7 @@ HTTP status: **200**
         "isImmutable": false,
         "isMultiple": false,
         "isDynamic": false,
-        "title": "Short Symbol Code"
+        "title": "Short symbol code"
     }
 },
 "time": {
@@ -229,8 +254,8 @@ HTTP status: **200**
     "finish": 1750152521.526358,
     "duration": 0.041098833084106445,
     "processing": 0.00034499168395996094,
-    "date_start": "2025-06-17T12:28:41+02:00",
-    "date_finish": "2025-06-17T12:28:41+02:00",
+    "date_start": "2025-06-17T12:28:41+03:00",
+    "date_finish": "2025-06-17T12:28:41+03:00",
     "operating_reset_at": 1750153121,
     "operating": 0
 }
@@ -248,7 +273,7 @@ HTTP status: **200**
 [`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
 
-#### Fields of the result Object {#result}
+#### Fields of the Result Object {#result}
 
 #|
 || **Name**
@@ -258,9 +283,9 @@ HTTP status: **200**
 || **NAME**
 [`object`](../../../data-types.md) | Name ||
 || **SYMBOL_CODE**
-[`object`](../../../data-types.md) | Symbol Code ||
+[`object`](../../../data-types.md) | Symbolic code ||
 || **SYMBOL_CODE_SHORT**
-[`object`](../../../data-types.md) | Short Symbol Code ||
+[`object`](../../../data-types.md) | Short symbolic code ||
 |#
 
 #### Description of Field Characteristics
@@ -288,7 +313,7 @@ HTTP status: **200**
 
 The method does not return errors.
 
-{% include [system errors](../../../../_includes/system-errors.md) %}
+{% include [System errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

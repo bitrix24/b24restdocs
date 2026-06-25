@@ -67,13 +67,13 @@ Currently, the field does not actually affect anything | Yes | Yes | No | No ||
 || **RQ_BANK_ROUTE_NUM**
 [`string`](../../../data-types.md) | Bank Routing Number | Yes | Yes | No | No ||
 || **RQ_BIK**
-[`string`](../../../data-types.md) | BIC | Yes | Yes | No | No ||
+[`string`](../../../data-types.md) | BIK | Yes | Yes | No | No ||
 || **RQ_CODEB**
-[`string`](../../../data-types.md) | Code Banque (for country FR) | Yes | Yes | No | No ||
+[`string`](../../../data-types.md) | Bank Code (for country FR) | Yes | Yes | No | No ||
 || **RQ_CODEG**
-[`string`](../../../data-types.md) | Code Guichet (for country FR) | Yes | Yes | No | No ||
+[`string`](../../../data-types.md) | Branch Code (for country FR) | Yes | Yes | No | No ||
 || **RQ_RIB**
-[`string`](../../../data-types.md) | Clé RIB (for country FR) | Yes | Yes | No | No ||
+[`string`](../../../data-types.md) | RIB Key (for country FR) | Yes | Yes | No | No ||
 || **RQ_MFO**
 [`string`](../../../data-types.md) | MFO | Yes | Yes | No | No ||
 || **RQ_ACC_NAME**
@@ -81,9 +81,9 @@ Currently, the field does not actually affect anything | Yes | Yes | No | No ||
 || **RQ_ACC_NUM**
 [`string`](../../../data-types.md) | Bank Account Number | Yes | Yes | No | No ||
 || **RQ_ACC_TYPE**
-[`string`](../../../data-types.md) | Tipo da conta (for country BR) | Yes | Yes | No | No ||
+[`string`](../../../data-types.md) | Account Type (for country BR) | Yes | Yes | No | No ||
 || **RQ_AGENCY_NAME**
-[`string`](../../../data-types.md) | Agência (for country BR) | Yes | Yes | No | No ||
+[`string`](../../../data-types.md) | Agency (for country BR) | Yes | Yes | No | No ||
 || **RQ_IIK**
 [`string`](../../../data-types.md) | IIK | Yes | Yes | No | No ||
 || **RQ_ACC_CURRENCY**
@@ -94,8 +94,8 @@ Currently, the field does not actually affect anything | Yes | Yes | No | No ||
 [`string`](../../../data-types.md) | IBAN | Yes | Yes | No | No ||
 || **RQ_SWIFT**
 [`string`](../../../data-types.md) | SWIFT | Yes | Yes | No | No ||
-|| **RQ_BIC**
-[`string`](../../../data-types.md) | BIC | Yes | Yes | No | No ||
+|| **RQ_BIK**
+[`string`](../../../data-types.md) | BIK | Yes | Yes | No | No ||
 || **COMMENTS**
 [`string`](../../../data-types.md) | Comment | Yes | Yes | No | No ||
 || **ORIGINATOR_ID**

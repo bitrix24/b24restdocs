@@ -49,7 +49,7 @@ The default value is `'P'` ||
 [`object`](../../../data-types.md) | Additional parameters for selecting the type of lead. The structure is described [below](#extras) ||
 |#
 
-### Extras Parameter {#extras}
+### Parameter extras Parameter {#extras}
 
 #|
 || **Name**

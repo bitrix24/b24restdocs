@@ -1,4 +1,4 @@
-# Set Page Title BX24.setTitle
+# Set the Page Heading BX24.setTitle
 
 {% note tip "" %}
 
@@ -6,23 +6,25 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-The method `BX24.setTitle` sends a command to change the title of the application page.
+The `BX24.setTitle` method sends a command to change the application page heading.
 
 ```js
 void BX24.setTitle(String title[, Function callback])
 ```
 
+The `BX24.setTitle` method changes the heading within the application container: a page or a slider. The portal page controls the heading of the top browser tab, so the command may execute successfully, but the browser tab heading will not change.
+
 ## Parameters
 
-{% include [Note on required parameters](../../../_includes/required.md) %}
+{% include [Note on parameters](../../../_includes/required.md) %}
 
-#| 
-|| **Name** 
-`Type` | **Description** ||
-|| **title*** 
-`string` | The new title of the page. The value is converted to a string using `toString()` within the method. ||
-|| **callback** 
-`function` | A callback function that is executed after the command to change the title is sent. ||
+#|
+|| **Name**
+`type` | **Description** ||
+|| **title***
+`string` | New page title. Inside the method, the value is converted to a string via `toString()` ||
+|| **callback**
+`function` | Callback function, executed after sending the command to change the title ||
 |#
 
 ## Code Example
@@ -31,15 +33,15 @@ void BX24.setTitle(String title[, Function callback])
 
 ```js
 BX24.init(function () {
-    BX24.setTitle('New Title', function () {
-        console.log('Command to change the title has been sent');
+    BX24.setTitle('New headline', function () {
+        console.log('Command to change the headline has been sent');
     });
 });
 ```
 
 ## Response Handling
 
-The method does not return any data (`void`).
+The method does not return data (`void`).
 
 ## Continue Learning
 

@@ -27,7 +27,7 @@ The widget will not be displayed in the interface until the application installa
 || `CRM_LEAD_ROBOT_DESIGNER_TOOLBAR` | Dropdown menu item of the top button in the [lead](../../crm/leads/index.md) ||
 || `CRM_DEAL_ROBOT_DESIGNER_TOOLBAR` | Dropdown menu item of the top button in the [deal](../../crm/deals/index.md) ||
 || `CRM_SMART_INVOICE_ROBOT_DESIGNER_TOOLBAR` | Dropdown menu item of the top button in the [new invoices](../../crm/universal/invoice.md) ||
-|| `CRM_DYNAMIC_XXX_ROBOT_DESIGNER_TOOLBAR` | Dropdown menu item of the top button in custom CRM entity types. Replace XXX with the numeric identifier of the specific [custom entity type](../../crm/universal/index.md). For example, `CRM_DYNAMIC_183_LIST_MENU` ||
+|| `CRM_DYNAMIC_XXX_ROBOT_DESIGNER_TOOLBAR` | Dropdown menu item of the top button in custom CRM object types. Replace XXX with the numeric identifier of the specific [custom entity type](../../crm/universal/index.md). For example, `CRM_DYNAMIC_183_LIST_MENU` ||
 |#
 
 ## What the Handler Receives

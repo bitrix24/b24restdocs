@@ -93,9 +93,9 @@ Example:
   || **LANGUAGE_ID**
   [`string`](../../data-types.md) | Language of the channel, for example `de` ||
   || **CRM_CREATE_SECOND**
-  [`string`](../../data-types.md) | Additional mode for creating a CRM entity ||
+  [`string`](../../data-types.md) | Additional mode for creating a CRM object ||
   || **CRM_CREATE_THIRD**
-  [`char`](../../data-types.md) | Create a third CRM entity. Possible values:
+  [`char`](../../data-types.md) | Create a third CRM object. Possible values:
 - `Y` — yes
 - `N` — no ||
   || **CRM_CHAT_TRACKER**
@@ -111,7 +111,7 @@ Example:
 - `Y` — yes
 - `N` — no ||
   || **CRM_SOURCE**
-  [`string`](../../data-types.md) | Source for the created CRM entity ||
+  [`string`](../../data-types.md) | Source for the created CRM object ||
   || **MAX_CHAT**
   [`integer`](../../data-types.md) | Maximum number of simultaneous dialogues for the operator ||
   || **TYPE_MAX_CHAT**
@@ -434,7 +434,7 @@ Example:
             WORKTIME_ENABLE: 'Y',
             WORKTIME_FROM: '09:00',
             WORKTIME_TO: '21:00',
-            WORKTIME_TIMEZONE: 'Europe/Kaliningrad',
+            WORKTIME_TIMEZONE: 'Europe/Berlin',
             WORKTIME_DAYOFF: ['SA', 'SU'],
             WORKTIME_DAYOFF_RULE: 'text',
             WORKTIME_DAYOFF_TEXT: 'The line is currently unavailable. Write to us and we will respond during business hours',
@@ -491,7 +491,7 @@ Example:
                 WORKTIME_ENABLE: 'Y',
                 WORKTIME_FROM: '09:00',
                 WORKTIME_TO: '21:00',
-                WORKTIME_TIMEZONE: 'Europe/Kaliningrad',
+                WORKTIME_TIMEZONE: 'Europe/Berlin',
                 WORKTIME_DAYOFF: ['SA', 'SU'],
                 WORKTIME_DAYOFF_RULE: 'text',
                 WORKTIME_DAYOFF_TEXT: 'The line is currently unavailable. Write to us and we will respond during business hours',

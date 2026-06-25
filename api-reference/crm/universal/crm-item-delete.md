@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 > 
 > Who can execute the method: any user with the "delete" permission for CRM object elements.
 
-This method deletes a CRM object element by its item ID and entity type ID.
+Deletes a CRM object element by its item ID and entity type ID.
 
 ## Method Parameters
 
@@ -28,6 +28,7 @@ Numerical values for system types (Lead — 1, Deal — 2, Contact — 3, Compan
 
 It can be obtained using the [`crm.item.list`](./crm-item-list.md) method or when creating an item with [`crm.item.add`](./crm-item-add.md). ||
 |#
+
 
 ## Code Examples
 
@@ -159,26 +160,56 @@ Deleting an item with `id = 1`, belonging to the SPA with `entityTypeId = 1268`.
     }
     ```
 
+- Python
+
+    Example
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.item.delete(
+            entity_type_id=1268,
+            bitrix_id=1,
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - BX24.js
 
     ```js
-    BX24.callMethod(
-        'crm.item.delete',
-        {
-            entityTypeId: 1268,
-            id: 1,
-        },
-        (result) => {
-            if (result.error())
+        BX24.callMethod(
+            'crm.item.delete',
             {
-                console.error(result.error());
+                entityTypeId: 1268,
+                id: 1,
+            },
+            (result) => {
+                if (result.error())
+                {
+                    console.error(result.error());
 
-                return;
-            }
+                    return;
+                }
 
-            console.info(result.data());
-        },
-    );
+                console.info(result.data());
+            },
+        );
     ```
 
 - PHP CRest
@@ -203,7 +234,7 @@ Deleting an item with `id = 1`, belonging to the SPA with `entityTypeId = 1268`.
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -230,12 +261,13 @@ HTTP Status: **200**
 
 Returns an empty array `[]` in case of success. ||
 || **time**
-[`time`][1] | Information about the execution time of the request. ||
+[`time`][1] | Information about the request execution time ||
 |#
+
 
 ## Error Handling
 
-HTTP Status: **400**, **403**
+HTTP status: **400**, **403**
 
 ```json
 {
@@ -244,19 +276,20 @@ HTTP Status: **400**, **403**
 }
 ```
 
-{% include notitle [error handling](../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
 || **Code**                          | **Description**                                     | **Value**                                                      ||
-|| `allowed_only_intranet_user`     | Action allowed only for intranet users             | User is not an intranet user                                   ||
-|| `NOT_FOUND`                      | SPA not found                                      | Occurs when an invalid `entityTypeId` is passed              ||
-|| `NOT_FOUND`                      | Item not found                                    | An item with the given `id` of type `entityTypeId` does not exist. ||
-|| `ACCESS_DENIED`                  | Access denied                                      | User does not have permission to delete items of type `entityTypeId`. ||
+|| `allowed_only_intranet_user`     | Action is allowed only to intranet users | User is not an intranet user                   ||
+|| `NOT_FOUND`                      | SPA not found                          | Occurs when an invalid `entityTypeId` is passed                ||
+|| `NOT_FOUND`                      | Item not found                                | An item with the given `id` of type `entityTypeId` does not exist.       ||
+|| `ACCESS_DENIED`                  | Access denied                                  | User does not have permission to delete items of type `entityTypeId`. ||
 |#
 
-{% include [system errors](./../../../_includes/system-errors.md) %}
+{% include [System errors](./../../../_includes/system-errors.md) %}
+
 
 ## Continue Learning
 

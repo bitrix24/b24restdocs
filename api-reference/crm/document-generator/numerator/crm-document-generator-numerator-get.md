@@ -14,18 +14,18 @@ The method `crm.documentgenerator.numerator.get` returns information about the n
 
 ## Method Parameters
 
-{% include [Parameter Note](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`](../../data-types.md) | Identifier of the numerator ||
+[`integer`](../../data-types.md) | The identifier of the numerator ||
 |#
 
 ## Code Examples
 
-{% include [Examples Note](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 Example of retrieving a numerator with `id = 45`.
 
@@ -166,6 +166,31 @@ Example of retrieving a numerator with `id = 45`.
     }
     ```
 
+- Python
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.documentgenerator.numerator.get(bitrix_id=45).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - BX24.js
 
     ```js
@@ -204,14 +229,14 @@ Example of retrieving a numerator with `id = 45`.
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
     "result": {
         "numerator": {
             "id": "45",
-            "name": "Numerator from REST (updated)",
+            "name": "REST Enumerator (updated)",
             "template": "INV-{NUMBER}",
             "code": null,
             "settings": {
@@ -232,8 +257,8 @@ HTTP Status: **200**
         "finish": 1773747475.904903,
         "duration": 0.9049029350280762,
         "processing": 0,
-        "date_start": "2026-03-17T14:37:55+01:00",
-        "date_finish": "2026-03-17T14:37:55+01:00",
+        "date_start": "2026-03-17T14:37:55+03:00",
+        "date_finish": "2026-03-17T14:37:55+03:00",
         "operating_reset_at": 1773748075,
         "operating": 0
     }
@@ -246,52 +271,52 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | Root element of the response. Contains the [`numerator`](#numerator) object ||
+[`object`](../../data-types.md) | The root element of the response. Contains the [`numerator`](#numerator) object ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the execution time of the request ||
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
-#### Type numerator {#numerator}
+#### Numerator Type {#numerator}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **id**
-[`string`](../../data-types.md) | Identifier of the numerator ||
+[`string`](../../data-types.md) | The identifier of the numerator ||
 || **name**
-[`string`](../../data-types.md) | Name of the numerator ||
+[`string`](../../data-types.md) | The name of the numerator ||
 || **template**
-[`string`](../../data-types.md) | Number template ||
+[`string`](../../data-types.md) | The number template ||
 || **code**
-[`string`](../../data-types.md) | Symbolic code of the numerator. Can be `null` ||
+[`string`](../../data-types.md) | The symbolic code of the numerator. Can be `null` ||
 || **settings**
 [`object`](../../data-types.md) | Saved settings for sequential numbering of type [`settings`](#settings) ||
 |#
 
-#### Type settings {#settings}
+#### Settings Type {#settings}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **start**
-[`integer`](../../data-types.md) | Initial value of the counter ||
+[`integer`](../../data-types.md) | The initial value of the counter ||
 || **step**
-[`integer`](../../data-types.md) | Increment step of the counter ||
+[`integer`](../../data-types.md) | The increment step of the counter ||
 || **length**
-[`integer`](../../data-types.md) | Minimum length of the number ||
+[`integer`](../../data-types.md) | The minimum length of the number ||
 || **padString**
-[`string`](../../data-types.md) | Padding character on the left ||
+[`string`](../../data-types.md) | The left padding character ||
 || **periodicBy**
-[`string`](../../data-types.md) | Period for resetting the counter: `null`, `day`, `month`, or `year` ||
+[`string`](../../data-types.md) | The reset period for the counter: `null`, `day`, `month`, or `year` ||
 || **timezone**
-[`string`](../../data-types.md) | Timezone identifier for periodic reset. Can be `null` ||
+[`string`](../../data-types.md) | The timezone identifier for periodic reset. Can be `null` ||
 || **isDirectNumeration**
 [`boolean`](../../data-types.md) | Indicator of direct numbering ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -300,7 +325,7 @@ HTTP Status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
@@ -309,11 +334,11 @@ HTTP Status: **400**
 || `100` | `Bitrix\Main\Numerator\Numerator constructor must be is public` | Error creating the numerator object ||
 || `100` | `Could not construct parameter {numerator}` | Numerator with the specified `id` not found ||
 || `DOCGEN_ACCESS_ERROR` | `Access denied` | No access to the numerator, or the numerator does not belong to the document generator module ||
-|| `Empty value` | `You do not have permissions to modify templates` | Insufficient permissions to modify document generator templates ||
-|| `Empty value` | `Module documentgenerator is not installed` | The `documentgenerator` module is unavailable ||
+|| Empty value | `You do not have permissions to modify templates` | Insufficient permissions to modify document generator templates ||
+|| Empty value | `Module documentgenerator is not installed` | The `documentgenerator` module is not available ||
 |#
 
-{% include [system errors](../../../../_includes/system-errors.md) %}
+{% include [System errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
@@ -322,3 +347,4 @@ HTTP Status: **400**
 - [{#T}](./crm-document-generator-numerator-list.md)
 - [{#T}](./crm-document-generator-numerator-delete.md)
 - [{#T}](../../../../tutorials/crm/how-to-add-crm-objects/how-to-generate-documents.md)
+

@@ -14,7 +14,7 @@ The method `crm.duplicate.volatileType.fields` returns a list of standard and cu
 
 ## Method Parameters
 
-{% include [Parameter Note](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -30,7 +30,7 @@ If not specified, fields for all types will be returned ||
 
 ## Code Examples
 
-{% include [Example Note](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -160,6 +160,33 @@ If not specified, fields for all types will be returned ||
     }
     ```
 
+- Python
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.duplicate.volatile_type.fields(
+            entity_type_id=1,
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - BX24.js
 
     ```js
@@ -198,7 +225,7 @@ If not specified, fields for all types will be returned ||
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -206,7 +233,7 @@ HTTP Status: **200**
         {
             "entityTypeId": 1,
             "fieldCode": "TITLE",
-            "fieldTitle": "Lead Title"
+            "fieldTitle": "Lead Name"
         },
         {
             "entityTypeId": 1,
@@ -241,7 +268,7 @@ HTTP Status: **200**
 || **fieldCode**
 [`string`](../../../data-types.md) | Field code ||
 || **fieldTitle**
-[`string`](../../../data-types.md) | Field title ||
+[`string`](../../../data-types.md) | Field name ||
 || **time**
 [`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -250,7 +277,7 @@ HTTP Status: **200**
 
 Specific errors for the method are not highlighted.
 
-{% include [system errors](./../../../../_includes/system-errors.md) %}
+{% include [System errors](./../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

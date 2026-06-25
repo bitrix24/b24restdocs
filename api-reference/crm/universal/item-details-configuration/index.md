@@ -14,7 +14,7 @@ The methods `crm.item.details.configuration.*` manage the sections of the detail
 
 ## How to Work with Form Settings
 
-1. Define the CRM entity type using `entityTypeId`. You can find the identifiers in the sections [System CRM Types](../../index.md) and [Smart Processes](../user-defined-object-types/index.md).
+1. Define the CRM object type using `entityTypeId`. You can find the identifiers in the sections [System CRM Types](../../index.md) and [Smart Processes](../user-defined-object-types/index.md).
 2. For deals and smart processes, specify the funnel in the `extras` parameter (`dealCategoryId` or `categoryId`). You can retrieve the list of funnels using the method [crm.category.list](../category/crm-category-list.md).
 3. Obtain the current configuration using the method [crm.item.details.configuration.get](./crm-item-details-configuration-get.md).
 4. Save changes using the method [crm.item.details.configuration.set](./crm-item-details-configuration-set.md) or reset the settings to default values via [crm.item.details.configuration.reset](./crm-item-details-configuration-reset.md).
@@ -34,7 +34,7 @@ To work with personal settings, standard user permissions are sufficient. Changi
 
 ## Relationship with Other Objects
 
-**CRM Entity Type.** The settings of the detail form apply to a specific entity type through the `entityTypeId` parameter. For system objects, use identifiers from the section [System CRM Types](../../index.md), and for smart processes, refer to the section [Smart Processes](../user-defined-object-types/index.md).
+**CRM object Type.** The settings of the detail form apply to a specific entity type through the `entityTypeId` parameter. For system objects, use identifiers from the section [System CRM Types](../../index.md), and for smart processes, refer to the section [Smart Processes](../user-defined-object-types/index.md).
 
 **Funnels.** For deals and smart processes, the view of the detail form may differ across different funnels. Specify the funnel identifier in the `extras` parameter. If the parameter is not provided, the system uses the default funnel.
 
@@ -42,7 +42,7 @@ To work with personal settings, standard user permissions are sufficient. Changi
 
 ## Common Causes of Errors
 
-- An unsupported CRM entity type has been specified.
+- An unsupported CRM object type has been specified.
 - Incorrect `extras` parameters have been provided for the selected type.
 - Insufficient permissions to modify the common configuration.
 

@@ -22,9 +22,9 @@ Within the application, you can only delete the set of additional content blocks
 || **Name**
 `type` | **Description** ||
 || **entityTypeId*** 
-[`integer`](../../../data-types.md) | Identifier of the CRM entity type to which the timeline record is linked ||
+[`integer`](../../../data-types.md) | Identifier of the CRM object type to which the timeline record is linked ||
 || **entityId*** 
-[`integer`](../../../data-types.md) | Identifier of the CRM entity to which the timeline record is linked ||
+[`integer`](../../../data-types.md) | Identifier of the CRM object to which the timeline record is linked ||
 || **timelineId*** 
 [`integer`](../../../data-types.md) | Identifier of the timeline record ||
 |#

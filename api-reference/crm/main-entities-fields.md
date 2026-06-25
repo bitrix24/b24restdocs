@@ -564,7 +564,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
     - `3` — contact
     - `4` — company
 
-    Identifiers of all CRM entity types are returned by the method [crm.enum.ownertype](./auxiliary/enum/crm-enum-owner-type.md) | Yes | Yes ||
+    Identifiers of all CRM object types are returned by the method [crm.enum.ownertype](./auxiliary/enum/crm-enum-owner-type.md) | Yes | Yes ||
     || **ENTITY_ID**
     [`integer`][1] | Identifier of the parent entity (contact or company).
 
@@ -672,7 +672,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
     || **RQ_OKTMO**
     [`string`][1] | Municipal classification of territories | Yes | Yes ||
     || **RQ_OKVED**
-    [`string`][1] | All-Russian classifier of economic activities | Yes | Yes ||
+    [`string`][1] | National classifier of economic activities | Yes | Yes ||
     || **RQ_EDRPOU**
     [`string`][1] | Unified State Register of Enterprises and Organizations | Yes | Yes ||
     || **RQ_DRFO**
@@ -787,7 +787,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
     [`string`][1] | Bank code (for country BR) | Yes | Yes ||
     || **RQ_BANK_ROUTE_NUM**
     [`string`][1] | Bank Routing Number | Yes | Yes ||
-    || **RQ_BIK**
+    || ****
     [`string`][1] | BIK | Yes | Yes ||
     || **RQ_CODEB**
     [`string`][1] | Bank Code (for country FR) | Yes | Yes ||
@@ -815,8 +815,8 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
     [`string`][1] | IBAN | Yes | Yes ||
     || **RQ_SWIFT**
     [`string`][1] | SWIFT | Yes | Yes ||
-    || **RQ_BIC**
-    [`string`][1] | BIC | Yes | Yes ||
+    || **RQ_BIK**
+    [`string`][1] | BIK | Yes | Yes ||
     || **COMMENTS**
     [`string`][1] | Comment | Yes | Yes ||
     || **ORIGINATOR_ID**

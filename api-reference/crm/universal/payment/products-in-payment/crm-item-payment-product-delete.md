@@ -10,11 +10,12 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: access permission to modify the order from which the product item is being removed is required.
 
-This method removes a product item from the payment.
+
+Removes a product item from the payment.
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -27,7 +28,7 @@ Can be obtained using [`crm.item.payment.product.list`](../../../../crm/universa
 
 ## Code Examples
 
-{% include [Note on Examples](../../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -145,6 +146,35 @@ Can be obtained using [`crm.item.payment.product.list`](../../../../crm/universa
     }
     ```
 
+- Python
+
+    Example
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.item.payment.product.delete(
+            bitrix_id=1194,
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - BX24.js
 
     ```js
@@ -181,9 +211,9 @@ Can be obtained using [`crm.item.payment.product.list`](../../../../crm/universa
 
 {% endlist %}
 
-## Successful Response
+## Response on Success
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -193,8 +223,8 @@ HTTP Status: **200**
       "finish":1716281949.752528,
       "duration":0.764387845993042,
       "processing":0.488523006439209,
-      "date_start":"2024-05-21T11:59:08+02:00",
-      "date_finish":"2024-05-21T11:59:09+02:00"
+      "date_start":"2024-05-21T11:59:08+03:00",
+      "date_finish":"2024-05-21T11:59:09+03:00"
    }
 }
 ```
@@ -212,7 +242,7 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -221,7 +251,7 @@ HTTP Status: **400**
 }
 ```
 
-{% include notitle [Error Handling](../../../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
@@ -235,9 +265,9 @@ HTTP Status: **400**
 
 ### Error Handling Features
 
-For business errors, the method may return `error: 0`. In this case, refer to `error_description` and match it against the list of errors above.
+For business errors, the method may return `error: 0`. In this case, refer to `error_description` and match it with the list of errors above.
 
-{% include notitle [System Errors](../../../../../_includes/system-errors.md) %}
+{% include notitle [System errors](../../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

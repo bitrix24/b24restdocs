@@ -1,6 +1,6 @@
 # Documents: Overview of Methods
 
-Documents in the Bitrix24 document generator can be created from a template for a CRM entity or uploaded as a ready-made file and attached to a CRM entity.
+Documents in the Bitrix24 document generator can be created from a template for a CRM object or uploaded as a ready-made file and attached to a CRM object.
 
 {% note tip "" %}
 
@@ -15,8 +15,8 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 ## Getting Started
 
 1. Prepare the document template and obtain the `templateId` in the [Document Templates](../templates/index.md) section.
-2. Determine the `entityTypeId` of the CRM entity for which the document is needed.
-3. Obtain the `entityId` of the required CRM entity.
+2. Determine the `entityTypeId` of the CRM object for which the document is needed.
+3. Obtain the `entityId` of the required CRM object.
 4. If you need to check the available document fields, use the [crm.documentgenerator.document.getfields](./crm-document-generator-document-get-fields.md) method.
 5. Create a document from the template using the [crm.documentgenerator.document.add](./crm-document-generator-document-add.md) method or upload a ready-made file using the [crm.documentgenerator.document.upload](./crm-document-generator-document-upload.md) method.
 6. If you know the document's `id` and want to retrieve its data, use the [crm.documentgenerator.document.get](./crm-document-generator-document-get.md) method.
@@ -63,7 +63,7 @@ The `pdfUrl` and `imageUrl` links may not be available immediately after creatin
     || [crm.documentgenerator.document.list](./crm-document-generator-document-list.md) | Returns a list of documents ||
     || [crm.documentgenerator.document.delete](./crm-document-generator-document-delete.md) | Deletes a document ||
     || [crm.documentgenerator.document.enablepublicurl](./crm-document-generator-document-enable-public-url.md) | Enables or disables a public link ||
-    || [crm.documentgenerator.document.upload](./crm-document-generator-document-upload.md) | Uploads a ready document and attaches it to a CRM entity ||
+    || [crm.documentgenerator.document.upload](./crm-document-generator-document-upload.md) | Uploads a ready document and attaches it to a CRM object ||
     || [crm.documentgenerator.document.getfields](./crm-document-generator-document-get-fields.md) | Returns the fields of the created document ||
     |#
 

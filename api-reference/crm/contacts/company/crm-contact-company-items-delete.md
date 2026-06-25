@@ -1,4 +1,4 @@
-# Clear the set of companies associated with the specified contact crm.contact.company.items.delete
+# Clear the Set of Companies Associated with the Specified Contact crm.contact.company.items.delete
 
 {% note tip "" %}
 
@@ -14,7 +14,7 @@ The method `crm.contact.company.items.delete` clears the set of companies associ
 
 ## Method Parameters
 
-{% include [Notes on parameters](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -27,7 +27,7 @@ The identifier can be obtained using the methods [crm.contact.list](../crm-conta
 
 ## Code Examples
 
-{% include [Notes on examples](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 Example of deleting all linked companies for a contact with `id = 54`
 
@@ -151,6 +151,35 @@ Example of deleting all linked companies for a contact with `id = 54`
     }
     ```
 
+- Python
+
+    Example
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.contact.company.items.delete(
+            bitrix_id=54,
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - BX24.js
 
     ```js
@@ -227,17 +256,17 @@ HTTP status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `-`     | `The parameter 'ownerEntityID' is invalid or not defined` | The provided `id` is less than 0 or not provided at all ||
+|| `-`     | `The parameter 'ownerEntityID' is invalid or not defined` | The `id` is less than 0 or not provided at all ||
 || `ACCESS_DENIED` | `Access denied!` | The user does not have permission to edit contacts ||
 |#
 
-{% include [system errors](../../../../_includes/system-errors.md) %}
+{% include [System errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

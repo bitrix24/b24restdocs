@@ -33,9 +33,9 @@ The methods `crm.vat.*` continue to function, but there is a more relevant alter
 
 ## Connection of VAT Rates with Other Objects
 
-**Product items** are goods or services listed in a deal or another CRM entity. Product items may not be present in the trade catalog. Changing the VAT rate for a product in one deal does not affect the rate of a similar product in another entity. To set the VAT for a product item in a deal or another CRM entity, use the `taxRate` parameter from the group of methods [crm.item.productrow.*](../../universal/product-rows/index.md).
+**Product items** are goods or services listed in a deal or another CRM object. Product items may not be present in the trade catalog. Changing the VAT rate for a product in one deal does not affect the rate of a similar product in another entity. To set the VAT for a product item in a deal or another CRM object, use the `taxRate` parameter from the group of methods [crm.item.productrow.*](../../universal/product-rows/index.md).
 
-**Goods and services** are products of the company with fixed sales conditions, stored in the trade catalog. When selecting a product from the catalog in a deal or another CRM entity, it will automatically be added with the rate specified in the catalog. To set the VAT for a product or service in the trade catalog, use the `vatId` parameter from the group of methods [catalog.product.*](../../../catalog/product/index.md).
+**Goods and services** are products of the company with fixed sales conditions, stored in the trade catalog. When selecting a product from the catalog in a deal or another CRM object, it will automatically be added with the rate specified in the catalog. To set the VAT for a product or service in the trade catalog, use the `vatId` parameter from the group of methods [catalog.product.*](../../../catalog/product/index.md).
 
 ## Overview of Methods {#all-methods}
 

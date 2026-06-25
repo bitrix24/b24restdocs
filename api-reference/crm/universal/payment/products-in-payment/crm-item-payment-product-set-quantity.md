@@ -2,25 +2,25 @@
 
 {% note tip "" %}
 
-If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect the [MCP server](../../../../../ai-tools/mcp.md) so that the assistant can utilize the official REST documentation.
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../../../ai-tools/mcp.md) so that the assistant can utilize the official REST documentation.
 
 {% endnote %}
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
-> Who can execute the method: access permission to modify the payment order is required
+> Who can execute the method: requires access permission to modify the payment order
 
-This method changes the quantity of a product in the payment line item.
+This method changes the quantity of a product in a payment line item.
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`](../../../../data-types.md) | Identifier of the product line item in the payment ||
+[`integer`](../../../../data-types.md) | Identifier of the product item in the payment ||
 || **quantity***
 [`double`](../../../../data-types.md) | Quantity of the product ||
 |#
@@ -148,6 +148,36 @@ This method changes the quantity of a product in the payment line item.
     }
     ```
 
+- Python
+
+    Example
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.item.payment.product.set_quantity(
+            bitrix_id=1195,
+            quantity=3,
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - BX24.js
 
     ```js
@@ -186,7 +216,7 @@ This method changes the quantity of a product in the payment line item.
 
 {% endlist %}
 
-## Successful Response
+## Response on Success
 
 HTTP status: **200**
 
@@ -198,8 +228,8 @@ HTTP status: **200**
       "finish":1716282832.02954,
       "duration":0.7456350326538086,
       "processing":0.4978060722351074,
-      "date_start":"2024-05-21T12:13:51+02:00",
-      "date_finish":"2024-05-21T12:13:52+02:00"
+      "date_start":"2024-05-21T12:13:51+03:00",
+      "date_finish":"2024-05-21T12:13:52+03:00"
    }
 }
 ```
@@ -212,7 +242,7 @@ HTTP status: **200**
 || **result**
 [`boolean`](../../../../data-types.md) | Result of the operation ||
 || **time**
-[`time`](../../../../data-types.md) | Information about the execution time of the request ||
+[`time`](../../../../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -226,25 +256,25 @@ HTTP status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
 || **Code** | **Description** ||
-|| `0` | Product line item not found ||
+|| `0` | Product item not found ||
 || `0` | Access denied ||
-|| `0` | Quantity of the product cannot be less than or equal to 0 ||
-|| `0` | Insufficient product to add to payment ||
-|| `100` | Required fields not provided ||
+|| `0` | Product quantity cannot be less than or equal to 0 ||
+|| `0` | Insufficient product quantity to add to payment ||
+|| `100` | Required fields are not provided ||
 || `0` | Other errors (e.g., fatal errors) ||
 |#
 
 ### Error Handling Features
 
-For business errors, the method may return `error: 0`. In this case, refer to `error_description` and match it against the list of errors above.
+For business errors, the method may return `error: 0`. In this case, refer to `error_description` and match it with the list of errors above.
 
-{% include notitle [system errors](../../../../../_includes/system-errors.md) %}
+{% include notitle [System errors](../../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

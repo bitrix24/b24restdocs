@@ -18,7 +18,7 @@ No parameters.
 
 ## Code Examples
 
-{% include [Examples Note](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -146,6 +146,33 @@ No parameters.
         error_log($e->getMessage());
         echo 'Error fetching CRM status fields: ' . $e->getMessage();
     }
+    ```
+
+- Python
+
+    Example
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.status.fields().response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
     ```
 
 - BX24.js
@@ -292,8 +319,8 @@ HTTP status: **200**
         "finish": 1752132864.366912,
         "duration": 0.03175783157348633,
         "processing": 0.002053976058959961,
-        "date_start": "2025-07-10T10:34:24+02:00",
-        "date_finish": "2025-07-10T10:34:24+02:00",
+        "date_start": "2025-07-10T10:34:24+03:00",
+        "date_finish": "2025-07-10T10:34:24+03:00",
         "operating_reset_at": 1752133464,
         "operating": 0
     }
@@ -306,12 +333,12 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | Object with field descriptions [(detailed description)](#result) ||
+[`object`](../../data-types.md) |  Object with field descriptions [(detailed description)](#result) ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
-#### Fields of the result object {#result}
+#### Fields of the Result Object {#result}
 
 #|
 || **Name**
@@ -323,7 +350,7 @@ HTTP status: **200**
 || **STATUS_ID**
 [`string`](../../data-types.md) | Status value code, used in CRM object methods ||
 || **SORT**
-[`integer`](../../data-types.md) | Sorting order ||
+[`integer`](../../data-types.md) | Sort order ||
 || **NAME**
 [`string`](../../data-types.md) | Name ||
 || **NAME_INIT**
@@ -347,7 +374,7 @@ HTTP status: **200**
 
 The method does not return errors.
 
-{% include [system errors](../../../_includes/system-errors.md) %}
+{% include [System errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
@@ -355,4 +382,4 @@ The method does not return errors.
 - [{#T}](./crm-status-get.md)
 - [{#T}](./crm-status-add.md)
 - [{#T}](./crm-status-update.md)
-- [{#T}](./crm-status-delete.md)
+- [{#T}](./crm-status-delete.md) 

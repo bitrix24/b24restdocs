@@ -221,6 +221,106 @@ The list of fields for filtering can be found using the method [crm.status.field
     }
     ```
 
+- Python
+
+    Example
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.status.list(
+            order={
+                "SORT": "ASC",
+            },
+            filter={
+                "ENTITY_ID": "DEAL_STAGE",
+            },
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
+    Example `as_list`
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.status.list(
+            order={
+                "SORT": "ASC",
+            },
+            filter={
+                "ENTITY_ID": "DEAL_STAGE",
+            },
+        ).as_list().response
+        result = bitrix_response.result
+        for item in result:
+            print(item)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
+    Example `as_list_fast`
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.status.list(
+            order={
+                "SORT": "ASC",
+            },
+            filter={
+                "ENTITY_ID": "DEAL_STAGE",
+            },
+        ).as_list_fast(descending=True).response
+        result = bitrix_response.result
+        for item in result:
+            print(item)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - BX24.js
 
     ```js
@@ -261,7 +361,7 @@ The list of fields for filtering can be found using the method [crm.status.field
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -286,7 +386,7 @@ HTTP Status: **200**
             "ID": "103",
             "ENTITY_ID": "DEAL_STAGE",
             "STATUS_ID": "PREPARATION",
-            "NAME": "Document Preparation",
+            "NAME": "Document preparation",
             "NAME_INIT": "",
             "SORT": "20",
             "SYSTEM": "N",
@@ -302,7 +402,7 @@ HTTP Status: **200**
             "ID": "105",
             "ENTITY_ID": "DEAL_STAGE",
             "STATUS_ID": "PREPAYMENT_INVOICE",
-            "NAME": "Prepayment Invoice",
+            "NAME": "Prepayment invoice",
             "NAME_INIT": "",
             "SORT": "30",
             "SYSTEM": "N",
@@ -318,7 +418,7 @@ HTTP Status: **200**
             "ID": "107",
             "ENTITY_ID": "DEAL_STAGE",
             "STATUS_ID": "EXECUTING",
-            "NAME": "In Progress",
+            "NAME": "In progress",
             "NAME_INIT": "",
             "SORT": "40",
             "SYSTEM": "N",
@@ -334,7 +434,7 @@ HTTP Status: **200**
             "ID": "109",
             "ENTITY_ID": "DEAL_STAGE",
             "STATUS_ID": "FINAL_INVOICE",
-            "NAME": "Final Invoice",
+            "NAME": "Final invoice",
             "NAME_INIT": "",
             "SORT": "50",
             "SYSTEM": "N",
@@ -350,8 +450,8 @@ HTTP Status: **200**
             "ID": "111",
             "ENTITY_ID": "DEAL_STAGE",
             "STATUS_ID": "WON",
-            "NAME": "Deal Successful",
-            "NAME_INIT": "Deal Successful",
+            "NAME": "Deal successful",
+            "NAME_INIT": "Deal successful",
             "SORT": "60",
             "SYSTEM": "Y",
             "CATEGORY_ID": null,
@@ -366,8 +466,8 @@ HTTP Status: **200**
             "ID": "113",
             "ENTITY_ID": "DEAL_STAGE",
             "STATUS_ID": "LOSE",
-            "NAME": "Deal Failed",
-            "NAME_INIT": "Deal Failed",
+            "NAME": "Deal failed",
+            "NAME_INIT": "Deal failed",
             "SORT": "70",
             "SYSTEM": "Y",
             "CATEGORY_ID": null,
@@ -382,7 +482,7 @@ HTTP Status: **200**
             "ID": "115",
             "ENTITY_ID": "DEAL_STAGE",
             "STATUS_ID": "APOLOGY",
-            "NAME": "Reason for Failure Analysis",
+            "NAME": "Failure reason analysis",
             "NAME_INIT": "",
             "SORT": "80",
             "SYSTEM": "N",
@@ -401,8 +501,8 @@ HTTP Status: **200**
         "finish": 1752146147.354549,
         "duration": 0.04173684120178223,
         "processing": 0.00507807731628418,
-        "date_start": "2025-07-10T14:15:47+02:00",
-        "date_finish": "2025-07-10T14:15:47+02:00",
+        "date_start": "2025-07-10T14:15:47+03:00",
+        "date_finish": "2025-07-10T14:15:47+03:00",
         "operating_reset_at": 1752146747,
         "operating": 0
     }
@@ -419,21 +519,21 @@ HTTP Status: **200**
 || **total**
 [`integer`](../../data-types.md) | The total number of found items ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the execution time of the request ||
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
     "error": "Invalid parameters.",
-    "error_description": "Invalid parameters were provided."
+    "error_description": "Incorrect parameters passed."
 }
 ```
 
-{% include notitle [error handling](../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
@@ -443,7 +543,7 @@ HTTP Status: **400**
 || `400`     | `Invalid parameters.` | Invalid parameters were provided ||
 |#
 
-{% include [system errors](../../../_includes/system-errors.md) %}
+{% include [System errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
@@ -455,4 +555,3 @@ HTTP Status: **400**
 - [{#T}](../../../tutorials/crm/how-to-get-lists/how-to-get-elements-by-stage-filter.md)
 - [{#T}](../../../tutorials/crm/how-to-get-lists/how-to-get-stages-with-semantics.md)
 - [{#T}](../../../tutorials/crm/how-to-add-crm-objects/how-to-add-category-to-spa.md)
-

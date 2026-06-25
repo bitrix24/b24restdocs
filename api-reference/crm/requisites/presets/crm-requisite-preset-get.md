@@ -14,13 +14,13 @@ This method returns the requisite template by its identifier.
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`](../../../data-types.md) | Identifier of the requisite template. Can be obtained using the method [`crm.requisite.preset.list`](./crm-requisite-preset-list.md) ||
+[`integer`](../../../data-types.md) | Identifier of the requisite template. It can be obtained using the method [`crm.requisite.preset.list`](./crm-requisite-preset-list.md) ||
 |#
 
 ## Code Examples
@@ -167,7 +167,7 @@ This method returns the requisite template by its identifier.
     ```js
     BX24.callMethod(
         "crm.requisite.preset.get",
-        { id: 347 },    // Identifier of the requisite template.
+        { id: 347 },    // Attribute template identifier.
         function(result)
         {
             if(result.error())
@@ -195,6 +195,31 @@ This method returns the requisite template by its identifier.
     echo '</PRE>';
     ```
 
+- Python
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.requisite.preset.get(bitrix_id=347).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 {% endlist %}
 
 ## Response Handling
@@ -211,7 +236,7 @@ HTTP status: **200**
         "DATE_MODIFY": "",
         "CREATED_BY_ID": "1",
         "MODIFY_BY_ID": null,
-        "NAME": "Individual Entrepreneur",
+        "NAME": "Smith LLC",
         "XML_ID": "EXAMPLE_COMPANY__VALUE_1",
         "ACTIVE": "Y",
         "SORT": "520"
@@ -239,22 +264,22 @@ HTTP status: **200**
 [`time`](../../../data-types.md) | Information about the request execution time ||
 |#
 
-### Description of Requisite Template Fields
+### Description of the Requisite Template Fields
 
 #|
 || **Name**
 `type` | **Description** ||
 || **ID**
-[`integer`](../../../data-types.md) | Identifier of the requisite. Automatically created and unique within the account ||
+[`integer`](../../../data-types.md) | Identifier of the requisite. Created automatically and unique within the account ||
 || **ENTITY_TYPE_ID**
 [`integer`](../../../data-types.md) | Identifier of the parent object type.
 
 The identifiers of CRM object types are provided by the method [crm.enum.ownertype](../../auxiliary/enum/crm-enum-owner-type.md) 
 ||
 || **COUNTRY_ID**
-[`integer`](../../../data-types.md) | Identifier of the country corresponding to the requisite template field set (for available values see the method [crm.requisite.preset.countries](./crm-requisite-preset-countries.md)) ||
+[`integer`](../../../data-types.md) | Identifier of the country corresponding to the set of fields in the requisites template (for available values, see the method [crm.requisite.preset.countries](./crm-requisite-preset-countries.md)) ||
 || **DATE_CREATE**
-[`datetime`](../../../data-types.md) | Creation date ||
+[`datetime`](../../../data-types.md) | Create date ||
 || **DATE_MODIFY**
 [`datetime`](../../../data-types.md) | Modification date. Contains an empty string if the template has not been changed since creation ||
 || **CREATED_BY_ID**
@@ -288,17 +313,17 @@ HTTP status: **40x**, **50x**
 }
 ```
 
-{% include notitle [error handling](../../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
 || **Code** | **Description** ||
-|| `The Preset with ID '347' is not found` | The template with the specified identifier was not found ||
+|| `The Preset with ID '347' is not found` | Template with the specified identifier not found ||
 || `Access denied` | Insufficient access permissions to retrieve the template ||
 |#
 
-{% include [system errors](../../../../_includes/system-errors.md) %}
+{% include [System errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

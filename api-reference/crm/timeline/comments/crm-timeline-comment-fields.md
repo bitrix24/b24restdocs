@@ -1,4 +1,4 @@
-# Get Fields of crm.timeline.comment.fields
+# Get Fields Of crm.timeline.comment.fields
 
 {% note tip "" %}
 
@@ -8,15 +8,15 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: `any user`
+> Who can execute the method: any user
 
-This method retrieves the fields of a "Comment" type deal.
+Retrieves the fields of a "Comment" type deal.
 
-No parameters required.
+No parameters.
 
 ## Code Examples
 
-{% include [Examples Note](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -145,6 +145,33 @@ No parameters required.
     }
     ```
 
+- Python
+
+    Example
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.timeline.comment.fields().response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - BX24.js
 
     ```js
@@ -175,7 +202,7 @@ No parameters required.
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -196,7 +223,7 @@ HTTP Status: **200**
             "isImmutable": false,
             "isMultiple": false,
             "isDynamic": false,
-            "title": "Date Added"
+            "title": "Date added"
         },
         "ENTITY_ID": {
             "type": "integer",
@@ -205,7 +232,7 @@ HTTP Status: **200**
             "isImmutable": true,
             "isMultiple": false,
             "isDynamic": false,
-            "title": "ID of the entity to which the comment is linked"
+            "title": "ID of the element the comment is attached to"
         },
         "ENTITY_TYPE": {
             "type": "string",
@@ -214,7 +241,7 @@ HTTP Status: **200**
             "isImmutable": true,
             "isMultiple": false,
             "isDynamic": false,
-            "title": "Type of the entity to which the comment is linked"
+            "title": "Type of the element the comment is attached to"
         },
         "AUTHOR_ID": {
             "type": "integer",
@@ -232,7 +259,7 @@ HTTP Status: **200**
             "isImmutable": false,
             "isMultiple": false,
             "isDynamic": false,
-            "title": "Comment Text"
+            "title": "Comment text"
         },
         "FILES": {
             "type": "attached_diskfile",
@@ -241,15 +268,15 @@ HTTP Status: **200**
             "isImmutable": false,
             "isMultiple": true,
             "isDynamic": false,
-            "title": "List of Files"
+            "title": "File list"
         }
     },
     "time": {
         "start": 1715091541.642592,
         "finish": 1715091541.730599,
         "duration": 0.08800697326660156,
-        "date_start": "2024-05-03T17:19:01+02:00",
-        "date_finish": "2024-05-03T17:19:01+02:00",
+        "date_start": "2024-05-03T17:19:01+03:00",
+        "date_finish": "2024-05-03T17:19:01+03:00",
         "operating": 0
     }
 }
@@ -268,7 +295,7 @@ HTTP Status: **200**
 
 #### List of Fields {#fields}
 
-{% include [Required Parameters Note](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -293,14 +320,14 @@ Values:
 || **AUTHOR_ID**
 [`integer`](../../../data-types.md) | Author. Immutable ||
 || **COMMENT**
-[`string`](../../../data-types.md) | Comment text ||
+[`string`](../../../data-types.md) | The text of the comment ||
 || **FILES**
-[`attached_diskfile`](../../../data-types.md) | List of files. Array of values described by [rules](../../../files/how-to-upload-files.md) ||
+[`attached_diskfile`](../../../data-types.md) | List of files. An array of values described according to the [rules](../../../files/how-to-upload-files.md) ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -309,18 +336,18 @@ HTTP Status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
-|| **Code** | **Error Message** | **Description** ||
+|| **Code** | **Error message** | **Description** ||
 || `0` | error | Other errors (e.g., fatal errors) ||
 |#
 
-{% include [system errors](../../../../_includes/system-errors.md) %}
+{% include [System errors](../../../../_includes/system-errors.md) %}
 
-## Continue Learning 
+## Continue Learning
 
 - [{#T}](./crm-timeline-comment-add.md)
 - [{#T}](./crm-timeline-comment-update.md)

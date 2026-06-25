@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-Sales funnels allow you to divide work in the CRM into different stages. For example, a sale may consist of three funnels: sales, delivery, and post-sale service. Access permissions and the view of the CRM entity card can be configured for each funnel.
+Sales funnels allow you to divide work in the CRM into different stages. For example, a sale may consist of three funnels: sales, delivery, and post-sale service. Access permissions and the view of the CRM object card can be configured for each funnel.
 
 To create a new funnel in a smart process, we will sequentially execute the following methods:
 

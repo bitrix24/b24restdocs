@@ -1,4 +1,4 @@
-# Delete log entry crm.timeline.logmessage.delete
+# Delete Log Entry crm.timeline.logmessage.delete
 
 {% note tip "" %}
 
@@ -8,13 +8,13 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: `user with permission to modify the CRM entity where the entry is located`
+> Who can execute the method: a user with permission to edit the CRM item containing the record
 
-This method deletes a timeline log entry.
+Deletes a timeline record.
 
 {% note warning %}
 
-You can only delete a log entry in the context of the [application](https://dev.quickbooks.com/docs/chm_files/app.zip) that created it.
+You can only delete a log entry in the context of the [application](https://dev.bitrixsoft.com/docs/chm_files/app.zip) that created it.
 
 This means that only the application that added the entry can delete it. This ensures data security and control.
 
@@ -22,7 +22,7 @@ This means that only the application that added the entry can delete it. This en
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -174,6 +174,35 @@ You can obtain identifiers using the [`crm.timeline.logmessage.list`](./crm-time
     );
     ```
 
+- Python
+
+    Example
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.timeline.logmessage.delete(
+            bitrix_id=1,
+        )
+        result = bitrix_response.response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - PHP CRest
 
     ```php
@@ -239,7 +268,7 @@ HTTP status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
@@ -248,13 +277,13 @@ HTTP status: **400**
 || `ACCESS_DENIED` | Access denied ||
 || `NOT_FOUND` | Timeline entry with the specified `id` does not exist ||
 || `REMOVING_DISABLED` | Timeline entry with the specified `id` was created in the context of another REST application ||
-|| `100` | Required fields not provided ||
+|| `100` | Required fields are not provided ||
 || `0` | Other errors (e.g., fatal) ||
 |#
 
-{% include [system errors](../../../../_includes/system-errors.md) %}
+{% include [System errors](../../../../_includes/system-errors.md) %}
 
-## Continue Learning 
+## Continue Learning
 
 - [{#T}](./crm-timeline-logmessage-add.md)
 - [{#T}](./crm-timeline-logmessage-get.md)

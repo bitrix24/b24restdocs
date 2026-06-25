@@ -1,4 +1,4 @@
-# Get a list of countries for the template crm.requisite.preset.countries
+# Get a List of Countries for the Template crm.requisite.preset.countries
 
 {% note tip "" %}
 
@@ -12,11 +12,11 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 The method returns a possible list of countries for [requisite templates](./index.md). Country identifiers are used as values for the `COUNTRY_ID` field of the template.
 
-No parameters required.
+No parameters.
 
 ## Code Examples
 
-{% include [Examples Note](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -170,18 +170,43 @@ No parameters required.
     echo '</PRE>';
     ```
 
+- Python
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.requisite.preset.countries().response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 {% endlist %}
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
     "result": [
         {
             "ID": 1,
-            "CODE": "US",
+            "CODE": "RU",
             "TITLE": "United States"
         },
         {
@@ -253,7 +278,7 @@ HTTP Status: **200**
 [`time`](../../../data-types.md) | Information about the request execution time ||
 |#
 
-### Fields of the country object
+### Fields of the Country Object
 
 #|
 || **Name**
@@ -268,7 +293,7 @@ HTTP Status: **200**
 
 ## Error Handling
 
-{% include [system errors](../../../../_includes/system-errors.md) %}
+{% include [System errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

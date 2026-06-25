@@ -412,11 +412,11 @@ HTTP Status: **200**
 - `Y` — yes
 - `N` — no ||
 || **CRM_CREATE**
-[`string`](../../data-types.md) | The scenario for creating a CRM entity ||
+[`string`](../../data-types.md) | The scenario for creating a CRM object ||
 || **CRM_CREATE_SECOND**
-[`string`](../../data-types.md) | Additional mode for creating a CRM entity ||
+[`string`](../../data-types.md) | Additional mode for creating a CRM object ||
 || **CRM_CREATE_THIRD**
-[`string`](../../data-types.md) | Additional mode for creating a CRM entity. Possible values:
+[`string`](../../data-types.md) | Additional mode for creating a CRM object. Possible values:
 - `Y` — yes
 - `N` — no ||
 || **CRM_FORWARD**

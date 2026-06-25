@@ -56,7 +56,7 @@ Array
 - `IS_CHROME` — whether this frame is running in the Google Chrome browser or not
 - `DIALOG_CONTEXT` — **this parameter is currently unavailable**. It can be `all`, `chat`, `bot`, `lines`, `user`, `call`
 - `DIALOG_ENTITY_ID` — additional data about the chat (**this parameter is currently unavailable**). For Open Lines, the data is separated by |. The values for Open Lines are: 1 — the channel through which the user wrote, 2 — the identifier of the OL, 3 and 4 — service data (parameter currently unavailable)
-- `DIALOG_ENTITY_DATA_1` — additional data about the chat (**this parameter is currently unavailable**). For Open Lines, the data is separated by |. The values for Open Lines are: 1 — saved in CRM, 2 — type of CRM entity, 3 — identifier of the CRM entity, 4 and 5 — service data, 6 — identifier of the open line session
+- `DIALOG_ENTITY_DATA_1` — additional data about the chat (**this parameter is currently unavailable**). For Open Lines, the data is separated by |. The values for Open Lines are: 1 — saved in CRM, 2 — type of CRM object, 3 — identifier of the CRM object, 4 and 5 — service data, 6 — identifier of the open line session
 
 If the frame is running in context mode:
 

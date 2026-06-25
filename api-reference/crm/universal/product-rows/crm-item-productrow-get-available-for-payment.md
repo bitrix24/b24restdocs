@@ -10,19 +10,19 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: requires read access permission for the CRM object whose product rows are being selected.
 
-The method retrieves product rows of the CRM object for which the client has not yet been billed.
+The method retrieves product rows of the CRM object for which the customer has not yet been billed.
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **ownerId***
-[`integer`](../../../data-types.md) | Identifier of the CRM object ||
+[`integer`](../../../data-types.md) | Identifier of the CRM object. ||
 || **ownerType***
-[`string`](../../../data-types.md) | Identifier of the [`CRM object type`](../../data-types.md#object_type). Pass the [Short symbolic code of the type](../../data-types.md#object_type) ||
+[`string`](../../../data-types.md) | Identifier of the [CRM object type](../../data-types.md#object_type). Pass the [Short symbolic code of the type](../../data-types.md#object_type) ||
 |#
 
 ## Code Examples
@@ -176,6 +176,36 @@ The method retrieves product rows of the CRM object for which the client has not
     }
     ```
 
+- Python
+
+    Example
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.item.productrow.get_available_for_payment(
+            owner_type="D",
+            owner_id=13144,
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - BX24.js
 
     ```js
@@ -214,9 +244,9 @@ The method retrieves product rows of the CRM object for which the client has not
 
 {% endlist %}
 
-## Successful Response
+## Response on Success
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -277,8 +307,8 @@ HTTP Status: **200**
       "finish":1716966560.742781,
       "duration":0.42228102684020996,
       "processing":0.17676782608032227,
-      "date_start":"2024-05-29T10:09:20+02:00",
-      "date_finish":"2024-05-29T10:09:20+02:00"
+      "date_start":"2024-05-29T10:09:20+03:00",
+      "date_finish":"2024-05-29T10:09:20+03:00"
    }
 }
 ```
@@ -291,14 +321,15 @@ HTTP Status: **200**
 || **result**
 [`object`](../../../data-types.md) | Root element of the response ||
 || **productRows**
-[`crm_item_product_row[]`](../../data-types.md#crm_item_product_row) | Array of objects containing information about all product rows of the CRM object for which the client has not yet been billed ||
+[`crm_item_product_row[]`](../../data-types.md#crm_item_product_row) |An array of objects containing information about all CRM object line items for which the client has not yet been invoiced
+ ||
 || **time**
 [`time`](../../../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -307,7 +338,7 @@ HTTP Status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
@@ -318,7 +349,7 @@ HTTP Status: **400**
 || `0` | Other errors (e.g., fatal errors) ||
 |#
 
-{% include notitle [system errors](../../../../_includes/system-errors.md) %}
+{% include notitle [System errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

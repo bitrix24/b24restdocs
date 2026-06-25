@@ -10,11 +10,11 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: requires access permission to modify the CRM object to which the product row is being added.
 
-This method adds a product row to a CRM object.
+Adds a product row to a CRM object.
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -29,15 +29,15 @@ This method adds a product row to a CRM object.
 || **Name**
 `type` | **Description** ||
 || **ownerId***
-[`integer`](../../../data-types.md) | Identifier of the CRM object ||
+[`integer`](../../../data-types.md) | Identifier of the CRM object. ||
 || **ownerType***
-[`string`](../../../data-types.md) | Identifier of the [`CRM object type`](../../data-types.md#object_type). Pass the [Short symbolic code of the type](../../data-types.md#object_type) ||
+[`string`](../../../data-types.md) | Identifier of the [CRM object type](../../data-types.md#object_type). Pass the [Short symbolic code of the type](../../data-types.md#object_type) ||
 || **productId**
-[`catalog_product.id`](../../../catalog/data-types.md#catalog_product) | Identifier of the product from the catalog ||
+[`catalog_product.id`](../../../catalog/data-types.md#catalog_product) | Identifier of the product from the catalog. ||
 || **productName**
 [`string`](../../../data-types.md) | Name of the product in the product row. If not provided, but `productId` is given, the product name from the product catalog is used ||
 || **price**
-[`double`](../../../data-types.md) | Price per unit of the product row, including discounts and taxes ||
+[`double`](../../../data-types.md) | Price per unit of the product row, including discounts and taxes. ||
 || **quantity**
 [`double`](../../../data-types.md) | Quantity of the product. Default is 1 ||
 || **discountTypeId**
@@ -46,11 +46,11 @@ This method adds a product row to a CRM object.
 - `2` — percentage value
 Default is 2 ||
 || **discountRate**
-[`double`](../../../data-types.md) | Discount value in percentage (if using the percentage discount type) ||
+[`double`](../../../data-types.md) | The discount value in percentage (if using the percentage discount type) ||
 || **discountSum**
-[`double`](../../../data-types.md) | Absolute discount value (if using the absolute discount type) ||
+[`double`](../../../data-types.md) | The absolute value of the discount (if using the absolute discount type) ||
 || **taxRate**
-[`double`](../../../data-types.md) | Tax rate in percentage ||
+[`double`](../../../data-types.md) | Tax rate in percentage. ||
 || **taxIncluded**
 [`string`](../../../data-types.md) | Indicator of whether the tax is included in the price. Possible values:
 - `Y` – tax included
@@ -246,6 +246,47 @@ Default is N ||
     }
     ```
 
+- Python
+
+    Example
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.item.productrow.add(
+            fields={
+                "ownerId": 13142,
+                "ownerType": "D",
+                "productId": 9621,
+                "price": 80000,
+                "quantity": 2,
+                "discountTypeId": 2,
+                "discountRate": 20,
+                "taxRate": 20,
+                "taxIncluded": "Y",
+                "measureCode": 796,
+                "sort": 10,
+            },
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - BX24.js
 
     ```js
@@ -306,9 +347,9 @@ Default is N ||
 
 {% endlist %}
 
-## Successful Response
+## Response on Success
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -343,8 +384,8 @@ HTTP Status: **200**
       "finish":1716887723.259695,
       "duration":1.4809050559997559,
       "processing":1.2986550331115723,
-      "date_start":"2024-05-28T12:15:21+02:00",
-      "date_finish":"2024-05-28T12:15:23+02:00"
+      "date_start":"2024-05-28T12:15:21+03:00",
+      "date_finish":"2024-05-28T12:15:23+03:00"
    }
 }
 ```
@@ -364,7 +405,7 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -373,7 +414,7 @@ HTTP Status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
@@ -382,11 +423,11 @@ HTTP Status: **400**
 || `ENTITY_TYPE_NOT_SUPPORTED` | Working with this type of objects is not supported ||
 || `ACCESS_DENIED` | Access denied ||
 || `OWNER_NOT_FOUND` | The provided CRM object was not found ||
-|| `100` | Required parameters were not provided ||
+|| `100` | Required parameters not provided ||
 || `0` | Other errors (e.g., fatal errors) ||
 |#
 
-{% include notitle [system errors](../../../../_includes/system-errors.md) %}
+{% include notitle [System errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

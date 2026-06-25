@@ -31,7 +31,7 @@ The method `crm.status.add` creates a new element in the specified CRM directory
 || **ENTITY_ID*** 
 [`string`](../../data-types.md) | Type of directory, for example `DEAL_STAGE`, `SOURCE`. You can get the list of types using the method [crm.status.entity.types](./crm-status-entity-types.md) ||
 || **STATUS_ID*** 
-[`string`](../../data-types.md) | Status value code. The code must be unique within the directory. Length and character restrictions depend on the type of directory ||
+[`string`](../../data-types.md) | Status value code. The code must be unique within the directory. Length and character restrictions depend on the type of directory||
 || **NAME*** 
 [`string`](../../data-types.md) | Name ||
 || **SORT** 
@@ -56,19 +56,19 @@ Follow the length and character restrictions for different types of directories:
 - **STATUS** lead stages. Max length: 21, can contain only Latin letters, numbers, hyphens, and underscores.
 - **QUOTE_STATUS** estimate stages. Max length: 22, can contain only Latin letters, numbers, hyphens, and underscores.
 - **DEAL_STAGE** deal stages. Max length: 22, can contain only Latin letters, numbers, hyphens, and underscores.
-- **DEAL_STAGE_xx** deal stages in non-default funnels. xx — funnel identifier. Max length depends on the funnel identifier. Can contain only Latin letters, numbers, hyphens, and underscores.
+- **DEAL_STAGE_xx** deal stages in non-default pipelines. xx — pipeline identifier. Max length depends on the pipeline identifier. Can contain only Latin letters, numbers, hyphens, and underscores.
 - For other `ENTITY_ID`, the maximum length of `STATUS_ID` is 50 characters and can contain any characters.
 
-If a stage is added for a custom deal funnel, the status identifier will automatically have the funnel prefix added. This is necessary to identify the funnel by the stage identifier.
+If a stage is added for a custom deal pipeline, the status identifier will automatically have the pipeline prefix added. This is necessary to identify the pipeline by the stage identifier.
 
-For example, the value `DECISION` for a deal funnel with identifier `1` will be saved as `C1:DECISION`. The system will automatically add the prefix `C1:` corresponding to the deal funnel identifier. 
+For example, the value `DECISION` for a deal pipeline with identifier `1` will be saved as `C1:DECISION`. The system will automatically add the prefix `C1:` corresponding to the deal pipeline identifier.
 If a value is passed to the field with the prefix `C1:DECISION`, it will be saved as `C1:DECISION`, and no additional prefix will be added.
 
-For SPAs with funnels, a similar logic for forming `STATUS_ID` from the value and prefix applies. The funnel prefix can be obtained using the method [crm.status.entity.types](./crm-status-entity-types.md).
+For SPAs with pipelines, a similar logic for forming `STATUS_ID` from the value and prefix applies. The pipeline prefix can be obtained using the method [crm.status.entity.types](./crm-status-entity-types.md).
 
 **Restrictions for `SORT`**
 
-For the correct operation of status stages, the sorting must follow this order: 
+For the correct operation of status stages, the sorting must follow this order:
 1. Stages of the "In Progress" group
 2. Stage of the "Success" group
 3. Stages of the "Failure" group
@@ -85,7 +85,7 @@ For the correct operation of status stages, the sorting must follow this order:
     curl -X POST \
          -H "Content-Type: application/json" \
          -H "Accept: application/json" \
-         -d '{"fields":{"ENTITY_ID":"DEAL_STAGE_1","STATUS_ID":"DECISION","NAME":"Decision Making","SORT":70,"COLOR":"#FFA900"}}' \
+         -d '{"fields":{"ENTITY_ID":"DEAL_STAGE_1","STATUS_ID":"DECISION","NAME":"Decision making","SORT":70,"COLOR":"#FFA900"}}' \
          https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.status.add
     ```
 
@@ -95,7 +95,7 @@ For the correct operation of status stages, the sorting must follow this order:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"ENTITY_ID":"DEAL_STAGE_1","STATUS_ID":"DECISION","NAME":"Decision Making","SORT":70,"COLOR":"#FFA900"},"auth":"**put_access_token_here**"}' \
+    -d '{"fields":{"ENTITY_ID":"DEAL_STAGE_1","STATUS_ID":"DECISION","NAME":"Decision making","SORT":70,"COLOR":"#FFA900"},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/crm.status.add
     ```
 
@@ -192,7 +192,7 @@ For the correct operation of status stages, the sorting must follow this order:
                     'fields' => [
                         'ENTITY_ID' => 'DEAL_STAGE_1',
                         'STATUS_ID' => 'DECISION',
-                        'NAME'     => 'Decision Making',
+                        'NAME'     => 'Decision making',
                         'SORT'     => 70,
                         'COLOR'    => '#FFA900',
                     ],
@@ -216,6 +216,41 @@ For the correct operation of status stages, the sorting must follow this order:
     }
     ```
 
+- Python
+
+    Example
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.status.add(
+            fields={
+                "ENTITY_ID": "DEAL_STAGE_1",
+                "STATUS_ID": "DECISION",
+                "NAME": "Decision making",
+                "SORT": 70,
+                "COLOR": "#FFA900",
+            },
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - BX24.js
 
     ```js
@@ -225,7 +260,7 @@ For the correct operation of status stages, the sorting must follow this order:
             fields: {
                 ENTITY_ID: "DEAL_STAGE_1",
                 STATUS_ID: "DECISION",
-                NAME: "Decision Making",
+                NAME: "Decision making",
                 SORT: 70,
                 COLOR: "#FFA900"
             }
@@ -250,7 +285,7 @@ For the correct operation of status stages, the sorting must follow this order:
             'fields' => [
                 'ENTITY_ID' => 'DEAL_STAGE_1',
                 'STATUS_ID' => 'DECISION',
-                'NAME' => 'Decision Making',
+                'NAME' => 'Decision making',
                 'SORT' => 70,
                 'COLOR' => '#FFA900'
             ]
@@ -276,8 +311,8 @@ HTTP status: **200**
         "finish": 1752215174.916697,
         "duration": 0.053774118423461914,
         "processing": 0.014070987701416016,
-        "date_start": "2025-07-11T09:26:14+02:00",
-        "date_finish": "2025-07-11T09:26:14+02:00",
+        "date_start": "2025-07-11T09:26:14+03:00",
+        "date_finish": "2025-07-11T09:26:14+03:00",
         "operating_reset_at": 1752215774,
         "operating": 0
     }
@@ -302,17 +337,17 @@ HTTP status: **400**
 ```json
 {
     "error": "Invalid parameters.",
-    "error_description": "Invalid parameters were provided."
+    "error_description": "Incorrect parameters provided."
 }
 ```
 
-{% include notitle [error handling](../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `400`     | `Access denied.` | No rights to perform the operation ||
+|| `400`     | `Access denied.` | No permission to perform the operation ||
 || `400`     | `Invalid parameters.` | Invalid parameters were provided ||
 || `400`     | `Specified entity type is not supported.` | An unsupported directory type was specified ||
 || `400`     | `The field ENTITY_ID is required.` | `ENTITY_ID` is not specified ||
@@ -323,7 +358,7 @@ HTTP status: **400**
 || `400`     | ` ` | The required field "Title" is not filled ||
 |#
 
-{% include [system errors](../../../_includes/system-errors.md) %}
+{% include [System errors](../../../_includes/system-errors.md) %}
 
 
 ## Continue Learning

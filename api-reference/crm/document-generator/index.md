@@ -23,9 +23,9 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 1. Create a numerator using the method [crm.documentgenerator.numerator.add](./numerator/crm-document-generator-numerator-add.md) — this sets the number template for documents.
 2. Prepare a `.docx` template file in Base64 format — [How to upload files](../../files/how-to-upload-files.md).
-3. Define the `entityTypeId` of the required CRM entity — typical values are provided in the article [Features of transmitted values](../index.md).
+3. Define the `entityTypeId` of the required CRM object — typical values are provided in the article [Features of transmitted values](../index.md).
 4. Upload the template using the method [crm.documentgenerator.template.add](./templates/crm-document-generator-template-add.md): pass the name, file, `numeratorId`, `entityTypeId`, and `region`.
-5. Obtain the `entityId` of the required CRM entity using the method [crm.item.list](../universal/crm-item-list.md).
+5. Obtain the `entityId` of the required CRM object using the method [crm.item.list](../universal/crm-item-list.md).
 6. Choose how to work with the document:
    - to create a document from a template, use [crm.documentgenerator.document.add](./documents/crm-document-generator-document-add.md).
    - to upload a ready-made file, use [crm.documentgenerator.document.upload](./documents/crm-document-generator-document-upload.md).
@@ -47,7 +47,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 **Document Templates.** The template stores the `.docx` file, region, linkage to types of CRM entities, and connection with the numerator. To create a document, you need the `templateId` — take the `id` from the response of [crm.documentgenerator.template.add](./templates/crm-document-generator-template-add.md) or the `id` of the required template from the response of [crm.documentgenerator.template.list](./templates/crm-document-generator-template-list.md).
 
-**Documents.** A document is created from a template using the method [crm.documentgenerator.document.add](./documents/crm-document-generator-document-add.md) or a ready-made file is uploaded using the method [crm.documentgenerator.document.upload](./documents/crm-document-generator-document-upload.md) — in both cases, the document is attached to a CRM entity.
+**Documents.** A document is created from a template using the method [crm.documentgenerator.document.add](./documents/crm-document-generator-document-add.md) or a ready-made file is uploaded using the method [crm.documentgenerator.document.upload](./documents/crm-document-generator-document-upload.md) — in both cases, the document is attached to a CRM object.
 
 **CRM Entities.** Templates and documents use `entityTypeId` and `entityId`. Typical values of `entityTypeId` for CRM entities are provided in the article [Features of transmitted values](../index.md). For Smart Processes, `entityTypeId` can be obtained using the method [crm.type.list](../universal/user-defined-object-types/crm-type-list.md). The identifier of the required object `entityId` is obtained using the method [crm.item.list](../universal/crm-item-list.md).
 
@@ -81,7 +81,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 || [crm.documentgenerator.template.get](./templates/crm-document-generator-template-get.md) | Returns information about the template by identifier ||
 || [crm.documentgenerator.template.list](./templates/crm-document-generator-template-list.md) | Returns a list of templates ||
 || [crm.documentgenerator.template.delete](./templates/crm-document-generator-template-delete.md) | Deletes a template ||
-|| [crm.documentgenerator.template.getfields](./templates/crm-document-generator-template-get-fields.md) | Returns the fields of the template for the specified CRM entity ||
+|| [crm.documentgenerator.template.getfields](./templates/crm-document-generator-template-get-fields.md) | Returns the fields of the template for the specified CRM object ||
 |#
 
 ### Documents
@@ -98,7 +98,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
     || [crm.documentgenerator.document.list](./documents/crm-document-generator-document-list.md) | Returns a list of documents ||
     || [crm.documentgenerator.document.delete](./documents/crm-document-generator-document-delete.md) | Deletes a document ||
     || [crm.documentgenerator.document.enablepublicurl](./documents/crm-document-generator-document-enable-public-url.md) | Enables or disables the public link ||
-    || [crm.documentgenerator.document.upload](./documents/crm-document-generator-document-upload.md) | Uploads a ready document and attaches it to a CRM entity ||
+    || [crm.documentgenerator.document.upload](./documents/crm-document-generator-document-upload.md) | Uploads a ready document and attaches it to a CRM object ||
     || [crm.documentgenerator.document.getfields](./documents/crm-document-generator-document-get-fields.md) | Returns the fields of the created document ||
     |#
 

@@ -1,4 +1,4 @@
-# Get a list of available logos crm.timeline.logo.list
+# Get a List of Available Logos crm.timeline.logo.list
 
 {% note tip "" %}
 
@@ -8,15 +8,15 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
-> Who can execute the method: `any user`
+> Who can execute the method: any user
 
-This method retrieves a list of available logos for timeline log entries.
+Retrieves a list of available logos for timeline log entries.
 
 No parameters.
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -171,6 +171,85 @@ No parameters.
     );
     ```
 
+- Python
+
+    Example
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.timeline.logo.list()
+        result = bitrix_response.response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
+    Example `as_list`
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.timeline.logo.list().as_list().response
+        result = bitrix_response.result
+        for item in result:
+            print(item)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
+    Example `as_list_fast`
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.timeline.logo.list().as_list_fast(descending=True).response
+        result = bitrix_response.result
+        for item in result:
+            print(item)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - PHP CRest
 
     ```php
@@ -237,7 +316,7 @@ HTTP status: **200**
 
 The `result` field contains an array of `logos`, each entry of which includes an associative array of logo fields [logo](./crm-timeline-logo-add.md#logo) ||
 || **total**
-[`integer`](../../../../data-types.md) | Total number of records found ||
+[`integer`](../../../../data-types.md) | The total number of records found ||
 || **time**
 [`time`](../../../../data-types.md) | Information about the request execution time ||
 |#
@@ -253,7 +332,7 @@ HTTP status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
@@ -262,11 +341,10 @@ HTTP status: **400**
 || `0` | Other errors (e.g., fatal) ||
 |#
 
-{% include [system errors](../../../../../_includes/system-errors.md) %}
+{% include [System errors](../../../../../_includes/system-errors.md) %}
 
-## Continue Exploring 
+## Continue Learning
 
 - [{#T}](./crm-timeline-logo-add.md)
 - [{#T}](./crm-timeline-logo-get.md)
 - [{#T}](./crm-timeline-logo-delete.md)
-

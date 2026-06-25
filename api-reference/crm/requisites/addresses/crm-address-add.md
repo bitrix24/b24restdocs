@@ -123,12 +123,11 @@ If at least one string field is specified, only the specified fields will be sav
             ENTITY_TYPE_ID: 8,     // Parent object type (requisite or lead)
             ENTITY_ID: 1,          // Requisite identifier
             ADDRESS_1: '4 Peace Avenue',
-            ADDRESS_2: 'Kaliningrad Regional Drama Theater',
-            CITY: 'Kaliningrad',
-            POSTAL_CODE: '236036',
-            REGION: 'Kaliningrad urban district',
-            PROVINCE: 'Kaliningrad Oblast',
-            COUNTRY: 'Russia',
+            ADDRESS_2: 'Drama Theater',
+            CITY: 'City',
+            REGION: 'City urban district',
+            PROVINCE: 'Region',
+            COUNTRY: 'USA',
           },
         },
         requestId: Text.getUuidRfc4122()
@@ -166,12 +165,11 @@ If at least one string field is specified, only the specified fields will be sav
                 ENTITY_TYPE_ID: 8,     // Parent object type (requisite or lead)
                 ENTITY_ID: 1,          // Requisite identifier
                 ADDRESS_1: '4 Peace Avenue',
-                ADDRESS_2: 'Kaliningrad Regional Drama Theater',
-                CITY: 'Kaliningrad',
-                POSTAL_CODE: '236036',
-                REGION: 'Kaliningrad urban district',
-                PROVINCE: 'Kaliningrad Oblast',
-                COUNTRY: 'Russia',
+                ADDRESS_2: 'Drama Theater',
+                CITY: 'City',
+                REGION: 'City urban district',
+                PROVINCE: 'Region',
+                COUNTRY: 'USA',
               },
             },
             requestId: B24Js.Text.getUuidRfc4122()

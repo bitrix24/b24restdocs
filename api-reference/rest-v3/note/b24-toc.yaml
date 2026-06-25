@@ -1,0 +1,17 @@
+title: Knowledge Base 2.0
+href: index.md
+items:
+  - name: Overview of Sections
+    href: index.md
+  - name: Knowledge Bases
+    include:
+      path: collection/b24-toc.yaml
+      mode: link
+  - name: Documents
+    include:
+      path: document/b24-toc.yaml
+      mode: link
+  - name: Files
+    include:
+      path: file/b24-toc.yaml
+      mode: link

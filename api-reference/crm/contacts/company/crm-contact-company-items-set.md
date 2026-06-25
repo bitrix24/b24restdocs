@@ -1,4 +1,4 @@
-# Set the set of companies associated with the specified contact crm.contact.company.items.set
+# Set the Set of Companies Associated with the Specified Contact crm.contact.company.items.set
 
 {% note tip "" %}
 
@@ -14,7 +14,7 @@ The method `crm.contact.company.items.set` sets the set of companies associated 
 
 ## Method Parameters
 
-{% include [Parameter Note](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -30,13 +30,13 @@ The identifier can be obtained using the methods [crm.contact.list](../crm-conta
 
 ### Structure of the Binding Object {#contact_company_binding}
 
-{% include [Parameter Note](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **COMPANY_ID***
-[`crm_entity`][2] | Identifier of the company that will be associated with the contact.
+[`crm_entity`][2] | Identifier of the company that will be linked to the contact.
 
 The identifier can be obtained using the method [crm.item.list](../../universal/crm-item-list.md) with `entityTypeId = 4` ||
 || **IS_PRIMARY**
@@ -46,7 +46,7 @@ The identifier can be obtained using the method [crm.item.list](../../universal/
 
 If there is no binding with `IS_PRIMARY = Y`, it will be set for the first binding in `items`.
 
-If multiple bindings are provided with `IS_PRIMARY = Y`, the first binding with `IS_PRIMARY = Y` will be considered primary
+If multiple bindings with `IS_PRIMARY = Y` are provided, the first binding with `IS_PRIMARY = Y` will be considered primary.
 ||
 || **SORT**
 [`integer`][1] | Sort index.
@@ -58,7 +58,7 @@ If an existing binding is provided without the `SORT` parameter, the default val
 
 ## Code Examples
 
-{% include [Example Note](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 Set the following associated companies for the contact with `id = 82`:
 - company with `id = 8`, make it primary and set `SORT = 100`
@@ -222,7 +222,7 @@ Set the following associated companies for the contact with `id = 82`:
             echo 'Error: ' . $result->error();
         } else {
             echo 'Success: ' . print_r($result->data(), true);
-            // Your logic for processing data
+            // The data processing logic you need
             processData($result->data());
         }
     
@@ -230,6 +230,50 @@ Set the following associated companies for the contact with `id = 82`:
         error_log($e->getMessage());
         echo 'Error setting company items for contact: ' . $e->getMessage();
     }
+    ```
+
+- Python
+
+    Example
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.contact.company.items.set(
+            bitrix_id=82,
+            items=[
+                {
+                    "COMPANY_ID": 8,
+                    "IS_PRIMARY": "Y",
+                    "SORT": 100,
+                },
+                {
+                    "COMPANY_ID": 9,
+                    "SORT": 200,
+                },
+                {
+                    "COMPANY_ID": 10,
+                    "SORT": 400,
+                },
+            ],
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
     ```
 
 - BX24.js
@@ -300,7 +344,7 @@ Set the following associated companies for the contact with `id = 82`:
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -325,12 +369,12 @@ HTTP Status: **200**
 || **result**
 [`boolean`][1] | Root element of the response. Contains `true` in case of success ||
 || **time**
-[`time`][1] | Information about the execution time of the request ||
+[`time`][1] | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -339,19 +383,19 @@ HTTP Status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `-`     | `The parameter ownerEntityID is invalid or not defined` | The provided `id` is less than 0 or not provided at all ||
-|| `-`     | `The parameter items must be array` | A non-array value was provided in `items` ||
+|| `-`     | `The parameter ownerEntityID is invalid or not defined` | The `id` is less than 0 or not provided at all ||
+|| `-`     | `The parameter items must be array` | The `items` parameter is not an array ||
 || `ACCESS_DENIED` | `Access denied!` | The user does not have permission to edit contacts ||
-|| `-`     | `Not found` | The contact with the provided `id` was not found ||
+|| `-`     | `Not found` | Contact with the provided `id` not found ||
 |#
 
-{% include [system errors](../../../../_includes/system-errors.md) %}
+{% include [System errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

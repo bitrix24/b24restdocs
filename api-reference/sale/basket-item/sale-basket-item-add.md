@@ -170,7 +170,7 @@ If `Y` is specified, catalog data will be ignored. The parameters `price`, `base
             orderId: 5147,
             quantity: 2,
             productId: 6544,
-            currency: 'RUB',
+            currency: 'USD',
           },
         },
         requestId: Text.getUuidRfc4122()
@@ -207,7 +207,7 @@ If `Y` is specified, catalog data will be ignored. The parameters `price`, `base
                 orderId: 5147,
                 quantity: 2,
                 productId: 6544,
-                currency: 'RUB',
+                currency: 'USD',
               },
             },
             requestId: B24Js.Text.getUuidRfc4122()

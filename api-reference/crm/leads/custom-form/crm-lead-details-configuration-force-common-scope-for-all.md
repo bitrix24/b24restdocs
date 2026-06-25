@@ -35,7 +35,7 @@ Settings for repeat leads may differ from those for simple leads. To switch betw
 [`object`](../../../data-types.md) | Additional parameters for selecting the lead type. The structure is described [below](#extras) ||
 |#
 
-### Extras Parameter {#extras}
+### Parameter extras Parameter {#extras}
 
 #|
 || **Name**

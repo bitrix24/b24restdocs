@@ -1,4 +1,4 @@
-# Delete bank detail crm.requisite.bankdetail.delete
+# Delete Bank Detail crm.requisite.bankdetail.delete
 
 {% note tip "" %}
 
@@ -14,7 +14,7 @@ This method deletes a bank detail.
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -178,6 +178,31 @@ This method deletes a bank detail.
     echo '</PRE>';
     ```
 
+- Python
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.requisite.bankdetail.delete(bitrix_id=357).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected Error: {error}")
+    ```
+
 {% endlist %}
 
 ## Response Handling
@@ -224,18 +249,18 @@ HTTP status: **40x**, **50x**
 }
 ```
 
-{% include notitle [error handling](../../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Errors
 
-#|  
-|| **Error Text** | **Description** ||
+#|
+|| **Error text** | **Description** ||
 || `ID is not defined or invalid` | The identifier of the bank detail is not specified or has an invalid value ||
 || `The RequisiteBankDetail with ID '357' is not found` | The bank detail with the specified identifier was not found ||
 || `Access denied` | Insufficient access permissions to delete the bank detail ||
 |#
 
-{% include [system errors](../../../../_includes/system-errors.md) %}
+{% include [System errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

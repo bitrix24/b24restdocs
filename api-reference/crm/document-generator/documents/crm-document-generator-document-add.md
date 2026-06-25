@@ -10,11 +10,11 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: a user with "edit" access permission for document generator documents.
 
-The method `crm.documentgenerator.document.add` creates a document based on a template for a CRM entity.
+The method `crm.documentgenerator.document.add` creates a document based on a template for a CRM object.
 
 ## Method Parameters
 
-{% include [Note on Parameters](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -22,7 +22,7 @@ The method `crm.documentgenerator.document.add` creates a document based on a te
 || **templateId**^*^
 [`integer`](../../data-types.md) | Identifier of the document template ||
 || **entityTypeId**^*^
-[`integer`](../../data-types.md) | Identifier of the CRM entity type for which the document is created.
+[`integer`](../../data-types.md) | Identifier of the CRM object type for which the document is created.
 
 Typical values:
 - `1` — lead
@@ -35,7 +35,7 @@ Typical values:
 
 For Smart Processes, their `entityTypeId` is passed, for example, `177` ||
 || **entityId**^*^
-[`integer`](../../data-types.md) | Identifier of the CRM entity based on which the document is created ||
+[`integer`](../../data-types.md) | Identifier of the CRM object based on which the document is created ||
 || **values**
 [`object`](../../data-types.md) | Object with the values of the document fields.
 
@@ -101,7 +101,7 @@ Some computed fields may not be overridden via `fields` ||
 
 ## Code Examples
 
-{% include [Note on Examples](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 Example of creating a document where:
 - `templateId` — `39`
@@ -118,7 +118,7 @@ Example of creating a document where:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"templateId":39,"entityTypeId":2,"entityId":101,"values":{"DocumentNumber":"2026-001"},"fields":{"DocumentTitle":{"title":"Document Title","value":"Demo Implementation of Product 1","required":"Y","default":"Demo Implementation of Product 1","chain":[{},"getTitle"],"VALUE":"Test via fields"}},"stampsEnabled":1}' \
+    -d '{"templateId":39,"entityTypeId":2,"entityId":101,"values":{"DocumentNumber":"2026-001"},"fields":{"DocumentTitle":{"title":"Document Name","value":"Demo fulfillment of product 1","required":"Y","default":"Demo fulfillment of product 1","chain":[{},"getTitle"],"VALUE":"Test via fields"}},"stampsEnabled":1}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.documentgenerator.document.add
     ```
 
@@ -128,7 +128,7 @@ Example of creating a document where:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"templateId":39,"entityTypeId":2,"entityId":101,"values":{"DocumentNumber":"2026-001"},"fields":{"DocumentTitle":{"title":"Document Title","value":"Demo Implementation of Product 1","required":"Y","default":"Demo Implementation of Product 1","chain":[{},"getTitle"],"VALUE":"Test via fields"}},"stampsEnabled":1,"auth":"**put_access_token_here**"}' \
+    -d '{"templateId":39,"entityTypeId":2,"entityId":101,"values":{"DocumentNumber":"2026-001"},"fields":{"DocumentTitle":{"title":"Document Name","value":"Demo fulfillment of product 1","required":"Y","default":"Demo fulfillment of product 1","chain":[{},"getTitle"],"VALUE":"Test via fields"}},"stampsEnabled":1,"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/crm.documentgenerator.document.add
     ```
 
@@ -288,10 +288,10 @@ Example of creating a document where:
                     ],
                     'fields' => [
                         'DocumentTitle' => [
-                            'title' => 'Document Title',
-                            'value' => 'Demo Implementation of Product 1',
+                            'title' => 'Document Name',
+                            'value' => 'Demo fulfillment of product 1',
                             'required' => 'Y',
-                            'default' => 'Demo Implementation of Product 1',
+                            'default' => 'Demo fulfillment of product 1',
                             'chain' => [
                                 [],
                                 'getTitle',
@@ -317,6 +317,49 @@ Example of creating a document where:
     }
     ```
 
+- Python
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.documentgenerator.document.add(
+            template_id=39,
+            entity_type_id=2,
+            entity_id=101,
+            values={
+                "DocumentNumber": "2026-001",
+            },
+            fields={
+                "DocumentTitle": {
+                    "title": "Document Name",
+                    "value": "Demo fulfillment of product 1",
+                    "required": "Y",
+                    "default": "Demo fulfillment of product 1",
+                    "chain": [{}, "getTitle"],
+                    "VALUE": "Test via fields",
+                },
+            },
+            stamps_enabled=1,
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - BX24.js
 
     ```js
@@ -331,10 +374,10 @@ Example of creating a document where:
             },
             fields: {
                 DocumentTitle: {
-                    title: 'Document Title',
-                    value: 'Demo Implementation of Product 1',
+                    title: 'Document Name',
+                    value: 'Demo fulfillment of product 1',
                     required: 'Y',
-                    default: 'Demo Implementation of Product 1',
+                    default: 'Demo fulfillment of product 1',
                     chain: [{}, 'getTitle'],
                     VALUE: 'Test via fields',
                 }
@@ -366,10 +409,10 @@ Example of creating a document where:
             ],
             'fields' => [
                 'DocumentTitle' => [
-                    'title' => 'Document Title',
-                    'value' => 'Demo Implementation of Product 1',
+                    'title' => 'Document Name',
+                    'value' => 'Demo fulfillment of product 1',
                     'required' => 'Y',
-                    'default' => 'Demo Implementation of Product 1',
+                    'default' => 'Demo fulfillment of product 1',
                     'chain' => [
                         [],
                         'getTitle',
@@ -390,19 +433,19 @@ Example of creating a document where:
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
     "result": {
         "document": {
             "changeStampsEnabled": false,
-            "changeStampsDisabledReason": "No stamps and signatures in the template",
+            "changeStampsDisabledReason": "The template is missing seals and signatures",
             "changeQrCodeEnabled": false,
             "qrCodeEnabled": false,
-            "changeQrCodeDisabledReason": "No QR code in the template",
+            "changeQrCodeDisabledReason": "The template is missing a QR code",
             "products": {
-                "currencyId": "EUR",
+                "currencyId": "UAH",
                 "totalSum": "0.00",
                 "totalRows": 0
             },
@@ -410,11 +453,11 @@ HTTP Status: **200**
             "downloadUrlMachine": "https://bitrix.bitrix24.com/rest/crm.documentgenerator.document.download.json?...",
             "publicUrl": null,
             "id": 61,
-            "title": "Demo Implementation of Product 2026-001",
+            "title": "Demo fulfillment of product 2026-001",
             "number": "2026-001",
-            "createTime": "2026-03-20T13:51:45+01:00",
+            "createTime": "2026-03-20T13:51:45+03:00",
             "createdBy": 577,
-            "updateTime": "2026-03-20T13:51:45+01:00",
+            "updateTime": "2026-03-20T13:51:45+03:00",
             "updatedBy": null,
             "stampsEnabled": true,
             "isTransformationError": false,
@@ -438,8 +481,8 @@ HTTP Status: **200**
         "finish": 1774003905.448804,
         "duration": 1.4488039016723633,
         "processing": 1,
-        "date_start": "2026-03-20T13:51:44+01:00",
-        "date_finish": "2026-03-20T13:51:45+01:00",
+        "date_start": "2026-03-20T13:51:44+03:00",
+        "date_finish": "2026-03-20T13:51:45+03:00",
         "operating_reset_at": 1774004504,
         "operating": 0.9240179061889648
     }
@@ -457,7 +500,7 @@ HTTP Status: **200**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
-#### Type result {#result}
+#### Result Type {#result}
 
 #|
 || **Name**
@@ -466,19 +509,19 @@ HTTP Status: **200**
 [`object`](../../data-types.md) | Data of the created document. The structure is described in the [`document`](#document) type ||
 |#
 
-#### Type document {#document}
+#### Document Type {#document}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **id**
-[`integer`](../../data-types.md) | Identifier of the document ||
+[`integer`](../../data-types.md) | Document identifier ||
 || **title**
-[`string`](../../data-types.md) | Title of the document ||
+[`string`](../../data-types.md) | Document name ||
 || **number**
 [`string`](../../data-types.md) | Document number ||
 || **createTime**
-[`datetime`](../../data-types.md) | Creation date ||
+[`datetime`](../../data-types.md) | Create date ||
 || **updateTime**
 [`datetime`](../../data-types.md) | Update date ||
 || **createdBy**
@@ -518,9 +561,9 @@ HTTP Status: **200**
 || **emailDiskFile**
 [`integer`](../../data-types.md) | Identifier of the file in Drive for sending via email ||
 || **entityTypeId**
-[`integer`](../../data-types.md) | Identifier of the CRM entity type ||
+[`integer`](../../data-types.md) | Identifier of the CRM object type ||
 || **entityId**
-[`integer`](../../data-types.md) | Identifier of the CRM entity ||
+[`integer`](../../data-types.md) | Identifier of the CRM object ||
 || **values**
 [`object`](../../data-types.md) | Values of the document fields passed during creation ||
 || **imageUrl**
@@ -531,7 +574,7 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -540,7 +583,7 @@ HTTP Status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
@@ -553,12 +596,12 @@ HTTP Status: **400**
 || `DOCGEN_ACCESS_ERROR` | Access denied | No access to create the document ||
 || `DOCGEN_LIMIT_ERROR` | Maximum count of documents has been reached | Exceeded the limit of documents in the plan ||
 || `0` | Error getting next number | Failed to get the next document number from the number generator ||
-|| `100` | Bitrix\\DocumentGenerator\\Template constructor must be public | Low-level error when calling without a valid `templateId` ||
+|| `100` | Bitrix\\DocumentGenerator\\Template constructor must be is public | Low-level error when calling without a valid `templateId` ||
 || `0` | Module documentgenerator is not installed | The `documentgenerator` module is not available ||
 || `0` | Template not found | Template with the specified `templateId` not found or unavailable ||
 |#
 
-{% include [system errors](../../../../_includes/system-errors.md) %}
+{% include [System errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

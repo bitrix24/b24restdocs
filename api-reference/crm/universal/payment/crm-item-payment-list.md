@@ -1,4 +1,4 @@
-# Get the list of payments crm.item.payment.list
+# Get the List of Payments crm.item.payment.list
 
 {% note tip "" %}
 
@@ -10,11 +10,11 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: requires read access permission for the CRM object from which payments are selected.
 
-The method retrieves a list of payments for a specific CRM object.
+Retrieves a list of payments for a specific CRM object.
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -22,7 +22,7 @@ The method retrieves a list of payments for a specific CRM object.
 || **entityId***
 [`integer`](../../../../api-reference/data-types.md) | Identifier of the CRM object ||
 || **entityTypeId***
-[`integer`](../../../../api-reference/data-types.md) | Identifier of the [`CRM object type`](../../data-types.md#object_type) ||
+[`integer`](../../../../api-reference/data-types.md) | Identifier of the [CRM object type](../../data-types.md#object_type) ||
 || **filter**
 [`object`](../../../../api-reference/data-types.md) | Additional filter for cases when you need to get not all payments of the entity, but based on a more specific filter. The format description is provided in the **filter** parameter of the [`sale.payment.list`](../../../sale/payment/sale-payment-list.md) method ||
 || **order**
@@ -186,6 +186,103 @@ The method retrieves a list of payments for a specific CRM object.
     }
     ```
 
+- Python
+
+    Example
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.item.payment.list(
+            entity_id=13123,
+            entity_type_id=2,
+            filter={
+                "@id": [1036, 1037],
+            },
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
+    Example `as_list`
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.item.payment.list(
+            entity_id=13123,
+            entity_type_id=2,
+            filter={
+                "@id": [1036, 1037],
+            },
+        ).as_list().response
+        result = bitrix_response.result
+        for item in result:
+            print(item)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
+    Example `as_list_fast`
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.item.payment.list(
+            entity_id=13123,
+            entity_type_id=2,
+            filter={
+                "@id": [1036, 1037],
+            },
+        ).as_list_fast(descending=True).response
+        result = bitrix_response.result
+        for item in result:
+            print(item)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - BX24.js
 
     ```js
@@ -230,7 +327,7 @@ The method retrieves a list of payments for a specific CRM object.
 
 {% endlist %}
 
-## Successful Response
+## Response on Success
 
 HTTP status: **200**
 
@@ -241,7 +338,7 @@ HTTP status: **200**
          "id":1036,
          "accountNumber":"3653\/1",
          "paid": "Y",
-         "datePaid":"2024-05-20T12:32:02+02:00",
+         "datePaid":"2024-05-20T12:32:02+03:00",
          "empPaidId":1,
          "paySystemId":6,
          "sum":0,
@@ -265,8 +362,8 @@ HTTP status: **200**
       "finish":1716205783.702053,
       "duration":0.41652917861938477,
       "processing":0.15817594528198242,
-      "date_start":"2024-05-20T14:49:43+02:00",
-      "date_finish":"2024-05-20T14:49:43+02:00"
+      "date_start":"2024-05-20T14:49:43+03:00",
+      "date_finish":"2024-05-20T14:49:43+03:00"
    }
 }
 ```
@@ -277,9 +374,9 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`sale_order_payment_crm_simple[]`](crm-item-payment-get.md#sale_order_payment_crm_simple) | Array of objects containing brief information about the selected payments ||
+[`sale_order_payment_crm_simple[]`](crm-item-payment-get.md#sale_order_payment_crm_simple) | Array of objects containing brief information about the selected payments  ||
 || **time**
-[`time`](../../../../api-reference/data-types.md) | Information about the execution time of the request ||
+[`time`](../../../../api-reference/data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -293,18 +390,18 @@ HTTP status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
 || **Code** | **Description** ||
 || `0` | Access denied ||
-|| `100` | Required fields not provided ||
+|| `100` | Required fields are not provided ||
 || `0` | Other errors (e.g., fatal errors) ||
 |#
 
-{% include notitle [system errors](../../../../_includes/system-errors.md) %}
+{% include notitle [System errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
@@ -315,4 +412,3 @@ HTTP status: **400**
 - [{#T}](./crm-item-payment-unpay.md)
 - [{#T}](./crm-item-payment-add.md)
 - [{#T}](../../../../tutorials/crm/how-to-edit-crm-objects/how-to-set-paid-date-to-deal.md)
-

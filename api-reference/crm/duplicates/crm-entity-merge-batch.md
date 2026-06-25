@@ -45,7 +45,7 @@ The method `crm.entity.mergeBatch` merges multiple entities into one.
 
 You can only merge entities of the same type: lead with lead, contact with contact, SPA element with ID 128 with another SPA element with ID 128.
 
-Full automatic merging is available in several cases: 
+Full automatic merging is available in several cases:
 - the entities are identical,
 - the entities are not identical, but the differences in field values do not require manual processing. For example, if one entity has a field filled and the other has the same field empty — the value from the filled field will be retained.
 
@@ -60,7 +60,7 @@ If the method returns a status of `CONFLICT`, you can continue the merge manuall
 - Leads: `/crm/lead/merge/?id=1,2,3`
 - Deals: `/crm/deal/merge/?id=1,2,3`
   
-The `id` parameter contains the identifiers of the entities to be merged, separated by commas.  
+The `id` parameter contains the identifiers of the entities to be merged, separated by commas.
 
 - Invoices: `/crm/type/31/merge/?id[]=1&id[]=2`
 - Estimates: `/crm/type/7/merge/?id[]=1&id[]=2`
@@ -207,6 +207,36 @@ The `id[]` parameter contains the identifiers of the entities to be merged, pass
     }
     ```
 
+- Python
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.entity.merge_batch(
+            params={
+                "entityTypeId": 3,
+                "entityIds": [100, 101, 102],
+            },
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - BX24.js
 
     ```js
@@ -264,8 +294,8 @@ HTTP status: **200**
         "finish": 1750754641.350269,
         "duration": 2.049431085586548,
         "processing": 2.0271031856536865,
-        "date_start": "2025-06-24T11:43:59+02:00",
-        "date_finish": "2025-06-24T11:44:01+02:00",
+        "date_start": "2025-06-24T11:43:59+03:00",
+        "date_finish": "2025-06-24T11:44:01+03:00",
         "operating_reset_at": 1750755239,
         "operating": 0
     }
@@ -295,27 +325,27 @@ HTTP status: **400**
 ```json
 {
     "error": 0,
-    "error_description": "The parameter entityIds must contain at least two elements."
+    "error_description": "The parameter entityIds must contains at least two elements."
 }
 ```
 
-{% include notitle [error handling](../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../_includes/error-info.md) %}
 
 ### Possible Error Codes {#errors}
 
 #|
 || **Code** | **Description** | **Value** ||
 || `403` | `Access denied` | The user does not have permission to modify or delete CRM entities ||
-|| `400` | `The parameter entityTypeId is required.` | The required parameter `entityTypeId` is missing ||
-|| `400` | `The parameter entityIds does not contain valid elements.` | No elements were provided or found for merging ||
-|| `400` | `The parameter entityIds must contain at least two elements.` | At least two elements are required for merging ||
+|| `400` | `The parameter entityTypeId is required.` | Required parameter `entityTypeId` is not specified ||
+|| `400` | `The parameter entityIds does not contains valid elements.` | No elements were provided or found for merging ||
+|| `400` | `The parameter entityIds must contains at least two elements.` | At least two elements are required for merging ||
 || `400` | `Owner was not found` | The object was not found ||
 || `400` | `Entity type {entityTypeName} is not supported` | An unsupported object type was specified ||
 || `400` | `CRM_FEATURE_RESTRICTION_ERROR` | Plan restriction ||
 |#
 
-{% include [system errors](./../../../_includes/system-errors.md) %}
+{% include [System errors](./../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
-- [crm.duplicate.findbycomm](./crm-duplicate-find-by-comm.md)
+- [crm.duplicate.findbycomm](./crm-duplicate-find-by-comm.md) 

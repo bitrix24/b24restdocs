@@ -14,7 +14,7 @@ The method `crm.documentgenerator.template.list` returns a list of document temp
 
 ## Method Parameters
 
-{% include [Note on Parameters](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -32,7 +32,7 @@ Additionally, the following are supported:
 
 Main fields for `select`: `id`, `name`, `region`, `code`, `active`, `moduleId`, `numeratorId`, `withStamps`, `isDeleted`, `sort`, `createTime`, `updateTime`
 
-See the list of template fields in the [`Type template`](#template) section. By default, `["*"]` is used. ||
+See the list of template fields in the [Type template](#template) section. By default, `["*"]` is used. ||
 || **filter**
 [`object`](../../data-types.md) | An object in the format:
 
@@ -92,17 +92,17 @@ The page size is fixed: `50` records.
 The formula for obtaining the N-th page:
 `start = (N - 1) * 50`
 
-More details in the article [Features of List Methods](../../../../settings/how-to-call-rest-api/list-methods-pecularities.md) ||
+For more details, refer to the article [Features of List Methods](../../../../settings/how-to-call-rest-api/list-methods-pecularities.md) ||
 |#
 
 ## Code Examples
 
-{% include [Note on Examples](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 Example of retrieving a list of templates where:
 - fields `id`, `name`, `region`, `entityTypeId`, `users` are selected
-- sorting by `id` in descending order
-- filtering by region `de` and activity `Y`
+- sorted by `id` in descending order
+- filtering by region `ru` and activity `Y`
 - starting offset — `0`
 
 {% list tabs %}
@@ -163,7 +163,7 @@ Example of retrieving a list of templates where:
         params: {
           select: ['id', 'name', 'region', 'entityTypeId', 'users'],
           order: { id: 'desc' },
-          filter: { region: 'ru', active: 'Y' },
+          filter: { region: 'de', active: 'Y' },
           start: 0,
         },
         requestId: Text.getUuidRfc4122()
@@ -204,7 +204,7 @@ Example of retrieving a list of templates where:
             params: {
               select: ['id', 'name', 'region', 'entityTypeId', 'users'],
               order: { id: 'desc' },
-              filter: { region: 'ru', active: 'Y' },
+              filter: { region: 'de', active: 'Y' },
               start: 0,
             },
             requestId: B24Js.Text.getUuidRfc4122()
@@ -259,6 +259,105 @@ Example of retrieving a list of templates where:
     }
     ```
 
+- Python
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.documentgenerator.template.list(
+            select=["id", "name", "region", "entityTypeId", "users"],
+            order={"id": "desc"},
+            filter={
+                "region": "de",
+                "active": "Y",
+            },
+            start=0,
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
+    `as_list` Example
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.documentgenerator.template.list(
+            select=["id", "name", "region", "entityTypeId", "users"],
+            order={"id": "desc"},
+            filter={
+                "region": "de",
+                "active": "Y",
+            },
+        ).as_list().response
+        result = bitrix_response.result
+        for item in result:
+            print(item)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
+    `as_list_fast` Example
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.documentgenerator.template.list(
+            select=["id", "name", "region", "entityTypeId", "users"],
+            order={"id": "desc"},
+            filter={
+                "region": "de",
+                "active": "Y",
+            },
+        ).as_list_fast(descending=True).response
+        result = bitrix_response.result
+        for item in result:
+            print(item)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - BX24.js
 
     ```js
@@ -308,7 +407,7 @@ Example of retrieving a list of templates where:
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -316,7 +415,7 @@ HTTP Status: **200**
         "templates": {
             "39": {
                 "id": "39",
-                "name": "Demo Product Implementation",
+                "name": "Product demonstration implementation",
                 "region": "de",
                 "download": "https://mysite.com/bitrix/services/main/ajax.php?action=crm.documentgenerator.template.download&SITE_ID=s1&id=39",
                 "users": [
@@ -330,7 +429,7 @@ HTTP Status: **200**
             },
             "37": {
                 "id": "37",
-                "name": "Goods Write-off Act (Germany)",
+                "name": "Inventory Write-off Report (United States)",
                 "region": "de",
                 "download": "https://mysite.com/bitrix/services/main/ajax.php?action=crm.documentgenerator.template.download&SITE_ID=s1&id=37",
                 "users": [
@@ -350,8 +449,8 @@ HTTP Status: **200**
         "finish": 1773845479.829607,
         "duration": 0.8296070098876953,
         "processing": 0,
-        "date_start": "2026-03-18T17:51:19+01:00",
-        "date_finish": "2026-03-18T17:51:19+01:00",
+        "date_start": "2026-03-18T17:51:19+03:00",
+        "date_finish": "2026-03-18T17:51:19+03:00",
         "operating_reset_at": 1773846079,
         "operating": 0
     }
@@ -371,21 +470,21 @@ HTTP Status: **200**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
-#### Object templates {#templates}
+#### Templates Object {#templates}
 
 [`object`](../../data-types.md), where the key is the string identifier of the template, and the value is the object [`template`](#template)
 
-#### Type template {#template}
+#### Template Type {#template}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **id**
-[`string`](../../data-types.md) | The identifier of the template ||
+[`string`](../../data-types.md) | Identifier of the template ||
 || **name**
-[`string`](../../data-types.md) | The name of the template ||
+[`string`](../../data-types.md) | Template name ||
 || **region**
-[`string`](../../data-types.md) | The region of the template ||
+[`string`](../../data-types.md) | Template region ||
 || **download**
 [`string`](../../data-types.md) | The link to download the template ||
 || **users**
@@ -407,7 +506,7 @@ HTTP Status: **200**
 || **isDeleted**
 [`char`](../../data-types.md) | The indication of deletion (`Y`/`N`) ||
 || **sort**
-[`integer`](../../data-types.md) | The sorting index ||
+[`integer`](../../data-types.md) | Sorting index ||
 || **createTime**
 [`datetime`](../../data-types.md) | The creation time of the template ||
 || **updateTime**
@@ -416,7 +515,7 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -425,18 +524,18 @@ HTTP Status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
 || **Code** | **Description** | **Value** ||
 || `DOCGEN_ACCESS_ERROR` | Access denied | No access to templates ||
-|| `Empty value` | You do not have permissions to modify templates | Insufficient rights to modify document generator templates ||
-|| `Empty value` | Module documentgenerator is not installed | The `documentgenerator` module is unavailable ||
+|| Empty value | You do not have permissions to modify templates | Insufficient permissions to modify document generator templates ||
+|| Empty value | Module documentgenerator is not installed | The `documentgenerator` module is not available ||
 |#
 
-{% include [system errors](../../../../_includes/system-errors.md) %}
+{% include [System errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

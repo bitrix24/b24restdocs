@@ -6,7 +6,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-Currency in CRM helps to work with clients from different countries. For example, the primary currency in which the company conducts transactions is rubles. The manager adds products priced in rubles to the deal, while the client pays in their preferred currency—tenge. The manager simply needs to change the currency of the deal in the detail form—Bitrix will automatically calculate the cost of the products in tenge based on the exchange rate set in the settings.
+Currency in CRM helps to work with clients from different countries. For example, the primary currency in which the company conducts transactions is rubles. The manager adds products priced in dollars to the deal, while the client pays in their preferred currency—tenge. The manager simply needs to change the currency of the deal in the detail form—Bitrix will automatically calculate the cost of the products in tenge based on the exchange rate set in the settings.
 
 > Quick navigation: [all methods and events](#all-methods) 
 > 
@@ -14,17 +14,17 @@ Currency in CRM helps to work with clients from different countries. For example
 
 ## Currency Relation to CRM Objects
 
-**Products.** The price of a product item can be specified through [price methods](../../catalog/price/index.md). All price type fields are composite—the amount and currency are changed separately. To specify or change the currency, use the `currency` parameter and pass the currency identifier in the format `RUB`.
+**Products.** The price of a product item can be specified through [price methods](../../catalog/price/index.md). All price type fields are composite—the amount and currency are changed separately. To specify or change the currency, use the `currency` parameter and pass the currency identifier in the format `USD`.
 
-**Standard field "Amount and Currency."** This field shows the total amount of products and the currency in [deals](../deals/index.md), [leads](../leads/index.md), [invoices](../universal/invoice.md), [estimates](../quote/index.md), and [SPAs](../universal/index.md). The `Amount and Currency` field is composite, with the amount and currency changing separately. To specify or change the currency, use the `CURRENCY_ID` parameter and pass the currency identifier in the format `RUB`.
+**Standard field "Amount and Currency."** This field shows the total amount of products and the currency in [deals](../deals/index.md), [leads](../leads/index.md), [invoices](../universal/invoice.md), [estimates](../quote/index.md), and [SPAs](../universal/index.md). The `Amount and Currency` field is composite, with the amount and currency changing separately. To specify or change the currency, use the `CURRENCY_ID` parameter and pass the currency identifier in the format `USD`.
 
-**Custom field of type "Money."** To specify or change the currency value, pass the amount and currency code in the format `100|RUB`.
+**Custom field of type "Money."** To specify or change the currency value, pass the amount and currency code in the format `100|USD`.
 
 ## Base Currency
 
 The base currency is the currency in which the company conducts transactions.
 
-* If you create or modify a CRM entity without passing the currency code, the base currency is set automatically.
+* If you create or modify a CRM object without passing the currency code, the base currency is set automatically.
 * If you change the currency in the field, the amount will be recalculated based on the base currency exchange rate.
 
 To find out the base currency, use the method [crm.currency.base.get](./crm-currency-base-get.md). To change the base currency, use the method [crm.currency.base.set](./crm-currency-base-set.md). 

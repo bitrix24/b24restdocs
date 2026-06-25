@@ -14,14 +14,14 @@ This method updates an existing bank detail.
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 #|
-|| **Parameter** | **Description** ||
+|| **parameter** | **Description** ||
 || **id***
-[`integer`](../../../data-types.md) | Identifier of the bank detail. 
+[`integer`](../../../data-types.md) | Identifier of the bank details. 
 
-Bank detail identifiers can be obtained using the [`crm.requisite.bankdetail.list`](./crm-requisite-bank-detail-list.md) method. ||
+Identifiers of bank details can be obtained using the method [`crm.requisite.bankdetail.list`](./crm-requisite-bank-detail-list.md) ||
 || **fields***
 [`object`](../../../data-types.md) | Set of bank detail fields — an object of the form `{"field": "value"[, ...]}`, the values of which need to be changed. ||
 |#
@@ -32,63 +32,64 @@ Bank detail identifiers can be obtained using the [`crm.requisite.bankdetail.lis
 || **Name**
 `type` | **Description** ||
 || **NAME**
-[`string`](../../../data-types.md) | Name of the bank detail. ||
+[`string`](../../../data-types.md) | Name of the bank details ||
 || **CODE**
-[`string`](../../../data-types.md) | Symbolic code of the detail. ||
+[`string`](../../../data-types.md) | Symbolic code of the requisite ||
 || **XML_ID**
-[`string`](../../../data-types.md) | External key. Used for exchange operations. Identifier of the external information base object. 
+[`string`](../../../data-types.md) | External key. Used for exchange operations. Identifier of the object in the external information base. 
 
 The purpose of the field may change by the final developer. Each application ensures the uniqueness of values in this field. 
 
-It is recommended to use a unique prefix to avoid collisions with other applications. ||
+It is recommended to use a unique prefix to avoid collisions with other applications
+||
 || **ACTIVE**
-[`char`](../../../data-types.md) | Activity status. Values `Y` or `N` are used. 
+[`char`](../../../data-types.md) | Activity indicator. Uses values `Y` or `N`. 
 
-Currently, this field does not affect anything. ||
+Currently, the field does not actually affect anything ||
 || **SORT**
-[`integer`](../../../data-types.md) | Sorting. ||
+[`integer`](../../../data-types.md) | Sorting ||
 || **RQ_BANK_NAME**
-[`string`](../../../data-types.md) | Name of the bank. ||
+[`string`](../../../data-types.md) | Name of the bank ||
 || **RQ_BANK_ADDR**
-[`string`](../../../data-types.md) | Address of the bank. ||
+[`string`](../../../data-types.md) | Address of the bank ||
 || **RQ_BANK_CODE**
-[`string`](../../../data-types.md) | Bank Code (for country BR). ||
+[`string`](../../../data-types.md) | Bank Code (for country BR) ||
 || **RQ_BANK_ROUTE_NUM**
-[`string`](../../../data-types.md) | Bank Routing Number. ||
+[`string`](../../../data-types.md) | Bank Routing Number ||
 || **RQ_BIK**
-[`string`](../../../data-types.md) | BIK. ||
+[`string`](../../../data-types.md) | BIK ||
 || **RQ_CODEB**
-[`string`](../../../data-types.md) | Code Banque (for country FR). ||
+[`string`](../../../data-types.md) | Bank Code (for country FR) ||
 || **RQ_CODEG**
-[`string`](../../../data-types.md) | Code Guichet (for country FR). ||
+[`string`](../../../data-types.md) | Branch Code (for country FR) ||
 || **RQ_RIB**
-[`string`](../../../data-types.md) | Clé RIB (for country FR). ||
+[`string`](../../../data-types.md) | RIB Key (for country FR) ||
 || **RQ_MFO**
-[`string`](../../../data-types.md) | MFO. ||
+[`string`](../../../data-types.md) | MFO ||
 || **RQ_ACC_NAME**
-[`string`](../../../data-types.md) | Bank Account Holder Name. ||
+[`string`](../../../data-types.md) | Bank Account Holder Name ||
 || **RQ_ACC_NUM**
-[`string`](../../../data-types.md) | Bank Account Number. ||
+[`string`](../../../data-types.md) | Bank Account Number ||
 || **RQ_ACC_TYPE**
-[`string`](../../../data-types.md) | Tipo da conta (for country BR). ||
+[`string`](../../../data-types.md) | Account Type (for country BR) ||
 || **RQ_AGENCY_NAME**
-[`string`](../../../data-types.md) | Agência (for country BR). ||
+[`string`](../../../data-types.md) | Agency (for country BR) ||
 || **RQ_IIK**
-[`string`](../../../data-types.md) | IIK. ||
+[`string`](../../../data-types.md) | IIK ||
 || **RQ_ACC_CURRENCY**
-[`string`](../../../data-types.md) | Account Currency. ||
+[`string`](../../../data-types.md) | Currency of the account ||
 || **RQ_COR_ACC_NUM**
-[`string`](../../../data-types.md) | Correspondent Account Number. ||
+[`string`](../../../data-types.md) | Correspondent account ||
 || **RQ_IBAN**
-[`string`](../../../data-types.md) | IBAN. ||
+[`string`](../../../data-types.md) | IBAN ||
 || **RQ_SWIFT**
-[`string`](../../../data-types.md) | SWIFT. ||
-|| **RQ_BIC**
-[`string`](../../../data-types.md) | BIC. ||
+[`string`](../../../data-types.md) | SWIFT ||
+|| **RQ_BIK**
+[`string`](../../../data-types.md) | BIK ||
 || **COMMENTS**
-[`string`](../../../data-types.md) | Comment. ||
+[`string`](../../../data-types.md) | Comment ||
 || **ORIGINATOR_ID**
-[`string`](../../../data-types.md) | Identifier of the external information base. The purpose of the field may change by the final developer. ||
+[`string`](../../../data-types.md) | Identifier of the external information base. The purpose of the field may change by the final developer ||
 |#
 
 ## Code Examples
@@ -103,7 +104,7 @@ Currently, this field does not affect anything. ||
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":357,"fields":{"NAME":"Superbank Ltd. (do not use)","COMMENTS":"Outdated","SORT":10000,"ACTIVE":"N"}}' \
+    -d '{"id":357,"fields":{"NAME":"Ltd. Superbank (do not use)","COMMENTS":"Outdated","SORT":10000,"ACTIVE":"N"}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.requisite.bankdetail.update
     ```
 
@@ -113,7 +114,7 @@ Currently, this field does not affect anything. ||
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":357,"fields":{"NAME":"Superbank Ltd. (do not use)","COMMENTS":"Outdated","SORT":10000,"ACTIVE":"N"},"auth":"**put_access_token_here**"}' \
+    -d '{"id":357,"fields":{"NAME":"Ltd. Superbank (do not use)","COMMENTS":"Outdated","SORT":10000,"ACTIVE":"N"},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/crm.requisite.bankdetail.update
     ```
 
@@ -209,7 +210,7 @@ Currently, this field does not affect anything. ||
                 [
                     'id'     => 357,
                     'fields' => [
-                        'NAME'     => 'Superbank Ltd. (do not use)',
+                        'NAME'     => 'Ltd. Superbank (do not use)',
                         'COMMENTS' => 'Outdated',
                         'SORT'     => 10000,
                         'ACTIVE'   => 'N',
@@ -242,7 +243,7 @@ Currently, this field does not affect anything. ||
             id: 357,
             fields:
             {
-                "NAME": "Superbank Ltd. (do not use)",
+                "NAME": "Ltd. Superbank (do not use)",
                 "COMMENTS": "Outdated",
                 "SORT" : 10000,
                 "ACTIVE": "N"
@@ -270,7 +271,7 @@ Currently, this field does not affect anything. ||
         [
             'id' => 357,
             'fields' => [
-                'NAME' => 'Superbank Ltd. (do not use)',
+                'NAME' => 'Ltd. Superbank (do not use)',
                 'COMMENTS' => 'Outdated',
                 'SORT' => 10000,
                 'ACTIVE' => 'N'
@@ -281,6 +282,39 @@ Currently, this field does not affect anything. ||
     echo '<PRE>';
     print_r($result);
     echo '</PRE>';
+    ```
+
+- Python
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.requisite.bankdetail.update(
+            bitrix_id=357,
+            fields={
+                "NAME": "Ltd. Superbank (do not use)",
+                "COMMENTS": "Outdated",
+                "SORT": 10000,
+                "ACTIVE": "N",
+            },
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
     ```
 
 {% endlist %}
@@ -315,7 +349,7 @@ HTTP status: **200**
 - false — not updated 
 ||
 || **time**
-[`time`](../../../data-types.md) | Information about the request execution time. ||
+[`time`](../../../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -325,22 +359,22 @@ HTTP status: **40x**, **50x**
 ```json
 {
     "error": "",
-    "error_description": "The RequisiteBankDetail with ID '357' is not found."
+    "error_description": "The RequisiteBankDetail with ID '357' is not found"
 }
 ```
 
-{% include notitle [error handling](../../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Errors
 
-#|  
-|| **Error Text** | **Description** ||
-|| `ID is not defined or invalid` | The identifier of the bank detail is not specified or has an invalid value. ||
-|| `The Requisite with ID '357' is not found` | The bank detail with the specified identifier was not found. ||
+#|
+|| **Error text** | **Description** ||
+|| `ID is not defined or invalid` | The identifier of the bank detail is not specified or has an invalid value ||
+|| `The Requisite with ID '357' is not found` | The bank detail with the specified identifier was not found ||
 || `Access denied` | Insufficient access permissions to update the bank detail. ||
 |#
 
-{% include [system errors](../../../../_includes/system-errors.md) %}
+{% include [System errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

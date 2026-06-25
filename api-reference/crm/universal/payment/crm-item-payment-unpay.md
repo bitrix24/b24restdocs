@@ -8,13 +8,13 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: access permission to modify the payment order is required
+> Who can execute the method: requires access permission to modify the payment order
 
-This method changes the payment status to "Unpaid".
+Changes the payment status to "Unpaid".
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -143,6 +143,35 @@ This method changes the payment status to "Unpaid".
     }
     ```
 
+- Python
+
+    Example
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.item.payment.unpay(
+            bitrix_id=1038,
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - BX24.js
 
     ```js
@@ -179,7 +208,7 @@ This method changes the payment status to "Unpaid".
 
 {% endlist %}
 
-## Successful Response
+## Response on Success
 
 HTTP status: **200**
 
@@ -191,8 +220,8 @@ HTTP status: **200**
       "finish":1716209826.931873,
       "duration":1.0318090915679932,
       "processing":0.7891800403594971,
-      "date_start":"2024-05-20T15:57:05+02:00",
-      "date_finish":"2024-05-20T15:57:06+02:00"
+      "date_start":"2024-05-20T15:57:05+03:00",
+      "date_finish":"2024-05-20T15:57:06+03:00"
    }
 }
 ```
@@ -203,7 +232,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../../../api-reference/data-types.md) | Result of the operation ||
+[`boolean`](../../../../api-reference/data-types.md) | Result of the operation  ||
 || **time**
 [`time`](../../../../api-reference/data-types.md) | Information about the request execution time ||
 |#
@@ -219,7 +248,7 @@ HTTP status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
@@ -230,7 +259,7 @@ HTTP status: **400**
 || `0` | Other errors (e.g., fatal errors) ||
 |#
 
-{% include notitle [system errors](../../../../_includes/system-errors.md) %}
+{% include notitle [System errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

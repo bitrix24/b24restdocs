@@ -276,7 +276,7 @@ In the method `calendar.resource.booking.list`, you must use only one of the two
 {% endlist %}
 
 
-**Example 2**. Select bookings by their identifiers from custom fields of the CRM entity.
+**Example 2**. Select bookings by their identifiers from custom fields of the CRM object.
 
 {% include [Note on examples](../../../_includes/examples.md) %}
 

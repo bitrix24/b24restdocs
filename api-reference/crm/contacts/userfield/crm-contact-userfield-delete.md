@@ -14,7 +14,7 @@ The method `crm.contact.userfield.delete` removes a custom contact field.
 
 ## Method Parameters
 
-{% include [Footnote on parameters](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -27,7 +27,7 @@ The identifier can be obtained using the methods [`crm.contact.userfield.add`](.
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 Delete the custom field with `id = 432`
 
@@ -141,6 +141,31 @@ Delete the custom field with `id = 432`
     }
     ```
 
+- Python
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.contact.userfield.delete(bitrix_id=432).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - BX24.js
 
     ```js
@@ -204,7 +229,7 @@ HTTP status: **200**
 || **result**
 [`boolean`](../../../data-types.md) | Root element of the response, contains `true` in case of success ||
 || **time**
-[`time`](../../../data-types.md#time) | Information about the execution time of the request ||
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -218,7 +243,7 @@ HTTP status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
@@ -232,7 +257,7 @@ HTTP status: **400**
 || `-` | Error deleting `FIELD_NAME` for object `ENTITY_ID` | Unknown error during deletion ||
 |#
 
-{% include [system errors](../../../../_includes/system-errors.md) %}
+{% include [System errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

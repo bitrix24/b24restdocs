@@ -12,7 +12,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 A client's address can be stored in Bitrix:
 
-* in a custom field of type "address" for any CRM entity. To retrieve the address from the field, call the get or list method for the desired entity type.
+* in a custom field of type "address" for any CRM object. To retrieve the address from the field, call the get or list method for the desired entity type.
 * in the [requisites](../../../api-reference/crm/requisites/index.md) of contacts, companies, and leads. Within the requisites, multiple addresses can be stored in a single field `Address`, specifying their types. A single client may have multiple requisites recorded.
 
 To obtain a client's address from the requisites, you need to execute two methods sequentially:

@@ -76,7 +76,7 @@ Possible values:
 - `ANNOUNCEMENT` — announcement chat
 - `CALENDAR` — chat related to a calendar event
 - `MAIL` — chat related to email correspondence
-- `CRM` — chat related to a CRM entity
+- `CRM` — chat related to a CRM object
 - `SONET_GROUP` — social network group chat
 - `TASKS` — chat related to a task
 - `CALL` — chat related to a call

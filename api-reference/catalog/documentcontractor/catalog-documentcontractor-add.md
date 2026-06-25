@@ -41,7 +41,7 @@ Can be obtained using the method [catalog.document.list](../document/catalog-doc
 `3` — contact 
 `4` — company ||  
 || **entityId***  
-[`integer`](../../data-types.md) | Identifier of the CRM entity, contact, or company from the "Vendor" category.
+[`integer`](../../data-types.md) | Identifier of the CRM object, contact, or company from the "Vendor" category.
  
 To obtain vendor identifiers:  
 1. Get the category identifier with the code `CATALOG_CONTRACTOR_CONTACT` for contacts or `CATALOG_CONTRACTOR_COMPANY` for companies using the method [crm.category.list](../../crm/universal/category/crm-category-list.md).  

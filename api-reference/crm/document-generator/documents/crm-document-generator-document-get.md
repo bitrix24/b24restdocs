@@ -14,7 +14,7 @@ The method `crm.documentgenerator.document.get` returns the document data by its
 
 ## Method Parameters
 
-{% include [Footnote on parameters](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -31,7 +31,7 @@ The method `crm.documentgenerator.document.get` returns the document data by its
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 Example of retrieving a document with identifier `61`.
 
@@ -191,6 +191,31 @@ Example of retrieving a document with identifier `61`.
     }
     ```
 
+- Python
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.documentgenerator.document.get(bitrix_id=61).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - BX24.js
 
     ```js
@@ -229,30 +254,30 @@ Example of retrieving a document with identifier `61`.
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
     "result": {
         "document": {
             "changeStampsEnabled": false,
-            "changeStampsDisabledReason": "The template does not have seals and signatures",
+            "changeStampsDisabledReason": "No seals or signatures in the template",
             "changeQrCodeEnabled": false,
             "qrCodeEnabled": false,
-            "changeQrCodeDisabledReason": "The template does not have a QR code",
+            "changeQrCodeDisabledReason": "No QR code in the template",
             "products": {
-                "currencyId": "EUR",
+                "currencyId": "UAH",
                 "totalSum": "0.00",
                 "totalRows": 0
             },
             "downloadUrl": "https://bitrix.bitrix24.com/bitrix/services/main/ajax.php?action=crm.documentgenerator.document.download&SITE_ID=s1&id=61",
             "publicUrl": null,
-            "title": "Demo Product Implementation 2026-001",
+            "title": "Demonstration implementation of product 2026-001",
             "number": "2026-001",
             "id": "61",
-            "createTime": "2026-03-20T13:51:45+01:00",
+            "createTime": "2026-03-20T13:51:45+03:00",
             "createdBy": "577",
-            "updateTime": "2026-03-20T13:51:45+01:00",
+            "updateTime": "2026-03-20T13:51:45+03:00",
             "updatedBy": null,
             "stampsEnabled": true,
             "isTransformationError": false,
@@ -278,8 +303,8 @@ HTTP Status: **200**
         "finish": 1774006578.790473,
         "duration": 0.7904729843139648,
         "processing": 0,
-        "date_start": "2026-03-20T14:36:18+01:00",
-        "date_finish": "2026-03-20T14:36:18+01:00",
+        "date_start": "2026-03-20T14:36:18+03:00",
+        "date_finish": "2026-03-20T14:36:18+03:00",
         "operating_reset_at": 1774007178,
         "operating": 0.23765993118286133
     }
@@ -297,7 +322,7 @@ HTTP Status: **200**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
-#### Type result {#result}
+#### Result Type {#result}
 
 #|
 || **Name**
@@ -306,7 +331,7 @@ HTTP Status: **200**
 [`object`](../../data-types.md) | Document data. The structure is described in the [`document`](#document) type ||
 |#
 
-#### Type document {#document}
+#### Document Type {#document}
 
 #|
 || **Name**
@@ -314,11 +339,11 @@ HTTP Status: **200**
 || **id**
 [`integer`](../../data-types.md) \| [`string`](../../data-types.md) | Document identifier ||
 || **title**
-[`string`](../../data-types.md) | Document title ||
+[`string`](../../data-types.md) | Document name ||
 || **number**
 [`string`](../../data-types.md) | Document number ||
 || **createTime**
-[`datetime`](../../data-types.md) | Document creation date ||
+[`datetime`](../../data-types.md) | Date of document creation ||
 || **updateTime**
 [`datetime`](../../data-types.md) | Document update date ||
 || **createdBy**
@@ -326,9 +351,9 @@ HTTP Status: **200**
 || **updatedBy**
 [`integer`](../../data-types.md) \| [`string`](../../data-types.md) \| [`null`](../../data-types.md) | Identifier of the user who updated the document ||
 || **changeStampsEnabled**
-[`boolean`](../../data-types.md) | Can the stamp and signature substitution feature be changed ||
+[`boolean`](../../data-types.md) | Can the stamp and signature inclusion be changed ||
 || **changeStampsDisabledReason**
-[`string`](../../data-types.md) | Reason why the stamp and signature substitution feature cannot be changed ||
+[`string`](../../data-types.md) | Reason why the stamp and signature inclusion cannot be changed ||
 || **changeQrCodeEnabled**
 [`boolean`](../../data-types.md) | Can the QR code be enabled or disabled ||
 || **qrCodeEnabled**
@@ -338,7 +363,7 @@ HTTP Status: **200**
 || **products**
 [`object`](../../data-types.md) | Summary information about the document's products (`currencyId`, `totalSum`, `totalRows`) ||
 || **stampsEnabled**
-[`boolean`](../../data-types.md) | Stamp and signature substitution feature indicator ||
+[`boolean`](../../data-types.md) | Stamp and signature inclusion flag ||
 || **downloadUrl**
 [`string`](../../data-types.md) | Link to download the document ||
 || **downloadUrlMachine**
@@ -354,15 +379,15 @@ HTTP Status: **200**
 || **publicUrl**
 [`string`](../../data-types.md) \| [`null`](../../data-types.md) | Public link to the document ||
 || **isTransformationError**
-[`boolean`](../../data-types.md) | Indicator of document conversion error ||
+[`boolean`](../../data-types.md) | Flag indicating a document conversion error ||
 || **transformationErrorMessage**
-[`string`](../../data-types.md) | Text of the conversion error, if `isTransformationError = true` ||
+[`string`](../../data-types.md) | Text of the conversion error if `isTransformationError = true` ||
 || **transformationErrorCode**
-[`string`](../../data-types.md) | Code of the conversion error, if `isTransformationError = true` ||
+[`string`](../../data-types.md) | Code of the conversion error if `isTransformationError = true` ||
 || **templateId**
 [`integer`](../../data-types.md) \| [`string`](../../data-types.md) | Identifier of the document template ||
 || **pullTag**
-[`string`](../../data-types.md) | Tag for the document transformation event ||
+[`string`](../../data-types.md) | Event tag for document transformation ||
 || **emailDiskFile**
 [`integer`](../../data-types.md) | Identifier of the file on Drive for sending via email ||
 || **entityTypeId**
@@ -375,7 +400,7 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -384,7 +409,7 @@ HTTP Status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
@@ -392,13 +417,13 @@ HTTP Status: **400**
 || **Code** | **Description** | **Value** ||
 || `DOCGEN_ACCESS_ERROR` | Access denied | No access to the document ||
 || `0` | Document not found | Document with the specified `id` not found or unavailable ||
-|| `Empty value` | Document not found | Document does not belong to the `crm` module ||
+|| Empty value | Document not found | Document does not belong to the `crm` module ||
 || `100` | Bitrix\\DocumentGenerator\\Document constructor must be is public | Required parameter `id` not provided ||
-|| `Empty value` | You do not have permissions to view documents | Insufficient rights to view document generator documents ||
-|| `Empty value` | Module documentgenerator is not installed | The `documentgenerator` module is unavailable ||
+|| Empty value | You do not have permissions to view documents | Insufficient permissions to view document generator documents ||
+|| Empty value | Module documentgenerator is not installed | The `documentgenerator` module is not available ||
 |#
 
-{% include [system errors](../../../../_includes/system-errors.md) %}
+{% include [System errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

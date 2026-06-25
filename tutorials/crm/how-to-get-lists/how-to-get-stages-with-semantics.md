@@ -10,13 +10,13 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-The semantics of a stage reflects the current state of a CRM entity: in progress, successfully completed, or unsuccessful. The system uses the semantic value in automation and reporting.
+The semantics of a stage reflects the current state of a CRM object: in progress, successfully completed, or unsuccessful. The system uses the semantic value in automation and reporting.
 
-To create a table of CRM entity stages with semantics, we will use the method [crm.status.list](../../../api-reference/crm/status/crm-status-list.md).
+To create a table of CRM object stages with semantics, we will use the method [crm.status.list](../../../api-reference/crm/status/crm-status-list.md).
 
 ## Retrieve a List of Stages with Semantics
 
-The method [crm.status.list](../../../api-reference/crm/status/crm-status-list.md) returns a description of stages based on the stage code `ENTITY_ID` for the CRM entity.
+The method [crm.status.list](../../../api-reference/crm/status/crm-status-list.md) returns a description of stages based on the stage code `ENTITY_ID` for the CRM object.
 
 -  [Deals](../../../api-reference/crm/deals/index.md) — `DEAL_STAGE` for the main deal direction and `DEAL_STAGE_xx` for additional ones, where xx is the direction identifier.
 
@@ -165,11 +165,11 @@ As a result, we will receive an array of objects, where each object is a descrip
 
 The `EXTRA.SEMANTICS` object contains the semantics of the stages. Possible values include:
 
--  `process` — the CRM entity is in progress,
+-  `process` — the CRM object is in progress,
 
--  `success` — the work with the CRM entity has been successfully completed,
+-  `success` — the work with the CRM object has been successfully completed,
 
--  `failure` — the work with the CRM entity has been unsuccessfully completed.
+-  `failure` — the work with the CRM object has been unsuccessfully completed.
 
 ## Code Example
 

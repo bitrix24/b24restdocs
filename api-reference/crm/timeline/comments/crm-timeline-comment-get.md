@@ -8,24 +8,24 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: `any user`
+> Who can execute the method: any user
 
-This method retrieves information about a comment type deal.
+Retrieves information about a comment type deal.
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`](../../../data-types.md) | Integer identifier of the comment type deal (for example, `1`). You can obtain identifiers using the [`crm.timeline.comment.list`](./crm-timeline-comment-list.md) method ||
+[`integer`](../../../data-types.md) | Integer identifier of the "Comment" type deal (e.g., `1`). Identifiers can be obtained using the [`crm.timeline.comment.list`](./crm-timeline-comment-list.md) method ||
 |#
 
 ## Code Examples
 
-{% include [Note on Examples](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -171,6 +171,35 @@ This method retrieves information about a comment type deal.
     }
     ```
 
+- Python
+
+    Example
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.timeline.comment.get(
+            bitrix_id=999,
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - BX24.js
 
     ```js
@@ -208,7 +237,7 @@ This method retrieves information about a comment type deal.
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -216,13 +245,13 @@ HTTP Status: **200**
         "ID": "999",
         "ENTITY_ID": "2",
         "ENTITY_TYPE": "deal",
-        "CREATED": "2020-03-02T12:00:00+01:00",
+        "CREATED": "2020-03-02T12:00:00+03:00",
         "COMMENT": "New comment was added",
         "AUTHOR_ID": "1",
         "FILES": {
             "1": {
                 "id": 1,
-                "date": "2020-03-02T12:00:00+01:00",
+                "date": "2020-03-02T12:00:00+03:00",
                 "type": "image",
                 "name": "1.gif",
                 "size": 43,
@@ -231,14 +260,14 @@ HTTP Status: **200**
                     "height": 1
                 },
                 "authorId": 1,
-                "authorName": "John Smith",
+                "authorName": "John Dou",
                 "urlPreview": "https://my.bitrix24.com/disk/showFile/930/?&ncc=1&width=640&height=640&signature=292f450929833cd881070155e05a2c41b5bb265ea8c8c1bc2108dbcbb56f667f&ts=1718366521&filename=1.gif",
                 "urlShow": "https://my.bitrix24.com/disk/showFile/930/?&ncc=1&ts=1718366521&filename=1.gif",
                 "urlDownload": "https://my.bitrix24.com/disk/downloadFile/930/?&ncc=1&filename=1.gif"
             },
             "2": {
                 "id": 2,
-                "date": "2020-03-02T12:00:00+01:00",
+                "date": "2020-03-02T12:00:00+03:00",
                 "type": "image",
                 "name": "2.gif",
                 "size": 43,
@@ -247,7 +276,7 @@ HTTP Status: **200**
                     "height": 1
                 },
                 "authorId": 1,
-                "authorName": "John Smith",
+                "authorName": "John Dou",
                 "urlPreview": "https://my.bitrix24.com/disk/showFile/931/?&ncc=1&width=640&height=640&signature=118de010a40eff06fb9d691ee9235e2ef809a17780e46927bf8b12f8dc3224db&ts=1718366521&filename=2.gif",
                 "urlShow": "https://my.bitrix24.com/disk/showFile/931/?&ncc=1&ts=1718366521&filename=2.gif",
                 "urlDownload": "https://my.bitrix24.com/disk/downloadFile/931/?&ncc=1&filename=2.gif"
@@ -258,8 +287,8 @@ HTTP Status: **200**
         "start": 1715091541.642592,
         "finish": 1715091541.730599,
         "duration": 0.08800697326660156,
-        "date_start": "2024-05-03T17:19:01+01:00",
-        "date_finish": "2024-05-03T17:19:01+01:00",
+        "date_start": "2024-05-03T17:19:01+03:00",
+        "date_finish": "2024-05-03T17:19:01+03:00",
         "operating": 0
     }
 }
@@ -278,7 +307,7 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -287,18 +316,18 @@ HTTP Status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
-|| **Code** | **Error Message** | **Description** ||
+|| **Code** | **Error message** | **Description** ||
 || Empty string | Not found. | The element with the specified parameters was not found ||
 || Empty string | Access denied. | No permission to edit the CRM element ||
-|| Empty string | ID is not defined or invalid. | Required fields were not provided ||
+|| Empty string | ID is not defined or invalid. | Required fields are not provided ||
 |#
 
-{% include [system errors](../../../../_includes/system-errors.md) %}
+{% include [System errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

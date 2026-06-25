@@ -16,7 +16,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 ## Getting Started
 
-1. Identify the CRM entity: `ownerTypeId` and `ownerId`
+1. Identify the CRM object: `ownerTypeId` and `ownerId`
 2. Define the record type `itemType`
 3. Retrieve the `itemId` of the record based on `itemType`
 4. Save the note using the [crm.timeline.note.save](./crm-timeline-note-save.md) method
@@ -25,9 +25,9 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 ## Relationship with Other Objects
 
-**CRM Entities.** The note is linked to a specific CRM entity: the entity type is passed in `ownerTypeId`, and the identifier is passed in `ownerId`. Typical values for `ownerTypeId` are listed in the article [CRM Object Type](../../data-types.md#object_type). You can obtain the `ownerId` using the universal method [crm.item.list](../../universal/crm-item-list.md).
+**CRM Entities.** The note is linked to a specific CRM object: the entity type is passed in `ownerTypeId`, and the identifier is passed in `ownerId`. Typical values for `ownerTypeId` are listed in the article [CRM Object Type](../../data-types.md#object_type). You can obtain the `ownerId` using the universal method [crm.item.list](../../universal/crm-item-list.md).
 
-**Timeline History Records.** The note is added to a comment in the timeline of the CRM entity. To link it, pass `itemType = 1` and the record identifier `itemId`. To obtain `itemId`, use the [crm.timeline.comment.add](../comments/crm-timeline-comment-add.md) method when creating a comment or the [crm.timeline.comment.list](../comments/crm-timeline-comment-list.md) method for existing records.
+**Timeline History Records.** The note is added to a comment in the timeline of the CRM object. To link it, pass `itemType = 1` and the record identifier `itemId`. To obtain `itemId`, use the [crm.timeline.comment.add](../comments/crm-timeline-comment-add.md) method when creating a comment or the [crm.timeline.comment.list](../comments/crm-timeline-comment-list.md) method for existing records.
 
 **CRM Activities.** A note can also be added to a CRM activity in the timeline—such as a call, email, meeting, or task. To link it, pass `itemType = 2` and the activity identifier `itemId`. Retrieve `itemId` from the response of the [crm.activity.add](../activities/activity-base/crm-activity-add.md) method or from the list using the [crm.activity.list](../activities/activity-base/crm-activity-list.md) method.
 

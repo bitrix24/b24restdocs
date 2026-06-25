@@ -14,7 +14,7 @@ This method updates a limited set of payment fields (see [`sale.payment.update`]
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -25,7 +25,7 @@ This method updates a limited set of payment fields (see [`sale.payment.update`]
 [`object`](../../../../api-reference/data-types.md) | Field values for updating the payment  ||
 |#
 
-### Fields Parameter
+### Parameter fields
 
 #|
 || **Name**
@@ -173,6 +173,39 @@ Possible values:
     }
     ```
 
+- Python
+
+    Example
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.item.payment.update(
+            bitrix_id=1036,
+            fields={
+                "paid": "Y",
+                "paySystemId": 110,
+            },
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - BX24.js
 
     ```js
@@ -217,7 +250,7 @@ Possible values:
 
 {% endlist %}
 
-## Successful Response
+## Response on Success
 
 HTTP status: **200**
 
@@ -229,8 +262,8 @@ HTTP status: **200**
       "finish":1716212944.578154,
       "duration":0.9266471862792969,
       "processing":0.6742370128631592,
-      "date_start":"2024-05-20T16:49:03+02:00",
-      "date_finish":"2024-05-20T16:49:04+02:00"
+      "date_start":"2024-05-20T16:49:03+03:00",
+      "date_finish":"2024-05-20T16:49:04+03:00"
    }
 }
 ```
@@ -257,7 +290,7 @@ HTTP status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
@@ -269,7 +302,7 @@ HTTP status: **400**
 || `0` | Other errors (e.g., fatal errors) ||
 |#
 
-{% include notitle [system errors](../../../../_includes/system-errors.md) %}
+{% include notitle [System errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

@@ -8,24 +8,24 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: user with "edit" access permission for document generator templates
+> Who can execute the method: a user with "modify" access permission for document generator templates
 
 The method `crm.documentgenerator.template.delete` removes a document template.
 
 ## Method Parameters
 
-{% include [Footnote about parameters](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **id**^*^
-[`integer`](../../data-types.md) | Template identifier ||
+[`integer`](../../data-types.md) | Identifier of the template ||
 |#
 
 ## Code Examples
 
-{% include [Footnote about examples](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 Example of deleting a document template where:
 - template identifier — `41`
@@ -148,6 +148,31 @@ Example of deleting a document template where:
     }
     ```
 
+- Python
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.documentgenerator.template.delete(bitrix_id=41).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - BX24.js
 
     ```js
@@ -196,8 +221,8 @@ HTTP status: **200**
         "finish": 1773844531.844605,
         "duration": 0.8446049690246582,
         "processing": 0,
-        "date_start": "2026-03-18T17:35:31+02:00",
-        "date_finish": "2026-03-18T17:35:31+02:00",
+        "date_start": "2026-03-18T17:35:31+03:00",
+        "date_finish": "2026-03-18T17:35:31+03:00",
         "operating_reset_at": 1773845131,
         "operating": 0.3437991142272949
     }
@@ -226,19 +251,19 @@ HTTP status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `0` | Template not found | Template with the specified `id` was not found or is unavailable ||
+|| `0` | Template not found | Template with the specified `id` not found or unavailable ||
 || `DOCGEN_ACCESS_ERROR` | Access denied | No access to the template ||
-|| `Empty value` | You do not have permissions to modify templates | Insufficient rights to modify document generator templates ||
-|| `Empty value` | Module documentgenerator is not installed | The `documentgenerator` module is unavailable ||
+|| Empty value | You do not have permissions to modify templates | Insufficient permissions to modify document generator templates ||
+|| Empty value | Module documentgenerator is not installed | The `documentgenerator` module is not available ||
 |#
 
-{% include [system errors](../../../../_includes/system-errors.md) %}
+{% include [System errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

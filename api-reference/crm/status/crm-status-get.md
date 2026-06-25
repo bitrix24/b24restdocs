@@ -1,4 +1,4 @@
-# Get a directory item by ID crm.status.get
+# Get a Directory Item by ID crm.status.get
 
 {% note tip "" %}
 
@@ -161,6 +161,35 @@ The method `crm.status.get` returns the parameters of a directory item by its ID
     }
     ```
 
+- Python
+
+    Example
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.status.get(
+            bitrix_id=123,
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - BX24.js
 
     ```js
@@ -220,8 +249,8 @@ HTTP status: **200**
         "finish": 1752133970.690207,
         "duration": 0.03828096389770508,
         "processing": 0.0060749053955078125,
-        "date_start": "2025-07-10T10:52:50+02:00",
-        "date_finish": "2025-07-10T10:52:50+02:00",
+        "date_start": "2025-07-10T10:52:50+03:00",
+        "date_finish": "2025-07-10T10:52:50+03:00",
         "operating_reset_at": 1752134570,
         "operating": 0
     }
@@ -268,7 +297,7 @@ HTTP status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
@@ -278,7 +307,7 @@ HTTP status: **400**
 || `400`     | `Status is not found.` | Directory item not found ||
 |#
 
-{% include [system errors](../../../_includes/system-errors.md) %}
+{% include [System errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
@@ -286,4 +315,4 @@ HTTP status: **400**
 - [{#T}](./crm-status-list.md)
 - [{#T}](./crm-status-add.md)
 - [{#T}](./crm-status-update.md)
-- [{#T}](./crm-status-delete.md)
+- [{#T}](./crm-status-delete.md) 

@@ -16,7 +16,7 @@ The method `crm.tracking.trace.add` creates a Sales Intelligence trace and retur
 
 ## Method Parameters
 
-{% include [Footnote on required parameters](../../../_includes/required.md) %}
+{% include [Note on parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -29,7 +29,7 @@ For the correct value, refer to the [tutorial](../../../tutorials/crm/how-to-use
 [`object[]`](../../data-types.md) | Array of objects to be linked with the trace [more details](#entities) ||
 |#
 
-### ENTITIES Parameter {#entities}
+### Parameter ENTITIES {#entities}
 
 #|
 || **Name**
@@ -50,7 +50,7 @@ The user must have modification rights for the specified object ||
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 Example of creating a Sales Intelligence trace, where:
 - `TRACE` — JSON string with trace data
@@ -64,7 +64,7 @@ Example of creating a Sales Intelligence trace, where:
     curl -X POST \
       -H "Content-Type: application/json" \
       -d '{
-        "TRACE": "{\"SOURCE_ID\":\"6\",\"SOURCE_DESC\":\"Direct sale\",\"PAGES\":[{\"URL\":\"https://example.com/\",\"DATE\":\"2024-04-03T10:26:32+01:00\"}]}",
+        "TRACE": "{\"SOURCE_ID\":\"6\",\"SOURCE_DESC\":\"Direct sale\",\"PAGES\":[{\"URL\":\"https://example.com/\",\"DATE\":\"2024-04-03T10:26:32+03:00\"}]}",
         "ENTITIES": [
           {
             "TYPE": "CONTACT",
@@ -85,7 +85,7 @@ Example of creating a Sales Intelligence trace, where:
     curl -X POST \
       -H "Content-Type: application/json" \
       -d '{
-        "TRACE": "{\"SOURCE_ID\":\"6\",\"SOURCE_DESC\":\"Direct sale\",\"PAGES\":[{\"URL\":\"https://example.com/\",\"DATE\":\"2024-04-03T10:26:32+01:00\"}]}",
+        "TRACE": "{\"SOURCE_ID\":\"6\",\"SOURCE_DESC\":\"Direct sale\",\"PAGES\":[{\"URL\":\"https://example.com/\",\"DATE\":\"2024-04-03T10:26:32+03:00\"}]}",
         "ENTITIES": [
           {
             "TYPE": "CONTACT",
@@ -199,7 +199,7 @@ Example of creating a Sales Intelligence trace, where:
             ->call(
                 'crm.tracking.trace.add',
                 [
-                    'TRACE' => '{"SOURCE_ID":"6","SOURCE_DESC":"Direct sale","PAGES":[{"URL":"https://example.com/","DATE":"2024-04-03T10:26:32+01:00"}]}',
+                    'TRACE' => '{"SOURCE_ID":"6","SOURCE_DESC":"Direct sale","PAGES":[{"URL":"https://example.com/","DATE":"2024-04-03T10:26:32+03:00"}]}',
                     'ENTITIES' => [
                         [
                             'TYPE' => 'CONTACT',
@@ -230,7 +230,7 @@ Example of creating a Sales Intelligence trace, where:
     BX24.callMethod(
         'crm.tracking.trace.add',
         {
-            TRACE: '{"SOURCE_ID":"6","SOURCE_DESC":"Direct sale","PAGES":[{"URL":"https://example.com/","DATE":"2024-04-03T10:26:32+01:00"}]}',
+            TRACE: '{"SOURCE_ID":"6","SOURCE_DESC":"Direct sale","PAGES":[{"URL":"https://example.com/","DATE":"2024-04-03T10:26:32+03:00"}]}',
             ENTITIES: [
                 {
                     TYPE: 'CONTACT',
@@ -256,13 +256,52 @@ Example of creating a Sales Intelligence trace, where:
     );
     ```
 
+- Python
+
+    Example
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.tracking.trace.add(
+            trace="{\"SOURCE_ID\":\"6\",\"SOURCE_DESC\":\"Direct sale\",\"PAGES\":[{\"URL\":\"https://example.com/\",\"DATE\":\"2024-04-03T10:26:32+03:00\"}]}",
+            entities=[
+                {
+                    "TYPE": "CONTACT",
+                    "ID": 3215
+                },
+                {
+                    "TYPE": "LEAD",
+                    "ID": 1
+                }
+            ],
+        )
+        result = bitrix_response.response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - PHP CRest
 
     ```php
     $result = CRest::call(
         'crm.tracking.trace.add',
         [
-            'TRACE' => '{"SOURCE_ID":"6","SOURCE_DESC":"Direct sale","PAGES":[{"URL":"https://example.com/","DATE":"2024-04-03T10:26:32+01:00"}]}',
+            'TRACE' => '{"SOURCE_ID":"6","SOURCE_DESC":"Direct sale","PAGES":[{"URL":"https://example.com/","DATE":"2024-04-03T10:26:32+03:00"}]}',
             'ENTITIES' => [
                 [
                     'TYPE' => 'CONTACT',
@@ -285,7 +324,7 @@ Example of creating a Sales Intelligence trace, where:
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -295,8 +334,8 @@ HTTP Status: **200**
         "finish": 1775117367.080829,
         "duration": 1.0808289051055908,
         "processing": 0,
-        "date_start": "2026-04-02T11:09:26+01:00",
-        "date_finish": "2026-04-02T11:09:27+01:00",
+        "date_start": "2026-04-02T11:09:26+03:00",
+        "date_finish": "2026-04-02T11:09:27+03:00",
         "operating_reset_at": 1775117967,
         "operating": 0
     }
@@ -316,7 +355,7 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -325,20 +364,20 @@ HTTP Status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
 || **Status** | **Code** | **Description** | **Value** ||
-|| `400` | `ERROR_CORE` | Parameter `TRACE` required. | TRACE parameter is missing ||
-|| `400` | `ERROR_CORE` | Can not parse JSON in parameter `TRACE`. | TRACE value is not a valid JSON string ||
-|| `400` | `ERROR_CORE` | Wrong TYPE in parameter `ENTITIES`. Allowed types: COMPANY,CONTACT,DEAL,LEAD,QUOTE | Invalid TYPE provided in ENTITIES ||
-|| `400` | `ERROR_CORE` | Wrong ID in parameter `ENTITIES`. | Invalid ID provided in ENTITIES ||
-|| `400` | `ERROR_CORE` | You have no access to entity `<TYPE>` with ID `<ID>`. | No permission to modify the object specified in ENTITIES ||
+|| `400` | `ERROR_CORE` | Parameter `TRACE` required. | The `TRACE` parameter is not provided ||
+|| `400` | `ERROR_CORE` | Can not parse JSON in parameter `TRACE`. | The value `TRACE` is not a valid JSON string ||
+|| `400` | `ERROR_CORE` | Wrong TYPE in parameter `ENTITIES`. Allowed types: COMPANY,CONTACT,DEAL,LEAD,QUOTE | An invalid `TYPE` was passed in `ENTITIES` ||
+|| `400` | `ERROR_CORE` | Wrong ID in parameter `ENTITIES`. | An incorrect `ID` was passed in `ENTITIES` ||
+|| `400` | `ERROR_CORE` | You have no access to entity `<TYPE>` with ID `<ID>`. | No permission to modify the object specified in `ENTITIES` ||
 |#
 
-{% include [system errors](../../../_includes/system-errors.md) %}
+{% include [System errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

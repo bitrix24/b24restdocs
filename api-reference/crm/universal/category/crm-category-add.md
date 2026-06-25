@@ -20,7 +20,7 @@ This method creates a new sales funnel (direction) for the CRM object type with 
 || **Name**
 `type` | **Description** ||
 || **entityTypeId*** 
-[`integer`][1] | Identifier of the [system](../../index.md) or [user-defined type](../user-defined-object-types/index.md) of the CRM entity for which the new funnel will be created ||
+[`integer`][1] | Identifier of the [system](../../index.md) or [user-defined type](../user-defined-object-types/index.md) of the CRM object for which the new funnel will be created ||
 || **fields***
 [`object`][1]  | Field values (detailed description provided [below](#parametr-fields)) for adding a new funnel in the form of a structure:
 

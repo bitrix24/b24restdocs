@@ -1,4 +1,4 @@
-# Set Parameters for crm.item.details.configuration.set
+# Set Parameters For crm.item.details.configuration.set
 
 {% note tip "" %}
 
@@ -8,23 +8,24 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: access rights when executing the method depend on the provided data:
+> Who can execute the method: access rights during method execution depend on the provided data:
 >   - Any user has the right to set their personal settings
 >   - A user can set common and others' settings only if they are an administrator
 
-The method `crm.item.details.configuration.set` sets the settings for the card of a specific CRM object. It records the personal settings of the specified user or common settings for all users.
+
+The method `crm.item.details.configuration.set` sets the configurations for the card of a specific CRM object. It records the personal settings of the specified user or common configurations for all users.
 
 {% include [Extras Notice](./_includes/extras_notice.md) %}
 
 ## Method Parameters
 
-{% include [Required Parameters Note](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **entityTypeId***
-[`integer`][1] | Identifier of the [system](./../../index.md) or [user-defined type](./../user-defined-object-types/index.md) of CRM objects ||
+[`integer`][1] | Identifier of the [system](./../../index.md) or [custom type](./../user-defined-object-types/index.md) of CRM entities ||
 || **data***
 [`section[]`](#section)| List of `section` describing the configuration of field sections in the item card. The structure of `section` is described below ||
 || **userId**
@@ -35,9 +36,9 @@ If the parameter is not provided, the `userId` of the user calling this method w
 Required only when requesting personal settings
 ||
 || **scope**
-[`string`][1] | Scope of the settings. Allowed values:
+[`string`][1] | Scope of the settings. Acceptable values:
 - `'P'` — personal settings
-- `'C'` — common settings
+- `'C'` — shared settings
 
 By default, the value is `'P'`
 
@@ -46,11 +47,11 @@ By default, the value is `'P'`
 [`object`][1] | Additional parameters. Possible values and their structure are described [below](#extras) ||
 |#
 
-### section
+### Section
 
 Describes a specific section with fields within the item card.
 
-{% include [Required Parameters Note](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -67,11 +68,11 @@ Currently, only the value `'section'` is available ||
 [`section_element[]`](#section_element) | Array of `section_element`, describing the configuration of fields in the section ||
 |#
 
-#### section_element
+#### Section_Element
 
 Configuration of a specific field within the section.
 
-{% include [Required Parameters Note](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -85,7 +86,7 @@ Configuration of a specific field within the section.
 
 By default, the value is `0` ||
 || **options**
-[`object`][1] | Additional [options list](#section_elementoptions) for the field ||
+[`object`][1] | Additional [list of options](#section_elementoptions) for the field ||
 |#
 
 #### section_element.options
@@ -94,32 +95,32 @@ By default, the value is `0` ||
 || **Name**
 `type` | **Fields where the option is available** | **Description** | **Default** ||
 || **defaultAddressType**
-[`integer`][1] | `ADDRESS` | Identifier of the default address type. To find out possible address types, use [`crm.enum.addresstype`][2] | `Computed` ||
+[`integer`][1] | `ADDRESS` | Default address type identifier. To find possible address types, use [`crm.enum.addresstype`][2] | `Calculated` ||
 || **defaultCountry** 
 [`string`][1] | `PHONE`
 `CLIENT`
 `COMPANY`
 `CONTACT`
-`MYCOMPANY_ID` | Country code for the default phone number format — a string of two Latin letters. For example, `"DE"`              | `Computed` ||
+`MYCOMPANY_ID` | Country code for the default phone number format — a string of two Latin letters. For example `"RU"`              | `Calculated` ||
 || **isPayButtonVisible**
-[`boolean`][1] | `OPPORTUNITY_WITH_CURRENCY` | Is the payment acceptance button displayed.
+[`boolean`][1] | `OPPORTUNITY_WITH_CURRENCY` | Whether the payment acceptance button is shown.
 
 Possible values:
-- `'true'` — displayed
+- `'true'` — shown
 - `'false'` — hidden 
 | `'true'` ||
 || **isPaymentDocumentsVisible**
-[`boolean`][1] | `OPPORTUNITY_WITH_CURRENCY` | Is the "Payment and Delivery" block displayed.
+[`boolean`][1] | `OPPORTUNITY_WITH_CURRENCY` | Whether the "Payment and Delivery" block is shown.
 
 Possible values: 
-- `'true'` — displayed
+- `'true'` — shown
 - `'false'` — hidden 
 | `'true'` ||
 |#
 
-### extras
+### Parameter extras
 
-The `extras` parameter depends on the CRM object.
+The parameter in `extras` depends on the CRM object.
 
 #|
 || **CRM Object** | **Name** | **Description** ||
@@ -139,11 +140,11 @@ Possible values:
 
 ## Code Examples
 
-{% include [Examples Note](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 For a user with `id = 1`, set the following configuration for item cards
 
-- Section 1 - **Personal Data**
+- Section 1 - **Personal information**
     - **First Name**
         - Always show
     - **Last Name**
@@ -152,7 +153,7 @@ For a user with `id = 1`, set the following configuration for item cards
     - **Date of Birth**
     - **Phone**
         - Always show
-        - Default country: **United Kingdom(+44)**
+        - Default country: **United Kingdom (+44)**
     - **Address**
         - Always show
         - Default address type: **Registration Address** (see [`crm.enum.addresstype`][2])
@@ -160,7 +161,7 @@ For a user with `id = 1`, set the following configuration for item cards
     - **Contact Type**
     - **Source**
     - **Position**
-- Section 3 - **Additional Information**
+- Section 3 - **Additional information**
     - **Photo**
     - **Comment**
     - **Custom Field #1**
@@ -455,6 +456,105 @@ For a user with `id = 1`, set the following configuration for item cards
     }
     ```
 
+- Python
+
+    Example
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.item.details.configuration.set(
+            entity_type_id=3,
+            user_id=1,
+            data=[
+                {
+                    "name": "section_1",
+                    "title": "Personal Data",
+                    "type": "section",
+                    "elements": [
+                        {
+                            "name": "NAME",
+                            "optionFlags": 1,
+                        },
+                        {
+                            "name": "LAST_NAME",
+                            "optionFlags": 1,
+                        },
+                        {
+                            "name": "SECOND_NAME",
+                        },
+                        {
+                            "name": "BIRTHDATE",
+                        },
+                        {
+                            "name": "PHONE",
+                            "optionFlags": 1,
+                            "options": {
+                                "defaultCountry": "GB",
+                            },
+                        },
+                        {
+                            "name": "ADDRESS",
+                            "optionFlags": 1,
+                            "options": {
+                                "defaultAddressType": 4,
+                            },
+                        },
+                    ],
+                },
+                {
+                    "name": "section_2",
+                    "title": "Basic Information",
+                    "type": "section",
+                    "elements": [
+                        {
+                            "name": "TYPE_ID",
+                        },
+                        {
+                            "name": "SOURCE_ID",
+                        },
+                        {
+                            "name": "POST",
+                        },
+                    ],
+                },
+                {
+                    "name": "section_3",
+                    "title": "Additional Information",
+                    "type": "section",
+                    "elements": [
+                        {
+                            "name": "PHOTO",
+                        },
+                        {
+                            "name": "COMMENTS",
+                        },
+                        {
+                            "name": "UF_CRM_1720697698689",
+                        },
+                    ],
+                },
+            ],
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected Error: {error}")
+    ```
+
 - BX24.js
 
     ```javascript
@@ -617,7 +717,7 @@ For a user with `id = 1`, set the following configuration for item cards
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -642,12 +742,12 @@ HTTP Status: **200**
 || **result**
 [`boolean`][1] | Root element of the response. Returns `true` on success ||
 || **time**
-[`time`][1] | Information about the execution time of the request ||
+[`time`][1] | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -656,25 +756,25 @@ HTTP Status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
 || **Code** | **Description** | **Value** ||
-|| Empty value | Parameter 'entityTypeId' is not defined | Required parameter `entityTypeId` is not provided ||
+|| Empty value | Parameter 'entityTypeId' is not defined | Required parameter `entityTypeId` not provided ||
 || Empty value | The entity type '`entityTypeName`' is not supported in current context. | The method does not support this entity type ||
 || Empty value | Access denied. | The user does not have administrative rights ||
-|| Empty value | Parameter 'data' must be array. | `data` is not an array ||
-|| Empty value | The data must be indexed array. | `data` is not an indexed array ||
-|| Empty value | There are no data to write. | `data` is an empty array ||
-|| Empty value | Section at index `i` have type `data[i].type`. The expected type is 'section'. | `data[i].type` contains a value other than `'section'` || 
-|| Empty value | Section at index `i` does not have name. | `data[i].name` is empty ||
-|| Empty value | Section at index `i` does not have title. | `data[i].title` is empty ||
-|| Empty value | Element at index `j` in section at index `i` does not have name. | `data[i].elements[j].name` is empty ||
+|| Empty value | Parameter 'data' must be array. | The `data` parameter is not an array ||
+|| Empty value | The data must be indexed array. | A non-indexed array was passed in `data` ||
+|| Empty value | There are no data to write. | An empty array was passed in `data` ||
+|| Empty value | Section at index `i` have type `data[i].type`. The expected type is 'section'. | The value in `data[i].type` is different from `'section'` || 
+|| Empty value | Section at index `i` does not have name. | An empty value was passed in `data[i].name` ||
+|| Empty value | Section at index `i` does not have title. | An empty value was passed in `data[i].title` ||
+|| Empty value | Element at index `j` in section at index `i` does not have name. | An empty value was passed in `data[i].elements[j].name` ||
 |#
 
-{% include [system errors](./../../../../_includes/system-errors.md) %}
+{% include [System errors](./../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

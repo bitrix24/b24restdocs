@@ -18,10 +18,10 @@ The methods in this section help manage such records: creating, retrieving, upda
 
 Comments exist only in relation to CRM entities.
 
-**CRM Entity.** The connection between a comment and an entity is defined by the parameters `ENTITY_TYPE` and `ENTITY_ID`.
+**CRM object.** The connection between a comment and an entity is defined by the parameters `ENTITY_TYPE` and `ENTITY_ID`.
 
 - `ENTITY_TYPE` stores the type of CRM object. You can find the type values in the [CRM Object Type Reference](../../data-types.md#object_type).  
-- `ENTITY_ID` stores the identifier of the CRM entity. It is returned by list methods and creation methods, such as [crm.item.list](../../universal/crm-item-list.md) and [crm.item.add](../../universal/crm-item-add.md).  
+- `ENTITY_ID` stores the identifier of the CRM object. It is returned by list methods and creation methods, such as [crm.item.list](../../universal/crm-item-list.md) and [crm.item.add](../../universal/crm-item-add.md).  
 
 The parameters `ENTITY_TYPE` and `ENTITY_ID` are used in the methods [crm.timeline.comment.add](./crm-timeline-comment-add.md) and [crm.timeline.comment.list](./crm-timeline-comment-list.md).
 
@@ -31,8 +31,8 @@ The `FILES` field is processed by the methods [crm.timeline.comment.add](./crm-t
 
 ## How to Work with Comments
 
-1. Identify the CRM entity to which the comment pertains.
-2. Check the access permissions for the CRM entity; otherwise, the methods may return an `Access denied` error. Access depends on the current user's rights to the specific entity.
+1. Identify the CRM object to which the comment pertains.
+2. Check the access permissions for the CRM object; otherwise, the methods may return an `Access denied` error. Access depends on the current user's rights to the specific entity.
 3. Retrieve the list of available fields using the method [crm.timeline.comment.fields](./crm-timeline-comment-fields.md).
 4. Add a comment using the method [crm.timeline.comment.add](./crm-timeline-comment-add.md).
 5. Retrieve the list of comments using the method [crm.timeline.comment.list](./crm-timeline-comment-list.md) or the data for a specific comment using the method [crm.timeline.comment.get](./crm-timeline-comment-get.md).
@@ -55,7 +55,7 @@ The `FILES` field is processed by the methods [crm.timeline.comment.add](./crm-t
     || [crm.timeline.comment.add](./crm-timeline-comment-add.md) | Adds a new comment to the timeline ||
     || [crm.timeline.comment.update](./crm-timeline-comment-update.md) | Updates a comment ||
     || [crm.timeline.comment.get](./crm-timeline-comment-get.md) | Retrieves information about a comment ||
-    || [crm.timeline.comment.list](./crm-timeline-comment-list.md) | Retrieves a list of comments for a CRM entity ||
+    || [crm.timeline.comment.list](./crm-timeline-comment-list.md) | Retrieves a list of comments for a CRM object ||
     || [crm.timeline.comment.delete](./crm-timeline-comment-delete.md) | Deletes a comment ||
     || [crm.timeline.comment.fields](./crm-timeline-comment-fields.md) | Retrieves a list of timeline comment fields ||
     |#

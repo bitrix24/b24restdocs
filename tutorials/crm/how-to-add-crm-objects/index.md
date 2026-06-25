@@ -8,7 +8,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 This section helps you choose a scenario for integration with CRM. The materials describe the creation of objects and the addition of related data: files, requisites, CRM activities, documents, and settings for Smart Process Automation (SPA).
 
-You can select a scenario based on the CRM entity, the integration result, and the main REST methods.
+You can select a scenario based on the CRM object, the integration result, and the main REST methods.
 
 ## Choose the Type of Object
 
@@ -33,7 +33,7 @@ Start by selecting the base object. The choice depends on the stage of interacti
 
 ## Work with Related Data
 
-Requisites, addresses, files, and vendors are stored separately from the main CRM entity. They are created independently and then linked to a lead, contact, company, or deal.
+Requisites, addresses, files, and vendors are stored separately from the main CRM object. They are created independently and then linked to a lead, contact, company, or deal.
 
 **Requisites and Addresses**. Bank requisites and legal addresses are stored separately from contacts and companies. First, obtain the requisite templates, then create the object and link the address to it.
 
@@ -55,11 +55,11 @@ Requisites, addresses, files, and vendors are stored separately from the main CR
 
 Record actions that should remain in the client's card: meetings, e-mails, tasks, and documents.
 
-**CRM Activities**. Calendar events, e-mails, and tasks are saved in CRM as activities. When creating, specify the owner type and the ID of the CRM entity.
+**CRM Activities**. Calendar events, e-mails, and tasks are saved in CRM as activities. When creating, specify the owner type and the ID of the CRM object.
 
 **CRM Mode Consideration**. The CRM mode determines where a new inquiry will go: to a lead or directly to a deal. If the integration needs to work across different accounts, check the CRM mode before creating an activity.
 
-**Documents**. Document generation occurs based on templates. First, set up the numbering and upload the template, then create the document linked to the CRM entity.
+**Documents**. Document generation occurs based on templates. First, set up the numbering and upload the template, then create the document linked to the CRM object.
 
 ### Scenarios for Activities and Documents
 

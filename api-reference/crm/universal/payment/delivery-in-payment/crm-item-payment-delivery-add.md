@@ -10,19 +10,19 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: requires access permission to modify the order to which the delivery item is added.
 
-This method adds a delivery item to the payment.
+Adds a delivery item to a payment.
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../../_includes/required.md) %}
 
-#| 
+#|
 || **Name**
 `type` | **Description** ||
-|| **paymentId*** 
+|| **paymentId***
 [`sale_order_payment.id`](../../../../sale/data-types.md#sale_order_payment) | Identifier of the payment. 
 Can be obtained using the method [`sale.payment.list`](../../../../sale/payment/sale-payment-list.md) ||
-|| **deliveryId*** 
+|| **deliveryId***
 [`sale_order_shipment.id`](../../../../sale/data-types.md#sale_order_shipment) | Identifier of the delivery. 
 Can be obtained using the method [`crm.item.delivery.list`](../../delivery/crm-item-delivery-list.md) (key id) ||
 |#
@@ -150,6 +150,36 @@ Can be obtained using the method [`crm.item.delivery.list`](../../delivery/crm-i
     }
     ```
 
+- Python
+
+    Example
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.item.payment.delivery.add(
+            payment_id=1039,
+            delivery_id=4072,
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - BX24.js
 
     ```js
@@ -188,7 +218,7 @@ Can be obtained using the method [`crm.item.delivery.list`](../../delivery/crm-i
 
 {% endlist %}
 
-## Successful Response
+## Response on Success
 
 HTTP status: **200**
 
@@ -200,15 +230,15 @@ HTTP status: **200**
       "finish":1716295804.17372,
       "duration":1.3357298374176025,
       "processing":0.8379831314086914,
-      "date_start":"2024-05-21T15:50:02+02:00",
-      "date_finish":"2024-05-21T15:50:04+02:00"
+      "date_start":"2024-05-21T15:50:02+03:00",
+      "date_finish":"2024-05-21T15:50:04+03:00"
    }
 }
 ```
 
 ### Returned Data
 
-#| 
+#|
 || **Name**
 `type` | **Description** ||
 || **result**
@@ -228,11 +258,11 @@ HTTP status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
-#| 
+#|
 || **Code** | **Description** ||
 || `0` | Payment not found ||
 || `0` | Access denied ||
@@ -245,7 +275,7 @@ HTTP status: **400**
 
 For business errors, the method may return `error: 0`. In this case, refer to `error_description` and match it with the list of errors above.
 
-{% include notitle [system errors](../../../../../_includes/system-errors.md) %}
+{% include notitle [System errors](../../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

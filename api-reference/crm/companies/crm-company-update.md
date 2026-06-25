@@ -172,7 +172,7 @@ To change the address and banking details of the company, use the methods for [r
         params: {
           id: 43,
           fields: {
-            CURRENCY_ID: 'RUB',
+            CURRENCY_ID: 'USD',
             REVENUE: 500000,
             EMPLOYEES: 'EMPLOYEES_3',
           },
@@ -210,7 +210,7 @@ To change the address and banking details of the company, use the methods for [r
             params: {
               id: 43,
               fields: {
-                CURRENCY_ID: 'RUB',
+                CURRENCY_ID: 'USD',
                 REVENUE: 500000,
                 EMPLOYEES: 'EMPLOYEES_3',
               },

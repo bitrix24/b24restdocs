@@ -16,7 +16,7 @@ Bitrix24 allows users to create a special custom trigger "Track Incoming Webhook
 https://mydomain.bitrix24.com/rest/1/not_var{{PASSWORD}}/crm.automation.trigger/?target=DEAL_not_var{{ID}}&code=nwly5
 ```
 
-A call to this URL from an external source will trigger the automation and transition the CRM entity to another stage in the Sales Funnel.
+A call to this URL from an external source will trigger the automation and transition the CRM object to another stage in the Sales Funnel.
 
 As you can see from the format of this URL, a [local incoming webhook](../../../local-integrations/local-webhooks.md) is effectively created within Bitrix24, which calls the `crm.automation.trigger` method, specifying a specific CRM object and the unique symbolic code of the trigger that was created by Bitrix24 itself (in the example above, this is `nwly5`).
 

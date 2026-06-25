@@ -14,7 +14,7 @@ This method updates an existing requisite.
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -27,7 +27,7 @@ This method updates an existing requisite.
 
 ## Parameter fields
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -39,11 +39,11 @@ This method updates an existing requisite.
 || **XML_ID**
 [`string`](../../../data-types.md) | External key, used for exchange operations.
 
-Identifier of the external information base object.
+Identifier of the external information database.
 
 The purpose of the field may change by the final developer ||
 || **ORIGINATOR_ID**
-[`string`](../../../data-types.md) | Identifier of the external information base.
+[`string`](../../../data-types.md) | Identifier of the external information database.
 
 The purpose of the field may change by the final developer ||
 || **ACTIVE**
@@ -51,7 +51,7 @@ The purpose of the field may change by the final developer ||
 
 Values `Y` or `N` are used.
 
-Currently, the field does not actually affect anything ||
+Currently, the field does not affect anything ||
 || **ADDRESS_ONLY**
 [`char`](../../../data-types.md) | Status indicator when the requisite is used only for storing the address.
 
@@ -59,15 +59,15 @@ Values `Y` or `N` are used. When set to `Y`, the requisites are not displayed in
 || **SORT**
 [`integer`](../../../data-types.md) | Sorting.
 
-Order in the list of entity requisites when there are multiple ||
+Order in the list of requisites of the entity when there are multiple ||
 || **RQ_NAME**
-[`string`](../../../data-types.md) | Full name ||
+[`string`](../../../data-types.md) | Full Name ||
 || **RQ_FIRST_NAME**
-[`string`](../../../data-types.md) | First name ||
+[`string`](../../../data-types.md) | First Name ||
 || **RQ_LAST_NAME**
-[`string`](../../../data-types.md) | Last name ||
+[`string`](../../../data-types.md) | Last Name ||
 || **RQ_SECOND_NAME**
-[`string`](../../../data-types.md) | Middle name ||
+[`string`](../../../data-types.md) | Patronymic ||
 || **RQ_COMPANY_ID**
 [`string`](../../../data-types.md) | Identifier of the organization ||
 || **RQ_COMPANY_NAME**
@@ -109,37 +109,37 @@ Order in the list of entity requisites when there are multiple ||
 || **RQ_IDENT_DOC_DEP_CODE**
 [`string`](../../../data-types.md) | Department code ||
 || **RQ_INN**
-[`string`](../../../data-types.md) | Taxpayer Identification Number ||
+[`string`](../../../data-types.md) | TIN (INN) ||
 || **RQ_KPP**
-[`string`](../../../data-types.md) | Tax Registration Reason Code ||
+[`string`](../../../data-types.md) | KPP ||
 || **RQ_USRLE**
 [`string`](../../../data-types.md) | Handelsregisternummer (for country DE) ||
 || **RQ_IFNS**
-[`string`](../../../data-types.md) | Tax Authority ||
+[`string`](../../../data-types.md) | IFNS ||
 || **RQ_OGRN**
-[`string`](../../../data-types.md) | Primary State Registration Number ||
+[`string`](../../../data-types.md) | OGRN ||
 || **RQ_OGRNIP**
-[`string`](../../../data-types.md) | Individual Entrepreneur Registration Number ||
+[`string`](../../../data-types.md) | OGRNIP ||
 || **RQ_OKPO**
-[`string`](../../../data-types.md) | All-Russian Classifier of Enterprises and Organizations ||
+[`string`](../../../data-types.md) | OKPO ||
 || **RQ_OKTMO**
-[`string`](../../../data-types.md) | All-Russian Classifier of Territorial Units ||
+[`string`](../../../data-types.md) | OKTMO ||
 || **RQ_OKVED**
-[`string`](../../../data-types.md) | All-Russian Classifier of Economic Activities ||
+[`string`](../../../data-types.md) | OKVED ||
 || **RQ_EDRPOU**
-[`string`](../../../data-types.md) | Unified State Register of Enterprises and Organizations ||
+[`string`](../../../data-types.md) | EDRPOU ||
 || **RQ_DRFO**
-[`string`](../../../data-types.md) | Tax Registration Number ||
+[`string`](../../../data-types.md) | DRFO ||
 || **RQ_KBE**
-[`string`](../../../data-types.md) | Classification of Business Entities ||
+[`string`](../../../data-types.md) | KBE ||
 || **RQ_IIN**
-[`string`](../../../data-types.md) | Individual Identification Number ||
+[`string`](../../../data-types.md) | IIN ||
 || **RQ_BIN**
-[`string`](../../../data-types.md) | Business Identification Number ||
+[`string`](../../../data-types.md) | BIN ||
 || **RQ_ST_CERT_SER**
-[`string`](../../../data-types.md) | Series of the state registration certificate ||
+[`string`](../../../data-types.md) | Series of State Registration Certificate ||
 || **RQ_ST_CERT_NUM**
-[`string`](../../../data-types.md) | Number of the state registration certificate ||
+[`string`](../../../data-types.md) | Number of State Registration Certificate ||
 || **RQ_ST_CERT_DATE**
 [`string`](../../../data-types.md) | Date of the state registration certificate ||
 || **RQ_VAT_PAYER**
@@ -147,7 +147,7 @@ Order in the list of entity requisites when there are multiple ||
 
 Values `Y` or `N` are used ||
 || **RQ_VAT_ID**
-[`string`](../../../data-types.md) | VAT ID (identification number of the VAT payer) ||
+[`string`](../../../data-types.md) | VAT ID (identification number of VAT payer) ||
 || **RQ_VAT_CERT_SER**
 [`string`](../../../data-types.md) | Series of the VAT certificate ||
 || **RQ_VAT_CERT_NUM**
@@ -381,6 +381,39 @@ You can add a custom field to requisites using the method [crm.requisite.userfie
     echo '</PRE>';
     ```
 
+- Python
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.requisite.update(
+            bitrix_id=27,
+            fields={
+                "RQ_OKPO": "80715150",
+                "RQ_OKTMO": "45381000000",
+                "UF_CRM_1707997209": "78",
+                "UF_CRM_1708012333": "Category 3",
+            },
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 {% endlist %}
 
 ## Response on Success
@@ -429,12 +462,12 @@ HTTP status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Errors
 
-#|  
-|| **Code** | **Error Text** | **Description** ||
+#|
+|| **Code** | **Error text** | **Description** ||
 || Empty string | The Requisite with ID '57' is not found | The requisite with the specified identifier was not found ||
 || Empty string | ID is not defined or invalid. | The requisite identifier is not specified or has an invalid value ||
 || Empty string | ENTITY_TYPE_ID is not defined or invalid. | The identifier of the parent entity type is not specified or has an invalid value ||
@@ -443,7 +476,7 @@ HTTP status: **400**
 || Empty string | Access denied. | Insufficient access permissions to modify the requisite ||
 |#
 
-{% include [system errors](../../../../_includes/system-errors.md) %}
+{% include [System errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

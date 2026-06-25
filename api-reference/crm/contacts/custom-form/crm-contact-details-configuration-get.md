@@ -1,4 +1,4 @@
-# Get Parameters of crm.contact.details.configuration.get
+# Get Parameters Of crm.contact.details.configuration.get
 
 {% note tip "" %}
 
@@ -22,7 +22,7 @@ This method retrieves the settings for contact cards: it reads the personal sett
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -45,7 +45,7 @@ If not specified, the current user's ID is used.
 
 ## Code Examples
 
-{% include [Note on Examples](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 1. Retrieve personal card configuration
 
@@ -167,18 +167,47 @@ If not specified, the current user's ID is used.
         echo '</PRE>';
         ```
 
+    - Python
+
+        Example
+
+        ```python
+        from b24pysdk.client import BaseClient
+        from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+        client: BaseClient
+
+        try:
+            bitrix_response = client.crm.contact.details.configuration.get(
+                scope="C",
+            ).response
+            result = bitrix_response.result
+            print(result)
+        except BitrixAPIError as error:
+            print(
+                "Bitrix API Error",
+                f"error: {error.error}",
+                f"error_description: {error.error_description}",
+                sep="\n",
+            )
+        except BitrixSDKException as error:
+            print(f"Bitrix SDK Error: {error.message}")
+        except Exception as error:
+            print(f"Unexpected error: {error}")
+        ```
+
     {% endlist %}
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
     "result": [
         {
             "name": "main",
-            "title": "About the Contact",
+            "title": "Contact Us",
             "type": "section",
             "elements": [
                 {
@@ -216,7 +245,7 @@ HTTP Status: **200**
         },
         {
             "name": "additional",
-            "title": "Additional",
+            "title": "Additional Information",
             "type": "section",
             "elements": [
                 {
@@ -266,12 +295,12 @@ Contains the configuration of the sections of the detail form of the entity.
 
 Returns `null` if there is no configuration ||
 || **time**
-[`time`](../../../data-types.md#time) | Information about the execution time of the request ||
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
 
-#### section
+#### Section
 
-Describes a specific section with fields inside the entity card
+Describes a specific section with fields inside the element card
 
 #|
 || **Name**
@@ -286,7 +315,7 @@ Describes a specific section with fields inside the entity card
 [`section_element[]`](#section_element) | List of fields displayed in the entity card with additional settings ||
 |#
 
-#### section_element
+#### Section_Element
 
 Configuration of a specific field within the section
 
@@ -310,7 +339,7 @@ The structure is described [below](#options) ||
 |#
 
 
-#### options
+#### Options
 
 #|
 || **Name**
@@ -325,7 +354,7 @@ The structure is described [below](#options) ||
 `CONTACT`
 `MYCOMPANY_ID` | Country code for the default phone number format — a string of two Latin letters.
 
-For example `"DE"` ||
+For example `"RU"` ||
 || **isPayButtonVisible**
 [`boolean`](../../../data-types.md) | `OPPORTUNITY_WITH_CURRENCY` | Whether the payment acceptance button is visible.
 
@@ -347,7 +376,7 @@ Possible values:
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -356,18 +385,18 @@ HTTP Status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
 || **Code** | **Description**   | **Value** ||
-|| Empty Value | Access denied. | The user does not have administrative rights ||
+|| Empty value | Access denied. | The user does not have administrative rights ||
 |#
 
-{% include [system errors](../../../../_includes/system-errors.md) %}
+{% include [System errors](../../../../_includes/system-errors.md) %}
 
-## Continue Learning 
+## Continue Learning
 
 - [{#T}](./index.md)
 - [{#T}](./crm-contact-details-configuration-set.md)

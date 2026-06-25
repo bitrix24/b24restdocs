@@ -10,13 +10,13 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: any user
 
-This method adds a custom field to the requisite template. You can use the method [crm.requisite.preset.field.availabletoadd](./crm-requisite-preset-field-available-to-add.md) to retrieve the fields available for addition to the template.
+Adds a custom field to a company details template. Use the [crm.requisite.preset.field.availabletoadd](./crm-requisite-preset-field-available-to-add.md) method to retrieve the fields available for addition to the template.
 
-Before adding a user-defined field `UF_...` to the template, it must be created using the method [crm.requisite.userfield.add](../../user-fields/crm-requisite-userfield-add.md) or ensure that it already exists.
+Before adding a user-defined field `UF_...` to the template, you must create it using the [crm.requisite.userfield.add](../../user-fields/crm-requisite-userfield-add.md) method or ensure that it already exists.
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -29,9 +29,9 @@ Template identifiers can be obtained using the method [crm.requisite.preset.list
 [`object`](../../../../data-types.md) | A set of fields — an object of the form `{"field": "value"[, ...]}` for adding the custom field to the template ||
 |#
 
-### Fields Parameter
+### Parameter fields
 
-{% include [Note on required parameters](../../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../../_includes/required.md) %}
 
 #|
 ||  **Name**
@@ -170,9 +170,9 @@ The alternative name is displayed in various forms for filling out requisites. D
                 'crm.requisite.preset.field.add',
                 [
                     'preset' => [
-                        'ID' => 27, // Template identifier
+                        'ID' => 27, // Template ID
                     ],
-                    'fields' => [ // Object describing the custom field
+                    'fields' => [ // Object with custom field description
                         'FIELD_NAME'    => 'RQ_NAME',
                         'FIELD_TITLE'   => 'TEST',
                         'IN_SHORT_LIST' => 'N',
@@ -185,12 +185,49 @@ The alternative name is displayed in various forms for filling out requisites. D
             ->getResponseData()
             ->getResult();
     
-        echo 'Custom field with ID ' . $result . ' added to the template';
+        echo 'Custom field with ID has been added to the template ' . $result;
     
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error adding custom field: ' . $e->getMessage();
     }
+    ```
+
+- Python
+
+    Example
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.requisite.preset.field.add(
+            preset={
+                "ID": 27,
+            },
+            fields={
+                "FIELD_NAME": "RQ_NAME",
+                "FIELD_TITLE": "TEST",
+                "IN_SHORT_LIST": "N",
+                "SORT": 580,
+            },
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
     ```
 
 - BX24.js
@@ -201,9 +238,9 @@ The alternative name is displayed in various forms for filling out requisites. D
         {
             preset:
             {
-                "ID": 27    // Template identifier
+                "ID": 27    // Template ID
             },
-            fields:        // Object describing the custom field
+            fields:        // Object with custom field description
             {
                 "FIELD_NAME": "RQ_NAME",
                 "FIELD_TITLE": "TEST",
@@ -216,7 +253,7 @@ The alternative name is displayed in various forms for filling out requisites. D
             if(result.error())
                 console.error(result.error());
             else
-                console.info("Custom field with ID " + result.data() + " added to the template");
+                console.info("Custom field with ID has been added to the template " + result.data());
         }
     );
     ```
@@ -248,7 +285,7 @@ The alternative name is displayed in various forms for filling out requisites. D
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -278,27 +315,27 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **40x**, **50x**
+HTTP status: **40x**, **50x**
 
 ```json
 {
     "error": "",
-    "error_description": "The field 'RQ_NAME' cannot be added."
+    "error_description": "The field 'RQ_NAME' can not be added."
 }
 ```
 
-{% include notitle [error handling](../../../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
-#|  
+#|
 || **Code** | **Description** ||
-|| `The field 'RQ_NAME' cannot be added` | The field cannot be added. The field may already exist in the template or it is not available for the country to which the template belongs ||
+|| `The field 'RQ_NAME' can not be added` | The field cannot be added. The field may already exist in the template or it is not available for the country to which the template belongs ||
 || `The Preset with ID '27' is not found` | Template with the specified identifier not found ||
 || `Access denied` | Insufficient access permissions to add the custom field to the requisite template ||
 |#
 
-{% include [system errors](../../../../../_includes/system-errors.md) %}
+{% include [System errors](../../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

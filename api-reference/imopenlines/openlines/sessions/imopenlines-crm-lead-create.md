@@ -239,7 +239,7 @@ HTTP Status: **400**
 || `400` | `CHAT_TYPE` | The specified chat is not an Open Channel | The specified chat does not belong to Open Channels ||
 || `400` | `ACCESS_DENIED` | You cannot open this conversation as you do not have sufficient rights | The current user does not have access to the dialogue ||
 || `400` | `USER_ID` | The specified user identifier is incorrect | User not defined for whom the method is executed ||
-|| `400` | `ERROR_USER_NOT_OPERATOR` | Attempt to save a CRM entity by a user who is not an operator | The method was called by a user who is not the current operator of the Open Channel session ||
+|| `400` | `ERROR_USER_NOT_OPERATOR` | Attempt to save a CRM object by a user who is not an operator | The method was called by a user who is not the current operator of the Open Channel session ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

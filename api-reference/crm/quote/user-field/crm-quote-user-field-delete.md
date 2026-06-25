@@ -8,13 +8,13 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: CRM administrator
+> Who can execute the method: administrator CRM
 
 The method `crm.quote.userfield.delete` removes a custom field from quotes.
 
 ## Method Parameters
 
-{% include [Parameter Note](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -27,7 +27,7 @@ The identifier can be obtained using the methods [crm.quote.userfield.add](./crm
 
 ## Code Examples
 
-{% include [Example Note](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -174,11 +174,36 @@ The identifier can be obtained using the methods [crm.quote.userfield.add](./crm
     echo '</PRE>';
     ```
 
+- Python
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.quote.userfield.delete(bitrix_id=432).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 {% endlist %}
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -201,14 +226,14 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../../data-types.md) | Root element of the response, contains `true` on success ||
+[`boolean`](../../../data-types.md) | Root element of the response, contains `true` in case of success ||
 || **time**
 [`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -217,7 +242,7 @@ HTTP Status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
@@ -230,7 +255,7 @@ HTTP Status: **400**
 || `ERROR_NOT_FOUND` | The entity with ID 'id' is not found | The custom field with the provided `id` does not exist ||
 || `400` | Error deleting FIELD_NAME for object ENTITY_ID | Unknown error during deletion ||
 |#
-{% include [system errors](../../../../_includes/system-errors.md) %}
+{% include [System errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

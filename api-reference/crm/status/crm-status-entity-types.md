@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: any user
 
-The method `crm.status.entity.types` returns a list of all supported types of directories, `ENTITY_ID` objects.
+The method `crm.status.entity.types` returns a list of all supported directory types and `ENTITY_ID` objects.
 
 ## Method Parameters
 
@@ -18,7 +18,7 @@ No parameters.
 
 ## Code Examples
 
-{% include [Examples Note](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -156,6 +156,33 @@ No parameters.
     }
     ```
 
+- Python
+
+    Example
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.status.entity.types().response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - BX24.js
 
     ```js
@@ -197,7 +224,7 @@ HTTP status: **200**
   "result": [
     {
       "ID": "STATUS",
-      "NAME": "Lead Stages",
+      "NAME": "Lead stages",
       "SEMANTIC_INFO": {
         "START_FIELD": "NEW",
         "FINAL_SUCCESS_FIELD": "CONVERTED",
@@ -212,15 +239,15 @@ HTTP status: **200**
     },
     {
       "ID": "CONTACT_TYPE",
-      "NAME": "Contact Type"
+      "NAME": "Contact type"
     },
     {
       "ID": "COMPANY_TYPE",
-      "NAME": "Company Type"
+      "NAME": "Company type"
     },
     {
       "ID": "EMPLOYEES",
-      "NAME": "Number of Employees"
+      "NAME": "Number of employees"
     },
     {
       "ID": "INDUSTRY",
@@ -228,11 +255,11 @@ HTTP status: **200**
     },
     {
       "ID": "DEAL_TYPE",
-      "NAME": "Deal Type"
+      "NAME": "Deal type"
     },
     {
       "ID": "SMART_INVOICE_STAGE_5",
-      "NAME": "Invoice Stages",
+      "NAME": "Invoice stages",
       "SEMANTIC_INFO": [],
       "PREFIX": "DT31_5",
       "FIELD_ATTRIBUTE_SCOPE": "category_5",
@@ -242,7 +269,7 @@ HTTP status: **200**
     },
     {
       "ID": "DEAL_STAGE_1",
-      "NAME": "Newest Deal Stages",
+      "NAME": "Newest deal stages",
       "PARENT_ID": "DEAL_STAGE",
       "SEMANTIC_INFO": {
         "START_FIELD": "C1:NEW",
@@ -257,7 +284,7 @@ HTTP status: **200**
     },
     {
       "ID": "DEAL_STAGE",
-      "NAME": "General Deal Stages",
+      "NAME": "General deal stages",
       "SEMANTIC_INFO": {
         "START_FIELD": "NEW",
         "FINAL_SUCCESS_FIELD": "WON",
@@ -270,26 +297,26 @@ HTTP status: **200**
     },
     {
       "ID": "QUOTE_STATUS",
-      "NAME": "Estimate Stages",
+      "NAME": "Quote stages",
       "SEMANTIC_INFO": {
         "START_FIELD": "DRAFT",
         "FINAL_SUCCESS_FIELD": "APPROVED",
-        "FINAL_UNSUCCESS_FIELD": "DECLINED",
+        "FINAL_UNSUCCESS_FIELD": "DECLAINED",
         "FINAL_SORT": 0
       },
       "ENTITY_TYPE_ID": 7
     },
     {
       "ID": "HONORIFIC",
-      "NAME": "Honorifics"
+      "NAME": "Inquiries"
     },
     {
       "ID": "CALL_LIST",
-      "NAME": "Call Statuses"
+      "NAME": "Call statuses"
     },
     {
       "ID": "SMART_DOCUMENT_STAGE_13",
-      "NAME": "Document Stages",
+      "NAME": "Document stages",
       "SEMANTIC_INFO": [],
       "PREFIX": "DT36_13",
       "FIELD_ATTRIBUTE_SCOPE": "category_13",
@@ -299,7 +326,7 @@ HTTP status: **200**
     },
     {
       "ID": "DYNAMIC_177_STAGE_7",
-      "NAME": "Equipment Purchase (General)",
+      "NAME": "Equipment Procurement (General)",
       "SEMANTIC_INFO": [],
       "PREFIX": "DT177_7",
       "FIELD_ATTRIBUTE_SCOPE": "category_7",
@@ -312,25 +339,25 @@ HTTP status: **200**
     },
     {
       "ID": "DYNAMIC_177_STAGE_9",
-      "NAME": "Equipment Purchase (Second Funnel)",
+      "NAME": "Equipment Procurement (Second pipeline)",
       "SEMANTIC_INFO": [],
       "PREFIX": "DT177_9",
       "FIELD_ATTRIBUTE_SCOPE": "category_9",
       "ENTITY_TYPE_ID": 177,
       "IS_ENABLED": true,
       "CATEGORY_ID": 9,
-      "CATEGORY_NAME": "Second Funnel",
+      "CATEGORY_NAME": "Second pipeline",
       "CATEGORY_SORT": 500,
       "IS_DEFAULT_CATEGORY": false
-    }
+    },
   ],
   "time": {
     "start": 1752142616.128453,
     "finish": 1752142616.215683,
     "duration": 0.08722996711730957,
     "processing": 0.018637895584106445,
-    "date_start": "2025-07-10T13:16:56+02:00",
-    "date_finish": "2025-07-10T13:16:56+02:00",
+    "date_start": "2025-07-10T13:16:56+03:00",
+    "date_finish": "2025-07-10T13:16:56+03:00",
     "operating_reset_at": 1752143216,
     "operating": 0
   }
@@ -343,12 +370,12 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`array`](../../data-types.md) | Array of objects describing the types of directories [(detailed field description)](#result) ||
+[`array`](../../data-types.md) | Array of objects describing the types of directories [(detailed field description)](#result)||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
-#### Fields of the result object {#result}
+#### Fields of the Result Object {#result}
 
 #|
 || **Name**
@@ -383,7 +410,7 @@ HTTP status: **200**
 
 The method does not return errors.
 
-{% include [system errors](../../../_includes/system-errors.md) %}
+{% include [System errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
@@ -391,4 +418,4 @@ The method does not return errors.
 - [{#T}](./crm-status-list.md)
 - [{#T}](./crm-status-add.md)
 - [{#T}](./crm-status-update.md)
-- [{#T}](./crm-status-delete.md)
+- [{#T}](./crm-status-delete.md) 

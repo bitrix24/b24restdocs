@@ -25,9 +25,9 @@ Access to the data depends on permissions:
 || **Name**
 `type` | **Description** ||
 || **select**
-[`array`](../../data-types.md) | List of fields to be returned in the response. If `select` is not specified, the method returns only `id` of the task.
+[`array`](../../data-types.md) | List of fields to be returned in the response. If `select` is not specified, the method returns only the `id` of the task.
 
-Field names for `select` match the keys of the task object from the [Task Object](./fields.md#taskdto) block ||
+Field names for `select` match the keys of the task object from the [Task object](./fields.md#taskdto) block ||
 || **filter**
 [`array`](../../data-types.md) | Task filtering conditions in the format:
 - `["field", "operator", value]`
@@ -45,13 +45,13 @@ Available values:
 
 Available fields for sorting: `id`, `title`, `creatorId`, `created`, `responsibleId`, `deadline`, `startPlan`, `endPlan`, `groupId`, `priority`, `status`, `started`, `estimatedTime`, `changed`, `closed`, `activity`, `mark`, `allowsChangeDeadline`, `allowsTimeTracking`.
 
-See the field descriptions in the [Task Object](./fields.md#taskdto) block
+See the field descriptions in the [Task object](./fields.md#taskdto) block
 
 By default, tasks are sorted by `id` in ascending order ||
 || **pagination**
 [`object`](../../data-types.md) | Pagination parameters:
 - `page` — page number
-- `limit` — number of tasks per page, default is `50`
+- `limit` — number of tasks per page, default `50`, maximum `1000`
 - `offset` — task offset. If `page` and `limit` are provided, the offset is calculated automatically ||
 |#
 
@@ -382,7 +382,7 @@ HTTP status: **200**
 || **items[]**
 [`object`](../../data-types.md) | Task object. The set of fields depends on the `select` parameter. If `select` is not specified, the method returns only `id`.
 
-See the field descriptions in the [Task Object](./fields.md#taskdto) block ||
+See the field descriptions in the [Task object](./fields.md#taskdto) block ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -419,7 +419,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `#FIELD#` | In DTO `TaskDto`, the `#FIELD#` field requires the presence of the `Filterable` attribute for such a request | Use only the `id` field in the filter ||
+|| `#FIELD#` | In DTO `TaskDto`, the `#FIELD#` field requires the `Filterable` attribute for such a request | Use only the `id` field in the filter ||
 |#
 
 #### Sorting Errors
@@ -428,7 +428,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_INVALIDORDEREXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `order` | Unable to recognize sorting parameter `#ORDER#` | Provide the `ASC` or `DESC` direction and a field available for sorting ||
+|| `order` | Unable to recognize sorting parameter `#ORDER#` | Provide direction `ASC` or `DESC` and a field available for sorting ||
 |#
 
 #### Pagination Errors

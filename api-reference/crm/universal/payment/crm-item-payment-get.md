@@ -8,13 +8,13 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: access permission to modify the payment order is required
+> Who can execute the method: requires access permission to modify the payment order
 
-This method retrieves brief information about the payment.
+Retrieves brief information about the payment.
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -156,6 +156,35 @@ This method retrieves brief information about the payment.
     }
     ```
 
+- Python
+
+    Example
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.item.payment.get(
+            bitrix_id=1036,
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - BX24.js
 
     ```js
@@ -192,7 +221,7 @@ This method retrieves brief information about the payment.
 
 {% endlist %}
 
-## Successful Response
+## Response on Success
 
 HTTP status: **200**
 
@@ -202,7 +231,7 @@ HTTP status: **200**
       "id":1036,
       "accountNumber":"3653\/1",
       "paid": "Y",
-      "datePaid":"2024-05-20T12:32:02+02:00",
+      "datePaid":"2024-05-20T12:32:02+03:00",
       "empPaidId":1,
       "paySystemId":6,
       "sum":0,
@@ -214,8 +243,8 @@ HTTP status: **200**
       "finish":1716203536.798211,
       "duration":0.38332509994506836,
       "processing":0.052394866943359375,
-      "date_start":"2024-05-20T14:12:16+02:00",
-      "date_finish":"2024-05-20T14:12:16+02:00"
+      "date_start":"2024-05-20T14:12:16+03:00",
+      "date_finish":"2024-05-20T14:12:16+03:00"
    }
 }
 ```
@@ -231,8 +260,9 @@ HTTP status: **200**
 [`time`](../../../../api-reference/data-types.md) | Information about the request execution time ||
 |#
 
-### Key result. Object of type sale_order_payment_crm_simple {#sale_order_payment_crm_simple}
+### Key Result. {#sale_order_payment_crm_simple}
 
+Object of type sale_order_payment_crm_simple
 #|
 || **Name**
 `type` | **Description** ||
@@ -260,6 +290,7 @@ Possible values:
 [`string`](../../../../api-reference/data-types.md) | Name of the payment system ||
 |#
 
+
 ## Error Handling
 
 HTTP status: **400**
@@ -271,7 +302,7 @@ HTTP status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
@@ -282,7 +313,7 @@ HTTP status: **400**
 || `0` | Other errors (e.g., fatal errors) ||
 |#
 
-{% include notitle [system errors](../../../../_includes/system-errors.md) %}
+{% include notitle [System errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

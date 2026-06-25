@@ -8,19 +8,19 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: `any user`
+> Who can execute the method: any user
 
-This method removes the binding of a timeline record from a CRM entity.
+Unbinds a timeline record from a CRM object.
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **fields***
-[`object`](../../../data-types.md) | Field values (detailed description provided [below](#parametr-fields)) for unbinding the timeline record from the CRM entity in the form of a structure:
+[`object`](../../../data-types.md) | Field values (detailed description provided [below](#parametr-fields)) for unbinding the timeline record from the CRM object in the form of a structure:
 
 ```js
 fields: {
@@ -34,7 +34,7 @@ fields: {
 
 ### Parameter fields
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -42,7 +42,7 @@ fields: {
 || **OWNER_ID***
 [`integer`](../../../data-types.md) | Identifier of the timeline record  ||
 || **ENTITY_ID***
-[`integer`](../../../data-types.md) | Identifier `ID` of the CRM entity to which the comment is linked  ||
+[`integer`](../../../data-types.md) | Identifier `ID` of the CRM object to which the comment is linked  ||
 || **ENTITY_TYPE***
 [`string`](../../../data-types.md) | Type of the entity to which the comment is linked. Possible values: 
 - `lead` — lead
@@ -189,6 +189,39 @@ fields: {
     }
     ```
 
+- Python
+
+    Example
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.timeline.bindings.unbind(
+            fields={
+                "OWNER_ID": 1110,
+                "ENTITY_ID": 10,
+                "ENTITY_TYPE": "deal",
+            },
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - BX24.js
 
     ```js
@@ -259,9 +292,9 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../../data-types.md) | Result of the operation. Returns `true` if the binding was successfully removed, otherwise — `false` ||
+[`boolean`](../../../data-types.md) | Result of the operation. Returns `true` if the connection was successfully deleted, otherwise `false` ||
 || **time**
-[`time`](../../../data-types.md) | Information about the execution time of the request ||
+[`time`](../../../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -275,22 +308,22 @@ HTTP status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
-|| **Code** | **Error Message** | **Description** ||
+|| **Code** | **Error message** | **Description** ||
 || Empty string | OWNER_ID is not defined or invalid | The required parameter `OWNER_ID` was not provided or the provided `OWNER_ID` is invalid ||
 || Empty string | ENTITY_ID is not defined or invalid. | The required parameter `ENTITY_ID` was not provided or the provided `ENTITY_ID` is invalid ||
 || Empty string | ENTITY_TYPE is not defined or invalid. | The required parameter `ENTITY_TYPE` was not provided or the provided `ENTITY_TYPE` is invalid ||
-|| Empty string | Not found. | The record of the timeline binding with the CRM entity was not found ||
+|| Empty string | Not found. | The record of the timeline binding with the CRM object was not found ||
 || Empty string | Access denied. | No permission to edit the entity in CRM ||
 |#
 
-{% include [system errors](../../../../_includes/system-errors.md) %}
+{% include [System errors](../../../../_includes/system-errors.md) %}
 
-## Continue Learning 
+## Continue Learning
 
 - [{#T}](./crm-timeline-bindings-bind.md)
 - [{#T}](./crm-timeline-bindings-list.md)

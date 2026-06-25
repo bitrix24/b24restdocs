@@ -1,4 +1,4 @@
-# Get the list of fields for product rows crm.item.productrow.fields
+# Get the List of Fields for Product Rows crm.item.productrow.fields
 
 {% note tip "" %}
 
@@ -10,13 +10,13 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: any user
 
-This method retrieves the list of fields for product rows.
+Retrieves a list of fields for product rows.
 
 No parameters.
 
 ## Code Examples
 
-{% include [Examples Note](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -143,6 +143,33 @@ No parameters.
     }
     ```
 
+- Python
+
+    Example
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.item.productrow.fields().response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - BX24.js
 
     ```js
@@ -175,195 +202,195 @@ No parameters.
 
 {% endlist %}
 
-## Successful Response
+## Response on Success
 
 HTTP status: **200**
 
 ```json
 {
-   "result": {
-      "fields": {
-         "id": {
-            "type": "integer",
-            "isRequired": false,
-            "isReadOnly": true,
-            "isImmutable": false,
-            "isMultiple": false,
-            "isDynamic": false,
-            "title": "ID"
+   "result":{
+      "fields":{
+         "id":{
+            "type":"integer",
+            "isRequired":false,
+            "isReadOnly":true,
+            "isImmutable":false,
+            "isMultiple":false,
+            "isDynamic":false,
+            "title":"ID"
          },
-         "ownerId": {
-            "type": "integer",
-            "isRequired": true,
-            "isReadOnly": false,
-            "isImmutable": true,
-            "isMultiple": false,
-            "isDynamic": false,
-            "title": "Owner ID"
+         "ownerId":{
+            "type":"integer",
+            "isRequired":true,
+            "isReadOnly":false,
+            "isImmutable":true,
+            "isMultiple":false,
+            "isDynamic":false,
+            "title":"Owner ID"
          },
-         "ownerType": {
-            "type": "string",
-            "isRequired": true,
-            "isReadOnly": false,
-            "isImmutable": true,
-            "isMultiple": false,
-            "isDynamic": false,
-            "title": "Owner Type"
+         "ownerType":{
+            "type":"string",
+            "isRequired":true,
+            "isReadOnly":false,
+            "isImmutable":true,
+            "isMultiple":false,
+            "isDynamic":false,
+            "title":"Owner Type"
          },
-         "productId": {
-            "type": "integer",
-            "isRequired": true,
-            "isReadOnly": false,
-            "isImmutable": false,
-            "isMultiple": false,
-            "isDynamic": false,
-            "title": "Product"
+         "productId":{
+            "type":"integer",
+            "isRequired":true,
+            "isReadOnly":false,
+            "isImmutable":false,
+            "isMultiple":false,
+            "isDynamic":false,
+            "title":"Product"
          },
-         "productName": {
-            "type": "string",
-            "isRequired": false,
-            "isReadOnly": false,
-            "isImmutable": false,
-            "isMultiple": false,
-            "isDynamic": false,
-            "title": "Product Name"
+         "productName":{
+            "type":"string",
+            "isRequired":false,
+            "isReadOnly":false,
+            "isImmutable":false,
+            "isMultiple":false,
+            "isDynamic":false,
+            "title":"Product Name"
          },
-         "price": {
-            "type": "double",
-            "isRequired": false,
-            "isReadOnly": false,
-            "isImmutable": false,
-            "isMultiple": false,
-            "isDynamic": false,
-            "title": "Price"
+         "price":{
+            "type":"double",
+            "isRequired":false,
+            "isReadOnly":false,
+            "isImmutable":false,
+            "isMultiple":false,
+            "isDynamic":false,
+            "title":"Price"
          },
-         "priceExclusive": {
-            "type": "double",
-            "isRequired": false,
-            "isReadOnly": true,
-            "isImmutable": false,
-            "isMultiple": false,
-            "isDynamic": false,
-            "title": "Price excluding tax with discount"
+         "priceExclusive":{
+            "type":"double",
+            "isRequired":false,
+            "isReadOnly":true,
+            "isImmutable":false,
+            "isMultiple":false,
+            "isDynamic":false,
+            "title":"Discounted price excluding tax"
          },
-         "priceNetto": {
-            "type": "double",
-            "isRequired": false,
-            "isReadOnly": true,
-            "isImmutable": false,
-            "isMultiple": false,
-            "isDynamic": false,
-            "title": "PRICE_NETTO"
+         "priceNetto":{
+            "type":"double",
+            "isRequired":false,
+            "isReadOnly":true,
+            "isImmutable":false,
+            "isMultiple":false,
+            "isDynamic":false,
+            "title":"PRICE_NETTO"
          },
-         "priceBrutto": {
-            "type": "double",
-            "isRequired": false,
-            "isReadOnly": true,
-            "isImmutable": false,
-            "isMultiple": false,
-            "isDynamic": false,
-            "title": "PRICE_BRUTTO"
+         "priceBrutto":{
+            "type":"double",
+            "isRequired":false,
+            "isReadOnly":true,
+            "isImmutable":false,
+            "isMultiple":false,
+            "isDynamic":false,
+            "title":"PRICE_BRUTTO"
          },
-         "quantity": {
-            "type": "double",
-            "isRequired": false,
-            "isReadOnly": false,
-            "isImmutable": false,
-            "isMultiple": false,
-            "isDynamic": false,
-            "title": "Quantity"
+         "quantity":{
+            "type":"double",
+            "isRequired":false,
+            "isReadOnly":false,
+            "isImmutable":false,
+            "isMultiple":false,
+            "isDynamic":false,
+            "title":"Quantity"
          },
-         "discountTypeId": {
-            "type": "integer",
-            "isRequired": false,
-            "isReadOnly": false,
-            "isImmutable": false,
-            "isMultiple": false,
-            "isDynamic": false,
-            "title": "Discount Type"
+         "discountTypeId":{
+            "type":"integer",
+            "isRequired":false,
+            "isReadOnly":false,
+            "isImmutable":false,
+            "isMultiple":false,
+            "isDynamic":false,
+            "title":"Discount Type"
          },
-         "discountRate": {
-            "type": "double",
-            "isRequired": false,
-            "isReadOnly": false,
-            "isImmutable": false,
-            "isMultiple": false,
-            "isDynamic": false,
-            "title": "Discount Rate"
+         "discountRate":{
+            "type":"double",
+            "isRequired":false,
+            "isReadOnly":false,
+            "isImmutable":false,
+            "isMultiple":false,
+            "isDynamic":false,
+            "title":"Discount Amount"
          },
-         "discountSum": {
-            "type": "double",
-            "isRequired": false,
-            "isReadOnly": false,
-            "isImmutable": false,
-            "isMultiple": false,
-            "isDynamic": false,
-            "title": "Discount Sum"
+         "discountSum":{
+            "type":"double",
+            "isRequired":false,
+            "isReadOnly":false,
+            "isImmutable":false,
+            "isMultiple":false,
+            "isDynamic":false,
+            "title":"Discount Total"
          },
-         "taxRate": {
-            "type": "double",
-            "isRequired": false,
-            "isReadOnly": false,
-            "isImmutable": false,
-            "isMultiple": false,
-            "isDynamic": false,
-            "title": "Tax"
+         "taxRate":{
+            "type":"double",
+            "isRequired":false,
+            "isReadOnly":false,
+            "isImmutable":false,
+            "isMultiple":false,
+            "isDynamic":false,
+            "title":"Tax"
          },
-         "taxIncluded": {
-            "type": "char",
-            "isRequired": false,
-            "isReadOnly": false,
-            "isImmutable": false,
-            "isMultiple": false,
-            "isDynamic": false,
-            "title": "Tax included in price"
+         "taxIncluded":{
+            "type":"char",
+            "isRequired":false,
+            "isReadOnly":false,
+            "isImmutable":false,
+            "isMultiple":false,
+            "isDynamic":false,
+            "title":"Tax included in price"
          },
-         "customized": {
-            "type": "char",
-            "isRequired": false,
-            "isReadOnly": false,
-            "isImmutable": false,
-            "isMultiple": false,
-            "isDynamic": false,
-            "title": "Customized"
+         "customized":{
+            "type":"char",
+            "isRequired":false,
+            "isReadOnly":false,
+            "isImmutable":false,
+            "isMultiple":false,
+            "isDynamic":false,
+            "title":"Modified"
          },
-         "measureCode": {
-            "type": "integer",
-            "isRequired": false,
-            "isReadOnly": false,
-            "isImmutable": false,
-            "isMultiple": false,
-            "isDynamic": false,
-            "title": "Measure Code"
+         "measureCode":{
+            "type":"integer",
+            "isRequired":false,
+            "isReadOnly":false,
+            "isImmutable":false,
+            "isMultiple":false,
+            "isDynamic":false,
+            "title":"Unit of Measure Code"
          },
-         "measureName": {
-            "type": "string",
-            "isRequired": false,
-            "isReadOnly": false,
-            "isImmutable": false,
-            "isMultiple": false,
-            "isDynamic": false,
-            "title": "Measure Name"
+         "measureName":{
+            "type":"string",
+            "isRequired":false,
+            "isReadOnly":false,
+            "isImmutable":false,
+            "isMultiple":false,
+            "isDynamic":false,
+            "title":"Unit of Measure"
          },
-         "sort": {
-            "type": "integer",
-            "isRequired": false,
-            "isReadOnly": false,
-            "isImmutable": false,
-            "isMultiple": false,
-            "isDynamic": false,
-            "title": "Sort"
+         "sort":{
+            "type":"integer",
+            "isRequired":false,
+            "isReadOnly":false,
+            "isImmutable":false,
+            "isMultiple":false,
+            "isDynamic":false,
+            "title":"Sorting"
          },
-         "type": {
-            "type": "integer",
-            "isRequired": false,
-            "isReadOnly": true,
-            "isImmutable": false,
-            "isMultiple": false,
-            "isDynamic": false,
-            "title": "TYPE"
+         "type":{
+            "type":"integer",
+            "isRequired":false,
+            "isReadOnly":true,
+            "isImmutable":false,
+            "isMultiple":false,
+            "isDynamic":false,
+            "title":"TYPE"
          },
-         "storeId": {
+         "storeId":{
                "type": "integer",
                "isRequired": false,
                "isReadOnly": true,
@@ -374,13 +401,13 @@ HTTP status: **200**
          }         
       }
    },
-   "time": {
-      "start": 1716812240.400023,
-      "finish": 1716812242.151703,
-      "duration": 1.7516798973083496,
-      "processing": 0.09682416915893555,
-      "date_start": "2024-05-27T15:17:20+02:00",
-      "date_finish": "2024-05-27T15:17:22+02:00"
+   "time":{
+      "start":1716812240.400023,
+      "finish":1716812242.151703,
+      "duration":1.7516798973083496,
+      "processing":0.09682416915893555,
+      "date_start":"2024-05-27T15:17:20+03:00",
+      "date_finish":"2024-05-27T15:17:22+03:00"
    }
 }
 ```
@@ -395,7 +422,7 @@ HTTP status: **200**
 || **fields**
 [`object`](../../../data-types.md) | Object in the format `{"field_1": "value_1", ... "field_N": "value_N"}`, where `field` is the identifier of the [crm_item_product_row](../../data-types.md#crm_item_product_row) object, and `value` is an object of type [crm_rest_field_description](../../data-types.md#crm_rest_field_description) ||
 || **time**
-[`time`](../../../data-types.md) | Information about the execution time of the request ||
+[`time`](../../../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -404,12 +431,12 @@ HTTP status: **400**
 
 ```json
 {
-   "error": 0,
-   "error_description": "some error"
+   "error":0,
+   "error_description":"some error"
 }
 ```
 
-{% include notitle [error handling](../../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
@@ -418,7 +445,7 @@ HTTP status: **400**
 || `0` | Other errors (e.g., fatal errors) ||
 |#
 
-{% include notitle [system errors](../../../../_includes/system-errors.md) %}
+{% include notitle [System errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

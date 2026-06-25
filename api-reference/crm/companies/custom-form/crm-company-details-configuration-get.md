@@ -1,4 +1,4 @@
-# Get Parameters for crm.company.details.configuration.get
+# Get Parameters For crm.company.details.configuration.get
 
 {% note tip "" %}
 
@@ -22,7 +22,7 @@ The method `crm.company.details.configuration.get` retrieves the settings for co
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -45,7 +45,7 @@ Required only for administrators when requesting others' personal settings. If n
 
 ## Code Examples
 
-{% include [Note on Examples](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 1. Retrieve personal card configuration
 
@@ -360,6 +360,35 @@ Required only for administrators when requesting others' personal settings. If n
         }
         ```
 
+    - Python
+
+        Example
+
+        ```python
+        from b24pysdk.client import BaseClient
+        from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+        client: BaseClient
+
+        try:
+            bitrix_response = client.crm.company.details.configuration.get(
+                scope="C",
+            ).response
+            result = bitrix_response.result
+            print(result)
+        except BitrixAPIError as error:
+            print(
+                "Bitrix API Error",
+                f"error: {error.error}",
+                f"error_description: {error.error_description}",
+                sep="\n",
+            )
+        except BitrixSDKException as error:
+            print(f"Bitrix SDK Error: {error.message}")
+        except Exception as error:
+            print(f"Unexpected error: {error}")
+        ```
+
     - BX24.js
 
         ```js
@@ -399,14 +428,14 @@ Required only for administrators when requesting others' personal settings. If n
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
     "result": [
         {
             "name": "main",
-            "title": "About Company",
+            "title": "About Us",
             "type": "section",
             "elements": [
                 {
@@ -433,7 +462,7 @@ HTTP Status: **200**
                     "name": "CONTACT",
                     "optionFlags": "0",
                     "options": {
-                        "defaultCountry": "DE"
+                        "defaultCountry": "RU"
                     }
                 },
                 {
@@ -464,7 +493,7 @@ HTTP Status: **200**
                     "name": "PHONE",
                     "optionFlags": "1",
                     "options": {
-                        "defaultCountry": "DE"
+                        "defaultCountry": "RU"
                     }
                 },
                 {
@@ -475,7 +504,7 @@ HTTP Status: **200**
         },
         {
             "name": "additional",
-            "title": "Additional",
+            "title": "Additional Information",
             "type": "section",
             "elements": [
                 {
@@ -513,8 +542,8 @@ HTTP Status: **200**
         "finish": 1769418250.874948,
         "duration": 0.8749480247497559,
         "processing": 0,
-        "date_start": "2026-01-26T12:04:10+01:00",
-        "date_finish": "2026-01-26T12:04:10+01:00",
+        "date_start": "2026-01-26T12:04:10+03:00",
+        "date_finish": "2026-01-26T12:04:10+03:00",
         "operating_reset_at": 1769418850,
         "operating": 0
     }
@@ -533,10 +562,10 @@ Contains the configuration of the sections of the company detail form.
 
 Returns `null` if there is no configuration ||
 || **time**
-[`time`](../../../data-types.md#time) | Information about the execution time of the request ||
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
 
-#### section
+#### Section
 
 Describes a specific section with fields inside the element card
 
@@ -553,7 +582,7 @@ Describes a specific section with fields inside the element card
 [`section_element[]`](#section_element) | List of fields displayed in the card with additional settings ||
 |#
 
-#### section_element
+#### Section_Element
 
 Configuration of a specific field within the section
 
@@ -590,12 +619,12 @@ The structure is described [below](#options) ||
 `CONTACT`
 `MYCOMPANY_ID` | Country code for the default phone number format — a string of two Latin letters.
 
-For example `"DE"` ||
+For example `"RU"` ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -604,7 +633,7 @@ HTTP Status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
@@ -613,9 +642,9 @@ HTTP Status: **400**
 || `-` | `Access denied` | The user does not have the "Allow to modify settings" permission to retrieve others' settings ||
 |#
 
-{% include [system errors](../../../../_includes/system-errors.md) %}
+{% include [System errors](../../../../_includes/system-errors.md) %}
 
-## Continue Learning 
+## Continue Learning
 
 - [{#T}](./index.md)
 - [{#T}](./crm-company-details-configuration-set.md)

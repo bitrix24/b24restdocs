@@ -16,7 +16,7 @@ No parameters.
 
 ## Code Examples
 
-{% include [Examples Note](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -181,11 +181,36 @@ No parameters.
     echo '</PRE>';
     ```
 
+- Python
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.requisite.fields().response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 {% endlist %}
 
-## Successful Response
+## Response on Success
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -206,7 +231,7 @@ HTTP Status: **200**
             "isImmutable": true,
             "isMultiple": false,
             "isDynamic": false,
-            "title": "Entity Type ID"
+            "title": "Entity type ID"
         },
         "ENTITY_ID": {
             "type": "integer",
@@ -233,7 +258,7 @@ HTTP Status: **200**
             "isImmutable": false,
             "isMultiple": false,
             "isDynamic": false,
-            "title": "Creation Date"
+            "title": "Creation date"
         },
         "DATE_MODIFY": {
             "type": "datetime",
@@ -242,7 +267,7 @@ HTTP Status: **200**
             "isImmutable": false,
             "isMultiple": false,
             "isDynamic": false,
-            "title": "Modification Date"
+            "title": "Modification date"
         },
         "CREATED_BY_ID": {
             "type": "user",
@@ -251,7 +276,7 @@ HTTP Status: **200**
             "isImmutable": false,
             "isMultiple": false,
             "isDynamic": false,
-            "title": "Created By"
+            "title": "Created by"
         },
         "MODIFY_BY_ID": {
             "type": "user",
@@ -260,7 +285,7 @@ HTTP Status: **200**
             "isImmutable": false,
             "isMultiple": false,
             "isDynamic": false,
-            "title": "Modified By"
+            "title": "Modified by"
         },
         "NAME": {
             "type": "string",
@@ -287,7 +312,7 @@ HTTP Status: **200**
             "isImmutable": false,
             "isMultiple": false,
             "isDynamic": false,
-            "title": "External Code"
+            "title": "External code"
         },
         "ORIGINATOR_ID": {
             "type": "string",
@@ -323,7 +348,7 @@ HTTP Status: **200**
             "isImmutable": false,
             "isMultiple": false,
             "isDynamic": false,
-            "title": "Sort Order"
+            "title": "Sort order"
         },
         "RQ_NAME": {
             "type": "string",
@@ -377,7 +402,7 @@ HTTP Status: **200**
             "isImmutable": false,
             "isMultiple": false,
             "isDynamic": false,
-            "title": "Abbreviated Organization Name"
+            "title": "Short organization name"
         },
         "RQ_COMPANY_FULL_NAME": {
             "type": "string",
@@ -386,7 +411,7 @@ HTTP Status: **200**
             "isImmutable": false,
             "isMultiple": false,
             "isDynamic": false,
-            "title": "Full Organization Name"
+            "title": "Full organization name"
         },
         "RQ_COMPANY_REG_DATE": {
             "type": "string",
@@ -395,7 +420,7 @@ HTTP Status: **200**
             "isImmutable": false,
             "isMultiple": false,
             "isDynamic": false,
-            "title": "State Registration Date"
+            "title": "State registration date"
         },
         "RQ_DIRECTOR": {
             "type": "string",
@@ -404,7 +429,7 @@ HTTP Status: **200**
             "isImmutable": false,
             "isMultiple": false,
             "isDynamic": false,
-            "title": "General Director"
+            "title": "CEO"
         },
         "RQ_ACCOUNTANT": {
             "type": "string",
@@ -440,7 +465,7 @@ HTTP Status: **200**
             "isImmutable": false,
             "isMultiple": false,
             "isDynamic": false,
-            "title": "Contact Person"
+            "title": "Contact person"
         },
         "RQ_EMAIL": {
             "type": "string",
@@ -488,7 +513,7 @@ HTTP Status: **200**
             "isImmutable": false,
             "isMultiple": false,
             "isDynamic": false,
-            "title": "Document Type"
+            "title": "Document type"
         },
         "RQ_IDENT_DOC_SER": {
             "type": "string",
@@ -497,7 +522,7 @@ HTTP Status: **200**
             "isImmutable": false,
             "isMultiple": false,
             "isDynamic": false,
-            "title": "Series"
+            "title": "series"
         },
         "RQ_IDENT_DOC_NUM": {
             "type": "string",
@@ -506,7 +531,7 @@ HTTP Status: **200**
             "isImmutable": false,
             "isMultiple": false,
             "isDynamic": false,
-            "title": "Number"
+            "title": "number"
         },
         "RQ_IDENT_DOC_PERS_NUM": {
             "type": "string",
@@ -524,7 +549,7 @@ HTTP Status: **200**
             "isImmutable": false,
             "isMultiple": false,
             "isDynamic": false,
-            "title": "Issue Date"
+            "title": "issue date"
         },
         "RQ_IDENT_DOC_ISSUED_BY": {
             "type": "string",
@@ -533,7 +558,7 @@ HTTP Status: **200**
             "isImmutable": false,
             "isMultiple": false,
             "isDynamic": false,
-            "title": "Issued By"
+            "title": "issued by"
         },
         "RQ_IDENT_DOC_DEP_CODE": {
             "type": "string",
@@ -542,7 +567,7 @@ HTTP Status: **200**
             "isImmutable": false,
             "isMultiple": false,
             "isDynamic": false,
-            "title": "Department Code"
+            "title": "department code"
         },
         "RQ_INN": {
             "type": "string",
@@ -551,7 +576,7 @@ HTTP Status: **200**
             "isImmutable": false,
             "isMultiple": false,
             "isDynamic": false,
-            "title": "INN"
+            "title": "Tax ID"
         },
         "RQ_KPP": {
             "type": "string",
@@ -560,7 +585,7 @@ HTTP Status: **200**
             "isImmutable": false,
             "isMultiple": false,
             "isDynamic": false,
-            "title": "KPP"
+            "title": "Tax Registration Code"
         },
         "RQ_USRLE": {
             "type": "string",
@@ -578,7 +603,7 @@ HTTP Status: **200**
             "isImmutable": false,
             "isMultiple": false,
             "isDynamic": false,
-            "title": "IFNS"
+            "title": "Tax Office"
         },
         "RQ_OGRN": {
             "type": "string",
@@ -587,7 +612,7 @@ HTTP Status: **200**
             "isImmutable": false,
             "isMultiple": false,
             "isDynamic": false,
-            "title": "OGRN"
+            "title": "State Registration Number"
         },
         "RQ_OGRNIP": {
             "type": "string",
@@ -596,7 +621,7 @@ HTTP Status: **200**
             "isImmutable": false,
             "isMultiple": false,
             "isDynamic": false,
-            "title": "OGRNIP"
+            "title": "Sole Proprietor Registration Number"
         },
         "RQ_OKPO": {
             "type": "string",
@@ -605,7 +630,7 @@ HTTP Status: **200**
             "isImmutable": false,
             "isMultiple": false,
             "isDynamic": false,
-            "title": "OKPO"
+            "title": "OKPO Code"
         },
         "RQ_OKTMO": {
             "type": "string",
@@ -614,7 +639,7 @@ HTTP Status: **200**
             "isImmutable": false,
             "isMultiple": false,
             "isDynamic": false,
-            "title": "OKTMO"
+            "title": "OKTMO Code"
         },
         "RQ_OKVED": {
             "type": "string",
@@ -623,7 +648,7 @@ HTTP Status: **200**
             "isImmutable": false,
             "isMultiple": false,
             "isDynamic": false,
-            "title": "OKVED"
+            "title": "NAICS Code"
         },
         "RQ_EDRPOU": {
             "type": "string",
@@ -677,7 +702,7 @@ HTTP Status: **200**
             "isImmutable": false,
             "isMultiple": false,
             "isDynamic": false,
-            "title": "Certificate Series of State Registration"
+            "title": "State registration certificate series"
         },
         "RQ_ST_CERT_NUM": {
             "type": "string",
@@ -686,7 +711,7 @@ HTTP Status: **200**
             "isImmutable": false,
             "isMultiple": false,
             "isDynamic": false,
-            "title": "Certificate Number of State Registration"
+            "title": "State registration certificate number"
         },
         "RQ_ST_CERT_DATE": {
             "type": "string",
@@ -695,7 +720,7 @@ HTTP Status: **200**
             "isImmutable": false,
             "isMultiple": false,
             "isDynamic": false,
-            "title": "Date of State Registration Certificate"
+            "title": "State registration certificate date"
         },
         "RQ_VAT_PAYER": {
             "type": "char",
@@ -969,12 +994,14 @@ HTTP Status: **200**
 || **result**
 [`object`](../../../data-types.md) | An object in the format `{"field_1": "value_1", ... "field_N": "value_N"}`, where `field` is the identifier of the [requisite field](./index.md#fields), and `value` is an object with [field attributes](#attributes) ||
 || **time**
-[`time`](../../../data-types.md) | Information about the execution time of the request ||
+[`time`](../../../data-types.md) | Information about the request execution time ||
 |#
 
-### Attribute Descriptions {#attributes}
+
+### Description of Attributes {#attributes}
+
 #|
-|| Attribute Purpose | Description ||
+|| Attribute purpose | Description ||
 || type
 [`string`](../../../data-types.md) | Field type ||
 || isRequired
@@ -1019,7 +1046,7 @@ HTTP Status: **200**
 [`object`](../../../data-types.md) | Custom field attribute. An object with specific settings for a particular field type. See [custom requisite fields](../user-fields/index.md) ||
 |#
 
-{% include [system errors](../../../../_includes/system-errors.md) %}
+{% include [System errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
@@ -1029,3 +1056,5 @@ HTTP Status: **200**
 - [{#T}](./crm-requisite-get.md)
 - [{#T}](./crm-requisite-list.md)
 - [{#T}](./crm-requisite-delete.md)
+
+

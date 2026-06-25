@@ -1,4 +1,4 @@
-# Get the link of the requisite with the object crm.requisite.link.get
+# Get the Link of the Requisite with the Object crm.requisite.link.get
 
 {% note tip "" %}
 
@@ -14,7 +14,7 @@ The method returns the link of the requisites with the object.
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -30,7 +30,7 @@ The following types can be used:
 - new invoice (value `31`)
 - other dynamic objects (to get possible values, see the method [crm.type.list](../../universal/user-defined-object-types/crm-type-list.md)).
 
-Identifiers of CRM object types can be obtained using the method [crm.enum.ownertype](../../auxiliary/enum/crm-enum-owner-type.md) 
+Object type identifiers can be obtained using the method [crm.enum.ownertype](../../auxiliary/enum/crm-enum-owner-type.md) 
 ||
 || **entityId***
 [`integer`](../../../data-types.md) | Identifier of the object to which the link belongs. 
@@ -180,8 +180,8 @@ Identifiers of objects can be obtained using the following methods: [crm.deal.li
     ```js
     BX24.callMethod(
         "crm.requisite.link.get", {
-            entityTypeId: 31,        // Identifier of the type (Invoice)
-            entityId: 315,             // Identifier of the invoice
+            entityTypeId: 31,        // Type Identifier (Account)
+            entityId: 315,             // Account Identifier
         },
         function(result)
         {
@@ -209,6 +209,34 @@ Identifiers of objects can be obtained using the following methods: [crm.deal.li
     echo '<PRE>';
     print_r($result);
     echo '</PRE>';
+    ```
+
+- Python
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.requisite.link.get(
+            entity_type_id=31,
+            entity_id=315,
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected Error: {error}")
     ```
 
 {% endlist %}
@@ -247,10 +275,10 @@ HTTP status: **200**
 || **result**
 `Object`| An object containing the values of the requisite link fields ||
 || **time**
-[`time`](../../../data-types.md) | Information about the execution time of the request ||
+[`time`](../../../data-types.md) | Information about the request execution time ||
 |#
 
-### Description of the requisite link fields with the CRM object
+### Description of Requisite Link Fields with CRM Object
 
 #|
 || **Name**
@@ -265,28 +293,28 @@ The following types can be used:
 - new invoice (value `31`)
 - other dynamic objects (to get possible values, see the method [crm.type.list](../../universal/user-defined-object-types/crm-type-list.md)).
 
-Identifiers of CRM object types can be obtained using the method [crm.enum.ownertype](../../auxiliary/enum/crm-enum-owner-type.md) 
+Object type identifiers can be obtained using the method [crm.enum.ownertype](../../auxiliary/enum/crm-enum-owner-type.md) 
 ||
 || **ENTITY_ID**
 [`integer`](../../../data-types.md) | Identifier of the object to which the link belongs. 
 
-Identifiers of objects can be obtained using the following methods: [crm.deal.list](../../deals/crm-deal-list.md), [crm.quote.list](../../quote/crm-quote-list.md), [crm.item.list](../../universal/crm-item-list.md) ||
+Object identifiers can be obtained using the following methods: [crm.deal.list](../../deals/crm-deal-list.md), [crm.quote.list](../../quote/crm-quote-list.md), [crm.item.list](../../universal/crm-item-list.md) ||
 || **REQUISITE_ID**
 [`integer`](../../../data-types.md) | Identifier of the client's requisite selected for the object. 
 
-Identifiers of requisites can be obtained using the method [crm.requisite.list](../universal/crm-requisite-list.md) ||
+Requisite identifiers can be obtained using the method [crm.requisite.list](../universal/crm-requisite-list.md) ||
 || **BANK_DETAIL_ID**
 [`integer`](../../../data-types.md) | Identifier of the client's bank requisite selected for the object.
 
-Identifiers of bank requisites can be obtained using the method [crm.requisite.bankdetail.list](../bank-detail/crm-requisite-bank-detail-list.md) ||
+Bank requisite identifiers can be obtained using the method [crm.requisite.bankdetail.list](../bank-detail/crm-requisite-bank-detail-list.md) ||
 || **MC_REQUISITE_ID**
 [`integer`](../../../data-types.md) | Identifier of my company's requisite selected for the object. 
 
-Identifiers of requisites can be obtained using the method [crm.requisite.list](../universal/crm-requisite-list.md) ||
+Requisite identifiers can be obtained using the method [crm.requisite.list](../universal/crm-requisite-list.md) ||
 || **MC_BANK_DETAIL_ID**
 [`integer`](../../../data-types.md) | Identifier of my company's bank requisite selected for the object. 
 
-Identifiers of bank requisites can be obtained using the method [crm.requisite.bankdetail.list](../bank-detail/crm-requisite-bank-detail-list.md) ||
+Bank requisite identifiers can be obtained using the method [crm.requisite.bankdetail.list](../bank-detail/crm-requisite-bank-detail-list.md) ||
 |#
 
 ## Error Handling
@@ -300,11 +328,11 @@ HTTP status: **40x**, **50x**
 }
 ```
 
-{% include notitle [error handling](../../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
-#|  
+#|
 || **Code** | **Description** ||
 || `entityTypeId is not defined or invalid` | The object type identifier is not set or has an invalid value ||
 || `entityId is not defined or invalid` | The object identifier is not set or has an invalid value ||
@@ -312,7 +340,7 @@ HTTP status: **40x**, **50x**
 || `Access denied` | Insufficient access permissions to retrieve the requisite link ||
 |#
 
-{% include [system errors](../../../../_includes/system-errors.md) %}
+{% include [System errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

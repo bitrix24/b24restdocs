@@ -1,4 +1,4 @@
-# Get a List of Comments from crm.timeline.comment.list
+# Get a List of Comments From crm.timeline.comment.list
 
 {% note tip "" %}
 
@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: a user with read access to CRM entities
 
-The method `crm.timeline.comment.list` retrieves a list of all comments associated with a specified CRM entity.
+The method `crm.timeline.comment.list` retrieves a list of all comments associated with a specified CRM object.
 
 ## Method Parameters
 
@@ -23,7 +23,7 @@ The method `crm.timeline.comment.list` retrieves a list of all comments associat
 [`object`](../../../data-types.md) | An object for filtering the selected comments in the format `{"field_1": "value_1", ... "field_N": "value_N"}`.
 
 The filter works on two mandatory fields:
-- `ENTITY_ID` — ID of the CRM entity to which the comment is attached
+- `ENTITY_ID` — ID of the CRM object to which the comment is attached
 - `ENTITY_TYPE` — [type of CRM object](../../data-types.md#object_type), for example: `deal`, `lead`, `contact`, `company`
 ||
 || **order**
@@ -53,7 +53,7 @@ The formula for calculating the `start` parameter value:
 
 ## Code Examples
 
-{% include [Examples Note](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -249,6 +249,127 @@ The formula for calculating the `start` parameter value:
     }
     ```
 
+- Python
+
+    Example
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.timeline.comment.list(
+            filter={
+                "ENTITY_ID": 10,
+                "ENTITY_TYPE": "deal",
+            },
+            select=[
+                "ID",
+                "CREATED",
+                "ENTITY_ID",
+                "ENTITY_TYPE",
+                "AUTHOR_ID",
+                "COMMENT",
+                "FILES",
+            ],
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected Error: {error}")
+    ```
+
+    Example `as_list`
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.timeline.comment.list(
+            filter={
+                "ENTITY_ID": 10,
+                "ENTITY_TYPE": "deal",
+            },
+            select=[
+                "ID",
+                "CREATED",
+                "ENTITY_ID",
+                "ENTITY_TYPE",
+                "AUTHOR_ID",
+                "COMMENT",
+                "FILES",
+            ],
+        ).as_list().response
+        result = bitrix_response.result
+        for item in result:
+            print(item)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected Error: {error}")
+    ```
+
+    Example `as_list_fast`
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.timeline.comment.list(
+            filter={
+                "ENTITY_ID": 10,
+                "ENTITY_TYPE": "deal",
+            },
+            select=[
+                "ID",
+                "CREATED",
+                "ENTITY_ID",
+                "ENTITY_TYPE",
+                "AUTHOR_ID",
+                "COMMENT",
+                "FILES",
+            ],
+        ).as_list_fast(descending=True).response
+        result = bitrix_response.result
+        for item in result:
+            print(item)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected Error: {error}")
+    ```
+
 - BX24.js
 
     ```js
@@ -311,7 +432,7 @@ The formula for calculating the `start` parameter value:
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -320,13 +441,13 @@ HTTP Status: **200**
             "ID": "999",
             "ENTITY_ID": "2",
             "ENTITY_TYPE": "deal",
-            "CREATED": "2020-03-02T12:00:00+02:00",
+            "CREATED": "2020-03-02T12:00:00+03:00",
             "COMMENT": "New comment was added",
             "AUTHOR_ID": "1",
             "FILES": {
                 "1": {
                     "id": 1,
-                    "date": "2020-03-02T12:00:00+02:00",
+                    "date": "2020-03-02T12:00:00+03:00",
                     "type": "image",
                     "name": "1.gif",
                     "size": 43,
@@ -335,14 +456,14 @@ HTTP Status: **200**
                         "height": 1
                     },
                     "authorId": 1,
-                    "authorName": "John Doe",
+                    "authorName": "John Dou",
                     "urlPreview": "https://my.bitrix24.com/disk/showFile/930/?&ncc=1&width=640&height=640&signature=292f450929833cd881070155e05a2c41b5bb265ea8c8c1bc2108dbcbb56f667f&ts=1718366521&filename=1.gif",
                     "urlShow": "https://my.bitrix24.com/disk/showFile/930/?&ncc=1&ts=1718366521&filename=1.gif",
                     "urlDownload": "https://my.bitrix24.com/disk/downloadFile/930/?&ncc=1&filename=1.gif"
                 },
                 "2": {
                     "id": 2,
-                    "date": "2020-03-02T12:00:00+02:00",
+                    "date": "2020-03-02T12:00:00+03:00",
                     "type": "image",
                     "name": "2.gif",
                     "size": 43,
@@ -351,7 +472,7 @@ HTTP Status: **200**
                         "height": 1
                     },
                     "authorId": 1,
-                    "authorName": "John Doe",
+                    "authorName": "John Dou",
                     "urlPreview": "https://my.bitrix24.com/disk/showFile/931/?&ncc=1&width=640&height=640&signature=118de010a40eff06fb9d691ee9235e2ef809a17780e46927bf8b12f8dc3224db&ts=1718366521&filename=2.gif",
                     "urlShow": "https://my.bitrix24.com/disk/showFile/931/?&ncc=1&ts=1718366521&filename=2.gif",
                     "urlDownload": "https://my.bitrix24.com/disk/downloadFile/931/?&ncc=1&filename=2.gif"
@@ -362,7 +483,7 @@ HTTP Status: **200**
             "ID": "1000",
             "ENTITY_ID": "2",
             "ENTITY_TYPE": "deal",
-            "CREATED": "2020-03-02T12:00:00+02:00",
+            "CREATED": "2020-03-02T12:00:00+03:00",
             "COMMENT": "Test comment",
             "AUTHOR_ID": "1",
             "FILES": {}
@@ -373,8 +494,8 @@ HTTP Status: **200**
         "start": 1715091541.642592,
         "finish": 1715091541.730599,
         "duration": 0.08800697326660156,
-        "date_start": "2024-05-03T17:19:01+02:00",
-        "date_finish": "2024-05-03T17:19:01+02:00",
+        "date_start": "2024-05-03T17:19:01+03:00",
+        "date_finish": "2024-05-03T17:19:01+03:00",
         "operating": 0
     }
 }
@@ -390,12 +511,12 @@ HTTP Status: **200**
 || **total**
 [`integer`](../../../data-types.md) | The total number of records found ||
 || **time**
-[`time`](../../../data-types.md#time) | Information about the execution time of the request ||
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -404,16 +525,16 @@ HTTP Status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
-|| **Code** | **Error Message** | **Description** ||
-|| Empty string | Access denied | No permissions for the specified CRM entity ||
+|| **Code** | **Error message** | **Description** ||
+|| Empty string | Access denied | No permissions for the specified CRM object ||
 |#
 
-{% include [system errors](../../../../_includes/system-errors.md) %}
+{% include [System errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

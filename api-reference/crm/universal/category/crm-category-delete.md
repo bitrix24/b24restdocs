@@ -27,7 +27,7 @@ This method deletes a funnel (direction) with the identifier `id`.
 || **Name**
 `type` | **Description** ||
 || **entityTypeId***
-[`integer`][1] | Identifier of the [system](./../../index.md) or [user-defined type](./../user-defined-object-types/index.md) of the CRM entity from which the funnel will be deleted   ||
+[`integer`][1] | Identifier of the [system](./../../index.md) or [user-defined type](./../user-defined-object-types/index.md) of the CRM object from which the funnel will be deleted   ||
 || **id***
 [`integer`][1] | Identifier of the funnel to be deleted. Can be obtained using the [`crm.category.list`](./crm-category-list.md) method or when creating a funnel with the [`crm.category.add`](./crm-category-add.md) method ||
 |#

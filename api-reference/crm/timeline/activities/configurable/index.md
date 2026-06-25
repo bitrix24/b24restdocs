@@ -29,7 +29,7 @@ Configurable activities are a type of activity that can only be created from the
 || [crm.activity.configurable.update](./crm-activity-configurable-update.md) | Updates a configurable activity ||
 || [crm.activity.configurable.get](./crm-activity-configurable-get.md) | Retrieves information about the activity ||
 || [crm.activity.delete](../activity-base/crm-activity-delete.md) | Deletes a configurable activity by its identifier ||
-|| [crm.activity.list](../activity-base/crm-activity-list.md) | Retrieves a list of all configurable activities for a CRM entity filtered by `PROVIDER_ID` = `CONFIGURABLE_REST_APP` ||
+|| [crm.activity.list](../activity-base/crm-activity-list.md) | Retrieves a list of all configurable activities for a CRM object filtered by `PROVIDER_ID` = `CONFIGURABLE_REST_APP` ||
 |#
 
 {% note warning %}

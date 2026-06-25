@@ -10,11 +10,11 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: any user
 
-This method updates a custom field in the requisite template.
+Updates a custom field in the specified template.
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -24,9 +24,9 @@ This method updates a custom field in the requisite template.
 
 Identifiers of custom fields in the requisite template can be obtained using the [crm.requisite.preset.field.list](./crm-requisite-preset-field-list.md) method. ||
 || **preset***
-[`object`](../../../../data-types.md) | An object containing the identifier of the template to which the custom field is added (e.g., `{"ID": 27}`). 
+[`object`](../../../../data-types.md) | An object containing the identifier of the template to which the custom field is added (e.g., `{"ID": 27}`).
 
-Template identifiers can be obtained using the [crm.requisite.preset.list](../crm-requisite-preset-list.md) method. ||
+Template identifiers can be obtained using the method [crm.requisite.preset.list](../crm-requisite-preset-list.md) ||
 || **fields***
 [`object`](../../../../data-types.md) | An object with fields and their values that need to be updated. The [crm.requisite.preset.field.fields](./crm-requisite-preset-field-fields.md) method allows you to get the description of the fields that can be modified. 
 
@@ -35,23 +35,24 @@ The API requires a value to be specified in the **FIELD_NAME** field. If it does
 
 ### Parameter fields
 
-{% include [Note on required parameters](../../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../../_includes/required.md) %}
 
 #|
 ||  **Name**
 `type` | **Description** ||
 || **FIELD_NAME***
-[`string`](../../../../data-types.md) | Name of the field. 
+[`string`](../../../../data-types.md) | Field name. 
 
-The API requires a value to be specified in this field. If it does not need to be changed, the current value can be specified. ||
+The API requires specifying a value in this field. If it does not need to be changed, you can specify the current ||
 || **FIELD_TITLE**
-[`string`](../../../../data-types.md) | Alternative name of the field for the requisite.
+[`string`](../../../../data-types.md) | An alternative name for the field in the requisite.
 
-The alternative name is displayed in various forms for filling out requisites. Depending on the specific form, the alternative name may or may not be used. ||
+The alternative name is displayed in various forms for filling out requisites. Depending on the specific form, the alternative name may or may not be used 
+||
 || **SORT**
-[`integer`](../../../../data-types.md) | Sorting. Order in the list of template fields. ||
+[`integer`](../../../../data-types.md) | Sorting. The order in the list of template fields ||
 || **IN_SHORT_LIST**
-[`char`](../../../../data-types.md) | Show in the short list. Deprecated field, currently not used. Retained for backward compatibility. Can take values `Y` or `N`. ||
+[`char`](../../../../data-types.md) | Show in the short list. Deprecated field, currently not used. Retained for backward compatibility. Can take values `Y` or `N` ||
 |#
 
 ## Code Examples
@@ -191,7 +192,7 @@ The alternative name is displayed in various forms for filling out requisites. D
             ->getResult();
     
         echo 'Success: ' . print_r($result, true);
-        // Your logic for processing data
+        // The data processing logic you need
         processData($result);
     
     } catch (Throwable $e) {
@@ -200,21 +201,58 @@ The alternative name is displayed in various forms for filling out requisites. D
     }
     ```
 
+- Python
+
+    Example
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.requisite.preset.field.update(
+            bitrix_id=1,
+            preset={
+                "ID": 27,
+            },
+            fields={
+                "FIELD_NAME": "RQ_NAME",
+                "FIELD_TITLE": "Name",
+                "IN_SHORT_LIST": "Y",
+            },
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - BX24.js
 
     ```js
     BX24.callMethod(
         "crm.requisite.preset.field.update",
         {
-            ID: 1,          // Identifier of the custom field to be updated
+            ID: 1,          // Custom field ID to be changed
             preset:
             {
-                "ID": 27    // Identifier of the requisite template
+                "ID": 27    // Requisition template ID
             },
-            fields:         // Values of the fields to be updated
+            fields:         // Field values to be changed
             {
                 "FIELD_NAME": "RQ_NAME",    // The API requires a value to be specified in this field. If
-                                            // the value does not need to be changed, keep the current one.
+                                            // no change is needed, leave the previous value.
                 "FIELD_TITLE": "Name",
                 "IN_SHORT_LIST": "Y",
             }
@@ -258,7 +296,7 @@ The alternative name is displayed in various forms for filling out requisites. D
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -286,12 +324,12 @@ HTTP Status: **200**
 - `false` — not updated 
 ||
 || **time**
-[`time`](../../../data-types.md) | Information about the execution time of the request ||
+[`time`](../../../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-HTTP Status: **40x**, **50x**
+HTTP status: **40x**, **50x**
 
 ```json
 {
@@ -300,19 +338,19 @@ HTTP Status: **40x**, **50x**
 }
 ```
 
-{% include notitle [error handling](../../../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
-#|  
+#|
 || **Code** | **Description** ||
 || `The PresetField with ID '1' is not found` | The field with the specified identifier was not found. ||
-|| `The Preset with ID '27' is not found` | The template with the specified identifier was not found. ||
+|| `The Preset with ID '27' is not found` | Template with the specified identifier not found ||
 || `ID is not defined or invalid` | The field identifier is not specified or has an invalid value. ||
 || `Access denied` | Insufficient access permissions to delete the field from the requisite template. ||
 |#
 
-{% include [system errors](../../../../../_includes/system-errors.md) %}
+{% include [System errors](../../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

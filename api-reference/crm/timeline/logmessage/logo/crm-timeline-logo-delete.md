@@ -1,4 +1,4 @@
-# Delete logo crm.timeline.logo.delete
+# Delete Logo crm.timeline.logo.delete
 
 {% note tip "" %}
 
@@ -8,13 +8,13 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
-> Who can execute the method: `administrator`
+> Who can execute the method: administrator
 
-This method deletes the logo.
+Deletes the logo.
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -166,6 +166,35 @@ You can get a list of all available codes using the method [`crm.timeline.logo.l
     );
     ```
 
+- Python
+
+    Example
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.timeline.logo.delete(
+            code="info",
+        )
+        result = bitrix_response.response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - PHP CRest
 
     ```php
@@ -211,7 +240,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../../../data-types.md) | Operation result. Returns:
+[`boolean`](../../../../data-types.md) | Result of the operation. Returns:
 
 - `true` — on successful deletion
 - `null` — on error 
@@ -231,7 +260,7 @@ HTTP status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
@@ -239,13 +268,13 @@ HTTP status: **400**
 || **Code** | **Description** ||
 || `ACCESS_DENIED` | Access denied ||
 || `NOT_FOUND` | Logo with the specified `code` does not exist ||
-|| `100` | Required fields not provided ||
+|| `100` | Required fields are not provided ||
 || `0` | Other errors (e.g., fatal) ||
 |#
 
-{% include [system errors](../../../../../_includes/system-errors.md) %}
+{% include [System errors](../../../../../_includes/system-errors.md) %}
 
-## Continue Learning 
+## Continue Learning
 
 - [{#T}](./crm-timeline-logo-add.md)
 - [{#T}](./crm-timeline-logo-get.md)

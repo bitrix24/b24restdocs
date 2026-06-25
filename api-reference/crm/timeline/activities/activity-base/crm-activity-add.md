@@ -58,13 +58,13 @@ There is an additional field `DISABLE_SENDING_MESSAGE_COPY`. It is intended to f
 #|
 || **Field** `type` | **Description** ||
 || **OWNER_ID***
-[`integer`](../../../data-types.md) | Identifier of the CRM entity ||
+[`integer`](../../../data-types.md) | Identifier of the CRM object ||
 || **OWNER_TYPE_ID***
 [`integer`](../../../data-types.md) | [Identifier of the CRM object type](../../../data-types.md#object_type) ||
 || **TYPE_ID***
 [`crm_enum_activitytype`](../../../data-types.md) | Type of the activity. To get available activity types, use the method [crm.enum.activitytype](../../../auxiliary/enum/outdated/crm-enum-activity-type.md). 
 
-To create an activity with the type "task", use the [creation](../../../../tasks/tasks-task-add.md) or [modification](../../../../tasks/tasks-task-update.md) method and specify the CRM entity in the `UF_CRM_TASK` field ||
+To create an activity with the type "task", use the [creation](../../../../tasks/tasks-task-add.md) or [modification](../../../../tasks/tasks-task-update.md) method and specify the CRM object in the `UF_CRM_TASK` field ||
 || **ASSOCIATED_ENTITY_ID**
 [`integer`](../../../../data-types.md) | Identifier of the entity associated with the activity ||
 || **COMMUNICATIONS***

@@ -22,7 +22,7 @@ This method retrieves existing currency localizations.
 
 Corresponds to the ISO 4217 standard.
 
-The identifier can be obtained using the [crm.currency.list](../crm-currency-list.md) method
+The identifier can be obtained using the [crm.currency.list](../crm-currency-list.md) method.
  ||
 |#
 
@@ -79,7 +79,7 @@ The identifier can be obtained using the [crm.currency.list](../crm-currency-lis
       const response = await $b24.actions.v2.call.make<CrmCurrencyLocalizations>({
         method: 'crm.currency.localizations.get',
         params: {
-          id: 'RUB',
+          id: 'USD',
         },
         requestId: Text.getUuidRfc4122()
       })
@@ -111,7 +111,7 @@ The identifier can be obtained using the [crm.currency.list](../crm-currency-lis
           const response = await $b24.actions.v2.call.make({
             method: 'crm.currency.localizations.get',
             params: {
-              id: 'RUB',
+              id: 'USD',
             },
             requestId: B24Js.Text.getUuidRfc4122()
           })
@@ -157,6 +157,31 @@ The identifier can be obtained using the [crm.currency.list](../crm-currency-lis
         error_log($e->getMessage());
         echo 'Error getting currency localizations: ' . $e->getMessage();
     }
+    ```
+
+- Python
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.currency.localizations.get(bitrix_id="USD").response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
     ```
 
 - BX24.js
@@ -208,7 +233,7 @@ The identifier can be obtained using the [crm.currency.list](../crm-currency-lis
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -257,7 +282,7 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -266,19 +291,19 @@ HTTP Status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
 || **Code** | **Description** | **Value** ||
-|| Empty string | Access denied. | Insufficient access permissions ||
+|| Empty string | Access denied. | Insufficient access rights. ||
 || Empty string | The parameter id is invalid or not defined. | Empty currency identifier ||
 |#
 
-{% include [system errors](../../../../_includes/system-errors.md) %}
+{% include [System errors](../../../../_includes/system-errors.md) %}
 
-## Continue Learning 
+## Continue Learning
 
 - [{#T}](./crm-currency-localizations-set.md)
 - [{#T}](./crm-currency-localizations-delete.md)

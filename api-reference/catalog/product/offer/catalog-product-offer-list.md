@@ -636,7 +636,7 @@ HTTP status: **200**
                 },
                 "previewText": null,
                 "previewTextType": "text",
-                "purchasingCurrency": "RUB",
+                "purchasingCurrency": "USD",
                 "purchasingPrice": 1000,
                 "quantity": 10,
                 "quantityReserved": 1,

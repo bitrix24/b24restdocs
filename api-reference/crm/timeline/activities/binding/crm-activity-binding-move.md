@@ -1,4 +1,4 @@
-# Update the Deal's Connection with the CRM Entity crm.activity.binding.move
+# Update the Deal's Connection with the CRM object crm.activity.binding.move
 
 {% note tip "" %}
 
@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: a user with editing access permission for CRM entities
 
-The method `crm.activity.binding.move` updates the connection of a deal with a CRM entity.
+The method `crm.activity.binding.move` updates the connection of a deal with a CRM object.
 
 ## Method Parameters
 
@@ -24,11 +24,11 @@ The method `crm.activity.binding.move` updates the connection of a deal with a C
 || **sourceEntityTypeId*** 
 [`integer`](../../../../data-types.md) | [Identifier of the CRM object type](../../../data-types.md#object_type) to which the deal is linked, for example, `2` for a deal ||
 || **sourceEntityId*** 
-[`integer`](../../../../data-types.md) | The identifier of the CRM entity to which the deal is linked, for example, `1` ||
+[`integer`](../../../../data-types.md) | The identifier of the CRM object to which the deal is linked, for example, `1` ||
 || **targetEntityTypeId*** 
 [`integer`](../../../../data-types.md) | [Identifier of the CRM object type](../../../data-types.md#object_type) to which the deal should be linked, for example, `2` for a deal ||
 || **targetEntityId*** 
-[`integer`](../../../../data-types.md) | The identifier of the CRM entity to which the deal should be linked, for example, `100` ||
+[`integer`](../../../../data-types.md) | The identifier of the CRM object to which the deal should be linked, for example, `100` ||
 |#
 
 ## Code Examples

@@ -20,7 +20,7 @@ The method returns a list of order bindings to CRM entities.
 || **select**
 [`array`](../../../data-types.md) | An array of fields to select (see fields of the [crm_orderentity](../../data-types.md#crm_orderentity) object).
 
-If the array is not provided or an empty array is passed, all available fields of the order binding to the CRM entity will be selected.
+If the array is not provided or an empty array is passed, all available fields of the order binding to the CRM object will be selected.
 ||
 || **filter**
 [`object`](../../../data-types.md) | An object for filtering selected records in the format `{"field_1": "value_1", ... "field_N": "value_N"}`.

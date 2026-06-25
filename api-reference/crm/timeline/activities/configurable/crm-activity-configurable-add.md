@@ -26,7 +26,7 @@ The method can only be called in the context of an [application](https://helpdes
 || **Name**
 `type` | **Description** ||
 || **ownerTypeId***
-[`integer`](../../../../data-types.md) | Integer identifier of the [CRM entity type](../../../data-types.md#object_type) in which the activity is created, for example `2` for a deal ||
+[`integer`](../../../../data-types.md) | Integer identifier of the [CRM object type](../../../data-types.md#object_type) in which the activity is created, for example `2` for a deal ||
 || **ownerId***
 [`integer`](../../../../data-types.md) | Integer identifier of the CRM element in which the activity is created, for example `1` ||
 || **fields***

@@ -14,20 +14,20 @@ The method `crm.quote.userfield.get` returns a custom field of estimates by its 
 
 ## Method Parameters
 
-{% include [Footnote on parameters](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`](../../../data-types.md) | Identifier of the custom field associated with the estimate.
+[`integer`](../../../data-types.md) | Identifier of the custom field associated with the quote.
 
 The identifier can be obtained using the methods [crm.quote.userfield.add](./crm-quote-user-field-add.md) or [crm.quote.userfield.list](./crm-quote-user-field-list.md) ||
 |#
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -212,11 +212,36 @@ The identifier can be obtained using the methods [crm.quote.userfield.add](./crm
     echo '</PRE>';
     ```
 
+- Python
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.quote.userfield.get(bitrix_id=399).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 {% endlist %}
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -239,7 +264,7 @@ HTTP Status: **200**
             "REGEXP": "",
             "MIN_LENGTH": 0,
             "MAX_LENGTH": 0,
-            "DEFAULT_VALUE": "Hello, World! Default value (changed)"
+            "DEFAULT_VALUE": "Hello, world! Default value (changed)"
         },
         "EDIT_FORM_LABEL": {
             "ar": "",
@@ -256,7 +281,6 @@ HTTP Status: **200**
             "la": "",
             "ms": "",
             "pl": "",
-            "ru": "",
             "sc": "",
             "tc": "",
             "th": "",
@@ -279,7 +303,6 @@ HTTP Status: **200**
             "la": "",
             "ms": "",
             "pl": "",
-            "ru": "",
             "sc": "",
             "tc": "",
             "th": "",
@@ -288,27 +311,26 @@ HTTP Status: **200**
             "vn": ""
         },
         "LIST_FILTER_LABEL": {
-            "ar": "Hello, World! Column (changed)",
-            "br": "Hello, World! Column (changed)",
-            "de": "Hello, World! Column (changed)",
-            "en": "Hello, World! Column (changed)",
-            "fr": "Hello, World! Column (changed)",
-            "hi": "Hello, World! Column (changed)",
-            "id": "Hello, World! Column (changed)",
-            "in": "Hello, World! Column (changed)",
-            "it": "Hello, World! Column (changed)",
-            "ja": "Hello, World! Column (changed)",
-            "kz": "Hello, World! Column (changed)",
-            "la": "Hello, World! Column (changed)",
-            "ms": "Hello, World! Column (changed)",
-            "pl": "Hello, World! Column (changed)",
-            "ru": "Hello, World! Column (changed)",
-            "sc": "Hello, World! Column (changed)",
-            "tc": "Hello, World! Column (changed)",
-            "th": "Hello, World! Column (changed)",
-            "tr": "Hello, World! Column (changed)",
-            "ua": "Hello, World! Column (changed)",
-            "vn": "Hello, World! Column (changed)"
+            "ar": "Hello, world! Filter (changed)",
+            "br": "Hello, world! Filter (changed)",
+            "de": "Hello, world! Filter (changed)",
+            "en": "Hello, world! Filter (changed)",
+            "fr": "Hello, world! Filter (changed)",
+            "hi": "Hello, world! Filter (changed)",
+            "id": "Hello, world! Filter (changed)",
+            "in": "Hello, world! Filter (changed)",
+            "it": "Hello, world! Filter (changed)",
+            "ja": "Hello, world! Filter (changed)",
+            "kz": "Hello, world! Filter (changed)",
+            "la": "Hello, world! Filter (changed)",
+            "ms": "Hello, world! Filter (changed)",
+            "pl": "Hello, world! Filter (changed)",
+            "sc": "Hello, world! Filter (changed)",
+            "tc": "Hello, world! Filter (changed)",
+            "th": "Hello, world! Filter (changed)",
+            "tr": "Hello, world! Filter (changed)",
+            "ua": "Hello, world! Filter (changed)",
+            "vn": "Hello, world! Filter (changed)"
         },
         "ERROR_MESSAGE": {
             "ar": "",
@@ -325,7 +347,6 @@ HTTP Status: **200**
             "la": "",
             "ms": "",
             "pl": "",
-            "ru": "",
             "sc": "",
             "tc": "",
             "th": "",
@@ -348,7 +369,6 @@ HTTP Status: **200**
             "la": "",
             "ms": "",
             "pl": "",
-            "ru": "",
             "sc": "",
             "tc": "",
             "th": "",
@@ -362,8 +382,8 @@ HTTP Status: **200**
         "finish": 1753790529.487882,
         "duration": 0.05694580078125,
         "processing": 0.0039789676666259766,
-        "date_start": "2025-07-29T15:02:09+02:00",
-        "date_finish": "2025-07-29T15:02:09+02:00",
+        "date_start": "2025-07-29T15:02:09+03:00",
+        "date_finish": "2025-07-29T15:02:09+03:00",
         "operating_reset_at": 1753791129,
         "operating": 0
     }
@@ -376,14 +396,14 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../../data-types.md) | The root element of the response, contains information about the fields of the custom field. The final list of fields depends on the field type; detailed descriptions of the fields can be found in the method [crm.quote.userfield.add](./crm-quote-user-field-add.md) ||
+[`object`](../../../data-types.md) | The root element of the response, contains information about the fields of the custom field. The final list of fields depends on the field type; detailed descriptions of the fields can be found in the method [crm.quote.userfield.add](./crm-quote-user-field-add.md)||
 || **time**
 [`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -392,7 +412,7 @@ HTTP Status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
@@ -401,10 +421,10 @@ HTTP Status: **400**
 || `403` | Access denied | Occurs when:
 - the user does not have read access to estimates
 - the user attempts to retrieve a custom field not associated with estimates ||
-|| `400` | ID is not defined or invalid | The provided `id` is less than or equal to zero, or is not provided at all ||
+|| `400` | ID is not defined or invalid | The provided `id` is less than or equal to zero, or not provided at all ||
 || `ERROR_NOT_FOUND` | The entity with ID 'id' is not found | The custom field with the provided `id` was not found ||
 |#
-{% include [system errors](../../../../_includes/system-errors.md) %}
+{% include [System errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
@@ -412,3 +432,12 @@ HTTP Status: **400**
 - [{#T}](./crm-quote-user-field-update.md)
 - [{#T}](./crm-quote-user-field-list.md)
 - [{#T}](./crm-quote-user-field-delete.md)
+
+
+
+
+
+
+
+
+

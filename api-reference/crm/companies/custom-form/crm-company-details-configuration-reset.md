@@ -8,7 +8,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute this method:
+> Who can execute the method:
 >  - any user can reset their own settings,
 >  - a user with the "Allow changing settings" access permission in CRM can reset both general and other users' settings.
 
@@ -22,7 +22,7 @@ The method `crm.company.details.configuration.reset` resets the settings of comp
 
 ## Method Parameters
 
-{% include [Required Parameters Note](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -32,12 +32,12 @@ The method `crm.company.details.configuration.reset` resets the settings of comp
 
 Possible values:
 - `P` — personal settings
-- `C` — general settings
+- `C` — shared settings
 
 Default is `P`
 ||
 || **userId**
-[`user`](../../../data-types.md) | The user identifier, which can be obtained using the [user.get](../../../user/user-get.md) method. Required only when resetting personal settings.
+[`user`](../../../data-types.md) |  The user identifier, which can be obtained using the [user.get](../../../user/user-get.md) method. Required only when resetting personal settings.
 
 If not specified, the `id` of the current user is used.
 ||
@@ -45,7 +45,7 @@ If not specified, the `id` of the current user is used.
 
 ## Code Examples
 
-{% include [Examples Note](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 1. Reset Personal Card Settings
 
@@ -333,6 +333,35 @@ If not specified, the `id` of the current user is used.
         }
         ```
 
+    - Python
+
+        Example
+
+        ```python
+        from b24pysdk.client import BaseClient
+        from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+        client: BaseClient
+
+        try:
+            bitrix_response = client.crm.company.details.configuration.reset(
+                scope="C",
+            ).response
+            result = bitrix_response.result
+            print(result)
+        except BitrixAPIError as error:
+            print(
+                "Bitrix API Error",
+                f"error: {error.error}",
+                f"error_description: {error.error_description}",
+                sep="\n",
+            )
+        except BitrixSDKException as error:
+            print(f"Bitrix SDK Error: {error.message}")
+        except Exception as error:
+            print(f"Unexpected Error: {error}")
+        ```
+
     - BX24.js
 
         ```js
@@ -372,7 +401,7 @@ If not specified, the `id` of the current user is used.
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -382,8 +411,8 @@ HTTP Status: **200**
         "finish": 1769420530.756109,
         "duration": 0.7561089992523193,
         "processing": 0,
-        "date_start": "2026-01-26T12:42:10+01:00",
-        "date_finish": "2026-01-26T12:42:10+01:00",
+        "date_start": "2026-01-26T12:42:10+03:00",
+        "date_finish": "2026-01-26T12:42:10+03:00",
         "operating_reset_at": 1769421130,
         "operating": 0
     }
@@ -405,7 +434,7 @@ Returns `true` if the settings were successfully reset ||
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -414,7 +443,7 @@ HTTP Status: **400**
 }
 ```
 
-{% include notitle [Error Handling](../../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
@@ -423,9 +452,9 @@ HTTP Status: **400**
 || `-` | `Access denied` | The user does not have permission to reset settings ||
 |#
 
-{% include [System Errors](../../../../_includes/system-errors.md) %}
+{% include [System errors](../../../../_includes/system-errors.md) %}
 
-## Continue Learning 
+## Continue Learning
 
 - [{#T}](./index.md)
 - [{#T}](./crm-company-details-configuration-get.md)

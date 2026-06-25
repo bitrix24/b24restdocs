@@ -1,4 +1,4 @@
-# Get a set of companies associated with the specified contact crm.contact.company.items.get
+# Get a Set of Companies Associated with the Specified Contact crm.contact.company.items.get
 
 {% note tip "" %}
 
@@ -14,7 +14,7 @@ The method `crm.contact.company.items.get` returns a set of companies associated
 
 ## Method Parameters
 
-{% include [Footnote about parameters](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -27,7 +27,7 @@ The identifier can be obtained using the methods [crm.contact.list](../crm-conta
 
 ## Code Examples
 
-{% include [Footnote about examples](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 Example of retrieving all associated companies for a contact with `id = 54`
 
@@ -159,6 +159,35 @@ Example of retrieving all associated companies for a contact with `id = 54`
     }
     ```
 
+- Python
+
+    Example
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.contact.company.items.get(
+            bitrix_id=54,
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - BX24.js
 
     ```js
@@ -240,18 +269,18 @@ HTTP status: **200**
 || **result**
 [`contact_company_binding[]`](#contact_company_binding) | Root element of the response. Contains an array with information about the companies associated with the contact ||
 || **time**
-[`time`][1] | Information about the execution time of the request ||
+[`time`][1] | Information about the request execution time ||
 |#
 
-### Parameter contact_company_binding {#contact_company_binding}
+### Parameter Contact_Company_Binding {#contact_company_binding}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **COMPANY_ID**
-[`integer`][1] | Identifier of the company ||
+[`integer`][1] | Company identifier ||
 || **SORT**
-[`integer`][1] | Sort index ||
+[`integer`][1] | Sorting index ||
 || **ROLE_ID**
 [`integer`][1] | Identifier of the role (reserved) ||
 || **IS_PRIMARY**
@@ -271,17 +300,17 @@ HTTP status: **200**
 }
 ```
 
-{% include notitle [error handling](../../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `-`     | `The parameter 'ownerEntityID' is invalid or not defined` | The provided `id` is less than 0 or not provided at all ||
+|| `-`     | `The parameter 'ownerEntityID' is invalid or not defined` | The `id` is less than 0 or not provided at all ||
 || `ACCESS_DENIED` | `Access denied!` | The user does not have permission to read contacts ||
 |#
 
-{% include [system errors](../../../../_includes/system-errors.md) %}
+{% include [System errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

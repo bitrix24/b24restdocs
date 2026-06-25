@@ -10,17 +10,17 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: any user
 
-This method updates an existing custom field of the requisite.
+Updates an existing custom field of the company details.
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`](../../../data-types.md) | Identifier of the custom field. Can be obtained using the method [crm.requisite.userfield.list](./crm-requisite-userfield-list.md) ||
+[`integer`](../../../data-types.md) | Identifier of the user field. Can be obtained using the method [crm.requisite.userfield.list](./crm-requisite-userfield-list.md) ||
 || **fields***
 [`object`](../../../data-types.md) | Set of fields — an object of the form `{"field": "value"[, ...]}`, the values of which need to be changed ||
 |#
@@ -31,18 +31,18 @@ This method updates an existing custom field of the requisite.
 || **Name**
 `type` | **Description** ||
 || **XML_ID**
-[`string`](../../../data-types.md) | External key. Used for data exchange operations. Identifier of the object in the external information base. 
+[`string`](../../../data-types.md) | External key. Used for exchange operations. Identifier of the object in the external information base. 
 
 The purpose of the field may change by the final developer ||
 || **SORT**
 [`integer`](../../../data-types.md) | Sorting ||
 || **MULTIPLE**
-[`char`](../../../data-types.md) | Multiplicity indicator. Possible values:
+[`char`](../../../data-types.md) | Indicator of multiplicity. Possible values:
 - `Y` — yes
 - `N` — no 
 ||
 || **MANDATORY**
-[`char`](../../../data-types.md) | Mandatory indicator. Possible values:
+[`char`](../../../data-types.md) | Indicator of mandatory status. Possible values:
 - `Y` — yes
 - `N` — no 
 ||
@@ -54,17 +54,17 @@ The purpose of the field may change by the final developer ||
 - `S` — substring 
 ||
 || **SHOW_IN_LIST**
-[`char`](../../../data-types.md) | Show in the list. Possible values:
+[`char`](../../../data-types.md) | Whether to show in the list. Possible values:
 - `Y` — yes
 - `N` — no 
 ||
 || **EDIT_IN_LIST**
-[`char`](../../../data-types.md) | Allow user editing. Possible values:
+[`char`](../../../data-types.md) | Allow user editing? Possible values:
 - `Y` — yes
 - `N` — no 
 ||
 || **IS_SEARCHABLE**
-[`char`](../../../data-types.md) | Are field values included in the search. Possible values:
+[`char`](../../../data-types.md) | Whether the field values participate in search. Possible values:
 - `Y` — yes
 - `N` — no 
 ||
@@ -79,14 +79,14 @@ The purpose of the field may change by the final developer ||
 || **HELP_MESSAGE**
 [`string`](../../../data-types.md) | Help ||
 || **LIST**
-[`uf_enum_element`](../../../data-types.md) | List elements. For more details, see the section [{#T}](../../universal/user-defined-fields/crm-userfield-enumeration-fields.md) ||
+[`uf_enum_element`](../../../data-types.md) | List elements. For detailed information, see the section [{#T}](../../universal/user-defined-fields/crm-userfield-enumeration-fields.md) ||
 || **SETTINGS**
-[`object`](../../../data-types.md) | Additional settings (dependent on type). For more details, see the section [{#T}](../../universal/user-defined-fields/crm-userfield-settings-fields.md) ||
+[`object`](../../../data-types.md) | Additional settings (dependent on type). For detailed information, see the section [{#T}](../../universal/user-defined-fields/crm-userfield-settings-fields.md) ||
 |#
 
 ## Code Examples
 
-{% include [Note on Examples](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -225,6 +225,40 @@ The purpose of the field may change by the final developer ||
     }
     ```
 
+- Python
+
+    Example
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.requisite.userfield.update(
+            bitrix_id=235,
+            fields={
+                "EDIT_FORM_LABEL": "Category",
+                "LIST_COLUMN_LABEL": "Category",
+                "LIST_FILTER_LABEL": "Category",
+            },
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - BX24.js
 
     ```js
@@ -281,7 +315,7 @@ The purpose of the field may change by the final developer ||
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -314,7 +348,7 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **40x**, **50x**
+HTTP status: **40x**, **50x**
 
 ```json
 {
@@ -323,21 +357,21 @@ HTTP Status: **40x**, **50x**
 }
 ```
 
-{% include notitle [error handling](../../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Errors
 
-#|  
-|| **Code** | **Error Text** | **Description** ||
-|| Empty string | `Operation is not allowed. Entity ID is not defined` | Custom field with the specified identifier not found ||
-|| Empty string | `The entity with ID '235' is not found` | Custom field with the specified identifier not found ||
-|| Empty string | `ID is not defined or invalid` | Identifier of the custom field is not specified or has an invalid value ||
+#|
+|| **Code** | **Error text** | **Description** ||
+|| Empty string | `Operation is not allowed. Entity ID is not defined` | The user field with the specified identifier was not found ||
+|| Empty string | `The entity with ID '235' is not found` | The user field with the specified identifier was not found ||
+|| Empty string | `ID is not defined or invalid` | The identifier of the user field is not specified or has an invalid value ||
 || Empty string | `Access denied` | Insufficient access rights to modify the custom field ||
 || `ERROR_CORE` | `Fail to update user field` |  Failed to update the custom field ||
-|| `ERROR_CORE` | `Fail to save enumeration field values` | Failed to save values of the list-type custom field (e.g., when a duplicate external key of one of the values occurred) ||
+|| `ERROR_CORE` | `Fail to save enumeration field values` | Failed to save values for the custom list-type field (e.g., when there is a duplication of the external key of one of the values) ||
 |#
 
-{% include [system errors](../../../../_includes/system-errors.md) %}
+{% include [System errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

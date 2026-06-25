@@ -149,8 +149,8 @@ Examples:
         method: 'documentgenerator.region.add',
         params: {
           fields: {
-            title: 'Russia (Custom)',
-            languageId: 'ru',
+            title: 'Germany (Custom)',
+            languageId: 'de',
             formatDate: 'DD.MM.YYYY',
             formatDatetime: 'DD.MM.YYYY HH:MI:SS',
             formatName: '#LAST_NAME# #NAME# #SECOND_NAME#',
@@ -191,8 +191,8 @@ Examples:
             method: 'documentgenerator.region.add',
             params: {
               fields: {
-                title: 'Russia (Custom)',
-                languageId: 'ru',
+                title: 'Germany (Custom)',
+                languageId: 'de',
                 formatDate: 'DD.MM.YYYY',
                 formatDatetime: 'DD.MM.YYYY HH:MI:SS',
                 formatName: '#LAST_NAME# #NAME# #SECOND_NAME#',

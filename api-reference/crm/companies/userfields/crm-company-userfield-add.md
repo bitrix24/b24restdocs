@@ -14,7 +14,7 @@ The method `crm.company.userfield.add` creates a new custom field for companies.
 
 ## Method Parameters
 
-{% include [Parameter Notes](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -40,7 +40,7 @@ An incorrect field in `fields` will be ignored ||
 
 ### Parameter fields {#parameter-fields}
 
-{% include [Parameter Notes](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -102,9 +102,9 @@ When a `lang_map` type value is provided, the value from `LABEL` will be set for
 
 By default, the value passed in `LABEL` is set for all language identifiers ||
 || **ERROR_MESSAGE**
-[`string`](../../../data-types.md)\|[`lang_map`](../../data-types.md#lang-ids) | Error message ||
+[`string`](../../../data-types.md)\|[`lang_map`](../../data-types.md#lang-ids) | Error message||
 || **HELP_MESSAGE**
-[`string`](../../../data-types.md)\|[`lang_map`](../../data-types.md#lang-ids) | Help ||
+[`string`](../../../data-types.md)\|[`lang_map`](../../data-types.md#lang-ids) | Help||
 || **MULTIPLE**
 [`boolean`](../../../data-types.md) | Is the field multiple. Possible values:
 - `Y` — yes
@@ -165,7 +165,7 @@ By default `N` ||
 
 ### Parameter SETTINGS {#settings}
 
-Each type of custom fields has its own set of additional settings. This method only supports those described below.
+Each type of custom field has its own set of additional settings. This method only supports those described below.
 
 {% list tabs %}
 
@@ -177,11 +177,11 @@ Each type of custom fields has its own set of additional settings. This method o
     || **DEFAULT_VALUE**
     [`string`](../../../data-types.md) | Default value.
 
-    By default `''` ||
+    Default `''` ||
     || **ROWS**
-    [`integer`](../../../data-types.md) | Number of rows in the input field. Must be greater than 0.
+    [`integer`](../../../data-types.md) | Number of lines in the input field. Must be greater than 0.
 
-    By default `1` ||
+    Default `1` ||
     |#
 
 - integer
@@ -203,7 +203,7 @@ Each type of custom fields has its own set of additional settings. This method o
     || **PRECISION**
     [`integer`](../../../data-types.md) | Number precision. Must be greater than or equal to 0.
 
-    By default `2` ||
+    Default `2` ||
     |#
 
 - boolean
@@ -212,20 +212,20 @@ Each type of custom fields has its own set of additional settings. This method o
     || **Name**
     `type` | **Description** ||
     || **DEFAULT_VALUE**
-    [`integer`](../../../data-types.md) | Default value, where `1` — yes, `0` — no.
+    [`integer`](../../../data-types.md) | Default value, where `1` is yes, `0` is no.
 
     Possible values:
     - `>= 1` -> 1
     - `<= 0` -> 0
 
-    By default `0` ||
+    Default `0` ||
     || **DISPLAY**
     [`string`](../../../data-types.md) | Appearance. Possible values:
     - `CHECKBOX` — checkbox
     - `RADIO` — radio buttons
     - `DROPDOWN` — dropdown list
 
-    By default `CHECKBOX` ||
+    Default `CHECKBOX` ||
     |#
 
 - date|datetime
@@ -244,10 +244,10 @@ Each type of custom fields has its own set of additional settings. This method o
     ```
     where:
     - `VALUE` — default value of type `datetime` or `date`
-    - `TYPE` — type of the default value:
+    - `TYPE` — default value type:
       - `NONE` — do not set a default value
-      - `NOW` — use the current time/date
-      - `FIXED` — use the time/date from `VALUE`
+      - `NOW` — use current time/date
+      - `FIXED` — use time/date from `VALUE`
 
     Default value:
     ```
@@ -266,16 +266,16 @@ Each type of custom fields has its own set of additional settings. This method o
     || **DISPLAY**
     [`string`](../../../data-types.md) | Appearance. Possible values:
     - `LIST` — list
-    - `UI` — input list
+    - `UI` — editable list
     - `CHECKBOX` — checkboxes
     - `DIALOG` — entity selection dialog
 
-    By default `LIST` ||
+    Default `LIST` ||
     || **LIST_HEIGHT** | List height. Must be greater than 0.
 
     Available only when `DISPLAY = LIST` or `DISPLAY = UI`.
 
-    By default `1` ||
+    Default `1` ||
     |#
 
 - iblock_section|iblock_element
@@ -284,35 +284,35 @@ Each type of custom fields has its own set of additional settings. This method o
     || **Name**
     `type` | **Description** ||
     || **IBLOCK_TYPE_ID**
-    [`string`](../../../data-types.md) | Identifier of the information block type.
+    [`string`](../../../data-types.md) | Infoblock type identifier.
 
-    By default `''` ||
+    Default `''` ||
     || **IBLOCK_ID**
-    [`string`](../../../data-types.md) | Identifier of the information block.
+[`string`](../../../data-types.md) | Information block identifier.
 
-    By default `0` ||
+    Default `0` ||
     || **DEFAULT_VALUE**
     [`string`](../../../data-types.md) | Default value.
 
-    By default `''` ||
+    Default `''` ||
     || **DISPLAY**
     [`string`](../../../data-types.md) | Appearance. Possible values:
-    - `DIALOG` — dialog
-    - `UI` — input list
+- `DIALOG` — dialog
+    - `UI` — editable list
     - `LIST` — list
     - `CHECKBOX` — checkboxes
 
-    By default `LIST` ||
+    Default `LIST` ||
     || **LIST_HEIGHT**
-    [`integer`](../../../data-types.md) | List height. Must be greater than 0.
+[`integer`](../../../data-types.md) | List height. Must be greater than 0.
 
-    By default `1` ||
+    Default `1` ||
     || **ACTIVE_FILTER**
-    [`boolean`](../../../data-types.md) | Show elements with the active flag enabled. Possible values:
-    - `Y` — yes
-    - `N` — no
+[`boolean`](../../../data-types.md) | Whether to show elements with the activity flag enabled. Possible values:
+- `Y` — yes
+- `N` — no
 
-    By default `N` ||
+Default `N` ||
     |#
 
 - crm_status
@@ -321,11 +321,11 @@ Each type of custom fields has its own set of additional settings. This method o
     || **Name**
     `type` | **Description** ||
     || **ENTITY_TYPE**
-    [`string`](../../../data-types.md) | Identifier of the directory type.
+[`string`](../../../data-types.md) | Directory type identifier.
 
-    Use [`crm.status.entity.types`](../../status/crm-status-entity-types.md) to find possible values.
+Use [`crm.status.entity.types`](../../status/crm-status-entity-types.md) to find possible values.
 
-    By default `''` ||
+    Default `''` ||
     |#
 
 - crm
@@ -336,29 +336,29 @@ Each type of custom fields has its own set of additional settings. This method o
     || **Name**
     `type` | **Description** ||
     || **LEAD**
-    [`boolean`](../../../data-types.md) | Is the link to [Leads](../../leads/index.md) enabled. Possible values:
-    - `Y` — yes
-    - `N` — no
+[`boolean`](../../../data-types.md) | Whether binding to [Leads](../../leads/index.md) is enabled. Possible values:
+- `Y` — yes
+- `N` — no
 
-    By default `N` ||
+Default `N` ||
     || **CONTACT**
-    [`boolean`](../../../data-types.md) | Is the link to [Contacts](../../contacts/index.md) enabled. Possible values:
-    - `Y` — yes
-    - `N` — no
+[`boolean`](../../../data-types.md) | Whether binding to [Contacts](../../contacts/index.md) is enabled. Possible values:
+- `Y` — yes
+- `N` — no
 
-    By default `N` ||
+Default `N` ||
     || **COMPANY**
-    [`boolean`](../../../data-types.md) | Is the link to [Companies](../index.md) enabled. Possible values:
-    - `Y` — yes
-    - `N` — no
+[`boolean`](../../../data-types.md) | Whether binding to [Companies](../index.md) is enabled. Possible values:
+- `Y` — yes
+- `N` — no
 
-    By default `N` ||
+Default `N` ||
     || **DEAL**
-    [`boolean`](../../../data-types.md) | Is the link to [Deals](../../deals/index.md) enabled. Possible values:
-    - `Y` — yes
-    - `N` — no
+[`boolean`](../../../data-types.md) | Whether binding to [Deals](../../deals/index.md) is enabled. Possible values:
+- `Y` — yes
+- `N` — no
 
-    By default `N` ||
+Default `N` ||
     |#
 
 {% endlist %}
@@ -391,7 +391,7 @@ By default `N` ||
 
 ## Code Examples
 
-{% include [Example Notes](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 ### Example of Creating a Custom Field of Type String
 
@@ -403,7 +403,7 @@ By default `N` ||
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"LABEL":"Field Hello, World!","USER_TYPE_ID":"string","FIELD_NAME":"HELLO_WORLD","MULTIPLE":"Y","MANDATORY":"Y","SHOW_FILTER":"Y","SETTINGS":{"DEFAULT_VALUE":"Hello, World! Default value","ROWS":3},"SORT":1000,"EDIT_IN_LIST":"Y","LIST_FILTER_LABEL":"Hello, World! Filter","LIST_COLUMN_LABEL":{"en":"Hello, World! Column","de":"Hallo, Welt! Spalte"},"EDIT_FORM_LABEL":{"en":"Hello, World! Edit","de":"Hallo, Welt! Bearbeiten"},"ERROR_MESSAGE":{"en":"Hello, World! Error","de":"Hallo, Welt! Fehler"},"HELP_MESSAGE":{"en":"Hello, World! Help","de":"Hallo, Welt! Hilfe"}}}' \
+    -d '{"fields":{"LABEL":"Hello, world! Field","USER_TYPE_ID":"string","FIELD_NAME":"HELLO_WORLD","MULTIPLE":"Y","MANDATORY":"Y","SHOW_FILTER":"Y","SETTINGS":{"DEFAULT_VALUE":"Hello, world! Default value","ROWS":3},"SORT":1000,"EDIT_IN_LIST":"Y","LIST_FILTER_LABEL":"Hello, world! Filter","LIST_COLUMN_LABEL":{"en":"Hello, World! Column","de":"Hello, world! Column","de":"Hallo, Welt! Spalte"},"EDIT_FORM_LABEL":{"en":"Hello, World! Edit","de":"Hello, world! Edit","de":"Hallo, Welt! Bearbeiten"},"ERROR_MESSAGE":{"en":"Hello, World! Error","de":"Hello, world! Error","de":"Hallo, Welt! Fehler"},"HELP_MESSAGE":{"en":"Hello, World! Help","de":"Hello, world! Help","de":"Hallo, Welt! Hilfe"}}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.company.userfield.add
     ```
 
@@ -413,7 +413,7 @@ By default `N` ||
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"LABEL":"Field Hello, World!","USER_TYPE_ID":"string","FIELD_NAME":"HELLO_WORLD","MULTIPLE":"Y","MANDATORY":"Y","SHOW_FILTER":"Y","SETTINGS":{"DEFAULT_VALUE":"Hello, World! Default value","ROWS":3},"SORT":1000,"EDIT_IN_LIST":"Y","LIST_FILTER_LABEL":"Hello, World! Filter","LIST_COLUMN_LABEL":{"en":"Hello, World! Column","de":"Hallo, Welt! Spalte"},"EDIT_FORM_LABEL":{"en":"Hello, World! Edit","de":"Hallo, Welt! Bearbeiten"},"ERROR_MESSAGE":{"en":"Hello, World! Error","de":"Hallo, Welt! Fehler"},"HELP_MESSAGE":{"en":"Hello, World! Help","de":"Hallo, Welt! Hilfe"}},"auth":"**put_access_token_here**"}' \
+    -d '{"fields":{"LABEL":"Hello, world! Field","USER_TYPE_ID":"string","FIELD_NAME":"HELLO_WORLD","MULTIPLE":"Y","MANDATORY":"Y","SHOW_FILTER":"Y","SETTINGS":{"DEFAULT_VALUE":"Hello, world! Default value","ROWS":3},"SORT":1000,"EDIT_IN_LIST":"Y","LIST_FILTER_LABEL":"Hello, world! Filter","LIST_COLUMN_LABEL":{"en":"Hello, World! Column","de":"Hello, world! Column","de":"Hallo, Welt! Spalte"},"EDIT_FORM_LABEL":{"en":"Hello, World! Edit","de":"Hello, world! Edit","de":"Hallo, Welt! Bearbeiten"},"ERROR_MESSAGE":{"en":"Hello, World! Error","de":"Hello, world! Error","de":"Hallo, Welt! Fehler"},"HELP_MESSAGE":{"en":"Hello, World! Help","de":"Hello, world! Help","de":"Hallo, Welt! Hilfe"}},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/crm.company.userfield.add
     ```
 
@@ -558,7 +558,7 @@ By default `N` ||
             'MANDATORY' => 'Y',
             'SHOW_FILTER' => 'Y',
             'EDIT_IN_LIST' => 'Y',
-            'LIST_FILTER_LABEL' => 'Hello, World! Filter',
+            'LIST_FILTER_LABEL' => 'Hello, world! Filter',
             'LIST_COLUMN_LABEL' => [
                 'en' => 'Hello, World! Column',
                 'de' => 'Hallo, Welt! Spalte',
@@ -576,7 +576,7 @@ By default `N` ||
                 'de' => 'Hallo, Welt! Hilfe',
             ],
             'SETTINGS' => [
-                'DEFAULT_VALUE' => 'Hello, World! Default value',
+                'DEFAULT_VALUE' => 'Hello, world! Default value',
                 'ROWS' => 3,
             ],
         ];
@@ -592,6 +592,65 @@ By default `N` ||
     }
     ```
 
+- Python
+
+    Example
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.company.userfield.add(
+            fields={
+                "LABEL": "Hello, world! Field",
+                "USER_TYPE_ID": "string",
+                "FIELD_NAME": "HELLO_WORLD",
+                "MULTIPLE": "Y",
+                "MANDATORY": "Y",
+                "SHOW_FILTER": "Y",
+                "SETTINGS": {
+                    "DEFAULT_VALUE": "Hello, world! Default value",
+                    "ROWS": 3,
+                },
+                "SORT": 1000,
+                "EDIT_IN_LIST": "Y",
+                "LIST_FILTER_LABEL": "Hello, world! Filter",
+                "LIST_COLUMN_LABEL": {
+                    "en": "Hello, World! Column",
+                    "de": "Hallo, Welt! Spalte",
+                },
+                "EDIT_FORM_LABEL": {
+                    "en": "Hello, World! Edit",
+                    "de": "Hallo, Welt! Bearbeiten",
+                },
+                "ERROR_MESSAGE": {
+                    "en": "Hello, World! Error",
+                    "de": "Hallo, Welt! Fehler",
+                },
+                "HELP_MESSAGE": {
+                    "en": "Hello, World! Help",
+                    "de": "Hallo, Welt! Hilfe",
+                },
+            },
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - BX24.js
 
     ```js
@@ -599,14 +658,14 @@ By default `N` ||
         'crm.company.userfield.add',
         {
             fields: {
-                LABEL: 'Field Hello, World!',
+                LABEL: 'Hello, world! Field',
                 USER_TYPE_ID: 'string',
                 FIELD_NAME: 'HELLO_WORLD',
                 MULTIPLE: 'Y',
                 MANDATORY: 'Y',
                 SHOW_FILTER: 'Y',
                 SETTINGS: {
-                    DEFAULT_VALUE: 'Hello, World! Default value',
+                    DEFAULT_VALUE: 'Hello, world! Default value',
                     ROWS: 3,
                 },
                 SORT: 1000,
@@ -630,14 +689,14 @@ By default `N` ||
         'crm.company.userfield.add',
         [
             'fields' => [
-                'LABEL' => 'Field Hello, World!',
+                'LABEL' => 'Hello, world! Field',
                 'USER_TYPE_ID' => 'string',
                 'FIELD_NAME' => 'HELLO_WORLD',
                 'MULTIPLE' => 'Y',
                 'MANDATORY' => 'Y',
                 'SHOW_FILTER' => 'Y',
                 'SETTINGS' => [
-                    'DEFAULT_VALUE' => 'Hello, World! Default value',
+                    'DEFAULT_VALUE' => 'Hello, world! Default value',
                     'ROWS' => 3,
                 ],
                 'SORT' => 1000,
@@ -663,7 +722,7 @@ By default `N` ||
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"LABEL":"Custom Field (list)","USER_TYPE_ID":"enumeration","FIELD_NAME":"ENUMERATION_EXAMPLE","MULTIPLE":"N","MANDATORY":"N","SHOW_FILTER":"Y","LIST":[{"VALUE":"List Item #1","DEF":"Y","XML_ID":"XML_ID_1","SORT":100},{"VALUE":"List Item #2","XML_ID":"XML_ID_2","SORT":200},{"VALUE":"List Item #3","XML_ID":"XML_ID_3","SORT":300},{"VALUE":"List Item #4","XML_ID":"XML_ID_4","SORT":400}],"SETTINGS":{"DISPLAY":"UI","LIST_HEIGHT":2},"SORT":2000}}' \
+    -d '{"fields":{"LABEL":"Custom field (list)","USER_TYPE_ID":"enumeration","FIELD_NAME":"ENUMERATION_EXAMPLE","MULTIPLE":"N","MANDATORY":"N","SHOW_FILTER":"Y","LIST":[{"VALUE":"List item #1","DEF":"Y","XML_ID":"XML_ID_1","SORT":100},{"VALUE":"List item #2","XML_ID":"XML_ID_2","SORT":200},{"VALUE":"List item #3","XML_ID":"XML_ID_3","SORT":300},{"VALUE":"List item #4","XML_ID":"XML_ID_4","SORT":400}],"SETTINGS":{"DISPLAY":"UI","LIST_HEIGHT":2},"SORT":2000}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.company.userfield.add
     ```
 
@@ -673,7 +732,7 @@ By default `N` ||
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"LABEL":"Custom Field (list)","USER_TYPE_ID":"enumeration","FIELD_NAME":"ENUMERATION_EXAMPLE","MULTIPLE":"N","MANDATORY":"N","SHOW_FILTER":"Y","LIST":[{"VALUE":"List Item #1","DEF":"Y","XML_ID":"XML_ID_1","SORT":100},{"VALUE":"List Item #2","XML_ID":"XML_ID_2","SORT":200},{"VALUE":"List Item #3","XML_ID":"XML_ID_3","SORT":300},{"VALUE":"List Item #4","XML_ID":"XML_ID_4","SORT":400}],"SETTINGS":{"DISPLAY":"UI","LIST_HEIGHT":2},"SORT":2000},"auth":"**put_access_token_here**"}' \
+    -d '{"fields":{"LABEL":"Custom field (list)","USER_TYPE_ID":"enumeration","FIELD_NAME":"ENUMERATION_EXAMPLE","MULTIPLE":"N","MANDATORY":"N","SHOW_FILTER":"Y","LIST":[{"VALUE":"List item #1","DEF":"Y","XML_ID":"XML_ID_1","SORT":100},{"VALUE":"List item #2","XML_ID":"XML_ID_2","SORT":200},{"VALUE":"List item #3","XML_ID":"XML_ID_3","SORT":300},{"VALUE":"List item #4","XML_ID":"XML_ID_4","SORT":400}],"SETTINGS":{"DISPLAY":"UI","LIST_HEIGHT":2},"SORT":2000},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/crm.company.userfield.add
     ```
 
@@ -787,17 +846,17 @@ By default `N` ||
     ```php
     try {
         $userfieldItemFields = [
-            'LABEL' => 'Custom Field (list)',
+            'LABEL' => 'Custom field (list)',
             'USER_TYPE_ID' => 'enumeration',
             'FIELD_NAME' => 'ENUMERATION_EXAMPLE',
             'MULTIPLE' => 'N',
             'MANDATORY' => 'N',
             'SHOW_FILTER' => 'Y',
             'LIST' => [
-                ['VALUE' => 'List Item #1', 'DEF' => 'Y', 'XML_ID' => 'XML_ID_1', 'SORT' => 100],
-                ['VALUE' => 'List Item #2', 'XML_ID' => 'XML_ID_2', 'SORT' => 200],
-                ['VALUE' => 'List Item #3', 'XML_ID' => 'XML_ID_3', 'SORT' => 300],
-                ['VALUE' => 'List Item #4', 'XML_ID' => 'XML_ID_4', 'SORT' => 400],
+                ['VALUE' => 'List item #1', 'DEF' => 'Y', 'XML_ID' => 'XML_ID_1', 'SORT' => 100],
+                ['VALUE' => 'List item #2', 'XML_ID' => 'XML_ID_2', 'SORT' => 200],
+                ['VALUE' => 'List item #3', 'XML_ID' => 'XML_ID_3', 'SORT' => 300],
+                ['VALUE' => 'List item #4', 'XML_ID' => 'XML_ID_4', 'SORT' => 400],
             ],
             'SETTINGS' => ['DISPLAY' => 'UI', 'LIST_HEIGHT' => 2],
             'SORT' => 2000,
@@ -814,6 +873,70 @@ By default `N` ||
     }
     ```
 
+- Python
+
+    Example
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.company.userfield.add(
+            fields={
+                "LABEL": "Custom field (list)",
+                "USER_TYPE_ID": "enumeration",
+                "FIELD_NAME": "ENUMERATION_EXAMPLE",
+                "MULTIPLE": "N",
+                "MANDATORY": "N",
+                "SHOW_FILTER": "Y",
+                "LIST": [
+                    {
+                        "VALUE": "List item #1",
+                        "DEF": "Y",
+                        "XML_ID": "XML_ID_1",
+                        "SORT": 100,
+                    },
+                    {
+                        "VALUE": "List item #2",
+                        "XML_ID": "XML_ID_2",
+                        "SORT": 200,
+                    },
+                    {
+                        "VALUE": "List item #3",
+                        "XML_ID": "XML_ID_3",
+                        "SORT": 300,
+                    },
+                    {
+                        "VALUE": "List item #4",
+                        "XML_ID": "XML_ID_4",
+                        "SORT": 400,
+                    },
+                ],
+                "SETTINGS": {
+                    "DISPLAY": "UI",
+                    "LIST_HEIGHT": 2,
+                },
+                "SORT": 2000,
+            },
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - BX24.js
 
     ```js
@@ -821,17 +944,17 @@ By default `N` ||
         'crm.company.userfield.add',
         {
             fields: {
-                LABEL: 'Custom Field (list)',
+                LABEL: 'Custom field (list)',
                 USER_TYPE_ID: 'enumeration',
                 FIELD_NAME: 'ENUMERATION_EXAMPLE',
                 MULTIPLE: 'N',
                 MANDATORY: 'N',
                 SHOW_FILTER: 'Y',
                 LIST: [
-                    { VALUE: 'List Item #1', DEF: 'Y', XML_ID: 'XML_ID_1', SORT: 100 },
-                    { VALUE: 'List Item #2', XML_ID: 'XML_ID_2', SORT: 200 },
-                    { VALUE: 'List Item #3', XML_ID: 'XML_ID_3', SORT: 300 },
-                    { VALUE: 'List Item #4', XML_ID: 'XML_ID_4', SORT: 400 },
+                    { VALUE: 'List item #1', DEF: 'Y', XML_ID: 'XML_ID_1', SORT: 100 },
+                    { VALUE: 'List item #2', XML_ID: 'XML_ID_2', SORT: 200 },
+                    { VALUE: 'List item #3', XML_ID: 'XML_ID_3', SORT: 300 },
+                    { VALUE: 'List item #4', XML_ID: 'XML_ID_4', SORT: 400 },
                 ],
                 SETTINGS: { DISPLAY: 'UI', LIST_HEIGHT: 2 },
                 SORT: 2000,
@@ -854,17 +977,17 @@ By default `N` ||
         'crm.company.userfield.add',
         [
             'fields' => [
-                'LABEL' => 'Custom Field (list)',
+                'LABEL' => 'Custom field (list)',
                 'USER_TYPE_ID' => 'enumeration',
                 'FIELD_NAME' => 'ENUMERATION_EXAMPLE',
                 'MULTIPLE' => 'N',
                 'MANDATORY' => 'N',
                 'SHOW_FILTER' => 'Y',
                 'LIST' => [
-                    ['VALUE' => 'List Item #1', 'DEF' => 'Y', 'XML_ID' => 'XML_ID_1', 'SORT' => 100],
-                    ['VALUE' => 'List Item #2', 'XML_ID' => 'XML_ID_2', 'SORT' => 200],
-                    ['VALUE' => 'List Item #3', 'XML_ID' => 'XML_ID_3', 'SORT' => 300],
-                    ['VALUE' => 'List Item #4', 'XML_ID' => 'XML_ID_4', 'SORT' => 400],
+                    ['VALUE' => 'List item #1', 'DEF' => 'Y', 'XML_ID' => 'XML_ID_1', 'SORT' => 100],
+                    ['VALUE' => 'List item #2', 'XML_ID' => 'XML_ID_2', 'SORT' => 200],
+                    ['VALUE' => 'List item #3', 'XML_ID' => 'XML_ID_3', 'SORT' => 300],
+                    ['VALUE' => 'List item #4', 'XML_ID' => 'XML_ID_4', 'SORT' => 400],
                 ],
                 'SETTINGS' => [
                     'DISPLAY' => 'UI',
@@ -925,7 +1048,7 @@ HTTP status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
@@ -933,12 +1056,12 @@ HTTP status: **400**
 || **Code** | **Description** | **Value** ||
 || `400` | The 'FIELD_NAME' field is not found | Either an empty `FIELD_NAME` was provided, or it was not provided at all ||
 || `400` | Field name is too long (more than 50 characters). | The provided `FIELD_NAME` contains more than 50 characters ||
-|| `400` | Field name contains invalid characters. The allowed characters are: A-Z, 0-9, and _. | The provided `FIELD_NAME` contains invalid characters ||
+|| `400` | Field name contains invalid characters. Allowed characters are: A-Z, 0-9 and _. | The provided `FIELD_NAME` contains invalid characters ||
 || `400` | The 'USER_TYPE_ID' field is not found | Either an empty `USER_TYPE_ID` was provided, or it was not provided at all ||
-|| `400` | Invalid user type specified | The provided `USER_TYPE_ID` does not exist ||
-|| `400` | List item with value XML_ID='XML_ID' already exists | The provided `XML_ID` in list items are not unique ||
+|| `400` | Invalid custom type specified | The provided `USER_TYPE_ID` does not exist ||
+|| `400` | List item with XML_ID='XML_ID' already exists | The provided `XML_ID` in list items are not unique ||
 |#
-{% include [system errors](../../../../_includes/system-errors.md) %}
+{% include [System errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

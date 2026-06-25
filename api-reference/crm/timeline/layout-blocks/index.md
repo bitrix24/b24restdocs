@@ -8,7 +8,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 Additional content blocks are customizable interface elements in the CRM timeline entry that the application adds alongside the main content of the entry.
 
-These additional blocks are necessary when the standard entry view is insufficient, and there is a need to display application data directly within the CRM entity card without navigating to a separate interface. Such blocks can be used to show explanatory text, links, headings with nested blocks, and other elements in the timeline.
+These additional blocks are necessary when the standard entry view is insufficient, and there is a need to display application data directly within the CRM object card without navigating to a separate interface. Such blocks can be used to show explanatory text, links, headings with nested blocks, and other elements in the timeline.
 
 > Quick Navigation: [All Methods](#all-methods)
 

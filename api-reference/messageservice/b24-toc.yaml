@@ -13,5 +13,3 @@ items:
     href: messageservice-sender-delete.md
   - name: Update Message Delivery Status
     href: messageservice-message-status-update.md
-  - name: Example of Message Provider
-    href: tutorial.md

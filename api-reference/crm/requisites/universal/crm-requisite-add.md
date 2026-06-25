@@ -14,7 +14,7 @@ This method adds a new requisite.
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -25,7 +25,7 @@ This method adds a new requisite.
 
 ## Parameter fields
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -37,7 +37,7 @@ Currently, this can only be:
 - `3` — contact
 - `4` — company
 
-Identifiers for all CRM entity types can be retrieved using the method [crm.enum.ownertype](../../auxiliary/enum/crm-enum-owner-type.md)
+Identifiers for all CRM object types can be retrieved using the method [crm.enum.ownertype](../../auxiliary/enum/crm-enum-owner-type.md)
 ||
 || **ENTITY_ID***
 [`integer`](../../../data-types.md) | Identifier of the parent entity (contact or company).
@@ -76,13 +76,13 @@ Values `Y` or `N` are used. When set to `Y`, the requisites are not displayed in
 
 Order in the list of requisites of the entity when there are multiple ||
 || **RQ_NAME**
-[`string`](../../../data-types.md) | Full name ||
+[`string`](../../../data-types.md) | Full Name ||
 || **RQ_FIRST_NAME**
-[`string`](../../../data-types.md) | First name ||
+[`string`](../../../data-types.md) | First Name ||
 || **RQ_LAST_NAME**
-[`string`](../../../data-types.md) | Last name ||
+[`string`](../../../data-types.md) | Last Name ||
 || **RQ_SECOND_NAME**
-[`string`](../../../data-types.md) | Middle name ||
+[`string`](../../../data-types.md) | Patronymic ||
 || **RQ_COMPANY_ID**
 [`string`](../../../data-types.md) | Identifier of the organization ||
 || **RQ_COMPANY_NAME**
@@ -124,15 +124,15 @@ Order in the list of requisites of the entity when there are multiple ||
 || **RQ_IDENT_DOC_DEP_CODE**
 [`string`](../../../data-types.md) | Department code ||
 || **RQ_INN**
-[`string`](../../../data-types.md) | Taxpayer Identification Number ||
+[`string`](../../../data-types.md) | TIN (INN) ||
 || **RQ_KPP**
-[`string`](../../../data-types.md) | Tax Registration Reason Code ||
+[`string`](../../../data-types.md) | KPP ||
 || **RQ_USRLE**
 [`string`](../../../data-types.md) | Handelsregisternummer (for country DE) ||
 || **RQ_IFNS**
-[`string`](../../../data-types.md) | Tax Authority ||
+[`string`](../../../data-types.md) | IFNS ||
 || **RQ_OGRN**
-[`string`](../../../data-types.md) | Primary State Registration Number ||
+[`string`](../../../data-types.md) | OGRN ||
 || **RQ_OGRNIP**
 [`string`](../../../data-types.md) | OGRNIP ||
 || **RQ_OKPO**
@@ -142,7 +142,7 @@ Order in the list of requisites of the entity when there are multiple ||
 || **RQ_OKVED**
 [`string`](../../../data-types.md) | OKVED ||
 || **RQ_EDRPOU**
-[`string`](../../../data-types.md) | EDRPOU ||
+[`string`](../../../data-types.md) | EDRPOU (EDRPOU) ||
 || **RQ_DRFO**
 [`string`](../../../data-types.md) | DRFO ||
 || **RQ_KBE**
@@ -152,9 +152,9 @@ Order in the list of requisites of the entity when there are multiple ||
 || **RQ_BIN**
 [`string`](../../../data-types.md) | BIN ||
 || **RQ_ST_CERT_SER**
-[`string`](../../../data-types.md) | Series of the state registration certificate ||
+[`string`](../../../data-types.md) | Series of State Registration Certificate ||
 || **RQ_ST_CERT_NUM**
-[`string`](../../../data-types.md) | Number of the state registration certificate ||
+[`string`](../../../data-types.md) | Number of State Registration Certificate ||
 || **RQ_ST_CERT_DATE**
 [`string`](../../../data-types.md) | Date of the state registration certificate ||
 || **RQ_VAT_PAYER**
@@ -222,7 +222,7 @@ When creating a requisite, only those fields with the prefix `RQ_` that are pres
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"ENTITY_TYPE_ID":4,"ENTITY_ID":1,"PRESET_ID":1,"NAME":"Organization","ACTIVE":"Y","ADDRESS_ONLY":"N","SORT":500,"RQ_COMPANY_NAME":"Ltd. \"QuickBooks and other similar platforms\"","RQ_COMPANY_FULL_NAME":"LIMITED LIABILITY COMPANY \"QuickBooks and other similar platforms\"","RQ_COMPANY_REG_DATE":"06.04.2007","RQ_DIRECTOR":"SMITH JOHN","RQ_INN":"7717586110","RQ_KPP":"770501001","RQ_OGRN":"5077746476209","UF_CRM_1707997209":"56","UF_CRM_1708012333":"Category 1","XML_ID":"5e4641fd-1dd9-11e6-b2f2-005056c00008"}}' \
+    -d '{"fields":{"ENTITY_TYPE_ID":4,"ENTITY_ID":1,"PRESET_ID":1,"NAME":"Organization","ACTIVE":"Y","ADDRESS_ONLY":"N","SORT":500,"RQ_COMPANY_NAME":"Ltd. \"QuickBooks and other similar platforms\"","RQ_COMPANY_FULL_NAME":"LIMITED LIABILITY COMPANY \"QuickBooks and other similar platforms\"","RQ_COMPANY_REG_DATE":"06.04.2007","RQ_DIRECTOR":"SMITH JOHN","RQ_INN":"1717586110","RQ_KPP":"770501001","RQ_OGRN":"5077746476209","UF_CRM_1707997209":"56","UF_CRM_1708012333":"Category 1","XML_ID":"5e4641fd-1dd9-11e6-b2f2-005056c00008"}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.requisite.add
     ```
 
@@ -232,7 +232,7 @@ When creating a requisite, only those fields with the prefix `RQ_` that are pres
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"ENTITY_TYPE_ID":4,"ENTITY_ID":1,"PRESET_ID":1,"NAME":"Organization","ACTIVE":"Y","ADDRESS_ONLY":"N","SORT":500,"RQ_COMPANY_NAME":"Ltd. \"QuickBooks and other similar platforms\"","RQ_COMPANY_FULL_NAME":"LIMITED LIABILITY COMPANY \"QuickBooks and other similar platforms\"","RQ_COMPANY_REG_DATE":"06.04.2007","RQ_DIRECTOR":"SMITH JOHN","RQ_INN":"7717586110","RQ_KPP":"770501001","RQ_OGRN":"5077746476209","UF_CRM_1707997209":"56","UF_CRM_1708012333":"Category 1","XML_ID":"5e4641fd-1dd9-11e6-b2f2-005056c00008","auth":"**put_access_token_here**"}' \
+    -d '{"fields":{"ENTITY_TYPE_ID":4,"ENTITY_ID":1,"PRESET_ID":1,"NAME":"Organization","ACTIVE":"Y","ADDRESS_ONLY":"N","SORT":500,"RQ_COMPANY_NAME":"Ltd. \"QuickBooks and other similar platforms\"","RQ_COMPANY_FULL_NAME":"LIMITED LIABILITY COMPANY \"QuickBooks and other similar platforms\"","RQ_COMPANY_REG_DATE":"06.04.2007","RQ_DIRECTOR":"SMITH JOHN","RQ_INN":"1717586110","RQ_KPP":"770501001","RQ_OGRN":"5077746476209","UF_CRM_1707997209":"56","UF_CRM_1708012333":"Category 1","XML_ID":"5e4641fd-1dd9-11e6-b2f2-005056c00008","auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/crm.requisite.add
     ```
 
@@ -258,11 +258,11 @@ When creating a requisite, only those fields with the prefix `RQ_` that are pres
             ACTIVE: 'Y',
             ADDRESS_ONLY: 'N',
             SORT: 500,
-            RQ_COMPANY_NAME: 'LLC "1C-BITRIX"',
-            RQ_COMPANY_FULL_NAME: 'LIMITED LIABILITY COMPANY "1C-BITRIX"',
+            RQ_COMPANY_NAME: 'Ltd. \"QuickBooks and other similar platforms\"',
+            RQ_COMPANY_FULL_NAME: 'LIMITED LIABILITY COMPANY \"QuickBooks and other similar platforms\"',
             RQ_COMPANY_REG_DATE: '06.04.2007',
-            RQ_DIRECTOR: 'RYZHIKOV SERGEY VLADIMIROVICH',
-            RQ_INN: '7717586110',
+            RQ_DIRECTOR: 'SMITH JOHN',
+            RQ_INN: '1717586110',
             RQ_KPP: '770501001',
             RQ_OGRN: '5077746476209',
             UF_CRM_1707997209: '56',
@@ -308,11 +308,11 @@ When creating a requisite, only those fields with the prefix `RQ_` that are pres
                 ACTIVE: 'Y',
                 ADDRESS_ONLY: 'N',
                 SORT: 500,
-                RQ_COMPANY_NAME: 'LLC "1C-BITRIX"',
-                RQ_COMPANY_FULL_NAME: 'LIMITED LIABILITY COMPANY "1C-BITRIX"',
+                RQ_COMPANY_NAME: 'Ltd. \"QuickBooks and other similar platforms\"',
+                RQ_COMPANY_FULL_NAME: 'LIMITED LIABILITY COMPANY \"QuickBooks and other similar platforms\"',
                 RQ_COMPANY_REG_DATE: '06.04.2007',
-                RQ_DIRECTOR: 'RYZHIKOV SERGEY VLADIMIROVICH',
-                RQ_INN: '7717586110',
+                RQ_DIRECTOR: 'SMITH JOHN',
+                RQ_INN: '1717586110',
                 RQ_KPP: '770501001',
                 RQ_OGRN: '5077746476209',
                 UF_CRM_1707997209: '56',
@@ -358,11 +358,11 @@ When creating a requisite, only those fields with the prefix `RQ_` that are pres
                         'ACTIVE'                => 'Y',
                         'ADDRESS_ONLY'          => 'N',
                         'SORT'                  => 500,
-                        "RQ_COMPANY_NAME" => "Ltd. \"QuickBooks and other similar platforms\"",
-                        "RQ_COMPANY_FULL_NAME" => "LIMITED LIABILITY COMPANY \"QuickBooks and other similar platforms\"",
-                        "RQ_COMPANY_REG_DATE" => "06.04.2007",
-                        "RQ_DIRECTOR" => "SMITH JOHN",
-                        'RQ_INN'                => '7717586110',
+                        'RQ_COMPANY_NAME'       => 'Ltd. \"QuickBooks and other similar platforms\"',
+                        'RQ_COMPANY_FULL_NAME'  => 'LIMITED LIABILITY COMPANY \"QuickBooks and other similar platforms\"',
+                        'RQ_COMPANY_REG_DATE'   => '06.04.2007',
+                        'RQ_DIRECTOR'           => 'SMITH JOHN',
+                        'RQ_INN'                => '1717586110',
                         'RQ_KPP'                => '770501001',
                         'RQ_OGRN'               => '5077746476209',
                         'UF_CRM_1707997209'     => '56',
@@ -376,7 +376,7 @@ When creating a requisite, only those fields with the prefix `RQ_` that are pres
             ->getResponseData()
             ->getResult();
     
-        echo 'Requisite created with ID ' . $result;
+        echo 'Attribute created with ID ' . $result;
     
     } catch (Throwable $e) {
         error_log($e->getMessage());
@@ -403,7 +403,7 @@ When creating a requisite, only those fields with the prefix `RQ_` that are pres
                 "RQ_COMPANY_FULL_NAME": "LIMITED LIABILITY COMPANY \"QuickBooks and other similar platforms\"",
                 "RQ_COMPANY_REG_DATE": "06.04.2007",
                 "RQ_DIRECTOR": "SMITH JOHN",
-                "RQ_INN": "7717586110",
+                "RQ_INN": "1717586110",
                 "RQ_KPP": "770501001",
                 "RQ_OGRN": "5077746476209",
                 "UF_CRM_1707997209": "56",
@@ -416,7 +416,7 @@ When creating a requisite, only those fields with the prefix `RQ_` that are pres
             if(result.error())
                 console.error(result.error());
             else
-                console.info("Requisite created with ID " + result.data());
+                console.info("Attribute created with ID " + result.data());
         }
     );
     ```
@@ -441,7 +441,7 @@ When creating a requisite, only those fields with the prefix `RQ_` that are pres
                 "RQ_COMPANY_FULL_NAME" => "LIMITED LIABILITY COMPANY \"QuickBooks and other similar platforms\"",
                 "RQ_COMPANY_REG_DATE" => "06.04.2007",
                 "RQ_DIRECTOR" => "SMITH JOHN",
-                "RQ_INN" => "7717586110",
+                "RQ_INN" => "1717586110",
                 "RQ_KPP" => "770501001",
                 "RQ_OGRN" => "5077746476209",
                 "UF_CRM_1707997209" => "56",
@@ -454,6 +454,51 @@ When creating a requisite, only those fields with the prefix `RQ_` that are pres
     echo '<PRE>';
     print_r($result);
     echo '</PRE>';
+    ```
+
+- Python
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.requisite.add(
+            fields={
+                "ENTITY_TYPE_ID": 4,
+                "ENTITY_ID": 1,
+                "PRESET_ID": 1,
+                "NAME": "Organization",
+                "ACTIVE": "Y",
+                "ADDRESS_ONLY": "N",
+                "SORT": 500,
+                "RQ_COMPANY_NAME": "Ltd. \"QuickBooks and other similar platforms\"",
+                "RQ_COMPANY_FULL_NAME": "LIMITED LIABILITY COMPANY \"QuickBooks and other similar platforms\"",
+                "RQ_COMPANY_REG_DATE": "06.04.2007",
+                "RQ_DIRECTOR": "SMITH JOHN",
+                "RQ_INN": "1717586110",
+                "RQ_KPP": "770501001",
+                "RQ_OGRN": "5077746476209",
+                "UF_CRM_1707997209": "56",
+                "UF_CRM_1708012333": "Category 1",
+                "XML_ID": "5e4641fd-1dd9-11e6-b2f2-005056c00008",
+            },
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
     ```
 
 {% endlist %}
@@ -486,7 +531,7 @@ HTTP status: **200**
 || **result**
 [`integer`](../../../data-types.md) | Identifier of the created requisite ||
 || **time**
-[`time`](../../../data-types.md) | Information about the execution time of the request ||
+[`time`](../../../data-types.md) | Information about the request execution time ||
 |#
 
 ## Response on Error
@@ -500,12 +545,12 @@ HTTP status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Errors
 
-#|  
-|| **Code** | **Error Text** | **Description** ||
+#|
+|| **Code** | **Error text** | **Description** ||
 || Empty string | ENTITY_TYPE_ID is not defined or invalid. | Identifier of the parent entity type is not defined or has an invalid value ||
 || Empty string | ENTITY_ID is not defined or invalid. | Identifier of the parent entity is not defined or has an invalid value ||
 || Empty string | PRESET_ID is not defined or invalid. | Identifier of the requisite template is not defined or has an invalid value ||
@@ -513,7 +558,7 @@ HTTP status: **400**
 || Empty string | Access denied. | Insufficient access permissions to add the requisite ||
 |#
 
-{% include [system errors](../../../../_includes/system-errors.md) %}
+{% include [System errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

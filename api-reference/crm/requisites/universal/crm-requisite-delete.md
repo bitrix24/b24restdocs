@@ -14,7 +14,7 @@ This method deletes a requisite and all associated objects (links to other entit
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -184,9 +184,34 @@ The identifier can be obtained using the [crm.requisite.list](./crm-requisite-li
     echo '</PRE>';
     ```
 
+- Python
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.requisite.delete(bitrix_id=27).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected Error: {error}")
+    ```
+
 {% endlist %}
 
-## Successful Response
+## Response on Success
 
 HTTP status: **200**
 
@@ -221,7 +246,7 @@ HTTP status: **200**
 [`time`](../../../data-types.md) | Information about the request execution time ||
 |#
 
-## Error Response
+## Response on Error
 
 HTTP status: **400**
 
@@ -232,18 +257,18 @@ HTTP status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Errors
 
-#|  
-|| **Code** | **Error Text** | **Description** ||
+#|
+|| **Code** | **Error text** | **Description** ||
 || Empty string | The Requisite with ID '57' is not found | The requisite with the specified identifier was not found ||
 || Empty string | ID is not defined or invalid. | The requisite identifier is not specified or has an invalid value ||
 || Empty string | Access denied. | Insufficient access permissions to delete the requisite ||
 |#
 
-{% include [system errors](../../../../_includes/system-errors.md) %}
+{% include [System errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
@@ -253,3 +278,5 @@ HTTP status: **400**
 - [{#T}](./crm-requisite-get.md)
 - [{#T}](./crm-requisite-list.md)
 - [{#T}](./crm-requisite-fields.md)
+
+

@@ -14,7 +14,7 @@ This method deletes a currency.
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../_includes/required.md) %}
+{% include [Note on parameters](../../../_includes/required.md) %}
 
 #|
 ||  **Name**
@@ -152,6 +152,31 @@ The identifier can be obtained using the [crm.currency.list](./crm-currency-list
     }
     ```
 
+- Python
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.currency.delete(bitrix_id="IDR").response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - BX24.js
 
     ```js
@@ -201,7 +226,7 @@ The identifier can be obtained using the [crm.currency.list](./crm-currency-list
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -231,7 +256,7 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -240,23 +265,23 @@ HTTP Status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
 || **Code** | **Description** | **Value** ||
-|| Empty string | Access denied. | Insufficient access permissions ||
-|| Empty string | Currency module not found! Please install the currency module. |  ||
+|| Empty string | Access denied. | Insufficient access rights. ||
+|| Empty string | "Currencies" module not found! Please install the "Currencies" module. |  ||
 || Empty string | Empty string | Currency identifier must consist of 3 characters ||
-|| Empty string | Cannot delete the base currency. |  ||
-|| Empty string | Cannot delete the report currency. |  ||
-|| `ERROR_CODE` | Other errors in the currency modification data |  ||
+|| Empty string | Cannot delete base currency. |  ||
+|| Empty string | Cannot delete report currency. |  ||
+|| `ERROR_CODE` | Other errors in the data for changing currency |  ||
 |#
 
-{% include [system errors](../../../_includes/system-errors.md) %}
+{% include [System errors](../../../_includes/system-errors.md) %}
 
-## Continue Learning 
+## Continue Learning
 
 - [{#T}](./crm-currency-add.md)
 - [{#T}](./crm-currency-update.md)

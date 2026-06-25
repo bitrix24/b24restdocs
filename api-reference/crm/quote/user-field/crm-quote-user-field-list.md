@@ -1,4 +1,4 @@
-# Get a List of Custom Fields for crm.quote.userfield.list
+# Get a List of Custom Fields For crm.quote.userfield.list
 
 {% note tip "" %}
 
@@ -8,7 +8,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: a user with read access to estimates
+> Who can execute the method: User with read access to estimates
 
 The method `crm.quote.userfield.list` returns a list of custom fields for estimates based on a filter.
 
@@ -45,8 +45,8 @@ All conditions for individual fields are combined using `AND`. See the [list of 
 
 - `field_n` — the name of the field by which the selection of elements will be sorted
 - `value_n` — a `string` value equal to:
-    - `ASC` — ascending order
-    - `DESC` — descending order
+    - `ASC` — ascending sort
+    - `DESC` — descending sort
 
 Available fields for sorting:
 - `ID` — identifier of the custom field
@@ -65,7 +65,7 @@ By default:
 ||
 |#
 
-### Filterable Fields {#filterable}
+### Available Fields for Filtering {#filterable}
 
 #|
 || **Name**
@@ -97,18 +97,18 @@ By default:
 || **XML_ID**
 [`string`](../../../data-types.md) | External code ||
 || **SORT**
-[`integer`](../../../data-types.md) | Sort index ||
+[`integer`](../../../data-types.md) | Sorting index ||
 || **MULTIPLE**
-[`boolean`](../../../data-types.md) | Indicates whether the custom field is multiple.
+[`boolean`](../../../data-types.md) | Is the custom field multiple.
 Possible values:
 - `Y` — yes
 - `N` — no ||
 || **MANDATORY**
-[`boolean`](../../../data-types.md) | Indicates whether the custom field is mandatory. Possible values:
+[`boolean`](../../../data-types.md) | Is the custom field mandatory. Possible values:
 - `Y` — yes
 - `N` — no ||
 || **SHOW_FILTER**
-[`char`](../../../data-types.md) | Whether to show in the list filter. Possible values:
+[`char`](../../../data-types.md) | Show in the list filter. Possible values:
 - `N` — do not show
 - `I` — exact match
 - `E` — mask
@@ -119,15 +119,16 @@ Possible values:
 - `N` — no
 ||
 || **EDIT_IN_LIST**
-[`boolean`](../../../data-types.md) | Whether to allow editing by the user. Possible values:
+[`boolean`](../../../data-types.md) | Allow user editing? Possible values:
 - `Y` — yes
 - `N` — no ||
 || **IS_SEARCHABLE**
-[`boolean`](../../../data-types.md) | Whether the field values are searchable. Possible values:
+[`boolean`](../../../data-types.md) | Whether the field values participate in search. Possible values:
 - `Y` — yes
-- `N` — no ||
+- `N` — no
+||
 || **LANG**
-[`string`](../../../data-types.md) | [Language identifier](../../data-types.md#lang-ids). When filtering by this parameter, a set of fields with values in the specified language will be provided:
+[`string`](../../../data-types.md) | [Language identifier](../../data-types.md#lang-ids). When filtering by this parameter, a set of fields with values in the provided language will be returned:
 - `EDIT_FORM_LABEL` — label in the edit form
 - `LIST_COLUMN_LABEL` — header in the list
 - `LIST_FILTER_LABEL` — filter label in the list
@@ -137,12 +138,12 @@ Possible values:
 
 ## Code Examples
 
-{% include [Examples Note](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
-Get a list of custom fields that:
+Retrieves a list of custom fields that:
 - are multiple,
 - are mandatory,
-- have custom field labels in German. By filtering with the `LANG` parameter, we will additionally receive the field names in the response.
+- have custom field labels in German. By filtering with the `LANG` parameter, field names will additionally be included in the response.
 
 {% list tabs %}
 
@@ -210,7 +211,7 @@ Get a list of custom fields that:
           filter: {
             MULTIPLE: 'Y',
             MANDATORY: 'Y',
-            LANG: 'ru',
+            LANG: 'de',
           },
           order: {
             USER_TYPE_ID: 'ASC',
@@ -256,7 +257,7 @@ Get a list of custom fields that:
               filter: {
                 MULTIPLE: 'Y',
                 MANDATORY: 'Y',
-                LANG: 'ru',
+                LANG: 'de',
               },
               order: {
                 USER_TYPE_ID: 'ASC',
@@ -372,11 +373,99 @@ Get a list of custom fields that:
     echo '</PRE>';
     ```
 
+- Python
+
+    Example
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.quote.userfield.list(
+            filter={"MULTIPLE": "Y", "MANDATORY": "Y", "LANG": "de"},
+            order={"USER_TYPE_ID": "ASC", "SORT": "ASC"},
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
+    Example `as_list`
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.quote.userfield.list(
+            filter={"MULTIPLE": "Y", "MANDATORY": "Y", "LANG": "de"},
+            order={"USER_TYPE_ID": "ASC", "SORT": "ASC"},
+        ).as_list().response
+        result = bitrix_response.result
+        for item in result:
+            print(item)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
+    Example `as_list_fast`
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.quote.userfield.list(
+            filter={"MULTIPLE": "Y", "MANDATORY": "Y", "LANG": "de"},
+            order={"ID": "DESC"},
+        ).as_list_fast(descending=True).response
+        result = bitrix_response.result
+        for item in result:
+            print(item)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 {% endlist %}
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -431,14 +520,14 @@ HTTP Status: **200**
                 {
                     "ID": "3157",
                     "SORT": "10",
-                    "VALUE": "Children's Radio",
+                    "VALUE": "Kids Radio",
                     "DEF": "N",
                     "XML_ID": "79b4c576f96e65eb40f390e45c0dc802"
                 },
                 {
                     "ID": "3159",
                     "SORT": "20",
-                    "VALUE": "Shanson Radio",
+                    "VALUE": "Chanson Radio",
                     "DEF": "N",
                     "XML_ID": "d3ffd89a825f218f5efd79dffd38fbbf"
                 },
@@ -459,7 +548,7 @@ HTTP Status: **200**
                 {
                     "ID": "3181",
                     "SORT": "130",
-                    "VALUE": "DFM Yuriev-Polsky",
+                    "VALUE": "DFM Yuryev-Polsky",
                     "DEF": "N",
                     "XML_ID": "fc1c5e6b4a9fd20b4749240b8dbac41a"
                 }
@@ -487,9 +576,9 @@ HTTP Status: **200**
                 "EXTENSIONS": [],
                 "TARGET_BLANK": "Y"
             },
-            "EDIT_FORM_LABEL": "Estimate (files)",
-            "LIST_COLUMN_LABEL": "Estimate (files)",
-            "LIST_FILTER_LABEL": "Estimate (files)",
+            "EDIT_FORM_LABEL": "KP (files)",
+            "LIST_COLUMN_LABEL": "KP (files)",
+            "LIST_FILTER_LABEL": "KP (files)",
             "ERROR_MESSAGE": null,
             "HELP_MESSAGE": null
         },
@@ -568,9 +657,9 @@ HTTP Status: **200**
                 "TIMEZONE": "Europe/Berlin",
                 "USE_USER_TIMEZONE": "N"
             },
-            "EDIT_FORM_LABEL": "MEETING ROOM BOOKING",
-            "LIST_COLUMN_LABEL": "MEETING ROOM BOOKING",
-            "LIST_FILTER_LABEL": "MEETING ROOM BOOKING",
+            "EDIT_FORM_LABEL": "BOOK MEETING",
+            "LIST_COLUMN_LABEL": "BOOK MEETING",
+            "LIST_FILTER_LABEL": "BOOK MEETING",
             "ERROR_MESSAGE": null,
             "HELP_MESSAGE": null
         },
@@ -593,13 +682,13 @@ HTTP Status: **200**
                 "REGEXP": "",
                 "MIN_LENGTH": 0,
                 "MAX_LENGTH": 0,
-                "DEFAULT_VALUE": "Hello, world! Default value (modified)"
+                "DEFAULT_VALUE": "Hello, world! Default value (changed)"
             },
-            "EDIT_FORM_LABEL": "Hello, world! Edit (modified)",
-            "LIST_COLUMN_LABEL": "Hello, world! Column (modified)",
-            "LIST_FILTER_LABEL": "Hello, world! Filter (modified)",
-            "ERROR_MESSAGE": "Hello, world! Error (modified)",
-            "HELP_MESSAGE": "Hello, world! Help (modified)"
+            "EDIT_FORM_LABEL": "Hello, world! Edit (changed)",
+            "LIST_COLUMN_LABEL": "Hello, world! Column (changed)",
+            "LIST_FILTER_LABEL": "Hello, world! Filter (changed)",
+            "ERROR_MESSAGE": "Hello, world! Error (changed)",
+            "HELP_MESSAGE": "Hello, world! Help (changed)"
         }
     ],
     "total": 5,
@@ -608,8 +697,8 @@ HTTP Status: **200**
         "finish": 1753793143.529472,
         "duration": 0.30964016914367676,
         "processing": 0.06361007690429688,
-        "date_start": "2025-07-29T15:45:43+02:00",
-        "date_finish": "2025-07-29T15:45:43+02:00",
+        "date_start": "2025-07-29T15:45:43+03:00",
+        "date_finish": "2025-07-29T15:45:43+03:00",
         "operating_reset_at": 1753793743,
         "operating": 0
     }
@@ -622,18 +711,18 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../../data-types.md) | The root element of the response, contains a list of custom fields.
+[`object`](../../../data-types.md) | Root element of the response, contains a list of custom fields.
 
-The structure of an individual custom field depends on its type. The fields `EDIT_FORM_LABEL`, `LIST_COLUMN_LABEL`, `LIST_FILTER_LABEL`, `ERROR_MESSAGE`, `HELP_MESSAGE` are returned as `string` when `filter.LANG` is passed. ||
+The structure of an individual custom field depends on its type. The fields `EDIT_FORM_LABEL`, `LIST_COLUMN_LABEL`, `LIST_FILTER_LABEL`, `ERROR_MESSAGE`, `HELP_MESSAGE` are returned as `string` when passing `filter.LANG` ||
 || **total**
-[`integer`](../../../data-types.md) | The number of found custom fields ||
+[`integer`](../../../data-types.md) | Number of found custom fields ||
 || **time**
-[`time`](../../../data-types.md#time) | Information about the execution time of the request ||
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -642,7 +731,7 @@ HTTP Status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
@@ -651,7 +740,7 @@ HTTP Status: **400**
 || `400`     | Parameter 'order' must be array | The provided `order` is not an object ||
 || `400`     | Parameter 'filter' must be array | The provided `filter` is not an object ||
 |#
-{% include [system errors](../../../../_includes/system-errors.md) %}
+{% include [System errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

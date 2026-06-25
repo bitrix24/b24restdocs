@@ -8,13 +8,13 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: user with "Read" access permission for companies
+> Who can execute the method: a user with "Read" access permission for companies
 
 The method `crm.company.contact.items.get` returns a set of contacts associated with the specified company.
 
 ## Method Parameters
 
-{% include [Footnote on parameters](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -27,7 +27,7 @@ The identifier can be obtained using the methods [crm.company.list](../crm-compa
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -157,6 +157,35 @@ The identifier can be obtained using the methods [crm.company.list](../crm-compa
     }
     ```
 
+- Python
+
+    Example
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.company.contact.items.get(
+            bitrix_id=32,
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - BX24.js
 
     ```js
@@ -195,28 +224,28 @@ The identifier can be obtained using the methods [crm.company.list](../crm-compa
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
     "result": [
         {
-            "CONTACT_ID": 7,
-            "SORT": 100,
-            "ROLE_ID": 0,
-            "IS_PRIMARY": "Y"
+        "CONTACT_ID": 7,
+        "SORT": 100,
+        "ROLE_ID": 0,
+        "IS_PRIMARY": "Y"
         },
         {
-            "CONTACT_ID": 8,
-            "SORT": 110,
-            "ROLE_ID": 0,
-            "IS_PRIMARY": "N"
+        "CONTACT_ID": 8,
+        "SORT": 110,
+        "ROLE_ID": 0,
+        "IS_PRIMARY": "N"
         },
         {
-            "CONTACT_ID": 9,
-            "SORT": 120,
-            "ROLE_ID": 0,
-            "IS_PRIMARY": "N"
+        "CONTACT_ID": 9,
+        "SORT": 120,
+        "ROLE_ID": 0,
+        "IS_PRIMARY": "N"
         }
     ],
     "time": {
@@ -241,7 +270,7 @@ HTTP Status: **200**
 [`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
 
-### Parameter company_contact_binding {#company_contact_binding}
+### Parameter Company_Contact_Binding {#company_contact_binding}
 
 #|
 || **Name**
@@ -249,7 +278,7 @@ HTTP Status: **200**
 || **CONTACT_ID**
 [`integer`](../../../data-types.md) | Identifier of the contact ||
 || **SORT**
-[`integer`](../../../data-types.md) | Sort index ||
+[`integer`](../../../data-types.md) | Sorting index ||
 || **ROLE_ID**
 [`integer`](../../../data-types.md) | Role identifier, a system field ||
 || **IS_PRIMARY**
@@ -260,7 +289,7 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -269,7 +298,7 @@ HTTP Status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
@@ -279,7 +308,7 @@ HTTP Status: **400**
 || `ACCESS_DENIED` | `Access denied!` | The user does not have permission to read companies ||
 |#
 
-{% include [system errors](../../../../_includes/system-errors.md) %}
+{% include [System errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

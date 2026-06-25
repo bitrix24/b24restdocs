@@ -8,13 +8,13 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: `user with permission to modify the CRM entity to which the entry will be added`
+> Who can execute the method: a user with permission to edit the CRM object to which the entry will be added
 
 This method adds a new log entry to the timeline.
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -37,7 +37,7 @@ fields:
 
 ### Parameter fields
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -47,7 +47,7 @@ fields:
 || **entityId***
 [`integer`](../../../data-types.md) | Identifier of the entity item in which the entry will be created ||
 || **title***
-[`string`](../../../data-types.md) | Title of the entry ||
+[`string`](../../../data-types.md) | Title of the record ||
 || **text***
 [`string`](../../../data-types.md) | Text of the entry ||
 || **iconCode***
@@ -233,6 +233,41 @@ A list of available codes can be obtained using the method [crm.timeline.icon.li
     );
     ```
 
+- Python
+
+    Example
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.timeline.logmessage.add(
+            fields={
+                "entityTypeId": 1,
+                "entityId": 1,
+                "title": "Test title",
+                "text": "Test text message",
+                "iconCode": "info"
+            },
+        )
+        result = bitrix_response.response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - PHP CRest
 
     ```php
@@ -306,13 +341,13 @@ The `result` field contains the [logMessage](#logMessage) object ||
 || **Name**
 `type` | **Description**  ||
 || **id** 
-[`integer`](../../../data-types.md)| Identifier of the timeline entry ||
+[`integer`](../../../data-types.md)| Identifier of the timeline record ||
 || **created** 
 [`datetime`](../../../data-types.md)| Date and time of creation ||
 || **authorId** 
 [`integer`](../../../data-types.md)| User who created the entry ||
 || **title**
-[`string`](../../../data-types.md)| Title of the entry ||
+[`string`](../../../data-types.md)| Title of the record ||
 || **text** 
 [`string`](../../../data-types.md)| Content of the entry ||
 || **iconCode** 
@@ -330,21 +365,21 @@ HTTP status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
 || **Code** | **Description** ||
 || `ACCESS_DENIED` | Access denied ||
-|| `OWNER_NOT_FOUND` | The CRM entity with the specified `entityTypeId` and `entityId` does not exist ||
-|| `100` | Required fields not provided ||
+|| `OWNER_NOT_FOUND` | The CRM object with the specified `entityTypeId` and `entityId` does not exist ||
+|| `100` | Required fields are not provided ||
 || `0` | Other errors (e.g., fatal) ||
 |#
 
-{% include [system errors](../../../../_includes/system-errors.md) %}
+{% include [System errors](../../../../_includes/system-errors.md) %}
 
-## Continue Learning 
+## Continue Learning
 
 - [{#T}](./crm-timeline-logmessage-get.md)
 - [{#T}](./crm-timeline-logmessage-list.md)

@@ -1,4 +1,4 @@
-# Remove a company from the specified contact crm.contact.company.delete
+# Remove a Company from the Specified Contact crm.contact.company.delete
 
 {% note tip "" %}
 
@@ -31,7 +31,7 @@ Contains a single key `COMPANY_ID` ||
 [`integer`][1] | Identifier of the company that needs to be removed from the bindings ||
 |#
 
-{% note info "Remove primary binding" %}
+{% note info "Remove Primary Binding" %}
 
 If the primary binding is removed, the first available binding will become the new primary binding.
 
@@ -174,6 +174,36 @@ Example of removing the contact-company link, where:
     }
     ```
 
+- Python
+
+    Example
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.contact.company.delete(
+            bitrix_id=54,
+            fields={"COMPANY_ID": 32},
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected Error: {error}")
+    ```
+
 - BX24.js
 
     ```js
@@ -245,7 +275,7 @@ HTTP status: **200**
 - `false` — in case of failure (most likely the company you are trying to remove is not linked to the contact)
 ||
 || **time**
-[`time`][1] | Information about the execution time of the request ||
+[`time`][1] | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -259,22 +289,22 @@ HTTP status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
 || **Code** | **Description** | **Value** ||
 || `-`     | `The parameter 'ownerEntityID' is invalid or not defined` | The provided `id` is less than 0 ||
-|| `-`     | `The parameter 'fields' must be array` | An object was not provided in `fields` ||
+|| `-`     | `The parameter 'fields' must be array` | The `fields` parameter is not an object ||
 || `ACCESS_DENIED` | `Access denied!` | The user does not have permission to edit contacts ||
-|| `-`     | `Not found` | Contact with the provided `id` was not found ||
+|| `-`     | `Not found` | Contact with the provided `id` not found ||
 || `-`     | `The parameter 'fields' is not valid` | Can occur for several reasons:
 - if the required parameter `fields.COMPANY_ID` is not provided
 - if the provided parameter `fields.COMPANY_ID` is less than or equal to 0 ||
 |#
 
-{% include [system errors](../../../../_includes/system-errors.md) %}
+{% include [System errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

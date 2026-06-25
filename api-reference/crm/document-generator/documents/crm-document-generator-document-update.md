@@ -8,13 +8,13 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: a user with "edit" access permission for document generator documents
+> Who can execute the method: a user with "edit" access permission for document generator documents.
 
 The method `crm.documentgenerator.document.update` updates an existing document.
 
 ## Method Parameters
 
-{% include [Parameter Note](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -56,7 +56,7 @@ Default is `1` ||
 
 ## Code Examples
 
-{% include [Example Note](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 Example of updating a document where:
 - Document `id` — `61`
@@ -229,6 +229,37 @@ Example of updating a document where:
     }
     ```
 
+- Python
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.documentgenerator.document.update(
+            bitrix_id=61,
+            values={
+                "DocumentNumber": "2026-002",
+            },
+            stamps_enabled=1,
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - BX24.js
 
     ```js
@@ -275,30 +306,30 @@ Example of updating a document where:
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
     "result": {
         "document": {
             "changeStampsEnabled": false,
-            "changeStampsDisabledReason": "No stamps and signatures in the template",
+            "changeStampsDisabledReason": "No seals or signatures in the template",
             "changeQrCodeEnabled": false,
             "qrCodeEnabled": false,
             "changeQrCodeDisabledReason": "No QR code in the template",
             "products": {
-                "currencyId": "EUR",
+                "currencyId": "UAH",
                 "totalSum": "0.00",
                 "totalRows": 0
             },
             "downloadUrl": "https://bitrix.bitrix24.com/bitrix/services/main/ajax.php?action=crm.documentgenerator.document.download&SITE_ID=s1&id=61",
             "publicUrl": null,
-            "title": "Demo Product Implementation 2026-001",
+            "title": "Demonstration implementation of product 2026-001",
             "number": "2026-002",
             "id": "61",
-            "createTime": "2026-03-20T14:42:39+01:00",
+            "createTime": "2026-03-20T14:42:39+03:00",
             "createdBy": null,
-            "updateTime": "2026-03-20T14:42:38+01:00",
+            "updateTime": "2026-03-20T14:42:38+03:00",
             "updatedBy": 577,
             "stampsEnabled": true,
             "isTransformationError": false,
@@ -323,8 +354,8 @@ HTTP Status: **200**
         "finish": 1774006960.122164,
         "duration": 2.122164011001587,
         "processing": 2,
-        "date_start": "2026-03-20T14:42:38+01:00",
-        "date_finish": "2026-03-20T14:42:40+01:00",
+        "date_start": "2026-03-20T14:42:38+03:00",
+        "date_finish": "2026-03-20T14:42:40+03:00",
         "operating_reset_at": 1774007558,
         "operating": 1.9965031147003174
     }
@@ -342,7 +373,7 @@ HTTP Status: **200**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
-#### Type result {#result}
+#### Result Type {#result}
 
 #|
 || **Name**
@@ -351,7 +382,7 @@ HTTP Status: **200**
 [`object`](../../data-types.md) | Data of the updated document. Structure is described in the [`document`](#document) type ||
 |#
 
-#### Type document {#document}
+#### Document Type {#document}
 
 #|
 || **Name**
@@ -359,11 +390,11 @@ HTTP Status: **200**
 || **id**
 [`integer`](../../data-types.md) \| [`string`](../../data-types.md) | Document identifier ||
 || **title**
-[`string`](../../data-types.md) | Document title ||
+[`string`](../../data-types.md) | Document name ||
 || **number**
 [`string`](../../data-types.md) | Document number ||
 || **createTime**
-[`datetime`](../../data-types.md) | Creation date ||
+[`datetime`](../../data-types.md) | Create date ||
 || **updateTime**
 [`datetime`](../../data-types.md) | Update date ||
 || **createdBy**
@@ -371,11 +402,11 @@ HTTP Status: **200**
 || **updatedBy**
 [`integer`](../../data-types.md) \| [`string`](../../data-types.md) \| [`null`](../../data-types.md) | Identifier of the user who updated the document ||
 || **changeStampsEnabled**
-[`boolean`](../../data-types.md) | Whether the stamp and signature inclusion can be changed ||
+[`boolean`](../../data-types.md) | Can the stamp and signature inclusion be changed ||
 || **changeStampsDisabledReason**
 [`string`](../../data-types.md) | Reason why the stamp and signature inclusion cannot be changed ||
 || **changeQrCodeEnabled**
-[`boolean`](../../data-types.md) | Whether the QR code can be enabled or disabled ||
+[`boolean`](../../data-types.md) | Can the QR code be enabled or disabled ||
 || **qrCodeEnabled**
 [`boolean`](../../data-types.md) | Current state of the QR code ||
 || **changeQrCodeDisabledReason**
@@ -383,7 +414,7 @@ HTTP Status: **200**
 || **products**
 [`object`](../../data-types.md) | Summary information about the document's products (`currencyId`, `totalSum`, `totalRows`) ||
 || **stampsEnabled**
-[`boolean`](../../data-types.md) | Stamp and signature inclusion status ||
+[`boolean`](../../data-types.md) | Stamp and signature inclusion flag ||
 || **downloadUrl**
 [`string`](../../data-types.md) | Link to download the document ||
 || **downloadUrlMachine**
@@ -391,15 +422,15 @@ HTTP Status: **200**
 || **publicUrl**
 [`string`](../../data-types.md) \| [`null`](../../data-types.md) | Public link to the document ||
 || **isTransformationError**
-[`boolean`](../../data-types.md) | Indicates if there was a conversion error with the document ||
+[`boolean`](../../data-types.md) | Flag indicating a document conversion error ||
 || **transformationErrorMessage**
-[`string`](../../data-types.md) | Conversion error message, if `isTransformationError = true` ||
+[`string`](../../data-types.md) | Text of the conversion error if `isTransformationError = true` ||
 || **transformationErrorCode**
-[`string`](../../data-types.md) | Conversion error code, if `isTransformationError = true` ||
+[`string`](../../data-types.md) | Code of the conversion error if `isTransformationError = true` ||
 || **templateId**
-[`integer`](../../data-types.md) \| [`string`](../../data-types.md) | Template identifier ||
+[`integer`](../../data-types.md) \| [`string`](../../data-types.md) | Identifier of the template ||
 || **pullTag**
-[`string`](../../data-types.md) | Document transformation event tag ||
+[`string`](../../data-types.md) | Event tag for document transformation ||
 || **emailDiskFile**
 [`integer`](../../data-types.md) | Identifier of the file in Drive for sending via email ||
 || **entityTypeId**
@@ -416,7 +447,7 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -425,23 +456,23 @@ HTTP Status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `100` | Bitrix\\DocumentGenerator\\Document constructor must be public | Required parameter `id` not provided ||
+|| `100` | Bitrix\\DocumentGenerator\\Document constructor must be is public | Required parameter `id` not provided ||
 || `DOCGEN_ACCESS_ERROR` | Access denied | No access to the document ||
 || `0` | Document not found | Document with the specified `id` not found or unavailable ||
 || `0` | Document not found | Document does not belong to the CRM module ||
 || `0` | You do not have permissions to modify this document | Insufficient permissions to modify the document ||
-|| `0` | Document generator module is not installed | `documentgenerator` module is unavailable ||
-|| `0` | Cannot update unsaved document | Attempt to update an unsaved document ||
+|| `0` | Module documentgenerator is not installed | The `documentgenerator` module is not available ||
+|| `0` | Cant update not saved document | Attempt to update an unsaved document ||
 || `0` | DOCUMENT_FILE_NOT_PROCESSABLE_ERROR | Template file is corrupted or has an invalid structure ||
 |#
 
-{% include [system errors](../../../../_includes/system-errors.md) %}
+{% include [System errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

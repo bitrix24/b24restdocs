@@ -10,23 +10,23 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: requires access permission to modify the order from which the delivery item is removed.
 
-This method removes a delivery item from the payment.
+Removes a delivery item from the payment.
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../../_includes/required.md) %}
 
-#| 
+#|
 || **Name**
 `type` | **Description** ||
-|| **id*** 
+|| **id***
 [`integer`](../../../../data-types.md) | Identifier of the delivery item in the payment. 
 Can be obtained using the method [`crm.item.payment.delivery.list`](./crm-item-payment-delivery-list.md)  ||
 |#
 
 ## Code Examples
 
-{% include [Note on Examples](../../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -144,6 +144,35 @@ Can be obtained using the method [`crm.item.payment.delivery.list`](./crm-item-p
     }
     ```
 
+- Python
+
+    Example
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.item.payment.delivery.delete(
+            bitrix_id=1199,
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - BX24.js
 
     ```js
@@ -180,9 +209,9 @@ Can be obtained using the method [`crm.item.payment.delivery.list`](./crm-item-p
 
 {% endlist %}
 
-## Successful Response
+## Response on Success
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -200,18 +229,18 @@ HTTP Status: **200**
 
 ### Returned Data
 
-#| 
+#|
 || **Name**
 `type` | **Description** ||
 || **result**
 [`boolean`](../../../../data-types.md) | Result of the operation ||
 || **time**
-[`time`](../../../../data-types.md) | Information about the execution time of the request ||
+[`time`](../../../../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -220,11 +249,11 @@ HTTP Status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
-#| 
+#|
 || **Code** | **Description** ||
 || `0` | Delivery item not found ||
 || `0` | Access denied ||
@@ -236,7 +265,7 @@ HTTP Status: **400**
 
 For business errors, the method may return `error: 0`. In this case, refer to `error_description` and match it with the list of errors above.
 
-{% include notitle [system errors](../../../../../_includes/system-errors.md) %}
+{% include notitle [System errors](../../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

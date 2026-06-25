@@ -79,13 +79,13 @@ Lines are added by applications for integrating telephony using the [telephony.e
 || **CRM_ENTITY_TYPE** 
 [`integer`](../../data-types.md) | [Type of the entity](../../crm/data-types.md#object_type) in CRM associated with the current call.
 
-Knowing the type and identifier of the CRM entity (specified in the `CRM_ENTITY_ID` parameter), you can retrieve information about the entity.
+Knowing the type and identifier of the CRM object (specified in the `CRM_ENTITY_ID` parameter), you can retrieve information about the entity.
 
 || 
 || **CRM_ENTITY_ID** 
-[`string`](../../data-types.md) | The identifier of the CRM entity associated with the current call.
+[`string`](../../data-types.md) | The identifier of the CRM object associated with the current call.
 
-Knowing the type (specified in the `CRM_ENTITY_TYPE` parameter) and the identifier of the CRM entity (specified in the `CRM_ENTITY_ID` parameter), you can retrieve information about the entity using the corresponding methods:
+Knowing the type (specified in the `CRM_ENTITY_TYPE` parameter) and the identifier of the CRM object (specified in the `CRM_ENTITY_ID` parameter), you can retrieve information about the entity using the corresponding methods:
 
 - any type of object [crm.item.get](../../crm/universal/crm-item-get.md) with entityTypeId = '1' for leads, '2' for deals, and [etc.](../../crm/data-types.md#object_type)
 - lead [crm.lead.get](../../crm/leads/crm-lead-get.md)

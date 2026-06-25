@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-The stage name is not stored in the "Stage" field of the CRM entity. The "Stage" field contains an identifier. You can correlate the name and identifier of the stage using methods for working with [dictionaries](../../../api-reference/crm/status/index.md) — system fields of the "list" type. To search for items by stage name, we will sequentially execute three methods:
+The stage name is not stored in the "Stage" field of the CRM object. The "Stage" field contains an identifier. You can correlate the name and identifier of the stage using methods for working with [dictionaries](../../../api-reference/crm/status/index.md) — system fields of the "list" type. To search for items by stage name, we will sequentially execute three methods:
 
 1. [crm.category.list](../../../api-reference/crm/universal/category/crm-category-list.md) — retrieve the funnel identifier
 2. [crm.status.list](../../../api-reference/crm/status/crm-status-list.md) — retrieve the stage identifier in the funnel

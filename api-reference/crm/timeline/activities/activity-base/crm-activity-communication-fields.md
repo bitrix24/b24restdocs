@@ -304,7 +304,7 @@ HTTP status: **200**
 || **ACTIVITY_ID***
 [`integer`](../../../data-types.md) | Identifier of the activity ||
 || **ENTITY_ID***
-[`integer`](../../../data-types.md) | Identifier of the CRM entity ||
+[`integer`](../../../data-types.md) | Identifier of the CRM object ||
 || **ENTITY_TYPE_ID***
 [`integer`](../../../data-types.md) | [Identifier of the CRM object type](../../../data-types.md#object_type) ||
 || **TYPE_ID***

@@ -14,7 +14,7 @@ The method `crm.documentgenerator.document.getfields` returns a detail form of t
 
 ## Method Parameters
 
-{% include [Footnote on parameters](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -44,7 +44,7 @@ This allows checking the result without changing the document itself. For exampl
 If `values` are not provided, the method will return the detail form of the fields based on the current document data and template logic ||
 |#
 
-### Parameter values {#parameter-values-fields}
+### Parameter Values {#parameter-values-fields}
 
 The composition of the keys in `values` depends on the template used to create the document, so it may vary across different documents.
 
@@ -56,7 +56,7 @@ The composition of the keys in `values` depends on the template used to create t
 || **DocumentCreateTime**
 [`string`](../../data-types.md) | Generation date ||
 || **DocumentTitle**
-[`string`](../../data-types.md) | Document title ||
+[`string`](../../data-types.md) | Document name ||
 || **ClientPhone**
 [`string`](../../data-types.md) | Client phone ||
 || **ClientEmail**
@@ -71,7 +71,7 @@ The composition of the keys in `values` depends on the template used to create t
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 Example of retrieving document fields, where:
 - document identifier — `101`
@@ -222,6 +222,36 @@ Example of retrieving document fields, where:
     }
     ```
 
+- Python
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.documentgenerator.document.getfields(
+            bitrix_id=101,
+            values={
+                "DocumentNumber": "2026-001",
+            },
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - BX24.js
 
     ```js
@@ -266,7 +296,7 @@ Example of retrieving document fields, where:
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -298,12 +328,12 @@ HTTP Status: **200**
                 "value": [
                     {
                         "value": "340",
-                        "title": "Fortune Wheel",
+                        "title": "Wheel of Fortune",
                         "selected": true
                     },
                     {
                         "value": "358",
-                        "title": "Bitrix-Development",
+                        "title": "Bitrix Development",
                         "selected": false
                     }
                 ],
@@ -319,8 +349,8 @@ HTTP Status: **200**
         "finish": 1773909500.192341,
         "duration": 0.19234108924865723,
         "processing": 0,
-        "date_start": "2026-03-19T11:38:20+02:00",
-        "date_finish": "2026-03-19T11:38:20+02:00",
+        "date_start": "2026-03-19T11:38:20+03:00",
+        "date_finish": "2026-03-19T11:38:20+03:00",
         "operating_reset_at": 1773910100,
         "operating": 0
     }
@@ -338,7 +368,7 @@ HTTP Status: **200**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
-#### Type result {#result}
+#### Result Type {#result}
 
 #|
 || **Name**
@@ -347,7 +377,7 @@ HTTP Status: **200**
 [`object`](../../data-types.md) | Object of document fields, where the key is the field code and the value is the structure [`documentField`](#documentfield) ||
 |#
 
-#### Type documentField {#documentfield}
+#### documentField Type {#documentfield}
 
 #|
 || **Name**
@@ -367,7 +397,7 @@ HTTP Status: **200**
 || **chain**
 [`string`](../../data-types.md) \| [`array`](../../data-types.md) | Path of the field in the data provider, e.g., `this.SOURCE.MY_COMPANY.UF_LOGO` ||
 || **format**
-[`object`](../../data-types.md) | Field formatting parameters, e.g., `{"currencyId":"EUR","withZeros":true}` ||
+[`object`](../../data-types.md) | Field formatting parameters, e.g., `{"currencyId":"USD","withZeros":true}` ||
 || **options**
 [`object`](../../data-types.md) | Additional field parameters, e.g., `{"isArray":true}` ||
 || **hideRow**
@@ -376,7 +406,7 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -385,7 +415,7 @@ HTTP Status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
@@ -394,11 +424,11 @@ HTTP Status: **400**
 || `100` | Bitrix\\DocumentGenerator\\Document constructor must be is public | Required parameter `id` not provided ||
 || `DOCGEN_ACCESS_ERROR` | Access denied | No access to the document or insufficient rights to work with document generator documents ||
 || `0` | Document not found | Document with the specified `id` not found or unavailable ||
-|| `Empty value` | You do not have permissions to modify documents | Insufficient rights to modify document generator documents ||
-|| `Empty value` | Module documentgenerator is not installed | The `documentgenerator` module is unavailable ||
+|| Empty value | You do not have permissions to modify documents | Insufficient rights to modify document generator documents ||
+|| Empty value | Module documentgenerator is not installed | The `documentgenerator` module is not available ||
 |#
 
-{% include [system errors](../../../../_includes/system-errors.md) %}
+{% include [System errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

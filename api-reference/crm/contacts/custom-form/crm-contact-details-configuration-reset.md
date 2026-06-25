@@ -1,4 +1,4 @@
-# Resetting the Parameters of crm.contact.details.configuration.reset
+# Resetting the Parameters Of crm.contact.details.configuration.reset
 
 {% note tip "" %}
 
@@ -14,7 +14,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% note warning "DEPRECATED" %}
 
-The development of this method has been halted. Please use [crm.item.details.configuration.reset](../../universal/item-details-configuration/crm-item-details-configuration-reset.md).
+Development of this method has been halted. Please use [crm.item.details.configuration.reset](../../universal/item-details-configuration/crm-item-details-configuration-reset.md).
 
 {% endnote %}
 
@@ -22,19 +22,19 @@ This method resets the contact card settings: it removes the personal settings o
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **scope**
-[`string`](../../../data-types.md) | The scope of the settings.
+[`string`](../../../data-types.md) | The scope of the settings. 
 
 Possible values:
 - **P** — personal settings
 - **C** — shared settings
 
-Default is `P`
+Default — `P`
 ||
 || **userId**
 [`user`](../../../data-types.md) | User identifier. Required only when resetting personal settings.
@@ -45,7 +45,7 @@ If not specified, the `id` of the current user is used
 
 ## Code Examples
 
-{% include [Note on Examples](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 1. Resetting Shared Configuration
 
@@ -167,11 +167,41 @@ If not specified, the `id` of the current user is used
         echo '</PRE>';
         ```
 
+    - Python
+
+        Example
+
+        ```python
+        from b24pysdk.client import BaseClient
+        from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+        client: BaseClient
+
+        try:
+            bitrix_response = client.crm.contact.details.configuration.reset(
+                scope="P",
+                user_id=6,
+            ).response
+            result = bitrix_response.result
+            print(result)
+        except BitrixAPIError as error:
+            print(
+                "Bitrix API Error",
+                f"error: {error.error}",
+                f"error_description: {error.error_description}",
+                sep="\n",
+            )
+        except BitrixSDKException as error:
+            print(f"Bitrix SDK Error: {error.message}")
+        except Exception as error:
+            print(f"Unexpected error: {error}")
+        ```
+
     {% endlist %}
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -198,12 +228,12 @@ HTTP Status: **200**
 
 Returns `true` if the settings were successfully reset ||
 || **time**
-[`time`](../../../data-types.md#time) | Information about the execution time of the request ||
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -212,18 +242,18 @@ HTTP Status: **400**
 }
 ```
 
-{% include notitle [Error Handling](../../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
 || **Code** | **Description**   | **Value** ||
-|| Empty Value | Access denied. | The user does not have administrative rights ||
+|| Empty value | Access denied. | The user does not have administrative rights ||
 |#
 
-{% include [System Errors](../../../../_includes/system-errors.md) %}
+{% include [System errors](../../../../_includes/system-errors.md) %}
 
-## Continue Learning 
+## Continue Learning
 
 - [{#T}](./index.md)
 - [{#T}](./crm-contact-details-configuration-get.md)

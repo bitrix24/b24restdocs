@@ -8,7 +8,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
-> Who can execute the method: a user with edit access permission for the CRM entity to which the activity is linked
+> Who can execute the method: a user with edit access permission for the CRM object to which the activity is linked
 
 The method `crm.activity.todo.updateColor` updates the color of the universal deal.
 
@@ -24,7 +24,7 @@ The method `crm.activity.todo.updateColor` updates the color of the universal de
 || **ownerTypeId***
 [`integer`](../../../../data-types.md) | [Identifier of the CRM object type](../../../data-types.md#object_type) to which the deal is linked, for example `2` for a deal ||
 || **ownerId***
-[`integer`](../../../../data-types.md) | Identifier of the CRM entity to which the deal is linked, for example, `1` ||
+[`integer`](../../../../data-types.md) | Identifier of the CRM object to which the deal is linked, for example, `1` ||
 || **colorId***
 [`string`](../../../../data-types.md) | Identifier of the deal's color in the timeline, for example `1`. There are 8 available colors, values from 1 to 7 and the default color if none is specified:
 
@@ -293,7 +293,7 @@ HTTP status: **400**
 #|
 || **Code** | **Description** ||
 || `100` | Required fields are missing ||
-|| `NOT_FOUND` | CRM entity not found ||
+|| `NOT_FOUND` | CRM object not found ||
 || `ACCESS_DENIED` | Insufficient permissions to perform the operation ||
 || `OWNER_NOT_FOUND` | Owner of the entity not found ||
 || `CAN_NOT_UPDATE_COLOR_COMPLETED_TODO` | Cannot change color in a closed deal ||

@@ -19,6 +19,10 @@ items:
     include:
       path: chat-bots/b24-toc.yaml
       mode: link
+  - name: Message Providers, SMS Providers
+    include:
+      path: messageservice/b24-toc.yaml
+      mode: link
   - name: Telephony
     include:
       path: telephony/b24-toc.yaml

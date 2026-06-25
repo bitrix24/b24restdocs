@@ -153,7 +153,7 @@ Default is `N` ||
         method: 'catalog.store.add',
         params: {
           fields: {
-            address: 'Moscow Ave., 52',
+            address: '19 Miller St.',
             title: 'Warehouse 1',
             active: 'Y',
             description: 'Description',
@@ -209,7 +209,7 @@ Default is `N` ||
             method: 'catalog.store.add',
             params: {
               fields: {
-                address: 'Moscow Ave., 52',
+                address: '19 Miller St.',
                 title: 'Warehouse 1',
                 active: 'Y',
                 description: 'Description',

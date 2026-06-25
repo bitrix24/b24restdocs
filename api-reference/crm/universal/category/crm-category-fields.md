@@ -386,7 +386,7 @@ HTTP status: **400**
 #|
 || **Code** | **Description** | **Value** ||
 || `NOT_FOUND` | SPA not found | Occurs with incorrect values for `entityTypeId` ||
-|| `ENTITY_TYPE_NOT_SUPPORTED` |  Entity type `{entityTypeName}` is not supported | Occurs if the CRM entity does not support funnels ||
+|| `ENTITY_TYPE_NOT_SUPPORTED` |  Entity type `{entityTypeName}` is not supported | Occurs if the CRM object does not support funnels ||
 |#
 
 {% include [system errors](./../../../../_includes/system-errors.md) %}

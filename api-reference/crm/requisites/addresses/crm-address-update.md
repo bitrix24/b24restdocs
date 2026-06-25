@@ -123,8 +123,8 @@ If at least one string field is specified, only the specified fields will be sav
             TYPE_ID: 1,           // identifies the address
             ENTITY_TYPE_ID: 3,    // identifies the address
             ENTITY_ID: 1,         // identifies the address
-            ADDRESS_1: 'Moskovskiy prospect, 261', // field to update
-            CITY: 'Kaliningrad',                   // field to update
+            ADDRESS_1: 'Street, 261', // field to update
+            CITY: 'City',                   // field to update
           },
         },
         requestId: Text.getUuidRfc4122()
@@ -161,8 +161,8 @@ If at least one string field is specified, only the specified fields will be sav
                 TYPE_ID: 1,           // identifies the address
                 ENTITY_TYPE_ID: 3,    // identifies the address
                 ENTITY_ID: 1,         // identifies the address
-                ADDRESS_1: 'Moskovskiy prospect, 261', // field to update
-                CITY: 'Kaliningrad',                   // field to update
+                ADDRESS_1: 'Street, 261', // field to update
+                CITY: 'City',                   // field to update
               },
             },
             requestId: B24Js.Text.getUuidRfc4122()

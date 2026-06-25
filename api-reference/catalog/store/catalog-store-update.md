@@ -149,7 +149,7 @@ Can be used to synchronize the current warehouse with a similar position in an e
         params: {
           id: 1,
           fields: {
-            address: 'Moscow Ave, 52',
+            address: '19 Miller St.',
             title: 'Warehouse 1',
             active: 'Y',
             description: 'Description',
@@ -203,7 +203,7 @@ Can be used to synchronize the current warehouse with a similar position in an e
             params: {
               id: 1,
               fields: {
-                address: 'Moscow Ave, 52',
+                address: '19 Miller St.',
                 title: 'Warehouse 1',
                 active: 'Y',
                 description: 'Description',

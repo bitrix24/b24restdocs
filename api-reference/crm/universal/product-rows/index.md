@@ -29,7 +29,7 @@ For example, for a deal with ID `13142`, pass `ownerType: "D"` and `ownerId: 131
 
 ## Relationship with Other Objects
 
-**CRM Entities.** Product items are related to a specific CRM entity. The relationship is defined through `ownerType` and `ownerId` in the [crm.item.productrow.add](./crm-item-productrow-add.md), [crm.item.productrow.set](./crm-item-productrow-set.md), [crm.item.productrow.list](./crm-item-productrow-list.md), and [crm.item.productrow.getAvailableForPayment](./crm-item-productrow-get-available-for-payment.md) methods.
+**CRM Entities.** Product items are related to a specific CRM object. The relationship is defined through `ownerType` and `ownerId` in the [crm.item.productrow.add](./crm-item-productrow-add.md), [crm.item.productrow.set](./crm-item-productrow-set.md), [crm.item.productrow.list](./crm-item-productrow-list.md), and [crm.item.productrow.getAvailableForPayment](./crm-item-productrow-get-available-for-payment.md) methods.
 
 **Product Catalog.** A product item can be linked to a catalog product through the `productId` field in the [crm.item.productrow.add](./crm-item-productrow-add.md) and [crm.item.productrow.set](./crm-item-productrow-set.md) methods. If you pass `productId` but do not pass `productName` or `measureCode`, the CRM will use the product name and unit of measure from the catalog.
 

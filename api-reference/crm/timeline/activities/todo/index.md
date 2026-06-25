@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 > 
 > User documentation: [Universal activity in CRM](https://helpdesk.bitrix24.com/open/21064046/)
 
-Universal activities are a type of activity with extended settings. In the universal activity card, you can synchronize the activity with the calendar, choose a meeting location with the client, add colleagues, select a client from the CRM entity, categorize activity by color, and choose a meeting room. Some extended settings are available to the employee on the Bitrix24 side.
+Universal activities are a type of activity with extended settings. In the universal activity card, you can synchronize the activity with the calendar, choose a meeting location with the client, add colleagues, select a client from the CRM object, categorize activity by color, and choose a meeting room. Some extended settings are available to the employee on the Bitrix24 side.
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
@@ -27,7 +27,7 @@ Universal activities are a type of activity with extended settings. In the unive
 || [crm.activity.todo.updateDescription](./crm-activity-todo-update-description.md) | Updates the description of the universal activity ||
 || [crm.activity.todo.updateResponsibleUser](./crm-activity-todo-update-responsible-user.md) | Updates the responsible user for the universal activity ||
 || [crm.activity.get](../activity-base/crm-activity-get.md) | Retrieves information about the universal activity by its ID ||
-|| [crm.activity.list](../activity-base/crm-activity-list.md) | Retrieves a list of all universal activity for the CRM entity with the filter `PROVIDER_ID` = `"CRM_TODO"` ||
+|| [crm.activity.list](../activity-base/crm-activity-list.md) | Retrieves a list of all universal activity for the CRM object with the filter `PROVIDER_ID` = `"CRM_TODO"` ||
 || [crm.activity.delete](../activity-base/crm-activity-delete.md) | Deletes the universal activity by its ID ||
 |#
 

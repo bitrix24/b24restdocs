@@ -1,4 +1,4 @@
-# Get a list of bank details by filter crm.requisite.bankdetail.list
+# Get a List of Bank Details by Filter crm.requisite.bankdetail.list
 
 {% note tip "" %}
 
@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: any user
 
-The method returns a list of bank details based on the filter.
+Returns a list of banking details based on the filter.
 
 ## Method Parameters
 
@@ -59,7 +59,7 @@ Possible values for `order`:
 - `desc` — in descending order
 ||
 || **start**
-[`integer`](../../../data-types.md) | The parameter is used for managing pagination.
+[`integer`](../../../data-types.md) | This parameter is used to manage pagination.
 
 The page size of results is always static: 50 records.
 
@@ -67,7 +67,7 @@ To select the second page of results, you need to pass the value `50`. To select
 
 The formula for calculating the `start` parameter value:
 
-`start = (N-1) * 50`, where `N` — the number of the desired page 
+`start = (N-1) * 50`, where `N` is the desired page number 
 ||
 |#
 
@@ -77,86 +77,87 @@ The formula for calculating the `start` parameter value:
 || **Name**
 `type` | **Description** ||
 || **ID**
-[`integer`](../../../data-types.md) | Identifier of the bank detail. Automatically created and unique within the account. ||
+[`integer`](../../../data-types.md) | Identifier of the bank details. Automatically created and unique within the account ||
 || **ENTITY_ID**
-[`integer`](../../../data-types.md) | Identifier of the parent object. Currently, it can only be the identifier of the detail. 
+[`integer`](../../../data-types.md) | Identifier of the parent object. Currently can only be the identifier of the requisite. 
 
-Identifiers of details can be obtained using the method [`crm.requisite.list`](../universal/crm-requisite-list.md). ||
+Identifiers of requisites can be obtained using the method [`crm.requisite.list`](../universal/crm-requisite-list.md) ||
 || **COUNTRY_ID**
-[`integer`](../../../data-types.md) | Identifier of the country corresponding to the set of bank detail fields (see the method [crm.requisite.preset.countries](../presets/crm-requisite-preset-countries.md) for available values).
+[`integer`](../../../data-types.md) | Identifier of the country corresponding to the set of bank details fields (see method [crm.requisite.preset.countries](../presets/crm-requisite-preset-countries.md) for available values).
 
-The country code of the bank detail matches the country code in the linked detail template, the identifier of which is specified in the `ENTITY_ID` field. ||
+The country code of the bank details matches the country code in the linked requisite template, the identifier of which is specified in the `ENTITY_ID` field 
+||
 || **DATE_CREATE**
-[`datetime`](../../../data-types.md) | Creation date. ||
+[`datetime`](../../../data-types.md) | Create date ||
 || **DATE_MODIFY**
-[`datetime`](../../../data-types.md) | Modification date. ||
+[`datetime`](../../../data-types.md) | Modification date ||
 || **CREATED_BY_ID**
-[`user`](../../../data-types.md) | Identifier of the user who created the detail. ||
+[`user`](../../../data-types.md) | Identifier of the user who created the requisite ||
 || **MODIFY_BY_ID**
-[`user`](../../../data-types.md) | Identifier of the user who modified the detail. ||
+[`user`](../../../data-types.md) | Identifier of the user who modified the requisite ||
 || **NAME**
-[`string`](../../../data-types.md) | Name of the bank detail. ||
+[`string`](../../../data-types.md) | Name of the bank details ||
 || **CODE**
-[`string`](../../../data-types.md) | Symbolic code of the detail. ||
+[`string`](../../../data-types.md) | Symbolic code of the requisite ||
 || **XML_ID**
 [`string`](../../../data-types.md) | External key. Used for exchange operations. Identifier of the object in the external information base. 
 
 The purpose of the field may change by the final developer. Each application ensures the uniqueness of values in this field. 
 
-It is recommended to use a unique prefix to avoid collisions with other applications. ||
+It is recommended to use a unique prefix to avoid collisions with other applications ||
 || **ACTIVE**
-[`char`](../../../data-types.md) | Activity indicator. Values `Y` or `N` are used. 
+[`char`](../../../data-types.md) | Activity indicator. Uses values `Y` or `N`. 
 
-Currently, the field does not actually affect anything. ||
+Currently, the field does not actually affect anything ||
 || **SORT**
-[`integer`](../../../data-types.md) | Sorting. ||
+[`integer`](../../../data-types.md) | Sorting ||
 || **RQ_BANK_NAME**
-[`string`](../../../data-types.md) | Name of the bank. ||
+[`string`](../../../data-types.md) | Name of the bank ||
 || **RQ_BANK_ADDR**
-[`string`](../../../data-types.md) | Address of the bank. ||
+[`string`](../../../data-types.md) | Address of the bank ||
 || **RQ_BANK_CODE**
-[`string`](../../../data-types.md) | Bank Code (for country BR). ||
+[`string`](../../../data-types.md) | Bank Code (for country BR) ||
 || **RQ_BANK_ROUTE_NUM**
-[`string`](../../../data-types.md) | Bank Routing Number. ||
+[`string`](../../../data-types.md) | Bank Routing Number ||
 || **RQ_BIK**
-[`string`](../../../data-types.md) | BIK. ||
+[`string`](../../../data-types.md) | BIK ||
 || **RQ_CODEB**
-[`string`](../../../data-types.md) | Code Banque (for country FR). ||
+[`string`](../../../data-types.md) | Bank Code (for country FR) ||
 || **RQ_CODEG**
-[`string`](../../../data-types.md) | Code Guichet (for country FR). ||
+[`string`](../../../data-types.md) | Branch Code (for country FR) ||
 || **RQ_RIB**
-[`string`](../../../data-types.md) | Clé RIB (for country FR). ||
+[`string`](../../../data-types.md) | RIB Key (for country FR) ||
 || **RQ_MFO**
-[`string`](../../../data-types.md) | MFO. ||
+[`string`](../../../data-types.md) | MFO ||
 || **RQ_ACC_NAME**
-[`string`](../../../data-types.md) | Bank Account Holder Name. ||
+[`string`](../../../data-types.md) | Bank Account Holder Name ||
 || **RQ_ACC_NUM**
-[`string`](../../../data-types.md) | Bank Account Number. ||
+[`string`](../../../data-types.md) | Bank Account Number ||
 || **RQ_ACC_TYPE**
-[`string`](../../../data-types.md) | Tipo da conta (for country BR). ||
+[`string`](../../../data-types.md) | Account Type (for country BR) ||
 || **RQ_AGENCY_NAME**
-[`string`](../../../data-types.md) | Agência (for country BR). ||
+[`string`](../../../data-types.md) | Agency (for country BR) ||
 || **RQ_IIK**
-[`string`](../../../data-types.md) | IIK. ||
+[`string`](../../../data-types.md) | IIK ||
 || **RQ_ACC_CURRENCY**
-[`string`](../../../data-types.md) | Account Currency. ||
+[`string`](../../../data-types.md) | Currency of the account ||
 || **RQ_COR_ACC_NUM**
-[`string`](../../../data-types.md) | Correspondent Account Number. ||
+[`string`](../../../data-types.md) | Correspondent account ||
 || **RQ_IBAN**
-[`string`](../../../data-types.md) | IBAN. ||
+[`string`](../../../data-types.md) | IBAN ||
 || **RQ_SWIFT**
-[`string`](../../../data-types.md) | SWIFT. ||
-|| **RQ_BIC**
-[`string`](../../../data-types.md) | BIC. ||
+[`string`](../../../data-types.md) | SWIFT ||
+|| **RQ_BIK**
+[`string`](../../../data-types.md) | BIK ||
 || **COMMENTS**
-[`string`](../../../data-types.md) | Comment. ||
+[`string`](../../../data-types.md) | Comment ||
 || **ORIGINATOR_ID**
-[`string`](../../../data-types.md) | Identifier of the external information base. The purpose of the field may change by the final developer. ||
+[`string`](../../../data-types.md) | Identifier of the external information base. The purpose of the field may change by the final developer ||
 |#
 
 ## Code Examples
 
-{% include [Examples Note](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -346,11 +347,103 @@ Currently, the field does not actually affect anything. ||
     echo '</PRE>';
     ```
 
+- Python
+
+    Example
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.requisite.bankdetail.list(
+            order={"DATE_CREATE": "ASC"},
+            filter={"COUNTRY_ID": "1"},
+            select=["ENTITY_ID", "ID", "NAME"],
+            start=0,
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
+    Example `as_list`
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.requisite.bankdetail.list(
+            order={"DATE_CREATE": "ASC"},
+            filter={"COUNTRY_ID": "1"},
+            select=["ENTITY_ID", "ID", "NAME"],
+        ).as_list().response
+        result = bitrix_response.result
+        for item in result:
+            print(item)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
+    Example `as_list_fast`
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.requisite.bankdetail.list(
+            filter={"COUNTRY_ID": "1"},
+            select=["ENTITY_ID", "ID", "NAME"],
+            order={"ID": "DESC"},
+        ).as_list_fast(descending=True).response
+        result = bitrix_response.result
+        for item in result:
+            print(item)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 {% endlist %}
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -358,27 +451,27 @@ HTTP Status: **200**
         {
             "ENTITY_ID": "27",
             "ID": "11",
-            "NAME": "Tinkoff"
+            "NAME": "Chase"
         },
         {
             "ENTITY_ID": "30",
             "ID": "15",
-            "NAME": "ALPHA-BANK JSC"
+            "NAME": "Alpha Bank Corp."
         },
         {
             "ENTITY_ID": "30",
             "ID": "16",
-            "NAME": "Tinkoff Bank JSC"
+            "NAME": "Chase Bank Corp."
         },
         {
             "ENTITY_ID": "45",
             "ID": "17",
-            "NAME": "Tinkoff Bank JSC"
+            "NAME": "Chase Bank Corp."
         },
         {
             "ENTITY_ID": "45",
             "ID": "18",
-            "NAME": "ALPHA-BANK JSC"
+            "NAME": "Alpha Bank Corp."
         }
     ],
     "total": 5,
@@ -402,14 +495,14 @@ HTTP Status: **200**
 || **result**
 [`array`](../../../data-types.md)| An array of objects with information from the selected bank details. Each element contains the selected [bank detail fields](#fields). ||
 || **total**
-[`integer`](../../../data-types.md) | Total number of records found. ||
+[`integer`](../../../data-types.md) | The total number of records found ||
 || **time**
-[`time`](../../../data-types.md) | Information about the execution time of the request. ||
+[`time`](../../../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-HTTP Status: **40x**, **50x**
+HTTP status: **40x**, **50x**
 
 ```json
 {
@@ -418,16 +511,16 @@ HTTP Status: **40x**, **50x**
 }
 ```
 
-{% include notitle [error handling](../../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Errors
 
-#|  
-|| **Error Text** | **Description** ||
+#|
+|| **Error text** | **Description** ||
 || `Access denied` | Insufficient access permissions to retrieve the list of bank details. ||
 |#
 
-{% include [system errors](../../../../_includes/system-errors.md) %}
+{% include [System errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
@@ -436,4 +529,3 @@ HTTP Status: **40x**, **50x**
 - [{#T}](./crm-requisite-bank-detail-get.md)
 - [{#T}](./crm-requisite-bank-detail-delete.md)
 - [{#T}](./crm-requisite-bank-detail-fields.md)
-

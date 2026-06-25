@@ -48,7 +48,7 @@ To obtain the ID of a specific direction in Bitrix24, use the method [crm.status
 
 Each list value in the reference guides has:
 
-* name `NAME` — displayed in the CRM entity detail form
+* name `NAME` — displayed in the CRM object detail form
 * status `STATUS_ID` — used in methods for creating and modifying entities
 
 Using the method [crm.deal.update](../deals/crm-deal-update.md), you can change the values of the fields `Deal Stage` — `STAGE_ID` and `Source` — `SOURCE_ID`. Both fields are system list fields.

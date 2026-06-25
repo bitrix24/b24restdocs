@@ -16,7 +16,7 @@ The method `crm.tracking.trace.delete` removes a Sales Intelligence trace.
 
 ## Method Parameters
 
-{% include [Footnote on required parameters](../../../_includes/required.md) %}
+{% include [Note on parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -31,7 +31,7 @@ The `id` can be obtained using the method [crm.tracking.trace.add](./crm-trackin
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 Example of deleting a Sales Intelligence trace, where:
 - `id` — identifier of the trace
@@ -176,6 +176,35 @@ Example of deleting a Sales Intelligence trace, where:
     );
     ```
 
+- Python
+
+    Example
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.tracking.trace.delete(
+            bitrix_id=125,
+        )
+        result = bitrix_response.response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - PHP CRest
 
     ```php
@@ -195,7 +224,7 @@ Example of deleting a Sales Intelligence trace, where:
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -205,8 +234,8 @@ HTTP Status: **200**
         "finish": 1775119058.707133,
         "duration": 0.7071330547332764,
         "processing": 0,
-        "date_start": "2026-04-02T11:37:38+02:00",
-        "date_finish": "2026-04-02T11:37:38+02:00",
+        "date_start": "2026-04-02T11:37:38+03:00",
+        "date_finish": "2026-04-02T11:37:38+03:00",
         "operating_reset_at": 1775119658,
         "operating": 0
     }
@@ -230,7 +259,7 @@ Upon successful deletion of the binding, the value is cleared in the "Sales Inte
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -239,16 +268,16 @@ HTTP Status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
 || **Status** | **Code** | **Description** | **Value** ||
-|| `400` | `ERROR_CORE` | Parameter `id` required. | The `id` parameter is missing or an empty value was provided ||
+|| `400` | `ERROR_CORE` | Parameter `id` required. | The `id` parameter is missing or an empty value is provided ||
 |#
 
-{% include [system errors](../../../_includes/system-errors.md) %}
+{% include [System errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

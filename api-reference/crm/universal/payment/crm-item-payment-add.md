@@ -10,19 +10,19 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: requires access permission to modify the CRM object to which the payment is added.
 
-This method creates a payment for a CRM object.
+Creates a payment for a CRM object.
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **entityId***
-[`integer`](../../../../api-reference/data-types.md) | Identifier of the CRM object ||
+[`integer`](../../../../api-reference/data-types.md) | Identifier of the CRM object. ||
 || **entityTypeId***
-[`integer`](../../../../api-reference/data-types.md) | Identifier of the [`CRM object type`](../../data-types.md#object_type) ||
+[`integer`](../../../../api-reference/data-types.md) | Identifier of the [CRM object type](../../data-types.md#object_type). ||
 |#
 
 ## Code Examples
@@ -148,6 +148,36 @@ This method creates a payment for a CRM object.
     }
     ```
 
+- Python
+
+    Example
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.item.payment.add(
+            entity_id=13123,
+            entity_type_id=2,
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - BX24.js
 
     ```js
@@ -186,7 +216,7 @@ This method creates a payment for a CRM object.
 
 {% endlist %}
 
-## Successful Response
+## Response on Success
 
 HTTP status: **200**
 
@@ -198,8 +228,8 @@ HTTP status: **200**
         "finish": 1716193065.656833,
         "duration": 0.90767502784729,
         "processing": 0.6450831890106201,
-        "date_start": "2024-05-20T11:17:44+02:00",
-        "date_finish": "2024-05-20T11:17:45+02:00"
+        "date_start": "2024-05-20T11:17:44+03:00",
+        "date_finish": "2024-05-20T11:17:45+03:00"
     }
 }
 ```
@@ -226,7 +256,7 @@ HTTP status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
@@ -235,11 +265,11 @@ HTTP status: **400**
 || `0` | Access denied ||
 || `0` | Invalid CRM object type  ||
 || `0` | The provided CRM object was not found ||
-|| `100` | Required fields were not provided ||
+|| `100` | Required fields are not provided ||
 || `0` | Other errors (e.g., fatal errors) ||
 |#
 
-{% include notitle [system errors](../../../../_includes/system-errors.md) %}
+{% include notitle [System errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

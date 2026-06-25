@@ -8,19 +8,19 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: user with "edit" permission for document generator templates
+> Who can execute the method: a user with "modify" access permission for document generator templates
 
 The method `crm.documentgenerator.template.update` updates an existing document template.
 
 ## Method Parameters
 
-{% include [Footnote on parameters](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **id**^*^
-[`integer`](../../data-types.md) | Template identifier ||
+[`integer`](../../data-types.md) | Identifier of the template ||
 || **fields**^*^
 [`object`](../../data-types.md) | Object with template fields to update [(more details)](#fields) ||
 |#
@@ -33,13 +33,13 @@ The method `crm.documentgenerator.template.update` updates an existing document 
 || **name**
 [`string`](../../data-types.md) | Template name ||
 || **file**
-[`file`](../../data-types.md#file) | Template file in the format `["file_name.docx", "base64_content"]`. Can be sent in `base64` or `multipart/form-data`. More details: [How to upload files](../../../files/how-to-upload-files.md) ||
+[`file`](../../data-types.md#file) | Template file in the format `["file_name.docx", "base64_content"]`. Can be sent in `base64` or `multipart/form-data`. More details: [How to Upload Files](../../../files/how-to-upload-files.md) ||
 || **numeratorId**
 [`integer`](../../data-types.md) | Identifier of the numerator. A list of available numerators can be obtained using the method [crm.documentgenerator.numerator.list](../numerator/crm-document-generator-numerator-list.md) ||
 || **region**
-[`string`](../../data-types.md) | Template region, for example `de` ||
+[`string`](../../data-types.md) | Template region, for example `ru` ||
 || **entityTypeId**
-[`array`](../../data-types.md) | Array of CRM entity identifiers for which the template is available.
+[`array`](../../data-types.md) | Array of CRM object identifiers for which the template is available.
 
 Typical values:
 - `1` — lead
@@ -77,19 +77,19 @@ Supported access codes:
 || **withStamps**
 [`char`](../../data-types.md) | Include stamp and signature: `Y` or `N` ||
 || **sort**
-[`integer`](../../data-types.md) | Sort index ||
+[`integer`](../../data-types.md) | Sorting index ||
 |#
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 Example of updating a document template where:
 - template identifier — `41`
 - new name — `Template from file (updated)`
 - numerator identifier — `49`
-- template region — `de`
-- CRM entity identifier — `2`
+- template region — `ru`
+- CRM object identifier — `2`
 - access permission code — `UA`
 
 {% list tabs %}
@@ -155,7 +155,7 @@ Example of updating a document template where:
             name: 'Template from file (updated)',
             file: ['template-updated.docx', '**base64_encoded_content**'],
             numeratorId: 49,
-            region: 'ru',
+            region: 'de',
             entityTypeId: ['2'],
             users: ['UA'],
             active: 'Y',
@@ -198,7 +198,7 @@ Example of updating a document template where:
                 name: 'Template from file (updated)',
                 file: ['template-updated.docx', '**base64_encoded_content**'],
                 numeratorId: 49,
-                region: 'ru',
+                region: 'de',
                 entityTypeId: ['2'],
                 users: ['UA'],
                 active: 'Y',
@@ -266,6 +266,44 @@ Example of updating a document template where:
         error_log($e->getMessage());
         echo 'Error updating template: ' . $e->getMessage();
     }
+    ```
+
+- Python
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.documentgenerator.template.update(
+            bitrix_id=41,
+            fields={
+                "name": "Template from file (updated)",
+                "file": ["template-updated.docx", "**base64_encoded_content**"],
+                "numeratorId": 49,
+                "region": "de",
+                "entityTypeId": ["2"],
+                "users": ["UA"],
+                "active": "Y",
+                "withStamps": "N",
+                "sort": 500,
+            },
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
     ```
 
 - BX24.js
@@ -355,8 +393,8 @@ HTTP status: **200**
             "entityTypeId": [
                 "2"
             ],
-            "createTime": "2026-03-18T15:54:20+02:00",
-            "updateTime": "2026-03-18T17:26:29+02:00"
+            "createTime": "2026-03-18T15:54:20+03:00",
+            "updateTime": "2026-03-18T17:26:29+03:00"
         }
     },
     "time": {
@@ -364,8 +402,8 @@ HTTP status: **200**
         "finish": 1773843989.201709,
         "duration": 0.20170903205871582,
         "processing": 0,
-        "date_start": "2026-03-18T17:26:29+02:00",
-        "date_finish": "2026-03-18T17:26:29+02:00",
+        "date_start": "2026-03-18T17:26:29+03:00",
+        "date_finish": "2026-03-18T17:26:29+03:00",
         "operating_reset_at": 1773844589,
         "operating": 0
     }
@@ -383,13 +421,13 @@ HTTP status: **200**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
-#### Type template {#template}
+#### Template Type {#template}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **id**
-[`string`](../../data-types.md) | Template identifier ||
+[`string`](../../data-types.md) | Identifier of the template ||
 || **name**
 [`string`](../../data-types.md) | Template name ||
 || **region**
@@ -405,17 +443,17 @@ HTTP status: **200**
 || **moduleId**
 [`string`](../../data-types.md) | Module identifier ||
 || **numeratorId**
-[`string`](../../data-types.md) | Identifier of the numerator ||
+[`string`](../../data-types.md) | The identifier of the numerator ||
 || **withStamps**
 [`char`](../../data-types.md) | Include stamp and signature: `Y` or `N` ||
 || **users**
 [`object`](../../data-types.md) | Object of access permission codes in the format `{"UA":"UA"}` ||
 || **isDeleted**
-[`char`](../../data-types.md) | Deletion status of the template: `Y` or `N` ||
+[`char`](../../data-types.md) | Template deletion flag: `Y` or `N` ||
 || **sort**
-[`string`](../../data-types.md) | Sort index ||
+[`string`](../../data-types.md) | Sorting index ||
 || **entityTypeId**
-[`array`](../../data-types.md) | Array of CRM entity identifiers for which the template is available ||
+[`array`](../../data-types.md) | Array of CRM object identifiers for which the template is available ||
 || **createTime**
 [`datetime`](../../data-types.md) | Date and time of template creation ||
 || **updateTime**
@@ -433,22 +471,22 @@ HTTP status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
 || **Code** | **Description** | **Value** ||
 || `100` | Could not find value for parameter {fields} | Required parameter `fields` not provided ||
-|| `100` | Invalid value {...} to match with parameter {fields}. Should be value of type array. | Parameter `fields` not passed as an object ||
+|| `100` | Invalid value {...} to match with parameter {fields}. Should be value of type array. | Parameter `fields` not provided as an object ||
 || `0` | Template not found | Template with the specified `id` not found or unavailable ||
 || `0` | Could not save file | Failed to save the template file ||
 || `DOCGEN_ACCESS_ERROR` | Access denied | No access to the template ||
-|| `Empty value` | You do not have permissions to modify templates | Insufficient rights to modify document generator templates ||
-|| `Empty value` | Module documentgenerator is not installed | Module `documentgenerator` is unavailable ||
+|| Empty value | You do not have permissions to modify templates | Insufficient permissions to modify document generator templates ||
+|| Empty value | Module documentgenerator is not installed | The `documentgenerator` module is not available ||
 |#
 
-{% include [system errors](../../../../_includes/system-errors.md) %}
+{% include [System errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

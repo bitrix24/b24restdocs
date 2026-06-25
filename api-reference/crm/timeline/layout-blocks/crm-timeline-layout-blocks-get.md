@@ -22,9 +22,9 @@ Within the application, you can only obtain the set of additional content blocks
 || **Name** 
 `type` | **Description** ||
 || **entityTypeId*** 
-[`integer`](../../../data-types.md) | Identifier of the CRM entity type associated with the timeline record ||
+[`integer`](../../../data-types.md) | Identifier of the CRM object type associated with the timeline record ||
 || **entityId*** 
-[`integer`](../../../data-types.md) | Identifier of the CRM entity associated with the timeline record ||
+[`integer`](../../../data-types.md) | Identifier of the CRM object associated with the timeline record ||
 || **timelineId*** 
 [`integer`](../../../data-types.md) | Identifier of the timeline record ||
 |#

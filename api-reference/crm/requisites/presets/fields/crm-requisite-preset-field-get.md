@@ -10,11 +10,11 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: any user
 
-The method returns the description of the custom field of the requisite template by its identifier.
+Retrieves the description of a custom field within a company details template by its identifier.
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -171,16 +171,48 @@ Template identifiers can be obtained using the [crm.requisite.preset.list](../cr
     }
     ```
 
+- Python
+
+    Example
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.requisite.preset.field.get(
+            bitrix_id=1,
+            preset={
+                "ID": 27,
+            },
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - BX24.js
 
     ```js
     BX24.callMethod(
         "crm.requisite.preset.field.get",
         {
-            ID: 1,          // Identifier of the custom field
+            ID: 1,          // Custom field ID
             preset:
             {
-                "ID": 27    // Identifier of the requisite template
+                "ID": 27    // Billing template ID
             }
         },
         function(result)
@@ -246,7 +278,7 @@ HTTP status: **200**
 || **result**
 [`object`](../../../../data-types.md) | An object containing fields that describe the custom field of the requisite template ||
 || **time**
-[`time`](../../../../data-types.md) | Information about the execution time of the request ||
+[`time`](../../../../data-types.md) | Information about the request execution time ||
 |#
 
 ### Fields Describing the Custom Field of the Requisite Template
@@ -255,15 +287,15 @@ HTTP status: **200**
 ||  **Name**
 `type` | **Description** ||
 || **ID**
-[`integer`](../../../../data-types.md) | Identifier of the field. Created automatically and unique within the template 
+[`integer`](../../../../data-types.md) | Field identifier. Created automatically and unique within the template 
 || **FIELD_NAME**
-[`string`](../../../../data-types.md) | Name of the field 
+[`string`](../../../../data-types.md) | Field name 
 || **FIELD_TITLE**
-[`string`](../../../../data-types.md) | Alternative name of the field for the requisite.
+[`string`](../../../../data-types.md) | An alternative name for the field in the requisite.
 
 The alternative name is displayed in various forms for filling out requisites. Depending on the specific form, the alternative name may or may not be used 
 || **SORT**
-[`integer`](../../../../data-types.md) | Sorting. Order in the list of template fields 
+[`integer`](../../../../data-types.md) | Sorting. The order in the list of template fields 
 || **IN_SHORT_LIST**
 [`char`](../../../../data-types.md) | Show in the short list. Deprecated field, currently not used. Retained for backward compatibility. Can take values `Y` or `N` 
 |#
@@ -279,18 +311,18 @@ HTTP status: **40x**, **50x**
 }
 ```
 
-{% include notitle [error handling](../../../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
-#|  
+#|
 || **Code** | **Description** ||
 || `The PresetField with ID '1' is not found` | The custom field of the template with the specified identifier was not found ||
-|| `The Preset with ID '27' is not found` | The template with the specified identifier was not found ||
+|| `The Preset with ID '27' is not found` | Template with the specified identifier not found ||
 || `Access denied` | Insufficient access permissions to retrieve the custom field of the template ||
 |#
 
-{% include [system errors](../../../../../_includes/system-errors.md) %}
+{% include [System errors](../../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

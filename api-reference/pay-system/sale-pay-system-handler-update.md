@@ -86,7 +86,7 @@ This method updates the REST handler for the payment system.
             NAME: 'New handler name',
             SORT: 200,
             SETTINGS: {
-              CURRENCY: ['RUB', 'BYN'],
+              CURRENCY: ['USD', 'BYN'],
               FORM_DATA: {
                 ACTION_URI: 'http://example.com/payment_form.php',
                 METHOD: 'POST',
@@ -182,7 +182,7 @@ This method updates the REST handler for the payment system.
                 NAME: 'New handler name',
                 SORT: 200,
                 SETTINGS: {
-                  CURRENCY: ['RUB', 'BYN'],
+                  CURRENCY: ['USD', 'BYN'],
                   FORM_DATA: {
                     ACTION_URI: 'http://example.com/payment_form.php',
                     METHOD: 'POST',

@@ -162,6 +162,34 @@ The example enables the public link for document `61`.
     }
     ```
 
+- Python
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.documentgenerator.document.enablepublicurl(
+            bitrix_id=61,
+            status=1,
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - BX24.js
 
     ```js
@@ -202,7 +230,8 @@ The example enables the public link for document `61`.
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
+
 
 ```json
 {
@@ -214,8 +243,8 @@ HTTP Status: **200**
         "finish": 1774011939.899233,
         "duration": 0.8992331027984619,
         "processing": 0,
-        "date_start": "2026-03-20T16:05:39+01:00",
-        "date_finish": "2026-03-20T16:05:39+01:00",
+        "date_start": "2026-03-20T16:05:39+03:00",
+        "date_finish": "2026-03-20T16:05:39+03:00",
         "operating_reset_at": 1774012539,
         "operating": 0.3236720561981201
     }
@@ -233,18 +262,18 @@ HTTP Status: **200**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
-#### Type result {#result}
+#### Result Type {#result}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **publicUrl**
-[`string`](../../data-types.md) \| [`null`](../../data-types.md) | Public link to the document. Returns `null` when `status = 0` ||
+[`string`](../../data-types.md) \| [`null`](../../data-types.md) | Public link to the document. Returns `status = 0` when `null` ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -253,7 +282,7 @@ HTTP Status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
@@ -262,13 +291,13 @@ HTTP Status: **400**
 || `100` | Bitrix\\DocumentGenerator\\Document constructor must be is public | Required parameter `id` not provided ||
 || `DOCGEN_ACCESS_ERROR` | Access denied | No access to the document ||
 || `0` | Document not found | Document with the specified `id` not found ||
-|| `Empty value` | Document not found | Document does not belong to the `crm` module ||
-|| `Empty value` | You do not have permissions to modify this document | Insufficient permissions to modify the document ||
-|| `Empty value` | You do not have permissions to view documents | Insufficient permissions to view document generator documents ||
-|| `Empty value` | Module documentgenerator is not installed | The `documentgenerator` module is unavailable ||
+|| Empty value | Document not found | Document does not belong to the `crm` module ||
+|| Empty value | You do not have permissions to modify this document | Insufficient permissions to modify the document ||
+|| Empty value | You do not have permissions to view documents | Insufficient permissions to view document generator documents ||
+|| Empty value | Module documentgenerator is not installed | The `documentgenerator` module is not available ||
 |#
 
-{% include [system errors](../../../../_includes/system-errors.md) %}
+{% include [System errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

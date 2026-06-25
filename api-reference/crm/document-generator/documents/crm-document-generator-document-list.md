@@ -262,6 +262,105 @@ Example of retrieving a list of documents where:
     }
     ```
 
+- Python
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.documentgenerator.document.list(
+            select=["id", "title", "number", "entityId", "createTime"],
+            order={"id": "desc"},
+            filter={
+                "entityTypeId": 2,
+                "entityId": 101,
+            },
+            start=0,
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
+    `as_list` Example
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.documentgenerator.document.list(
+            select=["id", "title", "number", "entityId", "createTime"],
+            order={"id": "desc"},
+            filter={
+                "entityTypeId": 2,
+                "entityId": 101,
+            },
+        ).as_list().response
+        result = bitrix_response.result
+        for item in result:
+            print(item)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
+    `as_list_fast` Example
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.documentgenerator.document.list(
+            select=["id", "title", "number", "entityId", "createTime"],
+            order={"id": "desc"},
+            filter={
+                "entityTypeId": 2,
+                "entityId": 101,
+            },
+        ).as_list_fast(descending=True).response
+        result = bitrix_response.result
+        for item in result:
+            print(item)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - BX24.js
 
     ```js
@@ -311,7 +410,7 @@ Example of retrieving a list of documents where:
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -319,14 +418,14 @@ HTTP Status: **200**
         "documents": [
             {
                 "id": "61",
-                "title": "Demo Product Implementation 2026-001",
+                "title": "Demonstration implementation of product 2026-001",
                 "number": "2026-002",
                 "templateId": "39",
                 "fileId": "283",
                 "imageId": "285",
                 "pdfId": "287",
-                "createTime": "2026-03-20T13:51:45+02:00",
-                "updateTime": "2026-03-20T14:42:38+02:00",
+                "createTime": "2026-03-20T13:51:45+03:00",
+                "updateTime": "2026-03-20T14:42:38+03:00",
                 "values": {
                     "_creationMethod": "rest",
                     "stampsEnabled": true
@@ -345,14 +444,14 @@ HTTP Status: **200**
             },
             {
                 "id": "59",
-                "title": "Demo Product Implementation 2026-001",
+                "title": "Demonstration implementation of product 2026-001",
                 "number": "2026-001",
                 "templateId": "39",
                 "fileId": "271",
                 "imageId": "273",
                 "pdfId": "275",
-                "createTime": "2026-03-20T13:28:26+02:00",
-                "updateTime": "2026-03-20T13:28:26+02:00",
+                "createTime": "2026-03-20T13:28:26+03:00",
+                "updateTime": "2026-03-20T13:28:26+03:00",
                 "values": {
                     "_creationMethod": "rest",
                     "stampsEnabled": true
@@ -377,8 +476,8 @@ HTTP Status: **200**
         "finish": 1774009414.09833,
         "duration": 0.09833002090454102,
         "processing": 0,
-        "date_start": "2026-03-20T15:23:34+02:00",
-        "date_finish": "2026-03-20T15:23:34+02:00",
+        "date_start": "2026-03-20T15:23:34+03:00",
+        "date_finish": "2026-03-20T15:23:34+03:00",
         "operating_reset_at": 1774010014,
         "operating": 0
     }
@@ -391,13 +490,13 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | The root object of the response. Contains the structure of [`result`](#result) ||
+[`object`](../../data-types.md) | Root object of the response. Contains the structure [`result`](#result) ||
 || **total**
 [`integer`](../../data-types.md) | The total number of documents matching the filter ||
 || **next**
 [`integer`](../../data-types.md) | Offset for the next page. Returned if there is a next page ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the execution time of the request ||
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 #### Result Type {#result}
@@ -419,15 +518,15 @@ The composition of fields depends on the `select` parameter.
 || **id**
 [`string`](../../data-types.md) | Document identifier ||
 || **title**
-[`string`](../../data-types.md) | Document title ||
+[`string`](../../data-types.md) | Document name ||
 || **number**
 [`string`](../../data-types.md) | Document number ||
 || **templateId**
-[`integer`](../../data-types.md) \| [`string`](../../data-types.md) | Document template identifier ||
+[`integer`](../../data-types.md) \| [`string`](../../data-types.md) | Identifier of the document template ||
 || **entityTypeId**
-[`integer`](../../data-types.md) \| [`string`](../../data-types.md) | CRM object type identifier ||
+[`integer`](../../data-types.md) \| [`string`](../../data-types.md) | Identifier of the CRM object type ||
 || **entityId**
-[`integer`](../../data-types.md) \| [`string`](../../data-types.md) | CRM object identifier ||
+[`integer`](../../data-types.md) \| [`string`](../../data-types.md) | Identifier of the CRM object ||
 || **fileId**
 [`integer`](../../data-types.md) \| [`string`](../../data-types.md) | Document DOCX file identifier ||
 || **imageId**
@@ -435,7 +534,7 @@ The composition of fields depends on the `select` parameter.
 || **pdfId**
 [`integer`](../../data-types.md) \| [`string`](../../data-types.md) | Document PDF file identifier ||
 || **createTime**
-[`datetime`](../../data-types.md) | Document creation date ||
+[`datetime`](../../data-types.md) | Date of document creation ||
 || **updateTime**
 [`datetime`](../../data-types.md) | Document update date ||
 || **createdBy**
@@ -443,7 +542,7 @@ The composition of fields depends on the `select` parameter.
 || **updatedBy**
 [`integer`](../../data-types.md) \| [`string`](../../data-types.md) \| [`null`](../../data-types.md) | Identifier of the user who updated the document ||
 || **values**
-[`object`](../../data-types.md) \| [`null`](../../data-types.md) | Document field values ||
+[`object`](../../data-types.md) \| [`null`](../../data-types.md) | Field values of the document ||
 || **downloadUrl**
 [`string`](../../data-types.md) | Link to download the document ||
 || **imageUrl**
@@ -457,12 +556,12 @@ The composition of fields depends on the `select` parameter.
 || **imageUrlMachine**
 [`string`](../../data-types.md) | Link to the document image for machine access ||
 || **stampsEnabled**
-[`boolean`](../../data-types.md) | Indicates whether stamps and signatures can be applied ||
+[`boolean`](../../data-types.md) | Stamp and signature inclusion flag ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -471,19 +570,19 @@ HTTP Status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `100` | Unknown field definition ENTITY_TYPE_ID (ENTITY_TYPE_ID) for \Bitrix\DocumentGenerator\Model\Document Entity | The `entityTypeId` field passed in the `select` parameter is not a direct field of the document model. Use `select: ['*']` ||
+|| `100` | Unknown field definition ENTITY_TYPE_ID (ENTITY_TYPE_ID) for \Bitrix\DocumentGenerator\Model\Document Entity | The `select` field passed in the `entityTypeId` parameter is not a direct field of the document model. Use `select: ['*']` ||
 || `ACCESS_DENIED` | Access denied | Insufficient permissions to read documents based on the selected CRM object filter ||
-|| `Empty value` | You do not have permissions to view documents | Insufficient permissions to view document generator documents ||
-|| `Empty value` | Module documentgenerator is not installed | The `documentgenerator` module is unavailable ||
+|| Empty value | You do not have permissions to view documents | Insufficient permissions to view document generator documents ||
+|| Empty value | Module documentgenerator is not installed | The `documentgenerator` module is not available ||
 |#
 
-{% include [system errors](../../../../_includes/system-errors.md) %}
+{% include [System errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

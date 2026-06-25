@@ -599,7 +599,7 @@ HTTP status: **200**
                         "valueId": "9737"
                     }
                 ],
-                "purchasingCurrency": "RUB",
+                "purchasingCurrency": "USD",
                 "purchasingPrice": 1000,
                 "quantity": 10,
                 "quantityReserved": 1,

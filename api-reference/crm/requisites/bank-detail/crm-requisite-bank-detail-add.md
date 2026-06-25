@@ -1,4 +1,4 @@
-# Create a new bank detail crm.requisite.bankdetail.add
+# Create a New Bank Detail crm.requisite.bankdetail.add
 
 {% note tip "" %}
 
@@ -14,7 +14,7 @@ This method creates a new bank detail.
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -25,49 +25,50 @@ This method creates a new bank detail.
 
 ### Parameter fields
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **ENTITY_ID***
-[`integer`](../../../data-types.md) | Identifier of the parent object. Currently, it can only be the identifier of the detail. Identifiers of details can be obtained using the method [`crm.requisite.list`](../universal/crm-requisite-list.md) ||
+[`integer`](../../../data-types.md) | Parent object identifier. Currently, it can only be an attribute identifier. Attribute identifiers can be obtained using the [`crm.requisite.list`](../universal/crm-requisite-list.md) method. ||
 || **COUNTRY_ID**
-[`integer`](../../../data-types.md) | Identifier of the country corresponding to the set of bank detail fields (see the method [crm.requisite.preset.countries](../presets/crm-requisite-preset-countries.md) for available values).
+[`integer`](../../../data-types.md) | Identifier of the country corresponding to the set of bank details fields (see method [crm.requisite.preset.countries](../presets/crm-requisite-preset-countries.md) for available values).
 
-The country code of the bank detail matches the country code in the linked detail template, the identifier of which is specified in the `ENTITY_ID` field ||
+The country code of the bank details matches the country code in the linked requisite template, the identifier of which is specified in the `ENTITY_ID` field 
+||
 || **NAME***
-[`string`](../../../data-types.md) | Name of the bank detail ||
+[`string`](../../../data-types.md) | Name of the bank details ||
 || **CODE**
-[`string`](../../../data-types.md) | Symbolic code of the detail ||
+[`string`](../../../data-types.md) | Symbolic code of the requisite ||
 || **XML_ID**
-[`string`](../../../data-types.md) | External key. Used for exchange operations. Identifier of the external information base object. 
+[`string`](../../../data-types.md) | External key. Used for exchange operations. Identifier of the object in the external information base. 
 
 The purpose of the field may change by the final developer. Each application ensures the uniqueness of values in this field. 
 
 It is recommended to use a unique prefix to avoid collisions with other applications ||
 || **ACTIVE**
-[`char`](../../../data-types.md) | Activity status. Values `Y` or `N` are used. 
+[`char`](../../../data-types.md) | Activity indicator. Uses values `Y` or `N`. 
 
 Currently, the field does not actually affect anything ||
 || **SORT**
 [`integer`](../../../data-types.md) | Sorting ||
 || **RQ_BANK_NAME**
-[`string`](../../../data-types.md) | Bank name ||
+[`string`](../../../data-types.md) | Name of the bank ||
 || **RQ_BANK_ADDR**
-[`string`](../../../data-types.md) | Bank address ||
+[`string`](../../../data-types.md) | Address of the bank ||
 || **RQ_BANK_CODE**
-[`string`](../../../data-types.md) | Bank code (for country BR) ||
+[`string`](../../../data-types.md) | Bank Code (for country BR) ||
 || **RQ_BANK_ROUTE_NUM**
 [`string`](../../../data-types.md) | Bank Routing Number ||
 || **RQ_BIK**
 [`string`](../../../data-types.md) | BIK ||
 || **RQ_CODEB**
-[`string`](../../../data-types.md) | Code Banque (for country FR) ||
+[`string`](../../../data-types.md) | Bank Code (for country FR) ||
 || **RQ_CODEG**
-[`string`](../../../data-types.md) | Code Guichet (for country FR) ||
+[`string`](../../../data-types.md) | Branch Code (for country FR) ||
 || **RQ_RIB**
-[`string`](../../../data-types.md) | Clé RIB (for country FR) ||
+[`string`](../../../data-types.md) | RIB Key (for country FR) ||
 || **RQ_MFO**
 [`string`](../../../data-types.md) | MFO ||
 || **RQ_ACC_NAME**
@@ -75,21 +76,21 @@ Currently, the field does not actually affect anything ||
 || **RQ_ACC_NUM**
 [`string`](../../../data-types.md) | Bank Account Number ||
 || **RQ_ACC_TYPE**
-[`string`](../../../data-types.md) | Tipo da conta (for country BR) ||
+[`string`](../../../data-types.md) | Account Type (for country BR) ||
 || **RQ_AGENCY_NAME**
-[`string`](../../../data-types.md) | Agência (for country BR) ||
+[`string`](../../../data-types.md) | Agency (for country BR) ||
 || **RQ_IIK**
 [`string`](../../../data-types.md) | IIK ||
 || **RQ_ACC_CURRENCY**
-[`string`](../../../data-types.md) | Account currency ||
+[`string`](../../../data-types.md) | Currency of the account ||
 || **RQ_COR_ACC_NUM**
 [`string`](../../../data-types.md) | Correspondent account ||
 || **RQ_IBAN**
 [`string`](../../../data-types.md) | IBAN ||
 || **RQ_SWIFT**
 [`string`](../../../data-types.md) | SWIFT ||
-|| **RQ_BIC**
-[`string`](../../../data-types.md) | BIC ||
+|| **RQ_BIK**
+[`string`](../../../data-types.md) | BIK ||
 || **COMMENTS**
 [`string`](../../../data-types.md) | Comment ||
 || **ORIGINATOR_ID**
@@ -138,13 +139,13 @@ Currently, the field does not actually affect anything ||
         params: {
           fields: {
             ENTITY_ID: 27,           // Requisite ID
-            COUNTRY_ID: 1,           // Country code (Russia)
+            COUNTRY_ID: 1,           // Country code
             NAME: 'Superbank',       // Bank detail name
             RQ_BANK_NAME: 'JSC Superbank',  // Bank name
-            RQ_BANK_ADDR: '117312, Moscow, Vavilova str., 19',
+            RQ_BANK_ADDR: '117312, New York, 19 Miller St.',
             RQ_BIK: '044525225',
             RQ_ACC_NUM: '40702810938000060473',
-            RQ_ACC_CURRENCY: 'RUR',
+            RQ_ACC_CURRENCY: 'USD',
             RQ_COR_ACC_NUM: '30101810400000000225',
             XML_ID: '1e4641fd-2dd9-31e6-b2f2-105056c00008',
             ACTIVE: 'Y',
@@ -186,10 +187,10 @@ Currently, the field does not actually affect anything ||
                 COUNTRY_ID: 1,           // Country code (Russia)
                 NAME: 'Superbank',       // Bank detail name
                 RQ_BANK_NAME: 'JSC Superbank',  // Bank name
-                RQ_BANK_ADDR: '117312, Moscow, Vavilova str., 19',
+                RQ_BANK_ADDR: '117312, New York, 19 Miller St.',
                 RQ_BIK: '044525225',
                 RQ_ACC_NUM: '40702810938000060473',
-                RQ_ACC_CURRENCY: 'RUR',
+                RQ_ACC_CURRENCY: 'USD',
                 RQ_COR_ACC_NUM: '30101810400000000225',
                 XML_ID: '1e4641fd-2dd9-31e6-b2f2-105056c00008',
                 ACTIVE: 'Y',
@@ -247,7 +248,7 @@ Currently, the field does not actually affect anything ||
             ->getResponseData()
             ->getResult();
     
-        echo 'Created bank detail with ID ' . $result;
+        echo 'Bank details created with ID ' . $result;
     
     } catch (Throwable $e) {
         error_log($e->getMessage());
@@ -282,7 +283,7 @@ Currently, the field does not actually affect anything ||
             if(result.error())
                 console.error(result.error());
             else
-                console.info("Created bank detail with ID " + result.data());
+                console.info("Bank details created with ID " + result.data());
         }
     );
     ```
@@ -317,6 +318,46 @@ Currently, the field does not actually affect anything ||
     echo '</PRE>';
     ```
 
+- Python
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.requisite.bankdetail.add(
+            fields={
+                "ENTITY_ID": 27,
+                "COUNTRY_ID": 1,
+                "NAME": "Superbank",
+                "RQ_BANK_NAME": "Ltd. Superbank",
+                "RQ_BANK_ADDR": "117312, New York, 19 Miller St.",
+                "RQ_BIK": "044525225",
+                "RQ_ACC_NUM": "40702810938000060473",
+                "RQ_ACC_CURRENCY": "USD",
+                "RQ_COR_ACC_NUM": "30101810400000000225",
+                "XML_ID": "1e4641fd-2dd9-31e6-b2f2-105056c00008",
+                "ACTIVE": "Y",
+                "SORT": 600,
+            },
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 {% endlist %}
 
 ## Response Handling
@@ -346,7 +387,7 @@ HTTP status: **200**
 || **result**
 [`integer`](../../../data-types.md) | Identifier of the created bank detail ||
 || **time**
-[`time`](../../../data-types.md) | Information about the execution time of the request ||
+[`time`](../../../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -360,17 +401,17 @@ HTTP status: **40x**, **50x**
 }
 ```
 
-{% include notitle [error handling](../../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Errors
 
-#|  
-|| **Error Text** | **Description** ||
+#|
+|| **Error text** | **Description** ||
 || `ENTITY_ID is not defined or invalid` | The identifier of the detail is not defined or has an invalid value ||
 || `Access denied` | Insufficient access permissions to add a bank detail ||
 |#
 
-{% include [system errors](../../../../_includes/system-errors.md) %}
+{% include [System errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

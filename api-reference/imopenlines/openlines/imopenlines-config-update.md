@@ -149,7 +149,7 @@ You can obtain the identifier of the open channel when [creating an open channel
             WORKTIME_ENABLE: 'Y',
             WORKTIME_FROM: '09:00',
             WORKTIME_TO: '21:00',
-            WORKTIME_TIMEZONE: 'Europe/Kaliningrad',
+            WORKTIME_TIMEZONE: 'Europe/Berlin',
           },
         },
         requestId: Text.getUuidRfc4122()
@@ -207,7 +207,7 @@ You can obtain the identifier of the open channel when [creating an open channel
                 WORKTIME_ENABLE: 'Y',
                 WORKTIME_FROM: '09:00',
                 WORKTIME_TO: '21:00',
-                WORKTIME_TIMEZONE: 'Europe/Kaliningrad',
+                WORKTIME_TIMEZONE: 'Europe/Berlin',
               },
             },
             requestId: B24Js.Text.getUuidRfc4122()

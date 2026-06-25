@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: any user
 
-This method retrieves a list of requisites based on a filter.
+This method retrieves a list of company details based on a filter.
 
 ## Method Parameters
 
@@ -55,23 +55,23 @@ An additional prefix can be specified for the key to clarify the filter behavior
 - `!=` — not equal
 - `!` — not equal ||
   || **order**
-  [`object`](../../../data-types.md) | An object for sorting the selected requisites in the format `{"field_1": "order_1", ... "field_N": "order_N"}`.
+  [`object`](../../../data-types.md) | An object for sorting selected attributes in the format `{"field_1": "order_1", ... "field_N": "order_N"}`.
 
-Possible values for `field` correspond to [requisite fields](./index.md#fields).
+Possible values for `field` correspond to [attribute fields](./index.md#fields).
 
 Possible values for `order`:
 
-- `asc` — ascending order
-- `desc` — descending order
+- `asc` — in ascending order
+- `desc` — in descending order
   ||
   || **start**
-  [`integer`](../../../data-types.md) | This parameter is used for pagination control.
+  [`integer`](../../../data-types.md) | A parameter used to control pagination.
 
-The page size of results is always static: 50 records.
+The results page size is always static: 50 records.
 
-To select the second page of results, the value `50` must be passed. To select the third page of results, the value is `100`, and so on.
+To select the second page of results, you must pass the value `50`. To select the third page of results, the value is — `100` and so on.
 
-The formula for calculating the `start` parameter value:
+Formula for calculating the `start` parameter value:
 
 `start = (N-1) * 50`, where `N` is the desired page number
 ||
@@ -79,9 +79,9 @@ The formula for calculating the `start` parameter value:
 
 ## Code Example
 
-{% include [Example Notes](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
-1. Retrieving requisites by template ID
+1. Retrieving company details by template ID
 
     {% list tabs %}
 
@@ -217,9 +217,101 @@ The formula for calculating the `start` parameter value:
         echo '</PRE>';
         ```
 
+    - Python
+
+        Example
+
+        ```python
+        from b24pysdk.client import BaseClient
+        from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+        client: BaseClient
+
+        try:
+            bitrix_response = client.crm.requisite.list(
+                order={"DATE_CREATE": "ASC"},
+                filter={"PRESET_ID": "1"},
+                select=["ENTITY_TYPE_ID", "ENTITY_ID", "ID", "NAME"],
+                start=0,
+            ).response
+            result = bitrix_response.result
+            print(result)
+        except BitrixAPIError as error:
+            print(
+                "Bitrix API Error",
+                f"error: {error.error}",
+                f"error_description: {error.error_description}",
+                sep="\n",
+            )
+        except BitrixSDKException as error:
+            print(f"Bitrix SDK Error: {error.message}")
+        except Exception as error:
+            print(f"Unexpected error: {error}")
+        ```
+
+        Example `as_list`
+
+        ```python
+        from b24pysdk.client import BaseClient
+        from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+        client: BaseClient
+
+        try:
+            bitrix_response = client.crm.requisite.list(
+                order={"DATE_CREATE": "ASC"},
+                filter={"PRESET_ID": "1"},
+                select=["ENTITY_TYPE_ID", "ENTITY_ID", "ID", "NAME"],
+            ).as_list().response
+            result = bitrix_response.result
+            for item in result:
+                print(item)
+        except BitrixAPIError as error:
+            print(
+                "Bitrix API Error",
+                f"error: {error.error}",
+                f"error_description: {error.error_description}",
+                sep="\n",
+            )
+        except BitrixSDKException as error:
+            print(f"Bitrix SDK Error: {error.message}")
+        except Exception as error:
+            print(f"Unexpected error: {error}")
+        ```
+
+        Example `as_list_fast`
+
+        ```python
+        from b24pysdk.client import BaseClient
+        from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+        client: BaseClient
+
+        try:
+            bitrix_response = client.crm.requisite.list(
+                filter={"PRESET_ID": "1"},
+                select=["ENTITY_TYPE_ID", "ENTITY_ID", "ID", "NAME"],
+                order={"ID": "DESC"},
+            ).as_list_fast(descending=True).response
+            result = bitrix_response.result
+            for item in result:
+                print(item)
+        except BitrixAPIError as error:
+            print(
+                "Bitrix API Error",
+                f"error: {error.error}",
+                f"error_description: {error.error_description}",
+                sep="\n",
+            )
+        except BitrixSDKException as error:
+            print(f"Bitrix SDK Error: {error.message}")
+        except Exception as error:
+            print(f"Unexpected error: {error}")
+        ```
+
     {% endlist %}
 
-2. Retrieving the value of a custom field in requisites
+2. Retrieving the value of a custom field in company details
 
     {% list tabs %}
 
@@ -352,9 +444,38 @@ The formula for calculating the `start` parameter value:
         echo '</PRE>';
         ```
 
+    - Python
+
+        ```python
+        from b24pysdk.client import BaseClient
+        from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+        client: BaseClient
+
+        try:
+            bitrix_response = client.crm.requisite.list(
+                order={},
+                filter={"ID": "51"},
+                select=["UF_CRM_1707997209"],
+            ).response
+            result = bitrix_response.result
+            print(result)
+        except BitrixAPIError as error:
+            print(
+                "Bitrix API Error",
+                f"error: {error.error}",
+                f"error_description: {error.error_description}",
+                sep="\n",
+            )
+        except BitrixSDKException as error:
+            print(f"Bitrix SDK Error: {error.message}")
+        except Exception as error:
+            print(f"Unexpected error: {error}")
+        ```
+
     {% endlist %}
 
-## Successful Response
+## Response on Success
 
 HTTP status: **200**
 
@@ -373,7 +494,7 @@ HTTP status: **200**
         "ENTITY_TYPE_ID": "4",
         "ENTITY_ID": "3028",
         "ID": "41",
-        "NAME": "Head Office Requisites"
+        "NAME": "Headquarters details"
         },
         {
         "ENTITY_TYPE_ID": "4",
@@ -427,10 +548,10 @@ HTTP status: **200**
 || **total**
 [`integer`](../../../data-types.md) | The total number of records found ||
 || **time**
-[`time`](../../../data-types.md) | Information about the execution time of the request ||
+[`time`](../../../data-types.md) | Information about the request execution time ||
 |#
 
-## Error Response
+## Response on Error
 
 HTTP status: **400**
 
@@ -441,16 +562,16 @@ HTTP status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Errors
 
-#|  
-|| **Code** | **Error Text** | **Description** ||
+#|
+|| **Code** | **Error text** | **Description** ||
 || `0` | Access denied. | Insufficient access permissions to retrieve the list of requisites. ||
 |#
 
-{% include [system errors](../../../../_includes/system-errors.md) %}
+{% include [System errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

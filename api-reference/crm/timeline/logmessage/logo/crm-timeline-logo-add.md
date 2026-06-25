@@ -8,13 +8,13 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
-> Who can execute the method: `administrator`
+> Who can execute the method: administrator
 
-This method adds a new logo.
+This method adds a new Logo.
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -22,7 +22,7 @@ This method adds a new logo.
 || **code***
 [`string`](../../../../data-types.md) | Logo code (e.g., `info`) ||
 || **fileContent***
-[`string`](../../../../data-types.md) | Base64 encoded content of the logo file.
+[`string`](../../../../data-types.md) | Encoded `base64` content of the logo file.
 
 File requirements:
 
@@ -187,6 +187,36 @@ File requirements:
     );
     ```
 
+- Python
+
+    Example
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.timeline.logo.add(
+            code="info",
+            file_content="iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAIAAABvFaqvAAABhWlDQ1BJQ0MgcHJvZmlsZQAAKJF9kT1Iw0AcxV9TRdGqgx1UHDLUgmBBVMRRq1CECqFWaNXB5NIvaNKQpLg4Cq4FBz8Wqw4uzro6uAqC4AeIo5OToouU",
+        )
+        result = bitrix_response.response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - PHP CRest
 
     ```php
@@ -209,7 +239,7 @@ File requirements:
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -246,6 +276,7 @@ The `result` field contains the [logo](#logo) object ||
 [`time`](../../../data-types.md) | Information about the request execution time ||
 |#
 
+
 #### Logo Object {#logo}
 
 #|
@@ -263,7 +294,7 @@ If the logo was added by the user, the field contains the path to the logo image
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -272,22 +303,22 @@ HTTP Status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
 || **Code** | **Description** ||
 || `ACCESS_DENIED` | Access denied ||
-|| `INVALID_ARG_VALUE` | Invalid parameter `fileContent` specified ||
+|| `INVALID_ARG_VALUE` | Invalid `fileContent` parameter specified ||
 || `FILE_SAVE_ERROR` | Unable to save the provided logo file ||
-|| `100` | Required fields not provided ||
+|| `100` | Required fields are not provided ||
 || `0` | Other errors (e.g., fatal) ||
 |#
 
-{% include [system errors](../../../../../_includes/system-errors.md) %}
+{% include [System errors](../../../../../_includes/system-errors.md) %}
 
-## Continue Learning 
+## Continue Learning
 
 - [{#T}](./crm-timeline-logo-get.md)
 - [{#T}](./crm-timeline-logo-list.md)

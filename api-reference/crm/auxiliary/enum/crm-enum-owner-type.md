@@ -24,7 +24,7 @@ No parameters.
 
 ## Code Examples
 
-{% include [Examples Note](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -179,6 +179,31 @@ No parameters.
     echo '</PRE>';
     ```
 
+- Python
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.enum.ownertype().response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 {% endlist %}
 
 ## Response Handling
@@ -226,13 +251,13 @@ HTTP status: **200**
     },
     {
      "ID": 7,
-     "NAME": "Estimate",
+     "NAME": "Quote",
      "SYMBOL_CODE": "QUOTE",
      "SYMBOL_CODE_SHORT": "Q"
     },
     {
      "ID": 8,
-     "NAME": "Requisites",
+     "NAME": "Billing Details",
      "SYMBOL_CODE": "REQUISITE",
      "SYMBOL_CODE_SHORT": "RQ"
     },
@@ -259,15 +284,15 @@ HTTP status: **200**
      "NAME": "Purchase",
      "SYMBOL_CODE": "DYNAMIC_156",
      "SYMBOL_CODE_SHORT": "T9c"
-    }
+    },
 ],
 "time": {
     "start": 1750153184.228934,
     "finish": 1750153184.262921,
     "duration": 0.03398704528808594,
     "processing": 0.0008471012115478516,
-    "date_start": "2025-06-17T12:39:44+02:00",
-    "date_finish": "2025-06-17T12:39:44+02:00",
+    "date_start": "2025-06-17T12:39:44+03:00",
+    "date_finish": "2025-06-17T12:39:44+03:00",
     "operating_reset_at": 1750153784,
     "operating": 0
 }
@@ -285,7 +310,7 @@ HTTP status: **200**
 [`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
 
-#### Fields of the result array {#result}
+#### Fields of the Result Array {#result}
 
 #|
 || **Name**
@@ -304,7 +329,7 @@ HTTP status: **200**
 
 The method does not return errors.
 
-{% include [system errors](../../../../_includes/system-errors.md) %}
+{% include [System errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

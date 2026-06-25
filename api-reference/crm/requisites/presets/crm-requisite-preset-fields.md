@@ -16,7 +16,7 @@ No parameters.
 
 ## Code Examples
 
-{% include [Examples Note](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 Searching for templates by country binding:
 
@@ -180,11 +180,36 @@ Searching for templates by country binding:
     echo '</PRE>';
     ```
 
+- Python
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.requisite.preset.fields().response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 {% endlist %}
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -205,7 +230,7 @@ HTTP Status: **200**
             "isImmutable": true,
             "isMultiple": false,
             "isDynamic": false,
-            "title": "Object Type ID"
+            "title": "Object type ID"
         },
         "COUNTRY_ID": {
             "type": "integer",
@@ -232,7 +257,7 @@ HTTP Status: **200**
             "isImmutable": false,
             "isMultiple": false,
             "isDynamic": false,
-            "title": "Creation Date"
+            "title": "Creation date"
         },
         "DATE_MODIFY": {
             "type": "datetime",
@@ -241,7 +266,7 @@ HTTP Status: **200**
             "isImmutable": false,
             "isMultiple": false,
             "isDynamic": false,
-            "title": "Modification Date"
+            "title": "Modification date"
         },
         "CREATED_BY_ID": {
             "type": "user",
@@ -250,7 +275,7 @@ HTTP Status: **200**
             "isImmutable": false,
             "isMultiple": false,
             "isDynamic": false,
-            "title": "Created By"
+            "title": "Created by"
         },
         "MODIFY_BY_ID": {
             "type": "user",
@@ -259,7 +284,7 @@ HTTP Status: **200**
             "isImmutable": false,
             "isMultiple": false,
             "isDynamic": false,
-            "title": "Modified By"
+            "title": "Modified by"
         },
         "ACTIVE": {
             "type": "char",
@@ -286,7 +311,7 @@ HTTP Status: **200**
             "isImmutable": false,
             "isMultiple": false,
             "isDynamic": false,
-            "title": "External Code"
+            "title": "External code"
         }
     },
     "time": {
@@ -325,9 +350,9 @@ HTTP Status: **200**
 The identifiers of CRM object types are provided by the method [crm.enum.ownertype](../../auxiliary/enum/crm-enum-owner-type.md) 
 ||
 || **COUNTRY_ID**
-[`integer`](../../../data-types.md) | Identifier of the country corresponding to the set of fields of the requisite template (to get available values, see the method [crm.requisite.preset.countries](./crm-requisite-preset-countries.md)) ||
+[`integer`](../../../data-types.md) | Identifier of the country corresponding to the set of fields in the requisites template (for available values, see the method [crm.requisite.preset.countries](./crm-requisite-preset-countries.md)) ||
 || **DATE_CREATE**
-[`datetime`](../../../data-types.md) | Creation date ||
+[`datetime`](../../../data-types.md) | Create date ||
 || **DATE_MODIFY**
 [`datetime`](../../../data-types.md) | Modification date. Contains an empty string if the template has not been changed since creation ||
 || **CREATED_BY_ID**
@@ -343,9 +368,9 @@ The purpose of the field may change by the final developer.
 
 Each application ensures the uniqueness of values in this field. It is recommended to use a unique prefix to avoid collisions with other applications. 
 
-In CRM, values of the form `#CRM_REQUISITE_PRESET_DEF_...` are reserved for identifying templates that are used by default. These identifiers should not be used for your purposes, as this may lead to logic violations ||
+Values of the form `#CRM_REQUISITE_PRESET_DEF_...` are reserved in CRM for identifying templates that are used by default. These identifiers should not be used for your purposes, as this may lead to logic violations ||
 || **ACTIVE**
-[`char`](../../../data-types.md) | Activity status. Uses values `Y` or `N`. Determines the availability of the template in the selection list when adding requisites ||
+[`char`](../../../data-types.md) | Activity status. Values `Y` or `N` are used. Determines the availability of the template in the selection list when adding requisites ||
 || **SORT**
 [`integer`](../../../data-types.md) | Sorting ||
 |#
@@ -358,27 +383,27 @@ In CRM, values of the form `#CRM_REQUISITE_PRESET_DEF_...` are reserved for iden
 || **type**
 [`string`](../../../data-types.md) | Field type ||
 || **isRequired**
-[`boolean`](../../../data-types.md) | Required attribute. Possible values:
+[`boolean`](../../../data-types.md) | "Required" attribute. Possible values:
 - true — yes
 - false — no
 ||
 || **isReadOnly**
-[`boolean`](../../../data-types.md) | Read-only attribute. Possible values:
+[`boolean`](../../../data-types.md) | "Read-only" attribute. Possible values:
 - true — yes
 - false — no
 ||
 || **isImmutable**
-[`boolean`](../../../data-types.md) | Immutable attribute. Possible values:
+[`boolean`](../../../data-types.md) | "Immutable" attribute. Possible values:
 - true — yes
 - false — no
 ||
 || **isMultiple**
-[`boolean`](../../../data-types.md) | Multi-field attribute. Possible values:
+[`boolean`](../../../data-types.md) | "Multiple" attribute. Possible values:
 - true — yes
 - false — no
 ||
 || **isDynamic**
-[`boolean`](../../../data-types.md) | Custom attribute. Possible values:
+[`boolean`](../../../data-types.md) | "Custom" attribute. Possible values:
 - true — yes
 - false — no
 ||
@@ -388,7 +413,7 @@ In CRM, values of the form `#CRM_REQUISITE_PRESET_DEF_...` are reserved for iden
 
 ## Error Handling
 
-{% include [system errors](../../../../_includes/system-errors.md) %}
+{% include [System errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

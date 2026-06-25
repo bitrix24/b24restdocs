@@ -46,7 +46,7 @@ The parameters of the deal card can be managed depending on the funnel through t
 - [CRM Card: Features and Settings](https://helpdesk.bitrix24.com/open/22879716/)
 - [System Fields in CRM](https://helpdesk.bitrix24.com/open/18529390/)
 - [Custom Fields in CRM](https://helpdesk.bitrix24.com/open/22067852/)
-- [Timeline in CRM Entity](https://helpdesk.bitrix24.com/open/16767378/)
+- [Timeline in CRM object](https://helpdesk.bitrix24.com/open/16767378/)
 
 {% endnote %}
 

@@ -30,7 +30,7 @@ Possible values:
 - `ANNOUNCEMENT` — announcement chat
 - `CALENDAR` — chat related to a calendar event
 - `MAIL` — chat related to email correspondence
-- `CRM` — system chat "for discussion" of a CRM entity. The method will not return IDs of other chats related to the CRM entity
+- `CRM` — system chat "for discussion" of a CRM object. The method will not return IDs of other chats related to the CRM object
 - `SONET_GROUP` — social network group chat
 - `TASKS_TASK` — task chat in the [new task card](../tasks/tasks-new.md)
 - `TASKS` — system task chat in the old task card

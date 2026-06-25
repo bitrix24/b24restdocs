@@ -30,9 +30,9 @@ A CRM card combines the entity's data, the stage of work with it, and the histor
 
 **Funnel and Stage.** For deals and Smart Processes, the card shows which funnel the entity is in and at what stage. To work with funnels, you need `categoryId`, which can be retrieved using [crm.category.list](./universal/category/crm-category-list.md). The list of stages with their `ENTITY_ID` codes can be obtained from [crm.status.list](./status/crm-status-list.md).
 
-**Timeline.** The timeline stores the history of interactions with the CRM entity: activities and comments. To add a record to the entity's card, you typically create an activity using the [crm.activity.add](./timeline/activities/activity-base/crm-activity-add.md) method or a comment using the [crm.timeline.comment.add](./timeline/comments/crm-timeline-comment-add.md) method.
+**Timeline.** The timeline stores the history of interactions with the CRM object: activities and comments. To add a record to the entity's card, you typically create an activity using the [crm.activity.add](./timeline/activities/activity-base/crm-activity-add.md) method or a comment using the [crm.timeline.comment.add](./timeline/comments/crm-timeline-comment-add.md) method.
 
-**Documents.** Documents in CRM are created based on templates from the document generator. Templates and numerators are added using the [crm.documentgenerator.template.add](./document-generator/templates/crm-document-generator-template-add.md) and [crm.documentgenerator.numerator.add](./document-generator/numerator/crm-document-generator-numerator-add.md) methods. A document is created and linked to a CRM entity using the [crm.documentgenerator.document.add](./document-generator/documents/crm-document-generator-document-add.md) method.
+**Documents.** Documents in CRM are created based on templates from the document generator. Templates and numerators are added using the [crm.documentgenerator.template.add](./document-generator/templates/crm-document-generator-template-add.md) and [crm.documentgenerator.numerator.add](./document-generator/numerator/crm-document-generator-numerator-add.md) methods. A document is created and linked to a CRM object using the [crm.documentgenerator.document.add](./document-generator/documents/crm-document-generator-document-add.md) method.
 
 **Automation.** The card can participate in automation scenarios that depend on the entity's state. A custom trigger is registered using the [crm.automation.trigger.add](./automation/triggers/crm-automation-trigger-add.md) method and then executed for the desired element using the [crm.automation.trigger.execute](./automation/triggers/crm-automation-trigger-execute.md) method. Both methods work only in the context of an [application](../../settings/app-installation/index.md).
 
@@ -64,7 +64,7 @@ After configuring the structure, you can work with elements using the [crm.item.
 
 ## Widgets
 
-You can embed an application into CRM entity cards and lists. This allows you to use the application without leaving the card or list.
+You can embed an application into CRM object cards and lists. This allows you to use the application without leaving the card or list.
 
 There are two embedding scenarios:
 
@@ -108,17 +108,17 @@ Replace `XXX` with the entity code: `LEAD`, `DEAL`, `CONTACT`, `COMPANY`, `QUOTE
 
 #|
 || **Identifier** | **Meaning** | **Where Used** | **How to Obtain** ||
-|| `entityTypeId` | CRM entity type | Universal methods, funnels, custom fields | For standard entities — [crm.enum.ownertype](./auxiliary/enum/crm-enum-owner-type.md), for Smart Processes — [crm.type.list](./universal/user-defined-object-types/crm-type-list.md) ||
-|| `id` | CRM entity identifier | Reading, updating, relationships between entities | From the list of entities [crm.item.list](./universal/crm-item-list.md) or after creating an entity [crm.item.add](./universal/crm-item-add.md) ||
+|| `entityTypeId` | CRM object type | Universal methods, funnels, custom fields | For standard entities — [crm.enum.ownertype](./auxiliary/enum/crm-enum-owner-type.md), for Smart Processes — [crm.type.list](./universal/user-defined-object-types/crm-type-list.md) ||
+|| `id` | CRM object identifier | Reading, updating, relationships between entities | From the list of entities [crm.item.list](./universal/crm-item-list.md) or after creating an entity [crm.item.add](./universal/crm-item-add.md) ||
 || `categoryId` | Funnel identifier | Deals and Smart Processes — needed when creating and filtering entities | From the list of funnels [crm.category.list](./universal/category/crm-category-list.md) ||
 || `stageId` | Stage identifier | Creating and filtering deal and Smart Process entities | From the list of stages [crm.status.list](./status/crm-status-list.md) with a filter by `ENTITY_ID` ||
 |#
 
 ## Relationships with Other Entities
 
-**Users.** The person responsible for the CRM entity is stored in the `assignedById` field. User data can be retrieved using the [user.get](../user/user-get.md) or [user.search](../user/user-search.md) methods.
+**Users.** The person responsible for the CRM object is stored in the `assignedById` field. User data can be retrieved using the [user.get](../user/user-get.md) or [user.search](../user/user-search.md) methods.
 
-**Tasks.** Tasks are linked to CRM entities through the `UF_CRM_TASK` field. The CRM entity identifier is passed to this field. The relationship is recorded when creating a task using the [tasks.task.add](../tasks/tasks-task-add.md) method, and it can be read using the [tasks.task.get](../tasks/tasks-task-get.md) method.
+**Tasks.** Tasks are linked to CRM entities through the `UF_CRM_TASK` field. The CRM object identifier is passed to this field. The relationship is recorded when creating a task using the [tasks.task.add](../tasks/tasks-task-add.md) method, and it can be read using the [tasks.task.get](../tasks/tasks-task-get.md) method.
 
 **Catalog.** Product items in deals and estimates are sourced from the product catalog. Products can be managed using the [catalog.product.*](../catalog/product/index.md) methods.
 

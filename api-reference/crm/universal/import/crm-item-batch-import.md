@@ -8,7 +8,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: any user with the "import" access permission for the CRM entity
+> Who can execute the method: any user with the "import" access permission for the CRM object
 
 This is a universal method for importing objects into CRM. The differences from adding an object are described in more detail [`here`](./index.md).
 
@@ -22,19 +22,19 @@ A maximum of 20 entities can be imported in a single request.
 
 ## Method Parameters
 
-{% include [Parameters Note](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
-#| 
+#|
 || **Name**
 `type`          | **Description** ||
-|| **entityTypeId*** 
+|| **entityTypeId***
 [`integer`][1] | Identifier of the [system](../../data-types.md#object_type) or [custom type](../user-defined-object-types/index.md) for which the entity needs to be created.
 
 Numerical values for system types (Lead — 1, Deal — 2, Contact — 3, Company — 4, Invoice — 31, etc.) are provided in the [CRM object types reference](../../data-types.md#object_type). The identifier for the SPA can be obtained using the [crm.type.list](../user-defined-object-types/crm-type-list.md) method. ||
-|| **data*** 
+|| **data***
 [`array`][1] | An array of field values for the entities. It can be viewed as an array where each element contains a set of `fields`, as described in the [crm.item.import](crm-item-import.md) method. ||
-|| **useOriginalUfNames** 
-[`boolean`][1] | A parameter to control the format of custom field names in the request and response.   
+|| **useOriginalUfNames**
+[`boolean`][1] | Parameter to control the format of custom field names in the request and response.   
 Possible values:
 
 - `Y` — original names of custom fields, e.g., `UF_CRM_2_1639669411830`
@@ -45,7 +45,7 @@ Default is `N`. ||
 
 ## Code Examples
 
-{% include [Examples Note](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 1. How to Import Deals
 
@@ -57,7 +57,7 @@ Default is `N`. ||
         curl -X POST \
         -H "Content-Type: application/json" \
         -H "Accept: application/json" \
-        -d '{"entityTypeId":2,"data":[{"title":"New Deal (example for REST methods)","typeId":"SERVICE","categoryId":9,"stageId":"C9:UC_KN8KFI","isReccurring":"Y","probability":50,"currencyId":"USD","isManualOpportunity":"Y","opportunity":999.99,"taxValue":99.9,"companyId":5,"contactId":4,"contactIds":[4,5],"quoteId":7,"begindate":"formatDate(monthAgo)","closedate":"formatDate(twelveDaysInAdvance)","opened":"N","comments":"commentsExample","assignedById":6,"sourceId":"WEB","sourceDescription":"Additional description about the source","leadId":102,"additionalInfo":"Additional information","observers":[2,3],"utmSource":"google","utmMedium":"CPC","ufCrm_1721244707107":1111.1,"parentId1220":2},{"title":"New Deal (example for REST methods)","typeId":"SERVICE","categoryId":4,"stageId":"C9:UC_KN8KFI","isReccurring":"Y","probability":50,"currencyId":"USD","isManualOpportunity":"Y","opportunity":999.99,"taxValue":99.9,"companyId":5,"contactId":4,"contactIds":[4,5],"quoteId":7,"begindate":"formatDate(monthAgo)","closedate":"formatDate(twelveDaysInAdvance)","opened":"N","comments":"commentsExample","assignedById":6,"sourceId":"WEB","sourceDescription":"Additional description about the source","leadId":102,"additionalInfo":"Additional information","observers":[2,3],"utmSource":"google","utmMedium":"CPC","ufCrm_1721244707107":1111.1,"parentId1220":2}]}' \
+        -d '{"entityTypeId":2,"data":[{"title":"New deal (specifically for REST method examples)","typeId":"SERVICE","categoryId":9,"stageId":"C9:UC_KN8KFI","isReccurring":"Y","probability":50,"currencyId":"USD","isManualOpportunity":"Y","opportunity":999.99,"taxValue":99.9,"companyId":5,"contactId":4,"contactIds":[4,5],"quoteId":7,"begindate":"formatDate(monthAgo)","closedate":"formatDate(twelveDaysInAdvance)","opened":"N","comments":"commentsExample","assignedById":6,"sourceId":"WEB","sourceDescription":"There should be an additional description about the source","leadId":102,"additionalInfo":"There should be additional information","observers":[2,3],"utmSource":"google","utmMedium":"CPC","ufCrm_1721244707107":1111.1,"parentId1220":2},{"title":"New deal (specifically for REST method examples)","typeId":"SERVICE","categoryId":4,"stageId":"C9:UC_KN8KFI","isReccurring":"Y","probability":50,"currencyId":"USD","isManualOpportunity":"Y","opportunity":999.99,"taxValue":99.9,"companyId":5,"contactId":4,"contactIds":[4,5],"quoteId":7,"begindate":"formatDate(monthAgo)","closedate":"formatDate(twelveDaysInAdvance)","opened":"N","comments":"commentsExample","assignedById":6,"sourceId":"WEB","sourceDescription":"There should be an additional description about the source","leadId":102,"additionalInfo":"There should be additional information","observers":[2,3],"utmSource":"google","utmMedium":"CPC","ufCrm_1721244707107":1111.1,"parentId1220":2}]}' \
         https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.item.batchImport
         ```
 
@@ -67,8 +67,99 @@ Default is `N`. ||
         curl -X POST \
         -H "Content-Type: application/json" \
         -H "Accept: application/json" \
-        -d '{"entityTypeId":2,"data":[{"title":"New Deal (example for REST methods)","typeId":"SERVICE","categoryId":9,"stageId":"C9:UC_KN8KFI","isReccurring":"Y","probability":50,"currencyId":"USD","isManualOpportunity":"Y","opportunity":999.99,"taxValue":99.9,"companyId":5,"contactId":4,"contactIds":[4,5],"quoteId":7,"begindate":"formatDate(monthAgo)","closedate":"formatDate(twelveDaysInAdvance)","opened":"N","comments":"commentsExample","assignedById":6,"sourceId":"WEB","sourceDescription":"Additional description about the source","leadId":102,"additionalInfo":"Additional information","observers":[2,3],"utmSource":"google","utmMedium":"CPC","ufCrm_1721244707107":1111.1,"parentId1220":2},{"title":"New Deal (example for REST methods)","typeId":"SERVICE","categoryId":4,"stageId":"C9:UC_KN8KFI","isReccurring":"Y","probability":50,"currencyId":"USD","isManualOpportunity":"Y","opportunity":999.99,"taxValue":99.9,"companyId":5,"contactId":4,"contactIds":[4,5],"quoteId":7,"begindate":"formatDate(monthAgo)","closedate":"formatDate(twelveDaysInAdvance)","opened":"N","comments":"commentsExample","assignedById":6,"sourceId":"WEB","sourceDescription":"Additional description about the source","leadId":102,"additionalInfo":"Additional information","observers":[2,3],"utmSource":"google","utmMedium":"CPC","ufCrm_1721244707107":1111.1,"parentId1220":2}],"auth":"**put_access_token_here**"}' \
+        -d '{"entityTypeId":2,"data":[{"title":"New deal (specifically for REST method examples)","typeId":"SERVICE","categoryId":9,"stageId":"C9:UC_KN8KFI","isReccurring":"Y","probability":50,"currencyId":"USD","isManualOpportunity":"Y","opportunity":999.99,"taxValue":99.9,"companyId":5,"contactId":4,"contactIds":[4,5],"quoteId":7,"begindate":"formatDate(monthAgo)","closedate":"formatDate(twelveDaysInAdvance)","opened":"N","comments":"commentsExample","assignedById":6,"sourceId":"WEB","sourceDescription":"There should be an additional description about the source","leadId":102,"additionalInfo":"There should be additional information","observers":[2,3],"utmSource":"google","utmMedium":"CPC","ufCrm_1721244707107":1111.1,"parentId1220":2},{"title":"New deal (specifically for REST method examples)","typeId":"SERVICE","categoryId":4,"stageId":"C9:UC_KN8KFI","isReccurring":"Y","probability":50,"currencyId":"USD","isManualOpportunity":"Y","opportunity":999.99,"taxValue":99.9,"companyId":5,"contactId":4,"contactIds":[4,5],"quoteId":7,"begindate":"formatDate(monthAgo)","closedate":"formatDate(twelveDaysInAdvance)","opened":"N","comments":"commentsExample","assignedById":6,"sourceId":"WEB","sourceDescription":"There should be an additional description about the source","leadId":102,"additionalInfo":"There should be additional information","observers":[2,3],"utmSource":"google","utmMedium":"CPC","ufCrm_1721244707107":1111.1,"parentId1220":2}],"auth":"**put_access_token_here**"}' \
         https://**put_your_bitrix24_address**/rest/crm.item.batchImport
+        ```
+
+    - Python
+
+        Example
+
+        ```python
+        from b24pysdk.client import BaseClient
+        from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+        client: BaseClient
+
+        try:
+            bitrix_response = client.crm.item.batch_import(
+                entity_type_id=2,
+                data=[
+                    {
+                        "title": "New deal (specifically for REST method examples)",
+                        "typeId": "SERVICE",
+                        "categoryId": 9,
+                        "stageId": "C9:UC_KN8KFI",
+                        "isReccurring": "Y",
+                        "probability": 50,
+                        "currencyId": "USD",
+                        "isManualOpportunity": "Y",
+                        "opportunity": 999.99,
+                        "taxValue": 99.9,
+                        "companyId": 5,
+                        "contactId": 4,
+                        "contactIds": [4, 5],
+                        "quoteId": 7,
+                        "begindate": "formatDate(monthAgo)",
+                        "closedate": "formatDate(twelveDaysInAdvance)",
+                        "opened": "N",
+                        "comments": "commentsExample",
+                        "assignedById": 6,
+                        "sourceId": "WEB",
+                        "sourceDescription": "There should be an additional description about the source",
+                        "leadId": 102,
+                        "additionalInfo": "There should be additional information",
+                        "observers": [2, 3],
+                        "utmSource": "google",
+                        "utmMedium": "CPC",
+                        "ufCrm_1721244707107": 1111.1,
+                        "parentId1220": 2,
+                    },
+                    {
+                        "title": "New deal (specifically for REST method examples)",
+                        "typeId": "SERVICE",
+                        "categoryId": 4,
+                        "stageId": "C9:UC_KN8KFI",
+                        "isReccurring": "Y",
+                        "probability": 50,
+                        "currencyId": "USD",
+                        "isManualOpportunity": "Y",
+                        "opportunity": 999.99,
+                        "taxValue": 99.9,
+                        "companyId": 5,
+                        "contactId": 4,
+                        "contactIds": [4, 5],
+                        "quoteId": 7,
+                        "begindate": "formatDate(monthAgo)",
+                        "closedate": "formatDate(twelveDaysInAdvance)",
+                        "opened": "N",
+                        "comments": "commentsExample",
+                        "assignedById": 6,
+                        "sourceId": "WEB",
+                        "sourceDescription": "There should be an additional description about the source",
+                        "leadId": 102,
+                        "additionalInfo": "There should be additional information",
+                        "observers": [2, 3],
+                        "utmSource": "google",
+                        "utmMedium": "CPC",
+                        "ufCrm_1721244707107": 1111.1,
+                        "parentId1220": 2,
+                    },
+                ],
+            ).response
+            result = bitrix_response.result
+            print(result)
+        except BitrixAPIError as error:
+            print(
+                "Bitrix API error",
+                f"error: {error.error}",
+                f"error_description: {error.error_description}",
+                sep="\n",
+            )
+        except BitrixSDKException as error:
+            print(f"Bitrix SDK error: {error.message}")
+        except Exception as error:
+            print(f"Unexpected error: {error}")
         ```
 
     - BX24.js
@@ -85,29 +176,29 @@ Default is `N`. ||
         const monthAgo = new Date(now.getTime() - 30 * day);
 
         const commentsExample = `
-        Example comment within the deal
+        Пример комментария внутри сделки
 
-        [B]Bold text[/B]
-        [I]Italic[/I]
-        [U]Underlined[/U]
-        [S]Strikethrough[/S]
-        [B][I][U][S]Mix[/S][/U][/I][/B]
+        [B]Жирный текст[/B]
+        [I]Курсив[/I]
+        [U]Подчеркнутый[/U]
+        [S]Зачеркнутый[/S]
+        [B][I][U][S]Микс[/S][/U][/I][/B]
 
         [LIST]
-        [*]List item #1
-        [*]List item #2
-        [*]List item #3
+        [*]Элемент списка #1
+        [*]Элемент списка #2
+        [*]Элемент списка #3
         [/LIST]
 
         [LIST=1]
-        [*]Numbered list item #1
-        [*]Numbered list item #2
-        [*]Numbered list item #3
+        [*]Нумерованный элемент списка #1
+        [*]Нумерованный элемент списка #2
+        [*]Нумерованный элемент списка #3
         [/LIST]
         `;
       
         const deal = {
-            title: "New Deal (example for REST methods)",
+            title: "New deal (specifically for REST method examples)",
             typeId: "SERVICE",
             categoryId: 9,
             stageId: "C9:UC_KN8KFI",
@@ -127,9 +218,9 @@ Default is `N`. ||
             comments: commentsExample,
             assignedById: 6,
             sourceId: "WEB",
-            sourceDescription: "Additional description about the source",
+            sourceDescription: "There should be an additional description about the source",
             leadId: 102,
-            additionalInfo: "Additional information",
+            additionalInfo: "There should be additional information",
             observers: [2, 3],
             utmSource: "google",
             utmMedium: "CPC",
@@ -138,7 +229,7 @@ Default is `N`. ||
         };
 
         const secondDeal = {
-            title: "New Deal (example for REST methods)",
+            title: "New deal (specifically for REST method examples)",
             typeId: "SERVICE",
             categoryId: 4,
             stageId: "C9:UC_KN8KFI",
@@ -158,9 +249,9 @@ Default is `N`. ||
             comments: commentsExample,
             assignedById: 6,
             sourceId: "WEB",
-            sourceDescription: "Additional description about the source",
+            sourceDescription: "There should be an additional description about the source",
             leadId: 102,
-            additionalInfo: "Additional information",
+            additionalInfo: "There should be additional information",
             observers: [2, 3],
             utmSource: "google",
             utmMedium: "CPC",
@@ -193,7 +284,7 @@ Default is `N`. ||
         require_once('crest.php');
         
         $deal = [
-            'title' => "New Deal (example for REST methods)",
+            'title' => "New deal (specifically for REST method examples)",
             'typeId' => "SERVICE",
             'categoryId' => 9,
             'stageId' => "C9:UC_KN8KFI",
@@ -213,18 +304,18 @@ Default is `N`. ||
             'comments' => $commentsExample,
             'assignedById' => 6,
             'sourceId' => "WEB",
-            'sourceDescription' => "Additional description about the source",
+            'sourceDescription' => "There should be an additional description about the source",
             'leadId' => 102,
-            'additionalInfo' => "Additional information",
+            'additionalInfo' => "There should be additional information",
             'observers' => [2, 3],
             'utmSource' => "google",
             'utmMedium' => "CPC",
             'ufCrm_1721244707107' => 1111.1,
             'parentId1220' => 2
-        ];
+        ]
         
         $secondDeal = [
-            'title' => "New Deal (example for REST methods)",
+            'title' => "New deal (specifically for REST method examples)",
             'typeId' => "SERVICE",
             'categoryId' => 4,
             'stageId' => "C9:UC_KN8KFI",
@@ -244,16 +335,15 @@ Default is `N`. ||
             'comments' => $commentsExample,
             'assignedById' => 6,
             'sourceId' => "WEB",
-            'sourceDescription' => "Additional description about the source",
+            'sourceDescription' => "There should be an additional description about the source",
             'leadId' => 102,
-            'additionalInfo' => "Additional information",
+            'additionalInfo' => "There should be additional information",
             'observers' => [2, 3],
             'utmSource' => "google",
             'utmMedium' => "CPC",
             'ufCrm_1721244707107' => 1111.1,
             'parentId1220' => 2
-        ];
-        
+        ]
         $result = CRest::call(
             'crm.item.batchImport',
             [
@@ -275,7 +365,7 @@ Default is `N`. ||
 
 2. How to Create an SPA Element with a Set of Custom Fields
 
-    {% cut "Custom Fields Used in the Example" %}
+    {% cut "Custom fields involved in the example" %}
 
     {% include [Set of Custom Fields](../../_include/user-fields-for-examples-cut.md) %}
 
@@ -292,7 +382,7 @@ Default is `N`. ||
         -d '{
             "entityTypeId": 1302,
             "data": [{
-                "ufCrm44_1721812760630": "String for custom field of type String",
+                "ufCrm44_1721812760630": "String for a string-type custom field",
                 "ufCrm44_1721812814433": 81,
                 "ufCrm44_1721812853419": "'"$(date '+%Y-%m-%d')"'",
                 "ufCrm44_1721812885588": [
@@ -307,7 +397,7 @@ Default is `N`. ||
                 "ufCrm44_1721812935209": "Y",
                 "ufCrm44_1721812948498": 9999.9
             },{
-                "ufCrm44_1721812760630": "String for custom field of type String",
+                "ufCrm44_1721812760630": "String for a string-type custom field",
                 "ufCrm44_1721812814433": 45,
                 "ufCrm44_1721812853419": "'"$(date '+%Y-%m-%d')"'",
                 "ufCrm44_1721812885588": [
@@ -335,7 +425,7 @@ Default is `N`. ||
         -d '{
             "entityTypeId": 1302,
             "data": [{
-                "ufCrm44_1721812760630": "String for custom field of type String",
+                "ufCrm44_1721812760630": "String for a string-type custom field",
                 "ufCrm44_1721812814433": 81,
                 "ufCrm44_1721812853419": "'"$(date '+%Y-%m-%d')"'",
                 "ufCrm44_1721812885588": [
@@ -350,7 +440,7 @@ Default is `N`. ||
                 "ufCrm44_1721812935209": "Y",
                 "ufCrm44_1721812948498": 9999.9
             },{
-                "ufCrm44_1721812760630": "String for custom field of type String",
+                "ufCrm44_1721812760630": "String for a string-type custom field",
                 "ufCrm44_1721812814433": 45,
                 "ufCrm44_1721812853419": "'"$(date '+%Y-%m-%d')"'",
                 "ufCrm44_1721812885588": [
@@ -408,7 +498,7 @@ Default is `N`. ||
                     "green_pixel.png",
                     greenPixelInBase64,
                   ],
-                  ufCrm44_1721812915476: "300|RUB",
+                  ufCrm44_1721812915476: "300|USD",
                   ufCrm44_1721812935209: "Y",
                   ufCrm44_1721812948498: 9999.9,
                 },
@@ -424,7 +514,7 @@ Default is `N`. ||
                     "green_pixel2.png",
                     greenPixelInBase64,
                   ],
-                  ufCrm44_1721812915476: "600|RUB",
+                  ufCrm44_1721812915476: "600|USD",
                   ufCrm44_1721812935209: "N",
                   ufCrm44_1721812948498: 9999.9,
                 },
@@ -476,7 +566,7 @@ Default is `N`. ||
                         "green_pixel.png",
                         greenPixelInBase64,
                       ],
-                      ufCrm44_1721812915476: "300|RUB",
+                      ufCrm44_1721812915476: "300|USD",
                       ufCrm44_1721812935209: "Y",
                       ufCrm44_1721812948498: 9999.9,
                     },
@@ -492,7 +582,7 @@ Default is `N`. ||
                         "green_pixel2.png",
                         greenPixelInBase64,
                       ],
-                      ufCrm44_1721812915476: "600|RUB",
+                      ufCrm44_1721812915476: "600|USD",
                       ufCrm44_1721812935209: "N",
                       ufCrm44_1721812948498: 9999.9,
                     },
@@ -530,7 +620,7 @@ Default is `N`. ||
                 'entityTypeId' => 1302,
                 'data' => [
                     [
-                        'ufCrm44_1721812760630' => "String for custom field of type String",
+                        'ufCrm44_1721812760630' => "String for a string-type custom field",
                         'ufCrm44_1721812814433' => 81,
                         'ufCrm44_1721812853419' => date('Y-m-d'),
                         'ufCrm44_1721812885588' => [
@@ -546,7 +636,7 @@ Default is `N`. ||
                         'ufCrm44_1721812948498' => 9999.9,
                     ],
                     [
-                        'ufCrm44_1721812760630' => "String for custom field of type String",
+                        'ufCrm44_1721812760630' => "String for a string-type custom field",
                         'ufCrm44_1721812814433' => 45,
                         'ufCrm44_1721812853419' => date('Y-m-d'),
                         'ufCrm44_1721812885588' => [
@@ -590,7 +680,7 @@ HTTP status: **200**
             },
             {
                 "error": "CRM_FIELD_ERROR_REQUIRED",
-                "error_description": "The field \"Title\" is required."
+                "error_description": "The \"Name\" field is required"
             }
         ]
     },
@@ -608,7 +698,7 @@ HTTP status: **200**
 
 ### Returned Data
 
-#| 
+#|
 || **Name**
 `type` | **Description** ||
 || **result**
@@ -624,13 +714,13 @@ Contains a single key `id` ||
 || **id**
 [`int`][1] | Identifier of the created entity ||
 || **time**
-[`time`][1] | Information about the execution time of the request ||
+[`time`][1] | Information about the request execution time ||
 |#
 
 {% note info " " %}
 
-By default, custom field names are passed and returned in camelCase, e.g., `ufCrm2_1639669411830`.
-When the `useOriginalUfNames` parameter is passed with the value `Y`, custom fields will be returned with their original names, e.g., `UF_CRM_2_1639669411830`.
+By default, custom field names are passed and returned in camelCase, for example `ufCrm2_1639669411830`.
+When passing the parameter `useOriginalUfNames` with the value `Y`, custom fields will be returned with their original names, for example `UF_CRM_2_1639669411830`.
 
 {% endnote %}
 
@@ -641,33 +731,33 @@ HTTP status: **401**, **400**, **403**
 ```json
 {
     "error": "NOT_FOUND",
-    "error_description": "SPA not found."
+    "error_description": "Smart process not found"
 }
 ```
 
-{% include notitle [error handling](../../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
-#| 
+#|
 || **Status** | **Code**                           | **Description**                                                       | **Value**                                                                                    ||
-|| `400`      | `NOT_FOUND`                       | SPA not found.                                                      | Occurs when an invalid `entityTypeId` is passed.                                              ||
-|| `400`      | `ACCESS_DENIED`                   | Access denied.                                                    | The user does not have permission to add entities of type `entityTypeId`.                             ||
-|| `400`      | `CRM_FIELD_ERROR_VALUE_NOT_VALID` | Invalid value for field "`field`".                                   | An incorrect value for the `field` was passed.
+|| `400`      | `NOT_FOUND`                       | SPA not found                                            | Occurs when an invalid `entityTypeId` is passed                                              ||
+|| `400`      | `ACCESS_DENIED`                   | Access denied                                                    | User does not have permission to add items of type `entityTypeId`                             ||
+|| `400`      | `CRM_FIELD_ERROR_VALUE_NOT_VALID` | Invalid value for field "`field`"                                   | An incorrect value for the `field` was passed.
 
 For system fields of type `createdTime`, if the request is not from an administrator. ||
-|| `400`      | `100`                             | Expected iterable value for multiple field, but got `type` instead. | One of the multiple fields received a value of type `type`, while an iterable type was expected. This can also occur with an incorrect request (invalid JSON or request headers). ||
-|| `400`      | `CREATE_DYNAMIC_ITEM_RESTRICTED`  | You cannot create a new entity due to your plan's restrictions. | The plan restrictions do not allow creating SPA entities.                              ||
-|| `400`      | `MAX_IMPORT_BATCH_SIZE_EXCEEDED`  | You cannot import more than 20 entities.                     | Occurs when more than 20 entities are passed during import.                                        ||
-|| `401`      | `INVALID_CREDENTIALS`             | Invalid authorization data for the request.                            | Incorrect `user ID` and/or code in the request path.                                       ||
-|| `403`      | `allowed_only_intranet_user`      | Action allowed only for intranet users.                   | The user is not an intranet user.                                                 ||
+|| `400`      | `100`                             | Expected iterable value for multiple field, but got `type` instead | One of the multiple fields received a value of type `type`, while an iterable type was expected. This can also occur with an incorrect request (invalid JSON or request headers). ||
+|| `400`      | `CREATE_DYNAMIC_ITEM_RESTRICTED`  | You cannot create a new item due to your plan restrictions | Plan restrictions do not allow creating SPA items                              ||
+|| `400`      | `MAX_IMPORT_BATCH_SIZE_EXCEEDED`  | You cannot import more than 20 items                     | Occurs when more than 20 entities are passed during import.                                        ||
+|| `401`      | `INVALID_CREDENTIALS`             | Invalid authorization data for the request                            | Incorrect `ID` and/or code in the request path.                                       ||
+|| `403`      | `allowed_only_intranet_user`      | This action is allowed only for intranet users                   | User is not an intranet user                                                 ||
 |#
 
-{% include [system errors](./../../../../_includes/system-errors.md) %}
+{% include [System errors](./../../../../_includes/system-errors.md) %}
 
-{% include [Examples Note](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
-## Continue Learning 
+## Continue Learning
 
 - [{#T}](./index.md)
 - [{#T}](./crm-item-import.md)

@@ -291,7 +291,7 @@ To add an activity to the deal, we will use the method [crm.activity.todo.add](.
 
 -  `ownerTypeId` — identifier of the CRM object type. You can obtain identifiers using the method [crm.enum.ownertype](../../../api-reference/crm/auxiliary/enum/crm-enum-owner-type.md). We will specify the value — `2`, which means a deal,
 
--  `ownerId` — identifier of the CRM entity. We will specify the deal identifier obtained in the previous request,
+-  `ownerId` — identifier of the CRM object. We will specify the deal identifier obtained in the previous request,
 
 -  `deadline` — deadline for the activity,
 
@@ -324,7 +324,7 @@ To add an activity to the lead, we will use the method [crm.activity.todo.add](.
 
 -  `ownerTypeId` — identifier of the CRM object type. You can obtain identifiers using the method [crm.enum.ownertype](../../../api-reference/crm/auxiliary/enum/crm-enum-owner-type.md). We will specify the value — `1`, which means a lead,
 
--  `ownerId` — identifier of the CRM entity. We will specify the identifier of the new lead,
+-  `ownerId` — identifier of the CRM object. We will specify the identifier of the new lead,
 
 -  `deadline` — deadline for the activity,
 

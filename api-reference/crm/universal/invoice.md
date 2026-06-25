@@ -75,7 +75,7 @@ The parameters of the invoice detail form can be managed through the group of me
 - [CRM Detail Form: Features and Settings](https://helpdesk.bitrix24.com/open/22879716/)
 - [System Fields in CRM](https://helpdesk.bitrix24.com/open/18529390/)
 - [Custom Fields in CRM](https://helpdesk.bitrix24.com/open/22067852/)
-- [Timeline in CRM Entity](https://helpdesk.bitrix24.com/open/16767378/)
+- [Timeline in CRM item form](https://helpdesk.bitrix24.com/open/16767378/)
 
 {% endnote %}
 
@@ -90,7 +90,7 @@ There are two embedding scenarios:
 
 ### Embedding Locations for New Invoices
 
-- [`CRM_SMART_INVOICE_DETAIL_TAB`](../../widgets/crm/detail-tab.md) — a tab in the detailed view of the CRM entity
+- [`CRM_SMART_INVOICE_DETAIL_TAB`](../../widgets/crm/detail-tab.md) — a tab in the detailed view of the CRM object
 
 - [`CRM_SMART_INVOICE_DETAIL_ACTIVITY`](../../widgets/crm/detail-activity.md) — a button above the timeline of the detail form
 
@@ -128,7 +128,7 @@ CRM Object Identifier **entityTypeId** — `31`
 - Methods
 
     #|
-    || [crm.item.add](./crm-item-add.md) | Creates a new CRM entity ||
+    || [crm.item.add](./crm-item-add.md) | Creates a new CRM object ||
     || [crm.item.update](./crm-item-update.md) | Updates an entity ||
     || [crm.item.get](./crm-item-get.md) | Returns an entity by Id ||
     || [crm.item.list](./crm-item-list.md) | Returns a list of entities by filter ||

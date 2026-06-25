@@ -10,11 +10,11 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: any user
 
-The method returns the user field of the requisite by its identifier.
+Retrieves a user field of the company details by its identifier.
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -169,6 +169,35 @@ The method returns the user field of the requisite by its identifier.
     }
     ```
 
+- Python
+
+    Example
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.requisite.userfield.get(
+            bitrix_id=235,
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected Error: {error}")
+    ```
+
 - BX24.js
 
     ```js
@@ -234,16 +263,16 @@ HTTP status: **200**
             "DEFAULT_VALUE": ""
         },
         "EDIT_FORM_LABEL": {
-            "en": "PP - String",
-            "de": "PP - String"
+            "en": "PP - Line",
+            "de": "PP - Line"
         },
         "LIST_COLUMN_LABEL": {
-            "en": "PP - String",
-            "de": "PP - String"
+            "en": "PP - Line",
+            "de": "PP - Line"
         },
         "LIST_FILTER_LABEL": {
-            "en": "PP - String",
-            "de": "PP - String"
+            "en": "PP - Line",
+            "de": "PP - Line"
         },
         "ERROR_MESSAGE": {
             "en": "UF_CRM_NEWTECH_V1_STRING",
@@ -274,7 +303,7 @@ HTTP status: **200**
 || **result**
 [`object`](../../../data-types.md) | Object containing field values describing the user field of the requisite ||
 || **time**
-[`time`](../../../data-types.md) | Information about the execution time of the request ||
+[`time`](../../../data-types.md) | Information about the request execution time ||
 |#
 
 ### Description of User Field of the Requisite
@@ -283,13 +312,13 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **ID**
-[`int`](../../../data-types.md) | Identifier of the user field ||
+[`int`](../../../data-types.md) | Identifier of the custom field ||
 || **ENTITY_ID**
-[`string`](../../../data-types.md) | Identifier of the entity to which the user field belongs. For requisites, this is always `CRM_REQUISITE` ||
+[`string`](../../../data-types.md) | The identifier of the entity to which the custom field belongs. For requisites, this is always `CRM_REQUISITE` ||
 || **FIELD_NAME**
 [`string`](../../../data-types.md) | Symbolic code. For requisites, it always starts with the prefix `UF_CRM_` ||
 || **USER_TYPE_ID**
-[`string`](../../../data-types.md) | Data type ([`string`](../../universal/user-defined-fields/crm-userfield-types.md), [`boolean`](../../universal/user-defined-fields/crm-userfield-types.md), [`double`](../../universal/user-defined-fields/crm-userfield-types.md) or [`datetime`](../../universal/user-defined-fields/crm-userfield-types.md)) ||
+[`string`](../../../data-types.md) | Data type ([`string`](../../universal/user-defined-fields/crm-userfield-types.md), [`boolean`](../../universal/user-defined-fields/crm-userfield-types.md), [`double`](../../universal/user-defined-fields/crm-userfield-types.md), or [`datetime`](../../universal/user-defined-fields/crm-userfield-types.md)) ||
 || **XML_ID**
 [`string`](../../../data-types.md) | External key. Used for exchange operations. Identifier of the object in the external information base. 
 
@@ -297,17 +326,17 @@ The purpose of the field may change by the final developer ||
 || **SORT**
 [`int`](../../../data-types.md) | Sorting ||
 || **MULTIPLE**
-[`char`](../../../data-types.md) | Multiplicity indicator. Possible values:
+[`char`](../../../data-types.md) | Indicator of multiplicity. Possible values:
 - `Y` — yes
 - `N` — no
 ||
 || **MANDATORY**
-[`char`](../../../data-types.md) | Mandatory indicator. Possible values:
+[`char`](../../../data-types.md) | Indicator of mandatory status. Possible values:
 - `Y` — yes
 - `N` — no 
 ||
 || **SHOW_FILTER**
-[`char`](../../../data-types.md) | Whether to show in the list filter. Possible values:
+[`char`](../../../data-types.md) | Show in the list filter. Possible values:
 - `N` — do not show
 - `I` — exact match
 - `E` — mask
@@ -319,7 +348,7 @@ The purpose of the field may change by the final developer ||
 - `N` — no 
 ||
 || **EDIT_IN_LIST**
-[`char`](../../../data-types.md) | Whether to allow editing by the user. Possible values:
+[`char`](../../../data-types.md) | Allow user editing? Possible values:
 - `Y` — yes
 - `N` — no 
 ||
@@ -355,18 +384,18 @@ HTTP status: **40x**, **50x**
 }
 ```
 
-{% include notitle [error handling](../../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Errors
 
-#|  
-|| **Code** | **Error Text** | **Description** ||
+#|
+|| **Code** | **Error text** | **Description** ||
 || Empty string | `ID is not defined or invalid` | The identifier of the user field is not set or has an invalid value ||
 || `ERROR_NOT_FOUND` | `The entity with ID '235' is not found` | The user field with the specified identifier was not found ||
-|| Empty string | `Access denied` | Insufficient access permissions to retrieve the user field ||
+|| Empty string" | `Access denied` | Insufficient access permissions to retrieve the user field ||
 |#
 
-{% include [system errors](../../../../_includes/system-errors.md) %}
+{% include [System errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

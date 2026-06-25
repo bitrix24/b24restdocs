@@ -54,7 +54,7 @@ SE_PARAMETER: [
 
 {% include [Note on Examples](../../_includes/examples.md) %}
 
-Let's add a task with files and CRM entity bindings. To attach a file to the task, you need to add the character `n` before the file ID.
+Let's add a task with files and CRM object bindings. To attach a file to the task, you need to add the character `n` before the file ID.
 
 {% list tabs %}
 

@@ -14,12 +14,12 @@ This method retrieves brief information about the delivery.
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
-#| 
+#|
 || **Name**
 `type` | **Description** ||
-|| **id*** 
+|| **id***
 [`sale_order_shipment.id`](../../../sale/data-types.md#sale_order_shipment) | Delivery identifier ||
 |#
 
@@ -155,6 +155,35 @@ This method retrieves brief information about the delivery.
     }
     ```
 
+- Python
+
+    Example
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.item.delivery.get(
+            bitrix_id=4077,
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - BX24.js
 
     ```js
@@ -191,36 +220,36 @@ This method retrieves brief information about the delivery.
 
 {% endlist %}
 
-## Successful Response
+## Response on Success
 
 HTTP status: **200**
 
 ```json
 {
-   "result": {
-      "id": 4077,
-      "accountNumber": "3657/2",
-      "priceDelivery": 79.99,
-      "currency": "USD",
-      "deducted": "N",
-      "dateDeducted": null,
-      "deliveryId": 228,
-      "deliveryName": "Uber Taxi (Cargo)"
+   "result":{
+      "id":4077,
+      "accountNumber":"3657\/2",
+      "priceDelivery":79.99,
+      "currency":"USD",
+      "deducted":"N",
+      "dateDeducted":null,
+      "deliveryId":228,
+      "deliveryName":"Uber Taxi (Cargo)"
    },
-   "time": {
-      "start": 1716369295.614557,
-      "finish": 1716369296.143089,
-      "duration": 0.5285320281982422,
-      "processing": 0.2371680736541748,
-      "date_start": "2024-05-22T12:14:55+02:00",
-      "date_finish": "2024-05-22T12:14:56+02:00"
+   "time":{
+      "start":1716369295.614557,
+      "finish":1716369296.143089,
+      "duration":0.5285320281982422,
+      "processing":0.2371680736541748,
+      "date_start":"2024-05-22T12:14:55+03:00",
+      "date_finish":"2024-05-22T12:14:56+03:00"
    }
 }
 ```
 
 ### Returned Data
 
-#| 
+#|
 || **Name**
 `type` | **Description** ||
 || **result**
@@ -229,16 +258,16 @@ HTTP status: **200**
 [`time`](../../../data-types.md) | Information about the request execution time ||
 |#
 
-### Key result. Object of type 
-### sale_order_shipment_crm_simple 
+### Key Result. Object of Type
+### Sale_Order_Shipment_Crm_Simple
 
-#| 
+#|
 || **Name**
 `type` | **Description** ||
 || **id**
-[`sale_order_shipment.id`](../../../data-types.md#sale_order_shipment) | Delivery identifier ||
+[`sale_order_shipment.id`](../../../sale/data-types.md#sale_order_shipment) | Delivery identifier ||
 || **accountNumber**
-[`string`](../../../data-types.md) | System delivery number ||
+[`string`](../../../data-types.md) | System delivery number  ||
 || **deducted**
 [`string`](../../../data-types.md) | Indicates whether the delivery has been shipped.
 Possible values:
@@ -246,15 +275,15 @@ Possible values:
 - `N` — no (not shipped)
  ||
 || **dateDeducted**
-[`datetime`](../../../data-types.md) | Date of the shipment's shipped flag change ||
+[`datetime`](../../../data-types.md)  | Date of the shipment's shipped flag change ||
 || **priceDelivery**
-[`double`](../../../data-types.md) | Delivery cost ||
+[`double`](../../../data-types.md)  | Delivery cost ||
 || **currency**
-[`string`](../../../data-types.md) | Delivery currency ||
+[`string`](../../../data-types.md)  | Delivery currency ||
 || **deliveryId**
-[`sale_delivery_service.ID`](../../../data-types.md#sale_delivery_service) | Delivery service identifier ||
+[`sale_delivery_service.ID`](../../../sale/data-types.md#sale_delivery_service)  | Delivery service identifier ||
 || **deliveryName**
-[`string`](../../../data-types.md) | Delivery service name ||
+[`string`](../../../data-types.md)  | Delivery service name ||
 |#
 
 ## Error Handling
@@ -263,23 +292,23 @@ HTTP status: **400**
 
 ```json
 {
-   "error": 0,
-   "error_description": "Insufficient permissions"
+   "error":0,
+   "error_description":"Insufficient permissions"
 }
 ```
 
-{% include notitle [error handling](../../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
-#| 
+#|
 || **Code** | **Description** ||
 || `0` | Delivery not found or access denied ||
 || `100` | Parameter id not specified ||
 || `0` | Other errors (e.g., fatal errors) ||
 |#
 
-{% include notitle [system errors](../../../../_includes/system-errors.md) %}
+{% include notitle [System errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

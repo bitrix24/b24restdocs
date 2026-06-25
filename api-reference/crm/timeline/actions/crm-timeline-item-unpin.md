@@ -24,7 +24,7 @@ The method `crm.timeline.item.unpin` unpins a timeline item.
 || **ownerTypeId***
 [`integer`](../../data-types.md#object_type) | [Identifier of the CRM object type](../../data-types.md#object_type) to which the item is linked, for example `2` for a deal ||
 || **ownerId***
-[`integer`](../../../data-types.md) | Identifier of the CRM entity to which the item is linked, for example `10` ||
+[`integer`](../../../data-types.md) | Identifier of the CRM object to which the item is linked, for example `10` ||
 |#
 
 ## Code Examples
