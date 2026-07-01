@@ -10,7 +10,7 @@ Time tracking records help monitor when an employee starts and ends their workda
 
 > Quick navigation: [all methods](#all-methods)
 >
-> User documentation: [Worktime](hhttps://helpdesk.bitrix24.com/open/24856218/)
+> User documentation: [Worktime](https://helpdesk.bitrix24.com/open/24856218/)
 
 ## Getting Started
 

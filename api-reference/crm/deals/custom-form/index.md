@@ -15,7 +15,7 @@ For each card view, sections can be configured, and within each section, a list 
 
 > Quick navigation: [all methods](#all-methods) 
 > 
-> User documentation: [CRM Views](https://helpdesk.bitrix24.com/open/17914816/)
+> User documentation: [CRM item form layout](https://helpdesk.bitrix24.com/open/25791235/)
 
 ## Linking Deal Cards with Other Objects
 

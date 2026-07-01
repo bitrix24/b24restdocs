@@ -107,19 +107,19 @@
   || **companyId**
   [`crm_company`][1] | Identifier of the company linked to the element.
 
-  The list of companies can be obtained using the [`crm.item.list`](../universal/crm-item-list.md) method with `entityTypeId = 4`.
+  The list of companies can be obtained using the [`crm.item.list`](/api-reference/crm/universal/crm-item-list.html) method with `entityTypeId = 4`.
 
   By default — `null` ||
   || **contactId**
   [`crm_contact`][1] | Identifier of the contact linked to the element.
 
-  The list of contacts can be obtained using the [`crm.item.list`](../universal/crm-item-list.md) method with `entityTypeId = 3`.
+  The list of contacts can be obtained using the [`crm.item.list`](/api-reference/crm/universal/crm-item-list.html) method with `entityTypeId = 3`.
 
   By default — `null` ||
   || **contactIds**
   [`crm_contact[]`][1] | List of identifiers of contacts linked to the element.
 
-  The list of contacts can be obtained using the [`crm.item.list`](../universal/crm-item-list.md) method with `entityTypeId = 3`.
+  The list of contacts can be obtained using the [`crm.item.list`](/api-reference/crm/universal/crm-item-list.html) method with `entityTypeId = 3`.
 
   By default — `null` ||
   || **originatorId**
@@ -164,7 +164,7 @@
   || **ufCrm...**
   [`crm_userfield`][1] | User-defined field.
 
-  For information on user-defined fields, see the section [{#T}](../universal/user-defined-fields/index.md)
+  For information on user-defined fields, see the section [{#T}](/api-reference/crm/universal/user-defined-fields/index.html)
 
   Values of multiple fields are passed as an array.
 
@@ -200,7 +200,7 @@
 
   By default — the first available entity type ||
   || **categoryId**
-  [`integer`][1] | Identifier of the [direction](../universal/category/index.md) (funnel) of the deal.
+  [`integer`][1] | Identifier of the [direction](/api-reference/crm/universal/category/index.html) (funnel) of the deal.
 
   By default — `0` (general) ||
   || **stageId**
@@ -211,7 +211,7 @@
   The list of available stages can be obtained using [`crm.status.list`][2] with the filter:
   - If the deal is in the general funnel (direction) — `{ ENTITY_ID: "DEAL_STAGE" }`
   - If the deal is not in the general funnel (direction) — `{ ENTITY_ID: "DEAL_STAGE_{categoryId}" }`, where
-    `categoryId` is the identifier of the funnel ([direction](../universal/category/index.md)) of the deal
+    `categoryId` is the identifier of the funnel ([direction](/api-reference/crm/universal/category/index.html)) of the deal
 
   By default — the first available stage relative to the funnel ||
   || **isRecurring**
@@ -247,19 +247,19 @@
   || **companyId**
   [`crm_company`][1] | Identifier of the company linked to the element.
 
-  The list of companies can be obtained using the [`crm.item.list`](../universal/crm-item-list.md) method with `entityTypeId = 4`.
+  The list of companies can be obtained using the [`crm.item.list`](/api-reference/crm/universal/crm-item-list.html) method with `entityTypeId = 4`.
 
   By default — `null` ||
   || **contactId**
   [`crm_contact`][1] | Identifier of the contact linked to the element.
 
-  The list of contacts can be obtained using the [`crm.item.list`](../universal/crm-item-list.md) method with `entityTypeId = 3`.
+  The list of contacts can be obtained using the [`crm.item.list`](/api-reference/crm/universal/crm-item-list.html) method with `entityTypeId = 3`.
 
   By default — `null` ||
   || **contactIds**
   [`crm_contact[]`][1] | List of identifiers of contacts linked to the element.
 
-  The list of contacts can be obtained using the [`crm.item.list`](../universal/crm-item-list.md) method with `entityTypeId = 3`.
+  The list of contacts can be obtained using the [`crm.item.list`](/api-reference/crm/universal/crm-item-list.html) method with `entityTypeId = 3`.
 
   By default — `null` ||
   || **quoteId**
@@ -346,7 +346,7 @@
 
   By default — `null` ||
   || **ufCrm...**
-  [`crm_userfield`][1] | User-defined field. See the section [{#T}](../universal/user-defined-fields/index.md)
+  [`crm_userfield`][1] | User-defined field. See the section [{#T}](/api-reference/crm/universal/user-defined-fields/index.html)
 
   - Values of multiple fields are passed as an array
   - To upload a file, the value of the user-defined field must be an array where the first element is the file name and the second is the base64 encoded content of the file.
@@ -441,7 +441,7 @@
   || **companyId**
   [`crm_company`][1] | Identifier of the company linked to the element.
 
-  The list of companies can be obtained using the [`crm.item.list`](../universal/crm-item-list.md) method with `entityTypeId = 4`.
+  The list of companies can be obtained using the [`crm.item.list`](/api-reference/crm/universal/crm-item-list.html) method with `entityTypeId = 4`.
 
   By default — `null` ||
   || **companyIds**
@@ -490,7 +490,7 @@
 
   By default — `null` ||
   || **ufCrm...**
-  [`crm_userfield`][1] | User-defined field. See the section [{#T}](../universal/user-defined-fields/index.md)
+  [`crm_userfield`][1] | User-defined field. See the section [{#T}](/api-reference/crm/universal/user-defined-fields/index.html)
 
     - Values of multiple fields are passed as an array
     - To upload a file, the value of the user-defined field must be an array where the first element is the file name and the second is the base64 encoded content of the file.
@@ -582,7 +582,7 @@
   || **contactIds**
   [`crm_contact[]`][1] | List of identifiers of contacts linked to the element.
 
-  The list of contacts can be obtained using the [`crm.item.list`](../universal/crm-item-list.md) method with `entityTypeId = 3`.
+  The list of contacts can be obtained using the [`crm.item.list`](/api-reference/crm/universal/crm-item-list.html) method with `entityTypeId = 3`.
 
   By default — `null`||
   || **leadId**
@@ -628,7 +628,7 @@
 
   By default — `null` ||
   || **ufCrm...**
-  [`crm_userfield`][1] | User-defined field. See the section [{#T}](../universal/user-defined-fields/index.md)
+  [`crm_userfield`][1] | User-defined field. See the section [{#T}](/api-reference/crm/universal/user-defined-fields/index.html)
 
     - Values of multiple fields are passed as an array
     - To upload a file, the value of the user-defined field must be an array where the first element is the file name and the second is the base64 encoded content of the file.
@@ -710,19 +710,19 @@
   || **companyId**
   [`crm_company`][1] | Identifier of the company linked to the element.
 
-  The list of companies can be obtained using the [`crm.item.list`](../universal/crm-item-list.md) method with `entityTypeId = 4`.
+  The list of companies can be obtained using the [`crm.item.list`](/api-reference/crm/universal/crm-item-list.html) method with `entityTypeId = 4`.
 
   By default — `null` ||
   || **contactId**
   [`crm_contact`][1] | Identifier of the contact linked to the element.
 
-  The list of contacts can be obtained using the [`crm.item.list`](../universal/crm-item-list.md) method with `entityTypeId = 3`
+  The list of contacts can be obtained using the [`crm.item.list`](/api-reference/crm/universal/crm-item-list.html) method with `entityTypeId = 3`
 
   By default — `null` ||
   || **contactIds**
   [`crm_contact[]`][1] | List of identifiers of contacts linked to the element.
 
-  The list of contacts can be obtained using the [`crm.item.list`](../universal/crm-item-list.md) method with `entityTypeId = 3`.
+  The list of contacts can be obtained using the [`crm.item.list`](/api-reference/crm/universal/crm-item-list.html) method with `entityTypeId = 3`.
 
   By default — `null` ||
   || **locationId**
@@ -796,7 +796,7 @@
 
   By default — `null` ||
   || **ufCrm...**
-  [`crm_userfield`][1] | User-defined field. See the section [{#T}](../universal/user-defined-fields/index.md).
+  [`crm_userfield`][1] | User-defined field. See the section [{#T}](/api-reference/crm/universal/user-defined-fields/index.html).
 
     - Values of multiple fields are passed as an array
     - To upload a file, the value of the user-defined field must be an array where the first element is the file name and the second is the base64 encoded content of the file.
@@ -857,19 +857,19 @@
   || **companyId**
   [`crm_company`][1] | Identifier of the company linked to the element.
 
-  The list of companies can be obtained using the [`crm.item.list`](../universal/crm-item-list.md) method with `entityTypeId = 4`.
+  The list of companies can be obtained using the [`crm.item.list`](/api-reference/crm/universal/crm-item-list.html) method with `entityTypeId = 4`.
 
   By default — `null` ||
   || **contactId**
   [`crm_contact`][1] | Identifier of the contact linked to the element.
 
-  The list of contacts can be obtained using the [`crm.item.list`](../universal/crm-item-list.md) method with `entityTypeId = 3`.
+  The list of contacts can be obtained using the [`crm.item.list`](/api-reference/crm/universal/crm-item-list.html) method with `entityTypeId = 3`.
 
   By default — `null` ||
   || **contactIds**
   [`crm_contact[]`][1] | List of identifiers of contacts linked to the element.
 
-  The list of contacts can be obtained using the [`crm.item.list`](../universal/crm-item-list.md) method with `entityTypeId = 3`.
+  The list of contacts can be obtained using the [`crm.item.list`](/api-reference/crm/universal/crm-item-list.html) method with `entityTypeId = 3`.
 
   By default — `null` ||
   || **observers**
@@ -882,7 +882,7 @@
   For example, `'DT31_13:N' = 'New'`.
 
   The list of available stages can be obtained using [`crm.status.list`][2], with the filter: `{ ENTITY_ID: "SMART_INVOICE_STAGE_{categoryId}" }`, where
-  `categoryId` — identifier of the default invoice funnel. It can be obtained using [`crm.category.list`](../universal/category/crm-category-list.md) with `entityTypeId = 31`.
+  `categoryId` — identifier of the default invoice funnel. It can be obtained using [`crm.category.list`](/api-reference/crm/universal/category/crm-category-list.html) with `entityTypeId = 31`.
 
   By default — the first available stage ||
   || **sourceId**
@@ -929,7 +929,7 @@
 
   By default — `null` ||
   || **ufCrm...**
-  [`crm_userfield`][1] | User-defined field. See the section [{#T}](../universal/user-defined-fields/index.md).
+  [`crm_userfield`][1] | User-defined field. See the section [{#T}](/api-reference/crm/universal/user-defined-fields/index.html).
 
     - Values of multiple fields are passed as an array
     - To upload a file, the value of the user-defined field must be an array where the first element is the file name and the second is the base64 encoded content of the file.
@@ -945,7 +945,7 @@
 
 - SPA
 
-  CRM object identifier **entityTypeId:** can be obtained using the [`crm.type.list`](../universal/user-defined-object-types/crm-type-list.md) method or created using the [`crm.type.add`](../universal/user-defined-object-types/crm-type-add.md) method.
+  CRM object identifier **entityTypeId:** can be obtained using the [`crm.type.list`](/api-reference/crm/universal/user-defined-object-types/crm-type-list.html) method or created using the [`crm.type.add`](/api-reference/crm/universal/user-defined-object-types/crm-type-add.html) method.
 
   #|
   || **Name**
@@ -992,7 +992,7 @@
   || **companyId**
   [`crm_company`][1] | Identifier of the company linked to the element.
 
-  The list of companies can be obtained using the [`crm.item.list`](../universal/crm-item-list.md) method with `entityTypeId = 4`.
+  The list of companies can be obtained using the [`crm.item.list`](/api-reference/crm/universal/crm-item-list.html) method with `entityTypeId = 4`.
 
   Available only if the `isClientEnabled` setting is enabled for the corresponding SPA.
 
@@ -1000,7 +1000,7 @@
   || **contactId**
   [`crm_contact`][1] | Identifier of the contact linked to the element.
 
-  The list of contacts can be obtained using the [`crm.item.list`](../universal/crm-item-list.md) method with `entityTypeId = 3`.
+  The list of contacts can be obtained using the [`crm.item.list`](/api-reference/crm/universal/crm-item-list.html) method with `entityTypeId = 3`.
 
   Available only if the `isClientEnabled` setting is enabled for the corresponding SPA.
 
@@ -1008,7 +1008,7 @@
   || **contactIds**
   [`crm_contact[]`][1] | List of identifiers of contacts linked to the element.
 
-  The list of contacts can be obtained using the [`crm.item.list`](../universal/crm-item-list.md) method with `entityTypeId = 3`.
+  The list of contacts can be obtained using the [`crm.item.list`](/api-reference/crm/universal/crm-item-list.html) method with `entityTypeId = 3`.
 
   Available only if the `isClientEnabled` setting is enabled for the corresponding SPA.
 
@@ -1022,7 +1022,7 @@
   || **categoryId**
   [`crm_category`][1] | Identifier of the funnel of the SPA element.
 
-  The list of available funnels can be obtained using [`crm.category.list`](../universal/category/crm-category-list.md) with the corresponding `entityTypeId` ||
+  The list of available funnels can be obtained using [`crm.category.list`](/api-reference/crm/universal/category/crm-category-list.html) with the corresponding `entityTypeId` ||
   || **stageId**
   [`crm_status`][1] | String identifier for the stage of the element.
 
@@ -1032,7 +1032,7 @@
     - `entityTypeId` — identifier of the SPA type
     - `categoryId` — identifier of the funnel (direction) of the SPA element
 
-  [Learn more about funnels (directions)](../universal/category/index.md).
+  [Learn more about funnels (directions)](/api-reference/crm/universal/category/index.html).
 
   Available only if the `isStagesEnabled` setting is enabled for the corresponding SPA.
 
@@ -1085,7 +1085,7 @@
 
   By default — Identifier of the first available "my" company ||
   || **ufCrm...**
-  [`crm_userfield`][1] | User-defined field. See the section [{#T}](../universal/user-defined-fields/index.md).
+  [`crm_userfield`][1] | User-defined field. See the section [{#T}](/api-reference/crm/universal/user-defined-fields/index.html).
 
     - Values of multiple fields are passed as an array
     - To upload a file, the value of the user-defined field must be an array where the first element is the file name and the second is the base64 encoded content of the file.
@@ -1100,11 +1100,11 @@
 
   {% note info "SPA Settings" %}
 
-  For more information on managing SPA settings, you can read in [{#T}](../universal/user-defined-object-types/index.md)
+  For more information on managing SPA settings, you can read in [{#T}](/api-reference/crm/universal/user-defined-object-types/index.html)
 
   {% endnote %}
 
 {% endlist %}
 
-[1]: ../data-types.md
-[2]: ../status/crm-status-list.md
+[1]: /api-reference/crm/data-types.html
+[2]: /api-reference/crm/status/crm-status-list.html

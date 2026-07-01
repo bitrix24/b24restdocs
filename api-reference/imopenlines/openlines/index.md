@@ -65,7 +65,7 @@ This section describes the management of each step in this chain: configuring ch
 
 ## Limits and Response Format
 
-**Limits.** General REST limitations and open channel restrictions apply to methods, such as the limit on unclosed dialogues for operators. For details, refer to the article [Limit on Unclosed Dialogues for Open Channel Operators](https://helpdesk.bitrix24.com/open/26928654/).
+**Limits.** General REST limitations and open channel restrictions apply to methods, such as the limit on unclosed dialogues for operators. For details, refer to the article [Limit on the number of open conversations per agent](https://helpdesk.bitrix24.com/open/25830887/).
 
 **Response Format.** A successful response typically contains `result` and `time`, while errors are returned in the format `error` and `error_description`. Examples of response structure and error codes can be found on the specific method's page.
 

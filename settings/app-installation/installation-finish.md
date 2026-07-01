@@ -124,7 +124,7 @@ Call the method after you have completed the necessary settings: registered widg
 
 - JS
 
-    [installFinish()](https://bitrix-tools.github.io/b24jssdk/reference/frame-index.html#installFinish)
+    [installFinish()](https://bitrix24.github.io/b24jssdk/docs/working-with-the-rest-api/frame/#installfinish)
 
     ```html
         <script setup lang="ts">

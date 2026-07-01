@@ -26,7 +26,7 @@ You can find the channel code in the detail form of the connected open channel i
 
 {% note tip "User Documentation" %}
 
-- [Contact Center: Bitrix24.Network](https://helpdesk.bitrix24.com/open/19124962/)
+- [Contact Center: Bitrix24.Network](https://helpdesk.bitrix24.com/open/19222304/)
 
 {% endnote %}
 

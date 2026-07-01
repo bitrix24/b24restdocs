@@ -22,7 +22,7 @@ Access rights are set for the website and apply to all its pages. In the cloud v
 
 > Quick Navigation: [All Methods](#all-methods)
 >
-> User Documentation: [Access Rights for Websites and Stores](https://helpdesk.bitrix24.com/open/9375089/)
+> User Documentation: [Site access permissions](https://helpdesk.bitrix24.com/open/22057418/)
 
 ## How to Configure the Access Rights Model
 

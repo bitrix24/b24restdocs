@@ -21,7 +21,7 @@ $b24.parent.message.send(method, params)
 ## Prerequisites Before Calls
 
 1. The application must be running inside the Bitrix24 frame.
-2. The SDK must be initialized via [initializeB24Frame()](https://bitrix-tools.github.io/b24jssdk/reference/frame-initialize-b24-frame.html).
+2. The SDK must be initialized via [initializeB24Frame()](https://bitrix24.github.io/b24jssdk/docs/working-with-the-rest-api/frame-initialize-b24-frame/).
 
 Example:
 
@@ -40,7 +40,7 @@ The method `im:getImTextareaContent` returns the current text from the input fie
 #| 
 || **Parameter** | **Description** ||
 || **requestId***  
-`string` | Unique request ID. Create it using [B24Js.Text.getUuidRfc4122()](https://bitrix-tools.github.io/b24jssdk/reference/tools-text.html#getuuidrfc4122) ||
+`string` | Unique request ID. Create it using [B24Js.Text.getUuidRfc4122()](https://bitrix24.github.io/b24jssdk/docs/working-with-the-rest-api/tools-text#identifiers) ||
 || **isSafely**  
 `boolean` | If `true`, a timeout for waiting for a response is applied. Use together with `safelyTime`. If `false`, no timeout is applied for this parameter ||
 || **safelyTime**  
@@ -83,7 +83,7 @@ The method `im:setImTextareaContent` inserts text into the input field of the ac
 || **text***  
 `string` | Text to insert into the input field ||
 || **requestId***  
-`string` | Unique request ID. Create it using [`B24Js.Text.getUuidRfc4122()`](https://bitrix-tools.github.io/b24jssdk/reference/tools-text.html#getuuidrfc4122) ||
+`string` | Unique request ID. Create it using [B24Js.Text.getUuidRfc4122()](https://bitrix24.github.io/b24jssdk/docs/working-with-the-rest-api/tools-text#identifiers) ||
 || **withNewLine**  
 `boolean` | If `true`, the text will be added on a new line ||
 || **replace**  

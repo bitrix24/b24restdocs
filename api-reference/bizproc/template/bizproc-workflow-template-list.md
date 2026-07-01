@@ -130,7 +130,7 @@ drive:
 - `Y` — yes, it has been modified
 - `N` — no
 
-This option is needed for [typical templates](https://helpdesk.bitrix24.com/open/5415841/) of business processes ||
+This option is needed for [typical templates](https://helpdesk.bitrix24.com/open/16974820/) of business processes ||
 || **USER_ID**
 [`integer`](../../data-types.md) | Identifier of the user who created or modified the template ||
 || **SYSTEM_CODE**

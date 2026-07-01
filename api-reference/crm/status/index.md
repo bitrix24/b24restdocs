@@ -14,7 +14,7 @@ In the detail forms of CRM entities, there are two types of list fields:
 
 > Quick navigation: [all methods and events](#all-methods)
 > 
-> User documentation: [reference guides in Bitrix24](https://helpdesk.bitrix24.com/open/21600612/)
+> User documentation: [Statuses and dropdowns in CRM](https://helpdesk.bitrix24.com/open/21656894/)
 
 ## List of Reference Guides
 
@@ -25,7 +25,7 @@ To modify a reference guide, specify the `ENTITY_ID` parameter in the methods of
 * [Leads](../leads/index.md) — `STATUS`
 * [Invoices](../universal/invoice.md) — `SMART_INVOICE_STAGE_xx`, where xx is the ID value of the invoice direction.
 * [Quotes](../quote/index.md) — `QUOTE_STATUS`
-* [Documents](https://helpdesk.bitrix24.com/open/17572968/) — `SMART_DOCUMENT_STAGE_xx`, where xx is the ID value of the document direction.
+* [Documents](https://helpdesk.bitrix24.com/open/19441484/) — `SMART_DOCUMENT_STAGE_xx`, where xx is the ID value of the document direction.
 * [Smart Processes](../universal/index.md) — `DYNAMIC_xx_STAGE_xx`, where the first xx is the `entityTypeId` of the smart process, and the second xx is the ID of the direction.
 
 To obtain the ID of a specific direction in Bitrix24, use the method [crm.status.entity.types](./crm-status-entity-types.md).

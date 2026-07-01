@@ -14,7 +14,7 @@ Deletes a timeline record.
 
 {% note warning %}
 
-You can only delete a log entry in the context of the [application](https://dev.bitrixsoft.com/docs/chm_files/app.zip) that created it.
+You can only delete a log entry in the context of the application that created it.
 
 This means that only the application that added the entry can delete it. This ensures data security and control.
 

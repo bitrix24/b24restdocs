@@ -85,7 +85,7 @@ Data on the execution time of requests to each individual method is aggregated.
 
 {% note info "Triggering Limits" %}
 
-If the total execution time of requests exceeds 480 seconds within a 10-minute period, this method is blocked for all applications and webhooks of that account. Meanwhile, all other methods continue to function.
+If the total execution time of requests exceeds 480 seconds within the past 10 minutes, this method is blocked for the app or webhook that exceeded the limit for 10 minutes. The app receives a `429` status with the `OPERATION_TIME_LIMIT` error code in response. Other apps and all other methods continue to function.
 
 {% endnote %}
 

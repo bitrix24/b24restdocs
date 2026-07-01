@@ -24,7 +24,7 @@ There are several ways to install the SDK:
 
 ### Installation in Node.js / Nuxt
 
-Details can be found in the [B24JsSDK documentation](https://bitrix-tools.github.io/b24jssdk/guide/getting-started.html).
+Details can be found in the [B24JsSDK documentation](https://bitrix24.github.io/b24jssdk/docs/getting-started).
 
 ### Usage in the Browser
 
@@ -71,7 +71,7 @@ Once included, the library will be accessible via the global variable `B24Js`. H
 
 ## Usage with Webhooks
 
-For working with local webhooks, use them only in [server applications](https://bitrix-tools.github.io/b24jssdk/guide/getting-started.html).
+For working with local webhooks, use them only in [server applications](https://bitrix24.github.io/b24jssdk/docs/getting-started#for-server-applications-with-webhook-b24hook).
 
 Example of server-side usage of the SDK: [https://github.com/bitrix24/b24sdk-examples/tree/main/js/05-node-hook](https://github.com/bitrix24/b24sdk-examples/tree/main/js/05-node-hook)
 

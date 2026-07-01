@@ -14,7 +14,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 The method returns the current settings of the CRM operating mode: **classic CRM mode** (with leads) or **simple CRM mode** (without leads).
 
-This mode affects a number of CRM operation scenarios, and for better understanding, we recommend reading the [relevant article](https://helpdesk.bitrix24.com/open/17611420/) in the user documentation.
+This mode affects a number of CRM operation scenarios, and for better understanding, we recommend reading the [relevant article](https://helpdesk.bitrix24.com/open/24207198/) in the user documentation.
 
 ## Method Parameters
 

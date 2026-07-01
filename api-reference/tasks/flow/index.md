@@ -32,9 +32,9 @@ If there are no employees left in the flow team with queue distribution or self-
 
 {% note tip "User Documentation" %}
 
-- [How to Create a Group and Project](https://helpdesk.bitrix24.com/open/22699004/)
-- [Bitrix24 Tasks](https://helpdesk.bitrix24.com/open/17962166/)
-- [Task Templates](https://helpdesk.bitrix24.com/open/17869536/)
+- [Create a workgroup or project](https://helpdesk.bitrix24.com/open/22796428/)
+- [Tasks in Bitrix24](https://helpdesk.bitrix24.com/open/18034564/)
+- [Task templates](https://helpdesk.bitrix24.com/open/20883624/)
 
 {% endnote %}
 
@@ -48,7 +48,7 @@ The title and assignee are required fields when creating a task outside the flow
 
 {% note tip "User Documentation" %}
 
-- [How to Create and Find a Task in the Flow](https://helpdesk.bitrix24.com/open/21307012/)
+- [Create and find tasks in Flows](https://helpdesk.bitrix24.com/open/21438552/)
 
 {% endnote %}
 

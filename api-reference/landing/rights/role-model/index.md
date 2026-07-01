@@ -12,7 +12,7 @@ For example, you can create a role called "Editor" and grant permission to edit 
 
 > Quick navigation: [all methods](#all-methods)
 >
-> User documentation: [Site and Store Permissions](https://helpdesk.bitrix24.com/open/9375089/)
+> User documentation: [Site access permissions](https://helpdesk.bitrix24.com/open/22057418/)
 
 ## How to Assign Roles and Configure Access Permissions
 

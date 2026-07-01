@@ -1,4 +1,4 @@
-- `SG<X>` — [workgroups and projects](../../sonet-group/sonet-group-create.md) with the identifier `X`. The identifier can be obtained using the [sonet_group.get](../../sonet-group/sonet-group-get.md) method.
-- `U<X>` — [users](../../user/index.md) with the identifier `X`. The identifier can be obtained using the [user.get](../../user/user-get.md) method.
+- `SG<X>` — [workgroups and projects](/api-reference/sonet-group/sonet-group-create.html) with the identifier `X`. The identifier can be obtained using the [sonet_group.get](/api-reference/sonet-group/sonet-group-get.html) method.
+- `U<X>` — [users](/api-reference/user/index.html) with the identifier `X`. The identifier can be obtained using the [user.get](/api-reference/user/user-get.html) method.
 - `UA` — all authorized users
-- `DR<X>` — company departments with the identifier `X`. The identifier can be obtained using the [department.get](../../departments/department-get.md) method.
+- `DR<X>` — company departments with the identifier `X`. The identifier can be obtained using the [department.get](/api-reference/departments/department-get.html) method.

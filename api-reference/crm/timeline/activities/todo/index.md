@@ -8,7 +8,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Quick navigation: [all methods](#all-methods) 
 > 
-> User documentation: [Universal activity in CRM](https://helpdesk.bitrix24.com/open/21064046/)
+> User documentation: [Universal activity in CRM](https://helpdesk.bitrix24.com/open/21458972/)
 
 Universal activities are a type of activity with extended settings. In the universal activity card, you can synchronize the activity with the calendar, choose a meeting location with the client, add colleagues, select a client from the CRM object, categorize activity by color, and choose a meeting room. Some extended settings are available to the employee on the Bitrix24 side.
 

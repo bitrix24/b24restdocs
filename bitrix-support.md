@@ -126,7 +126,7 @@ In one chat, a support staff member addresses only one issue. If you have multip
 1. Describe the event you are having trouble with. You can attach a link to the documentation page.
 
 2. Provide the URL of the handler that is subscribed to the event:
-	- URL from the `handler` field of the [event.bind](//api-reference/events/event-bind.md) method,
+	- URL from the `handler` field of the [event.bind](./api-reference/events/event-bind.md) method,
 	- URL from the `URL of your handler*` field of the [outgoing webhook](./local-integrations/local-webhooks.md).
 
 3. Indicate the date and time when the event last failed to trigger.
