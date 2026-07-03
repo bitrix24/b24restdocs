@@ -12,14 +12,15 @@ Participants of departments and teams define who belongs to a department or team
 >
 > User documentation: [Company structure: New interface and features](https://helpdesk.bitrix24.com/open/23583540/)
 
-## Working with Participants
+## Working With Participants
 
-1. Identify the required department or team and obtain the `nodeId` using the [humanresources.node.list](../node/humanresources-node-list.md) method. If the identifier is already known, verify the department or team data using the [humanresources.node.get](../node/humanresources-node-get.md) method.
-2. Retrieve user identifiers using the [user.get](../../../user/user-get.md) method if you need to prepare `userIds` for adding, transferring, or removing participants.
-3. Add users to the desired department or team using the [humanresources.node.member.add](./humanresources-node-member-add.md) method.
-4. Use [humanresources.node.member.set](./humanresources-node-member-set.md) if you need to specify the complete composition of participants by roles in a single request.
-5. Transfer participants to another department or team using the [humanresources.node.member.move](./humanresources-node-member-move.md) method if you need to change their position in the structure.
-6. Remove participants using the [humanresources.node.member.remove](./humanresources-node-member-remove.md) method if they should no longer belong to the department or team.
+1. Retrieve field descriptions using the [humanresources.node.member.field.list](./humanresources-node-member-field-list.md) and [humanresources.node.member.field.get](./humanresources-node-member-field-get.md) methods if you need to verify the available participant fields in advance
+2. Identify the required department or team and retrieve `nodeId` using the [humanresources.node.list](../node/humanresources-node-list.md) method. If the identifier is already known, verify the department or team data using the [humanresources.node.get](../node/humanresources-node-get.md) method
+3. Retrieve user identifiers using the [user.get](../../../user/user-get.md) method if you need to prepare `userIds` for adding, moving, or removing participants
+4. Add users to the required department or team using the [humanresources.node.member.add](./humanresources-node-member-add.md) method
+5. Use [humanresources.node.member.set](./humanresources-node-member-set.md) if you need to set the full composition of participants by roles in a single request
+6. Move participants to a different department or team using the [humanresources.node.member.move](./humanresources-node-member-move.md) method if you need to change their position in the structure
+7. Remove participants using the [humanresources.node.member.remove](./humanresources-node-member-remove.md) method if they should no longer be part of the department or team
 
 ## Section Limitations
 
@@ -52,6 +53,8 @@ Participants of departments and teams define who belongs to a department or team
 || [humanresources.node.member.set](./humanresources-node-member-set.md) | Updates the composition of participants in a department or team by roles ||
 || [humanresources.node.member.move](./humanresources-node-member-move.md) | Transfers users to another department or team ||
 || [humanresources.node.member.remove](./humanresources-node-member-remove.md) | Removes users from a department or team ||
+|| [humanresources.node.member.field.list](./humanresources-node-member-field-list.md) | Returns a list of fields for a department or team member ||
+|| [humanresources.node.member.field.get](./humanresources-node-member-field-get.md) | Returns the description of a department or team member field ||
 |#
 
 ## Continue Your Exploration

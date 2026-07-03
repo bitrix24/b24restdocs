@@ -109,6 +109,7 @@ Thanks to the embedding, you can use the application without leaving the entity 
     || [crm.activity.get](./activity-base/crm-activity-get.md) | Returns an activity by ID ||
     || [crm.activity.list](./activity-base/crm-activity-list.md) | Returns a list of activities of all types by filter ||
     || [crm.activity.delete](./activity-base/crm-activity-delete.md) | Deletes any type of activity ||
+    || [crm.activity.call.getTranscript](./activity-base/crm-activity-call-get-transcript.md) | Returns a ready-made call transcription ||
     || [crm.activity.fields](./activity-base/crm-activity-fields.md) | Returns the description of activity fields ||
     || [crm.activity.communication.fields](./activity-base/crm-activity-communication-fields.md) | Returns the description of communication fields ||
     |#

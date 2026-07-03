@@ -13,6 +13,8 @@ items:
     href: crm-activity-list.md
   - name: Delete Activity
     href: crm-activity-delete.md
+  - name: Get Call Transcription
+    href: crm-activity-call-get-transcript.md
   - name: Get List of Activity Fields
     href: crm-activity-fields.md
   - name: Get Communication Description

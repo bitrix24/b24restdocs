@@ -1,8 +1,8 @@
-# How to Retrieve a Sales Funnel for a Specific Direction with Semantics for Each Stage of the Deal
+# How to Get Deal Pipelines with Stages and Semantics
 
 > Scope: [`crm`](../../../api-reference/scopes/permissions.md)
 >
-> Who can execute the method: users with administrative access to the CRM section
+> Who can execute the method: any user with access to CRM
 
 {% note tip "" %}
 
@@ -10,74 +10,319 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-This example outputs all existing deal directions along with the semantics for each stage.
+Deal pipelines help separate different sales processes: new sales, contract renewals, partner management, or individual business lines. Each pipeline has its own set of stages. Each stage has semantics—the state of the deal: in progress, won, or lost.
+
+Semantics are required for reports, automation, and deal filtering. For example, they allow you to distinguish active deals from won and lost deals, even if the stage names differ across various pipelines.
+
+As a result, you will obtain a table for each deal pipeline. The rows of the table will contain the stages, their names, and their semantics.
+
+To retrieve deal pipelines with stages and semantics, call two methods sequentially:
+
+1. [crm.category.list](../../../api-reference/crm/universal/category/crm-category-list.md) — retrieve an array of `categories` containing deal pipelines and extract `id` and `name` from it
+2. [crm.status.list](../../../api-reference/crm/status/crm-status-list.md) — for each pipeline, pass the stage codes into `filter.ENTITY_ID` to retrieve the stages
+
+Data is passed between methods as follows:
+
+- The `id` of the pipeline from `categories` determines the stage code
+- For the main pipeline with `id = 0`, use code `DEAL_STAGE`
+- For the additional pipeline with `id > 0`, use code `DEAL_STAGE_{id}`
+- Pass the generated code into the `filter.ENTITY_ID` of the [crm.status.list](../../../api-reference/crm/status/crm-status-list.md) method
+
+## 1. Retrieve a List of Deal Pipelines
+
+Call the [crm.category.list](../../../api-reference/crm/universal/category/crm-category-list.md) method with the `entityTypeId: 2` parameter, where `2` is the identifier of the `deal` object type. CRM object type identifiers can be retrieved using the [crm.enum.ownertype](../../../api-reference/crm/auxiliary/enum/crm-enum-owner-type.md) method.
+
+The list of pipelines is filtered by user permissions. If a user does not have permission to read a specific pipeline, the method will not return it in the response.
+
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
 - JS
 
     ```js
-    var arCategory = [];
+    var arCategory = {};
 
-    BX24.callMethod('crm.dealcategory.list', {}, function(result) {
+    BX24.callMethod('crm.category.list', { entityTypeId: 2 }, function(result) {
         if (result.error()) {
             console.error(result.error());
         } else {
-            arCategory = result.data().reduce(function(acc, item) {
-                acc[item.ID] = item.NAME;
+            arCategory = result.data().categories.reduce(function(acc, item) {
+                acc[item.id] = item.name;
+                return acc;
+            }, {});
+        }
+    });
+    ```
+
+- PHP
+
+    ```php
+    $arCategory = [];
+
+    $result = CRest::call(
+        'crm.category.list',
+        [
+            'entityTypeId' => 2
+        ]
+    );
+    if (!empty($result['result']['categories']))
+    {
+        $arCategory = array_column($result['result']['categories'], 'name', 'id');
+    }
+    ```
+
+- Python
+
+    ```python
+    categories = client.crm.category.list(entity_type_id=2).response.result.get("categories", [])
+    category_map = {item["id"]: item["name"] for item in categories}
+    ```
+
+{% endlist %}
+
+The method returns an array of `categories` in the response containing the deal pipelines available to the user, including the main pipeline. Each pipeline has an `id` (the pipeline identifier), a `name` (the name), and an `isDefault` (the flag indicating the main pipeline).
+
+```json
+{
+    "result": {
+        "categories": [
+            {
+                "id": 0,
+                "name": "General",
+                "sort": 100,
+                "entityTypeId": 2,
+                "isDefault": "Y"
+            },
+            {
+                "id": 7,
+                "name": "Contract extension",
+                "sort": 200,
+                "entityTypeId": 2,
+                "isDefault": "N"
+            }
+        ]
+    },
+    "total": 2
+}
+```
+
+The `total` field shows the total number of pipelines found. The method returns a single page of results—up to 50 records. The examples above process the `items` received in the response.
+
+## 2. Retrieve Stages and Semantics for Each Pipeline
+
+The [crm.status.list](../../../api-reference/crm/status/crm-status-list.md) method retrieves stages using the `ENTITY_ID` filter. For deals, the stage code depends on the pipeline:
+
+- `DEAL_STAGE` — stages of the main pipeline
+- `DEAL_STAGE_{id}` — stages of an additional pipeline, where `{id}` is the pipeline identifier
+
+Retrieve the `id` field from the [crm.category.list](../../../api-reference/crm/universal/category/crm-category-list.md) response, form `ENTITY_ID`, and call [crm.status.list](../../../api-reference/crm/status/crm-status-list.md) with sorting by `SORT`. For example, for a pipeline with ID `7`, you need to pass `DEAL_STAGE_7`.
+
+Use the following fields in the response:
+
+- `STATUS_ID` — stage identifier
+- `NAME` — stage name
+- `EXTRA.SEMANTICS` — stage semantics
+- `EXTRA.COLOR` — stage color
+
+The `EXTRA.SEMANTICS` value indicates the stage group:
+
+- `process` — deal in progress
+- `success` — deal won
+- `failure` — deal lost
+- `apology` — a separate group of lost stages
+
+The examples below use data obtained in the previous step.
+
+{% list tabs %}
+
+- JS
+
+    ```js
+    Object.keys(arCategory).forEach(function(id) {
+        var entity_id = id > 0 ? 'DEAL_STAGE_' + id : 'DEAL_STAGE';
+
+        BX24.callMethod(
+            'crm.status.list',
+            {
+                order: {
+                    SORT: 'ASC'
+                },
+                filter: {
+                    ENTITY_ID: entity_id
+                }
+            },
+            function(resultDeal) {
+                if (resultDeal.error()) {
+                    console.error(resultDeal.error());
+                } else {
+                    resultDeal.data().forEach(function(item) {
+                        console.log(arCategory[id], item.STATUS_ID, item.NAME, item.EXTRA && item.EXTRA.SEMANTICS);
+                    });
+                }
+            }
+        );
+    });
+    ```
+
+- PHP
+
+    ```php
+    foreach ($arCategory as $id => $name)
+    {
+        if ($id > 0)
+        {
+            $entity_id = 'DEAL_STAGE_' . $id;
+        }
+        else
+        {
+            $entity_id = 'DEAL_STAGE';
+        }
+
+        $resultDeal = CRest::call(
+            'crm.status.list',
+            [
+                'order' => [
+                    'SORT' => 'ASC'
+                ],
+                'filter' => [
+                    'ENTITY_ID' => $entity_id
+                ]
+            ]
+        );
+
+        if (!empty($resultDeal['result']))
+        {
+            foreach ($resultDeal['result'] as $item)
+            {
+                echo $name . ': ' . $item['STATUS_ID'] . ': ' . $item['NAME'] . ' - ' . ($item['EXTRA']['SEMANTICS'] ?? '') . PHP_EOL;
+            }
+        }
+    }
+    ```
+
+- Python
+
+    ```python
+    for category_id, category_name in category_map.items():
+        entity_id = f"DEAL_STAGE_{category_id}" if int(category_id) > 0 else "DEAL_STAGE"
+        result_deal = client.crm.status.list(
+            order={"SORT": "ASC"},
+            filter={"ENTITY_ID": entity_id},
+        ).response.result
+
+        for item in result_deal:
+            print(
+                category_name,
+                item.get("STATUS_ID", ""),
+                item.get("NAME", ""),
+                (item.get("EXTRA") or {}).get("SEMANTICS", ""),
+            )
+    ```
+
+{% endlist %}
+
+The method returns an array of stages for the specified `ENTITY_ID` in the response.
+
+```json
+{
+    "result": [
+        {
+            "ENTITY_ID": "DEAL_STAGE_7",
+            "STATUS_ID": "NEW",
+            "NAME": "New",
+            "EXTRA": {
+                "SEMANTICS": "process",
+                "COLOR": "#39A8EF"
+            }
+        },
+        {
+            "ENTITY_ID": "DEAL_STAGE_7",
+            "STATUS_ID": "WON",
+            "NAME": "Deal successful",
+            "EXTRA": {
+                "SEMANTICS": "success",
+                "COLOR": "#7BD500"
+            }
+        },
+        {
+            "ENTITY_ID": "DEAL_STAGE_7",
+            "STATUS_ID": "LOSE",
+            "NAME": "Deal failed",
+            "EXTRA": {
+                "SEMANTICS": "failure",
+                "COLOR": "#FF5752"
+            }
+        }
+    ],
+    "total": 3
+}
+```
+
+The `total` field shows the total number of stages found for the specified `ENTITY_ID`. The method returns a single response page — up to 50 records. The examples above process the `items` received in the response.
+
+## Full Code Example
+
+The example outputs a table for each deal pipeline. The table shows the stage identifier, stage name, and semantics.
+
+{% list tabs %}
+
+- JS
+
+    ```js
+    var arCategory = {};
+
+    BX24.callMethod('crm.category.list', { entityTypeId: 2 }, function(result) {
+        if (result.error()) {
+            console.error(result.error());
+        } else {
+            arCategory = result.data().categories.reduce(function(acc, item) {
+                acc[item.id] = item.name;
                 return acc;
             }, {});
 
-            BX24.callMethod('crm.dealcategory.default.get', {}, function(result) {
-                if (result.error()) {
-                    console.error(result.error());
-                } else {
-                    arCategory[result.data().ID] = result.data().NAME;
+            Object.keys(arCategory).forEach(function(id) {
+                var entity_id = id > 0 ? 'DEAL_STAGE_' + id : 'DEAL_STAGE';
 
-                    Object.keys(arCategory).forEach(function(id) {
-                        var entity_id = id > 0 ? 'DEAL_STAGE_' + id : 'DEAL_STAGE';
+                BX24.callMethod('crm.status.list', { order: { SORT: 'ASC' }, filter: { ENTITY_ID: entity_id } }, function(resultDeal) {
+                    if (resultDeal.error()) {
+                        console.error(resultDeal.error());
+                    } else {
+                        var table = document.createElement('table');
+                        var caption = document.createElement('caption');
+                        caption.textContent = arCategory[id];
+                        table.appendChild(caption);
 
-                        BX24.callMethod('crm.status.list', { filter: { ENTITY_ID: entity_id } }, function(resultDeal) {
-                            if (resultDeal.error()) {
-                                console.error(resultDeal.error());
-                            } else {
-                                var table = document.createElement('table');
-                                var caption = document.createElement('caption');
-                                caption.textContent = arCategory[id];
-                                table.appendChild(caption);
-
-                                var thead = document.createElement('thead');
-                                var trHead = document.createElement('tr');
-                                ['STATUS ID', 'NAME', 'SEMANTICS'].forEach(function(text) {
-                                    var th = document.createElement('th');
-                                    th.textContent = text;
-                                    trHead.appendChild(th);
-                                });
-                                thead.appendChild(trHead);
-                                table.appendChild(thead);
-
-                                var tbody = document.createElement('tbody');
-                                resultDeal.data().forEach(function(item) {
-                                    var tr = document.createElement('tr');
-                                    if (item.EXTRA && item.EXTRA.COLOR) {
-                                        tr.style.color = item.EXTRA.COLOR;
-                                    }
-                                    ['STATUS_ID', 'NAME', 'EXTRA.SEMANTICS'].forEach(function(key) {
-                                        var td = document.createElement('td');
-                                        td.textContent = key.split('.').reduce(function(acc, k) {
-                                            return acc && acc[k];
-                                        }, item);
-                                        tr.appendChild(td);
-                                    });
-                                    tbody.appendChild(tr);
-                                });
-                                table.appendChild(tbody);
-
-                                document.body.appendChild(table);
-                            }
+                        var thead = document.createElement('thead');
+                        var trHead = document.createElement('tr');
+                        ['STATUS ID', 'NAME', 'SEMANTICS'].forEach(function(text) {
+                            var th = document.createElement('th');
+                            th.textContent = text;
+                            trHead.appendChild(th);
                         });
-                    });
-                }
+                        thead.appendChild(trHead);
+                        table.appendChild(thead);
+
+                        var tbody = document.createElement('tbody');
+                        resultDeal.data().forEach(function(item) {
+                            var tr = document.createElement('tr');
+                            if (item.EXTRA && item.EXTRA.COLOR) {
+                                tr.style.color = item.EXTRA.COLOR;
+                            }
+                            ['STATUS_ID', 'NAME', 'EXTRA.SEMANTICS'].forEach(function(key) {
+                                var td = document.createElement('td');
+                                td.textContent = key.split('.').reduce(function(acc, k) {
+                                    return acc && acc[k];
+                                }, item);
+                                tr.appendChild(td);
+                            });
+                            tbody.appendChild(tr);
+                        });
+                        table.appendChild(tbody);
+
+                        document.body.appendChild(table);
+                    }
+                });
             });
         }
     });
@@ -93,15 +338,15 @@ This example outputs all existing deal directions along with the semantics for e
 
     ```php
     $arCategory = [];
-    $result = CRest::call('crm.dealcategory.list');
-    if (!empty($result['result']))
+    $result = CRest::call(
+        'crm.category.list',
+        [
+            'entityTypeId' => 2
+        ]
+    );
+    if (!empty($result['result']['categories']))
     {
-        $arCategory = array_column($result['result'], 'NAME', 'ID');
-    }
-    $result = CRest::call('crm.dealcategory.default.get');//get name default deal category
-    if (!empty($result['result']))
-    {
-        $arCategory[$result['result']['ID']] = $result['result']['NAME'];
+        $arCategory = array_column($result['result']['categories'], 'name', 'id');
     }
     foreach ($arCategory as $id => $name):
         if ($id > 0)
@@ -112,11 +357,21 @@ This example outputs all existing deal directions along with the semantics for e
         {
             $entity_id = 'DEAL_STAGE';
         }
-        $resultDeal = CRest::call('crm.status.list', ['filter' => ['ENTITY_ID' => $entity_id]]);
+        $resultDeal = CRest::call(
+            'crm.status.list',
+            [
+                'order' => [
+                    'SORT' => 'ASC'
+                ],
+                'filter' => [
+                    'ENTITY_ID' => $entity_id
+                ]
+            ]
+        );
         if (!empty($resultDeal['result'])):
     ?>
             <table>
-                <caption><?=$name?></caption>
+                <caption><?=htmlspecialchars((string)$name, ENT_QUOTES, 'UTF-8')?></caption>
                 <thead>
                 <tr>
                     <th>STATUS ID</th>
@@ -125,17 +380,24 @@ This example outputs all existing deal directions along with the semantics for e
                 </tr>
                 </thead>
                 <tbody>
-                <? foreach ($resultDeal['result'] as $item): ?>
-                <tr <?=(!empty($item['EXTRA']['COLOR']) ? ' style="color:' . $item['EXTRA']['COLOR'] . '"' : '');?>>
-                    <td><?=$item['STATUS_ID']?></td>
-                    <td><?=$item['NAME']?></td>
-                    <td><?=$item['EXTRA']['SEMANTICS']?></td>
-                <tr>
-                    <? endforeach; ?>
+                <?php foreach ($resultDeal['result'] as $item): ?>
+                    <?php
+                    $statusId = htmlspecialchars((string)($item['STATUS_ID'] ?? ''), ENT_QUOTES, 'UTF-8');
+                    $stageName = htmlspecialchars((string)($item['NAME'] ?? ''), ENT_QUOTES, 'UTF-8');
+                    $semantics = htmlspecialchars((string)($item['EXTRA']['SEMANTICS'] ?? ''), ENT_QUOTES, 'UTF-8');
+                    $color = (string)($item['EXTRA']['COLOR'] ?? '');
+                    $colorStyle = preg_match('/^#[0-9A-Fa-f]{6}$/', $color) ? ' style="color:' . $color . '"' : '';
+                    ?>
+                <tr<?=$colorStyle?>>
+                    <td><?=$statusId?></td>
+                    <td><?=$stageName?></td>
+                    <td><?=$semantics?></td>
+                </tr>
+                    <?php endforeach; ?>
                 </tbody>
             </table>
-        <? endif; ?>
-    <? endforeach; ?>
+        <?php endif; ?>
+    <?php endforeach; ?>
     ```
 
 - Python
@@ -158,6 +420,7 @@ This example outputs all existing deal directions along with the semantics for e
         for category_id, category_name in category_map.items():
             entity_id = f"DEAL_STAGE_{category_id}" if int(category_id) > 0 else "DEAL_STAGE"
             result_deal = client.crm.status.list(
+                order={"SORT": "ASC"},
                 filter={"ENTITY_ID": entity_id},
             ).response.result
 
@@ -178,3 +441,37 @@ This example outputs all existing deal directions along with the semantics for e
     ```
 
 {% endlist %}
+
+## If the Result Is Empty or an Error Occurs
+
+If [crm.category.list](../../../api-reference/crm/universal/category/crm-category-list.md) or [crm.status.list](../../../api-reference/crm/status/crm-status-list.md) returns an error, check the authorization and user permissions. To run the scenario, access to the CRM and the [`crm`](../../../api-reference/scopes/permissions.md) scope is required.
+
+If [crm.category.list](../../../api-reference/crm/universal/category/crm-category-list.md) returns an empty array `categories`, the user cannot see the available deal pipelines. Check the user's CRM read permissions and repeat the scenario from the first step.
+
+If [crm.status.list](../../../api-reference/crm/status/crm-status-list.md) returns an empty array of stages, check the `ENTITY_ID` value:
+
+- for the main pipeline with `id = 0`, pass `DEAL_STAGE`
+- for an additional pipeline with `id > 0`, pass `DEAL_STAGE_{id}`
+- do not pass `DEAL_STAGE_0`
+
+After fixing `ENTITY_ID`, repeat the second step for this pipeline.
+
+If the response contains the `total` field but not all `items` are processed, take the single response page limit into account. The examples in the tutorial only process the `items` received in the current response.
+
+## Verify the Result
+
+After running the example, tables containing the retrieved deal pipelines will appear on the page. The table heading is the pipeline name. The rows of the table display the stages of that pipeline:
+
+- `STATUS ID` — the stage code, which can be used in deal fields and filters
+- `NAME` — the stage name in the CRM interface
+- `SEMANTICS` — the stage group: `process`, `success`, `failure`, or `apology`
+
+If Bitrix24 contains only the main pipeline, the example will output one table. If additional pipelines have been created, there will be a separate table for each one.
+
+The main pipeline has `id = 0`. Its stage code is `DEAL_STAGE`, without suffix `_0`.
+
+## Continue Learning
+
+- [{#T}](./how-to-get-stages-with-semantics.md)
+- [{#T}](./how-to-get-elements-by-stage-filter.md)
+- [{#T}](../../../api-reference/crm/status/crm-status-list.md)

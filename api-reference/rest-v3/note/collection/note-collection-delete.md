@@ -232,7 +232,7 @@ HTTP status: **400**
 {
     "error": {
         "code": "BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION",
-        "message": "Error validating request object",
+        "message": "Error during request object validation",
         "validation": [
             {
                 "message": "Mandatory field `id` is missing",

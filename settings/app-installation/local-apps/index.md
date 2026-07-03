@@ -6,28 +6,38 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-Each local application can only operate on the Bitrix24 account where it was added.
+A local application operates within a single Bitrix24 instance—the one where it was created. It can display reports, exchange data with an external system, or add its own interface items.
 
-In fact, the action of "adding" or "creating" a local application is already equivalent to the installation procedure. For mass-market solutions, these actions differ—first, the solution must be added to the Developer's area, and only then can it be installed on a specific Bitrix24 account. For local applications, adding and installing are the same action.
+After saving, the application is added to Bitrix24, and further installation depends on the selected scenario. Choose a scenario before saving:
 
-To add a local application, you need to go to the Developer resources section, select "Other," and in the opened slider, choose the scenario "Local Application."
+- Make the application immediately available to users
+- Show the initial setup page to the administrator first
+- Pass authorization data to the application server
 
-There are three options for the installation process that will be triggered when saving a local application:
+> Quick links: [How to Choose a Scenario](#installation-scenarios)
+>
+> User documentation: [Developer resources: How to create webhooks and applications for Bitrix24](https://helpdesk.bitrix24.com/open/20886106/#2)
 
-- Adding without an installation scenario;
-- Adding with an installation wizard;
-- Adding with a callback installation.
+## Connection with Other Objects
 
-Most often, the first option is chosen for local applications simply because a special installation process in the form of a wizard or callback is usually more beneficial for mass-market solutions, which require a specific onboarding process for new users or a one-time interface with pre-configured user options, or a callback for saving user tokens at the time of installation on another Bitrix24 account.
+**OAuth 2.0.** Bitrix24 passes authorization data to the application, which it uses to execute methods. Retrieving and refreshing tokens is described in the [OAuth 2.0](../../oauth/index.md) section.
 
-A local application is added and created by the portal administrator only once. More often than not, developing a setup wizard for one's own application is an excessive use of resources. Nevertheless, such scenarios are also possible.
+**Events and Widgets.** During initial setup, an application can register [event handlers](../../../api-reference/events/index.md) or add [widgets](../../../api-reference/widgets/index.md) to the Bitrix24 interface.
 
-## Adding Without an Installation Scenario
+## Getting Started
 
-To ensure that the installation procedure is absent and the application works immediately, it is sufficient to fill in the "Path to your handler" field, specifying the main URL of the application, which will later be used to embed the application's interface into Bitrix24's left menu.
+1. Determine whether the application requires an interface within Bitrix24
+2. Prepare the application page, server handler, or a ZIP archive containing static files
+3. Select an option from the [How to Choose a Scenario](#installation-scenarios) table
+4. Open the local application form following the [user instructions](https://helpdesk.bitrix24.com/open/20886106/#2)
+5. Specify a name, select permissions, and fill in the fields for the chosen scenario
+6. Save the application and perform the initial setup if required
 
-Similarly, in the case of a static application, which consists of an archive with HTML/JS files, you only need to have an index.html file in that archive.
+## How to Choose a Scenario {#installation-scenarios}
 
-In both cases, after saving the local application, it will already be available to users without any installation procedure.
-
-If your application does not have a user interface, you need to enable the "Uses only API" option. Even though you still do not need an "installation," you will still require REST API tokens for further use. In this case, you cannot do without a [callback handler](./installation-callback.md), which will receive a call from Bitrix24 immediately after the local application is added.
+#|
+|| **If necessary** | **Open** ||
+|| Make the application immediately available to users | [Server-side local application with a user interface](../../../local-integrations/serverside-local-app-with-ui.md) or [Static local application](../../../local-integrations/static-local-app.md) ||
+|| Configure the application first | [Local application installation wizard](./installation-master.md) ||
+|| Pass authorization data to the application server | [Installation callback](./installation-callback.md) ||
+|#

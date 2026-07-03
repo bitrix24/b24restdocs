@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: a user with access to the Knowledge base module and "Administration" permissions for the relevant knowledge base
 
-The `note.collection.archive` method archives a knowledge base and cascades the archive operation to all its documents.
+The `note.collection.archive` method archives a knowledge base and cascades the archive to all its documents.
 
 ## Method Parameters
 

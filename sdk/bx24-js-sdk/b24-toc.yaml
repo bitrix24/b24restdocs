@@ -1,8 +1,8 @@
 title: BX24.JS SDK  
 href: index.md  
 items:   
-  - name: Connection and Usage  
-    href: index.md  
+  - name: Library Overview
+    href: index.md
   - name: Calling REST Methods  
     include:  
       path: how-to-call-rest-methods/b24-toc.yaml  

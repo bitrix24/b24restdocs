@@ -8,7 +8,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 Widgets add an application interface to the CRM. The user works with a card in Bitrix24, while the application interface appears inside the card: in a custom lead field or on a separate tab.
 
-Two scenarios are available. The first shows how to add a field to a lead that opens the application interface. The second provides a video tutorial and materials on adding a tab to a CRM card.
+Two scenarios are available. The first shows how to add a field to a lead that opens the application interface. The second explains how to add a tab to a CRM card using a deal as an example.
 
 Both scenarios require a handler — an application page with a public URL. Bitrix24 opens this URL in the CRM card and passes the call data to the handler. Each scenario specifies which data the handler receives.
 
@@ -30,7 +30,7 @@ Both scenarios require a handler — an application page with a public URL. Bitr
 #|
 || **If necessary** | **Open** ||
 || Show the application interface inside the lead custom field | [Embed a widget into a lead as a custom property](./widget-as-field-in-lead-page.md) ||
-|| Watch the video tutorial and materials on adding a tab to a CRM card | [Embed a widget into a CRM card](./widget-as-detail-tab.md) ||
+|| Add a tab to a CRM card using a deal as an example | [Embed a widget into a CRM item tab](./widget-as-detail-tab.md) ||
 || Clarify tab codes and the data received by the handler | [Tab in CRM card CRM_XXX_DETAIL_TAB](../../../api-reference/widgets/crm/detail-tab.md) ||
 || Learn how custom CRM field types work | [Custom field types in CRM](../../../api-reference/crm/universal/user-defined-fields/userfield-type.md) ||
 |#

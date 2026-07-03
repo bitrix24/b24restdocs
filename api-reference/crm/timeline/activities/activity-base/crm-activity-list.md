@@ -1,4 +1,4 @@
-# Get the list of activities crm.activity.list
+# Get List of Activities crm.activity.list
 
 {% note tip "" %}
 
@@ -14,7 +14,7 @@ The method `crm.activity.list` returns a list of activities based on the filter,
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -68,22 +68,22 @@ The page size of results is always static: 50 records.
 
 To select the second page of results, you need to pass the value `50`. To select the third page of results — the value `100`, and so on.
 
-The formula for calculating the value of the `start` parameter:
+The formula for calculating the `start` parameter value:
 
 `start = (N-1) * 50`, where `N` — the number of the desired page ||
 |#
 
-See the description of [list methods](../../../../../settings/how-to-call-rest-api/list-methods-pecularities.md).
+See the [list methods](../../../../../settings/how-to-call-rest-api/list-methods-pecularities.md) description.
 
 {% note info "" %}
 
-Pay attention to the peculiarity of the parameter `filter[BINDINGS]`.
+Please note the specific behavior of the `filter[BINDINGS]` parameter.
 
-Activity can be linked to multiple CRM entities. For example, a call can be linked to both a lead and an activity, so to retrieve these entities, there is a special filter key in the parameters of the method `crm.activity.list` - `BINDINGS`.
+An activity can be linked to several CRM entities. For example, a call can simultaneously be linked to a lead and a deal; therefore, to retrieve these entities, the `crm.activity.list` method parameters include a special filter key: `BINDINGS`.
 
-You need to specify an array of [system](../../../index.md) or [custom](../../../universal/user-defined-object-types/index.md) types of CRM objects for which you need to find the binding.
+You must specify an array of [system](../../../index.md) or [custom](../../../universal/user-defined-object-types/index.md) CRM object types for which you need to find a link.
 
-Each object can consist of the keys `OWNER_TYPE_ID` (entity type identifier) and `OWNER_ID` (entity identifier), either one or a combination of both. For example:
+Each object can consist of the `OWNER_TYPE_ID` keys (entity type identifier) and `OWNER_ID` keys (entity identifier), either individually or in combination. For example:
 
 ```json
 "BINDINGS": [
@@ -106,7 +106,7 @@ Each object can consist of the keys `OWNER_TYPE_ID` (entity type identifier) and
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"order":{"ID":"DESC"},"filter":{"OWNER_TYPE_ID":3,"OWNER_ID":102},"select":["*","COMMUNICATIONS"]}' \
+    -d '{"order":{"ID":"DESC"},"filter":{"OWNER_TYPE_ID":3,"OWNER_ID":102},"select":["*","COMMUNICATIONS"],"start":0}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.activity.list
     ```
 
@@ -116,7 +116,7 @@ Each object can consist of the keys `OWNER_TYPE_ID` (entity type identifier) and
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"order":{"ID":"DESC"},"filter":{"OWNER_TYPE_ID":3,"OWNER_ID":102},"select":["*","COMMUNICATIONS"],"auth":"**put_access_token_here**"}' \
+    -d '{"order":{"ID":"DESC"},"filter":{"OWNER_TYPE_ID":3,"OWNER_ID":102},"select":["*","COMMUNICATIONS"],"start":0,"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/crm.activity.list
     ```
 
@@ -229,6 +229,75 @@ Each object can consist of the keys `OWNER_TYPE_ID` (entity type identifier) and
 - PHP
 
     ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.activity.list',
+                [
+                    'order' => [
+                        'ID' => 'DESC',
+                    ],
+                    'filter' => [
+                        'OWNER_TYPE_ID' => 3,
+                        'OWNER_ID' => 102,
+                    ],
+                    'select' => [
+                        '*',
+                        'COMMUNICATIONS',
+                    ],
+                    'start' => 0,
+                ]
+            );
+
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Activities: ' . print_r($result->data(), true);
+        }
+
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting activity list: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```javascript
+    BX24.callMethod(
+        'crm.activity.list',
+        {
+            order: {
+                ID: 'DESC',
+            },
+            filter: {
+                OWNER_TYPE_ID: 3,
+                OWNER_ID: 102,
+            },
+            select: [
+                '*',
+                'COMMUNICATIONS',
+            ],
+            start: 0,
+        },
+        result => {
+            if (result.error()) {
+                console.error(result.error());
+            } else {
+                console.dir(result.data());
+            }
+        }
+    );
+    ```
+
+- PHP CRest
+
+    ```php
     require_once('crest.php');
 
     $result = CRest::call(
@@ -239,7 +308,8 @@ Each object can consist of the keys `OWNER_TYPE_ID` (entity type identifier) and
                 'OWNER_TYPE_ID' => 3,
                 'OWNER_ID' => 102
             ],
-            'select' => [ '*', 'COMMUNICATIONS' ]
+            'select' => [ '*', 'COMMUNICATIONS' ],
+            'start' => 0
         ]
     );
 
@@ -269,13 +339,13 @@ Each object can consist of the keys `OWNER_TYPE_ID` (entity type identifier) and
         print(result)
     except BitrixAPIError as error:
         print(
-            "Bitrix API error",
+            "Bitrix API Error",
             f"error: {error.error}",
             f"error_description: {error.error_description}",
             sep="\n",
         )
     except BitrixSDKException as error:
-        print(f"Bitrix SDK error: {error.message}")
+        print(f"Bitrix SDK Error: {error.message}")
     except Exception as error:
         print(f"Unexpected error: {error}")
     ```
@@ -299,13 +369,13 @@ Each object can consist of the keys `OWNER_TYPE_ID` (entity type identifier) and
             print(item)
     except BitrixAPIError as error:
         print(
-            "Bitrix API error",
+            "Bitrix API Error",
             f"error: {error.error}",
             f"error_description: {error.error_description}",
             sep="\n",
         )
     except BitrixSDKException as error:
-        print(f"Bitrix SDK error: {error.message}")
+        print(f"Bitrix SDK Error: {error.message}")
     except Exception as error:
         print(f"Unexpected error: {error}")
     ```
@@ -329,13 +399,13 @@ Each object can consist of the keys `OWNER_TYPE_ID` (entity type identifier) and
             print(item)
     except BitrixAPIError as error:
         print(
-            "Bitrix API error",
+            "Bitrix API Error",
             f"error: {error.error}",
             f"error_description: {error.error_description}",
             sep="\n",
         )
     except BitrixSDKException as error:
-        print(f"Bitrix SDK error: {error.message}")
+        print(f"Bitrix SDK Error: {error.message}")
     except Exception as error:
         print(f"Unexpected error: {error}")
     ```
@@ -365,7 +435,7 @@ HTTP status: **200**
             "PROVIDER_TYPE_ID": "CALL",
             "PROVIDER_GROUP_ID": null,
             "ASSOCIATED_ENTITY_ID": "0",
-            "SUBJECT": "Outgoing call Nicholas Mitchell",
+            "SUBJECT": "Outgoing call Klaus Weber",
             "CREATED": "2020-09-27T13:26:55+03:00",
             "LAST_UPDATED": "2021-03-21T20:28:24+03:00",
             "START_TIME": "2020-09-27T13:25:00+03:00",
@@ -422,7 +492,7 @@ HTTP status: **200**
 || **result**
 [`boolean`](../../../../data-types.md) | The result of the operation. An array of activitys. For information about the structure of an activity, see the method [crm.activity.fields](./crm-activity-fields.md) ||
 || **time**
-[`time`](../../../../data-types.md#time) | Information about the execution time of the request ||
+[`time`](../../../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -436,23 +506,23 @@ HTTP status: **400**, **403**
 }
 ```
 
-{% include notitle [error handling](../../../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../../../_includes/error-info.md) %}
 
-{% include [system errors](../../../../../_includes/system-errors.md) %}
+{% include [System errors](../../../../../_includes/system-errors.md) %}
 
-## Private Examples
+## Specific Examples
 
 {% include [Note on examples](../../../../../_includes/examples.md) %}
 
 ### Using BINDINGS {#example-bindings}
 
-Retrieve fields: Identifier, Name, Owner Type (Entity Type Identifier), Owner (Entity Identifier)
+Retrieve fields: Identifier, Title, Owner Type (Entity Type Identifier), Owner (Entity Identifier)
 
-Selection condition: the activity is linked to both a deal and a contact
+Filter condition: the activity is linked to both a deal and a contact simultaneously
 
 {% note info %}
 
-When using multiple pairs in `BINDINGS`, duplication may occur in the results. For example, in the result of executing the code example below, the activity linked to both entities will be output twice.
+When using multiple pairs in `BINDINGS`, duplication may occur in the results. For example, when executing the code example below, an activity linked to both entities will be output twice.
 
 {% endnote %}
 
@@ -464,7 +534,7 @@ When using multiple pairs in `BINDINGS`, duplication may occur in the results. F
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"order":{"ID":"DESC"},"filter":{"BINDINGS":[{"OWNER_TYPE_ID":2},{"OWNER_TYPE_ID":3}]},"select":["*","COMMUNICATIONS"]}' \
+    -d '{"order":{"ID":"DESC"},"filter":{"BINDINGS":[{"OWNER_TYPE_ID":2},{"OWNER_TYPE_ID":3}]},"select":["*","COMMUNICATIONS"],"start":0}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.activity.list
     ```
 
@@ -474,7 +544,7 @@ When using multiple pairs in `BINDINGS`, duplication may occur in the results. F
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"order":{"ID":"DESC"},"filter":{"BINDINGS":[{"OWNER_TYPE_ID":2},{"OWNER_TYPE_ID":3}]},"select":["*","COMMUNICATIONS"],"auth":"**put_access_token_here**"}' \
+    -d '{"order":{"ID":"DESC"},"filter":{"BINDINGS":[{"OWNER_TYPE_ID":2},{"OWNER_TYPE_ID":3}]},"select":["*","COMMUNICATIONS"],"start":0,"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/crm.activity.list
     ```
 
@@ -591,6 +661,87 @@ When using multiple pairs in `BINDINGS`, duplication may occur in the results. F
 - PHP
 
     ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.activity.list',
+                [
+                    'order' => [
+                        'ID' => 'DESC',
+                    ],
+                    'filter' => [
+                        'BINDINGS' => [
+                            [
+                                'OWNER_TYPE_ID' => 2,
+                            ],
+                            [
+                                'OWNER_TYPE_ID' => 3,
+                            ],
+                        ],
+                    ],
+                    'select' => [
+                        '*',
+                        'COMMUNICATIONS',
+                    ],
+                    'start' => 0,
+                ]
+            );
+
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Activities: ' . print_r($result->data(), true);
+        }
+
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting activity list: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```javascript
+    BX24.callMethod(
+        'crm.activity.list',
+        {
+            order: {
+                ID: 'DESC',
+            },
+            filter: {
+                BINDINGS: [
+                    {
+                        OWNER_TYPE_ID: 2,
+                    },
+                    {
+                        OWNER_TYPE_ID: 3,
+                    },
+                ],
+            },
+            select: [
+                '*',
+                'COMMUNICATIONS',
+            ],
+            start: 0,
+        },
+        result => {
+            if (result.error()) {
+                console.error(result.error());
+            } else {
+                console.dir(result.data());
+            }
+        }
+    );
+    ```
+
+- PHP CRest
+
+    ```php
     require_once('crest.php');
 
     $result = CRest::call(
@@ -603,7 +754,8 @@ When using multiple pairs in `BINDINGS`, duplication may occur in the results. F
                     ['OWNER_TYPE_ID' => 3]
                 ]
             ],
-            'select' => ['*', 'COMMUNICATIONS']
+            'select' => ['*', 'COMMUNICATIONS'],
+            'start' => 0
         ]
     );
 
@@ -624,7 +776,7 @@ When using multiple pairs in `BINDINGS`, duplication may occur in the results. F
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"filter":{"ID":"20"},"select":["*","COMMUNICATIONS"]}' \
+    -d '{"filter":{"ID":"20"},"select":["*","COMMUNICATIONS"],"start":0}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.activity.list
     ```
 
@@ -634,7 +786,7 @@ When using multiple pairs in `BINDINGS`, duplication may occur in the results. F
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"filter":{"ID":"20"},"select":["*","COMMUNICATIONS"],"auth":"**put_access_token_here**"}' \
+    -d '{"filter":{"ID":"20"},"select":["*","COMMUNICATIONS"],"start":0,"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/crm.activity.list
     ```
 
@@ -744,6 +896,67 @@ When using multiple pairs in `BINDINGS`, duplication may occur in the results. F
 - PHP
 
     ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.activity.list',
+                [
+                    'filter' => [
+                        'ID' => '20',
+                    ],
+                    'select' => [
+                        '*',
+                        'COMMUNICATIONS',
+                    ],
+                    'start' => 0,
+                ]
+            );
+
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Activity communications: ' . print_r($result->data(), true);
+        }
+
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting activity communications: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```javascript
+    BX24.callMethod(
+        'crm.activity.list',
+        {
+            filter: {
+                ID: '20',
+            },
+            select: [
+                '*',
+                'COMMUNICATIONS',
+            ],
+            start: 0,
+        },
+        result => {
+            if (result.error()) {
+                console.error(result.error());
+            } else {
+                console.dir(result.data());
+            }
+        }
+    );
+    ```
+
+- PHP CRest
+
+    ```php
     require_once('crest.php');
 
     $result = CRest::call(
@@ -752,7 +965,8 @@ When using multiple pairs in `BINDINGS`, duplication may occur in the results. F
             'filter' => [
                 'ID' => '20'
             ],
-            'select' => ['*', 'COMMUNICATIONS']
+            'select' => ['*', 'COMMUNICATIONS'],
+            'start' => 0
         ]
     );
 
@@ -763,7 +977,7 @@ When using multiple pairs in `BINDINGS`, duplication may occur in the results. F
 
 {% endlist %}
 
-#### Example of Returned Data
+#### Returned Data Example
 
 HTTP status: **200**
 
@@ -776,15 +990,15 @@ HTTP status: **200**
             {
                 "ID": "23",
                 "TYPE": "PHONE",
-                "VALUE": "19152222222",
+                "VALUE": "499152222222",
                 "ENTITY_ID": "15",
                 "ENTITY_TYPE_ID": "3",
                 "ENTITY_SETTINGS": {
                     "HONORIFIC": "1",
-                    "NAME": "Andrew ",
-                    "SECOND_NAME": "Nikolaev",
+                    "NAME": "Klaus ",
+                    "SECOND_NAME": "Weber",
                     "LAST_NAME": "",
-                    "COMPANY_TITLE": "Ltd. Fusion",
+                    "COMPANY_TITLE": "Müller GmbH",
                     "COMPANY_ID": "21"
                 }
             }
@@ -813,7 +1027,7 @@ HTTP status: **200**
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"filter":{"ID":"101121"},"select":["*","STORAGE_ELEMENT_IDS"]}' \
+    -d '{"filter":{"ID":"101121"},"select":["*","STORAGE_ELEMENT_IDS"],"start":0}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.activity.list
     ```
 
@@ -823,7 +1037,7 @@ HTTP status: **200**
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"filter":{"ID":"101121"},"select":["*","STORAGE_ELEMENT_IDS"],"auth":"**put_access_token_here**"}' \
+    -d '{"filter":{"ID":"101121"},"select":["*","STORAGE_ELEMENT_IDS"],"start":0,"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/crm.activity.list
     ```
 
@@ -930,6 +1144,67 @@ HTTP status: **200**
 - PHP
 
     ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.activity.list',
+                [
+                    'filter' => [
+                        'ID' => '101121',
+                    ],
+                    'select' => [
+                        '*',
+                        'STORAGE_ELEMENT_IDS',
+                    ],
+                    'start' => 0,
+                ]
+            );
+
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Activity files: ' . print_r($result->data(), true);
+        }
+
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting activity files: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```javascript
+    BX24.callMethod(
+        'crm.activity.list',
+        {
+            filter: {
+                ID: '101121',
+            },
+            select: [
+                '*',
+                'STORAGE_ELEMENT_IDS',
+            ],
+            start: 0,
+        },
+        result => {
+            if (result.error()) {
+                console.error(result.error());
+            } else {
+                console.dir(result.data());
+            }
+        }
+    );
+    ```
+
+- PHP CRest
+
+    ```php
     require_once('crest.php');
 
     $result = CRest::call(
@@ -938,7 +1213,8 @@ HTTP status: **200**
             'filter' => [
                 'ID' => '101121'
             ],
-            'select' => ['*', 'STORAGE_ELEMENT_IDS']
+            'select' => ['*', 'STORAGE_ELEMENT_IDS'],
+            'start' => 0
         ]
     );
 
@@ -949,7 +1225,7 @@ HTTP status: **200**
 
 {% endlist %}
 
-#### Example of Returned Data
+#### Returned Data Example
 
 HTTP status: **200**
 
@@ -978,7 +1254,7 @@ HTTP status: **200**
 }
 ```
 
-## Continue Learning 
+## Continue Learning
 
 - [{#T}](../../../../../tutorials/crm/how-to-edit-crm-objects/how-to-move-activity-between-objects.md)
 - [{#T}](../../../../../tutorials/crm/how-to-edit-crm-objects/how-to-move-activity.md)

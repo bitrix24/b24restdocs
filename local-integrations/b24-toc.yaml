@@ -3,7 +3,7 @@ href: index.md
 items: 
   - name: Overview of Tools
     href: index.md
-  - name: Typical Use-Cases and Scenarios 
+  - name: "Local Integrations: Use Case Scenarios"
     href: use-cases.md
   - name: Incoming and Outgoing Webhooks
     href: local-webhooks.md

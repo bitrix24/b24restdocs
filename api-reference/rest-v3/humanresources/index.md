@@ -81,6 +81,8 @@ The methods in this section work with several groups of objects:
 || [humanresources.node.member.set](./node-member/humanresources-node-member-set.md) | Updates the composition of department or team members by roles ||
 || [humanresources.node.member.move](./node-member/humanresources-node-member-move.md) | Transfers users to another department or team ||
 || [humanresources.node.member.remove](./node-member/humanresources-node-member-remove.md) | Removes users from a department or team ||
+|| [humanresources.node.member.field.list](./node-member/humanresources-node-member-field-list.md) | Returns a list of fields for a department or team member ||
+|| [humanresources.node.member.field.get](./node-member/humanresources-node-member-field-get.md) | Returns the description of a department or team member field ||
 |#
 
 ### Department and Team Communications
@@ -96,11 +98,11 @@ The methods in this section work with several groups of objects:
 #|
 || **Method** | **Description** ||
 || [humanresources.employee.search](./employee/humanresources-employee-search.md) | Searches for employees by name ||
-|| [humanresources.employee.subordinates](./employee/humanresources-employee-subordinates.md) | Returns subordinates of a user by departments ||
+|| [humanresources.employee.subordinates](./employee/humanresources-employee-subordinates.md) | Returns the user's subordinates by departments ||
 || [humanresources.employee.count](./employee/humanresources-employee-count.md) | Returns the number of employees in the company structure ||
 || [humanresources.employee.multidepartment](./employee/humanresources-employee-multidepartment.md) | Returns employees who belong to multiple departments ||
-|| [humanresources.employee.field.list](./employee/humanresources-employee-field-list.md) | Returns a list of fields for an employee ||
-|| [humanresources.employee.field.get](./employee/humanresources-employee-field-get.md) | Returns the description of a field for an employee ||
+|| [humanresources.employee.field.list](./employee/humanresources-employee-field-list.md) | Returns a list of employee fields ||
+|| [humanresources.employee.field.get](./employee/humanresources-employee-field-get.md) | Returns the description of an employee field ||
 |#
 
 ## Continue Learning

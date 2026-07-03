@@ -11,3 +11,7 @@ items:
     href: humanresources-node-member-move.md  
   - name: Remove Participants  
     href: humanresources-node-member-remove.md  
+  - name: Get Member Field List
+    href: humanresources-node-member-field-list.md
+  - name: Get Member Field
+    href: humanresources-node-member-field-get.md

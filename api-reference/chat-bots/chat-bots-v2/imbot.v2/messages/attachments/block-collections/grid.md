@@ -218,7 +218,7 @@ In the mobile version, elements are displayed one below the other.
                 'COLOR' => '#ff0000',
                 'DISPLAY' => 'LINE',
                 'WIDTH' => 250
-            },
+            ],
             [
                 'NAME' => 'Category',
                 'VALUE' => 'Requests',
@@ -269,7 +269,7 @@ In the mobile version, elements are displayed one below the other.
                 'VALUE' => 'High',
                 'DISPLAY' => 'ROW',
                 'WIDTH' => 250
-            },
+            ],
             [
                 'NAME' => 'Category',
                 'VALUE' => 'Requests',
@@ -281,9 +281,67 @@ In the mobile version, elements are displayed one below the other.
 
 {% endlist %}
 
+### Tabular Representation
+
+`DISPLAY: 'TABLE'` displays `NAME` and `VALUE` pairs in a compact table.
+
+#### Example
+
+{% list tabs %}
+
+- JS
+
+    ```js
+    {
+        GRID: [
+            {
+                NAME: 'Project',
+                VALUE: 'BUGS',
+                DISPLAY: 'TABLE'
+            },
+            {
+                NAME: 'Category',
+                VALUE: 'im',
+                DISPLAY: 'TABLE'
+            },
+            {
+                NAME: 'Deadline',
+                VALUE: '24.06.2026 17:50:43',
+                DISPLAY: 'TABLE'
+            }
+        ]
+    }
+    ```
+
+- PHP
+
+    ```php
+    [
+        'GRID' => [
+            [
+                'NAME' => 'Project',
+                'VALUE' => 'BUGS',
+                'DISPLAY' => 'TABLE'
+            ],
+            [
+                'NAME' => 'Category',
+                'VALUE' => 'im',
+                'DISPLAY' => 'TABLE'
+            ],
+            [
+                'NAME' => 'Deadline',
+                'VALUE' => '24.06.2026 17:50:43',
+                'DISPLAY' => 'TABLE'
+            ]
+        ]
+    ]
+    ```
+
+{% endlist %}
+
 ## Continue Learning
 
-- [API Change Log for imbot.v2](../../../../change-log.md)
+- [API imbot.v2 Change Log](../../../../change-log.md)
 - [{#T}](./index.md)
 - [{#T}](./text.md)
 - [{#T}](./delimiter.md)

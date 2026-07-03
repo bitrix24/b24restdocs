@@ -2,6 +2,14 @@
 
 ## 2026
 
+### June 30, 2026
+
+- Added the method [crm.activity.call.getTranscript](./api-reference/crm/timeline/activities/activity-base/crm-activity-call-get-transcript.md)
+
+### June 29, 2026
+
+- Updated the tutorial [How to Get Deal Pipelines with Stages and Semantics](./tutorials/crm/how-to-get-lists/how-to-get-deal-funnels.md)
+
 ### June 25, 2026
 
 - Added methods for the section [Knowledge Base 2.0](./api-reference/rest-v3/note/collection/index.md)
