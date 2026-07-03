@@ -13,9 +13,9 @@ search: true
 
 staticContent: true
 
-<!-- extensions:
+extensions:
   - './extensions/copy-md-button'
   - './extensions/faq-schema'
 
 feedback:
-  url: https://util.bitrixsoft.com/rest-doc/feedback-control.php -->
+  url: https://util.bitrixsoft.com/rest-doc/feedback-control.php
