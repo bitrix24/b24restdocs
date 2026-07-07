@@ -16,6 +16,10 @@ Tasks in Bitrix24 are a unified workspace that helps organize team workflows: as
 
 When using task methods, you must follow the parameter order specified in the parameter tables. Otherwise, the request will execute with errors.
 
+## Tasks in REST 3.0
+
+In [REST 3.0](../rest-v3.md), task methods use an updated architecture, a unified response format, and support connections between objects. REST 3.0 currently covers basic task operations, task chat, file attachment, task results, and field schema methods (`*.field.list` / `*.field.get`).
+
 ## Task card
 
 A task card can be divided into blocks:
@@ -312,4 +316,35 @@ Comment methods are not applicable to the new task card. Task discussions are he
 || [tasks.flow.Flow.delete](./flow/tasks-flow-flow-delete.md) | Delete a stream ||
 || [tasks.flow.Flow.isExists](./flow/tasks-flow-flow-is-exists.md) | Check if a stream with such a name exists ||
 || [tasks.flow.Flow.activate](./flow/tasks-flow-flow-activate.md) | Enable or disable a stream ||
+|#
+
+### Tasks in REST 3.0
+
+> Scope: [`tasks`](../scopes/permissions.md)
+>
+> Who can execute the method: depends on the method
+
+#|
+|| **Method** | **Description** ||
+|| [tasks.task.add](./rest-v3/tasks-task-add.md) | Adds a new task ||
+|| [tasks.task.file.attach](./rest-v3/tasks-task-file-attach.md) | Attaches Drive files to a task ||
+|| [tasks.task.get](./rest-v3/tasks-task-get.md) | Gets task data with connection support through `select` ||
+|| [tasks.task.list](./rest-v3/tasks-task-list.md) | Returns a list of tasks by the specified conditions ||
+|| [tasks.task.chat.message.send](./rest-v3/tasks-task-chat-message-send.md) | Sends a message to the task chat ||
+|| [tasks.task.result.add](./rest-v3/result/tasks-task-result-add.md) | Adds a result to a task ||
+|| [tasks.task.result.addfromchatmessage](./rest-v3/result/tasks-task-result-addfromchatmessage.md) | Creates a result from a task chat message ||
+|| [tasks.task.result.update](./rest-v3/result/tasks-task-result-update.md) | Updates the result text ||
+|| [tasks.task.result.list](./rest-v3/result/tasks-task-result-list.md) | Returns a list of task results ||
+|| [tasks.task.result.delete](./rest-v3/result/tasks-task-result-delete.md) | Deletes a task result ||
+|| [tasks.task.update](./rest-v3/tasks-task-update.md) | Updates a task ||
+|| [tasks.task.delete](./rest-v3/tasks-task-delete.md) | Deletes a task ||
+|| [tasks.task.access.get](./rest-v3/tasks-task-access-get.md) | Checks access permissions for a task ||
+|| [tasks.task.field.list](./rest-v3/tasks-task-field-list.md) | Returns a list of task fields ||
+|| [tasks.task.field.get](./rest-v3/tasks-task-field-get.md) | Returns the description of a task field by name ||
+|| [tasks.task.access.field.list](./rest-v3/tasks-task-access-field-list.md) | Returns a list of task access permission fields ||
+|| [tasks.task.access.field.get](./rest-v3/tasks-task-access-field-get.md) | Returns the description of a task access permission field by name ||
+|| [tasks.task.file.field.list](./rest-v3/tasks-task-file-field-list.md) | Returns a list of task file fields ||
+|| [tasks.task.file.field.get](./rest-v3/tasks-task-file-field-get.md) | Returns the description of a task file field by name ||
+|| [tasks.task.chat.message.field.list](./rest-v3/tasks-task-chat-message-field-list.md) | Returns a list of task chat message fields ||
+|| [tasks.task.chat.message.field.get](./rest-v3/tasks-task-chat-message-field-get.md) | Returns the description of a task chat message field by name ||
 |#

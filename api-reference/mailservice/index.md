@@ -10,7 +10,7 @@ In Bitrix24, you can connect mailboxes from services like Gmail and others. This
 
 > Quick navigation: [all methods](#all-methods)
 
-You can manage only email services through the REST API. Connecting mailboxes, sending, and receiving emails must be done through the Bitrix24 interface.
+The methods in this section manage email services. Mailboxes, messages, and recipients are managed by [E-mail REST 3.0](../mail/index.md) methods.
 
 {% note tip "User Documentation" %}
 

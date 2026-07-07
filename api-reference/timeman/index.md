@@ -48,6 +48,12 @@ You can work with reports and configure time control using the group of methods 
 
 An office network is a group of IP addresses used within the organization's local network. Working with the ranges of IP addresses in the office network is done using the methods from the group [timeman.networkrange.*](./networkrange/index.md).
 
+## Work Time Records
+
+In [REST 3.0](../rest-v3.md), [timeman.record.*](./record/index.md) methods are available. They return employee work time records and the record field structure: a list of fields, the description of a specific field, and a list of records for a period.
+
+Work time records show when an employee started and ended the workday, how long breaks took, and how many hours were worked in the selected period. This data helps analyze workload, track unclosed or unconfirmed days, and compare actually worked time.
+
 ## Overview of Methods {#all-methods}
 
 > Scope: [`timeman`](../scopes/permissions.md)
@@ -91,4 +97,13 @@ An office network is a group of IP addresses used within the organization's loca
 || [timeman.networkrange.get](./networkrange/timeman-networkrange-get.md) | Retrieves the ranges of network addresses included in the office network ||
 || [timeman.networkrange.set](./networkrange/timeman-networkrange-set.md) | Sets the ranges of network addresses included in the office network ||
 || [timeman.networkrange.check](./networkrange/timeman-networkrange-check.md) | Checks if an IP address is within the ranges of network addresses in the office network ||
+|#
+
+### Work Time Records in REST 3.0
+
+#|
+|| **Method** | **Description** ||
+|| [timeman.record.list](./record/timeman-record-list.md) | Returns a list of employee work time records ||
+|| [timeman.record.field.list](./record/timeman-record-field-list.md) | Returns a list of work time record fields ||
+|| [timeman.record.field.get](./record/timeman-record-field-get.md) | Returns the description of a work time record field ||
 |#

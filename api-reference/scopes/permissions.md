@@ -28,7 +28,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 || **lists** | [Lists](../lists/index.md) | Universal Lists ||
 || **log** | [Live Feed](../log/index.md) | News Feed ||
 || **mailservice** | [Mail Services](../mailservice/index.md) | Mail Services ||
-|| **main** | [Event Log](../rest-v3/main/index.md) | Event Log ||
+|| **main** | [Event Log](../event-log/index.md) | Event Log ||
 || **messageservice** | [Message Service](../messageservice/index.md) | Message Service ||
 || **pay_system** | [Payment Systems](../pay-system/index.md) | Payment Systems ||
 || **pull** | [Pull&Push](../../settings/interactivity/push-and-pull/index.md) | Pull&Push ||

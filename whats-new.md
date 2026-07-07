@@ -12,8 +12,8 @@
 
 ### June 25, 2026
 
-- Added methods for the section [Knowledge Base 2.0](./api-reference/rest-v3/note/collection/index.md)
-- Added methods for the section [Documents in Knowledge Base 2.0](./api-reference/rest-v3/note/document/index.md)
+- Added methods for the section [Knowledge Base 2.0](./api-reference/note/collection/index.md)
+- Added methods for the section [Documents in Knowledge Base 2.0](./api-reference/note/document/index.md)
 - Updated the page [How to Embed a Widget into a Lead as a Custom Field](./tutorials/crm/crm-widgets/widget-as-field-in-lead-page.md)
 - Updated the tutorial [Open Channels: Common Scenarios](./tutorials/openlines/index.md)
 - Updated the tutorial [How to Connect an SMS Provider to Bitrix24](./tutorials/messageservice/index.md)
@@ -22,20 +22,20 @@
 
 ### June 18, 2026
 
-- Added new method [tasks.task.list](./api-reference/rest-v3/tasks/tasks-task-list.md)
+- Added new method [tasks.task.list](./api-reference/tasks/rest-v3/tasks-task-list.md)
 - Updated the main page of the [Embedding Applications into CRM Activities](./api-reference/crm/timeline/activities/app-embedding/index.md) section
 
 ### June 10, 2026
 
-- Added methods to the [Department and Team Communications](./api-reference/rest-v3/humanresources/node-communication/index.md) section
-- Added methods to the [Employees](./api-reference/rest-v3/humanresources/employee/index.md) section
+- Added methods to the [Department and Team Communications](./api-reference/departments/node-communication/index.md) section
+- Added methods to the [Employees](./api-reference/departments/employee/index.md) section
 - Updated the main page of the [Embedding Applications in CRM Activities](./api-reference/crm/timeline/activities/app-embedding/index.md) section
 
 ### June 5, 2026
 
-- Added methods to the section [Time Tracking Records](./api-reference/rest-v3/timeman/index.md)
-- Added methods to the section [Departments and Teams](./api-reference/rest-v3/humanresources/node/index.md)
-- Added methods to the section [Department and Team Participants](./api-reference/rest-v3/humanresources/node-member/index.md)
+- Added methods to the section [Time Tracking Records](./api-reference/timeman/record/index.md)
+- Added methods to the section [Departments and Teams](./api-reference/departments/node/index.md)
+- Added methods to the section [Department and Team Participants](./api-reference/departments/node-member/index.md)
 - Updated the page [Method Permissions and Scopes](./api-reference/scopes/index.md)
 - Updated the page [Data Import into CRM: Overview of Methods](./api-reference/crm/universal/import/index.md)
 - Updated the page [Product Items in CRM Entities: Overview of Methods](./api-reference/crm/universal/product-rows/index.md)
@@ -44,7 +44,7 @@
 
 ### May 29, 2026
 
-- Added a section for working with [mail methods in REST 3.0](./api-reference/rest-v3/mail/index.md)
+- Added a section for working with [mail methods in REST 3.0](./api-reference/mail/index.md)
 - Updated the main page [REST API Reference: Bitrix24 tools and methods](./api-reference/index.md)
 - Updated the tutorial [Workflows and Automation rules: typical scenarios](./tutorials/bizproc/index.md)
 - Updated the tutorial [How to embed widgets in CRM](./tutorials/crm/crm-widgets/index.md)
@@ -59,7 +59,7 @@
 
 ### May 15, 2026
 
-- Added a description of the methods for working with [Task Results](./api-reference/rest-v3/tasks/result/index.md) REST 3.0
+- Added a description of the methods for working with [Task Results](./api-reference/tasks/rest-v3/result/index.md) REST 3.0
 
 ### May 08, 2026
 
@@ -271,7 +271,7 @@
 
 ### March 16, 2026
 
-- Added documentation for REST 3.0 methods to retrieve fields from the [event log](./api-reference/rest-v3/main/index.md) and [tasks](./api-reference/rest-v3/tasks/index.md)
+- Added documentation for REST 3.0 methods to retrieve fields from the [event log](./api-reference/event-log/index.md) and [tasks](./api-reference/tasks/rest-v3/index.md)
 
 ### March 13, 2026
 
@@ -343,7 +343,7 @@
 
 ### February 4, 2026
 
-- Added methods [main.eventlog.*](./api-reference/rest-v3/main/index.md) for retrieving event log entries
+- Added methods [main.eventlog.*](./api-reference/event-log/index.md) for retrieving event log entries
 - Updated the article [Support and Community for Developers](./support.md)
 - Updated the documentation for the methods [disk.folder.uploadfile](./api-reference/disk/folder/disk-folder-upload-file.md), [disk.storage.addfolder](./api-reference/disk/storage/disk-storage-add-folder.md), [disk.storage.getchildren](./api-reference/disk/storage/disk-storage-get-children.md), [disk.storage.getfields](./api-reference/disk/storage/disk-storage-get-fields.md), [disk.storage.gettypes](./api-reference/disk/storage/disk-storage-get-types.md), [disk.storage.get](./api-reference/disk/storage/disk-storage-get.md)
 
@@ -377,15 +377,15 @@
 ### December 24, 2025
 
 - Updated the main page of the [Events](./api-reference/events/index.md) section
-- Added the article [Tasks in REST 3.0: Overview of Methods](./api-reference/rest-v3/tasks/index.md)
+- Added the article [Tasks in REST 3.0: Overview of Methods](./api-reference/tasks/rest-v3/index.md)
 - Updated the documentation for the methods [catalog.documentcontractor.add](./api-reference/catalog/documentcontractor/catalog-documentcontractor-add.md), [catalog.documentcontractor.delete](./api-reference/catalog/documentcontractor/catalog-documentcontractor-delete.md), [catalog.documentcontractor.getFields](./api-reference/catalog/documentcontractor/catalog-documentcontractor-get-fields.md), [catalog.documentcontractor.list](./api-reference/catalog/documentcontractor/catalog-documentcontractor-list.md)
 - Updated the documentation for the methods [disk.attachedObject.get](./api-reference/disk/attached-object/disk-attached-object-get.md), [disk.rights.getTasks](./api-reference/disk/rights/disk-rights-get-tasks.md), [disk.version.get](./api-reference/disk/version/disk-version-get.md)
 
 ### December 17, 2025
 
-- Added the section [REST 3.0](./api-reference/rest-v3/index.md)
-- Added new task methods for REST 3.0 [tasks.task.access.get](./api-reference/rest-v3/tasks/tasks-task-access-get.md), [tasks.task.add](./api-reference/rest-v3/tasks/tasks-task-add.md), [tasks.task.chat.message.send](./api-reference/rest-v3/tasks/tasks-task-chat-message-send.md), [tasks.task.delete](./api-reference/rest-v3/tasks/tasks-task-delete.md), [tasks.task.file.attach](./api-reference/rest-v3/tasks/tasks-task-file-attach.md), [tasks.task.get](./api-reference/rest-v3/tasks/tasks-task-get.md), [tasks.task.update](./api-reference/rest-v3/tasks/tasks-task-update.md)
-- Added the article describing task fields and related objects [Task fields in REST 3.0](./api-reference/rest-v3/tasks/fields.md)
+- Added the section [REST 3.0](./api-reference/rest-v3.md)
+- Added new task methods for REST 3.0 [tasks.task.access.get](./api-reference/tasks/rest-v3/tasks-task-access-get.md), [tasks.task.add](./api-reference/tasks/rest-v3/tasks-task-add.md), [tasks.task.chat.message.send](./api-reference/tasks/rest-v3/tasks-task-chat-message-send.md), [tasks.task.delete](./api-reference/tasks/rest-v3/tasks-task-delete.md), [tasks.task.file.attach](./api-reference/tasks/rest-v3/tasks-task-file-attach.md), [tasks.task.get](./api-reference/tasks/rest-v3/tasks-task-get.md), [tasks.task.update](./api-reference/tasks/rest-v3/tasks-task-update.md)
+- Added the article describing task fields and related objects [Task fields in REST 3.0](./api-reference/tasks/rest-v3/fields.md)
 - Updated the documentation for the methods [lists.field.add](./api-reference/lists/fields/lists-field-add.md), [lists.field.update](./api-reference/lists/fields/lists-field-update.md), [lists.field.get](./api-reference/lists/fields/lists-field-get.md), [lists.field.delete](./api-reference/lists/fields/lists-field-delete.md), [lists.field.type.get](./api-reference/lists/fields/lists-field-type-get.md) in Working with Fields
 
 ### December 10, 2025
@@ -402,7 +402,7 @@
 ### November 27, 2025
 
 - Added the article [New task card: comments and events](./api-reference/tasks/tasks-new.md)
-- Added the method [tasks.task.chat.message.send](./api-reference/rest-v3/tasks/tasks-task-chat-message-send.md)
+- Added the method [tasks.task.chat.message.send](./api-reference/tasks/rest-v3/tasks-task-chat-message-send.md)
 
 ### November 26, 2025
 

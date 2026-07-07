@@ -57,6 +57,4 @@ Here’s a sample algorithm for working with the section:
 
 ## How to Provide Feedback on the Tutorials
 
-If you would like to add your scenario or improve an existing one:
-- submit a [pull request](../change-article.md) with your solution to the documentation repository,
-- write an [issue](../support.md) with your idea suggestion.
+If you would like to add your scenario or improve an existing one, you can leave your [Pull Requests and Issues](../feedback.md).

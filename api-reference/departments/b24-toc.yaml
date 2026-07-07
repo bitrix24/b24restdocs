@@ -13,3 +13,19 @@ items:
     href: department-delete.md
   - name: Get Department Fields Reference
     href: department-fields.md
+  - name: Company Structure
+    include:
+      path: node/b24-toc.yaml
+      mode: link
+  - name: Participants
+    include:
+      path: node-member/b24-toc.yaml
+      mode: link
+  - name: Links Between Structure Items
+    include:
+      path: node-communication/b24-toc.yaml
+      mode: link
+  - name: Employees
+    include:
+      path: employee/b24-toc.yaml
+      mode: link

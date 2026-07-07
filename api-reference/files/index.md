@@ -27,7 +27,7 @@ Files are associated with CRM entities, Drive, catalogs, chats, tasks, sites, an
 - **Users.** A user's photo is transmitted using the method [user.add](../user/user-add.md).
 - **Chats.** A file is uploaded to a chat using the method [im.v2.File.upload](../chat-bots/chat-bots-v2/im.v2/files/file-upload.md), and a download link is obtained using the method [im.v2.File.download](../chat-bots/chat-bots-v2/im.v2/files/file-download.md).
 - **Chat-bots.** A file is uploaded on behalf of the bot using the method [imbot.v2.File.upload](../chat-bots/chat-bots-v2/imbot.v2/files/file-upload.md), and a download link is obtained using the method [imbot.v2.File.download](../chat-bots/chat-bots-v2/imbot.v2/files/file-download.md).
-- **Tasks.** Files from Drive are attached to a task using the method [tasks.task.file.attach](../rest-v3/tasks/tasks-task-file-attach.md).
+- **Tasks.** Files from Drive are attached to a task using the method [tasks.task.file.attach](../tasks/rest-v3/tasks-task-file-attach.md).
 - **Sites.** An image for a site block is uploaded and linked using the method [landing.block.uploadfile](../landing/block/methods/landing-block-upload-file.md).
 
 ## Main Methods for Working with Files

@@ -52,9 +52,6 @@ items:
     href: meetups.md
   - name: Support and Community for Developers
     href: support.md
-  - name: Documentation Edits
-    href: change-article.md
-    hidden: true
   - name: How to Contact Support
     href: bitrix-support.md
     hidden: true       

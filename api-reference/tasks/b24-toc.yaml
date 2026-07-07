@@ -5,6 +5,10 @@ items:
     href: index.md
   - name: New Task Card
     href: tasks-new.md    
+  - name: Tasks in REST 3.0
+    include:
+      path: rest-v3/b24-toc.yaml
+      mode: link
   - name: Task Fields
     href: fields.md
   - name: Add Task

@@ -73,7 +73,7 @@ blocks:
         links:
           - text: 'Compare REST versions'
             theme: 'normal'
-            url: '/api-reference/rest-v3/index.html'
+            url: '/api-reference/rest-v3.html'
       - type: 'basic-card'
         title: 'Method naming'
         text: 'A method name often helps identify the API area and the type of operation. However, the name alone is not enough to determine exact behavior, parameters, and limits. Use the name as a guide, and check the details in the API reference.'
@@ -375,7 +375,7 @@ blocks:
         buttons:
           - text: 'Details'
             theme: 'raised'
-            url: 'change-article.html'
+            url: 'feedback.html'
         border: none
         theme: 'light'
       - type: 'background-card'

@@ -40,7 +40,7 @@ They do not describe a complete workflow. If you need to solve a task entirely, 
 || [Method scopes](./scopes/index.md) | Application permissions to method groups ||
 || [Common methods and events](./common/index.md) | System methods, application settings, users, and common events ||
 || [Events](./events/index.md) | Registration, deletion, and processing of REST API events ||
-|| [REST 3.0](./rest-v3/index.md) | Methods and rules of the new REST API version ||
+|| [REST 3.0](./rest-v3.md) | Call rules and response format of the new REST API version ||
 || [Deprecated methods](./outdated/index.md) | Methods to support existing integrations ||
 |#
 
@@ -64,8 +64,9 @@ They do not describe a complete workflow. If you need to solve a task entirely, 
 || [Tasks](./tasks/index.md) | Tasks, checklists, comments, templates, stages, and flows ||
 || [Workgroups and Projects](./sonet-group/index.md) | Workgroups, projects, participants, and scrum ||
 || [Calendar](./calendar/index.md) | Calendars, events, and resources ||
-|| [Company Structure](./departments/index.md) | Company departments ||
-|| [Time Tracking](./timeman/index.md) | Working time, schedules, and time control ||
+|| [Event Log](./event-log/index.md) | Employee sign-ins, IP addresses, and other event log records ||
+|| [Company Structure](./departments/index.md) | Departments, teams, participants, and employees ||
+|| [Time Tracking](./timeman/index.md) | Working time, work time records, schedules, and time control ||
 || [Users](./user/index.md) | Users and user fields ||
 |#
 
@@ -79,6 +80,7 @@ They do not describe a complete workflow. If you need to solve a task entirely, 
 || [Telephony](./telephony/index.md) | Telephony, calls, and Voximplant lines ||
 || [Messaging providers, SMS providers](./messageservice/index.md) | Messaging providers and SMS providers ||
 || [News Feed](./log/index.md) | News, comments, and feed events ||
+|| [E-mail](./mail/index.md) | Mailboxes, messages, and recipients ||
 || [Email Services](./mailservice/index.md) | Email services ||
 |#
 
@@ -91,6 +93,7 @@ They do not describe a complete workflow. If you need to solve a task entirely, 
 || [Data store](./entity/index.md) | Data store and application data items ||
 || [Universal Lists](./lists/index.md) | Lists, sections, fields, and items ||
 || [Sites and stores](./landing/index.md) | Sites, pages, blocks, templates, and permissions ||
+|| [Knowledge Base 2.0](./note/index.md) | Knowledge Base 2.0 collections, documents, and files ||
 || [Online booking](./booking/index.md) | Resources, bookings, waiting lists, clients, and events ||
 || [Surveys, polls](./vote/index.md) | Surveys and polls ||
 || [User agreements](./user-consent/index.md) | User agreements ||

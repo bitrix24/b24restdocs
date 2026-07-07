@@ -12,7 +12,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% note warning "DEPRECATED" %}
 
-The development of this method has been halted. Use [tasks.task.chat.message.send](../../rest-v3/tasks/tasks-task-chat-message-send.md).
+The development of this method has been halted. Use [tasks.task.chat.message.send](../rest-v3/tasks-task-chat-message-send.md).
 
 {% endnote %}
 
