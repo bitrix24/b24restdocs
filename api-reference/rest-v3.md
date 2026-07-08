@@ -49,7 +49,7 @@ https://**put_your_bitrix24_address**/rest/api/tasks.task.chat.message.send
 
 - Pass the request body in JSON format with the header `Content-Type: application/json`.
 
-- All requests with parameters should be sent only in POST format, for example, the method [tasks.task.chat.message.send](./tasks/rest-v3/tasks-task-chat-message-send.md) with parameters `taskId` and `text`.
+- All requests with parameters should be sent only in POST format, for example, the method [tasks.task.chat.message.send](./tasks/tasks-task-chat-message-send.md) with parameters `taskId` and `text`.
 
  ```json
  curl -X POST \
@@ -145,7 +145,7 @@ Any method can return an error, for example, due to access denial or incorrect r
 
 REST 3.0 allows retrieving data from related objects in a single response. For example, a task has a `responsible` field — this field contains the identifier of another object, a user. In the old version of REST, you first had to get the identifier from the `responsible` field using the old method [tasks.task.get](./tasks/tasks-task-get.md), and then separately call the method [user.get](./user/user-get.md) to get data by the user identifier.
 
-In the new version of REST, you can specify the fields of related objects directly in the request [tasks.task.get](./tasks/rest-v3/tasks-task-get.md) using `select`: `"select": ["responsible.name", "responsible.email"]`.
+In the new version of REST, you can specify the fields of related objects directly in the request [tasks.task.get](./tasks/tasks-task-get-rest-v3.md) using `select`: `"select": ["responsible.name", "responsible.email"]`.
 
 ```json
 curl -X POST \
@@ -184,7 +184,7 @@ If incorrect or unavailable fields are specified in `select`, the request will r
 }
 ```
 
-To find out which connections and fields are supported, use the [OpenAPI documentation](#openapi) or the article [Task fields in REST 3.0](./tasks/rest-v3/fields.md).
+To find out which connections and fields are supported, use the [OpenAPI documentation](#openapi) or the article [Task fields in REST 3.0](./tasks/fields-rest-v3.md).
 
 ## Filtering {#filter}
 

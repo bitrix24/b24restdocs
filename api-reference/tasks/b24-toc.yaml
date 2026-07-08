@@ -5,28 +5,58 @@ items:
     href: index.md
   - name: New Task Card
     href: tasks-new.md    
-  - name: Tasks in REST 3.0
-    include:
-      path: rest-v3/b24-toc.yaml
-      mode: link
   - name: Task Fields
     href: fields.md
+  - name: Task Fields v 3.0
+    href: fields-rest-v3.md
   - name: Add Task
     href: tasks-task-add.md
+  - name: Add Task v 3.0
+    href: tasks-task-add-rest-v3.md
   - name: Update Task
     href: tasks-task-update.md
+  - name: Update Task v 3.0
+    href: tasks-task-update-rest-v3.md
   - name: Get Task by ID
     href: tasks-task-get.md
+  - name: Get Task by ID v 3.0
+    href: tasks-task-get-rest-v3.md
   - name: Get Task List
     href: tasks-task-list.md
+  - name: Get Task List v 3.0
+    href: tasks-task-list-rest-v3.md
   - name: Delete Task
     href: tasks-task-delete.md
-  - name: Get List of Fields
+  - name: Delete Task v 3.0
+    href: tasks-task-delete-rest-v3.md
+  - name: Get List of Task Fields
     href: tasks-task-get-fields.md
+  - name: Get List of Task Fields v 3.0
+    href: tasks-task-field-list.md
+  - name: Get Task Field Description
+    href: tasks-task-field-get.md
   - name: Check Access to Task
     href: tasks-task-get-access.md
+  - name: Check Access to Task v 3.0
+    href: tasks-task-access-get.md
+  - name: Get List of Access Permission Fields
+    href: tasks-task-access-field-list.md
+  - name: Get Access Permission Field Description
+    href: tasks-task-access-field-get.md
   - name: Attach Files to Task
     href: tasks-task-files-attach.md
+  - name: Attach Files to Task v 3.0
+    href: tasks-task-file-attach.md
+  - name: Get List of Task File Fields
+    href: tasks-task-file-field-list.md
+  - name: Get Task File Field Description
+    href: tasks-task-file-field-get.md
+  - name: Send Message to Task Chat
+    href: tasks-task-chat-message-send.md
+  - name: Get List of Task Chat Message Fields
+    href: tasks-task-chat-message-field-list.md
+  - name: Get Task Chat Message Field Description
+    href: tasks-task-chat-message-field-get.md
   - name: Get User Counters
     href: tasks-task-counters-get.md
   - name: Delegate Task
@@ -35,38 +65,20 @@ items:
     href: tasks-task-approve.md
   - name: Reject Task
     href: tasks-task-disapprove.md
-  - name: Add Task to Favorites
-    href: tasks-task-favorite-add.md
-  - name: Remove Task from Favorites
-    href: tasks-task-favorite-remove.md
-  - name: Pin task
-    href: tasks-task-pin.md
-  - name: Unpin task
-    href: tasks-task-unpin.md
   - name: Task History
     href: tasks-task-history-list.md
-  - name: Start Watching Task
-    href: tasks-task-start-watch.md
-  - name: Stop Watching Task
-    href: tasks-task-stop-watch.md
-  - name: Change Task Status to In Progress
-    href: tasks-task-start.md
-  - name: Change Task Status to Waiting
-    href: tasks-task-pause.md
-  - name: Change Task Status to Deferred
-    href: tasks-task-defer.md
-  - name: Change Task Status to Completed
-    href: tasks-task-complete.md
-  - name: Renew Task After Completion
-    href: tasks-task-renew.md
-  - name: Enable Silent Mode
-    href: tasks-task-mute.md
-  - name: Disable Silent Mode
-    href: tasks-task-unmute.md
   - name: Create Dependency Between Tasks
     href: task-dependence-add.md
   - name: Remove Dependency Between Tasks
     href: task-dependence-delete.md
+  - name: Task Status Changes
+    include:
+      path: status/b24-toc.yaml
+      mode: link
+  - name: User Actions on Task
+    include:
+      path: user-actions/b24-toc.yaml
+      mode: link
   - name: Task Result
     include:
       path: result/b24-toc.yaml

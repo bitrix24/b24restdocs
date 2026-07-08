@@ -1,0 +1,15 @@
+title: Task Status Changes
+href: index.md
+items:
+  - name: Overview of Methods
+    href: index.md
+  - name: Change Task Status to In Progress
+    href: tasks-task-start.md
+  - name: Change Task Status to Waiting
+    href: tasks-task-pause.md
+  - name: Change Task Status to Deferred
+    href: tasks-task-defer.md
+  - name: Change Task Status to Completed
+    href: tasks-task-complete.md
+  - name: Renew Task After Completion
+    href: tasks-task-renew.md

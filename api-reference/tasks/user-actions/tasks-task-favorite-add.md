@@ -1,4 +1,4 @@
-# Add Comment to Task task.comment.add
+# Add Task to Favorites tasks.task.favorite.add
 
 {% note tip "" %}
 
@@ -8,29 +8,26 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`task`](../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: any user with read access to the task
 
-{% note warning "DEPRECATED" %}
-
-The development of this method has been halted. Use [tasks.task.chat.message.send](../tasks-task-chat-message-send.md).
-
-{% endnote %}
-
-This method adds comments to a task.
+The method `tasks.task.favorite.add` adds a task to Favorites.
 
 ## Method Parameters
 
-#| 
-|| **Name** | **Description** ||
-|| **TASKID** | Task identifier ||
-|| **COMMENTTEXT** | Comment ||
-|#
+{% include [Note on parameters](../../../_includes/required.md) %}
 
-It is essential to maintain the order of parameters in the request. If this order is violated, the request will be executed with errors.
+#| 
+|| **Name**
+`type` | **Description** ||
+|| **taskId*** 
+[`integer`](../../data-types.md) | Task identifier.
+
+The task identifier can be obtained when [creating a new task](../tasks-task-add.md) or by using the [get task list](../tasks-task-list.md) method ||
+|#
 
 ## Code Examples
 
-{% include [Examples Note](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -40,8 +37,8 @@ It is essential to maintain the order of parameters in the request. If this orde
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"TASKID":1,"FIELDS":{"POST_MESSAGE":"comment text"}}' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/task.comment.add
+    -d '{"taskId":119}' \
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/tasks.task.favorite.add
     ```
 
 - cURL (OAuth)
@@ -50,8 +47,8 @@ It is essential to maintain the order of parameters in the request. If this orde
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"TASKID":1,"FIELDS":{"POST_MESSAGE":"comment text"},"auth":"**put_access_token_here**"}' \
-    https://**put_your_bitrix24_address**/rest/task.comment.add
+    -d '{"taskId":119,"auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/tasks.task.favorite.add
     ```
 
 - JS (TS)
@@ -64,18 +61,11 @@ It is essential to maintain the order of parameters in the request. If this orde
 
     declare const $b24: B24Frame
 
-    // TODO: verify API version
-    // Shape of the payload returned in result (comment ID)
-    type TaskCommentAddResult = number
-
     try {
-      const response = await $b24.actions.v2.call.make<TaskCommentAddResult>({
-        method: 'task.comment.add',
+      const response = await $b24.actions.v2.call.make<boolean>({
+        method: 'tasks.task.favorite.add',
         params: {
-          TASKID: 1,
-          FIELDS: {
-            POST_MESSAGE: 'comment text',
-          },
+          taskId: 119,
         },
         requestId: Text.getUuidRfc4122()
       })
@@ -85,7 +75,7 @@ It is essential to maintain the order of parameters in the request. If this orde
         console.error(response.getErrorMessages().join('; '))
       } else {
         const result = response.getData()!.result
-        console.info('Created comment ID:', result)
+        console.info('Task added to favorites:', result)
       }
     } catch (error) {
       // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
@@ -99,18 +89,15 @@ It is essential to maintain the order of parameters in the request. If this orde
     <!-- Load the SDK (UMD build); it is exposed as the global B24Js -->
     <script src="https://unpkg.com/@bitrix24/b24jssdk@1/dist/umd/index.min.js"></script>
     <script>
-      async function addTaskComment() {
+      async function addTaskToFavorites() {
         try {
           // Initialize the SDK inside a Bitrix24 frame
           const $b24 = await B24Js.initializeB24Frame()
 
           const response = await $b24.actions.v2.call.make({
-            method: 'task.comment.add',
+            method: 'tasks.task.favorite.add',
             params: {
-              TASKID: 1,
-              FIELDS: {
-                POST_MESSAGE: 'comment text',
-              },
+              taskId: 119,
             },
             requestId: B24Js.Text.getUuidRfc4122()
           })
@@ -122,14 +109,14 @@ It is essential to maintain the order of parameters in the request. If this orde
           }
 
           const result = response.getData().result
-          console.info('Created comment ID:', result)
+          console.info('Task added to favorites:', result)
         } catch (error) {
           // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
           console.error(error)
         }
       }
 
-      document.addEventListener('DOMContentLoaded', addTaskComment)
+      document.addEventListener('DOMContentLoaded', addTaskToFavorites)
     </script>
     ```
 
@@ -140,24 +127,22 @@ It is essential to maintain the order of parameters in the request. If this orde
         $response = $b24Service
             ->core
             ->call(
-                'task.comment.add',
+                'tasks.task.favorite.add',
                 [
-                    1,
-                    'comment text',
+                    'taskId' => 119
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
+
         echo 'Success: ' . print_r($result, true);
-        // Your logic for processing data
         processData($result);
-    
+
     } catch (Throwable $e) {
         error_log($e->getMessage());
-        echo 'Error adding task comment: ' . $e->getMessage();
+        echo 'Error: ' . $e->getMessage();
     }
     ```
 
@@ -165,10 +150,11 @@ It is essential to maintain the order of parameters in the request. If this orde
 
     ```js
     BX24.callMethod(
-        'task.comment.add',
-        [1, 'comment text'],
-        function(result)
+        'tasks.task.favorite.add',
         {
+            'taskId': 119
+        },
+        function(result){
             console.info(result.data());
             console.log(result);
         }
@@ -181,12 +167,9 @@ It is essential to maintain the order of parameters in the request. If this orde
     require_once('crest.php');
 
     $result = CRest::call(
-        'task.comment.add',
+        'tasks.task.favorite.add',
         [
-            'TASKID' => 1,
-            'FIELDS' => [
-                'POST_MESSAGE' => 'comment text'
-            ]
+            'taskId' => 119
         ]
     );
 
@@ -196,3 +179,63 @@ It is essential to maintain the order of parameters in the request. If this orde
     ```
 
 {% endlist %}
+
+## Response Handling
+
+HTTP Status: **200**
+
+```json
+{
+    "result": true,
+    "time": {
+        "start": 1758015040.372338,
+        "finish": 1758015040.421553,
+        "duration": 0.049214839935302734,
+        "processing": 0.015886783599853516,
+        "date_start": "2025-09-16T12:30:40+03:00",
+        "date_finish": "2025-09-16T12:30:40+03:00",
+        "operating_reset_at": 1758015640,
+        "operating": 0
+    }
+}
+```
+
+### Returned Data
+
+#| 
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`boolean`](../../data-types.md) | Returns `true` if the task was successfully added to favorites ||
+|| **time**
+[`time`](../../data-types.md#time) | Information about the request execution time ||
+|#
+
+## Error Handling
+
+HTTP Status: **400**
+
+```json
+{
+    "error":"1",
+    "error_description":"Task not found or not accessible"
+}
+```
+
+{% include notitle [error handling](../../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+#| 
+|| **Code** | **Description** | **Value** ||
+|| `0` | wrong task id | The value in the `taskId` parameter is of an incorrect type ||
+|| `1` | Task not found or not accessible | The task was not found or the user does not have access to the task ||
+|| `100` | CTaskItem All parameters in the constructor must have real class type | The required parameter `taskId` is missing ||
+|#
+
+{% include [system errors](../../../_includes/system-errors.md) %}
+
+## Continue Learning 
+
+- [{#T}](./index.md)
+- [{#T}](./tasks-task-favorite-remove.md)

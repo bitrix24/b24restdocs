@@ -27,7 +27,7 @@ This method adds a task to Favorites.
 
 {% note warning "DEPRECATED" %}
 
-Development of this method has been halted. Use [tasks.task.favorite.add](../../tasks-task-favorite-add.md).
+Development of this method has been halted. Use [tasks.task.favorite.add](../../user-actions/tasks-task-favorite-add.md).
 
 {% endnote %}
 

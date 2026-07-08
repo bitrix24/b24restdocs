@@ -22,7 +22,7 @@
 
 ### June 18, 2026
 
-- Added new method [tasks.task.list](./api-reference/tasks/rest-v3/tasks-task-list.md)
+- Added new method [tasks.task.list](./api-reference/tasks/tasks-task-list-rest-v3.md)
 - Updated the main page of the [Embedding Applications into CRM Activities](./api-reference/crm/timeline/activities/app-embedding/index.md) section
 
 ### June 10, 2026
@@ -54,12 +54,12 @@
 
 ### May 22, 2026
 
-- Added descriptions of the [tasks.task.pin](./api-reference/tasks/tasks-task-pin.md) and [tasks.task.unpin](./api-reference/tasks/tasks-task-unpin.md) methods
+- Added descriptions of the [tasks.task.pin](./api-reference/tasks/user-actions/tasks-task-pin.md) and [tasks.task.unpin](./api-reference/tasks/user-actions/tasks-task-unpin.md) methods
 - Updated the tutorials [How to Use End-to-End Analytics Data](./tutorials/crm/how-to-use-analitycs/index.md) and [How to Send Data to CRM End-to-End Analytics](./tutorials/crm/how-to-use-analitycs/info-to-analitics.md)
 
 ### May 15, 2026
 
-- Added a description of the methods for working with [Task Results](./api-reference/tasks/rest-v3/result/index.md) REST 3.0
+- Added a description of the methods for working with [Task Results](./api-reference/tasks/result/index.md) REST 3.0
 
 ### May 08, 2026
 
@@ -271,7 +271,7 @@
 
 ### March 16, 2026
 
-- Added documentation for REST 3.0 methods to retrieve fields from the [event log](./api-reference/event-log/index.md) and [tasks](./api-reference/tasks/rest-v3/index.md)
+- Added documentation for REST 3.0 methods to retrieve fields from the [event log](./api-reference/event-log/index.md) and [tasks](./api-reference/tasks/index.md)
 
 ### March 13, 2026
 
@@ -377,15 +377,15 @@
 ### December 24, 2025
 
 - Updated the main page of the [Events](./api-reference/events/index.md) section
-- Added the article [Tasks in REST 3.0: Overview of Methods](./api-reference/tasks/rest-v3/index.md)
+- Added the article [Tasks in REST 3.0: Overview of Methods](./api-reference/tasks/index.md)
 - Updated the documentation for the methods [catalog.documentcontractor.add](./api-reference/catalog/documentcontractor/catalog-documentcontractor-add.md), [catalog.documentcontractor.delete](./api-reference/catalog/documentcontractor/catalog-documentcontractor-delete.md), [catalog.documentcontractor.getFields](./api-reference/catalog/documentcontractor/catalog-documentcontractor-get-fields.md), [catalog.documentcontractor.list](./api-reference/catalog/documentcontractor/catalog-documentcontractor-list.md)
 - Updated the documentation for the methods [disk.attachedObject.get](./api-reference/disk/attached-object/disk-attached-object-get.md), [disk.rights.getTasks](./api-reference/disk/rights/disk-rights-get-tasks.md), [disk.version.get](./api-reference/disk/version/disk-version-get.md)
 
 ### December 17, 2025
 
 - Added the section [REST 3.0](./api-reference/rest-v3.md)
-- Added new task methods for REST 3.0 [tasks.task.access.get](./api-reference/tasks/rest-v3/tasks-task-access-get.md), [tasks.task.add](./api-reference/tasks/rest-v3/tasks-task-add.md), [tasks.task.chat.message.send](./api-reference/tasks/rest-v3/tasks-task-chat-message-send.md), [tasks.task.delete](./api-reference/tasks/rest-v3/tasks-task-delete.md), [tasks.task.file.attach](./api-reference/tasks/rest-v3/tasks-task-file-attach.md), [tasks.task.get](./api-reference/tasks/rest-v3/tasks-task-get.md), [tasks.task.update](./api-reference/tasks/rest-v3/tasks-task-update.md)
-- Added the article describing task fields and related objects [Task fields in REST 3.0](./api-reference/tasks/rest-v3/fields.md)
+- Added new task methods for REST 3.0 [tasks.task.access.get](./api-reference/tasks/tasks-task-access-get.md), [tasks.task.add](./api-reference/tasks/tasks-task-add-rest-v3.md), [tasks.task.chat.message.send](./api-reference/tasks/tasks-task-chat-message-send.md), [tasks.task.delete](./api-reference/tasks/tasks-task-delete-rest-v3.md), [tasks.task.file.attach](./api-reference/tasks/tasks-task-file-attach.md), [tasks.task.get](./api-reference/tasks/tasks-task-get-rest-v3.md), [tasks.task.update](./api-reference/tasks/tasks-task-update-rest-v3.md)
+- Added the article describing task fields and related objects [Task fields in REST 3.0](./api-reference/tasks/fields-rest-v3.md)
 - Updated the documentation for the methods [lists.field.add](./api-reference/lists/fields/lists-field-add.md), [lists.field.update](./api-reference/lists/fields/lists-field-update.md), [lists.field.get](./api-reference/lists/fields/lists-field-get.md), [lists.field.delete](./api-reference/lists/fields/lists-field-delete.md), [lists.field.type.get](./api-reference/lists/fields/lists-field-type-get.md) in Working with Fields
 
 ### December 10, 2025
@@ -402,7 +402,7 @@
 ### November 27, 2025
 
 - Added the article [New task card: comments and events](./api-reference/tasks/tasks-new.md)
-- Added the method [tasks.task.chat.message.send](./api-reference/tasks/rest-v3/tasks-task-chat-message-send.md)
+- Added the method [tasks.task.chat.message.send](./api-reference/tasks/tasks-task-chat-message-send.md)
 
 ### November 26, 2025
 
@@ -459,13 +459,13 @@
 - Updated the main page of the [Chats](./api-reference/imopenlines/openlines/chats/index.md) section in Open Lines. Added introductory information as well as an overview of methods and connections.
 - Updated the main page of events in the [Currencies](./api-reference/crm/currency/events/index.md) section. Added introductory information and an overview of events.
 - Added the article [Completing Application Installation](./settings/app-installation/installation-finish.md).
-- Updated the documentation for the methods [tasks.task.favorite.add](./api-reference/tasks/tasks-task-favorite-add.md), [tasks.task.favorite.remove](./api-reference/tasks/tasks-task-favorite-remove.md), [tasks.task.getaccess](./api-reference/tasks/tasks-task-get-access.md), [tasks.task.delete](./api-reference/tasks/tasks-task-delete.md), [tasks.task.delegate](./api-reference/tasks/tasks-task-delegate.md), [tasks.task.approve](./api-reference/tasks/tasks-task-approve.md), [tasks.task.disapprove](./api-reference/tasks/tasks-task-disapprove.md) in Tasks.
+- Updated the documentation for the methods [tasks.task.favorite.add](./api-reference/tasks/user-actions/tasks-task-favorite-add.md), [tasks.task.favorite.remove](./api-reference/tasks/user-actions/tasks-task-favorite-remove.md), [tasks.task.getaccess](./api-reference/tasks/tasks-task-get-access.md), [tasks.task.delete](./api-reference/tasks/tasks-task-delete.md), [tasks.task.delegate](./api-reference/tasks/tasks-task-delegate.md), [tasks.task.approve](./api-reference/tasks/tasks-task-approve.md), [tasks.task.disapprove](./api-reference/tasks/tasks-task-disapprove.md) in Tasks.
 - Updated the documentation for the methods [catalog.storeproduct.*](./api-reference/catalog/store-product/index.md) in the Trade Catalog.
 
 ### September 17, 2025
 
-- Updated the documentation for the methods [tasks.task.mute](./api-reference/tasks/tasks-task-mute.md), [tasks.task.unmute](./api-reference/tasks/tasks-task-unmute.md), [tasks.task.startwatch](./api-reference/tasks/tasks-task-start-watch.md), [tasks.task.stopwatch](./api-reference/tasks/tasks-task-stop-watch.md) in Tasks
-- Updated the documentation for the task status change methods [tasks.task.complete](./api-reference/tasks/tasks-task-complete.md), [tasks.task.pause](./api-reference/tasks/tasks-task-pause.md), [tasks.task.start](./api-reference/tasks/tasks-task-start.md), [tasks.task.defer](./api-reference/tasks/tasks-task-defer.md), [tasks.task.renew](./api-reference/tasks/tasks-task-renew.md) in Tasks
+- Updated the documentation for the methods [tasks.task.mute](./api-reference/tasks/user-actions/tasks-task-mute.md), [tasks.task.unmute](./api-reference/tasks/user-actions/tasks-task-unmute.md), [tasks.task.startwatch](./api-reference/tasks/user-actions/tasks-task-start-watch.md), [tasks.task.stopwatch](./api-reference/tasks/user-actions/tasks-task-stop-watch.md) in Tasks
+- Updated the documentation for the task status change methods [tasks.task.complete](./api-reference/tasks/status/tasks-task-complete.md), [tasks.task.pause](./api-reference/tasks/status/tasks-task-pause.md), [tasks.task.start](./api-reference/tasks/status/tasks-task-start.md), [tasks.task.defer](./api-reference/tasks/status/tasks-task-defer.md), [tasks.task.renew](./api-reference/tasks/status/tasks-task-renew.md) in Tasks
 
 ### September 11, 2025
 

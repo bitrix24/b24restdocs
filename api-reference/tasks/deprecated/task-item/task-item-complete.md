@@ -14,7 +14,7 @@ This method moves a task to the "completed" or "conditionally completed (awaitin
 
 {% note warning "DEPRECATED" %}
 
-Development of this method has been halted. Use [tasks.task.complete](../../tasks-task-complete.md).
+Development of this method has been halted. Use [tasks.task.complete](../../status/tasks-task-complete.md).
 
 {% endnote %}
 

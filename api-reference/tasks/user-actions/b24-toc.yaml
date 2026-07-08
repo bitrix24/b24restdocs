@@ -1,0 +1,21 @@
+title: User Actions on Task
+href: index.md
+items:
+  - name: Overview of Methods
+    href: index.md
+  - name: Start Watching Task
+    href: tasks-task-start-watch.md
+  - name: Stop Watching Task
+    href: tasks-task-stop-watch.md
+  - name: Add Task to Favorites
+    href: tasks-task-favorite-add.md
+  - name: Remove Task from Favorites
+    href: tasks-task-favorite-remove.md
+  - name: Pin Task
+    href: tasks-task-pin.md
+  - name: Unpin Task
+    href: tasks-task-unpin.md
+  - name: Enable Silent Mode
+    href: tasks-task-mute.md
+  - name: Disable Silent Mode
+    href: tasks-task-unmute.md

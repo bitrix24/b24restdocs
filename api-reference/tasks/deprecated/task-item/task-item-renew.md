@@ -14,7 +14,7 @@ This method changes the status of a task to "Not Executed." It is applicable for
 
 {% note warning "DEPRECATED" %}
 
-The development of this method has been halted. Please use [tasks.task.renew](../../tasks-task-renew.md).
+The development of this method has been halted. Please use [tasks.task.renew](../../status/tasks-task-renew.md).
 
 {% endnote %}
 

@@ -3,9 +3,19 @@ href: index.md
 items:
   - name: Overview of Methods
     href: index.md
-  - name: Get Task Result List
-    href: tasks-task-result-list.md
+  - name: Add Result to Task
+    href: tasks-task-result-add.md
+  - name: Create Result from Chat Message
+    href: tasks-task-result-addfromchatmessage.md
+  - name: Update Task Result
+    href: tasks-task-result-update.md
+  - name: Get Task Result List v 3.0
+    href: tasks-task-result-list-rest-v3.md
+  - name: Delete Task Result
+    href: tasks-task-result-delete.md
   - name: Add Comment to Result
     href: tasks-task-result-add-from-comment.md
-  - name: Delete Comment from Result
+  - name: Get Task Result List
+    href: tasks-task-result-list.md
+  - name: Remove Comment from Result
     href: tasks-task-result-delete-from-comment.md

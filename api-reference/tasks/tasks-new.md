@@ -104,7 +104,7 @@ Documentation for the new version of the method call is available in OpenApi for
 ## How to Send Messages to a Task
 
 - Old method [task.commentitem.add](./comment-item/task-comment-item-add.md).
-- New method [tasks.task.chat.message.send](./rest-v3/tasks-task-chat-message-send.md). To send a file in the task chat, use the method [im.disk.file.commit](../chats/files/im-disk-file-commit.md).
+- New method [tasks.task.chat.message.send](./tasks-task-chat-message-send.md). To send a file in the task chat, use the method [im.disk.file.commit](../chats/files/im-disk-file-commit.md).
 
 ## Events
 

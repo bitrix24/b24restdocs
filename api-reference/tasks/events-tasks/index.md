@@ -36,10 +36,10 @@ An example of a handler code for the event is described in the article [How to T
 || [OnTaskAdd](./on-task-add.md) | When a task is added manually or via the method [task.task.add](../tasks-task-add.md) ||
 || [OnTaskUpdate](./on-task-update.md) | When a task is updated manually or through methods:
 - [task update](../tasks-task-update.md)
-- status update, for example, via the method [setting status to Completed](../tasks-task-complete.md)
+- status update, for example, via the method [setting status to Completed](../status/tasks-task-complete.md)
 - [delegation](../tasks-task-delegate.md)
 - [attaching a file to a task](../tasks-task-files-attach.md)
-- observing a task, for example, via the method [starting observation](../tasks-task-start-watch.md)
+- observing a task, for example, via the method [starting observation](../user-actions/tasks-task-start-watch.md)
 - managing dependencies between tasks, for example, via the method [creating a dependency](../task-dependence-add.md)
 - [moving a task through stages](../stages/task-stages-move-task.md) ||
 || [OnTaskDelete](./on-task-delete.md) | When a task is deleted manually or via the method [task.task.delete](../tasks-task-delete.md) ||

@@ -14,7 +14,7 @@ This method transitions a task to "In Progress" status.
 
 {% note warning "DEPRECATED" %}
 
-Development of this method has been halted. Please use [tasks.task.start](../../tasks-task-start.md).
+Development of this method has been halted. Please use [tasks.task.start](../../status/tasks-task-start.md).
 
 {% endnote %}
 

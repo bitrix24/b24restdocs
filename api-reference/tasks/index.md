@@ -20,6 +20,12 @@ When using task methods, you must follow the parameter order specified in the pa
 
 In [REST 3.0](../rest-v3.md), task methods use an updated architecture, a unified response format, and support connections between objects. REST 3.0 currently covers basic task operations, task chat, file attachment, task results, and field schema methods (`*.field.list` / `*.field.get`).
 
+{% note info "" %}
+
+Some methods of the new version perform the same tasks as methods of the previous API version. These methods are marked as `v 3.0` to make the versions easier to distinguish.
+
+{% endnote %}
+
 ## Task card
 
 A task card can be divided into blocks:
@@ -49,6 +55,8 @@ Time tracking in tasks monitors the time spent by an employee on a task. You can
 
 All actions with a task are recorded and retained in the task history. To retrieve the history, use the [tasks.task.history.list](./tasks-task-history-list.md) method.
 
+In REST 3.0, the task card structure remains the same, but the data model and work with relations are changed. The full field set of the new version is described in [Task Fields v 3.0](./fields-rest-v3.md).
+
 {% note tip "User documentation" %}
 
   - [How to create a task](https://helpdesk.bitrix24.com/open/18025566/)
@@ -77,6 +85,10 @@ You can retrieve a user identifier using the [user.get](../user/user-get.md) met
 
 **Webmail.** A task can be linked to an email by identifier via the `UF_MAIL_MESSAGE` parameter.
 
+In REST 3.0, relations are passed in the new field model: `parentId`, `groupId`, `crmItemIds`, `emailId`, `flowId`, and `chatId`. In the new model, user relations are also available separately through the fields `creatorId`, `responsibleId`, `accomplices`, `auditors`, `changedById`, `statusChangedById`, and `closedById`.
+
+The [tasks.task.get](./tasks-task-get-rest-v3.md) method can get related object data through `select`, for example `"select": ["parent.title", "responsible.name", "group.name", "chat.id"]`. Time tracking data is also available in the new model through `elapsedTime`.
+
 {% note tip "User documentation" %}
 
   - [How to create a subtask](https://helpdesk.bitrix24.com/open/17781634/)
@@ -97,6 +109,8 @@ Use one of the file list retrieval methods:
   - [disk.folder.getchildren](../disk/folder/disk-folder-get-children.md)
 
 Attach files to a task using the [tasks.task.files.attach](./tasks-task-files-attach.md) method if the task has already been created.
+
+In REST 3.0, use [tasks.task.file.attach](./tasks-task-file-attach.md) for an already created task.
 
 {% note tip "Typical use-cases and scenarios" %}
 
@@ -163,10 +177,23 @@ In Kanban or "My Plan" task modes, there are two additional special embedding lo
 - [Main dropdown menu item](../widgets/task/list-toolbar.md) `TASK_USER_LIST_TOOLBAR`, `TASK_GROUP_LIST_TOOLBAR`
 - [Main dropdown menu item near robot settings](../widgets/task/robot-designer-toolbar.md) `TASK_ROBOT_DESIGNER_TOOLBAR`
 
+In the new task card, starting from module version `tasks 25.700.0`, the `TASK_VIEW_TAB`, `TASK_VIEW_SIDEBAR`, and `TASK_VIEW_TOP_PANEL` embedding locations are combined into the "Applications" block at the bottom of the card.
+
+## Task Chat in REST 3.0
+
+Task discussion in REST 3.0 is performed through the chat. The [tasks.task.chat.message.send](./tasks-task-chat-message-send.md) method sends a message to the task chat.
+
+To work with messages, also use messenger methods:
+
+- [im.message.update](../chats/messages/im-message-update.md)
+- [im.message.delete](../chats/messages/im-message-delete.md)
+- [im.dialog.messages.get](../chats/messages/im-dialog-messages-get.md)
 
 ## Overview of Methods and Events {#all-methods}
 
-> Scope: [`task`](../scopes/permissions.md)
+> Scope:
+> - [`task`](../scopes/permissions.md) — for methods of the previous API version
+> - [`tasks`](../scopes/permissions.md) — for REST 3.0 methods
 >
 > Who can execute the method: depends on the method
 
@@ -179,31 +206,34 @@ In Kanban or "My Plan" task modes, there are two additional special embedding lo
     #|
     || **Method** | **Description** ||
     || [tasks.task.add](./tasks-task-add.md) | Creates a task ||
+    || [tasks.task.add](./tasks-task-add-rest-v3.md) | Creates a task v 3.0 ||
     || [tasks.task.update](./tasks-task-update.md) | Updates a task ||
+    || [tasks.task.update](./tasks-task-update-rest-v3.md) | Updates a task v 3.0 ||
     || [tasks.task.get](./tasks-task-get.md) | Gets information about a task by `id` ||
+    || [tasks.task.get](./tasks-task-get-rest-v3.md) | Gets information about a task by `id` v 3.0 ||
     || [tasks.task.list](./tasks-task-list.md) | Gets a list of tasks ||
+    || [tasks.task.list](./tasks-task-list-rest-v3.md) | Gets a list of tasks v 3.0 ||
+    || [tasks.task.delete](./tasks-task-delete.md) | Deletes a task ||
+    || [tasks.task.delete](./tasks-task-delete-rest-v3.md) | Deletes a task v 3.0 ||
+    || [tasks.task.getFields](./tasks-task-get-fields.md) | Gets a list of task fields ||
+    || [tasks.task.field.list](./tasks-task-field-list.md) | Gets a list of task fields v 3.0 ||
+    || [tasks.task.field.get](./tasks-task-field-get.md) | Gets task field description ||
+    || [tasks.task.getaccess](./tasks-task-get-access.md) | Checks access to the task ||
+    || [tasks.task.access.get](./tasks-task-access-get.md) | Checks access to the task v 3.0 ||
+    || [tasks.task.access.field.list](./tasks-task-access-field-list.md) | Gets a list of access permission fields ||
+    || [tasks.task.access.field.get](./tasks-task-access-field-get.md) | Gets access permission field description ||
     || [tasks.task.files.attach](./tasks-task-files-attach.md) | Attaches files to a task ||
+    || [tasks.task.file.attach](./tasks-task-file-attach.md) | Attaches files to a task v 3.0 ||
+    || [tasks.task.file.field.list](./tasks-task-file-field-list.md) | Gets a list of task file fields ||
+    || [tasks.task.file.field.get](./tasks-task-file-field-get.md) | Gets task file field description ||
+    || [tasks.task.chat.message.send](./tasks-task-chat-message-send.md) | Sends a message to the task chat ||
+    || [tasks.task.chat.message.field.list](./tasks-task-chat-message-field-list.md) | Gets a list of task chat message fields ||
+    || [tasks.task.chat.message.field.get](./tasks-task-chat-message-field-get.md) | Gets task chat message field description ||
     || [tasks.task.delegate](./tasks-task-delegate.md) | Delegates tasks ||
     || [tasks.task.counters.get](./tasks-task-counters-get.md) | Gets user counters ||
-    || [tasks.task.start](./tasks-task-start.md) | Moves a task to "in progress" status ||
-    || [tasks.task.pause](./tasks-task-pause.md) | Stops task execution and moves it to "waiting" status ||
-    || [tasks.task.defer](./tasks-task-defer.md) | Moves a task to "deferred" status ||
-    || [tasks.task.complete](./tasks-task-complete.md) | Moves a task to "completed" status ||
-    || [tasks.task.renew](./tasks-task-renew.md) | Renews a task after its completion ||
     || [tasks.task.approve](./tasks-task-approve.md) | Approves a task ||
     || [tasks.task.disapprove](./tasks-task-disapprove.md) | Rejects a task ||
-    || [tasks.task.delete](./tasks-task-delete.md) | Deletes a task ||
-    || [tasks.task.startwatch](./tasks-task-start-watch.md) | Allows watching a task ||
-    || [tasks.task.stopwatch](./tasks-task-stop-watch.md) | Stops watching a task ||
-    || [tasks.task.favorite.add](./tasks-task-favorite-add.md) | Adds tasks to favorites ||
-    || [tasks.task.favorite.remove](./tasks-task-favorite-remove.md) | Removes tasks from favorites ||
-    || [tasks.task.pin](./tasks-task-pin.md) | Pins a task in the list ||
-    || [tasks.task.unpin](./tasks-task-unpin.md) | Unpins a task in the list ||
-    || [tasks.task.getFields](./tasks-task-get-fields.md) | Gets available fields ||
-    || [tasks.task.getaccess](./tasks-task-get-access.md) | Checks access to the task ||
     || [tasks.task.history.list](./tasks-task-history-list.md) | Gets the task history ||
-    || [tasks.task.mute](./tasks-task-mute.md) | Enables "Mute" mode ||
-    || [tasks.task.unmute](./tasks-task-unmute.md) | Disables "Mute" mode ||
     || [task.dependence.add](./task-dependence-add.md) | Creates a dependency of one task on another ||
     || [task.dependence.delete](./task-dependence-delete.md) | Deletes a dependency of one task on another ||
     |#
@@ -219,13 +249,43 @@ In Kanban or "My Plan" task modes, there are two additional special embedding lo
 
 {% endlist %}
 
-### Task result
+### Task Status Changes
 
 #|
 || **Method** | **Description** ||
-|| [tasks.task.result.addFromCommentt](./result/tasks-task-result-add-from-comment.md) | Adds a comment to the result ||
+|| [tasks.task.start](./status/tasks-task-start.md) | Moves a task to In Progress status ||
+|| [tasks.task.pause](./status/tasks-task-pause.md) | Stops task execution and moves it to Waiting status ||
+|| [tasks.task.defer](./status/tasks-task-defer.md) | Moves a task to Deferred status ||
+|| [tasks.task.complete](./status/tasks-task-complete.md) | Moves a task to Completed status ||
+|| [tasks.task.renew](./status/tasks-task-renew.md) | Renews a task after completion ||
+|#
+
+### User Actions on Task
+
+#|
+|| **Method** | **Description** ||
+|| [tasks.task.startwatch](./user-actions/tasks-task-start-watch.md) | Starts watching a task ||
+|| [tasks.task.stopwatch](./user-actions/tasks-task-stop-watch.md) | Stops watching a task ||
+|| [tasks.task.favorite.add](./user-actions/tasks-task-favorite-add.md) | Adds a task to favorites ||
+|| [tasks.task.favorite.remove](./user-actions/tasks-task-favorite-remove.md) | Removes a task from favorites ||
+|| [tasks.task.pin](./user-actions/tasks-task-pin.md) | Pins a task in the list ||
+|| [tasks.task.unpin](./user-actions/tasks-task-unpin.md) | Unpins a task in the list ||
+|| [tasks.task.mute](./user-actions/tasks-task-mute.md) | Enables silent mode ||
+|| [tasks.task.unmute](./user-actions/tasks-task-unmute.md) | Disables silent mode ||
+|#
+
+### Task Result
+
+#|
+|| **Method** | **Description** ||
+|| [tasks.task.result.addFromComment](./result/tasks-task-result-add-from-comment.md) | Adds a comment to the result ||
 || [tasks.task.result.list](./result/tasks-task-result-list.md) | Gets a list of task results ||
 || [tasks.task.result.deleteFromComment](./result/tasks-task-result-delete-from-comment.md) | Removes a comment from the task result ||
+|| [tasks.task.result.add](./result/tasks-task-result-add.md) | Adds a result to the task ||
+|| [tasks.task.result.addfromchatmessage](./result/tasks-task-result-addfromchatmessage.md) | Creates a result from a task chat message ||
+|| [tasks.task.result.update](./result/tasks-task-result-update.md) | Updates the result text ||
+|| [tasks.task.result.list](./result/tasks-task-result-list-rest-v3.md) | Gets a list of task results v 3.0 ||
+|| [tasks.task.result.delete](./result/tasks-task-result-delete.md) | Deletes a task result ||
 |#
 
 ### Checklists
@@ -316,35 +376,4 @@ Comment methods are not applicable to the new task card. Task discussions are he
 || [tasks.flow.Flow.delete](./flow/tasks-flow-flow-delete.md) | Delete a stream ||
 || [tasks.flow.Flow.isExists](./flow/tasks-flow-flow-is-exists.md) | Check if a stream with such a name exists ||
 || [tasks.flow.Flow.activate](./flow/tasks-flow-flow-activate.md) | Enable or disable a stream ||
-|#
-
-### Tasks in REST 3.0
-
-> Scope: [`tasks`](../scopes/permissions.md)
->
-> Who can execute the method: depends on the method
-
-#|
-|| **Method** | **Description** ||
-|| [tasks.task.add](./rest-v3/tasks-task-add.md) | Adds a new task ||
-|| [tasks.task.file.attach](./rest-v3/tasks-task-file-attach.md) | Attaches Drive files to a task ||
-|| [tasks.task.get](./rest-v3/tasks-task-get.md) | Gets task data with connection support through `select` ||
-|| [tasks.task.list](./rest-v3/tasks-task-list.md) | Returns a list of tasks by the specified conditions ||
-|| [tasks.task.chat.message.send](./rest-v3/tasks-task-chat-message-send.md) | Sends a message to the task chat ||
-|| [tasks.task.result.add](./rest-v3/result/tasks-task-result-add.md) | Adds a result to a task ||
-|| [tasks.task.result.addfromchatmessage](./rest-v3/result/tasks-task-result-addfromchatmessage.md) | Creates a result from a task chat message ||
-|| [tasks.task.result.update](./rest-v3/result/tasks-task-result-update.md) | Updates the result text ||
-|| [tasks.task.result.list](./rest-v3/result/tasks-task-result-list.md) | Returns a list of task results ||
-|| [tasks.task.result.delete](./rest-v3/result/tasks-task-result-delete.md) | Deletes a task result ||
-|| [tasks.task.update](./rest-v3/tasks-task-update.md) | Updates a task ||
-|| [tasks.task.delete](./rest-v3/tasks-task-delete.md) | Deletes a task ||
-|| [tasks.task.access.get](./rest-v3/tasks-task-access-get.md) | Checks access permissions for a task ||
-|| [tasks.task.field.list](./rest-v3/tasks-task-field-list.md) | Returns a list of task fields ||
-|| [tasks.task.field.get](./rest-v3/tasks-task-field-get.md) | Returns the description of a task field by name ||
-|| [tasks.task.access.field.list](./rest-v3/tasks-task-access-field-list.md) | Returns a list of task access permission fields ||
-|| [tasks.task.access.field.get](./rest-v3/tasks-task-access-field-get.md) | Returns the description of a task access permission field by name ||
-|| [tasks.task.file.field.list](./rest-v3/tasks-task-file-field-list.md) | Returns a list of task file fields ||
-|| [tasks.task.file.field.get](./rest-v3/tasks-task-file-field-get.md) | Returns the description of a task file field by name ||
-|| [tasks.task.chat.message.field.list](./rest-v3/tasks-task-chat-message-field-list.md) | Returns a list of task chat message fields ||
-|| [tasks.task.chat.message.field.get](./rest-v3/tasks-task-chat-message-field-get.md) | Returns the description of a task chat message field by name ||
 |#

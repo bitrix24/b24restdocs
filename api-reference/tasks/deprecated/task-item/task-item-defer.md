@@ -14,7 +14,7 @@ This method changes the status of a task to "Deferred." To perform this operatio
 
 {% note warning "DEPRECATED" %}
 
-The development of this method has been halted. Please use [tasks.task.defer](../../tasks-task-defer.md).
+The development of this method has been halted. Please use [tasks.task.defer](../../status/tasks-task-defer.md).
 
 {% endnote %}
 

@@ -14,7 +14,7 @@ This method removes a task from Favorites.
 
 {% note warning "DEPRECATED" %}
 
-Development of this method has been halted. Use [tasks.task.favorite.remove](../../tasks-task-favorite-remove.md).
+Development of this method has been halted. Use [tasks.task.favorite.remove](../../user-actions/tasks-task-favorite-remove.md).
 
 {% endnote %}
 

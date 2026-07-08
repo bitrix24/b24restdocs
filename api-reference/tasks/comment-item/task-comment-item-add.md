@@ -14,7 +14,7 @@ The method `task.commentitem.add` adds a new comment to a task.
 
 {% note warning "DEPRECATED" %}
 
-The development of this method has been halted since version `tasks 25.700.0`. Use [tasks.task.chat.message.send](../rest-v3/tasks-task-chat-message-send.md).
+The development of this method has been halted since version `tasks 25.700.0`. Use [tasks.task.chat.message.send](../tasks-task-chat-message-send.md).
 
 {% endnote %}
 
