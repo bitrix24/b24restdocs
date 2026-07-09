@@ -25,7 +25,7 @@ The method `crm.duplicate.volatileType.register` adds a field to the duplicate s
 - `3` — [contact](../../contacts/index.md)
 - `4` — [company](../../companies/index.md) ||
 || **fieldCode*** 
-[`string`](../../../data-types.md) | The code of the field to be added to the duplicate search. For example, `TITLE`, `RQ.RU.NAME`, `UF_CRM_1750854801`. You can get a list of available fields using the method [crm.duplicate.volatileType.fields](./crm-duplicate-volatile-type-fields.md) ||
+[`string`](../../../data-types.md) | The code of the field to be added to the duplicate search. For example, `TITLE`, `RQ.EN.NAME`, `UF_CRM_1750854801`. You can get a list of available fields using the method [crm.duplicate.volatileType.fields](./crm-duplicate-volatile-type-fields.md) ||
 |#
 
 ### Method Operation Features

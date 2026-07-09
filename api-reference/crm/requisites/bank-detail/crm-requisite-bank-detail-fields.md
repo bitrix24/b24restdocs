@@ -453,14 +453,14 @@ HTTP status: **200**
             "isDynamic": false,
             "title": "SWIFT"
         },
-        "RQ_BIK": {
+        "RQ_BIC": {
             "type": "string",
             "isRequired": false,
             "isReadOnly": false,
             "isImmutable": false,
             "isMultiple": false,
             "isDynamic": false,
-            "title": "RQ_BIK"
+            "title": "RQ_BIC"
         },
         "RQ_CODEB": {
             "type": "string",
@@ -607,8 +607,8 @@ Currently, the field does not actually affect anything ||
 [`string`](../../../data-types.md) | IBAN ||
 || **RQ_SWIFT**
 [`string`](../../../data-types.md) | SWIFT ||
-|| **RQ_BIK**
-[`string`](../../../data-types.md) | BIK ||
+|| **RQ_BIC**
+[`string`](../../../data-types.md) | BIC ||
 || **COMMENTS**
 [`string`](../../../data-types.md) | Comment ||
 || **ORIGINATOR_ID**

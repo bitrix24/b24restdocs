@@ -2,6 +2,13 @@
 
 ## 2026
 
+### July 09, 2026
+
+- Added the tutorial [How to Add a Product with Custom Property Values](./tutorials/catalog/index.md)
+- Added the tutorial [How to Reschedule a Planned Activity](./tutorials/crm/how-to-edit-crm-objects/how-to-change-date-in-activity.md)
+- Updated the [CRM: Common Scenarios](./tutorials/crm/index.md) page
+- Added the tutorial [How to Find a CRM Object Created from an Open Channel Conversation](./tutorials/openlines/find-crm-object-by-dialog.md)
+
 ### June 30, 2026
 
 - Added the method [crm.activity.call.getTranscript](./api-reference/crm/timeline/activities/activity-base/crm-activity-call-get-transcript.md)

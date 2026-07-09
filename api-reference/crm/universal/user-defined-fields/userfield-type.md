@@ -9,29 +9,29 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 In CRM, you can create fields of two types:
 - standard: number, string, date, address, link, file, etc.,
 - custom: application integrations within the CRM detail form.
-
+  
 With custom fields, you can:
 
 - display data in the CRM detail form that does not fit standard field types. The field value is stored in Bitrix24, while the application shows it within the field and, if necessary, supplements it with data from its service.
 - create interface elements in CRM detail forms. For example, display buttons within the field to control the application.
 - integrate external services into the CRM detail form. For instance, display dynamic information in the field. Each time the detail form is opened, the field will make a request to the application handler and automatically load fresh data.
 
-> Quick navigation: [all methods](#all-methods)
+> Quick navigation: [All Methods](#all-methods)
 >
 > User documentation: [Custom fields in CRM](https://helpdesk.bitrix24.com/open/22067852/)
 
 ## Connection with CRM Objects
 
 Custom field types can be added to:
-- [deals](../../deals/index.md) — use methods [crm.deal.userfield.add](../../deals/user-defined-fields/crm-deal-userfield-add.md) or [userfieldconfig.add](../userfieldconfig/userfieldconfig-add.md),
-- [leads](../../leads/index.md) — [crm.lead.userfield.add](../../leads/userfield/crm-lead-userfield-add.md) or [userfieldconfig.add](../userfieldconfig/userfieldconfig-add.md),
-- [contacts](../../contacts/index.md) — [crm.contact.userfield.add](../../contacts/userfield/crm-contact-userfield-add.md) or [userfieldconfig.add](../userfieldconfig/userfieldconfig-add.md),
-- [companies](../../companies/index.md) — [crm.company.userfield.add](../../companies/userfields/crm-company-userfield-add.md) or [userfieldconfig.add](../userfieldconfig/userfieldconfig-add.md),
-- [new invoices](../invoice.md) — [userfieldconfig.add](../userfieldconfig/userfieldconfig-add.md),
-- [estimates](../../quote/index.md) — [crm.quote.userfield.add](../../quote/user-field/crm-quote-user-field-add.md) or [userfieldconfig.add](../userfieldconfig/userfieldconfig-add.md),
+- [Deals](../../deals/index.md) — use methods [crm.deal.userfield.add](../../deals/user-defined-fields/crm-deal-userfield-add.md) or [userfieldconfig.add](../userfieldconfig/userfieldconfig-add.md),
+- [Leads](../../leads/index.md) — [crm.lead.userfield.add](../../leads/userfield/crm-lead-userfield-add.md) or [userfieldconfig.add](../userfieldconfig/userfieldconfig-add.md),
+- [Contacts](../../contacts/index.md) — [crm.contact.userfield.add](../../contacts/userfield/crm-contact-userfield-add.md) or [userfieldconfig.add](../userfieldconfig/userfieldconfig-add.md),
+- [Companies](../../companies/index.md) — [crm.company.userfield.add](../../companies/userfields/crm-company-userfield-add.md) or [userfieldconfig.add](../userfieldconfig/userfieldconfig-add.md),
+- [New Invoices](../invoice.md) — [userfieldconfig.add](../userfieldconfig/userfieldconfig-add.md),
+- [Estimates](../../quote/index.md) — [crm.quote.userfield.add](../../quote/user-field/crm-quote-user-field-add.md) or [userfieldconfig.add](../userfieldconfig/userfieldconfig-add.md),
 - [SPAs](../index.md) — [userfieldconfig.add](../userfieldconfig/userfieldconfig-add.md).
 
-In the `USER_TYPE_ID` field, pass the value in the form `rest_#ID_application#_#USER_TYPE_ID#`. For example, for an application with `ID: 123` and `USER_TYPE_ID: userfield1`, the value will be `rest_123_test_userfield1`.
+Pass the value to the `USER_TYPE_ID` field in the `rest_#ID_приложения#_#USER_TYPE_ID#` format. For example, for an application with `ID: 123` and `USER_TYPE_ID: userfield1`, the value will be `rest_123_userfield1`.
 
 To obtain the application `ID`, use the method [app.info](../../../common/system/app-info.md).
 
@@ -39,7 +39,7 @@ To obtain the application `ID`, use the method [app.info](../../../common/system
 
 ### Error 400 When Creating a Field
 
-When creating a field with a custom type, you may encounter the error `Error! 400: ERROR_CORE: Invalid user type specified. (400)`.
+When creating a field with a custom type, you may encounter error `Error! 400: ERROR_CORE: Invalid user type specified. (400)`.
 
 1. Execute the method [userfieldtype.list](../../../widgets/user-field/userfieldtype-list.md).
 
@@ -59,7 +59,7 @@ When creating a field with a custom type, you may encounter the error `Error! 40
     });
     ```
 
-### Error 50x When Loading a Field
+### Error 50X When Loading a Field
 
 If the field was created without errors, but the content is not loading:
 
@@ -67,7 +67,7 @@ If the field was created without errors, but the content is not loading:
 
 2. Ensure that the handler is accessible from the internet:
 
-   - do not use local addresses: localhost, 192.168.* and other addresses accessible only from the local network,
+   - do not use local addresses: `localhost`, `192.168.*`, and other addresses accessible only from the local network,
 
    - check the handler's availability using public "website availability" services.
 
@@ -75,9 +75,9 @@ If the field was created without errors, but the content is not loading:
 
    - the correctness of the SSL certificate if HTTPS is used,
 
-   - the absence of blocks in .htaccess or firewall on the handler's server,
+   - the absence of blocks in `.htaccess` or a firewall on the handler's server,
 
-   - the returned HTTP codes; it should be 200 OK.
+   - the returned HTTP codes; it should be `200 OK`.
 
 ## General Recommendations
 
@@ -87,9 +87,9 @@ If the field was created without errors, but the content is not loading:
 
 {% note tip "Typical use-cases and scenarios" %}
 
--  [Embed a widget in a lead as a custom property](../../../../tutorials/crm/crm-widgets/widget-as-field-in-lead-page)
+- [Embed a Widget into a Lead as a User Field](../../../../tutorials/crm/crm-widgets/widget-as-field-in-lead-page)
 
--  [Widget embedding mechanism](../../../widgets/index)
+- [Widget Embedding Mechanism](../../../widgets/index)
 
 {% endnote %}
 
@@ -99,7 +99,7 @@ If the field was created without errors, but the content is not loading:
 > 
 > Who can execute the method: administrator
 
-#| 
+#|
 || **Method** | **Description** ||
 || [userfieldtype.add](../../../widgets/user-field/userfieldtype-add.md) | Registers a new type of custom field ||
 || [userfieldtype.update](../../../widgets/user-field/userfieldtype-update.md) | Modifies the parameters of an existing field type ||

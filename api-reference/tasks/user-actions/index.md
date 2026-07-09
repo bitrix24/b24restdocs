@@ -12,7 +12,7 @@ These methods do not change the task content. They help track updates, find requ
 
 > Quick links: [all methods](#all-methods)
 > 
-> User documentation: [How to find favorite tasks](https://helpdesk.bitrix24.com/open/27648776/#4)
+> User documentation: [Searching for favorite tasks](https://helpdesk.bitrix24.com/open/25886923/#4)
 
 ## Getting Started
 

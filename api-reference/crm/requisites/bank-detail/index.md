@@ -94,8 +94,8 @@ Currently, the field does not actually affect anything | Yes | Yes | No | No ||
 [`string`](../../../data-types.md) | IBAN | Yes | Yes | No | No ||
 || **RQ_SWIFT**
 [`string`](../../../data-types.md) | SWIFT | Yes | Yes | No | No ||
-|| **RQ_BIK**
-[`string`](../../../data-types.md) | BIK | Yes | Yes | No | No ||
+|| **RQ_BIC**
+[`string`](../../../data-types.md) | BIC | Yes | Yes | No | No ||
 || **COMMENTS**
 [`string`](../../../data-types.md) | Comment | Yes | Yes | No | No ||
 || **ORIGINATOR_ID**

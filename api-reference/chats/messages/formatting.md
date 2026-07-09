@@ -58,7 +58,7 @@ Most often, formatting is conveyed in the `MESSAGE` field of the [im.message.add
         method: 'im.message.add',
         params: {
           DIALOG_ID: 'chat2725',
-          MESSAGE: '[B]Important[/B][BR]Open [URL=https://bitrix24.ru]site[/URL][BR][SEND=/help]Help[/SEND]',
+          MESSAGE: '[B]Important[/B][BR]Open [URL=https://bitrix24.com]site[/URL][BR][SEND=/help]Help[/SEND]',
         },
         requestId: Text.getUuidRfc4122()
       })
@@ -91,7 +91,7 @@ Most often, formatting is conveyed in the `MESSAGE` field of the [im.message.add
             method: 'im.message.add',
             params: {
               DIALOG_ID: 'chat2725',
-              MESSAGE: '[B]Important[/B][BR]Open [URL=https://bitrix24.ru]site[/URL][BR][SEND=/help]Help[/SEND]',
+              MESSAGE: '[B]Important[/B][BR]Open [URL=https://bitrix24.com]site[/URL][BR][SEND=/help]Help[/SEND]',
             },
             requestId: B24Js.Text.getUuidRfc4122()
           })

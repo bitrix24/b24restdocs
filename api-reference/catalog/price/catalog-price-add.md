@@ -14,7 +14,7 @@ The method `catalog.price.add` adds a new price for a product.
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../_includes/required.md) %}
+{% include [Note on parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -25,7 +25,7 @@ The method `catalog.price.add` adds a new price for a product.
 
 ### Parameter fields {#fields}
 
-{% include [Note on required parameters](../../../_includes/required.md) %}
+{% include [Note on parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -35,7 +35,7 @@ The method `catalog.price.add` adds a new price for a product.
 || **catalogGroupId***
 [`catalog_price_type.id`](../data-types.md#catalog_price_type) | Price type identifier, can be obtained using the method [catalog.priceType.list](../price-type/catalog-price-type-list.md) ||
 || **price***
-[`double`](../../data-types.md) | Price value ||
+[`double`](../../data-types.md) | Value of the price ||
 || **currency***
 [`string`](../../data-types.md) | Currency identifier, can be obtained using the method [crm.currency.list](../../crm/currency/crm-currency-list.md) ||
 |#
@@ -52,7 +52,7 @@ The method `catalog.price.add` adds a new price for a product.
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"catalogGroupId":1,"currency":"USD","price":2000,"productId":1}}' \
+    -d '{"fields":{"catalogGroupId":1,"currency":"EUR","price":2000,"productId":1}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/catalog.price.add
     ```
 
@@ -62,7 +62,7 @@ The method `catalog.price.add` adds a new price for a product.
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"catalogGroupId":1,"currency":"USD","price":2000,"productId":1},"auth":"**put_access_token_here**"}' \
+    -d '{"fields":{"catalogGroupId":1,"currency":"EUR","price":2000,"productId":1},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/catalog.price.add
     ```
 
@@ -97,7 +97,7 @@ The method `catalog.price.add` adds a new price for a product.
         params: {
           fields: {
             catalogGroupId: 1,
-            currency: 'USD',
+            currency: 'EUR',
             price: 2000,
             productId: 1,
           },
@@ -134,7 +134,7 @@ The method `catalog.price.add` adds a new price for a product.
             params: {
               fields: {
                 catalogGroupId: 1,
-                currency: 'USD',
+                currency: 'EUR',
                 price: 2000,
                 productId: 1,
               },
@@ -171,7 +171,7 @@ The method `catalog.price.add` adds a new price for a product.
                 [
                     'fields' => [
                         'catalogGroupId' => 1,
-                        'currency'       => "USD",
+                        'currency'       => "EUR",
                         'price'          => 2000,
                         'productId'      => 1
                     ]
@@ -202,7 +202,7 @@ The method `catalog.price.add` adds a new price for a product.
         {
             fields: {
                 catalogGroupId: 1,
-                currency: "USD",
+                currency: "EUR",
                 price: 2000,
                 productId: 1
             }
@@ -226,7 +226,7 @@ The method `catalog.price.add` adds a new price for a product.
         [
             'fields' => [
                 'catalogGroupId' => 1,
-                'currency' => 'USD',
+                'currency' => 'EUR',
                 'price' => 2000,
                 'productId' => 1
             ]
@@ -295,26 +295,27 @@ HTTP status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
 || **Code** | **Description** | **Value** ||
 || `200040300020` | Access Denied | Insufficient permissions ||
-|| `100` | Could not find value for parameter {fields} | Parameter `fields` is missing or empty || 
-|| `0` | Required fields: | Required fields are not set ||
+|| `100` | Could not find value for parameter {fields} | Parameter `fields` not specified or empty || 
+|| `0` | Required fields: | Required fields not set ||
 || `0` | Validate price error. Catalog price group is wrong | Incorrect price type ||
 || `0` | Validate price error. Catalog product is allowed has only single price without ranges in price group | A price of this type already exists for the product ||
 |#
 
-{% include [system errors](../../../_includes/system-errors.md) %}
+{% include [System errors](../../../_includes/system-errors.md) %}
 
-## Continue Learning 
+## Continue Learning
 
 - [{#T}](./catalog-price-update.md)
 - [{#T}](./catalog-price-get.md)
 - [{#T}](./catalog-price-list.md)
+- [{#T}](../../../tutorials/catalog/index.md)
 - [{#T}](./catalog-price-delete.md)
 - [{#T}](./catalog-price-get-fields.md)
 - [{#T}](./catalog-price-modify.md)

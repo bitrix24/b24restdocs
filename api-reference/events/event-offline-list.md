@@ -6,42 +6,42 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-> Who can execute the method: any user
+> Who can execute the method: administrator
 
-The `event.offline.list` method is used to read the current queue without altering its state, unlike [event.offline.get](./event-offline-get.md). The availability of offline events can be checked using the [feature.get](../common/system/feature-get.md) method.
+A `event.offline.list` method for reading the current queue without making changes to its state, unlike [event.offline.get](./event-offline-get.md). The availability of offline events can be checked via the [feature.get](../common/system/feature-get.md) method.
 
-This method does not mark events as processed and does not generate a `process_id`. In the records, the `PROCESS_ID` field remains empty until events are reserved by calling [event.offline.get](./event-offline-get.md) with the `clear=0` parameter.
+The method does not mark events as processed and does not generate `process_id`. In the `PROCESS_ID` field, the value is empty until events are reserved by a call to [event.offline.get](./event-offline-get.md) with the `clear=0` parameter.
 
-The method operates only within the context of application authorization [application](../../settings/app-installation/index.md).
+The method works only in the context of authorizing the [application](../../settings/app-installation/index.md).
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../_includes/required.md) %}
+{% include [Note on parameters](../../_includes/required.md) %}
 
-#| 
+#|
 || **Name**
 `type` | **Description** ||
 || **filter**
 [`array`](../data-types.md) | Record filter. By default, all records are returned without filtering. Filtering is supported by fields: `ID`, `TIMESTAMP_X`, `EVENT_NAME`, `MESSAGE_ID`, `PROCESS_ID`, `ERROR` with standard operations like `=`, `>`, `<`, `<=`, etc. ||
 || **order**
-[`array`](../data-types.md) | Record sorting. Sorting is supported by the same fields as in the filter, and the input is an array in the format `[field=>ASC|DESC]`. By default — `[ID:ASC]` ||
+[`array`](../data-types.md) | Record sorting. Sorting is supported by the same fields as in the filter; an array of the type `[field=>ASC|DESC]` is accepted as input. Default —`[ID:ASC]` ||
 || **start**
-[`integer`](../data-types.md) | This parameter is used to manage pagination.
+[`integer`](../data-types.md) | This parameter is used to control pagination.
 
-The page size for results is always static: 50 records.
+The page size of results is always static: 50 records.
 
 To select the second page of results, you need to pass the value `50`. To select the third page of results — the value `100`, and so on.
 
 The formula for calculating the `start` parameter value:
 
-`start = (N-1) * 50`, where `N` is the desired page number. ||
+`start = (N-1) * 50`, where `N` — the number of the desired page ||
 || **auth_connector**
-[`string`](../data-types.md) | Source key. The queue of offline events is divided by sources. Pass the same `auth_connector` value as when subscribing with the [event.bind](./event-bind.md) method; otherwise, the method will return only events without a source. This parameter is available on the Professional plan and above. ||
+[`string`](../data-types.md) | Source key. The queue of offline events is divided by sources. Pass the same `auth_connector` value as when subscribing with the [event.bind](./event-bind.md) method; otherwise, the method will return only events without a source. This parameter is available on the Professional plan and above ||
 |#
 
 ## Code Examples
 
-{% include [Note on Examples](../../_includes/examples.md) %}
+{% include [Note on examples](../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -250,7 +250,7 @@ The formula for calculating the `start` parameter value:
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -291,20 +291,38 @@ HTTP Status: **200**
 
 ### Returned Data
 
-#| 
+#|
 || **Name**
 `type` | **Description** ||
 || **result**
 [`object`](../data-types.md) | Root element of the response ||
 || **total**
-[`integer`](../data-types.md) | Total number of records found ||
+[`integer`](../data-types.md) | The total number of records found ||
 || **time**
 [`time`](../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-{% include [system errors](../../_includes/system-errors.md) %}
+HTTP status: **403**
+
+```json
+{
+    "error": "ACCESS_DENIED",
+    "error_description": "Access denied!"
+}
+```
+
+{% include notitle [Error handling](../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+#|
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `403` | `ACCESS_DENIED` | Access denied! | Method was executed by a non-administrator ||
+|#
+
+{% include [System errors](../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

@@ -1,6 +1,6 @@
-# Tutorials: Ready-Made Use-Cases for the REST API
+# Tutorials: Ready-to-Use REST API Scenarios
 
-Tutorials are a practical guide for developers on the Bitrix24 REST API. They help address typical tasks such as creating or modifying entities and setting up integrations with external systems.
+Tutorials are a practical guide for developers working with the Bitrix24 REST API. Tutorials help solve common tasks: creating or modifying items, and configuring integrations with external systems.
 
 {% note tip "" %}
 
@@ -8,53 +8,54 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-## How to Use the Tutorials
+## How to Use Tutorials
 
-- As educational material for making your first requests. This is suitable for developers who are just starting to work with the Bitrix24 REST API. The tutorials will help you understand how to formulate requests and process responses. For example, the tutorial [How to Attach a Task to a SPA](./tasks/how-to-connect-task-to-spa.md).
+- As educational material for making your first requests. This is suitable for developers who are starting to work with the Bitrix24 REST API. Tutorials will help you understand how to form requests and process responses. For example, the [How to Attach a Task to a SPA](./tasks/how-to-connect-task-to-spa.md) tutorial.
 
-- As templates for real scenarios. The tutorials can serve as a foundation for your own solutions: adapt the examples to your needs, add error handling logic, and logging. For instance, the tutorial [How to Implement a Simple Cash Register Using the REST API](./sale/cashbox-add-example.md).
+- As templates for real-world scenarios. Tutorials can be used as a foundation for your own solutions: adapt the examples to your needs, and add error handling logic and logging. For example, the [How to Implement a Simple Cash Register via REST API](./sale/cashbox-add-example.md) tutorial.
 
-- For quickly solving specific tasks. The tutorials will help you find a ready-made code example that you can use immediately. For example, the tutorial [How to Set Up Rounding for a Custom Number Field](./crm/how-to-add-crm-objects/how-to-add-precision-to-user-field.md).
+- For quickly solving specific tasks. Tutorials help you find ready-to-use code examples. For example, the [How to Configure Rounding for a Custom Numeric Field](./crm/how-to-add-crm-objects/how-to-add-precision-to-user-field.md) tutorial.
 
-## Structure of the Tutorials
+## Tutorial Structure
 
-The tutorials consist of:
+Tutorials consist of:
 
 - a brief description of the task being solved,
-- examples of methods in PHP and JavaScript,
+- method examples in PHP and JavaScript,
 - descriptions of the parameters used,
 - examples of server responses in JSON format,
-- examples of general code for applications in PHP and JavaScript,
+- examples of boilerplate code for PHP and JavaScript applications,
 - explanations and tips,
 - links to related articles.
 
 ## Tips for Beginners
 
-Explore the sections [Getting Started](../first-steps/index.md), [How to Make Your First Request](../first-steps/first-rest-api-call.md), and install the [REST API Documentation app](https://www.bitrix24.com/apps/app/bitrix.restapi/) — it allows you to view documentation and make requests in the application console simultaneously.
+Study the [Getting Started](../first-steps/index.md) and [How to Make Your First Request](../first-steps/first-rest-api-call.md) sections, and install the [REST API Documentation](https://www.bitrix24.com/apps/app/bitrix.restapi/) application — it allows you to view documentation and execute requests in the application console simultaneously.
 
-Start with simple scenarios, such as filtering data in the tutorial [How to Filter Elements by Stage Name](./crm/how-to-get-lists/how-to-get-elements-by-stage-filter.md). This tutorial does not use methods for modifying or deleting entities, ensuring that the data within the entities remains safe.
+Start with simple scenarios, such as filtering data in the [How to Filter Items by Stage Name](./crm/how-to-get-lists/how-to-get-elements-by-stage-filter.md) tutorial. It does not use methods to modify or delete items, so the data within the items will remain safe.
 
-Here’s a sample algorithm for working with the section:
+Example workflow for working with a section:
 
-1. Select a [category](#categories) from the menu that interests you, such as CRM.
+1. Select a [category](#categories) of interest from the menu, such as CRM.
 2. Find the tutorial that corresponds to your task.
 3. Follow the step-by-step instructions and examples.
 4. Adapt the code to your needs.
-5. Check the results and ensure everything works.
-6. Contact [Bitrix24 support](../bitrix-support.md) if you encounter any difficulties.
+5. Verify the result and ensure everything works correctly.
+6. [Contact Bitrix24 Helpdesk](../bitrix-support.md) if you encounter any difficulties.
 
-## Categories of Tutorials {#categories}
+## Tutorial Categories {#categories}
 
 #|
-|| [CRM](./crm/index) | How to work with CRM entities: contacts, deals, SPAs, custom fields, widgets, and Sales Intelligence ||
-|| [Online Sales and E-commerce](./sale/index) | How to integrate sales functions: create product items, set up delivery, implement a cash register ||
-|| [Workflows](./bizproc/index) | How to embed workflow actions, complete processes, configure Automation rules ||
-|| [Chatbots](./chat-bots/index) | How to create a chatbot, configure it for Open Channels, create a support channel ||
+|| [CRM](./crm/index) | How to work with CRM objects: contacts, deals, smart processes, custom fields, widgets, and Sales Intelligence ||
+|| [Online sales and Online store](./sale/index) | How to integrate trading functions: create product items, set up delivery, implement a cash register ||
+|| [Product catalog](./catalog/index) | How to create products, properties, prices, and other catalog data ||
+|| [Business processes](./bizproc/index) | How to embed an action, complete processes, configure robot parameters ||
+|| [Chatbots](./chat-bots/index) | How to create a chatbot, configure it for Open Channels, and create a support channel ||
 || [Telephony](./telephony/index) | How to implement custom scenarios for integration with a call center ||
-|| [Tasks](./tasks/index) | How to create tasks with files, attach them to SPAs, add comments ||
-|| [Open Channels](./openlines/example-connector) | How to create a connector for online chat on a website and integrate it with Bitrix24 ||
+|| [Tasks](./tasks/index) | How to create tasks with files, attach them to smart processes, and add comments ||
+|| [Open Channels](./openlines/example-connector) | How to create a connector for an online chat on a website and integrate it with Bitrix24 ||
 |#
 
-## How to Provide Feedback on the Tutorials
+## How to Provide Feedback on Tutorials
 
-If you would like to add your scenario or improve an existing one, you can leave your [Pull Requests and Issues](../feedback.md).
+If you want to add your own scenario or improve an existing one, you can submit [Pull Requests and Issues](../feedback.md).

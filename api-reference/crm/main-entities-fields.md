@@ -815,8 +815,8 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
     [`string`][1] | IBAN | Yes | Yes ||
     || **RQ_SWIFT**
     [`string`][1] | SWIFT | Yes | Yes ||
-    || **RQ_BIK**
-    [`string`][1] | BIK | Yes | Yes ||
+    || **RQ_BIC**
+    [`string`][1] | BIC | Yes | Yes ||
     || **COMMENTS**
     [`string`][1] | Comment | Yes | Yes ||
     || **ORIGINATOR_ID**

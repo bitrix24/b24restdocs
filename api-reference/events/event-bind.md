@@ -10,14 +10,14 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 The `event.bind` method registers a new event handler.
 
-This method works only in the context of authorizing the [application](../../settings/app-installation/index.md). It can operate under a user with portal administration rights as well as under a regular user. The method for a user without administrator rights is available with limitations:
+The method works only within the context of [application](../../settings/app-installation/index.md) authorization. It can work both under a user with portal administration rights and under a regular user. For a user without administrator rights, the method is available with the following restrictions:
 
-1. Offline events are not available; attempting to set them will generate an exception.
-2. Events are set on behalf of the current user (see the description of the `auth_type` parameter). Explicitly specifying an `auth_type` different from the current user's `ID` will also generate an exception.
+1. Offline events are unavailable; attempting to install them will throw an exception.
+2. Events are installed on behalf of the current user (see the description of parameter `auth_type`). An explicit indication `auth_type` that differs from the `ID` current user will also throw an exception.
 
 {% note info %}
 
-Since requests will come from Bitrix servers, any URL must be accessible for GET/POST requests from the outside.
+Since requests will originate from Bitrix servers, any URL must be accessible for external GET/POST requests.
 
 {% endnote %}
 
@@ -25,28 +25,28 @@ The interface for this method is [BX24.callBind](../../sdk/bx24-js-sdk/how-to-ca
 
 {% note info %}
 
-When deleting and updating the application, its actions will be removed. Therefore, in the installer of each version, they need to be set from scratch.
+When an application is deleted or updated, its actions will be removed. Therefore, they must be set from scratch in the installer of each version.
 
 {% endnote %}
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../_includes/required.md) %}
+{% include [Note on parameters](../../_includes/required.md) %}
 
-#| 
-|| **Name** 
+#|
+|| **Name**
 `type` | **Description** ||
-|| **event*** 
+|| **event***
 [`string`](../data-types.md) | Event name ||
-|| **handler*** 
+|| **handler***
 [`string`](../data-types.md) | Link to the event handler ||
-|| **auth_type** 
+|| **auth_type**
 [`integer`](../data-types.md) | Identifier of the user under whom the event handler is authorized. By default, the authorization of the user whose actions triggered the event will be used ||
-|| **event_type** 
-[`string`](../data-types.md) | Values: `online|offline`. By default, `event_type=online`, and the method's behavior remains unchanged. If `event_type=offline` is called, the method works with [offline events](./offline-events.md) ||
-|| **auth_connector** 
-[`string`](../data-types.md) | Source key. This parameter is intended for [offline events](./offline-events.md). It allows excluding false event triggers ||
-|| **options** 
+|| **event_type**
+[`string`](../data-types.md) | Values: `online\|offline`. By default, `event_type=online`, and the method's behavior remains unchanged. If `event_type=offline` is called, the method works with [offline events](./offline-events.md) ||
+|| **auth_connector**
+[`string`](../data-types.md) |  Source key. This parameter is intended for [offline events](./offline-events.md). It allows excluding false event triggers ||
+|| **options**
 [`object`](../data-types.md) | Additional settings for the registered event. The set of fields depends on the event.
 
 For the `ONOFFLINEEVENT` event, the `minTimeout` parameter is supported — the minimum interval between notifications in seconds. Default is 1. More details in the article [{#T}](./on-offline-event.md#min-timeout) ||
@@ -54,7 +54,7 @@ For the `ONOFFLINEEVENT` event, the `minTimeout` parameter is supported — the 
 
 ## Code Examples
 
-{% include [Note on Examples](../../_includes/examples.md) %}
+{% include [Note on examples](../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -87,7 +87,7 @@ For the `ONOFFLINEEVENT` event, the `minTimeout` parameter is supported — the 
         method: 'event.bind',
         params: {
           event: 'ONCRMLEADADD',
-          handler: 'https://www.my-domain.ru/handler/',
+          handler: 'https://www.my-domain.com/handler/',
           auth_type: 15,
         },
         requestId: Text.getUuidRfc4122()
@@ -121,7 +121,7 @@ For the `ONOFFLINEEVENT` event, the `minTimeout` parameter is supported — the 
             method: 'event.bind',
             params: {
               event: 'ONCRMLEADADD',
-              handler: 'https://www.my-domain.ru/handler/',
+              handler: 'https://www.my-domain.com/handler/',
               auth_type: 15,
             },
             requestId: B24Js.Text.getUuidRfc4122()
@@ -168,7 +168,7 @@ For the `ONOFFLINEEVENT` event, the `minTimeout` parameter is supported — the 
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -187,18 +187,18 @@ HTTP Status: **200**
 
 ### Returned Data
 
-#| 
-|| **Name** 
+#|
+|| **Name**
 `type` | **Description** ||
-|| **result** 
+|| **result**
 [`boolean`](../data-types.md) | Success of execution ||
-|| **time** 
-[`time`](../data-types.md) | Information about the execution time of the request ||
+|| **time**
+[`time`](../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**, **403**
 
 ```json
 {
@@ -207,16 +207,18 @@ HTTP Status: **400**
 }
 ```
 
-{% include notitle [Error Handling](../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
-#| 
-|| **Code** | **Error Message** | **Description** ||
-|| `ERROR_EVENT_NOT_FOUND` | Event not found | The event is incorrectly specified ||
+#|
+|| **Status** | **Code** | **Error message** | **Description** ||
+|| `400` | `ERROR_EVENT_NOT_FOUND` | Event not found | The event is incorrectly specified ||
+|| `403` | `ACCESS_DENIED` | Access denied! Offline events binding requires administrator access rights | The method was launched by someone other than the administrator when registering an offline event handler ||
+|| `403` | `ACCESS_DENIED` | Access denied! Event binding with AUTH_TYPE requires administrator access rights | The method was launched by someone other than the administrator and specified the `auth_type` of another user ||
 |#
 
-{% include [System Errors](../../_includes/system-errors.md) %}
+{% include [System errors](../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

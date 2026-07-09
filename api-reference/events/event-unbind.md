@@ -1,4 +1,4 @@
-# Unbind Registered Event Handler event.unbind
+# Unregister Event Handler event.unbind
 
 {% note tip "" %}
 
@@ -6,15 +6,18 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-> Who can execute the method: administrator
+> Who can execute the method: any user
 
-The `event.unbind` method cancels a registered event handler.
+The `event.unbind` method unregisters a registered event handler.
 
-This method works only in the context of [application](../../settings/app-installation/index.md) authorization and only when authorized under a user with administrative rights to the account.
+The method works only within the authorization context of an [application](../../settings/app-installation/index.md). It can work both when authorized as a user with Bitrix24 administration rights and as a regular user. For a user without administrator rights, the method is available with the following restrictions:
+
+1. Offline events are unavailable
+2. Only online event handlers registered for the current user can be deleted
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../_includes/required.md) %}
+{% include [Note on parameters](../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -36,7 +39,7 @@ If you need to remove event handlers set with an empty `auth_type` (authorized o
 [`string`](../data-types.md) | Values: `online\|offline`. By default, `event_type=online`, and the method's behavior remains unchanged. If `event_type=offline` is called, the method works with [offline events](./offline-events.md) ||
 |#
 
-If any parameters are not specified, all event handlers that meet the other requirements will be removed.
+If no parameters are specified, all event handlers that meet the other requirements will be deleted.
 
 ## Code Examples
 
@@ -56,7 +59,7 @@ If any parameters are not specified, all event handlers that meet the other requ
         "auth": "**put_access_token_here**"
     }' \
     https://**put_your_bitrix24_address**/rest/event.unbind
-    ```
+        ```
 
 - JS (TS)
 
@@ -78,7 +81,7 @@ If any parameters are not specified, all event handlers that meet the other requ
         method: 'event.unbind',
         params: {
           event: 'ONCRMLEADADD',
-          handler: 'https://www.my-domain.ru/handler/',
+          handler: 'https://www.my-domain.com/handler/',
           auth_type: 15,
         },
         requestId: Text.getUuidRfc4122()
@@ -112,7 +115,7 @@ If any parameters are not specified, all event handlers that meet the other requ
             method: 'event.unbind',
             params: {
               event: 'ONCRMLEADADD',
-              handler: 'https://www.my-domain.ru/handler/',
+              handler: 'https://www.my-domain.com/handler/',
               auth_type: 15,
             },
             requestId: B24Js.Text.getUuidRfc4122()
@@ -178,7 +181,7 @@ If any parameters are not specified, all event handlers that meet the other requ
 
 HTTP status: **200**
 
-The method returns the number of event handlers removed upon invocation.
+The method returns the number of event handlers deleted during the call.
 
 ```json
 {
@@ -210,7 +213,26 @@ The method returns the number of event handlers removed upon invocation.
 
 ## Error Handling
 
-{% include [system errors](../../_includes/system-errors.md) %}
+HTTP status: **403**
+
+```json
+{
+    "error": "ACCESS_DENIED",
+    "error_description": "Access denied! Offline events unbinding requires administrator access rights"
+}
+```
+
+{% include notitle [Error handling](../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+#|
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `403` | `ACCESS_DENIED` | Access denied! Offline events unbinding requires administrator access rights | The method was launched by a non-administrator when deleting an offline event handler ||
+|| `403` | `ACCESS_DENIED` | Access denied! Event unbinding with AUTH_TYPE requires administrator access rights | The method was launched by a non-administrator and specified the `auth_type` of another user ||
+|#
+
+{% include [System errors](../../_includes/system-errors.md) %}
 
 ## See Also
 

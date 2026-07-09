@@ -1,4 +1,4 @@
-# Register Errors for Processing Offline Events event.offline.error
+# Register Offline Event Queue Processing Errors event.offline.error
 
 {% note tip "" %}
 
@@ -6,15 +6,15 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-> Who can execute the method: any user
+> Who can execute the method: administrator
 
-The method `event.offline.error` saves a record in the database with an error mark when using offline events. The availability of offline events can be checked through the method [feature.get](../common/system/feature-get.md).
+The `event.offline.error` method retains a database record marked with an error when using offline events. The availability of offline events can be verified via the [feature.get](../common/system/feature-get.md) method.
 
 The method works only in the context of authorizing the [application](../../settings/app-installation/index.md).
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../_includes/required.md) %}
+{% include [Note on parameters](../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -212,12 +212,30 @@ HTTP status: **200**
 || **result**
 [`boolean`](../data-types.md) | Success of execution ||
 || **time**
-[`time`](../data-types.md) | Information about the execution time of the request ||
+[`time`](../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-{% include [system errors](../../_includes/system-errors.md) %}
+HTTP status: **403**
+
+```json
+{
+    "error": "ACCESS_DENIED",
+    "error_description": "Access denied!"
+}
+```
+
+{% include notitle [Error handling](../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+#|
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `403` | `ACCESS_DENIED` | Access denied! | Method was executed by a non-administrator ||
+|#
+
+{% include [System errors](../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

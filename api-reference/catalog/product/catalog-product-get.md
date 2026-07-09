@@ -14,19 +14,19 @@ This method retrieves information about a product in the trade catalog by its `I
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../_includes/required.md) %}
+{% include [Note on parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **id*** 
-[`catalog_product.id`](../data-types.md#catalog_product)| Product identifier.
+[`catalog_product.id`](../data-types.md#catalog_product)| Identifier of the product.
 
 To obtain product identifiers, use [catalog.product.list](./catalog-product-list.md)
  ||
 |#
 
-{% note warning "Working with Product Price" %}
+{% note warning "Working with product prices" %}
 
 To get product prices, use the methods [catalog.price.*](../price/index.md).
 
@@ -238,7 +238,7 @@ To get product prices, use the methods [catalog.price.*](../price/index.md).
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -250,9 +250,9 @@ HTTP Status: **200**
             "canBuyZero": "Y",
             "code": "Product",
             "createdBy": 1,
-            "dateActiveFrom": "2024-05-28T10:00:00+02:00",
-            "dateActiveTo": "2024-05-29T10:00:00+02:00",
-            "dateCreate": "2024-05-27T10:00:00+02:00",
+            "dateActiveFrom": "2024-05-28T10:00:00+03:00",
+            "dateActiveTo": "2024-05-29T10:00:00+03:00",
+            "dateCreate": "2024-05-27T10:00:00+03:00",
             "detailPicture": {
                 "id": "6455",
                 "url": "\/rest\/catalog.product.download?fields%5BfieldName%5D=detailPicture\u0026fields%5BfileId%5D=6455\u0026fields%5BproductId%5D=1243",
@@ -296,7 +296,7 @@ HTTP Status: **200**
             "quantityTrace": "Y",
             "sort": 100,
             "subscribe": "Y",
-            "timestampX": "2024-06-06T16:45:35+02:00",
+            "timestampX": "2024-06-06T16:45:35+03:00",
             "type": 1,
             "vatId": 1,
             "vatIncluded": "Y",
@@ -310,8 +310,8 @@ HTTP Status: **200**
         "finish": 1717745699.571344,
         "duration": 0.8867809772491455,
         "processing": 0.47261500358581543,
-        "date_start": "2024-06-07T10:34:58+02:00",
-        "date_finish": "2024-06-07T10:34:59+02:00"
+        "date_start": "2024-06-07T10:34:58+03:00",
+        "date_finish": "2024-06-07T10:34:59+03:00"
     }
 }
 ```
@@ -331,7 +331,7 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -340,27 +340,28 @@ HTTP Status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
 || **Code** | **Description** ||
-|| `200040300000` | The information block with the specified identifier does not exist ||
+|| `200040300000` | Information block with the specified identifier does not exist ||
 || `200040300040` | Insufficient rights to read the information block element ||
-|| `200040300010` | Insufficient rights to read the trade catalog ||
-|| `100` | The `id` parameter is not specified ||
+|| `200040300010` | Insufficient permissions to read the trade catalog ||
+|| `100` | Parameter `id` not specified ||
 || `0` | The product does not exist ||
 || `0` | Other errors (e.g., fatal errors) ||
 |#
 
-{% include [system errors](../../../_includes/system-errors.md) %}
+{% include [System errors](../../../_includes/system-errors.md) %}
 
-## Continue Learning 
+## Continue Learning
 
 - [{#T}](./catalog-product-add.md)
 - [{#T}](./catalog-product-update.md)
 - [{#T}](./catalog-product-list.md)
+- [{#T}](../../../tutorials/catalog/index.md)
 - [{#T}](./catalog-product-download.md)
 - [{#T}](./catalog-product-delete.md)
 - [{#T}](./catalog-product-get-fields-by-filter.md)

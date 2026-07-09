@@ -22,7 +22,7 @@ To complete this scenario, we will sequentially execute the following methods:
 
 {% note info "" %}
 
-The original example and additional materials are available in the [Embedding into a CRM Item Card](https://dev.bitrixsoft.com/learning/course/index.php?COURSE_ID=266&LESSON_ID=25544) lesson.
+The original example and additional materials are available in the [Embedding into a CRM Item Card](https://helpdesk.bitrix24.com/courses/index.php?COURSE_ID=268&LESSON_ID=26026) lesson.
 
 {% endnote %}
 

@@ -1,7 +1,9 @@
-title: Tutorials and Use-Cases for REST in the Open Channels Module  
-href: index.md  
-items:  
-  - name: Overview of Use-Cases  
-    href: index.md  
-  - name: How to Create an Open Channels Connector for Website Chat  
-    href: example-connector.md  
+title: Tutorials and use cases for REST in the Open Channels module
+href: index.md
+items:
+  - name: Overview of use-cases
+    href: index.md
+  - name: How to Create an Open Channels Connector for Website Chat
+    href: example-connector.md
+  - name: How to Find a CRM Object Created from an Open Channel Conversation
+    href: find-crm-object-by-dialog.md

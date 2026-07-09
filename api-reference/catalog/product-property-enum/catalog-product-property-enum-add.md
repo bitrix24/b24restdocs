@@ -14,7 +14,7 @@ The method `catalog.productPropertyEnum.add` adds a value to a list property.
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../_includes/required.md) %}
+{% include [Note on parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -25,7 +25,7 @@ The method `catalog.productPropertyEnum.add` adds a value to a list property.
 
 ### Parameter fields {#fields}
 
-{% include [Note on required parameters](../../../_includes/required.md) %}
+{% include [Note on parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -33,17 +33,17 @@ The method `catalog.productPropertyEnum.add` adds a value to a list property.
 || **propertyId***
 [`catalog_product_property.id`](../data-types.md#catalog_product_property) | Identifier of the product property or variation.
 
-Property identifiers can be obtained using the [catalog.productProperty.list](../product-property/catalog-product-property-list.md) method. ||
+Property identifiers can be obtained using the [catalog.productProperty.list](../product-property/catalog-product-property-list.md) method ||
 || **value***
-[`string`](../../data-types.md) | Value of the list item. ||
+[`string`](../../data-types.md) | Value of the list element ||
 || **xmlId***
-[`string`](../../data-types.md) | External identifier of the list value. Must be unique within the property. ||
+[`string`](../../data-types.md) | External identifier of the list value. Must be unique within the property ||
 || **def**
 [`char`](../../data-types.md) | Indicator of the default value. Acceptable values:
 - `Y` — default
-- `N` — not default. ||
+- `N` — not default ||
 || **sort**
-[`integer`](../../data-types.md) | Sort index. ||
+[`integer`](../../data-types.md) | Sorting index ||
 |#
 
 {% note info "" %}
@@ -64,7 +64,7 @@ The method only adds values for properties of type `L` (list). If a `propertyId`
     curl -X POST \
       -H "Content-Type: application/json" \
       -H "Accept: application/json" \
-      -d '{"fields":{"propertyId":431,"value":"Medium","xmlId":"M","def":"Y","sort":100}}' \
+      -d '{"fields":{"propertyId":431,"value":"Average","xmlId":"M","def":"Y","sort":100}}' \
       https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/catalog.productPropertyEnum.add
     ```
 
@@ -74,7 +74,7 @@ The method only adds values for properties of type `L` (list). If a `propertyId`
     curl -X POST \
       -H "Content-Type: application/json" \
       -H "Accept: application/json" \
-      -d '{"fields":{"propertyId":431,"value":"Medium","xmlId":"M","def":"Y","sort":100},"auth":"**put_access_token_here**"}' \
+      -d '{"fields":{"propertyId":431,"value":"Average","xmlId":"M","def":"Y","sort":100},"auth":"**put_access_token_here**"}' \
       https://**put_your_bitrix24_address**/rest/catalog.productPropertyEnum.add
     ```
 
@@ -182,7 +182,7 @@ The method only adds values for properties of type `L` (list). If a `propertyId`
                 [
                     'fields' => [
                         'propertyId' => 431,
-                        'value' => 'Medium',
+                        'value' => 'Average',
                         'xmlId' => 'M',
                         'def' => 'Y',
                         'sort' => 100,
@@ -204,7 +204,7 @@ The method only adds values for properties of type `L` (list). If a `propertyId`
         {
             fields: {
                 propertyId: 431,
-                value: 'Medium',
+                value: 'Average',
                 xmlId: 'M',
                 def: 'Y',
                 sort: 100,
@@ -230,7 +230,7 @@ The method only adds values for properties of type `L` (list). If a `propertyId`
         [
             'fields' => [
                 'propertyId' => 431,
-                'value' => 'Medium',
+                'value' => 'Average',
                 'xmlId' => 'M',
                 'def' => 'Y',
                 'sort' => 100,
@@ -245,7 +245,7 @@ The method only adds values for properties of type `L` (list). If a `propertyId`
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -255,7 +255,7 @@ HTTP Status: **200**
         "id": 1739,
         "propertyId": 431,
         "sort": 100,
-        "value": "Medium",
+        "value": "Average",
         "xmlId": "M"
         }
     },
@@ -264,8 +264,8 @@ HTTP Status: **200**
         "finish": 1774279799.330864,
         "duration": 0.33086395263671875,
         "processing": 0,
-        "date_start": "2026-03-23T18:29:59+02:00",
-        "date_finish": "2026-03-23T18:29:59+02:00",
+        "date_start": "2026-03-23T18:29:59+03:00",
+        "date_finish": "2026-03-23T18:29:59+03:00",
         "operating_reset_at": 1774280399,
         "operating": 0
     }
@@ -278,45 +278,46 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | Root object of the response. ||
+[`object`](../../data-types.md) | Root object of the response ||
 || **productPropertyEnum**
-[`catalog_product_property_enum`](../data-types.md#catalog_product_property_enum) | Object of the added list property value. ||
+[`catalog_product_property_enum`](../data-types.md#catalog_product_property_enum) | Object of the added list property value ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the request execution time. ||
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
     "error": "BX_INVALID_VALUE",
-    "error_description": "A record with the External code value equal to ... already exists in the database."
+    "error_description": "An entry with External code equal to ..., already exists in the database"
 }
 ```
 
-{% include notitle [error handling](../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `0` | Access Denied | Insufficient rights to modify the information block property. ||
-|| `0` | productPropertyEnum does not exist. | The property with the provided `propertyId` was not found or does not belong to the trade catalog. ||
-|| `0` | Only list properties are supported | A property of a type other than `List` was provided. ||
-|| `0` | Required fields: xmlId | The required field `xmlId` was not provided. ||
-|| `0` | A value with xmlId '...' already exists. | A value with this `xmlId` already exists within the property. ||
-|| `BX_INVALID_VALUE` | A record with the value "External code" equal to "..." already exists in the database. | Localized duplicate error for `xmlId`. ||
-|| `0` | Internal error adding enumeration value. Try adding again. | Internal error while adding the list value. ||
+|| `0` | Access Denied | Insufficient rights to modify the information block property ||
+|| `0` | productPropertyEnum does not exist. | The property with the provided `propertyId` was not found or does not belong to the trade catalog ||
+|| `0` | Only list properties are supported | A property was passed whose type is not `List` ||
+|| `0` | Required fields: xmlId | The required field `xmlId` was not provided ||
+|| `0` | A value with xmlId '...' already exists. | A value with this `xmlId` already exists within the property ||
+|| `BX_INVALID_VALUE` | A record with the value "External code" equal to "..." already exists in the database | Localized duplicate error for `xmlId` ||
+|| `0` | Internal error adding enumeration value. Try adding again. | Internal error while adding the list value ||
 |#
 
-{% include [system errors](../../../_includes/system-errors.md) %}
+{% include [System errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
 - [{#T}](./catalog-product-property-enum-update.md)
 - [{#T}](./catalog-product-property-enum-get.md)
 - [{#T}](./catalog-product-property-enum-list.md)
+- [{#T}](../../../tutorials/catalog/index.md)
 - [{#T}](./catalog-product-property-enum-delete.md)
 - [{#T}](./catalog-product-property-enum-get-fields.md)

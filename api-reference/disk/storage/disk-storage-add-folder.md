@@ -14,7 +14,7 @@ The method `disk.storage.addfolder` creates a folder in the root of the storage.
 
 ## Method Parameters
 
-{% include [Footnote about parameters](../../../_includes/required.md) %}
+{% include [Note on parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -42,7 +42,7 @@ The list of available `TASK_ID` identifiers for setting permissions can be obtai
 
 ## Code Examples
 
-{% include [Footnote about examples](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -52,7 +52,7 @@ The list of available `TASK_ID` identifiers for setting permissions can be obtai
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":1357,"data":{"NAME":"New Folder"},"rights":[{"TASK_ID":71,"ACCESS_CODE":"U1271"}]}' \
+    -d '{"id":1357,"data":{"NAME":"Neuer Ordner"},"rights":[{"TASK_ID":71,"ACCESS_CODE":"U1271"}]}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/disk.storage.addfolder
     ```
 
@@ -62,7 +62,7 @@ The list of available `TASK_ID` identifiers for setting permissions can be obtai
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":1357,"data":{"NAME":"New Folder"},"rights":[{"TASK_ID":71,"ACCESS_CODE":"U1271"}],"auth":"**put_access_token_here**"}' \
+    -d '{"id":1357,"data":{"NAME":"Neuer Ordner"},"rights":[{"TASK_ID":71,"ACCESS_CODE":"U1271"}],"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/disk.storage.addfolder
     ```
 
@@ -183,7 +183,7 @@ The list of available `TASK_ID` identifiers for setting permissions can be obtai
                 [
                     'id' => 1357,
                     'data' => [
-                        'NAME' => 'New Folder'
+                        'NAME' => 'Neuer Ordner'
                     ],
                     'rights' => [
                         [
@@ -215,7 +215,7 @@ The list of available `TASK_ID` identifiers for setting permissions can be obtai
         {
             id: 1357,
             data: {
-                NAME: 'New Folder'
+                NAME: 'Neuer Ordner'
             },
             rights: [
                 {
@@ -244,7 +244,7 @@ The list of available `TASK_ID` identifiers for setting permissions can be obtai
         [
             'id' => 1357,
             'data' => [
-                'NAME' => 'New Folder'
+                'NAME' => 'Neuer Ordner'
             ],
             'rights' => [
                 [
@@ -270,28 +270,28 @@ HTTP status: **200**
 {
     "result": {
         "ID": 9031,
-        "NAME": "New Folder",
+        "NAME": "Neuer Ordner",
         "CODE": null,
         "STORAGE_ID": "1357",
         "TYPE": "folder",
         "REAL_OBJECT_ID": 9031,
         "PARENT_ID": "8875",
         "DELETED_TYPE": 0,
-        "CREATE_TIME": "2026-01-28T17:23:11+02:00",
-        "UPDATE_TIME": "2026-01-28T17:23:11+02:00",
+        "CREATE_TIME": "2026-01-28T17:23:11+03:00",
+        "UPDATE_TIME": "2026-01-28T17:23:11+03:00",
         "DELETE_TIME": null,
         "CREATED_BY": "1269",
         "UPDATED_BY": "1269",
         "DELETED_BY": null,
-        "DETAIL_URL": "https://test.bitrix24.com/company/personal/user/1269/disk/path/New Folder"
+        "DETAIL_URL": "https://test.bitrix24.com/company/personal/user/1269/disk/path/Neuer Ordner"
     },
     "time": {
         "start": 1769610191,
         "finish": 1769610191.803601,
         "duration": 0.8036010265350342,
         "processing": 0,
-        "date_start": "2026-01-28T17:23:11+02:00",
-        "date_finish": "2026-01-28T17:23:11+02:00",
+        "date_start": "2026-01-28T17:23:11+03:00",
+        "date_finish": "2026-01-28T17:23:11+03:00",
         "operating_reset_at": 1769610791,
         "operating": 0
     }
@@ -304,11 +304,11 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`array`](../../data-types.md) | Array with data about the created folder ||
+[`array`](../../data-types.md) | An array with data about the created folder ||
 || **ID**
-[`integer`](../../data-types.md) | Identifier of the folder ||
+[`integer`](../../data-types.md) | Folder identifier ||
 || **NAME**
-[`string`](../../data-types.md) | Name of the folder ||
+[`string`](../../data-types.md) | Folder name ||
 || **CODE**
 [`string`](../../data-types.md) | Symbolic code of the folder ||
 || **STORAGE_ID**
@@ -339,7 +339,7 @@ HTTP status: **200**
 || **DETAIL_URL**
 [`string`](../../data-types.md) | Link to open the folder in the interface ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the execution time of the request ||
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -353,19 +353,19 @@ HTTP status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `ERROR_ARGUMENT` | Invalid value of parameter {Parameter #1} | Required field `NAME` not provided in the `data` array ||
+|| `ERROR_ARGUMENT` | Invalid value of parameter {Parameter #1} | The required field `NAME` is missing in the `data` array ||
 || `DISK_OBJ_22000` | A folder with this name already exists | A folder with this name already exists ||
 || `ERROR_NOT_FOUND` | Could not find entity with id `X` | Storage with the specified `id` not found ||
-|| `ACCESS_DENIED` | Access denied | Insufficient permissions to create the folder ||
+|| `ACCESS_DENIED` | Access denied | Insufficient rights to create the folder ||
 |#
 
-{% include [system errors](../../../_includes/system-errors.md) %}
+{% include [System errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

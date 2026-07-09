@@ -104,10 +104,10 @@ Default value: `Y` ||
         params: {
           NAME: 'My mail service',
           ACTIVE: 'Y',
-          SERVER: 'imap.my-mail.ru',
+          SERVER: 'imap.my-mail.com',
           PORT: 993,
           ENCRYPTION: 'Y',
-          LINK: 'https://mail.my-mail.ru/',
+          LINK: 'https://mail.my-mail.com/',
           SORT: 500,
         },
         requestId: Text.getUuidRfc4122()
@@ -142,10 +142,10 @@ Default value: `Y` ||
             params: {
               NAME: 'My mail service',
               ACTIVE: 'Y',
-              SERVER: 'imap.my-mail.ru',
+              SERVER: 'imap.my-mail.com',
               PORT: 993,
               ENCRYPTION: 'Y',
-              LINK: 'https://mail.my-mail.ru/',
+              LINK: 'https://mail.my-mail.com/',
               SORT: 500,
             },
             requestId: B24Js.Text.getUuidRfc4122()

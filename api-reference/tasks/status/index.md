@@ -12,7 +12,7 @@ The task status reflects the current stage of work and affects the task card, ch
 
 > Quick links: [all methods](#all-methods)
 >
-> User documentation: [Track employee tasks in Bitrix24](https://helpdesk.bitrix24.com/open/27774804/)
+> User documentation: [List view in tasks](https://helpdesk.bitrix24.com/open/21840936/)
 
 ## Getting Started
 

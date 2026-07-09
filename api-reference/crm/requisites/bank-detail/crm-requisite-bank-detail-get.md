@@ -90,7 +90,7 @@ Identifiers of bank details can be obtained using the method [`crm.requisite.ban
       RQ_COR_ACC_NUM: string | null
       RQ_IBAN: string | null
       RQ_SWIFT: string | null
-      RQ_BIK: string | null
+      RQ_BIC: string | null
       RQ_CODEB: string | null
       RQ_CODEG: string | null
       RQ_RIB: string | null
@@ -278,7 +278,7 @@ HTTP status: **200**
         "RQ_COR_ACC_NUM": "30101810400000000225",
         "RQ_IBAN": null,
         "RQ_SWIFT": null,
-        "RQ_BIK": null,
+        "RQ_BIC": null,
         "RQ_CODEB": null,
         "RQ_CODEG": null,
         "RQ_RIB": null,
@@ -390,8 +390,8 @@ Currently, the field does not actually affect anything ||
 [`string`](../../../data-types.md) | IBAN ||
 || **RQ_SWIFT**
 [`string`](../../../data-types.md) | SWIFT ||
-|| **RQ_BIK**
-[`string`](../../../data-types.md) | BIK ||
+|| **RQ_BIC**
+[`string`](../../../data-types.md) | BIC ||
 || **COMMENTS**
 [`string`](../../../data-types.md) | Comment ||
 || **ORIGINATOR_ID**

@@ -1,4 +1,4 @@
-# Get a List of Offline Events with event.offline.get
+# Retrieve a List of Offline Events With Cleanup event.offline.get
 
 {% note tip "" %}
 
@@ -6,15 +6,15 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-> Who can execute the method: any user
+> Who can execute the method: administrator
 
-The method `event.offline.get` returns the first queued offline events to the application according to the filter settings. The availability of offline events can be checked using the [feature.get](../common/system/feature-get.md) method.
+The `event.offline.get` method returns the first offline events in the queue to the application according to the filter settings. The availability of offline events can be checked via the [feature.get](../common/system/feature-get.md) method.
 
-This method works only in the context of [application](../../settings/app-installation/index.md) authorization.
+The method works only in the context of authorizing the [application](../../settings/app-installation/index.md).
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../_includes/required.md) %}
+{% include [Note on parameters](../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -24,7 +24,7 @@ This method works only in the context of [application](../../settings/app-instal
 
 Important: the operation type is placed before the field name in the filter ||
 || **order**
-[`array`](../data-types.md) | Record sorting. Sorting is supported by the same fields as in the filter, and an array of the form `[field=>ASC|DESC]` is accepted. By default — [TIMESTAMP_X:ASC] ||
+[`array`](../data-types.md) | Record sorting. Sorting is supported by the same fields as in the filter; an array of the type `[field=>ASC\|DESC]` is accepted as input. Default is [TIMESTAMP_X:ASC] ||
 || **limit**
 [`integer`](../data-types.md) | Number of records to select. Default is 50 ||
 |#
@@ -35,18 +35,18 @@ Important: the operation type is placed before the field name in the filter ||
 || **Name**
 `type` | **Description** ||
 || **clear**
-[`integer`](../data-types.md) | Values: `0|1` — whether to delete the selected records. Default is `1` ||
+[`integer`](../data-types.md) |Values: `0\|1` — whether to delete selected records. Default is `1` ||
 || **process_id**
 [`string`](../data-types.md) | Process identifier. Used if you need to re-select any unprocessed records from the current process ||
 || **auth_connector**
 [`string`](../data-types.md) | Source key. Used if the `auth_connector` value was specified in the [event.bind](./event-bind.md) method ||
 || **error**
-[`integer`](../data-types.md) | Values: `0|1` — whether to return erroneous records. Default is `0` ||
+[`integer`](../data-types.md) | Values: `0\|1` — whether to return erroneous records. Default is `0` ||
 |#
 
 {% note info %}
 
-The method supports multithreaded parsing. This means that multiple parallel requests to /rest/event.offline.get are allowed (subject to limits on the number of requests per unit of time), and each will receive different sets of records.
+The method supports multi-threaded parsing. This means several parallel requests to /rest/event.offline.get are permitted (subject to rate limits), and each will receive a different set of records.
 
 {% endnote %}
 
@@ -199,7 +199,7 @@ The method supports multithreaded parsing. This means that multiple parallel req
                 "=MESSAGE_ID": 1,
                 "=EVENT_NAME": "ONCRMLEADADD",
                 ">=ID": 1
-            },
+            }
             "auth_connector": "BxTest"
         },
         function(result)
@@ -238,7 +238,7 @@ The method supports multithreaded parsing. This means that multiple parallel req
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -275,12 +275,30 @@ HTTP Status: **200**
 || **result**
 [`object`](../data-types.md) | Root element of the response ||
 || **time**
-[`time`](../data-types.md) | Information about the execution time of the request ||
+[`time`](../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-{% include [system errors](../../_includes/system-errors.md) %}
+HTTP status: **403**
+
+```json
+{
+    "error": "ACCESS_DENIED",
+    "error_description": "Access denied!"
+}
+```
+
+{% include notitle [Error handling](../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+#|
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `403` | `ACCESS_DENIED` | Access denied! | Method was executed by a non-administrator ||
+|#
+
+{% include [System errors](../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

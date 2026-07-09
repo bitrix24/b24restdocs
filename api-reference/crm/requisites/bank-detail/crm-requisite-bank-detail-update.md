@@ -84,8 +84,8 @@ Currently, the field does not actually affect anything ||
 [`string`](../../../data-types.md) | IBAN ||
 || **RQ_SWIFT**
 [`string`](../../../data-types.md) | SWIFT ||
-|| **RQ_BIK**
-[`string`](../../../data-types.md) | BIK ||
+|| **RQ_BIC**
+[`string`](../../../data-types.md) | BIC ||
 || **COMMENTS**
 [`string`](../../../data-types.md) | Comment ||
 || **ORIGINATOR_ID**

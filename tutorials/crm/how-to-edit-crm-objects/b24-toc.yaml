@@ -1,19 +1,21 @@
 title: Edit Data
 href: index.md
-items: 
-  - name: Edit Data
+items:
+  - name: Edit data
     href: index.md
-  - name: How to Create Your Lead Edit Form
+  - name: How to Reschedule a Planned Activity
+    href: how-to-change-date-in-activity.md
+  - name: How to Create Your Own Lead Edit Card
     href: how-to-generate-edit-form-for-lead.md
-  - name: How to Create Your Contact Edit Card
+  - name: How to Create Your Own Contact Edit Card
     href: how-to-make-contact-edit-card.md
-  - name: How to Create Your Company Edit Card
+  - name: How to Create Your Company Edit Form
     href: how-to-generate-edit-form-for-company.md
-  - name: How to Create Your Deal Edit Card
+  - name: How to Create an Edit Deal Form
     href: how-to-generate-edit-form-for-deal.md
-  - name: How to Change or Remove Phone Numbers and Email
+  - name: How to Change or Delete Phone Numbers and Emails
     href: how-to-change-email-or-phone.md
-  - name: How to Move an Activity Between Entities of the Same Type
+  - name: How to Move an Activity Between Items of the Same Type
     href: how-to-move-activity.md
   - name: How to Move an Activity from One Object Type to Another
     href: how-to-move-activity-between-objects.md

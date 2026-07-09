@@ -6,69 +6,77 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-To make your first request to the REST API, use an inbound webhook. This is a ready-made tool for calling API methods with the permissions of the user who created the webhook.
+To make your first request to the REST API, create an incoming webhook. This is a ready-to-use tool for calling API methods with the permissions of the user who created the webhook.
 
-## How to Create an Inbound Webhook
+On this page, you will learn how to configure a webhook, perform a test request, and choose the appropriate authorization method for your integration.
 
-1. In the left menu of Bitrix24, open the *Applications > Developer resources* section.
-2. Go to the *Common use cases > Other > Inbound webhook* tab. A slider will appear with the already generated webhook code.
+## How to Create an Incoming Webhook
+
+1. In the Bitrix24 left menu, open the *Applications > Developer resources* section.
+2. Go to the *Scenarios > Other > Incoming webhook* tab. A slider will appear containing the pre-generated webhook code.
 
 {% note alert "" %}
 
-Do not share the secret webhook code with anyone and do not embed it in public web pages or scripts.
+Never share the secret webhook code and do not embed it in public web page code or scripts.
 
 {% endnote %}
 
-## Request Builder
+## Request Generator
 
-Below the webhook code is the Request Builder block. It allows you to select the necessary values for methods and parameters.
+Below the webhook code is the Request Generator block. You can use it to select the required method and parameter values.
 
-1. Choose a method from the list. If the desired method is not in the list:
-   - Set the required scopes in the Assign permissions block and save the webhook.
-   - Enter the method name in the URL.
+1. Select a method from the list. If the required method is not in the list:
+   - Set the necessary scopes in the Permission settings block and save the webhook.
+   - Manually enter the method name in the URL.
 
-   ![Request Generator](_images/generator.png)
+   ![Query Generator](_images/generator.png)
 
 2. Specify the method parameters if necessary.
 3. Click the Execute button. The request will be sent to the Bitrix24 API, and you will see the response in JSON format.
 
-   ![JSON Response](_images/json.png)
+   ![JSON response](_images/json.png)
 
 ## Webhook URL Structure
 
-To perform a request from an external system, a URL is used, which is generated automatically. You can view it in the generator.
+To execute a request from an external system, a URL is used which is generated automatically. You can view it in the generator.
+
+Example URL:
+
+```http
+https://test.bitrix24.com/rest/1/4l777m8lapmdaz1n/crm.company.add.json?fields[TITLE]=Company
+```
 
 The URL consists of several parts:
 
-- test.bitrix24.com — the address of your Bitrix24
-- /rest — indication of working through the REST API
-- /1 — identifier of the user who created the webhook
-- /wrd2qabp9x5dvsog — unique webhook code
-- /crm.company.add — the invoked REST API method
-- .json — data format
-- ?fields — parameters required for the specific method
+- `test.bitrix24.com` — your Bitrix24 address
+- `/rest` — indication of REST API access
+- `/1` — the identifier of the user who created the webhook
+- `/4l777m8lapmdaz1n` — the unique webhook code
+- `/crm.company.add` — the called Bitrix24 REST API method
+- `.json` — the data format
+- `?fields` — parameters required for the specific method
 
-## Assign permissions
+## Permission Settings
 
-In the Assign permissions block, specify which Bitrix24 modules the webhook can access. You can find out which scopes are needed to execute a specific method on the page describing that method.
+The Permission settings block specifies which Bitrix24 modules the webhook can access. Requests are executed with the permissions of the user who created the webhook and only within the selected scopes. You can find out which scopes are required to execute a specific method on its description page.
 
 {% note tip "" %}
-
-- [Available Scopes in Bitrix24](../api-reference/scopes/permissions.md)
+   
+- [Available Bitrix24 Scopes](../api-reference/scopes/permissions.md)
 
 {% endnote %}
 
 ## Other Ways to Work with the API
 
-Inbound webhooks are suitable for personal use. For developing local applications that will work for different users or mass-market solutions for the Bitrix24 Marketplace, authorization via OAuth 2.0 is required.
+Incoming webhooks are suitable for personal use and internal scenarios where requests are executed on behalf of a single user. For local applications that will run for different users, use OAuth 2.0. For commercial solutions that will be listed in the Bitrix24 Market, OAuth 2.0 and solution registration are also required.
 
-- To register local applications, go to the *Common use cases > Other > Local application* tab.
-- To place solutions in the Marketplace, you need to become a participant in the partner program. To do this, fill out the application on the [developer's area website](https://vendors.bitrix24.com/technology-partnership/).
+- To register local applications, go to the *Scenarios > Other > Local application* tab.
+- To list solutions in the Market, you must become a partner program member. To do this, fill out the application form on the [developer portal website](https://vendors.bitrix24.com/technology-partnership/).
 
 {% note tip "" %}
 
-- [Local Applications](../local-integrations/local-apps.md)
-- [Overview of Mass-Market Applications](../market/index.md)
-- [OAuth 2.0 Authorization Protocol](../settings/oauth/index.md)
+- [Local applications](../local-integrations/local-apps.md)
+- [Commercial applications overview](../market/index.md)
+- [OAuth 2.0 authorization protocol](../settings/oauth/index.md)
 
 {% endnote %}

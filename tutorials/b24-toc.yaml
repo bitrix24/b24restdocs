@@ -1,17 +1,21 @@
-title: Typical use-cases and scenarios
+title: Typical Use-Cases and Scenarios
 href: index.md
 items:
-  - name: Ready-to-use scenarios for REST API
+  - name: Ready-to-use REST API scenarios
     href: index.md
   - name: CRM
     include:
       path: crm/b24-toc.yaml
       mode: link
-  - name: Online Sales
+  - name: Online sales
     include:
       path: sale/b24-toc.yaml
       mode: link
-  - name: Workflows
+  - name: Product Catalog
+    include:
+      path: catalog/b24-toc.yaml
+      mode: link
+  - name: Business processes
     include:
       path: bizproc/b24-toc.yaml
       mode: link

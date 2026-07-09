@@ -1,4 +1,4 @@
-# Clear Records in the Offline Events Queue event.offline.clear
+# Clear Offline Event Queue event.offline.clear
 
 {% note tip "" %}
 
@@ -6,30 +6,30 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-> Who can execute the method: any user
+> Who can execute the method: administrator
 
-The `event.offline.clear` method clears records in the offline events queue. The availability of offline events can be checked using the [feature.get](../common/system/feature-get.md) method.
+The `event.offline.clear` method clears the records in the offline event queue. The availability of offline events can be checked via the [feature.get](../common/system/feature-get.md) method.
 
-This method works only in the context of authorizing the [application](../../settings/app-installation/index.md).
+The method works only in the context of authorizing the [application](../../settings/app-installation/index.md).
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../_includes/required.md) %}
+{% include [Note on parameters](../../_includes/required.md) %}
 
-#| 
-|| **Name** 
+#|
+|| **Name**
 `type` | **Description** ||
-|| **process_id*** 
+|| **process_id***
 [`string`](../data-types.md) | Identifier of the reserved event package. It is returned by the [event.offline.get](./event-offline-get.md) method when called with the `clear=0` parameter. The [event.offline.list](./event-offline-list.md) method does not return `process_id` ||
-|| **id** 
+|| **id**
 [`array`](../data-types.md) | Array of identifiers of records to be cleared. By default, all records marked with the provided `process_id` will be cleared ||
-|| **message_id** 
+|| **message_id**
 [`array`](../data-types.md) | Array of values of the `MESSAGE_ID` field of records to be cleared. Ignored if the `id` parameter is specified. By default, all records marked with the provided `process_id` will be cleared ||
 |#
 
 ## Code Examples
 
-{% include [Note on Examples](../../_includes/examples.md) %}
+{% include [Note on examples](../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -189,7 +189,7 @@ This method works only in the context of authorizing the [application](../../set
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -208,19 +208,36 @@ HTTP Status: **200**
 
 ### Returned Data
 
-#| 
-|| **Name** 
+#|
+|| **Name**
 `type` | **Description** ||
-|| **result** 
+|| **result**
 [`boolean`](../data-types.md) | Success of execution ||
-|| **time** 
-[`time`](../data-types.md) | Information about the execution time of the request ||
+|| **time**
+[`time`](../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-{% include [System Errors](../../_includes/system-errors.md) %}
+HTTP status: **403**
 
+```json
+{
+    "error": "ACCESS_DENIED",
+    "error_description": "Access denied!"
+}
+```
+
+{% include notitle [Error handling](../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+#|
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `403` | `ACCESS_DENIED` | Access denied! | Method was executed by a non-administrator ||
+|#
+
+{% include [System errors](../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

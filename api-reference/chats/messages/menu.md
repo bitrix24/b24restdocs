@@ -172,7 +172,7 @@ Default is `N` ||
             ITEMS: [
               {
                 TEXT: 'Open website',
-                LINK: 'https://www.example.ru/',
+                LINK: 'https://www.example.com/',
               },
               {
                 TEXT: 'Send text',
@@ -219,7 +219,7 @@ Default is `N` ||
                 ITEMS: [
                   {
                     TEXT: 'Open website',
-                    LINK: 'https://www.example.ru/',
+                    LINK: 'https://www.example.com/',
                   },
                   {
                     TEXT: 'Send text',

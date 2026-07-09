@@ -199,7 +199,7 @@ Default is `false` ||
             },
             '.landing-block-node-link': {
               text: 'Learn more',
-              href: 'https://www.bitrix24.ru',
+              href: 'https://www.bitrix24.com',
               target: '_blank',
             },
             '.landing-block-node-icon': ['fa', 'fa-telegram'],
@@ -249,7 +249,7 @@ Default is `false` ||
                 },
                 '.landing-block-node-link': {
                   text: 'Learn more',
-                  href: 'https://www.bitrix24.ru',
+                  href: 'https://www.bitrix24.com',
                   target: '_blank',
                 },
                 '.landing-block-node-icon': ['fa', 'fa-telegram'],

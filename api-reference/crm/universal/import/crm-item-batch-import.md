@@ -176,24 +176,24 @@ Default is `N`. ||
         const monthAgo = new Date(now.getTime() - 30 * day);
 
         const commentsExample = `
-        Пример комментария внутри сделки
+        Example comment within the deal
 
-        [B]Жирный текст[/B]
-        [I]Курсив[/I]
-        [U]Подчеркнутый[/U]
-        [S]Зачеркнутый[/S]
-        [B][I][U][S]Микс[/S][/U][/I][/B]
+        [B]Bold text[/B]
+        [I]Italic[/I]
+        [U]Underlined[/U]
+        [S]Strikethrough[/S]
+        [B][I][U][S]Mix[/S][/U][/I][/B]
 
         [LIST]
-        [*]Элемент списка #1
-        [*]Элемент списка #2
-        [*]Элемент списка #3
+        [*]List item #1
+        [*]List item #2
+        [*]List item #3
         [/LIST]
 
         [LIST=1]
-        [*]Нумерованный элемент списка #1
-        [*]Нумерованный элемент списка #2
-        [*]Нумерованный элемент списка #3
+        [*]Numbered list item #1
+        [*]Numbered list item #2
+        [*]Numbered list item #3
         [/LIST]
         `;
       

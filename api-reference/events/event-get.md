@@ -1,4 +1,4 @@
-# Get a List of Registered Event Handlers event.get
+# Retrieve a List of Registered Event Handlers event.get
 
 {% note tip "" %}
 
@@ -12,11 +12,13 @@ The `event.get` method allows you to retrieve a list of registered event handler
 
 The method works only in the context of authorizing the [application](../../settings/app-installation/index.md).
 
+A user without administrator permissions receives only the handlers registered for the current user.
+
 No parameters.
 
 ## Code Examples
 
-{% include [Footnote on examples](../../_includes/examples.md) %}
+{% include [Note on examples](../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -160,7 +162,6 @@ No parameters.
 
 {% endlist %}
 
-
 ## Response Handling
 
 HTTP status: **200**
@@ -206,7 +207,7 @@ HTTP status: **200**
 
 ## Error Handling
 
-{% include [system errors](../../_includes/system-errors.md) %}
+{% include [System errors](../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

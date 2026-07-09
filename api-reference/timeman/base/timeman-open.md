@@ -170,7 +170,7 @@ Required under the conditions:
         {
             'USER_ID' : 503,
             'TIME': '2025-03-27T08:00:01+00:00',
-            'REPORT': 'Забыла открыть рабочий день',
+            'REPORT': 'I forgot to start the workday',
             'LAT': 53.548841, 
             'LON': 9.987274
         },

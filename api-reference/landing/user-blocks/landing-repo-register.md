@@ -131,7 +131,7 @@ Example of registering a block where:
             NAME: 'Test block',
             DESCRIPTION: 'Just try!',
             SECTIONS: 'cover,about',
-            PREVIEW: 'https://www.bitrix24.ru/images/b24_screen.png',
+            PREVIEW: 'https://www.bitrix24.com/images/b24_screen.png',
             CONTENT: '<section class="landing-block"><div class="container">Test</div></section>',
           },
           manifest: {
@@ -176,7 +176,7 @@ Example of registering a block where:
                 NAME: 'Test block',
                 DESCRIPTION: 'Just try!',
                 SECTIONS: 'cover,about',
-                PREVIEW: 'https://www.bitrix24.ru/images/b24_screen.png',
+                PREVIEW: 'https://www.bitrix24.com/images/b24_screen.png',
                 CONTENT: '<section class="landing-block"><div class="container">Test</div></section>',
               },
               manifest: {

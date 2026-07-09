@@ -14,7 +14,7 @@ The method `catalog.productProperty.add` adds a property to a product or variati
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../_includes/required.md) %}
+{% include [Note on parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -25,7 +25,7 @@ The method `catalog.productProperty.add` adds a property to a product or variati
 
 ### Parameter fields {#fields}
 
-{% include [Note on required parameters](../../../_includes/required.md) %}
+{% include [Note on parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -35,7 +35,7 @@ The method `catalog.productProperty.add` adds a property to a product or variati
 
 Existing identifiers can be obtained using the method [catalog.catalog.list](../catalog/catalog-catalog-list.md) ||
 || **name***
-[`string`](../../data-types.md) | Property name ||
+[`string`](../../data-types.md) | Name of the property ||
 || **propertyType***
 [`string`](../../data-types.md) | Basic type of the property. Allowed values:
 - `N` — number
@@ -50,33 +50,34 @@ Existing identifiers can be obtained using the method [catalog.catalog.list](../
 - `N` — no
 ||
 || **sort**
-[`integer`](../../data-types.md) | Sort index ||
+[`integer`](../../data-types.md) | Sorting index ||
 || **code**
 [`string`](../../data-types.md) | Symbolic code of the property. The property code can consist of Latin letters, numbers, and underscores. The first character cannot be a digit ||
 || **defaultValue**
 [`text`](../../data-types.md) | Default value of the property ||
 || **userType**
-[`string`](../../data-types.md) | Custom type of the property. The value must correspond to the specified `propertyType`.
+[`string`](../../data-types.md) | Custom property type. The value must correspond to the specified `propertyType`.
 
-Examples of values:
+Value examples:
 - `DateTime` — date and time
 - `Money` — monetary value with currency
-- `SKU` — binding to product variations
-- `directory` — binding to a directory
-- `employee` — binding to an employee
-- `UserID` — binding to a user
-- `EList` — selection of an item from a list
-- `EAutocomplete` — binding to elements with auto-search
-- `SectionAuto` — binding to sections with auto-search
+- `SKU` — link to product variations
+- `directory` — link to a directory
+- `employee` — link to an employee
+- `UserID` — link to a user
+- `EList` — select item from a list
+- `EAutocomplete` — link to elements with auto-search
+- `SectionAuto` — link to sections with auto-search
 - `HTML` — value in HTML format
 - `map_google` — coordinates and address on Google Maps
-- `DiskFile` — binding to a file from Bitrix24.Drive
-- `ECrm` — binding to CRM elements
-- `BoolEnum` — checkbox based on a list, use this value with `propertyType = L` ||
+- `map_yandex` — coordinates and address on Yandex Maps
+- `DiskFile` — link to a file from Bitrix24.Drive
+- `ECrm` — link to CRM elements
+- `BoolEnum` — checkbox based on a list; use this value together with `propertyType = L` ||
 || **rowCount**
-[`integer`](../../data-types.md) | Number of input field rows ||
+[`integer`](../../data-types.md) | Number of rows in the input field ||
 || **colCount**
-[`integer`](../../data-types.md) | Number of input field columns ||
+[`integer`](../../data-types.md) | Number of columns in the input field ||
 || **listType**
 [`char`](../../data-types.md) | Appearance of the list. Allowed values:
 - `L` — dropdown list
@@ -92,9 +93,9 @@ Examples of values:
 || **multipleCnt**
 [`integer`](../../data-types.md) | Number of fields for entering multiple values ||
 || **linkIblockId**
-[`catalog_catalog.id`](../data-types.md#catalog_catalog) | Identifier of the related information block. 
+[`catalog_catalog.id`](../data-types.md#catalog_catalog) | Identifier of the linked information block. 
 
-Available identifiers can be obtained using the method [catalog.catalog.list](../catalog/catalog-catalog-list.md) ||
+Available identifiers can be obtained using the [catalog.catalog.list](../catalog/catalog-catalog-list.md) method ||
 || **withDescription**
 [`char`](../../data-types.md) | Indicator of storing the description of the value. Allowed values:
 - `Y` — yes
@@ -388,7 +389,7 @@ HTTP status: **200**
             "rowCount": 1,
             "searchable": "N",
             "sort": 100,
-            "timestampX": "2026-03-19T15:46:23+02:00",
+            "timestampX": "2026-03-19T15:46:23+03:00",
             "userType": "directory",
             "userTypeSettings": {
                 "group": "N",
@@ -406,8 +407,8 @@ HTTP status: **200**
         "finish": 1773927983.409049,
         "duration": 0.40904903411865234,
         "processing": 0,
-        "date_start": "2026-03-19T16:46:23+02:00",
-        "date_finish": "2026-03-19T16:46:23+02:00",
+        "date_start": "2026-03-19T16:46:23+03:00",
+        "date_finish": "2026-03-19T16:46:23+03:00",
         "operating_reset_at": 1773928583,
         "operating": 0
     }
@@ -424,7 +425,7 @@ HTTP status: **200**
 || **productProperty**
 [`catalog_product_property`](../data-types.md#catalog_product_property) | Object with information about the added property ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the execution time of the request ||
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -438,7 +439,7 @@ HTTP status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
@@ -454,12 +455,13 @@ HTTP status: **400**
 || `400` | `0` | Error adding property | Internal error while creating the property ||
 |#
 
-{% include [system errors](../../../_includes/system-errors.md) %}
+{% include [System errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
 - [{#T}](./catalog-product-property-update.md)
 - [{#T}](./catalog-product-property-get.md)
 - [{#T}](./catalog-product-property-list.md)
+- [{#T}](../../../tutorials/catalog/index.md)
 - [{#T}](./catalog-product-property-delete.md)
 - [{#T}](./catalog-product-property-get-fields.md)

@@ -60,7 +60,7 @@ The keyboard is passed in the `KEYBOARD` parameter when sending or updating a me
           MESSAGE: 'Choose an action',
           KEYBOARD: {
             BUTTONS: [
-              { TEXT: 'Open site', LINK: 'https://www.example.ru/' },
+              { TEXT: 'Open site', LINK: 'https://www.example.com/' },
               { TYPE: 'NEWLINE' },
               { TEXT: 'Insert command', ACTION: 'PUT', ACTION_VALUE: '/help' },
             ],
@@ -100,7 +100,7 @@ The keyboard is passed in the `KEYBOARD` parameter when sending or updating a me
               MESSAGE: 'Choose an action',
               KEYBOARD: {
                 BUTTONS: [
-                  { TEXT: 'Open site', LINK: 'https://www.example.ru/' },
+                  { TEXT: 'Open site', LINK: 'https://www.example.com/' },
                   { TYPE: 'NEWLINE' },
                   { TEXT: 'Insert command', ACTION: 'PUT', ACTION_VALUE: '/help' },
                 ],

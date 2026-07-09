@@ -6,11 +6,11 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-> Quick navigation: [all methods and events](#all-methods) 
+> Quick navigation: [All Methods and Events](#all-methods)
 
 Events in Bitrix24 are notifications about data changes, such as the creation of a deal or the deletion of a product. When an application or webhook subscribes to an event, the system starts generating these notifications for it. To receive events, set up a handler.
 
-An event handler is an external URL to which Bitrix24 sends a POST request with data about the change. The handler allows you to:
+An event handler is an external URL to which Bitrix24 sends a POST request containing data about the change. The handler allows you to:
 
 - synchronize data with an external system,
 - trigger automated scenarios,
@@ -28,24 +28,24 @@ The handler URL must be accessible from the external network. Do not use address
 2. The user performs an action in Bitrix24, such as modifying a task.
 3. Bitrix24 sends a notification to the application via the queue server.
 
-![How Events Work](./_images/how_events_work.png "How Events Work")
+![How events work](./_images/how_events_work.png "How events work")
 
 ### Features of Operation
 
 Events are not processed directly. First, Bitrix24 queues the event on a special server. From there, a POST request is sent to your handler. As a result, the request may arrive with a slight delay.
 
-The server checks the response speed of the handler. If the handler responds slowly, the server reduces the frequency of calls. The intervals between requests increase.
+The server monitors the response speed of the handler. If the handler responds slowly, the server reduces the frequency of calls. The intervals between requests increase.
 
-Current [queue server addresses](../../settings/cloud-and-on-premise/network-access.md).
+Current [Queue Server Addresses](../../settings/cloud-and-on-premise/network-access.md).
 
 ## What Comes to the Handler
 
 The system sends a request with content-type `application/x-www-form-urlencoded`. The main keys are:
 
--  `event` — the name of the event,
--  `ts` — a timestamp in Unix timestamp format,
--  `data` — event data, such as the identifier of the modified element,
--  `auth` — authorization parameters, including [OAuth 2.0 tokens](../../settings/oauth/index.md).
+- `event` — the name of the event,
+- `ts` — a timestamp in Unix timestamp format,
+- `data` — event data, such as the identifier of the modified element,
+- `auth` — authorization parameters, including [OAuth 2.0 Tokens](../../settings/oauth/index.md).
 
 Example request:
 
@@ -76,11 +76,11 @@ array(
 
 OAuth 2.0 tokens in the request are tied to the user who performed the action. If the event is triggered automatically, for example, by an automation rule or workflow, the user ID will be `0`. In this case, tokens are not passed to the handler.
 
-To ensure that the application can always make callbacks to Bitrix24, save the tokens of the user who installed the application. Use these tokens for any subsequent requests on behalf of the application.
+To ensure that the application can always make callbacks to Bitrix24, retain the tokens of the user who installed the application. Use these tokens for any subsequent requests on behalf of the application.
 
 ## How to Subscribe to an Event via Webhook
 
-1. In Bitrix24, go to *Developer resources > Other > Outbound webhook*.
+1. In Bitrix24, go to *Developer resources > Other > Outgoing webhook*.
 2. Specify the handler URL.
 3. Select one or more events from the list, such as `OnCrmDealAdd`.
 4. Save the webhook. The Application Token field will be generated automatically.
@@ -115,7 +115,13 @@ Events have two main limitations:
 1. **Load cannot be regulated**. When mass data changes occur, you will receive many consecutive calls. If a thousand deals are changed simultaneously in Bitrix24, the handler will receive a thousand calls.
 2. **No retries**. If your server does not respond or returns an error, the Bitrix24 queue server will log the failure but will not resend the event.
 
-If it is important to process all events without loss, use [offline events](./offline-events.md). They allow you to retrieve events from the queue manually.
+If it is important to process all events without loss, use [Offline Events](./offline-events.md). They allow you to retrieve events from the queue manually.
+
+## Access Permissions
+
+A regular user can register, retrieve, and delete their own online event handlers using the [event.bind](./event-bind.md), [event.get](./event-get.md), and [event.unbind](./event-unbind.md) methods. If you specify the `auth_type` of another user in `event.bind` or `event.unbind`, the method will return an access error.
+
+Only an administrator can work with the offline event queue. This restriction applies to the [event.offline.get](./event-offline-get.md), [event.offline.list](./event-offline-list.md), [event.offline.clear](./event-offline-clear.md), and [event.offline.error](./event-offline-error.md) methods.
 
 ## Overview of Methods and Events {#all-methods}
 
@@ -123,23 +129,23 @@ If it is important to process all events without loss, use [offline events](./of
 
 - Methods
 
-    #| 
+    #|
     || **Method** | **Description** ||
     || [event.bind](./event-bind.md) | Registers a new event handler ||
-    || [event.get](./event-get.md) | Retrieves a list of registered event handlers ||
-    || [event.offline.clear](./event-offline-clear.md) | Clears records in the offline events queue ||
-    || [event.offline.error](./event-offline-error.md) | Registers errors in processing the offline events queue ||
-    || [event.offline.get](./event-offline-get.md) | Retrieves a list of offline events with "clearing" ||
-    || [event.offline.list](./event-offline-list.md) | Retrieves a list of offline events ||
-    || [event.unbind](./event-unbind.md) | Unregisters a registered event handler ||
-    || [events](./events.md) | Retrieves a list of available events ||
+    || [event.get](./event-get.md) | Gets a list of registered event handlers ||
+    || [event.offline.clear](./event-offline-clear.md) | Clears records in the offline event queue ||
+    || [event.offline.error](./event-offline-error.md) | Registers errors in the offline event queue processing ||
+    || [event.offline.get](./event-offline-get.md) | Gets a list of offline events with "cleanup" ||
+    || [event.offline.list](./event-offline-list.md) | Gets a list of offline events ||
+    || [event.unbind](./event-unbind.md) | Unregisters an event handler ||
+    || [events](./events.md) | Gets a list of available events ||
     |#
 
 - Events
 
-    #| 
+    #|
     || **Event** | **Description** ||
-    || [onOfflineEvent](./on-offline-event.md) | When the offline events queue changes ||
+    || [onOfflineEvent](./on-offline-event.md) | On offline event queue change ||
     |#
 
 {% endlist %}
