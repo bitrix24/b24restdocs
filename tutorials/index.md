@@ -30,7 +30,7 @@ Tutorials consist of:
 
 ## Tips for Beginners
 
-Study the [Getting Started](../first-steps/index.md) and [How to Make Your First Request](../first-steps/first-rest-api-call.md) sections, and install the [REST API Documentation](https://www.bitrix24.com/apps/app/bitrix.restapi/) application — it allows you to view documentation and execute requests in the application console simultaneously.
+Study the [Getting Started](../first-steps/index.md) and [How to Make Your First Request](../first-steps/first-rest-api-call.md) sections to learn the basics of working with the Bitrix24 REST API.
 
 Start with simple scenarios, such as filtering data in the [How to Filter Items by Stage Name](./crm/how-to-get-lists/how-to-get-elements-by-stage-filter.md) tutorial. It does not use methods to modify or delete items, so the data within the items will remain safe.
 
