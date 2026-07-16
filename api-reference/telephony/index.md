@@ -8,10 +8,11 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 Bitrix24 telephony helps manage calls within the CRM: making and receiving calls, maintaining call history, linking calls to client records, and saving recordings.
 
-The REST API supports two scenarios for working with telephony:
+The REST API supports three telephony scenarios:
 
 - Integration of external telephony — the application registers the line, reports the call, manages the record, and ends the call.
 - Management of built-in telephony and SIP connector — the application works with SIP connections, outgoing lines, users, and call events.
+- Retrieving AI Follow-ups for completed calls — the application retrieves transcription, overview, summary, insights, and efficiency ratings.
 
 > Quick navigation: [all methods and events](#all-methods)
 >
@@ -22,7 +23,8 @@ The REST API supports two scenarios for working with telephony:
 #|
 || **If you need** | **Open the section** ||
 || Integrate external telephony via REST | [External Telephony Methods](#external-telephony) ||
-|| Manage SIP connections, lines, and SIP settings for employees | [SIP and Built-in Telephony](./voximplant/index.md) ||
+|| Manage SIP connections, lines, and employee SIP settings | [SIP and Built-in Telephony](./voximplant/index.md) ||
+|| Get AI Follow-up for completed calls | [Call follow-ups](./follow-up/index.md) ||
 || Subscribe to external telephony events | [Events](./events/index.md) ||
 |#
 
@@ -31,6 +33,8 @@ The REST API supports two scenarios for working with telephony:
 **User.** The identifier `USER_ID` links the call and SIP settings to the employee. You can obtain `USER_ID` using the [user.get](../user/user-get.md) method. Pass `USER_ID` to [telephony.externalCall.show](./telephony-external-call-show.md) and methods in the [User Management](./voximplant/users/index.md) section.
 
 **Call.** The identifier `CALL_ID` is created in [telephony.externalCall.register](./telephony-external-call-register.md) and is used in [telephony.externalCall.show](./telephony-external-call-show.md), [telephony.externalCall.hide](./telephony-external-call-hide.md), [telephony.externalCall.finish](./telephony-external-call-finish.md), [telephony.externalCall.attachRecord](./telephony-external-call-attach-record.md), and [telephony.call.attachTranscription](./telephony-call-attach-transcription.md).
+
+**Call Follow-ups.** The [call.followup.list](./follow-up/call-followup-list.md) and [call.followup.get](./follow-up/call-followup-get.md) methods return AI follow-ups for completed calls by identifier `callId`. A regular user receives call follow-ups in which they participated or were part of a linked chat. An administrator has access to all follow-ups.
 
 **CRM.** The method [telephony.externalCall.searchCrmEntities](./telephony-external-call-search-crm-entities.md) searches for CRM entities by phone number to link the call to the client record.
 
@@ -160,4 +164,18 @@ You can embed an application into the call record and display the operator inter
 || **Method** | **Description** ||
 || [voximplant.user.get](./voximplant/users/voximplant-user-get.md) | Returns user settings ||
 || [voximplant.user.activatePhone](./voximplant/users/voximplant-user-activate-phone.md) | Sets the employee's SIP device presence flag ||
+|#
+
+### Call Follow-ups in REST 3.0
+
+> Scope: [`call`](../scopes/permissions.md)
+>
+> Who can execute the method: depends on the method
+
+#|
+|| **Method** | **Description** ||
+|| [call.followup.list](./follow-up/call-followup-list.md) | Returns a list of call follow-ups for a period ||
+|| [call.followup.get](./follow-up/call-followup-get.md) | Returns the follow-up of a single call ||
+|| [call.followup.field.list](./follow-up/call-followup-field-list.md) | Returns a list of follow-up fields ||
+|| [call.followup.field.get](./follow-up/call-followup-field-get.md) | Returns the description of a follow-up field by name ||
 |#

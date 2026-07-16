@@ -12,40 +12,54 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 The key parameter for attaching a task to a CRM object is the [object type identifier](../../api-reference/crm/data-types.md#object_type). This identifier indicates which type of object the relationship will be added to: a deal, a lead, or a specific smart process.
 
-To create a task and attach it to a smart process, we will sequentially execute three methods:
+To create a task and attach it to an SPA, we will sequentially execute three methods:
 
-1. [crm.enum.ownertype](../../api-reference/crm/auxiliary/enum/crm-enum-owner-type.md) — retrieve the `entityTypeId` and `SYMBOL_CODE_SHORT` of the smart process.
+1. [crm.enum.ownertype](../../api-reference/crm/auxiliary/enum/crm-enum-owner-type.md) — retrieve the `entityTypeId` and `SYMBOL_CODE_SHORT` of the SPA
 
-2. [crm.item.list](../../api-reference/crm/universal/crm-item-list.md) — retrieve the smart process entity using the `entityTypeId` parameter.
+2. [crm.item.list](../../api-reference/crm/universal/crm-item-list.md) — retrieve the SPA item with the `entityTypeId` parameter
 
-3. [tasks.task.add](../../api-reference/tasks/tasks-task-add.md) — create a task and link it to the smart process entity using `SYMBOL_CODE_SHORT`.
+3. [tasks.task.add](../../api-reference/tasks/tasks-task-add.md) — create a task and link it to the SPA item using `SYMBOL_CODE_SHORT`
+   
+## 1. Retrieve SPA Identifiers {#SPA-ids}
 
-## 1. Retrieving Smart Process Identifiers {#SPA-ids}
+To retrieve the SPA identifier, use the [crm.enum.ownertype](../../api-reference/crm/auxiliary/enum/crm-enum-owner-type.md) method. The method is called without parameters and returns an enumeration of all CRM object types.
 
-To obtain the smart process identifier, we use the [crm.enum.ownertype](../../api-reference/crm/auxiliary/enum/crm-enum-owner-type.md) method. This method is called without parameters and returns an enumeration of all CRM object types.
-
-{% include [Examples Note](../../_includes/examples.md) %}
+{% include [Note on examples](../../_includes/examples.md) %}
 
 {% list tabs %}
 
 - JS
 
-    ```JavaScript
-    BX24.callMethod(
-    "crm.enum.ownertype",
-    {} 
-    );     
+    ```javascript
+    import { B24Hook } from '@bitrix24/b24jssdk'
+
+    const $b24 = B24Hook.fromWebhookUrl('https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/')
+
+    const response = await $b24.actions.v2.call.make({
+        method: 'crm.enum.ownertype',
+        params: {},
+        requestId: 'crm-enum-ownertype'
+    })
+
+    if (!response.isSuccess) {
+        throw new Error(response.getErrorMessages().join('; '))
+    }
+
+    const result = response.getData().result
     ```
 
 - PHP
 
     ```php
-    require_once('crest.php');
+    require_once 'vendor/autoload.php';
 
-    $result = CRest::call(
-        'crm.enum.ownertype',
-        []
-    );
+    use Bitrix24\SDK\Services\ServiceBuilderFactory;
+    use Symfony\Component\EventDispatcher\EventDispatcher;
+
+    $serviceBuilder = (new ServiceBuilderFactory(new EventDispatcher(), $log))
+        ->initFromWebhook('https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/');
+
+    $result = $serviceBuilder->getCRMScope()->enum()->ownerType()->getItems();
     ```
 
 - Python
@@ -56,7 +70,7 @@ To obtain the smart process identifier, we use the [crm.enum.ownertype](../../ap
     client = Client(
         BitrixWebhook(
             domain="your-domain.bitrix24.com",
-            auth_token="your-webhook-token",
+            webhook_token="user_id/webhook_key",
         )
     )
 
@@ -68,15 +82,15 @@ To obtain the smart process identifier, we use the [crm.enum.ownertype](../../ap
 The method returns four different identifiers:
 
 ```JSON
-     "ID": 130, // entityTypeId — obtained to find the CRM object by filter
-     "NAME": "All Inclusive", // name
-     "SYMBOL_CODE": "DYNAMIC_130", // symbolic code
-     "SYMBOL_CODE_SHORT": "T82" // short symbolic code — obtained to link the CRM object to the task
+     "ID": 130, // entityTypeId — obtained to find a CRM item by filter
+     "NAME": "All inclusive", // name
+     "SYMBOL_CODE": "DYNAMIC_130", // character code
+     "SYMBOL_CODE_SHORT": "T82" // short character code — obtained to link a CRM item to a task
 ```
 
-`ID` is obtained to find the CRM object by filter.
+`ID` is retrieved to find a CRM item by filter.
 
-`SYMBOL_CODE_SHORT` is obtained to link the CRM object to the task.
+`SYMBOL_CODE_SHORT` is retrieved to bind a CRM item to a task.
 
 ```JSON
 {
@@ -119,13 +133,13 @@ The method returns four different identifiers:
         },
         {
             "ID": 7,
-            "NAME": "Estimate",
+            "NAME": "Quotation",
             "SYMBOL_CODE": "QUOTE",
             "SYMBOL_CODE_SHORT": "Q"
         },
         {
             "ID": 8,
-            "NAME": "Requisite",
+            "NAME": "Details",
             "SYMBOL_CODE": "REQUISITE",
             "SYMBOL_CODE_SHORT": "RQ"
         },
@@ -137,91 +151,94 @@ The method returns four different identifiers:
         },
         {
             "ID": 39,
-            "NAME": "Company Document",
+            "NAME": "Company document",
             "SYMBOL_CODE": "SMART_B2E_DOC",
             "SYMBOL_CODE_SHORT": "SBD"
         },
         {
             "ID": 177,
-            "NAME": "Equipment Purchase",
+            "NAME": "Equipment procurement",
             "SYMBOL_CODE": "DYNAMIC_177",
             "SYMBOL_CODE_SHORT": "Tb1"
         },
         {
             "ID": 156,
-            "NAME": "Purchase",
+            "NAME": "Procurement",
             "SYMBOL_CODE": "DYNAMIC_156",
             "SYMBOL_CODE_SHORT": "T9c"
-        }
-    ]
+        },
+    ],
 }
 ```
 
-As a result, we obtained a list of all CRM object types in Bitrix24 with their identifiers. For the next requests, we will use `ID`: `177` and `SYMBOL_CODE_SHORT`: `Tb1` for the smart process "Equipment Purchase."
+As a result, we have obtained a list of all CRM object types in Bitrix24 with their identifiers. For the following requests, we will use `ID`: `177` and `SYMBOL_CODE_SHORT`: `Tb1` for the "Equipment Procurement" SPA.
 
 ## 2. Retrieving the Smart Process Element ID {#element-id}
 
-To obtain the ID of the smart process element, we use the [crm.item.list](../../api-reference/crm/universal/crm-item-list.md) method with the following parameters:
+To retrieve the SPA item ID, use the [crm.item.list](../../api-reference/crm/universal/crm-item-list.md) method with the following parameters:
 
--  `entityTypeId` — `177`, which is the value of `ID` from the previous method's result.
+-  `entityTypeId` — `177`, where the value equals `ID` from the previous method's result
 
--  `filter[title]` — specify the name of the element to search for.  
+-  `filter[title]` — specify the item name for the search  
 
 {% list tabs %}
 
 - JS
   
     ```javascript
-       BX24.callMethod(
-        'crm.item.list',
-        {
-            entityTypeId: 177, // ID from the result of crm.enum.ownertype
+    const response = await $b24.actions.v2.call.make({
+        method: 'crm.item.list',
+        params: {
+            entityTypeId: 177, // ID from crm.enum.ownertype result
             select: [
-                "id", // selected fields
-                "title",
+                'id', // selectable fields
+                'title',
             ],
             filter: {
-                "title": "Washing Machine", // name of the element
+                'title': 'Washing machine', // element name
             },
-        }
-    );
+        },
+        requestId: 'crm-item-list'
+    })
+
+    if (!response.isSuccess) {
+        throw new Error(response.getErrorMessages().join('; '))
+    }
+
+    const result = response.getData().result
     ```
 
 - PHP
   
     ```php
-    require_once('crest.php');
-
-    $result = CRest::call(
-        'crm.item.list',
+    $result = $serviceBuilder->getCRMScope()->item()->list(
+        177, // ID from crm.enum.ownertype result
+        [], // sorting
         [
-            'entityTypeId' => 177, // ID from the result of crm.enum.ownertype
-            'select' => [
-                'id', // selected fields
-                'title',
-            ],
-            'filter' => [
-                'title' => 'Washing Machine', // name of the element
-            ],
+            'title' => 'Washing machine', // element name
+        ],
+        [
+            'id', // selectable fields
+            'title',
         ]
-    );
+    )->getItems();
     ```
 
 - Python
-  
+
     ```python
     result = client.crm.item.list(
         entity_type_id=177,
         select=["id", "title"],
         filter={
-            "title": "Washing Machine",
+            "title": "Washing machine",
         },
     ).response.result
     ```
 
 {% endlist %}
 
-As a result, we obtained the ID of the smart process element — a parameter necessary for the next request.
+As a result, we have obtained the SPA item ID — the parameter required for the next request.
 
 ```JSON
 {
@@ -229,67 +246,71 @@ As a result, we obtained the ID of the smart process element — a parameter nec
         "items": [
             {
                 "id": 29,
-                "title": "Washing Machine"
+                "title": "Washing machine"
             }
         ]
     },
-    "total": 1
+    "total": 1,
 }
 ```
 
-## 3. Creating a Task Linked to the Smart Process Element
+## 3. Create a Task Bound to an SPA Item
 
-To create a task, we use the [tasks.task.add](../../api-reference/tasks/tasks-task-add.md) method with the following parameters:
+To create a task, use the [tasks.task.add](../../api-reference/tasks/tasks-task-add.md) method with the following parameters:
 
--  `UF_CRM_TASK` — specify the value `Tb1_29`. This is the short symbolic code of type `SYMBOL_CODE_SHORT`: `Tb1` from the results of [crm.enum.ownertype](./how-to-connect-task-to-spa.md#SPA-ids) and the ID of the smart process element `id`: `29` from the results of [crm.item.list](./how-to-connect-task-to-spa.md#element-id).
+-  `UF_CRM_TASK` — specify the value of `Tb1_29`. This is the short character code of the type `SYMBOL_CODE_SHORT`: `Tb1` from the [crm.enum.ownertype](./how-to-connect-task-to-spa.md#SPA-ids) results and the SPA item ID `id`: `29` from the [crm.item.list](./how-to-connect-task-to-spa.md#element-id) results
 
--  `TITLE` — the title of the task, a required field. Without a title, the task will not be created.
+-  `TITLE` — the task name, a required field. The task will not be created without a name
 
--  `CREATED_BY` — the ID of the task Creator, this field cannot be empty. If not filled, the Creator will automatically be the one sending the request.
+-  `CREATED_BY` — the ID of the task creator; this field cannot be empty. If it is not filled, the user sending the request will automatically become the creator
 
--  `RESPONSIBLE_ID` — the ID of the task Participant, a required field. Without a Participant, the task will not be created.
-  
+-  `RESPONSIBLE_ID` — the ID of the task assignee, a required field. The task will not be created without an assignee
+
 {% list tabs %}
 
 - JS
   
     ```javascript
-    BX24.callMethod(
-        'tasks.task.add',
-        {
+    const response = await $b24.actions.v2.call.make({
+        method: 'tasks.task.add',
+        params: {
             fields: {
-                TITLE: 'task for test', // task title
-                RESPONSIBLE_ID: 1, // participant
-                UF_CRM_TASK: [ // array of CRM entities
-                    "Tb1_29"
+                TITLE: 'task for test', // task name
+                RESPONSIBLE_ID: 1, // performer
+                UF_CRM_TASK: [ // array of CRM items
+                    'Tb1_29'
                 ]
             }
-        }
-    );
+        },
+        requestId: 'task-add'
+    })
+
+    if (!response.isSuccess) {
+        throw new Error(response.getErrorMessages().join('; '))
+    }
+
+    const result = response.getData().result
     ```
 
 - PHP
   
     ```php
-    require_once('crest.php');
-
-    $result = CRest::call(
+    $result = $serviceBuilder->core->call(
         'tasks.task.add',
         [
             'fields' => [
-                'TITLE' => 'task for test', // task title
-                'RESPONSIBLE_ID' => 1, // participant
-                'UF_CRM_TASK' => [ // array of CRM entities
+                'TITLE' => 'task for test', // task name
+                'RESPONSIBLE_ID' => 1, // performer
+                'UF_CRM_TASK' => [ // array of CRM items
                     'Tb1_29'
                 ]
             ]
-        }
-    );
+        ]
+    )->getResponseData()->getResult();
     ```
 
-
 - Python
-  
+
     ```python
     result = client.tasks.task.add(
         fields={
@@ -302,10 +323,9 @@ To create a task, we use the [tasks.task.add](../../api-reference/tasks/tasks-ta
     ).response.result
     ```
 
-
 {% endlist %}
 
-As a result, we created a task with ID `3731`.
+As a result, a task was created with ID `3731`.
 
 ```JSON
 {
@@ -440,59 +460,63 @@ As a result, we created a task with ID `3731`.
             },
             "checkListCanAdd": true
         }
-    }
+    },
 }
 ```
 
 ## Verifying the Created Task
 
-The obtained result does not contain information about the linked CRM entities. To check if the smart process element has been successfully attached to the task, we will execute the [tasks.task.get](../../api-reference/tasks/tasks-task-get.md) method with the following parameters:
+The received result does not contain information about linked CRM items. To verify that the SPA item was successfully attached to the task, call the [tasks.task.get](../../api-reference/tasks/tasks-task-get.md) method with the following parameters:
 
--  `taskId` — `3731`, the ID of the created task from the result of the previous method.
+- `taskId` — `3731`, the ID of the created task from the previous method's result
 
--  `select` — `UF_CRM_TASK`, the field "Link to CRM entities." The [tasks.task.get](../../api-reference/tasks/tasks-task-get.md) method will not return the link field without `UF_CRM_TASK` in `select`.
+- `select` — `UF_CRM_TASK`, field "CRM Link". The method [tasks.task.get](../../api-reference/tasks/tasks-task-get.md) will not return the link field without `UF_CRM_TASK` in `select`
   
 {% list tabs %}
 
 - JS
   
     ```javascript
-    BX24.callMethod(
-        'tasks.task.get',
-        {
+    const response = await $b24.actions.v2.call.make({
+        method: 'tasks.task.get',
+        params: {
             taskId: 3731, // task ID
-            select: ['ID', 'UF_CRM_TASK'] // selected fields
-        }
-    );
+            select: ['ID', 'UF_CRM_TASK'] // selectable fields
+        },
+        requestId: 'task-get'
+    })
+
+    if (!response.isSuccess) {
+        throw new Error(response.getErrorMessages().join('; '))
+    }
+
+    const result = response.getData().result
     ```
 
 - PHP
   
     ```php
-    require_once('crest.php');
-
-    $result = CRest::call(
+    $result = $serviceBuilder->core->call(
         'tasks.task.get',
         [
             'taskId' => 3731, // task ID
-            'select' => ['ID', 'UF_CRM_TASK'] // selected fields
+            'select' => ['ID', 'UF_CRM_TASK'] // selectable fields
         ]
-    );
+    )->getResponseData()->getResult();
     ```
 
 - Python
-  
+
     ```python
     result = client.tasks.task.get(
         bitrix_id=3731,
         select=["ID", "UF_CRM_TASK"],
     ).response.result
     ```
-  
 
 {% endlist %}
 
-As a result, we obtained the value of the `ufCrmTask` field: `Tb1_29`. The smart process element has been successfully attached.
+As a result, we obtained the value of the `ufCrmTask` field: `Tb1_29`. The SPA item was successfully attached.
 
 ```JSON
 {
@@ -539,7 +563,7 @@ As a result, we obtained the value of the `ufCrmTask` field: `Tb1_29`. The smart
                 "favorite.delete": false
             }
         }
-    }
+    },
 }
 ```
 
@@ -549,111 +573,124 @@ As a result, we obtained the value of the `ufCrmTask` field: `Tb1_29`. The smart
 
 - JS
     
-    ```JavaScript
-    // Variables for user input
-    var smartProcessName = 'smart_process_name'; // Name of the smart process
-    var itemName = 'item_name'; // Name of the smart process element
-    var responsibleId = 'RESPONSIBLE_ID'; // ID of the task responsible person
-    var taskTitle = 'task_title'; // Title of the task
+    ```javascript
+    import { B24Hook } from '@bitrix24/b24jssdk'
 
-    // Function to create a task linked to the smart process element
-    function createTaskWithSmartProcess() {
-        // Retrieving entity type and smart process identifiers
-        BX24.callMethod(
-            'crm.enum.ownertype',
-            {},
-            function(result) {
-                if (result.error()) {
-                    console.error('Error retrieving entity types:', result.error());
-                    return;
+    const $b24 = B24Hook.fromWebhookUrl('https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/')
+
+    // Variables for user data input
+    const smartProcessName = 'smart_process_name'; // Smart process name
+    const itemName = 'element_name'; // Smart process element name
+    const responsibleId = 'responsible_ID'; // task responsible ID
+    const taskTitle = 'task_name'; // Task name
+
+    // Function to create a task linked to a smart process element
+    async function createTaskWithSmartProcess() {
+        // Getting entity type and smart process IDs
+        const ownerTypeResponse = await $b24.actions.v2.call.make({
+            method: 'crm.enum.ownertype',
+            params: {},
+            requestId: 'crm-enum-ownertype'
+        });
+
+        if (!ownerTypeResponse.isSuccess) {
+            console.error('Error getting entity types:', ownerTypeResponse.getErrorMessages().join('; '));
+            return;
+        }
+
+        // Searching for the required smart process
+        const smartProcess = ownerTypeResponse.getData().result.find(function(process) {
+            return process.NAME === smartProcessName;
+        });
+
+        if (!smartProcess) {
+            console.error('Smart process not found');
+            return;
+        }
+
+        const symbolCodeShort = smartProcess.SYMBOL_CODE_SHORT;
+
+        // Searching for a smart process element using a name filter
+        const itemResponse = await $b24.actions.v2.call.make({
+            method: 'crm.item.list',
+            params: {
+                entityTypeId: smartProcess.ID,
+                select: ['id', 'title'],
+                filter: { 'title': itemName }
+            },
+            requestId: 'crm-item-list'
+        });
+
+        if (!itemResponse.isSuccess) {
+            console.error('Error getting smart process elements:', itemResponse.getErrorMessages().join('; '));
+            return;
+        }
+
+        if (itemResponse.getData().result.items.length === 0) {
+            console.error('Smart process element not found');
+            return;
+        }
+
+        const itemId = itemResponse.getData().result.items[0].id;
+
+        // Task creation
+        const taskResponse = await $b24.actions.v2.call.make({
+            method: 'tasks.task.add',
+            params: {
+                fields: {
+                    TITLE: taskTitle, // Using the entered task name
+                    RESPONSIBLE_ID: responsibleId, // Adding the responsible ID
+                    UF_CRM_TASK: [symbolCodeShort + '_' + itemId]
                 }
+            },
+            requestId: 'task-add'
+        });
 
-                // Finding the required smart process
-                var smartProcess = result.data().find(function(process) {
-                    return process.NAME === smartProcessName;
-                });
-
-                if (!smartProcess) {
-                    console.error('Smart process not found');
-                    return;
-                }
-
-                var symbolCodeShort = smartProcess.SYMBOL_CODE_SHORT;
-
-                // Searching for the smart process element using a title filter
-                BX24.callMethod(
-                    'crm.item.list',
-                    {
-                        entityTypeId: smartProcess.ID,
-                        select: ["id", "title"],
-                        filter: { "title": itemName }
-                    },
-                    function(itemResult) {
-                        if (itemResult.error()) {
-                            console.error('Error retrieving smart process elements:', itemResult.error());
-                            return;
-                        }
-
-                        if (itemResult.data().items.length === 0) {
-                            console.error('Smart process element not found');
-                            return;
-                        }
-
-                        var itemId = itemResult.data().items[0].id;
-
-                        // Creating the task
-                        BX24.callMethod(
-                            'tasks.task.add',
-                            {
-                                fields: {
-                                    TITLE: taskTitle, // Using the entered task title
-                                    RESPONSIBLE_ID: responsibleId, // Adding the responsible ID
-                                    UF_CRM_TASK: [symbolCodeShort + '_' + itemId]
-                                }
-                            },
-                            function(taskResult) {
-                                if (taskResult.error()) {
-                                    console.error('Error creating task:', taskResult.error());
-                                } else {
-                                    console.log('Task successfully created!', taskResult.data());
-                                }
-                            }
-                        );
-                    }
-                );
-            }
-        );
+        if (!taskResponse.isSuccess) {
+            console.error('Error creating task:', taskResponse.getErrorMessages().join('; '));
+        } else {
+            console.log('Task created successfully!', taskResponse.getData().result);
+        }
     }
 
-    // Calling the function to create the task
-    createTaskWithSmartProcess();
+    // Calling the function to create a task
+    await createTaskWithSmartProcess();
+
+    $b24.destroy();
     ```
 
 - PHP
   
     ```php
-    require_once('crest.php');
+    require_once 'vendor/autoload.php';
 
-    // Variables for user input
-    $smartProcessName = 'smart_process_name'; // Name of the smart process
-    $itemName = 'item_name'; // Name of the smart process element
-    $responsibleId = 'RESPONSIBLE_ID'; // ID of the task responsible person
-    $taskTitle = 'task_title'; // Title of the task
+    use Bitrix24\SDK\Services\ServiceBuilderFactory;
+    use Bitrix24\SDK\Core\Exceptions\BaseException;
+    use Symfony\Component\EventDispatcher\EventDispatcher;
 
-    // Function to create a task linked to the smart process element
-    function createTaskWithSmartProcess($smartProcessName, $itemName, $responsibleId, $taskTitle) {
-        // Retrieving entity type and smart process identifiers
-        $result = CRest::call('crm.enum.ownertype', []);
+    $serviceBuilder = (new ServiceBuilderFactory(new EventDispatcher(), $log))
+        ->initFromWebhook('https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/');
 
-        if (isset($result['error'])) {
-            echo 'Error retrieving entity types: ' . $result['error_description'];
+    // Variables for user data input
+    $smartProcessName = 'smart_process_name'; // Smart process name
+    $itemName = 'element_name'; // Smart process element name
+    $responsibleId = 'responsible_ID'; // task responsible ID
+    $taskTitle = 'task_name'; // Task name
+
+    // Function to create a task linked to a smart process element
+    function createTaskWithSmartProcess($serviceBuilder, $smartProcessName, $itemName, $responsibleId, $taskTitle) {
+        // Getting entity type and smart process IDs
+        try {
+            $ownerTypes = $serviceBuilder->getCRMScope()->enum()->ownerType()->getItems();
+        } catch (BaseException $e) {
+            echo 'Error getting entity types: ' . $e->getMessage();
             return;
         }
 
-        // Finding the required smart process
+        // Searching for the required smart process
         $smartProcess = null;
-        foreach ($result['result'] as $process) {
-            if ($process['NAME'] === $smartProcessName) {
+        foreach ($ownerTypes as $process) {
+            if ($process->NAME === $smartProcessName) {
                 $smartProcess = $process;
                 break;
             }
@@ -664,46 +701,48 @@ As a result, we obtained the value of the `ufCrmTask` field: `Tb1_29`. The smart
             return;
         }
 
-        $symbolCodeShort = $smartProcess['SYMBOL_CODE_SHORT'];
+        $symbolCodeShort = $smartProcess->SYMBOL_CODE_SHORT;
 
-        // Searching for the smart process element using a title filter
-        $itemResult = CRest::call('crm.item.list', [
-            'entityTypeId' => $smartProcess['ID'],
-            'select' => ['id', 'title'],
-            'filter' => ['title' => $itemName]
-        ]);
-
-        if (isset($itemResult['error'])) {
-            echo 'Error retrieving smart process elements: ' . $itemResult['error_description'];
+        // Searching for a smart process element using a name filter
+        try {
+            $items = $serviceBuilder->getCRMScope()->item()->list(
+                $smartProcess->ID,
+                [],
+                ['title' => $itemName],
+                ['id', 'title']
+            )->getItems();
+        } catch (BaseException $e) {
+            echo 'Error getting smart process elements: ' . $e->getMessage();
             return;
         }
 
-        if (count($itemResult['result']['items']) === 0) {
+        if (count($items) === 0) {
             echo 'Smart process element not found';
             return;
         }
 
-        $itemId = $itemResult['result']['items'][0]['id'];
+        $itemId = $items[0]->id;
 
-        // Creating the task
-        $taskResult = CRest::call('tasks.task.add', [
-            'fields' => [
-                'TITLE' => $taskTitle, // Using the entered task title
-                'RESPONSIBLE_ID' => $responsibleId, // Adding the responsible ID
-                'UF_CRM_TASK' => [$symbolCodeShort . '_' . $itemId]
-            ]
-        ]);
-
-        if (isset($taskResult['error'])) {
-            echo 'Error creating task: ' . $taskResult['error_description'];
-        } else {
-            echo 'Task successfully created!';
-            print_r($taskResult['result']);
+        // Task creation
+        try {
+            $taskResult = $serviceBuilder->core->call('tasks.task.add', [
+                'fields' => [
+                    'TITLE' => $taskTitle, // Using the entered task name
+                    'RESPONSIBLE_ID' => $responsibleId, // Adding the responsible ID
+                    'UF_CRM_TASK' => [$symbolCodeShort . '_' . $itemId]
+                ]
+            ])->getResponseData()->getResult();
+        } catch (BaseException $e) {
+            echo 'Error creating task: ' . $e->getMessage();
+            return;
         }
+
+        echo 'Task created successfully!';
+        print_r($taskResult);
     }
 
-    // Calling the function to create the task
-    createTaskWithSmartProcess($smartProcessName, $itemName, $responsibleId, $taskTitle);
+    // Calling the function to create a task
+    createTaskWithSmartProcess($serviceBuilder, $smartProcessName, $itemName, $responsibleId, $taskTitle);
     ```
 
 - Python
@@ -713,16 +752,15 @@ As a result, we obtained the value of the `ufCrmTask` field: `Tb1_29`. The smart
     from b24pysdk.errors import BitrixAPIError
 
     smart_process_name = "smart_process_name"
-    item_name = "item_name"
-    responsible_id = "RESPONSIBLE_ID"
-    task_title = "task_title"
-
+    item_name = "element_name"
+    responsible_id = "responsible_ID"
+    task_title = "task_name"
 
     def create_task_with_smart_process(client, smart_process_name, item_name, responsible_id, task_title):
         try:
             result = client.crm.enum.ownertype().response.result
         except BitrixAPIError as error:
-            print(f"Error retrieving entity types: {error}")
+            print(f"Error getting entity types: {error}")
             return
 
         smart_process = None
@@ -744,7 +782,7 @@ As a result, we obtained the value of the `ufCrmTask` field: `Tb1_29`. The smart
                 filter={"title": item_name},
             ).response.result
         except BitrixAPIError as error:
-            print(f"Error retrieving smart process elements: {error}")
+            print(f"Error getting smart process elements: {error}")
             return
 
         if len(item_result["items"]) == 0:
@@ -764,14 +802,13 @@ As a result, we obtained the value of the `ufCrmTask` field: `Tb1_29`. The smart
         except BitrixAPIError as error:
             print(f"Error creating task: {error}")
         else:
-            print("Task successfully created!")
+            print("Task created successfully!")
             print(task_result)
-
 
     client = Client(
         BitrixWebhook(
             domain="your-domain.bitrix24.com",
-            auth_token="your-webhook-token",
+            webhook_token="user_id/webhook_key",
         )
     )
 

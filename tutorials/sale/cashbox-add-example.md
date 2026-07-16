@@ -4,85 +4,94 @@
 >
 > Who can execute methods: administrator
 
-In Bitrix24, you can connect an external cash register and automatically print receipts. When a client pays for an order, the account sends the receipt data to a specified URL. The external service will generate and register the fiscal receipt.
+{% note tip "" %}
 
-To connect the cash register, we will sequentially execute the following methods:
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../ai-tools/mcp.md) so that the assistant can utilize the official REST documentation.
 
-1. [sale.cashbox.handler.add](../../api-reference/sale/cashbox/sale-cashbox-handler-add.md) — we will add a cash register handler,
+{% endnote %}
 
-2. [sale.cashbox.add](../../api-reference/sale/cashbox/sale-cashbox-add.md) — we will create a cash register and link it to the handler.
+In Bitrix24, you can connect an external cash register and automatically print receipts. When a customer pays for an order, the account sends the receipt data to a specified URL. An external service then generates and registers the fiscal receipt.
+
+To connect a cash register, perform the following methods in sequence:
+
+1. [sale.cashbox.handler.add](../../api-reference/sale/cashbox/sale-cashbox-handler-add.md) — add a cash register handler,
+
+2. [sale.cashbox.add](../../api-reference/sale/cashbox/sale-cashbox-add.md) — create a cash register and link it to the handler.
 
 ## 1\. Add the Cash Register Handler
 
-We will register the handler using [sale.cashbox.handler.add](../../api-reference/sale/cashbox/sale-cashbox-handler-add.md). We will pass the handler settings and the addresses to which the account sends requests for printing and checking the receipt status.
+Register a handler using [sale.cashbox.handler.add](../../api-reference/sale/cashbox/sale-cashbox-handler-add.md). Pass the handler configurations and the addresses to which the account sends requests for printing and checking the receipt status to the method.
 
-- `CODE` — a unique code for the handler. We will specify `my_rest_cashbox`.
+- `CODE` — the unique code of the handler. We will specify `my_rest_cashbox`.
 
-- `NAME` — the name of the handler, for example, `My REST Cash Register`.
+- `NAME` — the name of the handler, for example, My REST cash register.
 
 - `SORT` — a number that determines the position of the handler in the list.
 
-- `SETTINGS` — an object with the handler settings.
+- `SETTINGS` — the handler settings object.
 
     - `PRINT_URL` — the address to which the account sends data for printing the receipt. We will specify `http://example.com/rest_print.php`.
 
-    - `CHECK_URL` — the address for checking the receipt status. We will pass `http://example.com/rest_check.php`.
+    - `CHECK_URL` — the address used to check the receipt status. We will pass `http://example.com/rest_check.php`.
 
-    - `CONFIG` — fields that need to be created for the handler. The administrator fills in these fields when setting up the cash register. We will create three blocks: `AUTH` — authorization by login and password, `COMPANY` — organization data, `INTERACTION` — cash register operation mode.
+    - `CONFIG` — the fields that need to be created for the handler. An Administrator fills in these fields when configuring the cash register. We will create three blocks: `AUTH` — authorization via login and password, `COMPANY` — company details, `INTERACTION` — cash register operation mode.
 
-{% include [Note on Examples](../../_includes/examples.md) %}
+{% include [Note on examples](../../_includes/examples.md) %}
 
 {% list tabs %}
 
 - JS
 
    ```js
-   BX24.callMethod(
-       "sale.cashbox.handler.add",
-       {
-           "CODE": "my_rest_cashbox",
-           "NAME": "My REST Cash Register",
-           "SORT": 100,
-           "SETTINGS":
-           {
-               "PRINT_URL": "http://example.com/rest_print.php",
-               "CHECK_URL": "http://example.com/rest_check.php",
-               "CONFIG":
-               {
-                   "AUTH": {
-                       "LABEL": "Authorization",
-                       "ITEMS": {
-                           "LOGIN": {
-                               "TYPE": "STRING",
-                               "REQUIRED": "Y",
-                               "LABEL": "Login"
+   import { B24Hook } from '@bitrix24/b24jssdk'
+
+   const $b24 = B24Hook.fromWebhookUrl(process.env.B24_HOOK)
+   // B24_HOOK = 'https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/'
+
+   const response = await $b24.actions.v2.call.make({
+       method: 'sale.cashbox.handler.add',
+       params: {
+           CODE: 'my_rest_cashbox',
+           NAME: 'My REST cash register',
+           SORT: 100,
+           SETTINGS: {
+               PRINT_URL: 'http://example.com/rest_print.php',
+               CHECK_URL: 'http://example.com/rest_check.php',
+               CONFIG: {
+                   AUTH: {
+                       LABEL: 'Authorization',
+                       ITEMS: {
+                           LOGIN: {
+                               TYPE: 'STRING',
+                               REQUIRED: 'Y',
+                               LABEL: 'Login'
                            },
-                           "PASSWORD": {
-                               "TYPE": "STRING",
-                               "REQUIRED": "Y",
-                               "LABEL": "Password"
-                           },
-                       }
-                   },
-                   "COMPANY": {
-                       "LABEL": "Organization Data",
-                       "ITEMS": {
-                           "INN": {
-                               "TYPE": "STRING",
-                               "REQUIRED": "Y",
-                               "LABEL": "Organization INN"
+                           PASSWORD: {
+                               TYPE: 'STRING',
+                               REQUIRED: 'Y',
+                               LABEL: 'Password'
                            }
                        }
                    },
-                   "INTERACTION": {
-                       "LABEL": "Cash Register Interaction Settings",
-                       "ITEMS": {
-                           "MODE": {
-                               "TYPE": "ENUM",
-                               "LABEL": "Cash Register Operation Mode",
-                               "OPTIONS": {
-                                   "ACTIVE": "active",
-                                   "TEST": "test"
+                   COMPANY: {
+                       LABEL: 'Organization data',
+                       ITEMS: {
+                           INN: {
+                               TYPE: 'STRING',
+                               REQUIRED: 'Y',
+                               LABEL: 'Tax ID of the organization'
+                           }
+                       }
+                   },
+                   INTERACTION: {
+                       LABEL: 'Cash register interaction settings',
+                       ITEMS: {
+                           MODE: {
+                               TYPE: 'ENUM',
+                               LABEL: 'Cash register operating mode',
+                               OPTIONS: {
+                                   ACTIVE: 'production',
+                                   TEST: 'test'
                                }
                            }
                        }
@@ -90,26 +99,38 @@ We will register the handler using [sale.cashbox.handler.add](../../api-referenc
                }
            }
        },
-       function(result)
-       {
-           if(result.error())
-               console.error(result.error());
-           else
-               console.dir(result.data());
-       }
-   );
+       requestId: 'cashbox-handler-add'
+   })
+
+   if (response.isSuccess) {
+       console.dir(response.getData().result)
+   } else {
+       console.error(response.getErrorMessages().join('; '))
+   }
    ```
 
 - PHP
 
    ```php
-   require_once('crest.php');
-   
-   $result = CRest::call('sale.cashbox.handler.add', [
-       'CODE' => 'my_rest_cashbox',
-       'NAME' => 'My REST Cash Register',
-       'SORT' => 100,
-       'SETTINGS' => [
+   <?php
+   // composer require bitrix24/b24phpsdk:"^3.0"
+   require_once 'vendor/autoload.php';
+
+   use Bitrix24\SDK\Services\ServiceBuilderFactory;
+   use Symfony\Component\EventDispatcher\EventDispatcher;
+   use Monolog\Logger;
+   use Monolog\Handler\StreamHandler;
+
+   $log = new Logger('b24');
+   $log->pushHandler(new StreamHandler('php://stdout'));
+
+   $sb = (new ServiceBuilderFactory(new EventDispatcher(), $log))
+       ->initFromWebhook('https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/');
+
+   $result = $sb->getSaleScope()->cashboxHandler()->add(
+       'my_rest_cashbox',
+       'My REST cash register',
+       [
            'PRINT_URL' => 'http://example.com/rest_print.php',
            'CHECK_URL' => 'http://example.com/rest_check.php',
            'CONFIG' => [
@@ -129,34 +150,35 @@ We will register the handler using [sale.cashbox.handler.add](../../api-referenc
                    ]
                ],
                'COMPANY' => [
-                   'LABEL' => 'Organization Data',
+                   'LABEL' => 'Organization data',
                    'ITEMS' => [
                        'INN' => [
                            'TYPE' => 'STRING',
                            'REQUIRED' => 'Y',
-                           'LABEL' => 'Organization INN'
+                           'LABEL' => 'Tax ID of the organization'
                        ]
                    ]
                ],
                'INTERACTION' => [
-                   'LABEL' => 'Cash Register Interaction Settings',
+                   'LABEL' => 'Cash register interaction settings',
                    'ITEMS' => [
                        'MODE' => [
                            'TYPE' => 'ENUM',
-                           'LABEL' => 'Cash Register Operation Mode',
+                           'LABEL' => 'Cash register operating mode',
                            'OPTIONS' => [
-                               'ACTIVE' => 'active',
+                               'ACTIVE' => 'production',
                                'TEST' => 'test'
                            ]
                        ]
                    ]
                ]
            ]
-       ]
-   ]);
-   
+       ],
+       100
+   );
+
    echo '<PRE>';
-   print_r($result);
+   print_r($result->getId());
    echo '</PRE>';
    ```
 
@@ -170,14 +192,14 @@ We will register the handler using [sale.cashbox.handler.add](../../api-referenc
    client = Client(
        BitrixWebhook(
            domain="your-domain.bitrix24.com",
-           auth_token="your-webhook-token",
+           webhook_token="user_id/webhook_key",
        )
    )
 
    try:
        response = client.sale.cashbox.handler.add(
        code="my_rest_cashbox",
-       name="My REST Cash Register",
+       name="My REST cash register",
        sort=100,
        settings={
            "PRINT_URL": "http://example.com/rest_print.php",
@@ -199,23 +221,23 @@ We will register the handler using [sale.cashbox.handler.add](../../api-referenc
                    },
                },
                "COMPANY": {
-                   "LABEL": "Organization Data",
+                   "LABEL": "Organization data",
                    "ITEMS": {
                        "INN": {
                            "TYPE": "STRING",
                            "REQUIRED": "Y",
-                           "LABEL": "Organization INN",
+                           "LABEL": "Tax ID of the organization",
                        }
                    },
                },
                "INTERACTION": {
-                   "LABEL": "Cash Register Interaction Settings",
+                   "LABEL": "Cash register interaction settings",
                    "ITEMS": {
                        "MODE": {
                            "TYPE": "ENUM",
-                           "LABEL": "Cash Register Operation Mode",
+                           "LABEL": "Cash register operating mode",
                            "OPTIONS": {
-                               "ACTIVE": "active",
+                               "ACTIVE": "production",
                                "TEST": "test",
                            },
                        }
@@ -241,114 +263,109 @@ If the handler is successfully added, the method will return its identifier. If 
         "finish":1761744611.243273,
         "duration":0.24327301979064941,
         "processing":0,
-        "date_start":"2025-10-29T16:30:11+02:00",
-        "date_finish":"2025-10-29T16:30:11+02:00",
+        "date_start":"2025-10-29T16:30:11+03:00",
+        "date_finish":"2025-10-29T16:30:11+03:00",
         "operating_reset_at":1761745211,
         "operating":0
     }
 }
 ```
 
-Now the handler can be used to create cash registers in the Bitrix24 interface. One handler can serve multiple cash registers with different details.
+The handler can now be used to create cash registers in the Bitrix24 interface. One handler can serve multiple cash registers with different company details.
 
 ![Handler](_images/crm_cash_handler.png)
 
-## 2\. Configure the Cash Register
+## 2. Configure the Cashbox
 
-We will add the cash register using [sale.cashbox.add](../../api-reference/sale/cashbox/sale-cashbox-add.md). We will pass the cash register settings and the values of the `CONFIG` parameter from the previous step.
+Add a cashbox using [sale.cashbox.add](../../api-reference/sale/cashbox/sale-cashbox-add.md). Pass the cashbox configurations and the value of the `CONFIG` parameter from the previous step to the method.
 
-- `REST_CODE` — the code of the handler. We will pass the value `my_rest_cashbox`, which we specified when adding the handler in the `CODE` parameter.
+- `REST_CODE` — handler code. Pass the value `my_rest_cashbox`, which you specified when adding a handler in the parameter `CODE`.
 
-- `NAME` — the name of the cash register. We will specify `REST Cash Register`.
+- `NAME` — cashbox name. Specify REST cash register.
 
-- `NUMBER_KKM` — the external identifier of the cash register, for example, `1`.
+- `NUMBER_KKM` — external cashbox identifier, for example, `1`.
 
-- `OFD` — the code of the OFD handler. We will pass `bx_firstofd`. A list of possible values can be found in the documentation for the method [sale.cashbox.add](../../api-reference/sale/cashbox/sale-cashbox-add.md).
+- `OFD` — OFD handler code. Pass `bx_firstofd`. See the list of possible values in the [sale.cashbox.add](../../api-reference/sale/cashbox/sale-cashbox-add.md) method documentation.
 
-- `EMAIL` — the email address for notifications. We will specify `owner@example.com`.
+- `EMAIL` — email address for notifications. Specify `owner@example.com`.
 
-- `USE_OFFLINE` — a flag indicating whether the cash register is used offline. We will set the value to `Y`.
+- `USE_OFFLINE` — flag indicating whether the cashbox is used offline. Set the value `Y`.
 
-- `ACTIVE` — the activity status of the cash register. We will specify `Y`.
+- `ACTIVE` — cashbox activity. Specify `Y`.
 
-- `SETTINGS` — data for the fields created in the `CONFIG` parameter in the previous step. They need to be filled in exactly as described when registering the handler:
+- `SETTINGS` — data for the fields created in the `CONFIG` parameter in the previous step. They must be filled out exactly as described during the handler registration:
 
     - `AUTH` — login and password for authorization,
 
-    - `COMPANY` — organization INN,
+    - `COMPANY` — organization Taxpayer ID,
 
-    - `INTERACTION` — operation mode, for example, `ACTIVE`.
+    - `INTERACTION` — operating mode, for example, `ACTIVE`.
 
 {% list tabs %}
 
 - JS
 
    ```js
-   BX24.callMethod(
-       "sale.cashbox.add",
-       {
-           "REST_CODE": "my_rest_cashbox",
-           "NAME": "REST Cash Register",
-           "NUMBER_KKM": "1",
-           "OFD": "bx_firstofd",
-           "EMAIL": "owner@example.com",
-           "USE_OFFLINE": "Y",
-           "ACTIVE": "Y",
-           "SETTINGS": {
-               "AUTH": {
-                   "LOGIN": "rest_login",
-                   "PASSWORD": "rest_password"
+   const response = await $b24.actions.v2.call.make({
+       method: 'sale.cashbox.add',
+       params: {
+           REST_CODE: 'my_rest_cashbox',
+           NAME: 'REST cash register',
+           NUMBER_KKM: '1',
+           OFD: 'bx_firstofd',
+           EMAIL: 'owner@example.com',
+           USE_OFFLINE: 'Y',
+           ACTIVE: 'Y',
+           SETTINGS: {
+               AUTH: {
+                   LOGIN: 'rest_login',
+                   PASSWORD: 'rest_password'
                },
-               "COMPANY": {
-                   "INN": "1234567890"
+               COMPANY: {
+                   INN: '1234567890'
                },
-               "INTERACTION": {
-                   "MODE": "ACTIVE"
+               INTERACTION: {
+                   MODE: 'ACTIVE'
                }
            }
        },
-       function(result)
-       {
-           if(result.error())
-           console.error(result.error());
-           else
-           console.dir(result.data());
-       }
-   );
+       requestId: 'cashbox-add'
+   })
+
+   if (response.isSuccess) {
+       console.dir(response.getData().result)
+   } else {
+       console.error(response.getErrorMessages().join('; '))
+   }
    ```
 
 - PHP
 
    ```php
-   require_once('crest.php');
-   
-   $result = CRest::call(
-       'sale.cashbox.add',
-       [
-           'REST_CODE' => 'my_rest_cashbox',
-           'NAME' => 'REST Cash Register',
-           'NUMBER_KKM' => '1',
-           'OFD' => 'bx_firstofd',
-           'EMAIL' => 'owner@example.com',
-           'USE_OFFLINE' => 'Y',
-           'ACTIVE' => 'Y',
-           'SETTINGS' => [
-               'AUTH' => [
-                   'LOGIN' => 'rest_login',
-                   'PASSWORD' => 'rest_password'
-               },
-               'COMPANY' => [
-                   'INN' => '1234567890'
-               },
-               'INTERACTION' => [
-                   'MODE' => 'ACTIVE'
-               ]
+   $result = $sb->getSaleScope()->cashbox()->add([
+       'REST_CODE' => 'my_rest_cashbox',
+       'NAME' => 'REST cash register',
+       'NUMBER_KKM' => '1',
+       'OFD' => 'bx_firstofd',
+       'EMAIL' => 'owner@example.com',
+       'USE_OFFLINE' => 'Y',
+       'ACTIVE' => 'Y',
+       'SETTINGS' => [
+           'AUTH' => [
+               'LOGIN' => 'rest_login',
+               'PASSWORD' => 'rest_password'
+           ],
+           'COMPANY' => [
+               'INN' => '1234567890'
+           ],
+           'INTERACTION' => [
+               'MODE' => 'ACTIVE'
            ]
        ]
-   );
-   
+   ]);
+
    echo '<PRE>';
-   print_r($result);
+   print_r($result->getId());
    echo '</PRE>';
    ```
 
@@ -358,7 +375,7 @@ We will add the cash register using [sale.cashbox.add](../../api-reference/sale/
    try:
        response = client.sale.cashbox.add(
        rest_code="my_rest_cashbox",
-       name="REST Cash Register",
+       name="REST cash register",
        email="owner@example.com",
        number_kkm="1",
        ofd="bx_firstofd",
@@ -384,7 +401,7 @@ We will add the cash register using [sale.cashbox.add](../../api-reference/sale/
 
 {% endlist %}
 
-If the cash register is successfully added, the method will return its identifier. If you receive an `error`, check the description of possible errors in the documentation for the method [sale.cashbox.add](../../api-reference/sale/cashbox/sale-cashbox-add.md).
+If the cashbox is successfully added, the method returns its identifier. If you receive error `error`, review the description of possible errors in the [sale.cashbox.add](../../api-reference/sale/cashbox/sale-cashbox-add.md) method documentation.
 
 ```json
 {
@@ -394,29 +411,29 @@ If the cash register is successfully added, the method will return its identifie
         "finish":1761771262.111383,
         "duration":0.11138296127319336,
         "processing":0,
-        "date_start":"2025-10-29T16:54:22+02:00",
-        "date_finish":"2025-10-29T16:54:22+02:00",
+        "date_start":"2025-10-29T16:54:22+03:00",
+        "date_finish":"2025-10-29T16:54:22+03:00",
         "operating_reset_at":1761771862,
         "operating":0
     }
 }
 ```
 
-In the Sales Center, you can check that the cash register is connected to Bitrix24.
+You can verify that the cashbox is connected to Bitrix24 in the Sales Center.
 
 ![Cash Register](_images/add_cash.png)
 
 ## Printing Receipts
 
-The cash register uses two addresses. The `PRINT_URL` is where the account sends data for printing. The `CHECK_URL` is where Bitrix24 checks if the receipt has been printed and if there are any errors.
+The cash register uses two addresses. The account sends printing data to `PRINT_URL`. Bitrix24 uses `CHECK_URL` to check whether the receipt has been printed and if there are any errors.
 
 ### PRINT_URL Page
 
-The `PRINT_URL` page is the address to which the account sends data for printing the receipt. The structure of the request can be found in the section [PRINT_URL Page](../../api-reference/sale/cashbox/sale-cashbox-handler-add.md#print_url) of the method `sale.cashbox.handler.add`.
+The `PRINT_URL` page is the address to which the account sends data to print a receipt. For the request structure, see the [PRINT_URL Page](../../api-reference/sale/cashbox/sale-cashbox-handler-add.md#print_url) section of the `sale.cashbox.handler.add` method.
 
-At the `PRINT_URL`, the incoming data is processed, the document is generated, and the print result is returned.
+Input data processing, document generation, and the return of the printing result occur at `PRINT_URL`.
 
-- If the print fails, the JSON array looks like this:
+- If printing fails, the JSON array looks like this:
 
    ```json
    {
@@ -428,7 +445,7 @@ At the `PRINT_URL`, the incoming data is processed, the document is generated, a
    }
    ```
 
-- If the receipt has been sent for printing, the array looks like this:
+- If the receipt is sent to print, the array looks like this:
 
    ```json
    {
@@ -438,13 +455,13 @@ At the `PRINT_URL`, the incoming data is processed, the document is generated, a
 
 ### CHECK_URL Page
 
-The `CHECK_URL` page is the address where the account checks if the receipt is ready and if there are any errors.
+The `CHECK_URL` page is the address used by the account to check if the receipt is ready and if there are any errors.
 
-The request to the `CHECK_URL` is executed by the manager's request or is automatically triggered after some time following the successful printing of the receipt. The structure of the request can be found in the section [CHECK_URL Page](../../api-reference/sale/cashbox/sale-cashbox-handler-add.md#check_url) of the method `sale.cashbox.handler.add`.
+A request to `CHECK_URL` is performed upon a manager's request or is triggered automatically after a certain amount of time following a successful receipt print. For the request structure, see the [CHECK_URL Page](../../api-reference/sale/cashbox/sale-cashbox-handler-add.md#check_url) section of the `sale.cashbox.handler.add` method.
 
-The request to the `CHECK_URL` returns data about the receipt, error data if there was an error printing the receipt, or a status of "waiting for print".
+A request to `CHECK_URL` returns data about the receipt, error data if a printing error occurred, or an "idle" status.
 
-- The data format in case of a printing error:
+- Data format in case of a printing error:
 
    ```json
    {
@@ -453,7 +470,7 @@ The request to the `CHECK_URL` returns data about the receipt, error data if the
    }
    ```
 
-- The data format if the receipt has not been printed:
+- Data format if the receipt has not been printed:
 
    ```json
    {
@@ -461,7 +478,7 @@ The request to the `CHECK_URL` returns data about the receipt, error data if the
    }
    ```
 
-- The data format upon successful receipt submission:
+- Data format upon successful receipt submission:
 
    ```json
    {
@@ -477,80 +494,75 @@ The request to the `CHECK_URL` returns data about the receipt, error data if the
    }
    ```
 
-The complete list of fields matches the parameters of the method [sale.cashbox.check.apply](../../api-reference/sale/cashbox/sale-cashbox-check-apply.md).
+The full list of fields matches the parameters of the [sale.cashbox.check.apply](../../api-reference/sale/cashbox/sale-cashbox-check-apply.md) method.
 
-Data from the `CHECK_URL` is saved on the account and used to generate a link to the receipt.
+Data from `CHECK_URL` is retained on the account and used to generate a link to the receipt.
 
 ### Manually Submit Print Result
 
-Receipt data can be submitted at any time using the method [sale.cashbox.check.apply](../../api-reference/sale/cashbox/sale-cashbox-check-apply.md).
+Receipt data can be submitted at any time using the [sale.cashbox.check.apply](../../api-reference/sale/cashbox/sale-cashbox-check-apply.md) method.
 
 Prepare the fields for `sale.cashbox.check.apply`.
 
-- `UUID` — the unique identifier of the receipt returned by the handler in response to `PRINT_URL`.
+- `UUID` — the unique ID of the receipt returned by the handler in the response to `PRINT_URL`.
 
-- `PRINT_END_TIME` — the time the receipt printing ended.
+- `PRINT_END_TIME` — the receipt printing End Time.
 
-- `REG_NUMBER_KKT` — the registration number of the cash register.
+- `REG_NUMBER_KKT` — the cash register registration number.
 
 - `FISCAL_DOC_ATTR` — the fiscal attribute of the document generated by the cash register.
 
-- `FISCAL_DOC_NUMBER` — the number of the fiscal document.
+- `FISCAL_DOC_NUMBER` — the fiscal document number.
 
 - `FISCAL_RECEIPT_NUMBER` — the receipt number within the shift.
 
-- `FN_NUMBER` — the number of the fiscal accumulator.
+- `FN_NUMBER` — the fiscal storage device number.
 
-- `SHIFT_NUMBER` — the shift number in which the receipt was included.
+- `SHIFT_NUMBER` — the shift number in which the receipt was recorded.
 
 {% list tabs %}
 
 - JS
 
    ```js
-   BX24.callMethod(
-       "sale.cashbox.check.apply",
-       {
-           'UUID':'00112233-4455-6677-8899-aabbccddeeff',
-           'PRINT_END_TIME':'1609459200',
-           'REG_NUMBER_KKT':'000111222333',
-           'FISCAL_DOC_ATTR':'33445500',
-           'FISCAL_DOC_NUMBER':'123',
-           'FISCAL_RECEIPT_NUMBER':'10',
-           'FN_NUMBER':'0011223344556677',
-           'SHIFT_NUMBER':'12'
+   const response = await $b24.actions.v2.call.make({
+       method: 'sale.cashbox.check.apply',
+       params: {
+           UUID: '00112233-4455-6677-8899-aabbccddeeff',
+           PRINT_END_TIME: '1609459200',
+           REG_NUMBER_KKT: '000111222333',
+           FISCAL_DOC_ATTR: '33445500',
+           FISCAL_DOC_NUMBER: '123',
+           FISCAL_RECEIPT_NUMBER: '10',
+           FN_NUMBER: '0011223344556677',
+           SHIFT_NUMBER: '12'
        },
-       function(result)
-       {
-           if(result.error())
-               console.error(result.error());
-           else
-               console.dir(result.data());
-       }
-   );
+       requestId: 'cashbox-check-apply'
+   })
+
+   if (response.isSuccess) {
+       console.dir(response.getData().result)
+   } else {
+       console.error(response.getErrorMessages().join('; '))
+   }
    ```
 
 - PHP
 
    ```php
-   require_once('crest.php');
-   
-   $result = CRest::call(
-       'sale.cashbox.check.apply',
-       [
-           'UUID' => '00112233-4455-6677-8899-aabbccddeeff',
-           'PRINT_END_TIME' => '1609459200',
-           'REG_NUMBER_KKT' => '000111222333',
-           'FISCAL_DOC_ATTR' => '33445500',
-           'FISCAL_DOC_NUMBER' => '123',
-           'FISCAL_RECEIPT_NUMBER' => '10',
-           'FN_NUMBER' => '0011223344556677',
-           'SHIFT_NUMBER' => '12'
-       ]
-   );
-   
+   $result = $sb->getSaleScope()->cashbox()->checkApply([
+       'UUID' => '00112233-4455-6677-8899-aabbccddeeff',
+       'PRINT_END_TIME' => '1609459200',
+       'REG_NUMBER_KKT' => '000111222333',
+       'FISCAL_DOC_ATTR' => '33445500',
+       'FISCAL_DOC_NUMBER' => '123',
+       'FISCAL_RECEIPT_NUMBER' => '10',
+       'FN_NUMBER' => '0011223344556677',
+       'SHIFT_NUMBER' => '12'
+   ]);
+
    echo '<PRE>';
-   print_r($result);
+   print_r($result->isSuccess());
    echo '</PRE>';
    ```
 

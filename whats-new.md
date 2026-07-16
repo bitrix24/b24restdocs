@@ -2,6 +2,17 @@
 
 ## 2026
 
+### July 14, 2026
+
+- Added [call.followup.*](./api-reference/telephony/follow-up/index.md) methods for working with AI call summaries
+
+### July 10, 2026
+
+- Updated the [B24PhpSDK: Installation and First Call](./sdk/b24phpsdk/index.md) page
+- Updated the [CRest PHP SDK: Installation and First Call](./sdk/crest-php-sdk/index.md) page
+- Updated the [How to Create an Activity from an Application](./api-reference/crm/timeline/activities/app-embedding/activity-app.md) page
+
+
 ### July 09, 2026
 
 - Added the tutorial [How to Add a Product with Custom Property Values](./tutorials/catalog/index.md)

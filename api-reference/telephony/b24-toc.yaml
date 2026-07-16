@@ -25,6 +25,10 @@ items:
     href: telephony-external-call-attach-record.md  
   - name: Add Transcription of Recording to Call  
     href: telephony-call-attach-transcription.md  
+  - name: Call Follow-ups
+    include:
+      path: follow-up/b24-toc.yaml
+      mode: link
   - name: Events  
     include:  
       path: events/b24-toc.yaml  

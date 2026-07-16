@@ -14,52 +14,68 @@ Deals associated with CRM entities are stored in the timeline of the entity's de
 
 To transfer a deal, we will sequentially execute three methods:
 
-1. [crm.activity.list](../../../api-reference/crm/timeline/activities/activity-base/crm-activity-list.md) — retrieve the deal ID
+1. [crm.activity.list](../../../api-reference/crm/timeline/activities/activity-base/crm-activity-list.md) — retrieve the activity ID
 
-2. [crm.lead.add](../../../api-reference/crm/leads/crm-lead-add.md) — create the entity to which we will transfer the deal, in this example, a lead
+2. [crm.lead.add](../../../api-reference/crm/leads/crm-lead-add.md) — create the item to which the activity will be moved (in this example, a lead)
 
-3. [crm.activity.binding.move](../../../api-reference/crm/timeline/activities/binding/crm-activity-binding-move.md) — perform the deal transfer
+3. [crm.activity.binding.move](../../../api-reference/crm/timeline/activities/binding/crm-activity-binding-move.md) — perform the activity transfer
 
 ## 1. Retrieving the Deal ID {#first}
 
 We will use the method [crm.activity.list](../../../api-reference/crm/timeline/activities/activity-base/crm-activity-list.md) with the following filter:
 
-- `OWNER_TYPE_ID` — [object type](../../../api-reference/crm/data-types.md#object_type), specify `1` for leads
+- `OWNER_TYPE_ID` — [object type](../../../api-reference/crm/data-types.md#object_type), specify `1` for a lead
 
-- `OWNER_ID` — ID of the entity from which we will transfer the deal
+- `OWNER_ID` — the ID of the item from which the activity will be moved
 
-{% include [Example Notes](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
 - JS
 
     ```JavaScript
-    BX24.callMethod(
-        "crm.activity.list",
-        {
+    import { B24Hook } from '@bitrix24/b24jssdk'
+
+    const $b24 = B24Hook.fromWebhookUrl(process.env.B24_HOOK)
+    // B24_HOOK = 'https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/'
+
+    const result = await $b24.actions.v2.call.make({
+        method: "crm.activity.list",
+        params: {
             filter:
             {
-                "OWNER_TYPE_ID": 1, 
-                "OWNER_ID": 1000977 
+                "OWNER_TYPE_ID": 1,
+                "OWNER_ID": 1000977
             },
-        },
-    );
+        }
+    });
     ```
 
 - PHP
 
     ```php
-    require_once('crest.php');
+    require_once 'vendor/autoload.php';
 
-    $result = CRest::call(
-        'crm.activity.list',
+    use Bitrix24\SDK\Services\ServiceBuilderFactory;
+    use Symfony\Component\EventDispatcher\EventDispatcher;
+    use Monolog\Logger;
+    use Monolog\Handler\StreamHandler;
+
+    $logger = new Logger('b24');
+    $logger->pushHandler(new StreamHandler('php://stdout'));
+
+    $serviceBuilder = (new ServiceBuilderFactory(new EventDispatcher(), $logger))
+        ->initFromWebhook('https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/');
+
+    $result = $serviceBuilder->getCRMScope()->activity()->list(
+        [],
         [
-            'filter' => [
-                'OWNER_TYPE_ID' => 1, 
-                'OWNER_ID' => 1000977 
-            ]
-        ]
+            'OWNER_TYPE_ID' => 1,
+            'OWNER_ID' => 1000977,
+        ],
+        [],
+        0
     );
     ```
 
@@ -71,7 +87,7 @@ We will use the method [crm.activity.list](../../../api-reference/crm/timeline/a
     client = Client(
         BitrixWebhook(
             domain="your-domain.bitrix24.com",
-            auth_token="your-webhook-token",
+            webhook_token="user_id/webhook_key",
         )
     )
 
@@ -85,7 +101,7 @@ We will use the method [crm.activity.list](../../../api-reference/crm/timeline/a
 
 {% endlist %}
 
-As a result, we will receive all deals associated with the specified entity.
+As a result, you will retrieve all activities associated with the specified item.
 
 ```JSON
 {
@@ -193,59 +209,54 @@ As a result, we will receive all deals associated with the specified entity.
             "AUTOCOMPLETE_RULE": "0"
         }
     ],
-    "total": 2
+    "total": 2,
 }
 ```
 
-Select the desired deal from the list obtained and save its `ID`: `7687`. In the [code example](#example), the deal selection is implemented through a search by the phrase from the `DESCRIPTION` field.
+Select the required activity from the retrieved list and save its `ID`: `7687`. In [the code example](#example), task selection is implemented via phrase search from the field `DESCRIPTION`.
 
 ## 2. Creating a New Entity {#second}
 
-To create a new lead to which we will transfer the email deal, we will execute the method [crm.lead.add](../../../api-reference/crm/leads/crm-lead-add.md) with the following parameters:
+To create a new lead to which the e-mail activity will be moved, call the [crm.lead.add](../../../api-reference/crm/leads/crm-lead-add.md) method with the following parameters:
 
-- `fields[TITLE]` — title of the lead
+- `fields[TITLE]` — the lead name
 
-- `fields[ASSIGNED_BY_ID]` — identifier of the person responsible for the new lead
+- `fields[ASSIGNED_BY_ID]` — the identifier of the user responsible for the new lead
 
-- `params[REGISTER_SONET_EVENT]` — parameter for registering notifications, specify `Y` to trigger system notifications for the new lead upon creation
+- `params[REGISTER_SONET_EVENT]` — a parameter for registering notifications; specify `Y` so that system notifications are triggered upon the creation of the new lead
 
-All required fields for leads in your Bitrix24 must be specified in the method; otherwise, the lead will not be created. You can check which fields are mandatory using the method [crm.lead.fields](../../../api-reference/crm/leads/crm-lead-fields.md), which is called without parameters.
+The method must include all mandatory fields for leads in your Bitrix24; otherwise, the lead will not be created. You can check which fields are mandatory using the [crm.lead.fields](../../../api-reference/crm/leads/crm-lead-fields.md) method, which is called without parameters.
 
 {% list tabs %}
 
 - JS
 
     ```JavaScript
-    BX24.callMethod(
-        "crm.lead.add",
-        {
+    const result = await $b24.actions.v2.call.make({
+        method: "crm.lead.add",
+        params: {
             fields:
             {
-                TITLE: "Second Lead", 
-                ASSIGNED_BY_ID: 1, 
+                TITLE: "Second lead",
+                ASSIGNED_BY_ID: 1,
             },
             params: {
-                REGISTER_SONET_EVENT: "Y", 
+                REGISTER_SONET_EVENT: "Y",
             }
-        },
-    );
+        }
+    });
     ```
 
 - PHP
 
     ```php
-    require_once('crest.php');
-
-    $result = CRest::call(
-        'crm.lead.add',
+    $result = $serviceBuilder->getCRMScope()->lead()->add(
         [
-            'fields' => [
-                'TITLE' => 'Second Lead', 
-                'ASSIGNED_BY_ID' => 1, 
-            ],
-            'params' => [
-                'REGISTER_SONET_EVENT' => 'Y', 
-            ]
+            'TITLE' => 'Second lead',
+            'ASSIGNED_BY_ID' => 1,
+        ],
+        [
+            'REGISTER_SONET_EVENT' => 'Y',
         ]
     );
     ```
@@ -255,7 +266,7 @@ All required fields for leads in your Bitrix24 must be specified in the method; 
     ```python
     result = client.crm.lead.add(
         fields={
-            "TITLE": "Second Lead",
+            "TITLE": "Second lead",
             "ASSIGNED_BY_ID": 1,
         },
         params={
@@ -266,27 +277,27 @@ All required fields for leads in your Bitrix24 must be specified in the method; 
 
 {% endlist %}
 
-As a result, we will receive the ID of the created lead.
+As a result, you will receive the ID of the created lead.
 
 ```JSON
 {
-    "result": 1000979
+    "result": 1000979,
 }
 ```
 
 ## 3. Transferring the Deal Between Entities
 
-To transfer the deal, we will use the method [crm.activity.binding.move](../../../api-reference/crm/timeline/activities/binding/crm-activity-binding-move.md) with the following parameters:
+To move the activity, use the [crm.activity.binding.move](../../../api-reference/crm/timeline/activities/binding/crm-activity-binding-move.md) method with the following parameters:
 
-- `activityId` — ID of the deal obtained in [step 1](#first) using the method [crm.activity.list](../../../api-reference/crm/timeline/activities/activity-base/crm-activity-list.md)
+- `activityId` — the activity ID obtained in [step 1](#first) via the [crm.activity.list](../../../api-reference/crm/timeline/activities/activity-base/crm-activity-list.md) method
 
-- `sourceEntityTypeId` — ID of the [object type](../../../api-reference/crm/data-types.md#object_type) from which we are transferring the deal
+- `sourceEntityTypeId` — the ID of the [object type](../../../api-reference/crm/data-types.md#object_type) from which the activity is being moved
 
-- `sourceEntityId` — ID of the entity from which we are transferring the deal
+- `sourceEntityId` — the ID of the item from which the activity is being moved
 
-- `targetEntityTypeId` — ID of the [object type](../../../api-reference/crm/data-types.md#object_type) to which we are transferring the deal
+- `targetEntityTypeId` — the ID of the [object type](../../../api-reference/crm/data-types.md#object_type) to which the activity is being moved
 
-- `targetEntityId` — ID of the entity to which we are transferring the deal, obtained in [step 2](#second) using the method [crm.lead.add](../../../api-reference/crm/leads/crm-lead-add.md)
+- `targetEntityId` — the ID of the item to which the activity is being moved, obtained in [step 2](#second) via the [crm.lead.add](../../../api-reference/crm/leads/crm-lead-add.md) method
 
 `sourceEntityTypeId` and `targetEntityTypeId` must have the same object type value.
 
@@ -295,31 +306,29 @@ To transfer the deal, we will use the method [crm.activity.binding.move](../../.
 - JS
 
     ```JavaScript
-    BX24.callMethod(
-        'crm.activity.binding.move',
-        {
-            activityId: 7687, 
-            sourceEntityTypeId: 1, 
-            sourceEntityId: 1000977, 
-            targetEntityTypeId: 1, 
-            targetEntityId: 1000979 
+    const result = await $b24.actions.v2.call.make({
+        method: 'crm.activity.binding.move',
+        params: {
+            activityId: 7687,
+            sourceEntityTypeId: 1,
+            sourceEntityId: 1000977,
+            targetEntityTypeId: 1,
+            targetEntityId: 1000979
         }
-    );
+    });
     ```
 
 - PHP
 
     ```php
-    require_once('crest.php');
-
-    $result = CRest::call(
+    $result = $serviceBuilder->core->call(
         'crm.activity.binding.move',
         [
-            'activityId' => 7687, 
-            'sourceEntityTypeId' => 1, 
-            'sourceEntityId' => 1000977, 
+            'activityId' => 7687,
+            'sourceEntityTypeId' => 1,
+            'sourceEntityId' => 1000977,
             'targetEntityTypeId' => 1,
-            'targetEntityId' => 1000979 
+            'targetEntityId' => 1000979
         ]
     );
     ```
@@ -338,11 +347,11 @@ To transfer the deal, we will use the method [crm.activity.binding.move](../../.
 
 {% endlist %}
 
-As a result, we will receive `true`, indicating that the deal transfer was successful. If you receive an `error` in the result, refer to the documentation for the method [crm.activity.binding.move](../../../api-reference/crm/timeline/activities/binding/crm-activity-binding-move.md#error-handling) to understand possible errors.
+As a result, you will receive `true`, the task transfer was successful. If you received an error as a result `error`, study the description of possible errors in the [crm.activity.binding.move](../../../api-reference/crm/timeline/activities/binding/crm-activity-binding-move.md#error-handling) method documentation.
 
 ```JSON
 {
-    "result": true
+    "result": true,
 }
 ```
 
@@ -353,173 +362,160 @@ As a result, we will receive `true`, indicating that the deal transfer was succe
 - JS
 
     ```JavaScript
-    // Function to execute all steps
-    function transferActivity() {
-        // Prompt user for the ID of the first lead
-        const firstLeadId = prompt("Enter the ID of the first lead:");
+    import { B24Hook } from '@bitrix24/b24jssdk'
+    import { createInterface } from 'node:readline/promises'
 
-        // Prompt user for the phrase to search in the email body
-        const searchPhrase = prompt("Enter the phrase to search in the email body:");
+    const $b24 = B24Hook.fromWebhookUrl(process.env.B24_HOOK)
+    // B24_HOOK = 'https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/'
 
-        // Step 1: Retrieve the list of deals for the specified lead
-        BX24.callMethod(
-            "crm.activity.list",
-            {
-                filter: {
-                    "OWNER_TYPE_ID": 1,
-                    "OWNER_ID": firstLeadId
-                },
-            },
-            function(result) {
-                if (result.error()) {
-                    console.error(result.error());
-                    return;
-                }
-
-                const activities = result.data();
-                const targetActivity = activities.find(activity => activity.DESCRIPTION.includes(searchPhrase));
-
-                if (!targetActivity) {
-                    console.log(`No deal found with description containing '${searchPhrase}'.`);
-                    return;
-                }
-
-                const activityId = targetActivity.ID;
-
-                // Step 2: Create a new lead
-                BX24.callMethod(
-                    "crm.lead.add",
-                    {
-                        fields: {
-                            TITLE: "Second Lead",
-                            ASSIGNED_BY_ID: 1,
-                        },
-                        params: {
-                            REGISTER_SONET_EVENT: "Y",
-                        }
-                    },
-                    function(result) {
-                        if (result.error()) {
-                            console.error(result.error());
-                            return;
-                        }
-
-                        const newLeadId = result.data();
-
-                        // Step 3: Transfer the deal
-                        BX24.callMethod(
-                            'crm.activity.binding.move',
-                            {
-                                activityId: activityId,
-                                sourceEntityTypeId: 1,
-                                sourceEntityId: firstLeadId,
-                                targetEntityTypeId: 1,
-                                targetEntityId: newLeadId
-                            },
-                            function(result) {
-                                if (result.error()) {
-                                    console.error(result.error());
-                                } else {
-                                    console.log("Deal successfully transferred.");
-                                }
-                            }
-                        );
-                    }
-                );
-            }
-        );
+    async function call(method, params) {
+        const result = await $b24.actions.v2.call.make({ method, params });
+        if (!result.isSuccess) {
+            throw new Error(result.getErrorMessages().join('; '));
+        }
+        return result.getData().result;
     }
 
-    // Execute the function
-    transferActivity();
+    // Function to perform all steps
+    async function transferActivity(firstLeadId, searchPhrase) {
+        // Step 1: Get the task list for the specified lead
+        const activities = await call("crm.activity.list", {
+            filter: {
+                "OWNER_TYPE_ID": 1,
+                "OWNER_ID": firstLeadId
+            }
+        });
+
+        const targetActivity = activities.find(activity => activity.DESCRIPTION.includes(searchPhrase));
+
+        if (!targetActivity) {
+            console.log(`Task with description containing '${searchPhrase}', not found.`);
+            return;
+        }
+
+        const activityId = targetActivity.ID;
+
+        // Step 2: Create a new lead
+        const newLeadId = await call("crm.lead.add", {
+            fields: {
+                TITLE: "Second lead",
+                ASSIGNED_BY_ID: 1,
+            },
+            params: {
+                REGISTER_SONET_EVENT: "Y",
+            }
+        });
+
+        // Step 3: Transfer the task
+        await call('crm.activity.binding.move', {
+            activityId: activityId,
+            sourceEntityTypeId: 1,
+            sourceEntityId: firstLeadId,
+            targetEntityTypeId: 1,
+            targetEntityId: newLeadId
+        });
+
+        console.log("Task successfully transferred.");
+    }
+
+    // Requesting the first lead's ID and search phrase from the user
+    const rl = createInterface({ input: process.stdin, output: process.stdout });
+    const firstLeadId = await rl.question("Enter the first lead's ID: ");
+    const searchPhrase = await rl.question("Enter the phrase to search in the email body: ");
+    rl.close();
+
+    // Running the function
+    try {
+        await transferActivity(firstLeadId, searchPhrase);
+    } catch (error) {
+        console.error(error.message);
+    }
     ```
 
 - PHP
 
     ```php
-    require_once('crest.php');
+    <?php
+    require_once 'vendor/autoload.php';
 
-    // Function to execute all steps
-    function transferActivity($firstLeadId, $searchPhrase) {
-        // Step 1: Retrieve the list of deals for the specified lead
-        $result = CRest::call(
-            'crm.activity.list',
-            [
-                'filter' => [
+    use Bitrix24\SDK\Services\ServiceBuilderFactory;
+    use Symfony\Component\EventDispatcher\EventDispatcher;
+    use Monolog\Logger;
+    use Monolog\Handler\StreamHandler;
+
+    $logger = new Logger('b24');
+    $logger->pushHandler(new StreamHandler('php://stdout'));
+
+    $serviceBuilder = (new ServiceBuilderFactory(new EventDispatcher(), $logger))
+        ->initFromWebhook('https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/');
+
+    // Function to perform all steps
+    function transferActivity($serviceBuilder, $firstLeadId, $searchPhrase) {
+        $crm = $serviceBuilder->getCRMScope();
+
+        try {
+            // Step 1: Get the task list for the specified lead
+            $activities = $crm->activity()->list(
+                [],
+                [
                     'OWNER_TYPE_ID' => 1,
-                    'OWNER_ID' => $firstLeadId
-                ]
-            ]
-        );
+                    'OWNER_ID' => $firstLeadId,
+                ],
+                [],
+                0
+            )->getActivities();
 
-        if (isset($result['error'])) {
-            echo 'Error: ' . $result['error_description'];
-            return;
-        }
+            $targetActivity = null;
 
-        $activities = $result['result'];
-        $targetActivity = null;
-
-        foreach ($activities as $activity) {
-            if (strpos($activity['DESCRIPTION'], $searchPhrase) !== false) {
-                $targetActivity = $activity;
-                break;
+            foreach ($activities as $activity) {
+                if (strpos((string)$activity->DESCRIPTION, $searchPhrase) !== false) {
+                    $targetActivity = $activity;
+                    break;
+                }
             }
-        }
 
-        if (!$targetActivity) {
-            echo "No deal found with description containing '{$searchPhrase}'.";
-            return;
-        }
+            if (!$targetActivity) {
+                echo "Task with description containing '{$searchPhrase}' not found.";
+                return;
+            }
 
-        $activityId = $targetActivity['ID'];
+            $activityId = $targetActivity->ID;
 
-        // Step 2: Create a new lead
-        $leadResult = CRest::call(
-            'crm.lead.add',
-            [
-                'fields' => [
-                    'TITLE' => 'Second Lead',
+            // Step 2: Create a new lead
+            $newLeadId = $crm->lead()->add(
+                [
+                    'TITLE' => 'Second lead',
                     'ASSIGNED_BY_ID' => 1,
                 ],
-                'params' => [
+                [
                     'REGISTER_SONET_EVENT' => 'Y',
                 ]
-            ]
-        );
+            )->getId();
 
-        if (isset($leadResult['error'])) {
-            echo 'Error: ' . $leadResult['error_description'];
-            return;
-        }
+            // Step 3: Transfer the task
+            $serviceBuilder->core->call(
+                'crm.activity.binding.move',
+                [
+                    'activityId' => $activityId,
+                    'sourceEntityTypeId' => 1,
+                    'sourceEntityId' => $firstLeadId,
+                    'targetEntityTypeId' => 1,
+                    'targetEntityId' => $newLeadId
+                ]
+            );
 
-        $newLeadId = $leadResult['result'];
-
-        // Step 3: Transfer the deal
-        $moveResult = CRest::call(
-            'crm.activity.binding.move',
-            [
-                'activityId' => $activityId,
-                'sourceEntityTypeId' => 1,
-                'sourceEntityId' => $firstLeadId,
-                'targetEntityTypeId' => 1,
-                'targetEntityId' => $newLeadId
-            ]
-        );
-
-        if (isset($moveResult['error'])) {
-            echo 'Error: ' . $moveResult['error_description'];
-        } else {
-            echo 'Deal successfully transferred.';
+            echo 'Task successfully transferred.';
+        } catch (\Throwable $e) {
+            echo 'Error: ' . $e->getMessage();
         }
     }
 
-    // Prompt user for the ID of the first lead and the search phrase
-    $firstLeadId = readline("Enter the ID of the first lead: ");
+    // Requesting the first lead's ID and search phrase from the user
+    $firstLeadId = readline("Enter the first lead's ID: ");
     $searchPhrase = readline("Enter the phrase to search in the email body: ");
 
-    // Execute the function
-    transferActivity($firstLeadId, $searchPhrase);
+    // Running the function
+    transferActivity($serviceBuilder, $firstLeadId, $searchPhrase);
     ```
 
 - Python
@@ -527,7 +523,6 @@ As a result, we will receive `true`, indicating that the deal transfer was succe
     ```python
     from b24pysdk import BitrixWebhook, Client
     from b24pysdk.errors import BitrixAPIError
-
 
     def transfer_activity(client, first_lead_id, search_phrase):
         try:
@@ -548,7 +543,7 @@ As a result, we will receive `true`, indicating that the deal transfer was succe
                 break
 
         if target_activity is None:
-            print(f"No activity found with description containing '{search_phrase}'.")
+            print(f"Task with description containing '{search_phrase}' not found.")
             return
 
         activity_id = int(target_activity["ID"])
@@ -556,7 +551,7 @@ As a result, we will receive `true`, indicating that the deal transfer was succe
         try:
             new_lead_id = client.crm.lead.add(
                 fields={
-                    "TITLE": "Second Lead",
+                    "TITLE": "Second lead",
                     "ASSIGNED_BY_ID": 1,
                 },
                 params={
@@ -579,17 +574,16 @@ As a result, we will receive `true`, indicating that the deal transfer was succe
             print(f"Error: {error}")
         else:
             if result:
-                print("Deal successfully transferred.")
-
+                print("Task successfully transferred.")
 
     client = Client(
         BitrixWebhook(
             domain="your-domain.bitrix24.com",
-            auth_token="your-webhook-token",
+            webhook_token="user_id/webhook_key",
         )
     )
 
-    first_lead_id = int(input("Enter the ID of the first lead: "))
+    first_lead_id = int(input("Enter the first lead's ID: "))
     search_phrase = input("Enter the phrase to search in the email body: ")
 
     transfer_activity(client, first_lead_id, search_phrase)

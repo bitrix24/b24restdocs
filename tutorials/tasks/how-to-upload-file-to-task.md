@@ -1,78 +1,90 @@
 # How to Upload a File to a Task
 
-> Scope: [`drive`, `tasks`](../../api-reference/scopes/permissions.md)
+> Scope: [`disk`, `tasks`](../../api-reference/scopes/permissions.md)
 >
-> Who can execute the method: users with access to the drive and tasks sections
+> Who can execute the method: users with access to the Drive and Task sections
 
 {% note tip "" %}
 
-If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect the [MCP server](../../ai-tools/mcp.md) so the assistant can utilize the official REST documentation.
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../ai-tools/mcp.md) so that the assistant can utilize the official REST documentation.
 
 {% endnote %}
 
-In Bitrix24, there are two types of file fields:
+Bitrix24 has two types of file fields: 
 
-* **File.** This field is not linked to the drive; files are uploaded directly via a [Base64 format string](../../api-reference/files/how-to-upload-files.md).
-* **File (drive).** This field is linked to the drive, storing the ID of the drive object. The Base64 format is not processed in this field, so the file must first be uploaded to the Bitrix24 drive.
+* **File.** This field is not linked to Drive; files are uploaded directly into it via a [Base64 format string](../../api-reference/files/how-to-upload-files.md)
+* **File (Drive).** This field is linked to Drive and stores the Drive object ID. Base64 format is not processed in this field, so you must first upload the file to Bitrix24 Drive
 
-To attach a file to a task, you need to execute two methods in sequence:
+To attach a file to a task, execute these two methods in sequence:
 
-1. [disk.folder.uploadfile](../../api-reference/disk/folder/disk-folder-upload-file.md) — this method uploads the file to the drive.
-2. [tasks.task.files.attach](../../api-reference/tasks/tasks-task-files-attach.md) — this method attaches the drive file to the task.
+1. [disk.folder.uploadfile](../../api-reference/disk/folder/disk-folder-upload-file.md) — uploads a file to Drive
+2. [tasks.task.files.attach](../../api-reference/tasks/tasks-task-files-attach.md) — attaches a Drive file to a task
+   
+## 1. Uploading a File to Bitrix24 Drive
 
-## 1. Uploading a File to the Bitrix24 Drive
+To upload a file to Drive, use the [disk.folder.uploadfile](../../api-reference/disk/folder/disk-folder-upload-file.md) method with the following parameters:
 
-To upload a file to the drive, we use the [disk.folder.uploadfile](../../api-reference/disk/folder/disk-folder-upload-file.md) method with the following parameters:
+* `id` — specify the value of `1739` — the identifier of the Drive folder where the file will be uploaded
+* `data` — specify the filename `NAME`; the file will be saved on Bitrix24 Drive with this name
+* `fileContent` — pass the file in the format `['filename.extension', 'file as a Base64 encoded string']`
 
-* `id` — specify the value `1739` — the identifier of the drive folder where the file will be uploaded.
-* `data` — specify the file name `NAME`, which will be used to save the file on the Bitrix24 drive.
-* `fileContent` — pass the file in the format ['file_name.extension', 'file as a Base64 encoded string'].
+Uploading a file to Drive is a required step because the `UF_TASK_WEBDAV_FILES` field in tasks only accepts Drive file IDs.
 
-Uploading the file to the drive is a necessary step, as the `UF_TASK_WEBDAV_FILES` field in tasks only accepts the IDs of drive files.
-
-{% include [Examples Note](../../_includes/examples.md) %}
+{% include [Note on examples](../../_includes/examples.md) %}
 
 {% list tabs %}
 
 - JS
 
     ```javascript
-    BX24.callMethod(
-        "disk.folder.uploadfile",
-        {
+    import { B24Hook } from '@bitrix24/b24jssdk'
+
+    const $b24 = B24Hook.fromWebhookUrl('https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/')
+
+    const response = await $b24.actions.v2.call.make({
+        method: 'disk.folder.uploadfile',
+        params: {
             id: 1739,
             data: {
-                NAME: "ava555.jpg"
+                NAME: 'ava555.jpg'
             },
             fileContent: [
                 'avatar.jpg',
                 '/9j/4AAQSkZJRgABAQEASABIAAD/2wBDAAQDAwQDAwQEAwQ///+dAYq6YFKoAv/AFnAa6ArKv8AAtFJVppxCEAulxQ2DWgfMR//2Q=='
             ]
-        }
-    );
+        },
+        requestId: 'disk-uploadfile'
+    })
+
+    if (!response.isSuccess) {
+        throw new Error(response.getErrorMessages().join('; '))
+    }
+
+    const result = response.getData().result
     ```
 
 - PHP
 
     ```php
-    require_once('crest.php');
+    require_once 'vendor/autoload.php';
 
-    $result = CRest::call(
-        'disk.folder.uploadfile',
+    use Bitrix24\SDK\Services\ServiceBuilderFactory;
+    use Symfony\Component\EventDispatcher\EventDispatcher;
+
+    $serviceBuilder = (new ServiceBuilderFactory(new EventDispatcher(), $log))
+        ->initFromWebhook('https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/');
+
+    $result = $serviceBuilder->getDiskScope()->folder()->uploadFile(
+        1739,
+        ['NAME' => 'ava555.jpg'],
         [
-            'id' => 1739,
-            'data' => [
-                'NAME' => 'ava555.jpg'
-            ],
-            'fileContent' => [
-                'avatar.jpg',
-                '/9j/4AAQSkZJRgABAQEASABIAAD/2wBDAAQDAwQDAwQEAwQ///+dAYq6YFKoAv/AFnAa6ArKv8AAtFJVppxCEAulxQ2DWgfMR//2Q=='
-            ]
+            'avatar.jpg',
+            '/9j/4AAQSkZJRgABAQEASABIAAD/2wBDAAQDAwQDAwQEAwQ///+dAYq6YFKoAv/AFnAa6ArKv8AAtFJVppxCEAulxQ2DWgfMR//2Q=='
         ]
     );
 
     echo '<PRE>';
-    print_r($result);
+    print_r($result->getFile());
     echo '</PRE>';
     ```
 
@@ -84,7 +96,7 @@ Uploading the file to the drive is a necessary step, as the `UF_TASK_WEBDAV_FILE
     client = Client(
         BitrixWebhook(
             domain="your-domain.bitrix24.com",
-            auth_token="your-webhook-token",
+            webhook_token="user_id/webhook_key",
         )
     )
 
@@ -102,10 +114,11 @@ Uploading the file to the drive is a necessary step, as the `UF_TASK_WEBDAV_FILE
 
 {% endlist %}
 
-As a result of uploading the file to the drive, we receive two different file ID values:
+As a result of uploading the file to Drive, you will receive two different file ID values:
 
-* `FILE_ID`: `28073` — the internal file ID value.
-* `ID`: `6687` — the drive object ID, which we will use in methods for working with fields of the "file (drive)" type. If the request to change the "file (drive)" field passes the `FILE_ID`, the file will either not attach to the task because there is no drive object with that ID, or the wrong file will be attached.
+* `FILE_ID`: `28073` — the internal file ID value
+* `ID`: `6687` — the Drive object ID; use this value in methods when working with "File (Drive)" type fields
+If you pass the value `FILE_ID` in a request to change a "File (Drive)" field, the file will either not be attached to the task because no Drive object exists with that ID, or the wrong file will be attached
 
 ```json
 {
@@ -127,44 +140,48 @@ As a result of uploading the file to the drive, we receive two different file ID
         "UPDATED_BY": "1",
         "DELETED_BY": null,
         "DOWNLOAD_URL": "https://your-domain.bitrix24.com/rest/download.json?sessid=9dd90ed5a58ccc41af81f5f0043739db&token=disk%7CaWQ9NjY4NyZfPTJ5ZXdvN2Fsb09SMGw1b0FHTkRMSGR5MFJkN1pLTjNS%7CImRvd25sb2FkfGRpc2t8YVdROU5qWTROeVpmUFRKNVpYZHZOMkZzYjA5U01HdzFiMEZIVGtSTVNHUjVNRkprTjFwTFRqTlN8OWRkOTBlZDVhNThjY2M0MWFmODFmNWYwMDQzNzM5ZGIi.Lup1vDbibL6twiCPfCMFnLSoDLleNX0cfMHGv5PFaJw%3D",
-        "DETAIL_URL": "https://your-domain.bitrix24.com/company/personal/user/1/disk/file/Created files/New test folder/ava555.jpg"
+        "DETAIL_URL": "https://your-domain.bitrix24.com/company/personal/user/1/disk/file/Created files/New folder for process test/ava555.jpg"
     }
 }
 ```
+## 2. Attaching a File to a Task
 
-## 2. Attaching the File to the Task
+To attach a file to a task, use the [tasks.task.files.attach](../../api-reference/tasks/tasks-task-files-attach.md) method with the following parameters:
 
-To attach the file to the task, we use the [tasks.task.files.attach](../../api-reference/tasks/tasks-task-files-attach.md) method with the following parameters:
-
-* `taskId` — the ID of the task. To obtain the ID value, use the [tasks.task.list](../../api-reference/tasks/tasks-task-list.md) method.
-* `fileId` — specify the file ID from the result of the previous method `6687`.
+* `taskId` — the task ID. To retrieve the ID value, use the [tasks.task.list](../../api-reference/tasks/tasks-task-list.md) method
+* `fileId` — specify the file ID from the result of the previous method `6687`
 
 {% list tabs %}
 
 - JS
 
     ```javascript
-    BX24.callMethod(
-        'tasks.task.files.attach',
-        {
+    const response = await $b24.actions.v2.call.make({
+        method: 'tasks.task.files.attach',
+        params: {
             taskId: 3709,
             fileId: 6687
-        }
-    );
+        },
+        requestId: 'task-files-attach'
+    })
+
+    if (!response.isSuccess) {
+        throw new Error(response.getErrorMessages().join('; '))
+    }
+
+    const result = response.getData().result
     ```
 
 - PHP
 
     ```php
-    require_once('crest.php');
-
-    $result = CRest::call(
+    $result = $serviceBuilder->core->call(
         'tasks.task.files.attach',
         [
             'taskId' => 3709,
             'fileId' => 6687
         ]
-    );
+    )->getResponseData()->getResult();
 
     echo '<PRE>';
     print_r($result);
@@ -182,7 +199,7 @@ To attach the file to the task, we use the [tasks.task.files.attach](../../api-r
 
 {% endlist %}
 
-We uploaded the file to the task and received the ID of the link between the drive file and the task `423` in response. To verify the attachment of the file to the task by the link ID, we use the [disk.attachedObject.get](../../api-reference/disk/attached-object/disk-attached-object-get.md) method.
+We have uploaded the file to the task and received the link ID between the Drive file and the task in the response: `423`. To verify the file attachment to a task using the link ID, use the [disk.attachedObject.get](../../api-reference/disk/attached-object/disk-attached-object-get.md) method. 
 
 ```json
 {
@@ -209,20 +226,24 @@ We uploaded the file to the task and received the ID of the link between the dri
 - JS
 
     ```javascript
-    // Function to upload a file
-    function uploadFileToDisk() {
-        // ID of the folder where you want to upload the file
-        var folderId = 'your_folder_ID';
-        // File name and its content in Base64 format
-        var fileName = 'your_file_name';
-        var fileContentBase64 = 'your_file_content_Base64';
-        // ID of the task to which the file needs to be attached
-        var taskId = 'your_task_ID';
+    import { B24Hook } from '@bitrix24/b24jssdk'
 
-        // Call the disk.folder.uploadfile method
-        BX24.callMethod(
-            'disk.folder.uploadfile',
-            {
+    const $b24 = B24Hook.fromWebhookUrl('https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/')
+
+    // Function for uploading a file
+    async function uploadFileToDisk() {
+        // ID of the folder where you want to upload the file
+        const folderId = 'your_folder_ID';
+        // File name and its content in Base64 format
+        const fileName = 'your_file_name';
+        const fileContentBase64 = 'your_file_content_Base64';
+        // ID of the task to which the file should be attached
+        const taskId = 'your_task_ID';
+
+        // Calling the disk.folder.uploadfile method
+        const response = await $b24.actions.v2.call.make({
+            method: 'disk.folder.uploadfile',
+            params: {
                 id: folderId,
                 data: {
                     NAME: fileName
@@ -232,105 +253,113 @@ We uploaded the file to the task and received the ID of the link between the dri
                     fileContentBase64
                 ]
             },
-            function(result) {
-                if (result.error()) {
-                    console.error('Error uploading file:', result.error());
-                } else {
-                    console.log('File uploaded successfully!', result.data());
-                    var fileId = result.data().ID; // Use ID from the result
-                    attachFileToTask(taskId, fileId);
-                }
-            }
-        );
+            requestId: 'disk-uploadfile'
+        });
+
+        if (!response.isSuccess) {
+            console.error('Error while uploading the file:', response.getErrorMessages().join('; '));
+            return;
+        }
+
+        console.log('File uploaded successfully!', response.getData().result);
+        const fileId = response.getData().result.ID; // Using the ID from the result
+        await attachFileToTask(taskId, fileId);
     }
 
-    // Function to attach a file to an existing task
-    function attachFileToTask(taskId, fileId) {
-        // Call the tasks.task.files.attach method
-        BX24.callMethod(
-            'tasks.task.files.attach',
-            {
+    // Function for attaching a file to an existing task
+    async function attachFileToTask(taskId, fileId) {
+        // Calling the tasks.task.files.attach method
+        const response = await $b24.actions.v2.call.make({
+            method: 'tasks.task.files.attach',
+            params: {
                 taskId: taskId,
-                fileIds: [fileId]
+                fileId: fileId
             },
-            function(result) {
-                if (result.error()) {
-                    console.error('Error attaching file to task:', result.error());
-                } else {
-                    console.log('File successfully attached to the task!', result.data());
-                }
-            }
-        );
+            requestId: 'task-files-attach'
+        });
+
+        if (!response.isSuccess) {
+            console.error('Error while attaching the file to the task:', response.getErrorMessages().join('; '));
+            return;
+        }
+
+        console.log('File successfully attached to the task!', response.getData().result);
     }
 
-    // Call the function to upload the file and attach it to the task
-    uploadFileToDisk();
-    ```
+    // Calling the function to upload a file and attach it to a task
+    await uploadFileToDisk();
 
+    $b24.destroy();
+    ```
+    
 - PHP
 
     ```php
-    require_once('crest.php');
+    require_once 'vendor/autoload.php';
 
-    // Function to upload a file
-    function uploadFileToDisk() {
+    use Bitrix24\SDK\Services\ServiceBuilderFactory;
+    use Bitrix24\SDK\Core\Exceptions\BaseException;
+    use Symfony\Component\EventDispatcher\EventDispatcher;
+
+    $serviceBuilder = (new ServiceBuilderFactory(new EventDispatcher(), $log))
+        ->initFromWebhook('https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/');
+
+    // Function for uploading a file
+    function uploadFileToDisk($serviceBuilder) {
         // ID of the folder where you want to upload the file
         $folderId = 'your_folder_ID';
-        // Name of the file you want to upload
+        // The name of the file you want to upload
         $fileName = 'your_file_name';
         // Path to the file on your file system
         $filePath = '/path/to/your/file';
 
-        // Read the file content and encode it in Base64
+        // Reading the file content and encoding it in Base64
         $fileContentBase64 = base64_encode(file_get_contents($filePath));
 
-        // ID of the task to which the file needs to be attached
+        // ID of the task to which the file should be attached
         $taskId = 'your_task_ID';
 
-        // Call the disk.folder.uploadfile method
-        $result = CRest::call(
-            'disk.folder.uploadfile',
-            [
-                'id' => $folderId,
-                'data' => [
-                    'NAME' => $fileName
-                ],
-                'fileContent' => [
+        // Calling the disk.folder.uploadfile method
+        try {
+            $result = $serviceBuilder->getDiskScope()->folder()->uploadFile(
+                (int)$folderId,
+                ['NAME' => $fileName],
+                [
                     $fileName,
                     $fileContentBase64
                 ]
-            ]
-        );
-
-        if (isset($result['error'])) {
-            echo 'Error uploading file: ' . $result['error'];
-        } else {
-            echo 'File uploaded successfully!';
-            $fileId = $result['result']['ID']; // Use ID from the result
-            attachFileToTask($taskId, $fileId);
+            );
+        } catch (BaseException $e) {
+            echo 'Error while uploading the file: ' . $e->getMessage();
+            return;
         }
+
+        echo 'File uploaded successfully!';
+        $fileId = $result->getId(); // Using the ID from the result
+        attachFileToTask($serviceBuilder, $taskId, $fileId);
     }
 
-    // Function to attach a file to an existing task
-    function attachFileToTask($taskId, $fileId) {
-        // Call the tasks.task.files.attach method
-        $result = CRest::call(
-            'tasks.task.files.attach',
-            [
-                'taskId' => $taskId,
-                'fileIds' => [$fileId]
-            ]
-        );
-
-        if (isset($result['error'])) {
-            echo 'Error attaching file to task: ' . $result['error'];
-        } else {
-            echo 'File successfully attached to the task!';
+    // Function for attaching a file to an existing task
+    function attachFileToTask($serviceBuilder, $taskId, $fileId) {
+        // Calling the tasks.task.files.attach method
+        try {
+            $serviceBuilder->core->call(
+                'tasks.task.files.attach',
+                [
+                    'taskId' => $taskId,
+                    'fileId' => $fileId
+                ]
+            );
+        } catch (BaseException $e) {
+            echo 'Error while attaching the file to the task: ' . $e->getMessage();
+            return;
         }
+
+        echo 'File successfully attached to the task!';
     }
 
-    // Call the function to upload the file and attach it to the task
-    uploadFileToDisk();
+    // Calling the function to upload a file and attach it to a task
+    uploadFileToDisk($serviceBuilder);
     ```
 
 - Python
@@ -338,7 +367,6 @@ We uploaded the file to the task and received the ID of the link between the dri
     ```python
     from b24pysdk import BitrixWebhook, Client
     from b24pysdk.errors import BitrixAPIError
-
 
     def upload_file_to_disk(client):
         folder_id = "your_folder_ID"
@@ -353,12 +381,11 @@ We uploaded the file to the task and received the ID of the link between the dri
                 file_content=[file_name, file_content_base64],
             ).response.result
         except BitrixAPIError as error:
-            print(f"Error uploading file: {error}")
+            print(f"File upload error: {error}")
         else:
             print("File uploaded successfully!")
             file_id = result["ID"]
             attach_file_to_task(client, task_id, file_id)
-
 
     def attach_file_to_task(client, task_id, file_id):
         try:
@@ -367,15 +394,14 @@ We uploaded the file to the task and received the ID of the link between the dri
                 file_id=file_id,
             ).response
         except BitrixAPIError as error:
-            print(f"Error attaching file to task: {error}")
+            print(f"File attachment error to the task: {error}")
         else:
             print("File successfully attached to the task!")
-
 
     client = Client(
         BitrixWebhook(
             domain="your-domain.bitrix24.com",
-            auth_token="your-webhook-token",
+            webhook_token="user_id/webhook_key",
         )
     )
 

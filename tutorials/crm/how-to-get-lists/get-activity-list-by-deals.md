@@ -31,24 +31,38 @@ To get the identifier of the current user, we will use the [user.current](../../
 -  JS
 
     ```javascript
-    BX24.callMethod(
-        'user.current',
-        {}
-    );
+    import { B24Hook } from '@bitrix24/b24jssdk'
+
+    const $b24 = B24Hook.fromWebhookUrl(process.env.B24_HOOK)
+    // B24_HOOK = 'https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/'
+
+    const result = await $b24.actions.v2.call.make({
+        method: 'user.current',
+        params: {}
+    });
     ```
 
 -  PHP
 
     ```php
-    require_once('crest.php');
+    // composer require bitrix24/b24phpsdk:"^3.0"
+    require_once 'vendor/autoload.php';
 
-    $result = CRest::call(
-        'user.current',
-        []
-    );
+    use Bitrix24\SDK\Services\ServiceBuilderFactory;
+    use Symfony\Component\EventDispatcher\EventDispatcher;
+    use Monolog\Logger;
+    use Monolog\Handler\StreamHandler;
+
+    $log = new Logger('b24');
+    $log->pushHandler(new StreamHandler('php://stdout'));
+
+    $sb = (new ServiceBuilderFactory(new EventDispatcher(), $log))
+        ->initFromWebhook('https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/');
+
+    $currentUser = $sb->getUserScope()->user()->current()->user();
     ```
 
--  Python
+- Python
 
     ```python
     from b24pysdk import BitrixWebhook, Client
@@ -56,7 +70,7 @@ To get the identifier of the current user, we will use the [user.current](../../
     client = Client(
         BitrixWebhook(
             domain="your-domain.bitrix24.com",
-            auth_token="your-webhook-token",
+            webhook_token="user_id/webhook_key",
         )
     )
 
@@ -72,8 +86,8 @@ As a result, we will receive the user identifier `"ID": "29"`.
     "result": {
         "ID": "29",
         "ACTIVE": true,
-        "NAME": "John",
-        "LAST_NAME": "Doe",
+        "NAME": "Klaus",
+        "LAST_NAME": "Weber",
         ...
     }
 }
@@ -102,36 +116,30 @@ To make the request faster and return only relevant data, add a filter by stages
 -  JS
 
     ```javascript
-    BX24.callMethod(
-        'crm.item.list',
-        {
+    const result = await $b24.actions.v2.call.make({
+        method: 'crm.item.list',
+        params: {
             entityTypeId: 2,
-            select: ['id','title'],
+            select: ['id', 'title'],
             filter: {
                 assignedById: 29
             }
         }
-    );
+    });
     ```
 
 -  PHP
 
     ```php
-    require_once('crest.php');
-
-    $result = CRest::call(
-        'crm.item.list',
-        [
-            'entityTypeId' => 2,
-            'select' => ['id','title'],
-            'filter' => [
-                'assignedById' => 29
-            ]
-        ]
-    );
+    $items = $sb->getCRMScope()->item()->list(
+        2,
+        [],
+        ['assignedById' => 29],
+        ['id', 'title']
+    )->getItems();
     ```
 
--  Python
+- Python
 
     ```python
     result = client.crm.item.list(
@@ -149,9 +157,9 @@ As a result, we will receive an array `items` with deal identifiers like `"id": 
 {
     "result": {
         "items": [
-            { "id": 5111, "title": "Deal #1" },
-            { "id": 5199, "title": "Deal #2" },
-            { "id": 5257, "title": "Deal #3" }
+            { "id": 5111, "title": "Deal №1" },
+            { "id": 5199, "title": "Deal №2" },
+            { "id": 5257, "title": "Deal №3" }
         ]
     },
     "total": 3
@@ -187,9 +195,9 @@ We will output the following fields in the `select`:
 -  JS
 
     ```javascript
-    BX24.callMethod(
-        'crm.activity.list',
-        {
+    const result = await $b24.actions.v2.call.make({
+        method: 'crm.activity.list',
+        params: {
             filter: {
                 BINDINGS: [
                     { OWNER_TYPE_ID: 2, OWNER_ID: 5111 },
@@ -200,31 +208,28 @@ We will output the following fields in the `select`:
             },
             select: ['ID', 'OWNER_ID', 'SUBJECT', 'DEADLINE', 'RESPONSIBLE_ID']
         }
-    );
+    });
     ```
 
 -  PHP
 
     ```php
-    require_once('crest.php');
-    
-    $result = CRest::call(
-        'crm.activity.list',
+    $activities = $sb->getCRMScope()->activity()->list(
+        [],
         [
-            'filter' => [
-                'BINDINGS' => [
-                    ['OWNER_TYPE_ID' => 2, 'OWNER_ID' => 5111],
-                    ['OWNER_TYPE_ID' => 2, 'OWNER_ID' => 5199],
-                    ['OWNER_TYPE_ID' => 2, 'OWNER_ID' => 5257]
-                ],
-                'COMPLETED' => 'N'
+            'BINDINGS' => [
+                ['OWNER_TYPE_ID' => 2, 'OWNER_ID' => 5111],
+                ['OWNER_TYPE_ID' => 2, 'OWNER_ID' => 5199],
+                ['OWNER_TYPE_ID' => 2, 'OWNER_ID' => 5257]
             ],
-            'select' => ['ID', 'OWNER_ID', 'SUBJECT', 'DEADLINE', 'RESPONSIBLE_ID']
-        ]
-    );
+            'COMPLETED' => 'N'
+        ],
+        ['ID', 'OWNER_ID', 'SUBJECT', 'DEADLINE', 'RESPONSIBLE_ID'],
+        0
+    )->getActivities();
     ```
 
--  Python
+- Python
 
     ```python
     result = client.crm.activity.list(
@@ -242,7 +247,7 @@ We will output the following fields in the `select`:
 
 {% endlist %}
 
-As a result, we will receive a list of tasks with descriptions for each task.
+As a result, you will obtain a list of activities with a description for each activity.
 
 ```json
 {
@@ -250,15 +255,15 @@ As a result, we will receive a list of tasks with descriptions for each task.
         {
             "ID": "10120",
             "OWNER_ID": "5111",
-            "SUBJECT": "Call the client",
-            "DEADLINE": "2025-08-21T16:00:00+02:00",
+            "SUBJECT": "Call client",
+            "DEADLINE": "2025-08-21T16:00:00+03:00",
             "RESPONSIBLE_ID": "29"
         },
         {
             "ID": "10131",
             "OWNER_ID": "5199",
-            "SUBJECT": "Check the contract",
-            "DEADLINE": "2025-08-29T16:00:00+02:00",
+            "SUBJECT": "Check contract",
+            "DEADLINE": "2025-08-29T16:00:00+03:00",
             "RESPONSIBLE_ID": "47"
         },
         ...
@@ -271,39 +276,33 @@ As a result, we will receive a list of tasks with descriptions for each task.
 
 The individual responsible for a task in a deal can be any user, not just the one responsible for the deal. To display the name and surname of the person responsible for the task in the table, we will use the [user.get](../../../api-reference/user/user-get.md) method.
 
-In the `filter`, we will pass the identifiers of the responsible users `ID: [29, 47, ...]`.
+Pass the assigned user identifiers `ID: [29, 47, ...]` in the `filter` filter.
 
 {% list tabs %}
 
 -  JS
 
     ```javascript
-    BX24.callMethod(
-        'user.get',
-        {
+    const result = await $b24.actions.v2.call.make({
+        method: 'user.get',
+        params: {
             filter: {
-                ID: [29, 47, ...]
+                ID: [29, 47]
             }
         }
-    );
+    });
     ```
 
 -  PHP
 
     ```php
-    require_once('crest.php');
-    
-    $result = CRest::call(
-        'user.get',
-        [
-            'filter' => [
-                'ID' => [29, 47, ...]
-            ]
-        }
-    );
+    $users = $sb->getUserScope()->user()->get(
+        [],
+        ['ID' => [29, 47]]
+    )->getUsers();
     ```
 
--  Python
+- Python
 
     ```python
     result = client.user.get(
@@ -324,15 +323,15 @@ As a result, we will receive information about the users.
             "ID": "29",
             "XML_ID": "23699770",
             "ACTIVE": true,
-            "NAME": "John",
-            "LAST_NAME": "Doe"
+            "NAME": "Klaus",
+            "LAST_NAME": "Weber"
         },
         {
             "ID": "47",
             "XML_ID": "63726962",
             "ACTIVE": true,
             "NAME": "Peter",
-            "LAST_NAME": "Smith"
+            "LAST_NAME": "Schmidt"
         },
         ...
     ],
@@ -347,157 +346,146 @@ As a result, we will receive information about the users.
 -  JS
 
     ```javascript
-    // Function to build an array of bindings to deals
-    // CRM object type OWNER_TYPE_ID — 2, which means deal
+    import { B24Hook } from '@bitrix24/b24jssdk'
+
+    const $b24 = B24Hook.fromWebhookUrl(process.env.B24_HOOK)
+    // B24_HOOK = 'https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/'
+
+    // Function for forming an array of links to deals
+    // CRM object type OWNER_TYPE_ID — 2, i.e., deal
     function buildBindingsFromDealIds(dealIds) {
         return dealIds.map((id) => ({ OWNER_TYPE_ID: 2, OWNER_ID: id }));
     }
-    
-    // Function to retrieve all items using pagination
-    // Necessary for list methods, as one request retrieves a maximum of 50 records
-    function fetchAllItems(method, params, callback) {
+
+    // Function to get all elements using pagination
+    // Required for list methods, as one request retrieves a maximum of 50 records
+    async function fetchAllItems(method, params) {
         let allResults = [];
-        
-        function processResult(result) {
-            if (result.error()) {
-                console.error(`Error retrieving data from ${method}:`, result.error().ex);
-                callback(result.error(), null);
-                return;
-            }
-    
-            const data = result.data();
-            
-            // Process results based on the method
-            if (method === 'crm.item.list') {
-                allResults = allResults.concat(data.items || []);
-            } else if (method === 'crm.activity.list') {
-                allResults = allResults.concat(data || []);
-            } else {
-                if (Array.isArray(data)) {
-                    allResults = allResults.concat(data);
-                } else if (data && Array.isArray(data.result)) {
-                    allResults = allResults.concat(data.result);
-                }
-            }
-    
-            // Check if there are more data
-            if (result.more && result.more()) {
-                // Use result.next() to get the next page
-                result.next(processResult);
-            } else {
-                // If there are no more pages, finish
-                callback(null, allResults);
-            }
-        }
-    
-        // First request
-        BX24.callMethod(method, params, processResult);
-    }
-    
-    // Step 1: Retrieve information about the current user
-    BX24.callMethod('user.current', {}, function(userResult) {
-        if (userResult.error()) {
-            console.error('Error retrieving user:', userResult.error().ex);
-            return;
-        }
-    
-        const current = userResult.data();
-        const userId = Number(current.ID);
-        console.log('Current user ID:', userId);
-    
-        // Step 2: Retrieve the list of all deals
-        fetchAllItems('crm.item.list', {
-            entityTypeId: 2,
-            select: ['id', 'title'],
-            filter: { assignedById: userId }
-        }, function(error, allItems) {
-            if (error) {
-                console.error('Error retrieving all deals:', error.ex);
-                return;
-            }
-    
-            const dealIds = allItems.map(it => it.id);
-            const dealMap = allItems.reduce((map, deal) => {
-                map[deal.id] = deal.title;
-                return map;
-            }, {});
-    
-            console.log('Deals:', dealMap);
-    
-            if (dealIds.length === 0) {
-                alert('The employee has no deals');
-                return;
-            }
-    
-            // Build bindings to search for tasks by deals
-            const bindings = buildBindingsFromDealIds(dealIds);
-    
-            // Step 3: Retrieve all tasks linked to these deals
-            fetchAllItems('crm.activity.list', {
-                filter: { BINDINGS: bindings, COMPLETED: 'N' },
-                select: ['ID', 'OWNER_ID', 'SUBJECT', 'DEADLINE', 'RESPONSIBLE_ID']
-            }, function(error, allActivities) {
-                if (error) {
-                    console.error('Error retrieving all tasks:', error.ex);
-                    return;
-                }
-    
-                const userIds = [...new Set(allActivities.map(a => a.RESPONSIBLE_ID))];
-    
-                if (userIds.length === 0) {
-                    console.log('No incomplete tasks for the deals.');
-                    console.table([]);
-                    return;
-                }
-    
-                // Step 4: Retrieve user data
-                BX24.callMethod('user.get', {
-                    filter: { ID: userIds }
-                }, function(userResult) {
-                    if (userResult.error()) {
-                        console.error('Error retrieving users:', userResult.error().ex);
-                        const tableFallback = allActivities.map(a => ({
-                            activityId: a.ID,
-                            dealTitle: dealMap[a.OWNER_ID] || `Deal #${a.OWNER_ID}`,
-                            subject: a.SUBJECT,
-                            deadline: a.DEADLINE,
-                            responsibleId: a.RESPONSIBLE_ID,
-                            responsibleName: `User ${a.RESPONSIBLE_ID} (not found)`
-                        }));
-                        console.table(tableFallback);
-                        return;
-                    }
-    
-                    const users = userResult.data();
-                    const userMap = users.reduce((map, user) => {
-                        map[user.ID] = `${user.NAME || ''} ${user.LAST_NAME || ''}`.trim() || user.LOGIN;
-                        return map;
-                    }, {});
-    
-                    const table = allActivities.map(a => ({
-                        activityId: a.ID,
-                        dealTitle: dealMap[a.OWNER_ID] || `Deal #${a.OWNER_ID}`,
-                        subject: a.SUBJECT,
-                        deadline: a.DEADLINE,
-                        responsibleId: a.RESPONSIBLE_ID,
-                        responsibleName: userMap[a.RESPONSIBLE_ID] || `User ${a.RESPONSIBLE_ID}`
-                    }));
-    
-                    console.table(table);
-                });
+        let start = 0;
+        const batchSize = 50;
+
+        while (true) {
+            const result = await $b24.actions.v2.call.make({
+                method,
+                params: { ...params, start }
             });
-        });
+            if (!result.isSuccess) {
+                throw new Error(`Error getting data from ${method}: ${result.getErrorMessages().join('; ')}`);
+            }
+
+            const data = result.getData().result;
+
+            // Processing results depending on the method
+            let pageItems;
+            if (method === 'crm.item.list') {
+                pageItems = data.items || [];
+            } else if (Array.isArray(data)) {
+                pageItems = data;
+            } else {
+                pageItems = data.result || [];
+            }
+            allResults = allResults.concat(pageItems);
+
+            // Checking if there is more data
+            if (pageItems.length < batchSize) {
+                break;
+            }
+            start += batchSize;
+        }
+
+        return allResults;
+    }
+
+    // Step 1: Get information about the current user
+    const userResult = await $b24.actions.v2.call.make({ method: 'user.current', params: {} });
+    if (!userResult.isSuccess) {
+        throw new Error('Error getting user: ' + userResult.getErrorMessages().join('; '));
+    }
+    const userId = Number(userResult.getData().result.ID);
+    console.log('Current user ID:', userId);
+
+    // Step 2: Get the list of all deals
+    const allItems = await fetchAllItems('crm.item.list', {
+        entityTypeId: 2,
+        select: ['id', 'title'],
+        filter: { assignedById: userId }
     });
+
+    const dealIds = allItems.map(it => it.id);
+    const dealMap = allItems.reduce((map, deal) => {
+        map[deal.id] = deal.title;
+        return map;
+    }, {});
+
+    console.log('Deals:', dealMap);
+
+    if (dealIds.length === 0) {
+        console.log('Employee has no deals');
+    } else {
+        // Forming links to search for tasks by deals
+        const bindings = buildBindingsFromDealIds(dealIds);
+
+        // Step 3: Get all tasks linked to these deals
+        const allActivities = await fetchAllItems('crm.activity.list', {
+            filter: { BINDINGS: bindings, COMPLETED: 'N' },
+            select: ['ID', 'OWNER_ID', 'SUBJECT', 'DEADLINE', 'RESPONSIBLE_ID']
+        });
+
+        const userIds = [...new Set(allActivities.map(a => a.RESPONSIBLE_ID))];
+
+        if (userIds.length === 0) {
+            console.log('No incomplete tasks for these deals.');
+            console.table([]);
+        } else {
+            // Step 4: Get user data
+            const usersResult = await $b24.actions.v2.call.make({
+                method: 'user.get',
+                params: { filter: { ID: userIds } }
+            });
+
+            let userMap = {};
+            if (usersResult.isSuccess) {
+                userMap = usersResult.getData().result.reduce((map, user) => {
+                    map[user.ID] = `${user.NAME || ''} ${user.LAST_NAME || ''}`.trim() || user.LOGIN;
+                    return map;
+                }, {});
+            } else {
+                console.error('Error getting users:', usersResult.getErrorMessages().join('; '));
+            }
+
+            const table = allActivities.map(a => ({
+                activityId: a.ID,
+                dealTitle: dealMap[a.OWNER_ID] || `Deal #${a.OWNER_ID}`,
+                subject: a.SUBJECT,
+                deadline: a.DEADLINE,
+                responsibleId: a.RESPONSIBLE_ID,
+                responsibleName: userMap[a.RESPONSIBLE_ID] || `User ${a.RESPONSIBLE_ID}`
+            }));
+
+            console.table(table);
+        }
+    }
     ```
 
 -  PHP
 
     ```php
     <?php
-    
-    require_once('crest.php');
-    
-    // Function to build an array of bindings to deals
+    // composer require bitrix24/b24phpsdk:"^3.0"
+    require_once 'vendor/autoload.php';
+
+    use Bitrix24\SDK\Services\ServiceBuilderFactory;
+    use Symfony\Component\EventDispatcher\EventDispatcher;
+    use Monolog\Logger;
+    use Monolog\Handler\StreamHandler;
+
+    $log = new Logger('b24');
+    $log->pushHandler(new StreamHandler('php://stdout'));
+
+    $sb = (new ServiceBuilderFactory(new EventDispatcher(), $log))
+        ->initFromWebhook('https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/');
+
+    // Function for forming an array of links to deals
     // OWNER_TYPE_ID: 2 — CRM object type — deal
     function buildBindingsFromDealIds($dealIds) {
         $bindings = [];
@@ -509,157 +497,108 @@ As a result, we will receive information about the users.
         }
         return $bindings;
     }
-    
-    // Function to retrieve all items using pagination
-    // Necessary for list methods, as one request retrieves a maximum of 50 records
-    function fetchAllItems($method, $params) {
+
+    // Function to get all elements using pagination
+    // Required for list methods, as one request retrieves a maximum of 50 records
+    // $fetchPage($start) returns an array of elements for one page
+    function fetchAllItems(callable $fetchPage) {
         $allResults = [];
-        
         $start = 0;
         $batchSize = 50;
-        
+
         do {
-            $params['start'] = $start;
-            $result = CRest::call($method, $params);
-            
-            if (!empty($result['error'])) {
-                return ['error' => $result['error'], 'error_description' => $result['error_description']];
-            }
-            
-            $data = $result['result'] ?? [];
-            
-            // Process results based on the method
-            if ($method === 'crm.item.list') {
-                if (!empty($data['items']) && is_array($data['items'])) {
-                    $allResults = array_merge($allResults, $data['items']);
-                }
-            } elseif ($method === 'crm.activity.list') {
-                if (is_array($data)) {
-                    $allResults = array_merge($allResults, $data);
-                }
-            } else {
-                if (is_array($data)) {
-                    $allResults = array_merge($allResults, $data);
-                }
-            }
-            
-            // Check if there are more data
-            if (count($data) >= $batchSize) {
-                $start += $batchSize;
-            } else {
+            $pageItems = $fetchPage($start);
+            $allResults = array_merge($allResults, $pageItems);
+
+            if (count($pageItems) < $batchSize) {
                 break;
             }
-            
+            $start += $batchSize;
         } while (true);
-        
-        return ['result' => $allResults];
+
+        return $allResults;
     }
-    
-    // Step 1: Retrieve information about the current user
-    $userResult = CRest::call('user.current', []);
-    
-    if (!empty($userResult['error'])) {
-        echo 'Error retrieving user: ' . $userResult['error_description'] . "\n";
-        exit;
-    }
-    
-    $current = $userResult['result'] ?? null;
-    if (!$current || empty($current['ID'])) {
-        echo "Failed to retrieve the current user\n";
-        exit;
-    }
-    
-    $userId = (int)$current['ID'];
+
+    $crm = $sb->getCRMScope();
+
+    // Step 1: Get information about the current user
+    $userId = $sb->getUserScope()->user()->current()->user()->ID;
     echo "Current user ID: $userId\n";
-    
-    // Step 2: Retrieve the list of all deals
-    $itemsResult = fetchAllItems('crm.item.list', [
-        'entityTypeId' => 2,
-        'select' => ['id', 'title'],
-        'filter' => ['assignedById' => $userId]
-    ]);
-    
-    if (isset($itemsResult['error'])) {
-        echo 'Error retrieving all deals: ' . $itemsResult['error_description'] . "\n";
-        exit;
-    }
-    
-    $allItems = $itemsResult['result'];
-    
+
+    // Step 2: Get the list of all deals
+    $allItems = fetchAllItems(fn($start) => $crm->item()->list(
+        2,
+        [],
+        ['assignedById' => $userId],
+        ['id', 'title'],
+        $start
+    )->getItems());
+
     $dealMap = [];
     $dealIds = [];
     foreach ($allItems as $item) {
-        $id = (int)$item['id'];
+        $id = $item->id;
         $dealIds[] = $id;
-        $dealMap[$id] = $item['title'];
+        $dealMap[$id] = $item->title;
     }
-    
+
     echo "Deals found: " . count($dealIds) . "\n";
-    
+
     if (empty($dealIds)) {
-        echo "The employee has no deals\n";
+        echo "Employee has no deals\n";
         exit;
     }
-    
-    // Build bindings to search for tasks by deals
+
+    // Forming links to search for tasks by deals
     $bindings = buildBindingsFromDealIds($dealIds);
-    
-    // Step 3: Retrieve all tasks linked to these deals
-    $activitiesResult = fetchAllItems('crm.activity.list', [
-        'filter' => [
+
+    // Step 3: Get all tasks linked to these deals
+    $allActivities = fetchAllItems(fn($start) => $crm->activity()->list(
+        [],
+        [
             'BINDINGS' => $bindings,
             'COMPLETED' => 'N',
         ],
-        'select' => ['ID', 'OWNER_ID', 'SUBJECT', 'DEADLINE', 'RESPONSIBLE_ID']
-    ]);
-    
-    if (isset($activitiesResult['error'])) {
-        echo 'Error retrieving all tasks: ' . $activitiesResult['error_description'] . "\n";
-        exit;
-    }
-    
-    $allActivities = $activitiesResult['result'];
-    
+        ['ID', 'OWNER_ID', 'SUBJECT', 'DEADLINE', 'RESPONSIBLE_ID'],
+        $start
+    )->getActivities());
+
     if (empty($allActivities)) {
-        echo "No incomplete tasks for the deals.\n";
-        echo implode("\t", ['Task ID', 'Deal', 'Subject', 'Deadline', 'Responsible']) . "\n";
+        echo "No incomplete tasks for these deals.\n";
+        echo implode("\t", ['Task ID', 'Deal', 'Subject', 'Deadline', 'Responsible person']) . "\n";
         exit;
     }
-    
-    // Collect unique responsible IDs
-    $responsibleIds = array_unique(array_column($allActivities, 'RESPONSIBLE_ID'));
+
+    // Collecting unique IDs of responsible persons
+    $responsibleIds = [];
+    foreach ($allActivities as $a) {
+        $responsibleIds[$a->RESPONSIBLE_ID] = true;
+    }
+    $responsibleIds = array_keys($responsibleIds);
     $userMap = [];
-    
+
     if (!empty($responsibleIds)) {
-        // Step 4: Retrieve user data
-        $usersResult = fetchAllItems('user.get', [
-            'filter' => ['ID' => array_values($responsibleIds)]
-        ]);
-    
-        if (isset($usersResult['error'])) {
-            echo 'Error retrieving users: ' . $usersResult['error_description'] . "\n";
-            $userMap = [];
-        } else {
-            foreach ($usersResult['result'] as $user) {
-                $fullName = trim(($user['NAME'] ?? '') . ' ' . ($user['LAST_NAME'] ?? ''));
-                $userMap[$user['ID']] = $fullName ?: ($user['LOGIN'] ?? "User {$user['ID']}");
-            }
+        // Step 4: Get user data
+        $users = $sb->getUserScope()->user()->get([], ['ID' => $responsibleIds])->getUsers();
+        foreach ($users as $user) {
+            $fullName = trim(($user->NAME ?? '') . ' ' . ($user->LAST_NAME ?? ''));
+            $userMap[$user->ID] = $fullName ?: ($user->LOGIN ?? "User {$user->ID}");
         }
     }
-    
-    // Build and display the table
-    $header = ['Task ID', 'Deal', 'Subject', 'Deadline', 'Responsible'];
+
+    // Forming and displaying the table
+    $header = ['Task ID', 'Deal', 'Subject', 'Deadline', 'Responsible person'];
     echo implode("\t", $header) . "\n";
-    
+
     foreach ($allActivities as $a) {
-        $activityId = $a['ID'] ?? '';
-        $ownerId = (int)($a['OWNER_ID'] ?? 0);
+        $activityId = $a->ID;
+        $ownerId = (int)$a->OWNER_ID;
         $dealTitle = $dealMap[$ownerId] ?? "Deal #{$ownerId}";
-        $subject = $a['SUBJECT'] ?? '';
-        $deadline = $a['DEADLINE'] ?? '';
-        $responsibleId = $a['RESPONSIBLE_ID'] ?? '';
+        $subject = $a->SUBJECT ?? '';
+        $deadline = $a->DEADLINE;
+        $responsibleId = $a->RESPONSIBLE_ID;
         $responsibleName = $userMap[$responsibleId] ?? "User {$responsibleId} (not found)";
-    
+
         echo implode("\t", [
             $activityId,
             $dealTitle,
@@ -675,10 +614,8 @@ As a result, we will receive information about the users.
     ```python
     from b24pysdk import BitrixWebhook, Client
 
-
     def build_bindings_from_deal_ids(deal_ids):
         return [{"OWNER_TYPE_ID": 2, "OWNER_ID": deal_id} for deal_id in deal_ids]
-
 
     def fetch_all_items(fetch_page, data_key=None):
         all_results = []
@@ -701,11 +638,10 @@ As a result, we will receive information about the users.
 
         return all_results
 
-
     client = Client(
         BitrixWebhook(
             domain="your-domain.bitrix24.com",
-            auth_token="your-webhook-token",
+            webhook_token="user_id/webhook_key",
         )
     )
 
@@ -729,7 +665,7 @@ As a result, we will receive information about the users.
     print(f"Deals found: {len(deal_ids)}")
 
     if not deal_ids:
-        print("The employee has no deals")
+        print("Employee has no deals")
     else:
         bindings = build_bindings_from_deal_ids(deal_ids)
 
@@ -745,8 +681,8 @@ As a result, we will receive information about the users.
         )
 
         if not all_activities:
-            print("No incomplete tasks for the deals.")
-            print("\t".join(["Task ID", "Deal", "Subject", "Deadline", "Responsible"]))
+            print("No incomplete tasks for these deals.")
+            print("\t".join(["Task ID", "Deal", "Subject", "Deadline", "Responsible person"]))
         else:
             responsible_ids = sorted(
                 {
@@ -766,9 +702,9 @@ As a result, we will receive information about the users.
                 )
                 for user in users:
                     full_name = f"{user.get('NAME', '')} {user.get('LAST_NAME', '')}".strip()
-                    user_map[user["ID"]] = full_name or user.get("LOGIN", f"User {user['ID']}")
+                    user_map[str(user["ID"])] = full_name or user.get("LOGIN", f"User {user['ID']}")
 
-            print("\t".join(["Task ID", "Deal", "Subject", "Deadline", "Responsible"]))
+            print("\t".join(["Task ID", "Deal", "Subject", "Deadline", "Responsible person"]))
             for activity in all_activities:
                 activity_id = activity.get("ID", "")
                 owner_id = int(activity.get("OWNER_ID", 0))

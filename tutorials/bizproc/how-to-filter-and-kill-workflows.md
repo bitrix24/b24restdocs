@@ -20,53 +20,61 @@ To mass terminate old workflows, we will sequentially execute two methods:
 
 We will use the [bizproc.workflow.instances](../../api-reference/bizproc/bizproc-workflow-instances.md) method with a filter:
 
-- `<STARTED` — specify the start date with the prefix `<`, only processes that were started before this date will be selected.
-
-{% include [Examples Note](../../_includes/examples.md) %}
+- `<STARTED` — specify the launch date with the `<` prefix; only workflows launched before this date will be selected.
 
 {% list tabs %}
 
 - JS
   
-    ```javascript
-    BX24.callMethod(
-        'bizproc.workflow.instances',
-        {
-            filter: {
-                '<STARTED': '2025-01-01T00:00:00Z'
-            }
+    ```js
+    import { B24Hook } from '@bitrix24/b24jssdk'
+
+    const $b24 = B24Hook.fromWebhookUrl('https://your-domain.bitrix24.com/rest/1/xxxxxxxxxxxxxxxx/')
+
+    const response = await $b24.actions.v2.call.make({
+        method: 'bizproc.workflow.instances',
+        params: {
+            filter: { '<STARTED': '2025-01-01T00:00:00Z' },
         },
-    );
+        requestId: 'workflow-instances',
+    })
+
+    const instances = response.getData().result
     ```
 
 - PHP
   
     ```php
-    require_once('crest.php');
+    <?php
+    // composer require bitrix24/b24phpsdk:"^3.0"
+    require_once 'vendor/autoload.php';
 
-    $result = CRest::call(
-        'bizproc.workflow.instances',
-        [
-            'filter' => [
-                '<STARTED' => '2025-01-01T00:00:00Z'
-            ]
-        ]
-    );
+    use Bitrix24\SDK\Services\ServiceBuilderFactory;
+    use Symfony\Component\EventDispatcher\EventDispatcher;
+    use Monolog\Logger;
+    use Monolog\Handler\StreamHandler;
+
+    $log = new Logger('b24');
+    $log->pushHandler(new StreamHandler('php://stdout'));
+
+    $b24 = (new ServiceBuilderFactory(new EventDispatcher(), $log))
+        ->initFromWebhook('https://your-domain.bitrix24.com/rest/1/xxxxxxxxxxxxxxxx/');
+
+    $instances = $b24->getBizProcScope()->workflow()->instances(
+        filter: ['<STARTED' => '2025-01-01T00:00:00Z']
+    )->getInstances();
     ```
 
 - Python
 
     ```python
     from b24pysdk import BitrixWebhook, Client
-    from b24pysdk.errors import BitrixAPIError
 
-
-    client = Client(
-        BitrixWebhook(
-            domain="your-domain.bitrix24.com",
-            auth_token="your-webhook-token",
-        )
+    token = BitrixWebhook(
+        domain="your-domain.bitrix24.com",
+        webhook_token="user_id/webhook_key",
     )
+    client = Client(token)
 
     response = client.bizproc.workflow.instances(
         filter={
@@ -91,59 +99,48 @@ As a result, we will obtain the `ID` of all active workflows that were initiated
             "ID": "6639c7b59e9eb5.40607056",
             "MODIFIED": "2024-12-04T09:52:40+03:00",
             "OWNED_UNTIL": null
-        },
-        {
-            "ID": "66ea9200131729.26195442",
-            "MODIFIED": "2024-09-18T11:42:28+03:00",
-            "OWNED_UNTIL": null
-        },
-        {
-            "ID": "65ef0868368978.47049110",
-            "MODIFIED": "2024-03-11T16:34:32+03:00",
-            "OWNED_UNTIL": null
         }
     ],
-    "total": 4
+    "total": 2,
 }
 ```
 
 ## 2. Terminate Workflows 
 
-We will use the [bizproc.workflow.kill](../../api-reference/bizproc/bizproc-workflow-kill.md) method with the parameter:
-- `ID` — the identifier of the process, we pass the `ID` obtained in [step 1](#workflow_id).
+Use the [bizproc.workflow.kill](../../api-reference/bizproc/bizproc-workflow-kill.md) method with the following parameter:
+- `ID` — the workflow identifier; pass the `ID` obtained in [step 1](#workflow_id).
 
 {% list tabs %}
 
 - JS
 
-    ```javascript
-    BX24.callMethod(
-        'bizproc.workflow.kill',
-        {
-            ID: '660e559f34af10.95144732',
-        },
-    );
+    ```js
+    const response = await $b24.actions.v2.call.make({
+        method: 'bizproc.workflow.kill',
+        params: { ID: '660e559f34af10.95144732' },
+        requestId: 'workflow-kill',
+    })
+
+    const isKilled = response.getData().result
     ```
 
 - PHP
 
     ```php
-    require_once('crest.php');
-
-    $result = CRest::call(
-        'bizproc.workflow.kill',
-        [
-            'ID' => '660e559f34af10.95144732'
-        ]
-    );
+    $isKilled = $b24->getBizProcScope()->workflow()
+        ->kill('660e559f34af10.95144732')
+        ->isSuccess();
     ```
 
 - Python
 
     ```python
-    response = client.bizproc.workflow.kill(
-        bitrix_id="660e559f34af10.95144732",
-    ).response
+    # Process ID is a string, so we call the method directly via token.call_method
+    # (typed client.bizproc.workflow.kill expects an int)
+    response = token.call_method(
+        "bizproc.workflow.kill",
+        {"ID": "660e559f34af10.95144732"},
+    )
     ```
 
 {% endlist %}
@@ -152,165 +149,108 @@ As a result, we will receive `true`, indicating that the process was successfull
 
 ```json
 {
-    "result": true
+    "result": true,
 }
 ```
 
 ## Code Example
 
-In this example, all found processes are deleted in a loop. When deleting a large volume of data, there may be limitations on request execution. To optimize the code for your workload, refer to the [Performance](../../settings/performance/index.md) section.
+In the example, all found workflows are deleted within a loop. When deleting large volumes of data, request execution limits may apply. To optimize the code for your workload, use the recommendations in the [Performance](../../settings/performance/index.md) section.
 
 {% list tabs %}
 
 - JS
   
-    ```javascript  
-    // Function to convert date from dd.mm.yyyy format to ISO format
-    function convertDateToISO(dateString) {
-        const [day, month, year] = dateString.split('.');
-        return `${year}-${month}-${day}T00:00:00Z`;
+    ```js
+    // npm install @bitrix24/b24jssdk
+    import { B24Hook } from '@bitrix24/b24jssdk'
+
+    const $b24 = B24Hook.fromWebhookUrl('https://your-domain.bitrix24.com/rest/1/xxxxxxxxxxxxxxxx/')
+
+    // Enter the date in dd.mm.yyyy format as an argument: node kill.mjs 01.01.2025
+    const [day, month, year] = (process.argv[2] || '').split('.')
+    const isoDate = `${year}-${month}-${day}T00:00:00Z`
+
+    // callList iterates through all selection pages itself; getData() returns an array of elements
+    const listResponse = await $b24.actions.v2.callList.make({
+        method: 'bizproc.workflow.instances',
+        params: { filter: { '<STARTED': isoDate }, select: ['ID'] },
+        requestId: 'workflow-instances',
+    })
+
+    const instances = listResponse.getData()
+
+    for (const instance of instances) {
+        const response = await $b24.actions.v2.call.make({
+            method: 'bizproc.workflow.kill',
+            params: { ID: instance.ID },
+            requestId: `kill-${instance.ID}`,
+        })
+        console.log(response.isSuccess
+            ? `Process ${instance.ID} successfully deleted.`
+            : `Error deleting process ${instance.ID}: ${response.getErrorMessages().join('; ')}`)
     }
 
-    // Request date from user
-    const userDateInput = prompt("Enter the date in dd.mm.yyyy format:");
-    const isoDate = convertDateToISO(userDateInput);
-
-    // Call the bizproc.workflow.instances method with date filter
-    BX24.callMethod(
-        'bizproc.workflow.instances',
-        {
-            filter: {
-                '<STARTED': isoDate
-            }
-        },
-        function(result) {
-            if (result.error()) {
-                console.error(result.error());
-            } else {
-                const instances = result.data();
-                instances.forEach(instance => {
-                    const instanceId = instance.ID;
-                    
-                    // Call the bizproc.workflow.kill method for each ID
-                    BX24.callMethod(
-                        'bizproc.workflow.kill',
-                        {
-                            ID: instanceId
-                        },
-                        function(killResult) {
-                            if (killResult.error()) {
-                                console.error(`Error deleting process ${instanceId}:`, killResult.error());
-                            } else {
-                                console.log(`Process ${instanceId} successfully deleted.`);
-                            }
-                        }
-                    );
-                });
-
-                if (result.more()) {
-                    result.next();
-                }
-            }
-        }
-    );
+    $b24.destroy()
     ```
 
 - PHP
   
     ```php
-    require_once('crest.php');
+    <?php
+    // composer require bitrix24/b24phpsdk:"^3.0"
+    require_once 'vendor/autoload.php';
 
-    // Function to convert date from dd.mm.yyyy format to ISO format
-    function convertDateToISO($dateString) {
-        list($day, $month, $year) = explode('.', $dateString);
-        return "{$year}-{$month}-{$day}T00:00:00Z";
-    }
+    use Bitrix24\SDK\Services\ServiceBuilderFactory;
+    use Symfony\Component\EventDispatcher\EventDispatcher;
+    use Monolog\Logger;
+    use Monolog\Handler\StreamHandler;
 
-    // Request date from user
-    $userDateInput = readline("Enter the date in dd.mm.yyyy format: ");
-    $isoDate = convertDateToISO($userDateInput);
+    $log = new Logger('b24');
+    $log->pushHandler(new StreamHandler('php://stdout'));
 
-    // Call the bizproc.workflow.instances method with date filter
-    $result = CRest::call(
-        'bizproc.workflow.instances',
-        [
-            'filter' => [
-                '<STARTED' => $isoDate
-            ]
-        ]
-    );
+    $b24 = (new ServiceBuilderFactory(new EventDispatcher(), $log))
+        ->initFromWebhook('https://your-domain.bitrix24.com/rest/1/xxxxxxxxxxxxxxxx/');
 
-    if (!empty($result['error'])) {
-        echo "Error: " . $result['error_description'];
-    } else {
-        $instances = $result['result'];
-        foreach ($instances as $instance) {
-            $instanceId = $instance['ID'];
+    $userDateInput = readline('Enter the date in dd.mm.yyyy format: ');
+    [$day, $month, $year] = explode('.', $userDateInput);
+    $isoDate = "{$year}-{$month}-{$day}T00:00:00Z";
 
-            // Call the bizproc.workflow.kill method for each ID
-            $killResult = CRest::call(
-                'bizproc.workflow.kill',
-                [
-                    'ID' => $instanceId
-                ]
-            );
+    // The instances() method returns a single page. For pagination
+    // we call the method directly via the core and read the offset of the next page.
+    $start = 0;
+    do {
+        $response = $b24->core->call('bizproc.workflow.instances', [
+            'filter' => ['<STARTED' => $isoDate],
+            'start' => $start,
+        ]);
 
-            if (!empty($killResult['error'])) {
-                echo "Error deleting process {$instanceId}: " . $killResult['error_description'] . "\n";
-            } else {
-                echo "Process {$instanceId} successfully deleted.\n";
-            }
+        foreach ($response->getResponseData()->getResult() as $instance) {
+            $isKilled = $b24->getBizProcScope()->workflow()->kill($instance['ID'])->isSuccess();
+            echo $isKilled
+                ? "Process {$instance['ID']} successfully deleted.\n"
+                : "Error deleting process {$instance['ID']}\n";
         }
 
-        // Check for additional data
-        while (!empty($result['next'])) {
-            $result = CRest::call(
-                'bizproc.workflow.instances',
-                [
-                    'filter' => [
-                        '<STARTED' => $isoDate
-                    ],
-                    'start' => $result['next']
-                ]
-            );
-
-            $instances = $result['result'];
-            foreach ($instances as $instance) {
-                $instanceId = $instance['ID'];
-
-                // Call the bizproc.workflow.kill method for each ID
-                $killResult = CRest::call(
-                    'bizproc.workflow.kill',
-                    [
-                        'ID' => $instanceId
-                    ]
-                );
-
-                if (!empty($killResult['error'])) {
-                    echo "Error deleting process {$instanceId}: " . $killResult['error_description'] . "\n";
-                } else {
-                    echo "Process {$instanceId} successfully deleted.\n";
-                }
-            }
-        }
-    }
+        $start = $response->getResponseData()->getPagination()->getNextItem();
+    } while ($start !== null);
     ```
 
 - Python
 
     ```python
     from b24pysdk import BitrixWebhook, Client
+    from b24pysdk.errors import BitrixAPIError
 
     user_date_input = input("Enter the date in dd.mm.yyyy format: ")
     day, month, year = user_date_input.split(".")
     iso_date = f"{year}-{month}-{day}T00:00:00Z"
 
-    client = Client(
-        BitrixWebhook(
-            domain="your-domain.bitrix24.com",
-            auth_token="your-webhook-token",
-        )
+    token = BitrixWebhook(
+        domain="your-domain.bitrix24.com",
+        webhook_token="user_id/webhook_key",
     )
+    client = Client(token)
 
     start = None
     while True:
@@ -324,7 +264,7 @@ In this example, all found processes are deleted in a loop. When deleting a larg
         for instance in instances:
             instance_id = instance["ID"]
             try:
-                client.bizproc.workflow.kill(bitrix_id=instance_id).response
+                token.call_method("bizproc.workflow.kill", {"ID": instance_id})
             except BitrixAPIError as error:
                 print(f"Error deleting process {instance_id}: {error}")
             else:

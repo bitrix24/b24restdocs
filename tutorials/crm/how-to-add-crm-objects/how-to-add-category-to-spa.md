@@ -31,34 +31,49 @@ We will use the method [crm.type.list](../../../api-reference/crm/universal/user
 - JS
   
     ```javascript
-    BX24.callMethod(
-        'crm.type.list',
-        {
-            filter: { title: 'Equipment Purchase' }
-        },
-        function(result) {
-            if (result.error()) {
-                console.error(result.error());
-                return;
-            }
-            var types = result.data().types;
-            if (types.length > 0) {
-                var entityTypeId = types[0].entityTypeId;
-                console.log('entityTypeId:', entityTypeId);
-            }
+    import { B24Hook } from '@bitrix24/b24jssdk'
+
+    const $b24 = B24Hook.fromWebhookUrl(process.env.B24_HOOK)
+    // B24_HOOK = 'https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/'
+
+    const result = await $b24.actions.v2.call.make({
+        method: 'crm.type.list',
+        params: {
+            filter: { title: 'Equipment procurement' }
         }
-    );
+    });
+
+    if (!result.isSuccess) {
+        console.error(result.getErrorMessages().join('; '));
+    } else {
+        const types = result.getData().result.types;
+        if (types.length > 0) {
+            var entityTypeId = types[0].entityTypeId;
+            console.log('entityTypeId:', entityTypeId);
+        }
+    }
     ```
 
 - PHP
   
     ```php
-    require_once('crest.php');
-    $result = CRest::call(
-        'crm.type.list',
-        [ 'filter' => [ 'title' => 'Equipment Purchase' ] ]
-    );
-    $entityTypeId = $result['result']['types'][0]['entityTypeId'];
+    require_once 'vendor/autoload.php';
+
+    use Bitrix24\SDK\Services\ServiceBuilderFactory;
+    use Symfony\Component\EventDispatcher\EventDispatcher;
+    use Monolog\Logger;
+    use Monolog\Handler\StreamHandler;
+
+    $logger = new Logger('b24');
+    $logger->pushHandler(new StreamHandler('php://stdout'));
+
+    $serviceBuilder = (new ServiceBuilderFactory(new EventDispatcher(), $logger))
+        ->initFromWebhook('https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/');
+
+    $types = $serviceBuilder->getCRMScope()->type()
+        ->list([], ['title' => 'Equipment procurement'])
+        ->getTypes();
+    $entityTypeId = $types[0]->entityTypeId;
     ```
 
 - Python
@@ -69,20 +84,20 @@ We will use the method [crm.type.list](../../../api-reference/crm/universal/user
     client = Client(
         BitrixWebhook(
             domain="your-domain.bitrix24.com",
-            auth_token="your-webhook-token",
+            webhook_token="user_id/webhook_key",
         )
     )
 
     entity_type_id = int(
         client.crm.type.list(
-            filter={"title": "Equipment Purchase"},
+            filter={"title": "Equipment procurement"},
         ).response.result["types"][0]["entityTypeId"]
     )
     ```
 
 {% endlist %}
 
-As a result, we will obtain and save the `entityTypeId` of the required smart process.
+As a result, you will retrieve and save the `entityTypeId` of the required SPA.
 
 ```json
 {
@@ -90,7 +105,7 @@ As a result, we will obtain and save the `entityTypeId` of the required smart pr
         "types": [
             {
                 "id": 7,
-                "title": "Equipment Purchase",
+                "title": "Equipment procurement",
                 "code": "",
                 "createdBy": 1,
                 "entityTypeId": 177,
@@ -136,59 +151,58 @@ As a result, we will obtain and save the `entityTypeId` of the required smart pr
 
 We will use the method [crm.category.add](../../../api-reference/crm/universal/category/crm-category-add.md) with the following parameters:
 
-- `entityTypeId` — the numeric identifier of the type from the method [crm.type.list](../../../api-reference/crm/universal/user-defined-object-types/crm-type-list.md),
-- `fields[name]` — the name of the funnel,
-- `fields[sort]` — the sorting order of the funnel. Sorting affects the position of the funnel in the list.
+- `entityTypeId` — the numeric type identifier from the [crm.type.list](../../../api-reference/crm/universal/user-defined-object-types/crm-type-list.md) method,
+- `fields[name]` — the pipeline name,
+- `fields[sort]` — the pipeline sorting. Sorting affects the pipeline's position in the list.
 
 {% list tabs %}
 
 - JS
   
     ```javascript
-    BX24.callMethod(
-        'crm.category.add',
-        {
-            entityTypeId: entityTypeId, 
+    const result = await $b24.actions.v2.call.make({
+        method: 'crm.category.add',
+        params: {
+            entityTypeId: entityTypeId,
             fields: {
-                name: 'New Funnel',
+                name: 'New funnel',
                 sort: 100
             }
-        },
-        function(result) {
-            if (result.error()) {
-                console.error(result.error());
-                return;
-            }
-            var categoryId = result.data().category.id;
-            console.log('categoryId:', categoryId);
         }
-    );
+    });
+
+    if (!result.isSuccess) {
+        console.error(result.getErrorMessages().join('; '));
+    } else {
+        var categoryId = result.getData().result.category.id;
+        console.log('categoryId:', categoryId);
+    }
     ```
 
 - PHP
   
     ```php
-    $result = CRest::call(
+    $result = $serviceBuilder->core->call(
         'crm.category.add',
         [
             'entityTypeId' => $entityTypeId,
             'fields' => [
-                'name' => 'New Funnel',
+                'name' => 'New funnel',
                 'sort' => 100,
             ]
         ]
     );
-    $categoryId = $result['result']['category']['id'];
+    $categoryId = $result->getResponseData()->getResult()['category']['id'];
     ```
 
 - Python
-  
+
     ```python
     category_id = int(
         client.crm.category.add(
             entity_type_id=entity_type_id,
             fields={
-                "name": "New Funnel",
+                "name": "New funnel",
                 "sort": 100,
             },
         ).response.result["category"]["id"]
@@ -197,14 +211,14 @@ We will use the method [crm.category.add](../../../api-reference/crm/universal/c
 
 {% endlist %}
 
-As a result, we will obtain and save the `id` of the created funnel.
+As a result, you will retrieve and save the `id` of the created pipeline.
 
 ```json
 {
     "result": {
         "category": {
             "id": 39,
-            "name": "New Funnel",
+            "name": "New funnel",
             "sort": 100,
             "entityTypeId": 177,
             "isDefault": "N"
@@ -227,9 +241,9 @@ As a result, we will obtain and save the `id` of the created funnel.
 
 We will use the method [crm.status.list](../../../api-reference/crm/status/crm-status-list.md) with the filter:
 
-- `ENTITY_ID` — the identifier of the CRM directory. For smart process stages, the identifier has the format `DYNAMIC_{entityTypeId}_STAGE_{categoryId}`:
-	- `{entityTypeId}` — the numeric identifier of the smart process type from the method [crm.type.list](../../../api-reference/crm/universal/user-defined-object-types/crm-type-list.md),
-	- `{categoryId}` — the identifier of the funnel from the method [crm.category.add](../../../api-reference/crm/universal/category/crm-category-add.md).
+- `ENTITY_ID` — the CRM directory identifier. For SPA stages, the identifier follows the format `DYNAMIC_{entityTypeId}_STAGE_{categoryId}`:
+	- `{entityTypeId}` — the numeric SPA type identifier from the [crm.type.list](../../../api-reference/crm/universal/user-defined-object-types/crm-type-list.md) method,
+	- `{categoryId}` — the pipeline identifier from the [crm.category.add](../../../api-reference/crm/universal/category/crm-category-add.md) method.
 
 {% list tabs %}
 
@@ -237,35 +251,31 @@ We will use the method [crm.status.list](../../../api-reference/crm/status/crm-s
   
     ```javascript
     var entityId = `DYNAMIC_${entityTypeId}_STAGE_${categoryId}`;
-    BX24.callMethod(
-        'crm.status.list',
-        {
+    const result = await $b24.actions.v2.call.make({
+        method: 'crm.status.list',
+        params: {
             filter: { ENTITY_ID: entityId }
-        },
-        function(result) {
-            if (result.error()) {
-                console.error(result.error());
-                return;
-            }
-            var stages = result.data();
-            console.log('Stages:', stages);
         }
-    );
-    ```
+    });
 
+    if (!result.isSuccess) {
+        console.error(result.getErrorMessages().join('; '));
+    } else {
+        var stages = result.getData().result;
+        console.log('Stages:', stages);
+    }
+    ```
 - PHP
   
     ```php
     $entityId = "DYNAMIC_{$entityTypeId}_STAGE_{$categoryId}";
-    $result = CRest::call(
-        'crm.status.list',
-        [ 'filter' => [ 'ENTITY_ID' => $entityId ] ]
-    );
-    $stages = $result['result'];
+    $stages = $serviceBuilder->getCRMScope()->status()
+        ->list([], ['ENTITY_ID' => $entityId])
+        ->getStatuses();
     ```
 
 - Python
-  
+
     ```python
     entity_id = f"DYNAMIC_{entity_type_id}_STAGE_{category_id}"
     stages = client.crm.status.list(
@@ -277,11 +287,11 @@ We will use the method [crm.status.list](../../../api-reference/crm/status/crm-s
 
 As a result, we will obtain the pre-installed stages of the funnel. By default, each new funnel has five stages:
 
-- three stages "In Progress" `SEMANTICS: ""`,
-- one stage "Success" `SEMANTICS: "S"`,
-- one stage "Failure" `SEMANTIC": "F"`.
-
-Each funnel must have at least one stage from each group. There can only be one successful stage in a funnel.
+- three "In Progress" stages `SEMANTICS: ""`,
+- one "Success" stage `SEMANTICS: "S"`,
+- one "Failure" stage `SEMANTIC": "F"`.
+  
+Each pipeline must have at least one stage from each group. A pipeline can have only one success stage.
 
 ```json
 {
@@ -365,53 +375,49 @@ Each funnel must have at least one stage from each group. There can only be one 
 
 We will use the method [crm.status.update](../../../api-reference/crm/status/crm-status-update.md) with the following parameters:
 
-- `id` — the identifier of the stage from the method [crm.status.list](../../../api-reference/crm/status/crm-status-list.md),
-- `fields[name]` — the new name of the stage.
+- `id` — the stage identifier from the [crm.status.list](../../../api-reference/crm/status/crm-status-list.md) method,
+- `fields[name]` — the new stage name.
 
 {% list tabs %}
 
 - JS
   
     ```javascript
-    BX24.callMethod(
-        'crm.status.update',
-        {
-            id: stageId, 
+    const result = await $b24.actions.v2.call.make({
+        method: 'crm.status.update',
+        params: {
+            id: stageId,
             fields: {
-                NAME: 'New Name'
+                NAME: 'New name'
             }
-        },
-        function(result) {
-            if (result.error()) {
-                console.error(result.error());
-                return;
-            }
-            console.log('Stage updated');
         }
-    );
+    });
+
+    if (!result.isSuccess) {
+        console.error(result.getErrorMessages().join('; '));
+    } else {
+        console.log('Stage updated');
+    }
     ```
 
 - PHP
   
     ```php
-    $result = CRest::call(
-        'crm.status.update',
+    $result = $serviceBuilder->getCRMScope()->status()->update(
+        $stageId,
         [
-            'id' => $stageId,
-            'fields' => [
-                'NAME' => 'New Name',
-            ]
+            'NAME' => 'New name',
         ]
     );
     ```
 
 - Python
-  
+
     ```python
     client.crm.status.update(
         stage_id,
         fields={
-            "NAME": "New Name",
+            "NAME": "New name",
         },
     ).response
     ```
@@ -455,53 +461,49 @@ We will use the method [crm.status.add](../../../api-reference/crm/status/crm-st
 - JS
   
     ```javascript
-    BX24.callMethod(
-        'crm.status.add',
-        {
+    const result = await $b24.actions.v2.call.make({
+        method: 'crm.status.add',
+        params: {
             fields: {
                 ENTITY_ID: entityId,
                 STATUS_ID: `DT${entityTypeId}_${categoryId}:MY_STAGE`,
-                NAME: 'My Stage',
+                NAME: 'My stage',
                 SORT: 60,
                 SEMANTICS: "F",
             }
-        },
-        function(result) {
-            if (result.error()) {
-                console.error(result.error());
-                return;
-            }
-            console.log('New stage ID:', result.data());
         }
-    );
+    });
+
+    if (!result.isSuccess) {
+        console.error(result.getErrorMessages().join('; '));
+    } else {
+        console.log('New stage ID:', result.getData().result);
+    }
     ```
 
 - PHP
   
     ```php
-    $result = CRest::call(
-        'crm.status.add',
+    $result = $serviceBuilder->getCRMScope()->status()->add(
         [
-            'fields' => [
-                'ENTITY_ID' => $entityId,
-                'STATUS_ID' => 'DT' . $entityTypeId . '_' . $categoryId . ':MY_STAGE',
-                'NAME' => 'My Stage',
-                'SORT' => 60,
-                'SEMANTICS' => 'F',
-            ]
+            'ENTITY_ID' => $entityId,
+            'STATUS_ID' => 'DT' . $entityTypeId . '_' . $categoryId . ':MY_STAGE',
+            'NAME' => 'My stage',
+            'SORT' => 60,
+            'SEMANTICS' => 'F',
         ]
     );
-    $newStageId = $result['result'];
+    $newStageId = $result->getId();
     ```
 
 - Python
-  
+
     ```python
     new_stage_id = client.crm.status.add(
         fields={
             "ENTITY_ID": entity_id,
             "STATUS_ID": f"DT{entity_type_id}_{category_id}:MY_STAGE",
-            "NAME": "My Stage",
+            "NAME": "My stage",
             "SORT": 60,
             "SEMANTICS": "F",
         }
@@ -537,72 +539,72 @@ In this example, we create a new funnel in the smart process, change the name of
 - JS
   
    ```javascript
-    // 1. Retrieve entityTypeId by the smart process name
-    BX24.callMethod('crm.type.list', {
-        filter: {
-            title: 'Equipment Purchase'
+    import { B24Hook } from '@bitrix24/b24jssdk'
+
+    const $b24 = B24Hook.fromWebhookUrl(process.env.B24_HOOK)
+    // B24_HOOK = 'https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/'
+
+    async function call(method, params) {
+        const result = await $b24.actions.v2.call.make({ method, params });
+        if (!result.isSuccess) {
+            throw new Error(result.getErrorMessages().join('; '));
         }
-    }, function(result) {
-        if (result.error()) return;
-        var entityTypeId = result.data().types[0].entityTypeId;
+        return result.getData().result;
+    }
+
+    try {
+        // 1. Get entityTypeId by smart process name
+        const types = (await call('crm.type.list', {
+            filter: { title: 'Equipment procurement' }
+        })).types;
+        const entityTypeId = types[0].entityTypeId;
 
         // 2. Create a new funnel
-        BX24.callMethod('crm.category.add', {
+        const category = (await call('crm.category.add', {
             entityTypeId: entityTypeId,
             fields: {
-                name: 'New Funnel',
+                name: 'New funnel',
                 sort: 100
             }
-        }, function(result) {
-            if (result.error()) return;
-            var categoryId = result.data().category.id;
-            var entityId = `DYNAMIC_${entityTypeId}_STAGE_${categoryId}`;
+        })).category;
+        const categoryId = category.id;
+        const entityId = `DYNAMIC_${entityTypeId}_STAGE_${categoryId}`;
 
-            // 3. Retrieve the list of stages
-            BX24.callMethod('crm.status.list', {
-                filter: {
-                    ENTITY_ID: entityId
-                }
-            }, function(result) {
-                if (result.error()) return;
-                var stages = result.data();
-
-                // 4. Modify the first stage
-                var firstStageId = stages[0].ID;
-                BX24.callMethod('crm.status.update', {
-                    id: firstStageId,
-                    fields: {
-                        NAME: 'First Stage'
-                    }
-                }, function() {
-                    // 5. Add a new stage
-                    BX24.callMethod('crm.status.add', {
-                        fields: {
-                            ENTITY_ID: entityId,
-                            STATUS_ID: `DT${entityTypeId}_${categoryId}:MY_STAGE`,
-                            NAME: 'My Stage',
-                            SORT: 60,
-                            SEMANTICS: "F"
-                        }
-                    }, function() {
-                        // 6. Retrieve and display the final table of stages
-                        BX24.callMethod('crm.status.list', {
-                            filter: {
-                                ENTITY_ID: entityId
-                            }
-                        }, function(result) {
-                            if (result.error()) return;
-                            printStagesTable(result.data());
-                        });
-                    });
-                });
-            });
+        // 3. Get the list of stages
+        let stages = await call('crm.status.list', {
+            filter: { ENTITY_ID: entityId }
         });
-    });
+
+        // 4. Change the first stage
+        const firstStageId = stages[0].ID;
+        await call('crm.status.update', {
+            id: firstStageId,
+            fields: { NAME: 'First stage' }
+        });
+
+        // 5. Add a new stage
+        await call('crm.status.add', {
+            fields: {
+                ENTITY_ID: entityId,
+                STATUS_ID: `DT${entityTypeId}_${categoryId}:MY_STAGE`,
+                NAME: 'My stage',
+                SORT: 60,
+                SEMANTICS: "F"
+            }
+        });
+
+        // 6. Get and display the final stages table
+        stages = await call('crm.status.list', {
+            filter: { ENTITY_ID: entityId }
+        });
+        printStagesTable(stages);
+    } catch (error) {
+        console.error(error.message);
+    }
 
     function printStagesTable(stages) {
         const columns = {
-            'In Progress': [],
+            'In progress': [],
             'Success': [],
             'Failure': []
         };
@@ -614,13 +616,13 @@ In this example, we create a new funnel in the smart process, change the name of
             } else if (semantics === 'F') {
                 columns['Failure'].push(stage.NAME);
             } else {
-                columns['In Progress'].push(stage.NAME);
+                columns['In progress'].push(stage.NAME);
             }
         });
 
         // Determine the maximum number of rows
         const maxRows = Math.max(
-            columns['In Progress'].length,
+            columns['In progress'].length,
             columns['Success'].length,
             columns['Failure'].length
         );
@@ -630,7 +632,7 @@ In this example, we create a new funnel in the smart process, change the name of
 
         for (let i = 0; i < maxRows; i++) {
             tableData.push({
-                'In Progress': columns['In Progress'][i] || '',
+                'In progress': columns['In progress'][i] || '',
                 'Success': columns['Success'][i] || '',
                 'Failure': columns['Failure'][i] || ''
             });
@@ -644,138 +646,92 @@ In this example, we create a new funnel in the smart process, change the name of
   
     ```php
     <?php
-    require_once('crest.php');
+    require_once 'vendor/autoload.php';
 
-    // 1. Retrieve entityTypeId by the smart process name
-    $result = CRest::call(
-        'crm.type.list',
-        [
-            'filter' => [
-                'title' => 'Equipment Purchase'
-            ]
-        ]
-    );
+    use Bitrix24\SDK\Services\ServiceBuilderFactory;
+    use Symfony\Component\EventDispatcher\EventDispatcher;
+    use Monolog\Logger;
+    use Monolog\Handler\StreamHandler;
 
-    if ($result['error']) {
-        echo 'Error: ' . $result['error_description'];
-        exit;
-    }
+    $logger = new Logger('b24');
+    $logger->pushHandler(new StreamHandler('php://stdout'));
 
-    $entityTypeId = $result['result']['types'][0]['entityTypeId'];
+    $serviceBuilder = (new ServiceBuilderFactory(new EventDispatcher(), $logger))
+        ->initFromWebhook('https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/');
 
-    // 2. Create a new funnel
-    $result = CRest::call(
-        'crm.category.add',
-        [
-            'entityTypeId' => $entityTypeId,
-            'fields' => [
-                'name' => 'New Funnel',
-                'sort' => 100
-            ]
-        ]
-    );
+    $crm = $serviceBuilder->getCRMScope();
 
-    if ($result['error']) {
-        echo 'Error: ' . $result['error_description'];
-        exit;
-    }
+    try {
+        // 1. Get entityTypeId by smart process name
+        $types = $crm->type()
+            ->list([], ['title' => 'Equipment procurement'])
+            ->getTypes();
+        $entityTypeId = $types[0]->entityTypeId;
 
-    $categoryId = $result['result']['category']['id'];
-    $entityId = 'DYNAMIC_' . $entityTypeId . '_STAGE_' . $categoryId;
-
-    // 3. Retrieve the list of stages
-    $result = CRest::call(
-        'crm.status.list',
-        [
-            'filter' => [
-                'ENTITY_ID' => $entityId
-            ]
-        ]
-    );
-
-    if ($result['error']) {
-        echo 'Error: ' . $result['error_description'];
-        exit;
-    }
-
-    $stages = $result['result'];
-
-    // 4. Modify the first stage
-    if (!empty($stages)) {
-        $firstStageId = $stages[0]['ID'];
-        $result = CRest::call(
-            'crm.status.update',
+        // 2. Create a new funnel
+        $result = $serviceBuilder->core->call(
+            'crm.category.add',
             [
-                'id' => $firstStageId,
+                'entityTypeId' => $entityTypeId,
                 'fields' => [
-                    'NAME' => 'First Stage'
+                    'name' => 'New funnel',
+                    'sort' => 100
                 ]
             ]
         );
+        $categoryId = $result->getResponseData()->getResult()['category']['id'];
+        $entityId = 'DYNAMIC_' . $entityTypeId . '_STAGE_' . $categoryId;
 
-        if ($result['error']) {
-            echo 'Error: ' . $result['error_description'];
-            exit;
+        // 3. Get the list of stages
+        $stages = $crm->status()
+            ->list([], ['ENTITY_ID' => $entityId])
+            ->getStatuses();
+
+        // 4. Change the first stage
+        if (!empty($stages)) {
+            $firstStageId = $stages[0]->ID;
+            $crm->status()->update($firstStageId, ['NAME' => 'First stage']);
         }
-    }
 
-    // 5. Add a new stage
-    $result = CRest::call(
-        'crm.status.add',
-        [
-            'fields' => [
-                'ENTITY_ID' => $entityId,
-                'STATUS_ID' => 'DT' . $entityTypeId . '_' . $categoryId . ':MY_STAGE',
-                'NAME' => 'My Stage',
-                'SORT' => 60,
-                'SEMANTICS' => 'F',
-            ]
-        ]
-    );
+        // 5. Add a new stage
+        $crm->status()->add([
+            'ENTITY_ID' => $entityId,
+            'STATUS_ID' => 'DT' . $entityTypeId . '_' . $categoryId . ':MY_STAGE',
+            'NAME' => 'My stage',
+            'SORT' => 60,
+            'SEMANTICS' => 'F',
+        ]);
 
-    if ($result['error']) {
-        echo 'Error: ' . $result['error_description'];
+        // 6. Get the final stages table
+        $stages = $crm->status()
+            ->list([], ['ENTITY_ID' => $entityId])
+            ->getStatuses();
+    } catch (\Throwable $e) {
+        echo 'Error: ' . $e->getMessage();
         exit;
     }
-
-    // 6. Retrieve and display the final table of stages
-    $result = CRest::call(
-        'crm.status.list',
-        [
-            'filter' => [
-                'ENTITY_ID' => $entityId
-            ]
-        ]
-    );
-
-    if ($result['error']) {
-        echo 'Error: ' . $result['error_description'];
-        exit;
-    }
-
-    $stages = $result['result'];
 
     // Form the stages table
     $columns = [
-        'In Progress' => [],
+        'In progress' => [],
         'Success' => [],
         'Failure' => []
     ];
 
     foreach ($stages as $stage) {
-        $semantics = ($stage['EXTRA'] && $stage['EXTRA']['SEMANTICS']) ? $stage['EXTRA']['SEMANTICS'] : $stage['SEMANTICS'];
+        $semantics = $stage->EXTRA['SEMANTICS'] ?? $stage->SEMANTICS;
         if ($semantics === 'S') {
-            $columns['Success'][] = $stage['NAME'];
+            $columns['Success'][] = $stage->NAME;
         } elseif ($semantics === 'F') {
-            $columns['Failure'][] = $stage['NAME'];
+            $columns['Failure'][] = $stage->NAME;
         } else {
-            $columns['In Progress'][] = $stage['NAME'];
+            $columns['In progress'][] = $stage->NAME;
         }
     }
 
     // Determine the maximum number of rows
     $maxRows = max(
-        count($columns['In Progress']),
+        count($columns['In progress']),
         count($columns['Success']),
         count($columns['Failure'])
     );
@@ -785,29 +741,28 @@ In this example, we create a new funnel in the smart process, change the name of
 
     for ($i = 0; $i < $maxRows; $i++) {
         $tableData[] = [
-            'In Progress' => $columns['In Progress'][$i] ?? '',
+            'In progress' => $columns['In progress'][$i] ?? '',
             'Success' => $columns['Success'][$i] ?? '',
             'Failure' => $columns['Failure'][$i] ?? ''
         ];
     }
 
-    // Output the table 
-    echo "Stages Table:\n";
+    // Display the table 
+    echo "Stages table:\n";
     foreach ($tableData as $row) {
-        echo "In Progress: " . $row['In Progress'] . " | Success: " . $row['Success'] . " | Failure: " . $row['Failure'] . "\n";
+        echo "In progress: " . $row['In progress'] . " | Success: " . $row['Success'] . " | Failure: " . $row['Failure'] . "\n";
     }
     ```
 
 - Python
-  
+
     ```python
     from b24pysdk import BitrixWebhook, Client
     from b24pysdk.errors import BitrixAPIError
 
-
     def print_stages_table(stages):
         columns = {
-            "In Progress": [],
+            "In progress": [],
             "Success": [],
             "Failure": [],
         }
@@ -819,10 +774,10 @@ In this example, we create a new funnel in the smart process, change the name of
             elif semantics == "F":
                 columns["Failure"].append(stage["NAME"])
             else:
-                columns["In Progress"].append(stage["NAME"])
+                columns["In progress"].append(stage["NAME"])
 
         max_rows = max(
-            len(columns["In Progress"]),
+            len(columns["In progress"]),
             len(columns["Success"]),
             len(columns["Failure"]),
         )
@@ -831,7 +786,7 @@ In this example, we create a new funnel in the smart process, change the name of
         for index in range(max_rows):
             table_data.append(
                 {
-                    "In Progress": columns["In Progress"][index] if index < len(columns["In Progress"]) else "",
+                    "In progress": columns["In progress"][index] if index < len(columns["In progress"]) else "",
                     "Success": columns["Success"][index] if index < len(columns["Success"]) else "",
                     "Failure": columns["Failure"][index] if index < len(columns["Failure"]) else "",
                 }
@@ -839,26 +794,25 @@ In this example, we create a new funnel in the smart process, change the name of
 
         for row in table_data:
             print(
-                "In Progress: "
-                + row["In Progress"]
+                "In progress: "
+                + row["In progress"]
                 + " | Success: "
                 + row["Success"]
                 + " | Failure: "
                 + row["Failure"]
             )
 
-
     client = Client(
         BitrixWebhook(
             domain="your-domain.bitrix24.com",
-            auth_token="your-webhook-token",
+            webhook_token="user_id/webhook_key",
         )
     )
 
     try:
         entity_type_id = int(
             client.crm.type.list(
-                filter={"title": "Equipment Purchase"},
+                filter={"title": "Equipment procurement"},
             ).response.result["types"][0]["entityTypeId"]
         )
 
@@ -866,7 +820,7 @@ In this example, we create a new funnel in the smart process, change the name of
             client.crm.category.add(
                 entity_type_id=entity_type_id,
                 fields={
-                    "name": "New Funnel",
+                    "name": "New funnel",
                     "sort": 100,
                 },
             ).response.result["category"]["id"]
@@ -882,7 +836,7 @@ In this example, we create a new funnel in the smart process, change the name of
             client.crm.status.update(
                 first_stage_id,
                 fields={
-                    "NAME": "First Stage",
+                    "NAME": "First stage",
                 },
             ).response
 
@@ -890,7 +844,7 @@ In this example, we create a new funnel in the smart process, change the name of
             fields={
                 "ENTITY_ID": entity_id,
                 "STATUS_ID": f"DT{entity_type_id}_{category_id}:MY_STAGE",
-                "NAME": "My Stage",
+                "NAME": "My stage",
                 "SORT": 60,
                 "SEMANTICS": "F",
             }
@@ -902,7 +856,7 @@ In this example, we create a new funnel in the smart process, change the name of
     except BitrixAPIError as error:
         print(f"Error: {error}")
     else:
-        print("Stages Table:")
+        print("Stages table:")
         print_stages_table(stages)
     ```
 

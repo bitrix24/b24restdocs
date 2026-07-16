@@ -13,71 +13,85 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 In Bitrix24, the payment date is stored in payment documents. Sometimes, the payment date may be needed in the deal field:
 
 - for integrations with external systems,
-- BI report generation,
-- automations through Automation rules and workflows.
+- for BI Builder reports,
+- for automation via automation rules and workflows.
+  
+To transfer the payment date information to a deal, we will sequentially execute three methods:
 
-To transfer the payment date information to the deal, we will sequentially execute three methods:
-
-1. [crm.deal.userfield.list](../../../api-reference/crm/deals/user-defined-fields/crm-deal-userfield-list.md) — retrieve the identifier of the deal field where we will save the date information.
-2. [crm.item.payment.list](../../../api-reference/crm/universal/payment/crm-item-payment-list.md) — obtain payment information.
-3. [crm.deal.update](../../../api-reference/crm/deals/crm-deal-update.md) — save the payment date in the deal field.
+1. [crm.deal.userfield.list](../../../api-reference/crm/deals/user-defined-fields/crm-deal-userfield-list.md) — retrieve the identifier of the deal field where the date information will be retained
+2. [crm.item.payment.list](../../../api-reference/crm/universal/payment/crm-item-payment-list.md) — retrieve payment information
+3. [crm.deal.update](../../../api-reference/crm/deals/crm-deal-update.md) — retain the payment date in the deal field
 
 ## 1. Retrieve the Field Identifier {#field_id}
 
-To get the identifier of the deal field, we use the method [crm.deal.userfield.list](../../../api-reference/crm/deals/user-defined-fields/crm-deal-userfield-list.md) with the following parameters:
+To retrieve the identifier of a deal field, use the [crm.deal.userfield.list](../../../api-reference/crm/deals/user-defined-fields/crm-deal-userfield-list.md) method with the following parameters:
 
-- `filter[LANG]` — use this language filter to display field names in the desired language. Without this filter, the names will not be displayed.
-- `filter[USER_TYPE_ID]` — use this field type filter to retrieve only fields of type "Date" in the result.
+- `filter[LANG]` — a language filter used to output field names in the required language. Without this filter, names will not be output.
+- `filter[USER_TYPE_ID]` — a field type filter used to retrieve only fields of type "Date" in the result.
 
-{% include [Example Notes](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
 - JS
   
     ```javascript
-    BX24.callMethod(
-        'crm.deal.userfield.list',
-        {
+    import { B24Hook } from '@bitrix24/b24jssdk'
+
+    const $b24 = B24Hook.fromWebhookUrl(process.env.B24_HOOK)
+    // B24_HOOK = 'https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/'
+
+    const result = await $b24.actions.v2.call.make({
+        method: 'crm.deal.userfield.list',
+        params: {
             filter: {
-                LANG: 'en', 
+                LANG: 'de',
                 USER_TYPE_ID: 'date'
             }
         }
-    );
+    });
     ```
 
 - PHP
   
     ```php
-    require_once('crest.php');
+    require_once 'vendor/autoload.php';
 
-    $result = CRest::call(
-        'crm.deal.userfield.list',
+    use Bitrix24\SDK\Services\ServiceBuilderFactory;
+    use Symfony\Component\EventDispatcher\EventDispatcher;
+    use Monolog\Logger;
+    use Monolog\Handler\StreamHandler;
+
+    $logger = new Logger('b24');
+    $logger->pushHandler(new StreamHandler('php://stdout'));
+
+    $serviceBuilder = (new ServiceBuilderFactory(new EventDispatcher(), $logger))
+        ->initFromWebhook('https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/');
+
+    $result = $serviceBuilder->getCRMScope()->dealUserfield()->list(
+        [],
         [
-            'filter' => [
-                'LANG' => 'en',
-                'USER_TYPE_ID' => 'date'
-            ]
+            'LANG' => 'de',
+            'USER_TYPE_ID' => 'date'
         ]
     );
     ```
 
 - Python
-  
+
     ```python
     from b24pysdk import BitrixWebhook, Client
 
     client = Client(
         BitrixWebhook(
             domain="your-domain.bitrix24.com",
-            auth_token="your-webhook-token",
+            webhook_token="user_id/webhook_key",
         )
     )
 
     result = client.crm.deal.userfield.list(
         filter={
-            "LANG": "en",
+            "LANG": "de",
             "USER_TYPE_ID": "date",
         }
     ).response.result
@@ -85,7 +99,7 @@ To get the identifier of the deal field, we use the method [crm.deal.userfield.l
 
 {% endlist %}
 
-As a result, we will obtain information about all deal fields of type "Date". We will identify the appropriate field by its name in the `EDIT_FORM_LABEL` parameter. The field identifier will be taken from the `FIELD_NAME` field.
+As a result, you will receive information about all deal fields of type "Date". Identify the appropriate field by the name in the `EDIT_FORM_LABEL` parameter. We will take the field identifier from the field `FIELD_NAME`.
 
 ```json
 {
@@ -109,9 +123,9 @@ As a result, we will obtain information about all deal fields of type "Date". We
                     "VALUE": ""
                 }
             },
-            "EDIT_FORM_LABEL": "Payment Date",
-            "LIST_COLUMN_LABEL": "Payment Date",
-            "LIST_FILTER_LABEL": "Payment Date",
+            "EDIT_FORM_LABEL": "Payment date",
+            "LIST_COLUMN_LABEL": "Payment date",
+            "LIST_FILTER_LABEL": "Payment date",
             "ERROR_MESSAGE": null,
             "HELP_MESSAGE": null
         },
@@ -134,9 +148,9 @@ As a result, we will obtain information about all deal fields of type "Date". We
                     "VALUE": ""
                 }
             },
-            "EDIT_FORM_LABEL": "Campaign End",
-            "LIST_COLUMN_LABEL": "Campaign End",
-            "LIST_FILTER_LABEL": "Campaign End",
+            "EDIT_FORM_LABEL": "End of campaign",
+            "LIST_COLUMN_LABEL": "End of campaign",
+            "LIST_FILTER_LABEL": "End of campaign",
             "ERROR_MESSAGE": null,
             "HELP_MESSAGE": null
         },
@@ -159,9 +173,9 @@ As a result, we will obtain information about all deal fields of type "Date". We
                     "VALUE": ""
                 }
             },
-            "EDIT_FORM_LABEL": "Campaign Start",
-            "LIST_COLUMN_LABEL": "Campaign Start",
-            "LIST_FILTER_LABEL": "Campaign Start",
+            "EDIT_FORM_LABEL": "Start of campaign",
+            "LIST_COLUMN_LABEL": "Start of campaign",
+            "LIST_FILTER_LABEL": "Start of campaign",
             "ERROR_MESSAGE": null,
             "HELP_MESSAGE": null
         }
@@ -174,28 +188,27 @@ As a result, we will obtain information about all deal fields of type "Date". We
 
 We use the method [crm.item.payment.list](../../../api-reference/crm/universal/payment/crm-item-payment-list.md) with the following parameters:
 
-- `entityId` — `ID` of the deal for which we are retrieving the payment date.
-- `entityTypeId` — [object type](../../../api-reference/crm/data-types.md#object_type), specify `2` for a deal.
+- `entityId` — the `ID` of the deal for which we are retrieving the payment date
+- `entityTypeId` — the [object type](../../../api-reference/crm/data-types.md#object_type), specify `2` for the deal
 
 {% list tabs %}
 
 - JS
   
     ```javascript
-    BX24.callMethod(
-        'crm.item.payment.list', {
+    const result = await $b24.actions.v2.call.make({
+        method: 'crm.item.payment.list',
+        params: {
             entityId: 6917,
             entityTypeId: 2,
-        },
-    );
+        }
+    });
     ```
 
 - PHP
   
     ```php
-    require_once('crest.php');
-
-    $result = CRest::call(
+    $result = $serviceBuilder->core->call(
         'crm.item.payment.list',
         [
             'entityId' => 6917,
@@ -205,7 +218,7 @@ We use the method [crm.item.payment.list](../../../api-reference/crm/universal/p
     ```
 
 - Python
-  
+
     ```python
     result = client.crm.item.payment.list(
         entity_id=6917,
@@ -224,70 +237,65 @@ As a result, we will obtain a list of payments with fields for the deal. We will
             "id": 503,
             "accountNumber": "831/1",
             "paid": "Y",
-            "datePaid": "2025-04-29T13:03:20+02:00",
+            "datePaid": "2025-04-29T13:03:20+03:00",
             "empPaidId": 1,
             "paySystemId": 19,
             "sum": 15,
             "currency": "EUR",
-            "paySystemName": "YooKassa"
+            "paySystemName": "Card Payment"
         }
     ],
 }
 ```
 
-## 3. Save the Date in the Deal Field
+## 3. Retain the Date in a Deal Field
+   
+To update a deal field and write the payment date to it, use the [crm.deal.update](../../../api-reference/crm/deals/crm-deal-update.md) method with the following parameters:
 
-To modify the deal field and record the payment date, we use the method [crm.deal.update](../../../api-reference/crm/deals/crm-deal-update.md) with the following parameters:
-
-- `id` — `ID` of the deal, a required parameter.
-- `fields[UF_CRM_1723209318]` — we will specify the value from the `datePaid` field obtained in [step 2](#date). We will pass the `FIELD_NAME` of the field obtained in [step 1](#field_id) as the field identifier.
+- `id` — the `ID` of the deal, a required parameter
+- `fields[UF_CRM_1723209318]` — specify the value from the `datePaid` field, obtained at [step 2](#date). As the field identifier, we will pass the `FIELD_NAME` of the field, obtained at [step 1](#field_id)
 
 {% list tabs %}
 
 - JS
     
     ```javascript
-    BX24.callMethod(
-        'crm.deal.update',
-        {
+    const result = await $b24.actions.v2.call.make({
+        method: 'crm.deal.update',
+        params: {
             id: 6917,
             fields: {
-                UF_CRM_1723209318: "2025-04-29T13:03:20+02:00",
+                UF_CRM_1723209318: "2025-04-29T13:03:20+03:00",
             },
-        },
-    );
+        }
+    });
     ```
 
 - PHP
   
     ```php
-    require_once('crest.php');
-
-    $result = CRest::call(
-        'crm.deal.update',
+    $result = $serviceBuilder->getCRMScope()->deal()->update(
+        6917,
         [
-            'id' => 6917,
-            'fields' => [
-                'UF_CRM_1723209318' => '2025-04-29T13:03:20+02:00'
-            ]
+            'UF_CRM_1723209318' => '2025-04-29T13:03:20+03:00'
         ]
     );
     ```
 
 - Python
-  
+
     ```python
     result = client.crm.deal.update(
         bitrix_id=6917,
         fields={
-            "UF_CRM_1723209318": "2025-04-29T13:03:20+02:00",
+            "UF_CRM_1723209318": "2025-04-29T13:03:20+03:00",
         },
     ).response.result
     ```
 
 {% endlist %}
 
-As a result, we will receive `true`, indicating that the deal has been successfully updated. If you receive an `error` in the result, refer to the documentation for the method [crm.deal.update](../../../api-reference/crm/deals/crm-deal-update.md#error-handling) to understand possible errors.
+As a result, you will receive `true`, the deal update was successful. If you received an error as a result `error`, study the description of possible errors in the [crm.deal.update](../../../api-reference/crm/deals/crm-deal-update.md#error-handling) method documentation.
 
 ```json
 {
@@ -297,38 +305,31 @@ As a result, we will receive `true`, indicating that the deal has been successfu
 
 ## Check the Value of the Deal Field
 
-The result does not contain information about the deal fields. To verify whether the payment date field has been successfully updated, we will execute the method [crm.deal.get](../../../api-reference/crm/deals/crm-deal-get.md) with the following parameters:
+The received result does not contain information about deal fields. To verify whether the payment date field was updated successfully, execute the [crm.deal.get](../../../api-reference/crm/deals/crm-deal-get.md) method with the following parameters:
 
-- `id` — `ID` of the deal, a required parameter.
+- `id` — the `ID` of the deal, a required parameter
 
 {% list tabs %}
 
 - JS
   
     ```javascript
-    BX24.callMethod(
-        'crm.deal.get',
-        {
+    const result = await $b24.actions.v2.call.make({
+        method: 'crm.deal.get',
+        params: {
             id: 6917,
-        },
-    );
+        }
+    });
     ```
 
 - PHP
   
     ```php
-    require_once('crest.php');
-
-    $result = CRest::call(
-        'crm.deal.get',
-        [
-            'id' => 6917
-        ]
-    );
+    $result = $serviceBuilder->getCRMScope()->deal()->get(6917);
     ```
 
 - Python
-  
+
     ```python
     result = client.crm.deal.get(
         bitrix_id=6917,
@@ -337,7 +338,7 @@ The result does not contain information about the deal fields. To verify whether
 
 {% endlist %}
 
-As a result, we will obtain the values of all deal fields, including custom fields. The value of the "Payment Date" field `UF_CRM_1723209318`: `2025-04-29T03:00:00+02:00` has been successfully set.
+As a result, you will receive the values of all deal fields, including user fields. The value of the "Payment Date" field `UF_CRM_1723209318`: `2025-04-29T03:00:00+03:00` was set successfully.
 
 ```json
 {
@@ -355,13 +356,13 @@ As a result, we will obtain the values of all deal fields, including custom fiel
         "COMPANY_ID": "0",
         "CONTACT_ID": "275",
         "QUOTE_ID": null,
-        "BEGINDATE": "2024-08-20T03:00:00+02:00",
-        "CLOSEDATE": "2024-08-27T03:00:00+02:00",
+        "BEGINDATE": "2024-08-20T03:00:00+03:00",
+        "CLOSEDATE": "2024-08-27T03:00:00+03:00",
         "ASSIGNED_BY_ID": "1",
         "CREATED_BY_ID": "1",
         "MODIFY_BY_ID": "1",
-        "DATE_CREATE": "2025-04-29T00:03:19+02:00",
-        "DATE_MODIFY": "2025-05-05T10:17:08+02:00",
+        "DATE_CREATE": "2025-04-29T00:03:19+03:00",
+        "DATE_MODIFY": "2025-05-05T10:17:08+03:00",
         "OPENED": "Y",
         "CLOSED": "N",
         "COMMENTS": "",
@@ -378,8 +379,8 @@ As a result, we will obtain the values of all deal fields, including custom fiel
         "ORIGINATOR_ID": null,
         "ORIGIN_ID": null,
         "MOVED_BY_ID": "0",
-        "MOVED_TIME": "2025-04-29T00:03:19+02:00",
-        "LAST_ACTIVITY_TIME": "2025-04-29T13:03:21+02:00",
+        "MOVED_TIME": "2025-04-29T00:03:19+03:00",
+        "LAST_ACTIVITY_TIME": "2025-04-29T13:03:21+03:00",
         "UTM_SOURCE": null,
         "UTM_MEDIUM": null,
         "UTM_CAMPAIGN": null,
@@ -393,7 +394,7 @@ As a result, we will obtain the values of all deal fields, including custom fiel
         "UF_CRM_1723206732": "",
         "UF_CRM_1723206709": "",
         "UF_CRM_1740471712": "",
-        "UF_CRM_1723209318": "2025-04-29T03:00:00+02:00",
+        "UF_CRM_1723209318": "2025-04-29T03:00:00+03:00",
         "UF_CRM_1722577765": "",
         "UF_CRM_1723188121": ""
     },
@@ -407,139 +408,127 @@ As a result, we will obtain the values of all deal fields, including custom fiel
 - JS
   
     ```javascript
-    // Step 1: Retrieve FIELD_NAME for the field with EDIT_FORM_LABEL "Payment Date"
-    BX24.callMethod(
-        'crm.deal.userfield.list',
-        {
+    import { B24Hook } from '@bitrix24/b24jssdk'
+    import { createInterface } from 'node:readline/promises'
+
+    const $b24 = B24Hook.fromWebhookUrl(process.env.B24_HOOK)
+    // B24_HOOK = 'https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/'
+
+    async function call(method, params) {
+        const result = await $b24.actions.v2.call.make({ method, params });
+        if (!result.isSuccess) {
+            throw new Error(result.getErrorMessages().join('; '));
+        }
+        return result.getData().result;
+    }
+
+    try {
+        // Step 1: Get FIELD_NAME for the field with EDIT_FORM_LABEL "Payment date"
+        const fields = await call('crm.deal.userfield.list', {
             filter: {
-                LANG: 'en',
+                LANG: 'de',
                 USER_TYPE_ID: 'date'
             }
-        },
-        function(result) {
-            if (result.error()) {
-                console.error(result.error());
-            } else {
-                const fields = result.data();
-                const dateField = fields.find(field => field.EDIT_FORM_LABEL === "Payment Date");
-                if (dateField) {
-                    const fieldName = dateField.FIELD_NAME;
-                    console.log("FIELD_NAME for 'Payment Date':", fieldName);
+        });
+        const dateField = fields.find(field => field.EDIT_FORM_LABEL === "Payment date");
+        if (dateField) {
+            const fieldName = dateField.FIELD_NAME;
+            console.log("FIELD_NAME for 'Payment date':", fieldName);
 
-                    // Step 2: Request the deal ID from the user and retrieve the payment date
-                    const dealId = prompt("Enter the deal ID:");
-                    BX24.callMethod(
-                        'crm.item.payment.list',
-                        {
-                            entityId: dealId,
-                            entityTypeId: 2
-                        },
-                        function(result) {
-                            if (result.error()) {
-                                console.error(result.error());
-                            } else {
-                                const payments = result.data();
-                                if (payments.length > 0) {
-                                    const datePaid = payments[0].datePaid;
-                                    console.log("Payment Date:", datePaid);
+            // Step 2: Request deal ID from user and get payment date
+            const rl = createInterface({ input: process.stdin, output: process.stdout });
+            const dealId = await rl.question("Enter deal ID: ");
+            rl.close();
 
-                                    // Step 3: Update the deal
-                                    BX24.callMethod(
-                                        'crm.deal.update',
-                                        {
-                                            id: dealId,
-                                            fields: {
-                                                [fieldName]: datePaid
-                                            }
-                                        },
-                                        function(result) {
-                                            if (result.error()) {
-                                                console.error(result.error());
-                                            } else {
-                                                console.log("Deal successfully updated");
-                                            }
-                                        }
-                                    );
-                                }
-                            }
-                        }
-                    );
-                }
+            const payments = await call('crm.item.payment.list', {
+                entityId: dealId,
+                entityTypeId: 2
+            });
+            if (payments.length > 0) {
+                const datePaid = payments[0].datePaid;
+                console.log("Payment date:", datePaid);
+
+                // Step 3: Updating deal
+                await call('crm.deal.update', {
+                    id: dealId,
+                    fields: {
+                        [fieldName]: datePaid
+                    }
+                });
+                console.log("Deal successfully updated");
             }
         }
-    );
+    } catch (error) {
+        console.error(error.message);
+    }
     ```
 
 - PHP
   
     ```php
-    require_once('crest.php');
+    require_once 'vendor/autoload.php';
 
-    // Step 1: Retrieve FIELD_NAME for the field with EDIT_FORM_LABEL "Payment Date"
-    $result = CRest::call(
-        'crm.deal.userfield.list',
-        [
-            'filter' => [
-                'LANG' => 'en',
+    use Bitrix24\SDK\Services\ServiceBuilderFactory;
+    use Symfony\Component\EventDispatcher\EventDispatcher;
+    use Monolog\Logger;
+    use Monolog\Handler\StreamHandler;
+
+    $logger = new Logger('b24');
+    $logger->pushHandler(new StreamHandler('php://stdout'));
+
+    $serviceBuilder = (new ServiceBuilderFactory(new EventDispatcher(), $logger))
+        ->initFromWebhook('https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/');
+
+    $crm = $serviceBuilder->getCRMScope();
+
+    try {
+        // Step 1: Get FIELD_NAME for the field with EDIT_FORM_LABEL "Payment date"
+        $fields = $crm->dealUserfield()->list(
+            [],
+            [
+                'LANG' => 'de',
                 'USER_TYPE_ID' => 'date'
             ]
-        ]
-    );
+        )->getUserfields();
 
-    if (!empty($result['error'])) {
-        echo "Error: " . $result['error_description'];
-    } else {
-        $fields = $result['result'];
         $dateField = null;
-
         foreach ($fields as $field) {
-            if ($field['EDIT_FORM_LABEL'] === "Payment Date") {
+            if ($field->EDIT_FORM_LABEL === "Payment date") {
                 $dateField = $field;
                 break;
             }
         }
 
         if ($dateField) {
-            $fieldName = $dateField['FIELD_NAME'];
-            echo "FIELD_NAME for 'Payment Date': " . $fieldName . "\n";
+            $fieldName = $dateField->FIELD_NAME;
+            echo "FIELD_NAME for 'Payment date': " . $fieldName . "\n";
 
-            // Step 2: Request the deal ID from the user and retrieve the payment date
-            $dealId = readline("Enter the deal ID: ");
-            $paymentResult = CRest::call(
+            // Step 2: Request deal ID from user and get payment date
+            $dealId = readline("Enter deal ID: ");
+            $payments = $serviceBuilder->core->call(
                 'crm.item.payment.list',
                 [
                     'entityId' => $dealId,
                     'entityTypeId' => 2
                 ]
-            );
+            )->getResponseData()->getResult();
 
-            if (!empty($paymentResult['error'])) {
-                echo "Error: " . $paymentResult['error_description'];
-            } else {
-                $payments = $paymentResult['result'];
-                if (count($payments) > 0) {
-                    $datePaid = $payments[0]['datePaid'];
-                    echo "Payment Date: " . $datePaid . "\n";
+            if (count($payments) > 0) {
+                $datePaid = $payments[0]['datePaid'];
+                echo "Payment date: " . $datePaid . "\n";
 
-                    // Step 3: Update the deal
-                    $updateResult = CRest::call(
-                        'crm.deal.update',
-                        [
-                            'id' => $dealId,
-                            'fields' => [
-                                $fieldName => $datePaid
-                            ]
-                        ]
-                    );
-
-                    if (!empty($updateResult['error'])) {
-                        echo "Error: " . $updateResult['error_description'];
-                    } else {
-                        echo "Deal successfully updated\n";
-                    }
-                }
+                // Step 3: Updating deal
+                $crm->deal()->update(
+                    (int)$dealId,
+                    [
+                        $fieldName => $datePaid
+                    ]
+                );
+                echo "Deal successfully updated\n";
             }
         }
+    } catch (\Throwable $e) {
+        echo "Error: " . $e->getMessage();
     }
     ```
 
@@ -552,14 +541,14 @@ As a result, we will obtain the values of all deal fields, including custom fiel
     client = Client(
         BitrixWebhook(
             domain="your-domain.bitrix24.com",
-            auth_token="your-webhook-token",
+            webhook_token="user_id/webhook_key",
         )
     )
 
     try:
         user_fields = client.crm.deal.userfield.list(
             filter={
-                "LANG": "en",
+                "LANG": "de",
                 "USER_TYPE_ID": "date",
             }
         ).response.result
@@ -570,15 +559,15 @@ As a result, we will obtain the values of all deal fields, including custom fiel
             (
                 field
                 for field in user_fields
-                if field.get("EDIT_FORM_LABEL") == "Payment Date"
+                if field.get("EDIT_FORM_LABEL") == "Payment date"
             ),
             None,
         )
 
         if date_field:
-            print("FIELD_NAME for 'Payment Date':", date_field["FIELD_NAME"])
+            print("FIELD_NAME for 'Payment date':", date_field["FIELD_NAME"])
 
-            deal_id = int(input("Enter the deal ID: "))
+            deal_id = int(input("Enter deal ID: "))
 
             try:
                 payments = client.crm.item.payment.list(
@@ -590,7 +579,7 @@ As a result, we will obtain the values of all deal fields, including custom fiel
             else:
                 if payments:
                     date_paid = payments[0]["datePaid"]
-                    print("Payment Date:", date_paid)
+                    print("Payment date:", date_paid)
 
                     try:
                         client.crm.deal.update(

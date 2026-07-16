@@ -22,9 +22,9 @@ The scenario consists of three steps.
 
 Before running the examples, prepare the environment:
 
-- JS code is executed in a Bitrix24 application where the `BX24` object is available.
-- PHP code uses the `CRest` class; configure a webhook or OAuth authorization for method calls.
-- Files to be uploaded must be accessible to the example code: in JS via a relative application URL, and in PHP via a server path.
+- Install the SDK for your language: `npm install @bitrix24/b24jssdk`, `composer require bitrix24/b24phpsdk:"^3.0"`, or `pip install b24pysdk`
+- The examples are executed on a server and authorized via an [incoming webhook](../../local-integrations/local-webhooks.md) with the `catalog` permission. Replace the webhook address with your own
+- Files to be uploaded must be accessible to the example code via a path on the server
 
 ## 1. Prepare Properties
 
@@ -44,6 +44,16 @@ In this example, we will create four properties:
 - `Certificate` — a file property
 - `Gallery` — a multiple file property
 
+{% note warning "A single list property requires at least two values" %}
+
+For the single list property `multiple: N`, create at least two list values. If there is only one value, Bitrix24 defines such a property as "Yes/No" — `userType: BoolEnum`. The list value identifier in field `propertyN` will not be saved: the product will return `propertyN: "N"`, and no error will occur.
+
+Therefore, for the `Color` property, we will create two values — `Blue` and `Red`. This restriction does not apply to multiple list properties.
+
+You can check how the property was defined using the [catalog.product.getFieldsByFilter](../../api-reference/catalog/product/catalog-product-get-fields-by-filter.md) method — the response for field `propertyN` will contain `userType: BoolEnum`. The [catalog.productProperty.get](../../api-reference/catalog/product-property/catalog-product-property-get.md) method will return `userType: null`, because the "Yes/No" type is calculated based on the number of list values.
+
+{% endnote %}
+
 {% include [Note on examples](../../_includes/examples.md) %}
 
 {% list tabs %}
@@ -51,273 +61,313 @@ In this example, we will create four properties:
 - JS
 
     ```js
-    const iblockId = 23;
+    // npm install @bitrix24/b24jssdk
+    import { B24Hook } from '@bitrix24/b24jssdk'
 
-    function callMethod(method, params) {
-        return new Promise((resolve, reject) => {
-            BX24.callMethod(method, params, function(result) {
-                if (result.error()) {
-                    reject(result.error() + ': ' + result.error_description());
-                    return;
-                }
+    const $b24 = B24Hook.fromWebhookUrl('https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/')
 
-                resolve(result.data());
-            });
-        });
+    const iblockId = 23
+
+    async function callMethod(method, params, requestId) {
+        const response = await $b24.actions.v2.call.make({ method, params, requestId })
+
+        if (!response.isSuccess) {
+            throw new Error(response.getErrorMessages().join('; '))
+        }
+
+        return response.getData().result
+    }
+
+    async function addProperty(fields) {
+        const result = await callMethod(
+            'catalog.productProperty.add',
+            { fields },
+            `property-add-${fields.code}`
+        )
+
+        return result.productProperty
+    }
+
+    async function addPropertyEnum(propertyId, value, xmlId, sort) {
+        const result = await callMethod(
+            'catalog.productPropertyEnum.add',
+            { fields: { propertyId, value, xmlId, sort } },
+            `property-enum-add-${xmlId}`
+        )
+
+        return result.productPropertyEnum
     }
 
     async function prepareProperties() {
-        const colorProperty = await callMethod(
-            'catalog.productProperty.add',
-            {
-                fields: {
-                    iblockId: iblockId,
-                    name: 'Color',
-                    code: 'COLOR',
-                    propertyType: 'L',
-                    listType: 'L',
-                    multiple: 'N',
-                    active: 'Y',
-                    sort: 100
-                }
-            }
-        );
+        const colorProperty = await addProperty({
+            iblockId: iblockId,
+            name: 'Color',
+            code: 'COLOR',
+            propertyType: 'L',
+            listType: 'L',
+            multiple: 'N',
+            active: 'Y',
+            sort: 100
+        })
 
-        const sizeProperty = await callMethod(
-            'catalog.productProperty.add',
-            {
-                fields: {
-                    iblockId: iblockId,
-                    name: 'Sizes',
-                    code: 'SIZES',
-                    propertyType: 'L',
-                    listType: 'C',
-                    multiple: 'Y',
-                    active: 'Y',
-                    sort: 200
-                }
-            }
-        );
+        const sizeProperty = await addProperty({
+            iblockId: iblockId,
+            name: 'Sizes',
+            code: 'SIZES',
+            propertyType: 'L',
+            listType: 'C',
+            multiple: 'Y',
+            active: 'Y',
+            sort: 200
+        })
 
-        const certificateProperty = await callMethod(
-            'catalog.productProperty.add',
-            {
-                fields: {
-                    iblockId: iblockId,
-                    name: 'Certificate',
-                    code: 'CERTIFICATE',
-                    propertyType: 'F',
-                    multiple: 'N',
-                    active: 'Y',
-                    sort: 300
-                }
-            }
-        );
+        const certificateProperty = await addProperty({
+            iblockId: iblockId,
+            name: 'Certificate',
+            code: 'CERTIFICATE',
+            propertyType: 'F',
+            multiple: 'N',
+            active: 'Y',
+            sort: 300
+        })
 
-        const galleryProperty = await callMethod(
-            'catalog.productProperty.add',
-            {
-                fields: {
-                    iblockId: iblockId,
-                    name: 'Gallery',
-                    code: 'GALLERY',
-                    propertyType: 'F',
-                    multiple: 'Y',
-                    active: 'Y',
-                    sort: 400
-                }
-            }
-        );
+        const galleryProperty = await addProperty({
+            iblockId: iblockId,
+            name: 'Gallery',
+            code: 'GALLERY',
+            propertyType: 'F',
+            multiple: 'Y',
+            active: 'Y',
+            sort: 400
+        })
 
-        const colorBlue = await callMethod(
-            'catalog.productPropertyEnum.add',
-            {
-                fields: {
-                    propertyId: colorProperty.productProperty.id,
-                    value: 'Blue',
-                    xmlId: 'BLUE',
-                    sort: 100
-                }
-            }
-        );
-
-        const sizeM = await callMethod(
-            'catalog.productPropertyEnum.add',
-            {
-                fields: {
-                    propertyId: sizeProperty.productProperty.id,
-                    value: 'M',
-                    xmlId: 'M',
-                    sort: 100
-                }
-            }
-        );
-
-        const sizeL = await callMethod(
-            'catalog.productPropertyEnum.add',
-            {
-                fields: {
-                    propertyId: sizeProperty.productProperty.id,
-                    value: 'L',
-                    xmlId: 'L',
-                    sort: 200
-                }
-            }
-        );
+        const colorBlue = await addPropertyEnum(colorProperty.id, 'Blue', 'BLUE', 100)
+        const colorRed = await addPropertyEnum(colorProperty.id, 'Red', 'RED', 200)
+        const sizeM = await addPropertyEnum(sizeProperty.id, 'M', 'M', 100)
+        const sizeL = await addPropertyEnum(sizeProperty.id, 'L', 'L', 200)
 
         console.log({
-            colorPropertyId: colorProperty.productProperty.id,
-            colorBlueId: colorBlue.productPropertyEnum.id,
-            sizePropertyId: sizeProperty.productProperty.id,
-            sizeValueIds: [
-                sizeM.productPropertyEnum.id,
-                sizeL.productPropertyEnum.id
-            ],
-            certificatePropertyId: certificateProperty.productProperty.id,
-            galleryPropertyId: galleryProperty.productProperty.id
-        });
+            colorPropertyId: colorProperty.id,
+            colorBlueId: colorBlue.id,
+            colorRedId: colorRed.id,
+            sizePropertyId: sizeProperty.id,
+            sizeValueIds: [sizeM.id, sizeL.id],
+            certificatePropertyId: certificateProperty.id,
+            galleryPropertyId: galleryProperty.id
+        })
     }
 
-    prepareProperties().catch(console.error);
+    try {
+        await prepareProperties()
+    } catch (error) {
+        console.error('Error:', error.message)
+    } finally {
+        $b24.destroy()
+    }
     ```
 
 - PHP
 
     ```php
     <?php
-    require_once('crest.php');
+    // composer require bitrix24/b24phpsdk:"^3.0"
+    require_once 'vendor/autoload.php';
+
+    use Bitrix24\SDK\Core\Exceptions\BaseException;
+    use Bitrix24\SDK\Services\ServiceBuilderFactory;
+    use Monolog\Handler\StreamHandler;
+    use Monolog\Logger;
+    use Symfony\Component\EventDispatcher\EventDispatcher;
+
+    $log = new Logger('b24');
+    $log->pushHandler(new StreamHandler('php://stdout'));
+
+    $b24 = (new ServiceBuilderFactory(new EventDispatcher(), $log))
+        ->initFromWebhook('https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/');
 
     $iblockId = 23;
 
-    function callRestMethod(string $method, array $params): array
+    function addProperty($b24, array $fields): array
     {
-        $result = CRest::call($method, $params);
+        return $b24->core->call('catalog.productProperty.add', ['fields' => $fields])
+            ->getResponseData()
+            ->getResult()['productProperty'];
+    }
 
-        if (!empty($result['error']))
-        {
-            throw new RuntimeException($result['error_description']);
-        }
-
-        return $result['result'];
+    function addPropertyEnum($b24, int $propertyId, string $value, string $xmlId, int $sort): array
+    {
+        return $b24->core->call(
+            'catalog.productPropertyEnum.add',
+            [
+                'fields' => [
+                    'propertyId' => $propertyId,
+                    'value' => $value,
+                    'xmlId' => $xmlId,
+                    'sort' => $sort,
+                ],
+            ]
+        )->getResponseData()->getResult()['productPropertyEnum'];
     }
 
     try
     {
-        $colorProperty = callRestMethod(
-            'catalog.productProperty.add',
-            [
-                'fields' => [
-                    'iblockId' => $iblockId,
-                    'name' => 'Color',
-                    'code' => 'COLOR',
-                    'propertyType' => 'L',
-                    'listType' => 'L',
-                    'multiple' => 'N',
-                    'active' => 'Y',
-                    'sort' => 100,
-                ],
-            ]
-        );
+        $colorProperty = addProperty($b24, [
+            'iblockId' => $iblockId,
+            'name' => 'Color',
+            'code' => 'COLOR',
+            'propertyType' => 'L',
+            'listType' => 'L',
+            'multiple' => 'N',
+            'active' => 'Y',
+            'sort' => 100,
+        ]);
 
-        $sizeProperty = callRestMethod(
-            'catalog.productProperty.add',
-            [
-                'fields' => [
-                    'iblockId' => $iblockId,
-                    'name' => 'Sizes',
-                    'code' => 'SIZES',
-                    'propertyType' => 'L',
-                    'listType' => 'C',
-                    'multiple' => 'Y',
-                    'active' => 'Y',
-                    'sort' => 200,
-                ],
-            ]
-        );
+        $sizeProperty = addProperty($b24, [
+            'iblockId' => $iblockId,
+            'name' => 'Sizes',
+            'code' => 'SIZES',
+            'propertyType' => 'L',
+            'listType' => 'C',
+            'multiple' => 'Y',
+            'active' => 'Y',
+            'sort' => 200,
+        ]);
 
-        $certificateProperty = callRestMethod(
-            'catalog.productProperty.add',
-            [
-                'fields' => [
-                    'iblockId' => $iblockId,
-                    'name' => 'Certificate',
-                    'code' => 'CERTIFICATE',
-                    'propertyType' => 'F',
-                    'multiple' => 'N',
-                    'active' => 'Y',
-                    'sort' => 300,
-                ],
-            ]
-        );
+        $certificateProperty = addProperty($b24, [
+            'iblockId' => $iblockId,
+            'name' => 'Certificate',
+            'code' => 'CERTIFICATE',
+            'propertyType' => 'F',
+            'multiple' => 'N',
+            'active' => 'Y',
+            'sort' => 300,
+        ]);
 
-        $galleryProperty = callRestMethod(
-            'catalog.productProperty.add',
-            [
-                'fields' => [
-                    'iblockId' => $iblockId,
-                    'name' => 'Gallery',
-                    'code' => 'GALLERY',
-                    'propertyType' => 'F',
-                    'multiple' => 'Y',
-                    'active' => 'Y',
-                    'sort' => 400,
-                ],
-            ]
-        );
+        $galleryProperty = addProperty($b24, [
+            'iblockId' => $iblockId,
+            'name' => 'Gallery',
+            'code' => 'GALLERY',
+            'propertyType' => 'F',
+            'multiple' => 'Y',
+            'active' => 'Y',
+            'sort' => 400,
+        ]);
 
-        $colorBlue = callRestMethod(
-            'catalog.productPropertyEnum.add',
-            [
-                'fields' => [
-                    'propertyId' => $colorProperty['productProperty']['id'],
-                    'value' => 'Blue',
-                    'xmlId' => 'BLUE',
-                    'sort' => 100,
-                ],
-            ]
-        );
-
-        $sizeM = callRestMethod(
-            'catalog.productPropertyEnum.add',
-            [
-                'fields' => [
-                    'propertyId' => $sizeProperty['productProperty']['id'],
-                    'value' => 'M',
-                    'xmlId' => 'M',
-                    'sort' => 100,
-                ],
-            ]
-        );
-
-        $sizeL = callRestMethod(
-            'catalog.productPropertyEnum.add',
-            [
-                'fields' => [
-                    'propertyId' => $sizeProperty['productProperty']['id'],
-                    'value' => 'L',
-                    'xmlId' => 'L',
-                    'sort' => 200,
-                ],
-            ]
-        );
+        $colorBlue = addPropertyEnum($b24, $colorProperty['id'], 'Blue', 'BLUE', 100);
+        $colorRed = addPropertyEnum($b24, $colorProperty['id'], 'Red', 'RED', 200);
+        $sizeM = addPropertyEnum($b24, $sizeProperty['id'], 'M', 'M', 100);
+        $sizeL = addPropertyEnum($b24, $sizeProperty['id'], 'L', 'L', 200);
 
         print_r([
-            'colorPropertyId' => $colorProperty['productProperty']['id'],
-            'colorBlueId' => $colorBlue['productPropertyEnum']['id'],
-            'sizePropertyId' => $sizeProperty['productProperty']['id'],
+            'colorPropertyId' => $colorProperty['id'],
+            'colorBlueId' => $colorBlue['id'],
+            'colorRedId' => $colorRed['id'],
+            'sizePropertyId' => $sizeProperty['id'],
             'sizeValueIds' => [
-                $sizeM['productPropertyEnum']['id'],
-                $sizeL['productPropertyEnum']['id'],
+                $sizeM['id'],
+                $sizeL['id'],
             ],
-            'certificatePropertyId' => $certificateProperty['productProperty']['id'],
-            'galleryPropertyId' => $galleryProperty['productProperty']['id'],
+            'certificatePropertyId' => $certificateProperty['id'],
+            'galleryPropertyId' => $galleryProperty['id'],
         ]);
     }
-    catch (Throwable $exception)
+    catch (BaseException $exception)
     {
         echo 'Error: '.$exception->getMessage();
     }
     ?>
+    ```
+
+- Python
+
+    ```python
+    # pip install b24pysdk
+    from b24pysdk import BitrixWebhook, Client
+    from b24pysdk.errors import BitrixAPIError
+
+    client = Client(
+        BitrixWebhook(
+            domain="your-domain.bitrix24.com",
+            webhook_token="user_id/webhook_key",
+        )
+    )
+
+    iblock_id = 23
+
+    def add_property(fields):
+        return client.catalog.product_property.add(fields=fields).response.result["productProperty"]
+
+    def add_property_enum(property_id, value, xml_id, sort):
+        return client.catalog.product_property_enum.add(
+            fields={
+                "propertyId": property_id,
+                "value": value,
+                "xmlId": xml_id,
+                "sort": sort,
+            },
+        ).response.result["productPropertyEnum"]
+
+    try:
+        color_property = add_property({
+            "iblockId": iblock_id,
+            "name": "Color",
+            "code": "COLOR",
+            "propertyType": "L",
+            "listType": "L",
+            "multiple": "N",
+            "active": "Y",
+            "sort": 100,
+        })
+
+        size_property = add_property({
+            "iblockId": iblock_id,
+            "name": "Sizes",
+            "code": "SIZES",
+            "propertyType": "L",
+            "listType": "C",
+            "multiple": "Y",
+            "active": "Y",
+            "sort": 200,
+        })
+
+        certificate_property = add_property({
+            "iblockId": iblock_id,
+            "name": "Certificate",
+            "code": "CERTIFICATE",
+            "propertyType": "F",
+            "multiple": "N",
+            "active": "Y",
+            "sort": 300,
+        })
+
+        gallery_property = add_property({
+            "iblockId": iblock_id,
+            "name": "Gallery",
+            "code": "GALLERY",
+            "propertyType": "F",
+            "multiple": "Y",
+            "active": "Y",
+            "sort": 400,
+        })
+
+        color_blue = add_property_enum(color_property["id"], "Blue", "BLUE", 100)
+        color_red = add_property_enum(color_property["id"], "Red", "RED", 200)
+        size_m = add_property_enum(size_property["id"], "M", "M", 100)
+        size_l = add_property_enum(size_property["id"], "L", "L", 200)
+
+    except BitrixAPIError as error:
+        print(f"Error: {error}")
+
+    else:
+        print({
+            "colorPropertyId": color_property["id"],
+            "colorBlueId": color_blue["id"],
+            "colorRedId": color_red["id"],
+            "sizePropertyId": size_property["id"],
+            "sizeValueIds": [size_m["id"], size_l["id"]],
+            "certificatePropertyId": certificate_property["id"],
+            "galleryPropertyId": gallery_property["id"],
+        })
     ```
 
 {% endlist %}
@@ -328,10 +378,11 @@ After completing the first step, save the property and list value identifiers. T
 {
     "colorPropertyId": 431,
     "colorBlueId": 1739,
+    "colorRedId": 1740,
     "sizePropertyId": 432,
     "sizeValueIds": [
-        1740,
-        1741
+        1741,
+        1742
     ],
     "certificatePropertyId": 433,
     "galleryPropertyId": 434
@@ -358,30 +409,27 @@ To run the example, create a folder `pictures` next to the example file and add 
 - JS
 
     ```js
-    const iblockId = 23;
-    const colorPropertyId = 431;
-    const colorBlueId = 1739;
-    const sizePropertyId = 432;
-    const sizeValueIds = [1740, 1741];
-    const certificatePropertyId = 433;
-    const galleryPropertyId = 434;
+    // npm install @bitrix24/b24jssdk
+    import { readFile } from 'node:fs/promises'
+    import { B24Hook } from '@bitrix24/b24jssdk'
 
-    function fileToBase64(filePath) {
-        return fetch(filePath)
-            .then(response => response.blob())
-            .then(blob => new Promise((resolve, reject) => {
-                const reader = new FileReader();
-                reader.onload = () => resolve(reader.result.split(',')[1]);
-                reader.onerror = reject;
-                reader.readAsDataURL(blob);
-            }));
+    const $b24 = B24Hook.fromWebhookUrl('https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/')
+
+    const iblockId = 23
+    const colorPropertyId = 431
+    const colorBlueId = 1739
+    const sizePropertyId = 432
+    const sizeValueIds = [1741, 1742]
+    const certificatePropertyId = 433
+    const galleryPropertyId = 434
+
+    async function encodeFile(filePath) {
+        const content = await readFile(filePath)
+
+        return [filePath.split('/').pop(), content.toString('base64')]
     }
 
     async function addProduct() {
-        const certificateBase64 = await fileToBase64('pictures/certificate.pdf');
-        const galleryFirstBase64 = await fileToBase64('pictures/gallery-1.jpg');
-        const gallerySecondBase64 = await fileToBase64('pictures/gallery-2.jpg');
-
         const fields = {
             iblockId: iblockId,
             name: 'Printed T-shirt',
@@ -391,63 +439,70 @@ To run the example, create a folder `pictures` next to the example file and add 
             ['property' + sizePropertyId]: sizeValueIds,
             ['property' + certificatePropertyId]: {
                 value: {
-                    fileData: [
-                        'certificate.pdf',
-                        certificateBase64
-                    ]
+                    fileData: await encodeFile('pictures/certificate.pdf')
                 }
             },
             ['property' + galleryPropertyId]: [
                 {
                     value: {
-                        fileData: [
-                            'gallery-1.jpg',
-                            galleryFirstBase64
-                        ]
+                        fileData: await encodeFile('pictures/gallery-1.jpg')
                     }
                 },
                 {
                     value: {
-                        fileData: [
-                            'gallery-2.jpg',
-                            gallerySecondBase64
-                        ]
+                        fileData: await encodeFile('pictures/gallery-2.jpg')
                     }
                 }
             ]
-        };
+        }
 
-        BX24.callMethod(
-            'catalog.product.add',
-            {
-                fields: fields
-            },
-            function(result) {
-                if (result.error()) {
-                    console.error(result.error() + ': ' + result.error_description());
-                    return;
-                }
+        const response = await $b24.actions.v2.call.make({
+            method: 'catalog.product.add',
+            params: { fields },
+            requestId: 'product-add'
+        })
 
-                const productId = Number(result.data().element.id);
-                console.log('Product added: ' + productId);
-            }
-        );
+        if (!response.isSuccess) {
+            throw new Error(response.getErrorMessages().join('; '))
+        }
+
+        const productId = Number(response.getData().result.element.id)
+        console.log('Product added: ' + productId)
     }
 
-    addProduct().catch(console.error);
+    try {
+        await addProduct()
+    } catch (error) {
+        console.error('Error:', error.message)
+    } finally {
+        $b24.destroy()
+    }
     ```
 
 - PHP
 
     ```php
     <?php
-    require_once('crest.php');
+    // composer require bitrix24/b24phpsdk:"^3.0"
+    require_once 'vendor/autoload.php';
+
+    use Bitrix24\SDK\Core\Exceptions\BaseException;
+    use Bitrix24\SDK\Services\ServiceBuilderFactory;
+    use Monolog\Handler\StreamHandler;
+    use Monolog\Logger;
+    use Symfony\Component\EventDispatcher\EventDispatcher;
+
+    $log = new Logger('b24');
+    $log->pushHandler(new StreamHandler('php://stdout'));
+
+    $b24 = (new ServiceBuilderFactory(new EventDispatcher(), $log))
+        ->initFromWebhook('https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/');
 
     $iblockId = 23;
     $colorPropertyId = 431;
     $colorBlueId = 1739;
     $sizePropertyId = 432;
-    $sizeValueIds = [1740, 1741];
+    $sizeValueIds = [1741, 1742];
     $certificatePropertyId = 433;
     $galleryPropertyId = 434;
 
@@ -492,32 +547,82 @@ To run the example, create a folder `pictures` next to the example file and add 
             ],
         ];
 
-        $result = CRest::call(
-            'catalog.product.add',
-            [
-                'fields' => $fields,
-            ]
-        );
+        $productId = $b24->getCatalogScope()->product()->add($fields)->product()->id;
 
-        if (!empty($result['error']))
-        {
-            echo 'Error: '.$result['error_description'];
-            return;
-        }
-
-        $productId = (int)$result['result']['element']['id'];
         echo 'Product added: '.$productId;
     }
-    catch (Throwable $exception)
+    catch (BaseException|RuntimeException $exception)
     {
         echo 'Error: '.$exception->getMessage();
     }
     ?>
     ```
 
+- Python
+
+    ```python
+    # pip install b24pysdk
+    import base64
+
+    from b24pysdk import BitrixWebhook, Client
+    from b24pysdk.errors import BitrixAPIError
+
+    client = Client(
+        BitrixWebhook(
+            domain="your-domain.bitrix24.com",
+            webhook_token="user_id/webhook_key",
+        )
+    )
+
+    iblock_id = 23
+    color_property_id = 431
+    color_blue_id = 1739
+    size_property_id = 432
+    size_value_ids = [1741, 1742]
+    certificate_property_id = 433
+    gallery_property_id = 434
+
+    def encode_file(path):
+        with open(path, "rb") as file:
+            return [path.split("/")[-1], base64.b64encode(file.read()).decode()]
+
+    fields = {
+        "iblockId": iblock_id,
+        "name": "Printed T-shirt",
+        "active": "Y",
+        "sort": 100,
+        f"property{color_property_id}": color_blue_id,
+        f"property{size_property_id}": size_value_ids,
+        f"property{certificate_property_id}": {
+            "value": {
+                "fileData": encode_file("pictures/certificate.pdf"),
+            },
+        },
+        f"property{gallery_property_id}": [
+            {
+                "value": {
+                    "fileData": encode_file("pictures/gallery-1.jpg"),
+                },
+            },
+            {
+                "value": {
+                    "fileData": encode_file("pictures/gallery-2.jpg"),
+                },
+            },
+        ],
+    }
+
+    try:
+        element = client.catalog.product.add(fields=fields).response.result["element"]
+    except BitrixAPIError as error:
+        print(f"Error: {error}")
+    else:
+        print(f"Product added: {element['id']}")
+    ```
+
 {% endlist %}
 
-If the product is added successfully, the method returns a `element` object. The response will contain the product fields and the custom property values.
+If the product is added successfully, the method returns a `element` object. The response will contain the product fields and the custom property values. File properties are returned with a link to the uploaded file rather than the original Base64 string.
 
 ```json
 {
@@ -526,18 +631,48 @@ If the product is added successfully, the method returns a `element` object. The
             "id": 1267,
             "iblockId": 23,
             "name": "Printed T-shirt",
+            "active": "Y",
             "property431": {
                 "value": "1739",
+                "valueEnum": "Blue",
                 "valueId": "9816"
             },
             "property432": [
                 {
-                    "value": "1740",
+                    "value": "1741",
+                    "valueEnum": "M",
                     "valueId": "9817"
                 },
                 {
-                    "value": "1741",
+                    "value": "1742",
+                    "valueEnum": "L",
                     "valueId": "9818"
+                }
+            ],
+            "property433": {
+                "value": {
+                    "id": "4801",
+                    "url": "/rest/catalog.product.download?fields%5BfieldName%5D=property433&fields%5BfileId%5D=4801&fields%5BproductId%5D=1267",
+                    "urlMachine": "/rest/catalog.product.download?fields%5BfieldName%5D=property433&fields%5BfileId%5D=4801&fields%5BproductId%5D=1267"
+                },
+                "valueId": "9819"
+            },
+            "property434": [
+                {
+                    "value": {
+                        "id": "4803",
+                        "url": "/rest/catalog.product.download?fields%5BfieldName%5D=property434&fields%5BfileId%5D=4803&fields%5BproductId%5D=1267",
+                        "urlMachine": "/rest/catalog.product.download?fields%5BfieldName%5D=property434&fields%5BfileId%5D=4803&fields%5BproductId%5D=1267"
+                    },
+                    "valueId": "9820"
+                },
+                {
+                    "value": {
+                        "id": "4805",
+                        "url": "/rest/catalog.product.download?fields%5BfieldName%5D=property434&fields%5BfileId%5D=4805&fields%5BproductId%5D=1267",
+                        "urlMachine": "/rest/catalog.product.download?fields%5BfieldName%5D=property434&fields%5BfileId%5D=4805&fields%5BproductId%5D=1267"
+                    },
+                    "valueId": "9821"
                 }
             ]
         }
@@ -558,60 +693,115 @@ In the examples below, replace `1267` with the `element.id` value obtained in th
 - JS
 
     ```js
-    const productId = 1267;
-    const catalogGroupId = 1;
+    // npm install @bitrix24/b24jssdk
+    import { B24Hook } from '@bitrix24/b24jssdk'
 
-    BX24.callMethod(
-        'catalog.price.add',
-        {
-            fields: {
-                productId: productId,
-                catalogGroupId: catalogGroupId,
-                price: 4900,
-                currency: 'EUR'
-            }
-        },
-        function(result) {
-            if (result.error()) {
-                console.error(result.error() + ': ' + result.error_description());
-                return;
-            }
+    const $b24 = B24Hook.fromWebhookUrl('https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/')
 
-            console.log('Price added: ' + result.data().price.id);
+    const productId = 1267
+    const catalogGroupId = 1
+
+    try {
+        const response = await $b24.actions.v2.call.make({
+            method: 'catalog.price.add',
+            params: {
+                fields: {
+                    productId: productId,
+                    catalogGroupId: catalogGroupId,
+                    price: 4900,
+                    currency: 'EUR'
+                }
+            },
+            requestId: 'price-add'
+        })
+
+        if (!response.isSuccess) {
+            throw new Error(response.getErrorMessages().join('; '))
         }
-    );
+
+        console.log('Price added: ' + response.getData().result.price.id)
+    } catch (error) {
+        console.error('Error:', error.message)
+    } finally {
+        $b24.destroy()
+    }
     ```
 
 - PHP
 
     ```php
     <?php
-    require_once('crest.php');
+    // composer require bitrix24/b24phpsdk:"^3.0"
+    require_once 'vendor/autoload.php';
+
+    use Bitrix24\SDK\Core\Exceptions\BaseException;
+    use Bitrix24\SDK\Services\ServiceBuilderFactory;
+    use Monolog\Handler\StreamHandler;
+    use Monolog\Logger;
+    use Symfony\Component\EventDispatcher\EventDispatcher;
+
+    $log = new Logger('b24');
+    $log->pushHandler(new StreamHandler('php://stdout'));
+
+    $b24 = (new ServiceBuilderFactory(new EventDispatcher(), $log))
+        ->initFromWebhook('https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/');
 
     $productId = 1267;
     $catalogGroupId = 1;
 
-    $result = CRest::call(
-        'catalog.price.add',
-        [
-            'fields' => [
-                'productId' => $productId,
-                'catalogGroupId' => $catalogGroupId,
-                'price' => 4900,
-                'currency' => 'EUR',
-            ],
-        ]
-    );
+    try
+    {
+        $price = $b24->core->call(
+            'catalog.price.add',
+            [
+                'fields' => [
+                    'productId' => $productId,
+                    'catalogGroupId' => $catalogGroupId,
+                    'price' => 4900,
+                    'currency' => 'EUR',
+                ],
+            ]
+        )->getResponseData()->getResult()['price'];
 
-    if (!empty($result['error']))
-    {
-        echo 'Error: '.$result['error_description'];
+        echo 'Price added: '.$price['id'];
     }
-    else
+    catch (BaseException $exception)
     {
-        echo 'Price added: '.$result['result']['price']['id'];
+        echo 'Error: '.$exception->getMessage();
     }
     ?>
+    ```
+
+- Python
+
+    ```python
+    # pip install b24pysdk
+    from b24pysdk import BitrixWebhook, Client
+    from b24pysdk.errors import BitrixAPIError
+
+    client = Client(
+        BitrixWebhook(
+            domain="your-domain.bitrix24.com",
+            webhook_token="user_id/webhook_key",
+        )
+    )
+
+    product_id = 1267
+    catalog_group_id = 1
+
+    try:
+        price = client.catalog.price.add(
+            fields={
+                "productId": product_id,
+                "catalogGroupId": catalog_group_id,
+                "price": 4900,
+                "currency": "EUR",
+            },
+        ).response.result["price"]
+    except BitrixAPIError as error:
+        print(f"Error: {error}")
+    else:
+        print(f"Price added: {price['id']}")
     ```
 
 {% endlist %}
@@ -626,7 +816,12 @@ If the price is added successfully, the method returns a `price` object.
             "productId": 1267,
             "catalogGroupId": 1,
             "price": 4900,
-            "currency": "EUR"
+            "priceScale": 4900,
+            "currency": "EUR",
+            "extraId": null,
+            "quantityFrom": null,
+            "quantityTo": null,
+            "timestampX": "2024-11-01T17:00:55+03:00"
         }
     }
 }
@@ -650,7 +845,12 @@ If the method returns an error, check the request data.
 - `A value with xmlId '...' already exists.` — a list value with this `xmlId` already exists. Use the existing value identifier or pass a new `xmlId`
 - `Property code cannot start with a digit` — the `code` value of the property starts with a digit
 - `Access Denied` — the user does not have permission to modify the catalog, properties, product, or price
-- `Validate price error. Catalog price group is wrong` — an invalid price type was passed in `catalogGroupId`
+- `Validate price error. Catalog price group is wrong` — an incorrect price type was passed in `catalogGroupId`
+
+The method may not return an error but may also fail to retain the property value.
+
+- `propertyN: "N"` in the response instead of a list value — a single-value list property has only one value, so Bitrix24 identified it as a "Yes/No" property. Add a second list value to the property using the [catalog.productPropertyEnum.add](../../api-reference/catalog/product-property-enum/catalog-product-property-enum-add.md) method
+- `propertyN: null` when updating a product — the [catalog.product.update](../../api-reference/catalog/product/catalog-product-update.md) method does not accept a list value identifier directly. Pass it in the `{value: 1739}` format
 
 ## Continue Learning
 

@@ -24,8 +24,8 @@ To retrieve a list of vendors, we will sequentially execute two methods:
 
 We will use the [crm.category.list](../../../api-reference/crm/universal/category/crm-category-list.md) method with the following parameters:
 
-- `entityTypeId` — the ID of the [CRM object type](../../../api-reference/crm/data-types.md#object_type). Use `3` for contacts. For companies, use `4`.
-- `filter[code]` — filter by category code. Use `CATALOG_CONTRACTOR_CONTACT` for contacts. For companies, use `CATALOG_CONTRACTOR_COMPANY`.
+- `entityTypeId` — the [CRM object type](../../../api-reference/crm/data-types.md#object_type) identifier. Specify `3` for contacts. For companies, use `4`.
+- `filter[code]` — a filter by category code. Specify `CATALOG_CONTRACTOR_CONTACT` for contacts. For companies, use `CATALOG_CONTRACTOR_COMPANY`.
 
 {% include [Examples Note](../../../_includes/examples.md) %}
 
@@ -34,26 +34,41 @@ We will use the [crm.category.list](../../../api-reference/crm/universal/categor
 - JS
   
     ```javascript
-    BX24.callMethod(
-        'crm.category.list',
-        {
+    import { B24Hook } from '@bitrix24/b24jssdk'
+
+    const $b24 = B24Hook.fromWebhookUrl(process.env.B24_HOOK)
+    // B24_HOOK = 'https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/'
+
+    const result = await $b24.actions.v2.call.make({
+        method: 'crm.category.list',
+        params: {
             entityTypeId: 3,
             filter: {
                 code: 'CATALOG_CONTRACTOR_CONTACT'
             }
-        },
-        function(result) {
-            console.log(result.data());
         }
-    );
+    });
+
+    console.log(result.getData().result);
     ```
 
 - PHP
   
     ```php
-    require_once('crest.php');
+    require_once 'vendor/autoload.php';
 
-    $result = CRest::call(
+    use Bitrix24\SDK\Services\ServiceBuilderFactory;
+    use Symfony\Component\EventDispatcher\EventDispatcher;
+    use Monolog\Logger;
+    use Monolog\Handler\StreamHandler;
+
+    $logger = new Logger('b24');
+    $logger->pushHandler(new StreamHandler('php://stdout'));
+
+    $serviceBuilder = (new ServiceBuilderFactory(new EventDispatcher(), $logger))
+        ->initFromWebhook('https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/');
+
+    $result = $serviceBuilder->core->call(
         'crm.category.list',
         [
             'entityTypeId' => 3,
@@ -65,23 +80,26 @@ We will use the [crm.category.list](../../../api-reference/crm/universal/categor
     ```
 
 - Python
-  
+
     ```python
     from b24pysdk import BitrixWebhook, Client
 
     client = Client(
         BitrixWebhook(
             domain="your-domain.bitrix24.com",
-            auth_token="your-webhook-token",
+            webhook_token="user_id/webhook_key",
         )
     )
 
     result = client.crm.category.list(
         entity_type_id=3,
-        filter={
-            "code": "CATALOG_CONTRACTOR_CONTACT",
-        },
     ).response.result
+    categories = [
+        category
+        for category in result.get("categories", [])
+        if category.get("code") == "CATALOG_CONTRACTOR_CONTACT"
+    ]
+    print(categories)
     ```
 
 {% endlist %}
@@ -94,7 +112,7 @@ As a result, we will obtain the category ID. In the example, `id`:`15`. The ID m
     "categories": [
       {
         "id": 15,
-        "name": "Vendor Contacts",
+        "name": "Lieferantenkontakte",
         "entityTypeId": 3,
         "isSystem": "Y",
         "code": "CATALOG_CONTRACTOR_CONTACT"
@@ -108,51 +126,46 @@ As a result, we will obtain the category ID. In the example, `id`:`15`. The ID m
 
 We will filter the items using the [crm.item.list](../../../api-reference/crm/universal/crm-item-list.md) method with the following parameters:
 
-- `entityTypeId` — the ID of the [CRM object type](../../../api-reference/crm/data-types.md#object_type). Use `3` for contacts. For companies, use `4`.
+- `entityTypeId` — the [CRM object type](../../../api-reference/crm/data-types.md#object_type) identifier. Specify `3` for contacts. For companies, use `4`.
 
-- `select` — a list of fields to output. All available fields can be retrieved using the [crm.item.fields](../../../api-reference/crm/universal/crm-item-fields.md) method.
+- `select` — a list of fields to return. All available fields can be retrieved using the [crm.item.fields](../../../api-reference/crm/universal/crm-item-fields.md) method.
 
-- `filter[categoryId]` - the ID of the system category from step 1. In this example, `15`.
+- `filter[categoryId]` — the system category identifier from step 1. In the example, `15`.
 
 {% list tabs %}
 
 - JS
   
     ```javascript
-    BX24.callMethod(
-        'crm.item.list',
-        {
+    const result = await $b24.actions.v2.call.make({
+        method: 'crm.item.list',
+        params: {
             entityTypeId: 3,
             select: ['id', 'name', 'lastName', 'categoryId'],
             filter: {
                 categoryId: 15
             }
-        },
-        function(result) {
-            console.log(result.data());
         }
-    );
+    });
+
+    console.log(result.getData().result);
     ```
 
 - PHP
   
     ```php
-    require_once('crest.php');
-
-    $result = CRest::call(
-        'crm.item.list',
+    $result = $serviceBuilder->getCRMScope()->item()->list(
+        3,
+        [],
         [
-            'entityTypeId' => 3,
-            'select' => ['id', 'name', 'lastName', 'categoryId'],
-            'filter' => [
-                'categoryId' => 15
-            ]
-        ]
+            'categoryId' => 15
+        ],
+        ['id', 'name', 'lastName', 'categoryId']
     );
     ```
 
 - Python
-  
+
     ```python
     result = client.crm.item.list(
         entity_type_id=3,
@@ -165,7 +178,7 @@ We will filter the items using the [crm.item.list](../../../api-reference/crm/un
 
 {% endlist %}
 
-As a result, we will obtain a list of contacts that are vendors.
+As a result, you will receive a list of contacts that are vendors.
 
 ```json
 {
@@ -173,14 +186,14 @@ As a result, we will obtain a list of contacts that are vendors.
     "items": [
       {
         "id": 2185,
-        "name": "He",
+        "name": "Er",
         "lastName": null,
         "categoryId": 15
       },
       {
         "id": 2443,
-        "name": "Ivan",
-        "lastName": "Ivanov",
+        "name": "Klaus",
+        "lastName": "Weber",
         "categoryId": 15
       }
     ]
@@ -189,7 +202,7 @@ As a result, we will obtain a list of contacts that are vendors.
 }
 ```
 
-The vendor IDs, in this example `id`: `2185` and `id`: `2443`, should be used in the inventory method [catalog.documentcontractor.add](../../../api-reference/catalog/documentcontractor/catalog-documentcontractor-add.md).
+Use the vendor identifiers from the example, `id`: `2185` and `id`: `2443`, in the inventory management method [catalog.documentcontractor.add](../../../api-reference/catalog/documentcontractor/catalog-documentcontractor-add.md).
 
 ## Code Example
 
@@ -198,98 +211,102 @@ The vendor IDs, in this example `id`: `2185` and `id`: `2443`, should be used in
 - JS
   
     ```javascript
-    var entityTypeId = 3; // 3 - contact; for company use 4
-    var categoryCode = 'CATALOG_CONTRACTOR_CONTACT'; // for company use CATALOG_CONTRACTOR_COMPANY
+    import { B24Hook } from '@bitrix24/b24jssdk'
 
-    BX24.callMethod(
-        'crm.category.list',
-        {
+    const $b24 = B24Hook.fromWebhookUrl(process.env.B24_HOOK)
+    // B24_HOOK = 'https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/'
+
+    var entityTypeId = 3; // 3 - Kontakt; für das Unternehmen geben Sie 4 an
+    var categoryCode = 'CATALOG_CONTRACTOR_CONTACT'; // für das Unternehmen geben Sie CATALOG_CONTRACTOR_COMPANY an
+
+    const resultCategory = await $b24.actions.v2.call.make({
+        method: 'crm.category.list',
+        params: {
             entityTypeId: entityTypeId,
             filter: { code: categoryCode }
-        },
-        function(resultCategory) {
-            if (resultCategory.error()) {
-                console.error(resultCategory.error() + ': ' + resultCategory.error_description());
-                return;
-            }
+        }
+    });
 
-            var categories = resultCategory.data().categories || [];
-            if (!categories.length) {
-                console.error('Vendor category not found');
-                return;
-            }
-
+    if (!resultCategory.isSuccess) {
+        console.error(resultCategory.getErrorMessages().join('; '));
+    } else {
+        var categories = resultCategory.getData().result.categories || [];
+        if (!categories.length) {
+            console.error('Lieferantenkategorie nicht gefunden');
+        } else {
             var categoryId = categories[0].id;
 
-            BX24.callMethod(
-                'crm.item.list',
-                {
+            const resultItems = await $b24.actions.v2.call.make({
+                method: 'crm.item.list',
+                params: {
                     entityTypeId: entityTypeId,
                     select: ['id', 'name', 'lastName', 'categoryId'],
                     filter: { categoryId: categoryId },
                     order: { ID: 'DESC' }
-                },
-                function(resultItems) {
-                    if (resultItems.error()) {
-                        console.error(resultItems.error() + ': ' + resultItems.error_description());
-                    } else {
-                        console.log(resultItems.data());
-                    }
                 }
-            );
+            });
+
+            if (!resultItems.isSuccess) {
+                console.error(resultItems.getErrorMessages().join('; '));
+            } else {
+                console.log(resultItems.getData().result);
+            }
         }
-    );
+    }
     ```
 
 - PHP
   
     ```php
-    require_once('crest.php');
+    require_once 'vendor/autoload.php';
 
-    $entityTypeId = 3; // 3 - contact; for company use 4
-    $categoryCode = 'CATALOG_CONTRACTOR_CONTACT'; // for company use CATALOG_CONTRACTOR_COMPANY
+    use Bitrix24\SDK\Services\ServiceBuilderFactory;
+    use Symfony\Component\EventDispatcher\EventDispatcher;
+    use Monolog\Logger;
+    use Monolog\Handler\StreamHandler;
 
-    $resultCategory = CRest::call(
-        'crm.category.list',
-        [
-            'entityTypeId' => $entityTypeId,
-            'filter' => [
-                'code' => $categoryCode
+    $logger = new Logger('b24');
+    $logger->pushHandler(new StreamHandler('php://stdout'));
+
+    $serviceBuilder = (new ServiceBuilderFactory(new EventDispatcher(), $logger))
+        ->initFromWebhook('https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/');
+
+    $entityTypeId = 3; // 3 - Kontakt; für das Unternehmen geben Sie 4 an
+    $categoryCode = 'CATALOG_CONTRACTOR_CONTACT'; // für das Unternehmen geben Sie CATALOG_CONTRACTOR_COMPANY an
+
+    try {
+        $resultCategory = $serviceBuilder->core->call(
+            'crm.category.list',
+            [
+                'entityTypeId' => $entityTypeId,
+                'filter' => [
+                    'code' => $categoryCode
+                ]
             ]
-        ]
-    );
+        );
 
-    if (!empty($resultCategory['error_description'])) {
-        echo $resultCategory['error_description'];
-        return;
-    }
+        $categories = $resultCategory->getResponseData()->getResult()['categories'] ?? [];
+        if (empty($categories)) {
+            echo 'Lieferantenkategorie nicht gefunden';
+            return;
+        }
 
-    $categories = $resultCategory['result']['categories'] ?? [];
-    if (empty($categories)) {
-        echo 'Vendor category not found';
-        return;
-    }
+        $categoryId = $categories[0]['id'];
 
-    $categoryId = $categories[0]['id'];
-
-    $resultItems = CRest::call(
-        'crm.item.list',
-        [
-            'entityTypeId' => $entityTypeId,
-            'select' => ['id', 'name', 'lastName', 'categoryId'],
-            'filter' => [
+        $resultItems = $serviceBuilder->getCRMScope()->item()->list(
+            $entityTypeId,
+            [
+                'ID' => 'DESC'
+            ],
+            [
                 'categoryId' => $categoryId
             ],
-            'order' => [
-                'ID' => 'DESC'
-            ]
-        ]
-    );
+            ['id', 'name', 'lastName', 'categoryId']
+        );
 
-    if (!empty($resultItems['error_description'])) {
-        echo $resultItems['error_description'];
-    } else {
-        print_r($resultItems['result']);
+        print_r($resultItems->getItems());
+    } catch (\Throwable $e) {
+        echo $e->getMessage();
     }
     ```
 
@@ -302,7 +319,7 @@ The vendor IDs, in this example `id`: `2185` and `id`: `2443`, should be used in
     client = Client(
         BitrixWebhook(
             domain="your-domain.bitrix24.com",
-            auth_token="your-webhook-token",
+            webhook_token="user_id/webhook_key",
         )
     )
 
@@ -315,15 +332,19 @@ The vendor IDs, in this example `id`: `2185` and `id`: `2443`, should be used in
     )
 
     try:
-        categories = client.crm.category.list(
+        categories_response = client.crm.category.list(
             entity_type_id=entity_type_id,
-            filter={"code": category_code},
         ).response.result.get("categories", [])
+        categories = [
+            category
+            for category in categories_response
+            if category.get("code") == category_code
+        ]
     except BitrixAPIError as error:
         print(error)
     else:
         if not categories:
-            print("Vendor category not found")
+            print("Lieferantenkategorie nicht gefunden")
         else:
             try:
                 items_result = client.crm.item.list(

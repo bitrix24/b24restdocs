@@ -10,9 +10,9 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-Activities related to CRM entities are stored in the timeline of the entity's detail form. Transferring activities may be necessary between different types of entities: [lead](../../../api-reference/crm/leads/index.md), [deal](../../../api-reference/crm/deals/index.md), [contact](../../../api-reference/crm/contacts/index.md), [company](../../../api-reference/crm/companies/index.md), [invoice](../../../api-reference/crm/universal/invoice.md), [SPA](../../../api-reference/crm/universal/index.md). For example, a client has two email addresses, but only one is saved in the company detail form in your Bitrix24. When the client sends an email from the second, unknown address, the email will create a new lead instead of attaching the email to the existing company. To keep client information in one place, you can transfer the activity from the lead to the company detail form.
+Activities associated with CRM items are stored in the item card timeline. Moving activities may be required between items of different types: [lead](../../../api-reference/crm/leads/index.md), [deal](../../../api-reference/crm/deals/index.md), [contact](../../../api-reference/crm/contacts/index.md), [company](../../../api-reference/crm/companies/index.md), [invoice](../../../api-reference/crm/universal/invoice.md), [SPA](../../../api-reference/crm/universal/index.md). For example, a customer has two e-mail addresses, but only one is saved in the company card of your Bitrix24. When the customer writes an e-mail from the second, unknown address, Webmail will create a new lead instead of attaching the e-mail to the existing company card. To store customer information in one place, you can move an activity from a lead to a company card.
 
-To transfer the activity, we will sequentially execute four methods:
+To move an activity, we will sequentially execute four methods:
 
 1. [crm.activity.list](../../../api-reference/crm/timeline/activities/activity-base/crm-activity-list.md) — retrieve the activity ID
 
@@ -26,42 +26,58 @@ To transfer the activity, we will sequentially execute four methods:
 
 We will use the method [crm.activity.list](../../../api-reference/crm/timeline/activities/activity-base/crm-activity-list.md) with the following filter:
 
-- `OWNER_TYPE_ID` — [object type](../../../api-reference/crm/data-types.md#object_type), specify `1` for lead
+- `OWNER_TYPE_ID` — [object type](../../../api-reference/crm/data-types.md#object_type), specify `1` for the lead
 
-- `OWNER_ID` — ID of the entity from which we will transfer the activity
+- `OWNER_ID` — the ID of the item from which the activity will be moved
 
-{% include [Examples Note](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
 - JS
 
     ```JavaScript
-    BX24.callMethod(
-        "crm.activity.list",
-        {
+    import { B24Hook } from '@bitrix24/b24jssdk'
+
+    const $b24 = B24Hook.fromWebhookUrl(process.env.B24_HOOK)
+    // B24_HOOK = 'https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/'
+
+    const result = await $b24.actions.v2.call.make({
+        method: "crm.activity.list",
+        params: {
             filter:
             {
-                "OWNER_TYPE_ID": 1, 
-                "OWNER_ID": 1000977 
+                "OWNER_TYPE_ID": 1,
+                "OWNER_ID": 1000977
             },
-        },
-    );
+        }
+    });
     ```
 
 - PHP
 
     ```php
-    require_once('crest.php');
+    require_once 'vendor/autoload.php';
 
-    $result = CRest::call(
-        'crm.activity.list',
+    use Bitrix24\SDK\Services\ServiceBuilderFactory;
+    use Symfony\Component\EventDispatcher\EventDispatcher;
+    use Monolog\Logger;
+    use Monolog\Handler\StreamHandler;
+
+    $logger = new Logger('b24');
+    $logger->pushHandler(new StreamHandler('php://stdout'));
+
+    $serviceBuilder = (new ServiceBuilderFactory(new EventDispatcher(), $logger))
+        ->initFromWebhook('https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/');
+
+    $result = $serviceBuilder->getCRMScope()->activity()->list(
+        [],
         [
-            'filter' => [
-                'OWNER_TYPE_ID' => 1, 
-                'OWNER_ID' => 1000977 
-            ]
-        ]
+            'OWNER_TYPE_ID' => 1,
+            'OWNER_ID' => 1000977,
+        ],
+        [],
+        0
     );
     ```
 
@@ -73,7 +89,7 @@ We will use the method [crm.activity.list](../../../api-reference/crm/timeline/a
     client = Client(
         BitrixWebhook(
             domain="your-domain.bitrix24.com",
-            auth_token="your-webhook-token",
+            webhook_token="user_id/webhook_key",
         )
     )
 
@@ -87,7 +103,7 @@ We will use the method [crm.activity.list](../../../api-reference/crm/timeline/a
 
 {% endlist %}
 
-As a result, we will receive all activities associated with the specified entity.
+As a result, you will retrieve all activities associated with the specified item.
 
 ```JSON
 {
@@ -102,11 +118,11 @@ As a result, we will receive all activities associated with the specified entity
             "PROVIDER_GROUP_ID": null,
             "ASSOCIATED_ENTITY_ID": "0",
             "SUBJECT": "for leads",
-            "CREATED": "2025-03-10T10:57:41+01:00",
-            "LAST_UPDATED": "2025-03-10T10:57:41+01:00",
-            "START_TIME": "2025-03-10T10:57:34+01:00",
-            "END_TIME": "2025-03-10T20:00:00+01:00",
-            "DEADLINE": "9999-12-31T00:00:00+01:00",
+            "CREATED": "2025-03-10T10:57:41+03:00",
+            "LAST_UPDATED": "2025-03-10T10:57:41+03:00",
+            "START_TIME": "2025-03-10T10:57:34+03:00",
+            "END_TIME": "2025-03-10T20:00:00+03:00",
+            "DEADLINE": "9999-12-31T00:00:00+03:00",
             "COMPLETED": "N",
             "STATUS": "1",
             "RESPONSIBLE_ID": "29",
@@ -152,7 +168,7 @@ As a result, we will receive all activities associated with the specified entity
 
 We will use the method [crm.company.list](../../../api-reference/crm/companies/crm-company-list.md) with the following filter:
 
-- `TITLE` — name of the company
+- `TITLE` — the company name
 
 To limit the returned fields, we will add the `select` parameter and specify only the `ID` and `TITLE` fields.
 
@@ -161,30 +177,27 @@ To limit the returned fields, we will add the `select` parameter and specify onl
 - JS
 
     ```JavaScript
-    BX24.callMethod(
-        "crm.company.list",
-        {
+    const result = await $b24.actions.v2.call.make({
+        method: "crm.company.list",
+        params: {
             filter: { "TITLE": "Company_Name" },
             select: [ "ID", "TITLE" ]
-        },
-    );
+        }
+    });
     ```
 
 - PHP
 
     ```php
-    require_once('crest.php');
-
-    $result = CRest::call(
-        'crm.company.list',
+    $result = $serviceBuilder->getCRMScope()->company()->list(
+        [],
         [
-            'filter' => [
-                'TITLE' => 'Company_Name' 
-            ],
-            'select' => [
-                'ID', 'TITLE'
-            ]
-        ]
+            'TITLE' => 'Company_Name'
+        ],
+        [
+            'ID', 'TITLE'
+        ],
+        0
     );
     ```
 
@@ -201,7 +214,7 @@ To limit the returned fields, we will add the `select` parameter and specify onl
 
 {% endlist %}
 
-As a result, we will receive the company ID — `ID`: `173`.
+As a result, you will retrieve the company ID — `ID`: `173`.
 
 ```JSON
 {
@@ -219,38 +232,36 @@ As a result, we will receive the company ID — `ID`: `173`.
 
 To bind the activity and the company, we will use the method [crm.activity.binding.add](../../../api-reference/crm/timeline/activities/binding/crm-activity-binding-add.md) with the following parameters:
 
-- `activityId` — ID of the activity, obtained in [step 1](#first) using the method [crm.activity.list](../../../api-reference/crm/timeline/activities/activity-base/crm-activity-list.md)
+- `activityId` — the activity ID retrieved in [step 1](#first) using the [crm.activity.list](../../../api-reference/crm/timeline/activities/activity-base/crm-activity-list.md) method
 
-- `entityTypeId` — ID of the [object type](../../../api-reference/crm/data-types.md#object_type), specify `4` for company
+- `entityTypeId` — the [object type](../../../api-reference/crm/data-types.md#object_type) ID, specify `4` for the company
 
-- `entityId` — ID of the company, obtained in [step 2](#second) using the method [crm.company.list](../../../api-reference/crm/companies/crm-company-list.md)
+- `entityId` — the company ID retrieved in [step 2](#second) using the [crm.company.list](../../../api-reference/crm/companies/crm-company-list.md) method
 
 {% list tabs %}
 
 - JS
 
     ```JavaScript
-    BX24.callMethod(
-        'crm.activity.binding.add',
-        {
-            activityId: 7685, 
-            entityTypeId: 4, 
-            entityId: 173 
-        },
-    );
+    const result = await $b24.actions.v2.call.make({
+        method: 'crm.activity.binding.add',
+        params: {
+            activityId: 7685,
+            entityTypeId: 4,
+            entityId: 173
+        }
+    });
     ```
 
 - PHP
 
     ```php
-    require_once('crest.php');
-
-    $result = CRest::call(
+    $result = $serviceBuilder->core->call(
         'crm.activity.binding.add',
         [
-            'activityId' => 7685, 
-            'entityTypeId' => 4, 
-            'entityId' => 173 
+            'activityId' => 7685,
+            'entityTypeId' => 4,
+            'entityId' => 173
         ]
     );
     ```
@@ -279,38 +290,36 @@ As a result, we will receive `true`, indicating that the binding for the activit
 
 We will use the method [crm.activity.binding.delete](../../../api-reference/crm/timeline/activities/binding/crm-activity-binding-delete.md) with the following parameters:
 
-- `activityId` — ID of the activity, obtained in [step 1](#first) using the method [crm.activity.list](../../../api-reference/crm/timeline/activities/activity-base/crm-activity-list.md)
+- `activityId` — The activity ID obtained in [Step 1](#first) using the [crm.activity.list](../../../api-reference/crm/timeline/activities/activity-base/crm-activity-list.md) method
 
-- `entityTypeId` — ID of the [object type](../../../api-reference/crm/data-types.md#object_type), specify `1` for lead
+- `entityTypeId` — The [object type](../../../api-reference/crm/data-types.md#object_type) ID; specify `1` for a lead
 
-- `entityId` — ID of the lead from which we are removing the activity
+- `entityId` — The lead ID from which the activity is being removed
 
 {% list tabs %}
 
 - JS
 
     ```JavaScript
-    BX24.callMethod(
-        'crm.activity.binding.delete',
-        {
-            activityId: 7685, 
-            entityTypeId: 1, 
-            entityId: 1000977 
-        },
-    );
+    const result = await $b24.actions.v2.call.make({
+        method: 'crm.activity.binding.delete',
+        params: {
+            activityId: 7685,
+            entityTypeId: 1,
+            entityId: 1000977
+        }
+    });
     ```
 
 - PHP
 
     ```php
-    require_once('crest.php');
-
-    $result = CRest::call(
+    $result = $serviceBuilder->core->call(
         'crm.activity.binding.delete',
         [
-            'activityId' => 7685, 
-            'entityTypeId' => 1, 
-            'entityId' => 1000977 
+            'activityId' => 7685,
+            'entityTypeId' => 1,
+            'entityId' => 1000977
         ]
     );
     ```
@@ -342,195 +351,170 @@ As a result, we will receive `true`, indicating that the binding of the activity
 - JS
 
     ```JavaScript
-    // Function to execute all steps
-    function transferActivityToCompany() {
-        // Prompt user for lead ID
-        const leadId = prompt("Enter the lead ID:");
+    import { B24Hook } from '@bitrix24/b24jssdk'
+    import { createInterface } from 'node:readline/promises'
 
-        // Prompt user for company name
-        const companyName = prompt("Enter the company name:");
+    const $b24 = B24Hook.fromWebhookUrl(process.env.B24_HOOK)
+    // B24_HOOK = 'https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/'
 
-        // Step 1: Retrieve the list of activities for the specified lead
-        BX24.callMethod(
-            "crm.activity.list",
-            {
-                filter: {
-                    "OWNER_TYPE_ID": 1,
-                    "OWNER_ID": leadId
-                },
-            },
-            function(result) {
-                if (result.error()) {
-                    console.error(result.error());
-                    return;
-                }
-
-                const activities = result.data();
-                if (activities.length === 0) {
-                    console.log("No activities found for the specified lead.");
-                    return;
-                }
-
-                const activityId = activities[0].ID;
-
-                // Step 2: Search for the company by name
-                BX24.callMethod(
-                    "crm.company.list",
-                    {
-                        filter: { "TITLE": companyName },
-                        select: [ "ID", "TITLE" ]
-                    },
-                    function(result) {
-                        if (result.error()) {
-                            console.error(result.error());
-                            return;
-                        }
-
-                        const companies = result.data();
-                        if (companies.length === 0) {
-                            console.log("No company found with the specified name.");
-                            return;
-                        }
-
-                        const companyId = companies[0].ID;
-
-                        // Step 3: Create a binding for the found activity and company
-                        BX24.callMethod(
-                            'crm.activity.binding.add',
-                            {
-                                activityId: activityId,
-                                entityTypeId: 4,
-                                entityId: companyId
-                            },
-                            function(result) {
-                                if (result.error()) {
-                                    console.error(result.error());
-                                    return;
-                                }
-
-                                console.log("Activity successfully bound to the company.");
-
-                                // Step 4: Remove the binding of the activity from the lead
-                                BX24.callMethod(
-                                    'crm.activity.binding.delete',
-                                    {
-                                        activityId: activityId,
-                                        entityTypeId: 1,
-                                        entityId: leadId
-                                    },
-                                    function(result) {
-                                        if (result.error()) {
-                                            console.error(result.error());
-                                        } else {
-                                            console.log("Activity successfully unbound from the lead.");
-                                        }
-                                    }
-                                );
-                            }
-                        );
-                    }
-                );
-            }
-        );
+    async function call(method, params) {
+        const result = await $b24.actions.v2.call.make({ method, params });
+        if (!result.isSuccess) {
+            throw new Error(result.getErrorMessages().join('; '));
+        }
+        return result.getData().result;
     }
 
-    // Execute the function
-    transferActivityToCompany();
+    // Function to perform all steps
+    async function transferActivityToCompany(leadId, companyName) {
+        // Step 1: Get the task list for the specified lead
+        const activities = await call("crm.activity.list", {
+            filter: {
+                "OWNER_TYPE_ID": 1,
+                "OWNER_ID": leadId
+            }
+        });
+        if (activities.length === 0) {
+            console.log("Tasks for the specified lead were not found.");
+            return;
+        }
+
+        const activityId = activities[0].ID;
+
+        // Step 2: Search for the company by name
+        const companies = await call("crm.company.list", {
+            filter: { "TITLE": companyName },
+            select: [ "ID", "TITLE" ]
+        });
+        if (companies.length === 0) {
+            console.log("Company with the specified name was not found.");
+            return;
+        }
+
+        const companyId = companies[0].ID;
+
+        // Step 3: Create a link between the found task and the company
+        await call('crm.activity.binding.add', {
+            activityId: activityId,
+            entityTypeId: 4,
+            entityId: companyId
+        });
+
+        console.log("Task-company link created successfully.");
+
+        // Step 4: Delete the link between the task and the lead
+        await call('crm.activity.binding.delete', {
+            activityId: activityId,
+            entityTypeId: 1,
+            entityId: leadId
+        });
+
+        console.log("Task-lead link deleted successfully.");
+    }
+
+    // Request lead ID and company name from the user
+    const rl = createInterface({ input: process.stdin, output: process.stdout });
+    const leadId = await rl.question("Enter lead ID: ");
+    const companyName = await rl.question("Enter company name: ");
+    rl.close();
+
+    // Running function
+    try {
+        await transferActivityToCompany(leadId, companyName);
+    } catch (error) {
+        console.error(error.message);
+    }
     ```
 
 - PHP
 
     ```php
-    require_once('crest.php');
+    <?php
+    require_once 'vendor/autoload.php';
 
-    // Function to execute all steps
-    function transferActivityToCompany($leadId, $companyName) {
-        // Step 1: Retrieve the list of activities for the specified lead
-        $activityResult = CRest::call(
-            'crm.activity.list',
-            [
-                'filter' => [
+    use Bitrix24\SDK\Services\ServiceBuilderFactory;
+    use Symfony\Component\EventDispatcher\EventDispatcher;
+    use Monolog\Logger;
+    use Monolog\Handler\StreamHandler;
+
+    $logger = new Logger('b24');
+    $logger->pushHandler(new StreamHandler('php://stdout'));
+
+    $serviceBuilder = (new ServiceBuilderFactory(new EventDispatcher(), $logger))
+        ->initFromWebhook('https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/');
+
+    // Function to perform all steps
+    function transferActivityToCompany($serviceBuilder, $leadId, $companyName) {
+        $crm = $serviceBuilder->getCRMScope();
+
+        try {
+            // Step 1: Get the task list for the specified lead
+            $activities = $crm->activity()->list(
+                [],
+                [
                     'OWNER_TYPE_ID' => 1,
                     'OWNER_ID' => $leadId
+                ],
+                [],
+                0
+            )->getActivities();
+
+            if (empty($activities)) {
+                echo "Tasks for the specified lead were not found.";
+                return;
+            }
+
+            $activityId = $activities[0]->ID;
+
+            // Step 2: Search for the company by name
+            $companies = $crm->company()->list(
+                [],
+                ['TITLE' => $companyName],
+                ['ID', 'TITLE'],
+                0
+            )->getCompanies();
+
+            if (empty($companies)) {
+                echo "Company with the specified name was not found.";
+                return;
+            }
+
+            $companyId = $companies[0]->ID;
+
+            // Step 3: Create a link between the found task and the company
+            $serviceBuilder->core->call(
+                'crm.activity.binding.add',
+                [
+                    'activityId' => $activityId,
+                    'entityTypeId' => 4,
+                    'entityId' => $companyId
                 ]
-            ]
-        );
+            );
 
-        if (isset($activityResult['error'])) {
-            echo 'Error: ' . $activityResult['error_description'];
-            return;
-        }
+            echo "Task-company link created successfully.";
 
-        $activities = $activityResult['result'];
-        if (empty($activities)) {
-            echo "No activities found for the specified lead.";
-            return;
-        }
+            // Step 4: Delete the link between the task and the lead
+            $serviceBuilder->core->call(
+                'crm.activity.binding.delete',
+                [
+                    'activityId' => $activityId,
+                    'entityTypeId' => 1,
+                    'entityId' => $leadId
+                ]
+            );
 
-        $activityId = $activities[0]['ID'];
-
-        // Step 2: Search for the company by name
-        $companyResult = CRest::call(
-            'crm.company.list',
-            [
-                'filter' => ['TITLE' => $companyName],
-                'select' => ['ID', 'TITLE']
-            ]
-        );
-
-        if (isset($companyResult['error'])) {
-            echo 'Error: ' . $companyResult['error_description'];
-            return;
-        }
-
-        $companies = $companyResult['result'];
-        if (empty($companies)) {
-            echo "No company found with the specified name.";
-            return;
-        }
-
-        $companyId = $companies[0]['ID'];
-
-        // Step 3: Create a binding for the found activity and company
-        $bindingAddResult = CRest::call(
-            'crm.activity.binding.add',
-            [
-                'activityId' => $activityId,
-                'entityTypeId' => 4,
-                'entityId' => $companyId
-            ]
-        );
-
-        if (isset($bindingAddResult['error'])) {
-            echo 'Error: ' . $bindingAddResult['error_description'];
-            return;
-        }
-
-        echo "Activity successfully bound to the company.";
-
-        // Step 4: Remove the binding of the activity from the lead
-        $bindingDeleteResult = CRest::call(
-            'crm.activity.binding.delete',
-            [
-                'activityId' => $activityId,
-                'entityTypeId' => 1,
-                'entityId' => $leadId
-            ]
-        );
-
-        if (isset($bindingDeleteResult['error'])) {
-            echo 'Error: ' . $bindingDeleteResult['error_description'];
-        } else {
-            echo "Activity successfully unbound from the lead.";
+            echo "Task-lead link deleted successfully.";
+        } catch (\Throwable $e) {
+            echo 'Error: ' . $e->getMessage();
         }
     }
 
-    // Prompt user for lead ID and company name
-    $leadId = readline("Enter the lead ID: ");
-    $companyName = readline("Enter the company name: ");
+    // Request lead ID and company name from the user
+    $leadId = readline("Enter lead ID: ");
+    $companyName = readline("Enter company name: ");
 
-    // Execute the function
-    transferActivityToCompany($leadId, $companyName);
+    // Running function
+    transferActivityToCompany($serviceBuilder, $leadId, $companyName);
     ``` 
 
 - Python
@@ -538,7 +522,6 @@ As a result, we will receive `true`, indicating that the binding of the activity
     ```python
     from b24pysdk import BitrixWebhook, Client
     from b24pysdk.errors import BitrixAPIError
-
 
     def transfer_activity_to_company(client, lead_id, company_name):
         try:
@@ -553,7 +536,7 @@ As a result, we will receive `true`, indicating that the binding of the activity
             return
 
         if not activity_result:
-            print("No activities found for the specified lead.")
+            print("Tasks for the specified lead were not found.")
             return
 
         activity_id = activity_result[0]["ID"]
@@ -568,7 +551,7 @@ As a result, we will receive `true`, indicating that the binding of the activity
             return
 
         if not company_result:
-            print("No company found with the specified name.")
+            print("Company with the specified name was not found.")
             return
 
         company_id = company_result[0]["ID"]
@@ -586,7 +569,7 @@ As a result, we will receive `true`, indicating that the binding of the activity
         if not add_result:
             return
 
-        print("Activity successfully bound to the company.")
+        print("Task-company link created successfully.")
 
         try:
             delete_result = client.crm.activity.binding.delete(
@@ -598,18 +581,17 @@ As a result, we will receive `true`, indicating that the binding of the activity
             print(f"Error: {error}")
         else:
             if delete_result:
-                print("Activity successfully unbound from the lead.")
-
+                print("Task-lead link deleted successfully.")
 
     client = Client(
         BitrixWebhook(
             domain="your-domain.bitrix24.com",
-            auth_token="your-webhook-token",
+            webhook_token="user_id/webhook_key",
         )
     )
 
-    lead_id = int(input("Enter the lead ID: "))
-    company_name = input("Enter the company name: ")
+    lead_id = int(input("Enter lead ID: "))
+    company_name = input("Enter company name: ")
 
     transfer_activity_to_company(client, lead_id, company_name)
     ```

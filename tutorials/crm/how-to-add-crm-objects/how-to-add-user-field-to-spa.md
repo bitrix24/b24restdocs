@@ -10,78 +10,88 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-Custom fields enhance the functionality of the CRM to meet your business needs:
+Custom fields extend CRM functionality to meet your business requirements:
 
 - You can create fields to store information in various formats: string, money, number, address, file, and others.
 
-- You can configure field characteristics: names for different languages, multiple field flag, rounding settings for numeric fields, and more.
+- You can configure field properties: names for different languages, a multiple field flag, rounding settings for numeric fields, and others.
 
-To create a custom field in a smart process, we will sequentially execute two methods:
+To create a custom field in an SPA, we will sequentially call two methods:
 
-1. [crm.type.list](../../../api-reference/crm/universal/user-defined-object-types/crm-type-list.md) — retrieve the ID of the smart process.
+1. [crm.type.list](../../../api-reference/crm/universal/user-defined-object-types/crm-type-list.md) — retrieve the SPA ID.
 
-2. [userfieldconfig.add](../../../api-reference/crm/universal/userfieldconfig/userfieldconfig-add.md) — create a custom field in the smart process.
+2. [userfieldconfig.add](../../../api-reference/crm/universal/userfieldconfig/userfieldconfig-add.md) — create a custom field in the SPA.
 
 ## 1. Retrieve the Smart Process ID {#spa-id}
 
-To obtain the ID of the smart process, we use the [crm.type.list](../../../api-reference/crm/universal/user-defined-object-types/crm-type-list.md) method with a filter:
+To retrieve the SPA ID, use the [crm.type.list](../../../api-reference/crm/universal/user-defined-object-types/crm-type-list.md) method with a filter:
 
-- `title` — specify the name of the smart process.
+- `title` — specify the SPA name.
 
-{% include [Example Notes](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
 - JS
   
     ```JavaScript
-    BX24.callMethod(
-        'crm.type.list',
-        {
+    import { B24Hook } from '@bitrix24/b24jssdk'
+
+    const $b24 = B24Hook.fromWebhookUrl(process.env.B24_HOOK)
+    // B24_HOOK = 'https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/'
+
+    const result = await $b24.actions.v2.call.make({
+        method: 'crm.type.list',
+        params: {
             filter: { // array of fields for filtering
-                "title": "Equipment Purchase" // name of the smart process
+                "title": "Equipment procurement" // smart process name
             }
-        }
-    );
+        },
+        requestId: 'type-list'
+    });
     ```
 
 - PHP
   
     ```php
-    require_once('crest.php');
+    // composer require bitrix24/b24phpsdk:"^3.0"
+    require_once 'vendor/autoload.php';
 
-    $result = CRest::call(
-        'crm.type.list',
-        [
-            'filter' => [
-                'title' => 'Equipment Purchase' // name of the smart process
-            ]
-        ]
+    use Bitrix24\SDK\Services\ServiceBuilderFactory;
+    use Symfony\Component\EventDispatcher\EventDispatcher;
+    use Psr\Log\NullLogger;
+
+    $sb = (new ServiceBuilderFactory(new EventDispatcher(), new NullLogger()))
+        ->initFromWebhook('https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/');
+
+    $result = $sb->getCRMScope()->type()->list(
+        order: [],
+        filter: ['title' => 'Equipment procurement'] // smart process name
     );
     ```
 
 - Python
-  
+
     ```python
     from b24pysdk import BitrixWebhook, Client
 
     client = Client(
         BitrixWebhook(
             domain="your-domain.bitrix24.com",
-            auth_token="your-webhook-token",
+            webhook_token="user_id/webhook_key",
         )
     )
 
     result = client.crm.type.list(
         filter={
-            "title": "Equipment Purchase",
+            "title": "Equipment procurement",
         }
     ).response.result
     ```
 
 {% endlist %}
 
-As a result, we will receive the ID — this is the ordinal number of the smart process in Bitrix24. In the example, `id`: `7`.
+As a result, you will receive an `id` — this is the sequential number of the SPA in Bitrix24. In the example `id`: `7`.
 
 ```json
 {
@@ -89,7 +99,7 @@ As a result, we will receive the ID — this is the ordinal number of the smart 
         "types": [
             {
                 "id": 7,
-                "title": "Equipment Purchase",
+                "title": "Equipment procurement",
                 "code": "",
                 "createdBy": 1,
                 "entityTypeId": 177,
@@ -119,37 +129,38 @@ As a result, we will receive the ID — this is the ordinal number of the smart 
 }
 ```
 
-## 2. Create a Custom Field in the Smart Process
+## 2. Create a Custom Field in an SPA
 
-To create a custom field, we use the [userfieldconfig.add](../../../api-reference/crm/universal/userfieldconfig/userfieldconfig-add.md) method with the following parameters:
+To create a custom field, use the [userfieldconfig.add](../../../api-reference/crm/universal/userfieldconfig/userfieldconfig-add.md) method with the following parameters:
 
-- `moduleId` — the identifier of the module in which the method will create the field, a required parameter. The module for smart processes is `crm`.
+- `moduleId` — the module identifier where the method will create the field, a required parameter. The SPA module is `crm`.
 
-- `field[entityId]` — the identifier of the object in the format `CRM_ + {ID}`, where ID is the ordinal number of the smart process in Bitrix24 from the result of [crm.type.list](./how-to-add-user-field-to-spa.md#spa-id), a required parameter. In the example, we will specify `CRM_7`.
+- `field[entityId]` — the object identifier following the formula `CRM_ + {ID}`, where `ID` is the sequential number of the SPA in Bitrix24 from the [crm.type.list](./how-to-add-user-field-to-spa.md#spa-id) result, a required parameter. In the example, we will specify `CRM_7`.
 
-- `field[fieldName]` — the field code in the format `UF_ + {object identifier} + _ + {arbitrary string in UPPERCASE}`. The length limit for the code is 50 characters, a required parameter. In the example, we will specify `UF_CRM_7_NEW_REST_LIST`.
+- `field[fieldName]` — the field code according to the formula `UF_ + {object_id} + _ + {arbitrary string in UPPERCASE}`. The code length limit is 50 characters, a required parameter. In the example, we will specify `UF_CRM_7_NEW_REST_LIST`.
 
-- `field[userTypeId]` — the identifier of the [field type](../../../api-reference/crm/universal/user-defined-fields/crm-userfield-types.md), a required parameter. In the example, we will specify `enumeration` to create a list-type field, and we will pass the list values in a separate `enum` array.
+- `field[userTypeId]` — the [field type](../../../api-reference/crm/universal/user-defined-fields/crm-userfield-types.md) identifier, a required parameter. In the example, we will specify `enumeration` to create a list type field; the value options for the list field will be passed in a separate `enum` array.
 
-- `field[multiple]` — the multiple field flag, an optional parameter. The multiplicity flag cannot be changed after the field is created.
+- `field[multiple]` — a multiple field flag, an optional parameter. The multiplicity flag cannot be changed after the field is created.
 
-- `field[editFormLabel]` — an array of names for displaying the field in Bitrix24 in different languages. An optional parameter; if no name is provided, the field code will be displayed in Bitrix24.
+- `field[editFormLabel]` — an array of names for displaying the field in Bitrix24 in different languages. An optional parameter; if no name is provided, Bitrix24 will display the field code.
 
 {% list tabs %}
 
 - JS
   
     ```javascript
-    BX24.callMethod(
-        'userfieldconfig.add',
-        {
-            moduleId: 'crm', // Module identifier
+    const result = await $b24.actions.v2.call.make({
+        method: 'userfieldconfig.add',
+        params: {
+            moduleId: 'crm', // Module ID
             field: {
-                entityId: 'CRM_7', // Object identifier
+                entityId: 'CRM_7', // Object ID
                 fieldName: 'UF_CRM_7_NEW_REST_LIST', // Field code
-                userTypeId: 'enumeration', // Field type identifier
-                multiple: 'Y', // Multiple field flag
+                userTypeId: 'enumeration', // Field type ID
+                multiple: 'Y', // Multiple flag
                 editFormLabel: { 
+                    'de': 'List of characteristics', // Field name in German
                     'en': 'List of characteristics' // Field name in English
                 },
                 enum: [ // List field values
@@ -166,24 +177,25 @@ To create a custom field, we use the [userfieldconfig.add](../../../api-referenc
                 ]
             }
         },
-    );
+        requestId: 'userfieldconfig-add'
+    });
     ```
 
 - PHP
   
     ```php
-    require_once('crest.php');
-
-    $result = CRest::call(
+    // userfieldconfig.add has no wrapper in the SDK — calling the method directly
+    $result = $sb->core->call(
         'userfieldconfig.add',
         [
-            'moduleId' => 'crm', // Module identifier
+            'moduleId' => 'crm', // Module ID
             'field' => [
-                'entityId' => 'CRM_7', // Object identifier
+                'entityId' => 'CRM_7', // Object ID
                 'fieldName' => 'UF_CRM_7_NEW_REST_LIST', // Field code
-                'userTypeId' => 'enumeration', // Field type identifier
-                'multiple' => 'Y', // Multiple field flag
+                'userTypeId' => 'enumeration', // Field type ID
+                'multiple' => 'Y', // Multiple flag
                 'editFormLabel' => [
+                    'de' => 'List of characteristics', // Field name in German
                     'en' => 'List of characteristics' // Field name in English
                 ],
                 'enum' => [ // List field values
@@ -204,7 +216,7 @@ To create a custom field, we use the [userfieldconfig.add](../../../api-referenc
     ```
 
 - Python
-  
+
     ```python
     field = client.userfieldconfig.add(
         module_id="crm",
@@ -214,7 +226,7 @@ To create a custom field, we use the [userfieldconfig.add](../../../api-referenc
             "userTypeId": "enumeration",
             "multiple": "Y",
             "editFormLabel": {
-                "en": "List of characteristics",
+                "de": "List of characteristics",
             },
             "enum": [
                 {
@@ -234,7 +246,7 @@ To create a custom field, we use the [userfieldconfig.add](../../../api-referenc
 
 {% endlist %}
 
-As a result, we will receive the data of the created field.
+As a result, you will receive the data for the created field.
 
 ```json
 {
@@ -259,22 +271,28 @@ As a result, we will receive the data of the created field.
                 "SHOW_NO_VALUE": "Y"
             },
             "languageId": {
-                "en": "en"
+                "en": "en",
+                "de": "de"
             },
             "editFormLabel": {
-                "en": "List of characteristics"
+                "en": "List of characteristics",
+                "de": "List of characteristics"
             },
             "listColumnLabel": {
-                "en": null
+                "en": null,
+                "de": null
             },
             "listFilterLabel": {
-                "en": null
+                "en": null,
+                "de": null
             },
             "errorMessage": {
-                "en": null
+                "en": null,
+                "de": null
             },
             "helpMessage": {
-                "en": null
+                "en": null,
+                "de": null
             },
             "enum": [
                 {
@@ -306,141 +324,146 @@ As a result, we will receive the data of the created field.
 - JS
   
     ```JavaScript
-    // Function to retrieve the smart process and create a custom field
-    function getCrmTypeAndAddUserField() {
-        // Variable for user input of the smart process name
-        var processTitle = prompt("Enter the name of the smart process to search:", "Your_Process_Name");
-        // Call the crm.type.list method to retrieve the smart process
-        BX24.callMethod(
-            'crm.type.list',
-            {
-                filter: {
-                    "title": processTitle // Use the name entered by the user
-                }
-            },
-            function(result) {
-                if (result.error()) {
-                    console.error('Error retrieving smart process:', result.error());
-                } else {
-                    console.log('Smart process successfully retrieved:', result.data());
-                    var spaId = result.data().types[0].id; // Use the id from the result
-                    addUserField(spaId);
-                }
-            }
-        );
+    import { B24Hook } from '@bitrix24/b24jssdk'
+
+    const $b24 = B24Hook.fromWebhookUrl(process.env.B24_HOOK)
+    // B24_HOOK = 'https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/'
+
+    // Function to get the smart process and create a custom field
+    async function getCrmTypeAndAddUserField() {
+        // Variable for the smart process name entered by the user
+        var processTitle = prompt("Enter the smart process name to search for:", "Your_Process_Name");
+        try {
+            // Calling the crm.type.list method to get the smart process
+            const result = await $b24.actions.v2.call.make({
+                method: 'crm.type.list',
+                params: { filter: { "title": processTitle } }, // Using the name entered by the user
+                requestId: 'type-list'
+            });
+            console.log('Smart process successfully retrieved:', result.getData().result);
+            var spaId = result.getData().result.types[0].id; // Using the id from the result
+            await addUserField(spaId);
+        } catch (error) {
+            console.error('Error retrieving the smart process:', error);
+        }
     }
 
     // Function to create a custom field
-    function addUserField(spaId) {
-        // Call the userfieldconfig.add method to create a custom field
-        BX24.callMethod(
-            'userfieldconfig.add',
-            {
-                moduleId: 'crm',
-                field: {
-                    entityId: 'CRM_' + spaId, // Use the id from the previous result
-                    fieldName: 'UF_CRM_' + spaId + '_NEW_REST_LIST', // Use the id
-                    userTypeId: 'enumeration',
-                    multiple: 'Y',
-                    editFormLabel: {
-                        'en': 'List of characteristics'
-                    },
-                    enum: [
-                        {
-                            value: 'Characteristic 1',
-                            def: 'N',
-                            sort: 100
+    async function addUserField(spaId) {
+        try {
+            // Calling the userfieldconfig.add method to create a custom field
+            const result = await $b24.actions.v2.call.make({
+                method: 'userfieldconfig.add',
+                params: {
+                    moduleId: 'crm',
+                    field: {
+                        entityId: 'CRM_' + spaId, // Using the id from the previous result
+                        fieldName: 'UF_CRM_' + spaId + '_NEW_REST_LIST', // Using the id
+                        userTypeId: 'enumeration',
+                        multiple: 'Y',
+                        editFormLabel: {
+                            'de': 'List of characteristics',
+                            'en': 'List of characteristics'
                         },
-                        {
-                            value: 'Characteristic 2',
-                            def: 'Y',
-                            sort: 200
-                        }
-                    ]
-                }
-            },
-            function(result) {
-                if (result.error()) {
-                    console.error('Error creating custom field:', result.error());
-                } else {
-                    console.log('Custom field successfully created:', result.data());
-                }
-            }
-        );
+                        enum: [
+                            {
+                                value: 'Characteristic 1',
+                                def: 'N',
+                                sort: 100
+                            },
+                            {
+                                value: 'Characteristic 2',
+                                def: 'Y',
+                                sort: 200
+                            }
+                        ]
+                    }
+                },
+                requestId: 'userfieldconfig-add'
+            });
+            console.log('Custom field successfully created:', result.getData().result);
+        } catch (error) {
+            console.error('Error creating custom field:', error);
+        }
     }
 
-    // Call the function to retrieve smart process data and create a custom field
+    // Calling the function to get smart process data and create a custom field
     getCrmTypeAndAddUserField();
     ```
 
 - PHP
   
     ```php
-    require_once('crest.php');
+    <?php
+    // composer require bitrix24/b24phpsdk:"^3.0"
+    require_once 'vendor/autoload.php';
 
-    // Function to retrieve the smart process and create a custom field
-    function getCrmTypeAndAddUserField($processTitle) {
-        // Call the crm.type.list method to retrieve the smart process
-        $result = CRest::call('crm.type.list', [
-            'filter' => [
-                'title' => $processTitle // Use the name entered by the user
-            ]
-        ]);
+    use Bitrix24\SDK\Services\ServiceBuilderFactory;
+    use Bitrix24\SDK\Services\ServiceBuilder;
+    use Symfony\Component\EventDispatcher\EventDispatcher;
+    use Psr\Log\NullLogger;
 
-        if (isset($result['error'])) {
-            echo 'Error retrieving smart process: ' . $result['error_description'];
-        } else {
-            echo 'Smart process successfully retrieved: ';
-            print_r($result['result']);
-            
-            if (!empty($result['result']['types'])) {
-                $spaId = $result['result']['types'][0]['id']; // Use the id from the result
-                addUserField($spaId);
+    $sb = (new ServiceBuilderFactory(new EventDispatcher(), new NullLogger()))
+        ->initFromWebhook('https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/');
+
+    // Function to get the smart process and create a custom field
+    function getCrmTypeAndAddUserField(ServiceBuilder $sb, $processTitle) {
+        try {
+            // Calling the crm.type.list method to get the smart process
+            $types = $sb->getCRMScope()->type()->list(
+                order: [],
+                filter: ['title' => $processTitle] // Using the name entered by the user
+            )->getTypes();
+
+            if (!empty($types)) {
+                $spaId = $types[0]->id; // Using the id from the result
+                addUserField($sb, $spaId);
             } else {
                 echo 'Smart process not found.';
             }
+        } catch (\Throwable $e) {
+            echo 'Error retrieving the smart process: ' . $e->getMessage();
         }
     }
 
     // Function to create a custom field
-    function addUserField($spaId) {
-        // Call the userfieldconfig.add method to create a custom field
-        $result = CRest::call('userfieldconfig.add', [
-            'moduleId' => 'crm',
-            'field' => [
-                'entityId' => 'CRM_' . $spaId, // Use the id from the previous result
-                'fieldName' => 'UF_CRM_' . $spaId . '_NEW_REST_LIST', // Use the id
-                'userTypeId' => 'enumeration',
-                'multiple' => 'Y',
-                'editFormLabel' => [
-                    'en' => 'List of characteristics'
-                ],
-                'enum' => [
-                    [
-                        'value' => 'Characteristic 1',
-                        'def' => 'N',
-                        'sort' => 100
+    function addUserField(ServiceBuilder $sb, $spaId) {
+        try {
+            // userfieldconfig.add has no wrapper in the SDK — calling the method directly
+            $sb->core->call('userfieldconfig.add', [
+                'moduleId' => 'crm',
+                'field' => [
+                    'entityId' => 'CRM_' . $spaId, // Using the id from the previous result
+                    'fieldName' => 'UF_CRM_' . $spaId . '_NEW_REST_LIST', // Using the id
+                    'userTypeId' => 'enumeration',
+                    'multiple' => 'Y',
+                    'editFormLabel' => [
+                        'de' => 'List of characteristics',
+                        'en' => 'List of characteristics'
                     ],
-                    [
-                        'value' => 'Characteristic 2',
-                        'def' => 'Y',
-                        'sort' => 200
+                    'enum' => [
+                        [
+                            'value' => 'Characteristic 1',
+                            'def' => 'N',
+                            'sort' => 100
+                        ],
+                        [
+                            'value' => 'Characteristic 2',
+                            'def' => 'Y',
+                            'sort' => 200
+                        ]
                     ]
                 ]
-            ]
-        ]);
-
-        if (isset($result['error'])) {
-            echo 'Error creating custom field: ' . $result['error_description'];
-        } else {
-            echo 'Custom field successfully created: ';
-            print_r($result['result']);
+            ]);
+            echo 'Custom field successfully created.';
+        } catch (\Throwable $e) {
+            echo 'Error creating custom field: ' . $e->getMessage();
         }
     }
 
-    // Call the function to retrieve smart process data and create a custom field
-    $processTitle = readline("Enter the name of the smart process to search: ");
-    getCrmTypeAndAddUserField($processTitle);
+    // Calling the function to get smart process data and create a custom field
+    $processTitle = readline("Enter the smart process name to search for: ");
+    getCrmTypeAndAddUserField($sb, $processTitle);
     ```
 
 - Python
@@ -449,16 +472,15 @@ As a result, we will receive the data of the created field.
     from b24pysdk import BitrixWebhook, Client
     from b24pysdk.errors import BitrixAPIError
 
-
     def get_crm_type_and_add_user_field(client):
-        process_title = input("Enter the name of the smart process to search: ")
+        process_title = input("Enter the smart process name to search for: ")
 
         try:
             resp = client.crm.type.list(
                 filter={"title": process_title},
             ).response
         except BitrixAPIError as error:
-            print(f"Error retrieving smart process: {error}")
+            print(f"Error retrieving the smart process: {error}")
             return
 
         print("Smart process successfully retrieved:")
@@ -471,7 +493,6 @@ As a result, we will receive the data of the created field.
         else:
             print("Smart process not found.")
 
-
     def add_user_field(client, spa_id):
         try:
             result = client.userfieldconfig.add(
@@ -482,7 +503,7 @@ As a result, we will receive the data of the created field.
                     "userTypeId": "enumeration",
                     "multiple": "Y",
                     "editFormLabel": {
-                        "en": "List of characteristics",
+                        "de": "List of characteristics",
                     },
                     "enum": [
                         {"value": "Characteristic 1", "def": "N", "sort": 100},
@@ -496,11 +517,10 @@ As a result, we will receive the data of the created field.
             print("Custom field successfully created:")
             print(result.result)
 
-
     client = Client(
         BitrixWebhook(
             domain="your-domain.bitrix24.com",
-            auth_token="your-webhook-token",
+            webhook_token="user_id/webhook_key",
         )
     )
 

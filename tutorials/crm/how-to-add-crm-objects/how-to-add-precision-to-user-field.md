@@ -9,55 +9,54 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 Custom fields have standard settings: name, required status, and multiple values.
 
 Additionally, there are specialized settings depending on the field type:
-- values for the list
+- list values
 - rounding precision for numbers
-- currency for monetary fields
+- currency for money fields
 
-To obtain specialized settings for the "Number" type — `double`, we use the method [crm.userfield.settings.fields](../../../api-reference/crm/universal/user-defined-fields/crm-userfield-settings-fields.md):
+To retrieve specialized settings for the "Number" type — `double`, use the [crm.userfield.settings.fields](../../../api-reference/crm/universal/user-defined-fields/crm-userfield-settings-fields.md) method:
 
 {% list tabs %}
 
 - JS
   
     ```JavaScript
-    BX24.callMethod(
-        "crm.userfield.settings.fields",
-        {
-            type: "double" // type of the custom field
+    import { B24Hook } from '@bitrix24/b24jssdk'
+
+    const $b24 = B24Hook.fromWebhookUrl(process.env.B24_HOOK)
+    // B24_HOOK = 'https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/'
+
+    const result = await $b24.actions.v2.call.make({
+        method: 'crm.userfield.settings.fields',
+        params: {
+            type: 'double' // user field type
         },
-        function(result)
-        {
-            if(result.error())
-                console.error(result.error());
-            else
-                console.dir(result.data());
-        }
-    );
+        requestId: 'settings-fields'
+    });
+    console.dir(result.getData().result);
     ```
 
 - PHP
   
     ```php
-    require_once('crest.php');
+    // composer require bitrix24/b24phpsdk:"^3.0"
+    require_once 'vendor/autoload.php';
 
-    $result = CRest::call(
-        'crm.userfield.settings.fields',
-        [
-            'type' => 'double' // Type of the custom field
-        ]
-    );
+    use Bitrix24\SDK\Services\ServiceBuilderFactory;
+    use Symfony\Component\EventDispatcher\EventDispatcher;
+    use Psr\Log\NullLogger;
 
-    if (isset($result['error'])) {
-        echo 'Error: ' . $result['error_description'];
-    } else {
-        echo '<PRE>';
-        print_r($result['result']);
-        echo '</PRE>';
-    }
+    $sb = (new ServiceBuilderFactory(new EventDispatcher(), new NullLogger()))
+        ->initFromWebhook('https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/');
+
+    $result = $sb->getCRMScope()->userfield()->settingsFields(
+        'double' // User field type
+    )->getFieldsDescription();
+
+    print_r($result);
     ```
 
 - Python
-  
+
     ```python
     from b24pysdk import BitrixWebhook, Client
     from b24pysdk.errors import BitrixAPIError
@@ -65,7 +64,7 @@ To obtain specialized settings for the "Number" type — `double`, we use the me
     client = Client(
         BitrixWebhook(
             domain="your-domain.bitrix24.com",
-            auth_token="your-webhook-token",
+            webhook_token="user_id/webhook_key",
         )
     )
 
@@ -78,14 +77,14 @@ To obtain specialized settings for the "Number" type — `double`, we use the me
 
 {% endlist %}
 
-As a result, we will receive two settings: default value and precision.
+As a result, you will receive two settings: default value and precision.
 
 ```JSON
 {
     "result": {
         "DEFAULT_VALUE": {
             "type": "double",
-            "title": "Default Value"
+            "title": "Default value"
         },
         "PRECISION": {
             "type": "int",
@@ -97,36 +96,36 @@ As a result, we will receive two settings: default value and precision.
 
 ## Creating a Numeric Field with Rounding Configuration
 
-We will create a field of type number with a precision setting of three decimal places. If a value with four or more decimal places is entered in the field, it will automatically round to three decimal places.
+We will create a field of type number with a precision setting of three decimal places. If a value with four or more decimal places is entered into the field, it will automatically be rounded to three decimal places.
 
-To create a custom field, we use the method [userfieldconfig.add](../../../api-reference/crm/universal/userfieldconfig/userfieldconfig-add.md) with the following parameters:
+To create a custom field, use the [userfieldconfig.add](../../../api-reference/crm/universal/userfieldconfig/userfieldconfig-add.md) method with the following parameters:
 
-- `moduleId` — the identifier of the module in which the method will create the field, a required parameter. In this example, we create a field for deals, the module is `crm`.
-- `field[entityId]` — the identifier of the object in the format `CRM_ + {ID}`, a required parameter. A list of identifiers for objects can be found in the article [Custom Field Settings](../../../api-reference/crm/universal/userfieldconfig/index.md#entity-id). In this example, we will specify `CRM_DEAL`.
+- `moduleId` — the module identifier in which the method will create the field, a required parameter. In this example, we are creating a field for deals, so the module is `crm`
+- `field[entityId]` — the object identifier according to the formula `CRM_ + {ID}`, a required parameter. A list of object identifiers can be found in the article [User field settings](../../../api-reference/crm/universal/userfieldconfig/index.md#entity-id). In the example, we will specify `CRM_DEAL`
 
-- `field[fieldName]` — the field code in the format `UF_ + {object identifier} + _ + {arbitrary string in UPPERCASE}`. The length limit for the code is 50 characters, a required parameter. In this example, we will specify `UF_CRM_DEAL_NEW_DOUBLE_FIELD`.
+- `field[fieldName]` — the field code according to the formula `UF_ + {object identifier} + _ + {arbitrary string in UPPERCASE}`. The maximum length for the code is 50 characters, a required parameter. In the example, we will specify `UF_CRM_DEAL_NEW_DOUBLE_FIELD`
 
-- `field[userTypeId]` — the identifier of the [field type](../../../api-reference/crm/universal/user-defined-fields/crm-userfield-types.md), a required parameter. In this example, we will specify `double` to create a number type field.
+- `field[userTypeId]` — the [field type](../../../api-reference/crm/universal/user-defined-fields/crm-userfield-types.md) identifier, a required parameter. In the example, we will specify `double` to create a field of type number
 
-- `field[editFormLabel]` — an array of names for displaying the field in Bitrix24 in different languages. An optional parameter; if the name is absent, the field code will be displayed in Bitrix24.
+- `field[editFormLabel]` — an array of names for displaying the field in Bitrix24 in different languages. An optional parameter; if no name is provided, Bitrix24 will display the field code
 
-- `field[settings]` — an array of additional settings for the field depending on its type. An optional parameter; if absent, default settings will be used. In this example, we will specify the `PRECISION` setting — precision. We will pass an integer equal to the number of decimal places.
+- `field[settings]` — an array of additional field settings depending on its type. An optional parameter; if omitted, default settings will be used. In the example, we will specify the `PRECISION` setting — precision. We will pass an integer equal to the number of decimal places.
 
 {% list tabs %}
 
 - JS
   
     ```JavaScript
-    BX24.callMethod(
-        'userfieldconfig.add',
-        {
-            moduleId: 'crm', // Module identifier
+    const result = await $b24.actions.v2.call.make({
+        method: 'userfieldconfig.add',
+        params: {
+            moduleId: 'crm', // Module ID
             field: {
-                entityId: 'CRM_DEAL', // Object identifier
+                entityId: 'CRM_DEAL', // Object ID
                 fieldName: 'UF_CRM_DEAL_NEW_DOUBLE_FIELD', // Field code
-                userTypeId: 'double', // Field type identifier
+                userTypeId: 'double', // Field type ID
                 editFormLabel: { 
-                    'en': 'Number with Rounding', // Field name in English
+                    'de': 'Number with rounding', // Field name in German
                     'en': 'PRECISION double' // Field name in English
                 },
                 settings: { // Additional field settings
@@ -134,25 +133,24 @@ To create a custom field, we use the method [userfieldconfig.add](../../../api-r
                     },
             }
         },
-    );
+        requestId: 'userfieldconfig-add'
+    });
     ```
 
 - PHP
-  
 
     ```php
-    require_once('crest.php');
-
-    $result = CRest::call(
+    // userfieldconfig.add has no wrapper in the SDK — calling the method directly
+    $result = $sb->core->call(
         'userfieldconfig.add',
         [
-            'moduleId' => 'crm', // Module identifier
+            'moduleId' => 'crm', // Module ID
             'field' => [
-                'entityId' => 'CRM_DEAL', // Object identifier
+                'entityId' => 'CRM_DEAL', // Object ID
                 'fieldName' => 'UF_CRM_DEAL_NEW_DOUBLE_FIELD', // Field code
-                'userTypeId' => 'double', // Field type identifier
+                'userTypeId' => 'double', // Field type ID
                 'editFormLabel' => [
-                    'en' => 'Number with Rounding', // Field name in English
+                    'de' => 'Number with rounding', // Field name in German
                     'en' => 'PRECISION double' // Field name in English
                 ],
                 'settings' => [ // Additional field settings
@@ -167,11 +165,12 @@ To create a custom field, we use the method [userfieldconfig.add](../../../api-r
 
     ```python
     from b24pysdk import BitrixWebhook, Client
+    from b24pysdk.errors import BitrixAPIError
 
     client = Client(
         BitrixWebhook(
             domain="your-domain.bitrix24.com",
-            auth_token="your-webhook-token",
+            webhook_token="user_id/webhook_key",
         )
     )
 
@@ -183,7 +182,7 @@ To create a custom field, we use the method [userfieldconfig.add](../../../api-r
                 "fieldName": "UF_CRM_DEAL_NEW_DOUBLE_FIELD",
                 "userTypeId": "double",
                 "editFormLabel": {
-                    "en": "PRECISION double",
+                    "de": "Number with rounding",
                 },
                 "settings": {
                     "PRECISION": 3,
@@ -197,7 +196,7 @@ To create a custom field, we use the method [userfieldconfig.add](../../../api-r
 
 {% endlist %}
 
-As a result, we will receive the data of the created field.
+As a result, you will receive the data for the created field.
 
 ```JSON
 {
@@ -223,79 +222,81 @@ As a result, we will receive the data of the created field.
                 "DEFAULT_VALUE": null
             },
             "languageId": {
-                "en": "en"
+                "en": "en",
+                "de": "de"
             },
             "editFormLabel": {
                 "en": "PRECISION double",
-                "en": "Number with Rounding"
+                "de": "Number with rounding"
             },
             "listColumnLabel": {
-                "en": null
+                "en": null,
+                "de": null
             },
             "listFilterLabel": {
-                "en": null
+                "en": null,
+                "de": null
             },
             "errorMessage": {
-                "en": null
+                "en": null,
+                "de": null
             },
             "helpMessage": {
-                "en": null
+                "en": null,
+                "de": null
             }
         }
     },
 }
 ```
 
-## Modifying the Setting of an Existing Numeric Field
+## Modifying the Configuration of an Existing Numeric Field
 
-To change the rounding setting of an existing field, we use the method [userfieldconfig.update](../../../api-reference/crm/universal/userfieldconfig/userfieldconfig-update.md) specifying the field ID. The field ID can be obtained in two ways: when creating the field using the method [userfieldconfig.add](../../../api-reference/crm/universal/userfieldconfig/userfieldconfig-add.md) or through the method for retrieving the list of custom fields of the object. In this example, we are dealing with a deal field, so we will use the method [crm.deal.userfield.list](../../../api-reference/crm/deals/user-defined-fields/crm-deal-userfield-list.md).
+To change the rounding configuration of an existing field, use the [userfieldconfig.update](../../../api-reference/crm/universal/userfieldconfig/userfieldconfig-update.md) method by specifying the field `ID`. You can obtain the field `ID` in two ways: during field creation using the [userfieldconfig.add](../../../api-reference/crm/universal/userfieldconfig/userfieldconfig-add.md) method, or via a method that retrieves a list of custom fields for an object. In this example, the field belongs to a deal, so we use the [crm.deal.userfield.list](../../../api-reference/crm/deals/user-defined-fields/crm-deal-userfield-list.md) method.
 
 ### 1. Retrieving the Field ID
 
-To get the field ID, we use the method [crm.deal.userfield.list](../../../api-reference/crm/deals/user-defined-fields/crm-deal-userfield-list.md) with the following parameters:
+To retrieve the field `ID`, use the [crm.deal.userfield.list](../../../api-reference/crm/deals/user-defined-fields/crm-deal-userfield-list.md) method with the following parameters:
 
-- `filter[LANG]` — a language filter used to display field names in the desired language. Without this filter, names will not be displayed.
+- `filter[LANG]` — a language filter used to output field names in the required language. Without this filter, names will not be output.
 
-- `filter[USER_TYPE_ID]` — a field type filter used to retrieve only fields of type "Number" in the result.
+- `filter[USER_TYPE_ID]` — a field type filter used to retrieve only fields of the "Number" type in the result.
 
 {% list tabs %}
 
 - JS
   
     ```JavaScript
-    BX24.callMethod(
-        "crm.deal.userfield.list",
-        {
+    const result = await $b24.actions.v2.call.make({
+        method: 'crm.deal.userfield.list',
+        params: {
             filter: {
-                LANG: 'en', // Language filter for displaying the field name
+                LANG: 'de', // Language filter for field name output
                 USER_TYPE_ID: 'double' // Field type filter
             }
-        }
-    );
+        },
+        requestId: 'userfield-list'
+    });
     ```
 
 - PHP
   
     ```php
-    require_once('crest.php');
-
-    $result = CRest::call(
-        'crm.deal.userfield.list',
-        [
-            'filter' => [
-                'LANG' => 'en', // Language filter for displaying the field name
-                'USER_TYPE_ID' => 'double' // Field type filter
-            ]
+    $result = $sb->getCRMScope()->dealUserfield()->list(
+        order: [],
+        filter: [
+            'LANG' => 'de', // Language filter for field name output
+            'USER_TYPE_ID' => 'double' // Field type filter
         ]
-    );
+    )->getUserfields();
     ```
 
 - Python
-  
+
     ```python
     fields = client.crm.deal.userfield.list(
         filter={
-            "LANG": "en",
+            "LANG": "de",
             "USER_TYPE_ID": "double",
         }
     ).response.result
@@ -303,7 +304,7 @@ To get the field ID, we use the method [crm.deal.userfield.list](../../../api-re
 
 {% endlist %}
 
-As a result, we will receive all numeric fields of deals with their names.
+As a result, you will receive all numeric deal fields along with their names.
 
 ```JSON
 {
@@ -328,9 +329,9 @@ As a result, we will receive all numeric fields of deals with their names.
                 "MAX_VALUE": 0,
                 "DEFAULT_VALUE": null
             },
-            "EDIT_FORM_LABEL": "Advance",
-            "LIST_COLUMN_LABEL": "Advance",
-            "LIST_FILTER_LABEL": "Advance",
+            "EDIT_FORM_LABEL": "Advance payment",
+            "LIST_COLUMN_LABEL": "Advance payment",
+            "LIST_FILTER_LABEL": "Advance payment",
             "ERROR_MESSAGE": null,
             "HELP_MESSAGE": null
         },
@@ -354,9 +355,9 @@ As a result, we will receive all numeric fields of deals with their names.
                 "MAX_VALUE": 0,
                 "DEFAULT_VALUE": null
             },
-            "EDIT_FORM_LABEL": "Refund Amount",
-            "LIST_COLUMN_LABEL": "Refund Amount",
-            "LIST_FILTER_LABEL": "Refund Amount",
+            "EDIT_FORM_LABEL": "Refund amount",
+            "LIST_COLUMN_LABEL": "Refund amount",
+            "LIST_FILTER_LABEL": "Refund amount",
             "ERROR_MESSAGE": null,
             "HELP_MESSAGE": null
         }
@@ -365,45 +366,45 @@ As a result, we will receive all numeric fields of deals with their names.
 }
 ```
 
-### 2. Modifying the Rounding Setting for the Field Value
+### 2. Modifying the Value Rounding Configuration in the Field
 
-To change the setting of an existing field, we use the method [userfieldconfig.update](../../../api-reference/crm/universal/userfieldconfig/userfieldconfig-update.md) with the following parameters:
+To change the configuration of an existing field, use the [userfieldconfig.update](../../../api-reference/crm/universal/userfieldconfig/userfieldconfig-update.md) method with the following parameters:
 
-- `moduleId` — the identifier of the module in which the method will modify the field, a required parameter. In this example, we modify a deal field, the module is `crm`.
+- `moduleId` — the module identifier in which the method will modify the field; this is a required parameter. In this example, we are modifying a deal field, so the module is `crm`.
 
-- `id` — the identifier of the custom field, a required parameter. In this example, we will pass the field ID obtained from the method [crm.deal.userfield.list](#1-retrieving-the-field-id).
+- `id` — the custom field identifier; this is a required parameter. In this example, we pass the field `ID` obtained via the [crm.deal.userfield.list](#1-retrieving-the-field-id) method.
 
-- `field[settings]` — an array of additional settings for the field depending on its type. In this example, we will specify the `PRECISION` setting — precision. We will pass an integer equal to the number of decimal places.
+- `field[settings]` — an array of additional field configurations depending on its type. In this example, we specify the `PRECISION` configuration — precision. We pass an integer representing the number of decimal places.
 
 {% list tabs %}
 
 - JS
   
     ```JavaScript
-    BX24.callMethod(
-        'userfieldconfig.update',
-        {
-            moduleId: 'crm', // Module identifier
-            id: 6807, // ID of the custom field
+    const result = await $b24.actions.v2.call.make({
+        method: 'userfieldconfig.update',
+        params: {
+            moduleId: 'crm', // Module ID
+            id: 6807, // user field id
             field: {
                 settings: { // Additional field settings
                         PRECISION: 3, // Number of decimal places
                     },
             }
         },
-    );
+        requestId: 'userfieldconfig-update'
+    });
     ```
 
 - PHP
   
     ```php
-    require_once('crest.php');
-
-    $result = CRest::call(
+    // userfieldconfig.update has no wrapper in the SDK — calling the method directly
+    $result = $sb->core->call(
         'userfieldconfig.update',
         [
-            'moduleId' => 'crm', // Module identifier
-            'id' => 6807, // ID of the custom field
+            'moduleId' => 'crm', // Module ID
+            'id' => 6807, // User field ID
             'field' => [
                 'settings' => [ // Additional field settings
                     'PRECISION' => 3 // Number of decimal places
@@ -414,7 +415,7 @@ To change the setting of an existing field, we use the method [userfieldconfig.u
     ```
 
 - Python
-  
+
     ```python
     field = client.userfieldconfig.update(
         module_id="crm",
@@ -429,7 +430,7 @@ To change the setting of an existing field, we use the method [userfieldconfig.u
 
 {% endlist %}
 
-As a result, we will receive the data of the modified field.
+As a result, you will receive the data for the modified field.
 
 ```JSON
 {
@@ -455,22 +456,22 @@ As a result, we will receive the data of the modified field.
                 "DEFAULT_VALUE": null
             },
             "languageId": {
-                "en": "en"
+                "de": "de"
             },
             "editFormLabel": {
-                "en": "Refund Amount"
+                "de": "Refund amount"
             },
             "listColumnLabel": {
-                "en": "Refund Amount"
+                "de": "Refund amount"
             },
             "listFilterLabel": {
-                "en": "Refund Amount"
+                "de": "Refund amount"
             },
             "errorMessage": {
-                "en": null
+                "de": null
             },
             "helpMessage": {
-                "en": null
+                "de": null
             }
         }
     },
@@ -484,107 +485,112 @@ As a result, we will receive the data of the modified field.
 - JS
   
     ```JavaScript
-    // Function to find and update a custom field
-    function updateUserField() {
-        // Prompt the user for the field name
-        var fieldName = prompt("Enter the field name:");
+    import { B24Hook } from '@bitrix24/b24jssdk'
 
-        // First method: Retrieve the list of all custom fields of type 'double'
-        BX24.callMethod(
-            "crm.deal.userfield.list",
-            {
-                filter: {
-                    LANG: 'en', // Language filter for displaying the field name
-                    USER_TYPE_ID: 'double' // Field type filter
-                }
-            },
-            function(result) {
-                if (result.error()) {
-                    console.error(result.error());
-                } else {
-                    // Iterate through the retrieved fields to find the one by name
-                    var fields = result.data();
-                    var fieldId = null;
+    const $b24 = B24Hook.fromWebhookUrl(process.env.B24_HOOK)
+    // B24_HOOK = 'https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/'
 
-                    for (var i = 0; i < fields.length; i++) {
-                        if (fields[i].EDIT_FORM_LABEL === fieldName) {
-                            fieldId = fields[i].ID;
-                            break;
-                        }
+    // Function to search and update a user field
+    async function updateUserField() {
+        // Requesting the field name from the user
+        var fieldName = prompt("Enter field name:");
+
+        try {
+            // First method: Get a list of all user fields of type 'double'
+            const result = await $b24.actions.v2.call.make({
+                method: 'crm.deal.userfield.list',
+                params: {
+                    filter: {
+                        LANG: 'de', // Language filter for field name output
+                        USER_TYPE_ID: 'double' // Field type filter
                     }
+                },
+                requestId: 'userfield-list'
+            });
 
-                    if (fieldId) {
-                        // Second method: Update the settings of the found field
-                        BX24.callMethod(
-                            'userfieldconfig.update',
-                            {
-                                moduleId: 'crm', // Module identifier
-                                id: fieldId, // ID of the found custom field
-                                field: {
-                                    settings: { 
-                                        PRECISION: 3 // Number of decimal places
-                                    }
-                                }
-                            },
-                            function(updateResult) {
-                                if (updateResult.error()) {
-                                    console.error(updateResult.error());
-                                } else {
-                                    console.log("Field settings successfully updated.");
-                                }
-                            }
-                        );
-                    } else {
-                        console.log("Field with the specified name not found.");
-                    }
+            // Iterating through the retrieved fields to find the one matching the name
+            var fields = result.getData().result;
+            var fieldId = null;
+
+            for (var i = 0; i < fields.length; i++) {
+                if (fields[i].EDIT_FORM_LABEL === fieldName) {
+                    fieldId = fields[i].ID;
+                    break;
                 }
             }
-        );
+
+            if (fieldId) {
+                // Second method: Update the settings of the found field
+                await $b24.actions.v2.call.make({
+                    method: 'userfieldconfig.update',
+                    params: {
+                        moduleId: 'crm', // Module ID
+                        id: fieldId, // Found user field ID
+                        field: {
+                            settings: { 
+                                PRECISION: 3 // Number of decimal places
+                            }
+                        }
+                    },
+                    requestId: 'userfieldconfig-update'
+                });
+                console.log("Field settings updated successfully.");
+            } else {
+                console.log("Field with the specified name not found.");
+            }
+        } catch (error) {
+            console.error(error);
+        }
     }
 
-    // Run the function
+    // Running function
     updateUserField();
     ```
 
 - PHP
   
     ```php
-    require_once('crest.php');
+    <?php
+    // composer require bitrix24/b24phpsdk:"^3.0"
+    require_once 'vendor/autoload.php';
 
-    // Function to find and update a custom field
-    function updateUserField($fieldName) {
-        // First method: Retrieve the list of all custom fields of type 'double'
-        $result = CRest::call(
-            'crm.deal.userfield.list',
-            [
-                'filter' => [
-                    'LANG' => 'en', // Language filter for displaying the field name
+    use Bitrix24\SDK\Services\ServiceBuilderFactory;
+    use Bitrix24\SDK\Services\ServiceBuilder;
+    use Symfony\Component\EventDispatcher\EventDispatcher;
+    use Psr\Log\NullLogger;
+
+    $sb = (new ServiceBuilderFactory(new EventDispatcher(), new NullLogger()))
+        ->initFromWebhook('https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/');
+
+    // Function to search and update a user field
+    function updateUserField(ServiceBuilder $sb, $fieldName) {
+        try {
+            // First method: Get a list of all user fields of type 'double'
+            $fields = $sb->getCRMScope()->dealUserfield()->list(
+                order: [],
+                filter: [
+                    'LANG' => 'de', // Language filter for field name output
                     'USER_TYPE_ID' => 'double' // Field type filter
                 ]
-            ]
-        );
+            )->getUserfields();
 
-        if (isset($result['error'])) {
-            echo 'Error: ' . $result['error_description'];
-        } else {
-            // Iterate through the retrieved fields to find the one by name
-            $fields = $result['result'];
+            // Iterating through the retrieved fields to find the one matching the name
             $fieldId = null;
-
             foreach ($fields as $field) {
-                if ($field['EDIT_FORM_LABEL'] === $fieldName) {
-                    $fieldId = $field['ID'];
+                if ($field->EDIT_FORM_LABEL === $fieldName) {
+                    $fieldId = $field->ID;
                     break;
                 }
             }
 
             if ($fieldId) {
                 // Second method: Update the settings of the found field
-                $updateResult = CRest::call(
+                // userfieldconfig.update has no wrapper in the SDK — calling the method directly
+                $sb->core->call(
                     'userfieldconfig.update',
                     [
-                        'moduleId' => 'crm', // Module identifier
-                        'id' => $fieldId, // ID of the found custom field
+                        'moduleId' => 'crm', // Module ID
+                        'id' => $fieldId, // Found user field ID
                         'field' => [
                             'settings' => [
                                 'PRECISION' => 3 // Number of decimal places
@@ -592,37 +598,33 @@ As a result, we will receive the data of the modified field.
                         ]
                     ]
                 );
-
-                if (isset($updateResult['error'])) {
-                    echo 'Error: ' . $updateResult['error_description'];
-                } else {
-                    echo 'Field settings successfully updated.';
-                }
+                echo 'Field settings updated successfully.';
             } else {
                 echo 'Field with the specified name not found.';
             }
+        } catch (\Throwable $e) {
+            echo 'Error: ' . $e->getMessage();
         }
     }
 
-    // Prompt the user for the field name
-    $fieldName = readline("Enter the field name: ");
+    // Requesting the field name from the user
+    $fieldName = readline("Enter field name: ");
 
-    // Run the function
-    updateUserField($fieldName);
+    // Running function
+    updateUserField($sb, $fieldName);
     ```
 
 - Python
-  
+
     ```python
     from b24pysdk import BitrixWebhook, Client
     from b24pysdk.errors import BitrixAPIError
-
 
     def update_user_field(client, field_name: str) -> None:
         try:
             fields = client.crm.deal.userfield.list(
                 filter={
-                    "LANG": "en",
+                    "LANG": "de",
                     "USER_TYPE_ID": "double",
                 }
             ).response.result
@@ -651,19 +653,18 @@ As a result, we will receive the data of the modified field.
                 },
             ).response
         except BitrixAPIError as error:
-            print(f"Error: {error}")
+                print(f"Error: {error}")
         else:
-            print("Field settings successfully updated.")
-
+            print("Field settings updated successfully.")
 
     client = Client(
         BitrixWebhook(
             domain="your-domain.bitrix24.com",
-            auth_token="your-webhook-token",
+            webhook_token="user_id/webhook_key",
         )
     )
 
-    field_name = input("Enter the field name: ")
+    field_name = input("Enter field name: ")
     update_user_field(client, field_name)
     ```
 

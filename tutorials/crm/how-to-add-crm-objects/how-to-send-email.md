@@ -12,49 +12,44 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 You can automatically send an e-mail to a client through the CRM. The "From" field will display the name and e-mail address of the employee. An event for the outgoing e-mail will be added to the contact card.
 
-To send the e-mail, we will sequentially execute three methods:
+To send an e-mail, we will sequentially execute three methods:
 
-1. [crm.contact.get](../../../api-reference/crm/contacts/crm-contact-get.md) — retrieve client data
+1. [crm.contact.get](../../../api-reference/crm/contacts/crm-contact-get.md) — retrieve customer data
 
 2. [user.get](../../../api-reference/user/user-get.md) — retrieve employee data
 
-3. [crm.activity.add](../../../api-reference/crm/timeline/activities/activity-base/crm-activity-add.md) — create a deal of type "E-mail"
+3. [crm.activity.add](../../../api-reference/crm/timeline/activities/activity-base/crm-activity-add.md) — create an activity of type "E-mail"
 
 ## 1. Retrieve Client Data
 
-We will use the [crm.contact.get](../../../api-reference/crm/contacts/crm-contact-get.md) method with the client ID. The ID value can be stored in the variable `contactID`. For example, we will retrieve the contact data with the ID `1`.
+Use the [crm.contact.get](../../../api-reference/crm/contacts/crm-contact-get.md) method with the customer identifier. The identifier value can be previously stored in the `contactID` variable. For example, we get contact data with identifier `1`.
 
-{% include [Example Note](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
 - JS
 
     ```js
+    import { B24Hook } from '@bitrix24/b24jssdk'
+
+    const $b24 = B24Hook.fromWebhookUrl(process.env.B24_HOOK)
+    // B24_HOOK = 'https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/'
+
     let contactID = 1;
-    BX24.callMethod(
-            'crm.contact.get',
-            { 'id': contactID },
-            function(result) {
-                if (result.error()) {
-                    reject(result.error());
-                } else {
-                    resolve(result.data());
-            }
-        }
-    );
+    const response = await $b24.actions.v2.call.make({
+        method: 'crm.contact.get',
+        params: { id: contactID },
+        requestId: 'contact-get'
+    })
+    let resultContact = response.getData().result
     ```
 
 - PHP
 
     ```php
     $contactID = 1;
-    $resultContact = CRest::call(
-        'crm.contact.get',
-        [
-            'id' => $contactID
-        ]
-    );
+    $resultContact = $sb->getCRMScope()->contact()->get($contactID)->contact();
     ```
 
 - Python
@@ -65,7 +60,7 @@ We will use the [crm.contact.get](../../../api-reference/crm/contacts/crm-contac
     client = Client(
         BitrixWebhook(
             domain="your-domain.bitrix24.com",
-            auth_token="your-webhook-token",
+            webhook_token="user_id/webhook_key",
         )
     )
 
@@ -77,15 +72,15 @@ We will use the [crm.contact.get](../../../api-reference/crm/contacts/crm-contac
 
 {% endlist %}
 
-As a result, we will obtain client data, including the e-mail address `EMAIL` and the ID of the responsible employee `ASSIGNED_BY_ID`.
+As a result, we will retrieve the customer data, including the e-mail address `EMAIL` and the responsible employee identifier `ASSIGNED_BY_ID`.
 
 ```json
 {
     "result": {
         "ID": "1",
-        "NAME": "Alex",
-        "SECOND_NAME": "Kirillovich",
-        "LAST_NAME": "Vronsky",
+        "NAME": "Klaus",
+        "SECOND_NAME": "Werner",
+        "LAST_NAME": "Müller",
         "ASSIGNED_BY_ID": "61",
         "EMAIL": [
             {
@@ -101,43 +96,32 @@ As a result, we will obtain client data, including the e-mail address `EMAIL` an
 
 ## 2. Retrieve Employee Data
 
-To get the data of the responsible employee, we will use the [user.get](../../../api-reference/user/user-get.md) method with a filter by employee ID. The ID should take the value from the `ASSIGNED_BY_ID` field of the `resultContact` object.
+To retrieve the data of the responsible employee, use the [user.get](../../../api-reference/user/user-get.md) method with a filter by the employee identifier. The identifier must take the value from the `ASSIGNED_BY_ID` field of the `resultContact` object.
 
 {% list tabs %}
 
 - JS
 
     ```js
-    BX24.callMethod(
-        'user.get',
-        {
-            'filter': {
-                'ID': resultContact.ASSIGNED_BY_ID
+    const responseUser = await $b24.actions.v2.call.make({
+        method: 'user.get',
+        params: {
+            filter: {
+                ID: resultContact.ASSIGNED_BY_ID
             }
         },
-        function(result) {
-            if (result.error()) {
-                reject(result.error());
-            } else {
-                 resolve(result.data());
-            }
-        }
-    );
+        requestId: 'user-get'
+    })
+    let resultUser = responseUser.getData().result
     ```
 
 - PHP
 
     ```php
-    {
-        $resultUser = CRest::call(
-            'user.get',
-            [
-                'filter' => [
-                    'ID' => $resultContact['result']['ASSIGNED_BY_ID']
-                ]
-            ]
-       );
-    }
+    $resultUser = $sb->getUserScope()->user()->get(
+        [],
+        ['ID' => $resultContact->ASSIGNED_BY_ID]
+    )->getUsers();
     ```
 
 - Python
@@ -152,7 +136,7 @@ To get the data of the responsible employee, we will use the [user.get](../../..
 
 {% endlist %}
 
-We will obtain employee data, including the e-mail address `EMAIL`.
+We will retrieve the employee data, including the e-mail address `EMAIL`.
 
 ```json
 {
@@ -160,21 +144,21 @@ We will obtain employee data, including the e-mail address `EMAIL`.
         {
         "ID": "61",
         "ACTIVE": true,
-        "NAME": "Ivan",
-        "LAST_NAME": "Petrov",
+        "NAME": "Hans",
+        "LAST_NAME": "Weber",
         "EMAIL": "ivanpetrov@example.com"
         }
     ]
 }
 ```
 
-## 3. Create a Deal of Type "E-mail"
+## 3. Create an E-mail Activity
 
-We will prepare the variables:
+Prepare the variables:
 
-- `contactEmail` — the first element from the contact `resultContact`,
+- `contactEmail` — the first item from contact `resultContact`,
 
-- `staff` — the first element from the `resultUser` object.
+- `staff` — the first item from object `resultUser`.
 
 {% list tabs %}
 
@@ -188,8 +172,9 @@ We will prepare the variables:
 - PHP
 
     ```php
-        $contactEmail = reset($resultContact['result']['EMAIL']);
-        $staff = reset($resultUser['result']);
+        $emails = $resultContact->EMAIL;
+        $contactEmail = reset($emails);
+        $staff = reset($resultUser);
     ```
 
 - Python
@@ -201,49 +186,49 @@ We will prepare the variables:
 
 {% endlist %}
 
-To add the event and send the e-mail, we will use the [crm.activity.add](../../../api-reference/crm/timeline/activities/activity-base/crm-activity-add.md) method. We need to pass the client data, employee data, and deal parameters.
+To add an event and send an e-mail, use the [crm.activity.add](../../../api-reference/crm/timeline/activities/activity-base/crm-activity-add.md) method. You need to pass the customer data, employee data, and activity parameters to it.
 
 - `SUBJECT` — the subject of the e-mail. We will specify `subject email now`.
 
-- `DESCRIPTION` — the body of the e-mail. For example, `body email now`.
+- `DESCRIPTION` — the e-mail body. For example, `body email now`.
 
-- `DESCRIPTION_TYPE` — the text type. Possible values: `1`— plain text, `2`— HTML markup, `3`— BB-code. We will set the value to `3`.
+- `DESCRIPTION_TYPE` — the text type. Possible values: `1`— plain text, `2`— HTML markup, `3`— BB-code. Set the value `3`.
 
 - `COMPLETED` — a flag indicating whether the event is completed. We will specify `Y`.
 
-- `DIRECTION` — the direction of the activity. We will pass `2` — outgoing e-mail. A complete list of activity directions can be obtained using the [crm.enum.activitydirection](../../../api-reference/crm/auxiliary/enum/outdated/crm-enum-activity-direction.md) method.
+- `DIRECTION` — the activity direction. We pass `2` — an outbound e-mail. A full list of activity directions can be retrieved using the [crm.enum.activitydirection](../../../api-reference/crm/auxiliary/enum/outdated/crm-enum-activity-direction.md) method.
 
-- `OWNER_ID` — the contact ID. We will pass the variable `contactID`.
+- `OWNER_ID` — the contact identifier. We pass the variable `contactID`.
 
-- `OWNER_TYPE_ID` — [the identifier of the CRM object type](../../../api-reference/crm/data-types.md#object_type). We will pass `3`— contact. A complete list of object types can be obtained using the [crm.enum.ownertype](../../../api-reference/crm/auxiliary/enum/crm-enum-owner-type.md) method.
+- `OWNER_TYPE_ID` — the [CRM object type identifier](../../../api-reference/crm/data-types.md#object_type). We pass `3`— contact. A full list of object types can be retrieved using the [crm.enum.ownertype](../../../api-reference/crm/auxiliary/enum/crm-enum-owner-type.md) method.
 
-- `TYPE_ID` — the activity type. We will specify `4` — e-mail. A list of activity types can be obtained using the [crm.enum.activitytype](../../../api-reference/crm/auxiliary/enum/outdated/crm-enum-activity-type.md) method.
+- `TYPE_ID` — the activity type. We will specify `4` — e-mail. A list of activity types can be retrieved using the [crm.enum.activitytype](../../../api-reference/crm/auxiliary/enum/outdated/crm-enum-activity-type.md) method.
 
-- `COMMUNICATIONS` — the client's contact details:
+- `COMMUNICATIONS` — client contact details:
 
-    - `VALUE` — the e-mail address, we will take the `VALUE` from the `contactEmail` array,
+    - `VALUE` — the e-mail address; we take the value `VALUE` from the `contactEmail` array,
 
-    - `ENTITY_ID` — the client ID, we will pass `contactID`,
+    - `ENTITY_ID` — the customer identifier; we pass `contactID`,
 
-    - `ENTITY_TYPE_ID` — [the identifier of the object type](../../../api-reference/crm/data-types.md#object_type), we will pass `3` — contact.
+    - `ENTITY_TYPE_ID` — the [object type identifier](../../../api-reference/crm/data-types.md#object_type); we pass `3` — contact.
 
-- `START_TIME` and `END_TIME` — the start and end date and time of the activity. We will specify a duration of 1 hour.
+- `START_TIME` and `END_TIME` — the activity start and end date and time. We will specify a duration of 1 hour.
 
-- `RESPONSIBLE_ID` — the ID of the responsible person, we will pass `staff.ID`.
+- `RESPONSIBLE_ID` — the responsible person identifier; we pass `staff.ID`.
 
 - `SETTINGS` — additional settings:
 
-    - `MESSAGE_FROM` — the sender of the e-mail, we will pass the name `staff.NAME`, last name `staff.LAST_NAME`, and e-mail address `staff.EMAIL` of the employee.
+    - `MESSAGE_FROM` — the e-mail sender; we pass the name `staff.NAME`, surname `staff.LAST_NAME`, and e-mail address `staff.EMAIL` of the employee.
 
 {% list tabs %}
 
 - JS
 
     ```js
-    BX24.callMethod(
-        'crm.activity.add',
-        {
-            'fields': {
+    const responseActivity = await $b24.actions.v2.call.make({
+        method: 'crm.activity.add',
+        params: {
+            fields: {
                 "SUBJECT": "subject email now",
                 "DESCRIPTION": "body email now",
                 "DESCRIPTION_TYPE": 3,
@@ -266,44 +251,42 @@ To add the event and send the e-mail, we will use the [crm.activity.add](../../.
                     'MESSAGE_FROM': `${staff.NAME} ${staff.LAST_NAME} <${staff.EMAIL}>`
                 }
             }
-        }
-    ); 
+        },
+        requestId: 'activity-add'
+    });
     ```
 
-- PHP
+-  PHP
 
     ```php
-    $resultActivity = CRest::call(
-        'crm.activity.add',
+    $resultActivity = $sb->getCRMScope()->activity()->add(
         [
-            'fields' => [
-                "SUBJECT" => "subject email now",
-                "DESCRIPTION" => "body email now",
-                "DESCRIPTION_TYPE" => 3,//text,html,bbCode type id in: CRest::call('crm.enum.contenttype');
-                "COMPLETED" => "Y",//send now
-                "DIRECTION" => 2,// CRest::call('crm.enum.activitydirection');
-                "OWNER_ID" => $contactID,
-                "OWNER_TYPE_ID" => 3, // CRest::call('crm.enum.ownertype');
-                "TYPE_ID" => 4, // CRest::call('crm.enum.activitytype');
-                "COMMUNICATIONS" => [
-                    [
-                        'VALUE' => $contactEmail['VALUE'],
-                        'ENTITY_ID' => $contactID,
-                        'ENTITY_TYPE_ID' => 3// CRest::call('crm.enum.ownertype');
-                    ]
-                ],
-                "START_TIME" => date("Y-m-d H:i:s", time()),
-                "END_TIME" => date("Y-m-d H:i:s", time() + 3600),
-                "RESPONSIBLE_ID" => $staff['ID'],
-                'SETTINGS' => [
-                    'MESSAGE_FROM' => implode(
-                        ' ',
-                        [$staff['NAME'], $staff['LAST_NAME'], '<' . $staff['EMAIL'] . '>']
-                    ),
-                ],
-            ]
+            "SUBJECT" => "subject email now",
+            "DESCRIPTION" => "body email now",
+            "DESCRIPTION_TYPE" => 3,// text type (crm.enum.contenttype): plain, HTML, BB-code
+            "COMPLETED" => "Y",// send now
+            "DIRECTION" => 2,// crm.enum.activitydirection
+            "OWNER_ID" => $contactID,
+            "OWNER_TYPE_ID" => 3, // crm.enum.ownertype
+            "TYPE_ID" => 4, // crm.enum.activitytype
+            "COMMUNICATIONS" => [
+                [
+                    'VALUE' => $contactEmail->VALUE,
+                    'ENTITY_ID' => $contactID,
+                    'ENTITY_TYPE_ID' => 3// crm.enum.ownertype
+                ]
+            ],
+            "START_TIME" => date("Y-m-d H:i:s", time()),
+            "END_TIME" => date("Y-m-d H:i:s", time() + 3600),
+            "RESPONSIBLE_ID" => $staff->ID,
+            'SETTINGS' => [
+                'MESSAGE_FROM' => implode(
+                    ' ',
+                    [$staff->NAME, $staff->LAST_NAME, '<' . $staff->EMAIL . '>']
+                ),
+            ],
         ]
-    );
+    )->getId();
     ```
 
 - Python
@@ -344,7 +327,7 @@ To add the event and send the e-mail, we will use the [crm.activity.add](../../.
 
 {% endlist %}
 
-If the event is created successfully, the method will return its ID. If you receive an `error`, refer to the documentation for the [crm.activity.add](../../../api-reference/crm/timeline/activities/activity-base/crm-activity-add.md) method to understand possible errors.
+If the event is created successfully, the method will return its identifier. If you receive error `error`, review the possible error descriptions in the [crm.activity.add](../../../api-reference/crm/timeline/activities/activity-base/crm-activity-add.md) method documentation.
 
 ```json
 {
@@ -352,189 +335,165 @@ If the event is created successfully, the method will return its ID. If you rece
 }
 ```
 
-## Complete Code Example
+## Full Code Example
 
-The code in this example combines all steps: it retrieves client and employee data, adds the "E-mail" deal, and sends the e-mail to the client.
+The code in this example combines all steps: it retrieves customer and employee data, adds an "E-mail" activity, and sends an e-mail to the customer.
 
 {% list tabs %}
 
 - JS
 
     ```js
-    document.addEventListener('DOMContentLoaded', function() {
-        async function createEmailActivityForContact() {
-            try {
-                let contactID = 1;
+    import { B24Hook } from '@bitrix24/b24jssdk'
 
-                let resultContact = await new Promise((resolve, reject) => {
-                    BX24.callMethod(
-                        'crm.contact.get',
-                        { 'id': contactID },
-                        function(result) {
-                            if (result.error()) {
-                                reject(result.error());
-                            } else {
-                                resolve(result.data());
-                            }
-                        }
-                    );
+    const $b24 = B24Hook.fromWebhookUrl(process.env.B24_HOOK)
+    // B24_HOOK = 'https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/'
+
+    async function createEmailActivityForContact() {
+        try {
+            let contactID = 1;
+
+            const responseContact = await $b24.actions.v2.call.make({
+                method: 'crm.contact.get',
+                params: { id: contactID },
+                requestId: 'contact-get'
+            });
+            let resultContact = responseContact.getData().result;
+
+            if (resultContact && resultContact.ASSIGNED_BY_ID && resultContact.EMAIL) {
+                const responseUser = await $b24.actions.v2.call.make({
+                    method: 'user.get',
+                    params: { filter: { ID: resultContact.ASSIGNED_BY_ID } },
+                    requestId: 'user-get'
                 });
+                let resultUser = responseUser.getData().result;
 
-                if (resultContact && resultContact.ASSIGNED_BY_ID && resultContact.EMAIL) {
-                    let resultUser = await new Promise((resolve, reject) => {
-                        BX24.callMethod(
-                            'user.get',
-                            {
-                                'filter': {
-                                    'ID': resultContact.ASSIGNED_BY_ID
+                if (resultUser.length > 0) {
+                    let contactEmail = resultContact.EMAIL[0];
+                    let staff = resultUser[0];
+
+                    if (contactEmail.VALUE && staff.EMAIL) {
+                        const responseActivity = await $b24.actions.v2.call.make({
+                            method: 'crm.activity.add',
+                            params: {
+                                fields: {
+                                    "SUBJECT": "subject email now",
+                                    "DESCRIPTION": "body email now",
+                                    "DESCRIPTION_TYPE": 3,
+                                    "COMPLETED": "Y",
+                                    "DIRECTION": 2,
+                                    "OWNER_ID": contactID,
+                                    "OWNER_TYPE_ID": 3,
+                                    "TYPE_ID": 4,
+                                    "COMMUNICATIONS": [
+                                        {
+                                            'VALUE': contactEmail.VALUE,
+                                            'ENTITY_ID': contactID,
+                                            'ENTITY_TYPE_ID': 3
+                                        }
+                                    ],
+                                    "START_TIME": new Date().toISOString(),
+                                    "END_TIME": new Date(Date.now() + 3600 * 1000).toISOString(),
+                                    "RESPONSIBLE_ID": staff.ID,
+                                    'SETTINGS': {
+                                        'MESSAGE_FROM': `${staff.NAME} ${staff.LAST_NAME} <${staff.EMAIL}>`
+                                    }
                                 }
                             },
-                            function(result) {
-                                if (result.error()) {
-                                    reject(result.error());
-                                } else {
-                                    resolve(result.data());
-                                }
-                            }
-                        );
-                    });
+                            requestId: 'activity-add'
+                        });
+                        let resultActivity = responseActivity.getData().result;
 
-                    if (resultUser.length > 0) {
-                        let contactEmail = resultContact.EMAIL[0];
-                        let staff = resultUser[0];
-
-                        if (contactEmail.VALUE && staff.EMAIL) {
-                            let resultActivity = await new Promise((resolve, reject) => {
-                                BX24.callMethod(
-                                    'crm.activity.add',
-                                    {
-                                        'fields': {
-                                            "SUBJECT": "subject email now",
-                                            "DESCRIPTION": "body email now",
-                                            "DESCRIPTION_TYPE": 3,
-                                            "COMPLETED": "Y",
-                                            "DIRECTION": 2,
-                                            "OWNER_ID": contactID,
-                                            "OWNER_TYPE_ID": 3,
-                                            "TYPE_ID": 4,
-                                            "COMMUNICATIONS": [
-                                                {
-                                                    'VALUE': contactEmail.VALUE,
-                                                    'ENTITY_ID': contactID,
-                                                    'ENTITY_TYPE_ID': 3
-                                                }
-                                            ],
-                                            "START_TIME": new Date().toISOString(),
-                                            "END_TIME": new Date(Date.now() + 3600 * 1000).toISOString(),
-                                            "RESPONSIBLE_ID": staff.ID,
-                                            'SETTINGS': {
-                                                'MESSAGE_FROM': `${staff.NAME} ${staff.LAST_NAME} <${staff.EMAIL}>`
-                                            }
-                                        }
-                                    },
-                                    function(result) {
-                                        if (result.error()) {
-                                            reject(result.error());
-                                        } else {
-                                            resolve(result.data());
-                                        }
-                                    }
-                                );
-                            });
-
-                            if (resultActivity) {
-                                console.log(JSON.stringify({ 'message': 'Activity added' }));
-                            } else {
-                                console.log(JSON.stringify({ 'message': 'Activity not added' }));
-                            }
+                        if (resultActivity) {
+                            console.log(JSON.stringify({ 'message': 'Activity added' }));
+                        } else {
+                            console.log(JSON.stringify({ 'message': 'Activity not added' }));
                         }
                     }
                 }
-            } catch (error) {
-                console.error(error);
-                console.log(JSON.stringify({ 'message': 'Activity not added: ' + error.message }));
             }
+        } catch (error) {
+            console.error(error);
+            console.log(JSON.stringify({ 'message': 'Activity not added: ' + error.message }));
         }
+    }
 
-        createEmailActivityForContact();
-    });
+    createEmailActivityForContact();
     ```
 
 - PHP
 
     ```php
     <?php
+    // composer require bitrix24/b24phpsdk:"^3.0"
+    require_once 'vendor/autoload.php';
+
+    use Bitrix24\SDK\Services\ServiceBuilderFactory;
+    use Symfony\Component\EventDispatcher\EventDispatcher;
+    use Psr\Log\NullLogger;
+
+    $sb = (new ServiceBuilderFactory(new EventDispatcher(), new NullLogger()))
+        ->initFromWebhook('https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/');
+
     $contactID = 1;
-    $resultContact = CRest::call(
-        'crm.contact.get',
-        [
-            'id' => $contactID
-        ]
-    );
-    $resultActivity = [];
-    if (!empty($resultContact['result']['ASSIGNED_BY_ID']) && !empty($resultContact['result']['EMAIL']))
-    {
-        $resultUser = CRest::call(
-            'user.get',
-            [
-                'filter' => [
-                    'ID' => $resultContact['result']['ASSIGNED_BY_ID']
-                ]
-            ]
-        );
-        if ($resultUser['result'])
+    try {
+        $resultContact = $sb->getCRMScope()->contact()->get($contactID)->contact();
+        $resultActivity = null;
+        if (!empty($resultContact->ASSIGNED_BY_ID) && !empty($resultContact->EMAIL))
         {
-            $contactEmail = reset($resultContact['result']['EMAIL']);
-            $staff = reset($resultUser['result']);
-            if (!empty($contactEmail['VALUE']) && !empty($staff['EMAIL']))
+            $resultUser = $sb->getUserScope()->user()->get(
+                [],
+                ['ID' => $resultContact->ASSIGNED_BY_ID]
+            )->getUsers();
+            if ($resultUser)
             {
-                $resultActivity = CRest::call(
-                    'crm.activity.add',
-                    [
-                        'fields' => [
+                $emails = $resultContact->EMAIL;
+                $contactEmail = reset($emails);
+                $staff = reset($resultUser);
+                if (!empty($contactEmail->VALUE) && !empty($staff->EMAIL))
+                {
+                    $resultActivity = $sb->getCRMScope()->activity()->add(
+                        [
                             "SUBJECT" => "subject email now",
                             "DESCRIPTION" => "body email now",
-                            "DESCRIPTION_TYPE" => 3,//text,html,bbCode type id in: CRest::call('crm.enum.contenttype');
-                            "COMPLETED" => "Y",//send now
-                            "DIRECTION" => 2,// CRest::call('crm.enum.activitydirection');
+                            "DESCRIPTION_TYPE" => 3,// text type (crm.enum.contenttype): plain, HTML, BB-code
+                            "COMPLETED" => "Y",// send now
+                            "DIRECTION" => 2,// crm.enum.activitydirection
                             "OWNER_ID" => $contactID,
-                            "OWNER_TYPE_ID" => 3, // CRest::call('crm.enum.ownertype');
-                            "TYPE_ID" => 4, // CRest::call('crm.enum.activitytype');
+                            "OWNER_TYPE_ID" => 3, // crm.enum.ownertype
+                            "TYPE_ID" => 4, // crm.enum.activitytype
                             "COMMUNICATIONS" => [
                                 [
-                                    'VALUE' => $contactEmail['VALUE'],
+                                    'VALUE' => $contactEmail->VALUE,
                                     'ENTITY_ID' => $contactID,
-                                    'ENTITY_TYPE_ID' => 3// CRest::call('crm.enum.ownertype');
+                                    'ENTITY_TYPE_ID' => 3// crm.enum.ownertype
                                 ]
                             ],
                             "START_TIME" => date("Y-m-d H:i:s", time()),
                             "END_TIME" => date("Y-m-d H:i:s", time() + 3600),
-                            "RESPONSIBLE_ID" => $staff['ID'],
+                            "RESPONSIBLE_ID" => $staff->ID,
                             'SETTINGS' => [
                                 'MESSAGE_FROM' => implode(
                                     ' ',
-                                    [$staff['NAME'], $staff['LAST_NAME'], '<' . $staff['EMAIL'] . '>']
+                                    [$staff->NAME, $staff->LAST_NAME, '<' . $staff->EMAIL . '>']
                                 ),
                             ],
                         ]
-                    ]
-                );
+                    )->getId();
+                }
             }
         }
+        if (!empty($resultActivity))
+        {
+            echo json_encode(['message' => 'Activity add']);
+        }
+        else
+        {
+            echo json_encode(['message' => 'Activity not added']);
+        }
+    } catch (\Throwable $e) {
+        echo json_encode(['message' => 'Activity not added: ' . $e->getMessage()]);
     }
-    if (!empty($resultActivity['result']))
-    {
-        echo json_encode(['message' => 'Activity added']);
-    }
-    elseif (!empty($resultActivity['error_description']))
-    {
-        echo json_encode(['message' => 'Activity not added: ' . $resultActivity['error_description']]);
-    }
-    else
-    {
-        echo json_encode(['message' => 'Activity not added']);
-    }
-    ?>
     ```
 
 - Python
@@ -548,7 +507,7 @@ The code in this example combines all steps: it retrieves client and employee da
     client = Client(
         BitrixWebhook(
             domain="your-domain.bitrix24.com",
-            auth_token="your-webhook-token",
+            webhook_token="user_id/webhook_key",
         )
     )
 
@@ -596,7 +555,7 @@ The code in this example combines all steps: it retrieves client and employee da
                     ).response.result
 
         if result_activity:
-            print({"message": "Activity added"})
+            print({"message": "Activity add"})
         else:
             print({"message": "Activity not added"})
     except BitrixAPIError as error:

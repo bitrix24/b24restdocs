@@ -39,36 +39,50 @@ Let's retrieve the description of stages with semantics for leads. To do this, w
 -  JS
 
     ```javascript
-    BX24.callMethod(
-        "crm.status.list",
-        {
-            order: { SORT: "ASC" }, // sorting in ascending order based on the SORT field
-            filter: { ENTITY_ID: "STATUS" }, // retrieving stages for leads
-        },
-        function(result) {
-            if(result.error())
-                console.error(result.error());
-            else
-                console.dir(result.data());
+    import { B24Hook } from '@bitrix24/b24jssdk'
+
+    const $b24 = B24Hook.fromWebhookUrl(process.env.B24_HOOK)
+    // B24_HOOK = 'https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/'
+
+    const result = await $b24.actions.v2.call.make({
+        method: 'crm.status.list',
+        params: {
+            order: { SORT: 'ASC' }, // sort by ascending value in the SORT field
+            filter: { ENTITY_ID: 'STATUS' }, // get stages for leads
         }
-    );
+    });
+
+    if (result.isSuccess) {
+        console.dir(result.getData().result);
+    } else {
+        console.error(result.getErrorMessages().join('; '));
+    }
     ```
 
 -  PHP
 
     ```php
-    require_once('crest.php');
+    // composer require bitrix24/b24phpsdk:"^3.0"
+    require_once 'vendor/autoload.php';
 
-    $result = CRest::call(
-        'crm.status.list',
-        [
-            'order' => [ 'SORT' => 'ASC' ],
-            'filter' => [ 'ENTITY_ID' => 'STATUS' ]
-        ]
-    );
+    use Bitrix24\SDK\Services\ServiceBuilderFactory;
+    use Symfony\Component\EventDispatcher\EventDispatcher;
+    use Monolog\Logger;
+    use Monolog\Handler\StreamHandler;
+
+    $log = new Logger('b24');
+    $log->pushHandler(new StreamHandler('php://stdout'));
+
+    $sb = (new ServiceBuilderFactory(new EventDispatcher(), $log))
+        ->initFromWebhook('https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/');
+
+    $statuses = $sb->getCRMScope()->status()->list(
+        ['SORT' => 'ASC'],
+        ['ENTITY_ID' => 'STATUS']
+    )->getStatuses();
     ```
 
--  Python
+- Python
 
     ```python
     from b24pysdk import BitrixWebhook, Client
@@ -76,7 +90,7 @@ Let's retrieve the description of stages with semantics for leads. To do this, w
     client = Client(
         BitrixWebhook(
             domain="your-domain.bitrix24.com",
-            auth_token="your-webhook-token",
+            webhook_token="user_id/webhook_key",
         )
     )
 
@@ -97,8 +111,8 @@ As a result, we will receive an array of objects, where each object is a descrip
             "ID": "1",
             "ENTITY_ID": "STATUS",
             "STATUS_ID": "NEW",
-            "NAME": "Not Processed",
-            "NAME_INIT": "Not Processed",
+            "NAME": "Not processed",
+            "NAME_INIT": "Not processed",
             "SORT": "10",
             "SYSTEM": "Y",
             "CATEGORY_ID": null,
@@ -113,7 +127,7 @@ As a result, we will receive an array of objects, where each object is a descrip
             "ID": "3",
             "ENTITY_ID": "STATUS",
             "STATUS_ID": "ASSIGNED",
-            "NAME": "Responsible Assigned",
+            "NAME": "Responsible person assigned",
             "NAME_INIT": "",
             "SORT": "20",
             "SYSTEM": "N",
@@ -146,8 +160,8 @@ As a result, we will receive an array of objects, where each object is a descrip
             "ID": "17",
             "ENTITY_ID": "STATUS",
             "STATUS_ID": "JUNK",
-            "NAME": "Low-Quality Lead",
-            "NAME_INIT": "Low-Quality Lead",
+            "NAME": "Low-quality lead",
+            "NAME_INIT": "Low-quality lead",
             "SORT": "60",
             "SYSTEM": "Y",
             "CATEGORY_ID": null,
@@ -180,25 +194,29 @@ The code outputs tables with a list of stages for leads and quotes.
 -  JS
 
    ```javascript
+   import { B24Hook } from '@bitrix24/b24jssdk'
+
+   const $b24 = B24Hook.fromWebhookUrl(process.env.B24_HOOK)
+   // B24_HOOK = 'https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/'
+
    /**
-    * Loads all statuses for the given ENTITY_ID
-    * @param {string} entityId — entity code, e.g., 'STATUS' or 'QUOTE_STATUS'
+    * Loads all statuses for the specified ENTITY_ID
+    * @param {string} entityId — entity code, for example, 'STATUS' or 'QUOTE_STATUS'
     * @returns {Promise<Array>} — array of all statuses
     */
-   function loadStatuses(entityId) {
-       return new Promise((resolve, reject) => {
-           BX24.callMethod('crm.status.list', {
+   async function loadStatuses(entityId) {
+       const result = await $b24.actions.v2.call.make({
+           method: 'crm.status.list',
+           params: {
                filter: { ENTITY_ID: entityId },
                select: ['STATUS_ID', 'NAME', 'EXTRA'],
                order: { SORT: 'ASC' }
-           }, (result) => {
-               if (result.error()) {
-                   reject(result.error());
-                   return;
-               }
-               resolve(result.data());
-           });
+           }
        });
+       if (!result.isSuccess) {
+           throw new Error(result.getErrorMessages().join('; '));
+       }
+       return result.getData().result;
    }
    
    /**
@@ -234,7 +252,7 @@ The code outputs tables with a list of stages for leads and quotes.
    
        return Array(maxLen).fill().map((_, i) => ({
            '✅ Success': pad(success, maxLen)[i],
-           '⚠️ In Progress': pad(process, maxLen)[i],
+           '⚠️ In progress': pad(process, maxLen)[i],
            '❌ Failure': pad(failure, maxLen)[i]
        }));
    }
@@ -242,7 +260,7 @@ The code outputs tables with a list of stages for leads and quotes.
    // Requesting statuses
    Promise.all([
        loadStatuses('STATUS').then(data => ({ type: 'Leads', data })),
-       loadStatuses('QUOTE_STATUS').then(data => ({ type: 'Quotes', data }))
+       loadStatuses('QUOTE_STATUS').then(data => ({ type: 'Commercial offers', data }))
    ]).then(results => {
        results.forEach(({ type, data }) => {
            console.group(`📊 ${type}`);
@@ -259,25 +277,32 @@ The code outputs tables with a list of stages for leads and quotes.
 
    ```php
    <?php
-   require_once 'crest.php';
-   
+   // composer require bitrix24/b24phpsdk:"^3.0"
+   require_once 'vendor/autoload.php';
+
+   use Bitrix24\SDK\Services\ServiceBuilderFactory;
+   use Symfony\Component\EventDispatcher\EventDispatcher;
+   use Monolog\Logger;
+   use Monolog\Handler\StreamHandler;
+
+   $log = new Logger('b24');
+   $log->pushHandler(new StreamHandler('php://stdout'));
+
+   $sb = (new ServiceBuilderFactory(new EventDispatcher(), $log))
+       ->initFromWebhook('https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/');
+
    /**
-    * Retrieves all statuses for the given ENTITY_ID
+    * Gets all statuses for the specified ENTITY_ID
     * @param string $entityId
     * @return array
     */
    function loadStatuses($entityId) {
-       $result = CRest::call('crm.status.list', [
-           'filter' => ['ENTITY_ID' => $entityId],
-           'select' => ['STATUS_ID', 'NAME', 'EXTRA'],
-           'order'  => ['SORT' => 'ASC']
-       ]);
-   
-       if (!empty($result['error'])) {
-           throw new Exception("Error loading statuses for $entityId: " . $result['error_description']);
-       }
-   
-       return $result['result'];
+       global $sb;
+       return $sb->getCRMScope()->status()->list(
+           ['SORT' => 'ASC'],
+           ['ENTITY_ID' => $entityId],
+           ['STATUS_ID', 'NAME', 'EXTRA']
+       )->getStatuses();
    }
    
    /**
@@ -287,8 +312,8 @@ The code outputs tables with a list of stages for leads and quotes.
        $groups = ['success' => [], 'process' => [], 'failure' => []];
    
        foreach ($statuses as $item) {
-           $semantics = $item['EXTRA']['SEMANTICS'] ?? '';
-           $name = $item['NAME'] ?? $item['STATUS_ID'];
+           $semantics = $item->EXTRA['SEMANTICS'] ?? '';
+           $name = $item->NAME ?? $item->STATUS_ID;
    
            if ($semantics === 'success') {
                $groups['success'][] = $name;
@@ -327,8 +352,8 @@ The code outputs tables with a list of stages for leads and quotes.
    }
    
    $entities = [
-       ['title' => 'Lead Statuses', 'entityId' => 'STATUS'],
-       ['title' => 'Quote Statuses', 'entityId' => 'QUOTE_STATUS']
+       ['title' => 'Lead statuses', 'entityId' => 'STATUS'],
+       ['title' => 'Commercial offer statuses', 'entityId' => 'QUOTE_STATUS']
    ];
    
    foreach ($entities as $entity) {
@@ -346,7 +371,7 @@ The code outputs tables with a list of stages for leads and quotes.
            echo "<table border=\"1\" style=\"border-collapse: collapse; width: 100%;\">\n";
            echo "<thead><tr>
                <th style=\"padding: 8px; background: #d4edda;\">✅ Success</th>
-               <th style=\"padding: 8px; background: #fff3cd;\">⚠️ In Progress</th>
+               <th style=\"padding: 8px; background: #fff3cd;\">⚠️ In progress</th>
                <th style=\"padding: 8px; background: #f8d7da;\">❌ Failure</th>
            </tr></thead>\n<tbody>";
    
@@ -372,14 +397,11 @@ The code outputs tables with a list of stages for leads and quotes.
     from b24pysdk import BitrixWebhook, Client
     from b24pysdk.errors import BitrixAPIError
 
-
     def load_statuses(client, entity_id: str) -> list:
         return client.crm.status.list(
             filter={"ENTITY_ID": entity_id},
-            select=["STATUS_ID", "NAME", "EXTRA"],
             order={"SORT": "ASC"},
         ).response.result
-
 
     def group_statuses_by_semantics(statuses: list) -> dict:
         groups = {"success": [], "process": [], "failure": []}
@@ -393,7 +415,6 @@ The code outputs tables with a list of stages for leads and quotes.
             else:
                 groups["process"].append(name)
         return groups
-
 
     def build_table_rows(groups: dict) -> list:
         success = groups["success"]
@@ -410,17 +431,16 @@ The code outputs tables with a list of stages for leads and quotes.
             rows.append([success[i], process[i], failure[i]])
         return rows
 
-
     client = Client(
         BitrixWebhook(
             domain="your-domain.bitrix24.com",
-            auth_token="your-webhook-token",
+            webhook_token="user_id/webhook_key",
         )
     )
 
     entities = [
-        {"title": "Lead Statuses", "entity_id": "STATUS"},
-        {"title": "Quote Statuses", "entity_id": "QUOTE_STATUS"},
+        {"title": "Lead statuses", "entity_id": "STATUS"},
+        {"title": "Commercial offer statuses", "entity_id": "QUOTE_STATUS"},
     ]
 
     try:
@@ -434,7 +454,7 @@ The code outputs tables with a list of stages for leads and quotes.
 
         for title, rows in tables.items():
             print(title)
-            print("Success\tIn Progress\tFailure")
+            print("✅ Success\t⚠️ In progress\t❌ Failure")
             for row in rows:
                 print("\t".join(row))
     except BitrixAPIError as error:

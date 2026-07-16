@@ -10,27 +10,27 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-You can automate document handling in CRM using a script. It will perform the complete document generation cycle: create a number generator, upload a template in `.docx` format, and generate a document for a specific deal.
+You can automate working with documents in the CRM using a script. It will perform the full document generation cycle: create a numerator, upload a template in `.docx` format, and generate a document for a specific deal.
 
-To create a document, we will sequentially execute the following methods:
+To create a document, we will call the following methods in sequence:
 
-1. [crm.documentgenerator.numerator.add](../../../api-reference/crm/document-generator/numerator/crm-document-generator-numerator-add.md) — create a document number generator,
+1. [crm.documentgenerator.numerator.add](../../../api-reference/crm/document-generator/numerator/crm-document-generator-numerator-add.md) — create a document numerator,
 
-2. [crm.documentgenerator.template.add](../../../api-reference/crm/document-generator/templates/crm-document-generator-template-add.md) — upload the document template,
+2. [crm.documentgenerator.template.add](../../../api-reference/crm/document-generator/templates/crm-document-generator-template-add.md) — upload a document template,
 
-3. [crm.documentgenerator.document.add](../../../api-reference/crm/document-generator/documents/crm-document-generator-document-add.md) — generate the document.
+3. [crm.documentgenerator.document.add](../../../api-reference/crm/document-generator/documents/crm-document-generator-document-add.md) — generate a document.
 
-## Preparing Variables
+## Prepare Variables
 
-Let's define the main variables that we will use during the document generation process.
+Define the main variables that will be used during the document generation process.
 
--  `filePath` — the path to the template file. We will specify `template.docx`.
+-  `filePath` — path to the template file. We will specify `template.docx`.
 
--  `iDealID` — the deal identifier. We will create a document for the deal with the identifier `1`.
+-  `iDealID` — deal identifier. We will create a document for a deal with identifier `1`.
 
--  `sDocName` — the name of the document being created. We will specify `Product Demonstration Implementation`.
+-  `sDocName` — name of the document being created. We will specify Demonstration product implementation.
 
-{% include [Example Notes](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -39,7 +39,7 @@ Let's define the main variables that we will use during the document generation 
    ```javascript
    let filePath = 'template.docx'; 
    let iDealID = 1; 
-   let sDocName = 'Product Demonstration Implementation';
+   let sDocName = 'Demonstration product implementation';
    ```
 
 -  PHP
@@ -47,65 +47,71 @@ Let's define the main variables that we will use during the document generation 
    ```php
    $filePath = __DIR__ . '/template.docx';  
    $iDealID = 1;  
-   $sDocName = 'Product Demonstration Implementation';
+   $sDocName = 'Demonstration product implementation';
    ```
 
--  Python
+- Python
 
    ```python
    file_path = "template.docx"
    deal_id = 1
-   document_name = "Product Demonstration Implementation"
+   document_name = "Demonstration product implementation"
    ```
 
 {% endlist %}
 
-## 1. Create a Document Number Generator
+## 1\. Create a Document Numerator
 
-We will create a number generator for documents using [crm.documentgenerator.numerator.add](../../../api-reference/crm/document-generator/numerator/crm-document-generator-numerator-add.md). We will pass two parameters to the method.
+Create a numerator for documents using [crm.documentgenerator.numerator.add](../../../api-reference/crm/document-generator/numerator/crm-document-generator-numerator-add.md). Pass two parameters to the method.
 
--  `name` — the name of the number generator. We will specify `Rest Numerator`.
+-  `name` — numerator name. We will specify `Rest Numerator`.
 
--  `template` — the template from which the document number will be generated. We will specify `{NUMBER}` — this variable will be replaced with the sequential number. Other variables can also be used, for example, `{DAY}` — the current day, `{CLIENT_ID}` — the client identifier, `{RANDOM}` — a random number.
+-  `template` — the template used to generate the document number. We will specify `{NUMBER}` — this is a variable that will be replaced by a sequential number. You can use other variables, such as `{DAY}` — current day, `{CLIENT_ID}` — customer identifier, `{RANDOM}` — random number.
 
 {% list tabs %}
 
 -  JS
 
    ```javascript
-   BX24.callMethod(
-       'crm.documentgenerator.numerator.add',
-       {
-           'fields': {
-               'name': 'Rest Numerator',
+   import { B24Hook } from '@bitrix24/b24jssdk'
+
+   const $b24 = B24Hook.fromWebhookUrl(process.env.B24_HOOK)
+   // B24_HOOK = 'https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/'
+
+   const resNum = await $b24.actions.v2.call.make({
+       method: 'crm.documentgenerator.numerator.add',
+       params: {
+           fields: {
+               'name': 'Enumerator from REST',
                'template': '{NUMBER}'
            }
        },
-       function(resNum) {
-           if (resNum.error()) {
-               console.error(resNum.error());
-               alert('Number generator not added: ' + resNum.error_description());
-               return;
-           }
-       }
-   );
+       requestId: 'numerator-add'
+   });
    ```
 
 -  PHP
 
    ```php
-   $resNum = CRest::call(
-       'crm.documentgenerator.numerator.add',
+   // composer require bitrix24/b24phpsdk:"^3.0"
+   require_once 'vendor/autoload.php';
+
+   use Bitrix24\SDK\Services\ServiceBuilderFactory;
+   use Symfony\Component\EventDispatcher\EventDispatcher;
+   use Psr\Log\NullLogger;
+
+   $sb = (new ServiceBuilderFactory(new EventDispatcher(), new NullLogger()))
+       ->initFromWebhook('https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/');
+
+   $resNum = $sb->getCRMScope()->documentgeneratorNumerator()->add(
        [
-           'fields' => [
-               'name' => 'Rest Numerator',
-               'template' => '{NUMBER}',
-           ]
+           'name' => 'Enumerator from REST',
+           'template' => '{NUMBER}',
        ]
    );
    ```
 
--  Python
+- Python
 
    ```python
    from b24pysdk import BitrixWebhook, Client
@@ -113,13 +119,13 @@ We will create a number generator for documents using [crm.documentgenerator.num
    client = Client(
        BitrixWebhook(
            domain="your-domain.bitrix24.com",
-           auth_token="your-webhook-token",
+           webhook_token="user_id/webhook_key",
        )
    )
 
    res_num = client.crm.documentgenerator.numerator.add(
        fields={
-           "name": "Rest Numerator",
+           "name": "Enumerator from REST",
            "template": "{NUMBER}",
        }
    ).response.result
@@ -127,51 +133,51 @@ We will create a number generator for documents using [crm.documentgenerator.num
 
 {% endlist %}
 
-The method [crm.documentgenerator.numerator.add](../../../api-reference/crm/document-generator/numerator/crm-document-generator-numerator-add.md) will return an object `resNum` with information about the created number generator.
+The [crm.documentgenerator.numerator.add](../../../api-reference/crm/document-generator/numerator/crm-document-generator-numerator-add.md) method returns an `resNum` object containing information about the created numerator.
 
 ```json
-"numerator": {
-    "name": "Rest Numerator",
-    "template": "{NUMBER}",
-    "id": 43,
-    "code": null,
-    "settings": {
-        "Bitrix_Main_Numerator_Generator_SequentNumberGenerator": {
-            "start": 1,
-            "step": 1,
-            "length": 0,
-            "padString": "0",
-            "periodicBy": null,
-            "timezone": null,
-            "isDirectNumeration": false
+"numerator":{
+    "name":"Enumerator from REST",
+    "template":"{NUMBER}",
+    "id":43,
+    "code":null,
+    "settings":{
+        "Bitrix_Main_Numerator_Generator_SequentNumberGenerator":{
+            "start":1,
+            "step":1,
+            "length":0,
+            "padString":"0",
+            "periodicBy":null,
+            "timezone":null,
+            "isDirectNumeration":false
         }
     }
 }
 ```
 
-## 2. Upload the Document Template
+## 2\. Upload a Document Template
 
-If the number generator is created, we will add the document template using the method [crm.documentgenerator.template.add](../../../api-reference/crm/document-generator/templates/crm-document-generator-template-add.md).
+Once the numerator is created, add a document template using the [crm.documentgenerator.template.add](../../../api-reference/crm/document-generator/templates/crm-document-generator-template-add.md) method.
 
 {% note warning "" %}
 
-The content of the template file needs to be converted to [Base64](../../../api-reference/files/how-to-upload-files.md).
+The template file content must be converted to [Base64](../../../api-reference/files/how-to-upload-files.md) format.
 
 {% endnote %}
 
-In [crm.documentgenerator.template.add](../../../api-reference/crm/document-generator/templates/crm-document-generator-template-add.md), we need to pass the following data:
+Pass the following data to [crm.documentgenerator.template.add](../../../api-reference/crm/document-generator/templates/crm-document-generator-template-add.md):
 
--  `name` — the name of the template. We will specify the variable `sDocName`.
+-  `name` — template name. We will specify the variable `sDocName`.
 
--  `numeratorId` — the identifier of the number generator. We will pass it from the object `resNum`, which we obtained in the first step.
+-  `numeratorId` — numerator identifier. Pass this from the `resNum` object obtained in the first step.
 
--  `region` — the region of the template. This affects localization, such as currency and date. We will specify `de` — Germany.
+-  `region` — template region. This affects localization, such as currency and date. We will specify `de` — Germany.
 
--  `users` — an array of access permissions. This defines which user groups can see and use the template. We will specify `UA` — all authorized users.
+-  `users` — access rights array. Defines which user groups can view and use the template. We will specify `UA` — all authorized users.
 
--  `entityTypeId` — [the identifier of the CRM object type](../../../api-reference/crm/data-types.md#object_type). We will specify `2` — deal. A complete list of object types can be obtained using the method [crm.enum.ownertype](../../../api-reference/crm/auxiliary/enum/crm-enum-owner-type.md).
+-  `entityTypeId` — [CRM object type identifier](../../../api-reference/crm/data-types.md#object_type). We will specify `2` — deal. A full list of object types can be retrieved using the [crm.enum.ownertype](../../../api-reference/crm/auxiliary/enum/crm-enum-owner-type.md) method.
 
--  `file` — the content of the file `filePath`, which has been converted to Base64.
+-  `file` — content of file `filePath`, converted to Base64 format.
 
 {% list tabs %}
 
@@ -193,49 +199,40 @@ In [crm.documentgenerator.template.add](../../../api-reference/crm/document-gene
    
    let fileContent = await fileToBase64(filePath);
    
-   BX24.callMethod(
-       'crm.documentgenerator.template.add',
-       {
-           'fields': {
+   const resTemplate = await $b24.actions.v2.call.make({
+       method: 'crm.documentgenerator.template.add',
+       params: {
+           fields: {
                'name': sDocName,
-               'numeratorId': resNum.data().numerator.id,
+               'numeratorId': resNum.getData().result.numerator.id,
                'region': 'de',
                'users': ['UA'],
                'entityTypeId': ['2'],
                'file': fileContent
            }
        },
-       function(resTemplate) {
-           if (resTemplate.error()) {
-               console.error(resTemplate.error());
-               alert('Template not added: ' + resTemplate.error_description());
-               return;
-           }
-       }
-   );
+       requestId: 'template-add'
+   });
    ```
 
 -  PHP
 
    ```php
-   $resTemplate = CRest::call(
-       'crm.documentgenerator.template.add',
+   $resTemplate = $sb->getCRMScope()->documentgeneratorTemplate()->add(
        [
-           'fields' => [
-               'name' => $sDocName,
-               'numeratorId' => $resNum['result']['numerator']['id'],  
-               'region' => 'de', 
-               'users' => [
-                   'UA' // User All
-               ],
-               'entityTypeId' => ['2'], 
-               'file' => base64_encode(file_get_contents($filePath))
-           ]
+           'name' => $sDocName,
+           'numeratorId' => $resNum->getId(), // crm.documentgenerator.numerator.add
+           'region' => 'de', // eu,de,ua,by,ru
+           'users' => [
+               'UA'//User All
+           ],
+           'entityTypeId' => ['2'], // 2 — deal (crm.enum.ownertype)
+           'file' => base64_encode(file_get_contents($filePath))
        ]
    );
    ```
 
--  Python
+- Python
 
    ```python
    import base64
@@ -257,73 +254,64 @@ In [crm.documentgenerator.template.add](../../../api-reference/crm/document-gene
 
 {% endlist %}
 
-The method [crm.documentgenerator.template.add](../../../api-reference/crm/document-generator/templates/crm-document-generator-template-add.md) will return an object `resTemplate` with information about the template.
+The [crm.documentgenerator.template.add](../../../api-reference/crm/document-generator/templates/crm-document-generator-template-add.md) method returns an `resTemplate` object containing information about the template.
 
 ```json
 template: { 
     "id": "39", 
-    "name": "Product Demonstration Implementation", 
+    "name": "Demonstration product implementation", 
     "region": "de",
-    "active": "Y",
-    "code": null,
-    "createTime": "2025-07-09T16:12:13+03:00",
-    "download": "https://some-domain.bitrix24.com/bitrix/services/main/ajax.php?action=crm.documentgenerator.template.download&SITE_ID=s1&id=39",
-    "downloadMachine": "https://some-domain.bitrix24.com/rest/crm.documentgenerator.template.download.json?sessid=c4ad892d7583ead4fd38666a0af85cb7&token=crm%7CYWN0aW9uPWNybS5kb2N1bWVudGdlbmVyYXRvci50ZW1wbGF0ZS5kb3dubG9hZCZTSVRFX0lEPXMxJmlkPTM5Jl89azNRNlFuVVRvUGl5VzNLaExTVDJCR3g1WjdyQ0tSSFA%3D%7CImNybS5kb2N1bWVudGdlbmVyYXRvci50ZW1wbGF0ZS5kb3dubG9hZHxjcm18WVdOMGFXOXVQV055YlM1a2IyTjFiV1Z1ZEdkbGJtVnlZWFJ2Y2k1MFpXMXdiR0YwWlM1a2IzZHViRzloWkNaVFNWUkZYMGxFUFhNeEptbGtQVE01Smw4OWF6TlJObEZ1VlZSdlVHbDVWek5MYUV4VFZESkNSM2cxV2pkeVEwdFNTRkE9fGM0YWQ4OTJkNzU4M2VhZDRmZDM4NjY2YTBhZjg1Y2I3Ig%3D%3D.GMgjAbCT099xlo8CJN9n5mP2s7MBbqfU%2BbEM%2FAzpoYE%3D",
-    "entityTypeId": [ "0": "2" ],
-    "length": 1,
-    "numeratorId": "43",
-    "users": [ "0": "UA" ],
+    "​​active": "Y",
+    "​​code": null,
+    "​​createTime": "2025-07-09T16:12:13+03:00",
+    "​​download": "https://some-domain.bitrix24.com/bitrix/services/main/ajax.php?action=crm.documentgenerator.template.download&SITE_ID=s1&id=39",
+    "​​downloadMachine": "https://some-domain.bitrix24.com/rest/crm.documentgenerator.template.download.json?sessid=c4ad892d7583ead4fd38666a0af85cb7&token=crm%7CYWN0aW9uPWNybS5kb2N1bWVudGdlbmVyYXRvci50ZW1wbGF0ZS5kb3dubG9hZCZTSVRFX0lEPXMxJmlkPTM5Jl89azNRNlFuVVRvUGl5VzNLaExTVDJCR3g1WjdyQ0tSSFA%3D%7CImNybS5kb2N1bWVudGdlbmVyYXRvci50ZW1wbGF0ZS5kb3dubG9hZHxjcm18WVdOMGFXOXVQV055YlM1a2IyTjFiV1Z1ZEdkbGJtVnlZWFJ2Y2k1MFpXMXdiR0YwWlM1a2IzZHViRzloWkNaVFNWUkZYMGxFUFhNeEptbGtQVE01Smw4OWF6TlJObEZ1VlZSdlVHbDVWek5MYUV4VFZESkNSM2cxV2pkeVEwdFNTRkE9fGM0YWQ4OTJkNzU4M2VhZDRmZDM4NjY2YTBhZjg1Y2I3Ig%3D%3D.GMgjAbCT099xlo8CJN9n5mP2s7MBbqfU%2BbEM%2FAzpoYE%3D",
+    "​​entityTypeId": [ "0": "2" ],
+    "​​​length": 1,
+    "​​​numeratorId": "43",
+    "​​users": [ "0": "UA" ],
     "sort": 500
 }
+​​
 ```
 
-## 3. Generate the Document
+## 3. Generate a Document
 
-If the template is successfully uploaded, we will create a document for the deal using the method [crm.documentgenerator.document.add](../../../api-reference/crm/document-generator/documents/crm-document-generator-document-add.md). We will specify three parameters in the method.
+If the template is successfully uploaded, create a document for the deal using the [crm.documentgenerator.document.add](../../../api-reference/crm/document-generator/documents/crm-document-generator-document-add.md) method. Specify three parameters in the method.
 
-1. `templateId` — the identifier of the template. We will pass it from the object `resTemplate`, which we obtained in the second step.
+1. `templateId` — the template identifier. Pass it from the `resTemplate` object obtained in step two.
 
-2. `entityTypeId` — [the identifier of the CRM object type](../../../api-reference/crm/data-types.md#object_type). We will specify `2` — deal. A complete list of object types can be obtained using the method [crm.enum.ownertype](../../../api-reference/crm/auxiliary/enum/crm-enum-owner-type.md).
+2. `entityTypeId` — the [CRM object type identifier](../../../api-reference/crm/data-types.md#object_type). Specify `2` — deal. You can retrieve the full list of object types using the [crm.enum.ownertype](../../../api-reference/crm/auxiliary/enum/crm-enum-owner-type.md) method.
 
-3. `entityId` — the identifier of the deal. We will specify the variable `iDealID`.
+3. `entityId` — the deal identifier. Specify the `iDealID` variable.
 
 {% list tabs %}
 
 -  JS
 
    ```js
-   BX24.callMethod(
-       'crm.documentgenerator.document.add',
-       {
-           'templateId': resTemplate.data().template.id,
+   const resDoc = await $b24.actions.v2.call.make({
+       method: 'crm.documentgenerator.document.add',
+       params: {
+           'templateId': resTemplate.getData().result.template.id,
            'entityTypeId': '2',
            'entityId': iDealID
        },
-       function(resDoc) {
-           if (resDoc.error()) {
-               console.error(resDoc.error());
-               alert('Document not created: ' + resDoc.error_description());
-           } else {
-               alert('Document created');
-           }
-       }
-   );
+       requestId: 'document-add'
+   });
    ```
 
 -  PHP
 
    ```php
-   $resDoc = CRest::call(
-       'crm.documentgenerator.document.add',
-       [
-           'templateId' => $resTemplate['result']['template']['id'],
-           'entityTypeId' => '2', 
-           'entityId' => $iDealID,
-       ]
+   $resDoc = $sb->getCRMScope()->documentgeneratorDocument()->add(
+       templateId: $resTemplate->getId(),
+       entityTypeId: 2, // 2 — deal (crm.enum.ownertype)
+       entityId: $iDealID,
    );
    ```
 
--  Python
+- Python
 
    ```python
    res_doc = client.crm.documentgenerator.document.add(
@@ -337,28 +325,28 @@ If the template is successfully uploaded, we will create a document for the deal
 
 {% endlist %}
 
-The document will be generated, and the method [crm.documentgenerator.document.add](../../../api-reference/crm/document-generator/documents/crm-document-generator-document-add.md) will return its parameters.
+The document will be generated, and the [crm.documentgenerator.document.add](../../../api-reference/crm/document-generator/documents/crm-document-generator-document-add.md) method will return its parameters.
 
 ```json
-"document": {
-    "products": {
-        "currencyId": "EUR",
-        "totalSum": 1500,
-        "totalRows": 1
+"document":{
+    "products":{
+        "currencyId":"EUR",
+        "totalSum":1500,
+        "totalRows":1
     },
-    "downloadUrl": "https://some-domain.bitrix24.com/bitrix/services/main/ajax.php?action=crm.documentgenerator.document.download&SITE_ID=s1&id=29",
-    "publicUrl": null,
-    "title": "Product Demonstration Implementation 1",
-    "number": "1",
-    "id": 29,
-    "createTime": "2025-07-09T16:29:27+03:00",
-    "createdBy": 27,
-    "updateTime": "2025-07-09T16:29:27+03:00",
-    "templateId": "39",
-    "emailDiskFile": 4917,
-    "entityId": "1",
-    "entityTypeId": "2",
-    "downloadUrlMachine": "https://some-domain.bitrix24.com/rest/crm.documentgenerator.document.download.json?sessid=c4ad892d7583ead4fd38666a0af85cb7&token=crm%7CYWN0aW9uPWNybS5kb2N1bWVudGdlbmVyYXRvci5kb2N1bWVudC5kb3dubG9hZCZTSVRFX0lEPXMxJmlkPTI5Jl89YlQ2SU9XeGVnR2s3NnZ5M0hGVlRxTDVaRlJtdFgyNTE%3D%7CImNybS5kb2N1bWVudGdlbmVyYXRvci5kb2N1bWVudC5kb3dubG9hZHxjcm18WVdOMGFXOXVQV055YlM1a2IyTjFiV1Z1ZEdkbGJtVnlZWFJ2Y2k1a2IyTjFiV1Z1ZEM1a2IzZHViRzloWkNaVFNWUkZYMGxFUFhNeEptbGtQVEk1Smw4OVlsUTJTVTlYZUdWblIyczNOblo1TTBoR1ZsUnhURFZhUmxKdGRGZ3lOVEU9fGM0YWQ4OTJkNzU4M2VhZDRmZDM4NjY2YTBhZjg1Y2I3Ig%3D%3D.H575mM4Mf%2Fj4PVH2Ngzb1kmkQhdScsAL75ZJkbYkALk%3D"
+    "downloadUrl":"https:\\/\\/some-domain.bitrix24.com\\/bitrix\\/services\\/main\\/ajax.php?action=crm.documentgenerator.document.download\\u0026SITE_ID=s1\\u0026id=29",
+    "publicUrl":null,
+    "title":"Demonstration product implementation 1",
+    "number":"1",
+    "id":29,
+    "createTime":"2025-07-09T16:29:27+03:00",
+    "createdBy":27,
+    "updateTime":"2025-07-09T16:29:27+03:00",
+    "templateId":"39",
+    "emailDiskFile":4917,
+    "entityId":"1",
+    "entityTypeId":"2",
+    "downloadUrlMachine":"https:\\/\\/some-domain.bitrix24.com\\/rest\\/crm.documentgenerator.document.download.json?sessid=c4ad892d7583ead4fd38666a0af85cb7\\u0026token=crm%7CYWN0aW9uPWNybS5kb2N1bWVudGdlbmVyYXRvci5kb2N1bWVudC5kb3dubG9hZCZTSVRFX0lEPXMxJmlkPTI5Jl89YlQ2SU9XeGVnR2s3NnZ5M0hGVlRxTDVaRlJtdFgyNTE%3D%7CImNybS5kb2N1bWVudGdlbmVyYXRvci5kb2N1bWVudC5kb3dubG9hZHxjcm18WVdOMGFXOXVQV055YlM1a2IyTjFiV1Z1ZEdkbGJtVnlZWFJ2Y2k1a2IyTjFiV1Z1ZEM1a2IzZHViRzloWkNaVFNWUkZYMGxFUFhNeEptbGtQVEk1Smw4OVlsUTJTVTlYZUdWblIyczNOblo1TTBoR1ZsUnhURFZhUmxKdGRGZ3lOVEU9fGM0YWQ4OTJkNzU4M2VhZDRmZDM4NjY2YTBhZjg1Y2I3Ig%3D%3D.H575mM4Mf%2Fj4PVH2Ngzb1kmkQhdScsAL75ZJkbYkALk%3D"
 }
 ```
 
@@ -369,144 +357,134 @@ The document will be generated, and the method [crm.documentgenerator.document.a
 -  JS
 
    ```javascript
-   document.addEventListener('DOMContentLoaded', function() {
-       let filePath = 'template.docx'; // path to the local template file
-       let iDealID = 1; // deal identifier
-       let sDocName = 'Product Demonstration Implementation';
-   
-       function fileToBase64(filePath) {
-           return new Promise((resolve, reject) => {
-               fetch(filePath)
-                   .then(response => response.blob())
-                   .then(blob => {
-                       let reader = new FileReader();
-                       reader.onloadend = () => resolve(reader.result.split(',')[1]);
-                       reader.onerror = reject;
-                       reader.readAsDataURL(blob);
-                   });
+   import { B24Hook } from '@bitrix24/b24jssdk'
+
+   const $b24 = B24Hook.fromWebhookUrl(process.env.B24_HOOK)
+   // B24_HOOK = 'https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/'
+
+   let filePath = 'template.docx'; // path to local template file
+   let iDealID = 1; // deal identifier
+   let sDocName = 'Demonstration product implementation';
+
+   function fileToBase64(filePath) {
+       return new Promise((resolve, reject) => {
+           fetch(filePath)
+               .then(response => response.blob())
+               .then(blob => {
+                   let reader = new FileReader();
+                   reader.onloadend = () => resolve(reader.result.split(',')[1]);
+                   reader.onerror = reject;
+                   reader.readAsDataURL(blob);
+               });
+       });
+   }
+
+   async function createDocument() {
+       try {
+           let fileContent = await fileToBase64(filePath);
+
+           const resNum = await $b24.actions.v2.call.make({
+               method: 'crm.documentgenerator.numerator.add',
+               params: { fields: { 'name': 'Enumerator from REST', 'template': '{NUMBER}' } },
+               requestId: 'numerator-add'
            });
-       }
-   
-       async function createDocument() {
-           try {
-               let fileContent = await fileToBase64(filePath);
-   
-               BX24.callMethod(
-                   'crm.documentgenerator.numerator.add',
-                   {
-                       'fields': {
-                           'name': 'Rest Numerator',
-                           'template': '{NUMBER}'
+
+           if (resNum.getData().result.numerator.id) {
+               const resTemplate = await $b24.actions.v2.call.make({
+                   method: 'crm.documentgenerator.template.add',
+                   params: {
+                       fields: {
+                           'name': sDocName,
+                           'numeratorId': resNum.getData().result.numerator.id,
+                           'region': 'de',
+                           'users': ['UA'],
+                           'entityTypeId': ['2'],
+                           'file': fileContent
                        }
                    },
-                   function(resNum) {
-                       if (resNum.error()) {
-                           console.error(resNum.error());
-                           alert('Number generator not added: ' + resNum.error_description());
-                           return;
-                       }
-   
-                       if (resNum.data().numerator.id) {
-                           BX24.callMethod(
-                               'crm.documentgenerator.template.add',
-                               {
-                                   'fields': {
-                                       'name': sDocName,
-                                       'numeratorId': resNum.data().numerator.id,
-                                       'region': 'de',
-                                       'users': ['UA'],
-                                       'entityTypeId': ['2'],
-                                       'file': fileContent
-                                   }
-                               },
-                               function(resTemplate) {
-                                   if (resTemplate.error()) {
-                                       console.error(resTemplate.error());
-                                       alert('Template not added: ' + resTemplate.error_description());
-                                       return;
-                                   }
-   
-                                   if (resTemplate.data().template.id) {
-                                       BX24.callMethod(
-                                           'crm.documentgenerator.document.add',
-                                           {
-                                               'templateId': resTemplate.data().template.id,
-                                               'entityTypeId': '2',
-                                               'entityId': iDealID
-                                           },
-                                           function(resDoc) {
-                                               if (resDoc.error()) {
-                                                   console.error(resDoc.error());
-                                                   alert('Document not created: ' + resDoc.error_description());
-                                               } else {
-                                                   alert('Document created');
-                                               }
-                                           }
-                                       );
-                                   }
-                               }
-                           );
-                       }
-                   }
-               );
-           } catch (error) {
-               console.error(error);
-               alert('Error: ' + error.message);
+                   requestId: 'template-add'
+               });
+
+               if (resTemplate.getData().result.template.id) {
+                   await $b24.actions.v2.call.make({
+                       method: 'crm.documentgenerator.document.add',
+                       params: {
+                           'templateId': resTemplate.getData().result.template.id,
+                           'entityTypeId': '2',
+                           'entityId': iDealID
+                       },
+                       requestId: 'document-add'
+                   });
+                   alert('Document created');
+               }
            }
+       } catch (error) {
+           console.error(error);
+           alert('Error: ' + error.message);
        }
-   
-       createDocument();
-   });
+   }
+
+   createDocument();
    ```
 
 -  PHP
 
    ```php
-   $filePath = __DIR__ . '/template.docx'; // path to the local template file
+   <?php
+   // composer require bitrix24/b24phpsdk:"^3.0"
+   require_once 'vendor/autoload.php';
+
+   use Bitrix24\SDK\Services\ServiceBuilderFactory;
+   use Symfony\Component\EventDispatcher\EventDispatcher;
+   use Psr\Log\NullLogger;
+
+   $sb = (new ServiceBuilderFactory(new EventDispatcher(), new NullLogger()))
+       ->initFromWebhook('https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/');
+
+   $filePath = __DIR__ . '/template.docx'; // path to local template file
    $iDealID = 1; // deal identifier
-   $sDocName = 'Product Demonstration Implementation';
-   $resNum = CRest::call(
-       'crm.documentgenerator.numerator.add',
-       [
-           'fields' => [
-               'name' => 'Rest Numerator',
+   $sDocName = 'Demonstration product implementation';
+   try {
+       $resNum = $sb->getCRMScope()->documentgeneratorNumerator()->add(
+           [
+               'name' => 'Enumerator from REST',
                'template' => '{NUMBER}',
            ]
-       ]
-   );
-   if (!empty($resNum['result']['numerator']['id'])) {
-       $resTemplate = CRest::call(
-           'crm.documentgenerator.template.add',
-           [
-               'fields' => [
+       );
+       $resDoc = null;
+       if (!empty($resNum->getId()))
+       {
+           $resTemplate = $sb->getCRMScope()->documentgeneratorTemplate()->add(
+               [
                    'name' => $sDocName,
-                   'numeratorId' => $resNum['result']['numerator']['id'], // crm.documentgenerator.numerator.add
+                   'numeratorId' => $resNum->getId(), // crm.documentgenerator.numerator.add
                    'region' => 'de', // eu,de,ua,by,ru
                    'users' => [
-                       'UA' // User All
+                       'UA'//User All
                    ],
-                   'entityTypeId' => ['2'], // 2 — deal in CRest::call('crm.enum.ownertype');
+                   'entityTypeId' => ['2'], // 2 — deal (crm.enum.ownertype)
                    'file' => base64_encode(file_get_contents($filePath))
                ]
-           ]
-       );
-       if (!empty($resTemplate['result']['template']['id'])) {
-           $resDoc = CRest::call(
-               'crm.documentgenerator.document.add',
-               [
-                   'templateId' => $resTemplate['result']['template']['id'],
-                   'entityTypeId' => '2', // 2 — deal in CRest::call('crm.enum.ownertype');
-                   'entityId' => $iDealID,
-               ]
            );
+           if (!empty($resTemplate->getId()))
+           {
+               $resDoc = $sb->getCRMScope()->documentgeneratorDocument()->add(
+                   templateId: $resTemplate->getId(),
+                   entityTypeId: 2, // 2 — deal (crm.enum.ownertype)
+                   entityId: $iDealID,
+               );
+           }
        }
-   }
-   if (!empty($resDoc['result'])) {
-       echo json_encode(['message' => 'Document created']);
-   } elseif (!empty($resDoc['error_description'])) {
-       echo json_encode(['message' => 'Document not created: ' . $resDoc['error_description']]);
-   } else {
-       echo json_encode(['message' => 'Document not created']);
+       if (!empty($resDoc) && !empty($resDoc->getId()))
+       {
+           echo json_encode(['message' => 'Document created']);
+       }
+       else
+       {
+           echo json_encode(['message' => 'Document not created']);
+       }
+   } catch (\Throwable $e) {
+       echo json_encode(['message' => 'Document not created: ' . $e->getMessage()]);
    }
    ```
 
@@ -521,18 +499,18 @@ The document will be generated, and the method [crm.documentgenerator.document.a
     client = Client(
         BitrixWebhook(
             domain="your-domain.bitrix24.com",
-            auth_token="your-webhook-token",
+            webhook_token="user_id/webhook_key",
         )
     )
 
     template_path = "template.docx"
     deal_id = 1
-    document_name = "Product Demonstration Implementation"
+    document_name = "Demonstration product implementation"
 
     try:
         numerator = client.crm.documentgenerator.numerator.add(
             fields={
-                "name": "Rest Numerator",
+                "name": "Enumerator from REST",
                 "template": "{NUMBER}",
             }
         ).response.result["numerator"]

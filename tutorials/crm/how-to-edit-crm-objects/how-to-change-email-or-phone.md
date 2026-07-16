@@ -26,16 +26,16 @@ The system stores phone numbers and emails as an array of objects [crm_multifiel
 
 ```javascript
 {
-    ID: 123, // Identifier of the existing record. Needed for updates
-    TYPE_ID: "PHONE" // Type of the multifield
+    ID: 123, // Existing record identifier. Required for update
+    TYPE_ID: "PHONE" // Multiple field type
     VALUE: "test@test.com", // Value
-    VALUE_TYPE: "WORK" // Type of the value
+    VALUE_TYPE: "WORK" // Value type
 }
 ```
 
-- To delete a value from a multifield, pass the identifier `ID` and an empty value `VALUE`. Alternatively, specify the parameter `DELETE: 'Y'` instead of `VALUE`.
+- To delete a value from a multi-field, pass the `ID` identifier and an empty value `VALUE`. Another option — specify parameter `DELETE: 'Y'` instead of `VALUE`.
 
-- To update a value in a multifield, pass the identifier and the new value.
+- To update a multi-field value, pass the identifier and the new value.
 
 ## Example with Email
 
@@ -43,7 +43,7 @@ The system stores phone numbers and emails as an array of objects [crm_multifiel
 
 To create a contact in CRM, we will execute the method [crm.contact.add](../../../api-reference/crm/contacts/crm-contact-add.md). In the `fields` object, we will pass the fields:
 
-- `NAME` — the name of the contact,
+- `NAME` — the contact name,
 
 - `EMAIL` — an array of email addresses from `arNewEmail`.
 
@@ -53,24 +53,45 @@ Check which required fields are set for contacts in your Bitrix24. All required 
 
 {% endnote %}
 
-```javascript
-// preparing addresses in crm_multifield format
-let arNewEmail = [
- { VALUE: 'work_email@nomail.com', VALUE_TYPE: 'WORK' },
- { VALUE: 'home_email@nomail.com', VALUE_TYPE: 'HOME' }
-];
+{% list tabs %}
 
-// creating a new contact
-BX24.callMethod(
-	"crm.contact.add",
-	{
-		fields: {
-			NAME: 'New Contact',
-			EMAIL: arNewEmail
- 		}
-	}
-);
-```
+- JS
+
+    ```javascript
+    import { B24Hook } from '@bitrix24/b24jssdk'
+
+    const $b24 = B24Hook.fromWebhookUrl(process.env.B24_HOOK)
+    // B24_HOOK = 'https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/'
+    ```
+
+- PHP
+
+    ```php
+    <?php
+    // composer require bitrix24/b24phpsdk:"^3.0"
+    require_once 'vendor/autoload.php';
+
+    use Bitrix24\SDK\Services\ServiceBuilderFactory;
+    use Symfony\Component\EventDispatcher\EventDispatcher;
+    use Psr\Log\NullLogger;
+
+    $sb = (new ServiceBuilderFactory(new EventDispatcher(), new NullLogger()))
+        ->initFromWebhook('https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/');
+    ```
+
+- Python
+
+    ```python
+    # pip install b24pysdk
+    from b24pysdk import BitrixWebhook, Client
+
+    client = Client(BitrixWebhook(
+        domain="your-domain.bitrix24.com",
+        webhook_token="USER_ID/TOKEN",  # user_id/token only, without https://
+    ))
+    ```
+
+{% endlist %}
 
 As a result, we will receive the identifier of the new contact, for example, `25`.
 
@@ -82,26 +103,45 @@ As a result, we will receive the identifier of the new contact, for example, `25
 
 ### 2. Retrieving the Contact for Editing
 
-To get information about the created contact, we use the method [crm.contact.get](../../../api-reference/crm/contacts/crm-contact-get.md) with the identifier `ID` from the result of the previous request.
+To retrieve information about the created contact, use the [crm.contact.get](../../../api-reference/crm/contacts/crm-contact-get.md) method with the `ID` identifier from the previous request's result.
 
-```javascript
-let contactId = newContact.data().result; // saving the ID of the created contact in a variable
-// retrieving information about the contact by ID
-BX24.callMethod(
-	"crm.contact.get",
-	{
-		ID: contactId
-	}
-);
-```
+{% list tabs %}
 
-As a result, we will receive a description of all fields of the new contact.
+- JS
+
+    ```javascript
+    // get contact information by ID
+    const response = await $b24.actions.v2.call.make({
+        method: 'crm.contact.get',
+        params: { ID: contactId },
+        requestId: 'contact-get'
+    })
+    const contactData = response.getData().result
+    ```
+
+- PHP
+
+    ```php
+    // get contact information by ID
+    $contactData = $sb->getCRMScope()->contact()->get($contactId)->contact();
+    ```
+
+- Python
+
+    ```python
+    # get contact information by ID
+    contact_data = client.crm.contact.get(bitrix_id=contact_id).result
+    ```
+
+{% endlist %}
+
+As a result, we will receive a description of all fields for the new contact.
 
 ```json
 {
     "result": {
         "ID": "25",
-        "NAME": "New Contact",
+        "NAME": "New contact",
 		..., // other fields
         "EMAIL": [
             {
@@ -125,30 +165,58 @@ As a result, we will receive a description of all fields of the new contact.
 
 To change the email list, we will execute the method [crm.contact.update](../../../api-reference/crm/contacts/crm-contact-update.md).
 
-- `ID` — the identifier of the contact,
+- `ID` — the contact identifier,
 
-- `FIELDS` — an array of fields that need to be changed. We will pass the `EMAIL` field in the array along with the new address values: for the first address, we will specify a new email, and for the second, we will use `DELETE: 'Y'` to remove it.
+- `FIELDS` — an array of fields to be changed. We will pass the `EMAIL` field in the array along with the new address values: for the first address, we will specify a new email, and for the second, we will specify `DELETE: 'Y'` to delete it.
 
-```javascript
-// preparing an array with new email information
-let arUpdateEmail = [
- { ID: contactData.EMAIL[0].ID, VALUE: 'new_work_email@example.com' }, // changing value for the first email
- { ID: contactData.EMAIL[1].ID, 'DELETE': 'Y' } // deleting the second value
-];
+{% list tabs %}
 
-// updating the contact
-BX24.callMethod(
-	"crm.contact.update",
-	{
-		ID: contactId,
-		FIELDS: {
-			EMAIL: arUpdateEmail
-		}
-	}
-);
-```
+- JS
 
-Upon successful update, the method will return `true`.
+    ```javascript
+    // prepare an array with new email information
+    const arUpdateEmail = [
+        { ID: contactData.EMAIL[0].ID, VALUE: 'new_work_email@example.com' }, // change value for the first email
+        { ID: contactData.EMAIL[1].ID, DELETE: 'Y' } // delete the second value
+    ]
+
+    // update contact
+    await $b24.actions.v2.call.make({
+        method: 'crm.contact.update',
+        params: { ID: contactId, FIELDS: { EMAIL: arUpdateEmail } },
+        requestId: 'contact-update'
+    })
+    ```
+
+- PHP
+
+    ```php
+    // prepare an array with new email information
+    $arUpdateEmail = [
+        ['ID' => $contactData->EMAIL[0]->ID, 'VALUE' => 'new_work_email@example.com'], // change value for the first email
+        ['ID' => $contactData->EMAIL[1]->ID, 'DELETE' => 'Y'], // delete the second value
+    ];
+
+    // update contact
+    $sb->getCRMScope()->contact()->update($contactId, ['EMAIL' => $arUpdateEmail]);
+    ```
+
+- Python
+
+    ```python
+    # prepare an array with new email information
+    ar_update_email = [
+        {"ID": contact_data["EMAIL"][0]["ID"], "VALUE": "new_work_email@example.com"},  # change value for the first email
+        {"ID": contact_data["EMAIL"][1]["ID"], "DELETE": "Y"},  # delete the second value
+    ]
+
+    # update contact
+    client.crm.contact.update(bitrix_id=contact_id, fields={"EMAIL": ar_update_email})
+    ```
+
+{% endlist %}
+
+Upon a successful update, the method will return `true`.
 
 ```json
 {
@@ -158,141 +226,114 @@ Upon successful update, the method will return `true`.
 
 ### Full Code Example
 
-{% include [Example Note](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
 - JS
 
     ```javascript
-    let arNewEmail = [
-        {
-            'VALUE': 'work_email@nomail.com',
-            'VALUE_TYPE': 'WORK'
-        },
-        {
-            'VALUE': 'home_email@nomail.com',
-            'VALUE_TYPE': 'HOME'
-        }
-    ];
+    import { B24Hook } from '@bitrix24/b24jssdk'
 
-    // Step 1: Create a contact
-    BX24.callMethod(
-        "crm.contact.add",
-        {
-            fields: {
-                'NAME': 'New Contact',
-                'EMAIL': arNewEmail
-            }
-        },
-        function(newContact) {
-            if (newContact.error()) {
-                console.error('Error creating contact: ' + newContact.error_description());
+    const $b24 = B24Hook.fromWebhookUrl(process.env.B24_HOOK)
+    // B24_HOOK = 'https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/'
+
+    const arNewEmail = [
+        { VALUE: 'work_email@nomail.com', VALUE_TYPE: 'WORK' },
+        { VALUE: 'home_email@nomail.com', VALUE_TYPE: 'HOME' }
+    ]
+
+    // Step 1: create contact
+    const newContact = await $b24.actions.v2.call.make({
+        method: 'crm.contact.add',
+        params: { fields: { NAME: 'New contact', EMAIL: arNewEmail } },
+        requestId: 'contact-add'
+    })
+    if (!newContact.isSuccess) {
+        console.error('Error creating contact: ' + newContact.getErrorMessages().join('; '))
+    } else {
+        const contactId = newContact.getData().result
+
+        // Step 2: get contact data
+        const contactResponse = await $b24.actions.v2.call.make({
+            method: 'crm.contact.get',
+            params: { ID: contactId },
+            requestId: 'contact-get'
+        })
+        const contactData = contactResponse.getData().result
+
+        // Check if email exists
+        if ((contactData.EMAIL?.length ?? 0) >= 2) {
+            // Step 3: form email update
+            const arUpdateEmail = [
+                { ID: contactData.EMAIL[0].ID, VALUE: 'new_work_email@example.com' },
+                { ID: contactData.EMAIL[1].ID, DELETE: 'Y' }
+            ]
+
+            // update contact
+            const resultContactChange = await $b24.actions.v2.call.make({
+                method: 'crm.contact.update',
+                params: { ID: contactId, FIELDS: { EMAIL: arUpdateEmail } },
+                requestId: 'contact-update'
+            })
+            if (!resultContactChange.isSuccess) {
+                console.error('Error updating contact: ' + resultContactChange.getErrorMessages().join('; '))
             } else {
-                let contactId = newContact.data().result;
-
-                // Step 2: Retrieve contact data
-                BX24.callMethod(
-                    "crm.contact.get",
-                    {
-                        ID: contactId
-                    },
-                    function(newContactData) {
-
-                        // Check for email presence
-                        if (newContactData.data().result.EMAIL?.length >= 2) {
-                            let contactData = newContactData.data().result;
-
-                            // Step 3: Prepare email update
-                            let arUpdateEmail = [
-                                {
-                                    'ID': contactData.EMAIL[0].ID,
-                                    'VALUE': 'new_work_email@example.com'
-                                },
-                                {
-                                    'ID': contactData.EMAIL[1].ID,
-                                    'DELETE': 'Y'
-                                }
-                            ];
-
-                            // Update contact
-                            BX24.callMethod(
-                                "crm.contact.update",
-                                {
-                                    ID: contactId,
-                                    FIELDS: {
-                                        'EMAIL': arUpdateEmail
-                                    }
-                                },
-                                function(resultContactChange) {
-                                    if (resultContactChange.error()) {
-                                        console.error('Error updating contact:', resultContactChange.error());
-                                    } else {
-                                        console.log('Contact successfully updated');
-                                    }
-                                }
-                            );
-                        } else {
-                            console.warn('Not enough emails found for update.');
-                        }
-                    }
-                );
+                console.log('Contact successfully updated')
             }
+        } else {
+            console.warn('Not enough emails found to update.')
         }
-    );
+    }
     ```
 
 - PHP
 
     ```php
     <?php
-    require_once('crest.php');
+    // composer require bitrix24/b24phpsdk:"^3.0"
+    require_once 'vendor/autoload.php';
 
-    // Preparing an array of emails in multifield format
+    use Bitrix24\SDK\Services\ServiceBuilderFactory;
+    use Symfony\Component\EventDispatcher\EventDispatcher;
+    use Psr\Log\NullLogger;
+
+    $sb = (new ServiceBuilderFactory(new EventDispatcher(), new NullLogger()))
+        ->initFromWebhook('https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/');
+    $contact = $sb->getCRMScope()->contact();
+
+    // Form an email array in multifield format
     $newEmail = [
         ['VALUE' => 'work_email@nomail.com', 'VALUE_TYPE' => 'WORK'],
-        ['VALUE' => 'home_email@nomail.com', 'VALUE_TYPE' => 'HOME']
+        ['VALUE' => 'home_email@nomail.com', 'VALUE_TYPE' => 'HOME'],
     ];
 
-    // Creating a contact
-    $newContact = CRest::call('crm.contact.add', [
-        'fields' => [
-            'NAME' => 'New Contact',
-            'EMAIL' => $newEmail
-        ]
-    ]);
+    try {
+        // Step 1: create contact
+        $contactId = $contact->add([
+            'NAME' => 'New contact',
+            'EMAIL' => $newEmail,
+        ])->getId();
 
-    if (!empty($newContact['result'])) {
-        $contactId = $newContact['result'];
+        // Step 2: get contact data
+        $contactData = $contact->get($contactId)->contact();
 
-        // Step 2: Retrieve contact data
-        $contactData = CRest::call('crm.contact.get', ['ID' => $contactId]);
-
-        if (!empty($contactData['result']['EMAIL'][0]) && !empty($contactData['result']['EMAIL'][1])) {
-            // Step 3: Prepare email update
+        if (count($contactData->EMAIL) >= 2) {
+            // Step 3: form email update
             $updateEmail = [
-                ['ID' => $contactData['result']['EMAIL'][0]['ID'], 'VALUE' => 'new_work_email@example.com'],
-                ['ID' => $contactData['result']['EMAIL'][1]['ID'], 'DELETE' => 'Y'] // Deleting second email
+                ['ID' => $contactData->EMAIL[0]->ID, 'VALUE' => 'new_work_email@example.com'],
+                ['ID' => $contactData->EMAIL[1]->ID, 'DELETE' => 'Y'], // delete the second email
             ];
 
-            // Updating contact
-            $changeResult = CRest::call('crm.contact.update', [
-                'ID' => $contactId,
-                'FIELDS' => ['EMAIL' => $updateEmail]
-            ]);
-
-            if (!empty($changeResult['error'])) {
-                echo 'Error updating contact: ' . $changeResult['error_description'];
-            } else {
-                echo 'Contact successfully updated.';
-            }
+            // update contact
+            $contact->update($contactId, ['EMAIL' => $updateEmail]);
+            echo 'Contact successfully updated.';
         } else {
-            echo 'No emails found for update.';
+            echo 'No emails found to update.';
         }
-    } else {
-        echo 'Error creating contact: ' . $newContact['error_description'];
+    } catch (\Throwable $e) {
+        echo 'Error working with contact: ' . $e->getMessage();
     }
-    ?>
     ```
 
 - Python
@@ -304,7 +345,7 @@ Upon successful update, the method will return `true`.
     client = Client(
         BitrixWebhook(
             domain="your-domain.bitrix24.com",
-            auth_token="your-webhook-token",
+            webhook_token="USER_ID/TOKEN",
         )
     )
 
@@ -312,7 +353,7 @@ Upon successful update, the method will return `true`.
         new_contact_id = int(
             client.crm.contact.add(
                 fields={
-                    "NAME": "New Contact",
+                    "NAME": "New contact",
                     "EMAIL": [
                         {"VALUE": "work_email@nomail.com", "VALUE_TYPE": "WORK"},
                         {"VALUE": "home_email@nomail.com", "VALUE_TYPE": "HOME"},
@@ -328,7 +369,7 @@ Upon successful update, the method will return `true`.
                 bitrix_id=new_contact_id,
             ).response.result
         except BitrixAPIError as error:
-            print(f"Error retrieving contact: {error}")
+            print(f"Error getting contact: {error}")
         else:
             if len(contact_data.get("EMAIL", [])) >= 2:
                 update_email = [
@@ -353,20 +394,20 @@ Upon successful update, the method will return `true`.
                     if change_result:
                         print("Contact successfully updated.")
             else:
-                print("No emails found for update.")
+                print("No emails found to update.")
     ```
 
 {% endlist %}
 
-## Example with Phone Numbers
+## Phone Number Example
 
 Similarly, you can update the list of phone numbers for the contact `PHONE`.
 
 ### 1. Adding a Contact with Two Phone Numbers
 
-To create a contact in CRM, we will execute the method [crm.contact.add](../../../api-reference/crm/contacts/crm-contact-add.md). In the `fields` object, we will pass the fields:
+To create a contact in the CRM, call the [crm.contact.add](../../../api-reference/crm/contacts/crm-contact-add.md) method. In the `fields` object, pass the following fields:
 
-- `NAME` — the name of the contact,
+- `NAME` — the contact name,
 
 - `PHONE` — an array of phone numbers from `arNewPhone`.
 
@@ -376,25 +417,47 @@ Check which required fields are set for contacts in your Bitrix24. All required 
 
 {% endnote %}
 
-```javascript
-// preparing phones in crm_multifield format
-let arNewPhone = [
-	{ VALUE: '89991234567', VALUE_TYPE: 'WORK' },
-	{ VALUE: '89997654321', VALUE_TYPE: 'HOME' }
-];
-// creating a new contact
-BX24.callMethod(
-	"crm.contact.add",
-	{
-		fields: {
-			NAME: 'New Contact',
-			PHONE: arNewPhone
-		}
-	}
-);
-```
+{% list tabs %}
 
-As a result, we will receive the identifier of the new contact, for example, `25`.
+- JS
+
+    ```javascript
+    import { B24Hook } from '@bitrix24/b24jssdk'
+
+    const $b24 = B24Hook.fromWebhookUrl(process.env.B24_HOOK)
+    // B24_HOOK = 'https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/'
+    ```
+
+- PHP
+
+    ```php
+    <?php
+    // composer require bitrix24/b24phpsdk:"^3.0"
+    require_once 'vendor/autoload.php';
+
+    use Bitrix24\SDK\Services\ServiceBuilderFactory;
+    use Symfony\Component\EventDispatcher\EventDispatcher;
+    use Psr\Log\NullLogger;
+
+    $sb = (new ServiceBuilderFactory(new EventDispatcher(), new NullLogger()))
+        ->initFromWebhook('https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/');
+    ```
+
+- Python
+
+    ```python
+    # pip install b24pysdk
+    from b24pysdk import BitrixWebhook, Client
+
+    client = Client(BitrixWebhook(
+        domain="your-domain.bitrix24.com",
+        webhook_token="USER_ID/TOKEN",  # user_id/token only, without https://
+    ))
+    ```
+
+{% endlist %}
+
+As a result, you will receive the identifier of the new contact, for example, `25`.
 
 ```json
 {
@@ -402,40 +465,59 @@ As a result, we will receive the identifier of the new contact, for example, `25
 }
 ```
 
-### 2. Retrieving the Contact for Editing
+### 2. Retrieving a Contact for Editing
 
-To get information about the created contact, we use the method [crm.contact.get](../../../api-reference/crm/contacts/crm-contact-get.md) with the identifier `ID` obtained from the previous request.
+To retrieve information about the created contact, use the [crm.contact.get](../../../api-reference/crm/contacts/crm-contact-get.md) method with the `ID` identifier obtained in the previous request.
 
-```javascript
-let contactId = newContact.data().result; // saving the ID of the created contact in a variable
-// retrieving information about the contact by ID
-BX24.callMethod(
-	"crm.contact.get",
-	{
-		ID: contactId
-	}
-);
-```
+{% list tabs %}
 
-As a result, we will receive a description of all fields of the new contact.
+- JS
+
+    ```javascript
+    // get contact information by ID
+    const response = await $b24.actions.v2.call.make({
+        method: 'crm.contact.get',
+        params: { ID: contactId },
+        requestId: 'contact-get'
+    })
+    const contactData = response.getData().result
+    ```
+
+- PHP
+
+    ```php
+    // get contact information by ID
+    $contactData = $sb->getCRMScope()->contact()->get($contactId)->contact();
+    ```
+
+- Python
+
+    ```python
+    # get contact information by ID
+    contact_data = client.crm.contact.get(bitrix_id=contact_id).result
+    ```
+
+{% endlist %}
+
+As a result, you will receive a description of all fields for the new contact.
 
 ```json
 {
     "result": {
         "ID": "25",
-        "NAME": "New Contact",
+        "NAME": "New contact",
 		..., // other fields
         "PHONE": [
             {
                 "ID": "1971",
                 "VALUE_TYPE": "WORK",
-                "VALUE": "89991234567",
+                "VALUE": "499991234567",
                 "TYPE_ID": "PHONE"
             },
             {
                 "ID": "1973",
                 "VALUE_TYPE": "HOME",
-                "VALUE": "89997654321",
+                "VALUE": "499997654321",
                 "TYPE_ID": "PHONE"
             }
         ]
@@ -443,33 +525,62 @@ As a result, we will receive a description of all fields of the new contact.
 }
 ```
 
-### 3. Updating the Phone List
+### 3. Updating the Phone Number List
 
-To change the phone list, we will execute the method [crm.contact.update](../../../api-reference/crm/contacts/crm-contact-update.md).
+To change the list of phone numbers, call the [crm.contact.update](../../../api-reference/crm/contacts/crm-contact-update.md) method.
 
-- `ID` — the identifier of the contact,
+- `ID` — the contact identifier,
 
-- `FIELDS` — an array of fields that need to be changed. We will pass the `PHONE` field in the array along with the new phone values: for the first phone, we will specify a new value, and for the second, we will use an empty value to remove it.
+- `FIELDS` — an array of fields to be changed. We will pass the `PHONE` field in the array along with the new phone values: we will specify a new value for the first phone and an empty value for the second to delete it.
 
-```javascript
-// preparing an array with new phone information
-let arUpdatePhone = [
-	{ ID: contactData.PHONE[0].ID, VALUE: '81119876541' },
-	{ ID: contactData.PHONE[1].ID, VALUE: '' }
- ];
-// updating the contact
-BX24.callMethod(
-	"crm.contact.update",
-	{
-		ID: contactId,
-		FIELDS: {
-			PHONE: arUpdatePhone
-		}
-	}
-);
-```
+{% list tabs %}
 
-Upon successful update, the method will return `true`.
+- JS
+
+    ```javascript
+    // prepare an array with new phone information
+    const arUpdatePhone = [
+        { ID: contactData.PHONE[0].ID, VALUE: '81119876541' }, // change value for the first phone
+        { ID: contactData.PHONE[1].ID, VALUE: '' } // empty value deletes the second phone
+    ]
+
+    // update contact
+    await $b24.actions.v2.call.make({
+        method: 'crm.contact.update',
+        params: { ID: contactId, FIELDS: { PHONE: arUpdatePhone } },
+        requestId: 'contact-update'
+    })
+    ```
+
+- PHP
+
+    ```php
+    // prepare an array with new phone information
+    $arUpdatePhone = [
+        ['ID' => $contactData->PHONE[0]->ID, 'VALUE' => '81119876541'], // change value for the first phone
+        ['ID' => $contactData->PHONE[1]->ID, 'VALUE' => ''], // empty value deletes the second phone
+    ];
+
+    // update contact
+    $sb->getCRMScope()->contact()->update($contactId, ['PHONE' => $arUpdatePhone]);
+    ```
+
+- Python
+
+    ```python
+    # prepare an array with new phone information
+    ar_update_phone = [
+        {"ID": contact_data["PHONE"][0]["ID"], "VALUE": "81119876541"},  # change value for the first phone
+        {"ID": contact_data["PHONE"][1]["ID"], "VALUE": ""},  # empty value deletes the second phone
+    ]
+
+    # update contact
+    client.crm.contact.update(bitrix_id=contact_id, fields={"PHONE": ar_update_phone})
+    ```
+
+{% endlist %}
+
+Upon a successful update, the method will return `true`.
 
 ```json
 {
@@ -479,135 +590,114 @@ Upon successful update, the method will return `true`.
 
 ### Full Code Example
 
-{% include [Example Note](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
 - JS
 
     ```javascript
-    let arNewPhone = [
-        { VALUE: '89991234567', VALUE_TYPE: 'WORK' },
-        { VALUE: '89997654321', VALUE_TYPE: 'HOME' }
-    ];
+    import { B24Hook } from '@bitrix24/b24jssdk'
 
-    // Step 1: Create a contact
-    BX24.callMethod(
-        "crm.contact.add",
-        {
-            fields: {
-                NAME: 'New Contact',
-                PHONE: arNewPhone
-            }
-        },
-        function(newContact) {
-            if (newContact.error()) {
-                console.error('Error creating contact: ' + newContact.error_description());
+    const $b24 = B24Hook.fromWebhookUrl(process.env.B24_HOOK)
+    // B24_HOOK = 'https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/'
+
+    const arNewPhone = [
+        { VALUE: '499991234567', VALUE_TYPE: 'WORK' },
+        { VALUE: '499997654321', VALUE_TYPE: 'HOME' }
+    ]
+
+    // Step 1: create contact
+    const newContact = await $b24.actions.v2.call.make({
+        method: 'crm.contact.add',
+        params: { fields: { NAME: 'New contact', PHONE: arNewPhone } },
+        requestId: 'contact-add'
+    })
+    if (!newContact.isSuccess) {
+        console.error('Error creating contact: ' + newContact.getErrorMessages().join('; '))
+    } else {
+        const contactId = newContact.getData().result
+
+        // Step 2: get contact data
+        const contactResponse = await $b24.actions.v2.call.make({
+            method: 'crm.contact.get',
+            params: { ID: contactId },
+            requestId: 'contact-get'
+        })
+        const phoneData = contactResponse.getData().result
+
+        // Check if phones exist
+        if ((phoneData.PHONE?.length ?? 0) >= 2) {
+            // Step 3: form phone update
+            const arUpdatePhone = [
+                { ID: phoneData.PHONE[0].ID, VALUE: '81119876541' },
+                { ID: phoneData.PHONE[1].ID, VALUE: '' }
+            ]
+
+            // update contact
+            const resultContactChange = await $b24.actions.v2.call.make({
+                method: 'crm.contact.update',
+                params: { ID: contactId, FIELDS: { PHONE: arUpdatePhone } },
+                requestId: 'contact-update'
+            })
+            if (!resultContactChange.isSuccess) {
+                console.error('Error updating contact: ' + resultContactChange.getErrorMessages().join('; '))
             } else {
-                let contactId = newContact.data().result;
-
-                // Step 2: Retrieve contact data
-                BX24.callMethod(
-                    "crm.contact.get",
-                    {
-                        ID: contactId
-                    },
-                    function(contactData) {
-
-                        // Check for phone presence
-                        if (contactData.data().result.PHONE?.length >= 2) {
-                            let phoneData = contactData.data().result;
-
-                            // Step 3: Prepare phone update
-                            let arUpdatePhone = [
-                                {
-                                    ID: phoneData.PHONE[0].ID,
-                                    VALUE: '81119876541'
-                                },
-                                {
-                                    ID: phoneData.PHONE[1].ID,
-                                    VALUE: ''
-                                }
-                            ];
-
-                            // Update contact
-                            BX24.callMethod(
-                                "crm.contact.update",
-                                {
-                                    ID: contactId,
-                                    FIELDS: {
-                                        PHONE: arUpdatePhone
-                                    }
-                                },
-                                function(resultContactChange) {
-                                    if (resultContactChange.error()) {
-                                        console.error('Error updating contact:', resultContactChange.error());
-                                    } else {
-                                        console.log('Contact successfully updated');
-                                    }
-                                }
-                            );
-                        } else {
-                            console.warn('Not enough phones found for update.');
-                        }
-                    }
-                );
+                console.log('Contact successfully updated')
             }
+        } else {
+            console.warn('Not enough phones found.')
         }
-    );
+    }
     ```
 
 - PHP
 
     ```php
     <?php
-    require_once('crest.php');
+    // composer require bitrix24/b24phpsdk:"^3.0"
+    require_once 'vendor/autoload.php';
 
-    // Preparing an array of phones in multifield format
+    use Bitrix24\SDK\Services\ServiceBuilderFactory;
+    use Symfony\Component\EventDispatcher\EventDispatcher;
+    use Psr\Log\NullLogger;
+
+    $sb = (new ServiceBuilderFactory(new EventDispatcher(), new NullLogger()))
+        ->initFromWebhook('https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/');
+    $contact = $sb->getCRMScope()->contact();
+
+    // Form a phone array in multifield format
     $newPhone = [
-        ['VALUE' => '89991234567', 'VALUE_TYPE' => 'WORK'],
-        ['VALUE' => '89997654321', 'VALUE_TYPE' => 'HOME']
+        ['VALUE' => '499991234567', 'VALUE_TYPE' => 'WORK'],
+        ['VALUE' => '499997654321', 'VALUE_TYPE' => 'HOME'],
     ];
 
-    // Creating a contact
-    $newContact = CRest::call('crm.contact.add', [
-        'fields' => [
-            'NAME' => 'New Contact',
-            'PHONE' => $newPhone
-        ]
-    ]);
+    try {
+        // Step 1: create contact
+        $contactId = $contact->add([
+            'NAME' => 'New contact',
+            'PHONE' => $newPhone,
+        ])->getId();
 
-    if (!empty($newContact['result'])) {
-        $contactId = $newContact['result'];
+        // Step 2: get contact data
+        $contactData = $contact->get($contactId)->contact();
 
-        // Step 2: Retrieve contact data
-        $contactData = CRest::call('crm.contact.get', ['ID' => $contactId]);
-
-        if (!empty($contactData['result']['PHONE'][0]) && !empty($contactData['result']['PHONE'][1])) {
-            // Step 3: Prepare phone update
+        if (count($contactData->PHONE) >= 2) {
+            // Step 3: form phone update
             $updatePhone = [
-                ['ID' => $contactData['result']['PHONE'][0]['ID'], 'VALUE' => '81119876541'],
-                ['ID' => $contactData['result']['PHONE'][1]['ID'], 'VALUE' => ''] // Deleting second phone
+                ['ID' => $contactData->PHONE[0]->ID, 'VALUE' => '81119876541'],
+                ['ID' => $contactData->PHONE[1]->ID, 'VALUE' => ''], // empty value deletes the second phone
             ];
 
-            // Updating contact
-            $changeResult = CRest::call('crm.contact.update', [
-                'ID' => $contactId,
-                'FIELDS' => ['PHONE' => $updatePhone]
-            ]);
-
-            if (!empty($changeResult['error'])) {
-                echo 'Error updating contact: ' . $changeResult['error_description'];
-            } else {
-                echo 'Contact successfully updated.';
-            }
+            // update contact
+            $contact->update($contactId, ['PHONE' => $updatePhone]);
+            echo 'Contact successfully updated.';
         } else {
-            echo 'No phones found for update.';
+            echo 'No phones found to update.';
         }
-    } else {
-        echo 'Error creating contact: ' . $newContact['error_description'];
+    } catch (\Throwable $e) {
+        echo 'Error working with contact: ' . $e->getMessage();
     }
-    ?>
     ```
 
 - Python
@@ -619,7 +709,7 @@ Upon successful update, the method will return `true`.
     client = Client(
         BitrixWebhook(
             domain="your-domain.bitrix24.com",
-            auth_token="your-webhook-token",
+            webhook_token="USER_ID/TOKEN",
         )
     )
 
@@ -627,10 +717,10 @@ Upon successful update, the method will return `true`.
         contact_id = int(
             client.crm.contact.add(
                 fields={
-                    "NAME": "New Contact",
+                    "NAME": "New contact",
                     "PHONE": [
-                        {"VALUE": "89991234567", "VALUE_TYPE": "WORK"},
-                        {"VALUE": "89997654321", "VALUE_TYPE": "HOME"},
+                        {"VALUE": "499991234567", "VALUE_TYPE": "WORK"},
+                        {"VALUE": "499997654321", "VALUE_TYPE": "HOME"},
                     ],
                 }
             ).response.result
@@ -641,7 +731,7 @@ Upon successful update, the method will return `true`.
         try:
             contact = client.crm.contact.get(bitrix_id=contact_id).response.result
         except BitrixAPIError as error:
-            print(f"Error retrieving contact: {error}")
+            print(f"Error getting contact: {error}")
         else:
             values = contact.get("PHONE") or []
 
@@ -661,7 +751,7 @@ Upon successful update, the method will return `true`.
                     if change_result:
                         print("Contact successfully updated.")
             else:
-                print("No phones found for update.")
+                print("No phones found to update.")
     ```
 
 {% endlist %}

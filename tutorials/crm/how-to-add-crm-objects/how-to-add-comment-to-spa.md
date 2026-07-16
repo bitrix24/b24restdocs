@@ -36,28 +36,38 @@ To obtain the type identifier, we use the [crm.type.list](../../../api-reference
 - JS
   
     ```javascript
-    BX24.callMethod(
-        'crm.type.list',
-        {
+    import { B24Hook } from '@bitrix24/b24jssdk'
+
+    const $b24 = B24Hook.fromWebhookUrl(process.env.B24_HOOK)
+    // B24_HOOK = 'https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/'
+
+    const response = await $b24.actions.v2.call.make({
+        method: 'crm.type.list',
+        params: {
             filter: {
-                "title": "Equipment Purchase"
+                "title": "Equipment procurement"
             }
-        }
-    );
+        },
+        requestId: 'type-list'
+    });
     ```
 
 - PHP
 
     ```php
-    require_once('crest.php');
+    // composer require bitrix24/b24phpsdk:"^3.0"
+    require_once 'vendor/autoload.php';
 
-    $result = CRest::call(
-        'crm.type.list',
-        [
-            'filter' => [
-                'title' => 'Equipment Purchase'
-            ]
-        ]
+    use Bitrix24\SDK\Services\ServiceBuilderFactory;
+    use Symfony\Component\EventDispatcher\EventDispatcher;
+    use Psr\Log\NullLogger;
+
+    $sb = (new ServiceBuilderFactory(new EventDispatcher(), new NullLogger()))
+        ->initFromWebhook('https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/');
+
+    $result = $sb->getCRMScope()->type()->list(
+        order: [],
+        filter: ['title' => 'Equipment procurement']
     );
     ```
 
@@ -66,26 +76,25 @@ To obtain the type identifier, we use the [crm.type.list](../../../api-reference
     ```python
     from b24pysdk import BitrixWebhook, Client
 
-
     client = Client(
         BitrixWebhook(
             domain="your-domain.bitrix24.com",
-            auth_token="your-webhook-token",
+            webhook_token="user_id/webhook_key",
         )
     )
 
     response = client.crm.type.list(
         filter={
-            "title": "Equipment Purchase",
+            "title": "Equipment procurement",
         }
     ).response
     ```
 
 {% endlist %}
 
-As a result, we obtain two ID values:
-* `id`: `7` — the ordinal number of the smart process in Bitrix.
-* `entityTypeId`: `177` — the identifier for the smart process type. This parameter is necessary for the next request.
+As a result, we obtained two ID values:
+* `id`: `7` — the sequential number of the SPA in Bitrix
+* `entityTypeId`: `177` — the SPA type identifier. This parameter is required for the next request
   
 ```json
 {
@@ -93,7 +102,7 @@ As a result, we obtain two ID values:
         "types": [
             {
                 "id": 7,
-                "title": "Equipment Purchase",
+                "title": "Equipment procurement",
                 "code": "",
                 "createdBy": 1,
                 "entityTypeId": 177,
@@ -114,8 +123,8 @@ As a result, we obtain two ID values:
                 "isSetOpenPermissions": "Y",
                 "isPaymentsEnabled": "N",
                 "isCountersEnabled": "N",
-                "createdTime": "2021-11-26T10:52:17+01:00",
-                "updatedTime": "2024-11-12T15:32:39+01:00",
+                "createdTime": "2021-11-26T10:52:17+03:00",
+                "updatedTime": "2024-11-12T15:32:39+03:00",
                 "updatedBy": 1
             }
         ]
@@ -125,42 +134,38 @@ As a result, we obtain two ID values:
 
 ## 2. Add a Comment to the Smart Process Entity
 
-To add a comment, we use the [crm.timeline.comment.add](../../../api-reference/crm/timeline/comments/crm-timeline-comment-add.md) method with the following parameters:
-* `ENTITY_ID` — the ID of the entity. To obtain the ID value, use the [crm.item.list](../../../api-reference/crm/universal/crm-item-list.md) method, where the `entityTypeId` filter equals the `entityTypeId` value from [crm.type.list](../../../api-reference/crm/universal/user-defined-object-types/crm-type-list.md).
-* `ENTITY_TYPE` — specify `DYNAMIC_177`. The value consists of the `entityTypeId` from the previous method's result and the prefix for dynamic objects `DYNAMIC_`.
-* `COMMENT` — the text value of the comment.
+To add a comment, use the [crm.timeline.comment.add](../../../api-reference/crm/timeline/comments/crm-timeline-comment-add.md) method with the following parameters:
+* `ENTITY_ID` — the item ID. To retrieve the ID value, use the [crm.item.list](../../../api-reference/crm/universal/crm-item-list.md) method, where the `entityTypeId` filter equals the `entityTypeId` value from [crm.type.list](../../../api-reference/crm/universal/user-defined-object-types/crm-type-list.md)
+* `ENTITY_TYPE` — specify `DYNAMIC_177`. The value consists of `entityTypeId` from the previous method's result and the dynamic object prefix `DYNAMIC_`
+* `COMMENT` — the text value of the comment
 
 {% list tabs %}
 
 - JS
 
     ```javascript
-    BX24.callMethod(
-        "crm.timeline.comment.add",
-        {
+    const response = await $b24.actions.v2.call.make({
+        method: 'crm.timeline.comment.add',
+        params: {
             fields:
             {
                 "ENTITY_ID": 19,
                 "ENTITY_TYPE": "DYNAMIC_177",
                 "COMMENT": "Confirm the purchase via email!",
             }
-        }
-    );
+        },
+        requestId: 'comment-add'
+    });
     ```
 
 - PHP
 
     ```php
-    require_once('crest.php');
-
-    $result = CRest::call(
-        'crm.timeline.comment.add',
+    $result = $sb->getCRMScope()->timelineComment()->add(
         [
-            'fields' => [
-                'ENTITY_ID' => 19,
-                'ENTITY_TYPE' => 'DYNAMIC_177',
-                'COMMENT' => 'Confirm the purchase via email!',
-            ]
+            'ENTITY_ID' => 19,
+            'ENTITY_TYPE' => 'DYNAMIC_177',
+            'COMMENT' => 'Confirm the purchase via email!',
         ]
     );
     ```
@@ -179,7 +184,7 @@ To add a comment, we use the [crm.timeline.comment.add](../../../api-reference/c
 
 {% endlist %}
 
-We have added a comment to the timeline of the smart process entity and received the timeline record ID `55771` in response. This record ID can be used in the [update](../../../api-reference/crm/timeline/comments/crm-timeline-comment-update.md) and [delete](../../../api-reference/crm/timeline/comments/crm-timeline-comment-delete.md) methods for comments.
+We added a comment to the SPA item timeline and received the timeline entry ID `55771` in the response. The entry ID can be used in the [update](../../../api-reference/crm/timeline/comments/crm-timeline-comment-update.md) and [delete](../../../api-reference/crm/timeline/comments/crm-timeline-comment-delete.md) methods for the comment.
 
 ```json
 {
@@ -194,129 +199,130 @@ We have added a comment to the timeline of the smart process entity and received
 - JS
 
     ```javascript
-    // Function to find the smart process identifier
-    function findSPA() {
-        // Name of the smart process to obtain entityTypeId
+    import { B24Hook } from '@bitrix24/b24jssdk'
+
+    const $b24 = B24Hook.fromWebhookUrl(process.env.B24_HOOK)
+    // B24_HOOK = 'https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/'
+
+    // Function to search for the smart process ID
+    async function findSPA() {
+        // Smart process name to obtain entityTypeId
         var SPAtitle = 'your_smart_process_name';
 
-        // Call the crm.type.list method to get entityTypeId
-        BX24.callMethod(
-            'crm.type.list',
-            {
-                filter: {
-                    title: SPAtitle
-                }
-            },
-            function(result) {
-                if (result.error()) {
-                    console.error('Error finding smart process:', result.error());
-                } else {
-                    var types = result.data().types;
-                    if (Array.isArray(types) && types.length > 0) {
-                        var SPAId = types[0].entityTypeId; // Assuming the desired object is the first in the array
-                        console.log('Smart process found', SPAId);
-                        createComment(SPAId);
-                    } else {
-                        console.error('Smart process not found or data is empty');
-                    }
-                }
+        try {
+            // Calling the crm.type.list method to obtain entityTypeId
+            const result = await $b24.actions.v2.call.make({
+                method: 'crm.type.list',
+                params: { filter: { title: SPAtitle } },
+                requestId: 'type-list'
+            });
+
+            var types = result.getData().result.types;
+            if (Array.isArray(types) && types.length > 0) {
+                var SPAId = types[0].entityTypeId; // Assuming the required object is the first in the array
+                console.log('Smart process found', SPAId);
+                await createComment(SPAId);
+            } else {
+                console.error('Smart process not found or data is empty');
             }
-        );
+        } catch (error) {
+            console.error('Error searching for the smart process:', error);
+        }
     }
 
-    // Function to create a comment in the smart process entity
-    function createComment(SPAId) {
-        // ID of the entity to which the comment will be added
+    // Function to create a comment in a smart process element
+    async function createComment(SPAId) {
+        // Element ID where the comment will be added
         var elementId = 'your_element_ID';
-        // Text of the comment
+        // Comment text
         var commentText = 'your_comment';
 
-        // Call the crm.timeline.comment.add method to add the comment
-        BX24.callMethod(
-            "crm.timeline.comment.add",
-            {
-                fields: {
-                    ENTITY_ID: elementId,
-                    ENTITY_TYPE: 'DYNAMIC_' + SPAId,
-                    COMMENT: commentText
-                }
-            },
-            function(result) {
-                if (result.error()) {
-                    console.error('Error creating comment:', result.error());
-                } else {
-                    console.log('Comment added', result.data());
-                }
-            }
-        );
+        try {
+            // Calling the crm.timeline.comment.add method to add a comment
+            const result = await $b24.actions.v2.call.make({
+                method: 'crm.timeline.comment.add',
+                params: {
+                    fields: {
+                        ENTITY_ID: elementId,
+                        ENTITY_TYPE: 'DYNAMIC_' + SPAId,
+                        COMMENT: commentText
+                    }
+                },
+                requestId: 'comment-add'
+            });
+            console.log('Comment added', result.getData().result);
+        } catch (error) {
+            console.error('Error creating the comment:', error);
+        }
     }
 
-    // Call the function to find the smart process and add a comment
+    // Calling the function to search for the smart process and add a comment
     findSPA();
     ```
 
 - PHP
 
     ```php
-    require_once('crest.php');
+    <?php
+    // composer require bitrix24/b24phpsdk:"^3.0"
+    require_once 'vendor/autoload.php';
 
-    // Function to find the smart process identifier
-    function findSPA() {
-        // Name of the smart process to obtain entityTypeId
+    use Bitrix24\SDK\Services\ServiceBuilderFactory;
+    use Bitrix24\SDK\Services\ServiceBuilder;
+    use Symfony\Component\EventDispatcher\EventDispatcher;
+    use Psr\Log\NullLogger;
+
+    $sb = (new ServiceBuilderFactory(new EventDispatcher(), new NullLogger()))
+        ->initFromWebhook('https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/');
+
+    // Function to search for the smart process ID
+    function findSPA(ServiceBuilder $sb) {
+        // Smart process name to obtain entityTypeId
         $SPAtitle = 'your_smart_process_name';
 
-        // Call the crm.type.list method to get entityTypeId
-        $result = CRest::call(
-            'crm.type.list',
-            [
-                'filter' => [
-                    'title' => $SPAtitle
-                ]
-            ]
-        );
+        try {
+            // Calling the crm.type.list method to obtain entityTypeId
+            $types = $sb->getCRMScope()->type()->list(
+                order: [],
+                filter: ['title' => $SPAtitle]
+            )->getTypes();
 
-        if (isset($result['error'])) {
-            echo 'Error finding smart process: ' . $result['error'];
-        } else {
-            $types = $result['result']['types'];
             if (is_array($types) && count($types) > 0) {
-                $SPAId = $types[0]['entityTypeId']; // Assuming the desired object is the first in the array
+                $SPAId = $types[0]->entityTypeId; // Assuming the required object is the first in the array
                 echo 'Smart process found: ' . $SPAId;
-                createComment($SPAId);
+                createComment($sb, $SPAId);
             } else {
                 echo 'Smart process not found or data is empty';
             }
+        } catch (\Throwable $e) {
+            echo 'Error searching for the smart process: ' . $e->getMessage();
         }
     }
 
-    // Function to create a comment in the smart process entity
-    function createComment($SPAId) {
-        // ID of the entity to which the comment will be added
+    // Function to create a comment in a smart process element
+    function createComment(ServiceBuilder $sb, $SPAId) {
+        // Element ID where the comment will be added
         $elementId = 'your_element_ID';
-        // Text of the comment
+        // Comment text
         $commentText = 'your_comment';
 
-        // Call the crm.timeline.comment.add method to add the comment
-        $result = CRest::call(
-            'crm.timeline.comment.add',
-            [
-                'fields' => [
+        try {
+            // Calling the crm.timeline.comment.add method to add a comment
+            $sb->getCRMScope()->timelineComment()->add(
+                [
                     'ENTITY_ID' => $elementId,
                     'ENTITY_TYPE' => 'DYNAMIC_' . $SPAId,
                     'COMMENT' => $commentText
                 ]
-            ]
-        );
-
-        if (isset($result['error'])) {
-            echo 'Error creating comment: ' . $result['error'];
-        } else {
+            );
             echo 'Comment added';
+        } catch (\Throwable $e) {
+            echo 'Error creating the comment: ' . $e->getMessage();
         }
     }
 
-    // Call the function to find the smart process and add a comment
-    findSPA();
+    // Calling the function to search for the smart process and add a comment
+    findSPA($sb);
     ```
 
 - Python
@@ -324,7 +330,6 @@ We have added a comment to the timeline of the smart process entity and received
     ```python
     from b24pysdk import BitrixWebhook, Client
     from b24pysdk.errors import BitrixAPIError
-
 
     def find_spa(client):
         spa_title = "your_smart_process_name"
@@ -334,7 +339,7 @@ We have added a comment to the timeline of the smart process entity and received
                 filter={"title": spa_title},
             ).response
         except BitrixAPIError as error:
-            print(f"Error finding smart process: {error}")
+            print(f"Error searching for the smart process: {error}")
             return
 
         types = resp.result["types"]
@@ -344,7 +349,6 @@ We have added a comment to the timeline of the smart process entity and received
             create_comment(client, spa_id)
         else:
             print("Smart process not found or data is empty")
-
 
     def create_comment(client, spa_id):
         element_id = "your_element_ID"
@@ -359,15 +363,14 @@ We have added a comment to the timeline of the smart process entity and received
                 },
             ).response
         except BitrixAPIError as error:
-            print(f"Error creating comment: {error}")
+            print(f"Error creating the comment: {error}")
         else:
             print("Comment added")
-
 
     client = Client(
         BitrixWebhook(
             domain="your-domain.bitrix24.com",
-            auth_token="your-webhook-token",
+            webhook_token="user_id/webhook_key",
         )
     )
 

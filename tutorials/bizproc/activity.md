@@ -12,152 +12,133 @@ This example is universal for workflow actions and Automation rules. The only di
 
 In the example code, the method `bizproc.activity.add` is used. If you want to create an Automation rule, replace the method with `bizproc.robot.add`.
 
-To use the example, set up the `CRest` class and include the `crest.php` file in the files where this class is used. More details can be found in the article [{#T}](../../first-steps/how-to-use-examples.md).
+{% note info "" %}
 
-## Action Registration File
+The `bizproc.activity.add` and `bizproc.robot.add` methods work only within an [application](../../settings/app-installation/index.md) context. An incoming webhook will not work: the method will return error `ACCESS_DENIED` with the description "Application context required". The application authorization (`access_token`, `domain`) is received by the handler during installation and in every call.
 
-{% include [Example Note](../../_includes/examples.md) %}
+{% endnote %}
 
-Replace the path `$handlerUrl` with your path to the action handler.
+## Initializing the SDK in an Application Context
 
 {% list tabs %}
 
 - JS
 
     ```js
-    BX24.callMethod(
-        "bizproc.activity.add",
-        {
-            "CODE": "activityAccount",
-            "HANDLER": "https://yourdomain.com/handler.php",
-            "AUTH_USER_ID": 1,
-            "NAME": "ActivityAccount",
-            "DESCRIPTION": "description",
-            "PROPERTIES": {
-                "account_title": {
-                    "Name": "Format account title",
-                    "Description": "",
-                    "Type": "string",
-                    "Required": "Y",
-                    "Multiple": "N",
-                    "Default": "Account title"
-                },
-                "my_company_id": {
-                    "Name": "My Company id",
-                    "Description": "",
-                    "Type": "int",
-                    "Required": "Y",
-                    "Multiple": "N",
-                    "Default": "1"
-                },
-                "pay_system_id": {
-                    "Name": "Pay system id",
-                    "Description": "",
-                    "Type": "int",
-                    "Required": "Y",
-                    "Multiple": "N",
-                    "Default": "1"
-                }
-            }
-        },
-        function(result) {
-            if(result.error())
-                console.error(result.error());
-            else
-                console.dir(result.data());
-        }
-    );
+    // npm install @bitrix24/b24jssdk
+    // The application page opens inside a Bitrix24 iframe
+    import { initializeB24Frame } from '@bitrix24/b24jssdk'
+
+    const $b24 = await initializeB24Frame()
     ```
 
 - PHP
 
     ```php
     <?php
-    $handlerUrl = 'https://yourdomain.com/handler.php';
-    $result = CRest::call(
-        'bizproc.activity.add',
-        [
-            'CODE' => 'activityAccount',
-            'HANDLER' => $handlerUrl,
-            'AUTH_USER_ID' => 1,
-            'NAME' => 'ActivityAccount',
-            'DESCRIPTION' => 'description',
-            'PROPERTIES' => [
-                'account_title' => [
-                    'Name' => 'Format account title',
-                    'Description' => '',
-                    'Type' => 'string',
-                    'Required' => 'Y',
-                    'Multiple' => 'N',
-                    'Default' => 'Account title',
-                ],
-                'my_company_id' => [
-                    'Name' => 'My Company id',
-                    'Description' => '',
-                    'Type' => 'int',
-                    'Required' => 'Y',
-                    'Multiple' => 'N',
-                    'Default' => '1',
-                ],
-                'pay_system_id' => [
-                    'Name' => 'Pay system id',
-                    'Description' => '',
-                    'Type' => 'int',
-                    'Required' => 'Y',
-                    'Multiple' => 'N',
-                    'Default' => '1',
-                ],
-            ]
-        ]
+    // composer require bitrix24/b24phpsdk:"^3.0"
+    require_once 'vendor/autoload.php';
+
+    use Bitrix24\SDK\Services\ServiceBuilderFactory;
+    use Bitrix24\SDK\Core\Credentials\ApplicationProfile;
+    use Symfony\Component\HttpFoundation\Request;
+
+    $appProfile = ApplicationProfile::initFromArray([
+        'BITRIX24_PHP_SDK_APPLICATION_CLIENT_ID' => 'local.xxxxxxxx.xxxxxxxx',
+        'BITRIX24_PHP_SDK_APPLICATION_CLIENT_SECRET' => 'yyyyyyyy',
+        'BITRIX24_PHP_SDK_APPLICATION_SCOPE' => 'crm,bizproc',
+    ]);
+    $b24 = ServiceBuilderFactory::createServiceBuilderFromPlacementRequest(
+        Request::createFromGlobals(),
+        $appProfile
     );
-    ?>
     ```
 
 - Python
 
     ```python
-    from b24pysdk import BitrixWebhook, Client
-    from b24pysdk.errors import BitrixAPIError
+    # pip install b24pysdk
+    from b24pysdk import Client, BitrixApp, BitrixToken
 
-    client = Client(
-        BitrixWebhook(
-            domain="your-domain.bitrix24.com",
-            auth_token="your-webhook-token",
-        )
+    bitrix_app = BitrixApp(client_id="local.xxxxxxxx.xxxxxxxx", client_secret="yyyyyyyy")
+    token = BitrixToken(
+        domain=auth["domain"],
+        auth_token=auth["access_token"],
+        refresh_token=auth["refresh_token"],
+        bitrix_app=bitrix_app,
     )
+    client = Client(token)
+    ```
+
+{% endlist %}
+
+## Action Registration File
+
+Replace the handler path with your public URL. Describe the configurable action fields in the `PROPERTIES` parameter.
+
+{% list tabs %}
+
+- JS
+
+    ```js
+    const response = await $b24.actions.v2.call.make({
+        method: 'bizproc.activity.add',
+        params: {
+            CODE: 'activityAccount',
+            HANDLER: 'https://your-domain.example/handler.php',
+            AUTH_USER_ID: 1,
+            NAME: 'ActivityAccount',
+            DESCRIPTION: 'description',
+            PROPERTIES: {
+                account_title: { Name: 'Format account title', Type: 'string', Required: 'Y', Default: 'Account title' },
+                my_company_id: { Name: 'My Company id', Type: 'int', Required: 'Y', Default: '1' },
+                pay_system_id: { Name: 'Pay system id', Type: 'int', Required: 'Y', Default: '1' },
+            },
+        },
+        requestId: 'bizproc-activity-add',
+    })
+
+    if (!response.isSuccess) {
+        throw new Error(response.getErrorMessages().join('; '))
+    }
+    ```
+
+- PHP
+
+    ```php
+    // The typed method getBizProcScope()->activity()->add(...) accepts
+    // localized arrays and a document type object. For a simple example,
+    // we call the method directly via the core with a flat parameter structure.
+    $b24->core->call('bizproc.activity.add', [
+        'CODE' => 'activityAccount',
+        'HANDLER' => 'https://your-domain.example/handler.php',
+        'AUTH_USER_ID' => 1,
+        'NAME' => 'ActivityAccount',
+        'DESCRIPTION' => 'description',
+        'PROPERTIES' => [
+            'account_title' => ['Name' => 'Format account title', 'Type' => 'string', 'Required' => 'Y', 'Default' => 'Account title'],
+            'my_company_id' => ['Name' => 'My Company id', 'Type' => 'int', 'Required' => 'Y', 'Default' => '1'],
+            'pay_system_id' => ['Name' => 'Pay system id', 'Type' => 'int', 'Required' => 'Y', 'Default' => '1'],
+        ],
+    ]);
+    ```
+
+- Python
+
+    ```python
+    from b24pysdk.errors import BitrixAPIError
 
     try:
         result = client.bizproc.activity.add(
             code="activityAccount",
-            handler="https://yourdomain.com/handler.php",
+            handler="https://your-domain.example/handler.php",
             auth_user_id=1,
             name="ActivityAccount",
             description="description",
             properties={
-                "account_title": {
-                    "Name": "Format account title",
-                    "Description": "",
-                    "Type": "string",
-                    "Required": "Y",
-                    "Multiple": "N",
-                    "Default": "Account title",
-                },
-                "my_company_id": {
-                    "Name": "My Company id",
-                    "Description": "",
-                    "Type": "int",
-                    "Required": "Y",
-                    "Multiple": "N",
-                    "Default": "1",
-                },
-                "pay_system_id": {
-                    "Name": "Pay system id",
-                    "Description": "",
-                    "Type": "int",
-                    "Required": "Y",
-                    "Multiple": "N",
-                    "Default": "1",
-                },
+                "account_title": {"Name": "Format account title", "Type": "string", "Required": "Y", "Default": "Account title"},
+                "my_company_id": {"Name": "My Company id", "Type": "int", "Required": "Y", "Default": "1"},
+                "pay_system_id": {"Name": "Pay system id", "Type": "int", "Required": "Y", "Default": "1"},
             },
         ).response.result
         print(result)
@@ -169,112 +150,157 @@ Replace the path `$handlerUrl` with your path to the action handler.
 
 ## Action Handler 
 
-{% include [Example Note](../../_includes/examples.md) %}
+Bitrix24 calls the handler when the action is executed and passes `properties` with the configured values and `document_id` — an array of document identifiers in the form of `['DEAL_123']` or `['LEAD_456']`.
 
-```php
-<?php
-$my_company_id = intval($_REQUEST['properties']['my_company_id']);
-$pay_system_id = intval($_REQUEST['properties']['pay_system_id']);//some in CRest::call('sale.paysystem.list')
-$account_title = htmlspecialchars($_REQUEST['properties']['account_title']);
-$arDocument = $_REQUEST['document_id'];
-$iDealID = 0;
-$iLeadID = 0;
-if (is_array($arDocument))
-{
-    foreach ($arDocument as $param)
-    {//search id
-        if (strpos($param, 'DEAL_') !== false)
-        {
-            $iDealID = intval(substr($param, strlen('DEAL_')));
-            break;
+In the handler, we will determine the object type and identifier, retrieve its data and line items, and then create an invoice.
+
+{% note warning "" %}
+
+The `crm.invoice.add` method refers to old invoices and is deprecated. In new integrations, use smart invoices — the universal [crm.item.add](../../api-reference/crm/universal/crm-item-add.md) methods with `entityTypeId` of the invoice SPA. The `crm.invoice.add` call is preserved below for compatibility with the scenario.
+
+{% endnote %}
+
+{% list tabs %}
+
+- JS
+
+    ```js
+    // Server-side handler (Node.js). We take the application authorization from the request.
+    import { B24Hook } from '@bitrix24/b24jssdk'
+
+    export async function handler(req, res) {
+        const $b24 = B24Hook.fromWebhookUrl(process.env.B24_APP_HOOK) // or B24OAuth with an application token
+        const properties = req.body.properties || {}
+        const documentId = req.body.document_id || []
+
+        const dealMatch = documentId.find((v) => v.startsWith('DEAL_'))
+        const leadMatch = documentId.find((v) => v.startsWith('LEAD_'))
+
+        let entity, productMethod, idField
+        if (dealMatch) {
+            entity = await getItem('crm.deal.get', Number(dealMatch.slice(5)))
+            productMethod = 'crm.deal.productrows.get'
+            idField = Number(dealMatch.slice(5))
+        } else if (leadMatch) {
+            entity = await getItem('crm.lead.get', Number(leadMatch.slice(5)))
+            productMethod = 'crm.lead.productrows.get'
+            idField = Number(leadMatch.slice(5))
+        } else {
+            return res.end()
         }
-        elseif (strpos($param, 'LEAD_') !== false)
-        {
-            $iLeadID = intval(substr($param, strlen('LEAD_')));
-            break;
+
+        async function getItem(method, id) {
+            const r = await $b24.actions.v2.call.make({ method, params: { id }, requestId: method })
+            return r.getData().result
         }
+
+        const rowsResp = await $b24.actions.v2.call.make({ method: productMethod, params: { id: idField }, requestId: 'rows' })
+        const rows = rowsResp.getData().result
+
+        await $b24.actions.v2.call.make({
+            method: 'crm.invoice.add',
+            params: { fields: {
+                ORDER_TOPIC: properties.account_title,
+                UF_COMPANY_ID: entity.COMPANY_ID,
+                UF_CONTACT_ID: entity.CONTACT_ID,
+                UF_DEAL_ID: entity.ID,
+                UF_MYCOMPANY_ID: properties.my_company_id,
+                PERSON_TYPE_ID: entity.COMPANY_ID > 0 ? 1 : 2,
+                PAY_SYSTEM_ID: properties.pay_system_id,
+                STATUS_ID: 'N',
+                PRODUCT_ROWS: rows,
+            } },
+            requestId: 'invoice-add',
+        })
+        res.end()
     }
-}
-if ($iDealID > 0)
-{
-    $result = CRest::call(
-        'crm.deal.get',
-        [
-            'id' => $iDealID
-        ]
-    );
-    if (!empty($result['result']))
-    {
-        $arData = $result['result'];
-        $resultProduct = CRest::call(
-            'crm.deal.productrows.get',
-            [
-                'id' => $iDealID
-            ]
-        );
+    ```
+
+- PHP
+
+    ```php
+    <?php
+    // composer require bitrix24/b24phpsdk:"^3.0"
+    require_once 'vendor/autoload.php';
+
+    // $b24 is built on the application token (see "SDK Initialization in the context of an application")
+
+    $properties = $_REQUEST['properties'] ?? [];
+    $documentId = (array)($_REQUEST['document_id'] ?? []);
+
+    $dealId = 0;
+    $leadId = 0;
+    foreach ($documentId as $param) {
+        if (str_starts_with($param, 'DEAL_')) { $dealId = (int)substr($param, 5); break; }
+        if (str_starts_with($param, 'LEAD_')) { $leadId = (int)substr($param, 5); break; }
     }
-}
-elseif ($iLeadID > 0)
-{
-    $result = CRest::call(
-        'crm.lead.get',
-        [
-            'id' => $iLeadID
-        ]
-    );
-    if (!empty($result['result']))
-    {
-        $arData = $result['result'];
-        $resultProduct = CRest::call(
-            'crm.lead.productrows.get',
-            [
-                'id' => $iLeadID
-            ]
-        );
+
+    if ($dealId > 0) {
+        $entity = $b24->getCRMScope()->deal()->get($dealId)->deal();
+        $rows = $b24->core->call('crm.deal.productrows.get', ['id' => $dealId])->getResponseData()->getResult();
+    } elseif ($leadId > 0) {
+        $entity = $b24->getCRMScope()->lead()->get($leadId)->lead();
+        $rows = $b24->core->call('crm.lead.productrows.get', ['id' => $leadId])->getResponseData()->getResult();
+    } else {
+        exit;
     }
-}
-if (!empty($arData['COMPANY_ID']) || !empty($arData['CONTACT_ID']))
-{
-    if (empty($resultProduct['result']))
-    {//if the deal or lead has no products
-        $resultProduct['result'][] = [
-            'ID' => 0,
-            'PRODUCT_ID' => 0,
-            'PRODUCT_NAME' => $account_title,
-            'QUANTITY' => 1,
-            'PRICE' => ($arData['OPPORTUNITY'])?:0,
-        ];
-    }
-    $arProduct = [];
-    foreach ($resultProduct['result'] as $product)
-    {
-        $arProduct[] = [
-            'ID' => $product['ID'],
-            'PRODUCT_ID' => $product['PRODUCT_ID'],
-            'PRODUCT_NAME' => $product['PRODUCT_NAME'],
-            'QUANTITY' => $product['QUANTITY'],
-            'PRICE' => $product['PRICE']
-        ];
-    }
-    $resultInvoice = CRest::call(
-        'crm.invoice.add',
-        [
-            'fields' => [
-                'ORDER_TOPIC' => $account_title,
-                'UF_COMPANY_ID' => $arData['COMPANY_ID'],
-                'UF_CONTACT_ID' => $arData['CONTACT_ID'],
-                'UF_DEAL_ID' => $arData['ID'],
-                'UF_MYCOMPANY_ID' => $my_company_id,
-                'PERSON_TYPE_ID' => ($arData['COMPANY_ID'] > 0) ? 1 : 2,//1 is company, 2 is contact in CRest::call('crm.persontype.list')
-                'PAY_SYSTEM_ID' => $pay_system_id,
-                "STATUS_ID" => "N",
-                'DATE_INSERT' => date(DATE_ATOM),
-                'DATE_BILL' => date(DATE_ATOM),
-                'DATE_PAY_BEFORE' => date(DATE_ATOM, time() + 3600 * 24 * 20),//20 day pay
-                'PRODUCT_ROWS' => $arProduct,
-            ]
-        ]
-    );
-}
-?>
-```
+
+    // crm.invoice.add — a deprecated method for old invoices, kept for compatibility
+    $b24->core->call('crm.invoice.add', [
+        'fields' => [
+            'ORDER_TOPIC' => $properties['account_title'] ?? '',
+            'UF_COMPANY_ID' => $entity->COMPANY_ID,
+            'UF_CONTACT_ID' => $entity->CONTACT_ID,
+            'UF_DEAL_ID' => $entity->ID,
+            'UF_MYCOMPANY_ID' => (int)($properties['my_company_id'] ?? 0),
+            'PERSON_TYPE_ID' => $entity->COMPANY_ID > 0 ? 1 : 2,
+            'PAY_SYSTEM_ID' => (int)($properties['pay_system_id'] ?? 0),
+            'STATUS_ID' => 'N',
+            'PRODUCT_ROWS' => $rows,
+        ],
+    ]);
+    ```
+
+- Python
+
+    ```python
+    # client and token are built on the application token (see "SDK Initialization in the context of an application")
+
+    # properties and document_id come in the request body from Bitrix24.
+    # Parsing depends on the framework; we assume the values have already been extracted:
+    properties = ...   # dict of configured field values
+    document_id = ...  # list of type ["DEAL_123"] or ["LEAD_456"]
+
+    deal_id = lead_id = 0
+    for param in document_id:
+        if param.startswith("DEAL_"):
+            deal_id = int(param[5:]); break
+        if param.startswith("LEAD_"):
+            lead_id = int(param[5:]); break
+
+    if deal_id:
+        entity = client.crm.deal.get(bitrix_id=deal_id).response.result
+        rows = client.crm.deal.productrows.get(bitrix_id=deal_id).response.result
+    elif lead_id:
+        entity = client.crm.lead.get(bitrix_id=lead_id).response.result
+        rows = client.crm.lead.productrows.get(bitrix_id=lead_id).response.result
+    else:
+        rows = entity = None
+
+    if entity:
+        # crm.invoice — a deprecated scope, there is no typed client.crm.invoice in b24pysdk,
+        # therefore we call the method directly via token.call_method
+        token.call_method("crm.invoice.add", {"fields": {
+            "ORDER_TOPIC": properties.get("account_title", ""),
+            "UF_COMPANY_ID": entity.get("COMPANY_ID"),
+            "UF_CONTACT_ID": entity.get("CONTACT_ID"),
+            "UF_DEAL_ID": entity.get("ID"),
+            "UF_MYCOMPANY_ID": properties.get("my_company_id"),
+            "PERSON_TYPE_ID": 1 if int(entity.get("COMPANY_ID") or 0) > 0 else 2,
+            "PAY_SYSTEM_ID": properties.get("pay_system_id"),
+            "STATUS_ID": "N",
+            "PRODUCT_ROWS": rows,
+        }})
+    ```
+
+{% endlist %}

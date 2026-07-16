@@ -28,7 +28,7 @@ To update an activity, you need the following values:
 - `id` — the activity identifier in the timeline,
 - `ownerTypeId` — the [CRM object type identifier](../../../api-reference/crm/data-types.md#object_type) to which the activity is linked,
 - `ownerId` — the CRM item identifier to which the activity is linked,
-- `deadline` — the current activity deadline, from which we will take the time and time zone for the new deadline in [ISO 8601](https://www.php.net/manual/ru/class.datetimeinterface.php#datetimeinterface.constants.atom) format.
+- `deadline` — the current activity deadline, from which we will take the time and time zone for the new deadline in [ISO 8601](https://www.php.net/manual/en/class.datetimeinterface.php#datetimeinterface.constants.atom) format.
 
 The [crm.activity.todo.update](../../../api-reference/crm/timeline/activities/todo/crm-activity-todo-update.md) method does not update closed activities. To retrieve an open activity, call the [crm.activity.list](../../../api-reference/crm/timeline/activities/activity-base/crm-activity-list.md) method with the `COMPLETED: 'N'` filter.
 
@@ -41,15 +41,20 @@ In the example, we retrieve the first open activity linked to deal `18`. For the
 - JS
 
     ```js
-    const dealId = 18;
+    // npm install @bitrix24/b24jssdk
+    import { B24Hook } from '@bitrix24/b24jssdk'
 
-    BX24.callMethod(
-        'crm.activity.list',
-        {
+    const $b24 = B24Hook.fromWebhookUrl('https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/')
+
+    const dealId = 18
+
+    const activityResponse = await $b24.actions.v2.call.make({
+        method: 'crm.activity.list',
+        params: {
             filter: {
                 OWNER_TYPE_ID: 2,
                 OWNER_ID: dealId,
-                COMPLETED: 'N'
+                COMPLETED: 'N',
             },
             select: [
                 'ID',
@@ -58,75 +63,84 @@ In the example, we retrieve the first open activity linked to deal `18`. For the
                 'SUBJECT',
                 'DEADLINE',
                 'COMPLETED',
-                'RESPONSIBLE_ID'
-            ]
+                'RESPONSIBLE_ID',
+            ],
         },
-        function(result) {
-            if (result.error()) {
-                console.error(result.error() + ': ' + result.error_description());
-                return;
-            }
+        requestId: 'activity-list',
+    })
 
-            const activity = result.data()[0];
+    if (!activityResponse.isSuccess) {
+        throw new Error(activityResponse.getErrorMessages().join('; '))
+    }
 
-            if (!activity) {
-                console.log('No open activities found');
-                return;
-            }
+    const activity = activityResponse.getData().result[0]
 
-            const activityId = Number(activity.ID);
-            const ownerTypeId = Number(activity.OWNER_TYPE_ID);
-            const ownerId = Number(activity.OWNER_ID);
-            const currentDeadline = activity.DEADLINE;
-            const responsibleId = Number(activity.RESPONSIBLE_ID);
+    if (!activity) {
+        console.log('Unclosed tasks not found')
+    } else {
+        const activityId = Number(activity.ID)
+        const ownerTypeId = Number(activity.OWNER_TYPE_ID)
+        const ownerId = Number(activity.OWNER_ID)
+        const currentDeadline = activity.DEADLINE
+        const responsibleId = Number(activity.RESPONSIBLE_ID)
 
-            console.log(activityId, ownerTypeId, ownerId, currentDeadline, responsibleId);
-        }
-    );
+        console.log(activityId, ownerTypeId, ownerId, currentDeadline, responsibleId)
+    }
     ```
 
 - PHP
 
     ```php
     <?php
-    require_once('crest.php');
+    // composer require bitrix24/b24phpsdk:"^3.0"
+    require_once 'vendor/autoload.php';
+
+    use Bitrix24\SDK\Services\ServiceBuilderFactory;
+    use Symfony\Component\EventDispatcher\EventDispatcher;
+    use Monolog\Logger;
+    use Monolog\Handler\StreamHandler;
+
+    $log = new Logger('b24');
+    $log->pushHandler(new StreamHandler('php://stdout'));
+
+    $sb = (new ServiceBuilderFactory(new EventDispatcher(), $log))
+        ->initFromWebhook('https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/');
 
     $dealId = 18;
 
-    $activitiesResult = CRest::call(
-        'crm.activity.list',
+    $activities = $sb->getCRMScope()->activity()->list(
+        [],
         [
-            'filter' => [
-                'OWNER_TYPE_ID' => 2,
-                'OWNER_ID' => $dealId,
-                'COMPLETED' => 'N'
-            ],
-            'select' => [
-                'ID',
-                'OWNER_TYPE_ID',
-                'OWNER_ID',
-                'SUBJECT',
-                'DEADLINE',
-                'COMPLETED',
-                'RESPONSIBLE_ID'
-            ]
-        ]
-    );
+            'OWNER_TYPE_ID' => 2,
+            'OWNER_ID' => $dealId,
+            'COMPLETED' => 'N'
+        ],
+        [
+            'ID',
+            'OWNER_TYPE_ID',
+            'OWNER_ID',
+            'SUBJECT',
+            'DEADLINE',
+            'COMPLETED',
+            'RESPONSIBLE_ID'
+        ],
+        0
+    )->getActivities();
 
-    $activity = $activitiesResult['result'][0] ?? null;
+    $activity = $activities[0] ?? null;
 
-    if (empty($activity))
+    if ($activity === null)
     {
-        echo 'No open activities found';
+        echo 'Unclosed tasks not found';
         return;
     }
 
-    $activityId = (int)$activity['ID'];
-    $ownerTypeId = (int)$activity['OWNER_TYPE_ID'];
-    $ownerId = (int)$activity['OWNER_ID'];
-    $currentDeadline = $activity['DEADLINE'];
-    $responsibleId = (int)$activity['RESPONSIBLE_ID'];
-    ?>
+    $activityId = $activity->ID;
+    $ownerTypeId = $activity->OWNER_TYPE_ID;
+    $ownerId = $activity->OWNER_ID;
+    // DEADLINE is typed in CarbonImmutable
+    $currentDeadline = $activity->DEADLINE;
+    $responsibleId = $activity->RESPONSIBLE_ID;
     ```
 
 - Python
@@ -161,7 +175,7 @@ In the example, we retrieve the first open activity linked to deal `18`. For the
     ).response.result
 
     if not activities:
-        print("No open activities found")
+        print("Unclosed tasks not found")
         raise SystemExit
 
     activity = activities[0]
@@ -181,7 +195,7 @@ Take the values for updating the activity from the first item of the `result` ar
     "ID": "555",
     "OWNER_TYPE_ID": "2",
     "OWNER_ID": "18",
-    "SUBJECT": "Contact the customer",
+    "SUBJECT": "Contact client",
     "DEADLINE": "2026-08-14T10:00:00+03:00",
     "COMPLETED": "N",
     "RESPONSIBLE_ID": "1"
@@ -206,6 +220,11 @@ The [crm.activity.todo.update](../../../api-reference/crm/timeline/activities/to
 - JS
 
     ```js
+    // npm install @bitrix24/b24jssdk
+    import { B24Hook } from '@bitrix24/b24jssdk'
+
+    const $b24 = B24Hook.fromWebhookUrl('https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/')
+
     const activityId = 555;
     const ownerTypeId = 2;
     const ownerId = 18;
@@ -216,7 +235,7 @@ The [crm.activity.todo.update](../../../api-reference/crm/timeline/activities/to
         const dateTimeParts = isoDateTime.match(/^\d{4}-\d{2}-\d{2}(T.+)$/);
 
         if (!dateTimeParts) {
-            throw new Error('Invalid date format');
+            throw new Error('Incorrect date format');
         }
 
         const tomorrow = new Date();
@@ -231,33 +250,46 @@ The [crm.activity.todo.update](../../../api-reference/crm/timeline/activities/to
 
     const deadline = getTomorrowDeadlineWithSameTime(currentDeadline);
 
-    BX24.callMethod(
-        'crm.activity.todo.update',
-        {
+    const updateResponse = await $b24.actions.v2.call.make({
+        method: 'crm.activity.todo.update',
+        params: {
             id: activityId,
             ownerTypeId: ownerTypeId,
             ownerId: ownerId,
             deadline: deadline,
-            title: 'Contact the customer',
+            title: 'Contact client',
             responsibleId: responsibleId,
             pingOffsets: [0, 15],
-            colorId: '2'
+            colorId: '2',
         },
-        function(result) {
-            if (result.error()) {
-                console.error(result.error() + ': ' + result.error_description());
-            } else {
-                console.log('Activity updated: ' + result.data().id);
-            }
-        }
-    );
+        requestId: 'activity-todo-update',
+    })
+
+    if (!updateResponse.isSuccess) {
+        console.error(updateResponse.getErrorMessages().join('; '))
+    } else {
+        console.log('Task updated: ' + updateResponse.getData().result.id)
+    }
     ```
 
 - PHP
 
     ```php
     <?php
-    require_once('crest.php');
+    // composer require bitrix24/b24phpsdk:"^3.0"
+    require_once 'vendor/autoload.php';
+
+    use Bitrix24\SDK\Core\Exceptions\BaseException;
+    use Bitrix24\SDK\Services\ServiceBuilderFactory;
+    use Symfony\Component\EventDispatcher\EventDispatcher;
+    use Monolog\Logger;
+    use Monolog\Handler\StreamHandler;
+
+    $log = new Logger('b24');
+    $log->pushHandler(new StreamHandler('php://stdout'));
+
+    $sb = (new ServiceBuilderFactory(new EventDispatcher(), $log))
+        ->initFromWebhook('https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/');
 
     $activityId = 555;
     $ownerTypeId = 2;
@@ -273,29 +305,29 @@ The [crm.activity.todo.update](../../../api-reference/crm/timeline/activities/to
         (int)$currentDeadlineDate->format('s')
     );
 
-    $result = CRest::call(
-        'crm.activity.todo.update',
-        [
-            'id' => $activityId,
-            'ownerTypeId' => $ownerTypeId,
-            'ownerId' => $ownerId,
-            'deadline' => $deadline->format(DateTimeInterface::ATOM),
-            'title' => 'Contact the customer',
-            'responsibleId' => $responsibleId,
-            'pingOffsets' => [0, 15],
-            'colorId' => '2'
-        ]
-    );
+    try
+    {
+        // crm.activity.todo.update does not have a typed wrapper — calling via core
+        $result = $sb->core->call(
+            'crm.activity.todo.update',
+            [
+                'id' => $activityId,
+                'ownerTypeId' => $ownerTypeId,
+                'ownerId' => $ownerId,
+                'deadline' => $deadline->format(DateTimeInterface::ATOM),
+                'title' => 'Contact client',
+                'responsibleId' => $responsibleId,
+                'pingOffsets' => [0, 15],
+                'colorId' => '2'
+            ]
+        )->getResponseData()->getResult();
 
-    if (!empty($result['error']))
-    {
-        echo 'Error: '.$result['error_description'];
+        echo 'Task updated: ' . $result['id'];
     }
-    else
+    catch (BaseException $exception)
     {
-        echo 'Activity updated: '.$result['result']['id'];
+        echo 'Error: ' . $exception->getMessage();
     }
-    ?>
     ```
 
 - Python
@@ -327,12 +359,12 @@ The [crm.activity.todo.update](../../../api-reference/crm/timeline/activities/to
             owner_type_id=owner_type_id,
             owner_id=owner_id,
             deadline=deadline,
-            title="Contact the customer",
+            title="Contact client",
             responsible_id=responsible_id,
             ping_offsets=[0, 15],
             color_id="2",
         ).response
-        print(f"Activity updated: {response.result['id']}")
+        print(f"Task updated: {response.result['id']}")
     except BitrixAPIError as error:
         print(f"Error: {error}")
     ```

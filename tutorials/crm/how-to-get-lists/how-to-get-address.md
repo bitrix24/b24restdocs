@@ -12,10 +12,10 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 A client's address can be stored in Bitrix:
 
-* in a custom field of type "address" for any CRM object. To retrieve the address from the field, call the get or list method for the desired entity type.
-* in the [requisites](../../../api-reference/crm/requisites/index.md) of contacts, companies, and leads. Within the requisites, multiple addresses can be stored in a single field `Address`, specifying their types. A single client may have multiple requisites recorded.
+* in a custom field of the "address" type within any CRM object. To retrieve an address from a field, call the `get` or `list` method for the relevant object type.
+* in the [Company details](../../../api-reference/crm/requisites/index.md) of contacts, companies, and leads. Within a single `Adresse` field, multiple addresses with their respective types may be stored. A single customer may have multiple sets of Company details recorded.
 
-To obtain a client's address from the requisites, you need to execute two methods sequentially:
+To retrieve a customer address from Company details, execute these two methods sequentially:
 
 1. [crm.requisite.list](../../../api-reference/crm/requisites/universal/crm-requisite-list.md)
 2. [crm.address.list](../../../api-reference/crm/requisites/addresses/crm-address-list.md)
@@ -26,8 +26,8 @@ Obtaining the requisite ID is a necessary step, as the address is not directly l
 
 To retrieve the requisites, we use the crm.requisite.list method with the following filter:
 
-* in `ENTITY_TYPE_ID`, specify the value `3` — the identifier for [contact type](../../../api-reference/crm/data-types.md#object_type). For company type, use the identifier `4`.
-* in `ENTITY_ID` — the ID of the contact, in this example `2429`. You can obtain the ID using the [crm.contact.list](../../../api-reference/crm/contacts/crm-contact-list.md) method with a filter based on any known contact field. To get the company ID, use [crm.company.list](../../../api-reference/crm/companies/crm-company-list.md). If you need to find the contact or company ID by phone number or email, refer to the tutorial [“Finding Duplicates by Phone Number”](./search-by-phone-and-email.md).
+* specify the value `3` in `ENTITY_TYPE_ID` — the identifier for the [contact type](../../../api-reference/crm/data-types.md#object_type). For the company type, use the identifier `4`.
+* specify the contact ID in `ENTITY_ID`, which is `2429` in the example. You can retrieve the ID using the [crm.contact.list](../../../api-reference/crm/contacts/crm-contact-list.md) method with a filter on any known contact field. To retrieve a company ID, use [crm.company.list](../../../api-reference/crm/companies/crm-company-list.md). If you need to retrieve a contact or company ID by phone number or email, use the [“Search for Duplicates by Phone Number”](./search-by-phone-and-email.md) tutorial.
 
 {% include [Example Footnote](../../../_includes/examples.md) %}
 
@@ -36,45 +36,58 @@ To retrieve the requisites, we use the crm.requisite.list method with the follow
 - JS
 
     ```javascript
-   BX24.callMethod(
-    "crm.requisite.list",
-        {
-        filter: { 
-             "ENTITY_TYPE_ID": "3", 
-             "ENTITY_ID": "2429",      
+    import { B24Hook } from '@bitrix24/b24jssdk'
+
+    const $b24 = B24Hook.fromWebhookUrl(process.env.B24_HOOK)
+    // B24_HOOK = 'https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/'
+
+    const result = await $b24.actions.v2.call.make({
+        method: 'crm.requisite.list',
+        params: {
+            filter: {
+                ENTITY_TYPE_ID: '3',
+                ENTITY_ID: '2429',
             },
-        select: [
-            "ID",
-            "ENTITY_TYPE_ID",
-            "ENTITY_ID",
+            select: [
+                'ID',
+                'ENTITY_TYPE_ID',
+                'ENTITY_ID',
             ],
-        },
-    );
+        }
+    });
     ```
 
 - PHP
 
-    ```php  
-    require_once('crest.php');
+    ```php
+    // composer require bitrix24/b24phpsdk:"^3.0"
+    require_once 'vendor/autoload.php';
 
-        $result = CRest::call(
-            'crm.requisite.list',
-            [
-                'filter' => [
-                    'ENTITY_TYPE_ID' => '3',
-                    'ENTITY_ID' => '2429',
-                ],
-                'select' => [
-                    'ID',
-                    'ENTITY_TYPE_ID',
-                    'ENTITY_ID',
-                ],
-            ]
-        );
+    use Bitrix24\SDK\Services\ServiceBuilderFactory;
+    use Symfony\Component\EventDispatcher\EventDispatcher;
+    use Monolog\Logger;
+    use Monolog\Handler\StreamHandler;
 
-    echo '<PRE>';
-    print_r($result);
-    echo '</PRE>';
+    $log = new Logger('b24');
+    $log->pushHandler(new StreamHandler('php://stdout'));
+
+    $sb = (new ServiceBuilderFactory(new EventDispatcher(), $log))
+        ->initFromWebhook('https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/');
+
+    $requisites = $sb->getCRMScope()->requisite()->list(
+        [],
+        [
+            'ENTITY_TYPE_ID' => '3',
+            'ENTITY_ID' => '2429',
+        ],
+        [
+            'ID',
+            'ENTITY_TYPE_ID',
+            'ENTITY_ID',
+        ]
+    )->getRequisites();
+
+    print_r($requisites);
     ```
 
 - Python
@@ -86,7 +99,7 @@ To retrieve the requisites, we use the crm.requisite.list method with the follow
     client = Client(
         BitrixWebhook(
             domain="your-domain.bitrix24.com",
-            auth_token="your-webhook-token",
+            webhook_token="user_id/webhook_key",
         )
     )
 
@@ -102,6 +115,7 @@ To retrieve the requisites, we use the crm.requisite.list method with the follow
         ],
     ).response.result
     ```
+
 {% endlist %}
 
 We obtained the requisite ID `361` — a parameter necessary for the next request.
@@ -126,46 +140,41 @@ We obtained the requisite ID `361` — a parameter necessary for the next reques
 
 To obtain the address, we use the crm.address.list method with the following filter:
 
-* in `ENTITY_TYPE_ID`, specify the value `8` — the identifier for [requisite type](../../../api-reference/crm/data-types.md#object_type)
-* in `ENTITY_ID` — the requisite ID obtained from the previous request, in this example `361`
-* in `TYPE_ID` — the [address type](../../../api-reference/crm/auxiliary/enum/crm-enum-address-type.md), if you need to retrieve a specific one. For example, the delivery address type is `11`, and the legal address type is `6`.
+* specify the value `8` in `ENTITY_TYPE_ID` — the identifier for the [requisite type](../../../api-reference/crm/data-types.md#object_type).
+* specify the requisite ID obtained in the previous request in `ENTITY_ID`, which is `361` in the example.
+* specify the [Address type](../../../api-reference/crm/auxiliary/enum/crm-enum-address-type.md) in `TYPE_ID` if you need to retrieve a specific one. For example, the delivery address type is `11`, and the business address is `6`.
 
 {% list tabs %}
 
 - JS
 
     ```javascript
-    BX24.callMethod(
-        "crm.address.list",
-        {
-            filter: { 
-            "ENTITY_TYPE_ID": 8, 
-            "ENTITY_ID": 361,  
-            "TYPE_ID": 11, 
+    const result = await $b24.actions.v2.call.make({
+        method: 'crm.address.list',
+        params: {
+            filter: {
+                ENTITY_TYPE_ID: 8,
+                ENTITY_ID: 361,
+                TYPE_ID: 11,
             },
-        },
-    );
+        }
+    });
     ```
 
 - PHP
 
-    ```php   
-    require_once('crest.php');
+    ```php
+    $addresses = $sb->getCRMScope()->address()->list(
+        [],
+        [
+            'ENTITY_TYPE_ID' => 8,
+            'ENTITY_ID' => 361,
+            'TYPE_ID' => 11,
+        ],
+        []
+    )->getAddresses();
 
-        $result = CRest::call(
-            'crm.address.list',
-            [
-                'filter' => [
-                    'ENTITY_TYPE_ID' => 8,
-                    'ENTITY_ID' => 361,
-                    'TYPE_ID' => 11,
-                ],
-            ]
-        );
-
-    echo '<PRE>';
-    print_r($result);
-    echo '</PRE>';
+    print_r($addresses);
     ```
 
 - Python
@@ -179,6 +188,7 @@ To obtain the address, we use the crm.address.list method with the following fil
         }
     ).response.result
     ```
+
 {% endlist %}
 
 We received the delivery address data for the contact.
@@ -193,13 +203,13 @@ We received the delivery address data for the contact.
                         [TYPE_ID] => 11
                         [ENTITY_TYPE_ID] => 8
                         [ENTITY_ID] => 361
-                        [ADDRESS_1] => Pomegranate Lane, 10 c1
+                        [ADDRESS_1] => Granatengasse 10 c1
                         [ADDRESS_2] => 
-                        [CITY] => New York
-                        [POSTAL_CODE] => 10001
-                        [REGION] => Manhattan
-                        [PROVINCE] => New York
-                        [COUNTRY] => USA
+                        [CITY] => Berlin
+                        [POSTAL_CODE] => 123001
+                        [REGION] => Bezirk Preschensky
+                        [PROVINCE] => Berlin
+                        [COUNTRY] => Deutschland
                         [COUNTRY_CODE] => 
                         [LOC_ADDR_ID] => 571
                         [ANCHOR_TYPE_ID] => 3
@@ -217,147 +227,155 @@ We received the delivery address data for the contact.
 - JS
 
     ```javascript
-    var contactId = "your_contact_ID_here"; // Replace with the actual contact ID
+    import { B24Hook } from '@bitrix24/b24jssdk'
 
-    // Method to retrieve the requisite ID
-    BX24.callMethod(
-        "crm.requisite.list",
-        {
+    const $b24 = B24Hook.fromWebhookUrl(process.env.B24_HOOK)
+    // B24_HOOK = 'https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/'
+
+    const contactId = "dein_kontakt_id_hier"; // Ersetze durch die tatsächliche Kontakt-ID
+
+    // Methode zum Abrufen der Requisiten-ID
+    const requisiteResult = await $b24.actions.v2.call.make({
+        method: 'crm.requisite.list',
+        params: {
             filter: {
-                "ENTITY_TYPE_ID": 3,
-                "ENTITY_ID": contactId
+                ENTITY_TYPE_ID: 3,
+                ENTITY_ID: contactId
             },
             select: ["ID"]
-        },
-        function(requisiteResult) {
-            if (requisiteResult.error()) {
-                console.error(requisiteResult.error());
-            } else {
-                var requisites = requisiteResult.data();
-                if (requisites.length > 0) {
-                    var requisiteId = requisites[0].ID;
-                    console.log("Requisite ID:", requisiteId);
+        }
+    });
 
-                    // Method to retrieve the address
-                    BX24.callMethod(
-                        "crm.address.list",
-                        {
-                            filter: {
-                                "ENTITY_TYPE_ID": 8,
-                                "ENTITY_ID": requisiteId,
-                                "TYPE_ID": 11
-                            }
-                        },
-                        function(addressResult) {
-                            if (addressResult.error()) {
-                                console.error(addressResult.error());
-                            } else {
-                                var addresses = addressResult.data();
-                                if (addresses.length > 0) {
-                                    // Create a table to display addresses
-                                    var table = [];
-                                    addresses.forEach(function(address) {
-                                        table.push({
-                                            "Address": address.ADDRESS_1 || "Not specified",
-                                            "City": address.CITY || "Not specified",
-                                            "Postal Code": address.POSTAL_CODE || "Not specified",
-                                            "Country": address.COUNTRY || "Not specified"
-                                        });
-                                    });
-                                    console.table(table);
-                                } else {
-                                    console.log("Delivery address not found.");
-                                }
-                            }
-                        }
-                    );
+    if (!requisiteResult.isSuccess) {
+        console.error(requisiteResult.getErrorMessages().join('; '));
+    } else {
+        const requisites = requisiteResult.getData().result;
+        if (requisites.length > 0) {
+            const requisiteId = requisites[0].ID;
+            console.log("Requisite ID:", requisiteId);
+
+            // Methode zum Abrufen der Adresse
+            const addressResult = await $b24.actions.v2.call.make({
+                method: 'crm.address.list',
+                params: {
+                    filter: {
+                        ENTITY_TYPE_ID: 8,
+                        ENTITY_ID: requisiteId,
+                        TYPE_ID: 11
+                    }
+                }
+            });
+
+            if (!addressResult.isSuccess) {
+                console.error(addressResult.getErrorMessages().join('; '));
+            } else {
+                const addresses = addressResult.getData().result;
+                if (addresses.length > 0) {
+                    // Wir erstellen eine Tabelle zur Anzeige der Adressen
+                    const table = [];
+                    addresses.forEach(function(address) {
+                        table.push({
+                            "Adresse": address.ADDRESS_1 || "Nicht angegeben",
+                            "Stadt": address.CITY || "Nicht angegeben",
+                            "Postleitzahl": address.POSTAL_CODE || "Nicht angegeben",
+                            "Land": address.COUNTRY || "Nicht angegeben"
+                        });
+                    });
+                    console.table(table);
                 } else {
-                    console.log("Requisite not found.");
+                    console.log("Lieferadresse nicht gefunden.");
                 }
             }
+        } else {
+            console.log("Requisite nicht gefunden.");
         }
-    );
+    }
     ```
-
 
 - PHP
 
-    ```php  
-    require_once('crest.php');
+    ```php
+    <?php
+    // composer require bitrix24/b24phpsdk:"^3.0"
+    require_once 'vendor/autoload.php';
 
-        $contactId = 'your_contact_ID_here'; // Replace with the actual contact ID
+    use Bitrix24\SDK\Services\ServiceBuilderFactory;
+    use Symfony\Component\EventDispatcher\EventDispatcher;
+    use Monolog\Logger;
+    use Monolog\Handler\StreamHandler;
 
-        // Method to retrieve the requisite ID
-        $requisiteResult = CRest::call(
-            'crm.requisite.list',
+    $log = new Logger('b24');
+    $log->pushHandler(new StreamHandler('php://stdout'));
+
+    $sb = (new ServiceBuilderFactory(new EventDispatcher(), $log))
+        ->initFromWebhook('https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/');
+
+    $contactId = 'dein_kontakt_id_hier'; // Ersetze durch die tatsächliche Kontakt-ID
+
+    try {
+        // Methode zum Abrufen der Requisiten-ID
+        $requisites = $sb->getCRMScope()->requisite()->list(
+            [],
             [
-                'filter' => [
-                    'ENTITY_TYPE_ID' => 3,
-                    'ENTITY_ID' => $contactId
+                'ENTITY_TYPE_ID' => 3,
+                'ENTITY_ID' => $contactId
+            ],
+            ['ID']
+        )->getRequisites();
+
+        if (count($requisites) > 0) {
+            $requisiteId = $requisites[0]->ID;
+            echo 'Requisite ID: ' . $requisiteId . PHP_EOL;
+
+            // Methode zum Abrufen der Adresse
+            $addresses = $sb->getCRMScope()->address()->list(
+                [],
+                [
+                    'ENTITY_TYPE_ID' => 8,
+                    'ENTITY_ID' => $requisiteId,
+                    'TYPE_ID' => 11
                 ],
-                'select' => ['ID']
-            ]
-        );
+                []
+            )->getAddresses();
 
-        if (isset($requisiteResult['error'])) {
-            echo 'Error: ' . $requisiteResult['error_description'];
-        } else {
-            $requisites = $requisiteResult['result'];
-            if (count($requisites) > 0) {
-                $requisiteId = $requisites[0]['ID'];
-                echo 'Requisite ID: ' . $requisiteId . PHP_EOL;
-
-                // Method to retrieve the address
-                $addressResult = CRest::call(
-                    'crm.address.list',
-                    [
-                        'filter' => [
-                            'ENTITY_TYPE_ID' => 8,
-                            'ENTITY_ID' => $requisiteId,
-                            'TYPE_ID' => 11
-                        ]
-                    ]
-                );
-
-                if (isset($addressResult['error'])) {
-                    echo 'Error: ' . $addressResult['error_description'];
-                } else {
-                    $addresses = $addressResult['result'];
-                    if (count($addresses) > 0) {
-                        // Create a table to display addresses
-                        echo '<table border="1">';
-                        echo '<tr><th>Address</th><th>City</th><th>Postal Code</th><th>Country</th></tr>';
-                        foreach ($addresses as $address) {
-                            echo '<tr>';
-                            echo '<td>' . ($address['ADDRESS_1'] ?? 'Not specified') . '</td>';
-                            echo '<td>' . ($address['CITY'] ?? 'Not specified') . '</td>';
-                            echo '<td>' . ($address['POSTAL_CODE'] ?? 'Not specified') . '</td>';
-                            echo '<td>' . ($address['COUNTRY'] ?? 'Not specified') . '</td>';
-                            echo '</tr>';
-                        }
-                        echo '</table>';
-                    } else {
-                        echo 'Delivery address not found.';
-                    }
+            if (count($addresses) > 0) {
+                // Wir erstellen eine Tabelle zur Anzeige der Adressen
+                echo '<table border="1">';
+                echo '<tr><th>Adresse</th><th>Stadt</th><th>Postleitzahl</th><th>Land</th></tr>';
+                foreach ($addresses as $address) {
+                    echo '<tr>';
+                    echo '<td>' . ($address->ADDRESS_1 ?? 'Nicht angegeben') . '</td>';
+                    echo '<td>' . ($address->CITY ?? 'Nicht angegeben') . '</td>';
+                    echo '<td>' . ($address->POSTAL_CODE ?? 'Nicht angegeben') . '</td>';
+                    echo '<td>' . ($address->COUNTRY ?? 'Nicht angegeben') . '</td>';
+                    echo '</tr>';
                 }
+                echo '</table>';
             } else {
-                echo 'Requisite not found.';
+                echo 'Lieferadresse nicht gefunden.';
             }
+        } else {
+            echo 'Requisite nicht gefunden.';
         }
+    } catch (\Throwable $e) {
+        echo 'Error: ' . $e->getMessage();
+    }
     ```
+
 - Python
 
     ```python
     from b24pysdk import BitrixWebhook, Client
+    from b24pysdk.errors import BitrixAPIError
 
     client = Client(
         BitrixWebhook(
             domain="your-domain.bitrix24.com",
-            auth_token="your-webhook-token",
+            webhook_token="user_id/webhook_key",
         )
     )
 
-    contact_id = "your_contact_ID_here"
+    contact_id = "dein_kontakt_id_hier"
 
     try:
         requisites = client.crm.requisite.list(
@@ -368,11 +386,11 @@ We received the delivery address data for the contact.
             select=["ID"],
         ).response.result
     except BitrixAPIError as error:
-        print(f"Error: {error}")
+        print(f"Fehler: {error}")
     else:
         if requisites:
             requisite_id = requisites[0]["ID"]
-            print(f"Requisite ID: {requisite_id}")
+            print(f"Requisiten-ID: {requisite_id}")
 
             try:
                 addresses = client.crm.address.list(
@@ -383,25 +401,25 @@ We received the delivery address data for the contact.
                     }
                 ).response.result
             except BitrixAPIError as error:
-                print(f"Error: {error}")
+                print(f"Fehler: {error}")
             else:
                 if addresses:
-                    print("Address\tCity\tPostal Code\tCountry")
+                    print("Adresse\tStadt\tPostleitzahl\tLand")
                     for address in addresses:
                         print(
                             "\t".join(
                                 [
-                                    str(address.get("ADDRESS_1") or "Not specified"),
-                                    str(address.get("CITY") or "Not specified"),
-                                    str(address.get("POSTAL_CODE") or "Not specified"),
-                                    str(address.get("COUNTRY") or "Not specified"),
+                                    str(address.get("ADDRESS_1") or "Nicht angegeben"),
+                                    str(address.get("CITY") or "Nicht angegeben"),
+                                    str(address.get("POSTAL_CODE") or "Nicht angegeben"),
+                                    str(address.get("COUNTRY") or "Nicht angegeben"),
                                 ]
                             )
                         )
                 else:
-                    print("Delivery address not found.")
+                    print("Lieferadresse nicht gefunden.")
         else:
-            print("Requisite not found.")
+            print("Requisite nicht gefunden.")
     ```
 
 {% endlist %}

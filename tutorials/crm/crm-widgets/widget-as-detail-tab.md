@@ -30,7 +30,7 @@ The original example and additional materials are available in the [Embedding in
 
 The application registers a handler URL using the `placement.bind` method and specifies the `CRM_DEAL_DETAIL_TAB` code. Once the application installation is complete, a new tab appears in the deal card.
 
-When a user opens the tab, Bitrix24 loads the handler in an iframe and passes the call context to it. The current deal identifier is received in `PLACEMENT_OPTIONS.ID`. The handler passes this identifier to `crm.item.get` and displays the retrieved data.
+When a user opens the tab, Bitrix24 loads the handler in an iframe and passes the invocation context to it. The current deal identifier is sent to `PLACEMENT_OPTIONS.ID`. The handler passes this identifier to `crm.item.get` and displays the retrieved data.
 
 ## 1. Prepare the Application
 
@@ -55,11 +55,9 @@ The handler URL must be accessible from an external network. Do not use `localho
 
 {% endnote %}
 
-The `placement.bind` method works only within the context of an application. An incoming webhook is not suitable for registering a tab.
+The `placement.bind` method works only within the application context. An incoming webhook is not suitable for registering a tab.
 
 ## 2. Register the Tab
-
-Choose one example option: BX24.js or PHP CRest.
 
 Register the handler using the `placement.bind` method. Pass the following parameters:
 
@@ -72,67 +70,91 @@ Register the handler using the `placement.bind` method. Pass the following param
 
 {% list tabs %}
 
-- BX24.js
+- JS
 
     ```js
-    BX24.callMethod(
-        'placement.bind',
-        {
+    // npm install @bitrix24/b24jssdk
+    // App settings page opened in a Bitrix24 iframe
+    import { initializeB24Frame } from '@bitrix24/b24jssdk'
+
+    const $b24 = await initializeB24Frame()
+
+    const response = await $b24.actions.v2.call.make({
+        method: 'placement.bind',
+        params: {
             PLACEMENT: 'CRM_DEAL_DETAIL_TAB',
             HANDLER: 'https://your-domain.example/deal-tab.php',
             TITLE: 'Deal data',
             LANG_ALL: {
-                de: {
-                    TITLE: 'Transaction data',
+                ru: {
+                    TITLE: 'Deal data',
                 },
                 en: {
                     TITLE: 'Deal data',
                 },
             },
         },
-        (result) => {
-            if (result.error())
-            {
-                console.error(result.error() + ': ' + result.error_description());
-                return;
-            }
+        requestId: 'placement-bind',
+    })
 
-            console.info('Tab registered');
-        }
-    );
+    if (!response.isSuccess) {
+        throw new Error(response.getErrorMessages().join('; '))
+    }
+
+    console.info('Registered tab')
     ```
 
-- PHP CRest
+- PHP
 
     ```php
     <?php
-    require_once('crest.php');
+    // composer require bitrix24/b24phpsdk:"^3.0"
+    require_once 'vendor/autoload.php';
 
-    $result = CRest::call(
-        'placement.bind',
-        [
-            'PLACEMENT' => 'CRM_DEAL_DETAIL_TAB',
-            'HANDLER' => 'https://your-domain.example/deal-tab.php',
-            'TITLE' => 'Deal data',
-            'LANG_ALL' => [
-                'de' => [
-                    'TITLE' => 'Transaction data',
-                ],
-                'en' => [
-                    'TITLE' => 'Deal data',
-                ],
-            ],
-        ]
-    );
+    use Bitrix24\SDK\Core\Exceptions\BaseException;
 
-    if (!empty($result['error']))
+    // $b24 is built on the app token — see scenario
+    // "How to embed a widget into a lead as a custom field"
+    try
     {
-        echo $result['error'] . ': ' . $result['error_description'];
+        $b24->getPlacementScope()->placement()->bind(
+            'CRM_DEAL_DETAIL_TAB',
+            'https://your-domain.example/deal-tab.php',
+            [
+                'de' => ['TITLE' => 'Deal data'],
+                'en' => ['TITLE' => 'Deal data'],
+            ]
+        );
+
+        echo 'Registered tab';
     }
-    else
+    catch (BaseException $exception)
     {
-        echo 'Tab registered';
+        echo $exception->getMessage();
     }
+    ```
+
+- Python
+
+    ```python
+    # pip install b24pysdk
+    # client is built on the app token — see scenario
+    # "How to embed a widget into a lead as a custom field"
+    from b24pysdk.errors import BitrixAPIError
+
+    try:
+        bitrix_response = client.placement.bind(
+            placement="CRM_DEAL_DETAIL_TAB",
+            handler="https://your-domain.example/deal-tab.php",
+            title="Deal data",
+            lang_all={
+                "de": {"TITLE": "Deal data"},
+                "en": {"TITLE": "Deal data"},
+            },
+        ).response
+        print("Registered tab:", bitrix_response.result)
+    except BitrixAPIError as error:
+        print(error)
     ```
 
 {% endlist %}
@@ -156,7 +178,7 @@ PLACEMENT=CRM_DEAL_DETAIL_TAB
 PLACEMENT_OPTIONS={"ID":"3473"}
 ```
 
-`PLACEMENT_OPTIONS` is passed as a JSON string. In PHP, convert it to an array using the `json_decode` function. In the JavaScript SDK, the `BX24.getPlacementOptions()` method returns a ready-to-use object.
+`PLACEMENT_OPTIONS` is passed as a JSON string. In PHP and Python, convert it into an array or dictionary—for example, using the `json_decode` or `json.loads` function. In B24JsSDK, the property `$b24.placement.options` returns a ready-to-use object, while `$b24.placement.placement` returns the placement code.
 
 #|
 || **Parameter**
@@ -175,7 +197,7 @@ PLACEMENT_OPTIONS={"ID":"3473"}
 [`string`](../../../api-reference/data-types.md) | OAuth token of the user who opened the tab. The PHP handler uses the token to call `crm.item.get` with this user's permissions ||
 |#
 
-The full set of request service parameters is described on the [CRM Card Tab](../../../api-reference/widgets/crm/detail-tab.md#what-the-handler-receives) page.
+The full set of request service parameters is described on the [Tabs in CRM Cards](../../../api-reference/widgets/crm/detail-tab.md#what-the-handler-receives) page.
 
 ## 4. Retrieve Deal Data
 
@@ -184,10 +206,10 @@ Call `crm.item.get` from the handler. For a deal, pass:
 - `entityTypeId: 2` — the identifier for the "Deal" CRM object type
 - `id` — the identifier from `PLACEMENT_OPTIONS.ID`
 
-Choose one handler option:
+The method is executed with the authorization of the user who opened the tab:
 
-- JavaScript calls the method via BX24.js using the authorization of the user who opened the tab
-- PHP performs an OAuth request using the `AUTH_ID` token, which Bitrix24 passes for the user who opened the tab
+- JS runs inside an iframe — `initializeB24Frame` retrieves authorization from the tab context
+- PHP and Python build a client using the request data that Bitrix24 passes to the handler, including the `AUTH_ID` token
 
 {% list tabs %}
 
@@ -198,126 +220,103 @@ Choose one handler option:
     <html lang="en">
         <head>
             <meta charset="UTF-8">
-            <title>Deal Data</title>
-            <script src="https://api.bitrix24.com/api/v1/"></script>
+            <title>Deal data</title>
         </head>
         <body>
             <h2 id="deal-title">Loading deal data</h2>
             <div id="deal-stage"></div>
 
-            <script>
-                BX24.init(() => {
-                    const placementOptions = BX24.getPlacementOptions();
-                    const dealId = Number(placementOptions.ID);
+            <script type="module">
+                // npm install @bitrix24/b24jssdk
+                import { initializeB24Frame } from '@bitrix24/b24jssdk'
 
-                    if (
-                        BX24.getPlacement() !== 'CRM_DEAL_DETAIL_TAB'
-                        || !Number.isInteger(dealId)
-                        || dealId <= 0
-                    )
-                    {
-                        document.getElementById('deal-title').textContent =
-                            'Could not determine transaction';
-                        return;
-                    }
+                const $b24 = await initializeB24Frame()
 
-                    BX24.callMethod(
-                        'crm.item.get',
-                        {
+                const dealId = Number($b24.placement.options.ID)
+
+                if (
+                    $b24.placement.placement !== 'CRM_DEAL_DETAIL_TAB'
+                    || !Number.isInteger(dealId)
+                    || dealId <= 0
+                ) {
+                    document.getElementById('deal-title').textContent =
+                        'Failed to identify deal'
+                } else {
+                    const response = await $b24.actions.v2.call.make({
+                        method: 'crm.item.get',
+                        params: {
                             entityTypeId: 2,
                             id: dealId,
                         },
-                        (result) => {
-                            if (result.error())
-                            {
-                                document.getElementById('deal-title').textContent =
-                                    result.error_description();
-                                return;
-                            }
+                        requestId: 'deal-get',
+                    })
 
-                            const deal = result.data().item;
+                    if (!response.isSuccess) {
+                        document.getElementById('deal-title').textContent =
+                            response.getErrorMessages().join('; ')
+                    } else {
+                        const deal = response.getData().result.item
 
-                            document.getElementById('deal-title').textContent =
-                                deal.title || 'Unnamed transaction';
-                            document.getElementById('deal-stage').textContent =
-                                'Stage: ' + deal.stageId;
-                        }
-                    );
-                });
+                        document.getElementById('deal-title').textContent =
+                            deal.title || 'Deal without title'
+                        document.getElementById('deal-stage').textContent =
+                            'Stage: ' + deal.stageId
+                    }
+                }
             </script>
         </body>
     </html>
     ```
 
-- PHP (OAuth)
+- PHP
 
     ```php
     <?php
-    $placement = $_POST['PLACEMENT'] ?? '';
-    $placementOptions = isset($_POST['PLACEMENT_OPTIONS'])
-        ? json_decode($_POST['PLACEMENT_OPTIONS'], true)
-        : [];
-    $placementOptions = is_array($placementOptions) ? $placementOptions : [];
-    $dealId = (int)($placementOptions['ID'] ?? 0);
-    $domain = (string)($_POST['DOMAIN'] ?? '');
-    $authId = (string)($_POST['AUTH_ID'] ?? '');
-    $protocol = ($_POST['PROTOCOL'] ?? '1') === '0' ? 'http' : 'https';
-    $deal = [];
-    $error = '';
+    // composer require bitrix24/b24phpsdk:"^3.0"
+    require_once 'vendor/autoload.php';
 
-    if (
-        $placement !== 'CRM_DEAL_DETAIL_TAB'
-        || $dealId <= 0
-        || $domain === ''
-        || $authId === ''
-        || !preg_match('/^[a-z0-9.-]+(?::\d+)?$/i', $domain)
-    )
+    use Bitrix24\SDK\Core\Credentials\ApplicationProfile;
+    use Bitrix24\SDK\Core\Exceptions\BaseException;
+    use Bitrix24\SDK\Services\ServiceBuilderFactory;
+    use Symfony\Component\HttpFoundation\Request;
+
+    $request = Request::createFromGlobals();
+
+    $placement = (string)$request->request->get('PLACEMENT', '');
+    $placementOptions = json_decode(
+        (string)$request->request->get('PLACEMENT_OPTIONS', '[]'),
+        true
+    ) ?: [];
+    $dealId = (int)($placementOptions['ID'] ?? 0);
+
+    $error = '';
+    $deal = null;
+
+    if ($placement !== 'CRM_DEAL_DETAIL_TAB' || $dealId <= 0)
     {
-        $error = 'Could not get call context';
+        $error = 'Failed to get call context';
     }
     else
     {
-        $curl = curl_init($protocol . '://' . $domain . '/rest/crm.item.get.json');
+        $appProfile = ApplicationProfile::initFromArray([
+            'BITRIX24_PHP_SDK_APPLICATION_CLIENT_ID' => 'local.xxxxxxxx.xxxxxxxx',
+            'BITRIX24_PHP_SDK_APPLICATION_CLIENT_SECRET' => 'yyyyyyyy',
+            'BITRIX24_PHP_SDK_APPLICATION_SCOPE' => 'crm,placement',
+        ]);
 
-        curl_setopt_array(
-            $curl,
-            [
-                CURLOPT_POST => true,
-                CURLOPT_RETURNTRANSFER => true,
-                CURLOPT_TIMEOUT => 30,
-                CURLOPT_POSTFIELDS => http_build_query([
-                    'entityTypeId' => 2,
-                    'id' => $dealId,
-                    'auth' => $authId,
-                ]),
-            ]
-        );
-
-        $response = curl_exec($curl);
-
-        if ($response === false)
+        try
         {
-            $error = curl_error($curl);
+            // The SDK will automatically take DOMAIN and AUTH_ID from the embedding request
+            $b24 = ServiceBuilderFactory::createServiceBuilderFromPlacementRequest(
+                $request,
+                $appProfile
+            );
+
+            $deal = $b24->getCRMScope()->item()->get(2, $dealId)->item();
         }
-
-        curl_close($curl);
-
-        if ($error === '')
+        catch (BaseException $exception)
         {
-            $result = json_decode($response, true);
-
-            if (!is_array($result))
-            {
-                $error = 'Could not parse Bitrix24 response';
-            }
-            elseif (!empty($result['error']))
-            {
-                $error = $result['error_description'] ?? $result['error'];
-            }
-            else
-            {
-                $deal = $result['result']['item'] ?? [];
-            }
+            $error = $exception->getMessage();
         }
     }
     ?>
@@ -325,17 +324,62 @@ Choose one handler option:
     <html lang="en">
         <head>
             <meta charset="UTF-8">
-            <title>Deal Data</title>
+            <title>Deal data</title>
         </head>
         <body>
             <?php if ($error !== ''): ?>
                 <p><?=htmlspecialchars($error)?></p>
             <?php else: ?>
-                <h2><?=htmlspecialchars($deal['title'] ?? 'Unnamed transaction')?></h2>
-                <p>Stage: <?=htmlspecialchars($deal['stageId'] ?? '')?></p>
+                <h2><?=htmlspecialchars($deal->title ?? 'Deal without title')?></h2>
+                <p>Stage: <?=htmlspecialchars($deal->stageId ?? '')?></p>
             <?php endif; ?>
         </body>
     </html>
+    ```
+
+- Python
+
+    ```python
+    # pip install b24pysdk flask
+    from flask import Flask, request
+    from b24pysdk import BitrixApp, BitrixToken, Client
+    from b24pysdk.errors import BitrixAPIError
+    import json
+
+    app = Flask(__name__)
+
+    bitrix_app = BitrixApp(
+        client_id="local.xxxxxxxx.xxxxxxxx",
+        client_secret="yyyyyyyy",
+    )
+
+    @app.post("/deal-tab")
+    def deal_tab():
+        placement = request.form.get("PLACEMENT", "")
+        options = json.loads(request.form.get("PLACEMENT_OPTIONS", "{}") or "{}")
+        deal_id = int(options.get("ID", 0))
+
+        if placement != "CRM_DEAL_DETAIL_TAB" or deal_id <= 0:
+            return "Failed to get call context"
+
+        # Bitrix24 passes the domain and user token to the handler
+        client = Client(
+            BitrixToken(
+                domain=request.args.get("DOMAIN", ""),
+                auth_token=request.form.get("AUTH_ID", ""),
+                bitrix_app=bitrix_app,
+            )
+        )
+
+        try:
+            deal = client.crm.item.get(
+                entity_type_id=2,
+                bitrix_id=deal_id,
+            ).response.result["item"]
+        except BitrixAPIError as error:
+            return str(error)
+
+        return f"{deal.get('title', 'Deal without title')} — stage: {deal.get('stageId', '')}"
     ```
 
 {% endlist %}
@@ -347,29 +391,29 @@ The method returns a `item` object containing the deal data available to the use
     "result": {
         "item": {
             "id": 3473,
-            "title": "Preparing proposal",
+            "title": "Preparing offer",
             "stageId": "NEW"
         }
     }
 }
 ```
 
-The identifier from `PLACEMENT_OPTIONS` can also be used for other actions: retrieving linked contacts and the company, requesting data from an external system, or displaying a custom interface for working with the deal.
+The identifier from `PLACEMENT_OPTIONS` can also be used for other actions: retrieve related contacts and the company, request data from an external system, or display a custom interface for working with the deal.
 
 ## 5. Verify the Widget
 
-1. Install the application in a test Bitrix24 environment
+1. Install the application in a test Bitrix24
 2. Ensure that the application installation is complete
 3. Open the CRM section
 4. Open any deal
-5. Locate the **Deal Data** tab
+5. Find the **Deal Data** tab
 6. Verify that the handler displays the name and stage of the opened deal
 
-If the tab does not appear, check the handler registration using the [placement.get](../../../api-reference/widgets/placement-get.md) method. The response must include code `CRM_DEAL_DETAIL_TAB` and the handler page URL.
+If the tab does not appear, check the handler registration using the [placement.get](../../../api-reference/widgets/placement-get.md) method. The response must contain the `CRM_DEAL_DETAIL_TAB` code and the handler page URL.
 
 ## Other CRM Cards
 
-You can add a tab to cards of other objects using the same scenario. Replace the code in `PLACEMENT` and specify the corresponding `entityTypeId` in `crm.item.get`.
+You can follow the same scenario to add a tab to cards of other objects. Replace the code in `PLACEMENT` and specify the corresponding `entityTypeId` in `crm.item.get`.
 
 #|
 || **CRM Object** | **PLACEMENT** | **entityTypeId** ||
@@ -385,7 +429,7 @@ For codes for commercial proposals and SPAs, see the description of the [CRM_XXX
 ## Continue Learning
 
 - [How to Embed Widgets in CRM](./index.md)
-- [CRM Card Tab CRM_XXX_DETAIL_TAB](../../../api-reference/widgets/crm/detail-tab.md)
-- [Set a Widget Handler with placement.bind](../../../api-reference/widgets/placement-bind.md)
-- [Retrieve a CRM Item with crm.item.get](../../../api-reference/crm/universal/crm-item-get.md)
+- [Tab in CRM Card CRM_XXX_DETAIL_TAB](../../../api-reference/widgets/crm/detail-tab.md)
+- [Set Widget Handler with placement.bind](../../../api-reference/widgets/placement-bind.md)
+- [Retrieve CRM Item with crm.item.get](../../../api-reference/crm/universal/crm-item-get.md)
 - [Widget Interface Interaction Methods](../../../api-reference/widgets/ui-interaction/index.md)

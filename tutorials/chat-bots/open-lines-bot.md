@@ -6,133 +6,154 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-The process of creating a chatbot for *Open Channels* is similar to [creating a regular chatbot](./index.md), but there are two differences:
+Creating a chatbot for *Open Channels* is similar to [creating a regular chatbot](./index.md), but there are two differences:
 
-1. When creating a chatbot for *Open Channels*, in [imbot.register](../../api-reference/chat-bots/outdated/bots/imbot-register.md), the `TYPE` parameter must be set to `O`.
+1. When registering via [imbot.register](../../api-reference/chat-bots/outdated/bots/imbot-register.md), pass `O` to the `TYPE` parameter. To extend an existing bot, we pass `OPENLINE => Y` — in this case, the bot operates in hybrid mode (Group chat, private chat, and Open Channels).
 
-2. If you need to extend the capabilities of an existing chatbot, you should pass the new key `OPENLINE => Y`, and then the chatbot will operate in hybrid mode.
+2. In hybrid mode, check `CHAT_ENTITY_TYPE` in all incoming events ([ONIMBOTMESSAGEADD](../../api-reference/chat-bots/outdated/messages/events/on-imbot-message-add.md) and [ONIMBOTJOINCHAT](../../api-reference/chat-bots/outdated/chats/events/on-imbot-join-chat.md)) — for Open Channels, it equals `LINES`.
 
-   In hybrid mode, the chatbot must function correctly in group chats, personal chats, and open channel chats. To achieve this, you need to check the `CHAT_ENTITY_TYPE` parameter in all incoming events ([ONIMBOTMESSAGEADD](../../api-reference/chat-bots/outdated/messages/events/on-imbot-message-add.md) and [ONIMBOTJOINCHAT](../../api-reference/chat-bots/outdated/chats/events/on-imbot-join-chat.md)) — for *Open Channels*, it should be `CHAT_ENTITY_TYPE => LINES`.
+A scope of [`imopenlines`](../../api-reference/scopes/permissions.md) is required for tight integration with Open Channels. For SDK initialization using event data, see the [regular chatbot example](./index.md#initializing-the-sdk-using-event-data).
 
-In all other respects, this is the familiar and already known [chatbot](./index.md).
+## Registering a Bot for Open Channels
 
-For closer integration with *Open Channels*, you need to have access permission for the scope [`imopenlines`](../../api-reference/scopes/permissions.md).
+{% list tabs %}
 
-With this permission, the following commands will be available:
+- JS
 
-- [imopenlines.network.join](../../api-reference/imopenlines/openlines/imopenlines-network-join.md) — connecting your company's open line to the *Bitrix24* account, after which employees will be able to message you.
-- [imopenlines.bot.session.operator](../../api-reference/imopenlines/openlines/chat-bots/imopenlines-bot-session-operator.md) — switching the conversation to a free operator.
-- [imopenlines.bot.session.transfer](../../api-reference/imopenlines/openlines/chat-bots/imopenlines-bot-session-transfer.md) — transferring the conversation to a specific operator.
-- [imopenlines.bot.session.finish](../../api-reference/imopenlines/openlines/chat-bots/imopenlines-bot-session-finish.md) — ending the current session.
+    ```js
+    await $b24.actions.v2.call.make({
+        method: 'imbot.register',
+        params: {
+            CODE: 'OpenLineBot',
+            TYPE: 'O',          // bot type for Open Lines
+            OPENLINE: 'Y',      // hybrid mode
+            EVENT_MESSAGE_ADD: HANDLER_URL,
+            EVENT_WELCOME_MESSAGE: HANDLER_URL,
+            EVENT_BOT_DELETE: HANDLER_URL,
+            PROPERTIES: { NAME: 'Support Line', COLOR: 'GREEN' },
+        },
+        requestId: 'imbot-register-ol',
+    })
+    ```
 
-{% note warning %}
+- PHP
 
-Using an HTTPS certificate for chatbots is not mandatory, but it is highly recommended to protect client confidential data. The application must be encoded in `UTF-8`.
+    ```php
+    // imbot.* is not among the typed PHP services — we call it via the core
+    $b24->core->call('imbot.register', [
+        'CODE' => 'OpenLineBot',
+        'TYPE' => 'O',
+        'OPENLINE' => 'Y',
+        'EVENT_MESSAGE_ADD' => $handlerUrl,
+        'EVENT_WELCOME_MESSAGE' => $handlerUrl,
+        'EVENT_BOT_DELETE' => $handlerUrl,
+        'PROPERTIES' => ['NAME' => 'Support Line', 'COLOR' => 'GREEN'],
+    ]);
+    ```
 
-{% endnote %}
+- Python
 
-## Download the Example Chatbot for Open Channels
+    ```python
+    client.imbot.register(
+        code="OpenLineBot",
+        properties={"NAME": "Support Line", "COLOR": "GREEN"},
+        event_message_add=HANDLER_URL,
+        event_welcome_message=HANDLER_URL,
+        event_bot_delete=HANDLER_URL,
+        type="O",
+        openline=True,
+    ).response
+    ```
 
-As an example of a chatbot for open channels, we have prepared the "ITR Bot." You can obtain it in the following ways:
+{% endlist %}
 
-- [download](https://github.com/bitrix24com/bots) from GitHub, file `itr.php`.
-- find and copy it in the *"Bitrix24 on-premise"* product in the folder `\Bitrix\ImBot\Bot\OpenlinesMenuExample`.
+## Checking the Chat Type in a Handler
 
-This chatbot serves as the first line of support: initially, all messages will go to it, and only then to employees in the queue. The time after which messages will be forwarded from the chatbot to employees is set in the open line settings.
+In hybrid mode, process messages from Open Channels separately using the `CHAT_ENTITY_TYPE` field.
 
-Additionally, a class for building multi-level menus in chats has been added to the chatbot.
+{% list tabs %}
 
-## Running on Your Account
+- JS
 
-You can [take the example chatbot code](#download-the-example-chatbot-for-open-channels) above, upload it to your server, and run the chatbot on your account as a local application without publishing it through *Marketplace*:
+    ```js
+    if (data.PARAMS.CHAT_ENTITY_TYPE === 'LINES') {
+        // message from an Open Line — first-line support logic
+    }
+    ```
 
-- In the left menu under **Applications** (1), go to the **Developer's area** (2) and select **Other** (3):
+- PHP
 
-![Adding application](./_images/chatbot1_sm.jpg)
+    ```php
+    if (($data['PARAMS']['CHAT_ENTITY_TYPE'] ?? '') === 'LINES') {
+        // message from an Open Line
+    }
+    ```
 
-- Use the **Local application** script (4):
+- Python
 
-![Local application](./_images/chatbot2_sm.jpg)
+    ```python
+    if data.get("data[PARAMS][CHAT_ENTITY_TYPE]") == "LINES":
+        # message from an Open Line
+        ...
+    ```
 
-- Select the application type **Server** and configure its parameters:
-  - Change the bot's name.
-  - Enable the option `Uses only API` and grant the application access permissions for:
-     - `Creating and managing Chatbots` — without these permissions, the application will not be able to register the chatbot.
-     - `Open Channels` — without these permissions, the application will not be able to work with open channels.
-  - Since the script is written in such a way that it acts as a handler for all events, the URLs in the `Your handler path` and `Initial setup path` fields will lead to the same URL.
+{% endlist %}
 
-![Add application ITR Bot](./_images/chatbot3_sm.png)
+## Session Management
 
-- After saving the settings, additional fields will appear: `Application code (client_id)` and `Application key (client_secret)`.
+With the `imopenlines` permission, the following commands for conversation management are available:
 
-![Bot settings](./_images/chatbot4_sm.png)
+- [imopenlines.bot.session.operator](../../api-reference/imopenlines/openlines/chat-bots/imopenlines-bot-session-operator.md) — transfer to an available operator
+- [imopenlines.bot.session.transfer](../../api-reference/imopenlines/openlines/chat-bots/imopenlines-bot-session-transfer.md) — transfer to a specific operator
+- [imopenlines.bot.session.finish](../../api-reference/imopenlines/openlines/chat-bots/imopenlines-bot-session-finish.md) — finish the session
 
-- Copy the data from these fields and paste it into the `itr.php` file.
+{% list tabs %}
 
-![Open channels settings](./_images/chatbot5.png)
+- JS
 
-- In the bot settings, click `Reinstall`. Now the bot is ready to work.
+    ```js
+    // Transfer conversation to an available operator
+    await $b24.actions.v2.call.make({
+        method: 'imopenlines.bot.session.operator',
+        params: { CHAT_ID: chatId },
+        requestId: 'session-operator',
+    })
 
-This bot does not publish messages indicating that it has been invited to the account. After installation, it will be available in the open channels settings. Select it as responsible and specify the time after which the conversation will be transferred from the chatbot to the queue for employees:
+    // Transfer to a specific operator
+    await $b24.actions.v2.call.make({
+        method: 'imopenlines.bot.session.transfer',
+        params: { CHAT_ID: chatId, USER_ID: operatorId },
+        requestId: 'session-transfer',
+    })
 
-![Open channels settings](./_images/ol_options_sm.png)
+    // End session
+    await $b24.actions.v2.call.make({
+        method: 'imopenlines.bot.session.finish',
+        params: { CHAT_ID: chatId },
+        requestId: 'session-finish',
+    })
+    ```
 
-{% note info %}
+- PHP
 
-The client can switch to an operator earlier by sending the message `0` or selecting the menu item `0. Wait operator answer`.
+    ```php
+    $b24->core->call('imopenlines.bot.session.operator', ['CHAT_ID' => $chatId]);
+    $b24->core->call('imopenlines.bot.session.transfer', ['CHAT_ID' => $chatId, 'USER_ID' => $operatorId]);
+    $b24->core->call('imopenlines.bot.session.finish', ['CHAT_ID' => $chatId]);
+    ```
 
-With any chatbot, pressing `0` will redirect the user to an operator; no additional processing is required.
+- Python
 
-{% endnote %}
+    ```python
+    client.imopenlines.bot.session.operator(chat_id=chat_id).response
+    client.imopenlines.bot.session.transfer(chat_id=chat_id, user_id=operator_id).response
+    client.imopenlines.bot.session.finish(chat_id=chat_id).response
+    ```
 
-Below is a dialogue: first, "ITR Bot" responds, the client clicks on the menu items, and then the queue switches to the operator as the client selected the menu item **0. Wait operator answer**:
+{% endlist %}
 
-![Dialogue with ITR Bot](./_images/ol_chat_sm.png)
+## Ready-to-Use Example: ITR Bot
 
-You can configure your own menu in "ITR Bot" in the `itrRun` method:
+Use "ITR Bot" as an example of an Open Channels bot with a multi-level menu: it can be [downloaded from GitHub](https://github.com/bitrix24com/bots) (file `itr.php`) or found in the boxed version in the folder `\Bitrix\ImBot\Bot\OpenlinesMenuExample`.
 
-```php
-/**
-* Run ITR menu
-*
-* @param $portalId
-* @param $dialogId
-* @param $userId
-* @param string $message
-* @return bool
-*/
-function itrRun($portalId, $dialogId, $userId, $message = '')
-{
-    if ($userId <= 0)
-        return false;
-
-    $menu0 = new ItrMenu(0);
-    $menu0->setText('Main menu (#0)');
-    $menu0->addItem(1, 'Text', ItrItem::sendText('Text message (for #USER_NAME#)'));
-    $menu0->addItem(2, 'Text without menu', ItrItem::sendText('Text message without menu', true));
-    $menu0->addItem(3, 'Open menu #1', ItrItem::openMenu(1));
-    $menu0->addItem(0, 'Wait operator answer', ItrItem::sendText('Wait operator answer', true));
-
-    $menu1 = new ItrMenu(1);
-    $menu1->setText('Second menu (#1)');
-    $menu1->addItem(2, 'Transfer to queue', ItrItem::transferToQueue('Transfer to queue'));
-    $menu1->addItem(3, 'Transfer to user', ItrItem::transferToUser(1, false, 'Transfer to user #1'));
-    $menu1->addItem(4, 'Transfer to bot', ItrItem::transferToBot('marta', true, 'Transfer to bot Marta', 'Marta not found :('));
-    $menu1->addItem(5, 'Finish session', ItrItem::finishSession('Finish session'));
-    $menu1->addItem(6, 'Exec function', ItrItem::execFunction(function($context){
-        $result = restCommand('imbot.message.add', Array(
-            "DIALOG_ID" => $_REQUEST['data']['PARAMS']['DIALOG_ID'],
-            "MESSAGE" => 'Function executed (action)',
-        ), $_REQUEST["auth"]);
-        writeToLog($result, 'Exec function');
-    }, 'Function executed (text)'));
-    $menu1->addItem(9, 'Back to main menu', ItrItem::openMenu(0));
-
-    $itr = new Itr($portalId, $dialogId, 0, $userId);
-    $itr->addMenu($menu0);
-    $itr->addMenu($menu1);
-    $itr->run(prepareText($message));
-
-    return true;
-}
-```
+The bot acts as the first line of Helpdesk: messages are first received by the bot, and then passed to operators in an enqueued state. A customer can switch to an operator at any time by sending `0`.
