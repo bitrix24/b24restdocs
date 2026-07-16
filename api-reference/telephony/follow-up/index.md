@@ -17,7 +17,7 @@ The following may be available in a Follow-up:
 
 > Quick navigation: [All Methods](#all-methods)
 >
-> User documentation: [CoPilot Follow-Up: AI Speech Analytics for Video Calls](https://helpdesk.bitrix24.com/open/23529044/)
+> User documentation: [CoPilot Follow-Up: AI Speech Analytics for Video Calls](https://helpdesk.bitrix24.com/open/25345201/)
 
 {% note info "" %}
 

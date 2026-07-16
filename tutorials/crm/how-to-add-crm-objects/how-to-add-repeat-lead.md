@@ -14,7 +14,7 @@ When a customer fills out a form on a site, their data is sent to a handler. The
 
 {% note info "" %}
 
-Repeat lead mode must be enabled in Bitrix24. For more details, read the article [Repeat Leads and Deals](https://helpdesk.bitrix24.com/open/17707848/).
+Repeat lead mode must be enabled in Bitrix24. For more details, read the article [Repeat Leads and Deals](https://helpdesk.bitrix24.com/open/24147842/).
 
 {% endnote %}
 
