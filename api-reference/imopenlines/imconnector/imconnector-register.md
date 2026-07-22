@@ -12,15 +12,17 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 The method `imconnector.register` registers a custom connector for Open Channels.
 
+If the method is called again with the same `ID`, the method updates the current connector.
+
 {% note info "" %}
 
-The method works only in the context of the [application](../../../settings/app-installation/index.md).
+The method works only in the context of an [application](../../../settings/app-installation/index.md).
 
 {% endnote %} 
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../_includes/required.md) %}
+{% include [Note on parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -54,10 +56,12 @@ The structure of the object is described in detail [below](#icon-disabled) ||
 || **NEED_SIGNATURE**
 [`boolean`](../../data-types.md) | Adds the operator's signature to messages. Default value is `true` ||
 || **CHAT_GROUP**
-[`boolean`](../../data-types.md) | Indicates the chat processing mode of the connector: `true` — grouping by `chat.id` (group chat), `false` — by `user.id` (one-on-one chat). Default value is `false` ||
+[`boolean`](../../data-types.md) | Connector chat processing mode indicator: `true` — grouping by `chat.id` (group chat), `false` — by `user.id` (one-on-one chat). Default value is `false`.
+
+In group mode, the incoming message CRM tracker is not launched. Because of this, standard CRM auto-linking and auto-creation of CRM items may not be performed for some dialogues. If a one-on-one chat with CRM auto-linking is required for the connector, pass `false` ||
 |#
 
-### ICON Parameter {#icon}
+### Parameter ICON {#icon}
 
 #|
 || **Name**
@@ -72,7 +76,7 @@ The structure of the object is described in detail [below](#icon-disabled) ||
 [`string`](../../data-types.md) | Background position. Example: `center` ||
 |#
 
-### ICON_DISABLED Parameter {#icon-disabled}
+### Parameter ICON_DISABLED {#icon-disabled}
 
 #|
 || **Name**
@@ -101,7 +105,7 @@ The structure of the object is described in detail [below](#icon-disabled) ||
       -H "Accept: application/json" \
       -d '{
         "ID": "myconnector",
-        "NAME": "My Connector",
+        "NAME": "Mein Connector",
         "ICON": {
           "DATA_IMAGE": "data:image/svg+xml,%3Csvg%20xmlns%3D%22http://www.w3.org/2000/svg%22/%3E",
           "COLOR": "#69acc0",
@@ -239,7 +243,7 @@ The structure of the object is described in detail [below](#icon-disabled) ||
         'imconnector.register',
         [
             'ID' => 'myconnector',
-            'NAME' => 'My Connector',
+            'NAME' => 'Mein Connector',
             'ICON' => [
                 'DATA_IMAGE' => 'data:image/svg+xml,%3Csvg%20xmlns%3D%22http://www.w3.org/2000/svg%22/%3E',
                 'COLOR' => '#69acc0',
@@ -269,7 +273,7 @@ The structure of the object is described in detail [below](#icon-disabled) ||
       'imconnector.register',
       {
         ID: 'myconnector',
-        NAME: 'My Connector',
+        NAME: 'Mein Connector',
         ICON: {
           DATA_IMAGE: 'data:image/svg+xml,%3Csvg%20xmlns%3D%22http://www.w3.org/2000/svg%22/%3E',
           COLOR: '#69acc0',
@@ -302,7 +306,7 @@ The structure of the object is described in detail [below](#icon-disabled) ||
         'imconnector.register',
         [
             'ID' => 'myconnector',
-            'NAME' => 'My Connector',
+            'NAME' => 'Mein Connector',
             'ICON' => [
                 'DATA_IMAGE' => 'data:image/svg+xml,%3Csvg%20xmlns%3D%22http://www.w3.org/2000/svg%22/%3E',
                 'COLOR' => '#69acc0',
@@ -324,12 +328,11 @@ The structure of the object is described in detail [below](#icon-disabled) ||
         ]
     );
     ```
-
 {% endlist %}
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -369,7 +372,7 @@ The method can return two error formats:
       "result": {
           "result": false,
           "error": "CONNECTOR_ID_REQUIRED",
-          "error_description": "Connector ID is not specified"
+          "error_description": "Connector-ID nicht angegeben"
       }
   }
   ```
@@ -383,24 +386,24 @@ The method can return two error formats:
   }
   ```
 
-{% include notitle [error handling](../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
 || **Status** | **Code** | **Description** | **Value** ||
-|| `200` | `APPLICATION_REGISTRATION_ERROR_POINT` | Application registration error. The connector identifier cannot contain a dot | The `ID` contains the `.` character ||
+|| `200` | `APPLICATION_REGISTRATION_ERROR_POINT` | Application registration error. Using a dot in the connector identifier is not allowed | The `ID` contains the `.` character ||
 || `200` | `CONNECTOR_ID_REQUIRED` | Connector ID is not specified | Empty or non-string `ID` ||
 || `200` | `NAME_REQUIRED` | Connector name is not specified | Empty or non-string `NAME` ||
 || `200` | `ICON_REQUIRED` | Connector icon is not specified | `ICON.DATA_IMAGE` is not provided or not a string ||
 || `200` | `NO_APPLICATION_ID` | Failed to get application ID | No application found in the request context ||
-|| `200` | `NO_PLACEMENT_HANDLER` | Failed to get the embedding handler URL | Empty or non-string `PLACEMENT_HANDLER` ||
+|| `200` | `NO_PLACEMENT_HANDLER` | Failed to get embedding handler URL | Empty or non-string `PLACEMENT_HANDLER` ||
 || `200` | `APPLICATION_REGISTRATION_ERROR` | Application registration error | Failed to complete registration: connector data and embedding parameters were not saved ||
 || `200` | `GENERAL_CONNECTOR_REGISTRATION_ERROR` | General connector registration error | Other validation errors in input data ||
-|| `403` | `WRONG_AUTH_TYPE` | Current authorization type is denied for this method Application context required | Method called outside of the OAuth application context ||
+|| `403` | `WRONG_AUTH_TYPE` | Current authorization type is denied for this method Application context required | The method was called outside the OAuth application context ||
 |#
 
-{% include [system errors](../../../_includes/system-errors.md) %}
+{% include [System errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

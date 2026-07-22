@@ -1,4 +1,4 @@
-# How to Test Your Handler for Bitrix24 Event Processing
+# How to Test Your Handler for Processing Bitrix24 Events
 
 {% note tip "" %}
 
@@ -6,34 +6,54 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-After registering the handler ONAPPTEST, the method `event.test` is called manually. This triggers the specified event and allows you to verify that the handler is indeed capable of receiving event data.
+A test handler helps verify that Bitrix24 can send an event to your server and that the server receives and retains the event data. To test, register a `ONAPPTEST` event handler using the [event.bind](./event-bind.md) method, then call the `event.test` method.
 
-## Step 1
+The scenario consists of four steps:
 
-Create a file named handler.php on your server. Ensure it is accessible from the internet. Next to the file, create a folder named \log.
+1. Create a `handler.php` file that saves the inbound request to a file
+2. Register a `ONAPPTEST` event handler using the [event.bind](./event-bind.md) method
+3. Call a test event using the `event.test` method
+4. Verify that a file containing the event data appears in the `log` folder
 
-Code for the file handler.php.
+## Prepare the Handler
 
-{% include [Example Notes](../../_includes/examples.md) %}
+To execute the scenario, you need:
+
+- An application with OAuth authorization
+- A public URL for the handler, accessible from an external network for GET and POST requests
+- A `handler.php` file on your server
+- A writable `log` folder located next to the `handler.php` file
+- An OAuth access token to call the `event.bind` and `event.test` methods
+
+Create a `handler.php` file on your server. Ensure the file is accessible from the internet. Create a `log` folder next to the file.
+
+The code in the `handler.php` file saves the inbound request to a separate file:
+
+{% include [Note on examples](../../_includes/examples.md) %}
 
 {% list tabs %}
 
 - PHP
 
     ```php
-    <?php
+    <?
     file_put_contents(
         __DIR__ . '/log/' . time() . '.txt',
         var_export($_REQUEST, true)
     );
-    ?>
     ```
 
 {% endlist %}
 
-## Step 2
+## Register a Test Event
 
-Register the event by specifying the path to the file created in Step 1 in the `handler` field.
+Register the `ONAPPTEST` event using the [event.bind](./event-bind.md) method. Pass the public URL of the `handler.php` file in the `handler` parameter.
+
+Replace the values in the examples:
+
+- `https://example.com/handler.php` with your handler URL
+- `**put_access_token_here**` with your OAuth access token
+- `**put_your_bitrix24_address**` with your Bitrix24 address
 
 {% list tabs %}
 
@@ -121,7 +141,7 @@ Register the event by specifying the path to the file created in Step 1 in the `
 - PHP
 
     ```php
-    <?php
+    <?
     $eventBind = CRest::call(
         'event.bind',
         [
@@ -138,9 +158,21 @@ Register the event by specifying the path to the file created in Step 1 in the `
 
 {% endlist %}
 
-## Step 3
+A successful registration returns `true`.
 
-Trigger the event by calling the method with arbitrary data.
+```json
+{
+    "result": true
+}
+```
+
+## Call the Test Event
+
+Call the `event.test` method with arbitrary data. Bitrix24 will send the `ONAPPTEST` event to the URL you specified when registering the handler.
+
+The `event.test` method works only with application OAuth authorization. It is not suitable for incoming webhooks: with a different authorization type, the method returns an authorization type error.
+
+In the example, the `any` parameter is used as a test value. After the call, it should appear in the saved request within the `data.QUERY` block.
 
 {% list tabs %}
 
@@ -165,7 +197,7 @@ Trigger the event by calling the method with arbitrary data.
     declare const $b24: B24Frame
 
     try {
-      const response = await $b24.actions.v2.call.make<boolean>({
+      const response = await $b24.actions.v2.call.make<number>({
         method: 'event.test',
         params: {
           any: 'data',
@@ -226,7 +258,7 @@ Trigger the event by calling the method with arbitrary data.
 - PHP
 
     ```php
-    <?php
+    <?
     $result = CRest::call(
         'event.test',
         [
@@ -242,9 +274,24 @@ Trigger the event by calling the method with arbitrary data.
 
 {% endlist %}
 
-## Result
+A successful call to the `event.test` method returns `1`.
 
-Upon a successful call, a file with standard event data is created in the \log folder.
+```json
+{
+    "result": 1
+}
+```
+
+## Verify the Result
+
+Open the `log` folder located next to the `handler.php` file. If the scenario is executed successfully, a file containing the event data will appear in it.
+
+The file should contain:
+
+- `event` with the value `ONAPPTEST`
+- `event_handler_id` with the identifier of the registered handler
+- `data.QUERY.any` with the value `data`
+- `auth` with the event authorization data
 
 {% list tabs %}
 
@@ -253,6 +300,7 @@ Upon a successful call, a file with standard event data is created in the \log f
     ```php
     array (
         'event' => 'ONAPPTEST',
+        'event_handler_id' => 1,
         'data' => 
         array (
             'QUERY' => 
@@ -267,3 +315,38 @@ Upon a successful call, a file with standard event data is created in the \log f
     ```
 
 {% endlist %}
+
+If the file is created and contains `data.QUERY.any`, the handler is accessible from Bitrix24 and accepts event data.
+
+## Errors and Diagnostics
+
+If the `event.bind` method returns an error, check the registration parameters:
+
+- `ERROR_EVENT_NOT_FOUND` — an incorrect event is specified in the `event` parameter. To test the handler, use `ONAPPTEST`
+- `HANDLER` was not passed — specify a public URL for the `handler.php` file
+- `Unable to set event handler` — check if a handler with the same URL is already registered
+- Access error — check the OAuth token and the application context
+
+If the `event.bind` method returns `false` or the `event.test` method returns a successful response, but the file does not appear in the `log` folder, check the handler:
+
+- The `handler` URL is accessible from the internet and does not point to `localhost`
+- The server accepts POST requests to the `handler.php` file
+- The `log` folder exists alongside the `handler.php` file
+- The web server has write permissions for the `log` folder
+- There are no PHP errors in the handler code
+
+## Key Considerations
+
+The `event.test` method only verifies the delivery of a test event `ONAPPTEST`. For production events, use the event codes from the list returned by the [events](./events.md) method and register them using the [event.bind](./event-bind.md) method.
+
+Do not save authorization tokens from the `auth` block into public logs. In the example, the handler records the entire request only for quick verification of event reception.
+
+After verification, delete the files from the `log` folder or close external access to it. If the test handler is no longer needed, remove the subscription using the [event.unbind](./event-unbind.md) method.
+
+## Continue Learning
+
+- [{#T}](./event-bind.md)
+- [{#T}](./events.md)
+- [{#T}](./event-get.md)
+- [{#T}](./event-unbind.md)
+- [{#T}](./safe-event-handlers.md)

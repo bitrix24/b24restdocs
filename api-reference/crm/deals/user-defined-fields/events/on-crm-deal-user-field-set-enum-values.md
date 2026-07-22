@@ -1,4 +1,4 @@
-# Event on changing the set of values for a custom list-type field onCrmDealUserFieldSetEnumValues
+# Event on Changing the Set of Values for a Custom List-type Field onCrmDealUserFieldSetEnumValues
 
 {% note tip "" %}
 
@@ -12,9 +12,11 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 The event `onCrmDealUserFieldSetEnumValues` will trigger when the set of values for a custom list-type field is changed.
 
-## What the handler receives
+The event refers to the set of values in the list-type field configuration, rather than the value selected for this field in a specific deal.
 
-Data is sent as a POST request {.b24-info}
+## What the Handler Receives
+
+Data is transmitted as a POST request {.b24-info}
 
 ```json
 {
@@ -44,7 +46,7 @@ Data is sent as a POST request {.b24-info}
 ```
 
 #|
-|| **Parameter**
+|| **parameter**
 `type` | **Description** ||
 || **event**
 [`string`](../../../data-types.md) | Symbolic code of the event.
@@ -61,7 +63,7 @@ Contains a single key `FIELDS` ||
 
 The structure is described [below](#fields) ||
 || **ts**
-[`timestamp`](../../../data-types.md) | Date and time the event was sent from the [event queue](../../../../events/index.md) ||
+[`timestamp`](../../../data-types.md) | Date and time of the event sent from the [event queue](../../../../events/index.md) ||
 || **auth**
 [`object`](../../../data-types.md) | Object containing authorization parameters and information about the account where the event occurred.
 
@@ -71,7 +73,7 @@ The structure is described [below](#auth) ||
 ### Parameter FIELDS {#fields}
 
 #|
-|| **Parameter**
+|| **parameter**
 `type` | **Description** ||
 || **ID**
 [`integer`](../../../data-types.md) | Identifier of the custom list-type field ||
@@ -83,9 +85,9 @@ The structure is described [below](#auth) ||
 
 ### Parameter auth {#auth}
 
-{% include notitle [Table with keys in the auth array](../../../../../_includes/auth-params-in-events.md) %}
+{% include notitle [Auth parameters in events](../../../../../_includes/auth-params-in-events.md) %}
 
-## Continue exploring
+## Continue Learning
 
 - [{#T}](../../../../events/index.md)
 - [{#T}](../../../../events/event-bind.md)

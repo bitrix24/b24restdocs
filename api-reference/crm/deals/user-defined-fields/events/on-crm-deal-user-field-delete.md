@@ -10,11 +10,13 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can subscribe: any user
 
-The event `onCrmDealUserFieldDelete` will trigger when a custom field is deleted.
+The `onCrmDealUserFieldDelete` event will trigger when a custom field is deleted.
 
-## What the handler receives
+The event refers to the configuration of a custom field rather than the value of this field in a specific deal.
 
-Data is sent as a POST request {.b24-info}
+## What the Handler Receives
+
+Data is transmitted as a POST request {.b24-info}
 
 ```json
 {
@@ -44,7 +46,7 @@ Data is sent as a POST request {.b24-info}
 ```
 
 #|
-|| **Parameter**
+|| **parameter**
 `type` | **Description** ||
 || **event**
 [`string`](../../../data-types.md) | Symbolic code of the event.
@@ -71,7 +73,7 @@ The structure is described [below](#auth) ||
 ### Parameter FIELDS {#fields}
 
 #|
-|| **Parameter**
+|| **parameter**
 `type` | **Description** ||
 || **ID**
 [`integer`](../../../data-types.md) | Identifier of the custom field ||
@@ -83,9 +85,9 @@ The structure is described [below](#auth) ||
 
 ### Parameter auth {#auth}
 
-{% include notitle [Table with keys in the auth array](../../../../../_includes/auth-params-in-events.md) %}
+{% include notitle [Auth parameters in events](../../../../../_includes/auth-params-in-events.md) %}
 
-## Continue exploring
+## Continue Learning
 
 - [{#T}](../../../../events/index.md)
 - [{#T}](../../../../events/event-bind.md)

@@ -1,4 +1,4 @@
-# Get a List of CRM Items: crm.item.list
+# Get a List of Items crm.item.list
 
 {% note tip "" %}
 
@@ -8,11 +8,11 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`crm`](../../scopes/permissions.md)
 > 
-> Who can execute the method: any user with "read" access permission for CRM object elements
+> Who can execute the method: any user with "read" permission for the CRM object items
 
-This method retrieves a list of items of a specific type from the CRM object.
+Retrieves a list of items of a specific CRM object type.
 
-CRM object items will not be included in the final selection if the user does not have "read" access permission for those items.
+CRM object items will not be included in the final selection if the user does not have "read" permission for those items.
 
 ## Method Parameters
 
@@ -22,21 +22,20 @@ CRM object items will not be included in the final selection if the user does no
 || **Name**
 `type` | **Description** ||
 || **entityTypeId***
-[`integer`][1] | Identifier of the [system](../data-types.md#object_type) or [custom type](./user-defined-object-types/index.md) whose items need to be retrieved.
+[`integer`][1] | [System](../data-types.md#object_type) or [user type](./user-defined-object-types/index.md) identifier whose items need to be retrieved.
 
-Numerical values for system types (Lead — 1, Deal — 2, Contact — 3, Company — 4, Invoice — 31, etc.) are listed in the [CRM object types reference](../data-types.md#object_type). The identifier of the smart process can be obtained using the [crm.type.list](./user-defined-object-types/crm-type-list.md) method. ||
+Numeric values for system types (Lead — 1, Deal — 2, Contact — 3, Company — 4, Account — 31, etc.) are provided in the [CRM object type directory](../data-types.md#object_type). The SPA identifier can be found using the [crm.type.list](./user-defined-object-types/crm-type-list.md) method ||
 || **select**
-[`array`][1] | List of fields that must be filled for items in the selection.
+[`array`][1] | List of fields that must be populated for the items in the selection.
 
-It can contain only item field names or `'*'`.
+May contain only item field names or `'*'`.
 
-The list of all available fields for selection can be found using the [`crm.item.fields`](./crm-item-fields.md) method. The list of standard fields is available in the article [CRM object fields](./object-fields.md)
+The list of all available fields for selection can be found using the [`crm.item.fields`](./crm-item-fields.md) method. The list of standard fields is available in the article [CRM Object Fields](./object-fields.md)
 
 The `fm` field (multiple fields: phones, e-mail, messengers) is not a CRM object field and cannot be explicitly requested via `select`. To receive `fm` in the response, pass `select: ['*']`
 ||
 || **filter**
-[`object`][1] |
-Object format:
+[`object`][1] |Format object:
 ```
 {
     field_1: value_1,
@@ -46,13 +45,13 @@ Object format:
 }
 ```
 where
-- `field_n` — name of the field by which the selection of items will be filtered
-- `value_n` — filter value
+- `field_n` — the field name by which the items selection will be filtered
+- `value_n` — the filter value
 
 The filter can have unlimited nesting and number of conditions.
-By default, all conditions are combined with `AND`. If you need to use `OR`, you can pass a special key `logic` with the value `OR`.
+By default, all conditions are joined together as `AND` (logical AND). If you need to use `OR` (Logical OR), you can pass a special key `logic` with the value `OR`.
 
-You can add a prefix to the `field_n` keys to specify the filter operation.
+A prefix can be added to the `field_n` keys to specify the filter's behavior.
 Possible prefix values:
 - `>=` — greater than or equal to
 - `>` — greater than
@@ -60,14 +59,14 @@ Possible prefix values:
 - `<` — less than
 - `@` — IN, an array is passed as the value
 - `!@` — NOT IN, an array is passed as the value
-- `%` — LIKE, substring search. The `%` symbol does not need to be passed in the filter value. The search looks for the substring in any position of the string.
-- `=%` — LIKE, substring search. The `%` symbol needs to be passed in the value. Examples:
+- `%` — LIKE, substring search. The symbol `%` does not need to be passed in the filter value. The search looks for a substring in any position of the string
+- `=%` — LIKE, substring search. The symbol `%` must be passed in the value. Examples:
     - `"mol%"` — searches for values starting with "mol"
     - `"%mol"` — searches for values ending with "mol"
     - `"%mol%"` — searches for values where "mol" can be in any position
 - `%=` — LIKE (similar to `=%`)
-- `!%` — NOT LIKE, substring search. The `%` symbol does not need to be passed in the filter value. The search goes from both sides.
-- `!=%` — NOT LIKE, substring search. The `%` symbol needs to be passed in the value. Examples:
+- `!%` — NOT LIKE, substring search. The symbol `%` does not need to be passed in the filter value. The search goes from both sides
+- `!=%` — NOT LIKE, substring search. The symbol `%` must be passed in the value. Examples:
     - `"mol%"` — searches for values not starting with "mol"
     - `"%mol"` — searches for values not ending with "mol"
     - `"%mol%"` — searches for values where the substring "mol" is not present in any position
@@ -76,11 +75,12 @@ Possible prefix values:
 - `!=` — not equal
 - `!` — not equal
 
-A list of all available fields for filtering can be obtained using the [`crm.item.fields`](./crm-item-fields.md) method. A list of standard fields is available in the article [CRM Object Fields](./object-fields.md).
+The list of all available fields for filtering can be found using the [`crm.item.fields`](./crm-item-fields.md) method. The list of standard fields is available in the article [CRM object fields](./object-fields.md)
+
+To filter by custom fields of type `boolean`, pass `1` or `0` values in `filter`, even if when receiving or changing an item, the value of such a field is passed in the format `Y` or `N`. For example, for the field `ufCrm2_1234567890` use the filter `{"ufCrm2_1234567890": 1}`. Format `Y` or `N` in the filter for custom fields of type `boolean` is not supported
 ||
 || **order**
-[`object`][1] |
-Object format:
+[`object`][1] |Format object:
 ```
 {
     field_1: value_1,
@@ -92,10 +92,10 @@ Object format:
 where
 - `field_n` — the name of the field by which the items selection will be sorted
 - `value_n` — a value of type `string` equal to:
-  - `ASC` — sorting in ascending order
-  - `DESC` — sorting in descending order
+  - `ASC` — ascending sorting
+  - `DESC` — descending sorting
 
-The list of all available fields for sorting can be found using the [`crm.item.fields`](./crm-item-fields.md) method. The list of standard fields is available in the article [CRM object fields](./object-fields.md)
+A list of all available fields for sorting can be obtained using the [`crm.item.fields`](./crm-item-fields.md) method. The list of standard fields is available in the article [CRM object fields](./object-fields.md)
 ||
 || **start**
 [`integer`][1] | This parameter is used to control pagination.
@@ -115,32 +115,32 @@ Possible values:
 - `Y` — original names of custom fields, e.g., `UF_CRM_2_1639669411830`
 - `N` — custom field names in camelCase, e.g., `ufCrm2_1639669411830`
 
-Default is `N`. ||
+Default is `N` ||
 |#
 
 ## Code Examples
 
 Retrieve a list of leads where:
 1. First name or last name is not empty.
-2. They are in the status "In Progress" or "Unprocessed".
-3. They came from sources "Ads" or "Sites".
-4. They are assigned to managers with IDs 1 or 6.
-5. They have a deal amount between 5000 and 20000.
-6. The calculation mode for the amount is manual.
+2. Status is "In Progress" or "Not Processed".
+3. Source is "Ads" or "Site".
+4. Assigned to managers with identifiers 1 or 6.
+5. Deal amount is between 5000 and 20000.
+6. Amount calculation mode is manual.
 
 Set the following sorting order for this selection:
 * First name and last name in ascending order.
 
-For clarity, we will select only the fields we need:
-* Identifier `id`
-* Title `title`
-* First name `name`
-* Last name `lastName`
-* Stage ID `stageId`
-* Source ID `sourceId`
-* Responsible ID `assignedById`
-* Amount `opportunity`
-* Manual calculation mode `isManualOpportunity`
+For clarity, we will select only the necessary fields:
+* `id` ID
+* `title` Title
+* `name` First name
+* `lastName` Last name
+* `stageId` Stage ID
+* `sourceId` Source ID
+* `assignedById` Responsible ID
+* `opportunity` Amount
+* `isManualOpportunity` Amount calculation mode
 
 {% list tabs %}
 
@@ -404,13 +404,13 @@ For clarity, we will select only the fields we need:
         print(result)
     except BitrixAPIError as error:
         print(
-            "Bitrix API Error",
+            "Bitrix API error",
             f"error: {error.error}",
             f"error_description: {error.error_description}",
             sep="\n",
         )
     except BitrixSDKException as error:
-        print(f"Bitrix SDK Error: {error.message}")
+        print(f"Bitrix SDK error: {error.message}")
     except Exception as error:
         print(f"Unexpected error: {error}")
     ```
@@ -464,13 +464,13 @@ For clarity, we will select only the fields we need:
             print(item)
     except BitrixAPIError as error:
         print(
-            "Bitrix API Error",
+            "Bitrix API error",
             f"error: {error.error}",
             f"error_description: {error.error_description}",
             sep="\n",
         )
     except BitrixSDKException as error:
-        print(f"Bitrix SDK Error: {error.message}")
+        print(f"Bitrix SDK error: {error.message}")
     except Exception as error:
         print(f"Unexpected error: {error}")
     ```
@@ -524,13 +524,13 @@ For clarity, we will select only the fields we need:
             print(item)
     except BitrixAPIError as error:
         print(
-            "Bitrix API Error",
+            "Bitrix API error",
             f"error: {error.error}",
             f"error_description: {error.error_description}",
             sep="\n",
         )
     except BitrixSDKException as error:
-        print(f"Bitrix SDK Error: {error.message}")
+        print(f"Bitrix SDK error: {error.message}")
     except Exception as error:
         print(f"Unexpected error: {error}")
     ```
@@ -641,12 +641,12 @@ For clarity, we will select only the fields we need:
 
 ### Example Request with Date Filter Using OR Logic
 
-Filter deals `entityTypeId = 2` by two creation dates. For each date, set the start and end of the day range.
+Filter deals `entityTypeId = 2` by two create dates. For each date, we set a range from the start to the end of the day.
 
-For clarity, we will select only the fields we need:
-* Identifier `id`
-* Title `title`
-* Create date `createdTime`
+For clarity, we will select only the necessary fields:
+* `id` ID
+* `title` Title
+* `createdTime` Create date
 
 {% list tabs %}
 
@@ -927,8 +927,8 @@ HTTP status: **200**
                 "opportunity": 19600,
                 "sourceId": "WEB",
                 "title": "Lead #255",
-                "name": "John",
-                "lastName": "Smith",
+                "name": "Klaus",
+                "lastName": "Weber",
                 "isManualOpportunity": "Y"
             },
             {
@@ -938,8 +938,8 @@ HTTP status: **200**
                 "opportunity": 12000,
                 "sourceId": "ADVERTISING",
                 "title": "Lead #252",
-                "name": "John",
-                "lastName": "Smith",
+                "name": "Klaus",
+                "lastName": "Schmidt",
                 "isManualOpportunity": "Y"
             },
             {
@@ -949,8 +949,8 @@ HTTP status: **200**
                 "opportunity": 19000,
                 "sourceId": "ADVERTISING",
                 "title": "Lead #254",
-                "name": "Smith",
-                "lastName": "Smith",
+                "name": "Schmidt",
+                "lastName": "Schmidt",
                 "isManualOpportunity": "Y"
             }
         ]
@@ -978,13 +978,13 @@ HTTP status: **200**
 || **items**
 [`item[]`](./object-fields.md) | Array with information about the found items.
 
-Returned fields depend on the `select` parameter, [field descriptions](./object-fields.md). ||
+Returned fields depend on the `select` parameter, [field descriptions](./object-fields.md) ||
 || **total**
 [`integer`][1] | The total number of found items ||
 || **next**
 [`integer`][1] | Contains the value to be passed in the next request in the `start` parameter to get the next batch of data.
 
-The `next` parameter appears in the response if the number of items matching your request exceeds `50`. ||
+The `next` parameter appears in the response if the number of items matching your request exceeds `50` ||
 || **time**
 [`time`][1] | Information about the request execution time ||
 |#
@@ -992,7 +992,7 @@ The `next` parameter appears in the response if the number of items matching you
 {% note info " " %}
 
 By default, custom field names are passed and returned in camelCase, for example `ufCrm2_1639669411830`.
-When passing the parameter `useOriginalUfNames` with the value `Y`, custom fields will be returned with their original names, for example `UF_CRM_2_1639669411830`.
+When passing the `useOriginalUfNames` parameter with the value `Y`, custom fields will be returned with their original names, for example `UF_CRM_2_1639669411830`.
 
 {% endnote %}
 
@@ -1015,9 +1015,9 @@ HTTP status: **400**, **403**
 || **Status** | **Code**                          | **Description**                                             | **Value**                                          ||
 || `403`      | `allowed_only_intranet_user`     | Action is allowed for intranet users only         | User is not an intranet user       ||
 || `400`      | `NOT_FOUND`                      | SPA not found                                  | Occurs when an invalid `entityTypeId` is passed    ||
-|| `400`      | `INVALID_ARG_VALUE`              | Invalid filter: field '`field`' is not allowed in filter | The field `filter` passed in `field` is not available for filtering ||
+|| `400`      | `INVALID_ARG_VALUE`              | Invalid filter: field '`field`' is not allowed in filter | The field `field` passed in `filter` is unavailable for filtering ||
 || `400`      | `INVALID_ARG_VALUE`              | Invalid filter: field '`field`' has invalid value        | The value passed for field `field` in `filter` is incorrect ||
-|| `400`      | `INVALID_ARG_VALUE`              | Invalid order: field '`field`' is not allowed in order   | The field `order` passed in `field` is not available for sorting ||
+|| `400`      | `INVALID_ARG_VALUE`              | Invalid order: field '`field`' is not allowed in order   | The field `field` passed in `order` is unavailable for sorting ||
 || `400`      | `INVALID_ARG_VALUE`              | Invalid order: allowed sort directions are `ASC, DESC`. But got '`orderValue`' for field '`field`' | The value `orderValue` passed for field `field` in the `order` parameter is incorrect ||
 |#
 

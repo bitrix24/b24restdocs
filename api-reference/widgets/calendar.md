@@ -1,4 +1,4 @@
-# Widget in the CALENDAR_GRIDVIEW
+# CALENDAR_GRIDVIEW Calendar Widget
 
 {% note tip "" %}
 
@@ -8,7 +8,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`calendar`](../scopes/permissions.md)
 
-You can add your item to the list of calendar view types.
+You can add your own item to the list of calendar view modes.
 
 The specific widget placement code is specified in the `PLACEMENT` parameter of the [placement.bind](./placement-bind.md) method.
 
@@ -18,18 +18,19 @@ The widget will not be displayed in the interface until the application installa
 
 {% endnote %}
 
-## Where the widget is embedded
+## Where the Widget Is Embedded
 
-#| 
-|| **Widget Code** | **Location** ||
+#|
+|| **Widget code** | **Location** ||
 || `CALENDAR_GRIDVIEW` | Item in the list of calendar view types ||
 |#
 
-## What the handler receives
+## What the Handler Receives
 
 Data is transmitted as a POST request {.b24-info}
 
 ```php
+
 Array
 (
     [DOMAIN] => xxx.bitrix24.com
@@ -44,9 +45,10 @@ Array
     [PLACEMENT] => CALENDAR_GRIDVIEW
     [PLACEMENT_OPTIONS] => {"viewRangeFrom":"2024-08-12","viewRangeTo":"2024-08-18"}
 )
+
 ```
 
-{% include [Note on required parameters](../../_includes/required.md) %}
+{% include [Note on parameters](../../_includes/required.md) %}
 
 {% include notitle [description of standard data](./_includes/widget_data.md) %}
 
@@ -54,27 +56,27 @@ Array
 
 The value of `PLACEMENT_OPTIONS` is a JSON string containing an array of one or more keys.
 
-{% include [Note on required parameters](../../_includes/required.md) %}
+{% include [Note on parameters](../../_includes/required.md) %}
 
-#| 
+#|
 || **Parameter** | **Description** ||
-|| **viewRangeFrom*** 
+|| **viewRangeFrom***
 [`date`](../data-types.md) | The start of the date range currently displayed in the calendar.
 
-This can be used to retrieve a list of events to display in the widget using the [calendar.event.get](../calendar/calendar-event/calendar-event-get.md) method.
+This can be used to retrieve a list of events to display in the widget using the [calendar.event.get](../calendar/calendar-event/calendar-event-get.md) method
 
-|| 
-|| **viewRangeTo*** 
+||
+|| **viewRangeTo***
 [`date`](../data-types.md) | The end of the date range currently displayed in the calendar.
 
-This can be used to retrieve a list of events to display in the widget using the [calendar.event.get](../calendar/calendar-event//calendar-event-get.md) method.
+This can be used to retrieve a list of events to display in the widget using the [calendar.event.get](../calendar/calendar-event/calendar-event-get.md) method
 
-|| 
+||
 |#
 
-## Continue exploring
+## Continue Learning
 
-- [{#T}](../calendar/calendar-grid-veiw.md)
+- [{#T}](../calendar/calendar-grid-view.md)
 - [{#T}](./placement-bind.md)
 - [{#T}](./ui-interaction/index.md)
 - [{#T}](../../settings/interactivity/index.md)

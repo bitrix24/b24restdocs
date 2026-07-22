@@ -2,6 +2,17 @@
 
 ## 2026
 
+### July 22, 2026
+
+- Updated the [REST API Limits](./limits.md) page
+- Updated the [How to Retrieve Large Volumes of Data](./settings/performance/huge-data.md) page
+- Updated the [How to Fix the "Site Does Not Allow Connection" Error When Opening an App](./local-integrations/site-does-not-allow-connection.md) page
+- Updated the [How to Link a Contact and a Deal with Sales Intelligence](./tutorials/crm/how-to-use-analitycs/use-analitics-for-add-contact.md) tutorial
+- Updated the [Example App with Additional Content Blocks](./api-reference/crm/timeline/layout-blocks/content-blocks-test-app.md) page
+- Updated the [How to Access the REST API](./first-steps/access-to-rest-api.md) page
+- Updated the [How to Test Your Handler for Processing Bitrix24 Events](./api-reference/events/test-handler.md) page
+- Updated the [How to Embed an App into the Calendar](./api-reference/calendar/calendar-grid-view.md) page
+
 ### July 14, 2026
 
 - Added [call.followup.*](./api-reference/telephony/follow-up/index.md) methods for working with AI call summaries
