@@ -26,7 +26,6 @@
 
 - `L` - [local](/local-integrations/local-apps.html) application
 - `F` - [free mass-market](/market/index.html) application
-- `S` - [subscription mass-market](/market/monetization/index.html) application
 ||
 || **PLACEMENT***
 [`string`](/api-reference/data-types.html) | Code for the widget embedding location. You can use the same handler URL for all your widgets. The value that Bitrix24 will report in the `PLACEMENT` parameter will help determine from which specific widget embedding location your handler was invoked in each case ||
