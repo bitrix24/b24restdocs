@@ -1,4 +1,4 @@
-# Get Description of Communication crm.activity.communication.fields
+# Get Communication Description crm.activity.communication.fields
 
 {% note tip "" %}
 
@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: any user
 
-The method `crm.activity.communication.fields` returns the description of communication for an activity. Communications store phone numbers in calls, email addresses in e-mails, and names in meetings.
+The `crm.activity.communication.fields` method returns a communication description for an activity. Communications store phone numbers in calls, email addresses in letters, and names in meetings.
 
 ## Method Parameters
 
@@ -18,7 +18,7 @@ No parameters
 
 ## Code Examples
 
-{% include [Footnote about examples](../../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -230,7 +230,7 @@ HTTP status: **200**
             "isImmutable": false,
             "isMultiple": false,
             "isDynamic": false,
-            "title": "Activity"
+            "title": "Case"
         },
         "ENTITY_ID": {
             "type": "integer",
@@ -239,7 +239,7 @@ HTTP status: **200**
             "isImmutable": false,
             "isMultiple": false,
             "isDynamic": false,
-            "title": "Entity ID"
+            "title": "Entity element ID"
         },
         "ENTITY_TYPE_ID": {
             "type": "integer",
@@ -248,7 +248,7 @@ HTTP status: **200**
             "isImmutable": false,
             "isMultiple": false,
             "isDynamic": false,
-            "title": "Entity Type"
+            "title": "Entity type"
         },
         "TYPE": {
             "type": "string",
@@ -288,32 +288,30 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../../../data-types.md) | Root element of the response. Values for the `result` field correspond to [fields of the object](#all-fields). ||
+[`object`](../../../../data-types.md) | Root element of the response. Values for the `result` field correspond to [fields of the object](#all-fields) ||
 || **time**
-[`time`](../../../../data-types.md#time) | Information about the execution time of the request ||
+[`time`](../../../../data-types.md#time) | Information about the request execution time ||
 |#
 
-#### Overview of Activity Communication Fields {#all-fields}
-
-{% include [Footnote about required parameters](../../../../../_includes/required.md) %}
+#### Activity Communication Field Overview {#all-fields}
 
 #|
 || **Field** `type` | **Description** ||
-|| **ID***
-[`integer`](../../../data-types.md) | Identifier of the communication ||
-|| **ACTIVITY_ID***
-[`integer`](../../../data-types.md) | Identifier of the activity ||
-|| **ENTITY_ID***
-[`integer`](../../../data-types.md) | Identifier of the CRM object ||
-|| **ENTITY_TYPE_ID***
-[`integer`](../../../data-types.md) | [Identifier of the CRM object type](../../../data-types.md#object_type) ||
-|| **TYPE_ID***
-[`integer`](../../../data-types.md) | Type of communication ||
-|| **VALUE***
-[`integer`](../../../data-types.md) | Value of the communication ||
+|| **ID**
+[`integer`](../../../../data-types.md) | Identifier of the communication ||
+|| **ACTIVITY_ID**
+[`integer`](../../../../data-types.md) | Identifier of the activity ||
+|| **ENTITY_ID**
+[`integer`](../../../../data-types.md) | Identifier of the CRM entity ||
+|| **ENTITY_TYPE_ID**
+[`integer`](../../../../data-types.md) | [Identifier of the CRM object type](../../../data-types.md#object_type) ||
+|| **TYPE**
+[`string`](../../../../data-types.md) | Type of communication ||
+|| **VALUE**
+[`string`](../../../../data-types.md) | Value of the communication ||
 |#
 
-# Error Handling
+## Error Handling
 
 HTTP status: **400**
 
@@ -324,11 +322,11 @@ HTTP status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
-{% include [system errors](../../../../../_includes/system-errors.md) %}
+{% include [System errors](../../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

@@ -6,7 +6,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-> Scope: [`imopenlines`](../../../scopes/permissions.md) 
+> Scope: [`imopenlines`](../../../scopes/permissions.md)
 >
 > Who can subscribe: any user
 
@@ -22,122 +22,180 @@ Events will not be sent to the application until the installation is complete. [
 
 ## What the Handler Receives
 
-Data is transmitted in the form of a POST request
+Data is transmitted as a POST request {.b24-info}
 
-```php
-[
-    'event' => 'ONOPENLINEMESSAGEADD',
-    'eventId' => 1,
-    'data' => [
-        'DATA' => [
-            [
-                'connector' => [
-                    'connector_id' => 'livechat',
-                    'line_id' => 128,
-                    'chat_id' => 10587,
-                    'user_id' => 1985,
-                ],
-                'chat' => [
-                    'id' => 10585
-                ],
-                'message' => [
-                    'id' => 80964,
-                    'date' => '',
-                    'text' => 'hello',
-                    'files' => [
-                    ],
-                    'attach' => '',
-                    'system' => 'N',
-                    'user_id' => 1985
-                ],
-                'ref' => [
-                ],
-                'extra' => [
-                    'EXTRA_URL' => '' 
-                ],
-            ],
-        ],
-    ],
-    'ts' => 1714649632,
-    'auth' => [
-        'access_token' => 's6p6eclrvim6da22ft9ch94ekreb52lv',
-        'expires_in' => 3600,
-        'scope' => 'imopenlines',
-        'domain' => 'some-domain.bitrix24.com',
-        'server_endpoint' => 'https://oauth.bitrix.info/rest/&#39;',
-        'status' => 'F',
-        'client_endpoint' => 'https://some-domain.bitrix24.com/rest/&#39;',
-        'member_id' => 'a223c6b3710f85df22e9377d6c4f7553',
-        'refresh_token' => '4s386p3q0tr8dy89xvmt96234v3dljg8',
-        'application_token' => '51856fefc120afa4b628cc82d3935cce',
-    ],
-]
+```json
+{
+    "event": "ONOPENLINEMESSAGEADD",
+    "eventId": 1,
+    "data": {
+        "DATA": [
+            {
+                "connector": {
+                    "connector_id": "livechat",
+                    "line_id": 128,
+                    "chat_id": 10587,
+                    "user_id": 1985
+                },
+                "chat": {
+                    "id": 10585
+                },
+                "message": {
+                    "id": 80964,
+                    "date": "",
+                    "text": "hello",
+                    "files": [],
+                    "attach": "",
+                    "system": "N",
+                    "user_id": 1985
+                },
+                "ref": [],
+                "extra": {
+                    "EXTRA_URL": ""
+                }
+            }
+        ]
+    },
+    "ts": 1714649632,
+    "auth": {
+        "access_token": "s6p6eclrvim6da22ft9ch94ekreb52lv",
+        "expires_in": 3600,
+        "scope": "imopenlines",
+        "domain": "some-domain.bitrix24.com",
+        "server_endpoint": "https://oauth.bitrix.info/rest/",
+        "status": "F",
+        "client_endpoint": "https://some-domain.bitrix24.com/rest/",
+        "member_id": "a223c6b3710f85df22e9377d6c4f7553",
+        "refresh_token": "4s386p3q0tr8dy89xvmt96234v3dljg8",
+        "application_token": "51856fefc120afa4b628cc82d3935cce"
+    }
+}
 ```
 
-## Parameters
-
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 #|
-|| **Name**
+|| **parameter**
 `type` | **Description** ||
 || **event***
-[`string`](../../../data-types.md) | Symbolic event code ||
+[`string`](../../../data-types.md) | Symbolic code of the event.
+
+In this case — `ONOPENLINEMESSAGEADD` ||
 || **eventId***
 [`integer`](../../../data-types.md) | Event identifier ||
 || **data***
-[`object`](../../../data-types.md) | Object with [event data](#data) ||
+[`object`](../../../data-types.md) | An object containing event data.
+
+The structure is described [below](#data) ||
 || **ts***
-[`integer`](../../../data-types.md) | Timestamp of the event sent from the event queue ||
+[`timestamp`](../../../data-types.md) | Date and time of the event sent from the [event queue](../../../events/index.md) ||
 || **auth***
-[`object`](../../../data-types.md) | Object with authorization parameters and information about the account where the event occurred ||
+[`object`](../../../data-types.md) | Object containing authorization parameters and information about the account where the event occurred.
+
+The structure is described [below](#auth) ||
 |#
 
 ### Parameter data {#data}
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
-
 #|
-|| **Name**
+|| **parameter**
 `type` | **Description** ||
 || **DATA***
-[`object`](../../../data-types.md) | Object with [chat data](#chat-params) ||
+[`array`](../../../data-types.md) | An array of objects with message data.
+
+The object structure is described [below](#chat-params) ||
 |#
 
-#### Parameter DATA {#chat-params}
+#### Array Element DATA {#chat-params}
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+Each array element `DATA` is an object with the following structure:
 
 #|
-|| **Name**
+|| **parameter**
 `type` | **Description** ||
 || **connector***
-[`object`](../../../data-types.md) | Object with information about the connector:
-- `connector_id` — connector identifier
-- `line_id` — open line identifier
-- `chat_id` — chat identifier
-- `user_id` — user identifier in the external system
-||
+[`object`](../../../data-types.md) | An object with connector information.
+
+The structure is described [below](#connector) ||
 || **chat***
-[`object`](../../../data-types.md) | Object with information about the chat:
-- `id` — chat identifier ||
+[`object`](../../../data-types.md) | An object with chat information.
+
+The structure is described [below](#chat) ||
 || **message***
-[`object`](../../../data-types.md) | Object with information about the message:
-- `id` — message identifier
-- `date` — date and time of addition
-- `text` — message text
-- `files` — files
-- `attach` — attached files
-- `system` — flag indicating whether the message is system. It has the value `Y` if it is system 
-- `user_id` — user identifier
-||
+[`object`](../../../data-types.md) | An object with message information.
+
+The structure is described [below](#message) ||
 || **ref***
-[`object`](../../../data-types.md) | Tracker code `trackId` for linking the message to a CRM object ||
+[`array`](../../../data-types.md) | An array with the tracker code `trackId` to link the message to a CRM object. In the example, it is passed as empty ||
 || **extra***
-[`object`](../../../data-types.md) | Object with additional information:
-- `EXTRA_URL` — external link for Bitrix24.Network ||
+[`object`](../../../data-types.md) | An object with additional information.
+
+The structure is described [below](#extra) ||
 |#
 
-### Parameter auth
+##### Parameter connector {#connector}
 
-{% include notitle [Parameter auth](../../../../_includes/auth-params-in-events.md) %}
+#|
+|| **parameter**
+`type` | **Description** ||
+|| **connector_id***
+[`string`](../../../data-types.md) | Connector identifier ||
+|| **line_id***
+[`integer`](../../../data-types.md) | Identifier of the open line ||
+|| **chat_id***
+[`integer`](../../../data-types.md) | Identifier of the chat ||
+|| **user_id***
+[`integer`](../../../data-types.md) | User ID in the external system ||
+|#
+
+##### Parameter chat {#chat}
+
+#|
+|| **parameter**
+`type` | **Description** ||
+|| **id***
+[`integer`](../../../data-types.md) | Identifier of the chat ||
+|#
+
+##### Parameter message {#message}
+
+#|
+|| **parameter**
+`type` | **Description** ||
+|| **id***
+[`integer`](../../../data-types.md) | Identifier of the message ||
+|| **date***
+[`string`](../../../data-types.md) | Date and time the message was added ||
+|| **text***
+[`string`](../../../data-types.md) | Text of the message ||
+|| **files***
+[`array`](../../../data-types.md) | Message files ||
+|| **attach***
+[`string`](../../../data-types.md) | Attached data ||
+|| **system***
+[`string`](../../../data-types.md) | A flag indicating that the message is a system message: `Y` — yes, `N` — no ||
+|| **user_id***
+[`integer`](../../../data-types.md) | User identifier ||
+|#
+
+##### Parameter extra {#extra}
+
+#|
+|| **parameter**
+`type` | **Description** ||
+|| **EXTRA_URL***
+[`string`](../../../data-types.md) | External link for Bitrix24.Network ||
+|#
+
+### Parameter auth {#auth}
+
+{% include notitle [Auth parameters in events](../../../../_includes/auth-params-in-events.md) %}
+
+## Continue Learning
+
+- [{#T}](../../../events/index.md)
+- [{#T}](../../../events/event-bind.md)
+- [{#T}](./on-open-line-message-update.md)
+- [{#T}](./on-open-line-message-delete.md)
+- [{#T}](./on-session-start.md)
+- [{#T}](./on-session-finish.md)

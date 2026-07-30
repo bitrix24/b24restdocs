@@ -1,5 +1,7 @@
 title: Product Catalog
 href: index.md
 items:
-  - name: How to Add a Product with Custom Property Values
+  - name: Add Product with Custom Property Values
     href: index.md
+  - name: Change Product Custom Field Values
+    href: how-to-change-product-custom-field-values.md

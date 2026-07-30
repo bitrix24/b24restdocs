@@ -7,7 +7,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 {% endnote %}
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
-> 
+>
 > Who can subscribe: any user
 
 The event `onCrmContactUserFieldAdd` is triggered when a custom field is added to a contact.
@@ -18,7 +18,7 @@ Events will not be sent to the application until the installation is complete. [
 
 {% endnote %}
 
-## What the handler receives
+## What the Handler Receives
 
 Data is transmitted as a POST request {.b24-info}
 
@@ -50,12 +50,12 @@ Data is transmitted as a POST request {.b24-info}
 ```
 
 #|
-|| **Parameter**
+|| **parameter**
 `type` | **Description** ||
 || **event**
-[`string`](../../../../data-types.md) | Symbolic event code.
+[`string`](../../../../data-types.md) | Symbolic code of the event.
 
-In this case — `ONCRMCONTACTUSERFIELDADD`||
+In this case — `ONCRMCONTACTUSERFIELDADD` ||
 || **event_handler_id**
 [`integer`](../../../../data-types.md) | Identifier of the event handler ||
 || **data**
@@ -63,11 +63,11 @@ In this case — `ONCRMCONTACTUSERFIELDADD`||
 
 Contains a single key `FIELDS` ||
 || **data.FIELDS**
-[`object`](../../../../data-types.md) | Object containing information about the fields of the created custom field.
+[`object`](../../../../data-types.md) | An object containing custom field properties.
 
 The structure is described [below](#fields) ||
 || **ts**
-[`timestamp`](../../../../data-types.md) | Date and time the event was sent from the [event queue](../../../../events/index.md) ||
+[`timestamp`](../../../../data-types.md) | Date and time of the event sent from the [event queue](../../../../events/index.md) ||
 || **auth**
 [`object`](../../../../data-types.md) | Object containing authorization parameters and information about the account where the event occurred.
 
@@ -77,7 +77,7 @@ The structure is described [below](#auth) ||
 ### Parameter FIELDS {#fields}
 
 #|
-|| **Parameter**
+|| **parameter**
 `type` | **Description** ||
 || **ID**
 [`integer`](../../../../data-types.md) | Identifier of the created custom field ||
@@ -91,11 +91,12 @@ In this case — `CRM_CONTACT` ||
 
 ### Parameter auth {#auth}
 
-{% include notitle [Table with keys in the auth array](../../../../../_includes/auth-params-in-events.md) %}
+{% include notitle [Auth parameters in events](../../../../../_includes/auth-params-in-events.md) %}
 
-## Continue exploring
+## Continue Learning
 
-- [{#T}](./index.md)
+- [{#T}](../../../../events/index.md)
+- [{#T}](../../../../events/event-bind.md)
 - [{#T}](./on-crm-contact-user-field-update.md)
 - [{#T}](./on-crm-contact-user-field-set-enum-values.md)
 - [{#T}](./on-crm-contact-user-field-delete.md)

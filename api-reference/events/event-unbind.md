@@ -141,6 +141,23 @@ If no parameters are specified, all event handlers that meet the other requireme
 
 - PHP
 
+    ```php        
+    try {
+        $eventCode = 'your_event_code'; // Replace with your actual event code
+        $handlerUrl = 'https://your.handler.url'; // Replace with your actual handler URL
+        $userId = null; // Replace with your actual user ID or leave as null
+        $result = $serviceBuilder
+            ->getMainScope()
+            ->event()
+            ->unbind($eventCode, $handlerUrl, $userId);
+        print($result->getUnbindedHandlersCount());
+    } catch (Throwable $e) {
+        print('Error: ' . $e->getMessage());
+    }
+    ```
+
+- PHP CRest
+
     ```php
     require_once('crest.php');
 
@@ -156,23 +173,6 @@ If no parameters are specified, all event handlers that meet the other requireme
     echo '<PRE>';
     print_r($result);
     echo '</PRE>';
-    ```
-
-- PHP (B24PhpSdk)
-
-    ```php        
-    try {
-        $eventCode = 'your_event_code'; // Replace with your actual event code
-        $handlerUrl = 'https://your.handler.url'; // Replace with your actual handler URL
-        $userId = null; // Replace with your actual user ID or leave as null
-        $result = $serviceBuilder
-            ->getMainScope()
-            ->event()
-            ->unbind($eventCode, $handlerUrl, $userId);
-        print($result->getUnbindedHandlersCount());
-    } catch (Throwable $e) {
-        print('Error: ' . $e->getMessage());
-    }
     ```
 
 {% endlist %}

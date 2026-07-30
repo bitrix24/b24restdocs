@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can subscribe: any user
 
-The `OnAppInstall` event is triggered immediately after the successful installation of an application on Bitrix24. The `application_token` is passed to the handler, which is important to save. For more details, refer to the article [{#T}](../../events/safe-event-handlers.md).
+The `ONAPPINSTALL` event is triggered immediately after the successful installation of an application on Bitrix24. The `application_token` is passed to the handler, which is important to save. For more details, refer to the article [{#T}](../../events/safe-event-handlers.md).
 
 {% note info "" %}
 
@@ -29,11 +29,15 @@ Data is transmitted as a POST request {.b24-info}
         "VERSION": "1.0.0",
         "ACTIVE": "Y",
         "INSTALLED": "Y",
-        "LANGUAGE_ID": "en"
+        "LANGUAGE_ID": "de"
     },
     "ts": "1696527000",
     "auth": {
         "domain": "some-domain.bitrix24.com",
+        "scope": "imbot",
+        "access_token": "s6p6eclrvim6da22ft9ch94ekreb52lv",
+        "refresh_token": "4s386p3q0tr8dy89xvmt96234v3dljg8",
+        "expires_in": 3600,
         "server_endpoint": "https://oauth.bitrix.info/rest/",
         "status": "F",
         "client_endpoint": "https://some-domain.bitrix24.com/rest/",
@@ -45,7 +49,7 @@ Data is transmitted as a POST request {.b24-info}
 
 ## Request Parameters
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -66,47 +70,49 @@ The structure is described [below](#auth) ||
 
 ### Parameter data {#data}
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
-
 #|
 || **Name**
 `type` | **Description** ||
-|| **LANGUAGE_ID***
-[`string`](../../data-types.md) | Installed language: `en`, `de`, and others ||
 || **VERSION***
-[`integer`](../../data-types.md) | Version of the installed application ||
+[`string`](../../data-types.md) | Version of the installed application ||
 || **ACTIVE***
-[`string`](../../data-types.md) | Status of the application's activity. 
+[`string`](../../data-types.md) | Application activity status.
 
 Possible values:
 `Y` — active
 `N` — inactive ||
 || **INSTALLED***
-[`string`](../../data-types.md) | Whether the application is ready for use. 
+[`string`](../../data-types.md) | Whether the application is ready for use.
 
-Possible values: 
+Possible values:
 `Y` — ready
 `N` — not fully installed ||
+|| **LANGUAGE_ID***
+[`string`](../../data-types.md) | Installed language: `ru`, `en` and others ||
 |#
 
 ### Parameter auth {#auth}
-
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **domain***
 [`string`](../../data-types.md) | Address of the Bitrix24 account ||
+|| **scope***
+[`string`](../../data-types.md) | List of permissions granted to the application, separated by spaces ||
+|| **access_token***
+[`string`](../../data-types.md) | OAuth 2.0 authorization token ||
+|| **refresh_token***
+[`string`](../../data-types.md) | Token for extending OAuth 2.0 authorization ||
+|| **expires_in***
+[`integer`](../../data-types.md) | Access token lifetime in seconds ||
 || **server_endpoint***
 [`string`](../../data-types.md) | Authorization server address for token renewal ||
 || **status***
 [`string`](../../data-types.md) | Status of the application that subscribed to this event:
 
 - `L` — local application
-- `F` — free mass-market application
-- `S` — subscription mass-market application
-||
+- `F` — free mass-market application ||
 || **client_endpoint***
 [`string`](../../data-types.md) | Common path for API method calls to the account ||
 || **member_id***
@@ -121,7 +127,7 @@ The handler for this event can be set in the installation script of the applicat
 
 {% endnote %}
 
-## Continue Your Learning
+## Continue Learning
 
 - [{#T}](../../events/index.md)
 - [{#T}](../../events/event-bind.md)

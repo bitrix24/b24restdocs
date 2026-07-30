@@ -14,13 +14,13 @@ The method `tasks.api.scrum.sprint.update` updates a sprint.
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`](../../../data-types.md) | Sprint identifier ||
+[`integer`](../../../data-types.md) | Identifier of the sprint ||
 || **fields***
 [`object`](../../../data-types.md) | Object containing sprint data ||
 |#
@@ -35,15 +35,15 @@ The method `tasks.api.scrum.sprint.update` updates a sprint.
 
 The identifier can be obtained using the method [tasks.api.scrum.sprint.get](./tasks-api-scrum-sprint-get.md) for an existing sprint ||
 || **name** 
-[`string`](../../../data-types.md) | Sprint name ||
+[`string`](../../../data-types.md) | Name of the sprint ||
 || **sort** 
 [`integer`](../../../data-types.md) | Sorting ||
 || **dateStart** 
-[`string`](../../../data-types.md) | Sprint start date. Available formats: `ISO 8601`, `timestamp` ||
+[`string`](../../../data-types.md) | Start date of the sprint. Available formats: `ISO 8601`, `timestamp` ||
 || **dateEnd** 
-[`string`](../../../data-types.md) | Sprint end date. Available formats: `ISO 8601`, `timestamp` ||
+[`string`](../../../data-types.md) | End date of the sprint. Available formats: `ISO 8601`, `timestamp` ||
 || **status** 
-[`string`](../../../data-types.md) | Sprint status. Available values: `active`, `planned`, `completed` ||
+[`string`](../../../data-types.md) | Status of the sprint. Available values: `active`, `planned`, `completed` ||
 |#
 
 ## Code Examples
@@ -69,7 +69,7 @@ The identifier can be obtained using the method [tasks.api.scrum.sprint.get](./t
     https://your-domain.bitrix24.com/rest/_USER_ID_/_CODE_/tasks.api.scrum.sprint.update
     ```
 
-- cURL (oAuth)
+- cURL (OAuth)
 
     ```bash
     curl -X POST \
@@ -207,7 +207,7 @@ The identifier can be obtained using the method [tasks.api.scrum.sprint.get](./t
             ->getResult();
     
         echo 'Success: ' . print_r($result, true);
-        // Your data processing logic
+        // The data processing logic you need
         processData($result);
     
     } catch (Throwable $e) {
@@ -245,9 +245,9 @@ The identifier can be obtained using the method [tasks.api.scrum.sprint.get](./t
 - PHP CRest
 
     ```php
-    require_once('crest.php'); // connect CRest PHP SDK
+    require_once('crest.php'); // connecting the CRest PHP SDK
 
-    // execute request to REST API
+    // executing a request to the REST API
     $result = CRest::call(
         'tasks.api.scrum.sprint.update',
         [
@@ -261,7 +261,7 @@ The identifier can be obtained using the method [tasks.api.scrum.sprint.get](./t
         ]
     );
 
-    // Process response from Bitrix24
+    // Processing the response from Bitrix24
     if (isset($result['error'])) {
         echo 'Error: '.$result['error_description'];
     } else {
@@ -273,7 +273,7 @@ The identifier can be obtained using the method [tasks.api.scrum.sprint.get](./t
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -302,15 +302,15 @@ HTTP Status: **200**
 || **result** 
 [`object`](../../../data-types.md) | Object containing sprint data ||
 || **id** 
-[`integer`](../../../data-types.md) | Sprint identifier ||
+[`integer`](../../../data-types.md) | Identifier of the sprint ||
 || **groupId** 
 [`integer`](../../../data-types.md) | Identifier of the group (Scrum) to which the sprint belongs ||
 || **entityType** 
 [`string`](../../../data-types.md) | Entity type (in this case `sprint`) ||
 || **name** 
-[`string`](../../../data-types.md) | Sprint name ||
+[`string`](../../../data-types.md) | Name of the sprint ||
 || **goal** 
-[`string`](../../../data-types.md) | Sprint goal. Set only in the interface when starting the sprint ||
+[`string`](../../../data-types.md) | Goal of the sprint. Set only in the interface when starting the sprint ||
 || **sort** 
 [`integer`](../../../data-types.md) | Sorting ||
 || **createdBy** 
@@ -318,16 +318,16 @@ HTTP Status: **200**
 || **modifiedBy** 
 [`integer`](../../../data-types.md) | Identifier of the user who modified the sprint ||
 || **dateStart** 
-[`string`](../../../data-types.md) | Sprint start date in `ISO 8601` format ||
+[`string`](../../../data-types.md) | Start date of the sprint in `ISO 8601` format ||
 || **dateEnd** 
-[`string`](../../../data-types.md) | Sprint end date in `ISO 8601` format ||
+[`string`](../../../data-types.md) | End date of the sprint in `ISO 8601` format ||
 || **status** 
-[`string`](../../../data-types.md) | Sprint status ||
+[`string`](../../../data-types.md) | Status of the sprint ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -336,25 +336,25 @@ HTTP Status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
-|| **Code** | **Error Message** | **Description** ||
+|| **Code** | **Error message** | **Description** ||
 || `0` | `Access denied` | No access to Scrum ||
 || `0` | `Sprint not created` | Failed to create sprint ||
 || `0` | `Incorrect dateStart format` | Invalid start date format for the sprint ||
 || `0` | `Incorrect dateEnd format` | Invalid end date format for the sprint ||
 || `0` | `createdBy user not found` | User in the "creator" field not found ||
 || `0` | `modifiedBy user not found` | User in the "last modified by" field not found ||
-|| `0` | `Unable to add two active sprints` | There cannot be two sprints with the status "active" in the group ||
+|| `0` | `Unable to add two active sprint` | There cannot be two sprints with the status "active" in the group ||
 || `0` | `Incorrect sprint status` | Status is not in the list of available sprint statuses ||
 || `100` | `Could not find value for parameter {fields}` | Incorrect parameter name or parameter not set ||
 || `100` | `Invalid value {stringValue} to match with parameter {fields}. Should be value of type array` | Invalid parameter type ||
 |#
 
-{% include [system errors](../../../../_includes/system-errors.md) %}
+{% include [System errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

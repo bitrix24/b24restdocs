@@ -11,13 +11,13 @@ Workflows can create tasks for participants to gather additional information fro
 There are four types of tasks:
 
 - Document approval
-- Document acknowledgment
+- Document review
 - Request for additional information
 - Request for additional information with rejection
 
-> Quick navigation: [all methods and events](#all-methods) 
-> 
-> User documentation: [Workflow Tasks](https://helpdesk.bitrix24.com/open/11466058/)
+> Quick navigation: [All Methods](#all-methods)
+>
+> User documentation: [Workflow Assignments](https://helpdesk.bitrix24.com/open/11466058/)
 
 ## Complete Task
 
@@ -25,14 +25,15 @@ You can complete a workflow task by its identifier using the [bizproc.task.compl
 
 Tasks that request additional information contain fields that the user must fill out. To complete such a task, pass the field values in the `FIELDS` object in the format `{"field_1": "value_1", ... , "field_N": "value_N"}`
 
--  `field_N` — symbolic identifier of the task field
--  `value_N` — field value
+- `field_N` — task field symbol identifier
+- `value_N` — field value
 
-You can find out which fields need to be filled out from the response of the [bizproc.task.list](./bizproc-task-list.md) method. The object `"PARAMETERS": "Fields"` contains descriptions of all task fields.
+Which fields need to be filled out can be determined from the [bizproc.task.list](./bizproc-task-list.md) method response. The `"PARAMETERS": "Fields"` object contains descriptions of all task fields.
 
 ## Delegate Task
 
 A task can be delegated to another employee using the [bizproc.task.delegate](./bizproc-task-delegate.md) method. To do this, specify the task identifier `TASK_IDS` and the user identifiers:
+
 - current assignee `FROM_USER_ID`
 - new assignee `TO_USER_ID`
 

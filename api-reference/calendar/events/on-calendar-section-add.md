@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can subscribe: any user
 
-This event is triggered when a calendar section or resource is added.
+The `ONCALENDARSECTIONADD` event is triggered when a calendar section or resource is added.
 
 {% note info " " %}
 
@@ -57,11 +57,11 @@ Example: event for creating a calendar section object with `id = 202`.
 || **Name**
 `type` | **Description** ||
 || **event**
-[`string`][1] | Symbolic event code.
+[`string`][1] | Symbolic code of the event.
 
-In this case — `ONCALENDARSECTIONADD`||
+In this case — `ONCALENDARSECTIONADD` ||
 || **event_handler_id**
-[`integer`][1] | Event handler identifier ||
+[`integer`][1] | Identifier of the event handler ||
 || **data**
 [`object`][1] | Object containing information about the added calendar section object.
 
@@ -69,18 +69,18 @@ Contains a single key — `id` ||
 || **data.id**
 [`string`][1] | Identifier of the calendar section object ||
 || **ts**
-[`timestamp`][1] | Date and time the event was sent from the [event queue](../../events/index.md) ||
+[`timestamp`][1] | Date and time of the event sent from the [event queue](../../events/index.md) ||
 || **auth**
 [`object`][1] | Object containing authorization parameters and information about the account where the event occurred.
 
 The structure is described [below](#auth) ||
 |#
 
-### auth Parameter {#auth}
+### Parameter auth {#auth}
 
-{% include notitle [Table with keys in the auth array](../../../_includes/auth-params-in-events.md) %}
+{% include notitle [Auth parameters in events](../../../_includes/auth-params-in-events.md) %}
 
-## Continue Exploring 
+## Continue Learning
 
 - [{#T}](../../events/index.md)
 - [{#T}](../../events/event-bind.md)

@@ -1,4 +1,4 @@
-# Event for updating custom CRM type onCrmTypeUpdate
+# Event for Updating Custom CRM Type onCrmTypeUpdate
 
 {% note tip "" %}
 
@@ -8,10 +8,9 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
-> Who can subscribe: `any user`
+> Who can subscribe: any user
 
-The event triggers when a [custom CRM type](../../user-defined-object-types/index.md) is updated.
-
+The `ONCRMTYPEUPDATE` event is triggered when a [custom CRM type](../../user-defined-object-types/index.md) is updated.
 
 {% note info "" %}
 
@@ -19,7 +18,7 @@ Events will not be sent to the application until the installation is complete. [
 
 {% endnote %}
 
-## What the handler receives
+## What the Handler Receives
 
 Data is transmitted as a POST request {.b24-info}
 
@@ -49,12 +48,12 @@ Data is transmitted as a POST request {.b24-info}
 ```
 
 #|
-|| **Parameter**
+|| **parameter**
 `type` | **Description** ||
 || **event**
-[`string`][1] | Symbolic event code.
+[`string`][1] | Symbolic code of the event.
 
-In this case — `ONCRMTYPEUPDATE`||
+In this case — `ONCRMTYPEUPDATE` ||
 || **event_handler_id**
 [`integer`][1] | Identifier of the event handler ||
 || **data**
@@ -62,33 +61,31 @@ In this case — `ONCRMTYPEUPDATE`||
 
 Contains a single key `FIELDS` ||
 || **data.FIELDS**
-[`object`][1] | Object containing information about the fields of the modified custom CRM type.
+[`object`][1] | An object containing information about the fields of a modified CRM custom type.
 
 The structure is described [below](#fields) ||
 || **ts**
-[`timestamp`][1] | Date and time the event was sent from the [event queue](../../../../events/index.md) ||
+[`timestamp`][1] | Date and time of the event sent from the [event queue](../../../../events/index.md) ||
 || **auth**
 [`object`][1] | Object containing authorization parameters and information about the account where the event occurred.
 
 The structure is described [below](#auth) ||
 |#
 
-
 ### Parameter FIELDS {#fields}
 
 #|
-|| **Parameter**
+|| **parameter**
 `type` | **Description** ||
 || **ID**
 [`integer`][1] | Identifier of the modified custom CRM type (primary key, not the type identifier) ||
 |#
 
-
 ### Parameter auth {#auth}
 
-{% include notitle [Table with keys in the auth array](../../../../../_includes/auth-params-in-events.md) %}
+{% include notitle [Auth parameters in events](../../../../../_includes/auth-params-in-events.md) %}
 
-## Continue exploring
+## Continue Learning
 
 - [{#T}](../../../../events/index.md)
 - [{#T}](../../../../events/event-bind.md)

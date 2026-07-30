@@ -12,7 +12,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 The `ONEXTERNALCALLSTART` event is triggered when a user clicks on a phone number in CRM entities to make an outgoing call through the selected telephony application.
 
-To ensure the event is triggered, specify the application in the Default Outgoing Call Number field in the telephony settings or select it as the default application in the user settings.
+To trigger the event, specify the application in the Default Number for Outgoing Calls field in the telephony settings or select it as the default application in the user settings.
 
 {% note info "" %}
 
@@ -20,7 +20,7 @@ Events will not be sent to the application until the installation is complete. [
 
 {% endnote %}
 
-## What the handler receives
+## What the Handler Receives
 
 Data is transmitted as a POST request {.b24-info}
 
@@ -29,8 +29,8 @@ Data is transmitted as a POST request {.b24-info}
     "event": "ONEXTERNALCALLSTART",
     "event_handler_id": "1055",
     "data": {
-        "PHONE_NUMBER": "+14155551234",
-        "PHONE_NUMBER_INTERNATIONAL": "+14155551234",
+        "PHONE_NUMBER": "+494951234567",
+        "PHONE_NUMBER_INTERNATIONAL": "+494951234567",
         "EXTENSION": "",
         "USER_ID": "1269",
         "CALL_LIST_ID": "0",
@@ -57,22 +57,22 @@ Data is transmitted as a POST request {.b24-info}
 ```
 
 #|
-|| **Parameter**
+|| **parameter**
 `type` | **Description** ||
 || **event**
-[`string`](../../data-types.md) | Symbolic event code.
+[`string`](../../data-types.md) | Symbolic code of the event.
 
 In this case — `ONEXTERNALCALLSTART` ||
 || **event_handler_id**
 [`integer`](../../data-types.md) | Identifier of the event handler ||
 || **data**
-[`object`](../../data-types.md) | Object containing event data.
+[`object`](../../data-types.md) | Object with event data.
 
 The structure is described [below](#data) ||
 || **ts**
-[`timestamp`](../../data-types.md) | Date and time the event was sent from the [event queue](../../events/index.md) ||
+[`timestamp`](../../data-types.md) | Date and time of the event sent from the [event queue](../../events/index.md) ||
 || **auth**
-[`object`](../../data-types.md) | Object containing the user's authorization parameters under which the event was triggered.
+[`object`](../../data-types.md) | Object containing authorization parameters of the user on behalf of whom the event was triggered.
 
 The structure is described [below](#auth) ||
 |#
@@ -80,7 +80,7 @@ The structure is described [below](#auth) ||
 ### Parameter data {#data}
 
 #|
-|| **Parameter**
+|| **parameter**
 `type` | **Description** ||
 || **PHONE_NUMBER**
 [`string`](../../data-types.md) | The phone number from which the user initiated the outgoing call ||
@@ -103,17 +103,19 @@ Possible values:
 || **CALL_ID**
 [`string`](../../data-types.md) | Identifier of the call created when registering the external call ||
 || **CRM_ENTITY_TYPE**
-[`string`](../../data-types.md) | Type of the CRM object from which the call was initiated ||
+[`string`](../../data-types.md) | Type of the CRM entity from which the call was initiated ||
 || **CRM_ENTITY_ID**
-[`integer`](../../data-types.md) | Identifier of the CRM object whose type is specified in `CRM_ENTITY_TYPE` ||
+[`integer`](../../data-types.md) | Identifier of the CRM object, the type of which is specified in `CRM_ENTITY_TYPE` ||
 |#
 
 ### Parameter auth {#auth}
 
-{% include notitle [Table with keys in the auth array](../../../_includes/auth-params-in-events.md) %}
+{% include notitle [Auth parameters in events](../../../_includes/auth-params-in-events.md) %}
 
-## Continue your exploration
+## Continue Learning
 
+- [{#T}](../../events/index.md)
+- [{#T}](../../events/event-bind.md)
 - [{#T}](../telephony-external-call-register.md)
 - [{#T}](../telephony-external-call-finish.md)
 - [{#T}](./on-external-call-back-start.md)

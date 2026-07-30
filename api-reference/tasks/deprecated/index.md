@@ -1,4 +1,4 @@
-# Deprecated Task Methods
+# Deprecated Task Methods: Methods Overview
 
 {% note tip "" %}
 
@@ -10,19 +10,29 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 **DEPRECATED**
 
-The development of methods task.item.* has been halted.  
-Please use the section [Current Task Methods (`tasks.task.*`)](../index.md).
+Development of `task.item.*` methods has been discontinued.
+Please refer to the section [Current Task Methods (`tasks.task.*`)](../index.md).
 
 {% endnote %}
 
-> Scope: [`task`](../../scopes/permissions.md)  
+> Quick navigation: [All Methods](#all-methods)
+
+## How to Choose the Current Section
+
+Methods `task.item.*`, `task.items.*`, and `task.comment.*` are maintained only to support existing integrations. For new development, use the current [Tasks](../index.md) section with methods `tasks.task.*`.
+
+#|
+|| **If needed** | **Use** ||
+|| Create, modify, retrieve, or delete a task in the new integration | [Current task methods](../index.md) ||
+|| Maintain the old integration on `task.item.*` | Methods in this section ||
+|| Check which old methods are available on the portal | [task.item.getmanifest](./task-item/task-item-get-manifest.md) ||
+|#
+
+## Overview of Methods {#all-methods}
+
+> Scope: [`task`](../../scopes/permissions.md)
+>
 > Who can execute the method: any user
-
-{% note warning %}
-
-This section contains information about deprecated methods. Their use is strongly discouraged.
-
-{% endnote %}
 
 #|
 || **Method** | **Description** ||

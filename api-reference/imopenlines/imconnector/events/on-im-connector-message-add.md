@@ -43,7 +43,7 @@ Data is transmitted as a POST request {.b24-info}
                 },
                 "message": {
                     "user_id": 27,
-                    "text": "[b]Samantha Johnson:[/b] [br]Good afternoon!"
+                    "text": "[b]Klaus Weber:[/b] [br]Guten Tag!"
                 },
                 "chat": {
                     "id": "channel-123"
@@ -69,14 +69,14 @@ Data is transmitted as a POST request {.b24-info}
 ```
 
 #|
-|| **Parameter**
+|| **parameter**
 `type` | **Description** ||
 || **event**
-[`string`](../../../data-types.md) | Symbolic event code.
+[`string`](../../../data-types.md) | Symbolic code of the event.
 
-In this case - `ONIMCONNECTORMESSAGEADD` ||
+In this case — `ONIMCONNECTORMESSAGEADD` ||
 || **event_handler_id**
-[`integer`](../../../data-types.md) | Event handler identifier ||
+[`integer`](../../../data-types.md) | Identifier of the event handler ||
 || **data**
 [`object`](../../../data-types.md) | Object with event parameters.
 
@@ -84,30 +84,30 @@ The structure is described [below](#data) ||
 || **ts**
 [`timestamp`](../../../data-types.md) | Date and time of the event sent from the [event queue](../../../events/index.md) ||
 || **auth**
-[`object`](../../../data-types.md) | Object with authorization parameters and information about the account where the event occurred.
+[`object`](../../../data-types.md) | Object containing authorization parameters and information about the account where the event occurred.
 
 The structure is described [below](#auth) ||
 |#
 
-### Data Parameter {#data}
+### Parameter data {#data}
 
 #|
-|| **Parameter**
+|| **parameter**
 `type` | **Description** ||
 || **CONNECTOR**
 [`string`](../../../data-types.md) | Connector identifier ||
 || **LINE**
-[`integer`](../../../data-types.md) | Open line identifier ||
+[`integer`](../../../data-types.md) | Identifier of the open line ||
 || **MESSAGES**
 [`object[]`](../../../data-types.md) | Array of messages.
 
 The structure of the array element is described [below](#messages-item) ||
 |#
 
-### MESSAGES Array Element {#messages-item}
+### Array Element MESSAGES {#messages-item}
 
 #|
-|| **Parameter**
+|| **parameter**
 `type` | **Description** ||
 || **im**
 [`object`](../../../data-types.md) | Object with message identifiers in Bitrix24.
@@ -123,10 +123,10 @@ The structure is described [below](#message) ||
 The structure is described [below](#chat) ||
 |#
 
-### im Parameter {#im}
+### Parameter im {#im}
 
 #|
-|| **Parameter**
+|| **parameter**
 `type` | **Description** ||
 || **chat_id**
 [`integer`](../../../data-types.md) | Identifier of the open line chat in Bitrix24 ||
@@ -134,10 +134,10 @@ The structure is described [below](#chat) ||
 [`integer`](../../../data-types.md) | Identifier of the message in Bitrix24 ||
 |#
 
-### message Parameter {#message}
+### Parameter message {#message}
 
 #|
-|| **Parameter**
+|| **parameter**
 `type` | **Description** ||
 || **user_id**
 [`integer`](../../../data-types.md) | Identifier of the user on whose behalf the message was created ||
@@ -145,21 +145,23 @@ The structure is described [below](#chat) ||
 [`string`](../../../data-types.md) | Message text in the format provided in the event ||
 |#
 
-### chat Parameter {#chat}
+### Parameter chat {#chat}
 
 #|
-|| **Parameter**
+|| **parameter**
 `type` | **Description** ||
 || **id**
 [`string`](../../../data-types.md) | Identifier of the chat in the external system ||
 |#
 
-### auth Parameter {#auth}
+### Parameter auth {#auth}
 
-{% include notitle [Table with keys in the auth array](../../../../_includes/auth-params-in-events.md) %}
+{% include notitle [Auth parameters in events](../../../../_includes/auth-params-in-events.md) %}
 
 ## Continue Learning
 
+- [{#T}](../../../events/index.md)
+- [{#T}](../../../events/event-bind.md)
 - [{#T}](./on-im-connector-dialog-start.md)
 - [{#T}](./on-im-connector-message-update.md)
 - [{#T}](./on-im-connector-message-delete.md)

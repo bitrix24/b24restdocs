@@ -1,4 +1,4 @@
-# Get a list of custom activity types crm.activity.type.list
+# Get a List of Custom Activity Types crm.activity.type.list
 
 {% note tip "" %}
 
@@ -8,17 +8,17 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
-> Who can execute the method: `any user`
+> Who can execute the method: administrator
 
-The method `crm.activity.type.list` retrieves a list of custom activity types registered by the application.
+The `crm.activity.type.list` method retrieves a list of custom activity types registered by the application.
 
 ## Method Parameters
 
-No parameters
+No parameters.
 
 ## Code Examples
 
-{% include [Examples Note](../../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -212,8 +212,8 @@ HTTP status: **200**
 {
     "result": [
         {
-            "TYPE_ID": "QuickBooks and other similar platforms",
-            "NAME": "Activity QuickBooks",
+            "TYPE_ID": "1C",
+            "NAME": "1C case",
             "IS_CONFIGURABLE_TYPE": "Y",
             "ICON_ID": "0"
         }
@@ -238,7 +238,7 @@ HTTP status: **200**
 || **result**
 [`array`](../../../../data-types.md) | The root element of the response containing an array of objects with information about custom activity types registered by the application ||
 || **time**
-[`time`](../../../../data-types.md#time) | Information about the execution time of the request ||
+[`time`](../../../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -252,7 +252,7 @@ HTTP status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
@@ -260,12 +260,12 @@ HTTP status: **400**
 || **Code** | **Description** ||
 || `ACCESS_DENIED` | Insufficient permissions to perform the operation ||
 || `Access denied! Application context required` | The method works only in the context of applications ||
+|| `Admin permissions required` | The method is only available to administrators ||
 |#
 
-{% include [system errors](../../../../../_includes/system-errors.md) %}
+{% include [System errors](../../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
 - [{#T}](./crm-activity-type-add.md)
 - [{#T}](./crm-activity-type-delete.md)
-

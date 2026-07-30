@@ -1,4 +1,4 @@
-# How to Make a Request
+# How a Request Is Executed
 
 {% note tip "" %}
 
@@ -6,41 +6,42 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-As already mentioned in the article about [authorization in REST API](./authorization.md), a request to the REST API method is an HTTP request to a specific address of a particular Bitrix24 in the following format:
+Accessing the Bitrix24 REST API is based on HTTP requests. Below is a description of how a method request is structured, which HTTP methods and data formats are supported, and the format in which the response is received. Questions regarding [Authorization](authorization.md), [Batch Calls](batch.md), and [Data Encoding](data-encoding.md) are covered on separate pages. After reading this, you will be able to construct a request to any method and select a response format.
+
+## Request Structure
+
+A Bitrix24 REST API method request is an HTTP request to a specific address of a particular type:
 
 ```http
+
 https://your-domain.bitrix24.com/rest/method-name?param1=value1&param2=value2....
+
 ```
 
-Most methods support passing an array of parameters as a `POST` request in `JSON` format. All methods support the `GET` protocol and `POST` in `multipart/form-data` format.
+In a real request, in addition to the method parameters, [authorization data](./authorization.md) is passed — either an incoming webhook code or an application OAuth token. Without them, the request will be rejected.
 
-In response to a request, the REST API returns the result in `JSON` or `XML` format depending on what the user requested, containing meaningful data or [error information](../../error-codes.md). We recommend trying to [make a simple request](../../first-steps/first-rest-api-call.md) before you start exploring the Bitrix24 REST API in depth.
+The full address depends on the authorization method:
+
+- **Webhook** — the user identifier and secret code are embedded in the path: `https://your-domain.bitrix24.com/rest/USER_ID/WEBHOOK_CODE/method`
+- **OAuth Token** — passed in the `auth` parameter of the request: `https://your-domain.bitrix24.com/rest/method?auth=ACCESS_TOKEN`
+
+Simple requests can be sent via `GET`. To transfer arrays and nested structures use `POST` with a body in `JSON` format — this method is supported by most methods. All methods also accept `GET` and `POST` requests in `multipart/form-data` format. Special characters in parameters must be [encoded](./data-encoding.md) — otherwise, they may break the URL structure, resulting in an incorrect outcome.
+
+In response to a request, the REST API returns meaningful data or [error information](../../error-codes.md). We recommend trying to [execute a simple request](../../first-steps/first-rest-api-call.md) before you begin exploring the Bitrix24 REST API in depth.
 
 ## Request Result
 
-The default response format is `JSON`, but it is possible to receive a response in `XML` format if necessary. To do this, you need to add the desired format to the name of the REST method: `.json` or `.xml`.
+The default response format is `JSON`, however if necessary you can obtain the answer in the format `XML`. To do this, add the desired format to the method name: `.json` or `.xml`.
 
-Please note the result of [batch](./batch.md) in both variations:
+`JSON` — the recommended response format: there is no need to append `.json` to the method name, and the format itself is easy to parse in most programming languages. Choose the `XML` format only when required by the receiving party — for example, for legacy integrations or parsers that work exclusively with XML.
+
+The difference between formats can be easily seen using the [batch](./batch.md) method as an example — it executes a batch of requests in a single call. The same request returns the result in `JSON` or `XML` depending on the extension in the method name:
 
 {% list tabs %}
 
-- batch (json)
+- Response in JSON
 
-    Request:
-
-    ```bash
-    curl -X POST \
-    -H "Content-Type: application/json" \
-    -d '{
-            "halt": 0,
-            "cmd": {
-                "get_user": "user.current"
-            }
-        }' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/batch
-    ```
-
-    Result:
+    Method `.../batch` returns:
 
     ```json
     {
@@ -48,116 +49,32 @@ Please note the result of [batch](./batch.md) in both variations:
             "result": {
                 "get_user": {
                     "ID": "1",
-                    "ACTIVE": true,
-                    "NAME": "Administrator",
-                    "LAST_NAME": "Fusion",
-                    "EMAIL": "info@efusion.com",
-                    "LAST_LOGIN": "2024-08-29T10:29:54+02:00",
-                    "DATE_REGISTER": "2023-08-24T03:00:00+02:00",
-                    "IS_ONLINE": "Y",
-                    "TIMESTAMP_X": "24.08.2023 13:19:39",
-                    "LAST_ACTIVITY_DATE": "2024-08-29 10:59:12",
-                    "PERSONAL_GENDER": "",
-                    "PERSONAL_BIRTHDAY": "",
-                    "UF_EMPLOYMENT_DATE": "",
-                    "UF_DEPARTMENT": [
-                        1
-                    ]
-                }
-            },
-            "result_error": [],
-            "result_total": [],
-            "result_next": [],
-            "result_time": {
-                "get_user": {
-                    "start": 1724918931.686765,
-                    "finish": 1724918931.689633,
-                    "duration": 0.0028679370880126953,
-                    "processing": 0.0027151107788085938,
-                    "date_start": "2024-08-29T11:08:51+02:00",
-                    "date_finish": "2024-08-29T11:08:51+02:00"
+                    "NAME": "Klaus",
+                    "LAST_NAME": "Weber"
                 }
             }
-        },
-        "time": {
-            "start": 1724918931.634301,
-            "finish": 1724918931.689674,
-            "duration": 0.05537295341491699,
-            "processing": 0.0031290054321289062,
-            "date_start": "2024-08-29T11:08:51+02:00",
-            "date_finish": "2024-08-29T11:08:51+02:00"
         }
     }
     ```
 
-- batch (xml)
+- Response in XML
 
-    Request:
+    Method `.../batch.xml` returns the same data:
 
-    ```bash
-    curl -X POST \
-    -H "Content-Type: application/json" \
-    -d '{
-            "halt": 0,
-            "cmd": {
-                "get_user": "user.current"
-            }
-        }' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/batch.xml
-    ```
-
-    Result:
     ```xml
     <response>
         <result>
             <result>
                 <get_user>
                     <ID>1</ID>
-                    <ACTIVE>1</ACTIVE>
-                    <NAME>Administrator</NAME>
-                    <LAST_NAME>Fusion</LAST_NAME>
-                    <EMAIL>info@efusion.com</EMAIL>
-                    <LAST_LOGIN>2024-08-29T10:29:54+02:00</LAST_LOGIN>
-                    <DATE_REGISTER>2023-08-24T03:00:00+02:00</DATE_REGISTER>
-                    <IS_ONLINE>Y</IS_ONLINE>
-                    <TIMESTAMP_X>24.08.2023 13:19:39</TIMESTAMP_X>
-                    <LAST_ACTIVITY_DATE>2024-08-29 10:59:12</LAST_ACTIVITY_DATE>
-                    <PERSONAL_GENDER></PERSONAL_GENDER>
-                    <PERSONAL_BIRTHDAY></PERSONAL_BIRTHDAY>
-                    <UF_EMPLOYMENT_DATE></UF_EMPLOYMENT_DATE>
-                    <UF_DEPARTMENT>
-                        <item>1</item>
-                    </UF_DEPARTMENT>
+                    <NAME>Klaus</NAME>
+                    <LAST_NAME>Weber</LAST_NAME>
                 </get_user>
             </result>
-            <result_error></result_error>
-            <result_total></result_total>
-            <result_next></result_next>
-            <result_time>
-                <get_user>
-                    <start>1724918984.0348</start>
-                    <finish>1724918984.0386</finish>
-                    <duration>0.0037539005279541</duration>
-                    <processing>0.0035719871520996</processing>
-                    <date_start>2024-08-29T11:09:44+02:00</date_start>
-                    <date_finish>2024-08-29T11:09:44+02:00</date_finish>
-                </get_user>
-            </result_time>
         </result>
-        <time>
-            <start>1724918983.9771</start>
-            <finish>1724918984.0386</finish>
-            <duration>0.06153392791748</duration>
-            <processing>0.0040559768676758</processing>
-            <date_start>2024-08-29T11:09:43+02:00</date_start>
-            <date_finish>2024-08-29T11:09:44+02:00</date_finish>
-        </time>
     </response>
     ```
+
 {% endlist %}
 
-{% note info %}
-
-`JSON` is the primary response format. There is no need to append `.json` to the name of each method.
-
-{% endnote %}
+Only key response fields are shown here. For the full result structure `batch` — including fields `result_error`, `result_total`, `result_next`, and execution time — and a breakdown of the method parameters, see the [batch](./batch.md) page.

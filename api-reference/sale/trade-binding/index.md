@@ -7,15 +7,31 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 {% endnote %}
 
 Orders can be created manually using the [sale.order.add](../order/sale-order-add.md) method or obtained from internal sources:
-- invoice,
-- sales document,
-- deal,
-- activity,
-- landing page.
+
+- invoice
+- sales order
+- deal
+- activity
+- landing page
 
 To view orders from a specific source, use the [sale.tradeBinding.list](./sale-trade-binding-list.md) method.
 
-## Connection of Order Source Bindings with Other Objects
+> Quick navigation: [All Methods](#all-methods)
+
+## Getting Started
+
+1. Retrieve a list of order sources using the [sale.tradePlatform.list](../trade-platform/sale-trade-platform-list.md) method
+2. Check available binding fields using the [sale.tradeBinding.getFields](./sale-trade-binding-get-fields.md) method
+3. Retrieve a list of orders by source using the [sale.tradeBinding.list](./sale-trade-binding-list.md) method
+4. Retrieve data for a specific order using the [sale.order.get](../order/sale-order-get.md) method
+
+## Order Source Identifiers
+
+- `tradingPlatformId` — the order source identifier. You can retrieve a list of sources and their identifiers using the [sale.tradePlatform.list](../trade-platform/sale-trade-platform-list.md) method
+- `orderId` — the identifier of the order linked to the source. Detailed order data can be retrieved using the [sale.order.get](../order/sale-order-get.md) method
+- Available binding fields that can be used in `select`, `filter`, and `order` are returned by the [sale.tradeBinding.getFields](./sale-trade-binding-get-fields.md) method
+
+## Connection with Other Objects
 
 **Order Sources.** Get information about all order sources in your Bitrix24 using the [sale.tradePlatform.list](../trade-platform/sale-trade-platform-list.md) method.
 

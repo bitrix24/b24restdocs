@@ -8,7 +8,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
-> Who can subscribe: `any user`
+> Who can subscribe: any user
 
 The `onCrmActivityAdd` event is triggered when a new deal is added to the CRM timeline.
 
@@ -50,15 +50,21 @@ Data is transmitted as a POST request {.b24-info}
 || **Parameter**
 `type` | **Description** ||
 || **event**
-[`string`](../../../data-types.md) | Symbolic code of the event. In our case, it is `onCrmActivityAdd`||
+[`string`](../../../data-types.md) | Symbolic code of the event.
+
+In this case — `onCrmActivityAdd` ||
 || **data**
-`array` | An object containing information about the created deal.
+[`object`](../../../data-types.md) | An object containing information about the created deal.
 
 Contains a single key `FIELDS` ||
+|| **data.FIELDS**
+[`object`](../../../data-types.md) | An object containing information about the fields of the created case.
+
+The structure is described [below](#fields) ||
 || **ts**
 [`timestamp`](../../../data-types.md) | Date and time of the event sent from the [event queue](../../../../events/index.md) ||
 || **auth**
-[`array`](../../../data-types.md) | Authorization parameters and information about the account where the event occurred.
+[`object`](../../../data-types.md) | Object containing authorization parameters and information about the account where the event occurred.
 
 The structure is described [below](#auth) ||
 |#
@@ -69,14 +75,14 @@ The structure is described [below](#auth) ||
 || **Parameter**
 `type` | **Description** ||
 || **ID**
-[`integer`](../../../data-types.md) | `ID` with the value of the added deal's identifier ||
+[`integer`](../../../data-types.md) | Identifier of the added case ||
 |#
 
 ### Parameter auth {#auth}
 
-{% include notitle [Table with keys in the auth array](../../../../../_includes/auth-params-in-events.md) %}
+{% include notitle [Auth parameters in events](../../../../../_includes/auth-params-in-events.md) %}
 
-## Continue Exploring 
+## Continue Learning
 
 - [{#T}](../../../../events/index.md)
 - [{#T}](../../../../events/event-bind.md)

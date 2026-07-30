@@ -10,12 +10,12 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 ## Parameters of the `BodyDto` Object
 
-{% include [Footnote on parameters](../../../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../../../_includes/required.md) %}
 
 #|
 || **Field** | **Description** ||
 || **logo^*^**
-[`LogoDto`](#object) | An object describing the logo of the timeline entry ||
+[`LogoDto`](#obuekt) | An object describing the logo of the timeline entry ||
 || **blocks**
 [`ContentBlockDto`](./content-block.md) | An associative array of objects describing content blocks 
 
@@ -28,13 +28,13 @@ The array must contain at least one element and no more than 20 elements.
 ||
 |#
 
-## `LogoDto` Object
+## `LogoDto` Object {#obuekt}
 
 Logo of the timeline entry.
 
 ### Parameters of the `LogoDto` Object
 
-{% include [Footnote on parameters](../../../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../../../_includes/required.md) %}
 
 #|
 || **Field** | **Description** ||
@@ -44,7 +44,7 @@ Logo of the timeline entry.
 [`ActionDto`](./action.md) | Action to be taken when the logo is clicked ||
 |#
 
-## Example Object (without content blocks)
+## Example Object (Without Content Blocks)
 
 ```json
 {
@@ -63,7 +63,7 @@ Logo of the timeline entry.
 }
 ```
 
-## Continue Exploring
+## Continue Learning
 
 - [{#T}](./layout.md)
 - [{#T}](./header.md)

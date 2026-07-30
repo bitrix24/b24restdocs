@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can subscribe: any user
 
-The event occurs when the price type is updated.
+The `CATALOG.PRICE.TYPE.ON.UPDATE` event is triggered when a price type is updated.
 
 {% note info "" %}
 
@@ -18,85 +18,80 @@ Events will not be sent to the application until the installation is complete. [
 
 {% endnote %}
 
-## What the handler receives
+## What the Handler Receives
 
 Data is transmitted as a POST request {.b24-info}
 
-```
-[
-    'event' => 'CATALOG.PRICE.TYPE.ON.UPDATE',    
-    'event_handler_id' => 1,
-    'data' => [
-        'FIELDS' => [
-            'ID' => 1,
-        ],
-    ],
-    'ts' => 1714649632,
-    'auth' => [
-        'access_token' => 's6p6eclrvim6da22ft9ch94ekreb52lv',
-        'expires_in' => 3600,
-        'scope' => 'catalog',
-        'domain' => 'some-domain.bitrix24.com',
-        'server_endpoint' => 'https://oauth.bitrix.info/rest/',
-        'status' => 'F',
-        'client_endpoint' => 'https://some-domain.bitrix24.com/rest/',
-        'member_id' => 'a223c6b3710f85df22e9377d6c4f7553',
-        'refresh_token' => '4s386p3q0tr8dy89xvmt96234v3dljg8',
-        'application_token' => '51856fefc120afa4b628cc82d3935cce',
-    ],
-]
+```json
+{
+    "event": "CATALOG.PRICE.TYPE.ON.UPDATE",
+    "event_handler_id": 1,
+    "data": {
+        "FIELDS": {
+            "ID": 1
+        }
+    },
+    "ts": 1714649632,
+    "auth": {
+        "access_token": "s6p6eclrvim6da22ft9ch94ekreb52lv",
+        "expires_in": 3600,
+        "scope": "catalog",
+        "domain": "some-domain.bitrix24.com",
+        "server_endpoint": "https://oauth.bitrix.info/rest/",
+        "status": "F",
+        "client_endpoint": "https://some-domain.bitrix24.com/rest/",
+        "member_id": "a223c6b3710f85df22e9377d6c4f7553",
+        "refresh_token": "4s386p3q0tr8dy89xvmt96234v3dljg8",
+        "application_token": "51856fefc120afa4b628cc82d3935cce"
+    }
+}
 ```
 
 ## Parameters
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
-|| **event***  
-[`string`](../../data-types.md) | Symbolic event code ||
-|| **event_handler_id***  
-[`integer`](../../data-types.md) | Event handler identifier ||
-|| **data***  
-[`object`](../../data-types.md) | Object containing event data.
+|| **event***
+[`string`](../../data-types.md) | Symbolic code of the event.
 
-The structure is described [below](#data) ||
-|| **ts***  
-[`integer`](../../data-types.md) | Timestamp of the event sent from the event queue ||
-|| **auth***  
-[`object`](../../data-types.md) | Object with authorization parameters and information about the account where the event occurred ||
-|#
+In this case — `CATALOG.PRICE.TYPE.ON.UPDATE` ||
+|| **event_handler_id***
+[`integer`](../../data-types.md) | Identifier of the event handler ||
+|| **data***
+[`object`](../../data-types.md) | An object containing information about the updated price type.
 
-### Parameter data {#data}
-
-{% include [Note on required parameters](../../../../_includes/required.md) %}
-
-#|
-|| **Name**
-`type` | **Description** ||
-|| **FIELDS***  
-[`object`](../../data-types.md) | Object with properties of the price type.
+Contains a single key `FIELDS` ||
+|| **data.FIELDS***
+[`object`](../../data-types.md) | An object containing information about the price type fields.
 
 The structure is described [below](#fields) ||
+|| **ts***
+[`timestamp`](../../data-types.md) | Date and time of the event sent from the [event queue](../../../events/index.md) ||
+|| **auth***
+[`object`](../../data-types.md) | Object containing authorization parameters and information about the account where the event occurred.
+
+The structure is described [below](#auth) ||
 |#
 
 ### Parameter FIELDS {#fields}
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
-
 #|
 || **Name**
 `type` | **Description** ||
-|| **ID***  
+|| **ID***
 [`catalog_price_type.id`](../../data-types.md#catalog_price_type) | Identifier of the price type. You can retrieve all fields of the price type by its identifier using the method [catalog.priceType.get](../catalog-price-type-get.md) ||
 |#
 
 ### Parameter auth {#auth}
 
-{% include notitle [Table with keys in the auth array](../../../../_includes/auth-params-in-events.md) %}
+{% include notitle [Auth parameters in events](../../../../_includes/auth-params-in-events.md) %}
 
-## Continue your exploration
+## Continue Learning
 
+- [{#T}](../../../events/index.md)
+- [{#T}](../../../events/event-bind.md)
 - [{#T}](./catalog-price-type-on-add.md)
 - [{#T}](./catalog-price-type-on-delete.md)

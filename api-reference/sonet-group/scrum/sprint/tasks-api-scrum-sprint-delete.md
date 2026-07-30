@@ -16,13 +16,13 @@ When a sprint with tasks is deleted, the tasks will be moved to the backlog.
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`](../../../data-types.md) | Sprint identifier ||
+[`integer`](../../../data-types.md) | Identifier of the sprint ||
 |#
 
 ## Code Examples
@@ -42,7 +42,7 @@ When a sprint with tasks is deleted, the tasks will be moved to the backlog.
     https://your-domain.bitrix24.com/rest/_USER_ID_/_CODE_/tasks.api.scrum.sprint.delete
     ```
     
-- cURL (oAuth)
+- cURL (OAuth)
 
     ```bash
     curl -X POST \
@@ -167,9 +167,9 @@ When a sprint with tasks is deleted, the tasks will be moved to the backlog.
 - PHP CRest
 
     ```php
-    require_once('crest.php'); // connecting CRest PHP SDK
+    require_once('crest.php'); // connecting the CRest PHP SDK
 
-    // executing request to REST API
+    // executing a request to the REST API
     $result = CRest::call(
         'tasks.api.scrum.sprint.delete',
         [
@@ -177,7 +177,7 @@ When a sprint with tasks is deleted, the tasks will be moved to the backlog.
         ]
     );
 
-    // Handling response from Bitrix24
+    // Processing the response from Bitrix24
     if (isset($result['error'])) {
         echo 'Error: '.$result['error_description'];
     } else {
@@ -210,21 +210,21 @@ HTTP status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
-|| **Code** | **Error Message** | **Description** ||
+|| **Code** | **Error message** | **Description** ||
 || `0` | `Access denied` | No access to Scrum ||
 || `0` | `Sprint not found` | The sprint does not exist ||
-|| `0` | `It is forbidden to remove a sprint with items` | Cannot delete a sprint that has tasks ||
+|| `0` | `It is forbidden remove a sprint with items` | Cannot delete a sprint that has tasks ||
 || `0` | `Sprint items have not been moved to backlog` | Failed to move tasks from the sprint to the backlog ||
 || `100` | `Could not find value for parameter {id}` | Incorrect parameter name or parameter not set ||
 || `100` | `Invalid value {stringValue} to match with parameter {id}. Should be value of type int` | Invalid parameter type ||
 |#
 
-{% include [system errors](../../../../_includes/system-errors.md) %}
+{% include [System errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

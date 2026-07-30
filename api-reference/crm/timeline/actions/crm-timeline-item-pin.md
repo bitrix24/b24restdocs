@@ -1,4 +1,4 @@
-# Pinning an Item in the Timeline crm.timeline.item.pin
+# Pin a Timeline Entry crm.timeline.item.pin
 
 {% note tip "" %}
 
@@ -8,13 +8,13 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: a user with permission to edit the CRM item
 
-The method `crm.timeline.item.pin` pins an item in the timeline.
+The `crm.timeline.item.pin` method pins an entry in the timeline.
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -238,21 +238,21 @@ HTTP status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
 || **Code** | **Description** ||
 || `0` | Only three events can be added to favorites ||
-|| `100` | Required fields are missing ||
+|| `100` | Required fields are not provided ||
 || `ACCESS_DENIED` | Insufficient permissions to perform the operation ||
-|| `NOT_FOUND` | Item not found ||
+|| `NOT_FOUND` | Element not found ||
 || `OWNER_NOT_FOUND` | Owner of the item not found ||
 || `CAN_NOT_CHANGE_PINNED` | Unable to perform the operation ||
 |#
 
-{% include [system errors](../../../../_includes/system-errors.md) %}
+{% include [System errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

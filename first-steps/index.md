@@ -1,4 +1,4 @@
-# Getting Started
+# Where to Start
 
 {% note tip "" %}
 
@@ -10,60 +10,60 @@ The Bitrix24 REST API documentation describes API methods, request examples, and
 
 Below is the recommended sequence for studying the documentation, which will help you:
 
-- Understand the structure of the documentation,
-- Master the basic capabilities of the API,
-- Move on to more complex scenarios.
+- understand the documentation structure,
+- master the basic API capabilities,
+- move on to more complex scenarios.
 
 {% note tip "" %}
 
-To understand application architecture, authorization principles, working with the REST API, and the environment structure, study the [course on application development for Bitrix24](https://helpdesk.bitrix24.com/courses/index.php?COURSE_ID=268).
+To understand application architecture, authorization principles, working with the REST API, and environment structure, study the [Bitrix24 App Development Course](https://helpdesk.bitrix24.com/courses/index.php?COURSE_ID=268).
 
 {% endnote %}
 
-## Accessing the REST API
+## Access to the REST API
 
-The section [How to Access the REST API](./access-to-rest-api.md) describes how to activate the trial period and gain access to all methods and capabilities of the Bitrix24 REST API. It also includes information about NFR keys for partner developments.
+The [How to Access the REST API](./access-to-rest-api.md) section describes how to activate a trial period and gain access to all Bitrix24 REST API methods and capabilities. It also contains information regarding NFR keys for partner developments.
 
 ## AI Tools
 
-The section [AI Tools](../ai-tools/mcp.md) is dedicated to development with AI agents.
+The [AI Tools](../ai-tools/mcp.md) section is dedicated to development with AI agents. 
 
-## Configuring the REST API
+## REST API Configuration
 
-The section [Configuring and Using the REST API](../settings/index.md) focuses on parameters that affect integration functionality:
+The [Configuring and Using the REST API](../settings/index.md) section covers parameters that affect integration performance:
 
-- Authorization domains,
-- Access permissions,
-- Method call specifics,
-- Environment configuration,
-- Request limits.
+- authorization domains,
+- access permissions,
+- method call specifics,
+- environment configuration,
+- request rate limits.
 
-This section also includes the article [Configuring Access: Cloud and On-Premise Versions](../settings/cloud-and-on-premise/network-access.md), which describes how to set up network access for incoming and outgoing requests and how to add IP addresses to the allowed list.
+The section also includes the article [Configuring Access: Cloud and On-Premise Versions](../settings/cloud-and-on-premise/network-access.md), which describes how to configure network access for incoming and outgoing requests and how to add IP addresses to the allowlist.
 
-## First API Request
+## Your First API Request
 
-The section [How to Make Your First API Request](./first-rest-api-call.md) explains how to create an incoming webhook and make your first REST API method call. This allows you to verify the API's functionality and the correctness of your settings.
+The [How to Make Your First API Request](./first-rest-api-call.md) section explains how to create an incoming webhook and perform your first REST API method call. This allows you to verify the API functionality and the correctness of your settings.
 
-## Request Examples
+## Code Examples
 
-The section [How to Use Examples in the Documentation](./how-to-use-examples.md) describes how to work with request examples, which programming languages are used, and how to connect to libraries. It also shows how to adapt examples to your task and make real requests to the API.
+The [How to Use Examples in the Documentation](./how-to-use-examples.md) section describes how the "Code Examples" block is structured on method pages: which tab to select for your environment and authorization method, what to substitute for placeholders such as `**put_your_webhook_here**`, and what connection code to add to make the example work in your project. It also includes a checklist of reasons why a copied example might not work.
 
 ## Bitrix24 SDK
 
-The section [SDK for Bitrix24 Development](../sdk/index.md) describes ready-made libraries for development that speed up connection and simplify application creation for Bitrix24.
+The [SDK for Bitrix24 Development](../sdk/index.md) section describes ready-to-use development libraries that accelerate connection and simplify the creation of applications for Bitrix24.
 
 ## Local Integrations
 
-The section [Overview of Tools for Local Integrations](../local-integrations/index.md) is dedicated to tools for creating integrations that work within Bitrix24 and do not require publication in the Marketplace. This section includes examples of working with local webhooks and applications for task automation and data exchange.
+The [Overview of Local Integration Tools](../local-integrations/index.md) section is dedicated to tools for creating integrations that operate within Bitrix24 and do not require publication in the Market. The section includes examples of working with local webhooks and applications for task automation and data exchange.
 
-## Ready-Made Scenarios
+## Ready-to-Use Scenarios
 
-The section [Tutorials: Ready-Made Scenarios for Using the REST API](../tutorials/index.md) contains step-by-step guides and ready-made scenarios for using the Bitrix24 REST API. For example, how to create and configure a cash register handler or how to retrieve a client's address from the CRM. These examples can serve as a foundation for your own solutions.
+The [Tutorials: Ready-to-Use REST API Scenarios](../tutorials/index.md) section contains step-by-step guides and ready-to-use scenarios for using the Bitrix24 REST API. For example, how to create and configure a cash register handler or how to retrieve a customer address from the CRM. These examples can be used as a foundation for your own solutions.
 
 ## Mass-Market Applications
 
-The section [Overview of Mass-Market Applications](../market/index.md) describes the principles of working with mass-market applications from the Bitrix24 Marketplace, as well as opportunities for monetization and promotion.
+The [Mass-Market Applications Overview](../market/index.md) section describes the principles of working with mass-market applications from the Bitrix24 Market, as well as opportunities for their monetization and promotion.
 
 ## API Reference
 
-The section [API Reference](../api-reference/index.md) contains descriptions of methods and capabilities of the Bitrix24 REST API. This material helps you navigate the API and select methods for specific functionalities.
+The [API Reference](../api-reference/index.md) section contains descriptions of the Bitrix24 REST API methods and capabilities. This material helps navigate the API and select methods for specific functionality.

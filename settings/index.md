@@ -8,7 +8,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 This section provides answers to practical questions that arise during integration development:
 - how to securely access the REST API,
-- how to configure different application types,
+- how to configure different types of applications,
 - how to optimize load.
 
 To make your first request, study the [First Steps](../first-steps/index.md) section.
@@ -22,7 +22,7 @@ Review materials explaining how to form requests, encode data, and retrieve sequ
 - What a basic request looks like and how response formats differ — [How a Request Is Executed](how-to-call-rest-api/general-principles.md).
 - How to perform sequential method calls and pass results between requests — [How to Execute a Batch Request](how-to-call-rest-api/batch.md).
 - What to do if parameters contain special characters — [Data Encoding](how-to-call-rest-api/data-encoding.md).
-- How to correctly retrieve lists and work with the `start` parameter — [List Method Specifics](how-to-call-rest-api/list-methods-pecularities.md).
+- How to correctly retrieve lists and work with the `start` parameter — [Features of List Methods](how-to-call-rest-api/list-methods-pecularities.md).
 - Why a request stopped working after a domain change and how to handle redirects — [REST Call Specifics When a Bitrix24 Address Changes](how-to-call-rest-api/change-domen.md).
 
 ## Performing Authorization {#auth}
@@ -40,8 +40,8 @@ Choose an authorization method — from simple webhooks to the full OAuth 2.0 cy
 Choose the appropriate scenario and follow the instructions for local, mass-market, or configuration solutions.
 
 - Choosing the right application type — [Application Installation Options in Bitrix24](app-installation/index.md).
-- How to add a local application — [Local Application Installation Overview](app-installation/local-apps/index.md).
-- How to create and install a mass-market solution — [Mass-Market Application Installation Overview](app-installation/mass-market-apps/index.md).
+- How to add a local application — [Overview of Local Application Installation](app-installation/local-apps/index.md).
+- How to create and install a mass-market solution — [Overview of Mass-Market Application Installation](app-installation/mass-market-apps/index.md).
 - When to call `installFinish` and what to check before launching — [Completing Application Installation](app-installation/installation-finish.md).
 - How to publish ready-made sites, industry CRMs, and Smart scripts — [Installing Site Templates](app-installation/site-templates-installation.md), [Installing Industry CRMs](app-installation/vertical-crm-installation.md), [Installing Solutions with Smart Scripts](app-installation/smart-scripts-installation.md).
 - Which data is deleted when an application is removed and how to handle the deletion event — [Deleting Applications](app-uninstallation.md).
@@ -50,11 +50,11 @@ Choose the appropriate scenario and follow the instructions for local, mass-mark
 
 Compare the requirements for the cloud and self-hosted versions, configure the network, and extend the API if necessary.
 
-- What to consider for application operation in the self-hosted version — [REST API Usage Differences](cloud-and-on-premise/index.md).
-- Why a method might be unavailable — [Module Versioning in Self-Hosted Bitrix24](cloud-and-on-premise/on-premise/versions.md).
+- What to consider for application operation in the self-hosted version — [REST API Features in the Self-Hosted Version](cloud-and-on-premise/on-premise/index.md).
+- Why a method may be unavailable — [Module Versioning in Self-Hosted Bitrix24](cloud-and-on-premise/on-premise/versions.md).
 - Which domains to open and where to get the IP list for event queues — [Required Network Accesses](cloud-and-on-premise/network-access.md).
-- What to do if the corporate network is isolated and the authorization server needs to be replaced — [Application Authorization in an Isolated Self-Hosted Bitrix24](cloud-and-on-premise/on-premise/custom-auth-provider.md).
-- How to add custom methods and new scopes — [Adding Custom Methods to the Self-Hosted Bitrix24 REST API](cloud-and-on-premise/on-premise/custom-methods.md).
+- What to do if the corporate network is isolated and the authorization server needs to be replaced — [Application Authorization in an Isolated Bitrix24 Self-Hosted Environment](cloud-and-on-premise/on-premise/custom-auth-provider.md).
+- How to add custom methods and new scopes — [Adding Custom Methods to the Bitrix24 Self-Hosted REST API](cloud-and-on-premise/on-premise/custom-methods.md).
 - Which security requirements to consider during development — [Security Recommendations for REST API Applications](cloud-and-on-premise/security-recommendations.md).
 
 ## Implement an Interactive Interface and Instant Events {#push}

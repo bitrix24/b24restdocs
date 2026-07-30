@@ -1,4 +1,4 @@
-# Update Existing Custom Contact Field crm.contact.userfield.update
+# Edit an Existing Contact Custom Field crm.contact.userfield.update
 
 {% note tip "" %}
 
@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: administrator
 
-The method `crm.contact.userfield.update` updates an existing custom contact field.
+The `crm.contact.userfield.update` method updates an existing contact custom field.
 
 ## Method Parameters
 
@@ -138,7 +138,7 @@ The field completely overwrites the previous value ||
 
 ### Parameter SETTINGS {#settings}
 
-Each type of custom field has its own set of additional settings. This method supports changing only those described below.
+Each custom field type has its own set of additional configurations. This method supports changing only those described below.
 
 {% list tabs %}
 
@@ -150,11 +150,11 @@ Each type of custom field has its own set of additional settings. This method su
     || **DEFAULT_VALUE**
     [`string`][1] | Default value ||
     || **ROWS**
-    [`integer`][1] | Number of lines in the input field. Must be greater than 0 and less than 50.
+    [`integer`][1] | Number of rows in the input field. Must be greater than 0 and less than 50.
 
     If a value <= 0 is passed, the value `1` will be set.
 
-    If a value >= 50 is passed, the value `50` will be set.
+    If a value >= 50 is passed, the value `50` will be set
     ||
     |#
 
@@ -188,7 +188,7 @@ Each type of custom field has its own set of additional settings. This method su
     || **DEFAULT_VALUE**
     [`integer`][1] | Default value, where `1` is yes, `0` is no.
 
-    When passing a value, it will be set according to the rule:
+    When a value is passed, the value will be set according to the rule:
     - `>= 1` -> 1
     - `<= 0` -> 0
     ||
@@ -237,7 +237,7 @@ Each type of custom field has its own set of additional settings. This method su
     || **DISPLAY**
     [`string`][1] | Appearance. Possible values:
     - `LIST` — list
-    - `UI` — input list
+    - `UI` — autocomplete list
     - `CHECKBOX` — checkboxes
     - `DIALOG` — entity selection dialog
     ||
@@ -258,7 +258,7 @@ Each type of custom field has its own set of additional settings. This method su
     || **DISPLAY**
     [`string`][1] | Appearance. Possible values:
     - `DIALOG` — dialog
-    - `UI` — input list
+    - `UI` — autocomplete list
     - `LIST` — list
     - `CHECKBOX` — checkboxes
     ||
@@ -266,9 +266,9 @@ Each type of custom field has its own set of additional settings. This method su
     [`integer`][1] | List height. Must be greater than 0
     ||
     || **ACTIVE_FILTER**
-[`boolean`][1] | Whether to show items with the activity flag enabled. Possible values:
-- `Y` — yes
-- `N` — no
+    [`boolean`][1] | Whether to show items with the activity flag enabled. Possible values:
+    - `Y` — yes
+    - `N` — no
     ||
     |#
 
@@ -278,43 +278,43 @@ Each type of custom field has its own set of additional settings. This method su
     || **Name**
     `type` | **Description** ||
     || **ENTITY_TYPE**
-[`string`][1] | Directory type identifier.
+    [`string`][1] | Dictionary type identifier.
 
-Use [`crm.status.entity.types`](../../status/crm-status-entity-types.md) to find possible values ||
+    Use [`crm.status.entity.types`](../../status/crm-status-entity-types.md) to find possible values ||
     |#
 
 - crm
 
-    If none of the following options are passed, the binding to leads will be enabled by default (`LEAD = Y`)
+    If none of the following options are passed, linking to leads (`LEAD = Y`) will be enabled by default
 
     #|
     || **Name**
     `type` | **Description** ||
     || **LEAD**
-[`boolean`][1] | Whether binding to [Leads](../../leads/index.md) is enabled. Possible values:
-- `Y` — yes
-- `N` — no
+    [`boolean`][1] | Whether binding to [Leads](../../leads/index.md) is enabled. Possible values:
+    - `Y` — yes
+    - `N` — no
     ||
     || **CONTACT**
-[`boolean`][1] | Whether binding to [Contacts](../index.md) is enabled. Possible values:
-- `Y` — yes
-- `N` — no
+    [`boolean`][1] | Whether binding to [Contacts](../index.md) is enabled. Possible values:
+    - `Y` — yes
+    - `N` — no
     ||
     || **COMPANY**
-[`boolean`][1] | Whether binding to [Companies](../../companies/index.md) is enabled. Possible values:
-- `Y` — yes
-- `N` — no
+    [`boolean`][1] | Whether binding to [Companies](../../companies/index.md) is enabled. Possible values:
+    - `Y` — yes
+    - `N` — no
     ||
     || **DEAL**
-[`boolean`][1] | Whether binding to [Deals](../../deals/index.md) is enabled. Possible values:
-- `Y` — yes
-- `N` — no
+    [`boolean`][1] | Whether binding to [Deals](../../deals/index.md) is enabled. Possible values:
+    - `Y` — yes
+    - `N` — no
     ||
     |#
 
 {% endlist %}
 
-### Uf_Enum_Element Type {#uf_enum_element}
+### uf_enum_element Type {#uf_enum_element}
 
 #|
 || **Name**
@@ -351,7 +351,7 @@ For a multiple field, multiple `DEF = Y` is allowed. For a non-multiple field, t
 
 {% include [Note on examples](../../../../_includes/examples.md) %}
 
-### Example of Changing a String Type User Field
+### Example of Updating a String Type Custom Field
 
 {% list tabs %}
 
@@ -361,7 +361,7 @@ For a multiple field, multiple `DEF = Y` is allowed. For a non-multiple field, t
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":536,"fields":{"MANDATORY":"N","SHOW_FILTER":"N","SETTINGS":{"DEFAULT_VALUE":"Hello, world! Default value (changed)","ROWS":10},"SORT":2000,"EDIT_IN_LIST":"N","LIST_FILTER_LABEL":"Hello, world! Filter (changed)","LIST_COLUMN_LABEL":{"en":"Hello, World! Column (changed)","de":"Hello, world! Column (changed)","de":"Hallo, Welt! Spalte (geändert)"},"EDIT_FORM_LABEL":{"en":"Hello, World! Edit (changed)","de":"Hallo, Welt! Bearbeiten (geändert)"},"ERROR_MESSAGE":{"en":"Hello, World! Error (changed)","de":"Hello, world! Error (changed)","de":"Hallo, Welt! Fehler (geändert)"},"HELP_MESSAGE":{"en":"Hello, World! Help (changed)","de":"Hallo, Welt! Hilfe (geändert)"}}}' \
+    -d '{"id":536,"fields":{"MANDATORY":"N","SHOW_FILTER":"N","SETTINGS":{"DEFAULT_VALUE":"Hello, world! Default value (changed)","ROWS":10},"SORT":2000,"EDIT_IN_LIST":"N","LIST_FILTER_LABEL":"Hello, world! Filter (changed)","LIST_COLUMN_LABEL":{"en":"Hello, World! Column (changed)","ru":"Hello, world! Column (changed)","de":"Hallo, Welt! Spalte (geändert)"},"EDIT_FORM_LABEL":{"en":"Hello, World! Edit (changed)","ru":"Hello, world! Edit (changed)","de":"Hallo, Welt! Bearbeiten (geändert)"},"ERROR_MESSAGE":{"en":"Hello, World! Error (changed)","ru":"Hello, world! Error (changed)","de":"Hallo, Welt! Fehler (geändert)"},"HELP_MESSAGE":{"en":"Hello, World! Help (changed)","ru":"Hello, world! Help (changed)","de":"Hallo, Welt! Hilfe (geändert)"}}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.contact.userfield.update
     ```
 
@@ -371,11 +371,11 @@ For a multiple field, multiple `DEF = Y` is allowed. For a non-multiple field, t
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":536,"fields":{"MANDATORY":"N","SHOW_FILTER":"N","SETTINGS":{"DEFAULT_VALUE":"Hello, world! Default value (changed)","ROWS":10},"SORT":2000,"EDIT_IN_LIST":"N","LIST_FILTER_LABEL":"Hello, world! Filter (changed)","LIST_COLUMN_LABEL":{"en":"Hello, World! Column (changed)","de":"Hello, world! Column (changed)","de":"Hallo, Welt! Spalte (geändert)"},"EDIT_FORM_LABEL":{"en":"Hello, World! Edit (changed)","de":"Hallo, Welt! Bearbeiten (geändert)"},"ERROR_MESSAGE":{"en":"Hello, World! Error (changed)","de":"Hello, world! Error (changed)","de":"Hallo, Welt! Fehler (geändert)"},"HELP_MESSAGE":{"en":"Hello, World! Help (changed)","de":"Hallo, Welt! Hilfe (geändert)"}}, "auth":"**put_access_token_here**"}' \
+    -d '{"id":536,"fields":{"MANDATORY":"N","SHOW_FILTER":"N","SETTINGS":{"DEFAULT_VALUE":"Hello, world! Default value (changed)","ROWS":10},"SORT":2000,"EDIT_IN_LIST":"N","LIST_FILTER_LABEL":"Hello, world! Filter (changed)","LIST_COLUMN_LABEL":{"en":"Hello, World! Column (changed)","ru":"Hello, world! Column (changed)","de":"Hallo, Welt! Spalte (geändert)"},"EDIT_FORM_LABEL":{"en":"Hello, World! Edit (changed)","ru":"Hello, world! Edit (changed)","de":"Hallo, Welt! Bearbeiten (geändert)"},"ERROR_MESSAGE":{"en":"Hello, World! Error (changed)","ru":"Hello, world! Error (changed)","de":"Hallo, Welt! Fehler (geändert)"},"HELP_MESSAGE":{"en":"Hello, World! Help (changed)","ru":"Hello, world! Help (changed)","de":"Hallo, Welt! Hilfe (geändert)"}}, "auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/crm.contact.userfield.update
     ```
 
-- JS
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -394,18 +394,22 @@ For a multiple field, multiple `DEF = Y` is allowed. For a non-multiple field, t
                 LIST_FILTER_LABEL: "Hello, world! Filter (changed)",
                 LIST_COLUMN_LABEL: {
                     "en": "Hello, World! Column (changed)",
+                    "ru": "Hello, world! Column (changed)",
                     "de": "Hallo, Welt! Spalte (geändert)"
                 },
                 EDIT_FORM_LABEL: {
                     "en": "Hello, World! Edit (changed)",
+                    "ru": "Hello, world! Edit (changed)",
                     "de": "Hallo, Welt! Bearbeiten (geändert)"
                 },
                 ERROR_MESSAGE: {
                     "en": "Hello, World! Error (changed)",
+                    "ru": "Hello, world! Error (changed)",
                     "de": "Hallo, Welt! Fehler (geändert)"
                 },
                 HELP_MESSAGE: {
                     "en": "Hello, World! Help (changed)",
+                    "ru": "Hello, world! Help (changed)",
                     "de": "Hallo, Welt! Hilfe (geändert)"
                 },
             },
@@ -420,104 +424,6 @@ For a multiple field, multiple `DEF = Y` is allowed. For a non-multiple field, t
     ```
 
 - PHP
-
-    ```php
-    require_once('crest.php');
-
-    $result = CRest::call(
-        'crm.contact.userfield.update',
-        [
-            'id' => 536,
-            'fields' => [
-                'MANDATORY' => "N",
-                'SHOW_FILTER' => "N",
-                'SETTINGS' => [
-                    'DEFAULT_VALUE' => "Hello, world! Default value (changed)",
-                    'ROWS' => 10,
-                ],
-                'SORT' => 2000,
-                'EDIT_IN_LIST' => "N",
-                'LIST_FILTER_LABEL' => "Hello, world! Filter (changed)",
-                'LIST_COLUMN_LABEL' => [
-                    'en' => "Hello, World! Column (changed)",
-                    'de' => "Hallo, Welt! Spalte (geändert)"
-                ],
-                'EDIT_FORM_LABEL' => [
-                    'en' => "Hello, World! Edit (changed)",
-                    'de' => "Hallo, Welt! Bearbeiten (geändert)"
-                ],
-                'ERROR_MESSAGE' => [
-                    'en' => "Hello, World! Error (changed)",
-                    'de' => "Hallo, Welt! Fehler (geändert)"
-                ],
-                'HELP_MESSAGE' => [
-                    'en' => "Hello, World! Help (changed)",
-                    'de' => "Hallo, Welt! Hilfe (geändert)"
-                ],
-            ]
-        ]
-    );
-
-    echo '<PRE>';
-    print_r($result);
-    echo '</PRE>';
-    ```
-
-- Python
-
-    ```python
-    from b24pysdk.client import BaseClient
-    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
-
-    client: BaseClient
-
-    try:
-        bitrix_response = client.crm.contact.userfield.update(
-            bitrix_id=536,
-            fields={
-                "MANDATORY": "N",
-                "SHOW_FILTER": "N",
-                "SETTINGS": {
-                    "DEFAULT_VALUE": "Hello, world! Default value (changed)",
-                    "ROWS": 10,
-                },
-                "SORT": 2000,
-                "EDIT_IN_LIST": "N",
-                "LIST_FILTER_LABEL": "Hello, world! Filter (changed)",
-                "LIST_COLUMN_LABEL": {
-                    "en": "Hello, World! Column (changed)",
-                    "de": "Hallo, Welt! Spalte (geändert)",
-                },
-                "EDIT_FORM_LABEL": {
-                    "en": "Hello, World! Edit (changed)",
-                    "de": "Hallo, Welt! Bearbeiten (geändert)",
-                },
-                "ERROR_MESSAGE": {
-                    "en": "Hello, World! Error (changed)",
-                    "de": "Hallo, Welt! Fehler (geändert)",
-                },
-                "HELP_MESSAGE": {
-                    "en": "Hello, World! Help (changed)",
-                    "de": "Hallo, Welt! Hilfe (geändert)",
-                },
-            },
-        ).response
-        result = bitrix_response.result
-        print(result)
-    except BitrixAPIError as error:
-        print(
-            "Bitrix API Error",
-            f"error: {error.error}",
-            f"error_description: {error.error_description}",
-            sep="\n",
-        )
-    except BitrixSDKException as error:
-        print(f"Bitrix SDK Error: {error.message}")
-    except Exception as error:
-        print(f"Unexpected error: {error}")
-    ```
-
-- PHP (B24PhpSdk)
 
     ```php
     try {
@@ -556,9 +462,115 @@ For a multiple field, multiple `DEF = Y` is allowed. For a non-multiple field, t
     }
     ```
 
+- PHP CRest
+
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'crm.contact.userfield.update',
+        [
+            'id' => 536,
+            'fields' => [
+                'MANDATORY' => "N",
+                'SHOW_FILTER' => "N",
+                'SETTINGS' => [
+                    'DEFAULT_VALUE' => "Hello, world! Default value (changed)",
+                    'ROWS' => 10,
+                ],
+                'SORT' => 2000,
+                'EDIT_IN_LIST' => "N",
+                'LIST_FILTER_LABEL' => "Hello, world! Filter (changed)",
+                'LIST_COLUMN_LABEL' => [
+                    'en' => "Hello, World! Column (changed)",
+                    'ru' => "Hello, world! Column (changed)",
+                    'de' => "Hallo, Welt! Spalte (geändert)"
+                ],
+                'EDIT_FORM_LABEL' => [
+                    'en' => "Hello, World! Edit (changed)",
+                    'ru' => "Hello, world! Edit (changed)",
+                    'de' => "Hallo, Welt! Bearbeiten (geändert)"
+                ],
+                'ERROR_MESSAGE' => [
+                    'en' => "Hello, World! Error (changed)",
+                    'ru' => "Hello, world! Error (changed)",
+                    'de' => "Hallo, Welt! Fehler (geändert)"
+                ],
+                'HELP_MESSAGE' => [
+                    'en' => "Hello, World! Help (changed)",
+                    'ru' => "Hello, world! Help (changed)",
+                    'de' => "Hallo, Welt! Hilfe (geändert)"
+                ],
+            ]
+        ]
+    );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
+    ```
+
+- Python
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.contact.userfield.update(
+            bitrix_id=536,
+            fields={
+                "MANDATORY": "N",
+                "SHOW_FILTER": "N",
+                "SETTINGS": {
+                    "DEFAULT_VALUE": "Hello, world! Default value (changed)",
+                    "ROWS": 10,
+                },
+                "SORT": 2000,
+                "EDIT_IN_LIST": "N",
+                "LIST_FILTER_LABEL": "Hello, world! Filter (changed)",
+                "LIST_COLUMN_LABEL": {
+                    "en": "Hello, World! Column (changed)",
+                    "ru": "Hello, world! Column (changed)",
+                    "de": "Hallo, Welt! Spalte (geändert)",
+                },
+                "EDIT_FORM_LABEL": {
+                    "en": "Hello, World! Edit (changed)",
+                    "ru": "Hello, world! Edit (changed)",
+                    "de": "Hallo, Welt! Bearbeiten (geändert)",
+                },
+                "ERROR_MESSAGE": {
+                    "en": "Hello, World! Error (changed)",
+                    "ru": "Hello, world! Error (changed)",
+                    "de": "Hallo, Welt! Fehler (geändert)",
+                },
+                "HELP_MESSAGE": {
+                    "en": "Hello, World! Help (changed)",
+                    "ru": "Hello, world! Help (changed)",
+                    "de": "Hallo, Welt! Hilfe (geändert)",
+                },
+            },
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 {% endlist %}
 
-### Example of Updating a List Type Custom Field
+### Example of Modifying a List Type Custom Field
 
 Current list items:
 
@@ -595,12 +607,12 @@ Current list items:
 ]
 ```
 
-Change it as follows:
+Modify it as follows:
 - remove list items with `ID = 115` and `ID = 116`
-- update the list item with `ID  = 117`:
-    - `VALUE`: “List item #3” -> “List item #3 (changed)”
+- modify the list item with `ID  = 117`:
+    - `VALUE`: "List item #3" -> "List item #3 (modified)"
     - `SORT`: 300 -> 50
-- add a new list item “List item #5”
+- add a new list item "List item #5"
 
 {% list tabs %}
 
@@ -624,7 +636,7 @@ Change it as follows:
     https://**put_your_bitrix24_address**/rest/crm.contact.userfield.update
     ```
 
-- JS
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -669,7 +681,7 @@ Change it as follows:
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -759,13 +771,13 @@ Change it as follows:
         print(result)
     except BitrixAPIError as error:
         print(
-            "Bitrix API Error",
+            "Bitrix API error",
             f"error: {error.error}",
             f"error_description: {error.error_description}",
             sep="\n",
         )
     except BitrixSDKException as error:
-        print(f"Bitrix SDK Error: {error.message}")
+        print(f"Bitrix SDK error: {error.message}")
     except Exception as error:
         print(f"Unexpected error: {error}")
     ```
@@ -825,7 +837,7 @@ HTTP status: **400**
 - the user does not have administrative rights
 - the user attempts to delete a custom field not associated with contacts ||
 || `ERROR_NOT_FOUND` | `The entity with ID 'id' is not found` | The user field with the passed `id` does not exist ||
-|| `ERROR_CORE`               | List item with XML_ID=`XML_ID` already exists | The passed `XML_ID` for the list element must be unique within the elements of the user field list ||
+|| `ERROR_CORE`               | A list item with XML_ID=`XML_ID` already exists | The passed `XML_ID` for the list element must be unique within the elements of the user field list ||
 |#
 
 {% include [System errors](../../../../_includes/system-errors.md) %}

@@ -1,4 +1,4 @@
-# Resetting the Parameters Of crm.contact.details.configuration.reset
+# Reset Card Parameters crm.contact.details.configuration.reset
 
 {% note tip "" %}
 
@@ -14,11 +14,11 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% note warning "DEPRECATED" %}
 
-Development of this method has been halted. Please use [crm.item.details.configuration.reset](../../universal/item-details-configuration/crm-item-details-configuration-reset.md).
+The development of this method has been halted. Please use [crm.item.details.configuration.reset](../../universal/item-details-configuration/crm-item-details-configuration-reset.md).
 
 {% endnote %}
 
-This method resets the contact card settings: it removes the personal settings of the specified user or the shared settings defined for all users.
+The method resets the contact card configurations: it removes the personal card settings of a specified user or the shared settings defined for all users.
 
 ## Method Parameters
 
@@ -47,7 +47,7 @@ If not specified, the `id` of the current user is used
 
 {% include [Note on examples](../../../../_includes/examples.md) %}
 
-1. Resetting Shared Configuration
+1. Reset Shared Configuration
 
     {% list tabs %}
 
@@ -71,7 +71,7 @@ If not specified, the `id` of the current user is used
         https://**put_your_bitrix24_address**/rest/crm.contact.details.configuration.reset
         ```
 
-    - JS
+    - BX24.js
 
         ```js
         BX24.callMethod(
@@ -107,7 +107,7 @@ If not specified, the `id` of the current user is used
 
     {% endlist %}
 
-2. Resetting Personal Configuration
+2. Reset Personal Configuration
 
     {% list tabs %}
 
@@ -131,7 +131,7 @@ If not specified, the `id` of the current user is used
         https://**put_your_bitrix24_address**/rest/crm.contact.details.configuration.reset
         ```
 
-    - JS
+    - BX24.js
 
         ```js
         BX24.callMethod(
@@ -186,13 +186,13 @@ If not specified, the `id` of the current user is used
             print(result)
         except BitrixAPIError as error:
             print(
-                "Bitrix API Error",
+                "Bitrix API error",
                 f"error: {error.error}",
                 f"error_description: {error.error_description}",
                 sep="\n",
             )
         except BitrixSDKException as error:
-            print(f"Bitrix SDK Error: {error.message}")
+            print(f"Bitrix SDK error: {error.message}")
         except Exception as error:
             print(f"Unexpected error: {error}")
         ```

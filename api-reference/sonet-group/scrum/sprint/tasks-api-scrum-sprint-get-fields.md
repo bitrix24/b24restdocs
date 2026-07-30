@@ -1,4 +1,4 @@
-# Get a list of available fields for the sprint tasks.api.scrum.sprint.getFields
+# Get a List of Available Fields for the Sprint tasks.api.scrum.sprint.getFields
 
 {% note tip "" %}
 
@@ -20,7 +20,7 @@ No parameters.
 
 {% list tabs %}
 
-- cUrl (Webhook)
+- cURL (Webhook)
 
     ```bash
     curl -X POST \
@@ -30,7 +30,7 @@ No parameters.
     https://your-domain.bitrix24.com/rest/_USER_ID_/_CODE_/tasks.api.scrum.sprint.getFields
     ```
 
-- cURL (oAuth)
+- cURL (OAuth)
 
     ```bash
     curl -X POST \
@@ -154,7 +154,7 @@ No parameters.
 - PHP CRest
 
     ```php
-    require_once('crest.php'); // connecting CRest PHP SDK
+    require_once('crest.php'); // connecting the CRest PHP SDK
 
     // executing a request to the REST API
     $result = CRest::call(
@@ -246,7 +246,7 @@ HTTP status: **200**
 
 The method does not return errors.
 
-{% include [system errors](../../../../_includes/system-errors.md) %}
+{% include [System errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

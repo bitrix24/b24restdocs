@@ -1,4 +1,4 @@
-# Get a list of all bindings for the deal crm.activity.binding.list
+# Get a List of All Deal Links crm.activity.binding.list
 
 {% note tip "" %}
 
@@ -8,26 +8,26 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
-> Who can execute the method: user with read access permission for CRM entities
+> Who can execute the method: a user with read permissions for CRM items
 
-The method `crm.activity.binding.list` retrieves a list of all bindings for the deal.
+The `crm.activity.binding.list` method retrieves a list of all deal links.
 
-The method will return an array, where each element will be an array containing:
+The method returns an array of objects containing deal links:
 
-- `entityTypeId` — integer identifier of the [CRM object type](../../../data-types.md#object_type)
-- `entityId` — integer identifier of the CRM object
+- `entityTypeId` — the integer identifier of the [CRM object type](../../../data-types.md#object_type)
+- `entityId` — the integer identifier of the CRM item
 
-The result will only include entities that the current user has read access to.
+The result will contain only the items for which the current user has read access.
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **activityId***
-[`integer`](../../../../data-types.md) | Integer identifier of the deal in the timeline, for example `999` ||
+[`integer`](../../../../data-types.md) | Integer identifier of the activity in the timeline, for example `999` ||
 |#
 
 ## Code Examples
@@ -152,7 +152,7 @@ The result will only include entities that the current user has read access to.
             ->call(
                 'crm.activity.binding.list',
                 [
-                    'activityId' => 999, // Deal ID
+                    'activityId' => 999, // Case ID
                 ]
             );
     
@@ -174,7 +174,7 @@ The result will only include entities that the current user has read access to.
     BX24.callMethod(
         'crm.activity.binding.list',
         {
-            activityId: 999 // Deal ID
+            activityId: 999 // Case ID
         },
         function(result) {
             if (result.error()) {
@@ -194,7 +194,7 @@ The result will only include entities that the current user has read access to.
     $result = CRest::call(
         'crm.activity.binding.list',
         [
-            'activityId' => 999 // Deal ID
+            'activityId' => 999 // Case ID
         ]
     );
 
@@ -221,13 +221,13 @@ The result will only include entities that the current user has read access to.
         print(result)
     except BitrixAPIError as error:
         print(
-            "Bitrix API error",
+            "Bitrix API Error",
             f"error: {error.error}",
             f"error_description: {error.error_description}",
             sep="\n",
         )
     except BitrixSDKException as error:
-        print(f"Bitrix SDK error: {error.message}")
+        print(f"Bitrix SDK Error: {error.message}")
     except Exception as error:
         print(f"Unexpected error: {error}")
     ```
@@ -272,13 +272,20 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`array`](../../../../data-types.md) | Result of the operation. Returns an array, where each element will be an array containing:
-
-- `entityTypeId` — integer identifier of the [CRM object type](../../../data-types.md#object_type)
-- `entityId` — integer identifier of the CRM object
-||
+[`array`](../../../../data-types.md) | Array of objects with case bindings [(detailed description)](#result) ||
 || **time**
-[`time`](../../../../data-types.md#time) | Information about the execution time of the request ||
+[`time`](../../../../data-types.md#time) | Information about the request execution time ||
+|#
+
+#### Result Object {#result}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **entityTypeId**
+[`integer`](../../../../data-types.md) | [Identifier of the CRM object type](../../../data-types.md#object_type) ||
+|| **entityId**
+[`integer`](../../../../data-types.md) | Identifier of the CRM entity ||
 |#
 
 ## Error Handling
@@ -292,21 +299,20 @@ HTTP status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
 || **Code** | **Description** ||
-|| `100` | Required fields not provided ||
-|| `ACCESS_DENIED` | Insufficient permissions to perform the operation ||
+|| `100` | Required fields are not provided ||
+|| `ACCESS_DENIED` | Insufficient rights to perform the operation ||
 |#
 
-{% include [system errors](../../../../../_includes/system-errors.md) %}
+{% include [System errors](../../../../../_includes/system-errors.md) %}
 
-## Continue Learning 
+## Continue Learning
 
 - [{#T}](./crm-activity-binding-add.md)
 - [{#T}](./crm-activity-binding-delete.md)
 - [{#T}](./crm-activity-binding-move.md)
-

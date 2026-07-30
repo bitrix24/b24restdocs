@@ -1,4 +1,4 @@
-# Event when creating a deal onCrmDealAdd
+# Event When Creating a Deal onCrmDealAdd
 
 {% note tip "" %}
 
@@ -12,9 +12,9 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 The event `ONCRMDEALADD` will trigger when a deal is created.
 
-## What the handler receives
+## What the Handler Receives
 
-Data is sent as a POST request {.b24-info}
+Data is transmitted as a POST request {.b24-info}
 
 ```json
 {
@@ -47,7 +47,7 @@ Data is sent as a POST request {.b24-info}
 || **event**
 [`string`](../../../data-types.md) | Symbolic code of the event.
 
-In this case — `ONCRMDEALADD`||
+In this case — `ONCRMDEALADD` ||
 || **event_handler_id**
 [`integer`](../../../data-types.md) | Identifier of the event handler ||
 || **data**
@@ -55,11 +55,11 @@ In this case — `ONCRMDEALADD`||
 
 Contains a single key `FIELDS` ||
 || **data.FIELDS**
-[`object`](../../../data-types.md) | Object containing information about the fields of the created deal.
+[`object`](../../../data-types.md) | An object containing information about the fields of the created deal.
 
 The structure is described [below](#fields) ||
 || **ts**
-[`timestamp`](../../../data-types.md) | Date and time of sending the event from the [event queue](../../../events/index.md) ||
+[`timestamp`](../../../data-types.md) | Date and time of the event sent from the [event queue](../../../events/index.md) ||
 || **auth**
 [`object`](../../../data-types.md) | Object containing authorization parameters and information about the account where the event occurred.
 
@@ -77,9 +77,9 @@ The structure is described [below](#auth) ||
 
 ### Parameter auth {#auth}
 
-{% include notitle [Table with keys in the auth array](../../../../_includes/auth-params-in-events.md) %}
+{% include notitle [Auth parameters in events](../../../../_includes/auth-params-in-events.md) %}
 
-## Continue exploring
+## Continue Learning
 
 - [{#T}](../../../events/index.md)
 - [{#T}](../../../events/event-bind.md)

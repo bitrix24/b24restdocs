@@ -14,12 +14,12 @@ The method `tasks.api.scrum.sprint.get` returns the values of the sprint fields 
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
-|| **sprintId*** 
+|| **sprintId***
 [`integer`](../../../data-types.md) | The identifier of the sprint. 
 
 The identifier can be obtained using the method [tasks.api.scrum.sprint.list](./tasks-api-scrum-sprint-list.md) ||
@@ -42,7 +42,7 @@ The identifier can be obtained using the method [tasks.api.scrum.sprint.list](./
     https://your-domain.bitrix24.com/rest/_USER_ID_/_CODE_/tasks.api.scrum.sprint.get
     ```
 
-- cURL (oAuth)
+- cURL (OAuth)
 
     ```bash
     curl -X POST \
@@ -157,7 +157,7 @@ The identifier can be obtained using the method [tasks.api.scrum.sprint.list](./
             ->getResult();
     
         echo 'Success: ' . print_r($result, true);
-        // Your logic for processing data
+        // The data processing logic you need
         processData($result);
     
     } catch (Throwable $e) {
@@ -185,11 +185,11 @@ The identifier can be obtained using the method [tasks.api.scrum.sprint.list](./
 - PHP CRest
 
     ```php
-    require_once('crest.php'); // connecting CRest PHP SDK
+    require_once('crest.php'); // connecting the CRest PHP SDK
 
     $sprintId = 2;
 
-    // executing request to REST API
+    // executing a request to the REST API
     $result = CRest::call(
         'tasks.api.scrum.sprint.get',
         [
@@ -209,7 +209,7 @@ The identifier can be obtained using the method [tasks.api.scrum.sprint.list](./
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -236,34 +236,34 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result** 
-[`object`](../../../data-types.md) | An object containing data about the sprint ||
+[`object`](../../../data-types.md) | Object containing sprint data ||
 || **id** 
-[`integer`](../../../data-types.md) | The identifier of the sprint ||
+[`integer`](../../../data-types.md) | Identifier of the sprint ||
 || **groupId** 
-[`integer`](../../../data-types.md) | The identifier of the group (Scrum) to which the sprint belongs ||
+[`integer`](../../../data-types.md) | Identifier of the group (Scrum) to which the sprint belongs ||
 || **entityType** 
-[`string`](../../../data-types.md) | The type of entity (in this case `sprint`) ||
+[`string`](../../../data-types.md) | Entity type (in this case `sprint`) ||
 || **name** 
-[`string`](../../../data-types.md) | The name of the sprint ||
+[`string`](../../../data-types.md) | Name of the sprint ||
 || **goal** 
-[`string`](../../../data-types.md) | The goal of the sprint. Set only in the interface when starting the sprint ||
+[`string`](../../../data-types.md) | Goal of the sprint. Set only in the interface when starting the sprint ||
 || **sort** 
 [`integer`](../../../data-types.md) | Sorting ||
 || **createdBy** 
-[`integer`](../../../data-types.md) | The identifier of the user who created the sprint ||
+[`integer`](../../../data-types.md) | Identifier of the user who created the sprint ||
 || **modifiedBy** 
-[`integer`](../../../data-types.md) | The identifier of the user who modified the sprint ||
+[`integer`](../../../data-types.md) | Identifier of the user who modified the sprint ||
 || **dateStart** 
-[`string`](../../../data-types.md) | The start date of the sprint in `ISO 8601` format ||
+[`string`](../../../data-types.md) | Start date of the sprint in `ISO 8601` format ||
 || **dateEnd** 
-[`string`](../../../data-types.md) | The end date of the sprint in `ISO 8601` format ||
+[`string`](../../../data-types.md) | End date of the sprint in `ISO 8601` format ||
 || **status** 
-[`string`](../../../data-types.md) | The status of the sprint ||
+[`string`](../../../data-types.md) | Status of the sprint ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -272,19 +272,19 @@ HTTP Status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
-|| **Code** | **Error Message** | **Description** ||
+|| **Code** | **Error message** | **Description** ||
 || `0` | `Access denied` | No access to view sprint data ||
 || `0` | `Sprint not found` | The sprint does not exist ||
 || `100` | `Could not find value for parameter {id}` | Incorrect parameter name or parameter not set ||
 || `100` | `Invalid value {stringValue} to match with parameter {id}. Should be value of type int` | Invalid parameter type ||
 |#
 
-{% include [system errors](../../../../_includes/system-errors.md) %}
+{% include [System errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

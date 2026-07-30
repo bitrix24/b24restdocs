@@ -1,4 +1,4 @@
-# Get Information About the Note crm.timeline.note.get
+# Get Note Information crm.timeline.note.get
 
 {% note tip "" %}
 
@@ -8,13 +8,13 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: `any user`
+> Who can execute the method: any user
 
-The method returns information about a note related to a timeline record.
+Returns information about a note attached to a timeline record.
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -27,9 +27,9 @@ The method returns information about a note related to a timeline record.
 [`integer`](../../../data-types.md) | Type of the record to which the note should be applied: 
 
 - `1` — history record
-- `2` — activity ||
+- `2` — deal ||
 || **itemId***
-[`integer`](../../../data-types.md) | Identifier of the record to which the note should be applied. If `itemType=1`, this is the identifier of the timeline history record. If `itemType=2`, this is the identifier of the activity ||
+[`integer`](../../../data-types.md) | Identifier of the record to which the note should be applied. If `itemType=1`, this is the identifier of the timeline history record. If `itemType=2`, this is the identifier of the deal ||
 |#
 
 ## Code Examples
@@ -217,16 +217,16 @@ The method returns information about a note related to a timeline record.
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
     "result": {
         "text": "Test note",
         "createdById": 1,
-        "createdTime": "2024-03-17T15:55:10+02:00",
+        "createdTime": "2024-03-17T15:55:10+03:00",
         "updatedById": 1,
-        "updatedTime": "2024-03-17T15:55:10+02:00"
+        "updatedTime": "2024-03-17T15:55:10+03:00"
     },
     "time": {
         "start": 1712132792.910734,
@@ -247,20 +247,31 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../../data-types.md) | Information about the found note:
-
-- **text** — text of the note
-- **createdById** — identifier of the user who created the note
-- **createdTime** — date and time of note creation
-- **updatedById** — identifier of the user who modified the note
-- **updatedTime** — date and time of note modification ||
+[`object`](../../../data-types.md) | Information about the found note [(detailed description)](#result) ||
 || **time**
-[`time`](../../../data-types.md) | Information about the request execution time ||
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
+|#
+
+#### Result Object {#result}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **text**
+[`string`](../../../data-types.md) | Note text ||
+|| **createdById**
+[`integer`](../../../data-types.md) | Identifier of the user who created the note ||
+|| **createdTime**
+[`datetime`](../../../data-types.md) | Date and time of note creation ||
+|| **updatedById**
+[`integer`](../../../data-types.md) | Identifier of the user who modified the note ||
+|| **updatedTime**
+[`datetime`](../../../data-types.md) | Date and time of note modification ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -269,7 +280,7 @@ HTTP Status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
@@ -277,11 +288,11 @@ HTTP Status: **400**
 || **Code** | **Description** ||
 || `ACCESS_DENIED` | Insufficient permissions ||
 || `NOT_FOUND` | Element not found ||
-|| `100` | Required fields not provided ||
+|| `100` | Required fields are not provided ||
 || `0` | Other errors (e.g., fatal errors) ||
 |#
 
-{% include [system errors](../../../../_includes/system-errors.md) %}
+{% include [System errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

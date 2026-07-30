@@ -1,65 +1,65 @@
-title: Widgets  
-href: index.md  
-items:  
-  - name: Widget Embedding Mechanism  
-    href: index.md  
-  - name: UI Kit  
-    include:  
-      path: ui-kit/b24-toc.yaml  
-      mode: link  
-  - name: Typical Use-Cases  
-    href: tutorials.md  
-  - name: Widget Embedding Locations  
-    href: placements.md  
-  - name: Widgets in the Main Menu  
-    href: left-menu.md  
-  - name: Widgets in CRM  
-    include:  
-      path: crm/b24-toc.yaml  
-      mode: link  
-  - name: Widgets in Tasks  
-    include:  
-      path: task/b24-toc.yaml  
-      mode: link  
-  - name: Widgets in Workgroups/Projects  
-    include:  
-      path: workgroups/b24-toc.yaml  
-      mode: link  
-  - name: Widgets in User Profile  
-    include:  
-      path: user-profile/b24-toc.yaml  
-      mode: link  
-  - name: Widget in Calendar  
-    href: calendar.md  
-  - name: Widgets in Telephony  
-    include:  
-      path: telephony/b24-toc.yaml  
-      mode: link  
-  - name: Widgets in Messenger  
-    include:  
-      path: im/b24-toc.yaml  
-      mode: link  
-  - name: Widget in Contact Center  
-    href: contact-center.md  
-  - name: Universal Widgets  
-    include:  
-      path: universal/b24-toc.yaml  
-      mode: link  
-  - name: Register a Widget  
-    href: placement-bind.md  
-  - name: Get a List of Registered Widgets  
-    href: placement-get.md  
-  - name: Get a List of Widgets  
-    href: placement-list.md  
-  - name: Unregister a Widget  
-    href: placement-unbind.md  
-  - name: BX24 SDK Methods for Widgets  
-    href: bx24-widget-methods.md  
-  - name: UI Interaction from Widgets  
-    include:  
-      path: ui-interaction/b24-toc.yaml  
-      mode: link  
-  - name: Embedding as Custom Field Types  
-    include:  
-      path: user-field/b24-toc.yaml  
-      mode: link  
+title: Widgets
+href: index.md
+items:
+  - name: Widget Embedding Mechanism
+    href: index.md
+  - name: UI Kit
+    include:
+      path: ui-kit/b24-toc.yaml
+      mode: link
+  - name: Widget Embedding Locations
+    href: placements.md
+  - name: Widgets in the Main Menu
+    href: left-menu.md
+  - name: Widgets in CRM
+    include:
+      path: crm/b24-toc.yaml
+      mode: link
+  - name: Widgets in Tasks
+    include:
+      path: task/b24-toc.yaml
+      mode: link
+  - name: Widgets in Workgroups/Projects
+    include:
+      path: workgroups/b24-toc.yaml
+      mode: link
+  - name: Widgets in User Profile
+    include:
+      path: user-profile/b24-toc.yaml
+      mode: link
+  - name: Widget in Calendar
+    href: calendar.md
+  - name: Widgets in Telephony
+    include:
+      path: telephony/b24-toc.yaml
+      mode: link
+  - name: Widgets in Messenger
+    include:
+      path: im/b24-toc.yaml
+      mode: link
+  - name: Widget in Contact Center
+    href: contact-center.md
+  - name: Universal Widgets
+    include:
+      path: universal/b24-toc.yaml
+      mode: link
+  - name: Embedding in the Bitrix24 Mobile Application
+    href: mobile-app.md
+  - name: Register a Widget
+    href: placement-bind.md
+  - name: Get a List of Registered Widgets
+    href: placement-get.md
+  - name: Get Widget List
+    href: placement-list.md
+  - name: Unregister a Widget
+    href: placement-unbind.md
+  - name: BX24 SDK Methods for Widgets
+    href: bx24-widget-methods.md
+  - name: UI Interaction from Widgets
+    include:
+      path: ui-interaction/b24-toc.yaml
+      mode: link
+  - name: Embedding as Custom Field Types
+    include:
+      path: user-field/b24-toc.yaml
+      mode: link

@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can subscribe: any user
 
-The event is triggered when a calendar event is added.
+The `ONCALENDARENTRYADD` event is triggered when a calendar event is added.
 
 {% note info "" %}
 
@@ -53,7 +53,7 @@ Example: event for creating a calendar event object with `id = 1414`.
 || **event**
 [`string`][1] | Symbolic code of the event.
 
-In this case — `ONCALENDARENTRYADD`||
+In this case — `ONCALENDARENTRYADD` ||
 || **event_handler_id**
 [`integer`][1] | Identifier of the event handler ||
 || **data**
@@ -63,7 +63,7 @@ Contains a single key — `id` ||
 || **data.id**
 [`string`][1] | Identifier of the calendar event object ||
 || **ts**
-[`timestamp`][1] | Date and time the event was sent from the [event queue](../../../events/index.md) ||
+[`timestamp`][1] | Date and time of the event sent from the [event queue](../../../events/index.md) ||
 || **auth**
 [`object`][1] | Object containing authorization parameters and information about the account where the event occurred.
 
@@ -72,15 +72,14 @@ The structure is described [below](#auth) ||
 
 ### Parameter auth {#auth}
 
-{% include notitle [Table with keys in the auth array](../../../../_includes/auth-params-in-events.md) %}
+{% include notitle [Auth parameters in events](../../../../_includes/auth-params-in-events.md) %}
 
-## Continue Exploring 
+## Continue Learning
 
 - [{#T}](../../../events/index.md)
 - [{#T}](../../../events/event-bind.md)
 - [{#T}](./index.md)
 - [{#T}](./on-calendar-entry-update.md)
 - [{#T}](./on-calendar-entry-delete.md)
-
 
 [1]: ../../../data-types.md

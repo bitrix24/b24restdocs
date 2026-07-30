@@ -8,7 +8,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
-> Who can subscribe: `any user`
+> Who can subscribe: any user
 
 The `onCrmActivityUpdate` event is triggered when an activity is updated in the CRM timeline.
 
@@ -18,9 +18,9 @@ Events will not be sent to the application until the installation is complete. [
 
 {% endnote %}
 
-## What the handler receives
+## What the Handler Receives
 
-Data is sent as a POST request {.b24-info}
+Data is transmitted as a POST request {.b24-info}
 
 ```json
 {
@@ -50,15 +50,21 @@ Data is sent as a POST request {.b24-info}
 || **Parameter**
 `type` | **Description** ||
 || **event**
-[`string`](../../../data-types.md) | Symbolic code of the event. In our case, it is `onCrmActivityUpdate`||
+[`string`](../../../data-types.md) | Symbolic code of the event.
+
+In this case — `onCrmActivityUpdate` ||
 || **data**
-`array` | An object containing information about the updated activity.
+[`object`](../../../data-types.md) | An object containing information about the updated activity.
 
 Contains a single key `FIELDS` ||
+|| **data.FIELDS**
+[`object`](../../../data-types.md) | An object containing information about the fields of the modified case.
+
+The structure is described [below](#fields) ||
 || **ts**
-[`timestamp`](../../../data-types.md) | Date and time the event was sent from the [event queue](../../../../events/index.md) ||
+[`timestamp`](../../../data-types.md) | Date and time of the event sent from the [event queue](../../../../events/index.md) ||
 || **auth**
-[`array`](../../../data-types.md) | Authorization parameters and information about the account where the event occurred. 
+[`object`](../../../data-types.md) | Object containing authorization parameters and information about the account where the event occurred.
 
 The structure is described [below](#auth) ||
 |#
@@ -69,14 +75,14 @@ The structure is described [below](#auth) ||
 || **Parameter**
 `type` | **Description** ||
 || **ID**
-[`integer`](../../../data-types.md) | `ID` with the value of the updated activity identifier ||
+[`integer`](../../../data-types.md) | Identifier of the updated case ||
 |#
 
 ### Parameter auth {#auth}
 
-{% include notitle [Table with keys in the auth array](../../../../../_includes/auth-params-in-events.md) %}
+{% include notitle [Auth parameters in events](../../../../../_includes/auth-params-in-events.md) %}
 
-## Continue exploring 
+## Continue Learning
 
 - [{#T}](../../../../events/index.md)
 - [{#T}](../../../../events/event-bind.md)

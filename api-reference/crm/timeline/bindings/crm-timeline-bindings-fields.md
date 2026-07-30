@@ -1,4 +1,4 @@
-# Get CRM entity bindings fields and timeline record in crm.timeline.bindings.fields
+# Retrieve CRM Item Link Fields and Timeline Records crm.timeline.bindings.fields
 
 {% note tip "" %}
 
@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: any user
 
-Retrieves a list of available fields for linking CRM entities and timeline records.
+Retrieves a list of available fields for linking CRM items and timeline records.
 
 No parameters.
 
@@ -160,13 +160,13 @@ No parameters.
         print(result)
     except BitrixAPIError as error:
         print(
-            "Bitrix API Error",
+            "Bitrix API error",
             f"error: {error.error}",
             f"error_description: {error.error_description}",
             sep="\n",
         )
     except BitrixSDKException as error:
-        print(f"Bitrix SDK Error: {error.message}")
+        print(f"Bitrix SDK error: {error.message}")
     except Exception as error:
         print(f"Unexpected error: {error}")
     ```
@@ -224,7 +224,7 @@ HTTP status: **200**
             "isImmutable": true,
             "isMultiple": false,
             "isDynamic": false,
-            "title": "Item ID"
+            "title": "Element ID"
         },
         "ENTITY_TYPE": {
             "type": "string",
@@ -233,7 +233,7 @@ HTTP status: **200**
             "isImmutable": true,
             "isMultiple": false,
             "isDynamic": false,
-            "title": "Item type"
+            "title": "Element type"
         }
     },
     "time": {
@@ -255,10 +255,10 @@ HTTP status: **200**
 || **result**
 [`object`](../../../data-types.md) | Root element of the response. Contains [fields](#fields) linking timeline records to CRM entities ||
 || **time**
-[`time`](../../../data-types.md) | Information about the request execution time ||
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
 
-#### List of Fields {#fields}
+#### Fields List {#fields}
 
 {% include [Note on parameters](../../../../_includes/required.md) %}
 
@@ -266,11 +266,11 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **OWNER_ID***
-[`integer`](../../../data-types.md) | Identifier of the timeline record. Read-only ||
+[`integer`](../../../data-types.md) | Timeline record identifier. Immutable ||
 || **ENTITY_ID***
-[`integer`](../../../data-types.md) | `ID` of the CRM object to which the comment is linked. Immutable ||
+[`integer`](../../../data-types.md) | Identifier of the CRM item to which the timeline record is linked. Immutable ||
 || **ENTITY_TYPE***
-[`string`](../../../data-types.md) | Type of the entity to which the comment is linked. Immutable. Possible values:
+[`string`](../../../data-types.md) | Type of the CRM item to which the timeline record is linked. Immutable. Possible values:
 - `lead` — lead
 - `deal` — deal
 - `contact` — contact

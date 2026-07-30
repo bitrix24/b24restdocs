@@ -7,10 +7,10 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 {% endnote %}
 
 > Scope: [`log`](../../scopes/permissions.md)
-> 
+>
 > Who can subscribe: any user
 
-The `OnLiveFeedPostAdd` event is triggered after a new message is added to the News Feed. This allows a third-party application to perform necessary actions when messages are added, such as checking spelling or adding tags.
+The `ONLIVEFEEDPOSTADD` event is triggered when a message is added to the Feed.
 
 {% note info "" %}
 
@@ -48,12 +48,12 @@ Data is transmitted as a POST request {.b24-info}
 ```
 
 #|
-|| **Parameter**
+|| **parameter**
 `type` | **Description** ||
 || **event**
 [`string`](../../data-types.md) | Symbolic code of the event.
 
-In this case — `ONLIVEFEEDPOSTADD`||
+In this case — `ONLIVEFEEDPOSTADD` ||
 || **event_handler_id**
 [`integer`](../../data-types.md) | Identifier of the event handler ||
 || **data**
@@ -65,26 +65,29 @@ Contains a single key `FIELDS` ||
 
 The structure is described [below](#fields) ||
 || **ts**
-[`timestamp`](../../data-types.md) | Date and time the event was sent from the [event queue](../../events/index.md) ||
+[`timestamp`](../../data-types.md) | Date and time of the event sent from the [event queue](../../events/index.md) ||
 || **auth**
-[`object`](../../data-types.md) | Object containing authorization parameters and data about the account where the event occurred.
+[`object`](../../data-types.md) | Object containing authorization parameters and information about the account where the event occurred.
 
 The structure is described [below](#auth) ||
 |#
 
-### FIELDS Parameter {#fields}
+### Parameter FIELDS {#fields}
 
 #|
-|| **Parameter**
+|| **parameter**
 `type` | **Description** ||
-|| **POST_ID** 
+|| **POST_ID**
 [`integer`](../../data-types.md) | Identifier of the message added to the News Feed ||
 |#
 
-### auth Parameter
+### Parameter auth {#auth}
 
-{% include notitle [Table with keys in the auth array](../../../_includes/auth-params-in-events.md) %}
+{% include notitle [Auth parameters in events](../../../_includes/auth-params-in-events.md) %}
 
-## Continue Exploring
+## Continue Learning
+
 - [{#T}](../../events/index.md)
 - [{#T}](../../events/event-bind.md)
+- [{#T}](./on-live-feed-post-update.md)
+- [{#T}](./on-live-feed-post-delete.md)

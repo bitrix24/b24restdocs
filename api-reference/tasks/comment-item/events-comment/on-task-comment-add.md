@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can subscribe: any user
 
-The event is triggered after a new comment is added to a task.
+The `ONTASKCOMMENTADD` event is triggered after a new comment is added to a task.
 
 {% note info "" %}
 
@@ -25,75 +25,86 @@ Data is transmitted as a POST request {.b24-info}
 When working with the old task detail form before module version `tasks 25.700.0`:
 
 ```json
-array(
-    'event' => 'ONTASKCOMMENTADD',
-    'data' => array(
-        'FIELDS_BEFORE' => 'undefined',
-        'FIELDS_AFTER' => array('ID' => 123, 'TASK_ID' => 555),
-        'IS_ACCESSIBLE_BEFORE' => 'undefined',
-        'IS_ACCESSIBLE_AFTER' => 'undefined',
-    ),
-    'ts' => '1466439714',
-    'auth' => array(
-        'access_token' => 's6p6eclrvim6da22ft9ch94ekreb52lv',
-        'expires_in' => '3600',
-        'scope' => 'crm',
-        'domain' => 'some-domain.bitrix24.com',
-        'server_endpoint' => 'https://oauth.bitrix.info/rest/',
-        'status' => 'F',
-        'client_endpoint' => 'https://some-domain.bitrix24.com/rest/',
-        'member_id' => 'a223c6b3710f85df22e9377d6c4f7553',
-        'refresh_token' => '4s386p3q0tr8dy89xvmt96234v3dljg8',
-        'application_token' => '51856fefc120afa4b628cc82d3935cce',
-        ),
-)
+{
+    "event": "ONTASKCOMMENTADD",
+    "data": {
+        "FIELDS_BEFORE": "undefined",
+        "FIELDS_AFTER": {
+            "ID": 123,
+            "TASK_ID": 555
+        },
+        "IS_ACCESSIBLE_BEFORE": "undefined",
+        "IS_ACCESSIBLE_AFTER": "undefined"
+    },
+    "ts": "1466439714",
+    "auth": {
+        "access_token": "s6p6eclrvim6da22ft9ch94ekreb52lv",
+        "expires_in": "3600",
+        "scope": "task",
+        "domain": "some-domain.bitrix24.com",
+        "server_endpoint": "https://oauth.bitrix.info/rest/",
+        "status": "F",
+        "client_endpoint": "https://some-domain.bitrix24.com/rest/",
+        "member_id": "a223c6b3710f85df22e9377d6c4f7553",
+        "refresh_token": "4s386p3q0tr8dy89xvmt96234v3dljg8",
+        "application_token": "51856fefc120afa4b628cc82d3935cce"
+    }
+}
 ```
 
 When working with the new task detail form with chat from module version `tasks 25.700.0`:
 
 ```json
-array(
-    'event' => 'ONTASKCOMMENTADD',
-    'data' => array(
-        'FIELDS_BEFORE' => 'undefined',
-        'FIELDS_AFTER' => array('ID' => 0, 'TASK_ID' => 555, 'MESSAGE_ID' => 1458),
-        'IS_ACCESSIBLE_BEFORE' => 'undefined',
-        'IS_ACCESSIBLE_AFTER' => 'undefined',
-    ),
-    'ts' => '1466439714',
-    'auth' => array(
-        'access_token' => 's6p6eclrvim6da22ft9ch94ekreb52lv',
-        'expires_in' => '3600',
-        'scope' => 'crm',
-        'domain' => 'some-domain.bitrix24.com',
-        'server_endpoint' => 'https://oauth.bitrix.info/rest/',
-        'status' => 'F',
-        'client_endpoint' => 'https://some-domain.bitrix24.com/rest/',
-        'member_id' => 'a223c6b3710f85df22e9377d6c4f7553',
-        'refresh_token' => '4s386p3q0tr8dy89xvmt96234v3dljg8',
-        'application_token' => '51856fefc120afa4b628cc82d3935cce',
-        ),
-)
+{
+    "event": "ONTASKCOMMENTADD",
+    "data": {
+        "FIELDS_BEFORE": "undefined",
+        "FIELDS_AFTER": {
+            "ID": 0,
+            "TASK_ID": 555,
+            "MESSAGE_ID": 1458
+        },
+        "IS_ACCESSIBLE_BEFORE": "undefined",
+        "IS_ACCESSIBLE_AFTER": "undefined"
+    },
+    "ts": "1466439714",
+    "auth": {
+        "access_token": "s6p6eclrvim6da22ft9ch94ekreb52lv",
+        "expires_in": "3600",
+        "scope": "task",
+        "domain": "some-domain.bitrix24.com",
+        "server_endpoint": "https://oauth.bitrix.info/rest/",
+        "status": "F",
+        "client_endpoint": "https://some-domain.bitrix24.com/rest/",
+        "member_id": "a223c6b3710f85df22e9377d6c4f7553",
+        "refresh_token": "4s386p3q0tr8dy89xvmt96234v3dljg8",
+        "application_token": "51856fefc120afa4b628cc82d3935cce"
+    }
+}
 ```
 
-{% include notitle [Parameter Notes](../../../../_includes/required.md) %}
+{% include notitle [Note on parameters](../../../../_includes/required.md) %}
 
 #|
-|| **Parameter**
+|| **parameter**
 `type` | **Description** ||
 || **event***
-[`string`](../../../data-types.md) | Symbolic event code, in this case `OnTaskAdd` ||
+[`string`](../../../data-types.md) | Symbolic code of the event.
+
+In this case — `ONTASKCOMMENTADD` ||
 || **data***
-[`array`](../../../data-types.md) | Array with data of the new task comment ||
+[`object`](../../../data-types.md) | An object containing data about the comment addition event.
+
+The structure is described [below](#data) ||
 || **ts***
 [`timestamp`](../../../data-types.md) | Date and time of the event sent from the [event queue](../../../events/index.md) ||
 || **auth***
-[`array`](../../../data-types.md) | Authorization parameters and information about the account where the event occurred ||
+[`object`](../../../data-types.md) | Object containing authorization parameters and information about the account where the event occurred.
+
+The structure is described [below](#auth) ||
 |#
 
-### Parameter data[]
-
-{% include notitle [Parameter Notes](../../../../_includes/required.md) %}
+### Parameter Data[] {#data}
 
 #|
 || **Name**
@@ -110,8 +121,6 @@ array(
 
 ### Field FIELDS_BEFORE {#fields_before}
 
-{% include notitle [Parameter Notes](../../../../_includes/required.md) %}
-
 #|
 || **Name**
 `type` | **Description** ||
@@ -124,8 +133,6 @@ array(
 |#
 
 ### Field FIELDS_AFTER {#fields_after}
-
-{% include notitle [Parameter Notes](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -140,8 +147,6 @@ array(
 
 ### Field IS_ACCESSIBLE_BEFORE {#is_accessible_before}
 
-{% include notitle [Parameter Notes](../../../../_includes/required.md) %}
-
 #|
 || **Name**
 `type` | **Description** ||
@@ -150,11 +155,9 @@ array(
 - `Y` (Yes) — yes
 - `N` (No) — no
 - `undefined` — not defined or check was not performed ||
-  |#
+|#
 
 ### Field IS_ACCESSIBLE_AFTER {#is_accessible_after}
-
-{% include notitle [Parameter Notes](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -164,11 +167,15 @@ array(
 - `Y` (Yes) — yes
 - `N` (No) — no
 - `undefined` — not defined or check was not performed ||
-  |#
+|#
+
+### Parameter auth {#auth}
+
+{% include notitle [Auth parameters in events](../../../../_includes/auth-params-in-events.md) %}
 
 ## Code Examples
 
-{% include [Example Notes](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -265,7 +272,7 @@ array(
             ->getResult();
     
         echo 'Success: ' . print_r($result, true);
-        // Your logic for processing data
+        // The data processing logic you need
         processData($result);
     
     } catch (Throwable $e) {
@@ -315,6 +322,8 @@ array(
 
 ## Continue Learning
 
+- [{#T}](../../../events/index.md)
+- [{#T}](../../../events/event-bind.md)
 - [{#T}](./index.md)
 - [{#T}](./on-task-comment-update.md)
 - [{#T}](./on-task-comment-delete.md)

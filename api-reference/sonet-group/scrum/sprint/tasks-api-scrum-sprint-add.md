@@ -14,7 +14,7 @@ The method `tasks.api.scrum.sprint.add` adds a sprint to Scrum.
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -25,24 +25,24 @@ The method `tasks.api.scrum.sprint.add` adds a sprint to Scrum.
 
 ### Parameter fields
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
-|| **groupId***
+|| **groupId*** 
 [`integer`](../../../data-types.md) | Identifier of the group (Scrum) to which the sprint belongs. 
 
-The identifier can be obtained using the method [tasks.api.scrum.sprint.get](./tasks-api-scrum-sprint-get.md) for an existing sprint ||
-|| **name***
+The identifier can be obtained using the method [tasks.api.scrum.sprint.get](./tasks-api-scrum-sprint-get.md) for an existing sprint||
+|| **name*** 
 [`string`](../../../data-types.md) | Name of the sprint ||
-|| **sort**
+|| **sort** 
 [`integer`](../../../data-types.md) | Sorting ||
-|| **dateStart**
+|| **dateStart** 
 [`string`](../../../data-types.md) | Start date of the sprint. Available formats: `ISO 8601`, `timestamp` ||
-|| **dateEnd**
+|| **dateEnd** 
 [`string`](../../../data-types.md) | End date of the sprint. Available formats: `ISO 8601`, `timestamp` ||
-|| **status**
+|| **status** 
 [`string`](../../../data-types.md) | Status of the sprint. Available values: `active`, `planned`, `completed` ||
 |#
 
@@ -71,7 +71,7 @@ The identifier can be obtained using the method [tasks.api.scrum.sprint.get](./t
     https://your-domain.bitrix24.com/rest/_USER_ID_/_CODE_/tasks.api.scrum.sprint.add
     ```
 
-- cURL (oAuth)
+- cURL (OAuth)
 
     ```bash
     curl -X POST \
@@ -217,7 +217,7 @@ The identifier can be obtained using the method [tasks.api.scrum.sprint.get](./t
             ->getResult();
     
         echo 'Success: ' . print_r($result, true);
-        // Your data processing logic
+        // The data processing logic you need
         processData($result);
     
     } catch (Throwable $e) {
@@ -259,7 +259,7 @@ The identifier can be obtained using the method [tasks.api.scrum.sprint.get](./t
 - PHP CRest
 
     ```php
-    require_once('crest.php'); // connect CRest PHP SDK
+    require_once('crest.php'); // connecting the CRest PHP SDK
 
     $groupId = 1;
     $name = 'Sprint 1';
@@ -269,7 +269,7 @@ The identifier can be obtained using the method [tasks.api.scrum.sprint.get](./t
     $dateStart = '2021-11-22T00:00:00+02:00';
     $dateEnd = '2021-11-29T00:00:00+02:00';
 
-    // execute request to REST API
+    // executing a request to the REST API
     $result = CRest::call(
         'tasks.api.scrum.sprint.add',
         [
@@ -285,7 +285,7 @@ The identifier can be obtained using the method [tasks.api.scrum.sprint.get](./t
         ]
     );
 
-    // Process response from Bitrix24
+    // Processing the response from Bitrix24
     if (isset($result['error'])) {
         echo 'Error: '.$result['error_description'];
     } else {
@@ -297,7 +297,7 @@ The identifier can be obtained using the method [tasks.api.scrum.sprint.get](./t
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -323,35 +323,35 @@ HTTP Status: **200**
 #|
 || **Name**
 `type` | **Description** ||
-|| **result**
+|| **result** 
 [`object`](../../../data-types.md) | Object containing sprint data ||
-|| **id**
+|| **id** 
 [`integer`](../../../data-types.md) | Identifier of the sprint ||
-|| **groupId**
+|| **groupId** 
 [`integer`](../../../data-types.md) | Identifier of the group (Scrum) to which the sprint belongs ||
-|| **entityType**
+|| **entityType** 
 [`string`](../../../data-types.md) | Entity type (in this case `sprint`) ||
-|| **name**
+|| **name** 
 [`string`](../../../data-types.md) | Name of the sprint ||
-|| **goal**
+|| **goal** 
 [`string`](../../../data-types.md) | Goal of the sprint. Set only in the interface when starting the sprint ||
-|| **sort**
+|| **sort** 
 [`integer`](../../../data-types.md) | Sorting ||
-|| **createdBy**
+|| **createdBy** 
 [`integer`](../../../data-types.md) | Identifier of the user who created the sprint ||
-|| **modifiedBy**
+|| **modifiedBy** 
 [`integer`](../../../data-types.md) | Identifier of the user who modified the sprint ||
-|| **dateStart**
+|| **dateStart** 
 [`string`](../../../data-types.md) | Start date of the sprint in `ISO 8601` format ||
-|| **dateEnd**
+|| **dateEnd** 
 [`string`](../../../data-types.md) | End date of the sprint in `ISO 8601` format ||
-|| **status**
+|| **status** 
 [`string`](../../../data-types.md) | Status of the sprint ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -360,13 +360,13 @@ HTTP Status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
-|| **Code** | **Error Message** | **Description** ||
-|| `0` | `Access denied` | No access to Scrum ||
+|| **Code** | **Error message** | **Description** ||
+|| `0` | `Access denied` | No access to scrum ||
 || `0` | `Sprint not created` | Failed to create sprint ||
 || `0` | `Incorrect dateStart format` | Invalid start date format for the sprint ||
 || `0` | `Incorrect dateEnd format` | Invalid end date format for the sprint ||
@@ -376,7 +376,7 @@ HTTP Status: **400**
 || `100` | `Invalid value {stringValue} to match with parameter {fields}. Should be value of type array` | Invalid parameter type ||
 |#
 
-{% include [system errors](../../../../_includes/system-errors.md) %}
+{% include [System errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

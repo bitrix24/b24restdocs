@@ -51,15 +51,15 @@ Data is transmitted as a POST request {.b24-info}
 || **event**
 [`string`](../../../data-types.md) | Symbolic code of the event.
 
-In this case — `ONCRMDEALUSERFIELDUPDATE`||
+In this case — `ONCRMDEALUSERFIELDUPDATE` ||
 || **event_handler_id**
 [`integer`](../../../data-types.md) | Identifier of the event handler ||
 || **data**
-[`object`](../../../data-types.md) | Object containing information about the updated field.
+[`object`](../../../data-types.md) | An object containing information about the updated custom field.
 
 Contains a single key `FIELDS` ||
 || **data.FIELDS**
-[`object`](../../../data-types.md) | Object containing information about the updated fields.
+[`object`](../../../data-types.md) | An object containing custom field properties.
 
 The structure is described [below](#fields) ||
 || **ts**

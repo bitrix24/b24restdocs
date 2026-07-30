@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can subscribe: any user
 
-The `onAppPayment` event is triggered when an application is paid for.
+The `ONAPPPAYMENT` event is triggered when an application is paid for.
 
 {% note info "" %}
 
@@ -18,7 +18,7 @@ Events will not be sent to the application until the installation is complete. [
 
 {% endnote %}
 
-## What the handler receives
+## What the Handler Receives
 
 Data is transmitted as a POST request {.b24-info}
 
@@ -31,7 +31,7 @@ Data is transmitted as a POST request {.b24-info}
         "STATUS": "S",
         "PAYMENT_EXPIRED": "N",
         "DAYS": 28,
-        "LANGUAGE_ID": "en"
+        "LANGUAGE_ID": "de"
     },
     "ts": "1466439714",
     "auth": {
@@ -44,19 +44,19 @@ Data is transmitted as a POST request {.b24-info}
 
 ## Request Parameters
 
-{% include [Note on required parameters](../../../_includes/required.md) %}
+{% include [Note on parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **event***
-[`string`](../../data-types.md) | Symbolic event code — `ONAPPPAYMENT` ||
+[`string`](../../data-types.md) | Event character code — `ONAPPPAYMENT` ||
 || **data***
 [`object`](../../data-types.md) | Payment data.
 
 The structure is described [below](#data) ||
 || **ts***
-[`timestamp`](../../data-types.md) | Date and time of event dispatch from the queue ||
+[`timestamp`](../../data-types.md) | Date and time of the event sent from the queue ||
 || **auth***
 [`object`](../../data-types.md) | Authorization and account data.
 
@@ -64,8 +64,6 @@ The structure is described [below](#auth) ||
 |#
 
 ### Parameter data {#data}
-
-{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -78,31 +76,30 @@ The structure is described [below](#auth) ||
 [`string`](../../data-types.md) | Application status. Possible values:
 - `F` (Free) — free
 - `D` (Demo) — demo version
-- `T` (Trial) — time-limited trial version
-- `P` (Paid) — paid application ||
+- `T` (Trial) — trial version, time-limited
+- `P` (Paid) — paid application
+- `S` (Subscription) — subscription-based application (Market+) ||
 || **PAYMENT_EXPIRED***
 [`string`](../../data-types.md) | [Y|N] Flag indicating whether the paid period or trial period has expired ||
 || **DAYS***
 [`integer`](../../data-types.md) | Number of days remaining until the end of the paid period or trial period ||
 || **LANGUAGE_ID***
-[`string`](../../data-types.md) | Installed language: `en`, `de`, and others ||
+[`string`](../../data-types.md) | Set language: `ru`, `en` and others ||
 |#
 
 ### Parameter auth {#auth}
-
-{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **domain***
-[`string`](../../data-types.md) | Bitrix24 account address ||
+[`string`](../../data-types.md) | Address of the Bitrix24 account ||
 || **server_endpoint***
-[`string`](../../data-types.md) | Authorization server address for token refresh ||
+[`string`](../../data-types.md) | Authorization server address for token renewal||
 || **client_endpoint***
 [`string`](../../data-types.md) | Common path for API method calls to the account ||
 || **member_id***
-[`string`](../../data-types.md) | Unique account identifier ||
+[`string`](../../data-types.md) | Unique identifier of the account ||
 |#
 
 ## Continue Learning

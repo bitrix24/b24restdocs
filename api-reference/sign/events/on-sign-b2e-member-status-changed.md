@@ -2,7 +2,7 @@
 
 {% note tip "" %}
 
-If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect the [MCP server](../../../ai-tools/mcp.md) so that the assistant can utilize the official REST documentation.
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../ai-tools/mcp.md) so that the assistant can utilize the official REST documentation.
 
 {% endnote %}
 
@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can subscribe: a user with access to KEDO
 
-The event `OnSignB2eMemberStatusChanged` is triggered when the status of a signing participant changes.
+The event `ONSIGNB2EMEMBERSTATUSCHANGED` is triggered when the status of a signing participant changes.
 
 {% note info "" %}
 
@@ -49,10 +49,10 @@ Data is transmitted as a POST request {.b24-info}
 ```
 
 #|
-|| **Parameter**
+|| **parameter**
 `type` | **Description** ||
 || **event**
-[`string`](../../data-types.md) | Symbolic event code.
+[`string`](../../data-types.md) | Symbolic code of the event.
 
 In this case — `ONSIGNB2EMEMBERSTATUSCHANGED` ||
 || **event_handler_id**
@@ -62,15 +62,15 @@ In this case — `ONSIGNB2EMEMBERSTATUSCHANGED` ||
 || **data.memberUid**
 [`string`](../../data-types.md) | Unique identifier of the participant ||
 || **data.documentUid**
-[`string`](../../data-types.md) | Unique identifier of the document ||
+[`string`](../../data-types.md) | Unique document identifier ||
 || **data.companyUid**
-[`string`](../../data-types.md) | Unique identifier of the company. Returned in the event if the document is signed with the company for which the integration was created ||
+[`string`](../../data-types.md) | Unique company identifier. Returned in the event if the document is signed with the company for which the integration was created ||
 || **data.statusCode**
 [`string`](../../data-types.md) | Status code of the participant ||
 || **data.statusName**
 [`string`](../../data-types.md) | Name of the participant's status ||
 || **ts**
-[`timestamp`](../../data-types.md) | Date and time the event was sent from the [event queue](../../events/index.md) ||
+[`timestamp`](../../data-types.md) | Date and time of the event sent from the [event queue](../../events/index.md) ||
 || **auth**
 [`object`](../../data-types.md) | Object with authorization parameters and portal data.
 
@@ -79,7 +79,7 @@ The structure is described [below](#auth) ||
 
 ### Parameter auth {#auth}
 
-{% include notitle [Table with keys in the auth array](../../../_includes/auth-params-in-events.md) %}
+{% include notitle [Auth parameters in events](../../../_includes/auth-params-in-events.md) %}
 
 ## Continue Learning
 

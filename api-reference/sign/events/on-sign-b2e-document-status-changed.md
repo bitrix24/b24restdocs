@@ -2,7 +2,7 @@
 
 {% note tip "" %}
 
-If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect the [MCP server](../../../ai-tools/mcp.md) so that the assistant can utilize the official REST documentation.
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../ai-tools/mcp.md) so that the assistant can utilize the official REST documentation.
 
 {% endnote %}
 
@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can subscribe: a user with access to KEDO
 
-The event `OnSignB2eDocumentStatusChanged` is triggered when the status of a document changes.
+The `ONSIGNB2EDOCUMENTSTATUSCHANGED` event is triggered when a document status changes.
 
 {% note info "" %}
 
@@ -48,14 +48,14 @@ Data is transmitted as a POST request {.b24-info}
 ```
 
 #|
-|| **Parameter**
+|| **parameter**
 `type` | **Description** ||
 || **event**
-[`string`](../../data-types.md) | Symbolic event code.
+[`string`](../../data-types.md) | Symbolic code of the event.
 
 In this case — `ONSIGNB2EDOCUMENTSTATUSCHANGED` ||
 || **event_handler_id**
-[`integer`](../../data-types.md) | Event handler identifier ||
+[`integer`](../../data-types.md) | Identifier of the event handler ||
 || **data**
 [`object`](../../data-types.md) | Object containing information about the document ||
 || **data.documentUid**
@@ -67,7 +67,7 @@ In this case — `ONSIGNB2EDOCUMENTSTATUSCHANGED` ||
 || **data.statusName**
 [`string`](../../data-types.md) | Document status name ||
 || **ts**
-[`timestamp`](../../data-types.md) | Date and time the event was sent from the [event queue](../../events/index.md) ||
+[`timestamp`](../../data-types.md) | Date and time of the event sent from the [event queue](../../events/index.md) ||
 || **auth**
 [`object`](../../data-types.md) | Object with authorization parameters and portal data.
 
@@ -76,9 +76,9 @@ The structure is described [below](#auth) ||
 
 ### Parameter auth {#auth}
 
-{% include notitle [Table with keys in the auth array](../../../_includes/auth-params-in-events.md) %}
+{% include notitle [Auth parameters in events](../../../_includes/auth-params-in-events.md) %}
 
-## Continue Your Exploration
+## Continue Learning
 
 - [{#T}](../../events/index.md)
 - [{#T}](../../events/event-bind.md)

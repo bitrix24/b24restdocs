@@ -1,4 +1,4 @@
-# Overview of mass-market application installation
+# Mass-Market Application Installation Overview
 
 {% note tip "" %}
 
@@ -6,37 +6,43 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-Published mass-market solutions are installed by users on their Bitrix24 from the Bitrix24 Marketplace.
+Before it can function, a mass-market application must be installed on a specific Bitrix24 instance. This page explains the four available installation process options and how they differ. After reading this, you will be able to select the most suitable installation method for your application.
 
-Additionally, during the development stage, you can install an application from the developer console onto any Bitrix24 to which you have administrative access.
+This page provides an overview and selection criteria. For step-by-step configuration of each option, see the child pages via the links below.
 
-A normal scenario for creating mass-market solutions is that the developer first "creates" the application in the developer console, then writes and tests the code by installing the application under development on an available Bitrix24, and only after ensuring it is fully ready, submits the solution for moderation. More details can be found in the [corresponding section](../../../market/preparing-to-publish/how-to-add-app.md).
+## Mass-Market Application Workflow
 
-When developing an application, you must understand what the installation procedure will be and whether it is even necessary.
+What installation is and why it is required is described in the [{#T}](../index.md) overview. Below is a summary of what is specific to mass-market applications.
 
-In fact, "installing an application" on a specific Bitrix24 is not a solution upload or a download (with the exception of website templates and other "configuration solutions" that work without the REST API), but rather the "registration" of the application on the Bitrix24 where the installation is occurring. This registration is required solely so that the authorization server begins issuing OAuth tokens to your application for the users of that specific Bitrix24.
+The standard workflow is as follows: a developer creates an application in the Developer resources, writes and tests the code by installing the application from the developer portal onto an available Bitrix24 instance with administrative access, and only after verifying readiness submits the solution for moderation. Once published, users install the solution from the Bitrix24 Market. For more details on preparing for publication, see the [{#T}](../../../market/preparing-to-publish/how-to-add-app.md) section.
 
-Accordingly, depending on the user onboarding scenario for your application, you must choose an installation scenario.
+The installation option is chosen based on the user onboarding scenario. Determine in advance what the installation procedure will be and whether it is necessary at all.
 
-There are 4 options for the installation process that will be used during application installation:
+## Installation Process Options
 
-- Addition without an installation scenario;
-- [Addition with an installation wizard](./installation-master.md);
-- [Addition with a configuration wizard for a REST-only application](./rest-only-installation-master.md);
-- [Addition with an installation callback call](./installation-callback.md).
+There are four installation process options:
 
-The second option is most commonly chosen for mass-market applications simply because "installing" an application often requires performing certain "one-time" procedures, such as registering widget integration locations, registering event handlers, etc.
+- **Addition without an installation scenario** — the application begins working immediately after installation. This is suitable when the application does not require one-time configurations during installation.
+- **[Addition with an installation wizard](./installation-master.md)** — during installation, Bitrix24 opens your interface, where one-time operations can be performed, such as registering widgets, subscribing to events, and more. This is suitable for applications with a user interface that require initial configuration.
+- **[Addition with a configuration wizard for REST-only applications](./rest-only-installation-master.md)** — a built-in Bitrix24 form for applications without their own interface. This is suitable when simple configurations are required and data from a callback handler is insufficient.
+- **[Addition with an installation callback](./installation-callback.md)** — after installation, Bitrix24 sends OAuth tokens to your handler. This is suitable for applications without an interface, where all logic operates within event handlers.
 
-## Addition without an installation scenario
+An installation wizard is most commonly chosen for mass-market applications. During installation, it is usually necessary to perform one-time operations, such as registering widget integration points, subscribing to events, and more.
 
-To ensure that no installation procedure as such exists and the application works immediately, it is sufficient to fill in the "Application link" field in the version card, specifying the main application URL that will subsequently be used to embed the application interface into the Bitrix24 left menu.
+The three options with dedicated pages are covered in detail via the links in the list above. The "Addition without an installation scenario" option is described on this page.
 
-Similarly, in the case of a static application consisting of an archive with html/js files, you only need to have an index.html file in that archive.
+## Adding Without an Installation Scenario
 
-In both cases, after installing the application, it will already be available to users without any "special" installation procedure.
+To bypass the installation procedure so that the application is immediately functional, fill in the "App URL" field in the version card. Enter the main application URL here; this is the address used to embed the application interface into the Bitrix24 left menu.
 
-If your application does not have a user interface, you need to disable the "Add your own page and item in the main menu" option. In this case, even though you still do not need an "installation" as such, you still need REST API tokens for further use. In this case, you cannot do without a [callback handler](./installation-callback.md), which will receive a call from Bitrix24 immediately after the application is installed.
+For a static application—an archive containing HTML and JS files—simply include an `index.html` file in the archive.
+
+In both cases, once installed, the application is immediately available to users without a separate installation procedure.
+
+If the application does not have a user interface, disable the "Add your own page and item to the main menu" option. In this case, installation is not required, but the application still needs Bitrix24 REST API tokens. A [callback handler](./installation-callback.md), which Bitrix24 calls immediately after installation, will help you obtain them.
 
 ## Continue Learning
 
+- [Mass-Market Application Installation Wizard](./installation-master.md) — how to perform one-time configurations during application installation
+- [Installation Callback](./installation-callback.md) — how to obtain OAuth tokens for an application without an interface
 - [{#T}](../../system-user.md)

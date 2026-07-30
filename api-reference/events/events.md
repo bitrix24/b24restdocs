@@ -1,4 +1,4 @@
-# Get a list of available events
+# Get a List of Available Events
 
 {% note tip "" %}
 
@@ -14,7 +14,7 @@ The method works only in the context of authorizing the [application](../../sett
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../_includes/required.md) %}
+{% include [Note on parameters](../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -33,7 +33,7 @@ The method works only in the context of authorizing the [application](../../sett
 
 - cURL (OAuth)
 
-    Example #1
+    Example №1
 
     ```curl
     curl -X POST \
@@ -46,7 +46,7 @@ The method works only in the context of authorizing the [application](../../sett
     https://**put_your_bitrix24_address**/rest/events
     ```
     
-    Example #2
+    Example №2
     
     ```curl
     curl -X POST \
@@ -59,9 +59,9 @@ The method works only in the context of authorizing the [application](../../sett
     https://**put_your_bitrix24_address**/rest/events
     ```
 
-- JS
+- BX24.js
 
-    Example #1
+    Example №1
 
     ```js
     BX24.callMethod(
@@ -79,7 +79,7 @@ The method works only in the context of authorizing the [application](../../sett
     );
     ```
     
-    Example #2
+    Example №2
     
     ```js
     BX24.callMethod(
@@ -99,7 +99,7 @@ The method works only in the context of authorizing the [application](../../sett
 
 - PHP
 
-    Example #1
+    Example №1
     
     ```php
     require_once('crest.php');
@@ -116,7 +116,7 @@ The method works only in the context of authorizing the [application](../../sett
     echo '</PRE>';
     ```
 
-    Example #2
+    Example №2
     
     ```php
     require_once('crest.php');
@@ -268,7 +268,7 @@ HTTP status: **200**
 
 ## Error Handling
 
-{% include [system errors](../../_includes/system-errors.md) %}
+{% include [System errors](../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

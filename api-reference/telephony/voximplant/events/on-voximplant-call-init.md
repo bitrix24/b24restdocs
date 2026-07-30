@@ -18,7 +18,7 @@ Events will not be sent to the application until the installation is complete. [
 
 {% endnote %}
 
-## What the handler receives
+## What the Handler Receives
 
 Data is transmitted as a POST request {.b24-info}
 
@@ -34,7 +34,7 @@ Data is transmitted as a POST request {.b24-info}
             "CALL_ID": "5E316880469A6376.1773306964.8740011",
             "CALL_TYPE": "1",
             "ACCOUNT_SEARCH_ID": "reg150908",
-            "PHONE_NUMBER": "+19999999666",
+            "PHONE_NUMBER": "+499999996666",
             "CALLER_ID": "reg150908"
         },
         "ts": "1773306964",
@@ -61,7 +61,7 @@ Data is transmitted as a POST request {.b24-info}
         "data": {
             "CALL_ID": "externalCall.7b0c7de811455ef32b18dc5917e4306a.1773239327",
             "CALL_TYPE": "1",
-            "CALLER_ID": "+19061234567",
+            "CALLER_ID": "+499061234567",
             "REST_APP_ID": "3"
         },
         "ts": "1773239326",
@@ -83,30 +83,30 @@ Data is transmitted as a POST request {.b24-info}
 {% endlist %}
 
 #|
-|| **Parameter**
+|| **parameter**
 `type` | **Description** ||
 || **event**
 [`string`](../../../data-types.md) | Symbolic code of the event.
 
 In this case — `ONVOXIMPLANTCALLINIT` ||
 || **event_handler_id**
-[`string`](../../../data-types.md) | Identifier of the event handler ||
+[`integer`](../../../data-types.md) | Identifier of the event handler ||
 || **data**
-[`object`](../../../data-types.md) | Object containing event data.
+[`object`](../../../data-types.md) | Object with event data.
 
 The structure is described [below](#data) ||
 || **ts**
-[`timestamp`](../../../data-types.md) | Date and time the event was sent from the [event queue](../../../events/index.md) ||
+[`timestamp`](../../../data-types.md) | Date and time of the event sent from the [event queue](../../../events/index.md) ||
 || **auth**
-[`object`](../../../data-types.md) | Object containing user authorization parameters under which the event was triggered.
+[`object`](../../../data-types.md) | Object containing authorization parameters of the user on behalf of whom the event was triggered.
 
 The structure is described [below](#auth) ||
 |#
 
-### Data Parameter {#data}
+### Parameter data {#data}
 
 #|
-|| **Parameter**
+|| **parameter**
 `type` | **Description** ||
 || **CALL_ID**
 [`string`](../../../data-types.md) | Identifier of the call ||
@@ -142,12 +142,14 @@ This field is returned when using rented numbers or SIP ||
 This field is returned when using the telephony application ||
 |#
 
-### Auth Parameter {#auth}
+### Parameter auth {#auth}
 
-{% include notitle [Table with keys in the auth array](../../../../_includes/auth-params-in-events.md) %}
+{% include notitle [Auth parameters in events](../../../../_includes/auth-params-in-events.md) %}
 
 ## Continue Learning
 
+- [{#T}](../../../events/index.md)
+- [{#T}](../../../events/event-bind.md)
 - [{#T}](./on-voximplant-call-start.md)
 - [{#T}](./on-voximplant-call-end.md)
 - [{#T}](../../telephony-external-call-register.md)

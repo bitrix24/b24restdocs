@@ -1,8 +1,8 @@
-# How to Transfer a Deal from One Object Type to Another
+# How to Move an Activity from One Object Type to Another
 
 > Scope: [`crm`](../../../api-reference/scopes/permissions.md)
 >
-> Who can execute the method: users with permission to modify CRM entities
+> Who can execute the method: users with permission to edit CRM items
 
 {% note tip "" %}
 
@@ -10,25 +10,39 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-Activities associated with CRM items are stored in the item card timeline. Moving activities may be required between items of different types: [lead](../../../api-reference/crm/leads/index.md), [deal](../../../api-reference/crm/deals/index.md), [contact](../../../api-reference/crm/contacts/index.md), [company](../../../api-reference/crm/companies/index.md), [invoice](../../../api-reference/crm/universal/invoice.md), [SPA](../../../api-reference/crm/universal/index.md). For example, a customer has two e-mail addresses, but only one is saved in the company card of your Bitrix24. When the customer writes an e-mail from the second, unknown address, Webmail will create a new lead instead of attaching the e-mail to the existing company card. To store customer information in one place, you can move an activity from a lead to a company card.
+Activities associated with CRM items are stored in the item card's Timeline. Moving activities may be required between items of different types: [lead](../../../api-reference/crm/leads/index.md), [deal](../../../api-reference/crm/deals/index.md), [contact](../../../api-reference/crm/contacts/index.md), [company](../../../api-reference/crm/companies/index.md), [invoice](../../../api-reference/crm/universal/invoice.md), [SPA](../../../api-reference/crm/universal/index.md). For example, a customer has two e-mail addresses, but only one is saved in your Bitrix24 company card. When the customer writes an e-mail from the second, unknown address, Webmail will create a new lead instead of attaching the e-mail to the existing company card. To store customer information in one place, you can move an activity from a lead to a company card.
+
+Moving between different object types consists of two operations: first, add the activity link to the new object, then delete the link to the old one. As a result of the scenario, the activity will appear in the company Timeline and disappear from the lead Timeline.
+
+{% note warning "" %}
+
+The [crm.activity.binding.move](../../../api-reference/crm/timeline/activities/binding/crm-activity-binding-move.md) method is not suitable here: it only moves an activity between items of the same type. If the types are different, the method will return error `SOURCE_AND_TARGET_ENTITY_TYPES_ARE_NOT_EQUAL_ERROR`. To move an activity between two leads or two deals, use the [How to Move an Activity Between Items of the Same Type](./how-to-move-activity.md) scenario.
+
+{% endnote %}
 
 To move an activity, we will sequentially execute four methods:
 
 1. [crm.activity.list](../../../api-reference/crm/timeline/activities/activity-base/crm-activity-list.md) — retrieve the activity ID
 
-2. [crm.company.list](../../../api-reference/crm/companies/crm-company-list.md) — retrieve the company ID for transferring the activity
+2. [crm.company.list](../../../api-reference/crm/companies/crm-company-list.md) — retrieve the company ID to which the activity will be moved
 
-3. [crm.activity.binding.add](../../../api-reference/crm/timeline/activities/binding/crm-activity-binding-add.md) — add the binding of the activity to the company
+3. [crm.activity.binding.add](../../../api-reference/crm/timeline/activities/binding/crm-activity-binding-add.md) — add the activity link to the company
 
-4. [crm.activity.binding.delete](../../../api-reference/crm/timeline/activities/binding/crm-activity-binding-delete.md) — remove the binding of the activity from the lead
+4. [crm.activity.binding.delete](../../../api-reference/crm/timeline/activities/binding/crm-activity-binding-delete.md) — delete the activity link to the lead
 
-## 1. Retrieving the Activity ID {#first}
+The order of steps 3 and 4 cannot be changed. If you delete the link to the lead first, the activity will be left without its only link, and the method will return error `LAST_BINDING_CANNOT_BE_DELETED`.
 
-We will use the method [crm.activity.list](../../../api-reference/crm/timeline/activities/activity-base/crm-activity-list.md) with the following filter:
+## 1. Retrieve the Activity ID {#first}
 
-- `OWNER_TYPE_ID` — [object type](../../../api-reference/crm/data-types.md#object_type), specify `1` for the lead
+Use the [crm.activity.list](../../../api-reference/crm/timeline/activities/activity-base/crm-activity-list.md) method with a filter:
 
-- `OWNER_ID` — the ID of the item from which the activity will be moved
+- `OWNER_TYPE_ID` — [object type](../../../api-reference/crm/data-types.md#object_type), specify `1` for a lead,
+
+- `OWNER_ID` — the ID of the item from which the activity will be moved.
+
+In the example, we move an activity from lead `1000977`. Lead ID is visible in the address bar of its card, for example `/crm/lead/details/1000977/`, or it can be retrieved using the [crm.lead.list](../../../api-reference/crm/leads/crm-lead-list.md) method.
+
+Without the `select` parameter, the method returns all activity fields. To reduce the response size, specify only the fields required for the scenario: `ID`, `OWNER_TYPE_ID`, `OWNER_ID`, `SUBJECT`, and `DESCRIPTION`.
 
 {% include [Note on examples](../../../_includes/examples.md) %}
 
@@ -50,6 +64,7 @@ We will use the method [crm.activity.list](../../../api-reference/crm/timeline/a
                 "OWNER_TYPE_ID": 1,
                 "OWNER_ID": 1000977
             },
+            select: [ "ID", "OWNER_TYPE_ID", "OWNER_ID", "SUBJECT", "DESCRIPTION" ]
         }
     });
     ```
@@ -68,109 +83,74 @@ We will use the method [crm.activity.list](../../../api-reference/crm/timeline/a
     $logger->pushHandler(new StreamHandler('php://stdout'));
 
     $serviceBuilder = (new ServiceBuilderFactory(new EventDispatcher(), $logger))
-        ->initFromWebhook('https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/');
+        ->initFromWebhook(getenv('B24_HOOK'));
+    // B24_HOOK = 'https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/'
 
-    $result = $serviceBuilder->getCRMScope()->activity()->list(
+    $activities = $serviceBuilder->getCRMScope()->activity()->list(
         [],
         [
             'OWNER_TYPE_ID' => 1,
             'OWNER_ID' => 1000977,
         ],
-        [],
+        [
+            'ID', 'OWNER_TYPE_ID', 'OWNER_ID', 'SUBJECT', 'DESCRIPTION'
+        ],
         0
-    );
+    )->getActivities();
     ```
 
 - Python
 
     ```python
+    import os
+
     from b24pysdk import BitrixWebhook, Client
 
     client = Client(
         BitrixWebhook(
             domain="your-domain.bitrix24.com",
-            webhook_token="user_id/webhook_key",
+            webhook_token=os.environ["B24_HOOK_TOKEN"],
         )
     )
+    # B24_HOOK_TOKEN = 'user_id/webhook_key'
 
     result = client.crm.activity.list(
         filter={
             "OWNER_TYPE_ID": 1,
             "OWNER_ID": 1000977,
-        }
+        },
+        select=["ID", "OWNER_TYPE_ID", "OWNER_ID", "SUBJECT", "DESCRIPTION"],
     ).response.result
     ```
 
 {% endlist %}
 
-As a result, you will retrieve all activities associated with the specified item.
+As a result, we will retrieve all activities associated with the specified item.
 
 ```JSON
 {
     "result": [
         {
             "ID": "7685",
-            "OWNER_ID": "1000977",
             "OWNER_TYPE_ID": "1",
-            "TYPE_ID": "4",
-            "PROVIDER_ID": "CRM_EMAIL",
-            "PROVIDER_TYPE_ID": "EMAIL",
-            "PROVIDER_GROUP_ID": null,
-            "ASSOCIATED_ENTITY_ID": "0",
+            "OWNER_ID": "1000977",
             "SUBJECT": "for leads",
-            "CREATED": "2025-03-10T10:57:41+03:00",
-            "LAST_UPDATED": "2025-03-10T10:57:41+03:00",
-            "START_TIME": "2025-03-10T10:57:34+03:00",
-            "END_TIME": "2025-03-10T20:00:00+03:00",
-            "DEADLINE": "9999-12-31T00:00:00+03:00",
-            "COMPLETED": "N",
-            "STATUS": "1",
-            "RESPONSIBLE_ID": "29",
-            "PRIORITY": "2",
-            "NOTIFY_TYPE": "0",
-            "NOTIFY_VALUE": "0",
-            "DESCRIPTION": "<div>first email</div>\r\n",
-            "DESCRIPTION_TYPE": "3",
-            "DIRECTION": "1",
-            "LOCATION": "",
-            "SETTINGS": {
-                "EMAIL_META": {
-                    "__email": "some_email@gmail.com",
-                    "from": "Some client <some_client@gmail.com>",
-                    "replyTo": "",
-                    "to": "\"some_email@gmail.com\" <some_email@gmail.com>",
-                    "cc": "",
-                    "bcc": ""
-                },
-                "SANITIZE_ON_VIEW": 1
-            },
-            "ORIGINATOR_ID": null,
-            "ORIGIN_ID": null,
-            "AUTHOR_ID": "1",
-            "EDITOR_ID": "29",
-            "PROVIDER_PARAMS": [],
-            "PROVIDER_DATA": null,
-            "RESULT_MARK": "0",
-            "RESULT_VALUE": null,
-            "RESULT_SUM": null,
-            "RESULT_CURRENCY_ID": null,
-            "RESULT_STATUS": "0",
-            "RESULT_STREAM": "0",
-            "RESULT_SOURCE_ID": null,
-            "AUTOCOMPLETE_RULE": "0"
-        },
+            "DESCRIPTION": "<div>first email</div>\r\n"
+        }
     ],
-    "total": 1,
+    "total": 1
 }
 ```
 
-## 2. Retrieving the Company ID {#second}
+We will save the activity `ID`: `7685`. We will pass this value into the parameter `activityId` in steps 3 and 4.
 
-We will use the method [crm.company.list](../../../api-reference/crm/companies/crm-company-list.md) with the following filter:
+## 2. Retrieve the Company ID {#second}
 
-- `TITLE` — the company name
+Use the [crm.company.list](../../../api-reference/crm/companies/crm-company-list.md) method with a filter:
 
-To limit the returned fields, we will add the `select` parameter and specify only the `ID` and `TITLE` fields.
+- `TITLE` — the company name.
+
+To limit the returned fields, add the `select` parameter and specify only the `ID` and `TITLE` fields.
 
 {% list tabs %}
 
@@ -189,7 +169,7 @@ To limit the returned fields, we will add the `select` parameter and specify onl
 - PHP
 
     ```php
-    $result = $serviceBuilder->getCRMScope()->company()->list(
+    $companies = $serviceBuilder->getCRMScope()->company()->list(
         [],
         [
             'TITLE' => 'Company_Name'
@@ -198,7 +178,7 @@ To limit the returned fields, we will add the `select` parameter and specify onl
             'ID', 'TITLE'
         ],
         0
-    );
+    )->getCompanies();
     ```
 
 - Python
@@ -214,7 +194,7 @@ To limit the returned fields, we will add the `select` parameter and specify onl
 
 {% endlist %}
 
-As a result, you will retrieve the company ID — `ID`: `173`.
+As a result, you will obtain the company ID — `ID`: `173`. We will pass this value into the `entityId` parameter in step 3.
 
 ```JSON
 {
@@ -224,19 +204,19 @@ As a result, you will retrieve the company ID — `ID`: `173`.
             "TITLE": "Company_Name"
         }
     ],
-    "total": 1,
+    "total": 1
 }
 ```
 
-## 3. Adding the Binding of the Activity to the Company
+## 3. Add the Activity Link to the Company
 
-To bind the activity and the company, we will use the method [crm.activity.binding.add](../../../api-reference/crm/timeline/activities/binding/crm-activity-binding-add.md) with the following parameters:
+To link the activity and the company, use the [crm.activity.binding.add](../../../api-reference/crm/timeline/activities/binding/crm-activity-binding-add.md) method with the following parameters:
 
-- `activityId` — the activity ID retrieved in [step 1](#first) using the [crm.activity.list](../../../api-reference/crm/timeline/activities/activity-base/crm-activity-list.md) method
+- `activityId` — the activity ID obtained in [step 1](#first) using the [crm.activity.list](../../../api-reference/crm/timeline/activities/activity-base/crm-activity-list.md) method,
 
-- `entityTypeId` — the [object type](../../../api-reference/crm/data-types.md#object_type) ID, specify `4` for the company
+- `entityTypeId` — the [object type](../../../api-reference/crm/data-types.md#object_type) ID; specify `4` for the company,
 
-- `entityId` — the company ID retrieved in [step 2](#second) using the [crm.company.list](../../../api-reference/crm/companies/crm-company-list.md) method
+- `entityId` — the company ID obtained in [step 2](#second) using the [crm.company.list](../../../api-reference/crm/companies/crm-company-list.md) method.
 
 {% list tabs %}
 
@@ -256,6 +236,7 @@ To bind the activity and the company, we will use the method [crm.activity.bindi
 - PHP
 
     ```php
+    // crm.activity.binding.add does not have a typed wrapper — calling via core
     $result = $serviceBuilder->core->call(
         'crm.activity.binding.add',
         [
@@ -278,23 +259,23 @@ To bind the activity and the company, we will use the method [crm.activity.bindi
 
 {% endlist %}
 
-As a result, we will receive `true`, indicating that the binding for the activity was successfully created. If you receive an `error` in the result, refer to the documentation for the method [crm.activity.binding.add](../../../api-reference/crm/timeline/activities/binding/crm-activity-binding-add.md) to understand possible errors.
+As a result, you will receive `true`, indicating that the activity link was added successfully. The activity is now linked to two elements simultaneously — the lead and the company.
 
 ```JSON
 {
-    "result": true,
+    "result": true
 }
 ```
 
-## 4. Removing the Binding of the Activity from the Lead
+## 4. Delete the Activity Link to the Lead
 
-We will use the method [crm.activity.binding.delete](../../../api-reference/crm/timeline/activities/binding/crm-activity-binding-delete.md) with the following parameters:
+Use the [crm.activity.binding.delete](../../../api-reference/crm/timeline/activities/binding/crm-activity-binding-delete.md) method with the following parameters:
 
-- `activityId` — The activity ID obtained in [Step 1](#first) using the [crm.activity.list](../../../api-reference/crm/timeline/activities/activity-base/crm-activity-list.md) method
+- `activityId` — the activity ID obtained in [step 1](#first) using the [crm.activity.list](../../../api-reference/crm/timeline/activities/activity-base/crm-activity-list.md) method,
 
-- `entityTypeId` — The [object type](../../../api-reference/crm/data-types.md#object_type) ID; specify `1` for a lead
+- `entityTypeId` — the [object type](../../../api-reference/crm/data-types.md#object_type) ID; specify `1` for the lead,
 
-- `entityId` — The lead ID from which the activity is being removed
+- `entityId` — the lead ID from which the activity is being removed.
 
 {% list tabs %}
 
@@ -314,6 +295,7 @@ We will use the method [crm.activity.binding.delete](../../../api-reference/crm/
 - PHP
 
     ```php
+    // crm.activity.binding.delete does not have a typed wrapper — calling via core
     $result = $serviceBuilder->core->call(
         'crm.activity.binding.delete',
         [
@@ -336,11 +318,11 @@ We will use the method [crm.activity.binding.delete](../../../api-reference/crm/
 
 {% endlist %}
 
-As a result, we will receive `true`, indicating that the binding of the activity from the lead was successfully removed. If you receive an `error` in the result, refer to the documentation for the method [crm.activity.binding.delete](../../../api-reference/crm/timeline/activities/binding/crm-activity-binding-delete.md) to understand possible errors.
+As a result, you will receive `true`, indicating that the activity link to the lead was deleted successfully. The transfer is complete: the activity now has only one link — to the company.
 
 ```JSON
 {
-    "result": true,
+    "result": true
 }
 ```
 
@@ -365,14 +347,15 @@ As a result, we will receive `true`, indicating that the binding of the activity
         return result.getData().result;
     }
 
-    // Function to perform all steps
+    // Function to execute all steps
     async function transferActivityToCompany(leadId, companyName) {
-        // Step 1: Get the task list for the specified lead
+        // Step 1: Get the list of tasks for the specified lead
         const activities = await call("crm.activity.list", {
             filter: {
                 "OWNER_TYPE_ID": 1,
                 "OWNER_ID": leadId
-            }
+            },
+            select: [ "ID", "OWNER_TYPE_ID", "OWNER_ID", "SUBJECT", "DESCRIPTION" ]
         });
         if (activities.length === 0) {
             console.log("Tasks for the specified lead were not found.");
@@ -393,23 +376,23 @@ As a result, we will receive `true`, indicating that the binding of the activity
 
         const companyId = companies[0].ID;
 
-        // Step 3: Create a link between the found task and the company
+        // Step 3: Create a link for the found task and company
         await call('crm.activity.binding.add', {
             activityId: activityId,
             entityTypeId: 4,
             entityId: companyId
         });
 
-        console.log("Task-company link created successfully.");
+        console.log("Link between task and company successfully created.");
 
-        // Step 4: Delete the link between the task and the lead
+        // Step 4: Delete the link between task and lead
         await call('crm.activity.binding.delete', {
             activityId: activityId,
             entityTypeId: 1,
             entityId: leadId
         });
 
-        console.log("Task-lead link deleted successfully.");
+        console.log("Link between task and lead successfully deleted.");
     }
 
     // Request lead ID and company name from the user
@@ -418,7 +401,7 @@ As a result, we will receive `true`, indicating that the binding of the activity
     const companyName = await rl.question("Enter company name: ");
     rl.close();
 
-    // Running function
+    // Run function
     try {
         await transferActivityToCompany(leadId, companyName);
     } catch (error) {
@@ -441,21 +424,24 @@ As a result, we will receive `true`, indicating that the binding of the activity
     $logger->pushHandler(new StreamHandler('php://stdout'));
 
     $serviceBuilder = (new ServiceBuilderFactory(new EventDispatcher(), $logger))
-        ->initFromWebhook('https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/');
+        ->initFromWebhook(getenv('B24_HOOK'));
+    // B24_HOOK = 'https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/'
 
-    // Function to perform all steps
+    // Function to execute all steps
     function transferActivityToCompany($serviceBuilder, $leadId, $companyName) {
         $crm = $serviceBuilder->getCRMScope();
 
         try {
-            // Step 1: Get the task list for the specified lead
+            // Step 1: Get the list of tasks for the specified lead
             $activities = $crm->activity()->list(
                 [],
                 [
                     'OWNER_TYPE_ID' => 1,
                     'OWNER_ID' => $leadId
                 ],
-                [],
+                [
+                    'ID', 'OWNER_TYPE_ID', 'OWNER_ID', 'SUBJECT', 'DESCRIPTION'
+                ],
                 0
             )->getActivities();
 
@@ -481,7 +467,8 @@ As a result, we will receive `true`, indicating that the binding of the activity
 
             $companyId = $companies[0]->ID;
 
-            // Step 3: Create a link between the found task and the company
+            // Step 3: Create a link for the found task and company
+            // crm.activity.binding.add does not have a typed wrapper — calling via core
             $serviceBuilder->core->call(
                 'crm.activity.binding.add',
                 [
@@ -491,9 +478,10 @@ As a result, we will receive `true`, indicating that the binding of the activity
                 ]
             );
 
-            echo "Task-company link created successfully.";
+            echo "Link between task and company successfully created.";
 
-            // Step 4: Delete the link between the task and the lead
+            // Step 4: Delete the link between task and lead
+            // crm.activity.binding.delete does not have a typed wrapper — calling via core
             $serviceBuilder->core->call(
                 'crm.activity.binding.delete',
                 [
@@ -503,7 +491,7 @@ As a result, we will receive `true`, indicating that the binding of the activity
                 ]
             );
 
-            echo "Task-lead link deleted successfully.";
+            echo "Link between task and lead successfully deleted.";
         } catch (\Throwable $e) {
             echo 'Error: ' . $e->getMessage();
         }
@@ -513,13 +501,15 @@ As a result, we will receive `true`, indicating that the binding of the activity
     $leadId = readline("Enter lead ID: ");
     $companyName = readline("Enter company name: ");
 
-    // Running function
+    // Run function
     transferActivityToCompany($serviceBuilder, $leadId, $companyName);
-    ``` 
+    ```
 
 - Python
 
     ```python
+    import os
+
     from b24pysdk import BitrixWebhook, Client
     from b24pysdk.errors import BitrixAPIError
 
@@ -529,7 +519,8 @@ As a result, we will receive `true`, indicating that the binding of the activity
                 filter={
                     "OWNER_TYPE_ID": 1,
                     "OWNER_ID": lead_id,
-                }
+                },
+                select=["ID", "OWNER_TYPE_ID", "OWNER_ID", "SUBJECT", "DESCRIPTION"],
             ).response.result
         except BitrixAPIError as error:
             print(f"Error: {error}")
@@ -569,7 +560,7 @@ As a result, we will receive `true`, indicating that the binding of the activity
         if not add_result:
             return
 
-        print("Task-company link created successfully.")
+        print("Link between task and company successfully created.")
 
         try:
             delete_result = client.crm.activity.binding.delete(
@@ -581,14 +572,15 @@ As a result, we will receive `true`, indicating that the binding of the activity
             print(f"Error: {error}")
         else:
             if delete_result:
-                print("Task-lead link deleted successfully.")
+                print("Link between task and lead successfully deleted.")
 
     client = Client(
         BitrixWebhook(
             domain="your-domain.bitrix24.com",
-            webhook_token="user_id/webhook_key",
+            webhook_token=os.environ["B24_HOOK_TOKEN"],
         )
     )
+    # B24_HOOK_TOKEN = 'user_id/webhook_key'
 
     lead_id = int(input("Enter lead ID: "))
     company_name = input("Enter company name: ")
@@ -597,3 +589,56 @@ As a result, we will receive `true`, indicating that the binding of the activity
     ```
 
 {% endlist %}
+
+## Verify the Result
+
+Open the company card — the transferred e-mail will appear in the Timeline. The activity will no longer be in the lead card: the scenario transfers the link rather than copying it.
+
+You can verify the result via REST using the [crm.activity.binding.list](../../../api-reference/crm/timeline/activities/binding/crm-activity-binding-list.md) method. Pass the `activityId` of the transferred activity to it — the method will return all activity links. After a successful transfer, only one link should remain in the response: the object type `4` and the company ID. The link to the lead, object type `1`, should not be in the response.
+
+```JSON
+{
+    "result": [
+        {
+            "entityTypeId": 4,
+            "entityId": 173
+        }
+    ]
+}
+```
+
+If both links remain in the response, step 4 was not executed — repeat it. If the link to the company does not appear, return to step 3.
+
+## Errors and Diagnostics
+
+If the method returns an error, check the request data.
+
+#|
+|| **Code** | **Reason and action** ||
+|| `LAST_BINDING_CANNOT_BE_DELETED` | You are deleting the only connection of the activity. First, perform step 3 and link the activity to a company, only then delete the connection with the lead ||
+|| `ACTIVITY_IS_ALREADY_BOUND` | The activity is already linked to a company. Step 3 is completed, proceed to step 4 ||
+|| `BINDING_NOT_FOUND` | The activity is not linked to a lead from `entityId`. Check which item you are moving the activity from ||
+|| `NOT_FOUND` | Activity or CRM item not found. Check `activityId` and `entityId` ||
+|| `OWNER_NOT_FOUND` | Activity owner not found. Check `entityTypeId` and `entityId` ||
+|| `ACCESS_DENIED` | The user does not have permission to modify CRM items ||
+|| `100` | Mandatory parameters were not passed. Methods `binding.add` and `binding.delete` require all three: `activityId`, `entityTypeId`, and `entityId` ||
+|#
+
+## Key Considerations
+
+- Activities between items of the same type are moved using a single method [crm.activity.binding.move](../../../api-reference/crm/timeline/activities/binding/crm-activity-binding-move.md); a two-step scenario is not required for this
+- The order of steps 3 and 4 cannot be changed: an activity must always retain at least one link
+- Between steps 3 and 4, the activity is visible in the timeline of both items — both the lead and the company
+- The custom activity fields `OWNER_TYPE_ID` and `OWNER_ID` switch to the company only after step 4, when the activity has only one link remaining. As long as there are two links, the lead remains the owner. After step 4, [crm.activity.list](../../../api-reference/crm/timeline/activities/activity-base/crm-activity-list.md) with a filter by lead will no longer return the moved activity; look for it by company with `OWNER_TYPE_ID` equal to `4`
+- The company in the scenario is only an example of a target object. To move an activity to a deal, find it using the [crm.deal.list](../../../api-reference/crm/deals/crm-deal-list.md) method and pass `2` into `entityTypeId` of step 3. Values for other types can be found in the [object types](../../../api-reference/crm/data-types.md#object_type) reference
+- The [crm.company.list](../../../api-reference/crm/companies/crm-company-list.md) method by filter `TITLE` may return several companies with the same name; verify that you have selected the correct company
+- Rerunning the example on the same lead will not find the already moved activity: the link to the lead no longer exists, and the example will terminate with a message stating that no activities were found
+
+## Continue Learning
+
+- [{#T}](../../../api-reference/crm/timeline/activities/binding/crm-activity-binding-add.md)
+- [{#T}](../../../api-reference/crm/timeline/activities/binding/crm-activity-binding-delete.md)
+- [{#T}](../../../api-reference/crm/timeline/activities/binding/crm-activity-binding-list.md)
+- [{#T}](../../../api-reference/crm/timeline/activities/activity-base/crm-activity-list.md)
+- [{#T}](./how-to-move-activity.md)
+- [{#T}](./how-to-change-date-in-activity.md)

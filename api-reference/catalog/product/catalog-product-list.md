@@ -1,4 +1,4 @@
-# Get a list of products by filter catalog.product.list
+# Get a List of Products by Filter catalog.product.list
 
 {% note tip "" %}
 
@@ -8,7 +8,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute the method: administrator
+> Who can execute the method: a user with permission to view the product catalog and permission to read the commercial catalog information block
 
 The method retrieves a list of products from the trade catalog based on a filter.
 
@@ -27,35 +27,35 @@ Required fields: `id`, `iblockId`
 
 Possible values for `field` correspond to the fields of the [catalog_product](../data-types.md#catalog_product) object.
 
-Required fields: `iblockId`.
+Required fields:`iblockId`.
 
-A key can be assigned an additional prefix that clarifies the filter's behavior. Possible prefix values:
+A key can be assigned an additional prefix that specifies the filter behavior. Possible prefix values:
 - `>=` — greater than or equal to
 - `>` — greater than
 - `<=` — less than or equal to
 - `<` — less than
-- `%` — LIKE, substring search. The `%` symbol does not need to be passed in the filter value. The search finds the substring in any position of the string.
-- `=%` — LIKE, substring search. The `%` symbol must be passed in the value. Examples:
+- `%` — LIKE, substring search. The `%` character does not need to be passed in the filter value. The search looks for a substring in any position of the string.
+- `=%` — LIKE, substring search. The `%` character must be passed in the value. Examples:
   - `"mol%"` — searching for values starting with "mol"
   - `"%mol"` — searching for values ending with "mol"
   - `"%mol%"` — searching for values where "mol" can be in any position
 - `%=` — LIKE (similar to `=%`)
-- `!%` — NOT LIKE, substring search. The `%` symbol does not need to be passed in the filter value. The search goes from both sides.
-- `!=%` — NOT LIKE, substring search. The `%` symbol must be passed in the value. Examples:
+- `!%` — NOT LIKE, substring search. The `%` character does not need to be passed in the filter value. The search goes from both sides.
+- `!=%` — NOT LIKE, substring search. The `%` character must be passed in the value. Examples:
   - `"mol%"` — searching for values not starting with "mol"
   - `"%mol"` — searching for values not ending with "mol"
-  - `"%mol%"` — searching for values where the "mol" substring is not present in any position
+  - `"%mol%"` — searching for values where the substring "mol" is not present in any position
 - `!%=` — NOT LIKE (similar to `!=%`)
-- `=` — equal, exact match (used by default). For IN search, you can pass multiple values as an array 
+- `=` — equal, exact match (used by default). For IN searches, you can pass multiple values as an array 
 - `!=` — not equal
-- `!` — not equal. For NOT IN search, you can pass multiple values as an array
+- `!` — not equal. For NOT IN searches, you can pass multiple values as an array
 
-For `propertyN` properties, the value format in `filter` depends on the condition type:
-- if filtering a date or date-time type property by range, use the prefix in the key and pass the value in the `value` field
-- if filtering a numeric, string, or list property by exact match, pass the value directly, without `value`
-- for `IN` and NOT IN search, you can pass an array of values
+For custom fields `propertyN`, the value format in `filter` depends on the condition type:
+- if you are filtering a date or date-time type property by range, use a prefix in the key and pass the value in the `value` field
+- if you are filtering a numeric, string, or list custom field by exact match, pass the value directly without `value`
+- for `IN` and `NOT IN` searches, you can pass an array of values
 
-Examples of filtering by properties:
+Examples of filtering by custom fields:
 
 ```js
 filter: {
@@ -558,7 +558,7 @@ HTTP status: **200**
                 "barcodeMulti": "Y",
                 "bundle": "N",
                 "canBuyZero": "Y",
-                "code": "Product",
+                "code": "Tovar",
                 "createdBy": 1,
                 "dateActiveFrom": "2024-05-28T10:00:00+03:00",
                 "dateActiveTo": "2024-05-29T10:00:00+03:00",
@@ -599,7 +599,7 @@ HTTP status: **200**
                         "valueId": "9737"
                     }
                 ],
-                "purchasingCurrency": "USD",
+                "purchasingCurrency": "EUR",
                 "purchasingPrice": 1000,
                 "quantity": 10,
                 "quantityReserved": 1,
@@ -638,13 +638,13 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | Root response item ||
+[`object`](../../data-types.md) | Root element of the response ||
 || **products**
 [`catalog_product[]`](../data-types.md#catalog_product) | Array of objects containing information about the selected products ||
 || **total**
-[`integer`](../../data-types.md) | Total number of records found ||
+[`integer`](../../data-types.md) | The total number of records found ||
 || **time**
-[`time`](../../data-types.md) | Request execution time information ||
+[`time`](../../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -658,7 +658,7 @@ HTTP status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 

@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can subscribe: any user
 
-The `OnLiveFeedPostUpdate` event is triggered after a message in the News Feed is modified. This allows a third-party application to perform necessary actions when messages are changed, such as sending notifications to discussion participants.
+The `ONLIVEFEEDPOSTUPDATE` event is triggered when a message in the Feed is changed.
 
 {% note info "" %}
 
@@ -47,43 +47,46 @@ Data is transmitted as a POST request {.b24-info}
 }
 ```
 #|
-|| **Parameter**
+|| **parameter**
 `type` | **Description** ||
 || **event**
 [`string`](../../data-types.md) | Symbolic code of the event.
 
-In this case — `ONLIVEFEEDPOSTUPDATE`||
+In this case — `ONLIVEFEEDPOSTUPDATE` ||
 || **event_handler_id**
 [`integer`](../../data-types.md) | Identifier of the event handler ||
 || **data**
-[`object`](../../data-types.md) | Object containing information about the message change in the News Feed.
+[`object`](../../data-types.md) | Object containing information about the message change in the Feed.
 
 Contains a single key `FIELDS` ||
 || **data.FIELDS**
-[`object`](../../data-types.md) | Object containing information about the modified message in the News Feed.
+[`object`](../../data-types.md) | Object containing information about the modified message in the Feed.
 
 The structure is described [below](#fields) ||
 || **ts**
-[`timestamp`](../../data-types.md) | Date and time the event was sent from the [event queue](../../events/index.md) ||
+[`timestamp`](../../data-types.md) | Date and time of the event sent from the [event queue](../../events/index.md) ||
 || **auth**
 [`object`](../../data-types.md) | Object containing authorization parameters and information about the account where the event occurred.
 
 The structure is described [below](#auth) ||
 |#
 
-### FIELDS Parameter {#fields}
+### Parameter FIELDS {#fields}
 
 #|
-|| **Parameter**
+|| **parameter**
 `type` | **Description** ||
-|| **POST_ID** 
+|| **POST_ID**
 [`integer`](../../data-types.md) | Identifier of the modified message in the News Feed ||
 |#
 
-### auth Parameter
+### Parameter auth {#auth}
 
-{% include notitle [Table with keys in the auth array](../../../_includes/auth-params-in-events.md) %}
+{% include notitle [Auth parameters in events](../../../_includes/auth-params-in-events.md) %}
 
-## Continue Exploring
+## Continue Learning
+
 - [{#T}](../../events/index.md)
 - [{#T}](../../events/event-bind.md)
+- [{#T}](./on-live-feed-post-add.md)
+- [{#T}](./on-live-feed-post-delete.md)

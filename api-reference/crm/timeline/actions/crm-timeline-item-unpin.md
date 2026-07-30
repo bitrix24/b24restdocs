@@ -1,4 +1,4 @@
-# Unpin Timeline Item in crm.timeline.item.unpin
+# Unpin a Timeline Entry crm.timeline.item.unpin
 
 {% note tip "" %}
 
@@ -8,13 +8,13 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: a user with permission to edit the CRM item
 
-The method `crm.timeline.item.unpin` unpins a timeline item.
+The `crm.timeline.item.unpin` method unpins a timeline entry.
 
 ## Method Parameters
 
-{% include [Footnote on required parameters](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -24,12 +24,12 @@ The method `crm.timeline.item.unpin` unpins a timeline item.
 || **ownerTypeId***
 [`integer`](../../data-types.md#object_type) | [Identifier of the CRM object type](../../data-types.md#object_type) to which the item is linked, for example `2` for a deal ||
 || **ownerId***
-[`integer`](../../../data-types.md) | Identifier of the CRM object to which the item is linked, for example `10` ||
+[`integer`](../../../data-types.md) | Identifier of the CRM element to which the item is linked, for example `10` ||
 |#
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -238,20 +238,20 @@ HTTP status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
 || **Code** | **Description** ||
-|| `100` | Required fields are missing ||
+|| `100` | Required fields are not provided ||
 || `ACCESS_DENIED` | Insufficient permissions to perform the operation ||
-|| `NOT_FOUND` | Item not found ||
+|| `NOT_FOUND` | Element not found ||
 || `OWNER_NOT_FOUND` | Owner of the item not found ||
 || `CAN_NOT_CHANGE_PINNED` | Unable to perform the operation ||
 |#
 
-{% include [system errors](../../../../_includes/system-errors.md) %}
+{% include [System errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

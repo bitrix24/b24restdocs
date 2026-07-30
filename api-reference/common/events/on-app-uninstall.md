@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can subscribe: any user
 
-The `onAppUninstall` event is triggered when an application is uninstalled.
+The `ONAPPUNINSTALL` event is triggered when an application is uninstalled.
 
 {% note info "" %}
 
@@ -42,19 +42,19 @@ Data is transmitted as a POST request {.b24-info}
 
 ## Request Parameters
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **event***
-[`string`](../../data-types.md) | Symbolic event code — `ONAPPUNINSTALL` ||
+[`string`](../../data-types.md) | Event character code — `ONAPPUNINSTALL` ||
 || **data***
 [`object`](../../data-types.md) | Data about the uninstalled application.
 
 The structure is described [below](#data) ||
 || **ts***
-[`timestamp`](../../data-types.md) | Date and time the event was sent from the queue ||
+[`timestamp`](../../data-types.md) | Date and time of the event sent from the queue ||
 || **auth***
 [`object`](../../data-types.md) | Authorization and account data.
 
@@ -63,32 +63,28 @@ The structure is described [below](#auth) ||
 
 ### Parameter data {#data}
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
-
 #|
 || **Name**
 `type` | **Description** ||
 || **LANGUAGE_ID***
-[`string`](../../data-types.md) | Installed language: `de`, `en`, and others ||
+[`string`](../../data-types.md) | Set language: `ru`, `en` and others ||
 || **CLEAN***
 [`integer`](../../data-types.md) | Value of the "Clear application data" option set by the user during uninstallation. Values: `1` or `0` ||
 |#
 
 ### Parameter auth {#auth}
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
-
 #|
 || **Name**
 `type` | **Description** ||
 || **domain***
-[`string`](../../data-types.md) | Bitrix24 account address ||
+[`string`](../../data-types.md) | Address of the Bitrix24 account ||
 || **server_endpoint***
-[`string`](../../data-types.md) | Authorization server address for token refresh ||
+[`string`](../../data-types.md) | Authorization server address for token renewal ||
 || **client_endpoint***
-[`string`](../../data-types.md) | Common path for API method calls ||
+[`string`](../../data-types.md) | Common path for API method calls to the account ||
 || **member_id***
-[`string`](../../data-types.md) | Unique account identifier ||
+[`string`](../../data-types.md) | Unique identifier of the account ||
 || **application_token***
 [`string`](../../data-types.md) | Token for secure event handling ||
 |#

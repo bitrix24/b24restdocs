@@ -8,9 +8,9 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
-> Who can subscribe: `any user`
+> Who can subscribe: any user
 
-The event triggers when a new deal of type "Comment" is added to the CRM timeline.
+The `onCrmTimelineCommentAdd` event is triggered when a "Comment" type activity is added to the CRM timeline.
 
 {% note info "" %}
 
@@ -22,60 +22,66 @@ Events will not be sent to the application until the installation is complete. [
 
 Data is transmitted as a POST request {.b24-info}
 
-```php
-array(
-    'event' => 'onCrmTimelineCommentAdd',
-    'data' => array(
-        'ID' => 999,
-    ),
-    'ts' => '1466439714',
-    'auth' => array(
-        'access_token' => 's6p6eclrvim6da22ft9ch94ekreb52lv',
-        'expires_in' => '3600',
-        'scope' => 'crm',
-        'domain' => 'some-domain.bitrix24.com',
-        'server_endpoint' => 'https://oauth.bitrix.info/rest/',
-        'status' => 'F',
-        'client_endpoint' => 'https://some-domain.bitrix24.com/rest/',
-        'member_id' => 'a223c6b3710f85df22e9377d6c4f7553',
-        'refresh_token' => '4s386p3q0tr8dy89xvmt96234v3dljg8',
-        'application_token' => '51856fefc120afa4b628cc82d3935cce',
-    ),
-)
+```json
+{
+    "event": "onCrmTimelineCommentAdd",
+    "data": {
+        "ID": 999
+    },
+    "ts": "1466439714",
+    "auth": {
+        "access_token": "s6p6eclrvim6da22ft9ch94ekreb52lv",
+        "expires_in": "3600",
+        "scope": "crm",
+        "domain": "some-domain.bitrix24.com",
+        "server_endpoint": "https://oauth.bitrix.info/rest/",
+        "status": "F",
+        "client_endpoint": "https://some-domain.bitrix24.com/rest/",
+        "member_id": "a223c6b3710f85df22e9377d6c4f7553",
+        "refresh_token": "4s386p3q0tr8dy89xvmt96234v3dljg8",
+        "application_token": "51856fefc120afa4b628cc82d3935cce"
+    }
+}
 ```
 
-{% include [Note on Required Parameters](../../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../../_includes/required.md) %}
 
 #|
 || **Parameter**
 `type` | **Description** ||
 || **event***
-[`string`](../../../data-types.md) | Symbolic code of the event. In our case, it is `onCrmTimelineCommentAdd`||
+[`string`](../../../data-types.md) | Symbolic code of the event.
+
+In this case — `onCrmTimelineCommentAdd` ||
 || **data***
-`array` | Array with data of the added element ||
+[`object`](../../../data-types.md) | An object containing the data of the added comment case.
+
+The structure is described [below](#data) ||
 || **ts***
 [`timestamp`](../../../data-types.md) | Date and time of the event sent from the [event queue](../../../../events/index.md) ||
 || **auth***
-[`array`](../../../data-types.md) | Authorization parameters and information about the account where the event occurred ||
+[`object`](../../../data-types.md) | Object containing authorization parameters and information about the account where the event occurred.
+
+The structure is described [below](#auth) ||
 |#
 
-### Parameter data[]
-
-{% include notitle [Note on Parameters](../../../../../_includes/required.md) %}
+### Parameter data {#data}
 
 #|
 || **Parameter**
 `type` | **Description** ||
 || **ID***
-[`integer`](../../../data-types.md) | `ID` with the value of the added comment's identifier ||
+[`integer`](../../../data-types.md) | Identifier of the added comment ||
 |#
 
-### Parameter auth[]
+### Parameter auth {#auth}
 
-{% include notitle [Table with Keys in the auth Array](../../../../../_includes/auth-params-in-events.md) %}
+{% include notitle [Auth parameters in events](../../../../../_includes/auth-params-in-events.md) %}
 
-## Continue Your Exploration 
+## Continue Learning
 
+- [{#T}](../../../../events/index.md)
+- [{#T}](../../../../events/event-bind.md)
 - [{#T}](./index.md)
 - [{#T}](./on-Crm-Timeline-Comment-Update.md)
 - [{#T}](./on-Crm-Timeline-Comment-Delete.md)

@@ -1,4 +1,4 @@
-# Event on deal deletion onCrmDealDelete
+# Event on Deal Deletion onCrmDealDelete
 
 {% note tip "" %}
 
@@ -12,9 +12,9 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 The event `ONCRMDEALDELETE` will trigger upon the deletion of a deal.
 
-## What the handler receives
+## What the Handler Receives
 
-Data is sent as a POST request {.b24-info}
+Data is transmitted as a POST request {.b24-info}
 
 ```json
 {
@@ -47,7 +47,7 @@ Data is sent as a POST request {.b24-info}
 || **event**
 [`string`](../../../data-types.md) | Symbolic code of the event.
 
-In this case — `ONCRMDEALDELETE`||
+In this case — `ONCRMDEALDELETE` ||
 || **event_handler_id**
 [`integer`](../../../data-types.md) | Identifier of the event handler ||
 || **data**
@@ -55,7 +55,7 @@ In this case — `ONCRMDEALDELETE`||
 
 Contains a single key `FIELDS` ||
 || **data.FIELDS**
-[`object`](../../../data-types.md) | Object containing information about the fields of the deleted deal.
+[`object`](../../../data-types.md) | An object containing information about remote deal fields.
 
 The structure is described [below](#fields) ||
 || **ts**
@@ -77,9 +77,9 @@ The structure is described [below](#auth) ||
 
 ### Parameter auth {#auth}
 
-{% include notitle [Table with keys in the auth array](../../../../_includes/auth-params-in-events.md) %}
+{% include notitle [Auth parameters in events](../../../../_includes/auth-params-in-events.md) %}
 
-## Continue exploring
+## Continue Learning
 
 - [{#T}](../../../events/index.md)
 - [{#T}](../../../events/event-bind.md)

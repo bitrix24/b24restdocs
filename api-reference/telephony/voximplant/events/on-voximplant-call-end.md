@@ -18,7 +18,7 @@ Events will not be sent to the application until the installation is complete. [
 
 {% endnote %}
 
-## What the handler receives
+## What the Handler Receives
 
 Data is transmitted as a POST request {.b24-info}
 
@@ -29,11 +29,11 @@ Data is transmitted as a POST request {.b24-info}
     "data": {
         "CALL_ID": "externalCall.7b0c7de811455ef32b18dc5917e4306a.1773239327",
         "CALL_TYPE": "1",
-        "PHONE_NUMBER": "+19061234567",
+        "PHONE_NUMBER": "+499061234567",
         "PORTAL_NUMBER": "REST_APP:",
         "PORTAL_USER_ID": "1269",
         "CALL_DURATION": "0",
-        "CALL_START_DATE": "2026-03-11T17:28:46+02:00",
+        "CALL_START_DATE": "2026-03-11T17:28:46+03:00",
         "COST": "0",
         "COST_CURRENCY": "",
         "CALL_FAILED_CODE": "304",
@@ -57,22 +57,22 @@ Data is transmitted as a POST request {.b24-info}
 ```
 
 #|
-|| **Parameter**
+|| **parameter**
 `type` | **Description** ||
 || **event**
 [`string`](../../../data-types.md) | Symbolic code of the event.
 
 In this case — `ONVOXIMPLANTCALLEND` ||
 || **event_handler_id**
-[`string`](../../../data-types.md) | Identifier of the event handler ||
+[`integer`](../../../data-types.md) | Identifier of the event handler ||
 || **data**
-[`object`](../../../data-types.md) | Object containing event data.
+[`object`](../../../data-types.md) | Object with event data.
 
 The structure is described [below](#data) ||
 || **ts**
-[`timestamp`](../../../data-types.md) | Date and time the event was sent from the [event queue](../../../events/index.md) ||
+[`timestamp`](../../../data-types.md) | Date and time of the event sent from the [event queue](../../../events/index.md) ||
 || **auth**
-[`object`](../../../data-types.md) | Object with authorization parameters of the user on behalf of whom the event was triggered.
+[`object`](../../../data-types.md) | Object containing authorization parameters of the user on behalf of whom the event was triggered.
 
 The structure is described [below](#auth) ||
 |#
@@ -80,7 +80,7 @@ The structure is described [below](#auth) ||
 ### Parameter data {#data}
 
 #|
-|| **Parameter**
+|| **parameter**
 `type` | **Description** ||
 || **CALL_ID**
 [`string`](../../../data-types.md) | Identifier of the call ||
@@ -134,10 +134,12 @@ Possible values:
 
 ### Parameter auth {#auth}
 
-{% include notitle [Table with keys in the auth array](../../../../_includes/auth-params-in-events.md) %}
+{% include notitle [Auth parameters in events](../../../../_includes/auth-params-in-events.md) %}
 
-## Continue exploring
+## Continue Learning
 
+- [{#T}](../../../events/index.md)
+- [{#T}](../../../events/event-bind.md)
 - [{#T}](./on-voximplant-call-init.md)
 - [{#T}](./on-voximplant-call-start.md)
 - [{#T}](../voximplant-statistic-get.md)

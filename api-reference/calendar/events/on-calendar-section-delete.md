@@ -10,11 +10,11 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can subscribe: any user
 
-This event is triggered when a section or resource is deleted.
+The `ONCALENDARSECTIONDELETE` event is triggered when a section or resource is deleted.
 
 {% note info " " %}
 
-Technically, a resource is a calendar section. Each resource is placed in a special type of calendars, and a separate section is created for it. Events `OnCalendarSection*` are triggered when resources are added, updated, or deleted.
+Technically, a resource is a calendar section. Each resource is placed in a special type of calendar, and a separate section is created for it. Events `OnCalendarSection*` are triggered when resources are added, updated, or deleted.
 
 {% endnote %}
 
@@ -59,28 +59,28 @@ Example: event for deleting a calendar section object with `id = 202`.
 || **event**
 [`string`][1] | Symbolic code of the event.
 
-In this case — `ONCALENDARSECTIONDELETE`||
+In this case — `ONCALENDARSECTIONDELETE` ||
 || **event_handler_id**
 [`integer`][1] | Identifier of the event handler ||
 || **data**
-[`object`][1] | Object containing information about the deleted calendar section object.
+[`object`][1] | An object containing information about a remote calendar section object.
 
 Contains a single key — `id` ||
 || **data.id**
 [`string`][1] | Identifier of the calendar section object ||
 || **ts**
-[`timestamp`][1] | Date and time the event was sent from the [event queue](../../events/index.md) ||
+[`timestamp`][1] | Date and time of the event sent from the [event queue](../../events/index.md) ||
 || **auth**
 [`object`][1] | Object containing authorization parameters and information about the account where the event occurred.
 
 The structure is described [below](#auth) ||
 |#
 
-### auth Parameter {#auth}
+### Parameter auth {#auth}
 
-{% include notitle [Table with keys in the auth array](../../../_includes/auth-params-in-events.md) %}
+{% include notitle [Auth parameters in events](../../../_includes/auth-params-in-events.md) %}
 
-## Continue Exploring 
+## Continue Learning
 
 - [{#T}](../../events/index.md)
 - [{#T}](../../events/event-bind.md)

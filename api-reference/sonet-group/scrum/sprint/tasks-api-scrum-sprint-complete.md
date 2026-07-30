@@ -1,4 +1,4 @@
-# Complete the active sprint of the selected Scrum tasks.api.scrum.sprint.complete
+# Complete the Active Sprint of the Selected Scrum tasks.api.scrum.sprint.complete
 
 {% note tip "" %}
 
@@ -16,7 +16,7 @@ When the sprint is completed, unfinished tasks are moved to the backlog.
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -42,7 +42,7 @@ When the sprint is completed, unfinished tasks are moved to the backlog.
     https://your-domain.bitrix24.com/rest/_USER_ID_/_CODE_/tasks.api.scrum.sprint.complete
     ```
 
-- cURL (oAuth)
+- cURL (OAuth)
 
     ```bash
     curl -X POST \
@@ -156,7 +156,7 @@ When the sprint is completed, unfinished tasks are moved to the backlog.
             ->getResult();
     
         echo 'Success: ' . print_r($result, true);
-        // Your logic for processing data
+        // The data processing logic you need
         processData($result);
     
     } catch (Throwable $e) {
@@ -184,9 +184,9 @@ When the sprint is completed, unfinished tasks are moved to the backlog.
 - PHP CRest
 
     ```php
-    require_once('crest.php'); // connecting CRest PHP SDK
+    require_once('crest.php'); // connecting the CRest PHP SDK
 
-    // executing request to REST API
+    // executing a request to the REST API
     $result = CRest::call(
         'tasks.api.scrum.sprint.complete',
         [
@@ -233,13 +233,13 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result** 
-[`object`](../../../data-types.md) | Object containing data about the sprint ||
+[`object`](../../../data-types.md) | Object containing sprint data ||
 || **id** 
 [`integer`](../../../data-types.md) | Identifier of the sprint ||
 || **groupId** 
 [`integer`](../../../data-types.md) | Identifier of the group (Scrum) to which the sprint belongs ||
 || **entityType** 
-[`string`](../../../data-types.md) | Type of entity (in this case `sprint`) ||
+[`string`](../../../data-types.md) | Entity type (in this case `sprint`) ||
 || **name** 
 [`string`](../../../data-types.md) | Name of the sprint ||
 || **goal** 
@@ -269,19 +269,19 @@ HTTP status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
-|| **Code** | **Error Message** | **Description** ||
+|| **Code** | **Error message** | **Description** ||
 || `0` | `Access denied` | No access to Scrum ||
 || `0` | `Sprint not found` | Active sprint not found in the group ||
 || `100` | `Could not find value for parameter {id}` | Incorrect parameter name or parameter not set ||
 || `100` | `Invalid value {stringValue} to match with parameter {id}. Should be value of type int` | Invalid parameter type ||
 |#
 
-{% include [system errors](../../../../_includes/system-errors.md) %}
+{% include [System errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

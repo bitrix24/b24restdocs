@@ -1,4 +1,4 @@
-# OnSessionStart Chat Creation
+# When Creating an Open Channel Session OnSessionStart
 
 {% note tip "" %}
 
@@ -6,13 +6,13 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-> Scope: [`imopenlines`](../../../scopes/permissions.md) 
+> Scope: [`imopenlines`](../../../scopes/permissions.md)
 >
 > Who can subscribe: any user
 
-The `OnSessionStart` event is triggered when a chat is created.
+The `OnSessionStart` event is triggered when an Open Channel session is created.
 
-You can only [subscribe](../../../events/event-bind.md) to the event through the application. Only those events intended for the [connector](../../imconnector/index.md) added by the application can be received in the handler.
+[Subscribing](../../../events/event-bind.md) to the event can only be done through the application. Only those events intended for the [connector](../../imconnector/index.md) added by the application can be received in the handler.
 
 {% note info "" %}
 
@@ -22,100 +22,168 @@ Events will not be sent to the application until the installation is complete. [
 
 ## What the Handler Receives
 
-Data is transmitted as a POST request
+Data is transmitted as a POST request {.b24-info}
 
-```php
-[
-    'event' => 'ONSESSIONSTART',
-    'eventId' => 1,
-    'data' => [
-        'DATA' => [
-            [
-                'connector' => [
-                    'connector_id' => 'livechat',
-                    'line_id' => 128,
-                    'chat_id' => 10585,
-                    'user_id' => 1984,
-                ],
-                'chat' => [
-                    'id' => 10585
-                ],
-                'user' => [
-                    'id' => 128,
-                    'name' => 'linename'
-                ],
-            ],
-        ],
-    ],
-    'ts' => 1714649632,
-    'auth' => [
-        'access_token' => 's6p6eclrvim6da22ft9ch94ekreb52lv',
-        'expires_in' => 3600,
-        'scope' => 'imopenlines',
-        'domain' => 'some-domain.bitrix24.com',
-        'server_endpoint' => 'https://oauth.bitrix.info/rest/&#39;',
-        'status' => 'F',
-        'client_endpoint' => 'https://some-domain.bitrix24.com/rest/&#39;',
-        'member_id' => 'a223c6b3710f85df22e9377d6c4f7553',
-        'refresh_token' => '4s386p3q0tr8dy89xvmt96234v3dljg8',
-        'application_token' => '51856fefc120afa4b628cc82d3935cce',
-    ],
-]
+```json
+{
+    "event": "ONSESSIONSTART",
+    "eventId": 1,
+    "data": {
+        "DATA": [
+            {
+                "connector": {
+                    "connector_id": "livechat",
+                    "line_id": 128,
+                    "chat_id": 10585,
+                    "user_id": 1984
+                },
+                "session": {
+                    "id": 42,
+                    "closed": "N",
+                    "parent_id": 0,
+                    "close_term": 60
+                },
+                "chat": {
+                    "id": 10585
+                },
+                "user": {
+                    "id": 1984
+                }
+            }
+        ]
+    },
+    "ts": 1714649632,
+    "auth": {
+        "access_token": "s6p6eclrvim6da22ft9ch94ekreb52lv",
+        "expires_in": 3600,
+        "scope": "imopenlines",
+        "domain": "some-domain.bitrix24.com",
+        "server_endpoint": "https://oauth.bitrix.info/rest/",
+        "status": "F",
+        "client_endpoint": "https://some-domain.bitrix24.com/rest/",
+        "member_id": "a223c6b3710f85df22e9377d6c4f7553",
+        "refresh_token": "4s386p3q0tr8dy89xvmt96234v3dljg8",
+        "application_token": "51856fefc120afa4b628cc82d3935cce"
+    }
+}
 ```
 
-## Parameters
-
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 #|
-|| **Name**
+|| **Parameter**
 `type` | **Description** ||
-|| **event*** 
-[`string`](../../../data-types.md) | Symbolic event code ||
-|| **eventId*** 
+|| **event***
+[`string`](../../../data-types.md) | Symbolic code of the event.
+
+In this case — `ONSESSIONSTART` ||
+|| **eventId***
 [`integer`](../../../data-types.md) | Event identifier ||
-|| **data*** 
-[`object`](../../../data-types.md) | Object with [event data](#data) ||
-|| **ts*** 
-[`integer`](../../../data-types.md) | Timestamp of the event sent from the event queue ||
-|| **auth*** 
-[`object`](../../../data-types.md) | Object with authorization parameters and information about the account where the event occurred ||
+|| **data***
+[`object`](../../../data-types.md) | An object containing event data.
+
+The structure is described [below](#data) ||
+|| **ts***
+[`timestamp`](../../../data-types.md) | Date and time of the event sent from the [event queue](../../../events/index.md) ||
+|| **auth***
+[`object`](../../../data-types.md) | Object containing authorization parameters and information about the account where the event occurred.
+
+The structure is described [below](#auth) ||
 |#
 
 ### Parameter data {#data}
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
-
 #|
-|| **Name**
+|| **Parameter**
 `type` | **Description** ||
-|| **DATA*** 
-[`object`](../../../data-types.md) | Object with [chat data](#chat-params) ||
+|| **DATA***
+[`array`](../../../data-types.md) | An array of objects with session data.
+
+The object structure is described [below](#chat-params) ||
 |#
 
-#### Parameter DATA {#chat-params}
+#### Array Element DATA {#chat-params}
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+Each array element `DATA` is an object with the following structure:
 
 #|
-|| **Name**
+|| **Parameter**
 `type` | **Description** ||
-|| **connector*** 
-[`object`](../../../data-types.md) | Object with information about the connector:
-- `connector_id` — connector identifier
-- `line_id` — open line identifier
-- `chat_id` — chat identifier
-- `user_id` — user identifier in the external system
-||
-|| **chat*** 
-[`object`](../../../data-types.md) | Object with information about the chat:
-- `id` — chat identifier ||
-|| **line*** 
-[`object`](../../../data-types.md) | Object with information about the open line:
-- `id` — open line identifier
-- `name` — name of the open line ||
+|| **connector***
+[`object`](../../../data-types.md) | An object with connector information.
+
+The structure is described [below](#connector) ||
+|| **session***
+[`object`](../../../data-types.md) | An object with session information.
+
+The structure is described [below](#session) ||
+|| **chat***
+[`object`](../../../data-types.md) | An object with chat information.
+
+The structure is described [below](#chat) ||
+|| **user***
+[`object`](../../../data-types.md) | An object with user information.
+
+The structure is described [below](#user) ||
 |#
 
-### Parameter auth
+##### Parameter connector {#connector}
 
-{% include notitle [Parameter auth](../../../../_includes/auth-params-in-events.md) %}
+#|
+|| **Parameter**
+`type` | **Description** ||
+|| **connector_id***
+[`string`](../../../data-types.md) | Connector identifier ||
+|| **line_id***
+[`integer`](../../../data-types.md) | Identifier of the open line ||
+|| **chat_id***
+[`integer`](../../../data-types.md) | Identifier of the chat ||
+|| **user_id***
+[`integer`](../../../data-types.md) | User ID in the external system ||
+|#
+
+##### Parameter session {#session}
+
+#|
+|| **Parameter**
+`type` | **Description** ||
+|| **id***
+[`integer`](../../../data-types.md) | Identifier of the session ||
+|| **closed***
+[`string`](../../../data-types.md) | Whether the session is closed: `Y` — yes, `N` — no ||
+|| **parent_id***
+[`integer`](../../../data-types.md) | Previous session identifier ||
+|| **close_term***
+[`integer`](../../../data-types.md) | Time until automatic session closure, in minutes ||
+|#
+
+##### Parameter chat {#chat}
+
+#|
+|| **Parameter**
+`type` | **Description** ||
+|| **id***
+[`integer`](../../../data-types.md) | Identifier of the chat ||
+|#
+
+##### Parameter user {#user}
+
+#|
+|| **Parameter**
+`type` | **Description** ||
+|| **id***
+[`integer`](../../../data-types.md) | User ID in the external system ||
+|#
+
+### Parameter auth {#auth}
+
+{% include notitle [Auth parameters in events](../../../../_includes/auth-params-in-events.md) %}
+
+## Continue Learning
+
+- [{#T}](../../../events/index.md)
+- [{#T}](../../../events/event-bind.md)
+- [{#T}](./on-session-finish.md)
+- [{#T}](./on-open-line-message-add.md)
+- [{#T}](./on-open-line-message-update.md)
+- [{#T}](./on-open-line-message-delete.md)

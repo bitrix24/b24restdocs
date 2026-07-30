@@ -1,11 +1,11 @@
-title: First steps
+title: First Steps
 href: index.md
 items:
   - name: Getting Started
     href: index.md
-  - name: How to Access the REST API 
+  - name: How to Access the REST API
     href: access-to-rest-api.md
-  - name: How to Make Your First API Request 
+  - name: How to Make Your First API Request
     href: first-rest-api-call.md
-  - name: How to Use Examples 
+  - name: How to Use Examples in the Documentation
     href: how-to-use-examples.md

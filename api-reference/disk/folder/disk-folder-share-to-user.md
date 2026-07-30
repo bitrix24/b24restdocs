@@ -22,7 +22,7 @@ The method `disk.folder.sharetouser` assigns access permissions to a folder.
 || **id***
 [`integer`](../../data-types.md) | Identifier of the folder.
 
-The identifier can be obtained using the method [disk.storage.getchildren](../storage/disk-storage-get-children.md) if the folder is located at the root of the storage, and using the method [disk.folder.getchildren](./disk-folder-get-children.md) if the folder is located within another folder ||
+The identifier can be obtained using the method [disk.storage.getchildren](../storage/disk-storage-get-children.md) if the folder is located at the root of the storage, and using the method [disk.folder.getchildren](./disk-folder-get-children.md) if the folder is located in another folder ||
 || **userId***
 [`integer`](../../data-types.md) | Identifier of the user to whom access is granted.
 
@@ -212,7 +212,7 @@ The current user cannot grant permissions higher than their own level. For examp
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -222,8 +222,8 @@ HTTP Status: **200**
         "finish": 1768921228.02202,
         "duration": 1.0220201015472412,
         "processing": 1,
-        "date_start": "2026-01-20T17:00:27+02:00",
-        "date_finish": "2026-01-20T17:00:28+02:00",
+        "date_start": "2026-01-20T17:00:27+03:00",
+        "date_finish": "2026-01-20T17:00:28+03:00",
         "operating_reset_at": 1768921827,
         "operating": 0
     }
@@ -238,12 +238,12 @@ HTTP Status: **200**
 || **result**
 [`boolean`](../../data-types.md) | Returns `true` if permissions are successfully assigned ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the execution time of the request ||
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -252,19 +252,19 @@ HTTP Status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
 || **Code** | **Description** | **Value** ||
 || `ERROR_ARGUMENT` | Invalid value of parameter {Parameter #1} | Required parameter not specified ||
-|| `ERROR_NOT_FOUND` | Could not find entity with id `X` | Folder with the specified `id` not found ||
+|| `ERROR_NOT_FOUND` | Could not find entity with id `X` | The folder with the specified `id` was not found ||
 || `ACCESS_DENIED` | Access denied | Attempt to set permission level higher than the current user's ||
 || `ACCESS_DENIED` | Access denied | Incorrect value provided for parameter `taskName` ||
 |#
 
-{% include [system errors](../../../_includes/system-errors.md) %}
+{% include [System errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

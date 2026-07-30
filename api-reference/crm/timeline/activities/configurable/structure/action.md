@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 ## Link Navigation
 
-If a relative link to standard Bitrix24 objects that support opening in a slider is used, the slider will be displayed. Otherwise, it will be a regular link navigation.
+If a relative link to standard Bitrix24 objects that support opening in a slider is used, the slider will be displayed. Otherwise, a standard link redirection will occur. A link specifying a domain is considered external and will open in a new browser tab.
 
 ### Parameters
 
@@ -21,7 +21,7 @@ If a relative link to standard Bitrix24 objects that support opening in a slider
 || **type^*^**
 [`const`](../../../../data-types.md) | Value `redirect` ||
 || **uri**
-[`string`](../../../../data-types.md) | Valid URI link, for example `https://example.com` or `/crm/deal/details/1/` ||
+[`string`](../../../../data-types.md) | Valid link URI, for example `https://ya.com` or `/crm/deal/details/1/` ||
 |#
 
 ### Example
@@ -61,7 +61,7 @@ Calling the action will generate the event **onCrmTimelineItemAction**. When the
 
 In some cases, sending the event implies that the handler of this event should change the appearance of the record in the timeline. For example, adding new blocks or changing the set of buttons.
 
-To ensure the user sees the update, the `animationType` parameter can be used. If `animationType` is set to **loader** — the timeline record will be blocked and a loader will appear on top of it. The blocking will last until the record is updated via [crm.activity.configurable.update](../crm-activity-configurable-update.md). 
+To ensure the user sees the update, the `animationType` parameter can be used. If `animationType` is set to **loader** — the timeline record will be blocked and a loader will appear on top of it. The blocking will last until the record is updated via [crm.activity.configurable.update](../crm-activity-configurable-update.md).
 If the action is triggered by clicking a button at the bottom of the timeline and `animationType` is set to `disable` — this button will be blocked until the record is updated via [crm.activity.configurable.update](../crm-activity-configurable-update.md).
 
 ### Example
@@ -78,7 +78,7 @@ If the action is triggered by clicking a button at the bottom of the timeline an
 }
 ```
 
-The action is assigned to a button. Clicking it will trigger the event handler `onCrmTimelineItemAction`, registered by the application that created the timeline record. 
+The action is assigned to a button. Clicking it will trigger the event handler `onCrmTimelineItemAction`, registered by the application that created the timeline record.
 The standard parameters `id=resetButtonClick`, `entityTypeId`, `entityId`, `activityId`, `userId` and the parameters defined by the developer — `myId=123` and `someImportant=qwerty` will be passed to the handler. The button will be blocked from the moment it is clicked until the timeline record is updated via `crm.activity.configurable.update`.
 
 ## Opening the Application Slider
@@ -119,7 +119,7 @@ Calling the action will open the slider of the application that created the time
         "someImportant": "qwerty"
     },
     "sliderParams": {
-        "title": "This is the application slider title",
+        "title": "This is the application slider header",
         "width": 700
     }
 }
@@ -132,14 +132,14 @@ Calling the action will open the slider of the application that created the time
 #|
 || **Field** | **Description** | **Additional** ||
 || **width**
-[`int`](../../../../data-types.md) | Width of the slider, `px` | Cannot be used simultaneously with `leftBoundary` ||
+[`int`](../../../../data-types.md) | Slider width, `px` | Cannot be used simultaneously with `leftBoundary` ||
 || **leftBoundary**
-[`int`](../../../../data-types.md) | Slider spans the full width of the browser window with a left margin, `px` | Cannot be used simultaneously with `width` ||
+[`int`](../../../../data-types.md) | Full-width slider for the browser window with a left margin, `px` | Cannot be used simultaneously with `width` ||
 || **title**
-[`string`](../../../../data-types.md) | Text of the browser window title when opening the slider | ||
+[`string`](../../../../data-types.md) | Browser window title text when opening the slider | ||
 |#
 
-## Continue Exploring
+## Continue Learning
 
 - [{#T}](./layout.md)
 - [{#T}](./icon.md)

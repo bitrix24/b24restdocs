@@ -16,20 +16,20 @@ The flow must be associated with a group. If the group ID is not provided when c
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on parameters](../../../_includes/required.md) %}
 
-#| 
+#|
 || **Name**
 `type` | **Description** ||
-|| **flowData*** 
+|| **flowData***
 [`object`](../../data-types.md) | Field values for creating the flow (detailed description below) ||
 |#
 
 ### Parameter flowData
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on parameters](../../../_includes/required.md) %}
 
-#| 
+#|
 || **Name**
 `type` | **Description** ||
 || **name*** 
@@ -77,7 +77,7 @@ For self-distribution or queue distribution, specify the IDs of employees or dep
 
 If you do not add the suffix `:F`, the system will select all sub-departments of the specified department according to the company structure ||
 || **taskCreators** 
-[`object`](../../data-types.md) | A list of users who can add tasks to the flow in the format `{"<entity-type>": "<entity-id>"}`. For example:
+[`object`](../../data-types.md) | List of users who can add tasks to the flow in the `{"<entity-type>": "<entity-id>"}` format. For example
 
 ```js
 [
@@ -90,9 +90,9 @@ If you do not add the suffix `:F`, the system will select all sub-departments of
 ]
 ```
 
-If you do not add the suffix `:F`, the system will select all sub-departments of the specified department according to the company structure.
+If you do not add the `:F` suffix, the system will select all sub-departments of the specified department according to the company structure
 
-To allow all users to add tasks, specify the value `{"meta-user": "all-users"}` ||
+To allow all users to add tasks, specify the value `{"meta-user": "all-users"}`  ||
 || **matchWorkTime** 
 [`integer`](../../data-types.md) | Skip weekends and holidays when calculating the task deadline.
 
@@ -125,7 +125,7 @@ Default is `null`, meaning no notifications ||
 
 ## Code Examples
 
-{% include [Note on Examples](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -149,7 +149,7 @@ Default is `null`, meaning no notifications ||
     https://your-domain.bitrix24.com/rest/_USER_ID_/_CODE_/tasks.flow.Flow.create
     ```
 
-- cURL (oAuth)
+- cURL (OAuth)
 
     ```bash
     curl -X POST \
@@ -361,7 +361,7 @@ Default is `null`, meaning no notifications ||
 - PHP CRest
 
     ```php
-    require_once('crest.php'); // include CRest PHP SDK
+    require_once('crest.php'); // connecting CRest PHP SDK
 
     $flowData = [
         "name" => "Unique Flow Name",
@@ -374,7 +374,7 @@ Default is `null`, meaning no notifications ||
         "notifyAtHalfTime" => 0
     ];
 
-    // execute the request to the REST API
+    // executing a request to the REST API
     $result = CRest::call(
         'tasks.flow.Flow.create',
         [
@@ -382,7 +382,7 @@ Default is `null`, meaning no notifications ||
         ]
     );
 
-    // Handle the response from Bitrix24
+    // Processing the response from Bitrix24
     if ($result['error']) {
         echo 'Error: '.$result['error_description'];
     } else {
@@ -394,7 +394,7 @@ Default is `null`, meaning no notifications ||
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -444,7 +444,7 @@ HTTP Status: **200**
 
 ### Returned Data
 
-#| 
+#|
 || **Name**
 `type` | **Description** ||
 || **result** 
@@ -464,11 +464,11 @@ HTTP Status: **200**
 || **active** 
 [`boolean`](../../data-types.md) | Status of the flow's activity ||
 || **plannedCompletionTime** 
-[`integer`](../../data-types.md) | Planned time to complete the task in seconds ||
+[`integer`](../../data-types.md) | The planned time to complete the task in seconds ||
 || **activity** 
 [`string`](../../data-types.md) | Date and time of the last activity in the flow. Read-only ||
 || **name** 
-[`string`](../../data-types.md) | Name of the flow ||
+[`string`](../../data-types.md) | Flow name ||
 || **description** 
 [`string`](../../data-types.md) | Description of the flow ||
 || **distributionType** 
@@ -492,9 +492,9 @@ HTTP Status: **200**
 || **notifyWhenEfficiencyDecreases** 
 [`integer`](../../data-types.md) | Efficiency in percentage, below which a notification will be sent to the flow administrator (if `null`, notifications are disabled) ||
 || **taskCreators** 
-[`object`](../../data-types.md) | List of users who can add tasks to the flow in the format `{"<object-type>": "<object-id>"}`. For example, `[{"user": 3}, {"department": "17:F"}]`.
+[`object`](../../data-types.md) | List of users who can add tasks to the flow in the `{"<object-type>": "<object-id>"}` format. For example, `[{"user": 3}, {"department": "17:F"}]`.
 
-The element `{"meta-user": "all-users"}` means that all users can add tasks ||
+Item `{"meta-user": "all-users"}` means that all users can add tasks ||
 || **team** 
 [`object`](../../data-types.md) | Flow team.
 
@@ -507,7 +507,7 @@ For queue and self-distribution, the team is the same as in `responsibleList` ||
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -516,19 +516,19 @@ HTTP Status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
-#| 
-|| **Code** | **Description** | **Additional Information** ||
+#|
+|| **Code** | **Description** | **Additional Information**||
 || `0` | Access denied or flow not found | The portal's plan does not allow working with flows or the user does not have permission to create a flow ||
 || `0` | `Unknown error` | Unknown error ||
 || `0` | `'distributionType': field's value has an invalid value` | Invalid value for `distributionType` (similarly for other parameters) ||
 || `0` | A flow with this name already exists | ||
 |#
 
-{% include [system errors](../../../_includes/system-errors.md) %}
+{% include [System errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

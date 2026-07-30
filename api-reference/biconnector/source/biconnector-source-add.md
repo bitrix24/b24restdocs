@@ -8,9 +8,9 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`biconnector`](../../scopes/permissions.md)
 >
-> Who can execute the method: user with access to the "Analyst's Workspace" section
+> Who can execute the method: a user with access to the Analytics hub section
 
-The method `biconnector.source.add` creates a new data source associated with the connector.
+The `biconnector.source.add` method creates a new data source linked to a connector.
 
 ## Method Parameters
 
@@ -286,7 +286,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`integer`](../../data-types.md) | Root element of the response, contains the identifier of the created source ||
+[`object`](../../data-types.md) | Root element of the response. Contains the `id` field with the identifier of the created source ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -302,7 +302,7 @@ HTTP status: **200**
 }
 ```
 
-{% include notitle [error handling](../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
@@ -320,7 +320,7 @@ HTTP status: **200**
 || `BX_ERROR` | Cannot delete source. Delete all related datasets first. | Cannot delete source while related datasets exist ||
 |#
 
-{% include [system errors](../../../_includes/system-errors.md) %}
+{% include [System errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

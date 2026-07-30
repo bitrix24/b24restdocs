@@ -1,4 +1,4 @@
-# Features of REST Calls When Changing the Bitrix24 Address
+# REST Call Peculiarities During Bitrix24 Address Changes
 
 {% note tip "" %}
 
@@ -6,27 +6,27 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-New cloud Bitrix24 accounts are created with generated addresses in the format `b24-xxx.bitrix24.yy`. Users can change this address at any time, subject to certain limitations. These limitations depend on the plan being used.
+New Bitrix24 cloud instances are created with generated addresses in the format `b24-xxx.bitrix24.yy`. Subsequently, users can change this address at any time, subject to certain restrictions. These restrictions depend on the selected subscription plan.
 
-## Why This Is Important to Keep in Mind
+## Why This Is Important to Note
 
-If your application makes a REST call to Bitrix24 and uses a saved address on the application side, there may be a situation where this address is no longer valid.
+If your application makes a Bitrix24 REST call using an address stored on the application side, a situation may arise where this address is no longer valid.
 
-When accessing an outdated address, Bitrix24 performs a redirect to the new one, but this redirect needs to be handled correctly in your code.
+When accessing an outdated address, Bitrix24 performs a redirect to the new one, but such a redirect must be handled correctly within your code.
 
-Most likely, if you are using GET parameters in your REST calls, you won't notice anything unusual, but with POST requests, it gets a bit more complicated.
+You will likely notice nothing when using GET parameters in REST calls, but POST requests are somewhat more complex.
 
-In particular, if you are using PHP and curl, depending on the settings, a POST request during a redirect may "magically" turn into a GET request. In this case, the parameters sent in the POST request are simply lost.
+Specifically, if you are using PHP and curl, depending on your settings, a POST request may "magically" turn into a GET request during a redirect. In this case, the parameters passed in the POST request are simply lost.
 
 {% note info %}
 
-These features of working with the REST API are already taken into account in the [Bitrix SDK](../../first-steps/how-to-use-examples.md).
+These REST API operational peculiarities are already accounted for in the [Bitrix24 SDK](../../sdk/index.md).
 
 {% endnote %}
 
 ## Approach 1
 
-When making a POST request, disable the redirect. If you receive a 302 status code, take the new address from the result and repeat the POST request, but to the new address.
+When performing a POST request, disable redirects. Receive a 302 request status, extract the new address from the result, and repeat the POST request using the new address.
 
 {% list tabs %}
 
@@ -75,4 +75,4 @@ When making a POST request, disable the redirect. If you receive a 302 status co
 
 ## Approach 2
 
-Use the option `curl_setopt($ch, CURLOPT_POSTREDIR, 3)`, which will allow you to handle the redirect situation.
+Use the `curl_setopt($ch, CURLOPT_POSTREDIR, 3)` option, which will allow you to handle the redirect situation.

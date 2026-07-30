@@ -8,10 +8,9 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
-> Who can subscribe: `any user`
+> Who can subscribe: any user
 
-The event is triggered when a [custom CRM type](../../user-defined-object-types/index.md) is deleted.
-
+The `ONCRMTYPEDELETE` event is triggered when a [custom CRM type](../../user-defined-object-types/index.md) is deleted.
 
 {% note info "" %}
 
@@ -49,12 +48,12 @@ Data is transmitted as a POST request {.b24-info}
 ```
 
 #|
-|| **Parameter**
+|| **parameter**
 `type` | **Description** ||
 || **event**
-[`string`][1] | Symbolic event code.
+[`string`][1] | Symbolic code of the event.
 
-In this case — `ONCRMTYPEDELETE`||
+In this case — `ONCRMTYPEDELETE` ||
 || **event_handler_id**
 [`integer`][1] | Identifier of the event handler ||
 || **data**
@@ -62,22 +61,21 @@ In this case — `ONCRMTYPEDELETE`||
 
 Contains a single key `FIELDS` ||
 || **data.FIELDS**
-[`object`][1] | Object containing information about the fields of the deleted custom CRM type.
+[`object`][1] | An object containing information about remote CRM custom type fields.
 
 The structure is described [below](#fields) ||
 || **ts**
-[`timestamp`][1] | Date and time the event was sent from the [event queue](../../../../events/index.md) ||
+[`timestamp`][1] | Date and time of the event sent from the [event queue](../../../../events/index.md) ||
 || **auth**
 [`object`][1] | Object containing authorization parameters and information about the account where the event occurred.
 
 The structure is described [below](#auth) ||
 |#
 
-
 ### Parameter FIELDS {#fields}
 
 #|
-|| **Parameter**
+|| **parameter**
 `type` | **Description** ||
 || **ID**
 [`integer`][1] | Identifier of the deleted custom CRM type (primary key, not type identifier) ||
@@ -85,9 +83,9 @@ The structure is described [below](#auth) ||
 
 ### Parameter auth {#auth}
 
-{% include notitle [Table with keys in the auth array](../../../../../_includes/auth-params-in-events.md) %}
+{% include notitle [Auth parameters in events](../../../../../_includes/auth-params-in-events.md) %}
 
-## Continue Exploring
+## Continue Learning
 
 - [{#T}](../../../../events/index.md)
 - [{#T}](../../../../events/event-bind.md)

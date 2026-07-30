@@ -6,9 +6,9 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-The object that describes the appearance of the [timeline entry](../index.md) is a hierarchical structure of nested objects of various types.
+The object describing the appearance of a [timeline entry](../index.md) is a hierarchical structure of nested objects of various types.
 
-Each of the nested objects has its own set of fields and is described below in the form of DTO (Data Transfer Object).
+Each nested object has its own set of fields and is described below in the form of a DTO (Data Transfer Object).
 
 The top-level object of the timeline entry is `LayoutDto`.
 
@@ -23,14 +23,14 @@ The top-level object of the timeline entry is `LayoutDto`.
 || **icon^*^**
 [`IconDto`](./icon.md) | Icon to the left of the entry ||
 || **header^*^**
-[`HeaderDto`](./header.md) | Title of the entry ||
+[`HeaderDto`](./header.md) | Title of the record ||
 || **body^*^**
 [`BodyDto`](./body.md) | Main content area of the entry ||
 || **footer**
 [`FooterDto`](./footer.md) | Bottom part of the entry with action block ||
 |#
 
-## Example Object
+## Object Example {#primer}
 
 ```json
 {
@@ -38,11 +38,11 @@ The top-level object of the timeline entry is `LayoutDto`.
         "code": "call-completed"
     },
     "header": {
-        "title": "Incoming Call",
+        "title": "Incoming call",
         "tags": {
             "status2": {
                 "type": "warning",
-                "title": "not deciphered"
+                "title": "not transcribed"
             }
         }
     },
@@ -63,7 +63,7 @@ The top-level object of the timeline entry is `LayoutDto`.
                     "block": {
                         "type": "text",
                         "properties": {
-                            "value": "Ltd. Horns and Hooves"
+                            "value": "Müller GmbH"
                         }
                     }
                 }
@@ -75,7 +75,7 @@ The top-level object of the timeline entry is `LayoutDto`.
                         "client": {
                             "type": "link",
                             "properties": {
-                                "text": "Sergey Vostrikov",
+                                "text": "Klaus Weber",
                                 "bold": true,
                                 "action": {
                                     "type": "redirect",
@@ -86,7 +86,7 @@ The top-level object of the timeline entry is `LayoutDto`.
                         "phone": {
                             "type": "text",
                             "properties": {
-                                "value": "+1 999 888 7777"
+                                "value": "+49 999 888 7777"
                             }
                         }
                     }
@@ -97,7 +97,7 @@ The top-level object of the timeline entry is `LayoutDto`.
     "footer": {
         "buttons": {
             "startCall": {
-                "title": "About the Client",
+                "title": "About client",
                 "action": {
                     "type": "openRestApp",
                     "actionParams": {
@@ -111,7 +111,7 @@ The top-level object of the timeline entry is `LayoutDto`.
             "showPostponeItem": "false",
             "items": {
                 "confirm": {
-                    "title": "Confirm Request",
+                    "title": "Confirm request",
                     "action": {
                         "type": "restEvent",
                         "id": "confirm",
@@ -119,7 +119,7 @@ The top-level object of the timeline entry is `LayoutDto`.
                     }
                 },
                 "decline": {
-                    "title": "Decline Request",
+                    "title": "Reject request",
                     "action": {
                         "type": "restEvent",
                         "id": "decline",

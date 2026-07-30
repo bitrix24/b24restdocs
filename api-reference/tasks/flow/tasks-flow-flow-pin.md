@@ -14,15 +14,15 @@ This method pins or unpins a flow in the list of flows by its identifier.
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../_includes/required.md) %}
+{% include [Note on parameters](../../../_includes/required.md) %}
 
-#| 
+#|
 || **Name**
 `type` | **Description** ||
 || **flowId*** 
 [`integer`](../../data-types.md) | The identifier of the flow to be pinned or unpinned.
 
-You can obtain the identifier using the method for creating a new flow [tasks.flow.Flow.create](./tasks-flow-flow-create.md) or by retrieving a task [tasks.task.get](../tasks-task-get.md) for a task from the flow. ||
+You can obtain the identifier using the method for creating a new flow [tasks.flow.Flow.create](./tasks-flow-flow-create.md) or by retrieving a task [tasks.task.get](../tasks-task-get.md) for a task from the flow ||
 |#
 
 ## Code Examples
@@ -42,7 +42,7 @@ You can obtain the identifier using the method for creating a new flow [tasks.fl
     https://your-domain.bitrix24.com/rest/_USER_ID_/_CODE_/tasks.flow.Flow.pin
     ```
 
-- cURL (oAuth)
+- cURL (OAuth)
 
     ```bash
     curl -X POST \
@@ -177,7 +177,7 @@ You can obtain the identifier using the method for creating a new flow [tasks.fl
 - PHP CRest
 
     ```php
-    require_once('crest.php'); // connecting CRest PHP SDK
+    require_once('crest.php'); // connecting the CRest PHP SDK
     
     $flowId = 517;
     
@@ -201,7 +201,7 @@ You can obtain the identifier using the method for creating a new flow [tasks.fl
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -211,7 +211,7 @@ HTTP Status: **200**
 
 ### Returned Data
 
-#| 
+#|
 || **Name** 
 `type` | **Description** ||
 || **result**
@@ -223,7 +223,7 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -234,13 +234,13 @@ HTTP Status: **200**
 
 ### Possible Error Codes
 
-#| 
+#|
 || **Code** | **Description** | **Additional Information** ||
-|| `0` | Access denied or flow not found | The account's plan does not allow working with flows or the user does not have permission to perform the operation. ||
+|| `0` | Access denied or stream not found | The account plan does not allow working with flows or the user does not have permission to perform the operation ||
 || `0` | Unknown error | Unknown error ||
 |#
 
-{% include [system errors](../../../_includes/system-errors.md) %}
+{% include [System errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

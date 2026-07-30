@@ -1,4 +1,4 @@
-# Get the list of connectors biconnector.connector.list
+# Get a List of Connectors biconnector.connector.list
 
 {% note tip "" %}
 
@@ -8,9 +8,9 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`biconnector`](../../scopes/permissions.md)
 >
-> Who can execute the method: user with access to the "Analyst's workspace" section
+> Who can execute the method: a user with access to the Analytics hub section
 
-The method `biconnector.connector.list` returns a list of connectors based on a filter. It is an implementation of the list method for connectors.
+The `biconnector.connector.list` method returns a list of connectors by filter. It is a list-based method implementation for connectors.
 
 ## Method Parameters
 
@@ -29,16 +29,16 @@ The method `biconnector.connector.list` returns a list of connectors based on a 
 }
 ```
 
-You can add a prefix to the keys `field_n` to specify the filter operation.
+A prefix can be added to the keys `field_n` to specify the filter behavior.
 Possible prefix values:
 - `>=` — greater than or equal to
 - `>` — greater than
 - `<=` — less than or equal to
 - `<` — less than
-- `@` — IN, an array is passed as a value
-- `!@` — NOT IN, an array is passed as a value
-- `%` — LIKE, substring search. The `%` symbol in the filter value does not need to be passed. The search looks for a substring in any position of the string
-- `=%` — LIKE, substring search. The `%` symbol needs to be passed in the value. Examples:
+- `@` — IN, an array is passed as the value
+- `!@` — NOT IN, an array is passed as the value
+- `%` — LIKE, substring search. The symbol `%` does not need to be passed in the filter value. The search looks for a substring in any position of the string
+- `=%` — LIKE, substring search. The symbol `%` must be passed in the value. Examples:
 - `"mol%"` — searches for values starting with "mol"
 - `"%mol"` — searches for values ending with "mol"
 - `"%mol%"` — searches for values where "mol" can be in any position
@@ -47,7 +47,7 @@ Possible prefix values:
 - `!=` — not equal
 - `!` — not equal
 
-The list of available fields for filtering can be found using the method [biconnector.connector.fields](./biconnector-connector-fields.md)
+The list of available fields for filtering can be obtained using the [biconnector.connector.fields](./biconnector-connector-fields.md) method
 ||
 || **order**
 [`object`](../../data-types.md) | Sorting parameters. Example format:
@@ -75,15 +75,15 @@ The list of available fields for filtering can be found using the method [biconn
 
 {% include [Note on examples](../../../_includes/examples.md) %}
 
-Get the list of connectors where:
+Get a list of connectors where:
 - the name starts with `MyConnector`
 - the description is not empty
 
 Display only the necessary fields:
 - identifier `id`
 - name `title`
-- endpoint for checking the availability of the source `urlCheck`
-- creation date `dateCreate`
+- endpoint for checking source availability `urlCheck`
+- Create date `dateCreate`
 
 {% list tabs %}
 
@@ -94,17 +94,17 @@ Display only the necessary fields:
          -H "Content-Type: application/json" \
          -H "Accept: application/json" \
          -d '{
-             "SELECT": [
+             "select": [
                  "id",
                  "title",
                  "urlCheck",
                  "dateCreate"
              ],
-             "FILTER": {
+             "filter": {
                  "%=title": "MyConnector%",
                  "!description": ""
              },
-             "ORDER": {
+             "order": {
                  "dateCreate": "DESC"
              }
              }' \
@@ -118,17 +118,17 @@ Display only the necessary fields:
          -H "Content-Type: application/json" \
          -H "Accept: application/json" \
          -d '{
-             "SELECT": [
+             "select": [
                  "id",
                  "title",
                  "urlCheck",
                  "dateCreate"
              ],
-             "FILTER": {
+             "filter": {
                  "%=title": "MyConnector%",
                  "!description": ""
              },
-             "ORDER": {
+             "order": {
                  "dateCreate": "DESC"
              },
              "auth": "**put_access_token_here**"
@@ -384,11 +384,11 @@ HTTP status: **200**
 
 #|
 || **result**
-[`object`](../../data-types.md) | The root element of the response. Contains an array of objects with information about the fields of connectors. 
+[`array`](../../data-types.md) | Response root element. Contains an array of objects with information about connectors.
 
-It should be noted that the structure of fields may change due to the `select` parameter ||
+Note that the field structure may be changed due to the `select` parameter ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the execution time of the request ||
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -402,22 +402,22 @@ HTTP status: **200**
 }
 ```
 
-{% include notitle [error handling](../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `VALIDATION_SELECT_TYPE` | Parameter "select" must be array. | The `select` parameter is not an object ||
-|| `VALIDATION_FILTER_TYPE` | Parameter "filter" must be array. | The `filter` parameter is not an object ||
-|| `VALIDATION_ORDER_TYPE` | Parameter "order" must be array. | The `order` parameter is not an object ||
+|| `VALIDATION_SELECT_TYPE` | Parameter "select" must be array. | The `select` parameter must be an array ||
+|| `VALIDATION_FILTER_TYPE` | Parameter "filter" must be array. | The `filter` parameter must be an array ||
+|| `VALIDATION_ORDER_TYPE` | Parameter "order" must be array. | The `order` parameter must be an array ||
 || `VALIDATION_FIELD_NOT_ALLOWED_IN_SELECT` | Field "#TITLE#" is not allowed in the "select". | These fields are not allowed in the selection ||
 || `VALIDATION_FIELD_NOT_ALLOWED_IN_FILTER` | Field "#TITLE#" is not allowed in the "filter". | These fields are not allowed in the filter ||
 || `VALIDATION_FIELD_NOT_ALLOWED_IN_ORDER` | Field "#TITLE#" is not allowed in the "order". | These fields are not allowed for sorting ||
 || `VALIDATION_INVALID_FILTER_LOGIC` | Field "logic" must be either "AND" or "OR". | The `logic` field can only have the value "AND" or "OR" ||
 |#
 
-{% include [system errors](../../../_includes/system-errors.md) %}
+{% include [System errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
@@ -426,4 +426,3 @@ HTTP status: **200**
 - [{#T}](./biconnector-connector-add.md)
 - [{#T}](./biconnector-connector-delete.md)
 - [{#T}](./biconnector-connector-fields.md)
-

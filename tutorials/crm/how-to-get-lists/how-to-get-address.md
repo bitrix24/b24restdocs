@@ -1,35 +1,53 @@
-# How to Retrieve a Client's Address from CRM
+# How to Retrieve a Customer Address from the CRM
 
 > Scope: [`crm`](../../../api-reference/scopes/permissions.md)
 >
-> Who can execute the method: users with administrative access to the CRM section
+> Who can execute the methods:
+>
+> - [crm.requisite.list](../../../api-reference/crm/requisites/universal/crm-requisite-list.md) — a user with permission to read contacts or companies
+> - [crm.address.list](../../../api-reference/crm/requisites/addresses/crm-address-list.md) — a user with permission to read contacts, companies, and leads simultaneously
+> - [crm.contact.userfield.list](../../../api-reference/crm/contacts/userfield/crm-contact-userfield-list.md) — an administrator
+> - [crm.contact.get](../../../api-reference/crm/contacts/crm-contact-get.md) — a user with permission to read a contact
 
 {% note tip "" %}
 
-If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect the [MCP server](../../../ai-tools/mcp.md) so that the assistant can utilize the official REST documentation.
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../ai-tools/mcp.md) so that the assistant can utilize the official REST documentation.
 
 {% endnote %}
 
-A client's address can be stored in Bitrix:
+A customer address is stored in Bitrix24 in two independent ways.
 
-* in a custom field of the "address" type within any CRM object. To retrieve an address from a field, call the `get` or `list` method for the relevant object type.
-* in the [Company details](../../../api-reference/crm/requisites/index.md) of contacts, companies, and leads. Within a single `Adresse` field, multiple addresses with their respective types may be stored. A single customer may have multiple sets of Company details recorded.
+- In the [Company details](../../../api-reference/crm/requisites/index.md) of contacts and companies. This is the standard method. In the customer card, the address is displayed as a separate Company details field. A single customer may have multiple Company details, and within a single Company details entry, there can be several addresses of different types. Leads do not have Company details; their address is linked directly to the lead itself.
+- In a custom field of type `address`. An administrator creates such a field separately for a specific CRM object type, and the value is stored as a string within the object itself.
 
-To retrieve a customer address from Company details, execute these two methods sequentially:
+These methods are not linked. An address from Company details does not populate a custom field, and an address from a custom field is not visible to `crm.address.*` methods. If it is unknown where a specific customer's address is filled in, check both methods.
 
-1. [crm.requisite.list](../../../api-reference/crm/requisites/universal/crm-requisite-list.md)
-2. [crm.address.list](../../../api-reference/crm/requisites/addresses/crm-address-list.md)
+This tutorial covers both. The primary scenario is retrieving the address from Company details, which consists of two steps.
 
-## 1. Retrieving Requisites Associated with a Contact
+1. Retrieve the customer's Company details identifiers using the [crm.requisite.list](../../../api-reference/crm/requisites/universal/crm-requisite-list.md) method.
+2. Retrieve the addresses for these Company details using the [crm.address.list](../../../api-reference/crm/requisites/addresses/crm-address-list.md) method.
 
-Obtaining the requisite ID is a necessary step, as the address is not directly linked to a contact or company. The address is associated with the requisite entity.
+The second method is described in the [Address From a Custom Field](#userfield) section.
 
-To retrieve the requisites, we use the crm.requisite.list method with the following filter:
+## Prepare the Data
 
-* specify the value `3` in `ENTITY_TYPE_ID` — the identifier for the [contact type](../../../api-reference/crm/data-types.md#object_type). For the company type, use the identifier `4`.
-* specify the contact ID in `ENTITY_ID`, which is `2429` in the example. You can retrieve the ID using the [crm.contact.list](../../../api-reference/crm/contacts/crm-contact-list.md) method with a filter on any known contact field. To retrieve a company ID, use [crm.company.list](../../../api-reference/crm/companies/crm-company-list.md). If you need to retrieve a contact or company ID by phone number or email, use the [“Search for Duplicates by Phone Number”](./search-by-phone-and-email.md) tutorial.
+The following are required for the scenario:
 
-{% include [Example Footnote](../../../_includes/examples.md) %}
+- An incoming webhook with `crm` permission — the examples use it for authorization. Store the webhook URL in an environment variable rather than in the code.
+- A customer identifier. The examples use a contact with `ID` `2429`. You can retrieve the identifier using the [crm.contact.list](../../../api-reference/crm/contacts/crm-contact-list.md) method with a filter on any known contact field, or for a company, using the [crm.company.list](../../../api-reference/crm/companies/crm-company-list.md) method. If only a phone number or Webmail is known, use the [“Search for Duplicates by Phone Number”](./search-by-phone-and-email.md) tutorial.
+
+## 1. Retrieve Company Details Linked to a Contact
+
+An address is not linked directly to a contact or company — it is linked to a Company details entry. Therefore, first retrieve the customer's Company details identifiers.
+
+To do this, use the [crm.requisite.list](../../../api-reference/crm/requisites/universal/crm-requisite-list.md) method with a filter:
+
+- Specify the value `3` in `ENTITY_TYPE_ID` — the identifier for the [contact type](../../../api-reference/crm/data-types.md#object_type). For the company type, use the identifier `4`.
+- Specify the contact identifier in `ENTITY_ID`; in the example, this is `2429`.
+
+{% include [Note on examples](../../../_includes/examples.md) %}
+
+The example steps follow one another. The SDK is initialized once here, and the existing instance is used thereafter.
 
 {% list tabs %}
 
@@ -45,8 +63,8 @@ To retrieve the requisites, we use the crm.requisite.list method with the follow
         method: 'crm.requisite.list',
         params: {
             filter: {
-                ENTITY_TYPE_ID: '3',
-                ENTITY_ID: '2429',
+                ENTITY_TYPE_ID: 3,
+                ENTITY_ID: 2429,
             },
             select: [
                 'ID',
@@ -72,13 +90,14 @@ To retrieve the requisites, we use the crm.requisite.list method with the follow
     $log->pushHandler(new StreamHandler('php://stdout'));
 
     $sb = (new ServiceBuilderFactory(new EventDispatcher(), $log))
-        ->initFromWebhook('https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/');
+        ->initFromWebhook(getenv('B24_HOOK'));
+    // B24_HOOK = 'https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/'
 
     $requisites = $sb->getCRMScope()->requisite()->list(
         [],
         [
-            'ENTITY_TYPE_ID' => '3',
-            'ENTITY_ID' => '2429',
+            'ENTITY_TYPE_ID' => 3,
+            'ENTITY_ID' => 2429,
         ],
         [
             'ID',
@@ -93,20 +112,24 @@ To retrieve the requisites, we use the crm.requisite.list method with the follow
 - Python
 
     ```python
+    import os
+
     from b24pysdk import BitrixWebhook, Client
     from b24pysdk.errors import BitrixAPIError
 
     client = Client(
         BitrixWebhook(
-            domain="your-domain.bitrix24.com",
-            webhook_token="user_id/webhook_key",
+            domain=os.environ["B24_DOMAIN"],
+            webhook_token=os.environ["B24_WEBHOOK_TOKEN"],
         )
     )
+    # B24_DOMAIN = 'your-domain.bitrix24.com'
+    # B24_WEBHOOK_TOKEN = 'user_id/webhook_key'
 
     result = client.crm.requisite.list(
         filter={
-            "ENTITY_TYPE_ID": "3",
-            "ENTITY_ID": "2429",
+            "ENTITY_TYPE_ID": 3,
+            "ENTITY_ID": 2429,
         },
         select=[
             "ID",
@@ -118,31 +141,127 @@ To retrieve the requisites, we use the crm.requisite.list method with the follow
 
 {% endlist %}
 
-We obtained the requisite ID `361` — a parameter necessary for the next request.
+The response will contain a list of the contact's Company details. In the example, there is one Company details entry, and its `ID` is `361`. This is the value required for the next request.
 
- ```json
-    Array
-    (
-     [result] => Array
-        (
-            [0] => Array
-                (
-                    [ID] => 361
-                    [ENTITY_TYPE_ID] => 3
-                    [ENTITY_ID] => 2429
-                )
-        )
-     [total] => 1      
-    )
- ```
+```json
+{
+    "result": [
+        {
+            "ID": "361",
+            "ENTITY_TYPE_ID": "3",
+            "ENTITY_ID": "2429"
+        }
+    ],
+    "total": 1
+}
+```
 
-## 2. Retrieving the Address
+If there are multiple Company details in the response, you must request addresses for each `ID` from `result`.
 
-To obtain the address, we use the crm.address.list method with the following filter:
+## 2. Retrieve Company Details Addresses
 
-* specify the value `8` in `ENTITY_TYPE_ID` — the identifier for the [requisite type](../../../api-reference/crm/data-types.md#object_type).
-* specify the requisite ID obtained in the previous request in `ENTITY_ID`, which is `361` in the example.
-* specify the [Address type](../../../api-reference/crm/auxiliary/enum/crm-enum-address-type.md) in `TYPE_ID` if you need to retrieve a specific one. For example, the delivery address type is `11`, and the business address is `6`.
+To retrieve addresses, use the [crm.address.list](../../../api-reference/crm/requisites/addresses/crm-address-list.md) method with the following filter:
+
+- specify the value `8` in `ENTITY_TYPE_ID` — the identifier for the [company details type](../../../api-reference/crm/data-types.md#object_type)
+- specify the company details identifier from step 1 in `ENTITY_ID`, which is `361` in the example
+
+Without a type filter, the method returns all company details addresses. This allows you to obtain the complete list of customer addresses.
+
+The lead address is retrieved using the same method, but without step 1. Specify `1` in `ENTITY_TYPE_ID` — the identifier for the lead type, and `ENTITY_ID` — the identifier of the lead itself.
+
+{% list tabs %}
+
+- JS
+
+    ```javascript
+    const result = await $b24.actions.v2.call.make({
+        method: 'crm.address.list',
+        params: {
+            filter: {
+                ENTITY_TYPE_ID: 8,
+                ENTITY_ID: 361,
+            },
+        }
+    });
+    ```
+
+- PHP
+
+    ```php
+    $addresses = $sb->getCRMScope()->address()->list(
+        [],
+        [
+            'ENTITY_TYPE_ID' => 8,
+            'ENTITY_ID' => 361,
+        ],
+        []
+    )->getAddresses();
+
+    print_r($addresses);
+    ```
+
+- Python
+
+    ```python
+    result = client.crm.address.list(
+        filter={
+            "ENTITY_TYPE_ID": 8,
+            "ENTITY_ID": 361,
+        }
+    ).response.result
+    ```
+
+{% endlist %}
+
+The response contains all company details addresses. In the example, there are two — the street address and the delivery address.
+
+```json
+{
+    "result": [
+        {
+            "TYPE_ID": "1",
+            "ENTITY_TYPE_ID": "8",
+            "ENTITY_ID": "361",
+            "ADDRESS_1": "Tverskaya Street, 7",
+            "ADDRESS_2": null,
+            "CITY": "Berlin",
+            "POSTAL_CODE": "125009",
+            "REGION": null,
+            "PROVINCE": "Berlin",
+            "COUNTRY": "Germany",
+            "COUNTRY_CODE": null,
+            "LOC_ADDR_ID": "569",
+            "ANCHOR_TYPE_ID": "3",
+            "ANCHOR_ID": "2429"
+        },
+        {
+            "TYPE_ID": "11",
+            "ENTITY_TYPE_ID": "8",
+            "ENTITY_ID": "361",
+            "ADDRESS_1": "Granatny Lane, 10",
+            "ADDRESS_2": null,
+            "CITY": "Berlin",
+            "POSTAL_CODE": "123001",
+            "REGION": "Presnensky District",
+            "PROVINCE": "Berlin",
+            "COUNTRY": "Germany",
+            "COUNTRY_CODE": null,
+            "LOC_ADDR_ID": "571",
+            "ANCHOR_TYPE_ID": "3",
+            "ANCHOR_ID": "2429"
+        }
+    ],
+    "total": 2
+}
+```
+
+Key response fields:
+
+- `TYPE_ID` — [address type](../../../api-reference/crm/auxiliary/enum/crm-enum-address-type.md). In the example, `1` is the street address and `11` is the delivery address. The [crm.enum.addresstype](../../../api-reference/crm/auxiliary/enum/crm-enum-address-type.md) method returns the full list of types.
+- `ADDRESS_1`, `ADDRESS_2`, `CITY`, `POSTAL_CODE`, `REGION`, `PROVINCE`, `COUNTRY` — the address components. You must construct the address string from these components, as the method does not provide a single field with a ready-made string. Unfilled components are returned as `null`, which is normal even for a completed address.
+- `ANCHOR_TYPE_ID` and `ANCHOR_ID` — the type and identifier of the customer to whom the company details belong. In the example, `3` and `2429` refer to the original contact. Use this pair to verify that the address belongs to the correct customer.
+
+To retrieve only one type of address, add `TYPE_ID` to the filter. For example, for a delivery address:
 
 {% list tabs %}
 
@@ -191,35 +310,6 @@ To obtain the address, we use the crm.address.list method with the following fil
 
 {% endlist %}
 
-We received the delivery address data for the contact.
-
-```json
-    Array
-    (
-        [result] => Array
-            (
-                [0] => Array
-                    (
-                        [TYPE_ID] => 11
-                        [ENTITY_TYPE_ID] => 8
-                        [ENTITY_ID] => 361
-                        [ADDRESS_1] => Granatengasse 10 c1
-                        [ADDRESS_2] => 
-                        [CITY] => Berlin
-                        [POSTAL_CODE] => 123001
-                        [REGION] => Bezirk Preschensky
-                        [PROVINCE] => Berlin
-                        [COUNTRY] => Deutschland
-                        [COUNTRY_CODE] => 
-                        [LOC_ADDR_ID] => 571
-                        [ANCHOR_TYPE_ID] => 3
-                        [ANCHOR_ID] => 2429
-                    )
-            )
-        [total] => 1       
-    )
- ```
-
 ## Code Example
 
 {% list tabs %}
@@ -232,14 +322,20 @@ We received the delivery address data for the contact.
     const $b24 = B24Hook.fromWebhookUrl(process.env.B24_HOOK)
     // B24_HOOK = 'https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/'
 
-    const contactId = "dein_kontakt_id_hier"; // Ersetze durch die tatsächliche Kontakt-ID
+    // Customer ID, which can be obtained using the crm.contact.list method
+    const contactId = 2429;
+    // CRM object type: 3 — contact, 4 — company
+    const entityTypeId = 3;
+    // Address type from crm.enum.addresstype, for example 11 — delivery address.
+    // Leave null to get all customer addresses
+    const addressTypeId = null;
 
-    // Methode zum Abrufen der Requisiten-ID
+    // Getting customer requisition IDs
     const requisiteResult = await $b24.actions.v2.call.make({
         method: 'crm.requisite.list',
         params: {
             filter: {
-                ENTITY_TYPE_ID: 3,
+                ENTITY_TYPE_ID: entityTypeId,
                 ENTITY_ID: contactId
             },
             select: ["ID"]
@@ -250,44 +346,50 @@ We received the delivery address data for the contact.
         console.error(requisiteResult.getErrorMessages().join('; '));
     } else {
         const requisites = requisiteResult.getData().result;
-        if (requisites.length > 0) {
-            const requisiteId = requisites[0].ID;
-            console.log("Requisite ID:", requisiteId);
 
-            // Methode zum Abrufen der Adresse
-            const addressResult = await $b24.actions.v2.call.make({
-                method: 'crm.address.list',
-                params: {
-                    filter: {
-                        ENTITY_TYPE_ID: 8,
-                        ENTITY_ID: requisiteId,
-                        TYPE_ID: 11
-                    }
+        if (requisites.length === 0) {
+            console.log("The customer has no requisitions, there is nowhere to store the address.");
+        } else {
+            const rows = [];
+
+            // The customer may have several requisitions, we iterate through each one
+            for (const requisite of requisites) {
+                const filter = {
+                    ENTITY_TYPE_ID: 8,
+                    ENTITY_ID: requisite.ID
+                };
+
+                if (addressTypeId !== null) {
+                    filter.TYPE_ID = addressTypeId;
                 }
-            });
 
-            if (!addressResult.isSuccess) {
-                console.error(addressResult.getErrorMessages().join('; '));
-            } else {
-                const addresses = addressResult.getData().result;
-                if (addresses.length > 0) {
-                    // Wir erstellen eine Tabelle zur Anzeige der Adressen
-                    const table = [];
-                    addresses.forEach(function(address) {
-                        table.push({
-                            "Adresse": address.ADDRESS_1 || "Nicht angegeben",
-                            "Stadt": address.CITY || "Nicht angegeben",
-                            "Postleitzahl": address.POSTAL_CODE || "Nicht angegeben",
-                            "Land": address.COUNTRY || "Nicht angegeben"
-                        });
+                const addressResult = await $b24.actions.v2.call.make({
+                    method: 'crm.address.list',
+                    params: { filter: filter }
+                });
+
+                if (!addressResult.isSuccess) {
+                    console.error(addressResult.getErrorMessages().join('; '));
+                    continue;
+                }
+
+                for (const address of addressResult.getData().result) {
+                    rows.push({
+                        "Requisition": requisite.ID,
+                        "Address type": address.TYPE_ID,
+                        "Address": address.ADDRESS_1 || "Not specified",
+                        "City": address.CITY || "Not specified",
+                        "Postal code": address.POSTAL_CODE || "Not specified",
+                        "Country": address.COUNTRY || "Not specified"
                     });
-                    console.table(table);
-                } else {
-                    console.log("Lieferadresse nicht gefunden.");
                 }
             }
-        } else {
-            console.log("Requisite nicht gefunden.");
+
+            if (rows.length === 0) {
+                console.log("Customer requisitions have no addresses.");
+            } else {
+                console.table(rows);
+            }
         }
     }
     ```
@@ -308,55 +410,79 @@ We received the delivery address data for the contact.
     $log->pushHandler(new StreamHandler('php://stdout'));
 
     $sb = (new ServiceBuilderFactory(new EventDispatcher(), $log))
-        ->initFromWebhook('https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/');
+        ->initFromWebhook(getenv('B24_HOOK'));
+    // B24_HOOK = 'https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/'
 
-    $contactId = 'dein_kontakt_id_hier'; // Ersetze durch die tatsächliche Kontakt-ID
+    // Customer ID, which can be obtained using the crm.contact.list method
+    $contactId = 2429;
+    // CRM object type: 3 — contact, 4 — company
+    $entityTypeId = 3;
+    // Address type from crm.enum.addresstype, for example 11 — delivery address.
+    // Leave null to get all customer addresses
+    $addressTypeId = null;
 
     try {
-        // Methode zum Abrufen der Requisiten-ID
+        // Getting customer requisition IDs
         $requisites = $sb->getCRMScope()->requisite()->list(
             [],
             [
-                'ENTITY_TYPE_ID' => 3,
+                'ENTITY_TYPE_ID' => $entityTypeId,
                 'ENTITY_ID' => $contactId
             ],
             ['ID']
         )->getRequisites();
 
-        if (count($requisites) > 0) {
-            $requisiteId = $requisites[0]->ID;
-            echo 'Requisite ID: ' . $requisiteId . PHP_EOL;
+        if (count($requisites) === 0) {
+            echo 'The customer has no requisitions, there is nowhere to store the address.';
+            return;
+        }
 
-            // Methode zum Abrufen der Adresse
+        $rows = [];
+
+        // The customer may have several requisitions, we iterate through each one
+        foreach ($requisites as $requisite) {
+            $filter = [
+                'ENTITY_TYPE_ID' => 8,
+                'ENTITY_ID' => $requisite->ID
+            ];
+
+            if ($addressTypeId !== null) {
+                $filter['TYPE_ID'] = $addressTypeId;
+            }
+
             $addresses = $sb->getCRMScope()->address()->list(
                 [],
-                [
-                    'ENTITY_TYPE_ID' => 8,
-                    'ENTITY_ID' => $requisiteId,
-                    'TYPE_ID' => 11
-                ],
+                $filter,
                 []
             )->getAddresses();
 
-            if (count($addresses) > 0) {
-                // Wir erstellen eine Tabelle zur Anzeige der Adressen
-                echo '<table border="1">';
-                echo '<tr><th>Adresse</th><th>Stadt</th><th>Postleitzahl</th><th>Land</th></tr>';
-                foreach ($addresses as $address) {
-                    echo '<tr>';
-                    echo '<td>' . ($address->ADDRESS_1 ?? 'Nicht angegeben') . '</td>';
-                    echo '<td>' . ($address->CITY ?? 'Nicht angegeben') . '</td>';
-                    echo '<td>' . ($address->POSTAL_CODE ?? 'Nicht angegeben') . '</td>';
-                    echo '<td>' . ($address->COUNTRY ?? 'Nicht angegeben') . '</td>';
-                    echo '</tr>';
-                }
-                echo '</table>';
-            } else {
-                echo 'Lieferadresse nicht gefunden.';
+            foreach ($addresses as $address) {
+                $rows[] = [
+                    'requisiteId' => $requisite->ID,
+                    'typeId' => $address->TYPE_ID,
+                    'address' => $address->ADDRESS_1 ?? 'Not specified',
+                    'city' => $address->CITY ?? 'Not specified',
+                    'postalCode' => $address->POSTAL_CODE ?? 'Not specified',
+                    'country' => $address->COUNTRY ?? 'Not specified'
+                ];
             }
-        } else {
-            echo 'Requisite nicht gefunden.';
         }
+
+        if (count($rows) === 0) {
+            echo 'Customer requisitions have no addresses.';
+            return;
+        }
+
+        echo '<table border="1">';
+        echo '<tr><th>Requisition</th><th>Address type</th><th>Address</th><th>City</th><th>Postal code</th><th>Country</th></tr>';
+        foreach ($rows as $row) {
+            echo '<tr>';
+            foreach ($row as $value) {
+                echo '<td>' . htmlspecialchars((string)$value) . '</td>';
+            }
+            echo '</tr>';
+        }
+        echo '</table>';
     } catch (\Throwable $e) {
         echo 'Error: ' . $e->getMessage();
     }
@@ -365,61 +491,256 @@ We received the delivery address data for the contact.
 - Python
 
     ```python
+    import os
+
     from b24pysdk import BitrixWebhook, Client
     from b24pysdk.errors import BitrixAPIError
 
     client = Client(
         BitrixWebhook(
-            domain="your-domain.bitrix24.com",
-            webhook_token="user_id/webhook_key",
+            domain=os.environ["B24_DOMAIN"],
+            webhook_token=os.environ["B24_WEBHOOK_TOKEN"],
         )
     )
+    # B24_DOMAIN = 'your-domain.bitrix24.com'
+    # B24_WEBHOOK_TOKEN = 'user_id/webhook_key'
 
-    contact_id = "dein_kontakt_id_hier"
+    # Customer ID, which can be obtained using the crm.contact.list method
+    contact_id = 2429
+    # CRM object type: 3 — contact, 4 — company
+    entity_type_id = 3
+    # Address type from crm.enum.addresstype, for example 11 — delivery address.
+    # Leave None to get all customer addresses
+    address_type_id = None
 
     try:
         requisites = client.crm.requisite.list(
             filter={
-                "ENTITY_TYPE_ID": 3,
+                "ENTITY_TYPE_ID": entity_type_id,
                 "ENTITY_ID": contact_id,
             },
             select=["ID"],
         ).response.result
     except BitrixAPIError as error:
-        print(f"Fehler: {error}")
+        print(f"Error: {error}")
     else:
-        if requisites:
-            requisite_id = requisites[0]["ID"]
-            print(f"Requisiten-ID: {requisite_id}")
-
-            try:
-                addresses = client.crm.address.list(
-                    filter={
-                        "ENTITY_TYPE_ID": 8,
-                        "ENTITY_ID": requisite_id,
-                        "TYPE_ID": 11,
-                    }
-                ).response.result
-            except BitrixAPIError as error:
-                print(f"Fehler: {error}")
-            else:
-                if addresses:
-                    print("Adresse\tStadt\tPostleitzahl\tLand")
-                    for address in addresses:
-                        print(
-                            "\t".join(
-                                [
-                                    str(address.get("ADDRESS_1") or "Nicht angegeben"),
-                                    str(address.get("CITY") or "Nicht angegeben"),
-                                    str(address.get("POSTAL_CODE") or "Nicht angegeben"),
-                                    str(address.get("COUNTRY") or "Nicht angegeben"),
-                                ]
-                            )
-                        )
-                else:
-                    print("Lieferadresse nicht gefunden.")
+        if not requisites:
+            print("The customer has no requisitions, there is nowhere to store the address.")
         else:
-            print("Requisite nicht gefunden.")
+            rows = []
+
+            # The customer may have several requisitions, we iterate through each one
+            for requisite in requisites:
+                address_filter = {
+                    "ENTITY_TYPE_ID": 8,
+                    "ENTITY_ID": requisite["ID"],
+                }
+
+                if address_type_id is not None:
+                    address_filter["TYPE_ID"] = address_type_id
+
+                try:
+                    addresses = client.crm.address.list(
+                        filter=address_filter,
+                    ).response.result
+                except BitrixAPIError as error:
+                    print(f"Error: {error}")
+                    continue
+
+                for address in addresses:
+                    rows.append(
+                        [
+                            str(requisite["ID"]),
+                            str(address.get("TYPE_ID") or "Not specified"),
+                            str(address.get("ADDRESS_1") or "Not specified"),
+                            str(address.get("CITY") or "Not specified"),
+                            str(address.get("POSTAL_CODE") or "Not specified"),
+                            str(address.get("COUNTRY") or "Not specified"),
+                        ]
+                    )
+
+            if not rows:
+                print("Customer requisitions have no addresses.")
+            else:
+                print("Requisition\tAddress type\tAddress\tCity\tPostal code\tCountry")
+                for row in rows:
+                    print("\t".join(row))
     ```
 
 {% endlist %}
+
+## Address from Custom Field {#userfield}
+
+If a Bitrix24 administrator has created a custom field of type `address` for a contact, the address is stored directly in the contact and is not visible via methods `crm.address.*`. Such an address is retrieved in two steps.
+
+1. Find the field code using the [crm.contact.userfield.list](../../../api-reference/crm/contacts/userfield/crm-contact-userfield-list.md) method with the filter `USER_TYPE_ID` = `address`. This method is available only to an administrator.
+2. Read the field value using the [crm.contact.get](../../../api-reference/crm/contacts/crm-contact-get.md) method — it returns custom fields along with standard fields.
+
+For a company, use [crm.company.userfield.list](../../../api-reference/crm/companies/userfields/crm-company-userfield-list.md) and [crm.company.get](../../../api-reference/crm/companies/crm-company-get.md); for a lead, use [crm.lead.userfield.list](../../../api-reference/crm/leads/userfield/crm-lead-userfield-list.md) and [crm.lead.get](../../../api-reference/crm/leads/crm-lead-get.md).
+
+{% list tabs %}
+
+- JS
+
+    ```javascript
+    // 1. Searching for custom fields of type "address"
+    const fieldsResult = await $b24.actions.v2.call.make({
+        method: 'crm.contact.userfield.list',
+        params: {
+            filter: { USER_TYPE_ID: 'address' }
+        }
+    });
+
+    if (!fieldsResult.isSuccess) {
+        // Method is available only to the administrator
+        console.error(fieldsResult.getErrorMessages().join('; '));
+    } else {
+        const addressFields = fieldsResult.getData().result;
+
+        // 2. Reading the values of these fields for the contact
+        const contactResult = await $b24.actions.v2.call.make({
+            method: 'crm.contact.get',
+            params: { id: 2429 }
+        });
+
+        if (!contactResult.isSuccess) {
+            console.error(contactResult.getErrorMessages().join('; '));
+        } else {
+            const contact = contactResult.getData().result;
+
+            for (const field of addressFields) {
+                console.log(field.FIELD_NAME, contact[field.FIELD_NAME]);
+            }
+        }
+    }
+    ```
+
+- PHP
+
+    ```php
+    // B24PhpSDK does not have a typed wrapper for crm.contact.userfield.list,
+    // therefore we call the method via the SDK core
+    try {
+        $fields = $sb->core->call(
+            'crm.contact.userfield.list',
+            [
+                'filter' => ['USER_TYPE_ID' => 'address']
+            ]
+        )->getResponseData()->getResult();
+
+        $contact = $sb->core->call(
+            'crm.contact.get',
+            ['id' => 2429]
+        )->getResponseData()->getResult();
+
+        foreach ($fields as $field) {
+            echo $field['FIELD_NAME'] . ': ' . print_r($contact[$field['FIELD_NAME']] ?? null, true) . PHP_EOL;
+        }
+    } catch (\Throwable $e) {
+        // crm.contact.userfield.list is available only to the administrator
+        echo 'Error: ' . $e->getMessage();
+    }
+    ```
+
+- Python
+
+    ```python
+    try:
+        fields = client.crm.contact.userfield.list(
+            filter={"USER_TYPE_ID": "address"},
+        ).response.result
+
+        contact = client.crm.contact.get(bitrix_id=2429).response.result
+    except BitrixAPIError as error:
+        # crm.contact.userfield.list is available only to the administrator
+        print(f"Error: {error}")
+    else:
+        for field in fields:
+            print(field["FIELD_NAME"], contact.get(field["FIELD_NAME"]))
+    ```
+
+{% endlist %}
+
+In the response of the first request, we are interested in `FIELD_NAME` — the field code where the value is stored in the contact. Note `MULTIPLE`: the value format depends on it.
+
+```json
+{
+    "result": [
+        {
+            "ID": "474",
+            "ENTITY_ID": "CRM_CONTACT",
+            "FIELD_NAME": "UF_CRM_1724412832",
+            "USER_TYPE_ID": "address",
+            "MULTIPLE": "N",
+            "MANDATORY": "N"
+        },
+        {
+            "ID": "475",
+            "ENTITY_ID": "CRM_CONTACT",
+            "FIELD_NAME": "UF_CRM_1724412960",
+            "USER_TYPE_ID": "address",
+            "MULTIPLE": "Y",
+            "MANDATORY": "N"
+        }
+    ],
+    "total": 2
+}
+```
+
+The value of such a field is a string consisting of three parts separated by the `|` character: the text address, coordinates via `;`, and the address identifier in the `location` module. If `MULTIPLE` = `Y`, an array of such strings will be returned.
+
+```json
+{
+    "result": {
+        "ID": "2429",
+        "UF_CRM_1724412832": "Granatny Lane, 10, Berlin, Berlin, Germany, 123001|55.761234;37.591234|571",
+        "UF_CRM_1724412960": [
+            "Tverskaya Street, 7, , Berlin, Berlin, Germany|;|575",
+            ", , Berlin, Berlin, Germany|;|577"
+        ]
+    }
+}
+```
+
+The text part is constructed from the same components as a company details address, so unfilled components result in consecutive commas. Coordinates can also be empty — in that case, a single separator `;` remains. Parse the string by `|` and do not assume that all three parts are filled.
+
+## Verify the Result
+
+The scenario is successful if:
+
+- in the `crm.requisite.list` response, the `total` field is greater than zero and there is at least one `ID` in `result`
+- in the `crm.address.list` response, the `total` field is greater than zero
+- in every address, `ANCHOR_TYPE_ID` and `ANCHOR_ID` match the type and identifier of the original customer — in the example, `3` and `2429`
+
+Do not consider `null` in individual address fields as an error: unfilled components arrive empty even for a correctly created address.
+
+You can verify the data in the interface. Open the contact or company card and expand the "Company details" field. The addresses from the method response should match the addresses in the card's company details. The address from the custom field is displayed in the card as a separate field, not within the company details.
+
+## Errors and Diagnostics
+
+If the method returns an error or an empty result, check the request data.
+
+- `Access denied.` in `crm.requisite.list` — the user does not have permission to read the object specified in `ENTITY_TYPE_ID`. Check the permissions to read contacts and companies in the CRM settings.
+- `Access denied.` in `crm.requisite.list` with value `ENTITY_TYPE_ID` `1` — Company details only exist for contacts and companies; step 1 is skipped for a lead.
+- `Access denied.` in `crm.address.list` — the method requires permissions to read contacts, companies, and leads simultaneously. The error will appear even if a specific detail can be read.
+- `Access denied.` in `crm.contact.userfield.list` — the method was called by someone other than an administrator. This does not mean the address does not exist — the field code is retrieved as an administrator once, and thereafter `crm.contact.get` administrator is not required.
+- `result` is empty in `crm.requisite.list` — the customer has no details; check the custom field. Also, ensure that `ENTITY_TYPE_ID` corresponds to the object from `ENTITY_ID`. With type `3` and a company identifier, the method will return an empty list without an error.
+- `result` is empty in `crm.address.list` — the detail has no addresses, or addresses exist but of a different type. Repeat step 2 without the `TYPE_ID` filter and ensure that `8` is passed in `ENTITY_TYPE_ID`, and in `ENTITY_ID` the detail identifier from step 1 is passed, rather than the contact identifier.
+
+## Key Considerations
+
+- The address is linked to a detail, not directly to a contact or a company. A single customer may have multiple details, so iterate through the entire list from step 1 instead of just the first item.
+- A single detail may contain multiple addresses of different types. Without the `TYPE_ID` filter, the method will return all of them.
+- The method does not return a formatted address string. Construct it from the fields `ADDRESS_1`, `ADDRESS_2`, `CITY`, `POSTAL_CODE`, `REGION`, `PROVINCE`, and `COUNTRY`.
+- The field `COUNTRY_CODE` is kept for backward compatibility and is not populated.
+- The fields `ANCHOR_TYPE_ID` and `ANCHOR_ID` are service fields; they are populated automatically when an address is added.
+- Linking an address directly to a contact or a company, bypassing the detail, is only possible in cases where the old address management mode was enabled by technical support. Do not rely on this link in new integrations.
+- The two storage methods do not synchronize with each other. If an address is stored in a custom field, it will not appear in the details.
+
+## Continue Learning
+
+- [{#T}](../../../api-reference/crm/requisites/index.md)
+- [{#T}](../../../api-reference/crm/requisites/addresses/crm-address-list.md)
+- [{#T}](../../../api-reference/crm/requisites/universal/crm-requisite-list.md)
+- [{#T}](../../../api-reference/crm/auxiliary/enum/crm-enum-address-type.md)
+- [{#T}](./search-by-phone-and-email.md)

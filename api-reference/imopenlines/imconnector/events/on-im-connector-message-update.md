@@ -43,7 +43,7 @@ Data is transmitted as a POST request {.b24-info}
                 },
                 "message": {
                     "id": ["ext-msg-005"],
-                    "text": "[b]Samantha Johnson:[/b][br] What questions do you have?"
+                    "text": "[b]Klaus Weber:[/b][br] What questions do you have?"
                 },
                 "chat": {
                     "id": "channel-123"
@@ -69,45 +69,45 @@ Data is transmitted as a POST request {.b24-info}
 ```
 
 #|
-|| **Parameter**
+|| **parameter**
 `type` | **Description** ||
 || **event**
-[`string`](../../../data-types.md) | Symbolic event code.
+[`string`](../../../data-types.md) | Symbolic code of the event.
 
-In this case - `ONIMCONNECTORMESSAGEUPDATE` ||
+In this case — `ONIMCONNECTORMESSAGEUPDATE` ||
 || **event_handler_id**
-[`integer`](../../../data-types.md) | Event handler identifier ||
+[`integer`](../../../data-types.md) | Identifier of the event handler ||
 || **data**
 [`object`](../../../data-types.md) | Object with parameters of the outgoing message change event.
 
 The structure is described [below](#data) ||
 || **ts**
-[`timestamp`](../../../data-types.md) | Date and time the event was sent from the [event queue](../../../events/index.md) ||
+[`timestamp`](../../../data-types.md) | Date and time of the event sent from the [event queue](../../../events/index.md) ||
 || **auth**
-[`object`](../../../data-types.md) | Object with authorization parameters and information about the account where the event occurred.
+[`object`](../../../data-types.md) | Object containing authorization parameters and information about the account where the event occurred.
 
 The structure is described [below](#auth) ||
 |#
 
-### Data Parameter {#data}
+### Parameter data {#data}
 
 #|
-|| **Parameter**
+|| **parameter**
 `type` | **Description** ||
 || **CONNECTOR**
 [`string`](../../../data-types.md) | Connector identifier ||
 || **LINE**
-[`integer`](../../../data-types.md) | Open line identifier ||
+[`integer`](../../../data-types.md) | Identifier of the open line ||
 || **MESSAGES**
-[`object[]`](../../../data-types.md) | Array of messages that were modified in Bitrix24 and sent to the external system channel.
+[`object[]`](../../../data-types.md) | An array of messages that were changed in Bitrix24 and sent to the external system channel.
 
-The structure of the array element is described [below](#messages-item) ||
+The array element structure is described [below](#messages-item) ||
 |#
 
-### MESSAGES Array Element {#messages-item}
+### Array Element MESSAGES {#messages-item}
 
 #|
-|| **Parameter**
+|| **parameter**
 `type` | **Description** ||
 || **im**
 [`object`](../../../data-types.md) | Object with message identifiers in Bitrix24.
@@ -118,15 +118,15 @@ The structure is described [below](#im) ||
 
 The structure is described [below](#message) ||
 || **chat**
-[`object`](../../../data-types.md) | Object with the chat identifier in the external system channel.
+[`object`](../../../data-types.md) | Object with the identifier of the chat in the external system channel.
 
 The structure is described [below](#chat) ||
 |#
 
-### im Parameter {#im}
+### Parameter im {#im}
 
 #|
-|| **Parameter**
+|| **parameter**
 `type` | **Description** ||
 || **chat_id**
 [`integer`](../../../data-types.md) | Chat identifier in Bitrix24 ||
@@ -134,10 +134,10 @@ The structure is described [below](#chat) ||
 [`integer`](../../../data-types.md) | Identifier of the modified message in Bitrix24 ||
 |#
 
-### message Parameter {#message}
+### Parameter message {#message}
 
 #|
-|| **Parameter**
+|| **parameter**
 `type` | **Description** ||
 || **id**
 [`string[]`](../../../data-types.md) | Array of identifiers of the modified message in the external system channel ||
@@ -145,21 +145,23 @@ The structure is described [below](#chat) ||
 [`string`](../../../data-types.md) | New text of the message in the format provided in the event ||
 |#
 
-### chat Parameter {#chat}
+### Parameter chat {#chat}
 
 #|
-|| **Parameter**
+|| **parameter**
 `type` | **Description** ||
 || **id**
 [`string`](../../../data-types.md) | Identifier of the chat in the external system channel ||
 |#
 
-### auth Parameter {#auth}
+### Parameter auth {#auth}
 
-{% include notitle [Table with keys in the auth array](../../../../_includes/auth-params-in-events.md) %}
+{% include notitle [Auth parameters in events](../../../../_includes/auth-params-in-events.md) %}
 
 ## Continue Learning
 
+- [{#T}](../../../events/index.md)
+- [{#T}](../../../events/event-bind.md)
 - [{#T}](./on-im-connector-message-add.md)
 - [{#T}](./on-im-connector-dialog-start.md)
 - [{#T}](./on-im-connector-message-delete.md)

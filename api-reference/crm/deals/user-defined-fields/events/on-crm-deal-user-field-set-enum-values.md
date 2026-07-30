@@ -51,15 +51,15 @@ Data is transmitted as a POST request {.b24-info}
 || **event**
 [`string`](../../../data-types.md) | Symbolic code of the event.
 
-In this case — `ONCRMDEALUSERFIELDSETENUMVALUES`||
+In this case — `ONCRMDEALUSERFIELDSETENUMVALUES` ||
 || **event_handler_id**
 [`integer`](../../../data-types.md) | Identifier of the event handler ||
 || **data**
-[`object`](../../../data-types.md) | Object containing information about the updated list-type field.
+[`object`](../../../data-types.md) | An object containing information about a list-type custom field.
 
 Contains a single key `FIELDS` ||
 || **data.FIELDS**
-[`object`](../../../data-types.md) | Object containing information about the fields of the updated list-type field.
+[`object`](../../../data-types.md) | An object containing properties of a list-type custom field.
 
 The structure is described [below](#fields) ||
 || **ts**

@@ -10,11 +10,11 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can subscribe: any user
 
-The `OnAppUpdate` event is triggered after a new version of the application is installed in Bitrix24. This event transmits information about the current and previous versions of the application, as well as the updated `application_token`. For more details, refer to the article [{#T}](../../events/safe-event-handlers.md).
+The `ONAPPUPDATE` event is triggered after a new version of the application is installed in Bitrix24. This event transmits information about the current and previous versions of the application, as well as the updated `application_token`. For more details, refer to the article [{#T}](../../events/safe-event-handlers.md).
 
 ## What the Handler Receives
 
-Data is transmitted in the form of a POST request {.b24-info}
+Data is transmitted as a POST request {.b24-info}
 
 ```json
 {
@@ -31,6 +31,9 @@ Data is transmitted in the form of a POST request {.b24-info}
         "access_token": "lh8ze36o8ulgrljbyscr36c7ay5sinva",
         "refresh_token": "5f1ih5tsnsb11sc5heg3kp4ywqnjhd09",
         "expires_in": 3600,
+        "server_endpoint": "https://oauth.bitrix.info/rest/",
+        "status": "F",
+        "client_endpoint": "https://some-domain.bitrix24.com/rest/",
         "member_id": "d41d8cd98f00b204e9800998ecf8427e",
         "application_token": "c917d38f6bdb84e9d9e0bfe9d585be73"
     }
@@ -39,13 +42,13 @@ Data is transmitted in the form of a POST request {.b24-info}
 
 ## Request Parameters
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **event***
-[`string`](../../data-types.md) | Symbolic code of the event. In this case — `ONAPPUPDATE` ||
+[`string`](../../data-types.md) | Symbolic event code. In this case — `ONAPPUPDATE` ||
 || **data***
 [`object`](../../data-types.md) | Data about the application update.
 
@@ -60,22 +63,18 @@ The structure is described [below](#auth) ||
 
 ### Parameter data {#data}
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
-
 #|
 || **Name**
 `type` | **Description** ||
-|| **LANGUAGE_ID***
-[`string`](../../data-types.md) | Installed language: `de`, `en`, and others ||
 || **VERSION***
 [`string`](../../data-types.md) | Current installed version of the application ||
 || **PREVIOUS_VERSION***
 [`string`](../../data-types.md) | Previous version before the update ||
+|| **LANGUAGE_ID***
+[`string`](../../data-types.md) | Set language: `ru`, `en` and others ||
 |#
 
 ### Parameter auth {#auth}
-
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -88,14 +87,16 @@ The structure is described [below](#auth) ||
 [`string`](../../data-types.md) | OAuth 2.0 authorization token ||
 || **refresh_token***
 [`string`](../../data-types.md) | Token for extending OAuth 2.0 authorization ||
+|| **expires_in***
+[`integer`](../../data-types.md) | Access token lifetime in seconds ||
 || **server_endpoint***
 [`string`](../../data-types.md) | Address of the Bitrix24 authorization server, necessary for updating OAuth 2.0 tokens ||
 || **status***
-[`string`](/api-reference/data-types.html) | Status of the application that subscribed to this event:
+[`string`](../../data-types.md) | Status of the application that subscribed to this event:
 
 - `L` — local application
 - `F` — free mass-market application
-- `S` — subscription-based mass-market application
+- `S` — subscription mass-market application
 ||
 || **client_endpoint***
 [`string`](../../data-types.md) | Common path for API method calls to the account ||
@@ -105,7 +106,7 @@ The structure is described [below](#auth) ||
 [`string`](../../data-types.md) | Token for secure event handling ||
 |#
 
-## Continue Your Exploration
+## Continue Learning
 
 - [{#T}](../../events/index.md)
 - [{#T}](../../events/event-bind.md)

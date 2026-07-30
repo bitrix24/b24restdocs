@@ -8,19 +8,19 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
-> Who can execute the method: `any user`
+> Who can execute the method: administrator
 
-The method `crm.activity.type.delete` removes a custom activity type.
+The `crm.activity.type.delete` method deletes a custom activity type.
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **TYPE_ID***
-[`string`](../../../../data-types.md) | String value of the activity type, for example `QuickBooks and other similar platforms` ||
+[`string`](../../../../data-types.md) | String value of the case type, for example `1C` ||
 |#
 
 ## Code Examples
@@ -35,7 +35,7 @@ The method `crm.activity.type.delete` removes a custom activity type.
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"TYPE_ID":"QuickBooks and other similar platforms","auth":"**put_access_token_here**"}' \
+    -d '{"TYPE_ID":"1C","auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/crm.activity.type.delete
     ```
 
@@ -117,7 +117,7 @@ The method `crm.activity.type.delete` removes a custom activity type.
             ->call(
                 'crm.activity.type.delete',
                 [
-                    'TYPE_ID' => 'QuickBooks and other similar platforms',
+                    'TYPE_ID' => '1C',
                 ]
             );
     
@@ -143,7 +143,7 @@ The method `crm.activity.type.delete` removes a custom activity type.
     BX24.callMethod(
         "crm.activity.type.delete",
         {
-            "TYPE_ID": 'QuickBooks and other similar platforms',
+            "TYPE_ID": '1C',
         }, result => {
             if (result.error())
                 console.error(result.error());
@@ -161,7 +161,7 @@ The method `crm.activity.type.delete` removes a custom activity type.
     $result = CRest::call(
         'crm.activity.type.delete',
         [
-            'TYPE_ID' => 'QuickBooks and other similar platforms'
+            'TYPE_ID' => '1C'
         ]
     );
 
@@ -244,18 +244,19 @@ HTTP status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../../../_includes/error-info.md) %}
 
-### Possible Error Codes 
+### Possible Error Codes
 
 #|
 || **Code** | **Description** ||
 || `ACCESS_DENIED` | Insufficient permissions to perform the operation ||
-|| `Access denied! Application context required` | Method works only in the context of applications ||
+|| `Access denied! Application context required` | The method works only in the context of applications ||
+|| `Admin permissions required` | The method is only available to administrators ||
 || `INVALID_ARG_VALUE` | Custom activity type with the specified `TYPE_ID` does not exist ||
 |#
 
-{% include [system errors](../../../../../_includes/system-errors.md) %}
+{% include [System errors](../../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

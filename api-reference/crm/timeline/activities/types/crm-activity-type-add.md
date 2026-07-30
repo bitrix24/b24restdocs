@@ -8,13 +8,13 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
-> Who can execute the method: `any user`
+> Who can execute the method: administrator
 
-The method `crm.activity.type.add` registers a custom activity type by specifying a name and an icon.
+The `crm.activity.type.add` method registers a custom activity type by specifying a name and an icon.
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -37,15 +37,15 @@ A detailed description is provided [below](#parametr-fields)
 
 ### Parameter fields {#parametr-fields}
 
-{% include [Note on required parameters](../../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **TYPE_ID***
-[`string`](../../../../data-types.md) | String value of the activity type, for example `QuickBooks and other similar platforms`. When creating an activity, this field is `PROVIDER_TYPE_ID` ||
+[`string`](../../../../data-types.md) | String value of the deal type, for example `1C`. When creating a case, this field `PROVIDER_TYPE_ID` ||
 || **NAME**
-[`string`](../../../../data-types.md) | Name of the activity type, for example `Activity for QuickBooks` for a deal. Default is an empty string ||
+[`string`](../../../../data-types.md) | Name of the deal type, for example `Case 1c` for a deal. By default, an empty string ||
 || **ICON_FILE**
 [`attached_diskfile`](../../../../data-types.md) | Icon file for the activity type, described according to [rules](../../../../files/how-to-upload-files.md) ||
 || **IS_CONFIGURABLE_TYPE**
@@ -64,17 +64,17 @@ A detailed description is provided [below](#parametr-fields)
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"TYPE_ID":"QuickBooks and other similar platforms","NAME":"Activity for QuickBooks","ICON_FILE":"@type-icon","IS_CONFIGURABLE_TYPE":"N"},"auth":"**put_access_token_here**"}' \
+    -d '{"fields":{"TYPE_ID":"1C","NAME":"Case 1C","ICON_FILE":"@type-icon","IS_CONFIGURABLE_TYPE":"N"},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/crm.activity.type.add
     ```
 
-    After this, it is sufficient to specify your type when creating an activity, and the icon and name will be loaded automatically.
+    After this, you only need to specify your type when creating an activity, and the icon and name will be loaded automatically.
     
     ```bash
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"OWNER_TYPE_ID":1,"OWNER_ID":selectedEntityId,"PROVIDER_ID":"REST_APP","PROVIDER_TYPE_ID":"QuickBooks and other similar platforms","SUBJECT":"New Activity","COMPLETED":"N","RESPONSIBLE_ID":1,"DESCRIPTION":"Description of the new activity"},"auth":"**put_access_token_here**"}' \
+    -d '{"fields":{"OWNER_TYPE_ID":1,"OWNER_ID":selectedEntityId,"PROVIDER_ID":"REST_APP","PROVIDER_TYPE_ID":"1C","SUBJECT":"New case","COMPLETED":"N","RESPONSIBLE_ID":1,"DESCRIPTION":"Description of the new case"},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/crm.activity.add
     ```
 
@@ -167,8 +167,8 @@ A detailed description is provided [below](#parametr-fields)
                 'crm.activity.type.add',
                 [
                     'fields' => [
-                        'TYPE_ID'            => 'QuickBooks and other similar platforms',
-                        'NAME'               => 'Activity for QuickBooks',
+                        'TYPE_ID'            => '1C',
+                        'NAME'               => 'Case 1C',
                         'ICON_FILE'          => $_FILES['type-icon'], // file input node
                         'IS_CONFIGURABLE_TYPE' => 'N',
                     ],
@@ -200,8 +200,8 @@ A detailed description is provided [below](#parametr-fields)
         {
             fields:
             {
-                "TYPE_ID": 'QuickBooks and other similar platforms',
-                "NAME": "Activity for QuickBooks",
+                "TYPE_ID": '1C',
+                "NAME": "Case 1C",
                 'ICON_FILE': document.getElementById('type-icon'), // file input node
                 "IS_CONFIGURABLE_TYPE": "N"
             }
@@ -214,7 +214,7 @@ A detailed description is provided [below](#parametr-fields)
     );
     ```
 
-    After this, it is sufficient to specify your type when creating an activity, and the icon and name will be loaded automatically. 
+    After this, you only need to specify your type when creating an activity, and the icon and name will be loaded automatically. 
 
     ```js
     BX24.callMethod(
@@ -225,11 +225,11 @@ A detailed description is provided [below](#parametr-fields)
                 "OWNER_TYPE_ID": 1,
                 "OWNER_ID": selectedEntityId,
                 "PROVIDER_ID": 'REST_APP',
-                "PROVIDER_TYPE_ID": 'QuickBooks and other similar platforms',
-                "SUBJECT": "New Activity",
+                "PROVIDER_TYPE_ID": '1C',
+                "SUBJECT": "New case",
                 "COMPLETED": "N",
                 "RESPONSIBLE_ID": 1,
-                "DESCRIPTION": "Description of the new activity"
+                "DESCRIPTION": "Description of the new case"
             }
         }, result => {
             if (result.error())
@@ -249,8 +249,8 @@ A detailed description is provided [below](#parametr-fields)
         'crm.activity.type.add',
         [
             'fields' => [
-                'TYPE_ID' => 'QuickBooks and other similar platforms',
-                'NAME' => 'Activity for QuickBooks',
+                'TYPE_ID' => '1C',
+                'NAME' => 'Case 1C',
                 'ICON_FILE' => $_FILES['type-icon'], // Assuming file input is handled
                 'IS_CONFIGURABLE_TYPE' => 'N'
             ]
@@ -262,7 +262,7 @@ A detailed description is provided [below](#parametr-fields)
     echo '</PRE>';
     ```
 
-    After this, it is sufficient to specify your type when creating an activity, and the icon and name will be loaded automatically. 
+    After this, you only need to specify your type when creating an activity, and the icon and name will be loaded automatically. 
 
      ```php
     require_once('crest.php');
@@ -274,11 +274,11 @@ A detailed description is provided [below](#parametr-fields)
                 'OWNER_TYPE_ID' => 1,
                 'OWNER_ID' => $selectedEntityId, // Assuming this variable is defined
                 'PROVIDER_ID' => 'REST_APP',
-                'PROVIDER_TYPE_ID' => 'QuickBooks and other similar platforms',
-                'SUBJECT' => 'New Activity',
+                'PROVIDER_TYPE_ID' => '1C',
+                'SUBJECT' => 'New case',
                 'COMPLETED' => 'N',
                 'RESPONSIBLE_ID' => 1,
-                'DESCRIPTION' => 'Description of the new activity'
+                'DESCRIPTION' => 'Description of the new case'
             ]
         ]
     );
@@ -330,7 +330,7 @@ A detailed description is provided [below](#parametr-fields)
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -354,16 +354,16 @@ HTTP Status: **200**
 `type` | **Description** ||
 || **result**
 [`boolean`](../../../../data-types.md) | Root element of the response. Contains:
-- `true` — in case of success
-- `false` — in case of failure (an error occurred)
+- `true` — on success
+- `false` — on failure (an error occurred)
 ||
 || **time**
-[`time`](../../../../data-types.md#time) | Information about the execution time of the request ||
+[`time`](../../../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -372,7 +372,7 @@ HTTP Status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
@@ -380,11 +380,12 @@ HTTP Status: **400**
 || **Code** | **Description** ||
 || `ACCESS_DENIED` | Insufficient permissions to perform the operation ||
 || `Access denied! Application context required` | The method works only in the context of applications ||
+|| `Admin permissions required` | The method is only available to administrators ||
 || `INVALID_ARG_VALUE` | The required field `TYPE_ID` is not filled ||
 || `INVALID_ARG_VALUE` | A custom activity type with the specified `TYPE_ID` already exists ||
 |#
 
-{% include [system errors](../../../../../_includes/system-errors.md) %}
+{% include [System errors](../../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

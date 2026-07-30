@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can subscribe: any user
 
-The `onAppMethodConfirm` event is triggered upon receiving the [administrator's decision](../../scopes/confirmation.md) from the account regarding the use of methods.
+The `ONAPPMETHODCONFIRM` event is triggered upon receiving the [administrator's decision](../../scopes/confirmation.md) from the account regarding the use of methods.
 
 {% note info "" %}
 
@@ -29,7 +29,7 @@ Data is transmitted as a POST request {.b24-info}
         "TOKEN": "fkp963yuv1ggkfbs5z3f5hy8lilm0iw6",
         "METHOD": "voximplant.user.get",
         "CONFIRMED": "1",
-        "LANGUAGE_ID": "en"
+        "LANGUAGE_ID": "de"
     },
     "ts": "1478790852",
     "auth": {
@@ -44,7 +44,7 @@ Data is transmitted as a POST request {.b24-info}
 
 ## Request Parameters
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -65,8 +65,6 @@ The structure is described [below](#auth) ||
 
 ### Parameter data {#data}
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
-
 #|
 || **Name**
 `type` | **Description** ||
@@ -77,12 +75,10 @@ The structure is described [below](#auth) ||
 || **CONFIRMED***
 [`string`](../../data-types.md) | Permission result: `0` — denied, `1` — granted ||
 || **LANGUAGE_ID***
-[`string`](../../data-types.md) | Set language: `en`, `de`, and others ||
+[`string`](../../data-types.md) | Set language: `ru`, `en` and others ||
 |#
 
 ### Parameter auth {#auth}
-
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -90,13 +86,13 @@ The structure is described [below](#auth) ||
 || **domain***
 [`string`](../../data-types.md) | Address of the Bitrix24 account ||
 || **server_endpoint***
-[`string`](../../data-types.md) | Authorization server address for token renewal ||
+[`string`](../../data-types.md) | Authorization server address for token renewal||
 || **client_endpoint***
 [`string`](../../data-types.md) | Common path for API method calls to the account ||
 || **member_id***
 [`string`](../../data-types.md) | Unique identifier of the account ||
 || **application_token***
-[`string`](../../data-types.md) | Token for secure event processing ||
+[`string`](../../data-types.md) | Token for secure event handling ||
 |#
 
 ## Continue Learning

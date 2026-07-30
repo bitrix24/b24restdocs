@@ -8,7 +8,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can subscribe: `any user`
+> Who can subscribe: any user
 
 The `onCrmRequisiteDelete` event is triggered when a requisite is deleted.
 
@@ -18,82 +18,81 @@ Events will not be sent to the application until the installation is complete. [
 
 {% endnote %}
 
-## What the handler receives
+## What the Handler Receives
 
 Data is transmitted as a POST request {.b24-info}
 
-```php
-[
-    'event' => 'onCrmRequisiteDelete',
-    'data' => [
-        'FIELDS' => [
-            'ID' => 27,
-        ],
-    ],
-    'ts' => '1466439714',
-    'auth' => [
-        'access_token' => 's6p6eclrvim6da22ft9ch94ekreb52lv',
-        'expires_in' => '3600',
-        'scope' => 'crm',
-        'domain' => 'some-domain.bitrix24.com',
-        'server_endpoint' => 'https://oauth.bitrix.info/rest/',
-        'status' => 'F',
-        'client_endpoint' => 'https://some-domain.bitrix24.com/rest/',
-        'member_id' => 'a223c6b3710f85df22e9377d6c4f7553',
-        'refresh_token' => '4s386p3q0tr8dy89xvmt96234v3dljg8',
-        'application_token' => '51856fefc120afa4b628cc82d3935cce',
-    ],
-]
+```json
+{
+    "event": "onCrmRequisiteDelete",
+    "data": {
+        "FIELDS": {
+            "ID": 27
+        }
+    },
+    "ts": "1466439714",
+    "auth": {
+        "access_token": "s6p6eclrvim6da22ft9ch94ekreb52lv",
+        "expires_in": "3600",
+        "scope": "crm",
+        "domain": "some-domain.bitrix24.com",
+        "server_endpoint": "https://oauth.bitrix.info/rest/",
+        "status": "F",
+        "client_endpoint": "https://some-domain.bitrix24.com/rest/",
+        "member_id": "a223c6b3710f85df22e9377d6c4f7553",
+        "refresh_token": "4s386p3q0tr8dy89xvmt96234v3dljg8",
+        "application_token": "51856fefc120afa4b628cc82d3935cce"
+    }
+}
 ```
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 #|
 || **Parameter**
 `type` | **Description** ||
 || **event***
-[`string`](../../../data-types.md) | Symbolic event code. In this case, it is `onCrmRequisiteDelete`||
+[`string`](../../../data-types.md) | Symbolic code of the event.
+
+In this case — `onCrmRequisiteDelete` ||
 || **data***
-[`array`](../../../data-types.md) | Array with data of the deleted requisite ||
+[`object`](../../../data-types.md) | An object containing remote requisite data.
+
+Contains a single key `FIELDS` ||
+|| **data.FIELDS***
+[`object`](../../../data-types.md) | An object containing remote requisite fields.
+
+The structure is described [below](#fields) ||
 || **ts***
-[`timestamp`](../../../data-types.md) | Date and time the event was sent from the [event queue](../../../events/index.md) ||
+[`timestamp`](../../../data-types.md) | Date and time of the event sent from the [event queue](../../../events/index.md) ||
 || **auth***
-[`array`](../../../data-types.md) | Authorization parameters and information about the account where the event occurred ||
+[`object`](../../../data-types.md) | Object containing authorization parameters and information about the account where the event occurred.
+
+The structure is described [below](#auth) ||
 |#
 
-### Parameter data[]
-
-{% include [Note on required parameters](../../../../_includes/required.md) %}
-
-#|
-|| **Parameter**
-`type` | **Description** ||
-|| **FIELDS***
-[`array`](../../../data-types.md) | Array with fields of the deleted requisite ||
-|#
-
-### Parameter FIELDS[]
-
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+### Parameter FIELDS {#fields}
 
 #|
 || **Parameter**
 `type` | **Description** ||
 || **ID***
-[`integer`](../../../data-types.md) | Identifier of the requisite. It can be obtained using the method [crm.requisite.list](../universal/crm-requisite-list.md). 
+[`integer`](../../../data-types.md) | Requisite identifier. It can be obtained using the [crm.requisite.list](../universal/crm-requisite-list.md) method.
 
-Automatically created and unique within the account ||
+It is created automatically and is unique within the portal ||
 |#
 
-### Parameter auth[]
+### Parameter auth {#auth}
 
-{% include notitle [Table with keys in the auth array](../../../../_includes/auth-params-in-events.md) %}
+{% include notitle [Auth parameters in events](../../../../_includes/auth-params-in-events.md) %}
 
-## Continue exploring
+## Continue Learning
 
+- [{#T}](../../../events/index.md)
+- [{#T}](../../../events/event-bind.md)
 - [{#T}](./on-crm-address-register.md)
 - [{#T}](./on-crm-address-unregister.md)
-- [{#T}](./on-crm-requisite-add.md) 
+- [{#T}](./on-crm-requisite-add.md)
 - [{#T}](./on-crm-requisite-update.md)
 - [{#T}](./on-crm-requisite-user-field-add.md)
 - [{#T}](./on-crm-requisite-user-field-set-enum-values.md)

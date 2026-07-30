@@ -8,9 +8,9 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: administrator CRM
+> Who can execute the method: CRM administrator
 
-The method `crm.deal.userfield.add` creates a new custom field for deals.
+The `crm.deal.userfield.add` method creates a new custom field for deals.
 
 ## Method Parameters
 
@@ -165,7 +165,7 @@ By default `N` ||
 
 ### Parameter SETTINGS {#settings}
 
-Each type of custom fields has its own set of additional settings. This method only supports those described below.
+Each type of custom field has its own set of additional settings. This method only supports those described below.
 
 {% list tabs %}
 
@@ -179,7 +179,7 @@ Each type of custom fields has its own set of additional settings. This method o
 
     Default `''` ||
     || **ROWS**
-    [`integer`](../../../data-types.md) | Number of lines in the input field. Must be greater than 0.
+    [`integer`](../../../data-types.md) | Number of rows in the input field. Must be greater than 0.
 
     Default `1` ||
     |#
@@ -235,7 +235,7 @@ Each type of custom fields has its own set of additional settings. This method o
     `type` | **Description** ||
     || **DEFAULT_VALUE**
     [`object`](../../../data-types.md)  | Default value.
-    Object format:
+    Format object:
     ```
     {
         VALUE: datetime|date,
@@ -266,14 +266,14 @@ Each type of custom fields has its own set of additional settings. This method o
     || **DISPLAY**
     [`string`](../../../data-types.md) | Appearance. Possible values:
     - `LIST` — list
-    - `UI` — editable list
+    - `UI` — autocomplete list
     - `CHECKBOX` — checkboxes
     - `DIALOG` — entity selection dialog
 
     Default `LIST` ||
     || **LIST_HEIGHT** | List height. Must be greater than 0.
 
-    Available only when `DISPLAY = LIST` or `DISPLAY = UI`.
+    Available only with `DISPLAY = LIST` or `DISPLAY = UI`.
 
     Default `1` ||
     |#
@@ -284,7 +284,7 @@ Each type of custom fields has its own set of additional settings. This method o
     || **Name**
     `type` | **Description** ||
     || **IBLOCK_TYPE_ID**
-    [`string`](../../../data-types.md) | Infoblock type identifier.
+    [`string`](../../../data-types.md) | Information block type identifier.
 
     Default `''` ||
     || **IBLOCK_ID**
@@ -298,7 +298,7 @@ Each type of custom fields has its own set of additional settings. This method o
     || **DISPLAY**
     [`string`](../../../data-types.md) | Appearance. Possible values:
     - `DIALOG` — dialog
-    - `UI` — editable list
+    - `UI` — autocomplete list
     - `LIST` — list
     - `CHECKBOX` — checkboxes
 
@@ -308,7 +308,7 @@ Each type of custom fields has its own set of additional settings. This method o
 
     Default `1` ||
     || **ACTIVE_FILTER**
-    [`boolean`](../../../data-types.md) | Whether to show elements with the activity flag enabled. Possible values:
+    [`boolean`](../../../data-types.md) | Whether to show items with the activity flag enabled. Possible values:
     - `Y` — yes
     - `N` — no
 
@@ -321,7 +321,7 @@ Each type of custom fields has its own set of additional settings. This method o
     || **Name**
     `type` | **Description** ||
     || **ENTITY_TYPE**
-    [`string`](../../../data-types.md) | Directory type identifier.
+    [`string`](../../../data-types.md) | Dictionary type identifier.
 
     Use [`crm.status.entity.types`](../../status/crm-status-entity-types.md) to find possible values.
 
@@ -330,7 +330,7 @@ Each type of custom fields has its own set of additional settings. This method o
 
 - crm
 
-    If none of the following options are provided, the link to leads will be enabled by default `LEAD = Y`.
+    If none of the following options are passed, binding to leads `LEAD = Y` will be enabled by default.
 
     #|
     || **Name**
@@ -354,11 +354,11 @@ Each type of custom fields has its own set of additional settings. This method o
 
     Default `N` ||
     || **DEAL**
-    [`boolean`](../../../data-types.md) | Whether binding to [Deals](../index.md) is enabled. Possible values:
+    [`boolean`](../../../data-types.md) | Is the link to [Deals](../index.md) enabled? Possible values:
     - `Y` — yes
     - `N` — no
 
-    Default `N` ||
+    Default is `N` ||
     |#
 
 {% endlist %}
@@ -369,30 +369,30 @@ Each type of custom fields has its own set of additional settings. This method o
 || **Name**
 `type` | **Description** ||
 || **VALUE**
-[`string`](../../../data-types.md) | Value of the list item.
+[`string`](../../../data-types.md) | Value of the list element.
 
-List items with an empty or missing `VALUE` will be ignored ||
+List elements with an empty or missing `VALUE` will be ignored ||
 || **SORT**
 [`integer`](../../../data-types.md) | Sort index. Must be greater than or equal to 0.
 
 By default `0` ||
 || **DEF**
-[`boolean`](../../../data-types.md) | Is the list item the default value. Possible values:
+[`boolean`](../../../data-types.md) | Is the list item a default value? Possible values:
 - `Y` — yes
 - `N` — no
 
-For a multiple field, multiple `DEF = Y` are allowed. For a non-multiple field, the first provided list item with `DEF = Y` will be considered default.
+For a multiple field, several `DEF = Y` are allowed. For non-multiple, the first passed list item will be considered default `DEF = Y`.
 
-By default `N` ||
+Default is `N` ||
 || **XML_ID**
-[`string`](../../../data-types.md) | External code of the value. Must be unique within the list items of the custom field ||
+[`string`](../../../data-types.md) | External code of the value. Must be unique within the elements of the user field list ||
 |#
 
 ## Code Examples
 
 {% include [Note on examples](../../../../_includes/examples.md) %}
 
-### Example of Creating a Custom Field of Type String
+### Example of Creating a String Type Custom Field
 
 {% list tabs %}
 
@@ -402,7 +402,7 @@ By default `N` ||
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"LABEL":"Field 'Hello, World!'","USER_TYPE_ID":"string","FIELD_NAME":"HELLO_WORLD","MULTIPLE":"Y","MANDATORY":"Y","SHOW_FILTER":"Y","SETTINGS":{"DEFAULT_VALUE":"Hello, World! Default value","ROWS":3},"SORT":1000,"EDIT_IN_LIST":"Y","LIST_FILTER_LABEL":"Hello, World! Filter","LIST_COLUMN_LABEL":{"en":"Hello, World! Column","de":"Hallo, Welt! Spalte"},"EDIT_FORM_LABEL":{"en":"Hello, World! Edit","de":"Hallo, Welt! Bearbeiten"},"ERROR_MESSAGE":{"en":"Hello, World! Error","de":"Hallo, Welt! Fehler"},"HELP_MESSAGE":{"en":"Hello, World! Help","de":"Hallo, Welt! Hilfe"}}}' \
+    -d '{"fields":{"LABEL":"Field 'Hello, world!'","USER_TYPE_ID":"string","FIELD_NAME":"HELLO_WORLD","MULTIPLE":"Y","MANDATORY":"Y","SHOW_FILTER":"Y","SETTINGS":{"DEFAULT_VALUE":"Hello, world! Default value","ROWS":3},"SORT":1000,"EDIT_IN_LIST":"Y","LIST_FILTER_LABEL":"Hello, world! Filter","LIST_COLUMN_LABEL":{"en":"Hello, World! Column","ru":"Hello, world! Column","de":"Hallo, Welt! Spalte"},"EDIT_FORM_LABEL":{"en":"Hello, World! Edit","ru":"Hello, world! Edit","de":"Hallo, Welt! Bearbeiten"},"ERROR_MESSAGE":{"en":"Hello, World! Error","ru":"Hello, world! Error","de":"Hallo, Welt! Fehler"},"HELP_MESSAGE":{"en":"Hello, World! Help","ru":"Hello, world! Help","de":"Hallo, Welt! Hilfe"}}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.deal.userfield.add
     ```
 
@@ -412,11 +412,11 @@ By default `N` ||
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"LABEL":"Field 'Hello, World!'","USER_TYPE_ID":"string","FIELD_NAME":"HELLO_WORLD","MULTIPLE":"Y","MANDATORY":"Y","SHOW_FILTER":"Y","SETTINGS":{"DEFAULT_VALUE":"Hello, World! Default value","ROWS":3},"SORT":1000,"EDIT_IN_LIST":"Y","LIST_FILTER_LABEL":"Hello, World! Filter","LIST_COLUMN_LABEL":{"en":"Hello, World! Column","de":"Hallo, Welt! Spalte"},"EDIT_FORM_LABEL":{"en":"Hello, World! Edit","de":"Hallo, Welt! Bearbeiten"},"ERROR_MESSAGE":{"en":"Hello, World! Error","de":"Hallo, Welt! Fehler"},"HELP_MESSAGE":{"en":"Hello, World! Help","de":"Hallo, Welt! Hilfe"}},"auth":"**put_access_token_here**"}' \
+    -d '{"fields":{"LABEL":"Field 'Hello, world!'","USER_TYPE_ID":"string","FIELD_NAME":"HELLO_WORLD","MULTIPLE":"Y","MANDATORY":"Y","SHOW_FILTER":"Y","SETTINGS":{"DEFAULT_VALUE":"Hello, world! Default value","ROWS":3},"SORT":1000,"EDIT_IN_LIST":"Y","LIST_FILTER_LABEL":"Hello, world! Filter","LIST_COLUMN_LABEL":{"en":"Hello, World! Column","ru":"Hello, world! Column","de":"Hallo, Welt! Spalte"},"EDIT_FORM_LABEL":{"en":"Hello, World! Edit","ru":"Hello, world! Edit","de":"Hallo, Welt! Bearbeiten"},"ERROR_MESSAGE":{"en":"Hello, World! Error","ru":"Hello, world! Error","de":"Hallo, Welt! Fehler"},"HELP_MESSAGE":{"en":"Hello, World! Help","ru":"Hello, world! Help","de":"Hallo, Welt! Hilfe"}},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/crm.deal.userfield.add
     ```
 
-- JS
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -438,18 +438,22 @@ By default `N` ||
                 LIST_FILTER_LABEL: "Hello, world! Filter",
                 LIST_COLUMN_LABEL: {
                     "en": "Hello, World! Column",
+                    "ru": "Hello, world! Column",
                     "de": "Hallo, Welt! Spalte"
                 },
                 EDIT_FORM_LABEL: {
                     "en": "Hello, World! Edit",
+                    "ru": "Hello, world! Edit",
                     "de": "Hallo, Welt! Bearbeiten"
                 },
                 ERROR_MESSAGE: {
                     "en": "Hello, World! Error",
+                    "ru": "Hello, world! Error",
                     "de": "Hallo, Welt! Fehler"
                 },
                 HELP_MESSAGE: {
                     "en": "Hello, World! Help",
+                    "ru": "Hello, world! Help",
                     "de": "Hallo, Welt! Hilfe"
                 },
             },
@@ -464,6 +468,41 @@ By default `N` ||
     ```
 
 - PHP
+
+    ```php
+    try {
+        $userfieldItemFields = [
+            'FIELD_NAME' => 'Test Field',
+            'USER_TYPE_ID' => 'string',
+            'XML_ID' => 'test_field_1',
+            'SORT' => '100',
+            'MULTIPLE' => 'N',
+            'MANDATORY' => 'N',
+            'SHOW_FILTER' => 'Y',
+            'SHOW_IN_LIST' => 'Y',
+            'EDIT_IN_LIST' => 'Y',
+            'IS_SEARCHABLE' => 'Y',
+            'EDIT_FORM_LABEL' => 'Test Field Label',
+            'LIST_COLUMN_LABEL' => 'Test Field List Label',
+            'LIST_FILTER_LABEL' => 'Test Field Filter Label',
+            'ERROR_MESSAGE' => 'Error occurred',
+            'HELP_MESSAGE' => 'Help message for Test Field',
+            'LIST' => '',
+            'SETTINGS' => '',
+        ];
+
+        $result = $serviceBuilder
+            ->getCRMScope()
+            ->dealUserfield()
+            ->add($userfieldItemFields);
+
+        print($result->getId());
+    } catch (Throwable $e) {
+        print('Error: ' . $e->getMessage());
+    }
+    ```
+
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -487,18 +526,22 @@ By default `N` ||
                 'LIST_FILTER_LABEL' => "Hello, world! Filter",
                 'LIST_COLUMN_LABEL' => [
                     'en' => "Hello, World! Column",
+                    'ru' => "Hello, world! Column",
                     'de' => "Hallo, Welt! Spalte"
                 ],
                 'EDIT_FORM_LABEL' => [
                     'en' => "Hello, World! Edit",
+                    'ru' => "Hello, world! Edit",
                     'de' => "Hallo, Welt! Bearbeiten"
                 ],
                 'ERROR_MESSAGE' => [
                     'en' => "Hello, World! Error",
+                    'ru' => "Hello, world! Error",
                     'de' => "Hallo, Welt! Fehler"
                 ],
                 'HELP_MESSAGE' => [
                     'en' => "Hello, World! Help",
+                    'ru' => "Hello, world! Help",
                     'de' => "Hallo, Welt! Hilfe"
                 ],
             ]
@@ -536,18 +579,22 @@ By default `N` ||
                 "LIST_FILTER_LABEL": "Hello, world! Filter",
                 "LIST_COLUMN_LABEL": {
                     "en": "Hello, World! Column",
+                    "ru": "Hello, world! Column",
                     "de": "Hallo, Welt! Spalte",
                 },
                 "EDIT_FORM_LABEL": {
                     "en": "Hello, World! Edit",
+                    "ru": "Hello, world! Edit",
                     "de": "Hallo, Welt! Bearbeiten",
                 },
                 "ERROR_MESSAGE": {
                     "en": "Hello, World! Error",
+                    "ru": "Hello, world! Error",
                     "de": "Hallo, Welt! Fehler",
                 },
                 "HELP_MESSAGE": {
                     "en": "Hello, World! Help",
+                    "ru": "Hello, world! Help",
                     "de": "Hallo, Welt! Hilfe",
                 },
             },
@@ -565,41 +612,6 @@ By default `N` ||
         print(f"Bitrix SDK error: {error.message}")
     except Exception as error:
         print(f"Unexpected error: {error}")
-    ```
-
-- PHP (B24PhpSdk)
-
-    ```php
-    try {
-        $userfieldItemFields = [
-            'FIELD_NAME' => 'Test Field',
-            'USER_TYPE_ID' => 'string',
-            'XML_ID' => 'test_field_1',
-            'SORT' => '100',
-            'MULTIPLE' => 'N',
-            'MANDATORY' => 'N',
-            'SHOW_FILTER' => 'Y',
-            'SHOW_IN_LIST' => 'Y',
-            'EDIT_IN_LIST' => 'Y',
-            'IS_SEARCHABLE' => 'Y',
-            'EDIT_FORM_LABEL' => 'Test Field Label',
-            'LIST_COLUMN_LABEL' => 'Test Field List Label',
-            'LIST_FILTER_LABEL' => 'Test Field Filter Label',
-            'ERROR_MESSAGE' => 'Error occurred',
-            'HELP_MESSAGE' => 'Help message for Test Field',
-            'LIST' => '',
-            'SETTINGS' => '',
-        ];
-
-        $result = $serviceBuilder
-            ->getCRMScope()
-            ->dealUserfield()
-            ->add($userfieldItemFields);
-
-        print($result->getId());
-    } catch (Throwable $e) {
-        print('Error: ' . $e->getMessage());
-    }
     ```
 
 - Python
@@ -621,6 +633,7 @@ By default `N` ||
                 "MANDATORY": "N",
                 "SHOW_FILTER": "Y",
                 "EDIT_FORM_LABEL": {"de": "Deal comment"},
+                "LIST_COLUMN_LABEL": {"de": "Deal comment"},
                 "LIST_FILTER_LABEL": {"de": "Deal comment"},
             },
         ).response
@@ -641,7 +654,7 @@ By default `N` ||
 
 {% endlist %}
 
-### Example of Creating a Custom Field of Type List
+### Example of Creating a List Type Custom Field
 
 {% list tabs %}
 
@@ -717,7 +730,7 @@ By default `N` ||
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -883,9 +896,9 @@ HTTP status: **400**
 || **Code** | **Description** | **Value** ||
 || `400` | `The 'FIELD_NAME' field is not found` | Either an empty `FIELD_NAME` was provided, or it was not provided at all ||
 || `400` | `Field name is too long (more than 50 characters).` | The provided `FIELD_NAME` contains more than 50 characters ||
-|| `400` | `Field name contains invalid characters. Allowed characters are: A-Z, 0-9, and _.` | The provided `FIELD_NAME` contains invalid characters ||
+|| `400` | `Field name contains invalid characters. Allowed characters are: A-Z, 0-9 and _.` | The provided `FIELD_NAME` contains invalid characters ||
 || `400` | `The 'USER_TYPE_ID' field is not found` | Either an empty `USER_TYPE_ID` was provided, or it was not provided at all ||
-|| `400` | Invalid custom type specified | The provided `USER_TYPE_ID` does not exist ||
+|| `400` | Incorrect custom type specified | The provided `USER_TYPE_ID` does not exist ||
 || `400` | `List item with value XML_ID='XML_ID' already exists` | The provided `XML_ID` in list items are not unique ||
 |#
 

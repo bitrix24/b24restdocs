@@ -6,31 +6,31 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-Open channels in Bitrix24 consolidate requests from external channels into a single stream and direct them to employees. The channel maintains routing rules, operator queues, auto-response scripts, working hours, and CRM integration.
+Open channels in Bitrix24 consolidate requests from external channels into a single stream and direct them to employees. The channel maintains routing rules, operator queues, auto-response scripts, work hours, and CRM integration.
 
-The workflow operates in a chain: a client writes to a connected channel, the system creates a chat and opens a session, after which the dialogue is assigned to an employee according to the channel's rules. Within the session, the operator responds to the client, transfers the dialogue, connects a colleague, or concludes the request.
+The workflow operates in a chain: a customer writes to a connected channel, the system creates a chat and opens a session, after which the dialogue is assigned to an employee according to the channel's rules. Within the session, the operator responds to the customer, transfers the dialogue, connects a colleague, or concludes the request.
 
 This section describes the management of each step in this chain: configuring channels, working with chats and sessions, operator actions, messages, chatbots, and events.
 
-> Quick Navigation: [All Methods and Events](#all-methods)
+> Quick navigation: [All Methods and Events](#all-methods)
 >
-> User Documentation: [How to Create and Configure an Open Channel](https://helpdesk.bitrix24.com/open/25385203/)
+> User documentation: [How to Create and Configure an Open Channel](https://helpdesk.bitrix24.com/open/25385203/)
 
 ## How to Choose a Subsection
 
 #|
-|| **Scenario** | **What to Use** ||
-|| Create a channel, get a list of channels, update or delete settings | Methods `imopenlines.config.*` ||
-|| Connect an external open channel from another Bitrix24 to the current account | Method [imopenlines.network.join](./imopenlines-network-join.md) ||
-|| Open a dialogue, work with a session, and retrieve message history | Methods from the [Dialogs](./sessions/index.md) section ||
-|| Accept a dialogue, transfer it to another employee, or conclude it | Methods from the [Operators](./operators/index.md) section ||
-|| Send a message in a dialogue or save a quick response | Methods from the [Messages](./messages/index.md) section ||
-|| Manage the chat linked to CRM | Methods from the [CRM Chats](./chats/index.md) section ||
-|| Automate the dialogue using a chatbot | Methods from the [Chatbots](./chat-bots/index.md) section ||
-|| Subscribe to events related to messages and sessions | [Events](./events/index.md) ||
+|| **Scenario** | **What to use** ||
+|| Create a line, get a list of lines, update or delete settings | Methods `imopenlines.config.*` ||
+|| Connect an external Open Channel from another Bitrix24 to the current portal | Method [imopenlines.network.join](./imopenlines-network-join.md) ||
+|| Open a dialog, work with a session, and get message history | Methods from the [Dialogs](./sessions/index.md) section ||
+|| Accept a dialog, transfer it to another employee, or end it | Methods from the [Operators](./operators/index.md) section ||
+|| Send a message in a dialog or save a quick reply | Methods from the [Messages](./messages/index.md) section ||
+|| Manage a chat associated with CRM | Methods from the [CRM Chats](./chats/index.md) section ||
+|| Automate a dialog using a chatbot | Methods from the [Chatbots](./chat-bots/index.md) section ||
+|| Subscribe to events for messages and sessions | [Events](./events/index.md) ||
 |#
 
-## Connection of Open Channels with Other Objects
+## Connection with Other Objects
 
 **Chat.** Requests in an open channel are processed in a chat. To find the chat and retrieve its data, use the methods [imopenlines.session.open](./sessions/imopenlines-session-open.md) and [imopenlines.dialog.get](./sessions/imopenlines-dialog-get.md). For operations with CRM chats, refer to the [CRM Chats](./chats/index.md) section. The main identifier is `CHAT_ID`.
 
@@ -38,7 +38,7 @@ This section describes the management of each step in this chain: configuring ch
 
 **Employee.** The channel distributes requests among employees from the queue. The queue and distribution rules are configured through `imopenlines.config.*`, while the employee's work in an active dialogue is managed through the [Operators](./operators/index.md) section.
 
-**External User.** Messages from the client in the external channel create a chat and session in the channel. The `USER_CODE` is used to communicate with the user.
+**External User.** Messages from the customer in the external channel create a chat and session in the channel. The `USER_CODE` is used to communicate with the user.
 
 **Message.** Message exchanges in the open channel are conducted using methods from the [Messages](./messages/index.md) section. Messages are linked to the chat, session, and participate in [events](./events/index.md).
 
@@ -46,26 +46,26 @@ This section describes the management of each step in this chain: configuring ch
 
 **CRM.** Open channels are connected to CRM. Using methods from the [CRM Chats](./chats/index.md) section, you can retrieve a chat linked to a CRM object. The method [imopenlines.crm.lead.create](./sessions/imopenlines-crm-lead-create.md) allows you to create a lead based on the dialogue.
 
-## How to Get Started
+## Getting Started
 
-1. Connect the source of requests:
-   - external channel via a connector according to the scenario from the article [Open Channels in Bitrix24: API of Channels and Connectors](../index.md),
-   - external open channel from another Bitrix24 using the method [imopenlines.network.join](./imopenlines-network-join.md).
-2. Open a dialogue and retrieve the identifiers `CHAT_ID` and `SESSION_ID` in the [Dialogs](./sessions/index.md) section.
-3. Configure the processing of the dialogue by employees in the [Operators](./operators/index.md) section.
-4. For additional scenarios, use the sections [Messages](./messages/index.md), [Chatbots](./chat-bots/index.md), and [Events](./events/index.md).
+1. Connect the request source:
+   - An external channel via a connector according to the scenario from the article [Open Channels in Bitrix24: API of Channels and Connectors](../index.md),
+   - An external open channel from another Bitrix24 using the method [imopenlines.network.join](./imopenlines-network-join.md).
+2. Open a conversation and retrieve the `CHAT_ID` and `SESSION_ID` identifiers in the [Dialogs](./sessions/index.md) section.
+3. Configure conversation processing by employees in the [Operators](./operators/index.md) section.
+4. For additional scenarios, use the [Messages](./messages/index.md), [Chatbots](./chat-bots/index.md), and [Events](./events/index.md) sections.
 
-{% note tip "User Documentation" %}
+{% note tip "User documentation" %}
 
-- [How to Work with Chats in Open Channels](https://helpdesk.bitrix24.com/open/25761311/)
-- [Quick Responses in Open Channels: How to Create and Configure](https://helpdesk.bitrix24.com/open/25760371/)
-- [Open Channels: How to Obtain Consent for Personal Data Processing](https://helpdesk.bitrix24.com/open/25828127/)
+- [How to Work with Chats in Open Channels](https://helpdesk.bitrix24.com/open/25743776/)
+- [Canned Responses in Open Channels: How to Create and Configure](https://helpdesk.bitrix24.com/open/25839638/)
+- [Open Channels: How to Obtain Consent for Personal Data Processing](https://helpdesk.bitrix24.com/open/26873178/)
 
 {% endnote %}
 
 ## Limits and Response Format
 
-**Limits.** General REST limitations and open channel restrictions apply to methods, such as the limit on unclosed dialogues for operators. For details, refer to the article [Limit on the number of open conversations per agent](https://helpdesk.bitrix24.com/open/25830887/).
+**Limits.** General REST limitations and open channel restrictions apply to methods, such as the limit on unclosed conversations for operators. For details, refer to the article [Limit on Unclosed Conversations for Open Channel Operators](https://helpdesk.bitrix24.com/open/26928654/).
 
 **Response Format.** A successful response typically contains `result` and `time`, while errors are returned in the format `error` and `error_description`. Examples of response structure and error codes can be found on the specific method's page.
 
@@ -94,10 +94,10 @@ This section describes the management of each step in this chain: configuring ch
 
 #|
 || **Method** | **Description** ||
-|| [imopenlines.bot.session.message.send](./chat-bots/imopenlines-bot-session-message-send.md) | Sends an automated message in the dialogue ||
-|| [imopenlines.bot.session.operator](./chat-bots/imopenlines-bot-session-operator.md) | Switches the dialogue to an available operator ||
+|| [imopenlines.bot.session.message.send](./chat-bots/imopenlines-bot-session-message-send.md) | Sends an automatic message in the dialogue ||
+|| [imopenlines.bot.session.operator](./chat-bots/imopenlines-bot-session-operator.md) | Switches the dialogue to a free operator ||
 || [imopenlines.bot.session.transfer](./chat-bots/imopenlines-bot-session-transfer.md) | Transfers the dialogue to an operator or queue ||
-|| [imopenlines.bot.session.finish](./chat-bots/imopenlines-bot-session-finish.md) | Concludes the dialogue ||
+|| [imopenlines.bot.session.finish](./chat-bots/imopenlines-bot-session-finish.md) | Ends the dialogue ||
 |#
 
 ### CRM Chats in Open Channels
@@ -118,17 +118,17 @@ This section describes the management of each step in this chain: configuring ch
 
     #|
     || **Method** | **Description** ||
-    || [imopenlines.crm.message.add](./messages/imopenlines-crm-message-add.md) | Sends a message in the open channel ||
-    || [imopenlines.message.quick.save](./messages/imopenlines-message-quick-save.md) | Saves a message as a quick response ||
+    || [imopenlines.crm.message.add](./messages/imopenlines-crm-message-add.md) | Sends a message to an Open Channel ||
+    || [imopenlines.message.quick.save](./messages/imopenlines-message-quick-save.md) | Saves a message as a quick reply ||
     |#
 
 - Events
 
     #|
-    || **Event** | **Triggered By** ||
-    || [OnOpenLineMessageAdd](./events/on-open-line-message-add.md) | When a message is added to the chat ||
-    || [OnOpenLineMessageUpdate](./events/on-open-line-message-update.md) | When a message is updated in the chat ||
-    || [OnOpenLineMessageDelete](./events/on-open-line-message-delete.md) | When a message is deleted from the chat ||
+    || **Event** | **Triggered** ||
+    || [OnOpenLineMessageAdd](./events/on-open-line-message-add.md) | When adding a message to a chat ||
+    || [OnOpenLineMessageUpdate](./events/on-open-line-message-update.md) | When changing a message in a chat ||
+    || [OnOpenLineMessageDelete](./events/on-open-line-message-delete.md) | When deleting a message in a chat ||
     |#
 
 {% endlist %}
@@ -154,26 +154,26 @@ This section describes the management of each step in this chain: configuring ch
     #|
     || **Method** | **Description** ||
     || [imopenlines.session.open](./sessions/imopenlines-session-open.md) | Retrieves the chat identifier by user code ||
-    || [imopenlines.dialog.get](./sessions/imopenlines-dialog-get.md) | Retrieves the operator's dialogue data ||
-    || [imopenlines.session.start](./sessions/imopenlines-session-start.md) | Starts a new session in the chat ||
+    || [imopenlines.dialog.get](./sessions/imopenlines-dialog-get.md) | Gets operator dialog data ||
+    || [imopenlines.session.start](./sessions/imopenlines-session-start.md) | Starts a new session in a chat ||
     || [imopenlines.message.session.start](./sessions/imopenlines-message-session-start.md) | Starts a new session based on a message ||
-    || [imopenlines.session.history.get](./sessions/imopenlines-session-history-get.md) | Retrieves message history and session data ||
-    || [imopenlines.session.join](./sessions/imopenlines-session-join.md) | Joins the operator to the dialogue ||
-    || [imopenlines.session.intercept](./sessions/imopenlines-session-intercept.md) | Transfers the dialogue to the current operator ||
-    || [imopenlines.session.mode.pin](./sessions/imopenlines-session-mode-pin.md) | Pins or unpins the selected dialogue ||
-    || [imopenlines.session.mode.pinAll](./sessions/imopenlines-session-mode-pin-all.md) | Pins all available dialogues to the operator ||
-    || [imopenlines.session.mode.unpinAll](./sessions/imopenlines-session-mode-unpin-all.md) | Unpins all pinned dialogues of the operator ||
-    || [imopenlines.session.mode.silent](./sessions/imopenlines-session-mode-silent.md) | Enables or disables silent mode for the dialogue ||
-    || [imopenlines.session.head.vote](./sessions/imopenlines-session-head-vote.md) | Saves the supervisor's rating for the completed session ||
-    || [imopenlines.crm.lead.create](./sessions/imopenlines-crm-lead-create.md) | Creates a CRM lead based on the dialogue ||
+    || [imopenlines.session.history.get](./sessions/imopenlines-session-history-get.md) | Gets message history and session data ||
+    || [imopenlines.session.join](./sessions/imopenlines-session-join.md) | Attaches an operator to a dialog ||
+    || [imopenlines.session.intercept](./sessions/imopenlines-session-intercept.md) | Transfers the dialog to the current operator ||
+    || [imopenlines.session.mode.pin](./sessions/imopenlines-session-mode-pin.md) | Pins or unpins the selected dialog ||
+    || [imopenlines.session.mode.pinAll](./sessions/imopenlines-session-mode-pin-all.md) | Assigns all available dialogs to an operator ||
+    || [imopenlines.session.mode.unpinAll](./sessions/imopenlines-session-mode-unpin-all.md) | Unassigns all assigned dialogs from an operator ||
+    || [imopenlines.session.mode.silent](./sessions/imopenlines-session-mode-silent.md) | Turns the dialog's silent mode on or off ||
+    || [imopenlines.session.head.vote](./sessions/imopenlines-session-head-vote.md) | Saves the supervisor's evaluation for the completed session ||
+    || [imopenlines.crm.lead.create](./sessions/imopenlines-crm-lead-create.md) | Creates a CRM lead based on a dialog ||
     |#
 
 - Events
 
     #|
-    || **Event** | **Triggered By** ||
-    || [OnSessionStart](./events/on-session-start.md) | When a chat is created ||
-    || [OnSessionFinish](./events/on-session-finish.md) | When a chat is closed ||
+    || **Event** | **Triggered** ||
+    || [OnSessionStart](./events/on-session-start.md) | When creating an Open Channel session ||
+    || [OnSessionFinish](./events/on-session-finish.md) | When closing an Open Channel session ||
     |#
 
 {% endlist %}

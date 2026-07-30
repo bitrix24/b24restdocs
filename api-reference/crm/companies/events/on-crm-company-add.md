@@ -1,4 +1,4 @@
-# Event on creating a company onCrmCompanyAdd
+# Event on Creating a Company onCrmCompanyAdd
 
 {% note tip "" %}
 
@@ -18,9 +18,9 @@ Events will not be sent to the application until the installation is complete. [
 
 {% endnote %}
 
-## What the handler receives
+## What the Handler Receives
 
-Data is sent as a POST request {.b24-info}
+Data is transmitted as a POST request {.b24-info}
 
 ```json
 {
@@ -48,14 +48,14 @@ Data is sent as a POST request {.b24-info}
 ```
 
 #|
-|| **Parameter**
+|| **parameter**
 `type` | **Description** ||
 || **event**
-[`string`](../../../data-types.md) | Symbolic event code.
+[`string`](../../../data-types.md) | Symbolic code of the event.
 
-In this case — `ONCRMCOMPANYADD`||
+In this case — `ONCRMCOMPANYADD` ||
 || **event_handler_id**
-[`integer`](../../../data-types.md) | Event handler identifier ||
+[`integer`](../../../data-types.md) | Identifier of the event handler ||
 || **data**
 [`object`](../../../data-types.md) | Object containing information about the created company.
 
@@ -65,7 +65,7 @@ Contains a single key `FIELDS` ||
 
 The structure is described [below](#fields) ||
 || **ts**
-[`timestamp`](../../../data-types.md) | Date and time the event was sent from the [event queue](../../../events/index.md) ||
+[`timestamp`](../../../data-types.md) | Date and time of the event sent from the [event queue](../../../events/index.md) ||
 || **auth**
 [`object`](../../../data-types.md) | Object containing authorization parameters and information about the account where the event occurred.
 
@@ -75,7 +75,7 @@ The structure is described [below](#auth) ||
 ### Parameter FIELDS {#fields}
 
 #|
-|| **Parameter**
+|| **parameter**
 `type` | **Description** ||
 || **ID**
 [`integer`](../../../data-types.md) | Identifier of the created company ||
@@ -83,9 +83,9 @@ The structure is described [below](#auth) ||
 
 ### Parameter auth {#auth}
 
-{% include notitle [Table with keys in the auth array](../../../../_includes/auth-params-in-events.md) %}
+{% include notitle [Auth parameters in events](../../../../_includes/auth-params-in-events.md) %}
 
-## Continue exploring
+## Continue Learning
 
 - [{#T}](../../../events/index.md)
 - [{#T}](../../../events/event-bind.md)

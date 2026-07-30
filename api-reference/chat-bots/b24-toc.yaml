@@ -1,21 +1,21 @@
-title: Bot Platform  
-href: index.md  
-items:  
-  - name: Section Overview  
-    href: index.md  
-  - name: Chatbots 2.0  
-    include:  
-      path: chat-bots-v2/b24-toc.yaml  
-      mode: link  
-  - name: Working with Chat  
-    include:  
-      path: chat-bots-v2/im.v2/b24-toc.yaml  
-      mode: link  
-  - name: Additional Resources  
-    items:  
-      - name: How to Call Chatbot Methods and Update the Authorization Token  
-        href: send-command.md  
-  - name: Deprecated  
-    include:  
-      path: outdated/b24-toc.yaml  
-      mode: link  
+title: Bot Platform
+href: index.md
+items:
+  - name: Section Overview
+    href: index.md
+  - name: Chatbots 2.0
+    include:
+      path: chat-bots-v2/b24-toc.yaml
+      mode: link
+  - name: Working with Chat
+    include:
+      path: chat-bots-v2/im.v2/b24-toc.yaml
+      mode: link
+  - name: Additional Resources
+    items:
+      - name: How to Call Chatbot 2.0 Methods and Refresh Authorization Token
+        href: send-command.md
+  - name: Deprecated
+    include:
+      path: outdated/b24-toc.yaml
+      mode: link

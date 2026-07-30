@@ -1,8 +1,8 @@
-# How to Transfer a Deal Between Entities of the Same Type
+# How to Move an Activity Between Items of the Same Type
 
 > Scope: [`crm`](../../../api-reference/scopes/permissions.md)
 >
-> Who can execute the method: users with permission to modify CRM entities
+> Who can execute the method: users with permission to edit CRM items
 
 {% note tip "" %}
 
@@ -10,23 +10,35 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-Deals associated with CRM entities are stored in the timeline of the entity's detail form. Transferring a deal from one entity to another may be necessary when multiple emails or calls related to different leads are captured under a single lead. In this case, the original lead can be split into several new ones, and the deals can be transferred for accurate data tracking.
+Activities associated with CRM items are stored in the item card timeline. Moving an activity from one item to another may be required when a single lead receives several e-mails or calls that, from a business perspective, belong to different leads. In this case, you can split the original lead into several new ones and move the activities to ensure correct data accounting.
 
-To transfer a deal, we will sequentially execute three methods:
+The method moves the activity link rather than copying it. As a result of the scenario, the activity will appear in the timeline of the new lead and disappear from the timeline of the original one.
 
-1. [crm.activity.list](../../../api-reference/crm/timeline/activities/activity-base/crm-activity-list.md) — retrieve the activity ID
+{% note warning "" %}
 
-2. [crm.lead.add](../../../api-reference/crm/leads/crm-lead-add.md) — create the item to which the activity will be moved (in this example, a lead)
+An activity can only be moved between items of the same type: the values of `sourceEntityTypeId` and `targetEntityTypeId` must match. If the types are different, the method will return error `SOURCE_AND_TARGET_ENTITY_TYPES_ARE_NOT_EQUAL_ERROR`. To move an activity between objects of different types, such as from a lead to a company, use the [How to Move an Activity from One Object Type to Another](./how-to-move-activity-between-objects.md) scenario.
 
-3. [crm.activity.binding.move](../../../api-reference/crm/timeline/activities/binding/crm-activity-binding-move.md) — perform the activity transfer
+{% endnote %}
 
-## 1. Retrieving the Deal ID {#first}
+To move an activity, we will sequentially execute three methods:
 
-We will use the method [crm.activity.list](../../../api-reference/crm/timeline/activities/activity-base/crm-activity-list.md) with the following filter:
+1. [crm.activity.list](../../../api-reference/crm/timeline/activities/activity-base/crm-activity-list.md) — retrieve the activity ID,
 
-- `OWNER_TYPE_ID` — [object type](../../../api-reference/crm/data-types.md#object_type), specify `1` for a lead
+2. [crm.lead.add](../../../api-reference/crm/leads/crm-lead-add.md) — create the item to which the activity will be moved (a lead in this example),
 
-- `OWNER_ID` — the ID of the item from which the activity will be moved
+3. [crm.activity.binding.move](../../../api-reference/crm/timeline/activities/binding/crm-activity-binding-move.md) — perform the activity move.
+
+## 1. Retrieve the Activity ID {#first}
+
+Use the [crm.activity.list](../../../api-reference/crm/timeline/activities/activity-base/crm-activity-list.md) method with a filter:
+
+- `OWNER_TYPE_ID` — [object type](../../../api-reference/crm/data-types.md#object_type), specify `1` for a lead,
+
+- `OWNER_ID` — the ID of the item from which the activity will be moved.
+
+In this example, we are moving an activity from lead `1000977`. The lead ID is visible in the address bar of its card, for example `/crm/lead/details/1000977/`, or it can be retrieved using the [crm.lead.list](../../../api-reference/crm/leads/crm-lead-list.md) method.
+
+Without the `select` parameter, the method returns all activity fields. To reduce the response size, specify only the fields required for the scenario: `ID`, `OWNER_TYPE_ID`, `OWNER_ID`, `SUBJECT`, and `DESCRIPTION`. By field `DESCRIPTION` in the [code example](#example), the required activity is selected.
 
 {% include [Note on examples](../../../_includes/examples.md) %}
 
@@ -48,6 +60,7 @@ We will use the method [crm.activity.list](../../../api-reference/crm/timeline/a
                 "OWNER_TYPE_ID": 1,
                 "OWNER_ID": 1000977
             },
+            select: [ "ID", "OWNER_TYPE_ID", "OWNER_ID", "SUBJECT", "DESCRIPTION" ]
         }
     });
     ```
@@ -66,36 +79,43 @@ We will use the method [crm.activity.list](../../../api-reference/crm/timeline/a
     $logger->pushHandler(new StreamHandler('php://stdout'));
 
     $serviceBuilder = (new ServiceBuilderFactory(new EventDispatcher(), $logger))
-        ->initFromWebhook('https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/');
+        ->initFromWebhook(getenv('B24_HOOK'));
+    // B24_HOOK = 'https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/'
 
-    $result = $serviceBuilder->getCRMScope()->activity()->list(
+    $activities = $serviceBuilder->getCRMScope()->activity()->list(
         [],
         [
             'OWNER_TYPE_ID' => 1,
             'OWNER_ID' => 1000977,
         ],
-        [],
+        [
+            'ID', 'OWNER_TYPE_ID', 'OWNER_ID', 'SUBJECT', 'DESCRIPTION'
+        ],
         0
-    );
+    )->getActivities();
     ```
 
 - Python
 
     ```python
+    import os
+
     from b24pysdk import BitrixWebhook, Client
 
     client = Client(
         BitrixWebhook(
             domain="your-domain.bitrix24.com",
-            webhook_token="user_id/webhook_key",
+            webhook_token=os.environ["B24_HOOK_TOKEN"],
         )
     )
+    # B24_HOOK_TOKEN = 'user_id/webhook_key'
 
     result = client.crm.activity.list(
         filter={
             "OWNER_TYPE_ID": 1,
             "OWNER_ID": 1000977,
-        }
+        },
+        select=["ID", "OWNER_TYPE_ID", "OWNER_ID", "SUBJECT", "DESCRIPTION"],
     ).response.result
     ```
 
@@ -108,122 +128,34 @@ As a result, you will retrieve all activities associated with the specified item
     "result": [
         {
             "ID": "7685",
-            "OWNER_ID": "1000977",
             "OWNER_TYPE_ID": "1",
-            "TYPE_ID": "4",
-            "PROVIDER_ID": "CRM_EMAIL",
-            "PROVIDER_TYPE_ID": "EMAIL",
-            "PROVIDER_GROUP_ID": null,
-            "ASSOCIATED_ENTITY_ID": "0",
+            "OWNER_ID": "1000977",
             "SUBJECT": "for leads",
-            "CREATED": "2025-03-10T10:57:41+03:00",
-            "LAST_UPDATED": "2025-03-10T10:57:41+03:00",
-            "START_TIME": "2025-03-10T10:57:34+03:00",
-            "END_TIME": "2025-03-10T20:00:00+03:00",
-            "DEADLINE": "9999-12-31T00:00:00+03:00",
-            "COMPLETED": "N",
-            "STATUS": "1",
-            "RESPONSIBLE_ID": "29",
-            "PRIORITY": "2",
-            "NOTIFY_TYPE": "0",
-            "NOTIFY_VALUE": "0",
-            "DESCRIPTION": "<div>first email</div>\r\n",
-            "DESCRIPTION_TYPE": "3",
-            "DIRECTION": "1",
-            "LOCATION": "",
-            "SETTINGS": {
-                "EMAIL_META": {
-                    "__email": "some_email@gmail.com",
-                    "from": "Some client <some_client@gmail.com>",
-                    "replyTo": "",
-                    "to": "\"some_email@gmail.com\" <some_email@gmail.com>",
-                    "cc": "",
-                    "bcc": ""
-                },
-                "SANITIZE_ON_VIEW": 1
-            },
-            "ORIGINATOR_ID": null,
-            "ORIGIN_ID": null,
-            "AUTHOR_ID": "1",
-            "EDITOR_ID": "29",
-            "PROVIDER_PARAMS": [],
-            "PROVIDER_DATA": null,
-            "RESULT_MARK": "0",
-            "RESULT_VALUE": null,
-            "RESULT_SUM": null,
-            "RESULT_CURRENCY_ID": null,
-            "RESULT_STATUS": "0",
-            "RESULT_STREAM": "0",
-            "RESULT_SOURCE_ID": null,
-            "AUTOCOMPLETE_RULE": "0"
+            "DESCRIPTION": "<div>first email</div>\r\n"
         },
         {
             "ID": "7687",
-            "OWNER_ID": "1000977",
             "OWNER_TYPE_ID": "1",
-            "TYPE_ID": "4",
-            "PROVIDER_ID": "CRM_EMAIL",
-            "PROVIDER_TYPE_ID": "EMAIL",
-            "PROVIDER_GROUP_ID": null,
-            "ASSOCIATED_ENTITY_ID": "0",
+            "OWNER_ID": "1000977",
             "SUBJECT": "for leads",
-            "CREATED": "2025-03-10T10:58:13+03:00",
-            "LAST_UPDATED": "2025-03-10T10:58:13+03:00",
-            "START_TIME": "2025-03-10T10:58:08+03:00",
-            "END_TIME": "2025-03-10T20:00:00+03:00",
-            "DEADLINE": "9999-12-31T00:00:00+03:00",
-            "COMPLETED": "N",
-            "STATUS": "1",
-            "RESPONSIBLE_ID": "29",
-            "PRIORITY": "2",
-            "NOTIFY_TYPE": "0",
-            "NOTIFY_VALUE": "0",
-            "DESCRIPTION": "<div>second email</div>\r\n",
-            "DESCRIPTION_TYPE": "3",
-            "DIRECTION": "1",
-            "LOCATION": "",
-            "SETTINGS": {
-                "EMAIL_META": {
-                    "__email": "some_email@gmail.com",
-                    "from": "Some client <some_client@gmail.com>",
-                    "replyTo": "",
-                    "to": "\"some_email@gmail.com\" <some_email@gmail.com>",
-                    "cc": "",
-                    "bcc": ""
-                },
-                "SANITIZE_ON_VIEW": 1
-            },
-            "ORIGINATOR_ID": null,
-            "ORIGIN_ID": null,
-            "AUTHOR_ID": "1",
-            "EDITOR_ID": "29",
-            "PROVIDER_PARAMS": [],
-            "PROVIDER_DATA": null,
-            "RESULT_MARK": "0",
-            "RESULT_VALUE": null,
-            "RESULT_SUM": null,
-            "RESULT_CURRENCY_ID": null,
-            "RESULT_STATUS": "0",
-            "RESULT_STREAM": "0",
-            "RESULT_SOURCE_ID": null,
-            "AUTOCOMPLETE_RULE": "0"
+            "DESCRIPTION": "<div>second email</div>\r\n"
         }
     ],
-    "total": 2,
+    "total": 2
 }
 ```
 
-Select the required activity from the retrieved list and save its `ID`: `7687`. In [the code example](#example), task selection is implemented via phrase search from the field `DESCRIPTION`.
+Select the required activity from the retrieved list and save its `ID`: `7687`. We will pass this value to the parameter `activityId` in step 3.
 
-## 2. Creating a New Entity {#second}
+## 2. Create a New Item {#second}
 
-To create a new lead to which the e-mail activity will be moved, call the [crm.lead.add](../../../api-reference/crm/leads/crm-lead-add.md) method with the following parameters:
+To create a new lead to which the e-mail activity will be moved, execute the [crm.lead.add](../../../api-reference/crm/leads/crm-lead-add.md) method with the following parameters:
 
-- `fields[TITLE]` — the lead name
+- `fields[TITLE]` — the lead name,
 
-- `fields[ASSIGNED_BY_ID]` — the identifier of the user responsible for the new lead
+- `fields[ASSIGNED_BY_ID]` — the identifier of the user responsible for the new lead,
 
-- `params[REGISTER_SONET_EVENT]` — a parameter for registering notifications; specify `Y` so that system notifications are triggered upon the creation of the new lead
+- `params[REGISTER_SONET_EVENT]` — a parameter for registering notifications; specify `Y` so that system notifications are triggered upon the creation of the new lead.
 
 The method must include all mandatory fields for leads in your Bitrix24; otherwise, the lead will not be created. You can check which fields are mandatory using the [crm.lead.fields](../../../api-reference/crm/leads/crm-lead-fields.md) method, which is called without parameters.
 
@@ -250,7 +182,7 @@ The method must include all mandatory fields for leads in your Bitrix24; otherwi
 - PHP
 
     ```php
-    $result = $serviceBuilder->getCRMScope()->lead()->add(
+    $newLeadId = $serviceBuilder->getCRMScope()->lead()->add(
         [
             'TITLE' => 'Second lead',
             'ASSIGNED_BY_ID' => 1,
@@ -258,7 +190,7 @@ The method must include all mandatory fields for leads in your Bitrix24; otherwi
         [
             'REGISTER_SONET_EVENT' => 'Y',
         ]
-    );
+    )->getId();
     ```
 
 - Python
@@ -277,29 +209,29 @@ The method must include all mandatory fields for leads in your Bitrix24; otherwi
 
 {% endlist %}
 
-As a result, you will receive the ID of the created lead.
+As a result, you will receive the ID of the created lead. Pass this value to the `targetEntityId` parameter in step 3.
 
 ```JSON
 {
-    "result": 1000979,
+    "result": 1000979
 }
 ```
 
-## 3. Transferring the Deal Between Entities
+## 3. Moving an Activity Between Items
 
-To move the activity, use the [crm.activity.binding.move](../../../api-reference/crm/timeline/activities/binding/crm-activity-binding-move.md) method with the following parameters:
+To move an activity, use the [crm.activity.binding.move](../../../api-reference/crm/timeline/activities/binding/crm-activity-binding-move.md) method with the following parameters:
 
-- `activityId` — the activity ID obtained in [step 1](#first) via the [crm.activity.list](../../../api-reference/crm/timeline/activities/activity-base/crm-activity-list.md) method
+- `activityId` — the activity ID obtained in [Step 1](#first) using the [crm.activity.list](../../../api-reference/crm/timeline/activities/activity-base/crm-activity-list.md) method,
 
-- `sourceEntityTypeId` — the ID of the [object type](../../../api-reference/crm/data-types.md#object_type) from which the activity is being moved
+- `sourceEntityTypeId` — the [object type](../../../api-reference/crm/data-types.md#object_type) ID from which the activity is being moved,
 
-- `sourceEntityId` — the ID of the item from which the activity is being moved
+- `sourceEntityId` — the item ID from which the activity is being moved,
 
-- `targetEntityTypeId` — the ID of the [object type](../../../api-reference/crm/data-types.md#object_type) to which the activity is being moved
+- `targetEntityTypeId` — the [object type](../../../api-reference/crm/data-types.md#object_type) ID to which the activity is being moved,
 
-- `targetEntityId` — the ID of the item to which the activity is being moved, obtained in [step 2](#second) via the [crm.lead.add](../../../api-reference/crm/leads/crm-lead-add.md) method
+- `targetEntityId` — the item ID to which the activity is being moved, obtained in [Step 2](#second) using the [crm.lead.add](../../../api-reference/crm/leads/crm-lead-add.md) method.
 
-`sourceEntityTypeId` and `targetEntityTypeId` must have the same object type value.
+In this example, both object types are equal to `1` — the activity is moved from one lead to another lead.
 
 {% list tabs %}
 
@@ -321,6 +253,7 @@ To move the activity, use the [crm.activity.binding.move](../../../api-reference
 - PHP
 
     ```php
+    // crm.activity.binding.move does not have a typed wrapper — calling via core
     $result = $serviceBuilder->core->call(
         'crm.activity.binding.move',
         [
@@ -347,11 +280,11 @@ To move the activity, use the [crm.activity.binding.move](../../../api-reference
 
 {% endlist %}
 
-As a result, you will receive `true`, the task transfer was successful. If you received an error as a result `error`, study the description of possible errors in the [crm.activity.binding.move](../../../api-reference/crm/timeline/activities/binding/crm-activity-binding-move.md#error-handling) method documentation.
+As a result, you will receive `true`, indicating the activity move was successful.
 
 ```JSON
 {
-    "result": true,
+    "result": true
 }
 ```
 
@@ -376,14 +309,15 @@ As a result, you will receive `true`, the task transfer was successful. If you r
         return result.getData().result;
     }
 
-    // Function to perform all steps
+    // Function to execute all steps
     async function transferActivity(firstLeadId, searchPhrase) {
-        // Step 1: Get the task list for the specified lead
+        // Step 1: Get the list of tasks for the specified lead
         const activities = await call("crm.activity.list", {
             filter: {
                 "OWNER_TYPE_ID": 1,
                 "OWNER_ID": firstLeadId
-            }
+            },
+            select: [ "ID", "OWNER_TYPE_ID", "OWNER_ID", "SUBJECT", "DESCRIPTION" ]
         });
 
         const targetActivity = activities.find(activity => activity.DESCRIPTION.includes(searchPhrase));
@@ -406,7 +340,7 @@ As a result, you will receive `true`, the task transfer was successful. If you r
             }
         });
 
-        // Step 3: Transfer the task
+        // Step 3: Move the task
         await call('crm.activity.binding.move', {
             activityId: activityId,
             sourceEntityTypeId: 1,
@@ -415,7 +349,7 @@ As a result, you will receive `true`, the task transfer was successful. If you r
             targetEntityId: newLeadId
         });
 
-        console.log("Task successfully transferred.");
+        console.log("Task successfully moved.");
     }
 
     // Requesting the first lead's ID and search phrase from the user
@@ -447,21 +381,24 @@ As a result, you will receive `true`, the task transfer was successful. If you r
     $logger->pushHandler(new StreamHandler('php://stdout'));
 
     $serviceBuilder = (new ServiceBuilderFactory(new EventDispatcher(), $logger))
-        ->initFromWebhook('https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/');
+        ->initFromWebhook(getenv('B24_HOOK'));
+    // B24_HOOK = 'https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/'
 
-    // Function to perform all steps
+    // Function to execute all steps
     function transferActivity($serviceBuilder, $firstLeadId, $searchPhrase) {
         $crm = $serviceBuilder->getCRMScope();
 
         try {
-            // Step 1: Get the task list for the specified lead
+            // Step 1: Get the list of tasks for the specified lead
             $activities = $crm->activity()->list(
                 [],
                 [
                     'OWNER_TYPE_ID' => 1,
                     'OWNER_ID' => $firstLeadId,
                 ],
-                [],
+                [
+                    'ID', 'OWNER_TYPE_ID', 'OWNER_ID', 'SUBJECT', 'DESCRIPTION'
+                ],
                 0
             )->getActivities();
 
@@ -492,7 +429,8 @@ As a result, you will receive `true`, the task transfer was successful. If you r
                 ]
             )->getId();
 
-            // Step 3: Transfer the task
+            // Step 3: Move the task
+            // crm.activity.binding.move does not have a typed wrapper — calling via core
             $serviceBuilder->core->call(
                 'crm.activity.binding.move',
                 [
@@ -504,7 +442,7 @@ As a result, you will receive `true`, the task transfer was successful. If you r
                 ]
             );
 
-            echo 'Task successfully transferred.';
+            echo 'Task successfully moved.';
         } catch (\Throwable $e) {
             echo 'Error: ' . $e->getMessage();
         }
@@ -521,6 +459,8 @@ As a result, you will receive `true`, the task transfer was successful. If you r
 - Python
 
     ```python
+    import os
+
     from b24pysdk import BitrixWebhook, Client
     from b24pysdk.errors import BitrixAPIError
 
@@ -530,7 +470,8 @@ As a result, you will receive `true`, the task transfer was successful. If you r
                 filter={
                     "OWNER_TYPE_ID": 1,
                     "OWNER_ID": first_lead_id,
-                }
+                },
+                select=["ID", "OWNER_TYPE_ID", "OWNER_ID", "SUBJECT", "DESCRIPTION"],
             ).response.result
         except BitrixAPIError as error:
             print(f"Error: {error}")
@@ -574,14 +515,15 @@ As a result, you will receive `true`, the task transfer was successful. If you r
             print(f"Error: {error}")
         else:
             if result:
-                print("Task successfully transferred.")
+                print("Task successfully moved.")
 
     client = Client(
         BitrixWebhook(
             domain="your-domain.bitrix24.com",
-            webhook_token="user_id/webhook_key",
+            webhook_token=os.environ["B24_HOOK_TOKEN"],
         )
     )
+    # B24_HOOK_TOKEN = 'user_id/webhook_key'
 
     first_lead_id = int(input("Enter the first lead's ID: "))
     search_phrase = input("Enter the phrase to search in the email body: ")
@@ -590,3 +532,52 @@ As a result, you will receive `true`, the task transfer was successful. If you r
     ```
 
 {% endlist %}
+
+## Verifying the Result
+
+Open the new lead card — the moved activity will appear in the timeline. The activity will no longer be present in the original lead card: the method moves the link rather than copying it.
+
+You can verify the result via REST using the [crm.activity.binding.list](../../../api-reference/crm/timeline/activities/binding/crm-activity-binding-list.md) method. Pass the `activityId` of the moved activity to it — the method will return all activity links. After a successful move, only one link will remain in the response: the object type `1` and the new lead ID.
+
+```JSON
+{
+    "result": [
+        {
+            "entityTypeId": 1,
+            "entityId": 1000979
+        }
+    ]
+}
+```
+
+## Errors and Troubleshooting
+
+If the method returns an error, check the request data.
+
+#|
+|| **Code** | **Reason and action** ||
+|| `SOURCE_AND_TARGET_ENTITY_TYPES_ARE_NOT_EQUAL_ERROR` | Values `sourceEntityTypeId` and `targetEntityTypeId` do not match. For objects of different types, the activity is moved according to the [How to move an activity from one object type to another](./how-to-move-activity-between-objects.md) scenario ||
+|| `SOURCE_AND_TARGET_ENTITY_ID_ARE_EQUAL_ERROR` | The same item was passed in `sourceEntityId` and `targetEntityId`. Please specify different items ||
+|| `BINDING_NOT_FOUND` | The activity is not linked to an item from `sourceEntityTypeId` and `sourceEntityId`. Check which item you are moving the activity from ||
+|| `ACTIVITY_IS_ALREADY_BOUND` | The activity is already linked to the item you are moving it to ||
+|| `NOT_FOUND` | Activity or CRM item not found. Check `activityId`, `sourceEntityId`, and `targetEntityId` ||
+|| `ACCESS_DENIED` | The user does not have permission to modify CRM items ||
+|| `100` | Mandatory parameters were not passed. The method requires all five: `activityId`, `sourceEntityTypeId`, `sourceEntityId`, `targetEntityTypeId`, and `targetEntityId` ||
+|#
+
+## Key Considerations
+
+- The [crm.activity.binding.move](../../../api-reference/crm/timeline/activities/binding/crm-activity-binding-move.md) method only moves an activity between items of the same type.
+- This scenario does not work only for leads. To move an activity between two deals, specify `2` in `OWNER_TYPE_ID` of Step 1 and in both object type parameters of Step 3, and create the target deal using the [crm.deal.add](../../../api-reference/crm/deals/crm-deal-add.md) method. Values for other types can be found in the [object types](../../../api-reference/crm/data-types.md#object_type) reference.
+- The activity is moved along with its entire history: an e-mail or call will disappear from the original item's timeline.
+- Along with the link, the activity's own `OWNER_TYPE_ID` and `OWNER_ID` fields change — when only one link remains, its item becomes the owner. Therefore, [crm.activity.list](../../../api-reference/crm/timeline/activities/activity-base/crm-activity-list.md) with a filter for the original lead will no longer return the moved activity; search for it using the new lead instead.
+- The [crm.lead.add](../../../api-reference/crm/leads/crm-lead-add.md) method requires all mandatory lead fields for your Bitrix24; verify the field composition using the [crm.lead.fields](../../../api-reference/crm/leads/crm-lead-fields.md) method.
+- Rerunning the example creates another lead. The already moved activity will not be found in the original lead, and the example will terminate with a message stating the activity was not found.
+
+## Continue Learning
+
+- [{#T}](../../../api-reference/crm/timeline/activities/binding/crm-activity-binding-move.md)
+- [{#T}](../../../api-reference/crm/timeline/activities/binding/crm-activity-binding-list.md)
+- [{#T}](../../../api-reference/crm/timeline/activities/activity-base/crm-activity-list.md)
+- [{#T}](./how-to-move-activity-between-objects.md)
+- [{#T}](./how-to-change-date-in-activity.md)

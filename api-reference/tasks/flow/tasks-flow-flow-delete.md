@@ -14,9 +14,9 @@ The method `tasks.flow.Flow.delete` deletes a flow by its identifier.
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../_includes/required.md) %}
+{% include [Note on parameters](../../../_includes/required.md) %}
 
-#| 
+#|
 || **Name**
 `type` | **Description** ||
 || **flowData*** 
@@ -43,10 +43,10 @@ You can obtain the identifier using the method for creating a new flow [tasks.fl
             "id": 517
         }
     }' \
-    https://your-domain.com/rest/_USER_ID_/_CODE_/tasks.flow.Flow.delete
+    https://your-domain.bitrix24.com/rest/_USER_ID_/_CODE_/tasks.flow.Flow.delete
     ```
 
-- cURL (oAuth)
+- cURL (OAuth)
 
     ```bash
     curl -X POST \
@@ -57,7 +57,7 @@ You can obtain the identifier using the method for creating a new flow [tasks.fl
             "id": 517
         }
     }' \
-    https://your-domain.com/rest/tasks.flow.Flow.delete
+    https://your-domain.bitrix24.com/rest/tasks.flow.Flow.delete
     ```
 
 - JS (TS)
@@ -192,13 +192,13 @@ You can obtain the identifier using the method for creating a new flow [tasks.fl
 - PHP CRest
 
     ```php
-    require_once('crest.php'); // include CRest PHP SDK
+    require_once('crest.php'); // connecting the CRest PHP SDK
 
     $flowData = [
         "id" => 517
     ];
 
-    // execute request to REST API
+    // executing a request to the REST API
     $result = CRest::call(
         'tasks.flow.Flow.delete',
         [
@@ -206,7 +206,7 @@ You can obtain the identifier using the method for creating a new flow [tasks.fl
         ]
     );
 
-    // Handle response from Bitrix24
+    // Processing the response from Bitrix24
     if ($result['error']) {
         echo 'Error: '.$result['error_description'];
     } else {
@@ -218,7 +218,7 @@ You can obtain the identifier using the method for creating a new flow [tasks.fl
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -230,18 +230,18 @@ HTTP Status: **200**
 
 ### Returned Data
 
-#| 
+#|
 || **Name**
 `type` | **Description** ||
 || **result** 
-[`object`](../../data-types.md) | Object containing the result of the operation ||
+[`object`](../../data-types.md) | Object with the result of the operation ||
 || **deleted** 
 [`boolean`](../../data-types.md) | Success of the flow deletion ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -250,18 +250,18 @@ HTTP Status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
-#| 
+#|
 || **Code** | **Description** | **Additional Information** ||
-|| `0` | Access denied or flow not found | The account plan does not allow working with flows or the user does not have permission to delete the flow ||
+|| `0` | Access denied or stream not found | The account plan does not allow working with flows or the user does not have permission to delete the flow ||
 || `0` | `Flow not found` | The flow with the specified identifier was not found ||
-|| `0` | `Unknown error` | An unknown error occurred ||
+|| `0` | `Unknown error` | Unknown error ||
 |#
 
-{% include [system errors](../../../_includes/system-errors.md) %}
+{% include [System errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

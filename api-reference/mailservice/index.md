@@ -1,4 +1,4 @@
-# Email Services: Overview of Methods
+# Mail Services: Methods Overview
 
 {% note tip "" %}
 
@@ -6,18 +6,34 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-In Bitrix24, you can connect mailboxes from services like Gmail and others. This simplifies working with emails.
+In Bitrix24, you can connect mailboxes from services such as Gmail, Outlook, and others. This simplifies working with emails.
 
-> Quick navigation: [all methods](#all-methods)
+> Quick navigation: [All Methods](#all-methods)
 
-The methods in this section manage email services. Mailboxes, messages, and recipients are managed by [E-mail REST 3.0](../mail/index.md) methods.
+The methods in this section manage mail services. Mailboxes, emails, and recipients are managed via the [Webmail REST 3.0](../mail/index.md) methods.
 
-{% note tip "User Documentation" %}
+## Getting Started
 
-- [How to connect Gmail to Bitrix24](https://helpdesk.bitrix24.com/open/18508706/)
-- [Ways to connect mailboxes in Bitrix24](https://helpdesk.bitrix24.com/open/19264454/)
-- [How to work with email in Bitrix24](https://helpdesk.bitrix24.com/open/20134658/)
-- [Questions about email operation (connection, integration with CRM)](https://helpdesk.bitrix24.com/open/8293717/)
+1. Create a mail service using the [mailservice.add](./mailservice-add.md) method
+2. Update service parameters using the [mailservice.update](./mailservice-update.md) method
+3. Retrieve a service by identifier using the [mailservice.get](./mailservice-get.md) method
+4. Check the list of active services using the [mailservice.list](./mailservice-list.md) method
+5. Delete a service using the [mailservice.delete](./mailservice-delete.md) method if it is no longer needed
+6. To check available fields, use the [mailservice.fields](./mailservice-fields.md) method
+
+## Mail Service Identifiers
+
+- `ID` — the mail service identifier. It is returned by the [mailservice.add](./mailservice-add.md) method
+- Retrieve service parameters by `ID` using the [mailservice.get](./mailservice-get.md) method
+- Find active mail services and their `ID` using the [mailservice.list](./mailservice-list.md) method
+
+{% note tip "User documentation" %}
+
+- [How to Connect Gmail to Bitrix24](https://helpdesk.bitrix24.com/open/18508706/)
+- [How to Connect Gmail to Bitrix24](https://helpdesk.bitrix24.com/open/19264454/)
+- [Ways to Connect Mailboxes in Bitrix24](https://helpdesk.bitrix24.com/open/20134658/)
+- [How to Work with Webmail in Bitrix24](https://helpdesk.bitrix24.com/open/8293717/)
+- [Questions About Webmail (Connection, CRM Integration)](https://helpdesk.bitrix24.com/open/24207776/)
 
 {% endnote %}
 
@@ -25,7 +41,7 @@ The methods in this section manage email services. Mailboxes, messages, and reci
 
 > Scope: [`mailservice`](../scopes/permissions.md)
 >
-> Who can perform the method: depending on the method
+> Who can execute the method: depends on the method
 
 #|
 || **Method** | **Description** ||

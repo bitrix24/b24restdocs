@@ -1,4 +1,4 @@
-# Get the list of sprints tasks.api.scrum.sprint.list
+# Get a List of Sprints tasks.api.scrum.sprint.list
 
 {% note tip "" %}
 
@@ -12,21 +12,21 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 The method `tasks.api.scrum.sprint.list` returns a list of sprints.
 
-This method is similar to other methods with filtering by list.
+This method is similar to other methods with list filtering.
 
-## Method parameters
+## Method Parameters
 
 #|
 || **Name**
 `type` | **Description** ||
 || **order**
-[`object`](../../../data-types.md) | An object for sorting the result. The object format is `{'sorting_field': 'sorting_direction' [, ...]}`. Available fields are described in the table [below](#fields).
+[`object`](../../../data-types.md) | Object for sorting the result. An object of type `{'sort_field': 'sort_direction' [, ...]}`. Available fields are described in the table [below](#fields).
 
-Sorting direction can take the following values:
+The sort direction can take the following values:
 - `asc` — ascending
 - `desc` — descending ||
 || **filter**
-[`object`](../../../data-types.md) | An object in the format `{'filter_field': 'filter_value' [, ...]}`. Available fields are described in the table [below](#fields) ||
+[`object`](../../../data-types.md) | An object of type `{'filterable_field': 'filter_value' [, ...]}`. Available fields are described in the table [below](#fields) ||
 || **select**
 [`object`](../../../data-types.md) | An array of record fields that will be returned by the method. You can specify only the fields that are necessary. 
 
@@ -37,17 +37,17 @@ The default value is an empty array `array()`. In this case, all fields of the m
 [`integer`](../../../data-types.md) | The page number of the output. Works for https requests ||
 |#
 
-### Available filter fields {#fields}
+### Available Filter Fields {#fields}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **ID** 
-[`integer`](../../../data-types.md) | Sprint identifier ||
+[`integer`](../../../data-types.md) | Identifier of the sprint ||
 || **GROUP_ID** 
 [`integer`](../../../data-types.md) | Scrum identifier ||
 || **ENTITY_TYPE** 
-[`string`](../../../data-types.md) | Entity type ||
+[`string`](../../../data-types.md) | Item type ||
 || **NAME** 
 [`string`](../../../data-types.md) | Name ||
 || **SORT** 
@@ -66,9 +66,9 @@ The default value is an empty array `array()`. In this case, all fields of the m
 [`object`](../../../data-types.md) | Information ||
 |#
 
-## Code examples
+## Code Examples
 
-{% include [Footnote on examples](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -86,7 +86,7 @@ The default value is an empty array `array()`. In this case, all fields of the m
     https://your-domain.bitrix24.com/rest/_USER_ID_/_CODE_/tasks.api.scrum.sprint.list
     ```
 
-- cURL (oAuth)
+- cURL (OAuth)
 
     ```bash
     curl -X POST \
@@ -259,9 +259,9 @@ The default value is an empty array `array()`. In this case, all fields of the m
 - PHP CRest
 
     ```php
-    require_once('crest.php'); // include CRest PHP SDK
+    require_once('crest.php'); // connecting CRest PHP SDK
 
-    // execute a request to the REST API
+    // executing a request to the REST API
     $result = CRest::call(
         'tasks.api.scrum.sprint.list',
         [
@@ -272,7 +272,7 @@ The default value is an empty array `array()`. In this case, all fields of the m
         ]
     );
 
-    // Process the response from Bitrix24
+    // Processing the response from Bitrix24
     if (isset($result['error'])) {
         echo 'Error: '.$result['error_description'];
     } else {
@@ -282,7 +282,7 @@ The default value is an empty array `array()`. In this case, all fields of the m
 
 {% endlist %}
 
-## Response handling
+## Response Handling
 
 HTTP status: **200**
 
@@ -317,15 +317,15 @@ HTTP status: **200**
 ]
 ```
 
-### Returned data
+### Returned Data
 
 #|
 || **Name**
 `type` | **Description** ||
 || **result** 
-[`object`](../../../data-types.md) | An object containing data about the sprint ||
+[`object`](../../../data-types.md) | Object containing sprint data ||
 || **id** 
-[`integer`](../../../data-types.md) | Sprint identifier ||
+[`integer`](../../../data-types.md) | Identifier of the sprint ||
 || **groupId** 
 [`integer`](../../../data-types.md) | Identifier of the group (Scrum) to which the sprint belongs ||
 || **entityType** 
@@ -348,7 +348,7 @@ HTTP status: **200**
 [`string`](../../../data-types.md) | Status of the sprint ||
 |#
 
-## Error handling
+## Error Handling
 
 HTTP status: **400**
 
@@ -359,18 +359,18 @@ HTTP status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../../_includes/error-info.md) %}
 
-### Possible error codes
+### Possible Error Codes
 
 #|
 || **Code** | **Error message** | **Description** ||
 || `0` | `Could not load list`| No sprints found with the specified filters ||
 |#
 
-{% include [system errors](../../../../_includes/system-errors.md) %}
+{% include [System errors](../../../../_includes/system-errors.md) %}
 
-## Continue exploring
+## Continue Learning
 
 - [{#T}](./tasks-api-scrum-sprint-add.md)
 - [{#T}](./tasks-api-scrum-sprint-update.md)
@@ -379,4 +379,3 @@ HTTP status: **400**
 - [{#T}](./tasks-api-scrum-sprint-get.md)
 - [{#T}](./tasks-api-scrum-sprint-delete.md)
 - [{#T}](./tasks-api-scrum-sprint-get-fields.md)
-

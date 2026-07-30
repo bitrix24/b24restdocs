@@ -1,4 +1,4 @@
-# Add Timeline Record Binding to CRM Entity crm.timeline.bindings.bind
+# Link a Timeline Record to a CRM Item crm.timeline.bindings.bind
 
 {% note tip "" %}
 
@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: any user
 
-This method adds a binding of a timeline record to a CRM object.
+Adds a link between a timeline record and a CRM item.
 
 ## Method Parameters
 
@@ -20,7 +20,7 @@ This method adds a binding of a timeline record to a CRM object.
 || **Name**
 `type` | **Description** ||
 || **fields***
-[`object`](../../../data-types.md) | Field values (detailed description provided [below](#parametr-fields)) for adding a binding of a timeline record to a CRM object in the form of a structure:
+[`object`](../../../data-types.md) | Field values (detailed description provided [below](#parametr-fields)) for adding a binding of a timeline record to a CRM entity in the form of a structure:
 
 ```js
 fields: {
@@ -41,17 +41,17 @@ fields: {
 || **Name**
 `type` | **Description** ||
 || **OWNER_ID***
-[`integer`](../../../data-types.md) | Identifier of the timeline record  ||
+[`integer`](../../../data-types.md) | Identifier of the timeline record ||
 || **ENTITY_ID***
-[`integer`](../../../data-types.md) | Identifier `ID` of the CRM object to which the comment is linked  ||
+[`integer`](../../../data-types.md) | Identifier of the CRM item to which the timeline record is linked ||
 || **ENTITY_TYPE***
-[`string`](../../../data-types.md) | Type of the entity to which the comment is linked. Possible values: 
+[`string`](../../../data-types.md) | Type of the CRM item to which the timeline record is linked. Possible values:
 - `lead` — lead
 - `deal` — deal
 - `contact` — contact
 - `company` — company
 - `order` — order  
- ||
+||
 |#
 
 ## Code Examples
@@ -212,13 +212,13 @@ fields: {
         print(result)
     except BitrixAPIError as error:
         print(
-            "Bitrix API Error",
+            "Bitrix API error",
             f"error: {error.error}",
             f"error_description: {error.error_description}",
             sep="\n",
         )
     except BitrixSDKException as error:
-        print(f"Bitrix SDK Error: {error.message}")
+        print(f"Bitrix SDK error: {error.message}")
     except Exception as error:
         print(f"Unexpected error: {error}")
     ```
@@ -292,9 +292,9 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../../data-types.md) | Result of the operation. Returns `true` if the binding was successfully created, otherwise `false` ||
+[`boolean`](../../../data-types.md) | Returns `true`, if the connection is established. Returns `false`, if no connection is created ||
 || **time**
-[`time`](../../../data-types.md) | Information about the request execution time ||
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -314,10 +314,10 @@ HTTP status: **400**
 
 #|
 || **Code** | **Error message** | **Description** ||
-|| Empty string | OWNER_ID is not defined or invalid | The required parameter `OWNER_ID` was not provided or the provided `OWNER_ID` is invalid ||
-|| Empty string | ENTITY_ID is not defined or invalid. | The required parameter `ENTITY_ID` was not provided or the provided `ENTITY_ID` is invalid ||
-|| Empty string | ENTITY_TYPE is not defined or invalid. | The required parameter `ENTITY_TYPE` was not provided or the provided `ENTITY_TYPE` is invalid ||
-|| Empty string | Access denied. | No permission to edit the entity in CRM ||
+|| Empty value | OWNER_ID is not defined or invalid | The required parameter `OWNER_ID` was not provided or the provided `OWNER_ID` is invalid ||
+|| Empty value | ENTITY_ID is not defined or invalid. | The required parameter `ENTITY_ID` was not provided or the provided `ENTITY_ID` is invalid ||
+|| Empty value | ENTITY_TYPE is not defined or invalid. | The required parameter `ENTITY_TYPE` was not provided or the provided `ENTITY_TYPE` is invalid ||
+|| Empty value | Access denied. | Missing permissions to edit the CRM object ||
 |#
 
 {% include [System errors](../../../../_includes/system-errors.md) %}

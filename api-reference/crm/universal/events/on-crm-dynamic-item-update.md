@@ -1,4 +1,4 @@
-# Event for updating a custom type CRM object onCrmDynamicItemUpdate
+# Event for Updating a Custom Type CRM Object onCrmDynamicItemUpdate
 
 {% note tip "" %}
 
@@ -8,9 +8,9 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can subscribe: `any user`
+> Who can subscribe: any user
 
-The event triggers when an element of any [custom object type](../user-defined-object-types/index.md) in CRM is modified.
+The `ONCRMDYNAMICITEMUPDATE` event is triggered when an item of any [custom object type](../user-defined-object-types/index.md) in the CRM is changed.
 
 {% note info "" %}
 
@@ -18,7 +18,7 @@ Events will not be sent to the application until the installation is complete. [
 
 {% endnote %}
 
-## What the handler receives
+## What the Handler Receives
 
 Data is transmitted as a POST request {.b24-info}
 
@@ -51,12 +51,12 @@ Event for changing an element with `id = 24`, belonging to a smart process with 
 ```
 
 #|
-|| **Parameter**
+|| **parameter**
 `type` | **Description** ||
 || **event**
-[`string`][1] | Symbolic event code.
+[`string`][1] | Symbolic code of the event.
 
-In this case, `ONCRMDYNAMICITEMUPDATE` ||
+In this case — `ONCRMDYNAMICITEMUPDATE` ||
 || **event_handler_id**
 [`integer`][1] | Identifier of the event handler ||
 || **data**
@@ -64,11 +64,11 @@ In this case, `ONCRMDYNAMICITEMUPDATE` ||
 
 Contains a single key `FIELDS` ||
 || **data.FIELDS**
-[`object`][1] | Object containing information about the fields of the modified custom type CRM object.
+[`object`][1] | An object containing information about the fields of a modified CRM custom type object.
 
 The structure is described [below](#fields) ||
 || **ts**
-[`timestamp`][1] | Date and time the event was sent from the [event queue](../../../events/index.md) ||
+[`timestamp`][1] | Date and time of the event sent from the [event queue](../../../events/index.md) ||
 || **auth**
 [`object`][1] | Object containing authorization parameters and information about the account where the event occurred.
 
@@ -78,7 +78,7 @@ The structure is described [below](#auth) ||
 ### Parameter FIELDS {#fields}
 
 #|
-|| **Parameter**
+|| **parameter**
 `type` | **Description** ||
 || **ID**
 [`integer`][1] | Identifier of the modified custom type CRM object ||
@@ -88,9 +88,9 @@ The structure is described [below](#auth) ||
 
 ### Parameter auth {#auth}
 
-{% include notitle [Table with keys in the auth array](../../../../_includes/auth-params-in-events.md) %}
+{% include notitle [Auth parameters in events](../../../../_includes/auth-params-in-events.md) %}
 
-{% note warning "Events of system object types" %}
+{% note warning "System Object Type Events" %}
 
 Although [universal CRM methods](../index.md) allow adding and modifying objects of standard types such as deals, leads, contacts, companies, and estimates, the event `onCrmDynamicItemUpdate` will not trigger when modifying the listed objects.
 
@@ -106,7 +106,7 @@ When new invoices are modified, the event `onCrmDynamicItemUpdate` will trigger.
 
 {% endnote %}
 
-## Continue exploring
+## Continue Learning
 
 - [{#T}](../../../events/index.md)
 - [{#T}](../../../events/event-bind.md)

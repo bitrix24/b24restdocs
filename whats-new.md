@@ -2,6 +2,13 @@
 
 ## 2026
 
+### July 30, 2026
+
+- Updated the tutorial [How to Create a Helpdesk Channel via Bitrix24 Network Open Channel](./tutorials/chat-bots/support-bot.md)
+- Updated the tutorial [How to Create Your Own Company Edit Card](./tutorials/crm/how-to-edit-crm-objects/how-to-generate-edit-form-for-company.md)
+- Updated the page [How to Create a CRM Object with Products, Discounts, and Taxes](./tutorials/crm/how-to-add-crm-objects/how-to-product-binding.md)
+- Updated the page [How to Change Custom Product Field Values](./tutorials/catalog/how-to-change-product-custom-field-values.md)
+
 ### July 22, 2026
 
 - Updated the [REST API Limits](./limits.md) page

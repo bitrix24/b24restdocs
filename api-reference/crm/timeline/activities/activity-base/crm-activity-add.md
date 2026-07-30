@@ -8,19 +8,19 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
-> Who can execute the method: user with permission to add an activity
+> Who can execute the method: a user with permission to add activities
 
 {% note warning "DEPRECATED" %}
 
-Development of this method has been halted. Please use [crm.activity.todo.add](../todo/crm-activity-todo-add.md).
+Method development has been discontinued. Use [crm.activity.todo.add](../todo/crm-activity-todo-add.md).
 
 {% endnote %}
 
-The method `crm.activity.add` creates a new system activity.
+The `crm.activity.add` method creates a new system activity.
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -53,18 +53,18 @@ There is an additional field `DISABLE_SENDING_MESSAGE_COPY`. It is intended to f
 
 ### Parameter fields {#fields}
 
-{% include [Note on Required Parameters](../../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../../_includes/required.md) %}
 
 #|
 || **Field** `type` | **Description** ||
 || **OWNER_ID***
-[`integer`](../../../data-types.md) | Identifier of the CRM object ||
+[`integer`](../../../data-types.md) | Identifier of the CRM entity ||
 || **OWNER_TYPE_ID***
 [`integer`](../../../data-types.md) | [Identifier of the CRM object type](../../../data-types.md#object_type) ||
 || **TYPE_ID***
 [`crm_enum_activitytype`](../../../data-types.md) | Type of the activity. To get available activity types, use the method [crm.enum.activitytype](../../../auxiliary/enum/outdated/crm-enum-activity-type.md). 
 
-To create an activity with the type "task", use the [creation](../../../../tasks/tasks-task-add.md) or [modification](../../../../tasks/tasks-task-update.md) method and specify the CRM object in the `UF_CRM_TASK` field ||
+To create an activity with the type "task", use the [creation](../../../../tasks/tasks-task-add.md) or [modification](../../../../tasks/tasks-task-update.md) method and specify the CRM entity in the `UF_CRM_TASK` field ||
 || **ASSOCIATED_ENTITY_ID**
 [`integer`](../../../../data-types.md) | Identifier of the entity associated with the activity ||
 || **COMMUNICATIONS***
@@ -74,11 +74,11 @@ To create an activity with the type "task", use the [creation](../../../../tasks
 || **DESCRIPTION**
 [`string`](../../../data-types.md) | Text description of the activity ||
 || **DESCRIPTION_TYPE**
-[`crm.enum.contenttype`](../../../data-types.md) | Type of description ||
+[`crm.enum.contenttype`](../../../data-types.md) | Description type ||
 || **DIRECTION**
 [`crm.enum.activitydirection`](../../../data-types.md) | Direction of the activity: incoming/outgoing. Relevant for calls and emails, not used for meetings ||
 || **END_TIME**
-[`datetime`](../../../data-types.md) | Time of activity completion | ||
+[`datetime`](../../../data-types.md) | Activity completion time | ||
 || **FILES**
 [`diskfile`](../../../data-types.md) | Files added to the activity ||
 || **LOCATION**
@@ -119,15 +119,15 @@ To create an activity with the type "task", use the [creation](../../../../tasks
 [`char`](../../../data-types.md) | Flag indicating whether the activity was created from an incoming channel (`Y`/`N`) ||
 |#
 
-### Usage Scenarios for Field Values
+### Field Value Usage Options
 
 For activities of type `e-mail`:
-- if the email should not be sent, set parameters `DIRECTION=2` and `COMPLETED='N'`;
-- if it is necessary to mark emails as completed, update the activities by setting the completion flag.
+- if the e-mail should not be sent, set the `DIRECTION=2` and `COMPLETED='N'` parameters;
+- if it is necessary to mark e-mails as completed, perform an activity update by setting the completion flag.
 
 ## Code Examples
 
-{% include [Note on Examples](../../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -137,7 +137,7 @@ For activities of type `e-mail`:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"OWNER_TYPE_ID":2,"OWNER_ID":102,"TYPE_ID":2,"COMMUNICATIONS":[{"VALUE":"+1234567890","ENTITY_ID":134,"ENTITY_TYPE_ID":3}],"SUBJECT":"New Call","START_TIME":"2023-12-31T12:00:00+00:00","END_TIME":"2023-12-31T12:30:00+00:00","COMPLETED":"N","PRIORITY":3,"RESPONSIBLE_ID":1,"DESCRIPTION":"Important Call","DESCRIPTION_TYPE":3,"DIRECTION":2,"FILES":[{"fileData":["example.jpg","base64_encoded_content_here"]}]} }' \
+    -d '{"fields":{"OWNER_TYPE_ID":2,"OWNER_ID":102,"TYPE_ID":2,"COMMUNICATIONS":[{"VALUE":"+499832322323","ENTITY_ID":134,"ENTITY_TYPE_ID":3}],"SUBJECT":"New call","START_TIME":"2023-12-31T12:00:00+00:00","END_TIME":"2023-12-31T12:30:00+00:00","COMPLETED":"N","PRIORITY":3,"RESPONSIBLE_ID":1,"DESCRIPTION":"Important call","DESCRIPTION_TYPE":3,"DIRECTION":2,"FILES":[{"fileData":["example.jpg","base64_encoded_content_here"]}]} }' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.activity.add
     ```
 
@@ -147,7 +147,7 @@ For activities of type `e-mail`:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"OWNER_TYPE_ID":2,"OWNER_ID":102,"TYPE_ID":2,"COMMUNICATIONS":[{"VALUE":"+1234567890","ENTITY_ID":134,"ENTITY_TYPE_ID":3}],"SUBJECT":"New Call","START_TIME":"2023-12-31T12:00:00+00:00","END_TIME":"2023-12-31T12:30:00+00:00","COMPLETED":"N","PRIORITY":3,"RESPONSIBLE_ID":1,"DESCRIPTION":"Important Call","DESCRIPTION_TYPE":3,"DIRECTION":2,"FILES":[{"fileData":["example.jpg","base64_encoded_content_here"]}]},"auth":"**put_access_token_here**"}' \
+    -d '{"fields":{"OWNER_TYPE_ID":2,"OWNER_ID":102,"TYPE_ID":2,"COMMUNICATIONS":[{"VALUE":"+499832322323","ENTITY_ID":134,"ENTITY_TYPE_ID":3}],"SUBJECT":"New call","START_TIME":"2023-12-31T12:00:00+00:00","END_TIME":"2023-12-31T12:30:00+00:00","COMPLETED":"N","PRIORITY":3,"RESPONSIBLE_ID":1,"DESCRIPTION":"Important call","DESCRIPTION_TYPE":3,"DIRECTION":2,"FILES":[{"fileData":["example.jpg","base64_encoded_content_here"]}]},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/crm.activity.add
     ```
 
@@ -170,7 +170,7 @@ For activities of type `e-mail`:
             OWNER_ID: 102,
             TYPE_ID: 2,
             COMMUNICATIONS: [
-              { VALUE: '+79832322323', ENTITY_ID: 134, ENTITY_TYPE_ID: 3 },
+              { VALUE: '+499832322323', ENTITY_ID: 134, ENTITY_TYPE_ID: 3 },
             ],
             SUBJECT: 'New call',
             START_TIME: '2023-12-31T12:00:00+00:00',
@@ -226,7 +226,7 @@ For activities of type `e-mail`:
                 OWNER_ID: 102,
                 TYPE_ID: 2,
                 COMMUNICATIONS: [
-                  { VALUE: '+79832322323', ENTITY_ID: 134, ENTITY_TYPE_ID: 3 },
+                  { VALUE: '+499832322323', ENTITY_ID: 134, ENTITY_TYPE_ID: 3 },
                 ],
                 SUBJECT: 'New call',
                 START_TIME: '2023-12-31T12:00:00+00:00',
@@ -282,15 +282,15 @@ For activities of type `e-mail`:
                         'OWNER_ID'         => 102,
                         'TYPE_ID'          => 2,
                         'COMMUNICATIONS'   => [
-                            ['VALUE' => '+1234567890', 'ENTITY_ID' => 134, 'ENTITY_TYPE_ID' => 3]
+                            ['VALUE' => '+499832322323', 'ENTITY_ID' => 134, 'ENTITY_TYPE_ID' => 3]
                         ],
-                        'SUBJECT'          => 'New Call',
+                        'SUBJECT'          => 'New call',
                         'START_TIME'       => '2023-12-31T12:00:00+00:00',
                         'END_TIME'         => '2023-12-31T12:30:00+00:00',
                         'COMPLETED'        => 'N',
                         'PRIORITY'         => 3,
                         'RESPONSIBLE_ID'   => 1,
-                        'DESCRIPTION'      => 'Important Call',
+                        'DESCRIPTION'      => 'Important call',
                         'DESCRIPTION_TYPE' => 3,
                         'DIRECTION'        => 2,
                         'FILES'            => [
@@ -310,7 +310,7 @@ For activities of type `e-mail`:
             ->getResult();
     
         echo 'Success: ' . print_r($result, true);
-        // Your logic for processing data
+        // The data processing logic you need
         processData($result);
     
     } catch (Throwable $e) {
@@ -330,15 +330,15 @@ For activities of type `e-mail`:
                 "OWNER_ID": 102,
                 "TYPE_ID": 2,
                 "COMMUNICATIONS": [
-                    { VALUE: "+1234567890", ENTITY_ID: 134, ENTITY_TYPE_ID: 3 }
+                    { VALUE: "+499832322323", ENTITY_ID: 134, ENTITY_TYPE_ID: 3 }
                 ],
-                "SUBJECT": "New Call",
+                "SUBJECT": "New call",
                 "START_TIME": "2023-12-31T12:00:00+00:00", // Example date and time
                 "END_TIME": "2023-12-31T12:30:00+00:00", // Example date and time
                 "COMPLETED": "N",
                 "PRIORITY": 3,
                 "RESPONSIBLE_ID": 1,
-                "DESCRIPTION": "Important Call",
+                "DESCRIPTION": "Important call",
                 "DESCRIPTION_TYPE": 3,
                 "DIRECTION": 2,
                 "FILES": [
@@ -375,18 +375,18 @@ For activities of type `e-mail`:
                 'TYPE_ID' => 2,
                 'COMMUNICATIONS' => [
                     [
-                        'VALUE' => '+1234567890',
+                        'VALUE' => '+499832322323',
                         'ENTITY_ID' => 134,
                         'ENTITY_TYPE_ID' => 3
                     ]
                 ],
-                'SUBJECT' => 'New Call',
+                'SUBJECT' => 'New call',
                 'START_TIME' => '2023-12-31T12:00:00+00:00', // Example date and time
                 'END_TIME' => '2023-12-31T12:30:00+00:00', // Example date and time
                 'COMPLETED' => 'N',
                 'PRIORITY' => 3,
                 'RESPONSIBLE_ID' => 1,
-                'DESCRIPTION' => 'Important Call',
+                'DESCRIPTION' => 'Important call',
                 'DESCRIPTION_TYPE' => 3,
                 'DIRECTION' => 2,
                 'FILES' => [
@@ -398,7 +398,7 @@ For activities of type `e-mail`:
                     ]
                 ]
             ]
-        }
+        ]
     );
 
     if (isset($result['error'])) {
@@ -458,7 +458,7 @@ For activities of type `e-mail`:
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -482,14 +482,14 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../../../data-types.md) | Result of the operation. Returns the identifier of the activity in the timeline on success, otherwise — `false` ||
+[`integer`](../../../../data-types.md) | Activity identifier in the timeline ||
 || **time**
 [`time`](../../../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -498,7 +498,7 @@ HTTP Status: **400**
 }
 ```
 
-{% include notitle [Error Handling](../../../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
@@ -527,9 +527,9 @@ HTTP Status: **400**
 || `Application context required` | Incorrect `PROVIDER_ID` parameter for the activity created in the application context ||
 |#
 
-{% include [System Errors](../../../../../_includes/system-errors.md) %}
+{% include [System errors](../../../../../_includes/system-errors.md) %}
 
-## Continue Learning 
+## Continue Learning
 
 - [{#T}](./crm-activity-update.md)
 - [{#T}](./crm-activity-delete.md)
@@ -539,4 +539,3 @@ HTTP Status: **400**
 - [{#T}](./crm-activity-fields.md)
 - [{#T}](../../../../../tutorials/crm/how-to-add-crm-objects/how-to-add-activity-to-contact.md)
 - [{#T}](../../../../../tutorials/crm/how-to-add-crm-objects/how-to-send-email.md)
-

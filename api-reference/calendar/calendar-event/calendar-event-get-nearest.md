@@ -1,4 +1,4 @@
-# Get a list of upcoming events calendar.event.get.nearest
+# Get a List of Upcoming Events calendar.event.get.nearest
 
 {% note tip "" %}
 
@@ -64,7 +64,7 @@ For the company calendar, the `ownerId` parameter is `0` ||
         https://**put_your_bitrix24_address**/rest/calendar.event.get.nearest
         ```
 
-    - JS
+    - BX24.js
 
         ```js
         BX24.callMethod(
@@ -104,8 +104,7 @@ For the company calendar, the `ownerId` parameter is `0` ||
 
     {% endlist %}
 
-
-2. Get events from the company calendar.
+2. Get events from the Company Calendar.
 
     {% list tabs %}
 
@@ -129,14 +128,14 @@ For the company calendar, the `ownerId` parameter is `0` ||
         https://**put_your_bitrix24_address**/rest/calendar.event.get
         ```
 
-    - JS
+    - BX24.js
 
         ```js
         BX24.callMethod(
             'calendar.event.get',
             {
                 type: 'company_calendar',
-                ownerId: 0, // ownerId is not specified when retrieving events from the company calendar. It is empty for all events of this type.
+                ownerId: 0, // ownerId is not specified when retrieving company calendar events. It is empty for all events of this type.
                 forCurrentUser: false
             }
         );
@@ -180,8 +179,8 @@ HTTP status: **200**
             "DATE_FROM": "12/11/2024 05:59:00 pm",
             "DATE_TO": "12/11/2024 06:59:00 pm",
             "ORIGINAL_DATE_FROM": null,
-            "TZ_FROM": "Europe/Riga",
-            "TZ_TO": "Europe/Riga",
+            "TZ_FROM": "Europe/Berlin",
+            "TZ_TO": "Europe/Berlin",
             "TZ_OFFSET_FROM": "7200",
             "TZ_OFFSET_TO": "7200",
             "DATE_FROM_TS_UTC": "1733932740",
@@ -302,13 +301,13 @@ HTTP status: **400**
   "error_description": "Access denied"
 }
 ```
-{% include notitle [error handling](../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
-|| **Code** | **Error Message** | **Description** ||
-|| Empty string | Access denied | Access to the calendar type is restricted or the user has not activated the calendar functionality ||
+|| **Code** | **Error message** | **Description** ||
+|| empty string | Access denied | Access to the calendar type is restricted or the user has not activated the calendar functionality ||
 |#
 
-{% include [system errors](../../../_includes/system-errors.md) %}
+{% include [System errors](../../../_includes/system-errors.md) %}

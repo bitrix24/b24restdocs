@@ -1,4 +1,4 @@
-# Features of the REST API in the On-Premise Version of Bitrix24
+# REST API Specifics in the Bitrix24 Self-Hosted Version
 
 {% note tip "" %}
 
@@ -6,36 +6,56 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-In the cloud version of Bitrix24, the REST API is always available in the "latest version." However, updates for the on-premise version may be released some time after they appear in the cloud, due to the additional functionality in the on-premise Bitrix24 that requires extra time for compatibility testing.
+A REST application works identically in both Bitrix24 Cloud and Bitrix24 Self-Hosted. However, the Self-Hosted version has specific characteristics that must be considered during implementation: the REST version may lag behind the Cloud version, the set of installed modules and updates depends on the owner, and part of the traffic goes through Bitrix24 Cloud and requires open network access.
 
-Moreover, in the case of a specific on-premise installation, there is no guarantee that the owner has installed the latest available updates or the necessary modules for the application in Bitrix24 (for example, nothing prevents the owner from completely disabling the telephony module in the on-premise Bitrix24). This means that when installing an application, there is no certainty about the availability of specific REST methods.
+Below are three recommendations to help your application work stably in the Self-Hosted version:
 
-Therefore, **recommendation number 1** in your installation script is to check the list of available methods and events by referring to the [methods](../../../api-reference/common/system/methods.md) and [events](../../../api-reference/events/index.md) documentation, and inform the user that they need to install updates for Bitrix24.
+1. Check the availability of required methods and events during application installation
+2. Refresh tokens only directly via the authorization server
+3. Open network access to Bitrix24 servers in advance
+
+## Checking Available Methods and Events
+
+In Bitrix24 Cloud, the "latest version" of REST is always available. Updates for the Self-Hosted version are released some time after they appear in the Cloud. Bitrix24 Self-Hosted contains additional functionality, and verifying compatibility with it takes time.
+
+Furthermore, for a specific Self-Hosted installation, there is no guarantee that the owner has installed the latest updates and all modules required by the application. For example, the Telephony module can be completely disabled in Bitrix24 Self-Hosted. Therefore, there is no certainty regarding the availability of specific REST methods during application installation.
+
+**Recommendation number 1** — in your solution's installation script, verify the list of available methods and events using the [methods](../../../api-reference/common/system/methods.md) and [events](../../../api-reference/events/index.md) methods. If the required methods or events are missing, inform the user that they need to install updates on their Bitrix24.
 
 ## Bitrix24 Authorization Server
 
-If your application refreshes authorization tokens using `refresh_token`, there are two options: obtain a new pair of tokens by making a request to
+If your application refreshes authorization tokens using [`refresh_token`](../../oauth/auto-renewal.md), there are two options. The first is to obtain a new token pair by making a request to Bitrix24 itself:
 
 ```
-xxx.bitrix24.xxx/oauth/token/?grant_type=authorization_code...
+xxx.bitrix24.xxx/oauth/token/?grant_type=refresh_token...
 ```
 
-or to the authorization server
+The second is to make a request directly to the `oauth.bitrix.info` authorization server:
 
 ```
-oauth.bitrix.info/oauth/token/?grant_type=authorization_code...
+oauth.bitrix.info/oauth/token/?grant_type=refresh_token...
 ```
 
-In the case of cloud Bitrix24, both options will work equally well, as the cloud Bitrix24 will simply "forward" your request to the actual authorization server; however, the on-premise Bitrix24 may not do this.
+In Bitrix24 Cloud, both options will work equally well. The Cloud simply "proxies" the request to the actual authorization server, whereas Bitrix24 Self-Hosted may not do this.
 
-Therefore, **recommendation number 2** is to always address the authorization server directly for token updates. This will work for both the cloud and the on-premise versions.
+**Recommendation number 2** — always contact the `oauth.bitrix.info` authorization server directly to refresh tokens. This will work for both Cloud and Self-Hosted versions.
 
-## Network Limitations
+## Network Restrictions
 
-When accessing REST methods, your application makes a request to a specific Bitrix24. However, REST events do not come directly from a specific Bitrix24 to your application; instead, they go through an event queue located in the cloud, even if it concerns the on-premise Bitrix24.
+When calling methods, the application makes a request directly to a specific Bitrix24 instance. Events reach the application differently. They pass through an event queue located in the cloud, even when dealing with a self-hosted Bitrix24 instance.
 
-There may be a situation where the owner of the on-premise Bitrix24 has closed network access to the event queue server for some reason. In this case, events simply will not work. If you are implementing a solution while communicating with the client, you should recommend whitelisting the address of the queue server.
+A situation may arise where the owner of a self-hosted Bitrix24 instance has closed network access to the event queue server. In this case, events simply will not work.
 
-The same applies to the authorization server. If network access to it is closed, then REST will not work in the on-premise Bitrix24, as the on-premise Bitrix24 will not be able to validate the token that your application is using to access it.
+The same applies to the authorization server `oauth.bitrix.info`. If network access to it is closed, REST will not work in a self-hosted Bitrix24 instance. Bitrix24 will be unable to validate the token used by the application to access it.
 
-There is an alternative option where you can specifically connect your own authorization and event mechanism for a particular client on their on-premise Bitrix24.
+**Recommendation number 3** — if you are implementing a solution with a client, ensure that the required Bitrix24 servers are whitelisted. Current server addresses and firewall configuration rules are collected in the article [Required Network Access](../network-access.md).
+
+There is an alternative option — specifically for a particular client, you can connect a custom authorization and event mechanism on the side of their self-hosted Bitrix24 instance. For more details, see the article [Application Authorization in an Isolated Bitrix24 Self-Hosted Instance](custom-auth-provider.md) and the report by Maxim Sidorenko:
+
+<iframe width="720" height="405" src="https://rutube.com/play/embed/0becef7c826427edd5e05e55ffb24144/?p=6tgNGVLNFCycVzj1phG1xg" frameBorder="0" allow="clipboard-write; autoplay" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
+
+## What's Next
+
+- [Module Versioning in Self-Hosted Bitrix24](versions.md) — why a method or event might be unavailable and how to check the module version
+- [Application Authorization in an Isolated Bitrix24 Self-Hosted Instance](custom-auth-provider.md) — using your own authorization and event mechanism for a client with a closed network
+- [Adding Your Own Methods to the Bitrix24 Self-Hosted REST API](custom-methods.md) — how to extend REST with your own methods and scopes

@@ -8,34 +8,43 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 #|
 || **Scope Code** | **Scope Name**| **Bitrix24 Tool**||
-|| **ai_admin** | [Channel for registering a custom service for processing requests](../ai/index.md)| Copilot ||
+|| **ai_admin** | [Channel for registering a user service to process requests](../ai/index.md)| Copilot ||
 || **biconnector** | [BI Analytics Connector](../biconnector/index.md) | BIconnector ||
-|| **bizproc** | [Business Processes](../bizproc/index.md) | Business processes, RPA, CRM Automation rules ||
+|| **bizproc** | [Business Processes](../bizproc/index.md) | Business processes, RPA, CRM robots ||
 || **booking** | [Online Booking](../booking/index.md) | Online Booking ||
 || **calendar** | [Calendar](../calendar/index.md) | Calendar ||
 || **call** | Telephony (making calls). The scope includes methods: [voximplant.infocall.startwithsound](../telephony/voximplant/voximplant-infocall-start-with-sound.md), [voximplant.infocall.startwithtext](../telephony/voximplant/voximplant-infocall-start-with-text.md)| Telephony ||
-|| **catalog** | [Trade Catalog](../catalog/index.md) | Trade catalog, inventory management ||
+|| **cashbox** | [Cash Registers](../sale/cashbox/index.md) | Cash Registers ||
+|| **catalog** | [Product Catalog](../catalog/index.md) | Product catalog, inventory management ||
+|| **contact_center** | [Contact Center Widget](../widgets/contact-center.md) | Contact Center ||
 || **crm** | [CRM](../crm/index.md) | CRM ||
 || **documentgenerator** | [Document Generator](../document-generator/index.md), [CRM Document Generator](../crm/document-generator/index.md) | Document Generator ||
-|| **delivery** | [Deliveries](../sale/delivery/index.md) | Online Store, CRM ||
+|| **delivery** | [Delivery](../sale/delivery/index.md) | Online store, CRM ||
 || **department** | [Company Structure](../departments/index.md) | Company Structure ||
 || **disk** | [Drive](../disk/index.md) | Bitrix24.Drive ||
-|| **entity** | [Data Storage](../entity/index.md) | Data Storage ||
+|| **entity** | [Data store](../entity/index.md) | Data store ||
+|| **humanresources** | [Company Structure REST 3.0](../departments/index.md) | Company Structure ||
+|| **humanresources.hcmlink** | [HCM Link](../sign/index.md#osobennosti-scope) | KEDO, Signature ||
 || **im** | [Chat and Notifications](../chats/index.md) | Chat and Notifications ||
-|| **imbot** | [Creating and Managing Chat Bots](../chat-bots/index.md) | Chat Bots ||
+|| **imbot** | [Creating and managing Chatbots](../chat-bots/index.md) | Chat bots ||
+|| **imconnector** | [Connectors for external messengers](../imopenlines/imconnector/index.md) | Open Channels ||
 || **imopenlines** | [Open Channels](../imopenlines/index.md) | Open Channels ||
-|| **landing** | [Sites](../landing/index.md) | Sites ||
-|| **lists** | [Lists](../lists/index.md) | Universal Lists ||
-|| **log** | [Live Feed](../log/index.md) | News Feed ||
-|| **mailservice** | [Mail Services](../mailservice/index.md) | Mail Services ||
+|| **intranet** | [Widgets](../widgets/index.md) | Widgets ||
+|| **landing** | [Websites](../landing/index.md) | Websites ||
+|| **lists** | [Lists](../lists/index.md) | Universal lists ||
+|| **log** | [Live Feed](../log/index.md) | News feed ||
+|| **mailservice** | [Email Services](../mailservice/index.md) | Email services ||
 || **main** | [Event Log](../event-log/index.md) | Event Log ||
-|| **messageservice** | [Message Service](../messageservice/index.md) | Message Service ||
+|| **messageservice** | [Messaging Service](../messageservice/index.md) | Messaging Service ||
+|| **mobile** | [Mobile App Widgets](../widgets/mobile-app.md) | Mobile App ||
 || **pay_system** | [Payment Systems](../pay-system/index.md) | Payment Systems ||
+|| **placement** | [Widgets](../widgets/index.md) | App Embedding ||
 || **pull** | [Pull&Push](../../settings/interactivity/push-and-pull/index.md) | Pull&Push ||
 || **rpa** | [Business Automation](../outdated/rpa/index.md) | Business Automation ||
-|| **sale** | [Online Store](../sale/index.md) | Online Store ||
-|| **sign.b2e** | [e-Signature for HR](../sign/index.md) | e-Signature for HR ||
-|| **sonet_group, socialnetwork** | [Social Network Workgroups](../sonet-group/sonet-group-create.md) | Social Network Workgroups ||
+|| **sale** | [Online store](../sale/index.md) | Online store ||
+|| **salescenter** | [CRM. Payment](../crm/universal/payment/index.md) | Chat sales ||
+|| **sign.b2e** | [KEDO + Gosklyuch](../sign/index.md) | KEDO, Signature ||
+|| **sonet_group, socialnetwork** | [Social Network Working Groups](../sonet-group/sonet-group-create.md) | Social Network Working Groups ||
 || **task** | [Tasks](../tasks/index.md) | Tasks ||
 || **telephony** | [Telephony](../telephony/index.md) | Telephony ||
 || **timeman** | [Time Tracking](../timeman/index.md) | Time Tracking ||
@@ -43,10 +52,10 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 Versions: 
 - **user_brief** — Users (minimal) 
 - **user_basic** — Users (basic) | Users ||
-|| **user.userfield** | [User Custom Fields](../user/userfields/index.md) | User Custom Fields ||
-|| **userfieldconfig** | [User Field Settings](../crm/universal/userfieldconfig/index.md) | User Field Settings ||
-|| **userconsent** | [Working with Agreements](../user-consent/index.md) | Working with Agreements ||
-|| **vote** | [Polls](../vote/index.md) | Working with polls, voting ||
+|| **user.userfield** | [User custom fields](../user/userfields/index.md) | Custom fields ||
+|| **userfieldconfig** | [Custom field settings](../crm/universal/userfieldconfig/index.md) | Custom field settings ||
+|| **userconsent** | [Working with agreements](../user-consent/index.md) | Working with agreements ||
+|| **vote** | [Surveys](../vote/index.md) | Working with surveys, voting ||
 |#
 
 [*key_task]: Additionally, three deprecated scopes are available — tasks, tasks_extended, tasksmobile. They should not be used.

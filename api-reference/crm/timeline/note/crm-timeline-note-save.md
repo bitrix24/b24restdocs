@@ -1,4 +1,4 @@
-# Save Note crm.timeline.note.save
+# Save a Note crm.timeline.note.save
 
 {% note tip "" %}
 
@@ -8,29 +8,29 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: `any user`
+> Who can execute the method: any user
 
-This method allows you to save a note.
+Allows you to retain a note.
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
-|| **ownerTypeId***  
-[`integer`](../../../data-types.md) | [Identifier of the entity type](../../data-types.md) to which the record belongs ||
-|| **ownerId***  
-[`integer`](../../../data-types.md) | Identifier of the entity to which the record belongs ||
-|| **itemType***  
+|| **ownerTypeId***
+[`integer`](../../../data-types.md) | [Identifier of the element type](../../data-types.md) to which the record belongs ||
+|| **ownerId***
+[`integer`](../../../data-types.md) | Identifier of the element to which the record belongs ||
+|| **itemType***
 [`integer`](../../../data-types.md) | Type of the record to which the note should be applied: 
 
 - `1` — history record
-- `2` — activity ||
-|| **itemId***  
-[`integer`](../../../data-types.md) | Identifier of the record to which the note should be applied. If `itemType=1`, this is the identifier of the timeline history record. If `itemType=2`, this is the identifier of the activity ||
-|| **text***  
+- `2` — deal ||
+|| **itemId***
+[`integer`](../../../data-types.md) | Identifier of the record to which the note should be applied. If `itemType=1`, this is the identifier of the timeline history record. If `itemType=2`, this is the identifier of the deal ||
+|| **text***
 [`string`](../../../data-types.md) | Note text ||
 |#
 
@@ -239,9 +239,9 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../../data-types.md) | Operation result ||
+[`boolean`](../../../data-types.md) | Returns `true` if the note is saved ||
 || **time**
-[`time`](../../../data-types.md) | Information about the request execution time ||
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -255,7 +255,7 @@ HTTP status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
@@ -263,11 +263,11 @@ HTTP status: **400**
 || **Code** | **Description** ||
 || `ACCESS_DENIED` | Insufficient permissions ||
 || `NOT_FOUND` | Element not found ||
-|| `100` | Required fields not provided ||
+|| `100` | Required fields are not provided ||
 || `0` | Other errors (e.g., fatal errors) ||
 |#
 
-{% include [system errors](../../../../_includes/system-errors.md) %}
+{% include [System errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

@@ -1,4 +1,4 @@
-# Get Parameters Of crm.contact.details.configuration.get
+# Get Card Parameters crm.contact.details.configuration.get
 
 {% note tip "" %}
 
@@ -18,7 +18,7 @@ The development of this method has been halted. Please use [crm.item.details.con
 
 {% endnote %}
 
-This method retrieves the settings for contact cards: it reads the personal settings of the specified user or the shared settings defined for all users.
+Retrieves the contact card configurations: reads the personal card configurations of the specified user or the shared configurations set for all users.
 
 ## Method Parameters
 
@@ -39,7 +39,7 @@ Default — `P`
 || **userId**
 [`user`](../../../data-types.md) | User identifier. Required only when requesting another user's personal settings.
 
-If not specified, the current user's ID is used.
+If not specified, the current user's ID is used
 ||
 |#
 
@@ -47,7 +47,7 @@ If not specified, the current user's ID is used.
 
 {% include [Note on examples](../../../../_includes/examples.md) %}
 
-1. Retrieve personal card configuration
+1. Retrieve Personal Configuration of the Card
 
     {% list tabs %}
 
@@ -71,7 +71,7 @@ If not specified, the current user's ID is used.
         https://**put_your_bitrix24_address**/rest/crm.contact.details.configuration.get
         ```
 
-    - JS
+    - BX24.js
 
         ```js
         BX24.callMethod(
@@ -109,7 +109,7 @@ If not specified, the current user's ID is used.
 
     {% endlist %}
 
-2. Retrieve shared card configuration
+2. Retrieve Shared Configuration of the Card
 
     {% list tabs %}
 
@@ -133,7 +133,7 @@ If not specified, the current user's ID is used.
         https://**put_your_bitrix24_address**/rest/crm.contact.details.configuration.get
         ```
 
-    - JS
+    - BX24.js
 
         ```js
         BX24.callMethod(
@@ -185,13 +185,13 @@ If not specified, the current user's ID is used.
             print(result)
         except BitrixAPIError as error:
             print(
-                "Bitrix API Error",
+                "Bitrix API error",
                 f"error: {error.error}",
                 f"error_description: {error.error_description}",
                 sep="\n",
             )
         except BitrixSDKException as error:
-            print(f"Bitrix SDK Error: {error.message}")
+            print(f"Bitrix SDK error: {error.message}")
         except Exception as error:
             print(f"Unexpected error: {error}")
         ```
@@ -207,7 +207,7 @@ HTTP status: **200**
     "result": [
         {
             "name": "main",
-            "title": "Contact Us",
+            "title": "Contact information",
             "type": "section",
             "elements": [
                 {
@@ -245,7 +245,7 @@ HTTP status: **200**
         },
         {
             "name": "additional",
-            "title": "Additional Information",
+            "title": "Additional information",
             "type": "section",
             "elements": [
                 {
@@ -300,7 +300,7 @@ Returns `null` if there is no configuration ||
 
 #### Section
 
-Describes a specific section with fields inside the element card
+Describes an individual section containing fields within the `item` card
 
 #|
 || **Name**
@@ -315,9 +315,9 @@ Describes a specific section with fields inside the element card
 [`section_element[]`](#section_element) | List of fields displayed in the entity card with additional settings ||
 |#
 
-#### Section_Element
+#### section_element
 
-Configuration of a specific field within the section
+Configuration of an individual field within a section
 
 #|
 || **Name**
@@ -338,7 +338,6 @@ Possible values:
 The structure is described [below](#options) ||
 |#
 
-
 #### Options
 
 #|
@@ -352,7 +351,7 @@ The structure is described [below](#options) ||
 `CLIENT`
 `COMPANY`
 `CONTACT`
-`MYCOMPANY_ID` | Country code for the default phone number format — a string of two Latin letters.
+`MYCOMPANY_ID` | The country code for the default phone number format is a string of two Latin letters.
 
 For example `"RU"` ||
 || **isPayButtonVisible**
@@ -372,7 +371,6 @@ Possible values:
 
 ||
 |#
-
 
 ## Error Handling
 

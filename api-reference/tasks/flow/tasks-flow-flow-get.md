@@ -14,7 +14,7 @@ The method `tasks.flow.Flow.get` returns flow data by its identifier.
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../_includes/required.md) %}
+{% include [Note on parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -41,7 +41,7 @@ You can obtain the identifier by creating a new flow using the method [tasks.flo
     https://your-domain.bitrix24.com/rest/_USER_ID_/_CODE_/tasks.flow.Flow.get
     ```
 
-- cURL (oAuth)
+- cURL (OAuth)
 
     ```bash
     curl -X POST \
@@ -168,7 +168,7 @@ You can obtain the identifier by creating a new flow using the method [tasks.flo
             ->getResult();
     
         echo 'Success: ' . print_r($result, true);
-        // Your logic for processing data
+        // The data processing logic you need
         processData($result);
     
     } catch (Throwable $e) {
@@ -198,11 +198,11 @@ You can obtain the identifier by creating a new flow using the method [tasks.flo
 - PHP CRest
 
     ```php
-    require_once('crest.php'); // include CRest PHP SDK
+    require_once('crest.php'); // connecting the CRest PHP SDK
 
     $flowId = 517;
 
-    // execute request to REST API
+    // executing a request to the REST API
     $result = CRest::call(
         'tasks.flow.Flow.get',
         [
@@ -210,7 +210,7 @@ You can obtain the identifier by creating a new flow using the method [tasks.flo
         ]
     );
 
-    // Process the response from Bitrix24
+    // Processing the response from Bitrix24
     if ($result['error']) {
         echo 'Error: '.$result['error_description'];
     } else {
@@ -222,7 +222,7 @@ You can obtain the identifier by creating a new flow using the method [tasks.flo
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -280,39 +280,39 @@ HTTP Status: **200**
 || **id** 
 [`integer`](../../data-types.md) | Flow identifier ||
 || **creatorId** 
-[`integer`](../../data-types.md) | Identifier of the flow creator. Read-only ||
+[`integer`](../../data-types.md) | ID of the flow creator. Read-only ||
 || **ownerId** 
-[`integer`](../../data-types.md) | Identifier of the flow administrator ||
+[`integer`](../../data-types.md) | ID of the flow administrator ||
 || **groupId** 
-[`integer`](../../data-types.md) | Identifier of the group to which the flow is linked ||
+[`integer`](../../data-types.md) | ID of the group to which the flow is linked ||
 || **templateId** 
-[`integer`](../../data-types.md) | Identifier of the template used to create tasks in the flow ||
+[`integer`](../../data-types.md) | ID of the template used to create tasks in the flow ||
 || **efficiency** 
-[`integer`](../../data-types.md) | Flow efficiency in percentage. Read-only ||
+[`integer`](../../data-types.md) | Efficiency of the flow in percentage. Read-only ||
 || **active** 
-[`boolean`](../../data-types.md) | Flow active status ||
+[`boolean`](../../data-types.md) | Status of the flow's activity ||
 || **plannedCompletionTime** 
-[`integer`](../../data-types.md) | Planned task completion time in seconds ||
+[`integer`](../../data-types.md) | The planned time to complete the task in seconds ||
 || **activity** 
 [`string`](../../data-types.md) | Date and time of the last activity in the flow. Read-only ||
 || **name** 
 [`string`](../../data-types.md) | Flow name ||
 || **description** 
-[`string`](../../data-types.md) | Flow description ||
+[`string`](../../data-types.md) | Description of the flow ||
 || **distributionType** 
 [`string`](../../data-types.md) | Type of task distribution in the flow ||
 || **responsibleList**
 [`array`](../../data-types.md) | List of responsible persons for tasks in the flow. For manual distribution, this is the flow moderator ||
 || **demo** 
-[`boolean`](../../data-types.md) | Indicates if the flow is a demo. System parameter. Read-only ||
+[`boolean`](../../data-types.md) | Indicates whether the flow is a demo. System parameter. Read-only ||
 || **responsibleCanChangeDeadline** 
 [`boolean`](../../data-types.md) | Can the responsible person change the task deadline ||
 || **matchWorkTime** 
-[`boolean`](../../data-types.md) | Should weekends and holidays be skipped when calculating the task deadline ||
+[`boolean`](../../data-types.md) | Whether to skip weekends and holidays when calculating the task deadline ||
 || **taskControl** 
-[`boolean`](../../data-types.md) | Should the completed task be sent to the Creator for review ||
+[`boolean`](../../data-types.md) | Whether to send the completed task to the creator for review ||
 || **notifyAtHalfTime** 
-[`boolean`](../../data-types.md) | Should the performer be notified at half the task deadline ||
+[`boolean`](../../data-types.md) | Whether to notify the performer at half the task deadline ||
 || **notifyOnQueueOverflow** 
 [`integer`](../../data-types.md) | Number of tasks in the queue, exceeding which will send a notification to the flow administrator (if `null`, notifications are disabled) ||
 || **notifyOnTasksInProgressOverflow** 
@@ -320,22 +320,22 @@ HTTP Status: **200**
 || **notifyWhenEfficiencyDecreases** 
 [`integer`](../../data-types.md) | Efficiency in percentage, below which a notification will be sent to the flow administrator (if `null`, notifications are disabled) ||
 || **taskCreators** 
-[`object`](../../data-types.md) | List of users who can add tasks to the flow in the format `{"<object-type>": "<object-identifier>"}`. For example, `[{"user": 3}, {"department": "17:F"}]`.
+[`object`](../../data-types.md) | List of users who can add tasks to the flow in the `{"<object-type>": "<object-id>"}` format. For example, `[{"user": 3}, {"department": "17:F"}]`.
 
-The element `{"meta-user": "all-users"}` means that all users can add tasks ||
+Item `{"meta-user": "all-users"}` means that all users can add tasks ||
 || **team**
 [`object`](../../data-types.md) | Flow team.
 
-For manual distribution, this includes all project participants linked to the flow, except for the moderator. 
+For manual distribution, this includes all project participants linked to the flow, except for the moderator.
 
-For queue distribution and self-distribution, the team is the same as in `responsibleList` ||
+For queue and self-distribution, the team is the same as in `responsibleList` ||
 || **trialFeatureEnabled** 
-[`boolean`](../../data-types.md) | Indicates if the trial period is enabled for the flow. System parameter. Read-only ||
+[`boolean`](../../data-types.md) | Indicates whether the trial period is enabled for the flow. System parameter. Read-only ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -344,7 +344,7 @@ HTTP Status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
@@ -355,7 +355,7 @@ HTTP Status: **400**
 || `0` | `Flow not found` | Flow not found ||
 |#
 
-{% include [system errors](../../../_includes/system-errors.md) %}
+{% include [System errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

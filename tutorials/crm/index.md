@@ -6,13 +6,13 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-CRM Integration begins with an application task: creating a customer or a deal, updating a card, retrieving lists, passing Sales Intelligence, or embedding an application interface.
+This page helps you choose a tutorial for CRM Integration: creating a customer or a deal, updating a card, retrieving lists, passing Sales Intelligence, or embedding an application interface.
 
-Tutorials help you select a working scenario so you do not have to assemble a chain of methods manually. Each scenario specifies access permissions, the request order, identifiers to be passed between methods, a code sample, and the result to be verified.
+Tutorials help you select a working scenario so you do not have to assemble a chain of methods manually. Each scenario specifies access permissions, the request order, identifiers to pass between methods, a code sample, and the result to verify.
 
 > Quick links: [How to Choose a Direction](#choose-section) and [Common Scenarios](#popular-tutorials)
 > 
-> User documentation: [CRM overview](https://helpdesk.bitrix24.com/open/25766191/)
+> User documentation: [How to Start Working with CRM in Bitrix24](https://helpdesk.bitrix24.com/open/25766191/)
 
 ## Connection with CRM Objects
 
@@ -20,13 +20,13 @@ Scenarios work with core CRM objects and related data.
 
 **Leads, contacts, companies, and deals.** Core customer and sales cards can be created, updated, and retrieved using the [crm.lead.*](../../api-reference/crm/leads/index.md), [crm.contact.*](../../api-reference/crm/contacts/index.md), [crm.company.*](../../api-reference/crm/companies/index.md), and [crm.deal.*](../../api-reference/crm/deals/index.md) methods.
 
-**Activities and Timeline.** Calls, emails, meetings, tasks, and comments are linked to CRM cards via [activity](../../api-reference/crm/timeline/activities/index.md) and [timeline comment](../../api-reference/crm/timeline/comments/index.md) methods.
+**Activities and timeline.** Calls, emails, meetings, tasks, and comments are linked to CRM cards via [activity](../../api-reference/crm/timeline/activities/index.md) and [timeline comment](../../api-reference/crm/timeline/comments/index.md) methods.
 
 **Company details, addresses, and line items.** Related data is stored separately from the CRM card. These are created and linked to a customer, deal, or document using [company details](../../api-reference/crm/requisites/index.md), [addresses](../../api-reference/crm/requisites/addresses/index.md), [line items](../../api-reference/crm/universal/product-rows/index.md), and [catalog](../../api-reference/catalog/index.md) methods.
 
-**SPAs.** Custom CRM types operate via `entityTypeId` — an object type identifier. To create items, pipelines, stages, and custom fields, use the universal [crm.item.*](../../api-reference/crm/universal/index.md) methods.
+**SPAs.** Custom CRM types work via `entityTypeId` — an object type identifier. To create items, pipelines, stages, and custom fields, use the universal [crm.item.*](../../api-reference/crm/universal/index.md) methods.
 
-**Sales Intelligence.** The source of inquiry and the customer route are passed to the CRM via UTM parameters, the `TRACE` field, or the [crm.tracking.trace.add](../../api-reference/crm/tracking/crm-tracking-trace-add.md) method.
+**Sales Intelligence.** The source of inquiry and the customer journey are passed to the CRM via UTM parameters, the `TRACE` field, or the [crm.tracking.trace.add](../../api-reference/crm/tracking/crm-tracking-trace-add.md) method.
 
 **CRM Widgets.** An application interface can be embedded into a CRM card via a custom field or a tab. To register handlers, use the [widgets](../../api-reference/widgets/index.md) methods and embedding points.
 
@@ -34,7 +34,7 @@ Scenarios work with core CRM objects and related data.
 
 1. Define the integration task: create an object, modify data, retrieve a list, pass analytics, or embed an interface.
 2. Select a direction in the [How to Choose a Direction](#choose-section) table.
-3. Open the overview for the selected direction and find a scenario for your task.
+3. Open the overview for the selected direction and find a scenario matching your task.
 4. Verify the access permissions and scopes specified in the scenario.
 5. Prepare the CRM object, field, stage, or user identifiers required for the requests.
 6. Execute the methods in the order described in the scenario.
@@ -58,14 +58,14 @@ The table below is a selection of tasks used to begin working with the CRM. For 
 || **If needed** | **Open** ||
 || Add a lead from a website form | [How to add a lead](./how-to-add-crm-objects/how-to-add-lead.md) ||
 || Add a lead with files | [How to add a lead with files](./how-to-add-crm-objects/how-to-add-lead-with-files.md) ||
-|| Add a contact or company with billing details | [How to add a contact with billing details](./how-to-add-crm-objects/how-to-add-contact-with-requisite.md) or [how to add a company with billing details](./how-to-add-crm-objects/how-to-add-company-with-requisite.md) ||
-|| Add a deal and select the company's Company details | [How to add a deal and a company with billing details](./how-to-add-crm-objects/how-to-add-deal-with-choice-of-requisite.md) ||
+|| Add a contact or company with requisites | [How to add a contact with requisites](./how-to-add-crm-objects/how-to-add-contact-with-requisite.md) or [how to add a company with requisites](./how-to-add-crm-objects/how-to-add-company-with-requisite.md) ||
+|| Add a deal and select the company's Company details | [How to add a deal and a company with requisites](./how-to-add-crm-objects/how-to-add-deal-with-choice-of-requisite.md) ||
 || Create an activity in a lead or deal, taking the CRM mode into account | [How to add an activity to a new lead or deal depending on the CRM mode](./how-to-add-crm-objects/how-to-add-objects-with-crm-mode.md) ||
 || Change the scheduled activity date | [How to change the time of a scheduled activity](./how-to-edit-crm-objects/how-to-change-date-in-activity.md) ||
 || Change client phone or email | [How to change or delete phone numbers and email](./how-to-edit-crm-objects/how-to-change-email-or-phone.md) ||
-|| Move activity between CRM cards | [How to move activity between items of the same type](./how-to-edit-crm-objects/how-to-move-activity.md) or [how to move activity from one object type to another](./how-to-edit-crm-objects/how-to-move-activity-between-objects.md) ||
+|| Move an activity between CRM cards | [How to move an activity between items of the same type](./how-to-edit-crm-objects/how-to-move-activity.md) or [how to move an activity from one object type to another](./how-to-edit-crm-objects/how-to-move-activity-between-objects.md) ||
 || Find duplicates by phone or email | [How to find duplicates in CRM by phone and email](./how-to-get-lists/search-by-phone-and-email.md) ||
 || Get stages, pipelines, or items by stage | [How to get a list of stages with semantics](./how-to-get-lists/how-to-get-stages-with-semantics.md), [how to get deal pipelines](./how-to-get-lists/how-to-get-deal-funnels.md), or [how to filter items by stage name](./how-to-get-lists/how-to-get-elements-by-stage-filter.md) ||
 || Pass Sales Intelligence data when creating a lead or a deal | [How to use Sales Intelligence when creating a lead](./how-to-use-analitycs/use-analitics-for-add-lead.md) or [how to use Sales Intelligence when creating a deal and a contact](./how-to-use-analitycs/use-analitics-for-add-contact.md) ||
-|| Embed the application interface into a CRM card | [How to embed a widget into a lead as a custom field](./crm-widgets/widget-as-field-in-lead-page.md) or [how to embed a widget into a CRM card tab](./crm-widgets/widget-as-detail-tab.md) ||
+|| Embed an application interface into a CRM card | [How to embed a widget into a lead as a custom field](./crm-widgets/widget-as-field-in-lead-page.md) or [how to embed a widget into a CRM card tab](./crm-widgets/widget-as-detail-tab.md) ||
 |#

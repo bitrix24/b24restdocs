@@ -22,7 +22,7 @@ The method `disk.folder.rename` renames a folder.
 || **id***
 [`integer`](../../data-types.md) | Identifier of the folder.
 
-The identifier can be obtained using the method [disk.storage.getchildren](../storage/disk-storage-get-children.md) if the folder is in the root of the storage, and using the method [disk.folder.getchildren](./disk-folder-get-children.md) if the folder is in another folder ||
+The identifier can be obtained using the method [disk.storage.getchildren](../storage/disk-storage-get-children.md) if the folder is located at the root of the storage, and using the method [disk.folder.getchildren](./disk-folder-get-children.md) if the folder is located in another folder ||
 || **newName***
 [`string`](../../data-types.md) | New name of the folder ||
 |#
@@ -39,7 +39,7 @@ The identifier can be obtained using the method [disk.storage.getchildren](../st
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":8968,"newName":"New Folder Name"}' \
+    -d '{"id":8968,"newName":"Neuer Ordnername"}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/disk.folder.rename
     ```
 
@@ -49,7 +49,7 @@ The identifier can be obtained using the method [disk.storage.getchildren](../st
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":8968,"newName":"New Folder Name","auth":"**put_access_token_here**"}' \
+    -d '{"id":8968,"newName":"Neuer Ordnername","auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/disk.folder.rename
     ```
 
@@ -153,7 +153,7 @@ The identifier can be obtained using the method [disk.storage.getchildren](../st
                 'disk.folder.rename',
                 [
                     'id' => 8968,
-                    'newName' => 'New Folder Name'
+                    'newName' => 'Neuer Ordnername'
                 ]
             );
 
@@ -177,7 +177,7 @@ The identifier can be obtained using the method [disk.storage.getchildren](../st
         "disk.folder.rename",
         {
             id: 8968,
-            newName: 'New Folder Name'
+            newName: 'Neuer Ordnername'
         },
         function (result)
         {
@@ -198,7 +198,7 @@ The identifier can be obtained using the method [disk.storage.getchildren](../st
         'disk.folder.rename',
         [
             'id' => 8968,
-            'newName' => 'New Folder Name'
+            'newName' => 'Neuer Ordnername'
         ]
     );
 
@@ -211,34 +211,34 @@ The identifier can be obtained using the method [disk.storage.getchildren](../st
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
     "result": {
         "ID": "8968",
-        "NAME": "New Folder Name",
+        "NAME": "Neuer Ordnername",
         "CODE": null,
         "STORAGE_ID": "1357",
         "TYPE": "folder",
         "REAL_OBJECT_ID": "8968",
         "PARENT_ID": "8907",
         "DELETED_TYPE": "0",
-        "CREATE_TIME": "2026-01-14T13:50:44+02:00",
-        "UPDATE_TIME": "2026-01-20T15:38:22+02:00",
+        "CREATE_TIME": "2026-01-14T13:50:44+03:00",
+        "UPDATE_TIME": "2026-01-20T15:38:22+03:00",
         "DELETE_TIME": null,
         "CREATED_BY": "1269",
         "UPDATED_BY": "1269",
         "DELETED_BY": "0",
-        "DETAIL_URL": "https://test.bitrix24.com/company/personal/user/1269/disk/path/Folder/New Folder Name"
+        "DETAIL_URL": "https://test.bitrix24.com/company/personal/user/1269/disk/path/Ordner/Neuer Ordnername"
     },
     "time": {
         "start": 1768912702,
         "finish": 1768912702.385507,
         "duration": 0.38550710678100586,
         "processing": 0,
-        "date_start": "2026-01-20T15:38:22+02:00",
-        "date_finish": "2026-01-20T15:38:22+02:00",
+        "date_start": "2026-01-20T15:38:22+03:00",
+        "date_finish": "2026-01-20T15:38:22+03:00",
         "operating_reset_at": 1768913302,
         "operating": 0
     }
@@ -253,9 +253,9 @@ HTTP Status: **200**
 || **result**
 [`array`](../../data-types.md) | Array with folder data ||
 || **ID**
-[`integer`](../../data-types.md) | Identifier of the folder ||
+[`integer`](../../data-types.md) | Folder identifier ||
 || **NAME**
-[`string`](../../data-types.md) | Name of the folder ||
+[`string`](../../data-types.md) | Folder name ||
 || **CODE**
 [`string`](../../data-types.md) | Symbolic code of the folder ||
 || **STORAGE_ID**
@@ -269,14 +269,14 @@ HTTP Status: **200**
 || **DELETED_TYPE**
 [`enum`](../../data-types.md) | Deletion status of the object. Possible values:
 - `0` — not deleted
-- `3` — in trash
+- `3` — in the trash
 - `4` — deleted along with the parent folder ||
 || **CREATE_TIME**
 [`datetime`](../../data-types.md) | Date and time of folder creation ||
 || **UPDATE_TIME**
 [`datetime`](../../data-types.md) | Date and time of the last update of the folder ||
 || **DELETE_TIME**
-[`datetime`](../../data-types.md) | Date and time of moving the folder to trash ||
+[`datetime`](../../data-types.md) | Date and time of moving the folder to the trash ||
 || **CREATED_BY**
 [`integer`](../../data-types.md) | Identifier of the user who created the folder ||
 || **UPDATED_BY**
@@ -286,12 +286,12 @@ HTTP Status: **200**
 || **DETAIL_URL**
 [`string`](../../data-types.md) | Link to open the folder in the interface ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the execution time of the request ||
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -300,18 +300,18 @@ HTTP Status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
 || **Code** | **Description** | **Value** ||
 || `ERROR_ARGUMENT` | Invalid value of parameter {Parameter #1} | Required parameter `id` or `newName` is missing ||
-|| `ERROR_NOT_FOUND` | Could not find entity with id `X` | Folder with the specified `id` not found ||
+|| `ERROR_NOT_FOUND` | Could not find entity with id `X` | The folder with the specified `id` was not found ||
 || `ACCESS_DENIED` | Access denied | Insufficient permissions to rename the folder ||
 |#
 
-{% include [system errors](../../../_includes/system-errors.md) %}
+{% include [System errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

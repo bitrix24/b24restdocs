@@ -10,17 +10,17 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: any user
 
-The method `crm.activity.configurable.update` makes changes to a configurable activity.
+The `crm.activity.configurable.update` method modifies a configurable activity. 
 
 {% note warning %}
 
-The method can only be called in the context of the [application](https://helpdesk.bitrix24.com/examples/app.zip) that created it.
+The method can only be called within the context of the [application](https://helpdesk.bitrix24.com/examples/app.zip) that created it.
 
 {% endnote %}
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -46,7 +46,7 @@ fields:
 ```
 ||
 || **layout***
-[`LayoutDto`](./structure/layout.md) | [Associative array of special structure](./structure/layout.md#example), describing the appearance of the activity in the timeline ||
+[`LayoutDto`](./structure/layout.md) | [A special structure associative array](./structure/layout.md#primer) describing the appearance of the activity in the timeline ||
 |#
 
 ## Code Examples
@@ -61,7 +61,7 @@ fields:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":999,"fields":{"typeId":"CONFIGURABLE","completed":false,"deadline":"**put_current_date_time_here**","pingOffsets":[300],"isIncomingChannel":"Y","responsibleId":5,"badgeCode":"CUSTOM"},"layout":{"icon":{"code":"call-completed"},"header":{"title":"Incoming Call"},"body":{"logo":{"code":"call-incoming"},"blocks":{"responsible":{"type":"lineOfBlocks","properties":{"blocks":{"client":{"type":"link","properties":{"text":"John Smith","bold":true,"action":{"type":"redirect","uri":"/crm/lead/details/789/"}}},"phone":{"type":"text","properties":{"value":"+1 999 888 7777"}}}}}}},"footer":{"buttons":{"startCall":{"title":"About Client","action":{"type":"openRestApp","actionParams":{"clientId":456}},"type":"primary"}}}},"auth":"**put_access_token_here**"}' \
+    -d '{"id":999,"fields":{"typeId":"CONFIGURABLE","completed":false,"deadline":"**put_current_date_time_here**","pingOffsets":[300],"isIncomingChannel":"Y","responsibleId":5,"badgeCode":"CUSTOM"},"layout":{"icon":{"code":"call-completed"},"header":{"title":"Incoming call"},"body":{"logo":{"code":"call-incoming"},"blocks":{"responsible":{"type":"lineOfBlocks","properties":{"blocks":{"client":{"type":"link","properties":{"text":"Klaus Weber","bold":true,"action":{"type":"redirect","uri":"/crm/lead/details/789/"}}},"phone":{"type":"text","properties":{"value":"+49 999 888 7777"}}}}}}},"footer":{"buttons":{"startCall":{"title":"About the client","action":{"type":"openRestApp","actionParams":{"clientId":456}},"type":"primary"}}}},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/crm.activity.configurable.update
     ```
 
@@ -126,7 +126,7 @@ fields:
                       phone: {
                         type: 'text',
                         properties: {
-                          value: '+7 999 888 7777',
+                          value: '+49 999 888 7777',
                         },
                       },
                     },
@@ -220,7 +220,7 @@ fields:
                           phone: {
                             type: 'text',
                             properties: {
-                              value: '+7 999 888 7777',
+                              value: '+49 999 888 7777',
                             },
                           },
                         },
@@ -289,7 +289,7 @@ fields:
                             'code' => 'call-completed',
                         ],
                         'header' => [
-                            'title' => 'Incoming Call',
+                            'title' => 'Incoming call',
                         ],
                         'body'   => [
                             'logo'   => [
@@ -303,7 +303,7 @@ fields:
                                             'client' => [
                                                 'type'       => 'link',
                                                 'properties' => [
-                                                    'text'   => 'John Smith',
+                                                    'text'   => 'Klaus Weber',
                                                     'bold'   => true,
                                                     'action' => [
                                                         'type' => 'redirect',
@@ -314,7 +314,7 @@ fields:
                                             'phone'  => [
                                                 'type'       => 'text',
                                                 'properties' => [
-                                                    'value' => '+1 999 888 7777',
+                                                    'value' => '+49 999 888 7777',
                                                 ],
                                             ],
                                         ],
@@ -325,7 +325,7 @@ fields:
                         'footer' => [
                             'buttons' => [
                                 'startCall' => [
-                                    'title'  => 'About Client',
+                                    'title'  => 'About the client',
                                     'action' => [
                                         'type'         => 'openRestApp',
                                         'actionParams' => [
@@ -345,7 +345,7 @@ fields:
             ->getResult();
     
         echo 'Success: ' . print_r($result, true);
-        // Your logic for processing data
+        // The data processing logic you need
         processData($result);
     
     } catch (Throwable $e) {
@@ -377,7 +377,7 @@ fields:
                     "code": "call-completed"
                 },
                 "header": {
-                    "title": "Incoming Call"
+                    "title": "Incoming call"
                 },
                 "body": {
                     "logo": {
@@ -391,7 +391,7 @@ fields:
                                     "client": {
                                         "type": "link",
                                         "properties": {
-                                            "text": "John Smith",
+                                            "text": "Klaus Weber",
                                             "bold": true,
                                             "action": {
                                                 "type": "redirect",
@@ -402,7 +402,7 @@ fields:
                                     "phone": {
                                         "type": "text",
                                         "properties": {
-                                            "value": "+1 999 888 7777"
+                                            "value": "+49 999 888 7777"
                                         }
                                     }
                                 }
@@ -413,7 +413,7 @@ fields:
                 "footer": {
                     "buttons": {
                         "startCall": {
-                            "title": "About Client",
+                            "title": "About the client",
                             "action": {
                                 "type": "openRestApp",
                                 "actionParams": {
@@ -446,7 +446,7 @@ fields:
             'fields' => [
                 'typeId' => 'CONFIGURABLE',
                 'completed' => false,
-                'deadline' => date('c'), // Using the current date and time in ISO 8601 format
+                'deadline' => date('c'), // We use the current date and time in ISO 8601 format
                 'pingOffsets' => [300],
                 'isIncomingChannel' => 'Y',
                 'responsibleId' => 5,
@@ -457,7 +457,7 @@ fields:
                     'code' => 'call-completed'
                 ],
                 'header' => [
-                    'title' => 'Incoming Call'
+                    'title' => 'Incoming call'
                 ],
                 'body' => [
                     'logo' => [
@@ -471,7 +471,7 @@ fields:
                                     'client' => [
                                         'type' => 'link',
                                         'properties' => [
-                                            'text' => 'John Smith',
+                                            'text' => 'Klaus Weber',
                                             'bold' => true,
                                             'action' => [
                                                 'type' => 'redirect',
@@ -482,7 +482,7 @@ fields:
                                     'phone' => [
                                         'type' => 'text',
                                         'properties' => [
-                                            'value' => '+1 999 888 7777'
+                                            'value' => '+49 999 888 7777'
                                         ]
                                     ]
                                 ]
@@ -493,7 +493,7 @@ fields:
                 'footer' => [
                     'buttons' => [
                         'startCall' => [
-                            'title' => 'About Client',
+                            'title' => 'About the client',
                             'action' => [
                                 'type' => 'openRestApp',
                                 'actionParams' => [
@@ -558,7 +558,7 @@ fields:
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -585,14 +585,14 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../../../data-types.md) | Root element of the response containing information about the added activity identifier `id` in case of success. In case of failure, it will return `null` ||
+[`object`](../../../../data-types.md) | Response root element containing the activity identifier `id` information in case of success. In case of failure, it will return `null` ||
 || **time**
-[`time`](../../../../data-types.md#time) | Information about the execution time of the request ||
+[`time`](../../../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -601,23 +601,29 @@ HTTP Status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../../../_includes/error-info.md) %}
 
-### Possible Error Codes
+### Possible Error Codes {#errors}
 
 #|
 || **Code** | **Description** ||
 || `ACCESS_DENIED` | Insufficient permissions to perform the operation ||
 || `NOT_FOUND` | Element not found ||
 || `100` | Required fields are not filled ||
-|| `ERROR_WRONG_CONTEXT` | Method call is only possible in the context of the application ||
+|| `ERROR_WRONG_CONTEXT` | Method call is only possible in the context of an application ||
 || `ERROR_WRONG_APPLICATION` | The activity can only be updated by the application that created it ||
 || `WRONG_FIELD_VALUE` | Incorrect field value ||
 || `INCOMING_ACTIVITY_CAN_NOT_BE_WITH_DEADLINE` | Incoming activity cannot have a deadline ||
 || `ERROR_EMPTY_LAYOUT` | The layout field must be filled ||
+|| `FIELD_IS_REQUIRED` | A required field was not passed in the structure object ||
+|| `FIELD_IS_REDUNDANT` | A field was passed in the structure object that is not in its description ||
+|| `ENUM_FIELD` | The field value is not in the list of allowed values, for example, an unknown tag type ||
+|| `TOO_MANY_ITEMS` | The number of array elements has been exceeded, for example, more than two tags or buttons ||
+|| `KEY_CONTAIN_WRONG_SYMBOLS` | The key in the structure's associative array contains invalid characters. Only Latin letters, digits, hyphens, and underscores are allowed ||
+|| `WRONG_LANG` | In the multi-language value, a language code was passed that is not set on the portal ||
 |#
 
-{% include [system errors](../../../../../_includes/system-errors.md) %}
+{% include [System errors](../../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

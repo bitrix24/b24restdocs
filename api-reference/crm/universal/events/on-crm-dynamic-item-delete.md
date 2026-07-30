@@ -8,9 +8,9 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can subscribe: `any user`
+> Who can subscribe: any user
 
-The event will trigger upon the deletion of any [custom object type](../user-defined-object-types/index.md) item in CRM.
+The `ONCRMDYNAMICITEMDELETE` event is triggered when an item of any [custom object type](../user-defined-object-types/index.md) is deleted in the CRM.
 
 {% note info "" %}
 
@@ -51,12 +51,12 @@ The event for deleting an item with the identifier `23`, belonging to a smart pr
 ```
 
 #|
-|| **Parameter**
+|| **parameter**
 `type` | **Description** ||
 || **event**
-[`string`][1] | Symbolic event code.
+[`string`][1] | Symbolic code of the event.
 
-In this case — `ONCRMDYNAMICITEMDELETE`||
+In this case — `ONCRMDYNAMICITEMDELETE` ||
 || **event_handler_id**
 [`integer`][1] | Identifier of the event handler ||
 || **data**
@@ -64,11 +64,11 @@ In this case — `ONCRMDYNAMICITEMDELETE`||
 
 Contains a single key `FIELDS` ||
 || **data.FIELDS**
-[`object`][1] | Object containing information about the fields of the deleted custom CRM object.
+[`object`][1] | An object containing information about the fields of a CRM custom type remote object.
 
 The structure is described [below](#fields) ||
 || **ts**
-[`timestamp`][1] | Date and time the event was sent from the [event queue](../../../events/index.md) ||
+[`timestamp`][1] | Date and time of the event sent from the [event queue](../../../events/index.md) ||
 || **auth**
 [`object`][1] | Object containing authorization parameters and information about the account where the event occurred.
 
@@ -78,7 +78,7 @@ The structure is described [below](#auth) ||
 ### Parameter FIELDS {#fields}
 
 #|
-|| **Parameter**
+|| **parameter**
 `type` | **Description** ||
 || **ID**
 [`integer`][1] | Identifier of the deleted custom CRM object ||
@@ -88,9 +88,9 @@ The structure is described [below](#auth) ||
 
 ### Parameter auth {#auth}
 
-{% include notitle [Table with keys in the auth array](../../../../_includes/auth-params-in-events.md) %}
+{% include notitle [Auth parameters in events](../../../../_includes/auth-params-in-events.md) %}
 
-{% note warning "Events for System Object Types" %}
+{% note warning "System Object Type Events" %}
 
 Although [universal CRM methods](../index.md) allow adding and modifying objects of standard types such as deals, leads, contacts, companies, and estimates, the event `onCrmDynamicItemDelete` will not trigger when deleting the listed objects.
 

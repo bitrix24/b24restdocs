@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can subscribe: any user
 
-The event is triggered after a task is updated.
+The `ONTASKUPDATE` event is triggered after a task is updated.
 
 {% note info "" %}
 
@@ -18,120 +18,124 @@ Events will not be sent to the application until the installation is complete. [
 
 {% endnote %}
 
-## What the handler receives
+## What the Handler Receives
 
 Data is transmitted as a POST request {.b24-info}
 
 ```json
-array(
-    'event' => 'ONTASKUPDATE',
-    'data' => array(
-        'FIELDS_BEFORE' => array('ID' => 123),
-        'FIELDS_AFTER' => array('ID' => 123),
-        'IS_ACCESSIBLE_BEFORE' => 'undefined',
-        'IS_ACCESSIBLE_AFTER' => 'undefined',
-    ),
-    'ts' => '1466439714',
-    'auth' => array(
-        'access_token' => 's6p6eclrvim6da22ft9ch94ekreb52lv',
-        'expires_in' => '3600',
-        'scope' => 'crm',
-        'domain' => 'some-domain.bitrix24.com',
-        'server_endpoint' => 'https://oauth.bitrix.info/rest/',
-        'status' => 'F',
-        'client_endpoint' => 'https://some-domain.bitrix24.com/rest/',
-        'member_id' => 'a223c6b3710f85df22e9377d6c4f7553',
-        'refresh_token' => '4s386p3q0tr8dy89xvmt96234v3dljg8',
-        'application_token' => '51856fefc120afa4b628cc82d3935cce',
-        ),
-)
+{
+    "event": "ONTASKUPDATE",
+    "data": {
+        "FIELDS_BEFORE": {
+            "ID": 123
+        },
+        "FIELDS_AFTER": {
+            "ID": 123
+        },
+        "IS_ACCESSIBLE_BEFORE": "undefined",
+        "IS_ACCESSIBLE_AFTER": "undefined"
+    },
+    "ts": "1466439714",
+    "auth": {
+        "access_token": "s6p6eclrvim6da22ft9ch94ekreb52lv",
+        "expires_in": "3600",
+        "scope": "task",
+        "domain": "some-domain.bitrix24.com",
+        "server_endpoint": "https://oauth.bitrix.info/rest/",
+        "status": "F",
+        "client_endpoint": "https://some-domain.bitrix24.com/rest/",
+        "member_id": "a223c6b3710f85df22e9377d6c4f7553",
+        "refresh_token": "4s386p3q0tr8dy89xvmt96234v3dljg8",
+        "application_token": "51856fefc120afa4b628cc82d3935cce"
+    }
+}
 ```
 
-{% include notitle [Footnote on parameters](../../../_includes/required.md) %}
+{% include notitle [Note on parameters](../../../_includes/required.md) %}
 
-#| 
-|| **Parameter** 
+#|
+|| **parameter**
 `type` | **Description** ||
-|| **event*** 
-[`string`](../../data-types.md) | Symbolic event code, in this case `OnTaskUpdate` ||
-|| **data*** 
-[`array`](../../data-types.md) | Array with data of the updated task ||
-|| **ts*** 
+|| **event***
+[`string`](../../data-types.md) | Symbolic code of the event.
+
+In this case — `ONTASKUPDATE` ||
+|| **data***
+[`object`](../../data-types.md) | An object containing data about the task update event.
+
+The structure is described [below](#data) ||
+|| **ts***
 [`timestamp`](../../data-types.md) | Date and time of the event sent from the [event queue](../../events/index.md) ||
-|| **auth*** 
-[`array`](../../data-types.md) | Authorization parameters and information about the account where the event occurred ||
+|| **auth***
+[`object`](../../data-types.md) | Object containing authorization parameters and information about the account where the event occurred.
+
+The structure is described [below](#auth) ||
 |#
 
-### Parameter data[]
+### Parameter Data[] {#data}
 
-{% include notitle [Footnote on parameters](../../../_includes/required.md) %}
-
-#| 
-|| **Name** 
+#|
+|| **Name**
 `type` | **Description** ||
-|| **FIELDS_BEFORE*** 
+|| **FIELDS_BEFORE***
 [`undefined`\|`object`](../../data-types.md) | Fields of the task before the event (detailed description provided [below](#fields_before)). If no task fields are available, this field will contain the value `undefined` ||
-|| **FIELDS_AFTER*** 
+|| **FIELDS_AFTER***
 [`undefined`\|`object`](../../data-types.md) | Fields of the task after the event (detailed description provided [below](#fields_after)). If no task fields are available, this field will contain the value `undefined` ||
-|| **IS_ACCESSIBLE_BEFORE*** 
-[`string`](../../data-types.md) | Whether the task was readable before the event (detailed description provided [below](#is_accessible_before)) ||
-|| **IS_ACCESSIBLE_AFTER*** 
-[`string`](../../data-types.md) | Whether the task became readable after the event (detailed description provided [below](#is_accessible_after)) ||
+|| **IS_ACCESSIBLE_BEFORE***
+[`string`](../../data-types.md) | Whether the task was accessible for reading before the event (detailed description provided [below](#is_accessible_before)) ||
+|| **IS_ACCESSIBLE_AFTER***
+[`string`](../../data-types.md) | Whether the task became accessible for reading after the event (detailed description provided [below](#is_accessible_after)) ||
 |#
 
 ### Field FIELDS_BEFORE {#fields_before}
 
-{% include notitle [Footnote on parameters](../../../_includes/required.md) %}
-
-#| 
-|| **Name** 
+#|
+|| **Name**
 `type` | **Description** ||
-|| **ID*** 
+|| **ID***
 [`integer`](../../data-types.md) | Identifier of the updated task ||
 |#
 
 ### Field FIELDS_AFTER {#fields_after}
 
-{% include notitle [Footnote on parameters](../../../_includes/required.md) %}
-
-#| 
-|| **Name** 
+#|
+|| **Name**
 `type` | **Description** ||
-|| **ID*** 
+|| **ID***
 [`integer`](../../data-types.md) | Identifier of the updated task ||
 |#
 
 ### Field IS_ACCESSIBLE_BEFORE {#is_accessible_before}
 
-{% include notitle [Footnote on parameters](../../../_includes/required.md) %}
-
-#| 
-|| **Name** 
+#|
+|| **Name**
 `type` | **Description** ||
-|| **IS_ACCESSIBLE_BEFORE*** 
+|| **IS_ACCESSIBLE_BEFORE***
 [`string`](../../data-types.md) | Possible values:
 - `Y` (Yes) — yes
 - `N` (No) — no
-- `undefined` — not defined or check not performed ||
-  |#
+- `undefined` — not defined or check was not performed ||
+|#
 
 ### Field IS_ACCESSIBLE_AFTER {#is_accessible_after}
 
-{% include notitle [Footnote on parameters](../../../_includes/required.md) %}
-
-#| 
-|| **Name** 
+#|
+|| **Name**
 `type` | **Description** ||
-|| **IS_ACCESSIBLE_AFTER*** 
+|| **IS_ACCESSIBLE_AFTER***
 [`string`](../../data-types.md) | Possible values:
 - `Y` (Yes) — yes
 - `N` (No) — no
-- `undefined` — not defined or check not performed ||
-  |#
+- `undefined` — not defined or check was not performed ||
+|#
+
+### Parameter auth {#auth}
+
+{% include notitle [Auth parameters in events](../../../_includes/auth-params-in-events.md) %}
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -228,7 +232,7 @@ array(
             ->getResult();
     
         echo 'Success: ' . print_r($result, true);
-        // Your logic for processing data
+        // The data processing logic you need
         processData($result);
     
     } catch (Throwable $e) {
@@ -278,6 +282,8 @@ array(
 
 ## Continue Learning
 
+- [{#T}](../../events/index.md)
+- [{#T}](../../events/event-bind.md)
 - [{#T}](./index.md)
 - [{#T}](./on-task-add.md)
 - [{#T}](./on-task-delete.md)

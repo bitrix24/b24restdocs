@@ -8,13 +8,13 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`disk`](../../scopes/permissions.md)
 >
-> Who can execute the method: a user with "Read" access permission for the required folder
+> Who can execute the method: user with "Read" access permission for the required folder
 
 The method `disk.folder.get` returns data about a folder.
 
 ## Method Parameters
 
-{% include [Footnote about parameters](../../../_includes/required.md) %}
+{% include [Note on parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -22,7 +22,7 @@ The method `disk.folder.get` returns data about a folder.
 || **id***
 [`integer`](../../data-types.md) | Identifier of the folder.
 
-The identifier can be obtained using the method [disk.storage.getchildren](../storage/disk-storage-get-children.md) if the folder is in the root of the storage, and using the method [disk.folder.getchildren](./disk-folder-get-children.md) if the folder is in another folder ||
+The identifier can be obtained using the method [disk.storage.getchildren](../storage/disk-storage-get-children.md) if the folder is located at the root of the storage, and using the method [disk.folder.getchildren](./disk-folder-get-children.md) if the folder is located in another folder ||
 |#
 
 ## Code Examples
@@ -204,34 +204,34 @@ The identifier can be obtained using the method [disk.storage.getchildren](../st
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
     "result": {
         "ID": "8930",
-        "NAME": "Folder in Folder",
+        "NAME": "Folder in folder",
         "CODE": null,
         "STORAGE_ID": "1357",
         "TYPE": "folder",
         "REAL_OBJECT_ID": "8930",
         "PARENT_ID": "8907",
         "DELETED_TYPE": "0",
-        "CREATE_TIME": "2026-01-13T16:16:35+01:00",
-        "UPDATE_TIME": "2026-01-13T16:16:35+01:00",
+        "CREATE_TIME": "2026-01-13T16:16:35+03:00",
+        "UPDATE_TIME": "2026-01-13T16:16:35+03:00",
         "DELETE_TIME": null,
         "CREATED_BY": "1269",
         "UPDATED_BY": "1269",
         "DELETED_BY": "0",
-        "DETAIL_URL": "https://test.bitrix24.com/company/personal/user/1269/disk/path/Folder/Folder in Folder"
+        "DETAIL_URL": "https://test.bitrix24.com/company/personal/user/1269/disk/path/Ordner/Ordner in Ordner"
     },
     "time": {
         "start": 1768904310,
         "finish": 1768904310.320223,
         "duration": 0.3202230930328369,
         "processing": 0,
-        "date_start": "2026-01-19T13:18:30+01:00",
-        "date_finish": "2026-01-29T13:18:30+01:00",
+        "date_start": "2026-01-19T13:18:30+03:00",
+        "date_finish": "2026-01-29T13:18:30+03:00",
         "operating_reset_at": 1768904910,
         "operating": 0
     }
@@ -246,9 +246,9 @@ HTTP Status: **200**
 || **result**
 [`array`](../../data-types.md) | Array with folder data ||
 || **ID**
-[`integer`](../../data-types.md) | Identifier of the folder ||
+[`integer`](../../data-types.md) | Folder identifier ||
 || **NAME**
-[`string`](../../data-types.md) | Name of the folder ||
+[`string`](../../data-types.md) | Folder name ||
 || **CODE**
 [`string`](../../data-types.md) | Symbolic code of the folder ||
 || **STORAGE_ID**
@@ -279,12 +279,12 @@ HTTP Status: **200**
 || **DETAIL_URL**
 [`string`](../../data-types.md) | Link to open the folder in the interface ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the execution time of the request ||
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -293,18 +293,18 @@ HTTP Status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `ERROR_ARGUMENT` | Invalid value of parameter {Parameter #1} | Required parameter `id` is missing ||
-|| `ERROR_NOT_FOUND` | Could not find entity with id `X` | Folder with the specified `id` was not found ||
+|| `ERROR_ARGUMENT` | Invalid value of parameter {Parameter #1} | Required parameter `id` is not specified ||
+|| `ERROR_NOT_FOUND` | Could not find entity with id `X` | The folder with the specified `id` was not found ||
 || `ACCESS_DENIED` | Access denied | Insufficient rights to read the folder ||
 |#
 
-{% include [system errors](../../../_includes/system-errors.md) %}
+{% include [System errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

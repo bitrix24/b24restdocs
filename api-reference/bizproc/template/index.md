@@ -1,4 +1,4 @@
-# Business Process Templates: Overview of Methods
+# Workflow Templates: Methods Overview
 
 {% note tip "" %}
 
@@ -6,99 +6,103 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-A business process template is a logical scheme. It implements business logic through actions and operations in the business process designer.
+A workflow template is a logical scheme. It implements business logic using actions and operations within the workflow designer.
 
-> Quick navigation: [all methods and events](#all-methods) 
-> 
-> User documentation: 
-> - [How to create a sequential business process template](https://helpdesk.bitrix24.com/open/6034961/)
-> - [How to configure template parameters](https://helpdesk.bitrix24.com/open/22522520/)
+{% note info "" %}
 
-## Add a Business Process Template
-
-The method [bizproc.workflow.template.add](./bizproc-workflow-template-add.md) adds a template to Bitrix24 from a file with the `.bpt` extension. To obtain the file, configure the business process template and export it.
-
-The resulting file can be used as a template in the desired Bitrix24.
-
-{% note tip "User documentation" %}
-
--  [Business Process Designer](https://helpdesk.bitrix24.com/open/6035031/)
--  [Exporting and Importing Business Process Templates](https://helpdesk.bitrix24.com/open/8605753/)
+Methods for adding, updating, and deleting templates work only within the context of an ../../../settings/app-installation/index.md application. Only the application that created a template can update or delete it.
 
 {% endnote %}
 
-## Application Context
+> Quick navigation: [All Methods](#all-methods)
+>
+> User documentation:
+> - [How to Create a Sequential Workflow Template](https://helpdesk.bitrix24.com/open/6034961/)
+> - [How to Configure Template Parameters](https://helpdesk.bitrix24.com/open/22522520/)
 
-The system ties the new template to an [application](../../../settings/app-installation/index.md). Templates created by the method [bizproc.workflow.template.add](./bizproc-workflow-template-add.md) can only be updated or deleted in the context of the application they were created with.
+## Add a Workflow Template
 
-## Template Connection to Document
+The [bizproc.workflow.template.add](./bizproc-workflow-template-add.md) method adds a template to Bitrix24 from a file with the `.bpt` extension. To obtain the file, configure a workflow template and export it.
 
-Each template is linked to a base object whose data it manages. For example, a template may be linked to CRM deals. In this case, the base object will be a specific deal for which the business process is initiated.
+![Template Export](./_images/export-bp-template.png)
 
-The connection to the base object defines the launch context: you cannot start a process for a lead using a template for a deal.
+The resulting file can be used as a template in any Bitrix24 instance.
 
-The template is linked to the document through the `DOCUMENT_TYPE` parameter, which is an array of three elements:
+{% note tip "User documentation" %}
 
--  module identifier
--  object type
--  document type
+- [Workflow Designer](https://helpdesk.bitrix24.com/open/6035031/)
+- [Exporting and Importing Workflow Templates](https://helpdesk.bitrix24.com/open/8605753/)
+
+{% endnote %}
+
+## Linking a Template to a Document
+
+Each template is linked to a base object whose data it manages. For example, a template can be linked to CRM deals. In this case, the base object will be the specific deal for which the workflow is launched.
+
+The link to the base object determines the launch context: you cannot launch a process for a lead using a template designed for a deal.
+
+A template is linked to a document via the `DOCUMENT_TYPE` parameter, which is an array consisting of three items:
+
+- module identifier
+- object type
+- document type
 
 For example, `['crm', 'CCrmDocumentLead', 'LEAD']`.
 
-The values in the array are interrelated. If the first element is `'crm'`, the others must correspond to CRM. It is important to ensure the correctness of the values.
+The values in the array are interconnected. If the first item is `'crm'`, the remaining items must correspond to CRM. It is important to ensure the correctness of these values.
 
 ### Possible Values
 
-**Module Identifier.** Indicates the scope of the business process template.
+**Module Identifier.** Specifies the scope of application for the workflow template.
 
--  `crm` — CRM
--  `lists` — Universal lists
--  `disk` — Bitrix24 Disk
+- `crm` — CRM
+- `lists` — Common Lists
+- `disk` — Bitrix24 Drive
 
-**Object Identifier.** The object within the specified module. For example, in CRM, the object can be a lead or a deal.
+**Object Identifier.** An object within the specified module. For example, in CRM, an object could be a lead or a deal.
 
 CRM
--  `CCrmDocumentLead` — leads
--  `CCrmDocumentContact` — contacts
--  `CCrmDocumentCompany` — companies
--  `CCrmDocumentDeal` — deals
--  `Bitrix\Crm\Integration\BizProc\Document\Quote` — estimates
--  `Bitrix\Crm\Integration\BizProc\Document\SmartInvoice` — invoices
--  `Bitrix\Crm\Integration\BizProc\Document\Dynamic` — SPAs
+- `CCrmDocumentLead` — leads
+- `CCrmDocumentContact` — contacts
+- `CCrmDocumentCompany` — companies
+- `CCrmDocumentDeal` — deals
+- `Bitrix\Crm\Integration\BizProc\Document\Quote` — quotes
+- `Bitrix\Crm\Integration\BizProc\Document\SmartInvoice` — invoices
+- `Bitrix\Crm\Integration\BizProc\Document\Dynamic` — SPAs
 
 Lists
--  `BizprocDocument` — processes in the news feed
--  `Bitrix\Lists\BizprocDocumentLists` — lists in groups
+- `BizprocDocument` — Workflows in Feed
+- `Bitrix\Lists\BizprocDocumentLists` — lists in queue groups
 
-Disk
--  `Bitrix\Disk\BizProcDocument`
+Drive
+- `Bitrix\Disk\BizProcDocument`
 
-**Document Type.** Binding to a specific document of the specified object.
+**Document Type.** A binding to a specific document of the specified object.
 
 CRM
--  `LEAD` — leads
--  `CONTACT` — contacts
--  `COMPANY` — companies
--  `DEAL` — deals
--  `QUOTE` — estimates
--  `SMART_INVOICE` — invoices
--  `DYNAMIC_XXX` — SPAs, where XXX is the SPA identifier
+- `LEAD` — leads
+- `CONTACT` — contacts
+- `COMPANY` — companies
+- `DEAL` — deals
+- `QUOTE` — quotes
+- `SMART_INVOICE` — invoices
+- `DYNAMIC_XXX` — SPAs, where XXX is the SPA identifier
 
-Universal Lists
--  `iblock_XXX` — information block, where XXX is the information block identifier
+Common Lists
+- `iblock_XXX` — information block, where XXX is the information block identifier
 
-Disk
--  `STORAGE_XXX` — disk storage, where XXX is the storage identifier
+Drive
+- `STORAGE_XXX` — drive data store, where XXX is the data store identifier
 
-## Get List of Templates
+## Retrieve a List of Templates
 
-To obtain a list of all templates in the account, use the method [bizproc.workflow.template.list](./bizproc-workflow-template-list.md). To get a list of application templates, specify the `FILTER` parameter with the `SYSTEM_CODE` field and the symbolic code of the application, for example, `"SYSTEM_CODE": "rest_app_5"`.
+To retrieve a list of all portal templates, use the [bizproc.workflow.template.list](./bizproc-workflow-template-list.md) method. To retrieve a list of application templates, specify the `SYSTEM_CODE` field in the `FILTER` parameter and the application symbolic code, for example, `"SYSTEM_CODE": "rest_app_5"`.
 
 ## Overview of Methods {#all-methods}
 
 > Scope: [`bizproc`](../../scopes/permissions.md)
 >
-> Who can execute the method: depending on the method
+> Who can execute the method: depends on the method
 
 #|
 || **Method** | **Description** ||

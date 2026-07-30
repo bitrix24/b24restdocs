@@ -1,4 +1,4 @@
-# Move a folder and all its contents to the specified folder disk.folder.moveto
+# Move a Folder and All Its Contents to the Specified Folder disk.folder.moveto
 
 {% note tip "" %}
 
@@ -223,28 +223,28 @@ HTTP status: **200**
 {
     "result": {
         "ID": "8968",
-        "NAME": "Folder Name",
+        "NAME": "Ordnername",
         "CODE": null,
         "STORAGE_ID": "1357",
         "TYPE": "folder",
         "REAL_OBJECT_ID": "8968",
         "PARENT_ID": 8907,
         "DELETED_TYPE": "0",
-        "CREATE_TIME": "2026-01-14T13:50:44+02:00",
-        "UPDATE_TIME": "2026-01-20T14:46:24+02:00",
+        "CREATE_TIME": "2026-01-14T13:50:44+03:00",
+        "UPDATE_TIME": "2026-01-20T14:46:24+03:00",
         "DELETE_TIME": null,
         "CREATED_BY": "1269",
         "UPDATED_BY": "1269",
         "DELETED_BY": "0",
-        "DETAIL_URL": "https://test.bitrix24.com/company/personal/user/1269/disk/path/Folder/Folder Name"
+        "DETAIL_URL": "https://test.bitrix24.com/company/personal/user/1269/disk/path/Ordner/Ordnername"
     },
     "time": {
         "start": 1768910130,
         "finish": 1768910130.793927,
         "duration": 0.7939269542694092,
         "processing": 0,
-        "date_start": "2026-01-20T14:55:30+02:00",
-        "date_finish": "2026-01-20T14:55:30+02:00",
+        "date_start": "2026-01-20T14:55:30+03:00",
+        "date_finish": "2026-01-20T14:55:30+03:00",
         "operating_reset_at": 1768910730,
         "operating": 0
     }
@@ -261,9 +261,9 @@ HTTP status: **200**
 
 Returns `false` if the folders are in different storages ||
 || **ID**
-[`integer`](../../data-types.md) | Identifier of the folder ||
+[`integer`](../../data-types.md) | Folder identifier ||
 || **NAME**
-[`string`](../../data-types.md) | Name of the folder ||
+[`string`](../../data-types.md) | Folder name ||
 || **CODE**
 [`string`](../../data-types.md) | Symbolic code of the folder ||
 || **STORAGE_ID**
@@ -294,7 +294,7 @@ Returns `false` if the folders are in different storages ||
 || **DETAIL_URL**
 [`string`](../../data-types.md) | Link to open the folder in the interface ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the execution time of the request ||
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -308,7 +308,7 @@ HTTP status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
@@ -321,7 +321,7 @@ HTTP status: **400**
 || `ACCESS_DENIED` | Access denied | Insufficient permissions to move the folder ||
 |#
 
-{% include [system errors](../../../_includes/system-errors.md) %}
+{% include [System errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

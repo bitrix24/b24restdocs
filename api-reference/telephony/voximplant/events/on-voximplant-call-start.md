@@ -18,9 +18,9 @@ Events will not be sent to the application until the installation is complete. [
 
 {% endnote %}
 
-## What the handler receives
+## What the Handler Receives
 
-Data is transmitted in the form of a POST request {.b24-info}
+Data is transmitted as a POST request {.b24-info}
 
 ```json
 {
@@ -47,22 +47,22 @@ Data is transmitted in the form of a POST request {.b24-info}
 ```
 
 #|
-|| **Parameter**
+|| **parameter**
 `type` | **Description** ||
 || **event**
 [`string`](../../../data-types.md) | Symbolic code of the event.
 
 In this case — `ONVOXIMPLANTCALLSTART` ||
 || **event_handler_id**
-[`string`](../../../data-types.md) | Identifier of the event handler ||
+[`integer`](../../../data-types.md) | Identifier of the event handler ||
 || **data**
-[`object`](../../../data-types.md) | Object containing event data.
+[`object`](../../../data-types.md) | Object with event data.
 
 The structure is described [below](#data) ||
 || **ts**
 [`timestamp`](../../../data-types.md) | Date and time of the event sent from the [event queue](../../../events/index.md) ||
 || **auth**
-[`object`](../../../data-types.md) | Object with user authorization parameters on behalf of which the event was triggered.
+[`object`](../../../data-types.md) | Object containing authorization parameters of the user on behalf of whom the event was triggered.
 
 The structure is described [below](#auth) ||
 |#
@@ -70,7 +70,7 @@ The structure is described [below](#auth) ||
 ### Parameter data {#data}
 
 #|
-|| **Parameter**
+|| **parameter**
 `type` | **Description** ||
 || **CALL_ID**
 [`string`](../../../data-types.md) | Identifier of the call ||
@@ -80,10 +80,12 @@ The structure is described [below](#auth) ||
 
 ### Parameter auth {#auth}
 
-{% include notitle [Table with keys in the auth array](../../../../_includes/auth-params-in-events.md) %}
+{% include notitle [Auth parameters in events](../../../../_includes/auth-params-in-events.md) %}
 
-## Continue your exploration
+## Continue Learning
 
+- [{#T}](../../../events/index.md)
+- [{#T}](../../../events/event-bind.md)
 - [{#T}](./on-voximplant-call-init.md)
 - [{#T}](./on-voximplant-call-end.md)
 - [{#T}](../voximplant-statistic-get.md)

@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: any user
 
-The method `crm.activity.list` returns a list of activities based on the filter, considering the access permissions of the current user.
+The `crm.activity.list` method returns a list of activities by filter, taking the current user's permissions into account.
 
 ## Method Parameters
 
@@ -20,7 +20,7 @@ The method `crm.activity.list` returns a list of activities based on the filter,
 || **Name**
 `type` | **Description** ||
 || **select**
-[`array`](../../../data-types.md) | An array of fields of the activity [crm.activity.fields](./crm-activity-fields.md) that need to be selected. To get the fields `COMMUNICATIONS` and `FILES`, specify them in select.
+[`array`](../../../data-types.md) | An array of fields of the activity [crm.activity.fields](./crm-activity-fields.md) that need to be selected. To get the fields `COMMUNICATIONS` and `FILES`, specify them in select
 ||
 || **filter**
 [`object`](../../../data-types.md) | An object for filtering the selected items in key-value format.
@@ -73,13 +73,13 @@ The formula for calculating the `start` parameter value:
 `start = (N-1) * 50`, where `N` — the number of the desired page ||
 |#
 
-See the [list methods](../../../../../settings/how-to-call-rest-api/list-methods-pecularities.md) description.
+See the description of [list methods](../../../../../settings/how-to-call-rest-api/list-methods-pecularities.md).
 
 {% note info "" %}
 
 Please note the specific behavior of the `filter[BINDINGS]` parameter.
 
-An activity can be linked to several CRM entities. For example, a call can simultaneously be linked to a lead and a deal; therefore, to retrieve these entities, the `crm.activity.list` method parameters include a special filter key: `BINDINGS`.
+An activity can be linked to multiple CRM entities. For example, a call can simultaneously be linked to a lead and a deal; therefore, to retrieve these entities, the `crm.activity.list` method parameters include a special filter key: `BINDINGS`.
 
 You must specify an array of [system](../../../index.md) or [custom](../../../universal/user-defined-object-types/index.md) CRM object types for which you need to find a link.
 
@@ -490,7 +490,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../../../data-types.md) | The result of the operation. An array of activitys. For information about the structure of an activity, see the method [crm.activity.fields](./crm-activity-fields.md) ||
+[`array`](../../../../data-types.md) | Array of activities. To get information about the activity structure, see the [crm.activity.fields](./crm-activity-fields.md) method ||
 || **time**
 [`time`](../../../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -514,7 +514,7 @@ HTTP status: **400**, **403**
 
 {% include [Note on examples](../../../../../_includes/examples.md) %}
 
-### Using BINDINGS {#example-bindings}
+### Using BINGINDS {#example-bindings}
 
 Retrieve fields: Identifier, Title, Owner Type (Entity Type Identifier), Owner (Entity Identifier)
 

@@ -1,4 +1,4 @@
-# Content Block of Configurable Deal
+# Configurable Activity Content Block
 
 {% note tip "" %}
 
@@ -6,26 +6,26 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-Content blocks `ContentBlockDto` are the foundation of the content area of the timeline record. By combining these blocks, various interfaces can be flexibly assembled.
+Content blocks `ContentBlockDto` are the foundation of the content area of a timeline entry. By combining these blocks, you can flexibly assemble various interfaces.
 
-This structure is used when creating [configurable deals](../../layout-blocks/index.md) and when enriching timeline records with [content blocks](../../../layout-blocks/index.md).
+This structure is used when creating [configurable activities](../../layout-blocks/index.md) and when enriching timeline entries with [content blocks](../../../layout-blocks/index.md).
 
-## General Structure of the Block:
+## General Block Structure:
 
 ```json
 {
     "type": "Block type",
     "properties": {
-        ... some properties, varying for each specific block
+        ... some properties, different for each specific block
     }
 }
 ```
 
-## Types of Content Blocks:
+## Content Block Types:
 
 ### Text
 
-The simplest block `type = text`, which displays some formatted text.
+The simplest block `type = text`, which outputs certain formatted text.
 
 #### Parameters
 
@@ -57,7 +57,7 @@ The simplest block `type = text`, which displays some formatted text.
         "code": "info"
     },
     "header": {
-        "title": "Information Message"
+        "title": "Information message"
     },
     "body": {
         "logo": {
@@ -79,7 +79,7 @@ The simplest block `type = text`, which displays some formatted text.
 
 ### Long Multiline Text
 
-The block `type = largeText` allows displaying long multiline texts that will automatically collapse to a preview.
+The `type = largeText` block allows displaying long multiline texts, which will be automatically collapsed into a preview.
 
 #### Parameters
 
@@ -95,7 +95,7 @@ The block `type = largeText` allows displaying long multiline texts that will au
 
 #### Example
 
-Long text collapsed under "Show more".
+Long text hidden under "Show more".
 
 ```json
 {
@@ -103,7 +103,7 @@ Long text collapsed under "Show more".
         "code": "info"
     },
     "header": {
-        "title": "Information Message"
+        "title": "Information message"
     },
     "body": {
         "logo": {
@@ -121,11 +121,11 @@ Long text collapsed under "Show more".
 }
 ```
 
-![Long Text](./_images/ContentBlockDto_10.png)
+![Long text](./_images/ContentBlockDto_10.png)
 
 ### Link
 
-The block `type = link` displays a link.
+The `type = link` block outputs a link.
 
 #### Parameters
 
@@ -149,7 +149,7 @@ The block `type = link` displays a link.
 {
     "type": "link",
     "properties": {
-     "text": "Open Deal",
+     "text": "Open deal",
      "action": {
         "type": "redirect",
         "uri": "/crm/deal/details/123/"
@@ -159,9 +159,11 @@ The block `type = link` displays a link.
 }
 ```
 
-### Block with Title
+![Link](./_images/ContentBlockDto_15.png)
 
-The block `type = withTitle` displays a title-value pair. Another content block can be used as the value.
+### Block with Heading
+
+The `type = withTitle` block outputs a name-value pair. Another content block can be used as the value.
 
 #### Parameters
 
@@ -185,7 +187,7 @@ The block `type = withTitle` displays a title-value pair. Another content block 
 {
     "type": "withTitle",
     "properties": {
-        "title": "Title",
+        "title": "Heading",
         "block": {
             "type": "text",
             "properties": {
@@ -196,16 +198,17 @@ The block `type = withTitle` displays a title-value pair. Another content block 
 }
 ```
 
+![Link](./_images/ContentBlockDto_16.png)
 
 ```json
 {
     "type": "withTitle",
     "properties": {
-        "title": "Title 2",
+        "title": "Heading 2",
         "block": {
             "type": "link",
             "properties": {
-                "text": "Open Deal",
+                "text": "Open deal",
                 "action": {
                     "type": "redirect",
                     "uri": "/crm/deal/details/123/"
@@ -217,10 +220,11 @@ The block `type = withTitle` displays a title-value pair. Another content block 
 }
 ```
 
+![Link](./_images/ContentBlockDto_17.png)
 
 ### Multiple Content Blocks in One Line
 
-The block `type = lineOfBlocks` displays several content blocks of type text or link in one line. This allows displaying text with different formatting mixed with links in a single line.
+The `type = lineOfBlocks` block outputs several text or link type content blocks in a single line. This allows displaying text with different formatting mixed with links in one line.
 
 #### Parameters
 
@@ -269,10 +273,11 @@ The block `type = lineOfBlocks` displays several content blocks of type text or 
 }
 ```
 
+![Link](./_images/ContentBlockDto_18.png)
 
 ### Deadline Selection
 
-The block `type = deadline` displays the current deadline value with the ability to quickly change it. The block will not be shown if added to an incoming deal or a deal without a deadline.
+The `type = deadline` block displays the current deadline value with the ability to change it quickly. The block will not be shown if it is added to an incoming activity or to an activity without a deadline.
 
 #### Parameters
 
@@ -281,7 +286,7 @@ The block `type = deadline` displays the current deadline value with the ability
 #|
 || **Field** | **Description** ||
 || **readonly**
-[`boolean`](../../../../data-types.md) | Permission to change the deadline. Default is `false`. If the user does not have access to modify the entity to which the deal relates, or if the deal is completed, then `readonly = true` regardless of the settings provided ||
+[`boolean`](../../../../data-types.md) | Permission to change the deadline. By default `false`. If the user does not have access to edit the object to which the case belongs, or if the case is completed, then `readonly = true` regardless of the provided settings ||
 || **scope**
 [`string`](../../../../data-types.md) | [Visibility scope](./field-types.md#scope), for example `web` ||
 |#
@@ -296,6 +301,8 @@ The block `type = deadline` displays the current deadline value with the ability
     }
 }
 ```
+
+![Link](./_images/ContentBlockDto_19.png)
 
 ## Continue Learning
 

@@ -1,4 +1,4 @@
-# Set Settings for User BX24.userOption.set
+# Set Configurations for a User BX24.userOption.set
 
 {% note tip "" %}
 
@@ -7,14 +7,14 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 {% endnote %}
 
 ```js
-BX24.userOption.set(string name, string value): void;
+BX24.userOption.set(string name, mixed value): void;
 ```
 
-The method `BX24.userOption.set` sets the `value` of the setting named `name` for the current user. The value is set immediately.
+The `BX24.userOption.set` method sets the value of the `value` configuration with the name `name` for the current user. The value is applied immediately.
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../_includes/required.md) %}
+{% include [Note on parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -24,7 +24,6 @@ The method `BX24.userOption.set` sets the `value` of the setting named `name` fo
 || **value***
 [`mixed`](../../../api-reference/data-types.md) | Parameter value ||
 |#
-
 
 ## Code Example
 
@@ -37,6 +36,10 @@ BX24.init(() => {
 ```
 
 {% include [Note on examples](../../../_includes/examples.md) %}
+
+## Return Value
+
+The method returns nothing.
 
 ## Continue Learning
 

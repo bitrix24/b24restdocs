@@ -1,4 +1,4 @@
-# Set Settings for the Application BX24.appOption.set
+# Set Configurations for the BX24.appOption.set App
 
 {% note tip "" %}
 
@@ -10,13 +10,13 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 BX24.appOption.set(string name, mixed value[, Function callback]): void;
 ```
 
-The method `BX24.appOption.set` sets global settings for the current application.
+The `BX24.appOption.set` method sets general configurations for the current application.
 
-Setting application values is only available to users with application management access permission (see [BX24.isAdmin](../additional-functions/bx24-is-admin.md)). A completion handler may be required for application settings (see the `callback` parameter below).
+Setting application configuration values is only available to users with application management permissions (see [BX24.isAdmin](../additional-functions/bx24-is-admin.md)). An on-completion handler may be required for application configurations (see parameter `callback` below).
 
 ## Method Parameters
 
-{% include [Footnote on required parameters](../../../_includes/required.md) %}
+{% include [Note on parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -38,7 +38,11 @@ BX24.init(() => {
 });
 ```
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
+
+## Return Value
+
+The method returns nothing. If the `callback` parameter is passed, current application settings will be passed as a function argument `callback`.
 
 ## Continue Learning
 

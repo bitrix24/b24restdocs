@@ -1,4 +1,4 @@
-# Get the List of Bindings for a Record in the Timeline crm.timeline.bindings.list
+# Retrieve a List of Timeline Record Links crm.timeline.bindings.list
 
 {% note tip "" %}
 
@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: any user
 
-Retrieves a list of bindings for a record in the timeline.
+Retrieves a list of links for a timeline record.
 
 ## Method Parameters
 
@@ -22,7 +22,7 @@ Retrieves a list of bindings for a record in the timeline.
 || **filter***
 [`object`](../../../data-types.md) | Object for filtering selected records.
 
-The `OWNER_ID` field is required; other fields are not necessary. ||
+The `OWNER_ID` field is required; other fields are not necessary ||
 |#
 
 ## Code Examples
@@ -197,15 +197,15 @@ The `OWNER_ID` field is required; other fields are not necessary. ||
         print(result)
     except BitrixAPIError as error:
         print(
-            "Bitrix API Error",
+            "Bitrix API error",
             f"error: {error.error}",
             f"error_description: {error.error_description}",
             sep="\n",
         )
     except BitrixSDKException as error:
-        print(f"Bitrix SDK Error: {error.message}")
+        print(f"Bitrix SDK error: {error.message}")
     except Exception as error:
-        print(f"Unexpected Error: {error}")
+        print(f"Unexpected error: {error}")
     ```
 
     Example `as_list`
@@ -227,15 +227,15 @@ The `OWNER_ID` field is required; other fields are not necessary. ||
             print(item)
     except BitrixAPIError as error:
         print(
-            "Bitrix API Error",
+            "Bitrix API error",
             f"error: {error.error}",
             f"error_description: {error.error_description}",
             sep="\n",
         )
     except BitrixSDKException as error:
-        print(f"Bitrix SDK Error: {error.message}")
+        print(f"Bitrix SDK error: {error.message}")
     except Exception as error:
-        print(f"Unexpected Error: {error}")
+        print(f"Unexpected error: {error}")
     ```
 
     Example `as_list_fast`
@@ -257,15 +257,15 @@ The `OWNER_ID` field is required; other fields are not necessary. ||
             print(item)
     except BitrixAPIError as error:
         print(
-            "Bitrix API Error",
+            "Bitrix API error",
             f"error: {error.error}",
             f"error_description: {error.error_description}",
             sep="\n",
         )
     except BitrixSDKException as error:
-        print(f"Bitrix SDK Error: {error.message}")
+        print(f"Bitrix SDK error: {error.message}")
     except Exception as error:
-        print(f"Unexpected Error: {error}")
+        print(f"Unexpected error: {error}")
     ```
 
 - BX24.js
@@ -352,11 +352,24 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../../data-types.md) | Root element of the response containing an array of objects with [information](crm-timeline-bindings-bind.md#parametr-fields) about the found bindings ||
+[`array`](../../../data-types.md) | Array of objects with found connections [(detailed description)](#result) ||
 || **total**
 [`integer`](../../../data-types.md) | The total number of records found ||
 || **time**
-[`time`](../../../data-types.md) | Information about the request execution time ||
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
+|#
+
+#### Result Object {#result}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **OWNER_ID**
+[`string`](../../../data-types.md) | Identifier of the timeline record ||
+|| **ENTITY_ID**
+[`string`](../../../data-types.md) | Identifier of the CRM entity ||
+|| **ENTITY_TYPE**
+[`string`](../../../data-types.md) | CRM item type. Possible values: `lead`, `deal`, `contact`, `company`, `order` ||
 |#
 
 ## Error Handling
@@ -376,7 +389,7 @@ HTTP status: **400**
 
 #|
 || **Code** | **Error message** | **Description** ||
-|| Empty string | OWNER_ID is not defined or invalid | The required parameter `OWNER_ID` was not provided or the provided `OWNER_ID` is invalid ||
+|| Empty value | OWNER_ID is not defined or invalid | The required parameter `OWNER_ID` was not provided or the provided `OWNER_ID` is invalid ||
 |#
 
 {% include [System errors](../../../../_includes/system-errors.md) %}

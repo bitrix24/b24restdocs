@@ -36,8 +36,8 @@ After selecting a location, the application performs three operations:
 
 ## Preparing the Application and Data
 
-1. Save the [full code](#full-code) to file `index.html`
-2. In the three presets containing links, replace `123` in path `/crm/deal/details/123/` with an existing deal identifier or specify another relative path within Bitrix24
+1. Save the [full code](#full-code) to the file `index.html`
+2. In the three presets containing links, replace `123` in the path `/crm/deal/details/123/` with an existing deal identifier or specify another relative path within Bitrix24
 3. Host the file on a server with a public HTTPS address
 4. Create a [server-side local application with a user interface](../../../../local-integrations/serverside-local-app-with-ui.md), specify the file address as the main page, and add the [`crm`](../../../scopes/permissions.md) scope
 5. Install and open the application in Bitrix24
@@ -49,15 +49,15 @@ To verify, prepare the following:
 - A deal where a test comment can be created to test the second mode
 - Browser access to the jsDelivr CDN and the address `api.bitrix24.com`
 
-[Additional activity block methods](../activities/layout-blocks/index.md) and [additional timeline block methods](./index.md) work only within the context of an installed application. An incoming webhook is not suitable for this example.
+../activities/layout-blocks/index.md ([Additional Activity Block Methods]) and ./index.md ([Additional Timeline Block Methods]) work only within the context of an installed application. An incoming webhook is not suitable for this example.
 
 The application supplements the list of CRM types using the [crm.type.list](../../universal/user-defined-object-types/crm-type-list.md) method. This method requires administrative access to the CRM. If permissions are insufficient, the application will display an error but will retain the standard types in the list: leads, deals, contacts, companies, estimates, and invoices.
 
-### Retrieving `timelineId` for a Deal
+### Retrieving the timelineId for a Deal
 
-This step is only required for the **Timeline record** mode. Open the installed application and wait for it to load. Then, open the developer tools, select the application's iframe context in the **Console** tab, and execute the following code.
+This step is only required for the **Timeline Record** mode. Open the installed application and wait for it to load. Then, open the developer tools, select the application iframe context in the **Console** tab, and execute the following code.
 
-In the example, `ENTITY_ID = 4` is the deal identifier that must be replaced. The string type `deal` corresponds to the numeric `entityTypeId = 2` in the test application.
+In the example, `ENTITY_ID = 4` is the deal identifier that must be replaced. The `deal` string type corresponds to the `entityTypeId = 2` numeric type in the test application.
 
 {% include [Note on examples](../../../../_includes/examples.md) %}
 
@@ -84,13 +84,13 @@ BX24.callMethod(
 );
 ```
 
-The [crm.timeline.comment.add](../comments/crm-timeline-comment-add.md) method returns an integer comment identifier. A string will appear in the console, for example, `timelineId: 123`. Retain this value: it will be needed when verifying the timeline record mode.
+The [crm.timeline.comment.add](../comments/crm-timeline-comment-add.md) method returns an integer comment identifier. A string will appear in the console, for example, `timelineId: 123`. Save this value: it will be needed when verifying the timeline recording mode.
 
 Each request execution creates a new comment. After verification, you can delete the unnecessary comment using the [crm.timeline.comment.delete](../comments/crm-timeline-comment-delete.md) method.
 
 Next, we will examine the main parts of the application. The fragments show how the interface, parameters, and methods are linked, but they cannot be run separately. They are already assembled in the correct order in the [full code](#full-code).
 
-The core logic is located in the `ConfigurableTimelineBlocks` class. It stores the editor, fields, and buttons. Records of type `this.#itemIdNode` access the private fields of the class. Methods from the following steps belong to this class.
+The core logic is located in the `ConfigurableTimelineBlocks` class. It stores the editor, fields, and buttons. Records of the `this.#itemIdNode` type access the private fields of the class. The methods from the following steps belong to this class.
 
 ## 1. Including Libraries
 
@@ -98,7 +98,7 @@ At the beginning of the file, we will set the UTF-8 encoding and include three e
 
 - Bootstrap styles the fields and buttons
 - JSONEditor displays and edits the `layout` object as JSON
-- [BX24.js](../../../../sdk/bx24-js-sdk/index.md) provides functions for page initialization and calling Bitrix24 methods
+- [BX24.js](../../../../sdk/bx24-js-sdk/index.md) provides functions for initializing the page and calling Bitrix24 methods
 
 ```html
 <!DOCTYPE html>
@@ -175,7 +175,7 @@ Divide the page into two parts. On the left will be the JSON editor, and on the 
     <div class="container-fluid" id="alert_container"></div>
 ```
 
-By default, the **Deal** type with `entityTypeId = 2` and the **Activity** mode are selected. The user enters `entityId` — the identifier of a specific deal — and clicks **Find**. To record a timeline entry, the application will replace the activity list with a manual input field `timelineId`.
+By default, the **Deal** type with `entityTypeId = 2` and the **Activity** mode are selected. The user enters `entityId` — the identifier of a specific deal — and clicks **Find**. To record a timeline entry, the application will replace the activity list with the manual input field `timelineId`.
 
 ## 3. Selecting Methods for an Activity or a Timeline Entry
 
@@ -230,7 +230,7 @@ When the mode changes, the `renderItemIdControl` method changes the interface it
         }
 ```
 
-For an activity, a list and a **Find** button are displayed; for a timeline entry, a numeric manual input field is displayed.
+For an activity, a list and a **Find** button are displayed; for a timeline entry, a manual numeric input field is displayed.
 
 ## 4. Loading CRM Types and Activities
 
@@ -414,7 +414,7 @@ For example, a set with a single text block looks like this:
 }
 ```
 
-The **Install** button reads the JSON, verifies the `blocks` field and the number of blocks, and then adds `layout` to the `set` method parameters.
+The **Set** button reads the JSON, verifies the `blocks` field and the number of blocks, and then adds `layout` to the `set` method parameters.
 
 ```js
         setAction()
@@ -1128,7 +1128,7 @@ The class constructor binds buttons to handlers, creates buttons for ready-made 
 
 When working, keep the following limitations in mind:
 
-- To record a timeline entry, select a configurable record—a record that supports additional application blocks. It is not possible to set blocks in a deal, a [timeline log entry](../logmessage/index.md) for a secondary event, or a legacy record using [crm.timeline.layout.blocks.* methods](./index.md).
+- To record a timeline entry, select a configurable record — a record that supports additional application blocks. It is not possible to set blocks in a deal, a [timeline log entry](../logmessage/index.md) for a secondary event, or a legacy record using [crm.timeline.layout.blocks.* methods](./index.md).
 - For an activity, the [crm.activity.layout.blocks.set](../activities/layout-blocks/crm-activity-layout-blocks-set.md) method cannot be applied to a [configurable application activity](../activities/configurable/index.md) or a legacy type activity.
 - The **Delete** button removes the set immediately without additional confirmation.
 
@@ -1139,7 +1139,7 @@ When working, keep the following limitations in mind:
    - **Activity** — click **Find** and select an activity from the list.
    - **Timeline Record** — enter the saved `timelineId` of the created comment.
 3. Add one or more ready-made blocks to the editor.
-4. Click **Install**. The application will display the Block set set message.
+4. Click **Set**. The application will display the Block set set message.
 5. Open the CRM item card. The added blocks should appear on the selected activity or timeline record.
 6. Return to the application and click **Get**. The installed JSON should appear in the editor.
 7. Click **Delete**, then refresh the CRM card. The set should disappear from the timeline.

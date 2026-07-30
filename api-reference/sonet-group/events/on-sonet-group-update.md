@@ -6,11 +6,11 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-> Scope: `sonet`
-> 
+> Scope: [`sonet`](../../scopes/permissions.md)
+>
 > Who can subscribe: any user
 
-The `onSonetGroupUpdate` event is triggered when a workgroup/project is modified. This allows a third-party application to respond to changes in groups and perform necessary actions—such as data synchronization or sending notifications.
+The `ONSONETGROUPUPDATE` event is triggered when a Workgroup or Project is modified.
 
 {% note info "" %}
 
@@ -18,7 +18,7 @@ Events will not be sent to the application until the installation is complete. [
 
 {% endnote %}
 
-## What the handler receives
+## What the Handler Receives
 
 Data is transmitted as a POST request {.b24-info}
 
@@ -47,43 +47,46 @@ Data is transmitted as a POST request {.b24-info}
 }
 ```
 #|
-|| **Parameter**
+|| **parameter**
 `type` | **Description** ||
 || **event**
-[`string`](../../data-types.md) | Symbolic event code.
+[`string`](../../data-types.md) | Symbolic code of the event.
 
-In this case—`ONSONETGROUPUPDATE`||
+In this case — `ONSONETGROUPUPDATE` ||
 || **event_handler_id**
 [`integer`](../../data-types.md) | Identifier of the event handler ||
 || **data**
-[`object`](../../data-types.md) | Object containing information about the workgroup change.
+[`object`](../../data-types.md) | Object containing information about the Workgroup change.
 
 Contains a single key `FIELDS` ||
 || **data.FIELDS**
-[`object`](../../data-types.md) | Object containing information about the fields of the modified workgroup.
+[`object`](../../data-types.md) | Object containing information about the fields of the modified Workgroup.
 
 Structure is described [below](#fields) ||
 || **ts**
-[`timestamp`](../../data-types.md) | Date and time the event was sent from the [event queue](../../events/index.md) ||
+[`timestamp`](../../data-types.md) | Date and time of the event sent from the [event queue](../../events/index.md) ||
 || **auth**
 [`object`](../../data-types.md) | Object containing authorization parameters and information about the account where the event occurred.
 
-Structure is described [below](#auth) ||
+The structure is described [below](#auth) ||
 |#
 
 ### Parameter FIELDS {#fields}
 
 #|
-|| **Parameter**
+|| **parameter**
 `type` | **Description** ||
-|| **ID** 
+|| **ID**
 [`integer`](../../data-types.md) | Identifier of the modified workgroup ||
 |#
 
-### Parameter auth
+### Parameter auth {#auth}
 
-{% include notitle [Table with keys in the auth array](../../../_includes/auth-params-in-events.md) %}
+{% include notitle [Auth parameters in events](../../../_includes/auth-params-in-events.md) %}
 
-## Continue exploring
+## Continue Learning
+
 - [{#T}](../../events/index.md)
 - [{#T}](../../events/event-bind.md)
+- [{#T}](./on-sonet-group-add.md)
+- [{#T}](./on-sonet-group-delete.md)

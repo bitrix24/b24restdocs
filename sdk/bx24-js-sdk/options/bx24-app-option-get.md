@@ -1,4 +1,4 @@
-# Get Application Settings BX24.appOption.get
+# Get App Configurations BX24.appOption.get
 
 {% note tip "" %}
 
@@ -7,14 +7,14 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 {% endnote %}
 
 ```js
-BX24.appOption.get(string name, mixed value): mixed;
+BX24.appOption.get(string name): mixed;
 ```
 
-The method `BX24.appOption.get` returns a setting by its code.
+The `BX24.appOption.get` method returns a configuration by its code.
 
 ## Method Parameters
 
-{% include [Footnote about required parameters](../../../_includes/required.md) %}
+{% include [Note on parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -30,12 +30,16 @@ BX24.init(() => {
     BX24.appOption.set('param_str', 'str1', (params) => console.log(params));
     BX24.appOption.set('param_numb', 1);
 
-    console.log(BX24.appOption.get('param_str')); //will return str1
-    console.log(BX24.appOption.get('param_numb'));//will return 1
+    console.log(BX24.appOption.get('param_str')); //returns str1
+    console.log(BX24.appOption.get('param_numb'));//returns 1
 });
 ```
 
-{% include [Footnote about examples](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
+
+## Return Value
+
+Returns the value of the app configuration with the name `name`. The value type depends on what was retained by the [BX24.appOption.set](./bx24-app-option-set.md) method.
 
 ## Continue Learning
 

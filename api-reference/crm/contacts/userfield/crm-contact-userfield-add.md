@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: administrator
 
-The method `crm.contact.userfield.add` creates a new custom field for contacts.
+The `crm.contact.userfield.add` method creates a new custom field for contacts.
 
 ## Method Parameters
 
@@ -180,7 +180,7 @@ By default `N` ||
 
 ### Parameter SETTINGS {#settings}
 
-Each type of custom fields has its own set of additional settings. This method only supports those described below.
+Each type of custom field has its own set of additional settings. This method only supports those described below.
 
 {% list tabs %}
 
@@ -194,7 +194,7 @@ Each type of custom fields has its own set of additional settings. This method o
 
     Default `''` ||
     || **ROWS**
-    [`integer`][1] | Number of lines in the input field. Must be greater than 0.
+    [`integer`][1] | Number of rows in the input field. Must be greater than 0.
 
     Default `1` ||
     |#
@@ -251,7 +251,7 @@ Each type of custom fields has its own set of additional settings. This method o
     || **DEFAULT_VALUE**
     [`object`][1]  | Default value.
 
-    Object format:
+    Format object:
 
     ```
     {
@@ -286,7 +286,7 @@ Each type of custom fields has its own set of additional settings. This method o
     || **DISPLAY**
     [`string`][1] | Appearance. Possible values:
     - `LIST` — list
-    - `UI` — typed list
+    - `UI` — autocomplete list
     - `CHECKBOX` — checkboxes
     - `DIALOG` — entity selection dialog
 
@@ -304,11 +304,11 @@ Each type of custom fields has its own set of additional settings. This method o
     || **Name**
     `type` | **Description** ||
     || **IBLOCK_TYPE_ID**
-    [`string`][1] | Iblock type identifier.
+    [`string`][1] | Information block type identifier.
 
     Default `''` ||
     || **IBLOCK_ID**
-    [`string`][1] | Iblock identifier.
+    [`string`][1] | Information block identifier.
 
     Default `0` ||
     || **DEFAULT_VALUE**
@@ -318,7 +318,7 @@ Each type of custom fields has its own set of additional settings. This method o
     || **DISPLAY**
     [`string`][1] | Appearance. Possible values:
     - `DIALOG` — dialog
-    - `UI` — typed list
+    - `UI` — autocomplete list
     - `LIST` — list
     - `CHECKBOX` — checkboxes
 
@@ -332,7 +332,7 @@ Each type of custom fields has its own set of additional settings. This method o
     - `Y` — yes
     - `N` — no
 
-    Default is `N` ||
+    Default `N` ||
     |#
 
 - crm_status
@@ -341,7 +341,7 @@ Each type of custom fields has its own set of additional settings. This method o
     || **Name**
     `type` | **Description** ||
     || **ENTITY_TYPE**
-    [`string`][1] | Directory type identifier.
+    [`string`][1] | Dictionary type identifier.
 
     Use [`crm.status.entity.types`](../../status/crm-status-entity-types.md) to find possible values.
 
@@ -350,7 +350,7 @@ Each type of custom fields has its own set of additional settings. This method o
 
 - crm
 
-    If none of the following options are provided, the link to leads will be enabled by default (`LEAD = Y`).
+    If none of the following options are passed, linking to leads (`LEAD = Y`) will be enabled by default.
 
     #|
     || **Name**
@@ -360,21 +360,21 @@ Each type of custom fields has its own set of additional settings. This method o
     - `Y` — yes
     - `N` — no
 
-    Default is `N` ||
+    Default `N` ||
     || **CONTACT**
     [`boolean`][1] | Whether binding to [Contacts](../index.md) is enabled. Possible values:
     - `Y` — yes
     - `N` — no
 
-    Default is `N` ||
+    Default `N` ||
     || **COMPANY**
     [`boolean`][1] | Whether binding to [Companies](../../companies/index.md) is enabled. Possible values:
     - `Y` — yes
     - `N` — no
 
-    Default is `N` ||
+    Default `N` ||
     || **DEAL**
-    [`boolean`][1] | Whether binding to [Deals](../../deals/index.md) is enabled. Possible values:
+    [`boolean`][1] | Is the link to [Deals](../../deals/index.md) enabled? Possible values:
     - `Y` — yes
     - `N` — no
 
@@ -383,7 +383,7 @@ Each type of custom fields has its own set of additional settings. This method o
 
 {% endlist %}
 
-### Uf_Enum_Element Type {#uf_enum_element}
+### uf_enum_element Type {#uf_enum_element}
 
 #|
 || **Name**
@@ -412,7 +412,7 @@ By default `N` ||
 
 {% include [Note on examples](../../../../_includes/examples.md) %}
 
-### Example of Creating a Custom Field of Type String
+### Example of Creating a String Type Custom Field
 
 {% list tabs %}
 
@@ -422,7 +422,7 @@ By default `N` ||
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"LABEL":"Field 'Hello, world!'","USER_TYPE_ID":"string","FIELD_NAME":"HELLO_WORLD","MULTIPLE":"Y","MANDATORY":"Y","SHOW_FILTER":"Y","SETTINGS":{"DEFAULT_VALUE":"Hello, world! Default value","ROWS":3},"SORT":1000,"EDIT_IN_LIST":"Y","LIST_FILTER_LABEL":"Hello, world! Filter","LIST_COLUMN_LABEL":{"en":"Hello, World! Column","de":"Hello, world! Column","de":"Hallo, Welt! Spalte"},"EDIT_FORM_LABEL":{"en":"Hello, World! Edit","de":"Hello, world! Edit","de":"Hallo, Welt! Bearbeiten"},"ERROR_MESSAGE":{"en":"Hello, World! Error","de":"Hello, world! Error","de":"Hallo, Welt! Fehler"},"HELP_MESSAGE":{"en":"Hello, World! Help","de":"Hello, world! Help","de":"Hallo, Welt! Hilfe"}}}' \
+    -d '{"fields":{"LABEL":"Field 'Hello, world!'","USER_TYPE_ID":"string","FIELD_NAME":"HELLO_WORLD","MULTIPLE":"Y","MANDATORY":"Y","SHOW_FILTER":"Y","SETTINGS":{"DEFAULT_VALUE":"Hello, world! Default value","ROWS":3},"SORT":1000,"EDIT_IN_LIST":"Y","LIST_FILTER_LABEL":"Hello, world! Filter","LIST_COLUMN_LABEL":{"en":"Hello, World! Column","ru":"Hello, world! Column","de":"Hallo, Welt! Spalte"},"EDIT_FORM_LABEL":{"en":"Hello, World! Edit","ru":"Hello, world! Edit","de":"Hallo, Welt! Bearbeiten"},"ERROR_MESSAGE":{"en":"Hello, World! Error","ru":"Hello, world! Error","de":"Hallo, Welt! Fehler"},"HELP_MESSAGE":{"en":"Hello, World! Help","ru":"Hello, world! Help","de":"Hallo, Welt! Hilfe"}}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.contact.userfield.add
     ```
 
@@ -432,11 +432,11 @@ By default `N` ||
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"LABEL":"Field 'Hello, world!'","USER_TYPE_ID":"string","FIELD_NAME":"HELLO_WORLD","MULTIPLE":"Y","MANDATORY":"Y","SHOW_FILTER":"Y","SETTINGS":{"DEFAULT_VALUE":"Hello, world! Default value","ROWS":3},"SORT":1000,"EDIT_IN_LIST":"Y","LIST_FILTER_LABEL":"Hello, world! Filter","LIST_COLUMN_LABEL":{"en":"Hello, World! Column","de":"Hello, world! Column","de":"Hallo, Welt! Spalte"},"EDIT_FORM_LABEL":{"en":"Hello, World! Edit","de":"Hello, world! Edit","de":"Hallo, Welt! Bearbeiten"},"ERROR_MESSAGE":{"en":"Hello, World! Error","de":"Hello, world! Error","de":"Hallo, Welt! Fehler"},"HELP_MESSAGE":{"en":"Hello, World! Help","de":"Hello, world! Help","de":"Hallo, Welt! Hilfe"}},"auth":"**put_access_token_here**"}' \
+    -d '{"fields":{"LABEL":"Field 'Hello, world!'","USER_TYPE_ID":"string","FIELD_NAME":"HELLO_WORLD","MULTIPLE":"Y","MANDATORY":"Y","SHOW_FILTER":"Y","SETTINGS":{"DEFAULT_VALUE":"Hello, world! Default value","ROWS":3},"SORT":1000,"EDIT_IN_LIST":"Y","LIST_FILTER_LABEL":"Hello, world! Filter","LIST_COLUMN_LABEL":{"en":"Hello, World! Column","ru":"Hello, world! Column","de":"Hallo, Welt! Spalte"},"EDIT_FORM_LABEL":{"en":"Hello, World! Edit","ru":"Hello, world! Edit","de":"Hallo, Welt! Bearbeiten"},"ERROR_MESSAGE":{"en":"Hello, World! Error","ru":"Hello, world! Error","de":"Hallo, Welt! Fehler"},"HELP_MESSAGE":{"en":"Hello, World! Help","ru":"Hello, world! Help","de":"Hallo, Welt! Hilfe"}},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/crm.contact.userfield.add
     ```
 
-- JS
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -458,22 +458,22 @@ By default `N` ||
                 LIST_FILTER_LABEL: "Hello, world! Filter",
                 LIST_COLUMN_LABEL: {
                     "en": "Hello, World! Column",
-                    "de": "Hello, world! Column",
+                    "ru": "Hello, world! Column",
                     "de": "Hallo, Welt! Spalte"
                 },
                 EDIT_FORM_LABEL: {
                     "en": "Hello, World! Edit",
-                    "de": "Hello, world! Edit",
+                    "ru": "Hello, world! Edit",
                     "de": "Hallo, Welt! Bearbeiten"
                 },
                 ERROR_MESSAGE: {
                     "en": "Hello, World! Error",
-                    "de": "Hello, world! Error",
+                    "ru": "Hello, world! Error",
                     "de": "Hallo, Welt! Fehler"
                 },
                 HELP_MESSAGE: {
                     "en": "Hello, World! Help",
-                    "de": "Hello, world! Help",
+                    "ru": "Hello, world! Help",
                     "de": "Hallo, Welt! Hilfe"
                 },
             },
@@ -488,6 +488,41 @@ By default `N` ||
     ```
 
 - PHP
+
+    ```php
+    try {
+        $userfieldItemFields = [
+            'FIELD_NAME' => 'UF_CRM_example',
+            'USER_TYPE_ID' => 'string',
+            'XML_ID' => 'xml_example',
+            'SORT' => '100',
+            'MULTIPLE' => 'N',
+            'MANDATORY' => 'Y',
+            'SHOW_FILTER' => 'Y',
+            'SHOW_IN_LIST' => 'Y',
+            'EDIT_IN_LIST' => 'Y',
+            'IS_SEARCHABLE' => 'Y',
+            'EDIT_FORM_LABEL' => 'Example Field',
+            'LIST_COLUMN_LABEL' => 'Example Column',
+            'LIST_FILTER_LABEL' => 'Example Filter',
+            'ERROR_MESSAGE' => 'Error occurred',
+            'HELP_MESSAGE' => 'Help message',
+            'LIST' => 'list_value',
+            'SETTINGS' => 'settings_value',
+        ];
+
+        $result = $serviceBuilder
+            ->getCRMScope()
+            ->contactUserfield()
+            ->add($userfieldItemFields);
+
+        print($result->getId());
+    } catch (Throwable $e) {
+        print('Error: ' . $e->getMessage());
+    }
+    ```
+
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -511,22 +546,22 @@ By default `N` ||
                 'LIST_FILTER_LABEL' => "Hello, world! Filter",
                 'LIST_COLUMN_LABEL' => [
                     'en' => "Hello, World! Column",
-                    'de' => "Hello, world! Column",
+                    'ru' => "Hello, world! Column",
                     'de' => "Hallo, Welt! Spalte"
                 ],
                 'EDIT_FORM_LABEL' => [
                     'en' => "Hello, World! Edit",
-                    'de' => "Hello, world! Edit",
+                    'ru' => "Hello, world! Edit",
                     'de' => "Hallo, Welt! Bearbeiten"
                 ],
                 'ERROR_MESSAGE' => [
                     'en' => "Hello, World! Error",
-                    'de' => "Hello, world! Error",
+                    'ru' => "Hello, world! Error",
                     'de' => "Hallo, Welt! Fehler"
                 ],
                 'HELP_MESSAGE' => [
                     'en' => "Hello, World! Help",
-                    'de' => "Hello, world! Help",
+                    'ru' => "Hello, world! Help",
                     'de' => "Hallo, Welt! Hilfe"
                 ],
             ]
@@ -564,22 +599,22 @@ By default `N` ||
                 "LIST_FILTER_LABEL": "Hello, world! Filter",
                 "LIST_COLUMN_LABEL": {
                     "en": "Hello, World! Column",
-                    "de": "Hello, world! Column",
+                    "ru": "Hello, world! Column",
                     "de": "Hallo, Welt! Spalte",
                 },
                 "EDIT_FORM_LABEL": {
                     "en": "Hello, World! Edit",
-                    "de": "Hello, world! Edit",
+                    "ru": "Hello, world! Edit",
                     "de": "Hallo, Welt! Bearbeiten",
                 },
                 "ERROR_MESSAGE": {
                     "en": "Hello, World! Error",
-                    "de": "Hello, world! Error",
+                    "ru": "Hello, world! Error",
                     "de": "Hallo, Welt! Fehler",
                 },
                 "HELP_MESSAGE": {
                     "en": "Hello, World! Help",
-                    "de": "Hello, world! Help",
+                    "ru": "Hello, world! Help",
                     "de": "Hallo, Welt! Hilfe",
                 },
             },
@@ -588,55 +623,20 @@ By default `N` ||
         print(result)
     except BitrixAPIError as error:
         print(
-            "Bitrix API Error",
+            "Bitrix API error",
             f"error: {error.error}",
             f"error_description: {error.error_description}",
             sep="\n",
         )
     except BitrixSDKException as error:
-        print(f"Bitrix SDK Error: {error.message}")
+        print(f"Bitrix SDK error: {error.message}")
     except Exception as error:
         print(f"Unexpected error: {error}")
     ```
 
-- PHP (B24PhpSdk)
-
-    ```php
-    try {
-        $userfieldItemFields = [
-            'FIELD_NAME' => 'UF_CRM_example',
-            'USER_TYPE_ID' => 'string',
-            'XML_ID' => 'xml_example',
-            'SORT' => '100',
-            'MULTIPLE' => 'N',
-            'MANDATORY' => 'Y',
-            'SHOW_FILTER' => 'Y',
-            'SHOW_IN_LIST' => 'Y',
-            'EDIT_IN_LIST' => 'Y',
-            'IS_SEARCHABLE' => 'Y',
-            'EDIT_FORM_LABEL' => 'Example Field',
-            'LIST_COLUMN_LABEL' => 'Example Column',
-            'LIST_FILTER_LABEL' => 'Example Filter',
-            'ERROR_MESSAGE' => 'Error occurred',
-            'HELP_MESSAGE' => 'Help message',
-            'LIST' => 'list_value',
-            'SETTINGS' => 'settings_value',
-        ];
-
-        $result = $serviceBuilder
-            ->getCRMScope()
-            ->contactUserfield()
-            ->add($userfieldItemFields);
-
-        print($result->getId());
-    } catch (Throwable $e) {
-        print('Error: ' . $e->getMessage());
-    }
-    ```
-
 {% endlist %}
 
-### Example of Creating a Custom Field of Type List
+### Example of Creating a List Type Custom Field
 
 {% list tabs %}
 
@@ -660,7 +660,7 @@ By default `N` ||
     https://**put_your_bitrix24_address**/rest/crm.contact.userfield.add
     ```
 
-- JS
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -712,7 +712,7 @@ By default `N` ||
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -815,13 +815,13 @@ By default `N` ||
         print(result)
     except BitrixAPIError as error:
         print(
-            "Bitrix API Error",
+            "Bitrix API error",
             f"error: {error.error}",
             f"error_description: {error.error_description}",
             sep="\n",
         )
     except BitrixSDKException as error:
-        print(f"Bitrix SDK Error: {error.message}")
+        print(f"Bitrix SDK error: {error.message}")
     except Exception as error:
         print(f"Unexpected error: {error}")
     ```
@@ -862,7 +862,7 @@ HTTP status: **200**
 
 HTTP status: **400**
 
-This method may return errors not immediately, but by collecting several and concatenating them into a string: `\n`.
+This method may not return errors immediately, but instead collects several errors and joins them together with a string: `\n`.
 
 ```json
 {
@@ -883,7 +883,7 @@ This method may return errors not immediately, but by collecting several and con
 || Field name contains invalid characters. Allowed characters are: `A-Z`, `0-9` and `_` | The provided `FIELD_NAME` contains invalid characters ||
 || `The 'USER_TYPE_ID' field is not found` | Either an empty `USER_TYPE_ID` was provided, or it was not provided at all ||
 || Incorrect custom type specified | The provided `USER_TYPE_ID` does not exist ||
-|| List item with XML_ID=`XML_ID` already exists | The provided `XML_ID` in list items are not unique ||
+|| A list item with XML_ID=`XML_ID` already exists | The provided `XML_ID` in list items are not unique ||
 |#
 
 {% include [System errors](../../../../_includes/system-errors.md) %}

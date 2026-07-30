@@ -18,19 +18,18 @@ The method `app.option.get` retrieves data linked to the application. If no inpu
 || **Name**
 `type` | **Description** ||
 || **option**
-[`string`](../../data-types.md) | A string, one of the keys from the property [app.option.set](./app-option-set.md). ||
+[`string`](../../data-types.md) | A string, one of the keys from the property [app.option.set](./app-option-set.md) ||
 |#
 
 ## Code Examples
 
-{% include [Example Notes](../../../_includes/examples.md) %}
-
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
 - cURL (Webhook)
 
-    Example #1
+    Example №1
 
     ```curl
     curl -X POST \
@@ -42,7 +41,7 @@ The method `app.option.get` retrieves data linked to the application. If no inpu
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/app.option.get
     ```
 
-    Example #2
+    Example №2
 
     ```curl
     curl -X POST \
@@ -54,7 +53,7 @@ The method `app.option.get` retrieves data linked to the application. If no inpu
 
 - cURL (OAuth)
 
-    Example #1
+    Example №1
 
     ```curl
     curl -X POST \
@@ -67,7 +66,7 @@ The method `app.option.get` retrieves data linked to the application. If no inpu
     https://**put_your_bitrix24_address**/rest/app.option.get
     ```
     
-    Example #2
+    Example №2
     
     ```curl
     curl -X POST \
@@ -77,9 +76,9 @@ The method `app.option.get` retrieves data linked to the application. If no inpu
     https://**put_your_bitrix24_address**/rest/app.option.get
     ```
 
-- JS
+- BX24.js
 
-    Example #1
+    Example №1
 
     ```js
     BX24.callMethod(
@@ -97,7 +96,7 @@ The method `app.option.get` retrieves data linked to the application. If no inpu
     );
     ```
     
-    Example #2
+    Example №2
     
     ```js
     BX24.callMethod(
@@ -114,7 +113,7 @@ The method `app.option.get` retrieves data linked to the application. If no inpu
 
 - PHP
 
-    Example #1
+    Example №1
     
     ```php
     require_once('crest.php');
@@ -131,7 +130,7 @@ The method `app.option.get` retrieves data linked to the application. If no inpu
     echo '</PRE>';
     ```
 
-    Example #2
+    Example №2
     
     ```php
     require_once('crest.php');
@@ -178,7 +177,7 @@ The method `app.option.get` retrieves data linked to the application. If no inpu
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -191,7 +190,7 @@ The method returns data linked to the application.
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -200,16 +199,16 @@ HTTP Status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
-|| **Code** | **Error Message** | **Description** ||
+|| **Code** | **Error message** | **Description** ||
 || `AccessException` | Application context required / Administrator authorization required | Access denied ||
 |#
 
-{% include [system errors](../../../_includes/system-errors.md) %}
+{% include [System errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
