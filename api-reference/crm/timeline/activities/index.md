@@ -56,7 +56,7 @@ To create a universal activity, use the method [crm.activity.todo.add](./todo/cr
 
 {% note tip "User documentation" %}
 
-  -	[Universal Activity in Bitrix24](https://helpdesk.bitrix24.com/open/21064046/)
+  -	[Universal Activity in Bitrix24](https://helpdesk.bitrix24.com/open/21458972/)
 
 {% endnote %}
 

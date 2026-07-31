@@ -57,15 +57,15 @@ This section describes the management of each step in this chain: configuring ch
 
 {% note tip "User documentation" %}
 
-- [How to Work with Chats in Open Channels](https://helpdesk.bitrix24.com/open/25743776/)
-- [Canned Responses in Open Channels: How to Create and Configure](https://helpdesk.bitrix24.com/open/25839638/)
-- [Open Channels: How to Obtain Consent for Personal Data Processing](https://helpdesk.bitrix24.com/open/26873178/)
+- [How to Work with Chats in Open Channels](https://helpdesk.bitrix24.com/open/25761311/)
+- [Canned Responses in Open Channels: How to Create and Configure](https://helpdesk.bitrix24.com/open/25760371/)
+- [Open Channels: How to Obtain Consent for Personal Data Processing](https://helpdesk.bitrix24.com/open/25828127/)
 
 {% endnote %}
 
 ## Limits and Response Format
 
-**Limits.** General REST limitations and open channel restrictions apply to methods, such as the limit on unclosed conversations for operators. For details, refer to the article [Limit on Unclosed Conversations for Open Channel Operators](https://helpdesk.bitrix24.com/open/26928654/).
+**Limits.** General REST limitations and open channel restrictions apply to methods, such as the limit on unclosed conversations for operators. For details, refer to the article [Limit on Unclosed Conversations for Open Channel Operators](https://helpdesk.bitrix24.com/open/25830887/).
 
 **Response Format.** A successful response typically contains `result` and `time`, while errors are returned in the format `error` and `error_description`. Examples of response structure and error codes can be found on the specific method's page.
 
