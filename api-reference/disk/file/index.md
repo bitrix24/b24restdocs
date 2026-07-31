@@ -20,6 +20,8 @@ You can retrieve file field values using the [disk.file.get](./disk-file-get.md)
 
 You can rename a file using the [disk.file.rename](./disk-file-rename.md) method.
 
+You can search for files and folders by name or by text inside a document using the [disk.file.search](./disk-file-search.md) method. The search can be limited to a single storage or folder.
+
 {% note tip "User Documentation" %}
 
 - [Documents Online: Getting Started](https://helpdesk.bitrix24.com/open/20595366/)
@@ -76,6 +78,7 @@ To permanently delete a file without the possibility of recovery, you need to us
 || **Method** | **Description** ||
 || [disk.file.getfields](./disk-file-get-fields.md) | Returns the description of file fields ||
 || [disk.file.get](./disk-file-get.md) | Returns the file by identifier ||
+|| [disk.file.search](./disk-file-search.md) | Finds files and folders by a text query ||
 || [disk.file.rename](./disk-file-rename.md) | Renames the file ||
 || [disk.file.copyto](./disk-file-copy-to.md) | Copies the file to the specified folder ||
 || [disk.file.moveto](./disk-file-move-to.md) | Moves the file to the specified folder ||

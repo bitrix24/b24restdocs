@@ -2,6 +2,10 @@
 
 ## 2026
 
+### July 31, 2026
+
+- Added the method [disk.file.search](./api-reference/disk/file/disk-file-search.md)
+
 ### July 30, 2026
 
 - Updated the tutorial [How to Create a Helpdesk Channel via Bitrix24 Network Open Channel](./tutorials/chat-bots/support-bot.md)

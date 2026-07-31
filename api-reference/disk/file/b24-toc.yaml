@@ -25,5 +25,7 @@ items:
     href: disk-file-restore-from-version.md
   - name: Restore File from Trash
     href: disk-file-restore.md
+  - name: Search Files and Folders
+    href: disk-file-search.md
   - name: Upload New Version of File
     href: disk-file-upload-version.md

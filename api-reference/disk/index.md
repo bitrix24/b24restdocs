@@ -132,6 +132,7 @@ You can find out the version of a file using the method [disk.version.get](./ver
 || **Method** | **Description** ||
 || [disk.file.getfields](file/disk-file-get-fields.md) | Returns the description of file fields ||
 || [disk.file.get](file/disk-file-get.md) | Returns the file by identifier ||
+|| [disk.file.search](file/disk-file-search.md) | Finds files and folders by a text query ||
 || [disk.file.rename](file/disk-file-rename.md) | Renames the file ||
 || [disk.file.copyto](file/disk-file-copy-to.md) | Copies the file to the specified folder ||
 || [disk.file.moveto](file/disk-file-move-to.md) | Moves the file to the specified folder ||
