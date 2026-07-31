@@ -31,7 +31,7 @@ Custom field types can be added to:
 - [Estimates](../../quote/index.md) — [crm.quote.userfield.add](../../quote/user-field/crm-quote-user-field-add.md) or [userfieldconfig.add](../userfieldconfig/userfieldconfig-add.md),
 - [SPAs](../index.md) — [userfieldconfig.add](../userfieldconfig/userfieldconfig-add.md).
 
-Pass the value to the `USER_TYPE_ID` field in the `rest_#ID_приложения#_#USER_TYPE_ID#` format. For example, for an application with `ID: 123` and `USER_TYPE_ID: userfield1`, the value will be `rest_123_userfield1`.
+Pass the value to the `USER_TYPE_ID` field in the `rest_#application_ID#_#USER_TYPE_ID#` format. For example, for an application with `ID: 123` and `USER_TYPE_ID: userfield1`, the value will be `rest_123_userfield1`.
 
 To obtain the application `ID`, use the method [app.info](../../../common/system/app-info.md).
 
