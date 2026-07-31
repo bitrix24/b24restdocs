@@ -5,6 +5,8 @@
 ### July 31, 2026
 
 - Added the method [disk.file.search](./api-reference/disk/file/disk-file-search.md)
+- Updated the tutorial [How to Create a Custom Deal Edit Form](./tutorials/crm/how-to-edit-crm-objects/how-to-generate-edit-form-for-deal.md)
+- Updated the tutorial [How to Create a Custom Lead Edit Form](./tutorials/crm/how-to-edit-crm-objects/how-to-generate-edit-form-for-lead.md)
 
 ### July 30, 2026
 
