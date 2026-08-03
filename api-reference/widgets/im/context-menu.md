@@ -29,6 +29,8 @@ The embedding will not be displayed in the interface until the application insta
 
 Open any chat and hover over a message. In the message action bar, click the `...` button to open the context menu. Hover over *More* to reveal additional menu items. The application item with `PLACEMENT=IM_CONTEXT_MENU` appears at the end of the action list above the message.
 
+![Message context menu item](./_images/IM_CONTEXT_MENU.png "Message context menu item")
+
 ## What the Handler Receives
 
 Data is transmitted as a POST request {.b24-info}
