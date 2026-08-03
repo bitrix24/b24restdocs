@@ -2,222 +2,160 @@
 
 > Scope: [`crm`](../../../api-reference/scopes/permissions.md)
 >
-> Who can execute the method: users with the permission to create companies in CRM
+> Who can execute the methods: to complete the entire scenario, both permissions are required — to add companies and to read companies
+>
+> - [crm.item.add](../../../api-reference/crm/universal/crm-item-add.md) — a user with permission to add companies
+> - [crm.item.get](../../../api-reference/crm/universal/crm-item-get.md) — a user with permission to read companies
 
 {% note tip "" %}
 
-If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect the [MCP server](../../../ai-tools/mcp.md) so that the assistant can utilize the official REST documentation.
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../ai-tools/mcp.md) so that the assistant can utilize the official REST documentation.
 
 {% endnote %}
 
-You can place a form on your website to collect client data. When a client fills out the form, their information will be sent to the CRM, allowing you to process the request.
+You can place a form on your website to collect client data. When a client fills out the form, a handler on your server creates a company in the CRM and returns its identifier. As a result, you get two files — a page with the form and a handler built on the stack of your choice — plus a separate script to verify the result.
 
-Setting up the form consists of two steps.
+The scenario consists of two steps.
 
-1. Place the form on an HTML page. It will send data to the handler.
+1. Place the form on an HTML page. The form sends the data to the handler
 
-2. Create a file to process the data. The handler will accept and prepare the data, then create a company using the [crm.company.add](../../../api-reference/crm/companies/crm-company-add.md) method.
+2. Create the handler. It validates the data and creates a company using the universal [crm.item.add](../../../api-reference/crm/universal/crm-item-add.md) method
+
+After that, we verify the result with the [crm.item.get](../../../api-reference/crm/universal/crm-item-get.md) method using the identifier from the second step response: this call only confirms the creation and does not change any data in the CRM.
+
+## Prepare the Data
+
+To run this example, you need:
+
+- an [incoming webhook](../../../local-integrations/local-webhooks.md) with the `crm` scope. The handler runs on the server: the page with the form does not use the webhook
+
+- permissions for the user on whose behalf the webhook is created: to add companies — for step 2, and to read companies — for the verification step
+
+- the page with the form and the handler on the same domain and port. In the example, `handlerUrl` is a relative path, so the request goes to the address the page was opened from. If you open `form.html` from a different address or from the file system, the handler will not receive the data
+
+- environment variables with the webhook data. Set them in the process environment before startup, do not write them into the code:
+
+   - `B24_HOOK` — the full webhook URL, for JS and PHP
+
+   - `B24_DOMAIN` and `B24_WEBHOOK_TOKEN` — the domain and `USER_ID/TOKEN` without `https://`, for Python
+
+   For example, for a local run:
+
+   - Node.js — `B24_HOOK='https://your-domain.bitrix24.com/rest/1/TOKEN/' node handler.mjs`
+
+   - PHP — `B24_HOOK='https://your-domain.bitrix24.com/rest/1/TOKEN/' php -S localhost:3000 -t public`
+
+   - Python — `B24_DOMAIN='your-domain.bitrix24.com' B24_WEBHOOK_TOKEN='1/TOKEN' python handler.py`
+
+- the company type that will be assigned to the new record. In the example, it is `CUSTOMER` — a client, a value from the default reference book. If the company type reference book has been changed in your Bitrix24, the available values are returned by the [crm.status.list](../../../api-reference/crm/status/crm-status-list.md) method with the `{ ENTITY_ID: "COMPANY_TYPE" }` filter: in `typeId`, pass the `STATUS_ID` from the response, not the type name
+
+If mandatory fields are configured for companies in your Bitrix24, they must also be passed in the `fields` of the [crm.item.add](../../../api-reference/crm/universal/crm-item-add.md) method — otherwise the method returns an error. The [crm.item.fields](../../../api-reference/crm/universal/crm-item-fields.md) method with `entityTypeId` set to `4` returns the list of fields with the `isRequired` flag.
+
+For server-side JS examples with `B24Hook`, Node.js 18, 20, 22 or newer is required. For new projects, take 22 or newer: community support for Node.js 18 and 20 has ended. [B24JsSDK](../../../sdk/b24jssdk/index.md) is an ES module: save the code in an `.mjs` file or add `"type": "module"` to `package.json`.
+
+For examples with [b24pysdk](../../../sdk/b24pysdk/index.md), Python 3.9 or newer is required.
+
+For examples with `bitrix24/b24phpsdk:"^3.3"`, PHP 8.4 or newer is required with the `curl`, `intl`, and `json` extensions, and `mbstring` for the value length check in the example. For the SDK requirements and the recommended file layout, see the [B24PhpSDK](../../../sdk/b24phpsdk/index.md) page.
 
 ## 1. Creating the Web Form
 
 We will create a web form on a website page with three fields:
 
--  `TITLE` — company name, required,
+- `TITLE` — company name, a required form field
 
--  `EMAIL` — Email,
+- `EMAIL` — email
 
--  `PHONE` — phone.
+- `PHONE` — phone
 
-When submitted, the form passes the data to the handler.
+Save the page to the `form.html` file. Where it must be located depends on the handler:
 
-{% list tabs %}
+- Node.js — in the `public` subfolder of the directory that contains the handler file. Run `node` from this directory: `express.static` looks for the `public` folder relative to the working directory of the process. The page opens at `http://localhost:3000/form.html`
 
-- JS
+- Flask — in the `static` folder. The page opens at `http://localhost:3000/static/form.html`
 
-    ```html
-    <form id="form_to_crm">
-        <!-- Company name (required field) -->
-        <input type="text" name="TITLE" placeholder="Company name" required>
-        <!-- Email address -->
-        <input type="text" name="EMAIL" placeholder="Email">
-        <!-- Phone number -->
-        <input type="text" name="PHONE" placeholder="Phone">
-        <!-- Submit button -->
-        <input type="submit" value="Submit">
-    </form>
+- PHP — in the public directory of the web server together with `form.php`. Keep the `vendor` directory above the public one so that it is not accessible from the browser. With the local run `php -S localhost:3000 -t public`, the page opens at `http://localhost:3000/form.html`
 
-    <script>
-        document.getElementById('form_to_crm').addEventListener('submit', async (el) => {
-            el.preventDefault(); // Canceling standard submission
-            // Collecting form data into JSON
-            const formData = Object.fromEntries(new FormData(el.currentTarget).entries());
-            // Sending data to the server (Node.js handler endpoint)
-            const response = await fetch('/form', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(formData),
-            });
-            const data = await response.json();
-            alert(data.message); // Showing the result
-        });
-    </script>
-    ```
+The addresses start working after the startup from step 2: in Node.js and Flask, the page is served by the same application that receives the form data, and in PHP — by the web server that hosts `form.php`.
 
-- PHP
+The form sends the data to the handler with the `POST` method in the `application/x-www-form-urlencoded` format. The same code works with all three handler options: only the address in the `handlerUrl` variable changes.
 
-    ```html
-    <form id="form_to_crm" method="POST" action="form.php">
-        <!-- Company name (required field) -->
-        <input type="text" name="TITLE" placeholder="Company name" required>
-        <!-- Email address -->
-        <input type="text" name="EMAIL" placeholder="Email">
-        <!-- Phone number -->
-        <input type="text" name="PHONE" placeholder="Phone">
-        <!-- Submit button -->
-        <input type="submit" value="Submit">
-    </form>
+```html
+<form id="form_to_crm">
+    <input type="text" name="TITLE" placeholder="Company Name" required>
+    <input type="text" name="EMAIL" placeholder="Email">
+    <input type="text" name="PHONE" placeholder="Phone">
+    <input type="submit" value="Submit">
+</form>
 
-    <!-- Connecting jQuery for the AJAX request -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            // Form submission without page reload
-            $('#form_to_crm').on('submit', function(el) {
-                el.preventDefault(); // Canceling standard submission
-                // Getting form data
-                var formData = $(this).serialize();
-                // Sending data to the server
-                $.ajax({
-                    'method': 'POST',
-                    'dataType': 'json',
-                    'url': 'form.php', // Handler file
-                    'data': formData,
-                    success: function(data) {
-                        alert(data.message); // Showing the result
-                    }
-                });
-            });
-        });
-    </script>
-    ```
+<script>
+    // Handler address: '/form' — for Node.js and Flask, 'form.php' — for PHP
+    const handlerUrl = '/form';
 
-- Python
+    document.getElementById('form_to_crm').addEventListener('submit', async (event) => {
+        event.preventDefault(); // Canceling the standard form submission
+        // Collecting the form fields into the request body
+        const body = new URLSearchParams(new FormData(event.currentTarget));
 
-    ```html
-    <form id="form_to_crm">
-        <!-- Company name (required field) -->
-        <input type="text" name="TITLE" placeholder="Company name" required>
-        <!-- Email address -->
-        <input type="text" name="EMAIL" placeholder="Email">
-        <!-- Phone number -->
-        <input type="text" name="PHONE" placeholder="Phone">
-        <!-- Submit button -->
-        <input type="submit" value="Submit">
-    </form>
+        const response = await fetch(handlerUrl, { method: 'POST', body });
+        // The handler responds with JSON. If something else arrives, we show a generic message
+        const data = await response.json().catch(() => ({ message: 'The server returned an unexpected response' }));
 
-    <!-- Connecting jQuery for the AJAX request -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            // Form submission without page reload
-            $('#form_to_crm').on('submit', function(el) {
-                el.preventDefault(); // Canceling standard submission
-                // Getting form data
-                var formData = $(this).serialize();
-                // Sending data to the server (Flask handler route)
-                $.ajax({
-                    'method': 'POST',
-                    'dataType': 'json',
-                    'url': '/form', // Handler route
-                    'data': formData,
-                    success: function(data) {
-                        alert(data.message); // Showing the result
-                    }
-                });
-            });
-        });
-    </script>
-    ```
+        // Showing the result: the identifier will be needed for verification via REST
+        alert(data.id ? data.message + '. ID: ' + data.id : data.message);
+    });
+</script>
+```
 
-{% endlist %}
+The `required` attribute checks the mandatory field only in the browser. A request can be sent bypassing the form, so the handler validates the data again.
 
-## 2. Create a Form Handler
+## 2. Creating a Form Handler
 
-To process the values from the form fields and add a company to the CRM, we will create a handler.
+The handler receives the form data, validates it, and adds a company using the [crm.item.add](../../../api-reference/crm/universal/crm-item-add.md) method. In the `entityTypeId` parameter, we pass `4` — the "Company" object type; the values for the other types are listed in the [CRM object types reference](../../../api-reference/crm/data-types.md#object_type). In the `fields` object, we pass the fields:
 
-Use the [crm.company.add](../../../api-reference/crm/companies/crm-company-add.md) method to add the company. In the `fields` object, pass the following fields:
+- `title` — company name
 
--  `TITLE` — company name,
+- `typeId` — company type. We specify `CUSTOMER` — a client, since the form is filled out by clients
 
--  `COMPANY_TYPE` — company type. Specify `CUSTOMER`, since only company customers fill out the form,
+- `fm` — an array of multifields, in which we pass the phone and email
 
--  `PHONE` — phone number,
+The universal `crm.item.*` methods use field names in camelCase. They differ from the names in the methods of individual objects: `title` instead of `TITLE`, `typeId` instead of `COMPANY_TYPE`, and the phone and email are passed in a single `fm` array instead of separate `PHONE` and `EMAIL` fields.
 
--  `EMAIL` — Email.
+We retrieve the values of the `title` and `fm` fields from the form, and set `typeId` in the code. Each action of the handler is described below, and the full code is provided at the end of the section.
 
-Retrieve the values for fields `TITLE`, `PHONE`, and `EMAIL` from the form. The system stores phone and email as an array of [crm_multifield](../../../api-reference/crm/data-types.md#crm_multifield) objects, so they must be converted to an array format.
+{% include [Note on examples](../../../_includes/examples.md) %}
 
-1. If a value exists, add it as the first item `VALUE` in the array, and specify the type `VALUE_TYPE` as the second value, for example:
+### Receiving the Request and Connecting the SDK
 
-   -  `WORK` — for the phone,
-
-   -  `HOME` — for the email.
-
-2. If no value exists, pass an empty array.
-
-{% note warning "" %}
-
-Check which mandatory fields are configured for companies in your Bitrix24. All mandatory fields must be passed to the [crm.company.add](../../../api-reference/crm/companies/crm-company-add.md) method.
-
-{% endnote %}
+The handler receives a POST request at the address specified in the `handlerUrl` variable on the page with the form. We work with Bitrix24 through an incoming webhook.
 
 {% list tabs %}
 
 - JS
 
     ```javascript
+    // npm install express @bitrix24/b24jssdk
     import express from 'express'
     import { B24Hook } from '@bitrix24/b24jssdk'
 
     const $b24 = B24Hook.fromWebhookUrl(process.env.B24_HOOK)
-    // B24_HOOK = 'https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/'
 
     const app = express()
-    app.use(express.json())
+    // The form sends the data in the application/x-www-form-urlencoded format
+    app.use(express.urlencoded({ extended: true }))
+    // Serving the page with the form from the public folder
+    app.use(express.static('public'))
 
-    // The handler receives form data via the /form route
+    // Pattern for validating the email address
+    const emailPattern = /^[^@\s]+@[^@\s]+\.[^@\s]+$/
+    // Value length limit: the form is public
+    const maxLength = 100
+
+    // The handler receives the form data via the /form route
     app.post('/form', async (req, res) => {
-        // Getting data from the form
-        const sTitle = String(req.body.TITLE ?? '')
-        const sPhone = String(req.body.PHONE ?? '')
-        const sEmail = String(req.body.EMAIL ?? '')
-
-        // Formatting phone and email for Bitrix24 into the crm_multifield format
-        const arPhone = sPhone ? [{ VALUE: sPhone, VALUE_TYPE: 'WORK' }] : []
-        const arEmail = sEmail ? [{ VALUE: sEmail, VALUE_TYPE: 'HOME' }] : []
-
-        // Sending data to Bitrix24
-        const response = await $b24.actions.v2.call.make({
-            method: 'crm.company.add',
-            params: {
-                fields: {
-                    TITLE: sTitle, // Company name
-                    COMPANY_TYPE: 'CUSTOMER', // Company type — client
-                    PHONE: arPhone, // Phone
-                    EMAIL: arEmail, // Email
-                }
-            },
-            requestId: 'company-add'
-        })
-
-        // Returning the result
-        if (response.isSuccess && response.getData()?.result) {
-            res.json({ message: 'Company added' })
-        } else {
-            res.json({ message: 'Company not added: ' + response.getErrorMessages().join('; ') })
-        }
+        // The handler body — in the following steps
     })
 
+    // Run: node handler.mjs
     app.listen(3000)
     ```
 
@@ -225,80 +163,732 @@ Check which mandatory fields are configured for companies in your Bitrix24. All 
 
     ```php
     <?php
-    // composer require bitrix24/b24phpsdk:"^3.0"
-    require_once 'vendor/autoload.php';
+    // composer require bitrix24/b24phpsdk:"^3.3"
+    // form.php and form.html are located in the public directory, vendor — above it
+    // Local run: php -S localhost:3000 -t public
+    require_once __DIR__ . '/../vendor/autoload.php';
 
     use Bitrix24\SDK\Services\ServiceBuilderFactory;
-    use Symfony\Component\EventDispatcher\EventDispatcher;
-    use Monolog\Logger;
-    use Monolog\Handler\StreamHandler;
 
-    $log = new Logger('b24');
-    $log->pushHandler(new StreamHandler('php://stdout'));
+    header('Content-Type: application/json; charset=utf-8');
 
-    $sb = (new ServiceBuilderFactory(new EventDispatcher(), $log))
-        ->initFromWebhook('https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/');
+    // Value length limit: the form is public
+    const MAX_LENGTH = 100;
 
-    // Getting data from the form
-    $sTitle = htmlspecialchars($_POST["TITLE"]);
-    $sPhone = htmlspecialchars($_POST["PHONE"]);
-    $sEmail = htmlspecialchars($_POST["EMAIL"]);
+    // The handler accepts POST requests only
+    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+        http_response_code(405);
+        echo json_encode(['message' => 'Method not supported']);
+        exit;
+    }
 
-    // Formatting phone and email for Bitrix24 into the crm_multifield format
-    $arPhone = (!empty($sPhone)) ? array(array('VALUE' => $sPhone, 'VALUE_TYPE' => 'WORK')) : array();
-    $arEmail = (!empty($sEmail)) ? array(array('VALUE' => $sEmail, 'VALUE_TYPE' => 'HOME')) : array();
+    $sb = ServiceBuilderFactory::createServiceBuilderFromWebhook(getenv('B24_HOOK'));
+    ```
 
-    // Sending data to Bitrix24
-    try {
-        $companyId = $sb->getCRMScope()->company()->add([
-            "TITLE" => $sTitle, // Company name
-            "COMPANY_TYPE" => 'CUSTOMER', // Company type — client
-            "PHONE" => $arPhone, // Phone
-            "EMAIL" => $arEmail, // Email
-        ])->getId();
+- Python
 
-        echo json_encode(['message' => 'Company added']);
-    } catch (\Throwable $e) {
-        echo json_encode(['message' => 'Company not added: ' . $e->getMessage()]);
+    ```python
+    # pip install flask b24pysdk
+    import os
+    import re
+
+    from flask import Flask, request, jsonify
+    from b24pysdk import BitrixWebhook, Client
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    # We place the form.html page in the static folder
+    app = Flask(__name__)
+
+    client = Client(BitrixWebhook(
+        domain=os.environ["B24_DOMAIN"],  # your-domain.bitrix24.com
+        webhook_token=os.environ["B24_WEBHOOK_TOKEN"],  # user_id/token only, without https://
+    ))
+
+    # Pattern for validating the email address
+    EMAIL_PATTERN = re.compile(r"[^@\s]+@[^@\s]+\.[^@\s]+")
+    # Value length limit: the form is public
+    MAX_LENGTH = 100
+
+
+    @app.route("/form", methods=["POST"])
+    def handle_form():
+        ...  # The handler body — in the following steps
+
+
+    # Run: python handler.py
+    if __name__ == "__main__":
+        app.run(port=3000)
+    ```
+
+{% endlist %}
+
+### Validating the Form Data
+
+The data comes from an anonymous visitor, so the handler validates it before calling the method:
+
+- accesses the fields with a default value: the required key may be missing from the request
+
+- trims the surrounding spaces and does not create a company if the name is empty
+
+- checks the email format so that a knowingly invalid address is not saved in the CRM
+
+- rejects values that are too long: anything can arrive in a public form
+
+In REST, we pass the values as is. Do not apply `htmlspecialchars` or other HTML escaping functions to them: those are needed when displaying data on a page, and because of them `Müller & Co. GmbH` would end up in the CRM as `Müller &amp; Co. GmbH`.
+
+{% list tabs %}
+
+- JS
+
+    ```javascript
+    // Getting the data from the form
+    const sTitle = String(req.body.TITLE ?? '').trim()
+    const sPhone = String(req.body.PHONE ?? '').trim()
+    const sEmail = String(req.body.EMAIL ?? '').trim()
+
+    // Validating the data before calling the method
+    if (!sTitle) {
+        res.status(400).json({ message: 'Enter the company name' })
+        return
+    }
+
+    if (sEmail && !emailPattern.test(sEmail)) {
+        res.status(400).json({ message: 'Check the email address' })
+        return
+    }
+
+    if ([sTitle, sPhone, sEmail].some(value => value.length > maxLength)) {
+        res.status(400).json({ message: 'One of the fields is too long' })
+        return
+    }
+    ```
+
+- PHP
+
+    ```php
+    // Getting the data from the form
+    $sTitle = trim((string)($_POST['TITLE'] ?? ''));
+    $sPhone = trim((string)($_POST['PHONE'] ?? ''));
+    $sEmail = trim((string)($_POST['EMAIL'] ?? ''));
+
+    // Validating the data before calling the method
+    if ($sTitle === '') {
+        http_response_code(400);
+        echo json_encode(['message' => 'Enter the company name']);
+        exit;
+    }
+
+    if ($sEmail !== '' && !preg_match('/^[^@\s]+@[^@\s]+\.[^@\s]+$/u', $sEmail)) {
+        http_response_code(400);
+        echo json_encode(['message' => 'Check the email address']);
+        exit;
+    }
+
+    foreach ([$sTitle, $sPhone, $sEmail] as $value) {
+        if (mb_strlen($value) > MAX_LENGTH) {
+            http_response_code(400);
+            echo json_encode(['message' => 'One of the fields is too long']);
+            exit;
+        }
     }
     ```
 
 - Python
 
     ```python
-    # pip install b24pysdk
-    from flask import Flask, request, jsonify
-    from b24pysdk import BitrixWebhook, Client
+    # Getting the data from the form
+    s_title = request.form.get("TITLE", "").strip()
+    s_phone = request.form.get("PHONE", "").strip()
+    s_email = request.form.get("EMAIL", "").strip()
 
-    app = Flask(__name__)
+    # Validating the data before calling the method
+    if not s_title:
+        return jsonify({"message": "Enter the company name"}), 400
 
-    client = Client(BitrixWebhook(
-        domain="your-domain.bitrix24.com",
-        webhook_token="USER_ID/TOKEN",  # user_id/token only, without https://
-    ))
+    if s_email and not EMAIL_PATTERN.fullmatch(s_email):
+        return jsonify({"message": "Check the email address"}), 400
 
-    @app.route("/form", methods=["POST"])
-    def handle_form():
-        # Getting data from the form
-        s_title = request.form.get("TITLE", "")
-        s_phone = request.form.get("PHONE", "")
-        s_email = request.form.get("EMAIL", "")
-
-        # Formatting phone and email for Bitrix24 into the crm_multifield format
-        ar_phone = [{"VALUE": s_phone, "VALUE_TYPE": "WORK"}] if s_phone else []
-        ar_email = [{"VALUE": s_email, "VALUE_TYPE": "HOME"}] if s_email else []
-
-        # Sending data to Bitrix24
-        try:
-            client.crm.company.add(fields={
-                "TITLE": s_title,  # Company name
-                "COMPANY_TYPE": "CUSTOMER",  # Company type — client
-                "PHONE": ar_phone,  # Phone
-                "EMAIL": ar_email,  # Email
-            })
-            return jsonify({"message": "Company added"})
-        except Exception as e:
-            return jsonify({"message": f"Company not added: {e}"})
+    if any(len(value) > MAX_LENGTH for value in (s_title, s_phone, s_email)):
+        return jsonify({"message": "One of the fields is too long"}), 400
     ```
 
 {% endlist %}
+
+### Collecting the Phone and Email into Multifields
+
+The method accepts the phone and email in the `fm` field — an array of [crm_multifield](../../../api-reference/crm/data-types.md#crm_multifield) objects. Each object has three keys:
+
+- `typeId` — the multifield type: `PHONE` for a phone, `EMAIL` for an email
+
+- `valueType` — the value type, for example `WORK` — work, `HOME` — home
+
+- `value` — the value from the form
+
+If the visitor did not fill in a field, we do not add the object to the array. If no value is filled in, we pass an empty array.
+
+In the [crm_multifield](../../../api-reference/crm/data-types.md#crm_multifield) reference, the multifield keys are listed in uppercase — `TYPE_ID`, `VALUE_TYPE`, `VALUE`. That is the format of the methods of individual objects, for example `crm.company.add`. The universal `crm.item.*` methods accept and return the same keys in camelCase.
+
+{% list tabs %}
+
+- JS
+
+    ```javascript
+    // Collecting the phone and email into multifields
+    const arFm = []
+
+    if (sPhone) {
+        arFm.push({ typeId: 'PHONE', valueType: 'WORK', value: sPhone })
+    }
+
+    if (sEmail) {
+        arFm.push({ typeId: 'EMAIL', valueType: 'HOME', value: sEmail })
+    }
+    ```
+
+- PHP
+
+    ```php
+    // Collecting the phone and email into multifields
+    $arFm = [];
+
+    if ($sPhone !== '') {
+        $arFm[] = ['typeId' => 'PHONE', 'valueType' => 'WORK', 'value' => $sPhone];
+    }
+
+    if ($sEmail !== '') {
+        $arFm[] = ['typeId' => 'EMAIL', 'valueType' => 'HOME', 'value' => $sEmail];
+    }
+    ```
+
+- Python
+
+    ```python
+    # Collecting the phone and email into multifields
+    ar_fm = []
+
+    if s_phone:
+        ar_fm.append({"typeId": "PHONE", "valueType": "WORK", "value": s_phone})
+
+    if s_email:
+        ar_fm.append({"typeId": "EMAIL", "valueType": "HOME", "value": s_email})
+    ```
+
+{% endlist %}
+
+### Creating the Company
+
+We pass the prepared values in the `fields` of the [crm.item.add](../../../api-reference/crm/universal/crm-item-add.md) method. We write the error text to the server log and return a generic message to the visitor: this way technical details do not end up on a public page.
+
+{% list tabs %}
+
+- JS
+
+    ```javascript
+    // Sending the data to Bitrix24
+    try {
+        const response = await $b24.actions.v2.call.make({
+            method: 'crm.item.add',
+            params: {
+                entityTypeId: 4, // CRM object type — company
+                fields: {
+                    title: sTitle, // Company name
+                    typeId: 'CUSTOMER', // Company type — client
+                    fm: arFm, // Phone and email
+                }
+            },
+            requestId: 'company-add'
+        })
+
+        // Checking the result and displaying a message
+        if (!response.isSuccess) {
+            // We write the error details to the log and do not show them to the visitor
+            console.error(response.getErrorMessages().join('; '))
+            res.status(502).json({ message: 'Could not create the company, try again later' })
+            return
+        }
+
+        const companyId = response.getData().result.item.id // Identifier of the created company
+        console.info('Company created with ID ' + companyId)
+        res.json({ message: 'Company created', id: companyId })
+    } catch (error) {
+        // Network errors and SDK failures arrive as an exception
+        console.error(error)
+        res.status(502).json({ message: 'Could not create the company, try again later' })
+    }
+    ```
+
+- PHP
+
+    ```php
+    // Sending the data to Bitrix24
+    try {
+        $result = $sb->getCRMScope()->item()->add(4, [ // 4 — the "Company" CRM object type
+            'title' => $sTitle, // Company name
+            'typeId' => 'CUSTOMER', // Company type — client
+            'fm' => $arFm, // Phone and email
+        ]);
+
+        $companyId = $result->item()->id; // Identifier of the created company
+        error_log('Company created with ID ' . $companyId);
+        echo json_encode(['message' => 'Company created', 'id' => $companyId]);
+    } catch (\Throwable $e) {
+        // We write the error details to the log and do not show them to the visitor
+        error_log($e->getMessage());
+        http_response_code(502);
+        echo json_encode(['message' => 'Could not create the company, try again later']);
+    }
+    ```
+
+- Python
+
+    ```python
+    # Sending the data to Bitrix24
+    try:
+        bitrix_response = client.crm.item.add(
+            entity_type_id=4,  # CRM object type — company
+            fields={
+                "title": s_title,  # Company name
+                "typeId": "CUSTOMER",  # Company type — client
+                "fm": ar_fm,  # Phone and email
+            },
+        ).response
+        company_id = bitrix_response.result["item"]["id"]  # Identifier of the created company
+        app.logger.info("Company created with ID %s", company_id)
+        return jsonify({"message": "Company created", "id": company_id})
+    except (BitrixAPIError, BitrixSDKException) as error:
+        # We write the error details to the log and do not show them to the visitor
+        app.logger.error(error)
+        return jsonify({"message": "Could not create the company, try again later"}), 502
+    ```
+
+{% endlist %}
+
+The method returns the data of the created company in the `result.item` object.
+
+Abbreviated response:
+
+```json
+{
+    "result": {
+        "item": {
+            "id": 2921,
+            "title": "Müller GmbH",
+            "typeId": "CUSTOMER",
+            "entityTypeId": 4
+        }
+    }
+}
+```
+
+The handler returns `{ "message": "Company created", "id": 2921 }` to the page. The identifier will be needed to open the company in the interface or to request its data via REST.
+
+### Full Handler Code Example
+
+{% list tabs %}
+
+- JS
+
+    ```javascript
+    // npm install express @bitrix24/b24jssdk
+    import express from 'express'
+    import { B24Hook } from '@bitrix24/b24jssdk'
+
+    const $b24 = B24Hook.fromWebhookUrl(process.env.B24_HOOK)
+
+    const app = express()
+    // The form sends the data in the application/x-www-form-urlencoded format
+    app.use(express.urlencoded({ extended: true }))
+    // Serving the page with the form from the public folder
+    app.use(express.static('public'))
+
+    // Pattern for validating the email address
+    const emailPattern = /^[^@\s]+@[^@\s]+\.[^@\s]+$/
+    // Value length limit: the form is public
+    const maxLength = 100
+
+    // The handler receives the form data via the /form route
+    app.post('/form', async (req, res) => {
+        // Getting the data from the form
+        const sTitle = String(req.body.TITLE ?? '').trim()
+        const sPhone = String(req.body.PHONE ?? '').trim()
+        const sEmail = String(req.body.EMAIL ?? '').trim()
+
+        // Validating the data before calling the method
+        if (!sTitle) {
+            res.status(400).json({ message: 'Enter the company name' })
+            return
+        }
+
+        if (sEmail && !emailPattern.test(sEmail)) {
+            res.status(400).json({ message: 'Check the email address' })
+            return
+        }
+
+        if ([sTitle, sPhone, sEmail].some(value => value.length > maxLength)) {
+            res.status(400).json({ message: 'One of the fields is too long' })
+            return
+        }
+
+        // Collecting the phone and email into multifields
+        const arFm = []
+
+        if (sPhone) {
+            arFm.push({ typeId: 'PHONE', valueType: 'WORK', value: sPhone })
+        }
+
+        if (sEmail) {
+            arFm.push({ typeId: 'EMAIL', valueType: 'HOME', value: sEmail })
+        }
+
+        // Sending the data to Bitrix24
+        try {
+            const response = await $b24.actions.v2.call.make({
+                method: 'crm.item.add',
+                params: {
+                    entityTypeId: 4, // CRM object type — company
+                    fields: {
+                        title: sTitle, // Company name
+                        typeId: 'CUSTOMER', // Company type — client
+                        fm: arFm, // Phone and email
+                    }
+                },
+                requestId: 'company-add'
+            })
+
+            // Checking the result and displaying a message
+            if (!response.isSuccess) {
+                // We write the error details to the log and do not show them to the visitor
+                console.error(response.getErrorMessages().join('; '))
+                res.status(502).json({ message: 'Could not create the company, try again later' })
+                return
+            }
+
+            const companyId = response.getData().result.item.id // Identifier of the created company
+            console.info('Company created with ID ' + companyId)
+            res.json({ message: 'Company created', id: companyId })
+        } catch (error) {
+            // Network errors and SDK failures arrive as an exception
+            console.error(error)
+            res.status(502).json({ message: 'Could not create the company, try again later' })
+        }
+    })
+
+    // Run: node handler.mjs
+    app.listen(3000)
+    ```
+
+- PHP
+
+    ```php
+    <?php
+    // composer require bitrix24/b24phpsdk:"^3.3"
+    // form.php and form.html are located in the public directory, vendor — above it
+    // Local run: php -S localhost:3000 -t public
+    require_once __DIR__ . '/../vendor/autoload.php';
+
+    use Bitrix24\SDK\Services\ServiceBuilderFactory;
+
+    header('Content-Type: application/json; charset=utf-8');
+
+    // Value length limit: the form is public
+    const MAX_LENGTH = 100;
+
+    // The handler accepts POST requests only
+    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+        http_response_code(405);
+        echo json_encode(['message' => 'Method not supported']);
+        exit;
+    }
+
+    $sb = ServiceBuilderFactory::createServiceBuilderFromWebhook(getenv('B24_HOOK'));
+
+    // Getting the data from the form
+    $sTitle = trim((string)($_POST['TITLE'] ?? ''));
+    $sPhone = trim((string)($_POST['PHONE'] ?? ''));
+    $sEmail = trim((string)($_POST['EMAIL'] ?? ''));
+
+    // Validating the data before calling the method
+    if ($sTitle === '') {
+        http_response_code(400);
+        echo json_encode(['message' => 'Enter the company name']);
+        exit;
+    }
+
+    if ($sEmail !== '' && !preg_match('/^[^@\s]+@[^@\s]+\.[^@\s]+$/u', $sEmail)) {
+        http_response_code(400);
+        echo json_encode(['message' => 'Check the email address']);
+        exit;
+    }
+
+    foreach ([$sTitle, $sPhone, $sEmail] as $value) {
+        if (mb_strlen($value) > MAX_LENGTH) {
+            http_response_code(400);
+            echo json_encode(['message' => 'One of the fields is too long']);
+            exit;
+        }
+    }
+
+    // Collecting the phone and email into multifields
+    $arFm = [];
+
+    if ($sPhone !== '') {
+        $arFm[] = ['typeId' => 'PHONE', 'valueType' => 'WORK', 'value' => $sPhone];
+    }
+
+    if ($sEmail !== '') {
+        $arFm[] = ['typeId' => 'EMAIL', 'valueType' => 'HOME', 'value' => $sEmail];
+    }
+
+    // Sending the data to Bitrix24
+    try {
+        $result = $sb->getCRMScope()->item()->add(4, [ // 4 — the "Company" CRM object type
+            'title' => $sTitle, // Company name
+            'typeId' => 'CUSTOMER', // Company type — client
+            'fm' => $arFm, // Phone and email
+        ]);
+
+        $companyId = $result->item()->id; // Identifier of the created company
+        error_log('Company created with ID ' . $companyId);
+        echo json_encode(['message' => 'Company created', 'id' => $companyId]);
+    } catch (\Throwable $e) {
+        // We write the error details to the log and do not show them to the visitor
+        error_log($e->getMessage());
+        http_response_code(502);
+        echo json_encode(['message' => 'Could not create the company, try again later']);
+    }
+    ```
+
+- Python
+
+    ```python
+    # pip install flask b24pysdk
+    import os
+    import re
+
+    from flask import Flask, request, jsonify
+    from b24pysdk import BitrixWebhook, Client
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    # We place the form.html page in the static folder
+    app = Flask(__name__)
+
+    client = Client(BitrixWebhook(
+        domain=os.environ["B24_DOMAIN"],  # your-domain.bitrix24.com
+        webhook_token=os.environ["B24_WEBHOOK_TOKEN"],  # user_id/token only, without https://
+    ))
+
+    # Pattern for validating the email address
+    EMAIL_PATTERN = re.compile(r"[^@\s]+@[^@\s]+\.[^@\s]+")
+    # Value length limit: the form is public
+    MAX_LENGTH = 100
+
+
+    @app.route("/form", methods=["POST"])
+    def handle_form():
+        # Getting the data from the form
+        s_title = request.form.get("TITLE", "").strip()
+        s_phone = request.form.get("PHONE", "").strip()
+        s_email = request.form.get("EMAIL", "").strip()
+
+        # Validating the data before calling the method
+        if not s_title:
+            return jsonify({"message": "Enter the company name"}), 400
+
+        if s_email and not EMAIL_PATTERN.fullmatch(s_email):
+            return jsonify({"message": "Check the email address"}), 400
+
+        if any(len(value) > MAX_LENGTH for value in (s_title, s_phone, s_email)):
+            return jsonify({"message": "One of the fields is too long"}), 400
+
+        # Collecting the phone and email into multifields
+        ar_fm = []
+
+        if s_phone:
+            ar_fm.append({"typeId": "PHONE", "valueType": "WORK", "value": s_phone})
+
+        if s_email:
+            ar_fm.append({"typeId": "EMAIL", "valueType": "HOME", "value": s_email})
+
+        # Sending the data to Bitrix24
+        try:
+            bitrix_response = client.crm.item.add(
+                entity_type_id=4,  # CRM object type — company
+                fields={
+                    "title": s_title,  # Company name
+                    "typeId": "CUSTOMER",  # Company type — client
+                    "fm": ar_fm,  # Phone and email
+                },
+            ).response
+            company_id = bitrix_response.result["item"]["id"]  # Identifier of the created company
+            app.logger.info("Company created with ID %s", company_id)
+            return jsonify({"message": "Company created", "id": company_id})
+        except (BitrixAPIError, BitrixSDKException) as error:
+            # We write the error details to the log and do not show them to the visitor
+            app.logger.error(error)
+            return jsonify({"message": "Could not create the company, try again later"}), 502
+
+
+    # Run: python handler.py
+    if __name__ == "__main__":
+        app.run(port=3000)
+    ```
+
+{% endlist %}
+
+## Verify the Result
+
+1. Submit the form. A message like "Company created. ID: 2921" appears in the browser — the identifier will be needed in step 3
+
+2. Open the CRM section and go to Companies. The new company has the name from the form and the type "Client"
+
+3. Request the company data using the [crm.item.get](../../../api-reference/crm/universal/crm-item-get.md) method. Pass `entityTypeId` set to `4` and the `id` from the handler response
+
+Run the verification with a separate script: it does not depend on the handler and connects to Bitrix24 through the same webhook.
+
+{% list tabs %}
+
+- JS
+
+    ```javascript
+    // Save to the check.mjs file in the project directory next to node_modules
+    // Run: B24_HOOK='https://your-domain.bitrix24.com/rest/1/TOKEN/' node check.mjs
+    import { B24Hook } from '@bitrix24/b24jssdk'
+
+    const $b24 = B24Hook.fromWebhookUrl(process.env.B24_HOOK)
+    const companyId = 2921 // Identifier from the handler response
+
+    const response = await $b24.actions.v2.call.make({
+        method: 'crm.item.get',
+        params: { entityTypeId: 4, id: companyId },
+        requestId: 'company-get'
+    })
+
+    console.info(response.getData().result.item)
+    ```
+
+- PHP
+
+    ```php
+    <?php
+    // Save to the check.php file in the project root next to the vendor directory
+    // Run: B24_HOOK='https://your-domain.bitrix24.com/rest/1/TOKEN/' php check.php
+    require_once __DIR__ . '/vendor/autoload.php';
+
+    use Bitrix24\SDK\Services\ServiceBuilderFactory;
+
+    $sb = ServiceBuilderFactory::createServiceBuilderFromWebhook(getenv('B24_HOOK'));
+    $companyId = 2921; // Identifier from the handler response
+
+    $result = $sb->getCRMScope()->item()->get(4, $companyId);
+
+    print_r($result->item());
+    ```
+
+- Python
+
+    ```python
+    # Save to the check.py file in the project directory
+    # Run: B24_DOMAIN='your-domain.bitrix24.com' B24_WEBHOOK_TOKEN='1/TOKEN' python check.py
+    import os
+
+    from b24pysdk import BitrixWebhook, Client
+
+    client = Client(BitrixWebhook(
+        domain=os.environ["B24_DOMAIN"],
+        webhook_token=os.environ["B24_WEBHOOK_TOKEN"],
+    ))
+    company_id = 2921  # Identifier from the handler response
+
+    bitrix_response = client.crm.item.get(entity_type_id=4, bitrix_id=company_id).response
+
+    print(bitrix_response.result["item"])
+    ```
+
+{% endlist %}
+
+Abbreviated response:
+
+```json
+{
+    "result": {
+        "item": {
+            "id": 2921,
+            "title": "Müller GmbH",
+            "typeId": "CUSTOMER",
+            "hasPhone": "Y",
+            "hasEmail": "Y",
+            "fm": [
+                {
+                    "id": 3401,
+                    "valueType": "WORK",
+                    "value": "+49000000000",
+                    "typeId": "PHONE"
+                },
+                {
+                    "id": 3402,
+                    "valueType": "HOME",
+                    "value": "info@example.com",
+                    "typeId": "EMAIL"
+                }
+            ]
+        }
+    }
+}
+```
+
+The `title` value matches the form field, and `CUSTOMER` is returned in `typeId`. The phone and email are returned in the `fm` array with the same `typeId` and `valueType` types that the handler passed. The `hasPhone` and `hasEmail` flags show that the company has a phone and email filled in — they confirm that the multifields were saved.
+
+## Errors and Diagnostics
+
+If the method returns an error, check the request data.
+
+#|
+|| **Code** | **Reason and action** ||
+|| `ACCESS_DENIED` | The user on whose behalf the webhook is created lacks the required permission: to add companies — for step 2, and to read companies — for the verification step. Check the permissions in the CRM settings ||
+|| `NOT_FOUND` | At step 2 — an invalid `entityTypeId` was passed, a company requires the value `4`. At the verification step — there is no object with such an `id`: substitute the identifier from the handler response ||
+|| `CRM_FIELD_ERROR_VALUE_NOT_VALID` | Invalid field value. Check the email address and the `typeId` value, and also that the field names are written in camelCase and that the multifields are passed in `fm` ||
+|| `100` | A non-iterable value was passed to a multiple field. Make sure that `fm` is an array, even if it is empty ||
+|| `NO_AUTH_FOUND` | Invalid webhook code. Check the value of the environment variable with the webhook URL ||
+|| `insufficient_scope` | The webhook does not have the `crm` scope. Create the webhook again and select the required permission ||
+|| `QUERY_LIMIT_EXCEEDED` | The request rate limit is exceeded. Repeat the call later ||
+|#
+
+The method checks the mandatory fields itself and returns an error if a field is empty. Look for the text of such an error in the handler log: only a generic message is sent to the visitor. The method silently ignores something else — an unknown field name: a typo in `fields` does not raise an error, and the value is not saved. That is why, after the first run, you should verify the saved data with the [crm.item.get](../../../api-reference/crm/universal/crm-item-get.md) method. The full list of method errors is provided on the [crm.item.add](../../../api-reference/crm/universal/crm-item-add.md) page.
+
+The handler makes a single call, so after fixing an error, submit the form again in full — no incomplete records remain in the CRM. The messages "Enter the company name", "Check the email address", and "One of the fields is too long" are returned by the handler itself with the status `400`, before contacting Bitrix24.
+
+The method does not return errors that occur between the form and the handler — they are visible in the browser.
+
+#|
+|| **Symptom** | **Reason and action** ||
+|| The handler exits immediately at startup or responds with an error to the very first request | The environment variables with the webhook data are not set: `B24Hook.fromWebhookUrl` and `os.environ` terminate with an error, while in PHP `getenv` returns `false` and the SDK throws the error. `fromWebhookUrl` also validates the URL: the protocol must be HTTPS, and the user identifier must be a number ||
+|| The page is opened from the file system at an address like `file://` | There is nothing to resolve the relative path from `handlerUrl` against, and the request is not sent. Open the page at the application address from step 1 ||
+|| A CORS error in the browser console | An absolute address of a different domain or port is substituted in `handlerUrl`. The browser will not let the page read the response, but the request is executed and the object is created in the CRM — check for duplicates. With the relative path from the example, this error does not occur ||
+|| A 404 error in the browser console | An invalid address in the `handlerUrl` variable. For Node.js and Flask, it is `/form`, and for PHP — `form.php` ||
+|| A `405` response with the message "Method not supported" | The `form.php` file is opened directly with a GET request. The handler accepts POST only — send the data with the form ||
+|| The message "The server returned an unexpected response" | The handler responded with something other than JSON: it crashed before `header` or returned a web server error page. Check the log: `console.error` — in the Node.js output, `error_log` — in the PHP log, `app.logger.error` — in the Flask output ||
+|#
+
+## Key Considerations
+
+- Each form submission creates a new company. If a client contacts you again, duplicates appear. You can find matches by phone and email before creating a record with the [crm.duplicate.findbycomm](../../../api-reference/crm/duplicates/crm-duplicate-find-by-comm.md) method; an example of such a check is covered in the tutorial [Add Duplicate Lead](./how-to-add-repeat-lead.md)
+
+- A webhook grants access to the entire CRM. Call REST from the server only and do not pass the webhook URL to the browser
+
+- The form is filled out by anonymous visitors. The handler from the example limits the value length, but protection against automated submissions must be added separately, for example a captcha
+
+- When switching to a different CRM object type, it is not only `entityTypeId` that changes: each type has its own set of fields. Refer to the description of the `fields` parameter on the [crm.item.add](../../../api-reference/crm/universal/crm-item-add.md) page
+
+- The built-in servers from the examples — `app.listen`, `app.run`, `php -S` — are suitable for local verification of the scenario. Host the public page on a web server over HTTPS: the form collects the client's personal data
+
+- The scenario uses the universal [crm.item.add](../../../api-reference/crm/universal/crm-item-add.md) method. Development of the [crm.company.add](../../../api-reference/crm/companies/crm-company-add.md) method has stopped: it continues to work, but use `crm.item.add` in new integrations
+
+## Continue Learning
+
+- [{#T}](../../../api-reference/crm/universal/crm-item-add.md)
+- [{#T}](../../../api-reference/crm/universal/crm-item-get.md)
+- [{#T}](../../../api-reference/crm/status/crm-status-list.md)
+- [{#T}](./how-to-add-company-with-requisite.md)
+- [{#T}](./how-to-add-lead.md)
+- [{#T}](./how-to-add-contact.md)
+- [{#T}](./how-to-add-deal-with-choice-of-requisite.md)
