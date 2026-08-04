@@ -2,6 +2,13 @@
 
 ## 2026
 
+### August 4, 2026
+
+- Updated the tutorial [How to Add an Action to Create a Smart Invoice Based on a Lead or Deal](./tutorials/bizproc/activity.md)
+- Updated the tutorial [How to Embed Your UI in Automation Rule Parameters](./tutorials/bizproc/setting-robot.md)
+- Updated the tutorial [How to Create a Chatbot for Open Channels](./tutorials/chat-bots/open-lines-bot.md)
+- Updated the tutorial [How to Create an Open Channels Connector for Website Chat](./tutorials/openlines/example-connector.md)
+
 ### July 31, 2026
 
 - Added the method [disk.file.search](./api-reference/disk/file/disk-file-search.md)
