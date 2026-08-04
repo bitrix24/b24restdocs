@@ -1,4 +1,4 @@
-# Main Dropdown Menu Item for the Project SONET_GROUP_DETAIL_TAB
+# Workgroup Menu Item SONET_GROUP_DETAIL_TAB
 
 {% note tip "" %}
 
@@ -6,10 +6,11 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-> Scope: [`workgroups`](../../scopes/permissions.md)
+> Scope: [`sonet_group`](../../scopes/permissions.md)
 
-You can add your own item to the main dropdown menu of the project.
-The specific placement code for the widget is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
+The widget adds its own item to the menu of a workgroup or project.
+
+The placement code is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
 
 {% note info "" %}
 
@@ -19,10 +20,20 @@ The widget will not be displayed in the interface until the application installa
 
 ## Where the Widget is Embedded
 
-#| 
+#|
 || **Widget Code** | **Location** ||
-|| `SONET_GROUP_DETAIL_TAB` | Main dropdown menu item of the project ||
+|| `SONET_GROUP_DETAIL_TAB` | Menu item of a workgroup or project ||
 |#
+
+### Where to Find It in the Interface
+
+The location of the item depends on the interface version. The classic view currently runs in most Bitrix24 accounts, while the new Projects AI view is being rolled out gradually.
+
+In the classic interface, open the workgroup and click *More* in the row of group tabs. The application item is displayed at the end of the list. The screenshot shows this view.
+
+In the Projects AI interface, the item moves to the *•••* menu on the project card.
+
+![Menu item of a workgroup or project](./_images/SONET_GROUP_DETAIL_TAB.png "Menu item of a workgroup or project")
 
 ## What the Handler Receives
 
@@ -38,10 +49,13 @@ Array
     [AUTH_ID] => 1a55ba6600705a0700005a4b00000001f0f107db29f044c6ff24e984d378967134de83
     [AUTH_EXPIRES] => 3600
     [REFRESH_ID] => 0ad4e16600705a0700005a4b00000001f0f10731fce9fa3219163d545a088b217cc2d4
+    [SERVER_ENDPOINT] => https://oauth.bitrix.info/rest/
+    [APPLICATION_TOKEN] => 5b2f8c1d7e3a9046b8c5d2f1a7e3b904
+    [APPLICATION_SCOPE] => sonet_group,task,placement
     [member_id] => da45a03b265edd8787f8a258d793cc5d
     [status] => L
     [PLACEMENT] => SONET_GROUP_DETAIL_TAB
-    [PLACEMENT_OPTIONS] => {"GROUP_ID":"10"}
+    [PLACEMENT_OPTIONS] => {"GROUP_ID":"10","URI":"\/workgroups\/group\/10\/"}
 )
 ```
 
@@ -51,23 +65,17 @@ Array
 
 ### PLACEMENT_OPTIONS
 
-The value of `PLACEMENT_OPTIONS` is a JSON string containing an array of one or more keys.
+The value of `PLACEMENT_OPTIONS` is passed as a JSON string with the context of the call.
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+For `SONET_GROUP_DETAIL_TAB`, the context includes the key:
 
-#| 
-|| **Parameter** | **Description** ||
-|| **GROUP_ID*** 
-[`string`](../../data-types.md) | Identifier of the workgroup/project where the widget was opened.
+- `GROUP_ID` — identifier of the workgroup or project from which the widget was opened. Use it to retrieve the workgroup data with the [sonet_group.get](../../sonet-group/sonet-group-get.md) method
 
-It can be used to retrieve additional information using the [sonet.group.get](../../sonet-group/sonet-group-get.md) method.
+## Continue Learning
 
-|| 
-|#
-
-## Continue Exploring
-
+- [{#T}](./toolbar.md)
+- [{#T}](./robot-designer-toolbar.md)
 - [{#T}](../placement-bind.md)
 - [{#T}](../ui-interaction/index.md)
-- [{#T}](../../../settings/interactivity/index.md)
 - [{#T}](../bx24-widget-methods.md)
+- [{#T}](../../../settings/interactivity/index.md)

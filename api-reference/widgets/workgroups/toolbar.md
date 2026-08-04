@@ -1,4 +1,4 @@
-# Dropdown Menu Item Above the TASK_GROUP_LIST_TOOLBAR Task List
+# Workgroup Extensions Menu Item SONET_GROUP_TOOLBAR
 
 {% note tip "" %}
 
@@ -6,11 +6,11 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-> Scope: [`intranet`](../../scopes/permissions.md)
+> Scope: [`sonet_group`](../../scopes/permissions.md)
 
-You can add your dropdown menu item above the project task list.
+The widget adds its own item to the extensions menu of a workgroup or project.
 
-The specific widget placement code is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
+The placement code is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
 
 {% note info "" %}
 
@@ -20,10 +20,22 @@ The widget will not be displayed in the interface until the application installa
 
 ## Where the Widget is Embedded
 
-#| 
+#|
 || **Widget Code** | **Location** ||
-|| `TASK_GROUP_LIST_TOOLBAR` | Dropdown menu item above the task list ||
+|| `SONET_GROUP_TOOLBAR` | Extensions menu item of a workgroup or project ||
 |#
+
+### Where to Find It in the Interface
+
+Open the workgroup, click *•••* to the right of the group name and select *Extensions*. The application item is displayed in this submenu next to the knowledge base items and Bitrix24 Market.
+
+{% note warning "" %}
+
+The group menu with the *Extensions* item exists only in the classic interface. In the new Projects AI view, the placement is registered by the `placement.bind` method, but it has no rendering location — the item will not appear. To add your own item to the workgroup menu in both cases, use [{#T}](./index.md)
+
+{% endnote %}
+
+![Extensions menu item of a workgroup or project](./_images/SONET_GROUP_TOOLBAR.png "Extensions menu item of a workgroup or project")
 
 ## What the Handler Receives
 
@@ -39,10 +51,13 @@ Array
     [AUTH_ID] => 5d56ba6600705a0700005a4b00000001f0f107d21c0babb82529a32836e165141a2010
     [AUTH_EXPIRES] => 3600
     [REFRESH_ID] => 4dd5e16600705a0700005a4b00000001f0f107a934a327935855b75f8c3686204e3bd5
+    [SERVER_ENDPOINT] => https://oauth.bitrix.info/rest/
+    [APPLICATION_TOKEN] => 5b2f8c1d7e3a9046b8c5d2f1a7e3b904
+    [APPLICATION_SCOPE] => sonet_group,task,placement
     [member_id] => da45a03b265edd8787f8a258d793cc5d
     [status] => L
-    [PLACEMENT] => TASK_ROBOT_DESIGNER_TOOLBAR
-    [PLACEMENT_OPTIONS] => {"GROUP_ID":"10"}
+    [PLACEMENT] => SONET_GROUP_TOOLBAR
+    [PLACEMENT_OPTIONS] => {"URI":"\/workgroups\/group\/10\/tasks\/"}
 )
 ```
 
@@ -52,23 +67,17 @@ Array
 
 ### PLACEMENT_OPTIONS
 
-The value of `PLACEMENT_OPTIONS` is a JSON string containing an array of one or more keys.
+The value of `PLACEMENT_OPTIONS` is passed as a JSON string with the context of the call.
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+`SONET_GROUP_TOOLBAR` has no keys of its own — the context contains only the universal `URI` key. The workgroup identifier does not arrive as a separate parameter, so take it from the path in `URI`. For the value `/workgroups/group/10/tasks/`, the workgroup identifier is `10`. Use it to retrieve the workgroup data with the [sonet_group.get](../../sonet-group/sonet-group-get.md) method.
 
-#| 
-|| **Parameter** | **Description** ||
-|| **GROUP_ID*** 
-[`string`](../../data-types.md) | Identifier of the workgroup/project in which the widget was opened.
+If your handler needs the workgroup identifier explicitly, use [{#T}](./index.md) or [{#T}](./robot-designer-toolbar.md) — these placements pass it in the `GROUP_ID` key.
 
-It can be used to retrieve additional information using the [sonet.group.get](../../sonet-group/sonet-group-get.md) method.
+## Continue Learning
 
-|| 
-|#
-
-## Continue Your Exploration
-
+- [{#T}](./index.md)
+- [{#T}](./robot-designer-toolbar.md)
 - [{#T}](../placement-bind.md)
 - [{#T}](../ui-interaction/index.md)
-- [{#T}](../../../settings/interactivity/index.md)
 - [{#T}](../bx24-widget-methods.md)
+- [{#T}](../../../settings/interactivity/index.md)
