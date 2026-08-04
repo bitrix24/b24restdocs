@@ -29,6 +29,8 @@ The embedding will not be displayed in the interface until the application insta
 
 Open the chat and scroll to the bottom of the window where the message input field is located. In the bottom right corner of the input field, open the application panel. The application item with `PLACEMENT=IM_TEXTAREA` can be found in this panel.
 
+![Item in the panel above the input field](./_images/IM_TEXTAREA.png "Item in the panel above the input field")
+
 ## What the Handler Receives
 
 Data is transmitted as a POST request {.b24-info}

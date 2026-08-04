@@ -12,6 +12,14 @@ The `CRM_REQUISITE_AUTOCOMPLETE` point connects an application handler to the se
 
 The general workflow and common errors are described in the [Autofilling details in the CRM card](./index.md) overview.
 
+## Where to find it in the interface
+
+Open a company or contact card and go to the *Details* field. The handler is connected to the search in this field.
+
+If only one search source is available, its name is shown as a hint inside the field. If there are several sources, they are offered in a list below the field as you type a query. The application handler appears in this list under the name from the `TITLE` parameter.
+
+![Application handler in the list of details search sources](./_images/CRM_REQUISITE_AUTOCOMPLETE.png "Application handler in the list of details search sources")
+
 ## How to register a handler
 
 When registering a handler using the [placement.bind](../../placement-bind.md) method, pass the value `CRM_REQUISITE_AUTOCOMPLETE` in the `PLACEMENT` parameter. Bitrix24 uses this code to determine that the handler belongs to client details autofill.

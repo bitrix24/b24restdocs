@@ -29,6 +29,8 @@ The embedding will not be displayed in the interface until the application insta
 
 Open the chat and click the sidebar button on the right side of the top chat panel. In the opened sidebar, there is an *Applications* block at the bottom, which displays the application item with `PLACEMENT=IM_SIDEBAR`.
 
+![Item in the chat sidebar](./_images/IM_SIDEBAR.png "Item in the chat sidebar")
+
 ## What the handler receives
 
 Data is transmitted as a POST request {.b24-info}

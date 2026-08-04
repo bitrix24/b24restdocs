@@ -12,6 +12,20 @@ The `CRM_BANK_DETAIL_AUTOCOMPLETE` point connects an application handler to the 
 
 The general workflow and common errors are described in the [Autofilling details in the CRM card](./index.md) overview.
 
+## Where to find it in the interface
+
+To reach the search field:
+
+1. Open a company or contact card
+2. In the *Details* field, click the *details* link
+3. In the details form, add banking details
+
+The handler is connected to the *Find details* field in the *Banking details* section.
+
+If only one search source is available, its name is shown as a hint inside the field. If there are several sources, they are offered in a list below the field as you type a query. The application handler appears in this list under the name from the `TITLE` parameter.
+
+![Application handler in the list of bank details search sources](./_images/CRM_BANK_DETAIL_AUTOCOMPLETE.png "Application handler in the list of bank details search sources")
+
 ## How to register a handler
 
 When registering a handler using the [placement.bind](../../placement-bind.md) method, pass the value `CRM_BANK_DETAIL_AUTOCOMPLETE` in the `PLACEMENT` parameter. Bitrix24 uses this code to determine that the handler belongs to bank details autofill.

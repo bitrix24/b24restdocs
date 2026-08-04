@@ -28,7 +28,6 @@ The widget will not be displayed in the interface until the application installa
 || `CRM_CONTACT_LIST_MENU` | Context menu item for [contact](../../crm/contacts/index.md) ||
 || `CRM_COMPANY_LIST_MENU` | Context menu item for [company](../../crm/companies/index.md) ||
 || `CRM_DEAL_LIST_MENU` | Context menu item for [deal](../../crm/deals/index.md) ||
-|| `CRM_INVOICE_LIST_MENU` | Context menu item for [outdated invoice](../../crm/outdated/invoice/index.md) ||
 || `CRM_SMART_INVOICE_LIST_MENU` | Context menu item for [new invoice](../../crm/universal/invoice.md) ||
 || `CRM_QUOTE_LIST_MENU` | Context menu item for [estimate](../../crm/quote/index.md) ||
 || `CRM_ACTIVITY_LIST_MENU` | Context menu item for [CRM activity](../../crm/timeline/activities/index.md) ||
