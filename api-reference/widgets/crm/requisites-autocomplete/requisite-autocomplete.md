@@ -68,7 +68,9 @@ BX24.callMethod(
 
 ## What the handler receives
 
-Bitrix24 sends a POST request with the point data to the handler. The `searchQuery` [`string`](../../../data-types.md) is passed in the `PLACEMENT_OPTIONS` parameter — this is the string that the user entered in the details search field.
+Bitrix24 sends a POST request with the point data to the handler. Some parameters come in the handler URL query string, the rest in the request body.
+
+The `searchQuery` [`string`](../../../data-types.md) is passed in the `PLACEMENT_OPTIONS` parameter — this is the string that the user entered in the details search field.
 
 Example POST request:
 

@@ -31,7 +31,7 @@ Open the user menu and navigate to the user profile card. The application item w
 
 ## What the Handler Receives
 
-Data is transmitted as a POST request {.b24-info}
+Data is sent in a POST request: some parameters come in the handler URL query string, the rest in the request body {.b24-info}
 
 ```php
 Array

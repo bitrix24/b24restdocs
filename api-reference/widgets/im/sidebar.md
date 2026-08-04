@@ -33,7 +33,7 @@ Open the chat and click the sidebar button on the right side of the top chat pan
 
 ## What the handler receives
 
-Data is transmitted as a POST request {.b24-info}
+Data is sent in a POST request: some parameters come in the handler URL query string, the rest in the request body {.b24-info}
 
 ```php
 Array
