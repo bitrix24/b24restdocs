@@ -69,9 +69,216 @@ For `SONET_GROUP_ROBOT_DESIGNER_TOOLBAR`, the context includes the key:
 
 - `GROUP_ID` — identifier of the workgroup or project whose automation the user is configuring. Use it to retrieve the workgroup data with the [sonet_group.get](../../sonet-group/sonet-group-get.md) method
 
+## Code Examples
+
+{% include [Footnote on examples](../../../_includes/examples.md) %}
+
+{% list tabs %}
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+      -H "Content-Type: application/json" \
+      -H "Accept: application/json" \
+      -d '{
+        "PLACEMENT": "SONET_GROUP_ROBOT_DESIGNER_TOOLBAR",
+        "HANDLER": "https://your-domain.com/widgets/sonet-group-robot-designer-handler.php",
+        "TITLE": "My group automation",
+        "LANG_ALL": {
+          "en": {
+            "TITLE": "My group automation"
+          },
+          "de": {
+            "TITLE": "Meine Gruppenautomatisierung"
+          }
+        },
+        "auth": "**put_access_token_here**"
+      }' \
+      https://**put_your_bitrix24_address**/rest/placement.bind
+    ```
+
+- JS (TS)
+
+    ```ts
+    // This snippet is an ES module: top-level await requires type="module" or a bundler.
+    // $b24 is an already-initialized SDK instance (see the SDK "Get started" guide).
+    import { Text } from '@bitrix24/b24jssdk'
+    import type { B24Frame } from '@bitrix24/b24jssdk'
+
+    declare const $b24: B24Frame
+
+    try {
+      const response = await $b24.actions.v2.call.make<boolean>({
+        method: 'placement.bind',
+        params: {
+          PLACEMENT: 'SONET_GROUP_ROBOT_DESIGNER_TOOLBAR',
+          HANDLER: 'https://your-domain.com/widgets/sonet-group-robot-designer-handler.php',
+          TITLE: 'My group automation',
+          LANG_ALL: {
+            en: {
+              TITLE: 'My group automation',
+            },
+            de: {
+              TITLE: 'Meine Gruppenautomatisierung',
+            },
+          },
+        },
+        requestId: Text.getUuidRfc4122()
+      })
+
+      // The payload is available only on a successful response
+      if (!response.isSuccess) {
+        console.error(response.getErrorMessages().join('; '))
+      } else {
+        const result = response.getData()!.result
+        console.info('Placement bound successfully:', result)
+      }
+    } catch (error) {
+      // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+      console.error(error)
+    }
+    ```
+
+- JS (UMD)
+
+    ```html
+    <!-- Load the SDK (UMD build); it is exposed as the global B24Js -->
+    <script src="https://unpkg.com/@bitrix24/b24jssdk@1/dist/umd/index.min.js"></script>
+    <script>
+      async function bindSonetGroupRobotDesignerToolbar() {
+        try {
+          // Initialize the SDK inside a Bitrix24 frame
+          const $b24 = await B24Js.initializeB24Frame()
+
+          const response = await $b24.actions.v2.call.make({
+            method: 'placement.bind',
+            params: {
+              PLACEMENT: 'SONET_GROUP_ROBOT_DESIGNER_TOOLBAR',
+              HANDLER: 'https://your-domain.com/widgets/sonet-group-robot-designer-handler.php',
+              TITLE: 'My group automation',
+              LANG_ALL: {
+                en: {
+                  TITLE: 'My group automation',
+                },
+                de: {
+                  TITLE: 'Meine Gruppenautomatisierung',
+                },
+              },
+            },
+            requestId: B24Js.Text.getUuidRfc4122()
+          })
+
+          // The payload is available only on a successful response
+          if (!response.isSuccess) {
+            console.error(response.getErrorMessages().join('; '))
+            return
+          }
+
+          const result = response.getData().result
+          console.info('Placement bound successfully:', result)
+        } catch (error) {
+          // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+          console.error(error)
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', bindSonetGroupRobotDesignerToolbar)
+    </script>
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'placement.bind',
+                [
+                    'PLACEMENT' => 'SONET_GROUP_ROBOT_DESIGNER_TOOLBAR',
+                    'HANDLER' => 'https://your-domain.com/widgets/sonet-group-robot-designer-handler.php',
+                    'TITLE' => 'My group automation',
+                    'LANG_ALL' => [
+                        'en' => [
+                            'TITLE' => 'My group automation',
+                        ],
+                        'de' => [
+                            'TITLE' => 'Meine Gruppenautomatisierung',
+                        ],
+                    ],
+                ]
+            );
+
+        $result = $response->getResponseData()->getResult();
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error binding placement: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
+    BX24.callMethod(
+        'placement.bind',
+        {
+            PLACEMENT: 'SONET_GROUP_ROBOT_DESIGNER_TOOLBAR',
+            HANDLER: 'https://your-domain.com/widgets/sonet-group-robot-designer-handler.php',
+            TITLE: 'My group automation',
+            LANG_ALL: {
+                en: { TITLE: 'My group automation' },
+                de: { TITLE: 'Meine Gruppenautomatisierung' }
+            }
+        },
+        function(result) {
+            if (result.error()) {
+                console.error(result.error());
+            } else {
+                console.log(result.data());
+            }
+        }
+    );
+    ```
+
+- PHP CRest
+
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'placement.bind',
+        [
+            'PLACEMENT' => 'SONET_GROUP_ROBOT_DESIGNER_TOOLBAR',
+            'HANDLER' => 'https://your-domain.com/widgets/sonet-group-robot-designer-handler.php',
+            'TITLE' => 'My group automation',
+            'LANG_ALL' => [
+                'en' => [
+                    'TITLE' => 'My group automation',
+                ],
+                'de' => [
+                    'TITLE' => 'Meine Gruppenautomatisierung',
+                ],
+            ],
+        ]
+    );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
+    ```
+
+{% endlist %}
+
 ## Continue Learning
 
 - [{#T}](./index.md)
+- [{#T}](./detail-tab.md)
 - [{#T}](./toolbar.md)
 - [{#T}](../task/robot-designer-toolbar.md)
 - [{#T}](../placement-bind.md)

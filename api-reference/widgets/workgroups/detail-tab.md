@@ -1,4 +1,4 @@
-# Workgroup Extensions Menu Item SONET_GROUP_TOOLBAR
+# Workgroup Menu Item SONET_GROUP_DETAIL_TAB
 
 {% note tip "" %}
 
@@ -8,7 +8,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`sonet_group`](../../scopes/permissions.md)
 
-The widget adds its own item to the extensions menu of a workgroup or project.
+The widget adds its own item to the menu of a workgroup or project.
 
 The placement code is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
 
@@ -22,20 +22,18 @@ The widget will not be displayed in the interface until the application installa
 
 #|
 || **Widget Code** | **Location** ||
-|| `SONET_GROUP_TOOLBAR` | Extensions menu item of a workgroup or project ||
+|| `SONET_GROUP_DETAIL_TAB` | Menu item of a workgroup or project ||
 |#
 
 ### Where to Find It in the Interface
 
-Open the workgroup, click *•••* to the right of the group name and select *Extensions*. The application item is displayed in this submenu next to the knowledge base items and Bitrix24 Market.
+The location of the item depends on the interface version. The classic view currently runs in most Bitrix24 accounts, while the new Projects AI view is being rolled out gradually.
 
-{% note warning "" %}
+In the classic interface, open the workgroup and click *More* in the row of group tabs. The application item is displayed at the end of the list. The screenshot shows this view.
 
-The group menu with the *Extensions* item exists only in the classic interface. In the new Projects AI view, the placement is registered by the `placement.bind` method, but it has no rendering location — the item will not appear. To add your own item to the workgroup menu in both cases, use [{#T}](./detail-tab.md)
+In the Projects AI interface, the item moves to the *•••* menu on the project card.
 
-{% endnote %}
-
-![Extensions menu item of a workgroup or project](./_images/SONET_GROUP_TOOLBAR.png "Extensions menu item of a workgroup or project")
+![Menu item of a workgroup or project](./_images/SONET_GROUP_DETAIL_TAB.png "Menu item of a workgroup or project")
 
 ## What the Handler Receives
 
@@ -47,17 +45,17 @@ Array
     [DOMAIN] => xxx.bitrix24.com
     [PROTOCOL] => 1
     [LANG] => en
-    [APP_SID] => 25e596577c2a1ddf98c7863421330527
-    [AUTH_ID] => 5d56ba6600705a0700005a4b00000001f0f107d21c0babb82529a32836e165141a2010
+    [APP_SID] => 3c900e588b941b81eef07608e4253159
+    [AUTH_ID] => 1a55ba6600705a0700005a4b00000001f0f107db29f044c6ff24e984d378967134de83
     [AUTH_EXPIRES] => 3600
-    [REFRESH_ID] => 4dd5e16600705a0700005a4b00000001f0f107a934a327935855b75f8c3686204e3bd5
+    [REFRESH_ID] => 0ad4e16600705a0700005a4b00000001f0f10731fce9fa3219163d545a088b217cc2d4
     [SERVER_ENDPOINT] => https://oauth.bitrix.info/rest/
     [APPLICATION_TOKEN] => 5b2f8c1d7e3a9046b8c5d2f1a7e3b904
     [APPLICATION_SCOPE] => sonet_group,task,placement
     [member_id] => da45a03b265edd8787f8a258d793cc5d
     [status] => L
-    [PLACEMENT] => SONET_GROUP_TOOLBAR
-    [PLACEMENT_OPTIONS] => {"URI":"\/workgroups\/group\/10\/tasks\/"}
+    [PLACEMENT] => SONET_GROUP_DETAIL_TAB
+    [PLACEMENT_OPTIONS] => {"GROUP_ID":"10","URI":"\/workgroups\/group\/10\/"}
 )
 ```
 
@@ -69,9 +67,9 @@ Array
 
 The value of `PLACEMENT_OPTIONS` is passed as a JSON string with the context of the call.
 
-`SONET_GROUP_TOOLBAR` has no keys of its own — the context contains only the universal `URI` key. The workgroup identifier does not arrive as a separate parameter, so take it from the path in `URI`. For the value `/workgroups/group/10/tasks/`, the workgroup identifier is `10`. Use it to retrieve the workgroup data with the [sonet_group.get](../../sonet-group/sonet-group-get.md) method.
+For `SONET_GROUP_DETAIL_TAB`, the context includes the key:
 
-If your handler needs the workgroup identifier explicitly, use [{#T}](./detail-tab.md) or [{#T}](./robot-designer-toolbar.md) — these placements pass it in the `GROUP_ID` key.
+- `GROUP_ID` — identifier of the workgroup or project from which the widget was opened. Use it to retrieve the workgroup data with the [sonet_group.get](../../sonet-group/sonet-group-get.md) method
 
 ## Code Examples
 
@@ -86,15 +84,15 @@ If your handler needs the workgroup identifier explicitly, use [{#T}](./detail-t
       -H "Content-Type: application/json" \
       -H "Accept: application/json" \
       -d '{
-        "PLACEMENT": "SONET_GROUP_TOOLBAR",
-        "HANDLER": "https://your-domain.com/widgets/sonet-group-toolbar-handler.php",
-        "TITLE": "My group extension",
+        "PLACEMENT": "SONET_GROUP_DETAIL_TAB",
+        "HANDLER": "https://your-domain.com/widgets/sonet-group-detail-tab-handler.php",
+        "TITLE": "My group section",
         "LANG_ALL": {
           "en": {
-            "TITLE": "My group extension"
+            "TITLE": "My group section"
           },
           "de": {
-            "TITLE": "Meine Gruppenerweiterung"
+            "TITLE": "Mein Gruppenbereich"
           }
         },
         "auth": "**put_access_token_here**"
@@ -116,15 +114,15 @@ If your handler needs the workgroup identifier explicitly, use [{#T}](./detail-t
       const response = await $b24.actions.v2.call.make<boolean>({
         method: 'placement.bind',
         params: {
-          PLACEMENT: 'SONET_GROUP_TOOLBAR',
-          HANDLER: 'https://your-domain.com/widgets/sonet-group-toolbar-handler.php',
-          TITLE: 'My group extension',
+          PLACEMENT: 'SONET_GROUP_DETAIL_TAB',
+          HANDLER: 'https://your-domain.com/widgets/sonet-group-detail-tab-handler.php',
+          TITLE: 'My group section',
           LANG_ALL: {
             en: {
-              TITLE: 'My group extension',
+              TITLE: 'My group section',
             },
             de: {
-              TITLE: 'Meine Gruppenerweiterung',
+              TITLE: 'Mein Gruppenbereich',
             },
           },
         },
@@ -150,7 +148,7 @@ If your handler needs the workgroup identifier explicitly, use [{#T}](./detail-t
     <!-- Load the SDK (UMD build); it is exposed as the global B24Js -->
     <script src="https://unpkg.com/@bitrix24/b24jssdk@1/dist/umd/index.min.js"></script>
     <script>
-      async function bindSonetGroupToolbar() {
+      async function bindSonetGroupDetailTab() {
         try {
           // Initialize the SDK inside a Bitrix24 frame
           const $b24 = await B24Js.initializeB24Frame()
@@ -158,15 +156,15 @@ If your handler needs the workgroup identifier explicitly, use [{#T}](./detail-t
           const response = await $b24.actions.v2.call.make({
             method: 'placement.bind',
             params: {
-              PLACEMENT: 'SONET_GROUP_TOOLBAR',
-              HANDLER: 'https://your-domain.com/widgets/sonet-group-toolbar-handler.php',
-              TITLE: 'My group extension',
+              PLACEMENT: 'SONET_GROUP_DETAIL_TAB',
+              HANDLER: 'https://your-domain.com/widgets/sonet-group-detail-tab-handler.php',
+              TITLE: 'My group section',
               LANG_ALL: {
                 en: {
-                  TITLE: 'My group extension',
+                  TITLE: 'My group section',
                 },
                 de: {
-                  TITLE: 'Meine Gruppenerweiterung',
+                  TITLE: 'Mein Gruppenbereich',
                 },
               },
             },
@@ -187,7 +185,7 @@ If your handler needs the workgroup identifier explicitly, use [{#T}](./detail-t
         }
       }
 
-      document.addEventListener('DOMContentLoaded', bindSonetGroupToolbar)
+      document.addEventListener('DOMContentLoaded', bindSonetGroupDetailTab)
     </script>
     ```
 
@@ -200,15 +198,15 @@ If your handler needs the workgroup identifier explicitly, use [{#T}](./detail-t
             ->call(
                 'placement.bind',
                 [
-                    'PLACEMENT' => 'SONET_GROUP_TOOLBAR',
-                    'HANDLER' => 'https://your-domain.com/widgets/sonet-group-toolbar-handler.php',
-                    'TITLE' => 'My group extension',
+                    'PLACEMENT' => 'SONET_GROUP_DETAIL_TAB',
+                    'HANDLER' => 'https://your-domain.com/widgets/sonet-group-detail-tab-handler.php',
+                    'TITLE' => 'My group section',
                     'LANG_ALL' => [
                         'en' => [
-                            'TITLE' => 'My group extension',
+                            'TITLE' => 'My group section',
                         ],
                         'de' => [
-                            'TITLE' => 'Meine Gruppenerweiterung',
+                            'TITLE' => 'Mein Gruppenbereich',
                         ],
                     ],
                 ]
@@ -232,12 +230,12 @@ If your handler needs the workgroup identifier explicitly, use [{#T}](./detail-t
     BX24.callMethod(
         'placement.bind',
         {
-            PLACEMENT: 'SONET_GROUP_TOOLBAR',
-            HANDLER: 'https://your-domain.com/widgets/sonet-group-toolbar-handler.php',
-            TITLE: 'My group extension',
+            PLACEMENT: 'SONET_GROUP_DETAIL_TAB',
+            HANDLER: 'https://your-domain.com/widgets/sonet-group-detail-tab-handler.php',
+            TITLE: 'My group section',
             LANG_ALL: {
-                en: { TITLE: 'My group extension' },
-                de: { TITLE: 'Meine Gruppenerweiterung' }
+                en: { TITLE: 'My group section' },
+                de: { TITLE: 'Mein Gruppenbereich' }
             }
         },
         function(result) {
@@ -258,15 +256,15 @@ If your handler needs the workgroup identifier explicitly, use [{#T}](./detail-t
     $result = CRest::call(
         'placement.bind',
         [
-            'PLACEMENT' => 'SONET_GROUP_TOOLBAR',
-            'HANDLER' => 'https://your-domain.com/widgets/sonet-group-toolbar-handler.php',
-            'TITLE' => 'My group extension',
+            'PLACEMENT' => 'SONET_GROUP_DETAIL_TAB',
+            'HANDLER' => 'https://your-domain.com/widgets/sonet-group-detail-tab-handler.php',
+            'TITLE' => 'My group section',
             'LANG_ALL' => [
                 'en' => [
-                    'TITLE' => 'My group extension',
+                    'TITLE' => 'My group section',
                 ],
                 'de' => [
-                    'TITLE' => 'Meine Gruppenerweiterung',
+                    'TITLE' => 'Mein Gruppenbereich',
                 ],
             ],
         ]
@@ -282,7 +280,7 @@ If your handler needs the workgroup identifier explicitly, use [{#T}](./detail-t
 ## Continue Learning
 
 - [{#T}](./index.md)
-- [{#T}](./detail-tab.md)
+- [{#T}](./toolbar.md)
 - [{#T}](./robot-designer-toolbar.md)
 - [{#T}](../placement-bind.md)
 - [{#T}](../ui-interaction/index.md)

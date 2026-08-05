@@ -50,13 +50,13 @@ A project is a group with enhanced capabilities. Its main distinction from a gro
 
 Add your items to menus to enhance the functionality of workgroups and projects:
 
-- [Workgroup menu item SONET_GROUP_DETAIL_TAB](../widgets/workgroups/index.md)
+- [Workgroup menu item SONET_GROUP_DETAIL_TAB](../widgets/workgroups/detail-tab.md)
 
 - [Workgroup extensions menu item SONET_GROUP_TOOLBAR](../widgets/workgroups/toolbar.md)
 
 - [Button in the workgroup automation rules designer SONET_GROUP_ROBOT_DESIGNER_TOOLBAR](../widgets/workgroups/robot-designer-toolbar.md)
 
-Specify the widget embedding code in the `PLACEMENT` parameter of the method [placement.bind](../widgets/placement-bind.md).
+Specify the widget embedding code in the `PLACEMENT` parameter of the method [placement.bind](../widgets/placement-bind.md). How to choose a placement and what the handler receives is described in the [overview of placements](../widgets/workgroups/index.md).
 
 ## Specialized Workgroups: Scrum and Flow
 

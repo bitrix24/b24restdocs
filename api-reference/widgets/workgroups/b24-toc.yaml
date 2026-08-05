@@ -1,7 +1,9 @@
 title: Widgets in Workgroups/Projects
 items:
-  - name: Workgroup Menu Item
+  - name: Overview of Placements
     href: index.md
+  - name: Workgroup Menu Item
+    href: detail-tab.md
   - name: Workgroup Extensions Menu Item
     href: toolbar.md
   - name: Button in the Automation Rules Designer

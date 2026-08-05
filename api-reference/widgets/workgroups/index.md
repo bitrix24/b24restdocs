@@ -1,4 +1,4 @@
-# Workgroup Menu Item SONET_GROUP_DETAIL_TAB
+# Widgets in Workgroups and Projects: Overview of Placements
 
 {% note tip "" %}
 
@@ -6,76 +6,84 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-> Scope: [`sonet_group`](../../scopes/permissions.md)
+Placements add the application interface inside a workgroup or project: an item in the group menu, an item in the extensions menu, or a button in the automation rules designer.
 
-The widget adds its own item to the menu of a workgroup or project.
+All three placements of the section work in the context of a single group and require the `sonet_group` scope. [A project is a group with extended capabilities](../../sonet-group/index.md), so the placements are displayed both in groups and in projects.
 
-The placement code is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
+To register a widget, use the [placement.bind](../placement-bind.md) method and pass the required code in the `PLACEMENT` parameter.
 
-{% note info "" %}
+> Quick navigation: [all placements](#all-placements)
 
-The widget will not be displayed in the interface until the application installation is complete. [Check the application installation](../../../settings/app-installation/installation-finish.md)
+## How to Choose a Placement
 
-{% endnote %}
+Choose a placement by the task your application solves:
 
-## Where the Widget is Embedded
+- add a separate screen with application data to a group — [SONET_GROUP_DETAIL_TAB](./detail-tab.md)
+- add an item to the extensions menu of a group — [SONET_GROUP_TOOLBAR](./toolbar.md)
+- extend the automation of group tasks — [SONET_GROUP_ROBOT_DESIGNER_TOOLBAR](./robot-designer-toolbar.md)
 
-#|
-|| **Widget Code** | **Location** ||
-|| `SONET_GROUP_DETAIL_TAB` | Menu item of a workgroup or project ||
-|#
+The rendering location depends on the interface version. The classic view currently runs in most Bitrix24 accounts, while the new Projects AI view is being rolled out gradually. Projects AI has no extensions menu, so the `SONET_GROUP_TOOLBAR` item will not appear there. If your application needs an item in the group in both interface versions, use [SONET_GROUP_DETAIL_TAB](./detail-tab.md).
 
-### Where to Find It in the Interface
+## How to Get Started
 
-The location of the item depends on the interface version. The classic view currently runs in most Bitrix24 accounts, while the new Projects AI view is being rolled out gradually.
-
-In the classic interface, open the workgroup and click *More* in the row of group tabs. The application item is displayed at the end of the list. The screenshot shows this view.
-
-In the Projects AI interface, the item moves to the *•••* menu on the project card.
-
-![Menu item of a workgroup or project](./_images/SONET_GROUP_DETAIL_TAB.png "Menu item of a workgroup or project")
+1. Choose a placement for your scenario.
+2. Register the handler with the [placement.bind](../placement-bind.md) method and pass the code in the `PLACEMENT` parameter. The method is available to an administrator only and requires the application context: a placement cannot be bound with a webhook.
+3. Complete the application installation. Until then, the widget is not displayed in the interface.
+4. Open the workgroup and call the widget. Where exactly the item is located is described on each placement page in the "Where to Find It in the Interface" section.
+5. Parse `PLACEMENT_OPTIONS` in the handler — it carries the call context: the workgroup identifier or the address of the page the widget was opened from.
 
 ## What the Handler Receives
 
-Data is sent in a POST request: some parameters come in the handler URL query string, the rest in the request body {.b24-info}
-
-```php
-Array
-(
-    [DOMAIN] => xxx.bitrix24.com
-    [PROTOCOL] => 1
-    [LANG] => en
-    [APP_SID] => 3c900e588b941b81eef07608e4253159
-    [AUTH_ID] => 1a55ba6600705a0700005a4b00000001f0f107db29f044c6ff24e984d378967134de83
-    [AUTH_EXPIRES] => 3600
-    [REFRESH_ID] => 0ad4e16600705a0700005a4b00000001f0f10731fce9fa3219163d545a088b217cc2d4
-    [SERVER_ENDPOINT] => https://oauth.bitrix.info/rest/
-    [APPLICATION_TOKEN] => 5b2f8c1d7e3a9046b8c5d2f1a7e3b904
-    [APPLICATION_SCOPE] => sonet_group,task,placement
-    [member_id] => da45a03b265edd8787f8a258d793cc5d
-    [status] => L
-    [PLACEMENT] => SONET_GROUP_DETAIL_TAB
-    [PLACEMENT_OPTIONS] => {"GROUP_ID":"10","URI":"\/workgroups\/group\/10\/"}
-)
-```
-
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+All placements of the section pass the same set of standard parameters to the handler.
 
 {% include notitle [Description of Standard Data](../_includes/widget_data.md) %}
 
 ### PLACEMENT_OPTIONS
 
-The value of `PLACEMENT_OPTIONS` is passed as a JSON string with the context of the call.
+The `PLACEMENT_OPTIONS` value is passed as a JSON string with the call context. The universal `URI` key arrives for every placement, while the set of the remaining keys is specific to each placement.
 
-For `SONET_GROUP_DETAIL_TAB`, the context includes the key:
+#|
+|| **Placement** | **Own Keys** | **What Is Passed** ||
+|| [SONET_GROUP_DETAIL_TAB](./detail-tab.md) | `GROUP_ID` | Identifier of the group whose menu the widget is opened from ||
+|| [SONET_GROUP_TOOLBAR](./toolbar.md) | none | The group identifier can be taken from the path in `URI` ||
+|| [SONET_GROUP_ROBOT_DESIGNER_TOOLBAR](./robot-designer-toolbar.md) | `GROUP_ID` | Identifier of the group whose automation the user is configuring ||
+|#
 
-- `GROUP_ID` — identifier of the workgroup or project from which the widget was opened. Use it to retrieve the workgroup data with the [sonet_group.get](../../sonet-group/sonet-group-get.md) method
+## Connection with Other Objects
+
+**Workgroup.** The `GROUP_ID` identifier indicates which group the handler was called for. Workgroup data is returned by the [sonet_group.get](../../sonet-group/sonet-group-get.md) method.
+
+**Group tasks.** The `SONET_GROUP_ROBOT_DESIGNER_TOOLBAR` placement is called from the task automation settings. Data of the tasks themselves is returned by the [methods of the tasks section](../../tasks/index.md).
+
+**Call page.** The universal `URI` key contains the path of the Bitrix24 page the widget was opened from. For `SONET_GROUP_TOOLBAR` it is the only source of the group identifier: in the path `/workgroups/group/10/tasks/` the identifier is `10`.
+
+## Common Mistakes
+
+#|
+|| **Mistake** | **Solution** ||
+|| `placement.bind` returns `Application context required` | Register the placement on behalf of an application. A placement cannot be bound with a webhook ||
+|| The placement is registered but does not appear in the interface | Complete the [application installation](../../../settings/app-installation/installation-finish.md) and reload the page ||
+|| The `SONET_GROUP_TOOLBAR` item does not appear in the group | The Projects AI interface has no extensions menu, and the placement has no rendering location there. Use [SONET_GROUP_DETAIL_TAB](./detail-tab.md) ||
+|| The handler does not find `GROUP_ID` | `SONET_GROUP_TOOLBAR` has no keys of its own. Take the identifier from the path in `URI` ||
+|| The item does not appear in the group tasks | Check the code: the menu and the automation rules in the tasks section are handled by [TASK_GROUP_LIST_TOOLBAR](../task/list-toolbar.md) and [TASK_ROBOT_DESIGNER_TOOLBAR](../task/robot-designer-toolbar.md), which require the `task` scope ||
+|#
+
+## Overview of Placements {#all-placements}
+
+> Scope: [`sonet_group`](../../scopes/permissions.md)
+
+#|
+|| **Placement** | **When to Use** ||
+|| [SONET_GROUP_DETAIL_TAB](./detail-tab.md) | Menu item of a workgroup or project ||
+|| [SONET_GROUP_TOOLBAR](./toolbar.md) | Extensions menu item of a workgroup or project ||
+|| [SONET_GROUP_ROBOT_DESIGNER_TOOLBAR](./robot-designer-toolbar.md) | Button in the workgroup automation rules designer ||
+|#
 
 ## Continue Learning
 
-- [{#T}](./toolbar.md)
-- [{#T}](./robot-designer-toolbar.md)
 - [{#T}](../placement-bind.md)
+- [{#T}](../placement-list.md)
+- [{#T}](../placement-unbind.md)
 - [{#T}](../ui-interaction/index.md)
 - [{#T}](../bx24-widget-methods.md)
 - [{#T}](../../../settings/interactivity/index.md)
