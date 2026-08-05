@@ -1,4 +1,4 @@
-# Call Card Tab in CALL_CARD
+# Widgets in Telephony: Overview of Placements
 
 {% note tip "" %}
 
@@ -6,130 +6,91 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-> Scope: [`telephony`](../../scopes/permissions.md)
+Placements of the section add the application interface to telephony: a tab in the call card during a conversation and a report in the call analytics menu. Both placements require the `telephony` scope.
 
-You can add your item in the call card tab.
+To register a widget, use the [placement.bind](../placement-bind.md) method and pass the required code in the `PLACEMENT` parameter.
 
-The specific widget placement code is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
+An external WebRTC client is embedded differently. It has no placement code of its own: the client is loaded into the `PAGE_BACKGROUND_WORKER` placement, and telephony is connected with the methods of the [{#T}](../../telephony/index.md) section. The scenario is described on the [{#T}](./webrtc.md) page.
 
-{% note info "" %}
+> Quick navigation: [all placements](#all-placements)
 
-The widget will not be displayed in the interface until the application installation is complete. [Check the application installation](../../../settings/app-installation/installation-finish.md)
+## How to Choose a Placement
 
-{% endnote %}
+Choose a placement by the task your application solves:
 
-## Where the Widget is Embedded
+- show client data right during a conversation — [CALL_CARD](./call-card.md)
+- add your own report to the built-in call analytics — [TELEPHONY_ANALYTICS_MENU](./analytics-menu.md)
 
-#| 
-|| **Widget Code** | **Location** ||
-|| `CALL_CARD` | Item in the call card tab ||
-|#
+The placements differ in the condition that invokes them. The `CALL_CARD` handler is invoked when the user opens the tab in the call card, and it receives the conversation context. This placement exists only during a call: without an active call there is no card and nothing to check the widget against.
+
+The `TELEPHONY_ANALYTICS_MENU` handler is invoked when the user selects an item in the call statistics menu. The placement has no context of its own, but it is available at any moment.
+
+## How to Get Started
+
+1. Choose a placement for your scenario.
+2. Register the handler with the [placement.bind](../placement-bind.md) method and pass the code in the `PLACEMENT` parameter. The method is available to an administrator only and requires the application context: a placement cannot be bound with a webhook.
+3. Complete the application installation. Until then, the widget is not displayed in the interface.
+4. Reload the Bitrix24 page. The lists of call card tabs and analytics menu items are built when the page loads.
+5. Call the widget. For `TELEPHONY_ANALYTICS_MENU`, open the `/report/telephony/` page and select the application item. For `CALL_CARD`, you need a call: register an external call with the [telephony.externalCall.register](../../telephony/telephony-external-call-register.md) method and the `SHOW` = 1 parameter.
+6. Parse `PLACEMENT_OPTIONS` in the handler — it carries the call context.
 
 ## What the Handler Receives
 
-Data is sent in a POST request: some parameters come in the handler URL query string, the rest in the request body {.b24-info}
-
-```php
-Array
-(
-    [DOMAIN] => xxx.bitrix24.com
-    [PROTOCOL] => 1
-    [LANG] => en
-    [APP_SID] => 588b8a98e848778a4ffb38fbcf70f2b9
-    [AUTH_ID] => 4172bb6600705a0700005a4b00000001f0f107c42ca5bd5f61030c5d9c3e4d60d11b5a
-    [AUTH_EXPIRES] => 3600
-    [REFRESH_ID] => 31f1e26600705a0700005a4b00000001f0f107b1918506d8a2ed9ecf76e8fdac962471
-    [member_id] => da45a03b265edd8787f8a258d793cc5d
-    [status] => L
-    [PLACEMENT] => CALL_CARD
-    [PLACEMENT_OPTIONS] => {"CALL_ID":"externalCall.c3ee67f1a63f6e6117c230ab59cc49ea.1723556778","PHONE_NUMBER":"555555","LINE_NUMBER":"","LINE_NAME":"","CRM_ENTITY_TYPE":"","CRM_ENTITY_ID":"0","CRM_ACTIVITY_ID":"undefined","CALL_DIRECTION":"incoming","CALL_STATE":"connected","CALL_LIST_MODE":"false"}
-)
-```
-
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+Both placements pass the same set of standard parameters to the handler.
 
 {% include notitle [Description of Standard Data](../_includes/widget_data.md) %}
 
 ### PLACEMENT_OPTIONS
 
-The value of `PLACEMENT_OPTIONS` is a JSON string containing an array of one or more keys.
+The `PLACEMENT_OPTIONS` value is passed as a JSON string with the call context. The universal `URI` key arrives for both placements, while own keys exist only for the call card.
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+#|
+|| **Placement** | **Own Keys** | **What Is Passed** ||
+|| [CALL_CARD](./call-card.md) | `CALL_ID`, `PHONE_NUMBER`, `LINE_NUMBER`, `LINE_NAME`, `CRM_ENTITY_TYPE`, `CRM_ENTITY_ID`, `CRM_BINDINGS`, `CRM_ACTIVITY_ID`, `CALL_DIRECTION`, `CALL_STATE`, `CALL_LIST_MODE` | The call context: call identifier, client and line numbers, conversation direction and state, linked CRM items ||
+|| [TELEPHONY_ANALYTICS_MENU](./analytics-menu.md) | none | Only the address of the analytics page in `URI` ||
+|#
 
-#| 
-|| **Parameter** | **Description** ||
-|| **CALL_ID*** 
-[`string`](../../data-types.md) | The identifier of the call during which the widget was opened.
+Neither placement of the section supports the `OPTIONS` parameter of the [placement.bind](../placement-bind.md) method: the values passed are not retained, and [placement.get](../placement-get.md) returns an empty array.
 
-|| 
-|| **PHONE_NUMBER*** 
-[`string`](../../data-types.md) | The phone number of the client with whom the conversation is taking place.
+## Relationship With Other Objects
 
-|| 
-|| **LINE_NUMBER** 
-[`string`](../../data-types.md) | The company's phone number used to communicate with the client.
+**Call.** The `CALL_ID` identifier from the `CALL_CARD` context is the same one returned by [telephony.externalCall.register](../../telephony/telephony-external-call-register.md). The handler uses it to finish the call with the [telephony.externalCall.finish](../../telephony/telephony-external-call-finish.md) method and to attach a call recording.
 
-|| 
-|| **LINE_NAME** 
-[`string`](../../data-types.md) | The name of the company's phone line used to communicate with the client.
+**CRM items.** The `CRM_ENTITY_TYPE` and `CRM_ENTITY_ID` keys point to the item the call is linked to, and `CRM_BINDINGS` points to all linked items. The data is returned by the methods of the corresponding CRM sections.
 
-Lines are added by applications for integrating telephony using the [telephony.externalLine.add](../../telephony/telephony-external-line-add.md) method and are used for user convenience in Sales Intelligence.
+**CRM activity.** The `CRM_ACTIVITY_ID` identifier points to the activity created for the call. The activity data is returned by the [crm.activity.get](../../crm/timeline/activities/activity-base/crm-activity-get.md) method.
 
-|| 
-|| **CRM_ENTITY_TYPE** 
-[`integer`](../../data-types.md) | [Type of the entity](../../crm/data-types.md#object_type) in CRM associated with the current call.
+**Phone lines.** The line name in `LINE_NAME` refers to a line added with the [telephony.externalLine.add](../../telephony/telephony-external-line-add.md) method.
 
-Knowing the type and identifier of the CRM object (specified in the `CRM_ENTITY_ID` parameter), you can retrieve information about the entity.
+## Common Mistakes
 
-|| 
-|| **CRM_ENTITY_ID** 
-[`string`](../../data-types.md) | The identifier of the CRM object associated with the current call.
+#|
+|| **Mistake** | **How to Resolve** ||
+|| `placement.bind` returns `Application context required` | Register the placement on behalf of the application. A placement cannot be bound with a webhook ||
+|| The widget is registered but does not appear in the interface | Complete the [application installation](../../../settings/app-installation/installation-finish.md) and reload the Bitrix24 page ||
+|| The `CALL_CARD` tab does not appear in the call card | The list of tabs is built when the page loads. Reload the page and raise the call again ||
+|| The handler does not find the activity identifier | If no activity was created for the call, `CRM_ACTIVITY_ID` carries the string `undefined`. Check the value before using it ||
+|| The handler does not recognize `CRM_ENTITY_TYPE` | The key carries the symbolic code of the type — `LEAD`, `DEAL`, `CONTACT`, `COMPANY` — not the numeric identifier ||
+|| The widget does not see the second linked CRM item | The `CRM_ENTITY_TYPE` and `CRM_ENTITY_ID` keys name the primary item only. The full list of links arrives in `CRM_BINDINGS` ||
+|#
 
-Knowing the type (specified in the `CRM_ENTITY_TYPE` parameter) and the identifier of the CRM object (specified in the `CRM_ENTITY_ID` parameter), you can retrieve information about the entity using the corresponding methods:
+## Overview of Placements {#all-placements}
 
-- any type of object [crm.item.get](../../crm/universal/crm-item-get.md) with entityTypeId = '1' for leads, '2' for deals, and [etc.](../../crm/data-types.md#object_type)
-- lead [crm.lead.get](../../crm/leads/crm-lead-get.md)
-- deal [crm.deal.get](../../crm/deals/crm-deal-get.md)
-- contact [crm.contact.get](../../crm/contacts/crm-contact-get.md)
-- company [crm.company.get](../../crm/companies/crm-company-get.md)
-- estimate [crm.quote.get](../../crm/quote/crm-quote-get.md)
+> Scope: [`telephony`](../../scopes/permissions.md)
 
-|| 
-|| **CRM_ACTIVITY_ID** 
-[`string`](../../data-types.md) | The identifier of the [CRM activity](../../crm/timeline/activities/index.md) associated with the current call.
-
-Can be used to obtain additional information using the [user.get](../../user/user-get.md) method.
-
-|| 
-|| **CALL_DIRECTION*** 
-[`string`](../../data-types.md) | Defines the type of call. Can take the following values:
-
-- 'incoming', incoming call;
-- 'outcoming', outgoing call.
-
-|| 
-|| **CALL_STATE** 
-[`string`](../../data-types.md) | Defines the state of the call. Can take the following values:
-
-- 'connected', active call;
-
-Other possible values will be published later.
-
-|| 
-|| **CALL_LIST_MODE** 
-[`string`](../../data-types.md) | Indicates whether the call is part of a [call campaign](https://helpdesk.bitrix24.com/open/21815426/) or not.
-
-Can take the following values:
-
-- `False`, the call is not part of a call campaign;
-- `True`, the call is made as part of a call campaign.
-
-|| 
+#|
+|| **Placement** | **When to Use** ||
+|| [CALL_CARD](./call-card.md) | Tab in the call card ||
+|| [TELEPHONY_ANALYTICS_MENU](./analytics-menu.md) | Menu item in call analytics ||
 |#
 
 ## Continue Your Exploration
 
+- [{#T}](./webrtc.md)
 - [{#T}](../placement-bind.md)
+- [{#T}](../placement-list.md)
+- [{#T}](../placement-unbind.md)
 - [{#T}](../ui-interaction/index.md)
-- [{#T}](../../../settings/interactivity/index.md)
 - [{#T}](../bx24-widget-methods.md)
+- [{#T}](../../telephony/index.md)
+- [{#T}](../../../settings/interactivity/index.md)

@@ -1,9 +1,11 @@
 title: Widgets in Telephony
 href: index.md
-items: 
-  - name: Tab in the Call Detail
+items:
+  - name: Overview of Placements
     href: index.md
-  - name: Menu Item in Call Analytics 
+  - name: Tab in the Call Card
+    href: call-card.md
+  - name: Menu Item in Call Analytics
     href: analytics-menu.md
   - name: WebRTC
     href: webrtc.md

@@ -494,4 +494,4 @@ If the connection between the PBX and Bitrix24 was unavailable, save the fact of
 
 - [Telephony Methods Overview](../../api-reference/telephony/index.md)
 - [Telephony Events](../../api-reference/telephony/events/index.md)
-- [Tab in the call record CALL_CARD](../../api-reference/widgets/telephony/index.md)
+- [Tab in the call record CALL_CARD](../../api-reference/widgets/telephony/call-card.md)

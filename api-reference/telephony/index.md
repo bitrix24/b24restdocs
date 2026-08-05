@@ -61,7 +61,8 @@ The REST API supports three telephony scenarios:
 
 You can embed an application into the call record and display the operator interface right during the conversation.
 
-- [Tab in the call record CALL_CARD](../widgets/telephony/index.md)
+- [Tab in the call record CALL_CARD](../widgets/telephony/call-card.md)
+- [Widgets in Telephony: Overview of Placements](../widgets/telephony/index.md)
 - [JS interface for the call record](../widgets/ui-interaction/call-card/index.md)
 
 ## Limitations and Checks
