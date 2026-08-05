@@ -1,15 +1,17 @@
 title: Widgets in Tasks
 href: index.md
-items: 
-  - name: Context Menu Item in the List
+items:
+  - name: Overview of Placements
     href: index.md
-  - name: Tab in the Task Detail Form
-    href: view-tab.md
-  - name: Right Panel of the Task Detail Form
-    href: view-sidebar.md
-  - name: Link at the Top of the Task Detail Form
-    href: view-top-panel.md
-  - name: Main Dropdown Menu Item
+  - name: Context Menu Item of a Task in the List
+    href: list-context-menu.md
+  - name: Dropdown Menu Item above the Task List
     href: list-toolbar.md
-  - name: Main Dropdown Menu Item near Automation Rules Settings
+  - name: Button in the Task Automation Rules Designer
     href: robot-designer-toolbar.md
+  - name: Widget on the Tab of the Task Card
+    href: view-tab.md
+  - name: Widget in the Right Sidebar of the Task Card
+    href: view-sidebar.md
+  - name: Widget in the Top Panel of the Task Card
+    href: view-top-panel.md

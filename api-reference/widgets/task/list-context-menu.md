@@ -1,4 +1,4 @@
-# Widget in the Right Sidebar of the Task Card TASK_VIEW_SIDEBAR
+# Context Menu Item of a Task in the List TASK_LIST_CONTEXT_MENU
 
 {% note tip "" %}
 
@@ -8,9 +8,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`task`](../../scopes/permissions.md)
 
-The widget adds an application widget to the task card. In the previous card the item was rendered in the right sidebar, hence the name of the placement. The handler receives the identifier of the task whose card the widget is opened from.
-
-The widget can be limited to tasks of specific projects — this is described in the [Connection parameters](#options) section.
+The widget adds its own item to the context menu of an individual task in the list. The handler receives the identifier of the task whose menu the widget is opened from.
 
 The specific widget placement code is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
 
@@ -24,16 +22,14 @@ The widget will not be displayed in the interface until the application installa
 
 #|
 || **Widget Code** | **Location** ||
-|| `TASK_VIEW_SIDEBAR` | Widget in the right sidebar of the task card ||
+|| `TASK_LIST_CONTEXT_MENU` | Context menu item of a task in the list ||
 |#
 
 ### Where to Find It in the Interface
 
-Starting from version `tasks 25.700.0`, a [new task card](../../tasks/tasks-new.md) has been released. The placement has no separate right sidebar in it: all widgets of the card are rendered as rows in the "Applications" block — below the task fields and before the list of additional fields. Open a task and click the row with the application name.
+Open the task list, click the menu button to the left of a task, and hover over *Bitrix24 Market*. The application item appears in this submenu.
 
-![Widget in the right sidebar of the task card](./_images/TASK_VIEW_SIDEBAR.png "Widget in the right sidebar of the task card")
-
-The [TASK_VIEW_TAB](./view-tab.md) and [TASK_VIEW_TOP_PANEL](./view-top-panel.md) placements are rendered in the same block. Previously registered widgets keep working.
+![Context menu item of a task in the list](./_images/TASK_LIST_CONTEXT_MENU.png "Context menu item of a task in the list")
 
 ## What the Handler Receives
 
@@ -46,17 +42,17 @@ Array
     [DOMAIN] => xxx.bitrix24.com
     [PROTOCOL] => 1
     [LANG] => en
-    [APP_SID] => 84986ed8551be43c882fc720b8e406e3
-    [AUTH_ID] => 9e52ba6600705a0700005a4b00000001f0f1076fce1ae9b9c15bf669f4147690
+    [APP_SID] => d7092a1d8c53d8be01cbb43a856e21ac
+    [AUTH_ID] => cb50ba6600631fcd00005a4b00000001f0f107523405e8ed8e45f3a87951e631
     [AUTH_EXPIRES] => 3600
-    [REFRESH_ID] => 8ed1e16600705a0700005a4b00000001f0f10706b7d2b53d9a0e08c50eb4b620
+    [REFRESH_ID] => bbcfe16600631fcd00005a4b00000001f0f1078b3cbb2ae3909b492b397f73c3
     [SERVER_ENDPOINT] => https://oauth.bitrix.info/rest/
     [APPLICATION_TOKEN] => 3f0a7c19e5b84d2196c8ad470e5f2b31
     [APPLICATION_SCOPE] => task,placement
     [member_id] => da45a03b265edd8787f8a258d793cc5d
     [status] => L
-    [PLACEMENT] => TASK_VIEW_SIDEBAR
-    [PLACEMENT_OPTIONS] => {"taskId":"31","URI":"\/company\/personal\/user\/1\/tasks\/task\/view\/31\/"}
+    [PLACEMENT] => TASK_LIST_CONTEXT_MENU
+    [PLACEMENT_OPTIONS] => {"ID":"31","URI":"\/company\/personal\/user\/1\/tasks\/"}
 )
 
 ```
@@ -73,45 +69,13 @@ The `PLACEMENT_OPTIONS` value is passed as a JSON string with the call context. 
 
 #|
 || **Parameter** | **Description** ||
-|| **taskId***
-[`string`](../../data-types.md) | Identifier of the task whose card the widget is opened from.
+|| **ID***
+[`string`](../../data-types.md) | Identifier of the task whose context menu the widget is opened from.
 
 Task data is returned by the [tasks.task.get](../../tasks/tasks-task-get.md) method
 
 ||
 |#
-
-## Connection Parameters {#options}
-
-The connection parameter is passed in the `OPTIONS` field of the [placement.bind](../placement-bind.md) method when the handler is registered. This is not the data that Bitrix24 passes to the handler when the placement is called: the incoming data is described above.
-
-#|
-|| **Parameter** | **Description** ||
-|| **groupId**
-[`string`](../../data-types.md) | Limits the widget to tasks of the listed projects. The value is a comma-separated list of project identifiers, for example `11,12`.
-
-If the parameter is not passed or is empty, the widget is displayed in all tasks. If the parameter is filled in, the widget is displayed only in tasks of the listed projects and is not displayed in tasks without a project
-
-||
-|#
-
-An example of registration limited to projects:
-
-```bash
-curl -X POST \
-  -H "Content-Type: application/json" \
-  -H "Accept: application/json" \
-  -d '{
-    "PLACEMENT": "TASK_VIEW_SIDEBAR",
-    "HANDLER": "https://your-domain.com/widgets/task-view-sidebar-handler.php",
-    "TITLE": "My task widget",
-    "OPTIONS": {
-      "groupId": "11,12"
-    },
-    "auth": "**put_access_token_here**"
-  }' \
-  https://**put_your_bitrix24_address**/rest/placement.bind
-```
 
 ## Code Examples
 
@@ -126,15 +90,15 @@ curl -X POST \
       -H "Content-Type: application/json" \
       -H "Accept: application/json" \
       -d '{
-        "PLACEMENT": "TASK_VIEW_SIDEBAR",
-        "HANDLER": "https://your-domain.com/widgets/task-view-sidebar-handler.php",
-        "TITLE": "My task widget",
+        "PLACEMENT": "TASK_LIST_CONTEXT_MENU",
+        "HANDLER": "https://your-domain.com/widgets/task-list-context-menu-handler.php",
+        "TITLE": "My task menu item",
         "LANG_ALL": {
           "en": {
-            "TITLE": "My task widget"
+            "TITLE": "My task menu item"
           },
           "de": {
-            "TITLE": "Mein Aufgaben-Widget"
+            "TITLE": "Mein Aufgabenmenüpunkt"
           }
         },
         "auth": "**put_access_token_here**"
@@ -156,15 +120,15 @@ curl -X POST \
       const response = await $b24.actions.v2.call.make<boolean>({
         method: 'placement.bind',
         params: {
-          PLACEMENT: 'TASK_VIEW_SIDEBAR',
-          HANDLER: 'https://your-domain.com/widgets/task-view-sidebar-handler.php',
-          TITLE: 'My task widget',
+          PLACEMENT: 'TASK_LIST_CONTEXT_MENU',
+          HANDLER: 'https://your-domain.com/widgets/task-list-context-menu-handler.php',
+          TITLE: 'My task menu item',
           LANG_ALL: {
             en: {
-              TITLE: 'My task widget',
+              TITLE: 'My task menu item',
             },
             de: {
-              TITLE: 'Mein Aufgaben-Widget',
+              TITLE: 'Mein Aufgabenmenüpunkt',
             },
           },
         },
@@ -190,7 +154,7 @@ curl -X POST \
     <!-- Load the SDK (UMD build); it is exposed as the global B24Js -->
     <script src="https://unpkg.com/@bitrix24/b24jssdk@1/dist/umd/index.min.js"></script>
     <script>
-      async function bindTaskViewSidebar() {
+      async function bindTaskListContextMenu() {
         try {
           // Initialize the SDK inside a Bitrix24 frame
           const $b24 = await B24Js.initializeB24Frame()
@@ -198,15 +162,15 @@ curl -X POST \
           const response = await $b24.actions.v2.call.make({
             method: 'placement.bind',
             params: {
-              PLACEMENT: 'TASK_VIEW_SIDEBAR',
-              HANDLER: 'https://your-domain.com/widgets/task-view-sidebar-handler.php',
-              TITLE: 'My task widget',
+              PLACEMENT: 'TASK_LIST_CONTEXT_MENU',
+              HANDLER: 'https://your-domain.com/widgets/task-list-context-menu-handler.php',
+              TITLE: 'My task menu item',
               LANG_ALL: {
                 en: {
-                  TITLE: 'My task widget',
+                  TITLE: 'My task menu item',
                 },
                 de: {
-                  TITLE: 'Mein Aufgaben-Widget',
+                  TITLE: 'Mein Aufgabenmenüpunkt',
                 },
               },
             },
@@ -227,7 +191,7 @@ curl -X POST \
         }
       }
 
-      document.addEventListener('DOMContentLoaded', bindTaskViewSidebar)
+      document.addEventListener('DOMContentLoaded', bindTaskListContextMenu)
     </script>
     ```
 
@@ -240,15 +204,15 @@ curl -X POST \
             ->call(
                 'placement.bind',
                 [
-                    'PLACEMENT' => 'TASK_VIEW_SIDEBAR',
-                    'HANDLER' => 'https://your-domain.com/widgets/task-view-sidebar-handler.php',
-                    'TITLE' => 'My task widget',
+                    'PLACEMENT' => 'TASK_LIST_CONTEXT_MENU',
+                    'HANDLER' => 'https://your-domain.com/widgets/task-list-context-menu-handler.php',
+                    'TITLE' => 'My task menu item',
                     'LANG_ALL' => [
                         'en' => [
-                            'TITLE' => 'My task widget',
+                            'TITLE' => 'My task menu item',
                         ],
                         'de' => [
-                            'TITLE' => 'Mein Aufgaben-Widget',
+                            'TITLE' => 'Mein Aufgabenmenüpunkt',
                         ],
                     ],
                 ]
@@ -272,12 +236,12 @@ curl -X POST \
     BX24.callMethod(
         'placement.bind',
         {
-            PLACEMENT: 'TASK_VIEW_SIDEBAR',
-            HANDLER: 'https://your-domain.com/widgets/task-view-sidebar-handler.php',
-            TITLE: 'My task widget',
+            PLACEMENT: 'TASK_LIST_CONTEXT_MENU',
+            HANDLER: 'https://your-domain.com/widgets/task-list-context-menu-handler.php',
+            TITLE: 'My task menu item',
             LANG_ALL: {
-                en: { TITLE: 'My task widget' },
-                de: { TITLE: 'Mein Aufgaben-Widget' }
+                en: { TITLE: 'My task menu item' },
+                de: { TITLE: 'Mein Aufgabenmenüpunkt' }
             }
         },
         function(result) {
@@ -298,15 +262,15 @@ curl -X POST \
     $result = CRest::call(
         'placement.bind',
         [
-            'PLACEMENT' => 'TASK_VIEW_SIDEBAR',
-            'HANDLER' => 'https://your-domain.com/widgets/task-view-sidebar-handler.php',
-            'TITLE' => 'My task widget',
+            'PLACEMENT' => 'TASK_LIST_CONTEXT_MENU',
+            'HANDLER' => 'https://your-domain.com/widgets/task-list-context-menu-handler.php',
+            'TITLE' => 'My task menu item',
             'LANG_ALL' => [
                 'en' => [
-                    'TITLE' => 'My task widget',
+                    'TITLE' => 'My task menu item',
                 ],
                 'de' => [
-                    'TITLE' => 'Mein Aufgaben-Widget',
+                    'TITLE' => 'Mein Aufgabenmenüpunkt',
                 ],
             ],
         ]
@@ -322,8 +286,8 @@ curl -X POST \
 ## Continue Learning
 
 - [{#T}](./index.md)
+- [{#T}](./list-toolbar.md)
 - [{#T}](./view-tab.md)
-- [{#T}](./view-top-panel.md)
 - [{#T}](../placement-bind.md)
 - [{#T}](../ui-interaction/index.md)
 - [{#T}](../../../settings/interactivity/index.md)

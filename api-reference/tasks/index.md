@@ -164,20 +164,19 @@ Kanban and "My plan" stages can be managed using the [task.stages.*](./stages/in
 
 An application can be embedded into a task card. Embedding allows you to use the application without leaving the card.
 
-- [Tab in the task card](../widgets/task/view-tab.md) `TASK_VIEW_TAB`
-- [Right panel of the task card](../widgets/task/view-sidebar.md) `TASK_VIEW_SIDEBAR`
-- [Link in the top part of the task card](../widgets/task/view-top-panel.md) `TASK_VIEW_TOP_PANEL`
+- [Widget on the tab of the task card](../widgets/task/view-tab.md) `TASK_VIEW_TAB`
+- [Widget in the right sidebar of the task card](../widgets/task/view-sidebar.md) `TASK_VIEW_SIDEBAR`
+- [Widget in the top panel of the task card](../widgets/task/view-top-panel.md) `TASK_VIEW_TOP_PANEL`
 
 An application can also be embedded in the task list:
 
-- [List context menu item](../widgets/task/index.md) `TASK_LIST_CONTEXT_MENU` 
-
-In Kanban or "My Plan" task modes, there are two additional special embedding locations:
-
-- [Main dropdown menu item](../widgets/task/list-toolbar.md) `TASK_USER_LIST_TOOLBAR`, `TASK_GROUP_LIST_TOOLBAR`
-- [Main dropdown menu item near robot settings](../widgets/task/robot-designer-toolbar.md) `TASK_ROBOT_DESIGNER_TOOLBAR`
+- [Context menu item of a task in the list](../widgets/task/list-context-menu.md) `TASK_LIST_CONTEXT_MENU`
+- [Dropdown menu item above the task list](../widgets/task/list-toolbar.md) `TASK_USER_LIST_TOOLBAR`, `TASK_GROUP_LIST_TOOLBAR`
+- [Button in the task automation rules designer](../widgets/task/robot-designer-toolbar.md) `TASK_ROBOT_DESIGNER_TOOLBAR`
 
 In the new task card, starting from module version `tasks 25.700.0`, the `TASK_VIEW_TAB`, `TASK_VIEW_SIDEBAR`, and `TASK_VIEW_TOP_PANEL` embedding locations are combined into the "Applications" block at the bottom of the card.
+
+How to choose a placement and what the handler receives is described in the [overview of placements](../widgets/task/index.md).
 
 ## Task Chat in REST 3.0
 
