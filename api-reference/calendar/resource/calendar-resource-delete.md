@@ -211,7 +211,7 @@ HTTP Status: **400**
 ```json
 {
     "error": "",
-    "error_description": "The required parameter "resourceId" for the method "calendar.resource.delete" is not set"
+    "error_description": "The required parameter \"resourceId\" for the method \"calendar.resource.delete\" is not set"
 }
 ```
 
@@ -221,9 +221,9 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Error Message** | **Description** ||
-|| Empty string | The required parameter "resourceId" for the method "calendar.resource.delete" is not set | The required parameter `resourceId` was not provided ||
-|| Empty string | Access denied | The method is called by an external user or the user is prohibited from modifying resources ||
-|| Empty string | An error occurred while deleting the section | Another error ||
+|| Empty value | The required parameter "resourceId" for the method "calendar.resource.delete" is not set | The required parameter `resourceId` was not provided ||
+|| Empty value | Access denied | The method is called by an external user or the user is not allowed to modify resources ||
+|| Empty value | An error occurred while deleting the resource | Another error ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

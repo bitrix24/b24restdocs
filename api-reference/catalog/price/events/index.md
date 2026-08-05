@@ -14,7 +14,7 @@ Detailed information on working with events is described in the article [Concept
 
 ## How to Receive Events
 
-You can subscribe to price events through the [application](./../../../../settings/app-installation/index.md) and the [event.bind](./../../../events/event-bind.md) method.
+You can subscribe to price events through the [application](../../../../settings/app-installation/index.md) and the [event.bind](../../../events/event-bind.md) method.
 
 An example of a handler code for the event is described in the article [How to Test Your Handler for Processing Bitrix24 Events](../../../events/test-handler.md).
 
@@ -22,7 +22,7 @@ An example of a handler code for the event is described in the article [How to T
 
 {% include notitle [Server Availability for Sending and Receiving Events](../../../../_includes/events-index.md) %}
 
-## Overview of Events
+## Overview of Events {#all-events}
 
 > Scope: [`catalog`](../../../scopes/permissions.md)
 >
@@ -30,7 +30,7 @@ An example of a handler code for the event is described in the article [How to T
 
 #|
 || **Event** | **Triggered** ||
-|| [CATALOG.PRICE.ON.ADD](catalog-price-on-add.md)| When a price is added manually or via the [catalog.price.add](../catalog-price-add.md) method ||
-|| [CATALOG.PRICE.ON.UPDATE](catalog-price-on-update.md)| When a price is updated manually or via the [catalog.price.update](../catalog-price-update.md) method ||
-|| [CATALOG.PRICE.ON.DELETE](catalog-price-on-delete.md)| When a price is deleted manually or via the [catalog.price.delete](../catalog-price-delete.md) method ||
+|| [CATALOG.PRICE.ON.ADD](./catalog-price-on-add.md) | When a price is added manually or using [catalog.price.add](../catalog-price-add.md) ||
+|| [CATALOG.PRICE.ON.UPDATE](./catalog-price-on-update.md) | When a price is updated manually or using [catalog.price.update](../catalog-price-update.md) ||
+|| [CATALOG.PRICE.ON.DELETE](./catalog-price-on-delete.md) | When a price is deleted manually or using [catalog.price.delete](../catalog-price-delete.md) ||
 |#

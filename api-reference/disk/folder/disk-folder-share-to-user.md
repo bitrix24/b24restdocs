@@ -1,4 +1,4 @@
-# Assign Access Permissions to Folder disk.folder.sharetouser
+# Assign Access Permissions to Folder disk.folder.shareToUser
 
 {% note tip "" %}
 
@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: a user with "Share" permission for the specified folder
 
-The method `disk.folder.sharetouser` assigns access permissions to a folder.
+The method `disk.folder.shareToUser` assigns access permissions to a folder.
 
 ## Method Parameters
 
@@ -22,7 +22,7 @@ The method `disk.folder.sharetouser` assigns access permissions to a folder.
 || **id***
 [`integer`](../../data-types.md) | Identifier of the folder.
 
-The identifier can be obtained using the method [disk.storage.getchildren](../storage/disk-storage-get-children.md) if the folder is located at the root of the storage, and using the method [disk.folder.getchildren](./disk-folder-get-children.md) if the folder is located in another folder ||
+The identifier can be obtained using the method [disk.storage.getChildren](../storage/disk-storage-get-children.md) if the folder is located at the root of the storage, and using the method [disk.folder.getChildren](./disk-folder-get-children.md) if the folder is located in another folder ||
 || **userId***
 [`integer`](../../data-types.md) | Identifier of the user to whom access is granted.
 
@@ -55,7 +55,7 @@ The current user cannot grant permissions higher than their own level. For examp
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"id":8994,"userId":1271,"taskName":"disk_access_read"}' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/disk.folder.sharetouser
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/disk.folder.shareToUser
     ```
 
 - cURL (OAuth)
@@ -65,7 +65,7 @@ The current user cannot grant permissions higher than their own level. For examp
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"id":8994,"userId":1271,"taskName":"disk_access_read","auth":"**put_access_token_here**"}' \
-    https://**put_your_bitrix24_address**/rest/disk.folder.sharetouser
+    https://**put_your_bitrix24_address**/rest/disk.folder.shareToUser
     ```
 
 - JS (TS)
@@ -80,7 +80,7 @@ The current user cannot grant permissions higher than their own level. For examp
 
     try {
       const response = await $b24.actions.v2.call.make<boolean>({
-        method: 'disk.folder.sharetouser',
+        method: 'disk.folder.shareToUser',
         params: {
           id: 8994,
           userId: 1271,
@@ -114,7 +114,7 @@ The current user cannot grant permissions higher than their own level. For examp
           const $b24 = await B24Js.initializeB24Frame()
 
           const response = await $b24.actions.v2.call.make({
-            method: 'disk.folder.sharetouser',
+            method: 'disk.folder.shareToUser',
             params: {
               id: 8994,
               userId: 1271,
@@ -148,7 +148,7 @@ The current user cannot grant permissions higher than their own level. For examp
         $response = $b24Service
             ->core
             ->call(
-                'disk.folder.sharetouser',
+                'disk.folder.shareToUser',
                 [
                     'id' => 8994,
                     'userId' => 1271,
@@ -173,7 +173,7 @@ The current user cannot grant permissions higher than their own level. For examp
 
     ```js
     BX24.callMethod(
-        "disk.folder.sharetouser",
+        "disk.folder.shareToUser",
         {
             id: 8994,              
             userId: 1271,           
@@ -195,7 +195,7 @@ The current user cannot grant permissions higher than their own level. For examp
     require_once('crest.php');
 
     $result = CRest::call(
-        'disk.folder.sharetouser',
+        'disk.folder.shareToUser',
         [
             'id' => 8994,
             'userId' => 1271,

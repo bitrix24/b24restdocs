@@ -14,23 +14,31 @@ Differences between a parent product and a simple product:
 
 - A simple product is a single item without variations. It can be added to the cart and purchased immediately. To work with simple products, use the group of methods [catalog.product.*](../index.md).
 
-> Quick navigation: [all methods](#all-methods) 
-> 
+> Quick navigation: [all methods](#all-methods)
+>
 > User documentation: [Add products to the catalog](https://helpdesk.bitrix24.com/open/18532198/)
 
-## Relationship of Parent Products with Other Objects
+## Relationship with Other Objects
 
 **Trade Catalog.** A product must be linked to a specific trade catalog. You can obtain the identifiers of available trade catalogs using the method [catalog.catalog.list](../../catalog/catalog-catalog-list.md).
 
-**Sections of the Trade Catalog.** Parent products are usually distributed across sections. To create and manage sections, use the group of methods [catalog.section.*](../../section/index.md).
+**Sections of the Trade Catalog.** Parent products are usually distributed across sections. To create and manage sections, use the [catalog.section.*](../../section/index.md) method group.
 
 **Images.** A parent product can contain images: for the announcement, detailed view, and additional images. To add images, use the methods [catalog.productImage.*](../../product-image/index.md), and to download, use the method [catalog.product.sku.download](./catalog-product-sku-download.md).
 
-**User.** Each product stores the identifiers of users who created and modified it. User information can be obtained using the methods [user.get](../../../user/user-get.md) and [user.search](../../../user/user-search.md).
+**User.** Each product stores the identifiers of users who created and modified it. User information can be obtained using [user.get](../../../user/user-get.md) and [user.search](../../../user/user-search.md).
 
 **Product and Variation Properties.** Parent products can have additional properties: manufacturer, season, or material. You can work with properties using the methods [catalog.productProperty.*](../../product-property/index.md).
 
 **CRM.** In parent products, you can specify [leads](../../../crm/leads/index.md), [deals](../../../crm/deals/index.md), [SPAs](../../../crm/universal/index.md), [invoices](../../../crm/universal/invoice.md), [contacts](../../../crm/contacts/index.md), and [companies](../../../crm/companies/index.md) using the property type "Link to CRM entities."
+
+## How to Start
+
+1. Get the trade catalog identifier using [catalog.catalog.list](../../catalog/catalog-catalog-list.md)
+2. Create a parent product using [catalog.product.sku.add](./catalog-product-sku-add.md)
+3. Create variations for the parent product using [catalog.product.offer.add](../offer/catalog-product-offer-add.md)
+4. Add images using [catalog.productImage.add](../../product-image/catalog-product-image-add.md), if needed
+5. Set variation prices using [catalog.price.*](../../price/index.md)
 
 ## Overview of Methods {#all-methods}
 

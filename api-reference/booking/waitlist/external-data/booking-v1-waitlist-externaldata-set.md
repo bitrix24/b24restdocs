@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: any user
 
-The method `booking.v1.waitlist.externalData.set` establishes connections for the specified entry in the waitlist.
+The method `booking.v1.waitlist.externalData.set` establishes links for the specified entry in the waitlist.
 
 ## Method Parameters
 

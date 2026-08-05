@@ -219,8 +219,8 @@ HTTP status: **400**
 
 #|
 || **Code** | **Error Message** | **Description** ||
-|| Empty string | Event id not specified | Required parameter `id` not provided ||
-|| Empty string | An error occurred while deleting the event | The user does not have access permission to the calendar, the calendar does not exist, or another error ||
+|| Empty value | Event id not specified | Required parameter `id` not provided ||
+|| Empty value | An error occurred while deleting the event | The user does not have access permission to the calendar, the calendar does not exist, or another error ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

@@ -14,7 +14,7 @@ Detailed information on working with events is described in the article [Concept
 
 ## How to Receive Events
 
-You can subscribe to section events through:
+You can subscribe to resource type events through:
 
 - [outgoing webhook](../../../../../local-integrations/local-webhooks.md)
 - [application](../../../../../settings/app-installation/index.md) and the method [event.bind](../../../../events/event-bind.md)
@@ -33,7 +33,7 @@ An example of a handler for the event is described in the article [How to Test Y
 
 #|
 || **Event** | **Triggered By** ||
-|| [onBookingResourceTypeAdd](./on-booking-resource-type-add.md) | When a resource type is created manually or by the method [booking.v1.resourcetype.add](../booking-v1-resourcetype-add.md) ||
-|| [onBookingResourceTypeUpdate](./on-booking-resource-type-update.md) | When a resource type is updated by the method [booking.v1.resourcetype.update](../booking-v1-resourcetype-update.md) ||
-|| [onBookingResourceTypeDelete](./on-booking-resource-type-delete.md) | When a resource type is deleted by the method [booking.v1.resourcetype.delete](../booking-v1-resourcetype-delete.md) ||
+|| [onBookingResourceTypeAdd](./on-booking-resource-type-add.md) | When a resource type is created manually or by the method [booking.v1.resourceType.add](../booking-v1-resourcetype-add.md) ||
+|| [onBookingResourceTypeUpdate](./on-booking-resource-type-update.md) | When a resource type is updated by the method [booking.v1.resourceType.update](../booking-v1-resourcetype-update.md) ||
+|| [onBookingResourceTypeDelete](./on-booking-resource-type-delete.md) | When a resource type is deleted by the method [booking.v1.resourceType.delete](../booking-v1-resourcetype-delete.md) ||
 |#

@@ -1,4 +1,4 @@
-# Move File to Trash disk.file.markdeleted
+# Move File to Trash disk.file.markDeleted
 
 {% note tip "" %}
 
@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: a user with "Edit" access permission for the specified file
 
-The method `disk.file.markdeleted` moves a file to the trash.
+The method `disk.file.markDeleted` moves a file to the trash.
 
 {% note info "" %}
 
@@ -28,7 +28,7 @@ Save the file ID after deletion so that it can be restored later using the [disk
 || **id***
 [`integer`](../../data-types.md) | File identifier.
 
-The identifier can be obtained using the [disk.storage.getchildren](../storage/disk-storage-get-children.md) method if the file is located at the root of the storage, and using the [disk.folder.getchildren](../folder/disk-folder-get-children.md) method if the file is located in a folder.
+The identifier can be obtained using the [disk.storage.getChildren](../storage/disk-storage-get-children.md) method if the file is located at the root of the storage, and using the [disk.folder.getChildren](../folder/disk-folder-get-children.md) method if the file is located in a folder.
 ||
 |#
 
@@ -45,7 +45,7 @@ The identifier can be obtained using the [disk.storage.getchildren](../storage/d
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"id":9037}' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/disk.file.markdeleted
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/disk.file.markDeleted
     ```
 
 - cURL (OAuth)
@@ -55,7 +55,7 @@ The identifier can be obtained using the [disk.storage.getchildren](../storage/d
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"id":9037,"auth":"**put_access_token_here**"}' \
-    https://**put_your_bitrix24_address**/rest/disk.file.markdeleted
+    https://**put_your_bitrix24_address**/rest/disk.file.markDeleted
     ```
 
 - JS (TS)
@@ -92,7 +92,7 @@ The identifier can be obtained using the [disk.storage.getchildren](../storage/d
 
     try {
       const response = await $b24.actions.v2.call.make<MarkDeletedResult>({
-        method: 'disk.file.markdeleted',
+        method: 'disk.file.markDeleted',
         params: {
           id: 9037,
         },
@@ -124,7 +124,7 @@ The identifier can be obtained using the [disk.storage.getchildren](../storage/d
           const $b24 = await B24Js.initializeB24Frame()
 
           const response = await $b24.actions.v2.call.make({
-            method: 'disk.file.markdeleted',
+            method: 'disk.file.markDeleted',
             params: {
               id: 9037,
             },
@@ -156,7 +156,7 @@ The identifier can be obtained using the [disk.storage.getchildren](../storage/d
         $response = $b24Service
             ->core
             ->call(
-                'disk.file.markdeleted',
+                'disk.file.markDeleted',
                 [
                     'id' => 9037
                 ]
@@ -179,7 +179,7 @@ The identifier can be obtained using the [disk.storage.getchildren](../storage/d
 
     ```js
     BX24.callMethod(
-        "disk.file.markdeleted",
+        "disk.file.markDeleted",
         {
             id: 9037
         },
@@ -199,7 +199,7 @@ The identifier can be obtained using the [disk.storage.getchildren](../storage/d
     require_once('crest.php');
 
     $result = CRest::call(
-        'disk.file.markdeleted',
+        'disk.file.markDeleted',
         [
             'id' => 9037
         ]

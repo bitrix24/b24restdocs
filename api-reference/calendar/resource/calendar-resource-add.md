@@ -211,7 +211,7 @@ HTTP status: **400**
 ```json
 {
     "error": "",
-    "error_description": "The required parameter "name" for the method "calendar.resource.add" is not set"
+    "error_description": "The required parameter \"name\" for the method \"calendar.resource.add\" is not set"
 }
 ```
 
@@ -221,9 +221,9 @@ HTTP status: **400**
 
 #|
 || **Code** | **Error Message** | **Description** ||
-|| Empty string | The required parameter "name" for the method "calendar.resource.add" is not set | The required parameter `name` was not provided ||
-|| Empty string | Access denied | The method is called by an external user or the user is not allowed to modify resources ||
-|| Empty string | An error occurred while creating the resource | Another error ||
+|| Empty value | The required parameter "name" for the method "calendar.resource.add" is not set | The required parameter `name` was not provided ||
+|| Empty value | Access denied | The method is called by an external user or the user is not allowed to modify resources ||
+|| Empty value | An error occurred while creating the resource | Another error ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

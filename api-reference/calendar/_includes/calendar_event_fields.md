@@ -106,7 +106,7 @@
 || **SYNC_STATUS**
 [`string`](../../data-types.md) | Synchronization status of the event ||
 || **UF_CRM_CAL_EVENT**
-[`array`](../../data-types.md) | Array of identifiers of CRM entities linked to the event ||
+[`array`](../../data-types.md) | Array of identifiers of CRM objects linked to the event ||
 || **UF_WEBDAV_CAL_EVENT**
 [`array`](../../data-types.md) | Array of identifiers of files linked to the event ||
 || **SECTION_DAV_XML_ID**
@@ -235,7 +235,7 @@
 || **Name**
 `type` | **Description** ||
 || **entityId**
-[`string`](../../data-types.md) | Type of the entity of the event participant ||
+[`string`](../../data-types.md) | Event participant object type ||
 || **id**
 [`integer`](../../data-types.md) | Identifier of the event participant ||
 |#

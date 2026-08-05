@@ -331,7 +331,7 @@ HTTP status: **400**
 ```json
 {
     "error": "",
-    "error_description": "The required parameter "id" for the method "calendar.event.getbyid" is not set"
+    "error_description": "The required parameter \"id\" for the method \"calendar.event.getbyid\" is not set"
 }
 ```
 
@@ -341,8 +341,8 @@ HTTP status: **400**
 
 #|
 || **Code** | **Error Message** | **Description** ||
-|| Empty string | The required parameter "id" for the method "calendar.event.getbyid" is not set | The required parameter `id` was not provided ||
-|| Empty string | Access denied | Access to the method is prohibited for external users ||
+|| Empty value | The required parameter "id" for the method "calendar.event.getbyid" is not set | The required parameter `id` was not provided ||
+|| Empty value | Access denied | Access to the method is prohibited for external users ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

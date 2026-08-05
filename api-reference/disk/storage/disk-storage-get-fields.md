@@ -1,4 +1,4 @@
-# Get Description of Storage Fields disk.storage.getfields
+# Get Description of Storage Fields disk.storage.getFields
 
 {% note tip "" %}
 
@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: any user
 
-The method `disk.storage.getfields` returns the description of storage fields.
+The method `disk.storage.getFields` returns the description of storage fields.
 
 ## Method Parameters
 
@@ -29,7 +29,7 @@ No parameters.
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{}' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/disk.storage.getfields
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/disk.storage.getFields
     ```
 
 - cURL (OAuth)
@@ -39,7 +39,7 @@ No parameters.
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"auth":"**put_access_token_here**"}' \
-    https://**put_your_bitrix24_address**/rest/disk.storage.getfields
+    https://**put_your_bitrix24_address**/rest/disk.storage.getFields
     ```
 
 - JS (TS)
@@ -63,7 +63,7 @@ No parameters.
 
     try {
       const response = await $b24.actions.v2.call.make<StorageFieldsResult>({
-        method: 'disk.storage.getfields',
+        method: 'disk.storage.getFields',
         params: {},
         requestId: Text.getUuidRfc4122()
       })
@@ -94,7 +94,7 @@ No parameters.
           const $b24 = await B24Js.initializeB24Frame()
 
           const response = await $b24.actions.v2.call.make({
-            method: 'disk.storage.getfields',
+            method: 'disk.storage.getFields',
             params: {},
             requestId: B24Js.Text.getUuidRfc4122()
           })
@@ -125,7 +125,7 @@ No parameters.
         $response = $b24Service
             ->core
             ->call(
-                'disk.storage.getfields',
+                'disk.storage.getFields',
                 []
             );
 
@@ -146,7 +146,7 @@ No parameters.
 
     ```js
     BX24.callMethod(
-        "disk.storage.getfields",
+        "disk.storage.getFields",
         {},
         function (result)
         {
@@ -164,7 +164,7 @@ No parameters.
     require_once('crest.php');
 
     $result = CRest::call(
-        'disk.storage.getfields',
+        'disk.storage.getFields',
         []
     );
 

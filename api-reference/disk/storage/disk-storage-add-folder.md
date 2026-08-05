@@ -1,4 +1,4 @@
-# Create a Folder in the Root of the Storage disk.storage.addfolder
+# Create a Folder in the Root of the Storage disk.storage.addFolder
 
 {% note tip "" %}
 
@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: user with "Add" access permission for the required storage
 
-The method `disk.storage.addfolder` creates a folder in the root of the storage.
+The method `disk.storage.addFolder` creates a folder in the root of the storage.
 
 ## Method Parameters
 
@@ -22,7 +22,7 @@ The method `disk.storage.addfolder` creates a folder in the root of the storage.
 || **id***
 [`integer`](../../data-types.md) | Identifier of the storage.
 
-The identifier can be obtained using the method [disk.storage.getlist](./disk-storage-get-list.md)
+The identifier can be obtained using the method [disk.storage.getList](./disk-storage-get-list.md)
 ||
 || **data***
 [`array`](../../data-types.md) | Array with the field `NAME`, where `NAME` is the name of the new folder ||
@@ -53,7 +53,7 @@ The list of available `TASK_ID` identifiers for setting permissions can be obtai
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"id":1357,"data":{"NAME":"Neuer Ordner"},"rights":[{"TASK_ID":71,"ACCESS_CODE":"U1271"}]}' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/disk.storage.addfolder
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/disk.storage.addFolder
     ```
 
 - cURL (OAuth)
@@ -63,7 +63,7 @@ The list of available `TASK_ID` identifiers for setting permissions can be obtai
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"id":1357,"data":{"NAME":"Neuer Ordner"},"rights":[{"TASK_ID":71,"ACCESS_CODE":"U1271"}],"auth":"**put_access_token_here**"}' \
-    https://**put_your_bitrix24_address**/rest/disk.storage.addfolder
+    https://**put_your_bitrix24_address**/rest/disk.storage.addFolder
     ```
 
 - JS (TS)
@@ -97,7 +97,7 @@ The list of available `TASK_ID` identifiers for setting permissions can be obtai
 
     try {
       const response = await $b24.actions.v2.call.make<AddFolderResult>({
-        method: 'disk.storage.addfolder',
+        method: 'disk.storage.addFolder',
         params: {
           id: 1357,
           data: {
@@ -138,7 +138,7 @@ The list of available `TASK_ID` identifiers for setting permissions can be obtai
           const $b24 = await B24Js.initializeB24Frame()
 
           const response = await $b24.actions.v2.call.make({
-            method: 'disk.storage.addfolder',
+            method: 'disk.storage.addFolder',
             params: {
               id: 1357,
               data: {
@@ -179,7 +179,7 @@ The list of available `TASK_ID` identifiers for setting permissions can be obtai
         $response = $b24Service
             ->core
             ->call(
-                'disk.storage.addfolder',
+                'disk.storage.addFolder',
                 [
                     'id' => 1357,
                     'data' => [
@@ -211,7 +211,7 @@ The list of available `TASK_ID` identifiers for setting permissions can be obtai
 
     ```js
     BX24.callMethod(
-        "disk.storage.addfolder",
+        "disk.storage.addFolder",
         {
             id: 1357,
             data: {
@@ -240,7 +240,7 @@ The list of available `TASK_ID` identifiers for setting permissions can be obtai
     require_once('crest.php');
 
     $result = CRest::call(
-        'disk.storage.addfolder',
+        'disk.storage.addFolder',
         [
             'id' => 1357,
             'data' => [

@@ -1,4 +1,4 @@
-# Create a Subfolder disk.folder.addsubfolder
+# Create a Subfolder disk.folder.addSubFolder
 
 {% note tip "" %}
 
@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: a user with "Add" or "Edit" access permission for the required folder
 
-The method `disk.folder.addsubfolder` creates a subfolder.
+The method `disk.folder.addSubFolder` creates a subfolder.
 
 ## Method Parameters
 
@@ -22,7 +22,7 @@ The method `disk.folder.addsubfolder` creates a subfolder.
 || **id***
 [`integer`](../../data-types.md) | Identifier of the parent folder.
 
-The identifier can be obtained using the method [disk.storage.getchildren](../storage/disk-storage-get-children.md) if the folder is in the root of the storage, and using the method [disk.folder.getchildren](./disk-folder-get-children.md) if the folder is in another folder
+The identifier can be obtained using the method [disk.storage.getChildren](../storage/disk-storage-get-children.md) if the folder is in the root of the storage, and using the method [disk.folder.getChildren](./disk-folder-get-children.md) if the folder is in another folder
 ||
 || **data***
 [`array`](../../data-types.md) | An array with the field `NAME`, where `NAME` is the name of the subfolder ||
@@ -30,7 +30,7 @@ The identifier can be obtained using the method [disk.storage.getchildren](../st
 
 {% note info "" %}
 
-To manage access to the created folder, use the method [disk.folder.sharetouser](./disk-folder-share-to-user.md)
+To manage access to the created folder, use the method [disk.folder.shareToUser](./disk-folder-share-to-user.md)
 
 {% endnote %} 
 
@@ -47,7 +47,7 @@ To manage access to the created folder, use the method [disk.folder.sharetouser]
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"id":8907,"data":{"NAME":"Folder in Folder"}}' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/disk.folder.addsubfolder
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/disk.folder.addSubFolder
     ```
 
 - cURL (OAuth)
@@ -57,7 +57,7 @@ To manage access to the created folder, use the method [disk.folder.sharetouser]
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"id":8907,"data":{"NAME":"Folder in Folder"},"auth":"**put_access_token_here**"}' \
-    https://**put_your_bitrix24_address**/rest/disk.folder.addsubfolder
+    https://**put_your_bitrix24_address**/rest/disk.folder.addSubFolder
     ```
 
 - JS (TS)
@@ -91,7 +91,7 @@ To manage access to the created folder, use the method [disk.folder.sharetouser]
 
     try {
       const response = await $b24.actions.v2.call.make<AddSubfolderResult>({
-        method: 'disk.folder.addsubfolder',
+        method: 'disk.folder.addSubFolder',
         params: {
           id: 8907,
           data: {
@@ -126,7 +126,7 @@ To manage access to the created folder, use the method [disk.folder.sharetouser]
           const $b24 = await B24Js.initializeB24Frame()
 
           const response = await $b24.actions.v2.call.make({
-            method: 'disk.folder.addsubfolder',
+            method: 'disk.folder.addSubFolder',
             params: {
               id: 8907,
               data: {
@@ -161,7 +161,7 @@ To manage access to the created folder, use the method [disk.folder.sharetouser]
         $response = $b24Service
             ->core
             ->call(
-                'disk.folder.addsubfolder',
+                'disk.folder.addSubFolder',
                 [
                     'id' => 8907,
                     'data' => [
@@ -187,7 +187,7 @@ To manage access to the created folder, use the method [disk.folder.sharetouser]
 
     ```js
     BX24.callMethod(
-        "disk.folder.addsubfolder",
+        "disk.folder.addSubFolder",
         {
             id: 8907,
             data: {
@@ -209,7 +209,7 @@ To manage access to the created folder, use the method [disk.folder.sharetouser]
     require_once('crest.php');
 
     $result = CRest::call(
-        'disk.folder.addsubfolder',
+        'disk.folder.addSubFolder',
         [
             'id' => 8907,
             'data' => [

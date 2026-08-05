@@ -8,21 +8,32 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 Slots are time intervals during which a resource can be reserved.
 
-> Quick navigation: [all methods](#all-methods) 
+> Quick navigation: [all methods](#all-methods)
 
-## Connection of Slots with Other Objects
+## How to Start
+
+1. Retrieve the resource `id` using [booking.v1.resource.list](../booking-v1-resource-list.md)
+2. Set the resource slots using [booking.v1.resource.slots.set](./booking-v1-resource-slots-set.md)
+3. Check the slot settings using [booking.v1.resource.slots.list](./booking-v1-resource-slots-list.md)
+4. Delete the slot settings using [booking.v1.resource.slots.unset](./booking-v1-resource-slots-unset.md) if the resource no longer needs to be bookable
+
+## Relationship with Other Objects
 
 **Resource.** To specify time intervals for booking, provide the `id` of the resource in the `resourceId` parameter of the [booking.v1.resource.slots.set](./booking-v1-resource-slots-set.md) method.
 
 ## Features of Slots
 
-Slots have three time parameters: the availability period of the resource `from` and `to`, and the duration of the booking `slotSize`. The time parameters accept and return values in minutes. Calculate time from the start of the day at 0:00. To convert hours to minutes, use the formula `hours × 60 = minutes`, for example, 14:00 = 14 × 60 = 840 minutes:
+Slots have three time parameters: the resource availability period `from` and `to`, and the booking duration `slotSize`. The time parameters accept and return values in minutes.
 
-- `from: 540` — booking time is available from 9:00,
+Calculate the start of the day from 0:00. To convert hours to minutes, use the formula `hours × 60 = minutes`. For example, 14:00 = 14 × 60 = 840 minutes.
 
-- `to: 1080` — booking time is available until 18:00,
+- `from: 540` — time available for booking from 9:00
 
-- `slotSize: 60` — duration of the booking is 1 hour.
+- `to: 1080` — time available for booking until 18:00
+
+- `slotSize: 60` — booking duration is 1 hour
+
+A resource can have one or several intervals per day: morning and evening, for example. Configure each interval separately so that the client can choose only an available time slot.
 
 ## Overview of Methods {#all-methods}
 

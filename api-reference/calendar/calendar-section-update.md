@@ -299,7 +299,7 @@ HTTP Status: **400**
 ```json
 {
     "error": "",
-    "error_description": "The required parameter "type" for the method "calendar.section.update" is not set"
+    "error_description": "The required parameter \"type\" for the method \"calendar.section.update\" is not set"
 }
 ```
 
@@ -309,13 +309,13 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Error Message** | **Description** ||
-|| Empty string | The required parameter "type" for the method "calendar.section.update" is not set | The required parameter `type` is missing ||
-|| Empty string | The required parameter "ownerId" for the method "calendar.section.update" is not set | The required parameter `ownerId` is missing and the `type` parameter is not equal to 'user' ||
-|| Empty string | Section ID is not set | The required parameter `id` is missing ||
-|| Empty string | Invalid value for the "name" parameter | Incorrect data format in the `name` field ||
-|| Empty string | Invalid value for the "description" parameter | Incorrect data format in the `description` field ||
-|| Empty string | Access denied | The calendar with the specified `id` does not exist or there are no rights to edit the calendar ||
-|| Empty string | An error occurred while updating the section | Another error ||
+|| Empty value | The required parameter "type" for the method "calendar.section.update" is not set | The required parameter `type` is missing ||
+|| Empty value | The required parameter "ownerId" for the method "calendar.section.update" is not set | The required parameter `ownerId` is missing and the `type` parameter is not equal to `user` ||
+|| Empty value | Section ID is not set | The required parameter `id` is missing ||
+|| Empty value | Invalid value for the "name" parameter | Incorrect data format in the `name` field ||
+|| Empty value | Invalid value for the "description" parameter | Incorrect data format in the `description` field ||
+|| Empty value | Access denied | The calendar with the specified `id` does not exist or there are no rights to edit the calendar ||
+|| Empty value | An error occurred while updating the section | Another error ||
 |#
 
 {% include [system errors](../../_includes/system-errors.md) %}

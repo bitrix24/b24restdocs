@@ -909,7 +909,7 @@ HTTP Status: **400**
 ```json
 {
     "error": "",
-    "error_description": "The required parameter "name" for the method "calendar.event.add" is not set"
+    "error_description": "The required parameter \"name\" for the method \"calendar.event.add\" is not set"
 }
 ```
 {% include notitle [error handling](../../../_includes/error-info.md) %}
@@ -918,17 +918,17 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Error Message** | **Description** ||
-|| Empty string | The required parameter "type" for the method "calendar.event.add" is not set | The required parameter `type` is not passed ||
-|| Empty string | The required parameter "ownerId" for the method "calendar.event.add" is not set | The required parameter `ownerId` is not passed ||
-|| Empty string | The required parameter "name" for the method "calendar.event.add" is not set | The required parameter `name` is not passed ||
-|| Empty string | The required parameter "from" for the method "calendar.event.add" is not set | The required parameter `from` or `from_ts` is not passed ||
-|| Empty string | The required parameter "to" for the method "calendar.event.add" is not set | The required parameter `to` or `to_ts` is not passed ||
-|| Empty string | Invalid value for the parameter "name" | Incorrect data format in the `name` field ||
-|| Empty string | Invalid value for the parameter "description" | Incorrect data format in the `description` field ||
-|| Empty string | Access denied | Creation of events in the specified calendar is prohibited ||
-|| Empty string | You specified an invalid calendar section ID or the user does not have access to it | An identifier of an inaccessible or non-existent calendar is passed ||
-|| Empty string | The list of event links to CRM must be an array | Incorrect data format in the `crm_fields` field ||
-|| Empty string | An error occurred while creating the event | Another error ||
+|| Empty value | The required parameter "type" for the method "calendar.event.add" is not set | The required parameter `type` is not passed ||
+|| Empty value | The required parameter "ownerId" for the method "calendar.event.add" is not set | The required parameter `ownerId` is not passed ||
+|| Empty value | The required parameter "name" for the method "calendar.event.add" is not set | The required parameter `name` is not passed ||
+|| Empty value | The required parameter "from" for the method "calendar.event.add" is not set | The required parameter `from` or `from_ts` is not passed ||
+|| Empty value | The required parameter "to" for the method "calendar.event.add" is not set | The required parameter `to` or `to_ts` is not passed ||
+|| Empty value | Invalid value for the parameter "name" | Incorrect data format in the `name` field ||
+|| Empty value | Invalid value for the parameter "description" | Incorrect data format in the `description` field ||
+|| Empty value | Access denied | Creation of events in the specified calendar is prohibited ||
+|| Empty value | You specified an invalid calendar section ID or the user does not have access to it | An identifier of an inaccessible or non-existent calendar is passed ||
+|| Empty value | The list of event links to CRM must be an array | Incorrect data format in the `crm_fields` field ||
+|| Empty value | An error occurred while creating the event | Another error ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

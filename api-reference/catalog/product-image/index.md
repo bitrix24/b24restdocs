@@ -7,25 +7,28 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 {% endnote %}
 
 Different types of images can be added to products and variations:
-- `DETAIL_PICTURE` — detailed image, the field is available in the old product card,
-- `PREVIEW_PICTURE` — preview image, the field is available in the old product card,
-- `MORE_PHOTO` — additional images.
+
+- `DETAIL_PICTURE` — detailed image, the field is available in the old product card
+- `PREVIEW_PICTURE` — preview image, the field is available in the old product card
+- `MORE_PHOTO` — additional images
+
+> Quick navigation: [all methods](#all-methods)
 
 ## How to Add an Image to a Created Product
 
 To add or replace an image for a created product, use the methods [catalog.productImage.*](#all-methods). Specify the image type and pass an array of two elements in the `fileContent` parameter:
-- the name of the image file with its extension,
-- the file in base64 encoding.
+
+- the name of the image file with its extension
+- the file in base64 encoding
 
 If the image type is not specified, it will be saved as an additional image `MORE_PHOTO`.
-
-> Quick link: [all methods](#all-methods)
 
 ## How to Add an Image When Creating a Product
 
 Use the method [catalog.product.add](../product/catalog-product-add.md) and pass an object in the format `{fileData: [value1, value2]}` to the `previewPicture` or `detailPicture` parameters:
-- `value1` — the name of the image file with its extension,
-- `value2` — the file in base64 encoding.
+
+- `value1` — the name of the image file with its extension
+- `value2` — the file in base64 encoding
 
 {% note tip "Typical use-cases and scenarios" %}
 
@@ -33,9 +36,10 @@ Use the method [catalog.product.add](../product/catalog-product-add.md) and pass
 
 {% endnote %}
 
-## Linking Product and Variation Images with Other Objects
+## Relationship with Other Objects
 
 **Products.** Specify the product ID for which you want to add an image. The list of IDs can be obtained using the methods:
+
 - [catalog.product.list](../product/catalog-product-list.md) — for simple products
 - [catalog.product.service.list](../product/service/catalog-product-service-list.md) — for services
 - [catalog.product.sku.list](../product/sku/catalog-product-sku-list.md) — for parent products of products with variations

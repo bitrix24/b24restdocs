@@ -14,7 +14,7 @@ Detailed information on working with events is described in the article [Concept
 
 ## How to Receive Events
 
-You can subscribe to events in the section through:
+You can subscribe to resource events through:
 
 - [outgoing webhook](../../../../local-integrations/local-webhooks.md)
 - [application](../../../../settings/app-installation/index.md) and the method [event.bind](../../../events/event-bind.md)

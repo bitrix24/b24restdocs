@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can subscribe: any user
 
-The event `ONBOOKINGRESOURCETYPEUPDATE` will trigger when the resource type is updated using the [booking.v1.resourcetype.update](../booking-v1-resourcetype-update.md) method.
+The event `ONBOOKINGRESOURCETYPEUPDATE` will trigger when the resource type is updated using the [booking.v1.resourceType.update](../booking-v1-resourcetype-update.md) method.
 
 {% note info "" %}
 

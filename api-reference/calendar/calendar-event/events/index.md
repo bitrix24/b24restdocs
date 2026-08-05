@@ -1,4 +1,4 @@
-# Overview of Events When Working with Calendar Events
+# Calendar Event Events: Overview of Events
 
 {% note tip "" %}
 
@@ -11,13 +11,15 @@ Events allow applications to respond to changes almost in real-time: receiving n
 Detailed information on working with events is described in the article [Concept and Benefits of Event Processing](../../../events/index.md).
 
 > Quick navigation: [all events](#all-events)
+>
+> User documentation: [How to Create an Event in the Calendar](https://helpdesk.bitrix24.com/open/21307284/)
 
 ## How to Receive Events
 
-You can subscribe to task events through:
+You can subscribe to calendar events through:
 
--  [outgoing webhook](../../../../local-integrations/local-webhooks.md)
--  [application](../../../../settings/app-installation/index.md) and the method [event.bind](../../../events/event-bind.md)
+- [outgoing webhook](../../../../local-integrations/local-webhooks.md)
+- [application](../../../../settings/app-installation/index.md) and the method [event.bind](../../../events/event-bind.md)
 
 An example of a handler code for the event is described in the article [How to Test Your Handler for Processing Bitrix24 Events](../../../events/test-handler.md).
 

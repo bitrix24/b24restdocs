@@ -10,9 +10,16 @@ You can link additional objects to a waitlist entry. This helps synchronize sale
 
 > Quick navigation: [all methods](#all-methods)
 
-## Connection to Objects
+## How to Start
 
-**Waitlist.** To create a new link for a waitlist entry, specify the `ID` of the entry in the `waitListId` parameter. You can obtain the `ID` using the [creation](../booking-v1-waitlist-add.md) or [filtering](../booking-v1-waitlist-list.md) methods.
+1. Create a waitlist entry using the [booking.v1.waitlist.*](../index.md) methods
+2. Retrieve the CRM deal `ID`
+3. Link the deal using [booking.v1.waitlist.externalData.set](./booking-v1-waitlist-externaldata-set.md)
+4. Check the linked data using [booking.v1.waitlist.externalData.list](./booking-v1-waitlist-externaldata-list.md)
+
+## Relationship with Other Objects
+
+**Waitlist.** To link data to a waitlist entry, specify the entry `ID` in the `waitListId` parameter. You can obtain the `ID` using [booking.v1.waitlist.add](../booking-v1-waitlist-add.md) or [booking.v1.waitlist.list](../booking-v1-waitlist-list.md).
 
 {% note info "" %}
 
@@ -24,7 +31,7 @@ Currently, only CRM deals can be linked to a waitlist entry. Other modules and o
 
 ## Overview of Methods {#all-methods}
 
-> Scope: [`booking`](../../../scopes/permissions)
+> Scope: [`booking`](../../../scopes/permissions.md)
 >
 > Who can perform the methods: any user
 

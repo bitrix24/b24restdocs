@@ -10,11 +10,18 @@ A price type is an object in the Trade Catalog that allows management of various
 
 One of the price types must be designated as the base type. The base price type cannot be deleted.
 
-> Quick navigation: [all methods and events](#all-methods) 
+> Quick navigation: [all methods and events](#all-methods)
 
-## Relationship of Price Type with Other Objects
+## How to Start
 
-**Price.** When creating a price, you must specify its type. You can set and change the price using the methods [catalog.price.*](../price/index.md). 
+1. Create a price type using [catalog.priceType.add](./catalog-price-type-add.md)
+2. Add name translations using [catalog.priceTypeLang.*](./price-type-lang/index.md), if needed
+3. Configure customer group access using [catalog.priceTypeGroup.*](./price-type-group/index.md)
+4. Use the price type when creating a price using [catalog.price.add](../price/catalog-price-add.md)
+
+## Relationship with Other Objects
+
+**Price.** When creating a price, you must specify its type. You can set and change the price using the methods [catalog.price.*](../price/index.md).
 
 **Price Rounding Rules.** Set rounding parameters for each price type using the methods [catalog.roundingRule.*](../rounding-rule/index.md).
 

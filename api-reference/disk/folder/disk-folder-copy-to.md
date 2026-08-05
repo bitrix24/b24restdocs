@@ -1,4 +1,4 @@
-# Copy a folder and all its contents to the specified folder disk.folder.copyto
+# Copy a folder and all its contents to the specified folder disk.folder.copyTo
 
 {% note tip "" %}
 
@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: a user with "Read" permission for the source folder and "Add" permission for the target folder
 
-The method `disk.folder.copyto` copies a folder and all its contents to the specified folder.
+The method `disk.folder.copyTo` copies a folder and all its contents to the specified folder.
 
 ## Method Parameters
 
@@ -22,7 +22,7 @@ The method `disk.folder.copyto` copies a folder and all its contents to the spec
 || **id***
 [`integer`](../../data-types.md) | Identifier of the source folder to be copied.
 
-The identifier can be obtained using the method [disk.storage.getchildren](../storage/disk-storage-get-children.md) if the folder is in the root of the storage, and using the method [disk.folder.getchildren](./disk-folder-get-children.md) if the folder is in another folder
+The identifier can be obtained using the method [disk.storage.getChildren](../storage/disk-storage-get-children.md) if the folder is in the root of the storage, and using the method [disk.folder.getChildren](./disk-folder-get-children.md) if the folder is in another folder
 ||
 || **targetFolderId***
 [`integer`](../../data-types.md) | Identifier of the target folder where the folder is copied ||
@@ -41,7 +41,7 @@ The identifier can be obtained using the method [disk.storage.getchildren](../st
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"id":8930,"targetFolderId":8895}' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/disk.folder.copyto
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/disk.folder.copyTo
     ```
 
 - cURL (OAuth)
@@ -51,7 +51,7 @@ The identifier can be obtained using the method [disk.storage.getchildren](../st
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"id":8930,"targetFolderId":8895,"auth":"**put_access_token_here**"}' \
-    https://**put_your_bitrix24_address**/rest/disk.folder.copyto
+    https://**put_your_bitrix24_address**/rest/disk.folder.copyTo
     ```
 
 - JS (TS)
@@ -85,7 +85,7 @@ The identifier can be obtained using the method [disk.storage.getchildren](../st
 
     try {
       const response = await $b24.actions.v2.call.make<FolderCopyToResult>({
-        method: 'disk.folder.copyto',
+        method: 'disk.folder.copyTo',
         params: {
           id: 8930,
           targetFolderId: 8895,
@@ -118,7 +118,7 @@ The identifier can be obtained using the method [disk.storage.getchildren](../st
           const $b24 = await B24Js.initializeB24Frame()
 
           const response = await $b24.actions.v2.call.make({
-            method: 'disk.folder.copyto',
+            method: 'disk.folder.copyTo',
             params: {
               id: 8930,
               targetFolderId: 8895,
@@ -151,7 +151,7 @@ The identifier can be obtained using the method [disk.storage.getchildren](../st
         $response = $b24Service
             ->core
             ->call(
-                'disk.folder.copyto',
+                'disk.folder.copyTo',
                 [
                     'id' => 8930,
                     'targetFolderId' => 8895
@@ -175,7 +175,7 @@ The identifier can be obtained using the method [disk.storage.getchildren](../st
 
     ```js
     BX24.callMethod(
-        "disk.folder.copyto",
+        "disk.folder.copyTo",
         {
             id: 8930,
             targetFolderId: 8895
@@ -195,7 +195,7 @@ The identifier can be obtained using the method [disk.storage.getchildren](../st
     require_once('crest.php');
 
     $result = CRest::call(
-        'disk.folder.copyto',
+        'disk.folder.copyTo',
         [
             'id' => 8930,
             'targetFolderId' => 8895

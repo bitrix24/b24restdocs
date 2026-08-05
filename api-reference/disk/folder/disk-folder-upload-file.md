@@ -1,4 +1,4 @@
-# Upload a New File to the Specified Folder disk.folder.uploadfile
+# Upload a New File to the Specified Folder disk.folder.uploadFile
 
 {% note tip "" %}
 
@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: a user with "Add" access permission for the required folder
 
-The method `disk.folder.uploadfile` uploads a new file to the specified folder.
+The method `disk.folder.uploadFile` uploads a new file to the specified folder.
 
 ## Method Parameters
 
@@ -22,7 +22,7 @@ The method `disk.folder.uploadfile` uploads a new file to the specified folder.
 || **id***
 [`integer`](../../data-types.md) | Identifier of the folder where the file needs to be uploaded.
 
-The identifier can be obtained using the method [disk.storage.getchildren](../storage/disk-storage-get-children.md) if the folder is in the root of the storage, and using the method [disk.folder.getchildren](./disk-folder-get-children.md) if the folder is in another folder
+The identifier can be obtained using the method [disk.storage.getChildren](../storage/disk-storage-get-children.md) if the folder is in the root of the storage, and using the method [disk.folder.getChildren](./disk-folder-get-children.md) if the folder is in another folder
 ||
 || **data***
 [`array`](../../data-types.md) | An array with the field `NAME`, where `NAME` is the name of the file.
@@ -69,7 +69,7 @@ Default is `false` ||
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"id":8930,"data":{"NAME":"test.png"},"fileContent":["test.png","iVBORw0KGgoAAAANSUhEUgAAAD4AAABDCAYAAADEfbZbAAAACXBIWXMAABJ0AAASdAHeZh94...rk5CYII="],"generateUniqueName":true,"rights":[{"TASK_ID":75,"ACCESS_CODE":"U1271"}]}' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/disk.folder.uploadfile
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/disk.folder.uploadFile
     ```
 
 - cURL (OAuth)
@@ -79,7 +79,7 @@ Default is `false` ||
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"id":8930,"data":{"NAME":"test.png"},"fileContent":["test.png","iVBORw0KGgoAAAANSUhEUgAAAD4AAABDCAYAAADEfbZbAAAACXBIWXMAABJ0AAASdAHeZh94...rk5CYII="],"generateUniqueName":true,"rights":[{"TASK_ID":75,"ACCESS_CODE":"U1271"}],"auth":"**put_access_token_here**"}' \
-    https://**put_your_bitrix24_address**/rest/disk.folder.uploadfile
+    https://**put_your_bitrix24_address**/rest/disk.folder.uploadFile
     ```
 
 - JS (TS)
@@ -116,7 +116,7 @@ Default is `false` ||
 
     try {
       const response = await $b24.actions.v2.call.make<UploadFileResult>({
-        method: 'disk.folder.uploadfile',
+        method: 'disk.folder.uploadFile',
         params: {
           id: 8930,
           data: {
@@ -162,7 +162,7 @@ Default is `false` ||
           const $b24 = await B24Js.initializeB24Frame()
 
           const response = await $b24.actions.v2.call.make({
-            method: 'disk.folder.uploadfile',
+            method: 'disk.folder.uploadFile',
             params: {
               id: 8930,
               data: {
@@ -208,7 +208,7 @@ Default is `false` ||
         $response = $b24Service
             ->core
             ->call(
-                'disk.folder.uploadfile',
+                'disk.folder.uploadFile',
                 [
                     'id' => 8930,
                     'data' => [
@@ -245,7 +245,7 @@ Default is `false` ||
 
     ```js
     BX24.callMethod(
-        "disk.folder.uploadfile",
+        "disk.folder.uploadFile",
         {
             id: 8930,
             data: {
@@ -279,7 +279,7 @@ Default is `false` ||
     require_once('crest.php');
 
     $result = CRest::call(
-        'disk.folder.uploadfile',
+        'disk.folder.uploadFile',
         [
             'id' => 8930,
             'data' => [
@@ -319,7 +319,7 @@ Default is `false` ||
         -H "Content-Type: application/json" \
         -H "Accept: application/json" \
         -d '{"id":8930}' \
-        https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/disk.folder.uploadfile
+        https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/disk.folder.uploadFile
         ```
 
     - cURL (OAuth)
@@ -329,7 +329,7 @@ Default is `false` ||
         -H "Content-Type: application/json" \
         -H "Accept: application/json" \
         -d '{"id":8930,"auth":"**put_access_token_here**"}' \
-        https://**put_your_bitrix24_address**/rest/disk.folder.uploadfile
+        https://**put_your_bitrix24_address**/rest/disk.folder.uploadFile
         ```
 
     - JS
@@ -338,7 +338,7 @@ Default is `false` ||
         try
         {
             const response = await $b24.callMethod(
-                'disk.folder.uploadfile',
+                'disk.folder.uploadFile',
                 {
                     id: 8930,
                 }
@@ -362,7 +362,7 @@ Default is `false` ||
             $response = $b24Service
                 ->core
                 ->call(
-                    'disk.folder.uploadfile',
+                    'disk.folder.uploadFile',
                     [
                         'id' => 8930
                     ]
@@ -385,7 +385,7 @@ Default is `false` ||
 
         ```js
         BX24.callMethod(
-            "disk.folder.uploadfile",
+            "disk.folder.uploadFile",
             {
                 id: 8930
             },
@@ -405,7 +405,7 @@ Default is `false` ||
         require_once('crest.php');
 
         $result = CRest::call(
-            'disk.folder.uploadfile',
+            'disk.folder.uploadFile',
             [
                 'id' => 8930
             ]
@@ -462,7 +462,7 @@ Default is `false` ||
     if (file_exists($path))
     {
         $file = CRest::call(
-            'disk.folder.uploadfile',
+            'disk.folder.uploadFile',
             [
                 'id' => $folderId,
             ]

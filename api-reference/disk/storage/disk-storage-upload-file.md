@@ -1,4 +1,4 @@
-# Upload a New File to the Root of the Storage disk.storage.uploadfile
+# Upload a New File to the Root of the Storage disk.storage.uploadFile
 
 {% note tip "" %}
 
@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: a user with "Add" access permission for the required storage
 
-The method `disk.storage.uploadfile` uploads a new file to the root of the storage.
+The method `disk.storage.uploadFile` uploads a new file to the root of the storage.
 
 ## Method Parameters
 
@@ -22,7 +22,7 @@ The method `disk.storage.uploadfile` uploads a new file to the root of the stora
 || **id***
 [`integer`](../../data-types.md) | Identifier of the storage where the file needs to be uploaded.
 
-The identifier can be obtained using the method [disk.storage.getlist](../storage/disk-storage-get-list.md)
+The identifier can be obtained using the method [disk.storage.getList](../storage/disk-storage-get-list.md)
 ||
 || **data***
 [`array`](../../data-types.md) | An array with the field `NAME`, where `NAME` is the name of the file ||
@@ -63,7 +63,7 @@ Default is `false` ||
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"id":1357,"data":{"NAME":"picture.png"},"fileContent":["picture.png","iVBORw0KGgoAAAANSUhEUgAAAD4AAABDCAYAAADEfbZbAAAACXBIWXMAABJ0AAASdAHeZh94...RK5CYII="],"generateUniqueName":true,"rights":[{"TASK_ID":79,"ACCESS_CODE":"U1271"}]}' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/disk.storage.uploadfile
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/disk.storage.uploadFile
     ```
 
 - cURL (OAuth)
@@ -73,7 +73,7 @@ Default is `false` ||
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"id":1357,"data":{"NAME":"picture.png"},"fileContent":["picture.png","iVBORw0KGgoAAAANSUhEUgAAAD4AAABDCAYAAADEfbZbAAAACXBIWXMAABJ0AAASdAHeZh94...RK5CYII="],"generateUniqueName":true,"rights":[{"TASK_ID":79,"ACCESS_CODE":"U1271"}],"auth":"**put_access_token_here**"}' \
-    https://**put_your_bitrix24_address**/rest/disk.storage.uploadfile
+    https://**put_your_bitrix24_address**/rest/disk.storage.uploadFile
     ```
 
 - JS (TS)
@@ -110,7 +110,7 @@ Default is `false` ||
 
     try {
       const response = await $b24.actions.v2.call.make<UploadFileResult>({
-        method: 'disk.storage.uploadfile',
+        method: 'disk.storage.uploadFile',
         params: {
           id: 1357,
           data: {
@@ -156,7 +156,7 @@ Default is `false` ||
           const $b24 = await B24Js.initializeB24Frame()
 
           const response = await $b24.actions.v2.call.make({
-            method: 'disk.storage.uploadfile',
+            method: 'disk.storage.uploadFile',
             params: {
               id: 1357,
               data: {
@@ -202,7 +202,7 @@ Default is `false` ||
         $response = $b24Service
             ->core
             ->call(
-                'disk.storage.uploadfile',
+                'disk.storage.uploadFile',
                 [
                     'id' => 1357,
                     'data' => [
@@ -239,7 +239,7 @@ Default is `false` ||
 
     ```js
     BX24.callMethod(
-        "disk.storage.uploadfile",
+        "disk.storage.uploadFile",
         {
             id: 1357,
             data: {
@@ -273,7 +273,7 @@ Default is `false` ||
     require_once('crest.php');
 
     $result = CRest::call(
-        'disk.storage.uploadfile',
+        'disk.storage.uploadFile',
         [
             'id' => 1357,
             'data' => [

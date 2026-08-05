@@ -307,7 +307,7 @@ HTTP status: **400**
 
 #|
 || **Code** | **Error message** | **Description** ||
-|| empty string | Access denied | Access to the calendar type is restricted or the user has not activated the calendar functionality ||
+|| Empty value | Access denied | Access to the calendar type is restricted or the user has not activated the calendar functionality ||
 |#
 
 {% include [System errors](../../../_includes/system-errors.md) %}

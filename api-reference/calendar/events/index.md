@@ -1,4 +1,4 @@
-# Overview of Events When Working with Calendar Sections or Resources
+# Calendar Section and Resource Events: Overview of Events
 
 {% note tip "" %}
 
@@ -11,13 +11,15 @@ Events allow applications to respond to changes almost in real-time: receiving n
 Detailed information on working with events is described in the article [Concept and Benefits of Event Handling](../../events/index.md).
 
 > Quick navigation: [all events](#all-events)
+>
+> User documentation: [Bitrix24 Calendar](https://helpdesk.bitrix24.com/section/47483/)
 
 ## How to Receive Events
 
-You can subscribe to task events through:
+You can subscribe to calendar events through:
 
--  [outgoing webhook](../../../local-integrations/local-webhooks.md)
--  [application](../../../settings/app-installation/index.md) and the method [event.bind](../../events/event-bind.md)
+- [outgoing webhook](../../../local-integrations/local-webhooks.md)
+- [application](../../../settings/app-installation/index.md) and the method [event.bind](../../events/event-bind.md)
 
 An example of a handler code for the event is described in the article [How to Test Your Handler for Handling Bitrix24 Events](../../events/test-handler.md).
 
@@ -36,10 +38,10 @@ An example of a handler code for the event is described in the article [How to T
 || [OnCalendarSectionAdd](./on-calendar-section-add.md) |
 - When a calendar section is added manually or by the method [calendar.section.add](../calendar-section-add.md)
 - When a resource is added manually or by the method [calendar.resource.add](../resource/calendar-resource-add.md) ||
-|| [OnCalendarSectionUpdate](./on-calendar-section-update.md) | 
+|| [OnCalendarSectionUpdate](./on-calendar-section-update.md) |
 - When a calendar section is modified manually or by the method [calendar.section.update](../calendar-section-update.md)
 - When a resource is modified manually or by the method [calendar.resource.update](../resource/calendar-resource-update.md) ||
-|| [OnCalendarSectionDelete](./on-calendar-section-delete.md) | 
+|| [OnCalendarSectionDelete](./on-calendar-section-delete.md) |
 - When a calendar section is deleted manually or by the method [calendar.section.delete](../calendar-section-delete.md)
 - When a resource is deleted manually or by the method [calendar.resource.delete](../resource/calendar-resource-delete.md) ||
 |#

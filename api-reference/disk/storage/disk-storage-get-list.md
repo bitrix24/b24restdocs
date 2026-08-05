@@ -1,4 +1,4 @@
-# Get a List of Available Storages disk.storage.getlist
+# Get a List of Available Storages disk.storage.getList
 
 {% note tip "" %}
 
@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: any user
 
-The method `disk.storage.getlist` returns a list of available storages.
+The method `disk.storage.getList` returns a list of available storages.
 
 ## Method Parameters
 
@@ -53,7 +53,7 @@ Possible prefix values:
 - `!=` — not equal
 - `!` — not equal
 
-The list of fields available for filtering can be obtained using the method [disk.storage.getfields](./disk-storage-get-fields.md) ||
+The list of fields available for filtering can be obtained using the method [disk.storage.getFields](./disk-storage-get-fields.md) ||
 || **order**
 [`array`](../../data-types.md) | Array format:
 
@@ -72,7 +72,7 @@ where:
     - `ASC` — ascending sort
     - `DESC` — descending sort
 
-The list of fields available for sorting can be obtained using the method [disk.storage.getfields](./disk-storage-get-fields.md) ||
+The list of fields available for sorting can be obtained using the method [disk.storage.getFields](./disk-storage-get-fields.md) ||
 || **start**
 [`integer`](../../data-types.md) | This parameter is used to manage pagination.
 
@@ -98,7 +98,7 @@ The formula for calculating the `start` parameter value:
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"filter":{"NAME":"%Bitrix24%"},"order":{"NAME":"DESC"}}' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/disk.storage.getlist
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/disk.storage.getList
     ```
 
 - cURL (OAuth)
@@ -108,7 +108,7 @@ The formula for calculating the `start` parameter value:
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"filter":{"NAME":"%Bitrix24%"},"order":{"NAME":"DESC"},"auth":"**put_access_token_here**"}' \
-    https://**put_your_bitrix24_address**/rest/disk.storage.getlist
+    https://**put_your_bitrix24_address**/rest/disk.storage.getList
     ```
 
 - JS (TS)
@@ -133,13 +133,13 @@ The formula for calculating the `start` parameter value:
     }
 
     try {
-      // disk.storage.getlist returns a single page (max 50 records). For the whole result set
+      // disk.storage.getList returns a single page (max 50 records). For the whole result set
       // use a list helper: $b24.actions.v2.callList.make() returns every record as one
       // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
       // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
       // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
       const response = await $b24.actions.v2.call.make<StorageItem[]>({
-        method: 'disk.storage.getlist',
+        method: 'disk.storage.getList',
         params: {
           filter: {
             NAME: '%Bitrix24%',
@@ -176,13 +176,13 @@ The formula for calculating the `start` parameter value:
           // Initialize the SDK inside a Bitrix24 frame
           const $b24 = await B24Js.initializeB24Frame()
 
-          // disk.storage.getlist returns a single page (max 50 records). For the whole result set
+          // disk.storage.getList returns a single page (max 50 records). For the whole result set
           // use a list helper: $b24.actions.v2.callList.make() returns every record as one
           // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
           // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
           // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
           const response = await $b24.actions.v2.call.make({
-            method: 'disk.storage.getlist',
+            method: 'disk.storage.getList',
             params: {
               filter: {
                 NAME: '%Bitrix24%',
@@ -220,7 +220,7 @@ The formula for calculating the `start` parameter value:
         $response = $b24Service
             ->core
             ->call(
-                'disk.storage.getlist',
+                'disk.storage.getList',
                 [
                     'filter' => [
                         'NAME' => '%Bitrix24%',
@@ -248,7 +248,7 @@ The formula for calculating the `start` parameter value:
 
     ```js
     BX24.callMethod(
-        "disk.storage.getlist",
+        "disk.storage.getList",
         {
             filter: {
                 NAME: '%Bitrix24%',
@@ -273,7 +273,7 @@ The formula for calculating the `start` parameter value:
     require_once('crest.php');
 
     $result = CRest::call(
-        'disk.storage.getlist',
+        'disk.storage.getList',
         [
             'filter' => [
                 'NAME' => '%Bitrix24%',

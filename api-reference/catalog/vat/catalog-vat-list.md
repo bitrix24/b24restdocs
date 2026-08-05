@@ -40,7 +40,7 @@ An additional prefix can be assigned to the key to specify the filter behavior. 
   - `"%mol"` — searching for values ending with "mol"
   - `"%mol%"` — searching for values where "mol" can be in any position
 - `%=` — LIKE (similar to `=%`)
-- `!%` — NOT LIKE, substring search. The `%` symbol in the filter value does not need to be passed. The search goes from both sides.
+- `!%` — NOT LIKE, substring search. The `%` symbol in the filter value does not need to be passed. The search is performed on both sides
 - `!=%` — NOT LIKE, substring search. The `%` symbol needs to be passed in the value. Examples:
   - `"mol%"` — searching for values not starting with "mol"
   - `"%mol"` — searching for values not ending with "mol"

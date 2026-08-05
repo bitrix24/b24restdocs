@@ -16,7 +16,7 @@ The search works through an index that covers the names of files and folders, an
 
 The result includes only the objects the current user has read access to. The method does not return objects from storages without internal access permissions — for example, from the storages of other modules. Chat folders are excluded from the results.
 
-The method rejects a query shorter than three characters, so it is not suitable for suggestions based on the first few characters entered. To walk through a known structure, use the [disk.storage.getchildren](../storage/disk-storage-get-children.md) and [disk.folder.getchildren](../folder/disk-folder-get-children.md) methods, and if the file identifier is already known — [disk.file.get](./disk-file-get.md).
+The method rejects a query shorter than three characters, so it is not suitable for suggestions based on the first few characters entered. To walk through a known structure, use the [disk.storage.getChildren](../storage/disk-storage-get-children.md) and [disk.folder.getChildren](../folder/disk-folder-get-children.md) methods, and if the file identifier is already known — [disk.file.get](./disk-file-get.md).
 
 ## Method Parameters
 
@@ -59,11 +59,11 @@ The name of the parameter is written in lowercase, unlike the other parameters o
 || **STORAGE_ID**
 [`integer`](../../data-types.md) | Optional key. Identifier of the storage to search in.
 
-You can retrieve the identifier using the [disk.storage.getlist](../storage/disk-storage-get-list.md) method ||
+You can retrieve the identifier using the [disk.storage.getList](../storage/disk-storage-get-list.md) method ||
 || **FOLDER_ID**
 [`integer`](../../data-types.md) | Optional key. Identifier of the folder to search in. The search also covers nested folders, and the folder itself is not included in the result.
 
-You can retrieve the identifier using the [disk.folder.getchildren](../folder/disk-folder-get-children.md) method ||
+You can retrieve the identifier using the [disk.folder.getChildren](../folder/disk-folder-get-children.md) method ||
 |#
 
 Both keys can be passed together — in that case the method verifies that the folder belongs to the specified storage and returns the `NOT_FOUND` error if it does not.

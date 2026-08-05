@@ -8,13 +8,13 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 You can store text documents, spreadsheets, presentations, images, and other information on Drive. Users can upload, edit, copy files, and configure access permissions for them.
 
-> Quick navigation: [all methods](#all-methods) 
+> Quick navigation: [all methods](#all-methods)
 
-## How to Manage Files
+## How to Start
 
-A new file should be uploaded using the [disk.folder.uploadfile](../folder/disk-folder-upload-file.md) method to a folder by its identifier.   
+A new file should be uploaded using the [disk.folder.uploadFile](../folder/disk-folder-upload-file.md) method to a folder by its identifier.
 
-You can change the location of files within the Drive structure: move them using the [disk.file.moveto](./disk-file-move-to.md) method or copy them to other folders using the [disk.file.copyto](./disk-file-copy-to.md) method.
+You can change the location of files within the Drive structure: move them using the [disk.file.moveTo](./disk-file-move-to.md) method or copy them to other folders using the [disk.file.copyTo](./disk-file-copy-to.md) method.
 
 You can retrieve file field values using the [disk.file.get](./disk-file-get.md) method. For example, to check if a file has been moved to the trash.
 
@@ -38,7 +38,7 @@ To get information about a version, use the [disk.version.get](../version/disk-v
 
 Drive tools allow you to restore the desired version of a file. This is done using the [disk.file.restoreFromVersion](./disk-file-restore-from-version.md) method.
 
-You can upload a new version of a file using the [disk.file.uploadversion](./disk-file-upload-version.md) method.
+You can upload a new version of a file using the [disk.file.uploadVersion](./disk-file-upload-version.md) method.
 
 {% note tip "User Documentation" %}
 
@@ -58,7 +58,7 @@ To provide access to a file for an external user, you need to create a public li
 
 ## How to Delete Files
 
-Files can be moved to the trash using the [disk.file.markdeleted](./disk-file-mark-deleted.md) method. Deleted files can be restored using the [disk.file.restore](./disk-file-restore.md) method within 30 days. 
+Files can be moved to the trash using the [disk.file.markDeleted](./disk-file-mark-deleted.md) method. Deleted files can be restored using the [disk.file.restore](./disk-file-restore.md) method within 30 days.
 
 To permanently delete a file without the possibility of recovery, you need to use the [disk.file.delete](./disk-file-delete.md) method. This will destroy the file forever. 
 
@@ -76,16 +76,16 @@ To permanently delete a file without the possibility of recovery, you need to us
 
 #|
 || **Method** | **Description** ||
-|| [disk.file.getfields](./disk-file-get-fields.md) | Returns the description of file fields ||
+|| [disk.file.getFields](./disk-file-get-fields.md) | Returns the description of file fields ||
 || [disk.file.get](./disk-file-get.md) | Returns the file by identifier ||
 || [disk.file.search](./disk-file-search.md) | Finds files and folders by a text query ||
 || [disk.file.rename](./disk-file-rename.md) | Renames the file ||
-|| [disk.file.copyto](./disk-file-copy-to.md) | Copies the file to the specified folder ||
-|| [disk.file.moveto](./disk-file-move-to.md) | Moves the file to the specified folder ||
+|| [disk.file.copyTo](./disk-file-copy-to.md) | Copies the file to the specified folder ||
+|| [disk.file.moveTo](./disk-file-move-to.md) | Moves the file to the specified folder ||
 || [disk.file.delete](./disk-file-delete.md) | Deletes the file forever ||
-|| [disk.file.markdeleted](./disk-file-mark-deleted.md) | Moves the file to the trash ||
+|| [disk.file.markDeleted](./disk-file-mark-deleted.md) | Moves the file to the trash ||
 || [disk.file.restore](./disk-file-restore.md) | Restores the file from the trash ||
-|| [disk.file.uploadversion](./disk-file-upload-version.md) | Uploads a new version of the file ||
+|| [disk.file.uploadVersion](./disk-file-upload-version.md) | Uploads a new version of the file ||
 || [disk.file.getVersions](./disk-file-get-versions.md) | Returns the list of file versions ||
 || [disk.file.restoreFromVersion](./disk-file-restore-from-version.md) | Restores the file from a specific version ||
 || [disk.file.getExternalLink](./disk-file-get-external-link.md) | Returns a public link to the file ||

@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can subscribe: any user
 
-The event `ONBOOKINGRESOURCETYPEDELETE` will trigger when a resource type is deleted using the method [booking.v1.resourcetype.delete](../booking-v1-resourcetype-delete.md).
+The event `ONBOOKINGRESOURCETYPEDELETE` will trigger when a resource type is deleted using the method [booking.v1.resourceType.delete](../booking-v1-resourcetype-delete.md).
 
 {% note info "" %}
 

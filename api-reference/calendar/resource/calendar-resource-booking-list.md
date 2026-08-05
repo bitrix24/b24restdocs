@@ -276,7 +276,7 @@ In the method `calendar.resource.booking.list`, you must use only one of the two
 {% endlist %}
 
 
-**Example 2**. Select bookings by their identifiers from custom fields of the CRM object.
+**Example 2**. Select bookings by their identifiers from CRM custom fields.
 
 {% include [Note on examples](../../../_includes/examples.md) %}
 
@@ -634,7 +634,7 @@ HTTP Status: **400**
 ```json
 {
     "error": "",
-    "error_description": "The required parameter "filter['resourceTypeIdList']" is not set for the method "calendar.resource.booking.list""
+    "error_description": "The required parameter \"filter['resourceTypeIdList']\" is not set for the method \"calendar.resource.booking.list\""
 }
 ```
 
@@ -644,8 +644,8 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Error Message** | **Description** ||
-|| Empty string | Access denied | Access to the method is prohibited for external users ||
-|| Empty string | The required parameter "filter['resourceTypeIdList']" is not set for the method "calendar.resource.booking.list" | Neither of the required parameters: `resourceTypeIdList` or `resourceIdList` was provided. ||
+|| Empty value | Access denied | Access to the method is prohibited for external users ||
+|| Empty value | The required parameter "filter['resourceTypeIdList']" is not set for the method "calendar.resource.booking.list" | Neither of the required parameters `resourceTypeIdList` or `resourceIdList` was provided ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

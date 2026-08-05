@@ -6,16 +6,23 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-Resource types are needed to categorize booking objects. For example, the Meeting Rooms type includes rooms for meetings, while the Chery type refers to cars of a specific brand.
+Resource types are needed to categorize booking objects. For example, one type can group meeting rooms, while another can group company vehicles.
 
 With resource types, you can:
-- group similar objects,
-- configure notification templates for clients,
-- filter bookings.
+
+- group similar objects
+- configure notification templates for clients
+- filter bookings
 
 > Quick navigation: [all methods](#all-methods)
 
-## Connection of Resource Types with Other Objects
+## How to Start
+
+1. Create a resource type using [booking.v1.resourceType.add](./booking-v1-resourcetype-add.md)
+2. Retrieve the type `id` using [booking.v1.resourceType.list](./booking-v1-resourcetype-list.md)
+3. Pass the type `id` in the `typeId` parameter of [booking.v1.resource.add](../booking-v1-resource-add.md)
+
+## Relationship with Other Objects
 
 **Resource.** Use the `id` of the resource type in the `typeId` parameter of the [booking.v1.resource.*](../index.md) methods.
 

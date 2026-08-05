@@ -240,7 +240,7 @@ HTTP status: **400**
 
 #|
 || **Code** | **Error Message** | **Description** ||
-|| Empty string | Access denied | Access to the method is prohibited for external users ||
+|| Empty value | Access denied | Access to the method is prohibited for external users ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

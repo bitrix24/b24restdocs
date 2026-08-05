@@ -18,7 +18,7 @@ In Bitrix24, there are three types of storage:
 - Company Drive — company storage
 - Group Drive — storage for the working group
 
-You can get a list of storage types using the [disk.storage.gettypes](./disk-storage-get-types.md) method.
+You can get a list of storage types using the [disk.storage.getTypes](./disk-storage-get-types.md) method.
 
 {% note tip "User Documentation" %}
 
@@ -27,23 +27,23 @@ You can get a list of storage types using the [disk.storage.gettypes](./disk-sto
 
 {% endnote %}
 
-## How to Get Storage Description
+## How to Start
 
 To work with storage, you need its identifier.
 
-1. Retrieve a list of available storages using the [disk.storage.getlist](./disk-storage-get-list.md) method.
-2. Find the required storage in the list and use its `ID`.
-3. Get the storage parameters using the [disk.storage.get](./disk-storage-get.md) method.
+1. Retrieve a list of available storages using the [disk.storage.getList](./disk-storage-get-list.md) method
+2. Find the required storage in the list and use its `ID`
+3. Get the storage parameters using the [disk.storage.get](./disk-storage-get.md) method
 
-The description of all storage fields is returned by the [disk.storage.getfields](./disk-storage-get-fields.md) method. To work with application storage, use the [disk.storage.getforapp](./disk-storage-get-for-app.md) method.
+The description of all storage fields is returned by the [disk.storage.getFields](./disk-storage-get-fields.md) method. To work with application storage, use the [disk.storage.getForApp](./disk-storage-get-for-app.md) method.
 
 ## Working with Storage Contents
 
 In the root of the storage, you can perform the following operations:
 
-- retrieve a list of files and folders using the [disk.storage.getchildren](./disk-storage-get-children.md) method
-- create a folder using the [disk.storage.addfolder](./disk-storage-add-folder.md) method
-- upload a file using the [disk.storage.uploadfile](./disk-storage-upload-file.md) method
+- retrieve a list of files and folders using the [disk.storage.getChildren](./disk-storage-get-children.md) method
+- create a folder using the [disk.storage.addFolder](./disk-storage-add-folder.md) method
+- upload a file using the [disk.storage.uploadFile](./disk-storage-upload-file.md) method
 
 To work with nested folders and files, use the [disk.folder.*](../folder/index.md) methods.
 
@@ -55,17 +55,17 @@ You can only rename application storage — for this, use the [disk.storage.rena
 
 > Scope: [`disk`](../../scopes/permissions.md)
 >
-> Who can execute the method: depends on the method
+> Who can execute the methods: depends on the method
 
 #|
 || **Method** | **Description** ||
-|| [disk.storage.getfields](./disk-storage-get-fields.md) | Returns the description of storage fields ||
+|| [disk.storage.getFields](./disk-storage-get-fields.md) | Returns the description of storage fields ||
 || [disk.storage.get](./disk-storage-get.md) | Returns storage by identifier ||
 || [disk.storage.rename](./disk-storage-rename.md) | Renames application storage ||
-|| [disk.storage.getlist](./disk-storage-get-list.md) | Returns a list of available storages ||
-|| [disk.storage.gettypes](./disk-storage-get-types.md) | Returns a list of storage types ||
-|| [disk.storage.addfolder](./disk-storage-add-folder.md) | Creates a folder in the root of the storage ||
-|| [disk.storage.getchildren](./disk-storage-get-children.md) | Returns a list of files and folders located in the root of the storage ||
-|| [disk.storage.uploadfile](./disk-storage-upload-file.md) | Uploads a new file to the root of the storage ||
-|| [disk.storage.getforapp](./disk-storage-get-for-app.md) | Returns the description of application storage ||
+|| [disk.storage.getList](./disk-storage-get-list.md) | Returns a list of available storages ||
+|| [disk.storage.getTypes](./disk-storage-get-types.md) | Returns a list of storage types ||
+|| [disk.storage.addFolder](./disk-storage-add-folder.md) | Creates a folder in the root of the storage ||
+|| [disk.storage.getChildren](./disk-storage-get-children.md) | Returns a list of files and folders located in the root of the storage ||
+|| [disk.storage.uploadFile](./disk-storage-upload-file.md) | Uploads a new file to the root of the storage ||
+|| [disk.storage.getForApp](./disk-storage-get-for-app.md) | Returns the description of application storage ||
 |#

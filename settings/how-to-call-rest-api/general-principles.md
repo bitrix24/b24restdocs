@@ -29,6 +29,25 @@ Simple requests can be sent via `GET`. To transfer arrays and nested structures 
 
 In response to a request, the REST API returns meaningful data or [error information](../../error-codes.md). We recommend trying to [execute a simple request](../../first-steps/first-rest-api-call.md) before you begin exploring the Bitrix24 REST API in depth.
 
+## Request Headers {#headers}
+
+For `POST` requests with a `JSON` body, pass these headers:
+
+- `Content-Type: application/json` — specifies the request body format
+- `Accept: application/json` — requests the response in `JSON` format
+- `User-Agent: integration-name/version` — helps Bitrix24 and intermediate servers correctly identify the HTTP client
+
+For `GET` requests without a body, `Content-Type` is not required. Pass `Accept: application/json` if you expect the method response in `JSON` format.
+
+If a method returns a signed file download link, such as `DOWNLOAD_URL` or `urlMachine`, download the file with a separate `GET` request. In this request, pass these headers:
+
+- `User-Agent: integration-name/version`
+- `Accept: */*` or the MIME type of the expected file
+- `Accept-Language: en-US,en;q=0.9`
+- `Referer: https://your-domain.bitrix24.com/`
+
+Do not change authorization parameters or tokens in the signed link. If the server returns the `Content-Disposition` header with a file name but the response body contains an Nginx `404`, check that the HTTP client passes the file download headers and does not replace `User-Agent` with an empty or technical value.
+
 ## Request Result
 
 The default response format is `JSON`, however if necessary you can obtain the answer in the format `XML`. To do this, add the desired format to the method name: `.json` or `.xml`.

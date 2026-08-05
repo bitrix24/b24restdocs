@@ -19,17 +19,17 @@ The translation uses:
 
 ## Considerations Before Calling Methods
 
-- The methods `catalog.priceTypeLang.*` are available only to administrators.
+- The methods `catalog.priceTypeLang.*` are available only to administrators
 
-- Only one translation can be created for a specific language for each price type. The pair `catalogGroupId + lang` must be unique. Before creating or updating, check for an existing translation using [catalog.priceTypeLang.list](./catalog-price-type-lang-list.md) with a filter on `catalogGroupId` and `lang`.
+- Only one translation can be created for a specific language for each price type. The pair `catalogGroupId + lang` must be unique. Before creating or updating, check for an existing translation using [catalog.priceTypeLang.list](./catalog-price-type-lang-list.md) with a filter on `catalogGroupId` and `lang`
 
-## How to Work with Price Type Name Translations
+## How to Start
 
-1. Retrieve the list of available languages using [catalog.priceTypeLang.getLanguages](./catalog-price-type-lang-get-languages.md).
-2. Check the field structure via [catalog.priceTypeLang.getFields](./catalog-price-type-lang-get-fields.md).
-3. Add a translation using the method [catalog.priceTypeLang.add](./catalog-price-type-lang-add.md).
-4. To modify a translation, use [catalog.priceTypeLang.update](./catalog-price-type-lang-update.md); to delete, use [catalog.priceTypeLang.delete](./catalog-price-type-lang-delete.md).
-5. To read a single translation by `id`, use [catalog.priceTypeLang.get](./catalog-price-type-lang-get.md); to get a list of translations by filter, use [catalog.priceTypeLang.list](./catalog-price-type-lang-list.md).
+1. Retrieve the list of available languages using [catalog.priceTypeLang.getLanguages](./catalog-price-type-lang-get-languages.md)
+2. Check the field structure using [catalog.priceTypeLang.getFields](./catalog-price-type-lang-get-fields.md)
+3. Add a translation using [catalog.priceTypeLang.add](./catalog-price-type-lang-add.md)
+4. To modify a translation, use [catalog.priceTypeLang.update](./catalog-price-type-lang-update.md); to delete it, use [catalog.priceTypeLang.delete](./catalog-price-type-lang-delete.md)
+5. To read a single translation by `id`, use [catalog.priceTypeLang.get](./catalog-price-type-lang-get.md); to get a list of translations by filter, use [catalog.priceTypeLang.list](./catalog-price-type-lang-list.md)
 
 ## Linking Translations to Other Objects
 
@@ -41,9 +41,9 @@ The translation uses:
 
 > Scope: [`catalog`](../../../scopes/permissions.md)
 >
-> Who can execute the method: administrator
+> Who can execute the methods: administrator
 
-#| 
+#|
 || **Method** | **Description** ||
 || [catalog.priceTypeLang.add](./catalog-price-type-lang-add.md) | Adds a translation for the price type name ||
 || [catalog.priceTypeLang.update](./catalog-price-type-lang-update.md) | Updates the translation for the price type name ||

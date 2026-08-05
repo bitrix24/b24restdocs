@@ -11,14 +11,22 @@ The VAT rate can be set for the entire catalog or for a specific product. The pr
 If a product or catalog has a VAT rate, general CRM taxes do not apply to them.
 
 > Quick navigation: [all methods](#all-methods)
-> 
+>
 > User documentation: [Taxes in CRM](https://helpdesk.bitrix24.com/open/17230492/)
 
-## Relationship of VAT Rates with Other Objects
+## How to Start
+
+1. Create a VAT rate using [catalog.vat.add](./catalog-vat-add.md)
+2. Get the VAT rate identifier using [catalog.vat.get](./catalog-vat-get.md) or [catalog.vat.list](./catalog-vat-list.md)
+3. Specify the VAT rate in trade catalog or product settings
+4. Change the rate using [catalog.vat.update](./catalog-vat-update.md), if needed
+
+## Relationship with Other Objects
 
 **Trade Catalog.** Find out what VAT rate is set for the trade catalog using the method [catalog.catalog.get](../catalog/catalog-catalog-get.md).
 
 **Products.** Specify the product's VAT using the following groups of methods:
+
 - [catalog.product.*](../product/index.md) — for simple products
 - [catalog.product.service.*](../product/service/index.md) — for services
 - [catalog.product.sku.*](../product/sku/index.md) — for parent products of products with variations
@@ -28,9 +36,9 @@ If a product or catalog has a VAT rate, general CRM taxes do not apply to them.
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute the method: administrator
+> Who can execute the methods: administrator
 
-#| 
+#|
 || **Method** | **Description** ||
 || [catalog.vat.add](./catalog-vat-add.md) | Adds a VAT rate ||
 || [catalog.vat.update](./catalog-vat-update.md) | Modifies a VAT rate ||

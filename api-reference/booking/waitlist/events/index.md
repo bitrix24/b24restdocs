@@ -14,7 +14,7 @@ Detailed information on working with events is described in the article [Concept
 
 ## How to Receive Events
 
-You can subscribe to events in the section through:
+You can subscribe to waitlist entry events through:
 
 - [outgoing webhook](../../../../local-integrations/local-webhooks.md)
 - [application](../../../../settings/app-installation/index.md) and the method [event.bind](../../../events/event-bind.md)
@@ -27,13 +27,13 @@ An example of a handler code for the event is described in the article [How to T
 
 ## Overview of Events {#all-events}
 
-> Scope: [`crm`](../../../scopes/permissions.md)
+> Scope: [`booking`](../../../scopes/permissions.md)
 >
 > Who can subscribe: any user
 
 #|
-|| **Event** | **Triggered** ||
-|| [onBookingWaitListItemAdd](./on-booking-waitlistitem-add.md) | When a record is created in the waitlist manually or via the methods [booking.v1.waitlist.add](../booking-v1-waitlist-add.md), [booking.v1.waitlist.createfrombooking](../booking-v1-waitlist-createfrombooking.md) ||
-|| [onCrmDealUpdate](./on-booking-waitlistitem-update.md) | When a record in the waitlist is modified manually or via the method [booking.v1.waitlist.update](../booking-v1-waitlist-update.md) ||
-|| [onBookingWaitListItemUpdate](./on-booking-waitlistitem-delete.md) | When a record is deleted from the waitlist manually or via the method [booking.v1.waitlist.delete](../booking-v1-waitlist-delete.md) ||
+|| **Event** | **Triggered By** ||
+|| [onBookingWaitListItemAdd](./on-booking-waitlistitem-add.md) | When a waitlist entry is created manually or by the methods [booking.v1.waitlist.add](../booking-v1-waitlist-add.md), [booking.v1.waitlist.createfrombooking](../booking-v1-waitlist-createfrombooking.md) ||
+|| [onBookingWaitListItemUpdate](./on-booking-waitlistitem-update.md) | When a waitlist entry is changed manually or by the method [booking.v1.waitlist.update](../booking-v1-waitlist-update.md) ||
+|| [onBookingWaitListItemDelete](./on-booking-waitlistitem-delete.md) | When a waitlist entry is deleted manually or by the method [booking.v1.waitlist.delete](../booking-v1-waitlist-delete.md) ||
 |#

@@ -228,8 +228,8 @@ HTTP status: **400**
 
 #|
 || **Code** | **Error Message** | **Description** ||
-|| Empty string | The required parameter "eventId" for the method "calendar.meeting.status.set" is not set | The required parameter `eventId` was not provided ||
-|| Empty string | An error occurred while retrieving the status | Another error ||
+|| Empty value | The required parameter "eventId" for the method "calendar.meeting.status.set" is not set | The required parameter `eventId` was not provided ||
+|| Empty value | An error occurred while retrieving the status | Another error ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

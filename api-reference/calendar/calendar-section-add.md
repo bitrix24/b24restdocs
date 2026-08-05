@@ -293,7 +293,7 @@ HTTP Status: **400**
 ```json
 {
     "error": "",
-    "error_description": "The required parameter "type" for the method "calendar.section.add" is not set."
+    "error_description": "The required parameter \"type\" for the method \"calendar.section.add\" is not set."
 }
 ```
 
@@ -303,12 +303,12 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Error Message** | **Description** ||
-|| Empty string | The required parameter "type" for the method "calendar.section.add" is not set. | The required parameter `type` is not provided ||
-|| Empty string | The required parameter "ownerId" for the method "calendar.section.add" is not set. | The required parameter `ownerId` is not provided and the `type` parameter is not equal to `user` ||
-|| Empty string | Invalid value for the "name" parameter | Incorrect data format in the `name` field ||
-|| Empty string | Invalid value for the "description" parameter | Incorrect data format in the `description` field ||
-|| Empty string | Access denied | No permission to create a calendar with the provided `type` ||
-|| Empty string | An error occurred while creating the section | Another error ||
+|| Empty value | The required parameter "type" for the method "calendar.section.add" is not set. | The required parameter `type` is not provided ||
+|| Empty value | The required parameter "ownerId" for the method "calendar.section.add" is not set. | The required parameter `ownerId` is not provided and the `type` parameter is not equal to `user` ||
+|| Empty value | Invalid value for the "name" parameter | Incorrect data format in the `name` field ||
+|| Empty value | Invalid value for the "description" parameter | Incorrect data format in the `description` field ||
+|| Empty value | Access denied | No permission to create a calendar with the provided `type` ||
+|| Empty value | An error occurred while creating the section | Another error ||
 |#
 
 {% include [system errors](../../_includes/system-errors.md) %}

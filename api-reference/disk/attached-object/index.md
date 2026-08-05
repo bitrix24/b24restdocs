@@ -16,7 +16,13 @@ The method `disk.attachedObject.get` operates on the record of attaching a file 
 
 To obtain the connection identifier, you need to use methods that return attached files within specific objects. For example, when working with tasks, the connection identifier can be retrieved through the method [tasks.task.get](../../tasks/tasks-task-get.md).
 
-## Connection to Other Objects
+## How to Start
+
+1. Retrieve the link identifier from the method of the object to which the file is attached
+2. Pass the link identifier to [disk.attachedObject.get](./disk-attached-object-get.md)
+3. Use `OBJECT_ID` from the response if you need to retrieve the file itself using [disk.file.*](../file/index.md)
+
+## Relationship with Other Objects
 
 **CRM.** Files can be attached to deals and estimates. The group of methods [crm.activity.*](../../crm/timeline/activities/index.md) is responsible for working with deals, while [crm.quote.*](../../crm/quote/index.md) handles estimates.
 
@@ -33,6 +39,8 @@ To obtain the connection identifier, you need to use methods that return attache
 **Universal Lists.** List items are linked to Drive through the [field](../../lists/fields/index.md) of type File (Drive). You can retrieve the parameters of an item using the method [lists.element.get](../../lists/elements/lists-element-get.md).
 
 **Chats.** Users can exchange documents, photos, videos, and audio files. Files can be viewed and downloaded, while documents can be edited without downloading. Attached files are accessible to all chat participants. The method [im.dialog.messages.get](../../chats/messages/im-dialog-messages-get.md) returns a list of the latest messages.
+
+## Overview of Methods {#all-methods}
 
 > Scope: [`disk`](../../scopes/permissions.md)
 >

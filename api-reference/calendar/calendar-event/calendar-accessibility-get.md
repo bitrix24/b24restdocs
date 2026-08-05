@@ -335,7 +335,7 @@ HTTP Status: **400**
 ```json
 {
     "error": "",
-    "error_description": "The required parameter "from" for the method "calendar.accessibility.get" is not set."
+    "error_description": "The required parameter \"from\" for the method \"calendar.accessibility.get\" is not set."
 }
 ```
 
@@ -345,10 +345,10 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Error Message** | **Description** ||
-|| Empty string | The required parameter "from" for the method "calendar.accessibility.get" is not set. | The required parameter `from` is missing ||
-|| Empty string | The required parameter "to" for the method "calendar.accessibility.get" is not set. | The required parameter `to` is missing ||
-|| Empty string | The required parameter "users" for the method "calendar.accessibility.get" is not set. | The required parameter `users` is missing ||
-|| Empty string | Access denied | Access to the method is prohibited for external users ||
+|| Empty value | The required parameter "from" for the method "calendar.accessibility.get" is not set. | The required parameter `from` is missing ||
+|| Empty value | The required parameter "to" for the method "calendar.accessibility.get" is not set. | The required parameter `to` is missing ||
+|| Empty value | The required parameter "users" for the method "calendar.accessibility.get" is not set. | The required parameter `users` is missing ||
+|| Empty value | Access denied | Access to the method is prohibited for external users ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

@@ -298,7 +298,7 @@ HTTP status: **400**
 ```json
 {
     "error": "",
-    "error_description": "Mandatory parameter not specified "type" for the method "calendar.event.get""
+    "error_description": "Mandatory parameter not specified \"type\" for the method \"calendar.event.get\""
 }
 ```
 

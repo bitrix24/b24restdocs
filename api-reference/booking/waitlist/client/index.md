@@ -8,15 +8,22 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 You can add a client to the waitlist: either a contact or a company. The client will receive a notification when their entry is moved to a specific time.
 
-> Quick navigation: [all methods](#all-methods) 
+> Quick navigation: [all methods](#all-methods)
+
+## How to Start
+
+1. Create a waitlist entry using the [booking.v1.waitlist.*](../index.md) methods
+2. Retrieve the CRM contact or company `ID`
+3. Add a client using [booking.v1.waitlist.client.set](./booking-v1-waitlist-client-set.md)
+4. Check the linked client information using [booking.v1.waitlist.client.list](./booking-v1-waitlist-client-list.md)
 
 ## Relationships with Other Objects
 
-**Waitlist.** To add or replace a client, use the `ID` of the waitlist entry in the `waitListId` parameter of the [booking.v1.waitlist.client.*](./index.md) methods. You can obtain the `ID` of the entry using the [creation](../booking-v1-waitlist-add.md) or [filtering](../booking-v1-waitlist-list.md) methods.
+**Waitlist.** To add or replace a client, use the `ID` of the waitlist entry in the `waitListId` parameter of the [booking.v1.waitlist.client.*](./index.md) methods. You can obtain the entry `ID` using [booking.v1.waitlist.add](../booking-v1-waitlist-add.md) or [booking.v1.waitlist.list](../booking-v1-waitlist-list.md).
 
-**Contact.** To attach a contact to the waitlist entry, pass the `ID` of the contact in the [booking.v1.waitlist.client.set](./booking-v1-waitlist-client-set) method. You can obtain the `ID` of the contact using the [crm.item.list](../../../crm/universal/crm-item-list.md) method with the `entityTypeId = 3` parameter.
+**Contact.** To attach a contact to the waitlist entry, pass the contact `ID` to the [booking.v1.waitlist.client.set](./booking-v1-waitlist-client-set.md) method. You can obtain the contact `ID` using the [crm.item.list](../../../crm/universal/crm-item-list.md) method with the `entityTypeId = 3` parameter.
 
-**Company.** To attach a company to the waitlist entry, pass the `ID` of the company in the [booking.v1.waitlist.client.set](./booking-v1-waitlist-client-set) method. You can obtain the `ID` of the company using the [crm.item.list](../../../crm/universal/crm-item-list.md) method with the `entityTypeId = 4` parameter.
+**Company.** To attach a company to the waitlist entry, pass the company `ID` to the [booking.v1.waitlist.client.set](./booking-v1-waitlist-client-set.md) method. You can obtain the company `ID` using the [crm.item.list](../../../crm/universal/crm-item-list.md) method with the `entityTypeId = 4` parameter.
 
 {% note info "" %}
 
@@ -28,10 +35,11 @@ If the client is new, first add them to the CRM using the [crm.item.add](../../.
 
 > Scope: [`booking`](../../../scopes/permissions.md)
 >
-> Who can perform the method: any user
+> Who can execute the methods: any user
 
 #|
-|| [booking.v1.waitlist.client.list](./booking-v1-waitlist-client-list.md) | Returns the contact and company linked to the waitlist entry ||
+|| **Method** | **Description** ||
 || [booking.v1.waitlist.client.set](./booking-v1-waitlist-client-set.md) | Adds a contact or company to the waitlist entry ||
+|| [booking.v1.waitlist.client.list](./booking-v1-waitlist-client-list.md) | Returns the contact and company linked to the waitlist entry ||
 || [booking.v1.waitlist.client.unset](./booking-v1-waitlist-client-unset.md) | Removes a contact or company from the waitlist entry ||
 |#

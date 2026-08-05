@@ -22,7 +22,7 @@ The method `disk.file.restoreFromVersion` restores a file from a specific versio
 || **id***
 [`integer`](../../data-types.md) | Identifier of the file.
 
-The identifier can be obtained using the [disk.storage.getchildren](../storage/disk-storage-get-children.md) method if the file is located at the root of the storage, and using the [disk.folder.getchildren](../folder/disk-folder-get-children.md) method if the file is located in a folder ||
+The identifier can be obtained using the [disk.storage.getChildren](../storage/disk-storage-get-children.md) method if the file is located at the root of the storage, and using the [disk.folder.getChildren](../folder/disk-folder-get-children.md) method if the file is located in a folder ||
 || **versionId***
 [`integer`](../../data-types.md) | Identifier of the file version.
 

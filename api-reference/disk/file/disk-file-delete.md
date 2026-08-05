@@ -12,7 +12,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 The method `disk.file.delete` permanently deletes a file.
 
-If you want to move the file to the trash, use the method [disk.file.markdeleted](./disk-file-mark-deleted.md).
+If you want to move the file to the trash, use the method [disk.file.markDeleted](./disk-file-mark-deleted.md).
 
 ## Method Parameters
 
@@ -24,7 +24,7 @@ If you want to move the file to the trash, use the method [disk.file.markdeleted
 || **id***
 [`integer`](../../data-types.md) | Identifier of the file.
 
-The identifier can be obtained using the method [disk.storage.getchildren](../storage/disk-storage-get-children.md) if the file is in the root of the storage, and using the method [disk.folder.getchildren](../folder/disk-folder-get-children.md) if the file is in a folder
+The identifier can be obtained using the method [disk.storage.getChildren](../storage/disk-storage-get-children.md) if the file is in the root of the storage, and using the method [disk.folder.getChildren](../folder/disk-folder-get-children.md) if the file is in a folder
 ||
 |#
 

@@ -1,4 +1,4 @@
-# Move a Folder and All Its Contents to the Specified Folder disk.folder.moveto
+# Move a Folder and All Its Contents to the Specified Folder disk.folder.moveTo
 
 {% note tip "" %}
 
@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: a user with "Edit" permission for the source folder and "Add" permission for the target folder
 
-The method `disk.folder.moveto` moves a folder and all its contents to the specified folder.
+The method `disk.folder.moveTo` moves a folder and all its contents to the specified folder.
 
 ## Method Parameters
 
@@ -24,7 +24,7 @@ The method `disk.folder.moveto` moves a folder and all its contents to the speci
 || **targetFolderId***
 [`integer`](../../data-types.md) | Identifier of the target folder to which the folder is moved.
 
-The identifier can be obtained using the method [disk.storage.getchildren](../storage/disk-storage-get-children.md) if the folder is in the root of the storage, and using the method [disk.folder.getchildren](./disk-folder-get-children.md) if the folder is in another folder ||
+The identifier can be obtained using the method [disk.storage.getChildren](../storage/disk-storage-get-children.md) if the folder is in the root of the storage, and using the method [disk.folder.getChildren](./disk-folder-get-children.md) if the folder is in another folder ||
 |#
 
 {% note info "" %}
@@ -46,7 +46,7 @@ The root folder of the storage cannot be moved. Additionally, both folders must 
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"id":8968,"targetFolderId":8907}' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/disk.folder.moveto
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/disk.folder.moveTo
     ```
 
 - cURL (OAuth)
@@ -56,7 +56,7 @@ The root folder of the storage cannot be moved. Additionally, both folders must 
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"id":8968,"targetFolderId":8907,"auth":"**put_access_token_here**"}' \
-    https://**put_your_bitrix24_address**/rest/disk.folder.moveto
+    https://**put_your_bitrix24_address**/rest/disk.folder.moveTo
     ```
 
 - JS (TS)
@@ -90,7 +90,7 @@ The root folder of the storage cannot be moved. Additionally, both folders must 
 
     try {
       const response = await $b24.actions.v2.call.make<MoveFolderResult>({
-        method: 'disk.folder.moveto',
+        method: 'disk.folder.moveTo',
         params: {
           id: 8968,
           targetFolderId: 8907,
@@ -123,7 +123,7 @@ The root folder of the storage cannot be moved. Additionally, both folders must 
           const $b24 = await B24Js.initializeB24Frame()
 
           const response = await $b24.actions.v2.call.make({
-            method: 'disk.folder.moveto',
+            method: 'disk.folder.moveTo',
             params: {
               id: 8968,
               targetFolderId: 8907,
@@ -156,7 +156,7 @@ The root folder of the storage cannot be moved. Additionally, both folders must 
         $response = $b24Service
             ->core
             ->call(
-                'disk.folder.moveto',
+                'disk.folder.moveTo',
                 [
                     'id' => 8968,
                     'targetFolderId' => 8907
@@ -180,7 +180,7 @@ The root folder of the storage cannot be moved. Additionally, both folders must 
 
     ```js
     BX24.callMethod(
-        "disk.folder.moveto",
+        "disk.folder.moveTo",
         {
             id: 8968,
             targetFolderId: 8907
@@ -201,7 +201,7 @@ The root folder of the storage cannot be moved. Additionally, both folders must 
     require_once('crest.php');
 
     $result = CRest::call(
-        'disk.folder.moveto',
+        'disk.folder.moveTo',
         [
             'id' => 8968,
             'targetFolderId' => 8907

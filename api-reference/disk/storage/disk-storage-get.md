@@ -22,7 +22,7 @@ The method `disk.storage.get` returns storage data.
 || **id***
 [`integer`](../../data-types.md) | Storage identifier.
 
-The identifier can be obtained using the method [disk.storage.getlist](./disk-storage-get-list.md) ||
+The identifier can be obtained using the method [disk.storage.getList](./disk-storage-get-list.md) ||
 |#
 
 ## Code Examples

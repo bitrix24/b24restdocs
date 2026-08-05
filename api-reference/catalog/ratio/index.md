@@ -17,13 +17,13 @@ The ratio object includes:
 
 > Quick navigation: [all methods](#all-methods)
 
-## How to Work with Measurement Unit Ratios
+## How to Start
 
-1. Retrieve the structure and field types via [catalog.ratio.getFields](./catalog-ratio-get-fields.md).
-2. Obtain a list of ratios through [catalog.ratio.list](./catalog-ratio-list.md). If you need the primary ratio for a product, select the record with `isDefault = Y`.
-3. Get the data for a specific ratio by its `id` through [catalog.ratio.get](./catalog-ratio-get.md).
+1. Retrieve the structure and field types using [catalog.ratio.getFields](./catalog-ratio-get-fields.md)
+2. Obtain a list of ratios using [catalog.ratio.list](./catalog-ratio-list.md). If you need the primary ratio for a product, select the record with `isDefault = Y`
+3. Get the data for a specific ratio by its `id` using [catalog.ratio.get](./catalog-ratio-get.md)
 
-## Connection to Other Objects
+## Relationship with Other Objects
 
 **Product.** The ratio is linked to the product through the `productId` field. Product identifiers can be obtained using the methods [catalog.product.list](../product/catalog-product-list.md) and [catalog.product.get](../product/catalog-product-get.md).
 
@@ -33,7 +33,7 @@ The ratio object includes:
 >
 > Who can execute the methods: administrator
 
-#| 
+#|
 || **Method** | **Description** ||
 || [catalog.ratio.get](./catalog-ratio-get.md) | Returns the field values of the measurement unit ratio by identifier ||
 || [catalog.ratio.list](./catalog-ratio-list.md) | Returns a list of measurement unit ratios ||

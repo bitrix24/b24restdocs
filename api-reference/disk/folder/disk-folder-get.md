@@ -22,7 +22,7 @@ The method `disk.folder.get` returns data about a folder.
 || **id***
 [`integer`](../../data-types.md) | Identifier of the folder.
 
-The identifier can be obtained using the method [disk.storage.getchildren](../storage/disk-storage-get-children.md) if the folder is located at the root of the storage, and using the method [disk.folder.getchildren](./disk-folder-get-children.md) if the folder is located in another folder ||
+The identifier can be obtained using the method [disk.storage.getChildren](../storage/disk-storage-get-children.md) if the folder is located at the root of the storage, and using the method [disk.folder.getChildren](./disk-folder-get-children.md) if the folder is located in another folder ||
 |#
 
 ## Code Examples

@@ -6,9 +6,15 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-The methods in this section return reference enumerations from the Trade Catalog for use in other methods.
+The `catalog.enum.*` methods return reference enumerations from the Trade Catalog for use in other methods.
 
 > Quick Navigation: [all methods](#all-methods)
+
+## How to Start
+
+1. Determine which scenario needs a reference list: price rounding or inventory documents
+2. Get the list of allowed values using a `catalog.enum.*` method
+3. Pass the returned code to the related Trade Catalog method
 
 ## Where Catalog Enumerations Are Used
 
@@ -20,9 +26,9 @@ The methods in this section return reference enumerations from the Trade Catalog
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the methods: any user
 
-#| 
+#|
 || **Method** | **Description** ||
 || [catalog.enum.getRoundTypes](./catalog-enum-get-round-types.md) | Returns a list of rounding types available in the catalog ||
 || [catalog.enum.getStoreDocumentTypes](./catalog-enum-get-store-document-types.md) | Returns types of warehouse accounting documents available for REST ||

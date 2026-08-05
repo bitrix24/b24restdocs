@@ -14,7 +14,7 @@ The connector transmits website visitor messages to Bitrix24 Open Channels and o
 
 {% note warning "" %}
 
-The connector works **only within the context of an application** (OAuth). An incoming webhook will not work: the `imconnector.*` methods require application authorization.
+The connector works only within the context of an application (OAuth). An incoming webhook will not work: the `imconnector.*` methods require application authorization.
 
 SDKs perform outgoing method calls. Your web server receives incoming events (`ONIMCONNECTORMESSAGEADD`) and connector settings (placement `SETTING_CONNECTOR`).
 

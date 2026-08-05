@@ -1,4 +1,4 @@
-# Get a list of files and folders in the root of the storage disk.storage.getchildren
+# Get a list of files and folders in the root of the storage disk.storage.getChildren
 
 {% note tip "" %}
 
@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: any user
 
-The method `disk.storage.getchildren` returns a list of files and folders located in the root of the storage.
+The method `disk.storage.getChildren` returns a list of files and folders located in the root of the storage.
 
 {% note info "" %}
 
@@ -28,7 +28,7 @@ Only those files and folders for which the user has "Read" access permission are
 || **id***
 [`integer`](../../data-types.md) | Identifier of the storage.
 
-The identifier can be obtained using the method [disk.storage.getlist](./disk-storage-get-list.md) ||
+The identifier can be obtained using the method [disk.storage.getList](./disk-storage-get-list.md) ||
 || **filter**
 [`array`](../../data-types.md) | Array format:
 
@@ -63,7 +63,7 @@ Possible prefix values:
 - `!=` — not equal
 - `!` — not equal
 
-The list of fields available for filtering can be obtained using the method [disk.folder.getfields](../folder/disk-folder-get-fields.md) ||
+The list of fields available for filtering can be obtained using the method [disk.folder.getFields](../folder/disk-folder-get-fields.md) ||
 || **order**
 [`array`](../../data-types.md) | Array format:
 
@@ -82,7 +82,7 @@ where:
     - `ASC` — ascending sort
     - `DESC` — descending sort
 
-The list of fields available for sorting can be obtained using the method [disk.folder.getfields](../folder/disk-folder-get-fields.md) ||
+The list of fields available for sorting can be obtained using the method [disk.folder.getFields](../folder/disk-folder-get-fields.md) ||
 || **start**
 [`integer`](../../data-types.md) | This parameter is used to manage pagination.
 
@@ -108,7 +108,7 @@ The formula for calculating the `start` parameter value:
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"id":1357,"filter":{"NAME":"%Folder%"},"order":{"NAME":"DESC"}}' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/disk.storage.getchildren
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/disk.storage.getChildren
     ```
 
 - cURL (OAuth)
@@ -118,7 +118,7 @@ The formula for calculating the `start` parameter value:
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"id":1357,"filter":{"NAME":"%Folder%"},"order":{"NAME":"DESC"},"auth":"**put_access_token_here**"}' \
-    https://**put_your_bitrix24_address**/rest/disk.storage.getchildren
+    https://**put_your_bitrix24_address**/rest/disk.storage.getChildren
     ```
 
 - JS (TS)
@@ -151,13 +151,13 @@ The formula for calculating the `start` parameter value:
     }
 
     try {
-      // disk.storage.getchildren returns a single page (max 50 records). For the whole result set
+      // disk.storage.getChildren returns a single page (max 50 records). For the whole result set
       // use a list helper: $b24.actions.v2.callList.make() returns every record as one
       // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
       // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
       // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
       const response = await $b24.actions.v2.call.make<StorageChildItem[]>({
-        method: 'disk.storage.getchildren',
+        method: 'disk.storage.getChildren',
         params: {
           id: 1357,
           filter: {
@@ -195,13 +195,13 @@ The formula for calculating the `start` parameter value:
           // Initialize the SDK inside a Bitrix24 frame
           const $b24 = await B24Js.initializeB24Frame()
 
-          // disk.storage.getchildren returns a single page (max 50 records). For the whole result set
+          // disk.storage.getChildren returns a single page (max 50 records). For the whole result set
           // use a list helper: $b24.actions.v2.callList.make() returns every record as one
           // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
           // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
           // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
           const response = await $b24.actions.v2.call.make({
-            method: 'disk.storage.getchildren',
+            method: 'disk.storage.getChildren',
             params: {
               id: 1357,
               filter: {
@@ -240,7 +240,7 @@ The formula for calculating the `start` parameter value:
         $response = $b24Service
             ->core
             ->call(
-                'disk.storage.getchildren',
+                'disk.storage.getChildren',
                 [
                     'id' => 1357,
                     'filter' => [
@@ -269,7 +269,7 @@ The formula for calculating the `start` parameter value:
 
     ```js
     BX24.callMethod(
-        "disk.storage.getchildren",
+        "disk.storage.getChildren",
         {
             id: 1357,
             filter: {
@@ -295,7 +295,7 @@ The formula for calculating the `start` parameter value:
     require_once('crest.php');
 
     $result = CRest::call(
-        'disk.storage.getchildren',
+        'disk.storage.getChildren',
         [
             'id' => 1357,
             'filter' => [

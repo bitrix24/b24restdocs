@@ -11,8 +11,8 @@ The calendar helps users plan meetings, tasks, and events. Calendars can be mana
 Calendar events are scheduled activities or meetings. A group of methods [calendar.event.*](./calendar-event/index.md) is used to create, modify, retrieve, or delete events.
 
 > Quick navigation: [all methods and events](#all-methods)
-> 
-> User documentation: [Bitrix24 calendar](https://helpdesk.bitrix24.com/section/47483/)
+>
+> User documentation: [Bitrix24 Calendar](https://helpdesk.bitrix24.com/section/47483/)
 
 ## Connection with Other Objects
 
@@ -34,7 +34,7 @@ In user settings, an employee can specify personal preferences, such as a time z
 
 {% note tip "User documentation" %}
 
-- [Calendar settings](https://helpdesk.bitrix24.com/open/13981546/)
+- [Calendar Settings](https://helpdesk.bitrix24.com/open/13981546/)
 
 {% endnote %}
 
@@ -44,22 +44,22 @@ In Bitrix24, resource booking is done through a custom CRM field of type `resour
 
 Resource availability can be tracked in the CRM Calendar. Technically, a resource is a section of the calendar, and booking is a calendar event.
 
-The management of resources is handled by a group of methods [calendar.resource.*](./resource/index.md).
+Resources are managed by the [calendar.resource.*](./resource/index.md) method group.
 
 {% note tip "User documentation" %}
 
-- [How to use resource booking](https://helpdesk.bitrix24.com/open/15375256/)
+- [How to Use Resource Booking](https://helpdesk.bitrix24.com/open/15375256/)
 
 {% endnote %}
 
-## **Widgets**
+## Widgets
 
 An application can be embedded into the calendar. In the list of calendar view types, there is a place for embedding `CALENDAR_GRIDVIEW`, where you can add [your item](../widgets/calendar.md).
 
 {% note tip "Typical use-cases and scenarios" %}
 
--  [{#T}](../widgets/index.md)
--  [{#T}](./calendar-grid-view.md)
+- [{#T}](../widgets/index.md)
+- [{#T}](./calendar-grid-view.md)
 
 {% endnote %}
 
@@ -77,13 +77,13 @@ An application can be embedded into the calendar. In the list of calendar view t
 
     #|
     || **Method** | **Description** ||
-    || [calendar.section.add](./calendar-section-add.md) | Add a new calendar ||
-    || [calendar.section.update](./calendar-section-update.md) | Update calendar ||
-    || [calendar.section.get](./calendar-section-get.md) | Get list of calendars ||
-    || [calendar.section.delete](./calendar-section-delete.md) | Delete calendar ||
-    || [calendar.settings.get](./calendar-settings-get.md) | Get basic calendar settings ||
-    || [calendar.user.settings.get](./calendar-user-settings-get.md) | Get user calendar settings ||
-    || [calendar.user.settings.set](./calendar-user-settings-set.md) | Set user calendar settings ||
+    || [calendar.section.add](./calendar-section-add.md) | Adds a new calendar ||
+    || [calendar.section.update](./calendar-section-update.md) | Updates a calendar ||
+    || [calendar.section.get](./calendar-section-get.md) | Retrieves a list of calendars ||
+    || [calendar.section.delete](./calendar-section-delete.md) | Deletes a calendar ||
+    || [calendar.settings.get](./calendar-settings-get.md) | Retrieves basic calendar settings ||
+    || [calendar.user.settings.get](./calendar-user-settings-get.md) | Retrieves user calendar settings ||
+    || [calendar.user.settings.set](./calendar-user-settings-set.md) | Sets user calendar settings ||
     |#
 
 - Events
@@ -105,15 +105,15 @@ An application can be embedded into the calendar. In the list of calendar view t
 
     #|
     || **Method** | **Description** ||
-    || [calendar.event.add](./calendar-event/calendar-event-add.md) | Add event ||
-    || [calendar.event.update](./calendar-event/calendar-event-update.md) | Update event ||
-    || [calendar.event.getById](./calendar-event/calendar-event-get-by-id.md) | Get event by `id` ||
-    || [calendar.event.get](./calendar-event/calendar-event-get.md) | Get list of calendar events ||
-    || [calendar.event.getNearest](./calendar-event/calendar-event-get-nearest.md) | Get list of future events ||
-    || [calendar.event.delete](./calendar-event/calendar-event-delete.md) | Delete event ||
-    || [calendar.meeting.status.get](./calendar-event/calendar-meeting-status-get.md) | Get current user's participation status in an event ||
-    || [calendar.meeting.status.set](./calendar-event/calendar-meeting-status-set.md) | Set event participation status for the current user ||
-    || [calendar.accessibility.get](./calendar-event/calendar-accessibility-get.md) | Get availability of users from a list ||
+    || [calendar.event.add](./calendar-event/calendar-event-add.md) | Adds an event ||
+    || [calendar.event.update](./calendar-event/calendar-event-update.md) | Updates an event ||
+    || [calendar.event.getbyid](./calendar-event/calendar-event-get-by-id.md) | Retrieves an event by `id` ||
+    || [calendar.event.get](./calendar-event/calendar-event-get.md) | Retrieves a list of calendar events ||
+    || [calendar.event.getNearest](./calendar-event/calendar-event-get-nearest.md) | Retrieves a list of future events ||
+    || [calendar.event.delete](./calendar-event/calendar-event-delete.md) | Deletes an event ||
+    || [calendar.meeting.status.get](./calendar-event/calendar-meeting-status-get.md) | Retrieves the current user's participation status in an event ||
+    || [calendar.meeting.status.set](./calendar-event/calendar-meeting-status-set.md) | Sets event participation status for the current user ||
+    || [calendar.accessibility.get](./calendar-event/calendar-accessibility-get.md) | Retrieves the availability of users from a list ||
     |#
 
 - Events
@@ -131,9 +131,9 @@ An application can be embedded into the calendar. In the list of calendar view t
 
 #|
 || **Method** | **Description** ||
-|| [calendar.resource.add](./resource/calendar-resource-add.md) | Add a resource ||
-|| [calendar.resource.update](./resource/calendar-resource-update.md) | Update a resource ||
-|| [calendar.resource.list](./resource/calendar-resource-list.md) | Get a list of resources ||
-|| [calendar.resource.booking.list](./resource/calendar-resource-booking-list.md) | Get resource bookings by filter ||
-|| [calendar.resource.delete](./resource/calendar-resource-delete.md) | Delete a resource ||
+|| [calendar.resource.add](./resource/calendar-resource-add.md) | Adds a resource ||
+|| [calendar.resource.update](./resource/calendar-resource-update.md) | Updates a resource ||
+|| [calendar.resource.list](./resource/calendar-resource-list.md) | Retrieves a list of resources ||
+|| [calendar.resource.booking.list](./resource/calendar-resource-booking-list.md) | Retrieves resource bookings by filter ||
+|| [calendar.resource.delete](./resource/calendar-resource-delete.md) | Deletes a resource ||
 |#

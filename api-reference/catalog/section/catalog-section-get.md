@@ -270,7 +270,7 @@ HTTP Status: **400**
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
-## Continue Learning 
+## Continue Learning
 
 - [{#T}](./catalog-section-add.md)
 - [{#T}](./catalog-section-update.md)

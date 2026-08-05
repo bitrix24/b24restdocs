@@ -22,7 +22,7 @@ The method `disk.file.restore` restores a file from the trash.
 || **id***
 [`integer`](../../data-types.md) | Identifier of the file located in the trash.
 
-Files in the trash are not accessible through standard methods. To obtain the identifier of the file for restoration, save it immediately after calling the method [disk.file.markdeleted](./disk-file-mark-deleted.md)
+Files in the trash are not accessible through standard methods. To obtain the identifier of the file for restoration, save it immediately after calling the method [disk.file.markDeleted](./disk-file-mark-deleted.md)
 ||
 |#
 

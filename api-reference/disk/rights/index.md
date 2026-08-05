@@ -8,19 +8,25 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 Access permissions allow sharing the contents of your personal drive with other users, departments, or groups. Permissions can be assigned to the entire drive, as well as to individual folders or files.
 
-> Quick Navigation: [All Methods](#all-methods) 
+> Quick Navigation: [All Methods](#all-methods)
 >
-> User Documentation: [Configure access permissions to personal drive](https://helpdesk.bitrix24.com/open/25750335/) 
+> User Documentation: [Configure Access Permissions to Personal Drive](https://helpdesk.bitrix24.com/open/25750335/)
+
+## How to Start
+
+1. Get access levels using [disk.rights.getTasks](./disk-rights-get-tasks.md)
+2. Select the required `TASK_ID`
+3. Pass `TASK_ID` when uploading a file or configuring folder access
 
 ## Features of Working with Access Permissions
 
 The method [disk.rights.getTasks](./disk-rights-get-tasks.md) returns identifiers for three levels of access:
 
-- read,
-- edit,
-- full access.
+- read
+- edit
+- full access
 
-Use these identifiers as the value for the `TASK_ID` parameter to set permissions when uploading a file. For example, when uploading a file to storage using the method [disk.storage.uploadfile](../storage/disk-storage-upload-file.md) or to a folder using the method [disk.folder.uploadfile](../folder/disk-folder-upload-file.md).
+Pass these identifiers as the value of the `TASK_ID` parameter to set permissions when uploading a file. For example, when uploading a file to storage using [disk.storage.uploadFile](../storage/disk-storage-upload-file.md) or to a folder using [disk.folder.uploadFile](../folder/disk-folder-upload-file.md).
 
 ## Overview of Methods {#all-methods}
 
@@ -28,7 +34,7 @@ Use these identifiers as the value for the `TASK_ID` parameter to set permission
 >
 > Who can execute the method: any user
 
-#| 
+#|
 || **Method** | **Description** ||
-|| [disk.rights.getTasks](./disk-rights-get-tasks.md) | Returns a list of available access levels || 
+|| [disk.rights.getTasks](./disk-rights-get-tasks.md) | Returns a list of available access levels ||
 |#

@@ -12,7 +12,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 The method `disk.rights.getTasks` returns a list of available access levels.
 
-Use the obtained access level identifiers to set permissions on files during their upload. Specify the identifiers as the value of the `TASK_ID` parameter in the methods [disk.storage.uploadfile](../storage/disk-storage-upload-file.md) and [disk.folder.uploadfile](../folder/disk-folder-upload-file.md).
+Use the obtained access level identifiers to set permissions on files during their upload. Specify the identifiers as the value of the `TASK_ID` parameter in the methods [disk.storage.uploadFile](../storage/disk-storage-upload-file.md) and [disk.folder.uploadFile](../folder/disk-folder-upload-file.md).
 
 ## Method Parameters
 

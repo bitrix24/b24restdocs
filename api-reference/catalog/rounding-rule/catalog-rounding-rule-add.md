@@ -318,7 +318,7 @@ HTTP status: **400**
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
-## Continue Learning 
+## Continue Learning
 
 - [{#T}](./catalog-rounding-rule-update.md)
 - [{#T}](./catalog-rounding-rule-get.md)

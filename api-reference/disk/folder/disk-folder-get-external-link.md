@@ -1,4 +1,4 @@
-# Get Public Link for Folder disk.folder.getexternallink
+# Get Public Link for Folder disk.folder.getExternalLink
 
 {% note tip "" %}
 
@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: user with "Read" access permission for the required folder
 
-The method `disk.folder.getexternallink` returns a public link to the folder.
+The method `disk.folder.getExternalLink` returns a public link to the folder.
 
 ## Method Parameters
 
@@ -22,7 +22,7 @@ The method `disk.folder.getexternallink` returns a public link to the folder.
 || **id***
 [`integer`](../../data-types.md) | Identifier of the folder.
 
-The identifier can be obtained using the method [disk.storage.getchildren](../storage/disk-storage-get-children.md) if the folder is in the root of the storage, and using the method [disk.folder.getchildren](./disk-folder-get-children.md) if the folder is in another folder ||
+The identifier can be obtained using the method [disk.storage.getChildren](../storage/disk-storage-get-children.md) if the folder is in the root of the storage, and using the method [disk.folder.getChildren](./disk-folder-get-children.md) if the folder is in another folder ||
 |#
 
 ## Code Examples
@@ -38,7 +38,7 @@ The identifier can be obtained using the method [disk.storage.getchildren](../st
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"id":8930}' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/disk.folder.getexternallink
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/disk.folder.getExternalLink
     ```
 
 - cURL (OAuth)
@@ -48,7 +48,7 @@ The identifier can be obtained using the method [disk.storage.getchildren](../st
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"id":8930,"auth":"**put_access_token_here**"}' \
-    https://**put_your_bitrix24_address**/rest/disk.folder.getexternallink
+    https://**put_your_bitrix24_address**/rest/disk.folder.getExternalLink
     ```
 
 - JS (TS)
@@ -63,7 +63,7 @@ The identifier can be obtained using the method [disk.storage.getchildren](../st
 
     try {
       const response = await $b24.actions.v2.call.make<string>({
-        method: 'disk.folder.getexternallink',
+        method: 'disk.folder.getExternalLink',
         params: {
           id: 8930,
         },
@@ -95,7 +95,7 @@ The identifier can be obtained using the method [disk.storage.getchildren](../st
           const $b24 = await B24Js.initializeB24Frame()
 
           const response = await $b24.actions.v2.call.make({
-            method: 'disk.folder.getexternallink',
+            method: 'disk.folder.getExternalLink',
             params: {
               id: 8930,
             },
@@ -127,7 +127,7 @@ The identifier can be obtained using the method [disk.storage.getchildren](../st
         $response = $b24Service
             ->core
             ->call(
-                'disk.folder.getexternallink',
+                'disk.folder.getExternalLink',
                 [
                     'id' => 8930
                 ]
@@ -150,7 +150,7 @@ The identifier can be obtained using the method [disk.storage.getchildren](../st
 
     ```js
     BX24.callMethod(
-        "disk.folder.getexternallink",
+        "disk.folder.getExternalLink",
         {
             id: 8930
         },
@@ -169,7 +169,7 @@ The identifier can be obtained using the method [disk.storage.getchildren](../st
     require_once('crest.php');
 
     $result = CRest::call(
-        'disk.folder.getexternallink',
+        'disk.folder.getExternalLink',
         [
             'id' => 8930
         ]

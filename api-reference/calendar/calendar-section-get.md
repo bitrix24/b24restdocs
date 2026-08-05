@@ -388,7 +388,7 @@ HTTP Status: **400**
 ```json
 {
     "error": "",
-    "error_description": "The required parameter "type" for the method "calendar.section.get" is not set"
+    "error_description": "The required parameter \"type\" for the method \"calendar.section.get\" is not set"
 }
 ```
 
@@ -398,9 +398,9 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Error Message** | **Description** ||
-|| Empty string | The required parameter "type" for the method "calendar.section.get" is not set | The required parameter `type` was not provided ||
-|| Empty string | The required parameter "ownerId" for the method "calendar.section.get" is not set | The required parameter `ownerId` was not provided and the `type` parameter is not equal to `user` ||
-|| Empty string | Access denied | Access to the method is prohibited for external users ||
+|| Empty value | The required parameter "type" for the method "calendar.section.get" is not set | The required parameter `type` was not provided ||
+|| Empty value | The required parameter "ownerId" for the method "calendar.section.get" is not set | The required parameter `ownerId` was not provided and the `type` parameter is not equal to `user` ||
+|| Empty value | Access denied | Access to the method is prohibited for external users ||
 |#
 
 {% include [system errors](../../_includes/system-errors.md) %}

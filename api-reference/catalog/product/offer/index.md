@@ -6,17 +6,17 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-Variations are different versions of a single product that differ in color and size. Each variation has its own price, image, and stock quantity.
+Variations are different versions of a single product that differ by characteristics, such as color or size. Each variation has its own price, image, and stock quantity.
 
 A variation is linked to a parent product, which contains general information: name, description, and category.
 
 To work with parent products, use the methods [catalog.product.sku.*](../sku/index.md).
 
-> Quick navigation: [all methods](#all-methods) 
-> 
+> Quick navigation: [all methods](#all-methods)
+>
 > User documentation: [Working with the product variants](https://helpdesk.bitrix24.com/open/18839102/)
 
-## Relationship of Product Variations with Other Objects
+## Relationship with Other Objects
 
 **Trade Catalog.** A product variation is always linked to a specific trade catalog. You can obtain the identifiers of available trade catalogs using the method [catalog.catalog.list](../../catalog/catalog-catalog-list.md).
 
@@ -28,7 +28,7 @@ To work with parent products, use the methods [catalog.product.sku.*](../sku/ind
 
 **VAT.** The VAT rate can be set for each variation separately. You can work with rates through the methods [catalog.vat.*](../../vat/index.md).
 
-**User.** Each variation stores the identifiers of users who created or modified it. You can obtain user information using the methods [user.get](../../../user/user-get.md) and [user.search](../../../user/user-search.md).
+**User.** Each variation stores the identifiers of users who created or modified it. You can obtain user information using [user.get](../../../user/user-get.md) and [user.search](../../../user/user-search.md).
 
 **Product and Variation Properties.** Variations have properties that distinguish them from each other. These can include color, size, or material. You can work with properties using the methods [catalog.productProperty.*](../../product-property/index.md).
 
@@ -42,7 +42,15 @@ To work with parent products, use the methods [catalog.product.sku.*](../sku/ind
 
 **CRM.** A variation can be added to the list of products in a [lead](../../../crm/leads/index.md), [deal](../../../crm/deals/index.md), [invoice](../../../crm/universal/invoice.md), [SPA](../../../crm/universal/index.md), and [estimate](../../../crm/quote/index.md).
 
-**Order Cart.** A product variation can be added, modified, or removed from the cart using the group of methods [sale.basketitem.*](../../../sale/basket-item/index.md).
+**Order Cart.** A product variation can be added, modified, or removed from the cart using the [sale.basketitem.*](../../../sale/basket-item/index.md) method group.
+
+## How to Start
+
+1. Get the trade catalog identifier for variations using [catalog.catalog.list](../../catalog/catalog-catalog-list.md)
+2. Get the parent product identifier using [catalog.product.sku.list](../sku/catalog-product-sku-list.md)
+3. Create a variation using [catalog.product.offer.add](./catalog-product-offer-add.md)
+4. Add images using [catalog.productImage.add](../../product-image/catalog-product-image-add.md), if needed
+5. Set variation prices using [catalog.price.*](../../price/index.md)
 
 ## Overview of Methods {#all-methods}
 

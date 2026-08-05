@@ -22,7 +22,7 @@ The method `disk.file.rename` renames a file.
 || **id***
 [`integer`](../../data-types.md) | File identifier.
 
-The identifier can be obtained using the method [disk.storage.getchildren](../storage/disk-storage-get-children.md) if the file is located at the root of the storage, and using the method [disk.folder.getchildren](../folder/disk-folder-get-children.md) if the file is located in a folder ||
+The identifier can be obtained using the method [disk.storage.getChildren](../storage/disk-storage-get-children.md) if the file is located at the root of the storage, and using the method [disk.folder.getChildren](../folder/disk-folder-get-children.md) if the file is located in a folder ||
 || **newName***
 [`string`](../../data-types.md) | New file name.
 

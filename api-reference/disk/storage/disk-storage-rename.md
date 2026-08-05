@@ -28,7 +28,7 @@ The method works only in the context of the [application](../../../settings/app-
 || **id***
 [`integer`](../../data-types.md) | Identifier of the application storage.
 
-The identifier can be obtained using the method [disk.storage.getforapp](./disk-storage-get-for-app.md) || 
+The identifier can be obtained using the method [disk.storage.getForApp](./disk-storage-get-for-app.md) ||
 || **newName***
 [`string`](../../data-types.md) | New name for the storage ||
 |#

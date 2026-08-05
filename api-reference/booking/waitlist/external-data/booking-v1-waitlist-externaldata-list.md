@@ -1,4 +1,4 @@
-# Get External Data Links for Waitlist Entry booking.v1.waitList.externalData.list
+# Get External Data Links for Waitlist Entry booking.v1.waitlist.externalData.list
 
 {% note tip "" %}
 
@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: any user
 
-The method `booking.v1.waitList.externalData.list` returns links for the specified entry in the waitlist.
+The method `booking.v1.waitlist.externalData.list` returns links for the specified entry in the waitlist.
 
 ## Method Parameters
 
@@ -37,7 +37,7 @@ Can be obtained using the methods [booking.v1.waitlist.add](../booking-v1-waitli
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"waitListId":257}' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/booking.v1.waitList.externalData.list
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/booking.v1.waitlist.externalData.list
     ```
 
 - cURL (OAuth)
@@ -47,7 +47,7 @@ Can be obtained using the methods [booking.v1.waitlist.add](../booking-v1-waitli
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"waitListId":257,"auth":"**put_access_token_here**"}' \
-    https://**put_your_bitrix24_address**/rest/booking.v1.waitList.externalData.list
+    https://**put_your_bitrix24_address**/rest/booking.v1.waitlist.externalData.list
     ```
 
 - JS (TS)
@@ -70,13 +70,13 @@ Can be obtained using the methods [booking.v1.waitlist.add](../booking-v1-waitli
     }
 
     try {
-      // booking.v1.waitList.externalData.list returns a single page (max 50 records). For the whole result set
+      // booking.v1.waitlist.externalData.list returns a single page (max 50 records). For the whole result set
       // use a list helper: $b24.actions.v2.callList.make() returns every record as one
       // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
       // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
       // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
       const response = await $b24.actions.v2.call.make<ExternalDataListResult>({
-        method: 'booking.v1.waitList.externalData.list',
+        method: 'booking.v1.waitlist.externalData.list',
         params: {
           waitListId: 257,
           start: 0,
@@ -108,13 +108,13 @@ Can be obtained using the methods [booking.v1.waitlist.add](../booking-v1-waitli
           // Initialize the SDK inside a Bitrix24 frame
           const $b24 = await B24Js.initializeB24Frame()
 
-          // booking.v1.waitList.externalData.list returns a single page (max 50 records). For the whole result set
+          // booking.v1.waitlist.externalData.list returns a single page (max 50 records). For the whole result set
           // use a list helper: $b24.actions.v2.callList.make() returns every record as one
           // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
           // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
           // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
           const response = await $b24.actions.v2.call.make({
-            method: 'booking.v1.waitList.externalData.list',
+            method: 'booking.v1.waitlist.externalData.list',
             params: {
               waitListId: 257,
               start: 0,
@@ -147,7 +147,7 @@ Can be obtained using the methods [booking.v1.waitlist.add](../booking-v1-waitli
         $response = $b24Service
             ->core
             ->call(
-                'booking.v1.waitList.externalData.list',
+                'booking.v1.waitlist.externalData.list',
                 [
                     'waitListId' => 257,
                 ]
@@ -173,7 +173,7 @@ Can be obtained using the methods [booking.v1.waitlist.add](../booking-v1-waitli
 
     ```js
     BX24.callMethod(
-        "booking.v1.waitList.externalData.list",
+        "booking.v1.waitlist.externalData.list",
         {
             waitListId: 257,
         },
@@ -192,7 +192,7 @@ Can be obtained using the methods [booking.v1.waitlist.add](../booking-v1-waitli
     require_once('crest.php');
 
     $result = CRest::call(
-        'booking.v1.waitList.externalData.list',
+        'booking.v1.waitlist.externalData.list',
         [
             'waitListId' => 257
         ]

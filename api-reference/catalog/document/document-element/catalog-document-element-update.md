@@ -9,8 +9,8 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 > Scope: [`catalog`](../../../scopes/permissions.md)
 >
 > Who can execute the method: 
-> - a user with "Create and Edit" permission on the document type in the request,
-> - and "View and Select Warehouse" permission on the incoming or outgoing warehouse.
+> - a user with "Create and Edit" permission on the document type in the request
+> - a user with "View and Select Warehouse" permission on the incoming or outgoing warehouse
 
 The method `catalog.document.element.update` modifies an existing item in the inventory document and returns the updated product data.
 

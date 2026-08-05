@@ -9,21 +9,30 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 The price rounding rule is a set of settings that define how to modify the price of a product or service in the cart. They help automatically round prices, for example, to the nearest whole number or to a specific decimal place.
 
 There are three types of price rounding:
+
 - mathematical rounding
 - rounding up: the price increases, which benefits the store
 - rounding down: the price decreases, which benefits the customer
 
-> Quick navigation: [all methods and events](#all-methods) 
+> Quick navigation: [all methods and events](#all-methods)
 
-## Connection of Price Rounding Rules with Other Objects
+## How to Start
 
-**Price Types.** To create different types of prices: wholesale, retail, and partner, use the methods of the group [catalog.priceType.* ](../price-type/index.md). For each price type, you can set your own rounding rules. This will allow you to control how prices will be displayed and applied.
+1. Get the price type using [catalog.priceType.list](../price-type/catalog-price-type-list.md)
+2. Check available rule fields using [catalog.roundingRule.getFields](./catalog-rounding-rule-get-fields.md)
+3. Create a rounding rule using [catalog.roundingRule.add](./catalog-rounding-rule-add.md)
+4. Check the rule using [catalog.roundingRule.get](./catalog-rounding-rule-get.md) or [catalog.roundingRule.list](./catalog-rounding-rule-list.md)
+5. Track changes through [rounding rule events](./events/index.md)
+
+## Relationship with Other Objects
+
+**Price Types.** A rounding rule applies to a price type. You can get and configure price types using [catalog.priceType.*](../price-type/index.md).
 
 ## Overview of Methods and Events {#all-methods}
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute the method: administrator
+> Who can execute the methods: administrator
 
 {% list tabs %}
 

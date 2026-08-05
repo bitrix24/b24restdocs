@@ -6,13 +6,13 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-This section contains methods for reading and updating the values of custom fields for inventory accounting documents. The creation and configuration of the custom fields themselves are performed in a separate section `userfieldconfig.*`.
+The `catalog.userfield.document.*` methods read and update the values of custom fields for inventory accounting documents. Custom fields themselves are created and configured using `userfieldconfig.*` methods.
 
 > Quick navigation: [all methods](#all-methods)
 
 ## Relationships with Other Objects
 
-**Custom Fields.** Fields are created and configured using the methods in the [userfieldconfig.*](../../crm/universal/userfieldconfig/index.md) section. For inventory accounting documents, use `moduleId = catalog` and `entityId` in the format `CAT_STORE_DOCUMENT_<documentType>`, for example, `CAT_STORE_DOCUMENT_A`.
+**Custom Fields.** Fields are created and configured using [userfieldconfig.*](../../crm/universal/userfieldconfig/index.md) methods. For inventory accounting documents, use `moduleId = catalog` and `entityId` in the format `CAT_STORE_DOCUMENT_<documentType>`, for example, `CAT_STORE_DOCUMENT_A`.
 
 **Type of Inventory Accounting Document.** The methods in this section use `documentType`. Acceptable values can be obtained using the [catalog.enum.getStoreDocumentTypes](../enum/catalog-enum-get-store-document-types.md) method.
 
@@ -27,12 +27,12 @@ This section contains methods for reading and updating the values of custom fiel
 
 {% endnote %}
 
-## Working with Custom Fields of Documents
+## How to Start
 
-1. Create a custom field using the [userfieldconfig.add](../../crm/universal/userfieldconfig/userfieldconfig-add.md) method.
-2. Retrieve the `documentType` via [catalog.enum.getStoreDocumentTypes](../enum/catalog-enum-get-store-document-types.md).
-3. Get the current field values using the [catalog.userfield.document.list](./catalog-userfield-document-list.md) method.
-4. Update the values using the [catalog.userfield.document.update](./catalog-userfield-document-update.md) method.
+1. Create a custom field using [userfieldconfig.add](../../crm/universal/userfieldconfig/userfieldconfig-add.md)
+2. Retrieve the `documentType` using [catalog.enum.getStoreDocumentTypes](../enum/catalog-enum-get-store-document-types.md)
+3. Get the current field values using [catalog.userfield.document.list](./catalog-userfield-document-list.md)
+4. Update the values using [catalog.userfield.document.update](./catalog-userfield-document-update.md)
 
 ## Overview of Methods {#all-methods}
 
@@ -40,8 +40,8 @@ This section contains methods for reading and updating the values of custom fiel
 >
 > Who can execute the method: depending on the method
 
-#| 
+#|
 || **Method** | **Description** ||
-|| [catalog.userfield.document.update](./catalog-userfield-document-update.md) | Updates the values of custom fields for inventory accounting documents ||
 || [catalog.userfield.document.list](./catalog-userfield-document-list.md) | Returns a list of values for custom fields of inventory accounting documents ||
+|| [catalog.userfield.document.update](./catalog-userfield-document-update.md) | Updates the values of custom fields for inventory accounting documents ||
 |#

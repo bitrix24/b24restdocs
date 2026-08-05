@@ -22,7 +22,7 @@ The method `disk.folder.restore` restores a folder from the trash.
 || **id***
 [`integer`](../../data-types.md) | Identifier of the folder located in the trash.
 
-Folders in the trash are not accessible for requests through standard methods. To obtain the identifier of the folder for restoration, save it immediately after calling the method [disk.folder.markdeleted](./disk-folder-mark-deleted.md) ||
+Folders in the trash are not accessible for requests through standard methods. To obtain the identifier of the folder for restoration, save it immediately after calling the method [disk.folder.markDeleted](./disk-folder-mark-deleted.md) ||
 |#
 
 ## Code Examples

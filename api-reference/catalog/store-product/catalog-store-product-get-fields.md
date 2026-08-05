@@ -267,7 +267,7 @@ HTTP status: **400**
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
-## Continue Learning 
+## Continue Learning
 
 - [{#T}](./catalog-store-product-get.md)
 - [{#T}](./catalog-store-product-list.md)

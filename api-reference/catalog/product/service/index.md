@@ -8,23 +8,23 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 Services are intangible goods: consultations, work, or actions. They can be used in CRM entities and be associated with physical products.
 
-> Quick navigation: [all methods](#all-methods) 
-> 
+> Quick navigation: [all methods](#all-methods)
+>
 > User documentation: [Services in CRM](https://helpdesk.bitrix24.com/open/16680094/)
 
-## Connection of Services with Other Entities
+## Relationship with Other Objects
 
 **Product Catalog.** A service must be linked to a specific product catalog. You can obtain the identifiers of available product catalogs using the method [catalog.catalog.list](../../catalog/catalog-catalog-list.md).
 
-**Sections of the Product Catalog.** Services are usually distributed across sections. To create and manage sections, use the group of methods [catalog.section.*](../../section/index.md).
+**Sections of the Product Catalog.** Services are usually distributed across sections. To create and manage sections, use the [catalog.section.*](../../section/index.md) method group.
 
 **Images.** A service can contain images: for announcement, detailed, additional. To add images, use the methods [catalog.productImage.*](../../product-image/index.md), and to download, use the method [catalog.product.service.download](./catalog-product-service-download.md).
 
-**Units of Measurement.** For a service, a unit of measurement is chosen, for example, hours for consultations. You can add or change the unit of measurement using the methods [catalog.measure.*](../../measure/index.md).
+**Units of Measurement.** For a service, select a unit of measurement, for example hours for consultations. You can add or change the unit of measurement using the [catalog.measure.*](../../measure/index.md) methods.
 
 **VAT.** The VAT rate can be set for each service individually. You can work with rates through the methods [catalog.vat.*](../../vat/index.md).
 
-**User.** Each service stores the identifiers of users who created and modified it. Information about the user can be obtained using the methods [user.get](../../../user/user-get.md) and [user.search](../../../user/user-search.md).
+**User.** Each service stores the identifiers of users who created and modified it. User information can be obtained using [user.get](../../../user/user-get.md) and [user.search](../../../user/user-search.md).
 
 **Product and Variation Properties.** Services have properties that distinguish them from one another. These can include the type of service, execution time, or service status. You can work with properties using the methods [catalog.productProperty.*](../../product-property/index.md).
 
@@ -34,7 +34,15 @@ Services are intangible goods: consultations, work, or actions. They can be used
 
 - [Leads](../../../crm/leads/index.md), [deals](../../../crm/deals/index.md), [SPAs](../../../crm/universal/index.md), [invoices](../../../crm/universal/invoice.md), [contacts](../../../crm/contacts/index.md), and [companies](../../../crm/companies/index.md) can be specified in services using the property type "Link to CRM entities."
 
-**Order Basket.** A service can be added, modified, or removed from the basket using the group of methods [sale.basketitem.*](../../../sale/basket-item/index.md).
+**Order Basket.** A service can be added, modified, or removed from the basket using the [sale.basketitem.*](../../../sale/basket-item/index.md) method group.
+
+## How to Start
+
+1. Get the trade catalog identifier using [catalog.catalog.list](../../catalog/catalog-catalog-list.md)
+2. If services need to be distributed across sections, create sections using [catalog.section.*](../../section/index.md)
+3. Create a service using [catalog.product.service.add](./catalog-product-service-add.md)
+4. Add images using [catalog.productImage.add](../../product-image/catalog-product-image-add.md), if needed
+5. Set the service price using [catalog.price.*](../../price/index.md)
 
 ## Overview of Methods {#all-methods}
 

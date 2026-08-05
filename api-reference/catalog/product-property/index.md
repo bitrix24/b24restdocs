@@ -8,13 +8,9 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 Products and variations have properties such as color, size, material, brand, and others. These properties help customers find and select products on the site.
 
-In Bitrix24, properties can be configured.
+Properties can be made common for all products or linked to catalog sections. For example, the "Brand" property can be available for all products, while the "Material" property can be available only in the "Clothing" section.
 
-- Make them common for all products. Such properties are available for all products in the catalog; for example, the "Brand" property can be specified for all products.
-
-- Bind them to product sections. For instance, the "Material" property may only be available for the "Clothing" section, while the "Diagonal" property may only be available for the "Televisions" section.
-
-> Quick navigation: [all methods and events](#all-methods) 
+> Quick navigation: [all methods](#all-methods)
 >
 > User documentation: [Product and Variation Properties](https://helpdesk.bitrix24.com/open/13413370/)
 
@@ -28,7 +24,7 @@ The type is set when creating the property and cannot be changed.
 
 {% endnote %}
 
-## Linking Product Properties with Other Objects
+## Relationship with Other Objects
 
 **Trade Catalog.** Product properties must be linked to a specific trade catalog. You can obtain the identifiers of available trade catalogs using the [catalog.catalog.list](../catalog/catalog-catalog-list.md) method.
 
@@ -48,11 +44,19 @@ The type is set when creating the property and cannot be changed.
 
 {% endnote %}
 
+## How to Start
+
+1. Get the trade catalog identifier using [catalog.catalog.list](../catalog/catalog-catalog-list.md)
+2. Create a property using [catalog.productProperty.add](./catalog-product-property-add.md)
+3. If the property should be available only in specific sections, configure the binding using [catalog.productPropertySection.*](../product-property-section/index.md)
+4. If the property has the List type, add values using [catalog.productPropertyEnum.*](../product-property-enum/index.md)
+5. Use the property code in product, service, parent product, or variation methods
+
 ## Overview of Methods {#all-methods}
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: depending on the method
 
 #|
 || **Method** | **Description** ||

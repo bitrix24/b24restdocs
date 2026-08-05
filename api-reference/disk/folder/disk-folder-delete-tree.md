@@ -1,4 +1,4 @@
-# Permanently Delete a Folder and All Its Contents disk.folder.deletetree
+# Permanently Delete a Folder and All Its Contents disk.folder.deleteTree
 
 {% note tip "" %}
 
@@ -10,9 +10,9 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: a user with "Full access" permission for the specified folder
 
-The method `disk.folder.deletetree` permanently deletes a folder and all its contents.
+The method `disk.folder.deleteTree` permanently deletes a folder and all its contents.
 
-If you want to move the folder to the trash, use the method [disk.folder.markdeleted](./disk-folder-mark-deleted.md).
+If you want to move the folder to the trash, use the method [disk.folder.markDeleted](./disk-folder-mark-deleted.md).
 
 ## Method Parameters
 
@@ -24,7 +24,7 @@ If you want to move the folder to the trash, use the method [disk.folder.markdel
 || **id***
 [`integer`](../../data-types.md) | Identifier of the folder.
 
-The identifier can be obtained using the method [disk.folder.getchildren](./disk-folder-get-children.md)
+The identifier can be obtained using the method [disk.folder.getChildren](./disk-folder-get-children.md)
 ||
 |#
 
@@ -47,7 +47,7 @@ You cannot delete the root folder of the storage
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"id":8942}' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/disk.folder.deletetree
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/disk.folder.deleteTree
     ```
 
 - cURL (OAuth)
@@ -57,7 +57,7 @@ You cannot delete the root folder of the storage
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"id":8942,"auth":"**put_access_token_here**"}' \
-    https://**put_your_bitrix24_address**/rest/disk.folder.deletetree
+    https://**put_your_bitrix24_address**/rest/disk.folder.deleteTree
     ```
 
 - JS (TS)
@@ -72,7 +72,7 @@ You cannot delete the root folder of the storage
 
     try {
       const response = await $b24.actions.v2.call.make<boolean>({
-        method: 'disk.folder.deletetree',
+        method: 'disk.folder.deleteTree',
         params: {
           id: 8942,
         },
@@ -104,7 +104,7 @@ You cannot delete the root folder of the storage
           const $b24 = await B24Js.initializeB24Frame()
 
           const response = await $b24.actions.v2.call.make({
-            method: 'disk.folder.deletetree',
+            method: 'disk.folder.deleteTree',
             params: {
               id: 8942,
             },
@@ -136,7 +136,7 @@ You cannot delete the root folder of the storage
         $response = $b24Service
             ->core
             ->call(
-                'disk.folder.deletetree',
+                'disk.folder.deleteTree',
                 [
                     'id' => 8942
                 ]
@@ -159,7 +159,7 @@ You cannot delete the root folder of the storage
 
     ```js
     BX24.callMethod(
-        "disk.folder.deletetree",
+        "disk.folder.deleteTree",
         {
             id: 8942
         },
@@ -178,7 +178,7 @@ You cannot delete the root folder of the storage
     require_once('crest.php');
 
     $result = CRest::call(
-        'disk.folder.deletetree',
+        'disk.folder.deleteTree',
         [
             'id' => 8942
         ]

@@ -1,4 +1,4 @@
-# Move File to Specified Folder disk.file.moveto
+# Move File to Specified Folder disk.file.moveTo
 
 {% note tip "" %}
 
@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: a user with "Edit" permission for the file and "Add" permission for the target folder.
 
-The method `disk.file.moveto` moves a file to the specified folder.
+The method `disk.file.moveTo` moves a file to the specified folder.
 
 {% note warning "" %}
 
@@ -33,7 +33,7 @@ You cannot move a file to a folder from a different storage.
 
 {% note info "" %}
 
-File and folder identifiers can be obtained using the [disk.storage.getchildren](../storage/disk-storage-get-children.md) or [disk.folder.getchildren](../folder/disk-folder-get-children.md) methods.
+File and folder identifiers can be obtained using the [disk.storage.getChildren](../storage/disk-storage-get-children.md) or [disk.folder.getChildren](../folder/disk-folder-get-children.md) methods.
 
 {% endnote %}
 
@@ -50,7 +50,7 @@ File and folder identifiers can be obtained using the [disk.storage.getchildren]
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"id":8964,"targetFolderId":9023}' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/disk.file.moveto
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/disk.file.moveTo
     ```
 
 - cURL (OAuth)
@@ -60,7 +60,7 @@ File and folder identifiers can be obtained using the [disk.storage.getchildren]
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"id":8964,"targetFolderId":9023,"auth":"**put_access_token_here**"}' \
-    https://**put_your_bitrix24_address**/rest/disk.file.moveto
+    https://**put_your_bitrix24_address**/rest/disk.file.moveTo
     ```
 
 - JS (TS)
@@ -97,7 +97,7 @@ File and folder identifiers can be obtained using the [disk.storage.getchildren]
 
     try {
       const response = await $b24.actions.v2.call.make<MoveFileResult>({
-        method: 'disk.file.moveto',
+        method: 'disk.file.moveTo',
         params: {
           id: 8964,
           targetFolderId: 9023,
@@ -130,7 +130,7 @@ File and folder identifiers can be obtained using the [disk.storage.getchildren]
           const $b24 = await B24Js.initializeB24Frame()
 
           const response = await $b24.actions.v2.call.make({
-            method: 'disk.file.moveto',
+            method: 'disk.file.moveTo',
             params: {
               id: 8964,
               targetFolderId: 9023,
@@ -163,7 +163,7 @@ File and folder identifiers can be obtained using the [disk.storage.getchildren]
         $response = $b24Service
             ->core
             ->call(
-                'disk.file.moveto',
+                'disk.file.moveTo',
                 [
                     'id' => 8964,
                     'targetFolderId' => 9023
@@ -187,7 +187,7 @@ File and folder identifiers can be obtained using the [disk.storage.getchildren]
 
     ```js
     BX24.callMethod(
-        "disk.file.moveto",
+        "disk.file.moveTo",
         {
             id: 8964,
             targetFolderId: 9023
@@ -208,7 +208,7 @@ File and folder identifiers can be obtained using the [disk.storage.getchildren]
     require_once('crest.php');
 
     $result = CRest::call(
-        'disk.file.moveto',
+        'disk.file.moveTo',
         [
             'id' => 8964,
             'targetFolderId' => 9023

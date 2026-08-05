@@ -224,7 +224,7 @@ HTTP status: **400**
 ```json
 {
     "error": "",
-    "error_description": "The required parameter "status" for the method "calendar.meeting.status.set" is not set"
+    "error_description": "The required parameter \"status\" for the method \"calendar.meeting.status.set\" is not set"
 }
 ```
 
@@ -234,9 +234,9 @@ HTTP status: **400**
 
 #|
 || **Code** | **Error Message** | **Description** ||
-|| Empty string | The required parameter "status" for the method "calendar.meeting.status.set" is not set | The required parameter `status` is not provided ||
-|| Empty string | The required parameter "eventId" for the method "calendar.meeting.status.set" is not set | The required parameter `eventId` is not provided ||
-|| Empty string | Invalid value for the parameter "status" | The value provided for the `status` parameter is different from `Q`, `Y`, or `N` ||
+|| Empty value | The required parameter "status" for the method "calendar.meeting.status.set" is not set | The required parameter `status` is not provided ||
+|| Empty value | The required parameter "eventId" for the method "calendar.meeting.status.set" is not set | The required parameter `eventId` is not provided ||
+|| Empty value | Invalid value for the parameter "status" | The value provided for the `status` parameter is different from `Q`, `Y`, or `N` ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

@@ -22,7 +22,7 @@ The method `disk.file.get` returns data about a file.
 || **id***
 [`integer`](../../data-types.md) | Identifier of the file.
 
-The identifier can be obtained using the method [disk.storage.getchildren](../storage/disk-storage-get-children.md) if the file is located in the root of the storage, and using the method [disk.folder.getchildren](../folder/disk-folder-get-children.md) if the file is located in a folder
+The identifier can be obtained using the method [disk.storage.getChildren](../storage/disk-storage-get-children.md) if the file is located in the root of the storage, and using the method [disk.folder.getChildren](../folder/disk-folder-get-children.md) if the file is located in a folder
 ||
 |#
 

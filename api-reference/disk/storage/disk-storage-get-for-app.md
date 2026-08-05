@@ -1,4 +1,4 @@
-# Get Application Storage Description disk.storage.getforapp
+# Get Application Storage Description disk.storage.getForApp
 
 {% note tip "" %}
 
@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: administrator
 
-The method `disk.storage.getforapp` returns the description of the storage associated with the application. If the storage does not exist, it creates one.
+The method `disk.storage.getForApp` returns the description of the storage associated with the application. If the storage does not exist, it creates one.
 
 {% note info "" %}
 
@@ -35,7 +35,7 @@ No parameters.
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"auth":"**put_access_token_here**"}' \
-    https://**put_your_bitrix24_address**/rest/disk.storage.getforapp
+    https://**put_your_bitrix24_address**/rest/disk.storage.getForApp
     ```
 
 - JS (TS)
@@ -61,7 +61,7 @@ No parameters.
 
     try {
       const response = await $b24.actions.v2.call.make<StorageResult>({
-        method: 'disk.storage.getforapp',
+        method: 'disk.storage.getForApp',
         params: {},
         requestId: Text.getUuidRfc4122()
       })
@@ -91,7 +91,7 @@ No parameters.
           const $b24 = await B24Js.initializeB24Frame()
 
           const response = await $b24.actions.v2.call.make({
-            method: 'disk.storage.getforapp',
+            method: 'disk.storage.getForApp',
             params: {},
             requestId: B24Js.Text.getUuidRfc4122()
           })
@@ -121,7 +121,7 @@ No parameters.
         $response = $b24Service
             ->core
             ->call(
-                'disk.storage.getforapp',
+                'disk.storage.getForApp',
                 []
             );
 
@@ -142,7 +142,7 @@ No parameters.
 
     ```js
     BX24.callMethod(
-        "disk.storage.getforapp",
+        "disk.storage.getForApp",
         {},
         function (result)
         {
@@ -160,7 +160,7 @@ No parameters.
     require_once('crest.php');
 
     $result = CRest::call(
-        'disk.storage.getforapp',
+        'disk.storage.getForApp',
         []
     );
 

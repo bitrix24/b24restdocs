@@ -6,13 +6,20 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-Resources are objects that can be reserved: rooms, equipment, services, and so on.
+Resources are objects that can be reserved: rooms, equipment, or services.
 
-> Quick navigation: [all methods](#all-methods) 
-> 
+> Quick navigation: [all methods](#all-methods)
+>
 > User documentation: [Add a resource to Booking section](https://helpdesk.bitrix24.com/open/23848816/)
 
-## Connection of Resources with Other Objects
+## How to Start
+
+1. Create or retrieve a resource type using [booking.v1.resourceType.*](./resource-type/index.md)
+2. Create a resource using [booking.v1.resource.add](./booking-v1-resource-add.md)
+3. Configure available time using [booking.v1.resource.slots.*](./slots/index.md)
+4. Pass the resource `id` in the `resourceIds` parameter of the [booking.v1.booking.*](../booking/index.md) methods so that the resource is included in a booking
+
+## Relationship with Other Objects
 
 **Reservation.** Pass the `id` of the resources in the `resourceIds` parameter of the [booking.v1.booking.*](../booking/index.md) methods. A single reservation can include multiple resources.
 
@@ -31,8 +38,8 @@ Resources are objects that can be reserved: rooms, equipment, services, and so o
 #|
 || **Method** | **Description** ||
 || [booking.v1.resource.add](./booking-v1-resource-add.md) | Adds a new resource ||
-|| [booking.v1.resource.delete](./booking-v1-resource-delete.md) | Deletes a resource ||
+|| [booking.v1.resource.update](./booking-v1-resource-update.md) | Updates a resource ||
 || [booking.v1.resource.get](./booking-v1-resource-get.md) | Retrieves a resource ||
 || [booking.v1.resource.list](./booking-v1-resource-list.md) | Retrieves a list of resources ||
-|| [booking.v1.resource.update](./booking-v1-resource-update.md) | Updates a resource ||
+|| [booking.v1.resource.delete](./booking-v1-resource-delete.md) | Deletes a resource ||
 |#

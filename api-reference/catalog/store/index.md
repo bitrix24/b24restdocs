@@ -11,12 +11,19 @@ Warehouses help manage inventory, movements, and receipts of goods. You will alw
 You can set access permissions for each warehouse. This way, employees will only see their own inventory documents and will not accidentally select another warehouse when creating new documents.
 
 > Quick navigation: [all methods](#all-methods)
-> 
-> User documentation: 
+>
+> User documentation:
 > - [How to get started with inventory management](https://helpdesk.bitrix24.com/open/14836088/)
 > - [Access permission for viewing and selecting a warehouse](https://helpdesk.bitrix24.com/open/16634838/)
 
-## Connection of Warehouses with Other Objects
+## How to Start
+
+1. Check available warehouse fields using [catalog.store.getFields](./catalog-store-get-fields.md)
+2. Create a warehouse using [catalog.store.add](./catalog-store-add.md)
+3. Get the warehouse identifier using [catalog.store.get](./catalog-store-get.md) or [catalog.store.list](./catalog-store-list.md)
+4. Use the warehouse identifier in inventory management documents or when reading inventory balances
+
+## Relationship with Other Objects
 
 **Inventory Levels.** Find out how many items are left in the warehouse using the methods [catalog.storeproduct.*](../store-product/index.md).
 
@@ -26,7 +33,7 @@ You can set access permissions for each warehouse. This way, employees will only
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute the method: administrator
+> Who can execute the methods: administrator
 
 #|
 || **Method** | **Description** ||

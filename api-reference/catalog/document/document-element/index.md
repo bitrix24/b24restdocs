@@ -10,31 +10,39 @@ The methods `catalog.document.element.*` add, modify, or remove product items in
 
 > Quick navigation: [all methods](#all-methods)
 
-## Relationships with Other Objects
+## How to Start
+
+1. Create or find an inventory management document using the [catalog.document.*](../index.md) methods
+2. Get the `id` of a product or variation
+3. Specify the receipt or write-off warehouse depending on the document type
+4. Add a product item using [catalog.document.element.add](./catalog-document-element-add.md)
+5. Check document items using [catalog.document.element.list](./catalog-document-element-list.md)
+
+## Relationship with Other Objects
 
 **Inventory Management Documents.** Specify the document ID in the `docId` field to process:
-- product receipt to the warehouse,
-- stock adjustment of the product,
-- transfer of the product between warehouses,
-- product return,
-- write-off of the product from the warehouse.
+- product receipt to the warehouse
+- stock adjustment of the product
+- transfer of the product between warehouses
+- product return
+- write-off of the product from the warehouse
 
 To obtain the document ID, use the [catalog.document.list](../catalog-document-list.md) method. Changes to the list of product items can only be made in a document that has not yet been processed.
 
-**Catalog Products.** Specify the ID of the simple product or variation in the `elementId` field. 
+**Catalog Products.** Specify the ID of the simple product or variation in the `elementId` field.
 Services are not supported in inventory management.
 
 To obtain product IDs, use the methods:
-- [catalog.product.list](../../product/catalog-product-list.md) for simple products,
-- [catalog.product.offer.list](../../product/offer/catalog-product-offer-list.md) for variations.
+- [catalog.product.list](../../product/catalog-product-list.md) for simple products
+- [catalog.product.offer.list](../../product/offer/catalog-product-offer-list.md) for variations
 
 **Warehouses.** Specify the ID of the receipt warehouse in the `storeTo` field or the write-off warehouse in the `storeFrom` field. Choose the field depending on the type of inventory management document:
 
-- receipt — `storeTo`,
-- stock adjustment — `storeTo`,
-- transfer — `storeTo` and `storeFrom`,
-- return — `storeFrom`,
-- write-off — `storeFrom`.
+- receipt — `storeTo`
+- stock adjustment — `storeTo`
+- transfer — `storeTo` and `storeFrom`
+- return — `storeFrom`
+- write-off — `storeFrom`
 
 To obtain warehouse IDs, use the [catalog.store.list](../../store/catalog-store-list.md) method.
 

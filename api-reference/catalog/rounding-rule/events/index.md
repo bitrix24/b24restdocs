@@ -14,7 +14,7 @@ Detailed information on working with events is described in the article [Concept
 
 ## How to Receive Events
 
-You can subscribe to rounding rule events through the [application](./../../../../settings/app-installation/index.md) and the [event.bind](./../../../events/event-bind.md) method.
+You can subscribe to rounding rule events through the [application](../../../../settings/app-installation/index.md) and the [event.bind](../../../events/event-bind.md) method.
 
 An example of a handler for the event is described in the article [How to Test Your Handler for Processing Bitrix24 Events](../../../events/test-handler.md).
 
@@ -22,7 +22,7 @@ An example of a handler for the event is described in the article [How to Test Y
 
 {% include notitle [Server Availability for Sending and Receiving Events](../../../../_includes/events-index.md) %}
 
-## Overview of Events
+## Overview of Events {#all-events}
 
 > Scope: [`catalog`](../../../scopes/permissions.md)
 >
@@ -30,7 +30,7 @@ An example of a handler for the event is described in the article [How to Test Y
 
 #|
 || **Event** | **Triggered** ||
-|| [CATALOG.ROUNDING.ON.ADD](catalog-rounding-on-add.md) | When a rounding rule is added manually or via the [catalog.roundingRule.add](../catalog-rounding-rule-add.md) method ||
-|| [CATALOG.ROUNDING.ON.UPDATE](catalog-rounding-on-update.md) | When a rounding rule is updated manually or via the [catalog.roundingRule.update](../catalog-rounding-rule-update.md) method ||
-|| [CATALOG.ROUNDING.ON.DELETE](catalog-rounding-on-delete.md) | When a rounding rule is deleted manually or via the [catalog.roundingRule.delete](../catalog-rounding-rule-delete.md) method ||
+|| [CATALOG.ROUNDING.ON.ADD](./catalog-rounding-on-add.md) | When a rounding rule is added manually or using [catalog.roundingRule.add](../catalog-rounding-rule-add.md) ||
+|| [CATALOG.ROUNDING.ON.UPDATE](./catalog-rounding-on-update.md) | When a rounding rule is updated manually or using [catalog.roundingRule.update](../catalog-rounding-rule-update.md) ||
+|| [CATALOG.ROUNDING.ON.DELETE](./catalog-rounding-on-delete.md) | When a rounding rule is deleted manually or using [catalog.roundingRule.delete](../catalog-rounding-rule-delete.md) ||
 |#

@@ -36,7 +36,7 @@ An additional prefix can be assigned to the key to specify the filter behavior. 
 - `<=` — less than or equal to
 - `<` — less than
 - `@` — IN (an array is passed as the value)
-- `!@`— NOT IN (an array is passed as the value)
+- `!@` — NOT IN (an array is passed as the value)
 - `%` — LIKE, substring search. The `%` symbol in the filter value does not need to be passed. The search looks for the substring in any position of the string.
 - `=%` — LIKE, substring search. The `%` symbol needs to be passed in the value. Examples:
     - "mol%" — searching for values starting with "mol"
@@ -379,7 +379,7 @@ HTTP status: **400**
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
-## Continue Learning 
+## Continue Learning
 
 - [{#T}](./catalog-section-add.md)
 - [{#T}](./catalog-section-update.md)

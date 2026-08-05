@@ -1265,6 +1265,8 @@ Methods that upload a file to an object field return the identifier of the creat
 
 These `ID` will be required when you need to [update or delete files](./how-to-update-files.md).
 
+To download a file using `DOWNLOAD_URL` or `urlMachine`, send a separate `GET` request. Pass the `User-Agent`, `Accept`, `Accept-Language`, and `Referer` headers according to the rules in [How a Request Is Executed](../../settings/how-to-call-rest-api/general-principles.md#headers). If the HTTP client does not pass these headers or inserts a technical `User-Agent`, the file may fail to download even if the link is signed correctly.
+
 ## Limitations When Working with Files
 
 - GET requests are limited by the URL length — approximately 2048 characters. This is a general limitation of browsers and web servers, not a specific feature of Bitrix24. A Base64 string is almost always longer, so pass files via a POST request.

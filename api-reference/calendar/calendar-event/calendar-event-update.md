@@ -658,7 +658,7 @@ HTTP status: **400**
 ```json
 {
     "error": "",
-    "error_description": "The required parameter "ownerId" for the method "calendar.event.update" is not set."
+    "error_description": "The required parameter \"ownerId\" for the method \"calendar.event.update\" is not set."
 }
 ```
 
@@ -668,16 +668,16 @@ HTTP status: **400**
 
 #|
 || **Code** | **Error Message** | **Description** ||
-|| Empty string | The required parameter "id" for the method "calendar.event.update" is not set. | The required parameter `id` is not provided. ||
-|| Empty string | The required parameter "ownerId" for the method "calendar.event.update" is not set. | The required parameter `ownerId` is not provided. ||
-|| Empty string | The required parameter "type" for the method "calendar.event.update" is not set. | The required parameter `type` is not provided. ||
-|| Empty string | Invalid value for the "name" parameter. | Incorrect data format in the `name` field. ||
-|| Empty string | Invalid value for the "description" parameter. | Incorrect data format in the `description` field. ||
-|| Empty string | Access denied. | Creating events in the specified calendar is prohibited. ||
-|| Empty string | You specified an invalid calendar section ID or the user does not have access to it. | An identifier of an inaccessible or non-existent calendar is provided. ||
-|| Empty string | An invalid editing type for the recurring event is specified. | An incorrect value for the `recurrence_mode` field is provided. ||
-|| Empty string | The event's CRM links list must be an array. | Incorrect data format in the `crm_fields` field. ||
-|| Empty string | An error occurred while changing the event. | Another error. ||
+|| Empty value | The required parameter "id" for the method "calendar.event.update" is not set. | The required parameter `id` is not provided. ||
+|| Empty value | The required parameter "ownerId" for the method "calendar.event.update" is not set. | The required parameter `ownerId` is not provided. ||
+|| Empty value | The required parameter "type" for the method "calendar.event.update" is not set. | The required parameter `type` is not provided. ||
+|| Empty value | Invalid value for the "name" parameter. | Incorrect data format in the `name` field. ||
+|| Empty value | Invalid value for the "description" parameter. | Incorrect data format in the `description` field. ||
+|| Empty value | Access denied. | Updating events in the specified calendar is prohibited. ||
+|| Empty value | You specified an invalid calendar section ID or the user does not have access to it. | An identifier of an inaccessible or non-existent calendar is provided. ||
+|| Empty value | An invalid editing type for the recurring event is specified. | An incorrect value for the `recurrence_mode` field is provided. ||
+|| Empty value | The event's CRM links list must be an array. | Incorrect data format in the `crm_fields` field. ||
+|| Empty value | An error occurred while changing the event. | Another error. ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

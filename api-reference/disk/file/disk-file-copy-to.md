@@ -1,4 +1,4 @@
-# Copy File to Specified Folder disk.file.copyto
+# Copy File to Specified Folder disk.file.copyTo
 
 {% note tip "" %}
 
@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: a user with "Read" permission for the file and "Add" permission for the folder
 
-The method `disk.file.copyto` copies a file to the specified folder.
+The method `disk.file.copyTo` copies a file to the specified folder.
 
 ## Method Parameters
 
@@ -27,7 +27,7 @@ The method `disk.file.copyto` copies a file to the specified folder.
 
 {% note info "" %}
 
-File and folder identifiers can be obtained using the methods [disk.storage.getchildren](../storage/disk-storage-get-children.md) and [disk.folder.getchildren](../folder/disk-folder-get-children.md)
+File and folder identifiers can be obtained using the methods [disk.storage.getChildren](../storage/disk-storage-get-children.md) and [disk.folder.getChildren](../folder/disk-folder-get-children.md)
 
 {% endnote %}
 
@@ -44,7 +44,7 @@ File and folder identifiers can be obtained using the methods [disk.storage.getc
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"id":9035,"targetFolderId":8930}' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/disk.file.copyto
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/disk.file.copyTo
     ```
 
 - cURL (OAuth)
@@ -54,7 +54,7 @@ File and folder identifiers can be obtained using the methods [disk.storage.getc
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"id":9035,"targetFolderId":8930,"auth":"**put_access_token_here**"}' \
-    https://**put_your_bitrix24_address**/rest/disk.file.copyto
+    https://**put_your_bitrix24_address**/rest/disk.file.copyTo
     ```
 
 - JS (TS)
@@ -91,7 +91,7 @@ File and folder identifiers can be obtained using the methods [disk.storage.getc
 
     try {
       const response = await $b24.actions.v2.call.make<DiskFileCopyToResult>({
-        method: 'disk.file.copyto',
+        method: 'disk.file.copyTo',
         params: {
           id: 9035,
           targetFolderId: 8930,
@@ -124,7 +124,7 @@ File and folder identifiers can be obtained using the methods [disk.storage.getc
           const $b24 = await B24Js.initializeB24Frame()
 
           const response = await $b24.actions.v2.call.make({
-            method: 'disk.file.copyto',
+            method: 'disk.file.copyTo',
             params: {
               id: 9035,
               targetFolderId: 8930,
@@ -157,7 +157,7 @@ File and folder identifiers can be obtained using the methods [disk.storage.getc
         $response = $b24Service
             ->core
             ->call(
-                'disk.file.copyto',
+                'disk.file.copyTo',
                 [
                     'id' => 9035,
                     'targetFolderId' => 8930
@@ -181,7 +181,7 @@ File and folder identifiers can be obtained using the methods [disk.storage.getc
 
     ```js
     BX24.callMethod(
-        "disk.file.copyto",
+        "disk.file.copyTo",
         {
             id: 9035,
             targetFolderId: 8930
@@ -202,7 +202,7 @@ File and folder identifiers can be obtained using the methods [disk.storage.getc
     require_once('crest.php');
 
     $result = CRest::call(
-        'disk.file.copyto',
+        'disk.file.copyTo',
         [
             'id' => 9035,
             'targetFolderId' => 8930

@@ -1,4 +1,4 @@
-# Upload a New Version of a File disk.file.uploadversion
+# Upload a New Version of a File disk.file.uploadVersion
 
 {% note tip "" %}
 
@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: a user with "Edit" access permission for the specified file
 
-The method `disk.file.uploadversion` uploads a new version of a file.
+The method `disk.file.uploadVersion` uploads a new version of a file.
 
 ## Method Parameters
 
@@ -22,7 +22,7 @@ The method `disk.file.uploadversion` uploads a new version of a file.
 || **id***
 [`integer`](../../data-types.md) | File identifier.
 
-The identifier can be obtained using the method [disk.storage.getchildren](../storage/disk-storage-get-children.md) if the file is located at the root of the storage, and using the method [disk.folder.getchildren](../folder/disk-folder-get-children.md) if the file is located in a folder ||
+The identifier can be obtained using the method [disk.storage.getChildren](../storage/disk-storage-get-children.md) if the file is located at the root of the storage, and using the method [disk.folder.getChildren](../folder/disk-folder-get-children.md) if the file is located in a folder ||
 || **fileContent***
 [`array`](../../data-types.md) | An array containing the file name and a string in [Base64](../../files/how-to-upload-files.md) ||
 |#
@@ -40,7 +40,7 @@ The identifier can be obtained using the method [disk.storage.getchildren](../st
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"id":9043,"fileContent":["Test #2.docx","UEsDBBQABgAIAAAAIQBKvAJxbQEAACgGAAATAAgCW0NvbnRlbnRfVHlwZXNdLnhtbCCiBAI...AAAAAA0ADQBAAwAAA2EAAAAA"]}' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/disk.file.uploadversion
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/disk.file.uploadVersion
     ```
 
 - cURL (OAuth)
@@ -50,7 +50,7 @@ The identifier can be obtained using the method [disk.storage.getchildren](../st
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"id":9043,"fileContent":["Test #2.docx","UEsDBBQABgAIAAAAIQBKvAJxbQEAACgGAAATAAgCW0NvbnRlbnRfVHlwZXNdLnhtbCCiBAI...AAAAAA0ADQBAAwAAA2EAAAAA"],"auth":"**put_access_token_here**"}' \
-    https://**put_your_bitrix24_address**/rest/disk.file.uploadversion
+    https://**put_your_bitrix24_address**/rest/disk.file.uploadVersion
     ```
 
 - JS (TS)
@@ -87,7 +87,7 @@ The identifier can be obtained using the method [disk.storage.getchildren](../st
 
     try {
       const response = await $b24.actions.v2.call.make<UploadVersionResult>({
-        method: 'disk.file.uploadversion',
+        method: 'disk.file.uploadVersion',
         params: {
           id: 9043,
           fileContent: [
@@ -123,7 +123,7 @@ The identifier can be obtained using the method [disk.storage.getchildren](../st
           const $b24 = await B24Js.initializeB24Frame()
 
           const response = await $b24.actions.v2.call.make({
-            method: 'disk.file.uploadversion',
+            method: 'disk.file.uploadVersion',
             params: {
               id: 9043,
               fileContent: [
@@ -159,7 +159,7 @@ The identifier can be obtained using the method [disk.storage.getchildren](../st
         $response = $b24Service
             ->core
             ->call(
-                'disk.file.uploadversion',
+                'disk.file.uploadVersion',
                 [
                     'id' => 9043,
                     'fileContent' => [
@@ -186,7 +186,7 @@ The identifier can be obtained using the method [disk.storage.getchildren](../st
 
     ```js
     BX24.callMethod(
-        "disk.file.uploadversion",
+        "disk.file.uploadVersion",
         {
             id: 9043,
             fileContent: [
@@ -210,7 +210,7 @@ The identifier can be obtained using the method [disk.storage.getchildren](../st
     require_once('crest.php');
 
     $result = CRest::call(
-        'disk.file.uploadversion',
+        'disk.file.uploadVersion',
         [
             'id' => 9043,
             'fileContent' => [

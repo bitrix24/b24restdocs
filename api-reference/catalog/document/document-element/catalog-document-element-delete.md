@@ -9,8 +9,8 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 > Scope: [`catalog`](../../../scopes/permissions.md)
 >
 > Who can execute the method: 
-> - a user with "Create and edit" permission on the document type in the request,
-> - and "View and select warehouse" permission on the incoming or outgoing warehouse.
+> - a user with "Create and edit" permission on the document type in the request
+> - a user with "View and select warehouse" permission on the incoming or outgoing warehouse
 
 The method `catalog.document.element.delete` removes an item from the inventory document. The document must be accessible to the user and have a status of `N` — not processed.
 

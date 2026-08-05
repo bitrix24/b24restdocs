@@ -1,4 +1,4 @@
-# Move Folder to Trash disk.folder.markdeleted
+# Move Folder to Trash disk.folder.markDeleted
 
 {% note tip "" %}
 
@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: a user with "Full access" permission for the specified folder
 
-The method `disk.folder.markdeleted` moves a folder to the trash.
+The method `disk.folder.markDeleted` moves a folder to the trash.
 
 {% note info "" %}
 
@@ -28,7 +28,7 @@ Save the folder ID after deletion so that it can be restored later using the met
 || **id***
 [`integer`](../../data-types.md) | Identifier of the folder.
 
-The identifier can be obtained using the method [disk.folder.getchildren](./disk-folder-get-children.md) ||
+The identifier can be obtained using the method [disk.folder.getChildren](./disk-folder-get-children.md) ||
 |#
 
 {% note info "" %}
@@ -50,7 +50,7 @@ You cannot move the root folder of the storage to the trash.
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"id":8996}' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/disk.folder.markdeleted
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/disk.folder.markDeleted
     ```
 
 - cURL (OAuth)
@@ -60,7 +60,7 @@ You cannot move the root folder of the storage to the trash.
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"id":8996,"auth":"**put_access_token_here**"}' \
-    https://**put_your_bitrix24_address**/rest/disk.folder.markdeleted
+    https://**put_your_bitrix24_address**/rest/disk.folder.markDeleted
     ```
 
 - JS (TS)
@@ -94,7 +94,7 @@ You cannot move the root folder of the storage to the trash.
 
     try {
       const response = await $b24.actions.v2.call.make<MarkDeletedResult>({
-        method: 'disk.folder.markdeleted',
+        method: 'disk.folder.markDeleted',
         params: {
           id: 8996,
         },
@@ -126,7 +126,7 @@ You cannot move the root folder of the storage to the trash.
           const $b24 = await B24Js.initializeB24Frame()
 
           const response = await $b24.actions.v2.call.make({
-            method: 'disk.folder.markdeleted',
+            method: 'disk.folder.markDeleted',
             params: {
               id: 8996,
             },
@@ -158,7 +158,7 @@ You cannot move the root folder of the storage to the trash.
         $response = $b24Service
             ->core
             ->call(
-                'disk.folder.markdeleted',
+                'disk.folder.markDeleted',
                 [
                     'id' => 8996
                 ]
@@ -181,7 +181,7 @@ You cannot move the root folder of the storage to the trash.
 
     ```js
     BX24.callMethod(
-        "disk.folder.markdeleted",
+        "disk.folder.markDeleted",
         {
             id: 8996
         },
@@ -201,7 +201,7 @@ You cannot move the root folder of the storage to the trash.
     require_once('crest.php');
 
     $result = CRest::call(
-        'disk.folder.markdeleted',
+        'disk.folder.markDeleted',
         [
             'id' => 8996
         ]

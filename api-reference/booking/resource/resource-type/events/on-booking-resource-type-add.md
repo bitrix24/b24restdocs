@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can subscribe: any user
 
-The event `ONBOOKINGRESOURCETYPEADD` will trigger when a new resource type is created either manually or via the [booking.v1.resourcetype.add](../booking-v1-resourcetype-add.md) method.
+The event `ONBOOKINGRESOURCETYPEADD` will trigger when a new resource type is created either manually or via the [booking.v1.resourceType.add](../booking-v1-resourcetype-add.md) method.
 
 {% note info "" %}
 
