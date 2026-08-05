@@ -1,4 +1,4 @@
-# Widgets in User Profile: Overview of Embedding Points
+# Widgets in User Profile: Overview of Placements
 
 {% note tip "" %}
 
@@ -6,103 +6,101 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-This section describes the embedding points for widgets in the Bitrix24 user profile interface. Through these points, developers can add their item to the context menu of the profile or to the context menu of the upper profile button.
+The placements of this section add an application item where the user works with profiles: to the user's own menu and to the employee card. Both placements require the `user` scope.
 
 To register a widget, use the [placement.bind](../placement-bind.md) method and pass the required code in the `PLACEMENT` parameter.
 
-> Quick navigation: [all widgets](#all-widgets)
+> Quick navigation: [all placements](#all-placements)
 
-## How to Choose an Embedding Point
+## How to Choose a Placement
 
-Both embedding points relate to the user profile but are displayed in different menus of the interface.
+The placements differ in whose identifier the handler receives.
 
 #|
-|| **Embedding Point** | **Where the User Sees It** | **When to Use** ||
-|| [USER_PROFILE_MENU](./profile-menu.md) | In the user menu under the *Extensions* button in the upper right corner | When the action should be accessible from the general user menu without navigating to the profile slider ||
-|| [USER_PROFILE_TOOLBAR](./profile-toolbar.md) | In the context menu of the *Extensions* button in the upper right corner of the profile slider | When the action should be available within the open user profile and relate to working with the profile card ||
+|| **Placement** | **Where the User Sees It** | **When to Use** ||
+|| [USER_PROFILE_MENU](./profile-menu.md) | In the menu under the avatar in the upper right corner, via the *Extensions* button | When the action relates to the user themselves: personal application settings, a jump to your own section. The handler receives the identifier of the person who opened the menu ||
+|| [USER_PROFILE_TOOLBAR](./profile-toolbar.md) | In the menu of the button in the upper right corner of the employee card | When the action relates to a specific employee: data from an external system, a request about a person. The handler receives the identifier of the owner of the open card ||
 |#
 
 ## How to Get Started
 
-1. Choose the embedding point for your scenario in the user profile.
-2. Register the handler via [placement.bind](../placement-bind.md) and pass the required `PLACEMENT`.
-3. Parse `PLACEMENT_OPTIONS` in the handler to obtain the user ID.
-4. If necessary, use `USER_ID` to call methods from the [user](../../user/index.md) section and retrieve profile data.
+1. Choose the placement by whose identifier the handler needs
+2. Register the handler with the [placement.bind](../placement-bind.md) method, pass the placement code in `PLACEMENT` and the item name in `TITLE`
+3. Complete the application installation — until then the item does not appear in the interface
+4. Open the user menu or an employee card and select your item
+5. Parse `PLACEMENT_OPTIONS` in the handler and retrieve employee data with the [user.get](../../user/user-get.md) method
 
 ## What the Handler Receives
 
-Data is transmitted as a POST request {.b24-info}
+Data is sent in a POST request: some parameters come in the handler URL query string, the rest in the request body {.b24-info}
 
-{% list tabs %}
+```php
+Array
+(
+    [DOMAIN] => xxx.bitrix24.com
+    [PROTOCOL] => 1
+    [LANG] => en
+    [APP_SID] => bbdb976c9f5d067b1d48d102ab17b995
+    [AUTH_ID] => ae70bb6600705a0700005a4b00000001f0f107ab19f75f907d2320df1129aa61f63efc
+    [AUTH_EXPIRES] => 3600
+    [REFRESH_ID] => 9eefe26600705a0700005a4b00000001f0f1078586205803785eca5262f6ff48e025ee
+    [SERVER_ENDPOINT] => https://oauth.bitrix.info/rest/
+    [APPLICATION_TOKEN] => 5b2f8c1d7e3a9046b8c5d2f1a7e3b904
+    [APPLICATION_SCOPE] => user,placement
+    [member_id] => da45a03b265edd8787f8a258d793cc5d
+    [status] => L
+    [PLACEMENT] => USER_PROFILE_MENU
+    [PLACEMENT_OPTIONS] => {"USER_ID":"1","URI":"\/company\/"}
+)
+```
 
-- USER_PROFILE_MENU
+{% include [Note on Required Parameters](../../../_includes/required.md) %}
 
-    ```php
-    Array
-    (
-        [DOMAIN] => xxx.bitrix24.com
-        [PROTOCOL] => 1
-        [LANG] => en
-        [APP_SID] => bbdb976c9f5d067b1d48d102ab17b995
-        [AUTH_ID] => ae70bb6600705a0700005a4b00000001f0f107ab19f75f907d2320df1129aa61f63efc
-        [AUTH_EXPIRES] => 3600
-        [REFRESH_ID] => 9eefe26600705a0700005a4b00000001f0f1078586205803785eca5262f6ff48e025ee
-        [member_id] => da45a03b265edd8787f8a258d793cc5d
-        [status] => L
-        [PLACEMENT] => USER_PROFILE_MENU
-        [PLACEMENT_OPTIONS] => {"USER_ID":"1"}
-    )
-    ```
-
-- USER_PROFILE_TOOLBAR
-
-    ```php
-    Array
-    (
-        [DOMAIN] => xxx.bitrix24.com
-        [PROTOCOL] => 1
-        [LANG] => en
-        [APP_SID] => 8cd7740e289bf14997dd7e5e20cf6d13
-        [AUTH_ID] => dc70bb6600705a0700005a4b00000001f0f1079c18b7c3d0497a2cf769e3c4d1150a9b
-        [AUTH_EXPIRES] => 3600
-        [REFRESH_ID] => ccefe26600705a0700005a4b00000001f0f107961459d1f9ac07ba82616c72079ede7b
-        [member_id] => da45a03b265edd8787f8a258d793cc5d
-        [status] => L
-        [PLACEMENT] => USER_PROFILE_TOOLBAR
-        [PLACEMENT_OPTIONS] => {"USER_ID":"1"}
-    )
-    ```
-
-{% endlist %}
+{% include notitle [Description of Standard Data](../_includes/widget_data.md) %}
 
 ### PLACEMENT_OPTIONS
 
-The value of `PLACEMENT_OPTIONS` is passed as a JSON string with the context of the call.
+The value of `PLACEMENT_OPTIONS` is passed as a JSON string with the call context. The set of keys is the same for both placements, but the value of `USER_ID` differs.
 
 #|
-|| **Widget** | **Keys** | **Description** ||
-|| [USER_PROFILE_MENU](./profile-menu.md) | `USER_ID` | The identifier of the user whose profile the widget is opened in ||
-|| [USER_PROFILE_TOOLBAR](./profile-toolbar.md) | `USER_ID` | The identifier of the user whose profile the widget is opened in ||
+|| **Placement** | **Keys** | **What Is in USER_ID** ||
+|| [USER_PROFILE_MENU](./profile-menu.md) | `USER_ID`, `URI` | The current user — the one who opened the menu ||
+|| [USER_PROFILE_TOOLBAR](./profile-toolbar.md) | `USER_ID`, `URI` | The owner of the open employee card ||
 |#
 
-## Relationships with Other Objects
+The `URI` key is universal: it carries the address of the page the widget is opened from.
 
-**User.** The `USER_ID` parameter in `PLACEMENT_OPTIONS` indicates for which user the handler was called. You can obtain user information by ID using the [user.get](../../user/user-get.md) method.
+Neither placement supports the `OPTIONS` parameter of the [placement.bind](../placement-bind.md) method: the values passed are not retained, and [placement.get](../placement-get.md) returns an empty array.
 
-## Typical Errors
+## Relationship With Other Objects
+
+**User.** Using `USER_ID` from the call context, the application retrieves employee data with the [user.get](../../user/user-get.md) method. The list of employees and the company structure are returned by the methods of the [{#T}](../../user/index.md) and [{#T}](../../departments/index.md) sections.
+
+## Common Mistakes
 
 #|
-|| **Error** | **How to Resolve** ||
-|| The widget does not display after registration | Complete the application installation and reopen the user profile ||
-|| The expected user does not come to the handler | Ensure that the handler is registered for the correct `PLACEMENT` and parses `USER_ID` from `PLACEMENT_OPTIONS` ||
+|| **Mistake** | **Solution** ||
+|| The item did not appear after registration | Complete the application installation and reload the page: the menu and the card build the item list on load ||
+|| The handler receives the wrong employee | Check the placement code: `USER_PROFILE_MENU` returns the current user, while `USER_PROFILE_TOOLBAR` returns the owner of the open card ||
+|| The `OPTIONS` passed during registration does not reach the handler | The placements of this section do not support `OPTIONS`. Pass your values through the handler address ||
 |#
 
-## Overview of Widgets {#all-widgets}
+## Overview of Placements {#all-placements}
 
 > Scope: [`user`](../../scopes/permissions.md)
 
 #|
-|| **Widget** | **When to Use** ||
-|| [USER_PROFILE_MENU](./profile-menu.md) | Context menu item in the user profile ||
-|| [USER_PROFILE_TOOLBAR](./profile-toolbar.md) | Context menu item for the upper profile button ||
+|| **Placement** | **When to Use** ||
+|| [USER_PROFILE_MENU](./profile-menu.md) | An item in the user menu, available from any page of Bitrix24 ||
+|| [USER_PROFILE_TOOLBAR](./profile-toolbar.md) | An item in the employee card menu ||
 |#
+
+## Continue Learning
+
+- [{#T}](../placement-bind.md)
+- [{#T}](../placement-list.md)
+- [{#T}](../placement-unbind.md)
+- [{#T}](../ui-interaction/index.md)
+- [{#T}](../bx24-widget-methods.md)
+- [{#T}](../../user/index.md)
+- [{#T}](../../../settings/interactivity/index.md)

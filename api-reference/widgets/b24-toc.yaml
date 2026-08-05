@@ -9,7 +9,7 @@ items:
       mode: link
   - name: Widget Embedding Locations
     href: placements.md
-  - name: Widgets in the Main Menu
+  - name: Item in the Main Menu
     href: left-menu.md
   - name: Widgets in CRM
     include:
@@ -27,7 +27,7 @@ items:
     include:
       path: user-profile/b24-toc.yaml
       mode: link
-  - name: Widget in Calendar
+  - name: Calendar View
     href: calendar.md
   - name: Widgets in Telephony
     include:
@@ -37,7 +37,7 @@ items:
     include:
       path: im/b24-toc.yaml
       mode: link
-  - name: Widget in Contact Center
+  - name: Tile in the Contact Center
     href: contact-center.md
   - name: Universal Widgets
     include:
