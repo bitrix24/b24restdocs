@@ -8,9 +8,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`crm`](../../scopes/permissions.md)
 
-You can add your own tabs to the detail form of CRM entities: [leads](../../crm/leads/index.md), [contacts](../../crm/contacts/index.md), [companies](../../crm/companies/index.md), [deals](../../crm/deals/index.md), [estimates](../../crm/quote/index.md), [new invoices](../../crm/universal/invoice.md), [custom object types](../../crm/universal/index.md).
-
-![Widget as a Tab in the Detail Form of CRM Entity](./_images/CRM_DEAL_DETAIL_TAB.png "Widget as a Tab in the Detail Form of CRM Entity")
+The widget adds its own tab to the card of a CRM object: a [lead](../../crm/leads/index.md), [contact](../../crm/contacts/index.md), [company](../../crm/companies/index.md), [deal](../../crm/deals/index.md), [estimate](../../crm/quote/index.md), [new invoice](../../crm/universal/invoice.md), [order](../../sale/order/index.md), or [custom object type](../../crm/universal/index.md).
 
 The specific placement code for the widget is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
 
@@ -30,163 +28,43 @@ The widget will not be displayed in the interface until the application installa
 || `CRM_COMPANY_DETAIL_TAB` | Tab in the [company](../../crm/companies/index.md) detail form ||
 || `CRM_QUOTE_DETAIL_TAB` | Tab in the [estimate](../../crm/quote/index.md) detail form ||
 || `CRM_SMART_INVOICE_DETAIL_TAB` | Tab in the [invoice](../../crm/universal/invoice.md) detail form ||
+|| `CRM_ORDER_DETAIL_TAB` | Tab in the [online store order](../../sale/order/index.md) card ||
 || `CRM_DYNAMIC_XXX_DETAIL_TAB` | Tab in the detail form of a custom object type in CRM. Replace XXX with the numeric identifier of the specific [custom object type](../../crm/universal/index.md). For example, `CRM_DYNAMIC_183_DETAIL_TAB` ||
 |#
+
+### Where to Find It in the Interface
+
+Open a CRM object card. The application tab appears in the card tab row. If there are more tabs than fit in the row, it moves under *More*.
+
+![Tab in the deal card](./_images/CRM_DEAL_DETAIL_TAB.png "Tab in the deal card")
 
 ## What the Handler Receives
 
 Data is sent in a POST request: some parameters come in the handler URL query string, the rest in the request body {.b24-info}
 
-{% list tabs %}
+The example is shown for the `CRM_DEAL_DETAIL_TAB` placement. Other codes send the same set of data: the `PLACEMENT` value and the object identifier in `PLACEMENT_OPTIONS` change.
 
-- CRM_LEAD_DETAIL_TAB
+```php
 
-    ```php
+Array
+(
+    [DOMAIN] => xxx.bitrix24.com
+    [PROTOCOL] => 1
+    [LANG] => en
+    [APP_SID] => 5552d735db7b7b4d5c16dd9c272bfe7d
+    [AUTH_ID] => 9d4c7166007e9c94001e30ba00000001f0f107e28b5a4310c7f6d9b3025ea814
+    [AUTH_EXPIRES] => 3600
+    [REFRESH_ID] => 8c3b9966007e9c94001e30ba00000001f0f107f19c6b3e04d182ac5b73f9052d
+    [SERVER_ENDPOINT] => https://oauth.bitrix.info/rest/
+    [APPLICATION_TOKEN] => ec1b2074a9d3f5c81b6e40d27a95cf38
+    [APPLICATION_SCOPE] => crm,placement
+    [member_id] => d897063e1ce7c5eb9f04b9751eef5915
+    [status] => L
+    [PLACEMENT] => CRM_DEAL_DETAIL_TAB
+    [PLACEMENT_OPTIONS] => {"ID":"8061","URI":"\/crm\/deal\/details\/8061\/?any=details%2F8061%2F&IFRAME=Y&IFRAME_TYPE=SIDE_SLIDER"}
+)
 
-    Array
-    (
-        [DOMAIN] => xxx.bitrix24.com
-        [PROTOCOL] => 1
-        [LANG] => en
-        [APP_SID] => 32dc7a69a3dac11ea9c95dfc6bf5dd8a
-        [AUTH_ID] => 1bf49f6600631fcd00005a4b00000001f0f107e9a9ddb6de2bd5f7856ac587b492adb4
-        [AUTH_EXPIRES] => 3600
-        [REFRESH_ID] => 0b73c76600631fcd00005a4b00000001f0f1079fd883d9c43bf4abf545709c61eb8f69
-        [member_id] => da45a03b265edd8787f8a258d793cc5d
-        [status] => L
-        [PLACEMENT] => CRM_LEAD_DETAIL_TAB
-        [PLACEMENT_OPTIONS] => {"ID":"6591"}
-    )
-
-    ```
-
-- CRM_DEAL_DETAIL_TAB
-
-    ```php
-
-    Array
-    (
-        [DOMAIN] => xxx.bitrix24.com
-        [PROTOCOL] => 1
-        [LANG] => en
-        [APP_SID] => d8286e173e919aa1695254997a6e3123
-        [AUTH_ID] => 3cf49f6600631fcd00005a4b00000001f0f107d9825065d14b0d269c63cdaa0bb1967d
-        [AUTH_EXPIRES] => 3600
-        [REFRESH_ID] => 2c73c76600631fcd00005a4b00000001f0f1076f22983f060e8e14120e47cbc2c227a0
-        [member_id] => da45a03b265edd8787f8a258d793cc5d
-        [status] => L
-        [PLACEMENT] => CRM_DEAL_DETAIL_TAB
-        [PLACEMENT_OPTIONS] => {"ID":"3473"}
-    )
-
-    ```
-
-- CRM_CONTACT_DETAIL_TAB
-
-    ```php
-
-    Array
-    (
-        [DOMAIN] => xxx.bitrix24.com
-        [PROTOCOL] => 1
-        [LANG] => en
-        [APP_SID] => d17a24f20960a2971eda0e69754e62a2
-        [AUTH_ID] => 57f49f6600631fcd00005a4b00000001f0f1077ef2d8b6c37097b8985bb7fb4948d1e8
-        [AUTH_EXPIRES] => 3600
-        [REFRESH_ID] => 4773c76600631fcd00005a4b00000001f0f10711f2f134f53a44072e44b61677961fac
-        [member_id] => da45a03b265edd8787f8a258d793cc5d
-        [status] => L
-        [PLACEMENT] => CRM_CONTACT_DETAIL_TAB
-        [PLACEMENT_OPTIONS] => {"ID":"13037"}
-    )
-
-    ```
-
-- CRM_COMPANY_DETAIL_TAB
-
-    ```php
-
-    Array
-    (
-        [DOMAIN] => xxx.bitrix24.com
-        [PROTOCOL] => 1
-        [LANG] => en
-        [APP_SID] => 1ff08edeb6a06f8f35a28fd745039801
-        [AUTH_ID] => 74f49f6600631fcd00005a4b00000001f0f1070281f446cf788ea6bd54f8420750aaea
-        [AUTH_EXPIRES] => 3600
-        [REFRESH_ID] => 6473c76600631fcd00005a4b00000001f0f107b5ee25f08705b5f616a23e2130eb7fad
-        [member_id] => da45a03b265edd8787f8a258d793cc5d
-        [status] => L
-        [PLACEMENT] => CRM_COMPANY_DETAIL_TAB
-        [PLACEMENT_OPTIONS] => {"ID":"2946"}
-    )
-        
-    ```
-
-- CRM_QUOTE_DETAIL_TAB
-
-    ```php
-
-    Array
-    (
-        [DOMAIN] => xxx.bitrix24.com
-        [PROTOCOL] => 1
-        [LANG] => en
-        [APP_SID] => 5571169e21118b274f4fa57b8fd4e2b3
-        [AUTH_ID] => aef49f6600631fcd00005a4b00000001f0f1079f066b85d07bc74dc9f4372d83152d70
-        [AUTH_EXPIRES] => 3600
-        [REFRESH_ID] => 9e73c76600631fcd00005a4b00000001f0f107541600cc2176b7d270db8ab3f1eecfcf
-        [member_id] => da45a03b265edd8787f8a258d793cc5d
-        [status] => L
-        [PLACEMENT] => CRM_QUOTE_DETAIL_TAB
-        [PLACEMENT_OPTIONS] => {"ID":"5"}
-    )
-    
-    ```
-
-- CRM_SMART_INVOICE_DETAIL_TAB
-
-    ```php
-
-    Array
-    (
-        [DOMAIN] => xxx.bitrix24.com
-        [PROTOCOL] => 1
-        [LANG] => en
-        [APP_SID] => fff172819907af99a29b4830304aabe7
-        [AUTH_ID] => ccbfca670076a4b8006f518000000001201c07b80ac830a875756c6c0c9073bec005c5
-        [AUTH_EXPIRES] => 3600
-        [REFRESH_ID] => bc3ef2670076a4b8006f518000000001201c07efcbf35af9b89bb15ea3ab8e7223fe49
-        [member_id] => e8857f161a1a8288f312b6cc6ad67995
-        [status] => L
-        [PLACEMENT] => CRM_SMART_INVOICE_DETAIL_TAB
-        [PLACEMENT_OPTIONS] => {"ID":"32"}
-    )
-    
-    ```
-
-- CRM_DYNAMIC_XXX_DETAIL_TAB
-
-    ```php
-
-    Array
-    (
-        [DOMAIN] => xxx.bitrix24.com
-        [PROTOCOL] => 1
-        [LANG] => en
-        [APP_SID] => 5d7bde16d7895ef326320f00c4bfbd8d
-        [AUTH_ID] => def49f6600631fcd00005a4b00000001f0f10700d7b3563b156732e94917116f0a81a1
-        [AUTH_EXPIRES] => 3600
-        [REFRESH_ID] => ce73c76600631fcd00005a4b00000001f0f1072e9cc05d2796e9b91abaa262fc98bdf9
-        [member_id] => da45a03b265edd8787f8a258d793cc5d
-        [status] => L
-        [PLACEMENT] => CRM_DYNAMIC_183_DETAIL_TAB
-        [PLACEMENT_OPTIONS] => {"ID":"3"}
-    )
-    
-    ```
-
-{% endlist %}
+```
 
 {% include [Note on Required Parameters](../../../_includes/required.md) %}
 
@@ -194,7 +72,7 @@ Data is sent in a POST request: some parameters come in the handler URL query st
 
 ### PLACEMENT_OPTIONS
 
-The value of `PLACEMENT_OPTIONS` is a JSON string containing an array of one or more keys.
+The `PLACEMENT_OPTIONS` value is passed as a JSON string with the call context. Along with the universal `URI` key, the context carries the object identifier.
 
 {% include [Note on Required Parameters](../../../_includes/required.md) %}
 
@@ -212,7 +90,7 @@ It can be used to retrieve additional information using the corresponding method
 - company [crm.company.get](../../crm/companies/crm-company-get.md)
 - estimate [crm.quote.get](../../crm/quote/crm-quote-get.md)
 
-In the case of embedding the widget in a custom object type, the type identifier can be obtained from the value of the `PLACEMENT` parameter. In the example above — `183`
+The object type identifier does not arrive as a separate key. For a custom object type, take it from the `PLACEMENT` parameter value: for the `CRM_DYNAMIC_183_DETAIL_TAB` code, the type identifier is `183`
 
 ||
 |#
@@ -223,8 +101,217 @@ In the case of embedding the widget in a custom object type, the type identifier
 
 {% endnote %}
 
+## Code Examples
+
+{% include [Footnote on examples](../../../_includes/examples.md) %}
+
+{% list tabs %}
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+      -H "Content-Type: application/json" \
+      -H "Accept: application/json" \
+      -d '{
+        "PLACEMENT": "CRM_DEAL_DETAIL_TAB",
+        "HANDLER": "https://your-domain.com/widgets/crm-detail-tab-handler.php",
+        "TITLE": "My deal tab",
+        "LANG_ALL": {
+          "en": {
+            "TITLE": "My deal tab"
+          },
+          "de": {
+            "TITLE": "Mein Deal-Tab"
+          }
+        },
+        "auth": "**put_access_token_here**"
+      }' \
+      https://**put_your_bitrix24_address**/rest/placement.bind
+    ```
+
+- JS (TS)
+
+    ```ts
+    // This snippet is an ES module: top-level await requires type="module" or a bundler.
+    // $b24 is an already-initialized SDK instance (see the SDK "Get started" guide).
+    import { Text } from '@bitrix24/b24jssdk'
+    import type { B24Frame } from '@bitrix24/b24jssdk'
+
+    declare const $b24: B24Frame
+
+    try {
+      const response = await $b24.actions.v2.call.make<boolean>({
+        method: 'placement.bind',
+        params: {
+          PLACEMENT: 'CRM_DEAL_DETAIL_TAB',
+          HANDLER: 'https://your-domain.com/widgets/crm-detail-tab-handler.php',
+          TITLE: 'My deal tab',
+          LANG_ALL: {
+            en: {
+              TITLE: 'My deal tab',
+            },
+            de: {
+              TITLE: 'Mein Deal-Tab',
+            },
+          },
+        },
+        requestId: Text.getUuidRfc4122()
+      })
+
+      // The payload is available only on a successful response
+      if (!response.isSuccess) {
+        console.error(response.getErrorMessages().join('; '))
+      } else {
+        const result = response.getData()!.result
+        console.info('Placement bound successfully:', result)
+      }
+    } catch (error) {
+      // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+      console.error(error)
+    }
+    ```
+
+- JS (UMD)
+
+    ```html
+    <!-- Load the SDK (UMD build); it is exposed as the global B24Js -->
+    <script src="https://unpkg.com/@bitrix24/b24jssdk@1/dist/umd/index.min.js"></script>
+    <script>
+      async function bindCrmDealDetailTab() {
+        try {
+          // Initialize the SDK inside a Bitrix24 frame
+          const $b24 = await B24Js.initializeB24Frame()
+
+          const response = await $b24.actions.v2.call.make({
+            method: 'placement.bind',
+            params: {
+              PLACEMENT: 'CRM_DEAL_DETAIL_TAB',
+              HANDLER: 'https://your-domain.com/widgets/crm-detail-tab-handler.php',
+              TITLE: 'My deal tab',
+              LANG_ALL: {
+                en: {
+                  TITLE: 'My deal tab',
+                },
+                de: {
+                  TITLE: 'Mein Deal-Tab',
+                },
+              },
+            },
+            requestId: B24Js.Text.getUuidRfc4122()
+          })
+
+          // The payload is available only on a successful response
+          if (!response.isSuccess) {
+            console.error(response.getErrorMessages().join('; '))
+            return
+          }
+
+          const result = response.getData().result
+          console.info('Placement bound successfully:', result)
+        } catch (error) {
+          // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+          console.error(error)
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', bindCrmDealDetailTab)
+    </script>
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'placement.bind',
+                [
+                    'PLACEMENT' => 'CRM_DEAL_DETAIL_TAB',
+                    'HANDLER' => 'https://your-domain.com/widgets/crm-detail-tab-handler.php',
+                    'TITLE' => 'My deal tab',
+                    'LANG_ALL' => [
+                        'en' => [
+                            'TITLE' => 'My deal tab',
+                        ],
+                        'de' => [
+                            'TITLE' => 'Mein Deal-Tab',
+                        ],
+                    ],
+                ]
+            );
+
+        $result = $response->getResponseData()->getResult();
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error binding placement: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
+    BX24.callMethod(
+        'placement.bind',
+        {
+            PLACEMENT: 'CRM_DEAL_DETAIL_TAB',
+            HANDLER: 'https://your-domain.com/widgets/crm-detail-tab-handler.php',
+            TITLE: 'My deal tab',
+            LANG_ALL: {
+                en: { TITLE: 'My deal tab' },
+                de: { TITLE: 'Mein Deal-Tab' }
+            }
+        },
+        function(result) {
+            if (result.error()) {
+                console.error(result.error());
+            } else {
+                console.log(result.data());
+            }
+        }
+    );
+    ```
+
+- PHP CRest
+
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'placement.bind',
+        [
+            'PLACEMENT' => 'CRM_DEAL_DETAIL_TAB',
+            'HANDLER' => 'https://your-domain.com/widgets/crm-detail-tab-handler.php',
+            'TITLE' => 'My deal tab',
+            'LANG_ALL' => [
+                'en' => [
+                    'TITLE' => 'My deal tab',
+                ],
+                'de' => [
+                    'TITLE' => 'Mein Deal-Tab',
+                ],
+            ],
+        ]
+    );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
+    ```
+
+{% endlist %}
+
 ## Continue Learning
 
+- [{#T}](./index.md)
+- [{#T}](./detail-toolbar.md)
+- [{#T}](./detail-activity.md)
 - [{#T}](../placement-bind.md)
 - [{#T}](../ui-interaction/index.md)
 - [{#T}](../../../settings/interactivity/index.md)

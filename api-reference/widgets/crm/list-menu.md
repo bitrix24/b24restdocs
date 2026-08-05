@@ -1,4 +1,4 @@
-# Button in the CRM Analytics Header CRM_ANALYTICS_TOOLBAR
+# Context Menu Item in the CRM_XXX_LIST_MENU, CRM_DYNAMIC_XXX_LIST_MENU
 
 {% note tip "" %}
 
@@ -8,9 +8,9 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`crm`](../../scopes/permissions.md)
 
-The widget adds its own button to the header of the CRM Analytics section.
+The widget adds its own item to the context menu of an element in the list of CRM objects: [leads](../../crm/leads/index.md), [contacts](../../crm/contacts/index.md), [companies](../../crm/companies/index.md), [deals](../../crm/deals/index.md), [estimates](../../crm/quote/index.md), [new invoices](../../crm/universal/invoice.md), [activities](../../crm/timeline/activities/index.md), and [custom object types](../../crm/universal/index.md).
 
-The specific widget placement code is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
+The specific placement code for the widget is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
 
 {% note info "" %}
 
@@ -22,20 +22,27 @@ The widget will not be displayed in the interface until the application installa
 
 #| 
 || **Widget Code** | **Location** ||
-|| `CRM_ANALYTICS_TOOLBAR` | Button in the CRM Analytics header ||
+|| `CRM_LEAD_LIST_MENU` | Context menu item for [lead](../../crm/leads/index.md) ||
+|| `CRM_CONTACT_LIST_MENU` | Context menu item for [contact](../../crm/contacts/index.md) ||
+|| `CRM_COMPANY_LIST_MENU` | Context menu item for [company](../../crm/companies/index.md) ||
+|| `CRM_DEAL_LIST_MENU` | Context menu item for [deal](../../crm/deals/index.md) ||
+|| `CRM_SMART_INVOICE_LIST_MENU` | Context menu item for [new invoice](../../crm/universal/invoice.md) ||
+|| `CRM_QUOTE_LIST_MENU` | Context menu item for [estimate](../../crm/quote/index.md) ||
+|| `CRM_ACTIVITY_LIST_MENU` | Context menu item for [CRM activity](../../crm/timeline/activities/index.md) ||
+|| `CRM_DYNAMIC_XXX_LIST_MENU` | Context menu item for custom CRM object type. Instead of XXX, specify the numeric identifier of the specific [custom object type](../../crm/universal/index.md). For example, `CRM_DYNAMIC_183_LIST_MENU` || 
 |#
 
 ### Where to Find It in the Interface
 
-Open the *CRM Analytics* section and select a report in the left menu. The application button appears on the right in the section header, next to the report settings.
+Open a CRM section in list view, click the menu button to the left of an element, and hover over *Bitrix24 Market*. The application item appears in this submenu.
 
-The button is not available on every report. For example, the *Individual performance* report has no settings of its own, and only the feedback button remains in the header.
-
-![Button in the CRM Analytics header](./_images/CRM_ANALYTICS_TOOLBAR.png "Button in the CRM Analytics header")
+![Context menu item in the deal list](./_images/CRM_DEAL_LIST_MENU.png "Context menu item in the deal list")
 
 ## What the Handler Receives
 
 Data is sent in a POST request: some parameters come in the handler URL query string, the rest in the request body {.b24-info}
+
+The example is shown for the `CRM_DEAL_LIST_MENU` placement. Other codes send the same set of data: the `PLACEMENT` value and the object identifier in `PLACEMENT_OPTIONS` change.
 
 ```php
 
@@ -44,30 +51,50 @@ Array
     [DOMAIN] => xxx.bitrix24.com
     [PROTOCOL] => 1
     [LANG] => en
-    [APP_SID] => 409c73573874c65b526f515837ae4775
-    [AUTH_ID] => f6b37166007e9c94001e30ba00000001f0f107b14e3f62a7c95d08ef7243b16
+    [APP_SID] => da79481fc89aea5a929b58815fbca926
+    [AUTH_ID] => 83fd7166007e9c94001e30ba00000001f0f107a52e6ad7ef9a1b8c3d5e2f4061
     [AUTH_EXPIRES] => 3600
-    [REFRESH_ID] => e5a29966007e9c94001e30ba00000001f0f107adf7048b529ce3d61b485f027
+    [REFRESH_ID] => 737c9966007e9c94001e30ba00000001f0f1072b8d4e6f01a3c57d9e8b2f4160
     [SERVER_ENDPOINT] => https://oauth.bitrix.info/rest/
     [APPLICATION_TOKEN] => ec1b2074a9d3f5c81b6e40d27a95cf38
     [APPLICATION_SCOPE] => crm,placement
     [member_id] => d897063e1ce7c5eb9f04b9751eef5915
     [status] => L
-    [PLACEMENT] => CRM_ANALYTICS_TOOLBAR
-    [PLACEMENT_OPTIONS] => {"URI":"\/report\/analytics\/"}
+    [PLACEMENT] => CRM_DEAL_LIST_MENU
+    [PLACEMENT_OPTIONS] => {"ID":"8061","URI":"\/crm\/deal\/list\/"}
 )
 
 ```
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Footnote on Required Parameters](../../../_includes/required.md) %}
 
 {% include notitle [Description of Standard Data](../_includes/widget_data.md) %}
 
 ### PLACEMENT_OPTIONS
 
-The `PLACEMENT_OPTIONS` value is passed as a JSON string with the call context.
+The `PLACEMENT_OPTIONS` value is passed as a JSON string with the call context. Along with the universal `URI` key, the context carries the placement’s own key.
 
-The placement has no keys of its own — the context carries only the universal `URI` key.
+{% include [Footnote on Required Parameters](../../../_includes/required.md) %}
+
+#| 
+|| **Parameter** | **Description** ||
+|| **ID*** 
+[`string`](../../data-types.md) | Identifier of the CRM object for which the widget was opened.
+
+It can be used to retrieve additional information using the corresponding methods:
+
+- any object type [crm.item.get](../../crm/universal/crm-item-get.md) specifying entityTypeId = '1' for leads, '2' for deals, and [etc.](../../crm/data-types.md#object_type)
+- lead [crm.lead.get](../../crm/leads/crm-lead-get.md)
+- deal [crm.deal.get](../../crm/deals/crm-deal-get.md)
+- contact [crm.contact.get](../../crm/contacts/crm-contact-get.md)
+- company [crm.company.get](../../crm/companies/crm-company-get.md)
+- estimate [crm.quote.get](../../crm/quote/crm-quote-get.md)
+- activity [crm.activity.get](../../crm/timeline/activities/activity-base/crm-activity-get.md)
+
+The object type identifier does not arrive as a separate key. For a custom object type, take it from the `PLACEMENT` parameter value: for the `CRM_DYNAMIC_183_LIST_MENU` code, the type identifier is `183`
+
+||
+|#
 
 ## Code Examples
 
@@ -82,15 +109,15 @@ The placement has no keys of its own — the context carries only the universal 
       -H "Content-Type: application/json" \
       -H "Accept: application/json" \
       -d '{
-        "PLACEMENT": "CRM_ANALYTICS_TOOLBAR",
-        "HANDLER": "https://your-domain.com/widgets/crm-analytics-toolbar-handler.php",
-        "TITLE": "My CRM analytics button",
+        "PLACEMENT": "CRM_DEAL_LIST_MENU",
+        "HANDLER": "https://your-domain.com/widgets/crm-list-menu-handler.php",
+        "TITLE": "My deal menu item",
         "LANG_ALL": {
           "en": {
-            "TITLE": "My CRM analytics button"
+            "TITLE": "My deal menu item"
           },
           "de": {
-            "TITLE": "Meine CRM-Analyse-Schaltfläche"
+            "TITLE": "Mein Deal-Menüelement"
           }
         },
         "auth": "**put_access_token_here**"
@@ -112,15 +139,15 @@ The placement has no keys of its own — the context carries only the universal 
       const response = await $b24.actions.v2.call.make<boolean>({
         method: 'placement.bind',
         params: {
-          PLACEMENT: 'CRM_ANALYTICS_TOOLBAR',
-          HANDLER: 'https://your-domain.com/widgets/crm-analytics-toolbar-handler.php',
-          TITLE: 'My CRM analytics button',
+          PLACEMENT: 'CRM_DEAL_LIST_MENU',
+          HANDLER: 'https://your-domain.com/widgets/crm-list-menu-handler.php',
+          TITLE: 'My deal menu item',
           LANG_ALL: {
             en: {
-              TITLE: 'My CRM analytics button',
+              TITLE: 'My deal menu item',
             },
             de: {
-              TITLE: 'Meine CRM-Analyse-Schaltfläche',
+              TITLE: 'Mein Deal-Menüelement',
             },
           },
         },
@@ -146,7 +173,7 @@ The placement has no keys of its own — the context carries only the universal 
     <!-- Load the SDK (UMD build); it is exposed as the global B24Js -->
     <script src="https://unpkg.com/@bitrix24/b24jssdk@1/dist/umd/index.min.js"></script>
     <script>
-      async function bindCrmAnalyticsToolbar() {
+      async function bindCrmDealListMenu() {
         try {
           // Initialize the SDK inside a Bitrix24 frame
           const $b24 = await B24Js.initializeB24Frame()
@@ -154,15 +181,15 @@ The placement has no keys of its own — the context carries only the universal 
           const response = await $b24.actions.v2.call.make({
             method: 'placement.bind',
             params: {
-              PLACEMENT: 'CRM_ANALYTICS_TOOLBAR',
-              HANDLER: 'https://your-domain.com/widgets/crm-analytics-toolbar-handler.php',
-              TITLE: 'My CRM analytics button',
+              PLACEMENT: 'CRM_DEAL_LIST_MENU',
+              HANDLER: 'https://your-domain.com/widgets/crm-list-menu-handler.php',
+              TITLE: 'My deal menu item',
               LANG_ALL: {
                 en: {
-                  TITLE: 'My CRM analytics button',
+                  TITLE: 'My deal menu item',
                 },
                 de: {
-                  TITLE: 'Meine CRM-Analyse-Schaltfläche',
+                  TITLE: 'Mein Deal-Menüelement',
                 },
               },
             },
@@ -183,7 +210,7 @@ The placement has no keys of its own — the context carries only the universal 
         }
       }
 
-      document.addEventListener('DOMContentLoaded', bindCrmAnalyticsToolbar)
+      document.addEventListener('DOMContentLoaded', bindCrmDealListMenu)
     </script>
     ```
 
@@ -196,15 +223,15 @@ The placement has no keys of its own — the context carries only the universal 
             ->call(
                 'placement.bind',
                 [
-                    'PLACEMENT' => 'CRM_ANALYTICS_TOOLBAR',
-                    'HANDLER' => 'https://your-domain.com/widgets/crm-analytics-toolbar-handler.php',
-                    'TITLE' => 'My CRM analytics button',
+                    'PLACEMENT' => 'CRM_DEAL_LIST_MENU',
+                    'HANDLER' => 'https://your-domain.com/widgets/crm-list-menu-handler.php',
+                    'TITLE' => 'My deal menu item',
                     'LANG_ALL' => [
                         'en' => [
-                            'TITLE' => 'My CRM analytics button',
+                            'TITLE' => 'My deal menu item',
                         ],
                         'de' => [
-                            'TITLE' => 'Meine CRM-Analyse-Schaltfläche',
+                            'TITLE' => 'Mein Deal-Menüelement',
                         ],
                     ],
                 ]
@@ -228,12 +255,12 @@ The placement has no keys of its own — the context carries only the universal 
     BX24.callMethod(
         'placement.bind',
         {
-            PLACEMENT: 'CRM_ANALYTICS_TOOLBAR',
-            HANDLER: 'https://your-domain.com/widgets/crm-analytics-toolbar-handler.php',
-            TITLE: 'My CRM analytics button',
+            PLACEMENT: 'CRM_DEAL_LIST_MENU',
+            HANDLER: 'https://your-domain.com/widgets/crm-list-menu-handler.php',
+            TITLE: 'My deal menu item',
             LANG_ALL: {
-                en: { TITLE: 'My CRM analytics button' },
-                de: { TITLE: 'Meine CRM-Analyse-Schaltfläche' }
+                en: { TITLE: 'My deal menu item' },
+                de: { TITLE: 'Mein Deal-Menüelement' }
             }
         },
         function(result) {
@@ -254,15 +281,15 @@ The placement has no keys of its own — the context carries only the universal 
     $result = CRest::call(
         'placement.bind',
         [
-            'PLACEMENT' => 'CRM_ANALYTICS_TOOLBAR',
-            'HANDLER' => 'https://your-domain.com/widgets/crm-analytics-toolbar-handler.php',
-            'TITLE' => 'My CRM analytics button',
+            'PLACEMENT' => 'CRM_DEAL_LIST_MENU',
+            'HANDLER' => 'https://your-domain.com/widgets/crm-list-menu-handler.php',
+            'TITLE' => 'My deal menu item',
             'LANG_ALL' => [
                 'en' => [
-                    'TITLE' => 'My CRM analytics button',
+                    'TITLE' => 'My deal menu item',
                 ],
                 'de' => [
-                    'TITLE' => 'Meine CRM-Analyse-Schaltfläche',
+                    'TITLE' => 'Mein Deal-Menüelement',
                 ],
             ],
         ]
@@ -275,10 +302,11 @@ The placement has no keys of its own — the context carries only the universal 
 
 {% endlist %}
 
-## Continue Your Exploration
+## Continue Learning
 
 - [{#T}](./index.md)
-- [{#T}](./analytics-menu.md)
+- [{#T}](./list-toolbar.md)
+- [{#T}](./detail-tab.md)
 - [{#T}](../placement-bind.md)
 - [{#T}](../ui-interaction/index.md)
 - [{#T}](../../../settings/interactivity/index.md)

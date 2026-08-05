@@ -6,7 +6,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-> Scope: [`intranet`](../../scopes/permissions.md)
+> Scope: [`crm`](../../scopes/permissions.md)
 
 You can add your item to the dropdown menu of the document generator for CRM objects: [leads](../../crm/leads/index.md), [contacts](../../crm/contacts/index.md), [companies](../../crm/companies/index.md), [deals](../../crm/deals/index.md), [estimates](../../crm/quote/index.md), [new invoices](../../crm/universal/invoice.md), and [custom object types](../../crm/universal/index.md).
 
@@ -217,6 +217,7 @@ In the case of embedding the widget in a custom object type, the type identifier
 
 ## Continue Your Exploration
 
+- [{#T}](./index.md)
 - [{#T}](../placement-bind.md)
 - [{#T}](../ui-interaction/index.md)
 - [{#T}](../../../settings/interactivity/index.md)

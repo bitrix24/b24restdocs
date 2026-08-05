@@ -1,8 +1,10 @@
 title: Widgets in CRM  
 href: index.md  
 items:  
-  - name: Context menu item in the list of entities  
+  - name: Overview of placements  
     href: index.md  
+  - name: Context menu item in the list of entities  
+    href: list-menu.md  
   - name: Dropdown menu item above the list of entities  
     href: list-toolbar.md  
   - name: Tab in the detail form of the entity  
@@ -17,13 +19,13 @@ items:
     href: activity-timeline-menu.md  
   - name: Dropdown menu item of the document generator  
     href: document-generator-button.md  
-  - name: Dropdown menu item of the top button in the Automation rule designer  
+  - name: Button in the Automation rules designer  
     href: robot-designer-toolbar.md  
-  - name: Dropdown menu item in the Sales Funnels  
+  - name: Button in the sales pipelines and tunnels  
     href: funnels-toolbar.md  
   - name: Item in the left menu of CRM analytics  
     href: analytics-menu.md  
-  - name: Dropdown menu item of the top button in CRM analytics  
+  - name: Button in the CRM analytics header  
     href: analytics-toolbar.md  
   - name: Autofilling details in the CRM card
     include:
