@@ -98,7 +98,7 @@ There are two embedding scenarios:
 
 - [`CRM_SMART_INVOICE_DOCUMENTGENERATOR_BUTTON`](../../widgets/crm/document-generator-button.md) — an item in the dropdown menu of the document generator
 
-- [`CRM_SMART_INVOICE_LIST_MENU`](../../widgets/crm/index.md) — an item in the context menu in the list of entities
+- [`CRM_SMART_INVOICE_LIST_MENU`](../../widgets/crm/list-menu.md) — an item in the context menu in the list of entities
 
 - [`CRM_SMART_INVOICE_LIST_TOOLBAR`](../../widgets/crm/list-toolbar.md) — an item in the dropdown menu above the list of entities
 

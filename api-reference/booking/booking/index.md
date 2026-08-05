@@ -19,11 +19,15 @@ Booking methods allow you to:
 
 **Waiting List.** Pass the `id` of the entry from the waiting list to the `waitListId` parameter of the [booking.v1.booking.createfromwaitlist](./booking-v1-booking-createfromwaitlist.md) method to transfer the client's entry to a booking at a specific time.
 
-**Resource.** Pass the `id` of [resources](../resource/index.md) you want to book in the `resourceIds` parameter of the [booking.v1.booking.*](./index.md) methods. A single booking can include multiple resources with overlapping times. For example, you can book a driver service and a car simultaneously.
+**Resource.** Pass the `id` of [resources](../resource/index.md) you want to book in the `resourceIds` parameter of the [booking.v1.booking.*](#all-methods) methods. A single booking can include multiple resources with overlapping times. For example, you can book a driver service and a car simultaneously.
 
 **Client.** You can attach a [contact](../../crm/contacts/index.md) or [company](../../crm/companies/index.md) from CRM to the booking. Pass the `id` of the contact or company in the [booking.v1.booking.client.*](./client/index.md) methods.
 
 **Deal.** You can attach a [deal](../../crm/deals/index.md) from CRM to the booking. Pass the `id` of the deal in the [booking.v1.booking.externalData.*](./external-data/index.md) methods.
+
+## Events
+
+Events allow the application to respond when a booking is created, updated, or deleted. Learn how to subscribe to them in the [Booking Events](./events/index.md) section.
 
 ## Overview of Methods {#all-methods}
 

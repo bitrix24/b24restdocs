@@ -97,7 +97,7 @@ Replace `XXX` with the numeric identifier of the specific Smart Process, for exa
 
 - [`CRM_DYNAMIC_XXX_DOCUMENTGENERATOR_BUTTON`](../../../widgets/crm/document-generator-button.md) — item in the dropdown menu of the document generator
 
-- [`CRM_DYNAMIC_XXX_LIST_MENU`](../../../widgets/crm/index.md) — item in the context menu in the list of items
+- [`CRM_DYNAMIC_XXX_LIST_MENU`](../../../widgets/crm/list-menu.md) — item in the context menu in the list of items
 
 - [`CRM_DYNAMIC_XXX_LIST_TOOLBAR`](../../../widgets/crm/list-toolbar.md) — item in the dropdown menu above the list of items
 

@@ -1,4 +1,4 @@
-# Context Menu Item in the CRM_XXX_LIST_MENU, CRM_DYNAMIC_XXX_LIST_MENU
+# Widgets in CRM: Overview of Placements
 
 {% note tip "" %}
 
@@ -6,263 +6,110 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-> Scope: [`crm`](../../scopes/permissions.md)
+Placements add the application interface inside CRM: its own tab in an object card, an item in the list context menu, a button above the timeline, an item in the automation rules designer, or a report in CRM Analytics.
 
-You can add your item to the context menu of CRM objects: [leads](../../crm/leads/index.md), [contacts](../../crm/contacts/index.md), [companies](../../crm/companies/index.md), [deals](../../crm/deals/index.md), [outdated invoices](../../crm/outdated/invoice/index.md), [estimates](../../crm/quote/index.md), [new invoices](../../crm/universal/invoice.md), [custom object types](../../crm/universal/index.md).
+Placements fall into two groups. The first group works with a specific object type, and the placement code contains the name of that type: `CRM_DEAL_DETAIL_TAB`, `CRM_LEAD_LIST_MENU`. The second group belongs to the CRM section as a whole, and the code carries no object name: `CRM_ANALYTICS_MENU`, `CRM_FUNNELS_TOOLBAR`.
 
-![Widget as a context menu item in Deal](./_images/CRM_DEAL_LIST_MENU.png "Widget as a context menu item in Deal")
+To register a widget, use the [placement.bind](../placement-bind.md) method and pass the required code in the `PLACEMENT` parameter.
 
-The specific placement code for the widget is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
+> Quick navigation: [all placements](#all-placements)
 
-{% note info "" %}
+## How to Choose a Placement
 
-The widget will not be displayed in the interface until the application installation is complete. [Check the application installation](../../../settings/app-installation/installation-finish.md)
+Choose a placement by the task your application solves:
 
-{% endnote %}
+- add an action to an element in a list — [CRM_XXX_LIST_MENU](./list-menu.md)
+- add an action to the whole list rather than to a single element — [CRM_XXX_LIST_TOOLBAR](./list-toolbar.md)
+- add a separate screen with application data to a card — [CRM_XXX_DETAIL_TAB](./detail-tab.md)
+- add a button next to the activities and comments of a card — [CRM_XXX_DETAIL_ACTIVITY](./detail-activity.md), and to build its interface with Bitrix24 tools — [additional integration features](./detail-activity-area.md)
+- add an action for the whole card, next to tasks and documents — [CRM_XXX_DETAIL_TOOLBAR](./detail-toolbar.md)
+- add an action to an individual activity record in the timeline — [CRM_XXX_ACTIVITY_TIMELINE_MENU](./activity-timeline-menu.md)
+- generate a document for an object — [CRM_XXX_DOCUMENTGENERATOR_BUTTON](./document-generator-button.md)
+- extend automation — [CRM_XXX_ROBOT_DESIGNER_TOOLBAR](./robot-designer-toolbar.md)
+- extend pipelines and tunnels — [CRM_FUNNELS_TOOLBAR](./funnels-toolbar.md)
+- show your own report — [CRM_ANALYTICS_MENU](./analytics-menu.md), and to add an action for the analytics section — [CRM_ANALYTICS_TOOLBAR](./analytics-toolbar.md)
+- fill in company data from an external source — [details autofill](./requisites-autocomplete/index.md)
 
-## Where the Widget is Embedded
+## How to Get Started
 
-#| 
-|| **Widget Code** | **Location** ||
-|| `CRM_LEAD_LIST_MENU` | Context menu item for [lead](../../crm/leads/index.md) ||
-|| `CRM_CONTACT_LIST_MENU` | Context menu item for [contact](../../crm/contacts/index.md) ||
-|| `CRM_COMPANY_LIST_MENU` | Context menu item for [company](../../crm/companies/index.md) ||
-|| `CRM_DEAL_LIST_MENU` | Context menu item for [deal](../../crm/deals/index.md) ||
-|| `CRM_SMART_INVOICE_LIST_MENU` | Context menu item for [new invoice](../../crm/universal/invoice.md) ||
-|| `CRM_QUOTE_LIST_MENU` | Context menu item for [estimate](../../crm/quote/index.md) ||
-|| `CRM_ACTIVITY_LIST_MENU` | Context menu item for [CRM activity](../../crm/timeline/activities/index.md) ||
-|| `CRM_DYNAMIC_XXX_LIST_MENU` | Context menu item for custom CRM object type. Instead of XXX, specify the numeric identifier of the specific [custom object type](../../crm/universal/index.md). For example, `CRM_DYNAMIC_183_LIST_MENU` || 
-|#
+1. Choose a placement for your scenario and assemble the placement code: substitute the object type name if the code contains one. For custom object types, the numeric type identifier is substituted instead of the name — `CRM_DYNAMIC_183_DETAIL_TAB`.
+2. Register the handler with the [placement.bind](../placement-bind.md) method and pass the code in the `PLACEMENT` parameter. The method is available to an administrator only and requires the application context: a placement cannot be bound with a webhook.
+3. Complete the application installation. Until then, the widget is not displayed in the interface.
+4. Open the place in the interface and call the widget. Where exactly the item is located is described on each placement page in the "Where to Find It in the Interface" section.
+5. Parse `PLACEMENT_OPTIONS` in the handler — it carries the call context: the identifier of the object or activity, or the address of the page the widget was opened from.
 
 ## What the Handler Receives
 
-Data is sent in a POST request: some parameters come in the handler URL query string, the rest in the request body {.b24-info}
+All placements of the section pass the same set of standard parameters to the handler.
 
-{% list tabs %}
-
-- CRM_LEAD_LIST_MENU
-
-    ```php
-
-    Array
-    (
-        [DOMAIN] => xxx.bitrix24.com
-        [PROTOCOL] => 1
-        [LANG] => en
-        [APP_SID] => 37430843b6a2ce62aea9be09c34d9e6d
-        [AUTH_ID] => 39e69f6600631fcd00005a4b00000001f0f10738741fe7296291110a2e9788a33216cf
-        [AUTH_EXPIRES] => 3600
-        [REFRESH_ID] => 2965c76600631fcd00005a4b00000001f0f107cdf3226bebc47f89d1b0f15608e44b14
-        [member_id] => da45a03b265edd8787f8a258d793cc5d
-        [status] => L
-        [PLACEMENT] => CRM_LEAD_LIST_MENU
-        [PLACEMENT_OPTIONS] => {"ID":"6591"}
-    )
-
-    ```
-
-- CRM_DEAL_LIST_MENU
-
-    ```php
-
-    Array
-    (
-        [DOMAIN] => xxx.bitrix24.com
-        [PROTOCOL] => 1
-        [LANG] => en
-        [APP_SID] => a50589d05446337105e25d637db82f43
-        [AUTH_ID] => 69e69f6600631fcd00005a4b00000001f0f107b9e6d35725003c1524f001562c374275
-        [AUTH_EXPIRES] => 3600
-        [REFRESH_ID] => 5965c76600631fcd00005a4b00000001f0f107fb7f5a0542d97a9f3a31c73bbfde48e2
-        [member_id] => da45a03b265edd8787f8a258d793cc5d
-        [status] => L
-        [PLACEMENT] => CRM_DEAL_LIST_MENU
-        [PLACEMENT_OPTIONS] => {"ID":"3473"}
-    )
-
-    ```
-
-- CRM_CONTACT_LIST_MENU
-
-    ```php
-
-    Array
-    (
-        [DOMAIN] => xxx.bitrix24.com
-        [PROTOCOL] => 1
-        [LANG] => en
-        [APP_SID] => fcd06d800f545d3b6937cdf58cf17ac2
-        [AUTH_ID] => 68e99f6600631fcd00005a4b00000001f0f107343b8243b5a1ad4f168fc8a8d05c182f
-        [AUTH_EXPIRES] => 3600
-        [REFRESH_ID] => 5868c76600631fcd00005a4b00000001f0f107b05367c5e576376b33d68414e1b04f18
-        [member_id] => da45a03b265edd8787f8a258d793cc5d
-        [status] => L
-        [PLACEMENT] => CRM_CONTACT_LIST_MENU
-        [PLACEMENT_OPTIONS] => {"ID":"13037"}
-    )
-
-    ```
-
-- CRM_COMPANY_LIST_MENU
-
-    ```php
-
-    Array
-    (
-        [DOMAIN] => xxx.bitrix24.com
-        [PROTOCOL] => 1
-        [LANG] => en
-        [APP_SID] => b61394bd23467de46689899d065e8a0f
-        [AUTH_ID] => 9ce99f6600631fcd00005a4b00000001f0f1073d433234d6fbee7d770aac0b3ba5e23f
-        [AUTH_EXPIRES] => 3600
-        [REFRESH_ID] => 8c68c76600631fcd00005a4b00000001f0f107704816219d9d7a765a4038ae79f9a3db
-        [member_id] => da45a03b265edd8787f8a258d793cc5d
-        [status] => L
-        [PLACEMENT] => CRM_COMPANY_LIST_MENU
-        [PLACEMENT_OPTIONS] => {"ID":"2946"}
-    }
-    
-    ```
-
-- CRM_QUOTE_LIST_MENU
-
-    ```php
-
-    Array
-    (
-        [DOMAIN] => xxx.bitrix24.com
-        [PROTOCOL] => 1
-        [LANG] => en
-        [APP_SID] => c1228e789d5052287ceb321fe7b3377a
-        [AUTH_ID] => d3e99f6600631fcd00005a4b00000001f0f1079f90c8cd4e3f2726ab8ea7a40888c844
-        [AUTH_EXPIRES] => 3600
-        [REFRESH_ID] => c368c76600631fcd00005a4b00000001f0f107d077746104d8e477278da715f3ea28cf
-        [member_id] => da45a03b265edd8787f8a258d793cc5d
-        [status] => L
-        [PLACEMENT] => CRM_QUOTE_LIST_MENU
-        [PLACEMENT_OPTIONS] => {"ID":"5"}
-    }
-    
-    ```
-
-- CRM_INVOICE_LIST_MENU
-
-    ```php
-
-    Array
-    (
-        [DOMAIN] => xxx.bitrix24.com
-        [PROTOCOL] => 1
-        [LANG] => en
-        [APP_SID] => a2734d8a3ee69cc513b26555bc43f44c
-        [AUTH_ID] => fce99f6600631fcd00005a4b00000001f0f10757595d9831ca4f9591c8b5190a12d385
-        [AUTH_EXPIRES] => 3600
-        [REFRESH_ID] => ec68c76600631fcd00005a4b00000001f0f107e37ac66ed69aaa16cbc75c7a650e61ef
-        [member_id] => da45a03b265edd8787f8a258d793cc5d
-        [status] => L
-        [PLACEMENT] => CRM_INVOICE_LIST_MENU
-        [PLACEMENT_OPTIONS] => {"ID":"12"}
-    }
-    
-    ```
-
-- CRM_SMART_INVOICE_LIST_MENU
-
-    ```php
-
-    Array
-    (
-        [DOMAIN] => xxx.bitrix24.com
-        [PROTOCOL] => 1
-        [LANG] => en
-        [APP_SID] => adada92053b22a4de3895402a01693cf
-        [AUTH_ID] => 69c7ca670076a4b8006f518000000001201c0720c9c9d78077b5f2c5530f64b061c8a1
-        [AUTH_EXPIRES] => 3600
-        [REFRESH_ID] => 5946f2670076a4b8006f518000000001201c07709da4b12d3c7e82e120a20e547b638f
-        [member_id] => e8857f161a1a8288f312b6cc6ad67995
-        [status] => L
-        [PLACEMENT] => CRM_SMART_INVOICE_LIST_MENU
-        [PLACEMENT_OPTIONS] => {"ID":"32"}
-    }
-    
-    ```
-
-- CRM_ACTIVITY_LIST_MENU
-
-    ```php
-
-    Array
-    (
-        [DOMAIN] => xxx.bitrix24.com
-        [PROTOCOL] => 1
-        [LANG] => en
-        [APP_SID] => a29cf633b74509437b3873a57d138f10
-        [AUTH_ID] => 30ea9f6600631fcd00005a4b00000001f0f107450fd57122ecc7d9e58f894b3fb2c57f
-        [AUTH_EXPIRES] => 3600
-        [REFRESH_ID] => 2069c76600631fcd00005a4b00000001f0f107bd1492748f20b4a006e2a35f9f7c0b6d
-        [member_id] => da45a03b265edd8787f8a258d793cc5d
-        [status] => L
-        [PLACEMENT] => CRM_ACTIVITY_LIST_MENU
-        [PLACEMENT_OPTIONS] => {"ID":"1465"}
-    }
-    
-    ```
-
-- CRM_DYNAMIC_XXX_LIST_MENU
-
-    ```php
-
-    Array
-    (
-        [DOMAIN] => xxx.bitrix24.com
-        [PROTOCOL] => 1
-        [LANG] => en
-        [APP_SID] => ef961a45216cf6944d118ebd2a44c119
-        [AUTH_ID] => 5cea9f6600631fcd00005a4b00000001f0f107d2ceb3f7eaaaa5cee8960f2572ab96e4
-        [AUTH_EXPIRES] => 3600
-        [REFRESH_ID] => 4c69c76600631fcd00005a4b00000001f0f107e7da55ee918fcdeef4bfa02243184591
-        [member_id] => da45a03b265edd8787f8a258d793cc5d
-        [status] => L
-        [PLACEMENT] => CRM_DYNAMIC_183_LIST_MENU
-    )
-    
-    ```
-
-{% endlist %}
-
-{% include [Footnote on Required Parameters](../../../_includes/required.md) %}
-
-{% include notitle [Description of Standard Data](../_includes/widget_data.md) %}
+{% include notitle [description of standard data](../_includes/widget_data.md) %}
 
 ### PLACEMENT_OPTIONS
 
-The value of `PLACEMENT_OPTIONS` is a JSON string containing an array of one or more keys.
+The `PLACEMENT_OPTIONS` value is passed as a JSON string with the call context. The universal `URI` key arrives for every placement, while the set of the remaining keys is specific to each placement.
 
-{% include [Footnote on Required Parameters](../../../_includes/required.md) %}
+#|
+|| **Placement** | **Own Keys** | **What Is Passed** ||
+|| [CRM_XXX_LIST_MENU](./list-menu.md) | `ID` | Identifier of the element whose menu the widget is opened from ||
+|| [CRM_XXX_LIST_TOOLBAR](./list-toolbar.md) | none | The widget opens above the list, not above an element ||
+|| [CRM_XXX_DETAIL_TAB](./detail-tab.md) | `ID` | Identifier of the object whose card the widget is opened in ||
+|| [CRM_XXX_DETAIL_ACTIVITY](./detail-activity.md) | `ID` | Identifier of the object whose timeline the widget is opened in ||
+|| [CRM_XXX_DETAIL_TOOLBAR](./detail-toolbar.md) | `ID` or `ENTITY_ID` | Identifier of the object. The key name depends on the object type ||
+|| [CRM_XXX_ACTIVITY_TIMELINE_MENU](./activity-timeline-menu.md) | `ENTITY_ID`, `ASSOCIATED_ENTITY_ID`, `ASSOCIATED_ENTITY_TYPE_ID` | Identifiers of the object and of the activity whose record the widget is opened on ||
+|| [CRM_XXX_DOCUMENTGENERATOR_BUTTON](./document-generator-button.md) | `ENTITY_ID` | Identifier of the object the document is generated for ||
+|| [CRM_XXX_ROBOT_DESIGNER_TOOLBAR](./robot-designer-toolbar.md) | none | The pipeline identifier can be taken from the path in `URI` ||
+|| [CRM_FUNNELS_TOOLBAR](./funnels-toolbar.md) | none | The widget opens above the pipeline list ||
+|| [CRM_ANALYTICS_MENU](./analytics-menu.md) | none | The widget opens in the analytics section ||
+|| [CRM_ANALYTICS_TOOLBAR](./analytics-toolbar.md) | none | The widget opens in the analytics section ||
+|#
 
-#| 
-|| **Parameter** | **Description** ||
-|| **ID*** 
-[`string`](../../data-types.md) | Identifier of the CRM object for which the widget was opened.
+## Connection with Other Objects
 
-It can be used to retrieve additional information using the corresponding methods:
+**CRM object.** The identifier from `PLACEMENT_OPTIONS` indicates which element the handler was called for. Object data can be retrieved with the [crm.item.get](../../crm/universal/crm-item-get.md) method by passing the `entityTypeId` of the required [object type](../../crm/data-types.md#object_type), or with the method of its own section: [crm.deal.get](../../crm/deals/crm-deal-get.md), [crm.lead.get](../../crm/leads/crm-lead-get.md), [crm.contact.get](../../crm/contacts/crm-contact-get.md), [crm.company.get](../../crm/companies/crm-company-get.md), [crm.quote.get](../../crm/quote/crm-quote-get.md).
 
-- any object type [crm.item.get](../../crm/universal/crm-item-get.md) specifying entityTypeId = '1' for leads, '2' for deals, and [etc.](../../crm/data-types.md#object_type)
-- lead [crm.lead.get](../../crm/leads/crm-lead-get.md)
-- deal [crm.deal.get](../../crm/deals/crm-deal-get.md)
-- contact [crm.contact.get](../../crm/contacts/crm-contact-get.md)
-- company [crm.company.get](../../crm/companies/crm-company-get.md)
-- estimate [crm.quote.get](../../crm/quote/crm-quote-get.md)
-- activity [crm.activity.get](../../crm/timeline/activities/activity-base/crm-activity-get.md)
+**Activity.** The `ASSOCIATED_ENTITY_ID` key indicates which activity record the widget is opened on. Activity data is returned by the [crm.activity.get](../../crm/timeline/activities/activity-base/crm-activity-get.md) method.
 
-In the case of embedding the widget in a custom object type, the type identifier can be obtained from the value of the `PLACEMENT` parameter. In the example above — `183`
+**Custom object type.** The type identifier does not arrive as a separate key. It can be taken from the `PLACEMENT` parameter value: for the `CRM_DYNAMIC_183_DETAIL_TAB` code, the type identifier is `183`.
 
-||
+**Call page.** The universal `URI` key contains the path of the Bitrix24 page the widget was opened from. The handler uses it to restore the scenario when the placement has no keys of its own.
+
+## Common Mistakes
+
+#|
+|| **Mistake** | **Solution** ||
+|| `placement.bind` returns `Application context required` | Register the placement on behalf of an application. A placement cannot be bound with a webhook ||
+|| The placement is registered but does not appear in the interface | Complete the [application installation](../../../settings/app-installation/installation-finish.md) and reload the page ||
+|| The item cannot be found in a card or in a list | Some placements are displayed under *More* or in the *Bitrix24 Market* submenu when there are more items than fit in the row. The path is described on the placement page ||
+|| The placement code is assembled for an object type that does not support this placement | Check the code against the section table: not all object types are supported in all placements ||
+|| The handler does not find the object identifier in the request body | The identifier arrives inside `PLACEMENT_OPTIONS` as a separate JSON string, not as a separate parameter ||
+|#
+
+## Overview of Placements {#all-placements}
+
+> Scope: [`crm`](../../scopes/permissions.md)
+
+#|
+|| **Placement** | **When to Use** ||
+|| [CRM_XXX_LIST_MENU](./list-menu.md) | Context menu item of an element in a list ||
+|| [CRM_XXX_LIST_TOOLBAR](./list-toolbar.md) | Menu item above the list of elements ||
+|| [CRM_XXX_DETAIL_TAB](./detail-tab.md) | Separate tab in an element card ||
+|| [CRM_XXX_DETAIL_ACTIVITY](./detail-activity.md) | Button in the panel above the card timeline ||
+|| [CRM_XXX_DETAIL_TOOLBAR](./detail-toolbar.md) | Top button menu item of a card ||
+|| [CRM_XXX_ACTIVITY_TIMELINE_MENU](./activity-timeline-menu.md) | Context menu item of an activity record in the timeline ||
+|| [CRM_XXX_DOCUMENTGENERATOR_BUTTON](./document-generator-button.md) | Menu item of the document generator ||
+|| [CRM_XXX_ROBOT_DESIGNER_TOOLBAR](./robot-designer-toolbar.md) | Button in the automation rules designer ||
+|| [CRM_FUNNELS_TOOLBAR](./funnels-toolbar.md) | Button in the sales pipelines and tunnels ||
+|| [CRM_ANALYTICS_MENU](./analytics-menu.md) | Application report in the left menu of CRM Analytics ||
+|| [CRM_ANALYTICS_TOOLBAR](./analytics-toolbar.md) | Button in the CRM Analytics header ||
+|| [CRM_REQUISITE_AUTOCOMPLETE, CRM_BANK_DETAIL_AUTOCOMPLETE](./requisites-autocomplete/index.md) | Filling in company data and bank details from an external source ||
+|| [Additional features of CRM_XXX_DETAIL_ACTIVITY](./detail-activity-area.md) | Interface of the button above the timeline built with Bitrix24 tools ||
 |#
 
 ## Continue Learning
 
 - [{#T}](../placement-bind.md)
+- [{#T}](../placement-list.md)
+- [{#T}](../placement-unbind.md)
 - [{#T}](../ui-interaction/index.md)
-- [{#T}](../../../settings/interactivity/index.md)
 - [{#T}](../bx24-widget-methods.md)
+- [{#T}](../../../settings/interactivity/index.md)

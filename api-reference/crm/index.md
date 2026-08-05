@@ -85,7 +85,7 @@ Replace `XXX` with the entity code: `LEAD`, `DEAL`, `CONTACT`, `COMPANY`, `QUOTE
 
 - [`CRM_XXX_ACTIVITY_TIMELINE_MENU`](../widgets/crm/activity-timeline-menu.md) — context menu item for an activity in the card
 
-- [`CRM_XXX_LIST_MENU`](../widgets/crm/index.md) — context menu item in the list of entities
+- [`CRM_XXX_LIST_MENU`](../widgets/crm/list-menu.md) — context menu item in the list of entities
 
 - [`CRM_XXX_LIST_TOOLBAR`](../widgets/crm/list-toolbar.md) — dropdown menu item above the list of entities
 

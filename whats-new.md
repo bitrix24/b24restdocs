@@ -8,6 +8,9 @@
 - Updated the tutorial [How to Embed Your UI in Automation Rule Parameters](./tutorials/bizproc/setting-robot.md)
 - Updated the tutorial [How to Create a Chatbot for Open Channels](./tutorials/chat-bots/open-lines-bot.md)
 - Updated the tutorial [How to Create an Open Channels Connector for Website Chat](./tutorials/openlines/example-connector.md)
+- Updated the tutorial [How to Create a Custom Contact Edit Form](./tutorials/crm/how-to-edit-crm-objects/how-to-make-contact-edit-card.md)
+- Updated the page [Online Booking: Overview of Methods and Events](./api-reference/booking/index.md)
+- Updated the page [Booking: Overview of Methods](./api-reference/booking/booking/index.md)
 
 ### July 31, 2026
 

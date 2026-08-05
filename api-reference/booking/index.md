@@ -1,4 +1,4 @@
-# Online Booking: Overview of Methods
+# Online Booking: Overview of Methods and Events
 
 {% note tip "" %}
 
@@ -8,7 +8,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 Online booking is a tool for automating the reservation of resources: rooms, equipment, specialist services, and more. You can move clients between the waitlist and bookings, manage occupancy, and synchronize resources with external systems.
 
-> Quick navigation: [all methods](#all-methods) 
+> Quick navigation: [all methods and events](#all-methods)
 > 
 > User documentation: [Booking: Getting Started](https://helpdesk.bitrix24.com/open/23873394/)
 
@@ -38,7 +38,7 @@ Use the waitlist when the desired resource is temporarily unavailable. Methods i
 
 - add, modify, and delete entries in the waitlist — [booking.v1.waitlist.*](./waitlist/index.md)
 - move an entry from booking to the waitlist — [booking.v1.waitlist.createfrombooking](./waitlist/booking-v1-waitlist-createfrombooking.md)
-- manage relationships between waitlist entries and CRM clients — [booking.v1.waitlist.client.*](./waitlist/client/index.md) and other objects — [booking.v1.waitList.externalData.*](./waitlist/external-data/index.md)
+- manage relationships between waitlist entries and CRM clients — [booking.v1.waitlist.client.*](./waitlist/client/index.md) and other objects — [booking.v1.waitlist.externalData.*](./waitlist/external-data/index.md)
 
 ## Booking Resources
 
@@ -48,7 +48,16 @@ Booking is a confirmed reservation for a resource. Methods in this group allow y
 - create a booking from an entry in the waitlist — [booking.v1.booking.createfromwaitlist](./booking/booking-v1-booking-createfromwaitlist.md)
 - manage relationships between bookings and CRM clients — [booking.v1.booking.client.*](./booking/client/index.md) and other objects — [booking.v1.booking.externalData.*](./booking/external-data/index.md)
 
-## Overview of Methods {#all-methods}
+## Getting Started
+
+1. Create a resource type using [booking.v1.resourceType.add](./resource/resource-type/booking-v1-resourcetype-add.md). A resource cannot be created without a type because the `typeId` parameter is required when creating a resource.
+2. Create a resource using [booking.v1.resource.add](./resource/booking-v1-resource-add.md).
+3. Configure the resource's time availability using [booking.v1.resource.slots.set](./resource/slots/booking-v1-resource-slots-set.md).
+4. Create a booking using [booking.v1.booking.add](./booking/booking-v1-booking-add.md). If no suitable time is available, add an entry to the waitlist using [booking.v1.waitlist.add](./waitlist/booking-v1-waitlist-add.md), then move it to a booking later using [booking.v1.booking.createfromwaitlist](./booking/booking-v1-booking-createfromwaitlist.md).
+5. Link a client to the booking using [booking.v1.booking.client.set](./booking/client/booking-v1-booking-client-set.md), and link a CRM deal using [booking.v1.booking.externalData.set](./booking/external-data/booking-v1-booking-externaldata-set.md).
+6. Subscribe to [Online Booking Events](#all-methods) so that the application is notified when objects are created, updated, or deleted.
+
+## Overview of Methods and Events {#all-methods}
 
 > Scope: [`booking`](../scopes/permissions.md)
 >
@@ -110,7 +119,7 @@ Booking is a confirmed reservation for a resource. Methods in this group allow y
 
 #|
 || **Method** | **Description** ||
-|| [booking.v1.waitList.externalData.list](./waitlist/external-data/booking-v1-waitlist-externaldata-list.md) | Retrieves relationships for the waitlist entry ||
+|| [booking.v1.waitlist.externalData.list](./waitlist/external-data/booking-v1-waitlist-externaldata-list.md) | Retrieves relationships for the waitlist entry ||
 || [booking.v1.waitlist.externalData.set](./waitlist/external-data/booking-v1-waitlist-externaldata-set.md) | Sets relationships for the waitlist entry ||
 || [booking.v1.waitlist.externalData.unset](./waitlist/external-data/booking-v1-waitlist-externaldata-unset.md) | Removes relationships for the waitlist entry ||
 |#
@@ -132,7 +141,7 @@ Booking is a confirmed reservation for a resource. Methods in this group allow y
 #|
 || **Method** | **Description** ||
 || [booking.v1.booking.client.list](./booking/client/booking-v1-booking-client-list.md) | Retrieves a list of clients in the booking ||
-|| [booking.v1.booking.client.set](./booking/client/booking-v1-booking-client-set.md) | Adds a client to the booking ||
+|| [booking.v1.booking.client.set](./booking/client/booking-v1-booking-client-set.md) | Adds clients to the booking ||
 || [booking.v1.booking.client.unset](./booking/client/booking-v1-booking-client-unset.md) | Removes clients from the booking ||
 |#
 
@@ -150,4 +159,22 @@ Booking is a confirmed reservation for a resource. Methods in this group allow y
 #|
 || **Method** | **Description** ||
 || [booking.v1.clienttype.list](./booking-v1-clienttype-list.md) | Retrieves a list of client types ||
+|#
+
+### Events
+
+#|
+|| **Event** | **Triggered** ||
+|| [onBookingResourceTypeAdd](./resource/resource-type/events/on-booking-resource-type-add.md) | When a resource type is created manually or using [booking.v1.resourceType.add](./resource/resource-type/booking-v1-resourcetype-add.md) ||
+|| [onBookingResourceTypeUpdate](./resource/resource-type/events/on-booking-resource-type-update.md) | When a resource type is updated manually or using [booking.v1.resourceType.update](./resource/resource-type/booking-v1-resourcetype-update.md) ||
+|| [onBookingResourceTypeDelete](./resource/resource-type/events/on-booking-resource-type-delete.md) | When a resource type is deleted manually or using [booking.v1.resourceType.delete](./resource/resource-type/booking-v1-resourcetype-delete.md) ||
+|| [onBookingResourceAdd](./resource/events/on-booking-resource-add.md) | When a resource is created manually or using [booking.v1.resource.add](./resource/booking-v1-resource-add.md) ||
+|| [onBookingResourceUpdate](./resource/events/on-booking-resource-update.md) | When a resource is updated manually or using [booking.v1.resource.update](./resource/booking-v1-resource-update.md) ||
+|| [onBookingResourceDelete](./resource/events/on-booking-resource-delete.md) | When a resource is deleted manually or using [booking.v1.resource.delete](./resource/booking-v1-resource-delete.md) ||
+|| [onBookingWaitListItemAdd](./waitlist/events/on-booking-waitlistitem-add.md) | When a waitlist entry is created manually or using [booking.v1.waitlist.add](./waitlist/booking-v1-waitlist-add.md) ||
+|| [onBookingWaitListItemUpdate](./waitlist/events/on-booking-waitlistitem-update.md) | When a waitlist entry is updated manually or using [booking.v1.waitlist.update](./waitlist/booking-v1-waitlist-update.md) ||
+|| [onBookingWaitListItemDelete](./waitlist/events/on-booking-waitlistitem-delete.md) | When a waitlist entry is deleted manually or using [booking.v1.waitlist.delete](./waitlist/booking-v1-waitlist-delete.md) ||
+|| [onBookingAdd](./booking/events/on-booking-add.md) | When a booking is created manually or using [booking.v1.booking.add](./booking/booking-v1-booking-add.md) or [booking.v1.booking.createfromwaitlist](./booking/booking-v1-booking-createfromwaitlist.md) ||
+|| [onBookingUpdate](./booking/events/on-booking-update.md) | When a booking is updated manually or using [booking.v1.booking.update](./booking/booking-v1-booking-update.md) ||
+|| [onBookingDelete](./booking/events/on-booking-delete.md) | When a booking is deleted manually or using [booking.v1.booking.delete](./booking/booking-v1-booking-delete.md) ||
 |#

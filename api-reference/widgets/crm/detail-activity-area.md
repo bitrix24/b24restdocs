@@ -18,16 +18,9 @@ To add the integration, use the method [placement.bind](../placement-bind.md). T
 
 ## OPTIONS Parameter
 
-#|
-|| **Name**
-`type` | **Description** ||
-|| **useBuiltInInterface**
-[`boolean`](../../data-types.md) | Use the standard Bitrix24 interface. Default is `N`. If `Y`, the interface is built according to the described structure [LayoutDto](#LayoutDto). The process of working with the interface is described [below](#Interface) ||
-|| **newUserNotificationTitle**
-[`string`](../../data-types.md) | Notification title for new users ||
-|| **newUserNotificationText**
-[`string`](../../data-types.md) | Notification text for new users. Clicking "More" will open a slider with the context `newUserNotification=Y` and a width of `800px` ||
-|#
+The built-in interface is enabled by the `useBuiltInInterface` parameter when the placement is registered. The full list of the `OPTIONS` parameters is described on the [{#T}](./detail-activity.md) page.
+
+When `useBuiltInInterface = Y`, the interface is built from the [LayoutDto](#LayoutDto) structure, and the process of working with it is described [below](#Interface).
 
 ## Registration Example 
 
@@ -886,6 +879,7 @@ Calling the action will open the slider of the application that registered the i
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](../placement-bind.md)
 - [{#T}](../ui-interaction/index.md)
 - [{#T}](../../../settings/interactivity/index.md)

@@ -50,7 +50,7 @@ A complete list of codes can be found on the [CRM Activity Context Menu Item Pag
 
 #|
 || **If needed** | **Use** | **What the handler receives** ||
-|| Add an item to the activity in the CRM activity list | [`CRM_ACTIVITY_LIST_MENU`](../../../../widgets/crm/index.md) | [`PLACEMENT_OPTIONS`](../../../../widgets/crm/index.md#placement_options) with activity ID `ID` ||
+|| Add an item to the activity in the CRM activity list | [`CRM_ACTIVITY_LIST_MENU`](../../../../widgets/crm/list-menu.md) | [`PLACEMENT_OPTIONS`](../../../../widgets/crm/list-menu.md#placement_options) with activity ID `ID` ||
 || Add an item to the activity in the CRM card timeline | [`CRM_XXX_ACTIVITY_TIMELINE_MENU`](../../../../widgets/crm/activity-timeline-menu.md) | [`PLACEMENT_OPTIONS`](../../../../widgets/crm/activity-timeline-menu.md#placement_options) with CRM card ID `ENTITY_ID` and activity ID `ASSOCIATED_ENTITY_ID` ||
 || Create an activity that opens the application | [How to create an activity from the application](./activity-app.md) | [`PLACEMENT_OPTIONS`](./activity-app.md) with activity ID `activity_id` ||
 |#
