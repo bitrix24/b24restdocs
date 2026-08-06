@@ -46,10 +46,13 @@ Data is sent in a POST request: some parameters come in the handler URL query st
         [AUTH_ID] => 6061e72600631fcd00005a4b00000001f0f1076700000000f69dd5fc643d9ce2fdbc1
         [AUTH_EXPIRES] => 3600
         [REFRESH_ID] => 50e00aa340631fcd00005a4b00000001f0f1071111116580a5b83c2de639ef28c12
+        [SERVER_ENDPOINT] => https://oauth.bitrix.info/rest/
+        [APPLICATION_TOKEN] => ec1b2074a9d3f5c81b6e40d27a95cf38
+        [APPLICATION_SCOPE] => im,placement
         [member_id] => da45a03b265ed12127f8a258d793cc5d
-        [status] => F
+        [status] => L
         [PLACEMENT] => IM_TEXTAREA
-        [PLACEMENT_OPTIONS] => {"dialogId":"chat1489"}
+        [PLACEMENT_OPTIONS] => {"dialogId":"chat2","URI":"\/online\/"}
     )
     ```
 
@@ -65,10 +68,13 @@ Data is sent in a POST request: some parameters come in the handler URL query st
         [AUTH_ID] => 6061e72600631fcd00005a4b00000001f0f1076700000000f69dd5fc643d9ce2fdbc1
         [AUTH_EXPIRES] => 3600
         [REFRESH_ID] => 50e00aa340631fcd00005a4b00000001f0f1071111116580a5b83c2de639ef28c12
+        [SERVER_ENDPOINT] => https://oauth.bitrix.info/rest/
+        [APPLICATION_TOKEN] => ec1b2074a9d3f5c81b6e40d27a95cf38
+        [APPLICATION_SCOPE] => im,placement
         [member_id] => da45a03b265ed12127f8a258d793cc5d
-        [status] => F
+        [status] => L
         [PLACEMENT] => IM_SIDEBAR
-        [PLACEMENT_OPTIONS] => {"dialogId":"chat1489"}
+        [PLACEMENT_OPTIONS] => {"dialogId":"chat2","URI":"\/online\/"}
     )
     ```
 
@@ -84,10 +90,13 @@ Data is sent in a POST request: some parameters come in the handler URL query st
         [AUTH_ID] => 6061e72600631fcd00005a4b00000001f0f1076700000000f69dd5fc643d9ce2fdbc1
         [AUTH_EXPIRES] => 3600
         [REFRESH_ID] => 50e00aa340631fcd00005a4b00000001f0f1071111116580a5b83c2de639ef28c12
+        [SERVER_ENDPOINT] => https://oauth.bitrix.info/rest/
+        [APPLICATION_TOKEN] => ec1b2074a9d3f5c81b6e40d27a95cf38
+        [APPLICATION_SCOPE] => im,placement
         [member_id] => da45a03b265ed12127f8a258d793cc5d
-        [status] => F
+        [status] => L
         [PLACEMENT] => IM_CONTEXT_MENU
-        [PLACEMENT_OPTIONS] => {"messageId":84889, "dialogId":"chat1489"}
+        [PLACEMENT_OPTIONS] => {"messageId":"2431","dialogId":"chat2","URI":"\/online\/"}
     )
     ```
 
@@ -103,8 +112,11 @@ Data is sent in a POST request: some parameters come in the handler URL query st
         [AUTH_ID] => 6061e72600631fcd00005a4b00000001f0f1076700000000f69dd5fc643d9ce2fdbc1
         [AUTH_EXPIRES] => 3600
         [REFRESH_ID] => 50e00aa340631fcd00005a4b00000001f0f1071111116580a5b83c2de639ef28c12
+        [SERVER_ENDPOINT] => https://oauth.bitrix.info/rest/
+        [APPLICATION_TOKEN] => ec1b2074a9d3f5c81b6e40d27a95cf38
+        [APPLICATION_SCOPE] => im,placement
         [member_id] => da45a03b265ed12127f8a258d793cc5d
-        [status] => F
+        [status] => L
         [PLACEMENT] => IM_NAVIGATION
         [PLACEMENT_OPTIONS] => {"URI":"\/online\/"}
     )
@@ -112,17 +124,23 @@ Data is sent in a POST request: some parameters come in the handler URL query st
 
 {% endlist %}
 
+{% include [Note on Required Parameters](../../../_includes/required.md) %}
+
+{% include notitle [Description of Standard Data](../_includes/widget_data.md) %}
+
 ### PLACEMENT_OPTIONS
 
 The value of `PLACEMENT_OPTIONS` is passed as a JSON string with the context of the call.
 
 #|
 || **Widget** | **Keys** | **Description** ||
-|| [IM_TEXTAREA](./textarea.md) | `dialogId` | Identifier of the current chat ||
-|| [IM_SIDEBAR](./sidebar.md) | `dialogId` | Identifier of the current chat ||
-|| [IM_CONTEXT_MENU](./context-menu.md) | `dialogId`, `messageId` | Identifier of the current chat and selected message ||
-|| [IM_NAVIGATION](./navigation.md) | none | The widget is opened for the messenger as a whole, not for a particular chat ||
+|| [IM_TEXTAREA](./textarea.md) | `dialogId`, `URI` | Identifier of the current chat ||
+|| [IM_SIDEBAR](./sidebar.md) | `dialogId`, `URI` | Identifier of the current chat ||
+|| [IM_CONTEXT_MENU](./context-menu.md) | `dialogId`, `messageId`, `URI` | Identifier of the current chat and selected message ||
+|| [IM_NAVIGATION](./navigation.md) | `URI` | The widget is opened for the messenger as a whole, not for a particular chat ||
 |#
+
+The `URI` key is universal: it is passed to any placement and contains the address of the page the widget is opened from. For the messenger this is `/online/`.
 
 ## Relationships with Other Objects
 

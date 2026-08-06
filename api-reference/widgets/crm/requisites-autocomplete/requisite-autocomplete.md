@@ -70,8 +70,6 @@ BX24.callMethod(
 
 Bitrix24 sends a POST request with the point data to the handler. Some parameters come in the handler URL query string, the rest in the request body.
 
-The `searchQuery` [`string`](../../../data-types.md) is passed in the `PLACEMENT_OPTIONS` parameter — this is the string that the user entered in the details search field.
-
 Example POST request:
 
 ```php
@@ -79,19 +77,35 @@ Array
 (
     [DOMAIN] => xxx.bitrix24.com
     [PROTOCOL] => 1
-    [LANG] => ru
+    [LANG] => en
     [APP_SID] => 8b3f2c5d9c1a4f6e9d7a2b4c6f8e1a3d
     [AUTH_ID] => 1f0f107e5806d5fe9a98e02021a72e57645f86a
     [AUTH_EXPIRES] => 3600
     [REFRESH_ID] => 1f0f107a80816604b24a8719792ac2a21d629b5
+    [SERVER_ENDPOINT] => https://oauth.bitrix.info/rest/
+    [APPLICATION_TOKEN] => ec1b2074a9d3f5c81b6e40d27a95cf38
+    [APPLICATION_SCOPE] => crm,placement
     [member_id] => da45a03b265edd8787f8a258d793cc5d
     [status] => L
     [PLACEMENT] => CRM_REQUISITE_AUTOCOMPLETE
-    [PLACEMENT_OPTIONS] => {"searchQuery":"1707083893"}
+    [PLACEMENT_OPTIONS] => {"searchQuery":"Daisy","URI":"\/crm\/company\/details\/7\/?any=details%2F7%2F&IFRAME=Y&IFRAME_TYPE=SIDE_SLIDER"}
 )
 ```
 
 {% include notitle [standard data description](../../_includes/widget_data.md) %}
+
+### PLACEMENT_OPTIONS
+
+The value of `PLACEMENT_OPTIONS` is passed as a JSON string with the context of the call.
+
+#|
+|| **Parameter**
+[`type`](../../../data-types.md) | **Description** ||
+|| **searchQuery***
+[`string`](../../../data-types.md) | The string that the user entered in the details search field ||
+|| **URI***
+[`string`](../../../data-types.md) | Address of the card the search is called from. The card opens in a slider, so the address contains the `IFRAME=Y` and `IFRAME_TYPE=SIDE_SLIDER` parameters ||
+|#
 
 ## How to return found options
 

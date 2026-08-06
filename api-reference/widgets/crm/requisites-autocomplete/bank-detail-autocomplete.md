@@ -76,8 +76,6 @@ BX24.callMethod(
 
 Bitrix24 sends a POST request with the point data to the handler. Some parameters come in the handler URL query string, the rest in the request body.
 
-The `searchQuery` [`string`](../../../data-types.md) string, which the user entered into the bank details search field, is passed in the `PLACEMENT_OPTIONS` parameter.
-
 Example POST request:
 
 ```php
@@ -85,19 +83,35 @@ Array
 (
     [DOMAIN] => xxx.bitrix24.com
     [PROTOCOL] => 1
-    [LANG] => ru
+    [LANG] => en
     [APP_SID] => 8b3f2c5d9c1a4f6e9d7a2b4c6f8e1a3d
     [AUTH_ID] => 1f0f107e5806d5fe9a98e02021a72e57645f86a
     [AUTH_EXPIRES] => 3600
     [REFRESH_ID] => 1f0f107a80816604b24a8719792ac2a21d629b5
+    [SERVER_ENDPOINT] => https://oauth.bitrix.info/rest/
+    [APPLICATION_TOKEN] => ec1b2074a9d3f5c81b6e40d27a95cf38
+    [APPLICATION_SCOPE] => crm,placement
     [member_id] => da45a03b265edd8787f8a258d793cc5d
     [status] => L
     [PLACEMENT] => CRM_BANK_DETAIL_AUTOCOMPLETE
-    [PLACEMENT_OPTIONS] => {"searchQuery":"044525225"}
+    [PLACEMENT_OPTIONS] => {"searchQuery":"044599999","URI":"\/bitrix\/components\/bitrix\/crm.requisite.details\/slider.ajax.php?requisite_id=n0&sessid=1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d&etype=4&eid=2979&external_context_id=COMPANY_2979&pid=1&cid=0&IFRAME=Y&IFRAME_TYPE=SIDE_SLIDER"}
 )
 ```
 
 {% include notitle [description of standard data](../../_includes/widget_data.md) %}
+
+### PLACEMENT_OPTIONS
+
+The value of `PLACEMENT_OPTIONS` is passed as a JSON string with the context of the call.
+
+#|
+|| **Parameter**
+[`type`](../../../data-types.md) | **Description** ||
+|| **searchQuery***
+[`string`](../../../data-types.md) | The string that the user entered in the bank details search field ||
+|| **URI***
+[`string`](../../../data-types.md) | Address of the page the widget is opened from. The details form is a separate document of the `crm.requisite.details` component, so its address arrives here instead of the client card address. The client identifier is passed in the `eid` and `external_context_id` parameters ||
+|#
 
 ## How to return found options
 

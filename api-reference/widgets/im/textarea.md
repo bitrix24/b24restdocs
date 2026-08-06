@@ -45,10 +45,13 @@ Array
     [AUTH_ID] => 6061e72600631fcd00005a4b00000001f0f1076700000000f69dd5fc643d9ce2fdbc1
     [AUTH_EXPIRES] => 3600
     [REFRESH_ID] => 50e00aa340631fcd00005a4b00000001f0f1071111116580a5b83c2de639ef28c12
+    [SERVER_ENDPOINT] => https://oauth.bitrix.info/rest/
+    [APPLICATION_TOKEN] => ec1b2074a9d3f5c81b6e40d27a95cf38
+    [APPLICATION_SCOPE] => im,placement
     [member_id] => da45a03b265ed12127f8a258d793cc5d
-    [status] => F
+    [status] => L
     [PLACEMENT] => IM_TEXTAREA
-    [PLACEMENT_OPTIONS] => {"dialogId":"chat1489"}
+    [PLACEMENT_OPTIONS] => {"dialogId":"chat2","URI":"\/online\/"}
 )
 ```
 
@@ -60,9 +63,14 @@ Array
 
 The value of `PLACEMENT_OPTIONS` is passed as a JSON string with the context of the call.
 
-For `IM_TEXTAREA`, the following key is passed in the context:
-
-- `dialogId` — the identifier of the current chat
+#|
+|| **Parameter**
+[`type`](../../data-types.md) | **Description** ||
+|| **dialogId***
+[`string`](../../data-types.md) | Identifier of the chat from whose input field the widget is opened: `chatNNN` for a group chat, the user identifier for a private conversation. The chat can be retrieved by this identifier with the [im.dialog.get](../../chats/im-dialog-get.md) method ||
+|| **URI***
+[`string`](../../data-types.md) | Address of the page the widget is opened from. For the messenger this is `/online/` ||
+|#
 
 ## OPTIONS When Registering via placement.bind
 
