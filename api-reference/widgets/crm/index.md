@@ -28,6 +28,7 @@ Choose a placement by the task your application solves:
 - extend automation — [CRM_XXX_ROBOT_DESIGNER_TOOLBAR](./robot-designer-toolbar.md)
 - extend pipelines and tunnels — [CRM_FUNNELS_TOOLBAR](./funnels-toolbar.md)
 - show your own report — [CRM_ANALYTICS_MENU](./analytics-menu.md), and to add an action for the analytics section — [CRM_ANALYTICS_TOOLBAR](./analytics-toolbar.md)
+- search for a client in an external source and fill it into the form — [CRM_DETAIL_SEARCH](./detail-search.md)
 - fill in company data from an external source — [details autofill](./requisites-autocomplete/index.md)
 
 ## How to Get Started
@@ -61,6 +62,7 @@ The `PLACEMENT_OPTIONS` value is passed as a JSON string with the call context. 
 || [CRM_FUNNELS_TOOLBAR](./funnels-toolbar.md) | none | The widget opens above the pipeline list ||
 || [CRM_ANALYTICS_MENU](./analytics-menu.md) | none | The widget opens in the analytics section ||
 || [CRM_ANALYTICS_TOOLBAR](./analytics-toolbar.md) | none | The widget opens in the analytics section ||
+|| [CRM_DETAIL_SEARCH](./detail-search.md) | `entityTypeName`, `searchQuery` | Client type and the search query from the form ||
 |#
 
 ## Connection with Other Objects
@@ -96,11 +98,12 @@ The `PLACEMENT_OPTIONS` value is passed as a JSON string with the call context. 
 || [CRM_XXX_DETAIL_ACTIVITY](./detail-activity.md) | Button in the panel above the card timeline ||
 || [CRM_XXX_DETAIL_TOOLBAR](./detail-toolbar.md) | Top button menu item of a card ||
 || [CRM_XXX_ACTIVITY_TIMELINE_MENU](./activity-timeline-menu.md) | Context menu item of an activity record in the timeline ||
-|| [CRM_XXX_DOCUMENTGENERATOR_BUTTON](./document-generator-button.md) | Menu item of the document generator ||
+|| [CRM_XXX_DOCUMENTGENERATOR_BUTTON](./document-generator-button.md) | Dropdown menu item of the document generator ||
 || [CRM_XXX_ROBOT_DESIGNER_TOOLBAR](./robot-designer-toolbar.md) | Button in the automation rules designer ||
 || [CRM_FUNNELS_TOOLBAR](./funnels-toolbar.md) | Button in the sales pipelines and tunnels ||
 || [CRM_ANALYTICS_MENU](./analytics-menu.md) | Application report in the left menu of CRM Analytics ||
 || [CRM_ANALYTICS_TOOLBAR](./analytics-toolbar.md) | Button in the CRM Analytics header ||
+|| [CRM_DETAIL_SEARCH](./detail-search.md) | Client search in an external source from the CRM form ||
 || [CRM_REQUISITE_AUTOCOMPLETE, CRM_BANK_DETAIL_AUTOCOMPLETE](./requisites-autocomplete/index.md) | Filling in company data and bank details from an external source ||
 || [Additional features of CRM_XXX_DETAIL_ACTIVITY](./detail-activity-area.md) | Interface of the button above the timeline built with Bitrix24 tools ||
 |#

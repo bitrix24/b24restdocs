@@ -72,7 +72,7 @@ For `IM_TEXTAREA`, the `placement.bind` method supports `OPTIONS` parameters.
 
 #| 
 || **Parameter** `type` | **Description** ||
-|| **iconName*** [`string`](../../data-types.md) | Label of the item in the interface. Up to 50 characters, Latin letters, spaces, and `-` are allowed ||
+|| **iconName*** [`string`](../../data-types.md) | Name of a Font Awesome 4 icon, for example `fa-paperclip`. Bitrix24 adds the `fa` set class itself. Up to 50 characters, the value must contain Latin letters, a space, or `-` ||
 || **extranet** [`string`](../../data-types.md) | Access in the extranet, default is `N`.
 
 Possible values:
@@ -146,7 +146,7 @@ Possible values:
           }
         },
         "OPTIONS": {
-          "iconName": "chat-compose",
+          "iconName": "fa-paperclip",
           "context": "ALL",
           "role": "USER",
           "extranet": "N",
@@ -185,7 +185,7 @@ Possible values:
             },
           },
           OPTIONS: {
-            iconName: 'chat-compose',
+            iconName: 'fa-paperclip',
             context: 'ALL',
             role: 'USER',
             extranet: 'N',
@@ -236,7 +236,7 @@ Possible values:
                 },
               },
               OPTIONS: {
-                iconName: 'chat-compose',
+                iconName: 'fa-paperclip',
                 context: 'ALL',
                 role: 'USER',
                 extranet: 'N',
@@ -287,7 +287,7 @@ Possible values:
                         ],
                     ],
                     'OPTIONS' => [
-                        'iconName' => 'chat-compose',
+                        'iconName' => 'fa-paperclip',
                         'context' => 'ALL',
                         'role' => 'USER',
                         'extranet' => 'N',
@@ -324,7 +324,7 @@ Possible values:
                 en: { TITLE: 'My toolbar item' }
             },
             OPTIONS: {
-                iconName: 'chat-compose',
+                iconName: 'fa-paperclip',
                 context: 'ALL',
                 role: 'USER',
                 extranet: 'N',
@@ -363,7 +363,7 @@ Possible values:
                 ],
             ],
             'OPTIONS' => [
-                'iconName' => 'chat-compose',
+                'iconName' => 'fa-paperclip',
                 'context' => 'ALL',
                 'role' => 'USER',
                 'extranet' => 'N',

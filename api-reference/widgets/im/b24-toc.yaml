@@ -9,5 +9,7 @@ items:
     href: sidebar.md  
   - name: Context Menu Item for Message  
     href: context-menu.md  
+  - name: Messenger Navigation Item
+    href: navigation.md
   - name: Emoji Collection  
     href: smile-selector.md  

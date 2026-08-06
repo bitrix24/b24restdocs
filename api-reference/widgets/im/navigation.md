@@ -1,4 +1,4 @@
-# Widget for the IM_SIDEBAR
+# Messenger Navigation Item IM_NAVIGATION
 
 {% note tip "" %}
 
@@ -8,48 +8,57 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`im`](../../scopes/permissions.md)
 
-The widget adds its item to the chat sidebar.
+The widget adds its own item to the messenger navigation menu — to the same row that holds *Chats*, *Channels*, and *Market*. When the item is clicked, the application opens in the entire working area of the messenger, instead of the chat list and the conversation.
 
-The embedding code is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
+The placement suits applications that work with the messenger as a whole rather than with a particular chat or message: conversation summaries, reports, custom dialog lists.
+
+The placement code is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
 
 {% note info "" %}
 
-The embedding will not be displayed in the interface until the application installation is complete. [Check the application installation](../../../settings/app-installation/installation-finish.md)
+The widget is not displayed in the interface until the application installation is complete. [Check the application installation](../../../settings/app-installation/installation-finish.md)
 
 {% endnote %}
 
 ## Where the widget is embedded
 
-#| 
-|| **Embedding Code** | **Location** ||
-|| `IM_SIDEBAR` | Item in the chat sidebar ||
+#|
+|| **Widget code** | **Location** ||
+|| `IM_NAVIGATION` | Item in the messenger navigation menu ||
 |#
 
 ### Where it is located in the interface
 
-Open the chat and click the sidebar button on the right side of the top chat panel. In the opened sidebar, there is an *Applications* block at the bottom, which displays the application item with `PLACEMENT=IM_SIDEBAR`.
+Open the messenger and look at the row of navigation items at the top of the screen. The application item appears in this row with the name from the `TITLE` parameter.
 
-![Item in the chat sidebar](./_images/IM_SIDEBAR.png "Item in the chat sidebar")
+If there are more items than fit into the row, some of them move under the *More* button. The application item is added last, so most often it ends up there.
+
+![Application item in the messenger navigation menu](./_images/IM_NAVIGATION.png "Application item in the messenger navigation menu")
 
 ## What the handler receives
 
 Data is sent in a POST request: some parameters come in the handler URL query string, the rest in the request body {.b24-info}
 
 ```php
+
 Array
 (
     [DOMAIN] => xxx.bitrix24.com
     [PROTOCOL] => 1
-    [LANG] => de
-    [APP_SID] => 99c80eff6378726287350416ee5fef0
-    [AUTH_ID] => 6061e72600631fcd00005a4b00000001f0f1076700000000f69dd5fc643d9ce2fdbc1
+    [LANG] => en
+    [APP_SID] => c14d1f3266fe7ba3cd098e2d04dccda3
+    [AUTH_ID] => 83fd7166007e9c94001e30ba00000001f0f107a52e6ad7ef9a1b8c3d5e2f4061
     [AUTH_EXPIRES] => 3600
-    [REFRESH_ID] => 50e00aa340631fcd00005a4b00000001f0f1071111116580a5b83c2de639ef28c12
-    [member_id] => da45a03b265ed12127f8a258d793cc5d
-    [status] => F
-    [PLACEMENT] => IM_SIDEBAR
-    [PLACEMENT_OPTIONS] => {"dialogId":"chat1489"}
+    [REFRESH_ID] => 737c9966007e9c94001e30ba00000001f0f1072b8d4e6f01a3c57d9e8b2f4160
+    [SERVER_ENDPOINT] => https://oauth.bitrix.info/rest/
+    [APPLICATION_TOKEN] => ec1b2074a9d3f5c81b6e40d27a95cf38
+    [APPLICATION_SCOPE] => im,placement
+    [member_id] => d897063e1ce7c5eb9f04b9751eef5915
+    [status] => L
+    [PLACEMENT] => IM_NAVIGATION
+    [PLACEMENT_OPTIONS] => {"URI":"\/online\/"}
 )
+
 ```
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
@@ -58,37 +67,27 @@ Array
 
 ### PLACEMENT_OPTIONS
 
-The value of `PLACEMENT_OPTIONS` is passed as a JSON string with the context of the call.
+The `PLACEMENT_OPTIONS` value is passed as a JSON string with the call context. The placement has no keys of its own: the widget is opened for the messenger as a whole, not for a particular chat. Only the universal `URI` key with the address of the messenger page arrives in the context.
 
-For `IM_SIDEBAR`, the following key is passed in the context:
-
-- `dialogId` — identifier of the current chat
+If the application needs a chat identifier, use the placements that are called from the chat itself: [IM_SIDEBAR](./sidebar.md), [IM_TEXTAREA](./textarea.md), or [IM_CONTEXT_MENU](./context-menu.md).
 
 ## OPTIONS when registering via placement.bind
 
-For `IM_SIDEBAR`, the `placement.bind` method supports `OPTIONS` parameters.
+For `IM_NAVIGATION`, the `placement.bind` method supports the `OPTIONS` parameters.
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
 
-#| 
+#|
 || **Parameter** `type` | **Description** ||
-|| **iconName*** [`string`](../../data-types.md) | Name of a Font Awesome 4 icon, for example `fa-file-text-o`. Bitrix24 adds the `fa` set class itself. Up to 50 characters, the value must contain Latin letters, a space, or `-` ||
+|| **iconName*** [`string`](../../data-types.md) | Name of a Font Awesome 4 icon, for example `fa-rocket`. Bitrix24 adds the `fa` set class itself. Up to 50 characters, the value must contain Latin letters, a space, or `-`.
+
+The parameter is required: without it, `placement.bind` returns the `ERROR_ARGUMENT` error. In the current messenger interface the navigation item is rendered as text, while the icon is used in the other placements of the section
+||
 || **extranet** [`string`](../../data-types.md) | Access in the extranet, default is `N`.
 
 Possible values:
 - `N` — application is not available for extranet users
 - `Y` — application is available for extranet users
-||
-|| **context** [`string`](../../data-types.md) | Display context, default is `ALL`. Multiple values can be passed using `;`.
-
-Possible values:
-- `ALL` — all chats
-- `USER` — personal chats of users, excluding chats with bots
-- `CHAT` — group chats, excluding `LINES` and `CRM`
-- `LINES` — chats of open channels
-- `CRM` — chats created within CRM
-
-If `ALL` is passed along with other values, only `ALL` is used. An invalid value will cause a registration error
 ||
 || **role** [`string`](../../data-types.md) | User role, default is `USER`.
 
@@ -96,28 +95,9 @@ Possible values:
 - `USER` — application is available to all users
 - `ADMIN` — application is available only to portal administrators
 ||
-|| **color** [`string`](../../data-types.md) | Icon color from the IM palette.
-
-Possible values:
-- `RED` — red
-- `GREEN` — green
-- `MINT` — mint
-- `LIGHT_BLUE` — light blue
-- `DARK_BLUE` — dark blue
-- `PURPLE` — purple
-- `AQUA` — aqua
-- `PINK` — pink
-- `LIME` — lime
-- `BROWN` — brown
-- `AZURE` — azure
-- `KHAKI` — khaki
-- `SAND` — sand
-- `ORANGE` — orange
-- `MARENGO` — marengo
-- `GRAY` — gray
-- `GRAPHITE` — graphite
-||
 |#
+
+The `context` parameter, which limits the display by chat type, does not apply to this placement: the navigation item is not bound to a chat.
 
 ### Code Examples
 
@@ -132,23 +112,21 @@ Possible values:
       -H "Content-Type: application/json" \
       -H "Accept: application/json" \
       -d '{
-        "PLACEMENT": "IM_SIDEBAR",
-        "HANDLER": "https://your-domain.com/widgets/im-sidebar-handler.php",
-        "TITLE": "My sidebar item",
+        "PLACEMENT": "IM_NAVIGATION",
+        "HANDLER": "https://your-domain.com/widgets/im-navigation-handler.php",
+        "TITLE": "My section",
         "LANG_ALL": {
-          "de": {
-            "TITLE": "Mein Sidebar-Element"
-          },
           "en": {
-            "TITLE": "My sidebar item"
+            "TITLE": "My section"
+          },
+          "de": {
+            "TITLE": "Mein Bereich"
           }
         },
         "OPTIONS": {
-          "iconName": "fa-file-text-o",
-          "context": "ALL",
+          "iconName": "fa-rocket",
           "role": "USER",
-          "extranet": "N",
-          "color": "LIGHT_BLUE"
+          "extranet": "N"
         },
         "auth": "**put_access_token_here**"
       }' \
@@ -169,23 +147,21 @@ Possible values:
       const response = await $b24.actions.v2.call.make<boolean>({
         method: 'placement.bind',
         params: {
-          PLACEMENT: 'IM_SIDEBAR',
-          HANDLER: 'https://your-domain.com/widgets/im-sidebar-handler.php',
-          TITLE: 'My sidebar item',
+          PLACEMENT: 'IM_NAVIGATION',
+          HANDLER: 'https://your-domain.com/widgets/im-navigation-handler.php',
+          TITLE: 'My section',
           LANG_ALL: {
-            ru: {
-              TITLE: 'My sidebar item',
-            },
             en: {
-              TITLE: 'My sidebar item',
+              TITLE: 'My section',
+            },
+            de: {
+              TITLE: 'Mein Bereich',
             },
           },
           OPTIONS: {
-            iconName: 'fa-file-text-o',
-            context: 'ALL',
+            iconName: 'fa-rocket',
             role: 'USER',
             extranet: 'N',
-            color: 'LIGHT_BLUE',
           },
         },
         requestId: Text.getUuidRfc4122()
@@ -210,7 +186,7 @@ Possible values:
     <!-- Load the SDK (UMD build); it is exposed as the global B24Js -->
     <script src="https://unpkg.com/@bitrix24/b24jssdk@1/dist/umd/index.min.js"></script>
     <script>
-      async function bindImSidebar() {
+      async function bindImNavigation() {
         try {
           // Initialize the SDK inside a Bitrix24 frame
           const $b24 = await B24Js.initializeB24Frame()
@@ -218,23 +194,21 @@ Possible values:
           const response = await $b24.actions.v2.call.make({
             method: 'placement.bind',
             params: {
-              PLACEMENT: 'IM_SIDEBAR',
-              HANDLER: 'https://your-domain.com/widgets/im-sidebar-handler.php',
-              TITLE: 'My sidebar item',
+              PLACEMENT: 'IM_NAVIGATION',
+              HANDLER: 'https://your-domain.com/widgets/im-navigation-handler.php',
+              TITLE: 'My section',
               LANG_ALL: {
-                ru: {
-                  TITLE: 'My sidebar item',
-                },
                 en: {
-                  TITLE: 'My sidebar item',
+                  TITLE: 'My section',
+                },
+                de: {
+                  TITLE: 'Mein Bereich',
                 },
               },
               OPTIONS: {
-                iconName: 'fa-file-text-o',
-                context: 'ALL',
+                iconName: 'fa-rocket',
                 role: 'USER',
                 extranet: 'N',
-                color: 'LIGHT_BLUE',
               },
             },
             requestId: B24Js.Text.getUuidRfc4122()
@@ -254,7 +228,7 @@ Possible values:
         }
       }
 
-      document.addEventListener('DOMContentLoaded', bindImSidebar)
+      document.addEventListener('DOMContentLoaded', bindImNavigation)
     </script>
     ```
 
@@ -267,23 +241,21 @@ Possible values:
             ->call(
                 'placement.bind',
                 [
-                    'PLACEMENT' => 'IM_SIDEBAR',
-                    'HANDLER' => 'https://your-domain.com/widgets/im-sidebar-handler.php',
-                    'TITLE' => 'My sidebar item',
+                    'PLACEMENT' => 'IM_NAVIGATION',
+                    'HANDLER' => 'https://your-domain.com/widgets/im-navigation-handler.php',
+                    'TITLE' => 'My section',
                     'LANG_ALL' => [
-                        'de' => [
-                            'TITLE' => 'Mein Sidebar-Element',
-                        ],
                         'en' => [
-                            'TITLE' => 'My sidebar item',
+                            'TITLE' => 'My section',
+                        ],
+                        'de' => [
+                            'TITLE' => 'Mein Bereich',
                         ],
                     ],
                     'OPTIONS' => [
-                        'iconName' => 'fa-file-text-o',
-                        'context' => 'ALL',
+                        'iconName' => 'fa-rocket',
                         'role' => 'USER',
                         'extranet' => 'N',
-                        'color' => 'LIGHT_BLUE',
                     ],
                 ]
             );
@@ -306,19 +278,17 @@ Possible values:
     BX24.callMethod(
         'placement.bind',
         {
-            PLACEMENT: 'IM_SIDEBAR',
-            HANDLER: 'https://your-domain.com/widgets/im-sidebar-handler.php',
-            TITLE: 'My sidebar item',
+            PLACEMENT: 'IM_NAVIGATION',
+            HANDLER: 'https://your-domain.com/widgets/im-navigation-handler.php',
+            TITLE: 'My section',
             LANG_ALL: {
-                de: { TITLE: 'Mein Sidebar-Element' },
-                en: { TITLE: 'My sidebar item' }
+                en: { TITLE: 'My section' },
+                de: { TITLE: 'Mein Bereich' }
             },
             OPTIONS: {
-                iconName: 'fa-file-text-o',
-                context: 'ALL',
+                iconName: 'fa-rocket',
                 role: 'USER',
-                extranet: 'N',
-                color: 'LIGHT_BLUE'
+                extranet: 'N'
             }
         },
         function(result) {
@@ -339,23 +309,21 @@ Possible values:
     $result = CRest::call(
         'placement.bind',
         [
-            'PLACEMENT' => 'IM_SIDEBAR',
-            'HANDLER' => 'https://your-domain.com/widgets/im-sidebar-handler.php',
-            'TITLE' => 'My sidebar item',
+            'PLACEMENT' => 'IM_NAVIGATION',
+            'HANDLER' => 'https://your-domain.com/widgets/im-navigation-handler.php',
+            'TITLE' => 'My section',
             'LANG_ALL' => [
-                'de' => [
-                    'TITLE' => 'Mein Sidebar-Element',
-                ],
                 'en' => [
-                    'TITLE' => 'My sidebar item',
+                    'TITLE' => 'My section',
+                ],
+                'de' => [
+                    'TITLE' => 'Mein Bereich',
                 ],
             ],
             'OPTIONS' => [
-                'iconName' => 'fa-file-text-o',
-                'context' => 'ALL',
+                'iconName' => 'fa-rocket',
                 'role' => 'USER',
                 'extranet' => 'N',
-                'color' => 'LIGHT_BLUE',
             ],
         ]
     );
@@ -370,6 +338,8 @@ Possible values:
 ## Continue Learning
 
 - [{#T}](./index.md)
+- [{#T}](./sidebar.md)
+- [{#T}](./textarea.md)
 - [{#T}](../placement-bind.md)
 - [{#T}](../ui-interaction/index.md)
 - [{#T}](../bx24-widget-methods.md)

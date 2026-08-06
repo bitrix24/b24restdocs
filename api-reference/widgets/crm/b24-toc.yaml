@@ -19,6 +19,8 @@ items:
     href: activity-timeline-menu.md  
   - name: Dropdown menu item of the document generator  
     href: document-generator-button.md  
+  - name: Client search in the entity form
+    href: detail-search.md
   - name: Button in the Automation rules designer  
     href: robot-designer-toolbar.md  
   - name: Button in the sales pipelines and tunnels  
