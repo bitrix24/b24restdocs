@@ -14,7 +14,7 @@ The method `placement.bind` adds a handler for the widget placement.
 
 It can be called at any time during the application's operation; however, it is often more convenient to register your widgets during the [application installation](../../settings/app-installation/index.md).
 
-It is important to note that until the application installation is complete, the widgets you register will not be available to regular users in the Bitrix24 interface—they will only be visible to users with administrative rights. 
+Until the application installation is complete, the registered widgets are not displayed in the Bitrix24 interface — neither to regular users nor to administrators.
 [Check the application installation](../../settings/app-installation/installation-finish.md).
 
 ## Method Parameters {#params}
