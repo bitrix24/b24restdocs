@@ -70,7 +70,7 @@ The `PLACEMENT_OPTIONS` value is passed as a JSON string with the call context. 
 
 ## Overview of Placements {#all-placements}
 
-> Scope: [`sonet_group`](../../scopes/permissions.md)
+> Scope: [`placement, sonet_group`](../../scopes/permissions.md)
 
 #|
 || **Placement** | **When to Use** ||

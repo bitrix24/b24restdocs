@@ -6,7 +6,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-> Scope: [`telephony`](../../scopes/permissions.md)
+> Scope: [`placement, telephony`](../../scopes/permissions.md)
 
 The widget adds its own report to the call analytics menu. The user selects the item in the menu, and the application interface opens instead of a built-in report.
 

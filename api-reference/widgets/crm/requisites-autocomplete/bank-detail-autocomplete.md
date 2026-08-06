@@ -6,7 +6,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-> Scope: [`crm`](../../../scopes/permissions.md)
+> Scope: [`placement, crm`](../../../scopes/permissions.md)
 
 The `CRM_BANK_DETAIL_AUTOCOMPLETE` point connects an application handler to the bank details search in a CRM card. It is required when an application searches for and populates bank company details, for example, by BIC.
 

@@ -6,7 +6,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-> Scope: [`task`](../../scopes/permissions.md)
+> Scope: [`placement, task`](../../scopes/permissions.md)
 
 The widget adds its own button to the task automation rules designer. The handler receives the context of the automation the widget is opened from: the personal planner of a user or a project.
 

@@ -6,7 +6,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-> Scope: [`sonet_group`](../../scopes/permissions.md)
+> Scope: [`placement, sonet_group`](../../scopes/permissions.md)
 
 The widget adds its own button to the automation rules designer, where the task automation of a workgroup or project is configured.
 

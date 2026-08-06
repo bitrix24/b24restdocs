@@ -6,7 +6,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-> Scope: [`contact_center`](../scopes/permissions.md)
+> Scope: [`placement, contact_center`](../scopes/permissions.md)
 
 The widget adds an application tile to the Contact Center — the same place where the user connects mail, telephony, and messengers. Clicking the tile opens the application interface: usually a form for connecting a communication channel of your own.
 

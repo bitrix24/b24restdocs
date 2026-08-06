@@ -6,7 +6,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-> Scope: [`crm`](../../scopes/permissions.md)
+> Scope: [`placement, crm`](../../scopes/permissions.md)
 
 The widget adds its own item to the context menu of an activity record in the timeline of a CRM object card: a [lead](../../crm/leads/index.md), [deal](../../crm/deals/index.md), [estimate](../../crm/quote/index.md), [new invoice](../../crm/universal/invoice.md), or [custom object type](../../crm/universal/index.md).
 

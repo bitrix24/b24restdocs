@@ -6,7 +6,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-> Scope: [`crm`](../../scopes/permissions.md)
+> Scope: [`placement, crm`](../../scopes/permissions.md)
 
 The widget adds its own button to the header of the CRM Analytics section.
 

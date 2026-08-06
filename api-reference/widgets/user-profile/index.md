@@ -87,7 +87,7 @@ Neither placement supports the `OPTIONS` parameter of the [placement.bind](../pl
 
 ## Overview of Placements {#all-placements}
 
-> Scope: [`user`](../../scopes/permissions.md)
+> Scope: [`placement, user`](../../scopes/permissions.md)
 
 #|
 || **Placement** | **When to Use** ||

@@ -90,7 +90,7 @@ The `PLACEMENT_OPTIONS` value is passed as a JSON string with the call context. 
 
 ## Overview of Placements {#all-placements}
 
-> Scope: [`crm`](../../scopes/permissions.md)
+> Scope: [`placement, crm`](../../scopes/permissions.md)
 
 The exception is `BI_ANALYTICS_MENU`: the placement is declared in the global [`placement`](../../scopes/permissions.md) scope and requires no separate CRM access.
 

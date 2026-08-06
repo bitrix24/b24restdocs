@@ -6,7 +6,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-> Scope: [`user`](../../scopes/permissions.md)
+> Scope: [`placement, user`](../../scopes/permissions.md)
 
 The widget adds its own item to the employee card menu. The call context carries the identifier of the employee whose card was opened — so the placement suits actions with a specific employee: show their data from an external system, submit a request about them, open their card in your own service.
 

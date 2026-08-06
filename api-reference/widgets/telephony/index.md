@@ -76,7 +76,7 @@ Neither placement of the section supports the `OPTIONS` parameter of the [placem
 
 ## Overview of Placements {#all-placements}
 
-> Scope: [`telephony`](../../scopes/permissions.md)
+> Scope: [`placement, telephony`](../../scopes/permissions.md)
 
 #|
 || **Placement** | **When to Use** ||

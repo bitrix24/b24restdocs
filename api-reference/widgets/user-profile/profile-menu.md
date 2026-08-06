@@ -6,7 +6,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-> Scope: [`user`](../../scopes/permissions.md)
+> Scope: [`placement, user`](../../scopes/permissions.md)
 
 The widget adds its own item to the user menu — the one that opens from the avatar in the upper right corner. The menu is available from any page of Bitrix24, so the placement suits actions that are not tied to a section: personal application settings, a jump to your own section, sending data about yourself to an external service.
 

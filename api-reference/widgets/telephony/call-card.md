@@ -6,7 +6,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-> Scope: [`telephony`](../../scopes/permissions.md)
+> Scope: [`placement, telephony`](../../scopes/permissions.md)
 
 The widget adds its own tab to the call card. The handler is invoked during a conversation and receives the call context: call identifier, phone number, call direction and state, and the linked CRM items.
 

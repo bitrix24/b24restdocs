@@ -6,7 +6,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-> Scope: [`crm`](../../scopes/permissions.md)
+> Scope: [`placement, crm`](../../scopes/permissions.md)
 >
 > Who can work with the integration: a user with access permission to modify the CRM object
 

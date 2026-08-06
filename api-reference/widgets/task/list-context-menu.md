@@ -6,7 +6,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-> Scope: [`task`](../../scopes/permissions.md)
+> Scope: [`placement, task`](../../scopes/permissions.md)
 
 The widget adds its own item to the context menu of an individual task in the list. The handler receives the identifier of the task whose menu the widget is opened from.
 

@@ -6,7 +6,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-> Scope: [`task`](../../scopes/permissions.md)
+> Scope: [`placement, task`](../../scopes/permissions.md)
 
 The widget adds its own item to the dropdown menu above the task list. The placement works with the list as a whole rather than with an individual task: the handler receives the identifier of the list owner — a user or a workgroup.
 

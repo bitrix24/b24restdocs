@@ -6,7 +6,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-> Scope: [`crm`](../../../scopes/permissions.md)
+> Scope: [`placement, crm`](../../../scopes/permissions.md)
 
 Autofill points for details connect an application to data search within a CRM card. The application works as an external source: it receives a search string, returns found options, and passes data from the selected option for insertion into the card.
 

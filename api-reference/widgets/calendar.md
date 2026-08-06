@@ -6,7 +6,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-> Scope: [`calendar`](../scopes/permissions.md)
+> Scope: [`placement, calendar`](../scopes/permissions.md)
 
 The widget adds its own view to the calendar. The user switches to it in the row of views, and the application interface opens instead of the calendar grid. The call context carries the date range the calendar was showing at the moment of switching.
 

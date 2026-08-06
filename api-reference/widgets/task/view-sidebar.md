@@ -6,7 +6,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-> Scope: [`task`](../../scopes/permissions.md)
+> Scope: [`placement, task`](../../scopes/permissions.md)
 
 The widget adds an application widget to the task card. In the previous card the item was rendered in the right sidebar, hence the name of the placement. The handler receives the identifier of the task whose card the widget is opened from.
 

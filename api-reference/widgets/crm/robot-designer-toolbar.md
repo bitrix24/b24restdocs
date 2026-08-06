@@ -6,7 +6,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-> Scope: [`crm`](../../scopes/permissions.md)
+> Scope: [`placement, crm`](../../scopes/permissions.md)
 
 The widget adds its own button to the automation rules designer, where the automation of CRM objects is configured: [leads](../../crm/leads/index.md), [deals](../../crm/deals/index.md), [new invoices](../../crm/universal/invoice.md), and [custom object types](../../crm/universal/index.md).
 

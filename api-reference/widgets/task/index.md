@@ -82,7 +82,7 @@ The key that carries the task identifier is named differently across the section
 
 ## Overview of Placements {#all-placements}
 
-> Scope: [`task`](../../scopes/permissions.md)
+> Scope: [`placement, task`](../../scopes/permissions.md)
 
 #|
 || **Placement** | **When to Use** ||

@@ -6,7 +6,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-> Scope: [`crm`](../../scopes/permissions.md)
+> Scope: [`placement, crm`](../../scopes/permissions.md)
 
 The `CRM_DETAIL_SEARCH` placement connects an application handler to the client search in the CRM form — to the *Contact* and *Company* fields of the *Client* block. Use it when the application searches for a client in an external source and fills the found option into the form.
 
