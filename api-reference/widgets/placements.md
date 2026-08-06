@@ -18,5 +18,6 @@ Each application can register an unlimited number of widgets, even of the same t
 - [Calendar](./calendar.md)
 - [Telephony](./telephony/index.md)
 - [Messenger](./im/index.md)
+- [Mobile Application](./mobile-app.md)
 - [Contact Center](./contact-center.md)
 - [Universal Widgets](./universal/app-url.md)

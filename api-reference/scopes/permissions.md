@@ -36,7 +36,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 || **mailservice** | [Email Services](../mailservice/index.md) | Email services ||
 || **main** | [Event Log](../event-log/index.md) | Event Log ||
 || **messageservice** | [Messaging Service](../messageservice/index.md) | Messaging Service ||
-|| **mobile** | [Mobile App Widgets](../widgets/mobile-app.md) | Mobile App ||
+|| **mobile** | [Mobile App](../widgets/mobile-app.md) | Mobile App ||
 || **pay_system** | [Payment Systems](../pay-system/index.md) | Payment Systems ||
 || **placement** | [Widgets](../widgets/index.md) | App Embedding ||
 || **pull** | [Pull&Push](../../settings/interactivity/push-and-pull/index.md) | Pull&Push ||

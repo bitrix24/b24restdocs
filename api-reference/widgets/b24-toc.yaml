@@ -45,7 +45,7 @@ items:
     include:
       path: universal/b24-toc.yaml
       mode: link
-  - name: Embedding in the Bitrix24 Mobile Application
+  - name: Widget in a Mobile App Chat
     href: mobile-app.md
   - name: Register a Widget
     href: placement-bind.md
