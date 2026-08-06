@@ -28,6 +28,7 @@ Choose a placement by the task your application solves:
 - extend automation — [CRM_XXX_ROBOT_DESIGNER_TOOLBAR](./robot-designer-toolbar.md)
 - extend pipelines and tunnels — [CRM_FUNNELS_TOOLBAR](./funnels-toolbar.md)
 - show your own report — [CRM_ANALYTICS_MENU](./analytics-menu.md), and to add an action for the analytics section — [CRM_ANALYTICS_TOOLBAR](./analytics-toolbar.md)
+- show a report next to the ready-made BI analytics reports — [BI_ANALYTICS_MENU](./bi-analytics-menu.md)
 - search for a client in an external source and fill it into the form — [CRM_DETAIL_SEARCH](./detail-search.md)
 - fill in company data from an external source — [details autofill](./requisites-autocomplete/index.md)
 
@@ -41,7 +42,7 @@ Choose a placement by the task your application solves:
 
 ## What the Handler Receives
 
-All placements of the section pass the same set of standard parameters to the handler.
+Placements of the section pass the same set of standard parameters to the handler. The exception is [BI_ANALYTICS_MENU](./bi-analytics-menu.md): this placement opens the handler address with a regular GET request and passes nothing to it.
 
 {% include notitle [description of standard data](../_includes/widget_data.md) %}
 
@@ -63,6 +64,7 @@ The `PLACEMENT_OPTIONS` value is passed as a JSON string with the call context. 
 || [CRM_ANALYTICS_MENU](./analytics-menu.md) | none | The widget opens in the analytics section ||
 || [CRM_ANALYTICS_TOOLBAR](./analytics-toolbar.md) | none | The widget opens in the analytics section ||
 || [CRM_DETAIL_SEARCH](./detail-search.md) | `entityTypeName`, `searchQuery` | Client type and the search query from the form ||
+|| [BI_ANALYTICS_MENU](./bi-analytics-menu.md) | — | `PLACEMENT_OPTIONS` is not passed: the handler is opened with a GET request ||
 |#
 
 ## Connection with Other Objects
@@ -90,6 +92,8 @@ The `PLACEMENT_OPTIONS` value is passed as a JSON string with the call context. 
 
 > Scope: [`crm`](../../scopes/permissions.md)
 
+The exception is `BI_ANALYTICS_MENU`: the placement is declared in the global [`placement`](../../scopes/permissions.md) scope and requires no separate CRM access.
+
 #|
 || **Placement** | **When to Use** ||
 || [CRM_XXX_LIST_MENU](./list-menu.md) | Context menu item of an element in a list ||
@@ -104,6 +108,7 @@ The `PLACEMENT_OPTIONS` value is passed as a JSON string with the call context. 
 || [CRM_ANALYTICS_MENU](./analytics-menu.md) | Application report in the left menu of CRM Analytics ||
 || [CRM_ANALYTICS_TOOLBAR](./analytics-toolbar.md) | Button in the CRM Analytics header ||
 || [CRM_DETAIL_SEARCH](./detail-search.md) | Client search in an external source from the CRM form ||
+|| [BI_ANALYTICS_MENU](./bi-analytics-menu.md) | Application report in the BI analytics menu ||
 || [CRM_REQUISITE_AUTOCOMPLETE, CRM_BANK_DETAIL_AUTOCOMPLETE](./requisites-autocomplete/index.md) | Filling in company data and bank details from an external source ||
 || [Additional features of CRM_XXX_DETAIL_ACTIVITY](./detail-activity-area.md) | Interface of the button above the timeline built with Bitrix24 tools ||
 |#

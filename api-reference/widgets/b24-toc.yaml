@@ -39,6 +39,8 @@ items:
       mode: link
   - name: Tile in the Contact Center
     href: contact-center.md
+  - name: Connector Settings Page
+    href: setting-connector.md
   - name: Universal Widgets
     include:
       path: universal/b24-toc.yaml

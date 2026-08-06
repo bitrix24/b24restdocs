@@ -27,8 +27,10 @@ items:
     href: funnels-toolbar.md  
   - name: Item in the left menu of CRM analytics  
     href: analytics-menu.md  
-  - name: Button in the CRM analytics header  
-    href: analytics-toolbar.md  
+  - name: Button in the CRM analytics header
+    href: analytics-toolbar.md
+  - name: Item in the BI analytics menu
+    href: bi-analytics-menu.md
   - name: Autofilling details in the CRM card
     include:
       path: requisites-autocomplete/b24-toc.yaml
