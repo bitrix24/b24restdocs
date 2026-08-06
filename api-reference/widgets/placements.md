@@ -1,4 +1,4 @@
-# Widget Embedding Locations
+# Placement Catalog
 
 {% note tip "" %}
 
@@ -10,13 +10,13 @@ A placement is a location in the Bitrix24 interface where an application adds it
 
 The handler is registered with the [placement.bind](./placement-bind.md) method: the code of the required location is passed in the `PLACEMENT` parameter. One application can register several widgets, including several in the same location — for example, two tabs in a deal card or two context menu items in the task list. [Universal placements](./universal/index.md) are limited to a single handler.
 
-This page is a general list of locations. The registration procedure, permissions, handler data, and common mistakes are described in the [Widget Integration Mechanism](./index.md) article.
+This page is a complete catalog of placements. The registration procedure, permissions, handler data, and common mistakes are described in the [Widget Integration Mechanism](./index.md) article.
 
 > Quick navigation: [all placements](#all-placements)
 
 ## How to Choose a Placement
 
-Locations with the same meaning exist in different Bitrix24 tools, so choose a placement by task rather than by section:
+Placements with the same meaning exist in different Bitrix24 tools, so choose a placement by task rather than by section:
 
 - show a screen of your own inside an entity card — `CRM_XXX_DETAIL_TAB`, `TASK_VIEW_TAB`, `TASK_VIEW_SIDEBAR`, `SONET_GROUP_DETAIL_TAB`, `CALL_CARD`
 - add an action to a single element in a list — `CRM_XXX_LIST_MENU`, `TASK_LIST_CONTEXT_MENU`
@@ -86,7 +86,7 @@ The exception is `SETTING_CONNECTOR`: it is connected with the `imconnector.regi
 || [IM_CONTEXT_MENU](./im/context-menu.md) | Item in the context menu of a message | `im` ||
 || [IM_NAVIGATION](./im/navigation.md) | Item in the messenger navigation menu | `im` ||
 || [IM_SIDEBAR](./im/sidebar.md) | Item in the chat sidebar | `im` ||
-|| [IM_SMILES_SELECTOR](./im/smile-selector.md) | Archived embedding of the emoji collection. Do not use for new integrations | not required ||
+|| [IM_SMILES_SELECTOR](./im/smile-selector.md) | Archived placement for the emoji collection. Do not use for new integrations | not required ||
 || [IM_TEXTAREA](./im/textarea.md) | Item in the panel above the chat input field | `im` ||
 || [IMMOBILE_CONTEXT_MENU](./mobile-app.md) | Item in the *Apps* menu in a chat of the mobile application | `im` ||
 || [LEFT_MENU](./left-menu.md) | Item in the main menu of Bitrix24 | not required ||

@@ -1,4 +1,4 @@
-# Remove Registered Automation Rule Handler placement.unbind
+# Delete a Widget Handler placement.unbind
 
 {% note tip "" %}
 
@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: administrator, authorized in the application
 
-The method `placement.unbind` removes the registered Automation rule handler.
+The method `placement.unbind` removes the registered widget handler.
 
 {% note info "" %}
 
@@ -26,17 +26,17 @@ The method works only in the context of the [application](../../settings/app-ins
 || **Name**
 `type` | **Description** ||
 || **PLACEMENT**^*^
-[`string`](../data-types.md) | Identifier of the Automation rule placement.
+[`string`](../data-types.md) | Code of the placement.
 
 `PLACEMENT` can be obtained by:
 - using the [placement.list](./placement-list.md) method
 - using the [placement.get](./placement-get.md) method in the `placement` field ||
 || **HANDLER**
-[`string`](../data-types.md) | URL of the Automation rule handler.
+[`string`](../data-types.md) | URL of the widget handler.
 
 `HANDLER` can be obtained using the [placement.get](./placement-get.md) method in the `handler` field.
 
-If the parameter is not provided or is empty, the method removes all handlers for the specified Automation rule registered by the application. ||
+If the parameter is not provided or is empty, the method removes all handlers of the specified placement registered by the application. ||
 || **USER_ID**
 [`integer`](../data-types.md) | Identifier of the Bitrix24 user for whom the handler was registered.
 
@@ -51,9 +51,9 @@ If the parameter is provided, the method removes only the handlers for the speci
 
 {% include [Note on examples](../../_includes/examples.md) %}
 
-Example of removing a registered Automation rule handler, where:
-- `PLACEMENT` — identifier of the Automation rule placement
-- `HANDLER` — URL of the Automation rule handler
+Example of removing a registered widget handler, where:
+- `PLACEMENT` — code of the placement
+- `HANDLER` — URL of the widget handler
 
 {% list tabs %}
 

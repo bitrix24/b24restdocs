@@ -1,4 +1,4 @@
-# Get a List of Available Application Embed Locations placement.list
+# Get Placements Available to the Application placement.list
 
 {% note tip "" %}
 
@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: a user authorized in the application
 
-The method `placement.list` returns a list of available embed locations for the application.
+The method `placement.list` returns the placements available to the application.
 
 {% note info "" %}
 
@@ -26,15 +26,15 @@ The method works only in the context of the [application](../../settings/app-ins
 || **Name**
 `type` | **Description** ||
 || **SCOPE**
-[`string`](../data-types.md) | Limits the list of embed locations to a specific application scope.
+[`string`](../data-types.md) | Limits the list to a specific application scope.
 
-If the parameter is provided and not empty, the method returns embed locations only for the specified scope. ||
+If the parameter is provided and not empty, the method returns placements only for the specified scope. ||
 || **FULL**
-[`boolean`](../data-types.md) | Flag to retrieve the full list of embed locations.
+[`boolean`](../data-types.md) | Flag to retrieve the full list of placements.
 
-If the parameter is not provided or is set to `false`, the method returns embed locations for the current application's scope and global embed locations.
+If the parameter is not provided or is set to `false`, the method returns placements for the current application's scope and global placements.
 
-If the parameter is set to `true`, the method returns embed locations for all service scopes.
+If the parameter is set to `true`, the method returns placements for all service scopes.
 
 The parameter is considered only if `SCOPE` is not provided. ||
 |#
@@ -43,8 +43,8 @@ The parameter is considered only if `SCOPE` is not provided. ||
 
 {% include [Examples Note](../../_includes/examples.md) %}
 
-Example of retrieving a list of embed locations available for the application, where:
-- `SCOPE` — the application's scope for which embed locations are needed.
+Example of retrieving the placements available to the application, where:
+- `SCOPE` — the application's scope for which placements are needed.
 
 {% list tabs %}
 
@@ -253,9 +253,9 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`string[]`](../data-types.md) | A list of codes for embed locations available for the application.
+[`string[]`](../data-types.md) | A list of codes of the placements available to the application.
 
-Each element of the array is a string code for an embed location. ||
+Each element of the array is a placement code. ||
 || **time**
 [`time`](../data-types.md#time) | Information about the execution time of the request. ||
 |#

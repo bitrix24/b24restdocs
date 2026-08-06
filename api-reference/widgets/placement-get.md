@@ -1,4 +1,4 @@
-# Get a List of Registered Placement Handlers placement.get
+# Get Handlers Registered by the Application placement.get
 
 {% note tip "" %}
 
@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: administrator
 
-The method `placement.get` retrieves a list of registered widget placement handlers.
+The method `placement.get` returns the widget handlers registered by the application.
 
 ## Method Parameters
 

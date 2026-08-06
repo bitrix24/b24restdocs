@@ -1,4 +1,4 @@
-# Set Up the Widget Handler placement.bind
+# Register a Widget Handler placement.bind
 
 {% note tip "" %}
 
@@ -6,7 +6,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-> Scope: [`placement`, `depending on the placement location`](../scopes/permissions.md)
+> Scope: [`placement`, `depending on the placement`](../scopes/permissions.md)
 >
 > Who can execute the method: administrator
 
@@ -25,11 +25,11 @@ Until the application installation is complete, the registered widgets are not d
 || **Name**
 `type` | **Description** ||
 || **PLACEMENT***
-[`string`](../data-types.md) | Identifier for the required widget placement location ||
+[`string`](../data-types.md) | Code of the placement ||
 || **HANDLER***
-[`string`](../data-types.md) | URL of the widget placement handler ||
+[`string`](../data-types.md) | URL of the widget handler ||
 || **TITLE**
-[`string`](../data-types.md) | Name of the widget in the interface. Depending on the specific placement location, this may be the name of a tab in a form, a menu item, etc. ||
+[`string`](../data-types.md) | Name of the widget in the interface. Depending on the placement, this may be the name of a tab in a form, a menu item, etc. ||
 || **DESCRIPTION**
 [`string`](../data-types.md) | Description of the widget in the interface. Not used in practice ||
 || **GROUP_NAME**
@@ -56,7 +56,7 @@ Until the application installation is complete, the registered widgets are not d
 
 ||
 || **OPTIONS**
-[`object`](../data-types.md) | Additional display parameters for the widget. Specific values depend on the widget placement location. Currently used in widgets for messengers, in the widget [`PAGE_BACKGROUND_WORKER`](./universal/background-worker.md), and in the widget [CRM_XXX_DETAIL_ACTIVITY](../widgets/crm/detail-activity-area.md)
+[`object`](../data-types.md) | Additional display parameters for the widget. Specific values depend on the placement. Currently used in widgets for messengers, in the widget [`PAGE_BACKGROUND_WORKER`](./universal/background-worker.md), and in the widget [CRM_XXX_DETAIL_ACTIVITY](../widgets/crm/detail-activity-area.md)
 
 ||
 || **USER_ID**
@@ -396,7 +396,7 @@ It is required that the handler URL is **definitely** accessible from the extern
 
 When accessing your handler, Bitrix24 will send a POST message containing information about the widget context, such as the deal identifier if the widget is embedded in the deal card in CRM, etc.
 
-You will find examples of such data in the descriptions of [specific widget placement locations](./placements.md).
+You will find examples of such data in the descriptions of [specific placements](./placements.md).
 
 ## Continue Learning
 
