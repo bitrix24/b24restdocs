@@ -6,7 +6,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-> Scope: [`im`](../../scopes/permissions.md)
+> Scope: [`placement, im`](../../scopes/permissions.md)
 
 The widget adds its own item to the messenger navigation menu — to the same row that holds *Chats*, *Channels*, and *Market*. When the item is clicked, the application opens in the entire working area of the messenger, instead of the chat list and the conversation.
 

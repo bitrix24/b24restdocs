@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 The placement has no button of its own in the interface. The handler is called when the user follows a link of the form `/marketplace/view/#APP_CODE#/` that the application itself placed in the content: in a chat message, a feed comment, a task description. The application opens in a slider over the page the user came from.
 
-Custom parameters can be added to the link — they reach the handler in `PLACEMENT_OPTIONS`. This way a single application opens different screens: a document card, a report, an approval form.
+Custom parameters can be added directly to the link: they reach the handler in `PLACEMENT_OPTIONS`. This way a single application opens different screens: a document card, a report, an approval form.
 
 The placement code is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
 
@@ -80,7 +80,7 @@ The value of `PLACEMENT_OPTIONS` is passed as a JSON string. It contains the key
 [`string`](../../data-types.md) | The path with the query string of the Bitrix24 page the user followed the link from ||
 |#
 
-Bitrix24 adds the `URI` key itself. If the application passes its own `URI` key in `params`, it remains unchanged — the substituted value does not overwrite it.
+Bitrix24 adds the `URI` key itself, but it never overwrites a value of its own. If the application passes its own `URI` key in `params`, the handler receives exactly that value.
 
 ## OPTIONS when registering via placement.bind
 
@@ -88,7 +88,7 @@ The placement does not support the `OPTIONS` parameter of the [placement.bind](.
 
 The placement does not support the `USER_ID` parameter either: an attempt to register a handler for a single user returns the error `ERROR_PLACEMENT_USER_MODE`. The handler is always registered for all Bitrix24 users.
 
-An application registers only one handler for this placement. A repeated `placement.bind` call returns the error `ERROR_PLACEMENT_MAX_COUNT` — to change the handler address, first remove the registration with the [placement.unbind](../placement-unbind.md) method.
+An application registers only one handler for this placement. A repeated `placement.bind` call returns the error `ERROR_PLACEMENT_MAX_COUNT`. To change the handler address, first remove the registration with the [placement.unbind](../placement-unbind.md) method.
 
 ### Code Examples
 
@@ -248,7 +248,7 @@ An application registers only one handler for this placement. A repeated `placem
 
 ## Relationship With Other Objects
 
-**The content that holds the link.** The application places the link with the same methods it uses for any other text: a chat message with the methods of the [{#T}](../../chats/index.md) section, a feed post with the methods of the [{#T}](../../log/index.md) section, a task description with the methods of the [{#T}](../../tasks/index.md) section.
+**The content that holds the link.** The application places the link with the same methods it uses for any other text: in a chat message with the methods of the [{#T}](../../chats/index.md) section, in a feed post with the methods of the [{#T}](../../log/index.md) section, in a task description with the methods of the [{#T}](../../tasks/index.md) section.
 
 **Application interface.** The slider is controlled by the [JavaScript methods for widgets](../bx24-widget-methods.md): `closeApplication` closes the widget, `openApplication` opens it again with different parameters.
 

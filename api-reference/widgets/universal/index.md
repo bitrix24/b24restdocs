@@ -26,7 +26,7 @@ The placements differ in who launches the handler.
 
 1. Choose the placement by who launches the handler: the user through a link or Bitrix24 on every page
 2. Register the handler with the [placement.bind](../placement-bind.md) method and pass the placement code in `PLACEMENT`. For `PAGE_BACKGROUND_WORKER`, `OPTIONS[errorHandlerUrl]` is mandatory
-3. Complete the application installation — until then the handler is not called
+3. Complete the application installation: until then the handler is not called
 4. Call the placement: follow the link `/marketplace/view/#APP_CODE#/` or open any Bitrix24 page
 5. Parse `PLACEMENT_OPTIONS` to get the launch context
 6. If the widget has to open the application interface, use the [JavaScript methods for widgets](../bx24-widget-methods.md)
@@ -107,7 +107,7 @@ The `URI` key is universal: it is passed to any placement and carries the path w
 
 **Signal exchange.** `PAGE_BACKGROUND_WORKER` is the only placement that works without any user action, so the application backend passes a signal to the browser through it using the [interactive interaction](../../../settings/interactivity/index.md) mechanism.
 
-**Call card.** Telephony applications control the call card from the background handler — the methods and events are described in the [{#T}](../ui-interaction/page-background-worker/index.md) section.
+**Call card.** Telephony applications control the call card from the background handler. The methods and events are described in the [{#T}](../ui-interaction/page-background-worker/index.md) section.
 
 ## Common Mistakes
 

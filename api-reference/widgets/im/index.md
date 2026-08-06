@@ -154,7 +154,9 @@ The `IM_NAVIGATION` placement does not support the `context` parameter: it is no
 
 ## Overview of Widgets {#all-widgets}
 
-> Scope: [`im`](../../scopes/permissions.md)
+> Scope: [`placement, im`](../../scopes/permissions.md)
+
+The `placement` scope is required to register the handler. To work with a chat from the widget — for example, to get it by the `dialogId` from the call context — the application also needs the `im` scope.
 
 #|
 || **Widget** | **When to Use** ||

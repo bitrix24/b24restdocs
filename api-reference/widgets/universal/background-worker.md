@@ -8,11 +8,11 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`placement`](../../scopes/permissions.md)
 
-Bitrix24 loads the handler of this placement on every page — in a hidden frame, without a visible interface element. The user neither opens nor sees the widget: the application code runs in the background on any page the employee has open.
+Bitrix24 loads the handler of this placement on every page in a hidden frame, without a visible interface element. The user neither opens nor sees the widget: the application code runs in the background on any page the employee has open.
 
 The placement is needed where the application has to react not to a click but to an external event: receive a signal from its own backend through [interactive interaction](../../../settings/interactivity/index.md), show an incoming call in a telephony integration, open the application slider with the [openApplication](../bx24-widget-methods.md) method.
 
-The placement code is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method. Registration requires the `OPTIONS[errorHandlerUrl]` parameter — the address where Bitrix24 reports that the handler has been deactivated.
+The placement code is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method. Registration requires the `OPTIONS[errorHandlerUrl]` parameter. It carries the address where Bitrix24 reports that the handler has been deactivated.
 
 {% note info "" %}
 
@@ -87,11 +87,11 @@ For `PAGE_BACKGROUND_WORKER`, the `placement.bind` method supports one `OPTIONS`
 || **errorHandlerUrl***
 [`string`](../../data-types.md) | The address where Bitrix24 reports that the handler registration has been deleted.
 
-The parameter is mandatory: without it `placement.bind` returns the error `EMPTY_ERROR_HANDLER_URL`. Other `OPTIONS` keys are not retained — [placement.get](../placement-get.md) returns only `errorHandlerUrl`
+The parameter is mandatory: without it `placement.bind` returns the error `EMPTY_ERROR_HANDLER_URL`. Other `OPTIONS` keys are not retained. The [placement.get](../placement-get.md) method returns only `errorHandlerUrl`
 ||
 |#
 
-An application registers one handler for this placement. A repeated `placement.bind` call returns the error `ERROR_PLACEMENT_MAX_COUNT` — to change the handler address, first remove the registration with the [placement.unbind](../placement-unbind.md) method.
+An application registers one handler for this placement. A repeated `placement.bind` call returns the error `ERROR_PLACEMENT_MAX_COUNT`. To change the handler address, first remove the registration with the [placement.unbind](../placement-unbind.md) method.
 
 ### Code Examples
 
@@ -269,13 +269,13 @@ An application registers one handler for this placement. A repeated `placement.b
 
 ## A Handler for a Single User
 
-`PAGE_BACKGROUND_WORKER` is the only placement that supports the `USER_ID` parameter of the [placement.bind](../placement-bind.md) method. A handler registered with `USER_ID` loads only on the pages of that user. This is how background code is connected for those who need it — for example, only for telephony operators.
+`PAGE_BACKGROUND_WORKER` is the only placement that supports the `USER_ID` parameter of the [placement.bind](../placement-bind.md) method. A handler registered with `USER_ID` loads only on the pages of that user. This is how background code is connected only for those who need it, for example for telephony operators.
 
 The limit of one handler is counted separately for the general registration and for each user, so a personal handler and a handler for all employees can be registered at the same time.
 
 ## Relationship With Other Objects
 
-**Call card.** From the background handler, the application controls the call card: it changes the card state, buttons, and title, and subscribes to the operator actions. The methods and events are in the [{#T}](../ui-interaction/page-background-worker/index.md) section, and the whole scenario is in the [{#T}](../ui-interaction/page-background-worker/webrtc-scenario.md) article.
+**Call card.** From the background handler, the application controls the call card: it changes the card state, buttons, and title, and subscribes to the operator actions. The methods and events are collected in the [{#T}](../ui-interaction/page-background-worker/index.md) section, and the whole scenario is described in the [{#T}](../ui-interaction/page-background-worker/webrtc-scenario.md) article.
 
 **Signals from the backend.** The handler receives messages from the server side of the application through the [interactive interaction](../../../settings/interactivity/index.md) mechanism and opens the application interface based on them with the [JavaScript methods for widgets](../bx24-widget-methods.md).
 
