@@ -375,7 +375,9 @@ HTTP status: **400**, **403**, **200**
 
 #|
 || **Code** | **Description** | **Status** ||
-|| `ERROR_PLACEMENT_MAX_COUNT` | Attempted to re-register the handler for the widget `PAGE_BACKGROUND_WORKER` | 200 ||
+|| `ERROR_PLACEMENT_MAX_COUNT` | Attempted to re-register the handler for a widget that allows only one registration: `PAGE_BACKGROUND_WORKER` or [`REST_APP_URI`](./universal/app-url.md) | 200 ||
+|| `ERROR_PLACEMENT_USER_MODE` | The `USER_ID` parameter was passed for a widget that does not support registration for an individual user | 200 ||
+|| `EMPTY_ERROR_HANDLER_URL` | The required `OPTIONS[errorHandlerUrl]` parameter was not passed when registering the `PAGE_BACKGROUND_WORKER` widget | 200 ||
 || `ERROR_ARGUMENT` | A required field value is missing. The code of the required field is returned in `argument`| 200 ||
 || `WRONG_AUTH_TYPE` | Current authorization type is denied for this method Application context required | 403 ||
 |#

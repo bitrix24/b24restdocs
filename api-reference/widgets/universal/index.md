@@ -1,4 +1,4 @@
-# Universal Widgets: Overview of Embedding Points
+# Universal Widgets: Overview of Placements
 
 {% note tip "" %}
 
@@ -6,34 +6,36 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-This section describes universal embedding points that are not tied to a specific Bitrix24 interface. Through these points, the application can be opened via a special link in the content or operate in the background on all pages of the account.
+Universal widgets are not tied to a specific Bitrix24 tool: they have neither their own button nor their own menu. The handler is called either through a link that the application itself placed in the content, or on every Bitrix24 page without any user action. Both placements require the `placement` scope.
 
 To register a widget, use the [placement.bind](../placement-bind.md) method and pass the required code in the `PLACEMENT` parameter.
 
-> Quick Navigation: [All Widgets](#all-widgets)
+> Quick navigation: [all placements](#all-placements)
 
-## How to Choose an Embedding Point
+## How to Choose a Placement
 
-- The user must open the application via a special link in a message, comment, task, or other content — [REST_APP_URI](./app-url.md)
-- The application should operate in the background on all pages of the account and respond to events without a separate visible interface element — [PAGE_BACKGROUND_WORKER](./background-worker.md)
+The placements differ in who launches the handler.
 
-## Getting Started
+#|
+|| **Placement** | **Who Launches It** | **When to Use** ||
+|| [REST_APP_URI](./app-url.md) | The user — by following the application link | The application places a link in a message, comment, task, or other content, and the handler opens in a slider over the current page. Custom parameters can be passed in the link ||
+|| [PAGE_BACKGROUND_WORKER](./background-worker.md) | Bitrix24 — on every page load | The application needs code that runs on all Bitrix24 pages: receiving signals from its own backend, telephony integration, opening the application interface automatically. The placement has no visible element ||
+|#
 
-1. Define the launch scenario: opening via a link or background operation on the account pages.
-2. Register the handler through [placement.bind](../placement-bind.md) and pass the appropriate `PLACEMENT`.
-3. Parse `PLACEMENT_OPTIONS` in the handler to obtain the launch context.
-4. If the widget needs to open the application interface, use the [JavaScript methods for widgets](../bx24-widget-methods.md).
-5. If the scenario requires signal exchange between the backend and frontend, connect to [interactive interaction](../../../settings/interactivity/index.md).
+## How to Get Started
 
-## Features of Universal Widgets
+1. Choose the placement by who launches the handler: the user through a link or Bitrix24 on every page
+2. Register the handler with the [placement.bind](../placement-bind.md) method and pass the placement code in `PLACEMENT`. For `PAGE_BACKGROUND_WORKER`, `OPTIONS[errorHandlerUrl]` is mandatory
+3. Complete the application installation — until then the handler is not called
+4. Call the placement: follow the link `/marketplace/view/#APP_CODE#/` or open any Bitrix24 page
+5. Parse `PLACEMENT_OPTIONS` to get the launch context
+6. If the widget has to open the application interface, use the [JavaScript methods for widgets](../bx24-widget-methods.md)
 
-**REST_APP_URI.** The widget opens via a link in the format `/marketplace/view/#APP_CODE#/` and can accept arbitrary parameters through `params`. This scenario is suitable when the application needs to be launched from text or other content where a link can be placed.
-
-**PAGE_BACKGROUND_WORKER.** The widget loads on all pages of the account without a separate visual element. The handler must respond quickly; otherwise, Bitrix24 may disable it and notify the application via `OPTIONS[errorHandlerUrl]`.
+Both placements are registered in a single copy: a repeated `placement.bind` for the same application returns the error `ERROR_PLACEMENT_MAX_COUNT`.
 
 ## What the Handler Receives
 
-Data is transmitted as a POST request {.b24-info}
+Data is sent in a POST request: some parameters come in the handler URL query string, the rest in the request body {.b24-info}
 
 {% list tabs %}
 
@@ -45,14 +47,17 @@ Data is transmitted as a POST request {.b24-info}
         [DOMAIN] => xxx.bitrix24.com
         [PROTOCOL] => 1
         [LANG] => en
-        [APP_SID] => 195ec4ee87932d8f9bbbd6a2f0a83553
-        [AUTH_ID] => f27bbb6600705a0700005a4b00000001f0f107398c3f17f5fc48d5ce194d5c65de7cfb
+        [APP_SID] => 9ecab44f06b9efb6c37d7b02180422b2
+        [AUTH_ID] => 913374660070f28d001e30ba00000001f0f1073c8a5e2b7d94f16c0a3e58d271
         [AUTH_EXPIRES] => 3600
-        [REFRESH_ID] => e2fae26600705a0700005a4b00000001f0f1075f986dbd8dff24c36c2ad9bb0816a665
+        [REFRESH_ID] => 81b29b660070f28d001e30ba00000001f0f107e4d1a9b3f508c72e6d95af3b04
+        [SERVER_ENDPOINT] => https://oauth.bitrix.info/rest/
+        [APPLICATION_TOKEN] => ec1b2074a9d3f5c81b6e40d27a95cf38
+        [APPLICATION_SCOPE] => placement
         [member_id] => da45a03b265edd8787f8a258d793cc5d
         [status] => L
         [PLACEMENT] => REST_APP_URI
-        [PLACEMENT_OPTIONS] => {"test":"y"}
+        [PLACEMENT_OPTIONS] => {"test":"y","docId":"42","URI":"\/company\/personal\/user\/1\/blog\/"}
     )
     ```
 
@@ -61,14 +66,16 @@ Data is transmitted as a POST request {.b24-info}
     ```php
     Array
     (
-        [handler] => 1
-        [DOMAIN] => restapi.bitrix24.com
+        [DOMAIN] => xxx.bitrix24.com
         [PROTOCOL] => 1
         [LANG] => en
         [APP_SID] => 588b8a98e848778a4ffb38fbcf70f2b9
-        [AUTH_ID] => 4172bb6600705a0700005a4b00000001f0f107c42ca5bd5f61030c5d9c3e4d60d11b5a
+        [AUTH_ID] => 4172bb660070f28d001e30ba00000001f0f107c42ca5bd5f61030c5d9c3e4d60
         [AUTH_EXPIRES] => 3600
-        [REFRESH_ID] => 31f1e26600705a0700005a4b00000001f0f107b1918506d8a2ed9ecf76e8fdac962471
+        [REFRESH_ID] => 31f1e2660070f28d001e30ba00000001f0f107b1918506d8a2ed9ecf76e8fdac
+        [SERVER_ENDPOINT] => https://oauth.bitrix.info/rest/
+        [APPLICATION_TOKEN] => ec1b2074a9d3f5c81b6e40d27a95cf38
+        [APPLICATION_SCOPE] => placement
         [member_id] => da45a03b265edd8787f8a258d793cc5d
         [status] => L
         [PLACEMENT] => PAGE_BACKGROUND_WORKER
@@ -78,28 +85,55 @@ Data is transmitted as a POST request {.b24-info}
 
 {% endlist %}
 
+{% include [Note on Required Parameters](../../../_includes/required.md) %}
+
+{% include notitle [Description of Standard Data](../_includes/widget_data.md) %}
+
 ### PLACEMENT_OPTIONS
 
-The value of `PLACEMENT_OPTIONS` is passed as a JSON string with the launch context.
+The value of `PLACEMENT_OPTIONS` is passed as a JSON string with the call context.
 
 #|
-|| **Widget** | **Keys** | **Description** ||
-|| [REST_APP_URI](./app-url.md) | Arbitrary keys from `params` | Parameters that the application passes in a special link in the format `/marketplace/view/#APP_CODE#/` ||
-|| [PAGE_BACKGROUND_WORKER](./background-worker.md) | `ID`, `URI` | Widget code and the address of the current page where the handler was launched ||
+|| **Placement** | **Keys** | **What They Contain** ||
+|| [REST_APP_URI](./app-url.md) | Keys from the link `params`, `URI` | The parameters the application set in the link itself and the address of the page the user came from ||
+|| [PAGE_BACKGROUND_WORKER](./background-worker.md) | `ID`, `URI` | The placement code and the address of the page where the handler loaded ||
 |#
 
-## Relationships with Other Objects
+The `URI` key is universal: it is passed to any placement and carries the path with the query string of the Bitrix24 page the widget is opened from.
 
-**Application Slider.** For scenarios where the application interface needs to be opened after a background signal, use the [JavaScript methods for widgets](../bx24-widget-methods.md).
+## Relationship With Other Objects
 
-**Interactivity.** The `PAGE_BACKGROUND_WORKER` widget is often used in conjunction with the [interactive interaction](../../../settings/interactivity/index.md) mechanism to transmit signals between the backend and frontend without manual initiation from the user.
+**Application interface.** Both placements open the application in its own frame, so the [JavaScript methods for widgets](../bx24-widget-methods.md) work further: `openApplication` opens the application slider, `closeApplication` closes it.
 
-## Overview of Widgets {#all-widgets}
+**Signal exchange.** `PAGE_BACKGROUND_WORKER` is the only placement that works without any user action, so the application backend passes a signal to the browser through it using the [interactive interaction](../../../settings/interactivity/index.md) mechanism.
+
+**Call card.** Telephony applications control the call card from the background handler — the methods and events are described in the [{#T}](../ui-interaction/page-background-worker/index.md) section.
+
+## Common Mistakes
+
+#|
+|| **Mistake** | **Solution** ||
+|| `placement.bind` returns `EMPTY_ERROR_HANDLER_URL` | The `PAGE_BACKGROUND_WORKER` placement requires an address for deactivation messages. Pass `OPTIONS[errorHandlerUrl]` ||
+|| `placement.bind` returns `ERROR_PLACEMENT_MAX_COUNT` | A handler for this placement is already registered. Remove the old registration with the [placement.unbind](../placement-unbind.md) method ||
+|| The `/marketplace/view/#APP_CODE#/` link opens an empty slider | Check that the application installation is complete and that the link contains the application code, not the handler registration identifier ||
+|| The background handler stopped being called | The registration is deleted if the handler took longer than five seconds to load more than ten times a day. Bitrix24 reports this to the address from `errorHandlerUrl` ||
+|#
+
+## Overview of Placements {#all-placements}
 
 > Scope: [`placement`](../../scopes/permissions.md)
 
 #|
-|| **Widget** | **When to Use** ||
-|| [REST_APP_URI](./app-url.md) | Open the application via a special link in text, comment, task, or other content ||
-|| [PAGE_BACKGROUND_WORKER](./background-worker.md) | Execute a background scenario on all pages of the account without a separate interface element ||
+|| **Placement** | **When to Use** ||
+|| [REST_APP_URI](./app-url.md) | Open the application in a slider through a link in a message, comment, task, or other content ||
+|| [PAGE_BACKGROUND_WORKER](./background-worker.md) | Run a background scenario on all Bitrix24 pages without a visible interface element ||
 |#
+
+## Continue Learning
+
+- [{#T}](../placement-bind.md)
+- [{#T}](../placement-get.md)
+- [{#T}](../placement-unbind.md)
+- [{#T}](../bx24-widget-methods.md)
+- [{#T}](../ui-interaction/index.md)
+- [{#T}](../../../settings/interactivity/index.md)
