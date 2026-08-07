@@ -6,7 +6,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-> Scope: [depending on the placement](../../scopes/permissions.md)
+> Scope: [`placement`](../../scopes/permissions.md)
 >
 > Who can execute the method: administrator
 

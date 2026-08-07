@@ -6,13 +6,13 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-> Scope: [`depending on the placement`](../../scopes/permissions.md)
+> Scope: [`placement`](../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the methods: administrator
 
 Applications that have access to the **placement** scope can register their own types of custom fields.
 
-Currently, cloud accounts support the use of such fields in both the new and old detail forms of **CRM** entities. Applications can create custom fields of standard types as well as those registered by the application itself. Account administrators can create fields of any registered types, including field types registered by applications. When registering a type, the application specifies the handler address that will open in a frame at the location of the field output, and further operations are virtually indistinguishable from those of a standard widget.
+Currently, cloud accounts support the use of such fields in both the new and old detail forms of **CRM** entities. Applications can create custom fields of standard types as well as those registered by the application itself. Account administrators can create fields of any registered types, including field types registered by applications. When registering a type, the application specifies the handler address that will open in a frame at the location of the field output, and further operations are virtually indistinguishable from those of a regular widget.
 
 #|
 || **Method** | **Description** ||

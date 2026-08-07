@@ -6,9 +6,9 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-> Scope: [`depending on the embedding location`](../../scopes/permissions.md)
+> Scope: [`placement`](../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: administrator
 
 The method retrieves a list of user field types registered by the application. It returns a list of field types with pagination.
 

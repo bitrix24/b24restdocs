@@ -6,9 +6,9 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-> Scope: [`depending on the embedding location`](../../scopes/permissions.md)
+> Scope: [`placement`](../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: administrator
 
 The method `userfieldtype.update` modifies the settings of a user field type registered by the application. It returns _true_ or an error with a description of the reason.
 
@@ -33,7 +33,7 @@ The method `userfieldtype.update` modifies the settings of a user field type reg
 [`string`](../../data-types.md) | Text description of the type. Will be displayed in the administrative interface for user field settings | ||
 || **OPTIONS**
 [`array`](../../data-types.md) | Additional settings. Currently, one key is available: `height` — specifies the height of the user field in pixels. Any positive value will apply.
-Default is `0`. If `0` is specified, the standard height for displaying this embedding will be used | ||
+Default is `0`. If `0` is specified, the standard height for displaying this widget will be used | ||
 |#
 
 ## Code examples

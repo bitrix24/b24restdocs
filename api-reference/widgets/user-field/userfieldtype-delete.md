@@ -6,9 +6,9 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-> Scope: [`depending on the integration point`](../../scopes/permissions.md)
+> Scope: [`placement`](../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: administrator
 
 The method `userfieldtype.delete` removes a user field type registered by the application. It returns _true_ or an error with a description of the reason.
 
