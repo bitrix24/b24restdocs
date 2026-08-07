@@ -10,18 +10,18 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 The widget adds its own button to the automation rules designer, where the automation of CRM objects is configured: [leads](../../crm/leads/index.md), [deals](../../crm/deals/index.md), [new invoices](../../crm/universal/invoice.md), and [custom object types](../../crm/universal/index.md).
 
-The specific placement code for the widget is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
+The placement code is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
 
 {% note info "" %}
 
-The widget will not be displayed in the interface until the application installation is complete. [Check the application installation](../../../settings/app-installation/installation-finish.md)
+The widget is not displayed in the interface until the application installation is complete. [Check the application installation](../../../settings/app-installation/installation-finish.md)
 
 {% endnote %}
 
 ## Where the Widget is Embedded
 
 #| 
-|| **Widget Code** | **Location** ||
+|| **Placement Code** | **Location** ||
 || `CRM_LEAD_ROBOT_DESIGNER_TOOLBAR` | Dropdown menu item of the top button in the [lead](../../crm/leads/index.md) ||
 || `CRM_DEAL_ROBOT_DESIGNER_TOOLBAR` | Dropdown menu item of the top button in the [deal](../../crm/deals/index.md) ||
 || `CRM_SMART_INVOICE_ROBOT_DESIGNER_TOOLBAR` | Dropdown menu item of the top button in the [new invoices](../../crm/universal/invoice.md) ||

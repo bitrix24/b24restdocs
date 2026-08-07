@@ -21,7 +21,7 @@ The widget is not displayed in the interface until the application installation 
 ## Where the Widget is Embedded
 
 #|
-|| **Widget Code** | **Location** ||
+|| **Placement Code** | **Location** ||
 || `CALENDAR_GRIDVIEW` | View in the row of calendar views ||
 |#
 

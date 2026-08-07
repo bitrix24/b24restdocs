@@ -21,7 +21,7 @@ The widget is not displayed in the interface until the application installation 
 ## Where the Widget is Embedded
 
 #|
-|| **Widget Code** | **Location** ||
+|| **Placement Code** | **Location** ||
 || `CALL_CARD` | Tab in the call card ||
 |#
 
@@ -31,9 +31,9 @@ The call card appears for the employee when a conversation starts. The applicati
 
 ![Tab in the call card](./_images/CALL_CARD.png "Tab in the call card")
 
-To check the placement, you need a call. External telephony raises one with the [telephony.externalCall.register](../../telephony/telephony-external-call-register.md) method and the `SHOW` = 1 parameter, or with the [telephony.externalCall.show](../../telephony/telephony-external-call-show.md) method for a call that is already registered.
+To check the widget, you need a call. External telephony raises one with the [telephony.externalCall.register](../../telephony/telephony-external-call-register.md) method and the `SHOW` = 1 parameter, or with the [telephony.externalCall.show](../../telephony/telephony-external-call-show.md) method for a call that is already registered.
 
-The list of card tabs is built when the Bitrix24 page loads. If you registered the placement while the page was already open, reload it — otherwise the new tab will not appear in the card.
+The list of card tabs is built when the Bitrix24 page loads. If you registered the widget while the page was already open, reload it — otherwise the new tab will not appear in the card.
 
 ## What the Handler Receives
 

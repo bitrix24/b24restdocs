@@ -12,7 +12,7 @@ The scenario has no visible element in the interface either. The user works with
 
 To embed your own WebRTC client:
 
-1. Upload your WebRTC client to a [special location](../universal/background-worker.md) for embedding widgets `PAGE_BACKGROUND_WORKER`.
+1. Upload your WebRTC client to a [dedicated placement](../universal/background-worker.md) `PAGE_BACKGROUND_WORKER`.
 2. When an incoming call arrives, register it using the standard telephony integration method [{#T}](../../telephony/telephony-external-call-register.md), which also displays the standard call card to the user.
 3. Manage the state and buttons of the call card using [special js methods](../ui-interaction/page-background-worker/index.md) available for the widget handler `PAGE_BACKGROUND_WORKER`.
 4. After the call ends, notify Bitrix24 about it using the method [{#T}](../../telephony/telephony-external-call-finish.md).

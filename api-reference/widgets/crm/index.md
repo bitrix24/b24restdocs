@@ -21,7 +21,7 @@ Choose a placement by the task your application solves:
 - add an action to an element in a list — [CRM_XXX_LIST_MENU](./list-menu.md)
 - add an action to the whole list rather than to a single element — [CRM_XXX_LIST_TOOLBAR](./list-toolbar.md)
 - add a separate screen with application data to a card — [CRM_XXX_DETAIL_TAB](./detail-tab.md)
-- add a button next to the activities and comments of a card — [CRM_XXX_DETAIL_ACTIVITY](./detail-activity.md), and to build its interface with Bitrix24 tools — [additional integration features](./detail-activity-area.md)
+- add a button next to the activities and comments of a card — [CRM_XXX_DETAIL_ACTIVITY](./detail-activity.md), and to build its interface with Bitrix24 tools — [additional placement features](./detail-activity-area.md)
 - add an action for the whole card, next to tasks and documents — [CRM_XXX_DETAIL_TOOLBAR](./detail-toolbar.md)
 - add an action to an individual activity record in the timeline — [CRM_XXX_ACTIVITY_TIMELINE_MENU](./activity-timeline-menu.md)
 - generate a document for an object — [CRM_XXX_DOCUMENTGENERATOR_BUTTON](./document-generator-button.md)
@@ -82,7 +82,7 @@ The `PLACEMENT_OPTIONS` value is passed as a JSON string with the call context. 
 #|
 || **Mistake** | **Solution** ||
 || `placement.bind` returns `Application context required` | Register the placement on behalf of an application. A placement cannot be bound with a webhook ||
-|| The placement is registered but does not appear in the interface | Complete the [application installation](../../../settings/app-installation/installation-finish.md) and reload the page ||
+|| The widget is registered but does not appear in the interface | Complete the [application installation](../../../settings/app-installation/installation-finish.md) and reload the page ||
 || The item cannot be found in a card or in a list | Some placements are displayed under *More* or in the *Bitrix24 Market* submenu when there are more items than fit in the row. The path is described on the placement page ||
 || The placement code is assembled for an object type that does not support this placement | Check the code against the section table: not all object types are supported in all placements ||
 || The handler does not find the object identifier in the request body | The identifier arrives inside `PLACEMENT_OPTIONS` as a separate JSON string, not as a separate parameter ||

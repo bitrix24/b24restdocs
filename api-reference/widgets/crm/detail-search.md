@@ -23,7 +23,7 @@ The widget is not displayed in the interface until the application installation 
 ## Where the Widget is Embedded
 
 #|
-|| **Widget Code** | **Location** ||
+|| **Placement Code** | **Location** ||
 || `CRM_DETAIL_SEARCH` | Application item in the client search of the CRM form ||
 |#
 
@@ -88,7 +88,7 @@ The identifier of the entity whose form the search was started from does not arr
 
 ## OPTIONS when registering via placement.bind
 
-The placement does not support the `OPTIONS` parameters. Passed values are not saved: the [placement.get](../placement-get.md) method returns an empty array for such a widget.
+The placement does not support the `OPTIONS` parameters. Passed values are not saved: the [placement.get](../placement-get.md) method returns an empty array for such a registration.
 
 ## How to Return the Found Options
 

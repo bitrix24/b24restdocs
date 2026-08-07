@@ -62,7 +62,7 @@ The `PLACEMENT_OPTIONS` value is passed as a JSON string with the call context. 
 #|
 || **Mistake** | **Solution** ||
 || `placement.bind` returns `Application context required` | Register the placement on behalf of an application. A placement cannot be bound with a webhook ||
-|| The placement is registered but does not appear in the interface | Complete the [application installation](../../../settings/app-installation/installation-finish.md) and reload the page ||
+|| The widget is registered but does not appear in the interface | Complete the [application installation](../../../settings/app-installation/installation-finish.md) and reload the page ||
 || The `SONET_GROUP_TOOLBAR` item does not appear in the group | The Projects AI interface has no extensions menu, and the placement has no rendering location there. Use [SONET_GROUP_DETAIL_TAB](./detail-tab.md) ||
 || The handler does not find `GROUP_ID` | `SONET_GROUP_TOOLBAR` has no keys of its own. Take the identifier from the path in `URI` ||
 || The item does not appear in the group tasks | Check the code: the menu and the automation rules in the tasks section are handled by [TASK_GROUP_LIST_TOOLBAR](../task/list-toolbar.md) and [TASK_ROBOT_DESIGNER_TOOLBAR](../task/robot-designer-toolbar.md), which require the `task` scope ||

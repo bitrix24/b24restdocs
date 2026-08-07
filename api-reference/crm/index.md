@@ -99,7 +99,7 @@ Replace `XXX` with the entity code: `LEAD`, `DEAL`, `CONTACT`, `COMPANY`, `QUOTE
 
 {% note tip "Typical use-cases and scenarios" %}
 
-- [Widget embedding mechanism](../widgets/index.md)
+- [Widget Embedding Mechanism](../widgets/index.md)
 - [Embed a widget in a CRM card](../../tutorials/crm/crm-widgets/widget-as-detail-tab.md)
 
 {% endnote %}

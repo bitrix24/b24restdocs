@@ -10,18 +10,18 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 The widget adds its own item to the left menu of the CRM Analytics section. Clicking the item opens the application report.
 
-The specific widget placement code is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
+The placement code is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
 
 {% note info "" %}
 
-The widget will not be displayed in the interface until the application installation is complete. [Check the application installation](../../../settings/app-installation/installation-finish.md)
+The widget is not displayed in the interface until the application installation is complete. [Check the application installation](../../../settings/app-installation/installation-finish.md)
 
 {% endnote %}
 
 ## Where the Widget is Embedded
 
 #| 
-|| **Widget Code** | **Location** ||
+|| **Placement Code** | **Location** ||
 || `CRM_ANALYTICS_MENU` | Item in the left menu of CRM Analytics ||
 |#
 

@@ -10,20 +10,20 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 The widget adds its own button to the panel above the timeline of a CRM object card: a [lead](../../crm/leads/index.md), [contact](../../crm/contacts/index.md), [company](../../crm/companies/index.md), [deal](../../crm/deals/index.md), [estimate](../../crm/quote/index.md), [new invoice](../../crm/universal/invoice.md), [order](../../sale/order/index.md), or [custom object type](../../crm/universal/index.md).
 
-The specific placement code for the widget is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
+The placement code is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
 
-Extended capabilities of the button above the timeline are described in the article [Additional Embedding Features in CRM_XXX_DETAIL_ACTIVITY](./detail-activity-area.md).
+Extended capabilities of the button above the timeline are described in the article [Additional Placement Features in CRM_XXX_DETAIL_ACTIVITY](./detail-activity-area.md).
 
 {% note info "" %}
 
-The embedding will not be displayed in the interface until the application installation is complete. [Check the application installation](../../../settings/app-installation/installation-finish.md).
+The widget is not displayed in the interface until the application installation is complete. [Check the application installation](../../../settings/app-installation/installation-finish.md)
 
 {% endnote %}
 
 ## Where the Widget is Embedded
 
 #|
-|| **Embedding Code** | **Location** ||
+|| **Placement Code** | **Location** ||
 || `CRM_LEAD_DETAIL_ACTIVITY` | Button above the timeline of [lead](../../crm/leads/index.md) ||
 || `CRM_CONTACT_DETAIL_ACTIVITY` | Button above the timeline of [contact](../../crm/contacts/index.md) ||
 || `CRM_COMPANY_DETAIL_ACTIVITY` | Button above the timeline of [company](../../crm/companies/index.md) ||

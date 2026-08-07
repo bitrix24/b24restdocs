@@ -35,7 +35,7 @@ Some placements support not only the basic methods `BX24.placement.*` but also a
 || **Placement** | **What is Available** ||
 || [Call Card `CALL_CARD`](./call-card/index.md) | Methods for obtaining call status, managing auto-closing of the card, and call card events. ||
 || [CRM Card](#crm-card) | Additional interface command `reloadData` for updating form data. ||
-|| [Background Placement `PAGE_BACKGROUND_WORKER`](./page-background-worker/index.md) | Call card events and methods for managing its interface from background embedding. ||
+|| [Background Placement `PAGE_BACKGROUND_WORKER`](./page-background-worker/index.md) | Call card events and methods for managing its interface from a background widget. ||
 |#
 
 ## CRM Card {#crm-card}

@@ -25,7 +25,7 @@ The widget is not displayed in the interface until the application installation 
 ## Where the Widget is Embedded
 
 #|
-|| **Widget code** | **Location** ||
+|| **Placement Code** | **Location** ||
 || `IMMOBILE_CONTEXT_MENU` | Item of the *Apps* menu above the input field in a chat of the mobile application ||
 |#
 

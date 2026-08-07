@@ -10,18 +10,18 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 The widget adds its own item to the context menu of an individual task in the list. The handler receives the identifier of the task whose menu the widget is opened from.
 
-The specific widget placement code is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
+The placement code is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
 
 {% note info "" %}
 
-The widget will not be displayed in the interface until the application installation is complete. [Check the application installation](../../../settings/app-installation/installation-finish.md)
+The widget is not displayed in the interface until the application installation is complete. [Check the application installation](../../../settings/app-installation/installation-finish.md)
 
 {% endnote %}
 
 ## Where the Widget is Embedded
 
 #|
-|| **Widget Code** | **Location** ||
+|| **Placement Code** | **Location** ||
 || `TASK_LIST_CONTEXT_MENU` | Context menu item of a task in the list ||
 |#
 

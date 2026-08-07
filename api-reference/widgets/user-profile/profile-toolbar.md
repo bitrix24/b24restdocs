@@ -21,7 +21,7 @@ The widget is not displayed in the interface until the application installation 
 ## Where the Widget is Embedded
 
 #|
-|| **Widget Code** | **Location** ||
+|| **Placement Code** | **Location** ||
 || `USER_PROFILE_TOOLBAR` | Item in the employee card menu ||
 |#
 

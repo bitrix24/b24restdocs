@@ -14,14 +14,14 @@ The placement code is specified in the `PLACEMENT` parameter of the [placement.b
 
 {% note info "" %}
 
-The widget will not be displayed in the interface until the application installation is complete. [Check the application installation](../../../settings/app-installation/installation-finish.md)
+The widget is not displayed in the interface until the application installation is complete. [Check the application installation](../../../settings/app-installation/installation-finish.md)
 
 {% endnote %}
 
 ## Where the Widget is Embedded
 
 #|
-|| **Widget Code** | **Location** ||
+|| **Placement Code** | **Location** ||
 || `SONET_GROUP_ROBOT_DESIGNER_TOOLBAR` | Button in the workgroup automation rules designer ||
 |#
 

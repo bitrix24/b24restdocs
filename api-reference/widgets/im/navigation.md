@@ -23,7 +23,7 @@ The widget is not displayed in the interface until the application installation 
 ## Where the widget is embedded
 
 #|
-|| **Widget code** | **Location** ||
+|| **Placement Code** | **Location** ||
 || `IM_NAVIGATION` | Item in the messenger navigation menu ||
 |#
 

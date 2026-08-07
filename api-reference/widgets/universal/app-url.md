@@ -16,14 +16,14 @@ The placement code is specified in the `PLACEMENT` parameter of the [placement.b
 
 {% note info "" %}
 
-The embedding is not displayed in the interface until the application installation is complete. [Check the application installation](../../../settings/app-installation/installation-finish.md)
+The widget is not displayed in the interface until the application installation is complete. [Check the application installation](../../../settings/app-installation/installation-finish.md)
 
 {% endnote %}
 
 ## Where the Widget is Embedded
 
 #|
-|| **Embedding Code** | **Location** ||
+|| **Placement Code** | **Location** ||
 || `REST_APP_URI` | A slider that opens when the user follows the link `/marketplace/view/#APP_CODE#/` ||
 |#
 

@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 The widget renders the application interface on the settings page of a custom open channel connector. This is where the user connects their communication channel: enters the login of an external service, selects an account, or confirms access.
 
-The handler is connected not with the `placement.bind` method but with the `PLACEMENT_HANDLER` parameter of the [imconnector.register](../imopenlines/imconnector/imconnector-register.md) method. Bitrix24 creates the widget binding itself when it registers the connector.
+The handler is connected not with the `placement.bind` method but with the `PLACEMENT_HANDLER` parameter of the [imconnector.register](../imopenlines/imconnector/imconnector-register.md) method. Bitrix24 creates the binding to the placement itself when it registers the connector.
 
 {% note info "" %}
 
@@ -21,7 +21,7 @@ The widget is not displayed in the interface until the application installation 
 ## Where the Widget is Embedded
 
 #|
-|| **Widget Code** | **Location** ||
+|| **Placement Code** | **Location** ||
 || `SETTING_CONNECTOR` | Settings page of a custom open channel connector ||
 |#
 
@@ -91,7 +91,7 @@ The state comes with every call, so the handler can show the right screen right 
 A separate [placement.bind](./placement-bind.md) call is not needed for this placement. The handler address is passed once — when the connector is registered:
 
 - specify the address of the settings page in `PLACEMENT_HANDLER` of the [imconnector.register](../imopenlines/imconnector/imconnector-register.md) method
-- Bitrix24 will create the `SETTING_CONNECTOR` widget binding and link it to the connector
+- Bitrix24 will create the binding to the `SETTING_CONNECTOR` placement and link it to the connector
 - to change the address, call `imconnector.register` again with the same `ID`
 
 The placement does not support the `OPTIONS` parameters: there is no way to pass them when registering a connector.

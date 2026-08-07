@@ -74,7 +74,7 @@ The key that carries the task identifier is named differently across the section
 #|
 || **Mistake** | **Solution** ||
 || `placement.bind` returns `Application context required` | Register the placement on behalf of an application. A placement cannot be bound with a webhook ||
-|| The placement is registered but does not appear in the interface | Complete the [application installation](../../../settings/app-installation/installation-finish.md) and reload the page ||
+|| The widget is registered but does not appear in the interface | Complete the [application installation](../../../settings/app-installation/installation-finish.md) and reload the page ||
 || The widget does not appear in the task card | Check the `groupId` connection parameter: if it is filled in, the widget is displayed only in tasks of the listed projects ||
 || The handler does not find the task identifier | The key name depends on the placement: `ID` in the context menu of the list and `taskId` in the card ||
 || The item cannot be found above the task list | The menu is hidden under the button in the right part of the panel: it shows the *•••* icon or the name of the item opened last ||

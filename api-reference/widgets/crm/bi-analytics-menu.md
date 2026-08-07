@@ -23,7 +23,7 @@ The widget is not displayed in the interface until the application installation 
 ## Where the Widget is Embedded
 
 #|
-|| **Widget Code** | **Location** ||
+|| **Placement Code** | **Location** ||
 || `BI_ANALYTICS_MENU` | Item in the BI analytics menu ||
 |#
 

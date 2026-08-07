@@ -12,18 +12,18 @@ The widget adds its own item to the dropdown menu above the task list. The place
 
 The task list of a user and the task list of a group are two different placements with different codes. Register both if the application has to work in both lists.
 
-The specific widget placement code is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
+The placement code is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
 
 {% note info "" %}
 
-The widget will not be displayed in the interface until the application installation is complete. [Check the application installation](../../../settings/app-installation/installation-finish.md)
+The widget is not displayed in the interface until the application installation is complete. [Check the application installation](../../../settings/app-installation/installation-finish.md)
 
 {% endnote %}
 
 ## Where the Widget is Embedded
 
 #|
-|| **Widget Code** | **Location** ||
+|| **Placement Code** | **Location** ||
 || `TASK_USER_LIST_TOOLBAR` | Dropdown menu item above the task list of a user ||
 || `TASK_GROUP_LIST_TOOLBAR` | Dropdown menu item above the task list of a workgroup or project ||
 |#

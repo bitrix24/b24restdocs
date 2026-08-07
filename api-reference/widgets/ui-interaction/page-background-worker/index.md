@@ -15,7 +15,7 @@ The `PAGE_BACKGROUND_WORKER` placement is utilized by telephony applications tha
 ## Getting Started with PAGE_BACKGROUND_WORKER
 
 1. Register the `PAGE_BACKGROUND_WORKER` placement via [placement.bind](../../placement-bind.md).
-2. Check the registration script and requirements for `errorHandlerUrl` on the [WebRTC Integration Script](./webrtc-scenario.md) page.
+2. Check the registration script and requirements for `errorHandlerUrl` on the [WebRTC Embedding Scenario](./webrtc-scenario.md) page.
 3. Register the call using [telephony.externalcall.register](../../../telephony/index.md) to open the call card.
 4. After the [BackgroundCallCard::initialized](./events/initialized.md) event, invoke placement commands through [BX24.placement.call](../bx24-placement-call.md).
 5. Subscribe to user actions on the card via [BX24.placement.bindEvent](../bx24-placement-bind-event.md).

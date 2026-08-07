@@ -10,18 +10,18 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 The widget adds its own item to the dropdown menu of the document generator of a CRM object. The placement suits applications that build a document for the object on their own side: a printed form, a contract, or an act.
 
-The specific widget placement code is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
+The placement code is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
 
 {% note info "" %}
 
-The widget will not be displayed in the interface until the application installation is complete. [Check the application installation](../../../settings/app-installation/installation-finish.md)
+The widget is not displayed in the interface until the application installation is complete. [Check the application installation](../../../settings/app-installation/installation-finish.md)
 
 {% endnote %}
 
 ## Where the Widget is Embedded
 
 #|
-|| **Widget Code** | **Location** ||
+|| **Placement Code** | **Location** ||
 || `CRM_LEAD_DOCUMENTGENERATOR_BUTTON` | Item in the dropdown menu of the document generator for a [lead](../../crm/leads/index.md) ||
 || `CRM_CONTACT_DOCUMENTGENERATOR_BUTTON` | Item in the dropdown menu of the document generator for a [contact](../../crm/contacts/index.md) ||
 || `CRM_COMPANY_DOCUMENTGENERATOR_BUTTON` | Item in the dropdown menu of the document generator for a [company](../../crm/companies/index.md) ||
@@ -96,7 +96,7 @@ The object type identifier does not arrive as a separate key. For a custom objec
 
 ## OPTIONS when registering via placement.bind
 
-The placement does not support the `OPTIONS` parameters. Passed values are not saved: the [placement.get](../placement-get.md) method returns an empty array for such a widget.
+The placement does not support the `OPTIONS` parameters. Passed values are not saved: the [placement.get](../placement-get.md) method returns an empty array for such a registration.
 
 ## Code Examples
 

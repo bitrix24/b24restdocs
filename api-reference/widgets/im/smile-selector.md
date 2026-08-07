@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 **DEPRECATED**
 
-The `IM_SMILES_SELECTOR` embedding has been deprecated since version `im 25.1600.0`. Emojis have been replaced with [stickers](https://helpdesk.bitrix24.com/open/25866875/).
+The `IM_SMILES_SELECTOR` placement has been deprecated since version `im 25.1600.0`. Emojis have been replaced with [stickers](https://helpdesk.bitrix24.com/open/25866875/).
 
 The [placement.bind](../placement-bind.md) method still accepts the placement code, but the handler is no longer called in the interface: the emoji selection window has been replaced with a new one, and it has no application tabs. This page is kept as an archival reference for older integrations.
 
@@ -18,7 +18,7 @@ The [placement.bind](../placement-bind.md) method still accepts the placement co
 
 > Scope: [`placement`](../../scopes/permissions.md)
 
-The embedding used to add its own tab to the emoji selection window that opens from the message input field. In that tab, the application showed its own collection: custom emoji sets or a Giphy selection.
+The widget used to add its own tab to the emoji selection window that opens from the message input field. In that tab, the application showed its own collection: custom emoji sets or a Giphy selection.
 
 ## What to Use Instead
 

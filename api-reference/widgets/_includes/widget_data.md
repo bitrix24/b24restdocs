@@ -46,9 +46,9 @@
 - `P` - paid mass-market application
 ||
 || **PLACEMENT***
-[`string`](/api-reference/data-types.html) | Code for the widget embedding location. You can use the same handler URL for all your widgets. The value that Bitrix24 will report in the `PLACEMENT` parameter will help determine from which specific widget embedding location your handler was invoked in each case ||
+[`string`](/api-reference/data-types.html) | The placement code. You can use the same handler URL for all your widgets. The value that Bitrix24 will report in the `PLACEMENT` parameter will help determine from which specific placement your handler was invoked in each case ||
 || **PLACEMENT_OPTIONS**
-[`string`](/api-reference/data-types.html) | Additional data in the form of a JSON string that defines the context of the widget execution. For example, this could be an array containing the numeric identifier of the CRM object in the detail form where the widget handler was invoked, etc. The `PLACEMENT_OPTIONS` parameter, along with the `PLACEMENT` parameter, allows you to accurately determine for which specific widget embedding location and object the widget handler was invoked ||
+[`string`](/api-reference/data-types.html) | Additional data in the form of a JSON string that defines the context of the widget execution. For example, this could be an array containing the numeric identifier of the CRM object in the detail form where the widget handler was invoked, etc. The `PLACEMENT_OPTIONS` parameter, along with the `PLACEMENT` parameter, allows you to accurately determine for which specific placement and object the widget handler was invoked ||
 |#
 
-Bitrix24 adds a `URI` key to `PLACEMENT_OPTIONS` — the path with the query string of the page from which the widget was opened. It arrives for any embedding location, along with the keys of that location itself. The key is absent if the browser did not send the `Referer` header or if the widget was opened from a page on a different domain.
+Bitrix24 adds a `URI` key to `PLACEMENT_OPTIONS` — the path with the query string of the page from which the widget was opened. It arrives for any placement, along with the keys of that placement itself. The key is absent if the browser did not send the `Referer` header or if the widget was opened from a page on a different domain.

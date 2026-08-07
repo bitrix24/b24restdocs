@@ -124,7 +124,7 @@ An application can be embedded in the user profile. This allows the application 
 
 {% note tip " " %}
 
-- [Widget embedding mechanism](../widgets/index.md)
+- [Widget Embedding Mechanism](../widgets/index.md)
 
 {% endnote %}
 

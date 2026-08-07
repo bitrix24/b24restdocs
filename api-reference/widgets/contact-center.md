@@ -21,7 +21,7 @@ The widget is not displayed in the interface until the application installation 
 ## Where the Widget is Embedded
 
 #|
-|| **Widget Code** | **Location** ||
+|| **Placement Code** | **Location** ||
 || `CONTACT_CENTER` | Tile in the Contact Center ||
 |#
 

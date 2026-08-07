@@ -1,4 +1,4 @@
-# WebRTC Integration Scenario
+# WebRTC Embedding Scenario
 
 {% note tip "" %}
 
@@ -6,11 +6,11 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-## Integration Registration
+## Handler Registration
 
-Registration of the integration for the "client" on each page.
+The handler of the WebRTC client is registered once and loads on every page.
 
-There is a special integration area that is formed as an invisible frame on each Bitrix24 page. The registration is done as follows:
+There is a dedicated placement for this: it is formed as an invisible frame on every Bitrix24 page. The registration is done as follows:
 
 ```php
 'placement.bind',
@@ -28,12 +28,12 @@ There is a special integration area that is formed as an invisible frame on each
 ]
 ```
 
-An important distinction from a standard integration is the `Options[errorHandlerUrl]` parameter. This handler receives a signal that we are disabling the integration on a specific Bitrix24 account if the handler specified in the Handler responds too slowly. Since the integration is formed on each page, it is crucial that the integration handler is called quickly (currently, we consider "not quickly" to be when the handler is called for more than 5 seconds three times). In case of a shutdown, the handler will need to be re-registered in this Bitrix24.
+An important distinction from other placements is the mandatory `OPTIONS[errorHandlerUrl]` parameter. The widget loads on every page, so the handler has to respond quickly: if the response takes longer than five seconds and this happens more than ten times a day on the same Bitrix24, the registration is deleted. Bitrix24 reports the deletion with a request to the address from `errorHandlerUrl`, after which the handler has to be registered again. Read more in the article [{#T}](../../universal/background-worker.md).
 
 ## Usage Scenario
 
-The work with telephony remains the same as it was. The call registration is performed using the method [telephony.externalcall.register](../../../telephony/index.md). This same method "raises" the call detail form. It is evident that this should occur if the WebRTC client in the integration described above has started processing the call.
+The work with telephony remains the same as it was. The call registration is performed using the method [telephony.externalcall.register](../../../telephony/index.md). This same method "raises" the call detail form. It is evident that this should occur if the WebRTC client in this widget has started processing the call.
 
-Furthermore, the integration can interact with the open call detail form, managing buttons and button press events. For working with the call detail form through the placement **PAGE_BACKGROUND_WORKER**, 9 methods have been added to retrieve and modify detail form data and 17 events for handling user activities.
+Furthermore, the widget can interact with the open call detail form, managing buttons and button press events. For working with the call detail form through the placement **PAGE_BACKGROUND_WORKER**, 9 methods have been added to retrieve and modify detail form data and 17 events for handling user activities.
 
 The key event is `BackgroundCallCard::initialized`. It is triggered upon the creation of the call detail form, and after that, it becomes possible to manage this detail form. Therefore, it is strongly recommended that all method calls from the application side be made specifically in the event handler function for this event.

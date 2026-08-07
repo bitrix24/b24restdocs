@@ -1,4 +1,4 @@
-# Widget Integration Mechanism
+# Widget Embedding Mechanism
 
 {% note tip "" %}
 

@@ -58,7 +58,7 @@ There are two embedding scenarios:
 
 {% note tip "Typical use-cases and scenarios" %}
 
-- [Widget embedding mechanism](../../widgets/index.md)
+- [Widget Embedding Mechanism](../../widgets/index.md)
 - [Embed a widget in the CRM card](../../../tutorials/crm/crm-widgets/widget-as-detail-tab.md)
 
 {% endnote %}

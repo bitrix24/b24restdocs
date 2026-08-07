@@ -182,5 +182,5 @@ The `placement` scope is required to register the handler. To work with a chat f
 || [IM_SIDEBAR](./sidebar.md) | Item in the chat sidebar ||
 || [IM_CONTEXT_MENU](./context-menu.md) | Item in the context menu of a message ||
 || [IM_NAVIGATION](./navigation.md) | Item in the messenger navigation menu ||
-|| [IM_SMILES_SELECTOR](./smile-selector.md) | Archive page of the deprecated embedding. Do not use for new integrations ||
+|| [IM_SMILES_SELECTOR](./smile-selector.md) | Archive page of the deprecated placement. Do not use for new integrations ||
 |#

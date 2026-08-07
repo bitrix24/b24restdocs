@@ -1,4 +1,4 @@
-# Additional Integration Features for CRM_XXX_DETAIL_ACTIVITY, CRM_DYNAMIC_XXX_DETAIL_ACTIVITY
+# Additional Placement Features for CRM_XXX_DETAIL_ACTIVITY, CRM_DYNAMIC_XXX_DETAIL_ACTIVITY
 
 {% note tip "" %}
 
@@ -8,13 +8,13 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`placement, crm`](../../scopes/permissions.md)
 >
-> Who can work with the integration: a user with access permission to modify the CRM object
+> Who can work with the widget: a user with access permission to modify the CRM object
 
 With additional parameters, you can set the Bitrix24 interface for your menu item in the timeline.
 
-To add the integration, use the method [placement.bind](../placement-bind.md). The basic integration capabilities are described in the article [Button Above the Timeline of the CRM object](./detail-activity.md).
+To register the widget, use the [placement.bind](../placement-bind.md) method. The basic capabilities of the placement are described in the article [Button Above the Timeline of the CRM object](./detail-activity.md).
 
-[Download an example application using the integration.](https://helpdesk.bitrix24.com/examples/timeline_activity_placement_einvoice.zip)
+[Download an example application using this placement.](https://helpdesk.bitrix24.com/examples/timeline_activity_placement_einvoice.zip)
 
 ## OPTIONS Parameter
 
@@ -30,7 +30,7 @@ BX24.callMethod(
   {
     'PLACEMENT': 'CRM_DEAL_DETAIL_ACTIVITY',
     'HANDLER': 'https://your-handler-uri.com',
-    'TITLE': 'My Integration',
+    'TITLE': 'My Widget',
     'OPTIONS': {
       'useBuiltInInterface': 'Y',
       'newUserNotificationTitle': 'Welcome to the new application',
@@ -40,7 +40,7 @@ BX24.callMethod(
 );
 ```
 
-## Working with the Integration Interface {#Interface}
+## Working with the Widget Interface {#Interface}
 
 Interaction occurs through the method [BX24.placement.call](../ui-interaction/bx24-placement-call.md). The application workflow when using the standard Bitrix24 interface `useBuiltInInterface = Y`:
 
@@ -53,7 +53,7 @@ Interaction occurs through the method [BX24.placement.call](../ui-interaction/bx
 
 2. Rendering the interface. 
    
-   Once the application is loaded, it should call `setLayout` to render the initial state of the integration point.
+   Once the application is loaded, it should call `setLayout` to render the initial state of the widget.
 
    ```js
    BX24.placement.call('setLayout', LayoutDto, callback);
@@ -86,7 +86,7 @@ Interaction occurs through the method [BX24.placement.call](../ui-interaction/bx
 
 6. Completing the process.
 
-   When the user's interaction with the integration is complete or if the user clicks "cancel," you need to call `finish`. The timeline will switch to the default tab.
+   When the user's interaction with the widget is complete or if the user clicks "cancel," you need to call `finish`. The timeline will switch to the default tab.
 
    ```js
    BX24.placement.call('finish');
@@ -743,7 +743,7 @@ The handler will receive the `value` of the action and the `id` of the block tha
 
 ##### Opening Application Slider {#slider}
 
-Calling the action will open the slider of the application that registered the integration. The context will be passed to the slider:
+Calling the action will open the slider of the application that registered the widget. The context will be passed to the slider:
 
 * `entityTypeId` is the identifier of the object type to which the deal is linked,
 * `entityId` is the identifier of the element.

@@ -10,18 +10,18 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 The widget adds its own item to the menu above the list of CRM objects: [leads](../../crm/leads/index.md), [contacts](../../crm/contacts/index.md), [companies](../../crm/companies/index.md), [deals](../../crm/deals/index.md), [estimates](../../crm/quote/index.md), [new invoices](../../crm/universal/invoice.md), [orders](../../sale/order/index.md), and [custom object types](../../crm/universal/index.md).
 
-The specific widget placement code is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
+The placement code is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
 
 {% note info "" %}
 
-The widget will not be displayed in the interface until the application installation is complete. [Check the application installation](../../../settings/app-installation/installation-finish.md)
+The widget is not displayed in the interface until the application installation is complete. [Check the application installation](../../../settings/app-installation/installation-finish.md)
 
 {% endnote %}
 
 ## Where the Widget is Embedded
 
 #| 
-|| **Widget Code** | **Location** ||
+|| **Placement Code** | **Location** ||
 || `CRM_LEAD_LIST_TOOLBAR` | Dropdown menu item above the list of [leads](../../crm/leads/index.md) ||
 || `CRM_CONTACT_LIST_TOOLBAR` | Dropdown menu item above the list of [contacts](../../crm/contacts/index.md) ||
 || `CRM_COMPANY_LIST_TOOLBAR` | Dropdown menu item above the list of [companies](../../crm/companies/index.md) ||

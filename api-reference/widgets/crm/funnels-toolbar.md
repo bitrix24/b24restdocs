@@ -10,18 +10,18 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 The widget adds its own button to the window where sales pipelines and tunnels are configured.
 
-The specific widget placement code is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
+The placement code is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
 
 {% note info "" %}
 
-The widget will not be displayed in the interface until the application installation is complete. [Check the application installation](../../../settings/app-installation/installation-finish.md)
+The widget is not displayed in the interface until the application installation is complete. [Check the application installation](../../../settings/app-installation/installation-finish.md)
 
 {% endnote %}
 
 ## Where the Widget is Embedded
 
 #| 
-|| **Widget Code** | **Location** ||
+|| **Placement Code** | **Location** ||
 || `CRM_FUNNELS_TOOLBAR` | Button in the pipelines and tunnels of [deals](../../crm/deals/index.md) ||
 || `CRM_SMART_INVOICE_FUNNELS_TOOLBAR` | Button in the pipelines and tunnels of [new invoices](../../crm/universal/invoice.md) ||
 || `CRM_DYNAMIC_XXX_FUNNELS_TOOLBAR` | Button in the pipelines and tunnels of a custom CRM object type. Replace XXX with the numeric identifier of the specific [custom object type](../../crm/universal/index.md). For example, `CRM_DYNAMIC_183_FUNNELS_TOOLBAR` ||
