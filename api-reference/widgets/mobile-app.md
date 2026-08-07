@@ -380,10 +380,6 @@ The placement supports no other parameters. The icon name cannot be set: it is t
 || Access is limited with the `role` and `context` parameters | The mobile application does not apply them. Check the rights and the chat type in the handler ||
 |#
 
-## Webinar
-
-@[youtube](MCziK3KRg1s)
-
 ## Continue Learning
 
 - [{#T}](./index.md)

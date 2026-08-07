@@ -16,7 +16,7 @@ After saving, the application is added to Bitrix24, and further installation dep
 
 > Quick links: [How to Choose a Scenario](#installation-scenarios)
 >
-> User documentation: [Developer resources: How to create webhooks and applications for Bitrix24](https://helpdesk.bitrix24.com/open/20886106/#2)
+> User documentation: [Create webhooks and apps in Bitrix24](https://helpdesk.bitrix24.com/open/21133100/)
 
 ## Connection with Other Objects
 

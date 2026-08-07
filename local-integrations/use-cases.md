@@ -10,7 +10,7 @@ A scenario describes a practical task and the sequence of methods required to pe
 
 > Quick links: [All Scenarios](#choose-tutorial)
 >
-> User documentation: [How to Create Webhooks and Applications for Bitrix24](https://helpdesk.bitrix24.com/open/20886106/)
+> User documentation: [Create webhooks and apps in Bitrix24](https://helpdesk.bitrix24.com/open/21133100/)
 
 ## Connection with Other Objects
 
