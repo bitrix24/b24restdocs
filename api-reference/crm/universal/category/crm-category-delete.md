@@ -232,6 +232,23 @@ Delete the funnel with `id = 5`, located in deals.
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.category.delete", b24.Params{
+    	"entityTypeId": 2,
+    	"id":           5,
+    })
+    if err != nil {
+    	return fmt.Errorf("crm.category.delete: %w", err)
+    }
+
+    // The response arrives as json.RawMessage — unmarshal it
+    // into a struct matching the response shape shown below on this page.
+    fmt.Printf("%s\n", res.Result)
+    ```
+
 {% endlist %}
 
 ## Response Handling

@@ -272,6 +272,45 @@ The formula for calculating the `start` parameter value:
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "catalog.priceTypeGroup.list", b24.Params{
+    	"select": []string{"id", "catalogGroupId", "groupId", "access"},
+    	"filter": b24.Params{
+    		"catalogGroupId": 9,
+    		"groupId":        23,
+    	},
+    	"order": b24.Params{
+    		"id": "ASC",
+    	},
+    	"start": 0,
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("catalog.priceTypeGroup.list: %w", err)
+    }
+
+    // The method wraps the response in an object with the "priceTypeGroups" key.
+    raw, ok := b24.Unwrap(res.Result, "priceTypeGroups")
+    if !ok {
+    	return fmt.Errorf("no priceTypeGroups key in the response")
+    }
+
+    var items []struct {
+    	Access         string `json:"access"`
+    	CatalogGroupID b24.ID `json:"catalogGroupId"`
+    	GroupID        b24.ID `json:"groupId"`
+    	ID             b24.ID `json:"id"`
+    }
+    if err := json.Unmarshal(raw, &items); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    for _, it := range items {
+    	fmt.Println(it.Access)
+    }
+    ```
+
 {% endlist %}
 
 ## Response Handling

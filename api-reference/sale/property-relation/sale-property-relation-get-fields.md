@@ -177,6 +177,24 @@ No parameters.
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "sale.propertyRelation.getFields", nil, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("sale.propertyRelation.getFields: %w", err)
+    }
+
+    // The method wraps the response in an object with the "propertyRelation" key.
+    raw, ok := b24.Unwrap(res.Result, "propertyRelation")
+    if !ok {
+    	return fmt.Errorf("no propertyRelation key in the response")
+    }
+
+    fmt.Printf("%s\n", raw)
+    ```
+
 {% endlist %}
 
 ## Response Handling

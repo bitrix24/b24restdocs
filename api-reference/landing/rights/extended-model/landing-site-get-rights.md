@@ -194,6 +194,24 @@ The site identifier can be obtained using the method [landing.site.getList](../.
     }
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "landing.site.getRights", b24.Params{
+    	"id": 645,
+    })
+    if err != nil {
+    	return fmt.Errorf("landing.site.getRights: %w", err)
+    }
+
+    var items []string
+    if err := json.Unmarshal(res.Result, &items); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("received:", len(items))
+    ```
+
 {% endlist %}
 
 ## Response Handling

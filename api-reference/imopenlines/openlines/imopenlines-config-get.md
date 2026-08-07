@@ -223,6 +223,33 @@ You can obtain the ID of the open line when [creating an open line](./imopenline
     print_r($result);
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "imopenlines.config.get", b24.Params{
+    	"CONFIG_ID":    15,
+    	"WITH_QUEUE":   "Y",
+    	"SHOW_OFFLINE": "Y",
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("imopenlines.config.get: %w", err)
+    }
+
+    var item struct {
+    	ID              b24.ID `json:"ID"`
+    	Active          string `json:"ACTIVE"`
+    	LineName        string `json:"LINE_NAME"`
+    	CRM             string `json:"CRM"`
+    	CRMCreate       string `json:"CRM_CREATE"`
+    	CRMCreateSecond string `json:"CRM_CREATE_SECOND"`
+    }
+    if err := json.Unmarshal(res.Result, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.ID, item.Active)
+    ```
+
 {% endlist %}
 
 ## Response Handling

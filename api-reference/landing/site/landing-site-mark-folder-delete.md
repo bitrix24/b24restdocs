@@ -197,6 +197,24 @@ The folder identifier can be obtained using the [landing.site.getFolders](./land
     }
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "landing.site.markFolderDelete", b24.Params{
+    	"id": 737,
+    })
+    if err != nil {
+    	return fmt.Errorf("landing.site.markFolderDelete: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

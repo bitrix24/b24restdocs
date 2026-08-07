@@ -240,6 +240,43 @@ This method adds a variant value for a property. It is applicable only for prope
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "sale.propertyvariant.add", b24.Params{
+    	"fields": b24.Params{
+    		"name":         "Red",
+    		"orderPropsId": 49,
+    		"value":        "red",
+    		"sort":         10,
+    		"description":  "Description of the value for red color",
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("sale.propertyvariant.add: %w", err)
+    }
+
+    // The method wraps the response in an object with the "propertyVariant" key.
+    raw, ok := b24.Unwrap(res.Result, "propertyVariant")
+    if !ok {
+    	return fmt.Errorf("no propertyVariant key in the response")
+    }
+
+    var item struct {
+    	Description  string `json:"description"`
+    	ID           b24.ID `json:"id"`
+    	Name         string `json:"name"`
+    	OrderPropsID b24.ID `json:"orderPropsId"`
+    	Sort         int    `json:"sort"`
+    	Value        string `json:"value"`
+    }
+    if err := json.Unmarshal(raw, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.Description, item.ID)
+    ```
+
 {% endlist %}
 
 ## Response Handling

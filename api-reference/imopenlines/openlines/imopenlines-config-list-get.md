@@ -328,6 +328,44 @@ For `field_N`, use fields from the [Result Array Element](#result) table. The fi
     print_r($result);
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "imopenlines.config.list.get", b24.Params{
+    	"PARAMS": b24.Params{
+    		"select": []string{"ID", "LINE_NAME", "ACTIVE"},
+    		"order": b24.Params{
+    			"ID": "ASC",
+    		},
+    		"filter": b24.Params{
+    			"ACTIVE": "Y",
+    		},
+    		"limit":  50,
+    		"offset": 0,
+    	},
+    	"OPTIONS": b24.Params{
+    		"QUEUE":        "Y",
+    		"CONFIG_QUEUE": "Y",
+    	},
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("imopenlines.config.list.get: %w", err)
+    }
+
+    var items []struct {
+    	ID       b24.ID `json:"ID"`
+    	LineName string `json:"LINE_NAME"`
+    	Active   string `json:"ACTIVE"`
+    }
+    if err := json.Unmarshal(res.Result, &items); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    for _, it := range items {
+    	fmt.Println(it.ID, it.LineName)
+    }
+    ```
+
 {% endlist %}
 
 ## Response Handling

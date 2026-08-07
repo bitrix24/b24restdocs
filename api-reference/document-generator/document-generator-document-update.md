@@ -320,6 +320,47 @@ For `NAME`:
   print_r($result);
   ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "documentgenerator.document.update", b24.Params{
+    	"id": 51,
+    	"values": b24.Params{
+    		"DocumentNumber": "DC-2026-001",
+    		"CurrentDate":    "2026-03-20T00:00:00+03:00",
+    		"ClientName":     "Ltd. Chamomile",
+    		"ClientPhone":    "+49 999 123-45-67",
+    		"Total":          "130000",
+    		"Comment":        "Payment within 3 business days after signing",
+    		"UserName":       "John Smith",
+    	},
+    	"stampsEnabled": 1,
+    })
+    if err != nil {
+    	return fmt.Errorf("documentgenerator.document.update: %w", err)
+    }
+
+    // The method wraps the response in an object with the "document" key.
+    raw, ok := b24.Unwrap(res.Result, "document")
+    if !ok {
+    	return fmt.Errorf("no document key in the response")
+    }
+
+    var item struct {
+    	DownloadUrl string `json:"downloadUrl"`
+    	PublicUrl   string `json:"publicUrl"`
+    	Title       string `json:"title"`
+    	Number      string `json:"number"`
+    	ID          b24.ID `json:"id"`
+    	CreateTime  string `json:"createTime"`
+    }
+    if err := json.Unmarshal(raw, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.DownloadUrl, item.PublicUrl)
+    ```
+
 {% endlist %}
 
 ## Response Handling

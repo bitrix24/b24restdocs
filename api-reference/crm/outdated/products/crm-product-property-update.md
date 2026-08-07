@@ -178,4 +178,23 @@ To find out the required format for the fields, execute the method [crm.product.
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.product.property.update", b24.Params{
+    	"id": "your_property_id",
+    	"fields": b24.Params{
+    		"NAME": "New Property Name",
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("crm.product.property.update: %w", err)
+    }
+
+    // The response arrives as json.RawMessage — unmarshal it
+    // into a struct matching the response shape shown below on this page.
+    fmt.Printf("%s\n", res.Result)
+    ```
+
 {% endlist %}

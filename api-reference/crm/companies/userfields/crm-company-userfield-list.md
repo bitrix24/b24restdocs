@@ -468,6 +468,47 @@ Get a list of custom fields that:
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.company.userfield.list", b24.Params{
+    	"filter": b24.Params{
+    		"MULTIPLE":  "Y",
+    		"MANDATORY": "Y",
+    		"LANG":      "ru",
+    	},
+    	"order": b24.Params{
+    		"USER_TYPE_ID": "ASC",
+    		"SORT":         "ASC",
+    	},
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("crm.company.userfield.list: %w", err)
+    }
+
+    var items []struct {
+    	ID         b24.ID `json:"ID"`
+    	EntityID   string `json:"ENTITY_ID"`
+    	FieldName  string `json:"FIELD_NAME"`
+    	UserTypeID string `json:"USER_TYPE_ID"`
+    	Sort       string `json:"SORT"`
+    	Multiple   string `json:"MULTIPLE"`
+    }
+    if err := json.Unmarshal(res.Result, &items); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    for _, it := range items {
+    	fmt.Println(it.ID, it.EntityID)
+    }
+
+    // Total and Next are filled in by list methods; for a full
+    // list traversal, use client.Core().Pages and Scan.
+    if res.Total != nil {
+    	fmt.Println("total:", *res.Total)
+    }
+    ```
+
 {% endlist %}
 
 ## Response Handling

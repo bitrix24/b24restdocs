@@ -254,6 +254,42 @@ The method `catalog.document.update` modifies the fields of an existing warehous
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "catalog.document.update", b24.Params{
+    	"id": 142,
+    	"fields": b24.Params{
+    		"title":         "Receipt from Vendor-1 (correction)",
+    		"commentary":    "Updated responsible person",
+    		"responsibleId": 21,
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("catalog.document.update: %w", err)
+    }
+
+    // The method wraps the response in an object with the "document" key.
+    raw, ok := b24.Unwrap(res.Result, "document")
+    if !ok {
+    	return fmt.Errorf("no document key in the response")
+    }
+
+    var item struct {
+    	Commentary string `json:"commentary"`
+    	CreatedBy  int    `json:"createdBy"`
+    	Currency   string `json:"currency"`
+    	DateCreate string `json:"dateCreate"`
+    	DateModify string `json:"dateModify"`
+    	DateStatus string `json:"dateStatus"`
+    }
+    if err := json.Unmarshal(raw, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.Commentary, item.CreatedBy)
+    ```
+
 {% endlist %}
 
 ## Response Handling

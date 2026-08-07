@@ -181,6 +181,21 @@ The number can be obtained using the [telephony.externalLine.get](./telephony-ex
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "telephony.externalLine.delete", b24.Params{
+    	"NUMBER": "74951234567",
+    })
+    if err != nil {
+    	return fmt.Errorf("telephony.externalLine.delete: %w", err)
+    }
+
+    // The response is a list; unmarshal it into a struct matching the response shape below.
+    fmt.Printf("%s\n", res.Result)
+    ```
+
 {% endlist %}
 
 ## Response Handling

@@ -709,6 +709,94 @@ For a user with `id = 1`, set the following configuration for item cards
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.item.details.configuration.set", b24.Params{
+    	"entityTypeId": 3,
+    	"userId":       1,
+    	"data": []b24.Params{
+    		{
+    			"name":  "section_1",
+    			"title": "Personal Data",
+    			"type":  "section",
+    			"elements": []b24.Params{
+    				{
+    					"name":        "NAME",
+    					"optionFlags": 1,
+    				},
+    				{
+    					"name":        "LAST_NAME",
+    					"optionFlags": 1,
+    				},
+    				{
+    					"name": "SECOND_NAME",
+    				},
+    				{
+    					"name": "BIRTHDATE",
+    				},
+    				{
+    					"name":        "PHONE",
+    					"optionFlags": 1,
+    					"options": b24.Params{
+    						"defaultCountry": "GB",
+    					},
+    				},
+    				{
+    					"name":        "ADDRESS",
+    					"optionFlags": 1,
+    					"options": b24.Params{
+    						"defaultAddressType": 4,
+    					},
+    				},
+    			},
+    		},
+    		{
+    			"name":  "section_2",
+    			"title": "Basic Information",
+    			"type":  "section",
+    			"elements": []b24.Params{
+    				{
+    					"name": "TYPE_ID",
+    				},
+    				{
+    					"name": "SOURCE_ID",
+    				},
+    				{
+    					"name": "POST",
+    				},
+    			},
+    		},
+    		{
+    			"name":  "section_3",
+    			"title": "Additional Information",
+    			"type":  "section",
+    			"elements": []b24.Params{
+    				{
+    					"name": "PHOTO",
+    				},
+    				{
+    					"name": "COMMENTS",
+    				},
+    				{
+    					"name": "UF_CRM_1720697698689",
+    				},
+    			},
+    		},
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("crm.item.details.configuration.set: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ### Result

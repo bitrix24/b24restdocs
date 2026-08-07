@@ -358,6 +358,37 @@ Currently, the field does not actually affect anything ||
         print(f"Unexpected error: {error}")
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.requisite.bankdetail.add", b24.Params{
+    	"fields": b24.Params{
+    		"ENTITY_ID":       27,
+    		"COUNTRY_ID":      1,
+    		"NAME":            "Superbank",
+    		"RQ_BANK_NAME":    "Ltd. Superbank",
+    		"RQ_BANK_ADDR":    "117312, New York, 19 Miller St.",
+    		"RQ_BIK":          "044525225",
+    		"RQ_ACC_NUM":      "40702810938000060473",
+    		"RQ_ACC_CURRENCY": "RUR",
+    		"RQ_COR_ACC_NUM":  "30101810400000000225",
+    		"XML_ID":          "1e4641fd-2dd9-31e6-b2f2-105056c00008",
+    		"ACTIVE":          "Y",
+    		"SORT":            600,
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("crm.requisite.bankdetail.add: %w", err)
+    }
+
+    var newID b24.ID
+    if err := json.Unmarshal(res.Result, &newID); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("id:", newID)
+    ```
+
 {% endlist %}
 
 ## Response Handling

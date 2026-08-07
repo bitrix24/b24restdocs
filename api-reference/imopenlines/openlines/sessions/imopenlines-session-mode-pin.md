@@ -196,6 +196,25 @@ Defaults to `Y` ||
     }
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "imopenlines.session.mode.pin", b24.Params{
+    	"CHAT_ID":  2043,
+    	"ACTIVATE": "Y",
+    })
+    if err != nil {
+    	return fmt.Errorf("imopenlines.session.mode.pin: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

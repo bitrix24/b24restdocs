@@ -184,6 +184,37 @@ The identifier can be obtained using the [catalog.productPropertyEnum.list](./ca
     print_r($result);
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "catalog.productPropertyEnum.get", b24.Params{
+    	"id": 1739,
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("catalog.productPropertyEnum.get: %w", err)
+    }
+
+    // The method wraps the response in an object with the "productPropertyEnum" key.
+    raw, ok := b24.Unwrap(res.Result, "productPropertyEnum")
+    if !ok {
+    	return fmt.Errorf("no productPropertyEnum key in the response")
+    }
+
+    var item struct {
+    	Def        string `json:"def"`
+    	ID         b24.ID `json:"id"`
+    	PropertyID b24.ID `json:"propertyId"`
+    	Sort       int    `json:"sort"`
+    	Value      string `json:"value"`
+    	XmlID      string `json:"xmlId"`
+    }
+    if err := json.Unmarshal(raw, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.Def, item.ID)
+    ```
+
 {% endlist %}
 
 ## Response Handling

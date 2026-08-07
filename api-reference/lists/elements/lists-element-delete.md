@@ -226,6 +226,26 @@ When deleting an element, files from fields of type "File (Drive)" are removed f
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "lists.element.delete", b24.Params{
+    	"IBLOCK_TYPE_ID": "lists",
+    	"IBLOCK_ID":      47,
+    	"ELEMENT_ID":     6999,
+    })
+    if err != nil {
+    	return fmt.Errorf("lists.element.delete: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

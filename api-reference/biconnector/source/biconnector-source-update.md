@@ -284,6 +284,33 @@ Parameters can be obtained using the methods [biconnector.connector.list](../con
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "biconnector.source.update", b24.Params{
+    	"id": 4,
+    	"fields": b24.Params{
+    		"title":       "New source name",
+    		"description": "Updated source description",
+    		"active":      false,
+    		"settings": b24.Params{
+    			"login":    "new_admin",
+    			"password": "new_password",
+    		},
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("biconnector.source.update: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

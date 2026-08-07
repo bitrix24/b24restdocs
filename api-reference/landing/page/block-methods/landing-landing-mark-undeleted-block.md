@@ -214,6 +214,25 @@ If you pass the identifier of a block from another page or a non-existent identi
     }
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "landing.landing.markundeletedblock", b24.Params{
+    	"lid":   627,
+    	"block": 11923,
+    })
+    if err != nil {
+    	return fmt.Errorf("landing.landing.markundeletedblock: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

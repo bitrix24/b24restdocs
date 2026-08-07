@@ -514,6 +514,47 @@ The formula for calculating the `start` parameter value:
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "catalog.product.sku.list", b24.Params{
+    	"select": []string{"id", "iblockId", "name", "active", "available", "bundle", "canBuyZero", "code", "createdBy", "dateActiveFrom", "dateActiveTo", "dateCreate", "detailPicture", "detailText", "detailTextType", "height", "iblockSectionId", "length", "measure", "modifiedBy", "previewPicture", "previewText", "previewTextType", "purchasingCurrency", "purchasingPrice", "quantity", "sort", "subscribe", "timestampX", "type", "vatId", "vatIncluded", "weight", "width", "xmlId", "property258", "property259"},
+    	"filter": b24.Params{
+    		"iblockId": 23,
+    		">id":      10,
+    		"vatId":    []int{1, 2},
+    	},
+    	"order": b24.Params{
+    		"id": "desc",
+    	},
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("catalog.product.sku.list: %w", err)
+    }
+
+    // The method wraps the response in an object with the "units" key.
+    raw, ok := b24.Unwrap(res.Result, "units")
+    if !ok {
+    	return fmt.Errorf("no units key in the response")
+    }
+
+    var items []struct {
+    	Active     string `json:"active"`
+    	Available  string `json:"available"`
+    	Bundle     string `json:"bundle"`
+    	CanBuyZero string `json:"canBuyZero"`
+    	Code       string `json:"code"`
+    	CreatedBy  int    `json:"createdBy"`
+    }
+    if err := json.Unmarshal(raw, &items); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    for _, it := range items {
+    	fmt.Println(it.Active)
+    }
+    ```
+
 {% endlist %}
 
 ## Response Handling

@@ -203,6 +203,23 @@ No parameters.
     except Exception as error:
         print(f"Unexpected error: {error}")
     ```
+
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.deal.contact.fields", nil, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("crm.deal.contact.fields: %w", err)
+    }
+
+    keys, ok := b24.Keys(res.Result)
+    if !ok {
+    	return fmt.Errorf("expected an object in the response")
+    }
+    fmt.Println("fields in response:", len(keys))
+    ```
+
 {% endlist %}
 
 ## Response Handling

@@ -235,6 +235,39 @@ If not specified, all fields of the list are returned ||
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "lists.field.get", b24.Params{
+    	"IBLOCK_TYPE_ID": "lists",
+    	"IBLOCK_ID":      "123",
+    	"FIELD_ID":       "PROPERTY_1151",
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("lists.field.get: %w", err)
+    }
+
+    // The method wraps the response in an object with the "L" key.
+    raw, ok := b24.Unwrap(res.Result, "L")
+    if !ok {
+    	return fmt.Errorf("no L key in the response")
+    }
+
+    var item struct {
+    	FieldID      string `json:"FIELD_ID"`
+    	Sort         int    `json:"SORT"`
+    	Name         string `json:"NAME"`
+    	IsRequired   string `json:"IS_REQUIRED"`
+    	Multiple     string `json:"MULTIPLE"`
+    	DefaultValue string `json:"DEFAULT_VALUE"`
+    }
+    if err := json.Unmarshal(raw, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.FieldID, item.Sort)
+    ```
+
 {% endlist %}
 
 ## Response Handling

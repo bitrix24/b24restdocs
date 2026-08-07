@@ -237,6 +237,29 @@ If `scope` is not provided, the method uses the current site type, and if it can
     }
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "landing.block.getrepository", b24.Params{
+    	"section": "text",
+    })
+    if err != nil {
+    	return fmt.Errorf("landing.block.getrepository: %w", err)
+    }
+
+    var item struct {
+    	Name      string `json:"name"`
+    	New       bool   `json:"new"`
+    	Separator bool   `json:"separator"`
+    	AppCode   bool   `json:"app_code"`
+    }
+    if err := json.Unmarshal(res.Result, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.Name, item.New)
+    ```
+
 {% endlist %}
 
 ## Response Handling

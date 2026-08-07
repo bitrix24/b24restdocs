@@ -197,6 +197,26 @@ PARAMETERS: {
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "bizproc.workflow.start", b24.Params{
+    	"TEMPLATE_ID": 1,
+    	"DOCUMENT_ID": []string{"crm", "CCrmDocumentLead", "LEAD_1"},
+    	"PARAMETERS": b24.Params{
+    		"Parameter1": "user_1",
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("bizproc.workflow.start: %w", err)
+    }
+
+    // The response arrives as json.RawMessage — unmarshal it
+    // into a struct matching the response shape shown below on this page.
+    fmt.Printf("%s\n", res.Result)
+    ```
+
 {% endlist %}
 
 ## Response Handling

@@ -261,6 +261,44 @@ Possible values for `order`:
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "sale.propertygroup.list", b24.Params{
+    	"select": []string{"id", "name", "personTypeId", "sort"},
+    	"filter": b24.Params{
+    		">=id": 14,
+    	},
+    	"order": b24.Params{
+    		"name": "asc",
+    		"id":   "desc",
+    	},
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("sale.propertygroup.list: %w", err)
+    }
+
+    // The method wraps the response in an object with the "propertyGroups" key.
+    raw, ok := b24.Unwrap(res.Result, "propertyGroups")
+    if !ok {
+    	return fmt.Errorf("no propertyGroups key in the response")
+    }
+
+    var items []struct {
+    	ID           b24.ID `json:"id"`
+    	Name         string `json:"name"`
+    	PersonTypeID b24.ID `json:"personTypeId"`
+    	Sort         int    `json:"sort"`
+    }
+    if err := json.Unmarshal(raw, &items); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    for _, it := range items {
+    	fmt.Println(it.ID)
+    }
+    ```
+
 {% endlist %}
 
 ## Response Handling

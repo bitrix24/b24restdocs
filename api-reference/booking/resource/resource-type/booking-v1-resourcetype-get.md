@@ -207,6 +207,37 @@ Can be obtained from the methods [booking.v1.resourceType.add](./booking-v1-reso
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "booking.v1.resourceType.get", b24.Params{
+    	"id": 15,
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("booking.v1.resourceType.get: %w", err)
+    }
+
+    // The method wraps the response in an object with the "resourceType" key.
+    raw, ok := b24.Unwrap(res.Result, "resourceType")
+    if !ok {
+    	return fmt.Errorf("no resourceType key in the response")
+    }
+
+    var item struct {
+    	Code                                        string `json:"code"`
+    	ConfirmationCounterDelay                    int    `json:"confirmationCounterDelay"`
+    	ConfirmationNotificationDelay               int    `json:"confirmationNotificationDelay"`
+    	ConfirmationNotificationRepetitionsInterval int    `json:"confirmationNotificationRepetitionsInterval"`
+    	DelayedCounterDelay                         int    `json:"delayedCounterDelay"`
+    	DelayedNotificationDelay                    int    `json:"delayedNotificationDelay"`
+    }
+    if err := json.Unmarshal(raw, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.Code, item.ConfirmationCounterDelay)
+    ```
+
 {% endlist %}
 
 ## Response Handling

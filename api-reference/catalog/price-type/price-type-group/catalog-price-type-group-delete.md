@@ -183,6 +183,24 @@ The identifier can be obtained using the [catalog.priceTypeGroup.list](./catalog
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "catalog.priceTypeGroup.delete", b24.Params{
+    	"id": 109,
+    })
+    if err != nil {
+    	return fmt.Errorf("catalog.priceTypeGroup.delete: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

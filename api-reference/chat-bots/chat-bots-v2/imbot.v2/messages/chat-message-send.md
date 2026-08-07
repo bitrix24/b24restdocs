@@ -185,6 +185,38 @@ The bot can only forward messages from chats where it is a participant. Maximum 
     }
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "imbot.v2.Chat.Message.send", b24.Params{
+    	"botId":    456,
+    	"botToken": "my_bot_token",
+    	"dialogId": "chat5",
+    	"fields": b24.Params{
+    		"message": "Hello from bot!",
+    		"keyboard": []b24.Params{
+    			{
+    				"TEXT":           "Open",
+    				"LINK":           "https://example.com",
+    				"BG_COLOR_TOKEN": "primary",
+    			},
+    		},
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("imbot.v2.Chat.Message.send: %w", err)
+    }
+
+    var item struct {
+    	ID b24.ID `json:"id"`
+    }
+    if err := json.Unmarshal(res.Result, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.ID)
+    ```
+
 {% endlist %}
 
 ## Response Handling

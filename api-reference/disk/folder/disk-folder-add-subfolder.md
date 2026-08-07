@@ -223,6 +223,34 @@ To manage access to the created folder, use the method [disk.folder.shareToUser]
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "disk.folder.addSubFolder", b24.Params{
+    	"id": 8907,
+    	"data": b24.Params{
+    		"NAME": "Folder in Folder",
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("disk.folder.addSubFolder: %w", err)
+    }
+
+    var item struct {
+    	ID           b24.ID `json:"ID"`
+    	Name         string `json:"NAME"`
+    	StorageID    b24.ID `json:"STORAGE_ID"`
+    	Type         string `json:"TYPE"`
+    	RealObjectID b24.ID `json:"REAL_OBJECT_ID"`
+    	ParentID     b24.ID `json:"PARENT_ID"`
+    }
+    if err := json.Unmarshal(res.Result, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.ID, item.Name)
+    ```
+
 {% endlist %}
 
 ## Response Handling

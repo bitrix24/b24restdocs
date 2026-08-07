@@ -450,6 +450,46 @@ The formula for calculating the `start` parameter value:
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "sale.shipmentproperty.list", b24.Params{
+    	"select": []string{"id", "active", "code", "defaultValue", "description", "inputFieldLocation", "isAddress", "isAddressFrom", "isAddressTo", "isEmail", "isFiltered", "isLocation", "isLocation4tax", "isPayer", "isPhone", "isProfileName", "isZip", "multiple", "name", "personTypeId", "propsGroupId", "required", "settings", "sort", "type", "userProps", "util", "xmlId"},
+    	"filter": b24.Params{
+    		"@type": "STRING",
+    		"%code": "EMAIL",
+    	},
+    	"order": b24.Params{
+    		"id": "desc",
+    	},
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("sale.shipmentproperty.list: %w", err)
+    }
+
+    // The method wraps the response in an object with the "properties" key.
+    raw, ok := b24.Unwrap(res.Result, "properties")
+    if !ok {
+    	return fmt.Errorf("no properties key in the response")
+    }
+
+    var items []struct {
+    	Active             string `json:"active"`
+    	Code               string `json:"code"`
+    	DefaultValue       string `json:"defaultValue"`
+    	Description        string `json:"description"`
+    	ID                 b24.ID `json:"id"`
+    	InputFieldLocation string `json:"inputFieldLocation"`
+    }
+    if err := json.Unmarshal(raw, &items); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    for _, it := range items {
+    	fmt.Println(it.Active)
+    }
+    ```
+
 {% endlist %}
 
 ## Successful Response

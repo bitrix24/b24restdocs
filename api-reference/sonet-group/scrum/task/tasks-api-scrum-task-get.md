@@ -193,6 +193,31 @@ This method retrieves the values of the Scrum task fields by its identifier `id`
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "tasks.api.scrum.task.get", b24.Params{
+    	"id": 1,
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("tasks.api.scrum.task.get: %w", err)
+    }
+
+    var item struct {
+    	EntityID    b24.ID `json:"entityId"`
+    	StoryPoints string `json:"storyPoints"`
+    	EpicID      b24.ID `json:"epicId"`
+    	Sort        int    `json:"sort"`
+    	CreatedBy   int    `json:"createdBy"`
+    	ModifiedBy  int    `json:"modifiedBy"`
+    }
+    if err := json.Unmarshal(res.Result, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.EntityID, item.StoryPoints)
+    ```
+
 {% endlist %}
 
 ## Response Handling

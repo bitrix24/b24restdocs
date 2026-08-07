@@ -258,6 +258,27 @@ Example of retrieving a list of page templates, where:
     echo '</pre>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "landing.demos.getPageList", b24.Params{
+    	"type": "page",
+    	"filter": b24.Params{
+    		"TYPE": "PAGE",
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("landing.demos.getPageList: %w", err)
+    }
+
+    keys, ok := b24.Keys(res.Result)
+    if !ok {
+    	return fmt.Errorf("expected an object in the response")
+    }
+    fmt.Println("fields in response:", len(keys))
+    ```
+
 {% endlist %}
 
 ## Response Handling

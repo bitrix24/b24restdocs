@@ -279,6 +279,31 @@ If the parameter is not provided, is set to `0`, or points to a block that does 
     }
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "landing.landing.moveblock", b24.Params{
+    	"lid":   351,
+    	"block": 26723,
+    	"params": b24.Params{
+    		"AFTER_ID":       6429,
+    		"RETURN_CONTENT": "Y",
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("landing.landing.moveblock: %w", err)
+    }
+
+    var item struct {
+    	Result bool `json:"result"`
+    }
+    if err := json.Unmarshal(res.Result, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.Result)
+    ```
+
 {% endlist %}
 
 ## Response Handling

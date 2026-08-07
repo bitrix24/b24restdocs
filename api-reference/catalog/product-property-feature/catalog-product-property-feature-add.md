@@ -237,6 +237,41 @@ Before adding, check for an existing entry using the [catalog.productPropertyFea
     print_r($result);
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "catalog.productPropertyFeature.add", b24.Params{
+    	"fields": b24.Params{
+    		"propertyId": 901,
+    		"moduleId":   "iblock",
+    		"featureId":  "LIST_PAGE_SHOW",
+    		"isEnabled":  "Y",
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("catalog.productPropertyFeature.add: %w", err)
+    }
+
+    // The method wraps the response in an object with the "productPropertyFeature" key.
+    raw, ok := b24.Unwrap(res.Result, "productPropertyFeature")
+    if !ok {
+    	return fmt.Errorf("no productPropertyFeature key in the response")
+    }
+
+    var item struct {
+    	FeatureID  string `json:"featureId"`
+    	ID         b24.ID `json:"id"`
+    	IsEnabled  string `json:"isEnabled"`
+    	ModuleID   string `json:"moduleId"`
+    	PropertyID b24.ID `json:"propertyId"`
+    }
+    if err := json.Unmarshal(raw, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.FeatureID, item.ID)
+    ```
+
 {% endlist %}
 
 ## Response Handling

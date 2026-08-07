@@ -173,6 +173,29 @@ No parameters.
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "app.info", nil)
+    if err != nil {
+    	return fmt.Errorf("app.info: %w", err)
+    }
+
+    var item struct {
+    	ID             b24.ID `json:"ID"`
+    	Code           string `json:"CODE"`
+    	Version        int    `json:"VERSION"`
+    	Status         string `json:"STATUS"`
+    	Installed      bool   `json:"INSTALLED"`
+    	PaymentExpired string `json:"PAYMENT_EXPIRED"`
+    }
+    if err := json.Unmarshal(res.Result, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.ID, item.Code)
+    ```
+
 {% endlist %}
 
 ## Response Handling

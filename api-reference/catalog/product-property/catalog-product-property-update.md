@@ -312,6 +312,44 @@ If `userType` is specified but `userTypeSettings` is not, the settings are not v
     print_r($result);
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "catalog.productProperty.update", b24.Params{
+    	"id": 115,
+    	"fields": b24.Params{
+    		"iblockId":     19,
+    		"name":         "Size",
+    		"propertyType": "L",
+    		"isRequired":   "Y",
+    		"active":       "Y",
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("catalog.productProperty.update: %w", err)
+    }
+
+    // The method wraps the response in an object with the "productProperty" key.
+    raw, ok := b24.Unwrap(res.Result, "productProperty")
+    if !ok {
+    	return fmt.Errorf("no productProperty key in the response")
+    }
+
+    var item struct {
+    	Active    string `json:"active"`
+    	ColCount  int    `json:"colCount"`
+    	Filtrable string `json:"filtrable"`
+    	IblockID  b24.ID `json:"iblockId"`
+    	ID        b24.ID `json:"id"`
+    	Name      string `json:"name"`
+    }
+    if err := json.Unmarshal(raw, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.Active, item.ColCount)
+    ```
+
 {% endlist %}
 
 ## Response Handling

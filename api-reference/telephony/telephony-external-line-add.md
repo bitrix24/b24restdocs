@@ -205,6 +205,28 @@ Default — `Y` ||
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "telephony.externalLine.add", b24.Params{
+    	"NUMBER":          "74951234567",
+    	"NAME":            "Main External Line",
+    	"CRM_AUTO_CREATE": "Y",
+    })
+    if err != nil {
+    	return fmt.Errorf("telephony.externalLine.add: %w", err)
+    }
+
+    var item struct {
+    	ID b24.ID `json:"ID"`
+    }
+    if err := json.Unmarshal(res.Result, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.ID)
+    ```
+
 {% endlist %}
 
 ## Response Handling

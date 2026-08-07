@@ -271,6 +271,32 @@ The placement has no keys of its own — the context carries only the universal 
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "placement.bind", b24.Params{
+    	"PLACEMENT": "CRM_ANALYTICS_MENU",
+    	"HANDLER":   "https://your-domain.com/widgets/crm-analytics-menu-handler.php",
+    	"TITLE":     "My CRM analytics report",
+    	"LANG_ALL": b24.Params{
+    		"ru": b24.Params{
+    			"TITLE": "My CRM analytics report",
+    		},
+    		"en": b24.Params{
+    			"TITLE": "My CRM analytics report",
+    		},
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("placement.bind: %w", err)
+    }
+
+    // The response arrives as json.RawMessage — unmarshal it
+    // into a struct matching the response shape shown below on this page.
+    fmt.Printf("%s\n", res.Result)
+    ```
+
 {% endlist %}
 
 ## Continue Your Exploration

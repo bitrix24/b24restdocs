@@ -409,6 +409,31 @@ Each object can consist of the `OWNER_TYPE_ID` keys (entity type identifier) and
     except Exception as error:
         print(f"Unexpected error: {error}")
     ```
+
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.activity.list", b24.Params{
+    	"order": b24.Params{
+    		"ID": "DESC",
+    	},
+    	"filter": b24.Params{
+    		"OWNER_TYPE_ID": 3,
+    		"OWNER_ID":      102,
+    	},
+    	"select": []string{"*", "COMMUNICATIONS"},
+    	"start":  0,
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("crm.activity.list: %w", err)
+    }
+
+    // The response arrives as json.RawMessage — unmarshal it
+    // into a struct matching the response shape shown below on this page.
+    fmt.Printf("%s\n", res.Result)
+    ```
+
 {% endlist %}
 
 {% note tip "Typical use-cases and scenarios" %}
@@ -764,6 +789,48 @@ When using multiple pairs in `BINDINGS`, duplication may occur in the results. F
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.activity.list", b24.Params{
+    	"order": b24.Params{
+    		"ID": "DESC",
+    	},
+    	"filter": b24.Params{
+    		"BINDINGS": []b24.Params{
+    			{
+    				"OWNER_TYPE_ID": 2,
+    			},
+    			{
+    				"OWNER_TYPE_ID": 3,
+    			},
+    		},
+    	},
+    	"select": []string{"*", "COMMUNICATIONS"},
+    	"start":  0,
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("crm.activity.list: %w", err)
+    }
+
+    var items []struct {
+    	ID b24.ID `json:"ID"`
+    }
+    if err := json.Unmarshal(res.Result, &items); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    for _, it := range items {
+    	fmt.Println(it.ID)
+    }
+
+    // Total and Next are filled in by list methods; for a full
+    // list traversal, use client.Core().Pages and Scan.
+    if res.Total != nil {
+    	fmt.Println("total:", *res.Total)
+    }
+    ```
+
 {% endlist %}
 
 ### Retrieving COMMUNICATIONS {#example-communications}
@@ -973,6 +1040,38 @@ When using multiple pairs in `BINDINGS`, duplication may occur in the results. F
     echo '<PRE>';
     print_r($result);
     echo '</PRE>';
+    ```
+
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.activity.list", b24.Params{
+    	"filter": b24.Params{
+    		"ID": "20",
+    	},
+    	"select": []string{"*", "COMMUNICATIONS"},
+    	"start":  0,
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("crm.activity.list: %w", err)
+    }
+
+    var items []struct {
+    	ID b24.ID `json:"ID"`
+    }
+    if err := json.Unmarshal(res.Result, &items); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    for _, it := range items {
+    	fmt.Println(it.ID)
+    }
+
+    // Total and Next are filled in by list methods; for a full
+    // list traversal, use client.Core().Pages and Scan.
+    if res.Total != nil {
+    	fmt.Println("total:", *res.Total)
+    }
     ```
 
 {% endlist %}
@@ -1221,6 +1320,38 @@ HTTP status: **200**
     echo '<PRE>';
     print_r($result);
     echo '</PRE>';
+    ```
+
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.activity.list", b24.Params{
+    	"filter": b24.Params{
+    		"ID": "101121",
+    	},
+    	"select": []string{"*", "STORAGE_ELEMENT_IDS"},
+    	"start":  0,
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("crm.activity.list: %w", err)
+    }
+
+    var items []struct {
+    	ID b24.ID `json:"ID"`
+    }
+    if err := json.Unmarshal(res.Result, &items); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    for _, it := range items {
+    	fmt.Println(it.ID)
+    }
+
+    // Total and Next are filled in by list methods; for a full
+    // list traversal, use client.Core().Pages and Scan.
+    if res.Total != nil {
+    	fmt.Println("total:", *res.Total)
+    }
     ```
 
 {% endlist %}

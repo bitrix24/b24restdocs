@@ -180,6 +180,29 @@ No parameters.
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "timeman.timecontrol.settings.get", nil, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("timeman.timecontrol.settings.get: %w", err)
+    }
+
+    var item struct {
+    	Active               bool   `json:"active"`
+    	MinimumIdleForReport int    `json:"minimum_idle_for_report"`
+    	RegisterOffline      bool   `json:"register_offline"`
+    	RegisterIdle         bool   `json:"register_idle"`
+    	RegisterDesktop      bool   `json:"register_desktop"`
+    	ReportRequestType    string `json:"report_request_type"`
+    }
+    if err := json.Unmarshal(res.Result, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.Active, item.MinimumIdleForReport)
+    ```
+
 {% endlist %}
 
 ## Response Handling

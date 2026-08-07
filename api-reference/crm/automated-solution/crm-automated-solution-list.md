@@ -357,6 +357,38 @@ The formula for calculating the `start` parameter value:
         except Exception as error:
             print(f"Unexpected error: {error}")
         ```
+
+    - Go
+
+        ```go
+        // client and ctx are already created — see the Go SDK section
+        res, err := client.Core().Call(ctx, "crm.automatedsolution.list", b24.Params{
+        	"order": b24.Params{
+        		"id": "DESC",
+        	},
+        }, b24.WithIdempotent())
+        if err != nil {
+        	return fmt.Errorf("crm.automatedsolution.list: %w", err)
+        }
+
+        // The method wraps the response in an object with the "automatedSolutions" key.
+        raw, ok := b24.Unwrap(res.Result, "automatedSolutions")
+        if !ok {
+        	return fmt.Errorf("no automatedSolutions key in the response")
+        }
+
+        var items []struct {
+        	ID    b24.ID `json:"id"`
+        	Title string `json:"title"`
+        }
+        if err := json.Unmarshal(raw, &items); err != nil {
+        	return fmt.Errorf("parse response: %w", err)
+        }
+        for _, it := range items {
+        	fmt.Println(it.ID)
+        }
+        ```
+
     {% endlist %}
 
 2. Get all digital workspaces whose titles start with "HR"
@@ -492,6 +524,37 @@ The formula for calculating the `start` parameter value:
         echo '<PRE>';
         print_r($result);
         echo '</PRE>';
+        ```
+
+    - Go
+
+        ```go
+        // client and ctx are already created — see the Go SDK section
+        res, err := client.Core().Call(ctx, "crm.automatedsolution.list", b24.Params{
+        	"filter": b24.Params{
+        		"%=title": "HR%",
+        	},
+        }, b24.WithIdempotent())
+        if err != nil {
+        	return fmt.Errorf("crm.automatedsolution.list: %w", err)
+        }
+
+        // The method wraps the response in an object with the "automatedSolutions" key.
+        raw, ok := b24.Unwrap(res.Result, "automatedSolutions")
+        if !ok {
+        	return fmt.Errorf("no automatedSolutions key in the response")
+        }
+
+        var items []struct {
+        	ID    b24.ID `json:"id"`
+        	Title string `json:"title"`
+        }
+        if err := json.Unmarshal(raw, &items); err != nil {
+        	return fmt.Errorf("parse response: %w", err)
+        }
+        for _, it := range items {
+        	fmt.Println(it.ID)
+        }
         ```
 
     {% endlist %}
@@ -657,6 +720,49 @@ The formula for calculating the `start` parameter value:
         echo '<PRE>';
         print_r($result);
         echo '</PRE>';
+        ```
+
+    - Go
+
+        ```go
+        // client and ctx are already created — see the Go SDK section
+        res, err := client.Core().Call(ctx, "crm.automatedsolution.list", b24.Params{
+        	"order": b24.Params{
+        		"title": "ASC",
+        	},
+        	"filter": b24.Params{
+        		">id": 100,
+        		"0": b24.Params{
+        			"logic": "OR",
+        			"0": b24.Params{
+        				"%=title": "HR%",
+        			},
+        			"1": b24.Params{
+        				"%=title": "Customer%",
+        			},
+        		},
+        	},
+        }, b24.WithIdempotent())
+        if err != nil {
+        	return fmt.Errorf("crm.automatedsolution.list: %w", err)
+        }
+
+        // The method wraps the response in an object with the "automatedSolutions" key.
+        raw, ok := b24.Unwrap(res.Result, "automatedSolutions")
+        if !ok {
+        	return fmt.Errorf("no automatedSolutions key in the response")
+        }
+
+        var items []struct {
+        	ID    b24.ID `json:"id"`
+        	Title string `json:"title"`
+        }
+        if err := json.Unmarshal(raw, &items); err != nil {
+        	return fmt.Errorf("parse response: %w", err)
+        }
+        for _, it := range items {
+        	fmt.Println(it.ID)
+        }
         ```
 
     {% endlist %}

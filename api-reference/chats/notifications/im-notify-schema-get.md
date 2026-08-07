@@ -161,6 +161,31 @@ No parameters
     }
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "im.notify.schema.get", nil, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("im.notify.schema.get: %w", err)
+    }
+
+    // The method wraps the response in an object with the "tasks" key.
+    raw, ok := b24.Unwrap(res.Result, "tasks")
+    if !ok {
+    	return fmt.Errorf("no tasks key in the response")
+    }
+
+    var item struct {
+    	Name     string `json:"name"`
+    	ModuleID string `json:"module_id"`
+    }
+    if err := json.Unmarshal(raw, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.Name, item.ModuleID)
+    ```
+
 {% endlist %}
 
 ## Response Handling

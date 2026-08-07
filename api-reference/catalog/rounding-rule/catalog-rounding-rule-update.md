@@ -250,6 +250,43 @@ This method updates the price rounding rule.
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "catalog.roundingRule.update", b24.Params{
+    	"Id": 1,
+    	"fields": b24.Params{
+    		"catalogGroupId": 14,
+    		"price":          1500,
+    		"roundType":      2,
+    		"roundPrecision": 10,
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("catalog.roundingRule.update: %w", err)
+    }
+
+    // The method wraps the response in an object with the "roundingRule" key.
+    raw, ok := b24.Unwrap(res.Result, "roundingRule")
+    if !ok {
+    	return fmt.Errorf("no roundingRule key in the response")
+    }
+
+    var item struct {
+    	CatalogGroupID b24.ID `json:"catalogGroupId"`
+    	CreatedBy      int    `json:"createdBy"`
+    	DateCreate     string `json:"dateCreate"`
+    	DateModify     string `json:"dateModify"`
+    	ID             b24.ID `json:"id"`
+    	ModifiedBy     int    `json:"modifiedBy"`
+    }
+    if err := json.Unmarshal(raw, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.CatalogGroupID, item.CreatedBy)
+    ```
+
 {% endlist %}
 
 ## Response Handling

@@ -230,6 +230,22 @@ Deleting an item with `id = 1`, belonging to the SPA with `entityTypeId = 1268`.
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.item.delete", b24.Params{
+    	"entityTypeId": 1268,
+    	"id":           1,
+    })
+    if err != nil {
+    	return fmt.Errorf("crm.item.delete: %w", err)
+    }
+
+    // The response is a list; unmarshal it into a struct matching the response shape below.
+    fmt.Printf("%s\n", res.Result)
+    ```
+
 {% endlist %}
 
 ## Response Handling

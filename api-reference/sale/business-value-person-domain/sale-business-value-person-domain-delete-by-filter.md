@@ -215,6 +215,27 @@ You can obtain the identifiers of payer types using the method [sale.persontype.
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "sale.businessValuePersonDomain.deleteByFilter", b24.Params{
+    	"fields": b24.Params{
+    		"personTypeId": 3,
+    		"domain":       "I",
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("sale.businessValuePersonDomain.deleteByFilter: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

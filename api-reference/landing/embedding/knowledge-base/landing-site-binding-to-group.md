@@ -212,6 +212,25 @@ Example of binding the Knowledge Base to a group, where:
     }
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "landing.site.bindingToGroup", b24.Params{
+    	"id":      32,
+    	"groupId": 174,
+    })
+    if err != nil {
+    	return fmt.Errorf("landing.site.bindingToGroup: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

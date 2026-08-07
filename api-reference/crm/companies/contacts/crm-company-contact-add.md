@@ -285,6 +285,29 @@ Defaults to `i + 10`, where `i` is the maximum sort index of existing links for 
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.company.contact.add", b24.Params{
+    	"id": 32,
+    	"fields": b24.Params{
+    		"CONTACT_ID": 54,
+    		"IS_PRIMARY": "Y",
+    		"SORT":       1000,
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("crm.company.contact.add: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

@@ -177,6 +177,25 @@ The new API call differs by adding the `/api/` segment to the request URL:
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "humanresources.node.count", nil)
+    if err != nil {
+    	return fmt.Errorf("humanresources.node.count: %w", err)
+    }
+
+    var item struct {
+    	Departments int `json:"departments"`
+    	Teams       int `json:"teams"`
+    }
+    if err := json.Unmarshal(res.Result, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.Departments, item.Teams)
+    ```
+
 {% endlist %}
 
 ## Response Handling

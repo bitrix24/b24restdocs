@@ -333,6 +333,38 @@ The table below applies to `params.filter.TYPE` and `params.filter.=TYPE`.
     echo '</pre>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "landing.site.getList", b24.Params{
+    	"params": b24.Params{
+    		"select": []string{"ID", "TITLE", "TYPE"},
+    		"filter": b24.Params{
+    			"=DELETED": "N",
+    		},
+    		"order": b24.Params{
+    			"ID": "DESC",
+    		},
+    	},
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("landing.site.getList: %w", err)
+    }
+
+    var items []struct {
+    	ID    b24.ID `json:"ID"`
+    	Title string `json:"TITLE"`
+    	Type  string `json:"TYPE"`
+    }
+    if err := json.Unmarshal(res.Result, &items); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    for _, it := range items {
+    	fmt.Println(it.ID, it.Title)
+    }
+    ```
+
 {% endlist %}
 
 ## Response Handling

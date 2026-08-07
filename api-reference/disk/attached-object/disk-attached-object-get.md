@@ -196,6 +196,31 @@ To obtain the connection identifier, use methods that return attached files. For
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "disk.attachedObject.get", b24.Params{
+    	"id": 495,
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("disk.attachedObject.get: %w", err)
+    }
+
+    var item struct {
+    	ID         b24.ID `json:"ID"`
+    	ObjectID   b24.ID `json:"OBJECT_ID"`
+    	ModuleID   string `json:"MODULE_ID"`
+    	EntityType string `json:"ENTITY_TYPE"`
+    	EntityID   b24.ID `json:"ENTITY_ID"`
+    	CreateTime string `json:"CREATE_TIME"`
+    }
+    if err := json.Unmarshal(res.Result, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.ID, item.ObjectID)
+    ```
+
 {% endlist %}
 
 ## Response Handling

@@ -75,6 +75,37 @@ We will use the [crm.contact.get](../../../api-reference/crm/contacts/crm-contac
    ).response
    ```
 
+- Go
+
+    ```go
+    res, err := core.Call(ctx, "crm.contact.get",
+    	b24.Params{"id": contactID}, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("crm.contact.get: %w", err)
+    }
+
+    // The phone and the responsible person are needed from the response. PHONE is a multifield: a list
+    // objects, even when there is a single number, and it arrives only if the contact
+    // has any phone numbers at all.
+    var contact struct {
+    	ID           b24.ID `json:"ID"`
+    	Name         string `json:"NAME"`
+    	LastName     string `json:"LAST_NAME"`
+    	AssignedByID b24.ID `json:"ASSIGNED_BY_ID"`
+    	Phone        []struct {
+    		ID        b24.ID `json:"ID"`
+    		Value     string `json:"VALUE"`
+    		ValueType string `json:"VALUE_TYPE"`
+    	} `json:"PHONE"`
+    }
+    if err := json.Unmarshal(res.Result, &contact); err != nil {
+    	return fmt.Errorf("parse contact: %w", err)
+    }
+    if len(contact.Phone) == 0 {
+    	return fmt.Errorf("contact %d has no phone number", contactID)
+    }
+    ```
+
 {% endlist %}
 
 As a result, we will obtain client data, including the phone `PHONE` and the ID of the responsible employee `ASSIGNED_BY_ID`.
@@ -261,6 +292,46 @@ To create an event, we will use the [crm.activity.add](../../../api-reference/cr
     ).response
     ```
 
+- Go
+
+    ```go
+    // The start and end times are in ISO 8601 format. Here it is a one-hour meeting,
+    // tomorrow at the same time.
+    start := time.Now().Add(24 * time.Hour)
+
+    res, err = core.Call(ctx, "crm.activity.add", b24.Params{
+    	"fields": b24.Params{
+    		"SUBJECT":     "calendar title",
+    		"DESCRIPTION": "calendar body",
+    		// 1 — plain text, 2 — HTML, 3 — BB code.
+    		"DESCRIPTION_TYPE": 3,
+    		"OWNER_ID":         contact.ID,
+    		"OWNER_TYPE_ID":    entityTypeContact,
+    		// 1 — a meeting; crm.enum.activitytype returns the full list.
+    		"TYPE_ID": 1,
+    		// COMMUNICATIONS links the activity to the client's contact details:
+    		// the value is taken from the PHONE multifield retrieved in step 1.
+    		"COMMUNICATIONS": []b24.Params{{
+    			"VALUE":          contact.Phone[0].Value,
+    			"ENTITY_ID":      contact.ID,
+    			"ENTITY_TYPE_ID": entityTypeContact,
+    		}},
+    		"START_TIME":     start.Format(time.RFC3339),
+    		"END_TIME":       start.Add(time.Hour).Format(time.RFC3339),
+    		"RESPONSIBLE_ID": contact.AssignedByID,
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("crm.activity.add: %w", err)
+    }
+
+    // There is no wrapper: result is the ID of the created activity itself.
+    var activityID b24.ID
+    if err := json.Unmarshal(res.Result, &activityID); err != nil {
+    	return fmt.Errorf("parse event ID: %w", err)
+    }
+    ```
+
 {% endlist %}
 
 If the event is created successfully, the method will return its ID. If you receive an `error`, refer to the documentation for the [crm.activity.add](../../../api-reference/crm/timeline/activities/activity-base/crm-activity-add.md) method to understand possible errors.
@@ -444,6 +515,159 @@ The example creates an activity "Meeting" in the CRM contact detail form and an 
             print({"message": "Activity add"})
         else:
             print({"message": "Activity not added"})
+    ```
+
+- Go
+
+    ```go
+    // Setup in an empty directory — go get will not work without go mod init:
+    //
+    //	go mod init example && go get github.com/bitrix24/b24gosdk
+    //
+    // Run:
+    //
+    //	export B24_WEBHOOK_URL='https://your-portal.bitrix24.com/rest/1/token/' && go run .
+    //
+    // The example is self-contained: it creates a contact with a phone number, reads its data,
+    // creates a calendar event linked to this contact and cleans up after itself.
+    // It runs on any portal, nothing needs to be edited.
+    package main
+
+    import (
+    	"context"
+    	"encoding/json"
+    	"fmt"
+    	"log"
+    	"os"
+    	"time"
+
+    	b24 "github.com/bitrix24/b24gosdk"
+    )
+
+    // entityTypeContact is the ID of the "contact" object type from crm.enum.ownertype.
+    const entityTypeContact = 3
+
+    func main() {
+    	if err := run(context.Background()); err != nil {
+    		log.Fatal(err)
+    	}
+    }
+
+    func run(ctx context.Context) error {
+    	// The webhook path is a secret, so it comes from the environment, not from the code.
+    	core := b24.NewClient(os.Getenv("B24_WEBHOOK_URL")).Core()
+
+    	// --- setup: our own contact with a phone number
+
+    	contactID, err := addContact(ctx, core)
+    	if err != nil {
+    		return err
+    	}
+    	defer del(ctx, core, "crm.contact.delete", b24.Params{"id": contactID})
+
+    	// --- step 1: the client data
+    	res, err := core.Call(ctx, "crm.contact.get",
+    		b24.Params{"id": contactID}, b24.WithIdempotent())
+    	if err != nil {
+    		return fmt.Errorf("crm.contact.get: %w", err)
+    	}
+
+    	// The phone and the responsible person are needed from the response. PHONE is a multifield: a list
+    	// objects, even when there is a single number, and it arrives only if the contact
+    	// has any phone numbers at all.
+    	var contact struct {
+    		ID           b24.ID `json:"ID"`
+    		Name         string `json:"NAME"`
+    		LastName     string `json:"LAST_NAME"`
+    		AssignedByID b24.ID `json:"ASSIGNED_BY_ID"`
+    		Phone        []struct {
+    			ID        b24.ID `json:"ID"`
+    			Value     string `json:"VALUE"`
+    			ValueType string `json:"VALUE_TYPE"`
+    		} `json:"PHONE"`
+    	}
+    	if err := json.Unmarshal(res.Result, &contact); err != nil {
+    		return fmt.Errorf("parse contact: %w", err)
+    	}
+    	if len(contact.Phone) == 0 {
+    		return fmt.Errorf("contact %d has no phone number", contactID)
+    	}
+    	fmt.Printf("contact %d %s %s, phone %s, responsible %d\n",
+    		contact.ID, contact.Name, contact.LastName, contact.Phone[0].Value, contact.AssignedByID)
+
+    	// --- step 2: the calendar event
+    	// The start and end times are in ISO 8601 format. Here it is a one-hour meeting,
+    	// tomorrow at the same time.
+    	start := time.Now().Add(24 * time.Hour)
+
+    	res, err = core.Call(ctx, "crm.activity.add", b24.Params{
+    		"fields": b24.Params{
+    			"SUBJECT":     "calendar title",
+    			"DESCRIPTION": "calendar body",
+    			// 1 — plain text, 2 — HTML, 3 — BB code.
+    			"DESCRIPTION_TYPE": 3,
+    			"OWNER_ID":         contact.ID,
+    			"OWNER_TYPE_ID":    entityTypeContact,
+    			// 1 — a meeting; crm.enum.activitytype returns the full list.
+    			"TYPE_ID": 1,
+    			// COMMUNICATIONS links the activity to the client's contact details:
+    			// the value is taken from the PHONE multifield retrieved in step 1.
+    			"COMMUNICATIONS": []b24.Params{{
+    				"VALUE":          contact.Phone[0].Value,
+    				"ENTITY_ID":      contact.ID,
+    				"ENTITY_TYPE_ID": entityTypeContact,
+    			}},
+    			"START_TIME":     start.Format(time.RFC3339),
+    			"END_TIME":       start.Add(time.Hour).Format(time.RFC3339),
+    			"RESPONSIBLE_ID": contact.AssignedByID,
+    		},
+    	})
+    	if err != nil {
+    		return fmt.Errorf("crm.activity.add: %w", err)
+    	}
+
+    	// There is no wrapper: result is the ID of the created activity itself.
+    	var activityID b24.ID
+    	if err := json.Unmarshal(res.Result, &activityID); err != nil {
+    		return fmt.Errorf("parse event ID: %w", err)
+    	}
+    	defer del(ctx, core, "crm.activity.delete", b24.Params{"id": activityID})
+
+    	fmt.Printf("event %d created for %s\n", activityID, start.Format("02.01.2006 15:04"))
+    	return nil
+    }
+
+    // --- helpers: data setup and cleanup
+
+    // addContact creates a contact with a phone number: the page takes a ready-made contact with
+    // with ID 1, but on someone else's portal that is a different person or nobody.
+    func addContact(ctx context.Context, core *b24.Core) (b24.ID, error) {
+    	res, err := core.Call(ctx, "crm.contact.add", b24.Params{
+    		"fields": b24.Params{
+    			"NAME":      "Klaus",
+    			"LAST_NAME": "Müller",
+    			// A multifield: a row without an ID ADDS a value. MultifieldAdd
+    			// assembles it for you, so you do not get lost in the keys.
+    			"PHONE": []map[string]any{
+    				b24.MultifieldAdd("+49 800 100-10-20", "MOBILE"),
+    			},
+    		},
+    	})
+    	if err != nil {
+    		return 0, fmt.Errorf("crm.contact.add: %w", err)
+    	}
+    	var id b24.ID
+    	return id, json.Unmarshal(res.Result, &id)
+    }
+
+    // del removes what was created. A cleanup error is printed but not returned: it must not
+    // mask the real error of the scenario.
+    func del(ctx context.Context, core *b24.Core, method string, params b24.Params) {
+    	if _, err := core.Call(ctx, method, params); err != nil {
+    		fmt.Fprintf(os.Stderr, "cleanup, %s: %v
+", method, err)
+    	}
+    }
     ```
 
 {% endlist %}

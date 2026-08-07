@@ -248,6 +248,43 @@ The method `catalog.document.element.add` adds a product item to the inventory d
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "catalog.document.element.add", b24.Params{
+    	"fields": b24.Params{
+    		"docId":           64,
+    		"elementId":       312,
+    		"storeTo":         2,
+    		"amount":          15,
+    		"purchasingPrice": 1250.5,
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("catalog.document.element.add: %w", err)
+    }
+
+    // The method wraps the response in an object with the "documentElement" key.
+    raw, ok := b24.Unwrap(res.Result, "documentElement")
+    if !ok {
+    	return fmt.Errorf("no documentElement key in the response")
+    }
+
+    var item struct {
+    	Amount          int     `json:"amount"`
+    	DocID           b24.ID  `json:"docId"`
+    	ElementID       b24.ID  `json:"elementId"`
+    	ID              b24.ID  `json:"id"`
+    	PurchasingPrice float64 `json:"purchasingPrice"`
+    	StoreTo         int     `json:"storeTo"`
+    }
+    if err := json.Unmarshal(raw, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.Amount, item.DocID)
+    ```
+
 {% endlist %}
 
 ## Response Handling

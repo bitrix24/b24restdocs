@@ -203,6 +203,29 @@ A list of available lines can be obtained using the [voximplant.line.get](./line
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "voximplant.infocall.startwithsound", b24.Params{
+    	"FROM_LINE": "reg151083",
+    	"TO_NUMBER": "79991234567",
+    	"URL":       "https://example.com/sound/notice.mp3",
+    })
+    if err != nil {
+    	return fmt.Errorf("voximplant.infocall.startwithsound: %w", err)
+    }
+
+    var item struct {
+    	Result bool   `json:"RESULT"`
+    	CallID string `json:"CALL_ID"`
+    }
+    if err := json.Unmarshal(res.Result, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.Result, item.CallID)
+    ```
+
 {% endlist %}
 
 ## Response Handling

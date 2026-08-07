@@ -271,6 +271,33 @@ Without this parameter, the method searches for the block only in the published 
     }
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "landing.block.getmanifest", b24.Params{
+    	"lid":   4858,
+    	"block": 39556,
+    	"params": b24.Params{
+    		"edit_mode": true,
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("landing.block.getmanifest: %w", err)
+    }
+
+    var item struct {
+    	Timestamp int    `json:"timestamp"`
+    	Namespace string `json:"namespace"`
+    	Code      string `json:"code"`
+    	Preview   string `json:"preview"`
+    }
+    if err := json.Unmarshal(res.Result, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.Timestamp, item.Namespace)
+    ```
+
 {% endlist %}
 
 ## Response Handling

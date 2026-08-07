@@ -574,6 +574,74 @@ Defaults to `N` ||
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "sale.payment.add", b24.Params{
+    	"fields": b24.Params{
+    		"orderId":             200,
+    		"paySystemId":         1,
+    		"paid":                "Y",
+    		"datePaid":            "2024-04-10T10:00:00",
+    		"empPaidId":           1,
+    		"psStatus":            "Y",
+    		"psStatusCode":        "",
+    		"psStatusDescription": "",
+    		"psStatusMessage":     "",
+    		"psSum":               100,
+    		"psCurrency":          "EUR",
+    		"psResponseDate":      "2024-04-10T10:00:00",
+    		"payVoucherNum":       "",
+    		"payVoucherDate":      "2024-04-10T10:00:00",
+    		"datePayBefore":       "2024-04-10T10:00:00",
+    		"dateBill":            "2024-04-10T10:00:00",
+    		"xmlId":               "",
+    		"sum":                 100,
+    		"companyId":           1,
+    		"payReturnNum":        "",
+    		"priceCod":            100,
+    		"payReturnDate":       "2024-04-10T10:00:00",
+    		"empReturnId":         1,
+    		"payReturnComment":    "",
+    		"responsibleId":       1,
+    		"empResponsibleId":    1,
+    		"isReturn":            "N",
+    		"comments":            "",
+    		"updated1c":           "N",
+    		"id1c":                "",
+    		"version1c":           "",
+    		"externalPayment":     "N",
+    		"psInvoiceId":         1,
+    		"marked":              "N",
+    		"reasonMarked":        "",
+    		"empMarkedId":         1,
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("sale.payment.add: %w", err)
+    }
+
+    // The method wraps the response in an object with the "payment" key.
+    raw, ok := b24.Unwrap(res.Result, "payment")
+    if !ok {
+    	return fmt.Errorf("no payment key in the response")
+    }
+
+    var item struct {
+    	AccountNumber string `json:"accountNumber"`
+    	Comments      string `json:"comments"`
+    	CompanyID     b24.ID `json:"companyId"`
+    	Currency      string `json:"currency"`
+    	DateBill      string `json:"dateBill"`
+    	DateMarked    string `json:"dateMarked"`
+    }
+    if err := json.Unmarshal(raw, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.AccountNumber, item.Comments)
+    ```
+
 {% endlist %}
 
 ## Response Handling

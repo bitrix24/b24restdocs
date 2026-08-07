@@ -202,6 +202,27 @@ The site identifier can be obtained using the method [landing.site.getList](./la
     }
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "landing.site.getPublicUrl", b24.Params{
+    	"id": []int{3, 135},
+    })
+    if err != nil {
+    	return fmt.Errorf("landing.site.getPublicUrl: %w", err)
+    }
+
+    var item struct {
+    	F3   string `json:"3"`
+    	F135 string `json:"135"`
+    }
+    if err := json.Unmarshal(res.Result, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.F3, item.F135)
+    ```
+
 {% endlist %}
 
 ## Response Handling

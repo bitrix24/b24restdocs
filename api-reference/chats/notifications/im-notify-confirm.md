@@ -196,6 +196,28 @@ For example, consider a notification that supports buttons:
         var_dump($result['result']);
     }
     ```
+
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "im.notify.confirm", b24.Params{
+    	"NOTIFY_ID":    288,
+    	"NOTIFY_VALUE": "Y",
+    })
+    if err != nil {
+    	return fmt.Errorf("im.notify.confirm: %w", err)
+    }
+
+    // The method wraps the response in an object with the "result_message" key.
+    raw, ok := b24.Unwrap(res.Result, "result_message")
+    if !ok {
+    	return fmt.Errorf("no result_message key in the response")
+    }
+
+    fmt.Printf("%s\n", raw)
+    ```
+
 {% endlist %}
 
 ## Response Handling

@@ -277,6 +277,40 @@ It is recommended to provide the same value as in `chat.id` of the [imconnector.
     );
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "imconnector.delete.messages", b24.Params{
+    	"CONNECTOR": "myconnector",
+    	"LINE":      107,
+    	"MESSAGES": []b24.Params{
+    		{
+    			"user": b24.Params{
+    				"id": "ext-user-42",
+    			},
+    			"message": b24.Params{
+    				"id": "ext-msg-1001",
+    			},
+    			"chat": b24.Params{
+    				"id": "channel-123",
+    			},
+    		},
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("imconnector.delete.messages: %w", err)
+    }
+
+    var item struct {
+    	Success bool `json:"SUCCESS"`
+    }
+    if err := json.Unmarshal(res.Result, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.Success)
+    ```
+
 {% endlist %}
 
 ## Response Handling

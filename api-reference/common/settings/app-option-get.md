@@ -173,6 +173,23 @@ The method `app.option.get` retrieves data linked to the application. If no inpu
     except Exception as error:
         print(f"Unexpected error: {error}")
     ```
+
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "app.option.get", b24.Params{
+    	"option": "data",
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("app.option.get: %w", err)
+    }
+
+    // The response arrives as json.RawMessage — unmarshal it
+    // into a struct matching the response shape shown below on this page.
+    fmt.Printf("%s\n", res.Result)
+    ```
+
 {% endlist %}
 
 ## Response Handling

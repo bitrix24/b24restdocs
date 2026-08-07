@@ -262,6 +262,42 @@ If not specified, it will be generated automatically ||
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "sale.basketproperties.add", b24.Params{
+    	"fields": b24.Params{
+    		"basketId": 6806,
+    		"name":     "Article",
+    		"value":    "4653-4877",
+    		"code":     "ARTICUL",
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("sale.basketproperties.add: %w", err)
+    }
+
+    // The method wraps the response in an object with the "basketProperty" key.
+    raw, ok := b24.Unwrap(res.Result, "basketProperty")
+    if !ok {
+    	return fmt.Errorf("no basketProperty key in the response")
+    }
+
+    var item struct {
+    	BasketID b24.ID `json:"basketId"`
+    	Code     string `json:"code"`
+    	ID       b24.ID `json:"id"`
+    	Name     string `json:"name"`
+    	Value    string `json:"value"`
+    	XmlID    string `json:"xmlId"`
+    }
+    if err := json.Unmarshal(raw, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.BasketID, item.Code)
+    ```
+
 {% endlist %}
 
 ## Response Handling

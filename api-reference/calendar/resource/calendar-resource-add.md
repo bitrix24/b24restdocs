@@ -175,6 +175,24 @@ This method adds a new resource.
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "calendar.resource.add", b24.Params{
+    	"name": "My resource title",
+    })
+    if err != nil {
+    	return fmt.Errorf("calendar.resource.add: %w", err)
+    }
+
+    var newID b24.ID
+    if err := json.Unmarshal(res.Result, &newID); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("id:", newID)
+    ```
+
 {% endlist %}
 
 ## Response Handling

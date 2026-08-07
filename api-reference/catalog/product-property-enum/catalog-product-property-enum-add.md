@@ -241,6 +241,43 @@ The method only adds values for properties of type `L` (list). If a `propertyId`
     print_r($result);
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "catalog.productPropertyEnum.add", b24.Params{
+    	"fields": b24.Params{
+    		"propertyId": 431,
+    		"value":      "Average",
+    		"xmlId":      "M",
+    		"def":        "Y",
+    		"sort":       100,
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("catalog.productPropertyEnum.add: %w", err)
+    }
+
+    // The method wraps the response in an object with the "productPropertyEnum" key.
+    raw, ok := b24.Unwrap(res.Result, "productPropertyEnum")
+    if !ok {
+    	return fmt.Errorf("no productPropertyEnum key in the response")
+    }
+
+    var item struct {
+    	Def        string `json:"def"`
+    	ID         b24.ID `json:"id"`
+    	PropertyID b24.ID `json:"propertyId"`
+    	Sort       int    `json:"sort"`
+    	Value      string `json:"value"`
+    	XmlID      string `json:"xmlId"`
+    }
+    if err := json.Unmarshal(raw, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.Def, item.ID)
+    ```
+
 {% endlist %}
 
 ## Response Handling

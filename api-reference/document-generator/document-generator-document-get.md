@@ -206,6 +206,37 @@ You can obtain the document ID after [creating a document](./document-generator-
   print_r($result);
   ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "documentgenerator.document.get", b24.Params{
+    	"id": 51,
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("documentgenerator.document.get: %w", err)
+    }
+
+    // The method wraps the response in an object with the "document" key.
+    raw, ok := b24.Unwrap(res.Result, "document")
+    if !ok {
+    	return fmt.Errorf("no document key in the response")
+    }
+
+    var item struct {
+    	DownloadUrl string `json:"downloadUrl"`
+    	PublicUrl   string `json:"publicUrl"`
+    	Title       string `json:"title"`
+    	Number      string `json:"number"`
+    	ID          b24.ID `json:"id"`
+    	CreateTime  string `json:"createTime"`
+    }
+    if err := json.Unmarshal(raw, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.DownloadUrl, item.PublicUrl)
+    ```
+
 {% endlist %}
 
 ## Response Handling

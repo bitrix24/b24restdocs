@@ -425,6 +425,43 @@ The formula for calculating the `start` parameter value:
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "lists.element.get", b24.Params{
+    	"IBLOCK_TYPE_ID": "lists",
+    	"IBLOCK_ID":      47,
+    	"ELEMENT_ID":     6999,
+    	"SELECT":         []string{"ID", "CODE", "NAME", "IBLOCK_SECTION_ID", "DATE_CREATE", "PROPERTY_951", "PROPERTY_1003"},
+    	"FILTER": b24.Params{
+    		"NAME":          "%Test%",
+    		"<=DATE_CREATE": "2025-12-31",
+    		">=DATE_CREATE": "2025-01-01",
+    	},
+    	"ELEMENT_ORDER": b24.Params{
+    		"NAME": "asc",
+    	},
+    	"start": 0,
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("lists.element.get: %w", err)
+    }
+
+    var items []struct {
+    	ID        b24.ID `json:"ID"`
+    	Name      string `json:"NAME"`
+    	CreatedBy string `json:"CREATED_BY"`
+    	Code      string `json:"CODE"`
+    }
+    if err := json.Unmarshal(res.Result, &items); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    for _, it := range items {
+    	fmt.Println(it.ID, it.Name)
+    }
+    ```
+
 {% endlist %}
 
 ## Response Handling

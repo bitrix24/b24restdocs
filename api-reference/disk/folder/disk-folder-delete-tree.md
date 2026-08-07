@@ -189,6 +189,24 @@ You cannot delete the root folder of the storage
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "disk.folder.deleteTree", b24.Params{
+    	"id": 8942,
+    })
+    if err != nil {
+    	return fmt.Errorf("disk.folder.deleteTree: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

@@ -264,6 +264,27 @@ The new API call differs by adding the `/api/` segment to the request URL:
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "note.collection.list", b24.Params{
+    	"pagination": b24.Params{
+    		"limit": 50,
+    		"afterCursor": b24.Params{
+    			"position": 100,
+    			"id":       42,
+    		},
+    	},
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("note.collection.list: %w", err)
+    }
+
+    // The response shape is shown below on this page.
+    fmt.Printf("%s\n", res.Result)
+    ```
+
 {% endlist %}
 
 ## Response Handling

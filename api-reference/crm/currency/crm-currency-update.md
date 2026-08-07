@@ -267,6 +267,27 @@ Refer to the [crm_currency_localization](../data-types.md#crm_currency_localizat
             print(f"Unexpected error: {error}")
         ```
 
+    - Go
+
+        ```go
+        // client and ctx are already created — see the Go SDK section
+        res, err := client.Core().Call(ctx, "crm.currency.update", b24.Params{
+        	"ID": "CNY",
+        	"fields": b24.Params{
+        		"AMOUNT": 15.3449,
+        	},
+        })
+        if err != nil {
+        	return fmt.Errorf("crm.currency.update: %w", err)
+        }
+
+        var ok bool
+        if err := json.Unmarshal(res.Result, &ok); err != nil {
+        	return fmt.Errorf("parse response: %w", err)
+        }
+        fmt.Println("done:", ok)
+        ```
+
     {% endlist %}
 
 2. Changing the localizations of the currency (using the example of the US dollar)
@@ -490,6 +511,44 @@ Refer to the [crm_currency_localization](../data-types.md#crm_currency_localizat
             print(f"Bitrix SDK Error: {error.message}")
         except Exception as error:
             print(f"Unexpected error: {error}")
+        ```
+
+    - Go
+
+        ```go
+        // client and ctx are already created — see the Go SDK section
+        res, err := client.Core().Call(ctx, "crm.currency.update", b24.Params{
+        	"ID": "USD",
+        	"fields": b24.Params{
+        		"LANG": b24.Params{
+        			"en": b24.Params{
+        				"DECIMALS":          2,
+        				"DEC_POINT":         ".",
+        				"FORMAT_STRING":     "$#",
+        				"FULL_NAME":         "US Dollar",
+        				"HIDE_ZERO":         "Y",
+        				"THOUSANDS_VARIANT": "S",
+        			},
+        			"de": b24.Params{
+        				"DECIMALS":          2,
+        				"DEC_POINT":         ".",
+        				"FORMAT_STRING":     "# $",
+        				"FULL_NAME":         "US-Dollar",
+        				"HIDE_ZERO":         "Y",
+        				"THOUSANDS_VARIANT": "C",
+        			},
+        		},
+        	},
+        })
+        if err != nil {
+        	return fmt.Errorf("crm.currency.update: %w", err)
+        }
+
+        var ok bool
+        if err := json.Unmarshal(res.Result, &ok); err != nil {
+        	return fmt.Errorf("parse response: %w", err)
+        }
+        fmt.Println("done:", ok)
         ```
 
     {% endlist %}

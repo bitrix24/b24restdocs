@@ -217,6 +217,26 @@ By default, the role `view_all` is used. ||
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "tasks.task.counters.get", b24.Params{
+    	"userId":  547,
+    	"groupId": 0,
+    	"type":    "view_all",
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("tasks.task.counters.get: %w", err)
+    }
+
+    keys, ok := b24.Keys(res.Result)
+    if !ok {
+    	return fmt.Errorf("expected an object in the response")
+    }
+    fmt.Println("fields in response:", len(keys))
+    ```
+
 {% endlist %}
 
 ## Response Handling

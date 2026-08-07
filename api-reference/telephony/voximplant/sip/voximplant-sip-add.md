@@ -254,6 +254,35 @@ You can connect no more than 10 cloud SIP lines. Exceeding this limit will retur
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "voximplant.sip.add", b24.Params{
+    	"TYPE":     "cloud",
+    	"TITLE":    "SIP line 1",
+    	"SERVER":   "sip.provider.com",
+    	"LOGIN":    "sip_user",
+    	"PASSWORD": "secret",
+    })
+    if err != nil {
+    	return fmt.Errorf("voximplant.sip.add: %w", err)
+    }
+
+    var item struct {
+    	ID       b24.ID `json:"ID"`
+    	Type     string `json:"TYPE"`
+    	ConfigID b24.ID `json:"CONFIG_ID"`
+    	RegID    b24.ID `json:"REG_ID"`
+    	Title    string `json:"TITLE"`
+    	Server   string `json:"SERVER"`
+    }
+    if err := json.Unmarshal(res.Result, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.ID, item.Type)
+    ```
+
 {% endlist %}
 
 

@@ -105,6 +105,24 @@ If not specified, the `id` of the current user is used
         echo '</PRE>';
         ```
 
+    - Go
+
+        ```go
+        // client and ctx are already created — see the Go SDK section
+        res, err := client.Core().Call(ctx, "crm.contact.details.configuration.reset", b24.Params{
+        	"scope": "C",
+        })
+        if err != nil {
+        	return fmt.Errorf("crm.contact.details.configuration.reset: %w", err)
+        }
+
+        var ok bool
+        if err := json.Unmarshal(res.Result, &ok); err != nil {
+        	return fmt.Errorf("parse response: %w", err)
+        }
+        fmt.Println("done:", ok)
+        ```
+
     {% endlist %}
 
 2. Reset Personal Configuration
@@ -195,6 +213,25 @@ If not specified, the `id` of the current user is used
             print(f"Bitrix SDK error: {error.message}")
         except Exception as error:
             print(f"Unexpected error: {error}")
+        ```
+
+    - Go
+
+        ```go
+        // client and ctx are already created — see the Go SDK section
+        res, err := client.Core().Call(ctx, "crm.contact.details.configuration.reset", b24.Params{
+        	"scope":  "P",
+        	"userId": 6,
+        })
+        if err != nil {
+        	return fmt.Errorf("crm.contact.details.configuration.reset: %w", err)
+        }
+
+        var ok bool
+        if err := json.Unmarshal(res.Result, &ok); err != nil {
+        	return fmt.Errorf("parse response: %w", err)
+        }
+        fmt.Println("done:", ok)
         ```
 
     {% endlist %}

@@ -304,6 +304,40 @@ The new API call differs by adding the `/api/` segment to the request URL:
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "humanresources.node.children", b24.Params{
+    	"id":     1,
+    	"select": []string{"id", "name", "type", "structureId", "parentId", "description", "accessCode", "userCount", "colorName", "xmlId", "createdAt", "updatedAt"},
+    })
+    if err != nil {
+    	return fmt.Errorf("humanresources.node.children: %w", err)
+    }
+
+    // The method wraps the response in an object with the "items" key.
+    raw, ok := b24.Unwrap(res.Result, "items")
+    if !ok {
+    	return fmt.Errorf("no items key in the response")
+    }
+
+    var items []struct {
+    	ID          b24.ID `json:"id"`
+    	Name        string `json:"name"`
+    	Type        string `json:"type"`
+    	StructureID b24.ID `json:"structureId"`
+    	ParentID    b24.ID `json:"parentId"`
+    	Description string `json:"description"`
+    }
+    if err := json.Unmarshal(raw, &items); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    for _, it := range items {
+    	fmt.Println(it.ID)
+    }
+    ```
+
 {% endlist %}
 
 ## Response Handling

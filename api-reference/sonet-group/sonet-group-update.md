@@ -242,6 +242,25 @@ To delete the avatar, pass `IMAGE_FILE_ID: 0`. The avatar will be removed even i
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "sonet_group.update", b24.Params{
+    	"GROUP_ID": 77,
+    	"NAME":     "New project title",
+    })
+    if err != nil {
+    	return fmt.Errorf("sonet_group.update: %w", err)
+    }
+
+    var value b24.ID
+    if err := json.Unmarshal(res.Result, &value); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("result:", value)
+    ```
+
 {% endlist %}
 
 ## Response Handling

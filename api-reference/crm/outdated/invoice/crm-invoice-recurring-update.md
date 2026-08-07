@@ -207,4 +207,33 @@ To find out the required format for the fields, execute the method [crm.invoice.
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.invoice.recurring.update", b24.Params{
+    	"id": "your_recurring_invoice_id",
+    	"fields": b24.Params{
+    		"SEND_BILL": "Y",
+    		"EMAIL_ID":  136,
+    		"PARAMS": b24.Params{
+    			"MODE":                         "month",
+    			"TYPE":                         2,
+    			"INTERVAL":                     3,
+    			"WEEKDAY":                      "Monday",
+    			"NUM_WEEKDAY_IN_MONTH":         4,
+    			"DATE_PAY_BEFORE_OFFSET_TYPE":  "day",
+    			"DATE_PAY_BEFORE_OFFSET_VALUE": 15,
+    		},
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("crm.invoice.recurring.update: %w", err)
+    }
+
+    // The response arrives as json.RawMessage — unmarshal it
+    // into a struct matching the response shape shown below on this page.
+    fmt.Printf("%s\n", res.Result)
+    ```
+
 {% endlist %}

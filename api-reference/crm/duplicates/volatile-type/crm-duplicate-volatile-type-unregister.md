@@ -206,6 +206,24 @@ The method `crm.duplicate.volatileType.unregister` removes a custom field from t
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.duplicate.volatileType.unregister", b24.Params{
+    	"id": 101,
+    })
+    if err != nil {
+    	return fmt.Errorf("crm.duplicate.volatileType.unregister: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

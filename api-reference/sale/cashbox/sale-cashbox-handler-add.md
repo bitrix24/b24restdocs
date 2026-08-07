@@ -510,6 +510,66 @@ Default value: `N`
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "sale.cashbox.handler.add", b24.Params{
+    	"CODE":            "restcashbox01",
+    	"NAME":            "REST-Cashbox 01",
+    	"SORT":            100,
+    	"SUPPORTS_FFD105": "Y",
+    	"SETTINGS": b24.Params{
+    		"PRINT_URL":    "http://example.com/rest_print.php",
+    		"CHECK_URL":    "http://example.com/rest_check.php",
+    		"HTTP_VERSION": "1.1",
+    		"CONFIG": b24.Params{
+    			"AUTH": b24.Params{
+    				"LABEL": "Authorization",
+    				"ITEMS": b24.Params{
+    					"KEYWORD": b24.Params{
+    						"TYPE":  "STRING",
+    						"LABEL": "Password",
+    					},
+    					"PREFERENCE": b24.Params{
+    						"TYPE":     "ENUM",
+    						"LABEL":    "Multiple Choice",
+    						"REQUIRED": "Y",
+    						"OPTIONS": b24.Params{
+    							"FIRST":  "First",
+    							"SECOND": "Second",
+    							"THIRD":  "Third",
+    						},
+    					},
+    				},
+    			},
+    			"INTERACTION": b24.Params{
+    				"LABEL": "Interaction Settings with Cashbox",
+    				"ITEMS": b24.Params{
+    					"MODE": b24.Params{
+    						"TYPE":  "ENUM",
+    						"LABEL": "Cashbox Operating Mode",
+    						"OPTIONS": b24.Params{
+    							"ACTIVE": "live",
+    							"TEST":   "test",
+    						},
+    					},
+    				},
+    			},
+    		},
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("sale.cashbox.handler.add: %w", err)
+    }
+
+    var newID b24.ID
+    if err := json.Unmarshal(res.Result, &newID); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("id:", newID)
+    ```
+
 {% endlist %}
 
 {% note tip "Typical use-cases and scenarios" %}

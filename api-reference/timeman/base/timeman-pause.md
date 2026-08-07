@@ -199,6 +199,31 @@ By default — the identifier of the current user ||
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "timeman.pause", b24.Params{
+    	"USER_ID": 503,
+    })
+    if err != nil {
+    	return fmt.Errorf("timeman.pause: %w", err)
+    }
+
+    var item struct {
+    	Status    string `json:"STATUS"`
+    	TimeStart string `json:"TIME_START"`
+    	Duration  string `json:"DURATION"`
+    	TimeLeaks string `json:"TIME_LEAKS"`
+    	Active    bool   `json:"ACTIVE"`
+    	IPOpen    string `json:"IP_OPEN"`
+    }
+    if err := json.Unmarshal(res.Result, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.Status, item.TimeStart)
+    ```
+
 {% endlist %}
 
 ## Response Handling

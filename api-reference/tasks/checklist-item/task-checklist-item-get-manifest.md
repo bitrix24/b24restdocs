@@ -165,6 +165,26 @@ No parameters.
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "task.checklistitem.getmanifest", nil)
+    if err != nil {
+    	return fmt.Errorf("task.checklistitem.getmanifest: %w", err)
+    }
+
+    var item struct {
+    	ManifestVersion           string `json:"Manifest version"`
+    	Warning                   string `json:"Warning"`
+    	RestShortnameAliasToClass string `json:"REST: shortname alias to class"`
+    }
+    if err := json.Unmarshal(res.Result, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.ManifestVersion, item.Warning)
+    ```
+
 {% endlist %}
 
 ## Response Handling

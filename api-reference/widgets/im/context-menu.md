@@ -345,6 +345,37 @@ Possible values:
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "placement.bind", b24.Params{
+    	"PLACEMENT": "IM_CONTEXT_MENU",
+    	"HANDLER":   "https://your-domain.com/widgets/im-context-menu-handler.php",
+    	"TITLE":     "My menu item",
+    	"LANG_ALL": b24.Params{
+    		"ru": b24.Params{
+    			"TITLE": "My menu item",
+    		},
+    		"en": b24.Params{
+    			"TITLE": "My menu item",
+    		},
+    	},
+    	"OPTIONS": b24.Params{
+    		"context":  "ALL",
+    		"role":     "USER",
+    		"extranet": "N",
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("placement.bind: %w", err)
+    }
+
+    // The response arrives as json.RawMessage — unmarshal it
+    // into a struct matching the response shape shown below on this page.
+    fmt.Printf("%s\n", res.Result)
+    ```
+
 {% endlist %}
 
 ## Continue Learning

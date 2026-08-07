@@ -545,6 +545,59 @@ Priority of timezone parameter processing:
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "calendar.event.add", b24.Params{
+    	"type":          "user",
+    	"ownerId":       2,
+    	"name":          "New Event Name",
+    	"description":   "Description for event",
+    	"from":          "2024-06-14",
+    	"to":            "2024-06-14",
+    	"skip_time":     "Y",
+    	"section":       5,
+    	"color":         "#9cbe1c",
+    	"text_color":    "#283033",
+    	"accessibility": "absent",
+    	"importance":    "normal",
+    	"is_meeting":    "Y",
+    	"private_event": "N",
+    	"remind": []b24.Params{
+    		{
+    			"type":  "min",
+    			"count": 20,
+    		},
+    	},
+    	"location":  "London",
+    	"attendees": []int{1, 2, 3},
+    	"host":      2,
+    	"meeting": b24.Params{
+    		"notify":       true,
+    		"reinvite":     false,
+    		"allow_invite": false,
+    		"hide_guests":  false,
+    	},
+    	"rrule": b24.Params{
+    		"FREQ":     "WEEKLY",
+    		"BYDAY":    []string{"MO", "WE"},
+    		"COUNT":    10,
+    		"INTERVAL": 1,
+    	},
+    	"crm_fields": []string{"C_5", "L_11"},
+    })
+    if err != nil {
+    	return fmt.Errorf("calendar.event.add: %w", err)
+    }
+
+    var newID b24.ID
+    if err := json.Unmarshal(res.Result, &newID); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("id:", newID)
+    ```
+
 {% endlist %}
 
 
@@ -871,6 +924,60 @@ Priority of timezone parameter processing:
         echo 'Event added successfully: ';
         print_r($result['result']); // Successful event addition
     }
+    ```
+
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "calendar.event.add", b24.Params{
+    	"type":          "company_calendar",
+    	"ownerId":       "",
+    	"from":          "2025-01-31T18:00:00",
+    	"to":            "2025-01-31T20:00:00",
+    	"section":       1,
+    	"name":          "Important Meeting",
+    	"skip_time":     "N",
+    	"timezone_from": "Europe/Berlin",
+    	"timezone_to":   "Europe/Berlin",
+    	"description":   "Event description",
+    	"color":         "#FF0000",
+    	"text_color":    "#000000",
+    	"accessibility": "busy",
+    	"importance":    "high",
+    	"private_event": "N",
+    	"rrule": b24.Params{
+    		"FREQ":     "WEEKLY",
+    		"COUNT":    10,
+    		"INTERVAL": 1,
+    		"BYDAY":    []string{"MO", "WE", "FR"},
+    	},
+    	"is_meeting": "Y",
+    	"location":   "Conference Room",
+    	"remind": []b24.Params{
+    		{
+    			"type":  "min",
+    			"count": 30,
+    		},
+    	},
+    	"attendees": []int{29, 93},
+    	"host":      1,
+    	"meeting": b24.Params{
+    		"notify":       true,
+    		"reinvite":     false,
+    		"allow_invite": true,
+    		"hide_guests":  false,
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("calendar.event.add: %w", err)
+    }
+
+    var newID b24.ID
+    if err := json.Unmarshal(res.Result, &newID); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("id:", newID)
     ```
 
 {% endlist %}

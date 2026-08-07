@@ -234,6 +234,39 @@ To obtain vendor identifiers:
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "catalog.documentcontractor.add", b24.Params{
+    	"fields": b24.Params{
+    		"documentId":   42,
+    		"entityTypeId": 3,
+    		"entityId":     101,
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("catalog.documentcontractor.add: %w", err)
+    }
+
+    // The method wraps the response in an object with the "documentContractor" key.
+    raw, ok := b24.Unwrap(res.Result, "documentContractor")
+    if !ok {
+    	return fmt.Errorf("no documentContractor key in the response")
+    }
+
+    var item struct {
+    	DocumentID   b24.ID `json:"documentId"`
+    	EntityID     b24.ID `json:"entityId"`
+    	EntityTypeID b24.ID `json:"entityTypeId"`
+    	ID           b24.ID `json:"id"`
+    }
+    if err := json.Unmarshal(raw, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.DocumentID, item.EntityID)
+    ```
+
 {% endlist %}
 
 ## Response Handling

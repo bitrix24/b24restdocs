@@ -293,6 +293,39 @@ The identifier can be obtained using the method [tasks.api.scrum.sprint.get](./t
     }
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "tasks.api.scrum.sprint.add", b24.Params{
+    	"fields": b24.Params{
+    		"name":      "Sprint 1",
+    		"groupId":   1,
+    		"createdBy": 1,
+    		"sort":      1,
+    		"status":    "planned",
+    		"dateStart": "2021-11-22T00:00:00+02:00",
+    		"dateEnd":   "2021-11-29T00:00:00+02:00",
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("tasks.api.scrum.sprint.add: %w", err)
+    }
+
+    var item struct {
+    	ID         b24.ID `json:"id"`
+    	GroupID    b24.ID `json:"groupId"`
+    	EntityType string `json:"entityType"`
+    	Name       string `json:"name"`
+    	Goal       string `json:"goal"`
+    	Sort       int    `json:"sort"`
+    }
+    if err := json.Unmarshal(res.Result, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.ID, item.GroupID)
+    ```
+
 {% endlist %}
 
 ## Response Handling

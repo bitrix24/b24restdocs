@@ -551,6 +551,46 @@ The formula for calculating the `start` parameter value:
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "sale.shipment.list", b24.Params{
+    	"select": []string{"id", "accountNumber", "allowDelivery", "basePriceDelivery", "canceled", "comments", "companyId", "currency", "customPriceDelivery", "dateAllowDelivery", "dateCanceled", "dateDeducted", "dateInsert", "dateMarked", "dateResponsibleId", "deducted", "deliveryDocDate", "deliveryDocNum", "deliveryId", "deliveryName", "deliveryXmlId", "discountPrice", "empAllowDeliveryId", "empCanceledId", "empDeductedId", "empMarkedId", "empResponsibleId", "externalDelivery", "id1c", "marked", "orderId", "priceDelivery", "reasonMarked", "reasonUndoDeducted", "responsibleId", "statusId", "statusXmlId", "system", "trackingDescription", "trackingLastCheck", "trackingNumber", "trackingStatus", "updated1c", "version1c", "xmlId"},
+    	"filter": b24.Params{
+    		"@orderId": []int{2069, 2070},
+    		">=id":     2464,
+    	},
+    	"order": b24.Params{
+    		"id": "desc",
+    	},
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("sale.shipment.list: %w", err)
+    }
+
+    // The method wraps the response in an object with the "shipments" key.
+    raw, ok := b24.Unwrap(res.Result, "shipments")
+    if !ok {
+    	return fmt.Errorf("no shipments key in the response")
+    }
+
+    var items []struct {
+    	AccountNumber     string `json:"accountNumber"`
+    	AllowDelivery     string `json:"allowDelivery"`
+    	BasePriceDelivery int    `json:"basePriceDelivery"`
+    	Canceled          string `json:"canceled"`
+    	Comments          string `json:"comments"`
+    	CompanyID         b24.ID `json:"companyId"`
+    }
+    if err := json.Unmarshal(raw, &items); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    for _, it := range items {
+    	fmt.Println(it.AccountNumber)
+    }
+    ```
+
 {% endlist %}
 
 ## Successful Response

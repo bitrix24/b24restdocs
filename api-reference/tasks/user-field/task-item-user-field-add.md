@@ -414,6 +414,39 @@ The fields of the `SETTINGS` object depend on the `USER_TYPE_ID` type.
     print_r($result);
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "task.item.userfield.add", b24.Params{
+    	"PARAMS": b24.Params{
+    		"USER_TYPE_ID": "string",
+    		"FIELD_NAME":   "UF_TASK_CLIENT_REQUEST",
+    		"XML_ID":       "UF_TASK_CLIENT_REQUEST",
+    		"EDIT_FORM_LABEL": b24.Params{
+    			"en": "Client request",
+    		},
+    		"LABEL":     "Client request",
+    		"SORT":      220,
+    		"MULTIPLE":  "N",
+    		"MANDATORY": "Y",
+    		"SETTINGS": b24.Params{
+    			"DEFAULT_VALUE": "Clarify the goal and expected result",
+    			"ROWS":          10,
+    		},
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("task.item.userfield.add: %w", err)
+    }
+
+    var newID b24.ID
+    if err := json.Unmarshal(res.Result, &newID); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("id:", newID)
+    ```
+
 {% endlist %}
 
 ## Response Handling

@@ -202,6 +202,24 @@ Example of retrieving the placements available to the application, where:
     echo '</pre>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "placement.list", b24.Params{
+    	"SCOPE": "crm",
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("placement.list: %w", err)
+    }
+
+    var items []string
+    if err := json.Unmarshal(res.Result, &items); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("received:", len(items))
+    ```
+
 {% endlist %}
 
 ## Response Handling

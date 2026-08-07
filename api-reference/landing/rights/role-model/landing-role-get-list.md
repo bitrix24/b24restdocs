@@ -217,6 +217,30 @@ By default, the method returns roles for sites and online stores. This will be t
     }
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "landing.role.getList", b24.Params{
+    	"scope": "KNOWLEDGE",
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("landing.role.getList: %w", err)
+    }
+
+    var items []struct {
+    	ID    b24.ID `json:"ID"`
+    	Title string `json:"TITLE"`
+    	XMLID string `json:"XML_ID"`
+    }
+    if err := json.Unmarshal(res.Result, &items); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    for _, it := range items {
+    	fmt.Println(it.ID, it.Title)
+    }
+    ```
+
 {% endlist %}
 
 ## Response Handling

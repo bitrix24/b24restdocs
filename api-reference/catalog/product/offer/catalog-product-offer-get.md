@@ -232,6 +232,37 @@ To get the prices of variations, use the methods [catalog.price.*](../../price/i
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "catalog.product.offer.get", b24.Params{
+    	"id": 1286,
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("catalog.product.offer.get: %w", err)
+    }
+
+    // The method wraps the response in an object with the "offer" key.
+    raw, ok := b24.Unwrap(res.Result, "offer")
+    if !ok {
+    	return fmt.Errorf("no offer key in the response")
+    }
+
+    var item struct {
+    	Active     string `json:"active"`
+    	Available  string `json:"available"`
+    	Bundle     string `json:"bundle"`
+    	CanBuyZero string `json:"canBuyZero"`
+    	Code       string `json:"code"`
+    	CreatedBy  int    `json:"createdBy"`
+    }
+    if err := json.Unmarshal(raw, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.Active, item.Available)
+    ```
+
 {% endlist %}
 
 ## Response Handling

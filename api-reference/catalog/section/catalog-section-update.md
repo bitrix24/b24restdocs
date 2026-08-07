@@ -279,6 +279,43 @@ Can be used to synchronize the current catalog section with a similar position i
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "catalog.section.update", b24.Params{
+    	"id": 32,
+    	"fields": b24.Params{
+    		"iblockId":        14,
+    		"name":            "Children",
+    		"description":     "<H1>Children",
+    		"descriptionType": "html",
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("catalog.section.update: %w", err)
+    }
+
+    // The method wraps the response in an object with the "section" key.
+    raw, ok := b24.Unwrap(res.Result, "section")
+    if !ok {
+    	return fmt.Errorf("no section key in the response")
+    }
+
+    var item struct {
+    	Active          string `json:"active"`
+    	Code            string `json:"code"`
+    	Description     string `json:"description"`
+    	DescriptionType string `json:"descriptionType"`
+    	IblockID        b24.ID `json:"iblockId"`
+    	IblockSectionID b24.ID `json:"iblockSectionId"`
+    }
+    if err := json.Unmarshal(raw, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.Active, item.Code)
+    ```
+
 {% endlist %}
 
 ## Response Handling

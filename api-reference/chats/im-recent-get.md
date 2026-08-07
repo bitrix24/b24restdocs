@@ -245,6 +245,34 @@ The retrieval returns data no older than 7 days ||
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "im.recent.get", b24.Params{
+    	"SKIP_OPENLINES": "Y",
+    	"LAST_UPDATE":    "2026-02-25T18:30:00+01:00",
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("im.recent.get: %w", err)
+    }
+
+    var items []struct {
+    	ID      string `json:"id"`
+    	ChatID  int    `json:"chat_id"`
+    	Type    string `json:"type"`
+    	Title   string `json:"title"`
+    	Counter int    `json:"counter"`
+    	LastID  int    `json:"last_id"`
+    }
+    if err := json.Unmarshal(res.Result, &items); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    for _, it := range items {
+    	fmt.Println(it.ID, it.ChatID)
+    }
+    ```
+
 {% endlist %}
 
 ## Response Handling

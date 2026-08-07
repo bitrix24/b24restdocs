@@ -199,6 +199,25 @@ The user identifier can be obtained using the [get user list](../user/user-get.m
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "tasks.task.delegate", b24.Params{
+    	"taskId": 8017,
+    	"userId": 547,
+    })
+    if err != nil {
+    	return fmt.Errorf("tasks.task.delegate: %w", err)
+    }
+
+    keys, ok := b24.Keys(res.Result)
+    if !ok {
+    	return fmt.Errorf("expected an object in the response")
+    }
+    fmt.Println("fields in response:", len(keys))
+    ```
+
 {% endlist %}
 
 ## Response Handling

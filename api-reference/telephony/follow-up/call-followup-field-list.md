@@ -219,6 +219,36 @@ The new API call differs by adding the `/api/` parameter to the request:
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "call.followup.field.list", b24.Params{
+    	"select": []string{"name", "type", "description"},
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("call.followup.field.list: %w", err)
+    }
+
+    // The method wraps the response in an object with the "items" key.
+    raw, ok := b24.Unwrap(res.Result, "items")
+    if !ok {
+    	return fmt.Errorf("no items key in the response")
+    }
+
+    var items []struct {
+    	Name        string `json:"name"`
+    	Type        string `json:"type"`
+    	Description string `json:"description"`
+    }
+    if err := json.Unmarshal(raw, &items); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    for _, it := range items {
+    	fmt.Println(it.Name)
+    }
+    ```
+
 {% endlist %}
 
 ## Response Handling

@@ -178,6 +178,37 @@ No parameters.
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "biconnector.source.fields", nil, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("biconnector.source.fields: %w", err)
+    }
+
+    // The method wraps the response in an object with the "fields" key.
+    raw, ok := b24.Unwrap(res.Result, "fields")
+    if !ok {
+    	return fmt.Errorf("no fields key in the response")
+    }
+
+    var items []struct {
+    	Title       string `json:"title"`
+    	Type        string `json:"type"`
+    	IsRequired  bool   `json:"isRequired"`
+    	IsReadOnly  bool   `json:"isReadOnly"`
+    	IsImmutable bool   `json:"isImmutable"`
+    	IsMultiple  bool   `json:"isMultiple"`
+    }
+    if err := json.Unmarshal(raw, &items); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    for _, it := range items {
+    	fmt.Println(it.Title)
+    }
+    ```
+
 {% endlist %}
 
 ## Response Handling

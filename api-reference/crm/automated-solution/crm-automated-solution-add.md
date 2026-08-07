@@ -254,6 +254,37 @@ A digital workspace without SPAs will not be displayed in the left menu. However
         except Exception as error:
             print(f"Unexpected error: {error}")
         ```
+
+    - Go
+
+        ```go
+        // client and ctx are already created — see the Go SDK section
+        res, err := client.Core().Call(ctx, "crm.automatedsolution.add", b24.Params{
+        	"fields": b24.Params{
+        		"title":   "HR",
+        		"typeIds": []int{1, 2, 3},
+        	},
+        })
+        if err != nil {
+        	return fmt.Errorf("crm.automatedsolution.add: %w", err)
+        }
+
+        // The method wraps the response in an object with the "automatedSolution" key.
+        raw, ok := b24.Unwrap(res.Result, "automatedSolution")
+        if !ok {
+        	return fmt.Errorf("no automatedSolution key in the response")
+        }
+
+        var item struct {
+        	ID    b24.ID `json:"id"`
+        	Title string `json:"title"`
+        }
+        if err := json.Unmarshal(raw, &item); err != nil {
+        	return fmt.Errorf("parse response: %w", err)
+        }
+        fmt.Println(item.ID, item.Title)
+        ```
+
     {% endlist %}
 
 2. Create a digital workspace without SPAs
@@ -380,6 +411,35 @@ A digital workspace without SPAs will not be displayed in the left menu. However
         echo '<PRE>';
         print_r($result);
         echo '</PRE>';
+        ```
+
+    - Go
+
+        ```go
+        // client and ctx are already created — see the Go SDK section
+        res, err := client.Core().Call(ctx, "crm.automatedsolution.add", b24.Params{
+        	"fields": b24.Params{
+        		"title": "HR",
+        	},
+        })
+        if err != nil {
+        	return fmt.Errorf("crm.automatedsolution.add: %w", err)
+        }
+
+        // The method wraps the response in an object with the "automatedSolution" key.
+        raw, ok := b24.Unwrap(res.Result, "automatedSolution")
+        if !ok {
+        	return fmt.Errorf("no automatedSolution key in the response")
+        }
+
+        var item struct {
+        	ID    b24.ID `json:"id"`
+        	Title string `json:"title"`
+        }
+        if err := json.Unmarshal(raw, &item); err != nil {
+        	return fmt.Errorf("parse response: %w", err)
+        }
+        fmt.Println(item.ID, item.Title)
         ```
 
     {% endlist %}

@@ -275,6 +275,32 @@ For `SONET_GROUP_DETAIL_TAB`, the context includes the key:
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "placement.bind", b24.Params{
+    	"PLACEMENT": "SONET_GROUP_DETAIL_TAB",
+    	"HANDLER":   "https://your-domain.com/widgets/sonet-group-detail-tab-handler.php",
+    	"TITLE":     "My group section",
+    	"LANG_ALL": b24.Params{
+    		"ru": b24.Params{
+    			"TITLE": "My group section",
+    		},
+    		"en": b24.Params{
+    			"TITLE": "My group section",
+    		},
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("placement.bind: %w", err)
+    }
+
+    // The response arrives as json.RawMessage — unmarshal it
+    // into a struct matching the response shape shown below on this page.
+    fmt.Printf("%s\n", res.Result)
+    ```
+
 {% endlist %}
 
 ## Continue Learning

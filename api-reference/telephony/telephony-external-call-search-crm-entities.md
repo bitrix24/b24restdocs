@@ -199,6 +199,31 @@ The method `telephony.externalCall.searchCrmEntities` returns CRM entities based
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "telephony.externalCall.searchCrmEntities", b24.Params{
+    	"PHONE_NUMBER": "79062195047",
+    })
+    if err != nil {
+    	return fmt.Errorf("telephony.externalCall.searchCrmEntities: %w", err)
+    }
+
+    var items []struct {
+    	CRMEntityType string `json:"CRM_ENTITY_TYPE"`
+    	CRMEntityID   b24.ID `json:"CRM_ENTITY_ID"`
+    	AssignedByID  b24.ID `json:"ASSIGNED_BY_ID"`
+    	Name          string `json:"NAME"`
+    }
+    if err := json.Unmarshal(res.Result, &items); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    for _, it := range items {
+    	fmt.Println(it.CRMEntityType, it.CRMEntityID)
+    }
+    ```
+
 {% endlist %}
 
 ## Response Handling

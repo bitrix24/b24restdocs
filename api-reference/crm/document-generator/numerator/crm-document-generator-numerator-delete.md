@@ -208,6 +208,22 @@ Example of deleting a numerator with `id = 47`.
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.documentgenerator.numerator.delete", b24.Params{
+    	"id": 47,
+    })
+    if err != nil {
+    	return fmt.Errorf("crm.documentgenerator.numerator.delete: %w", err)
+    }
+
+    // The response arrives as json.RawMessage — unmarshal it
+    // into a struct matching the response shape shown below on this page.
+    fmt.Printf("%s\n", res.Result)
+    ```
+
 {% endlist %}
 
 ## Response Handling

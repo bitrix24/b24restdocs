@@ -301,6 +301,39 @@ Retrieve information about a lead with `id = 250`
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.item.get", b24.Params{
+    	"entityTypeId":       1,
+    	"id":                 250,
+    	"useOriginalUfNames": "N",
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("crm.item.get: %w", err)
+    }
+
+    // The method wraps the response in an object with the "item" key.
+    raw, ok := b24.Unwrap(res.Result, "item")
+    if !ok {
+    	return fmt.Errorf("no item key in the response")
+    }
+
+    var item struct {
+    	ID           b24.ID `json:"id"`
+    	CreatedTime  string `json:"createdTime"`
+    	UpdatedTime  string `json:"updatedTime"`
+    	CreatedBy    int    `json:"createdBy"`
+    	UpdatedBy    int    `json:"updatedBy"`
+    	AssignedByID b24.ID `json:"assignedById"`
+    }
+    if err := json.Unmarshal(raw, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.ID, item.CreatedTime)
+    ```
+
 {% endlist %}
 
 ## Response Handling

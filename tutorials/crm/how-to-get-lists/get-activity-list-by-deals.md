@@ -77,6 +77,26 @@ To get the identifier of the current user, we will use the [user.current](../../
     result = client.user.current().response.result
     ```
 
+- Go
+
+    ```go
+    res, err := core.Call(ctx, "user.current", nil, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("user.current: %w", err)
+    }
+
+    // The ID arrives AS A STRING ("29"): b24.ID parses both a number and a string
+    // containing a number, a plain int fails here.
+    var me struct {
+    	ID       b24.ID `json:"ID"`
+    	Name     string `json:"NAME"`
+    	LastName string `json:"LAST_NAME"`
+    }
+    if err := json.Unmarshal(res.Result, &me); err != nil {
+    	return fmt.Errorf("parse the current user: %w", err)
+    }
+    ```
+
 {% endlist %}
 
 As a result, we will receive the user identifier `"ID": "29"`.
@@ -147,6 +167,47 @@ To make the request faster and return only relevant data, add a filter by stages
         select=["id", "title"],
         filter={"assignedById": 29},
     ).response.result
+    ```
+
+- Go
+
+    ```go
+    // A list method returns at most 50 records per request. Pages walks
+    // the cursor itself: the ABSENCE of next ends the list, because next: 0 is
+    // is a legitimate first offset rather than a sign of the end.
+    pager, err := core.Pages("crm.item.list", b24.Params{
+    	"entityTypeId": entityTypeDeal,
+    	"select":       []string{"id", "title"},
+    	"filter":       b24.Params{"assignedById": me.ID},
+    }, b24.WithCallOptions(b24.WithIdempotent()))
+    if err != nil {
+    	return fmt.Errorf("crm.item.list: %w", err)
+    }
+
+    var deals []struct {
+    	ID    int    `json:"id"`
+    	Title string `json:"title"`
+    }
+    for pager.Next(ctx) {
+    	for _, row := range pager.Rows() {
+    		var d struct {
+    			ID    int    `json:"id"`
+    			Title string `json:"title"`
+    		}
+    		if err := json.Unmarshal(row, &d); err != nil {
+    			return fmt.Errorf("parse deal: %w", err)
+    		}
+    		deals = append(deals, d)
+    	}
+    	if len(deals) >= maxDeals {
+    		break
+    	}
+    }
+    // The error surfaces HERE, after the loop: Next returns false both at the end
+    // of the list and on an error.
+    if err := pager.Err(); err != nil {
+    	return fmt.Errorf("traverse deals: %w", err)
+    }
     ```
 
 {% endlist %}
@@ -245,6 +306,39 @@ We will output the following fields in the `select`:
     ).response.result
     ```
 
+- Go
+
+    ```go
+    // BINDINGS is an array of bindings: one object per deal.
+    bindings := make([]b24.Params, 0, len(deals))
+    for _, d := range deals {
+    	bindings = append(bindings, b24.Params{"OWNER_TYPE_ID": entityTypeDeal, "OWNER_ID": d.ID})
+    }
+
+    pager, err = core.Pages("crm.activity.list", b24.Params{
+    	"filter": b24.Params{"BINDINGS": bindings, "COMPLETED": "N"},
+    	"select": []string{"ID", "OWNER_ID", "SUBJECT", "DEADLINE", "RESPONSIBLE_ID"},
+    }, b24.WithCallOptions(b24.WithIdempotent()))
+    if err != nil {
+    	return fmt.Errorf("crm.activity.list: %w", err)
+    }
+
+    // Activity fields are in UPPERCASE, whereas crm.item.list returns camelCase.
+    var activities []activity
+    for pager.Next(ctx) {
+    	for _, row := range pager.Rows() {
+    		var a activity
+    		if err := json.Unmarshal(row, &a); err != nil {
+    			return fmt.Errorf("parse activity: %w", err)
+    		}
+    		activities = append(activities, a)
+    	}
+    }
+    if err := pager.Err(); err != nil {
+    	return fmt.Errorf("traverse activities: %w", err)
+    }
+    ```
+
 {% endlist %}
 
 As a result, you will obtain a list of activities with a description for each activity.
@@ -310,6 +404,28 @@ Pass the assigned user identifiers `ID: [29, 47, ...]` in the `filter` filter.
             "ID": [29, 47],
         }
     ).response.result
+    ```
+
+- Go
+
+    ```go
+    res, err := core.Call(ctx, "user.get", b24.Params{
+    	"filter": b24.Params{"ID": ids},
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("user.get: %w", err)
+    }
+    var rows []struct {
+    	ID       b24.ID `json:"ID"`
+    	Name     string `json:"NAME"`
+    	LastName string `json:"LAST_NAME"`
+    }
+    if err := json.Unmarshal(res.Result, &rows); err != nil {
+    	return fmt.Errorf("parse employees: %w", err)
+    }
+    for _, u := range rows {
+    	users[u.ID] = u.Name + " " + u.LastName
+    }
     ```
 
 {% endlist %}
@@ -725,6 +841,280 @@ As a result, we will receive information about the users.
                         ]
                     )
                 )
+    ```
+
+- Go
+
+    ```go
+    // Setup in an empty directory — go get will not work without go mod init:
+    //
+    //	go mod init example && go get github.com/bitrix24/b24gosdk
+    //
+    // Run:
+    //
+    //	export B24_WEBHOOK_URL='https://your-portal.bitrix24.com/rest/1/token/' && go run .
+    //
+    // The example is self-contained: it creates two deals of its own with activities, collects for them
+    // a table of activities with the responsible persons and cleans up after itself. It runs on any
+    // portal, nothing needs to be edited.
+    package main
+
+    import (
+    	"context"
+    	"encoding/json"
+    	"fmt"
+    	"log"
+    	"os"
+    	"sort"
+    	"time"
+
+    	b24 "github.com/bitrix24/b24gosdk"
+    )
+
+    // entityTypeDeal is the ID of the "deal" object type from crm.enum.ownertype.
+    const entityTypeDeal = 2
+
+    // maxDeals limits the deal selection. BINDINGS is a FILTER rather than a batch:
+    // an array of a thousand bindings goes in a single request and weighs it down. On a production
+    // portal, the deals should be narrowed down by a stage filter as well.
+    const maxDeals = 50
+
+    func main() {
+    	if err := run(context.Background()); err != nil {
+    		log.Fatal(err)
+    	}
+    }
+
+    func run(ctx context.Context) error {
+    	// The webhook path is a secret, so it comes from the environment, not from the code.
+    	core := b24.NewClient(os.Getenv("B24_WEBHOOK_URL")).Core()
+
+    	// --- step 1: the current user ID
+    	res, err := core.Call(ctx, "user.current", nil, b24.WithIdempotent())
+    	if err != nil {
+    		return fmt.Errorf("user.current: %w", err)
+    	}
+
+    	// The ID arrives AS A STRING ("29"): b24.ID parses both a number and a string
+    	// containing a number, a plain int fails here.
+    	var me struct {
+    		ID       b24.ID `json:"ID"`
+    		Name     string `json:"NAME"`
+    		LastName string `json:"LAST_NAME"`
+    	}
+    	if err := json.Unmarshal(res.Result, &me); err != nil {
+    		return fmt.Errorf("parse the current user: %w", err)
+    	}
+    	fmt.Printf("current user %d: %s %s\n", me.ID, me.Name, me.LastName)
+
+    	// --- setup: our own deals with activities, so the table has something to show
+
+    	cleanup, err := createDealsWithActivities(ctx, core, me.ID)
+    	defer cleanup()
+    	if err != nil {
+    		return err
+    	}
+
+    	// --- step 2: the deals the employee is responsible for
+    	// A list method returns at most 50 records per request. Pages walks
+    	// the cursor itself: the ABSENCE of next ends the list, because next: 0 is
+    	// is a legitimate first offset rather than a sign of the end.
+    	pager, err := core.Pages("crm.item.list", b24.Params{
+    		"entityTypeId": entityTypeDeal,
+    		"select":       []string{"id", "title"},
+    		"filter":       b24.Params{"assignedById": me.ID},
+    	}, b24.WithCallOptions(b24.WithIdempotent()))
+    	if err != nil {
+    		return fmt.Errorf("crm.item.list: %w", err)
+    	}
+
+    	var deals []struct {
+    		ID    int    `json:"id"`
+    		Title string `json:"title"`
+    	}
+    	for pager.Next(ctx) {
+    		for _, row := range pager.Rows() {
+    			var d struct {
+    				ID    int    `json:"id"`
+    				Title string `json:"title"`
+    			}
+    			if err := json.Unmarshal(row, &d); err != nil {
+    				return fmt.Errorf("parse deal: %w", err)
+    			}
+    			deals = append(deals, d)
+    		}
+    		if len(deals) >= maxDeals {
+    			break
+    		}
+    	}
+    	// The error surfaces HERE, after the loop: Next returns false both at the end
+    	// of the list and on an error.
+    	if err := pager.Err(); err != nil {
+    		return fmt.Errorf("traverse deals: %w", err)
+    	}
+    	fmt.Printf("deals of the employee taken: %d\n", len(deals))
+    	if len(deals) == 0 {
+    		return nil
+    	}
+
+    	// --- step 3: the activities of these deals
+    	// BINDINGS is an array of bindings: one object per deal.
+    	bindings := make([]b24.Params, 0, len(deals))
+    	for _, d := range deals {
+    		bindings = append(bindings, b24.Params{"OWNER_TYPE_ID": entityTypeDeal, "OWNER_ID": d.ID})
+    	}
+
+    	pager, err = core.Pages("crm.activity.list", b24.Params{
+    		"filter": b24.Params{"BINDINGS": bindings, "COMPLETED": "N"},
+    		"select": []string{"ID", "OWNER_ID", "SUBJECT", "DEADLINE", "RESPONSIBLE_ID"},
+    	}, b24.WithCallOptions(b24.WithIdempotent()))
+    	if err != nil {
+    		return fmt.Errorf("crm.activity.list: %w", err)
+    	}
+
+    	// Activity fields are in UPPERCASE, whereas crm.item.list returns camelCase.
+    	var activities []activity
+    	for pager.Next(ctx) {
+    		for _, row := range pager.Rows() {
+    			var a activity
+    			if err := json.Unmarshal(row, &a); err != nil {
+    				return fmt.Errorf("parse activity: %w", err)
+    			}
+    			activities = append(activities, a)
+    		}
+    	}
+    	if err := pager.Err(); err != nil {
+    		return fmt.Errorf("traverse activities: %w", err)
+    	}
+    	fmt.Printf("active activities: %d\n", len(activities))
+
+    	// --- step 4: the persons responsible for the activities
+
+    	// The person responsible for an activity may differ from the one responsible for the deal, so
+    	// the IDs are taken from the activities themselves.
+    	ids := uniqueIDs(activities)
+    	users := map[b24.ID]string{}
+    	if len(ids) > 0 {
+    		res, err := core.Call(ctx, "user.get", b24.Params{
+    			"filter": b24.Params{"ID": ids},
+    		}, b24.WithIdempotent())
+    		if err != nil {
+    			return fmt.Errorf("user.get: %w", err)
+    		}
+    		var rows []struct {
+    			ID       b24.ID `json:"ID"`
+    			Name     string `json:"NAME"`
+    			LastName string `json:"LAST_NAME"`
+    		}
+    		if err := json.Unmarshal(res.Result, &rows); err != nil {
+    			return fmt.Errorf("parse employees: %w", err)
+    		}
+    		for _, u := range rows {
+    			users[u.ID] = u.Name + " " + u.LastName
+    		}
+    	}
+
+    	titles := map[int]string{}
+    	for _, d := range deals {
+    		titles[d.ID] = d.Title
+    	}
+    	fmt.Println("Activity\tDeal\tDescription\tDeadline\tResponsible")
+    	for _, a := range activities {
+    		who := users[a.ResponsibleID]
+    		if who == "" {
+    			who = "Unknown"
+    		}
+    		fmt.Printf("%d\t%s\t%s\t%s\t%s\n", a.ID, titles[int(a.OwnerID)], a.Subject, a.Deadline, who)
+    	}
+    	return nil
+    }
+
+    // activity is a single row of the crm.activity.list response.
+    type activity struct {
+    	ID            b24.ID `json:"ID"`
+    	OwnerID       b24.ID `json:"OWNER_ID"`
+    	Subject       string `json:"SUBJECT"`
+    	Deadline      string `json:"DEADLINE"`
+    	ResponsibleID b24.ID `json:"RESPONSIBLE_ID"`
+    }
+
+    func uniqueIDs(activities []activity) []b24.ID {
+    	seen := map[b24.ID]bool{}
+    	out := make([]b24.ID, 0, len(activities))
+    	for _, a := range activities {
+    		if a.ResponsibleID > 0 && !seen[a.ResponsibleID] {
+    			seen[a.ResponsibleID] = true
+    			out = append(out, a.ResponsibleID)
+    		}
+    	}
+    	sort.Slice(out, func(i, j int) bool { return out[i] < out[j] })
+    	return out
+    }
+
+    // --- helpers: data setup and cleanup
+
+    // createDealsWithActivities creates two deals and one activity in each. It returns
+    // a cleanup function — it is called even if the setup broke off halfway.
+    func createDealsWithActivities(ctx context.Context, core *b24.Core, userID b24.ID) (func(), error) {
+    	var dealIDs []b24.ID
+    	cleanup := func() {
+    		// Deleting a deal also removes its activities.
+    		for _, id := range dealIDs {
+    			del(ctx, core, "crm.item.delete", b24.Params{"entityTypeId": entityTypeDeal, "id": id})
+    		}
+    	}
+
+    	for i, spec := range []struct {
+    		title string
+    		task  string
+    		in    time.Duration
+    	}{
+    		{"Oven procurement (b24gosdk example)", "Call client", 24 * time.Hour},
+    		{"Blender procurement (b24gosdk example)", "Send the invoice", 48 * time.Hour},
+    	} {
+    		res, err := core.Call(ctx, "crm.item.add", b24.Params{
+    			"entityTypeId": entityTypeDeal,
+    			"fields": b24.Params{
+    				"title":        spec.title,
+    				"assignedById": userID,
+    				"opportunity":  (i + 1) * 100,
+    			},
+    		})
+    		if err != nil {
+    			return cleanup, fmt.Errorf("crm.item.add: %w", err)
+    		}
+    		raw, ok := b24.Unwrap(res.Result, "item", "id")
+    		if !ok {
+    			return cleanup, fmt.Errorf("no item.id in %s", res.Result)
+    		}
+    		var dealID b24.ID
+    		if err := json.Unmarshal(raw, &dealID); err != nil {
+    			return cleanup, err
+    		}
+    		dealIDs = append(dealIDs, dealID)
+
+    		if _, err := core.Call(ctx, "crm.activity.todo.add", b24.Params{
+    			"ownerTypeId":   entityTypeDeal,
+    			"ownerId":       dealID,
+    			"title":         spec.task,
+    			"description":   "Activity created by the b24gosdk example",
+    			"deadline":      time.Now().Add(spec.in).Format(time.RFC3339),
+    			"responsibleId": userID,
+    		}); err != nil {
+    			return cleanup, fmt.Errorf("crm.activity.todo.add: %w", err)
+    		}
+    	}
+    	return cleanup, nil
+    }
+
+    // del removes what was created. A cleanup error is printed but not returned: it must not
+    // mask the real error of the scenario.
+    func del(ctx context.Context, core *b24.Core, method string, params b24.Params) {
+    	if _, err := core.Call(ctx, method, params); err != nil {
+    		fmt.Fprintf(os.Stderr, "cleanup, %s: %v
+", method, err)
+    	}
+    }
     ```
 
 {% endlist %}

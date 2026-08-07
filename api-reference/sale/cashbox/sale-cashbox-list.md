@@ -252,6 +252,46 @@ Possible values for `order`:
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "sale.cashbox.list", b24.Params{
+    	"SELECT": []string{"ID", "NAME"},
+    	"FILTER": b24.Params{
+    		"=NAME": "My Rest cash register",
+    		">ID":   9,
+    	},
+    	"ORDER": b24.Params{
+    		"ID": "DESC",
+    	},
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("sale.cashbox.list: %w", err)
+    }
+
+    var items []struct {
+    	ID        b24.ID `json:"ID"`
+    	Name      string `json:"NAME"`
+    	Ofd       string `json:"OFD"`
+    	Email     string `json:"EMAIL"`
+    	NumberKkm string `json:"NUMBER_KKM"`
+    	Active    string `json:"ACTIVE"`
+    }
+    if err := json.Unmarshal(res.Result, &items); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    for _, it := range items {
+    	fmt.Println(it.ID, it.Name)
+    }
+
+    // Total and Next are filled in by list methods; for a full
+    // list traversal, use client.Core().Pages and Scan.
+    if res.Total != nil {
+    	fmt.Println("total:", *res.Total)
+    }
+    ```
+
 {% endlist %}
 
 ## Response Handling

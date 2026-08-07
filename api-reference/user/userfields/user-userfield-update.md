@@ -537,6 +537,29 @@ Each type of custom field has its own set of additional configurations.
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "user.userfield.update", b24.Params{
+    	"id": 42,
+    	"fields": b24.Params{
+    		"SORT":              150,
+    		"LIST_FILTER_LABEL": "New Title",
+    		"LIST_COLUMN_LABEL": "New List Title",
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("user.userfield.update: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

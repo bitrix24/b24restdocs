@@ -428,6 +428,43 @@ The formula for calculating the `start` parameter value:
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.timeline.comment.list", b24.Params{
+    	"filter": b24.Params{
+    		"ENTITY_ID":   10,
+    		"ENTITY_TYPE": "deal",
+    	},
+    	"select": []string{"ID", "CREATED", "ENTITY_ID", "ENTITY_TYPE", "AUTHOR_ID", "COMMENT", "FILES"},
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("crm.timeline.comment.list: %w", err)
+    }
+
+    var items []struct {
+    	ID         b24.ID `json:"ID"`
+    	EntityID   b24.ID `json:"ENTITY_ID"`
+    	EntityType string `json:"ENTITY_TYPE"`
+    	Created    string `json:"CREATED"`
+    	Comment    string `json:"COMMENT"`
+    	AuthorID   b24.ID `json:"AUTHOR_ID"`
+    }
+    if err := json.Unmarshal(res.Result, &items); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    for _, it := range items {
+    	fmt.Println(it.ID, it.EntityID)
+    }
+
+    // Total and Next are filled in by list methods; for a full
+    // list traversal, use client.Core().Pages and Scan.
+    if res.Total != nil {
+    	fmt.Println("total:", *res.Total)
+    }
+    ```
+
 {% endlist %}
 
 ## Response Handling

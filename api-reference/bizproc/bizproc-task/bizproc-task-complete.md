@@ -231,6 +231,30 @@ More about working with files can be found in the article [{#T}](../../files/how
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "bizproc.task.complete", b24.Params{
+    	"TASK_ID": 1501,
+    	"STATUS":  1,
+    	"COMMENT": "Added",
+    	"FIELDS": b24.Params{
+    		"contractor":   "C_607",
+    		"phone_number": "89991234567",
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("bizproc.task.complete: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response handling

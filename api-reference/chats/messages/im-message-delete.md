@@ -181,6 +181,24 @@ The identifier can be obtained using the method [im.dialog.messages.get](./im-di
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "im.message.delete", b24.Params{
+    	"MESSAGE_ID": 34247,
+    })
+    if err != nil {
+    	return fmt.Errorf("im.message.delete: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

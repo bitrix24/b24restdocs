@@ -197,6 +197,29 @@ The list of reactions may expand or contract without prior notice.
     }
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "imbot.v2.Chat.Message.Reaction.add", b24.Params{
+    	"botId":     456,
+    	"botToken":  "my_bot_token",
+    	"messageId": 789,
+    	"reaction":  "like",
+    })
+    if err != nil {
+    	return fmt.Errorf("imbot.v2.Chat.Message.Reaction.add: %w", err)
+    }
+
+    var item struct {
+    	Result bool `json:"result"`
+    }
+    if err := json.Unmarshal(res.Result, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.Result)
+    ```
+
 {% endlist %}
 
 ## Response Handling

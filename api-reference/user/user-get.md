@@ -501,6 +501,35 @@ Formula for calculating the value of the `start` parameter:
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "user.get", b24.Params{
+    	"FILTER": b24.Params{
+    		"NAME": "Iv%",
+    	},
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("user.get: %w", err)
+    }
+
+    var items []struct {
+    	ID         b24.ID `json:"ID"`
+    	Active     bool   `json:"ACTIVE"`
+    	Name       string `json:"NAME"`
+    	LastName   string `json:"LAST_NAME"`
+    	SecondName string `json:"SECOND_NAME"`
+    	Email      string `json:"EMAIL"`
+    }
+    if err := json.Unmarshal(res.Result, &items); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    for _, it := range items {
+    	fmt.Println(it.ID, it.Active)
+    }
+    ```
+
 {% endlist %}
 
 ### Filtering by a last name not containing "son"
@@ -687,6 +716,35 @@ Formula for calculating the value of the `start` parameter:
     echo '<PRE>';
     print_r($result);
     echo '</PRE>';
+    ```
+
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "user.get", b24.Params{
+    	"FILTER": b24.Params{
+    		"!%LAST_NAME": "er",
+    	},
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("user.get: %w", err)
+    }
+
+    var items []struct {
+    	ID         b24.ID `json:"ID"`
+    	Active     bool   `json:"ACTIVE"`
+    	Name       string `json:"NAME"`
+    	LastName   string `json:"LAST_NAME"`
+    	SecondName string `json:"SECOND_NAME"`
+    	Email      string `json:"EMAIL"`
+    }
+    if err := json.Unmarshal(res.Result, &items); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    for _, it := range items {
+    	fmt.Println(it.ID, it.Active)
+    }
     ```
 
 {% endlist %}
@@ -876,6 +934,35 @@ Formula for calculating the value of the `start` parameter:
     echo '<PRE>';
     print_r($result);
     echo '</PRE>';
+    ```
+
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "user.get", b24.Params{
+    	"FILTER": b24.Params{
+    		"@PERSONAL_CITY": []string{"Berlin", "Munich"},
+    	},
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("user.get: %w", err)
+    }
+
+    var items []struct {
+    	ID         b24.ID `json:"ID"`
+    	Active     bool   `json:"ACTIVE"`
+    	Name       string `json:"NAME"`
+    	LastName   string `json:"LAST_NAME"`
+    	SecondName string `json:"SECOND_NAME"`
+    	Email      string `json:"EMAIL"`
+    }
+    if err := json.Unmarshal(res.Result, &items); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    for _, it := range items {
+    	fmt.Println(it.ID, it.Active)
+    }
     ```
 
 {% endlist %}

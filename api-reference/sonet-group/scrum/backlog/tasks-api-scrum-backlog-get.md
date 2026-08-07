@@ -194,6 +194,29 @@ Can be obtained when creating a new group [sonet_group.create](../../sonet-group
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "tasks.api.scrum.backlog.get", b24.Params{
+    	"id": 125,
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("tasks.api.scrum.backlog.get: %w", err)
+    }
+
+    var item struct {
+    	ID         b24.ID `json:"id"`
+    	GroupID    b24.ID `json:"groupId"`
+    	CreatedBy  int    `json:"createdBy"`
+    	ModifiedBy int    `json:"modifiedBy"`
+    }
+    if err := json.Unmarshal(res.Result, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.ID, item.GroupID)
+    ```
+
 {% endlist %}
 
 ## Response Handling

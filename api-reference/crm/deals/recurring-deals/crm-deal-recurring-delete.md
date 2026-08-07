@@ -212,6 +212,25 @@ The identifier can be obtained using the methods [crm.deal.recurring.list](./crm
     except Exception as error:
         print(f"Unexpected error: {error}")
     ```
+
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.deal.recurring.delete", b24.Params{
+    	"id": 15,
+    })
+    if err != nil {
+    	return fmt.Errorf("crm.deal.recurring.delete: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

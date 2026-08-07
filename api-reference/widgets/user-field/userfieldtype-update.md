@@ -229,6 +229,30 @@ Default is `0`. If `0` is specified, the standard height for displaying this wid
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "userfieldtype.update", b24.Params{
+    	"USER_TYPE_ID": "test_type",
+    	"HANDLER":      "https://www.myapplication.com/handler/",
+    	"TITLE":        "Updated test type",
+    	"DESCRIPTION":  "Test userfield type for documentation with updated description",
+    	"OPTIONS": b24.Params{
+    		"height": 60,
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("userfieldtype.update: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response handling

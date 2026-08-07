@@ -256,6 +256,26 @@ The default value is `'P'` ||
     except Exception as error:
         print(f"Unexpected error: {error}")
     ```
+
+    - Go
+
+        ```go
+        // client and ctx are already created — see the Go SDK section
+        res, err := client.Core().Call(ctx, "crm.lead.details.configuration.reset", b24.Params{
+        	"scope":  "P",
+        	"userId": 1,
+        })
+        if err != nil {
+        	return fmt.Errorf("crm.lead.details.configuration.reset: %w", err)
+        }
+
+        var ok bool
+        if err := json.Unmarshal(res.Result, &ok); err != nil {
+        	return fmt.Errorf("parse response: %w", err)
+        }
+        fmt.Println("done:", ok)
+        ```
+
     {% endlist %}
 
 2. Resetting General Card Settings
@@ -413,6 +433,24 @@ The default value is `'P'` ||
         echo '<PRE>';
         print_r($result);
         echo '</PRE>';
+        ```
+
+    - Go
+
+        ```go
+        // client and ctx are already created — see the Go SDK section
+        res, err := client.Core().Call(ctx, "crm.lead.details.configuration.reset", b24.Params{
+        	"scope": "C",
+        })
+        if err != nil {
+        	return fmt.Errorf("crm.lead.details.configuration.reset: %w", err)
+        }
+
+        var ok bool
+        if err := json.Unmarshal(res.Result, &ok); err != nil {
+        	return fmt.Errorf("parse response: %w", err)
+        }
+        fmt.Println("done:", ok)
         ```
 
     {% endlist %}

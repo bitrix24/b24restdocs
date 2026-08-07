@@ -454,6 +454,50 @@ For activities of type `e-mail`:
     except Exception as error:
         print(f"Unexpected error: {error}")
     ```
+
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.activity.add", b24.Params{
+    	"fields": b24.Params{
+    		"OWNER_TYPE_ID": 2,
+    		"OWNER_ID":      102,
+    		"TYPE_ID":       2,
+    		"COMMUNICATIONS": []b24.Params{
+    			{
+    				"VALUE":          "+499832322323",
+    				"ENTITY_ID":      134,
+    				"ENTITY_TYPE_ID": 3,
+    			},
+    		},
+    		"SUBJECT":          "New Call",
+    		"START_TIME":       "2023-12-31T12:00:00+00:00",
+    		"END_TIME":         "2023-12-31T12:30:00+00:00",
+    		"COMPLETED":        "N",
+    		"PRIORITY":         3,
+    		"RESPONSIBLE_ID":   1,
+    		"DESCRIPTION":      "Important call",
+    		"DESCRIPTION_TYPE": 3,
+    		"DIRECTION":        2,
+    		"FILES": []b24.Params{
+    			{
+    				"fileData": []string{"example.jpg", "base64_encoded_content_here"},
+    			},
+    		},
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("crm.activity.add: %w", err)
+    }
+
+    var newID b24.ID
+    if err := json.Unmarshal(res.Result, &newID); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("id:", newID)
+    ```
+
 {% endlist %}    
 
 ## Response Handling

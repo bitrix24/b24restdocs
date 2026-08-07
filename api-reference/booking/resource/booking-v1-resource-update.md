@@ -376,6 +376,48 @@ The list of available types can be found using the method [booking.v1.resourceTy
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "booking.v1.resource.update", b24.Params{
+    	"id": 10,
+    	"fields": b24.Params{
+    		"name":                            "New Name",
+    		"description":                     "New Description",
+    		"typeId":                          1,
+    		"isMain":                          "N",
+    		"isInfoNotificationOn":            "Y",
+    		"templateTypeInfo":                "inanimate",
+    		"isConfirmationNotificationOn":    "Y",
+    		"templateTypeConfirmation":        "animate",
+    		"isReminderNotificationOn":        "Y",
+    		"templateTypeReminder":            "base",
+    		"isFeedbackNotificationOn":        "N",
+    		"templateTypeFeedback":            "animate",
+    		"isDelayedNotificationOn":         "N",
+    		"templateTypeDelayed":             "animate",
+    		"infoDelay":                       300,
+    		"reminderDelay":                   -1,
+    		"delayedDelay":                    300,
+    		"delayedCounterDelay":             7200,
+    		"confirmationDelay":               86400,
+    		"confirmationRepetitions":         0,
+    		"confirmationRepetitionsInterval": 0,
+    		"confirmationCounterDelay":        7200,
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("booking.v1.resource.update: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

@@ -230,6 +230,36 @@ Currently, the `avatar_hr` field is always returned, regardless of the parameter
         var_dump($result['result']);
     }
     ```
+
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "im.user.list.get", b24.Params{
+    	"ID":          []int{4, 5},
+    	"AVATAR_HR":   "Y",
+    	"RESULT_TYPE": "array",
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("im.user.list.get: %w", err)
+    }
+
+    var items []struct {
+    	ID           b24.ID `json:"id"`
+    	Active       bool   `json:"active"`
+    	Name         string `json:"name"`
+    	FirstName    string `json:"first_name"`
+    	LastName     string `json:"last_name"`
+    	WorkPosition string `json:"work_position"`
+    }
+    if err := json.Unmarshal(res.Result, &items); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    for _, it := range items {
+    	fmt.Println(it.ID, it.Active)
+    }
+    ```
+
 {% endlist %}
 
 ## Response Handling

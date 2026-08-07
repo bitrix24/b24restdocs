@@ -272,6 +272,28 @@ Possible values:
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "im.disk.file.commit", b24.Params{
+    	"CHAT_ID": 1489,
+    	"FILE_ID": []int{5249, 5250},
+    	"MESSAGE": "Project documents",
+    })
+    if err != nil {
+    	return fmt.Errorf("im.disk.file.commit: %w", err)
+    }
+
+    var item struct {
+    	MessageID b24.ID `json:"MESSAGE_ID"`
+    }
+    if err := json.Unmarshal(res.Result, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.MessageID)
+    ```
+
 {% endlist %}
 
 ## Response Handling

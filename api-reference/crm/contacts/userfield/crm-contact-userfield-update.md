@@ -568,6 +568,49 @@ For a multiple field, multiple `DEF = Y` is allowed. For a non-multiple field, t
         print(f"Unexpected error: {error}")
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.contact.userfield.update", b24.Params{
+    	"id": 536,
+    	"fields": b24.Params{
+    		"MANDATORY":   "N",
+    		"SHOW_FILTER": "N",
+    		"SETTINGS": b24.Params{
+    			"DEFAULT_VALUE": "Hello, world! Default value (changed)",
+    			"ROWS":          10,
+    		},
+    		"SORT":              2000,
+    		"EDIT_IN_LIST":      "N",
+    		"LIST_FILTER_LABEL": "Hello, world! Filter (changed)",
+    		"LIST_COLUMN_LABEL": b24.Params{
+    			"en": "Hello, World! Column (changed)",
+    			"de": "Hallo, Welt! Spalte (geändert)",
+    		},
+    		"EDIT_FORM_LABEL": b24.Params{
+    			"en": "Hello, World! Edit (changed)",
+    			"de": "Hallo, Welt! Bearbeiten (geändert)",
+    		},
+    		"ERROR_MESSAGE": b24.Params{
+    			"en": "Hello, World! Error (changed)",
+    			"de": "Hallo, Welt! Fehler (geändert)",
+    		},
+    		"HELP_MESSAGE": b24.Params{
+    			"en": "Hello, World! Help (changed)",
+    			"de": "Hallo, Welt! Hilfe (geändert)",
+    		},
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("crm.contact.userfield.update: %w", err)
+    }
+
+    // The response arrives as json.RawMessage — unmarshal it
+    // into a struct matching the response shape shown below on this page.
+    fmt.Printf("%s\n", res.Result)
+    ```
+
 {% endlist %}
 
 ### Example of Modifying a List Type Custom Field
@@ -780,6 +823,52 @@ Modify it as follows:
         print(f"Bitrix SDK error: {error.message}")
     except Exception as error:
         print(f"Unexpected error: {error}")
+    ```
+
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.contact.userfield.update", b24.Params{
+    	"fields": b24.Params{
+    		"MANDATORY":   "N",
+    		"SHOW_FILTER": "Y",
+    		"LIST": []b24.Params{
+    			{
+    				"ID":  115,
+    				"DEL": "Y",
+    			},
+    			{
+    				"ID":  116,
+    				"DEL": "Y",
+    			},
+    			{
+    				"ID":    117,
+    				"VALUE": "List item #3 (changed)",
+    				"SORT":  50,
+    			},
+    			{
+    				"VALUE":  "List item #5",
+    				"XML_ID": "XML_ID_5",
+    				"SORT":   500,
+    			},
+    		},
+    		"SETTINGS": b24.Params{
+    			"DISPLAY":     "DIALOG",
+    			"LIST_HEIGHT": 3,
+    		},
+    		"SORT": 1000,
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("crm.contact.userfield.update: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
     ```
 
 {% endlist %}

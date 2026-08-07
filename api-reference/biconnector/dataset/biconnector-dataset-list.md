@@ -318,6 +318,44 @@ For clarity, select only the necessary fields:
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "biconnector.dataset.list", b24.Params{
+    	"select": []string{"id", "name", "description"},
+    	"filter": b24.Params{
+    		"%=name":       "Sales%",
+    		"!description": "",
+    		"@sourceId":    []int{2, 4},
+    	},
+    	"order": b24.Params{
+    		"dateCreate": "DESC",
+    	},
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("biconnector.dataset.list: %w", err)
+    }
+
+    var items []struct {
+    	ID          b24.ID `json:"id"`
+    	Name        string `json:"name"`
+    	Description string `json:"description"`
+    }
+    if err := json.Unmarshal(res.Result, &items); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    for _, it := range items {
+    	fmt.Println(it.ID, it.Name)
+    }
+
+    // Total and Next are filled in by list methods; for a full
+    // list traversal, use client.Core().Pages and Scan.
+    if res.Total != nil {
+    	fmt.Println("total:", *res.Total)
+    }
+    ```
+
 {% endlist %}
 
 ## Response Handling

@@ -196,6 +196,32 @@ You can obtain the ID using the [user.get](../../../user/user-get.md) method. ||
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "voximplant.user.get", b24.Params{
+    	"USER_ID": []int{1269, 1271},
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("voximplant.user.get: %w", err)
+    }
+
+    var items []struct {
+    	ID           b24.ID `json:"ID"`
+    	PhoneEnabled string `json:"PHONE_ENABLED"`
+    	SipServer    string `json:"SIP_SERVER"`
+    	SipLogin     string `json:"SIP_LOGIN"`
+    	SipPassword  string `json:"SIP_PASSWORD"`
+    }
+    if err := json.Unmarshal(res.Result, &items); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    for _, it := range items {
+    	fmt.Println(it.ID, it.PhoneEnabled)
+    }
+    ```
+
 {% endlist %}
 
 ## Response Handling

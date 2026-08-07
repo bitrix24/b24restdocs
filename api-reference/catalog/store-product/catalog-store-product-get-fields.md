@@ -177,6 +177,24 @@ No parameters.
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "catalog.storeproduct.getFields", nil, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("catalog.storeproduct.getFields: %w", err)
+    }
+
+    // The method wraps the response in an object with the "storeProduct" key.
+    raw, ok := b24.Unwrap(res.Result, "storeProduct")
+    if !ok {
+    	return fmt.Errorf("no storeProduct key in the response")
+    }
+
+    fmt.Printf("%s\n", raw)
+    ```
+
 {% endlist %}
 
 ## Response Handling

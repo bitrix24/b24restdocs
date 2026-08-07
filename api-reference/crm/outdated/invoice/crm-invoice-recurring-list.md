@@ -172,4 +172,26 @@ See the description of [list methods](../../../../settings/how-to-call-rest-api/
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.invoice.recurring.list", b24.Params{
+    	"order": b24.Params{
+    		"INVOICE_ID": "ASC",
+    	},
+    	"filter": b24.Params{
+    		">COUNTER_REPEAT": 5,
+    	},
+    	"select": []string{"ID", "INVOICE_ID", "NEXT_EXECUTION", "LAST_EXECUTION", "SEND_BILL", "IS_LIMIT"},
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("crm.invoice.recurring.list: %w", err)
+    }
+
+    // The response arrives as json.RawMessage — unmarshal it
+    // into a struct matching the response shape shown below on this page.
+    fmt.Printf("%s\n", res.Result)
+    ```
+
 {% endlist %}

@@ -257,6 +257,30 @@ How to prepare data: [How to upload files](../../../../files/how-to-upload-files
     }
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "imbot.v2.Bot.register", b24.Params{
+    	"fields": b24.Params{
+    		"code":     "support_bot",
+    		"botToken": "my_bot_token",
+    		"properties": b24.Params{
+    			"name":         "Support Bot",
+    			"workPosition": "AI Assistant",
+    		},
+    		"type":      "bot",
+    		"eventMode": "fetch",
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("imbot.v2.Bot.register: %w", err)
+    }
+
+    // The response shape is shown below on this page.
+    fmt.Printf("%s\n", res.Result)
+    ```
+
 {% endlist %}
 
 ## Response Handling

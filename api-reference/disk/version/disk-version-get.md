@@ -193,6 +193,31 @@ The identifier can be obtained using the method [disk.file.getVersions](../file/
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "disk.version.get", b24.Params{
+    	"id": 7169,
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("disk.version.get: %w", err)
+    }
+
+    var item struct {
+    	ID                   b24.ID `json:"ID"`
+    	ObjectID             b24.ID `json:"OBJECT_ID"`
+    	Size                 string `json:"SIZE"`
+    	Name                 string `json:"NAME"`
+    	GlobalContentVersion string `json:"GLOBAL_CONTENT_VERSION"`
+    	CreateTime           string `json:"CREATE_TIME"`
+    }
+    if err := json.Unmarshal(res.Result, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.ID, item.ObjectID)
+    ```
+
 {% endlist %}
 
 ## Response Handling

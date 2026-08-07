@@ -203,6 +203,36 @@ The formula for calculating the `start` parameter value:
   print_r($result);
   ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "documentgenerator.role.list", b24.Params{
+    	"start": 0,
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("documentgenerator.role.list: %w", err)
+    }
+
+    // The method wraps the response in an object with the "roles" key.
+    raw, ok := b24.Unwrap(res.Result, "roles")
+    if !ok {
+    	return fmt.Errorf("no roles key in the response")
+    }
+
+    var items []struct {
+    	ID   b24.ID `json:"id"`
+    	Name string `json:"name"`
+    	Code string `json:"code"`
+    }
+    if err := json.Unmarshal(raw, &items); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    for _, it := range items {
+    	fmt.Println(it.ID)
+    }
+    ```
+
 {% endlist %}
 
 ## Response Handling

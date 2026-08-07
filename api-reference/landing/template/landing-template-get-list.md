@@ -387,6 +387,44 @@ If `limit` is not specified, the method returns all found templates without rest
     }
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "landing.template.getlist", b24.Params{
+    	"params": b24.Params{
+    		"select": []string{"ID", "TITLE", "XML_ID", "SORT", "ACTIVE", "DATE_MODIFY"},
+    		"filter": b24.Params{
+    			"=ACTIVE": "Y",
+    		},
+    		"order": b24.Params{
+    			"SORT": "ASC",
+    			"ID":   "ASC",
+    		},
+    		"limit":  2,
+    		"offset": 0,
+    	},
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("landing.template.getlist: %w", err)
+    }
+
+    var items []struct {
+    	ID         b24.ID `json:"ID"`
+    	Title      string `json:"TITLE"`
+    	XMLID      string `json:"XML_ID"`
+    	Sort       string `json:"SORT"`
+    	Active     string `json:"ACTIVE"`
+    	DateModify string `json:"DATE_MODIFY"`
+    }
+    if err := json.Unmarshal(res.Result, &items); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    for _, it := range items {
+    	fmt.Println(it.ID, it.Title)
+    }
+    ```
+
 {% endlist %}
 
 ## Response Handling

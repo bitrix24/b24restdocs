@@ -279,6 +279,32 @@ For stable pagination:
         var_dump($result['result']);
     }
     ```
+
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "im.notify.get", b24.Params{
+    	"LAST_ID":      1500,
+    	"LAST_TYPE":    3,
+    	"LIMIT":        20,
+    	"CONVERT_TEXT": "Y",
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("im.notify.get: %w", err)
+    }
+
+    var item struct {
+    	TotalCount       int `json:"total_count"`
+    	TotalUnreadCount int `json:"total_unread_count"`
+    	ChatID           int `json:"chat_id"`
+    }
+    if err := json.Unmarshal(res.Result, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.TotalCount, item.TotalUnreadCount)
+    ```
+
 {% endlist %}
 
 ## Response Handling

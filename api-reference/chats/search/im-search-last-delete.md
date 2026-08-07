@@ -184,6 +184,24 @@ Supported formats:
     }
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "im.search.last.delete", b24.Params{
+    	"DIALOG_ID": "chat17",
+    })
+    if err != nil {
+    	return fmt.Errorf("im.search.last.delete: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

@@ -263,6 +263,43 @@ The new API call differs by adding the `/api/` segment to the request URL:
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "tasks.task.add", b24.Params{
+    	"fields": b24.Params{
+    		"title":         "Task Title",
+    		"deadline":      "2025-12-31T23:59:59+02:00",
+    		"creatorId":     29,
+    		"responsibleId": 1,
+    		"crmItemIds":    []string{"L_1000959"},
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("tasks.task.add: %w", err)
+    }
+
+    // The method wraps the response in an object with the "item" key.
+    raw, ok := b24.Unwrap(res.Result, "item")
+    if !ok {
+    	return fmt.Errorf("no item key in the response")
+    }
+
+    var item struct {
+    	ID           b24.ID `json:"id"`
+    	Title        string `json:"title"`
+    	Description  string `json:"description"`
+    	Deadline     string `json:"deadline"`
+    	NeedsControl bool   `json:"needsControl"`
+    	Priority     string `json:"priority"`
+    }
+    if err := json.Unmarshal(raw, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.ID, item.Title)
+    ```
+
 {% endlist %}
 
 ## Response Handling

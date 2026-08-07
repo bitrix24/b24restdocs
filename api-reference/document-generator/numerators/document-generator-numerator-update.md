@@ -386,6 +386,43 @@ Example of updating a numerator:
   print_r($result);
   ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "documentgenerator.numerator.update", b24.Params{
+    	"id": 55,
+    	"fields": b24.Params{
+    		"name":     "REST Invoice Numerator Updated",
+    		"template": "INV-UPD-{NUMBER}",
+    		"settings": b24.Params{
+    			"Bitrix_Main_Numerator_Generator_SequentNumberGenerator": b24.Params{
+    				"start":              2000,
+    				"step":               10,
+    				"length":             8,
+    				"padString":          "0",
+    				"periodicBy":         "year",
+    				"timezone":           "Europe/Berlin",
+    				"isDirectNumeration": 0,
+    			},
+    		},
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("documentgenerator.numerator.update: %w", err)
+    }
+
+    var item struct {
+    	Name     string `json:"name"`
+    	Template string `json:"template"`
+    	ID       b24.ID `json:"id"`
+    }
+    if err := json.Unmarshal(res.Result, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.Name, item.Template)
+    ```
+
 {% endlist %}
 
 ## Response Handling

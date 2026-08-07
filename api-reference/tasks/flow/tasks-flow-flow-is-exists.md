@@ -216,6 +216,28 @@ You can obtain the identifier using the method for creating a new flow [tasks.fl
     }
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "tasks.flow.Flow.isExists", b24.Params{
+    	"flowData": b24.Params{
+    		"name": "Flow Name",
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("tasks.flow.Flow.isExists: %w", err)
+    }
+
+    var item struct {
+    	Exists bool `json:"exists"`
+    }
+    if err := json.Unmarshal(res.Result, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.Exists)
+    ```
+
 {% endlist %}
 
 ## Response Handling

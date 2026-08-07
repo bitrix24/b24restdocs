@@ -184,6 +184,24 @@ You can obtain the identifier using the [user.get](../../../user/user-get.md) me
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "voximplant.user.activatePhone", b24.Params{
+    	"USER_ID": 1269,
+    })
+    if err != nil {
+    	return fmt.Errorf("voximplant.user.activatePhone: %w", err)
+    }
+
+    var value b24.ID
+    if err := json.Unmarshal(res.Result, &value); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("result:", value)
+    ```
+
 {% endlist %}
 
 ## Response Handling

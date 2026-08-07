@@ -249,6 +249,28 @@ If the value `-1` is passed, the response will not include the `total` field ||
     print_r($result);
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "catalog.productProperty.list", b24.Params{
+    	"select": []string{"id", "name", "iblockId", "propertyType"},
+    	"filter": b24.Params{
+    		"iblockId": 19,
+    	},
+    	"order": b24.Params{
+    		"id": "ASC",
+    	},
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("catalog.productProperty.list: %w", err)
+    }
+
+    // The response arrives as json.RawMessage — unmarshal it
+    // into a struct matching the response shape shown below on this page.
+    fmt.Printf("%s\n", res.Result)
+    ```
+
 {% endlist %}
 
 ## Response Handling

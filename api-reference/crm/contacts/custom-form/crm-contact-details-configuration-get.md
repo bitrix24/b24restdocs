@@ -107,6 +107,31 @@ If not specified, the current user's ID is used
         echo '</PRE>';
         ```
 
+    - Go
+
+        ```go
+        // client and ctx are already created — see the Go SDK section
+        res, err := client.Core().Call(ctx, "crm.contact.details.configuration.get", b24.Params{
+        	"scope":  "P",
+        	"userId": 6,
+        }, b24.WithIdempotent())
+        if err != nil {
+        	return fmt.Errorf("crm.contact.details.configuration.get: %w", err)
+        }
+
+        var items []struct {
+        	Name  string `json:"name"`
+        	Title string `json:"title"`
+        	Type  string `json:"type"`
+        }
+        if err := json.Unmarshal(res.Result, &items); err != nil {
+        	return fmt.Errorf("parse response: %w", err)
+        }
+        for _, it := range items {
+        	fmt.Println(it.Name, it.Title)
+        }
+        ```
+
     {% endlist %}
 
 2. Retrieve Shared Configuration of the Card
@@ -194,6 +219,30 @@ If not specified, the current user's ID is used
             print(f"Bitrix SDK error: {error.message}")
         except Exception as error:
             print(f"Unexpected error: {error}")
+        ```
+
+    - Go
+
+        ```go
+        // client and ctx are already created — see the Go SDK section
+        res, err := client.Core().Call(ctx, "crm.contact.details.configuration.get", b24.Params{
+        	"scope": "C",
+        }, b24.WithIdempotent())
+        if err != nil {
+        	return fmt.Errorf("crm.contact.details.configuration.get: %w", err)
+        }
+
+        var items []struct {
+        	Name  string `json:"name"`
+        	Title string `json:"title"`
+        	Type  string `json:"type"`
+        }
+        if err := json.Unmarshal(res.Result, &items); err != nil {
+        	return fmt.Errorf("parse response: %w", err)
+        }
+        for _, it := range items {
+        	fmt.Println(it.Name, it.Title)
+        }
         ```
 
     {% endlist %}

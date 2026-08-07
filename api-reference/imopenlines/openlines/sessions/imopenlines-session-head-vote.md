@@ -205,6 +205,26 @@ At least one of the parameters must be provided: `RATING` or `COMMENT`.
     }
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "imopenlines.session.head.vote", b24.Params{
+    	"SESSION_ID": 1743,
+    	"RATING":     5,
+    	"COMMENT":    "Excellent handling",
+    })
+    if err != nil {
+    	return fmt.Errorf("imopenlines.session.head.vote: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

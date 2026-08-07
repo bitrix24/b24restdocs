@@ -202,6 +202,36 @@ No parameters.
     except Exception as error:
         print(f"Unexpected error: {error}")
     ```
+
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.activity.type.list", nil, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("crm.activity.type.list: %w", err)
+    }
+
+    var items []struct {
+    	TypeID             string `json:"TYPE_ID"`
+    	Name               string `json:"NAME"`
+    	IsConfigurableType string `json:"IS_CONFIGURABLE_TYPE"`
+    	IconID             b24.ID `json:"ICON_ID"`
+    }
+    if err := json.Unmarshal(res.Result, &items); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    for _, it := range items {
+    	fmt.Println(it.TypeID, it.Name)
+    }
+
+    // Total and Next are filled in by list methods; for a full
+    // list traversal, use client.Core().Pages and Scan.
+    if res.Total != nil {
+    	fmt.Println("total:", *res.Total)
+    }
+    ```
+
 {% endlist %}
 
 ## Response Handling

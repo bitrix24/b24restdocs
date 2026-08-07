@@ -174,6 +174,27 @@ No parameters.
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "timeman.networkrange.get", nil, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("timeman.networkrange.get: %w", err)
+    }
+
+    var items []struct {
+    	IPRange string `json:"ip_range"`
+    	Name    string `json:"name"`
+    }
+    if err := json.Unmarshal(res.Result, &items); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    for _, it := range items {
+    	fmt.Println(it.IPRange, it.Name)
+    }
+    ```
+
 {% endlist %}
 
 ## Response Handling

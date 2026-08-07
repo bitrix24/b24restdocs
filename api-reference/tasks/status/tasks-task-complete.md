@@ -190,6 +190,37 @@ The task identifier can be obtained when [creating a new task](../tasks-task-add
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "tasks.task.complete", b24.Params{
+    	"taskId": 1,
+    })
+    if err != nil {
+    	return fmt.Errorf("tasks.task.complete: %w", err)
+    }
+
+    // The method wraps the response in an object with the "task" key.
+    raw, ok := b24.Unwrap(res.Result, "task")
+    if !ok {
+    	return fmt.Errorf("no task key in the response")
+    }
+
+    var item struct {
+    	ID          b24.ID `json:"id"`
+    	ParentID    b24.ID `json:"parentId"`
+    	Title       string `json:"title"`
+    	Description string `json:"description"`
+    	Mark        string `json:"mark"`
+    	Priority    string `json:"priority"`
+    }
+    if err := json.Unmarshal(raw, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.ID, item.ParentID)
+    ```
+
 {% endlist %}
 
 ## Response Handling

@@ -354,6 +354,44 @@ By default, empty ||
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "sale.cashbox.add", b24.Params{
+    	"NAME":       "Rest-Cash Register",
+    	"REST_CODE":  "restcashbox01",
+    	"EMAIL":      "user@example.com",
+    	"NUMBER_KKM": "123",
+    	"ACTIVE":     "Y",
+    	"SORT":       100,
+    	"OFD":        "bx_ofdruofd",
+    	"OFD_SETTINGS": b24.Params{
+    		"OFD_MODE": b24.Params{
+    			"IS_TEST": "N",
+    		},
+    	},
+    	"SETTINGS": b24.Params{
+    		"AUTH": b24.Params{
+    			"KEYWORD":    "top_secret!",
+    			"PREFERENCE": "SECOND",
+    		},
+    		"INTERACTION": b24.Params{
+    			"MODE": "ACTIVE",
+    		},
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("sale.cashbox.add: %w", err)
+    }
+
+    var newID b24.ID
+    if err := json.Unmarshal(res.Result, &newID); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("id:", newID)
+    ```
+
 {% endlist %}
 
 {% note tip "Typical use-cases and scenarios" %}

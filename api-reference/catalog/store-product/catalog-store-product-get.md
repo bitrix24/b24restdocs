@@ -193,6 +193,35 @@ The method `catalog.storeproduct.get` returns information about the product inve
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "catalog.storeproduct.get", b24.Params{
+    	"id": 1,
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("catalog.storeproduct.get: %w", err)
+    }
+
+    // The method wraps the response in an object with the "storeProduct" key.
+    raw, ok := b24.Unwrap(res.Result, "storeProduct")
+    if !ok {
+    	return fmt.Errorf("no storeProduct key in the response")
+    }
+
+    var item struct {
+    	Amount    int    `json:"amount"`
+    	ID        b24.ID `json:"id"`
+    	ProductID b24.ID `json:"productId"`
+    	StoreID   b24.ID `json:"storeId"`
+    }
+    if err := json.Unmarshal(raw, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.Amount, item.ID)
+    ```
+
 {% endlist %}
 
 ## Response Handling

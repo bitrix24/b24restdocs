@@ -225,6 +225,26 @@ The folder identifier can be obtained using the method [landing.site.getFolders]
     }
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "landing.landing.move", b24.Params{
+    	"lid":        2227,
+    	"toSiteId":   157,
+    	"toFolderId": 95,
+    })
+    if err != nil {
+    	return fmt.Errorf("landing.landing.move: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

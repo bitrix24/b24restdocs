@@ -244,6 +244,27 @@ Example of removing the contact-company link, where:
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.contact.company.delete", b24.Params{
+    	"id": 54,
+    	"fields": b24.Params{
+    		"COMPANY_ID": 32,
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("crm.contact.company.delete: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

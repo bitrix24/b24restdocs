@@ -220,6 +220,29 @@ The new API call differs by adding the `/api/` segment to the request URL:
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "mail.message.movetofolder", b24.Params{
+    	"messageIds": []int{15, 16},
+    	"action":     "spam",
+    })
+    if err != nil {
+    	return fmt.Errorf("mail.message.movetofolder: %w", err)
+    }
+
+    var item struct {
+    	Success    bool   `json:"success"`
+    	MovedCount int    `json:"movedCount"`
+    	Action     string `json:"action"`
+    }
+    if err := json.Unmarshal(res.Result, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.Success, item.MovedCount)
+    ```
+
 {% endlist %}
 
 ## Response Handling

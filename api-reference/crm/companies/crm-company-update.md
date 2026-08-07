@@ -328,6 +328,33 @@ To change the address and banking details of the company, use the methods for [r
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.company.update", b24.Params{
+    	"id": 43,
+    	"fields": b24.Params{
+    		"CURRENCY_ID": "EUR",
+    		"REVENUE":     500000,
+    		"EMPLOYEES":   "EMPLOYEES_3",
+    	},
+    	"params": b24.Params{
+    		"REGISTER_SONET_EVENT":   "Y",
+    		"REGISTER_HISTORY_EVENT": "Y",
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("crm.company.update: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

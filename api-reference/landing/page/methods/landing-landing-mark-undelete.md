@@ -193,6 +193,24 @@ The page identifier can be obtained using the [landing.landing.getList](./landin
     }
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "landing.landing.markUnDelete", b24.Params{
+    	"lid": 2227,
+    })
+    if err != nil {
+    	return fmt.Errorf("landing.landing.markUnDelete: %w", err)
+    }
+
+    var value b24.ID
+    if err := json.Unmarshal(res.Result, &value); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("result:", value)
+    ```
+
 {% endlist %}
 
 ## Response Handling

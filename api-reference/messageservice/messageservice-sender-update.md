@@ -224,6 +224,27 @@ The request must include `CODE` and at least one of the parameters `HANDLER`, `N
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "messageservice.sender.update", b24.Params{
+    	"CODE":        "provider1",
+    	"HANDLER":     "https://provider.example/api/new-handler",
+    	"NAME":        "Provider 1 Updated",
+    	"DESCRIPTION": "Updated description",
+    })
+    if err != nil {
+    	return fmt.Errorf("messageservice.sender.update: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

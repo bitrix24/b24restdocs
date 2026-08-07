@@ -292,6 +292,37 @@ Settings are completely overwritten. When changing the list of linked SPAs, you 
         except Exception as error:
             print(f"Unexpected error: {error}")
         ```
+
+    - Go
+
+        ```go
+        // client and ctx are already created — see the Go SDK section
+        res, err := client.Core().Call(ctx, "crm.automatedsolution.update", b24.Params{
+        	"id": 238,
+        	"fields": b24.Params{
+        		"title": "HR & Customer Success",
+        	},
+        })
+        if err != nil {
+        	return fmt.Errorf("crm.automatedsolution.update: %w", err)
+        }
+
+        // The method wraps the response in an object with the "automatedSolution" key.
+        raw, ok := b24.Unwrap(res.Result, "automatedSolution")
+        if !ok {
+        	return fmt.Errorf("no automatedSolution key in the response")
+        }
+
+        var item struct {
+        	ID    b24.ID `json:"id"`
+        	Title string `json:"title"`
+        }
+        if err := json.Unmarshal(raw, &item); err != nil {
+        	return fmt.Errorf("parse response: %w", err)
+        }
+        fmt.Println(item.ID, item.Title)
+        ```
+
     {% endlist %}
 
 2. Change the list of linked SPAs
@@ -425,6 +456,36 @@ Settings are completely overwritten. When changing the list of linked SPAs, you 
         echo '</PRE>';
         ```
 
+    - Go
+
+        ```go
+        // client and ctx are already created — see the Go SDK section
+        res, err := client.Core().Call(ctx, "crm.automatedsolution.update", b24.Params{
+        	"id": 238,
+        	"fields": b24.Params{
+        		"typeIds": []int{14},
+        	},
+        })
+        if err != nil {
+        	return fmt.Errorf("crm.automatedsolution.update: %w", err)
+        }
+
+        // The method wraps the response in an object with the "automatedSolution" key.
+        raw, ok := b24.Unwrap(res.Result, "automatedSolution")
+        if !ok {
+        	return fmt.Errorf("no automatedSolution key in the response")
+        }
+
+        var item struct {
+        	ID    b24.ID `json:"id"`
+        	Title string `json:"title"`
+        }
+        if err := json.Unmarshal(raw, &item); err != nil {
+        	return fmt.Errorf("parse response: %w", err)
+        }
+        fmt.Println(item.ID, item.Title)
+        ```
+
     {% endlist %}
 
 3. Unlink all SPAs
@@ -556,6 +617,36 @@ Settings are completely overwritten. When changing the list of linked SPAs, you 
         echo '<PRE>';
         print_r($result);
         echo '</PRE>';
+        ```
+
+    - Go
+
+        ```go
+        // client and ctx are already created — see the Go SDK section
+        res, err := client.Core().Call(ctx, "crm.automatedsolution.update", b24.Params{
+        	"id": 238,
+        	"fields": b24.Params{
+        		"typeIds": []any{},
+        	},
+        })
+        if err != nil {
+        	return fmt.Errorf("crm.automatedsolution.update: %w", err)
+        }
+
+        // The method wraps the response in an object with the "automatedSolution" key.
+        raw, ok := b24.Unwrap(res.Result, "automatedSolution")
+        if !ok {
+        	return fmt.Errorf("no automatedSolution key in the response")
+        }
+
+        var item struct {
+        	ID    b24.ID `json:"id"`
+        	Title string `json:"title"`
+        }
+        if err := json.Unmarshal(raw, &item); err != nil {
+        	return fmt.Errorf("parse response: %w", err)
+        }
+        fmt.Println(item.ID, item.Title)
         ```
 
     {% endlist %}

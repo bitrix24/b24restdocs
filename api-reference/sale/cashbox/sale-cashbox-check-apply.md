@@ -233,6 +233,31 @@ The method saves the result of printing a receipt that was printed on a REST cas
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "sale.cashbox.check.apply", b24.Params{
+    	"UUID":                  "check|example.com|1",
+    	"PRINT_END_TIME":        "1609459200",
+    	"REG_NUMBER_KKT":        "1234567891011121",
+    	"FISCAL_DOC_ATTR":       "1234567890",
+    	"FISCAL_DOC_NUMBER":     "12345",
+    	"FISCAL_RECEIPT_NUMBER": "123",
+    	"FN_NUMBER":             "1234567891011121",
+    	"SHIFT_NUMBER":          "1",
+    })
+    if err != nil {
+    	return fmt.Errorf("sale.cashbox.check.apply: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

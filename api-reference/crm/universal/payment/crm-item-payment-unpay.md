@@ -206,6 +206,24 @@ Changes the payment status to "Unpaid".
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.item.payment.unpay", b24.Params{
+    	"id": 1038,
+    })
+    if err != nil {
+    	return fmt.Errorf("crm.item.payment.unpay: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response on Success

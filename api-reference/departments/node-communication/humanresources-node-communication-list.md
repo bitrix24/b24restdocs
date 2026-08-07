@@ -231,6 +231,28 @@ https://{installation_address}/rest/api/{user_id}/{webhook_token}/humanresources
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "humanresources.node.communication.list", b24.Params{
+    	"id": 15,
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("humanresources.node.communication.list: %w", err)
+    }
+
+    var item struct {
+    	ChannelsNoAccess int `json:"channelsNoAccess"`
+    	ChatsNoAccess    int `json:"chatsNoAccess"`
+    	CollabsNoAccess  int `json:"collabsNoAccess"`
+    }
+    if err := json.Unmarshal(res.Result, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.ChannelsNoAccess, item.ChatsNoAccess)
+    ```
+
 {% endlist %}
 
 ## Response Handling

@@ -182,6 +182,24 @@ Can be obtained using the methods [booking.v1.booking.add](../booking-v1-booking
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "booking.v1.booking.externalData.unset", b24.Params{
+    	"bookingId": 14,
+    })
+    if err != nil {
+    	return fmt.Errorf("booking.v1.booking.externalData.unset: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

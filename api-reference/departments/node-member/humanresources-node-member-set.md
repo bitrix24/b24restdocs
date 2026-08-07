@@ -252,6 +252,31 @@ The new API call differs by adding the `/api/` segment to the request URL:
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "humanresources.node.member.set", b24.Params{
+    	"nodeId": 15,
+    	"userIds": b24.Params{
+    		"MEMBER_HEAD":        []int{7},
+    		"MEMBER_DEPUTY_HEAD": []int{12},
+    		"MEMBER_EMPLOYEE":    []int{18, 25, 31},
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("humanresources.node.member.set: %w", err)
+    }
+
+    var item struct {
+    	Success bool `json:"success"`
+    }
+    if err := json.Unmarshal(res.Result, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.Success)
+    ```
+
 {% endlist %}
 
 ## Response Handling

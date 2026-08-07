@@ -208,6 +208,26 @@ The current user cannot grant permissions higher than their own level. For examp
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "disk.folder.shareToUser", b24.Params{
+    	"id":       8994,
+    	"userId":   1271,
+    	"taskName": "disk_access_read",
+    })
+    if err != nil {
+    	return fmt.Errorf("disk.folder.shareToUser: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

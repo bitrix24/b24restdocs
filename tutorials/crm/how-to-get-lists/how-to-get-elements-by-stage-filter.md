@@ -82,6 +82,41 @@ We will use the [crm.category.list](../../../api-reference/crm/universal/categor
     ).response.result
     ```
 
+- Go
+
+    ```go
+    res, err := core.Call(ctx, "crm.category.list", b24.Params{
+    	"entityTypeId": entityTypeDeal,
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("crm.category.list: %w", err)
+    }
+
+    // The method wraps the response in an object with the categories key.
+    var categories struct {
+    	Categories []struct {
+    		ID        int    `json:"id"`
+    		Name      string `json:"name"`
+    		IsDefault string `json:"isDefault"`
+    	} `json:"categories"`
+    }
+    if err := json.Unmarshal(res.Result, &categories); err != nil {
+    	return fmt.Errorf("parse pipelines: %w", err)
+    }
+
+    // The required pipeline is identified by its title in the name field.
+    funnel := -1
+    for i, c := range categories.Categories {
+    	if (funnelName == "" && c.IsDefault == "Y") || c.Name == funnelName {
+    		funnel = i
+    		break
+    	}
+    }
+    if funnel < 0 {
+    	return fmt.Errorf("pipeline %q not found", funnelName)
+    }
+    ```
+
 {% endlist %}
 
 As a result, we obtained the deal funnels. We will identify the required funnel by its name in the `name` field. The funnel identifier will be taken from the `id` field.
@@ -170,6 +205,50 @@ If the funnel `ID` is `0`, make the request for stages without adding `_ID`.
             "ENTITY_ID": "DEAL_STAGE_10",
         }
     ).response.result
+    ```
+
+- Go
+
+    ```go
+    // The default pipeline has stage IDs without a suffix, never
+    // DEAL_STAGE_0. For a smart process the formula is different: DYNAMIC_185_STAGE_11.
+    entityID := "DEAL_STAGE"
+    if id := categories.Categories[funnel].ID; id > 0 {
+    	entityID = fmt.Sprintf("DEAL_STAGE_%d", id)
+    }
+
+    res, err = core.Call(ctx, "crm.status.list", b24.Params{
+    	"filter": b24.Params{"ENTITY_ID": entityID},
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("crm.status.list: %w", err)
+    }
+
+    var stages []struct {
+    	StatusID string `json:"STATUS_ID"`
+    	Name     string `json:"NAME"`
+    	// The real semantics of the stage is in EXTRA: the top-level field
+    	// SEMANTICS arrives empty for stages that are in progress.
+    	Extra struct {
+    		Semantics string `json:"SEMANTICS"`
+    	} `json:"EXTRA"`
+    }
+    if err := json.Unmarshal(res.Result, &stages); err != nil {
+    	return fmt.Errorf("parse stages: %w", err)
+    }
+
+    // The required stage is identified by its title in the NAME field, and the ID is taken
+    // from STATUS_ID — it is exactly what goes into the filter of the next step.
+    stage := -1
+    for i, s := range stages {
+    	if (stageName == "" && s.Extra.Semantics == "process") || s.Name == stageName {
+    		stage = i
+    		break
+    	}
+    }
+    if stage < 0 {
+    	return fmt.Errorf("stage %q not found in pipeline %s", stageName, entityID)
+    }
     ```
 
 {% endlist %}
@@ -371,6 +450,33 @@ Use the [crm.item.list](../../../api-reference/crm/universal/crm-item-list.md) m
     ).response.result
     ```
 
+- Go
+
+    ```go
+    res, err = core.Call(ctx, "crm.item.list", b24.Params{
+    	"entityTypeId": entityTypeDeal,
+    	"select":       []string{"id", "title", "assignedById", "opportunity"},
+    	"filter":       b24.Params{"stageId": stages[stage].StatusID},
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("crm.item.list: %w", err)
+    }
+
+    // The method wraps the response in an object with the items key, and the fields here are in
+    // camelCase — unlike crm.status.list two calls above.
+    var list struct {
+    	Items []struct {
+    		ID           int     `json:"id"`
+    		Title        string  `json:"title"`
+    		AssignedByID int     `json:"assignedById"`
+    		Opportunity  float64 `json:"opportunity"`
+    	} `json:"items"`
+    }
+    if err := json.Unmarshal(res.Result, &list); err != nil {
+    	return fmt.Errorf("parse items: %w", err)
+    }
+    ```
+
 {% endlist %}
 
 As a result, we obtained a list of items at the requested stage.
@@ -449,6 +555,30 @@ In the obtained result, the `ID` of the employee responsible for the item is ind
     result = client.user.get(
         filter={"ID": 29},
     ).response.result
+    ```
+
+- Go
+
+    ```go
+    res, err = core.Call(ctx, "user.get", b24.Params{
+    	"filter": b24.Params{"ID": ids},
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("user.get: %w", err)
+    }
+
+    // user.get responds in UPPER_SNAKE and sends the ID as a string.
+    var rows []struct {
+    	ID       b24.ID `json:"ID"`
+    	Name     string `json:"NAME"`
+    	LastName string `json:"LAST_NAME"`
+    }
+    if err := json.Unmarshal(res.Result, &rows); err != nil {
+    	return fmt.Errorf("parse employees: %w", err)
+    }
+    for _, u := range rows {
+    	users[int(u.ID)] = u.Name + " " + u.LastName
+    }
     ```
 
 {% endlist %}
@@ -821,6 +951,248 @@ As a result, we will obtain the employee data, including the `NAME` and `LAST_NA
                     print("\t".join(row))
     except BitrixAPIError as error:
         print(f"Error: {error}")
+    ```
+
+- Go
+
+    ```go
+    // Setup in an empty directory — go get will not work without go mod init:
+    //
+    //	go mod init example && go get github.com/bitrix24/b24gosdk
+    //
+    // Run:
+    //
+    //	export B24_WEBHOOK_URL='https://your-portal.bitrix24.com/rest/1/token/' && go run .
+    //
+    // The example is self-contained: it finds the pipeline and the stage, places at this stage
+    // its own deal, displays the list of items at the stage with the responsible persons, and cleans up
+    // itself. It runs on any portal, nothing needs to be edited.
+    package main
+
+    import (
+    	"context"
+    	"encoding/json"
+    	"fmt"
+    	"log"
+    	"os"
+    	"sort"
+
+    	b24 "github.com/bitrix24/b24gosdk"
+    )
+
+    // entityTypeDeal is the ID of the "deal" object type. The ID
+    // of the smart process is returned by crm.enum.ownertype.
+    const entityTypeDeal = 2
+
+    // The titles of the pipeline and the stage being worked with. An empty string means
+    // "choose on your own": the titles differ on every portal, and the example must
+    // run everywhere without edits. Substitute your own here — the logic does not change.
+    const (
+    	funnelName = ""
+    	stageName  = ""
+    )
+
+    func main() {
+    	if err := run(context.Background()); err != nil {
+    		log.Fatal(err)
+    	}
+    }
+
+    func run(ctx context.Context) error {
+    	// The webhook path is a secret, so it comes from the environment, not from the code.
+    	core := b24.NewClient(os.Getenv("B24_WEBHOOK_URL")).Core()
+
+    	// --- step 1: the pipeline ID
+    	res, err := core.Call(ctx, "crm.category.list", b24.Params{
+    		"entityTypeId": entityTypeDeal,
+    	}, b24.WithIdempotent())
+    	if err != nil {
+    		return fmt.Errorf("crm.category.list: %w", err)
+    	}
+
+    	// The method wraps the response in an object with the categories key.
+    	var categories struct {
+    		Categories []struct {
+    			ID        int    `json:"id"`
+    			Name      string `json:"name"`
+    			IsDefault string `json:"isDefault"`
+    		} `json:"categories"`
+    	}
+    	if err := json.Unmarshal(res.Result, &categories); err != nil {
+    		return fmt.Errorf("parse pipelines: %w", err)
+    	}
+
+    	// The required pipeline is identified by its title in the name field.
+    	funnel := -1
+    	for i, c := range categories.Categories {
+    		if (funnelName == "" && c.IsDefault == "Y") || c.Name == funnelName {
+    			funnel = i
+    			break
+    		}
+    	}
+    	if funnel < 0 {
+    		return fmt.Errorf("pipeline %q not found", funnelName)
+    	}
+    	fmt.Printf("pipeline %q: id=%d\n", categories.Categories[funnel].Name, categories.Categories[funnel].ID)
+
+    	// --- step 2: the stage ID
+    	// The default pipeline has stage IDs without a suffix, never
+    	// DEAL_STAGE_0. For a smart process the formula is different: DYNAMIC_185_STAGE_11.
+    	entityID := "DEAL_STAGE"
+    	if id := categories.Categories[funnel].ID; id > 0 {
+    		entityID = fmt.Sprintf("DEAL_STAGE_%d", id)
+    	}
+
+    	res, err = core.Call(ctx, "crm.status.list", b24.Params{
+    		"filter": b24.Params{"ENTITY_ID": entityID},
+    	}, b24.WithIdempotent())
+    	if err != nil {
+    		return fmt.Errorf("crm.status.list: %w", err)
+    	}
+
+    	var stages []struct {
+    		StatusID string `json:"STATUS_ID"`
+    		Name     string `json:"NAME"`
+    		// The real semantics of the stage is in EXTRA: the top-level field
+    		// SEMANTICS arrives empty for stages that are in progress.
+    		Extra struct {
+    			Semantics string `json:"SEMANTICS"`
+    		} `json:"EXTRA"`
+    	}
+    	if err := json.Unmarshal(res.Result, &stages); err != nil {
+    		return fmt.Errorf("parse stages: %w", err)
+    	}
+
+    	// The required stage is identified by its title in the NAME field, and the ID is taken
+    	// from STATUS_ID — it is exactly what goes into the filter of the next step.
+    	stage := -1
+    	for i, s := range stages {
+    		if (stageName == "" && s.Extra.Semantics == "process") || s.Name == stageName {
+    			stage = i
+    			break
+    		}
+    	}
+    	if stage < 0 {
+    		return fmt.Errorf("stage %q not found in pipeline %s", stageName, entityID)
+    	}
+    	fmt.Printf("stage %q: stageId=%s\n", stages[stage].Name, stages[stage].StatusID)
+
+    	// --- setup: our own deal at this stage, so step 3 has something to find
+
+    	dealID, err := addDeal(ctx, core, categories.Categories[funnel].ID, stages[stage].StatusID)
+    	if err != nil {
+    		return err
+    	}
+    	defer del(ctx, core, "crm.item.delete", b24.Params{
+    		"entityTypeId": entityTypeDeal, "id": dealID,
+    	})
+
+    	// --- step 3: the items at the stage
+    	res, err = core.Call(ctx, "crm.item.list", b24.Params{
+    		"entityTypeId": entityTypeDeal,
+    		"select":       []string{"id", "title", "assignedById", "opportunity"},
+    		"filter":       b24.Params{"stageId": stages[stage].StatusID},
+    	}, b24.WithIdempotent())
+    	if err != nil {
+    		return fmt.Errorf("crm.item.list: %w", err)
+    	}
+
+    	// The method wraps the response in an object with the items key, and the fields here are in
+    	// camelCase — unlike crm.status.list two calls above.
+    	var list struct {
+    		Items []struct {
+    			ID           int     `json:"id"`
+    			Title        string  `json:"title"`
+    			AssignedByID int     `json:"assignedById"`
+    			Opportunity  float64 `json:"opportunity"`
+    		} `json:"items"`
+    	}
+    	if err := json.Unmarshal(res.Result, &list); err != nil {
+    		return fmt.Errorf("parse items: %w", err)
+    	}
+    	fmt.Printf("items at the stage: %d\n", len(list.Items))
+
+    	// --- step 4: the data of the responsible persons
+
+    	// One request for all responsible persons rather than one request per item: the portal
+    	// allows about two calls per second.
+    	ids := make([]int, 0, len(list.Items))
+    	seen := map[int]bool{}
+    	for _, it := range list.Items {
+    		if it.AssignedByID > 0 && !seen[it.AssignedByID] {
+    			seen[it.AssignedByID] = true
+    			ids = append(ids, it.AssignedByID)
+    		}
+    	}
+    	sort.Ints(ids)
+
+    	users := map[int]string{}
+    	if len(ids) > 0 {
+    		res, err = core.Call(ctx, "user.get", b24.Params{
+    			"filter": b24.Params{"ID": ids},
+    		}, b24.WithIdempotent())
+    		if err != nil {
+    			return fmt.Errorf("user.get: %w", err)
+    		}
+
+    		// user.get responds in UPPER_SNAKE and sends the ID as a string.
+    		var rows []struct {
+    			ID       b24.ID `json:"ID"`
+    			Name     string `json:"NAME"`
+    			LastName string `json:"LAST_NAME"`
+    		}
+    		if err := json.Unmarshal(res.Result, &rows); err != nil {
+    			return fmt.Errorf("parse employees: %w", err)
+    		}
+    		for _, u := range rows {
+    			users[int(u.ID)] = u.Name + " " + u.LastName
+    		}
+    	}
+
+    	fmt.Println("Deal ID\tTitle\tResponsible\tExpected revenue")
+    	for _, it := range list.Items {
+    		who := users[it.AssignedByID]
+    		if who == "" {
+    			who = "Unknown"
+    		}
+    		fmt.Printf("%d\t%s\t%s\t%.0f\n", it.ID, it.Title, who, it.Opportunity)
+    	}
+    	return nil
+    }
+
+    // --- helpers: data setup and cleanup
+
+    // addDeal places a deal at the chosen stage, so step 3 has something to find even
+    // on an empty portal.
+    func addDeal(ctx context.Context, core *b24.Core, categoryID int, stageID string) (b24.ID, error) {
+    	res, err := core.Call(ctx, "crm.item.add", b24.Params{
+    		"entityTypeId": entityTypeDeal,
+    		"fields": b24.Params{
+    			"title":       "Purchase of ovens",
+    			"categoryId":  categoryID,
+    			"stageId":     stageID,
+    			"opportunity": 500,
+    		},
+    	})
+    	if err != nil {
+    		return 0, fmt.Errorf("crm.item.add: %w", err)
+    	}
+    	raw, ok := b24.Unwrap(res.Result, "item", "id")
+    	if !ok {
+    		return 0, fmt.Errorf("no item.id in %s", res.Result)
+    	}
+    	var id b24.ID
+    	return id, json.Unmarshal(raw, &id)
+    }
+
+    // del removes what was created. A cleanup error is printed but not returned: it must not
+    // mask the real error of the scenario.
+    func del(ctx context.Context, core *b24.Core, method string, params b24.Params) {
+    	if _, err := core.Call(ctx, method, params); err != nil {
+    		fmt.Fprintf(os.Stderr, "cleanup, %s: %v
+", method, err)
+    	}
+    }
     ```
 
 {% endlist %}

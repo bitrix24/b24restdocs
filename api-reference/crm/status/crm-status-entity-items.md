@@ -219,6 +219,30 @@ This method is similar to [crm.status.list](crm-status-list.md), except that the
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.status.entity.items", b24.Params{
+    	"entityId": "DEAL_STAGE",
+    })
+    if err != nil {
+    	return fmt.Errorf("crm.status.entity.items: %w", err)
+    }
+
+    var items []struct {
+    	Name     string `json:"NAME"`
+    	Sort     int    `json:"SORT"`
+    	StatusID string `json:"STATUS_ID"`
+    }
+    if err := json.Unmarshal(res.Result, &items); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    for _, it := range items {
+    	fmt.Println(it.Name, it.Sort)
+    }
+    ```
+
 {% endlist %}
 
 ## Response Handling

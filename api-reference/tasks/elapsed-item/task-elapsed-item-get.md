@@ -213,6 +213,34 @@ It is mandatory to follow the specified order of parameters in the request as sh
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "task.elapseditem.get", b24.Params{
+    	"TASKID": 691,
+    	"ITEMID": 1,
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("task.elapseditem.get: %w", err)
+    }
+
+    var items []struct {
+    	ID          b24.ID `json:"ID"`
+    	TaskID      b24.ID `json:"TASK_ID"`
+    	UserID      b24.ID `json:"USER_ID"`
+    	CommentText string `json:"COMMENT_TEXT"`
+    	Seconds     string `json:"SECONDS"`
+    	Minutes     string `json:"MINUTES"`
+    }
+    if err := json.Unmarshal(res.Result, &items); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    for _, it := range items {
+    	fmt.Println(it.ID, it.TaskID)
+    }
+    ```
+
 {% endlist %}
 
 ## Response Handling

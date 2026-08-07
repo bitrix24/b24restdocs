@@ -408,6 +408,34 @@ Below are examples of `PROPERTY` objects for different parameter types.
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "bizproc.activity.update", b24.Params{
+    	"CODE": "action_test_code",
+    	"FIELDS": b24.Params{
+    		"AUTH_USER_ID":     1,
+    		"USE_SUBSCRIPTION": "N",
+    		"FILTER": b24.Params{
+    			"INCLUDE": []any{
+    				[]string{"lists"},
+    				[]string{"crm", "CCrmDocumentDeal"},
+    			},
+    		},
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("bizproc.activity.update: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

@@ -215,6 +215,24 @@ For example, `2024-12-20`  ||
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "calendar.accessibility.get", b24.Params{
+    	"from":  "2024-06-20",
+    	"to":    "2024-12-20",
+    	"users": []int{1, 2, 34},
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("calendar.accessibility.get: %w", err)
+    }
+
+    // The response arrives as json.RawMessage — unmarshal it
+    // into a struct matching the response shape shown below on this page.
+    fmt.Printf("%s\n", res.Result)
+    ```
+
 {% endlist %}
 
 ## Response Handling

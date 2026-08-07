@@ -374,6 +374,25 @@ Example of recording values with CRM.
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "task.item.update", b24.Params{
+    	"TASKID": 1,
+    	"FIELDS": b24.Params{
+    		"UF_CRM_TASK": []string{"L_4", "C_7", "CO_5", "D_10"},
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("task.item.update: %w", err)
+    }
+
+    // The response arrives as json.RawMessage — unmarshal it
+    // into a struct matching the response shape shown below on this page.
+    fmt.Printf("%s\n", res.Result)
+    ```
+
 {% endlist %}
 
 The numbers are the `ID` of the corresponding values. The value `L_4` indicates a link to the lead task with `ID = 4`. You can set multiple links of the same type, for example, `L_4, L_5`.

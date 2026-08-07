@@ -435,6 +435,64 @@ To enable a setting, use `Y`, to disable it — `N`. ||
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "lists.field.update", b24.Params{
+    	"IBLOCK_TYPE_ID": "lists",
+    	"IBLOCK_ID":      "123",
+    	"FIELD_ID":       "PROPERTY_1151",
+    	"FIELDS": b24.Params{
+    		"NAME":        "Task Status",
+    		"SORT":        "50",
+    		"IS_REQUIRED": "N",
+    		"MULTIPLE":    "N",
+    		"TYPE":        "L",
+    		"LIST": b24.Params{
+    			"1669": b24.Params{
+    				"VALUE": "Planning",
+    				"SORT":  10,
+    			},
+    			"1671": b24.Params{
+    				"VALUE": "In Progress",
+    				"SORT":  20,
+    			},
+    			"1673": b24.Params{
+    				"VALUE": "Testing",
+    				"SORT":  30,
+    			},
+    			"1675": b24.Params{
+    				"VALUE": "Completed",
+    				"SORT":  40,
+    			},
+    			"1677": b24.Params{
+    				"VALUE": "Deferred",
+    				"SORT":  50,
+    			},
+    		},
+    		"LIST_TEXT_VALUES": "Archive",
+    		"LIST_DEF":         []string{"1671"},
+    		"SETTINGS": b24.Params{
+    			"SHOW_ADD_FORM":        "Y",
+    			"SHOW_EDIT_FORM":       "Y",
+    			"ADD_READ_ONLY_FIELD":  "N",
+    			"EDIT_READ_ONLY_FIELD": "Y",
+    			"SHOW_FIELD_PREVIEW":   "N",
+    		},
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("lists.field.update: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

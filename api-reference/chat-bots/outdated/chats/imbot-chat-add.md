@@ -221,6 +221,34 @@ If the parameter is not provided, the method searches for the first bot register
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "imbot.chat.add", b24.Params{
+    	"TYPE":        "CHAT",
+    	"TITLE":       "New Chat",
+    	"DESCRIPTION": "Important News",
+    	"COLOR":       "GREEN",
+    	"MESSAGE":     "Welcome!",
+    	"USERS":       []int{1271},
+    	"AVATAR":      "/9j/4AAQSkZJRgABAQEBLAEsAAD/4QBwRXhp...+gKlSv+1v/2Q==",
+    	"ENTITY_TYPE": "CHAT",
+    	"ENTITY_ID":   "13",
+    	"BOT_ID":      1291,
+    	"CLIENT_ID":   "**put_your_client_id_here**",
+    })
+    if err != nil {
+    	return fmt.Errorf("imbot.chat.add: %w", err)
+    }
+
+    var newID b24.ID
+    if err := json.Unmarshal(res.Result, &newID); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("id:", newID)
+    ```
+
 {% endlist %}
 
 ## Response Handling

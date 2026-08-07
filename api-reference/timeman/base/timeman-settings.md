@@ -193,6 +193,31 @@ By default — identifier of the current user ||
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "timeman.settings", b24.Params{
+    	"USER_ID": 503,
+    })
+    if err != nil {
+    	return fmt.Errorf("timeman.settings: %w", err)
+    }
+
+    var item struct {
+    	UFTimeman        bool   `json:"UF_TIMEMAN"`
+    	UFTmFree         bool   `json:"UF_TM_FREE"`
+    	UFTmMaxStart     string `json:"UF_TM_MAX_START"`
+    	UFTmMinFinish    string `json:"UF_TM_MIN_FINISH"`
+    	UFTmMinDuration  string `json:"UF_TM_MIN_DURATION"`
+    	UFTmAllowedDelta string `json:"UF_TM_ALLOWED_DELTA"`
+    }
+    if err := json.Unmarshal(res.Result, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.UFTimeman, item.UFTmFree)
+    ```
+
 {% endlist %}
 
 ## Response Handling

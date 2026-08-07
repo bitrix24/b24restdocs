@@ -136,6 +136,23 @@ The identifier can be obtained using the [bizproc.workflow.instances](./bizproc-
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "bizproc.workflow.terminate", b24.Params{
+    	"ID":     "65e5a449e8f135.21284909",
+    	"STATUS": "Terminated by rest app.",
+    })
+    if err != nil {
+    	return fmt.Errorf("bizproc.workflow.terminate: %w", err)
+    }
+
+    // The response arrives as json.RawMessage — unmarshal it
+    // into a struct matching the response shape shown below on this page.
+    fmt.Printf("%s\n", res.Result)
+    ```
+
 {% endlist %}
 
 ## Response Handling

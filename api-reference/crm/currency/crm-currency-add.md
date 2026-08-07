@@ -347,6 +347,48 @@ Allowed values are described in the [reference](../data-types.md#crm_currency_lo
             print(f"Unexpected error: {error}")
         ```
 
+    - Go
+
+        ```go
+        // client and ctx are already created — see the Go SDK section
+        res, err := client.Core().Call(ctx, "crm.currency.add", b24.Params{
+        	"fields": b24.Params{
+        		"CURRENCY":   "CNY",
+        		"BASE":       "N",
+        		"AMOUNT":     12.2251,
+        		"AMOUNT_CNT": 1,
+        		"SORT":       9000,
+        		"LANG": b24.Params{
+        			"ru": b24.Params{
+        				"DECIMALS":          2,
+        				"DEC_POINT":         ".",
+        				"FORMAT_STRING":     "# CNY",
+        				"FULL_NAME":         "yuan",
+        				"HIDE_ZERO":         "Y",
+        				"THOUSANDS_VARIANT": "S",
+        			},
+        			"en": b24.Params{
+        				"DECIMALS":      2,
+        				"DEC_POINT":     ",",
+        				"FORMAT_STRING": "# CNY",
+        				"FULL_NAME":     "yuan",
+        				"HIDE_ZERO":     "Y",
+        				"THOUSANDS_SEP": ".",
+        			},
+        		},
+        	},
+        })
+        if err != nil {
+        	return fmt.Errorf("crm.currency.add: %w", err)
+        }
+
+        var value string
+        if err := json.Unmarshal(res.Result, &value); err != nil {
+        	return fmt.Errorf("parse response: %w", err)
+        }
+        fmt.Println("result:", value)
+        ```
+
     {% endlist %}
 
 2. Creating the Indonesian rupiah
@@ -580,6 +622,47 @@ Allowed values are described in the [reference](../data-types.md#crm_currency_lo
             print(f"Bitrix SDK Error: {error.message}")
         except Exception as error:
             print(f"Unexpected error: {error}")
+        ```
+
+    - Go
+
+        ```go
+        // client and ctx are already created — see the Go SDK section
+        res, err := client.Core().Call(ctx, "crm.currency.add", b24.Params{
+        	"fields": b24.Params{
+        		"CURRENCY":   "IDR",
+        		"AMOUNT":     54.8738,
+        		"AMOUNT_CNT": 10000,
+        		"SORT":       8000,
+        		"LANG": b24.Params{
+        			"ru": b24.Params{
+        				"DECIMALS":          2,
+        				"DEC_POINT":         ".",
+        				"FORMAT_STRING":     "Rp#",
+        				"FULL_NAME":         "rupiah",
+        				"HIDE_ZERO":         "Y",
+        				"THOUSANDS_VARIANT": "C",
+        			},
+        			"en": b24.Params{
+        				"DECIMALS":          2,
+        				"DEC_POINT":         ".",
+        				"FORMAT_STRING":     "Rp#",
+        				"FULL_NAME":         "rupee",
+        				"HIDE_ZERO":         "Y",
+        				"THOUSANDS_VARIANT": "C",
+        			},
+        		},
+        	},
+        })
+        if err != nil {
+        	return fmt.Errorf("crm.currency.add: %w", err)
+        }
+
+        var value string
+        if err := json.Unmarshal(res.Result, &value); err != nil {
+        	return fmt.Errorf("parse response: %w", err)
+        }
+        fmt.Println("result:", value)
         ```
 
     {% endlist %}

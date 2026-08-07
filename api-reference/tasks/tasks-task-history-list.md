@@ -232,6 +232,28 @@ By default, records are sorted in descending order by creation time, meaning fro
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "tasks.task.history.list", b24.Params{
+    	"taskId": 8137,
+    	"filter": b24.Params{
+    		"FIELD": "COMMENT",
+    	},
+    	"order": b24.Params{
+    		"createdDate": "ASC",
+    	},
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("tasks.task.history.list: %w", err)
+    }
+
+    // The response arrives as json.RawMessage — unmarshal it
+    // into a struct matching the response shape shown below on this page.
+    fmt.Printf("%s\n", res.Result)
+    ```
+
 {% endlist %}
 
 ## Response Handling

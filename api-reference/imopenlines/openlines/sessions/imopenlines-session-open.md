@@ -196,6 +196,26 @@ The value can be obtained using the method [imopenlines.dialog.get](./imopenline
     }
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "imopenlines.session.open", b24.Params{
+    	"USER_CODE": "livechat|22|1761|587",
+    })
+    if err != nil {
+    	return fmt.Errorf("imopenlines.session.open: %w", err)
+    }
+
+    var item struct {
+    	ChatID b24.ID `json:"chatId"`
+    }
+    if err := json.Unmarshal(res.Result, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.ChatID)
+    ```
+
 {% endlist %}
 
 ## Response Handling

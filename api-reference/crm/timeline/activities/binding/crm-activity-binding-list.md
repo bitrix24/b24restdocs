@@ -231,6 +231,36 @@ The result will contain only the items for which the current user has read acces
     except Exception as error:
         print(f"Unexpected error: {error}")
     ```
+
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.activity.binding.list", b24.Params{
+    	"activityId": 999,
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("crm.activity.binding.list: %w", err)
+    }
+
+    var items []struct {
+    	EntityTypeID b24.ID `json:"entityTypeId"`
+    	EntityID     b24.ID `json:"entityId"`
+    }
+    if err := json.Unmarshal(res.Result, &items); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    for _, it := range items {
+    	fmt.Println(it.EntityTypeID, it.EntityID)
+    }
+
+    // Total and Next are filled in by list methods; for a full
+    // list traversal, use client.Core().Pages and Scan.
+    if res.Total != nil {
+    	fmt.Println("total:", *res.Total)
+    }
+    ```
+
 {% endlist %}
 
 ## Response Handling

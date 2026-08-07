@@ -193,6 +193,24 @@ You can find the channel code in the detail form of the connected open channel i
     print_r($result);
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "imopenlines.network.join", b24.Params{
+    	"CODE": "ab515f5d85a8b844d484f6ea75a2e494",
+    })
+    if err != nil {
+    	return fmt.Errorf("imopenlines.network.join: %w", err)
+    }
+
+    var value b24.ID
+    if err := json.Unmarshal(res.Result, &value); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("result:", value)
+    ```
+
 {% endlist %}
 
 ## Response Handling

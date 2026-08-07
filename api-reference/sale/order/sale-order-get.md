@@ -203,6 +203,37 @@ The method `sale.order.get` is designed to retrieve values for all fields of an 
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "sale.order.get", b24.Params{
+    	"id": 6,
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("sale.order.get: %w", err)
+    }
+
+    // The method wraps the response in an object with the "order" key.
+    raw, ok := b24.Unwrap(res.Result, "order")
+    if !ok {
+    	return fmt.Errorf("no order key in the response")
+    }
+
+    var item struct {
+    	AccountNumber  string `json:"accountNumber"`
+    	AdditionalInfo string `json:"additionalInfo"`
+    	Canceled       string `json:"canceled"`
+    	Comments       string `json:"comments"`
+    	CompanyID      b24.ID `json:"companyId"`
+    	Currency       string `json:"currency"`
+    }
+    if err := json.Unmarshal(raw, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.AccountNumber, item.AdditionalInfo)
+    ```
+
 {% endlist %}
 
 ## Response Handling

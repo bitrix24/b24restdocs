@@ -649,6 +649,40 @@ If it is necessary to create a custom field with an added custom type via the AP
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "user.userfield.add", b24.Params{
+    	"fields": b24.Params{
+    		"FIELD_NAME":   "UF_USER_DEALS",
+    		"USER_TYPE_ID": "crm",
+    		"XML_ID":       "UF_CRM_DEALS",
+    		"SORT":         100,
+    		"MULTIPLE":     "Y",
+    		"MANDATORY":    "N",
+    		"SHOW_FILTER":  "N",
+    		"SHOW_IN_LIST": "Y",
+    		"EDIT_IN_LIST": "Y",
+    		"SETTINGS": b24.Params{
+    			"DEAL": "Y",
+    		},
+    		"LABEL": "CRM Deal Linking",
+    		"EDIT_FORM_LABEL": b24.Params{
+    		},
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("user.userfield.add: %w", err)
+    }
+
+    var newID b24.ID
+    if err := json.Unmarshal(res.Result, &newID); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("id:", newID)
+    ```
+
 {% endlist %}
 
 ## Response Handling

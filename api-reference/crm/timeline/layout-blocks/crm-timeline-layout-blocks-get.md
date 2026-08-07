@@ -209,6 +209,28 @@ Retrieve a set of additional content blocks for the timeline record with `id = 8
     echo '';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.timeline.layout.blocks.get", b24.Params{
+    	"entityTypeId": 2,
+    	"entityId":     4,
+    	"timelineId":   8,
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("crm.timeline.layout.blocks.get: %w", err)
+    }
+
+    // The method wraps the response in an object with the "layout" key.
+    raw, ok := b24.Unwrap(res.Result, "layout")
+    if !ok {
+    	return fmt.Errorf("no layout key in the response")
+    }
+
+    fmt.Printf("%s\n", raw)
+    ```
+
 {% endlist %}
 
 ## Response Handling

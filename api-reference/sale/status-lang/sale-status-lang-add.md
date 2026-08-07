@@ -266,6 +266,40 @@ The list of available languages can be obtained using the method [sale.statuslan
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "sale.statuslang.add", b24.Params{
+    	"fields": b24.Params{
+    		"statusId":    "RD",
+    		"lid":         "ru",
+    		"name":        "Returned by Customer",
+    		"description": "The customer returned the product due to a defect",
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("sale.statuslang.add: %w", err)
+    }
+
+    // The method wraps the response in an object with the "statusLang" key.
+    raw, ok := b24.Unwrap(res.Result, "statusLang")
+    if !ok {
+    	return fmt.Errorf("no statusLang key in the response")
+    }
+
+    var item struct {
+    	Description string `json:"description"`
+    	Lid         string `json:"lid"`
+    	Name        string `json:"name"`
+    	StatusID    string `json:"statusId"`
+    }
+    if err := json.Unmarshal(raw, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.Description, item.Lid)
+    ```
+
 {% endlist %}
 
 ## Response Handling

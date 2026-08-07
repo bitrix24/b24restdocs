@@ -217,6 +217,38 @@ The identifier of the checklist item can be obtained when [creating a new item](
     print_r($result);
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "tasks.template.checklist.renew", b24.Params{
+    	"templateId":      139,
+    	"checkListItemId": 27,
+    })
+    if err != nil {
+    	return fmt.Errorf("tasks.template.checklist.renew: %w", err)
+    }
+
+    // The method wraps the response in an object with the "checkListItem" key.
+    raw, ok := b24.Unwrap(res.Result, "checkListItem")
+    if !ok {
+    	return fmt.Errorf("no checkListItem key in the response")
+    }
+
+    var item struct {
+    	ID               b24.ID `json:"id"`
+    	UserID           b24.ID `json:"userId"`
+    	ParentID         b24.ID `json:"parentId"`
+    	Title            string `json:"title"`
+    	SortIndex        int    `json:"sortIndex"`
+    	DisplaySortIndex string `json:"displaySortIndex"`
+    }
+    if err := json.Unmarshal(raw, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.ID, item.UserID)
+    ```
+
 {% endlist %}
 
 ## Response Handling

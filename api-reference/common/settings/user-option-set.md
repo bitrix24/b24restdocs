@@ -210,6 +210,25 @@ The application can be bound to the user who installed it if it is a [headless a
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "user.option.set", b24.Params{
+    	"options": b24.Params{
+    		"data":  "value",
+    		"data2": "value2",
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("user.option.set: %w", err)
+    }
+
+    // The response arrives as json.RawMessage — unmarshal it
+    // into a struct matching the response shape shown below on this page.
+    fmt.Printf("%s\n", res.Result)
+    ```
+
 {% endlist %}
 
 ## Error Handling

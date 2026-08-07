@@ -325,6 +325,43 @@ Retrieves a list of payments for a specific CRM object.
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.item.payment.list", b24.Params{
+    	"entityId":     13123,
+    	"entityTypeId": 2,
+    	"filter": b24.Params{
+    		"@id": []int{1036, 1037},
+    	},
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("crm.item.payment.list: %w", err)
+    }
+
+    var items []struct {
+    	ID            b24.ID `json:"id"`
+    	AccountNumber string `json:"accountNumber"`
+    	Paid          string `json:"paid"`
+    	DatePaid      string `json:"datePaid"`
+    	EmpPaidID     b24.ID `json:"empPaidId"`
+    	PaySystemID   b24.ID `json:"paySystemId"`
+    }
+    if err := json.Unmarshal(res.Result, &items); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    for _, it := range items {
+    	fmt.Println(it.ID, it.AccountNumber)
+    }
+
+    // Total and Next are filled in by list methods; for a full
+    // list traversal, use client.Core().Pages and Scan.
+    if res.Total != nil {
+    	fmt.Println("total:", *res.Total)
+    }
+    ```
+
 {% endlist %}
 
 ## Response on Success

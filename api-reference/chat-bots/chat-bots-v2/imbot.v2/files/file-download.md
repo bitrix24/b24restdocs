@@ -136,6 +136,28 @@ Pass the same botToken that was specified during the chat-bot registration ||
     }
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "imbot.v2.File.download", b24.Params{
+    	"botId":    456,
+    	"botToken": "my_bot_token",
+    	"fileId":   138,
+    })
+    if err != nil {
+    	return fmt.Errorf("imbot.v2.File.download: %w", err)
+    }
+
+    var item struct {
+    	DownloadUrl string `json:"downloadUrl"`
+    }
+    if err := json.Unmarshal(res.Result, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.DownloadUrl)
+    ```
+
 {% endlist %}
 
 ## Response Handling

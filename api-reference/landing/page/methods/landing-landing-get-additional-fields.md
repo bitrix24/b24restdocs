@@ -200,6 +200,31 @@ The page identifier can be obtained using the [landing.landing.getList](./landin
     }
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "landing.landing.getadditionalfields", b24.Params{
+    	"lid": 349,
+    })
+    if err != nil {
+    	return fmt.Errorf("landing.landing.getadditionalfields: %w", err)
+    }
+
+    var item struct {
+    	FontsCode     string `json:"FONTS_CODE"`
+    	GacounterUse  string `json:"GACOUNTER_USE"`
+    	MetamainUse   string `json:"METAMAIN_USE"`
+    	MetamainTitle string `json:"METAMAIN_TITLE"`
+    	MetaogTitle   string `json:"METAOG_TITLE"`
+    	MetaogImage   string `json:"METAOG_IMAGE"`
+    }
+    if err := json.Unmarshal(res.Result, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.FontsCode, item.GacounterUse)
+    ```
+
 {% endlist %}
 
 ## Response Handling

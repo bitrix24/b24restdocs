@@ -173,6 +173,22 @@ No parameters.
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "disk.storage.getFields", nil, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("disk.storage.getFields: %w", err)
+    }
+
+    keys, ok := b24.Keys(res.Result)
+    if !ok {
+    	return fmt.Errorf("expected an object in the response")
+    }
+    fmt.Println("fields in response:", len(keys))
+    ```
+
 {% endlist %}
 
 ## Response Handling

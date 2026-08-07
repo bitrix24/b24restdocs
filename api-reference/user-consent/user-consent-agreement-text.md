@@ -269,6 +269,37 @@ Substitution is performed only for standard agreements created based on template
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "userconsent.agreement.text", b24.Params{
+    	"id": 19,
+    	"replace": b24.Params{
+    		"button_caption": "I agree",
+    		"fields": b24.Params{
+    			"COMPANY_NAME":    "Example Ltd.",
+    			"COMPANY_ADDRESS": "New York, Example St., 1",
+    			"PURPOSES":        "Processing personal data to improve service",
+    			"THIRD_PARTIES":   "Company partners for analytics",
+    			"EMAIL":           "info@example.com",
+    		},
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("userconsent.agreement.text: %w", err)
+    }
+
+    var item struct {
+    	Label string `json:"LABEL"`
+    	Text  string `json:"TEXT"`
+    }
+    if err := json.Unmarshal(res.Result, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.Label, item.Text)
+    ```
+
 {% endlist %}
 
 ## Response Handling

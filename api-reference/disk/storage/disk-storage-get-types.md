@@ -162,6 +162,22 @@ No parameters.
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "disk.storage.getTypes", nil)
+    if err != nil {
+    	return fmt.Errorf("disk.storage.getTypes: %w", err)
+    }
+
+    var items []string
+    if err := json.Unmarshal(res.Result, &items); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("received:", len(items))
+    ```
+
 {% endlist %}
 
 ## Response Handling

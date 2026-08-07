@@ -286,6 +286,29 @@ Reset the shared configuration for deal cards in the pipeline with `id = 9` for 
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.item.details.configuration.reset", b24.Params{
+    	"entityTypeId": 2,
+    	"userId":       1,
+    	"scope":        "C",
+    	"extras": b24.Params{
+    		"dealCategoryId": 9,
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("crm.item.details.configuration.reset: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

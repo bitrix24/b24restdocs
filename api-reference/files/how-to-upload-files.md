@@ -207,6 +207,35 @@ Pass a Base64 string in the `file` field. The filename is not passed in this for
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "documentgenerator.template.add", b24.Params{
+    	"fields": b24.Params{
+    		"name": "Template example",
+    		"file": "base64_encoded_content_here",
+    		"code": "example_template_code",
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("documentgenerator.template.add: %w", err)
+    }
+
+    var item struct {
+    	ID        b24.ID `json:"ID"`
+    	Name      string `json:"NAME"`
+    	Type      string `json:"TYPE"`
+    	StorageID b24.ID `json:"STORAGE_ID"`
+    	FileID    b24.ID `json:"FILE_ID"`
+    	Size      string `json:"SIZE"`
+    }
+    if err := json.Unmarshal(res.Result, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.ID, item.Name)
+    ```
+
 {% endlist %}
 
 ### "Filename — Base64" Array {#array}
@@ -326,6 +355,33 @@ Pass an array of two items: the first is the filename with its extension, and th
     echo '<PRE>';
     print_r($result);
     echo '</PRE>';
+    ```
+
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "bizproc.workflow.template.add", b24.Params{
+    	"DOCUMENT_TYPE": []string{"lists", "BizprocDocument", "iblock_164"},
+    	"NAME":          "App template",
+    	"TEMPLATE_DATA": []string{"bp-379.bpt", "base64_encoded_content_here"},
+    })
+    if err != nil {
+    	return fmt.Errorf("bizproc.workflow.template.add: %w", err)
+    }
+
+    var item struct {
+    	ID        b24.ID `json:"ID"`
+    	Name      string `json:"NAME"`
+    	Type      string `json:"TYPE"`
+    	StorageID b24.ID `json:"STORAGE_ID"`
+    	FileID    b24.ID `json:"FILE_ID"`
+    	Size      string `json:"SIZE"`
+    }
+    if err := json.Unmarshal(res.Result, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.ID, item.Name)
     ```
 
 {% endlist %}
@@ -465,6 +521,37 @@ Pass an object with the `fileData` key. The key contains an array consisting of 
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "catalog.product.add", b24.Params{
+    	"fields": b24.Params{
+    		"iblockId": "24",
+    		"name":     "Product example",
+    		"previewPicture": b24.Params{
+    			"fileData": []string{"example.jpg", "base64_encoded_content_here"},
+    		},
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("catalog.product.add: %w", err)
+    }
+
+    var item struct {
+    	ID        b24.ID `json:"ID"`
+    	Name      string `json:"NAME"`
+    	Type      string `json:"TYPE"`
+    	StorageID b24.ID `json:"STORAGE_ID"`
+    	FileID    b24.ID `json:"FILE_ID"`
+    	Size      string `json:"SIZE"`
+    }
+    if err := json.Unmarshal(res.Result, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.ID, item.Name)
+    ```
+
 {% endlist %}
 
 ### Parameter fileContent {#filecontent}
@@ -582,6 +669,32 @@ Pass a separate `fileContent` parameter containing an array of the filename and 
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "disk.file.uploadversion", b24.Params{
+    	"id":          4,
+    	"fileContent": []string{"1.gif", "base64_encoded_content_here"},
+    })
+    if err != nil {
+    	return fmt.Errorf("disk.file.uploadversion: %w", err)
+    }
+
+    var item struct {
+    	ID        b24.ID `json:"ID"`
+    	Name      string `json:"NAME"`
+    	Type      string `json:"TYPE"`
+    	StorageID b24.ID `json:"STORAGE_ID"`
+    	FileID    b24.ID `json:"FILE_ID"`
+    	Size      string `json:"SIZE"`
+    }
+    if err := json.Unmarshal(res.Result, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.ID, item.Name)
+    ```
+
 {% endlist %}
 
 ### FILENAME and FILE_CONTENT Parameters {#filename}
@@ -691,6 +804,33 @@ If `FILENAME` is passed without `FILE_CONTENT`, the method will return `uploadUr
     echo '<PRE>';
     print_r($result);
     echo '</PRE>';
+    ```
+
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "telephony.externalCall.attachRecord", b24.Params{
+    	"CALL_ID":      "externalCall.716f1cb73def9700a23842adf9c4c568.1773130779",
+    	"FILENAME":     "call-001.mp3",
+    	"FILE_CONTENT": "base64_encoded_content_here",
+    })
+    if err != nil {
+    	return fmt.Errorf("telephony.externalCall.attachRecord: %w", err)
+    }
+
+    var item struct {
+    	ID        b24.ID `json:"ID"`
+    	Name      string `json:"NAME"`
+    	Type      string `json:"TYPE"`
+    	StorageID b24.ID `json:"STORAGE_ID"`
+    	FileID    b24.ID `json:"FILE_ID"`
+    	Size      string `json:"SIZE"`
+    }
+    if err := json.Unmarshal(res.Result, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.ID, item.Name)
     ```
 
 {% endlist %}
@@ -866,6 +1006,39 @@ Pass an array where each item is an array consisting of the filename and the Bas
     echo '<PRE>';
     print_r($result);
     echo '</PRE>';
+    ```
+
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.item.add", b24.Params{
+    	"entityTypeId": 2,
+    	"fields": b24.Params{
+    		"title": "New deal (specifically for REST method examples)",
+    		"ufCrm_123456": []any{
+    			[]string{"green_pixel.png", "base64_encoded_content_here"},
+    			[]string{"blue_pixel.png", "base64_encoded_content_here"},
+    			[]string{"red_pixel.png", "base64_encoded_content_here"},
+    		},
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("crm.item.add: %w", err)
+    }
+
+    var item struct {
+    	ID        b24.ID `json:"ID"`
+    	Name      string `json:"NAME"`
+    	Type      string `json:"TYPE"`
+    	StorageID b24.ID `json:"STORAGE_ID"`
+    	FileID    b24.ID `json:"FILE_ID"`
+    	Size      string `json:"SIZE"`
+    }
+    if err := json.Unmarshal(res.Result, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.ID, item.Name)
     ```
 
 {% endlist %}
@@ -1053,6 +1226,46 @@ Pass an array of objects. Each object contains the `value` field with the `fileD
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "catalog.product.add", b24.Params{
+    	"fields": b24.Params{
+    		"iblockId": 1,
+    		"name":     "Product example",
+    		"PROPERTY_1077": []b24.Params{
+    			{
+    				"value": b24.Params{
+    					"fileData": []string{"blue_pixel.txt", "YmFzZSDRgtC10YHRgg=="},
+    				},
+    			},
+    			{
+    				"value": b24.Params{
+    					"fileData": []string{"red_pixel.txt", "YmFzZSDRgtC10YHRgg=="},
+    				},
+    			},
+    		},
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("catalog.product.add: %w", err)
+    }
+
+    var item struct {
+    	ID        b24.ID `json:"ID"`
+    	Name      string `json:"NAME"`
+    	Type      string `json:"TYPE"`
+    	StorageID b24.ID `json:"STORAGE_ID"`
+    	FileID    b24.ID `json:"FILE_ID"`
+    	Size      string `json:"SIZE"`
+    }
+    if err := json.Unmarshal(res.Result, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.ID, item.Name)
+    ```
+
 {% endlist %}
 
 ### Array of fileData Objects {#multiple-filedata}
@@ -1216,6 +1429,41 @@ Pass an array of objects, where each object contains the `fileData` key with the
     echo '<PRE>';
     print_r($result);
     echo '</PRE>';
+    ```
+
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.lead.add", b24.Params{
+    	"fields": b24.Params{
+    		"TITLE": "Lead example",
+    		"UF_CRM_1711610801": []b24.Params{
+    			{
+    				"fileData": []string{"file1.png", "base64_encoded_content_here"},
+    			},
+    			{
+    				"fileData": []string{"file2.png", "base64_encoded_content_here"},
+    			},
+    		},
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("crm.lead.add: %w", err)
+    }
+
+    var item struct {
+    	ID        b24.ID `json:"ID"`
+    	Name      string `json:"NAME"`
+    	Type      string `json:"TYPE"`
+    	StorageID b24.ID `json:"STORAGE_ID"`
+    	FileID    b24.ID `json:"FILE_ID"`
+    	Size      string `json:"SIZE"`
+    }
+    if err := json.Unmarshal(res.Result, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.ID, item.Name)
     ```
 
 {% endlist %}

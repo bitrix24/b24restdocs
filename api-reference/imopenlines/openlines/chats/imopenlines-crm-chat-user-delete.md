@@ -211,6 +211,27 @@ You can obtain the identifiers of chats associated with the CRM object using the
     print_r($result);
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "imopenlines.crm.chat.user.delete", b24.Params{
+    	"CRM_ENTITY_TYPE": "lead",
+    	"CRM_ENTITY":      1205,
+    	"USER_ID":         503,
+    	"CHAT_ID":         1763,
+    })
+    if err != nil {
+    	return fmt.Errorf("imopenlines.crm.chat.user.delete: %w", err)
+    }
+
+    var value b24.ID
+    if err := json.Unmarshal(res.Result, &value); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("result:", value)
+    ```
+
 {% endlist %}
 
 ## Response Handling

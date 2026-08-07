@@ -248,6 +248,26 @@ Maximum value: `200` ||
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "im.dialog.messages.search", b24.Params{
+    	"CHAT_ID":        3,
+    	"SEARCH_MESSAGE": "test",
+    	"ORDER": b24.Params{
+    		"ID": "DESC",
+    	},
+    	"LIMIT": 20,
+    })
+    if err != nil {
+    	return fmt.Errorf("im.dialog.messages.search: %w", err)
+    }
+
+    // The response shape is shown below on this page.
+    fmt.Printf("%s\n", res.Result)
+    ```
+
 {% endlist %}
 
 ## Response Handling

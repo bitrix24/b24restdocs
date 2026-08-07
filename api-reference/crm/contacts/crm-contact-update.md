@@ -449,6 +449,41 @@ Update contact with `id = 43`
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.contact.update", b24.Params{
+    	"id": 43,
+    	"fields": b24.Params{
+    		"NAME":                 "John",
+    		"BIRTHDATE":            "11.11.1999",
+    		"TYPE_ID":              "RECOMMENDATION",
+    		"SOURCE_ID":            "WEB",
+    		"POST":                 "Network Administrator",
+    		"COMMENTS":             "New comment",
+    		"OPENED":               "N",
+    		"EXPORT":               "Y",
+    		"ASSIGNED_BY_ID":       1,
+    		"COMPANY_ID":           12,
+    		"COMPANY_IDS":          []int{13, 15},
+    		"UF_CRM_1720697698689": "Example of a new value for a custom field of type \"String\"",
+    		"PARENT_ID_1224":       14,
+    	},
+    	"params": b24.Params{
+    		"REGISTER_SONET_EVENT":   "N",
+    		"REGISTER_HISTORY_EVENT": "N",
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("crm.contact.update: %w", err)
+    }
+
+    // The response arrives as json.RawMessage — unmarshal it
+    // into a struct matching the response shape shown below on this page.
+    fmt.Printf("%s\n", res.Result)
+    ```
+
 {% endlist %}
 
 ## Working with Multiple Fields

@@ -207,6 +207,26 @@ Allowed values:
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "im.message.share", b24.Params{
+    	"MESSAGE_ID": 34261,
+    	"DIALOG_ID":  "chat2941",
+    	"TYPE":       "TASK",
+    })
+    if err != nil {
+    	return fmt.Errorf("im.message.share: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

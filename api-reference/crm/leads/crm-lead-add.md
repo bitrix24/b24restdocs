@@ -535,6 +535,50 @@ When adding a lead, you cannot explicitly set the indicator for a repeat lead (t
     except Exception as error:
         print(f"Unexpected error: {error}")
     ```
+
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.lead.add", b24.Params{
+    	"fields": b24.Params{
+    		"TITLE":          "IP Titov",
+    		"NAME":           "Gleb",
+    		"SECOND_NAME":    "Egorovich",
+    		"LAST_NAME":      "Titov",
+    		"STATUS_ID":      "NEW",
+    		"OPENED":         "Y",
+    		"ASSIGNED_BY_ID": 1,
+    		"CURRENCY_ID":    "USD",
+    		"OPPORTUNITY":    12500,
+    		"PHONE": []b24.Params{
+    			{
+    				"VALUE":      "555888",
+    				"VALUE_TYPE": "WORK",
+    			},
+    		},
+    		"WEB": []b24.Params{
+    			{
+    				"VALUE":      "www.mysite.com",
+    				"VALUE_TYPE": "WORK",
+    			},
+    		},
+    	},
+    	"params": b24.Params{
+    		"REGISTER_SONET_EVENT": "Y",
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("crm.lead.add: %w", err)
+    }
+
+    var newID b24.ID
+    if err := json.Unmarshal(res.Result, &newID); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("id:", newID)
+    ```
+
 {% endlist %}
 
 ## Response Handling

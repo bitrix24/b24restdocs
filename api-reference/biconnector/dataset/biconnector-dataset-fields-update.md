@@ -383,6 +383,47 @@ The method `biconnector.dataset.fields.update` updates the fields of an existing
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "biconnector.dataset.fields.update", b24.Params{
+    	"id": 10,
+    	"add": []b24.Params{
+    		{
+    			"type":         "int",
+    			"name":         "NAME",
+    			"externalCode": "NAME",
+    		},
+    		{
+    			"type":         "int",
+    			"name":         "ID",
+    			"externalCode": "ID",
+    		},
+    	},
+    	"update": []b24.Params{
+    		{
+    			"id":      12,
+    			"visible": false,
+    		},
+    		{
+    			"id":      13,
+    			"visible": true,
+    		},
+    	},
+    	"delete": []int{14, 15},
+    })
+    if err != nil {
+    	return fmt.Errorf("biconnector.dataset.fields.update: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

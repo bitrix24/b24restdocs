@@ -194,4 +194,26 @@ See the description of [list methods](../../../common/index.md).
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.product.list", b24.Params{
+    	"order": b24.Params{
+    		"NAME": "ASC",
+    	},
+    	"filter": b24.Params{
+    		"CATALOG_ID": "your_catalog_id",
+    	},
+    	"select": []string{"ID", "NAME", "CURRENCY_ID", "PRICE"},
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("crm.product.list: %w", err)
+    }
+
+    // The response arrives as json.RawMessage — unmarshal it
+    // into a struct matching the response shape shown below on this page.
+    fmt.Printf("%s\n", res.Result)
+    ```
+
 {% endlist %}

@@ -174,6 +174,29 @@ Default is `0` ||
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "bizproc.workflow.template.update", b24.Params{
+    	"ID": 525,
+    	"FIELDS": b24.Params{
+    		"NAME":         "Display Time",
+    		"DESCRIPTION":  "Template shows a message with local and server time",
+    		"AUTO_EXECUTE": 0,
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("bizproc.workflow.template.update: %w", err)
+    }
+
+    var value b24.ID
+    if err := json.Unmarshal(res.Result, &value); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("result:", value)
+    ```
+
 {% endlist %}
 
 ## Response Handling

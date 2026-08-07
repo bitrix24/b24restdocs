@@ -213,6 +213,46 @@ Get stage movement history for the deal with `ID=1`
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.stagehistory.list", b24.Params{
+    	"entityTypeId": 2,
+    	"order": b24.Params{
+    		"ID": "ASC",
+    	},
+    	"filter": b24.Params{
+    		"OWNER_ID": 1,
+    	},
+    	"select": []string{"ID", "STAGE_ID", "CREATED_TIME"},
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("crm.stagehistory.list: %w", err)
+    }
+
+    // The method wraps the response in an object with the "items" key.
+    raw, ok := b24.Unwrap(res.Result, "items")
+    if !ok {
+    	return fmt.Errorf("no items key in the response")
+    }
+
+    var items []struct {
+    	ID              b24.ID `json:"ID"`
+    	TypeID          b24.ID `json:"TYPE_ID"`
+    	OwnerID         b24.ID `json:"OWNER_ID"`
+    	CreatedTime     string `json:"CREATED_TIME"`
+    	CategoryID      b24.ID `json:"CATEGORY_ID"`
+    	StageSemanticID string `json:"STAGE_SEMANTIC_ID"`
+    }
+    if err := json.Unmarshal(raw, &items); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    for _, it := range items {
+    	fmt.Println(it.ID)
+    }
+    ```
+
 {% endlist %}
 
 Get stage movement history for the SPA with `entityTypeId=130` and element `OWNER_ID=29`
@@ -360,6 +400,46 @@ Get stage movement history for the SPA with `entityTypeId=130` and element `OWNE
     echo '<PRE>';
     print_r($result);
     echo '</PRE>';
+    ```
+
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.stagehistory.list", b24.Params{
+    	"entityTypeId": 130,
+    	"order": b24.Params{
+    		"ID": "ASC",
+    	},
+    	"filter": b24.Params{
+    		"OWNER_ID": 29,
+    	},
+    	"select": []string{"ID", "STAGE_ID", "CREATED_TIME"},
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("crm.stagehistory.list: %w", err)
+    }
+
+    // The method wraps the response in an object with the "items" key.
+    raw, ok := b24.Unwrap(res.Result, "items")
+    if !ok {
+    	return fmt.Errorf("no items key in the response")
+    }
+
+    var items []struct {
+    	ID              b24.ID `json:"ID"`
+    	TypeID          b24.ID `json:"TYPE_ID"`
+    	OwnerID         b24.ID `json:"OWNER_ID"`
+    	CreatedTime     string `json:"CREATED_TIME"`
+    	CategoryID      b24.ID `json:"CATEGORY_ID"`
+    	StageSemanticID string `json:"STAGE_SEMANTIC_ID"`
+    }
+    if err := json.Unmarshal(raw, &items); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    for _, it := range items {
+    	fmt.Println(it.ID)
+    }
     ```
 
 {% endlist %}

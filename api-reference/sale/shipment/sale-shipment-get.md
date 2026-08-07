@@ -239,6 +239,37 @@ This method retrieves the values of all shipment fields.
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "sale.shipment.get", b24.Params{
+    	"id": 2465,
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("sale.shipment.get: %w", err)
+    }
+
+    // The method wraps the response in an object with the "shipment" key.
+    raw, ok := b24.Unwrap(res.Result, "shipment")
+    if !ok {
+    	return fmt.Errorf("no shipment key in the response")
+    }
+
+    var item struct {
+    	AccountNumber     string `json:"accountNumber"`
+    	AllowDelivery     string `json:"allowDelivery"`
+    	BasePriceDelivery int    `json:"basePriceDelivery"`
+    	Canceled          string `json:"canceled"`
+    	Comments          string `json:"comments"`
+    	CompanyID         b24.ID `json:"companyId"`
+    }
+    if err := json.Unmarshal(raw, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.AccountNumber, item.AllowDelivery)
+    ```
+
 {% endlist %}
 
 ## Successful Response

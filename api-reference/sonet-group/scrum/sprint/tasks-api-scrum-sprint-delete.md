@@ -185,6 +185,21 @@ When a sprint with tasks is deleted, the tasks will be moved to the backlog.
     }
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "tasks.api.scrum.sprint.delete", b24.Params{
+    	"id": 1,
+    })
+    if err != nil {
+    	return fmt.Errorf("tasks.api.scrum.sprint.delete: %w", err)
+    }
+
+    // The response is a list; unmarshal it into a struct matching the response shape below.
+    fmt.Printf("%s\n", res.Result)
+    ```
+
 {% endlist %}
 
 ## Response Handling

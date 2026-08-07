@@ -202,6 +202,31 @@ When the sprint is completed, unfinished tasks are moved to the backlog.
     }
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "tasks.api.scrum.sprint.complete", b24.Params{
+    	"id": 1,
+    })
+    if err != nil {
+    	return fmt.Errorf("tasks.api.scrum.sprint.complete: %w", err)
+    }
+
+    var item struct {
+    	ID         b24.ID `json:"id"`
+    	GroupID    b24.ID `json:"groupId"`
+    	EntityType string `json:"entityType"`
+    	Name       string `json:"name"`
+    	Goal       string `json:"goal"`
+    	Sort       int    `json:"sort"`
+    }
+    if err := json.Unmarshal(res.Result, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.ID, item.GroupID)
+    ```
+
 {% endlist %}
 
 ## Response Handling

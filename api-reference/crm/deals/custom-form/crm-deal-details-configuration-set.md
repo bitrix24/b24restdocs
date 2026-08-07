@@ -497,6 +497,88 @@ Set personal configuration for the deal card for the user with `id = 1` in the f
     except Exception as error:
         print(f"Unexpected error: {error}")
     ```
+
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.deal.details.configuration.set", b24.Params{
+    	"scope":  "P",
+    	"userId": 1,
+    	"extras": b24.Params{
+    		"dealCategoryId": 32,
+    	},
+    	"data": []b24.Params{
+    		{
+    			"name":  "main",
+    			"title": "About the Deal",
+    			"type":  "section",
+    			"elements": []b24.Params{
+    				{
+    					"name": "TITLE",
+    				},
+    				{
+    					"name": "OPPORTUNITY_WITH_CURRENCY",
+    				},
+    				{
+    					"name": "STAGE_ID",
+    				},
+    				{
+    					"name": "CLOSEDATE",
+    				},
+    				{
+    					"name": "CLIENT",
+    				},
+    			},
+    		},
+    		{
+    			"name":  "additional",
+    			"title": "Additional Information",
+    			"type":  "section",
+    			"elements": []b24.Params{
+    				{
+    					"name": "TYPE_ID",
+    				},
+    				{
+    					"name": "SOURCE_ID",
+    				},
+    				{
+    					"name": "SOURCE_DESCRIPTION",
+    				},
+    				{
+    					"name": "OPENED",
+    				},
+    				{
+    					"name": "ASSIGNED_BY_ID",
+    				},
+    				{
+    					"name": "COMMENTS",
+    				},
+    			},
+    		},
+    		{
+    			"name":  "products",
+    			"title": "Products",
+    			"type":  "section",
+    			"elements": []b24.Params{
+    				{
+    					"name": "PRODUCT_ROW_SUMMARY",
+    				},
+    			},
+    		},
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("crm.deal.details.configuration.set: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

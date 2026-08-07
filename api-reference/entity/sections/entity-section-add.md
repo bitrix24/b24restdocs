@@ -245,6 +245,32 @@ Example of adding a section to the `dish` storage:
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "entity.section.add", b24.Params{
+    	"ENTITY":         "dish",
+    	"NAME":           "Test Section",
+    	"SECTION":        671,
+    	"ACTIVE":         "Y",
+    	"SORT":           500,
+    	"CODE":           "testovyy-razdel",
+    	"DESCRIPTION":    "Description of the test section",
+    	"PICTURE":        []string{"section.jpg", "**base64_section_image**"},
+    	"DETAIL_PICTURE": []string{"section-detail.jpg", "**base64_section_detail_image**"},
+    })
+    if err != nil {
+    	return fmt.Errorf("entity.section.add: %w", err)
+    }
+
+    var newID b24.ID
+    if err := json.Unmarshal(res.Result, &newID); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("id:", newID)
+    ```
+
 {% endlist %}
 
 ## Response Handling

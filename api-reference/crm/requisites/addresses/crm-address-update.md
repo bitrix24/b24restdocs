@@ -301,6 +301,31 @@ If at least one string field is specified, only the specified fields will be sav
     except Exception as error:
         print(f"Unexpected error: {error}")
     ```
+
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.address.update", b24.Params{
+    	"fields": b24.Params{
+    		"TYPE_ID":        1,
+    		"ENTITY_TYPE_ID": 3,
+    		"ENTITY_ID":      1,
+    		"ADDRESS_1":      "Street, 261",
+    		"CITY":           "Los Angeles",
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("crm.address.update: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

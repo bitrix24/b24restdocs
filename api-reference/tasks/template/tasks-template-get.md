@@ -210,6 +210,31 @@ By default, `['*', 'UF_*']` is used — select all fields and custom fields ||
     print_r($result);
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "tasks.template.get", b24.Params{
+    	"templateId": 139,
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("tasks.template.get: %w", err)
+    }
+
+    var item struct {
+    	ID                  b24.ID `json:"ID"`
+    	Title               string `json:"TITLE"`
+    	Description         string `json:"DESCRIPTION"`
+    	DescriptionInBbcode string `json:"DESCRIPTION_IN_BBCODE"`
+    	Priority            string `json:"PRIORITY"`
+    	Status              string `json:"STATUS"`
+    }
+    if err := json.Unmarshal(res.Result, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.ID, item.Title)
+    ```
+
 {% endlist %}
 
 ## Response Handling

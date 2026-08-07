@@ -390,6 +390,57 @@ For `NAME`:
   print_r($result);
   ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "documentgenerator.document.add", b24.Params{
+    	"templateId": 53,
+    	"value":      "SUPPLY_CONTRACT_2026_015",
+    	"values": b24.Params{
+    		"DocumentNumber": "SC-2026-001",
+    		"CurrentDate":    "2026-03-18T00:00:00+03:00",
+    		"ClientName":     "ABC Corp",
+    		"ClientPhone":    "+49 999 123-45-67",
+    		"Total":          "125000",
+    		"Comment":        "Payment within 5 business days after signing",
+    		"UserName":       "John Smith",
+    	},
+    	"fields": b24.Params{
+    		"CurrentDate": b24.Params{
+    			"TYPE": "DATE",
+    			"FORMAT": b24.Params{
+    				"format": "d.m.Y",
+    			},
+    			"TITLE": "Contract Date",
+    		},
+    	},
+    	"stampsEnabled": 1,
+    })
+    if err != nil {
+    	return fmt.Errorf("documentgenerator.document.add: %w", err)
+    }
+
+    // The method wraps the response in an object with the "document" key.
+    raw, ok := b24.Unwrap(res.Result, "document")
+    if !ok {
+    	return fmt.Errorf("no document key in the response")
+    }
+
+    var item struct {
+    	DownloadUrl string `json:"downloadUrl"`
+    	Title       string `json:"title"`
+    	Number      string `json:"number"`
+    	ID          b24.ID `json:"id"`
+    	CreateTime  string `json:"createTime"`
+    	CreatedBy   int    `json:"createdBy"`
+    }
+    if err := json.Unmarshal(raw, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.DownloadUrl, item.Title)
+    ```
+
 {% endlist %}
 
 ## Response Handling

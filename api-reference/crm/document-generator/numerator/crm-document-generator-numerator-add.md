@@ -380,6 +380,48 @@ Example of creating a numerator:
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.documentgenerator.numerator.add", b24.Params{
+    	"fields": b24.Params{
+    		"name":     "REST Enumerator",
+    		"template": "{NUMBER}",
+    		"settings": b24.Params{
+    			"Bitrix_Main_Numerator_Generator_SequentNumberGenerator": b24.Params{
+    				"start":              1,
+    				"step":               1,
+    				"length":             6,
+    				"padString":          "0",
+    				"periodicBy":         "",
+    				"timezone":           "",
+    				"isDirectNumeration": false,
+    			},
+    		},
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("crm.documentgenerator.numerator.add: %w", err)
+    }
+
+    // The method wraps the response in an object with the "numerator" key.
+    raw, ok := b24.Unwrap(res.Result, "numerator")
+    if !ok {
+    	return fmt.Errorf("no numerator key in the response")
+    }
+
+    var item struct {
+    	Name     string `json:"name"`
+    	Template string `json:"template"`
+    	ID       b24.ID `json:"id"`
+    }
+    if err := json.Unmarshal(raw, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.Name, item.Template)
+    ```
+
 {% endlist %}
 
 ## Response Handling

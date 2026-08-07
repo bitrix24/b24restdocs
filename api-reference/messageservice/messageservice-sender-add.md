@@ -289,6 +289,28 @@ Use it in the [messageservice.message.status.update](./messageservice-message-st
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "messageservice.sender.add", b24.Params{
+    	"CODE":        "provider1",
+    	"TYPE":        "SMS",
+    	"HANDLER":     "https://provider.example/api/handler",
+    	"NAME":        "Provider 1",
+    	"DESCRIPTION": "Main SMS provider",
+    })
+    if err != nil {
+    	return fmt.Errorf("messageservice.sender.add: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

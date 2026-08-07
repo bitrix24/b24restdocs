@@ -273,6 +273,39 @@ The range can contain:
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "timeman.networkrange.set", b24.Params{
+    	"RANGES": []b24.Params{
+    		{
+    			"ip_range": "10.0.0.0-10.255.255.255",
+    			"name":     "Office Network 10.x.x.x",
+    		},
+    		{
+    			"ip_range": "172.16.0.0-172.31.255.255",
+    			"name":     "Office Network 172.x.x.x",
+    		},
+    		{
+    			"ip_range": "192.168.0.0-192.168.255.255",
+    			"name":     "Office Network 192.168.x.x",
+    		},
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("timeman.networkrange.set: %w", err)
+    }
+
+    var item struct {
+    	Result bool `json:"result"`
+    }
+    if err := json.Unmarshal(res.Result, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.Result)
+    ```
+
 {% endlist %}
 
 ## Response Handling

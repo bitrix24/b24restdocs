@@ -256,6 +256,31 @@ Can be obtained using the [crm.currency.list](./crm-currency-list.md) method
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.currency.get", b24.Params{
+    	"id": "EUR",
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("crm.currency.get: %w", err)
+    }
+
+    var item struct {
+    	Currency  string `json:"CURRENCY"`
+    	AmountCnt string `json:"AMOUNT_CNT"`
+    	Amount    string `json:"AMOUNT"`
+    	Sort      string `json:"SORT"`
+    	Base      string `json:"BASE"`
+    	FullName  string `json:"FULL_NAME"`
+    }
+    if err := json.Unmarshal(res.Result, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.Currency, item.AmountCnt)
+    ```
+
 {% endlist %}
 
 ## Response Handling

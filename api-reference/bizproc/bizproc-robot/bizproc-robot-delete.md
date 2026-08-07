@@ -116,6 +116,24 @@ When the application is deleted or updated, the associated robots are removed fr
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "bizproc.robot.delete", b24.Params{
+    	"CODE": "test_robot",
+    })
+    if err != nil {
+    	return fmt.Errorf("bizproc.robot.delete: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

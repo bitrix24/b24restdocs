@@ -171,6 +171,32 @@ To obtain an accurate status, always specify the identifier of the open line.
         ]
     );
     ```
+
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "imconnector.status", b24.Params{
+    	"CONNECTOR": "myconnector",
+    	"LINE":      "12",
+    })
+    if err != nil {
+    	return fmt.Errorf("imconnector.status: %w", err)
+    }
+
+    var item struct {
+    	Line       int    `json:"LINE"`
+    	Connector  string `json:"CONNECTOR"`
+    	Error      bool   `json:"ERROR"`
+    	Configured bool   `json:"CONFIGURED"`
+    	Status     bool   `json:"STATUS"`
+    }
+    if err := json.Unmarshal(res.Result, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.Line, item.Connector)
+    ```
+
 {% endlist %}
 
 ## Response Handling

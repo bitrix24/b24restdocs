@@ -376,6 +376,45 @@ The formula for obtaining the N-th page:
     except Exception as error:
         print(f"Unexpected error: {error}")
     ```
+
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.deal.recurring.list", b24.Params{
+    	"order": b24.Params{
+    		"deal_id": "ASC",
+    	},
+    	"filter": b24.Params{
+    		">COUNTER_REPEAT": 0,
+    	},
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("crm.deal.recurring.list: %w", err)
+    }
+
+    var items []struct {
+    	ID         b24.ID `json:"id"`
+    	DealID     string `json:"deal_id"`
+    	BasedID    string `json:"based_id"`
+    	Active     string `json:"ACTIVE"`
+    	CategoryID string `json:"category_id"`
+    	IsLimit    string `json:"IS_LIMIT"`
+    }
+    if err := json.Unmarshal(res.Result, &items); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    for _, it := range items {
+    	fmt.Println(it.ID, it.DealID)
+    }
+
+    // Total and Next are filled in by list methods; for a full
+    // list traversal, use client.Core().Pages and Scan.
+    if res.Total != nil {
+    	fmt.Println("total:", *res.Total)
+    }
+    ```
+
 {% endlist %}
 
 ## Response Handling

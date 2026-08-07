@@ -180,6 +180,27 @@ No parameters.
     print_r($result);
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "task.item.userfield.gettypes", nil)
+    if err != nil {
+    	return fmt.Errorf("task.item.userfield.gettypes: %w", err)
+    }
+
+    var items []struct {
+    	ID    string `json:"ID"`
+    	Title string `json:"title"`
+    }
+    if err := json.Unmarshal(res.Result, &items); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    for _, it := range items {
+    	fmt.Println(it.ID, it.Title)
+    }
+    ```
+
 {% endlist %}
 
 ## Response Handling

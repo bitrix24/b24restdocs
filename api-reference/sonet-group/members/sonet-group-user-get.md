@@ -191,6 +191,29 @@ The identifier can be obtained using the [sonet_group.get](../sonet-group-get.md
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "sonet_group.user.get", b24.Params{
+    	"ID": 69,
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("sonet_group.user.get: %w", err)
+    }
+
+    var items []struct {
+    	UserID b24.ID `json:"USER_ID"`
+    	Role   string `json:"ROLE"`
+    }
+    if err := json.Unmarshal(res.Result, &items); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    for _, it := range items {
+    	fmt.Println(it.UserID, it.Role)
+    }
+    ```
+
 {% endlist %}
 
 ## Response Handling

@@ -195,6 +195,33 @@ The method `booking.v1.booking.get` returns information about a booking by its i
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "booking.v1.booking.get", b24.Params{
+    	"id": 15,
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("booking.v1.booking.get: %w", err)
+    }
+
+    // The method wraps the response in an object with the "booking" key.
+    raw, ok := b24.Unwrap(res.Result, "booking")
+    if !ok {
+    	return fmt.Errorf("no booking key in the response")
+    }
+
+    var item struct {
+    	ID   b24.ID `json:"id"`
+    	Name string `json:"name"`
+    }
+    if err := json.Unmarshal(raw, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.ID, item.Name)
+    ```
+
 {% endlist %}
 
 ## Response Handling

@@ -205,6 +205,25 @@ In the case of `U` ("My Plan"), the value `true` will only be returned if the `e
     }
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "task.stages.canmovetask", b24.Params{
+    	"entityId":   1,
+    	"entityType": "U",
+    })
+    if err != nil {
+    	return fmt.Errorf("task.stages.canmovetask: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

@@ -186,6 +186,26 @@ The method `userfieldconfig.getTypes` returns a set of available user field type
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "userfieldconfig.getTypes", b24.Params{
+    	"moduleId": "crm",
+    })
+    if err != nil {
+    	return fmt.Errorf("userfieldconfig.getTypes: %w", err)
+    }
+
+    // The method wraps the response in an object with the "types" key.
+    raw, ok := b24.Unwrap(res.Result, "types")
+    if !ok {
+    	return fmt.Errorf("no types key in the response")
+    }
+
+    fmt.Printf("%s\n", raw)
+    ```
+
 {% endlist %}
 
 ## Response Handling

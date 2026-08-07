@@ -445,6 +445,73 @@ Fields available for update: `NAME`, `SORT`, `SETTINGS` (see fields [sale_cashbo
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "sale.cashbox.handler.update", b24.Params{
+    	"ID": 1,
+    	"FIELDS": b24.Params{
+    		"NAME": "My REST cash register with a new name",
+    		"SORT": 200,
+    		"SETTINGS": b24.Params{
+    			"PRINT_URL": "http://setagaya.bx/receipt_print.php",
+    			"CHECK_URL": "http://setagaya.bx/receipt_check.php",
+    			"CONFIG": b24.Params{
+    				"AUTH": b24.Params{
+    					"LABEL": "Authorization",
+    					"ITEMS": b24.Params{
+    						"LOGIN": b24.Params{
+    							"TYPE":     "STRING",
+    							"REQUIRED": "Y",
+    							"LABEL":    "Login",
+    						},
+    						"PASSWORD": b24.Params{
+    							"TYPE":     "STRING",
+    							"REQUIRED": "Y",
+    							"LABEL":    "Password",
+    						},
+    					},
+    				},
+    				"COMPANY": b24.Params{
+    					"LABEL": "Company Information",
+    					"ITEMS": b24.Params{
+    						"INN": b24.Params{
+    							"TYPE":     "STRING",
+    							"REQUIRED": "Y",
+    							"LABEL":    "Company INN",
+    						},
+    					},
+    				},
+    				"INTERACTION": b24.Params{
+    					"LABEL": "Cash Register Interaction Settings",
+    					"ITEMS": b24.Params{
+    						"MODE": b24.Params{
+    							"TYPE":  "ENUM",
+    							"LABEL": "Cash Register Operation Mode",
+    							"OPTIONS": b24.Params{
+    								"ACTIVE": "live",
+    								"TEST":   "test",
+    							},
+    						},
+    					},
+    				},
+    			},
+    			"SUPPORTS_FFD105": "N",
+    		},
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("sale.cashbox.handler.update: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

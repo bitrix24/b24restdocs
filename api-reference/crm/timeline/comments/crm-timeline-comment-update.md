@@ -300,6 +300,31 @@ Starting from version crm 23.100.0, only parameters with the key `fields` in low
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.timeline.comment.update", b24.Params{
+    	"id": 999,
+    	"fields": b24.Params{
+    		"COMMENT": "Comment was changed",
+    		"FILES": []any{
+    			[]string{"1.gif", "R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=="},
+    			[]string{"2.gif", "R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=="},
+    		},
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("crm.timeline.comment.update: %w", err)
+    }
+
+    var value b24.ID
+    if err := json.Unmarshal(res.Result, &value); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("result:", value)
+    ```
+
 {% endlist %}
 
 ## Response Handling

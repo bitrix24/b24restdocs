@@ -178,6 +178,24 @@ You can obtain the identifier using the [calendar.event.get](./calendar-event-ge
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "calendar.meeting.status.get", b24.Params{
+    	"eventId": 651,
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("calendar.meeting.status.get: %w", err)
+    }
+
+    var value string
+    if err := json.Unmarshal(res.Result, &value); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("result:", value)
+    ```
+
 {% endlist %}
 
 ## Response Handling

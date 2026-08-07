@@ -185,6 +185,24 @@ You can obtain the identifier using the [log.blogpost.get](./log-blogpost-get.md
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "log.blogpost.delete", b24.Params{
+    	"POST_ID": 211,
+    })
+    if err != nil {
+    	return fmt.Errorf("log.blogpost.delete: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

@@ -381,6 +381,50 @@ Use the `next` parameter value from the previous response ||
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "userfieldconfig.list", b24.Params{
+    	"moduleId": "crm",
+    	"select": b24.Params{
+    		"0":        "*",
+    		"language": "ru",
+    	},
+    	"order": b24.Params{
+    		"id": "DESC",
+    	},
+    	"filter": b24.Params{
+    		"multiple": "Y",
+    	},
+    	"start": 0,
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("userfieldconfig.list: %w", err)
+    }
+
+    // The method wraps the response in an object with the "fields" key.
+    raw, ok := b24.Unwrap(res.Result, "fields")
+    if !ok {
+    	return fmt.Errorf("no fields key in the response")
+    }
+
+    var items []struct {
+    	ID         b24.ID `json:"id"`
+    	EntityID   string `json:"entityId"`
+    	FieldName  string `json:"fieldName"`
+    	UserTypeID string `json:"userTypeId"`
+    	Sort       string `json:"sort"`
+    	Multiple   string `json:"multiple"`
+    }
+    if err := json.Unmarshal(raw, &items); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    for _, it := range items {
+    	fmt.Println(it.ID)
+    }
+    ```
+
 {% endlist %}
 
 ## Response Handling

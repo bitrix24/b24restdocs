@@ -370,6 +370,38 @@ Before the name of the filtered field, you can specify the type of filtering:
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "task.elapseditem.getlist", []b24.Params{
+    	{
+    		"ID": "desc",
+    	},
+    	{
+    		">=CREATED_DATE": "2024-02-16",
+    	},
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("task.elapseditem.getlist: %w", err)
+    }
+
+    var items []struct {
+    	ID          b24.ID `json:"ID"`
+    	TaskID      b24.ID `json:"TASK_ID"`
+    	UserID      b24.ID `json:"USER_ID"`
+    	CommentText string `json:"COMMENT_TEXT"`
+    	Seconds     string `json:"SECONDS"`
+    	Minutes     string `json:"MINUTES"`
+    }
+    if err := json.Unmarshal(res.Result, &items); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    for _, it := range items {
+    	fmt.Println(it.ID, it.TaskID)
+    }
+    ```
+
 {% endlist %}
 
 ## Response Handling

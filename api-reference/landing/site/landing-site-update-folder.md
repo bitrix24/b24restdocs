@@ -282,6 +282,32 @@ If the value is `0`, `null`, empty, or the parameter is not provided, the folder
     }
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "landing.site.updateFolder", b24.Params{
+    	"siteId":   1817,
+    	"folderId": 736,
+    	"fields": b24.Params{
+    		"TITLE":     "Services Catalog",
+    		"CODE":      "services-catalog",
+    		"PARENT_ID": 0,
+    		"INDEX_ID":  987,
+    		"ACTIVE":    "Y",
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("landing.site.updateFolder: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

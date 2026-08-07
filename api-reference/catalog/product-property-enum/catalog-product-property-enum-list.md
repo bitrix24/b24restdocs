@@ -253,6 +253,45 @@ If the value `-1` is passed, the response will not include the `total` field ||
     print_r($result);
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "catalog.productPropertyEnum.list", b24.Params{
+    	"select": []string{"id", "propertyId", "value", "def", "sort", "xmlId"},
+    	"filter": b24.Params{
+    		"propertyId": 431,
+    	},
+    	"order": b24.Params{
+    		"id": "ASC",
+    	},
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("catalog.productPropertyEnum.list: %w", err)
+    }
+
+    // The method wraps the response in an object with the "productPropertyEnums" key.
+    raw, ok := b24.Unwrap(res.Result, "productPropertyEnums")
+    if !ok {
+    	return fmt.Errorf("no productPropertyEnums key in the response")
+    }
+
+    var items []struct {
+    	Def        string `json:"def"`
+    	ID         b24.ID `json:"id"`
+    	PropertyID b24.ID `json:"propertyId"`
+    	Sort       int    `json:"sort"`
+    	Value      string `json:"value"`
+    	XmlID      b24.ID `json:"xmlId"`
+    }
+    if err := json.Unmarshal(raw, &items); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    for _, it := range items {
+    	fmt.Println(it.Def)
+    }
+    ```
+
 {% endlist %}
 
 ## Response Handling

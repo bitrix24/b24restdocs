@@ -110,6 +110,30 @@ No parameters required.
     }
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "imbot.bot.list", nil, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("imbot.bot.list: %w", err)
+    }
+
+    // The response is an object whose top-level key is the ID.
+    var items map[string]struct {
+    	ID       b24.ID `json:"ID"`
+    	Name     string `json:"NAME"`
+    	Code     string `json:"CODE"`
+    	Openline string `json:"OPENLINE"`
+    }
+    if err := json.Unmarshal(res.Result, &items); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    for id, it := range items {
+    	fmt.Println(id, it.Name)
+    }
+    ```
+
 {% endlist %}
 
 ## Response Handling

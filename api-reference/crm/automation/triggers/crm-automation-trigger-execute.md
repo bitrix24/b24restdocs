@@ -232,6 +232,26 @@ Triggers exist in leads, deals, estimates, invoices, and SPAs
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.automation.trigger.execute", b24.Params{
+    	"CODE":          "c5u4m",
+    	"OWNER_TYPE_ID": 2,
+    	"OWNER_ID":      6,
+    })
+    if err != nil {
+    	return fmt.Errorf("crm.automation.trigger.execute: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

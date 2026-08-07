@@ -302,6 +302,35 @@ Possible values:
   print_r($result);
   ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "documentgenerator.role.fillaccesses", b24.Params{
+    	"accesses": []b24.Params{
+    		{
+    			"roleId":     9,
+    			"accessCode": "U1",
+    		},
+    		{
+    			"roleId":     9,
+    			"accessCode": "D1",
+    		},
+    		{
+    			"roleId":     9,
+    			"accessCode": "UA",
+    		},
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("documentgenerator.role.fillaccesses: %w", err)
+    }
+
+    // The response arrives as json.RawMessage — unmarshal it
+    // into a struct matching the response shape shown below on this page.
+    fmt.Printf("%s\n", res.Result)
+    ```
+
 {% endlist %}
 
 ## Response Handling

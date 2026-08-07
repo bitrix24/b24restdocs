@@ -238,6 +238,40 @@ You must provide either the `companyUuid` or `companyCrmId` parameter.
     }
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "sign.b2e.company.provider.list", b24.Params{
+    	"companyCrmId": 12,
+    	"limit":        2,
+    	"offset":       0,
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("sign.b2e.company.provider.list: %w", err)
+    }
+
+    var items []struct {
+    	Code    string `json:"code"`
+    	Uid     string `json:"uid"`
+    	Name    string `json:"name"`
+    	Date    string `json:"date"`
+    	Expires string `json:"expires"`
+    }
+    if err := json.Unmarshal(res.Result, &items); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    for _, it := range items {
+    	fmt.Println(it.Code, it.Uid)
+    }
+
+    // Total and Next are filled in by list methods; for a full
+    // list traversal, use client.Core().Pages and Scan.
+    if res.Total != nil {
+    	fmt.Println("total:", *res.Total)
+    }
+    ```
+
 {% endlist %}
 
 ## Response Handling

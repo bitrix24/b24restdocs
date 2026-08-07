@@ -327,6 +327,37 @@ This example demonstrates a mixed scenario: blocks from `blocks` are completely 
     }
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "landing.landing.removeEntities", b24.Params{
+    	"lid": 648,
+    	"data": b24.Params{
+    		"blocks": []int{12167, 123},
+    		"images": []b24.Params{
+    			{
+    				"block": 12269,
+    				"image": 6866,
+    			},
+    			{
+    				"block": 12268,
+    				"image": 6861,
+    			},
+    		},
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("landing.landing.removeEntities: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

@@ -214,6 +214,30 @@ A list of available voices can be obtained using the [voximplant.tts.voices.get]
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "voximplant.callback.start", b24.Params{
+    	"FROM_LINE":         "reg151083",
+    	"TO_NUMBER":         "79991234567",
+    	"TEXT_TO_PRONOUNCE": "You have received a callback request",
+    	"VOICE":             "ruinternalfemale",
+    })
+    if err != nil {
+    	return fmt.Errorf("voximplant.callback.start: %w", err)
+    }
+
+    var item struct {
+    	Result bool   `json:"RESULT"`
+    	CallID string `json:"CALL_ID"`
+    }
+    if err := json.Unmarshal(res.Result, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.Result, item.CallID)
+    ```
+
 {% endlist %}
 
 ## Response Handling

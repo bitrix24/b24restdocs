@@ -337,6 +337,30 @@ The fields of the `SETTINGS` object depend on the `USER_TYPE_ID` type.
     print_r($result);
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "task.item.userfield.update", b24.Params{
+    	"ID": 1325,
+    	"DATA": b24.Params{
+    		"EDIT_FORM_LABEL": b24.Params{
+    			"en": "Description of client request",
+    		},
+    		"MANDATORY": "N",
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("task.item.userfield.update: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

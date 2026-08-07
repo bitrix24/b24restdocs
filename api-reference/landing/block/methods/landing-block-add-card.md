@@ -250,6 +250,27 @@ Default is `false` ||
     }
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "landing.block.addcard", b24.Params{
+    	"lid":      351,
+    	"block":    6428,
+    	"selector": ".landing-block-node-menu-list-item@0",
+    	"content":  "<li class=\"landing-block-node-menu-list-item nav-item\"><a href=\"#services\" class=\"landing-block-node-menu-list-item-link nav-link\">Services</a></li>",
+    })
+    if err != nil {
+    	return fmt.Errorf("landing.block.addcard: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

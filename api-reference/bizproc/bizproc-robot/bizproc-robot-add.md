@@ -423,6 +423,49 @@ Below are examples of `PROPERTY` objects for different parameter types.
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "bizproc.robot.add", b24.Params{
+    	"CODE":             "test_robot",
+    	"HANDLER":          "https://your_domain/robot.php",
+    	"AUTH_USER_ID":     1,
+    	"USE_SUBSCRIPTION": "Y",
+    	"NAME":             "Send Message",
+    	"PROPERTIES": b24.Params{
+    		"datetime": b24.Params{
+    			"Name": "When",
+    			"Type": "datetime",
+    		},
+    		"text": b24.Params{
+    			"Name": "Text",
+    			"Type": "text",
+    		},
+    		"user": b24.Params{
+    			"Name":    "To",
+    			"Type":    "user",
+    			"Default": "Author;",
+    		},
+    	},
+    	"FILTER": b24.Params{
+    		"INCLUDE": []any{
+    			[]string{"crm", "CCrmDocumentDeal"},
+    			[]string{"crm", "CCrmDocumentLead"},
+    		},
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("bizproc.robot.add: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

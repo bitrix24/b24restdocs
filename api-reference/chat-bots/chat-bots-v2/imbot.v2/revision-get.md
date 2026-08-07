@@ -109,6 +109,27 @@ else
   print_r($result['result']);
   ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "imbot.v2.Revision.get", nil, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("imbot.v2.Revision.get: %w", err)
+    }
+
+    var item struct {
+    	Rest    int `json:"rest"`
+    	Web     int `json:"web"`
+    	Mobile  int `json:"mobile"`
+    	Desktop int `json:"desktop"`
+    }
+    if err := json.Unmarshal(res.Result, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.Rest, item.Web)
+    ```
+
 {% endlist %}
 
 ## Response Handling

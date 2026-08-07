@@ -192,6 +192,44 @@ Update the title in `de` and `en`. Translations in other languages, if any, will
     }
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "imbot.v2.Command.update", b24.Params{
+    	"botId":     456,
+    	"botToken":  "b15f6e80ef345c97e23db31e727281f4",
+    	"commandId": 42,
+    	"fields": b24.Params{
+    		"title": b24.Params{
+    			"en": "Updated help",
+    		},
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("imbot.v2.Command.update: %w", err)
+    }
+
+    // The method wraps the response in an object with the "command" key.
+    raw, ok := b24.Unwrap(res.Result, "command")
+    if !ok {
+    	return fmt.Errorf("no command key in the response")
+    }
+
+    var item struct {
+    	ID              b24.ID `json:"id"`
+    	BotID           b24.ID `json:"botId"`
+    	Command         string `json:"command"`
+    	Common          bool   `json:"common"`
+    	Hidden          bool   `json:"hidden"`
+    	ExtranetSupport bool   `json:"extranetSupport"`
+    }
+    if err := json.Unmarshal(raw, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.ID, item.BotID)
+    ```
+
 {% endlist %}
 
 ### Example 2. Deleting a Translation
@@ -322,6 +360,44 @@ Update `de` and remove `en`. To delete, pass `null` as the value.
     } else {
         echo 'result: '. print_r($result['result'], true);
     }
+    ```
+
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "imbot.v2.Command.update", b24.Params{
+    	"botId":     456,
+    	"botToken":  "b15f6e80ef345c97e23db31e727281f4",
+    	"commandId": 42,
+    	"fields": b24.Params{
+    		"title": b24.Params{
+    			"en": nil,
+    		},
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("imbot.v2.Command.update: %w", err)
+    }
+
+    // The method wraps the response in an object with the "command" key.
+    raw, ok := b24.Unwrap(res.Result, "command")
+    if !ok {
+    	return fmt.Errorf("no command key in the response")
+    }
+
+    var item struct {
+    	ID              b24.ID `json:"id"`
+    	BotID           b24.ID `json:"botId"`
+    	Command         string `json:"command"`
+    	Common          bool   `json:"common"`
+    	Hidden          bool   `json:"hidden"`
+    	ExtranetSupport bool   `json:"extranetSupport"`
+    }
+    if err := json.Unmarshal(raw, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.ID, item.BotID)
     ```
 
 {% endlist %}

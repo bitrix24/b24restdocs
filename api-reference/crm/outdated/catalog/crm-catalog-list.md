@@ -151,4 +151,18 @@ See the description of [listing methods](../../../../settings/how-to-call-rest-a
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.catalog.list", nil, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("crm.catalog.list: %w", err)
+    }
+
+    // The response arrives as json.RawMessage — unmarshal it
+    // into a struct matching the response shape shown below on this page.
+    fmt.Printf("%s\n", res.Result)
+    ```
+
 {% endlist %}

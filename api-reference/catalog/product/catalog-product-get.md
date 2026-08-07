@@ -234,6 +234,37 @@ To get product prices, use the methods [catalog.price.*](../price/index.md).
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "catalog.product.get", b24.Params{
+    	"id": 1243,
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("catalog.product.get: %w", err)
+    }
+
+    // The method wraps the response in an object with the "product" key.
+    raw, ok := b24.Unwrap(res.Result, "product")
+    if !ok {
+    	return fmt.Errorf("no product key in the response")
+    }
+
+    var item struct {
+    	Active     string `json:"active"`
+    	Available  string `json:"available"`
+    	Bundle     string `json:"bundle"`
+    	CanBuyZero string `json:"canBuyZero"`
+    	Code       string `json:"code"`
+    	CreatedBy  int    `json:"createdBy"`
+    }
+    if err := json.Unmarshal(raw, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.Active, item.Available)
+    ```
+
 {% endlist %}
 
 ## Response Handling

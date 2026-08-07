@@ -257,6 +257,34 @@ Parameters can be obtained using the methods [biconnector.connector.list](../con
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "biconnector.source.add", b24.Params{
+    	"fields": b24.Params{
+    		"title":       "CRM Source",
+    		"description": "CRM data source",
+    		"connectorId": 123,
+    		"settings": b24.Params{
+    			"login":    "admin",
+    			"password": "qwerty",
+    		},
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("biconnector.source.add: %w", err)
+    }
+
+    var item struct {
+    	ID b24.ID `json:"id"`
+    }
+    if err := json.Unmarshal(res.Result, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.ID)
+    ```
+
 {% endlist %}
 
 ## Response Handling

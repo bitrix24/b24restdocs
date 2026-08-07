@@ -195,6 +195,24 @@ The page identifier can be obtained using the method [landing.landing.getList](.
     }
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "landing.landing.getpreview", b24.Params{
+    	"lid": 351,
+    })
+    if err != nil {
+    	return fmt.Errorf("landing.landing.getpreview: %w", err)
+    }
+
+    var value string
+    if err := json.Unmarshal(res.Result, &value); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("result:", value)
+    ```
+
 {% endlist %}
 
 ## Response Handling

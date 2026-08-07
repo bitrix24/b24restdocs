@@ -370,6 +370,44 @@ You can check how the property was defined using the [catalog.product.getFieldsB
         })
     ```
 
+- Go
+
+    ```go
+    // The symbolic code of a property is unique within an information block, while the xmlId of a value is
+    // within its own property. A fresh suffix on every run avoids
+    // a duplicate error if the previous run did not manage to clean up after itself.
+    suffix := strconv.FormatInt(time.Now().Unix(), 36)
+
+    // A list property needs AT LEAST TWO values. With one, Bitrix24 treats
+    // the property as a "Yes/No" type, and a value ID cannot be written into it:
+    // the product returns property N equal to "N", and without an error.
+    color, err := addListProperty(ctx, core, iblockID, "Color", "COLOR_"+suffix, "N",
+    	[]enumValue{{"Blue", "BLUE_" + suffix}, {"Red", "RED_" + suffix}})
+    if err != nil {
+    	return err
+    }
+    defer deleteProperty(ctx, core, color)
+
+    sizes, err := addListProperty(ctx, core, iblockID, "Sizes", "SIZES_"+suffix, "Y",
+    	[]enumValue{{"M", "M_" + suffix}, {"L", "L_" + suffix}})
+    if err != nil {
+    	return err
+    }
+    defer deleteProperty(ctx, core, sizes)
+
+    certificate, err := addFileProperty(ctx, core, iblockID, "Certificate", "CERTIFICATE_"+suffix, "N")
+    if err != nil {
+    	return err
+    }
+    defer deleteProperty(ctx, core, certificate)
+
+    gallery, err := addFileProperty(ctx, core, iblockID, "Gallery", "GALLERY_"+suffix, "Y")
+    if err != nil {
+    	return err
+    }
+    defer deleteProperty(ctx, core, gallery)
+    ```
+
 {% endlist %}
 
 After completing the first step, save the property and list value identifiers. They will be required when creating the product.
@@ -620,6 +658,47 @@ To run the example, create a folder `pictures` next to the example file and add 
         print(f"Product added: {element['id']}")
     ```
 
+- Go
+
+    ```go
+    // The name of the field holding the property value is built on the fly: propertyN, where N is
+    // the property ID issued by the portal. That is why fields is a map into
+    // which the keys are placed by a computed name, rather than a struct with tags.
+    fields := b24.Params{
+    	"iblockId": iblockID,
+    	"name":     "Printed T-shirt",
+    	"active":   "Y",
+    	"sort":     100,
+    }
+    // A single list property is a value ID as a scalar.
+    fields[propertyKey(color.ID)] = color.ValueIDs[0]
+    // A multiple list field is an array of value IDs.
+    fields[propertyKey(sizes.ID)] = sizes.ValueIDs
+    // A file property is an object with fileData: [file name, base64].
+    fields[propertyKey(certificate.ID)] = fileValue("certificate.pdf",
+    	[]byte("%PDF-1.4\nCertificate of conformity (b24gosdk example)\n"))
+    // A multiple file field is an array of such objects.
+    fields[propertyKey(gallery.ID)] = []any{
+    	fileValue("gallery-1.jpg", []byte("first gallery image")),
+    	fileValue("gallery-2.jpg", []byte("second gallery image")),
+    }
+
+    res, err := core.Call(ctx, "catalog.product.add", b24.Params{"fields": fields})
+    if err != nil {
+    	return fmt.Errorf("catalog.product.add: %w", err)
+    }
+
+    // add responds with the element key, while get responds with the product key for the same entity.
+    raw, ok := b24.Unwrap(res.Result, "element", "id")
+    if !ok {
+    	return fmt.Errorf("no element.id in %s", res.Result)
+    }
+    var productID b24.ID
+    if err := json.Unmarshal(raw, &productID); err != nil {
+    	return fmt.Errorf("parse product ID: %w", err)
+    }
+    ```
+
 {% endlist %}
 
 If the product is added successfully, the method returns a `element` object. The response will contain the product fields and the custom property values. File properties are returned with a link to the uploaded file rather than the original Base64 string.
@@ -802,6 +881,337 @@ In the examples below, replace `1267` with the `element.id` value obtained in th
         print(f"Error: {error}")
     else:
         print(f"Price added: {price['id']}")
+    ```
+
+- Go
+
+    ```go
+    // Setup in an empty directory — go get will not work without go mod init:
+    //
+    //	go mod init example && go get github.com/bitrix24/b24gosdk
+    //
+    // Run:
+    //
+    //	export B24_WEBHOOK_URL='https://your-portal.bitrix24.com/rest/1/token/' && go run .
+    //
+    // The example goes through all three steps of the page: it creates the properties and list values,
+    // adds a product with property values and files, adds a price, displays
+    // the result and cleans up after itself. The files are not read from disk — the example generates
+    // their content itself, so it runs on any portal, and nothing needs to be edited or
+    // nothing needs to be prepared.
+    package main
+
+    import (
+    	"context"
+    	"encoding/base64"
+    	"encoding/json"
+    	"fmt"
+    	"log"
+    	"os"
+    	"strconv"
+    	"time"
+
+    	b24 "github.com/bitrix24/b24gosdk"
+    )
+
+    func main() {
+    	if err := run(context.Background()); err != nil {
+    		log.Fatal(err)
+    	}
+    }
+
+    func run(ctx context.Context) error {
+    	// The webhook path is a secret, so it comes from the environment, not from the code.
+    	core := b24.NewClient(os.Getenv("B24_WEBHOOK_URL")).Core()
+
+    	iblockID, err := firstCatalog(ctx, core)
+    	if err != nil {
+    		return err
+    	}
+    	priceTypeID, err := firstPriceType(ctx, core)
+    	if err != nil {
+    		return err
+    	}
+
+    	// --- step 1: the properties and the values of their lists
+    	// The symbolic code of a property is unique within an information block, while the xmlId of a value is
+    	// within its own property. A fresh suffix on every run avoids
+    	// a duplicate error if the previous run did not manage to clean up after itself.
+    	suffix := strconv.FormatInt(time.Now().Unix(), 36)
+
+    	// A list property needs AT LEAST TWO values. With one, Bitrix24 treats
+    	// the property as a "Yes/No" type, and a value ID cannot be written into it:
+    	// the product returns property N equal to "N", and without an error.
+    	color, err := addListProperty(ctx, core, iblockID, "Color", "COLOR_"+suffix, "N",
+    		[]enumValue{{"Blue", "BLUE_" + suffix}, {"Red", "RED_" + suffix}})
+    	if err != nil {
+    		return err
+    	}
+    	defer deleteProperty(ctx, core, color)
+
+    	sizes, err := addListProperty(ctx, core, iblockID, "Sizes", "SIZES_"+suffix, "Y",
+    		[]enumValue{{"M", "M_" + suffix}, {"L", "L_" + suffix}})
+    	if err != nil {
+    		return err
+    	}
+    	defer deleteProperty(ctx, core, sizes)
+
+    	certificate, err := addFileProperty(ctx, core, iblockID, "Certificate", "CERTIFICATE_"+suffix, "N")
+    	if err != nil {
+    		return err
+    	}
+    	defer deleteProperty(ctx, core, certificate)
+
+    	gallery, err := addFileProperty(ctx, core, iblockID, "Gallery", "GALLERY_"+suffix, "Y")
+    	if err != nil {
+    		return err
+    	}
+    	defer deleteProperty(ctx, core, gallery)
+    	fmt.Printf("properties: Color=%d %v, Sizes=%d %v, Certificate=%d, Gallery=%d\n",
+    		color.ID, color.ValueIDs, sizes.ID, sizes.ValueIDs, certificate.ID, gallery.ID)
+
+    	// --- step 2: a product with property values
+    	// The name of the field holding the property value is built on the fly: propertyN, where N is
+    	// the property ID issued by the portal. That is why fields is a map into
+    	// which the keys are placed by a computed name, rather than a struct with tags.
+    	fields := b24.Params{
+    		"iblockId": iblockID,
+    		"name":     "Printed T-shirt",
+    		"active":   "Y",
+    		"sort":     100,
+    	}
+    	// A single list property is a value ID as a scalar.
+    	fields[propertyKey(color.ID)] = color.ValueIDs[0]
+    	// A multiple list field is an array of value IDs.
+    	fields[propertyKey(sizes.ID)] = sizes.ValueIDs
+    	// A file property is an object with fileData: [file name, base64].
+    	fields[propertyKey(certificate.ID)] = fileValue("certificate.pdf",
+    		[]byte("%PDF-1.4\nCertificate of conformity (b24gosdk example)\n"))
+    	// A multiple file field is an array of such objects.
+    	fields[propertyKey(gallery.ID)] = []any{
+    		fileValue("gallery-1.jpg", []byte("first gallery image")),
+    		fileValue("gallery-2.jpg", []byte("second gallery image")),
+    	}
+
+    	res, err := core.Call(ctx, "catalog.product.add", b24.Params{"fields": fields})
+    	if err != nil {
+    		return fmt.Errorf("catalog.product.add: %w", err)
+    	}
+
+    	// add responds with the element key, while get responds with the product key for the same entity.
+    	raw, ok := b24.Unwrap(res.Result, "element", "id")
+    	if !ok {
+    		return fmt.Errorf("no element.id in %s", res.Result)
+    	}
+    	var productID b24.ID
+    	if err := json.Unmarshal(raw, &productID); err != nil {
+    		return fmt.Errorf("parse product ID: %w", err)
+    	}
+    	defer del(ctx, core, "catalog.product.delete", b24.Params{"id": productID})
+    	fmt.Printf("product %d created\n", productID)
+
+    	// --- step 3: the product price
+
+    	// catalog.product.add does not set the price: the product card and its prices are different
+    	// methods.
+    	res, err = core.Call(ctx, "catalog.price.add", b24.Params{
+    		"fields": b24.Params{
+    			"productId":      productID,
+    			"catalogGroupId": priceTypeID,
+    			"price":          4900,
+    			"currency":       "EUR",
+    		},
+    	})
+    	if err != nil {
+    		return fmt.Errorf("catalog.price.add: %w", err)
+    	}
+    	var price struct {
+    		Price struct {
+    			ID       b24.ID  `json:"id"`
+    			Price    float64 `json:"price"`
+    			Currency string  `json:"currency"`
+    		} `json:"price"`
+    	}
+    	if err := json.Unmarshal(res.Result, &price); err != nil {
+    		return fmt.Errorf("parse price: %w", err)
+    	}
+
+    	fmt.Printf("price %d: %.0f %s\n", price.Price.ID, price.Price.Price, price.Price.Currency)
+    	return showProduct(ctx, core, productID, color.ID, sizes.ID)
+    }
+
+    // --- helpers: properties, files, verification, and cleanup
+
+    // propertyKey builds the name of the field holding the property value: property431.
+    func propertyKey(propertyID b24.ID) string {
+    	return "property" + strconv.FormatInt(int64(propertyID), 10)
+    }
+
+    // fileValue packs a file the way a product file property accepts it.
+    // Files travel as base64 INSIDE the JSON — multipart is not needed here.
+    func fileValue(name string, content []byte) b24.Params {
+    	return b24.Params{
+    		"value": b24.Params{
+    			"fileData": []string{name, base64.StdEncoding.EncodeToString(content)},
+    		},
+    	}
+    }
+
+    type enumValue struct{ Value, XMLID string }
+
+    // property is the created property together with the IDs of its list values.
+    type property struct {
+    	ID       b24.ID
+    	Name     string
+    	ValueIDs []b24.ID
+    }
+
+    func addListProperty(ctx context.Context, core *b24.Core, iblockID b24.ID,
+    	name, code, multiple string, values []enumValue) (property, error) {
+    	prop, err := addProperty(ctx, core, b24.Params{
+    		"iblockId":     iblockID,
+    		"name":         name,
+    		"code":         code,
+    		"propertyType": "L", // L — a list, its values are added by a separate method
+    		"listType":     "L",
+    		"multiple":     multiple,
+    		"active":       "Y",
+    	})
+    	if err != nil {
+    		return prop, err
+    	}
+    	for i, v := range values {
+    		res, err := core.Call(ctx, "catalog.productPropertyEnum.add", b24.Params{
+    			"fields": b24.Params{
+    				"propertyId": prop.ID,
+    				"value":      v.Value,
+    				"xmlId":      v.XMLID,
+    				"sort":       (i + 1) * 100,
+    			},
+    		})
+    		if err != nil {
+    			// The property is already created: return it together with the error so that
+    			// the caller can clean up after itself.
+    			return prop, fmt.Errorf("catalog.productPropertyEnum.add %s: %w", v.XMLID, err)
+    		}
+    		raw, ok := b24.Unwrap(res.Result, "productPropertyEnum", "id")
+    		if !ok {
+    			return prop, fmt.Errorf("no productPropertyEnum.id in %s", res.Result)
+    		}
+    		var id b24.ID
+    		if err := json.Unmarshal(raw, &id); err != nil {
+    			return prop, err
+    		}
+    		prop.ValueIDs = append(prop.ValueIDs, id)
+    	}
+    	return prop, nil
+    }
+
+    func addFileProperty(ctx context.Context, core *b24.Core, iblockID b24.ID,
+    	name, code, multiple string) (property, error) {
+    	return addProperty(ctx, core, b24.Params{
+    		"iblockId":     iblockID,
+    		"name":         name,
+    		"code":         code,
+    		"propertyType": "F", // F — a file
+    		"multiple":     multiple,
+    		"active":       "Y",
+    	})
+    }
+
+    func addProperty(ctx context.Context, core *b24.Core, fields b24.Params) (property, error) {
+    	res, err := core.Call(ctx, "catalog.productProperty.add", b24.Params{"fields": fields})
+    	if err != nil {
+    		return property{}, fmt.Errorf("catalog.productProperty.add %v: %w", fields["code"], err)
+    	}
+    	var out struct {
+    		ProductProperty struct {
+    			ID   b24.ID `json:"id"`
+    			Name string `json:"name"`
+    		} `json:"productProperty"`
+    	}
+    	if err := json.Unmarshal(res.Result, &out); err != nil {
+    		return property{}, fmt.Errorf("parse property: %w", err)
+    	}
+    	return property{ID: out.ProductProperty.ID, Name: out.ProductProperty.Name}, nil
+    }
+
+    // showProduct reads the product back: file properties are returned as a link to
+    // the uploaded file rather than the original base64 string.
+    func showProduct(ctx context.Context, core *b24.Core, productID, colorID, sizesID b24.ID) error {
+    	res, err := core.Call(ctx, "catalog.product.get",
+    		b24.Params{"id": productID}, b24.WithIdempotent())
+    	if err != nil {
+    		return fmt.Errorf("catalog.product.get: %w", err)
+    	}
+    	for _, key := range []string{propertyKey(colorID), propertyKey(sizesID)} {
+    		raw, ok := b24.Unwrap(res.Result, "product", key)
+    		if !ok {
+    			continue
+    		}
+    		// The same field arrives as an OBJECT for a single property and as an ARRAY
+    		// for a multiple one — check the shape before unmarshalling.
+    		fmt.Printf("  %s (%s): %s\n", key, b24.Result(raw).Kind(), raw)
+    	}
+    	return nil
+    }
+
+    func firstCatalog(ctx context.Context, core *b24.Core) (b24.ID, error) {
+    	res, err := core.Call(ctx, "catalog.catalog.list", b24.Params{
+    		"filter": b24.Params{"iblockTypeId": "CRM_PRODUCT_CATALOG"},
+    	}, b24.WithIdempotent())
+    	if err != nil {
+    		return 0, fmt.Errorf("catalog.catalog.list: %w", err)
+    	}
+    	var out struct {
+    		Catalogs []struct {
+    			IblockID b24.ID `json:"iblockId"`
+    		} `json:"catalogs"`
+    	}
+    	if err := json.Unmarshal(res.Result, &out); err != nil {
+    		return 0, err
+    	}
+    	if len(out.Catalogs) == 0 {
+    		return 0, fmt.Errorf("the portal has no commercial catalog")
+    	}
+    	return out.Catalogs[0].IblockID, nil
+    }
+
+    func firstPriceType(ctx context.Context, core *b24.Core) (b24.ID, error) {
+    	res, err := core.Call(ctx, "catalog.priceType.list", nil, b24.WithIdempotent())
+    	if err != nil {
+    		return 0, fmt.Errorf("catalog.priceType.list: %w", err)
+    	}
+    	var out struct {
+    		PriceTypes []struct {
+    			ID b24.ID `json:"id"`
+    		} `json:"priceTypes"`
+    	}
+    	if err := json.Unmarshal(res.Result, &out); err != nil {
+    		return 0, err
+    	}
+    	if len(out.PriceTypes) == 0 {
+    		return 0, fmt.Errorf("the portal has no price types")
+    	}
+    	return out.PriceTypes[0].ID, nil
+    }
+
+    // deleteProperty removes the list values together with the property.
+    func deleteProperty(ctx context.Context, core *b24.Core, prop property) {
+    	for _, id := range prop.ValueIDs {
+    		del(ctx, core, "catalog.productPropertyEnum.delete", b24.Params{"id": id})
+    	}
+    	del(ctx, core, "catalog.productProperty.delete", b24.Params{"id": prop.ID})
+    }
+
+    // del removes what was created. A cleanup error is printed but not returned: it must not
+    // mask the real error of the scenario.
+    func del(ctx context.Context, core *b24.Core, method string, params b24.Params) {
+    	if _, err := core.Call(ctx, method, params); err != nil {
+    		fmt.Fprintf(os.Stderr, "cleanup, %s: %v
+", method, err)
+    	}
+    }
     ```
 
 {% endlist %}

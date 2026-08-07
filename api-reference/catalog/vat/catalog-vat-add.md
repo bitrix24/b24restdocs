@@ -244,6 +244,42 @@ Default is `100`
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "catalog.vat.add", b24.Params{
+    	"fields": b24.Params{
+    		"name":   "Tax 13%",
+    		"rate":   13,
+    		"sort":   10,
+    		"active": "Y",
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("catalog.vat.add: %w", err)
+    }
+
+    // The method wraps the response in an object with the "vat" key.
+    raw, ok := b24.Unwrap(res.Result, "vat")
+    if !ok {
+    	return fmt.Errorf("no vat key in the response")
+    }
+
+    var item struct {
+    	Active     string `json:"active"`
+    	ID         b24.ID `json:"id"`
+    	Name       string `json:"name"`
+    	Rate       int    `json:"rate"`
+    	Sort       int    `json:"sort"`
+    	TimestampX string `json:"timestampX"`
+    }
+    if err := json.Unmarshal(raw, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.Active, item.ID)
+    ```
+
 {% endlist %}
 
 ## Response Handling

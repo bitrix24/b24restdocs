@@ -257,6 +257,44 @@ Only one measurement unit from the entire directory can have the value `Y`
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "catalog.measure.add", b24.Params{
+    	"fields": b24.Params{
+    		"code":             715,
+    		"measureTitle":     "Pair",
+    		"symbol":           "pair",
+    		"symbolLetterIntl": "NPR",
+    		"symbolIntl":       "pr; 2",
+    		"isDefault":        "N",
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("catalog.measure.add: %w", err)
+    }
+
+    // The method wraps the response in an object with the "measure" key.
+    raw, ok := b24.Unwrap(res.Result, "measure")
+    if !ok {
+    	return fmt.Errorf("no measure key in the response")
+    }
+
+    var item struct {
+    	Code         int    `json:"code"`
+    	ID           b24.ID `json:"id"`
+    	IsDefault    string `json:"isDefault"`
+    	MeasureTitle string `json:"measureTitle"`
+    	Symbol       string `json:"symbol"`
+    	SymbolIntl   string `json:"symbolIntl"`
+    }
+    if err := json.Unmarshal(raw, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.Code, item.ID)
+    ```
+
 {% endlist %}
 
 ## Response Handling

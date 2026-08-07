@@ -281,6 +281,40 @@ The structure of the object is returned by the method [booking.v1.clienttype.lis
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "booking.v1.waitlist.client.set", b24.Params{
+    	"waitListId": 4,
+    	"clients": []b24.Params{
+    		{
+    			"id": 1,
+    			"type": b24.Params{
+    				"module": "crm",
+    				"code":   "CONTACT",
+    			},
+    		},
+    		{
+    			"id": 2,
+    			"type": b24.Params{
+    				"module": "crm",
+    				"code":   "CONTACT",
+    			},
+    		},
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("booking.v1.waitlist.client.set: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

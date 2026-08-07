@@ -386,6 +386,46 @@ Access permissions can only be assigned to users or departments that do not alre
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "lists.update", b24.Params{
+    	"IBLOCK_TYPE_ID": "lists",
+    	"IBLOCK_ID":      109,
+    	"FIELDS": b24.Params{
+    		"NAME":        "Updated Task List",
+    		"DESCRIPTION": "Updated description: list for managing daily tasks",
+    		"SORT":        600,
+    		"BIZPROC":     "N",
+    	},
+    	"MESSAGES": b24.Params{
+    		"ELEMENTS_NAME":  "Items",
+    		"ELEMENT_NAME":   "Item",
+    		"ELEMENT_ADD":    "Create item",
+    		"ELEMENT_EDIT":   "Edit item",
+    		"ELEMENT_DELETE": "Delete item",
+    		"SECTIONS_NAME":  "Categories",
+    		"SECTION_NAME":   "Category",
+    		"SECTION_ADD":    "Add category",
+    		"SECTION_EDIT":   "Edit category",
+    		"SECTION_DELETE": "Delete category",
+    	},
+    	"RIGHTS": b24.Params{
+    		"D15": "W",
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("lists.update: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

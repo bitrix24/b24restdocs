@@ -228,6 +228,26 @@ The parameter is applied when updating `ATTACH`. When changing `MESSAGE`, the "e
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "im.message.update", b24.Params{
+    	"MESSAGE_ID": 34239,
+    	"MESSAGE":    "Updated text",
+    	"KEYBOARD":   "N",
+    })
+    if err != nil {
+    	return fmt.Errorf("im.message.update: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

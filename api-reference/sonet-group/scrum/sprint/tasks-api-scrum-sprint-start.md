@@ -210,6 +210,31 @@ Tasks will be added to the kanban of the active sprint. If there were completed 
     }
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "tasks.api.scrum.sprint.start", b24.Params{
+    	"id": 2,
+    })
+    if err != nil {
+    	return fmt.Errorf("tasks.api.scrum.sprint.start: %w", err)
+    }
+
+    var item struct {
+    	ID         b24.ID `json:"id"`
+    	GroupID    b24.ID `json:"groupId"`
+    	EntityType string `json:"entityType"`
+    	Name       string `json:"name"`
+    	Goal       string `json:"goal"`
+    	Sort       int    `json:"sort"`
+    }
+    if err := json.Unmarshal(res.Result, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.ID, item.GroupID)
+    ```
+
 {% endlist %}
 
 ## Response Handling

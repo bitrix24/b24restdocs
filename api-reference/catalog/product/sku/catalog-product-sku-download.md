@@ -227,6 +227,26 @@ To obtain existing identifiers or property codes of main products, you need to u
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "catalog.product.sku.download", b24.Params{
+    	"fields": b24.Params{
+    		"fileId":    6546,
+    		"productId": 1289,
+    		"fieldName": "detailPicture",
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("catalog.product.sku.download: %w", err)
+    }
+
+    // The response arrives as json.RawMessage — unmarshal it
+    // into a struct matching the response shape shown below on this page.
+    fmt.Printf("%s\n", res.Result)
+    ```
+
 {% endlist %}
 
 ## Response Handling

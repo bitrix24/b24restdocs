@@ -176,6 +176,24 @@ No parameters.
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "sale.tradeBinding.getFields", nil, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("sale.tradeBinding.getFields: %w", err)
+    }
+
+    // The method wraps the response in an object with the "tradeBinding" key.
+    raw, ok := b24.Unwrap(res.Result, "tradeBinding")
+    if !ok {
+    	return fmt.Errorf("no tradeBinding key in the response")
+    }
+
+    fmt.Printf("%s\n", raw)
+    ```
+
 {% endlist %}
 
 ## Response Handling

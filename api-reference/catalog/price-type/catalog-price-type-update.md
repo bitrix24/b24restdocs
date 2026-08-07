@@ -252,6 +252,43 @@ Can be used to synchronize the current price type with a similar position in an 
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "catalog.priceType.update", b24.Params{
+    	"id": 2,
+    	"fields": b24.Params{
+    		"name":  "Base wholesale price",
+    		"base":  "Y",
+    		"sort":  1,
+    		"xmlId": "basewholesale",
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("catalog.priceType.update: %w", err)
+    }
+
+    // The method wraps the response in an object with the "priceType" key.
+    raw, ok := b24.Unwrap(res.Result, "priceType")
+    if !ok {
+    	return fmt.Errorf("no priceType key in the response")
+    }
+
+    var item struct {
+    	Base       string `json:"base"`
+    	CreatedBy  int    `json:"createdBy"`
+    	DateCreate string `json:"dateCreate"`
+    	ID         b24.ID `json:"id"`
+    	ModifiedBy int    `json:"modifiedBy"`
+    	Name       string `json:"name"`
+    }
+    if err := json.Unmarshal(raw, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.Base, item.CreatedBy)
+    ```
+
 {% endlist %}
 
 ## Response Handling

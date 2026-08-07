@@ -67,7 +67,9 @@ https://**put_your_bitrix24_address**/rest/api/tasks.task.chat.message.send
 
 {% note info "" %}
 
-SDKs do not yet support the `/rest/api/` address in calls. Use direct HTTP requests, for example, via `curl` or `fetch`.
+The Go SDK [b24gosdk](../sdk/b24gosdk/index.md) calls REST 3.0 methods: pass a base address that contains the `/rest/api/` segment, and nothing else needs to be configured. List traversal and `batch` in it work only with the previous version — on REST 3.0, call them through a regular method call.
+
+Other SDKs do not yet support the `/rest/api/` address in calls. Use direct HTTP requests, for example, via `curl` or `fetch`.
 
 {% endnote %}
 

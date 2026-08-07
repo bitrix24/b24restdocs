@@ -244,6 +244,28 @@ If 20 or more duplicates are found for one object, the other types are not retur
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.duplicate.findbycomm", b24.Params{
+    	"entity_type": "CONTACT",
+    	"type":        "PHONE",
+    	"values":      []string{"8976543", "11223355"},
+    })
+    if err != nil {
+    	return fmt.Errorf("crm.duplicate.findbycomm: %w", err)
+    }
+
+    // The method wraps the response in an object with the "CONTACT" key.
+    raw, ok := b24.Unwrap(res.Result, "CONTACT")
+    if !ok {
+    	return fmt.Errorf("no CONTACT key in the response")
+    }
+
+    fmt.Printf("%s\n", raw)
+    ```
+
 {% endlist %}
 
 ## Response Handling

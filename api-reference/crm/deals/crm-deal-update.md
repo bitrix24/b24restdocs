@@ -478,6 +478,41 @@ For example, the field `PARENT_ID_153` — link to the smart process `entityType
     except Exception as error:
         print(f"Unexpected error: {error}")
     ```
+
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.deal.update", b24.Params{
+    	"id": 123,
+    	"fields": b24.Params{
+    		"TITLE":                 "New Deal Title!",
+    		"TYPE_ID":               "GOODS",
+    		"STAGE_ID":              "WON",
+    		"IS_RECCURING":          "Y",
+    		"IS_RETURN_CUSTOMER":    "Y",
+    		"OPPORTUNITY":           9999.99,
+    		"IS_MANUAL_OPPORTUNITY": "Y",
+    		"ASSIGNED_BY_ID":        1,
+    		"UF_CRM_1725365197310":  "String",
+    		"PARENT_ID_1032":        1,
+    	},
+    	"params": b24.Params{
+    		"REGISTER_SONET_EVENT":   "N",
+    		"REGISTER_HISTORY_EVENT": "N",
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("crm.deal.update: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ### Method Explanation

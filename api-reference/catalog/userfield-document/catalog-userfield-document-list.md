@@ -255,6 +255,44 @@ The formula for calculating the `start` parameter value:
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "catalog.userfield.document.list", b24.Params{
+    	"select": []string{"documentType", "documentId", "field7097"},
+    	"filter": b24.Params{
+    		"documentType": "A",
+    		"documentId":   81,
+    	},
+    	"order": b24.Params{
+    		"documentId": "ASC",
+    	},
+    	"start": 0,
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("catalog.userfield.document.list: %w", err)
+    }
+
+    // The method wraps the response in an object with the "documents" key.
+    raw, ok := b24.Unwrap(res.Result, "documents")
+    if !ok {
+    	return fmt.Errorf("no documents key in the response")
+    }
+
+    var items []struct {
+    	DocumentID   b24.ID `json:"documentId"`
+    	DocumentType string `json:"documentType"`
+    	Field7097    string `json:"field7097"`
+    }
+    if err := json.Unmarshal(raw, &items); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    for _, it := range items {
+    	fmt.Println(it.DocumentID)
+    }
+    ```
+
 {% endlist %}
 
 ## Response Handling

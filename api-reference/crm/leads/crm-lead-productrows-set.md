@@ -459,6 +459,49 @@ Default - `0`
     except Exception as error:
         print(f"Unexpected error: {error}")
     ```
+
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.lead.productrows.set", b24.Params{
+    	"id": 5,
+    	"rows": []b24.Params{
+    		{
+    			"PRODUCT_ID":       456,
+    			"PRICE":            1000,
+    			"QUANTITY":         10,
+    			"DISCOUNT_TYPE_ID": 1,
+    			"DISCOUNT_SUM":     100,
+    			"TAX_RATE":         13,
+    			"MEASURE_CODE":     796,
+    			"MEASURE_NAME":     "pcs",
+    			"SORT":             10,
+    		},
+    		{
+    			"PRODUCT_NAME":     "Product #2",
+    			"PRICE":            500,
+    			"QUANTITY":         5,
+    			"DISCOUNT_TYPE_ID": 2,
+    			"DISCOUNT_RATE":    10,
+    			"TAX_RATE":         10,
+    			"MEASURE_CODE":     166,
+    			"MEASURE_NAME":     "kg",
+    			"SORT":             20,
+    		},
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("crm.lead.productrows.set: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

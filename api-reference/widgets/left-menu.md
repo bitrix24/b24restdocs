@@ -281,6 +281,32 @@ This placement does not support the `OPTIONS` parameter of the [placement.bind](
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "placement.bind", b24.Params{
+    	"PLACEMENT": "LEFT_MENU",
+    	"HANDLER":   "https://your-domain.com/widgets/left-menu-handler.php",
+    	"TITLE":     "Supplier dashboard",
+    	"LANG_ALL": b24.Params{
+    		"ru": b24.Params{
+    			"TITLE": "Supplier dashboard",
+    		},
+    		"en": b24.Params{
+    			"TITLE": "Supplier dashboard",
+    		},
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("placement.bind: %w", err)
+    }
+
+    // The response arrives as json.RawMessage — unmarshal it
+    // into a struct matching the response shape shown below on this page.
+    fmt.Printf("%s\n", res.Result)
+    ```
+
 {% endlist %}
 
 ## Continue Learning

@@ -293,6 +293,32 @@ This placement does not support the `OPTIONS` parameter of the [placement.bind](
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "placement.bind", b24.Params{
+    	"PLACEMENT": "CALENDAR_GRIDVIEW",
+    	"HANDLER":   "https://your-domain.com/widgets/calendar-gridview-handler.php",
+    	"TITLE":     "Team workload",
+    	"LANG_ALL": b24.Params{
+    		"ru": b24.Params{
+    			"TITLE": "Team workload",
+    		},
+    		"en": b24.Params{
+    			"TITLE": "Team workload",
+    		},
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("placement.bind: %w", err)
+    }
+
+    // The response arrives as json.RawMessage — unmarshal it
+    // into a struct matching the response shape shown below on this page.
+    fmt.Printf("%s\n", res.Result)
+    ```
+
 {% endlist %}
 
 ## Continue Learning

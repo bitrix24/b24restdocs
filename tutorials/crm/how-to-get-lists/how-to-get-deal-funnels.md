@@ -77,6 +77,29 @@ The list of pipelines is filtered by user permissions. If a user does not have p
     category_map = {item["id"]: item["name"] for item in categories}
     ```
 
+- Go
+
+    ```go
+    // 1. The list of deal pipelines.
+    res, err := client.Core().Call(ctx, "crm.category.list", b24.Params{
+    	"entityTypeId": 2,
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("crm.category.list: %w", err)
+    }
+
+    // The method wraps the response in an object with the categories key.
+    var categories struct {
+    	Categories []struct {
+    		ID   int    `json:"id"`
+    		Name string `json:"name"`
+    	} `json:"categories"`
+    }
+    if err := json.Unmarshal(res.Result, &categories); err != nil {
+    	return fmt.Errorf("parse pipelines: %w", err)
+    }
+    ```
+
 {% endlist %}
 
 The method returns an array of `categories` in the response containing the deal pipelines available to the user, including the main pipeline. Each pipeline has an `id` (the pipeline identifier), a `name` (the name), and an `isDefault` (the flag indicating the main pipeline).
@@ -197,6 +220,39 @@ The examples below use data obtained in the previous step.
                 item.get("NAME", ""),
                 (item.get("EXTRA") or {}).get("SEMANTICS", ""),
             )
+    ```
+
+- Go
+
+    ```go
+    // 2. The stages of each pipeline.
+    for _, c := range categories.Categories {
+    	// The default pipeline has stage IDs without a suffix, never DEAL_STAGE_0.
+    	entityID := "DEAL_STAGE"
+    	if c.ID > 0 {
+    		entityID = fmt.Sprintf("DEAL_STAGE_%d", c.ID)
+    	}
+
+    	res, err := client.Core().Call(ctx, "crm.status.list", b24.Params{
+    		"order":  b24.Params{"SORT": "ASC"},
+    		"filter": b24.Params{"ENTITY_ID": entityID},
+    	}, b24.WithIdempotent())
+    	if err != nil {
+    		// A pipeline the webhook is not allowed to read is skipped:
+    		// the rest must not suffer because of it.
+    		fmt.Fprintf(os.Stderr, "pipeline %d (%s): %v\n", c.ID, c.Name, err)
+    		continue
+    	}
+
+    	var stages []stage
+    	if err := json.Unmarshal(res.Result, &stages); err != nil {
+    		return fmt.Errorf("parse the stages of pipeline %d: %w", c.ID, err)
+    	}
+
+    	for _, s := range stages {
+    		fmt.Println(c.Name, s.StatusID, s.Name, s.Extra.Semantics)
+    	}
+    }
     ```
 
 {% endlist %}
@@ -427,6 +483,99 @@ The example outputs a table for each deal pipeline. The table shows the stage id
                 )
     except BitrixAPIError as error:
         print(error)
+    ```
+
+- Go
+
+    ```go
+    // Setup in an empty directory — go get will not work without go mod init:
+    //   go mod init example && go get github.com/bitrix24/b24gosdk
+    // Run:
+    //   export B24_WEBHOOK_URL='https://your-portal.bitrix24.com/rest/1/token/' && go run .
+    package main
+
+    import (
+    	"context"
+    	"encoding/json"
+    	"fmt"
+    	"log"
+    	"os"
+
+    	b24 "github.com/bitrix24/b24gosdk"
+    )
+
+    func main() {
+    	// The webhook path is a secret, so it comes from the environment, not from the code.
+    	if err := run(context.Background()); err != nil {
+    		log.Fatal(err)
+    	}
+    }
+
+    func run(ctx context.Context) error {
+    	client := b24.NewClient(os.Getenv("B24_WEBHOOK_URL"))
+
+    	// 1. The list of deal pipelines.
+    	res, err := client.Core().Call(ctx, "crm.category.list", b24.Params{
+    		"entityTypeId": 2,
+    	}, b24.WithIdempotent())
+    	if err != nil {
+    		return fmt.Errorf("crm.category.list: %w", err)
+    	}
+
+    	// The method wraps the response in an object with the categories key.
+    	var categories struct {
+    		Categories []struct {
+    			ID   int    `json:"id"`
+    			Name string `json:"name"`
+    		} `json:"categories"`
+    	}
+    	if err := json.Unmarshal(res.Result, &categories); err != nil {
+    		return fmt.Errorf("parse pipelines: %w", err)
+    	}
+
+    	// 2. The stages of each pipeline.
+    	for _, c := range categories.Categories {
+    		// The default pipeline has stage IDs without a suffix, never DEAL_STAGE_0.
+    		entityID := "DEAL_STAGE"
+    		if c.ID > 0 {
+    			entityID = fmt.Sprintf("DEAL_STAGE_%d", c.ID)
+    		}
+
+    		res, err := client.Core().Call(ctx, "crm.status.list", b24.Params{
+    			"order":  b24.Params{"SORT": "ASC"},
+    			"filter": b24.Params{"ENTITY_ID": entityID},
+    		}, b24.WithIdempotent())
+    		if err != nil {
+    			// A pipeline the webhook is not allowed to read is skipped:
+    			// the rest must not suffer because of it.
+    			fmt.Fprintf(os.Stderr, "pipeline %d (%s): %v\n", c.ID, c.Name, err)
+    			continue
+    		}
+
+    		var stages []stage
+    		if err := json.Unmarshal(res.Result, &stages); err != nil {
+    			return fmt.Errorf("parse the stages of pipeline %d: %w", c.ID, err)
+    		}
+
+    		for _, s := range stages {
+    			fmt.Println(c.Name, s.StatusID, s.Name, s.Extra.Semantics)
+    		}
+    	}
+    	return nil
+    }
+
+    // stage is a single row of the crm.status.list response.
+    type stage struct {
+    	StatusID string `json:"STATUS_ID"`
+    	Name     string `json:"NAME"`
+
+    	// The row also has a TOP-LEVEL SEMANTICS field, but for deal stages it
+    	// arrives empty: the real value is in EXTRA. Reading the top-level field is
+    	// the usual way to conclude that the portal has no semantics at all.
+    	Extra struct {
+    		Semantics string `json:"SEMANTICS"`
+    	} `json:"EXTRA"`
+    }
     ```
 
 {% endlist %}

@@ -381,6 +381,49 @@ If keys are provided in lowercase, the role permissions will be reset to empty v
   print_r($result);
   ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "documentgenerator.role.update", b24.Params{
+    	"id": 9,
+    	"fields": b24.Params{
+    		"name": "Template Editors",
+    		"permissions": b24.Params{
+    			"SETTINGS": b24.Params{
+    				"MODIFY": "",
+    			},
+    			"TEMPLATES": b24.Params{
+    				"MODIFY": "A",
+    			},
+    			"DOCUMENTS": b24.Params{
+    				"MODIFY": "X",
+    				"VIEW":   "X",
+    			},
+    		},
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("documentgenerator.role.update: %w", err)
+    }
+
+    // The method wraps the response in an object with the "role" key.
+    raw, ok := b24.Unwrap(res.Result, "role")
+    if !ok {
+    	return fmt.Errorf("no role key in the response")
+    }
+
+    var item struct {
+    	ID   b24.ID `json:"id"`
+    	Name string `json:"name"`
+    	Code string `json:"code"`
+    }
+    if err := json.Unmarshal(raw, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.ID, item.Name)
+    ```
+
 {% endlist %}
 
 ## Response Handling

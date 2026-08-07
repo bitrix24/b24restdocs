@@ -172,6 +172,33 @@ More details: [How to upload files](../../../../files/how-to-upload-files.md#how
     }
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "im.v2.File.upload", b24.Params{
+    	"dialogId": "chat5",
+    	"fields": b24.Params{
+    		"name":    "report.pdf",
+    		"content": "SGVsbG8gV29ybGQh",
+    		"message": "Here is the report",
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("im.v2.File.upload: %w", err)
+    }
+
+    var item struct {
+    	DialogID  string `json:"dialogId"`
+    	ChatID    b24.ID `json:"chatId"`
+    	MessageID b24.ID `json:"messageId"`
+    }
+    if err := json.Unmarshal(res.Result, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.DialogID, item.ChatID)
+    ```
+
 {% endlist %}
 
 ## Response Handling

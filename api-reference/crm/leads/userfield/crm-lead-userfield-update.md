@@ -583,6 +583,51 @@ For multiple fields, multiple `DEF = Y` are allowed. For non-multiple fields, th
         print(f"Unexpected error: {error}")
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.lead.userfield.update", b24.Params{
+    	"id": 536,
+    	"fields": b24.Params{
+    		"MANDATORY":   "N",
+    		"SHOW_FILTER": "N",
+    		"SETTINGS": b24.Params{
+    			"DEFAULT_VALUE": "Hello, World! Default value (changed)",
+    			"ROWS":          10,
+    		},
+    		"SORT":              2000,
+    		"EDIT_IN_LIST":      "N",
+    		"LIST_FILTER_LABEL": "Hello, World! Filter (changed)",
+    		"LIST_COLUMN_LABEL": b24.Params{
+    			"en": "Hello, World! Column (changed)",
+    			"de": "Hallo, Welt! Spalte (geändert)",
+    		},
+    		"EDIT_FORM_LABEL": b24.Params{
+    			"en": "Hello, World! Edit (changed)",
+    			"de": "Hallo, Welt! Bearbeiten (geändert)",
+    		},
+    		"ERROR_MESSAGE": b24.Params{
+    			"en": "Hello, World! Error (changed)",
+    			"de": "Hallo, Welt! Fehler (geändert)",
+    		},
+    		"HELP_MESSAGE": b24.Params{
+    			"en": "Hello, World! Help (changed)",
+    			"de": "Hallo, Welt! Hilfe (geändert)",
+    		},
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("crm.lead.userfield.update: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 

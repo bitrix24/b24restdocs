@@ -255,6 +255,29 @@ Ensure to provide correct identifiers for the area and page. If such an area doe
     }
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "landing.template.setLandingRef", b24.Params{
+    	"id": 557,
+    	"data": b24.Params{
+    		"1": 614,
+    		"2": 615,
+    		"3": 616,
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("landing.template.setLandingRef: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

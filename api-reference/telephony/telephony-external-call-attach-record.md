@@ -227,6 +227,28 @@ If both `FILENAME` and `FILE_CONTENT` (or `RECORD_URL`) are provided, the file i
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "telephony.externalCall.attachRecord", b24.Params{
+    	"CALL_ID":      "externalCall.716f1cb73def9700a23842adf9c4c568.1773130779",
+    	"FILENAME":     "call-001.mp3",
+    	"FILE_CONTENT": "SUQzAwAAAAAiVVRJVDI...AAAAAAAAAAAAP8=",
+    })
+    if err != nil {
+    	return fmt.Errorf("telephony.externalCall.attachRecord: %w", err)
+    }
+
+    var item struct {
+    	FileID b24.ID `json:"FILE_ID"`
+    }
+    if err := json.Unmarshal(res.Result, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.FileID)
+    ```
+
 {% endlist %}
 
 ## Response Handling

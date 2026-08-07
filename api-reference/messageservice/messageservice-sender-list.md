@@ -170,6 +170,22 @@ No parameters.
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "messageservice.sender.list", nil, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("messageservice.sender.list: %w", err)
+    }
+
+    var items []string
+    if err := json.Unmarshal(res.Result, &items); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("received:", len(items))
+    ```
+
 {% endlist %}
 
 ## Response Handling

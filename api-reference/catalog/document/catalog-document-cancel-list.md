@@ -183,6 +183,24 @@ Access permissions are checked for each document in the request.
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "catalog.document.cancelList", b24.Params{
+    	"documentIds": []int{142, 143, 144},
+    })
+    if err != nil {
+    	return fmt.Errorf("catalog.document.cancelList: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

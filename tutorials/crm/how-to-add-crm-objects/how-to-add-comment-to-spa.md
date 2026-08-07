@@ -90,6 +90,38 @@ To obtain the type identifier, we use the [crm.type.list](../../../api-reference
     ).response
     ```
 
+- Go
+
+    ```go
+    res, err := core.Call(ctx, "crm.type.list", b24.Params{
+    	"filter": b24.Params{"title": spaTitle},
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("crm.type.list: %w", err)
+    }
+
+    // The method wraps the response in an object with the types key. Two smart processes
+    // nothing forbids identical titles, so the response is a list even with
+    // an exact filter.
+    var types struct {
+    	Types []struct {
+    		ID           int    `json:"id"`
+    		EntityTypeID int    `json:"entityTypeId"`
+    		Title        string `json:"title"`
+    	} `json:"types"`
+    }
+    if err := json.Unmarshal(res.Result, &types); err != nil {
+    	return fmt.Errorf("parse smart processes: %w", err)
+    }
+    if len(types.Types) == 0 {
+    	return fmt.Errorf("smart process %q not found", spaTitle)
+    }
+
+    // id is the sequential number of the smart process, entityTypeId is the ID of its
+    // of the TYPE. Further on you need exactly entityTypeId, these are different numbers.
+    entityTypeID := types.Types[0].EntityTypeID
+    ```
+
 {% endlist %}
 
 As a result, we obtained two ID values:
@@ -180,6 +212,31 @@ To add a comment, use the [crm.timeline.comment.add](../../../api-reference/crm/
             "COMMENT": "Confirm the purchase via email!",
         }
     ).response
+    ```
+
+- Go
+
+    ```go
+    // ENTITY_TYPE for a smart process is the string "DYNAMIC_" + entityTypeId.
+    // Timeline fields are written in UPPERCASE, whereas crm.item.* accepts
+    // camelCase: one entity, two conventions in a single scenario.
+    res, err = core.Call(ctx, "crm.timeline.comment.add", b24.Params{
+    	"fields": b24.Params{
+    		"ENTITY_ID":   itemID,
+    		"ENTITY_TYPE": "DYNAMIC_" + strconv.Itoa(entityTypeID),
+    		"COMMENT":     "Confirm the purchase via email!",
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("crm.timeline.comment.add: %w", err)
+    }
+
+    // There is no wrapper here at all: result is the ID of the record itself
+    // of the timeline, as a bare number.
+    var commentID b24.ID
+    if err := json.Unmarshal(res.Result, &commentID); err != nil {
+    	return fmt.Errorf("parse comment ID: %w", err)
+    }
     ```
 
 {% endlist %}
@@ -375,6 +432,176 @@ We added a comment to the SPA item timeline and received the timeline entry ID `
     )
 
     find_spa(client)
+    ```
+
+- Go
+
+    ```go
+    // Setup in an empty directory — go get will not work without go mod init:
+    //
+    //	go mod init example && go get github.com/bitrix24/b24gosdk
+    //
+    // Run:
+    //
+    //	export B24_WEBHOOK_URL='https://your-portal.bitrix24.com/rest/1/token/' && go run .
+    //
+    // The example is self-contained: it creates a smart process and an item in it, finds
+    // the smart process by title, adds a comment to the item timeline, and
+    // cleans up after itself. It runs on any portal, nothing needs to be edited.
+    package main
+
+    import (
+    	"context"
+    	"encoding/json"
+    	"errors"
+    	"fmt"
+    	"log"
+    	"os"
+    	"strconv"
+
+    	b24 "github.com/bitrix24/b24gosdk"
+    )
+
+    // The smart process title is the same one that step 1 looks for.
+    const spaTitle = "Equipment procurement (b24gosdk example)"
+
+    func main() {
+    	if err := run(context.Background()); err != nil {
+    		log.Fatal(err)
+    	}
+    }
+
+    func run(ctx context.Context) error {
+    	// The webhook path is a secret, so it comes from the environment, not from the code.
+    	core := b24.NewClient(os.Getenv("B24_WEBHOOK_URL")).Core()
+
+    	// --- setup: our own smart process and an item in it
+
+    	typeID, err := addType(ctx, core, spaTitle)
+    	if err != nil {
+    		return err
+    	}
+    	defer del(ctx, core, "crm.type.delete", b24.Params{"id": typeID})
+
+    	// entityTypeId is needed both to create the item and for the comment, but so far
+    	// only the id of the type itself is known — step 1 goes for entityTypeId.
+
+    	// --- step 1: find the smart process by its title
+    	res, err := core.Call(ctx, "crm.type.list", b24.Params{
+    		"filter": b24.Params{"title": spaTitle},
+    	}, b24.WithIdempotent())
+    	if err != nil {
+    		return fmt.Errorf("crm.type.list: %w", err)
+    	}
+
+    	// The method wraps the response in an object with the types key. Two smart processes
+    	// nothing forbids identical titles, so the response is a list even with
+    	// an exact filter.
+    	var types struct {
+    		Types []struct {
+    			ID           int    `json:"id"`
+    			EntityTypeID int    `json:"entityTypeId"`
+    			Title        string `json:"title"`
+    		} `json:"types"`
+    	}
+    	if err := json.Unmarshal(res.Result, &types); err != nil {
+    		return fmt.Errorf("parse smart processes: %w", err)
+    	}
+    	if len(types.Types) == 0 {
+    		return fmt.Errorf("smart process %q not found", spaTitle)
+    	}
+
+    	// id is the sequential number of the smart process, entityTypeId is the ID of its
+    	// of the TYPE. Further on you need exactly entityTypeId, these are different numbers.
+    	entityTypeID := types.Types[0].EntityTypeID
+    	fmt.Printf("smart process %q: id=%d, entityTypeId=%d\n",
+    		types.Types[0].Title, types.Types[0].ID, entityTypeID)
+
+    	itemID, err := addItem(ctx, core, entityTypeID, "Laptop procurement")
+    	if err != nil {
+    		return err
+    	}
+    	defer del(ctx, core, "crm.item.delete", b24.Params{
+    		"entityTypeId": entityTypeID, "id": itemID,
+    	})
+
+    	// --- step 2: add a comment to the item timeline
+    	// ENTITY_TYPE for a smart process is the string "DYNAMIC_" + entityTypeId.
+    	// Timeline fields are written in UPPERCASE, whereas crm.item.* accepts
+    	// camelCase: one entity, two conventions in a single scenario.
+    	res, err = core.Call(ctx, "crm.timeline.comment.add", b24.Params{
+    		"fields": b24.Params{
+    			"ENTITY_ID":   itemID,
+    			"ENTITY_TYPE": "DYNAMIC_" + strconv.Itoa(entityTypeID),
+    			"COMMENT":     "Confirm the purchase via email!",
+    		},
+    	})
+    	if err != nil {
+    		return fmt.Errorf("crm.timeline.comment.add: %w", err)
+    	}
+
+    	// There is no wrapper here at all: result is the ID of the record itself
+    	// of the timeline, as a bare number.
+    	var commentID b24.ID
+    	if err := json.Unmarshal(res.Result, &commentID); err != nil {
+    		return fmt.Errorf("parse comment ID: %w", err)
+    	}
+    	fmt.Printf("comment %d added to item %d\n", commentID, itemID)
+    	return nil
+    }
+
+    // --- helpers: data setup and cleanup
+
+    // addType creates a smart process. entityTypeId is deliberately not passed: it is
+    // is issued by the portal, and that is exactly what step 1 goes for.
+    func addType(ctx context.Context, core *b24.Core, title string) (b24.ID, error) {
+    	// isRecyclebinEnabled is disabled deliberately: an item in the recycle bin still
+    	// counts as an item, and crm.type.delete refuses to delete a type
+    	// that has items.
+    	res, err := core.Call(ctx, "crm.type.add", b24.Params{
+    		"fields": b24.Params{"title": title, "isRecyclebinEnabled": "N"},
+    	})
+    	if err != nil {
+    		// On plans without smart processes, the method responds with a dedicated code.
+    		// The code is compared with errors.Is rather than as a string: a typo in the literal
+    		// would compile and silently take a different branch.
+    		if errors.Is(err, b24.Code("CREATE_DYNAMIC_TYPE_RESTRICTED")) {
+    			return 0, fmt.Errorf("a smart process cannot be created on this portal: %w", err)
+    		}
+    		return 0, fmt.Errorf("crm.type.add: %w", err)
+    	}
+    	raw, ok := b24.Unwrap(res.Result, "type", "id")
+    	if !ok {
+    		return 0, fmt.Errorf("no type.id in %s", res.Result)
+    	}
+    	var id b24.ID
+    	return id, json.Unmarshal(raw, &id)
+    }
+
+    func addItem(ctx context.Context, core *b24.Core, entityTypeID int, title string) (b24.ID, error) {
+    	res, err := core.Call(ctx, "crm.item.add", b24.Params{
+    		"entityTypeId": entityTypeID,
+    		"fields":       b24.Params{"title": title},
+    	})
+    	if err != nil {
+    		return 0, fmt.Errorf("crm.item.add: %w", err)
+    	}
+    	raw, ok := b24.Unwrap(res.Result, "item", "id")
+    	if !ok {
+    		return 0, fmt.Errorf("no item.id in %s", res.Result)
+    	}
+    	var id b24.ID
+    	return id, json.Unmarshal(raw, &id)
+    }
+
+    // del removes what was created. A cleanup error is printed but not returned: it must not
+    // mask the real error of the scenario.
+    func del(ctx context.Context, core *b24.Core, method string, params b24.Params) {
+    	if _, err := core.Call(ctx, method, params); err != nil {
+    		fmt.Fprintf(os.Stderr, "cleanup, %s: %v
+", method, err)
+    	}
+    }
     ```
 
 {% endlist %}

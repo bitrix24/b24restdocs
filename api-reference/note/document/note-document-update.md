@@ -275,6 +275,42 @@ The new API call differs by adding the `/api/` segment to the request URL:
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "note.document.update", b24.Params{
+    	"id": 77,
+    	"fields": b24.Params{
+    		"title":    "Chapter 1 (updated)",
+    		"markdown": "# Chapter 1\n\nUpdated text\n\n[[image fileId=5001 width=30.98 align=left]]",
+    	},
+    	"overwrite": false,
+    })
+    if err != nil {
+    	return fmt.Errorf("note.document.update: %w", err)
+    }
+
+    // The method wraps the response in an object with the "item" key.
+    raw, ok := b24.Unwrap(res.Result, "item")
+    if !ok {
+    	return fmt.Errorf("no item key in the response")
+    }
+
+    var item struct {
+    	ID           b24.ID `json:"id"`
+    	CollectionID b24.ID `json:"collectionId"`
+    	ParentID     b24.ID `json:"parentId"`
+    	Title        string `json:"title"`
+    	Markdown     string `json:"markdown"`
+    	Position     int    `json:"position"`
+    }
+    if err := json.Unmarshal(raw, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.ID, item.CollectionID)
+    ```
+
 {% endlist %}
 
 ## Response Handling

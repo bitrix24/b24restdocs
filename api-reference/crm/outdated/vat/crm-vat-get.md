@@ -146,6 +146,30 @@ The method `crm.vat.get` returns the parameters of the VAT rate by its ID.
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.vat.get", b24.Params{
+    	"id": 7,
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("crm.vat.get: %w", err)
+    }
+
+    var item struct {
+    	ID     b24.ID `json:"ID"`
+    	Active string `json:"ACTIVE"`
+    	Name   string `json:"NAME"`
+    	Rate   string `json:"RATE"`
+    	CSort  string `json:"C_SORT"`
+    }
+    if err := json.Unmarshal(res.Result, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.ID, item.Active)
+    ```
+
 {% endlist %}
 
 ## Response Handling

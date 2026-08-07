@@ -248,6 +248,32 @@ The maximum number of bots for a single application: `5`
     }
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "imbot.register", b24.Params{
+    	"CODE":          "newbot",
+    	"TYPE":          "B",
+    	"EVENT_HANDLER": "https://example.com/bot/events",
+    	"OPENLINE":      "N",
+    	"PROPERTIES": b24.Params{
+    		"NAME":          "NewBot",
+    		"WORK_POSITION": "Support bot",
+    	},
+    	"CLIENT_ID": "**put_your_client_id_here**",
+    })
+    if err != nil {
+    	return fmt.Errorf("imbot.register: %w", err)
+    }
+
+    var value b24.ID
+    if err := json.Unmarshal(res.Result, &value); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("result:", value)
+    ```
+
 {% endlist %}
 
 ## Response Handling

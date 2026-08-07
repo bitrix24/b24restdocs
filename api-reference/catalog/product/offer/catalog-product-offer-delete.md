@@ -184,6 +184,24 @@ To obtain the identifiers of product variations, you need to use [catalog.produc
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "catalog.product.offer.delete", b24.Params{
+    	"id": 1285,
+    })
+    if err != nil {
+    	return fmt.Errorf("catalog.product.offer.delete: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

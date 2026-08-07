@@ -250,6 +250,37 @@ Example of retrieving a document with identifier `61`.
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.documentgenerator.document.get", b24.Params{
+    	"id": 61,
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("crm.documentgenerator.document.get: %w", err)
+    }
+
+    // The method wraps the response in an object with the "document" key.
+    raw, ok := b24.Unwrap(res.Result, "document")
+    if !ok {
+    	return fmt.Errorf("no document key in the response")
+    }
+
+    var item struct {
+    	ChangeStampsEnabled        bool   `json:"changeStampsEnabled"`
+    	ChangeStampsDisabledReason string `json:"changeStampsDisabledReason"`
+    	ChangeQrCodeEnabled        bool   `json:"changeQrCodeEnabled"`
+    	QrCodeEnabled              bool   `json:"qrCodeEnabled"`
+    	ChangeQrCodeDisabledReason string `json:"changeQrCodeDisabledReason"`
+    	DownloadUrl                string `json:"downloadUrl"`
+    }
+    if err := json.Unmarshal(raw, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.ChangeStampsEnabled, item.ChangeStampsDisabledReason)
+    ```
+
 {% endlist %}
 
 ## Response Handling

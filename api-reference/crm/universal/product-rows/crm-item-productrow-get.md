@@ -235,6 +235,37 @@ Retrieves information about a product item in the CRM.
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.item.productrow.get", b24.Params{
+    	"id": 17622,
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("crm.item.productrow.get: %w", err)
+    }
+
+    // The method wraps the response in an object with the "productRow" key.
+    raw, ok := b24.Unwrap(res.Result, "productRow")
+    if !ok {
+    	return fmt.Errorf("no productRow key in the response")
+    }
+
+    var item struct {
+    	ID          b24.ID `json:"id"`
+    	OwnerID     b24.ID `json:"ownerId"`
+    	OwnerType   string `json:"ownerType"`
+    	ProductID   b24.ID `json:"productId"`
+    	ProductName string `json:"productName"`
+    	Price       int    `json:"price"`
+    }
+    if err := json.Unmarshal(raw, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.ID, item.OwnerID)
+    ```
+
 {% endlist %}
 
 ## Response on Success

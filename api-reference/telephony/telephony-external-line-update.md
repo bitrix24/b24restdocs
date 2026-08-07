@@ -211,6 +211,28 @@ At least one field must be provided for modification: `NAME` or `CRM_AUTO_CREATE
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "telephony.externalLine.update", b24.Params{
+    	"NUMBER":          "74951234567",
+    	"NAME":            "Support Line",
+    	"CRM_AUTO_CREATE": "N",
+    })
+    if err != nil {
+    	return fmt.Errorf("telephony.externalLine.update: %w", err)
+    }
+
+    var item struct {
+    	ID b24.ID `json:"ID"`
+    }
+    if err := json.Unmarshal(res.Result, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.ID)
+    ```
+
 {% endlist %}
 
 ## Response Handling

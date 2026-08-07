@@ -187,6 +187,24 @@ The `user.access` method checks if the current user has at least one of the perm
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "user.access", b24.Params{
+    	"ACCESS": []string{"G2", "AU"},
+    })
+    if err != nil {
+    	return fmt.Errorf("user.access: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

@@ -396,6 +396,42 @@ To add the company's address and banking details, use the methods from [requisit
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.company.add", b24.Params{
+    	"fields": b24.Params{
+    		"TITLE":          "John Doe LLC",
+    		"COMPANY_TYPE":   "CUSTOMER",
+    		"INDUSTRY":       "MANUFACTURING",
+    		"EMPLOYEES":      "EMPLOYEES_2",
+    		"CURRENCY_ID":    "EUR",
+    		"REVENUE":        3000000,
+    		"OPENED":         "Y",
+    		"ASSIGNED_BY_ID": 1,
+    		"PHONE": []b24.Params{
+    			{
+    				"VALUE":      "555888",
+    				"VALUE_TYPE": "WORK",
+    			},
+    		},
+    	},
+    	"params": b24.Params{
+    		"REGISTER_SONET_EVENT": "Y",
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("crm.company.add: %w", err)
+    }
+
+    var newID b24.ID
+    if err := json.Unmarshal(res.Result, &newID); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("id:", newID)
+    ```
+
 {% endlist %}
 
 ## Response Handling

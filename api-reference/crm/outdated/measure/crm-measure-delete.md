@@ -144,6 +144,22 @@ This method deletes a measurement unit.
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.measure.delete", b24.Params{
+    	"id": "**put_id_here**",
+    })
+    if err != nil {
+    	return fmt.Errorf("crm.measure.delete: %w", err)
+    }
+
+    // The response arrives as json.RawMessage — unmarshal it
+    // into a struct matching the response shape shown below on this page.
+    fmt.Printf("%s\n", res.Result)
+    ```
+
 {% endlist %}
 
 ## Continue Learning

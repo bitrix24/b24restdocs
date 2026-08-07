@@ -205,6 +205,25 @@ Default is `Y` ||
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "im.chat.mute", b24.Params{
+    	"CHAT_ID": 1489,
+    	"MUTE":    "Y",
+    })
+    if err != nil {
+    	return fmt.Errorf("im.chat.mute: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

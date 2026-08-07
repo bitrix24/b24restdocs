@@ -230,6 +230,37 @@ You can obtain identifiers using the [`crm.timeline.logmessage.list`](./crm-time
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.timeline.logmessage.get", b24.Params{
+    	"id": 1,
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("crm.timeline.logmessage.get: %w", err)
+    }
+
+    // The method wraps the response in an object with the "logMessage" key.
+    raw, ok := b24.Unwrap(res.Result, "logMessage")
+    if !ok {
+    	return fmt.Errorf("no logMessage key in the response")
+    }
+
+    var item struct {
+    	ID       b24.ID `json:"id"`
+    	Created  string `json:"created"`
+    	AuthorID b24.ID `json:"authorId"`
+    	Title    string `json:"title"`
+    	Text     string `json:"text"`
+    	IconCode string `json:"iconCode"`
+    }
+    if err := json.Unmarshal(raw, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.ID, item.Created)
+    ```
+
 {% endlist %}
 
 ## Response Handling

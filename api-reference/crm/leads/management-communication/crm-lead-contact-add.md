@@ -269,6 +269,30 @@ Defaults to `N` ||
     except Exception as error:
         print(f"Unexpected error: {error}")
     ```
+
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.lead.contact.add", b24.Params{
+    	"id": 1,
+    	"fields": b24.Params{
+    		"CONTACT_ID": 1010,
+    		"SORT":       10,
+    		"IS_PRIMARY": "Y",
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("crm.lead.contact.add: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

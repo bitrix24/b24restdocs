@@ -251,6 +251,40 @@ This method changes the basket item position (catalog product) of an existing or
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "sale.basketitem.updateCatalogProduct", b24.Params{
+    	"id": 6783,
+    	"fields": b24.Params{
+    		"quantity": 4,
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("sale.basketitem.updateCatalogProduct: %w", err)
+    }
+
+    // The method wraps the response in an object with the "basketItem" key.
+    raw, ok := b24.Unwrap(res.Result, "basketItem")
+    if !ok {
+    	return fmt.Errorf("no basketItem key in the response")
+    }
+
+    var item struct {
+    	BasePrice    int    `json:"basePrice"`
+    	CanBuy       string `json:"canBuy"`
+    	CatalogXmlID string `json:"catalogXmlId"`
+    	Currency     string `json:"currency"`
+    	CustomPrice  string `json:"customPrice"`
+    	DateInsert   string `json:"dateInsert"`
+    }
+    if err := json.Unmarshal(raw, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.BasePrice, item.CanBuy)
+    ```
+
 {% endlist %}
 
 ## Response Handling

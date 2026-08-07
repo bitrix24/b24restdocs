@@ -296,6 +296,32 @@ The identifier of the view template can be obtained using the method [landing.te
     }
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "landing.landing.add", b24.Params{
+    	"fields": b24.Params{
+    		"TITLE":       "Spring Promotion",
+    		"SITE_ID":     292,
+    		"CODE":        "spring-sale",
+    		"DESCRIPTION": "Page for seasonal promotion",
+    		"ADDITIONAL_FIELDS": b24.Params{
+    			"THEME_CODE": "wedding",
+    		},
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("landing.landing.add: %w", err)
+    }
+
+    var newID b24.ID
+    if err := json.Unmarshal(res.Result, &newID); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("id:", newID)
+    ```
+
 {% endlist %}
 
 {% note warning %}

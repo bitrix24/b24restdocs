@@ -235,6 +235,32 @@ Possible values:
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "im.department.get", b24.Params{
+    	"ID":        []int{3, 7},
+    	"USER_DATA": "Y",
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("im.department.get: %w", err)
+    }
+
+    var items []struct {
+    	ID            b24.ID `json:"id"`
+    	Name          string `json:"name"`
+    	FullName      string `json:"full_name"`
+    	ManagerUserID int    `json:"manager_user_id"`
+    }
+    if err := json.Unmarshal(res.Result, &items); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    for _, it := range items {
+    	fmt.Println(it.ID, it.Name)
+    }
+    ```
+
 {% endlist %}
 
 ## Response Handling

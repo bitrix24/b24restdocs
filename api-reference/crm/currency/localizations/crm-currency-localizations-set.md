@@ -326,6 +326,40 @@ Existing localizations that are not passed to the method will not be changed.
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.currency.localizations.set", b24.Params{
+    	"id": "CLF",
+    	"localizations": b24.Params{
+    		"en": b24.Params{
+    			"FULL_NAME":         "Unidad de Fomento",
+    			"FORMAT_STRING":     "CLF#VALUE#",
+    			"DEC_POINT":         ".",
+    			"THOUSANDS_VARIANT": "C",
+    			"DECIMALS":          4,
+    		},
+    		"ru": b24.Params{
+    			"FULL_NAME":         "Einheit der Entwicklung",
+    			"FORMAT_STRING":     "#VALUE# CLF",
+    			"DEC_POINT":         ".",
+    			"THOUSANDS_VARIANT": "B",
+    			"DECIMALS":          4,
+    		},
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("crm.currency.localizations.set: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

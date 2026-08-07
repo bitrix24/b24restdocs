@@ -311,6 +311,26 @@ The `user.update` method updates user data. This is only possible on behalf of a
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "user.update", b24.Params{
+    	"ID":        1,
+    	"NAME":      "Administrator",
+    	"LAST_NAME": "SomeLastName",
+    })
+    if err != nil {
+    	return fmt.Errorf("user.update: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

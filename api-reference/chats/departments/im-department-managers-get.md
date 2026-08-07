@@ -233,6 +233,22 @@ Possible values:
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "im.department.managers.get", b24.Params{
+    	"ID":        []int{3, 7},
+    	"USER_DATA": "Y",
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("im.department.managers.get: %w", err)
+    }
+
+    // The response shape is shown below on this page.
+    fmt.Printf("%s\n", res.Result)
+    ```
+
 {% endlist %}
 
 ## Response Handling

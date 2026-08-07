@@ -262,6 +262,38 @@ The `CHAT_ID` field, which is the chat ID for the [new task card](tasks-new.md),
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "tasks.task.get", b24.Params{
+    	"taskId": 8017,
+    	"select": []string{"ID", "TITLE", "DESCRIPTION", "CREATED_BY", "RESPONSIBLE_ID", "DEADLINE", "UF_CRM_TASK", "UF_TASK_WEBDAV_FILES"},
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("tasks.task.get: %w", err)
+    }
+
+    // The method wraps the response in an object with the "task" key.
+    raw, ok := b24.Unwrap(res.Result, "task")
+    if !ok {
+    	return fmt.Errorf("no task key in the response")
+    }
+
+    var item struct {
+    	ID            b24.ID `json:"id"`
+    	Title         string `json:"title"`
+    	Description   string `json:"description"`
+    	CreatedBy     string `json:"createdBy"`
+    	ResponsibleID b24.ID `json:"responsibleId"`
+    	Deadline      string `json:"deadline"`
+    }
+    if err := json.Unmarshal(raw, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.ID, item.Title)
+    ```
+
 {% endlist %}
 
 ## Response Handling

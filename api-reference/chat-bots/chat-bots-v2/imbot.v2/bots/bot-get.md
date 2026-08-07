@@ -137,6 +137,22 @@ You must provide one of the parameters: `botId` or `code`.
     }
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "imbot.v2.Bot.get", b24.Params{
+    	"botToken": "my_bot_token",
+    	"code":     "support_bot",
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("imbot.v2.Bot.get: %w", err)
+    }
+
+    // The response shape is shown below on this page.
+    fmt.Printf("%s\n", res.Result)
+    ```
+
 {% endlist %}
 
 ## Response Handling

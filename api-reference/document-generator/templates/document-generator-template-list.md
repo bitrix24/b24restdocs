@@ -376,6 +376,31 @@ The formula for calculating the `start` parameter value:
   print_r($result);
   ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "documentgenerator.template.list", b24.Params{
+    	"select": []string{"*", "users", "providers"},
+    	"order": b24.Params{
+    		"id": "desc",
+    	},
+    	"filter": b24.Params{
+    		"region":       "ru",
+    		"active":       "Y",
+    		">=createTime": "2026-03-18T00:00:00+03:00",
+    	},
+    	"start": 0,
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("documentgenerator.template.list: %w", err)
+    }
+
+    // The response arrives as json.RawMessage — unmarshal it
+    // into a struct matching the response shape shown below on this page.
+    fmt.Printf("%s\n", res.Result)
+    ```
+
 {% endlist %}
 
 ## Response Handling

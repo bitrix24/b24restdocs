@@ -258,6 +258,40 @@ Example of retrieving a list of website templates, where:
     echo '</pre>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "landing.demos.getSiteList", b24.Params{
+    	"type": "page",
+    	"filter": b24.Params{
+    		"TYPE": "page",
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("landing.demos.getSiteList: %w", err)
+    }
+
+    // The method wraps the response in an object with the "empty" key.
+    raw, ok := b24.Unwrap(res.Result, "empty")
+    if !ok {
+    	return fmt.Errorf("no empty key in the response")
+    }
+
+    var item struct {
+    	ID          string `json:"ID"`
+    	XMLID       string `json:"XML_ID"`
+    	Title       string `json:"TITLE"`
+    	Active      bool   `json:"ACTIVE"`
+    	Publication bool   `json:"PUBLICATION"`
+    	LockDelete  bool   `json:"LOCK_DELETE"`
+    }
+    if err := json.Unmarshal(raw, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.ID, item.XMLID)
+    ```
+
 {% endlist %}
 
 ## Response Handling

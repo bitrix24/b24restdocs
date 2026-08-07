@@ -184,6 +184,24 @@ To obtain service identifiers, you need to use [catalog.product.service.list](./
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "catalog.product.service.delete", b24.Params{
+    	"id": 1264,
+    })
+    if err != nil {
+    	return fmt.Errorf("catalog.product.service.delete: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

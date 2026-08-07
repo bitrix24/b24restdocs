@@ -182,6 +182,24 @@ The method `catalog.document.element.delete` removes an item from the inventory 
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "catalog.document.element.delete", b24.Params{
+    	"id": 148,
+    })
+    if err != nil {
+    	return fmt.Errorf("catalog.document.element.delete: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

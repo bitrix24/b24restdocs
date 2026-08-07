@@ -219,6 +219,31 @@ Retrieves brief information about the payment.
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.item.payment.get", b24.Params{
+    	"id": 1036,
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("crm.item.payment.get: %w", err)
+    }
+
+    var item struct {
+    	ID            b24.ID `json:"id"`
+    	AccountNumber string `json:"accountNumber"`
+    	Paid          string `json:"paid"`
+    	DatePaid      string `json:"datePaid"`
+    	EmpPaidID     b24.ID `json:"empPaidId"`
+    	PaySystemID   b24.ID `json:"paySystemId"`
+    }
+    if err := json.Unmarshal(res.Result, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.ID, item.AccountNumber)
+    ```
+
 {% endlist %}
 
 ## Response on Success

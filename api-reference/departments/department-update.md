@@ -203,6 +203,29 @@ The method `department.update` modifies the department data in the company struc
     except Exception as error:
         print(f"Unexpected error: {error}")
     ```
+
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "department.update", b24.Params{
+    	"ID":      18,
+    	"NAME":    "Department of Secrets",
+    	"SORT":    500,
+    	"UF_HEAD": 1,
+    	"PARENT":  1,
+    })
+    if err != nil {
+    	return fmt.Errorf("department.update: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

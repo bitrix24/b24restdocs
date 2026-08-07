@@ -406,6 +406,47 @@ Example of retrieving a list of documents where:
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.documentgenerator.document.list", b24.Params{
+    	"select": []string{"id", "title", "number", "entityId", "createTime"},
+    	"order": b24.Params{
+    		"id": "desc",
+    	},
+    	"filter": b24.Params{
+    		"entityTypeId": 2,
+    		"entityId":     101,
+    	},
+    	"start": 0,
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("crm.documentgenerator.document.list: %w", err)
+    }
+
+    // The method wraps the response in an object with the "documents" key.
+    raw, ok := b24.Unwrap(res.Result, "documents")
+    if !ok {
+    	return fmt.Errorf("no documents key in the response")
+    }
+
+    var items []struct {
+    	ID         b24.ID `json:"id"`
+    	Title      string `json:"title"`
+    	Number     string `json:"number"`
+    	TemplateID b24.ID `json:"templateId"`
+    	FileID     b24.ID `json:"fileId"`
+    	ImageID    b24.ID `json:"imageId"`
+    }
+    if err := json.Unmarshal(raw, &items); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    for _, it := range items {
+    	fmt.Println(it.ID)
+    }
+    ```
+
 {% endlist %}
 
 ## Response Handling

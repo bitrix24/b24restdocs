@@ -235,6 +235,35 @@ File requirements:
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.timeline.icon.add", b24.Params{
+    	"code":        "info",
+    	"fileContent": "iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAIAAABvFaqvAAABhWlDQ1BJQ0MgcHJvZmlsZQAAKJF9kT1Iw0AcxV9TRdGqgx1UHDLUgmBBVMRRq1CECqFWaNXB5NIvaNKQpLg4Cq4FBz8Wqw4uzro6uAqC4AeIo5OToouU",
+    })
+    if err != nil {
+    	return fmt.Errorf("crm.timeline.icon.add: %w", err)
+    }
+
+    // The method wraps the response in an object with the "icon" key.
+    raw, ok := b24.Unwrap(res.Result, "icon")
+    if !ok {
+    	return fmt.Errorf("no icon key in the response")
+    }
+
+    var item struct {
+    	Code     string `json:"code"`
+    	IsSystem bool   `json:"isSystem"`
+    	FileUri  string `json:"fileUri"`
+    }
+    if err := json.Unmarshal(raw, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.Code, item.IsSystem)
+    ```
+
 {% endlist %}
 
 ## Response Handling

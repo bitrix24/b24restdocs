@@ -280,6 +280,29 @@ Reset the personal configuration of the deal card for the user with `id = 1` in 
     except Exception as error:
         print(f"Unexpected error: {error}")
     ```
+
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.deal.details.configuration.reset", b24.Params{
+    	"scope":  "P",
+    	"userId": 1,
+    	"extras": b24.Params{
+    		"dealCategoryId": 32,
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("crm.deal.details.configuration.reset: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

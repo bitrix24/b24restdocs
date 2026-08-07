@@ -189,6 +189,24 @@ The task template identifier can be obtained when [creating a new template](./ta
     print_r($result);
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "tasks.template.delete", b24.Params{
+    	"templateId": 123,
+    })
+    if err != nil {
+    	return fmt.Errorf("tasks.template.delete: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

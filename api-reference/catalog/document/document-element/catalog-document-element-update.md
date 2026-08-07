@@ -241,6 +241,42 @@ The method `catalog.document.element.update` modifies an existing item in the in
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "catalog.document.element.update", b24.Params{
+    	"id": 148,
+    	"fields": b24.Params{
+    		"amount":          12,
+    		"purchasingPrice": 1180,
+    		"storeTo":         2,
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("catalog.document.element.update: %w", err)
+    }
+
+    // The method wraps the response in an object with the "documentElement" key.
+    raw, ok := b24.Unwrap(res.Result, "documentElement")
+    if !ok {
+    	return fmt.Errorf("no documentElement key in the response")
+    }
+
+    var item struct {
+    	Amount          int    `json:"amount"`
+    	DocID           b24.ID `json:"docId"`
+    	ElementID       b24.ID `json:"elementId"`
+    	ID              b24.ID `json:"id"`
+    	PurchasingPrice int    `json:"purchasingPrice"`
+    	StoreTo         int    `json:"storeTo"`
+    }
+    if err := json.Unmarshal(raw, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.Amount, item.DocID)
+    ```
+
 {% endlist %}
 
 ## Response Handling

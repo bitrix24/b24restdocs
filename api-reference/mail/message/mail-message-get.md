@@ -308,6 +308,38 @@ The new API call differs by adding the `/api/` segment to the request URL:
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "mail.message.get", b24.Params{
+    	"id":     15,
+    	"select": []string{"id", "mailboxId", "mailboxEmail", "subject", "from", "to", "cc", "date", "isSeen", "hasAttachments", "url", "bindings", "body"},
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("mail.message.get: %w", err)
+    }
+
+    // The method wraps the response in an object with the "item" key.
+    raw, ok := b24.Unwrap(res.Result, "item")
+    if !ok {
+    	return fmt.Errorf("no item key in the response")
+    }
+
+    var item struct {
+    	ID           b24.ID `json:"id"`
+    	MailboxID    b24.ID `json:"mailboxId"`
+    	MailboxEmail string `json:"mailboxEmail"`
+    	Subject      string `json:"subject"`
+    	From         string `json:"from"`
+    	To           string `json:"to"`
+    }
+    if err := json.Unmarshal(raw, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.ID, item.MailboxID)
+    ```
+
 {% endlist %}
 
 ## Response Handling

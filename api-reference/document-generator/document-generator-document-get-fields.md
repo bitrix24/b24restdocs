@@ -243,6 +243,35 @@ If `values` is not provided, the method will return a structure of fields with c
   print_r($result);
   ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "documentgenerator.document.getfields", b24.Params{
+    	"id": 51,
+    	"values": b24.Params{
+    		"DocumentNumber": "DG-2026-001",
+    		"CurrentDate":    "2026-03-18T00:00:00+03:00",
+    		"ClientName":     "Ltd. Chamomile",
+    		"ClientPhone":    "+49 999 123-45-67",
+    		"Total":          "51000",
+    		"Comment":        "Payment within 5 business days after signing",
+    		"UserName":       "John Smith",
+    	},
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("documentgenerator.document.getfields: %w", err)
+    }
+
+    // The method wraps the response in an object with the "documentFields" key.
+    raw, ok := b24.Unwrap(res.Result, "documentFields")
+    if !ok {
+    	return fmt.Errorf("no documentFields key in the response")
+    }
+
+    fmt.Printf("%s\n", raw)
+    ```
+
 {% endlist %}
 
 ## Response Handling

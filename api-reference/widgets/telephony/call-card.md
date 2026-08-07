@@ -363,6 +363,32 @@ The handler can do more than read the context: it can change the link to a CRM i
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "placement.bind", b24.Params{
+    	"PLACEMENT": "CALL_CARD",
+    	"HANDLER":   "https://your-domain.com/widgets/call-card-handler.php",
+    	"TITLE":     "Customer profile",
+    	"LANG_ALL": b24.Params{
+    		"ru": b24.Params{
+    			"TITLE": "Customer profile",
+    		},
+    		"en": b24.Params{
+    			"TITLE": "Customer profile",
+    		},
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("placement.bind: %w", err)
+    }
+
+    // The response arrives as json.RawMessage — unmarshal it
+    // into a struct matching the response shape shown below on this page.
+    fmt.Printf("%s\n", res.Result)
+    ```
+
 {% endlist %}
 
 ## Continue Your Exploration

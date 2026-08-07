@@ -382,6 +382,35 @@ By default, the result is sorted by `ID` in descending order ||
     print_r($result);
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "tasks.template.checklist.list", b24.Params{
+    	"templateId": 139,
+    	"filter": b24.Params{
+    		"IS_COMPLETE":  "N",
+    		"IS_IMPORTANT": "N",
+    	},
+    	"select": []string{"ID", "TEMPLATE_ID", "PARENT_ID", "TITLE", "SORT_INDEX", "IS_COMPLETE", "IS_IMPORTANT"},
+    	"order": b24.Params{
+    		"SORT_INDEX": "asc",
+    		"ID":         "desc",
+    	},
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("tasks.template.checklist.list: %w", err)
+    }
+
+    // The method wraps the response in an object with the "checkListItems" key.
+    raw, ok := b24.Unwrap(res.Result, "checkListItems")
+    if !ok {
+    	return fmt.Errorf("no checkListItems key in the response")
+    }
+
+    fmt.Printf("%s\n", raw)
+    ```
+
 {% endlist %}
 
 ## Response Handling

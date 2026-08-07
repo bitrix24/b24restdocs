@@ -231,6 +231,29 @@ The user identifier can be obtained using the method [user.get](../../user/user-
     }
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "log.blogcomment.add", b24.Params{
+    	"POST_ID": 403,
+    	"TEXT":    "Comment on the post",
+    	"USER_ID": 27,
+    	"FILES": []any{
+    		[]string{"example.txt", "SXQncyBhIHRlc3QgZmlsZSBmb3IgQml0cml4IFJlc3QgQVBJLg=="},
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("log.blogcomment.add: %w", err)
+    }
+
+    var newID b24.ID
+    if err := json.Unmarshal(res.Result, &newID); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("id:", newID)
+    ```
+
 {% endlist %}
 
 ## Response Handling

@@ -190,6 +190,21 @@ Delete the smart process with `id = 16`
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.type.delete", b24.Params{
+    	"id": 16,
+    })
+    if err != nil {
+    	return fmt.Errorf("crm.type.delete: %w", err)
+    }
+
+    // The response is a list; unmarshal it into a struct matching the response shape below.
+    fmt.Printf("%s\n", res.Result)
+    ```
+
 {% endlist %}
 
 ## Response Handling

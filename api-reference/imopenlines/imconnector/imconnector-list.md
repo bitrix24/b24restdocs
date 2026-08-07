@@ -135,6 +135,28 @@ No parameters.
         []
     );
     ```
+
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "imconnector.list", nil, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("imconnector.list: %w", err)
+    }
+
+    var item struct {
+    	Livechat    string `json:"livechat"`
+    	Telegrambot string `json:"telegrambot"`
+    	Network     string `json:"network"`
+    	Myconnector string `json:"myconnector"`
+    }
+    if err := json.Unmarshal(res.Result, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.Livechat, item.Telegrambot)
+    ```
+
 {% endlist %}
 
 ## Response Handling

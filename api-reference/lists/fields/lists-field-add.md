@@ -433,6 +433,53 @@ Default — `30` ||
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "lists.field.add", b24.Params{
+    	"IBLOCK_TYPE_ID": "lists",
+    	"IBLOCK_ID":      "123",
+    	"FIELDS": b24.Params{
+    		"NAME":        "Project",
+    		"IS_REQUIRED": "Y",
+    		"MULTIPLE":    "N",
+    		"TYPE":        "L",
+    		"SORT":        "10",
+    		"CODE":        "PROJECT",
+    		"LIST": b24.Params{
+    			"10": b24.Params{
+    				"VALUE": "Planning",
+    				"SORT":  10,
+    				"DEF":   "Y",
+    			},
+    			"20": b24.Params{
+    				"VALUE": "In Development",
+    				"SORT":  20,
+    				"DEF":   "N",
+    			},
+    		},
+    		"LIST_TEXT_VALUES": "Testing\nCompleted\nDeferred",
+    		"SETTINGS": b24.Params{
+    			"SHOW_ADD_FORM":        "Y",
+    			"SHOW_EDIT_FORM":       "Y",
+    			"ADD_READ_ONLY_FIELD":  "N",
+    			"EDIT_READ_ONLY_FIELD": "N",
+    			"SHOW_FIELD_PREVIEW":   "N",
+    		},
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("lists.field.add: %w", err)
+    }
+
+    var value string
+    if err := json.Unmarshal(res.Result, &value); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("result:", value)
+    ```
+
 {% endlist %}
 
 ## Response Handling

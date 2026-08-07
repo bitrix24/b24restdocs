@@ -293,6 +293,50 @@ This method updates the shipment property values.
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "sale.shipmentpropertyvalue.modify", b24.Params{
+    	"fields": b24.Params{
+    		"shipment": b24.Params{
+    			"id": 4120,
+    			"propertyValues": []b24.Params{
+    				{
+    					"shipmentPropsId": 105,
+    					"value":           "Comments value",
+    				},
+    				{
+    					"shipmentPropsId": 106,
+    					"value":           "Description value",
+    				},
+    			},
+    		},
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("sale.shipmentpropertyvalue.modify: %w", err)
+    }
+
+    // The method wraps the response in an object with the "propertyValues" key.
+    raw, ok := b24.Unwrap(res.Result, "propertyValues")
+    if !ok {
+    	return fmt.Errorf("no propertyValues key in the response")
+    }
+
+    var items []struct {
+    	ID    b24.ID `json:"id"`
+    	Name  string `json:"name"`
+    	Value string `json:"value"`
+    }
+    if err := json.Unmarshal(raw, &items); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    for _, it := range items {
+    	fmt.Println(it.ID)
+    }
+    ```
+
 {% endlist %}
 
 ## Successful Response

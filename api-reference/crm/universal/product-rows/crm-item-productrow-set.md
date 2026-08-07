@@ -367,6 +367,54 @@ If not provided and a **productId** is provided, the unit of measurement from th
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.item.productrow.set", b24.Params{
+    	"ownerType": "D",
+    	"ownerId":   13143,
+    	"productRows": []b24.Params{
+    		{
+    			"productId": 9621,
+    			"price":     99999.99,
+    			"quantity":  1,
+    			"sort":      10,
+    		},
+    		{
+    			"productId": 9623,
+    			"price":     15900,
+    			"quantity":  2,
+    			"sort":      10,
+    		},
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("crm.item.productrow.set: %w", err)
+    }
+
+    // The method wraps the response in an object with the "productRows" key.
+    raw, ok := b24.Unwrap(res.Result, "productRows")
+    if !ok {
+    	return fmt.Errorf("no productRows key in the response")
+    }
+
+    var items []struct {
+    	ID          b24.ID  `json:"id"`
+    	OwnerID     b24.ID  `json:"ownerId"`
+    	OwnerType   string  `json:"ownerType"`
+    	ProductID   b24.ID  `json:"productId"`
+    	ProductName string  `json:"productName"`
+    	Price       float64 `json:"price"`
+    }
+    if err := json.Unmarshal(raw, &items); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    for _, it := range items {
+    	fmt.Println(it.ID)
+    }
+    ```
+
 {% endlist %}
 
 ## Response on Success

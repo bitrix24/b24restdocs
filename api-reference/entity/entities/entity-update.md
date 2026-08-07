@@ -243,6 +243,30 @@ Example of updating the storage, where:
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "entity.update", b24.Params{
+    	"ENTITY":     "dish",
+    	"NAME":       "Dishes v2",
+    	"ENTITY_NEW": "dish_v2",
+    	"ACCESS": b24.Params{
+    		"U1": "W",
+    		"AU": "R",
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("entity.update: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

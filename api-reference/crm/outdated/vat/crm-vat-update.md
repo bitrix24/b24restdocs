@@ -179,6 +179,28 @@ The method `crm.vat.update` updates the parameters of an existing VAT rate.
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.vat.update", b24.Params{
+    	"id": 7,
+    	"fields": b24.Params{
+    		"ACTIVE": "N",
+    		"NAME":   "VAT 20% (inactive)",
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("crm.vat.update: %w", err)
+    }
+
+    var value b24.ID
+    if err := json.Unmarshal(res.Result, &value); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("result:", value)
+    ```
+
 {% endlist %}
 
 ## Response Handling

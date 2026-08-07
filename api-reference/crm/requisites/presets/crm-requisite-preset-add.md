@@ -279,6 +279,31 @@ Values of the form `#CRM_REQUISITE_PRESET_DEF_...` are reserved in CRM for ident
         print(f"Unexpected error: {error}")
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.requisite.preset.add", b24.Params{
+    	"fields": b24.Params{
+    		"ENTITY_TYPE_ID": 8,
+    		"COUNTRY_ID":     1,
+    		"NAME":           "LLC",
+    		"XML_ID":         "EXAMPLE_COMPANY__VALUE_1",
+    		"ACTIVE":         "Y",
+    		"SORT":           520,
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("crm.requisite.preset.add: %w", err)
+    }
+
+    var newID b24.ID
+    if err := json.Unmarshal(res.Result, &newID); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("id:", newID)
+    ```
+
 {% endlist %}
 
 ## Response Handling

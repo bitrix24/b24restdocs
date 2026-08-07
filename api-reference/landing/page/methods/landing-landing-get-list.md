@@ -368,6 +368,44 @@ The site identifier can be obtained using the method [landing.site.getList](../.
     echo '</pre>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "landing.landing.getList", b24.Params{
+    	"params": b24.Params{
+    		"select": []string{"ID", "TITLE", "SITE_ID", "DATE_MODIFY"},
+    		"filter": b24.Params{
+    			"SITE_ID":  205,
+    			"=DELETED": "N",
+    		},
+    		"order": b24.Params{
+    			"ID": "DESC",
+    		},
+    		"get_urls":    true,
+    		"get_preview": true,
+    		"check_area":  true,
+    	},
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("landing.landing.getList: %w", err)
+    }
+
+    var items []struct {
+    	ID         b24.ID `json:"ID"`
+    	Title      string `json:"TITLE"`
+    	SiteID     b24.ID `json:"SITE_ID"`
+    	DateModify string `json:"DATE_MODIFY"`
+    	DomainID   b24.ID `json:"DOMAIN_ID"`
+    }
+    if err := json.Unmarshal(res.Result, &items); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    for _, it := range items {
+    	fmt.Println(it.ID, it.Title)
+    }
+    ```
+
 {% endlist %}
 
 ## Response Handling

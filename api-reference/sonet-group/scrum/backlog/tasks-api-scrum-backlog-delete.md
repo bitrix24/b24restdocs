@@ -189,6 +189,21 @@ It can be obtained using the backlog creation method [tasks.api.scrum.backlog.ad
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "tasks.api.scrum.backlog.delete", b24.Params{
+    	"id": 1,
+    })
+    if err != nil {
+    	return fmt.Errorf("tasks.api.scrum.backlog.delete: %w", err)
+    }
+
+    // The response is a list; unmarshal it into a struct matching the response shape below.
+    fmt.Printf("%s\n", res.Result)
+    ```
+
 {% endlist %}
 
 ## Response handling

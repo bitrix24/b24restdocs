@@ -374,6 +374,39 @@ Example of creating an estimate:
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.quote.add", b24.Params{
+    	"fields": b24.Params{
+    		"TITLE":          "Estimate for Furniture Supply",
+    		"STATUS_ID":      "DRAFT",
+    		"OPENED":         "Y",
+    		"ASSIGNED_BY_ID": 1,
+    		"CURRENCY_ID":    "EUR",
+    		"OPPORTUNITY":    150000,
+    		"COMPANY_ID":     1,
+    		"MYCOMPANY_ID":   3,
+    		"COMMENTS":       "Prepared upon client request",
+    		"BEGINDATE":      "2026-03-13T10:00:00+03:00",
+    		"CLOSEDATE":      "2026-03-20T18:00:00+03:00",
+    	},
+    	"params": b24.Params{
+    		"IMPORT": "N",
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("crm.quote.add: %w", err)
+    }
+
+    var newID b24.ID
+    if err := json.Unmarshal(res.Result, &newID); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("id:", newID)
+    ```
+
 {% endlist %}
 
 ## Response Handling

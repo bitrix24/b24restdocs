@@ -611,6 +611,86 @@ fields:
     except Exception as error:
         print(f"Unexpected error: {error}")
     ```
+
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.activity.configurable.add", b24.Params{
+    	"ownerTypeId": 1,
+    	"ownerId":     999,
+    	"fields": b24.Params{
+    		"typeId":            "CONFIGURABLE",
+    		"completed":         true,
+    		"deadline":          "**put_current_date_time_here**",
+    		"pingOffsets":       []int{60, 300},
+    		"isIncomingChannel": "N",
+    		"responsibleId":     1,
+    		"badgeCode":         "CUSTOM",
+    	},
+    	"layout": b24.Params{
+    		"icon": b24.Params{
+    			"code": "call-completed",
+    		},
+    		"header": b24.Params{
+    			"title": "Incoming call",
+    		},
+    		"body": b24.Params{
+    			"logo": b24.Params{
+    				"code": "call-incoming",
+    			},
+    			"blocks": b24.Params{
+    				"responsible": b24.Params{
+    					"type": "lineOfBlocks",
+    					"properties": b24.Params{
+    						"blocks": b24.Params{
+    							"client": b24.Params{
+    								"type": "link",
+    								"properties": b24.Params{
+    									"text": "Klaus Weber",
+    									"bold": true,
+    									"action": b24.Params{
+    										"type": "redirect",
+    										"uri":  "/crm/lead/details/789/",
+    									},
+    								},
+    							},
+    							"phone": b24.Params{
+    								"type": "text",
+    								"properties": b24.Params{
+    									"value": "+49 999 888 7777",
+    								},
+    							},
+    						},
+    					},
+    				},
+    			},
+    		},
+    		"footer": b24.Params{
+    			"buttons": b24.Params{
+    				"startCall": b24.Params{
+    					"title": "About the client",
+    					"action": b24.Params{
+    						"type": "openRestApp",
+    						"actionParams": b24.Params{
+    							"clientId": 456,
+    						},
+    					},
+    					"type": "primary",
+    				},
+    			},
+    		},
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("crm.activity.configurable.add: %w", err)
+    }
+
+    // The response arrives as json.RawMessage — unmarshal it
+    // into a struct matching the response shape shown below on this page.
+    fmt.Printf("%s\n", res.Result)
+    ```
+
 {% endlist %}
 
 ## Response Handling

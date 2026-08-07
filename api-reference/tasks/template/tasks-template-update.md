@@ -249,6 +249,32 @@ The fields and value types correspond to the description on the [Task Template F
     print_r($result);
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "tasks.template.update", b24.Params{
+    	"templateId": 139,
+    	"fields": b24.Params{
+    		"TITLE":         "Preparation of weekly project status and approval",
+    		"DESCRIPTION":   "Updated task template for preparing weekly project status and final approval before sending",
+    		"PRIORITY":      1,
+    		"TASK_CONTROL":  "Y",
+    		"ADD_IN_REPORT": "Y",
+    		"UF_CRM_TASK":   []string{"L_1179", "D_1833"},
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("tasks.template.update: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

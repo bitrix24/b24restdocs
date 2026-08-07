@@ -183,6 +183,29 @@ No parameters.
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "calendar.settings.get", nil, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("calendar.settings.get: %w", err)
+    }
+
+    var item struct {
+    	WorkTimeStart    string `json:"work_time_start"`
+    	WorkTimeEnd      string `json:"work_time_end"`
+    	YearHolidays     string `json:"year_holidays"`
+    	YearWorkdays     string `json:"year_workdays"`
+    	WeekStart        string `json:"week_start"`
+    	UserNameTemplate string `json:"user_name_template"`
+    }
+    if err := json.Unmarshal(res.Result, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.WorkTimeStart, item.WorkTimeEnd)
+    ```
+
 {% endlist %}
 
 ## Response Handling

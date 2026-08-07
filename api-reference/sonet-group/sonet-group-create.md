@@ -297,6 +297,29 @@ Default — the current site ||
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "sonet_group.create", b24.Params{
+    	"NAME":           "New Project",
+    	"PROJECT":        "Y",
+    	"VISIBLE":        "Y",
+    	"OPENED":         "N",
+    	"INITIATE_PERMS": "K",
+    	"IMAGE":          []string{"avatar.png", "iVBORw0KGgoAAAANSUhEUgAA..."},
+    })
+    if err != nil {
+    	return fmt.Errorf("sonet_group.create: %w", err)
+    }
+
+    var value b24.ID
+    if err := json.Unmarshal(res.Result, &value); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("result:", value)
+    ```
+
 {% endlist %}
 
 ## Response handling

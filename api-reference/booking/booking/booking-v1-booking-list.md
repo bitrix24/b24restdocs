@@ -362,6 +362,59 @@ If the object is provided, all parameters within it are required ||
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "booking.v1.booking.list", b24.Params{
+    	"FILTER": b24.Params{
+    		"within": b24.Params{
+    			"dateFrom": 0,
+    			"dateTo":   1739262600,
+    		},
+    		"client": b24.Params{
+    			"entities": []b24.Params{
+    				{
+    					"code":   "CONTACT",
+    					"module": "crm",
+    					"id":     "1",
+    				},
+    				{
+    					"code":   "COMPANY",
+    					"module": "crm",
+    					"id":     "1",
+    				},
+    			},
+    		},
+    	},
+    	"ORDER": b24.Params{
+    		"id":       "ASC",
+    		"dateFrom": "DESC",
+    		"dateTo":   "ASC",
+    	},
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("booking.v1.booking.list: %w", err)
+    }
+
+    // The method wraps the response in an object with the "booking" key.
+    raw, ok := b24.Unwrap(res.Result, "booking")
+    if !ok {
+    	return fmt.Errorf("no booking key in the response")
+    }
+
+    var items []struct {
+    	ID   b24.ID `json:"id"`
+    	Name string `json:"name"`
+    }
+    if err := json.Unmarshal(raw, &items); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    for _, it := range items {
+    	fmt.Println(it.ID)
+    }
+    ```
+
 {% endlist %}
 
 ## Response Handling

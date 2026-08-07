@@ -273,6 +273,26 @@ In the method `calendar.resource.booking.list`, you must use only one of the two
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "calendar.resource.booking.list", b24.Params{
+    	"filter": b24.Params{
+    		"resourceTypeIdList": []int{10852, 10888, 10873, 10871, 10853},
+    		"from":               "2024-06-20",
+    		"to":                 "2024-08-20",
+    	},
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("calendar.resource.booking.list: %w", err)
+    }
+
+    // The response arrives as json.RawMessage — unmarshal it
+    // into a struct matching the response shape shown below on this page.
+    fmt.Printf("%s\n", res.Result)
+    ```
+
 {% endlist %}
 
 
@@ -480,6 +500,24 @@ In the method `calendar.resource.booking.list`, you must use only one of the two
     echo '<PRE>';
     print_r($result);
     echo '</PRE>';
+    ```
+
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "calendar.resource.booking.list", b24.Params{
+    	"filter": b24.Params{
+    		"resourceIdList": []int{10, 18, 17},
+    	},
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("calendar.resource.booking.list: %w", err)
+    }
+
+    // The response arrives as json.RawMessage — unmarshal it
+    // into a struct matching the response shape shown below on this page.
+    fmt.Printf("%s\n", res.Result)
     ```
 
 {% endlist %}

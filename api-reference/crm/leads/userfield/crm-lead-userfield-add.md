@@ -724,6 +724,54 @@ By default `N` ||
         print(f"Unexpected error: {error}")
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.lead.userfield.add", b24.Params{
+    	"fields": b24.Params{
+    		"LABEL":        "Hello, world! Field",
+    		"USER_TYPE_ID": "string",
+    		"FIELD_NAME":   "HELLO_WORLD",
+    		"MULTIPLE":     "Y",
+    		"MANDATORY":    "Y",
+    		"SHOW_FILTER":  "Y",
+    		"SETTINGS": b24.Params{
+    			"DEFAULT_VALUE": "Hello, world! Default value",
+    			"ROWS":          3,
+    		},
+    		"SORT":              1000,
+    		"EDIT_IN_LIST":      "Y",
+    		"LIST_FILTER_LABEL": "Hello, world! Filter",
+    		"LIST_COLUMN_LABEL": b24.Params{
+    			"en": "Hello, World! Column",
+    			"de": "Hallo, Welt! Spalte",
+    		},
+    		"EDIT_FORM_LABEL": b24.Params{
+    			"en": "Hello, World! Edit",
+    			"de": "Hallo, Welt! Bearbeiten",
+    		},
+    		"ERROR_MESSAGE": b24.Params{
+    			"en": "Hello, World! Error",
+    			"de": "Hallo, Welt! Fehler",
+    		},
+    		"HELP_MESSAGE": b24.Params{
+    			"en": "Hello, World! Help",
+    			"de": "Hallo, Welt! Hilfe",
+    		},
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("crm.lead.userfield.add: %w", err)
+    }
+
+    var newID b24.ID
+    if err := json.Unmarshal(res.Result, &newID); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("id:", newID)
+    ```
+
 {% endlist %}
 
 ### Example of Creating a Custom Field of Type List
@@ -1013,6 +1061,59 @@ By default `N` ||
         print(f"Bitrix SDK Error: {error.message}")
     except Exception as error:
         print(f"Unexpected error: {error}")
+    ```
+
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.lead.userfield.add", b24.Params{
+    	"fields": b24.Params{
+    		"LABEL":        "Custom field (list)",
+    		"USER_TYPE_ID": "enumeration",
+    		"FIELD_NAME":   "ENUMERATION_EXAMPLE",
+    		"MULTIPLE":     "N",
+    		"MANDATORY":    "N",
+    		"SHOW_FILTER":  "Y",
+    		"LIST": []b24.Params{
+    			{
+    				"VALUE":  "List item #1",
+    				"DEF":    "Y",
+    				"XML_ID": "XML_ID_1",
+    				"SORT":   100,
+    			},
+    			{
+    				"VALUE":  "List item #2",
+    				"XML_ID": "XML_ID_2",
+    				"SORT":   200,
+    			},
+    			{
+    				"VALUE":  "List item #3",
+    				"XML_ID": "XML_ID_3",
+    				"SORT":   300,
+    			},
+    			{
+    				"VALUE":  "List item #4",
+    				"XML_ID": "XML_ID_4",
+    				"SORT":   400,
+    			},
+    		},
+    		"SETTINGS": b24.Params{
+    			"DISPLAY":     "UI",
+    			"LIST_HEIGHT": 2,
+    		},
+    		"SORT": 2000,
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("crm.lead.userfield.add: %w", err)
+    }
+
+    var newID b24.ID
+    if err := json.Unmarshal(res.Result, &newID); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("id:", newID)
     ```
 
 {% endlist %}

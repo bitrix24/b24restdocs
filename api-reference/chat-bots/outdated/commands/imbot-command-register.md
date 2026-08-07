@@ -219,6 +219,42 @@ When registering multiple commands, specify the same URL in `EVENT_COMMAND_ADD`,
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "imbot.command.register", b24.Params{
+    	"BOT_ID":            1291,
+    	"COMMAND":           "echo",
+    	"EVENT_COMMAND_ADD": "https://example.com/bot/command.php",
+    	"LANG": []b24.Params{
+    		{
+    			"LANGUAGE_ID": "ru",
+    			"TITLE":       "Echo",
+    			"PARAMS":      "text",
+    		},
+    		{
+    			"LANGUAGE_ID": "en",
+    			"TITLE":       "Echo",
+    			"PARAMS":      "text",
+    		},
+    	},
+    	"COMMON":           "Y",
+    	"HIDDEN":           "N",
+    	"EXTRANET_SUPPORT": "N",
+    	"CLIENT_ID":        "**put_your_client_id_here**",
+    })
+    if err != nil {
+    	return fmt.Errorf("imbot.command.register: %w", err)
+    }
+
+    var value b24.ID
+    if err := json.Unmarshal(res.Result, &value); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("result:", value)
+    ```
+
 {% endlist %}
 
 ## Response Handling

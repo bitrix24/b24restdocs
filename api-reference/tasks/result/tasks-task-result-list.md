@@ -204,6 +204,39 @@ The task identifier can be obtained when [creating a new task](../tasks-task-add
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "tasks.task.result.list", b24.Params{
+    	"taskId": 8017,
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("tasks.task.result.list: %w", err)
+    }
+
+    var items []struct {
+    	ID        b24.ID `json:"id"`
+    	TaskID    b24.ID `json:"taskId"`
+    	CommentID b24.ID `json:"commentId"`
+    	CreatedBy int    `json:"createdBy"`
+    	CreatedAt string `json:"createdAt"`
+    	UpdatedAt string `json:"updatedAt"`
+    }
+    if err := json.Unmarshal(res.Result, &items); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    for _, it := range items {
+    	fmt.Println(it.ID, it.TaskID)
+    }
+
+    // Total and Next are filled in by list methods; for a full
+    // list traversal, use client.Core().Pages and Scan.
+    if res.Total != nil {
+    	fmt.Println("total:", *res.Total)
+    }
+    ```
+
 {% endlist %}
 
 ## Response Handling

@@ -215,6 +215,31 @@ The method `crm.calllist.get` returns information about the call list by its ide
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.calllist.get", b24.Params{
+    	"ID": 123,
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("crm.calllist.get: %w", err)
+    }
+
+    var item struct {
+    	ID           b24.ID `json:"ID"`
+    	DateCreate   string `json:"DATE_CREATE"`
+    	CreatedByID  b24.ID `json:"CREATED_BY_ID"`
+    	WebformID    b24.ID `json:"WEBFORM_ID"`
+    	EntityTypeID b24.ID `json:"ENTITY_TYPE_ID"`
+    	EntityType   string `json:"ENTITY_TYPE"`
+    }
+    if err := json.Unmarshal(res.Result, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.ID, item.DateCreate)
+    ```
+
 {% endlist %}
 
 ## Response Handling

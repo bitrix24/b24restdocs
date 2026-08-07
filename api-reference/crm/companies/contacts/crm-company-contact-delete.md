@@ -240,6 +240,27 @@ If the primary binding is removed, the first available binding will become the n
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.company.contact.delete", b24.Params{
+    	"id": 32,
+    	"fields": b24.Params{
+    		"CONTACT_ID": 54,
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("crm.company.contact.delete: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

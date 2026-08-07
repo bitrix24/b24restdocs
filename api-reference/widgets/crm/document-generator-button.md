@@ -302,6 +302,32 @@ The placement does not support the `OPTIONS` parameters. Passed values are not s
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "placement.bind", b24.Params{
+    	"PLACEMENT": "CRM_DEAL_DOCUMENTGENERATOR_BUTTON",
+    	"HANDLER":   "https://your-domain.com/widgets/crm-document-handler.php",
+    	"TITLE":     "Supply contract",
+    	"LANG_ALL": b24.Params{
+    		"ru": b24.Params{
+    			"TITLE": "Supply contract",
+    		},
+    		"en": b24.Params{
+    			"TITLE": "Supply contract",
+    		},
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("placement.bind: %w", err)
+    }
+
+    // The response arrives as json.RawMessage — unmarshal it
+    // into a struct matching the response shape shown below on this page.
+    fmt.Printf("%s\n", res.Result)
+    ```
+
 {% endlist %}
 
 ## Continue Learning

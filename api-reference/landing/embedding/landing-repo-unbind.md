@@ -202,6 +202,25 @@ Example of removing an embedding placement, where:
     }
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "landing.repo.unbind", b24.Params{
+    	"code":    "LANDING_SETTINGS",
+    	"handler": "https://your-domain.com/widgets/landing-settings-handler.php",
+    })
+    if err != nil {
+    	return fmt.Errorf("landing.repo.unbind: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

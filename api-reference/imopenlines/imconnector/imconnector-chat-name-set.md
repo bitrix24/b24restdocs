@@ -216,6 +216,25 @@ The identifier can be obtained using the methods [imopenlines.config.get](../ope
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "imconnector.chat.name.set", b24.Params{
+    	"CONNECTOR": "connector",
+    	"LINE":      105,
+    	"CHAT_ID":   "47e007b1-ee15-43db-bcba-1c26e5884d3f",
+    	"NAME":      "New Dialog Name",
+    })
+    if err != nil {
+    	return fmt.Errorf("imconnector.chat.name.set: %w", err)
+    }
+
+    // The response arrives as json.RawMessage — unmarshal it
+    // into a struct matching the response shape shown below on this page.
+    fmt.Printf("%s\n", res.Result)
+    ```
+
 {% endlist %}
 
 ## Response Handling

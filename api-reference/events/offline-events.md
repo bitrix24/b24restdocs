@@ -178,6 +178,22 @@ The confirmation processing mode is available on certain plans. Check availabili
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "feature.get", b24.Params{
+    	"CODE": "rest_offline_extended",
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("feature.get: %w", err)
+    }
+
+    // The response arrives as json.RawMessage — unmarshal it
+    // into a struct matching the response shape shown below on this page.
+    fmt.Printf("%s\n", res.Result)
+    ```
+
 {% endlist %}
 
 ### Registering the Handler
@@ -328,6 +344,23 @@ Register the offline handler using the [event.bind](./event-bind.md) method. Spe
     echo '<PRE>';
     print_r($result);
     echo '</PRE>';
+    ```
+
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "event.bind", b24.Params{
+    	"event":      "ONCRMDEALUPDATE",
+    	"event_type": "offline",
+    })
+    if err != nil {
+    	return fmt.Errorf("event.bind: %w", err)
+    }
+
+    // The response arrives as json.RawMessage — unmarshal it
+    // into a struct matching the response shape shown below on this page.
+    fmt.Printf("%s\n", res.Result)
     ```
 
 {% endlist %}
@@ -501,6 +534,22 @@ The [event.offline.get](./event-offline-get.md) method returns the first records
     foreach ($result['result']['events'] as $event) {
         echo $event['EVENT_NAME'] . ' ' . $event['MESSAGE_ID'] . PHP_EOL;
     }
+    ```
+
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "event.offline.get", b24.Params{
+    	"limit": 50,
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("event.offline.get: %w", err)
+    }
+
+    // The response arrives as json.RawMessage — unmarshal it
+    // into a struct matching the response shape shown below on this page.
+    fmt.Printf("%s\n", res.Result)
     ```
 
 {% endlist %}
@@ -934,6 +983,23 @@ If events fail to process, mark them using the [event.offline.error](./event-off
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "event.offline.error", b24.Params{
+    	"process_id": "**put_process_id_here**",
+    	"message_id": []string{"**put_message_id_here**"},
+    })
+    if err != nil {
+    	return fmt.Errorf("event.offline.error: %w", err)
+    }
+
+    // The response arrives as json.RawMessage — unmarshal it
+    // into a struct matching the response shape shown below on this page.
+    fmt.Printf("%s\n", res.Result)
+    ```
+
 {% endlist %}
 
 ## How to Avoid Cycles {#how-to-avoid-cycles}
@@ -1095,6 +1161,24 @@ Specify `auth_connector` when registering the handler:
     echo '<PRE>';
     print_r($result);
     echo '</PRE>';
+    ```
+
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "event.bind", b24.Params{
+    	"event":          "ONCRMDEALUPDATE",
+    	"event_type":     "offline",
+    	"auth_connector": "my_connector",
+    })
+    if err != nil {
+    	return fmt.Errorf("event.bind: %w", err)
+    }
+
+    // The response arrives as json.RawMessage — unmarshal it
+    // into a struct matching the response shape shown below on this page.
+    fmt.Printf("%s\n", res.Result)
     ```
 
 {% endlist %}
@@ -1262,6 +1346,26 @@ Pass the same `auth_connector` in modifying calls. Then Bitrix24 will not record
     echo '<PRE>';
     print_r($result);
     echo '</PRE>';
+    ```
+
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.deal.update", b24.Params{
+    	"id": 1,
+    	"fields": b24.Params{
+    		"TITLE": "New Title",
+    	},
+    	"auth_connector": "my_connector",
+    })
+    if err != nil {
+    	return fmt.Errorf("crm.deal.update: %w", err)
+    }
+
+    // The response arrives as json.RawMessage — unmarshal it
+    // into a struct matching the response shape shown below on this page.
+    fmt.Printf("%s\n", res.Result)
     ```
 
 {% endlist %}

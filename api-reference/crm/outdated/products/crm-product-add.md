@@ -167,4 +167,25 @@ If the generated symbolic code exceeds 100 characters, it will be automatically 
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.product.add", b24.Params{
+    	"fields": b24.Params{
+    		"NAME":        "Plastic Chair",
+    		"CURRENCY_ID": "EUR",
+    		"PRICE":       4900,
+    		"SORT":        500,
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("crm.product.add: %w", err)
+    }
+
+    // The response arrives as json.RawMessage — unmarshal it
+    // into a struct matching the response shape shown below on this page.
+    fmt.Printf("%s\n", res.Result)
+    ```
+
 {% endlist %}

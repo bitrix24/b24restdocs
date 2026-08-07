@@ -242,6 +242,32 @@ The identifier can be obtained using the methods [crm.deal.list](./crm-deal-list
     except Exception as error:
         print(f"Unexpected error: {error}")
     ```
+
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.deal.get", b24.Params{
+    	"id": 410,
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("crm.deal.get: %w", err)
+    }
+
+    var item struct {
+    	ID          b24.ID `json:"ID"`
+    	Title       string `json:"TITLE"`
+    	TypeID      string `json:"TYPE_ID"`
+    	StageID     string `json:"STAGE_ID"`
+    	Probability string `json:"PROBABILITY"`
+    	CurrencyID  string `json:"CURRENCY_ID"`
+    }
+    if err := json.Unmarshal(res.Result, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.ID, item.Title)
+    ```
+
 {% endlist %}
 
 ## Response Handling

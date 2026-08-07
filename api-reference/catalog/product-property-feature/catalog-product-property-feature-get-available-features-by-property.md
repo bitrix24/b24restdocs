@@ -181,6 +181,36 @@ Property identifiers can be obtained using the [catalog.productProperty.list](..
     print_r($result);
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "catalog.productPropertyFeature.getAvailableFeaturesByProperty", b24.Params{
+    	"propertyId": 901,
+    })
+    if err != nil {
+    	return fmt.Errorf("catalog.productPropertyFeature.getAvailableFeaturesByProperty: %w", err)
+    }
+
+    // The method wraps the response in an object with the "features" key.
+    raw, ok := b24.Unwrap(res.Result, "features")
+    if !ok {
+    	return fmt.Errorf("no features key in the response")
+    }
+
+    var items []struct {
+    	FeatureID   string `json:"featureId"`
+    	FeatureName string `json:"featureName"`
+    	ModuleID    string `json:"moduleId"`
+    }
+    if err := json.Unmarshal(raw, &items); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    for _, it := range items {
+    	fmt.Println(it.FeatureID)
+    }
+    ```
+
 {% endlist %}
 
 ## Response Handling

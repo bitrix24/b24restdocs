@@ -143,4 +143,18 @@ This method returns a public link for an online invoice.
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.invoice.getexternallink", nil)
+    if err != nil {
+    	return fmt.Errorf("crm.invoice.getexternallink: %w", err)
+    }
+
+    // The response arrives as json.RawMessage — unmarshal it
+    // into a struct matching the response shape shown below on this page.
+    fmt.Printf("%s\n", res.Result)
+    ```
+
 {% endlist %}

@@ -278,6 +278,30 @@ You can get data about the list fields using the [lists.field.get](../fields/lis
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "lists.element.update", b24.Params{
+    	"IBLOCK_TYPE_ID": "lists",
+    	"IBLOCK_ID":      47,
+    	"ELEMENT_ID":     6999,
+    	"FIELDS": b24.Params{
+    		"NAME":         "Test Element (updated)",
+    		"PROPERTY_951": []string{"1269"},
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("lists.element.update: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

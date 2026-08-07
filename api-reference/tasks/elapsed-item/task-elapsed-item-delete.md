@@ -209,6 +209,23 @@ It is mandatory to follow the specified order of parameters in the request as sh
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "task.elapseditem.delete", b24.Params{
+    	"TASKID": 691,
+    	"ITEMID": 5,
+    })
+    if err != nil {
+    	return fmt.Errorf("task.elapseditem.delete: %w", err)
+    }
+
+    // The response arrives as json.RawMessage — unmarshal it
+    // into a struct matching the response shape shown below on this page.
+    fmt.Printf("%s\n", res.Result)
+    ```
+
 {% endlist %}
 
 ## Response Handling

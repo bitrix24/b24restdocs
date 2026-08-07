@@ -206,6 +206,28 @@ Default value — an empty string ||
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "booking.v1.waitlist.add", b24.Params{
+    	"fields": b24.Params{
+    		"note": "Note",
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("booking.v1.waitlist.add: %w", err)
+    }
+
+    var item struct {
+    	ID b24.ID `json:"id"`
+    }
+    if err := json.Unmarshal(res.Result, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.ID)
+    ```
+
 {% endlist %}
 
 ## Response Handling

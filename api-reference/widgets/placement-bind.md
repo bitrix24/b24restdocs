@@ -313,6 +313,43 @@ If you attempt to register a placement in other widgets, you will receive the er
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "placement.bind", b24.Params{
+    	"PLACEMENT": "PLACEMENT_CODE",
+    	"HANDLER":   "http://myapp.com/handler/?type=1",
+    	"OPTIONS": b24.Params{
+    		"errorHandlerUrl": "http://myapp.com/error/",
+    	},
+    	"TITLE":       "title",
+    	"DESCRIPTION": "description",
+    	"GROUP_NAME":  "group",
+    	"LANG_ALL": b24.Params{
+    		"en": b24.Params{
+    			"TITLE":       "title",
+    			"DESCRIPTION": "description",
+    			"GROUP_NAME":  "group",
+    		},
+    		"ru": b24.Params{
+    			"TITLE":       "Titel",
+    			"DESCRIPTION": "Beschreibung",
+    			"GROUP_NAME":  "Gruppe",
+    		},
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("placement.bind: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 {% note tip "Typical use-cases and scenarios" %}

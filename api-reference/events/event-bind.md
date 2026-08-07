@@ -164,6 +164,25 @@ For the `ONOFFLINEEVENT` event, the `minTimeout` parameter is supported — the 
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "event.bind", b24.Params{
+    	"event":   "ONCRMLEADADD",
+    	"handler": "https://www.my-domain.com/handler/",
+    })
+    if err != nil {
+    	return fmt.Errorf("event.bind: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

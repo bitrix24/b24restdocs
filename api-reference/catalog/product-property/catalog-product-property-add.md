@@ -360,6 +360,50 @@ Available identifiers can be obtained using the [catalog.catalog.list](../catalo
     print_r($result);
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "catalog.productProperty.add", b24.Params{
+    	"fields": b24.Params{
+    		"iblockId":     19,
+    		"name":         "Category",
+    		"code":         "CATEGORY",
+    		"propertyType": "S",
+    		"userType":     "directory",
+    		"multiple":     "N",
+    		"isRequired":   "N",
+    		"active":       "Y",
+    		"sort":         100,
+    		"userTypeSettings": b24.Params{
+    			"tableName": "b_hlbd_categories",
+    		},
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("catalog.productProperty.add: %w", err)
+    }
+
+    // The method wraps the response in an object with the "productProperty" key.
+    raw, ok := b24.Unwrap(res.Result, "productProperty")
+    if !ok {
+    	return fmt.Errorf("no productProperty key in the response")
+    }
+
+    var item struct {
+    	Active    string `json:"active"`
+    	Code      string `json:"code"`
+    	ColCount  int    `json:"colCount"`
+    	Filtrable string `json:"filtrable"`
+    	IblockID  b24.ID `json:"iblockId"`
+    	ID        b24.ID `json:"id"`
+    }
+    if err := json.Unmarshal(raw, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.Active, item.Code)
+    ```
+
 {% endlist %}
 
 ## Response Handling

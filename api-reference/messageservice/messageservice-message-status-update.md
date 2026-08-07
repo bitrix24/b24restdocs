@@ -196,6 +196,26 @@ Supported values:
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "messageservice.message.status.update", b24.Params{
+    	"CODE":       "provider1",
+    	"MESSAGE_ID": "65575980fa531ac284c2ee68f81ebebd",
+    	"STATUS":     "delivered",
+    })
+    if err != nil {
+    	return fmt.Errorf("messageservice.message.status.update: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

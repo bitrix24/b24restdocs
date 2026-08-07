@@ -272,6 +272,50 @@ The structure of the settings (code, name, data type) is defined when creating o
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "sale.delivery.config.update", b24.Params{
+    	"ID": 196,
+    	"CONFIG": []b24.Params{
+    		{
+    			"CODE":  "SETTING_1",
+    			"VALUE": "New SETTING_1 string value",
+    		},
+    		{
+    			"CODE":  "SETTING_2",
+    			"VALUE": "N",
+    		},
+    		{
+    			"CODE":  "SETTING_3",
+    			"VALUE": 999.99,
+    		},
+    		{
+    			"CODE":  "SETTING_4",
+    			"VALUE": "Option2Code",
+    		},
+    		{
+    			"CODE":  "SETTING_5",
+    			"VALUE": "25.03.2023",
+    		},
+    		{
+    			"CODE":  "SETTING_6",
+    			"VALUE": "0000144962",
+    		},
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("sale.delivery.config.update: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

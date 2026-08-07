@@ -216,6 +216,25 @@ Can be obtained using the method [`crm.item.delivery.list`](../../delivery/crm-i
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.item.payment.delivery.add", b24.Params{
+    	"paymentId":  1039,
+    	"deliveryId": 4072,
+    })
+    if err != nil {
+    	return fmt.Errorf("crm.item.payment.delivery.add: %w", err)
+    }
+
+    var newID b24.ID
+    if err := json.Unmarshal(res.Result, &newID); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("id:", newID)
+    ```
+
 {% endlist %}
 
 ## Response on Success

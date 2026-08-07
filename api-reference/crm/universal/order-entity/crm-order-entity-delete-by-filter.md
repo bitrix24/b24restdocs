@@ -233,6 +233,28 @@ Add order binding to a deal:
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.orderentity.deletebyfilter", b24.Params{
+    	"fields": b24.Params{
+    		"orderId":     5125,
+    		"ownerId":     6933,
+    		"ownerTypeId": 2,
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("crm.orderentity.deletebyfilter: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

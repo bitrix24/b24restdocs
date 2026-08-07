@@ -254,6 +254,36 @@ By default, the result is sorted by `ID` in descending order ||
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "task.checklistitem.getlist", b24.Params{
+    	"TASKID": 8017,
+    	"ORDER": b24.Params{
+    		"IS_COMPLETE": "ASC",
+    	},
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("task.checklistitem.getlist: %w", err)
+    }
+
+    var items []struct {
+    	ID        b24.ID `json:"ID"`
+    	TaskID    b24.ID `json:"TASK_ID"`
+    	ParentID  b24.ID `json:"PARENT_ID"`
+    	CreatedBy string `json:"CREATED_BY"`
+    	Title     string `json:"TITLE"`
+    	SortIndex string `json:"SORT_INDEX"`
+    }
+    if err := json.Unmarshal(res.Result, &items); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    for _, it := range items {
+    	fmt.Println(it.ID, it.TaskID)
+    }
+    ```
+
 {% endlist %}
 
 ## Response Handling

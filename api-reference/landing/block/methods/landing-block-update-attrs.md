@@ -312,6 +312,31 @@ For dynamic block and component parameters, use [landing.block.updatenodes](./la
     }
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "landing.block.updateattrs", b24.Params{
+    	"lid":   313,
+    	"block": 6134,
+    	"data": b24.Params{
+    		".bitrix24forms": b24.Params{
+    			"data-b24form":           "#crmFormInline45",
+    			"data-b24form-use-style": "N",
+    		},
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("landing.block.updateattrs: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

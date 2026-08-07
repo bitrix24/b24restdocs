@@ -213,6 +213,29 @@ The new API call differs by adding the `/api/` segment to the request URL:
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "mail.message.createfeedpost", b24.Params{
+    	"messageId": 15,
+    	"title":     "Contract discussion",
+    })
+    if err != nil {
+    	return fmt.Errorf("mail.message.createfeedpost: %w", err)
+    }
+
+    var item struct {
+    	Success   bool   `json:"success"`
+    	PostID    b24.ID `json:"postId"`
+    	MessageID b24.ID `json:"messageId"`
+    }
+    if err := json.Unmarshal(res.Result, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.Success, item.PostID)
+    ```
+
 {% endlist %}
 
 ## Response Handling

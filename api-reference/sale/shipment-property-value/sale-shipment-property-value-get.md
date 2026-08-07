@@ -190,6 +190,35 @@ This method returns the values of the shipment property.
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "sale.shipmentpropertyvalue.get", b24.Params{
+    	"id": 38164,
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("sale.shipmentpropertyvalue.get: %w", err)
+    }
+
+    // The method wraps the response in an object with the "propertyValue" key.
+    raw, ok := b24.Unwrap(res.Result, "propertyValue")
+    if !ok {
+    	return fmt.Errorf("no propertyValue key in the response")
+    }
+
+    var item struct {
+    	ID              b24.ID `json:"id"`
+    	Name            string `json:"name"`
+    	ShipmentPropsID b24.ID `json:"shipmentPropsId"`
+    	Value           string `json:"value"`
+    }
+    if err := json.Unmarshal(raw, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.ID, item.Name)
+    ```
+
 {% endlist %}
 
 ## Successful Response

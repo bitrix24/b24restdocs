@@ -278,6 +278,31 @@ Default value: `Y` ||
     except Exception as error:
         print(f"Unexpected error: {error}")
     ```
+
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "mailservice.add", b24.Params{
+    	"NAME":       "My Mail Service",
+    	"ACTIVE":     "Y",
+    	"SERVER":     "imap.my-mail.com",
+    	"PORT":       993,
+    	"ENCRYPTION": "Y",
+    	"LINK":       "https://mail.my-mail.com/",
+    	"SORT":       500,
+    })
+    if err != nil {
+    	return fmt.Errorf("mailservice.add: %w", err)
+    }
+
+    var newID b24.ID
+    if err := json.Unmarshal(res.Result, &newID); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("id:", newID)
+    ```
+
 {% endlist %}
 
 ## Response Handling

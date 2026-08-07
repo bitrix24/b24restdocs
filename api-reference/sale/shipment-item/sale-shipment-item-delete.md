@@ -177,6 +177,24 @@ The method `sale.shipmentitem.delete` removes an item from the shipment's table 
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "sale.shipmentitem.delete", b24.Params{
+    	"id": 5,
+    })
+    if err != nil {
+    	return fmt.Errorf("sale.shipmentitem.delete: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

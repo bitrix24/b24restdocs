@@ -202,6 +202,26 @@ Possible values:
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "sale.property.getfieldsbytype", b24.Params{
+    	"type": "NUMBER",
+    })
+    if err != nil {
+    	return fmt.Errorf("sale.property.getfieldsbytype: %w", err)
+    }
+
+    // The method wraps the response in an object with the "property" key.
+    raw, ok := b24.Unwrap(res.Result, "property")
+    if !ok {
+    	return fmt.Errorf("no property key in the response")
+    }
+
+    fmt.Printf("%s\n", raw)
+    ```
+
 {% endlist %}
 
 ## Successful Response

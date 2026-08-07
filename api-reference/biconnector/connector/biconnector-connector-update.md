@@ -380,6 +380,46 @@ The method `biconnector.connector.update` updates an existing connector.
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "biconnector.connector.update", b24.Params{
+    	"id": 4,
+    	"fields": b24.Params{
+    		"title":               "UPDATED REST CONNECTOR",
+    		"logo":                "data:image/svg+xml;base64,NEWLOGODATA",
+    		"description":         "Updated description",
+    		"urlCheck":            "http://example.com/api/new_check",
+    		"urlTableList":        "http://example.com/api/new_table_list",
+    		"urlTableDescription": "http://example.com/api/new_table_description",
+    		"urlData":             "http://example.com/api/new_data",
+    		"settings": []b24.Params{
+    			{
+    				"name": "Employee Identifier",
+    				"type": "STRING",
+    				"code": "id",
+    			},
+    			{
+    				"name": "Password",
+    				"type": "STRING",
+    				"code": "password",
+    			},
+    		},
+    		"sort": 200,
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("biconnector.connector.update: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

@@ -472,6 +472,67 @@ For the activity with `id = 8`, linked to the activity with `id = 4`, we will se
     except Exception as error:
         print(f"Unexpected error: {error}")
     ```
+
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.activity.layout.blocks.set", b24.Params{
+    	"entityTypeId": 2,
+    	"entityId":     4,
+    	"activityId":   8,
+    	"layout": b24.Params{
+    		"blocks": b24.Params{
+    			"block_1": b24.Params{
+    				"type": "text",
+    				"properties": b24.Params{
+    					"value":     "Hello!\nWe are starting.",
+    					"multiline": true,
+    					"bold":      true,
+    					"color":     "base_90",
+    				},
+    			},
+    			"block_2": b24.Params{
+    				"type": "largeText",
+    				"properties": b24.Params{
+    					"value": "Hello!\nWe are starting.\nWe are continuing.\nWe are still working on this.\nWe are continuing.\nWe are close to the result.\nGoodbye.",
+    				},
+    			},
+    			"block_3": b24.Params{
+    				"type": "link",
+    				"properties": b24.Params{
+    					"text": "Open deal",
+    					"bold": true,
+    					"action": b24.Params{
+    						"type": "redirect",
+    						"uri":  "/crm/deal/details/123/",
+    					},
+    				},
+    			},
+    			"block_4": b24.Params{
+    				"type": "withTitle",
+    				"properties": b24.Params{
+    					"title": "Title",
+    					"block": b24.Params{
+    						"type": "text",
+    						"properties": b24.Params{
+    							"value": "Some value",
+    						},
+    					},
+    				},
+    			},
+    		},
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("crm.activity.layout.blocks.set: %w", err)
+    }
+
+    // The response arrives as json.RawMessage — unmarshal it
+    // into a struct matching the response shape shown below on this page.
+    fmt.Printf("%s\n", res.Result)
+    ```
+
 {% endlist %}
 
 ## Appearance

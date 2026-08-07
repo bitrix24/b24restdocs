@@ -170,6 +170,25 @@ You can obtain the identifiers for payer types using the method [sale.persontype
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "sale.businessValuePersonDomain.add", b24.Params{
+    	"fields": b24.Params{
+    		"personTypeId": 3,
+    		"domain":       "I",
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("sale.businessValuePersonDomain.add: %w", err)
+    }
+
+    // The response arrives as json.RawMessage — unmarshal it
+    // into a struct matching the response shape shown below on this page.
+    fmt.Printf("%s\n", res.Result)
+    ```
+
 {% endlist %}
 
 ## Response Handling

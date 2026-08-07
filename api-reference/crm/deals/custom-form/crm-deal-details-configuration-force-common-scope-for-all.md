@@ -248,6 +248,27 @@ Set a common deal detail form for all users in the Sales Funnel with `id = 32`
     except Exception as error:
         print(f"Unexpected error: {error}")
     ```
+
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.deal.details.configuration.forceCommonScopeForAll", b24.Params{
+    	"extras": b24.Params{
+    		"dealCategoryId": 32,
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("crm.deal.details.configuration.forceCommonScopeForAll: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

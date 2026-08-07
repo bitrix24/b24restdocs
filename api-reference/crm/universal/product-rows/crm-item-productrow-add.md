@@ -345,6 +345,49 @@ Default is N ||
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.item.productrow.add", b24.Params{
+    	"fields": b24.Params{
+    		"ownerId":        13142,
+    		"ownerType":      "D",
+    		"productId":      9621,
+    		"price":          80000,
+    		"quantity":       2,
+    		"discountTypeId": 2,
+    		"discountRate":   20,
+    		"taxRate":        20,
+    		"taxIncluded":    "Y",
+    		"measureCode":    796,
+    		"sort":           10,
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("crm.item.productrow.add: %w", err)
+    }
+
+    // The method wraps the response in an object with the "productRow" key.
+    raw, ok := b24.Unwrap(res.Result, "productRow")
+    if !ok {
+    	return fmt.Errorf("no productRow key in the response")
+    }
+
+    var item struct {
+    	ID        b24.ID `json:"id"`
+    	OwnerID   b24.ID `json:"ownerId"`
+    	OwnerType string `json:"ownerType"`
+    	ProductID b24.ID `json:"productId"`
+    	Price     int    `json:"price"`
+    	Quantity  int    `json:"quantity"`
+    }
+    if err := json.Unmarshal(raw, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.ID, item.OwnerID)
+    ```
+
 {% endlist %}
 
 ## Response on Success

@@ -562,6 +562,83 @@ Let's create an SPA with the following conditions:
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.type.add", b24.Params{
+    	"fields": b24.Params{
+    		"title":                     "SPA",
+    		"entityTypeId":              2024,
+    		"isAutomationEnabled":       "Y",
+    		"isBeginCloseDatesEnabled":  "Y",
+    		"isBizProcEnabled":          "Y",
+    		"isCategoriesEnabled":       "Y",
+    		"isClientEnabled":           "Y",
+    		"isDocumentsEnabled":        "Y",
+    		"isLinkWithProductsEnabled": "Y",
+    		"isMycompanyEnabled":        "Y",
+    		"isObserversEnabled":        "Y",
+    		"isRecyclebinEnabled":       "Y",
+    		"isSetOpenPermissions":      "Y",
+    		"isSourceEnabled":           "Y",
+    		"isStagesEnabled":           "Y",
+    		"isUseInUserfieldEnabled":   "Y",
+    		"linkedUserFields": b24.Params{
+    			"CALENDAR_EVENT|UF_CRM_CAL_EVENT": "true",
+    			"TASKS_TASK|UF_CRM_TASK":          "true",
+    		},
+    		"relations": b24.Params{
+    			"parent": []b24.Params{
+    				{
+    					"entityTypeId":          1,
+    					"isChildrenListEnabled": "true",
+    				},
+    				{
+    					"entityTypeId":          2,
+    					"isChildrenListEnabled": "true",
+    				},
+    				{
+    					"entityTypeId":          31,
+    					"isChildrenListEnabled": "true",
+    				},
+    			},
+    			"child": []b24.Params{
+    				{
+    					"entityTypeId":          3,
+    					"isChildrenListEnabled": "true",
+    				},
+    				{
+    					"entityTypeId": 4,
+    				},
+    			},
+    		},
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("crm.type.add: %w", err)
+    }
+
+    // The method wraps the response in an object with the "type" key.
+    raw, ok := b24.Unwrap(res.Result, "type")
+    if !ok {
+    	return fmt.Errorf("no type key in the response")
+    }
+
+    var item struct {
+    	ID                       b24.ID `json:"id"`
+    	CreatedBy                int    `json:"createdBy"`
+    	EntityTypeID             b24.ID `json:"entityTypeId"`
+    	IsCategoriesEnabled      string `json:"isCategoriesEnabled"`
+    	IsStagesEnabled          string `json:"isStagesEnabled"`
+    	IsBeginCloseDatesEnabled string `json:"isBeginCloseDatesEnabled"`
+    }
+    if err := json.Unmarshal(raw, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.ID, item.CreatedBy)
+    ```
+
 {% endlist %}
 
 ## Response Handling

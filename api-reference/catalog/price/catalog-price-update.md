@@ -232,6 +232,41 @@ The method `catalog.price.update` updates the price of a product.
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "catalog.price.update", b24.Params{
+    	"id": 1,
+    	"fields": b24.Params{
+    		"currency": "EUR",
+    		"price":    5000,
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("catalog.price.update: %w", err)
+    }
+
+    // The method wraps the response in an object with the "price" key.
+    raw, ok := b24.Unwrap(res.Result, "price")
+    if !ok {
+    	return fmt.Errorf("no price key in the response")
+    }
+
+    var item struct {
+    	CatalogGroupID b24.ID  `json:"catalogGroupId"`
+    	Currency       string  `json:"currency"`
+    	ID             b24.ID  `json:"id"`
+    	Price          float64 `json:"price"`
+    	ProductID      b24.ID  `json:"productId"`
+    	TimestampX     string  `json:"timestampX"`
+    }
+    if err := json.Unmarshal(raw, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.CatalogGroupID, item.Currency)
+    ```
+
 {% endlist %}
 
 ## Response Handling

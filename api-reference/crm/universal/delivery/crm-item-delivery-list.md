@@ -326,6 +326,43 @@ The format of the `filter` parameter corresponds to what is described in the [`s
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.item.delivery.list", b24.Params{
+    	"entityId":     13127,
+    	"entityTypeId": 2,
+    	"filter": b24.Params{
+    		"@id": []int{4077, 4078},
+    	},
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("crm.item.delivery.list: %w", err)
+    }
+
+    var items []struct {
+    	ID            b24.ID  `json:"id"`
+    	AccountNumber string  `json:"accountNumber"`
+    	Deducted      string  `json:"deducted"`
+    	DeliveryID    b24.ID  `json:"deliveryId"`
+    	PriceDelivery float64 `json:"priceDelivery"`
+    	Currency      string  `json:"currency"`
+    }
+    if err := json.Unmarshal(res.Result, &items); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    for _, it := range items {
+    	fmt.Println(it.ID, it.AccountNumber)
+    }
+
+    // Total and Next are filled in by list methods; for a full
+    // list traversal, use client.Core().Pages and Scan.
+    if res.Total != nil {
+    	fmt.Println("total:", *res.Total)
+    }
+    ```
+
 {% endlist %}
 
 ## Response on Success

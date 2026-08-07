@@ -194,6 +194,21 @@ The method `landing.role.getRights` returns the rights of the specified role for
     }
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "landing.role.getRights", b24.Params{
+    	"id": 2,
+    })
+    if err != nil {
+    	return fmt.Errorf("landing.role.getRights: %w", err)
+    }
+
+    // The response shape is shown below on this page.
+    fmt.Printf("%s\n", res.Result)
+    ```
+
 {% endlist %}
 
 ## Response Handling

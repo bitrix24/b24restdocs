@@ -207,6 +207,30 @@ Allowed values:
         echo 'Created message ID: ' . $result['result'];
     }
     ```
+
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "imbot.message.add", b24.Params{
+    	"BOT_ID":      39,
+    	"DIALOG_ID":   "chat123",
+    	"MESSAGE":     "Message text",
+    	"SYSTEM":      "N",
+    	"URL_PREVIEW": "Y",
+    	"CLIENT_ID":   "**put_your_client_id_here**",
+    })
+    if err != nil {
+    	return fmt.Errorf("imbot.message.add: %w", err)
+    }
+
+    var newID b24.ID
+    if err := json.Unmarshal(res.Result, &newID); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("id:", newID)
+    ```
+
 {% endlist %}
 
 ## Response Handling

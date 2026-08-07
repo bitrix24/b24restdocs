@@ -180,6 +180,24 @@ Example of deleting a store where `ENTITY` is the identifier `dish_v2`.
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "entity.delete", b24.Params{
+    	"ENTITY": "dish_v2",
+    })
+    if err != nil {
+    	return fmt.Errorf("entity.delete: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

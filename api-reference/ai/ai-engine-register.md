@@ -407,6 +407,32 @@ Example structure of a message for a GPT-like model:
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "ai.engine.register", b24.Params{
+    	"name":            "Acme GPT",
+    	"code":            "acme_gpt",
+    	"category":        "text",
+    	"completions_url": "https://api.example.com/bitrix24/ai/completions",
+    	"settings": b24.Params{
+    		"code_alias":          "ChatGPT",
+    		"model_context_type":  "token",
+    		"model_context_limit": 15666,
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("ai.engine.register: %w", err)
+    }
+
+    var value b24.ID
+    if err := json.Unmarshal(res.Result, &value); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("result:", value)
+    ```
+
 {% endlist %}
 
 ## Response Handling

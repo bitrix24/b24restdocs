@@ -185,6 +185,24 @@ The identifier can be obtained using the [imopenlines.session.open](../sessions/
     }
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "imopenlines.operator.another.finish", b24.Params{
+    	"CHAT_ID": 2043,
+    })
+    if err != nil {
+    	return fmt.Errorf("imopenlines.operator.another.finish: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

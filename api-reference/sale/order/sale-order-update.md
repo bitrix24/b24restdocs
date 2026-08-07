@@ -464,6 +464,65 @@ Defaults to `N` ||
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "sale.order.update", b24.Params{
+    	"id": 300,
+    	"fields": b24.Params{
+    		"price":           100,
+    		"discountValue":   10,
+    		"statusId":        "N",
+    		"empStatusId":     1,
+    		"dateInsert":      "2024-03-01T14:00:00",
+    		"marked":          "Y",
+    		"empMarkedId":     1,
+    		"reasonMarked":    "",
+    		"userDescription": "",
+    		"additionalInfo":  "",
+    		"comments":        "",
+    		"companyId":       1,
+    		"responsibleId":   1,
+    		"recurringId":     1,
+    		"lockedBy":        1,
+    		"recountFlag":     "N",
+    		"affiliateId":     1,
+    		"updated1c":       "N",
+    		"orderTopic":      "",
+    		"xmlId":           "",
+    		"id1c":            "",
+    		"version1c":       "",
+    		"externalOrder":   "N",
+    		"canceled":        "Y",
+    		"empCanceledId":   1,
+    		"reasonCanceled":  "",
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("sale.order.update: %w", err)
+    }
+
+    // The method wraps the response in an object with the "order" key.
+    raw, ok := b24.Unwrap(res.Result, "order")
+    if !ok {
+    	return fmt.Errorf("no order key in the response")
+    }
+
+    var item struct {
+    	AccountNumber  string `json:"accountNumber"`
+    	AdditionalInfo string `json:"additionalInfo"`
+    	AffiliateID    b24.ID `json:"affiliateId"`
+    	Canceled       string `json:"canceled"`
+    	Comments       string `json:"comments"`
+    	CompanyID      b24.ID `json:"companyId"`
+    }
+    if err := json.Unmarshal(raw, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.AccountNumber, item.AdditionalInfo)
+    ```
+
 {% endlist %}
 
 ## Response Handling

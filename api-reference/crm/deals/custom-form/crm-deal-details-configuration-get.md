@@ -284,6 +284,34 @@ Example of retrieving the general configuration of the deal card for the funnel 
     except Exception as error:
         print(f"Unexpected error: {error}")
     ```
+
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.deal.details.configuration.get", b24.Params{
+    	"scope": "C",
+    	"extras": b24.Params{
+    		"dealCategoryId": 32,
+    	},
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("crm.deal.details.configuration.get: %w", err)
+    }
+
+    var items []struct {
+    	Name  string `json:"name"`
+    	Title string `json:"title"`
+    	Type  string `json:"type"`
+    }
+    if err := json.Unmarshal(res.Result, &items); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    for _, it := range items {
+    	fmt.Println(it.Name, it.Title)
+    }
+    ```
+
 {% endlist %}
 
 ## Response Handling

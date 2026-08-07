@@ -226,6 +226,26 @@ Fields with the prefix `UF_` in the response are custom fields (see [methods](..
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.requisite.preset.field.availabletoadd", b24.Params{
+    	"preset": b24.Params{
+    		"ID": 27,
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("crm.requisite.preset.field.availabletoadd: %w", err)
+    }
+
+    var items []string
+    if err := json.Unmarshal(res.Result, &items); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("received:", len(items))
+    ```
+
 {% endlist %}
 
 ## Response Handling

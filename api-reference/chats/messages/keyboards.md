@@ -208,6 +208,39 @@ The keyboard is passed in the `KEYBOARD` parameter when sending or updating a me
   print_r($result);
   ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "im.message.add", b24.Params{
+    	"DIALOG_ID": "chat2725",
+    	"MESSAGE":   "Select an action",
+    	"KEYBOARD": b24.Params{
+    		"BUTTONS": []b24.Params{
+    			{
+    				"TEXT": "Open website",
+    				"LINK": "https://www.example.com/",
+    			},
+    			{
+    				"TYPE": "NEWLINE",
+    			},
+    			{
+    				"TEXT":         "Insert command",
+    				"ACTION":       "PUT",
+    				"ACTION_VALUE": "/help",
+    			},
+    		},
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("im.message.add: %w", err)
+    }
+
+    // The response arrives as json.RawMessage — unmarshal it
+    // into a struct matching the response shape shown below on this page.
+    fmt.Printf("%s\n", res.Result)
+    ```
+
 {% endlist %}
 
 {% note warning "" %}

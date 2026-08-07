@@ -165,6 +165,24 @@ No parameters.
     print_r($result);
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "catalog.productPropertyEnum.getFields", nil, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("catalog.productPropertyEnum.getFields: %w", err)
+    }
+
+    // The method wraps the response in an object with the "productPropertyEnum" key.
+    raw, ok := b24.Unwrap(res.Result, "productPropertyEnum")
+    if !ok {
+    	return fmt.Errorf("no productPropertyEnum key in the response")
+    }
+
+    fmt.Printf("%s\n", raw)
+    ```
+
 {% endlist %}
 
 ## Response Handling

@@ -222,6 +222,28 @@ To obtain existing identifiers of information blocks, use [catalog.catalog.list]
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "catalog.product.getFieldsByFilter", b24.Params{
+    	"filter": b24.Params{
+    		"iblockId": 23,
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("catalog.product.getFieldsByFilter: %w", err)
+    }
+
+    // The method wraps the response in an object with the "product" key.
+    raw, ok := b24.Unwrap(res.Result, "product")
+    if !ok {
+    	return fmt.Errorf("no product key in the response")
+    }
+
+    fmt.Printf("%s\n", raw)
+    ```
+
 {% endlist %}
 
 ## Response Handling

@@ -257,6 +257,28 @@ To ensure the method works correctly, please provide any non-empty value for thi
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "sale.statusLang.deleteByFilter", b24.Params{
+    	"fields": b24.Params{
+    		"statusId": "RD",
+    		"lid":      "la",
+    		"name":     "-",
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("sale.statusLang.deleteByFilter: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

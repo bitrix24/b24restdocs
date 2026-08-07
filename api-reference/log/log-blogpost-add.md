@@ -335,6 +335,32 @@ When creating a new survey, use a random identifier with the prefix `n` ||
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "log.blogpost.add", b24.Params{
+    	"POST_TITLE":   "New Regulation",
+    	"POST_MESSAGE": "From November 1, the approval process is updated.",
+    	"DEST":         []string{"UA"},
+    	"TAGS":         "regulation,approval,update",
+    	"IMPORTANT":    "Y",
+    	"FILES": []any{
+    		[]string{"first-image.jpg", "iVBORw0KGgoAAAANSUhEUgAAAAUA..."},
+    		[]string{"second-image.jpg", "iVBORw0KGgoAAAANSUhEUgAAAAUA..."},
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("log.blogpost.add: %w", err)
+    }
+
+    var newID b24.ID
+    if err := json.Unmarshal(res.Result, &newID); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("id:", newID)
+    ```
+
 {% endlist %}
 
 ## Response Handling

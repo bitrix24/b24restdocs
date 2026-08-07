@@ -192,6 +192,35 @@ The method returns information about the translation of the price type name by i
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "catalog.priceTypeLang.get", b24.Params{
+    	"id": 2,
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("catalog.priceTypeLang.get: %w", err)
+    }
+
+    // The method wraps the response in an object with the "priceTypeLang" key.
+    raw, ok := b24.Unwrap(res.Result, "priceTypeLang")
+    if !ok {
+    	return fmt.Errorf("no priceTypeLang key in the response")
+    }
+
+    var item struct {
+    	CatalogGroupID b24.ID `json:"catalogGroupId"`
+    	ID             b24.ID `json:"id"`
+    	Lang           string `json:"lang"`
+    	Name           string `json:"name"`
+    }
+    if err := json.Unmarshal(raw, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.CatalogGroupID, item.ID)
+    ```
+
 {% endlist %}
 
 ## Response Handling

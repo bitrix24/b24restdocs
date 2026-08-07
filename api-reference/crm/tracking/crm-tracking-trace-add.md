@@ -320,6 +320,34 @@ Example of creating a Sales Intelligence trace, where:
     echo '</pre>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.tracking.trace.add", b24.Params{
+    	"TRACE": "{\"SOURCE_ID\":\"6\",\"SOURCE_DESC\":\"Direct sale\",\"PAGES\":[{\"URL\":\"https://example.com/\",\"DATE\":\"2024-04-03T10:26:32+03:00\"}]}",
+    	"ENTITIES": []b24.Params{
+    		{
+    			"TYPE": "CONTACT",
+    			"ID":   3215,
+    		},
+    		{
+    			"TYPE": "LEAD",
+    			"ID":   1,
+    		},
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("crm.tracking.trace.add: %w", err)
+    }
+
+    var newID b24.ID
+    if err := json.Unmarshal(res.Result, &newID); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("id:", newID)
+    ```
+
 {% endlist %}
 
 ## Response Handling

@@ -265,6 +265,32 @@ The default value is `'P'` ||
     except Exception as error:
         print(f"Unexpected error: {error}")
     ```
+
+    - Go
+
+        ```go
+        // client and ctx are already created — see the Go SDK section
+        res, err := client.Core().Call(ctx, "crm.lead.details.configuration.get", b24.Params{
+        	"scope":  "P",
+        	"userId": 1,
+        }, b24.WithIdempotent())
+        if err != nil {
+        	return fmt.Errorf("crm.lead.details.configuration.get: %w", err)
+        }
+
+        var items []struct {
+        	Name  string `json:"name"`
+        	Title string `json:"title"`
+        	Type  string `json:"type"`
+        }
+        if err := json.Unmarshal(res.Result, &items); err != nil {
+        	return fmt.Errorf("parse response: %w", err)
+        }
+        for _, it := range items {
+        	fmt.Println(it.Name, it.Title)
+        }
+        ```
+
     {% endlist %}
 
 2. Retrieve Shared Configuration of the Card
@@ -431,6 +457,30 @@ The default value is `'P'` ||
         echo '<PRE>';
         print_r($result);
         echo '</PRE>';
+        ```
+
+    - Go
+
+        ```go
+        // client and ctx are already created — see the Go SDK section
+        res, err := client.Core().Call(ctx, "crm.lead.details.configuration.get", b24.Params{
+        	"scope": "C",
+        }, b24.WithIdempotent())
+        if err != nil {
+        	return fmt.Errorf("crm.lead.details.configuration.get: %w", err)
+        }
+
+        var items []struct {
+        	Name  string `json:"name"`
+        	Title string `json:"title"`
+        	Type  string `json:"type"`
+        }
+        if err := json.Unmarshal(res.Result, &items); err != nil {
+        	return fmt.Errorf("parse response: %w", err)
+        }
+        for _, it := range items {
+        	fmt.Println(it.Name, it.Title)
+        }
         ```
 
     {% endlist %}

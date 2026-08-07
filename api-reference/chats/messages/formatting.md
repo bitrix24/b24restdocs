@@ -174,6 +174,23 @@ Most often, formatting is conveyed in the `MESSAGE` field of the [im.message.add
   print_r($result);
   ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "im.message.add", b24.Params{
+    	"DIALOG_ID": "chat2725",
+    	"MESSAGE":   "[B]Important[/B][BR]Visit [URL=https://bitrix24.com]the website[/URL][BR][SEND=/help]Help[/SEND]",
+    })
+    if err != nil {
+    	return fmt.Errorf("im.message.add: %w", err)
+    }
+
+    // The response arrives as json.RawMessage — unmarshal it
+    // into a struct matching the response shape shown below on this page.
+    fmt.Printf("%s\n", res.Result)
+    ```
+
 {% endlist %}
 
 {% note warning "" %}

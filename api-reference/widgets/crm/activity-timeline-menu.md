@@ -318,6 +318,32 @@ It can be used to retrieve additional information using the [crm.activity.get](.
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "placement.bind", b24.Params{
+    	"PLACEMENT": "CRM_DEAL_ACTIVITY_TIMELINE_MENU",
+    	"HANDLER":   "https://your-domain.com/widgets/crm-timeline-menu-handler.php",
+    	"TITLE":     "My activity menu item",
+    	"LANG_ALL": b24.Params{
+    		"ru": b24.Params{
+    			"TITLE": "My activity menu item",
+    		},
+    		"en": b24.Params{
+    			"TITLE": "My activity menu item",
+    		},
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("placement.bind: %w", err)
+    }
+
+    // The response arrives as json.RawMessage — unmarshal it
+    // into a struct matching the response shape shown below on this page.
+    fmt.Printf("%s\n", res.Result)
+    ```
+
 {% endlist %}
 
 ## Continue Learning

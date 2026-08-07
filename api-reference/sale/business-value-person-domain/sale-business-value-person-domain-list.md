@@ -255,6 +255,40 @@ The formula for calculating the `start` parameter value:
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "sale.businessValuePersonDomain.list", b24.Params{
+    	"select": []string{"personTypeId"},
+    	"filter": b24.Params{
+    		"=domain": "I",
+    	},
+    	"order": b24.Params{
+    		"personTypeId": "DESC",
+    	},
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("sale.businessValuePersonDomain.list: %w", err)
+    }
+
+    // The method wraps the response in an object with the "businessValuePersonDomains" key.
+    raw, ok := b24.Unwrap(res.Result, "businessValuePersonDomains")
+    if !ok {
+    	return fmt.Errorf("no businessValuePersonDomains key in the response")
+    }
+
+    var items []struct {
+    	PersonTypeID b24.ID `json:"personTypeId"`
+    }
+    if err := json.Unmarshal(raw, &items); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    for _, it := range items {
+    	fmt.Println(it.PersonTypeID)
+    }
+    ```
+
 {% endlist %}
 
 ## Response Handling

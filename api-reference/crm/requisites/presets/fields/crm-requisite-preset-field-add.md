@@ -281,6 +281,32 @@ The alternative name is displayed in various forms for filling out requisites. D
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.requisite.preset.field.add", b24.Params{
+    	"preset": b24.Params{
+    		"ID": 27,
+    	},
+    	"fields": b24.Params{
+    		"FIELD_NAME":    "RQ_NAME",
+    		"FIELD_TITLE":   "TEST",
+    		"IN_SHORT_LIST": "N",
+    		"SORT":          580,
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("crm.requisite.preset.field.add: %w", err)
+    }
+
+    var newID b24.ID
+    if err := json.Unmarshal(res.Result, &newID); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("id:", newID)
+    ```
+
 {% endlist %}
 
 ## Response Handling

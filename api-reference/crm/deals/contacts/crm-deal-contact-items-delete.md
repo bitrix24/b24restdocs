@@ -211,6 +211,25 @@ Example of removing all associated contacts from the deal with `id = 1875`.
     except Exception as error:
         print(f"Unexpected error: {error}")
     ```
+
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.deal.contact.items.delete", b24.Params{
+    	"id": 1875,
+    })
+    if err != nil {
+    	return fmt.Errorf("crm.deal.contact.items.delete: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

@@ -191,6 +191,24 @@ The method returns no more than 500 user IDs who have read the important message
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "log.blogpost.getusers.important", b24.Params{
+    	"POST_ID": 221,
+    })
+    if err != nil {
+    	return fmt.Errorf("log.blogpost.getusers.important: %w", err)
+    }
+
+    var items []b24.ID
+    if err := json.Unmarshal(res.Result, &items); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("received:", len(items))
+    ```
+
 {% endlist %}
 
 ## Response Handling

@@ -51,6 +51,17 @@ Use B24PySDK:
 - if IDE autocompletion, request parameter validation, and predictable response structures are important,
 - if you plan a backend application that needs to reliably handle authorization, events, and API errors.
 
+## Go SDK
+
+[B24GoSDK](./b24gosdk/index.md) is the official Go SDK for the Bitrix24 REST API. It handles authorization, retries on failures, list traversal, and response parsing, while a REST method is called by its name. There are deliberately no wrappers for individual methods: a method that Bitrix24 releases today is available in the SDK on the same day. Authorization is available through [webhooks](../local-integrations/local-webhooks.md) and the [OAuth protocol](../settings/oauth/index.md).
+
+Use B24GoSDK:
+
+- if you are developing an integration, an application, or a background service in Go,
+- if you need [batch requests](../settings/how-to-call-rest-api/batch.md) and the export of large lists,
+- if predictable behavior on connection drops and rate limits is important,
+- if you need code without external dependencies.
+
 ## Additional Tools
 
 [MCP](../ai-tools/mcp.md) is an auxiliary service for AI assistants in the development environment. MCP provides AI assistants with structured data and specifications for REST API methods, helps generate correct code, and speeds up application creation.

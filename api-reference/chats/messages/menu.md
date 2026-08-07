@@ -356,6 +356,37 @@ Default is `N` ||
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "im.message.add", b24.Params{
+    	"DIALOG_ID":   "chat2725",
+    	"MESSAGE":     "Select an action from the menu",
+    	"URL_PREVIEW": "Y",
+    	"MENU": b24.Params{
+    		"ITEMS": []b24.Params{
+    			{
+    				"TEXT": "Open Website",
+    				"LINK": "https://www.example.com/",
+    			},
+    			{
+    				"TEXT":         "Send Text",
+    				"ACTION":       "SEND",
+    				"ACTION_VALUE": "Done",
+    			},
+    		},
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("im.message.add: %w", err)
+    }
+
+    // The response arrives as json.RawMessage — unmarshal it
+    // into a struct matching the response shape shown below on this page.
+    fmt.Printf("%s\n", res.Result)
+    ```
+
 {% endlist %}
 
 ## How to Update or Remove the Context Menu

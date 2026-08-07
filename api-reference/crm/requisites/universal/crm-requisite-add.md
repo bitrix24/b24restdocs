@@ -501,6 +501,42 @@ When creating a requisite, only those fields with the prefix `RQ_` that are pres
         print(f"Unexpected error: {error}")
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.requisite.add", b24.Params{
+    	"fields": b24.Params{
+    		"ENTITY_TYPE_ID":       4,
+    		"ENTITY_ID":            1,
+    		"PRESET_ID":            1,
+    		"NAME":                 "Organization",
+    		"ACTIVE":               "Y",
+    		"ADDRESS_ONLY":         "N",
+    		"SORT":                 500,
+    		"RQ_COMPANY_NAME":      "Mueller GmbH",
+    		"RQ_COMPANY_FULL_NAME": "MUELLER GESELLSCHAFT MIT BESCHRAENKTER HAFTUNG",
+    		"RQ_COMPANY_REG_DATE":  "06.04.2007",
+    		"RQ_DIRECTOR":          "SMITH JOHN",
+    		"RQ_INN":               "7717586110",
+    		"RQ_KPP":               "770501001",
+    		"RQ_OGRN":              "5077746476209",
+    		"UF_CRM_1707997209":    "56",
+    		"UF_CRM_1708012333":    "Category 1",
+    		"XML_ID":               "5e4641fd-1dd9-11e6-b2f2-005056c00008",
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("crm.requisite.add: %w", err)
+    }
+
+    var newID b24.ID
+    if err := json.Unmarshal(res.Result, &newID); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("id:", newID)
+    ```
+
 {% endlist %}
 
 

@@ -329,6 +329,49 @@ The system will add the participants of the checklist item to the task in the sa
     print_r($result);
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "tasks.template.checklist.add", b24.Params{
+    	"templateId": 139,
+    	"fields": b24.Params{
+    		"TITLE":        "4. Prepare the dashboard",
+    		"PARENT_ID":    23,
+    		"SORT_INDEX":   200,
+    		"IS_COMPLETE":  "N",
+    		"IS_IMPORTANT": "Y",
+    		"MEMBERS": b24.Params{
+    			"547": b24.Params{
+    				"TYPE": "A",
+    			},
+    		},
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("tasks.template.checklist.add: %w", err)
+    }
+
+    // The method wraps the response in an object with the "checkListItem" key.
+    raw, ok := b24.Unwrap(res.Result, "checkListItem")
+    if !ok {
+    	return fmt.Errorf("no checkListItem key in the response")
+    }
+
+    var item struct {
+    	ID        b24.ID `json:"id"`
+    	UserID    b24.ID `json:"userId"`
+    	CreatedBy int    `json:"createdBy"`
+    	ParentID  b24.ID `json:"parentId"`
+    	Title     string `json:"title"`
+    	SortIndex int    `json:"sortIndex"`
+    }
+    if err := json.Unmarshal(raw, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.ID, item.UserID)
+    ```
+
 {% endlist %}
 
 ## Response Handling

@@ -420,6 +420,53 @@ For acceptable formatting, refer to the article [Formatting](../../chats/message
     );
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "imconnector.update.messages", b24.Params{
+    	"CONNECTOR": "myconnector",
+    	"LINE":      107,
+    	"MESSAGES": []b24.Params{
+    		{
+    			"user": b24.Params{
+    				"id":        "ext-user-42",
+    				"last_name": "Ivanov",
+    				"name":      "Ivan",
+    				"picture": b24.Params{
+    					"url": "https://example.com/u42.png",
+    				},
+    				"url":    "https://example.com/users/42",
+    				"gender": "male",
+    				"email":  "klaus@example.com",
+    				"phone":  "+499990000000",
+    			},
+    			"message": b24.Params{
+    				"id":   "ext-msg-1001",
+    				"date": 1773266050,
+    				"text": "Good afternoon, we clarified the details",
+    			},
+    			"chat": b24.Params{
+    				"id":   "channel-123",
+    				"name": "Support Channel",
+    				"url":  "https://example.com/chats/123",
+    			},
+    		},
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("imconnector.update.messages: %w", err)
+    }
+
+    var item struct {
+    	Success bool `json:"SUCCESS"`
+    }
+    if err := json.Unmarshal(res.Result, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.Success)
+    ```
+
 {% endlist %}
 
 ## Response Handling

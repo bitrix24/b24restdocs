@@ -216,6 +216,29 @@ You can obtain the user ID using the methods [user.get](../../user/user-get.md),
         echo 'Notification ID: ' . $result['result'];
     }
     ```
+
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "im.notify.personal.add", b24.Params{
+    	"USER_ID":     5,
+    	"MESSAGE":     "Task Reminder",
+    	"MESSAGE_OUT": "Task Reminder (email)",
+    	"TAG":         "TASK_REMINDER_42",
+    	"SUB_TAG":     "TASK_REMINDER|42",
+    })
+    if err != nil {
+    	return fmt.Errorf("im.notify.personal.add: %w", err)
+    }
+
+    var newID b24.ID
+    if err := json.Unmarshal(res.Result, &newID); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("id:", newID)
+    ```
+
 {% endlist %}
 
 ## Response Handling

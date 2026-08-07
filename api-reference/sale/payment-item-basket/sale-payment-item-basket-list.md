@@ -318,6 +318,46 @@ The formula for calculating the value of the `start` parameter:
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "sale.paymentitembasket.list", b24.Params{
+    	"select": []string{"id", "paymentId", "basketId", "quantity", "xmlId", "dateInsert"},
+    	"filter": b24.Params{
+    		"paymentId": 1025,
+    		">quantity": 2,
+    	},
+    	"order": b24.Params{
+    		"quantity": "desc",
+    	},
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("sale.paymentitembasket.list: %w", err)
+    }
+
+    // The method wraps the response in an object with the "paymentItemsBasket" key.
+    raw, ok := b24.Unwrap(res.Result, "paymentItemsBasket")
+    if !ok {
+    	return fmt.Errorf("no paymentItemsBasket key in the response")
+    }
+
+    var items []struct {
+    	BasketID   b24.ID `json:"basketId"`
+    	DateInsert string `json:"dateInsert"`
+    	ID         b24.ID `json:"id"`
+    	PaymentID  b24.ID `json:"paymentId"`
+    	Quantity   int    `json:"quantity"`
+    	XmlID      string `json:"xmlId"`
+    }
+    if err := json.Unmarshal(raw, &items); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    for _, it := range items {
+    	fmt.Println(it.BasketID)
+    }
+    ```
+
 {% endlist %}
 
 ## Response Handling

@@ -272,6 +272,35 @@ Default is `false`. The `content` field contains the prepared HTML of the block 
     }
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "landing.block.getbyid", b24.Params{
+    	"block": 39556,
+    	"params": b24.Params{
+    		"edit_mode":   true,
+    		"get_content": true,
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("landing.block.getbyid: %w", err)
+    }
+
+    var item struct {
+    	ID      b24.ID `json:"id"`
+    	Lid     int    `json:"lid"`
+    	Code    string `json:"code"`
+    	Name    string `json:"name"`
+    	Active  bool   `json:"active"`
+    	Content string `json:"content"`
+    }
+    if err := json.Unmarshal(res.Result, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.ID, item.Lid)
+    ```
+
 {% endlist %}
 
 ## Response Handling

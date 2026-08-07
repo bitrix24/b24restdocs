@@ -282,6 +282,44 @@ Let's add a task with files and CRM object bindings. To attach a file to the tas
     }
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "tasks.task.add", b24.Params{
+    	"fields": b24.Params{
+    		"TITLE":                "Task Title",
+    		"DEADLINE":             "2025-12-31T23:59:59",
+    		"CREATED_BY":           456,
+    		"RESPONSIBLE_ID":       123,
+    		"UF_CRM_TASK":          []string{"L_4", "C_7", "CO_5", "D_10"},
+    		"UF_TASK_WEBDAV_FILES": []string{"n12345", "n67890"},
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("tasks.task.add: %w", err)
+    }
+
+    // The method wraps the response in an object with the "task" key.
+    raw, ok := b24.Unwrap(res.Result, "task")
+    if !ok {
+    	return fmt.Errorf("no task key in the response")
+    }
+
+    var item struct {
+    	ID          b24.ID `json:"id"`
+    	Title       string `json:"title"`
+    	Description string `json:"description"`
+    	Priority    string `json:"priority"`
+    	Multitask   string `json:"multitask"`
+    	NotViewed   string `json:"notViewed"`
+    }
+    if err := json.Unmarshal(raw, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.ID, item.Title)
+    ```
+
 {% endlist %}
 
 ## Response Handling

@@ -225,6 +225,38 @@ Identifiers and settings for user fields can be obtained using the [userfieldcon
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "catalog.userfield.document.update", b24.Params{
+    	"documentId": 81,
+    	"fields": b24.Params{
+    		"documentType": "A",
+    		"field7097":    "Test Field",
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("catalog.userfield.document.update: %w", err)
+    }
+
+    // The method wraps the response in an object with the "document" key.
+    raw, ok := b24.Unwrap(res.Result, "document")
+    if !ok {
+    	return fmt.Errorf("no document key in the response")
+    }
+
+    var item struct {
+    	DocumentID   b24.ID `json:"documentId"`
+    	DocumentType string `json:"documentType"`
+    	Field7097    string `json:"field7097"`
+    }
+    if err := json.Unmarshal(raw, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.DocumentID, item.DocumentType)
+    ```
+
 {% endlist %}
 
 ## Response Handling

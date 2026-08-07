@@ -257,6 +257,33 @@ This method updates the payment system.
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "sale.paysystem.update", b24.Params{
+    	"ID": 12,
+    	"FIELDS": b24.Params{
+    		"NAME":            "New Payment System Name",
+    		"DESCRIPTION":     "New Payment System Description",
+    		"PERSON_TYPE_ID":  1,
+    		"BX_REST_HANDLER": "resthandlercode",
+    		"ACTIVE":          "Y",
+    		"NEW_WINDOW":      "N",
+    		"LOGOTYPE":        "/* base64 image */",
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("sale.paysystem.update: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

@@ -162,6 +162,22 @@ This method returns a list of deal stages for the direction specified by the ide
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.dealcategory.stage.list", b24.Params{
+    	"id": "1",
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("crm.dealcategory.stage.list: %w", err)
+    }
+
+    // The response arrives as json.RawMessage — unmarshal it
+    // into a struct matching the response shape shown below on this page.
+    fmt.Printf("%s\n", res.Result)
+    ```
+
 {% endlist %}
 
 

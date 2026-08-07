@@ -260,6 +260,30 @@ If the code is empty after transliteration, a random string of `12` characters i
     }
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "landing.site.addFolder", b24.Params{
+    	"siteId": 1817,
+    	"fields": b24.Params{
+    		"TITLE":     "New Folder",
+    		"CODE":      "new-folder",
+    		"ACTIVE":    "Y",
+    		"PARENT_ID": 736,
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("landing.site.addFolder: %w", err)
+    }
+
+    var value b24.ID
+    if err := json.Unmarshal(res.Result, &value); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("result:", value)
+    ```
+
 {% endlist %}
 
 ## Response Handling

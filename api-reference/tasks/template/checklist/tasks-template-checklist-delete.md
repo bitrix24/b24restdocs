@@ -196,6 +196,25 @@ The checklist item identifier can be obtained when [creating a new item](./tasks
     print_r($result);
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "tasks.template.checklist.delete", b24.Params{
+    	"templateId":      139,
+    	"checkListItemId": 29,
+    })
+    if err != nil {
+    	return fmt.Errorf("tasks.template.checklist.delete: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

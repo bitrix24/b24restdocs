@@ -391,6 +391,30 @@ The formula for calculating the `start` parameter value:
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "bizproc.task.list", b24.Params{
+    	"SELECT": []string{"ID", "WORKFLOW_ID", "DOCUMENT_NAME", "DESCRIPTION", "NAME", "MODIFIED", "WORKFLOW_STARTED", "WORKFLOW_STARTED_BY", "OVERDUE_DATE", "WORKFLOW_TEMPLATE_ID", "WORKFLOW_TEMPLATE_NAME", "WORKFLOW_STATE", "STATUS", "USER_ID", "USER_STATUS", "MODULE_ID", "ENTITY", "DOCUMENT_ID", "ACTIVITY", "ACTIVITY_NAME", "DOCUMENT_URL", "PARAMETERS"},
+    	"ORDER": b24.Params{
+    		"ID": "DESC",
+    	},
+    	"FILTER": b24.Params{
+    		"USER_ID":  1,
+    		"STATUS":   0,
+    		"ACTIVITY": "RequestInformationOptionalActivity",
+    	},
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("bizproc.task.list: %w", err)
+    }
+
+    // The response arrives as json.RawMessage — unmarshal it
+    // into a struct matching the response shape shown below on this page.
+    fmt.Printf("%s\n", res.Result)
+    ```
+
 {% endlist %}
 
 ## Response Handling

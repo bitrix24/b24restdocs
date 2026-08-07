@@ -288,6 +288,39 @@ Resource IDs can be obtained using the method [booking.v1.resource.list](../reso
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "booking.v1.booking.update", b24.Params{
+    	"id": 10,
+    	"fields": b24.Params{
+    		"name":        "Name",
+    		"description": "Description",
+    		"resourceIds": []int{1, 2, 3},
+    		"datePeriod": b24.Params{
+    			"from": b24.Params{
+    				"timestamp": 1723446900,
+    				"timezone":  "Europe/Berlin",
+    			},
+    			"to": b24.Params{
+    				"timestamp": 1723447800,
+    				"timezone":  "Europe/Berlin",
+    			},
+    		},
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("booking.v1.booking.update: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

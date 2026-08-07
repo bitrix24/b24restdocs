@@ -241,6 +241,43 @@ Property identifiers can be obtained using the [catalog.productProperty.list](..
     print_r($result);
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "catalog.productPropertySection.set", b24.Params{
+    	"propertyId": 901,
+    	"fields": b24.Params{
+    		"smartFilter":     "Y",
+    		"displayType":     "F",
+    		"displayExpanded": "N",
+    		"filterHint":      "Filter hint",
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("catalog.productPropertySection.set: %w", err)
+    }
+
+    // The method wraps the response in an object with the "productPropertySection" key.
+    raw, ok := b24.Unwrap(res.Result, "productPropertySection")
+    if !ok {
+    	return fmt.Errorf("no productPropertySection key in the response")
+    }
+
+    var item struct {
+    	DisplayExpanded string `json:"displayExpanded"`
+    	DisplayType     string `json:"displayType"`
+    	FilterHint      string `json:"filterHint"`
+    	IblockID        b24.ID `json:"iblockId"`
+    	PropertyID      b24.ID `json:"propertyId"`
+    	SectionID       b24.ID `json:"sectionId"`
+    }
+    if err := json.Unmarshal(raw, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.DisplayExpanded, item.DisplayType)
+    ```
+
 {% endlist %}
 
 ## Response Handling

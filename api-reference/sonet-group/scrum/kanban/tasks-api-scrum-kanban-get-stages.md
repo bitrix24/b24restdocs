@@ -190,6 +190,33 @@ The method returns the Kanban stages by the sprint ID.
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "tasks.api.scrum.kanban.getStages", b24.Params{
+    	"sprintId": 5,
+    })
+    if err != nil {
+    	return fmt.Errorf("tasks.api.scrum.kanban.getStages: %w", err)
+    }
+
+    var items []struct {
+    	ID       b24.ID `json:"id"`
+    	Name     string `json:"name"`
+    	Sort     string `json:"sort"`
+    	Type     string `json:"type"`
+    	SprintID b24.ID `json:"sprintId"`
+    	Color    string `json:"color"`
+    }
+    if err := json.Unmarshal(res.Result, &items); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    for _, it := range items {
+    	fmt.Println(it.ID, it.Name)
+    }
+    ```
+
 {% endlist %}
 
 

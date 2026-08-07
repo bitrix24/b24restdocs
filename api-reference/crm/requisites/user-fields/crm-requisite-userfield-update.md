@@ -311,6 +311,29 @@ The purpose of the field may change by the final developer ||
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.requisite.userfield.update", b24.Params{
+    	"id": 235,
+    	"fields": b24.Params{
+    		"EDIT_FORM_LABEL":   "Category",
+    		"LIST_COLUMN_LABEL": "Category",
+    		"LIST_FILTER_LABEL": "Category",
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("crm.requisite.userfield.update: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

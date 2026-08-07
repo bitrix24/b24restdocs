@@ -226,6 +226,26 @@ If set to `true`, the new page is created as non-system (`SYS = N`)
     }
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "landing.landing.copy", b24.Params{
+    	"lid":        1688,
+    	"toSiteId":   305,
+    	"toFolderId": 95,
+    })
+    if err != nil {
+    	return fmt.Errorf("landing.landing.copy: %w", err)
+    }
+
+    var value b24.ID
+    if err := json.Unmarshal(res.Result, &value); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("result:", value)
+    ```
+
 {% endlist %}
 
 ## Response Handling

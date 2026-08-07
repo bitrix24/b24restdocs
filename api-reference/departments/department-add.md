@@ -194,6 +194,28 @@ The method `department.add` adds a new department to the company's structure.
     except Exception as error:
         print(f"Unexpected error: {error}")
     ```
+
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "department.add", b24.Params{
+    	"NAME":    "Muggle Studies Department",
+    	"SORT":    450,
+    	"UF_HEAD": 1,
+    	"PARENT":  15,
+    })
+    if err != nil {
+    	return fmt.Errorf("department.add: %w", err)
+    }
+
+    var newID b24.ID
+    if err := json.Unmarshal(res.Result, &newID); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("id:", newID)
+    ```
+
 {% endlist %}
 
 ## Response Handling

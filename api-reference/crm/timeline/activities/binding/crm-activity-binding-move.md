@@ -240,6 +240,29 @@ The `crm.activity.binding.move` method updates the link between an activity and 
     except Exception as error:
         print(f"Unexpected error: {error}")
     ```
+
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.activity.binding.move", b24.Params{
+    	"activityId":         999,
+    	"sourceEntityTypeId": 2,
+    	"sourceEntityId":     1,
+    	"targetEntityTypeId": 2,
+    	"targetEntityId":     100,
+    })
+    if err != nil {
+    	return fmt.Errorf("crm.activity.binding.move: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

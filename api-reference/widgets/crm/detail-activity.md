@@ -348,6 +348,37 @@ For the `CRM_XXX_DETAIL_ACTIVITY` placements, the `placement.bind` method suppor
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "placement.bind", b24.Params{
+    	"PLACEMENT": "CRM_DEAL_DETAIL_ACTIVITY",
+    	"HANDLER":   "https://your-domain.com/widgets/crm-detail-activity-handler.php",
+    	"TITLE":     "My timeline button",
+    	"LANG_ALL": b24.Params{
+    		"ru": b24.Params{
+    			"TITLE": "My timeline button",
+    		},
+    		"en": b24.Params{
+    			"TITLE": "My timeline button",
+    		},
+    	},
+    	"OPTIONS": b24.Params{
+    		"useBuiltInInterface":      "Y",
+    		"newUserNotificationTitle": "Meet the new app",
+    		"newUserNotificationText":  "The app helps you work with deals",
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("placement.bind: %w", err)
+    }
+
+    // The response arrives as json.RawMessage — unmarshal it
+    // into a struct matching the response shape shown below on this page.
+    fmt.Printf("%s\n", res.Result)
+    ```
+
 {% endlist %}
 
 ## Continue Your Learning

@@ -201,6 +201,27 @@ Use one of the methods to get the list of files:
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "tasks.task.files.attach", b24.Params{
+    	"taskId": 8017,
+    	"fileId": 1065,
+    })
+    if err != nil {
+    	return fmt.Errorf("tasks.task.files.attach: %w", err)
+    }
+
+    var item struct {
+    	AttachmentID b24.ID `json:"attachmentId"`
+    }
+    if err := json.Unmarshal(res.Result, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.AttachmentID)
+    ```
+
 {% endlist %}
 
 ## Response Handling

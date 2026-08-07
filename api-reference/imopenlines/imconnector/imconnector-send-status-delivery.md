@@ -277,6 +277,42 @@ The external identifiers `message.id` and `chat.id` do not replace `im.message_i
     );
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "imconnector.send.status.delivery", b24.Params{
+    	"CONNECTOR": "myconnector",
+    	"LINE":      107,
+    	"MESSAGES": []b24.Params{
+    		{
+    			"im": b24.Params{
+    				"chat_id":    323,
+    				"message_id": 85911,
+    			},
+    			"message": b24.Params{
+    				"id":   []string{"ext-msg-1007"},
+    				"date": 1738065600,
+    			},
+    			"chat": b24.Params{
+    				"id": "channel-123",
+    			},
+    		},
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("imconnector.send.status.delivery: %w", err)
+    }
+
+    var item struct {
+    	Success bool `json:"SUCCESS"`
+    }
+    if err := json.Unmarshal(res.Result, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.Success)
+    ```
+
 {% endlist %}
 
 ## Response Handling

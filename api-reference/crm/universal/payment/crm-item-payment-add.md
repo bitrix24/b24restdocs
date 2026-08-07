@@ -214,6 +214,25 @@ Creates a payment for a CRM object.
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.item.payment.add", b24.Params{
+    	"entityId":     13123,
+    	"entityTypeId": 2,
+    })
+    if err != nil {
+    	return fmt.Errorf("crm.item.payment.add: %w", err)
+    }
+
+    var newID b24.ID
+    if err := json.Unmarshal(res.Result, &newID); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("id:", newID)
+    ```
+
 {% endlist %}
 
 ## Response on Success

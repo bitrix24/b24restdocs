@@ -273,6 +273,32 @@ For `SONET_GROUP_ROBOT_DESIGNER_TOOLBAR`, the context includes the key:
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "placement.bind", b24.Params{
+    	"PLACEMENT": "SONET_GROUP_ROBOT_DESIGNER_TOOLBAR",
+    	"HANDLER":   "https://your-domain.com/widgets/sonet-group-robot-designer-handler.php",
+    	"TITLE":     "My group automation",
+    	"LANG_ALL": b24.Params{
+    		"ru": b24.Params{
+    			"TITLE": "My group automation",
+    		},
+    		"en": b24.Params{
+    			"TITLE": "My group automation",
+    		},
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("placement.bind: %w", err)
+    }
+
+    // The response arrives as json.RawMessage — unmarshal it
+    // into a struct matching the response shape shown below on this page.
+    fmt.Printf("%s\n", res.Result)
+    ```
+
 {% endlist %}
 
 ## Continue Learning

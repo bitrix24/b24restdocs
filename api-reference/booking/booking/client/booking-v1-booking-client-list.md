@@ -205,6 +205,34 @@ Can be obtained using the methods [booking.v1.booking.add](../booking-v1-booking
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "booking.v1.booking.client.list", b24.Params{
+    	"bookingId": 123,
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("booking.v1.booking.client.list: %w", err)
+    }
+
+    // The method wraps the response in an object with the "bookingClient" key.
+    raw, ok := b24.Unwrap(res.Result, "bookingClient")
+    if !ok {
+    	return fmt.Errorf("no bookingClient key in the response")
+    }
+
+    var items []struct {
+    	ID b24.ID `json:"id"`
+    }
+    if err := json.Unmarshal(raw, &items); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    for _, it := range items {
+    	fmt.Println(it.ID)
+    }
+    ```
+
 {% endlist %}
 
 ## Response Handling

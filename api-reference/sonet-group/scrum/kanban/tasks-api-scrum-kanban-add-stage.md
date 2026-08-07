@@ -233,6 +233,30 @@ Use this method only for active sprints, meaning with the field `"status": "acti
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "tasks.api.scrum.kanban.addStage", b24.Params{
+    	"fields": b24.Params{
+    		"sprintId": 1,
+    		"name":     "First Stage",
+    		"type":     "NEW",
+    		"color":    "00C4FB",
+    		"sort":     100,
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("tasks.api.scrum.kanban.addStage: %w", err)
+    }
+
+    var value b24.ID
+    if err := json.Unmarshal(res.Result, &value); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("result:", value)
+    ```
+
 {% endlist %}
 
 ## Response Handling

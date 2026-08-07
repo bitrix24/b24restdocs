@@ -276,6 +276,29 @@ If you pass the identifier of an existing block on the page `lid`, the copy will
     }
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "landing.landing.copyblock", b24.Params{
+    	"lid":   351,
+    	"block": 6428,
+    	"params": b24.Params{
+    		"AFTER_ID":       6429,
+    		"RETURN_CONTENT": "Y",
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("landing.landing.copyblock: %w", err)
+    }
+
+    var value b24.ID
+    if err := json.Unmarshal(res.Result, &value); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("result:", value)
+    ```
+
 {% endlist %}
 
 ## Response Handling

@@ -217,6 +217,34 @@ The method returns information about the digital workplace with the identifier `
     except Exception as error:
         print(f"Unexpected error: {error}")
     ```
+
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.automatedsolution.get", b24.Params{
+    	"id": 393,
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("crm.automatedsolution.get: %w", err)
+    }
+
+    // The method wraps the response in an object with the "automatedSolution" key.
+    raw, ok := b24.Unwrap(res.Result, "automatedSolution")
+    if !ok {
+    	return fmt.Errorf("no automatedSolution key in the response")
+    }
+
+    var item struct {
+    	ID    b24.ID `json:"id"`
+    	Title string `json:"title"`
+    }
+    if err := json.Unmarshal(raw, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.ID, item.Title)
+    ```
+
 {% endlist %}
 
 ## Response Handling

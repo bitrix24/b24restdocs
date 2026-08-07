@@ -211,6 +211,32 @@ Default is `Y`
     print_r($result);
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "imopenlines.crm.chat.get", b24.Params{
+    	"CRM_ENTITY_TYPE": "lead",
+    	"CRM_ENTITY":      1205,
+    	"ACTIVE_ONLY":     "N",
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("imopenlines.crm.chat.get: %w", err)
+    }
+
+    var items []struct {
+    	ChatID         b24.ID `json:"CHAT_ID"`
+    	ConnectorID    string `json:"CONNECTOR_ID"`
+    	ConnectorTitle string `json:"CONNECTOR_TITLE"`
+    }
+    if err := json.Unmarshal(res.Result, &items); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    for _, it := range items {
+    	fmt.Println(it.ChatID, it.ConnectorID)
+    }
+    ```
+
 {% endlist %}
 
 ## Response Handling

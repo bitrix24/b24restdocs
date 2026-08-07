@@ -361,6 +361,37 @@ The placement supports no other parameters. The icon name cannot be set: it is t
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "placement.bind", b24.Params{
+    	"PLACEMENT": "IMMOBILE_CONTEXT_MENU",
+    	"HANDLER":   "https://your-domain.com/widgets/immobile-context-menu-handler.php",
+    	"TITLE":     "Reply templates",
+    	"LANG_ALL": b24.Params{
+    		"ru": b24.Params{
+    			"TITLE": "Reply templates",
+    		},
+    		"en": b24.Params{
+    			"TITLE": "Reply templates",
+    		},
+    	},
+    	"OPTIONS": b24.Params{
+    		"context":  "CHAT;LINES",
+    		"role":     "USER",
+    		"extranet": "N",
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("placement.bind: %w", err)
+    }
+
+    // The response arrives as json.RawMessage — unmarshal it
+    // into a struct matching the response shape shown below on this page.
+    fmt.Printf("%s\n", res.Result)
+    ```
+
 {% endlist %}
 
 ## Relationship with Other Objects

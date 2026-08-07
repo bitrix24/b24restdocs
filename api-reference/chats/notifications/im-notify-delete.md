@@ -189,6 +189,25 @@ You must provide one of three parameters: `ID`, `TAG`, or `SUB_TAG`.
         var_dump($result['result']);
     }
     ```
+
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "im.notify.delete", b24.Params{
+    	"ID": 101,
+    })
+    if err != nil {
+    	return fmt.Errorf("im.notify.delete: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

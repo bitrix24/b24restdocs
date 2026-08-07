@@ -212,4 +212,23 @@ See the description of [list methods](../../../../settings/how-to-call-rest-api/
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.productrow.list", b24.Params{
+    	"filter": b24.Params{
+    		"OWNER_TYPE": "D",
+    		"OWNER_ID":   "1",
+    	},
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("crm.productrow.list: %w", err)
+    }
+
+    // The response arrives as json.RawMessage — unmarshal it
+    // into a struct matching the response shape shown below on this page.
+    fmt.Printf("%s\n", res.Result)
+    ```
+
 {% endlist %}

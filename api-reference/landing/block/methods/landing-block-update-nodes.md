@@ -404,6 +404,42 @@ Default is `false` ||
     }
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "landing.block.updatenodes", b24.Params{
+    	"lid":   311,
+    	"block": 6058,
+    	"data": b24.Params{
+    		".landing-block-node-text": "New block text",
+    		".landing-block-node-img": b24.Params{
+    			"src": "https://cdn.bitrix24.site/bitrix/images/landing/business/1920x1280/img12.jpg",
+    			"alt": "New banner",
+    		},
+    		".landing-block-node-link": b24.Params{
+    			"text":   "Read more",
+    			"href":   "https://www.bitrix24.com",
+    			"target": "_blank",
+    		},
+    		".landing-block-node-icon": []string{"fa", "fa-telegram"},
+    		".landing-block-node-embed": b24.Params{
+    			"src":    "//www.youtube.com/embed/q4d8g9Dn3ww?autoplay=1&controls=0&loop=1&mute=1&rel=0",
+    			"source": "https://www.youtube.com/watch?v=q4d8g9Dn3ww",
+    		},
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("landing.block.updatenodes: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ### Updating Component Parameters

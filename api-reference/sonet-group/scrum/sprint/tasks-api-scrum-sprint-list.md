@@ -280,6 +280,25 @@ The default value is an empty array `array()`. In this case, all fields of the m
     }
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "tasks.api.scrum.sprint.list", b24.Params{
+    	"filter": b24.Params{
+    		"GROUP_ID":   1,
+    		">=DATE_END": "2024-07-19T15:03:01+00:00",
+    	},
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("tasks.api.scrum.sprint.list: %w", err)
+    }
+
+    // The response arrives as json.RawMessage — unmarshal it
+    // into a struct matching the response shape shown below on this page.
+    fmt.Printf("%s\n", res.Result)
+    ```
+
 {% endlist %}
 
 ## Response Handling

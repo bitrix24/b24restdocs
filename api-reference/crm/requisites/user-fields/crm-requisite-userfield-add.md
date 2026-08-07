@@ -365,6 +365,36 @@ Defaults to `N`
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.requisite.userfield.add", b24.Params{
+    	"fields": b24.Params{
+    		"USER_TYPE_ID":      "string",
+    		"ENTITY_ID":         "CRM_REQUISITE",
+    		"SORT":              100,
+    		"MULTIPLE":          "N",
+    		"MANDATORY":         "N",
+    		"SHOW_FILTER":       "E",
+    		"SHOW_IN_LIST":      "Y",
+    		"EDIT_FORM_LABEL":   "PP - Line",
+    		"LIST_COLUMN_LABEL": "PP - Line",
+    		"LIST_FILTER_LABEL": "PP - Line",
+    		"FIELD_NAME":        "NEWTECH_v1_STRING",
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("crm.requisite.userfield.add: %w", err)
+    }
+
+    var newID b24.ID
+    if err := json.Unmarshal(res.Result, &newID); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("id:", newID)
+    ```
+
 {% endlist %}
 
 ## Response Handling

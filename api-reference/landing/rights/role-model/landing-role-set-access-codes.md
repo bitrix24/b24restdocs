@@ -249,6 +249,25 @@ If the `codes` parameter is passed in a format other than an array, the method w
     }
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "landing.role.setAccessCodes", b24.Params{
+    	"id":    11,
+    	"codes": []string{"U45", "DR7", "SG3_A"},
+    })
+    if err != nil {
+    	return fmt.Errorf("landing.role.setAccessCodes: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

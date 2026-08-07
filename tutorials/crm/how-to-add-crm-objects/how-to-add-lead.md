@@ -230,6 +230,36 @@ The handler receives a POST request at the address specified in the `handlerUrl`
         app.run(port=3000)
     ```
 
+- Go
+
+    ```go
+    // The webhook path is a secret: it comes from the environment rather than from the code, and it
+    // never reaches the public page with the form. The client is built ONCE
+    // per portal and is reused by all requests — it holds the HTTP client and
+    // the authorization state, while http.Server calls the handler from many goroutines.
+    core := b24.NewClient(os.Getenv("B24_WEBHOOK_URL")).Core()
+
+    mux := http.NewServeMux()
+    // The page with the form is served from here as well: then the form request goes to the same
+    // the address it was opened from, and no static file setup is required.
+    mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+    	w.Header().Set("Content-Type", "text/html; charset=utf-8")
+    	fmt.Fprint(w, formPage)
+    })
+    mux.HandleFunc("/form", func(w http.ResponseWriter, r *http.Request) {
+    	if r.Method != http.MethodPost {
+    		reply(w, http.StatusMethodNotAllowed, "POST is required", 0)
+    		return
+    	}
+    	handleForm(w, r, core)
+    })
+
+    log.Println("form and handler: http://localhost:3000/")
+    if err := http.ListenAndServe(":3000", mux); err != nil {
+    	log.Fatal(err)
+    }
+    ```
+
 {% endlist %}
 
 ### Validating the Form Data
@@ -328,6 +358,44 @@ In REST, we pass the values as is. Do not apply `htmlspecialchars` or other HTML
         return jsonify({"message": "One of the fields is too long"}), 400
     ```
 
+- Go
+
+    ```go
+    // The data comes from an anonymous visitor, so before the method is called
+    // the handler validates them.
+    if err := r.ParseForm(); err != nil {
+    	reply(w, http.StatusBadRequest, "Failed to parse the form", 0)
+    	return
+    }
+    // r.PostFormValue returns an empty string when the key is missing entirely, so
+    // there is nothing to fail on for a missing field.
+    name := strings.TrimSpace(r.PostFormValue("NAME"))
+    lastName := strings.TrimSpace(r.PostFormValue("LAST_NAME"))
+    companyTitle := strings.TrimSpace(r.PostFormValue("COMPANY_TITLE"))
+    phone := strings.TrimSpace(r.PostFormValue("PHONE"))
+    email := strings.TrimSpace(r.PostFormValue("EMAIL"))
+
+    if name == "" {
+    	reply(w, http.StatusBadRequest, "Enter the first name", 0)
+    	return
+    }
+    if email != "" && !emailPattern.MatchString(email) {
+    	reply(w, http.StatusBadRequest, "Check the email address", 0)
+    	return
+    }
+    for _, value := range []string{name, lastName, companyTitle, phone, email} {
+    	// The length is counted in RUNES rather than bytes: in UTF-8 a non-Latin letter
+    	// takes two bytes, and len() would reject a name twice as short.
+    	if len([]rune(value)) > maxLength {
+    		reply(w, http.StatusBadRequest, "One of the fields is too long", 0)
+    		return
+    	}
+    }
+    // In REST, values are sent as is: html.EscapeString and the like
+    // is needed when rendering to a page, while in CRM it turns "Weber & Son" into
+    // yields "Weber &amp; Son".
+    ```
+
 {% endlist %}
 
 ### Collecting the Phone and Email into Multifields
@@ -389,6 +457,21 @@ In the [crm_multifield](../../../api-reference/crm/data-types.md#crm_multifield)
         ar_fm.append({"typeId": "EMAIL", "valueType": "HOME", "value": s_email})
     ```
 
+- Go
+
+    ```go
+    // The phone and the email go into the fm field — an array of crm_multifield objects.
+    // The universal crm.item.* methods accept keys in camelCase, whereas
+    // crm.lead.add would expect the same keys in UPPERCASE.
+    fm := make([]b24.Params, 0, 2)
+    if phone != "" {
+    	fm = append(fm, b24.Params{"typeId": "PHONE", "valueType": "WORK", "value": phone})
+    }
+    if email != "" {
+    	fm = append(fm, b24.Params{"typeId": "EMAIL", "valueType": "HOME", "value": email})
+    }
+    ```
+
 {% endlist %}
 
 ### Composing the Lead Title
@@ -433,6 +516,17 @@ We compose the title from the first name and last name. If the visitor specified
 
     if s_company_title:
         s_title += " — " + s_company_title
+    ```
+
+- Go
+
+    ```go
+    // The title is assembled from the first and last name, and the company name is appended after
+    // a dash — this way the manager sees in the lead list who the request came from.
+    title := "From the website: " + strings.TrimSpace(name+" "+lastName)
+    if companyTitle != "" {
+    	title += " — " + companyTitle
+    }
     ```
 
 {% endlist %}
@@ -527,6 +621,46 @@ We pass the prepared values in the `fields` of the [crm.item.add](../../../api-r
         # We write the error details to the log and do not show them to the visitor
         app.logger.error(error)
         return jsonify({"message": "Could not create the lead, try again later"}), 502
+    ```
+
+- Go
+
+    ```go
+    res, err := core.Call(r.Context(), "crm.item.add", b24.Params{
+    	"entityTypeId": entityTypeLead,
+    	"fields": b24.Params{
+    		"title":        title,
+    		"name":         name,
+    		"lastName":     lastName,
+    		"companyTitle": companyTitle,
+    		"fm":           fm,
+    	},
+    }) // no WithIdempotent: a retry would create a second lead
+    if err != nil {
+    	// The details go to the server log, and the visitor gets a generic
+    	// message: technical details have no place on a public page.
+    	// The webhook address will not appear in the error text — the SDK strips it itself.
+    	log.Println("crm.item.add:", err)
+    	reply(w, http.StatusBadGateway, "Could not create the lead, try again later", 0)
+    	return
+    }
+
+    // The method wraps the response in an object with the item key.
+    raw, ok := b24.Unwrap(res.Result, "item", "id")
+    if !ok {
+    	log.Println("no item.id in the response:", string(res.Result))
+    	reply(w, http.StatusBadGateway, "Could not create the lead, try again later", 0)
+    	return
+    }
+    var leadID b24.ID
+    if err := json.Unmarshal(raw, &leadID); err != nil {
+    	log.Println("parse lead ID:", err)
+    	reply(w, http.StatusBadGateway, "Could not create the lead, try again later", 0)
+    	return
+    }
+
+    log.Printf("lead %d created", leadID)
+    reply(w, http.StatusOK, "Lead created", leadID)
     ```
 
 {% endlist %}
@@ -835,6 +969,236 @@ The handler returns `{ "message": "Lead created", "id": 3465 }` to the page. The
         app.run(port=3000)
     ```
 
+- Go
+
+    ```go
+    // Setup in an empty directory — go get will not work without go mod init:
+    //
+    //	go mod init example && go get github.com/bitrix24/b24gosdk
+    //
+    // Run:
+    //
+    //	export B24_WEBHOOK_URL='https://your-portal.bitrix24.com/rest/1/token/' && go run .
+    //
+    // A separate form.html file is not needed: the page with the form is served by the same program,
+    // open http://localhost:3000/. To check the result, run the same program with
+    // as an argument: go run . check 3465
+    package main
+
+    import (
+    	"context"
+    	"encoding/json"
+    	"fmt"
+    	"log"
+    	"net/http"
+    	"os"
+    	"regexp"
+    	"strconv"
+    	"strings"
+
+    	b24 "github.com/bitrix24/b24gosdk"
+    )
+
+    // entityTypeLead is the ID of the "lead" object type for the universal methods
+    // crm.item.*.
+    const entityTypeLead = 1
+
+    // A length limit on the values: the form is public.
+    const maxLength = 100
+
+    // emailPattern validates an email address.
+    var emailPattern = regexp.MustCompile(`^[^@\s]+@[^@\s]+\.[^@\s]+$`)
+
+    func main() {
+    	// To check the result: go run . check 3465
+    	if len(os.Args) > 2 && os.Args[1] == "check" {
+    		id, err := strconv.ParseInt(os.Args[2], 10, 64)
+    		if err != nil {
+    			log.Fatal("a numeric lead ID is required")
+    		}
+    		if err := check(context.Background(), b24.ID(id)); err != nil {
+    			log.Fatal(err)
+    		}
+    		return
+    	}
+    	// The webhook path is a secret: it comes from the environment rather than from the code, and it
+    	// never reaches the public page with the form. The client is built ONCE
+    	// per portal and is reused by all requests — it holds the HTTP client and
+    	// the authorization state, while http.Server calls the handler from many goroutines.
+    	core := b24.NewClient(os.Getenv("B24_WEBHOOK_URL")).Core()
+
+    	mux := http.NewServeMux()
+    	// The page with the form is served from here as well: then the form request goes to the same
+    	// the address it was opened from, and no static file setup is required.
+    	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+    		w.Header().Set("Content-Type", "text/html; charset=utf-8")
+    		fmt.Fprint(w, formPage)
+    	})
+    	mux.HandleFunc("/form", func(w http.ResponseWriter, r *http.Request) {
+    		if r.Method != http.MethodPost {
+    			reply(w, http.StatusMethodNotAllowed, "POST is required", 0)
+    			return
+    		}
+    		handleForm(w, r, core)
+    	})
+
+    	log.Println("form and handler: http://localhost:3000/")
+    	if err := http.ListenAndServe(":3000", mux); err != nil {
+    		log.Fatal(err)
+    	}
+    }
+
+    func handleForm(w http.ResponseWriter, r *http.Request, core *b24.Core) {
+    	// The data comes from an anonymous visitor, so before the method is called
+    	// the handler validates them.
+    	if err := r.ParseForm(); err != nil {
+    		reply(w, http.StatusBadRequest, "Failed to parse the form", 0)
+    		return
+    	}
+    	// r.PostFormValue returns an empty string when the key is missing entirely, so
+    	// there is nothing to fail on for a missing field.
+    	name := strings.TrimSpace(r.PostFormValue("NAME"))
+    	lastName := strings.TrimSpace(r.PostFormValue("LAST_NAME"))
+    	companyTitle := strings.TrimSpace(r.PostFormValue("COMPANY_TITLE"))
+    	phone := strings.TrimSpace(r.PostFormValue("PHONE"))
+    	email := strings.TrimSpace(r.PostFormValue("EMAIL"))
+
+    	if name == "" {
+    		reply(w, http.StatusBadRequest, "Enter the first name", 0)
+    		return
+    	}
+    	if email != "" && !emailPattern.MatchString(email) {
+    		reply(w, http.StatusBadRequest, "Check the email address", 0)
+    		return
+    	}
+    	for _, value := range []string{name, lastName, companyTitle, phone, email} {
+    		// The length is counted in RUNES rather than bytes: in UTF-8 a non-Latin letter
+    		// takes two bytes, and len() would reject a name twice as short.
+    		if len([]rune(value)) > maxLength {
+    			reply(w, http.StatusBadRequest, "One of the fields is too long", 0)
+    			return
+    		}
+    	}
+    	// In REST, values are sent as is: html.EscapeString and the like
+    	// is needed when rendering to a page, while in CRM it turns "Weber & Son" into
+    	// yields "Weber &amp; Son".
+    	// The phone and the email go into the fm field — an array of crm_multifield objects.
+    	// The universal crm.item.* methods accept keys in camelCase, whereas
+    	// crm.lead.add would expect the same keys in UPPERCASE.
+    	fm := make([]b24.Params, 0, 2)
+    	if phone != "" {
+    		fm = append(fm, b24.Params{"typeId": "PHONE", "valueType": "WORK", "value": phone})
+    	}
+    	if email != "" {
+    		fm = append(fm, b24.Params{"typeId": "EMAIL", "valueType": "HOME", "value": email})
+    	}
+    	// The title is assembled from the first and last name, and the company name is appended after
+    	// a dash — this way the manager sees in the lead list who the request came from.
+    	title := "From the website: " + strings.TrimSpace(name+" "+lastName)
+    	if companyTitle != "" {
+    		title += " — " + companyTitle
+    	}
+    	res, err := core.Call(r.Context(), "crm.item.add", b24.Params{
+    		"entityTypeId": entityTypeLead,
+    		"fields": b24.Params{
+    			"title":        title,
+    			"name":         name,
+    			"lastName":     lastName,
+    			"companyTitle": companyTitle,
+    			"fm":           fm,
+    		},
+    	}) // no WithIdempotent: a retry would create a second lead
+    	if err != nil {
+    		// The details go to the server log, and the visitor gets a generic
+    		// message: technical details have no place on a public page.
+    		// The webhook address will not appear in the error text — the SDK strips it itself.
+    		log.Println("crm.item.add:", err)
+    		reply(w, http.StatusBadGateway, "Could not create the lead, try again later", 0)
+    		return
+    	}
+
+    	// The method wraps the response in an object with the item key.
+    	raw, ok := b24.Unwrap(res.Result, "item", "id")
+    	if !ok {
+    		log.Println("no item.id in the response:", string(res.Result))
+    		reply(w, http.StatusBadGateway, "Could not create the lead, try again later", 0)
+    		return
+    	}
+    	var leadID b24.ID
+    	if err := json.Unmarshal(raw, &leadID); err != nil {
+    		log.Println("parse lead ID:", err)
+    		reply(w, http.StatusBadGateway, "Could not create the lead, try again later", 0)
+    		return
+    	}
+
+    	log.Printf("lead %d created", leadID)
+    	reply(w, http.StatusOK, "Lead created", leadID)
+    }
+
+    // check displays the lead data by the ID from the handler response. The call
+    // only reads — it does not change any data in CRM.
+    func check(ctx context.Context, leadID b24.ID) error {
+    	core := b24.NewClient(os.Getenv("B24_WEBHOOK_URL")).Core()
+
+    	res, err := core.Call(ctx, "crm.item.get", b24.Params{
+    		"entityTypeId": entityTypeLead,
+    		"id":           leadID,
+    	}, b24.WithIdempotent()) // a read: an ambiguous network failure can be retried
+    	if err != nil {
+    		return fmt.Errorf("crm.item.get: %w", err)
+    	}
+
+    	var out struct {
+    		Item struct {
+    			ID           b24.ID `json:"id"`
+    			Title        string `json:"title"`
+    			Name         string `json:"name"`
+    			LastName     string `json:"lastName"`
+    			CompanyTitle string `json:"companyTitle"`
+    			FM           []struct {
+    				TypeID string `json:"typeId"`
+    				Value  string `json:"value"`
+    			} `json:"fm"`
+    		} `json:"item"`
+    	}
+    	if err := json.Unmarshal(res.Result, &out); err != nil {
+    		return fmt.Errorf("parse lead: %w", err)
+    	}
+
+    	fmt.Printf("lead %d: %s\n", out.Item.ID, out.Item.Title)
+    	for _, f := range out.Item.FM {
+    		fmt.Printf("  %s: %s\n", f.TypeID, f.Value)
+    	}
+    	return nil
+    }
+
+    // reply answers the page with the same JSON as the handlers in other languages:
+    // {"message": "...", "id": 3465}.
+    func reply(w http.ResponseWriter, status int, message string, id b24.ID) {
+    	w.Header().Set("Content-Type", "application/json; charset=utf-8")
+    	w.WriteHeader(status)
+    	body := map[string]any{"message": message}
+    	if id != 0 {
+    		body["id"] = id
+    	}
+    	_ = json.NewEncoder(w).Encode(body)
+    }
+
+    // formPage is the same form as in step 1, only served by the program rather than
+    // is stored as a separate file.
+    const formPage = `<!doctype html>
+    <meta charset="utf-8">
+    <title>Request</title>
+    <form method="post" action="/form">
+      <p><label>First name*<br><input name="NAME" required maxlength="100"></label></p>
+      <p><label>Last name<br><input name="LAST_NAME" maxlength="100"></label></p>
+      <p><label>Company<br><input name="COMPANY_TITLE" maxlength="100"></label></p>
+      <p><label>Phone<br><input name="PHONE" type="tel" maxlength="100"></label></p>
+      <p><label>Email<br><input name="EMAIL" type="email" maxlength="100"></label></p>
+      <p><button type="submit">Submit</button></p>
+    </form>`
+    ```
+
 {% endlist %}
 
 ## Verify the Result
@@ -904,6 +1268,42 @@ Run the verification with a separate script: it does not depend on the handler a
     bitrix_response = client.crm.item.get(entity_type_id=1, bitrix_id=lead_id).response
 
     print(bitrix_response.result["item"])
+    ```
+
+- Go
+
+    ```go
+    core := b24.NewClient(os.Getenv("B24_WEBHOOK_URL")).Core()
+
+    res, err := core.Call(ctx, "crm.item.get", b24.Params{
+    	"entityTypeId": entityTypeLead,
+    	"id":           leadID,
+    }, b24.WithIdempotent()) // a read: an ambiguous network failure can be retried
+    if err != nil {
+    	return fmt.Errorf("crm.item.get: %w", err)
+    }
+
+    var out struct {
+    	Item struct {
+    		ID           b24.ID `json:"id"`
+    		Title        string `json:"title"`
+    		Name         string `json:"name"`
+    		LastName     string `json:"lastName"`
+    		CompanyTitle string `json:"companyTitle"`
+    		FM           []struct {
+    			TypeID string `json:"typeId"`
+    			Value  string `json:"value"`
+    		} `json:"fm"`
+    	} `json:"item"`
+    }
+    if err := json.Unmarshal(res.Result, &out); err != nil {
+    	return fmt.Errorf("parse lead: %w", err)
+    }
+
+    fmt.Printf("lead %d: %s\n", out.Item.ID, out.Item.Title)
+    for _, f := range out.Item.FM {
+    	fmt.Printf("  %s: %s\n", f.TypeID, f.Value)
+    }
     ```
 
 {% endlist %}

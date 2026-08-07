@@ -268,6 +268,28 @@ https://b24-test.bitrix24.shop/personalsection/?SECTION=private&utm_source=newsl
     }
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "landing.syspage.getSpecialPage", b24.Params{
+    	"siteId": 1390,
+    	"type":   "personal",
+    	"additional": b24.Params{
+    		"SECTION": "private",
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("landing.syspage.getSpecialPage: %w", err)
+    }
+
+    var value string
+    if err := json.Unmarshal(res.Result, &value); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("result:", value)
+    ```
+
 {% endlist %}
 
 ## Response Handling

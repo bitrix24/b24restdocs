@@ -211,6 +211,28 @@ Allows you to retain a note.
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.timeline.note.save", b24.Params{
+    	"ownerTypeId": 1,
+    	"ownerId":     1,
+    	"itemType":    1,
+    	"itemId":      2,
+    	"text":        "Test note",
+    })
+    if err != nil {
+    	return fmt.Errorf("crm.timeline.note.save: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

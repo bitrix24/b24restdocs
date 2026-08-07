@@ -233,6 +233,32 @@ The group identifier can be obtained when creating a new group [sonet_group.crea
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "tasks.api.scrum.backlog.add", b24.Params{
+    	"fields": b24.Params{
+    		"groupId":   1,
+    		"createdBy": 1,
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("tasks.api.scrum.backlog.add: %w", err)
+    }
+
+    var item struct {
+    	ID         b24.ID `json:"id"`
+    	GroupID    b24.ID `json:"groupId"`
+    	CreatedBy  int    `json:"createdBy"`
+    	ModifiedBy int    `json:"modifiedBy"`
+    }
+    if err := json.Unmarshal(res.Result, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.ID, item.GroupID)
+    ```
+
 {% endlist %}
 
 ## Response Handling

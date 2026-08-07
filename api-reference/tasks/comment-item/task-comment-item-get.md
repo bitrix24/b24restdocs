@@ -221,6 +221,32 @@ The comment ID can be obtained when [adding a new comment](./task-comment-item-a
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "task.commentitem.get", b24.Params{
+    	"TASKID": 8017,
+    	"ITEMID": 3157,
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("task.commentitem.get: %w", err)
+    }
+
+    var item struct {
+    	ID          b24.ID `json:"ID"`
+    	AuthorID    b24.ID `json:"AUTHOR_ID"`
+    	AuthorName  string `json:"AUTHOR_NAME"`
+    	AuthorEmail string `json:"AUTHOR_EMAIL"`
+    	PostDate    string `json:"POST_DATE"`
+    	PostMessage string `json:"POST_MESSAGE"`
+    }
+    if err := json.Unmarshal(res.Result, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.ID, item.AuthorID)
+    ```
+
 {% endlist %}
 
 ## Response Handling

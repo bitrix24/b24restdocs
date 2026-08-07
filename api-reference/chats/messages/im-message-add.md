@@ -244,6 +244,28 @@ The identifier can be obtained using the [im.dialog.messages.get](./im-dialog-me
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "im.message.add", b24.Params{
+    	"DIALOG_ID":   "chat2941",
+    	"MESSAGE":     "Message text",
+    	"SYSTEM":      "N",
+    	"URL_PREVIEW": "Y",
+    	"REPLY_ID":    34237,
+    })
+    if err != nil {
+    	return fmt.Errorf("im.message.add: %w", err)
+    }
+
+    var newID b24.ID
+    if err := json.Unmarshal(res.Result, &newID); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("id:", newID)
+    ```
+
 {% endlist %}
 
 ## Response Handling

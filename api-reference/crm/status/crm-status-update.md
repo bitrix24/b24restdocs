@@ -250,6 +250,28 @@ The method `crm.status.update` updates the parameters of an existing CRM status 
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.status.update", b24.Params{
+    	"id": 123,
+    	"fields": b24.Params{
+    		"NAME":  "New name",
+    		"COLOR": "#00A9F4",
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("crm.status.update: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

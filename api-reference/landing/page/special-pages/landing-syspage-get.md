@@ -215,6 +215,25 @@ The filter is considered enabled if `true` is passed. By default, it is `false` 
     }
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "landing.syspage.get", b24.Params{
+    	"id":     1390,
+    	"active": true,
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("landing.syspage.get: %w", err)
+    }
+
+    keys, ok := b24.Keys(res.Result)
+    if !ok {
+    	return fmt.Errorf("expected an object in the response")
+    }
+    fmt.Println("fields in response:", len(keys))
+    ```
+
 {% endlist %}
 
 ## Response Handling

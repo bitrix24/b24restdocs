@@ -309,6 +309,38 @@ The parameters `name`, `description`, `preview`, `preview2x`, `preview3x`, and `
     }
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "landing.site.fullExport", b24.Params{
+    	"id": 326,
+    	"params": b24.Params{
+    		"edit_mode":   "Y",
+    		"code":        "myfirstsite2026",
+    		"name":        "Auto Repair Shop",
+    		"description": "Website for auto service",
+    		"preview_url": "https://example.com/previews/myfirstsite2026",
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("landing.site.fullExport: %w", err)
+    }
+
+    var item struct {
+    	Charset     string `json:"charset"`
+    	Code        string `json:"code"`
+    	SiteCode    string `json:"site_code"`
+    	Name        string `json:"name"`
+    	Description string `json:"description"`
+    	Preview     string `json:"preview"`
+    }
+    if err := json.Unmarshal(res.Result, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.Charset, item.Code)
+    ```
+
 {% endlist %}
 
 ## Response Handling

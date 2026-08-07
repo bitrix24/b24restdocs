@@ -198,6 +198,24 @@ The site identifier can be obtained using the method [landing.site.getList](./la
     }
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "landing.site.markUnDelete", b24.Params{
+    	"id": 157,
+    })
+    if err != nil {
+    	return fmt.Errorf("landing.site.markUnDelete: %w", err)
+    }
+
+    var value b24.ID
+    if err := json.Unmarshal(res.Result, &value); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("result:", value)
+    ```
+
 {% endlist %}
 
 ## Response Handling

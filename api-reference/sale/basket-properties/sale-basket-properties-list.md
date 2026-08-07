@@ -307,6 +307,45 @@ start = (N-1) * 50, where N is the desired page number
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "sale.basketproperties.list", b24.Params{
+    	"select": []string{"id", "basketId", "value", "name", "code"},
+    	"filter": b24.Params{
+    		"basketId": 6806,
+    	},
+    	"order": b24.Params{
+    		"id": "desc",
+    	},
+    	"start": 0,
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("sale.basketproperties.list: %w", err)
+    }
+
+    // The method wraps the response in an object with the "basketProperties" key.
+    raw, ok := b24.Unwrap(res.Result, "basketProperties")
+    if !ok {
+    	return fmt.Errorf("no basketProperties key in the response")
+    }
+
+    var items []struct {
+    	BasketID b24.ID `json:"basketId"`
+    	Code     string `json:"code"`
+    	ID       b24.ID `json:"id"`
+    	Name     string `json:"name"`
+    	Value    string `json:"value"`
+    }
+    if err := json.Unmarshal(raw, &items); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    for _, it := range items {
+    	fmt.Println(it.BasketID)
+    }
+    ```
+
 {% endlist %}
 
 ## Response Handling

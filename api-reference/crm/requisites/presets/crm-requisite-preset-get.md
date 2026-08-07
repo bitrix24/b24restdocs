@@ -220,6 +220,31 @@ This method returns the requisite template by its identifier.
         print(f"Unexpected error: {error}")
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.requisite.preset.get", b24.Params{
+    	"id": 347,
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("crm.requisite.preset.get: %w", err)
+    }
+
+    var item struct {
+    	ID           b24.ID `json:"ID"`
+    	EntityTypeID b24.ID `json:"ENTITY_TYPE_ID"`
+    	CountryID    b24.ID `json:"COUNTRY_ID"`
+    	DateCreate   string `json:"DATE_CREATE"`
+    	DateModify   string `json:"DATE_MODIFY"`
+    	CreatedByID  b24.ID `json:"CREATED_BY_ID"`
+    }
+    if err := json.Unmarshal(res.Result, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.ID, item.EntityTypeID)
+    ```
+
 {% endlist %}
 
 ## Response Handling

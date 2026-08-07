@@ -284,6 +284,27 @@ To move a deal to a stage in another funnel, use the method [crm.item.update](..
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.item.update", b24.Params{
+    	"entityTypeId": 2,
+    	"id":           233,
+    	"fields": b24.Params{
+    		"STAGE_ID":   "EXECUTING",
+    		"categoryId": 0,
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("crm.item.update: %w", err)
+    }
+
+    // The response arrives as json.RawMessage — unmarshal it
+    // into a struct matching the response shape shown below on this page.
+    fmt.Printf("%s\n", res.Result)
+    ```
+
 {% endlist %}
 
 ## Deal Card

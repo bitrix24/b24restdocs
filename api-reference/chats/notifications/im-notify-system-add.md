@@ -216,6 +216,29 @@ You can obtain the user ID using the methods [user.get](../../user/user-get.md),
         echo 'Notification ID: ' . $result['result'];
     }
     ```
+
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "im.notify.system.add", b24.Params{
+    	"USER_ID":     5,
+    	"MESSAGE":     "System notification",
+    	"MESSAGE_OUT": "System notification for email",
+    	"TAG":         "SYSTEM_EVENT_42",
+    	"SUB_TAG":     "SYSTEM_EVENT|42",
+    })
+    if err != nil {
+    	return fmt.Errorf("im.notify.system.add: %w", err)
+    }
+
+    var newID b24.ID
+    if err := json.Unmarshal(res.Result, &newID); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("id:", newID)
+    ```
+
 {% endlist %}
 
 ## Response Handling

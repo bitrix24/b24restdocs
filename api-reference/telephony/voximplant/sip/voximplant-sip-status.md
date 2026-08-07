@@ -194,6 +194,30 @@ The identifier can be obtained using the [voximplant.sip.get](./voximplant-sip-g
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "voximplant.sip.status", b24.Params{
+    	"REG_ID": 150907,
+    })
+    if err != nil {
+    	return fmt.Errorf("voximplant.sip.status: %w", err)
+    }
+
+    var item struct {
+    	RegID        b24.ID `json:"REG_ID"`
+    	LastUpdated  string `json:"LAST_UPDATED"`
+    	ErrorMessage string `json:"ERROR_MESSAGE"`
+    	StatusCode   int    `json:"STATUS_CODE"`
+    	StatusResult string `json:"STATUS_RESULT"`
+    }
+    if err := json.Unmarshal(res.Result, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.RegID, item.LastUpdated)
+    ```
+
 {% endlist %}
 
 ## Response Handling

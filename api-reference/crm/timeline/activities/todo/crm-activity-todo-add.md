@@ -276,6 +276,34 @@ The method `crm.activity.todo.add` adds a universal activity to the timeline.
     except Exception as error:
         print(f"Unexpected error: {error}")
     ```
+
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.activity.todo.add", b24.Params{
+    	"ownerTypeId":   2,
+    	"ownerId":       1,
+    	"deadline":      time.Now().Format(time.RFC3339),
+    	"title":         "Activity Title",
+    	"description":   "Activity Description",
+    	"responsibleId": 5,
+    	"pingOffsets":   []int{0, 15},
+    	"colorId":       "2",
+    })
+    if err != nil {
+    	return fmt.Errorf("crm.activity.todo.add: %w", err)
+    }
+
+    var item struct {
+    	ID b24.ID `json:"id"`
+    }
+    if err := json.Unmarshal(res.Result, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.ID)
+    ```
+
 {% endlist %}
 
 ## Response Handling

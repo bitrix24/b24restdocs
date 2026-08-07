@@ -291,6 +291,44 @@ Possible values:
   print_r($result);
   ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "documentgenerator.template.update", b24.Params{
+    	"id": 57,
+    	"fields": b24.Params{
+    		"name":        "SUPPLY_CONTRACT_NEW Template",
+    		"numeratorId": 3,
+    		"code":        "REST_TEMPLATE",
+    		"users":       []string{"U503"},
+    		"sort":        700,
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("documentgenerator.template.update: %w", err)
+    }
+
+    // The method wraps the response in an object with the "template" key.
+    raw, ok := b24.Unwrap(res.Result, "template")
+    if !ok {
+    	return fmt.Errorf("no template key in the response")
+    }
+
+    var item struct {
+    	ID       b24.ID `json:"id"`
+    	Name     string `json:"name"`
+    	Region   string `json:"region"`
+    	Code     string `json:"code"`
+    	Download string `json:"download"`
+    	Active   string `json:"active"`
+    }
+    if err := json.Unmarshal(raw, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.ID, item.Name)
+    ```
+
 {% endlist %}
 
 ## Response Handling

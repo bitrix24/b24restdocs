@@ -227,6 +227,32 @@ Example of modifying access permissions, where:
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "entity.rights", b24.Params{
+    	"ENTITY": "dish",
+    	"ACCESS": b24.Params{
+    		"U1": "W",
+    		"AU": "R",
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("entity.rights: %w", err)
+    }
+
+    var item struct {
+    	U1   string `json:"U1"`
+    	Au   string `json:"AU"`
+    	U577 string `json:"U577"`
+    }
+    if err := json.Unmarshal(res.Result, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.U1, item.Au)
+    ```
+
 {% endlist %}
 
 ## Response Handling

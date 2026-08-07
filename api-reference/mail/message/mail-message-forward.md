@@ -237,6 +237,30 @@ The new API call differs by adding the `/api/` segment to the request URL:
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "mail.message.forward", b24.Params{
+    	"forwardMessageId": 15,
+    	"from":             "user@example.com",
+    	"to":               []string{"manager@example.com"},
+    	"subject":          "Fwd: Contract",
+    	"body":             "Forwarding the email.",
+    })
+    if err != nil {
+    	return fmt.Errorf("mail.message.forward: %w", err)
+    }
+
+    var item struct {
+    	Success bool `json:"success"`
+    }
+    if err := json.Unmarshal(res.Result, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.Success)
+    ```
+
 {% endlist %}
 
 ## Response Handling

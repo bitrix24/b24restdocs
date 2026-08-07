@@ -189,6 +189,33 @@ No parameters.
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "booking.v1.clienttype.list", nil, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("booking.v1.clienttype.list: %w", err)
+    }
+
+    // The method wraps the response in an object with the "clientType" key.
+    raw, ok := b24.Unwrap(res.Result, "clientType")
+    if !ok {
+    	return fmt.Errorf("no clientType key in the response")
+    }
+
+    var items []struct {
+    	Code   string `json:"code"`
+    	Module string `json:"module"`
+    }
+    if err := json.Unmarshal(raw, &items); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    for _, it := range items {
+    	fmt.Println(it.Code)
+    }
+    ```
+
 {% endlist %}
 
 ## Response Handling

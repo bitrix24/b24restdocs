@@ -323,6 +323,31 @@ Example of updating an estimate:
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.quote.update", b24.Params{
+    	"id": 43,
+    	"fields": b24.Params{
+    		"STATUS_ID": "SENT",
+    		"COMMENTS":  "Conditions and deadlines clarified",
+    	},
+    	"params": b24.Params{
+    		"REGISTER_HISTORY_EVENT": "Y",
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("crm.quote.update: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

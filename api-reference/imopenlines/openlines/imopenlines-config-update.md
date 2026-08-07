@@ -369,6 +369,50 @@ You can obtain the identifier of the open channel when [creating an open channel
     print_r($result);
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "imopenlines.config.update", b24.Params{
+    	"CONFIG_ID": 15,
+    	"PARAMS": b24.Params{
+    		"LINE_NAME": "Online Store Support Line (VIP)",
+    		"QUEUE": []b24.Params{
+    			{
+    				"ENTITY_TYPE": "user",
+    				"ENTITY_ID":   "1",
+    			},
+    			{
+    				"ENTITY_TYPE": "user",
+    				"ENTITY_ID":   "15",
+    			},
+    			{
+    				"ENTITY_TYPE": "user",
+    				"ENTITY_ID":   "23",
+    			},
+    		},
+    		"QUEUE_TYPE":           "strictly",
+    		"QUEUE_TIME":           45,
+    		"NO_ANSWER_TIME":       120,
+    		"WELCOME_MESSAGE":      "Y",
+    		"WELCOME_MESSAGE_TEXT": "Hello! We will respond within a couple of minutes",
+    		"WORKTIME_ENABLE":      "Y",
+    		"WORKTIME_FROM":        "09:00",
+    		"WORKTIME_TO":          "21:00",
+    		"WORKTIME_TIMEZONE":    "Europe/Kaliningrad",
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("imopenlines.config.update: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

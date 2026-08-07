@@ -294,6 +294,40 @@ Example of retrieving sections from the storage, where:
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "entity.section.get", b24.Params{
+    	"ENTITY": "dish",
+    	"SORT": b24.Params{
+    		"NAME": "ASC",
+    	},
+    	"FILTER": b24.Params{
+    		"ACTIVE": "Y",
+    	},
+    	"start": 0,
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("entity.section.get: %w", err)
+    }
+
+    var items []struct {
+    	ID         b24.ID `json:"ID"`
+    	TimestampX string `json:"TIMESTAMP_X"`
+    	DateCreate string `json:"DATE_CREATE"`
+    	CreatedBy  string `json:"CREATED_BY"`
+    	ModifiedBy string `json:"MODIFIED_BY"`
+    	Active     string `json:"ACTIVE"`
+    }
+    if err := json.Unmarshal(res.Result, &items); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    for _, it := range items {
+    	fmt.Println(it.ID, it.TimestampX)
+    }
+    ```
+
 {% endlist %}
 
 ## Response Handling

@@ -251,6 +251,24 @@ Default — `20`. The maximum value is —`50` ||
     print_r($result);
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "im.dialog.messages.get", b24.Params{
+    	"DIALOG_ID": "chat1489",
+    	"FIRST_ID":  84869,
+    	"LIMIT":     10,
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("im.dialog.messages.get: %w", err)
+    }
+
+    // The response arrives as json.RawMessage — unmarshal it
+    // into a struct matching the response shape shown below on this page.
+    fmt.Printf("%s\n", res.Result)
+    ```
+
 {% endlist %}
 
 ## Response Handling

@@ -191,6 +191,28 @@ You can obtain the notification identifier using the [im.notify.get](./im-notify
         var_dump($result['result']);
     }
     ```
+
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "im.notify.answer", b24.Params{
+    	"NOTIFY_ID":   270,
+    	"ANSWER_TEXT": "I will participate",
+    })
+    if err != nil {
+    	return fmt.Errorf("im.notify.answer: %w", err)
+    }
+
+    // The method wraps the response in an object with the "result_message" key.
+    raw, ok := b24.Unwrap(res.Result, "result_message")
+    if !ok {
+    	return fmt.Errorf("no result_message key in the response")
+    }
+
+    fmt.Printf("%s\n", raw)
+    ```
+
 {% endlist %}
 
 ## Response Handling

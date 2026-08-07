@@ -258,6 +258,44 @@ If the value `-1` is passed, the response will not include the `total` field. ||
     print_r($result);
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "catalog.productPropertySection.list", b24.Params{
+    	"select": []string{"propertyId", "smartFilter", "displayType", "displayExpanded", "filterHint"},
+    	"filter": b24.Params{
+    		"propertyId": 901,
+    	},
+    	"order": b24.Params{
+    		"propertyId": "ASC",
+    	},
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("catalog.productPropertySection.list: %w", err)
+    }
+
+    // The method wraps the response in an object with the "productPropertySections" key.
+    raw, ok := b24.Unwrap(res.Result, "productPropertySections")
+    if !ok {
+    	return fmt.Errorf("no productPropertySections key in the response")
+    }
+
+    var items []struct {
+    	DisplayExpanded string `json:"displayExpanded"`
+    	DisplayType     string `json:"displayType"`
+    	FilterHint      string `json:"filterHint"`
+    	PropertyID      b24.ID `json:"propertyId"`
+    	SmartFilter     string `json:"smartFilter"`
+    }
+    if err := json.Unmarshal(raw, &items); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    for _, it := range items {
+    	fmt.Println(it.DisplayExpanded)
+    }
+    ```
+
 {% endlist %}
 
 ## Response Handling

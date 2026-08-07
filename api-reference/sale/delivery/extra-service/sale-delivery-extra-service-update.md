@@ -252,6 +252,30 @@ Updating a service of type `Quantitative service`:
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "sale.delivery.extra.service.update", b24.Params{
+    	"ID":          128,
+    	"ACTIVE":      "N",
+    	"CODE":        "door_delivery",
+    	"NAME":        "Door Delivery New Name",
+    	"DESCRIPTION": "Door Delivery New Description",
+    	"SORT":        200,
+    	"PRICE":       399.99,
+    })
+    if err != nil {
+    	return fmt.Errorf("sale.delivery.extra.service.update: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 Updating a service of type `List`:

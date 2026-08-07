@@ -217,6 +217,28 @@ Example of adding a property where:
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "entity.item.property.add", b24.Params{
+    	"ENTITY":   "dish",
+    	"PROPERTY": "new_prop",
+    	"NAME":     "New Property",
+    	"TYPE":     "S",
+    	"SORT":     100,
+    })
+    if err != nil {
+    	return fmt.Errorf("entity.item.property.add: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

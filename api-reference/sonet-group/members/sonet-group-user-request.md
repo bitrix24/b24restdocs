@@ -192,6 +192,25 @@ The identifier can be obtained using the [sonet_group.get](../sonet-group-get.md
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "sonet_group.user.request", b24.Params{
+    	"GROUP_ID": 69,
+    	"MESSAGE":  "Please add me to the project",
+    })
+    if err != nil {
+    	return fmt.Errorf("sonet_group.user.request: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

@@ -291,6 +291,43 @@ A list of available codes can be obtained using the method [crm.timeline.icon.li
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.timeline.logmessage.add", b24.Params{
+    	"fields": b24.Params{
+    		"entityTypeId": 1,
+    		"entityId":     1,
+    		"title":        "Test title",
+    		"text":         "Test text message",
+    		"iconCode":     "info",
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("crm.timeline.logmessage.add: %w", err)
+    }
+
+    // The method wraps the response in an object with the "logMessage" key.
+    raw, ok := b24.Unwrap(res.Result, "logMessage")
+    if !ok {
+    	return fmt.Errorf("no logMessage key in the response")
+    }
+
+    var item struct {
+    	ID       b24.ID `json:"id"`
+    	Created  string `json:"created"`
+    	AuthorID b24.ID `json:"authorId"`
+    	Title    string `json:"title"`
+    	Text     string `json:"text"`
+    	IconCode string `json:"iconCode"`
+    }
+    if err := json.Unmarshal(raw, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.ID, item.Created)
+    ```
+
 {% endlist %}
 
 ## Response Handling

@@ -179,6 +179,24 @@ This method deletes the shipment property value.
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "sale.shipmentpropertyvalue.delete", b24.Params{
+    	"id": 38165,
+    })
+    if err != nil {
+    	return fmt.Errorf("sale.shipmentpropertyvalue.delete: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Successful Response

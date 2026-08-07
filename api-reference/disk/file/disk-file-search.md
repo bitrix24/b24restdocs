@@ -272,6 +272,37 @@ The method does not accept other keys in `FILTER` and returns the `INVALID_FILTE
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "disk.file.search", b24.Params{
+    	"QUERY": "test",
+    	"TYPE":  "all",
+    	"FILTER": b24.Params{
+    		"STORAGE_ID": 1,
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("disk.file.search: %w", err)
+    }
+
+    var items []struct {
+    	ID           b24.ID `json:"ID"`
+    	Name         string `json:"NAME"`
+    	StorageID    b24.ID `json:"STORAGE_ID"`
+    	Type         string `json:"TYPE"`
+    	RealObjectID b24.ID `json:"REAL_OBJECT_ID"`
+    	ParentID     b24.ID `json:"PARENT_ID"`
+    }
+    if err := json.Unmarshal(res.Result, &items); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    for _, it := range items {
+    	fmt.Println(it.ID, it.Name)
+    }
+    ```
+
 {% endlist %}
 
 ## Response Handling

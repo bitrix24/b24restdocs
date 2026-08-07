@@ -192,6 +192,25 @@ The identifier is assigned by the external system in response to the webhook for
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "sale.delivery.request.delete", b24.Params{
+    	"DELIVERY_ID": 225,
+    	"REQUEST_ID":  "4757aca4931a4f029f49c0db4374d13d",
+    })
+    if err != nil {
+    	return fmt.Errorf("sale.delivery.request.delete: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

@@ -185,6 +185,25 @@ The method works only in the context of authorizing the [application](../../sett
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "event.offline.clear", b24.Params{
+    	"process_id": "yh3gu929sf0d32lsfysqas2y1hlpp09q",
+    	"id":         []int{2},
+    })
+    if err != nil {
+    	return fmt.Errorf("event.offline.clear: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

@@ -247,6 +247,29 @@ When updating a group stage with insufficient permission levels, an access error
     }
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "task.stages.update", b24.Params{
+    	"id": 5,
+    	"fields": b24.Params{
+    		"TITLE": "New Stage",
+    		"SORT":  200,
+    		"COLOR": "FF5733",
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("task.stages.update: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

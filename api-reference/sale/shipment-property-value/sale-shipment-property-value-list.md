@@ -319,6 +319,45 @@ The formula for calculating the `start` parameter value:
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "sale.shipmentpropertyvalue.list", b24.Params{
+    	"select": []string{"code", "id", "name", "shipmentId", "shipmentPropsId", "shipmentPropsXmlId", "value"},
+    	"filter": b24.Params{
+    		"@shipmentId": []int{4120},
+    	},
+    	"order": b24.Params{
+    		"shipmentId": "desc",
+    	},
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("sale.shipmentpropertyvalue.list: %w", err)
+    }
+
+    // The method wraps the response in an object with the "propertyValues" key.
+    raw, ok := b24.Unwrap(res.Result, "propertyValues")
+    if !ok {
+    	return fmt.Errorf("no propertyValues key in the response")
+    }
+
+    var items []struct {
+    	ID                 b24.ID `json:"id"`
+    	Name               string `json:"name"`
+    	ShipmentID         b24.ID `json:"shipmentId"`
+    	ShipmentPropsID    b24.ID `json:"shipmentPropsId"`
+    	ShipmentPropsXmlID string `json:"shipmentPropsXmlId"`
+    	Value              string `json:"value"`
+    }
+    if err := json.Unmarshal(raw, &items); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    for _, it := range items {
+    	fmt.Println(it.ID)
+    }
+    ```
+
 {% endlist %}
 
 ## Successful Response

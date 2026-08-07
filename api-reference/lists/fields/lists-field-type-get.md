@@ -210,6 +210,32 @@ If an identifier of an existing field in the list is specified, its type will be
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "lists.field.type.get", b24.Params{
+    	"IBLOCK_TYPE_ID": "lists",
+    	"IBLOCK_ID":      "123",
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("lists.field.type.get: %w", err)
+    }
+
+    var item struct {
+    	Sort           string `json:"SORT"`
+    	ActiveFrom     string `json:"ACTIVE_FROM"`
+    	ActiveTo       string `json:"ACTIVE_TO"`
+    	PreviewPicture string `json:"PREVIEW_PICTURE"`
+    	PreviewText    string `json:"PREVIEW_TEXT"`
+    	DetailPicture  string `json:"DETAIL_PICTURE"`
+    }
+    if err := json.Unmarshal(res.Result, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.Sort, item.ActiveFrom)
+    ```
+
 {% endlist %}
 
 ## Response Handling

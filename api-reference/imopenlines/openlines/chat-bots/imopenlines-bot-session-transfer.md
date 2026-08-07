@@ -223,6 +223,27 @@ It is recommended to pass only one destination parameter: `USER_ID`, `QUEUE_ID`,
   }
   ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "imopenlines.bot.session.transfer", b24.Params{
+    	"CHAT_ID":   112,
+    	"USER_ID":   12,
+    	"LEAVE":     "N",
+    	"CLIENT_ID": "**put_your_client_id_or_bot_token_here**",
+    })
+    if err != nil {
+    	return fmt.Errorf("imopenlines.bot.session.transfer: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

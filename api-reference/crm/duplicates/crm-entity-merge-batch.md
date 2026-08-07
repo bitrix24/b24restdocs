@@ -277,6 +277,29 @@ The `id[]` parameter contains the identifiers of the entities to be merged, pass
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.entity.mergeBatch", b24.Params{
+    	"params": b24.Params{
+    		"entityTypeId": 3,
+    		"entityIds":    []int{100, 101, 102},
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("crm.entity.mergeBatch: %w", err)
+    }
+
+    var item struct {
+    	Status string `json:"STATUS"`
+    }
+    if err := json.Unmarshal(res.Result, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.Status)
+    ```
+
 {% endlist %}
 
 ## Response Handling

@@ -129,6 +129,40 @@ Pass the same botToken that was specified during the chatbot registration ||
     }
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "imbot.v2.Command.list", b24.Params{
+    	"botId":    456,
+    	"botToken": "my_bot_token",
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("imbot.v2.Command.list: %w", err)
+    }
+
+    // The method wraps the response in an object with the "commands" key.
+    raw, ok := b24.Unwrap(res.Result, "commands")
+    if !ok {
+    	return fmt.Errorf("no commands key in the response")
+    }
+
+    var items []struct {
+    	ID      b24.ID `json:"id"`
+    	BotID   b24.ID `json:"botId"`
+    	Command string `json:"command"`
+    	Title   string `json:"title"`
+    	Params  string `json:"params"`
+    	Common  bool   `json:"common"`
+    }
+    if err := json.Unmarshal(raw, &items); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    for _, it := range items {
+    	fmt.Println(it.ID)
+    }
+    ```
+
 {% endlist %}
 
 ## Response Handling

@@ -191,6 +191,27 @@ Default is `1` ||
   print_r($result);
   ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "documentgenerator.document.enablepublicurl", b24.Params{
+    	"id":     51,
+    	"status": 1,
+    })
+    if err != nil {
+    	return fmt.Errorf("documentgenerator.document.enablepublicurl: %w", err)
+    }
+
+    var item struct {
+    	PublicUrl string `json:"publicUrl"`
+    }
+    if err := json.Unmarshal(res.Result, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.PublicUrl)
+    ```
+
 {% endlist %}
 
 ## Response Handling

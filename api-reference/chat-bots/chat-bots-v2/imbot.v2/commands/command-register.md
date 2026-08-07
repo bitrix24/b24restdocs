@@ -196,6 +196,47 @@ The event for invoking the command: [ONIMBOTV2COMMANDADD](../events/events.md#on
     }
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "imbot.v2.Command.register", b24.Params{
+    	"botId":    456,
+    	"botToken": "my_bot_token",
+    	"fields": b24.Params{
+    		"command": "help",
+    		"title": b24.Params{
+    			"en": "Show help",
+    		},
+    		"params": b24.Params{
+    			"en": "query",
+    		},
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("imbot.v2.Command.register: %w", err)
+    }
+
+    // The method wraps the response in an object with the "command" key.
+    raw, ok := b24.Unwrap(res.Result, "command")
+    if !ok {
+    	return fmt.Errorf("no command key in the response")
+    }
+
+    var item struct {
+    	ID              b24.ID `json:"id"`
+    	BotID           b24.ID `json:"botId"`
+    	Command         string `json:"command"`
+    	Common          bool   `json:"common"`
+    	Hidden          bool   `json:"hidden"`
+    	ExtranetSupport bool   `json:"extranetSupport"`
+    }
+    if err := json.Unmarshal(raw, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.ID, item.BotID)
+    ```
+
 {% endlist %}
 
 ## Response Handling

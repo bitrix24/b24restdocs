@@ -200,6 +200,24 @@ The task identifier can be obtained when [creating a new task](./tasks-task-add.
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "task.dependence.add", b24.Params{
+    	"taskIdFrom": 100,
+    	"taskIdTo":   101,
+    	"linkType":   0,
+    })
+    if err != nil {
+    	return fmt.Errorf("task.dependence.add: %w", err)
+    }
+
+    // The response arrives as json.RawMessage — unmarshal it
+    // into a struct matching the response shape shown below on this page.
+    fmt.Printf("%s\n", res.Result)
+    ```
+
 {% endlist %}
 
 ## Response Handling

@@ -213,6 +213,33 @@ Returns information about a note attached to a timeline record.
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.timeline.note.get", b24.Params{
+    	"ownerTypeId": 1,
+    	"ownerId":     1,
+    	"itemType":    1,
+    	"itemId":      2,
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("crm.timeline.note.get: %w", err)
+    }
+
+    var item struct {
+    	Text        string `json:"text"`
+    	CreatedByID b24.ID `json:"createdById"`
+    	CreatedTime string `json:"createdTime"`
+    	UpdatedByID b24.ID `json:"updatedById"`
+    	UpdatedTime string `json:"updatedTime"`
+    }
+    if err := json.Unmarshal(res.Result, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.Text, item.CreatedByID)
+    ```
+
 {% endlist %}
 
 ## Response Handling

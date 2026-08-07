@@ -191,6 +191,34 @@ This method returns information about the margin based on its ID.
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "catalog.extra.get", b24.Params{
+    	"id": 1,
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("catalog.extra.get: %w", err)
+    }
+
+    // The method wraps the response in an object with the "extra" key.
+    raw, ok := b24.Unwrap(res.Result, "extra")
+    if !ok {
+    	return fmt.Errorf("no extra key in the response")
+    }
+
+    var item struct {
+    	ID         b24.ID  `json:"id"`
+    	Name       string  `json:"name"`
+    	Percentage float64 `json:"percentage"`
+    }
+    if err := json.Unmarshal(raw, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.ID, item.Name)
+    ```
+
 {% endlist %}
 
 ## Response Handling

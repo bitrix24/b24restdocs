@@ -229,6 +229,23 @@ The user identifier can be obtained using the [user.get](../../user/user-get.md)
     }
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "log.blogcomment.user.get", b24.Params{
+    	"USER_ID":  28,
+    	"FIRST_ID": 215,
+    	"LAST_ID":  216,
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("log.blogcomment.user.get: %w", err)
+    }
+
+    // The response shape is shown below on this page.
+    fmt.Printf("%s\n", res.Result)
+    ```
+
 {% endlist %}
 
 ## Response Handling

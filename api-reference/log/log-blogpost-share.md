@@ -203,6 +203,25 @@ By default, it is the current user who initiated the method call.
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "log.blogpost.share", b24.Params{
+    	"POST_ID": 217,
+    	"DEST":    []string{"SG69", "DR4"},
+    })
+    if err != nil {
+    	return fmt.Errorf("log.blogpost.share: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

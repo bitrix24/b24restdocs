@@ -91,6 +91,31 @@ Check which required fields are set for contacts in your Bitrix24. All required 
     ))
     ```
 
+- Go
+
+    ```go
+    // A multifield row WITHOUT an ID adds a value. MultifieldAdd assembles it
+    // for you: VALUE and VALUE_TYPE under the required keys.
+    res, err := core.Call(ctx, "crm.contact.add", b24.Params{
+    	"fields": b24.Params{
+    		"NAME": "New contact",
+    		"EMAIL": []map[string]any{
+    			b24.MultifieldAdd("work_email@nomail.com", "WORK"),
+    			b24.MultifieldAdd("home_email@nomail.com", "HOME"),
+    		},
+    	},
+    }) // no WithIdempotent: a retry would create a second contact
+    if err != nil {
+    	return fmt.Errorf("crm.contact.add: %w", err)
+    }
+
+    // There is no wrapper: result is the ID of the new contact itself.
+    var contactID b24.ID
+    if err := json.Unmarshal(res.Result, &contactID); err != nil {
+    	return fmt.Errorf("parse contact ID: %w", err)
+    }
+    ```
+
 {% endlist %}
 
 As a result, we will receive the identifier of the new contact, for example, `25`.
@@ -131,6 +156,28 @@ To retrieve information about the created contact, use the [crm.contact.get](../
     ```python
     # get contact information by ID
     contact_data = client.crm.contact.get(bitrix_id=contact_id).result
+    ```
+
+- Go
+
+    ```go
+    res, err = core.Call(ctx, "crm.contact.get",
+    	b24.Params{"id": contactID}, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("crm.contact.get: %w", err)
+    }
+
+    // The portal issues the IDs of multifield rows, and without them you cannot change or
+    // delete a value.
+    var contact struct {
+    	Email []multifield `json:"EMAIL"`
+    }
+    if err := json.Unmarshal(res.Result, &contact); err != nil {
+    	return fmt.Errorf("parse contact: %w", err)
+    }
+    if len(contact.Email) < 2 {
+    	return fmt.Errorf("contact %d has fewer than two emails", contactID)
+    }
     ```
 
 {% endlist %}
@@ -212,6 +259,26 @@ To change the email list, we will execute the method [crm.contact.update](../../
 
     # update contact
     client.crm.contact.update(bitrix_id=contact_id, fields={"EMAIL": ar_update_email})
+    ```
+
+- Go
+
+    ```go
+    // Rows that are not mentioned stay as they were. That is why deletion is
+    // a SEPARATE command rather than the absence of a row in the list: a skipped
+    // the address simply survives.
+    _, err = core.Call(ctx, "crm.contact.update", b24.Params{
+    	"id": contactID,
+    	"fields": b24.Params{
+    		"EMAIL": []map[string]any{
+    			b24.MultifieldSet(contact.Email[0].ID, "new_work_email@example.com"),
+    			b24.MultifieldDelete(contact.Email[1].ID),
+    		},
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("crm.contact.update: %w", err)
+    }
     ```
 
 {% endlist %}
@@ -397,6 +464,142 @@ Upon a successful update, the method will return `true`.
                 print("No emails found to update.")
     ```
 
+- Go
+
+    ```go
+    // Setup in an empty directory — go get will not work without go mod init:
+    //
+    //	go mod init example && go get github.com/bitrix24/b24gosdk
+    //
+    // Run:
+    //
+    //	export B24_WEBHOOK_URL='https://your-portal.bitrix24.com/rest/1/token/' && go run .
+    //
+    // The example is self-contained: it creates a contact with two emails, reads their
+    // the IDs, changes the first address, deletes the second, displays the result, and
+    // cleans up after itself. It runs on any portal, nothing needs to be edited.
+    package main
+
+    import (
+    	"context"
+    	"encoding/json"
+    	"fmt"
+    	"log"
+    	"os"
+
+    	b24 "github.com/bitrix24/b24gosdk"
+    )
+
+    func main() {
+    	if err := run(context.Background()); err != nil {
+    		log.Fatal(err)
+    	}
+    }
+
+    func run(ctx context.Context) error {
+    	// The webhook path is a secret, so it comes from the environment, not from the code.
+    	core := b24.NewClient(os.Getenv("B24_WEBHOOK_URL")).Core()
+
+    	// --- step 1: a contact with two emails
+    	// A multifield row WITHOUT an ID adds a value. MultifieldAdd assembles it
+    	// for you: VALUE and VALUE_TYPE under the required keys.
+    	res, err := core.Call(ctx, "crm.contact.add", b24.Params{
+    		"fields": b24.Params{
+    			"NAME": "New contact",
+    			"EMAIL": []map[string]any{
+    				b24.MultifieldAdd("work_email@nomail.com", "WORK"),
+    				b24.MultifieldAdd("home_email@nomail.com", "HOME"),
+    			},
+    		},
+    	}) // no WithIdempotent: a retry would create a second contact
+    	if err != nil {
+    		return fmt.Errorf("crm.contact.add: %w", err)
+    	}
+
+    	// There is no wrapper: result is the ID of the new contact itself.
+    	var contactID b24.ID
+    	if err := json.Unmarshal(res.Result, &contactID); err != nil {
+    		return fmt.Errorf("parse contact ID: %w", err)
+    	}
+    	defer del(ctx, core, "crm.contact.delete", b24.Params{"id": contactID})
+    	fmt.Printf("contact %d created\n", contactID)
+
+    	// --- step 2: read the contact to learn the IDs of the multifield rows
+    	res, err = core.Call(ctx, "crm.contact.get",
+    		b24.Params{"id": contactID}, b24.WithIdempotent())
+    	if err != nil {
+    		return fmt.Errorf("crm.contact.get: %w", err)
+    	}
+
+    	// The portal issues the IDs of multifield rows, and without them you cannot change or
+    	// delete a value.
+    	var contact struct {
+    		Email []multifield `json:"EMAIL"`
+    	}
+    	if err := json.Unmarshal(res.Result, &contact); err != nil {
+    		return fmt.Errorf("parse contact: %w", err)
+    	}
+    	if len(contact.Email) < 2 {
+    		return fmt.Errorf("contact %d has fewer than two emails", contactID)
+    	}
+    	for _, e := range contact.Email {
+    		fmt.Printf("  before: ID=%d %s (%s)\n", e.ID, e.Value, e.ValueType)
+    	}
+
+    	// --- step 3: change the first address, delete the second
+    	// Rows that are not mentioned stay as they were. That is why deletion is
+    	// a SEPARATE command rather than the absence of a row in the list: a skipped
+    	// the address simply survives.
+    	_, err = core.Call(ctx, "crm.contact.update", b24.Params{
+    		"id": contactID,
+    		"fields": b24.Params{
+    			"EMAIL": []map[string]any{
+    				b24.MultifieldSet(contact.Email[0].ID, "new_work_email@example.com"),
+    				b24.MultifieldDelete(contact.Email[1].ID),
+    			},
+    		},
+    	})
+    	if err != nil {
+    		return fmt.Errorf("crm.contact.update: %w", err)
+    	}
+    	// --- check: what is left on the contact
+
+    	res, err = core.Call(ctx, "crm.contact.get",
+    		b24.Params{"id": contactID}, b24.WithIdempotent())
+    	if err != nil {
+    		return fmt.Errorf("crm.contact.get after the update: %w", err)
+    	}
+    	var updated struct {
+    		Email []multifield `json:"EMAIL"`
+    	}
+    	if err := json.Unmarshal(res.Result, &updated); err != nil {
+    		return fmt.Errorf("parse the contact after the update: %w", err)
+    	}
+    	for _, e := range updated.Email {
+    		fmt.Printf("  after: ID=%d %s (%s)\n", e.ID, e.Value, e.ValueType)
+    	}
+    	return nil
+    }
+
+    // multifield is a single row of a crm_multifield field. The ID arrives
+    // AS A STRING ("1328"), hence b24.ID rather than int.
+    type multifield struct {
+    	ID        b24.ID `json:"ID"`
+    	Value     string `json:"VALUE"`
+    	ValueType string `json:"VALUE_TYPE"`
+    	TypeID    string `json:"TYPE_ID"`
+    }
+
+    // del removes what was created. A cleanup error is printed but not returned: it must not
+    // mask the real error of the scenario.
+    func del(ctx context.Context, core *b24.Core, method string, params b24.Params) {
+    	if _, err := core.Call(ctx, method, params); err != nil {
+    		fmt.Fprintf(os.Stderr, "cleanup, %s: %v
+", method, err)
+    	}
+    }
+    ```
+
 {% endlist %}
 
 ## Phone Number Example
@@ -455,6 +658,31 @@ Check which required fields are set for contacts in your Bitrix24. All required 
     ))
     ```
 
+- Go
+
+    ```go
+    // A multifield row WITHOUT an ID adds a value. MultifieldAdd assembles it
+    // for you: VALUE and VALUE_TYPE under the required keys.
+    res, err := core.Call(ctx, "crm.contact.add", b24.Params{
+    	"fields": b24.Params{
+    		"NAME": "New contact",
+    		"PHONE": []map[string]any{
+    			b24.MultifieldAdd("+49 900 000-00-00", "WORK"),
+    			b24.MultifieldAdd("+49 900 111-11-11", "MOBILE"),
+    		},
+    	},
+    }) // no WithIdempotent: a retry would create a second contact
+    if err != nil {
+    	return fmt.Errorf("crm.contact.add: %w", err)
+    }
+
+    // There is no wrapper: result is the ID of the new contact itself.
+    var contactID b24.ID
+    if err := json.Unmarshal(res.Result, &contactID); err != nil {
+    	return fmt.Errorf("parse contact ID: %w", err)
+    }
+    ```
+
 {% endlist %}
 
 As a result, you will receive the identifier of the new contact, for example, `25`.
@@ -495,6 +723,28 @@ To retrieve information about the created contact, use the [crm.contact.get](../
     ```python
     # get contact information by ID
     contact_data = client.crm.contact.get(bitrix_id=contact_id).result
+    ```
+
+- Go
+
+    ```go
+    res, err = core.Call(ctx, "crm.contact.get",
+    	b24.Params{"id": contactID}, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("crm.contact.get: %w", err)
+    }
+
+    // The portal issues the IDs of multifield rows, and without them you cannot change or
+    // delete a value.
+    var contact struct {
+    	Phone []multifield `json:"PHONE"`
+    }
+    if err := json.Unmarshal(res.Result, &contact); err != nil {
+    	return fmt.Errorf("parse contact: %w", err)
+    }
+    if len(contact.Phone) < 2 {
+    	return fmt.Errorf("contact %d has fewer than two phone numbers", contactID)
+    }
     ```
 
 {% endlist %}
@@ -576,6 +826,26 @@ To change the list of phone numbers, call the [crm.contact.update](../../../api-
 
     # update contact
     client.crm.contact.update(bitrix_id=contact_id, fields={"PHONE": ar_update_phone})
+    ```
+
+- Go
+
+    ```go
+    // Rows that are not mentioned stay as they were. That is why deletion is
+    // a SEPARATE command rather than the absence of a row in the list: a skipped
+    // the number simply survives.
+    _, err = core.Call(ctx, "crm.contact.update", b24.Params{
+    	"id": contactID,
+    	"fields": b24.Params{
+    		"PHONE": []map[string]any{
+    			b24.MultifieldSet(contact.Phone[0].ID, "+49 900 222-22-22"),
+    			b24.MultifieldDelete(contact.Phone[1].ID),
+    		},
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("crm.contact.update: %w", err)
+    }
     ```
 
 {% endlist %}
@@ -752,6 +1022,142 @@ Upon a successful update, the method will return `true`.
                         print("Contact successfully updated.")
             else:
                 print("No phones found to update.")
+    ```
+
+- Go
+
+    ```go
+    // Setup in an empty directory — go get will not work without go mod init:
+    //
+    //	go mod init example && go get github.com/bitrix24/b24gosdk
+    //
+    // Run:
+    //
+    //	export B24_WEBHOOK_URL='https://your-portal.bitrix24.com/rest/1/token/' && go run .
+    //
+    // The example is self-contained: it creates a contact with two phone numbers, reads their
+    // the IDs, changes the first number, deletes the second, displays the result, and
+    // cleans up after itself. It runs on any portal, nothing needs to be edited.
+    package main
+
+    import (
+    	"context"
+    	"encoding/json"
+    	"fmt"
+    	"log"
+    	"os"
+
+    	b24 "github.com/bitrix24/b24gosdk"
+    )
+
+    func main() {
+    	if err := run(context.Background()); err != nil {
+    		log.Fatal(err)
+    	}
+    }
+
+    func run(ctx context.Context) error {
+    	// The webhook path is a secret, so it comes from the environment, not from the code.
+    	core := b24.NewClient(os.Getenv("B24_WEBHOOK_URL")).Core()
+
+    	// --- step 1: a contact with two phone numbers
+    	// A multifield row WITHOUT an ID adds a value. MultifieldAdd assembles it
+    	// for you: VALUE and VALUE_TYPE under the required keys.
+    	res, err := core.Call(ctx, "crm.contact.add", b24.Params{
+    		"fields": b24.Params{
+    			"NAME": "New contact",
+    			"PHONE": []map[string]any{
+    				b24.MultifieldAdd("+49 900 000-00-00", "WORK"),
+    				b24.MultifieldAdd("+49 900 111-11-11", "MOBILE"),
+    			},
+    		},
+    	}) // no WithIdempotent: a retry would create a second contact
+    	if err != nil {
+    		return fmt.Errorf("crm.contact.add: %w", err)
+    	}
+
+    	// There is no wrapper: result is the ID of the new contact itself.
+    	var contactID b24.ID
+    	if err := json.Unmarshal(res.Result, &contactID); err != nil {
+    		return fmt.Errorf("parse contact ID: %w", err)
+    	}
+    	defer del(ctx, core, "crm.contact.delete", b24.Params{"id": contactID})
+    	fmt.Printf("contact %d created\n", contactID)
+
+    	// --- step 2: read the contact to learn the IDs of the multifield rows
+    	res, err = core.Call(ctx, "crm.contact.get",
+    		b24.Params{"id": contactID}, b24.WithIdempotent())
+    	if err != nil {
+    		return fmt.Errorf("crm.contact.get: %w", err)
+    	}
+
+    	// The portal issues the IDs of multifield rows, and without them you cannot change or
+    	// delete a value.
+    	var contact struct {
+    		Phone []multifield `json:"PHONE"`
+    	}
+    	if err := json.Unmarshal(res.Result, &contact); err != nil {
+    		return fmt.Errorf("parse contact: %w", err)
+    	}
+    	if len(contact.Phone) < 2 {
+    		return fmt.Errorf("contact %d has fewer than two phone numbers", contactID)
+    	}
+    	for _, e := range contact.Phone {
+    		fmt.Printf("  before: ID=%d %s (%s)\n", e.ID, e.Value, e.ValueType)
+    	}
+
+    	// --- step 3: change the first address, delete the second
+    	// Rows that are not mentioned stay as they were. That is why deletion is
+    	// a SEPARATE command rather than the absence of a row in the list: a skipped
+    	// the number simply survives.
+    	_, err = core.Call(ctx, "crm.contact.update", b24.Params{
+    		"id": contactID,
+    		"fields": b24.Params{
+    			"PHONE": []map[string]any{
+    				b24.MultifieldSet(contact.Phone[0].ID, "+49 900 222-22-22"),
+    				b24.MultifieldDelete(contact.Phone[1].ID),
+    			},
+    		},
+    	})
+    	if err != nil {
+    		return fmt.Errorf("crm.contact.update: %w", err)
+    	}
+    	// --- check: what is left on the contact
+
+    	res, err = core.Call(ctx, "crm.contact.get",
+    		b24.Params{"id": contactID}, b24.WithIdempotent())
+    	if err != nil {
+    		return fmt.Errorf("crm.contact.get after the update: %w", err)
+    	}
+    	var updated struct {
+    		Phone []multifield `json:"PHONE"`
+    	}
+    	if err := json.Unmarshal(res.Result, &updated); err != nil {
+    		return fmt.Errorf("parse the contact after the update: %w", err)
+    	}
+    	for _, e := range updated.Phone {
+    		fmt.Printf("  after: ID=%d %s (%s)\n", e.ID, e.Value, e.ValueType)
+    	}
+    	return nil
+    }
+
+    // multifield is a single row of a crm_multifield field. The ID arrives
+    // AS A STRING ("1328"), hence b24.ID rather than int.
+    type multifield struct {
+    	ID        b24.ID `json:"ID"`
+    	Value     string `json:"VALUE"`
+    	ValueType string `json:"VALUE_TYPE"`
+    	TypeID    string `json:"TYPE_ID"`
+    }
+
+    // del removes what was created. A cleanup error is printed but not returned: it must not
+    // mask the real error of the scenario.
+    func del(ctx context.Context, core *b24.Core, method string, params b24.Params) {
+    	if _, err := core.Call(ctx, method, params); err != nil {
+    		fmt.Fprintf(os.Stderr, "cleanup, %s: %v
+", method, err)
+    	}
+    }
     ```
 
 {% endlist %}

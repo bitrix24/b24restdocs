@@ -218,6 +218,31 @@ You can obtain the identifier by creating a new flow using the method [tasks.flo
     }
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "tasks.flow.Flow.get", b24.Params{
+    	"flowId": 517,
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("tasks.flow.Flow.get: %w", err)
+    }
+
+    var item struct {
+    	ID         b24.ID `json:"id"`
+    	CreatorID  b24.ID `json:"creatorId"`
+    	OwnerID    b24.ID `json:"ownerId"`
+    	GroupID    b24.ID `json:"groupId"`
+    	TemplateID b24.ID `json:"templateId"`
+    	Efficiency int    `json:"efficiency"`
+    }
+    if err := json.Unmarshal(res.Result, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.ID, item.CreatorID)
+    ```
+
 {% endlist %}
 
 ## Response Handling

@@ -249,6 +249,30 @@ The comment author must have access to the attached files; otherwise, the method
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "task.commentitem.add", b24.Params{
+    	"TASKID": 8017,
+    	"FIELDS": b24.Params{
+    		"POST_MESSAGE":         "Text of the new task comment",
+    		"AUTHOR_ID":            503,
+    		"POST_DATE":            "2025-07-15T14:30:00+03:00",
+    		"UF_FORUM_MESSAGE_DOC": []string{"n4755", "n4753"},
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("task.commentitem.add: %w", err)
+    }
+
+    var newID b24.ID
+    if err := json.Unmarshal(res.Result, &newID); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("id:", newID)
+    ```
+
 {% endlist %}
 
 ## Response Handling

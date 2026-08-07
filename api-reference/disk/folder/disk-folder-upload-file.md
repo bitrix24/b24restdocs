@@ -304,6 +304,33 @@ Default is `false` ||
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "disk.folder.uploadFile", b24.Params{
+    	"id": 8930,
+    	"data": b24.Params{
+    		"NAME": "test.png",
+    	},
+    	"fileContent":        []string{"test.png", "iVBORw0KGgoAAAANSUhEUgAAAD4AAABDCAYAAADEfbZbAAAACXBIWXMAABJ0AAASdAHeZh94...rk5CYII="},
+    	"generateUniqueName": true,
+    	"rights": []b24.Params{
+    		{
+    			"TASK_ID":     75,
+    			"ACCESS_CODE": "U1271",
+    		},
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("disk.folder.uploadFile: %w", err)
+    }
+
+    // The response arrives as json.RawMessage — unmarshal it
+    // into a struct matching the response shape shown below on this page.
+    fmt.Printf("%s\n", res.Result)
+    ```
+
 {% endlist %}
 
 ### Uploading a File via URL {#uploadurl}
@@ -414,6 +441,22 @@ Default is `false` ||
         echo '<PRE>';
         print_r($result);
         echo '</PRE>';
+        ```
+
+    - Go
+
+        ```go
+        // client and ctx are already created — see the Go SDK section
+        res, err := client.Core().Call(ctx, "disk.folder.uploadFile", b24.Params{
+        	"id": 8930,
+        })
+        if err != nil {
+        	return fmt.Errorf("disk.folder.uploadFile: %w", err)
+        }
+
+        // The response arrives as json.RawMessage — unmarshal it
+        // into a struct matching the response shape shown below on this page.
+        fmt.Printf("%s\n", res.Result)
         ```
 
     {% endlist %}

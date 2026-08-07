@@ -231,6 +231,27 @@ If both parameters are not filled, the task is added to the stage column accordi
     }
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "task.stages.movetask", b24.Params{
+    	"id":      1,
+    	"stageId": 2,
+    	"before":  3,
+    	"after":   4,
+    })
+    if err != nil {
+    	return fmt.Errorf("task.stages.movetask: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

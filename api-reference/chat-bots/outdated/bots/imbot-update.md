@@ -235,6 +235,33 @@ To update the bot, at least one parameter must be provided: a field in `FIELDS` 
     }
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "imbot.update", b24.Params{
+    	"BOT_ID": 39,
+    	"FIELDS": b24.Params{
+    		"CODE":          "newbot_v2",
+    		"EVENT_HANDLER": "https://example.com/bot/events",
+    		"PROPERTIES": b24.Params{
+    			"NAME":          "UpdatedBot",
+    			"WORK_POSITION": "Updated description",
+    		},
+    	},
+    	"CLIENT_ID": "**put_your_client_id_here**",
+    })
+    if err != nil {
+    	return fmt.Errorf("imbot.update: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

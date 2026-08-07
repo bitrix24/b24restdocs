@@ -145,4 +145,21 @@ The method `crm.product.property.settings.fields` returns the description of the
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.product.property.settings.fields", b24.Params{
+    	"propertyType": "S",
+    	"userType":     "HTML",
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("crm.product.property.settings.fields: %w", err)
+    }
+
+    // The response arrives as json.RawMessage — unmarshal it
+    // into a struct matching the response shape shown below on this page.
+    fmt.Printf("%s\n", res.Result)
+    ```
+
 {% endlist %}

@@ -345,6 +345,30 @@ If the composition of blocks is not returned, create a test page and check the b
     }
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "landing.landing.addByTemplate", b24.Params{
+    	"siteId": 157,
+    	"code":   "krayt.monotovar@KraytPetShop",
+    	"fields": b24.Params{
+    		"TITLE":       "Spring Promotion",
+    		"DESCRIPTION": "SEO description of the promotion page",
+    		"FOLDER_ID":   95,
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("landing.landing.addByTemplate: %w", err)
+    }
+
+    var value b24.ID
+    if err := json.Unmarshal(res.Result, &value); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("result:", value)
+    ```
+
 {% endlist %}
 
 ## Response Handling

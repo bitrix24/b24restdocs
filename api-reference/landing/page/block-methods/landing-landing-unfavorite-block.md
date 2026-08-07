@@ -197,6 +197,24 @@ If you pass the identifier of a regular block on the page or a non-existent iden
     }
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "landing.landing.unFavoriteBlock", b24.Params{
+    	"blockId": 28619,
+    })
+    if err != nil {
+    	return fmt.Errorf("landing.landing.unFavoriteBlock: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

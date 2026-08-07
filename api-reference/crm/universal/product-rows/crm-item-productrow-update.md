@@ -337,6 +337,48 @@ Possible values:
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.item.productrow.update", b24.Params{
+    	"id": 17648,
+    	"fields": b24.Params{
+    		"productId":      9621,
+    		"price":          90000,
+    		"quantity":       3,
+    		"discountTypeId": 2,
+    		"discountRate":   10,
+    		"taxRate":        10,
+    		"taxIncluded":    "Y",
+    		"measureCode":    796,
+    		"sort":           20,
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("crm.item.productrow.update: %w", err)
+    }
+
+    // The method wraps the response in an object with the "productRow" key.
+    raw, ok := b24.Unwrap(res.Result, "productRow")
+    if !ok {
+    	return fmt.Errorf("no productRow key in the response")
+    }
+
+    var item struct {
+    	ID          b24.ID `json:"id"`
+    	OwnerID     b24.ID `json:"ownerId"`
+    	OwnerType   string `json:"ownerType"`
+    	ProductID   b24.ID `json:"productId"`
+    	ProductName string `json:"productName"`
+    	Price       int    `json:"price"`
+    }
+    if err := json.Unmarshal(raw, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.ID, item.OwnerID)
+    ```
+
 {% endlist %}
 
 ## Response on Success

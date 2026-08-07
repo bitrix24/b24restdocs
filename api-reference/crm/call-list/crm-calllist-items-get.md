@@ -230,6 +230,33 @@ You can get the status code values using the method [crm.calllist.statuslist](./
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.calllist.items.get", b24.Params{
+    	"LIST_ID": 13,
+    	"FILTER": b24.Params{
+    		"STATUS": "IN_WORK",
+    	},
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("crm.calllist.items.get: %w", err)
+    }
+
+    var items []struct {
+    	ID         b24.ID `json:"ID"`
+    	Status     string `json:"STATUS"`
+    	EntityType int    `json:"ENTITY_TYPE"`
+    }
+    if err := json.Unmarshal(res.Result, &items); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    for _, it := range items {
+    	fmt.Println(it.ID, it.Status)
+    }
+    ```
+
 {% endlist %}
 
 ## Response Handling

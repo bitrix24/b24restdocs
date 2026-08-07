@@ -257,6 +257,44 @@ Can be used for synchronization with the order or delivery status by identifier 
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "sale.status.add", b24.Params{
+    	"fields": b24.Params{
+    		"id":     "MS",
+    		"type":   "O",
+    		"notify": "Y",
+    		"sort":   500,
+    		"color":  "#FF0000",
+    		"xmlId":  "myStatusXmlId",
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("sale.status.add: %w", err)
+    }
+
+    // The method wraps the response in an object with the "status" key.
+    raw, ok := b24.Unwrap(res.Result, "status")
+    if !ok {
+    	return fmt.Errorf("no status key in the response")
+    }
+
+    var item struct {
+    	Color  string `json:"color"`
+    	ID     string `json:"id"`
+    	Notify string `json:"notify"`
+    	Sort   int    `json:"sort"`
+    	Type   string `json:"type"`
+    	XmlID  string `json:"xmlId"`
+    }
+    if err := json.Unmarshal(raw, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.Color, item.ID)
+    ```
+
 {% endlist %}
 
 ## Response Handling

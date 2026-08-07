@@ -349,6 +349,61 @@ The method `catalog.price.modify` updates the product price collection. It allow
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "catalog.price.modify", b24.Params{
+    	"fields": b24.Params{
+    		"product": b24.Params{
+    			"id": 8,
+    			"prices": []b24.Params{
+    				{
+    					"catalogGroupId": 1,
+    					"currency":       "EUR",
+    					"price":          2001,
+    				},
+    				{
+    					"catalogGroupId": 3,
+    					"currency":       "EUR",
+    					"price":          2001,
+    				},
+    				{
+    					"catalogGroupId": 5,
+    					"currency":       "EUR",
+    					"price":          2001,
+    					"id":             122,
+    				},
+    			},
+    		},
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("catalog.price.modify: %w", err)
+    }
+
+    // The method wraps the response in an object with the "prices" key.
+    raw, ok := b24.Unwrap(res.Result, "prices")
+    if !ok {
+    	return fmt.Errorf("no prices key in the response")
+    }
+
+    var items []struct {
+    	CatalogGroupID b24.ID `json:"catalogGroupId"`
+    	Currency       string `json:"currency"`
+    	ID             b24.ID `json:"id"`
+    	Price          int    `json:"price"`
+    	PriceScale     int    `json:"priceScale"`
+    	ProductID      b24.ID `json:"productId"`
+    }
+    if err := json.Unmarshal(raw, &items); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    for _, it := range items {
+    	fmt.Println(it.CatalogGroupID)
+    }
+    ```
+
 {% endlist %}
 
 ## Response Handling

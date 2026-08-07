@@ -104,6 +104,23 @@ We will create arrays:
    }
    ```
 
+- Go
+
+    ```go
+    // The phone and the email to search by. Neighbouring tabs ask them from
+    // the user; here they are set by constants, because the example itself creates
+    // objects with these values.
+    const (
+    	phone = "+49 900 555-35-35"
+    	email = "duplicate@example.com"
+    )
+
+    // The IDs of the found objects and their detailed data. The keys are
+    // the same ones that crm.duplicate.findbycomm returns.
+    entityIDs := map[string][]b24.ID{"LEAD": nil, "CONTACT": nil, "COMPANY": nil}
+    rows := make([]row, 0)
+    ```
+
 {% endlist %}
 
 ## 1. Find Duplicate Objects
@@ -204,6 +221,38 @@ We will combine the identifiers of the found duplicates into the `entityIDs` arr
                entity_ids[key].extend(result[key])
    ```
 
+- Go
+
+    ```go
+    // The method searches by ONE communication type per call, so the phone and the email are
+    // queried separately, and the IDs are accumulated in a shared map.
+    for _, comm := range []struct{ typ, value string }{
+    	{"PHONE", phone},
+    	{"EMAIL", email},
+    } {
+    	if comm.value == "" {
+    		continue
+    	}
+    	res, err := core.Call(ctx, "crm.duplicate.findbycomm", b24.Params{
+    		"type":   comm.typ,
+    		"values": []string{comm.value},
+    	}, b24.WithIdempotent())
+    	if err != nil {
+    		return fmt.Errorf("crm.duplicate.findbycomm %s: %w", comm.typ, err)
+    	}
+
+    	// The response is an object with the LEAD, CONTACT, and COMPANY keys. A key may be absent
+    	// at all: if nothing was found for that type, it is simply not sent.
+    	var found map[string][]b24.ID
+    	if err := json.Unmarshal(res.Result, &found); err != nil {
+    		return fmt.Errorf("parse duplicates: %w", err)
+    	}
+    	for key := range entityIDs {
+    		entityIDs[key] = appendUnique(entityIDs[key], found[key])
+    	}
+    }
+    ```
+
 {% endlist %}
 
 The [crm.duplicate.findbycomm](../../../api-reference/crm/duplicates/crm-duplicate-find-by-comm.md) method returns lists of identifiers for leads, contacts, and companies where the specified phone number or email address is found.
@@ -271,6 +320,25 @@ If the list of lead identifiers is not empty, we will retrieve their data using 
        if result:
            result_entity["lead"] = result
    ```
+
+- Go
+
+    ```go
+    res, err := core.Call(ctx, "crm.lead.list", b24.Params{
+    	"filter": b24.Params{"ID": entityIDs["LEAD"]},
+    	"select": []string{"ID", "NAME", "LAST_NAME", "PHONE", "EMAIL", "TITLE"},
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("crm.lead.list: %w", err)
+    }
+    var leads []entity
+    if err := json.Unmarshal(res.Result, &leads); err != nil {
+    	return fmt.Errorf("parse leads: %w", err)
+    }
+    for _, e := range leads {
+    	rows = append(rows, e.row("lead"))
+    }
+    ```
 
 {% endlist %}
 
@@ -358,6 +426,25 @@ If the list of contact IDs is not empty, we will retrieve their data using the m
            result_entity["contact"] = result
    ```
 
+- Go
+
+    ```go
+    res, err := core.Call(ctx, "crm.contact.list", b24.Params{
+    	"filter": b24.Params{"ID": entityIDs["CONTACT"]},
+    	"select": []string{"ID", "NAME", "LAST_NAME", "PHONE", "EMAIL"},
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("crm.contact.list: %w", err)
+    }
+    var contacts []entity
+    if err := json.Unmarshal(res.Result, &contacts); err != nil {
+    	return fmt.Errorf("parse contacts: %w", err)
+    }
+    for _, e := range contacts {
+    	rows = append(rows, e.row("contact"))
+    }
+    ```
+
 {% endlist %}
 
 The [crm.contact.list](../../../api-reference/crm/contacts/crm-contact-list.md) method returns a list of contacts by filter.
@@ -441,6 +528,26 @@ If the list of company IDs is not empty, we will retrieve their data using the m
        if result:
            result_entity["company"] = result
    ```
+
+- Go
+
+    ```go
+    // A company has no first or last name — its name is in TITLE.
+    res, err := core.Call(ctx, "crm.company.list", b24.Params{
+    	"filter": b24.Params{"ID": entityIDs["COMPANY"]},
+    	"select": []string{"ID", "TITLE", "PHONE", "EMAIL"},
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("crm.company.list: %w", err)
+    }
+    var companies []entity
+    if err := json.Unmarshal(res.Result, &companies); err != nil {
+    	return fmt.Errorf("parse companies: %w", err)
+    }
+    for _, e := range companies {
+    	rows = append(rows, e.row("company"))
+    }
+    ```
 
 {% endlist %}
 
@@ -593,6 +700,19 @@ Display the found records in the `Identifier`, Object type, `Name/First and last
    for row in table:
        print("\t".join(map(str, row)))
    ```
+
+- Go
+
+    ```go
+    if len(rows) == 0 {
+    	fmt.Println("No duplicates found")
+    	return nil
+    }
+    fmt.Println("ID\tType\tName\tPhone\tEmail")
+    for _, r := range rows {
+    	fmt.Printf("%d\t%s\t%s\t%s\t%s\n", r.ID, r.Kind, r.Title, r.Phone, r.Email)
+    }
+    ```
 
 {% endlist %}
 
@@ -1009,6 +1129,270 @@ Display the found records in the `Identifier`, Object type, `Name/First and last
 
     for row in table:
         print("\t".join(map(str, row)))
+    ```
+
+- Go
+
+    ```go
+    // Setup in an empty directory — go get will not work without go mod init:
+    //
+    //	go mod init example && go get github.com/bitrix24/b24gosdk
+    //
+    // Run:
+    //
+    //	export B24_WEBHOOK_URL='https://your-portal.bitrix24.com/rest/1/token/' && go run .
+    //
+    // The example is self-contained: it creates a lead, a contact, and a company with the same
+    // phone number and email, finds them as duplicates, prints the table, and cleans up
+    // itself. It runs on any portal, nothing needs to be edited.
+    package main
+
+    import (
+    	"context"
+    	"encoding/json"
+    	"fmt"
+    	"log"
+    	"os"
+    	"strings"
+
+    	b24 "github.com/bitrix24/b24gosdk"
+    )
+
+    func main() {
+    	if err := run(context.Background()); err != nil {
+    		log.Fatal(err)
+    	}
+    }
+
+    func run(ctx context.Context) error {
+    	// The webhook path is a secret, so it comes from the environment, not from the code.
+    	core := b24.NewClient(os.Getenv("B24_WEBHOOK_URL")).Core()
+    	// The phone and the email to search by. Neighbouring tabs ask them from
+    	// the user; here they are set by constants, because the example itself creates
+    	// objects with these values.
+    	const (
+    		phone = "+49 900 555-35-35"
+    		email = "duplicate@example.com"
+    	)
+
+    	// The IDs of the found objects and their detailed data. The keys are
+    	// the same ones that crm.duplicate.findbycomm returns.
+    	entityIDs := map[string][]b24.ID{"LEAD": nil, "CONTACT": nil, "COMPANY": nil}
+    	rows := make([]row, 0)
+    	// --- setup: our own duplicates
+
+    	cleanup, err := createDuplicates(ctx, core, phone, email)
+    	defer cleanup()
+    	if err != nil {
+    		return err
+    	}
+
+    	// --- step 1: search for duplicates by communications
+    	// The method searches by ONE communication type per call, so the phone and the email are
+    	// queried separately, and the IDs are accumulated in a shared map.
+    	for _, comm := range []struct{ typ, value string }{
+    		{"PHONE", phone},
+    		{"EMAIL", email},
+    	} {
+    		if comm.value == "" {
+    			continue
+    		}
+    		res, err := core.Call(ctx, "crm.duplicate.findbycomm", b24.Params{
+    			"type":   comm.typ,
+    			"values": []string{comm.value},
+    		}, b24.WithIdempotent())
+    		if err != nil {
+    			return fmt.Errorf("crm.duplicate.findbycomm %s: %w", comm.typ, err)
+    		}
+
+    		// The response is an object with the LEAD, CONTACT, and COMPANY keys. A key may be absent
+    		// at all: if nothing was found for that type, it is simply not sent.
+    		var found map[string][]b24.ID
+    		if err := json.Unmarshal(res.Result, &found); err != nil {
+    			return fmt.Errorf("parse duplicates: %w", err)
+    		}
+    		for key := range entityIDs {
+    			entityIDs[key] = appendUnique(entityIDs[key], found[key])
+    		}
+    	}
+    	fmt.Printf("found: leads %d, contacts %d, companies %d\n",
+    		len(entityIDs["LEAD"]), len(entityIDs["CONTACT"]), len(entityIDs["COMPANY"]))
+
+    	// --- step 2: the lead data
+
+    	if len(entityIDs["LEAD"]) > 0 {
+    		res, err := core.Call(ctx, "crm.lead.list", b24.Params{
+    			"filter": b24.Params{"ID": entityIDs["LEAD"]},
+    			"select": []string{"ID", "NAME", "LAST_NAME", "PHONE", "EMAIL", "TITLE"},
+    		}, b24.WithIdempotent())
+    		if err != nil {
+    			return fmt.Errorf("crm.lead.list: %w", err)
+    		}
+    		var leads []entity
+    		if err := json.Unmarshal(res.Result, &leads); err != nil {
+    			return fmt.Errorf("parse leads: %w", err)
+    		}
+    		for _, e := range leads {
+    			rows = append(rows, e.row("lead"))
+    		}
+    	}
+
+    	// --- step 3: the contact data
+
+    	if len(entityIDs["CONTACT"]) > 0 {
+    		res, err := core.Call(ctx, "crm.contact.list", b24.Params{
+    			"filter": b24.Params{"ID": entityIDs["CONTACT"]},
+    			"select": []string{"ID", "NAME", "LAST_NAME", "PHONE", "EMAIL"},
+    		}, b24.WithIdempotent())
+    		if err != nil {
+    			return fmt.Errorf("crm.contact.list: %w", err)
+    		}
+    		var contacts []entity
+    		if err := json.Unmarshal(res.Result, &contacts); err != nil {
+    			return fmt.Errorf("parse contacts: %w", err)
+    		}
+    		for _, e := range contacts {
+    			rows = append(rows, e.row("contact"))
+    		}
+    	}
+
+    	// --- step 4: the company data
+
+    	if len(entityIDs["COMPANY"]) > 0 {
+    		// A company has no first or last name — its name is in TITLE.
+    		res, err := core.Call(ctx, "crm.company.list", b24.Params{
+    			"filter": b24.Params{"ID": entityIDs["COMPANY"]},
+    			"select": []string{"ID", "TITLE", "PHONE", "EMAIL"},
+    		}, b24.WithIdempotent())
+    		if err != nil {
+    			return fmt.Errorf("crm.company.list: %w", err)
+    		}
+    		var companies []entity
+    		if err := json.Unmarshal(res.Result, &companies); err != nil {
+    			return fmt.Errorf("parse companies: %w", err)
+    		}
+    		for _, e := range companies {
+    			rows = append(rows, e.row("company"))
+    		}
+    	}
+
+    	// --- print the table
+    	if len(rows) == 0 {
+    		fmt.Println("No duplicates found")
+    		return nil
+    	}
+    	fmt.Println("ID\tType\tName\tPhone\tEmail")
+    	for _, r := range rows {
+    		fmt.Printf("%d\t%s\t%s\t%s\t%s\n", r.ID, r.Kind, r.Title, r.Phone, r.Email)
+    	}
+    	return nil
+    }
+
+    // entity is the common shape of a row in the lead, contact, and company lists: the field set
+    // differs between them, but the ones needed here match.
+    type entity struct {
+    	ID       b24.ID       `json:"ID"`
+    	Title    string       `json:"TITLE"`
+    	Name     string       `json:"NAME"`
+    	LastName string       `json:"LAST_NAME"`
+    	Phone    []multifield `json:"PHONE"`
+    	Email    []multifield `json:"EMAIL"`
+    }
+
+    // multifield is a row of a crm_multifield field: the phone and the email are stored
+    // as a list of objects, even when there is a single value.
+    type multifield struct {
+    	Value string `json:"VALUE"`
+    }
+
+    type row struct {
+    	ID                        b24.ID
+    	Kind, Title, Phone, Email string
+    }
+
+    func (e entity) row(kind string) row {
+    	title := strings.TrimSpace(e.Name + " " + e.LastName)
+    	if title == "" {
+    		title = e.Title
+    	}
+    	return row{ID: e.ID, Kind: kind, Title: title,
+    		Phone: first(e.Phone), Email: first(e.Email)}
+    }
+
+    func first(values []multifield) string {
+    	if len(values) == 0 {
+    		return "—"
+    	}
+    	return values[0].Value
+    }
+
+    func appendUnique(dst, src []b24.ID) []b24.ID {
+    	seen := make(map[b24.ID]bool, len(dst))
+    	for _, id := range dst {
+    		seen[id] = true
+    	}
+    	for _, id := range src {
+    		if !seen[id] {
+    			seen[id] = true
+    			dst = append(dst, id)
+    		}
+    	}
+    	return dst
+    }
+
+    // --- helpers: data setup and cleanup
+
+    // createDuplicates creates a lead, a contact, and a company with the same phone number and
+    // and email — exactly the situation the scenario looks for. It returns a function
+    // of the cleanup: it is called even when the setup broke off halfway.
+    func createDuplicates(ctx context.Context, core *b24.Core, phone, email string) (func(), error) {
+    	comm := b24.Params{
+    		"PHONE": []map[string]any{b24.MultifieldAdd(phone, "WORK")},
+    		"EMAIL": []map[string]any{b24.MultifieldAdd(email, "WORK")},
+    	}
+    	created := map[string]b24.ID{}
+    	cleanup := func() {
+    		for method, id := range created {
+    			del(ctx, core, method, b24.Params{"id": id})
+    		}
+    	}
+
+    	for _, spec := range []struct {
+    		add, delete string
+    		fields      b24.Params
+    	}{
+    		{"crm.lead.add", "crm.lead.delete", b24.Params{"TITLE": "Filling out the CRM form \", "NAME": "Klaus", "LAST_NAME": "Weber"}},
+    		{"crm.contact.add", "crm.contact.delete", b24.Params{"NAME": "Klaus", "LAST_NAME": "Weber"}},
+    		{"crm.company.add", "crm.company.delete", b24.Params{"TITLE": "Filling out the CRM form \"}},
+    	} {
+    		fields := b24.Params{}
+    		for k, v := range spec.fields {
+    			fields[k] = v
+    		}
+    		for k, v := range comm {
+    			fields[k] = v
+    		}
+    		res, err := core.Call(ctx, spec.add, b24.Params{"fields": fields})
+    		if err != nil {
+    			return cleanup, fmt.Errorf("%s: %w", spec.add, err)
+    		}
+    		var id b24.ID
+    		if err := json.Unmarshal(res.Result, &id); err != nil {
+    			return cleanup, fmt.Errorf("parse the ID from %s: %w", spec.add, err)
+    		}
+    		created[spec.delete] = id
+    	}
+    	return cleanup, nil
+    }
+
+    // del removes what was created. A cleanup error is printed but not returned: it must not
+    // mask the real error of the scenario.
+    func del(ctx context.Context, core *b24.Core, method string, params b24.Params) {
+    	if _, err := core.Call(ctx, method, params); err != nil {
+    		fmt.Fprintf(os.Stderr, "cleanup, %s: %v
+", method, err)
+    	}
+    }
     ```
 
 {% endlist %}

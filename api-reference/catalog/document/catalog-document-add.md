@@ -284,6 +284,44 @@ To fill in product data, use the method [catalog.document.element.add](./documen
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "catalog.document.add", b24.Params{
+    	"fields": b24.Params{
+    		"docType":       "A",
+    		"currency":      "EUR",
+    		"responsibleId": 29,
+    		"docNumber":     "IN-00042",
+    		"title":         "Receipt from Supplier-1",
+    		"commentary":    "Planned warehouse replenishment",
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("catalog.document.add: %w", err)
+    }
+
+    // The method wraps the response in an object with the "document" key.
+    raw, ok := b24.Unwrap(res.Result, "document")
+    if !ok {
+    	return fmt.Errorf("no document key in the response")
+    }
+
+    var item struct {
+    	Commentary string `json:"commentary"`
+    	CreatedBy  int    `json:"createdBy"`
+    	Currency   string `json:"currency"`
+    	DateCreate string `json:"dateCreate"`
+    	DateModify string `json:"dateModify"`
+    	DateStatus string `json:"dateStatus"`
+    }
+    if err := json.Unmarshal(raw, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.Commentary, item.CreatedBy)
+    ```
+
 {% endlist %}
 
 ## Response Handling

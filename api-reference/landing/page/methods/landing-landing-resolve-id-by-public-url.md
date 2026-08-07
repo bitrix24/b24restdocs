@@ -208,6 +208,25 @@ The site ID can be obtained using the method [landing.site.getList](../../site/l
     }
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "landing.landing.resolveIdByPublicUrl", b24.Params{
+    	"landingUrl": "/catalog/sale/",
+    	"siteId":     1817,
+    })
+    if err != nil {
+    	return fmt.Errorf("landing.landing.resolveIdByPublicUrl: %w", err)
+    }
+
+    var value b24.ID
+    if err := json.Unmarshal(res.Result, &value); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("result:", value)
+    ```
+
 {% endlist %}
 
 ## Response Handling

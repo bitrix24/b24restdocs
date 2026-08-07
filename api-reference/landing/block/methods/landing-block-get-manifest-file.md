@@ -210,6 +210,24 @@ The code can only contain Latin letters, numbers, and the characters `.` `_` `-`
     }
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "landing.block.getmanifestfile", b24.Params{
+    	"code": "01.big_with_text",
+    })
+    if err != nil {
+    	return fmt.Errorf("landing.block.getmanifestfile: %w", err)
+    }
+
+    keys, ok := b24.Keys(res.Result)
+    if !ok {
+    	return fmt.Errorf("expected an object in the response")
+    }
+    fmt.Println("fields in response:", len(keys))
+    ```
+
 {% endlist %}
 
 ## Response Handling

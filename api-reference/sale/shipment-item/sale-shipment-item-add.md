@@ -234,6 +234,41 @@ Can be used to synchronize the current product position in the shipment with a s
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "sale.shipmentitem.add", b24.Params{
+    	"fields": b24.Params{
+    		"orderDeliveryId": 33,
+    		"basketId":        18,
+    		"quantity":        1,
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("sale.shipmentitem.add: %w", err)
+    }
+
+    // The method wraps the response in an object with the "shipmentItem" key.
+    raw, ok := b24.Unwrap(res.Result, "shipmentItem")
+    if !ok {
+    	return fmt.Errorf("no shipmentItem key in the response")
+    }
+
+    var item struct {
+    	BasketID         b24.ID `json:"basketId"`
+    	DateInsert       string `json:"dateInsert"`
+    	ID               b24.ID `json:"id"`
+    	OrderDeliveryID  b24.ID `json:"orderDeliveryId"`
+    	Quantity         int    `json:"quantity"`
+    	ReservedQuantity int    `json:"reservedQuantity"`
+    }
+    if err := json.Unmarshal(raw, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.BasketID, item.DateInsert)
+    ```
+
 {% endlist %}
 
 ## Response Handling

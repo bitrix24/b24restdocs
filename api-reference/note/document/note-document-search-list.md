@@ -245,6 +245,29 @@ The new API call differs by adding the `/api/` segment to the request URL:
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "note.document.search.list", b24.Params{
+    	"query": "borscht recipe",
+    	"pagination": b24.Params{
+    		"limit": 50,
+    	},
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("note.document.search.list: %w", err)
+    }
+
+    var item struct {
+    	HasMore bool `json:"hasMore"`
+    }
+    if err := json.Unmarshal(res.Result, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.HasMore)
+    ```
+
 {% endlist %}
 
 ## Response Handling

@@ -452,6 +452,54 @@ For clarity, select only the necessary fields:
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.contact.list", b24.Params{
+    	"filter": b24.Params{
+    		"SOURCE_ID":       "CRM_FORM",
+    		"!=NAME":          "",
+    		"!=LAST_NAME":     "",
+    		"=%NAME":          "K%",
+    		"=%LAST_NAME":     "W%",
+    		"EMAIL":           "special-for@example.com",
+    		"@ASSIGNED_BY_ID": []int{1, 6},
+    		"IMPORT":          "Y",
+    		">=DATE_CREATE":   "**put_six_month_ago_date_here**",
+    	},
+    	"order": b24.Params{
+    		"LAST_NAME": "ASC",
+    		"NAME":      "ASC",
+    	},
+    	"select": []string{"ID", "NAME", "LAST_NAME", "EMAIL", "EXPORT", "ASSIGNED_BY_ID", "DATE_CREATE"},
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("crm.contact.list: %w", err)
+    }
+
+    var items []struct {
+    	ID           b24.ID `json:"ID"`
+    	Name         string `json:"NAME"`
+    	LastName     string `json:"LAST_NAME"`
+    	Export       string `json:"EXPORT"`
+    	AssignedByID b24.ID `json:"ASSIGNED_BY_ID"`
+    	DateCreate   string `json:"DATE_CREATE"`
+    }
+    if err := json.Unmarshal(res.Result, &items); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    for _, it := range items {
+    	fmt.Println(it.ID, it.Name)
+    }
+
+    // Total and Next are filled in by list methods; for a full
+    // list traversal, use client.Core().Pages and Scan.
+    if res.Total != nil {
+    	fmt.Println("total:", *res.Total)
+    }
+    ```
+
 {% endlist %}
 
 ## Response Handling

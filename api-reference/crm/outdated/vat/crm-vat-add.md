@@ -196,6 +196,29 @@ Default — 100 ||
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.vat.add", b24.Params{
+    	"fields": b24.Params{
+    		"ACTIVE": "Y",
+    		"C_SORT": 100,
+    		"NAME":   "VAT 20%",
+    		"RATE":   20.0,
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("crm.vat.add: %w", err)
+    }
+
+    var newID b24.ID
+    if err := json.Unmarshal(res.Result, &newID); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("id:", newID)
+    ```
+
 {% endlist %}
 
 ## Response Handling

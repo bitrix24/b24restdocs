@@ -164,6 +164,30 @@ Pass the same botToken that was specified during the chat bot registration ||
     }
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "imbot.v2.Chat.InputAction.notify", b24.Params{
+    	"botId":             456,
+    	"botToken":          "my_bot_token",
+    	"dialogId":          "chat5",
+    	"statusMessageCode": "IMBOT_AGENT_ACTION_THINKING",
+    	"duration":          30,
+    })
+    if err != nil {
+    	return fmt.Errorf("imbot.v2.Chat.InputAction.notify: %w", err)
+    }
+
+    var item struct {
+    	Result bool `json:"result"`
+    }
+    if err := json.Unmarshal(res.Result, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.Result)
+    ```
+
 {% endlist %}
 
 ## Response Handling

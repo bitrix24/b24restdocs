@@ -241,6 +241,37 @@ There are three ways to call the method.
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "vote.AttachedVote.recall", b24.Params{
+    	"attachId": "**put_attach_id**",
+    })
+    if err != nil {
+    	return fmt.Errorf("vote.AttachedVote.recall: %w", err)
+    }
+
+    // The method wraps the response in an object with the "attach" key.
+    raw, ok := b24.Unwrap(res.Result, "attach")
+    if !ok {
+    	return fmt.Errorf("no attach key in the response")
+    }
+
+    var item struct {
+    	ID        b24.ID `json:"ID"`
+    	VoteID    b24.ID `json:"VOTE_ID"`
+    	Counter   int    `json:"COUNTER"`
+    	Anonymity int    `json:"ANONYMITY"`
+    	Options   int    `json:"OPTIONS"`
+    	CanEdit   bool   `json:"canEdit"`
+    }
+    if err := json.Unmarshal(raw, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.ID, item.VoteID)
+    ```
+
 {% endlist %}
 
 ## Response Handling

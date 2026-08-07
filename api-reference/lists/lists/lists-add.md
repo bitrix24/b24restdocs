@@ -372,6 +372,46 @@ If the parameter is not provided, the authorized user who called the method is a
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "lists.add", b24.Params{
+    	"IBLOCK_TYPE_ID": "lists",
+    	"IBLOCK_CODE":    "my_custom_list",
+    	"FIELDS": b24.Params{
+    		"NAME":        "My new list",
+    		"DESCRIPTION": "List for tracking tasks in the project",
+    		"SORT":        500,
+    		"BIZPROC":     "Y",
+    	},
+    	"MESSAGES": b24.Params{
+    		"ELEMENTS_NAME":  "Tasks",
+    		"ELEMENT_NAME":   "Task",
+    		"ELEMENT_ADD":    "Add task",
+    		"ELEMENT_EDIT":   "Edit task",
+    		"ELEMENT_DELETE": "Delete task",
+    		"SECTIONS_NAME":  "Sections",
+    		"SECTION_NAME":   "Section",
+    		"SECTION_ADD":    "Add section",
+    		"SECTION_EDIT":   "Edit section",
+    		"SECTION_DELETE": "Delete section",
+    	},
+    	"RIGHTS": b24.Params{
+    		"U1271": "X",
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("lists.add: %w", err)
+    }
+
+    var newID b24.ID
+    if err := json.Unmarshal(res.Result, &newID); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("id:", newID)
+    ```
+
 {% endlist %}
 
 ## Response Handling

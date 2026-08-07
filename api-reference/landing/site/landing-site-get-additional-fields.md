@@ -200,6 +200,31 @@ The site identifier can be obtained using the method [landing.site.getList](./la
     }
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "landing.site.getadditionalfields", b24.Params{
+    	"id": 205,
+    })
+    if err != nil {
+    	return fmt.Errorf("landing.site.getadditionalfields: %w", err)
+    }
+
+    var item struct {
+    	CookiesUse         string `json:"COOKIES_USE"`
+    	CookiesAgreementID b24.ID `json:"COOKIES_AGREEMENT_ID"`
+    	CookiesColorBg     string `json:"COOKIES_COLOR_BG"`
+    	CookiesColorText   string `json:"COOKIES_COLOR_TEXT"`
+    	CookiesPosition    string `json:"COOKIES_POSITION"`
+    	CookiesMode        string `json:"COOKIES_MODE"`
+    }
+    if err := json.Unmarshal(res.Result, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.CookiesUse, item.CookiesAgreementID)
+    ```
+
 {% endlist %}
 
 ## Response Handling

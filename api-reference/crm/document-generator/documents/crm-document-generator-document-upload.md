@@ -347,6 +347,46 @@ Example of uploading a document where:
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.documentgenerator.document.upload", b24.Params{
+    	"fields": b24.Params{
+    		"entityTypeId": 2,
+    		"entityId":     101,
+    		"fileContent":  "**base64_docx_content**",
+    		"region":       "ru",
+    		"title":        "Product demonstration",
+    		"number":       "2026-001",
+    		"pdfContent":   "**base64_pdf_content**",
+    		"imageContent": "**base64_image_content**",
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("crm.documentgenerator.document.upload: %w", err)
+    }
+
+    // The method wraps the response in an object with the "document" key.
+    raw, ok := b24.Unwrap(res.Result, "document")
+    if !ok {
+    	return fmt.Errorf("no document key in the response")
+    }
+
+    var item struct {
+    	ChangeStampsEnabled        bool   `json:"changeStampsEnabled"`
+    	ChangeStampsDisabledReason string `json:"changeStampsDisabledReason"`
+    	ChangeQrCodeEnabled        bool   `json:"changeQrCodeEnabled"`
+    	QrCodeEnabled              bool   `json:"qrCodeEnabled"`
+    	ChangeQrCodeDisabledReason string `json:"changeQrCodeDisabledReason"`
+    	DownloadUrl                string `json:"downloadUrl"`
+    }
+    if err := json.Unmarshal(raw, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.ChangeStampsEnabled, item.ChangeStampsDisabledReason)
+    ```
+
 {% endlist %}
 
 ## Response Handling

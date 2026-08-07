@@ -297,6 +297,25 @@ If you need to add an extranet user, you must pass the following fields: `EXTRAN
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "user.add", b24.Params{
+    	"EMAIL":         "newuser1@example.com",
+    	"UF_DEPARTMENT": []int{1},
+    })
+    if err != nil {
+    	return fmt.Errorf("user.add: %w", err)
+    }
+
+    var newID b24.ID
+    if err := json.Unmarshal(res.Result, &newID); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("id:", newID)
+    ```
+
 {% endlist %}
 
 ## Response Handling

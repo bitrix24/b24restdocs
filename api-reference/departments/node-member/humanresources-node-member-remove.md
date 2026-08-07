@@ -217,6 +217,22 @@ The new API call differs by adding the `/api/` segment to the request URL:
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "humanresources.node.member.remove", b24.Params{
+    	"nodeId":  15,
+    	"userIds": []int{18, 25, 31},
+    })
+    if err != nil {
+    	return fmt.Errorf("humanresources.node.member.remove: %w", err)
+    }
+
+    // The response shape is shown below on this page.
+    fmt.Printf("%s\n", res.Result)
+    ```
+
 {% endlist %}
 
 ## Response Handling

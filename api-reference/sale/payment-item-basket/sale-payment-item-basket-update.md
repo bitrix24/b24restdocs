@@ -227,6 +227,41 @@ This method updates the binding of the cart item to the payment.
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "sale.paymentitembasket.update", b24.Params{
+    	"id": 1186,
+    	"fields": b24.Params{
+    		"quantity": 1,
+    		"xmlId":    "myNewXmlId",
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("sale.paymentitembasket.update: %w", err)
+    }
+
+    // The method wraps the response in an object with the "paymentItemBasket" key.
+    raw, ok := b24.Unwrap(res.Result, "paymentItemBasket")
+    if !ok {
+    	return fmt.Errorf("no paymentItemBasket key in the response")
+    }
+
+    var item struct {
+    	BasketID   b24.ID `json:"basketId"`
+    	DateInsert string `json:"dateInsert"`
+    	ID         b24.ID `json:"id"`
+    	PaymentID  b24.ID `json:"paymentId"`
+    	Quantity   int    `json:"quantity"`
+    	XmlID      string `json:"xmlId"`
+    }
+    if err := json.Unmarshal(raw, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.BasketID, item.DateInsert)
+    ```
+
 {% endlist %}
 
 ## Response Handling

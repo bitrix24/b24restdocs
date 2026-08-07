@@ -201,6 +201,26 @@ If `NAME=DEFAULT` is passed with an empty `MESSAGE`, no new message will be adde
   }
   ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "imopenlines.bot.session.message.send", b24.Params{
+    	"CHAT_ID": 112,
+    	"NAME":    "DEFAULT",
+    	"MESSAGE": "Hello! How can I assist you?",
+    })
+    if err != nil {
+    	return fmt.Errorf("imopenlines.bot.session.message.send: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

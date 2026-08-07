@@ -167,6 +167,27 @@ It is recommended to use `1` and `0` (or `Y` and `N`), rather than arbitrary str
         ]
     );
     ```
+
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "imconnector.activate", b24.Params{
+    	"CONNECTOR": "myconnector",
+    	"LINE":      107,
+    	"ACTIVE":    "1",
+    })
+    if err != nil {
+    	return fmt.Errorf("imconnector.activate: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

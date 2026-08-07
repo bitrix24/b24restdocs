@@ -204,6 +204,37 @@ The method `biconnector.connector.get` returns information about the connector b
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "biconnector.connector.get", b24.Params{
+    	"id": 4,
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("biconnector.connector.get: %w", err)
+    }
+
+    // The method wraps the response in an object with the "item" key.
+    raw, ok := b24.Unwrap(res.Result, "item")
+    if !ok {
+    	return fmt.Errorf("no item key in the response")
+    }
+
+    var item struct {
+    	ID          b24.ID `json:"id"`
+    	Title       string `json:"title"`
+    	DateCreate  string `json:"dateCreate"`
+    	Logo        string `json:"logo"`
+    	Description string `json:"description"`
+    	Sort        int    `json:"sort"`
+    }
+    if err := json.Unmarshal(raw, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.ID, item.Title)
+    ```
+
 {% endlist %}
 
 

@@ -224,6 +224,28 @@ You can obtain the chat ID using the method [imopenlines.crm.chat.get](../chats/
     }
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "imopenlines.crm.message.add", b24.Params{
+    	"CRM_ENTITY_TYPE": "lead",
+    	"CRM_ENTITY":      1195,
+    	"USER_ID":         27,
+    	"CHAT_ID":         1341,
+    	"MESSAGE":         "Message text",
+    })
+    if err != nil {
+    	return fmt.Errorf("imopenlines.crm.message.add: %w", err)
+    }
+
+    var newID b24.ID
+    if err := json.Unmarshal(res.Result, &newID); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("id:", newID)
+    ```
+
 {% endlist %}
 
 ## Response Handling

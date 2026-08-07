@@ -274,6 +274,36 @@ The formula for calculating the `start` parameter value:
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "disk.file.getVersions", b24.Params{
+    	"id": 9043,
+    	"filter": b24.Params{
+    		"NAME": "%test%",
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("disk.file.getVersions: %w", err)
+    }
+
+    var items []struct {
+    	ID                   b24.ID `json:"ID"`
+    	ObjectID             b24.ID `json:"OBJECT_ID"`
+    	Size                 string `json:"SIZE"`
+    	Name                 string `json:"NAME"`
+    	GlobalContentVersion string `json:"GLOBAL_CONTENT_VERSION"`
+    	CreateTime           string `json:"CREATE_TIME"`
+    }
+    if err := json.Unmarshal(res.Result, &items); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    for _, it := range items {
+    	fmt.Println(it.ID, it.ObjectID)
+    }
+    ```
+
 {% endlist %}
 
 ## Response Handling

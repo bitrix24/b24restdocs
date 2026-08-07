@@ -173,6 +173,24 @@ You can obtain the identifier using the resource creation method [calendar.resou
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "calendar.resource.delete", b24.Params{
+    	"resourceId": 521,
+    })
+    if err != nil {
+    	return fmt.Errorf("calendar.resource.delete: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 {% include [Note on examples](../../../_includes/examples.md) %}

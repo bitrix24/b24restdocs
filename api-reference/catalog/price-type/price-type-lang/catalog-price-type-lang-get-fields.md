@@ -175,6 +175,24 @@ No parameters.
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "catalog.priceTypeLang.getFields", nil, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("catalog.priceTypeLang.getFields: %w", err)
+    }
+
+    // The method wraps the response in an object with the "priceTypeLang" key.
+    raw, ok := b24.Unwrap(res.Result, "priceTypeLang")
+    if !ok {
+    	return fmt.Errorf("no priceTypeLang key in the response")
+    }
+
+    fmt.Printf("%s\n", raw)
+    ```
+
 {% endlist %}
 
 ## Response Handling

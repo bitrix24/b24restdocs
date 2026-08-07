@@ -387,6 +387,41 @@ The list of available funnels can be obtained using the method [crm.category.lis
     except Exception as error:
         print(f"Unexpected error: {error}")
     ```
+
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.deal.recurring.update", b24.Params{
+    	"id": 15,
+    	"fields": b24.Params{
+    		"ACTIVE":      "Y",
+    		"CATEGORY_ID": "2",
+    		"IS_LIMIT":    "D",
+    		"LIMIT_DATE":  "2027-03-05",
+    		"START_DATE":  "2026-04-05",
+    		"PARAMS": b24.Params{
+    			"MODE":                   "multiple",
+    			"MULTIPLE_TYPE":          "month",
+    			"MULTIPLE_INTERVAL":      1,
+    			"OFFSET_BEGINDATE_TYPE":  "day",
+    			"OFFSET_BEGINDATE_VALUE": 1,
+    			"OFFSET_CLOSEDATE_TYPE":  "month",
+    			"OFFSET_CLOSEDATE_VALUE": 2,
+    		},
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("crm.deal.recurring.update: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

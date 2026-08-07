@@ -300,6 +300,31 @@ Possible values:
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "im.chat.add", b24.Params{
+    	"USERS":       []int{103, 547},
+    	"TYPE":        "CHAT",
+    	"TITLE":       "Deal Chat",
+    	"DESCRIPTION": "Discussing the deal here",
+    	"COLOR":       "PINK",
+    	"MESSAGE":     "Welcome to the deal chat",
+    	"ENTITY_TYPE": "CRM",
+    	"ENTITY_ID":   "DEAL|1663",
+    })
+    if err != nil {
+    	return fmt.Errorf("im.chat.add: %w", err)
+    }
+
+    var newID b24.ID
+    if err := json.Unmarshal(res.Result, &newID); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("id:", newID)
+    ```
+
 {% endlist %}
 
 ## Response Handling

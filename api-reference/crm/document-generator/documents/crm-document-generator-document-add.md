@@ -429,6 +429,56 @@ Example of creating a document where:
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.documentgenerator.document.add", b24.Params{
+    	"templateId":   39,
+    	"entityTypeId": 2,
+    	"entityId":     101,
+    	"values": b24.Params{
+    		"DocumentNumber": "2026-001",
+    	},
+    	"fields": b24.Params{
+    		"DocumentTitle": b24.Params{
+    			"title":    "Document Title",
+    			"value":    "Demo Implementation of Product 1",
+    			"required": "Y",
+    			"default":  "Demo Implementation of Product 1",
+    			"chain": []any{
+    				b24.Params{},
+    				"getTitle",
+    			},
+    			"VALUE": "Test via fields",
+    		},
+    	},
+    	"stampsEnabled": 1,
+    })
+    if err != nil {
+    	return fmt.Errorf("crm.documentgenerator.document.add: %w", err)
+    }
+
+    // The method wraps the response in an object with the "document" key.
+    raw, ok := b24.Unwrap(res.Result, "document")
+    if !ok {
+    	return fmt.Errorf("no document key in the response")
+    }
+
+    var item struct {
+    	ChangeStampsEnabled        bool   `json:"changeStampsEnabled"`
+    	ChangeStampsDisabledReason string `json:"changeStampsDisabledReason"`
+    	ChangeQrCodeEnabled        bool   `json:"changeQrCodeEnabled"`
+    	QrCodeEnabled              bool   `json:"qrCodeEnabled"`
+    	ChangeQrCodeDisabledReason string `json:"changeQrCodeDisabledReason"`
+    	DownloadUrl                string `json:"downloadUrl"`
+    }
+    if err := json.Unmarshal(raw, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.ChangeStampsEnabled, item.ChangeStampsDisabledReason)
+    ```
+
 {% endlist %}
 
 ## Response Handling

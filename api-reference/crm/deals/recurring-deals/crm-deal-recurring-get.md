@@ -232,6 +232,32 @@ The identifier can be obtained using the methods [crm.deal.recurring.list](./crm
     except Exception as error:
         print(f"Unexpected error: {error}")
     ```
+
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.deal.recurring.get", b24.Params{
+    	"id": 15,
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("crm.deal.recurring.get: %w", err)
+    }
+
+    var item struct {
+    	ID         b24.ID `json:"ID"`
+    	DealID     b24.ID `json:"DEAL_ID"`
+    	BasedID    b24.ID `json:"BASED_ID"`
+    	Active     string `json:"ACTIVE"`
+    	CategoryID b24.ID `json:"CATEGORY_ID"`
+    	IsLimit    string `json:"IS_LIMIT"`
+    }
+    if err := json.Unmarshal(res.Result, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.ID, item.DealID)
+    ```
+
 {% endlist %}
 
 ## Response Handling

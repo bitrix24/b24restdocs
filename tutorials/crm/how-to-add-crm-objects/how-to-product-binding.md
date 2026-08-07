@@ -164,6 +164,37 @@ Call [catalog.product.list](../../../api-reference/catalog/product/catalog-produ
         return result["products"]
     ```
 
+- Go
+
+    ```go
+    // select must contain id and iblockId — without them the method responds with an error.
+    // Sorting by id in descending order puts the newly created product first: on a
+    // production portal it is not needed; here it makes the example fast.
+    res, err := core.Call(ctx, "catalog.product.list", b24.Params{
+    	"select": []string{"id", "iblockId", "name"},
+    	"filter": b24.Params{"iblockId": iblockID},
+    	"order":  b24.Params{"id": "DESC"},
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("catalog.product.list: %w", err)
+    }
+
+    // The method returns products page by page, up to 50 at a time, and wraps them in
+    // an object with the products key.
+    var catalog struct {
+    	Products []struct {
+    		ID   b24.ID `json:"id"`
+    		Name string `json:"name"`
+    	} `json:"products"`
+    }
+    if err := json.Unmarshal(res.Result, &catalog); err != nil {
+    	return fmt.Errorf("parse products: %w", err)
+    }
+    if len(catalog.Products) == 0 {
+    	return fmt.Errorf("catalog %d has no products", iblockID)
+    }
+    ```
+
 {% endlist %}
 
 The method returns products paginated. This example uses the first page, up to 50 products. If your catalog contains more products, iterate through the pages using the `start` parameter.
@@ -295,6 +326,35 @@ The product price is stored separately from the product card. For each found pro
         raise RuntimeError("There is no active product in the catalog with a price greater than zero")
     ```
 
+- Go
+
+    ```go
+    res, err := core.Call(ctx, "catalog.price.list", b24.Params{
+    	"select": []string{"id", "productId", "price", "currency"},
+    	"filter": b24.Params{"productId": p.ID},
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("catalog.price.list: %w", err)
+    }
+    var prices struct {
+    	Prices []struct {
+    		Price    float64 `json:"price"`
+    		Currency string  `json:"currency"`
+    	} `json:"prices"`
+    }
+    if err := json.Unmarshal(res.Result, &prices); err != nil {
+    	return fmt.Errorf("parse prices: %w", err)
+    }
+    // Take the first price above zero: a product can have several price
+    // price types, and some of them are zero.
+    for _, pr := range prices.Prices {
+    	if pr.Price > 0 {
+    		basePrice, currency = pr.Price, pr.Currency
+    		break
+    	}
+    }
+    ```
+
 {% endlist %}
 
 Short response:
@@ -373,6 +433,32 @@ Call [crm.item.add](../../../api-reference/crm/universal/crm-item-add.md). Pass:
         })
 
         return int(result["item"]["id"])
+    ```
+
+- Go
+
+    ```go
+    res, err = core.Call(ctx, "crm.item.add", b24.Params{
+    	"entityTypeId": entityTypeID,
+    	"fields": b24.Params{
+    		"title": "Deal with products",
+    		// The currency is taken from the price in step 2: line items are calculated in the currency
+    		// of the object, and a mismatch here would corrupt the totals.
+    		"currencyId": currency,
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("crm.item.add: %w", err)
+    }
+
+    raw, ok := b24.Unwrap(res.Result, "item", "id")
+    if !ok {
+    	return fmt.Errorf("no item.id in %s", res.Result)
+    }
+    var itemID b24.ID
+    if err := json.Unmarshal(raw, &itemID); err != nil {
+    	return fmt.Errorf("parse object ID: %w", err)
+    }
     ```
 
 {% endlist %}
@@ -577,6 +663,52 @@ The [crm.item.productrow.set](../../../api-reference/crm/universal/product-rows/
         return result["productRows"]
     ```
 
+- Go
+
+    ```go
+    // A fixed discount is the lesser of 100 currency units and half the price,
+    // so that the resulting line item price does not go negative.
+    fixedDiscount := math.Min(100, basePrice/2)
+
+    rows := []b24.Params{
+    	// Tax 20%, tax is NOT included in the price.
+    	{"productId": chosenID, "price": basePrice,
+    		"taxRate": 20, "taxIncluded": "N", "quantity": 1, "sort": 10},
+    	// Tax 20%, tax is included in the price.
+    	{"productId": chosenID, "price": basePrice * 1.2,
+    		"taxRate": 20, "taxIncluded": "Y", "quantity": 1, "sort": 20},
+    	// A fixed discount: discountTypeId = 1.
+    	{"productId": chosenID, "price": basePrice - fixedDiscount,
+    		"discountTypeId": 1, "discountSum": fixedDiscount, "quantity": 1, "sort": 30},
+    	// A percentage discount: discountTypeId = 2.
+    	{"productId": chosenID, "price": basePrice * 0.9,
+    		"discountTypeId": 2, "discountRate": 10, "quantity": 1, "sort": 40},
+    }
+
+    // The method OVERWRITES the entire set of line items of the object: whatever is not in
+    // productRows will disappear from the object.
+    res, err = core.Call(ctx, "crm.item.productrow.set", b24.Params{
+    	"ownerType":   ownerType,
+    	"ownerId":     itemID,
+    	"productRows": rows,
+    })
+    if err != nil {
+    	return fmt.Errorf("crm.item.productrow.set: %w", err)
+    }
+
+    var saved struct {
+    	ProductRows []struct {
+    		ID       b24.ID  `json:"id"`
+    		Price    float64 `json:"price"`
+    		TaxRate  float64 `json:"taxRate"`
+    		Quantity float64 `json:"quantity"`
+    	} `json:"productRows"`
+    }
+    if err := json.Unmarshal(res.Result, &saved); err != nil {
+    	return fmt.Errorf("parse product rows: %w", err)
+    }
+    ```
+
 {% endlist %}
 
 Short response:
@@ -688,6 +820,322 @@ After adding the functions from the previous steps, select the required object t
     print("CRM object created #%s" % item_id)
     print("Product: %s" % product["name"])
     print(saved_rows)
+    ```
+
+- Go
+
+    ```go
+    // Setup in an empty directory — go get will not work without go mod init:
+    //
+    //	go mod init example && go get github.com/bitrix24/b24gosdk
+    //
+    // Run:
+    //
+    //	export B24_WEBHOOK_URL='https://your-portal.bitrix24.com/rest/1/token/' && go run .
+    //
+    // The example is self-contained: it creates its own product with a price in the catalog, creates
+    // a deal, retains four product rows in it with different taxes and
+    // discounts, reads them back, and cleans up after itself. It runs on any
+    // portal, nothing needs to be edited.
+    package main
+
+    import (
+    	"context"
+    	"encoding/json"
+    	"fmt"
+    	"log"
+    	"math"
+    	"os"
+
+    	b24 "github.com/bitrix24/b24gosdk"
+    )
+
+    // The CRM object type the products are bound to. The pair of values always goes
+    // together: the numeric entityTypeId for crm.item.add and the short ownerType for
+    // crm.item.productrow.set. A lead is 1 and "L", a deal is 2 and "D", an invoice is 31 and "SI",
+    // an estimate is 7 and "Q".
+    const (
+    	entityTypeID = 2
+    	ownerType    = "D"
+    )
+
+    // maxProducts limits the iteration: the price is requested by a separate call for
+    // each product, while the portal allows about two calls per second.
+    const maxProducts = 10
+
+    func main() {
+    	if err := run(context.Background()); err != nil {
+    		log.Fatal(err)
+    	}
+    }
+
+    func run(ctx context.Context) error {
+    	// The webhook path is a secret, so it comes from the environment, not from the code.
+    	core := b24.NewClient(os.Getenv("B24_WEBHOOK_URL")).Core()
+
+    	// --- setup: our own product with a price, so steps 1 and 2 have something to find
+
+    	iblockID, err := firstCatalog(ctx, core)
+    	if err != nil {
+    		return err
+    	}
+    	productID, err := addProductWithPrice(ctx, core, iblockID, 1000)
+    	if err != nil {
+    		return err
+    	}
+    	defer del(ctx, core, "catalog.product.delete", b24.Params{"id": productID})
+
+    	// --- step 1: the catalog products
+    	// select must contain id and iblockId — without them the method responds with an error.
+    	// Sorting by id in descending order puts the newly created product first: on a
+    	// production portal it is not needed; here it makes the example fast.
+    	res, err := core.Call(ctx, "catalog.product.list", b24.Params{
+    		"select": []string{"id", "iblockId", "name"},
+    		"filter": b24.Params{"iblockId": iblockID},
+    		"order":  b24.Params{"id": "DESC"},
+    	}, b24.WithIdempotent())
+    	if err != nil {
+    		return fmt.Errorf("catalog.product.list: %w", err)
+    	}
+
+    	// The method returns products page by page, up to 50 at a time, and wraps them in
+    	// an object with the products key.
+    	var catalog struct {
+    		Products []struct {
+    			ID   b24.ID `json:"id"`
+    			Name string `json:"name"`
+    		} `json:"products"`
+    	}
+    	if err := json.Unmarshal(res.Result, &catalog); err != nil {
+    		return fmt.Errorf("parse products: %w", err)
+    	}
+    	if len(catalog.Products) == 0 {
+    		return fmt.Errorf("catalog %d has no products", iblockID)
+    	}
+    	// --- step 2: the product price
+
+    	// The price is stored SEPARATELY from the product card: catalog.product.list does not
+    	// return it, so each product needs its own call.
+    	var (
+    		chosenID   b24.ID
+    		chosenName string
+    		basePrice  float64
+    		currency   string
+    	)
+    	for i, p := range catalog.Products {
+    		if i >= maxProducts {
+    			break
+    		}
+    		res, err := core.Call(ctx, "catalog.price.list", b24.Params{
+    			"select": []string{"id", "productId", "price", "currency"},
+    			"filter": b24.Params{"productId": p.ID},
+    		}, b24.WithIdempotent())
+    		if err != nil {
+    			return fmt.Errorf("catalog.price.list: %w", err)
+    		}
+    		var prices struct {
+    			Prices []struct {
+    				Price    float64 `json:"price"`
+    				Currency string  `json:"currency"`
+    			} `json:"prices"`
+    		}
+    		if err := json.Unmarshal(res.Result, &prices); err != nil {
+    			return fmt.Errorf("parse prices: %w", err)
+    		}
+    		// Take the first price above zero: a product can have several price
+    		// price types, and some of them are zero.
+    		for _, pr := range prices.Prices {
+    			if pr.Price > 0 {
+    				basePrice, currency = pr.Price, pr.Currency
+    				break
+    			}
+    		}
+    		if basePrice > 0 {
+    			chosenID, chosenName = p.ID, p.Name
+    			break
+    		}
+    	}
+    	if basePrice == 0 {
+    		return fmt.Errorf("the catalog has no active product with a price above zero")
+    	}
+    	fmt.Printf("product %d %q, price %.2f %s\n", chosenID, chosenName, basePrice, currency)
+
+    	// --- step 3: the CRM object
+    	res, err = core.Call(ctx, "crm.item.add", b24.Params{
+    		"entityTypeId": entityTypeID,
+    		"fields": b24.Params{
+    			"title": "Deal with products",
+    			// The currency is taken from the price in step 2: line items are calculated in the currency
+    			// of the object, and a mismatch here would corrupt the totals.
+    			"currencyId": currency,
+    		},
+    	})
+    	if err != nil {
+    		return fmt.Errorf("crm.item.add: %w", err)
+    	}
+
+    	raw, ok := b24.Unwrap(res.Result, "item", "id")
+    	if !ok {
+    		return fmt.Errorf("no item.id in %s", res.Result)
+    	}
+    	var itemID b24.ID
+    	if err := json.Unmarshal(raw, &itemID); err != nil {
+    		return fmt.Errorf("parse object ID: %w", err)
+    	}
+    	defer del(ctx, core, "crm.item.delete", b24.Params{
+    		"entityTypeId": entityTypeID, "id": itemID,
+    	})
+    	fmt.Printf("CRM object %d created\n", itemID)
+
+    	// --- step 4: the product rows
+    	// A fixed discount is the lesser of 100 currency units and half the price,
+    	// so that the resulting line item price does not go negative.
+    	fixedDiscount := math.Min(100, basePrice/2)
+
+    	rows := []b24.Params{
+    		// Tax 20%, tax is NOT included in the price.
+    		{"productId": chosenID, "price": basePrice,
+    			"taxRate": 20, "taxIncluded": "N", "quantity": 1, "sort": 10},
+    		// Tax 20%, tax is included in the price.
+    		{"productId": chosenID, "price": basePrice * 1.2,
+    			"taxRate": 20, "taxIncluded": "Y", "quantity": 1, "sort": 20},
+    		// A fixed discount: discountTypeId = 1.
+    		{"productId": chosenID, "price": basePrice - fixedDiscount,
+    			"discountTypeId": 1, "discountSum": fixedDiscount, "quantity": 1, "sort": 30},
+    		// A percentage discount: discountTypeId = 2.
+    		{"productId": chosenID, "price": basePrice * 0.9,
+    			"discountTypeId": 2, "discountRate": 10, "quantity": 1, "sort": 40},
+    	}
+
+    	// The method OVERWRITES the entire set of line items of the object: whatever is not in
+    	// productRows will disappear from the object.
+    	res, err = core.Call(ctx, "crm.item.productrow.set", b24.Params{
+    		"ownerType":   ownerType,
+    		"ownerId":     itemID,
+    		"productRows": rows,
+    	})
+    	if err != nil {
+    		return fmt.Errorf("crm.item.productrow.set: %w", err)
+    	}
+
+    	var saved struct {
+    		ProductRows []struct {
+    			ID       b24.ID  `json:"id"`
+    			Price    float64 `json:"price"`
+    			TaxRate  float64 `json:"taxRate"`
+    			Quantity float64 `json:"quantity"`
+    		} `json:"productRows"`
+    	}
+    	if err := json.Unmarshal(res.Result, &saved); err != nil {
+    		return fmt.Errorf("parse product rows: %w", err)
+    	}
+    	for _, r := range saved.ProductRows {
+    		fmt.Printf("  line item %d: %.2f x %.0f, tax %.0f%%\n",
+    			r.ID, r.Price, r.Quantity, r.TaxRate)
+    	}
+
+    	// --- check: read the line items back
+
+    	res, err = core.Call(ctx, "crm.item.productrow.list", b24.Params{
+    		// The "=" sign in the key name is part of the filter rather than a typo: it means an exact
+    		// comparison.
+    		"filter": b24.Params{"=ownerType": ownerType, "=ownerId": itemID},
+    	}, b24.WithIdempotent())
+    	if err != nil {
+    		return fmt.Errorf("crm.item.productrow.list: %w", err)
+    	}
+    	rawRows, ok := b24.Unwrap(res.Result, "productRows")
+    	if !ok {
+    		return fmt.Errorf("no productRows in %s", res.Result)
+    	}
+    	var check []json.RawMessage
+    	if err := json.Unmarshal(rawRows, &check); err != nil {
+    		return fmt.Errorf("parse the check: %w", err)
+    	}
+    	fmt.Printf("product rows in object %d: %d\n", itemID, len(check))
+    	return nil
+    }
+
+    // --- helpers: data setup and cleanup
+
+    func firstCatalog(ctx context.Context, core *b24.Core) (b24.ID, error) {
+    	res, err := core.Call(ctx, "catalog.catalog.list", b24.Params{
+    		"filter": b24.Params{"iblockTypeId": "CRM_PRODUCT_CATALOG"},
+    	}, b24.WithIdempotent())
+    	if err != nil {
+    		return 0, fmt.Errorf("catalog.catalog.list: %w", err)
+    	}
+    	var out struct {
+    		Catalogs []struct {
+    			IblockID b24.ID `json:"iblockId"`
+    		} `json:"catalogs"`
+    	}
+    	if err := json.Unmarshal(res.Result, &out); err != nil {
+    		return 0, err
+    	}
+    	if len(out.Catalogs) == 0 {
+    		return 0, fmt.Errorf("the portal has no commercial catalog")
+    	}
+    	return out.Catalogs[0].IblockID, nil
+    }
+
+    // addProductWithPrice creates a product and sets its price: the page takes a ready-made
+    // catalog, while the example must also work on an empty one.
+    func addProductWithPrice(ctx context.Context, core *b24.Core, iblockID b24.ID, price float64) (b24.ID, error) {
+    	res, err := core.Call(ctx, "catalog.product.add", b24.Params{
+    		"fields": b24.Params{
+    			"iblockId": iblockID,
+    			"name":     "Monitor",
+    			"active":   "Y",
+    		},
+    	})
+    	if err != nil {
+    		return 0, fmt.Errorf("catalog.product.add: %w", err)
+    	}
+    	// add responds with the element key, while get responds with the product key for the same entity.
+    	raw, ok := b24.Unwrap(res.Result, "element", "id")
+    	if !ok {
+    		return 0, fmt.Errorf("no element.id in %s", res.Result)
+    	}
+    	var productID b24.ID
+    	if err := json.Unmarshal(raw, &productID); err != nil {
+    		return 0, err
+    	}
+
+    	res, err = core.Call(ctx, "catalog.priceType.list", nil, b24.WithIdempotent())
+    	if err != nil {
+    		return productID, fmt.Errorf("catalog.priceType.list: %w", err)
+    	}
+    	var types struct {
+    		PriceTypes []struct {
+    			ID b24.ID `json:"id"`
+    		} `json:"priceTypes"`
+    	}
+    	if err := json.Unmarshal(res.Result, &types); err != nil {
+    		return productID, err
+    	}
+    	if len(types.PriceTypes) == 0 {
+    		return productID, fmt.Errorf("the portal has no price types")
+    	}
+    	_, err = core.Call(ctx, "catalog.price.add", b24.Params{
+    		"fields": b24.Params{
+    			"productId":      productID,
+    			"catalogGroupId": types.PriceTypes[0].ID,
+    			"price":          price,
+    			"currency":       "EUR",
+    		},
+    	})
+    	return productID, err
+    }
+
+    // del removes what was created. A cleanup error is printed but not returned: it must not
+    // mask the real error of the scenario.
+    func del(ctx context.Context, core *b24.Core, method string, params b24.Params) {
+    	if _, err := core.Call(ctx, method, params); err != nil {
+    		fmt.Fprintf(os.Stderr, "cleanup, %s: %v
+", method, err)
+    	}
+    }
     ```
 
 {% endlist %}

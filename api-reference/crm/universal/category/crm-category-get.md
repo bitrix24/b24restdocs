@@ -238,6 +238,38 @@ How to get information about the funnel with `id` = `1`, located in deals.
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.category.get", b24.Params{
+    	"entityTypeId": 2,
+    	"id":           1,
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("crm.category.get: %w", err)
+    }
+
+    // The method wraps the response in an object with the "category" key.
+    raw, ok := b24.Unwrap(res.Result, "category")
+    if !ok {
+    	return fmt.Errorf("no category key in the response")
+    }
+
+    var item struct {
+    	ID           b24.ID `json:"id"`
+    	Name         string `json:"name"`
+    	Sort         int    `json:"sort"`
+    	EntityTypeID b24.ID `json:"entityTypeId"`
+    	IsDefault    string `json:"isDefault"`
+    	OriginID     string `json:"originId"`
+    }
+    if err := json.Unmarshal(raw, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.ID, item.Name)
+    ```
+
 {% endlist %}
 
 ## Response Handling

@@ -449,6 +449,76 @@ To set the card configuration for a user with `id = 1` in companies:
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.company.details.configuration.set", b24.Params{
+    	"userId": 1,
+    	"data": []b24.Params{
+    		{
+    			"name":  "main",
+    			"title": "About the Company",
+    			"type":  "section",
+    			"elements": []b24.Params{
+    				{
+    					"name": "TITLE",
+    				},
+    				{
+    					"name": "LOGO",
+    				},
+    				{
+    					"name": "COMPANY_TYPE",
+    				},
+    				{
+    					"name": "POST",
+    				},
+    				{
+    					"name": "PHONE",
+    					"options": b24.Params{
+    						"defaultCountry": "RU",
+    					},
+    				},
+    				{
+    					"name": "EMAIL",
+    				},
+    				{
+    					"name": "CONTACT",
+    				},
+    			},
+    		},
+    		{
+    			"name":  "additional",
+    			"title": "Additional",
+    			"type":  "section",
+    			"elements": []b24.Params{
+    				{
+    					"name": "INDUSTRY",
+    				},
+    				{
+    					"name": "OPENED",
+    				},
+    				{
+    					"name": "ASSIGNED_BY_ID",
+    				},
+    				{
+    					"name": "COMMENTS",
+    				},
+    			},
+    		},
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("crm.company.details.configuration.set: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

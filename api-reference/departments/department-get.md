@@ -270,6 +270,34 @@ Details in the article [{#T}](../../settings/how-to-call-rest-api/list-methods-p
     except Exception as error:
         print(f"Unexpected error: {error}")
     ```
+
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "department.get", b24.Params{
+    	"sort":   "NAME",
+    	"order":  "DESC",
+    	"PARENT": 1,
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("department.get: %w", err)
+    }
+
+    var items []struct {
+    	ID     b24.ID `json:"ID"`
+    	Name   string `json:"NAME"`
+    	Sort   int    `json:"SORT"`
+    	Parent string `json:"PARENT"`
+    }
+    if err := json.Unmarshal(res.Result, &items); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    for _, it := range items {
+    	fmt.Println(it.ID, it.Name)
+    }
+    ```
+
 {% endlist %}
 
 ## Response Handling

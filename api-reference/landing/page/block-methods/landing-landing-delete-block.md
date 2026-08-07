@@ -216,6 +216,25 @@ The method works with an existing block from the page draft that has not yet bee
     }
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "landing.landing.deleteblock", b24.Params{
+    	"lid":   351,
+    	"block": 6428,
+    })
+    if err != nil {
+    	return fmt.Errorf("landing.landing.deleteblock: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

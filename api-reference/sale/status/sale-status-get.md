@@ -191,6 +191,36 @@ This method retrieves the values of all fields of the status.
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "sale.status.get", b24.Params{
+    	"id": "N",
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("sale.status.get: %w", err)
+    }
+
+    // The method wraps the response in an object with the "status" key.
+    raw, ok := b24.Unwrap(res.Result, "status")
+    if !ok {
+    	return fmt.Errorf("no status key in the response")
+    }
+
+    var item struct {
+    	Color  string `json:"color"`
+    	ID     string `json:"id"`
+    	Notify string `json:"notify"`
+    	Sort   int    `json:"sort"`
+    	Type   string `json:"type"`
+    }
+    if err := json.Unmarshal(raw, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.Color, item.ID)
+    ```
+
 {% endlist %}
 
 ## Response Handling

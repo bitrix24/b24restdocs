@@ -309,6 +309,29 @@ Needed for identifying typical business process templates or templates created b
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "bizproc.workflow.template.list", b24.Params{
+    	"SELECT": []string{"ID", "NAME", "USER_ID", "SYSTEM_CODE"},
+    	"FILTER": b24.Params{
+    		"MODULE_ID":    "lists",
+    		"AUTO_EXECUTE": 0,
+    	},
+    	"ORDER": b24.Params{
+    		"ID": "DESC",
+    	},
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("bizproc.workflow.template.list: %w", err)
+    }
+
+    // The response arrives as json.RawMessage — unmarshal it
+    // into a struct matching the response shape shown below on this page.
+    fmt.Printf("%s\n", res.Result)
+    ```
+
 {% endlist %}
 
 ## Response Handling

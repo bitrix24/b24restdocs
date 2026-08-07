@@ -193,6 +193,24 @@ You can obtain the identifier by creating a new flow using the method [tasks.flo
     }
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "tasks.flow.Flow.activate", b24.Params{
+    	"flowId": 517,
+    })
+    if err != nil {
+    	return fmt.Errorf("tasks.flow.Flow.activate: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

@@ -156,6 +156,25 @@ Replace the values in the examples:
     ?>
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "event.bind", b24.Params{
+    	"event":   "ONAPPTEST",
+    	"handler": "https://example.com/handler.php",
+    })
+    if err != nil {
+    	return fmt.Errorf("event.bind: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 A successful registration returns `true`.
@@ -270,6 +289,24 @@ In the example, the `any` parameter is used as a test value. After the call, it 
         echo 'successful';
     }
     ?>
+    ```
+
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "event.test", b24.Params{
+    	"any": "data",
+    })
+    if err != nil {
+    	return fmt.Errorf("event.test: %w", err)
+    }
+
+    var value b24.ID
+    if err := json.Unmarshal(res.Result, &value); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("result:", value)
     ```
 
 {% endlist %}

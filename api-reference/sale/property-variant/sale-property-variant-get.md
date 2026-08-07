@@ -191,6 +191,37 @@ This method retrieves the variant value of an order property. It is applicable o
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "sale.propertyvariant.get", b24.Params{
+    	"id": 6,
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("sale.propertyvariant.get: %w", err)
+    }
+
+    // The method wraps the response in an object with the "propertyVariant" key.
+    raw, ok := b24.Unwrap(res.Result, "propertyVariant")
+    if !ok {
+    	return fmt.Errorf("no propertyVariant key in the response")
+    }
+
+    var item struct {
+    	Description  string `json:"description"`
+    	ID           b24.ID `json:"id"`
+    	Name         string `json:"name"`
+    	OrderPropsID b24.ID `json:"orderPropsId"`
+    	Sort         int    `json:"sort"`
+    	Value        string `json:"value"`
+    }
+    if err := json.Unmarshal(raw, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.Description, item.ID)
+    ```
+
 {% endlist %}
 
 ## Response Handling

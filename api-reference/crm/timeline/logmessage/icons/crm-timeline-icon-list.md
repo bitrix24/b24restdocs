@@ -266,6 +266,34 @@ No parameters.
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.timeline.icon.list", nil, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("crm.timeline.icon.list: %w", err)
+    }
+
+    // The method wraps the response in an object with the "icons" key.
+    raw, ok := b24.Unwrap(res.Result, "icons")
+    if !ok {
+    	return fmt.Errorf("no icons key in the response")
+    }
+
+    var items []struct {
+    	Code     string `json:"code"`
+    	IsSystem bool   `json:"isSystem"`
+    	FileUri  string `json:"fileUri"`
+    }
+    if err := json.Unmarshal(raw, &items); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    for _, it := range items {
+    	fmt.Println(it.Code)
+    }
+    ```
+
 {% endlist %}
 
 ## Response Handling

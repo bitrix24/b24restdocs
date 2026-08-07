@@ -297,6 +297,30 @@ For the correct operation of status stages, the sorting must follow this order:
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.status.add", b24.Params{
+    	"fields": b24.Params{
+    		"ENTITY_ID": "DEAL_STAGE_1",
+    		"STATUS_ID": "DECISION",
+    		"NAME":      "Decision making",
+    		"SORT":      70,
+    		"COLOR":     "#FFA900",
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("crm.status.add: %w", err)
+    }
+
+    var newID b24.ID
+    if err := json.Unmarshal(res.Result, &newID); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("id:", newID)
+    ```
+
 {% endlist %}
 
 ## Response Handling

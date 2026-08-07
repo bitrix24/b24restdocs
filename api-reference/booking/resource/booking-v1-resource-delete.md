@@ -182,6 +182,24 @@ Can be obtained from the methods [booking.v1.resource.add](./booking-v1-resource
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "booking.v1.resource.delete", b24.Params{
+    	"id": 15,
+    })
+    if err != nil {
+    	return fmt.Errorf("booking.v1.resource.delete: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

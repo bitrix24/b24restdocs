@@ -311,6 +311,28 @@ You can obtain the identifier of an existing survey using the [log.blogpost.get]
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "log.blogpost.update", b24.Params{
+    	"POST_ID":    217,
+    	"POST_TITLE": "New Message Title",
+    	"FILES": b24.Params{
+    		"505": "del",
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("log.blogpost.update: %w", err)
+    }
+
+    var value b24.ID
+    if err := json.Unmarshal(res.Result, &value); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("result:", value)
+    ```
+
 {% endlist %}
 
 ## Response Handling

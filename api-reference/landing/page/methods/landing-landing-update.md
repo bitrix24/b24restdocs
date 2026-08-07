@@ -287,6 +287,30 @@ For publishing and unpublishing, use the methods [landing.landing.publication](.
     }
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "landing.landing.update", b24.Params{
+    	"lid": 349,
+    	"fields": b24.Params{
+    		"TITLE":       "Spring Sale 2026",
+    		"CODE":        "spring-sale-2026",
+    		"DESCRIPTION": "Updated description of the promotion page",
+    		"XML_ID":      "promo-2026-landing",
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("landing.landing.update: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

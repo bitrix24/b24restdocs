@@ -175,6 +175,35 @@ No parameters.
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "userfieldtype.list", nil, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("userfieldtype.list: %w", err)
+    }
+
+    var items []struct {
+    	UserTypeID  string `json:"USER_TYPE_ID"`
+    	Handler     string `json:"HANDLER"`
+    	Title       string `json:"TITLE"`
+    	Description string `json:"DESCRIPTION"`
+    }
+    if err := json.Unmarshal(res.Result, &items); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    for _, it := range items {
+    	fmt.Println(it.UserTypeID, it.Handler)
+    }
+
+    // Total and Next are filled in by list methods; for a full
+    // list traversal, use client.Core().Pages and Scan.
+    if res.Total != nil {
+    	fmt.Println("total:", *res.Total)
+    }
+    ```
+
 {% endlist %}
 
 ## Response Handling

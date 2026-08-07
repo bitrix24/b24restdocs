@@ -233,6 +233,31 @@ This method updates the payment system settings. The structure of the settings i
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "sale.paysystem.settings.update", b24.Params{
+    	"ID":             11,
+    	"PERSON_TYPE_ID": 1,
+    	"SETTINGS": b24.Params{
+    		"REST_SERVICE_KEY_IFRAME": b24.Params{
+    			"TYPE":  "VALUE",
+    			"VALUE": "NEW_KEY",
+    		},
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("sale.paysystem.settings.update: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

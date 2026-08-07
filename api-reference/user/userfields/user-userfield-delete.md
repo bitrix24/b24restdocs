@@ -214,6 +214,25 @@ To get custom field identifiers, use the [user.userfield.list](./user-userfield-
     except Exception as error:
         print("Unexpected error", error, sep="\n")
     ```
+
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "user.userfield.delete", b24.Params{
+    	"id": 123,
+    })
+    if err != nil {
+    	return fmt.Errorf("user.userfield.delete: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

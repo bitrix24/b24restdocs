@@ -265,6 +265,31 @@ Adding a service with the type `Quantitative Service`:
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "sale.delivery.extra.service.add", b24.Params{
+    	"DELIVERY_ID": 197,
+    	"ACTIVE":      "Y",
+    	"CODE":        "door_delivery",
+    	"NAME":        "Door Delivery",
+    	"DESCRIPTION": "Door Delivery Description",
+    	"TYPE":        "checkbox",
+    	"SORT":        100,
+    	"PRICE":       99.99,
+    })
+    if err != nil {
+    	return fmt.Errorf("sale.delivery.extra.service.add: %w", err)
+    }
+
+    var newID b24.ID
+    if err := json.Unmarshal(res.Result, &newID); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("id:", newID)
+    ```
+
 {% endlist %}
 
 Adding a service with the type `List`:
@@ -506,6 +531,42 @@ Adding a service with the type `List`:
     echo '<PRE>';
     print_r($result);
     echo '</PRE>';
+    ```
+
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "sale.delivery.extra.service.add", b24.Params{
+    	"DELIVERY_ID": 198,
+    	"ACTIVE":      "Y",
+    	"CODE":        "cargo_type",
+    	"NAME":        "Cargo Type",
+    	"DESCRIPTION": "Cargo Type Description",
+    	"TYPE":        "enum",
+    	"SORT":        100,
+    	"ITEMS": []b24.Params{
+    		{
+    			"TITLE": "Small Package(s)",
+    			"CODE":  "small_package",
+    			"PRICE": 129.99,
+    		},
+    		{
+    			"TITLE": "Documents",
+    			"CODE":  "documents",
+    			"PRICE": 69.99,
+    		},
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("sale.delivery.extra.service.add: %w", err)
+    }
+
+    var newID b24.ID
+    if err := json.Unmarshal(res.Result, &newID); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("id:", newID)
     ```
 
 {% endlist %}

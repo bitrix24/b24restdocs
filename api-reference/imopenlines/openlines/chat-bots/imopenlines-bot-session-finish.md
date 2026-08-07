@@ -187,6 +187,25 @@ Pass:
   }
   ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "imopenlines.bot.session.finish", b24.Params{
+    	"CHAT_ID":   112,
+    	"CLIENT_ID": "**put_your_client_id_or_bot_token_here**",
+    })
+    if err != nil {
+    	return fmt.Errorf("imopenlines.bot.session.finish: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

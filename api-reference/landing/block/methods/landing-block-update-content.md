@@ -231,6 +231,27 @@ To enable this flag, pass `true`, `"true"`, or `1`. Any other value will not ena
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "landing.block.updatecontent", b24.Params{
+    	"lid":            311,
+    	"block":          6058,
+    	"content":        "<section class=\"g-pt-60 g-pb-60\"><div class=\"container\"><h2 class=\"landing-block-node-title\">Spring sale</h2><p class=\"landing-block-node-text\" bxstyle=\"color:#1d1d1d;\">15% off until the end of the month</p></div></section>",
+    	"preventHistory": true,
+    })
+    if err != nil {
+    	return fmt.Errorf("landing.block.updatecontent: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

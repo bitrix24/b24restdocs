@@ -310,6 +310,47 @@ Default is `Y` ||
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "catalog.section.add", b24.Params{
+    	"fields": b24.Params{
+    		"name":            "Children",
+    		"iblockId":        14,
+    		"iblockSectionId": 13,
+    		"sort":            "100",
+    		"active":          "Y",
+    		"code":            "toys",
+    		"xmlId":           "myXmlId",
+    		"description":     "Products for children - toys",
+    		"descriptionType": "text",
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("catalog.section.add: %w", err)
+    }
+
+    // The method wraps the response in an object with the "section" key.
+    raw, ok := b24.Unwrap(res.Result, "section")
+    if !ok {
+    	return fmt.Errorf("no section key in the response")
+    }
+
+    var item struct {
+    	Active          string `json:"active"`
+    	Code            string `json:"code"`
+    	Description     string `json:"description"`
+    	DescriptionType string `json:"descriptionType"`
+    	IblockID        b24.ID `json:"iblockId"`
+    	IblockSectionID b24.ID `json:"iblockSectionId"`
+    }
+    if err := json.Unmarshal(raw, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.Active, item.Code)
+    ```
+
 {% endlist %}
 
 ## Response Handling

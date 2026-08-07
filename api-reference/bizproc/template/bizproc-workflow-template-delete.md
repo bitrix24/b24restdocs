@@ -119,6 +119,22 @@ It allows you to remove templates that were created using the method [bizproc.wo
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "bizproc.workflow.template.delete", b24.Params{
+    	"ID": 525,
+    })
+    if err != nil {
+    	return fmt.Errorf("bizproc.workflow.template.delete: %w", err)
+    }
+
+    // The response arrives as json.RawMessage — unmarshal it
+    // into a struct matching the response shape shown below on this page.
+    fmt.Printf("%s\n", res.Result)
+    ```
+
 {% endlist %}
 
 ## Response Handling

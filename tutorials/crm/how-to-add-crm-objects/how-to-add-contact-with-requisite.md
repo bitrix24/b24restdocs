@@ -46,6 +46,37 @@ To generate the form fields, we will use data from Bitrix24. To obtain informati
        ar_address_fields = client.crm.address.fields().result
        ```
 
+   - Go
+
+       ```go
+       res, err := core.Call(ctx, "crm.address.fields", nil, b24.WithIdempotent())
+       if err != nil {
+       	return fmt.Errorf("crm.address.fields: %w", err)
+       }
+
+       // The response is not a list but an object "field name -> description", hence a map.
+       var addressFields map[string]struct {
+       	Type       string `json:"type"`
+       	Title      string `json:"title"`
+       	IsReadOnly bool   `json:"isReadOnly"`
+       }
+       if err := json.Unmarshal(res.Result, &addressFields); err != nil {
+       	return fmt.Errorf("parse address fields: %w", err)
+       }
+
+       // Only string fields that are writable are taken into the form: TYPE_ID,
+       // ENTITY_ID and ENTITY_TYPE_ID also arrive in this response, but the handler
+       // substitutes them itself. Map keys in Go are unordered — sort them, otherwise the fields
+       // of the form will jump from run to run.
+       var addressNames []string
+       for name, f := range addressFields {
+       	if f.Type == "string" && !f.IsReadOnly {
+       		addressNames = append(addressNames, name)
+       	}
+       }
+       sort.Strings(addressNames)
+       ```
+
    {% endlist %}
 
 2. [crm.requisite.preset.list](../../../api-reference/crm/requisites/presets/crm-requisite-preset-list.md) — requests a list of company detail templates. Use the `select` parameter to select the `ID` and `NAME` fields for each template. Save the result in `arRequisiteType`.
@@ -74,6 +105,30 @@ To generate the form fields, we will use data from Bitrix24. To obtain informati
 
        ```python
        ar_requisite_type = client.crm.requisite.preset.list(select=["ID", "NAME"]).result
+       ```
+
+   - Go
+
+       ```go
+       res, err = core.Call(ctx, "crm.requisite.preset.list", b24.Params{
+       	"select": []string{"ID", "NAME"},
+       }, b24.WithIdempotent())
+       if err != nil {
+       	return fmt.Errorf("crm.requisite.preset.list: %w", err)
+       }
+
+       // Here the ID arrives AS A STRING ("1"), whereas crm.enum.* returns
+       // numbers. b24.ID parses both spellings.
+       var presets []struct {
+       	ID   b24.ID `json:"ID"`
+       	Name string `json:"NAME"`
+       }
+       if err := json.Unmarshal(res.Result, &presets); err != nil {
+       	return fmt.Errorf("parse requisite templates: %w", err)
+       }
+       if len(presets) == 0 {
+       	return fmt.Errorf("the portal has no requisite templates")
+       }
        ```
 
    {% endlist %}
@@ -311,6 +366,33 @@ The form sends data to the handler using the `POST` method.
         return PAGE % {"options": options, "address_inputs": address_inputs}
     ```
 
+- Go
+
+    ```go
+    	var form strings.Builder
+    	form.WriteString(`<!doctype html>
+    <meta charset="utf-8">
+    <title>Request</title>
+    <form method="post" action="/form">
+    <p><label>Requisite type*<br><select name="REQ_TYPE" required>`)
+    	for _, p := range presets {
+    		fmt.Fprintf(&form, `<option value="%d">%s</option>`, p.ID, html.EscapeString(p.Name))
+    	}
+    	form.WriteString(`</select></label></p>
+    <p><label>First name*<br><input name="NAME" required></label></p>
+    <p><label>Last name<br><input name="LAST_NAME"></label></p>
+    <p><label>Phone<br><input name="PHONE" type="tel"></label></p>`)
+    	// The address fields are created dynamically: their set is defined by the portal, not by the code.
+    	// Names of the form ADDRESS[CITY] — the handler parses them back.
+    	for _, name := range addressNames {
+    		fmt.Fprintf(&form, "<p><label>%s<br><input name=\"ADDRESS[%s]\"></label></p>\n",
+    			html.EscapeString(addressFields[name].Title), name)
+    	}
+    	form.WriteString(`<p><button type="submit">Submit</button></p>
+    </form>`)
+    	page := form.String()
+    ```
+
 {% endlist %}
 
 ## 2. Create a Form Handler
@@ -352,6 +434,24 @@ Retrieve and sanitize the data from the form:
     s_name = request.form.get("NAME", "")
     s_last_name = request.form.get("LAST_NAME", "")
     s_phone = request.form.get("PHONE", "")
+    ```
+
+- Go
+
+    ```go
+    // The requisite type is converted to a number, the rest is stripped of HTML tags.
+    // The tags are STRIPPED rather than escaped: escaping is needed when rendering to
+    // page, while in CRM it turns "Weber & Son" into
+    // "Weber &amp; Son".
+    presetID, _ := strconv.Atoi(r.PostFormValue("REQ_TYPE"))
+    name := stripTags(r.PostFormValue("NAME"))
+    lastName := stripTags(r.PostFormValue("LAST_NAME"))
+    phone := stripTags(r.PostFormValue("PHONE"))
+
+    if presetID == 0 || name == "" {
+    	reply(w, http.StatusBadRequest, "Fill in the requisite type and the first name", 0)
+    	return
+    }
     ```
 
 {% endlist %}
@@ -397,6 +497,21 @@ Prepare the address fields and collect them into the `$arAddress` array.
     ar_address["ENTITY_TYPE_ID"] = 8
     ```
 
+- Go
+
+    ```go
+    // The address fields arrived as names of the form ADDRESS[CITY] — parse them back.
+    address := b24.Params{}
+    for key, values := range r.PostForm {
+    	if inner, ok := addressKey(key); ok && len(values) > 0 && values[0] != "" {
+    		address[inner] = stripTags(values[0])
+    	}
+    }
+    // The handler substitutes the address type and the owner type itself: they are not in the form.
+    address["TYPE_ID"] = addressTypeActual
+    address["ENTITY_TYPE_ID"] = typeRequisite
+    ```
+
 {% endlist %}
 
 The system stores the phone as a [crm_multifield](../../../api-reference/crm/data-types.md#crm_multifield) array of objects, so it must be converted to an array format.
@@ -423,6 +538,17 @@ The system stores the phone as a [crm_multifield](../../../api-reference/crm/dat
 
     ```python
     ar_phone = [{"VALUE": s_phone, "VALUE_TYPE": "WORK"}] if s_phone else []
+    ```
+
+- Go
+
+    ```go
+    // The phone is stored as a multifield — a list of objects, even when there is a single number.
+    // A row WITHOUT an ID adds a value; MultifieldAdd assembles it for you.
+    phones := []map[string]any{}
+    if phone != "" {
+    	phones = append(phones, b24.MultifieldAdd(phone, "WORK"))
+    }
     ```
 
 {% endlist %}
@@ -474,6 +600,32 @@ Check which mandatory fields are configured for contacts in your Bitrix24. All m
         "LAST_NAME": s_last_name,
         "PHONE": ar_phone,
     }).result
+    ```
+
+- Go
+
+    ```go
+    res, err := core.Call(ctx, "crm.contact.add", b24.Params{
+    	"fields": b24.Params{
+    		"NAME":      name,
+    		"LAST_NAME": lastName,
+    		"PHONE":     phones,
+    	},
+    }) // no WithIdempotent: a retry would create a second contact
+    if err != nil {
+    	// The details go to the server log and are not shown to the visitor.
+    	log.Println("crm.contact.add:", err)
+    	reply(w, http.StatusBadGateway, "Failed to create the contact", 0)
+    	return
+    }
+
+    // There is no wrapper: result is the ID of the new contact itself.
+    var contactID b24.ID
+    if err := json.Unmarshal(res.Result, &contactID); err != nil {
+    	log.Println("parse contact ID:", err)
+    	reply(w, http.StatusBadGateway, "Failed to create the contact", 0)
+    	return
+    }
     ```
 
 {% endlist %}
@@ -544,6 +696,33 @@ To add company details to a contact, call the [crm.requisite.add](../../../api-r
     })
     ```
 
+- Go
+
+    ```go
+    res, err = core.Call(ctx, "crm.requisite.add", b24.Params{
+    	"fields": b24.Params{
+    		"ENTITY_TYPE_ID": typeContact,
+    		"ENTITY_ID":      contactID,
+    		"PRESET_ID":      presetID,
+    		"ACTIVE":         "Y",
+    		"NAME":           strings.TrimSpace(name + " " + lastName),
+    	},
+    })
+    if err != nil {
+    	// The contact is already created, so this is no reason to answer "nothing worked":
+    	// report that the requisite was not added and return the ID.
+    	log.Println("crm.requisite.add:", err)
+    	reply(w, http.StatusOK, "Contact created, failed to add the requisite", contactID)
+    	return
+    }
+    var requisiteID b24.ID
+    if err := json.Unmarshal(res.Result, &requisiteID); err != nil {
+    	log.Println("parse requisite ID:", err)
+    	reply(w, http.StatusOK, "Contact created, failed to add the requisite", contactID)
+    	return
+    }
+    ```
+
 {% endlist %}
 
 As a result, you will receive the company details identifier.
@@ -588,6 +767,21 @@ Add an address for the company details using the [crm.address.add](../../../api-
     if requisite_id:
         ar_address["ENTITY_ID"] = requisite_id
         client.crm.address.add(fields=ar_address)
+    ```
+
+- Go
+
+    ```go
+    // The address is bound to the REQUISITE rather than to the contact, so ENTITY_ID
+    // is filled in only now — the requisite ID did not exist earlier.
+    if requisiteID != 0 {
+    	address["ENTITY_ID"] = requisiteID
+    	if _, err := core.Call(ctx, "crm.address.add", b24.Params{"fields": address}); err != nil {
+    		log.Println("crm.address.add:", err)
+    		reply(w, http.StatusOK, "Contact and requisite created, failed to add the address", contactID)
+    		return
+    	}
+    }
     ```
 
 {% endlist %}
@@ -781,6 +975,265 @@ Add an address for the company details using the [crm.address.add](../../../api-
             return jsonify({"message": "Contact added successfully"})
         except Exception as e:
             return jsonify({"message": f"Error: {e}"})
+    ```
+
+- Go
+
+    ```go
+    // Setup in an empty directory — go get will not work without go mod init:
+    //
+    //	go mod init example && go get github.com/bitrix24/b24gosdk
+    //
+    // Run:
+    //
+    //	export B24_WEBHOOK_URL='https://your-portal.bitrix24.com/rest/1/token/' && go run .
+    //
+    // A separate file with the form is not needed: the page is built and served by the same
+    // program — it takes the address fields and the list of requisite templates from the portal.
+    // Open http://localhost:3000/
+    package main
+
+    import (
+    	"context"
+    	"encoding/json"
+    	"fmt"
+    	"html"
+    	"log"
+    	"net/http"
+    	"os"
+    	"regexp"
+    	"sort"
+    	"strconv"
+    	"strings"
+
+    	b24 "github.com/bitrix24/b24gosdk"
+    )
+
+    // The IDs of CRM object types from crm.enum.ownertype.
+    const (
+    	typeContact   = 3
+    	typeRequisite = 8
+    )
+
+    // addressTypeActual is the actual address; the full list of types is returned by
+    // crm.enum.addresstype.
+    const addressTypeActual = 1
+
+    func main() {
+    	if err := run(context.Background()); err != nil {
+    		log.Fatal(err)
+    	}
+    }
+
+    func run(ctx context.Context) error {
+    	// The webhook path is a secret: it comes from the environment rather than from the code, and it
+    	// never reaches the public page with the form. The client is built ONCE
+    	// per portal: http.Server calls the handler from many goroutines.
+    	core := b24.NewClient(os.Getenv("B24_WEBHOOK_URL")).Core()
+
+    	// --- build the form from the portal settings
+    	res, err := core.Call(ctx, "crm.address.fields", nil, b24.WithIdempotent())
+    	if err != nil {
+    		return fmt.Errorf("crm.address.fields: %w", err)
+    	}
+
+    	// The response is not a list but an object "field name -> description", hence a map.
+    	var addressFields map[string]struct {
+    		Type       string `json:"type"`
+    		Title      string `json:"title"`
+    		IsReadOnly bool   `json:"isReadOnly"`
+    	}
+    	if err := json.Unmarshal(res.Result, &addressFields); err != nil {
+    		return fmt.Errorf("parse address fields: %w", err)
+    	}
+
+    	// Only string fields that are writable are taken into the form: TYPE_ID,
+    	// ENTITY_ID and ENTITY_TYPE_ID also arrive in this response, but the handler
+    	// substitutes them itself. Map keys in Go are unordered — sort them, otherwise the fields
+    	// of the form will jump from run to run.
+    	var addressNames []string
+    	for name, f := range addressFields {
+    		if f.Type == "string" && !f.IsReadOnly {
+    			addressNames = append(addressNames, name)
+    		}
+    	}
+    	sort.Strings(addressNames)
+    	res, err = core.Call(ctx, "crm.requisite.preset.list", b24.Params{
+    		"select": []string{"ID", "NAME"},
+    	}, b24.WithIdempotent())
+    	if err != nil {
+    		return fmt.Errorf("crm.requisite.preset.list: %w", err)
+    	}
+
+    	// Here the ID arrives AS A STRING ("1"), whereas crm.enum.* returns
+    	// numbers. b24.ID parses both spellings.
+    	var presets []struct {
+    		ID   b24.ID `json:"ID"`
+    		Name string `json:"NAME"`
+    	}
+    	if err := json.Unmarshal(res.Result, &presets); err != nil {
+    		return fmt.Errorf("parse requisite templates: %w", err)
+    	}
+    	if len(presets) == 0 {
+    		return fmt.Errorf("the portal has no requisite templates")
+    	}
+    	// --- the page with the form
+    	var form strings.Builder
+    	form.WriteString(`<!doctype html>
+    <meta charset="utf-8">
+    <title>Request</title>
+    <form method="post" action="/form">
+    <p><label>Requisite type*<br><select name="REQ_TYPE" required>`)
+    	for _, p := range presets {
+    		fmt.Fprintf(&form, `<option value="%d">%s</option>`, p.ID, html.EscapeString(p.Name))
+    	}
+    	form.WriteString(`</select></label></p>
+    <p><label>First name*<br><input name="NAME" required></label></p>
+    <p><label>Last name<br><input name="LAST_NAME"></label></p>
+    <p><label>Phone<br><input name="PHONE" type="tel"></label></p>`)
+    	// The address fields are created dynamically: their set is defined by the portal, not by the code.
+    	// Names of the form ADDRESS[CITY] — the handler parses them back.
+    	for _, name := range addressNames {
+    		fmt.Fprintf(&form, "<p><label>%s<br><input name=\"ADDRESS[%s]\"></label></p>\n",
+    			html.EscapeString(addressFields[name].Title), name)
+    	}
+    	form.WriteString(`<p><button type="submit">Submit</button></p>
+    </form>`)
+    	page := form.String()
+    	mux := http.NewServeMux()
+    	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+    		w.Header().Set("Content-Type", "text/html; charset=utf-8")
+    		fmt.Fprint(w, page)
+    	})
+    	mux.HandleFunc("/form", func(w http.ResponseWriter, r *http.Request) {
+    		if r.Method != http.MethodPost {
+    			reply(w, http.StatusMethodNotAllowed, "POST is required", 0)
+    			return
+    		}
+    		handleForm(w, r, core)
+    	})
+
+    	log.Println("form and handler: http://localhost:3000/")
+    	return http.ListenAndServe(":3000", mux)
+    }
+
+    func handleForm(w http.ResponseWriter, r *http.Request, core *b24.Core) {
+    	ctx := r.Context()
+    	if err := r.ParseForm(); err != nil {
+    		reply(w, http.StatusBadRequest, "Failed to parse the form", 0)
+    		return
+    	}
+    	// The requisite type is converted to a number, the rest is stripped of HTML tags.
+    	// The tags are STRIPPED rather than escaped: escaping is needed when rendering to
+    	// page, while in CRM it turns "Weber & Son" into
+    	// "Weber &amp; Son".
+    	presetID, _ := strconv.Atoi(r.PostFormValue("REQ_TYPE"))
+    	name := stripTags(r.PostFormValue("NAME"))
+    	lastName := stripTags(r.PostFormValue("LAST_NAME"))
+    	phone := stripTags(r.PostFormValue("PHONE"))
+
+    	if presetID == 0 || name == "" {
+    		reply(w, http.StatusBadRequest, "Fill in the requisite type and the first name", 0)
+    		return
+    	}
+    	// The address fields arrived as names of the form ADDRESS[CITY] — parse them back.
+    	address := b24.Params{}
+    	for key, values := range r.PostForm {
+    		if inner, ok := addressKey(key); ok && len(values) > 0 && values[0] != "" {
+    			address[inner] = stripTags(values[0])
+    		}
+    	}
+    	// The handler substitutes the address type and the owner type itself: they are not in the form.
+    	address["TYPE_ID"] = addressTypeActual
+    	address["ENTITY_TYPE_ID"] = typeRequisite
+    	// The phone is stored as a multifield — a list of objects, even when there is a single number.
+    	// A row WITHOUT an ID adds a value; MultifieldAdd assembles it for you.
+    	phones := []map[string]any{}
+    	if phone != "" {
+    		phones = append(phones, b24.MultifieldAdd(phone, "WORK"))
+    	}
+    	res, err := core.Call(ctx, "crm.contact.add", b24.Params{
+    		"fields": b24.Params{
+    			"NAME":      name,
+    			"LAST_NAME": lastName,
+    			"PHONE":     phones,
+    		},
+    	}) // no WithIdempotent: a retry would create a second contact
+    	if err != nil {
+    		// The details go to the server log and are not shown to the visitor.
+    		log.Println("crm.contact.add:", err)
+    		reply(w, http.StatusBadGateway, "Failed to create the contact", 0)
+    		return
+    	}
+
+    	// There is no wrapper: result is the ID of the new contact itself.
+    	var contactID b24.ID
+    	if err := json.Unmarshal(res.Result, &contactID); err != nil {
+    		log.Println("parse contact ID:", err)
+    		reply(w, http.StatusBadGateway, "Failed to create the contact", 0)
+    		return
+    	}
+    	res, err = core.Call(ctx, "crm.requisite.add", b24.Params{
+    		"fields": b24.Params{
+    			"ENTITY_TYPE_ID": typeContact,
+    			"ENTITY_ID":      contactID,
+    			"PRESET_ID":      presetID,
+    			"ACTIVE":         "Y",
+    			"NAME":           strings.TrimSpace(name + " " + lastName),
+    		},
+    	})
+    	if err != nil {
+    		// The contact is already created, so this is no reason to answer "nothing worked":
+    		// report that the requisite was not added and return the ID.
+    		log.Println("crm.requisite.add:", err)
+    		reply(w, http.StatusOK, "Contact created, failed to add the requisite", contactID)
+    		return
+    	}
+    	var requisiteID b24.ID
+    	if err := json.Unmarshal(res.Result, &requisiteID); err != nil {
+    		log.Println("parse requisite ID:", err)
+    		reply(w, http.StatusOK, "Contact created, failed to add the requisite", contactID)
+    		return
+    	}
+    	// The address is bound to the REQUISITE rather than to the contact, so ENTITY_ID
+    	// is filled in only now — the requisite ID did not exist earlier.
+    	if requisiteID != 0 {
+    		address["ENTITY_ID"] = requisiteID
+    		if _, err := core.Call(ctx, "crm.address.add", b24.Params{"fields": address}); err != nil {
+    			log.Println("crm.address.add:", err)
+    			reply(w, http.StatusOK, "Contact and requisite created, failed to add the address", contactID)
+    			return
+    		}
+    	}
+    	log.Printf("contact %d created, requisite %d", contactID, requisiteID)
+    	reply(w, http.StatusOK, "Contact with requisites created", contactID)
+    }
+
+    // tagPattern strips HTML tags from the form value.
+    var tagPattern = regexp.MustCompile(`<[^>]*>`)
+
+    func stripTags(s string) string {
+    	return strings.TrimSpace(tagPattern.ReplaceAllString(s, ""))
+    }
+
+    // addressKey extracts CITY from the ADDRESS[CITY] field name.
+    func addressKey(key string) (string, bool) {
+    	if strings.HasPrefix(key, "ADDRESS[") && strings.HasSuffix(key, "]") {
+    		return key[len("ADDRESS[") : len(key)-1], true
+    	}
+    	return "", false
+    }
+
+    // reply answers the page with the same JSON as the handlers in other languages.
+    func reply(w http.ResponseWriter, status int, message string, id b24.ID) {
+    	w.Header().Set("Content-Type", "application/json; charset=utf-8")
+    	w.WriteHeader(status)
+    	body := map[string]any{"message": message}
+    	if id != 0 {
+    		body["id"] = id
+    	}
+    	_ = json.NewEncoder(w).Encode(body)
+    }
     ```
 
 {% endlist %}

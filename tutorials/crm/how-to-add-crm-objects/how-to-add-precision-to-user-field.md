@@ -84,6 +84,15 @@ The step examples follow one another. The SDK is initialized once here; subseque
     )
     ```
 
+- Go
+
+    ```go
+    // The webhook path is a secret, so it comes from the environment, not from the code.
+    // The client is built once per portal: it holds the HTTP client and the state
+    // authorization state.
+    core := b24.NewClient(os.Getenv("B24_WEBHOOK_URL")).Core()
+    ```
+
 {% endlist %}
 
 ## Note the Different Field Casing {#case}
@@ -195,6 +204,47 @@ To create a custom field, use the [userfieldconfig.add](../../../api-reference/c
         print(f"Error: {error}")
     else:
         print(created_field["id"], created_field["settings"]["PRECISION"])
+    ```
+
+- Go
+
+    ```go
+    res, err := core.Call(ctx, "userfieldconfig.add", b24.Params{
+    	"moduleId": "crm",
+    	"field": b24.Params{
+    		"entityId":   "CRM_DEAL",
+    		"fieldName":  fieldName,
+    		"userTypeId": "double",
+    		"editFormLabel": b24.Params{
+    			"ru": fieldLabel,
+    			"en": "PRECISION double",
+    		},
+    		// The parameter is optional, but for the "Number" type it is better to
+    		// pass it: without it the precision will be 0 and the values will be rounded
+    		// to whole numbers.
+    		"settings": b24.Params{"PRECISION": 3},
+    	},
+    })
+    if err != nil {
+    	// The error code is compared with errors.Is rather than as a string: a typo in the
+    	// literal would compile and silently take a different branch.
+    	if errors.Is(err, b24.ErrAccessDenied) {
+    		return fmt.Errorf("the \"Allow to change settings\" permission is required in CRM: %w", err)
+    	}
+    	return fmt.Errorf("userfieldconfig.add: %w", err)
+    }
+
+    // The method wraps the response in an object with the field key and responds in camelCase:
+    // the precision is in settings.PRECISION rather than in SETTINGS.PRECISION.
+    var added struct {
+    	Field struct {
+    		ID       b24.ID         `json:"id"`
+    		Settings map[string]any `json:"settings"`
+    	} `json:"field"`
+    }
+    if err := json.Unmarshal(res.Result, &added); err != nil {
+    	return fmt.Errorf("parse the created field: %w", err)
+    }
     ```
 
 {% endlist %}
@@ -348,6 +398,42 @@ The method returns fields in UPPER_SNAKE case — keep this in mind when [ compa
 
     if target_field is None:
         raise RuntimeError("Field with the specified name not found")
+    ```
+
+- Go
+
+    ```go
+    // Without the LANG filter the titles are not returned at all, and finding a field by its title
+    // will not work.
+    res, err = core.Call(ctx, "crm.deal.userfield.list", b24.Params{
+    	"filter": b24.Params{"LANG": "ru", "USER_TYPE_ID": "double"},
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("crm.deal.userfield.list: %w", err)
+    }
+
+    // And this method responds in UPPER_SNAKE — the same data, a different case.
+    // The keys inside the settings themselves are uppercase in both cases.
+    var fields []struct {
+    	ID            b24.ID         `json:"ID"`
+    	FieldName     string         `json:"FIELD_NAME"`
+    	EditFormLabel string         `json:"EDIT_FORM_LABEL"`
+    	Settings      map[string]any `json:"SETTINGS"`
+    }
+    if err := json.Unmarshal(res.Result, &fields); err != nil {
+    	return fmt.Errorf("parse custom fields: %w", err)
+    }
+
+    target := -1
+    for i, f := range fields {
+    	if f.EditFormLabel == fieldLabel {
+    		target = i
+    		break
+    	}
+    }
+    if target < 0 {
+    	return fmt.Errorf("field %q not found", fieldLabel)
+    }
     ```
 
 {% endlist %}
@@ -505,6 +591,35 @@ See the full set of type configurations in the `settings` of any `userfieldconfi
     ).response.result["field"]
 
     print(updated_field["id"], updated_field["settings"]["PRECISION"])
+    ```
+
+- Go
+
+    ```go
+    // settings are REPLACED as a whole rather than appended to. If you pass one
+    // PRECISION, the remaining settings of the "Number" type will reset to their default
+    // values — that is why the settings from step 1 are taken and one of them is changed.
+    settings := fields[target].Settings
+    settings["PRECISION"] = 5
+
+    res, err = core.Call(ctx, "userfieldconfig.update", b24.Params{
+    	"moduleId": "crm",
+    	"id":       fields[target].ID,
+    	"field":    b24.Params{"settings": settings},
+    })
+    if err != nil {
+    	return fmt.Errorf("userfieldconfig.update: %w", err)
+    }
+
+    var updated struct {
+    	Field struct {
+    		ID       b24.ID         `json:"id"`
+    		Settings map[string]any `json:"settings"`
+    	} `json:"field"`
+    }
+    if err := json.Unmarshal(res.Result, &updated); err != nil {
+    	return fmt.Errorf("parse the updated field: %w", err)
+    }
     ```
 
 {% endlist %}
@@ -755,6 +870,167 @@ The example assembles the second scenario in its entirety: it finds a deal field
     )
 
     update_user_field(client, FIELD_LABEL, PRECISION)
+    ```
+
+- Go
+
+    ```go
+    // Setup in an empty directory — go get will not work without go mod init:
+    //
+    //	go mod init example && go get github.com/bitrix24/b24gosdk
+    //
+    // Run:
+    //
+    //	export B24_WEBHOOK_URL='https://your-portal.bitrix24.com/rest/1/token/' && go run .
+    //
+    // The example is self-contained: it creates a deal field with a precision of 2, finds it
+    // by title, changes the precision to 3, and deletes the field afterwards. The second scenario
+    // of the page requires an already existing field — the example prepares it in the first
+    // scenario, so it runs on any portal and nothing needs to be edited.
+    package main
+
+    import (
+    	"context"
+    	"encoding/json"
+    	"errors"
+    	"fmt"
+    	"log"
+    	"os"
+
+    	b24 "github.com/bitrix24/b24gosdk"
+    )
+
+    const (
+    	fieldName  = "UF_CRM_DEAL_NEW_DOUBLE_FIELD"
+    	fieldLabel = "Rounded number"
+    )
+
+    func main() {
+    	if err := run(context.Background()); err != nil {
+    		log.Fatal(err)
+    	}
+    }
+
+    func run(ctx context.Context) error {
+    	// The webhook path is a secret, so it comes from the environment, not from the code.
+    	// The client is built once per portal: it holds the HTTP client and the state
+    	// authorization state.
+    	core := b24.NewClient(os.Getenv("B24_WEBHOOK_URL")).Core()
+    	// --- scenario 1: create the field with the precision right away
+    	res, err := core.Call(ctx, "userfieldconfig.add", b24.Params{
+    		"moduleId": "crm",
+    		"field": b24.Params{
+    			"entityId":   "CRM_DEAL",
+    			"fieldName":  fieldName,
+    			"userTypeId": "double",
+    			"editFormLabel": b24.Params{
+    				"ru": fieldLabel,
+    				"en": "PRECISION double",
+    			},
+    			// The parameter is optional, but for the "Number" type it is better to
+    			// pass it: without it the precision will be 0 and the values will be rounded
+    			// to whole numbers.
+    			"settings": b24.Params{"PRECISION": 3},
+    		},
+    	})
+    	if err != nil {
+    		// The error code is compared with errors.Is rather than as a string: a typo in the
+    		// literal would compile and silently take a different branch.
+    		if errors.Is(err, b24.ErrAccessDenied) {
+    			return fmt.Errorf("the \"Allow to change settings\" permission is required in CRM: %w", err)
+    		}
+    		return fmt.Errorf("userfieldconfig.add: %w", err)
+    	}
+
+    	// The method wraps the response in an object with the field key and responds in camelCase:
+    	// the precision is in settings.PRECISION rather than in SETTINGS.PRECISION.
+    	var added struct {
+    		Field struct {
+    			ID       b24.ID         `json:"id"`
+    			Settings map[string]any `json:"settings"`
+    		} `json:"field"`
+    	}
+    	if err := json.Unmarshal(res.Result, &added); err != nil {
+    		return fmt.Errorf("parse the created field: %w", err)
+    	}
+    	defer del(ctx, core, "userfieldconfig.delete", b24.Params{
+    		"moduleId": "crm", "id": added.Field.ID,
+    	})
+    	fmt.Printf("field %d created, PRECISION=%v\n", added.Field.ID, added.Field.Settings["PRECISION"])
+
+    	// --- scenario 2, step 1: find the field by its title
+    	// Without the LANG filter the titles are not returned at all, and finding a field by its title
+    	// will not work.
+    	res, err = core.Call(ctx, "crm.deal.userfield.list", b24.Params{
+    		"filter": b24.Params{"LANG": "ru", "USER_TYPE_ID": "double"},
+    	}, b24.WithIdempotent())
+    	if err != nil {
+    		return fmt.Errorf("crm.deal.userfield.list: %w", err)
+    	}
+
+    	// And this method responds in UPPER_SNAKE — the same data, a different case.
+    	// The keys inside the settings themselves are uppercase in both cases.
+    	var fields []struct {
+    		ID            b24.ID         `json:"ID"`
+    		FieldName     string         `json:"FIELD_NAME"`
+    		EditFormLabel string         `json:"EDIT_FORM_LABEL"`
+    		Settings      map[string]any `json:"SETTINGS"`
+    	}
+    	if err := json.Unmarshal(res.Result, &fields); err != nil {
+    		return fmt.Errorf("parse custom fields: %w", err)
+    	}
+
+    	target := -1
+    	for i, f := range fields {
+    		if f.EditFormLabel == fieldLabel {
+    			target = i
+    			break
+    		}
+    	}
+    	if target < 0 {
+    		return fmt.Errorf("field %q not found", fieldLabel)
+    	}
+    	fmt.Printf("found field %d (%s), currently PRECISION=%v\n",
+    		fields[target].ID, fields[target].FieldName, fields[target].Settings["PRECISION"])
+
+    	// --- scenario 2, step 2: change the precision
+    	// settings are REPLACED as a whole rather than appended to. If you pass one
+    	// PRECISION, the remaining settings of the "Number" type will reset to their default
+    	// values — that is why the settings from step 1 are taken and one of them is changed.
+    	settings := fields[target].Settings
+    	settings["PRECISION"] = 5
+
+    	res, err = core.Call(ctx, "userfieldconfig.update", b24.Params{
+    		"moduleId": "crm",
+    		"id":       fields[target].ID,
+    		"field":    b24.Params{"settings": settings},
+    	})
+    	if err != nil {
+    		return fmt.Errorf("userfieldconfig.update: %w", err)
+    	}
+
+    	var updated struct {
+    		Field struct {
+    			ID       b24.ID         `json:"id"`
+    			Settings map[string]any `json:"settings"`
+    		} `json:"field"`
+    	}
+    	if err := json.Unmarshal(res.Result, &updated); err != nil {
+    		return fmt.Errorf("parse the updated field: %w", err)
+    	}
+    	fmt.Printf("field %d: PRECISION=%v, the remaining settings are retained: %v\n",
+    		updated.Field.ID, updated.Field.Settings["PRECISION"], updated.Field.Settings)
+    	return nil
+    }
+
+    // del removes what was created. A cleanup error is printed but not returned: it must not
+    // mask the real error of the scenario.
+    func del(ctx context.Context, core *b24.Core, method string, params b24.Params) {
+    	if _, err := core.Call(ctx, method, params); err != nil {
+    		fmt.Fprintf(os.Stderr, "cleanup, %s: %v
+", method, err)
+    	}
+    }
     ```
 
 {% endlist %}

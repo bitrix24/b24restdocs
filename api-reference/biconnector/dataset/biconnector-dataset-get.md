@@ -203,6 +203,37 @@ The method `biconnector.dataset.get` returns information about a dataset by its 
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "biconnector.dataset.get", b24.Params{
+    	"id": 2,
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("biconnector.dataset.get: %w", err)
+    }
+
+    // The method wraps the response in an object with the "item" key.
+    raw, ok := b24.Unwrap(res.Result, "item")
+    if !ok {
+    	return fmt.Errorf("no item key in the response")
+    }
+
+    var item struct {
+    	ID           b24.ID `json:"id"`
+    	Type         string `json:"type"`
+    	Name         string `json:"name"`
+    	Description  string `json:"description"`
+    	ExternalCode string `json:"externalCode"`
+    	ExternalName string `json:"externalName"`
+    }
+    if err := json.Unmarshal(raw, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.ID, item.Type)
+    ```
+
 {% endlist %}
 
 ## Response Handling

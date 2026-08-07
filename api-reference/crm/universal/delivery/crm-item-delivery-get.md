@@ -218,6 +218,31 @@ This method retrieves brief information about the delivery.
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.item.delivery.get", b24.Params{
+    	"id": 4077,
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("crm.item.delivery.get: %w", err)
+    }
+
+    var item struct {
+    	ID            b24.ID  `json:"id"`
+    	AccountNumber string  `json:"accountNumber"`
+    	PriceDelivery float64 `json:"priceDelivery"`
+    	Currency      string  `json:"currency"`
+    	Deducted      string  `json:"deducted"`
+    	DeliveryID    b24.ID  `json:"deliveryId"`
+    }
+    if err := json.Unmarshal(res.Result, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.ID, item.AccountNumber)
+    ```
+
 {% endlist %}
 
 ## Response on Success

@@ -193,6 +193,37 @@ The method returns the values of all fields in the trade catalog.
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "catalog.catalog.get", b24.Params{
+    	"id": 23,
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("catalog.catalog.get: %w", err)
+    }
+
+    // The method wraps the response in an object with the "catalog" key.
+    raw, ok := b24.Unwrap(res.Result, "catalog")
+    if !ok {
+    	return fmt.Errorf("no catalog key in the response")
+    }
+
+    var item struct {
+    	IblockID     b24.ID `json:"iblockId"`
+    	IblockTypeID b24.ID `json:"iblockTypeId"`
+    	ID           b24.ID `json:"id"`
+    	Lid          string `json:"lid"`
+    	Name         string `json:"name"`
+    	Subscription string `json:"subscription"`
+    }
+    if err := json.Unmarshal(raw, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.IblockID, item.IblockTypeID)
+    ```
+
 {% endlist %}
 
 ## Response Handling

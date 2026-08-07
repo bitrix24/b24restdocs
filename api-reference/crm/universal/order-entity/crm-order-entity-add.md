@@ -152,6 +152,38 @@ Add order binding to a deal:
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.orderentity.add", b24.Params{
+    	"fields": b24.Params{
+    		"orderId":     5125,
+    		"ownerId":     6933,
+    		"ownerTypeId": 2,
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("crm.orderentity.add: %w", err)
+    }
+
+    // The method wraps the response in an object with the "dealOrder" key.
+    raw, ok := b24.Unwrap(res.Result, "dealOrder")
+    if !ok {
+    	return fmt.Errorf("no dealOrder key in the response")
+    }
+
+    var item struct {
+    	OrderID     b24.ID `json:"orderId"`
+    	OwnerID     b24.ID `json:"ownerId"`
+    	OwnerTypeID b24.ID `json:"ownerTypeId"`
+    }
+    if err := json.Unmarshal(raw, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.OrderID, item.OwnerID)
+    ```
+
 {% endlist %}
 
 ## Response Handling

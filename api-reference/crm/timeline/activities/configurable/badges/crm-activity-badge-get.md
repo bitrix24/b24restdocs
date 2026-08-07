@@ -207,6 +207,36 @@ The method `crm.activity.badge.get` will return an array containing [badge field
     except Exception as error:
         print(f"Unexpected error: {error}")
     ```
+
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.activity.badge.get", b24.Params{
+    	"code": "missedCall",
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("crm.activity.badge.get: %w", err)
+    }
+
+    // The method wraps the response in an object with the "badge" key.
+    raw, ok := b24.Unwrap(res.Result, "badge")
+    if !ok {
+    	return fmt.Errorf("no badge key in the response")
+    }
+
+    var item struct {
+    	Code  string `json:"code"`
+    	Title string `json:"title"`
+    	Value string `json:"value"`
+    	Type  string `json:"type"`
+    }
+    if err := json.Unmarshal(raw, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.Code, item.Title)
+    ```
+
 {% endlist %}
 
 ## Response Handling

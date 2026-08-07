@@ -157,6 +157,25 @@ If provided, it is used as `custom{CLIENT_ID}` to identify the application. ||
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "imbot.chat.setOwner", b24.Params{
+    	"CHAT_ID": 2727,
+    	"USER_ID": 1269,
+    })
+    if err != nil {
+    	return fmt.Errorf("imbot.chat.setOwner: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

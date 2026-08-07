@@ -185,6 +185,24 @@ No parameters.
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.orderentity.getFields", nil, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("crm.orderentity.getFields: %w", err)
+    }
+
+    // The method wraps the response in an object with the "orderEntity" key.
+    raw, ok := b24.Unwrap(res.Result, "orderEntity")
+    if !ok {
+    	return fmt.Errorf("no orderEntity key in the response")
+    }
+
+    fmt.Printf("%s\n", raw)
+    ```
+
 {% endlist %}
 
 ## Response Handling

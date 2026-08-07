@@ -147,6 +147,25 @@ If this parameter is not provided, the method searches for the first bot registe
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "imbot.chat.user.list", b24.Params{
+    	"CHAT_ID":   2725,
+    	"CLIENT_ID": "**put_your_client_id_here**",
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("imbot.chat.user.list: %w", err)
+    }
+
+    var items []b24.ID
+    if err := json.Unmarshal(res.Result, &items); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("received:", len(items))
+    ```
+
 {% endlist %}
 
 ## Response Handling

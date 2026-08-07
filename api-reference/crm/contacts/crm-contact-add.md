@@ -726,6 +726,70 @@ Default is `No` ||
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.contact.add", b24.Params{
+    	"fields": b24.Params{
+    		"HONORIFIC":   "HNR_RU_1",
+    		"NAME":        "John",
+    		"SECOND_NAME": "Doe",
+    		"LAST_NAME":   "Smith",
+    		"PHOTO": b24.Params{
+    			"fileData": "**put_photo_data_here**",
+    		},
+    		"BIRTHDATE":          "11.11.2001",
+    		"TYPE_ID":            "PARTNER",
+    		"SOURCE_ID":          "WEB",
+    		"SOURCE_DESCRIPTION": "*Additional information about the source*",
+    		"POST":               "Administrator",
+    		"COMMENTS":           "**put_comment_here**",
+    		"OPENED":             "Y",
+    		"EXPORT":             "N",
+    		"ASSIGNED_BY_ID":     6,
+    		"COMPANY_ID":         12,
+    		"COMPANY_IDS":        []int{12, 13, 15},
+    		"UTM_SOURCE":         "yandex",
+    		"UTM_MEDIUM":         "CPC",
+    		"UTM_CAMPAIGN":       "summer_sale",
+    		"UTM_CONTENT":        "header_banner",
+    		"UTM_TERM":           "discount",
+    		"PHONE": []b24.Params{
+    			{
+    				"VALUE":      "+49333333555",
+    				"VALUE_TYPE": "WORK",
+    			},
+    			{
+    				"VALUE":      "+35599888666",
+    				"VALUE_TYPE": "HOME",
+    			},
+    		},
+    		"EMAIL": []b24.Params{
+    			{
+    				"VALUE":      "ivanov@example.mailing",
+    				"VALUE_TYPE": "MAILING",
+    			},
+    			{
+    				"VALUE":      "ivanov@example.work",
+    				"VALUE_TYPE": "WORK",
+    			},
+    		},
+    		"UF_CRM_1720697698689": "Example value of a custom field with type \"String\"",
+    		"PARENT_ID_1224":       12,
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("crm.contact.add: %w", err)
+    }
+
+    var newID b24.ID
+    if err := json.Unmarshal(res.Result, &newID); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("id:", newID)
+    ```
+
 {% endlist %}
 
 ## Response Handling

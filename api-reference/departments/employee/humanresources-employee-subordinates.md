@@ -211,6 +211,26 @@ https://{installation_address}/rest/api/{user_id}/{webhook_token}/humanresources
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "humanresources.employee.subordinates", b24.Params{
+    	"id": 7,
+    })
+    if err != nil {
+    	return fmt.Errorf("humanresources.employee.subordinates: %w", err)
+    }
+
+    var item struct {
+    	UserID b24.ID `json:"userId"`
+    }
+    if err := json.Unmarshal(res.Result, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.UserID)
+    ```
+
 {% endlist %}
 
 ## Response Handling

@@ -139,6 +139,32 @@ The example steps follow one another. The SDK is initialized once here, and the 
     ).response.result
     ```
 
+- Go
+
+    ```go
+    // The address is bound not to the contact but to its REQUISITE, so you first need
+    // the requisite IDs.
+    res, err := core.Call(ctx, "crm.requisite.list", b24.Params{
+    	"filter": b24.Params{"ENTITY_TYPE_ID": typeContact, "ENTITY_ID": contactID},
+    	"select": []string{"ID", "ENTITY_TYPE_ID", "ENTITY_ID"},
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("crm.requisite.list: %w", err)
+    }
+
+    // Here the IDs arrive AS STRINGS ("361"), although crm.enum.* returns them
+    // as numbers. b24.ID parses both spellings, a plain int does not.
+    var requisites []struct {
+    	ID b24.ID `json:"ID"`
+    }
+    if err := json.Unmarshal(res.Result, &requisites); err != nil {
+    	return fmt.Errorf("parse requisites: %w", err)
+    }
+    if len(requisites) == 0 {
+    	return fmt.Errorf("contact %d has no requisites, there is nowhere to store the address", contactID)
+    }
+    ```
+
 {% endlist %}
 
 The response will contain a list of the contact's Company details. In the example, there is one Company details entry, and its `ID` is `361`. This is the value required for the next request.
@@ -209,6 +235,23 @@ The lead address is retrieved using the same method, but without step 1. Specify
             "ENTITY_ID": 361,
         }
     ).response.result
+    ```
+
+- Go
+
+    ```go
+    // Without a filter by type, the method returns all addresses of the requisite.
+    res, err := core.Call(ctx, "crm.address.list", b24.Params{
+    	"filter": b24.Params{"ENTITY_TYPE_ID": typeRequisite, "ENTITY_ID": r.ID},
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("crm.address.list: %w", err)
+    }
+
+    var addresses []address
+    if err := json.Unmarshal(res.Result, &addresses); err != nil {
+    	return fmt.Errorf("parse addresses: %w", err)
+    }
     ```
 
 {% endlist %}
@@ -306,6 +349,25 @@ To retrieve only one type of address, add `TYPE_ID` to the filter. For example, 
             "TYPE_ID": 11,
         }
     ).response.result
+    ```
+
+- Go
+
+    ```go
+    res, err = core.Call(ctx, "crm.address.list", b24.Params{
+    	"filter": b24.Params{
+    		"ENTITY_TYPE_ID": typeRequisite,
+    		"ENTITY_ID":      r.ID,
+    		"TYPE_ID":        11, // 11 — delivery address
+    	},
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("crm.address.list by type: %w", err)
+    }
+    var delivery []address
+    if err := json.Unmarshal(res.Result, &delivery); err != nil {
+    	return fmt.Errorf("parse delivery addresses: %w", err)
+    }
     ```
 
 {% endlist %}
@@ -567,6 +629,302 @@ To retrieve only one type of address, add `TYPE_ID` to the filter. For example, 
                     print("\t".join(row))
     ```
 
+- Go
+
+    ```go
+    // Setup in an empty directory — go get will not work without go mod init:
+    //
+    //	go mod init example && go get github.com/bitrix24/b24gosdk
+    //
+    // Run:
+    //
+    //	export B24_WEBHOOK_URL='https://your-portal.bitrix24.com/rest/1/token/' && go run .
+    //
+    // The example is self-contained: it creates a contact with a requisite and two addresses,
+    // finds the addresses the way the page describes and cleans up after itself. It runs
+    // on any portal, nothing needs to be edited.
+    package main
+
+    import (
+    	"context"
+    	"encoding/json"
+    	"fmt"
+    	"log"
+    	"os"
+
+    	b24 "github.com/bitrix24/b24gosdk"
+    )
+
+    // The IDs of CRM object types: crm.enum.ownertype returns the full list.
+    const (
+    	typeContact   = 3 // a contact; a company is 4
+    	typeRequisite = 8 // a requisite
+    )
+
+    func main() {
+    	if err := run(context.Background()); err != nil {
+    		log.Fatal(err)
+    	}
+    }
+
+    func run(ctx context.Context) error {
+    	// The webhook path is a secret, so it comes from the environment, not from the code.
+    	core := b24.NewClient(os.Getenv("B24_WEBHOOK_URL")).Core()
+
+    	// --- setup: a contact, its requisite, and two addresses
+
+    	contactID, err := createClient(ctx, core)
+    	if err != nil {
+    		return err
+    	}
+    	// Deleting a contact also removes its requisites and the addresses of those requisites.
+    	defer del(ctx, core, "crm.contact.delete", b24.Params{"id": contactID})
+
+    	// --- step 1: the client requisites
+    	// The address is bound not to the contact but to its REQUISITE, so you first need
+    	// the requisite IDs.
+    	res, err := core.Call(ctx, "crm.requisite.list", b24.Params{
+    		"filter": b24.Params{"ENTITY_TYPE_ID": typeContact, "ENTITY_ID": contactID},
+    		"select": []string{"ID", "ENTITY_TYPE_ID", "ENTITY_ID"},
+    	}, b24.WithIdempotent())
+    	if err != nil {
+    		return fmt.Errorf("crm.requisite.list: %w", err)
+    	}
+
+    	// Here the IDs arrive AS STRINGS ("361"), although crm.enum.* returns them
+    	// as numbers. b24.ID parses both spellings, a plain int does not.
+    	var requisites []struct {
+    		ID b24.ID `json:"ID"`
+    	}
+    	if err := json.Unmarshal(res.Result, &requisites); err != nil {
+    		return fmt.Errorf("parse requisites: %w", err)
+    	}
+    	if len(requisites) == 0 {
+    		return fmt.Errorf("contact %d has no requisites, there is nowhere to store the address", contactID)
+    	}
+    	fmt.Printf("requisites of contact %d: %d\n", contactID, len(requisites))
+
+    	// --- step 2: the addresses of each requisite
+
+    	for _, r := range requisites {
+    		// Without a filter by type, the method returns all addresses of the requisite.
+    		res, err := core.Call(ctx, "crm.address.list", b24.Params{
+    			"filter": b24.Params{"ENTITY_TYPE_ID": typeRequisite, "ENTITY_ID": r.ID},
+    		}, b24.WithIdempotent())
+    		if err != nil {
+    			return fmt.Errorf("crm.address.list: %w", err)
+    		}
+
+    		var addresses []address
+    		if err := json.Unmarshal(res.Result, &addresses); err != nil {
+    			return fmt.Errorf("parse addresses: %w", err)
+    		}
+    		for _, a := range addresses {
+    			fmt.Printf("  requisite %d, type %d: %s\n", r.ID, a.TypeID, a.String())
+    		}
+
+    		// To retrieve an address of only one type, add TYPE_ID to the filter.
+    		res, err = core.Call(ctx, "crm.address.list", b24.Params{
+    			"filter": b24.Params{
+    				"ENTITY_TYPE_ID": typeRequisite,
+    				"ENTITY_ID":      r.ID,
+    				"TYPE_ID":        11, // 11 — delivery address
+    			},
+    		}, b24.WithIdempotent())
+    		if err != nil {
+    			return fmt.Errorf("crm.address.list by type: %w", err)
+    		}
+    		var delivery []address
+    		if err := json.Unmarshal(res.Result, &delivery); err != nil {
+    			return fmt.Errorf("parse delivery addresses: %w", err)
+    		}
+    		fmt.Printf("  of them delivery addresses: %d\n", len(delivery))
+    	}
+
+    	// --- the second storage option: a custom field of the address type
+
+    	return userFieldAddresses(ctx, core, contactID)
+    }
+
+    // address is a single row of the crm.address.list response. The method has no ready-made address string
+    // there is none: it is assembled from parts, and the unfilled parts arrive as null — this is
+    // normal even for a filled-in address.
+    type address struct {
+    	TypeID     b24.ID `json:"TYPE_ID"`
+    	Address1   string `json:"ADDRESS_1"`
+    	City       string `json:"CITY"`
+    	PostalCode string `json:"POSTAL_CODE"`
+    	Country    string `json:"COUNTRY"`
+    	// This pair is used to verify that the address belongs to the right client.
+    	AnchorTypeID b24.ID `json:"ANCHOR_TYPE_ID"`
+    	AnchorID     b24.ID `json:"ANCHOR_ID"`
+    }
+
+    func (a address) String() string {
+    	out := ""
+    	for _, part := range []string{a.PostalCode, a.Country, a.City, a.Address1} {
+    		if part == "" {
+    			continue
+    		}
+    		if out != "" {
+    			out += ", "
+    		}
+    		out += part
+    	}
+    	if out == "" {
+    		return "not specified"
+    	}
+    	return out
+    }
+
+    // userFieldAddresses reads the address stored not in the requisite but directly in
+    // the contact — in a custom field of the address type. To the crm.address.* methods such an
+    // the address is not visible, this is an independent storage option.
+    func userFieldAddresses(ctx context.Context, core *b24.Core, contactID b24.ID) error {
+    	res, err := core.Call(ctx, "crm.contact.userfield.list", b24.Params{
+    		"filter": b24.Params{"USER_TYPE_ID": "address"},
+    	}, b24.WithIdempotent())
+    	if err != nil {
+    		// The method is available only to an administrator — this is no reason to abort the scenario
+    		// with the addresses from the requisites, it has already run.
+    		fmt.Fprintf(os.Stderr, "crm.contact.userfield.list: %v\n", err)
+    		return nil
+    	}
+    	var fields []struct {
+    		FieldName string `json:"FIELD_NAME"`
+    		Multiple  string `json:"MULTIPLE"`
+    	}
+    	if err := json.Unmarshal(res.Result, &fields); err != nil {
+    		return fmt.Errorf("parse custom fields: %w", err)
+    	}
+
+    	res, err = core.Call(ctx, "crm.contact.get",
+    		b24.Params{"id": contactID}, b24.WithIdempotent())
+    	if err != nil {
+    		return fmt.Errorf("crm.contact.get: %w", err)
+    	}
+    	for _, f := range fields {
+    		// The shape of the value depends on MULTIPLE: for a multiple field it is an array.
+    		raw, ok := b24.Unwrap(res.Result, f.FieldName)
+    		if !ok || b24.IsEmpty(raw) {
+    			fmt.Printf("  field %s (MULTIPLE=%s): not filled in\n", f.FieldName, f.Multiple)
+    			continue
+    		}
+    		fmt.Printf("  field %s (MULTIPLE=%s): %s\n", f.FieldName, f.Multiple, raw)
+    	}
+    	if len(fields) == 0 {
+    		fmt.Println("  contacts on this portal have no fields of the address type")
+    	}
+    	return nil
+    }
+
+    // --- helpers: data setup and cleanup
+
+    // createClient creates a contact, its requisite, and two addresses in ONE linked
+    // in a batch: 4 commands cost one call to the portal instead of four.
+    func createClient(ctx context.Context, core *b24.Core) (b24.ID, error) {
+    	presetID, err := firstPreset(ctx, core)
+    	if err != nil {
+    		return 0, err
+    	}
+
+    	b := b24.NewBatch()
+    	// Halt is MANDATORY for a linked batch. Without it, a failed producer is not
+    	// an error for the server: it will substitute the placeholder text itself for the consumer
+    	// as a value, and the requisite would be bound to a "contact" named "$result[...]".
+    	b.Halt = true
+
+    	if err := b.AddAs("contact", "crm.contact.add", b24.Params{
+    		"fields": b24.Params{"NAME": "Klaus", "LAST_NAME": "Weber"},
+    	}); err != nil {
+    		return 0, err
+    	}
+    	// There is no path: crm.contact.add responds with a bare ID.
+    	contactRef, err := b24.Ref("contact")
+    	if err != nil {
+    		return 0, err
+    	}
+
+    	if err := b.AddAs("requisite", "crm.requisite.add", b24.Params{
+    		"fields": b24.Params{
+    			"ENTITY_TYPE_ID": typeContact,
+    			"ENTITY_ID":      contactRef,
+    			"PRESET_ID":      presetID,
+    			"NAME":           "Primary requisite",
+    			"ACTIVE":         "Y",
+    		},
+    	}); err != nil {
+    		return 0, err
+    	}
+    	requisiteRef, err := b24.Ref("requisite")
+    	if err != nil {
+    		return 0, err
+    	}
+
+    	// A single requisite can have several addresses, but no more than one
+    	// of each type: a second crm.address.add with the same TYPE_ID will not go through.
+    	// The address types are listed by crm.enum.addresstype: 1 — actual,
+    	// 11 — a delivery address.
+    	addresses := []struct {
+    		cmd    b24.CmdID
+    		fields b24.Params
+    	}{
+    		{"address_actual", b24.Params{"TYPE_ID": 1, "ADDRESS_1": "Tverskaya Street, 7",
+    			"CITY": "Berlin", "POSTAL_CODE": "125009", "COUNTRY": "Germany"}},
+    		{"address_delivery", b24.Params{"TYPE_ID": 11, "ADDRESS_1": "Granatny Lane, 10",
+    			"CITY": "Berlin", "POSTAL_CODE": "123001", "COUNTRY": "Germany"}},
+    	}
+    	for _, a := range addresses {
+    		a.fields["ENTITY_TYPE_ID"] = typeRequisite
+    		a.fields["ENTITY_ID"] = requisiteRef
+    		if err := b.AddAs(a.cmd, "crm.address.add", b24.Params{"fields": a.fields}); err != nil {
+    			return 0, err
+    		}
+    	}
+
+    	// The commands are executed in the order they were ADDED, whatever their names are —
+    	// this is exactly what makes the chain work.
+    	res, err := core.CallBatch(ctx, b)
+    	if err != nil {
+    		return 0, fmt.Errorf("prepare the data in a batch: %w", err)
+    	}
+    	raw, err := res.Get("contact")
+    	if err != nil {
+    		return 0, err
+    	}
+    	var contactID b24.ID
+    	return contactID, json.Unmarshal(raw, &contactID)
+    }
+
+    func firstPreset(ctx context.Context, core *b24.Core) (b24.ID, error) {
+    	res, err := core.Call(ctx, "crm.requisite.preset.list", b24.Params{
+    		"select": []string{"ID", "NAME"}, "order": b24.Params{"ID": "ASC"},
+    	}, b24.WithIdempotent())
+    	if err != nil {
+    		return 0, fmt.Errorf("crm.requisite.preset.list: %w", err)
+    	}
+    	var presets []struct {
+    		ID b24.ID `json:"ID"`
+    	}
+    	if err := json.Unmarshal(res.Result, &presets); err != nil {
+    		return 0, err
+    	}
+    	if len(presets) == 0 {
+    		return 0, fmt.Errorf("the portal has no requisite templates")
+    	}
+    	return presets[0].ID, nil
+    }
+
+    // del removes what was created. A cleanup error is printed but not returned: it must not
+    // mask the real error of the scenario.
+    func del(ctx context.Context, core *b24.Core, method string, params b24.Params) {
+    	if _, err := core.Call(ctx, method, params); err != nil {
+    		fmt.Fprintf(os.Stderr, "cleanup, %s: %v
+", method, err)
+    	}
+    }
+    ```
+
 {% endlist %}
 
 ## Address from Custom Field {#userfield}
@@ -657,6 +1015,42 @@ For a company, use [crm.company.userfield.list](../../../api-reference/crm/compa
     else:
         for field in fields:
             print(field["FIELD_NAME"], contact.get(field["FIELD_NAME"]))
+    ```
+
+- Go
+
+    ```go
+    res, err := core.Call(ctx, "crm.contact.userfield.list", b24.Params{
+    	"filter": b24.Params{"USER_TYPE_ID": "address"},
+    }, b24.WithIdempotent())
+    if err != nil {
+    	// The method is available only to an administrator — this is no reason to abort the scenario
+    	// with the addresses from the requisites, it has already run.
+    	fmt.Fprintf(os.Stderr, "crm.contact.userfield.list: %v\n", err)
+    	return nil
+    }
+    var fields []struct {
+    	FieldName string `json:"FIELD_NAME"`
+    	Multiple  string `json:"MULTIPLE"`
+    }
+    if err := json.Unmarshal(res.Result, &fields); err != nil {
+    	return fmt.Errorf("parse custom fields: %w", err)
+    }
+
+    res, err = core.Call(ctx, "crm.contact.get",
+    	b24.Params{"id": contactID}, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("crm.contact.get: %w", err)
+    }
+    for _, f := range fields {
+    	// The shape of the value depends on MULTIPLE: for a multiple field it is an array.
+    	raw, ok := b24.Unwrap(res.Result, f.FieldName)
+    	if !ok || b24.IsEmpty(raw) {
+    		fmt.Printf("  field %s (MULTIPLE=%s): not filled in\n", f.FieldName, f.Multiple)
+    		continue
+    	}
+    	fmt.Printf("  field %s (MULTIPLE=%s): %s\n", f.FieldName, f.Multiple, raw)
+    }
     ```
 
 {% endlist %}

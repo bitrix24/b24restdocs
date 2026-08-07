@@ -229,6 +229,30 @@ Default value — `USER` ||
         echo 'Notification ID: ' . $result['result'];
     }
     ```
+
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "im.notify", b24.Params{
+    	"USER_ID":     5,
+    	"TYPE":        "USER",
+    	"MESSAGE":     "Reminder",
+    	"MESSAGE_OUT": "Reminder (email)",
+    	"TAG":         "TASK_42",
+    	"SUB_TAG":     "TASK|42",
+    })
+    if err != nil {
+    	return fmt.Errorf("im.notify: %w", err)
+    }
+
+    var value b24.ID
+    if err := json.Unmarshal(res.Result, &value); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("result:", value)
+    ```
+
 {% endlist %}
 
 ## Response Handling

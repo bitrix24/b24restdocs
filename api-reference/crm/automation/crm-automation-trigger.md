@@ -242,6 +242,25 @@ It is also worth noting that triggers have "Conditions" and the option "Allow tr
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.automation.trigger", b24.Params{
+    	"target": "DEAL_57",
+    	"code":   "c5u4m",
+    })
+    if err != nil {
+    	return fmt.Errorf("crm.automation.trigger: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

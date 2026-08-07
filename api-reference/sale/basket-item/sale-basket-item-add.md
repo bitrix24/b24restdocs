@@ -317,6 +317,42 @@ If `Y` is specified, catalog data will be ignored. The parameters `price`, `base
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "sale.basketitem.add", b24.Params{
+    	"fields": b24.Params{
+    		"orderId":   5147,
+    		"quantity":  2,
+    		"productId": 6544,
+    		"currency":  "EUR",
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("sale.basketitem.add: %w", err)
+    }
+
+    // The method wraps the response in an object with the "basketItem" key.
+    raw, ok := b24.Unwrap(res.Result, "basketItem")
+    if !ok {
+    	return fmt.Errorf("no basketItem key in the response")
+    }
+
+    var item struct {
+    	BasePrice    int    `json:"basePrice"`
+    	CanBuy       string `json:"canBuy"`
+    	CatalogXmlID string `json:"catalogXmlId"`
+    	Currency     string `json:"currency"`
+    	CustomPrice  string `json:"customPrice"`
+    	DateInsert   string `json:"dateInsert"`
+    }
+    if err := json.Unmarshal(raw, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.BasePrice, item.CanBuy)
+    ```
+
 {% endlist %}
 
 {% note tip "Typical use-cases and scenarios" %}

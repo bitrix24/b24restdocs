@@ -237,6 +237,40 @@ Pass the `createdWithin` object inside the filter to filter by creation date, [(
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "booking.v1.waitlist.list", b24.Params{
+    	"filter": b24.Params{
+    		"createdWithin": b24.Params{
+    			"from": "01.04.2025",
+    			"to":   "16.04.2025",
+    		},
+    	},
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("booking.v1.waitlist.list: %w", err)
+    }
+
+    // The method wraps the response in an object with the "waitList" key.
+    raw, ok := b24.Unwrap(res.Result, "waitList")
+    if !ok {
+    	return fmt.Errorf("no waitList key in the response")
+    }
+
+    var items []struct {
+    	ID   b24.ID `json:"id"`
+    	Note string `json:"note"`
+    }
+    if err := json.Unmarshal(raw, &items); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    for _, it := range items {
+    	fmt.Println(it.ID)
+    }
+    ```
+
 {% endlist %}
 
 ## Response Handling

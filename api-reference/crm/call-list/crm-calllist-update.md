@@ -251,6 +251,27 @@ The method overwrites the `WEBFORM_ID` field. If the `WEBFORM_ID` field is not p
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.calllist.update", b24.Params{
+    	"LIST_ID":     123,
+    	"ENTITY_TYPE": "CONTACT",
+    	"ENTITIES":    []int{1, 2, 3},
+    	"WEBFORM_ID":  5,
+    })
+    if err != nil {
+    	return fmt.Errorf("crm.calllist.update: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

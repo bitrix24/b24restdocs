@@ -292,6 +292,29 @@ Example of retrieving document fields, where:
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.documentgenerator.document.getfields", b24.Params{
+    	"id": 101,
+    	"values": b24.Params{
+    		"DocumentNumber": "2026-001",
+    	},
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("crm.documentgenerator.document.getfields: %w", err)
+    }
+
+    // The method wraps the response in an object with the "documentFields" key.
+    raw, ok := b24.Unwrap(res.Result, "documentFields")
+    if !ok {
+    	return fmt.Errorf("no documentFields key in the response")
+    }
+
+    fmt.Printf("%s\n", raw)
+    ```
+
 {% endlist %}
 
 ## Response Handling

@@ -365,6 +365,48 @@ Example of updating a document template where:
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.documentgenerator.template.update", b24.Params{
+    	"id": 41,
+    	"fields": b24.Params{
+    		"name":         "Template from file (updated)",
+    		"file":         []string{"template-updated.docx", "**base64_encoded_content**"},
+    		"numeratorId":  49,
+    		"region":       "ru",
+    		"entityTypeId": []string{"2"},
+    		"users":        []string{"UA"},
+    		"active":       "Y",
+    		"withStamps":   "N",
+    		"sort":         500,
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("crm.documentgenerator.template.update: %w", err)
+    }
+
+    // The method wraps the response in an object with the "template" key.
+    raw, ok := b24.Unwrap(res.Result, "template")
+    if !ok {
+    	return fmt.Errorf("no template key in the response")
+    }
+
+    var item struct {
+    	ID       b24.ID `json:"id"`
+    	Name     string `json:"name"`
+    	Region   string `json:"region"`
+    	Download string `json:"download"`
+    	Active   string `json:"active"`
+    	ModuleID string `json:"moduleId"`
+    }
+    if err := json.Unmarshal(raw, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.ID, item.Name)
+    ```
+
 {% endlist %}
 
 ## Response Handling

@@ -257,6 +257,33 @@ For `type` with the value `user`, the identifier of the current user will be set
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "calendar.section.add", b24.Params{
+    	"type":        "user",
+    	"ownerId":     2,
+    	"name":        "New Section",
+    	"description": "Description for section",
+    	"color":       "#9cbeee",
+    	"text_color":  "#283000",
+    	"export": b24.Params{
+    		"ALLOW": false,
+    		"SET":   "3_9",
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("calendar.section.add: %w", err)
+    }
+
+    var newID b24.ID
+    if err := json.Unmarshal(res.Result, &newID); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("id:", newID)
+    ```
+
 {% endlist %}
 
 ## Response Handling

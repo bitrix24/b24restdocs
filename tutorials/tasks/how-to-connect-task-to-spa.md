@@ -115,6 +115,42 @@ To retrieve an SPA identifier, use the [crm.enum.ownertype](../../api-reference/
     result = client.crm.enum.ownertype().response.result
     ```
 
+- Go
+
+    ```go
+    // The method is called without parameters and returns both the preset types
+    // CRM objects, and smart processes.
+    res, err := core.Call(ctx, "crm.enum.ownertype", nil, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("crm.enum.ownertype: %w", err)
+    }
+
+    var ownerTypes []struct {
+    	ID              int    `json:"ID"`
+    	Name            string `json:"NAME"`
+    	SymbolCode      string `json:"SYMBOL_CODE"`
+    	SymbolCodeShort string `json:"SYMBOL_CODE_SHORT"`
+    }
+    if err := json.Unmarshal(res.Result, &ownerTypes); err != nil {
+    	return fmt.Errorf("parse object types: %w", err)
+    }
+
+    // Look up your smart process by title and remember TWO values: ID is
+    // entityTypeId to look up the item, SYMBOL_CODE_SHORT is the first half
+    // of the binding value.
+    var entityTypeIDFound int
+    var symbolCodeShort string
+    for _, t := range ownerTypes {
+    	if t.Name == spaTitle {
+    		entityTypeIDFound, symbolCodeShort = t.ID, t.SymbolCodeShort
+    		break
+    	}
+    }
+    if symbolCodeShort == "" {
+    	return fmt.Errorf("smart process %q not found in crm.enum.ownertype", spaTitle)
+    }
+    ```
+
 {% endlist %}
 
 For each object type, the method returns four fields:
@@ -273,6 +309,34 @@ To retrieve the SPA item ID, use the [crm.item.list](../../api-reference/crm/uni
     ).response.result
     ```
 
+- Go
+
+    ```go
+    res, err = core.Call(ctx, "crm.item.list", b24.Params{
+    	"entityTypeId": entityTypeIDFound,
+    	"select":       []string{"id", "title"},
+    	"filter":       b24.Params{"title": itemTitle},
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("crm.item.list: %w", err)
+    }
+
+    // The method wraps the response in an object with the items key. Identical titles
+    // nothing forbids it, so the response is a list even with an exact filter.
+    var list struct {
+    	Items []struct {
+    		ID    int    `json:"id"`
+    		Title string `json:"title"`
+    	} `json:"items"`
+    }
+    if err := json.Unmarshal(res.Result, &list); err != nil {
+    	return fmt.Errorf("parse items: %w", err)
+    }
+    if len(list.Items) == 0 {
+    	return fmt.Errorf("item %q not found", itemTitle)
+    }
+    ```
+
 {% endlist %}
 
 As a result, we obtained `id`: `29` of the SPA item — the second part of the binding value.
@@ -369,6 +433,38 @@ To create a task, use the [tasks.task.add](../../api-reference/tasks/tasks-task-
             ],
         }
     ).response.result
+    ```
+
+- Go
+
+    ```go
+    // The binding value is assembled from the responses rather than from a ready-made string: the short
+    // the code depends on entityTypeId and will differ on another portal.
+    binding := symbolCodeShort + "_" + strconv.Itoa(list.Items[0].ID)
+
+    res, err = core.Call(ctx, "tasks.task.add", b24.Params{
+    	"fields": b24.Params{
+    		"TITLE":          "task for test",
+    		"RESPONSIBLE_ID": userID,
+    		// UF_CRM_TASK is always an array, even when there is a single binding.
+    		"UF_CRM_TASK": []string{binding},
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("tasks.task.add: %w", err)
+    }
+
+    // tasks.* wraps the response in an object with the task key, and the task ID
+    // arrives AS A STRING ("3731"): b24.ID parses both a number and a string containing a number.
+    var added struct {
+    	Task struct {
+    		ID    b24.ID `json:"id"`
+    		Title string `json:"title"`
+    	} `json:"task"`
+    }
+    if err := json.Unmarshal(res.Result, &added); err != nil {
+    	return fmt.Errorf("parse the created task: %w", err)
+    }
     ```
 
 {% endlist %}
@@ -654,6 +750,268 @@ The script executes all three steps consecutively: finds the SPA by name, finds 
     create_task_with_smart_process(client, smart_process_name, item_name, responsible_id, task_title)
     ```
 
+- Go
+
+    ```go
+    // Setup in an empty directory — go get will not work without go mod init:
+    //
+    //	go mod init example && go get github.com/bitrix24/b24gosdk
+    //
+    // Run:
+    //
+    //	export B24_WEBHOOK_URL='https://your-portal.bitrix24.com/rest/1/token/' && go run .
+    //
+    // The example is self-contained: it creates a smart process allowed in the task field,
+    // adds an item to it, assembles the binding value, creates a task,
+    // verifies the binding and cleans up after itself. It runs on any portal, nothing
+    // needs to be edited.
+    package main
+
+    import (
+    	"context"
+    	"encoding/json"
+    	"errors"
+    	"fmt"
+    	"log"
+    	"os"
+    	"strconv"
+
+    	b24 "github.com/bitrix24/b24gosdk"
+    )
+
+    const (
+    	spaTitle  = "Equipment procurement (b24gosdk example)"
+    	itemTitle = "Washing machine"
+    )
+
+    func main() {
+    	if err := run(context.Background()); err != nil {
+    		log.Fatal(err)
+    	}
+    }
+
+    func run(ctx context.Context) error {
+    	// The webhook path is a secret, so it comes from the environment, not from the code.
+    	core := b24.NewClient(os.Getenv("B24_WEBHOOK_URL")).Core()
+
+    	// --- setup: a smart process that is allowed in the task field
+
+    	entityTypeID, typeID, err := addType(ctx, core, spaTitle)
+    	if err != nil {
+    		return err
+    	}
+    	defer del(ctx, core, "crm.type.delete", b24.Params{"id": typeID})
+
+    	itemID, err := addItem(ctx, core, entityTypeID, itemTitle)
+    	if err != nil {
+    		return err
+    	}
+    	defer del(ctx, core, "crm.item.delete", b24.Params{
+    		"entityTypeId": entityTypeID, "id": itemID,
+    	})
+
+    	userID, err := currentUser(ctx, core)
+    	if err != nil {
+    		return err
+    	}
+
+    	// --- step 1: the smart process IDs
+    	// The method is called without parameters and returns both the preset types
+    	// CRM objects, and smart processes.
+    	res, err := core.Call(ctx, "crm.enum.ownertype", nil, b24.WithIdempotent())
+    	if err != nil {
+    		return fmt.Errorf("crm.enum.ownertype: %w", err)
+    	}
+
+    	var ownerTypes []struct {
+    		ID              int    `json:"ID"`
+    		Name            string `json:"NAME"`
+    		SymbolCode      string `json:"SYMBOL_CODE"`
+    		SymbolCodeShort string `json:"SYMBOL_CODE_SHORT"`
+    	}
+    	if err := json.Unmarshal(res.Result, &ownerTypes); err != nil {
+    		return fmt.Errorf("parse object types: %w", err)
+    	}
+
+    	// Look up your smart process by title and remember TWO values: ID is
+    	// entityTypeId to look up the item, SYMBOL_CODE_SHORT is the first half
+    	// of the binding value.
+    	var entityTypeIDFound int
+    	var symbolCodeShort string
+    	for _, t := range ownerTypes {
+    		if t.Name == spaTitle {
+    			entityTypeIDFound, symbolCodeShort = t.ID, t.SymbolCodeShort
+    			break
+    		}
+    	}
+    	if symbolCodeShort == "" {
+    		return fmt.Errorf("smart process %q not found in crm.enum.ownertype", spaTitle)
+    	}
+    	fmt.Printf("smart process %q: entityTypeId=%d, short code %q\n",
+    		spaTitle, entityTypeIDFound, symbolCodeShort)
+
+    	// --- step 2: the item ID
+    	res, err = core.Call(ctx, "crm.item.list", b24.Params{
+    		"entityTypeId": entityTypeIDFound,
+    		"select":       []string{"id", "title"},
+    		"filter":       b24.Params{"title": itemTitle},
+    	}, b24.WithIdempotent())
+    	if err != nil {
+    		return fmt.Errorf("crm.item.list: %w", err)
+    	}
+
+    	// The method wraps the response in an object with the items key. Identical titles
+    	// nothing forbids it, so the response is a list even with an exact filter.
+    	var list struct {
+    		Items []struct {
+    			ID    int    `json:"id"`
+    			Title string `json:"title"`
+    		} `json:"items"`
+    	}
+    	if err := json.Unmarshal(res.Result, &list); err != nil {
+    		return fmt.Errorf("parse items: %w", err)
+    	}
+    	if len(list.Items) == 0 {
+    		return fmt.Errorf("item %q not found", itemTitle)
+    	}
+    	fmt.Printf("item %q: id=%d\n", list.Items[0].Title, list.Items[0].ID)
+
+    	// --- step 3: a task with a binding
+    	// The binding value is assembled from the responses rather than from a ready-made string: the short
+    	// the code depends on entityTypeId and will differ on another portal.
+    	binding := symbolCodeShort + "_" + strconv.Itoa(list.Items[0].ID)
+
+    	res, err = core.Call(ctx, "tasks.task.add", b24.Params{
+    		"fields": b24.Params{
+    			"TITLE":          "task for test",
+    			"RESPONSIBLE_ID": userID,
+    			// UF_CRM_TASK is always an array, even when there is a single binding.
+    			"UF_CRM_TASK": []string{binding},
+    		},
+    	})
+    	if err != nil {
+    		return fmt.Errorf("tasks.task.add: %w", err)
+    	}
+
+    	// tasks.* wraps the response in an object with the task key, and the task ID
+    	// arrives AS A STRING ("3731"): b24.ID parses both a number and a string containing a number.
+    	var added struct {
+    		Task struct {
+    			ID    b24.ID `json:"id"`
+    			Title string `json:"title"`
+    		} `json:"task"`
+    	}
+    	if err := json.Unmarshal(res.Result, &added); err != nil {
+    		return fmt.Errorf("parse the created task: %w", err)
+    	}
+    	defer del(ctx, core, "tasks.task.delete", b24.Params{"taskId": added.Task.ID})
+    	fmt.Printf("task %d created with the binding %s\n", added.Task.ID, binding)
+
+    	// --- check: the binding was actually retained
+    	// Without UF_CRM_TASK in select, the binding will not be in the response: it is a system field,
+    	// by default it is not returned.
+    	res, err = core.Call(ctx, "tasks.task.get", b24.Params{
+    		"taskId": added.Task.ID,
+    		"select": []string{"ID", "UF_CRM_TASK"},
+    	}, b24.WithIdempotent())
+    	if err != nil {
+    		return fmt.Errorf("tasks.task.get: %w", err)
+    	}
+
+    	// UF_CRM_TASK was requested, but in the response the field is called ufCrmTask. UnwrapFold
+    	// compares names ignoring case and underscores, so such a
+    	// renaming does not break it.
+    	raw, ok := b24.UnwrapFold(res.Result, "task", "UF_CRM_TASK")
+    	if !ok || b24.IsEmpty(raw) {
+    		return fmt.Errorf("the binding was not retained on task %d", added.Task.ID)
+    	}
+    	var bindings []string
+    	if err := json.Unmarshal(raw, &bindings); err != nil {
+    		return fmt.Errorf("parse bindings: %w", err)
+    	}
+    	fmt.Printf("in task %d the \"CRM items\" field = %v\n", added.Task.ID, bindings)
+    	return nil
+    }
+
+    // --- helpers: data setup and cleanup
+
+    // addType creates a smart process and returns its entityTypeId and id.
+    func addType(ctx context.Context, core *b24.Core, title string) (int, b24.ID, error) {
+    	// Neither setting is enough on its own: isUseInUserfieldEnabled allows
+    	// a smart process in custom fields at all, while linkedUserFields puts
+    	// it specifically in the UF_CRM_TASK task field. Without the second one, the binding is not retained.
+    	//
+    	// isRecyclebinEnabled is disabled deliberately: an item in the recycle bin still
+    	// counts as an item, and crm.type.delete refuses to delete a type
+    	// that has items.
+    	res, err := core.Call(ctx, "crm.type.add", b24.Params{
+    		"fields": b24.Params{
+    			"title":                   title,
+    			"isUseInUserfieldEnabled": "Y",
+    			"linkedUserFields":        b24.Params{"TASKS_TASK|UF_CRM_TASK": "true"},
+    			"isRecyclebinEnabled":     "N",
+    		},
+    	})
+    	if err != nil {
+    		// The error code is compared with errors.Is rather than as a string: a typo in the
+    		// literal would compile and silently take a different branch.
+    		if errors.Is(err, b24.Code("CREATE_DYNAMIC_TYPE_RESTRICTED")) {
+    			return 0, 0, fmt.Errorf("a smart process cannot be created on this portal: %w", err)
+    		}
+    		return 0, 0, fmt.Errorf("crm.type.add: %w", err)
+    	}
+    	var out struct {
+    		Type struct {
+    			ID           b24.ID `json:"id"`
+    			EntityTypeID int    `json:"entityTypeId"`
+    		} `json:"type"`
+    	}
+    	if err := json.Unmarshal(res.Result, &out); err != nil {
+    		return 0, 0, fmt.Errorf("parse smart process: %w", err)
+    	}
+    	return out.Type.EntityTypeID, out.Type.ID, nil
+    }
+
+    func addItem(ctx context.Context, core *b24.Core, entityTypeID int, title string) (b24.ID, error) {
+    	res, err := core.Call(ctx, "crm.item.add", b24.Params{
+    		"entityTypeId": entityTypeID,
+    		"fields":       b24.Params{"title": title},
+    	})
+    	if err != nil {
+    		return 0, fmt.Errorf("crm.item.add: %w", err)
+    	}
+    	raw, ok := b24.Unwrap(res.Result, "item", "id")
+    	if !ok {
+    		return 0, fmt.Errorf("no item.id in %s", res.Result)
+    	}
+    	var id b24.ID
+    	return id, json.Unmarshal(raw, &id)
+    }
+
+    func currentUser(ctx context.Context, core *b24.Core) (b24.ID, error) {
+    	res, err := core.Call(ctx, "user.current", nil, b24.WithIdempotent())
+    	if err != nil {
+    		return 0, fmt.Errorf("user.current: %w", err)
+    	}
+    	var u struct {
+    		ID b24.ID `json:"ID"`
+    	}
+    	if err := json.Unmarshal(res.Result, &u); err != nil {
+    		return 0, err
+    	}
+    	return u.ID, nil
+    }
+
+    // del removes what was created. A cleanup error is printed but not returned: it must not
+    // mask the real error of the scenario.
+    func del(ctx context.Context, core *b24.Core, method string, params b24.Params) {
+    	if _, err := core.Call(ctx, method, params); err != nil {
+    		fmt.Fprintf(os.Stderr, "cleanup, %s: %v
+", method, err)
+    	}
+    }
+    ```
+
 {% endlist %}
 
 ## Verify the Result
@@ -706,6 +1064,32 @@ Via REST, the binding is verified using the [tasks.task.get](../../api-reference
         bitrix_id=3731,
         select=["ID", "UF_CRM_TASK"],
     ).response.result
+    ```
+
+- Go
+
+    ```go
+    // Without UF_CRM_TASK in select, the binding will not be in the response: it is a system field,
+    // by default it is not returned.
+    res, err = core.Call(ctx, "tasks.task.get", b24.Params{
+    	"taskId": added.Task.ID,
+    	"select": []string{"ID", "UF_CRM_TASK"},
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("tasks.task.get: %w", err)
+    }
+
+    // UF_CRM_TASK was requested, but in the response the field is called ufCrmTask. UnwrapFold
+    // compares names ignoring case and underscores, so such a
+    // renaming does not break it.
+    raw, ok := b24.UnwrapFold(res.Result, "task", "UF_CRM_TASK")
+    if !ok || b24.IsEmpty(raw) {
+    	return fmt.Errorf("the binding was not retained on task %d", added.Task.ID)
+    }
+    var bindings []string
+    if err := json.Unmarshal(raw, &bindings); err != nil {
+    	return fmt.Errorf("parse bindings: %w", err)
+    }
     ```
 
 {% endlist %}

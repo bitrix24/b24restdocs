@@ -260,6 +260,40 @@ The list of available `TASK_ID` identifiers for setting permissions can be obtai
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "disk.storage.addFolder", b24.Params{
+    	"id": 1357,
+    	"data": b24.Params{
+    		"NAME": "Neuer Ordner",
+    	},
+    	"rights": []b24.Params{
+    		{
+    			"TASK_ID":     71,
+    			"ACCESS_CODE": "U1271",
+    		},
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("disk.storage.addFolder: %w", err)
+    }
+
+    var item struct {
+    	ID           b24.ID `json:"ID"`
+    	Name         string `json:"NAME"`
+    	StorageID    b24.ID `json:"STORAGE_ID"`
+    	Type         string `json:"TYPE"`
+    	RealObjectID b24.ID `json:"REAL_OBJECT_ID"`
+    	ParentID     b24.ID `json:"PARENT_ID"`
+    }
+    if err := json.Unmarshal(res.Result, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.ID, item.Name)
+    ```
+
 {% endlist %}
 
 ## Response Handling

@@ -190,6 +190,36 @@ This method retrieves the property value by its identifier.
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "sale.propertyvalue.get", b24.Params{
+    	"id": 13176,
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("sale.propertyvalue.get: %w", err)
+    }
+
+    // The method wraps the response in an object with the "propertyValue" key.
+    raw, ok := b24.Unwrap(res.Result, "propertyValue")
+    if !ok {
+    	return fmt.Errorf("no propertyValue key in the response")
+    }
+
+    var item struct {
+    	Code         string `json:"code"`
+    	ID           b24.ID `json:"id"`
+    	Name         string `json:"name"`
+    	OrderPropsID b24.ID `json:"orderPropsId"`
+    	Value        string `json:"value"`
+    }
+    if err := json.Unmarshal(raw, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.Code, item.ID)
+    ```
+
 {% endlist %}
 
 ## Response Handling

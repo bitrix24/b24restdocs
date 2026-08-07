@@ -278,6 +278,34 @@ An administrator can retrieve information about any group on the account, even i
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "socialnetwork.api.workgroup.get", b24.Params{
+    	"params": b24.Params{
+    		"groupId": 622,
+    		"select":  []string{"DEPARTMENTS", "TAGS"},
+    	},
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("socialnetwork.api.workgroup.get: %w", err)
+    }
+
+    var item struct {
+    	ID          b24.ID `json:"ID"`
+    	Active      string `json:"ACTIVE"`
+    	SiteID      string `json:"SITE_ID"`
+    	SubjectID   b24.ID `json:"SUBJECT_ID"`
+    	Name        string `json:"NAME"`
+    	Description string `json:"DESCRIPTION"`
+    }
+    if err := json.Unmarshal(res.Result, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.ID, item.Active)
+    ```
+
 {% endlist %}
 
 {% include [Footnote on examples](../../_includes/examples.md) %}

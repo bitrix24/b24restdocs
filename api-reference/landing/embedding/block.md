@@ -254,6 +254,26 @@ For `LANDING_BLOCK_<CODE>`, the following keys are passed in the context:
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "landing.repo.bind", b24.Params{
+    	"fields": b24.Params{
+    		"PLACEMENT":         "LANDING_BLOCK_04.1.one_col_fix_with_title",
+    		"PLACEMENT_HANDLER": "https://your-domain.com/widgets/landing-block-handler.php",
+    		"TITLE":             "My Widget for the Block",
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("landing.repo.bind: %w", err)
+    }
+
+    // The response arrives as json.RawMessage — unmarshal it
+    // into a struct matching the response shape shown below on this page.
+    fmt.Printf("%s\n", res.Result)
+    ```
+
 {% endlist %}
 
 ### Registering a Widget for All Blocks
@@ -427,6 +447,26 @@ If the application needs a single handler for all blocks, use the code `LANDING_
     echo '<PRE>';
     print_r($result);
     echo '</PRE>';
+    ```
+
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "landing.repo.bind", b24.Params{
+    	"fields": b24.Params{
+    		"PLACEMENT":         "LANDING_BLOCK_*",
+    		"PLACEMENT_HANDLER": "https://your-domain.com/widgets/landing-block-handler.php",
+    		"TITLE":             "My Widget for the Block",
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("landing.repo.bind: %w", err)
+    }
+
+    // The response arrives as json.RawMessage — unmarshal it
+    // into a struct matching the response shape shown below on this page.
+    fmt.Printf("%s\n", res.Result)
     ```
 
 {% endlist %}

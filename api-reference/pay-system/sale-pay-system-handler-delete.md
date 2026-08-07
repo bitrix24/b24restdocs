@@ -186,6 +186,24 @@ This method deletes the REST handler for the payment system.
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "sale.paysystem.handler.delete", b24.Params{
+    	"ID": 1,
+    })
+    if err != nil {
+    	return fmt.Errorf("sale.paysystem.handler.delete: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

@@ -256,6 +256,44 @@ Possible values for `order`:
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "sale.propertyvariant.list", b24.Params{
+    	"select": []string{"id", "name", "orderPropsId", "value"},
+    	"filter": b24.Params{
+    		">=id": 5,
+    	},
+    	"order": b24.Params{
+    		"orderPropsId": "desc",
+    		"id":           "asc",
+    	},
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("sale.propertyvariant.list: %w", err)
+    }
+
+    // The method wraps the response in an object with the "propertyVariants" key.
+    raw, ok := b24.Unwrap(res.Result, "propertyVariants")
+    if !ok {
+    	return fmt.Errorf("no propertyVariants key in the response")
+    }
+
+    var items []struct {
+    	ID           b24.ID `json:"id"`
+    	Name         string `json:"name"`
+    	OrderPropsID b24.ID `json:"orderPropsId"`
+    	Value        string `json:"value"`
+    }
+    if err := json.Unmarshal(raw, &items); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    for _, it := range items {
+    	fmt.Println(it.ID)
+    }
+    ```
+
 {% endlist %}
 
 ## Response Handling

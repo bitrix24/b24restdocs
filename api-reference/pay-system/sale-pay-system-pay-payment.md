@@ -196,6 +196,25 @@ To perform the payment, there must be a payment associated with the specified pa
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "sale.paysystem.pay.payment", b24.Params{
+    	"PAYMENT_ID":    1,
+    	"PAY_SYSTEM_ID": 1,
+    })
+    if err != nil {
+    	return fmt.Errorf("sale.paysystem.pay.payment: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

@@ -217,6 +217,27 @@ The method `crm.deal.recurring.expose` creates a new deal based on the template 
     except Exception as error:
         print(f"Unexpected error: {error}")
     ```
+
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.deal.recurring.expose", b24.Params{
+    	"id": 15,
+    })
+    if err != nil {
+    	return fmt.Errorf("crm.deal.recurring.expose: %w", err)
+    }
+
+    var item struct {
+    	DealID b24.ID `json:"DEAL_ID"`
+    }
+    if err := json.Unmarshal(res.Result, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.DealID)
+    ```
+
 {% endlist %}
 
 ## Response Handling

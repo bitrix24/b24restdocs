@@ -104,6 +104,26 @@ Default value is three months after the current date ||
         echo '</PRE>';
         ```
 
+    - Go
+
+        ```go
+        // client and ctx are already created — see the Go SDK section
+        res, err := client.Core().Call(ctx, "calendar.event.get", b24.Params{
+        	"type":    "user",
+        	"ownerId": 1,
+        	"from":    "2024-06-20",
+        	"to":      "2024-08-20",
+        	"section": []int{21, 44},
+        }, b24.WithIdempotent())
+        if err != nil {
+        	return fmt.Errorf("calendar.event.get: %w", err)
+        }
+
+        // The response arrives as json.RawMessage — unmarshal it
+        // into a struct matching the response shape shown below on this page.
+        fmt.Printf("%s\n", res.Result)
+        ```
+
     {% endlist %}
 
 2. Get events from the Company Calendar.
@@ -158,6 +178,23 @@ Default value is three months after the current date ||
         echo '<PRE>';
         print_r($result);
         echo '</PRE>';
+        ```
+
+    - Go
+
+        ```go
+        // client and ctx are already created — see the Go SDK section
+        res, err := client.Core().Call(ctx, "calendar.event.get", b24.Params{
+        	"type":    "company_calendar",
+        	"ownerId": "",
+        }, b24.WithIdempotent())
+        if err != nil {
+        	return fmt.Errorf("calendar.event.get: %w", err)
+        }
+
+        // The response arrives as json.RawMessage — unmarshal it
+        // into a struct matching the response shape shown below on this page.
+        fmt.Printf("%s\n", res.Result)
         ```
 
     {% endlist %}

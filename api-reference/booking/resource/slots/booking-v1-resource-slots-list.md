@@ -206,6 +206,38 @@ Can be obtained using the methods [booking.v1.resource.add](../booking-v1-resour
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "booking.v1.resource.slots.list", b24.Params{
+    	"resourceId": 257,
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("booking.v1.resource.slots.list: %w", err)
+    }
+
+    // The method wraps the response in an object with the "slots" key.
+    raw, ok := b24.Unwrap(res.Result, "slots")
+    if !ok {
+    	return fmt.Errorf("no slots key in the response")
+    }
+
+    var items []struct {
+    	From     int    `json:"from"`
+    	ID       b24.ID `json:"id"`
+    	SlotSize int    `json:"slotSize"`
+    	Timezone string `json:"timezone"`
+    	To       int    `json:"to"`
+    }
+    if err := json.Unmarshal(raw, &items); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    for _, it := range items {
+    	fmt.Println(it.From)
+    }
+    ```
+
 {% endlist %}
 
 ## Response Handling

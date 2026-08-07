@@ -154,6 +154,26 @@ No parameters.
         var_dump($result['result']);
     }
     ```
+
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "im.notify.read.all", nil)
+    if err != nil {
+    	return fmt.Errorf("im.notify.read.all: %w", err)
+    }
+
+    var item struct {
+    	Result     bool `json:"result"`
+    	NewCounter int  `json:"newCounter"`
+    }
+    if err := json.Unmarshal(res.Result, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.Result, item.NewCounter)
+    ```
+
 {% endlist %}
 
 ## Response Handling

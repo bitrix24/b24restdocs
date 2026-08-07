@@ -233,6 +233,37 @@ Retrieve information about the smart process with `entityTypeId = 2024`.
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.type.getByEntityTypeId", b24.Params{
+    	"entityTypeId": 2024,
+    })
+    if err != nil {
+    	return fmt.Errorf("crm.type.getByEntityTypeId: %w", err)
+    }
+
+    // The method wraps the response in an object with the "type" key.
+    raw, ok := b24.Unwrap(res.Result, "type")
+    if !ok {
+    	return fmt.Errorf("no type key in the response")
+    }
+
+    var item struct {
+    	ID                  b24.ID `json:"id"`
+    	Title               string `json:"title"`
+    	Code                string `json:"code"`
+    	CreatedBy           int    `json:"createdBy"`
+    	EntityTypeID        b24.ID `json:"entityTypeId"`
+    	IsCategoriesEnabled string `json:"isCategoriesEnabled"`
+    }
+    if err := json.Unmarshal(raw, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.ID, item.Title)
+    ```
+
 {% endlist %}
 
 ## Response Handling

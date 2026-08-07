@@ -223,6 +223,28 @@ When calling `Bot.update`, the bot's subscriptions to events `ONIMBOTV2*` are au
     }
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "imbot.v2.Bot.update", b24.Params{
+    	"botId":    456,
+    	"botToken": "my_bot_token",
+    	"fields": b24.Params{
+    		"properties": b24.Params{
+    			"name": "Updated Bot",
+    		},
+    		"isHidden": true,
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("imbot.v2.Bot.update: %w", err)
+    }
+
+    // The response shape is shown below on this page.
+    fmt.Printf("%s\n", res.Result)
+    ```
+
 {% endlist %}
 
 ## Response Handling

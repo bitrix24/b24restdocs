@@ -416,6 +416,80 @@ To delete a file, use an object in the format `{"remove": "Y"}` ||
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "sale.propertyvalue.modify", b24.Params{
+    	"fields": b24.Params{
+    		"order": b24.Params{
+    			"id": 2066,
+    			"propertyValues": []b24.Params{
+    				{
+    					"orderPropsId": 20,
+    					"value":        "John Smith",
+    				},
+    				{
+    					"orderPropsId": 21,
+    					"value":        "johnsmith@example.com",
+    				},
+    				{
+    					"orderPropsId": 22,
+    					"value":        "+10907996161",
+    				},
+    				{
+    					"orderPropsId": 25,
+    					"value":        "0000073738",
+    				},
+    				{
+    					"orderPropsId": 26,
+    					"value":        "900 S Holland Ave, Springfield, MO 65806, United States",
+    				},
+    				{
+    					"orderPropsId": 51,
+    					"value":        "17.04.2024",
+    				},
+    				{
+    					"orderPropsId": 52,
+    					"value":        "Y",
+    				},
+    				{
+    					"orderPropsId": 53,
+    					"value":        "948",
+    				},
+    				{
+    					"orderPropsId": 54,
+    					"value":        "10",
+    				},
+    			},
+    		},
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("sale.propertyvalue.modify: %w", err)
+    }
+
+    // The method wraps the response in an object with the "propertyValues" key.
+    raw, ok := b24.Unwrap(res.Result, "propertyValues")
+    if !ok {
+    	return fmt.Errorf("no propertyValues key in the response")
+    }
+
+    var items []struct {
+    	Code         string `json:"code"`
+    	ID           b24.ID `json:"id"`
+    	Name         string `json:"name"`
+    	OrderPropsID b24.ID `json:"orderPropsId"`
+    	Value        string `json:"value"`
+    }
+    if err := json.Unmarshal(raw, &items); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    for _, it := range items {
+    	fmt.Println(it.Code)
+    }
+    ```
+
 {% endlist %}
 
 ## Response Handling

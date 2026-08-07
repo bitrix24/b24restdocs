@@ -301,6 +301,45 @@ Or pass the value from the `next` key in the response. ||
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "catalog.document.list", b24.Params{
+    	"select": []string{"id", "docType", "docNumber", "title", "status", "dateDocument", "total"},
+    	"filter": b24.Params{
+    		">=dateCreate": "2025-10-01T00:00:00+03:00",
+    		"<=dateCreate": "2025-10-15T23:59:59+03:00",
+    	},
+    	"order": b24.Params{
+    		"id": "ASC",
+    	},
+    	"start": 50,
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("catalog.document.list: %w", err)
+    }
+
+    // The method wraps the response in an object with the "documents" key.
+    raw, ok := b24.Unwrap(res.Result, "documents")
+    if !ok {
+    	return fmt.Errorf("no documents key in the response")
+    }
+
+    var items []struct {
+    	DocType string `json:"docType"`
+    	ID      b24.ID `json:"id"`
+    	Status  string `json:"status"`
+    	Title   string `json:"title"`
+    }
+    if err := json.Unmarshal(raw, &items); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    for _, it := range items {
+    	fmt.Println(it.DocType)
+    }
+    ```
+
 {% endlist %}
 
 ## Response Handling

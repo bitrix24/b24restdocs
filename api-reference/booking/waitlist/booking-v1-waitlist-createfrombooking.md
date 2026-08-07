@@ -183,6 +183,24 @@ It can be obtained using the methods [booking.v1.booking.add](../booking/booking
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "booking.v1.waitlist.createfrombooking", b24.Params{
+    	"bookingId": 5,
+    })
+    if err != nil {
+    	return fmt.Errorf("booking.v1.waitlist.createfrombooking: %w", err)
+    }
+
+    var value b24.ID
+    if err := json.Unmarshal(res.Result, &value); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("result:", value)
+    ```
+
 {% endlist %}
 
 ## Response Handling

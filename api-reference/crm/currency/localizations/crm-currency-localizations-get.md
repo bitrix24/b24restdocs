@@ -229,6 +229,24 @@ The identifier can be obtained using the [crm.currency.list](../crm-currency-lis
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.currency.localizations.get", b24.Params{
+    	"id": "EUR",
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("crm.currency.localizations.get: %w", err)
+    }
+
+    keys, ok := b24.Keys(res.Result)
+    if !ok {
+    	return fmt.Errorf("expected an object in the response")
+    }
+    fmt.Println("fields in response:", len(keys))
+    ```
+
 {% endlist %}
 
 ## Response Handling

@@ -276,6 +276,29 @@ Default is `Y` ||
     }
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "landing.landing.addblock", b24.Params{
+    	"lid": 351,
+    	"fields": b24.Params{
+    		"CODE":     "02.three_cols_big_1",
+    		"AFTER_ID": 6428,
+    		"ACTIVE":   "Y",
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("landing.landing.addblock: %w", err)
+    }
+
+    var value b24.ID
+    if err := json.Unmarshal(res.Result, &value); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("result:", value)
+    ```
+
 {% endlist %}
 
 ## Response Handling

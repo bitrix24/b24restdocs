@@ -279,6 +279,30 @@ Site types and rules for selecting the `scope` parameter are described in the ar
     }
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "landing.site.add", b24.Params{
+    	"scope": "KNOWLEDGE",
+    	"fields": b24.Params{
+    		"TITLE":       "Company Knowledge Base",
+    		"CODE":        "",
+    		"TYPE":        "KNOWLEDGE",
+    		"DESCRIPTION": "Knowledge base site",
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("landing.site.add: %w", err)
+    }
+
+    var newID b24.ID
+    if err := json.Unmarshal(res.Result, &newID); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("id:", newID)
+    ```
+
 {% endlist %}
 
 ## Response Handling

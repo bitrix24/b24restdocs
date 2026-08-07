@@ -344,6 +344,37 @@ Possible values:
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "voximplant.sip.get", b24.Params{
+    	"FILTER": b24.Params{
+    		"CONFIG_ID": []int{3, 7, 9},
+    	},
+    	"SORT":  "CONFIG_ID",
+    	"ORDER": "ASC",
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("voximplant.sip.get: %w", err)
+    }
+
+    var items []struct {
+    	Type     string `json:"TYPE"`
+    	ConfigID b24.ID `json:"CONFIG_ID"`
+    	RegID    b24.ID `json:"REG_ID"`
+    	Server   string `json:"SERVER"`
+    	Login    string `json:"LOGIN"`
+    	Password string `json:"PASSWORD"`
+    }
+    if err := json.Unmarshal(res.Result, &items); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    for _, it := range items {
+    	fmt.Println(it.Type, it.ConfigID)
+    }
+    ```
+
 {% endlist %}
 
 ## Response Handling

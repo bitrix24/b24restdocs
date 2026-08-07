@@ -159,6 +159,26 @@ Who you can delegate to depends on the task settings: only subordinates, all emp
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "bizproc.task.delegate", b24.Params{
+    	"TASK_IDS":     []int{1128, 1129, 1130},
+    	"FROM_USER_ID": 15,
+    	"TO_USER_ID":   37,
+    })
+    if err != nil {
+    	return fmt.Errorf("bizproc.task.delegate: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response handling

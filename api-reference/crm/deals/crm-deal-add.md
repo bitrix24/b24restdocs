@@ -563,6 +563,55 @@ By default `Y` ||
     except Exception as error:
         print(f"Unexpected error: {error}")
     ```
+
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.deal.add", b24.Params{
+    	"fields": b24.Params{
+    		"TITLE":                 "New Deal #1",
+    		"TYPE_ID":               "COMPLEX",
+    		"CATEGORY_ID":           0,
+    		"STAGE_ID":              "PREPARATION",
+    		"IS_RECURRING":          "N",
+    		"IS_RETURN_CUSTOMER":    "Y",
+    		"IS_REPEATED_APPROACH":  "Y",
+    		"PROBABILITY":           99,
+    		"CURRENCY_ID":           "EUR",
+    		"OPPORTUNITY":           1000000,
+    		"IS_MANUAL_OPPORTUNITY": "Y",
+    		"TAX_VALUE":             0.10,
+    		"COMPANY_ID":            9,
+    		"CONTACT_IDS":           []int{84, 83},
+    		"BEGINDATE":             time.Now().Format(time.RFC3339),
+    		"CLOSEDATE":             time.Now().AddDate(0, 0, 10).Format(time.RFC3339),
+    		"OPENED":                "Y",
+    		"CLOSED":                "N",
+    		"COMMENTS":              "Example comment",
+    		"SOURCE_ID":             "CALLBACK",
+    		"SOURCE_DESCRIPTION":    "Additional information about the source",
+    		"ADDITIONAL_INFO":       "Additional information",
+    		"UTM_SOURCE":            "google",
+    		"UTM_MEDIUM":            "CPC",
+    		"PARENT_ID_1220":        22,
+    		"UF_CRM_1721244482250":  "Hello World!",
+    	},
+    	"params": b24.Params{
+    		"REGISTER_SONET_EVENT": "N",
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("crm.deal.add: %w", err)
+    }
+
+    var newID b24.ID
+    if err := json.Unmarshal(res.Result, &newID); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("id:", newID)
+    ```
+
 {% endlist %}
 
 ## Response Handling

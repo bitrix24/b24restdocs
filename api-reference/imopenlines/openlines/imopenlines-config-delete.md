@@ -185,6 +185,24 @@ You can obtain the identifier of the open channel when [creating an open channel
     print_r($result);
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "imopenlines.config.delete", b24.Params{
+    	"CONFIG_ID": 15,
+    })
+    if err != nil {
+    	return fmt.Errorf("imopenlines.config.delete: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

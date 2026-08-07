@@ -218,6 +218,29 @@ The identifier can be obtained using the methods [user.get](../user/user-get.md)
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "userconsent.consent.add", b24.Params{
+    	"AGREEMENT_ID":  19,
+    	"USER_ID":       123,
+    	"IP":            "192.168.1.100",
+    	"URL":           "https://example.com/contact-form",
+    	"ORIGIN_ID":     "my_contact_form",
+    	"ORIGINATOR_ID": "user@example.com",
+    })
+    if err != nil {
+    	return fmt.Errorf("userconsent.consent.add: %w", err)
+    }
+
+    var newID b24.ID
+    if err := json.Unmarshal(res.Result, &newID); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("id:", newID)
+    ```
+
 {% endlist %}
 
 ## Response Handling

@@ -290,6 +290,31 @@ Bank requisite identifiers can be obtained using the method [crm.requisite.bankd
         print(f"Unexpected error: {error}")
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.requisite.link.register", b24.Params{
+    	"fields": b24.Params{
+    		"ENTITY_TYPE_ID":    31,
+    		"ENTITY_ID":         315,
+    		"REQUISITE_ID":      60,
+    		"BANK_DETAIL_ID":    24,
+    		"MC_REQUISITE_ID":   2,
+    		"MC_BANK_DETAIL_ID": 2,
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("crm.requisite.link.register: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

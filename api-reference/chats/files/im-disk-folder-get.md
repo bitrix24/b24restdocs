@@ -192,6 +192,26 @@ The identifier from the response can be used in Drive methods:
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "im.disk.folder.get", b24.Params{
+    	"DIALOG_ID": "chat1489",
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("im.disk.folder.get: %w", err)
+    }
+
+    var item struct {
+    	ID b24.ID `json:"ID"`
+    }
+    if err := json.Unmarshal(res.Result, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.ID)
+    ```
+
 {% endlist %}
 
 ## Response Handling

@@ -277,6 +277,32 @@ If your handler needs the workgroup identifier explicitly, use [{#T}](./detail-t
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "placement.bind", b24.Params{
+    	"PLACEMENT": "SONET_GROUP_TOOLBAR",
+    	"HANDLER":   "https://your-domain.com/widgets/sonet-group-toolbar-handler.php",
+    	"TITLE":     "My group extension",
+    	"LANG_ALL": b24.Params{
+    		"ru": b24.Params{
+    			"TITLE": "My group extension",
+    		},
+    		"en": b24.Params{
+    			"TITLE": "My group extension",
+    		},
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("placement.bind: %w", err)
+    }
+
+    // The response arrives as json.RawMessage — unmarshal it
+    // into a struct matching the response shape shown below on this page.
+    fmt.Printf("%s\n", res.Result)
+    ```
+
 {% endlist %}
 
 ## Continue Learning

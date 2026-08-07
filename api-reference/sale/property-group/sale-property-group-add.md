@@ -224,6 +224,39 @@ This method creates a property group.
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "sale.propertygroup.add", b24.Params{
+    	"fields": b24.Params{
+    		"personTypeId": 3,
+    		"name":         "New Property Group",
+    		"sort":         100,
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("sale.propertygroup.add: %w", err)
+    }
+
+    // The method wraps the response in an object with the "propertyGroup" key.
+    raw, ok := b24.Unwrap(res.Result, "propertyGroup")
+    if !ok {
+    	return fmt.Errorf("no propertyGroup key in the response")
+    }
+
+    var item struct {
+    	ID           b24.ID `json:"id"`
+    	Name         string `json:"name"`
+    	PersonTypeID b24.ID `json:"personTypeId"`
+    	Sort         int    `json:"sort"`
+    }
+    if err := json.Unmarshal(raw, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.ID, item.Name)
+    ```
+
 {% endlist %}
 
 ## Response Handling

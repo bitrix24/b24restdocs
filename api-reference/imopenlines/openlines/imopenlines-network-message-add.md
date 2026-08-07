@@ -500,6 +500,66 @@ Pass `N` to disable link preview ||
     print_r($result);
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "imopenlines.network.message.add", b24.Params{
+    	"CODE":    "ab515f5d85a8b844d484f6ea75a2e494",
+    	"USER_ID": 2,
+    	"MESSAGE": "We have prepared materials for connecting open channels",
+    	"ATTACH": b24.Params{
+    		"ID":          1,
+    		"COLOR_TOKEN": "primary",
+    		"BLOCKS": []b24.Params{
+    			{
+    				"MESSAGE": "We have sent a checklist and connection diagram in the attachment",
+    			},
+    			{
+    				"FILE": []b24.Params{
+    					{
+    						"NAME": "checklist-openlines.pdf",
+    						"LINK": "https://cdn.example.com/docs/checklist-openlines.pdf",
+    						"SIZE": 428736,
+    					},
+    				},
+    			},
+    			{
+    				"IMAGE": []b24.Params{
+    					{
+    						"NAME":    "Connection Diagram",
+    						"LINK":    "https://cdn.example.com/images/openlines-setup.png",
+    						"PREVIEW": "https://cdn.example.com/images/openlines-setup-preview.png",
+    						"WIDTH":   1280,
+    						"HEIGHT":  720,
+    					},
+    				},
+    			},
+    		},
+    	},
+    	"KEYBOARD": b24.Params{
+    		"BUTTONS": []b24.Params{
+    			{
+    				"TEXT":           "Open Instructions",
+    				"LINK":           "https://help.example.com/openlines/setup",
+    				"DISPLAY":        "LINE",
+    				"BG_COLOR_TOKEN": "primary",
+    			},
+    		},
+    	},
+    	"URL_PREVIEW": "N",
+    })
+    if err != nil {
+    	return fmt.Errorf("imopenlines.network.message.add: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

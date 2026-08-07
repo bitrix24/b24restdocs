@@ -249,6 +249,39 @@ Get the list of funnels for deals.
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.category.list", b24.Params{
+    	"entityTypeId": 2,
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("crm.category.list: %w", err)
+    }
+
+    // The method wraps the response in an object with the "categories" key.
+    raw, ok := b24.Unwrap(res.Result, "categories")
+    if !ok {
+    	return fmt.Errorf("no categories key in the response")
+    }
+
+    var items []struct {
+    	ID           b24.ID `json:"id"`
+    	Name         string `json:"name"`
+    	Sort         int    `json:"sort"`
+    	EntityTypeID b24.ID `json:"entityTypeId"`
+    	IsDefault    string `json:"isDefault"`
+    	OriginID     string `json:"originId"`
+    }
+    if err := json.Unmarshal(raw, &items); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    for _, it := range items {
+    	fmt.Println(it.ID)
+    }
+    ```
+
 {% endlist %}
 
 ## Response Handling

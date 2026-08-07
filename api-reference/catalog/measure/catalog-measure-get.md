@@ -195,6 +195,37 @@ The method returns information about a unit of measurement by its ID.
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "catalog.measure.get", b24.Params{
+    	"id": 6,
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("catalog.measure.get: %w", err)
+    }
+
+    // The method wraps the response in an object with the "measure" key.
+    raw, ok := b24.Unwrap(res.Result, "measure")
+    if !ok {
+    	return fmt.Errorf("no measure key in the response")
+    }
+
+    var item struct {
+    	Code         int    `json:"code"`
+    	ID           b24.ID `json:"id"`
+    	IsDefault    string `json:"isDefault"`
+    	MeasureTitle string `json:"measureTitle"`
+    	Symbol       string `json:"symbol"`
+    	SymbolIntl   string `json:"symbolIntl"`
+    }
+    if err := json.Unmarshal(raw, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.Code, item.ID)
+    ```
+
 {% endlist %}
 
 ## Response Handling

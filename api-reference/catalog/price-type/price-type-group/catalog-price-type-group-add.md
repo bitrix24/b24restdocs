@@ -234,6 +234,39 @@ Before adding, check for an existing record using the [catalog.priceTypeGroup.li
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "catalog.priceTypeGroup.add", b24.Params{
+    	"fields": b24.Params{
+    		"catalogGroupId": 9,
+    		"groupId":        23,
+    		"access":         "Y",
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("catalog.priceTypeGroup.add: %w", err)
+    }
+
+    // The method wraps the response in an object with the "priceTypeGroup" key.
+    raw, ok := b24.Unwrap(res.Result, "priceTypeGroup")
+    if !ok {
+    	return fmt.Errorf("no priceTypeGroup key in the response")
+    }
+
+    var item struct {
+    	Access         string `json:"access"`
+    	CatalogGroupID b24.ID `json:"catalogGroupId"`
+    	GroupID        b24.ID `json:"groupId"`
+    	ID             b24.ID `json:"id"`
+    }
+    if err := json.Unmarshal(raw, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.Access, item.CatalogGroupID)
+    ```
+
 {% endlist %}
 
 ## Response Handling

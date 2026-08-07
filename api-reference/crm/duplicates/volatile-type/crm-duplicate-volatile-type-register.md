@@ -229,6 +229,27 @@ A total of 7 custom fields can be registered for duplicate searches. For example
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.duplicate.volatileType.register", b24.Params{
+    	"entityTypeId": 1,
+    	"fieldCode":    "TITLE",
+    })
+    if err != nil {
+    	return fmt.Errorf("crm.duplicate.volatileType.register: %w", err)
+    }
+
+    var item struct {
+    	ID b24.ID `json:"id"`
+    }
+    if err := json.Unmarshal(res.Result, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.ID)
+    ```
+
 {% endlist %}
 
 ## Response Handling

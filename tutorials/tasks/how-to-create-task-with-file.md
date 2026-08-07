@@ -112,6 +112,39 @@ Uploading a file to Drive is a required step because the `UF_TASK_WEBDAV_FILES` 
     ).response.result
     ```
 
+- Go
+
+    ```go
+    // fileContent is the file transport in Bitrix24: an array of two elements,
+    // [file name, content in base64]. The request body is JSON anyway, so a regular
+    // []string is serialized exactly as the method expects: neither multipart nor manual
+    // url encoding is needed. Base64 inflates the data by about a third —
+    // this path for small files.
+    res, err := core.Call(ctx, "disk.folder.uploadfile", b24.Params{
+    	"id":          folderID,
+    	"data":        b24.Params{"NAME": "ava555.jpg"},
+    	"fileContent": []string{"ava555.jpg", base64.StdEncoding.EncodeToString(content)},
+    	// Re-running the example must not fail because of a name collision.
+    	"generateUniqueName": true,
+    })
+    if err != nil {
+    	return fmt.Errorf("disk.folder.uploadfile: %w", err)
+    }
+
+    var file struct {
+    	// ID is the ID of the DRIVE OBJECT, and it is exactly what fields of type
+    	// "file (Drive)".
+    	ID b24.ID `json:"ID"`
+    	// FILE_ID is the internal file ID. If you substitute it into a field
+    	// of the task, the file either will not attach or the wrong one will.
+    	FileID b24.ID `json:"FILE_ID"`
+    	Name   string `json:"NAME"`
+    }
+    if err := json.Unmarshal(res.Result, &file); err != nil {
+    	return fmt.Errorf("parse the uploaded file: %w", err)
+    }
+    ```
+
 {% endlist %}
 
 As a result of uploading the file to Drive, you will receive two different file ID values:
@@ -211,6 +244,38 @@ To create a task, use the [tasks.task.add](../../api-reference/tasks/tasks-task-
             ],
         }
     ).response.result
+    ```
+
+- Go
+
+    ```go
+    // The "n" prefix before a Drive object ID means "attach exactly
+    // this existing object". The method will not accept a bare number. The field is always
+    // an array, even when there is a single file.
+    res, err = core.Call(ctx, "tasks.task.add", b24.Params{
+    	"fields": b24.Params{
+    		"TITLE":                "task for test",
+    		"CREATED_BY":           userID,
+    		"RESPONSIBLE_ID":       userID,
+    		"UF_TASK_WEBDAV_FILES": []string{"n" + strconv.FormatInt(int64(file.ID), 10)},
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("tasks.task.add: %w", err)
+    }
+
+    // tasks.* wraps the response in an object with the task key — unlike crm.*.add,
+    // which responds with a bare ID. And here the ID arrives
+    // AS A STRING ("3711"): b24.ID parses both spellings, a plain int does not.
+    var out struct {
+    	Task struct {
+    		ID    b24.ID `json:"id"`
+    		Title string `json:"title"`
+    	} `json:"task"`
+    }
+    if err := json.Unmarshal(res.Result, &out); err != nil {
+    	return fmt.Errorf("parse the created task: %w", err)
+    }
     ```
 
 {% endlist %}
@@ -563,6 +628,211 @@ As a result of [tasks.task.get](../../api-reference/tasks/tasks-task-get.md), yo
     )
 
     upload_file_to_drive(client)
+    ```
+
+- Go
+
+    ```go
+    // Setup in an empty directory — go get will not work without go mod init:
+    //
+    //	go mod init example && go get github.com/bitrix24/b24gosdk
+    //
+    // Run:
+    //
+    //	export B24_WEBHOOK_URL='https://your-portal.bitrix24.com/rest/1/token/' && go run .
+    //
+    // The example is self-contained: it finds a folder on Drive itself, uploads a file there,
+    // creates a task with this file, verifies the attachment, and cleans up after itself.
+    // It runs on any portal, nothing needs to be edited.
+    package main
+
+    import (
+    	"context"
+    	"encoding/base64"
+    	"encoding/json"
+    	"fmt"
+    	"log"
+    	"os"
+    	"strconv"
+
+    	b24 "github.com/bitrix24/b24gosdk"
+    )
+
+    func main() {
+    	if err := run(context.Background()); err != nil {
+    		log.Fatal(err)
+    	}
+    }
+
+    func run(ctx context.Context) error {
+    	// The webhook path is a secret, so it comes from the environment, not from the code.
+    	core := b24.NewClient(os.Getenv("B24_WEBHOOK_URL")).Core()
+
+    	// --- setup: whose Drive and which folder
+
+    	userID, err := currentUser(ctx, core)
+    	if err != nil {
+    		return err
+    	}
+    	folderID, err := rootFolder(ctx, core, userID)
+    	if err != nil {
+    		return err
+    	}
+
+    	// --- step 1: upload the file to Drive
+
+    	content := []byte("Quarterly report.\nCreated by the b24gosdk example.\n")
+    	// fileContent is the file transport in Bitrix24: an array of two elements,
+    	// [file name, content in base64]. The request body is JSON anyway, so a regular
+    	// []string is serialized exactly as the method expects: neither multipart nor manual
+    	// url encoding is needed. Base64 inflates the data by about a third —
+    	// this path for small files.
+    	res, err := core.Call(ctx, "disk.folder.uploadfile", b24.Params{
+    		"id":          folderID,
+    		"data":        b24.Params{"NAME": "ava555.jpg"},
+    		"fileContent": []string{"ava555.jpg", base64.StdEncoding.EncodeToString(content)},
+    		// Re-running the example must not fail because of a name collision.
+    		"generateUniqueName": true,
+    	})
+    	if err != nil {
+    		return fmt.Errorf("disk.folder.uploadfile: %w", err)
+    	}
+
+    	var file struct {
+    		// ID is the ID of the DRIVE OBJECT, and it is exactly what fields of type
+    		// "file (Drive)".
+    		ID b24.ID `json:"ID"`
+    		// FILE_ID is the internal file ID. If you substitute it into a field
+    		// of the task, the file either will not attach or the wrong one will.
+    		FileID b24.ID `json:"FILE_ID"`
+    		Name   string `json:"NAME"`
+    	}
+    	if err := json.Unmarshal(res.Result, &file); err != nil {
+    		return fmt.Errorf("parse the uploaded file: %w", err)
+    	}
+    	defer del(ctx, core, "disk.file.delete", b24.Params{"id": file.ID})
+    	fmt.Printf("file %q uploaded: ID=%d, FILE_ID=%d\n", file.Name, file.ID, file.FileID)
+
+    	// --- step 2: create a task with this file
+    	// The "n" prefix before a Drive object ID means "attach exactly
+    	// this existing object". The method will not accept a bare number. The field is always
+    	// an array, even when there is a single file.
+    	res, err = core.Call(ctx, "tasks.task.add", b24.Params{
+    		"fields": b24.Params{
+    			"TITLE":                "task for test",
+    			"CREATED_BY":           userID,
+    			"RESPONSIBLE_ID":       userID,
+    			"UF_TASK_WEBDAV_FILES": []string{"n" + strconv.FormatInt(int64(file.ID), 10)},
+    		},
+    	})
+    	if err != nil {
+    		return fmt.Errorf("tasks.task.add: %w", err)
+    	}
+
+    	// tasks.* wraps the response in an object with the task key — unlike crm.*.add,
+    	// which responds with a bare ID. And here the ID arrives
+    	// AS A STRING ("3711"): b24.ID parses both spellings, a plain int does not.
+    	var out struct {
+    		Task struct {
+    			ID    b24.ID `json:"id"`
+    			Title string `json:"title"`
+    		} `json:"task"`
+    	}
+    	if err := json.Unmarshal(res.Result, &out); err != nil {
+    		return fmt.Errorf("parse the created task: %w", err)
+    	}
+    	defer del(ctx, core, "tasks.task.delete", b24.Params{"taskId": out.Task.ID})
+    	fmt.Printf("task %d %q created\n", out.Task.ID, out.Task.Title)
+
+    	// --- check: the file is actually attached
+
+    	return checkAttachment(ctx, core, out.Task.ID)
+    }
+
+    // --- helpers: data setup, verification, and cleanup
+
+    func currentUser(ctx context.Context, core *b24.Core) (b24.ID, error) {
+    	res, err := core.Call(ctx, "user.current", nil, b24.WithIdempotent())
+    	if err != nil {
+    		return 0, fmt.Errorf("user.current: %w", err)
+    	}
+    	var u struct {
+    		ID b24.ID `json:"ID"`
+    	}
+    	if err := json.Unmarshal(res.Result, &u); err != nil {
+    		return 0, err
+    	}
+    	return u.ID, nil
+    }
+
+    // rootFolder returns the root folder of the user's personal storage, and if
+    // it does not exist — the shared portal storage. The page substitutes a ready-made number here
+    // of the folder; on someone else's portal such a number does not exist, so the example looks it up.
+    func rootFolder(ctx context.Context, core *b24.Core, userID b24.ID) (b24.ID, error) {
+    	for _, filter := range []b24.Params{
+    		{"ENTITY_TYPE": "user", "ENTITY_ID": userID},
+    		{"ENTITY_TYPE": "common"},
+    	} {
+    		res, err := core.Call(ctx, "disk.storage.getlist",
+    			b24.Params{"filter": filter}, b24.WithIdempotent())
+    		if err != nil {
+    			return 0, fmt.Errorf("disk.storage.getlist: %w", err)
+    		}
+    		var storages []struct {
+    			Name         string `json:"NAME"`
+    			RootObjectID b24.ID `json:"ROOT_OBJECT_ID"`
+    		}
+    		if err := json.Unmarshal(res.Result, &storages); err != nil {
+    			return 0, err
+    		}
+    		for _, s := range storages {
+    			if s.RootObjectID != 0 {
+    				fmt.Printf("storage %q, root folder %d\n", s.Name, s.RootObjectID)
+    				return s.RootObjectID, nil
+    			}
+    		}
+    	}
+    	return 0, fmt.Errorf("the webhook cannot see any storage on Drive")
+    }
+
+    // checkAttachment demonstrates what the page describes: in the tasks.task.add response
+    // there is no information about the files, it has to be requested separately.
+    func checkAttachment(ctx context.Context, core *b24.Core, taskID b24.ID) error {
+    	res, err := core.Call(ctx, "tasks.task.get", b24.Params{
+    		"taskId": taskID,
+    		"select": []string{"ID", "TITLE", "UF_TASK_WEBDAV_FILES"},
+    	}, b24.WithIdempotent())
+    	if err != nil {
+    		return fmt.Errorf("tasks.task.get: %w", err)
+    	}
+
+    	// The portal responds with a different name than the one requested: UF_TASK_WEBDAV_FILES
+    	// arrives as ufTaskWebdavFiles. UnwrapFold compares names ignoring
+    	// case and underscores, so renaming does not break it.
+    	raw, ok := b24.UnwrapFold(res.Result, "task", "UF_TASK_WEBDAV_FILES")
+    	if !ok || b24.IsEmpty(raw) {
+    		return fmt.Errorf("the file was not attached to task %d", taskID)
+    	}
+
+    	// The value is the list of IDs of the LINK between the task and the Drive file, not
+    	// the IDs of the files themselves.
+    	var attachIDs []b24.ID
+    	if err := json.Unmarshal(raw, &attachIDs); err != nil {
+    		return fmt.Errorf("parse attachments: %w", err)
+    	}
+    	fmt.Printf("attachments attached to the task: %d (link IDs %v)\n",
+    		len(attachIDs), attachIDs)
+    	return nil
+    }
+
+    // del removes what was created. A cleanup error is printed but not returned: it must not
+    // mask the real error of the scenario.
+    func del(ctx context.Context, core *b24.Core, method string, params b24.Params) {
+    	if _, err := core.Call(ctx, method, params); err != nil {
+    		fmt.Fprintf(os.Stderr, "cleanup, %s: %v
+", method, err)
+    	}
+    }
     ```
 
 {% endlist %}

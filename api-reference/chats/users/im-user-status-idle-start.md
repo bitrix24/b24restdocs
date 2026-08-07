@@ -185,6 +185,25 @@ This method was designed for the previous version of the chat. In the current M1
         var_dump($result['result']);
     }
     ```
+
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "im.user.status.idle.start", b24.Params{
+    	"AGO": 10,
+    })
+    if err != nil {
+    	return fmt.Errorf("im.user.status.idle.start: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

@@ -132,6 +132,27 @@ The method `im.v2.File.download` returns a link to download a file from the chat
     }
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "im.v2.File.download", b24.Params{
+    	"dialogId": "chat5",
+    	"fileId":   138,
+    })
+    if err != nil {
+    	return fmt.Errorf("im.v2.File.download: %w", err)
+    }
+
+    var item struct {
+    	DownloadUrl string `json:"downloadUrl"`
+    }
+    if err := json.Unmarshal(res.Result, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.DownloadUrl)
+    ```
+
 {% endlist %}
 
 ## Response Handling

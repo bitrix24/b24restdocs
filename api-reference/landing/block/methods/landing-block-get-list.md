@@ -282,6 +282,37 @@ If `edit_mode` is on, the method will return the HTML of the draft. ||
     }
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "landing.block.getlist", b24.Params{
+    	"lid": 4858,
+    	"params": b24.Params{
+    		"edit_mode":   true,
+    		"get_content": true,
+    	},
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("landing.block.getlist: %w", err)
+    }
+
+    var items []struct {
+    	ID      b24.ID `json:"id"`
+    	Lid     int    `json:"lid"`
+    	Code    string `json:"code"`
+    	Name    string `json:"name"`
+    	Active  bool   `json:"active"`
+    	Content string `json:"content"`
+    }
+    if err := json.Unmarshal(res.Result, &items); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    for _, it := range items {
+    	fmt.Println(it.ID, it.Lid)
+    }
+    ```
+
 {% endlist %}
 
 ## Response Handling

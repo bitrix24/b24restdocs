@@ -379,6 +379,50 @@ Set two product rows for the estimate with `id = 1`.
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.quote.productrows.set", b24.Params{
+    	"id": 1,
+    	"rows": []b24.Params{
+    		{
+    			"PRODUCT_ID":       459,
+    			"PRICE":            3000,
+    			"QUANTITY":         1,
+    			"DISCOUNT_TYPE_ID": 2,
+    			"DISCOUNT_RATE":    0,
+    			"TAX_RATE":         0,
+    			"TAX_INCLUDED":     "Y",
+    			"MEASURE_CODE":     796,
+    			"MEASURE_NAME":     "pcs",
+    			"SORT":             10,
+    		},
+    		{
+    			"PRODUCT_NAME":     "Support Service",
+    			"PRICE":            1500,
+    			"QUANTITY":         2,
+    			"DISCOUNT_TYPE_ID": 2,
+    			"DISCOUNT_RATE":    0,
+    			"TAX_RATE":         0,
+    			"TAX_INCLUDED":     "Y",
+    			"MEASURE_CODE":     796,
+    			"MEASURE_NAME":     "pcs",
+    			"SORT":             20,
+    		},
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("crm.quote.productrows.set: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

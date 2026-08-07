@@ -258,6 +258,31 @@ You can find the schedule identifier in the list of schedules on the *Employees 
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "timeman.schedule.get", b24.Params{
+    	"id": 1,
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("timeman.schedule.get: %w", err)
+    }
+
+    var item struct {
+    	ID           b24.ID `json:"ID"`
+    	Name         string `json:"NAME"`
+    	ScheduleType string `json:"SCHEDULE_TYPE"`
+    	ReportPeriod string `json:"REPORT_PERIOD"`
+    	CalendarID   b24.ID `json:"CALENDAR_ID"`
+    	Deleted      string `json:"DELETED"`
+    }
+    if err := json.Unmarshal(res.Result, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.ID, item.Name)
+    ```
+
 {% endlist %}
 
 ## Response Handling

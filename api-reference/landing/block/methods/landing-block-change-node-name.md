@@ -305,6 +305,30 @@ For example, if you pass ` H1 `, the method will save the tag as `h1`. If anothe
     }
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "landing.block.changeNodeName", b24.Params{
+    	"lid":   311,
+    	"block": 6058,
+    	"data": b24.Params{
+    		".landing-block-node-title@0": "h1",
+    		".landing-block-node-text@2":  "p",
+    	},
+    	"preventHistory": true,
+    })
+    if err != nil {
+    	return fmt.Errorf("landing.block.changeNodeName: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

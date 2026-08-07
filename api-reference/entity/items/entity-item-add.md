@@ -236,6 +236,30 @@ Example of adding an item where:
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "entity.item.add", b24.Params{
+    	"ENTITY": "dish",
+    	"NAME":   "Hello, world!",
+    	"PROPERTY_VALUES": b24.Params{
+    		"test":  11,
+    		"test1": 22,
+    	},
+    	"SECTION": 219,
+    })
+    if err != nil {
+    	return fmt.Errorf("entity.item.add: %w", err)
+    }
+
+    var newID b24.ID
+    if err := json.Unmarshal(res.Result, &newID); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("id:", newID)
+    ```
+
 {% endlist %}
 
 ## Response Handling

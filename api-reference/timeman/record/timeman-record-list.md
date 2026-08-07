@@ -344,6 +344,53 @@ The new API call differs by adding the `/api/` segment to the request URL:
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "timeman.record.list", b24.Params{
+    	"filter": []any{
+    		[]any{"userId", 1},
+    		[]any{
+    			"startTime",
+    			"between",
+    			[]string{"2026-06-01T00:00:00+03:00", "2026-06-30T23:59:59+03:00"},
+    		},
+    	},
+    	"select": []string{"id", "startTime", "endTime", "duration"},
+    	"order": b24.Params{
+    		"startTime": "DESC",
+    	},
+    	"pagination": b24.Params{
+    		"page":   1,
+    		"limit":  50,
+    		"offset": 0,
+    	},
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("timeman.record.list: %w", err)
+    }
+
+    // The method wraps the response in an object with the "items" key.
+    raw, ok := b24.Unwrap(res.Result, "items")
+    if !ok {
+    	return fmt.Errorf("no items key in the response")
+    }
+
+    var items []struct {
+    	ID        b24.ID `json:"id"`
+    	StartTime string `json:"startTime"`
+    	EndTime   string `json:"endTime"`
+    	Duration  int    `json:"duration"`
+    }
+    if err := json.Unmarshal(raw, &items); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    for _, it := range items {
+    	fmt.Println(it.ID)
+    }
+    ```
+
 {% endlist %}
 
 ## Response Handling

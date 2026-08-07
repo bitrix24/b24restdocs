@@ -269,6 +269,34 @@ For example, if you need to disable document printing functionality for the SPA 
         echo '</PRE>';
         ```
 
+    - Go
+
+        ```go
+        // client and ctx are already created — see the Go SDK section
+        res, err := client.Core().Call(ctx, "crm.type.update", b24.Params{
+        	"id": 20,
+        	"fields": b24.Params{
+        		"isAutomationEnabled":      "N",
+        		"isBeginCloseDatesEnabled": "N",
+        		"isClientEnabled":          "N",
+        		"isObserversEnabled":       "N",
+        		"isSourceEnabled":          "Y",
+        		"isStagesEnabled":          "Y",
+        		"isUseInUserfieldEnabled":  "Y",
+        		"linkedUserFields": b24.Params{
+        			"TASKS_TASK|UF_CRM_TASK": "true",
+        		},
+        	},
+        })
+        if err != nil {
+        	return fmt.Errorf("crm.type.update: %w", err)
+        }
+
+        // The response arrives as json.RawMessage — unmarshal it
+        // into a struct matching the response shape shown below on this page.
+        fmt.Printf("%s\n", res.Result)
+        ```
+
     {% endlist %}
 
 2. Suppose for the SPA with `id = 20` you need to:
@@ -467,6 +495,52 @@ For example, if you need to disable document printing functionality for the SPA 
         echo '<PRE>';
         print_r($result);
         echo '</PRE>';
+        ```
+
+    - Go
+
+        ```go
+        // client and ctx are already created — see the Go SDK section
+        res, err := client.Core().Call(ctx, "crm.type.update", b24.Params{
+        	"id": 20,
+        	"fields": b24.Params{
+        		"relations": b24.Params{
+        			"parent": []any{},
+        			"child": []b24.Params{
+        				{
+        					"entityTypeId":          1,
+        					"isChildrenListEnabled": "true",
+        				},
+        				{
+        					"entityTypeId":          2,
+        					"isChildrenListEnabled": "false",
+        				},
+        			},
+        		},
+        	},
+        })
+        if err != nil {
+        	return fmt.Errorf("crm.type.update: %w", err)
+        }
+
+        // The method wraps the response in an object with the "type" key.
+        raw, ok := b24.Unwrap(res.Result, "type")
+        if !ok {
+        	return fmt.Errorf("no type key in the response")
+        }
+
+        var item struct {
+        	ID                  b24.ID `json:"id"`
+        	Title               string `json:"title"`
+        	Code                string `json:"code"`
+        	CreatedBy           int    `json:"createdBy"`
+        	EntityTypeID        b24.ID `json:"entityTypeId"`
+        	IsCategoriesEnabled string `json:"isCategoriesEnabled"`
+        }
+        if err := json.Unmarshal(raw, &item); err != nil {
+        	return fmt.Errorf("parse response: %w", err)
+        }
+        fmt.Println(item.ID, item.Title)
         ```
 
     {% endlist %}

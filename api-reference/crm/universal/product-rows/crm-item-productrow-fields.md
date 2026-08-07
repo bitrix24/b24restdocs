@@ -200,6 +200,24 @@ No parameters.
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.item.productrow.fields", nil, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("crm.item.productrow.fields: %w", err)
+    }
+
+    // The method wraps the response in an object with the "fields" key.
+    raw, ok := b24.Unwrap(res.Result, "fields")
+    if !ok {
+    	return fmt.Errorf("no fields key in the response")
+    }
+
+    fmt.Printf("%s\n", raw)
+    ```
+
 {% endlist %}
 
 ## Response on Success

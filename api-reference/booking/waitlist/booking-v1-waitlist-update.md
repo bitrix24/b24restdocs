@@ -207,6 +207,27 @@ The method `booking.v1.waitlist.update` updates the information of a record in t
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "booking.v1.waitlist.update", b24.Params{
+    	"id": 5,
+    	"fields": b24.Params{
+    		"note": "New note",
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("booking.v1.waitlist.update: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

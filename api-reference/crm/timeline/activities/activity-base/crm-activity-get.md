@@ -252,6 +252,32 @@ The method `crm.activity.get` returns information about the activity by its ID.
     except Exception as error:
         print(f"Unexpected error: {error}")
     ```
+
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.activity.get", b24.Params{
+    	"id": 999,
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("crm.activity.get: %w", err)
+    }
+
+    var item struct {
+    	ID             b24.ID `json:"ID"`
+    	OwnerID        b24.ID `json:"OWNER_ID"`
+    	OwnerTypeID    b24.ID `json:"OWNER_TYPE_ID"`
+    	TypeID         b24.ID `json:"TYPE_ID"`
+    	ProviderID     string `json:"PROVIDER_ID"`
+    	ProviderTypeID string `json:"PROVIDER_TYPE_ID"`
+    }
+    if err := json.Unmarshal(res.Result, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.ID, item.OwnerID)
+    ```
+
 {% endlist %}
 
 ## Response handling

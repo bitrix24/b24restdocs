@@ -352,6 +352,31 @@ Example of retrieving document template fields, where:
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.documentgenerator.template.getfields", b24.Params{
+    	"id":           1,
+    	"entityTypeId": 2,
+    	"entityId":     123,
+    	"values": b24.Params{
+    		"DocumentNumber": "2026-001",
+    	},
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("crm.documentgenerator.template.getfields: %w", err)
+    }
+
+    // The method wraps the response in an object with the "templateFields" key.
+    raw, ok := b24.Unwrap(res.Result, "templateFields")
+    if !ok {
+    	return fmt.Errorf("no templateFields key in the response")
+    }
+
+    fmt.Printf("%s\n", raw)
+    ```
+
 {% endlist %}
 
 ## Response Handling

@@ -206,6 +206,37 @@ Property identifiers can be obtained using the [catalog.productProperty.list](./
     print_r($result);
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "catalog.productProperty.get", b24.Params{
+    	"id": 659,
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("catalog.productProperty.get: %w", err)
+    }
+
+    // The method wraps the response in an object with the "productProperty" key.
+    raw, ok := b24.Unwrap(res.Result, "productProperty")
+    if !ok {
+    	return fmt.Errorf("no productProperty key in the response")
+    }
+
+    var item struct {
+    	Active    string `json:"active"`
+    	Code      string `json:"code"`
+    	ColCount  int    `json:"colCount"`
+    	Filtrable string `json:"filtrable"`
+    	IblockID  b24.ID `json:"iblockId"`
+    	ID        b24.ID `json:"id"`
+    }
+    if err := json.Unmarshal(raw, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.Active, item.Code)
+    ```
+
 {% endlist %}
 
 ## Response Handling

@@ -201,6 +201,26 @@ The identifier can be obtained using the [user.get](../../user/user-get.md) meth
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "sonet_group.user.invite", b24.Params{
+    	"GROUP_ID": 69,
+    	"USER_ID":  1271,
+    	"MESSAGE":  "Join the project",
+    })
+    if err != nil {
+    	return fmt.Errorf("sonet_group.user.invite: %w", err)
+    }
+
+    var items []b24.ID
+    if err := json.Unmarshal(res.Result, &items); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("received:", len(items))
+    ```
+
 {% endlist %}
 
 ## Response handling

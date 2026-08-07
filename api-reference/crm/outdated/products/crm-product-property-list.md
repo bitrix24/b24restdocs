@@ -192,4 +192,26 @@ The method `crm.product.property.list` returns a list of product properties.
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.product.property.list", b24.Params{
+    	"order": b24.Params{
+    		"SORT": "ASC",
+    	},
+    	"filter": b24.Params{
+    		"PROPERTY_TYPE": "S",
+    		"USER_TYPE":     "HTML",
+    	},
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("crm.product.property.list: %w", err)
+    }
+
+    // The response arrives as json.RawMessage — unmarshal it
+    // into a struct matching the response shape shown below on this page.
+    fmt.Printf("%s\n", res.Result)
+    ```
+
 {% endlist %}

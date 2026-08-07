@@ -182,6 +182,29 @@ No parameters.
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "calendar.user.settings.get", nil, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("calendar.user.settings.get: %w", err)
+    }
+
+    var item struct {
+    	View               string `json:"view"`
+    	MeetSection        string `json:"meetSection"`
+    	CrmSection         string `json:"crmSection"`
+    	ShowDeclined       bool   `json:"showDeclined"`
+    	DenyBusyInvitation bool   `json:"denyBusyInvitation"`
+    	CollapseOffHours   string `json:"collapseOffHours"`
+    }
+    if err := json.Unmarshal(res.Result, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.View, item.MeetSection)
+    ```
+
 {% endlist %}
 
 ## Response Handling

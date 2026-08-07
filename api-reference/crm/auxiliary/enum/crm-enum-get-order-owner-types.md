@@ -204,6 +204,29 @@ No parameters.
         print(f"Unexpected error: {error}")
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.enum.getorderownertypes", nil)
+    if err != nil {
+    	return fmt.Errorf("crm.enum.getorderownertypes: %w", err)
+    }
+
+    var items []struct {
+    	Attribute string `json:"attribute"`
+    	Code      string `json:"code"`
+    	ID        b24.ID `json:"id"`
+    	Name      string `json:"name"`
+    }
+    if err := json.Unmarshal(res.Result, &items); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    for _, it := range items {
+    	fmt.Println(it.Attribute, it.Code)
+    }
+    ```
+
 {% endlist %}
 
 ## Response Handling

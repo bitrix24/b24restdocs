@@ -386,6 +386,34 @@ If system classes of the block, such as `landing-block-node-text`, are not inclu
     }
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "landing.block.updateStyles", b24.Params{
+    	"lid":   313,
+    	"block": 6134,
+    	"data": b24.Params{
+    		".landing-block-node-text": b24.Params{
+    			"classList": []string{"landing-block-node-text", "g-color-white", "text-right"},
+    			"affect":    []string{"text-align", "color"},
+    			"style": b24.Params{
+    				"font-weight": "700",
+    			},
+    		},
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("landing.block.updateStyles: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

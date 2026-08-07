@@ -247,6 +247,31 @@ The value can be obtained using the [imopenlines.session.history.get](./imopenli
     }
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "imopenlines.dialog.get", b24.Params{
+    	"USER_CODE": "livechat|1|1373|211",
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("imopenlines.dialog.get: %w", err)
+    }
+
+    var item struct {
+    	ID              b24.ID `json:"id"`
+    	ParentChatID    int    `json:"parent_chat_id"`
+    	ParentMessageID int    `json:"parent_message_id"`
+    	Name            string `json:"name"`
+    	Owner           int    `json:"owner"`
+    	Extranet        bool   `json:"extranet"`
+    }
+    if err := json.Unmarshal(res.Result, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.ID, item.ParentChatID)
+    ```
+
 {% endlist %}
 
 ## Response Handling

@@ -230,6 +230,26 @@ Values `0`, `null`, and an empty string are not considered as the absence of a p
     }
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "landing.syspage.set", b24.Params{
+    	"id":   1390,
+    	"type": "personal",
+    	"lid":  8593,
+    })
+    if err != nil {
+    	return fmt.Errorf("landing.syspage.set: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

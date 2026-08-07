@@ -550,6 +550,30 @@ The formula for calculating the `start` parameter value:
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "sale.payment.list", b24.Params{
+    	"select": []string{"paySystemXmlId", "paySystemIsCash", "accountNumber", "id", "orderId", "paid", "datePaid", "empPaidId", "paySystemId", "psStatus", "psStatusCode", "psStatusDescription", "psStatusMessage", "psSum", "psCurrency", "psResponseDate", "payVoucherNum", "payVoucherDate", "datePayBefore", "dateBill", "xmlId", "sum", "currency", "paySystemName", "companyId", "payReturnNum", "priceCod", "payReturnDate", "empReturnId", "payReturnComment", "responsibleId", "empResponsibleId", "dateResponsibleId", "isReturn", "comments", "updated1c", "id1c", "version1c", "externalPayment", "psInvoiceId", "marked", "reasonMarked", "dateMarked", "empMarkedId"},
+    	"filter": b24.Params{
+    		"<id":           10,
+    		"@personTypeId": []int{3, 4},
+    		"payed":         "N",
+    	},
+    	"order": b24.Params{
+    		"id": "desc",
+    	},
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("sale.payment.list: %w", err)
+    }
+
+    // The response arrives as json.RawMessage — unmarshal it
+    // into a struct matching the response shape shown below on this page.
+    fmt.Printf("%s\n", res.Result)
+    ```
+
 {% endlist %}
 
 ## Response Handling

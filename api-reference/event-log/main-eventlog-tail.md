@@ -322,6 +322,45 @@ The new API call differs by adding the `/api/` segment to the request URL:
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "main.eventlog.tail", b24.Params{
+    	"select": []string{"id", "timestampX", "severity", "auditTypeId", "moduleId", "itemId", "userId", "description"},
+    	"filter": []any{},
+    	"cursor": b24.Params{
+    		"field": "id",
+    		"value": 446313,
+    		"order": "ASC",
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("main.eventlog.tail: %w", err)
+    }
+
+    // The method wraps the response in an object with the "items" key.
+    raw, ok := b24.Unwrap(res.Result, "items")
+    if !ok {
+    	return fmt.Errorf("no items key in the response")
+    }
+
+    var items []struct {
+    	ID          b24.ID `json:"id"`
+    	TimestampX  string `json:"timestampX"`
+    	Severity    string `json:"severity"`
+    	AuditTypeID string `json:"auditTypeId"`
+    	ModuleID    string `json:"moduleId"`
+    	ItemID      b24.ID `json:"itemId"`
+    }
+    if err := json.Unmarshal(raw, &items); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    for _, it := range items {
+    	fmt.Println(it.ID)
+    }
+    ```
+
 {% endlist %}
 
 ## Response Handling

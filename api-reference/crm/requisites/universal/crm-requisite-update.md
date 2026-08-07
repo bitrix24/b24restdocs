@@ -414,6 +414,30 @@ You can add a custom field to requisites using the method [crm.requisite.userfie
         print(f"Unexpected error: {error}")
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.requisite.update", b24.Params{
+    	"id": 27,
+    	"fields": b24.Params{
+    		"RQ_OKPO":           "80715150",
+    		"RQ_OKTMO":          "45381000000",
+    		"UF_CRM_1707997209": "78",
+    		"UF_CRM_1708012333": "Category 3",
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("crm.requisite.update: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response on Success

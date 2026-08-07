@@ -174,6 +174,34 @@ No parameters.
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "catalog.priceTypeLang.getLanguages", nil)
+    if err != nil {
+    	return fmt.Errorf("catalog.priceTypeLang.getLanguages: %w", err)
+    }
+
+    // The method wraps the response in an object with the "languages" key.
+    raw, ok := b24.Unwrap(res.Result, "languages")
+    if !ok {
+    	return fmt.Errorf("no languages key in the response")
+    }
+
+    var items []struct {
+    	Active string `json:"active"`
+    	Lid    string `json:"lid"`
+    	Name   string `json:"name"`
+    }
+    if err := json.Unmarshal(raw, &items); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    for _, it := range items {
+    	fmt.Println(it.Active)
+    }
+    ```
+
 {% endlist %}
 
 ## Response Handling

@@ -171,6 +171,26 @@ To delete a file, the `valueId` field should contain the identifier of the prope
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.product.update", b24.Params{
+    	"id": "your_product_id",
+    	"fields": b24.Params{
+    		"CURRENCY_ID": "EUR",
+    		"PRICE":       5000,
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("crm.product.update: %w", err)
+    }
+
+    // The response arrives as json.RawMessage — unmarshal it
+    // into a struct matching the response shape shown below on this page.
+    fmt.Printf("%s\n", res.Result)
+    ```
+
 {% endlist %}
 
 ### Example 2

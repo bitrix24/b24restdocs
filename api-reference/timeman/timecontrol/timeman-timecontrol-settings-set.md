@@ -257,6 +257,31 @@ Filled if `REPORT_FULL_TYPE` is set to `user`  ||
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "timeman.timecontrol.settings.set", b24.Params{
+    	"ACTIVE":                  true,
+    	"MINIMUM_IDLE_FOR_REPORT": 15,
+    	"REGISTER_OFFLINE":        true,
+    	"REGISTER_IDLE":           true,
+    	"REGISTER_DESKTOP":        true,
+    	"REPORT_REQUEST_TYPE":     "all",
+    	"REPORT_SIMPLE_TYPE":      "all",
+    	"REPORT_FULL_TYPE":        "all",
+    })
+    if err != nil {
+    	return fmt.Errorf("timeman.timecontrol.settings.set: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

@@ -240,6 +240,30 @@ The method `crm.activity.todo.updateDeadline` changes the deadline of a universa
     except Exception as error:
         print(f"Unexpected error: {error}")
     ```
+
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.activity.todo.updateDeadline", b24.Params{
+    	"id":          999,
+    	"ownerTypeId": 2,
+    	"ownerId":     1,
+    	"value":       time.Now().Format(time.RFC3339),
+    })
+    if err != nil {
+    	return fmt.Errorf("crm.activity.todo.updateDeadline: %w", err)
+    }
+
+    var item struct {
+    	ID b24.ID `json:"id"`
+    }
+    if err := json.Unmarshal(res.Result, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.ID)
+    ```
+
 {% endlist %}
 
 ## Response Handling

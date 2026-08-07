@@ -263,6 +263,35 @@ This method updates the calendar.
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "calendar.section.update", b24.Params{
+    	"id":          325,
+    	"type":        "user",
+    	"ownerId":     2,
+    	"name":        "Changed Section Name",
+    	"description": "New description for section",
+    	"color":       "#9cbeAA",
+    	"text_color":  "#283099",
+    	"export": []b24.Params{
+    		{
+    			"ALLOW": false,
+    		},
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("calendar.section.update: %w", err)
+    }
+
+    var value b24.ID
+    if err := json.Unmarshal(res.Result, &value); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("result:", value)
+    ```
+
 {% endlist %}
 
 ## Response Handling

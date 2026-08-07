@@ -158,4 +158,23 @@ To find out the required format for the fields, execute the method [`crm.dealcat
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.dealcategory.add", b24.Params{
+    	"fields": b24.Params{
+    		"NAME": "New Direction",
+    		"SORT": "20",
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("crm.dealcategory.add: %w", err)
+    }
+
+    // The response arrives as json.RawMessage — unmarshal it
+    // into a struct matching the response shape shown below on this page.
+    fmt.Printf("%s\n", res.Result)
+    ```
+
 {% endlist %}

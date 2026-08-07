@@ -291,6 +291,44 @@ Examples:
   print_r($result);
   ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "documentgenerator.region.update", b24.Params{
+    	"id": 1,
+    	"fields": b24.Params{
+    		"title":      "Germany (User-defined)",
+    		"formatDate": "YYYY-MM-DD",
+    		"phrases": b24.Params{
+    			"TAX_INCLUDED": "Tax included in the price",
+    		},
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("documentgenerator.region.update: %w", err)
+    }
+
+    // The method wraps the response in an object with the "region" key.
+    raw, ok := b24.Unwrap(res.Result, "region")
+    if !ok {
+    	return fmt.Errorf("no region key in the response")
+    }
+
+    var item struct {
+    	ID             b24.ID `json:"id"`
+    	Title          string `json:"title"`
+    	LanguageID     string `json:"languageId"`
+    	FormatDate     string `json:"formatDate"`
+    	FormatDatetime string `json:"formatDatetime"`
+    	FormatName     string `json:"formatName"`
+    }
+    if err := json.Unmarshal(raw, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.ID, item.Title)
+    ```
+
 {% endlist %}
 
 ## Response Handling

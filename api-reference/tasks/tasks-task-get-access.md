@@ -194,6 +194,27 @@ The user identifier can be obtained using the [get user list](../user/user-get.m
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "tasks.task.getaccess", b24.Params{
+    	"taskId": 8017,
+    	"users":  []int{503, 547},
+    })
+    if err != nil {
+    	return fmt.Errorf("tasks.task.getaccess: %w", err)
+    }
+
+    // The method wraps the response in an object with the "allowedActions" key.
+    raw, ok := b24.Unwrap(res.Result, "allowedActions")
+    if !ok {
+    	return fmt.Errorf("no allowedActions key in the response")
+    }
+
+    fmt.Printf("%s\n", raw)
+    ```
+
 {% endlist %}
 
 ## Response Handling

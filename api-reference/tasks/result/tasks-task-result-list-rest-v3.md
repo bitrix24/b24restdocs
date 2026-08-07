@@ -319,6 +319,49 @@ The new API call differs by adding the `/api/` segment to the request URL:
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "tasks.task.result.list", b24.Params{
+    	"filter": []any{
+    		[]any{"taskId", 51},
+    	},
+    	"select": []string{"id", "taskId", "text", "authorId", "createdAt", "status", "messageId"},
+    	"order": b24.Params{
+    		"createdAt": "DESC",
+    	},
+    	"pagination": b24.Params{
+    		"limit":  10,
+    		"offset": 0,
+    	},
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("tasks.task.result.list: %w", err)
+    }
+
+    // The method wraps the response in an object with the "items" key.
+    raw, ok := b24.Unwrap(res.Result, "items")
+    if !ok {
+    	return fmt.Errorf("no items key in the response")
+    }
+
+    var items []struct {
+    	ID        b24.ID `json:"id"`
+    	TaskID    b24.ID `json:"taskId"`
+    	Text      string `json:"text"`
+    	AuthorID  b24.ID `json:"authorId"`
+    	CreatedAt string `json:"createdAt"`
+    	Status    string `json:"status"`
+    }
+    if err := json.Unmarshal(raw, &items); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    for _, it := range items {
+    	fmt.Println(it.ID)
+    }
+    ```
+
 {% endlist %}
 
 ## Response Handling

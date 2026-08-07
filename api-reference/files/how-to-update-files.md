@@ -133,6 +133,20 @@ If the field is not multiple, upload a new file to the field using the `*.update
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "bizproc.workflow.template.update", nil)
+    if err != nil {
+    	return fmt.Errorf("bizproc.workflow.template.update: %w", err)
+    }
+
+    // The response arrives as json.RawMessage — unmarshal it
+    // into a struct matching the response shape shown below on this page.
+    fmt.Printf("%s\n", res.Result)
+    ```
+
 {% endlist %}
 
 To clear the field, pass an empty value.
@@ -240,6 +254,20 @@ To clear the field, pass an empty value.
     echo '<PRE>';
     print_r($result);
     echo '</PRE>';
+    ```
+
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.item.update", nil)
+    if err != nil {
+    	return fmt.Errorf("crm.item.update: %w", err)
+    }
+
+    // The response arrives as json.RawMessage — unmarshal it
+    // into a struct matching the response shape shown below on this page.
+    fmt.Printf("%s\n", res.Result)
     ```
 
 {% endlist %}
@@ -394,6 +422,20 @@ Before updating the field, get the current file IDs to save them. You can use th
     echo '<PRE>';
     print_r($result);
     echo '</PRE>';
+    ```
+
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.item.list", nil, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("crm.item.list: %w", err)
+    }
+
+    // The response arrives as json.RawMessage — unmarshal it
+    // into a struct matching the response shape shown below on this page.
+    fmt.Printf("%s\n", res.Result)
     ```
 
 {% endlist %}
@@ -574,6 +616,20 @@ Files will be saved if their `ID` are listed in the request. Files will be delet
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.item.update", nil)
+    if err != nil {
+    	return fmt.Errorf("crm.item.update: %w", err)
+    }
+
+    // The response arrives as json.RawMessage — unmarshal it
+    // into a struct matching the response shape shown below on this page.
+    fmt.Printf("%s\n", res.Result)
+    ```
+
 {% endlist %}
 
 To delete all files, pass an empty array in the field.
@@ -689,6 +745,20 @@ To delete all files, pass an empty array in the `FILES` field.
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.timeline.comment.update", nil)
+    if err != nil {
+    	return fmt.Errorf("crm.timeline.comment.update: %w", err)
+    }
+
+    // The response arrives as json.RawMessage — unmarshal it
+    // into a struct matching the response shape shown below on this page.
+    fmt.Printf("%s\n", res.Result)
+    ```
+
 {% endlist %}
 
 ### lists.element.update — update field in the list
@@ -798,6 +868,20 @@ To get the `ID` for deleting a file, execute the [lists.element.get](../lists/el
     echo '<PRE>';
     print_r($result);
     echo '</PRE>';
+    ```
+
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "lists.element.get", nil, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("lists.element.get: %w", err)
+    }
+
+    // The response arrives as json.RawMessage — unmarshal it
+    // into a struct matching the response shape shown below on this page.
+    fmt.Printf("%s\n", res.Result)
     ```
 
 {% endlist %}
@@ -955,6 +1039,20 @@ Pass the property field with the `_DEL` suffix to the [lists.element.update](../
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "lists.element.update", nil)
+    if err != nil {
+    	return fmt.Errorf("lists.element.update: %w", err)
+    }
+
+    // The response arrives as json.RawMessage — unmarshal it
+    // into a struct matching the response shape shown below on this page.
+    fmt.Printf("%s\n", res.Result)
+    ```
+
 {% endlist %}
 
 ### log.blogpost.update — update files in a post
@@ -1055,6 +1153,20 @@ To get the `ID` for deleting a file, execute the [log.blogpost.get](../log/log-b
     echo '<PRE>';
     print_r($result);
     echo '</PRE>';
+    ```
+
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "log.blogpost.get", nil, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("log.blogpost.get: %w", err)
+    }
+
+    // The response arrives as json.RawMessage — unmarshal it
+    // into a struct matching the response shape shown below on this page.
+    fmt.Printf("%s\n", res.Result)
     ```
 
 {% endlist %}
@@ -1186,6 +1298,20 @@ Pass the `FILES` field to the [log.blogpost.update](../log/log-blogpost-update.m
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "log.blogpost.update", nil)
+    if err != nil {
+    	return fmt.Errorf("log.blogpost.update: %w", err)
+    }
+
+    // The response arrives as json.RawMessage — unmarshal it
+    // into a struct matching the response shape shown below on this page.
+    fmt.Printf("%s\n", res.Result)
+    ```
+
 {% endlist %}
 
 To delete all files from the post, pass the `UF_BLOG_POST_FILE` field to the [log.blogpost.update](../log/log-blogpost-update.md) method. In the field value, specify `["empty"]`.
@@ -1285,6 +1411,20 @@ To delete all files from the post, pass the `UF_BLOG_POST_FILE` field to the [lo
     echo '<PRE>';
     print_r($result);
     echo '</PRE>';
+    ```
+
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "log.blogpost.update", nil)
+    if err != nil {
+    	return fmt.Errorf("log.blogpost.update: %w", err)
+    }
+
+    // The response arrives as json.RawMessage — unmarshal it
+    // into a struct matching the response shape shown below on this page.
+    fmt.Printf("%s\n", res.Result)
     ```
 
 {% endlist %}
@@ -1387,6 +1527,20 @@ To get the `ID` for deleting a file, execute the [catalog.product.get](../catalo
     echo '<PRE>';
     print_r($result);
     echo '</PRE>';
+    ```
+
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "catalog.product.get", nil, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("catalog.product.get: %w", err)
+    }
+
+    // The response arrives as json.RawMessage — unmarshal it
+    // into a struct matching the response shape shown below on this page.
+    fmt.Printf("%s\n", res.Result)
     ```
 
 {% endlist %}
@@ -1565,6 +1719,20 @@ To delete a file, pass the field to the [catalog.product.update](../catalog/prod
     echo '<PRE>';
     print_r($result);
     echo '</PRE>';
+    ```
+
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "catalog.product.update", nil)
+    if err != nil {
+    	return fmt.Errorf("catalog.product.update: %w", err)
+    }
+
+    // The response arrives as json.RawMessage — unmarshal it
+    // into a struct matching the response shape shown below on this page.
+    fmt.Printf("%s\n", res.Result)
     ```
 
 {% endlist %}

@@ -328,6 +328,43 @@ Required fields for creating a template:
     print_r($result);
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "tasks.template.add", b24.Params{
+    	"fields": b24.Params{
+    		"PARENT_ID":             8131,
+    		"TITLE":                 "Weekly project status preparation",
+    		"DESCRIPTION":           "Task template for preparing and approving weekly project status with the team and manager",
+    		"PRIORITY":              2,
+    		"CREATED_BY":            101,
+    		"RESPONSIBLE_ID":        102,
+    		"REPLICATE":             "Y",
+    		"START_DATE_PLAN_AFTER": "32400",
+    		"END_DATE_PLAN_AFTER":   "97200",
+    		"REPLICATE_PARAMS": b24.Params{
+    			"PERIOD":      "weekly",
+    			"EVERY_WEEK":  1,
+    			"WEEK_DAYS":   []int{2},
+    			"TIME":        "11:00",
+    			"REPEAT_TILL": "endless",
+    			"START_DATE":  "16.03.2026 00:00:00",
+    		},
+    		"UF_CRM_TASK": []string{"L_1179", "D_1833"},
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("tasks.template.add: %w", err)
+    }
+
+    var newID b24.ID
+    if err := json.Unmarshal(res.Result, &newID); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("id:", newID)
+    ```
+
 {% endlist %}
 
 ## Response Handling

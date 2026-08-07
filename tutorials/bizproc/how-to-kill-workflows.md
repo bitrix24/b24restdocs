@@ -102,6 +102,38 @@ We will use the method [user.get](../../api-reference/user/user-get.md) with the
     ).response.result
     ```
 
+- Go
+
+    ```go
+    // ACTIVE: 0 selects only dismissed employees. Without this parameter, the search covers
+    // all employees regardless of status. The first and last names are set by the constants
+    // departedName and departedLastName at the top of the file; empty values are not put into
+    // the filter — an empty string matches nobody.
+    filter := b24.Params{"ACTIVE": 0}
+    if departedName != "" {
+    	filter["NAME"] = departedName
+    }
+    if departedLastName != "" {
+    	filter["LAST_NAME"] = departedLastName
+    }
+
+    res, err := core.Call(ctx, "user.get", b24.Params{"filter": filter}, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("user.get: %w", err)
+    }
+
+    // user.get responds in UPPER_SNAKE and sends the ID AS A STRING ("29"):
+    // b24.ID parses both a number and a string containing a number.
+    var users []struct {
+    	ID       b24.ID `json:"ID"`
+    	Name     string `json:"NAME"`
+    	LastName string `json:"LAST_NAME"`
+    }
+    if err := json.Unmarshal(res.Result, &users); err != nil {
+    	return fmt.Errorf("parse employees: %w", err)
+    }
+    ```
+
 {% endlist %}
 
 As a result, we will obtain the `ID` of the terminated employee.
@@ -177,6 +209,37 @@ We will use the method [bizproc.task.list](../../api-reference/bizproc/bizproc-t
     ).response.result
     ```
 
+- Go
+
+    ```go
+    // STATUS: 0 — only incomplete checklist items.
+    res, err := core.Call(ctx, "bizproc.task.list", b24.Params{
+    	"filter": b24.Params{"USER_ID": userID, "STATUS": 0},
+    }, b24.WithIdempotent())
+    if err != nil {
+    	// bizproc.* is available only to the portal administrator and only on
+    	// paid plans. The code is compared with errors.Is rather than as a string:
+    	// a typo in the literal would compile and silently take a different branch.
+    	if errors.Is(err, b24.ErrMethodNotFound) {
+    		return fmt.Errorf("the business processes module is not available on this portal: %w", err)
+    	}
+    	return fmt.Errorf("bizproc.task.list: %w", err)
+    }
+
+    // WORKFLOW_ID is NOT a number: "67e3db8e581121.72266518". Parsing it into
+    // int destroys the value, so the field stays a string from the list up to
+    // of the termination command.
+    var tasks []struct {
+    	ID           b24.ID `json:"ID"`
+    	WorkflowID   string `json:"WORKFLOW_ID"`
+    	Name         string `json:"NAME"`
+    	DocumentName string `json:"DOCUMENT_NAME"`
+    }
+    if err := json.Unmarshal(res.Result, &tasks); err != nil {
+    	return fmt.Errorf("parse workflow tasks: %w", err)
+    }
+    ```
+
 {% endlist %}
 
 As a result, we will obtain a list of incomplete tasks. Each task has a `WORKFLOW_ID` parameter — this is the `ID` of the business process that we will complete in the next step.
@@ -235,6 +298,25 @@ Use the [bizproc.workflow.kill](../../api-reference/bizproc/bizproc-workflow-kil
         "bizproc.workflow.kill",
         {"ID": "67e3db8e581121.72266518"},
     )
+    ```
+
+- Go
+
+    ```go
+    res, err := core.Call(ctx, "bizproc.workflow.kill", b24.Params{"ID": workflowID})
+    if err != nil {
+    	// An already finished workflow cannot be terminated — this is not a failure
+    	// of the scenario; the remaining workflows still have to be terminated.
+    	fmt.Fprintf(os.Stderr, "workflow %s: %v\n", workflowID, err)
+    	continue
+    }
+
+    // The response is a bare boolean rather than an object.
+    var killed bool
+    if err := json.Unmarshal(res.Result, &killed); err != nil {
+    	return fmt.Errorf("parse the bizproc.workflow.kill response: %w", err)
+    }
+    fmt.Printf("workflow %s terminated: %v\n", workflowID, killed)
     ```
 
 {% endlist %}
@@ -431,6 +513,254 @@ In the example, all found processes are deleted within a loop. If you need to de
     last_name = input("Enter employee's last name: ")
 
     process_employee_tasks(client, token, first_name, last_name)
+    ```
+
+- Go
+
+    ```go
+    // Setup in an empty directory — go get will not work without go mod init:
+    //
+    //	go mod init example && go get github.com/bitrix24/b24gosdk
+    //
+    // Run:
+    //
+    //	export B24_WEBHOOK_URL='https://your-portal.bitrix24.com/rest/1/token/' && go run .
+    //
+    // The example is self-contained and safe: it creates ITS OWN deal, terminates
+    // only the workflows that started on it, and deletes the deal afterwards.
+    // A dismissed employee cannot be created and "dismissed", so steps 1 and 2 are
+    // performs for real and shows what it found, while it terminates only its own.
+    // It runs on any portal, nothing needs to be edited.
+    package main
+
+    import (
+    	"context"
+    	"encoding/json"
+    	"errors"
+    	"fmt"
+    	"log"
+    	"os"
+    	"time"
+
+    	b24 "github.com/bitrix24/b24gosdk"
+    )
+
+    // The first and last name of the dismissed employee for step 1. Empty values mean
+    // "all dismissed employees": a specific person cannot be found on someone else's portal, and the example
+    // must run everywhere without edits.
+    const (
+    	departedName     = ""
+    	departedLastName = ""
+    )
+
+    func main() {
+    	if err := run(context.Background()); err != nil {
+    		log.Fatal(err)
+    	}
+    }
+
+    func run(ctx context.Context) error {
+    	// The webhook path is a secret, so it comes from the environment, not from the code.
+    	core := b24.NewClient(os.Getenv("B24_WEBHOOK_URL")).Core()
+
+    	// --- setup: our own deal and the workflows started on it
+
+    	dealID, err := addDeal(ctx, core)
+    	if err != nil {
+    		return err
+    	}
+    	// Deleting a deal also removes the unfinished workflows on it.
+    	defer del(ctx, core, "crm.deal.delete", b24.Params{"id": dealID})
+
+    	// Workflows do not start instantly.
+    	time.Sleep(3 * time.Second)
+
+    	mine, err := workflowsOfDeal(ctx, core, dealID)
+    	if err != nil {
+    		return err
+    	}
+    	fmt.Printf("workflows started on deal %d: %d\n", dealID, len(mine))
+
+    	// --- step 1: the ID of the dismissed employee
+    	// ACTIVE: 0 selects only dismissed employees. Without this parameter, the search covers
+    	// all employees regardless of status. The first and last names are set by the constants
+    	// departedName and departedLastName at the top of the file; empty values are not put into
+    	// the filter — an empty string matches nobody.
+    	filter := b24.Params{"ACTIVE": 0}
+    	if departedName != "" {
+    		filter["NAME"] = departedName
+    	}
+    	if departedLastName != "" {
+    		filter["LAST_NAME"] = departedLastName
+    	}
+
+    	res, err := core.Call(ctx, "user.get", b24.Params{"filter": filter}, b24.WithIdempotent())
+    	if err != nil {
+    		return fmt.Errorf("user.get: %w", err)
+    	}
+
+    	// user.get responds in UPPER_SNAKE and sends the ID AS A STRING ("29"):
+    	// b24.ID parses both a number and a string containing a number.
+    	var users []struct {
+    		ID       b24.ID `json:"ID"`
+    		Name     string `json:"NAME"`
+    		LastName string `json:"LAST_NAME"`
+    	}
+    	if err := json.Unmarshal(res.Result, &users); err != nil {
+    		return fmt.Errorf("parse employees: %w", err)
+    	}
+    	fmt.Printf("dismissed employees found: %d\n", len(users))
+
+    	// --- step 2: the workflow tasks the employee is responsible for
+
+    	// If there are no dismissed employees, request the tasks of the current user: the call itself
+    	// does not change because of it, and the scenario remains runnable on any portal.
+    	targets := make([]b24.ID, 0, len(users))
+    	for _, u := range users {
+    		targets = append(targets, u.ID)
+    	}
+    	if len(targets) == 0 {
+    		me, err := currentUser(ctx, core)
+    		if err != nil {
+    			return err
+    		}
+    		targets = append(targets, me)
+    	}
+
+    	for _, userID := range targets {
+    		// STATUS: 0 — only incomplete checklist items.
+    		res, err := core.Call(ctx, "bizproc.task.list", b24.Params{
+    			"filter": b24.Params{"USER_ID": userID, "STATUS": 0},
+    		}, b24.WithIdempotent())
+    		if err != nil {
+    			// bizproc.* is available only to the portal administrator and only on
+    			// paid plans. The code is compared with errors.Is rather than as a string:
+    			// a typo in the literal would compile and silently take a different branch.
+    			if errors.Is(err, b24.ErrMethodNotFound) {
+    				return fmt.Errorf("the business processes module is not available on this portal: %w", err)
+    			}
+    			return fmt.Errorf("bizproc.task.list: %w", err)
+    		}
+
+    		// WORKFLOW_ID is NOT a number: "67e3db8e581121.72266518". Parsing it into
+    		// int destroys the value, so the field stays a string from the list up to
+    		// of the termination command.
+    		var tasks []struct {
+    			ID           b24.ID `json:"ID"`
+    			WorkflowID   string `json:"WORKFLOW_ID"`
+    			Name         string `json:"NAME"`
+    			DocumentName string `json:"DOCUMENT_NAME"`
+    		}
+    		if err := json.Unmarshal(res.Result, &tasks); err != nil {
+    			return fmt.Errorf("parse workflow tasks: %w", err)
+    		}
+    		fmt.Printf("employee %d, incomplete workflow tasks: %d\n", userID, len(tasks))
+    		for _, t := range tasks {
+    			fmt.Printf("  workflow task %d %q, workflow %s (%s)\n",
+    				t.ID, t.Name, t.WorkflowID, t.DocumentName)
+    		}
+    	}
+
+    	// --- step 3: terminate the workflows
+
+    	// On a production portal, the WORKFLOW_ID from step 2 is substituted here. The example
+    	// is limited to the workflows of ITS OWN deal: it has no right to terminate
+    	// someone else's workflow on your portal.
+    	if len(mine) == 0 {
+    		fmt.Println("no workflows started on the example deal — there is nothing to terminate")
+    		return nil
+    	}
+
+    	for _, workflowID := range mine {
+    		res, err := core.Call(ctx, "bizproc.workflow.kill", b24.Params{"ID": workflowID})
+    		if err != nil {
+    			// An already finished workflow cannot be terminated — this is not a failure
+    			// of the scenario; the remaining workflows still have to be terminated.
+    			fmt.Fprintf(os.Stderr, "workflow %s: %v\n", workflowID, err)
+    			continue
+    		}
+
+    		// The response is a bare boolean rather than an object.
+    		var killed bool
+    		if err := json.Unmarshal(res.Result, &killed); err != nil {
+    			return fmt.Errorf("parse the bizproc.workflow.kill response: %w", err)
+    		}
+    		fmt.Printf("workflow %s terminated: %v\n", workflowID, killed)
+    	}
+
+    	// bizproc.workflow.terminate stops the workflow but RETAINS the record of
+    	// it; kill deletes the workflow together with its data. They are called the same way.
+    	return nil
+    }
+
+    // --- helpers: data setup and cleanup
+
+    func addDeal(ctx context.Context, core *b24.Core) (b24.ID, error) {
+    	res, err := core.Call(ctx, "crm.deal.add", b24.Params{
+    		"fields": b24.Params{"TITLE": "Deal for the b24gosdk example"},
+    	})
+    	if err != nil {
+    		return 0, fmt.Errorf("crm.deal.add: %w", err)
+    	}
+    	var id b24.ID
+    	return id, json.Unmarshal(res.Result, &id)
+    }
+
+    // workflowsOfDeal returns the IDs of the workflows started on the deal.
+    func workflowsOfDeal(ctx context.Context, core *b24.Core, dealID b24.ID) ([]string, error) {
+    	// bizproc.workflow.instances accepts parameters in UPPERCASE. SELECT
+    	// here is not decoration: by default the method returns only ID, MODIFIED, and
+    	// OWNED_UNTIL, while a missing field silently unmarshals into a zero value.
+    	res, err := core.Call(ctx, "bizproc.workflow.instances", b24.Params{
+    		"SELECT": []string{"ID", "TEMPLATE_ID", "DOCUMENT_ID", "STARTED"},
+    		"FILTER": b24.Params{"DOCUMENT_ID": fmt.Sprintf("DEAL_%d", dealID)},
+    	}, b24.WithIdempotent())
+    	if err != nil {
+    		if errors.Is(err, b24.ErrAccessDenied) {
+    			return nil, fmt.Errorf("bizproc.* is available only to the portal administrator: %w", err)
+    		}
+    		if errors.Is(err, b24.ErrMethodNotFound) {
+    			return nil, fmt.Errorf("the business processes module is not available on this portal: %w", err)
+    		}
+    		return nil, fmt.Errorf("bizproc.workflow.instances: %w", err)
+    	}
+    	var instances []struct {
+    		ID string `json:"ID"`
+    	}
+    	if err := json.Unmarshal(res.Result, &instances); err != nil {
+    		return nil, fmt.Errorf("parse workflows: %w", err)
+    	}
+    	ids := make([]string, 0, len(instances))
+    	for _, i := range instances {
+    		if i.ID != "" {
+    			ids = append(ids, i.ID)
+    		}
+    	}
+    	return ids, nil
+    }
+
+    func currentUser(ctx context.Context, core *b24.Core) (b24.ID, error) {
+    	res, err := core.Call(ctx, "user.current", nil, b24.WithIdempotent())
+    	if err != nil {
+    		return 0, fmt.Errorf("user.current: %w", err)
+    	}
+    	var u struct {
+    		ID b24.ID `json:"ID"`
+    	}
+    	if err := json.Unmarshal(res.Result, &u); err != nil {
+    		return 0, err
+    	}
+    	return u.ID, nil
+    }
+
+    // del removes what was created. A cleanup error is printed but not returned: it must not
+    // mask the real error of the scenario.
+    func del(ctx context.Context, core *b24.Core, method string, params b24.Params) {
+    	if _, err := core.Call(ctx, method, params); err != nil {
+    		fmt.Fprintf(os.Stderr, "cleanup, %s: %v
+", method, err)
+    	}
+    }
     ```
 
 {% endlist %}

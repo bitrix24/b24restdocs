@@ -200,6 +200,28 @@ Delete a set of additional content blocks for the timeline record with `id = 8`,
     echo '';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.timeline.layout.blocks.delete", b24.Params{
+    	"entityTypeId": 2,
+    	"entityId":     4,
+    	"timelineId":   8,
+    })
+    if err != nil {
+    	return fmt.Errorf("crm.timeline.layout.blocks.delete: %w", err)
+    }
+
+    var item struct {
+    	Success bool `json:"success"`
+    }
+    if err := json.Unmarshal(res.Result, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.Success)
+    ```
+
 {% endlist %}
 
 ## Response Handling

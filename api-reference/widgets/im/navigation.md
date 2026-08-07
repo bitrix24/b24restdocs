@@ -333,6 +333,37 @@ The `context` parameter, which limits the display by chat type, does not apply t
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "placement.bind", b24.Params{
+    	"PLACEMENT": "IM_NAVIGATION",
+    	"HANDLER":   "https://your-domain.com/widgets/im-navigation-handler.php",
+    	"TITLE":     "My section",
+    	"LANG_ALL": b24.Params{
+    		"ru": b24.Params{
+    			"TITLE": "My section",
+    		},
+    		"en": b24.Params{
+    			"TITLE": "My section",
+    		},
+    	},
+    	"OPTIONS": b24.Params{
+    		"iconName": "fa-rocket",
+    		"role":     "USER",
+    		"extranet": "N",
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("placement.bind: %w", err)
+    }
+
+    // The response arrives as json.RawMessage — unmarshal it
+    // into a struct matching the response shape shown below on this page.
+    fmt.Printf("%s\n", res.Result)
+    ```
+
 {% endlist %}
 
 ## Continue Learning

@@ -181,6 +181,24 @@ The identifier can be obtained using the method [disk.storage.getChildren](../st
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "disk.file.getExternalLink", b24.Params{
+    	"id": 8964,
+    })
+    if err != nil {
+    	return fmt.Errorf("disk.file.getExternalLink: %w", err)
+    }
+
+    var value string
+    if err := json.Unmarshal(res.Result, &value); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("result:", value)
+    ```
+
 {% endlist %}
 
 ## Response Handling

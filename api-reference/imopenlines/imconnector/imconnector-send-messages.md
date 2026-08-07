@@ -464,6 +464,61 @@ It is recommended to use the value from `DATA.URL` ||
     );
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "imconnector.send.messages", b24.Params{
+    	"CONNECTOR": "myconnector",
+    	"LINE":      107,
+    	"MESSAGES": []b24.Params{
+    		{
+    			"user": b24.Params{
+    				"id":        "ext-user-42",
+    				"last_name": "Ivanov",
+    				"name":      "Ivan",
+    				"picture": b24.Params{
+    					"url": "https://example.com/u42.png",
+    				},
+    				"url":                 "https://example.com/users/42",
+    				"gender":              "male",
+    				"email":               "klaus@example.com",
+    				"phone":               "+499990000000",
+    				"skip_phone_validate": "Y",
+    			},
+    			"message": b24.Params{
+    				"id":   "ext-msg-1001",
+    				"date": 1773265993,
+    				"text": "Good afternoon",
+    				"files": []b24.Params{
+    					{
+    						"url":  "https://example.com/files/spec.pdf",
+    						"name": "spec.pdf",
+    					},
+    				},
+    				"disable_crm": "Y",
+    			},
+    			"chat": b24.Params{
+    				"id":   "channel-123",
+    				"name": "Support Channel",
+    				"url":  "https://example.com/chats/123",
+    			},
+    		},
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("imconnector.send.messages: %w", err)
+    }
+
+    var item struct {
+    	Success bool `json:"SUCCESS"`
+    }
+    if err := json.Unmarshal(res.Result, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.Success)
+    ```
+
 {% endlist %}
 
 ## Response Handling

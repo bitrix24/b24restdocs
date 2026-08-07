@@ -242,6 +242,40 @@ The method retrieves product rows of the CRM object for which the customer has n
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.item.productrow.getAvailableForPayment", b24.Params{
+    	"ownerType": "D",
+    	"ownerId":   13144,
+    })
+    if err != nil {
+    	return fmt.Errorf("crm.item.productrow.getAvailableForPayment: %w", err)
+    }
+
+    // The method wraps the response in an object with the "productRows" key.
+    raw, ok := b24.Unwrap(res.Result, "productRows")
+    if !ok {
+    	return fmt.Errorf("no productRows key in the response")
+    }
+
+    var items []struct {
+    	ID          b24.ID `json:"id"`
+    	OwnerID     b24.ID `json:"ownerId"`
+    	OwnerType   string `json:"ownerType"`
+    	ProductID   b24.ID `json:"productId"`
+    	ProductName string `json:"productName"`
+    	Price       int    `json:"price"`
+    }
+    if err := json.Unmarshal(raw, &items); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    for _, it := range items {
+    	fmt.Println(it.ID)
+    }
+    ```
+
 {% endlist %}
 
 ## Response on Success

@@ -241,6 +241,40 @@ Minimum value — `1` ||
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "telephony.call.attachTranscription", b24.Params{
+    	"CALL_ID": "externalCall.716f1cb73def9700a23842adf9c4c568.1773130779",
+    	"MESSAGES": []b24.Params{
+    		{
+    			"SIDE":       "User",
+    			"START_TIME": 1,
+    			"STOP_TIME":  3,
+    			"MESSAGE":    "Good afternoon",
+    		},
+    		{
+    			"SIDE":       "Client",
+    			"START_TIME": 4,
+    			"STOP_TIME":  7,
+    			"MESSAGE":    "Hello",
+    		},
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("telephony.call.attachTranscription: %w", err)
+    }
+
+    var item struct {
+    	TranscriptID b24.ID `json:"TRANSCRIPT_ID"`
+    }
+    if err := json.Unmarshal(res.Result, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.TranscriptID)
+    ```
+
 {% endlist %}
 
 ## Response Handling

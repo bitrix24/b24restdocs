@@ -322,6 +322,64 @@ The `biconnector.dataset.add` method creates a new dataset linked to a data sour
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "biconnector.dataset.add", b24.Params{
+    	"fields": b24.Params{
+    		"sourceId":     3,
+    		"name":         "rest_dataset",
+    		"externalName": "extranalName",
+    		"externalCode": "extrnalCode",
+    		"description":  "Dataset description",
+    		"fields": []b24.Params{
+    			{
+    				"type":         "int",
+    				"name":         "ID",
+    				"externalCode": "ID",
+    			},
+    			{
+    				"type":         "string",
+    				"name":         "NAME",
+    				"externalCode": "NAME",
+    			},
+    			{
+    				"type":         "string",
+    				"name":         "SURNAME",
+    				"externalCode": "SURNAME",
+    			},
+    			{
+    				"type":         "double",
+    				"name":         "SCORE",
+    				"externalCode": "SCORE",
+    			},
+    			{
+    				"type":         "date",
+    				"name":         "DATA",
+    				"externalCode": "DATA",
+    			},
+    			{
+    				"type":         "datetime",
+    				"name":         "TIME",
+    				"externalCode": "TIME",
+    			},
+    		},
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("biconnector.dataset.add: %w", err)
+    }
+
+    var item struct {
+    	ID b24.ID `json:"id"`
+    }
+    if err := json.Unmarshal(res.Result, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.ID)
+    ```
+
 {% endlist %}
 
 ## Response Handling

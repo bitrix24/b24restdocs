@@ -214,6 +214,28 @@ You can obtain the identifier using the method for creating a new flow [tasks.fl
     }
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "tasks.flow.Flow.delete", b24.Params{
+    	"flowData": b24.Params{
+    		"id": 517,
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("tasks.flow.Flow.delete: %w", err)
+    }
+
+    var item struct {
+    	Deleted bool `json:"deleted"`
+    }
+    if err := json.Unmarshal(res.Result, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.Deleted)
+    ```
+
 {% endlist %}
 
 ## Response Handling

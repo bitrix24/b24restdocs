@@ -335,6 +335,39 @@ If an existing binding is provided without the `SORT` parameter, the default val
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.company.contact.items.set", b24.Params{
+    	"id": 32,
+    	"items": []b24.Params{
+    		{
+    			"CONTACT_ID": 8,
+    			"IS_PRIMARY": "Y",
+    			"SORT":       100,
+    		},
+    		{
+    			"CONTACT_ID": 9,
+    			"SORT":       200,
+    		},
+    		{
+    			"CONTACT_ID": 10,
+    			"SORT":       400,
+    		},
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("crm.company.contact.items.set: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

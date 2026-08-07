@@ -340,6 +340,39 @@ Set the following associated companies for the contact with `id = 82`:
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.contact.company.items.set", b24.Params{
+    	"id": 82,
+    	"items": []b24.Params{
+    		{
+    			"COMPANY_ID": 8,
+    			"IS_PRIMARY": "Y",
+    			"SORT":       100,
+    		},
+    		{
+    			"COMPANY_ID": 9,
+    			"SORT":       200,
+    		},
+    		{
+    			"COMPANY_ID": 10,
+    			"SORT":       400,
+    		},
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("crm.contact.company.items.set: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

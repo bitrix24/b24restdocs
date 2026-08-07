@@ -553,6 +553,30 @@ The formula for calculating the `start` parameter value:
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "sale.order.list", b24.Params{
+    	"select": []string{"id", "lid", "dateInsert", "dateUpdate", "personTypeId", "personTypeXmlId", "statusId", "dateStatus", "empStatusId", "marked", "dateMarked", "empMarkedId", "reasonMarked", "price", "discountValue", "taxValue", "userDescription", "additionalInfo", "comments", "companyId", "responsibleId", "recurringId", "lockedBy", "dateLock", "recountFlag", "affiliateId", "updated1c", "orderTopic", "xmlId", "statusXmlId", "id1c", "version", "version1c", "externalOrder", "canceled", "dateCanceled", "empCanceledId", "reasonCanceled", "userId", "currency", "accountNumber", "payed", "deducted"},
+    	"filter": b24.Params{
+    		"<id":           10,
+    		"@personTypeId": []int{3, 4},
+    		"payed":         "N",
+    	},
+    	"order": b24.Params{
+    		"id": "desc",
+    	},
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("sale.order.list: %w", err)
+    }
+
+    // The response arrives as json.RawMessage — unmarshal it
+    // into a struct matching the response shape shown below on this page.
+    fmt.Printf("%s\n", res.Result)
+    ```
+
 {% endlist %}
 
 ## Response Handling

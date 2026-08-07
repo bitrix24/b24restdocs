@@ -264,6 +264,30 @@ An access error will be returned if the permission level is insufficient ||
     }
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "task.stages.add", b24.Params{
+    	"fields": b24.Params{
+    		"TITLE":     "Stage title",
+    		"COLOR":     "#FFAAEE",
+    		"AFTER_ID":  1,
+    		"ENTITY_ID": 1,
+    	},
+    	"isAdmin": false,
+    })
+    if err != nil {
+    	return fmt.Errorf("task.stages.add: %w", err)
+    }
+
+    var newID b24.ID
+    if err := json.Unmarshal(res.Result, &newID); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("id:", newID)
+    ```
+
 {% endlist %}
 
 ## Response Handling

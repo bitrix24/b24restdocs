@@ -246,6 +246,44 @@ The formula for calculating the `start` parameter value:
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "event.offline.list", b24.Params{
+    	"filter": b24.Params{
+    		"ERROR": 0,
+    	},
+    	"order": b24.Params{
+    		"ID": "DESC",
+    	},
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("event.offline.list: %w", err)
+    }
+
+    var items []struct {
+    	ID              b24.ID `json:"ID"`
+    	TimestampX      string `json:"TIMESTAMP_X"`
+    	EventName       string `json:"EVENT_NAME"`
+    	EventData       bool   `json:"EVENT_DATA"`
+    	EventAdditional bool   `json:"EVENT_ADDITIONAL"`
+    	MessageID       b24.ID `json:"MESSAGE_ID"`
+    }
+    if err := json.Unmarshal(res.Result, &items); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    for _, it := range items {
+    	fmt.Println(it.ID, it.TimestampX)
+    }
+
+    // Total and Next are filled in by list methods; for a full
+    // list traversal, use client.Core().Pages and Scan.
+    if res.Total != nil {
+    	fmt.Println("total:", *res.Total)
+    }
+    ```
+
 {% endlist %}
 
 ## Response Handling

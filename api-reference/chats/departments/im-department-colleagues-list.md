@@ -241,6 +241,26 @@ Possible values:
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "im.department.colleagues.list", b24.Params{
+    	"USER_DATA": "Y",
+    	"OFFSET":    0,
+    	"LIMIT":     5,
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("im.department.colleagues.list: %w", err)
+    }
+
+    var items []b24.ID
+    if err := json.Unmarshal(res.Result, &items); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("received:", len(items))
+    ```
+
 {% endlist %}
 
 ## Response Handling

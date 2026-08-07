@@ -279,6 +279,37 @@ Default value is an empty string ||
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "booking.v1.booking.createfromwaitlist", b24.Params{
+    	"waitListId": 10,
+    	"fields": b24.Params{
+    		"resourceIds": []int{1, 2, 3},
+    		"datePeriod": b24.Params{
+    			"from": b24.Params{
+    				"timestamp": 1723446900,
+    				"timezone":  "Europe/Berlin",
+    			},
+    			"to": b24.Params{
+    				"timestamp": 1723447800,
+    				"timezone":  "Europe/Berlin",
+    			},
+    		},
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("booking.v1.booking.createfromwaitlist: %w", err)
+    }
+
+    var value b24.ID
+    if err := json.Unmarshal(res.Result, &value); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("result:", value)
+    ```
+
 {% endlist %}
 
 ## Response Handling

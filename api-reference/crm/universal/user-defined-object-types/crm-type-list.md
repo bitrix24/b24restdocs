@@ -449,6 +449,44 @@ The formula for calculating the `start` parameter value:
         echo '</PRE>';
         ```
 
+    - Go
+
+        ```go
+        // client and ctx are already created — see the Go SDK section
+        res, err := client.Core().Call(ctx, "crm.type.list", b24.Params{
+        	"filter": b24.Params{
+        		"isAutomationEnabled": "Y",
+        		"isBizProcEnabled":    "Y",
+        		"isCategoriesEnabled": "Y",
+        		"isClientEnabled":     "Y",
+        	},
+        }, b24.WithIdempotent())
+        if err != nil {
+        	return fmt.Errorf("crm.type.list: %w", err)
+        }
+
+        // The method wraps the response in an object with the "types" key.
+        raw, ok := b24.Unwrap(res.Result, "types")
+        if !ok {
+        	return fmt.Errorf("no types key in the response")
+        }
+
+        var items []struct {
+        	ID                  b24.ID `json:"id"`
+        	Title               string `json:"title"`
+        	Code                string `json:"code"`
+        	CreatedBy           int    `json:"createdBy"`
+        	EntityTypeID        b24.ID `json:"entityTypeId"`
+        	IsCategoriesEnabled string `json:"isCategoriesEnabled"`
+        }
+        if err := json.Unmarshal(raw, &items); err != nil {
+        	return fmt.Errorf("parse response: %w", err)
+        }
+        for _, it := range items {
+        	fmt.Println(it.ID)
+        }
+        ```
+
     {% endlist %}
 
 ## Response Handling

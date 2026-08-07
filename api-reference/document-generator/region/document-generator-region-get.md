@@ -188,6 +188,37 @@ You can obtain the identifier after [creating a region](./document-generator-reg
   print_r($result);
   ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "documentgenerator.region.get", b24.Params{
+    	"id": "1",
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("documentgenerator.region.get: %w", err)
+    }
+
+    // The method wraps the response in an object with the "region" key.
+    raw, ok := b24.Unwrap(res.Result, "region")
+    if !ok {
+    	return fmt.Errorf("no region key in the response")
+    }
+
+    var item struct {
+    	ID             b24.ID `json:"id"`
+    	Title          string `json:"title"`
+    	LanguageID     string `json:"languageId"`
+    	FormatDate     string `json:"formatDate"`
+    	FormatDatetime string `json:"formatDatetime"`
+    	FormatName     string `json:"formatName"`
+    }
+    if err := json.Unmarshal(raw, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.ID, item.Title)
+    ```
+
 {% endlist %}
 
 ## Response Handling

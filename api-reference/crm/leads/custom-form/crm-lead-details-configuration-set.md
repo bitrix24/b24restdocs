@@ -417,6 +417,67 @@ The default value is `0`. ||
     except Exception as error:
         print(f"Unexpected error: {error}")
     ```
+
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.lead.details.configuration.set", b24.Params{
+    	"scope":  "P",
+    	"userId": 1,
+    	"extras": b24.Params{
+    		"leadCustomerType": 2,
+    	},
+    	"data": []b24.Params{
+    		{
+    			"name":  "main",
+    			"title": "About the Lead",
+    			"type":  "section",
+    			"elements": []b24.Params{
+    				{
+    					"name": "TITLE",
+    				},
+    				{
+    					"name": "STATUS_ID",
+    				},
+    				{
+    					"name": "SOURCE_ID",
+    				},
+    				{
+    					"name": "NAME",
+    				},
+    				{
+    					"name":        "PHONE",
+    					"optionFlags": 1,
+    				},
+    			},
+    		},
+    		{
+    			"name":  "additional",
+    			"title": "Additional Information",
+    			"type":  "section",
+    			"elements": []b24.Params{
+    				{
+    					"name": "ASSIGNED_BY_ID",
+    				},
+    				{
+    					"name": "COMMENTS",
+    				},
+    			},
+    		},
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("crm.lead.details.configuration.set: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

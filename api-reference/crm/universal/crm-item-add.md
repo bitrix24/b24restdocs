@@ -1608,6 +1608,52 @@ Default is `N` ||
             print(f"Unexpected error: {error}")
         ```
 
+    - Go
+
+        ```go
+        // client and ctx are already created — see the Go SDK section
+        res, err := client.Core().Call(ctx, "crm.item.add", b24.Params{
+        	"entityTypeId": 2,
+        	"fields": b24.Params{
+        		"title":               "New deal (specifically for REST method examples)",
+        		"typeId":              "SERVICE",
+        		"categoryId":          9,
+        		"stageId":             "C9:UC_KN8KFI",
+        		"isReccurring":        "Y",
+        		"probability":         50,
+        		"currencyId":          "EUR",
+        		"isManualOpportunity": "Y",
+        		"opportunity":         999.99,
+        		"taxValue":            99.9,
+        		"companyId":           5,
+        		"contactId":           4,
+        		"contactIds":          []int{4, 5},
+        		"quoteId":             7,
+        		"begindate":           "formatDate(monthAgo)",
+        		"closedate":           "formatDate(twelveDaysInAdvance)",
+        		"opened":              "N",
+        		"comments":            "commentsExample",
+        		"assignedById":        6,
+        		"sourceId":            "WEB",
+        		"sourceDescription":   "There should be an additional description about the source",
+        		"leadId":              102,
+        		"additionalInfo":      "There should be additional information",
+        		"observers":           []int{2, 3},
+        		"utmSource":           "google",
+        		"utmMedium":           "CPC",
+        		"ufCrm_1721244707107": 1111.1,
+        		"parentId1220":        2,
+        	},
+        })
+        if err != nil {
+        	return fmt.Errorf("crm.item.add: %w", err)
+        }
+
+        // The response arrives as json.RawMessage — unmarshal it
+        // into a struct matching the response shape shown below on this page.
+        fmt.Printf("%s\n", res.Result)
+        ```
+
     {% endlist %}
 
 2. Example of Creating an SPA Item with a Set of Custom Fields
@@ -2021,6 +2067,47 @@ Default is `N` ||
         echo '<PRE>';
         print_r($result);
         echo '</PRE>';
+        ```
+
+    - Go
+
+        ```go
+        // client and ctx are already created — see the Go SDK section
+        res, err := client.Core().Call(ctx, "crm.item.add", b24.Params{
+        	"entityTypeId": 1302,
+        	"fields": b24.Params{
+        		"ufCrm44_1721812760630": "String for custom field of type String",
+        		"ufCrm44_1721812814433": 81,
+        		"ufCrm44_1721812853419": time.Now().Format(time.RFC3339),
+        		"ufCrm44_1721812885588": []string{"example.com", "second-example.com"},
+        		"ufCrm44_1721812898903": []string{"green_pixel.png", "iVBORw0KGgoAAAANSUhEUgAAAIAAAAAMCAYAAACqTLVoAAAALklEQVR42u3SAQEAAAQDsEsuOj3YMqwy6fBWCSCAAAIgAAIgAAIgAAIgAAJw3QLOrRH1U/gU4gAAAABJRU5ErkJggg=="},
+        		"ufCrm44_1721812915476": "300|EUR",
+        		"ufCrm44_1721812935209": "Y",
+        		"ufCrm44_1721812948498": 9999.9,
+        	},
+        })
+        if err != nil {
+        	return fmt.Errorf("crm.item.add: %w", err)
+        }
+
+        // The method wraps the response in an object with the "item" key.
+        raw, ok := b24.Unwrap(res.Result, "item")
+        if !ok {
+        	return fmt.Errorf("no item key in the response")
+        }
+
+        var item struct {
+        	ID           b24.ID `json:"id"`
+        	CreatedTime  string `json:"createdTime"`
+        	UpdatedTime  string `json:"updatedTime"`
+        	CreatedBy    int    `json:"createdBy"`
+        	UpdatedBy    int    `json:"updatedBy"`
+        	AssignedByID b24.ID `json:"assignedById"`
+        }
+        if err := json.Unmarshal(raw, &item); err != nil {
+        	return fmt.Errorf("parse response: %w", err)
+        }
+        fmt.Println(item.ID, item.CreatedTime)
         ```
 
     {% endlist %}

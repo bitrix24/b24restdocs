@@ -360,6 +360,88 @@ Default is `N`. ||
         echo '</PRE>';
         ```
 
+    - Go
+
+        ```go
+        // client and ctx are already created — see the Go SDK section
+        res, err := client.Core().Call(ctx, "crm.item.batchImport", b24.Params{
+        	"entityTypeId": 2,
+        	"data": []b24.Params{
+        		{
+        			"title":               "New deal (specifically for REST method examples)",
+        			"typeId":              "SERVICE",
+        			"categoryId":          9,
+        			"stageId":             "C9:UC_KN8KFI",
+        			"isReccurring":        "Y",
+        			"probability":         50,
+        			"currencyId":          "EUR",
+        			"isManualOpportunity": "Y",
+        			"opportunity":         999.99,
+        			"taxValue":            99.9,
+        			"companyId":           5,
+        			"contactId":           4,
+        			"contactIds":          []int{4, 5},
+        			"quoteId":             7,
+        			"begindate":           "formatDate(monthAgo)",
+        			"closedate":           "formatDate(twelveDaysInAdvance)",
+        			"opened":              "N",
+        			"comments":            "commentsExample",
+        			"assignedById":        6,
+        			"sourceId":            "WEB",
+        			"sourceDescription":   "There should be an additional description about the source",
+        			"leadId":              102,
+        			"additionalInfo":      "There should be additional information",
+        			"observers":           []int{2, 3},
+        			"utmSource":           "google",
+        			"utmMedium":           "CPC",
+        			"ufCrm_1721244707107": 1111.1,
+        			"parentId1220":        2,
+        		},
+        		{
+        			"title":               "New deal (specifically for REST method examples)",
+        			"typeId":              "SERVICE",
+        			"categoryId":          4,
+        			"stageId":             "C9:UC_KN8KFI",
+        			"isReccurring":        "Y",
+        			"probability":         50,
+        			"currencyId":          "EUR",
+        			"isManualOpportunity": "Y",
+        			"opportunity":         999.99,
+        			"taxValue":            99.9,
+        			"companyId":           5,
+        			"contactId":           4,
+        			"contactIds":          []int{4, 5},
+        			"quoteId":             7,
+        			"begindate":           "formatDate(monthAgo)",
+        			"closedate":           "formatDate(twelveDaysInAdvance)",
+        			"opened":              "N",
+        			"comments":            "commentsExample",
+        			"assignedById":        6,
+        			"sourceId":            "WEB",
+        			"sourceDescription":   "There should be an additional description about the source",
+        			"leadId":              102,
+        			"additionalInfo":      "There should be additional information",
+        			"observers":           []int{2, 3},
+        			"utmSource":           "google",
+        			"utmMedium":           "CPC",
+        			"ufCrm_1721244707107": 1111.1,
+        			"parentId1220":        2,
+        		},
+        	},
+        })
+        if err != nil {
+        	return fmt.Errorf("crm.item.batchImport: %w", err)
+        }
+
+        // The method wraps the response in an object with the "items" key.
+        raw, ok := b24.Unwrap(res.Result, "items")
+        if !ok {
+        	return fmt.Errorf("no items key in the response")
+        }
+
+        fmt.Printf("%s\n", raw)
+        ```
+
     {% endlist %}
 
 
@@ -658,6 +740,48 @@ Default is `N`. ||
         echo '<PRE>';
         print_r($result);
         echo '</PRE>';
+        ```
+
+    - Go
+
+        ```go
+        // client and ctx are already created — see the Go SDK section
+        res, err := client.Core().Call(ctx, "crm.item.batchImport", b24.Params{
+        	"entityTypeId": 1302,
+        	"data": []b24.Params{
+        		{
+        			"ufCrm44_1721812760630": "String for a string-type custom field",
+        			"ufCrm44_1721812814433": 81,
+        			"ufCrm44_1721812853419": time.Now().Format(time.RFC3339),
+        			"ufCrm44_1721812885588": []string{"example.com", "second-example.com"},
+        			"ufCrm44_1721812898903": []string{"green_pixel.png", "iVBORw0KGgoAAAANSUhEUgAAAIAAAAAMCAYAAACqTLVoAAAALklEQVR42u3SAQEAAAQDsEsuOj3YMqwy6fBWCSCAAAIgAAIgAAIgAAIgAAJw3QLOrRH1U/gU4gAAAABJRU5ErkJggg=="},
+        			"ufCrm44_1721812915476": "300|EUR",
+        			"ufCrm44_1721812935209": "Y",
+        			"ufCrm44_1721812948498": 9999.9,
+        		},
+        		{
+        			"ufCrm44_1721812760630": "String for a string-type custom field",
+        			"ufCrm44_1721812814433": 45,
+        			"ufCrm44_1721812853419": time.Now().Format(time.RFC3339),
+        			"ufCrm44_1721812885588": []string{"example.com", "second-example.com"},
+        			"ufCrm44_1721812898903": []string{"green_pixel2.png", "iVBORw0KGgoAAAANSUhEUgAAAIAAAAAMCAYAAACqTLVoAAAALklEQVR42u3SAQEAAAQDsEsuOj3YMqwy6fBWCSCAAAIgAAIgAAIgAAIgAAJw3QLOrRH1U/gU4gAAAABJRU5ErkJggg=="},
+        			"ufCrm44_1721812915476": "600|EUR",
+        			"ufCrm44_1721812935209": "N",
+        			"ufCrm44_1721812948498": 9999.9,
+        		},
+        	},
+        })
+        if err != nil {
+        	return fmt.Errorf("crm.item.batchImport: %w", err)
+        }
+
+        // The method wraps the response in an object with the "items" key.
+        raw, ok := b24.Unwrap(res.Result, "items")
+        if !ok {
+        	return fmt.Errorf("no items key in the response")
+        }
+
+        fmt.Printf("%s\n", raw)
         ```
 
     {% endlist %}

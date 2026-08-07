@@ -649,6 +649,66 @@ Example of registering a template where:
     }
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "landing.demos.register", b24.Params{
+    	"data": b24.Params{
+    		"charset":     "UTF-8",
+    		"code":        "ftmlt",
+    		"site_code":   "/ftmlt/",
+    		"name":        "Business",
+    		"description": nil,
+    		"type":        "page",
+    		"fields": b24.Params{
+    			"TITLE":             "Business",
+    			"LANDING_ID_INDEX":  "0",
+    			"LANDING_ID_404":    "0",
+    			"ADDITIONAL_FIELDS": b24.Params{},
+    		},
+    		"folders": []any{},
+    		"items": b24.Params{
+    			"ftmlt": b24.Params{
+    				"old_id":       "16",
+    				"code":         "ftmlt",
+    				"name":         "Business",
+    				"description":  nil,
+    				"preview":      "",
+    				"preview2x":    "",
+    				"preview3x":    "",
+    				"preview_url":  "",
+    				"show_in_list": "Y",
+    				"type":         "page",
+    				"version":      3,
+    				"fields": b24.Params{
+    					"TITLE": "Business",
+    				},
+    				"layout": []any{},
+    				"items":  b24.Params{},
+    			},
+    		},
+    		"layout":       []any{},
+    		"preview":      "",
+    		"preview2x":    "",
+    		"preview3x":    "",
+    		"preview_url":  "",
+    		"show_in_list": "Y",
+    		"syspages":     []any{},
+    		"version":      3,
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("landing.demos.register: %w", err)
+    }
+
+    var items []b24.ID
+    if err := json.Unmarshal(res.Result, &items); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("received:", len(items))
+    ```
+
 {% endlist %}
 
 ## Response Handling

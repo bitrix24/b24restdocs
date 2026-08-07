@@ -286,6 +286,35 @@ The `crm.activity.todo.update` method updates a universal activity.
     except Exception as error:
         print(f"Unexpected error: {error}")
     ```
+
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.activity.todo.update", b24.Params{
+    	"id":            999,
+    	"ownerTypeId":   2,
+    	"ownerId":       1,
+    	"deadline":      "**put_current_date_here**",
+    	"title":         "New case title",
+    	"description":   "New case description",
+    	"responsibleId": 1,
+    	"pingOffsets":   []int{15, 30},
+    	"colorId":       "7",
+    })
+    if err != nil {
+    	return fmt.Errorf("crm.activity.todo.update: %w", err)
+    }
+
+    var item struct {
+    	ID b24.ID `json:"id"`
+    }
+    if err := json.Unmarshal(res.Result, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.ID)
+    ```
+
 {% endlist %}
 
 ## Response Handling

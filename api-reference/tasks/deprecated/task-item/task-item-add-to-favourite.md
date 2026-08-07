@@ -219,4 +219,23 @@ Maintaining the order of parameters in the request is mandatory. If violated, th
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "task.item.addtofavorite", b24.Params{
+    	"TASK_ID": 10,
+    	"PARAMS": b24.Params{
+    		"AFFECT_CHILDREN": "Y",
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("task.item.addtofavorite: %w", err)
+    }
+
+    // The response arrives as json.RawMessage — unmarshal it
+    // into a struct matching the response shape shown below on this page.
+    fmt.Printf("%s\n", res.Result)
+    ```
+
 {% endlist %}

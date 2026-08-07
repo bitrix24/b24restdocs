@@ -317,6 +317,43 @@ Retrieve companies:
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.company.list", b24.Params{
+    	"order": b24.Params{
+    		"DATE_CREATE": "ASC",
+    	},
+    	"filter": b24.Params{
+    		"COMPANY_TYPE":  "CUSTOMER",
+    		">=DATE_CREATE": "2025-01-01",
+    	},
+    	"select": []string{"TITLE", "ASSIGNED_BY_ID", "PHONE"},
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("crm.company.list: %w", err)
+    }
+
+    var items []struct {
+    	Title        string `json:"TITLE"`
+    	AssignedByID b24.ID `json:"ASSIGNED_BY_ID"`
+    	ID           b24.ID `json:"ID"`
+    }
+    if err := json.Unmarshal(res.Result, &items); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    for _, it := range items {
+    	fmt.Println(it.Title, it.AssignedByID)
+    }
+
+    // Total and Next are filled in by list methods; for a full
+    // list traversal, use client.Core().Pages and Scan.
+    if res.Total != nil {
+    	fmt.Println("total:", *res.Total)
+    }
+    ```
+
 {% endlist %}
 
 ## Response Handling

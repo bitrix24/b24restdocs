@@ -289,6 +289,34 @@ Notifications are sorted first by descending creation date, then by descending i
         var_dump($result['result']);
     }
     ```
+
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "im.notify.history.search", b24.Params{
+    	"SEARCH_TEXT":  "invoice",
+    	"SEARCH_TYPE":  "tasks|task_update",
+    	"SEARCH_DATE":  "2026-03-03T16:52:29+03:00",
+    	"LAST_ID":      1500,
+    	"LIMIT":        20,
+    	"CONVERT_TEXT": "Y",
+    	"GROUP_TAG":    "TASK|42",
+    })
+    if err != nil {
+    	return fmt.Errorf("im.notify.history.search: %w", err)
+    }
+
+    var item struct {
+    	ChatID       int `json:"chat_id"`
+    	TotalResults int `json:"total_results"`
+    }
+    if err := json.Unmarshal(res.Result, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.ChatID, item.TotalResults)
+    ```
+
 {% endlist %}
 
 ## Response Handling
